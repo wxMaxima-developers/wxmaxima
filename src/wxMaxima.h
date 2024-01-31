@@ -411,6 +411,7 @@ protected:
      maths instead).
   */
   TextCell *ConsoleAppend(wxString s, CellType type, const wxString &userLabel = {});        //!< append maxima output to console
+  void ConsoleAppend(wxXmlDocument xml, CellType type, const wxString &userLabel = {});        //!< append maxima output to console
 
   enum AppendOpt { NewLine = 1, BigSkip = 2, PromptToolTip = 4, DefaultOpt = NewLine|BigSkip };
   void DoConsoleAppend(wxString s, CellType type, AppendOpt opts = AppendOpt::DefaultOpt,
@@ -528,7 +529,7 @@ protected:
 
     After processing the status bar marker is removed from data.
   */
-  void ReadMath(const wxString &data);
+  void ReadMath(const wxXmlDocument &xml);
 
   /*! Reads autocompletion templates we get on definition of a function or variable
 

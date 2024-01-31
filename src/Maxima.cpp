@@ -310,8 +310,7 @@ void Maxima::SendToWxMaxima()
               // XML_PROMPT contains fake XML and XML_SUPPRESSOUTPUT contains any kind of
               // text including XML. XML_MATHS should support adding real maths, but
               // currently still doesn't
-              if((tag->second != XML_PROMPT) && (tag->second != XML_SUPPRESSOUTPUT) &&
-                 (tag->second != XML_MATHS))
+              if((tag->second != XML_PROMPT) && (tag->second != XML_SUPPRESSOUTPUT))
               {
                 wxXmlDocument xmldoc;
                 wxStringInputStream xmlStream(dataToSend);

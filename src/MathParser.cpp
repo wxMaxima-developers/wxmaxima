@@ -1246,7 +1246,7 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
   m_highlight = false;
   std::unique_ptr<Cell> cell;
 
-  int showLength;
+  size_t showLength;
 
   switch (m_configuration->ShowLength()) {
   case 0:
@@ -1267,7 +1267,7 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
 
   m_graphRegex.Replace(&s, wxS("\uFFFD"));
 
-  if (((long)s.Length() < showLength) || (showLength == 0)) {
+  if ((s.Length() < showLength) || (showLength == 0)) {
     wxXmlDocument xml;
 
     wxStringInputStream xmlStream(s);
@@ -1291,6 +1291,52 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
                          "can be changed in the configuration dialogue."));
     cell->ForceBreakLine(true);
   }
+  return cell;
+}
+
+std::unique_ptr<Cell> MathParser::ParseLine(const wxXmlDocument &xml, CellType style) {
+  m_ParserStyle = style;
+  m_FracStyle = FracCell::FC_NORMAL;
+  m_highlight = false;
+  size_t showLength;
+
+  switch (m_configuration->ShowLength()) {
+  case 0:
+    showLength = 600;
+    break;
+  case 1:
+    showLength = 2000;
+    break;
+  case 2:
+    showLength = 25000;
+    break;
+  case 3:
+    showLength = 0;
+    break;
+  default:
+    showLength = 5000;
+  }
+
+  std::unique_ptr<Cell> cell;
+
+  wxXmlNode *doc = xml.GetRoot();
+  if (doc != NULL)
+    {
+      auto child = doc->GetChildren();
+      cell = ParseTag(child);
+    }
+
+  // if ((cell != NULL ) && (cell->GetInnerCellCount_recursive() > showLength))
+  //   {
+  //     cell = std::make_unique<TextCell>(
+  //                                       m_group, m_configuration,
+  //                                       T_("(wxMaxima is configured not to show long expressions - which would be slow)"),
+  //                                       TS_WARNING);
+  //     cell->SetToolTip(&T_(
+  //                          "The maximum size of the expressions wxMaxima is allowed to display "
+  //                          "can be changed in the configuration dialogue."));
+  //     cell->ForceBreakLine(true);
+  //   }
   return cell;
 }
 

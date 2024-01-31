@@ -70,6 +70,7 @@ public:
    * Put the result in line.
    */
   std::unique_ptr<Cell> ParseLine(wxString s, CellType style = MC_TYPE_DEFAULT);
+  std::unique_ptr<Cell> ParseLine(const wxXmlDocument &xml, CellType style = MC_TYPE_DEFAULT);
   /***
    * Parse the node and return the corresponding tag.
    */

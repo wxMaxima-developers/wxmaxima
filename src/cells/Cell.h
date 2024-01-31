@@ -999,6 +999,8 @@ protected:
     \image rtf CellHeights.png
   */
   wxCoord m_center = -1;
+public:
+  virtual size_t GetInnerCellCount_recursive() const;
 
 protected:
 //** 2-byte objects (2 bytes)

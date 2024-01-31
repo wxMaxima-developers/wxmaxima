@@ -1960,6 +1960,31 @@ void wxMaxima::FirstOutput() {
 ///  Appending stuff to output
 ///--------------------------------------------------------------------------------
 
+void wxMaxima::ConsoleAppend(wxXmlDocument xml, CellType type,
+                                  const wxString &userLabel) {
+  // If we want to append an error message to the worksheet and there is no cell
+  // that can contain it we need to create such a cell.
+  if (GetWorksheet()->GetTree() == NULL)
+    GetWorksheet()->InsertGroupCells(
+                                  std::make_unique<GroupCell>(&m_configuration, GC_TYPE_CODE));
+  m_dispReadOut = false;
+  GroupCell *tmp = GetWorksheet()->GetWorkingGroup(true);
+  
+  if (tmp == NULL) {
+    if (GetWorksheet()->GetActiveCell())
+      tmp = GetWorksheet()->GetActiveCell()->GetGroup();
+  }
+  if(tmp != NULL)
+    {
+      m_parser.SetUserLabel(userLabel);
+      m_parser.SetGroup(GetWorksheet()->GetInsertGroup());
+      std::unique_ptr<Cell> cell(m_parser.ParseLine(xml, type));
+      m_parser.SetGroup(nullptr);
+      GetWorksheet()->InsertLine(std::move(cell),
+                                 (AppendOpt::DefaultOpt & AppendOpt::NewLine) || cell->BreakLineHere());
+    }
+}
+
 /*! ConsoleAppend adds a new line s of type to the console window.
  *
  * It will call
@@ -2356,7 +2381,7 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
     break;
   case Maxima::XML_MATHS:
     m_statusBar->NetworkStatus(StatusBar::receive);
-    ReadMath(event.GetString()); // TODO: Should accept XML data
+    ReadMath(event.GetPayload<wxXmlDocument>());
     break;
   case Maxima::XML_WXXML_KEY: // TODO: Should the key be outside the SuppressOutput?
     break;
@@ -3156,16 +3181,16 @@ void wxMaxima::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
 /***
  * Checks if maxima displayed a new chunk of math
  */
-void wxMaxima::ReadMath(const wxString &data) {
+void wxMaxima::ReadMath(const wxXmlDocument &xml) {
   GetWorksheet()->SetCurrentTextCell(nullptr);
 
   // Append everything from the "beginning of math" to the "end of math" marker
   // to the console
   if (m_configuration.UseUserLabels()) {
-    ConsoleAppend(data, MC_TYPE_DEFAULT,
+    ConsoleAppend(xml, MC_TYPE_DEFAULT,
                   GetWorksheet()->m_evaluationQueue.GetUserLabel());
   } else {
-    ConsoleAppend(data, MC_TYPE_DEFAULT);
+    ConsoleAppend(xml, MC_TYPE_DEFAULT);
   }
 }
 
