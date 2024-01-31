@@ -943,9 +943,9 @@ std::unique_ptr&lt; <a class="el" href="classMaxima.html">Maxima</a> &gt;&#160;<
 <tr class="memitem:a520d1fc61b8ce43169f51904c068056a"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; wxSocketServer, <a class="el" href="structwxMaxima_1_1ServerDeleter.html">ServerDeleter</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a520d1fc61b8ce43169f51904c068056a">m_server</a></td></tr>
 <tr class="memdesc:a520d1fc61b8ce43169f51904c068056a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The server maxima connects to as client.  <a href="classwxMaxima.html#a520d1fc61b8ce43169f51904c068056a">More...</a><br /></td></tr>
 <tr class="separator:a520d1fc61b8ce43169f51904c068056a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a610fd87086ba39493307443fc46b02f1"><td class="memItemLeft" align="right" valign="top"><a id="a610fd87086ba39493307443fc46b02f1"></a>
-wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_process</b></td></tr>
-<tr class="separator:a610fd87086ba39493307443fc46b02f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d7bfc768a5bff21ac312378a99f646f"><td class="memItemLeft" align="right" valign="top"><a id="a4d7bfc768a5bff21ac312378a99f646f"></a>
+wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaProcess</b></td></tr>
+<tr class="separator:a4d7bfc768a5bff21ac312378a99f646f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ac7385ecd5b838d00b25a8ed62ce37a"><td class="memItemLeft" align="right" valign="top"><a id="a4ac7385ecd5b838d00b25a8ed62ce37a"></a>
 wxInputStream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a4ac7385ecd5b838d00b25a8ed62ce37a">m_maximaStdout</a></td></tr>
 <tr class="memdesc:a4ac7385ecd5b838d00b25a8ed62ce37a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The stdout of the maxima process. <br /></td></tr>
@@ -1658,7 +1658,7 @@ Appending stuff to output</h2>
 </div><div class="memdoc">
 
 <p>Spawn the "configure" menu. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
 
 </div>
 </div>
@@ -2347,7 +2347,7 @@ Dealing with stuff read from the socket</h2>
 
 <p>Setup maxima's variables. </p>
 <p>This method is called once when maxima starts. It loads wxmathml.lisp and sets some option variables.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
 
 </div>
 </div>
