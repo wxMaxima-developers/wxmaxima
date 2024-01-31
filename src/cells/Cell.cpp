@@ -1431,6 +1431,7 @@ size_t Cell::GetInnerCellCount_recursive() const
   size_t retval = GetInnerCellCount();
   for (const Cell &cell : OnInner(this))
     retval += cell.GetInnerCellCount_recursive();
+  return retval;
 }
 
 size_t Cell::GetInnerCellCount() const { return 0; }
