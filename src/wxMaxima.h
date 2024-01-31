@@ -732,7 +732,7 @@ protected:
   */
   std::unique_ptr<wxSocketServer,  ServerDeleter> m_server;
 
-  wxProcess *m_process;
+  wxProcess *m_maximaProcess;
   //! The stdout of the maxima process
   wxInputStream *m_maximaStdout;
   //! The stderr of the maxima process

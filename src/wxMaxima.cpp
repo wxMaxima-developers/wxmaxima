@@ -297,7 +297,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   m_CWD = wxEmptyString;
   m_pid = -1;
   m_hasEvaluatedCells = false;
-  m_process = NULL;
+  m_maximaProcess = NULL;
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
   m_ready = false;
@@ -1828,6 +1828,13 @@ void wxMaxima::StartAutoSaveTimer() {
 }
 
 wxMaxima::~wxMaxima() {
+  if(m_gnuplotTerminalQueryProcess)
+    m_gnuplotTerminalQueryProcess ->Detach();
+  if(m_gnuplotProcess)
+    m_gnuplotProcess ->Detach();
+  if(m_maximaProcess)
+    m_maximaProcess ->Detach();
+  m_maximaProcess = NULL;
   m_closing = true;
   //  KillMaxima(false);
   //  m_closing = true;
@@ -1952,7 +1959,6 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
 
 void wxMaxima::FirstOutput() {
   m_lastPrompt = wxS("(%i1) ");
-  //TriggerEvaluation();
   CallAfter([this]{GetWorksheet()->SetFocus();});
 }
 
@@ -1980,8 +1986,10 @@ void wxMaxima::ConsoleAppend(wxXmlDocument xml, CellType type,
       m_parser.SetGroup(GetWorksheet()->GetInsertGroup());
       std::unique_ptr<Cell> cell(m_parser.ParseLine(xml, type));
       m_parser.SetGroup(nullptr);
+      // TODO: Does using || make any sense here?
       GetWorksheet()->InsertLine(std::move(cell),
-                                 (AppendOpt::DefaultOpt & AppendOpt::NewLine) || cell->BreakLineHere());
+                                 (AppendOpt::DefaultOpt & AppendOpt::NewLine) ||
+                                 cell->BreakLineHere());
     }
 }
 
@@ -2423,7 +2431,7 @@ void wxMaxima::OnMaximaConnect() {
     wxLogMessage(_("New connection attempt whilst already connected."));
     return;
   }
-  if (m_process == NULL) {
+  if (m_maximaProcess == NULL) {
     wxLogMessage(_("New connection attempt, but no currently running maxima process."));
     return;
   }
@@ -2512,7 +2520,7 @@ bool wxMaxima::StartMaxima(bool force) {
   if (!StartServer())
     return false;
 
-  if ((m_process != NULL) || (m_pid >= 0) || (m_client))
+  if ((m_maximaProcess != NULL) || (m_pid >= 0) || (m_client))
     {
       m_unsuccessfulConnectionAttempts = 0;
       KillMaxima();
@@ -2533,7 +2541,7 @@ bool wxMaxima::StartMaxima(bool force) {
   wxString dirname_Old;
   wxGetEnv("MAXIMA_INITIAL_FOLDER", &dirname_Old);
 
-  if ((m_process == NULL) || (m_hasEvaluatedCells) || force ||
+  if ((m_maximaProcess == NULL) || (m_hasEvaluatedCells) || force ||
       (dirname != dirname_Old)) {
     if ((m_xmlInspector) && (IsPaneDisplayed(EventIDs::menu_pane_xmlInspector)))
       m_xmlInspector->Clear();
@@ -2564,9 +2572,9 @@ bool wxMaxima::StartMaxima(bool force) {
     if (!command.IsEmpty()) {
       command.Append(wxString::Format(wxS(" -s %d "), (int)m_port));
 
-      m_process = new wxProcess(this, m_maxima_process_id);
-      m_process->Redirect();
-      //      m_process->SetPriority(wxPRIORITY_MAX);
+      m_maximaProcess = new wxProcess(this, m_maxima_process_id);
+      m_maximaProcess->Redirect();
+      //      m_maximaProcess->SetPriority(wxPRIORITY_MAX);
       m_first = true;
       m_pid = -1;
       wxLogMessage(_("Running maxima as: %s"), command.utf8_str());
@@ -2593,11 +2601,11 @@ bool wxMaxima::StartMaxima(bool force) {
       environment["MAXIMA_AUTH_CODE"] = m_maximaAuthString;
 
       env->env = std::move(environment);
-      if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process,
+      if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_maximaProcess,
                     env.get()) <= 0) {
         StatusMaximaBusy(StatusBar::MaximaStatus::process_wont_start);
         StatusText(_("Cannot start the maxima binary"));
-        m_process = NULL;
+        m_maximaProcess = NULL;
         m_maximaStdout = NULL;
         m_maximaStderr = NULL;
         m_statusBar->NetworkStatus(StatusBar::offline);
@@ -2612,8 +2620,8 @@ bool wxMaxima::StartMaxima(bool force) {
                           _("Error"), wxOK | wxICON_ERROR);
         return false;
       }
-      m_maximaStdout = m_process->GetInputStream();
-      m_maximaStderr = m_process->GetErrorStream();
+      m_maximaStdout = m_maximaProcess->GetInputStream();
+      m_maximaStderr = m_maximaProcess->GetErrorStream();
       m_lastPrompt = wxS("(%i1) ");
       StatusMaximaBusy(StatusBar::MaximaStatus::wait_for_start);
     } else {
@@ -2739,10 +2747,10 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
     }
   }
 
-  if (m_process) {
+  if (m_maximaProcess) {
     // We need to send the CTRL_BREAK_EVENT to the process group, not
     // to the lisp.
-    auto pid = m_process->GetPid();
+    auto pid = m_maximaProcess->GetPid();
     if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, pid)) {
       wxLogMessage(_("Could not send an interrupt signal to maxima."));
       return;
@@ -2752,13 +2760,13 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
   wxLogMessage(_("Sending Maxima a SIGINT signal."));
   wxProcess::Kill(m_pid, wxSIGINT);
 #endif
-  if (m_process) {
-    wxProcess::Kill(m_process->GetPid(), wxSIGINT);
+  if (m_maximaProcess) {
+    wxProcess::Kill(m_maximaProcess->GetPid(), wxSIGINT);
   }
 }
 
 void wxMaxima::KillMaxima(bool logMessage) {
-  if (logMessage && (m_closing || (m_process == NULL) || (m_pid > 0))) {
+  if (logMessage && (m_closing || (m_maximaProcess == NULL) || (m_pid > 0))) {
     wxLogMessage(_("Killing Maxima."));
     if (m_history)
       m_history->MaximaSessionStart();
@@ -2783,7 +2791,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_statusBar->SetMaximaCPUPercentage(0);
   m_CWD = wxEmptyString;
   GetWorksheet()->QuestionAnswered();
-  m_process = NULL;
+  m_maximaProcess = NULL;
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
 
@@ -2879,7 +2887,7 @@ void wxMaxima::OnGnuplotClose(wxProcessEvent &event) {
 }
 
 void wxMaxima::OnMaximaClose(){
-  m_process = NULL;
+  m_maximaProcess = NULL;
   wxLogMessage(_("Maxima process (pid %li) has terminated\n"),
                static_cast<long>(m_pid));
   m_pid = -1;
@@ -5536,10 +5544,10 @@ void wxMaxima::ReadStdErr() {
   // If something is severely broken this might not be true, though, and we want
   // to inform the user about it.
 
-  if (m_process == NULL)
+  if (m_maximaProcess == NULL)
     return;
 
-  if (m_process->IsInputAvailable()) {
+  if (m_maximaProcess->IsInputAvailable()) {
     wxASSERT_MSG(
                  m_maximaStdout != NULL,
                  wxS("Bug: Trying to read from maxima but don't have an input stream"));
@@ -5563,7 +5571,7 @@ void wxMaxima::ReadStdErr() {
         std::cout << o;
     }
   }
-  if (m_process->IsErrorAvailable()) {
+  if (m_maximaProcess->IsErrorAvailable()) {
     wxASSERT_MSG(m_maximaStderr != NULL,
                  wxS("Bug: Trying to read from maxima but don't have a error "
                      "input stream"));
@@ -5747,18 +5755,18 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
   case MAXIMA_STDOUT_POLL_ID:
     ReadStdErr();
 
-    if (m_process != NULL) {
+    if (m_maximaProcess != NULL) {
       // The atexit() of maxima informs us if the process dies. But it sometimes
       // doesn't do so if it dies due to an out of memory => Periodically check
       // if it really lives.
-      if (!wxProcess::Exists(m_process->GetPid())) {
+      if (!wxProcess::Exists(m_maximaProcess->GetPid())) {
 //        OnMaximaClose();
       }
 
       double cpuPercentage = GetMaximaCPUPercentage();
       m_statusBar->SetMaximaCPUPercentage(cpuPercentage);
 
-      if ((m_process != NULL) && (m_pid > 0) &&
+      if ((m_maximaProcess != NULL) && (m_pid > 0) &&
           ((cpuPercentage > 0) || (m_maximaBusy)))
         m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
     }
