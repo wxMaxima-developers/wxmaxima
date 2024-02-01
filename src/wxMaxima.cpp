@@ -1835,9 +1835,7 @@ wxMaxima::~wxMaxima() {
   if(m_maximaProcess)
     m_maximaProcess ->Detach();
   m_maximaProcess = NULL;
-  m_closing = true;
-  //  KillMaxima(false);
-  //  m_closing = true;
+  KillMaxima(false);
   Disconnect(wxEVT_END_PROCESS);
   Disconnect(EVT_MAXIMA);
   Disconnect(wxEVT_TIMER);
@@ -1850,15 +1848,14 @@ wxMaxima::~wxMaxima() {
 
   wxWindow *newLogTarget = NULL;
   wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
-  // while (node)
-  //   {
-  //     wxWindow * data = node->GetData();
-  //     if((data != this) && (data != NULL))
-  //       newLogTarget = data;
-  //     node = node->GetNext();
-  //   } 
-  // if(newLogTarget != NULL)
-  //   dynamic_cast<wxMaxima *>(newLogTarget)->BecomeLogTarget();
+  while (node)
+    {
+      if(node->GetData() != this)
+        newLogTarget = node->GetData();
+      node = node->GetNext();
+    } 
+  //  if(newLogTarget != NULL)
+  //    dynamic_cast<wxMaxima *>(newLogTarget)->BecomeLogTarget();
   // else
     {    
       // If there is no window that can take over the log any more the program
@@ -3493,7 +3490,7 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   // gnuplot uses the PAGER variable only on un*x - and on un*x there is cat.
   environment["PAGER"] = "cat";
   wxGetEnvMap(&environment);
-  return;
+
   m_gnuplotTerminalQueryProcess =
     new wxProcess(this, EventIDs::gnuplot_query_terminals_id);
   m_gnuplotTerminalQueryProcess->Redirect();
@@ -5020,7 +5017,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
     {
       SaveFile(false);
-      Close();
+      CallAfter([this]{Close();});
     }
 }
 
