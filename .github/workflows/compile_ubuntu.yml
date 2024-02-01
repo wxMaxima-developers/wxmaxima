@@ -47,9 +47,8 @@ jobs:
         run: |
              cd build
              export HOME=`pwd`
-             export CTEST_PARALLEL_LEVEL=3
              export CTEST_OUTPUT_ON_FAILURE=1
-             xvfb-run -a ctest
+             xvfb-run -a ctest -j 3
              cd ..
 
   compile_without_webview:
@@ -90,9 +89,8 @@ jobs:
         run: |
              cd build
              export HOME=`pwd`
-             export CTEST_PARALLEL_LEVEL=3
              export CTEST_OUTPUT_ON_FAILURE=1
-             xvfb-run -a ctest
+             xvfb-run -a ctest -j 3
              cd ..
 
   compile_2004:
