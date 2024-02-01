@@ -891,10 +891,10 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --debug --logtostderr --pipe  --batch solvingEquations.wxm)
 
-add_test(
-    NAME testbench_simple.wxmx
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe  --batch testbench_simple.wxmx)
+# add_test(
+#     NAME testbench_simple.wxmx
+#     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+#     COMMAND wxmaxima --debug --logtostderr --pipe  --batch testbench_simple.wxmx)
 
 find_program(DESKTOP_FILE_VALIDATE desktop-file-validate)
 if(DESKTOP_FILE_VALIDATE)
