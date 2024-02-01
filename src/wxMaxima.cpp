@@ -2791,6 +2791,8 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_statusBar->SetMaximaCPUPercentage(0);
   m_CWD = wxEmptyString;
   GetWorksheet()->QuestionAnswered();
+  if(m_maximaProcess)
+    m_maximaProcess->Detach();
   m_maximaProcess = NULL;
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
@@ -3490,7 +3492,7 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   // gnuplot uses the PAGER variable only on un*x - and on un*x there is cat.
   environment["PAGER"] = "cat";
   wxGetEnvMap(&environment);
-
+  return;
   m_gnuplotTerminalQueryProcess =
     new wxProcess(this, EventIDs::gnuplot_query_terminals_id);
   m_gnuplotTerminalQueryProcess->Redirect();
