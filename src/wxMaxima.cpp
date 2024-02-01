@@ -5018,8 +5018,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
     {
-      SaveFile(false);
-      CallAfter([this]{Close();});
+      SaveFile(true);
+      Close();
     }
 }
 
