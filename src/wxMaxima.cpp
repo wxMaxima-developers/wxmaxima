@@ -1850,14 +1850,15 @@ wxMaxima::~wxMaxima() {
 
   wxWindow *newLogTarget = NULL;
   wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
-  while (node)
-    {
-      if(node->GetData() != this)
-        newLogTarget = node->GetData();
-      node = node->GetNext();
-    } 
-  //  if(newLogTarget != NULL)
-  //    dynamic_cast<wxMaxima *>(newLogTarget)->BecomeLogTarget();
+  // while (node)
+  //   {
+  //     wxWindow * data = node->GetData();
+  //     if((data != this) && (data != NULL))
+  //       newLogTarget = data;
+  //     node = node->GetNext();
+  //   } 
+  // if(newLogTarget != NULL)
+  //   dynamic_cast<wxMaxima *>(newLogTarget)->BecomeLogTarget();
   // else
     {    
       // If there is no window that can take over the log any more the program
@@ -5018,7 +5019,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
     {
-      SaveFile(true);
+      SaveFile(false);
       Close();
     }
 }

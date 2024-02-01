@@ -29,6 +29,7 @@
 - Better LibreOffice compatibility with the MathML output
 - Better HTML output
 - Fix crash when exporting a worksheet with animations to TeX
+- Resolved a crash on closing a window (#1889)
 
 # 23.12.0
 
