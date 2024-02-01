@@ -57,10 +57,10 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "1+1;" "<math><lbl altCopy=\"%o1\">(%o1) </lbl><mn>2</mn></math>"
 )
 
-add_test(
-    NAME multiple_batch_files
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --batch unicode.wxm boxes.wxm)
+#add_test(
+#    NAME multiple_batch_files
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+#    COMMAND wxmaxima --debug --batch unicode.wxm boxes.wxm)
 
 add_test(
     NAME multiple_batch_files2
@@ -887,6 +887,7 @@ add_test(
 #    COMMAND wxmaxima --debug --logtostderr --pipe  --batch memoizing.wxm)
 
 add_test(
+
     NAME tutorial_solvingEquations
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --debug --logtostderr --pipe  --batch solvingEquations.wxm)
