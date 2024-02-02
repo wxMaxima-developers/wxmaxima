@@ -1844,22 +1844,29 @@ wxMaxima::~wxMaxima() {
   m_fastResponseTimer.Stop();
   wxConfig::Get()->Write(wxS("Find/Flags"), m_findData.GetFlags());
   wxConfig::Get()->Write(wxS("Find/RegexSearch"), m_findData.GetRegexSearch());
-  wxWindow *newLogTarget = NULL;
+  wxMaxima *newLogTarget = NULL;
   wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
-  while (node)
+  if((m_logPane) && (m_logPane->IsLogTarget()))
     {
-      if(node->GetData() != this)
-        newLogTarget = node->GetData();
-      node = node->GetNext();
-    } 
-  //  if(newLogTarget != NULL)
-  //    dynamic_cast<wxMaxima *>(newLogTarget)->BecomeLogTarget();
-  // else
-    {    
-      // If there is no window that can take over the log any more the program
-      // is about to close and cannot instantiate new gui loggers.
-      wxLog::EnableLogging(false);
-      m_logPane->DropLogTarget();
+      while (node)
+        {
+          wxWindow *win = node->GetData();
+          if((win != NULL) && (node->GetData() != this) && (typeid(*win) == typeid(*this)))
+            {
+              newLogTarget = dynamic_cast<wxMaxima *>(win);
+              m_logPane->DropLogTarget();
+              newLogTarget->BecomeLogTarget();
+              break;
+            }
+          node = node->GetNext();
+        }
+      if(newLogTarget == NULL)
+        {    
+          // If there is no window that can take over the log any more the program
+          // is about to close and cannot instantiate new gui loggers.
+          m_logPane->DropLogTarget();
+          wxLog::EnableLogging(false);
+        }
     }
   if(m_configuration.GetDebugmode() && (!Dirstructure::Get()->UserConfDir().IsEmpty()))
     {
