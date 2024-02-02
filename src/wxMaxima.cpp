@@ -1866,7 +1866,7 @@ wxMaxima::~wxMaxima() {
           // is about to close and cannot instantiate new gui loggers.
           m_logPane->DropLogTarget();
           // Try to tell wxLog not to output log messages in dialogues
-          wxLog::SetActiveTarget(wxLogStderr());
+          wxLog::SetActiveTarget(new wxLogStderr);
           // Only affects the current thread, alas!
           wxLog::EnableLogging(false);
         }
