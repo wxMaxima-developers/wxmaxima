@@ -57,20 +57,20 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "1+1;" "<math><lbl altCopy=\"%o1\">(%o1) </lbl><mn>2</mn></math>"
 )
 
-#add_test(
-#    NAME multiple_batch_files
-#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#    COMMAND wxmaxima --debug --batch unicode.wxm boxes.wxm)
+add_test(
+    NAME multiple_batch_files
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --batch unicode.wxm boxes.wxm)
 
 add_test(
     NAME multiple_batch_files2
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --batch --single_process unicode.wxm boxes.wxm)
 
-# add_test(
-#     NAME multiple_batch_files_singlethread
-#     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#     COMMAND wxmaxima --debug --batch --single_thread unicode.wxm boxes.wxm)
+add_test(
+    NAME multiple_batch_files_singlethread
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --batch --single_thread unicode.wxm boxes.wxm)
 
 add_test(
     NAME multiple_batch_files2_singlethread
@@ -824,10 +824,10 @@ add_test(
     COMMAND wxmaxima --debug --gibberish --batch unicode.wxm)
 set_tests_properties(invalid_commandline_arg PROPERTIES WILL_FAIL true)
 
-#add_test(
-#    NAME multiwindow
-#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#    COMMAND wxmaxima --debug --logtostderr --pipe --single_process --batch unicode.wxm boxes.wxm)
+add_test(
+    NAME multiwindow
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --logtostderr --pipe --single_process --batch unicode.wxm boxes.wxm)
 
 # Maxima sometimes fails if this test is run in parallel,
 # see https://sourceforge.net/p/maxima/bugs/3699/
@@ -881,10 +881,10 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --debug --logtostderr --pipe  --batch displaying3DCurves.wxm)
 
-#add_test(
-#    NAME tutorial_memoizing
-#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
-#    COMMAND wxmaxima --debug --logtostderr --pipe  --batch memoizing.wxm)
+add_test(
+    NAME tutorial_memoizing
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
+    COMMAND wxmaxima --debug --logtostderr --pipe  --batch memoizing.wxm)
 
 add_test(
 
