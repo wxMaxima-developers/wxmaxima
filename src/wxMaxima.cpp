@@ -1848,15 +1848,21 @@ wxMaxima::~wxMaxima() {
   wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
   if((m_logPane) && (m_logPane->IsLogTarget()))
     {
+      // Try to find a other wxMaxima window that can log messages from now on 
       while (node)
         {
           wxWindow *win = node->GetData();
-          if((win != NULL) && (node->GetData() != this) && (typeid(*win) == typeid(*this)))
+          if((win != NULL) && (node->GetData() != this))
             {
               newLogTarget = dynamic_cast<wxMaxima *>(win);
-              m_logPane->DropLogTarget();
-              newLogTarget->BecomeLogTarget();
-              break;
+              // win is a window. If it is not a wxMaxima one newLogTarget will result in
+              // a NULL
+              if(newLogTarget != NULL)
+                {
+                  m_logPane->DropLogTarget();
+                  newLogTarget->BecomeLogTarget();
+                  break;
+                }
             }
           node = node->GetNext();
         }
