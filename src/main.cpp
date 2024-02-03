@@ -629,7 +629,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
   }
   else if(ev.GetId() == wxID_PREFERENCES) {
     Configuration config;
-    ConfigDialogue *configW = new ConfigDialogue(NULL, &config);
+    ConfigDialogue *configW = new ConfigDialogue(NULL);
     configW->Centre(wxBOTH);
     if (configW->ShowModal() == wxID_OK)
       configW->WriteSettings();

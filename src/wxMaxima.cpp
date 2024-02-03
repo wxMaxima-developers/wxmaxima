@@ -6161,7 +6161,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     wxConfigBase *config = wxConfig::Get();
     // Write the changes in the configuration to the disk.
     config->Flush(true);
-    ConfigDialogue *configW = new ConfigDialogue(this, &m_configuration);
+    ConfigDialogue *configW = new ConfigDialogue(this);
     configW->Centre(wxBOTH);
     auto result = configW->ShowModal();
     if (result == wxID_OK) {

@@ -99,7 +99,7 @@ int ConfigDialogue::GetImageSize() {
   }
 }
 
-ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
+ConfigDialogue::ConfigDialogue(wxWindow *parent)
   : wxPropertySheetDialog() {
 #if defined __WXOSX__
   SetSheetStyle(wxPROPSHEET_CHOICEBOOK);
