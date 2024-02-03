@@ -97,7 +97,7 @@ var searchData=
   ['compositedataobject_2eh_189',['CompositeDataObject.h',['../CompositeDataObject_8h.html',1,'']]],
   ['compressedgnuplotsource_190',['CompressedGnuplotSource',['../classImage.html#a81e9dd25a310174661afc1401798e0ee',1,'Image']]],
   ['configchanged_191',['ConfigChanged',['../classwxMaxima.html#af2f5e80d2d27151a20ffc5efd641bc4e',1,'wxMaxima::ConfigChanged()'],['../classCell.html#a01f036f4f68d223e2464097a7728def3',1,'Cell::ConfigChanged()']]],
-  ['configdialogue_192',['ConfigDialogue',['../classConfigDialogue.html',1,'ConfigDialogue'],['../classConfigDialogue.html#a2f800127ac6769f5d1793834e91bf3b0',1,'ConfigDialogue::ConfigDialogue()']]],
+  ['configdialogue_192',['ConfigDialogue',['../classConfigDialogue.html',1,'ConfigDialogue'],['../classConfigDialogue.html#a58672512562a99cc7c4f77783e60224a',1,'ConfigDialogue::ConfigDialogue()']]],
   ['configdialogue_2eh_193',['ConfigDialogue.h',['../ConfigDialogue_8h.html',1,'']]],
   ['configuration_194',['Configuration',['../classConfiguration.html#ab2cf918eb80018bccec4dd8ff00b8bdc',1,'Configuration::Configuration()'],['../classConfiguration.html',1,'Configuration']]],
   ['configuration_2ecpp_195',['Configuration.cpp',['../Configuration_8cpp.html',1,'']]],

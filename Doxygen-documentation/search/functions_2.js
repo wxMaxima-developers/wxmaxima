@@ -51,7 +51,7 @@ var searchData=
   ['completesymbol_2320',['CompleteSymbol',['../classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3',1,'AutoComplete']]],
   ['compressedgnuplotsource_2321',['CompressedGnuplotSource',['../classImage.html#a81e9dd25a310174661afc1401798e0ee',1,'Image']]],
   ['configchanged_2322',['ConfigChanged',['../classCell.html#a01f036f4f68d223e2464097a7728def3',1,'Cell::ConfigChanged()'],['../classwxMaxima.html#af2f5e80d2d27151a20ffc5efd641bc4e',1,'wxMaxima::ConfigChanged()']]],
-  ['configdialogue_2323',['ConfigDialogue',['../classConfigDialogue.html#a2f800127ac6769f5d1793834e91bf3b0',1,'ConfigDialogue']]],
+  ['configdialogue_2323',['ConfigDialogue',['../classConfigDialogue.html#a58672512562a99cc7c4f77783e60224a',1,'ConfigDialogue']]],
   ['configuration_2324',['Configuration',['../classConfiguration.html#ab2cf918eb80018bccec4dd8ff00b8bdc',1,'Configuration']]],
   ['consoleappend_2325',['ConsoleAppend',['../classwxMaxima.html#a772f4c12456a75a7fd4097dcf14d3fdb',1,'wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &amp;userLabel={})'],['../classwxMaxima.html#ae397ec8c3fb2c6f8ccc0ae2ae8ca18e7',1,'wxMaxima::ConsoleAppend(wxXmlDocument xml, CellType type, const wxString &amp;userLabel={})']]],
   ['contains_2326',['Contains',['../classCellPointers_1_1ErrorList.html#afb298b25a46c673d81e089a4b2e2c599',1,'CellPointers::ErrorList::Contains()'],['../classGroupCell.html#a00fc135c7cdcd938ed425d467fe43b7a',1,'GroupCell::Contains()']]],
