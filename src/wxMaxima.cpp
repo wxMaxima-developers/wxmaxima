@@ -9205,7 +9205,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
       info.SetDescription(description);
       info.SetName(_("wxMaxima"));
       info.SetVersion(wxS(GITVERSION));
-      info.SetCopyright(wxS("(C) 2004-2023 The wxMaxima Team"));
+      info.SetCopyright(wxS("(C) 2004-2024 The wxMaxima Team"));
       info.SetWebSite(wxS("https://wxMaxima-developers.github.io/wxmaxima/"));
 #include "contributors.h"
       wxAboutBox(info);
