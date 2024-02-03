@@ -63,7 +63,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Maxima Class Reference</div>  </div>
 </div><!--header-->
@@ -121,11 +122,9 @@ Public Member Functions</h2></td></tr>
 wxSocketBase *&#160;</td><td class="memItemRight" valign="bottom"><b>Socket</b> () const</td></tr>
 <tr class="separator:af87afb273371f445289a9bed8b7216e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad397fe2439bb3186b23bf0a91a9c680a"><td class="memItemLeft" align="right" valign="top"><a id="ad397fe2439bb3186b23bf0a91a9c680a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsConnected</b> () const</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaxima.html#ad397fe2439bb3186b23bf0a91a9c680a">IsConnected</a> () const</td></tr>
+<tr class="memdesc:ad397fe2439bb3186b23bf0a91a9c680a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Are we connected to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>? <br /></td></tr>
 <tr class="separator:ad397fe2439bb3186b23bf0a91a9c680a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3340933ce972cbe49ba54f9dab71694"><td class="memItemLeft" align="right" valign="top"><a id="ac3340933ce972cbe49ba54f9dab71694"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPipeToStdOut</b> (bool pipe)</td></tr>
-<tr class="separator:ac3340933ce972cbe49ba54f9dab71694"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb45e2fda6a941f99aa9181b644c75be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be">Write</a> (const void *buffer, std::size_t length)</td></tr>
 <tr class="memdesc:aeb45e2fda6a941f99aa9181b644c75be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write more data to be sent to maxima.  <a href="classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be">More...</a><br /></td></tr>
 <tr class="separator:aeb45e2fda6a941f99aa9181b644c75be"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,6 +139,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a1ca854a5456a6df1b10007a99d1e2f2c"><td class="memItemLeft" align="right" valign="top"><a id="a1ca854a5456a6df1b10007a99d1e2f2c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>XmlInspectorActive</b> (bool active)</td></tr>
 <tr class="separator:a1ca854a5456a6df1b10007a99d1e2f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ac8cf6784848689ae743ece4af20b0a02"><td class="memItemLeft" align="right" valign="top"><a id="ac8cf6784848689ae743ece4af20b0a02"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaxima.html#ac8cf6784848689ae743ece4af20b0a02">SetPipeToStdErr</a> (bool pipe)</td></tr>
+<tr class="memdesc:ac8cf6784848689ae743ece4af20b0a02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells us if the user wants all data to maxima to be copied to StdErr. <br /></td></tr>
+<tr class="separator:ac8cf6784848689ae743ece4af20b0a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6467e67766a124416f11de5bea8a1c12"><td class="memItemLeft" align="right" valign="top"><a id="a6467e67766a124416f11de5bea8a1c12"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetPipeToStdErr</b> ()</td></tr>
+<tr class="separator:a6467e67766a124416f11de5bea8a1c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process. </p>
