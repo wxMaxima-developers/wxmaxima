@@ -5581,6 +5581,8 @@ void wxMaxima::ReadStdErr() {
     if ((o_trimmed != wxEmptyString) &&
         (!o.StartsWith("Connecting Maxima to server on port")) && (!m_first)) {
       DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
+      if (Maxima::GetPipeToStdErr())
+        std::cerr << o;
     }
   }
   if (m_maximaProcess->IsErrorAvailable()) {
@@ -5609,6 +5611,9 @@ void wxMaxima::ReadStdErr() {
       AbortOnError();
       TriggerEvaluation();
       GetWorksheet()->GetErrorList().Add(GetWorksheet()->GetWorkingGroup(true));
+
+      if (Maxima::GetPipeToStdErr())
+        std::cerr << o;
     } else
       DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
   }
