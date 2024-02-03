@@ -26,6 +26,7 @@
 */
 
 #include "main.h"
+#include "Maxima.h"
 #include "Dirstructure.h"
 #include "StackToStdErr.h"
 #include "wxMathml.h"
@@ -329,7 +330,7 @@ bool MyApp::OnInit() {
     Configuration::SetDebugmode();
 
   if (cmdLineParser.Found(wxS("pipe")))
-    wxMaxima::PipeToStdout();
+    Maxima::SetPipeToStdErr(true);
 
   if (cmdLineParser.Found(wxS("exit-on-error")))
     wxMaxima::ExitOnError();
@@ -590,7 +591,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
         args.push_back("--logtostderr");
       if (Configuration::GetDebugmode())
         args.push_back("--debug");
-      if (wxMaxima::GetPipeToStdout())
+      if (Maxima::GetPipeToStdErr())
         args.push_back("--pipe");
       if (wxMaxima::GetExitOnError())
         args.push_back("--exit-on-error");

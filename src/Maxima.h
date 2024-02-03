@@ -68,9 +68,12 @@ public:
 
   wxSocketBase *Socket() const { return m_socket.get(); }
 
+  //! Are we connected to Maxima?
   bool IsConnected() const { return m_socket->IsConnected(); }
 
-  void SetPipeToStdOut(bool pipe) { m_pipeToStderr = pipe; }
+  //! Tells us if the user wants all data to maxima to be copied to StdErr
+  static void SetPipeToStdErr(bool pipe) { m_pipeToStderr = pipe; }
+  static bool GetPipeToStdErr() { return m_pipeToStderr; }
 
   /*! Write more data to be sent to maxima.
    *
@@ -114,9 +117,17 @@ public:
   };
   void XmlInspectorActive(bool active){m_xmlInspector = active;}
 private:
+  //! If this is set to true by XmlInspectorActive we send all data we get to the XML inspector
   bool m_xmlInspector = false;
+  /*! Send still-unsent data to wxMaxima
+
+    \todo As we tell wxWidgets to send all data in one go at the end of a write command
+    there should no more be unsent data.
+   */
   void SendDataTowxMaxima();
+  //! The configuration of our wxMaxima process
   Configuration *m_configuration;
+  //! The thread handler for SendDataTowxMaxima, the thread that parses the data from maxima.
   std::thread m_readerTask;
   //! Handles events on the open client socket
   void SocketEvent(wxSocketEvent &event);
@@ -124,7 +135,16 @@ private:
   void TimerEvent(wxTimerEvent &event);
 
   std::unique_ptr<wxSocketBase> m_socket;
+  //! The data we receive from Maxima
   wxSocketInputStream m_socketInput;
+  /*! Splits data we receive from Maxima to UTF-8
+
+    We cannot create this as a local variable in the function that interprets
+    data from Maxima as that data might end in the middle of an Unicode
+    codepoint (which means the next call to SocketEvent() starts in the middle
+    of a Unicode codepoint, as well). Both cases aren't handled well if we abandon
+    our TextInputStream inbetween and create a new one.
+   */
   wxTextInputStream m_textInput;
 
   /*! The data we received from Maxima
@@ -144,14 +164,38 @@ private:
   //! true = Maxima still has to send us its first prompt
   bool m_first = true;
   //! true = copy all data we receive to StdErr.
-  bool m_pipeToStderr = false;
+  static bool m_pipeToStderr;
 
   /*! Search m_socketInputData for complete commands and send them to wxMaxima
 
-    This is a restartable process.
+    This is a restartable process that is meant to be run as a background thread
+    that interprets the data maxima has sent us and sends it to wxMaxima one
+    item at a time.
+
+    Items that this task recognizes:
+     - All XML tags registered in m_knownTags are sent as a whole before
+       sending them to wxMaxima and in most cases this background task even
+       parses the XML data beforehand.
+     - All text between such commands is left as it is and sent to wxMaxima
+       as a string.
+     .
+
+    If m_abortReaderThread = true this process exits as fast as possible in
+    order to allow the main thread to append data to m_socketInputData, as fast
+    as possible: If maxima hasn't finished sending data it is highly probable
+    that m_socketInputData will contain the beginning of an XML tag, but not
+    its end and therefore cannot do anything, anyway.
    */
   void SendToWxMaxima();
-  
+
+  /*! A timer that triggers reading data from maxima
+
+    On MM Windows sometimes when we receive the signal that maxima has sent us
+    data, but don't receive data. In those cases the data seems to arrive only after
+    the next idle event. This timer wakes up the reader again, a while after we got
+    the signal that data is available and long after the idle event. Hopefully the
+    actual data has arrived until then.
+  */
   wxTimer m_readIdleTimer{this};
   //! The names of maxima tags we want to send to wxMaxima in whole
   static std::unordered_map<wxString, EventCause, wxStringHash> m_knownTags;

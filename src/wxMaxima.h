@@ -90,10 +90,6 @@ public:
   virtual ~wxMaxima();
 
   wxString EscapeFilenameForShell(wxString name);
-  //! Pipe maxima's output to stdout
-  static void PipeToStdout(){m_pipeToStderr = true;}
-  //! Pipe maxima's output to stdout?
-  static bool GetPipeToStdout(){return m_pipeToStderr;}
   //! Exit if we encounter an error
   static void ExitOnError(){m_exitOnError = true;}
   //! Do we exit if we encounter an error?
@@ -199,7 +195,6 @@ private:
   bool m_discardAllData = false;
   wxString m_maximaAuthString;
   MaximaIPC m_ipc{this};
-  static bool m_pipeToStderr;
   static bool m_exitOnError;
   static wxString m_extraMaximaArgs;
   //! The variable names to query for the variables pane and for internal reasons

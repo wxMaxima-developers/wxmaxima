@@ -2459,7 +2459,6 @@ void wxMaxima::OnMaximaConnect() {
   m_client = std::make_unique<Maxima>(m_server->Accept(false), &m_configuration);
   if (m_client->IsConnected()) {
     m_client->Bind(EVT_MAXIMA, &wxMaxima::MaximaEvent, this);
-    m_client->SetPipeToStdOut(GetPipeToStdout());
     SetupVariables();
   } else {
     wxLogMessage(_("Connection attempt, but connection failed."));
@@ -5582,8 +5581,6 @@ void wxMaxima::ReadStdErr() {
     if ((o_trimmed != wxEmptyString) &&
         (!o.StartsWith("Connecting Maxima to server on port")) && (!m_first)) {
       DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
-      if (GetPipeToStdout())
-        std::cout << o;
     }
   }
   if (m_maximaProcess->IsErrorAvailable()) {
@@ -5612,9 +5609,6 @@ void wxMaxima::ReadStdErr() {
       AbortOnError();
       TriggerEvaluation();
       GetWorksheet()->GetErrorList().Add(GetWorksheet()->GetWorkingGroup(true));
-
-      if (GetPipeToStdout())
-        std::cout << o;
     } else
       DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
   }
@@ -11062,7 +11056,6 @@ wxString wxMaxima::EscapeFilenameForShell(wxString name)
   return "\"" + name + "\"";
 }
 
-bool wxMaxima::m_pipeToStderr = false;
 bool wxMaxima::m_exitOnError = false;
 wxString wxMaxima::m_extraMaximaArgs;
 int wxMaxima::m_exitCode = 0;

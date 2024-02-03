@@ -328,3 +328,4 @@ void Maxima::SendToWxMaxima()
 }
 
 std::unordered_map<wxString, Maxima::EventCause, wxStringHash> Maxima::m_knownTags;
+bool Maxima::m_pipeToStderr = false;
