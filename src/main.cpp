@@ -406,8 +406,8 @@ bool MyApp::OnInit() {
 #endif
 
   if (cmdLineParser.Found(wxS("v"))) {
-#if defined(WXMAXIMA_GIT_VERSION)
-    wxMessageOutput::Get()->Printf("wxMaxima %s (Git version: %s)\n", GITVERSION, WXMAXIMA_GIT_VERSION);
+#if defined(WXMAXIMA_GIT_SHORT_HASH)
+    wxMessageOutput::Get()->Printf("wxMaxima %s (Git version: %s)\n", GITVERSION, WXMAXIMA_GIT_SHORT_HASH);
 #else
     wxMessageOutput::Get()->Printf("wxMaxima %s\n", GITVERSION);
 #endif

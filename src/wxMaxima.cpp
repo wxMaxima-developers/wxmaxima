@@ -9184,9 +9184,9 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
                       "graphics it uses nanosvg (https://github.com/memononen/nanosvg).\nThe "
                       "unicode character list has been compiled by the Unicode Consortium.");
 
-#if defined(WXMAXIMA_GIT_VERSION)
+#if defined(WXMAXIMA_GIT_SHORT_HASH)
       //cppcheck-suppress syntaxError
-      description += wxString::Format("\n(Build from Git version: " WXMAXIMA_GIT_VERSION ")");
+      description += wxString::Format("\n(Build from Git version: " WXMAXIMA_GIT_SHORT_HASH ")");
 #endif
       description += wxString::Format(
                                       _("\n\nwxWidgets: %d.%d.%d\nUnicode support: %s"), wxMAJOR_VERSION,
