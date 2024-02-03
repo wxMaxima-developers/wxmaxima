@@ -118,7 +118,6 @@ private:
   void SendDataTowxMaxima();
   Configuration *m_configuration;
   std::thread m_readerTask;
-  std::mutex m_socketLock;
   //! Handles events on the open client socket
   void SocketEvent(wxSocketEvent &event);
   //! Handles timer events
@@ -128,19 +127,39 @@ private:
   wxSocketInputStream m_socketInput;
   wxTextInputStream m_textInput;
 
+  /*! The data we received from Maxima
+
+    Used by the main thread and by the thread SendDataTowxMaxima() runs in.
+    We still don't need a mutex to protect it, though, as the main thread
+    waits for the other to exit before writing new data to this variable.
+   */
   wxString m_socketInputData;
+  /*! Data we didn't manage to send to wxMaxima until now
+
+    \todo Do we still need this variable? We tell wxWidgets to send all data in
+    one go, so there should be no data be left at the end of a write command.
+   */
   wxMemoryBuffer m_socketOutputData;
 
+  //! true = Maxima still has to send us its first prompt
   bool m_first = true;
+  //! true = copy all data we receive to StdErr.
   bool m_pipeToStderr = false;
 
-  // Send m_socketInputData to wxMaxima, except if we are waiting to the end of the current tag.
+  /*! Search m_socketInputData for complete commands and send them to wxMaxima
+
+    This is a restartable process.
+   */
   void SendToWxMaxima();
   
   wxTimer m_readIdleTimer{this};
   //! The names of maxima tags we want to send to wxMaxima in whole
   static std::unordered_map<wxString, EventCause, wxStringHash> m_knownTags;
-  //! True = abort the reader thread as fast as possible since new data has arrived.
+  /*! True = abort SendToWxMaxima() thread as fast as possible since new data has arrived.
+
+    If new data has arrived the probability is high that m_socketInputData does contain
+    the start of a command, but not its end.
+   */
   std::atomic_bool m_abortReaderThread;
 };
 
