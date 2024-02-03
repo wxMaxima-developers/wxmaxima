@@ -191,11 +191,17 @@ public:
 private:
   //! If we use the command line option --maxima=<str>, this variable is not-empty and contains its name
   static wxString maxima_command_line_filename;
+  //! True if maxima has sent us the correct Auth string
   bool m_maximaAuthenticated = false;
+  //! True if maxima has failed to authenticate and we therefore distrust its data.
   bool m_discardAllData = false;
+  //! The string Maxima needs to know in order to prove to be the correct process
   wxString m_maximaAuthString;
+  //! The object that allows maxima to send us GUI events for testing purposes
   MaximaIPC m_ipc{this};
+  //! True if we want to exit if we encounter an error
   static bool m_exitOnError;
+  //! Extra arguments wxMaxima's command line told us to pass to maxima
   static wxString m_extraMaximaArgs;
   //! The variable names to query for the variables pane and for internal reasons
   std::vector<wxString> m_varNamesToQuery;
