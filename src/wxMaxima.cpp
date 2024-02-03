@@ -11028,7 +11028,7 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent &WXUNUSED(event)) {
     return;
   GetWorksheet()->CloseAutoCompletePopup();
 
-#  if (GetWorksheet()->GetActiveCell()) {
+  if (GetWorksheet()->GetActiveCell()) {
     GroupCell *group = GetWorksheet()->GetActiveCell()->GetGroup();
     switch (group->GetGroupType()) {
     case GC_TYPE_CODE:
