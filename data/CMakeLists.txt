@@ -63,3 +63,16 @@ file(
     FILE_PERMISSIONS OWNER_WRITE OWNER_READ
 )
 
+add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/builtin_commands.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DBIN2H_SOURCE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/builtin_commands.txt"
+        -DBIN2H_VARIABLE_NAME=builtin_commands
+        -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/builtin_commands.h"
+        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+        -P "${CMAKE_SOURCE_DIR}/src/bin2h.cmake"
+        COMMENT "Embedding builtin_commands.txt"
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/builtin_commands.txt ${CMAKE_SOURCE_DIR}/src/bin2h.cmake
+)
+add_custom_target(build_builtin_commands.h DEPENDS ${CMAKE_BINARY_DIR}/builtin_commands.h)
+add_dependencies(wxmaxima build_builtin_commands.h)
