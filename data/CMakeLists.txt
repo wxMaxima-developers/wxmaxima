@@ -9,7 +9,7 @@ set(DATAFILES
 
 set(RESOLUTIONS 8 16 22 24 32 36 42 44 48 64 72 96 128 150 192 256 310 512 1024)
 
-foreach(resolution in RESOLUTIONS)
+foreach(resolution RESOLUTIONS)
         install(
             FILES CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima_${resolution}x${resolution}.png 
             DESTINATION /app/share/icons/hicolor/${resolution}x${resolution}/apps/
