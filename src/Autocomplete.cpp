@@ -66,7 +66,7 @@ std::vector<wxString> AutoComplete::GetSymbolList()
   return m_wordList.at(command);
 }
 
-bool AutoComplete::LoadBuiltinSymbols() {
+void AutoComplete::LoadBuiltinSymbols() {
   wxMemoryInputStream istream(BUILTIN_COMMANDS, BUILTIN_COMMANDS_SIZE);
   wxTextInputStream txtstrm(istream);
   wxString line;
@@ -77,7 +77,7 @@ bool AutoComplete::LoadBuiltinSymbols() {
       if(parenPos != wxNOT_FOUND)
         {
           m_wordList.at(tmplte).push_back(line);
-          m_wordList.at(command).push_back(line.Left(parenPos - 1));
+          m_wordList.at(command).push_back(line.Left(parenPos));
         }
       else
         m_wordList.at(command).push_back(line);
@@ -86,7 +86,6 @@ bool AutoComplete::LoadBuiltinSymbols() {
   std::unique(m_wordList.at(tmplte).begin(), m_wordList.at(tmplte).end());
   std::sort(m_wordList.at(command).begin(), m_wordList.at(command).end());
   std::unique(m_wordList.at(command).begin(), m_wordList.at(command).end());
-
 }
 
 bool AutoComplete::HasDemofile(wxString commandname)
@@ -241,7 +240,7 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
   {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for(auto &wordlist:m_wordList)
-    wordlist.clear();
+      wordlist.clear();
   }
   LoadBuiltinSymbols();
 
