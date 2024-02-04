@@ -39,7 +39,9 @@
 #include <wx/utils.h>
 #include <wx/wfstream.h>
 #include <wx/xml/xml.h>
+#include <wx/mstream.h>
 #include <algorithm>
+#include "builtin_commands.h"
 
 AutoComplete::AutoComplete(Configuration *configuration) : wxEvtHandler() {
   std::vector<wxString> emptyList;
@@ -64,6 +66,28 @@ std::vector<wxString> AutoComplete::GetSymbolList()
   return m_wordList.at(command);
 }
 
+bool AutoComplete::LoadBuiltinSymbols() {
+  wxMemoryInputStream istream(BUILTIN_COMMANDS, BUILTIN_COMMANDS_SIZE);
+  wxTextInputStream txtstrm(istream);
+  wxString line;
+  while(!istream.Eof())
+    {
+      line = txtstrm.ReadLine();
+      auto parenPos = line.Find(wxS("("));
+      if(parenPos != wxNOT_FOUND)
+        {
+          m_wordList.at(tmplte).push_back(line);
+          m_wordList.at(command).push_back(line.Left(parenPos - 1));
+        }
+      else
+        m_wordList.at(command).push_back(line);
+    }
+  std::sort(m_wordList.at(tmplte).begin(), m_wordList.at(tmplte).end());
+  std::unique(m_wordList.at(tmplte).begin(), m_wordList.at(tmplte).end());
+  std::sort(m_wordList.at(command).begin(), m_wordList.at(command).end());
+  std::unique(m_wordList.at(command).begin(), m_wordList.at(command).end());
+
+}
 
 bool AutoComplete::HasDemofile(wxString commandname)
 {
@@ -232,6 +256,7 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
     {
       const std::lock_guard<std::mutex> lock(m_keywordsLock);
       std::sort(wordlist.begin(), wordlist.end());
+      std::unique(wordlist.begin(), wordlist.end());
     }
 
   wxString line;

@@ -87,7 +87,7 @@ public:
     suspiciously long.
     For the same reason it has been split into a separate file.
   */
-  bool LoadBuiltinSymbols();
+  void LoadBuiltinSymbols();
 
   //! Manually add an autocompletable symbol to our symbols lists
   void AddSymbol(wxString fun, autoCompletionType type = command);

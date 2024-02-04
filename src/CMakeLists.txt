@@ -135,7 +135,6 @@ set(SOURCE_FILES
     ArtProvider.cpp
     Autocomplete.cpp
     AutocompletePopup.cpp
-    Autocomplete_Builtins.cpp
     BTextCtrl.cpp
     CellPointers.cpp
     CompositeDataObject.cpp
