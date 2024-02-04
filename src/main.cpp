@@ -612,7 +612,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
       // Additionally wxExecute expects these C strings in a C array.
       // Let's generate an unique pointer to that one so C++ automatically destroys it
       // once it is no more needed.
-      std::unique_ptr<char *> args_array(new char*[args.size() + 2]);
+      std::unique_ptr<char*[]> args_array(new char*[args.size() + 2]);
       wxCharBuffer executableName(wxStandardPaths::Get().GetExecutablePath().mb_str());
       args_array.get()[0] = executableName.data();;
       args_array.get()[args.size() + 1] = NULL;
