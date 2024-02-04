@@ -28,6 +28,7 @@
 #include <iostream>
 #include <wx/app.h>
 #include <wx/debug.h>
+#include <wx/sstream.h>
 
 //! The time, in ms, we'll wait for an end of string to arrive from maxima after
 //! the input was first read.
