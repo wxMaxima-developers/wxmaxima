@@ -7,6 +7,17 @@ set(DATAFILES
         ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.png
         ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.svg)
 
+set(RESOLUTIONS 8 16 22 24 32 36 42 44 48 64 72 96 128 150 192 256 310 512 1024)
+
+foreach(resolution in RESOLUTIONS)
+        install(
+            FILES CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima_${resolution}x${resolution}.png 
+            DESTINATION /app/share/icons/hicolor/${resolution}x${resolution}/apps/
+            RENAME io.github.wxmaxima_developers.wxMaxima.png)
+endforeach()
+install(FILES CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.svg
+        DESTINATION /app/share/icons/hicolor/scalable/apps/)
+
 set(PIXMAPS
         ${CMAKE_CURRENT_SOURCE_DIR}/text-x-wxmathml.svg
         ${CMAKE_CURRENT_SOURCE_DIR}/text-x-wxmaxima-batch.svg
