@@ -70,6 +70,7 @@ void AutoComplete::LoadBuiltinSymbols() {
   wxMemoryInputStream istream(BUILTIN_COMMANDS, BUILTIN_COMMANDS_SIZE);
   wxTextInputStream txtstrm(istream);
   wxString line;
+  const std::lock_guard<std::mutex> lock(m_keywordsLock);
   while(!istream.Eof())
     {
       line = txtstrm.ReadLine();
@@ -543,7 +544,9 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
     }
   }
 
+  const std::lock_guard<std::mutex> lock(m_keywordsLock);
   std::sort(completions.begin(), completions.end());
+  std::unique(completions.begin(), completions.end());
   if (perfectCompletions.size() > 0)
     return perfectCompletions;
   return completions;
