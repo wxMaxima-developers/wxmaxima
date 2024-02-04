@@ -23,7 +23,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt-get update
-             sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core
+             sudo apt-get install appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dpkg-dev
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra -ansi"
@@ -42,6 +42,11 @@ jobs:
         run: |
              cd build
              cmake --build . --target update-locale
+             cd ..
+      - name: create_packages
+        run: |
+             cd build
+             cmake --build . --target package
              cd ..
       - name: run_tests
         run: |
