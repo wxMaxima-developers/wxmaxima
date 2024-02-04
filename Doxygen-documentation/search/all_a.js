@@ -31,7 +31,7 @@ var searchData=
   ['listtoxml_723',['ListToXML',['../classCell.html#a761c4a922949226d09e6c69f0a43f7d9',1,'Cell']]],
   ['load_724',['Load',['../classRecentDocuments.html#a65944b1d9e1c768137ed2dbe0ab7ed0f',1,'RecentDocuments']]],
   ['loadbuiltinmanualanchors_725',['LoadBuiltInManualAnchors',['../classMaximaManual.html#ad09c01d401285181a342780dba6d3753',1,'MaximaManual']]],
-  ['loadbuiltinsymbols_726',['LoadBuiltinSymbols',['../classAutoComplete.html#aa52091684de760b86a7f934dce47fa26',1,'AutoComplete']]],
+  ['loadbuiltinsymbols_726',['LoadBuiltinSymbols',['../classAutoComplete.html#a9ea854df696c5e1ab20e9834dfef8a37',1,'AutoComplete']]],
   ['loadfile_727',['loadfile',['../classAutoComplete.html#a6225a91b46c0459755a62de137620b29ae79474d174763269e5ba387002436e43',1,'AutoComplete']]],
   ['loadhelpfileanchors_728',['LoadHelpFileAnchors',['../classMaximaManual.html#af130119bf939187ec30fc0e5a5fb1d00',1,'MaximaManual::LoadHelpFileAnchors()'],['../classWorksheet.html#acfd29d21d377a247566aa99deb37acd8',1,'Worksheet::LoadHelpFileAnchors()']]],
   ['loadimage_729',['LoadImage',['../classImage.html#a07e9f48042ddd9004c24c3ff9e899094',1,'Image::LoadImage()'],['../classwxMaxima.html#a7a4826538b58db187f5ee253c6445c67',1,'wxMaxima::LoadImage()']]],
