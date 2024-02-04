@@ -1,0 +1,2690 @@
+%
+%%
+_
+__
+abasep(<v>)
+absboxchar
+abs(<expr>)
+absint(<f>, <x>)
+absint(<f>, <x>, <a>, <b>)
+absint(<f>, <x>, <halfplane>)
+absolute_real_time()
+acosh(<x>)
+acos(<x>)
+acoth(<x>)
+acot(<x>)
+acsch(<x>)
+acsc(<x>)
+activate(<context_1>, ..., <context_n>)
+activecontexts
+adapt_depth
+addcol(<M>, <list_1>, ..., <list_n>)
+add_edge(<e>, <gr>)
+add_edges(<e_list>, <gr>)
+additive
+addmatrices(<f>, <M_1>, ..., <M_n>)
+addrow(<M>, <list_1>, ..., <list_n>)
+add_vertex(<v>, <gr>)
+add_vertices(<v_list>, <gr>)
+adim
+adjacency_matrix(<gr>)
+adjoint(<M>)
+adjoin(<x>, <a>) 
+adjust_external_format
+aform
+af(<u>, <v>)
+agd(<x>)
+airy_ai(<x>)
+airy_bi(<x>)
+airy_dai(<x>)
+airy_dbi(<x>)
+airy(<x>)
+algebraic
+algepsilon
+algexact
+algfac
+algnorm
+algsys([<eqn_1>, ..., <eqn_m>], [<x_1>, ..., <x_n>])
+algsys([<expr_1>, ..., <expr_m>], [<x_1>, ..., <x_n>])
+algtrace
+aliases
+alias(<new_name_1>, <old_name_1>, ..., <new_name_n>, <old_name_n>)
+allbut
+all_dotsimp_denoms
+allroots(<eqn>)
+allroots(<expr>)
+allsym
+aload_mac
+alphabetic
+alphacharp(<char>)    
+alphanumericp(<char>) 
+amortization(<rate>,<amount>,<num>)
+%and
+and
+announce_rules_firing
+annuity_fv(<rate>,<FV>,<num>)
+annuity_pv(<rate>,<PV>,<num>)
+antid(<expr>, <x>, <u(x)>) 
+AntiDifference(<F_k>, <k>)
+antidiff(<expr>, <x>, <u>(<x>))
+antisymmetric
+appendfile(<filename>)
+append(<list_1>, ..., <list_n>)
+apply1(<expr>, <rule_1>, <...>, <rule_n>)
+apply2(<expr>, <rule_1>, <...>, <rule_n>)
+applyb1(<expr>, <rule_1>, <...>, <rule_n>)
+apply(<F>, [<x_1>, ..., <x_n>])
+apropos(<string>)
+args(<expr>)
+arit_amortization(<rate>,<increment>,<amount>,<num>)
+arithmetic(<a>, <d>, <n>)
+arithsum(<a>, <d>, <n>)
+arrayapply(<A>, [<i_1>, ..., <i_n>])
+array_dimension_n
+arrayinfo(<A>)
+arraymake(<A>, [<i_1>, ..., <i_n>])
+array([<name_1>, ..., <name_m>], <dim_1>, ..., <dim_n>)
+array(<name>, <dim_1>, ..., <dim_n>)
+array(<name>, <type>, <dim_1>, ..., <dim_n>)
+arrays
+arraysetapply
+ascii(<int>) 
+asech(<x>)
+asec(<x>)
+asinh(<x>)
+asin(<x>)
+askequal(<exp1>,<exp2>)
+askexp
+askinteger(<expr>)
+askinteger(<expr>, even)
+askinteger(<expr>, integer)
+askinteger(<expr>, odd)
+asksign(<expr>)
+assoc(<key>, <list>)
+assoc(<key>, <list>, <default>)
+assoc_legendre_p(<n>, <m>, <x>)
+assoc_legendre_q(<n>, <m>, <x>)
+assume_external_byte_order(<byte_order_flag>)
+assume_pos
+assume_pos_pred
+assume(<pred_1>, ..., <pred_n>)
+assumescalar
+asymbol
+atan2(<y>, <x>)
+atanh(<x>)
+atan(<x>)
+atensimp(<expr>)
+at(<expr>, <eqn>)
+at(<expr>, [<eqn_1>, ..., <eqn_n>])
+atom(<expr>)
+atomgrad
+atrig1
+atvalue(<expr>, <x_1> = <a_1>, <c>)
+atvalue(<expr>, [<x_1> = <a_1>, ..., <x_m> = <a_m>], <c>)
+augcoefmatrix([<eqn_1>, ..., <eqn_m>], [<x_1>, ..., <x_n>])
+augmented_lagrangian_method([<FOM>, <grad>], <xx>, <C>, <yy>)
+augmented_lagrangian_method([<FOM>, <grad>], <xx>, <C>, <yy>, optional_args)
+augmented_lagrangian_method(<FOM>, <xx>, <C>, <yy>)
+augmented_lagrangian_method(<FOM>, <xx>, <C>, <yy>, optional_args)
+auto_mexpr
+average_degree(<gr>)
+av(<u>, <v>)
+axes
+axis_3d
+axis_bottom
+axis_left
+axis_right
+axis_top
+azimut
+backsubst
+backtrace()
+backtrace(<n>)
+barsplot(<data1>, <data2>, ..., <option_1>, <option_2>, ...)
+bashindices(<expr>)
+batch(<filename>)
+batchload(<filename>)
+bc2(<solution>, <xval1>, <yval1>, <xval2>, <yval2>)
+bdvac(<f>)
+belln(<n>)
+benefit_cost(<rate>,<input>,<output>)
+berlefact
+bern(<n>)
+bernpoly(<x>, <n>)
+besselexpand
+bessel_i(<v>, <z>)
+bessel_j(<v>, <z>)
+bessel_k(<v>, <z>)
+bessel_y(<v>, <z>)
+bessel(<z>, <a>) 
+beta(<a>, <b>)
+beta_args_sum_to_integer
+beta_expand
+beta_incomplete(<a>, <b>, <z>)
+beta_incomplete_generalized(<a>, <b>, <z1>, <z2>)
+beta_incomplete_regularized(<a>, <b>, <z>)
+bezout(<p1>, <p2>, <x>)
+bfallroots(<eqn>)
+bfallroots(<expr>)
+bffac(<expr>, <n>)
+bf_find_root(<expr>, <x>, <a>, <b>)
+bf_find_root(<f>, <a>, <b>)
+bfhzeta(<s>, <h>, <n>)
+bfloat(<expr>)
+bfloatp(<expr>)
+bfpsi0(<z>, <fpprec>)
+bfpsi(<n>, <z>, <fpprec>)
+bftorat
+bftrunc
+bfzeta(<s>, <n>)
+biconnected_components(<gr>)
+bimetric()
+binomial(<x>, <y>)
+bipartition(<gr>)
+block(<expr_1>, ..., <expr_n>)
+blockmatrixp(<M>)
+block([<v_1>, ..., <v_m>], <expr_1>, ..., <expr_n>)
+bode_gain(<H>, <range>, ...<plot_opts>...)
+bode_phase(<H>, <range>, ...<plot_opts>...)
+border
+bothcoef(<expr>, <x>)
+boundaries_array
+boxchar
+box(<expr>)
+box(<expr>, <a>)
+boxplot(<data>)
+boxplot(<data>, <option_1>, <option_2>, ...)
+break(<expr_1>, ..., <expr_n>)
+breakup
+browser
+browser_options
+bug_report()
+build_info()
+buildq(<L>, <expr>)
+burn(<n>)
+%c
+cabs(<expr>)
+canform(<expr>)
+canform(<expr>, <rename>)
+canten(<expr>)
+cardinality(<a>)
+carg(<z>)
+cartan
+cartan-
+cartesian_product(<b_1>, ... , <b_n>)
+cartesian_product_list(<l_1>, ... , <l_n>)
+catch(<expr_1>, ..., <expr_n>)
+cauchysum
+cbffac(<z>, <fpprec>)
+cbrange
+cbtics
+cdf_bernoulli(<x>,<p>)
+cdf_beta(<x>,<a>,<b>)
+cdf_binomial(<x>,<n>,<p>)
+cdf_cauchy(<x>,<a>,<b>)
+cdf_chi2(<x>,<n>)
+cdf_continuous_uniform(<x>,<a>,<b>)
+cdf_discrete_uniform(<x>,<n>)
+cdf_exp(<x>,<m>)
+cdf_f(<x>,<m>,<n>)
+cdf_gamma(<x>,<a>,<b>)
+cdf_geometric(<x>,<p>)
+cdf_gumbel(<x>,<a>,<b>)
+cdf_hypergeometric(<x>,<n1>,<n2>,<n>)
+cdf_laplace(<x>,<a>,<b>)
+cdf_logistic(<x>,<a>,<b>)
+cdf_lognormal(<x>,<m>,<s>)
+cdf_negative_binomial(<x>,<n>,<p>)
+cdf_noncentral_chi2(<x>,<n>,<ncp>)
+cdf_noncentral_student_t(<x>,<n>,<ncp>)
+cdf_normal(<x>,<m>,<s>)
+cdf_pareto(<x>,<a>,<b>)
+cdf_poisson(<x>,<m>)
+cdf_rank_sum(<x>, <n>, <m>)
+cdf_rayleigh(<x>,<b>)
+cdf_signed_rank(<x>, <n>)
+cdf_student_t(<x>,<n>)
+cdf_weibull(<x>,<a>,<b>)
+cdisplay(<ten>)
+ceiling(<x>)
+central_moment(<list>, <k>)
+central_moment(<matrix>, <k>)
+cequal(<char_1>, <char_2>)          
+cequalignore(<char_1>, <char_2>)    
+cfdisrep(<list>)
+cfexpand(<x>)
+cf(<expr>)
+cflength
+cframe_flag
+cgeodesic(<dis>)
+cgreaterp(<char_1>, <char_2>)       
+cgreaterpignore(<char_1>, <char_2>)
+changename(<old>, <new>, <expr>)
+changevar(<expr>, <f(x,y)>, <y>, <x>)
+chaosgame(<[[><x1>, <y1><]>...<[><xm>, <ym><]]>, <[><x0>, <y0><]>, <b>, <n>, ..., options, ...);
+charat(<string>, <n>) 
+charfun2(<x>, <a>, <b>)
+charfun(<p>)
+charlist(<string>) 
+charp(<obj>) 
+charpoly(<M>, <x>)
+chebyshev_t(<n>, <x>)
+chebyshev_u(<n>, <x>)
+checkdiv()
+check_overlaps(<n>, <add_to_simps>)
+cholesky(<M>)
+cholesky(<M>, <field>)
+christof(<dis>)
+chromatic_index(<gr>)
+chromatic_number(<gr>)
+cint(<char>) 
+circulant_graph(<n>, <d>)
+clear_edge_weight(<e>, <gr>)
+clear_rules()
+clear_vertex_label(<v>, <gr>)
+clebsch_graph()
+clessp(<char_1>, <char_2>)
+clesspignore(<char_1>, <char_2>)
+closefile()
+close(<stream>)
+close(<stream>) 
+cmetric()
+cmetric(<dis>)
+cnonmet_flag
+coeff(<expr>, <x>)
+coeff(<expr>, <x>, <n>)
+coefmatrix([<eqn_1>, ..., <eqn_m>], [<x_1>, ..., <x_n>])
+cograd()
+collapse(<expr>)
+collectterms(<expr>, <arg_1>, <...>, <arg_n>)
+col(<M>, <i>)
+color
+colorbox
+columnop(<M>, <i>, <j>, <theta>)
+columns
+columnspace(<M>)
+columnswap(<M>, <i>, <j>)
+columnvector(<L>)
+combination(<n>, <r>)
+combine(<expr>)
+commutative
+comp2pui(<n>, <L>)
+compare(<x>, <y>)
+compfile(<filename>, all)
+compfile(<filename>, <f_1>, ..., <f_n>)
+compfile(<filename>, functions)
+compile(all)
+compile(<f_1>, ..., <f_n>)
+compile_file(<filename>)
+compile_file(<filename>, <compiled_filename>)
+compile_file(<filename>, <compiled_filename>, <lisp_filename>)
+compile(functions)
+complement_graph(<g>)
+complete_bipartite_graph(<n>, <m>)
+complete_graph(<n>)
+complex_number_p(<x>)
+components(<tensor>, <expr>)
+compose_functions(<l>)
+concan(<expr>)
+concat(<arg_1>, <arg_2>, ...)
+conjugate(<x>)
+conmetderiv(<expr>, <tensor>)
+connected_components(<gr>)
+connect_vertices(<v_list>, <u_list>, <gr>)
+cons(<expr>, <list>)
+constantp(<expr>)
+constituent(<char>)   
+constvalue(<x>)
+cont2part(<pc>, <lvar>)
+content(<p_1>, <x_1>, <...>, <x_n>)
+context
+contexts
+continuous_freq(<list>)
+continuous_freq(<list>, <m>)
+contortion(<tr>)
+contour
+contour_levels
+contour_plot(<expr>, <x_range>, <y_range>, <options>)
+contract_edge(<e>, <gr>)
+contract(<expr>)
+contract(<psym>, <lvar>)
+contragrad()
+contrib_ode(<eqn>, <y>, <x>)
+convert(<expr>, <list>)
+convert_to_signum(<e>)
+coord(<tensor_1>, <tensor_2>, ...)
+copy(<e>)
+copy_graph(<g>)
+copylist(<list>)
+copymatrix(<M>)
+cor(<matrix>)
+cor(<matrix>, <logical_value>)
+cosh(<x>)
+cosnpiflag
+cos(<x>)
+coth(<x>)
+cot(<x>)
+cov1(<matrix>)
+covdiff(<expr>, <v_1>, <v_2>, ...)
+covect(<L>)
+covers(<x>)
+cov(<matrix>)
+create_graph(<n>, <e_list>)
+create_graph(<v_list>, <e_list>)
+create_graph(<v_list>, <e_list>, <directed>)
+create_list(<form>, <x_1>, <list_1>, ..., <x_n>, <list_n>)
+csch(<x>)
+csc(<x>)
+csetup()
+cspline(<points>)
+cspline(<points>, <option1>, <option2>, ...)
+ctaylor()
+ctaypov
+ctaypt
+ctayswitch
+ctayvar
+ct_coords
+ct_coordsys(<coordinate_system>)
+ct_coordsys(<coordinate_system>, <extra_arg>)
+ctorsion_flag
+ctransform(<M>)
+ctranspose(<M>)
+ctrgsimp
+cube_graph(<n>)
+cuboctahedron_graph(<n>)
+cunlisp(<lisp_char>) 
+current_let_rule_package
+cv(<list>)
+cv(<matrix>)
+cycle_digraph(<n>)
+cycle_graph(<n>)
+data_file_name
+days360(<year1>,<month1>,<day1>,<year2>,<month2>,<day2>)
+dblint(<f>, <r>, <s>, <a>, <b>)
+deactivate(<context_1>, ..., <context_n>)
+debugmode
+declare(<a_1>, <p_1>, <a_2>, <p_2>, ...)
+declare_constvalue(<a>, <x>)
+declare_dimensions(<a_1>, <d_1>, ..., <a_n>, <d_n>)
+declare_fundamental_dimensions(<d_1>, <d_2>, <d_3>, ...)
+declare_fundamental_units(<u_1>, <d_1>, ..., <u_n>, <d_n>)
+declare_index_properties(<var>, [<prop1>, <...>])
+declare_qty(<a>, <x>)
+declare_translated(<f_1>, <f_2>, ...)
+declare_unit_conversion(<u> = <v>, ...)
+declare_units(<a>, <u>)
+declare_weights(<x_1>, <w_1>, ..., <x_n>, <w_n>)
+decsym(<tensor>, <m>, <n>, [<cov_1>, <cov_2>, ...], [<contr_1>, <contr_2>, ...])
+default_let_rule_package
+defcon(<tensor_1>)
+defcon(<tensor_1>, <tensor_2>, <tensor_3>)
+define(arraymake (<f>, [<x_1>, ..., <x_n>]), <expr>)
+define(ev (<expr_1>), <expr_2>)
+define(funmake (<f>, [<x_1>, ..., <x_n>]), <expr>)
+define(<f>(<x_1>, ..., <x_n>), <expr>)
+define(<f>[<x_1>, ..., <x_n>], <expr>)
+define_variable(<name>, <default_value>, <mode>)
+defint(<expr>, <x>, <a>, <b>)
+defmatch(<progname>, <pattern>)
+defmatch(<progname>, <pattern>, <x_1>, <...>, <x_n>)
+defrule(<rulename>, <pattern>, <replacement>)
+defstruct(<struct(fields)>)
+deftaylor(<f_1>(<x_1>), <expr_1>, <...>, <f_n>(<x_n>), <expr_n>)
+degree_sequence(<gr>)
+delay
+delete(<expr_1>, <expr_2>)
+delete(<expr_1>, <expr_2>, <n>)
+deleten(<L>, <n>)
+delta(<t>)
+del(<x>)
+demo(<filename>)
+demoivre(<expr>)
+denom(<expr>)
+dependencies
+depends(<f_1>, <x_1>, ..., <f_n>, <x_n>)
+derivabbrev
+derivdegree(<expr>, <y>, <x>)
+derivlist(<var_1>, ..., <var_k>)
+?derivsimp
+derivsubst
+describe(<string>)
+describe(<string>, exact)
+describe(<string>, inexact)
+desolve([<eqn_1>, ..., <eqn_n>], [<x_1>, ..., <x_n>])
+desolve(<eqn>, <x>)
+determinant_by_lu(<M>)
+determinant(<M>)
+detout
+dfloat(<x>)
+dgauss_a(<a>, <b>, <c>, <x>)
+dgauss_b(<a>, <b>, <c>, <x>)
+dgeev(<A>)
+dgeev(<A>, <right_p>, <left_p>)
+dgesv(<A>, <b>)
+dgesvd(<A>)
+dgesvd(<A>, <left_p>, <right_p>)
+diag(<lm>)
+diag_matrix(<d_1>, <d_2>,...,<d_n>)
+diagmatrix(<n>, <x>)
+diagmatrixp(<M>)
+diagmetric
+diameter(<gr>)
+diff(<expr>)
+diff(<expr>, <v_1>, [<n_1>, [<v_2>, <n_2>] ...])
+diff(<expr>, <x>)
+diff(<expr>, <x_1>, <n_1>, ..., <x_m>, <n_m>)
+diff(<expr>, <x>, <n>)
+digitcharp(<char>)    
+dim
+dimacs_export(<gr>, <fl>)
+dimacs_export(<gr>, <fl>, <comment1>, ..., <commentn>)
+dimacs_import(<fl>)
+dimension(<eqn>)
+dimension(<eqn_1>, ..., <eqn_n>)
+dimensionless(<L>)
+dimensions_as_list(<x>)
+dimensions(<x>)
+directory(<pattern>)
+direct([<p_1>, <...>, <p_n>], <y>, <f>, [<lvar_1>, <...>, <lvar_n>])
+discrete_freq(<list>)
+disjointp(<a>, <b>) 
+disjoin(<x>, <a>)
+disolate(<expr>, <x_1>, ..., <x_n>)
+dispcon(all)
+dispcon(<tensor_1>, <tensor_2>, ...)
+disp(<expr_1>, <expr_2>, ...)
+dispflag
+dispform(<expr>)
+dispform(<expr>, all)
+dispfun(all)
+dispfun(<f_1>, ..., <f_n>)
+dispJordan(<l>)
+display2d
+display2d_unicode
+display_all
+display(<expr_1>, <expr_2>, ...)
+display_format_internal
+display_index_separator
+display_known_bugs
+disprule(all)
+disprule(<rulename_1>, <...>, <rulename_2>)
+dispterms(<expr>)
+distrib(<expr>)
+distribute_over
+divide(<p_1>, <p_2>, <x_1>, <...>, <x_n>)
+divisors(<n>)
+divsum(<n>)
+divsum(<n>, <k>)
+dkummer_m(<a>, <b>, <x>)
+dkummer_u(<a>, <b>, <x>)
+dlange(<norm>, <A>)
+doallmxops
+dodecahedron_graph()
+domain
+domxexpt
+domxmxops
+domxnctimes
+dontfactor
+doscmxops
+doscmxplus
+dot0nscsimp
+dot0simp
+dot1simp
+dotassoc
+dotconstrules
+dotdistrib
+dotexptsimp
+dotident
+dotproduct(<u>, <v>)
+dotscrules
+dotsimp(<f>)
+dpart(<expr>, <n_1>, ..., <n_k>)
+draw2d(<option>, <graphic_object>, ...)
+draw3d(<option>, <graphic_object>, ...)
+draw_file(<graphic option>, ..., <graphic object>, ...)
+draw(<gr2d>, ..., <gr3d>, ..., <options>, ...)
+draw_graph(<graph>)
+draw_graph(<graph>, <option1>, ..., <optionk>)
+draw_graph_program
+dscalar()
+dscalar(<f>)
+%e
+echelon(<M>)
+edge_color
+edge_coloring(<gr>)
+edge_connectivity(<gr>)
+edge_partition
+edges(<gr>)
+edge_type
+edge_width
+%edispflag
+eigens_by_jacobi(<A>)
+eigens_by_jacobi(<A>, <field_type>)
+eigenvalues(<M>)
+eigenvectors(<M>)
+eighth(<expr>)
+einstein(<dis>)
+eivals(<M>)
+eivects(<M>)
+elapsed_real_time()
+elapsed_run_time()
+ele2comp(<m>, <L>)
+ele2polynome(<L>, <z>)
+ele2pui(<m>, <L>)
+elem(<ele>, <sym>, <lvar>)
+elementp(<x>, <a>)
+elevation
+elim_allbut(<l>, <x>)
+eliminate([<eqn_1>, <...>, <eqn_n>], [<x_1>, <...>, <x_k>])
+eliminate_using(<l>, <e>, <x>)
+elim(<l>, <x>)
+elliptic_ec(<m>)
+elliptic_e(<phi>, <m>)
+elliptic_eu(<u>, <m>)
+elliptic_f(<phi>, <m>)
+elliptic_kc(<m>)
+elliptic_pi(<n>, <phi>, <m>)
+ematrix(<m>, <n>, <x>, <i>, <j>)
+%emode
+empty_graph(<n>)
+emptyp(<a>)
+endcons(<expr>, <list>)
+enhanced3d
+entermatrix(<m>, <n>)
+entertensor(<name>)
+entier(<x>)
+%enumer
+eps_height
+epsilon_lp
+eps_width
+equal(<a>, <b>)
+equalp(<x>, <y>)
+equiv_classes(<s>, <F>)
+erfc(<z>)
+erfflag
+erf_generalized(<z1>,<z2>)
+erfi(<z>)
+erf_representation
+erf(<z>)
+errcatch(<expr_1>, <...>, <expr_n>)
+error(<expr_1>, <...>, <expr_n>)
+errormsg()
+error_size
+error_syms
+%e_to_numlog
+euler(<n>)
+eval
+eval_string(<str>)
+evenp(<expr>)
+every(<f>, <L_1>, ..., <L_n>)
+every(<f>, <s>)
+ev(<expr>, <arg_1>, ..., <arg_n>)
+evflag
+evfun
+evolution2d(<[><F>, <G><]>, <[><u>, <v><]>, <[><u0>, <y0><]>, <n>, ..., options, ...);
+evolution(<F>, <y0>, <n>, ..., options, ...);
+ev_point
+evundiff(<expr>)
+example()
+example(<topic>)
+expand(<expr>)
+expand(<expr>, <p>, <n>)
+expandwrt_denom
+expandwrt(<expr>, <x_1>, <...>, <x_n>)
+expandwrt_factored(<expr>, <x_1>, <...>, <x_n>)
+expintegral_chi(<z>)
+expintegral_ci(<z>)
+expintegral_e1(<z>)
+expintegral_ei(<z>)
+expintegral_e(<n>,<z>)
+expintegral_li(<z>)
+expintegral_shi(<z>)
+expintegral_si(<z>)
+expintexpand
+expintrep
+expint(<z>)
+explose(<pc>, <lvar>)
+expon
+exponentialize(<expr>)
+expop
+express(<expr>)
+expt(<a>, <b>)
+exptdispflag
+exptisolate
+exptsubst
+exp(<x>)
+exsec(<x>)
+extdiff(<expr>, <i>)
+extract_linear_equations([<p_1>, ..., <p_n>], [<m_1>, ..., <m_n>])
+extra_definite_integration_methods
+extra_integration_methods
+extremal_subset(<s>, <f>, max)
+extremal_subset(<s>, <f>, min)
+ezgcd(<p_1>, <p_2>, <p_3>, ...)
+%f
+f90(<expr_1>, ..., <expr_n>)
+facexpand
+facsum_combine
+facsum(<expr>, <arg_1>, <...>, <arg_n>)
+factcomb(<expr>)
+factlim
+factor(<expr>)
+factor(<expr>, <p>)
+factorfacsum(<expr>, <arg_1>, <...>, <arg_n>)
+factorflag
+factorial_expand
+factorial(<x>)
+factorout(<expr>, <x_1>, <x_2>, <...>)
+factorsum(<expr>)
+facts()
+facts(<item>)
+false
+fast_central_elements([<x_1>, ..., <x_n>], <n>)
+fast_linsolve([<expr_1>, ..., <expr_m>], [<x_1>, ..., <x_n>])
+fasttimes(<p_1>, <p_2>)
+fb
+feature
+featurep(<a>, <f>)
+features
+fernfale(<n>)
+fft(<x>)
+fib(<n>)
+fibtophi(<expr>)
+fifth(<expr>)
+file_bgcolor
+file_name
+filename_merge(<path>, <filename>)
+  file_output_append
+file_output_append
+file_search_demo
+file_search(<filename>)
+file_search(<filename>, <pathlist>)
+file_search_lisp
+file_search_maxima
+file_search_tests
+file_search_usage
+file_type(<filename>)
+file_type_lisp
+file_type_maxima
+fillarray(<A>, <B>)
+fill_color
+fill_density
+filled_func
+findde(<A>, <n>)
+find_root_abs
+find_root_error
+find_root(<expr>, <x>, <a>, <b>)
+find_root(<f>, <a>, <b>)
+find_root_rel
+first(<expr>)
+firstn(<expr>, <number>)
+fixed_vertices
+fix(<x>)
+flatten(<expr>)
+flength(<stream>)
+flipflag
+float2bf
+float_approx_equal(<f_1>,<f_2>)
+float_approx_equal_tolerance
+float(<expr>)
+floatnump(<expr>)
+floor(<x>)
+flower_snark(<n>)
+flush1deriv(<expr>, <tensor>)
+flushd(<expr>, <tensor_1>, <tensor_2>, ...)
+flush(<expr>, <tensor_1>, <tensor_2>, ...)
+flushnd(<expr>, <tensor>, <n>)
+font
+font_size
+forget(<L>)
+forget(<pred_1>, ..., <pred_n>)
+fortindent
+fortran(<expr>)
+fortspaces
+fourcos(<f>, <x>, <p>)
+fourexpand(<l>, <x>, <p>, <limit>)
+fourier_elim([<eq1>, <eq2>, <...>], [<var1>, <var>, <...>])
+fourier(<f>, <x>, <p>)
+fourintcos(<f>, <x>)
+fourint(<f>, <x>)
+fourintsin(<f>, <x>)
+foursimp(<l>)
+foursin(<f>, <x>, <p>)
+fourth(<expr>)
+fposition(<stream>)
+fposition(<stream>, <pos>)
+fpprec
+fpprintprec
+%f[<p>,<q>] (<[a],[b],z>) 
+frame_bracket(<fr>, <fri>, <diagframe>)
+freeof(<x_1>, ..., <x_n>, <expr>)
+freshline() 
+freshline(<stream>) 
+fresnel_c(<z>)
+fresnel_s(<z>)
+from_adjacency_matrix(<A>)
+frucht_graph()
+full_listify(<a>)
+fullmap(<f>, <expr_1>, <...>)
+fullmapl(<f>, <list_1>, <...>)
+fullratsimp(<expr>)
+fullratsubst(<a>, <b>, <c>)
+fullsetify(<a>)
+funcsolve(<eqn>, <g>(<t>))
+functions
+fundamental_units()
+fundamental_units(<x>)
+fundef(<f>)
+funmake(<F>, [<arg_1>, ..., <arg_n>])
+funp(<f>, <expr>)
+funp(<f>, <expr>, <x>)
+fv(<rate>,<PV>,<num>)
+g0(<x>) 
+g1(<x>) 
+%gamma
+gamma_incomplete(<a>, <z>)
+gamma_incomplete_generalized(<a>,<z1>,<z1> )
+gamma_incomplete_regularized(<a>,<z>)
+gammalim
+gamma(<z>)
+garbage_collect
+gauss_a(<a>, <b>, <c>, <x>)
+gauss_b(<a>, <b>, <c>, <x>)
+gauss(<mean>, <sd>)
+gaussprob(<x>)
+gcdex(<f>, <g>)
+gcdex(<f>, <g>, <x>)
+gcdivide(<p>, <q>)
+gcd(<p_1>, <p_2>, <x_1>, <...>)
+gcfac(<expr>)
+gcfactor(<n>)
+gdet
+gd(<x>)
+genfact(<x>, <y>, <z>)
+genindex
+gen_laguerre(<n>, <a>, <x>)
+genmatrix(<a>, <i_2>, <j_2>)
+genmatrix(<a>, <i_2>, <j_2>, <i_1>)
+genmatrix(<a>, <i_2>, <j_2>, <i_1>, <j_1>)
+gensumnum
+gensym(<x>)
+gentran
+geo_amortization(<rate>,<growing_rate>,<amount>,<num>)
+geo_annuity_fv(<rate>,<growing_rate>,<FV>,<num>)
+geo_annuity_pv(<rate>,<growing_rate>,<PV>,<num>)
+geometric(<a>, <r>, <n>)
+geometric_mean(<list>)
+geometric_mean(<matrix>)
+geosum(<a>, <r>, <n>)
+get(<a>, <i>)
+get_edge_weight(<e>, <gr>)
+get_edge_weight(<e>, <gr>, <ifnot>)
+get_index_properties(<var>)
+get_lu_factors(<x>) 
+get_plot_option(<keyword>, <index>)
+get_tex_environment_default()
+get_tex_environment(<op>)
+get_vertex_label(<v>, <gr>)
+gfactor(<expr>)
+gfactorsum(<expr>)
+GGFCFMAX
+GGFINFINITY
+ggf(<l>)
+girth(<gr>)
+globalsolve
+global_variances(<matrix>)
+global_variances(<matrix>, <logical_value>)
+gnuplot_close()
+gnuplot_command
+gnuplot_curve_styles
+gnuplot_curve_titles
+gnuplot_default_term_command
+gnuplot_dumb_term_command
+gnuplot_file_name
+gnuplot_out_file
+gnuplot_pm3d
+gnuplot_preamble
+gnuplot_ps_term_command
+gnuplot_replot()
+gnuplot_replot(<s>)
+gnuplot_reset()
+gnuplot_restart()
+gnuplot_start()
+gnuplot_term
+gn(<x>, <n>) 
+Gosper(<F_k>, <k>)
+Gosper_in_Zeilberger
+GosperSum(<F_k>, <k>, <a>, <b>)
+go(<tag>)
+gradef(<a>, <x>, <expr>)
+gradef(<f>(<x_1>, ..., <x_n>), <g_1>, ..., <g_m>)
+gradefs
+gramschmidt(<x>)
+gramschmidt(<x>, <F>)
+graph6_decode(<str>)
+graph6_encode(<gr>)
+graph6_export(<gr_list>, <fl>)
+graph6_import(<fl>)
+graph_center(<gr>)
+graph_charpoly(<gr>, <x>)
+graph_eigenvalues(<gr>)
+graph_flow(<val>)
+graph_order(<gr>)
+graph_periphery(<gr>)
+graph_product(<g1>, <g1>)
+graph_size(<gr>)
+graph_union(<g1>, <g1>)
+great_rhombicosidodecahedron_graph()
+great_rhombicuboctahedron_graph()
+grid
+grid_graph(<n>, <m>)
+grind(<expr>)
+grobner_basis([<expr_1>, ..., <expr_m>])
+grotzch_graph()
+guess_exact_value([<expr>]))
+halfangles
+hamilton_cycle(<gr>)
+hamilton_path(<gr>)
+hankel_1(<v>, <z>)
+hankel_2(<v>, <z>)
+hankel(<col>)
+hankel(<col>, <row>)
+harmonic(<a>, <b>, <c>, <n>)
+harmonic_mean(<list>)
+harmonic_mean(<matrix>)
+hav(<x>)
+head_angle
+head_both
+head_length
+head_type
+heawood_graph()
+hermite(<n>, <x>)
+hessian(<f>, <x>)
+hgfred(<a>, <b>, <t>)
+hilbertmap(<nn>)
+hilbert_matrix(<n>)
+hipow(<expr>, <x>)
+histogram(<list>)
+histogram(<list>, <option_1>, <option_2>, ...)
+histogram(<one_column_matrix>)
+histogram(<one_column_matrix>, <option_1>, <option_2>, ...)
+histogram(<one_row_matrix>)
+histogram(<one_row_matrix>, <option_1>, <option_2>, ...)
+hodge(<expr>)
+horner(<expr>)
+horner(<expr>, <x>)
+hypergeometric([<a1>, <...>, <ap>],[<b1>, <...> ,<bq>], x)
+hypergeometric_representation
+%i
+i0(<x>) 
+i1(<x>) 
+%iargs
+ibase
+%ibes
+%ibes[<n>](<x>) 
+ic1(<solution>, <xval>, <yval>)
+ic2(<solution>, <xval>, <yval>, <dval>)
+icc1
+icc2
+ic_convert(<eqn>)
+ichr1([<i>, <j>, <k>])
+ichr2([<i>, <j>], [<k>])
+icosahedron_graph()
+icosidodecahedron_graph()
+icounter
+icurvature([<i>, <j>, <k>], [<h>])
+identfor(<M>)
+identfor(<M>, <fld>)
+identity(<x>)
+ident(<n>)
+idiff(<expr>, <v_1>, [<n_1>, [<v_2>, <n_2>] ...])
+idim(<n>)
+idummy()
+idummyx
+ieqn(<ie>, <unk>, <tech>, <n>, <guess>)
+ieqnprint
+%if
+ifactors(<n>)
+ifb
+ifc1
+ifc2
+ifg
+ifgi
+ifr
+iframe_bracket_form
+iframes()
+ifri
+ifs(<[><r1>, ..., <rm><]>, <[><A1>, ..., <Am><]>, <[[><x1>, <y1><]>, ..., <[><xm>, <ym><]]>, <[><x0>, <y0><]>, <n>, ..., options, ...);
+igeodesic_coords(<expr>, <name>)
+igeowedge_flag
+ikt1
+ikt2
+ilt(<expr>, <s>, <t>)
+imagpart(<expr>)
+imetric(<g>)
+implicit_derivative(<f>,<indvarlist>,<orderlist>,<depvar>)
+implicit_plot([<expr_1>, ..., <expr_n>], <x_range>, <y_range>)
+implicit_plot(<expr>, <x_range>, <y_range>)
+inchar
+ind
+indexed_tensor(<tensor>)
+indices(<expr>)
+induced_subgraph(<V>, <g>)
+inf
+inferencep(<obj>)
+inference_result(<title>, <values>, <numbers>)
+infeval
+infinity
+infix(<op>)
+infix(<op>, <lbp>, <rbp>)
+infix(<op>, <lbp>, <rbp>, <lpos>, <rpos>, <pos>)
+inflag
+infolists
+init_atensor(<alg_type>)
+init_atensor(<alg_type>, <opt_dims>)
+init_ctensor()
+inm
+inmc1
+inmc2
+in_neighbors(<v>, <gr>)
+innerproduct(<x>, <y>)
+inpart(<expr>, <n_1>, ..., <n_k>)
+inprod(<x>, <y>)
+inrt(<x>, <n>)
+intanalysis
+integer_partitions(<n>)
+integer_partitions(<n>, <len>)
+integerp(<expr>)
+integrate(<expr>, <x>)
+integrate(<expr>, <x>, <a>, <b>)
+integrate_use_rootsof
+integration_constant
+integration_constant_counter
+intersect(<a_1>, ..., <a_n>)
+intersection(<a_1>, ..., <a_n>)
+intervalp(<e>)
+intfaclim
+intfugudu(<e>, <x>)
+intopois(<a>)
+intosum(<expr>)
+invariant1()
+invariant2()
+inverse_fft(<y>)
+inverse_jacobi_cd(<u>, <m>)
+inverse_jacobi_cn(<u>, <m>)
+inverse_jacobi_cs(<u>, <m>)
+inverse_jacobi_dc(<u>, <m>)
+inverse_jacobi_dn(<u>, <m>)
+inverse_jacobi_ds(<u>, <m>)
+inverse_jacobi_nc(<u>, <m>)
+inverse_jacobi_nd(<u>, <m>)
+inverse_jacobi_ns(<u>, <m>)
+inverse_jacobi_sc(<u>, <m>)
+inverse_jacobi_sd(<u>, <m>)
+inverse_jacobi_sn(<u>, <m>)
+invert_by_lu(<M>, <(rng generalring)>)
+invert(<M>)
+inv_mod(<n>, <m>)
+in(<x>, <n>) 
+ip_grid
+ip_grid_in
+irr(<val>,<IO>)
+is_biconnected(<gr>)
+is_bipartite(<gr>)
+is_connected(<gr>)
+is_digraph(<gr>)
+is_edge_in_graph(<e>, <gr>)
+is(<expr>)
+is_graph(<gr>)
+is_graph_or_digraph(<gr>)
+ishow(<expr>)
+is_isomorphic(<gr1>, <gr2>)
+isolate(<expr>, <x>)
+isolate_wrt_times
+isomorphism(<gr1>, <gr2>)
+is_planar(<gr>)
+isqrt(<x>)
+isreal_p(<e>)
+is_sconnected(<gr>)
+is_tree(<gr>)
+is_vertex_in_graph(<v>, <gr>)
+items_inference(<obj>)
+itr
+%j
+j0(<x>) 
+j1(<x>) 
+jacobian(<f>, <x>)
+jacobi_cd(<u>, <m>)
+jacobi_cn(<u>, <m>)
+jacobi_cs(<u>, <m>)
+jacobi_dc(<u>, <m>)
+jacobi_dn(<u>, <m>)
+jacobi_ds(<u>, <m>)
+jacobi_nc(<u>, <m>)
+jacobi_nd(<u>, <m>)
+jacobi_ns(<u>, <m>)
+jacobi_p(<n>, <a>, <b>, <x>)
+jacobi(<p>, <q>)
+jacobi_sc(<u>, <m>)
+jacobi_sd(<u>, <m>)
+jacobi_sn(<u>, <m>)
+JF(<lambda>,<n>)
+%j[<n>](<x>) 
+jn(<x>, <n>) 
+join(<l>, <m>)
+jordan(<mat>)
+julia_parameter
+julia_set(<x>, <y>)
+julia_sin(<x>, <y>)
+julia(<x>, <y>, ...<options>...)
+%k
+%k1
+%k2
+kdels(<L1>, <L2>)
+kdelta(<L1>, <L2>)
+keepfloat
+key
+key_pos
+kill(<a_1>, ..., <a_n>)
+kill(all)
+kill(allbut (<a_1>, ..., <a_n>))
+killcontext(<context_1>, ..., <context_n>)
+kill(inlabels, outlabels, linelabels)
+kill(labels)
+kill([<m>, <n>])
+kill(<n>)
+kill(values, functions, arrays, ...)
+kinvariant
+%k[<n>](<x>) 
+kostka(<part_1>, <part_2>)
+kron_delta(<x>, <y>)
+kronecker_product(<A>, <B>)
+kt
+kummer_m(<a>, <b>, <x>)
+kummer_u(<a>, <b>, <x>)
+kurtosis_bernoulli(<p>)
+kurtosis_beta(<a>,<b>)
+kurtosis_binomial(<n>,<p>)
+kurtosis_chi2(<n>)
+kurtosis_continuous_uniform(<a>,<b>)
+kurtosis_discrete_uniform(<n>)
+kurtosis_exp(<m>)
+kurtosis_f(<m>,<n>)
+kurtosis_gamma(<a>,<b>)
+kurtosis_geometric(<p>)
+kurtosis_gumbel(<a>,<b>)
+kurtosis_hypergeometric(<n1>,<n2>,<n>)
+kurtosis_laplace(<a>,<b>)
+kurtosis(<list>)
+kurtosis_logistic(<a>,<b>)
+kurtosis_lognormal(<m>,<s>)
+kurtosis(<matrix>)
+kurtosis_negative_binomial(<n>,<p>)
+kurtosis_noncentral_chi2(<n>,<ncp>)
+kurtosis_noncentral_student_t(<n>,<ncp>)
+kurtosis_normal(<m>,<s>)
+kurtosis_pareto(<a>,<b>)
+kurtosis_poisson(<m>)
+kurtosis_rayleigh(<b>)
+kurtosis_student_t(<n>)
+kurtosis_weibull(<a>,<b>)
+label_alignment
+label_orientation
+labels(<symbol>)
+lagrange(<points>)
+lagrange(<points>, <option>)
+laguerre(<n>, <x>)
+lambda([[<L>]], <expr_1>, ..., <expr_n>)
+lambda([<x_1>, ..., <x_m>], <expr_1>, ..., <expr_n>)
+lambda([<x_1>, ..., <x_m>, [<L>]], <expr_1>, ..., <expr_n>)
+lambert_w(<z>)
+laplace(<expr>, <t>, <s>)
+laplacian_matrix(<gr>)
+lassociative
+last(<expr>)
+lastn(<expr>, <number>)
+lbfgs([<FOM>, <grad>] <X>, <X0>, <epsilon>, <iprint>)
+lbfgs(<FOM>, <X>, <X0>, <epsilon>, <iprint>)
+lbfgs_ncorrections
+lbfgs_nfeval_max
+lc2kdt(<expr>)
+lcharp(<obj>) 
+lcm(<expr_1>, ..., <expr_n>)
+ldefint(<expr>, <x>, <a>, <b>)
+ldisp(<expr_1>, ..., <expr_n>)
+ldisplay(<expr_1>, ..., <expr_n>)
+legend
+legendre_p(<n>, <x>)
+legendre_q(<n>, <x>)
+leinstein(<dis>)
+length(<expr>)
+let(<prod>, <repl>, <predname>, <arg_1>, <...>, <arg_n>)
+let([<prod>, <repl>, <predname>, <arg_1>, <...>, <arg_n>], <package_name>)
+letrat
+let_rule_packages
+letrules()
+letrules(<package_name>)
+letsimp(<expr>)
+letsimp(<expr>, <package_name>)
+letsimp(<expr>, <package_name_1>, <...>, <package_name_n>)
+levi_civita(<L>)
+lfg
+lfreeof(<list>, <expr>)
+lg
+lgtreillis(<n>, <m>)
+lhospitallim
+lhs(<expr>)
+li
+liediff(<v>, <ten>)
+limit(<expr>)
+limit(<expr>, <x>, <val>)
+limit(<expr>, <x>, <val>, <dir>)
+limsubst
+Lindstedt(<eq>,<pvar>,<torder>,<ic>)
+linear(<expr>, <x>)
+linearinterpol(<points>)
+linearinterpol(<points>, <option>)
+linear_program(<A>, <b>, <c>)
+linear_solver
+linechar
+line_graph(<g>)
+linel
+linenum
+line_type
+line_width
+linsolve([<expr_1>, ..., <expr_m>], [<x_1>, ..., <x_n>])
+linsolve_params
+linsolvewarn
+lispdisp
+listarith
+listarray(<A>)
+listconstvars
+list_correlations(<matrix>)
+list_correlations(<matrix>, <logical_value>)
+listdummyvars
+listify(<a>)
+list_nc_monomials(<p>)
+list_nc_monomials([<p_1>, ..., <p_n>])
+listofvars(<expr>)
+listp(<e>)
+listp(<e>, <p>)
+listp(<expr>)
+li[<s>] (<z>)
+lmax(<L>)
+lmin(<L>)
+lmxchar
+loadfile(<filename>)
+load(<filename>)
+load_pathname
+loadprint
+local(<v_1>, ..., <v_n>)
+locate_matrix_entry(<M>, <r_1>, <c_1>, <r_2>, <c_2>, <f>, <rel>)
+logabs
+logand(<x>,<y>)
+logarc
+logcb
+logconcoeffp
+logcontract(<expr>)
+logexpand
+log_gamma(<z>)
+lognegint
+lognumer
+logor(<x>,<y>)
+logsimp
+log(<x>)
+logx
+logxor(<x>,<y>)
+logx_secondary
+logy
+logy_secondary
+logz
+lopow(<expr>, <x>)
+lorentz_gauge(<expr>)
+lowercasep(<char>)    
+lpart(<label>, <expr>, <n_1>, ..., <n_k>)
+lratsubst(<L>, <expr>)
+lreduce(<F>, <s>)
+lreduce(<F>, <s>, <s_0>)
+lriem
+lriemann(<dis>)
+lsquares_estimates_approximate(<MSE>, <a>, initial = <L>, tol = <t>)
+lsquares_estimates(<D>, <x>, <e>, <a>)
+lsquares_estimates(<D>, <x>, <e>, <a>, initial = <L>, tol = <t>)
+lsquares_estimates_exact(<MSE>, <a>)
+lsquares_mse(<D>, <x>, <e>)
+lsquares_residual_mse(<D>, <x>, <e>, <a>)
+lsquares_residuals(<D>, <x>, <e>, <a>)
+lsum(<expr>, <x>, <L>)
+ltreillis(<n>, <m>)
+lu_backsub(<M>, <b>)
+lu_factor(<M>, <field>)
+%m
+m1pbranch
+macroexpand1(<expr>)
+macroexpand(<expr>)
+macroexpansion
+macros
+mainvar
+make_array(<type>, <dim_1>, ..., <dim_n>)
+makebox(<expr>)
+makefact(<expr>)
+makegamma(<expr>)
+make_graph(<vrt>, <f>)
+make_graph(<vrt>, <f>, <oriented>)
+make_level_picture(<data>,<width>,<height>)
+makelist(<expr>, <i>, <i_0>, <i_1>)
+makelist(<expr>, <x>, <list>)
+makeOrders(<indvarlist>,<orderlist>)
+make_random_state(<n>)
+make_random_state(<s>)
+makeset(<expr>, <x>, <s>)
+make_transform([<var1>, <var2>, <var3>], <fx>, <fy>, <fz>)
+mandelbrot(<options>)
+mandelbrot_set(<x>, <y>)
+manual_demo
+mapatom(<expr>)
+maperror
+map(<f>, <expr_1>, <...>, <expr_n>)
+maplist(<f>, <expr_1>, <...>, <expr_n>)
+mapprint
+matchdeclare(<a_1>, <pred_1>, <...>, <a_n>, <pred_n>)
+matchfix(<ldelimiter>, <rdelimiter>)
+matchfix(<ldelimiter>, <rdelimiter>, <arg_pos>, <pos>)
+mat_cond(<M>, 1)
+mat_cond(<M>, inf)
+mat_fullunblocker(<M>)
+mat_function(<f>,<mat>)
+mat_norm(<M>, 1)
+mat_norm(<M>, frobenius)
+mat_norm(<M>, inf)
+matrix_element_add
+matrix_element_mult
+matrix_element_transpose
+matrixexp(<M>, <v>)
+matrixmap(<f>, <M>)
+matrixp(<e>)
+matrixp(<e>, <p>)
+matrixp(<expr>)
+matrix(<row_1>, ..., <row_n>)
+matrix_size(<M>)
+mat_trace(<M>)
+mattrace(<M>)
+mat_unblocker(<M>)
+maxapplydepth
+maxapplyheight
+max_clique(<gr>)
+max_degree(<gr>)
+max_flow(<net>, <s>, <t>)
+maxima_frontend
+maxima_frontend_version
+maxima_objdir
+maxima_tempdir
+maxima_userdir
+maximize_lp(<obj>, <cond>, [<pos>])
+max_independent_set(<gr>)
+max_matching(<gr>)
+maxnegex
+MAX_ORD
+maxposex
+maxpsifracdenom
+maxpsifracnum
+maxpsinegint
+maxpsiposint
+maxtayorder
+max(<x_1>, <...>, <x_n>)
+maybe(<expr>)
+mean_bernoulli(<p>)
+mean_beta(<a>,<b>)
+mean_binomial(<n>,<p>)
+mean_chi2(<n>)
+mean_continuous_uniform(<a>,<b>)
+mean_deviation(<list>)
+mean_deviation(<matrix>)
+mean_discrete_uniform(<n>)
+mean_exp(<m>)
+mean_f(<m>,<n>)
+mean_gamma(<a>,<b>)
+mean_geometric(<p>)
+mean_gumbel(<a>,<b>)
+mean_hypergeometric(<n1>,<n2>,<n>)
+mean_laplace(<a>,<b>)
+mean(<list>)
+mean_logistic(<a>,<b>)
+mean_lognormal(<m>,<s>)
+mean(<matrix>)
+mean_negative_binomial(<n>,<p>)
+mean_noncentral_chi2(<n>,<ncp>)
+mean_noncentral_student_t(<n>,<ncp>)
+mean_normal(<m>,<s>)
+mean_pareto(<a>,<b>)
+mean_poisson(<m>)
+mean_rayleigh(<b>)
+mean_student_t(<n>)
+mean_weibull(<a>,<b>)
+median_deviation(<list>)
+median_deviation(<matrix>)
+median(<list>)
+median(<matrix>)
+member(<expr_1>, <expr_2>)
+mesh_lines_color
+method
+metricexpandall(<x>)
+min_degree(<gr>)
+min_edge_cut(<gr>)
+minf
+minfactorial(<expr>)
+minimalPoly(<l>)
+minimize_lp(<obj>, <cond>, [<pos>])
+minimum_spanning_tree(<gr>)
+minor(<M>, <i>, <j>)
+minpack_lsquares(<flist>, <varlist>, <guess> [, <tolerance>, <jacobian>])
+minpack_solve(<flist>, <varlist>, <guess> [, <tolerance>, <jacobian>])
+min_vertex_cover(<gr>)
+min_vertex_cut(<gr>)
+min(<x_1>, <...>, <x_n>)
+%m[<k>,<u>] (<z>) 
+mnewton(<FuncList>,<VarList>,<GuessList>)
+mod_big_prime
+mode_check_errorp
+mode_checkp
+mode_check_warnp
+mode_declare(<y_1>, <mode_1>, ..., <y_n>, <mode_n>)
+mode_identity(<arg_1>, <arg_2>)
+ModeMatrix(<A>,<l>)
+mod_test
+mod_threshold
+modular_linear_solver
+modulus
+mod(<x>, <y>)
+moebius(<n>)
+mon2schur(<L>)
+monomial_dimensions(<n>)
+mono([<x_1>, ..., <x_n>], <n>)
+multi_elem(<l_elem>, <multi_pc>, <l_var>)
+multinomial_coeff()
+multinomial_coeff(<a_1>, ..., <a_n>)
+multinomial(<r>, <part>)
+multi_orbit(<P>, [<lvar_1>, <lvar_2>,<...>, <lvar_p>])
+multiplicative
+multiplicities
+multiplot_mode(<term>)
+multsym(<ppart_1>, <ppart_2>, <n>)
+multthru(<expr>)
+multthru(<expr_1>, <expr_2>)
+mycielski_graph(<g>)
+myoptions
+natural_unit(<expr>, [<v_1>, ..., <v_n>])
+nc_degree(<p>)
+ncexpt(<a>, <b>)
+ncharpoly(<M>, <x>)
+negdistrib
+negsumdispflag
+neighbors(<v>, <gr>)
+newcontext(<name>)
+newdet(<M>)
+new_graph()
+newline() 
+newline(<stream>) 
+new(<struct(fields)>)
+newtonepsilon
+newton(<expr>, <x>, <x_0>, <eps>)
+newtonmaxiter
+new_variable(<type>)
+nextlayerfactor
+next_prime(<n>)
+niceindices(<expr>)
+niceindicespref
+ninth(<expr>)
+nm
+nmc
+noeval
+nolabels
+noncentral_moment(<list>, <k>)
+noncentral_moment(<matrix>, <k>)
+nonegative_lp
+nonmetricity(<nm>)
+nonnegintegerp(<n>)
+nonscalar
+nonscalarp(<expr>)
+nonzeroandfreeof(<x>, <expr>)
+notequal(<a>, <b>)
+noun
+noundisp
+nounify(<f>)
+nouns
+np
+npi
+nptetrad()
+npv(<rate>,<val>)
+nroots(<p>, <low>, <high>)
+nterms(<expr>)
+ntermst(<f>)
+nthroot(<p>, <n>)
+nticks
+ntrig
+nullity(<M>)
+nullspace(<M>)
+numberp(<expr>)
+num_distinct_partitions(<n>)
+num_distinct_partitions(<n>, list)
+numer
+numer_pbranch
+numerval(<x_1>, <expr_1>, <...>, <var_n>, <expr_n>)
+num(<expr>)
+numfactor(<expr>)
+num_partitions(<n>)
+num_partitions(<n>, list)
+nusum(<expr>, <x>, <i_0>, <i_1>)
+nzetai(<z>)
+nzetar(<z>)
+nzeta(<z>)
+obase
+odd_girth(<gr>)
+oddp(<expr>)
+ode2(<eqn>, <dvar>, <ivar>)
+ode_check(<eqn>, <soln>)
+odelin(<eqn>, <y>, <x>)
+opena_binary(<file_name>)
+opena(<file>) 
+openr_binary(<file_name>)
+openr(<file>) 
+openr(<file>,<encoding_name_as_string>) 
+openw_binary(<file_name>)
+openw(<file>) 
+openw(<file>,<encoding_name_as_string>) 
+operatorp(<expr>, <op>)
+operatorp(<expr>, [<op_1>, ..., <op_n>])
+op(<expr>)
+opproperties
+opsubst(<f>,<g>,<e>)
+opsubst([<g1>=<f1>,<g2>=<f2>,<gn>=<fn>],<e>)
+opsubst(<g>=<f>,<e>)
+optimize(<expr>)
+optimprefix
+optionset
+%or
+orbit(<P>, <lvar>)
+orbits(<F>, <y0>, <n1>, <n2>, [<x>, <x0>, <xf>, <xstep>], ...options...);
+ordergreatp(<expr_1>, <expr_2>)
+ordergreat(<v_1>, ..., <v_n>)
+orderlessp(<expr_1>, <expr_2>)
+orderless(<v_1>, ..., <v_n>)
+orthogonal_complement(<v_1>, ..., <v_n>)
+orthopoly_recur(<f>, <args>)
+orthopoly_returns_intervals
+orthopoly_weight(<f>, <args>)
+outative
+outchar
+outermap(<f>, <a_1>, <...>, <a_n>)
+out_neighbors(<v>, <gr>)
+outofpois(<a>)
+output_format_for_help
+packagefile
+pade(<taylor_series>, <numer_deg_bound>, <denom_deg_bound>)
+palette
+parabolic_cylinder_d(<v>, <z>) 
+parGosper(<F_(n,k)>, <k>, <n>, <d>)
+parGosper(<F_{n,k}>, <k>, <n>, <d>)
+parg(<x>)
+parse_string(<str>)
+part2cont(<ppart>, <lvar>)
+part(<expr>, <n_1>, ..., <n_k>)
+partfrac(<expr>, <var>)
+partition(<expr>, <x>)
+partition_set(<a>, <f>)
+partpol(<psym>, <lvar>)
+partswitch
+path_digraph(<n>)
+path_graph(<n>)
+pathname_name
+pdf_bernoulli(<x>,<p>)
+pdf_beta(<x>,<a>,<b>)
+pdf_binomial(<x>,<n>,<p>)
+pdf_cauchy(<x>,<a>,<b>)
+pdf_chi2(<x>,<n>)
+pdf_continuous_uniform(<x>,<a>,<b>)
+pdf_discrete_uniform(<x>,<n>)
+pdf_exp(<x>,<m>)
+pdf_f(<x>,<m>,<n>)
+pdf_gamma(<x>,<a>,<b>)
+pdf_geometric(<x>,<p>)
+pdf_gumbel(<x>,<a>,<b>)
+pdf_height
+pdf_hypergeometric(<x>,<n1>,<n2>,<n>)
+pdf_laplace(<x>,<a>,<b>)
+pdf_logistic(<x>,<a>,<b>)
+pdf_lognormal(<x>,<m>,<s>)
+pdf_negative_binomial(<x>,<n>,<p>)
+pdf_noncentral_chi2(<x>,<n>,<ncp>)
+pdf_noncentral_student_t(<x>,<n>,<ncp>)
+pdf_normal(<x>,<m>,<s>)
+pdf_pareto(<x>,<a>,<b>)
+pdf_poisson(<x>,<m>)
+pdf_rank_sum(<x>, <n>, <m>)
+pdf_rayleigh(<x>,<b>)
+pdf_signed_rank(<x>, <n>)
+pdf_student_t(<x>,<n>)
+pdf_weibull(<x>,<a>,<b>)
+pdf_width
+pearson_skewness(<list>)
+pearson_skewness(<matrix>)
+permanent(<M>)
+permutation(<n>, <r>)
+permutations(<a>)
+permut(<L>)
+petersen_graph()
+petersen_graph(<n>, <d>)
+petrov()
+pfeformat
+%phi
+%pi
+%piargs
+pic_height
+pickapart(<expr>, <n>)
+pic_width
+piece
+piechart(<list>)
+piechart(<list>, <option_1>, <option_2>, ...)
+piechart(<one_column_matrix>)
+piechart(<one_column_matrix>, <option_1>, <option_2>, ...)
+piechart(<one_row_matrix>)
+piechart(<one_row_matrix>, <option_1>, <option_2>, ...)
+planar_embedding(<gr>)
+playback()
+playback(grind)
+playback(input)
+playback([<m>])
+playback([<m>, <n>])
+playback(<n>)
+playback(slow)
+playback(time)
+plog(<x>)
+plot2d([<plot_1>, <plot_n>], <options>)
+plot2d([<plot_1>, <plot_n>], <x_range>, <[options]>)
+plot2d(<plot>, <x_range>, <[options]>)
+plot3d([<expr_1>, <...>, <expr_n>], <x_range>, <y_range>, <[options]>)
+plot3d(<expr>, <x_range>, <y_range>, <[options]>)
+plotdf([<dudt>,<dvdt>], [<u>,<v>], <options>)
+plotdf(<dvdu>, [<u>,<v>], <options>)
+plotdf([<dxdt>,<dydt>], <options>)
+plotdf(<dydx>, <options>)
+plot_format
+plot_options
+plot_real_part
+plsquares(<Mat>,<VarList>,<depvars>)
+plsquares(<Mat>,<VarList>,<depvars>,<maxexpon>)
+plsquares(<Mat>,<VarList>,<depvars>,<maxexpon>,<maxdegree>)
+pochhammer_max_index
+pochhammer(<n>, <x>)
+point_size
+points_joined
+point_type
+poisdiff(<a>, <b>)
+poisexpt(<a>, <b>)
+poisint(<a>, <b>)
+poislim
+poismap(<series>, <sinfn>, <cosfn>)
+poisplus(<a>, <b>)
+poissimp(<a>)
+poisson
+poissubst(<a>, <b>, <c>)
+poistimes(<a>, <b>)
+poistrim()
+polarform(<expr>)
+polartorect(<r>, <t>)
+poly_add(<poly1>, <poly2>, <varlist>)
+poly_buchberger_criterion(<polylist>, <varlist>)
+poly_buchberger(<polylist_fl>, <varlist>)
+poly_coefficient_ring
+poly_colon_ideal(<polylist1>, <polylist2>, <varlist>)
+poly_content(<poly>. <varlist>)
+polydecomp(<p>, <x>)
+poly_depends_p(<poly>, <var>, <varlist>)
+poly_elimination_ideal(<polylist>, <number>, <varlist>)
+poly_elimination_order
+poly_exact_divide(<poly1>, <poly2>, <varlist>)
+poly_expand(<poly>, <varlist>)
+poly_expt(<poly>, <number>, <varlist>)
+polyfactor
+poly_gcd(<poly1>, <poly2>, <varlist>)
+poly_grobner_algorithm
+poly_grobner_debug
+poly_grobner_equal(<polylist1>, <polylist2>, <varlist>)
+poly_grobner_member(<poly>, <polylist>, <varlist>)
+poly_grobner(<polylist>, <varlist>)
+poly_grobner_subsetp(<polylist1>, <polylist2>, <varlist>)
+poly_ideal_intersection(<polylist1>, <polylist2>, <varlist>)
+poly_ideal_polysaturation1(<polylist1>, <polylist2>, <varlist>)
+poly_ideal_polysaturation(<polylist>, <polylistlist>, <varlist>)
+poly_ideal_saturation1(<polylist>, <poly>, <varlist>)
+poly_ideal_saturation(<polylist1>, <polylist2>, <varlist>)
+poly_lcm(<poly1>, <poly2>, <varlist>)
+poly_minimization(<polylist>, <varlist>)
+polymod(<p>)
+polymod(<p>, <m>)
+poly_monomial_order
+poly_multiply(<poly1>, <poly2>, <varlist>)
+polynome2ele(<P>, <x>)
+polynomialp(<p>, <L>)
+polynomialp(<p>, <L>, <coeffp>)
+polynomialp(<p>, <L>, <coeffp>, <exponp>)
+poly_normal_form(<poly>, <polylist>, <varlist>)
+poly_normalize_list(<polylist>, <varlist>)
+poly_normalize(<poly>, <varlist>)
+poly_polysaturation_extension(<poly>, <polylist>, <varlist1>, <varlist2>)
+poly_primary_elimination_order
+poly_primitive_part(<poly1>, <varlist>)
+poly_pseudo_divide(<poly>, <polylist>, <varlist>)
+poly_reduced_grobner(<polylist>, <varlist>)
+poly_reduction(<polylist>, <varlist>)
+poly_return_term_list
+poly_saturation_extension(<poly>, <polylist>, <varlist1>, <varlist2>)
+poly_secondary_elimination_order
+poly_s_polynomial(<poly1>, <poly2>, <varlist>)
+poly_subtract(<poly1>, <poly2>, <varlist>)
+polytocompanion(<p>, <x>)
+poly_top_reduction_only
+pop(<list>)
+posfun
+postsubscript
+postsuperscript
+potential(<givengradient>)
+powerdisp
+power_mod(<a>, <n>, <m>)
+powerseries(<expr>, <x>, <a>)
+powerset(<a>)
+powerset(<a>, <n>)
+powers(<expr>, <x>)
+pred
+prederror
+presubscript
+presuperscript
+prev_prime(<n>)
+primep(<n>)
+primep_number_of_tests
+print(<expr_1>, ..., <expr_n>)
+printf(<dest>, <string>)
+printf(<dest>, <string>, <expr_1>, <...>, <expr_n>)
+printfile(<path>)
+print_graph(<gr>)
+printpois(<a>)
+printprops([<a_1>, ..., <a_n>], <i>)
+printprops(<a>, <i>)
+printprops(all, <i>)
+prodrac(<L>, <k>)
+product(<expr>, <i>, <i_0>, <i_1>)
+product_use_gamma
+program
+programmode
+prompt
+properties(<a>)
+proportional_axes
+props
+propvars(<prop>)
+psexpand
+psfile
+psi(<dis>)
+psi[<n>](<x>)
+psubst(<a>, <b>, <expr>)
+psubst(<list>, <expr>)
+ptriangularize(<M>, <v>)
+pui2comp(<n>, <lpui>)
+pui2ele(<n>, <lpui>)
+pui2polynome(<x>, <lpui>)
+pui_direct(<orbite>, [<lvar_1>, <...>, <lvar_n>], [<d_1>, <d_2>, <...>, <d_n>])
+pui(<L>, <sym>, <lvar>)
+puireduc(<n>, <lpui>)
+push(<item>, <list>)
+put(<atom>, <value>, <indicator>)
+pv(<rate>,<FV>,<num>)
+qput(<atom>, <value>, <indicator>)
+qrange(<list>)
+qrange(<matrix>)
+qty(<x>)
+quad_qag(<f>, <x>, <a>, <b>, <key>, [<epsrel>, <epsabs>, <limit>])
+quad_qag(<f(x)>, <x>, <a>, <b>, <key>, [<epsrel>, <epsabs>, <limit>])
+quad_qagi(<f>, <x>, <a>, <b>, [<epsrel>, <epsabs>, <limit>])
+quad_qagi(<f(x)>, <x>, <a>, <b>, [<epsrel>, <epsabs>, <limit>])
+quad_qags(<f>, <x>, <a>, <b>, [<epsrel>, <epsabs>, <limit>])
+quad_qags(<f(x)>, <x>, <a>, <b>, [<epsrel>, <epsabs>, <limit>])
+quad_qawc(<f>, <x>, <c>, <a>, <b>, [<epsrel>, <epsabs>, <limit>])
+quad_qawc(<f(x)>, <x>, <c>, <a>, <b>, [<epsrel>, <epsabs>, <limit>])
+quad_qawf(<f>, <x>, <a>, <omega>, <trig>, [<epsabs>, <limit>, <maxp1>, <limlst>])
+quad_qawf(<f(x)>, <x>, <a>, <omega>, <trig>, [<epsabs>, <limit>, <maxp1>, <limlst>])
+quad_qawo(<f>, <x>, <a>, <b>, <omega>, <trig>, [<epsrel>, <epsabs>, <limit>, <maxp1>, <limlst>])
+quad_qawo(<f(x)>, <x>, <a>, <b>, <omega>, <trig>, [<epsrel>, <epsabs>, <limit>, <maxp1>, <limlst>])
+quad_qaws(<f>, <x>, <a>, <b>, <alpha>, <beta>, <wfun>, [<epsrel>, <epsabs>, <limit>])
+quad_qaws(<f(x)>, <x>, <a>, <b>, <alpha>, <beta>, <wfun>, [<epsrel>, <epsabs>, <limit>])
+quantile_bernoulli(<q>,<p>)
+quantile_beta(<q>,<a>,<b>)
+quantile_binomial(<q>,<n>,<p>)
+quantile_cauchy(<q>,<a>,<b>)
+quantile_chi2(<q>,<n>)
+quantile_continuous_uniform(<q>,<a>,<b>)
+quantile_discrete_uniform(<q>,<n>)
+quantile_exp(<q>,<m>)
+quantile_f(<q>,<m>,<n>)
+quantile_gamma(<q>,<a>,<b>)
+quantile_geometric(<q>,<p>)
+quantile_gumbel(<q>,<a>,<b>)
+quantile_hypergeometric(<q>,<n1>,<n2>,<n>)
+quantile_laplace(<q>,<a>,<b>)
+quantile(<list>, <p>)
+quantile_logistic(<q>,<a>,<b>)
+quantile_lognormal(<q>,<m>,<s>)
+quantile(<matrix>, <p>)
+quantile_negative_binomial(<q>,<n>,<p>)
+quantile_noncentral_chi2(<q>,<n>,<ncp>)
+quantile_noncentral_student_t(<q>,<n>,<ncp>)
+quantile_normal(<q>,<m>,<s>)
+quantile_pareto(<q>,<a>,<b>)
+quantile_poisson(<q>,<m>)
+quantile_rayleigh(<q>,<b>)
+quantile_student_t(<q>,<n>)
+quantile_weibull(<q>,<a>,<b>)
+quartile_skewness(<list>)
+quartile_skewness(<matrix>)
+quit()
+qunit(<n>)
+quotient(<p_1>, <p_2>)
+quotient(<p_1>, <p_2>, <x_1>, <...>, <x_n>)
+radcan(<expr>)
+radexpand
+radius(<gr>)
+radsubstflag
+random_bernoulli(<p>)
+random_bernoulli(<p>,<n>)
+random_beta(<a>,<b>)
+random_beta(<a>,<b>,<n>)
+random_binomial(<n>,<p>)
+random_binomial(<n>,<p>,<m>)
+random_bipartite_graph(<a>, <b>, <p>)
+random_cauchy(<a>,<b>)
+random_cauchy(<a>,<b>,<n>)
+random_chi2(<n>)
+random_chi2(<n>,<m>)
+random_continuous_uniform(<a>,<b>)
+random_continuous_uniform(<a>,<b>,<n>)
+random_digraph(<n>, <p>)
+random_discrete_uniform(<n>)
+random_discrete_uniform(<n>,<m>)
+random_exp(<m>)
+random_exp(<m>,<k>)
+random_f(<m>,<n>)
+random_f(<m>,<n>,<k>)
+random_gamma(<a>,<b>)
+random_gamma(<a>,<b>,<n>)
+random_geometric(<p>)
+random_geometric(<p>,<n>)
+random_graph1(<n>, <m>)
+random_graph(<n>, <p>)
+random_gumbel(<a>,<b>)
+random_gumbel(<a>,<b>,<n>)
+random_hypergeometric(<n1>,<n2>,<n>)
+random_hypergeometric(<n1>,<n2>,<n>,<m>)
+random_laplace(<a>,<b>)
+random_laplace(<a>,<b>,<n>)
+random_logistic(<a>,<b>)
+random_logistic(<a>,<b>,<n>)
+random_lognormal(<m>,<s>)
+random_lognormal(<m>,<s>,<n>)
+random_negative_binomial(<n>,<p>)
+random_negative_binomial(<n>,<p>,<m>)
+random_network(<n>, <p>, <w>)
+random_noncentral_chi2(<n>,<ncp>)
+random_noncentral_chi2(<n>,<ncp>,<m>)
+random_noncentral_student_t(<n>,<ncp>)
+random_noncentral_student_t(<n>,<ncp>,<m>)
+random_normal(<m>,<s>)
+random_normal(<m>,<s>,<n>)
+random_pareto(<a>,<b>)
+random_pareto(<a>,<b>,<n>)
+random_permutation(<a>)
+random_poisson(<m>)
+random_poisson(<m>,<n>)
+random_rayleigh(<b>)
+random_rayleigh(<b>,<n>)
+random_regular_graph(<n>)
+random_regular_graph(<n>, <d>)
+random_student_t(<n>)
+random_student_t(<n>,<m>)
+random_tournament(<n>)
+random_tree(<n>)
+random_weibull(<a>,<b>)
+random_weibull(<a>,<b>,<n>)
+random(<x>)
+range(<list>)
+range(<matrix>)
+rank(<M>)
+rassociative
+ratalgdenom
+ratchristof
+ratcoef(<expr>, <x>)
+ratcoef(<expr>, <x>, <n>)
+ratdenomdivide
+ratdenom(<expr>)
+ratdiff(<expr>, <x>)
+ratdisrep(<expr>)
+rateinstein
+ratepsilon
+ratexpand(<expr>)
+rat(<expr>)
+rat(<expr>, <x_1>, <...>, <x_n>)
+ratfac
+ratinterpol(<points>, <numdeg>)
+ratinterpol(<points>, <numdeg>, <option1>, <option2>, ...)
+rationalize(<expr>)
+rational(<z>)
+ratmx
+ratnumer(<expr>)
+ratnump(<expr>)
+ratp(<expr>)
+ratprint
+ratriemann
+ratsimpexpons
+ratsimp(<expr>)
+ratsimp(<expr>, <x_1>, <...>, <x_n>)
+ratsubst(<a>, <b>, <c>)
+ratvars()
+ratvars(<x_1>, <...>, <x_n>)
+ratweight()
+ratweights
+ratweight(<x_1>, <w_1>, <...>, <x_n>, <w_n>)
+ratweyl
+ratwtlvl
+read_array(<S>, <A>)
+read_array(<S>, <A>, <separator_flag>)
+read_binary_array(<S>, <A>)
+read_binary_list(<S>)
+read_binary_list(<S>, <L>)
+read_binary_matrix(<S>, <M>)
+read(<expr_1>, ..., <expr_n>)
+read_hashed_array(<S>, <A>)
+read_hashed_array(<S>, <A>, <separator_flag>)
+readline(<stream>) 
+read_list(<S>)
+read_list(<S>, <L>)
+read_list(<S>, <L>, <separator_flag>)
+read_list(<S>, <separator_flag>)
+read_matrix(<S>)
+read_matrix(<S>, <M>)
+read_matrix(<S>, <M>, <separator_flag>)
+read_matrix(<S>, <separator_flag>)
+read_nested_list(<S>)
+read_nested_list(<S>, <separator_flag>)
+readonly(<expr_1>, ..., <expr_n>)
+real_imagpart_to_conjugate(<e>)
+realonly
+realpart(<expr>)
+realroots(<eqn>)
+realroots(<eqn>, <bound>)
+realroots(<expr>)
+realroots(<expr>, <bound>)
+rearray(<A>, <dim_1>, ..., <dim_n>)
+rectform(<expr>)
+rectform_log_if_constant(<e>)
+recttopolar(<a>, <b>)
+rediff(<ten>)
+redraw
+reduce_consts(<expr>)
+reduce_order(<rec>, <sol>, <var>)
+refcheck
+remainder(<p_1>, <p_2>)
+remainder(<p_1>, <p_2>, <x_1>, <...>, <x_n>)
+remarray(<A_1>, ..., <A_n>)
+remarray(all)
+rem(<atom>, <indicator>)
+rembox(<expr>)
+rembox(<expr>, <label>)
+rembox(<expr>, unlabelled)
+remcomps(<tensor>)
+remcon(all)
+remcon(<tensor_1>, ..., <tensor_n>)
+remcoord(all)
+remcoord(<tensor_1>, <tensor_2>, ...)
+remfunction(all)
+remfunction(<f_1>, ..., <f_n>)
+remfun(<f>, <expr>)
+remfun(<f>, <expr>, <x>)
+remlet()
+remlet(all)
+remlet(all, <name>)
+remlet(<prod>, <name>)
+remove([<a_1>, ..., <a_m>], [<p_1>, ..., <p_n>], ...)
+remove(<a_1>, <p_1>, ..., <a_n>, <p_n>)
+remove(all, <p>)
+remove("<a>", operator)
+remove(<a>, transfun)
+remove_dimensions(<a_1>, ..., <a_n>)
+remove_edge(<e>, <gr>)
+remove_fundamental_dimensions(<d_1>, <d_2>, <d_3>, ...)
+remove_fundamental_units(<u_1>, ..., <u_n>)
+remove_vertex(<v>, <gr>)
+rempart(<expr>, <n>)
+remrule(<op>, all)
+remrule(<op>, <rulename>)
+remsym(<tensor>, <m>, <n>)
+remvalue(all)
+remvalue(<name_1>, ..., <name_n>)
+rename(<expr>)
+rename(<expr>, <count>)
+reset()
+residue(<expr>, <z>, <z_0>)
+resolvante_alternee1(<P>, <x>)
+resolvante_bipartite(<P>, <x>)
+resolvante_diedrale(<P>, <x>)
+resolvante_klein3(<P>, <x>)
+resolvante_klein(<P>, <x>)
+resolvante_produit_sym(<P>, <x>)
+resolvante(<P>, <x>, <f>, [<x_1>,<...>, <x_d>]) 
+resolvante_unitaire(<P>, <Q>, <x>)
+resolvante_vierer(<P>, <x>)
+rest(<expr>)
+rest(<expr>, <n>)
+resultant(<p_1>, <p_2>, <x>)
+return(<value>)
+reveal(<expr>, <depth>)
+reverse(<list>)
+revert2(<expr>, <x>, <n>)
+revert(<expr>, <x>)
+rhs(<expr>)
+ric
+ricci(<dis>)
+riem
+riemann(<dis>)
+rinvariant()
+risch(<expr>, <x>)
+rk([<ODE1>,...,<ODEm>], [<v1>,...,<vm>], [<init1>,...,<initm>], <domain>)
+rk(<ODE>, <var>, <initial>, <domain>)
+rmxchar
+rncombine(<expr>)
+%rnum
+%rnum_list
+rombergabs
+romberg(<expr>, <x>, <a>, <b>)
+romberg(<F>, <a>, <b>)
+rombergit
+rombergmin
+rombergtol
+?room
+room()
+room(false)
+room(true)
+rootsconmode
+rootscontract(<expr>)
+rootsepsilon
+rot_horizontal
+rot_vertical
+round(<x>)
+row(<M>, <i>)
+rowop(<M>, <i>, <j>, <theta>)
+rowswap(<M>, <i>, <j>)
+rreduce(<F>, <s>)
+rreduce(<F>, <s>, @var{s_@{n + 1@}})
+rules
+run_testsuite([<options>])
+run_viewer
+%s
+savedef
+savefactors
+save(<filename>, all)
+save(<filename>, [<m>, <n>])
+save(<filename>, <name_1>=<expr_1>, ...)
+save(<filename>, <name_1>=<expr_1>, <name_2>=<expr_2>, ...)
+save(<filename>, <name_1>, <name_2>, <name_3>, ...)
+save(<filename>, values, functions, labels, ...)
+saving(<rate>,<amount>,<num>)
+scalarmatrixp
+scalarp(<expr>)
+scaled_bessel_i0(<z>) 
+scaled_bessel_i1(<z>) 
+scaled_bessel_i(<v>, <z>) 
+scalefactors(<coordinatetransform>)
+scanmap(<f>, <expr>)
+scanmap(<f>, <expr>, bottomup)
+scatterplot(<list>)
+scatterplot(<list>, <option_1>, <option_2>, ...)
+scatterplot(<matrix>)
+scatterplot(<matrix>, <option_1>, <option_2>, ...)
+schur2comp(<P>, <l_var>)
+sconcat(<arg_1>, <arg_2>, ...)
+scopy(<string>) 
+scsimp(<expr>, <rule_1>, <...>, <rule_n>)
+scurvature()
+sdowncase(<string>) 
+sdowncase(<string>, <start>) 
+sdowncase(<string>, <start>, <end>) 
+sech(<x>)
+second(<expr>)
+sec(<x>)
+sequalignore(<string_1>, <string_2>)
+sequal(<string_1>, <string_2>) 
+setcheck
+setcheckbreak
+setdifference(<a>, <b>)
+set_display
+set_draw_defaults(<graphic option>, ..., <graphic object>, ...)
+set_edge_weight(<e>, <w>, <gr>)
+setelmx(<x>, <i>, <j>, <M>)
+setequalp(<a>, <b>)
+setify(<a>)
+setp(<a>)
+set_partitions(<a>)
+set_partitions(<a>, <n>)
+set_plot_option(<option>)
+set_random_state(<s>)
+set_tex_environment_default(<before>, <after>)
+set_tex_environment(<op>, <before>, <after>)
+setunits(<list>)
+setup_autoload(<filename>, <function_1>, ..., <function_n>)
+set_up_dot_simplifications(<eqns>)
+set_up_dot_simplifications(<eqns>, <check_through_degree>)
+setval
+set_vertex_label(<v>, <l>, <gr>)
+seventh(<expr>)
+sexplode(<string>)
+sf(<u>, <v>)
+share_tests
+share_testsuite_files
+shortest_path(<u>, <v>, <gr>)
+shortest_weighted_path(<u>, <v>, <gr>)
+showcomps(<tensor>)
+show_edge_color
+show_edges
+show_edge_type
+show_edge_width
+show(<expr>)
+show_id
+show_image(<imagename>)
+show_label
+showratvars(<expr>)
+showtime
+show_vertex_color
+show_vertex_size
+show_vertex_type
+show_vertices
+show_weight
+sierpinskiale(<n>)
+sierpinskimap(<nn>)
+sign(<expr>)
+signum_to_abs(<e>)
+signum(<x>)
+similaritytransform(<M>)
+simp
+simp_inequality(<e>)
+simple_linear_regression(<x>)
+simple_linear_regression(<x>, <option>)
+simplified_output
+simplify_products
+simplify_sum(<expr>)
+simplode(<list>)  
+simplode(<list>, <delim>)  
+simpmetderiv(<expr>)
+simpmetderiv(<expr>[, <stop>])
+simpsum
+simtran(<M>)
+sinh(<x>)
+sinnpiflag
+sinsert(<seq>, <string>, <pos>)  
+sinvertcase(<string>)  
+sinvertcase(<string>, <start>)  
+sinvertcase(<string>, <start>, <end>)  
+sin(<x>)
+sixth(<expr>)
+skewness_bernoulli(<p>)
+skewness_beta(<a>,<b>)
+skewness_binomial(<n>,<p>)
+skewness_chi2(<n>)
+skewness_continuous_uniform(<a>,<b>)
+skewness_discrete_uniform(<n>)
+skewness_exp(<m>)
+skewness_f(<m>,<n>)
+skewness_gamma(<a>,<b>)
+skewness_geometric(<p>)
+skewness_gumbel(<a>,<b>)
+skewness_hypergeometric(<n1>,<n2>,<n>)
+skewness_laplace(<a>,<b>)
+skewness(<list>)
+skewness_logistic(<a>,<b>)
+skewness_lognormal(<m>,<s>)
+skewness(<matrix>)
+skewness_negative_binomial(<n>,<p>)
+skewness_noncentral_chi2(<n>,<ncp>)
+skewness_noncentral_student_t(<n>,<ncp>)
+skewness_normal(<m>,<s>)
+skewness_pareto(<a>,<b>)
+skewness_poisson(<m>)
+skewness_rayleigh(<b>)
+skewness_student_t(<n>)
+skewness_weibull(<a>,<b>)
+slength(<string>) 
+smake(<num>, <char>) 
+small_rhombicosidodecahedron_graph()
+small_rhombicuboctahedron_graph()
+smax(<list>)
+smax(<matrix>)
+smin(<list>)
+smin(<matrix>)
+smismatch(<string_1>, <string_2>) 
+smismatch(<string_1>, <string_2>, <test>) 
+snowmap(<ent>, <nn>)
+snub_cube_graph()
+snub_dodecahedron_graph()
+solvedecomposes
+solve([<eqn_1>, ..., <eqn_n>], [<x_1>, ..., <x_n>])
+solveexplicit
+solve(<expr>)
+solve(<expr>, <x>)
+solvefactors
+solvenullwarn
+solveradcan
+solve_rec(<eqn>, <var>, [<init>])
+solve_rec_rat(<eqn>, <var>, [<init>])
+solvetrigwarn
+some(<f>, <a>)
+some(<f>, <L_1>, ..., <L_n>)
+somrac(<L>, <k>)
+sort(<L>)
+sort(<L>, <P>)
+space
+sparse
+sparse6_decode(<str>)
+sparse6_encode(<gr>)
+sparse6_export(<gr_list>, <fl>)
+sparse6_import(<fl>)
+specint(exp(- s*<t>) * <expr>, <t>)
+spherical_bessel_j(<n>, <x>)
+spherical_bessel_y(<n>, <x>)
+spherical_hankel1(<n>, <x>)
+spherical_hankel2(<n>, <x>)
+spherical_harmonic(<n>, <m>, <x>, <y>)
+splice(<a>)
+split(<string>)  
+split(<string>, <delim>)  
+split(<string>, <delim>, <multiple>)  
+sposition(<char>, <string>) 
+spring_embedding_depth
+sprint(<expr_1>, <...>, <expr_n>)
+sqfr(<expr>)
+sqrtdenest(<expr>)
+sqrtdispflag
+sqrt(<x>)
+sremovefirst(<seq>, <string>)  
+sremovefirst(<seq>, <string>, <test>)  
+sremovefirst(<seq>, <string>, <test>, <start>)  
+sremovefirst(<seq>, <string>, <test>, <start>, <end>)  
+sremove(<seq>, <string>)  
+sremove(<seq>, <string>, <test>)  
+sremove(<seq>, <string>, <test>, <start>)  
+sremove(<seq>, <string>, <test>, <start>, <end>)  
+sreverse(<string>) 
+ssearch(<seq>, <string>)  
+ssearch(<seq>, <string>, <test>)  
+ssearch(<seq>, <string>, <test>, <start>)  
+ssearch(<seq>, <string>, <test>, <start>, <end>)
+ssort(<string>) 
+ssort(<string>, <test>) 
+sstatus(<keyword>, <item>)
+ssubstfirst(<new>, <old>, <string>) 
+ssubstfirst(<new>, <old>, <string>, <test>) 
+ssubstfirst(<new>, <old>, <string>, <test>, <start>) 
+ssubstfirst(<new>, <old>, <string>, <test>, <start>, <end>) 
+ssubst(<new>, <old>, <string>) 
+ssubst(<new>, <old>, <string>, <test>) 
+ssubst(<new>, <old>, <string>, <test>, <start>) 
+ssubst(<new>, <old>, <string>, <test>, <start>, <end>) 
+staircase(<F>, <y0>, <n>, ...options...);
+standardize_inverse_trig(<e>)
+stardisp
+stats_numer
+status(<feature>)
+status(<feature>, <item>)
+std1(<list>)
+std1(<matrix>)
+std_bernoulli(<p>)
+std_beta(<a>,<b>)
+std_binomial(<n>,<p>)
+std_chi2(<n>)
+std_continuous_uniform(<a>,<b>)
+std_discrete_uniform(<n>)
+std_exp(<m>)
+std_f(<m>,<n>)
+std_gamma(<a>,<b>)
+std_geometric(<p>)
+std_gumbel(<a>,<b>)
+std_hypergeometric(<n1>,<n2>,<n>)
+std_laplace(<a>,<b>)
+std(<list>)
+std_logistic(<a>,<b>)
+std_lognormal(<m>,<s>)
+std(<matrix>)
+std_negative_binomial(<n>,<p>)
+std_noncentral_chi2(<n>,<ncp>)
+std_noncentral_student_t(<n>,<ncp>)
+std_normal(<m>,<s>)
+std_pareto(<a>,<b>)
+std_poisson(<m>)
+std_rayleigh(<b>)
+std_student_t(<n>)
+std_weibull(<a>,<b>)
+stirling1(<n>, <m>)
+stirling2(<n>, <m>)
+stirling(<z>,<n>)
+stirling(<z>,<n>,<pred>)
+striml(<seq>, <string>) 
+strimr(<seq>, <string>) 
+strim(<seq>,<string>) 
+stringdisp
+string(<expr>)
+stringout(<filename>, <expr_1>, <expr_2>, <expr_3>, ...)
+stringout(<filename>, functions)
+stringout(<filename>, input)
+stringout(<filename>, [<m>, <n>])
+stringout(<filename>, values)
+stringp(<obj>) 
+strong_components(<gr>)
+structures
+struve_h(<v>, <z>)
+struve_l(<v>, <z>)
+style
+sublis_apply_lambda
+sublis(<list>, <expr>)
+sublist_indices(<L>, <P>)
+sublist(<list>, <p>)
+submatrix(<i_1>, ..., <i_m>, <M>)
+submatrix(<i_1>, ..., <i_m>, <M>, <j_1>, ..., <j_n>)
+submatrix(<M>, <j_1>, ..., <j_n>)
+subsample(<data_matrix>, <predicate_function>)
+subsample(<data_matrix>, <predicate_function>, <col_num1>, <col_num2>, ...)
+subset(<a>, <f>)
+subsetp(<a>, <b>)
+subst(<a>, <b>, <c>)
+substinpart(<x>, <expr>, <n_1>, <n_k>)
+substpart(<x>, <expr>, <n_1>, <n_k>)
+substring(<string>, <start>)
+substring(<string>, <start>, <end>) 
+subvarp(<expr>)
+subvar(<x>, <i>)
+sumcontract(<expr>)
+sumexpand
+sum(<expr>, <i>, <i_0>, <i_1>)
+summand_to_rec(<summand>, [<k>, <lo>, <hi>], <n>)
+summand_to_rec(<summand>, <k>, <n>)
+sumsplitfact
+supcase(<string>) 
+supcase(<string>, <start>) 
+supcase(<string>, <start>, <end>) 
+supcontext(<name>)
+supcontext(<name>, <context>)
+surface_hide
+%s[<u>,<v>] (<z>) 
+symbolp(<expr>)
+symmdifference(<a_1>, ..., <a_n>)
+symmetric
+symmetricp(<M>)
+system(<command>)
+t
+tab
+table_form(<data>)
+take_inference(<list>, <obj>)
+take_inference(<name>, <obj>)
+take_inference(<n>, <obj>)
+tanh(<x>)
+tan(<x>)
+taylordepth
+taylor(<expr>, [<x_1>, <a_1>, <n_1>], [<x_2>, <a_2>, <n_2>], <...>)
+taylor(<expr>, [<x_1>, <x_2>, <...>], [<a_1>, <a_2>, <...>], [<n_1>, <n_2>, <...>])
+taylor(<expr>, [<x_1>, <x_2>, <...>], <a>, <n>)
+taylor(<expr>, <x>, <a>, <n>)
+taylor(<expr>, [<x>, <a>, <n>, 'asymp])
+taylorinfo(<expr>)
+taylor_logexpand
+taylor_order_coefficients
+taylorp(<expr>)
+taylor_simplifier(<expr>)
+taylor_truncate_polynomials
+taytorat(<expr>)
+tcl_output([<list_1>, ..., <list_n>], <i>)
+tcl_output(<list>, <i0>)
+tcl_output(<list>, <i0>, <skip>)
+tcontract(<pol>, <lvar>)
+tellrat()
+tellrat(<p_1>, <...>, <p_n>)
+tellsimpafter(<pattern>, <replacement>)
+tellsimp(<pattern>, <replacement>)
+tensorkill
+tentex(<expr>)
+tenth(<expr>)
+terminal
+test_means_difference(<x1>, <x2>)
+test_means_difference(<x1>, <x2>, <options>, <...>)
+test_mean(<x>)
+test_mean(<x>, <options>, <...>)
+test_normality(<x>)
+test_proportions_difference(<x1>, <n1>, <x2>, <n2>)
+test_proportions_difference(<x1>, <n1>, <x2>, <n2>, <options>, <...>)
+test_proportion(<x>, <n>)
+test_proportion(<x>, <n>, <options>, <...>)
+test_rank_sum(<x1>, <x2>)
+test_rank_sum(<x1>, <x2>, <option>)
+tests
+test_signed_rank(<x>)
+test_signed_rank(<x>, <options>, <...>)
+test_sign(<x>)
+test_sign(<x>, <options>, <...>)
+testsuite_files
+test_variance_ratio(<x1>, <x2>)
+test_variance_ratio(<x1>, <x2>, <options>, <...>)
+test_variance(<x>)
+test_variance(<x>, <options>, <...>)
+tex1(<e>)
+tex(<expr>)
+tex(<expr>, <destination>)
+tex(<expr>, false)
+tex(<label>)
+tex(<label>, <destination>)
+tex(<label>, false)
+texput(<a>, <f>)
+texput(<a>, <s>)
+texput(<a>, [<s_1>, <s_2>], matchfix)
+texput(<a>, [<s_1>, <s_2>, <s_3>], matchfix)
+texput(<a>, <s>, <operator_type>)
+%th(<i>)
+third(<expr>)
+throw(<expr>)
+timedate()
+timedate(<T>)
+time(<%o1>, <%o2>, <%o3>, <...>)
+timer()
+timer(all)
+timer_devalue
+timer(<f_1>, ..., <f_n>)
+timer_info()
+timer_info(<f_1>, ..., <f_n>)
+title
+tldefint(<expr>, <x>, <a>, <b>)
+tlimit(<expr>)
+tlimit(<expr>, <x>, <val>)
+tlimit(<expr>, <x>, <val>, <dir>)
+tlimswitch
+tminverse
+tmlin
+tmlinsolve
+tmnewdet(<M>)
+todd_coxeter(<relations>)
+todd_coxeter(<relations>, <subgroup>)
+toeplitz(<col>)
+toeplitz(<col>, <row>)
+tokens(<string>) 
+tokens(<string>, <test>) 
+to_lisp()
+topological_sort(<dag>)
+to_poly(<e>, <l>)
+to_poly_solve(<e>, <l>, <[options]>)
+totaldisrep(<expr>)
+totalfourier(<f>, <x>, <p>)
+totient(<n>)
+tpartpol(<pol>, <lvar>)
+tr
+trace()
+trace(all)
+trace(<f_1>, ..., <f_n>)
+tracematrix(<M>)
+trace_options(<f>)
+trace_options(<f>, <option_1>, ..., <option_n>)
+transcompile
+transform
+transform_xy
+translate(all)
+translate(<f_1>, ..., <f_n>)
+translate_file(<maxima_filename>)
+translate_file(<maxima_filename>, <lisp_filename>)
+translate(functions)
+transparent
+transpose(<M>)
+transrun
+tr_array_as_ref
+tr_bound_function_applyp
+treefale(<n>)
+tree_reduce(<F>, <s>)
+tree_reduce(<F>, <s>, <s_0>)
+treillis(<n>)
+treinat(<part>)
+tr_file_tty_messagesp
+tr_float_can_branch_complex
+tr_function_call_default
+triangularize(<M>)
+trigexpand(<expr>)
+trigexpandplus
+trigexpandtimes
+triginverses
+trigrat(<expr>)
+trigreduce(<expr>)
+trigreduce(<expr>, <x>)
+trigsign
+trigsimp(<expr>)
+trivial_solutions
+tr_numer
+tr_optimize_max_loop
+tr_semicompile
+tr_state_vars
+true
+truncated_cube_graph()
+truncated_dodecahedron_graph()
+truncated_icosahedron_graph()
+truncated_tetrahedron_graph()
+trunc(<expr>)
+tr_warn_bad_function_calls
+tr_warn_fexpr
+tr_warnings_get()
+tr_warn_meval
+tr_warn_mode
+tr_warn_undeclared
+tr_warn_undefined_variable
+tr_windy
+ttyoff
+tube_extremes
+tutte_graph()
+ueivects(<M>)
+ufg
+uforget(<list>)
+ug
+ultraspherical(<n>, <a>, <x>)
+und
+underlying_graph(<g>)
+undiff(<expr>)
+union(<a_1>, ..., <a_n>)
+unique(<L>)
+uniteigenvectors(<M>)
+%unitexpand
+unitp(<x>)
+unit_step(<x>)
+units(<x>)
+unit_vectors
+unitvector(<x>)
+unknown(<expr>)
+unorder()
+unsum(<f>, <n>)
+untellrat(<x_1>, <...>, <x_n>)
+untimer()
+untimer(<f_1>, ..., <f_n>)
+untrace()
+untrace(<f_1>, ..., <f_n>)
+uppercasep(<char>)    
+uric
+uricci(<dis>)
+uriem
+uriemann(<dis>)
+url_base
+use_fast_arrays
+user_preamble
+usersetunits
+uvect(<x>)
+values
+vandermonde_matrix([<x_1>, ..., <x_n>])
+var1(<list>)
+var1(<matrix>)
+var_bernoulli(<p>)
+var_beta(<a>,<b>)
+var_binomial(<n>,<p>)
+var_chi2(<n>)
+var_continuous_uniform(<a>,<b>)
+var_discrete_uniform(<n>)
+var_exp(<m>)
+var_f(<m>,<n>)
+var_gamma(<a>,<b>)
+var_geometric(<p>)
+var_gumbel(<a>,<b>)
+var_hypergeometric(<n1>,<n2>,<n>)
+var_laplace(<a>,<b>)
+var(<list>)
+var_logistic(<a>,<b>)
+var_lognormal(<m>,<s>)
+var(<matrix>)
+var_negative_binomial(<n>,<p>)
+var_noncentral_chi2(<n>,<ncp>)
+var_noncentral_student_t(<n>,<ncp>)
+var_normal(<m>,<s>)
+var_pareto(<a>,<b>)
+var_poisson(<m>)
+var_rayleigh(<b>)
+var_student_t(<n>)
+var_weibull(<a>,<b>)
+vect_cross
+vectorpotential(<givencurl>)
+vectorsimp(<expr>)
+verbify(<f>)
+verbose
+vers(<x>)
+vertex_color
+vertex_coloring(<gr>)
+vertex_connectivity(<g>)
+vertex_degree(<v>, <gr>)
+vertex_distance(<u>, <v>, <gr>)
+vertex_eccentricity(<v>, <gr>)
+vertex_in_degree(<v>, <gr>)
+vertex_out_degree(<v>, <gr>)
+vertex_partition
+vertex_size
+vertex_type
+vertices(<gr>)
+vertices_to_cycle(<v_list>)
+vertices_to_path(<v_list>)
+%w
+warning(<expr>, <...>, <expr_n>)
+warnings
+weyl(<dis>)
+wheel_graph(<n>)
+wiener_index(<gr>)
+wired_surface
+with_default_2d_display(<cmd>)
+with_slider(<a_var>,<a_list>,<expr>,<x_range>)
+with_slider_draw
+with_slider_draw2d
+with_slider_draw3d
+with_stdout(<f>, <expr_1>, <expr_2>, <expr_3>, ...)
+with_stdout(<s>, <expr_1>, <expr_2>, <expr_3>, ...)
+%w[<k>,<u>] (<z>) 
+write_binary_data(<X>, <D>)
+write_data(<X>, <D>)
+write_data(<X>, <D>, <separator_flag>)
+writefile(<filename>)
+wronskian([<f_1>, <...>, <f_n>], <x>)
+wxanimate
+wxanimate_autoplay
+wxanimate_draw
+wxanimate_draw3d
+wxanimate_framerate
+wxanimate_from_imgfiles(<filename>,<[filename,...]>)
+wxbarsplot
+wxboxplot
+wxbug_report
+wxbuild_info
+wxcontour_plot
+wxdeclare_subscripted(<name>,<[false]>)
+wxdeclare_subscript(<subscript>,<[false]>)
+wxdirname
+wxdraw
+wxdraw2d
+wxdraw3d
+wxdraw_list
+wxfilename
+wxhistogram
+wximplicit_plot
+wxmaximaversion
+wxpiechart
+wxplot2d(<expr>,<x_range>)
+wxplot3d(<expr>,<x_range>,<y_range>)
+wxplot_pngcairo
+wxplot_size
+wxplot_usesvg
+wxscatterplot
+wxstatusbar(<string>)
+wxsubscripts
+wxwidgetsversion
+x
+xaxis
+xaxis_color
+xaxis_secondary
+xaxis_type
+xaxis_width
+xlabel
+xlabel_secondary
+xrange
+xrange_secondary
+xreduce(<F>, <s>)
+xreduce(<F>, <s>, <s_0>)
+xthru(<expr>)
+xtics
+xtics_axis
+xtics_rotate
+xtics_rotate_secondary
+xtics_secondary
+xtics_secondary_axis
+xu_grid
+x_voxel
+xy_file
+xyplane
+%y
+y
+yaxis
+yaxis_color
+yaxis_secondary
+yaxis_type
+yaxis_width
+ylabel
+ylabel_secondary
+%y[<n>](<x>) 
+yrange
+yrange_secondary
+ytics
+ytics_axis
+ytics_rotate
+ytics_rotate_secondary
+ytics_secondary
+ytics_secondary_axis
+yv_grid
+y_voxel
+z
+zaxis
+zaxis_color
+zaxis_type
+zaxis_width
+Zeilberger(<F_(n,k)>, <k>, <n>)
+Zeilberger(<F_{n,k}>, <k>, <n>)
+zeroa
+zerob
+zerobern
+zeroequiv(<expr>, <v>)
+zerofor(<M>)
+zerofor(<M>, <fld>)
+zeromatrix(<m>, <n>)
+zeromatrixp(<M>)
+zeta(<n>)
+zeta%pi
+zlabel
+zlange(<norm>, <A>)
+zrange
+ztics
+ztics_axis
+ztics_rotate
+z_voxel
