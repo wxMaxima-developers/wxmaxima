@@ -521,7 +521,6 @@ add_test(
     NAME imageCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe --batch imageCells.wxm)
-#set_tests_properties(imageCells PROPERTIES RUN_SERIAL true DEPENDS wxmaxima_performance)
 
 add_test(
     NAME limitCells_cmdline
@@ -829,8 +828,6 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe --single_process --batch unicode.wxm boxes.wxm)
 
-# Maxima sometimes fails if this test is run in parallel,
-# see https://sourceforge.net/p/maxima/bugs/3699/
 add_test(
     NAME multithreadtest
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
@@ -883,12 +880,11 @@ add_test(
 
 # Halts in the CI. No idea, why.
 #add_test(
-#    NAME tutorial_memoizing
-#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
-#    COMMAND wxmaxima --debug --logtostderr --pipe  --batch memoizing.wxm)
+#   NAME tutorial_memoizing
+#   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
+#   COMMAND wxmaxima --debug --logtostderr --pipe  --batch memoizing.wxm)
 
 add_test(
-
     NAME tutorial_solvingEquations
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --debug --logtostderr --pipe  --batch solvingEquations.wxm)
