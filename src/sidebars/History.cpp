@@ -70,19 +70,18 @@ History::History(wxWindow *parent, int id, Configuration *cfg)
   FitInside();
 
   wxConfig::Get()->Read("history/saveplace", &m_saveplace);
-  if(!m_saveplace.IsEmpty())
-    {
+  if(!m_saveplace.IsEmpty() && wxFile::Exists(m_saveplace)) {
       SuppressErrorDialogs suppressor;
       wxXmlDocument doc;
       wxFileInputStream fstrm(m_saveplace);
-      doc.Load(fstrm);
-      wxXmlNode *headNode = doc.GetDocumentNode();
-      if (headNode) {
+      if (fstrm.IsOk()) {
+        doc.Load(fstrm);
+        wxXmlNode *headNode = doc.GetDocumentNode();
+        if (headNode) {
           headNode = headNode->GetChildren();
           while ((headNode) && (headNode->GetName() != wxS("history")))
             headNode = headNode->GetNext();
-          if(headNode)
-            {
+          if(headNode) {
               wxXmlNode *entry = headNode->GetChildren();
               while (entry) {
                 if (entry->GetName() == wxS("entry")) {
@@ -93,9 +92,10 @@ History::History(wxWindow *parent, int id, Configuration *cfg)
                 }
                 entry = entry->GetNext();
               }
-            }
+          }
+        }
       }
-    }
+  }
 }
 
 void History::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
