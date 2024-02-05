@@ -84,9 +84,11 @@ void AutoComplete::LoadBuiltinSymbols() {
         m_wordList.at(command).push_back(line);
     }
   std::sort(m_wordList.at(tmplte).begin(), m_wordList.at(tmplte).end());
-  std::unique(m_wordList.at(tmplte).begin(), m_wordList.at(tmplte).end());
+  auto newEnd = std::unique(m_wordList.at(tmplte).begin(), m_wordList.at(tmplte).end());
+  m_wordList.at(tmplte).erase(newEnd, m_wordList.at(tmplte).end());
   std::sort(m_wordList.at(command).begin(), m_wordList.at(command).end());
-  std::unique(m_wordList.at(command).begin(), m_wordList.at(command).end());
+  newEnd = std::unique(m_wordList.at(command).begin(), m_wordList.at(command).end());
+  m_wordList.at(command).erase(newEnd, m_wordList.at(command).end());
 }
 
 bool AutoComplete::HasDemofile(wxString commandname)
@@ -255,8 +257,9 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
   for(auto &wordlist:m_wordList)
     {
       const std::lock_guard<std::mutex> lock(m_keywordsLock);
-      std::sort(wordlist.begin(), wordlist.end());
-      std::unique(wordlist.begin(), wordlist.end());
+  std::sort(wordlist.begin(), wordlist.end());
+  auto newEnd = std::unique(wordlist.begin(), wordlist.end());
+  wordlist.erase(newEnd, wordlist.end());
     }
 
   wxString line;
@@ -546,7 +549,8 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
 
   const std::lock_guard<std::mutex> lock(m_keywordsLock);
   std::sort(completions.begin(), completions.end());
-  std::unique(completions.begin(), completions.end());
+  auto newEnd = std::unique(completions.begin(), completions.end());
+  completions.erase(newEnd, completions.end());
   if (perfectCompletions.size() > 0)
     return perfectCompletions;
   return completions;
