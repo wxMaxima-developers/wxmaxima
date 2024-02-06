@@ -587,20 +587,10 @@ wxMaximaFrame::~wxMaximaFrame() {
   m_manager.UnInit();
 }
 
-void wxMaximaFrame::SetupMenu() {
-  // Silence a few warnings about non-existing icons.
-  SuppressErrorDialogs iconWarningBlocker;
-
-  m_MenuBar = new MainMenuBar();
-  // Enables the window list on MacOs.
-#ifdef __WXMAC__
-  m_MenuBar->SetAutoWindowMenu(true);
-#endif
-
 #define APPEND_MENU_ITEM(menu, id, label, help, stock)  \
   (menu)->Append((id), (label), (help), wxITEM_NORMAL);
 
-  // File menu
+void wxMaximaFrame::SetupFileMenu() {
   m_FileMenu = new wxMenu;
 #if defined __WXOSX__
   m_FileMenu->Append(wxID_NEW, _("New\tCtrl+N"), _("Open a new window"));
@@ -642,7 +632,9 @@ void wxMaximaFrame::SetupMenu() {
   APPEND_MENU_ITEM(m_FileMenu, wxID_EXIT, _("E&xit\tCtrl+Q"),
                    _("Exit wxMaxima"), wxS("gtk-quit"));
   m_MenuBar->Append(m_FileMenu, _("&File"));
+}
 
+void wxMaximaFrame::SetupEditMenu() {
   m_EditMenu = new wxMenu;
   m_EditMenu->Append(wxID_UNDO, _("Undo\tCtrl+Z"), _("Undo last change"),
                      wxITEM_NORMAL);
@@ -705,7 +697,9 @@ void wxMaximaFrame::SetupMenu() {
                    _("Configure wxMaxima"), wxS("gtk-preferences"));
 #endif
   m_MenuBar->Append(m_EditMenu, _("&Edit"));
+}
 
+void wxMaximaFrame::SetupViewMenu() {
   m_viewMenu = new wxMenu;
   // Sidebars
   m_Maxima_Panes_Sub = new wxMenu;
@@ -853,7 +847,8 @@ void wxMaximaFrame::SetupMenu() {
                     m_configuration.InvertBackground());
 
   m_MenuBar->Append(m_viewMenu, _("View"));
-
+}
+void wxMaximaFrame::SetupCellMenu() {
   // Cell menu
   m_CellMenu = new wxMenu;
   {
@@ -954,8 +949,9 @@ void wxMaximaFrame::SetupMenu() {
                               _("Automatically fill in answers known from the last run"));
 
   m_MenuBar->Append(m_CellMenu, _("Ce&ll"));
+}
 
-  // Maxima menu
+void wxMaximaFrame::SetupMaximaMenu() {
   m_MaximaMenu = new wxMenu;
 
   {
@@ -1205,8 +1201,9 @@ void wxMaximaFrame::SetupMenu() {
   m_gentranMenu->Append(EventIDs::gentran_to_file, _("Convert + Write to file"));
   m_MaximaMenu->Append(wxWindow::NewControlId(), _("maxima to other language"), m_gentranMenu);
   m_MenuBar->Append(m_MaximaMenu, _("&Maxima"));
+}
 
-  // Equations menu
+void wxMaximaFrame::SetupEquationsMenu() {
   m_EquationsMenu = new wxMenu;
   wxMenu *solve_sub = new wxMenu;
   solve_sub->Append(EventIDs::menu_solve, _("&Solve..."), _("Solve equation(s)"),
@@ -1278,8 +1275,9 @@ void wxMaximaFrame::SetupMenu() {
   m_EquationsMenu->AppendSeparator();
   m_EquationsMenu->Append(EventIDs::menu_construct_fraction, _("Construct fraction..."));
   m_MenuBar->Append(m_EquationsMenu, _("E&quations"));
+}
 
-  // Matrix menu
+void wxMaximaFrame::SetupMatrixMenu() {
   m_matrix_menu = new wxMenu;
   wxMenu *gen_matrix_menu = new wxMenu;
   gen_matrix_menu->Append(EventIDs::menu_genmatrix, _("2D Array to Matrix..."),
@@ -1419,8 +1417,9 @@ void wxMaximaFrame::SetupMenu() {
                         _("Map function to a matrix, affecting all of its clones"),
                         wxITEM_NORMAL);
   m_MenuBar->Append(m_matrix_menu, _("M&atrix"));
+}
 
-  // Calculus menu
+void wxMaximaFrame::SetupCalculusMenu() {
   m_CalculusMenu = new wxMenu;
   m_CalculusMenu->Append(EventIDs::menu_integrate, _("&Integrate..."),
                          _("Integrate expression"), wxITEM_NORMAL);
@@ -1475,8 +1474,8 @@ void wxMaximaFrame::SetupMenu() {
                          _("Compute continued fraction of a value"),
                          wxITEM_NORMAL);
   m_MenuBar->Append(m_CalculusMenu, _("&Calculus"));
-
-  // Simplify menu
+}
+void wxMaximaFrame::SetupSimplifyMenu() {
   m_SimplifyMenu = new wxMenu;
   wxMenu *simplify_sub = new wxMenu;
   simplify_sub->Append(EventIDs::menu_mainvar, _("Set main variable..."));
@@ -1632,8 +1631,9 @@ void wxMaximaFrame::SetupMenu() {
   m_SimplifyMenu->Append(EventIDs::menu_modulus, _("&Modulus Computation..."),
                          _("Setup modulus computation"), wxITEM_NORMAL);
   m_MenuBar->Append(m_SimplifyMenu, _("&Simplify"));
+}
 
-  // List menu
+void wxMaximaFrame::SetupListMenu() {
   m_listMenu = new wxMenu;
   wxMenu *listcreateSub = new wxMenu;
   listcreateSub->Append(
@@ -1732,7 +1732,9 @@ void wxMaximaFrame::SetupMenu() {
   m_listMenu->Append(EventIDs::menu_list_matrix2list, _("Matrix to nested List"),
                      _("Converts a matrix to a list of lists"));
   m_MenuBar->Append(m_listMenu, _("&List"));
-  // Plot menu
+}
+
+void wxMaximaFrame::SetupPlotMenu() {
   m_PlotMenu = new wxMenu;
   m_PlotMenu->Append(EventIDs::gp_plot2, _("Plot &2d..."), _("Plot in 2 dimensions"),
                      wxITEM_NORMAL);
@@ -1747,8 +1749,9 @@ void wxMaximaFrame::SetupMenu() {
   m_PlotMenu->Append(EventIDs::menu_animationframerate, _("Animation framerate..."),
                      _("Set the frame rate for animations."));
   m_MenuBar->Append(m_PlotMenu, _("&Plot"));
+}
 
-  // Numeric menu
+void wxMaximaFrame::SetupNumericMenu() {
   m_NumericMenu = new wxMenu;
   m_NumericMenu->AppendCheckItem(EventIDs::menu_num_out, _("&Numeric Output"),
                                  _("Numeric output"));
@@ -1836,8 +1839,9 @@ void wxMaximaFrame::SetupMenu() {
 
   m_NumericMenu->Append(wxWindow::NewControlId(), _("Integrate numerically"), quadpack_sub);
   m_MenuBar->Append(m_NumericMenu, _("&Numeric"));
+}
 
-  // Help menu
+void wxMaximaFrame::SetupHelpMenu() {
   m_HelpMenu = new wxMenu;
 #if defined __WXOSX__
   m_HelpMenu->Append(wxID_HELP, _("Context-sensitive &Help\tCtrl+?"),
@@ -1936,6 +1940,30 @@ void wxMaximaFrame::SetupMenu() {
 #endif
 
   m_MenuBar->Append(m_HelpMenu, _("&Help"));
+}
+
+void wxMaximaFrame::SetupMenu() {
+  // Silence a few warnings about non-existing icons.
+  SuppressErrorDialogs iconWarningBlocker;
+
+  m_MenuBar = new MainMenuBar();
+  // Enables the window list on MacOs.
+#ifdef __WXMAC__
+  m_MenuBar->SetAutoWindowMenu(true);
+#endif
+  SetupFileMenu();
+  SetupEditMenu();
+  SetupViewMenu(); 
+  SetupCellMenu(); 
+  SetupMaximaMenu(); 
+  SetupEquationsMenu(); 
+  SetupMatrixMenu(); 
+  SetupCalculusMenu();
+  SetupSimplifyMenu();
+  SetupListMenu();
+  SetupPlotMenu();
+  SetupNumericMenu();
+  SetupHelpMenu();
 
   SetMenuBar(m_MenuBar);
 #undef APPEND_MENU_ITEM

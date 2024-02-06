@@ -258,6 +258,19 @@ private:
   Create the menus.
 */
   void SetupMenu();
+  void SetupFileMenu();
+  void SetupEditMenu();
+  void SetupViewMenu();
+  void SetupCellMenu();
+  void SetupMaximaMenu();
+  void SetupEquationsMenu();
+  void SetupMatrixMenu();
+  void SetupCalculusMenu();
+  void SetupSimplifyMenu();
+  void SetupListMenu();
+  void SetupPlotMenu();
+  void SetupNumericMenu();
+  void SetupHelpMenu();
 
 public:
   void StatusText(const wxString &text, bool saveInLog = true);
