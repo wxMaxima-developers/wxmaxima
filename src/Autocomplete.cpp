@@ -158,7 +158,8 @@ void AutoComplete::AddSymbols_Backgroundtask(wxXmlDocument xmldoc) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
             wxString name = val->GetContent();
-            AddSymbol(name, command);
+            const std::lock_guard<std::mutex> lock(m_keywordsLock);
+            m_wordList.at(command).push_back(name);
           }
         }
 
@@ -166,7 +167,8 @@ void AutoComplete::AddSymbols_Backgroundtask(wxXmlDocument xmldoc) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
             wxString name = val->GetContent();
-            AddSymbol(name, tmplte);
+            const std::lock_guard<std::mutex> lock(m_keywordsLock);
+            m_wordList.at(tmplte).push_back(name);
           }
         }
 
@@ -174,7 +176,8 @@ void AutoComplete::AddSymbols_Backgroundtask(wxXmlDocument xmldoc) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
             wxString name = val->GetContent();
-            AddSymbol(name, unit);
+            const std::lock_guard<std::mutex> lock(m_keywordsLock);
+            m_wordList.at(unit).push_back(name);
           }
         }
 
@@ -182,11 +185,30 @@ void AutoComplete::AddSymbols_Backgroundtask(wxXmlDocument xmldoc) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
             wxString name = val->GetContent();
-            AddSymbol(name, command);
+            const std::lock_guard<std::mutex> lock(m_keywordsLock);
+            m_wordList.at(command).push_back(name);
           }
         }
       }
       children = children->GetNext();
+    }
+    {
+      const std::lock_guard<std::mutex> lock(m_keywordsLock);
+      std::sort(m_wordList.at(command).begin(), m_wordList.at(command).end());
+      auto newEnd = std::unique(m_wordList.at(command).begin(), m_wordList.at(command).end());
+      m_wordList.at(command).erase(newEnd, m_wordList.at(command).end());
+    }
+    {
+      const std::lock_guard<std::mutex> lock(m_keywordsLock);
+      std::sort(m_wordList.at(unit).begin(), m_wordList.at(unit).end());
+      auto newEnd = std::unique(m_wordList.at(unit).begin(), m_wordList.at(unit).end());
+      m_wordList.at(unit).erase(newEnd, m_wordList.at(unit).end());
+    }
+    {
+      const std::lock_guard<std::mutex> lock(m_keywordsLock);
+      std::sort(m_wordList.at(tmplte).begin(), m_wordList.at(tmplte).end());
+      auto newEnd = std::unique(m_wordList.at(tmplte).begin(), m_wordList.at(tmplte).end());
+      m_wordList.at(tmplte).erase(newEnd, m_wordList.at(tmplte).end());
     }
   }
   wxLogMessage(_("Autocompletable maxima commands are processed"));
@@ -257,9 +279,9 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
   for(auto &wordlist:m_wordList)
     {
       const std::lock_guard<std::mutex> lock(m_keywordsLock);
-  std::sort(wordlist.begin(), wordlist.end());
-  auto newEnd = std::unique(wordlist.begin(), wordlist.end());
-  wordlist.erase(newEnd, wordlist.end());
+      std::sort(wordlist.begin(), wordlist.end());
+      auto newEnd = std::unique(wordlist.begin(), wordlist.end());
+      wordlist.erase(newEnd, wordlist.end());
     }
 
   wxString line;
