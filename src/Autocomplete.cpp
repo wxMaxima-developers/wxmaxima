@@ -110,12 +110,7 @@ void AutoComplete::ClearDemofileList() {
 
 void AutoComplete::AddSymbols(wxString xml) {
   if(m_addSymbols_backgroundThread.joinable())
-    {
-      wxLogMessage(_("Waiting for m_addSymbols_backgroundThread to finish"));
-      m_addSymbols_backgroundThread.join();
-    }
-  wxLogMessage(_("Scheduling a background task that compiles a new list "
-                 "of autocompletable maxima commands."));
+    m_addSymbols_backgroundThread.join();
 
   if(m_configuration->UseThreads())
     m_addSymbols_backgroundThread = std::thread(&AutoComplete::AddSymbols_Backgroundtask_string,
@@ -211,7 +206,6 @@ void AutoComplete::AddSymbols_Backgroundtask(wxXmlDocument xmldoc) {
       m_wordList.at(tmplte).erase(newEnd, m_wordList.at(tmplte).end());
     }
   }
-  wxLogMessage(_("Autocompletable maxima commands are processed"));
 }
 
 void AutoComplete::AddWorksheetWords(WordList::const_iterator const begin,
