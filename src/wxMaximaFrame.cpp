@@ -547,12 +547,10 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
 void wxMaximaFrame::StatusSaveStart() {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = true;
-  StatusText(_("Saving..."));
 }
 
 void wxMaximaFrame::StatusSaveFinished() {
   m_forceStatusbarUpdate = true;
-  StatusText(_("Saving successful."));
 }
 
 void wxMaximaFrame::StatusExportStart() {

@@ -618,6 +618,7 @@ protected:
   wxString m_maximaVariable_altdisplay2d;
   wxString m_maximaVariable_engineeringFormat;
   bool m_readMaximaVariables = false;
+  bool m_updateAutocompletion = true;
   /*! How much CPU time has been used by the system until now? Used by GetMaximaCPUPercentage.
 
     \return The CPU time elapsed in the same unit as GetMaximaCpuTime(); -1 means: Unable to determine this value.

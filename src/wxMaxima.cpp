@@ -1870,9 +1870,10 @@ wxMaxima::~wxMaxima() {
         {    
           // If there is no window that can take over the log any more the program
           // is about to close and cannot instantiate new gui loggers.
-          auto suppressor = new wxLogNull;
-          (void)suppressor;
           m_logPane->DropLogTarget();
+          auto suppressor = new wxLogNull;
+          // Tell the compiler that we need no "unused variable" warning for this. 
+          (void)suppressor;
           // Only affects the current thread, alas!
           wxLog::EnableLogging(false);
         }
@@ -3550,6 +3551,7 @@ void wxMaxima::VariableActionWxLoadFileName(const wxString &value) {
   m_recentPackages.AddDocument(value);
   UpdateRecentDocuments();
   wxLogMessage(_("Maxima has loaded the file %s."), value.utf8_str());
+  m_updateAutocompletion = true;
 }
 
 void wxMaxima::VariableActionWxSubscripts(const wxString &value) {
@@ -3814,7 +3816,12 @@ bool wxMaxima::QueryVariableValue() {
     if (m_readMaximaVariables) {
       SendMaxima(wxS(":lisp-quiet (wx-print-gui-variables)\n"));
       m_readMaximaVariables = false;
-    }
+    } else
+      {
+        if(m_updateAutocompletion)
+          SendMaxima(wxS(":lisp-quiet (wxPrint_autocompletesymbols)\n"));
+        m_updateAutocompletion = false;
+      }
     if (GetWorksheet()->m_variablesPane &&
         (GetWorksheet()->m_variablesPane->GetEscapedVarnames().size() != 0))
       GetWorksheet()->m_variablesPane->UpdateSize();
@@ -5014,7 +5021,6 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   }
   if(m_configuration.UpdateNeeded())
     {
-      wxLogMessage(_("Updating the configuration from the system's configuration memory"));
       m_configuration.ReadConfig();
       GetWorksheet()->RequestRedraw();
       GetWorksheet()->UpdateControlsNeeded(true);
@@ -9435,7 +9441,6 @@ void wxMaxima::StatsMenu(wxCommandEvent &event) {
 
 bool wxMaxima::SaveOnClose() {
   if (!SaveNecessary()) {
-    wxLogMessage(_("No saving necessary on closing the window."));
     return true;
   }
 

@@ -46,6 +46,18 @@ public:
   ~LogPane();
 
 private:
+  
+  class NullBuffer : public std::streambuf
+  {
+  public:
+    int overflow(int c) { return c; }
+  };
+  class NullStream : public std::ostream {
+  public:
+    NullStream() : std::ostream(&m_sb) {}
+  private:
+    NullBuffer m_sb;
+  };
   //! The textctrl all log messages appear on
   wxTextCtrl *m_textCtrl;
   //! Shows all error messages on gui dialogues

@@ -46,8 +46,8 @@ LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget)
 
 void LogPane::DropLogTarget() {
   if (m_errorRedirector) {
-    m_errorRedirector.reset(); // redirector restores old target on destruction
-    wxLog::SetActiveTarget(nullptr); // but we don't want to be a target
+    m_errorRedirector.reset();
+    wxLog::SetActiveTarget(new wxLogStream(new NullStream));
   }
   m_logPanelTarget.reset();
 }

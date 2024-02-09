@@ -230,7 +230,6 @@ AutoComplete::~AutoComplete() {
      m_addSymbols_backgroundThread.join();
    if(m_addFiles_backgroundThread.joinable())
      m_addFiles_backgroundThread.join();
-   DeletePendingEvents();
 }
 
 void AutoComplete::LoadSymbols() {
