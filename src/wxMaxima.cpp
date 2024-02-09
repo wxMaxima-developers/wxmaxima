@@ -1870,9 +1870,9 @@ wxMaxima::~wxMaxima() {
         {    
           // If there is no window that can take over the log any more the program
           // is about to close and cannot instantiate new gui loggers.
+          auto suppressor = new wxLogNull;
+          (void)suppressor;
           m_logPane->DropLogTarget();
-          // Try to tell wxLog not to output log messages in dialogues
-          wxLog::SetActiveTarget(new wxLogStderr);
           // Only affects the current thread, alas!
           wxLog::EnableLogging(false);
         }
