@@ -168,10 +168,7 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
 
     for (const auto &file : helpFiles) {
       if(m_abortBackgroundTask)
-        {
-            wxLogMessage(_("Manual anchors background task aborted"));
             return;
-        }
       bool is_Singlepage = file.Contains("_singlepage.");
       std::size_t foundAnchors = 0;
       wxString fileURI = wxURI(wxS("file://") + file).BuildURI();
@@ -190,9 +187,6 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
       uriCorector1.ReplaceFirst(&fileURI, wxS("file:///\\1:"));
       uriCorector2.ReplaceFirst(&fileURI, wxS("file:///\\1:"));
 #endif
-
-      wxLogMessage(_("Scanning help file %s for anchors"),
-                   file.ToUTF8().data());
 
       wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
       wxRegEx idExtractor2("<dt id=\\\"(index-[a-zAZ0-9_-]*)\\\"");
@@ -263,8 +257,6 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
         AnchorAliasses(m_helpFileURLs_filePerChapter);
         AnchorAliasses(m_helpFileURLs_singlePage);
       }
-      wxLogMessage(_("Found %li anchors, %li anchors total."),
-                   static_cast<long>(foundAnchors), static_cast<long>(foundAnchorsTotal));
     }
     
     if(foundAnchorsTotal < 100)
@@ -279,7 +271,6 @@ void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
         SaveManualAnchorsToCache(maximaHtmlDir, maximaVersion, saveName);
       }
   }
-  wxLogMessage(_("Manual anchors background task finished."));
 }
 
 

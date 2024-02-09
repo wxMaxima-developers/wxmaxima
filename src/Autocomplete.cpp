@@ -282,8 +282,6 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
   /// Load private symbol list (do something different on Windows).
   wxString privateList;
   privateList = Dirstructure::Get()->UserAutocompleteFile();
-  wxLogMessage(_("Trying to load a list of autocompletable symbols from file %s"),
-               privateList.utf8_str());
   if (wxFileExists(privateList)) {
     wxTextFile priv(privateList);
 
@@ -358,8 +356,6 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
     else {
       wxFileName shareDir(sharedir + "/");
       shareDir.MakeAbsolute();
-      wxLogMessage(_("Autocompletion: Scanning %s recursively for loadable lisp files."),
-                   shareDir.GetFullPath().utf8_str());
       wxDir maximadir(shareDir.GetFullPath());
       if (maximadir.IsOpened())
         maximadir.Traverse(maximaLispIterator); // todo
@@ -368,13 +364,9 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
     wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
     userDir.MakeAbsolute();
     wxDir maximauserfilesdir(userDir.GetFullPath());
-    wxLogMessage(_("Autocompletion: Scanning %s for loadable lisp files."),
-                 userDir.GetFullPath().utf8_str());
     if (maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
-    long num = m_builtInLoadFiles.size();
-    wxLogMessage(_("Found %li loadable files."), num);
   }
 
   // Prepare a list of all built-in demos of maxima.
@@ -385,15 +377,10 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
     demoDir.MakeAbsolute();
     demoDir.RemoveLastDir();
     GetDemoFiles_includingSubdirs maximaLispIterator(m_builtInDemoFiles, &m_keywordsLock);
-    wxLogMessage(_("Autocompletion: Scanning %s for loadable demo files."),
-                 demoDir.GetFullPath().utf8_str());
-
     wxDir maximadir(demoDir.GetFullPath());
     if (maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
-    long num = m_builtInDemoFiles.size();
-    wxLogMessage(_("Found %li demo files."), num);
   }
   const std::lock_guard<std::mutex> lock(m_keywordsLock);
   std::sort(m_builtInLoadFiles.begin(), m_builtInLoadFiles.end());
