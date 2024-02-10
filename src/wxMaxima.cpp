@@ -940,8 +940,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::PlotMenu), NULL, this);
   Connect(EventIDs::menu_soft_restart, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_hard_restart, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(EventIDs::menu_jumptoerror, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(EventIDs::menu_display, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
@@ -6669,9 +6667,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_soft_restart){
     MenuCommand(wxS("kill(all);"));
-  }
-  else if(event.GetId() == EventIDs::menu_hard_restart){
-    StartMaxima(true);
   }
   else if(event.GetId() == EventIDs::menu_functions){
     MenuCommand(wxS("functions;"));

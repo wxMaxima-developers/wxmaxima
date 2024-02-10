@@ -438,7 +438,6 @@ public:
   static const wxWindowIDRef menu_animationframerate;
   static const wxWindowIDRef menu_display;
   static const wxWindowIDRef menu_soft_restart;
-  static const wxWindowIDRef menu_hard_restart;
   static const wxWindowIDRef menu_plot_format;
   static const wxWindowIDRef menu_build_info;
   static const wxWindowIDRef menu_bug_report;

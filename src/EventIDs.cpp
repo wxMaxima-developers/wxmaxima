@@ -374,7 +374,6 @@ const wxWindowIDRef EventIDs::menu_animationautostart(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_animationframerate(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_display(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_soft_restart(wxWindow::NewControlId());
-const wxWindowIDRef EventIDs::menu_hard_restart(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_plot_format(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_build_info(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_bug_report(wxWindow::NewControlId());

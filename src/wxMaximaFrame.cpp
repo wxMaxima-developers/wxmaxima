@@ -963,15 +963,13 @@ void wxMaximaFrame::SetupMaximaMenu() {
 
   {
     wxMenuItem *it = new wxMenuItem(m_MaximaMenu, ToolBar::menu_restart_id,
-                                    _("&Restart Maxima"), _("Restart Maxima"),
+                                    _("&Restart Maxima\tCtrl+Alt+R"), _("Restart Maxima"),
                                     wxITEM_NORMAL);
     it->SetBitmap(GetWorksheet()->m_mainToolBar->GetRestartBitmap(
                                                                wxRendererNative::Get().GetCheckBoxSize(this)));
     m_MaximaMenu->Append(it);
   }
   m_MaximaMenu->Append(EventIDs::menu_soft_restart, _("&Clear Memory"),
-                       _("Delete all values from memory"), wxITEM_NORMAL);
-  m_MaximaMenu->Append(EventIDs::menu_hard_restart, _("&Restart maxima\tCtrl+Alt+R"),
                        _("Delete all values from memory"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(m_MaximaMenu, EventIDs::menu_add_path, _("Add to &Path..."),
                    _("Add a directory to search path"), wxS("gtk-add"));
