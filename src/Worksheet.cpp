@@ -4153,7 +4153,13 @@ void Worksheet::OnChar(wxKeyEvent &event) {
         !(event.GetKeyCode() == WXK_HOME) && !(event.GetKeyCode() == WXK_END))
       event.Skip();
   }
-
+  
+  if (event.CmdDown() && event.AltDown() && ((event.GetKeyCode() == wxS('r'))))
+    {
+      event.Skip();
+      return;
+    }
+        
   // Forward cell creation hotkeys to the class wxMaxima
   if (event.CmdDown() && !event.AltDown()) {
     if ((event.GetKeyCode() == WXK_ESCAPE) ||
