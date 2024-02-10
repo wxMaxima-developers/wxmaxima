@@ -66,7 +66,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>To build <a class="el" href="classwxMaxima.html">wxMaxima</a> from sources you need to have a C++ compiler, wxWidgets &gt;= 3.0 (including development headers) and CMake &gt;= 3.10 installed.</p>
-<h2><a class="anchor" id="autotoc_md5"></a>
+<h2><a class="anchor" id="autotoc_md8"></a>
 Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Fink, Homebrew,...)</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is built using the CMake build system.</p>
 <p>The following steps will build and install <a class="el" href="classwxMaxima.html">wxMaxima</a> using CMake. Assume you start inside wxmaxima source tree root folder. Then:</p>
@@ -86,14 +86,14 @@ Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Fink, Home
 </div><!-- fragment --><p>Of course you can use the CMake GUI (<code>cmake-gui</code>) or curses based CMake (<code>ccmake</code>) for the configure step and change some CMake variables.</p>
 <p>If you want to create binary packages (tar.gz, tar.bz2, DEB &amp; RPM, on macOS also .dmg), the following command will create them:</p>
 <div class="fragment"><div class="line">cmake --build . -- package</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md7"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md9"></a>
 macOS: Creating a portable .apk and .dmg installer</h3>
 <p>This requires wxWidgets to be installed, e.G. using MacPorts</p>
 <div class="fragment"><div class="line">mkdir ../build-wxm</div>
 <div class="line">cmake -S . -B ../build-wxm -DCMAKE_INSTALL_PREFIX=.</div>
 <div class="line">cmake --build ../build-wxm</div>
 <div class="line">cmake --build ../build-wxm --install</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md9"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md10"></a>
 Ubuntu or Debian build prerequisites</h3>
 <div class="fragment"><div class="line">sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a</div>
 </div><!-- fragment --><p>beforehand or (if apt-get is configured to load the source package repositories and not only the binary packages) by the simpler</p>
