@@ -971,6 +971,8 @@ void wxMaximaFrame::SetupMaximaMenu() {
   }
   m_MaximaMenu->Append(EventIDs::menu_soft_restart, _("&Clear Memory"),
                        _("Delete all values from memory"), wxITEM_NORMAL);
+  m_MaximaMenu->Append(EventIDs::menu_hard_restart, _("&Restart maxima\tCtrl+Alt+R"),
+                       _("Delete all values from memory"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(m_MaximaMenu, EventIDs::menu_add_path, _("Add to &Path..."),
                    _("Add a directory to search path"), wxS("gtk-add"));
 
