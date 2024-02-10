@@ -90,33 +90,29 @@ $(function() {
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">//  SPDX-License-Identifier: GPL-2.0+</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifndef NULLLOG_H</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#define NULLLOG_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#ifndef NULLLOG_H</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define NULLLOG_H</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;wx/log.h&gt;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;precomp.h&quot;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;wx/log.h&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classNullLog.html">   37</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNullLog.html">NullLog</a> : <span class="keyword">public</span> wxLog</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classNullLog.html#a74060786f96e3af103322d0fd56ce205">NullLog</a>();</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classNullLog.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNullLog.html">NullLog</a> : <span class="keyword">public</span> wxLog</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classNullLog.html">NullLog</a>();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">virtual</span> ~<a class="code" href="classNullLog.html">NullLog</a>()<span class="keyword"> override </span>{}</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classNullLog.html#a11e6613ec37aded30e1f168c1100cec3">   44</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classNullLog.html#a11e6613ec37aded30e1f168c1100cec3">Flush</a>()<span class="keyword"> override </span>{}</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classNullLog.html#af99dc00951c159b2ccb32ecc7c8339cb">   47</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classNullLog.html#af99dc00951c159b2ccb32ecc7c8339cb">~NullLog</a>()<span class="keyword"> override </span>{}</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classNullLog.html#a11e6613ec37aded30e1f168c1100cec3">   53</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classNullLog.html#a11e6613ec37aded30e1f168c1100cec3">Flush</a>()<span class="keyword"> override </span>{}</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordtype">void</span> DoLogRecord(wxLogLevel level,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                   <span class="keyword">const</span> wxString&amp; msg,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                   <span class="keyword">const</span> wxLogRecordInfo&amp; info)<span class="keyword"> override </span>{}</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;};</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// NULLLOG_H</span></div>
-<div class="ttc" id="aclassNullLog_html"><div class="ttname"><a href="classNullLog.html">NullLog</a></div><div class="ttdoc">Redirect error messages (but not warnings) to a second target.</div><div class="ttdef"><b>Definition:</b> NullLog.h:38</div></div>
-<div class="ttc" id="aclassNullLog_html_a11e6613ec37aded30e1f168c1100cec3"><div class="ttname"><a href="classNullLog.html#a11e6613ec37aded30e1f168c1100cec3">NullLog::Flush</a></div><div class="ttdeci">void Flush() override</div><div class="ttdoc">This method is called from the idle loop.</div><div class="ttdef"><b>Definition:</b> NullLog.h:53</div></div>
-<div class="ttc" id="aclassNullLog_html_a74060786f96e3af103322d0fd56ce205"><div class="ttname"><a href="classNullLog.html#a74060786f96e3af103322d0fd56ce205">NullLog::NullLog</a></div><div class="ttdeci">NullLog()</div><div class="ttdoc">Sets the specified logger (which may be NULL) as the default log target but the log messages are also...</div><div class="ttdef"><b>Definition:</b> NullLog.cpp:35</div></div>
-<div class="ttc" id="aclassNullLog_html_af99dc00951c159b2ccb32ecc7c8339cb"><div class="ttname"><a href="classNullLog.html#af99dc00951c159b2ccb32ecc7c8339cb">NullLog::~NullLog</a></div><div class="ttdeci">virtual ~NullLog() override</div><div class="ttdoc">Restores the previous log target.</div><div class="ttdef"><b>Definition:</b> NullLog.h:47</div></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordtype">void</span> DoLogRecord(wxLogLevel WXUNUSED(level),</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                   <span class="keyword">const</span> wxString&amp; WXUNUSED(msg),</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                   <span class="keyword">const</span> wxLogRecordInfo&amp; WXUNUSED(info))<span class="keyword"> override </span>{}</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;};</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// NULLLOG_H</span></div>
+<div class="ttc" id="aclassNullLog_html"><div class="ttname"><a href="classNullLog.html">NullLog</a></div><div class="ttdoc">Redirect error messages to /dev/null.</div><div class="ttdef"><b>Definition:</b> NullLog.h:34</div></div>
+<div class="ttc" id="aclassNullLog_html_a11e6613ec37aded30e1f168c1100cec3"><div class="ttname"><a href="classNullLog.html#a11e6613ec37aded30e1f168c1100cec3">NullLog::Flush</a></div><div class="ttdeci">void Flush() override</div><div class="ttdoc">This method is called from the idle loop.</div><div class="ttdef"><b>Definition:</b> NullLog.h:44</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

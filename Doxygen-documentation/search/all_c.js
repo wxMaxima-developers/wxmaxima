@@ -24,7 +24,7 @@ var searchData=
   ['nsvgpaint_1032',['NSVGpaint',['../structNSVGpaint.html',1,'']]],
   ['nsvgpath_1033',['NSVGpath',['../structNSVGpath.html',1,'']]],
   ['nsvgshape_1034',['NSVGshape',['../structNSVGshape.html',1,'']]],
-  ['nulllog_1035',['NullLog',['../classNullLog.html',1,'NullLog'],['../classNullLog.html#a74060786f96e3af103322d0fd56ce205',1,'NullLog::NullLog()']]],
+  ['nulllog_1035',['NullLog',['../classNullLog.html',1,'']]],
   ['nulllog_2ecpp_1036',['NullLog.cpp',['../NullLog_8cpp.html',1,'']]],
   ['nulllog_2eh_1037',['NullLog.h',['../NullLog_8h.html',1,'']]],
   ['nullopt_5ft_1038',['nullopt_t',['../structSTX__NAMESPACE__NAME_1_1nullopt__t.html',1,'STX_NAMESPACE_NAME']]],

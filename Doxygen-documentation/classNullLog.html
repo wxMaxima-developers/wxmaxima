@@ -68,7 +68,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Redirect error messages (but not warnings) to a second target.  
+<p>Redirect error messages to /dev/null.  
  <a href="classNullLog.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="NullLog_8h_source.html">NullLog.h</a>&gt;</code></p>
@@ -87,23 +87,15 @@ Collaboration diagram for NullLog:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a74060786f96e3af103322d0fd56ce205"><td class="memItemLeft" align="right" valign="top"><a id="a74060786f96e3af103322d0fd56ce205"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNullLog.html#a74060786f96e3af103322d0fd56ce205">NullLog</a> ()</td></tr>
-<tr class="memdesc:a74060786f96e3af103322d0fd56ce205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the specified <code>logger</code> (which may be NULL) as the default log target but the log messages are also passed to the previous log target if any. <br /></td></tr>
-<tr class="separator:a74060786f96e3af103322d0fd56ce205"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af99dc00951c159b2ccb32ecc7c8339cb"><td class="memItemLeft" align="right" valign="top"><a id="af99dc00951c159b2ccb32ecc7c8339cb"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNullLog.html#af99dc00951c159b2ccb32ecc7c8339cb">~NullLog</a> () override</td></tr>
-<tr class="memdesc:af99dc00951c159b2ccb32ecc7c8339cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restores the previous log target. <br /></td></tr>
-<tr class="separator:af99dc00951c159b2ccb32ecc7c8339cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11e6613ec37aded30e1f168c1100cec3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNullLog.html#a11e6613ec37aded30e1f168c1100cec3">Flush</a> () override</td></tr>
 <tr class="memdesc:a11e6613ec37aded30e1f168c1100cec3"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is called from the idle loop.  <a href="classNullLog.html#a11e6613ec37aded30e1f168c1100cec3">More...</a><br /></td></tr>
 <tr class="separator:a11e6613ec37aded30e1f168c1100cec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade41d6b17ab73524b650c005be36c623"><td class="memItemLeft" align="right" valign="top"><a id="ade41d6b17ab73524b650c005be36c623"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DoLogRecord</b> (wxLogLevel level, const wxString &amp;msg, const wxLogRecordInfo &amp;info) override</td></tr>
-<tr class="separator:ade41d6b17ab73524b650c005be36c623"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25e094985a05342de26ee4a83b83b77b"><td class="memItemLeft" align="right" valign="top"><a id="a25e094985a05342de26ee4a83b83b77b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DoLogRecord</b> (wxLogLevel WXUNUSED(level), const wxString &amp;WXUNUSED(msg), const wxLogRecordInfo &amp;WXUNUSED(info)) override</td></tr>
+<tr class="separator:a25e094985a05342de26ee4a83b83b77b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Redirect error messages (but not warnings) to a second target. </p>
+<div class="textblock"><p>Redirect error messages to /dev/null. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a11e6613ec37aded30e1f168c1100cec3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a11e6613ec37aded30e1f168c1100cec3">&#9670;&nbsp;</a></span>Flush()</h2>
