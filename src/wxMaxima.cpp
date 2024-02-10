@@ -6670,7 +6670,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_soft_restart){
     MenuCommand(wxS("kill(all);"));
   }
-  else if(event.GetId() == EventIDs::menu_hars_restart){
+  else if(event.GetId() == EventIDs::menu_hard_restart){
     StartMaxima(true);
   }
   else if(event.GetId() == EventIDs::menu_functions){
