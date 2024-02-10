@@ -5,6 +5,8 @@
  - Update the autocompletion only in idle state
  - Fixed a race condition on dropping the log target
  - Alt+Up at startup no more crashes (#1886)
+ - Resolved a compilation error on old wxWidgets versions
+ - Resolved GCC errors about too long functions
 
 # 24.02.0
 
