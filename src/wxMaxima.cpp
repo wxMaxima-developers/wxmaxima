@@ -33,6 +33,7 @@
 */
 
 #include "MaximaTokenizer.h"
+#include "NullLog.h"
 #include <wx/notifmsg.h>
 #if defined __WXMSW__
 //#include <wchar.h>
@@ -203,6 +204,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   wxLogMessage(_("Will try to generate a stack backtrace, if the program ever crashes"));
 #endif 
   GnuplotCommandName(wxS("gnuplot"));
+  wxLog::SetActiveTarget(new NullLog);
   
   if (m_variableReadActions.empty()) {
     m_variableReadActions[wxS("gentranlang")] =
@@ -1871,9 +1873,7 @@ wxMaxima::~wxMaxima() {
           // If there is no window that can take over the log any more the program
           // is about to close and cannot instantiate new gui loggers.
           m_logPane->DropLogTarget();
-          auto suppressor = new wxLogNull;
-          // Tell the compiler that we need no "unused variable" warning for this. 
-          (void)suppressor;
+          wxLog::SetActiveTarget(new NullLog);
           // Only affects the current thread, alas!
           wxLog::EnableLogging(false);
         }

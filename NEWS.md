@@ -1,5 +1,13 @@
 # Current
 
+ - wxMaxima now correctly installs its icons (#1892)
+ - A race condition on closing Maxima
+ - Update the autocompletion only in idle state
+ - Fixed a race condition on dropping the log target
+ - Alt+Up at startup no more crashes (#1886)
+
+# 24.02.0
+
 - Faster start-up
 - Better performance directly after startup
 - Faster loading of files
