@@ -21,29 +21,20 @@
 
 /*!\file
 
-  This file defines the class ErrorRedirector that redirects wx Errors to a dialogue
-
-  It is a customized copy of a portion of wxWidget's log.cpp.
+  This file defines the class NullLog that just ignores log messages it is sent
 */
 
 #ifndef NULLLOG_H
 #define NULLLOG_H
 
-#include "precomp.h"
 #include <wx/log.h>
-#include <memory>
 
-//! Redirect error messages (but not warnings) to a second target.
+//! Redirect error messages to /dev/null
 class NullLog : public wxLog
 {
 public:
-  /**
-     Sets the specified @c logger (which may be NULL) as the default log
-     target but the log messages are also passed to the previous log target if any.
-  */
   explicit NullLog();
 
-  //! Restores the previous log target
   virtual ~NullLog() override {}
 
   /*! This method is called from the idle loop.
@@ -52,9 +43,9 @@ public:
   */
   void Flush() override {}
 
-  void DoLogRecord(wxLogLevel level,
-                   const wxString& msg,
-                   const wxLogRecordInfo& info) override {}
+  void DoLogRecord(wxLogLevel WXUNUSED(level),
+                   const wxString& WXUNUSED(msg),
+                   const wxLogRecordInfo& WXUNUSED(info)) override {}
 
 };
 
