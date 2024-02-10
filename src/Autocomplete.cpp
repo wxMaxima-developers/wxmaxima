@@ -112,7 +112,7 @@ void AutoComplete::AddSymbols(wxString xml) {
   if(m_addSymbols_backgroundThread.joinable())
     m_addSymbols_backgroundThread.join();
 
-  if((m_configuration->UseThreads() && xml.Length() > 1000))
+  if((m_configuration->UseThreads() && xml.Length() > 300))
     m_addSymbols_backgroundThread = std::thread(&AutoComplete::AddSymbols_Backgroundtask_string,
                                                 this, std::move(xml));
   else
