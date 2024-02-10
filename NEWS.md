@@ -7,6 +7,7 @@
  - Alt+Up at startup no more crashes (#1886)
  - Resolved a compilation error on old wxWidgets versions
  - Resolved GCC errors about too long functions
+ - Resolved an assert if no history file exists
 
 # 24.02.0
 
