@@ -21,7 +21,7 @@ var searchData=
   ['fixedvaluesgenerator_359',['FixedValuesGenerator',['../classCatch_1_1Generators_1_1FixedValuesGenerator.html',1,'Catch::Generators']]],
   ['fixreorderedindices_360',['FixReorderedIndices',['../classConfiguration.html#aa56b282dff36bf2514bae243a14a2a6f',1,'Configuration']]],
   ['fixtemplate_361',['FixTemplate',['../classAutoComplete.html#ad0026315422c75170949786143a114dd',1,'AutoComplete']]],
-  ['flush_362',['Flush',['../classErrorRedirector.html#a14df54cd465a31aa70f8a4d118ebd3fa',1,'ErrorRedirector']]],
+  ['flush_362',['Flush',['../classNullLog.html#a11e6613ec37aded30e1f168c1100cec3',1,'NullLog::Flush()'],['../classErrorRedirector.html#a14df54cd465a31aa70f8a4d118ebd3fa',1,'ErrorRedirector::Flush()']]],
   ['fold_363',['Fold',['../classGroupCell.html#a9a0bfd0bc4dbb4081891d162fcdf3834',1,'GroupCell']]],
   ['foldall_364',['FoldAll',['../classWorksheet.html#a16eca996fef1aa7e00cfd9886923671d',1,'Worksheet::FoldAll()'],['../classGroupCell.html#afe3c67676318a1b1ba043fb48dd56a4e',1,'GroupCell::FoldAll()']]],
   ['foldoccurred_365',['FoldOccurred',['../classWorksheet.html#a78ceeae9f7262c599b824e0f9a93ad9b',1,'Worksheet']]],
