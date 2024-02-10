@@ -408,12 +408,12 @@ Don't save the worksheet automatically</h3>
 <li>Files are saved automatically on exit</li>
 <li>And the file will automatically be saved every 3 minutes.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md107"></a>
+<h3><a class="anchor" id="autotoc_md108"></a>
 Where is the configuration saved?</h3>
 <p>If you are using Unix/Linux, the configuration information will be saved in a file <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> in your home directory (if you are using wxWidgets &lt; 3.1.1), or <code>.config/wxMaxima.conf</code> ((XDG-Standard) if wxWidgets &gt;= 3.1.1 is used). You can retrieve the wxWidgets version from the command <code>wxbuild_info();</code> or by using the menu option Help-&gt;About. <a href="https://www.wxwidgets.org/">wxWidgets</a> is the cross-platform GUI library, which is the base for <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (therefore the <code>wx</code> in the name). (Since the filename starts with a dot, <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> or <code>.config</code> will be hidden).</p>
 <p>If you are using Windows, the configuration will be stored in the registry. You will find the entries for <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> at the following position in the registry: <code>HKEY_CURRENT_USER\Software\<a class="el" href="classwxMaxima.html">wxMaxima</a></code></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md108"></a>
+<h1><a class="anchor" id="autotoc_md109"></a>
 Extensions to &lt;em&gt;Maxima&lt;/em&gt;</h1>
 <p><em>WxMaxima</em> is primarily a graphical user interface for <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. As such, its main purpose is to pass along commands to <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> and to report the results of executing those commands. In some cases, however, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> adds functionality to <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. <em>WxMaxima_’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that _wxMaxima</em> enhances the inclusion of graphics in a session.</p>
 <h2><a class="anchor" id="autotoc_md110"></a>
@@ -429,7 +429,7 @@ Subscripted variables</h2>
 <p><img src="./wxsubscripts.png" alt="How variables are autosubscripted using wxsubscripts" class="inline"/>{ id=img_wxsubscripts }</p>
 <p>If the variable name doesn’t match these requirements, it can still be declared as "to be subscripted" using the command <code>wxdeclare_subscript(variable_name);</code> or <code>wxdeclare_subscript([variable_name1,variable_name2,...]);</code> Declaring a variable as subscripted can be reverted using the following command: <code>wxdeclare_subscript(variable_name,false);</code></p>
 <p>You can use the menu "View-&gt;Autosubscript" to set these values.</p>
-<h2><a class="anchor" id="autotoc_md111"></a>
+<h2><a class="anchor" id="autotoc_md112"></a>
 User feedback in the status bar</h2>
 <p>Long-running commands can provide user feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> is finished. It is safe to use <code>wxstatusbar()</code> even in libraries that might be used with plain <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (as opposed to <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>): If <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> isn't present the <code>wxstatusbar()</code> command will just be left unevaluated.</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -440,10 +440,10 @@ User feedback in the status bar</h2>
 <div class="line">    /* program execution (here: for 3 seconds) */</div>
 <div class="line">    ?sleep(3)</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md112"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md114"></a>
 Plotting</h2>
 <p>Plotting (having fundamentally to do with graphics) is a place where a graphical user interface will have to provide some extensions to the original program.</p>
-<h3><a class="anchor" id="autotoc_md113"></a>
+<h3><a class="anchor" id="autotoc_md115"></a>
 Embedding a plot into the worksheet</h3>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> normally instructs the external program <em>gnuplot</em> to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the worksheet instead <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> provides its own set of plot functions that don’t differ from the corresponding <em>maxima</em> functions save in their name: They are all prefixed by a “wx”.</p>
 <p>The following plotting functions have wx-counterparts:</p>
@@ -617,13 +617,13 @@ Points</h4>
 <h4><a class="anchor" id="autotoc_md129"></a>
 Diagram title</h4>
 <p>Draws a title on the upper end of the diagram,</p>
-<h4><a class="anchor" id="autotoc_md130"></a>
+<h4><a class="anchor" id="autotoc_md131"></a>
 Axis</h4>
 <p>Sets up the axis.</p>
-<h4><a class="anchor" id="autotoc_md131"></a>
+<h4><a class="anchor" id="autotoc_md132"></a>
 Contour</h4>
 <p>(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current <code>draw()</code> command and/or to the ground plane of the diagram. Alternatively, this wizard allows skipping drawing the curves entirely only showing the contour plot.</p>
-<h4><a class="anchor" id="autotoc_md132"></a>
+<h4><a class="anchor" id="autotoc_md133"></a>
 Plot name</h4>
 <p>Adds a legend entry showing the next plot's name to the legend of the diagram. An empty name disables generating legend entries for the following plots.</p>
 <h4><a class="anchor" id="autotoc_md134"></a>
@@ -642,7 +642,7 @@ Accuracy</h4>
 Embedding graphics</h2>
 <p>If the <code>.wxmx</code> file format is being used embedding files in a <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:</p>
 <div class="fragment"><div class="line">show_image(&quot;man.png&quot;);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md139"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md140"></a>
 Startup files</h2>
 <p>The config dialogue of <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> offers to edit two files with commands that are executed on startup:</p>
 <ul>
@@ -650,7 +650,7 @@ Startup files</h2>
 <li>one file of additional commands that are executed if <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> is starting <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>: <code>wxmaxima-init.mac</code></li>
 </ul>
 <p>These files are in the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> user directory (usually <code>maxima</code> in Windows, <code>.maxima</code> otherwise) in the user's home directory / user profile directory. The location can be found out with the command: <code>maxima_userdir;</code></p>
-<h2><a class="anchor" id="autotoc_md140"></a>
+<h2><a class="anchor" id="autotoc_md142"></a>
 Special variables wx...</h2>
 <ul>
 <li><code>wxsubscripts</code> tells <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> if it should convert variable names that contain an underscore (<code>R_150</code> or the like) into subscripted variables. See <code>wxdeclare_subscript</code> for details which variable names are automatically converted.</li>
