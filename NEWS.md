@@ -1,4 +1,4 @@
-# Current
+# 24.02.1
 
  - wxMaxima now correctly installs its icons (#1892)
  - A race condition on closing Maxima
