@@ -7029,8 +7029,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
                wxS("sconcat(#1#);"), _("Expression(s):"), expr,
                _("Comma-separated expressions that shall be converted to a string"));
   }
-
-  else if(event.GetId() == EventIDs::menu_stringproc_setposition){
+  if(event.GetId() == EventIDs::menu_stringproc_setposition){
     CommandWiz(_("Seek to position"), wxEmptyString, wxEmptyString,
                wxS("fposition(#1#,#2#);"), _("Stream:"), expr, wxEmptyString,
                _("Position:"), wxS("0"), wxEmptyString);
