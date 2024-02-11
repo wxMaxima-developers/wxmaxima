@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 880;
+var viewWidth = 790;
 var viewHeight = 308;
 var sectionId = 'dynsection-1';
 </script>
@@ -54,13 +54,13 @@ var sectionId = 'dynsection-1';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>src/cells/ParenCell.h</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-304 875.5,-304 875.5,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-304 785.5,-304 785.5,4 -4,4"/>
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="This file declares the class ParenCell.">
-<polygon fill="#bfbfbf" stroke="black" points="527.5,-280.5 527.5,-299.5 641.5,-299.5 641.5,-280.5 527.5,-280.5"/>
-<text text-anchor="middle" x="584.5" y="-287.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/ParenCell.h</text>
+<polygon fill="#bfbfbf" stroke="black" points="437.5,-280.5 437.5,-299.5 551.5,-299.5 551.5,-280.5 437.5,-280.5"/>
+<text text-anchor="middle" x="494.5" y="-287.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/ParenCell.h</text>
 </a>
 </g>
 </g>
@@ -68,127 +68,142 @@ var sectionId = 'dynsection-1';
 <g id="node2" class="node">
 <title>Node2</title>
 <g id="a_node2"><a xlink:href="FracCell_8h.html" target="_top" xlink:title="This file declares the class FracCell.">
-<polygon fill="white" stroke="black" points="402,-224.5 402,-243.5 509,-243.5 509,-224.5 402,-224.5"/>
-<text text-anchor="middle" x="455.5" y="-231.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/FracCell.h</text>
+<polygon fill="white" stroke="black" points="318,-224.5 318,-243.5 425,-243.5 425,-224.5 318,-224.5"/>
+<text text-anchor="middle" x="371.5" y="-231.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/FracCell.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M554.65,-276.5C530.46,-266.38 497.04,-252.39 475.84,-243.52"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="553.48,-279.81 564.06,-280.44 556.19,-273.35 553.48,-279.81"/>
+<path fill="none" stroke="midnightblue" d="M465.73,-276.37C442.69,-266.26 411.02,-252.35 390.9,-243.52"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="464.45,-279.63 475.01,-280.44 467.26,-273.22 464.45,-279.63"/>
 </g>
-<!-- Node5 -->
-<g id="node5" class="node">
-<title>Node5</title>
-<g id="a_node5"><a xlink:href="MathParser_8cpp.html" target="_top" xlink:title="This file defines the class MathParser that reads wxmx data and math from Maxima.">
-<polygon fill="white" stroke="black" points="489.5,-112.5 489.5,-131.5 597.5,-131.5 597.5,-112.5 489.5,-112.5"/>
-<text text-anchor="middle" x="543.5" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/MathParser.cpp</text>
+<!-- Node9 -->
+<g id="node9" class="node">
+<title>Node9</title>
+<g id="a_node9"><a xlink:href="MathParser_8cpp.html" target="_top" xlink:title="This file defines the class MathParser that reads wxmx data and math from Maxima.">
+<polygon fill="white" stroke="black" points="401.5,-112.5 401.5,-131.5 509.5,-131.5 509.5,-112.5 401.5,-112.5"/>
+<text text-anchor="middle" x="455.5" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/MathParser.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node5 -->
+<!-- Node1&#45;&gt;Node9 -->
 <g id="edge22" class="edge">
-<title>Node1&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M574.94,-271.44C570.87,-263.3 566.4,-253.37 563.5,-244 550.84,-203.12 545.73,-151.84 544.12,-131.69"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="571.85,-273.07 579.58,-280.32 578.05,-269.84 571.85,-273.07"/>
+<title>Node1&#45;&gt;Node9</title>
+<path fill="none" stroke="midnightblue" d="M484.87,-271.46C480.79,-263.32 476.32,-253.39 473.5,-244 461.21,-203.12 457.12,-151.84 455.93,-131.69"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="481.78,-273.11 489.53,-280.33 487.98,-269.85 481.78,-273.11"/>
 </g>
 <!-- Node13 -->
 <g id="node13" class="node">
 <title>Node13</title>
 <g id="a_node13"><a xlink:href="ParenCell_8cpp.html" target="_top" xlink:title="This file defines the class ParenCell.">
-<polygon fill="white" stroke="black" points="699,-224.5 699,-243.5 824,-243.5 824,-224.5 699,-224.5"/>
-<text text-anchor="middle" x="761.5" y="-231.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/ParenCell.cpp</text>
+<polygon fill="white" stroke="black" points="609,-224.5 609,-243.5 734,-243.5 734,-224.5 609,-224.5"/>
+<text text-anchor="middle" x="671.5" y="-231.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/ParenCell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node13 -->
 <g id="edge15" class="edge">
 <title>Node1&#45;&gt;Node13</title>
-<path fill="none" stroke="midnightblue" d="M622.4,-277.44C655.78,-267.26 703.6,-252.66 733.59,-243.52"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="621.09,-274.18 612.55,-280.44 623.13,-280.87 621.09,-274.18"/>
+<path fill="none" stroke="midnightblue" d="M532.4,-277.44C565.78,-267.26 613.6,-252.66 643.59,-243.52"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="531.09,-274.18 522.55,-280.44 533.13,-280.87 531.09,-274.18"/>
 </g>
 <!-- Node14 -->
 <g id="node14" class="node">
 <title>Node14</title>
 <g id="a_node14"><a xlink:href="SumCell_8h.html" target="_top" xlink:title="This file declares the class SumCell.">
-<polygon fill="white" stroke="black" points="572,-224.5 572,-243.5 681,-243.5 681,-224.5 572,-224.5"/>
-<text text-anchor="middle" x="626.5" y="-231.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/SumCell.h</text>
+<polygon fill="white" stroke="black" points="482,-224.5 482,-243.5 591,-243.5 591,-224.5 482,-224.5"/>
+<text text-anchor="middle" x="536.5" y="-231.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/SumCell.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node14 -->
 <g id="edge16" class="edge">
 <title>Node1&#45;&gt;Node14</title>
-<path fill="none" stroke="midnightblue" d="M597.61,-272.14C604.93,-262.74 613.74,-251.4 619.69,-243.75"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="594.81,-270.04 591.44,-280.08 600.34,-274.34 594.81,-270.04"/>
+<path fill="none" stroke="midnightblue" d="M507.61,-272.14C514.93,-262.74 523.74,-251.4 529.69,-243.75"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="504.81,-270.04 501.44,-280.08 510.34,-274.34 504.81,-270.04"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
 <g id="a_node3"><a xlink:href="FracCell_8cpp.html" target="_top" xlink:title="This file defines the class FracCell.">
-<polygon fill="white" stroke="black" points="396,-168.5 396,-187.5 515,-187.5 515,-168.5 396,-168.5"/>
-<text text-anchor="middle" x="455.5" y="-175.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/FracCell.cpp</text>
+<polygon fill="white" stroke="black" points="188,-168.5 188,-187.5 307,-187.5 307,-168.5 188,-168.5"/>
+<text text-anchor="middle" x="247.5" y="-175.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/FracCell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node2&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node2&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M455.5,-213.8C455.5,-204.91 455.5,-194.78 455.5,-187.75"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="452,-214.08 455.5,-224.08 459,-214.08 452,-214.08"/>
+<path fill="none" stroke="midnightblue" d="M342.49,-220.37C319.27,-210.26 287.34,-196.35 267.06,-187.52"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="341.29,-223.66 351.85,-224.44 344.08,-217.24 341.29,-223.66"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
 <g id="a_node4"><a xlink:href="MathParser_8h.html" target="_top" xlink:title="The header file for the xml cell parser.">
-<polygon fill="white" stroke="black" points="281,-168.5 281,-187.5 378,-187.5 378,-168.5 281,-168.5"/>
-<text text-anchor="middle" x="329.5" y="-175.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/MathParser.h</text>
+<polygon fill="white" stroke="black" points="325,-168.5 325,-187.5 422,-187.5 422,-168.5 325,-168.5"/>
+<text text-anchor="middle" x="373.5" y="-175.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/MathParser.h</text>
 </a>
 </g>
 </g>
 <!-- Node2&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node2&#45;&gt;Node4</title>
-<path fill="none" stroke="midnightblue" d="M426.34,-220.5C402.72,-210.38 370.07,-196.39 349.37,-187.52"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="424.96,-223.72 435.53,-224.44 427.72,-217.29 424.96,-223.72"/>
+<path fill="none" stroke="midnightblue" d="M372.21,-213.8C372.54,-204.91 372.92,-194.78 373.18,-187.75"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="368.7,-213.96 371.83,-224.08 375.7,-214.22 368.7,-213.96"/>
 </g>
-<!-- Node4&#45;&gt;Node5 -->
-<g id="edge4" class="edge">
-<title>Node4&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M373.26,-165.96C413.67,-155.76 472.87,-140.82 509.75,-131.52"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="372.25,-162.6 363.41,-168.44 373.96,-169.39 372.25,-162.6"/>
-</g>
-<!-- Node6 -->
-<g id="node6" class="node">
-<title>Node6</title>
-<g id="a_node6"><a xlink:href="main_8h.html" target="_top" xlink:title="This file declares the class wxMaxima that contains most of the program&#39;s logic.">
+<!-- Node5 -->
+<g id="node5" class="node">
+<title>Node5</title>
+<g id="a_node5"><a xlink:href="main_8h.html" target="_top" xlink:title="This file declares the class wxMaxima that contains most of the program&#39;s logic.">
 <polygon fill="white" stroke="black" points="345.5,-56.5 345.5,-75.5 413.5,-75.5 413.5,-56.5 345.5,-56.5"/>
 <text text-anchor="middle" x="379.5" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/main.h</text>
 </a>
 </g>
 </g>
-<!-- Node4&#45;&gt;Node6 -->
-<g id="edge5" class="edge">
-<title>Node4&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M337.68,-159C348.59,-135 367.47,-93.47 375.59,-75.59"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="334.38,-157.82 333.42,-168.37 340.75,-160.71 334.38,-157.82"/>
+<!-- Node4&#45;&gt;Node5 -->
+<g id="edge4" class="edge">
+<title>Node4&#45;&gt;Node5</title>
+<path fill="none" stroke="midnightblue" d="M374.52,-158.35C375.83,-134.25 378.07,-93.31 379.03,-75.59"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="371.02,-158.19 373.97,-168.37 378.01,-158.57 371.02,-158.19"/>
+</g>
+<!-- Node4&#45;&gt;Node9 -->
+<g id="edge8" class="edge">
+<title>Node4&#45;&gt;Node9</title>
+<path fill="none" stroke="midnightblue" d="M395.33,-162.62C410.31,-152.76 429.7,-139.99 442.36,-131.65"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="393.1,-159.9 386.67,-168.32 396.95,-165.75 393.1,-159.9"/>
 </g>
 <!-- Node10 -->
 <g id="node10" class="node">
 <title>Node10</title>
 <g id="a_node10"><a xlink:href="wxMaxima_8h.html" target="_top" xlink:title="This file declares the class wxMaxima that contains most of the program&#39;s logic.">
-<polygon fill="white" stroke="black" points="237,-112.5 237,-131.5 334,-131.5 334,-112.5 237,-112.5"/>
-<text text-anchor="middle" x="285.5" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMaxima.h</text>
+<polygon fill="white" stroke="black" points="242,-112.5 242,-131.5 339,-131.5 339,-112.5 242,-112.5"/>
+<text text-anchor="middle" x="290.5" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMaxima.h</text>
 </a>
 </g>
 </g>
 <!-- Node4&#45;&gt;Node10 -->
 <g id="edge9" class="edge">
 <title>Node4&#45;&gt;Node10</title>
-<path fill="none" stroke="midnightblue" d="M315.77,-160.14C308.1,-150.74 298.87,-139.4 292.63,-131.75"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="313.2,-162.54 322.23,-168.08 318.63,-158.12 313.2,-162.54"/>
+<path fill="none" stroke="midnightblue" d="M351.4,-162.62C336.24,-152.76 316.62,-139.99 303.8,-131.65"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="349.87,-165.8 360.16,-168.32 353.69,-159.94 349.87,-165.8"/>
+</g>
+<!-- Node6 -->
+<g id="node6" class="node">
+<title>Node6</title>
+<g id="a_node6"><a xlink:href="main_8cpp.html" target="_top" xlink:title="The file that defines the starting point of the program.">
+<polygon fill="white" stroke="black" points="340,-0.5 340,-19.5 419,-19.5 419,-0.5 340,-0.5"/>
+<text text-anchor="middle" x="379.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/main.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node5&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node5&#45;&gt;Node6</title>
+<path fill="none" stroke="midnightblue" d="M379.5,-45.8C379.5,-36.91 379.5,-26.78 379.5,-19.75"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="376,-46.08 379.5,-56.08 383,-46.08 376,-46.08"/>
 </g>
 <!-- Node7 -->
 <g id="node7" class="node">
@@ -199,59 +214,44 @@ var sectionId = 'dynsection-1';
 </a>
 </g>
 </g>
-<!-- Node6&#45;&gt;Node7 -->
+<!-- Node5&#45;&gt;Node7 -->
 <g id="edge6" class="edge">
-<title>Node6&#45;&gt;Node7</title>
+<title>Node5&#45;&gt;Node7</title>
 <path fill="none" stroke="midnightblue" d="M408.27,-52.37C431.31,-42.26 462.98,-28.35 483.1,-19.52"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="406.74,-49.22 398.99,-56.44 409.55,-55.63 406.74,-49.22"/>
 </g>
 <!-- Node8 -->
 <g id="node8" class="node">
 <title>Node8</title>
-<g id="a_node8"><a xlink:href="main_8cpp.html" target="_top" xlink:title="The file that defines the starting point of the program.">
-<polygon fill="white" stroke="black" points="340,-0.5 340,-19.5 419,-19.5 419,-0.5 340,-0.5"/>
-<text text-anchor="middle" x="379.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/main.cpp</text>
-</a>
-</g>
-</g>
-<!-- Node6&#45;&gt;Node8 -->
-<g id="edge7" class="edge">
-<title>Node6&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M379.5,-45.8C379.5,-36.91 379.5,-26.78 379.5,-19.75"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="376,-46.08 379.5,-56.08 383,-46.08 376,-46.08"/>
-</g>
-<!-- Node9 -->
-<g id="node9" class="node">
-<title>Node9</title>
-<g id="a_node9"><a xlink:href="wxMaxima_8cpp.html" target="_top" xlink:title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">
+<g id="a_node8"><a xlink:href="wxMaxima_8cpp.html" target="_top" xlink:title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">
 <polygon fill="white" stroke="black" points="213.5,-0.5 213.5,-19.5 321.5,-19.5 321.5,-0.5 213.5,-0.5"/>
 <text text-anchor="middle" x="267.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMaxima.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node6&#45;&gt;Node9 -->
-<g id="edge8" class="edge">
-<title>Node6&#45;&gt;Node9</title>
+<!-- Node5&#45;&gt;Node8 -->
+<g id="edge7" class="edge">
+<title>Node5&#45;&gt;Node8</title>
 <path fill="none" stroke="midnightblue" d="M352.25,-51.86C331.48,-41.85 303.48,-28.35 285.45,-19.65"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="350.98,-55.13 361.51,-56.32 354.02,-48.83 350.98,-55.13"/>
 </g>
-<!-- Node10&#45;&gt;Node6 -->
+<!-- Node10&#45;&gt;Node5 -->
 <g id="edge11" class="edge">
+<title>Node10&#45;&gt;Node5</title>
+<path fill="none" stroke="midnightblue" d="M313.74,-106.9C330.06,-97 351.37,-84.07 365.24,-75.65"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="311.53,-104.14 304.8,-112.32 315.16,-110.13 311.53,-104.14"/>
+</g>
+<!-- Node10&#45;&gt;Node6 -->
+<g id="edge12" class="edge">
 <title>Node10&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M309.56,-107.18C326.86,-97.24 349.65,-84.15 364.43,-75.65"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="307.53,-104.31 300.6,-112.32 311.02,-110.38 307.53,-104.31"/>
+<path fill="none" stroke="midnightblue" d="M301.78,-103.62C310.72,-90.23 323.77,-71.45 336.5,-56 347.5,-42.66 361.54,-28.42 370.53,-19.61"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="298.65,-102.02 296.07,-112.29 304.49,-105.87 298.65,-102.02"/>
 </g>
 <!-- Node10&#45;&gt;Node8 -->
-<g id="edge12" class="edge">
-<title>Node10&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M298.01,-104.15C308.08,-90.81 322.76,-71.85 336.5,-56 347.82,-42.93 361.79,-28.62 370.67,-19.73"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="295.04,-102.27 291.85,-112.37 300.64,-106.47 295.04,-102.27"/>
-</g>
-<!-- Node10&#45;&gt;Node9 -->
 <g id="edge14" class="edge">
-<title>Node10&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M282.45,-102.35C278.51,-78.25 271.8,-37.31 268.91,-19.59"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="279.02,-103.06 284.09,-112.37 285.93,-101.93 279.02,-103.06"/>
+<title>Node10&#45;&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M286.6,-102.35C281.56,-78.25 273,-37.31 269.3,-19.59"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="283.22,-103.3 288.7,-112.37 290.07,-101.86 283.22,-103.3"/>
 </g>
 <!-- Node11 -->
 <g id="node11" class="node">
@@ -265,8 +265,8 @@ var sectionId = 'dynsection-1';
 <!-- Node10&#45;&gt;Node11 -->
 <g id="edge10" class="edge">
 <title>Node10&#45;&gt;Node11</title>
-<path fill="none" stroke="midnightblue" d="M240.38,-110.02C198.44,-99.82 136.85,-84.84 98.51,-75.52"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="239.78,-113.48 250.32,-112.44 241.43,-106.68 239.78,-113.48"/>
+<path fill="none" stroke="midnightblue" d="M244.63,-110.09C201.75,-99.89 138.58,-84.86 99.3,-75.52"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="243.99,-113.53 254.53,-112.44 245.61,-106.72 243.99,-113.53"/>
 </g>
 <!-- Node12 -->
 <g id="node12" class="node">
@@ -280,65 +280,65 @@ var sectionId = 'dynsection-1';
 <!-- Node10&#45;&gt;Node12 -->
 <g id="edge13" class="edge">
 <title>Node10&#45;&gt;Node12</title>
-<path fill="none" stroke="midnightblue" d="M262.78,-106.9C246.83,-97 226,-84.07 212.44,-75.65"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="261.18,-110.02 271.52,-112.32 264.87,-104.08 261.18,-110.02"/>
+<path fill="none" stroke="midnightblue" d="M266.95,-107.18C250.02,-97.24 227.72,-84.15 213.24,-75.65"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="265.32,-110.28 275.72,-112.32 268.87,-104.24 265.32,-110.28"/>
 </g>
-<!-- Node14&#45;&gt;Node5 -->
+<!-- Node14&#45;&gt;Node9 -->
 <g id="edge21" class="edge">
-<title>Node14&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M613.88,-216.27C595.94,-192.49 563.71,-149.79 549.98,-131.59"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="611.17,-218.49 619.99,-224.37 616.76,-214.28 611.17,-218.49"/>
+<title>Node14&#45;&gt;Node9</title>
+<path fill="none" stroke="midnightblue" d="M524.18,-216.27C506.67,-192.49 475.23,-149.79 461.83,-131.59"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="521.4,-218.39 530.14,-224.37 527.03,-214.24 521.4,-218.39"/>
 </g>
 <!-- Node15 -->
 <g id="node15" class="node">
 <title>Node15</title>
 <g id="a_node15"><a xlink:href="ProductCell_8h.html" target="_top" xlink:title="This file declares the class SumCell.">
-<polygon fill="white" stroke="black" points="609.5,-168.5 609.5,-187.5 733.5,-187.5 733.5,-168.5 609.5,-168.5"/>
-<text text-anchor="middle" x="671.5" y="-175.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/ProductCell.h</text>
+<polygon fill="white" stroke="black" points="519.5,-168.5 519.5,-187.5 643.5,-187.5 643.5,-168.5 519.5,-168.5"/>
+<text text-anchor="middle" x="581.5" y="-175.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/ProductCell.h</text>
 </a>
 </g>
 </g>
 <!-- Node14&#45;&gt;Node15 -->
 <g id="edge17" class="edge">
 <title>Node14&#45;&gt;Node15</title>
-<path fill="none" stroke="midnightblue" d="M640.55,-216.14C648.39,-206.74 657.83,-195.4 664.21,-187.75"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="637.64,-214.16 633.93,-224.08 643.02,-218.64 637.64,-214.16"/>
+<path fill="none" stroke="midnightblue" d="M550.55,-216.14C558.39,-206.74 567.83,-195.4 574.21,-187.75"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="547.64,-214.16 543.93,-224.08 553.02,-218.64 547.64,-214.16"/>
 </g>
 <!-- Node17 -->
 <g id="node17" class="node">
 <title>Node17</title>
 <g id="a_node17"><a xlink:href="SumCell_8cpp.html" target="_top" xlink:title="This file defines the class SumCell.">
-<polygon fill="white" stroke="black" points="751.5,-168.5 751.5,-187.5 871.5,-187.5 871.5,-168.5 751.5,-168.5"/>
-<text text-anchor="middle" x="811.5" y="-175.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/SumCell.cpp</text>
+<polygon fill="white" stroke="black" points="661.5,-168.5 661.5,-187.5 781.5,-187.5 781.5,-168.5 661.5,-168.5"/>
+<text text-anchor="middle" x="721.5" y="-175.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/SumCell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node14&#45;&gt;Node17 -->
 <g id="edge20" class="edge">
 <title>Node14&#45;&gt;Node17</title>
-<path fill="none" stroke="midnightblue" d="M665.67,-221.57C700.57,-211.38 750.85,-196.7 782.32,-187.52"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="664.43,-218.28 655.81,-224.44 666.39,-225 664.43,-218.28"/>
+<path fill="none" stroke="midnightblue" d="M575.67,-221.57C610.57,-211.38 660.85,-196.7 692.32,-187.52"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="574.43,-218.28 565.81,-224.44 576.39,-225 574.43,-218.28"/>
 </g>
-<!-- Node15&#45;&gt;Node5 -->
+<!-- Node15&#45;&gt;Node9 -->
 <g id="edge19" class="edge">
-<title>Node15&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M641.88,-164.5C617.88,-154.38 584.72,-140.39 563.69,-131.52"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="640.64,-167.78 651.22,-168.44 643.36,-161.33 640.64,-167.78"/>
+<title>Node15&#45;&gt;Node9</title>
+<path fill="none" stroke="midnightblue" d="M552.34,-164.5C528.72,-154.38 496.07,-140.39 475.37,-131.52"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="550.96,-167.72 561.53,-168.44 553.72,-161.29 550.96,-167.72"/>
 </g>
 <!-- Node16 -->
 <g id="node16" class="node">
 <title>Node16</title>
 <g id="a_node16"><a xlink:href="ProductCell_8cpp.html" target="_top" xlink:title="This file defines the class ProductCell.">
-<polygon fill="white" stroke="black" points="616,-112.5 616,-131.5 751,-131.5 751,-112.5 616,-112.5"/>
-<text text-anchor="middle" x="683.5" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/ProductCell.cpp</text>
+<polygon fill="white" stroke="black" points="528,-112.5 528,-131.5 663,-131.5 663,-112.5 528,-112.5"/>
+<text text-anchor="middle" x="595.5" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/ProductCell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node15&#45;&gt;Node16 -->
 <g id="edge18" class="edge">
 <title>Node15&#45;&gt;Node16</title>
-<path fill="none" stroke="midnightblue" d="M675.7,-158.1C677.69,-149.14 679.98,-138.86 681.56,-131.75"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="672.23,-157.56 673.48,-168.08 679.07,-159.08 672.23,-157.56"/>
+<path fill="none" stroke="midnightblue" d="M586.32,-158.4C588.67,-149.36 591.37,-138.94 593.23,-131.75"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="582.93,-157.52 583.81,-168.08 589.71,-159.28 582.93,-157.52"/>
 </g>
 </g>
 </svg>
