@@ -21,7 +21,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file declares all the wizards the draw sidepane needs.
+  This file declares all the changelog dialog needs.
 */
 
 #ifndef CHANGELOGDIALOG_H
@@ -41,8 +41,8 @@ class ChangeLogDialog : public wxDialog
 public:
   explicit ChangeLogDialog(wxWindow *parent);
 private:
-  wxRichTextCtrl *m_license;
+  wxRichTextCtrl *m_changelog;
   void OnTextURLEvent(wxTextUrlEvent& event);
 };
 
-#endif // LICENSEDIALOG_H
+#endif // CHANGELOGDIALOG_H

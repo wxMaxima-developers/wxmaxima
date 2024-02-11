@@ -22,7 +22,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  A dialog that shows the program's license.
+  A dialog that shows the program's changelog.
 */
 
 #include "ChangeLogDialog.h"
@@ -42,15 +42,14 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
   wxMemoryInputStream istream(NEWS_MD, NEWS_MD_SIZE);
   wxTextInputStream textIn(istream);
   wxString line;
-  wxString licenseText;
   Connect(wxEVT_TEXT_URL, wxTextUrlEventHandler(ChangeLogDialog::OnTextURLEvent),
           NULL, this);
 
-  m_license = new wxRichTextCtrl(
+  m_changelog = new wxRichTextCtrl(
                              this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
                              wxRE_MULTILINE | wxRE_READONLY);
-  m_license->BeginSuppressUndo();
-  wxFont fnt = m_license->GetFont();
+  m_changelog->BeginSuppressUndo();
+  wxFont fnt = m_changelog->GetFont();
   wxClientDC dc(this);
   dc.SetFont(fnt);
   wxRegEx issueLink("#([0-9][0-9]*)");
@@ -65,15 +64,15 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
         {
           if(!inBulletList)
             {
-              m_license->Newline();
+              m_changelog->Newline();
               inBulletList = true;
             }
           else
             {
-              m_license->Newline();
-              m_license->EndSymbolBullet();
+              m_changelog->Newline();
+              m_changelog->EndSymbolBullet();
             }
-          m_license->BeginSymbolBullet(wxS("\u2022"), 50, 0);
+          m_changelog->BeginSymbolBullet(wxS("\u2022"), 50, 0);
           // drop the "- " at the end of the line.
           line = line.Right(line.Length() - 2);
         }
@@ -82,8 +81,8 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
           if((inBulletList) && (!line.StartsWith(wxS(" "))))
             {
               inBulletList = false;
-              m_license->Newline();
-              m_license->EndSymbolBullet();
+              m_changelog->Newline();
+              m_changelog->EndSymbolBullet();
             }
           if(line.StartsWith(wxS("# ")))
             {
@@ -96,7 +95,7 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
       line.Trim(false);
       line += " ";
       if(isCaption)
-        m_license->BeginBold();
+        m_changelog->BeginBold();
       while(issueLink.Matches(line))
         {
           size_t start;
@@ -107,22 +106,22 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
           wxString url   = wxS("https://github.com/wxMaxima-developers/wxmaxima/issues/")
             + match.Right(match.Length() - 1);
           url = url.Left(url.Length() - 2);
-          m_license->WriteText(line.Left(start));
-          m_license->BeginURL(url);
-          m_license->WriteText(wxS("↗") + match);
-          m_license->EndURL();
+          m_changelog->WriteText(line.Left(start));
+          m_changelog->BeginURL(url);
+          m_changelog->WriteText(wxS("↗") + match);
+          m_changelog->EndURL();
           line = rest;
         }
-      m_license->WriteText(line);
+      m_changelog->WriteText(line);
       if(isCaption)
-        m_license->EndBold();
+        m_changelog->EndBold();
       isCaption = false;
     }
   }
 
-  m_license->SetMinSize(wxSize(350 * GetContentScaleFactor(),
+  m_changelog->SetMinSize(wxSize(350 * GetContentScaleFactor(),
                                400 * GetContentScaleFactor()));
-  vbox->Add(m_license, wxSizerFlags(10).Expand().Border(wxALL, 5));
+  vbox->Add(m_changelog, wxSizerFlags(10).Expand().Border(wxALL, 5));
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
