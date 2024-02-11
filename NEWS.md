@@ -1,15 +1,15 @@
 # 24.02.1
 
- - wxMaxima now correctly installs its icons (#1892)
- - A race condition on closing Maxima
- - Update the autocompletion only in idle state
- - Fixed a race condition on dropping the log target
- - Alt+Up at startup no more crashes (#1886)
- - Resolved a compilation error on old wxWidgets versions
- - Resolved GCC errors about too long functions
- - Resolved an assert if no history file exists
- - Ctrl+Alt+M now restarts maxima
- - Added a Maxima/Memory menu
+- wxMaxima now correctly installs its icons (#1892)
+- A race condition on closing Maxima
+- Update the autocompletion only in idle state
+- Fixed a race condition on dropping the log target
+- Alt+Up at startup no more crashes (#1886)
+- Resolved a compilation error on old wxWidgets versions
+- Resolved GCC errors about too long functions
+- Resolved an assert if no history file exists
+- Ctrl+Alt+M now restarts maxima
+- Added a Maxima/Memory menu
 
 # 24.02.0
 
