@@ -4113,6 +4113,7 @@ void Worksheet::SetNotification(const wxString &message, int flags) {
  */
 void Worksheet::OnChar(wxKeyEvent &event) {
   UpdateControlsNeeded(true);
+  event.Skip();
   m_configuration->LastActiveTextCtrl(NULL);
   m_adjustWorksheetSizeNeeded = true;
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to
@@ -4154,12 +4155,6 @@ void Worksheet::OnChar(wxKeyEvent &event) {
       event.Skip();
   }
   
-  if (event.CmdDown() && event.AltDown() && ((event.GetKeyCode() == wxS('r'))))
-    {
-      event.Skip();
-      return;
-    }
-        
   // Forward cell creation hotkeys to the class wxMaxima
   if (event.CmdDown() && !event.AltDown()) {
     if ((event.GetKeyCode() == WXK_ESCAPE) ||

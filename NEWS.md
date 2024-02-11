@@ -8,6 +8,7 @@
  - Resolved a compilation error on old wxWidgets versions
  - Resolved GCC errors about too long functions
  - Resolved an assert if no history file exists
+ - Ctrl+Alt+M now restarts maxima
 
 # 24.02.0
 
