@@ -969,30 +969,34 @@ void wxMaximaFrame::SetupMaximaMenu() {
                                                                wxRendererNative::Get().GetCheckBoxSize(this)));
     m_MaximaMenu->Append(it);
   }
-  wxMenu *m_memorySub = new wxMenu;
-  m_memorySub->Append(EventIDs::menu_soft_restart, _("&Clear Memory"),
-                      _("Delete all values from memory"), wxITEM_NORMAL);
-  m_memorySub->Append(EventIDs::menu_kill_dependencies, _("Clear all dependencies"));
-  m_memorySub->Append(EventIDs::menu_kill_values, _("Clear all variables"));
-  m_memorySub->Append(EventIDs::menu_kill_functions, _("Clear all functions"));
-  m_memorySub->Append(EventIDs::menu_kill_arrays, _("Clear all arrays"));
-  m_memorySub->Append(EventIDs::menu_kill_myoptions, _("Reset option variables"));
-  m_memorySub->Append(EventIDs::menu_kill_rules, _("Clear all rules"));
-  m_memorySub->Append(EventIDs::menu_kill_aliases, _("Clear all aliases"));
-  m_memorySub->Append(EventIDs::menu_kill_structures, _("Clear all structures"));
-  m_memorySub->Append(EventIDs::menu_kill_labels, _("Clear all labels"));
-  m_memorySub->Append(EventIDs::menu_kill_gradefs, _("Clear all gradefs"));
-  m_memorySub->Append(EventIDs::menu_kill_props, _("Clear all props"));
-  m_memorySub->Append(EventIDs::menu_kill_macros, _("Clear all macros"));
-  m_memorySub->Append(EventIDs::menu_kill_let_rule_packages, _("Clear all let rule packages"));
-  m_memorySub->Append(EventIDs::menu_clear_fun, _("Delete F&unction..."),
-                      _("Delete a function"), wxITEM_NORMAL);
-  m_memorySub->Append(EventIDs::menu_clear_var, _("Delete V&ariable..."),
-                      _("Delete a variable"), wxITEM_NORMAL);
-  m_memorySub->Append(EventIDs::menu_kill, _("Delete named object..."),
+  wxMenu *m_undefSub = new wxMenu;
+  m_undefSub->Append(EventIDs::menu_kill, _("Delete named object..."),
                       _("Delete all objects with a given name"),
                       wxITEM_NORMAL);
-  m_memorySub->AppendSeparator();
+  m_undefSub->AppendSeparator();
+  m_undefSub->Append(EventIDs::menu_soft_restart, _("&Clear Memory"),
+                      _("Delete all values from memory"), wxITEM_NORMAL);
+  m_undefSub->Append(EventIDs::menu_kill_dependencies, _("Clear all dependencies"));
+  m_undefSub->Append(EventIDs::menu_kill_values, _("Clear all variables"));
+  m_undefSub->Append(EventIDs::menu_kill_functions, _("Clear all functions"));
+  m_undefSub->Append(EventIDs::menu_kill_arrays, _("Clear all arrays"));
+  m_undefSub->Append(EventIDs::menu_kill_myoptions, _("Reset option variables"));
+  m_undefSub->Append(EventIDs::menu_kill_rules, _("Clear all rules"));
+  m_undefSub->Append(EventIDs::menu_kill_aliases, _("Clear all aliases"));
+  m_undefSub->Append(EventIDs::menu_kill_structures, _("Clear all structures"));
+  m_undefSub->Append(EventIDs::menu_kill_labels, _("Clear all labels"));
+  m_undefSub->Append(EventIDs::menu_kill_gradefs, _("Clear all gradefs"));
+  m_undefSub->Append(EventIDs::menu_kill_props, _("Clear all props"));
+  m_undefSub->Append(EventIDs::menu_kill_macros, _("Clear all macros"));
+  m_undefSub->Append(EventIDs::menu_kill_let_rule_packages, _("Clear all let rule packages"));
+  m_undefSub->Append(EventIDs::menu_clear_fun, _("Delete F&unction..."),
+                      _("Delete a function"), wxITEM_NORMAL);
+  m_undefSub->Append(EventIDs::menu_clear_var, _("Delete V&ariable..."),
+                      _("Delete a variable"), wxITEM_NORMAL);
+  m_undefSub->Append(EventIDs::menu_garbage_collect, _("Free all unused items now"));
+  m_undefSub->Append(EventIDs::menu_room, _("Show used + to-be-freed memory"));
+  m_MaximaMenu->Append(wxWindow::NewControlId(), _("Undefine"), m_undefSub);
+  wxMenu *m_memorySub = new wxMenu;
   m_memorySub->Append(EventIDs::menu_garbage_collect, _("Free all unused items now"));
   m_memorySub->Append(EventIDs::menu_room, _("Show used + to-be-freed memory"));
   m_MaximaMenu->Append(wxWindow::NewControlId(), _("Memory"), m_memorySub);
