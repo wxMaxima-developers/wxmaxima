@@ -7491,7 +7491,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
                wxS("remvalue(#1#);"), _("Variable name:"), wxS("all"),
                wxEmptyString);
   }
-  else if(event.GetId() == EventIDs::menu_kill){
+  if(event.GetId() == EventIDs::menu_kill){
     CommandWiz(_("Delete named object(s)"), wxEmptyString, wxEmptyString,
                wxS("kill(#1#);"), _("Object name:"), wxS("all"), wxEmptyString);
   }
