@@ -974,6 +974,11 @@ void wxMaximaFrame::SetupMaximaMenu() {
                       _("Delete all objects with a given name"),
                       wxITEM_NORMAL);
   m_undefSub->AppendSeparator();
+  m_undefSub->Append(EventIDs::menu_clear_fun, _("Delete F&unction..."),
+                      _("Delete a function"), wxITEM_NORMAL);
+  m_undefSub->Append(EventIDs::menu_clear_var, _("Delete V&ariable..."),
+                      _("Delete a variable"), wxITEM_NORMAL);
+  m_undefSub->AppendSeparator();
   m_undefSub->Append(EventIDs::menu_soft_restart, _("&Clear Memory"),
                       _("Delete all values from memory"), wxITEM_NORMAL);
   m_undefSub->Append(EventIDs::menu_kill_dependencies, _("Clear all dependencies"));
@@ -989,16 +994,14 @@ void wxMaximaFrame::SetupMaximaMenu() {
   m_undefSub->Append(EventIDs::menu_kill_props, _("Clear all props"));
   m_undefSub->Append(EventIDs::menu_kill_macros, _("Clear all macros"));
   m_undefSub->Append(EventIDs::menu_kill_let_rule_packages, _("Clear all let rule packages"));
-  m_undefSub->Append(EventIDs::menu_clear_fun, _("Delete F&unction..."),
-                      _("Delete a function"), wxITEM_NORMAL);
-  m_undefSub->Append(EventIDs::menu_clear_var, _("Delete V&ariable..."),
-                      _("Delete a variable"), wxITEM_NORMAL);
   m_undefSub->Append(EventIDs::menu_garbage_collect, _("Free all unused items now"));
   m_undefSub->Append(EventIDs::menu_room, _("Show used + to-be-freed memory"));
   m_MaximaMenu->Append(wxWindow::NewControlId(), _("Undefine"), m_undefSub);
   wxMenu *m_memorySub = new wxMenu;
-  m_memorySub->Append(EventIDs::menu_garbage_collect, _("Free all unused items now"));
-  m_memorySub->Append(EventIDs::menu_room, _("Show used + to-be-freed memory"));
+  m_memorySub->Append(EventIDs::menu_garbage_collect, _("Free all unused items now"),
+                      _("Lisp normally frees memory only when it has time or runs out of space"));
+  m_memorySub->Append(EventIDs::menu_room, _("Show used + to-be-freed memory"),
+                      _("Lisp normally frees memory only when it has time or runs out of space"));
   m_MaximaMenu->Append(wxWindow::NewControlId(), _("Memory"), m_memorySub);
 
   APPEND_MENU_ITEM(m_MaximaMenu, EventIDs::menu_add_path, _("Add to &Path..."),
