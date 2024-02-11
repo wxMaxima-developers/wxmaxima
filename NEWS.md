@@ -9,6 +9,7 @@
  - Resolved GCC errors about too long functions
  - Resolved an assert if no history file exists
  - Ctrl+Alt+M now restarts maxima
+ - Added a Maxima/Memory menu
 
 # 24.02.0
 

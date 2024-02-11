@@ -940,6 +940,36 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::PlotMenu), NULL, this);
   Connect(EventIDs::menu_soft_restart, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs:: menu_kill_dependencies, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_kill_values, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_kill_functions, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_kill_arrays, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_kill_myoptions, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_kill_rules, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_kill_aliases, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_kill_structures, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_kill_labels, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_kill_gradefs, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_kill_props, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_kill_macros, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_kill_let_rule_packages, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_garbage_collect, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_room, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(EventIDs::menu_jumptoerror, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(EventIDs::menu_display, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
@@ -6667,6 +6697,51 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_soft_restart){
     MenuCommand(wxS("kill(all);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_dependencies){
+    MenuCommand(wxS("kill(dependencies);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_values){
+    MenuCommand(wxS("kill(values);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_functions){
+    MenuCommand(wxS("kill(functions);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_arrays){
+    MenuCommand(wxS("kill(arrays);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_myoptions){
+    MenuCommand(wxS("kill(options);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_rules){
+    MenuCommand(wxS("kill(rules);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_aliases){
+    MenuCommand(wxS("kill(aliases);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_structures){
+    MenuCommand(wxS("kill(structures);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_labels){
+    MenuCommand(wxS("kill(labels);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_gradefs){
+    MenuCommand(wxS("kill(gradefs);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_props){
+    MenuCommand(wxS("kill(props);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_macros){
+    MenuCommand(wxS("kill(macros);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_let_rule_packages){
+    MenuCommand(wxS("kill(let_rule_packages);"));
+  }
+  else if(event.GetId() == EventIDs::menu_garbage_collect){
+    MenuCommand(wxS("garbage_collect();"));
+  }
+  else if(event.GetId() == EventIDs::menu_room){
+    MenuCommand(wxS("?room();"));
   }
   else if(event.GetId() == EventIDs::menu_functions){
     MenuCommand(wxS("functions;"));
