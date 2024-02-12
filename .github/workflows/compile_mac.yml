@@ -44,15 +44,12 @@ jobs:
   #     - name: Package wxMaxima
   #       run: |
   #            cd ../build-wxm
-  #            cpack -G DragNDrop
+  #             cpack -G DragNDrop||cpack -G DragNDrop||cpack -G DragNDrop||cpack -G DragNDrop
 
   compile_Ninja:
     runs-on: macos-latest
 
     steps:
-      - name: Avoid a race condition in cpack
-        run: |
-             sudo pkill -9 XProtect >/dev/null || true;
       - name: Checkout wxMaxima from git
         uses: actions/checkout@v4
         with:
@@ -85,7 +82,7 @@ jobs:
       - name: Package wxMaxima
         run: |
              cd build-wxm
-             cpack -G DragNDrop
+             cpack -G DragNDrop||cpack -G DragNDrop||cpack -G DragNDrop||cpack -G DragNDrop
              cd ..
              cp build-wxm/*.dmg wxMaxima.dmg
              cp build-wxm/*.sha512 wxMaxima.dmg.sha512
@@ -109,9 +106,6 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Avoid a race condition in cpack
-        run: |
-             sudo pkill -9 XProtect >/dev/null || true;
       - name: Checkout_git
         uses: actions/checkout@v4
         with:
@@ -138,15 +132,12 @@ jobs:
       - name: Package wxMaxima
         run: |
              cd ../build-wxm
-             cpack -G DragNDrop
+             cpack -G DragNDrop||cpack -G DragNDrop||cpack -G DragNDrop||cpack -G DragNDrop
 
   compile_macports:
     runs-on: macos-latest
 
     steps:
-      - name: Avoid a race condition in cpack
-        run: |
-             sudo pkill -9 XProtect >/dev/null || true;
       - name: Make MacPorts cachable
         run: |
              sudo mkdir /opt/local
@@ -191,7 +182,7 @@ jobs:
       - name: Package wxMaxima
         run: |
              cd ../build-wxm
-             cpack -G DragNDrop
+             cpack -G DragNDrop||cpack -G DragNDrop||cpack -G DragNDrop||cpack -G DragNDrop
       - name: Cleanup
         run: |
              port -f uninstall inactive || echo "No cleanup necessary"
