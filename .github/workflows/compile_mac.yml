@@ -50,6 +50,9 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      - name: Avoid a race condition in cpack
+        run: |
+             sudo pkill -9 XProtect >/dev/null || true;
       - name: Checkout wxMaxima from git
         uses: actions/checkout@v4
         with:
@@ -106,6 +109,9 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      - name: Avoid a race condition in cpack
+        run: |
+             sudo pkill -9 XProtect >/dev/null || true;
       - name: Checkout_git
         uses: actions/checkout@v4
         with:
@@ -138,6 +144,9 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      - name: Avoid a race condition in cpack
+        run: |
+             sudo pkill -9 XProtect >/dev/null || true;
       - name: Make MacPorts cachable
         run: |
              sudo mkdir /opt/local
