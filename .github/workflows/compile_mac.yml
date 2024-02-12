@@ -148,7 +148,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /opt/local/
-          key: ${{ runner.os }}-macports-${{ hashFiles('macos_build.txt') }}
+          key: ${{ runner.os }}-macports-2-${{ hashFiles('macos_build.txt') }}
       - name: Checkout wxMaxima from git
         uses: actions/checkout@v4
         with:
