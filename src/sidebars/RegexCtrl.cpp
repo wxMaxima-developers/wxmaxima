@@ -26,8 +26,6 @@
 #include "../ErrorRedirector.h"
 #include <wx/config.h>
 #include <wx/log.h>
-#include <wx/sstream.h>
-#include <wx/txtstrm.h>
 
 RegexCtrl::RegexCtrl(wxWindow *parent, wxWindowID id, Configuration *cfg, wxString configName)
   : BTextCtrl(parent, id, cfg),

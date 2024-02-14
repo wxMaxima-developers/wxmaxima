@@ -54,7 +54,6 @@
 #include <wx/persist/toplevel.h>
 #include <wx/scrolwin.h>
 #include <wx/settings.h>
-#include <wx/sstream.h>
 #include <wx/txtstrm.h>
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
