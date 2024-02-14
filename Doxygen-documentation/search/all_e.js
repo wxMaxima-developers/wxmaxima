@@ -37,7 +37,7 @@ var searchData=
   ['onnotificationclose_1083',['OnNotificationClose',['../classwxMaximaFrame.html#a8718cae02e2d2238a4229c0b3719b5bb',1,'wxMaximaFrame']]],
   ['onpaint_1084',['OnPaint',['../classUnicodeSidebar.html#afdaa28eb02a8caa5801536eae11cc0f4',1,'UnicodeSidebar']]],
   ['onprintpage_1085',['OnPrintPage',['../classPrintout.html#adc82d752a04a6336b91c09d0b180dc4d',1,'Printout']]],
-  ['onregexevent_1086',['OnRegExEvent',['../classTableOfContents.html#a30c1fca1e34b370fdaf099d0f5509ec3',1,'TableOfContents::OnRegExEvent()'],['../classUnicodeSidebar.html#abc0d197f1a789fba668c20e09b51ca3e',1,'UnicodeSidebar::OnRegExEvent()']]],
+  ['onregexevent_1086',['OnRegExEvent',['../classHistory.html#acd42415d63e0cde241213f020f3e7fbd',1,'History::OnRegExEvent()'],['../classTableOfContents.html#a30c1fca1e34b370fdaf099d0f5509ec3',1,'TableOfContents::OnRegExEvent()'],['../classUnicodeSidebar.html#abc0d197f1a789fba668c20e09b51ca3e',1,'UnicodeSidebar::OnRegExEvent()']]],
   ['onreplace_1087',['OnReplace',['../classwxMaxima.html#a338362c021e4dca26855b2563de99433',1,'wxMaxima']]],
   ['onreplaceall_1088',['OnReplaceAll',['../classwxMaxima.html#aa4e5130be0ab2a75f184a389d1fc8155',1,'wxMaxima']]],
   ['onrightclick_1089',['OnRightClick',['../classUnicodeSidebar.html#ab069b1eb73e12208cda06c0e415beefd',1,'UnicodeSidebar::OnRightClick()'],['../classVariablespane.html#aaee6c757a027d8e9c2fa8e4cc66735cf',1,'Variablespane::OnRightClick()']]],
