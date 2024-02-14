@@ -96,6 +96,7 @@ History::History(wxWindow *parent, int id, Configuration *cfg)
         }
       }
   }
+  m_sessionCommands = 0;
 }
 
 void History::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {

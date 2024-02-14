@@ -57,11 +57,13 @@ class History final : public wxPanel
 public:
   History(wxWindow *parent, int id, Configuration *cfg);
 
+  //! The destructor
   ~History();
 
   //! Add a file to the recently opened files list.
   void AddToHistory(const wxString &cmd);
 
+  //! Called if the filter text or method changes
   void OnRegExEvent(wxCommandEvent &ev);
 
   void RebuildDisplay();
@@ -83,7 +85,8 @@ private:
   void SetCurrent(long current);
 
   wxString m_saveplace;
-  int m_sessionCommands = 0;
+  //! How many commands in the history are from the current session?
+  size_t m_sessionCommands = 0;
   wxListBox *m_history;
   RegexCtrl *m_regex;
   std::vector<wxString> m_commands;
