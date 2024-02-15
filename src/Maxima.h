@@ -128,7 +128,7 @@ private:
   //! The configuration of our wxMaxima process
   Configuration *m_configuration;
   //! The thread handler for SendDataTowxMaxima, the thread that parses the data from maxima.
-  std::thread m_readerTask;
+  std::thread m_parserTask;
   //! Handles events on the open client socket
   void SocketEvent(wxSocketEvent &event);
   //! Handles timer events

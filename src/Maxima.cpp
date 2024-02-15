@@ -92,8 +92,8 @@ Maxima::~Maxima() {
   Disconnect(wxEVT_SOCKET);
   Disconnect(EVT_MAXIMA);
   m_abortReaderThread = true;
-  if(m_readerTask.joinable())
-    m_readerTask.join();
+  if(m_parserTask.joinable())
+    m_parserTask.join();
   if(IsConnected())
     {
       // Make wxWidgets close the connection only after we have sent the close
@@ -191,8 +191,8 @@ void Maxima::ReadSocket() {
   wxString line;
   wxChar ch;
   m_abortReaderThread = true;
-  if(m_readerTask.joinable())
-    m_readerTask.join();
+  if(m_parserTask.joinable())
+    m_parserTask.join();
   do
     {
       ch = m_textInput.GetChar();
@@ -219,7 +219,7 @@ void Maxima::ReadSocket() {
   // it to wxMaxima
   m_abortReaderThread = false;
   if(m_configuration->UseThreads())
-    m_readerTask = std::thread(&Maxima::SendToWxMaxima, this);
+    m_parserTask = std::thread(&Maxima::SendToWxMaxima, this);
   else
     SendToWxMaxima();
 }
