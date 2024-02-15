@@ -45,6 +45,7 @@ var searchData=
   ['drawwiz_279',['DrawWiz',['../classDrawWiz.html',1,'']]],
   ['drawwiz_2ecpp_280',['DrawWiz.cpp',['../DrawWiz_8cpp.html',1,'']]],
   ['drawwiz_2eh_281',['DrawWiz.h',['../DrawWiz_8h.html',1,'']]],
-  ['dynamic_5funique_5fptr_5fcast_282',['dynamic_unique_ptr_cast',['../CellPtr_8h.html#ab671e37a19353791368fe1bd77f12361',1,'CellPtr.h']]],
-  ['dynamicappend_283',['DynamicAppend',['../classCellListBuilder.html#a1023b91074207a0b0ed6d7cde65dc5c2',1,'CellListBuilder::DynamicAppend(Cell *cells)'],['../classCellListBuilder.html#a7c764bfe32fda08732fafec5ad1981c2',1,'CellListBuilder::DynamicAppend(std::unique_ptr&lt; Cell &gt; &amp;&amp;cells)']]]
+  ['droplogtarget_282',['DropLogTarget',['../classLogPane.html#a110e52972f06c6abca3c547c70d28b21',1,'LogPane']]],
+  ['dynamic_5funique_5fptr_5fcast_283',['dynamic_unique_ptr_cast',['../CellPtr_8h.html#ab671e37a19353791368fe1bd77f12361',1,'CellPtr.h']]],
+  ['dynamicappend_284',['DynamicAppend',['../classCellListBuilder.html#a1023b91074207a0b0ed6d7cde65dc5c2',1,'CellListBuilder::DynamicAppend(Cell *cells)'],['../classCellListBuilder.html#a7c764bfe32fda08732fafec5ad1981c2',1,'CellListBuilder::DynamicAppend(std::unique_ptr&lt; Cell &gt; &amp;&amp;cells)']]]
 ];

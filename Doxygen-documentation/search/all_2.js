@@ -6,7 +6,7 @@ var searchData=
   ['base_5fdynamicappend_73',['base_DynamicAppend',['../classCellListBuilderBase.html#a912afbac8cd712b3bc7fd3b1de3ebd6d',1,'CellListBuilderBase']]],
   ['base_5freset_74',['base_reset',['../classCellPtrBase.html#a8caf3e9b626fc9e72681c67a127246d1',1,'CellPtrBase']]],
   ['bc2wiz_75',['BC2Wiz',['../classBC2Wiz.html',1,'']]],
-  ['becomelogtarget_76',['BecomeLogTarget',['../classwxMaximaFrame.html#a11304019bac5674ec8bc275fef78c311',1,'wxMaximaFrame']]],
+  ['becomelogtarget_76',['BecomeLogTarget',['../classwxMaximaFrame.html#a11304019bac5674ec8bc275fef78c311',1,'wxMaximaFrame::BecomeLogTarget()'],['../classLogPane.html#a2cfc30d6be4a0b045381dc272c14e5a7',1,'LogPane::BecomeLogTarget()']]],
   ['beginningofline_77',['BeginningOfLine',['../classEditorCell.html#a3d892fe086a3da93fa79541cbaef442c',1,'EditorCell']]],
   ['binaryexpr_78',['BinaryExpr',['../classCatch_1_1BinaryExpr.html',1,'Catch']]],
   ['bitmapfromsvg_79',['BitmapFromSVG',['../classCell.html#ad505b47f50298511e9de2da7d220c990',1,'Cell']]],

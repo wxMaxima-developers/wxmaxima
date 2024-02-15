@@ -125,40 +125,44 @@ $(function() {
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classHistory.html#acd42415d63e0cde241213f020f3e7fbd">OnRegExEvent</a>(wxCommandEvent &amp;ev);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordtype">void</span> RebuildDisplay();</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  wxString GetCommand(<span class="keywordtype">bool</span> next);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">void</span> MaximaSessionStart();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classHistory.html#a0a25b82179350420ab4ee6b45bd86cb4">UpdateDeferred</a>();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordtype">void</span> SetSavePlace(wxString saveplace);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordtype">void</span> OnMouseRightDown(wxMouseEvent &amp;event);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordtype">void</span> OnMenu(wxCommandEvent &amp;event);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">void</span> UnselectAll() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordtype">void</span> SetCurrent(<span class="keywordtype">long</span> current);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  wxString m_saveplace;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordtype">size_t</span> m_sessionCommands = 0;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  wxListBox *m_history;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <a class="code" href="classRegexCtrl.html">RegexCtrl</a> *m_regex;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  std::vector&lt;wxString&gt; m_commands;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  wxArrayString m_deferredCommands;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keywordtype">long</span> m_current = 0;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  wxString m_regex_Old;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordtype">bool</span> m_showCurrentSessionOnly = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keyword">static</span> wxString m_showCurrentSessionOnlyKey;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;};</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// HISTORY_H</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classHistory.html#a21522cf3df7247393c2c641f3f4e0b0c">RebuildDisplay</a>();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  wxString <a class="code" href="classHistory.html#a1e07cfc3a8a3740dbc065f71eb49c05c">GetCommand</a>(<span class="keywordtype">bool</span> next);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classHistory.html#a4a50b4c22d87784dee4b52719d06c655">MaximaSessionStart</a>();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classHistory.html#a0a25b82179350420ab4ee6b45bd86cb4">UpdateDeferred</a>();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classHistory.html#ac68189c51c7f0d0ee3a1014ece792742">SetSavePlace</a>(wxString saveplace);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">void</span> OnMouseRightDown(wxMouseEvent &amp;event);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordtype">void</span> OnMenu(wxCommandEvent &amp;event);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordtype">void</span> UnselectAll() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordtype">void</span> SetCurrent(<span class="keywordtype">long</span> current);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  wxString m_saveplace;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordtype">size_t</span> m_sessionCommands = 0;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  wxListBox *m_history;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <a class="code" href="classRegexCtrl.html">RegexCtrl</a> *m_regex;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  std::vector&lt;wxString&gt; m_commands;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  wxArrayString m_deferredCommands;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keywordtype">long</span> m_current = 0;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  wxString m_regex_Old;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="keywordtype">bool</span> m_showCurrentSessionOnly = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keyword">static</span> wxString m_showCurrentSessionOnlyKey;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;};</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// HISTORY_H</span></div>
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:95</div></div>
 <div class="ttc" id="aclassHistory_html"><div class="ttname"><a href="classHistory.html">History</a></div><div class="ttdoc">This class generates a pane containing the last commands that were issued.</div><div class="ttdef"><b>Definition:</b> History.h:56</div></div>
 <div class="ttc" id="aclassHistory_html_a0a25b82179350420ab4ee6b45bd86cb4"><div class="ttname"><a href="classHistory.html#a0a25b82179350420ab4ee6b45bd86cb4">History::UpdateDeferred</a></div><div class="ttdeci">bool UpdateDeferred()</div><div class="ttdoc">Actually update the history sidebar. Called when no other work is to be done.</div><div class="ttdef"><b>Definition:</b> History.cpp:141</div></div>
+<div class="ttc" id="aclassHistory_html_a1e07cfc3a8a3740dbc065f71eb49c05c"><div class="ttname"><a href="classHistory.html#a1e07cfc3a8a3740dbc065f71eb49c05c">History::GetCommand</a></div><div class="ttdeci">wxString GetCommand(bool next)</div><div class="ttdoc">Get the currently selected command and advance the selection.</div><div class="ttdef"><b>Definition:</b> History.cpp:301</div></div>
+<div class="ttc" id="aclassHistory_html_a21522cf3df7247393c2c641f3f4e0b0c"><div class="ttname"><a href="classHistory.html#a21522cf3df7247393c2c641f3f4e0b0c">History::RebuildDisplay</a></div><div class="ttdeci">void RebuildDisplay()</div><div class="ttdoc">Apply all filters and refresh the display.</div><div class="ttdef"><b>Definition:</b> History.cpp:275</div></div>
+<div class="ttc" id="aclassHistory_html_a4a50b4c22d87784dee4b52719d06c655"><div class="ttname"><a href="classHistory.html#a4a50b4c22d87784dee4b52719d06c655">History::MaximaSessionStart</a></div><div class="ttdeci">void MaximaSessionStart()</div><div class="ttdoc">Is called when a new maxima session starts.</div><div class="ttdef"><b>Definition:</b> History.cpp:133</div></div>
 <div class="ttc" id="aclassHistory_html_a5b00b64a1ddee04e60d5a3b517fd6d4c"><div class="ttname"><a href="classHistory.html#a5b00b64a1ddee04e60d5a3b517fd6d4c">History::~History</a></div><div class="ttdeci">~History()</div><div class="ttdoc">The destructor.</div><div class="ttdef"><b>Definition:</b> History.cpp:245</div></div>
 <div class="ttc" id="aclassHistory_html_a6231be4bd394bdf7e4487536bbaa95dd"><div class="ttname"><a href="classHistory.html#a6231be4bd394bdf7e4487536bbaa95dd">History::AddToHistory</a></div><div class="ttdeci">void AddToHistory(const wxString &amp;cmd)</div><div class="ttdoc">Add a file to the recently opened files list.</div><div class="ttdef"><b>Definition:</b> History.cpp:264</div></div>
+<div class="ttc" id="aclassHistory_html_ac68189c51c7f0d0ee3a1014ece792742"><div class="ttname"><a href="classHistory.html#ac68189c51c7f0d0ee3a1014ece792742">History::SetSavePlace</a></div><div class="ttdeci">void SetSavePlace(wxString saveplace)</div><div class="ttdoc">Where to save thi history.</div><div class="ttdef"><b>Definition:</b> History.cpp:238</div></div>
 <div class="ttc" id="aclassHistory_html_acd42415d63e0cde241213f020f3e7fbd"><div class="ttname"><a href="classHistory.html#acd42415d63e0cde241213f020f3e7fbd">History::OnRegExEvent</a></div><div class="ttdeci">void OnRegExEvent(wxCommandEvent &amp;ev)</div><div class="ttdoc">Called if the filter text or method changes.</div><div class="ttdef"><b>Definition:</b> History.cpp:296</div></div>
 <div class="ttc" id="aclassRegexCtrl_html"><div class="ttname"><a href="classRegexCtrl.html">RegexCtrl</a></div><div class="ttdoc">A BTextCtrl that allows to input a regex.</div><div class="ttdef"><b>Definition:</b> RegexCtrl.h:36</div></div>
 </div><!-- fragment --></div><!-- contents -->
