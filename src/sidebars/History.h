@@ -66,19 +66,29 @@ public:
   //! Called if the filter text or method changes
   void OnRegExEvent(wxCommandEvent &ev);
 
+  //! Apply all filters and refresh the display
   void RebuildDisplay();
 
+  /*! Get the currently selected command and advance the selection
+
+    \param next
+      - true: Advance the current selection by one
+      - false: Advance the current selection by -1
+   */
   wxString GetCommand(bool next);
 
+  //! Is called when a new maxima session starts
   void MaximaSessionStart();
 
   //! Actually update the history sidebar. Called when no other work is to be done.
   bool UpdateDeferred();
+  //! Where to save thi history
   void SetSavePlace(wxString saveplace);
 
 private:
   //! Called on right-clicks on the history panel
   void OnMouseRightDown(wxMouseEvent &event);
+  //! Called if the user calls on a menu item
   void OnMenu(wxCommandEvent &event);
 
   void UnselectAll() const;

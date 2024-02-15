@@ -35,29 +35,30 @@
 class LogPane : public wxPanel
 {
 public:
+  //! The destructor
   explicit LogPane(wxWindow *parent, wxWindowID id = wxID_ANY, bool becomeLogTarget = true);
+  /*! Causes this log pane to receive all log messages from wxWidgets
+
+    Important on MacOs, where all active windows need to be handled from the same
+    wxMaxima process
+  */
   void BecomeLogTarget();
+  //! Causes log messages to be output to stderr, as well.
   void SetBatchMode() {
     if (m_errorRedirector)
       m_errorRedirector->SetBatchMode();
   }
+  /*! Stop receiving log messages
+
+    Tells wxLog to discard all log messages.
+   */
   void DropLogTarget();
+  //! True, if this is the log panel that receives all log messages
   bool IsLogTarget() {return m_logPanelTarget.has_value();}
+  //! The destructor
   ~LogPane();
 
-private:
-  
-  class NullBuffer : public std::streambuf
-  {
-  public:
-    int overflow(int c) { return c; }
-  };
-  class NullStream : public std::ostream {
-  public:
-    NullStream() : std::ostream(&m_sb) {}
-  private:
-    NullBuffer m_sb;
-  };
+private:  
   //! The textctrl all log messages appear on
   wxTextCtrl *m_textCtrl;
   //! Shows all error messages on gui dialogues
