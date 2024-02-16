@@ -400,7 +400,7 @@ void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
   partial.Replace(wxFileName::GetPathSeparator(), "/");
   int pos;
   if ((pos = partial.Find(wxS('/'), true)) == wxNOT_FOUND)
-    partial = wxEmptyString;
+    partial.Clear();
   else
     partial = partial.Left(pos);
   wxString prefix = partial + wxS("/");
@@ -436,7 +436,7 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir) {
   partial.Replace(wxFileName::GetPathSeparator(), "/");
   int pos;
   if ((pos = partial.Find(wxS('/'), true)) == wxNOT_FOUND)
-    partial = wxEmptyString;
+    partial.Clear();
   else
     partial = partial.Left(pos);
   wxString prefix = partial + wxS("/");
@@ -471,7 +471,7 @@ void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir) {
   partial.Replace(wxFileName::GetPathSeparator(), "/");
   int pos;
   if ((pos = partial.Find(wxS('/'), true)) == wxNOT_FOUND)
-    partial = wxEmptyString;
+    partial.Clear();
   else
     partial = partial.Left(pos);
   wxString prefix = partial + wxS("/");

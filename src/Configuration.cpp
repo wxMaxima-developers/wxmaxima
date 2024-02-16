@@ -249,9 +249,9 @@ void Configuration::ResetAllToDefaults() {
 
   m_wizardTab = 0;
   for (const auto &i : m_renderableChars)
-    m_renderableChars[i.first] = wxEmptyString;
+    m_renderableChars[i.first].Clear();
   for (const auto &i : m_nonRenderableChars)
-    m_nonRenderableChars[i.first] = wxEmptyString;
+    m_nonRenderableChars[i.first].Clear();
   m_showAllDigits = false;
   m_lineBreaksInLongNums = false;
   m_autoSaveMinutes = 3;
@@ -278,7 +278,7 @@ void Configuration::ResetAllToDefaults() {
 #else
   m_usepngCairo = true;
 #endif
-  m_wxMathML_Filename = wxEmptyString;
+  m_wxMathML_Filename.Clear();
 
   m_mathJaxURL =
     wxS("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");

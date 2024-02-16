@@ -37,7 +37,7 @@ wxMathML::wxMathML(Configuration *config) : m_configuration(config) {
 }
 
 wxString wxMathML::GetCmd() {
-  m_maximaCMD = wxEmptyString;
+  m_maximaCMD.Clear();
 
   if (Get_MathML_Filename().IsEmpty()) {
     wxLogMessage(_("Reading the Lisp part of wxMaxima from the included header file."));

@@ -460,7 +460,7 @@ namespace Format {
               if (!tree.Append(TreeFromWXM(commentLines, config)))
                 tree.Append(
                             std::make_unique<GroupCell>(config, GC_TYPE_TEXT, wxmLines));
-              wxmLines = wxEmptyString;
+              wxmLines.Clear();
             }
             if ((line.EndsWith(" */")) || (line.EndsWith("\n*/")))
               line.Truncate(line.length() - 3);
@@ -514,7 +514,7 @@ namespace Format {
       // Interpret the comment block
       if (!tree.Append(TreeFromWXM(commentLines, config)))
         tree.Append(std::make_unique<GroupCell>(config, GC_TYPE_TEXT, wxmLines));
-      wxmLines = wxEmptyString;
+      wxmLines.Clear();
     }
 
     line.Trim(true);

@@ -48,8 +48,8 @@ XmlInspector::~XmlInspector() {}
 
 void XmlInspector::Clear() {
   m_clear = true;
-  m_fromMaxima = wxEmptyString;
-  m_toMaxima = wxEmptyString;
+  m_fromMaxima.Clear();
+  m_toMaxima.Clear();
   m_updateNeeded = true;
 }
 
@@ -89,7 +89,7 @@ void XmlInspector::UpdateContents() {
     BeginTextColour(wxColour(128, 0, 0));
     WriteText(m_toMaxima);
     EndTextColour();
-    m_toMaxima = wxEmptyString;
+    m_toMaxima.Clear();
   }
 
   // Display all data from Maxima
@@ -139,7 +139,7 @@ void XmlInspector::UpdateContents() {
     BeginTextColour(wxColour(0, 128, 0));
     WriteText(textWithIndention);
     EndTextColour();
-    m_fromMaxima = wxEmptyString;
+    m_fromMaxima.Clear();
 
     // Adding many chars to the XML inspector is slow => Warn our users if we do
     // so.

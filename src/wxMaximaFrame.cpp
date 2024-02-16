@@ -2139,7 +2139,7 @@ void wxMaximaFrame::RemoveTempAutosavefile() {
       wxRemoveFile(m_tempfileName);
     }
   }
-  m_tempfileName = wxEmptyString;
+  m_tempfileName.Clear();
 }
 
 bool wxMaximaFrame::IsPaneDisplayed(int id) {

@@ -415,7 +415,7 @@ wxString MatrCell::ToXML() const {
     break;
   }
 
-  wxString s = wxEmptyString;
+  wxString s;
   if (m_specialMatrix)
     s = wxString::Format(wxS("<tb") + flags +
                          wxS(" special=\"true\" inference=\"%s\" "

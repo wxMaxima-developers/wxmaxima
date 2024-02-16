@@ -657,7 +657,7 @@ std::unique_ptr<Cell> MathParser::ParseEditorTag(wxXmlNode *node) {
   else if (type == wxS("heading6"))
     editor->SetType(MC_TYPE_HEADING6);
 
-  wxString text = wxEmptyString;
+  wxString text;
   wxXmlNode *line = node->GetChildren();
   while (line) {
     if (line->GetName() == wxS("line")) {

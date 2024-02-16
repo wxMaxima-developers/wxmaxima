@@ -1016,7 +1016,7 @@ wxWindow *ConfigDialogue::CreateStartupPanel() {
                       "\"math\" might be suppressed by wxMaxima. As always maxima "
                       "commands are required to end in a \";\" or a \"$\""));
   // Read maxima's startup file's contents
-  contents = wxEmptyString;
+  contents.Clear();
   if (wxFileExists(m_startupFileName)) {
     wxFileInputStream input(m_startupFileName);
     if (input.IsOk()) {

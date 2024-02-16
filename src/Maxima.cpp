@@ -67,7 +67,7 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
       m_knownTags[wxS("math")] = XML_MATHS;
       m_knownTags[wxS("wxxml-key")] = XML_WXXML_KEY;
     }
-  m_socketInputData.reserve(1000000);
+  m_socketInputData.Alloc(1000000);
   wxASSERT(socket);
   Bind(wxEVT_TIMER, wxTimerEventHandler(Maxima::TimerEvent), this);
   Bind(wxEVT_SOCKET, wxSocketEventHandler(Maxima::SocketEvent), this);
@@ -276,6 +276,7 @@ void Maxima::SendToWxMaxima()
         it++;
       }
     m_socketInputData = rest;
+    m_socketInputData.Alloc(1000000);
     if(m_abortReaderThread)
       return;
     
@@ -323,6 +324,7 @@ void Maxima::SendToWxMaxima()
               event->SetString(dataToSend);
             QueueEvent(event);
             m_socketInputData = rest;
+            m_socketInputData.Alloc(1000000);
           }
       }
   } while ((m_socketInputData.Length() != size_before) && (!m_socketInputData.IsEmpty()));

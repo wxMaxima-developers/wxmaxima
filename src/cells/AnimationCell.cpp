@@ -218,7 +218,7 @@ void AnimationCell::LoadImages(wxArrayString images, bool deleteRead) {
         }
       }
     }
-  m_wxmxFile = wxEmptyString;
+  m_wxmxFile.Clear();
   m_displayed = 0;
 }
 

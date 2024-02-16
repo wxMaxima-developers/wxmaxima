@@ -86,14 +86,14 @@ void LabelCell::UpdateDisplayedText() {
 
   if ((GetTextStyle() == TS_USERLABEL) || (GetTextStyle() == TS_LABEL)) {
     if (!m_configuration->ShowLabels())
-      m_displayedText = wxEmptyString;
+      m_displayedText.Clear();
     else {
       if (m_configuration->UseUserLabels()) {
         if (m_userDefinedLabel.empty()) {
           if (m_configuration->ShowAutomaticLabels())
             m_displayedText = m_text;
           else
-            m_displayedText = wxEmptyString;
+            m_displayedText.Clear();
         } else
           m_displayedText = m_userDefinedLabel;
       }

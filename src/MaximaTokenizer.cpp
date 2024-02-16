@@ -296,7 +296,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands,
               token += Ch;
             else {
               m_tokens.emplace_back(token);
-              token = wxEmptyString;
+              token.Clear();
 
               break;
             }

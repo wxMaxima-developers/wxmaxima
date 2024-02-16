@@ -494,7 +494,7 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
       if ((line.StartsWith("/*")) || (line.EndsWith("*/"))) {
         initialContents += _(block);
         initialContents += line + "\n";
-        block = wxEmptyString;
+        block.Clear();
       } else
         block += line + "\n";
     }

@@ -296,7 +296,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   // to retry.
   m_unsuccessfulConnectionAttempts = 11;
   m_outputCellsFromCurrentCommand = 0;
-  m_CWD = wxEmptyString;
+  m_CWD.Clear();
   m_pid = -1;
   m_hasEvaluatedCells = false;
   m_maximaProcess = NULL;
@@ -308,14 +308,14 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   m_gnuplot_process_id = wxWindow::NewControlId();
   m_maxima_process_id = wxWindow::NewControlId();
   config->Read(wxS("lastPath"), &m_lastPath);
-  m_lastPrompt = wxEmptyString;
+  m_lastPrompt.Clear();
 
   m_closing = false;
   m_fileSaved = true;
 
   UpdateRecentDocuments();
 
-  m_oldFindString = wxEmptyString;
+  m_oldFindString.Clear();
   m_oldFindFlags = 0;
   int findFlags = wxFR_DOWN | wxFR_MATCHCASE;
   wxConfig::Get()->Read(wxS("Find/Flags"), &findFlags);
@@ -2216,7 +2216,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
         s = s.Right(s.Length() - pos - 1);
       } else {
         newVal += s;
-        s = wxEmptyString;
+        s.Clear();
       }
 
       incompleteTextCell->SetValue(newVal);
@@ -2821,7 +2821,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
       GetWorksheet()->m_variablesPane->ResetValues();
       m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
     }
-  m_configCommands = wxEmptyString;
+  m_configCommands.Clear();
   // The new maxima process will be in its initial condition => mark it as such.
   m_hasEvaluatedCells = false;
 
@@ -2832,7 +2832,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
   // We start checking for maximas output again as soon as we send some data to
   // the program.
   m_statusBar->SetMaximaCPUPercentage(0);
-  m_CWD = wxEmptyString;
+  m_CWD.Clear();
   GetWorksheet()->QuestionAnswered();
   if(m_maximaProcess)
     m_maximaProcess->Detach();
@@ -6417,7 +6417,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
 
       // Start incremental search and highlighting of search results again.
       if(findDialogActiveWas)
-        m_oldFindString = wxEmptyString;
+        m_oldFindString.Clear();
       else
         m_oldFindString = selected;
 
@@ -7941,7 +7941,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
     // wiz->Centre(wxBOTH);
     wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
       if (retcode == wxID_OK) {
-        wxString cmd = wxEmptyString;
+        wxString cmd;
         if (wiz->GetValue1().IsEmpty())
           cmd = wiz->GetValue1() + wxS(":");
         cmd += wxS("matrixmap(") + wiz->GetValue2() + wxS(", ") +
@@ -10144,7 +10144,7 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event) {
   if (wxFileExists(file)) {
     OpenWXMXFile(file, GetWorksheet(), true);
     m_tempfileName = file;
-    GetWorksheet()->m_currentFile = wxEmptyString;
+    GetWorksheet()->m_currentFile.Clear();
     GetWorksheet()->SetSaved(false);
   } else
     LoggingMessageBox(_("File you tried to open does not exist."),
@@ -10404,7 +10404,7 @@ void wxMaxima::TriggerEvaluation() {
 
     if (m_configCommands != wxEmptyString)
       SendMaxima(m_configCommands);
-    m_configCommands = wxEmptyString;
+    m_configCommands.Clear();
     QueryVariableValue();
     return; // empty queue
   }
@@ -10475,7 +10475,7 @@ void wxMaxima::TriggerEvaluation() {
         m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
       // And the gui is interested in a few variable names
       m_readMaximaVariables = true;
-      m_configCommands = wxEmptyString;
+      m_configCommands.Clear();
 
       EvaluationQueueLength(
                             GetWorksheet()->m_evaluationQueue.Size(),

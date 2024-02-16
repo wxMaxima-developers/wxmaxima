@@ -825,7 +825,7 @@ wxString TextCell::ToTeX() const {
       else
         text = wxS(" ");
     } else
-      text = wxEmptyString;
+      text.Clear();
   } else {
     /*
       Normally we want to draw a centered dot in this case. But if we
@@ -1039,7 +1039,7 @@ wxString TextCell::ToMathML() const {
     text.Replace(wxS("*"), wxS("&#8290;"));
     text.Replace(wxS("\u00B7"), wxS("&#8290;"));
     if (text != wxS("&#8290;"))
-      text = wxEmptyString;
+      text.Clear();
   }
   text.Replace(wxS("*"), wxS("\u00B7"));
 
@@ -1117,7 +1117,7 @@ wxString TextCell::ToOMML() const {
     text.Replace(wxS("*"), wxS("&#8290;"));
     text.Replace(wxS("\u00B7"), wxS("&#8290;"));
     if (text != wxS("&#8290;"))
-      text = wxEmptyString;
+      text.Clear();
   }
   text.Replace(wxS("*"), wxS("\u00B7"));
 

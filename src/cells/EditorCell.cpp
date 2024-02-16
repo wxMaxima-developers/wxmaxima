@@ -208,7 +208,7 @@ wxString EditorCell::GetFullCommandUnderCursor() {
       if ((*ch == ';') || (*ch == '$')) {
         if (CursorPosition() < pos)
           return result;
-        result = wxEmptyString;
+        result.Clear();
       }
     }
 
@@ -991,7 +991,7 @@ wxString EditorCell::GetCurrentCommand() {
           ++it;
         if ((it != lineTillCursor.end()) && (*it == wxS('('))) {
           command = possibleCommand;
-          possibleCommand = wxEmptyString;
+          possibleCommand.Clear();
           ++it;
         }
         break;
@@ -1002,13 +1002,13 @@ wxString EditorCell::GetCurrentCommand() {
         break;
       case '$':
       case ';': {
-        command = wxEmptyString;
-        possibleCommand = wxEmptyString;
+        command.Clear();
+        possibleCommand.Clear();
         ++it;
         break;
       }
       default:
-        possibleCommand = wxEmptyString;
+        possibleCommand.Clear();
         ++it;
         break;
       }
@@ -2190,7 +2190,7 @@ void EditorCell::DeactivateCursor() {
 //    editor->m_paren1 = editor->m_paren2 = -1;
 //  }
   m_cellPointers->m_activeCell = nullptr;
-  m_cellPointers->m_selectionString = wxEmptyString;
+  m_cellPointers->m_selectionString.Clear();
 }
 
 bool EditorCell::ActivateCursor() {
@@ -2559,7 +2559,7 @@ wxString EditorCell::GetWordUnderCaret() {
       if (pos >= start)
         break;
       else
-        retval = wxEmptyString;
+        retval.Clear();
     } else
       retval += *it;
 
@@ -2987,7 +2987,7 @@ void EditorCell::StyleTextCode() {
         if (line != wxEmptyString)
           m_styledText.push_back(StyledText(token.GetTextStyle(), line));
         m_styledText.push_back(StyledText(token.GetTextStyle(), "\n"));
-        line = wxEmptyString;
+        line.Clear();
       }
     }
     if (line != wxEmptyString)
@@ -3063,7 +3063,7 @@ void EditorCell::StyleTextTexts() {
             if (i > 0)
               line = m_text.SubString(lastLineStart, i - 1);
             else
-              line = wxEmptyString;
+              line.Clear();
           } else
             line = m_text.SubString(lastLineStart, i);
 
@@ -3168,7 +3168,7 @@ void EditorCell::StyleTextTexts() {
 
           // Every line of a Quote begins with a ">":
           if (!line_trimmed.StartsWith(wxS("> ")))
-            indentChar = wxEmptyString;
+            indentChar.Clear();
 
           // Equip bullet lists with real bullets
           if (line_trimmed.StartsWith(wxS("* ")))
@@ -3196,7 +3196,7 @@ void EditorCell::StyleTextTexts() {
       }
 
       if (prefixes.empty())
-        indentChar = wxEmptyString;
+        indentChar.Clear();
 
       if ((!indentPixels.empty()) && (!newLine))
         indent = indentPixels.back();
