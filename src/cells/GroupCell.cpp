@@ -1781,7 +1781,7 @@ wxAccStatus GroupCell::GetDescription(int childId,
     }
   }
 
-  *description.Clear();
+  (*description).Clear();
   return wxACC_FAIL;
 }
 
