@@ -1890,15 +1890,16 @@ wxMaxima::~wxMaxima() {
               // win is a window. If it is not a wxMaxima one newLogTarget will result in
               // a NULL
               if(newLogTarget != NULL)
-                {
-                  m_logPane->DropLogTarget();
-                  newLogTarget->BecomeLogTarget();
                   break;
-                }
             }
           node = node->GetNext();
         }
-      if(newLogTarget == NULL)
+      if(newLogTarget != NULL)
+        {
+          m_logPane->DropLogTarget();
+          newLogTarget->BecomeLogTarget();
+        }
+      else
         {    
           // If there is no window that can take over the log any more the program
           // is about to close and cannot instantiate new gui loggers.
