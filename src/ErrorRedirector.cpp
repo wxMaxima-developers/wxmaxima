@@ -31,6 +31,7 @@
 */
 
 #include "ErrorRedirector.h"
+#include "NullLog.h"
 #include <cassert>
 #include <iostream>
 #include <utility>
@@ -50,7 +51,7 @@ ErrorRedirector::ErrorRedirector(std::unique_ptr<wxLog> &&newLog)
 ErrorRedirector::~ErrorRedirector() {
   assert(!m_logNew || m_logOwned.get() == m_logNew ||
          (!m_logOwned && m_logNew == this));
-  wxLog::SetActiveTarget(new wxLogStderr());
+  wxLog::SetActiveTarget(new NullLog);
 }
 
 void ErrorRedirector::SetLog(std::unique_ptr<wxLog> &&logger) {
