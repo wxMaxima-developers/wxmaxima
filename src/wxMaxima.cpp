@@ -8027,6 +8027,19 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
   }
 }
 
+std::size_t wxMaxima::CountWindows() {
+  size_t numberOfWindows = 1;
+  
+  wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
+  while (node) {
+    // Only count windows of the type wxMaxima
+    if(dynamic_cast<wxMaxima *>(node->GetData()) != NULL)
+      numberOfWindows++;
+    node = node->GetNext();
+  }
+  return numberOfWindows;
+}
+
 void wxMaxima::AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand) {
   if (!m_drawPane)
     return;

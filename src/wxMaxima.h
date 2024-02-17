@@ -88,7 +88,7 @@ public:
            const wxPoint pos = wxDefaultPosition, const wxSize size = wxDefaultSize);
 
   virtual ~wxMaxima();
-
+  static std::size_t CountWindows();
   wxString EscapeFilenameForShell(wxString name);
   //! Exit if we encounter an error
   static void ExitOnError(){m_exitOnError = true;}
