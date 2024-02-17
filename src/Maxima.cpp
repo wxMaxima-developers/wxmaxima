@@ -113,34 +113,17 @@ Maxima::~Maxima() {
 }
 
 bool Maxima::Write(const void *buffer, std::size_t length) {
-  if (!m_socketOutputData.IsEmpty()) {
-    if (buffer && length)
-      m_socketOutputData.AppendData(buffer, length);
-    buffer = m_socketOutputData.GetData();
-    length = m_socketOutputData.GetDataLen();
-  }
-  if (!length)
+  if(!buffer)
+    return false;
+  if (length == 0)
     return false;
   m_socket->Write(buffer, length);
   if (m_socket->Error() && m_socket->LastError() != wxSOCKET_WOULDBLOCK) {
     wxThreadEvent *sendevent = new wxThreadEvent(EVT_MAXIMA);
     sendevent->SetInt(WRITE_ERROR);
     QueueEvent(sendevent);
-    m_socketOutputData.Clear();
-    return true;
+    return false;
   }
-  auto const wrote = m_socket->LastWriteCount();
-  if (wrote < length) {
-    auto *const source = reinterpret_cast<const char *>(buffer);
-    auto const leftToWrite = length - wrote;
-    if (m_socketOutputData.IsEmpty())
-      m_socketOutputData.AppendData(source + wrote, leftToWrite);
-    else {
-      memmove(m_socketOutputData.GetData(), source + wrote, leftToWrite);
-      m_socketOutputData.SetDataLen(leftToWrite);
-    }
-  } else
-    m_socketOutputData.Clear();
   return true;
 }
 
