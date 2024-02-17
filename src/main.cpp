@@ -474,7 +474,7 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
   size_t numberOfWindows = wxMaxima::CountWindows();
 
   if (numberOfWindows > 1)
-    title = wxString::Format(_("wxMaxima %d"), static_cast<long>(numberOfWindows));
+    title = wxString::Format(_("wxMaxima %ld"), static_cast<long>(numberOfWindows));
 
   wxString initialContents;
   if (wxmData) {
