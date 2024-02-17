@@ -1,3 +1,9 @@
+# Current
+
+- Faster communication with maxima
+- Stability improvements in multi-window mode
+- Saved history sidebar no more is interpreted as from current session
+
 # 24.02.1
 
 - wxMaxima now correctly installs its icons (#1892)
