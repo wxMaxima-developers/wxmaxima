@@ -571,6 +571,8 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
     else {
       // Compile a list of arguments we want to pass to the new process
       std::vector<wxString> args;
+      args.push_back(wxStandardPaths::Get().GetExecutablePath().mb_str());
+ 
       if (Configuration::m_configfileLocation_override != wxEmptyString)
         {
           args.push_back("-f");
@@ -604,21 +606,14 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
         args_c_strings.push_back(wxCharBuffer(i.mb_str()));
 
       // Additionally wxExecute expects these C strings in a C array.
+      std::vector<const char *> argslist;
+      for(const auto &i : args_c_strings)
+        argslist.push_back(static_cast<const char *>(i.data()));
+      argslist.push_back(NULL);
       // Let's generate an unique pointer to that one so C++ automatically destroys it
       // once it is no more needed.
-      std::unique_ptr<char*[]> args_array(new char*[args.size() + 2]);
-      wxCharBuffer executableName(wxStandardPaths::Get().GetExecutablePath().mb_str());
-      args_array.get()[0] = executableName.data();;
-      args_array.get()[args.size() + 1] = NULL;
-      for(std::size_t i = 0; i< args.size(); i++)
-        args_array.get()[i + 1] = args_c_strings[i].data();
-      wxExecute(args_array.get());
-
-      wxString command;
-      for(std::size_t i = 0; i< args.size() + 1; i++)
-        command += wxString::FromUTF8(args_array.get()[i]) + "\n";
-      command.Trim();
-      wxLogMessage(_("Starting a new wxMaxima process as: %s"), command.mb_str());
+      wxExecute(argslist.data());
+      wxLogMessage(_("Starting a new wxMaxima process for a new window"));
     }
   }
   else if(ev.GetId() == wxID_PREFERENCES) {
