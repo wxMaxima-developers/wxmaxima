@@ -602,13 +602,13 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
       // wxExecute wants the arguments as C strings, not as wxStrings =>
       // generate those C strings
       std::vector<wxCharBuffer> args_c_strings;
-      for(const auto &i : args)
+      for(auto &i : args)
         args_c_strings.push_back(wxCharBuffer(i.mb_str()));
 
       // Additionally wxExecute expects these C strings in a C array.
-      std::vector<const char *> argslist;
-      for(const auto &i : args_c_strings)
-        argslist.push_back(static_cast<const char *>(i.data()));
+      std::vector<char *> argslist;
+      for(auto &i : args_c_strings)
+        argslist.push_back(static_cast<char *>(i.data()));
       argslist.push_back(NULL);
       // Let's generate an unique pointer to that one so C++ automatically destroys it
       // once it is no more needed.
