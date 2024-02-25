@@ -53,7 +53,7 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_socketInput(*m_socket),
   m_textInput(m_socketInput, wxS("\n"), wxConvUTF8)
 {
-  m_abortReaderThread = false;
+  m_abortParserThread = false;
   if(m_knownTags.empty())
     {
       m_knownTags[wxS("PROMPT")] = XML_PROMPT;
@@ -91,7 +91,7 @@ Maxima::~Maxima() {
   Disconnect(wxEVT_TIMER);
   Disconnect(wxEVT_SOCKET);
   Disconnect(EVT_MAXIMA);
-  m_abortReaderThread = true;
+  m_abortParserThread = true;
   if(m_parserTask.joinable())
     m_parserTask.join();
   if(IsConnected())
@@ -169,16 +169,19 @@ void Maxima::ReadSocket() {
   m_socketInputData.Alloc(1000000);
 
 
-  // std::cerr<<"------ transmission start ------\n";
   {
     wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
     event->SetInt(READ_PENDING);
     QueueEvent(event);
   }
+  m_abortParserThread = true;
   wxString line;
+  wxString rawData;
   wxUniChar ch;
   wxUniChar lastch = '\0';
-  m_abortReaderThread = true;
+  const bool collectRawData = m_xmlInspector || GetPipeToStdErr();
+  if(collectRawData)
+    rawData.Alloc(1000000);
   if(m_parserTask.joinable())
     m_parserTask.join();
   do
@@ -186,6 +189,8 @@ void Maxima::ReadSocket() {
       ch = m_textInput.GetChar();
       if(ch == wxS('\0'))
         continue;
+      if(collectRawData)
+        rawData.Append(ch);
       if(ch == wxS('\r'))
         {
           if(lastch != wxS('\n'))
@@ -197,16 +202,16 @@ void Maxima::ReadSocket() {
       lastch = ch;
     }  while (m_socket->LastReadCount() > 0);
 
-  if(m_xmlInspector || GetPipeToStdErr())
+  if(collectRawData)
     {
       wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
       event->SetInt(STRING_FOR_XMLINSPECTOR);
-      event->SetString(m_socketInputData);
+      event->SetString(rawData);
       QueueEvent(event);
     }
   // The string we have received now is broken into tags by a background task before sending
   // it to wxMaxima
-  m_abortReaderThread = false;
+  m_abortParserThread = false;
   if(m_configuration->UseThreads())
     m_parserTask = std::thread(&Maxima::SendToWxMaxima, this);
   else
@@ -246,7 +251,7 @@ void Maxima::SendToWxMaxima()
               }
             if(tag != m_knownTags.end())
               break;
-            if(m_abortReaderThread)
+            if(m_abortParserThread)
               return;
           }
         dataToSend += *it;
@@ -274,7 +279,7 @@ void Maxima::SendToWxMaxima()
       }
     m_socketInputData = rest;
     m_socketInputData.Alloc(1000000);
-    if(m_abortReaderThread)
+    if(m_abortParserThread)
       return;
     
     if(tag != m_knownTags.end())

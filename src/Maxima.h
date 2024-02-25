@@ -170,7 +170,7 @@ private:
        as a string.
      .
 
-    If m_abortReaderThread = true this process exits as fast as possible in
+    If m_abortParserThread = true this process exits as fast as possible in
     order to allow the main thread to append data to m_socketInputData, as fast
     as possible: If maxima hasn't finished sending data it is highly probable
     that m_socketInputData will contain the beginning of an XML tag, but not
@@ -194,7 +194,7 @@ private:
     If new data has arrived the probability is high that m_socketInputData does contain
     the start of a command, but not its end.
    */
-  std::atomic_bool m_abortReaderThread;
+  std::atomic_bool m_abortParserThread;
 };
 
 wxDECLARE_EVENT(EVT_MAXIMA, wxThreadEvent);
