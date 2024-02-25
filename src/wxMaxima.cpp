@@ -3145,28 +3145,13 @@ void wxMaxima::ReadMiscText(const wxString &data) {
       style = MC_TYPE_ERROR;
   }
 
-  // Add all text lines to the console
-  wxStringTokenizer lines(data, wxS("\n"));
-  while (lines.HasMoreTokens()) {
-    // extract a string from the Data lines
-    wxString textline = lines.GetNextToken();
-    wxString trimmedLine = textline;
-
-    trimmedLine.Trim(true);
-    trimmedLine.Trim(false);
-
-    if (!textline.empty() && textline != wxS("\n")) {
-      GetWorksheet()->SetCurrentTextCell(ConsoleAppend(textline, style));
-      if (style == MC_TYPE_ERROR)
-        AbortOnError();
-    }
-    if (lines.HasMoreTokens())
-      GetWorksheet()->SetCurrentTextCell(nullptr);
+  // Add the text line to the console
+  if (!data.empty()) {
+    GetWorksheet()->SetCurrentTextCell(ConsoleAppend(data, style));
+    if (style == MC_TYPE_ERROR)
+      AbortOnError();
   }
   if (data.EndsWith("\n"))
-    GetWorksheet()->SetCurrentTextCell(nullptr);
-
-  if (!data.empty())
     GetWorksheet()->SetCurrentTextCell(nullptr);
 }
 

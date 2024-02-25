@@ -250,6 +250,14 @@ void Maxima::SendToWxMaxima()
               return;
           }
         dataToSend += *it;
+        if(*it == wxS('\n'))
+          {
+            wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
+            event->SetInt(READ_MISC_TEXT);
+            event->SetString(dataToSend);
+            QueueEvent(event);
+            dataToSend.Clear();
+          }
         ++it;
       }
     if(!dataToSend.IsEmpty())
