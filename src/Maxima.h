@@ -73,6 +73,8 @@ public:
 
   //! Tells us if the user wants all data to maxima to be copied to StdErr
   static void SetPipeToStdErr(bool pipe) { m_pipeToStderr = pipe; }
+  //! Tells if the user wants all data to maxima to be copied to StdErr
+  static void GetPipeToStdErr(bool pipe) { m_pipeToStderr = pipe; }
   static bool GetPipeToStdErr() { return m_pipeToStderr; }
 
   /*! Write more data to be sent to maxima.

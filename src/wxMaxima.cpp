@@ -1866,11 +1866,11 @@ wxMaxima::~wxMaxima() {
     m_gnuplotProcess ->Detach();
   if(m_maximaProcess)
     m_maximaProcess ->Detach();
-  m_maximaProcess = NULL;
   KillMaxima(false);
   Disconnect(wxEVT_END_PROCESS);
   Disconnect(EVT_MAXIMA);
   Disconnect(wxEVT_TIMER);
+
   m_maximaStdoutPollTimer.Stop();
   m_autoSaveTimer.Stop();
   m_fastResponseTimer.Stop();
@@ -2401,6 +2401,11 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
   case Maxima::STRING_FOR_XMLINSPECTOR:
     if(m_xmlInspector)
       m_xmlInspector->Add_FromMaxima(event.GetString());
+    if (Maxima::GetPipeToStdErr())
+      {
+        std::cerr << event.GetString();
+        std::cerr.flush();
+      }
     break;
   case Maxima::XML_PROMPT:
     ReadStdErr();
@@ -8026,19 +8031,6 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
                _("The name of the variable that shall contain the current element"),
                _("Object composed of elements"), wxS("expr"));
   }
-}
-
-std::size_t wxMaxima::CountWindows() {
-  size_t numberOfWindows = 1;
-  
-  wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
-  while (node) {
-    // Only count windows of the type wxMaxima
-    if(dynamic_cast<wxMaxima *>(node->GetData()) != NULL)
-      numberOfWindows++;
-    node = node->GetNext();
-  }
-  return numberOfWindows;
 }
 
 void wxMaxima::AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand) {

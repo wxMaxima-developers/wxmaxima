@@ -455,7 +455,11 @@ bool MyApp::OnInit() {
   return true;
 }
 
-int MyApp::OnExit() { return wxMaxima::GetExitCode(); }
+int MyApp::OnExit() {
+  std::cout << std::flush;
+  std::cerr << std::flush;
+  return wxMaxima::GetExitCode();
+}
 
 int MyApp::OnRun() {
   wxLogStderr noErrorDialogs;
@@ -471,7 +475,7 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
   if (file.Length() > 0)
     title = file;
 
-  size_t numberOfWindows = wxMaxima::CountWindows();
+  size_t numberOfWindows = wxMaximaFrame::CountWindows();
 
   if (numberOfWindows > 1)
     title = wxString::Format(_("wxMaxima %ld"), static_cast<long>(numberOfWindows));

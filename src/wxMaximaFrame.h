@@ -67,7 +67,7 @@ public:
   wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                 const wxPoint &pos = wxDefaultPosition,
                 const wxSize &size = wxDefaultSize,
-                long style = wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION, bool becomeLogTarget = true);
+                long style = wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION);
 
   /*! The destructor
    */
@@ -79,6 +79,7 @@ public:
     - false: Hide the toolbar
   */
   void ShowToolBar(bool show);
+  static std::size_t CountWindows();
 
   /*! Update the recent documents list
 

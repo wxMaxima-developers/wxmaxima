@@ -60,8 +60,7 @@
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                              const wxString &title, const wxPoint &pos,
-                             const wxSize &size, long style,
-                             bool becomeLogTarget)
+                             const wxSize &size, long style)
 : wxFrame(parent, id, title, pos, size, style),
   m_manager(this, wxAUI_MGR_ALLOW_FLOATING | wxAUI_MGR_ALLOW_ACTIVE_PANE |
             wxAUI_MGR_TRANSPARENT_HINT | wxAUI_MGR_HINT_FADE),
@@ -111,7 +110,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   // Redirect all debug messages to a dockable panel and output some info
   // about this program.
-  m_logPane = new LogPane(this, -1, becomeLogTarget);
+  m_logPane = new LogPane(this);
 
   wxLogMessage(wxString::Format(_("wxMaxima version %s"), GITVERSION));
 #ifdef __WXMSW__
@@ -452,6 +451,19 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
           wxMenuEventHandler(wxMaximaFrame::OnMenuStatusText), NULL, this);
   Connect(EventIDs::menu_pane_dockAll, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
+}
+
+std::size_t wxMaximaFrame::CountWindows() {
+  size_t numberOfWindows = 1;
+  
+  wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
+  while (node) {
+    // Only count windows of the type wxMaxima
+    if(dynamic_cast<wxMaximaFrame *>(node->GetData()) != NULL)
+      numberOfWindows++;
+    node = node->GetNext();
+  }
+  return numberOfWindows;
 }
 
 wxSize wxMaximaFrame::DoGetBestClientSize() const {

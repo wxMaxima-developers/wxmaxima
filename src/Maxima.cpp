@@ -188,14 +188,8 @@ void Maxima::ReadSocket() {
       if(ch != wxS('\0'))
         m_socketInputData.Append(ch);
     }  while (m_socket->LastReadCount() > 0);
-  // std::cerr<<m_socketInputData<<"\n";
-  // std::cerr<<"------ transmission end ------\n";
-  if ((m_pipeToStderr) && (!m_socketInputData.IsEmpty()))
-    {
-      std::cerr << m_socketInputData;
-      std::cerr.flush();
-    }
-  if(m_xmlInspector)
+
+  if(m_xmlInspector || GetPipeToStdErr())
     {
       wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
       event->SetInt(STRING_FOR_XMLINSPECTOR);
