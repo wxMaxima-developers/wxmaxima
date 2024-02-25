@@ -120,71 +120,73 @@ $(function() {
 <div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classMaxima.html#ad397fe2439bb3186b23bf0a91a9c680a">   72</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classMaxima.html#ad397fe2439bb3186b23bf0a91a9c680a">IsConnected</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_socket-&gt;IsConnected(); }</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classMaxima.html#ac8cf6784848689ae743ece4af20b0a02">   75</a></span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classMaxima.html#ac8cf6784848689ae743ece4af20b0a02">SetPipeToStdErr</a>(<span class="keywordtype">bool</span> pipe) { m_pipeToStderr = pipe; }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> GetPipeToStdErr() { <span class="keywordflow">return</span> m_pipeToStderr; }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be">Write</a>(<span class="keyword">const</span> <span class="keywordtype">void</span> *buffer, std::size_t length);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMaxima.html#a2a43dbaf7acf0560851899a20683543e">ReadSocket</a>();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classMaxima.html#afb674371bf8cdadfb05e772ec7b51dd0">   94</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMaxima.html#afb674371bf8cdadfb05e772ec7b51dd0">ClearFirstPrompt</a>() { m_first = <span class="keyword">false</span>; }</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8">   96</a></span>&#160;  <span class="keyword">enum</span> <a class="code" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8">EventCause</a> {</div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a46c15ee0530754feaced0ef045889f20">   98</a></span>&#160;    <a class="code" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a46c15ee0530754feaced0ef045889f20">READ_PENDING</a>,</div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8abd3bebab2a70ef164bd89bf6d1320732">  100</a></span>&#160;    <a class="code" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8abd3bebab2a70ef164bd89bf6d1320732">READ_MISC_TEXT</a>,</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    XML_PROMPT,</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    XML_SUPPRESSOUTPUT,</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    XML_WXXMLSYMBOLS,</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    XML_VARIABLES,</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    XML_WATCH_VARIABLES_ADD,</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    XML_STATUSBAR,</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    XML_HTML_MANUAL_KEYWORDS,</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    XML_MATHS,</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    XML_WXXML_KEY,</div>
-<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8ab062169d756676320e790966e56ad5ce">  111</a></span>&#160;    <a class="code" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8ab062169d756676320e790966e56ad5ce">DISCONNECTED</a>,</div>
-<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f">  113</a></span>&#160;    <a class="code" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f">WRITE_PENDING</a>,</div>
-<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec">  115</a></span>&#160;    <a class="code" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec">WRITE_ERROR</a>,</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    STRING_FOR_XMLINSPECTOR,</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  };</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keywordtype">void</span> XmlInspectorActive(<span class="keywordtype">bool</span> active){m_xmlInspector = active;}</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keywordtype">bool</span> m_xmlInspector = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  std::thread m_parserTask;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <span class="keywordtype">void</span> SocketEvent(wxSocketEvent &amp;event);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordtype">void</span> TimerEvent(wxTimerEvent &amp;event);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  std::unique_ptr&lt;wxSocketBase&gt; m_socket;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  wxSocketInputStream m_socketInput;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  wxTextInputStream m_textInput;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  wxString m_socketInputData;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="keywordtype">bool</span> m_first = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> m_pipeToStderr;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  <span class="keywordtype">void</span> SendToWxMaxima();</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  wxTimer m_readIdleTimer{<span class="keyword">this</span>};</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keyword">static</span> std::unordered_map&lt;wxString, EventCause, wxStringHash&gt; m_knownTags;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  std::atomic_bool m_abortReaderThread;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;};</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;wxDECLARE_EVENT(EVT_MAXIMA, wxThreadEvent);</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classMaxima.html#a7197d1444d711491a80c23d8879376a3">   77</a></span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classMaxima.html#a7197d1444d711491a80c23d8879376a3">GetPipeToStdErr</a>(<span class="keywordtype">bool</span> pipe) { m_pipeToStderr = pipe; }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> GetPipeToStdErr() { <span class="keywordflow">return</span> m_pipeToStderr; }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be">Write</a>(<span class="keyword">const</span> <span class="keywordtype">void</span> *buffer, std::size_t length);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMaxima.html#a2a43dbaf7acf0560851899a20683543e">ReadSocket</a>();</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="classMaxima.html#afb674371bf8cdadfb05e772ec7b51dd0">   96</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classMaxima.html#afb674371bf8cdadfb05e772ec7b51dd0">ClearFirstPrompt</a>() { m_first = <span class="keyword">false</span>; }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8">   98</a></span>&#160;  <span class="keyword">enum</span> <a class="code" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8">EventCause</a> {</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a46c15ee0530754feaced0ef045889f20">  100</a></span>&#160;    <a class="code" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a46c15ee0530754feaced0ef045889f20">READ_PENDING</a>,</div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8abd3bebab2a70ef164bd89bf6d1320732">  102</a></span>&#160;    <a class="code" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8abd3bebab2a70ef164bd89bf6d1320732">READ_MISC_TEXT</a>,</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    XML_PROMPT,</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    XML_SUPPRESSOUTPUT,</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    XML_WXXMLSYMBOLS,</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    XML_VARIABLES,</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    XML_WATCH_VARIABLES_ADD,</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    XML_STATUSBAR,</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    XML_HTML_MANUAL_KEYWORDS,</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    XML_MATHS,</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    XML_WXXML_KEY,</div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8ab062169d756676320e790966e56ad5ce">  113</a></span>&#160;    <a class="code" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8ab062169d756676320e790966e56ad5ce">DISCONNECTED</a>,</div>
+<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f">  115</a></span>&#160;    <a class="code" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f">WRITE_PENDING</a>,</div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec">  117</a></span>&#160;    <a class="code" href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec">WRITE_ERROR</a>,</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    STRING_FOR_XMLINSPECTOR,</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  };</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keywordtype">void</span> XmlInspectorActive(<span class="keywordtype">bool</span> active){m_xmlInspector = active;}</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="keywordtype">bool</span> m_xmlInspector = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  std::thread m_parserTask;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordtype">void</span> SocketEvent(wxSocketEvent &amp;event);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keywordtype">void</span> TimerEvent(wxTimerEvent &amp;event);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  std::unique_ptr&lt;wxSocketBase&gt; m_socket;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  wxSocketInputStream m_socketInput;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  wxTextInputStream m_textInput;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  wxString m_socketInputData;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="keywordtype">bool</span> m_first = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> m_pipeToStderr;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  <span class="keywordtype">void</span> SendToWxMaxima();</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  wxTimer m_readIdleTimer{<span class="keyword">this</span>};</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keyword">static</span> std::unordered_map&lt;wxString, EventCause, wxStringHash&gt; m_knownTags;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  std::atomic_bool m_abortReaderThread;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;};</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;wxDECLARE_EVENT(EVT_MAXIMA, wxThreadEvent);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:95</div></div>
 <div class="ttc" id="aclassMaxima_html"><div class="ttname"><a href="classMaxima.html">Maxima</a></div><div class="ttdoc">Interface to the Maxima process.</div><div class="ttdef"><b>Definition:</b> Maxima.h:62</div></div>
-<div class="ttc" id="aclassMaxima_html_a01e208858ffeeb60e8a1787a580103c8"><div class="ttname"><a href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8">Maxima::EventCause</a></div><div class="ttdeci">EventCause</div><div class="ttdef"><b>Definition:</b> Maxima.h:96</div></div>
-<div class="ttc" id="aclassMaxima_html_a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f"><div class="ttname"><a href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f">Maxima::WRITE_PENDING</a></div><div class="ttdeci">@ WRITE_PENDING</div><div class="ttdoc">A write to Maxima is still ongoing. We use this event to keep the traffic indicator alive.</div><div class="ttdef"><b>Definition:</b> Maxima.h:113</div></div>
-<div class="ttc" id="aclassMaxima_html_a01e208858ffeeb60e8a1787a580103c8a46c15ee0530754feaced0ef045889f20"><div class="ttname"><a href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a46c15ee0530754feaced0ef045889f20">Maxima::READ_PENDING</a></div><div class="ttdeci">@ READ_PENDING</div><div class="ttdoc">There's still pending data coming from Maxima. The Data member is empty at the moment.</div><div class="ttdef"><b>Definition:</b> Maxima.h:98</div></div>
-<div class="ttc" id="aclassMaxima_html_a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec"><div class="ttname"><a href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec">Maxima::WRITE_ERROR</a></div><div class="ttdeci">@ WRITE_ERROR</div><div class="ttdoc">The transmission has failed - this is an unrecoverable error, most likely.</div><div class="ttdef"><b>Definition:</b> Maxima.h:115</div></div>
-<div class="ttc" id="aclassMaxima_html_a01e208858ffeeb60e8a1787a580103c8ab062169d756676320e790966e56ad5ce"><div class="ttname"><a href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8ab062169d756676320e790966e56ad5ce">Maxima::DISCONNECTED</a></div><div class="ttdeci">@ DISCONNECTED</div><div class="ttdoc">Maxima has disconnected (possibly because the process had died).</div><div class="ttdef"><b>Definition:</b> Maxima.h:111</div></div>
-<div class="ttc" id="aclassMaxima_html_a01e208858ffeeb60e8a1787a580103c8abd3bebab2a70ef164bd89bf6d1320732"><div class="ttname"><a href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8abd3bebab2a70ef164bd89bf6d1320732">Maxima::READ_MISC_TEXT</a></div><div class="ttdeci">@ READ_MISC_TEXT</div><div class="ttdoc">Maxima has sent non-XML text.</div><div class="ttdef"><b>Definition:</b> Maxima.h:100</div></div>
+<div class="ttc" id="aclassMaxima_html_a01e208858ffeeb60e8a1787a580103c8"><div class="ttname"><a href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8">Maxima::EventCause</a></div><div class="ttdeci">EventCause</div><div class="ttdef"><b>Definition:</b> Maxima.h:98</div></div>
+<div class="ttc" id="aclassMaxima_html_a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f"><div class="ttname"><a href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a058e131729ff28b6a0442db28c93799f">Maxima::WRITE_PENDING</a></div><div class="ttdeci">@ WRITE_PENDING</div><div class="ttdoc">A write to Maxima is still ongoing. We use this event to keep the traffic indicator alive.</div><div class="ttdef"><b>Definition:</b> Maxima.h:115</div></div>
+<div class="ttc" id="aclassMaxima_html_a01e208858ffeeb60e8a1787a580103c8a46c15ee0530754feaced0ef045889f20"><div class="ttname"><a href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a46c15ee0530754feaced0ef045889f20">Maxima::READ_PENDING</a></div><div class="ttdeci">@ READ_PENDING</div><div class="ttdoc">There's still pending data coming from Maxima. The Data member is empty at the moment.</div><div class="ttdef"><b>Definition:</b> Maxima.h:100</div></div>
+<div class="ttc" id="aclassMaxima_html_a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec"><div class="ttname"><a href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a8711123903e89e9976049e9ec2a3ebec">Maxima::WRITE_ERROR</a></div><div class="ttdeci">@ WRITE_ERROR</div><div class="ttdoc">The transmission has failed - this is an unrecoverable error, most likely.</div><div class="ttdef"><b>Definition:</b> Maxima.h:117</div></div>
+<div class="ttc" id="aclassMaxima_html_a01e208858ffeeb60e8a1787a580103c8ab062169d756676320e790966e56ad5ce"><div class="ttname"><a href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8ab062169d756676320e790966e56ad5ce">Maxima::DISCONNECTED</a></div><div class="ttdeci">@ DISCONNECTED</div><div class="ttdoc">Maxima has disconnected (possibly because the process had died).</div><div class="ttdef"><b>Definition:</b> Maxima.h:113</div></div>
+<div class="ttc" id="aclassMaxima_html_a01e208858ffeeb60e8a1787a580103c8abd3bebab2a70ef164bd89bf6d1320732"><div class="ttname"><a href="classMaxima.html#a01e208858ffeeb60e8a1787a580103c8abd3bebab2a70ef164bd89bf6d1320732">Maxima::READ_MISC_TEXT</a></div><div class="ttdeci">@ READ_MISC_TEXT</div><div class="ttdoc">Maxima has sent non-XML text.</div><div class="ttdef"><b>Definition:</b> Maxima.h:102</div></div>
 <div class="ttc" id="aclassMaxima_html_a276c070c35c3cc8d31593de9aab92edc"><div class="ttname"><a href="classMaxima.html#a276c070c35c3cc8d31593de9aab92edc">Maxima::Maxima</a></div><div class="ttdeci">Maxima(wxSocketBase *socket, Configuration *config)</div><div class="ttdoc">Construct this object when a connection is received from Maxima. The argument should be socketServer....</div><div class="ttdef"><b>Definition:</b> Maxima.cpp:50</div></div>
 <div class="ttc" id="aclassMaxima_html_a2a43dbaf7acf0560851899a20683543e"><div class="ttname"><a href="classMaxima.html#a2a43dbaf7acf0560851899a20683543e">Maxima::ReadSocket</a></div><div class="ttdeci">void ReadSocket()</div><div class="ttdoc">Read whatever data is in the socket. This is normally handled by the event handler,...</div><div class="ttdef"><b>Definition:</b> Maxima.cpp:162</div></div>
+<div class="ttc" id="aclassMaxima_html_a7197d1444d711491a80c23d8879376a3"><div class="ttname"><a href="classMaxima.html#a7197d1444d711491a80c23d8879376a3">Maxima::GetPipeToStdErr</a></div><div class="ttdeci">static void GetPipeToStdErr(bool pipe)</div><div class="ttdoc">Tells if the user wants all data to maxima to be copied to StdErr.</div><div class="ttdef"><b>Definition:</b> Maxima.h:77</div></div>
 <div class="ttc" id="aclassMaxima_html_ac8cf6784848689ae743ece4af20b0a02"><div class="ttname"><a href="classMaxima.html#ac8cf6784848689ae743ece4af20b0a02">Maxima::SetPipeToStdErr</a></div><div class="ttdeci">static void SetPipeToStdErr(bool pipe)</div><div class="ttdoc">Tells us if the user wants all data to maxima to be copied to StdErr.</div><div class="ttdef"><b>Definition:</b> Maxima.h:75</div></div>
 <div class="ttc" id="aclassMaxima_html_ad397fe2439bb3186b23bf0a91a9c680a"><div class="ttname"><a href="classMaxima.html#ad397fe2439bb3186b23bf0a91a9c680a">Maxima::IsConnected</a></div><div class="ttdeci">bool IsConnected() const</div><div class="ttdoc">Are we connected to Maxima?</div><div class="ttdef"><b>Definition:</b> Maxima.h:72</div></div>
 <div class="ttc" id="aclassMaxima_html_aeb45e2fda6a941f99aa9181b644c75be"><div class="ttname"><a href="classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be">Maxima::Write</a></div><div class="ttdeci">bool Write(const void *buffer, std::size_t length)</div><div class="ttdoc">Write more data to be sent to maxima.</div><div class="ttdef"><b>Definition:</b> Maxima.cpp:115</div></div>
-<div class="ttc" id="aclassMaxima_html_afb674371bf8cdadfb05e772ec7b51dd0"><div class="ttname"><a href="classMaxima.html#afb674371bf8cdadfb05e772ec7b51dd0">Maxima::ClearFirstPrompt</a></div><div class="ttdeci">void ClearFirstPrompt()</div><div class="ttdoc">Clear the first prompt state, based on what was read from maxima. This is called from prompt recogniz...</div><div class="ttdef"><b>Definition:</b> Maxima.h:94</div></div>
+<div class="ttc" id="aclassMaxima_html_afb674371bf8cdadfb05e772ec7b51dd0"><div class="ttname"><a href="classMaxima.html#afb674371bf8cdadfb05e772ec7b51dd0">Maxima::ClearFirstPrompt</a></div><div class="ttdeci">void ClearFirstPrompt()</div><div class="ttdoc">Clear the first prompt state, based on what was read from maxima. This is called from prompt recogniz...</div><div class="ttdef"><b>Definition:</b> Maxima.h:96</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
