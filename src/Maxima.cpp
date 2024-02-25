@@ -177,16 +177,24 @@ void Maxima::ReadSocket() {
   }
   wxString line;
   wxUniChar ch;
+  wxUniChar lastch = '\0';
   m_abortReaderThread = true;
   if(m_parserTask.joinable())
     m_parserTask.join();
   do
     {
       ch = m_textInput.GetChar();
+      if(ch == wxS('\0'))
+        continue;
       if(ch == wxS('\r'))
-        ch = wxS('\n');
-      if(ch != wxS('\0'))
-        m_socketInputData.Append(ch);
+        {
+          if(lastch != wxS('\n'))
+            m_socketInputData.Append(wxS('\n'));
+          lastch = ch;
+          continue;
+        }
+      m_socketInputData.Append(ch);
+      lastch = ch;
     }  while (m_socket->LastReadCount() > 0);
 
   if(m_xmlInspector || GetPipeToStdErr())
