@@ -159,11 +159,15 @@ void Maxima::TimerEvent(wxTimerEvent &event) {
   }
 }
 
-void Maxima::ReadSocket() {
+void Maxima::ReadSocket() {  
   // It is theoretically possible that the client has exited after sending us
   // data and before we had been able to process it.
   if (!m_socket->IsConnected() || !m_socket->IsData())
     return;
+
+  // Avoid frequent (slow) malloc() calls.
+  m_socketInputData.Alloc(1000000);
+
 
   // std::cerr<<"------ transmission start ------\n";
   {
@@ -172,7 +176,7 @@ void Maxima::ReadSocket() {
     QueueEvent(event);
   }
   wxString line;
-  wxChar ch;
+  wxUniChar ch;
   m_abortReaderThread = true;
   if(m_parserTask.joinable())
     m_parserTask.join();
@@ -182,7 +186,7 @@ void Maxima::ReadSocket() {
       if(ch == wxS('\r'))
         ch = wxS('\n');
       if(ch != wxS('\0'))
-        m_socketInputData.append(ch);
+        m_socketInputData.Append(ch);
     }  while (m_socket->LastReadCount() > 0);
   // std::cerr<<m_socketInputData<<"\n";
   // std::cerr<<"------ transmission end ------\n";
