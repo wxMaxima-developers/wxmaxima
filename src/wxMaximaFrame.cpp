@@ -975,7 +975,7 @@ void wxMaximaFrame::SetupMaximaMenu() {
 
   {
     wxMenuItem *it = new wxMenuItem(m_MaximaMenu, ToolBar::menu_restart_id,
-                                    _("&Restart Maxima\tShift+Ctrl+M"), _("Restart Maxima"),
+                                    _("&Restart Maxima\tCtrl+Alt+R"), _("Restart Maxima"),
                                     wxITEM_NORMAL);
     it->SetBitmap(GetWorksheet()->m_mainToolBar->GetRestartBitmap(
                                                                wxRendererNative::Get().GetCheckBoxSize(this)));
