@@ -115,7 +115,7 @@ private:
   //    m_configuration.MaximaShareDir(dir);
 
   //! The thread the help file anchors are compiled in
-  std::unique_ptr<std::thread> m_helpfileanchorsThread;
+  std::thread m_helpfileanchorsThread;
   std::mutex m_helpFileAnchorsLock;
   //! The configuration storage
   Configuration *m_configuration;

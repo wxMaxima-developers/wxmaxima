@@ -534,23 +534,19 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
   }
   if (!LoadManualAnchorsFromCache()) {
     if (!m_maximaHtmlDir.IsEmpty()) {
-      if (m_helpfileanchorsThread) {
-        m_abortBackgroundTask = true;
+      if (m_helpfileanchorsThread.joinable()) {
         wxLogMessage(_("Waiting for the Manual anchors background task."));
-        m_helpfileanchorsThread->join();
-        m_helpfileanchorsThread.reset();
+        m_helpfileanchorsThread.join();
       }
       wxLogMessage(_("Background task that compiles the Manual anchors scheduled."));
       m_abortBackgroundTask = false;
       if(m_configuration->UseThreads())
-        m_helpfileanchorsThread =
-          std::unique_ptr<std::thread>(new
-                                       std::thread(&MaximaManual::CompileHelpFileAnchors,
-                                                   this,
-                                                   m_maximaHtmlDir,
-                                                   m_maximaVersion,
-                                                   Dirstructure::AnchorsCacheFile()
-                                                   ));
+        m_helpfileanchorsThread = std::thread(&MaximaManual::CompileHelpFileAnchors,
+                                              this,
+                                              m_maximaHtmlDir,
+                                              m_maximaVersion,
+                                              Dirstructure::AnchorsCacheFile()
+                                              );
       else
         CompileHelpFileAnchors(
                                m_maximaHtmlDir,
@@ -565,14 +561,10 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
 }
 
 MaximaManual::~MaximaManual() {
-  if(m_helpfileanchorsThread)
+  if(m_helpfileanchorsThread.joinable())
     {
-      if(m_helpfileanchorsThread->joinable())
-        {
-          m_abortBackgroundTask = true;
-          wxLogMessage(_("Waiting for the thread that parses the maxima manual to finish"));
-          m_helpfileanchorsThread->join();
-        }
-      m_helpfileanchorsThread.reset();
+      m_abortBackgroundTask = true;
+      wxLogMessage(_("Waiting for the thread that parses the maxima manual to finish"));
+      m_helpfileanchorsThread.join();
     }
 }
