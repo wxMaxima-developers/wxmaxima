@@ -4112,6 +4112,8 @@ void Worksheet::SetNotification(const wxString &message, int flags) {
  * event to the active cell, else moves the cursor between groups.
  */
 void Worksheet::OnChar(wxKeyEvent &event) {
+  /* Doing an unconditional event.Skip() here means that on any key that
+     looks like navigation (up, down,...) the worksheet looses focus */
   UpdateControlsNeeded(true);
   m_configuration->LastActiveTextCtrl(NULL);
   m_adjustWorksheetSizeNeeded = true;

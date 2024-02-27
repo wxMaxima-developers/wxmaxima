@@ -1694,3 +1694,4 @@ wxString Configuration::m_configfileLocation_override;
 std::unordered_map<TextStyle, wxString> Configuration::m_styleNames;
 bool Configuration::m_debugMode = false;
 bool Configuration::m_use_threads = true;
+wxString Configuration::m_maxima_LANG;

@@ -1061,7 +1061,11 @@ public:
   void RecalculateForce() { m_cellCfgCnt++; }
   bool UseThreads(){return m_use_threads;}
   static void UseThreads(bool use){m_use_threads = use;}
+  static void SetMaximaLang(wxString LANG){m_maxima_LANG = LANG;}
+  static wxString GetMaximaLang(){return m_maxima_LANG;}
 private:
+  //! Which LANG environment variable to communicate to maxima?
+  static wxString m_maxima_LANG;
   //! Which styles affect how code is displayed?
   std::vector<TextStyle> m_codeStyles;
   //! Which styles affect how math output is displayed?

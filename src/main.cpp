@@ -267,7 +267,11 @@ bool MyApp::OnInit() {
     if (wxLocale::IsAvailable(lang))
       wxTranslations::Get()->SetLanguage(lang);
 
-    // Do we reckon we improve something if we set maxima's language, as well?
+    /* Maxima depending on the lisp it was compiled by and the lisp's version
+       might only support Unicode if LANG tells it so.
+       
+       Do we reckon we improve something if we set maxima's language, as well?
+    */
     if ((wxLocale::IsAvailable(lang)) && (lang != wxLANGUAGE_DEFAULT)) {
       // Set maxima's language, as well.
       wxString localeName = wxLocale().GetCanonicalName();
@@ -281,6 +285,7 @@ bool MyApp::OnInit() {
             localeName += wxS(".UTF-8");
           }
         }
+        Configuration::SetMaximaLang(localeName);
         wxSetEnv(wxS("LANG"), localeName);
       }
     }
