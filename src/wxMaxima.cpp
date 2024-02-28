@@ -9273,13 +9273,15 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
                                       wxMINOR_VERSION, wxRELEASE_NUMBER, _("yes").utf8_str());
 
       if (GetWorksheet()->GetMaximaVersion() != wxEmptyString)
-        description += _("\nMaxima version: ") + GetWorksheet()->GetMaximaVersion() +
-          " (" + m_maximaArch + ")";
+        {
+          description += _("\nMaxima version: ") + GetWorksheet()->GetMaximaVersion() +
+            " (" + m_maximaArch + ")";
+          if (m_lispVersion != wxEmptyString)
+            description += _("\nMaxima was compiled using: ") +
+              m_configuration.LispType() + " " + m_lispVersion;
+        }
       else
-        description += _("\nNot connected.");
-      if (m_lispVersion != wxEmptyString)
-        description += _("\nMaxima compiled using: ") +
-          m_configuration.LispType() + " " + m_lispVersion;
+        description += _("\nNot connected to Maxima.");
 
       info.SetIcon(wxMaximaIcon());
       info.SetDescription(description);
