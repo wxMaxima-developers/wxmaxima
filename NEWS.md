@@ -2,6 +2,7 @@
 
 - Set maxima's LANG variable, not wxMaxima's LANG (#1897)
 - Sped up the communication between maxima and wxMaxima
+- Sometimes newlines in misc text from maxima got lost (#1894)
 
 # 24.02.1
 

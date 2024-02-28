@@ -29,6 +29,7 @@
 #include <wx/app.h>
 #include <wx/debug.h>
 #include <wx/sstream.h>
+#include <wx/tokenzr.h>
 
 //! The time, in ms, we'll wait for an end of string to arrive from maxima after
 //! the input was first read.
@@ -267,10 +268,16 @@ void Maxima::SendToWxMaxima()
       }
     if(!dataToSend.IsEmpty())
       {
-        wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
-        event->SetInt(READ_MISC_TEXT);
-        event->SetString(dataToSend);
-        QueueEvent(event);
+        wxStringTokenizer lines(dataToSend, wxS("\n"), wxTOKEN_RET_EMPTY_ALL);
+        while (lines.HasMoreTokens()) {
+          wxString line = lines.GetNextToken();
+          if(lines.HasMoreTokens())
+            line += wxS("\n");
+          wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
+          event->SetInt(READ_MISC_TEXT);
+          event->SetString(line);
+          QueueEvent(event);
+        }
       }
     while(it != m_socketInputData.end())
       {
@@ -301,9 +308,9 @@ void Maxima::SendToWxMaxima()
                   }
                 else
                   {
-                    if((charsInTag == 0) || (i != '\n'))
+                    if((charsInTag < 0) || (i != '\n'))
                       rest += i;
-                    if(charsInTag >= 0)
+                    if(charsInTag == 0)
                       --charsInTag;
                   }
                 
