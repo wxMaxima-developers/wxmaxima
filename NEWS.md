@@ -1,3 +1,8 @@
+# Current
+
+- Set maxima's LANG variable, not wxMaxima's LANG (#1897)
+- Sped up the communication between maxima and wxMaxima
+
 # 24.02.1
 
 - wxMaxima now correctly installs its icons (#1892)

@@ -2635,7 +2635,8 @@ bool wxMaxima::StartMaxima(bool force) {
       // signal Strictly necessary only on MS Windows where we don'r have a
       // kill() command.
       environment["MAXIMA_SIGNALS_THREAD"] = "1";
-      environment["LANG"] = Configuration::GetMaximaLang();
+      if(!Configuration::GetMaximaLang().IsEmpty())
+        environment["LANG"] = Configuration::GetMaximaLang();
       // TODO: Is this still necessary for gnuplot on MacOs?
 #if defined __WXOSX__
       environment["DISPLAY"] = ":0.0";
@@ -3526,7 +3527,8 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   wxEnvVariableHashMap environment;
   // gnuplot uses the PAGER variable only on un*x - and on un*x there is cat.
   environment["PAGER"] = "cat";
-  environment["LANG"] = Configuration::GetMaximaLang();
+  if(!Configuration::GetMaximaLang().IsEmpty())
+    environment["LANG"] = Configuration::GetMaximaLang();
   wxGetEnvMap(&environment);
 
   m_gnuplotTerminalQueryProcess =
