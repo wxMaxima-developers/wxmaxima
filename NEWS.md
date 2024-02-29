@@ -1,4 +1,4 @@
-# Current
+# 24.02.2
 
 - Set maxima's LANG variable, not wxMaxima's LANG (#1897)
 - Sped up the communication between maxima and wxMaxima
