@@ -27,7 +27,7 @@ jobs:
              sudo apt-get install g++-i686-linux-gnu cmake gettext libwxgtk3.0-gtk3-dev:i386 libwxgtk-webview3.0-gtk3-dev:i386 pandoc make
       - name: configure
         run: |
-             export CXX="g++-i686-linux-gnu"
+             export CXX="i686-linux-gnu-g++"
              export CXXFLAGS="-Wall -Wextra -ansi"
              export LANG=en_US.UTF-8
              mkdir build
