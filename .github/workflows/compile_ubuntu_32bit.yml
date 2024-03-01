@@ -1,0 +1,41 @@
+name: compile_ubuntu_32bit
+
+on: [push]
+
+env:
+  BUILD_TYPE: Release
+
+permissions:
+  contents: read
+
+jobs:
+  compile_latest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout_git
+        uses: actions/checkout@v4
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 15
+      - name: install_packages
+        run: |
+             dpkg --add-architecture i386
+             sudo apt-get update
+             sudo apt-get install g++-i686-linux-gnu cmake gettext libwxgtk3.0-gtk3-dev:i386 libwxgtk-webview3.0-gtk3-dev:i386 pandoc make
+      - name: configure
+        run: |
+             export CXX="g++-i686-linux-gnu"
+             export CXXFLAGS="-Wall -Wextra -ansi"
+             export LANG=en_US.UTF-8
+             mkdir build
+             cd build
+             cmake ..
+             cd ..
+      - name: compile
+        run: |
+             cd build
+             cmake --build .
+             cd ..
