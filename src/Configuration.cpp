@@ -1690,6 +1690,27 @@ const wxString &Configuration::GetStyleName(TextStyle textStyle) {
     return wxm::emptyString;
 }
 
+const std::size_t Configuration::ShowLength_Cells() const
+{
+  std::size_t showLength;
+  switch (ShowLength()) {
+  case 0:
+    showLength = 600;
+    break;
+  case 1:
+    showLength = 2000;
+    break;
+  case 2:
+    showLength = 25000;
+    break;
+  case 3:
+    showLength = 0;
+    break;
+  default:
+    showLength = 5000;
+  }
+  return showLength;
+}
 wxString Configuration::m_configfileLocation_override;
 std::unordered_map<TextStyle, wxString> Configuration::m_styleNames;
 bool Configuration::m_debugMode = false;
