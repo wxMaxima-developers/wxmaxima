@@ -901,22 +901,14 @@ if(DESKTOP_FILE_VALIDATE)
         COMMAND ${DESKTOP_FILE_VALIDATE} ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.desktop)
 endif()
 
-find_program(APPSTREAM_UTIL appstream-util)
-if(APPSTREAM_UTIL)
-    # Get appstream-util version number
-    execute_process(COMMAND ${APPSTREAM_UTIL} --version
-                    OUTPUT_VARIABLE APPSTREAM_UTIL_VERSION_TEXT)
-    string(REGEX REPLACE "^Version:\t*([^\n]*).*" "\\1"  APPSTREAM_UTIL_VERSION "${APPSTREAM_UTIL_VERSION_TEXT}")
-    message(STATUS "Found appstream-util: ${APPSTREAM_UTIL} (found version \"${APPSTREAM_UTIL_VERSION}\")")
+find_program(APPSTREAMCLI appstreamcli)
+if(APPSTREAMCLI)
+    message(STATUS "Found appstreamcli: ${APPSTREAMCLI}")
     # In older versions (e.g. the version included in Ubuntu 18.04) the test fails, so disable it.
     # If it is okay in newer versions, I assume, our appstream file is valid and just the test was to hard.
-    if(APPSTREAM_UTIL_VERSION VERSION_LESS "0.7.16")
-        message(WARNING "appstream-util < 0.7.16 found. Disable the appdata validation test.")
-    else()
-        add_test(
+    add_test(
             NAME check_appstream_file
-            COMMAND ${APPSTREAM_UTIL} --nonet validate "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.appdata.xml")
-    endif()
+            COMMAND ${APPSTREAMCLI} validate "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.appdata.xml")
 else()
     message(STATUS "appstream-util not found. Do not check of the appstream file.")
 endif()
