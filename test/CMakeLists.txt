@@ -904,8 +904,6 @@ endif()
 find_program(APPSTREAMCLI appstreamcli)
 if(APPSTREAMCLI)
     message(STATUS "Found appstreamcli: ${APPSTREAMCLI}")
-    # In older versions (e.g. the version included in Ubuntu 18.04) the test fails, so disable it.
-    # If it is okay in newer versions, I assume, our appstream file is valid and just the test was to hard.
     add_test(
             NAME check_appstream_file
             COMMAND ${APPSTREAMCLI} validate "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.appdata.xml")
