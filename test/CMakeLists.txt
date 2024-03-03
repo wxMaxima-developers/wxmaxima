@@ -908,6 +908,6 @@ if(APPSTREAMCLI)
             NAME check_appstream_file
             COMMAND ${APPSTREAMCLI} validate "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.appdata.xml")
 else()
-    message(STATUS "appstream-util not found. Do not check of the appstream file.")
+    message(STATUS "appstreamcli not found. Do not check of the appstream file.")
 endif()
 
