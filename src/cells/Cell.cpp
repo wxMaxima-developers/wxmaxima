@@ -1426,14 +1426,6 @@ wxAccStatus Cell::GetRole(int WXUNUSED(childId), wxAccRole *role) const {
 
 #endif
 
-size_t Cell::GetInnerCellCount_recursive() const
-{
-  size_t retval = GetInnerCellCount();
-  for (const Cell &cell : OnInner(this))
-    retval += cell.GetInnerCellCount_recursive();
-  return retval;
-}
-
 size_t Cell::GetInnerCellCount() const { return 0; }
 
 Cell *Cell::GetInnerCell(size_t) const {
