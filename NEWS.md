@@ -1,5 +1,6 @@
 # Current
 
+- Discard maths that is too long to read faster
 
 # 24.02.2
 

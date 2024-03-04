@@ -58,8 +58,6 @@ set(CELL_SOURCE_FILES
     FontAttribs.cpp
     TextStyle.cpp
     FontVariantCache.cpp
-    VisiblyInvalidCell.cpp
-    TooLongMathsMsg.cpp
 )
 list_transform_prepend(CELL_SOURCE_FILES cells/)
 

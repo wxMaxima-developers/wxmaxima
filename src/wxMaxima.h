@@ -410,7 +410,7 @@ protected:
      NULL, if there is no such line (for example if the appended object is
      maths instead).
   */
-  TextCell *ConsoleAppend(wxString s, CellType type, const wxString &userLabel = {});        //!< append maxima output to console
+  TextCell *ConsoleAppend(wxString s, CellType type);        //!< append maxima output to console
   void ConsoleAppend(wxXmlDocument xml, CellType type, const wxString &userLabel = {});        //!< append maxima output to console
 
   enum AppendOpt { NewLine = 1, BigSkip = 2, PromptToolTip = 4, DefaultOpt = NewLine|BigSkip };

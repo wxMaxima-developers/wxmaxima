@@ -852,14 +852,12 @@ public:
   void UseSVG(bool useSVG) { m_useSVG = useSVG ;}
   //! The choice for the "maximum output length to display" setting
   void ShowLength(long length) {
-    if(m_showLength != length)
-      RecalculateForce();
     m_showLength = length;
   }
   //! The choice for the "maximum output length to display" setting
   long ShowLength() const {return m_showLength;}
   //! The "maximum output length to display" setting in cells
-  const std::size_t ShowLength_Cells() const;
+  const std::size_t ShowLength_Bytes() const;
   void LispType(wxString type) { m_lispType = std::move(type); }
   wxString LispType() const {return m_lispType;}
 

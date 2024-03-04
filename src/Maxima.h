@@ -108,6 +108,7 @@ public:
     XML_STATUSBAR,
     XML_HTML_MANUAL_KEYWORDS,
     XML_MATHS,
+    XML_TOOLONGMATHS,
     XML_WXXML_KEY,
     //! Maxima has disconnected (possibly because the process had died).
     DISCONNECTED,

@@ -1690,24 +1690,24 @@ const wxString &Configuration::GetStyleName(TextStyle textStyle) {
     return wxm::emptyString;
 }
 
-const std::size_t Configuration::ShowLength_Cells() const
+const std::size_t Configuration::ShowLength_Bytes() const
 {
   std::size_t showLength;
   switch (ShowLength()) {
   case 0:
-    showLength = 600;
+    showLength = 6000;
     break;
   case 1:
-    showLength = 2000;
+    showLength = 20000;
     break;
   case 2:
-    showLength = 25000;
+    showLength = 100000;
     break;
   case 3:
     showLength = 0;
     break;
   default:
-    showLength = 5000;
+    showLength = 6000;
   }
   return showLength;
 }

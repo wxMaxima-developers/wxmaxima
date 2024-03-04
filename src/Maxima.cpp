@@ -317,17 +317,25 @@ void Maxima::SendToWxMaxima()
               }
 
             wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
-              event->SetInt(tag->second);
               // XML_PROMPT contains fake XML and XML_SUPPRESSOUTPUT contains any kind of
-              // text including XML. XML_MATHS should support adding real maths, but
-              // currently still doesn't
+              // text including XML.
               if((tag->second != XML_PROMPT) && (tag->second != XML_SUPPRESSOUTPUT))
               {
-                wxXmlDocument xmldoc;
-                wxStringInputStream xmlStream(dataToSend);
-                wxLogNull suppressErrorDialogs;
-                xmldoc.Load(xmlStream, wxS("UTF-8"));
-                event->SetPayload(xmldoc);
+                if((tag->second == XML_MATHS) &&
+                   ((dataToSend.Length() > m_configuration->ShowLength_Bytes()) ||
+                    (m_configuration->ShowLength_Bytes() == 0)))
+                  {
+                    event->SetInt(XML_TOOLONGMATHS);
+                  }
+                else
+                  {
+                    event->SetInt(tag->second);
+                    wxXmlDocument xmldoc;
+                    wxStringInputStream xmlStream(dataToSend);
+                    wxLogNull suppressErrorDialogs;
+                    xmldoc.Load(xmlStream, wxS("UTF-8"));
+                    event->SetPayload(xmldoc);
+                  }
               }
             else
               event->SetString(dataToSend);
