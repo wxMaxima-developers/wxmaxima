@@ -322,8 +322,8 @@ void Maxima::SendToWxMaxima()
               if((tag->second != XML_PROMPT) && (tag->second != XML_SUPPRESSOUTPUT))
               {
                 if((tag->second == XML_MATHS) &&
-                   ((dataToSend.Length() > m_configuration->ShowLength_Bytes()) ||
-                    (m_configuration->ShowLength_Bytes() == 0)))
+                   ((m_configuration->ShowLength_Bytes() != 0) && (dataToSend.Length() > m_configuration->ShowLength_Bytes())
+                    ))
                   {
                     event->SetInt(XML_TOOLONGMATHS);
                   }
