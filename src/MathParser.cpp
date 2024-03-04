@@ -1284,11 +1284,8 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
   } else {
     cell = std::make_unique<TextCell>(
                                       m_group, m_configuration,
-                                      T_("(wxMaxima is configured not to show long expressions - which would be slow)"),
+                                      T_("(Invalid XML from maxima)"),
                                       TS_WARNING);
-    cell->SetToolTip(&T_(
-                         "The maximum size of the expressions wxMaxima is allowed to display "
-                         "can be changed in the configuration dialogue."));
     cell->ForceBreakLine(true);
   }
   return cell;
@@ -1306,15 +1303,6 @@ std::unique_ptr<Cell> MathParser::ParseLine(const wxXmlDocument &xml, CellType s
       auto child = doc->GetChildren();
       cell = ParseTag(child);
     }
-
-  cell = std::make_unique<TextCell>(
-                                    m_group, m_configuration,
-                                    T_("(wxMaxima is configured not to show long expressions - which would be slow)"),
-                                    TS_WARNING);
-  cell->SetToolTip(&T_(
-                       "The maximum size of the expressions wxMaxima is allowed to display "
-                       "can be changed in the configuration dialogue."));
-  cell->ForceBreakLine(true);
   return cell;
 }
 

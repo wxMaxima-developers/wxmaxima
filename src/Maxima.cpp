@@ -317,8 +317,10 @@ void Maxima::SendToWxMaxima()
               }
 
             wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
+              event->SetInt(tag->second);
               // XML_PROMPT contains fake XML and XML_SUPPRESSOUTPUT contains any kind of
-              // text including XML.
+              // text including XML. XML_MATHS should support adding real maths, but
+              // currently still doesn't
               if((tag->second != XML_PROMPT) && (tag->second != XML_SUPPRESSOUTPUT))
               {
                 if((tag->second == XML_MATHS) &&
