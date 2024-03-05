@@ -1284,11 +1284,8 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
   } else {
     cell = std::make_unique<TextCell>(
                                       m_group, m_configuration,
-                                      T_("(wxMaxima is configured not to show long expressions - which would be slow)"),
+                                      T_("(Invalid XML from maxima)"),
                                       TS_WARNING);
-    cell->SetToolTip(&T_(
-                         "The maximum size of the expressions wxMaxima is allowed to display "
-                         "can be changed in the configuration dialogue."));
     cell->ForceBreakLine(true);
   }
   return cell;
@@ -1298,25 +1295,6 @@ std::unique_ptr<Cell> MathParser::ParseLine(const wxXmlDocument &xml, CellType s
   m_ParserStyle = style;
   m_FracStyle = FracCell::FC_NORMAL;
   m_highlight = false;
-  size_t showLength;
-
-  switch (m_configuration->ShowLength()) {
-  case 0:
-    showLength = 600;
-    break;
-  case 1:
-    showLength = 2000;
-    break;
-  case 2:
-    showLength = 25000;
-    break;
-  case 3:
-    showLength = 0;
-    break;
-  default:
-    showLength = 5000;
-  }
-
   std::unique_ptr<Cell> cell;
 
   wxXmlNode *doc = xml.GetRoot();
@@ -1324,18 +1302,6 @@ std::unique_ptr<Cell> MathParser::ParseLine(const wxXmlDocument &xml, CellType s
     {
       auto child = doc->GetChildren();
       cell = ParseTag(child);
-    }
-
-  if ((cell != NULL ) && (cell->GetInnerCellCount_recursive() > showLength))
-    {
-      cell = std::make_unique<TextCell>(
-                                        m_group, m_configuration,
-                                        T_("(wxMaxima is configured not to show long expressions - which would be slow)"),
-                                        TS_WARNING);
-      cell->SetToolTip(&T_(
-                           "The maximum size of the expressions wxMaxima is allowed to display "
-                           "can be changed in the configuration dialogue."));
-      cell->ForceBreakLine(true);
     }
   return cell;
 }

@@ -2043,8 +2043,7 @@ void wxMaxima::ConsoleAppend(wxXmlDocument xml, CellType type,
  * It will call
  * DoConsoleAppend if s is in xml and DoRawCosoleAppend if s is not in xml.
  */
-TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type,
-                                  const wxString &userLabel) {
+TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type) {
   TextCell *lastLine = NULL;
   // If we want to append an error message to the worksheet and there is no cell
   // that can contain it we need to create such a cell.
@@ -2093,12 +2092,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type,
     // data from maxima.
     wxBusyCursor crs;
 
-    if (s.StartsWith(m_mathPrefix1) || s.StartsWith(m_mathPrefix2))
-      DoConsoleAppend("<span>" + s + "</span>", type,
-                      AppendOpt(AppendOpt::NewLine | AppendOpt::BigSkip),
-                      userLabel);
-    else
-      lastLine = DoRawConsoleAppend(s, type);
+    lastLine = DoRawConsoleAppend(s, type);
   } else if (type == MC_TYPE_PROMPT) {
     m_lastPrompt = s;
 
@@ -2108,8 +2102,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type,
       s = s + wxS(" ");
 
     DoConsoleAppend(wxS("<span>") + s + wxS("</span>"), type,
-                    AppendOpt(AppendOpt::NewLine | AppendOpt::BigSkip),
-                    userLabel);
+                    AppendOpt(AppendOpt::NewLine | AppendOpt::BigSkip));
   } else if (type == MC_TYPE_ERROR) {
     lastLine = DoRawConsoleAppend(s, MC_TYPE_ERROR);
     GroupCell *tmp = GetWorksheet()->GetWorkingGroup(true);
@@ -2440,6 +2433,11 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
   case Maxima::XML_MATHS:
     m_statusBar->NetworkStatus(StatusBar::receive);
     ReadMath(event.GetPayload<wxXmlDocument>());
+    break;
+  case Maxima::XML_TOOLONGMATHS:
+    m_statusBar->NetworkStatus(StatusBar::receive);
+    DoRawConsoleAppend(_("(Config tells to suppress the output of long cells)"),
+                       MC_TYPE_WARNING);    
     break;
   case Maxima::XML_WXXML_KEY: // TODO: Should the key be outside the SuppressOutput?
     break;

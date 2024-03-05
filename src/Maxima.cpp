@@ -323,11 +323,21 @@ void Maxima::SendToWxMaxima()
               // currently still doesn't
               if((tag->second != XML_PROMPT) && (tag->second != XML_SUPPRESSOUTPUT))
               {
-                wxXmlDocument xmldoc;
-                wxStringInputStream xmlStream(dataToSend);
-                wxLogNull suppressErrorDialogs;
-                xmldoc.Load(xmlStream, wxS("UTF-8"));
-                event->SetPayload(xmldoc);
+                if((tag->second == XML_MATHS) &&
+                   ((m_configuration->ShowLength_Bytes() != 0) && (dataToSend.Length() > m_configuration->ShowLength_Bytes())
+                    ))
+                  {
+                    event->SetInt(XML_TOOLONGMATHS);
+                  }
+                else
+                  {
+                    event->SetInt(tag->second);
+                    wxXmlDocument xmldoc;
+                    wxStringInputStream xmlStream(dataToSend);
+                    wxLogNull suppressErrorDialogs;
+                    xmldoc.Load(xmlStream, wxS("UTF-8"));
+                    event->SetPayload(xmldoc);
+                  }
               }
             else
               event->SetString(dataToSend);

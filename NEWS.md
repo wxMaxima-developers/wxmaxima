@@ -1,3 +1,7 @@
+# Current
+
+- Discard maths that is too long to read faster
+
 # 24.02.2
 
 - Set maxima's LANG variable, not wxMaxima's LANG (#1897)

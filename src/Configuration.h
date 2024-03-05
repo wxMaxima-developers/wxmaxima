@@ -850,8 +850,14 @@ public:
   void CopyEMF(bool copyEMF) { m_copyEMF = copyEMF; }
   bool UseSVG() const {return m_useSVG;}
   void UseSVG(bool useSVG) { m_useSVG = useSVG ;}
-  void ShowLength(long length) { m_showLength = length; }
+  //! The choice for the "maximum output length to display" setting
+  void ShowLength(long length) {
+    m_showLength = length;
+  }
+  //! The choice for the "maximum output length to display" setting
   long ShowLength() const {return m_showLength;}
+  //! The "maximum output length to display" setting in cells
+  const std::size_t ShowLength_Bytes() const;
   void LispType(wxString type) { m_lispType = std::move(type); }
   wxString LispType() const {return m_lispType;}
 
