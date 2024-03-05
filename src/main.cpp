@@ -627,6 +627,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
       std::vector<char *> argslist;
       for(auto &i : args_c_strings)
         argslist.push_back(static_cast<char *>(i.data()));
+      // Add an "end of arguments list" marker to the list of arguments
       argslist.push_back(NULL);
       // Let's generate an unique pointer to that one so C++ automatically destroys it
       // once it is no more needed.
