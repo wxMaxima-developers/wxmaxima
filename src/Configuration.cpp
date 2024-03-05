@@ -1690,7 +1690,7 @@ const wxString &Configuration::GetStyleName(TextStyle textStyle) {
     return wxm::emptyString;
 }
 
-const std::size_t Configuration::ShowLength_Bytes() const
+std::size_t Configuration::ShowLength_Bytes() const
 {
   std::size_t showLength;
   switch (ShowLength()) {

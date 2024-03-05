@@ -857,7 +857,7 @@ public:
   //! The choice for the "maximum output length to display" setting
   long ShowLength() const {return m_showLength;}
   //! The "maximum output length to display" setting in cells
-  const std::size_t ShowLength_Bytes() const;
+  std::size_t ShowLength_Bytes() const;
   void LispType(wxString type) { m_lispType = std::move(type); }
   wxString LispType() const {return m_lispType;}
 
