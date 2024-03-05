@@ -1,6 +1,7 @@
 # Current
 
-- Discard maths that is too long to read faster
+- Faster discarding of maths that is too long to read
+- Resolved a crash on closing the last window (#1898)
 
 # 24.02.2
 
