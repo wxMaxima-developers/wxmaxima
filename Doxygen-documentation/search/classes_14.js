@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xmlinspector_2060',['XmlInspector',['../classXmlInspector.html',1,'']]]
+  ['xmlinspector_2062',['XmlInspector',['../classXmlInspector.html',1,'']]]
 ];

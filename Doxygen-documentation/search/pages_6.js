@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['the_20example_20files_3392',['The example files',['../md_examples_README.html',1,'']]],
-  ['the_20manual_3393',['The manual',['../md_info_README.html',1,'']]],
-  ['the_20translation_20of_20the_20manual_3394',['The Translation of the manual',['../md_locales_manual_README.html',1,'']]],
-  ['the_20translation_20of_20the_20program_20itself_3395',['The Translation of the program itself',['../md_locales_wxMaxima_README.html',1,'']]],
-  ['the_20wxmaxima_20user_20manual_3396',['The wxMaxima user manual',['../md_info_wxmaxima.html',1,'']]],
-  ['todo_20list_3397',['Todo List',['../todo.html',1,'']]]
+  ['wxmaxima_3402',['wxMaxima',['../index.html',1,'']]],
+  ['wxmaxima_3403',['WxMaxima',['../md_README.html',1,'']]],
+  ['wxmaxima_20release_20checklist_3404',['wxMaxima Release Checklist',['../md_ReleaseChecklist.html',1,'']]],
+  ['wxmaxima_27s_20translations_3405',['wxMaxima&apos;s Translations',['../md_locales_README.html',1,'']]]
 ];
