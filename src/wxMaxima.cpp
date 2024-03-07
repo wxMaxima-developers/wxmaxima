@@ -3743,7 +3743,7 @@ void wxMaxima::VariableActionOperators(const wxString &value) {
   wxStringInputStream xmlStream(value);
   {
     wxLogNull noErrorDialog;
-    xmldoc.Load(xmlStream, wxS("UTF-8"));
+    xmldoc.Load(xmlStream);
   }
   if(!xmldoc.IsOk())
     {
@@ -4218,7 +4218,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
     }
 
   // Open the file
-  xmldoc.Load(wxmxContents, wxS("UTF-8"),
+  xmldoc.Load(wxmxContents,
               wxXMLDOC_KEEP_WHITESPACE_NODES);
 
   if (!xmldoc.IsOk()) {
@@ -4273,7 +4273,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
       wxMemoryInputStream istream(ostream);
 
       // Try to load the file from the memory buffer.
-      xmldoc.Load(istream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+      xmldoc.Load(istream, wxXMLDOC_KEEP_WHITESPACE_NODES);
     }
 
     // If the xml document still cannot be loaded let's extract only the input
@@ -4302,7 +4302,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
         wxMemoryInputStream istream(ostream);
 
         // Try to load the file from the memory buffer.
-        xmldoc.Load(istream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+        xmldoc.Load(istream, wxXMLDOC_KEEP_WHITESPACE_NODES);
       }
     }
 
@@ -4333,7 +4333,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
         wxMemoryInputStream istream(ostream);
 
         // Try to load the file from the memory buffer.
-        xmldoc.Load(istream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+        xmldoc.Load(istream, wxXMLDOC_KEEP_WHITESPACE_NODES);
       }
     }
   }

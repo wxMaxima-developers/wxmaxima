@@ -335,7 +335,7 @@ void Maxima::SendToWxMaxima()
                     wxXmlDocument xmldoc;
                     wxStringInputStream xmlStream(dataToSend);
                     wxLogNull suppressErrorDialogs;
-                    xmldoc.Load(xmlStream, wxS("UTF-8"));
+                    xmldoc.Load(xmlStream);
                     event->SetPayload(xmldoc);
                   }
               }

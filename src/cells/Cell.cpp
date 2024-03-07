@@ -795,7 +795,7 @@ wxString Cell::OMML2RTF(wxString ommltext) {
 
   wxStringInputStream ommlStream(ommltext);
 
-  ommldoc.Load(ommlStream, wxS("UTF-8"));
+  ommldoc.Load(ommlStream);
 
   wxXmlNode *node = ommldoc.GetRoot();
   result += OMML2RTF(node);

@@ -32,6 +32,7 @@
 
 #include <wx/colour.h>
 #include <map>
+#include <wx/hashmap.h>
 #include <string>
 #include <ostream>
 #include <wx/config.h>

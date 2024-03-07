@@ -88,7 +88,7 @@ bool MaximaManual::LoadBuiltInManualAnchors() {
   wxLogMessage(_("Using the built-in list of manual anchors."));
   wxMemoryInputStream istream(MANUAL_ANCHORS_XML, MANUAL_ANCHORS_XML_SIZE);
   wxXmlDocument xmlDoc;
-  if (!xmlDoc.Load(istream, wxS("UTF-8")))
+  if (!xmlDoc.Load(istream))
     return false;
   if (!LoadManualAnchorsFromXML(xmlDoc, false))
     return false;

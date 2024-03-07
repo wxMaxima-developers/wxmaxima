@@ -139,7 +139,7 @@ void AutoComplete::AddSymbols(wxXmlDocument xml) {
 void AutoComplete::AddSymbols_Backgroundtask_string(wxString xml) {
   wxXmlDocument xmldoc;
   wxStringInputStream xmlStream(xml);
-  xmldoc.Load(xmlStream, wxS("UTF-8"));
+  xmldoc.Load(xmlStream);
   AddSymbols_Backgroundtask(xmldoc);
 }
 

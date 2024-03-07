@@ -93,7 +93,7 @@ void MaximaIPC::ReadInputData(const wxString &data) {
 
   wxXmlDocument xmldoc;
   wxStringInputStream xmlStream(data);
-  xmldoc.Load(xmlStream, wxS("UTF-8"));
+  xmldoc.Load(xmlStream);
   wxXmlNode *node = xmldoc.GetRoot();
   if (!node)
     return;

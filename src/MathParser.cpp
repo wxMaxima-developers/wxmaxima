@@ -1274,7 +1274,7 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
 
     {
       wxLogNull suppressErrorMessages;
-      xml.Load(xmlStream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+      xml.Load(xmlStream, wxXMLDOC_KEEP_WHITESPACE_NODES);
     }
 
     wxXmlNode *doc = xml.GetRoot();
