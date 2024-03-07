@@ -125,13 +125,14 @@ message(STATUS "Looking for wxWidgets libraries in: ${wxWidgets_LIB_DIR}")
 ###  Incorrect order WILL BREAK Unix and MinGW STATIC BUILDS.
 ###
 # The correct order is a topological sort based on the dependency graph
-# here: https://docs.wxwidgets.org/3.0/page_libs.html#page_libs_wxrichtext
+# here: https://docs.wxwidgets.org/3.0/page_libs.html
+# (or for wxWidgets 3.2): https://docs.wxwidgets.org/3.2/page_libs.html
 # The root dependency (base) must come last.
 #
 if(WXM_DISABLE_WEBVIEW)
-	find_package(wxWidgets 3 REQUIRED core base richtext aui adv html xml net qa)
+	find_package(wxWidgets 3 REQUIRED richtext aui adv net qa html xml core base)
 else()
-	find_package(wxWidgets 3 REQUIRED core base richtext aui adv html webview xml net qa)
+	find_package(wxWidgets 3 REQUIRED richtext aui adv webview net qa html xml core base)
 endif()
 message(STATUS "Found wxWidgets: (found version \"${wxWidgets_VERSION_STRING}\")")
 include(${wxWidgets_USE_FILE})
