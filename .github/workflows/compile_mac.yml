@@ -69,7 +69,7 @@ jobs:
       - name: Configure wxMaxima
         run: |
              mkdir build-wxm
-             cmake -S . -B build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DWXM_UNIT_TESTS=YES
+             cmake -S . -B build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DWXM_UNIT_TESTS=YES -DCPACK_PACKAGE_CHECKSUM=SHA512
       - name: Check Info.plist
         run: |
              ls -l build-wxm/src/Info.plist
