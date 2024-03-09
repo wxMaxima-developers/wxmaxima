@@ -242,7 +242,7 @@ public:
     return m_svgRast != nullptr;}
 
   //! The tooltip to use wherever an image that's not Ok is shown.
-  static const wxString &GetBadImageToolTip();
+  static const wxString GetBadImageToolTip();
 
   class WxmxStream: public wxZipInputStream
   {

@@ -1379,7 +1379,7 @@ Cell::Range GroupCell::GetCellsInOutputRect(const wxRect &rect,
   return r;
 }
 
-const wxString &GroupCell::GetToolTip(const wxPoint point) const {
+const wxString GroupCell::GetToolTip(const wxPoint point) const {
   // TODO: There's a question of whether we want to return
   // the local tooltip, or empty string (latter would be in line
   // with Cell's behavior.
@@ -1834,8 +1834,8 @@ void CellList::Check(const GroupCell *c) {
   CellList::Check(static_cast<const Cell *>(c));
 }
 
-wxString GroupCell::m_lookalikeChars(
-                                     wxS("µ") wxS("\u03bc") wxS("\u2126") wxS("\u03a9") wxS("C") wxS(
+// cppcheck-suppress unknownMacro
+wxString GroupCell::m_lookalikeChars(wxS("µ") wxS("\u03bc") wxS("\u2126") wxS("\u03a9") wxS("C") wxS(
                                                                                                      "\u03F2") wxS("C") wxS("\u0421") wxS("\u03F2") wxS("\u0421") wxS("A")
                                      wxS("\u0391") wxS("A") wxS("\u0410") wxS("\u0391") wxS("\u0410") wxS(
                                                                                                           "M") wxS("\u0392") wxS("E") wxS("\u0395") wxS("E") wxS("\u0415")

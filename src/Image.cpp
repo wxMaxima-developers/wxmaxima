@@ -991,9 +991,9 @@ void Image::Recalculate(double scale) {
     ClearCache();
 }
 
-const wxString &Image::GetBadImageToolTip() {
+const wxString Image::GetBadImageToolTip() {
   // cppcheck-suppress returnTempReference
-  return T_(
+  return _(
     "The image could not be displayed. It may be broken, in a wrong format "
     "or "
     "be the result of gnuplot not being able to write the image or not being "

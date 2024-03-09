@@ -182,7 +182,7 @@ wxString IntCell::ToString() const {
 
   s += m_base->ListToString();
 
-  Cell *tmp = m_var.get();
+  const Cell *tmp = m_var.get();
   wxString var;
   tmp = tmp->GetNext();
   if (tmp != NULL) {
@@ -205,7 +205,7 @@ wxString IntCell::ToMatlab() const {
 
   s += m_base->ListToMatlab();
 
-  Cell *tmp = m_var.get();
+  const Cell *tmp = m_var.get();
   wxString var;
   tmp = tmp->GetNext();
   if (tmp != NULL)

@@ -41,8 +41,6 @@
 #include <wx/process.h>
 #include <wx/regex.h>
 #include <wx/dnd.h>
-#include <wx/wfstream.h>
-#include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include <wx/sckstrm.h>
 #include <wx/buffer.h>

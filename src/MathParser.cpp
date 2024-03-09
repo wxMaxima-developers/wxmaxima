@@ -627,11 +627,10 @@ MathParser::HandleNullPointer(std::unique_ptr<Cell> &&cell) {
   auto tmp = std::move(cell);
   if (!tmp) {
     tmp = std::make_unique<VisiblyInvalidCell>(m_group, m_configuration);
-    tmp->SetToolTip(
-                    &T_("The xml data from maxima or from the .wxmx file was missing data "
-                        "here.\n"
-                        "If you find a way how to reproduce this problem please file a bug "
-                        "report against wxMaxima."));
+    tmp->SetToolTip(_("The xml data from maxima or from the .wxmx file was missing data "
+                      "here.\n"
+                      "If you find a way how to reproduce this problem please file a bug "
+                      "report against wxMaxima."));
     tmp->SetStyle(TS_ERROR);
   }
   return tmp;
@@ -889,9 +888,9 @@ std::unique_ptr<Cell> MathParser::ParseFunTag(wxXmlNode *node) {
 
   ParseCommonAttrs(node, fun);
   if (fun->ToString().Contains(")("))
-    fun->SetToolTip(&T_("If this isn't a function returning a lambda() "
-                        "expression a multiplication sign (*) between closing "
-                        "and opening parenthesis is missing here."));
+    fun->SetToolTip(_("If this isn't a function returning a lambda() "
+                      "expression a multiplication sign (*) between closing "
+                      "and opening parenthesis is missing here."));
   return fun;
 }
 
@@ -1282,9 +1281,8 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
     if (doc != NULL)
       cell = ParseTag(doc->GetChildren());
   } else {
-    cell = std::make_unique<TextCell>(
-                                      m_group, m_configuration,
-                                      T_("(Invalid XML from maxima)"),
+    cell = std::make_unique<TextCell>(m_group, m_configuration,
+                                      _("(Invalid XML from maxima)"),
                                       TS_WARNING);
     cell->ForceBreakLine(true);
   }

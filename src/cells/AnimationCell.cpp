@@ -462,7 +462,7 @@ wxString AnimationCell::ToRTF() const {
   return header + image + footer;
 }
 
-const wxString &AnimationCell::GetToolTip(const wxPoint point) const {
+const wxString AnimationCell::GetToolTip(const wxPoint point) const {
   if (!ContainsPoint(point))
     return wxm::emptyString;
 

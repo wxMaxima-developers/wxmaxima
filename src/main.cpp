@@ -85,19 +85,22 @@ wxDECLARE_APP(MyApp);
 int CommonMain() {
   wxTheApp->CallOnInit();
   wxTheApp->OnRun();
-  wxConfigBase *config = wxConfig::Get();
-  config->Flush();
-  delete config;
-  if (CellPtrBase::GetLiveInstanceCount() != 0)
-    wxLogDebug("CellPtr: %zu live instances leaked",
-               CellPtrBase::GetLiveInstanceCount());
-  if (Observed::GetLiveInstanceCount() != 0)
-    wxLogDebug("Cell:    %zu live instances leaked",
-               Observed::GetLiveInstanceCount());
-  if (Observed::GetLiveControlBlockInstanceCount() != 0)
-    wxLogDebug("ControlBlock: %zu live instances leaked",
-               Observed::GetLiveControlBlockInstanceCount());
-  return 0;
+  // wxConfigBase *config = wxConfig::Get();
+  // config->Flush();
+  // delete config;
+  if(Configuration::GetDebugmode())
+    {
+     if (CellPtrBase::GetLiveInstanceCount() != 0)
+       wxLogDebug("CellPtr: %zu live instances leaked",
+                  CellPtrBase::GetLiveInstanceCount());
+     if (Observed::GetLiveInstanceCount() != 0)
+       wxLogDebug("Cell:    %zu live instances leaked",
+                  Observed::GetLiveInstanceCount());
+     if (Observed::GetLiveControlBlockInstanceCount() != 0)
+       wxLogDebug("ControlBlock: %zu live instances leaked",
+                  Observed::GetLiveControlBlockInstanceCount());
+     }
+  return wxMaxima::GetExitCode();
 }
 wxCmdLineParser cmdLineParser;
 static const wxCmdLineEntryDesc cmdLineDesc[] = {

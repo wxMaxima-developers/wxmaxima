@@ -103,7 +103,7 @@ public:
 
   bool IsOk() const;
 
-  const wxString &GetToolTip(wxPoint point) const override;
+  const wxString GetToolTip(wxPoint point) const override;
 
   /*! Remove all cached scaled images from memory
 

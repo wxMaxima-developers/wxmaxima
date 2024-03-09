@@ -41,7 +41,7 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)
   // for the language selection to take place.
   // NOTE: static variables are initialized exactly 0 or 1 times, so the below
   // is not wasteful.
-  SetToolTip(&T_("Missing contents. Bug?"));
+  SetToolTip(_("Missing contents. Bug?"));
 }
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config,

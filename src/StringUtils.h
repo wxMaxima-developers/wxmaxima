@@ -74,12 +74,6 @@ namespace wxm {
  */
 #define S_(string) ([]()->const wxString &{ static const wxString str(wxS(string)); return str; }())
 
-/*! Provides a static instance of a translated string - it will only be constructed once.
- *
- * Usage: T_("foo") - in place of _(wxS("foo"))
- */
-#define T_(string) ([]()->const wxString &{ static const wxString &str = _(wxS(string)); return str; }())
-
 // String Comparisons
 
 //! Whether a string begins with a given character
