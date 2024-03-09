@@ -26,7 +26,7 @@ if(PANDOC)
 		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.html" DESTINATION share/doc/wxmaxima OPTIONAL)
 	endfunction()
 
-	function(generate_wxmaxima_documentation_pdf FILEBASENAME PANDOC_TEXSELECT_OPTION)
+	function(generate_wxmaxima_documentation_pdf FILEBASENAME)
 		set(PDFLANG "${LANG}")
 		# if LANG is empty, we are generating the default (english) manual.
 		if("${PDFLANG}" STREQUAL "")
@@ -41,7 +41,7 @@ if(PANDOC)
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.pdf
 			DEPENDS ${FILEBASENAME}.md
-			COMMAND ${PANDOC} ${FILEBASENAME}.md -t latex -o ${FILEBASENAME}.pdf -M lang=${PDFLANG} -V 'mainfont:NotoSerif-Regular.ttf' -V 'sansfont:NotoSans-Regular.ttf' -V 'monofont:NotoSansMono-Regular.ttf' -V 'mathfont:NotoSansMath-Regular.ttf' -V 'CJKmainfont:NotoSerifCJK-Regular.ttc' --number-sections --table-of-contents --standalone --metadata title="wxMaxima" ${PANDOC_TEXSELECT_OPTION}
+			COMMAND ${PANDOC} ${FILEBASENAME}.md -t latex -o ${FILEBASENAME}.pdf -M lang=${PDFLANG} -V 'mainfont:NotoSerif-Regular.ttf' -V 'sansfont:NotoSans-Regular.ttf' -V 'monofont:NotoSansMono-Regular.ttf' -V 'mathfont:NotoSansMath-Regular.ttf' -V 'CJKmainfont:NotoSerifCJK-Regular.ttc' --number-sections --table-of-contents --standalone --metadata title="wxMaxima" --pdf-engine=${WXMAXIMA_LATEX_COMMAND}
 			COMMENT "Generating ${FILEBASENAME}.pdf")
 		add_custom_target(build_${FILEBASENAME}.pdf DEPENDS ${FILEBASENAME}.pdf)
 		add_dependencies(pdf build_${FILEBASENAME}.pdf)
@@ -105,14 +105,7 @@ if(PANDOC)
 	generate_wxmaxima_documentation_html("wxmaxima")
 	generate_wxmaxima_documentation_epub("wxmaxima")
 	if(WXMAXIMA_LATEX_COMMAND)
-		if(PANDOC_VERSION LESS_EQUAL 1)
-			message(STATUS "pandoc version < 2 found - using option --latex-engine=${WXMAXIMA_LATEX_COMMAND}")
-			set(PANDOC_TEXSELECT_OPTION "--latex-engine=${WXMAXIMA_LATEX_COMMAND}")
-		else()
-			message(STATUS "pandoc version >= 2 found - using option --pdf-engine=${WXMAXIMA_LATEX_COMMAND}")
-			set(PANDOC_TEXSELECT_OPTION "--pdf-engine=${WXMAXIMA_LATEX_COMMAND}")
-		endif()
-		generate_wxmaxima_documentation_pdf("wxmaxima" "${PANDOC_TEXSELECT_OPTION}")
+		generate_wxmaxima_documentation_pdf("wxmaxima")
     endif()
 
 	if(PO4A_TRANSLATE)
@@ -128,7 +121,7 @@ if(PANDOC)
 			generate_wxmaxima_documentation_html("${BASENAME}")
 			generate_wxmaxima_documentation_epub("${BASENAME}")
 			if(WXMAXIMA_LATEX_COMMAND)
-				generate_wxmaxima_documentation_pdf("${BASENAME}" "${PANDOC_TEXSELECT_OPTION}")
+				generate_wxmaxima_documentation_pdf("${BASENAME}")
 			endif()
 		endforeach()
 	else()
