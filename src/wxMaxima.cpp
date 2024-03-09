@@ -202,10 +202,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
   wxHandleFatalExceptions();
   wxLogMessage(_("Will try to generate a stack backtrace, if the program ever crashes"));
-#endif 
+#endif
   GnuplotCommandName(wxS("gnuplot"));
   wxLog::SetActiveTarget(new NullLog);
-  
+
   if (m_variableReadActions.empty()) {
     m_variableReadActions[wxS("gentranlang")] =
       &wxMaxima::VariableActionGentranlang;
@@ -1797,7 +1797,7 @@ void wxMaxima::OnNewDemoFiles(wxCommandEvent &WXUNUSED(event))
 
   std::vector<wxString> subMenuContents;
   for(const auto &i : filesList)
-    {      
+    {
       wxString name = i.SubString(1,i.Length() - 2);
       if(!name.IsEmpty())
         {
@@ -1880,7 +1880,7 @@ wxMaxima::~wxMaxima() {
   wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
   if((m_logPane) && (m_logPane->IsLogTarget()))
     {
-      // Try to find a other wxMaxima window that can log messages from now on 
+      // Try to find a other wxMaxima window that can log messages from now on
       while (node)
         {
           wxWindow *win = node->GetData();
@@ -1900,7 +1900,7 @@ wxMaxima::~wxMaxima() {
           newLogTarget->BecomeLogTarget();
         }
       else
-        {    
+        {
           // If there is no window that can take over the log any more the program
           // is about to close and cannot instantiate new gui loggers.
           m_logPane->DropLogTarget();
@@ -2020,7 +2020,7 @@ void wxMaxima::ConsoleAppend(wxXmlDocument xml, CellType type,
                                   std::make_unique<GroupCell>(&m_configuration, GC_TYPE_CODE));
   m_dispReadOut = false;
   GroupCell *tmp = GetWorksheet()->GetWorkingGroup(true);
-  
+
   if (tmp == NULL) {
     if (GetWorksheet()->GetActiveCell())
       tmp = GetWorksheet()->GetActiveCell()->GetGroup();
@@ -2437,7 +2437,7 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
   case Maxima::XML_TOOLONGMATHS:
     m_statusBar->NetworkStatus(StatusBar::receive);
     DoRawConsoleAppend(_("(Config tells to suppress the output of long cells)"),
-                       MC_TYPE_WARNING);    
+                       MC_TYPE_WARNING);
     break;
   case Maxima::XML_WXXML_KEY: // TODO: Should the key be outside the SuppressOutput?
     break;
@@ -2823,7 +2823,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_discardAllData = true;
   m_closing = true;
   if(GetWorksheet()->m_variablesPane)
-    {  
+    {
       GetWorksheet()->m_variablesPane->ResetValues();
       m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
     }
@@ -2847,7 +2847,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_maximaStderr = NULL;
 
   m_client = nullptr;
-  
+
   // Just to be absolutely sure: Additionally try to kill maxima
   if (m_pid > 0) {
     // wxProcess::kill will fail on MSW. Something with a console.
@@ -3287,7 +3287,7 @@ void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {
         wxXmlNode *vars = node->GetChildren();
         while (vars != NULL) {
           wxXmlNode *var = vars->GetChildren();
-          
+
           wxString name;
           wxString value;
           bool bound = false;
@@ -3871,7 +3871,7 @@ void wxMaxima::ReadPrompt(const wxString &data) {
 
   wxString label = data.SubString(m_promptPrefix.Length(),
                                   data.Length() - m_promptSuffix.Length() - 1);
-  
+
   // If we got a prompt our connection to maxima was successful.
   if (m_unsuccessfulConnectionAttempts > 0)
     m_unsuccessfulConnectionAttempts--;
@@ -3895,7 +3895,7 @@ void wxMaxima::ReadPrompt(const wxString &data) {
     GetWorksheet()->QuestionAnswered();
     // And we can remove one command from the evaluation queue.
     GetWorksheet()->m_evaluationQueue.RemoveFirst();
-    
+
     m_lastPrompt = label;
     // remove the event maxima has just processed from the evaluation queue
     // if we remove a command from the evaluation queue the next output line
@@ -4218,8 +4218,11 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
     }
 
   // Open the file
-  xmldoc.Load(wxmxContents,
-              wxXMLDOC_KEEP_WHITESPACE_NODES);
+#if wxCHECK_VERSION(3, 3, 0)
+  xmldoc.Load(wxmxContents, wxXMLDOC_KEEP_WHITESPACE_NODES);
+#else
+  xmldoc.Load(wxmxContents, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+#endif
 
   if (!xmldoc.IsOk()) {
     // If we cannot read the file a typical error in old wxMaxima versions was
@@ -4273,7 +4276,11 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
       wxMemoryInputStream istream(ostream);
 
       // Try to load the file from the memory buffer.
+#if wxCHECK_VERSION(3, 3, 0)
       xmldoc.Load(istream, wxXMLDOC_KEEP_WHITESPACE_NODES);
+#else
+      xmldoc.Load(istream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+#endif
     }
 
     // If the xml document still cannot be loaded let's extract only the input
@@ -4302,7 +4309,11 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
         wxMemoryInputStream istream(ostream);
 
         // Try to load the file from the memory buffer.
+#if wxCHECK_VERSION(3, 3, 0)
         xmldoc.Load(istream, wxXMLDOC_KEEP_WHITESPACE_NODES);
+#else
+        xmldoc.Load(istream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+#endif
       }
     }
 
@@ -4333,7 +4344,11 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
         wxMemoryInputStream istream(ostream);
 
         // Try to load the file from the memory buffer.
+#if wxCHECK_VERSION(3, 3, 0)
         xmldoc.Load(istream, wxXMLDOC_KEEP_WHITESPACE_NODES);
+#else
+        xmldoc.Load(istream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+#endif
       }
     }
   }
@@ -5029,7 +5044,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     event.RequestMore();
     return;
   }
-  
+
   UpdateSlider();
 
   // Update the history sidebar in case it is visible

@@ -1084,11 +1084,11 @@ std::unique_ptr<Cell> MathParser::ParseSumTag(wxXmlNode *node) {
 
   std::unique_ptr<Cell> sum;
   if ((type == wxS("prod")) || (type == wxS("lprod")))
-    sum = std::make_unique<ProductCell>(m_group, m_configuration, 
+    sum = std::make_unique<ProductCell>(m_group, m_configuration,
                                     std::move(under), std::move(over),
                                     std::move(base));
   else
-    sum = std::make_unique<SumCell>(m_group, m_configuration, 
+    sum = std::make_unique<SumCell>(m_group, m_configuration,
                                     std::move(under), std::move(over),
                                     std::move(base));
   sum->SetHighlight(highlight);
@@ -1274,7 +1274,11 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
 
     {
       wxLogNull suppressErrorMessages;
+#if wxCHECK_VERSION(3, 3, 0)
       xml.Load(xmlStream, wxXMLDOC_KEEP_WHITESPACE_NODES);
+#else
+      xml.Load(xmlStream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+#endif
     }
 
     wxXmlNode *doc = xml.GetRoot();
