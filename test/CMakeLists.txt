@@ -4,11 +4,14 @@
 file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg testbench_simple.wxmx automatic_test_files/*.gif)
 
 find_program(MAXIMA maxima)
-execute_process(COMMAND ${MAXIMA} --version
-                OUTPUT_VARIABLE MAXIMA_VERSION_TEXT OUTPUT_STRIP_TRAILING_WHITESPACE)
+if(MAXIMA)
+	execute_process(COMMAND ${MAXIMA} --version
+					OUTPUT_VARIABLE MAXIMA_VERSION_TEXT OUTPUT_STRIP_TRAILING_WHITESPACE)
 	string(REGEX REPLACE "^Maxima (.*)" "\\1"  MAXIMA_VERSION "${MAXIMA_VERSION_TEXT}")
-message(STATUS "Found maxima: ${MAXIMA} (found version \"${MAXIMA_VERSION}\")")
-
+	message(STATUS "Found Maxima: ${MAXIMA} (found version \"${MAXIMA_VERSION}\")")
+else()
+    message(STATUS "Maxima not found. Many tests will fail, Maxima is required for most tests.")
+endif()
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/xmlpatterngen.sh.in" xmlpatterngen.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxMathML.sh.in" check-wxMathML.sh)
 
