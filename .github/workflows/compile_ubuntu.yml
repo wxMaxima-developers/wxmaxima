@@ -112,7 +112,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt-get update
-             sudo apt-get install appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev maxima maxima-share netcat-openbsd pandoc xvfb at-spi2-core make po4a
+             sudo apt-get install cmake gettext libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev pandoc core make po4a
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra"
