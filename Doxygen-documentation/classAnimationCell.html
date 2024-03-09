@@ -159,9 +159,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a074f8e016852096f5288136d6f83337f"><td class="memItemLeft" align="right" valign="top"><a id="a074f8e016852096f5288136d6f83337f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsOk</b> () const</td></tr>
 <tr class="separator:a074f8e016852096f5288136d6f83337f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24b14f6999364b479fc4280b0c3e6022"><td class="memItemLeft" align="right" valign="top">const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimationCell.html#a24b14f6999364b479fc4280b0c3e6022">GetToolTip</a> (wxPoint point) const override</td></tr>
-<tr class="memdesc:a24b14f6999364b479fc4280b0c3e6022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the ToolTip this cell provides at a given point.  <a href="classAnimationCell.html#a24b14f6999364b479fc4280b0c3e6022">More...</a><br /></td></tr>
-<tr class="separator:a24b14f6999364b479fc4280b0c3e6022"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae200ce21029cac8692952ceab7530a69"><td class="memItemLeft" align="right" valign="top">const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimationCell.html#ae200ce21029cac8692952ceab7530a69">GetToolTip</a> (wxPoint point) const override</td></tr>
+<tr class="memdesc:ae200ce21029cac8692952ceab7530a69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the ToolTip this cell provides at a given point.  <a href="classAnimationCell.html#ae200ce21029cac8692952ceab7530a69">More...</a><br /></td></tr>
+<tr class="separator:ae200ce21029cac8692952ceab7530a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2893311cf335b9dc422fd22fcc6a0de8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimationCell.html#a2893311cf335b9dc422fd22fcc6a0de8">ClearCache</a> () override</td></tr>
 <tr class="memdesc:a2893311cf335b9dc422fd22fcc6a0de8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all cached scaled images from memory.  <a href="classAnimationCell.html#a2893311cf335b9dc422fd22fcc6a0de8">More...</a><br /></td></tr>
 <tr class="separator:a2893311cf335b9dc422fd22fcc6a0de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -629,10 +629,10 @@ std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a3f4a38a604b18e83c75df7454fc035bd">ClearToolTip</a> ()</td></tr>
 <tr class="memdesc:a3f4a38a604b18e83c75df7454fc035bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove this cell's tooltip. <br /></td></tr>
 <tr class="separator:a3f4a38a604b18e83c75df7454fc035bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedf3bf8f5c9b750c395f1542cb3fd46f"><td class="memItemLeft" align="right" valign="top"><a id="aedf3bf8f5c9b750c395f1542cb3fd46f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aedf3bf8f5c9b750c395f1542cb3fd46f">SetToolTip</a> (wxString &amp;&amp;tooltip)</td></tr>
-<tr class="memdesc:aedf3bf8f5c9b750c395f1542cb3fd46f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the tooltip to a given temporary string - the cell will move from it. <br /></td></tr>
-<tr class="separator:aedf3bf8f5c9b750c395f1542cb3fd46f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa119cfb77bd1bf9ca9d528075d695fc7"><td class="memItemLeft" align="right" valign="top"><a id="aa119cfb77bd1bf9ca9d528075d695fc7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa119cfb77bd1bf9ca9d528075d695fc7">SetToolTip</a> (const wxString tooltip)</td></tr>
+<tr class="memdesc:aa119cfb77bd1bf9ca9d528075d695fc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the tooltip to a given string. <br /></td></tr>
+<tr class="separator:aa119cfb77bd1bf9ca9d528075d695fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4623cb9c2726dc180faa22afdfa02465"><td class="memItemLeft" align="right" valign="top"><a id="a4623cb9c2726dc180faa22afdfa02465"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a4623cb9c2726dc180faa22afdfa02465">SetToolTip</a> (const wxString *toolTip)</td></tr>
 <tr class="memdesc:a4623cb9c2726dc180faa22afdfa02465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the tooltip of this math cell - it must be exist at least as long as the cell does. Translation results behave that way. I.e. it must be a static string! <br /></td></tr>
@@ -1764,8 +1764,8 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
-<a id="a24b14f6999364b479fc4280b0c3e6022"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24b14f6999364b479fc4280b0c3e6022">&#9670;&nbsp;</a></span>GetToolTip()</h2>
+<a id="ae200ce21029cac8692952ceab7530a69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae200ce21029cac8692952ceab7530a69">&#9670;&nbsp;</a></span>GetToolTip()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1774,7 +1774,7 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const wxString &amp; AnimationCell::GetToolTip </td>
+          <td class="memname">const wxString AnimationCell::GetToolTip </td>
           <td>(</td>
           <td class="paramtype">wxPoint&#160;</td>
           <td class="paramname"><em>point</em></td><td>)</td>
@@ -1797,7 +1797,7 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the tooltip text, or empty string if none. </dd></dl>
 
-<p>Implements <a class="el" href="classImgCellBase.html#af43f0cb678b17f5818d7ed8678de8d0a">ImgCellBase</a>.</p>
+<p>Implements <a class="el" href="classImgCellBase.html#a31a1a1d09fcf7305a31434b31bb18629">ImgCellBase</a>.</p>
 
 </div>
 </div>
@@ -2327,7 +2327,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

@@ -168,7 +168,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <tr class="memitem:a1782eed25a1f0c2bd91f11f1c3f67311"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a1782eed25a1f0c2bd91f11f1c3f67311">CellUnderPointer</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *cell)</td></tr>
 <tr class="memdesc:a1782eed25a1f0c2bd91f11f1c3f67311"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks the cell that is under the mouse pointer.  <a href="classGroupCell.html#a1782eed25a1f0c2bd91f11f1c3f67311">More...</a><br /></td></tr>
 <tr class="separator:a1782eed25a1f0c2bd91f11f1c3f67311"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78e75f6847ea9a757ae7ba43db7ad59e"><td class="memItemLeft" align="right" valign="top">const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a78e75f6847ea9a757ae7ba43db7ad59e">GetToolTip</a> (wxPoint point) const override</td></tr>
+<tr class="memitem:a78e75f6847ea9a757ae7ba43db7ad59e"><td class="memItemLeft" align="right" valign="top">const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a78e75f6847ea9a757ae7ba43db7ad59e">GetToolTip</a> (wxPoint point) const override</td></tr>
 <tr class="memdesc:a78e75f6847ea9a757ae7ba43db7ad59e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the tooltip for the element at the position point.  <a href="classGroupCell.html#a78e75f6847ea9a757ae7ba43db7ad59e">More...</a><br /></td></tr>
 <tr class="separator:a78e75f6847ea9a757ae7ba43db7ad59e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9744d449fa8af90edc8fed866f07e74e"><td class="memItemLeft" align="right" valign="top"><a id="a9744d449fa8af90edc8fed866f07e74e"></a>
@@ -770,10 +770,10 @@ std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a3f4a38a604b18e83c75df7454fc035bd">ClearToolTip</a> ()</td></tr>
 <tr class="memdesc:a3f4a38a604b18e83c75df7454fc035bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove this cell's tooltip. <br /></td></tr>
 <tr class="separator:a3f4a38a604b18e83c75df7454fc035bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedf3bf8f5c9b750c395f1542cb3fd46f"><td class="memItemLeft" align="right" valign="top"><a id="aedf3bf8f5c9b750c395f1542cb3fd46f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aedf3bf8f5c9b750c395f1542cb3fd46f">SetToolTip</a> (wxString &amp;&amp;tooltip)</td></tr>
-<tr class="memdesc:aedf3bf8f5c9b750c395f1542cb3fd46f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the tooltip to a given temporary string - the cell will move from it. <br /></td></tr>
-<tr class="separator:aedf3bf8f5c9b750c395f1542cb3fd46f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa119cfb77bd1bf9ca9d528075d695fc7"><td class="memItemLeft" align="right" valign="top"><a id="aa119cfb77bd1bf9ca9d528075d695fc7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa119cfb77bd1bf9ca9d528075d695fc7">SetToolTip</a> (const wxString tooltip)</td></tr>
+<tr class="memdesc:aa119cfb77bd1bf9ca9d528075d695fc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the tooltip to a given string. <br /></td></tr>
+<tr class="separator:aa119cfb77bd1bf9ca9d528075d695fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4623cb9c2726dc180faa22afdfa02465"><td class="memItemLeft" align="right" valign="top"><a id="a4623cb9c2726dc180faa22afdfa02465"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a4623cb9c2726dc180faa22afdfa02465">SetToolTip</a> (const wxString *toolTip)</td></tr>
 <tr class="memdesc:a4623cb9c2726dc180faa22afdfa02465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the tooltip of this math cell - it must be exist at least as long as the cell does. Translation results behave that way. I.e. it must be a static string! <br /></td></tr>
@@ -2234,7 +2234,7 @@ The y position used here must be in sync with the one calculated by <a class="el
 <p>Returns the tooltip for the element at the position point. </p>
 <p>wxEmptyString means: No toolTip. </p>
 
-<p>Reimplemented from <a class="el" href="classCell.html#ad574afcbe155cb24b46ae5d380a0ab5d">Cell</a>.</p>
+<p>Reimplemented from <a class="el" href="classCell.html#a06ac058dd29257ca5125f8afb0c27e88">Cell</a>.</p>
 
 </div>
 </div>
@@ -2988,7 +2988,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
