@@ -173,7 +173,6 @@ function(list_transform_prepend var prefix)
     set(${var} "${temp}" PARENT_SCOPE)
 endfunction()
 
-set(CPACK_PACKAGE_CHECKSUM "SHA512")
 ##
 # Build Items
 #
