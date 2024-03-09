@@ -120,7 +120,7 @@ public:
 
     wxEmptyString means: No toolTip.
   */
-  const wxString &GetToolTip(wxPoint point) const override;
+  const wxString GetToolTip(wxPoint point) const override;
 
   // general methods
   GroupType GetGroupType() const { return m_groupType; }

@@ -155,12 +155,11 @@ void TextCell::SetType(CellType type) {
 
 void TextCell::UpdateToolTip() {
   if (m_promptTooltip)
-    SetToolTip(
-               &T_("Most questions can be avoided using the assume() and the "
-                   "declare() command. If that isn't possible the \"Automatically "
-                   "answer questions\" button makes wxMaxima automatically fill in "
-                   "all answers it still remembers from a previous run."));
-
+    SetToolTip(_("Most questions can be avoided using the assume() and the "
+                 "declare() command. If that isn't possible the \"Automatically "
+                 "answer questions\" button makes wxMaxima automatically fill in "
+                 "all answers it still remembers from a previous run."));
+  
   if (m_text.empty())
     return;
 
@@ -168,49 +167,42 @@ void TextCell::UpdateToolTip() {
 
   if (GetTextStyle() == TS_VARIABLE) {
     if (m_text == wxS("pnz"))
-      SetToolTip(&T_(
-                     "Either positive, negative or zero.\n"
-                     "Normally the result of sign() if the sign cannot be determined."));
-
+      SetToolTip(_(
+                   "Either positive, negative or zero.\n"
+                   "Normally the result of sign() if the sign cannot be determined."));
+    
     else if (m_text == wxS("pz"))
-      SetToolTip(&T_("Either positive or zero.\n"
-                     "A possible result of sign()."));
+      SetToolTip(_("Either positive or zero.\n"
+                   "A possible result of sign()."));
 
     else if (m_text == wxS("nz"))
-      SetToolTip(&T_("Either negative or zero.\n"
-                     "A possible result of sign()."));
-
+      SetToolTip(_("Either negative or zero.\n"
+                   "A possible result of sign()."));
+    
     else if (m_text == wxS("und"))
-      SetToolTip(&T_("The result was undefined."));
-
+      SetToolTip(_("The result was undefined."));
     else if (m_text == wxS("ind"))
-      SetToolTip(&T_("The result was indefinite, which might be infinity, both "
-                     "plus or minus infinity or something additionally "
-                     "potentially involving a complex infinity."));
-
+      SetToolTip(_("The result was indefinite, which might be infinity, both "
+                   "plus or minus infinity or something additionally "
+                   "potentially involving a complex infinity."));
     else if (m_text == wxS("zeroa"))
-      SetToolTip(&T_("Infinitesimal above zero."));
-
+      SetToolTip(_("Infinitesimal above zero."));
     else if (m_text == wxS("zerob"))
-      SetToolTip(&T_("Infinitesimal below zero."));
-
+      SetToolTip(_("Infinitesimal below zero."));
     else if (m_text == wxS("inf"))
       SetToolTip(&S_("+∞."));
-
     else if (m_text == wxS("infinity"))
-      SetToolTip(&T_("Complex infinity."));
-
+      SetToolTip(_("Complex infinity."));
     else if (m_text == wxS("minf"))
       SetToolTip(&S_("-∞."));
-
     else if (m_text.StartsWith(S_("%r"))) {
       if (std::all_of(std::next(c_text.begin(), 2), c_text.end(), wxIsdigit))
-        SetToolTip(&T_("A variable that can be assigned a number to.\n"
-                       "Often used by solve() and algsys(), if there is an "
-                       "infinite number of results."));
+        SetToolTip(_("A variable that can be assigned a number to.\n"
+                     "Often used by solve() and algsys(), if there is an "
+                     "infinite number of results."));
     } else if (m_text.StartsWith(S_("%i"))) {
       if (std::all_of(std::next(c_text.begin(), 2), c_text.end(), wxIsdigit))
-        SetToolTip(&T_("An integration constant."));
+        SetToolTip(_("An integration constant."));
     }
   }
 
@@ -219,16 +211,16 @@ void TextCell::UpdateToolTip() {
         (m_roundingErrorRegEx2.Matches(m_text)) ||
         (m_roundingErrorRegEx3.Matches(m_text)) ||
         (m_roundingErrorRegEx4.Matches(m_text)))
-      SetToolTip(&T_(
-                     "As calculating 0.1^12 demonstrates maxima by default doesn't tend "
-                     "to "
-                     "hide what looks like being the small error using floating-point "
-                     "numbers introduces.\n"
-                     "If this seems to be the case here the error can be avoided by using "
-                     "exact numbers like 1/10, 1*10^-1 or rat(.1).\n"
-                     "It also can be hidden by setting fpprintprec to an appropriate "
-                     "value. "
-                     "But be aware in this case that even small errors can add up."));
+      SetToolTip(_(
+                   "As calculating 0.1^12 demonstrates maxima by default doesn't tend "
+                   "to "
+                   "hide what looks like being the small error using floating-point "
+                   "numbers introduces.\n"
+                   "If this seems to be the case here the error can be avoided by using "
+                   "exact numbers like 1/10, 1*10^-1 or rat(.1).\n"
+                   "It also can be hidden by setting fpprintprec to an appropriate "
+                   "value. "
+                   "But be aware in this case that even small errors can add up."));
   }
 
   else {
@@ -237,151 +229,133 @@ void TextCell::UpdateToolTip() {
         m_text.Contains(S_("ERROR RETURN OF LINE SEARCH:")) ||
         m_text.Contains(
                         S_("POSSIBLE CAUSES: FUNCTION OR GRADIENT ARE INCORRECT")))
-      SetToolTip(&T_(
-                     "This message can appear when trying to numerically find an optimum. "
-                     "In this case it might indicate that a starting point lies in a "
-                     "local "
-                     "optimum that fits the data best if one parameter is increased to "
-                     "infinity or decreased to -infinity. It also can indicate that an "
-                     "attempt was made to fit data to an equation that actually matches "
-                     "the data best if one parameter is set to +/- infinity."));
-
+      SetToolTip(_("This message can appear when trying to numerically find an optimum. "
+                   "In this case it might indicate that a starting point lies in a "
+                   "local "
+                   "optimum that fits the data best if one parameter is increased to "
+                   "infinity or decreased to -infinity. It also can indicate that an "
+                   "attempt was made to fit data to an equation that actually matches "
+                   "the data best if one parameter is set to +/- infinity."));
+    
     else if (m_text.StartsWith(S_("incorrect syntax")) &&
              m_text.Contains(S_("is not an infix operator")))
-      SetToolTip(
-                 &T_("A command or number wasn't preceded by a \":\", a \"$\", a "
-                     "\";\" or a \",\".\n"
-                     "Most probable cause: A missing comma between two list items."));
+      SetToolTip(_("A command or number wasn't preceded by a \":\", a \"$\", a "
+                   "\";\" or a \",\".\n"
+                   "Most probable cause: A missing comma between two list items."));
     else if (m_text.StartsWith(S_("incorrect syntax")) &&
              m_text.Contains(S_("Found LOGICAL expression where ALGEBRAIC "
                                 "expression expected")))
-      SetToolTip(&T_("Most probable cause: A dot instead a comma between two "
-                     "list items containing assignments."));
+      SetToolTip(_("Most probable cause: A dot instead a comma between two "
+                   "list items containing assignments."));
     else if (m_text.StartsWith(S_("incorrect syntax")) &&
              m_text.Contains(S_("is not a prefix operator")))
-      SetToolTip(&T_(
-                     "Most probable cause: Two commas or similar separators in a row."));
+      SetToolTip(_("Most probable cause: Two commas or similar separators in a row."));
     else if (m_text.Contains(S_("Illegal use of delimiter")))
-      SetToolTip(&T_("Most probable cause: an operator was directly followed "
+      SetToolTip(_("Most probable cause: an operator was directly followed "
                      "by a closing parenthesis."));
     else if (m_text.StartsWith(
                                S_("find_root: function has same sign at endpoints: ")))
-      SetToolTip(&T_(
-                     "Maxima tried to find out where between two points a curve crosses "
-                     "the zero line. Since the curve is on the same side of the zero line "
-                     "in both points its algorithms fails here. Set find_root_error to "
-                     "false if you want it to return false instead of an error."));
+      SetToolTip(_("Maxima tried to find out where between two points a curve crosses "
+                   "the zero line. Since the curve is on the same side of the zero line "
+                   "in both points its algorithms fails here. Set find_root_error to "
+                   "false if you want it to return false instead of an error."));
     else if (m_text.StartsWith(S_("part: fell off the end.")))
-      SetToolTip(&T_("part() or the [] operator was used in order to extract "
-                     "the nth element "
-                     "of something that was less than n elements long."));
+      SetToolTip(_("part() or the [] operator was used in order to extract "
+                   "the nth element "
+                   "of something that was less than n elements long."));
     else if (m_text.StartsWith(S_("rest: fell off the end.")))
-      SetToolTip(&T_("rest() tried to drop more entries from a list than the "
-                     "list was long."));
+      SetToolTip(_("rest() tried to drop more entries from a list than the "
+                   "list was long."));
     else if (m_text.StartsWith(S_("assignment: cannot assign to")))
-      SetToolTip(
-                 &T_("The value of few special variables is assigned by Maxima and "
-                     "cannot be changed by the user. Also a few constructs aren't "
-                     "variable names and therefore cannot be written to."));
+      SetToolTip(_("The value of few special variables is assigned by Maxima and "
+                   "cannot be changed by the user. Also a few constructs aren't "
+                   "variable names and therefore cannot be written to."));
     else if (m_text.StartsWith(S_("rat: replaced ")))
-      SetToolTip(&T_(
-                     "Normally computers use floating-point numbers that can be handled "
-                     "incredibly fast while being accurate to dozens of digits. "
-                     "They will, though, introduce a small error into some common "
-                     "numbers. "
-                     "For example 0.1 is represented as "
-                     "3602879701896397/36028797018963968.\n"
-                     "As mathematics is based on the fact that numbers that are exactly "
-                     "equal cancel each other out small errors can quickly add up to big "
-                     "errors "
-                     "(see Wilkinson's Polynomials or Rump's Polynomials). Some maxima "
-                     "commands therefore use rat() in order to automatically convert "
-                     "floats to "
-                     "exact numbers (like 1/10 or sqrt(2)/2) where floating-point errors "
-                     "might "
-                     "add up.\n\n"
-                     "This error message doesn't occur if exact numbers (1/10 instead of "
-                     "0.1) "
-                     "are used.\n"
-                     "The info that numbers have automatically been converted can be "
-                     "suppressed "
-                     "by setting ratprint to false."));
+      SetToolTip(_("Normally computers use floating-point numbers that can be handled "
+                   "incredibly fast while being accurate to dozens of digits. "
+                   "They will, though, introduce a small error into some common "
+                   "numbers. "
+                   "For example 0.1 is represented as "
+                   "3602879701896397/36028797018963968.\n"
+                   "As mathematics is based on the fact that numbers that are exactly "
+                   "equal cancel each other out small errors can quickly add up to big "
+                   "errors "
+                   "(see Wilkinson's Polynomials or Rump's Polynomials). Some maxima "
+                   "commands therefore use rat() in order to automatically convert "
+                   "floats to "
+                   "exact numbers (like 1/10 or sqrt(2)/2) where floating-point errors "
+                   "might "
+                   "add up.\n\n"
+                   "This error message doesn't occur if exact numbers (1/10 instead of "
+                   "0.1) "
+                   "are used.\n"
+                   "The info that numbers have automatically been converted can be "
+                   "suppressed "
+                   "by setting ratprint to false."));
     else if (m_text.StartsWith(S_("desolve: can't handle this case.")))
-      SetToolTip(
-                 &T_("The list of time-dependent variables to solve to doesn't match "
-                     "the time-dependent variables the list of dgls contains."));
+      SetToolTip(_("The list of time-dependent variables to solve to doesn't match "
+                   "the time-dependent variables the list of dgls contains."));
     else if (m_text.StartsWith(
                                S_("expt: undefined: 0 to a negative exponent.")))
-      SetToolTip(&T_("Division by 0."));
+      SetToolTip(_("Division by 0."));
     else if (m_text.StartsWith(S_("incorrect syntax: parser: incomplete "
                                   "number; missing exponent?")))
-      SetToolTip(
-                 &T_("Might also indicate a missing multiplication sign (\"*\")."));
+      SetToolTip(_("Might also indicate a missing multiplication sign (\"*\")."));
     else if (m_text.Contains(S_("arithmetic error DIVISION-BY-ZERO signalled")))
-      SetToolTip(&T_(
-                     "Besides a division by 0 the reason for this error message can be a "
-                     "calculation that returns +/-infinity."));
+      SetToolTip(_("Besides a division by 0 the reason for this error message can be a "
+                   "calculation that returns +/-infinity."));
     else if (m_text.Contains(S_("isn't in the domain of")))
-      SetToolTip(&T_("Most probable cause: A function was called with a "
-                     "parameter that causes "
-                     "it to return infinity and/or -infinity."));
+      SetToolTip(_("Most probable cause: A function was called with a "
+                   "parameter that causes "
+                   "it to return infinity and/or -infinity."));
     else if (m_text.StartsWith(S_("Only symbols can be bound")))
-      SetToolTip(&T_(
-                     "This error message is most probably caused by a try to assign "
-                     "a value to a number instead of a variable name.\n"
-                     "One probable cause is using a variable that already has a numeric "
-                     "value as a loop counter."));
+      SetToolTip(_("This error message is most probably caused by a try to assign "
+                   "a value to a number instead of a variable name.\n"
+                   "One probable cause is using a variable that already has a numeric "
+                   "value as a loop counter."));
     else if (m_text.StartsWith(
                                S_("append: operators of arguments must all be the same.")))
-      SetToolTip(
-                 &T_("Most probably it was attempted to append something to a list "
-                     "that isn't a list.\n"
-                     "Enclosing the new element for the list in brackets ([]) "
-                     "converts it to a list and makes it appendable."));
+      SetToolTip(_("Most probably it was attempted to append something to a list "
+                   "that isn't a list.\n"
+                   "Enclosing the new element for the list in brackets ([]) "
+                   "converts it to a list and makes it appendable."));
     else if (m_text.Contains(S_("matrix: all rows must be the same length")))
-      SetToolTip(&T_(
-                     "Might be caused by reading an csv file with an empty last line:\n"
-                     "Technically that line can be described as having the length 0 "
-                     "which differs from the other lines of this file."));
+      SetToolTip(_("Might be caused by reading an csv file with an empty last line:\n"
+                   "Technically that line can be described as having the length 0 "
+                   "which differs from the other lines of this file."));
     else if (m_text.Contains(S_("expected a polynomial")))
-      SetToolTip(
-                 &T_("If the thing maxima complains about actually looks like a "
-                     "polynomial "
-                     "you can try running it through ratdisrep() in order to fix that "
-                     "problem."));
+      SetToolTip(_("If the thing maxima complains about actually looks like a "
+                   "polynomial "
+                   "you can try running it through ratdisrep() in order to fix that "
+                   "problem."));
     else if (m_text.Contains(S_("Control stack exhausted")))
-      SetToolTip(&T_("Often caused by recursive function calls. Some lisps "
-                     "allow to increase "
-                     "the control stack size using command-line arguments."));
+      SetToolTip(_("Often caused by recursive function calls. Some lisps "
+                   "allow to increase "
+                   "the control stack size using command-line arguments."));
     else if (m_text.Contains(S_(": invalid index")))
-      SetToolTip(
-                 &T_("The [] or the part() command tried to access a list or matrix "
-                     "element that doesn't exist."));
+      SetToolTip(_("The [] or the part() command tried to access a list or matrix "
+                   "element that doesn't exist."));
     else if (m_text.StartsWith(
                                S_("apply: subscript must be an integer; found:")))
-      SetToolTip(&T_(
-                     "the [] operator tried to extract an element of a list, a matrix, "
-                     "an equation or an array. But instead of an integer number "
-                     "something was used whose numerical value is unknown or not an "
-                     "integer.\n"
-                     "Floating-point numbers are bound to contain small rounding errors "
-                     "and therefore in most cases don't work as an array index that"
-                     "needs to be an exact integer number."));
+      SetToolTip(_("the [] operator tried to extract an element of a list, a matrix, "
+                   "an equation or an array. But instead of an integer number "
+                   "something was used whose numerical value is unknown or not an "
+                   "integer.\n"
+                   "Floating-point numbers are bound to contain small rounding errors "
+                   "and therefore in most cases don't work as an array index that"
+                   "needs to be an exact integer number."));
     else if (m_text.StartsWith(S_(": improper argument: "))) {
       auto const prevString =
         GetPrevious() ? GetPrevious()->ToString() : wxm::emptyString;
       if (prevString == wxS("at"))
-        SetToolTip(
-                   &T_("The second argument of at() isn't an equation or a list of "
-                       "equations. Most probably it was lacking an \"=\"."));
+        SetToolTip(_("The second argument of at() isn't an equation or a list of "
+                     "equations. Most probably it was lacking an \"=\"."));
       else if (prevString == wxS("subst"))
-        SetToolTip(
-                   &T_("The first argument of subst() isn't an equation or a list of "
-                       "equations. Most probably it was lacking an \"=\"."));
+        SetToolTip(_("The first argument of subst() isn't an equation or a list of "
+                     "equations. Most probably it was lacking an \"=\"."));
       else
-        SetToolTip(&T_(
-                       "The argument of a function was of the wrong type. Most probably "
-                       "an equation was expected but was lacking an \"=\"."));
+        SetToolTip(_("The argument of a function was of the wrong type. Most probably "
+                     "an equation was expected but was lacking an \"=\"."));
     }
   }
 }
@@ -421,7 +395,7 @@ void TextCell::UpdateDisplayedText() {
 
   if (GetTextStyle() == TS_FUNCTION) {
     if (m_text == wxS("ilt"))
-      SetToolTip(&T_("The inverse laplace transform."));
+      SetToolTip(_("The inverse laplace transform."));
 
     if (m_text == wxS("gamma"))
       m_displayedText = wxS("\u0393");

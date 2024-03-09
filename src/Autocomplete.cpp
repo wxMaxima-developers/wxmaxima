@@ -94,12 +94,9 @@ void AutoComplete::LoadBuiltinSymbols() {
 bool AutoComplete::HasDemofile(wxString commandname)
 {
   const std::lock_guard<std::mutex> lock(m_keywordsLock);
-  for (auto &file : m_wordList.at(demofile))
-    {
-      if(file == "\"" + commandname + "\"")
-        return true;
-    }
-  return false;
+  return std::any_of(m_wordList.at(demofile).begin(),
+                     m_wordList.at(demofile).end(),
+                     [commandname](wxString file){return file == "\"" + commandname + "\"";});
 }
 
 
@@ -518,6 +515,7 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
   if ((type != tmplte) && (type >=0 ) && (type < numberOfTypes )) {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for (const auto &i : m_wordList.at(type)) {
+      //cppcheck-suppress useStlAlgorithm
       if (i.StartsWith(partial) &&
           (std::find(completions.begin(), completions.end(), i) == completions.end()))
         completions.push_back(i);
@@ -592,8 +590,8 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
       {
         wxString funName = fun.SubString(0, openpos);
         auto count = fun.Freq('<');
-        std::size_t i = 0;
         {
+          std::size_t i = 0;
           const std::lock_guard<std::mutex> lock(m_keywordsLock);
           for (const auto &o: m_wordList.at(type)) {
             if (o.StartsWith(funName) && (o.Freq('<') == count))

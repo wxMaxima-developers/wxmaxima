@@ -110,8 +110,8 @@
 #include <wx/utils.h>
 #include <wx/wupdlock.h>
 #include <wx/windowptr.h>
-
-#include <wx/fs_mem.h>
+#include <wx/wfstream.h>
+#include <wx/zstream.h>
 #include <wx/persist/toplevel.h>
 #include <wx/sckstrm.h>
 #include <wx/txtstrm.h>
@@ -5681,7 +5681,7 @@ bool wxMaxima::AbortOnError() {
 
   if (GetExitOnError()) {
     wxMaxima::m_exitCode = 1;
-    wxExit();
+    Close();
   }
   if (m_configuration.GetAbortOnError()) {
     GetWorksheet()->m_evaluationQueue.Clear();

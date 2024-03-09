@@ -131,7 +131,7 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap) {
 
 ImgCell::~ImgCell() { ImgCell::ClearCache(); }
 
-const wxString &ImgCell::GetToolTip(const wxPoint point) const {
+const wxString ImgCell::GetToolTip(const wxPoint point) const {
   if (!ContainsPoint(point))
     return wxm::emptyString;
 

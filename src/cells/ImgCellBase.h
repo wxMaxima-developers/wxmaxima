@@ -81,7 +81,7 @@ public:
   */
   virtual void ClearCache() override = 0;
 
-  virtual const wxString &GetToolTip(wxPoint point) const override = 0;
+  virtual const wxString GetToolTip(wxPoint point) const override = 0;
 
   //! Copies the cell to the system's clipboard
   virtual bool CopyToClipboard() const override = 0;

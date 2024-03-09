@@ -46,7 +46,7 @@
 
 const wxString &Cell::GetLocalToolTip() const { return *m_toolTip; }
 
-const wxString &Cell::GetToolTip(const wxPoint point) const {
+const wxString Cell::GetToolTip(const wxPoint point) const {
   if (!ContainsPoint(point))
     return wxm::emptyString;
 
@@ -339,13 +339,13 @@ void Cell::ClearToolTip() {
     m_toolTip = &wxm::emptyString;
 }
 
-void Cell::SetToolTip(wxString &&tooltip) {
+void Cell::SetToolTip(const wxString tooltip) {
   if (m_ownsToolTip)
-    const_cast<wxString &>(*m_toolTip) = std::move(tooltip);
+    const_cast<wxString &>(*m_toolTip) = tooltip;
   else {
     m_toolTip = nullptr;
     m_ownsToolTip = true;
-    m_toolTip = new wxString(std::move(tooltip));
+    m_toolTip = new wxString(tooltip);
   }
 }
 
