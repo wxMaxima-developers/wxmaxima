@@ -906,7 +906,10 @@ endif()
 
 find_program(APPSTREAMCLI appstreamcli)
 if(APPSTREAMCLI)
-    message(STATUS "Found appstreamcli: ${APPSTREAMCLI}")
+	execute_process(COMMAND ${APPSTREAMCLI} --version
+					OUTPUT_VARIABLE APPSTREAMCLI_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+	string(REGEX REPLACE "^.*:.(.*)" "\\1"  APPSTREAMCLI_VERSION "${APPSTREAMCLI_VERSION}")
+    message(STATUS "Found appstreamcli: ${APPSTREAMCLI} (found version \"${APPSTREAMCLI_VERSION}\")")
     add_test(
             NAME check_appstream_file
             COMMAND ${APPSTREAMCLI} validate "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.appdata.xml")
