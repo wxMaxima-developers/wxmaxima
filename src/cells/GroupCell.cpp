@@ -915,7 +915,7 @@ void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
   }
 }
 
-wxRect GroupCell::HideRect() {
+wxRect GroupCell::HideRect() const {
   return wxRect(m_currentPoint.x - m_configuration->GetCellBracketWidth() -
                 m_configuration->GetDefaultLineWidth() / 2,
                 m_currentPoint.y - m_center -

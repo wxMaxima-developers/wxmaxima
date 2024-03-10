@@ -54,7 +54,7 @@ public:
    */
   void DropLogTarget();
   //! True, if this is the log panel that receives all log messages
-  bool IsLogTarget() {return m_logPanelTarget.has_value();}
+  bool IsLogTarget() const {return m_logPanelTarget.has_value();}
   //! The destructor
   ~LogPane();
 

@@ -951,7 +951,7 @@ void EditorCell::SetForeground(wxDC *dc) {
   dc->SetTextForeground(m_configuration->GetColor(GetTextStyle()));
 }
 
-wxString EditorCell::GetCurrentCommand() {
+wxString EditorCell::GetCurrentCommand() const {
   // Discard all chars behind the cursor.
   wxString lineTillCursor = m_text.Left(CursorPosition());
 

@@ -30,6 +30,7 @@
   Labels are TextCells that scale down automatically if they need more space
   than we got.
 */
+//cppcheck-suppress ODR
 class LabelCell final : public TextCell
 {
 public:

@@ -153,7 +153,7 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
 void SymbolsSidebar::OnMenu(wxCommandEvent &event) {
   std::unordered_map<int, std::function<void()>> m{
     {EventIDs::enable_unicodePane, [&](){
-      wxWindow *mainWin = this;
+      const wxWindow *mainWin = this;
       while (mainWin->GetParent() != NULL)
         mainWin = mainWin->GetParent();
       wxCommandEvent *ev = new wxCommandEvent(event);

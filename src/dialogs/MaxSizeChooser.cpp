@@ -33,12 +33,12 @@ MaxSizeChooser::MaxSizeChooser(wxWindow *parent, int id, const int &width,
   wxStaticText *heightText =
     new wxStaticText(this, -1, wxS("Max height [in cm]:"));
 
-  m_width = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  m_imageWidth = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                            wxSize(100, -1), wxSP_VERTICAL, -1, 1000);
-  m_width->SetValue(width);
-  m_height = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  m_imageWidth->SetValue(width);
+  m_imageHeight = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
                             wxSize(100, -1), wxSP_VERTICAL, -1, 1000);
-  m_height->SetValue(height);
+  m_imageHeight->SetValue(height);
 
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
@@ -59,9 +59,9 @@ MaxSizeChooser::MaxSizeChooser(wxWindow *parent, int id, const int &width,
                                _("The maximum size for this image. Values <= 0 mean: Unspecified.")),
               0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
   grid_sizer_1->Add(widthText, 0, wxALL | wxEXPAND, 5);
-  grid_sizer_1->Add(m_width, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+  grid_sizer_1->Add(m_imageWidth, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
   grid_sizer_1->Add(heightText, 0, wxALL | wxEXPAND, 5);
-  grid_sizer_1->Add(m_height, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+  grid_sizer_1->Add(m_imageHeight, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
 
   sizer_1->Add(button_1, 0, wxALL, 5);
   sizer_1->Add(button_2, 0, wxALL, 5);

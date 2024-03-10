@@ -93,7 +93,7 @@ public:
 
   //! Clear the first prompt state, based on what was read from maxima.
   //! This is called from prompt recognizer code in the wxMaxima class.
-  void ClearFirstPrompt() { m_first = false; }
+  void ClearFirstPrompt() { m_firstPrompt = false; }
 
   enum EventCause {
     //! There's still pending data coming from Maxima. The Data member is empty at the moment.
@@ -153,7 +153,7 @@ private:
   wxString m_socketInputData;
 
   //! true = Maxima still has to send us its first prompt
-  bool m_first = true;
+  bool m_firstPrompt = true;
   //! true = copy all data we receive to StdErr.
   static bool m_pipeToStderr;
 

@@ -85,7 +85,7 @@ HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
   SetMinSize(wxSize(300 * GetContentScaleFactor(), 400 * GetContentScaleFactor()));
 }
 
-wxString HelpBrowser::GetKeyword(wxWindowID id) {
+wxString HelpBrowser::GetKeyword(wxWindowID id) const {
   if (id < m_topicButtonID0)
     return wxEmptyString;
   id -= m_topicButtonID0;

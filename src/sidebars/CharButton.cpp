@@ -38,7 +38,7 @@ void CharButton::MouseOverTextIs(bool mouseOver) {
   if (m_mouseOverText != mouseOver) {
     m_mouseOverText = mouseOver;
     m_backgroundColorChangeNeeded = true;
-    Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdle), NULL, this);
+    Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdleEvent), NULL, this);
   }
 }
 
@@ -46,7 +46,7 @@ void CharButton::MouseOverPanelIs(bool mouseOver) {
   if (m_mouseOverPanel != mouseOver) {
     m_mouseOverPanel = mouseOver;
     m_backgroundColorChangeNeeded = true;
-    Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdle), NULL, this);
+    Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdleEvent), NULL, this);
   }
 }
 
@@ -67,8 +67,8 @@ void CharButton::MouseLeftText(wxMouseEvent &event) {
   event.Skip();
 }
 
-void CharButton::OnIdle(wxIdleEvent &event) {
-  Disconnect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdle), NULL, this);
+void CharButton::OnIdleEvent(wxIdleEvent &event) {
+  Disconnect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdleEvent), NULL, this);
   if (!m_backgroundColorChangeNeeded)
     return;
   m_backgroundColorChangeNeeded = false;
@@ -122,7 +122,7 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
   SetToolTip(def.description);
   Connect(wxEVT_LEFT_UP, wxCommandEventHandler(CharButton::CharButtonPressed),
           NULL, this);
-  Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdle), NULL, this);
+  Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdleEvent), NULL, this);
   Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(CharButton::MouseOverPanel),
           NULL, this);
   Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(CharButton::MouseLeftPanel),

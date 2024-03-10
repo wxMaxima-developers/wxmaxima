@@ -30,6 +30,7 @@
   This is used for exporting HTML with embedded maths as bitmap
   and for putting bitmaps for the clipboard
 */
+//cppcheck-suppress ODR
 class BitmapOut final
 {
 public:
@@ -40,9 +41,9 @@ public:
     \param configuration A pointer to the pointer to this worksheet's configuration
     storage
   */
-  explicit BitmapOut(Configuration **configuration, double scale = 1);
+  explicit BitmapOut(const Configuration * const *configuration, double scale = 1);
   //! Constructs and renders the bitmap, setting the IsOK() status accordingly.
-  explicit BitmapOut(Configuration **configuration, std::unique_ptr<Cell> &&tree, double scale = 1, long maxSize = -1);
+  explicit BitmapOut(const Configuration * const *configuration, std::unique_ptr<Cell> &&tree, double scale = 1, long maxSize = -1);
   ~BitmapOut();
 
   /*! Renders tree as bitmap

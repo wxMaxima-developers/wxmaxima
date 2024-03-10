@@ -52,9 +52,9 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_configuration(config),
   m_socket(socket),
   m_socketInput(*m_socket),
-  m_textInput(m_socketInput, wxS("\n"), wxConvUTF8)
+  m_textInput(m_socketInput, wxS("\n"), wxConvUTF8),
+  m_abortParserThread(false)
 {
-  m_abortParserThread = false;
   if(m_knownTags.empty())
     {
       m_knownTags[wxS("PROMPT")] = XML_PROMPT;
@@ -134,16 +134,11 @@ void Maxima::SocketEvent(wxSocketEvent &event) {
     ReadSocket();
     break;
   case wxSOCKET_OUTPUT:
-    if (Write(nullptr, 0)) {
-      wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
-      event->SetInt(WRITE_PENDING);
-      QueueEvent(event);
-    }
     break;
   case wxSOCKET_LOST: {
-      wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
-      event->SetInt(DISCONNECTED);
-    QueueEvent(event);
+      wxThreadEvent *evt = new wxThreadEvent(EVT_MAXIMA);
+      evt->SetInt(DISCONNECTED);
+    QueueEvent(evt);
     break;
   }
   case wxSOCKET_CONNECTION:
@@ -244,7 +239,7 @@ void Maxima::SendToWxMaxima()
                 tagStart += *it2;
                 i++; ++it2;
               }
-            for(tag = m_knownTags.begin(); tag != m_knownTags.end(); tag++)
+            for(tag = m_knownTags.begin(); tag != m_knownTags.end(); ++tag)
               {
                 wxString tagstartname = wxS("<") + tag->first + wxS(">");
                 if(tagStart.StartsWith(tagstartname))
@@ -282,7 +277,7 @@ void Maxima::SendToWxMaxima()
     while(it != m_socketInputData.end())
       {
         rest += *it;
-        it++;
+        ++it;
       }
     m_socketInputData = rest;
     m_socketInputData.Alloc(1000000);

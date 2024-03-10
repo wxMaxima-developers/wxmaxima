@@ -90,7 +90,7 @@ public:
   const wxString &GetAnswer(size_t answer) const;
   const wxString &GetAnswer(const wxString &question) const;
   //! Does this GroupCell know the answer to any of maxima's questions?
-  bool ContainsSavedAnswers() { return !m_knownAnswers.empty(); }
+  bool ContainsSavedAnswers() const { return !m_knownAnswers.empty(); }
   //! Does this GroupCell save the answer to a question?
   bool AutoAnswer() const { return m_autoAnswer; }
   void SetAutoAnswer(bool autoAnswer);
@@ -178,7 +178,7 @@ public:
   virtual bool FirstLineOnlyEditor() override;
   void SwitchHide();
 
-  wxRect HideRect();
+  wxRect HideRect() const;
 
   // raw manipulation of GC (should be protected)
   void SetInput(std::unique_ptr<Cell> &&input);

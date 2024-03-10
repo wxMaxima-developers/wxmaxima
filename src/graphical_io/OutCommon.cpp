@@ -35,7 +35,7 @@ static wxString MakeTempFilename() {
     return wxFileName::CreateTempFileName(wxS("wxmaxima_size_"));
 }
 
-OutCommon::OutCommon(Configuration **configuration, const wxString &filename,
+OutCommon::OutCommon(const Configuration * const *configuration, const wxString &filename,
                      int fullWidth, double scale)
     : m_tempFilename(MakeTempFilename()),
       m_filename(filename.empty()
@@ -45,7 +45,7 @@ OutCommon::OutCommon(Configuration **configuration, const wxString &filename,
     m_thisconfig.ShowCodeCells(m_oldconfig->ShowCodeCells());
     m_thisconfig.SetWorkSheet((*configuration)->GetWorkSheet());
 
-    *m_configuration = &m_thisconfig;
+    //    *m_configuration = &m_thisconfig;
     m_thisconfig.SetZoomFactor_temporarily(1);
     m_thisconfig.FontChanged();
 
@@ -56,7 +56,7 @@ OutCommon::OutCommon(Configuration **configuration, const wxString &filename,
     m_thisconfig.SetParenthesisDrawMode(Configuration::handdrawn);
 }
 
-OutCommon::OutCommon(Configuration **configuration, int fullWidth, double scale)
+OutCommon::OutCommon(const Configuration * const *configuration, int fullWidth, double scale)
     : OutCommon(configuration, {}, fullWidth, scale) {}
 
 OutCommon::~OutCommon() {
@@ -68,8 +68,8 @@ OutCommon::~OutCommon() {
         if (!wxRemoveFile(m_tempFilename))
             wxLogMessage(_("Cannot remove the file %s"), m_tempFilename.mb_str());
     }
-    *m_configuration = m_oldconfig;
-    (*m_configuration)->FontChanged();
+    //    *m_configuration = m_oldconfig;
+    //    (*m_configuration)->FontChanged();
 }
 
 wxSize OutCommon::GetScaledSize() const {

@@ -165,7 +165,7 @@ void TableOfContents::OnDragStart(wxListEvent &evt) {
 
     // For the visual feedback: How many toc items does the user drag?
     m_numberOfCaptionsDragged = 1;
-    GroupCell *tmp = m_displayedGroupCells[evt.GetIndex()];
+    const GroupCell *tmp = m_displayedGroupCells[evt.GetIndex()];
     auto index = evt.GetIndex() + 1;
     tmp = tmp->GetNext();
     while ((tmp != NULL) && (index <= m_displayedItems->GetItemCount())) {
@@ -197,7 +197,7 @@ void TableOfContents::OnMouseUp(wxMouseEvent &evt) {
        m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged))
     m_dragStop = m_numberOfCaptionsDragged - 1;
   if ((m_dragStart >= 0) && (m_dragStop >= 0) && (m_dragStart != m_dragStop)) {
-    wxWindow *mainWin = this;
+    const wxWindow *mainWin = this;
     while (mainWin->GetParent() != NULL)
       mainWin = mainWin->GetParent();
     wxCommandEvent *tocEv = new wxCommandEvent;

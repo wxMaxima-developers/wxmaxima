@@ -1182,7 +1182,7 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all) {
 
   node = SkipWhitespaceNode(node);
   for (; node; node = GetNextTag(node)) {
-    auto &tagName = node->GetName();
+    const auto &tagName = node->GetName();
     tree.ClearLastAppended();
     if (node->GetType() == wxXML_ELEMENT_NODE) {
       // Parse XML tags. The only other type of element we recognize are text

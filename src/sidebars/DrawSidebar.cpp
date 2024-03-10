@@ -32,8 +32,8 @@
 #include <wx/windowptr.h>
 #include "wizards/Gen1Wiz.h"
 
-DrawSidebar::DrawSidebar(wxWindow *parent, int ID)
-  : wxScrolled<wxPanel>(parent, ID)
+DrawSidebar::DrawSidebar(wxWindow *parent, int id)
+  : wxScrolled<wxPanel>(parent, id)
 {
     wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   SetScrollRate(5, 5);

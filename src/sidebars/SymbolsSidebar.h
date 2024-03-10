@@ -41,6 +41,7 @@
 #include <list>
 
 
+//cppcheck-suppress ODR
 class SymbolsSidebar : public wxScrolled<wxPanel>
 {
 public:

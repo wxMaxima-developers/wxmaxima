@@ -62,7 +62,7 @@ public:
 
 private:
   //! The directory all data is stored relative to.
-  wxString ResourcesDir() const;
+  static wxString ResourcesDir();
 
 public:
   //! The directory the user stores its data in.
@@ -71,10 +71,10 @@ public:
   static void UserConfDir(wxString userConfDir);
 
   //! The directory general data is stored in
-  wxString DataDir() const;
+  static wxString DataDir();
 
   //! The directory our private fonts are stored in
-  wxString FontDir() const {return DataDir()+wxS("/../fonts");}
+  static wxString FontDir() {return DataDir()+wxS("/../fonts");}
 
   //! The directory the help file is stored in
   wxString HelpDir() const {return m_helpDir;}
@@ -87,14 +87,14 @@ public:
   static wxString UserAutocompleteFile();
 
   //! The path to wxMaxima's own AutoComplete file
-  wxString AutocompleteFile() const
+  static wxString AutocompleteFile()
     { return DataDir() + wxS("/autocomplete.txt"); }
 
   /*! The directory the locale data is to be found in
 
     Is only used on MSW and MAC
   */
-  wxString LocaleDir() const
+  static wxString LocaleDir()
     { return ResourcesDir() + wxS("/locale"); }
 
   //! The executable file path to the maxima executable (or .bat on Windows)

@@ -175,7 +175,7 @@ public:
   //! Sets the font size that this style has when not zoomed or being used as subscript/...
   static void SetFontSize(wxFont &, AFontSize fontSize);
   //! Empties the font variant cache.
-  void ClearCache()
+  void ClearCache() const
     {
       if(m.fontCache)
         m.fontCache->ClearCache();

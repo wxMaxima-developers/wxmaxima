@@ -312,10 +312,10 @@ private:
   void TreeUndo_ClearUndoActionList();
 
   //! Remove one action ftom the action list
-  void TreeUndo_DiscardAction(UndoActions *actionList);
+  static void TreeUndo_DiscardAction(UndoActions *actionList);
 
   //! Add another action to this undo action
-  void TreeUndo_AppendAction(UndoActions *actionList)
+  static void TreeUndo_AppendAction(UndoActions *actionList)
     {
       if(!actionList->empty())
         actionList->front().m_partOfAtomicAction = true;
@@ -427,7 +427,7 @@ private:
   };
 
   //! Add a line to a file.
-  void AddLineToFile(wxTextFile &output, const wxString &s);
+  static void AddLineToFile(wxTextFile &output, const wxString &s);
 
   //! Copy the currently selected cells
   std::unique_ptr<Cell> CopySelection(bool asData = false) const;
@@ -488,7 +488,7 @@ private:
   void DrawGroupCell_UsingBitmap(wxDC *dc, GroupCell *cell);
 
   //! All that has need to be done before drawing a GroupCell in a DC
-  void PrepareDrawGC(wxDC &dc);
+  void PrepareDrawGC(wxDC &dc) const;
 
   void OnSize(wxSizeEvent &event);
 
@@ -503,7 +503,7 @@ private:
 
   void OnMouseLeftDown(wxMouseEvent &event);
 
-  void OnMouseLeftInGcCell(wxMouseEvent &event, GroupCell *clickedInGc);
+  void OnMouseLeftInGcCell(wxMouseEvent &event, GroupCell *clickedInGC);
 
   void OnMouseLeftInGcLeft(wxMouseEvent &event, GroupCell *clickedInGC);
 
@@ -552,6 +552,7 @@ private:
 
   void AdjustSize();
 
+  //! Cannot be static as it is called using a function pointer to an object
   void OnEraseBackground(wxEraseEvent& WXUNUSED(event))
     {}
 
@@ -559,10 +560,10 @@ private:
 
   void OnMouseMiddleUp(wxMouseEvent &event);
 
-  bool IsLesserGCType(int type, int comparedTo);
+  static bool IsLesserGCType(int type, int comparedTo);
 
   //! Finds the start of the current chapter/section/...
-  GroupCell *StartOfSectioningUnit(GroupCell *start);
+  static GroupCell *StartOfSectioningUnit(GroupCell *start);
 
   //! Finds the end of the current chapter/section/...
   GroupCell *EndOfSectioningUnit(GroupCell *start);
@@ -636,7 +637,7 @@ private:
 
 public:
   void SetMaximaVersion(wxString version){m_maximaVersion = version;}
-  wxString GetMaximaVersion(){return m_maximaVersion;}
+  wxString GetMaximaVersion() const {return m_maximaVersion;}
   //! Is this worksheet empty?
   bool IsEmpty() const
     { return !m_tree || (!m_tree->GetNext() && m_tree->GetEditable()->GetValue().Length() <= 1); }
@@ -663,7 +664,7 @@ public:
   void SetCellStyle(GroupCell *group, GroupType style);
 
   //! Renumber all sections
-  void NumberSections();
+  void NumberSections() const;
 
   //! Make this chapter/section/... a section/subsection/... changing its subheadings, too.
   bool SectioningMoveIn();
@@ -706,7 +707,7 @@ public:
   EditorCell *SearchStart() const
     { return m_cellPointers.m_cellSearchStartedIn; }
 
-  int IndexSearchStartedAt()
+  int IndexSearchStartedAt() const
     { return m_cellPointers.m_indexSearchStartedAt; }
 
   CellPointers &GetCellPointers() { return m_cellPointers; }
@@ -912,17 +913,17 @@ public:
 
   void ResetInputPrompts();
 
-  bool CanCopy()
+  bool CanCopy() const
     {
       return m_cellPointers.m_selectionStart ||
         (m_cellPointers.m_activeCell &&
          m_cellPointers.m_activeCell->CanCopy());
     }
 
-  bool CanPaste()
+  bool CanPaste() const
     { return m_cellPointers.m_activeCell || m_hCaretActive; }
 
-  bool CanCut()
+  bool CanCut() const
     {
       return (m_cellPointers.m_activeCell && m_cellPointers.m_activeCell->CanCopy()) ||
         (m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP);
@@ -971,7 +972,7 @@ public:
   void TOCdnd();
 
   //! Is it possible to delete the cells between start and end?
-  bool CanDeleteRegion(GroupCell *start, GroupCell *end) const;
+  bool CanDeleteRegion(GroupCell *start, const GroupCell *end) const;
 
   //! Is it possible to delete the currently selected cells?
   bool CanDeleteSelection() const;
@@ -983,7 +984,7 @@ public:
   void DeleteCurrentCell();
 
   //! Does it make sense to enable the "Play" button and the slider now?
-  bool CanAnimate()
+  bool CanAnimate() const
     {
       return m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd &&
         m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE;
@@ -995,14 +996,14 @@ public:
     - false: Stop the animation
     - true: Run the animation
   */
-  void Animate(bool run = true);
+  void Animate(bool run = true) const;
 
   void DivideCell();
 
   void MergeCells();
 
   void SetLastQuestion(const wxString &lastQuestion){m_lastQuestion = lastQuestion;}
-  wxString GetLastQuestion(){return m_lastQuestion;}
+  wxString GetLastQuestion() const {return m_lastQuestion;}
 
   //! Add the currently selected cells to the clipboard and delete them.
   bool CutToClipboard();
@@ -1015,49 +1016,49 @@ public:
     - true:  Copy the current selection as text
     - false: Copy the current selection as they would appear in a .wxm file
   */
-  bool Copy(bool astext = false);
+  bool Copy(bool astext = false) const;
 
   //! Copy the selection to the clipboard as it would appear in a .wxm file
-  bool CopyCells();
+  bool CopyCells() const;
 
   //! Copy a Matlab representation of the current selection to the clipboard
-  bool CopyMatlab();
+  bool CopyMatlab() const;
 
   //! Copy a textual representation of the current selection to the clipboard
-  bool CopyText();
+  bool CopyText() const;
 
   //! Copy the TeX representation of the current selection to the clipboard
-  bool CopyTeX();
+  bool CopyTeX() const;
 
   //! Convert the current selection to MathML
-  wxString ConvertSelectionToMathML();
+  wxString ConvertSelectionToMathML() const;
 
   //! Convert the current selection to a bitmap
-  wxBitmap ConvertSelectionToBitmap();
+  wxBitmap ConvertSelectionToBitmap() const;
 
   //! Copy the MathML representation of the current selection to the clipboard
-  bool CopyMathML();
+  bool CopyMathML() const;
 
   //! Copy a bitmap of the current selection to the clipboard
-  bool CopyBitmap();
+  bool CopyBitmap() const;
 
   //! Copy the current animation to the clipboard
-  bool CopyAnimation();
+  bool CopyAnimation() const;
 
   //! Copy a svg of the current selection to the clipboard
-  bool CopySVG();
+  bool CopySVG() const;
 
 #if wxUSE_ENH_METAFILE
   //! Copy a svg of the current selection to the clipboard
-  bool CopyEMF();
+  bool CopyEMF() const;
 #endif
 
   //! Copy a rtf version of the current selection to the clipboard
-  bool CopyRTF();
+  bool CopyRTF() const;
 
-  wxSize CopyToFile(const wxString &file);
+  wxSize CopyToFile(const wxString &file) const;
 
-  wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData = false, double scale = 1);
+  wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData = false, double scale = 1) const;
 
   void CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex, std::vector<int> &cellMap);
 
@@ -1098,7 +1099,7 @@ public:
     - true:  Include linebreaks
     - false: Remove linebreaks from the converted string
   */
-  wxString GetString(bool lb = false);
+  wxString GetString(bool lb = false) const;
 
   GroupCell *GetTree() const { return m_tree.get(); }
   std::unique_ptr<GroupCell> *GetTreeAddress() { return &m_tree; }
@@ -1132,15 +1133,15 @@ public:
 
   bool ActivatePrevInput() { return ActivateInput(-1); }
   bool ActivateNextInput() { return ActivateInput(+1); }
-  wxString GetStatusText() const{return m_statusText;}
-  bool StatusTextChangedHas(){
+  wxString GetStatusText() const {return m_statusText;}
+  bool StatusTextChangedHas() {
     bool retval = (m_statusTextHas != m_statusTextHas_old) ||
       (m_statusText != m_statusText_old);
     m_statusText_old = m_statusText;
     m_statusTextHas_old = m_statusTextHas;
     return retval;
   }
-  bool StatusTextHas(){return m_statusTextHas;}
+  bool StatusTextHas() const {return m_statusTextHas;}
 private:
   /* ! A timer that tells us to urgently update the display
 
@@ -1239,7 +1240,7 @@ public:
   void StepAnimation(int change = 1);
 
   //! Is the editor active in the last cell of the worksheet?
-  bool IsActiveInLast()
+  bool IsActiveInLast() const
     { return m_cellPointers.m_activeCell && m_cellPointers.m_activeCell->GetGroup() == m_last; }
 
   //! Returns the last cell of the worksheet
@@ -1319,12 +1320,12 @@ public:
   */
   void ScrolledAwayFromEvaluation(bool ScrolledAway);
 
-  bool ScrolledAwayFromEvaluation()
+  bool ScrolledAwayFromEvaluation() const
     { return m_scrolledAwayFromEvaluation; }
 
   void SaveValue();
 
-  bool IsSaved()
+  bool IsSaved() const
     { return m_saved; }
 
   void SetSaved(bool saved)
@@ -1500,11 +1501,11 @@ public:
 
     \retval true = maxima waits for the answer of a question.
   */
-  bool QuestionPending()
+  bool QuestionPending() const
     { return m_questionPrompt; }
   //!@}
 
-  /*! Does maxima wait for the answer of a question?
+  /*! Does maxima currently wait for the answer of a question?
 
    */
   void QuestionPending(bool pending)
@@ -1515,8 +1516,8 @@ public:
       m_maximaDocDir = dir;
     }
 
-//! Does the GroupCell cell points to contain the question currently asked by maxima?
-  bool GCContainsCurrentQuestion(GroupCell *cell);
+  //! Does the GroupCell cell points to contain the question currently asked by maxima?
+  bool GCContainsCurrentQuestion(const GroupCell *cell);
 
   /*! Move the cursor to the question maxima currently asks and if needed add a cell for user input
    */
@@ -1597,7 +1598,7 @@ protected:
   int m_virtualHeight_Last;
   //! A memory we can manually buffer the contents of the area that is to be redrawn in
   wxBitmap m_memory;
-  virtual wxSize DoGetBestClientSize() const;
+  virtual wxSize DoGetBestClientSize() const override;
 #if wxUSE_ACCESSIBILITY
   AccessibilityInfo *m_accessibilityInfo;
 #endif

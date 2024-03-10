@@ -152,7 +152,7 @@ void Variablespane::InsertMenu(wxCommandEvent &event) {
     Clear();
   else if(event.GetId() == EventIDs::popid_var_addAll) {
     wxMenuEvent *VarAddEvent = new wxMenuEvent(wxEVT_MENU, EventIDs::popid_var_addAll);
-    wxWindow *top = this;
+    const wxWindow *top = this;
     while (top->GetParent())
       top = top->GetParent();
     top->GetEventHandler()->QueueEvent(VarAddEvent);
@@ -175,7 +175,8 @@ void Variablespane::InsertMenu(wxCommandEvent &event) {
 void Variablespane::OnRightClick(wxGridEvent &event) {
   m_rightClickRow = event.GetRow();
   m_vars.clear();
-  for (int i = 0; i < m_grid->GetNumberRows(); i++)
+  for (std::size_t i = 0;
+       (m_grid->GetNumberRows() > 0) && (i < static_cast<std::size_t>(m_grid->GetNumberRows())); i++)
     m_vars[m_grid->GetCellValue(i, 0)] = 1;
 
   std::unique_ptr<wxMenu> popupMenu(new wxMenu);
@@ -269,7 +270,7 @@ void Variablespane::OnTextChange(wxGridEvent &event) {
       if (m_grid->GetCellValue(i, 0) == wxEmptyString)
         m_grid->DeleteRows(i);
   wxMenuEvent *VarReadEvent = new wxMenuEvent(wxEVT_MENU, EventIDs::popid_var_newVar);
-  wxWindow *top = this;
+  const wxWindow *top = this;
   while (top->GetParent())
     top = top->GetParent();
   top->GetEventHandler()->QueueEvent(VarReadEvent);

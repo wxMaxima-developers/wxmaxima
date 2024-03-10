@@ -37,7 +37,7 @@
 class StatSidebar : public wxScrolled<wxPanel>
 {
 public:
-  StatSidebar(wxWindow *parent, int ID = wxID_ANY);
+  explicit StatSidebar(wxWindow *parent, int ID = wxID_ANY);
 };
 
 #endif // STATSIDEBAR_H

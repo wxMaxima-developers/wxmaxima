@@ -56,7 +56,7 @@ public:
   void SetURL(wxString url);
   void JumpToKeyword(wxString keyword);
   void SelectKeywords(const std::vector<wxString> &keywords);
-  wxString GetKeyword(wxWindowID id);
+  wxString GetKeyword(wxWindowID id) const;
 
 private:
   void CreateIfNeeded();

@@ -573,7 +573,7 @@ void Configuration::ShowCodeCells(bool show) {
   m_showCodeCells = show;
 }
 
-void Configuration::SetBackgroundBrush(wxBrush brush) {
+void Configuration::SetBackgroundBrush(const wxBrush &brush) {
   m_BackgroundBrush = brush;
   m_tooltipBrush = brush;
   m_tooltipBrush.SetColour(wxColour(255, 255, 192, 128));
@@ -1060,16 +1060,16 @@ long Configuration::GetLineWidth() const {
 }
 
 //! A comparison operator for wxImage
-static bool operator==(const wxImage &a, const wxImage &b) {
-  if (a.GetSize() != b.GetSize())
-    return false;
+// static bool operator==(const wxImage &a, const wxImage &b) {
+//   if (a.GetSize() != b.GetSize())
+//     return false;
 
-  long bytes = (long)a.GetWidth() * b.GetHeight() * 3;
-  if (bytes < 0)
-    return false;
+//   long bytes = (long)a.GetWidth() * b.GetHeight() * 3;
+//   if (bytes < 0)
+//     return false;
 
-  return memcmp(a.GetData(), b.GetData(), bytes) == 0;
-}
+//   return memcmp(a.GetData(), b.GetData(), bytes) == 0;
+// }
 
 void Configuration::SetZoomFactor(double newzoom) {
   if(m_zoomFactor == newzoom)
@@ -1095,72 +1095,72 @@ Configuration::~Configuration() {
     }
 }
 
-bool Configuration::CharsExistInFont(const wxFont &font,
-                                     const wxString &chars) {
-  wxASSERT(!chars.empty());
-  for (auto const &ex : m_charsInFont)
-    // cppcheck-suppress useStlAlgorithm
-    if (ex.chars == chars)
-      return ex.exist;
+// bool Configuration::CharsExistInFont(const wxFont &font,
+//                                      const wxString &chars) {
+//   wxASSERT(!chars.empty());
+//   for (auto const &ex : m_charsInFont)
+//     // cppcheck-suppress useStlAlgorithm
+//     if (ex.chars == chars)
+//       return ex.exist;
 
-  auto const cache = [this, &chars](bool result) {
-    m_charsInFont.emplace_back(chars, result);
-    return result;
-  };
+//   auto const cache = [this, &chars](bool result) {
+//     m_charsInFont.emplace_back(chars, result);
+//     return result;
+//   };
 
-  if (!font.IsOk())
-    return cache(false);
+//   if (!font.IsOk())
+//     return cache(false);
 
-  // Seems like Apple didn't hold to their high standards as the maths part of
-  // this font don't form nice big mathematical symbols => Blacklisting this
-  // font.
-  if (font.GetFaceName() == wxS("Monaco"))
-    return cache(false);
+//   // Seems like Apple didn't hold to their high standards as the maths part of
+//   // this font don't form nice big mathematical symbols => Blacklisting this
+//   // font.
+//   if (font.GetFaceName() == wxS("Monaco"))
+//     return cache(false);
 
-  if (!m_useUnicodeMaths)
-    return cache(false);
+//   if (!m_useUnicodeMaths)
+//     return cache(false);
 
-  struct Params {
-    wxUniChar ch;
-    wxSize size;
-    wxImage image;
-    explicit Params(wxUniChar ch) : ch(ch) {}
-  };
-  std::vector<Params> P(chars.begin(), chars.end());
+//   struct Params {
+//     wxUniChar ch;
+//     wxSize size;
+//     wxImage image;
+//     explicit Params(wxUniChar ch) : ch(ch) {}
+//   };
+//   std::vector<Params> P(chars.begin(), chars.end());
 
-  // Letters with width or height = 0 don't exist in the current font
-  GetRecalcDC()->SetFont(font);
-  for (auto &p : P) {
-    wxCoord descent;
-    GetRecalcDC()->GetTextExtent(p.ch, &p.size.x, &p.size.y, &descent);
-    if ((p.size.x < 1) || ((p.size.y - descent) < 1))
-      return cache(false);
-  }
+//   // Letters with width or height = 0 don't exist in the current font
+//   GetRecalcDC()->SetFont(font);
+//   for (auto &p : P) {
+//     wxCoord descent;
+//     GetRecalcDC()->GetTextExtent(p.ch, &p.size.x, &p.size.y, &descent);
+//     if ((p.size.x < 1) || ((p.size.y - descent) < 1))
+//       return cache(false);
+//   }
 
-  bool allDifferentSizes = true;
-  for (auto i = P.begin(); allDifferentSizes && i != P.end(); ++i)
-    for (auto j = i + 1; allDifferentSizes && j != P.end(); ++j)
-      allDifferentSizes &= i->size != j->size;
+//   bool allDifferentSizes = true;
+//   for (auto i = P.begin(); allDifferentSizes && i != P.end(); ++i)
+//     for (auto j = i + 1; allDifferentSizes && j != P.end(); ++j)
+//       allDifferentSizes &= i->size != j->size;
 
-  if (allDifferentSizes)
-    return cache(true);
+//   if (allDifferentSizes)
+//     return cache(true);
 
-  for (auto &p : P) {
-    wxBitmap bmp(p.size);
-    wxMemoryDC dc(bmp);
-    dc.SetFont(font);
-    dc.Clear();
-    dc.DrawText(p.ch, wxPoint(0, 0));
-    p.image = bmp.ConvertToImage();
-  }
+//   for (auto &p : P) {
+//     wxBitmap bmp(p.size);
+//     wxMemoryDC dc(bmp);
+//     dc.SetFont(font);
+//     dc.Clear();
+//     dc.DrawText(p.ch, wxPoint(0, 0));
+//     p.image = bmp.ConvertToImage();
+//   }
 
-  for (auto i = P.begin(); i != P.end(); ++i)
-    for (auto j = i + 1; j != P.end(); ++j)
-      if (i->image == j->image)
-        return cache(false);
+//   for (auto i = P.begin(); i != P.end(); ++i)
+//     for (auto j = i + 1; j != P.end(); ++j)
+//       if (i->image == j->image)
+//         return cache(false);
 
-  return cache(true);
-}
+//   return cache(true);
+// }
 
 wxString Configuration::GetFontName(TextStyle const ts) const {
   wxString retval;

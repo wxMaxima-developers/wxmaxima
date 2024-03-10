@@ -29,7 +29,7 @@ size_t Observed::m_instanceCount;
 size_t Observed::ControlBlock::m_instanceCount;
 size_t CellPtrBase::m_instanceCount;
 
-void Observed::OnEndOfLife() noexcept {
+void Observed::OnEndOfLife() const noexcept {
   // TODO Both cases are equivalent: we're resetting
   // a back-pointer pointed to by our pointer. In binary terms,
   // both operations are identical.
@@ -42,7 +42,8 @@ void Observed::OnEndOfLife() noexcept {
     if (CELLPTR_LOG_REFS)
       CELLPTR_LOG_METHOD(wxS("-- ~Obs=%p cb=%p"), this, cb);
     wxASSERT(cb);
-    cb->reset();
+    if(cb)
+      cb->reset();
   }
 }
 
@@ -86,7 +87,8 @@ void CellPtrBase::Ref(Observed *obj) {
   // The object has multiple pointers pointing to it
   auto *const cb = obj_ptr.GetControlBlock();
   wxASSERT(cb && cb->Get() == obj);
-  this->m_ptr = cb->Ref(this);
+  if(cb)
+    this->m_ptr = cb->Ref(this);
 }
 
 void CellPtrBase::Deref() noexcept {

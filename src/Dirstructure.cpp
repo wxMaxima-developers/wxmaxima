@@ -37,9 +37,10 @@
 #include <wx/filefn.h>
 #include <wx/filename.h>
 
-Dirstructure::Dirstructure() {
+Dirstructure::Dirstructure():
+  m_helpDir(ResourcesDir())
+{
   m_dirStructure = this;
-  m_helpDir = ResourcesDir();
 
   // The path Gentoo hides the manual at
   if (wxDirExists(m_helpDir + wxString::Format("/doc/wxmaxima-%s", GITVERSION)))
@@ -85,7 +86,7 @@ void Dirstructure::UserConfDir(wxString userConfDir) {
     wxMkdir(m_userConfDir, wxPATH_MKDIR_FULL);
 }
 
-wxString Dirstructure::ResourcesDir() const {
+wxString Dirstructure::ResourcesDir() {
   wxString exepath = wxStandardPaths::Get().GetExecutablePath();
   if (!exepath.IsEmpty()) {
     // Our resources dir is somewhere near to the dir the binary can be found.
@@ -124,7 +125,7 @@ wxString Dirstructure::ResourcesDir() const {
   return exepath;
 }
 
-wxString Dirstructure::DataDir() const {
+wxString Dirstructure::DataDir() {
   wxString dir = ResourcesDir();
   if (wxDirExists(dir + wxS("/data")))
     dir += wxS("/data");

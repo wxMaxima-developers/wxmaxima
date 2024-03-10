@@ -644,7 +644,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   m_configuration->ReportMultipleRedraws();
 }
 
-void Worksheet::PrepareDrawGC(wxDC &dc)
+void Worksheet::PrepareDrawGC(wxDC &dc) const
 {
   dc.SetMapMode(wxMM_TEXT);
   dc.SetBackgroundMode(wxTRANSPARENT);
@@ -1147,7 +1147,7 @@ void Worksheet::ResetInputPrompts() {
 //
 // support for numbered sections with hiding
 //
-void Worksheet::NumberSections() {
+void Worksheet::NumberSections() const {
   int s, sub, subsub, h5, h6, i;
   s = sub = subsub = i = h5 = h6 = 0;
   if (GetTree())
@@ -2576,7 +2576,7 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
 /***
  * Get the string representation of the selection
  */
-wxString Worksheet::GetString(bool lb) {
+wxString Worksheet::GetString(bool lb) const {
   if (!m_cellPointers.m_selectionStart)
     return GetActiveCell() ? GetActiveCell()->ToString() : wxString{};
 
@@ -2594,7 +2594,7 @@ wxString Worksheet::GetString(bool lb) {
 /***
  * Copy selection to clipboard.
  */
-bool Worksheet::Copy(bool astext) {
+bool Worksheet::Copy(bool astext) const {
   if (GetActiveCell())
     return GetActiveCell()->CopyToClipboard();
 
@@ -2670,14 +2670,12 @@ bool Worksheet::Copy(bool astext) {
     }
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
-    Recalculate();
     return true;
   }
-  Recalculate();
   return false;
 }
 
-wxString Worksheet::ConvertSelectionToMathML() {
+wxString Worksheet::ConvertSelectionToMathML() const {
   if (GetActiveCell())
     return {};
 
@@ -2723,11 +2721,10 @@ wxString Worksheet::ConvertSelectionToMathML() {
         s = s.SubString(static_cast<std::size_t>(pos) + 1, s.Length());
     }
   }
-  Recalculate();
   return s;
 }
 
-bool Worksheet::CopyMathML() {
+bool Worksheet::CopyMathML() const {
   wxString s = ConvertSelectionToMathML();
 
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),
@@ -2749,13 +2746,12 @@ bool Worksheet::CopyMathML() {
     data->Add(new wxHTMLDataObject(s + wxS('\0')));
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
-    Recalculate();
     return true;
   }
   return false;
 }
 
-bool Worksheet::CopyMatlab() {
+bool Worksheet::CopyMatlab() const {
   if (GetActiveCell())
     return false;
 
@@ -2783,7 +2779,7 @@ bool Worksheet::CopyMatlab() {
   return false;
 }
 
-bool Worksheet::CopyTeX() {
+bool Worksheet::CopyTeX() const {
   if (GetActiveCell())
     return false;
 
@@ -2818,7 +2814,7 @@ bool Worksheet::CopyTeX() {
   return false;
 }
 
-bool Worksheet::CopyText() {
+bool Worksheet::CopyText() const {
   if (GetActiveCell())
     return false;
 
@@ -2847,7 +2843,7 @@ bool Worksheet::CopyText() {
   return false;
 }
 
-bool Worksheet::CopyCells() {
+bool Worksheet::CopyCells() const {
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),
                _("Bug: The clipboard is already opened"));
   if (!m_cellPointers.m_selectionStart)
@@ -2911,7 +2907,6 @@ bool Worksheet::CopyCells() {
 
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
-    Recalculate();
     return true;
   }
 
@@ -2949,7 +2944,7 @@ void Worksheet::DeleteCurrentCell() {
     DeleteRegion(cellToDelete, cellToDelete);
 }
 
-bool Worksheet::CanDeleteRegion(GroupCell *start, GroupCell *end) const {
+bool Worksheet::CanDeleteRegion(GroupCell *start, const GroupCell *end) const {
   if (!start || !end)
     return false;
 
@@ -3355,7 +3350,7 @@ void Worksheet::OnKeyDown(wxKeyEvent &event) {
   }
 }
 
-bool Worksheet::GCContainsCurrentQuestion(GroupCell *cell) {
+bool Worksheet::GCContainsCurrentQuestion(const GroupCell *cell) {
   return GetWorkingGroup() && cell == GetWorkingGroup() && m_questionPrompt;
 }
 
@@ -4426,15 +4421,14 @@ std::unique_ptr<GroupCell> Worksheet::CopyTree() const {
   return GetTree() ? GetTree()->CopyList() : nullptr;
 }
 
-bool Worksheet::CopyBitmap() {
+bool Worksheet::CopyBitmap() const {
   BitmapOut bitmap(&m_configuration, CopySelection(), 1,
                    1000000 * m_configuration->MaxClipbrdBitmapMegabytes());
   bool retval = bitmap.ToClipboard();
-  Recalculate();
   return retval;
 }
 
-bool Worksheet::CopyAnimation() {
+bool Worksheet::CopyAnimation() const {
   if (GetSelectionStart() && GetSelectionStart() == GetSelectionEnd() &&
       GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
     return dynamic_cast<AnimationCell *>(GetSelectionStart())
@@ -4443,23 +4437,21 @@ bool Worksheet::CopyAnimation() {
     return false;
 }
 
-bool Worksheet::CopySVG() {
+bool Worksheet::CopySVG() const {
   Svgout svg(&m_configuration, CopySelection());
   bool retval = svg.ToClipboard();
-  Recalculate();
   return retval;
 }
 
 #if wxUSE_ENH_METAFILE
-bool Worksheet::CopyEMF() {
+bool Worksheet::CopyEMF() const {
   Emfout emf(&m_configuration, CopySelection());
   bool retval = emf.ToClipboard();
-  Recalculate();
   return retval;
 }
 #endif
 
-bool Worksheet::CopyRTF() {
+bool Worksheet::CopyRTF() const {
   if (!HasCellsSelected())
     return false;
 
@@ -4489,7 +4481,7 @@ bool Worksheet::CopyRTF() {
   return true;
 }
 
-wxSize Worksheet::CopyToFile(const wxString &file) {
+wxSize Worksheet::CopyToFile(const wxString &file) const {
   if (m_cellPointers.m_selectionStart &&
       m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd &&
       (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_IMAGE ||
@@ -4504,7 +4496,7 @@ wxSize Worksheet::CopyToFile(const wxString &file) {
 }
 
 wxSize Worksheet::CopyToFile(const wxString &file, Cell *start, Cell *end,
-                             bool asData, double scale) {
+                             bool asData, double scale) const {
   auto tmp = CopySelection(start, end, asData);
   BitmapOut output(&m_configuration, std::move(tmp), scale);
   wxSize retval = output.ToFile(file);
@@ -7259,7 +7251,7 @@ bool Worksheet::IsSelected(CellType type) {
 
 //! Starts playing the animation of a cell generated with the with_slider_*
 //! commands
-void Worksheet::Animate(bool run) {
+void Worksheet::Animate(bool run) const {
   if (CanAnimate()) {
     AnimationCell *animation =
       dynamic_cast<AnimationCell *>(GetSelectionStart());
@@ -8251,7 +8243,6 @@ Worksheet::MathMLDataObject2::MathMLDataObject2(wxString data)
   : wxCustomDataObject(m_mathmlFormat2),
     m_databuf(data.utf8_str())
 {
-  data += wxS('\0');
   SetData(m_databuf.length(), m_databuf.data());
 }
 
@@ -8261,7 +8252,6 @@ Worksheet::RtfDataObject::RtfDataObject(wxString data)
   : wxCustomDataObject(m_rtfFormat),
     m_databuf(data.utf8_str())
 {
-  data += wxS('\0');
   SetData(m_databuf.length(), m_databuf.data());
 }
 
@@ -8272,7 +8262,6 @@ Worksheet::RtfDataObject2::RtfDataObject2(wxString data)
   : wxCustomDataObject(m_rtfFormat2),
     m_databuf(data.utf8_str())
 {
-  data += wxS('\0');
   SetData(m_databuf.length(), m_databuf.data());
 }
 

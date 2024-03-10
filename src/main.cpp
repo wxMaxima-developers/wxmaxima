@@ -623,7 +623,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
       // wxExecute wants the arguments as C strings, not as wxStrings =>
       // generate those C strings
       std::vector<wxCharBuffer> args_c_strings;
-      for(auto &i : args)
+      for(const auto &i : args)
         args_c_strings.push_back(wxCharBuffer(i.mb_str()));
 
       // Additionally wxExecute expects these C strings in a C array.
@@ -652,7 +652,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
 
 
 void MyApp::MacNewFile() {
-  wxWindow *frame = GetTopWindow();
+  const wxWindow *frame = GetTopWindow();
   if (frame == NULL)
     NewWindow();
 }

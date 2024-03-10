@@ -29,7 +29,7 @@ FontVariantCache::FontVariantCache(wxString fontName):
 }
 
 
-void FontVariantCache::ClearCache(){
+void FontVariantCache::ClearCache() const {
   bool cleared = false;
   for (auto &i: m_fontCaches)
   {

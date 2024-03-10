@@ -43,9 +43,10 @@
 
 wxDECLARE_APP(MyApp);
 
-MaximaManual::MaximaManual(Configuration *configuration) {
-  m_abortBackgroundTask = false;
-  m_configuration = configuration;
+MaximaManual::MaximaManual(Configuration *configuration):
+  m_abortBackgroundTask(false),
+  m_configuration(configuration)
+{
 }
 
 MaximaManual::HelpFileAnchors MaximaManual::GetHelpfileAnchors() {
@@ -138,8 +139,6 @@ void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors) {
   aliasses["with_slider_draw3d"] = "draw3d";
 
   for (auto it = aliasses.begin(); it != aliasses.end(); ++it) {
-    wxString cmdName = it->first;
-
     if ((anchors.find(it->first) == anchors.end()) &&
         (anchors.find(it->second) != anchors.end()))
       anchors[it->first] = anchors[it->second];

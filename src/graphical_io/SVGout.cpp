@@ -37,7 +37,7 @@
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 
-Svgout::Svgout(Configuration **configuration, const wxString &filename,
+Svgout::Svgout(const Configuration * const *configuration, const wxString &filename,
                double scale)
   : m_cmn(configuration, filename, 500,
           scale), // Note: old SVGout code had this also at 500
@@ -58,7 +58,7 @@ Svgout::Svgout(Configuration **configuration, const wxString &filename,
   config->SetCanvasSize(wxSize(700 * scale, 100000 * scale));
 }
 
-Svgout::Svgout(Configuration **configuration, std::unique_ptr<Cell> &&tree,
+Svgout::Svgout(const Configuration * const *configuration, std::unique_ptr<Cell> &&tree,
                const wxString &filename, double scale)
   : Svgout(configuration, filename, scale) {
   Render(std::move(tree));

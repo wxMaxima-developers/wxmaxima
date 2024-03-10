@@ -30,7 +30,7 @@
 
 #if wxUSE_ENH_METAFILE
 
-Emfout::Emfout(Configuration **configuration, const wxString &filename)
+Emfout::Emfout(const Configuration * const *configuration, const wxString &filename)
   : m_cmn(configuration, filename, 500, 1.0),
     m_recalculationDc(m_cmn.GetTempFilename(), 3000, 50000) {
   m_cmn.SetRecalculationContext(&m_recalculationDc);
@@ -39,7 +39,7 @@ Emfout::Emfout(Configuration **configuration, const wxString &filename)
   config->SetCanvasSize(wxSize(3000,100000));
 }
 
-Emfout::Emfout(Configuration **configuration, std::unique_ptr<Cell> &&tree,
+Emfout::Emfout(const Configuration * const *configuration, std::unique_ptr<Cell> &&tree,
                const wxString &filename)
   : Emfout(configuration, filename) {
   Render(std::move(tree));

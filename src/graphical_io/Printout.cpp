@@ -185,10 +185,10 @@ void Printout::BreakPages() {
   // The 1st page starts at the beginning of the document
   GroupCell *group = m_tree.get();
   m_pages.push_back(group);
-  // Now see where the next pages should start
-  wxCoord pageStart = 0;
-    
+  
+  // Now see where the next pages should start    
   for (const auto &i : lineStarts) {
+    wxCoord pageStart = 0;
     pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetTop();
     wxCoord pageEnd = i->GetRect(true).GetBottom();
     if(i->GetNext())

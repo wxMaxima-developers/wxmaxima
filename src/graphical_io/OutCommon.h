@@ -67,9 +67,9 @@ public:
    * \param filename The name of the output file
    * \param scale The scaling factor of the output document
    */
-  explicit OutCommon(Configuration **configuration, const wxString &filename,
+  explicit OutCommon(const Configuration * const *configuration, const wxString &filename,
                      int fullWidth, double scale);
-  explicit OutCommon(Configuration **configuration, int fullWidth, double scale);
+  explicit OutCommon(const Configuration * const *configuration, int fullWidth, double scale);
   ~OutCommon();
 
   OutCommon(const OutCommon&) = delete;
@@ -82,7 +82,7 @@ public:
   //! Get the configuration for the file/bitmap/... output
   Configuration *GetConfiguration() { return &m_thisconfig; }
   //! Get the configuration for the screen output
-  Configuration &GetScreenConfig() { return *(*m_configuration); }
+  const Configuration &GetScreenConfig() { return *(*m_configuration); }
   wxSize getPPI() const { return m_ppi; }
 
   //! Sets the context for the configuration used in recalculating the cell dimensions.
@@ -121,8 +121,8 @@ private:
   wxDC *m_recalculationDc = {};
 
   wxString m_filename;
-  Configuration **m_configuration;
-  Configuration *m_oldconfig = *m_configuration;
+  const Configuration * const *m_configuration;
+  const Configuration *m_oldconfig = *m_configuration;
   Configuration m_thisconfig{ {}, Configuration::temporary };
   //! How many times the natural resolution do we want this output to be?
   double m_scale = 1.0;

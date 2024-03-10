@@ -59,7 +59,7 @@ public:
 
 protected:
   //! Is called if this element looses or gets the focus
-  void OnActivate(wxActivateEvent &WXUNUSED(event));
+  void OnActivateEvent(wxActivateEvent &WXUNUSED(event));
 
   //! We catch a few hot keys here as we don't provide a menu that could declare them
   void OnKeyDown(wxKeyEvent &WXUNUSED(event));

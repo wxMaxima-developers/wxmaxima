@@ -63,7 +63,7 @@ protected:
   Configuration *m_configuration;
   void CharButtonPressed(wxCommandEvent &event);
   void OnSize(wxSizeEvent &event);
-  void OnIdle(wxIdleEvent &event);
+  void OnIdleEvent(wxIdleEvent &event);
   void MouseOverPanel(wxMouseEvent &event);
   void MouseOverText(wxMouseEvent &event);
   void MouseLeftPanel(wxMouseEvent &event);

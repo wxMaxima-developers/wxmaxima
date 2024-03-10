@@ -31,7 +31,7 @@
 
 #define BM_FULL_WIDTH 1000
 
-BitmapOut::BitmapOut(Configuration **configuration, double scale)
+BitmapOut::BitmapOut(const Configuration * const *configuration, double scale)
   : m_cmn(configuration, BM_FULL_WIDTH, scale) {
   m_cmn.SetSize({10, 10});
   m_bmp.CreateScaled(10, 10, 24, scale);
@@ -45,7 +45,7 @@ BitmapOut::BitmapOut(Configuration **configuration, double scale)
   config->SetCanvasSize(wxSize(BM_FULL_WIDTH, BM_FULL_WIDTH));
 }
 
-BitmapOut::BitmapOut(Configuration **configuration,
+BitmapOut::BitmapOut(const Configuration * const *configuration,
                      std::unique_ptr<Cell> &&tree, double scale, long maxSize)
   : BitmapOut(configuration, scale) {
   Render(std::move(tree), maxSize);

@@ -153,7 +153,7 @@ void FindReplacePane::OnSearch(wxCommandEvent &event) {
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_NEXT);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetFlags(m_findReplaceData->GetFlags());
-  wxWindow *topLevelWindow = this;
+  const wxWindow *topLevelWindow = this;
   while(topLevelWindow->GetParent())
     topLevelWindow = topLevelWindow->GetParent();
   topLevelWindow->GetEventHandler()->QueueEvent(findEvent);
@@ -165,7 +165,7 @@ void FindReplacePane::OnReplace(wxCommandEvent &event) {
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetReplaceString(m_findReplaceData->GetReplaceString());
   findEvent->SetFlags(m_findReplaceData->GetFlags());
-  wxWindow *topLevelWindow = this;
+  const wxWindow *topLevelWindow = this;
   while(topLevelWindow->GetParent())
     topLevelWindow = topLevelWindow->GetParent();
   topLevelWindow->GetEventHandler()->QueueEvent(findEvent);
@@ -177,7 +177,7 @@ void FindReplacePane::OnReplaceAll(wxCommandEvent &event) {
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetReplaceString(m_findReplaceData->GetReplaceString());
   findEvent->SetFlags(m_findReplaceData->GetFlags());
-  wxWindow *topLevelWindow = this;
+  const wxWindow *topLevelWindow = this;
   while(topLevelWindow->GetParent())
     topLevelWindow = topLevelWindow->GetParent();
   topLevelWindow->GetEventHandler()->QueueEvent(findEvent);

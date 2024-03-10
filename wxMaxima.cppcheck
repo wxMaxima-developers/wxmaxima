@@ -14,15 +14,19 @@
         <dir name="src/wizards/"/>
         <dir name="build/"/>
         <dir name="build/examples/"/>
-        <dir name="/usr/include/wx-3.2"/>
+        <dir name="/usr/local/include/wx-3.3"/>
     </includedir>
     <defines>
+        <define name="__cplusplus=202003L"/>
         <define name="wxS(x)=x"/>
         <define name="__UNIX__=x"/>
         <define name="wxUSE_STL=1"/>
         <define name="__cplusplus=1"/>
         <define name="USE_WEBVIEW=1"/>
         <define name="wxUSE_STD_IOSTREAM=1"/>
+        <define name="wxUSE_CONSOLE_EVENTLOOP=1"/>
+        <define name="wxUSE_DYNLIB_CLASS=1"/>
+        <define name="wxUSE_ANY=1"/>
         <define name="WXK_NUMPAD_PRIOR=1"/>
         <define name="WXK_NUMPAD_NEXT=1"/>
         <define name="WXK_PRIOR=2"/>
@@ -31,6 +35,7 @@
         <define name="wxHAS_POWER_EVENTS=1"/>
     </defines>
     <undefines>
+        <undefine>wxABORT_ON_CONFIG_ERROR</undefine>
         <undefine>__APPLE__</undefine>
         <undefine>USE_PRECOMP_HEADER__</undefine>
         <undefine>__WXMSW__</undefine>
@@ -54,6 +59,7 @@
         <suppression>unusedFunction</suppression>
         <suppression>useStlAlgorithm</suppression>
         <suppression>missingIncludeSystem</suppression>
+        <suppression>ctuOneDefinitionRuleViolation</suppression>
     </suppressions>
     <addons>
         <addon>threadsafety</addon>

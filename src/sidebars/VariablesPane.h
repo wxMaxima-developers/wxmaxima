@@ -77,7 +77,7 @@ public:
   //! Add a variable without escapes to the list.
   void AddWatch(wxString watch);
   //! Is this string a valid variable name?
-  bool IsValidVariable(wxString var);
+  static bool IsValidVariable(wxString var);
   //! Returns a list of all variable names in a format maxima understands
   std::vector<wxString> GetEscapedVarnames();
   //! Returns the variable list in a human-readable format
@@ -87,9 +87,9 @@ public:
   //! Remove all entries from the variables list
   void Clear();
   //! Convert a human-readable variable name to one maxima understands
-  wxString EscapeVarname(wxString var);
+  static wxString EscapeVarname(wxString var);
   //! Convert a variable name maxima understands to human-readable
-  wxString UnescapeVarname(wxString var);
+  static wxString UnescapeVarname(wxString var);
   //! Tell the variables pane about a variable value
   void VariableValue(wxString var, wxString val);
   //! Sets the variable var to "undefined"
@@ -101,7 +101,7 @@ private:
   // The spreadsheet with the variable names
   wxGrid *m_grid;
   bool m_updateSizeNeeded = false;
-  wxString InvertCase(wxString var);
+  static wxString InvertCase(wxString var);
   typedef std::unordered_map <wxString, int, wxStringHash> IntHash;
 
   //! A list of all symbols that can be entered using Esc-Codes
@@ -109,7 +109,7 @@ private:
   //! The row that was right-clicked at
   int m_rightClickRow;
   //! Compares two integers.
-  static int CompareInt(int *int1, int *int2){return (*int1 < *int2);}
+  static int CompareInt(int * const int1, int * const int2){return (*int1 < *int2);}
 };
 
 #endif // VARIABLESPANE_H

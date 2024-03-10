@@ -457,7 +457,7 @@ public:
   wxString GetWordUnderCaret();
 
   //! Get the command the cursor is in the arguments for.
-  wxString GetCurrentCommand();
+  wxString GetCurrentCommand() const;
 
   //! Sets the index the error is at
   void SetErrorIndex(size_t index){m_errorIndex = index; m_errorIndexSet = true;}

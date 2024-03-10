@@ -38,8 +38,8 @@ class Svgout final
 public:
   /*! The constructor.
    */
-  explicit Svgout(Configuration **configuration, const wxString &filename = {}, double scale = 1.0);
-  explicit Svgout(Configuration **configuration, std::unique_ptr<Cell> &&tree,
+  explicit Svgout(const Configuration * const *configuration, const wxString &filename = {}, double scale = 1.0);
+  explicit Svgout(const Configuration * const *configuration, std::unique_ptr<Cell> &&tree,
                   const wxString &filename = {}, double scale = 1.0);
   ~Svgout();
 

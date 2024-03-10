@@ -48,7 +48,7 @@ public:
   explicit FontVariantCache(wxString fontName);
   ~FontVariantCache(){}
   //! Clear this font variant cache
-  void ClearCache();
+  void ClearCache() const;
   /*! Returns a font with the requested attributes
 
     This font can be either cached or newly created.*/

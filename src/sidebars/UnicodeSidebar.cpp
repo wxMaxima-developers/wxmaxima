@@ -102,7 +102,7 @@ void UnicodeSidebar::OnRightClick(wxGridEvent &event) {
 
 void UnicodeSidebar::OnMenu(wxCommandEvent &event) {
   if (event.GetId() == EventIDs::popid_addToSymbols) {
-    wxWindow *toplevel = this;
+    const wxWindow *toplevel = this;
     while (toplevel->GetParent() != NULL)
       toplevel = toplevel->GetParent();
     wxCommandEvent *ev =

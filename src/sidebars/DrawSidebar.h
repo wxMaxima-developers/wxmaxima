@@ -47,7 +47,7 @@ public:
     - 3 = We are inside a 3D plot
   */
   void SetDimensions(int dimensions);
-  int  GetDimensions() { return m_dimensions; }
+  int  GetDimensions() const { return m_dimensions; }
 protected:
   void OnSize(wxSizeEvent &event);
 private:

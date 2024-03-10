@@ -222,7 +222,7 @@ wxString SumCell::ToString() const {
 
   s += Base()->ListToString();
 
-  Cell *tmp = m_under.get();
+  const Cell *tmp  = m_under.get();
   wxString var = tmp->ToString();
   wxString from;
   tmp = tmp->GetNext();
@@ -244,7 +244,7 @@ wxString SumCell::ToMatlab() const {
   wxString s = GetMatlabCommandName();
   s += Base()->ListToMatlab();
 
-  Cell *tmp = m_under.get();
+  const Cell *tmp = m_under.get();
   wxString var = tmp->ToMatlab();
   wxString from;
   tmp = tmp->GetNext();

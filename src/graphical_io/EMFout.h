@@ -34,8 +34,8 @@
 class Emfout final
 {
 public:
-  explicit Emfout(Configuration **configuration, const wxString &filename = {});
-  explicit Emfout(Configuration **configuration, std::unique_ptr<Cell> &&tree, const wxString &filename = {});
+  explicit Emfout(const Configuration * const *configuration, const wxString &filename = {});
+  explicit Emfout(const Configuration * const *configuration, std::unique_ptr<Cell> &&tree, const wxString &filename = {});
   ~Emfout();
 
   /*! Renders tree as emf

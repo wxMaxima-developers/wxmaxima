@@ -246,15 +246,17 @@ did_change Style::SetFromFont(const wxFont &font) {
 AFontSize Style::GetFontSize(const wxFont &font) {
 #if wxCHECK_VERSION(3, 1, 2)
   return AFontSize(font.GetFractionalPointSize());
-#endif
+#else
   return AFontSize(font.GetPointSize());
+#endif
 }
 
 void Style::SetFontSize(wxFont &font, AFontSize fontSize) {
 #if wxCHECK_VERSION(3, 1, 2)
   return font.SetFractionalPointSize(fontSize.Get());
-#endif
+#else
   return font.SetPointSize(fontSize.GetAsLong());
+#endif
 }
 
 wxFontInfo Style::GetAsFontInfo() const {
@@ -270,11 +272,12 @@ wxFontInfo Style::GetAsFontInfo() const {
   // still compiles (doesn't bitrot).
 #if wxCHECK_VERSION(3, 1, 2)
   return result.Style(GetFontStyle()).Weight(GetWeight());
-#endif
+#else
   return result.Slant(IsSlant())
     .Italic(IsItalic())
     .Bold(IsBold())
     .Light(IsLight());
+#endif
 }
 
 const wxColor &Style::Default_Color() {

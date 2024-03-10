@@ -261,25 +261,20 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   m_sidebarNames[EventIDs::menu_pane_stats] = wxS("stats");
   m_sidebarCaption[EventIDs::menu_pane_stats] = _("Statistics");
-  wxWindow *statPane;
-  m_manager.AddPane(statPane = new StatSidebar(this), wxAuiPaneInfo()
+  m_manager.AddPane(new StatSidebar(this), wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_stats])
                     .Left());
-  //  wxWindowUpdateLocker statBlocker(statPane);
 
   m_sidebarNames[EventIDs::menu_pane_greek] = wxS("greek");
   m_sidebarCaption[EventIDs::menu_pane_greek] = _("Greek Letters");
-  wxPanel *greekPane = new GreekSidebar(this, &m_configuration, GetWorksheet());
-  m_manager.AddPane(greekPane, wxAuiPaneInfo()
+  m_manager.AddPane(new GreekSidebar(this, &m_configuration, GetWorksheet()), wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_greek])
                     .Left());
 
   m_sidebarNames[EventIDs::menu_pane_unicode] = wxS("unicode");
   m_sidebarCaption[EventIDs::menu_pane_unicode] = _("Unicode characters");
-  wxPanel *unicodePane =
-    new UnicodeSidebar(this, GetWorksheet(), &m_configuration);
   //  wxWindowUpdateLocker unicodeBlocker(unicodePane);
-  m_manager.AddPane(unicodePane, wxAuiPaneInfo()
+  m_manager.AddPane(new UnicodeSidebar(this, GetWorksheet(), &m_configuration), wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_unicode])
                     .Left());
 
@@ -385,7 +380,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // The system's language might have changed since then.
   for(const auto &pane: m_sidebarNames)
     {
-      wxSize minSiz = wxSize(0, 0);
+      wxSize minSiz;
       if(m_manager.GetPane(pane.second).IsOk())
         {
           if(m_manager.GetPane(pane.second).window != NULL)

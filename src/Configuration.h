@@ -182,7 +182,7 @@ public:
   void UnsetContext() {m_dc = NULL;}
 
   //! Set the brush to be used for the worksheet background
-  void SetBackgroundBrush(wxBrush brush);
+  void SetBackgroundBrush(const wxBrush &brush);
   //! Use a typewriter font in wizard entry fields that can contain maxima commands?
   bool FixedFontInTextControls() const {return m_fixedFontTC;}
   //! Use a typewriter font in wizard entry fields that can contain maxima commands?
@@ -1065,7 +1065,7 @@ public:
   */
   std::int_fast32_t CellCfgCnt() const {return m_cellCfgCnt;}
   void RecalculateForce() { m_cellCfgCnt++; }
-  bool UseThreads(){return m_use_threads;}
+  static bool UseThreads(){return m_use_threads;}
   static void UseThreads(bool use){m_use_threads = use;}
   static void SetMaximaLang(wxString LANG){m_maxima_LANG = LANG;}
   static wxString GetMaximaLang(){return m_maxima_LANG;}
@@ -1128,7 +1128,7 @@ private:
     As these might be costly operations it is important to cache the result
     of this function.
   */
-  bool CharsExistInFont(const wxFont &font, const wxString& chars);
+//  bool CharsExistInFont(const wxFont &font, const wxString& chars);
   //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
   bool m_wrapLatexMath;
   bool m_allowNetworkHelp;

@@ -37,20 +37,20 @@ public:
                  const wxPoint &pos = wxDefaultPosition,
                  const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
 
-  double GetMaxWidth()
+  double GetMaxImageWidth()
     {
-      return m_width->GetValue();
+      return m_imageWidth->GetValue();
     }
 
   double GetHeightList()
     {
-      return m_height->GetValue();
+      return m_imageHeight->GetValue();
     }
 
 
 private:
-  wxSpinCtrl *m_width;
-  wxSpinCtrl *m_height;
+  wxSpinCtrl *m_imageWidth;
+  wxSpinCtrl *m_imageHeight;
   wxButton *button_1;
   wxButton *button_2;
 };

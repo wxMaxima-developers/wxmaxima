@@ -224,7 +224,7 @@ class Observed
   Observed(const Observed &) = delete;
   void operator=(const Observed &) = delete;
   //! Perform cleanup when we're indeed observed and are being destroyed.
-  void OnEndOfLife() noexcept;
+  void OnEndOfLife() const noexcept;
 
 #if CELLPTR_LOG_REFS
   void LogRef(const CellPtrBase *) const;
