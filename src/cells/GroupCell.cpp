@@ -1390,10 +1390,10 @@ const wxString GroupCell::GetToolTip(const wxPoint point) const {
   // if there is a more accurate solution.
   m_cellPointers->m_cellUnderPointer = const_cast<GroupCell *>(this);
 
-  const wxString *retval = &GetLocalToolTip();
+  wxString retval = GetLocalToolTip();
 
   if (IsHidden())
-    return *retval;
+    return retval;
 
   for (auto &tmp : OnList(m_inputLabel.get())) {
     if (tmp.ContainsPoint(point))
@@ -1415,7 +1415,7 @@ const wxString GroupCell::GetToolTip(const wxPoint point) const {
       retval = toolTip;
   }
 
-  return *retval;
+  return retval;
 }
 
 // cppcheck-suppress functionConst
