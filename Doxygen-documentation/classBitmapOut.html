@@ -75,13 +75,13 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a219d0a7bb7ca413bf6c6a2394c15637d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitmapOut.html#a219d0a7bb7ca413bf6c6a2394c15637d">BitmapOut</a> (<a class="el" href="classConfiguration.html">Configuration</a> **configuration, double scale=1)</td></tr>
-<tr class="memdesc:a219d0a7bb7ca413bf6c6a2394c15637d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor.  <a href="classBitmapOut.html#a219d0a7bb7ca413bf6c6a2394c15637d">More...</a><br /></td></tr>
-<tr class="separator:a219d0a7bb7ca413bf6c6a2394c15637d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00c847fe2c09e2fdced8f8a75249661c"><td class="memItemLeft" align="right" valign="top"><a id="a00c847fe2c09e2fdced8f8a75249661c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitmapOut.html#a00c847fe2c09e2fdced8f8a75249661c">BitmapOut</a> (<a class="el" href="classConfiguration.html">Configuration</a> **configuration, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;tree, double scale=1, long maxSize=-1)</td></tr>
-<tr class="memdesc:a00c847fe2c09e2fdced8f8a75249661c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs and renders the bitmap, setting the IsOK() status accordingly. <br /></td></tr>
-<tr class="separator:a00c847fe2c09e2fdced8f8a75249661c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1111f5d2910b8321919625c4dea41b0a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitmapOut.html#a1111f5d2910b8321919625c4dea41b0a">BitmapOut</a> (const <a class="el" href="classConfiguration.html">Configuration</a> *const *configuration, double scale=1)</td></tr>
+<tr class="memdesc:a1111f5d2910b8321919625c4dea41b0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor.  <a href="classBitmapOut.html#a1111f5d2910b8321919625c4dea41b0a">More...</a><br /></td></tr>
+<tr class="separator:a1111f5d2910b8321919625c4dea41b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cab0a3b3954717722e8ef9b7ff21a3f"><td class="memItemLeft" align="right" valign="top"><a id="a0cab0a3b3954717722e8ef9b7ff21a3f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitmapOut.html#a0cab0a3b3954717722e8ef9b7ff21a3f">BitmapOut</a> (const <a class="el" href="classConfiguration.html">Configuration</a> *const *configuration, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;tree, double scale=1, long maxSize=-1)</td></tr>
+<tr class="memdesc:a0cab0a3b3954717722e8ef9b7ff21a3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs and renders the bitmap, setting the IsOK() status accordingly. <br /></td></tr>
+<tr class="separator:a0cab0a3b3954717722e8ef9b7ff21a3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad631df01df5b3df5b9599bd18932875c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitmapOut.html#ad631df01df5b3df5b9599bd18932875c">Render</a> (std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;tree, long int maxSize=-1)</td></tr>
 <tr class="memdesc:ad631df01df5b3df5b9599bd18932875c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders tree as bitmap.  <a href="classBitmapOut.html#ad631df01df5b3df5b9599bd18932875c">More...</a><br /></td></tr>
 <tr class="separator:ad631df01df5b3df5b9599bd18932875c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -108,8 +108,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <div class="textblock"><p>Renders portions of the work sheet (including 2D maths) as bitmap. </p>
 <p>This is used for exporting HTML with embedded maths as bitmap and for putting bitmaps for the clipboard </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a219d0a7bb7ca413bf6c6a2394c15637d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a219d0a7bb7ca413bf6c6a2394c15637d">&#9670;&nbsp;</a></span>BitmapOut()</h2>
+<a id="a1111f5d2910b8321919625c4dea41b0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1111f5d2910b8321919625c4dea41b0a">&#9670;&nbsp;</a></span>BitmapOut()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -120,7 +120,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">BitmapOut::BitmapOut </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classConfiguration.html">Configuration</a> **&#160;</td>
+          <td class="paramtype">const <a class="el" href="classConfiguration.html">Configuration</a> *const *&#160;</td>
           <td class="paramname"><em>configuration</em>, </td>
         </tr>
         <tr>

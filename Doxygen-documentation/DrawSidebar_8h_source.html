@@ -107,7 +107,7 @@ $(function() {
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classDrawSidebar.html">DrawSidebar</a>(wxWindow *parent, <span class="keywordtype">int</span> <span class="keywordtype">id</span> = wxID_ANY);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classDrawSidebar.html#a3730bc5344584f8f7cc93f7e0cf096bd">SetDimensions</a>(<span class="keywordtype">int</span> dimensions);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordtype">int</span>  GetDimensions() { <span class="keywordflow">return</span> m_dimensions; }</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordtype">int</span>  GetDimensions()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_dimensions; }</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">void</span> OnSize(wxSizeEvent &amp;event);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">private</span>:</div>

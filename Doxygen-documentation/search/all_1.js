@@ -10,7 +10,7 @@ var searchData=
   ['beginningofline_76',['BeginningOfLine',['../classEditorCell.html#a3d892fe086a3da93fa79541cbaef442c',1,'EditorCell']]],
   ['binaryexpr_77',['BinaryExpr',['../classCatch_1_1BinaryExpr.html',1,'Catch']]],
   ['bitmapfromsvg_78',['BitmapFromSVG',['../classCell.html#ad505b47f50298511e9de2da7d220c990',1,'Cell']]],
-  ['bitmapout_79',['BitmapOut',['../classBitmapOut.html#a219d0a7bb7ca413bf6c6a2394c15637d',1,'BitmapOut::BitmapOut(Configuration **configuration, double scale=1)'],['../classBitmapOut.html#a00c847fe2c09e2fdced8f8a75249661c',1,'BitmapOut::BitmapOut(Configuration **configuration, std::unique_ptr&lt; Cell &gt; &amp;&amp;tree, double scale=1, long maxSize=-1)'],['../classBitmapOut.html',1,'BitmapOut']]],
+  ['bitmapout_79',['BitmapOut',['../classBitmapOut.html#a1111f5d2910b8321919625c4dea41b0a',1,'BitmapOut::BitmapOut(const Configuration *const *configuration, double scale=1)'],['../classBitmapOut.html#a0cab0a3b3954717722e8ef9b7ff21a3f',1,'BitmapOut::BitmapOut(const Configuration *const *configuration, std::unique_ptr&lt; Cell &gt; &amp;&amp;tree, double scale=1, long maxSize=-1)'],['../classBitmapOut.html',1,'BitmapOut']]],
   ['bitmapout_2ecpp_80',['BitmapOut.cpp',['../BitmapOut_8cpp.html',1,'']]],
   ['boxcell_81',['BoxCell',['../classBoxCell.html',1,'']]],
   ['boxcell_2ecpp_82',['BoxCell.cpp',['../BoxCell_8cpp.html',1,'']]],

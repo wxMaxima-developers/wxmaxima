@@ -63,6 +63,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
 <div class="title">Variablespane Class Reference</div>  </div>
@@ -124,10 +125,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariablespane.html#a666070d5e63a8f830c119e012bb6a90e">AddWatch</a> (wxString watch)</td></tr>
 <tr class="memdesc:a666070d5e63a8f830c119e012bb6a90e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a variable without escapes to the list. <br /></td></tr>
 <tr class="separator:a666070d5e63a8f830c119e012bb6a90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ad9c02ee28a4e8dedab236c44ef1994"><td class="memItemLeft" align="right" valign="top"><a id="a7ad9c02ee28a4e8dedab236c44ef1994"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariablespane.html#a7ad9c02ee28a4e8dedab236c44ef1994">IsValidVariable</a> (wxString var)</td></tr>
-<tr class="memdesc:a7ad9c02ee28a4e8dedab236c44ef1994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this string a valid variable name? <br /></td></tr>
-<tr class="separator:a7ad9c02ee28a4e8dedab236c44ef1994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac84460f7b556076a3c3784c5ed55c8df"><td class="memItemLeft" align="right" valign="top"><a id="ac84460f7b556076a3c3784c5ed55c8df"></a>
 std::vector&lt; wxString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariablespane.html#ac84460f7b556076a3c3784c5ed55c8df">GetEscapedVarnames</a> ()</td></tr>
 <tr class="memdesc:ac84460f7b556076a3c3784c5ed55c8df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a list of all variable names in a format maxima understands. <br /></td></tr>
@@ -144,14 +141,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariablespane.html#a94b89ad105eac5a2d12d8bbabe60390b">Clear</a> ()</td></tr>
 <tr class="memdesc:a94b89ad105eac5a2d12d8bbabe60390b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all entries from the variables list. <br /></td></tr>
 <tr class="separator:a94b89ad105eac5a2d12d8bbabe60390b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2d981cfaa9e638174f1f919a753d01d"><td class="memItemLeft" align="right" valign="top"><a id="aa2d981cfaa9e638174f1f919a753d01d"></a>
-wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariablespane.html#aa2d981cfaa9e638174f1f919a753d01d">EscapeVarname</a> (wxString var)</td></tr>
-<tr class="memdesc:aa2d981cfaa9e638174f1f919a753d01d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a human-readable variable name to one maxima understands. <br /></td></tr>
-<tr class="separator:aa2d981cfaa9e638174f1f919a753d01d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb41264dadeb1976a429c553ff59321"><td class="memItemLeft" align="right" valign="top"><a id="afbb41264dadeb1976a429c553ff59321"></a>
-wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariablespane.html#afbb41264dadeb1976a429c553ff59321">UnescapeVarname</a> (wxString var)</td></tr>
-<tr class="memdesc:afbb41264dadeb1976a429c553ff59321"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a variable name maxima understands to human-readable. <br /></td></tr>
-<tr class="separator:afbb41264dadeb1976a429c553ff59321"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a167162a11036459b51dce22e0839a7ae"><td class="memItemLeft" align="right" valign="top"><a id="a167162a11036459b51dce22e0839a7ae"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariablespane.html#a167162a11036459b51dce22e0839a7ae">VariableValue</a> (wxString var, wxString val)</td></tr>
 <tr class="memdesc:a167162a11036459b51dce22e0839a7ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell the variables pane about a variable value. <br /></td></tr>
@@ -167,6 +156,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateSize</b> ()</td
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariablespane.html#a24455eb3a4b44eff8ea4eed83015bab6">~Variablespane</a> ()</td></tr>
 <tr class="memdesc:a24455eb3a4b44eff8ea4eed83015bab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The destructor. <br /></td></tr>
 <tr class="separator:a24455eb3a4b44eff8ea4eed83015bab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a7ad9c02ee28a4e8dedab236c44ef1994"><td class="memItemLeft" align="right" valign="top"><a id="a7ad9c02ee28a4e8dedab236c44ef1994"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariablespane.html#a7ad9c02ee28a4e8dedab236c44ef1994">IsValidVariable</a> (wxString var)</td></tr>
+<tr class="memdesc:a7ad9c02ee28a4e8dedab236c44ef1994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this string a valid variable name? <br /></td></tr>
+<tr class="separator:a7ad9c02ee28a4e8dedab236c44ef1994"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2d981cfaa9e638174f1f919a753d01d"><td class="memItemLeft" align="right" valign="top"><a id="aa2d981cfaa9e638174f1f919a753d01d"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariablespane.html#aa2d981cfaa9e638174f1f919a753d01d">EscapeVarname</a> (wxString var)</td></tr>
+<tr class="memdesc:aa2d981cfaa9e638174f1f919a753d01d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a human-readable variable name to one maxima understands. <br /></td></tr>
+<tr class="separator:aa2d981cfaa9e638174f1f919a753d01d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbb41264dadeb1976a429c553ff59321"><td class="memItemLeft" align="right" valign="top"><a id="afbb41264dadeb1976a429c553ff59321"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariablespane.html#afbb41264dadeb1976a429c553ff59321">UnescapeVarname</a> (wxString var)</td></tr>
+<tr class="memdesc:afbb41264dadeb1976a429c553ff59321"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a variable name maxima understands to human-readable. <br /></td></tr>
+<tr class="separator:afbb41264dadeb1976a429c553ff59321"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>

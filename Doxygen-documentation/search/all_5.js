@@ -27,7 +27,7 @@ var searchData=
   ['foldoccurred_366',['FoldOccurred',['../classWorksheet.html#a78ceeae9f7262c599b824e0f9a93ad9b',1,'Worksheet']]],
   ['followevaluation_367',['FollowEvaluation',['../classWorksheet.html#a6b947343c72f5e4da75470bd381907d8',1,'Worksheet::FollowEvaluation(bool followEvaluation)'],['../classWorksheet.html#af02bfd71d23fe6804fc27525f41e84bb',1,'Worksheet::FollowEvaluation() const']]],
   ['fontchanged_368',['FontChanged',['../classConfiguration.html#a2c1e5f6af5c57992c025514ba8046c0e',1,'Configuration']]],
-  ['fontdir_369',['FontDir',['../classDirstructure.html#a5f669ac1a484b9e148b6404796d7dcbe',1,'Dirstructure']]],
+  ['fontdir_369',['FontDir',['../classDirstructure.html#af16caf9e23989fbbdf1331824a8df412',1,'Dirstructure']]],
   ['fontrenderschar_370',['FontRendersChar',['../classConfiguration.html#abf405cb99a4979b52d63419ae6f430a8',1,'Configuration']]],
   ['fontschanged_371',['FontsChanged',['../classCell.html#ad78e4711af2ccac297ab020782decf70',1,'Cell::FontsChanged()'],['../classTextCell.html#a5cc73e63429c80a527c1867061fc837c',1,'TextCell::FontsChanged()']]],
   ['fontschangedlist_372',['FontsChangedList',['../classCell.html#aeefb0377b33712b91fe52218b434d101',1,'Cell']]],

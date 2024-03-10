@@ -106,31 +106,32 @@ $(function() {
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;list&gt;</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classSymbolsSidebar.html">   44</a></span>&#160;<span class="keyword">class </span><a class="code" href="classSymbolsSidebar.html">SymbolsSidebar</a> : <span class="keyword">public</span> <a class="code" href="classwxScrolled.html">wxScrolled</a>&lt;wxPanel&gt;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <a class="code" href="classSymbolsSidebar.html">SymbolsSidebar</a>(wxWindow *parent, <a class="code" href="classConfiguration.html">Configuration</a> *configuration, wxWindow *worksheet, <span class="keywordtype">int</span> ID = wxID_ANY);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classSymbolsSidebar.html#a096e679c86ed06e25caabe6e8ec3f90d">UpdateUserSymbols</a>();</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classSymbolsSidebar.html#a026362ade1cd24ba2753b7ce2db27cd7">AddUserSymbols</a>();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">void</span> OnMouseRightDown(wxMouseEvent &amp;event);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">void</span> OnMenu(wxCommandEvent &amp;event);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordtype">void</span> OnSize(wxSizeEvent &amp;event);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  wxPanel *m_userSymbols;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  std::list&lt;wxWindow *&gt; m_userSymbolButtons;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  wxSizer *m_userSymbolsSizer;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  wxWindow *m_worksheet;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  wxString m_userSymbols_Last;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;};</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// SYMBOLSSIDEBAR_H</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//cppcheck-suppress ODR</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classSymbolsSidebar.html">   45</a></span>&#160;<span class="keyword">class </span><a class="code" href="classSymbolsSidebar.html">SymbolsSidebar</a> : <span class="keyword">public</span> <a class="code" href="classwxScrolled.html">wxScrolled</a>&lt;wxPanel&gt;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="classSymbolsSidebar.html">SymbolsSidebar</a>(wxWindow *parent, <a class="code" href="classConfiguration.html">Configuration</a> *configuration, wxWindow *worksheet, <span class="keywordtype">int</span> ID = wxID_ANY);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classSymbolsSidebar.html#a096e679c86ed06e25caabe6e8ec3f90d">UpdateUserSymbols</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classSymbolsSidebar.html#a026362ade1cd24ba2753b7ce2db27cd7">AddUserSymbols</a>();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">void</span> OnMouseRightDown(wxMouseEvent &amp;event);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordtype">void</span> OnMenu(wxCommandEvent &amp;event);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordtype">void</span> OnSize(wxSizeEvent &amp;event);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  wxPanel *m_userSymbols;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  std::list&lt;wxWindow *&gt; m_userSymbolButtons;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  wxSizer *m_userSymbolsSizer;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  wxWindow *m_worksheet;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  wxString m_userSymbols_Last;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;};</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// SYMBOLSSIDEBAR_H</span></div>
 <div class="ttc" id="aButtonWrapSizer_8h_html"><div class="ttname"><a href="ButtonWrapSizer_8h.html">ButtonWrapSizer.h</a></div><div class="ttdoc">This file contains the definition of the class Buttonwrapsizer that allows to select arbitrary unicod...</div></div>
 <div class="ttc" id="aCharButton_8h_html"><div class="ttname"><a href="CharButton_8h.html">CharButton.h</a></div><div class="ttdoc">This file contains the definition of the class Charbutton that allows to select arbitrary unicode sym...</div></div>
 <div class="ttc" id="aEventIDs_8h_html"><div class="ttname"><a href="EventIDs_8h.html">EventIDs.h</a></div><div class="ttdoc">This file declares the class EventIDs that contains unique IDs for many events wxMaxima needs.</div></div>
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:95</div></div>
-<div class="ttc" id="aclassSymbolsSidebar_html"><div class="ttname"><a href="classSymbolsSidebar.html">SymbolsSidebar</a></div><div class="ttdef"><b>Definition:</b> SymbolsSidebar.h:45</div></div>
+<div class="ttc" id="aclassSymbolsSidebar_html"><div class="ttname"><a href="classSymbolsSidebar.html">SymbolsSidebar</a></div><div class="ttdef"><b>Definition:</b> SymbolsSidebar.h:46</div></div>
 <div class="ttc" id="aclassSymbolsSidebar_html_a026362ade1cd24ba2753b7ce2db27cd7"><div class="ttname"><a href="classSymbolsSidebar.html#a026362ade1cd24ba2753b7ce2db27cd7">SymbolsSidebar::AddUserSymbols</a></div><div class="ttdeci">void AddUserSymbols()</div><div class="ttdoc">Add the symbols to the &quot;user symbols&quot; portion of the symbols pane.</div><div class="ttdef"><b>Definition:</b> SymbolsSidebar.cpp:216</div></div>
 <div class="ttc" id="aclassSymbolsSidebar_html_a096e679c86ed06e25caabe6e8ec3f90d"><div class="ttname"><a href="classSymbolsSidebar.html#a096e679c86ed06e25caabe6e8ec3f90d">SymbolsSidebar::UpdateUserSymbols</a></div><div class="ttdeci">void UpdateUserSymbols()</div><div class="ttdoc">Update the &quot;user symbols&quot; portion of the symbols pane.</div><div class="ttdef"><b>Definition:</b> SymbolsSidebar.cpp:198</div></div>
 <div class="ttc" id="aclasswxScrolled_html"><div class="ttname"><a href="classwxScrolled.html">wxScrolled</a></div><div class="ttdef"><b>Definition:</b> CellPointers.h:32</div></div>

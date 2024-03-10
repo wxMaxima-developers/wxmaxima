@@ -36,6 +36,6 @@ var searchData=
   ['numberofsuggestions_1048',['NumberOfSuggestions',['../classEventIDs.html#a22036a6ca5e299f95646018f0d08f801',1,'EventIDs']]],
   ['numberoftoclevels_1049',['NumberOfTocLevels',['../classEventIDs.html#a883d6b4b1a30dcf3146e0ec3420f531c',1,'EventIDs']]],
   ['numberoftypes_1050',['numberOfTypes',['../classAutoComplete.html#a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231',1,'AutoComplete']]],
-  ['numbersections_1051',['NumberSections',['../classWorksheet.html#aaae87decc0964b306316e5341b92f3d8',1,'Worksheet']]],
+  ['numbersections_1051',['NumberSections',['../classWorksheet.html#a9770595891b32c0ea91ea4d4466c9310',1,'Worksheet']]],
   ['numericalmenu_1052',['NumericalMenu',['../classwxMaxima.html#a9c1ad69ebd56bb77c7f403d967f2ced2',1,'wxMaxima']]]
 ];

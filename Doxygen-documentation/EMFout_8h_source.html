@@ -104,8 +104,8 @@ $(function() {
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span>Emfout final</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">explicit</span> Emfout(<a class="code" href="classConfiguration.html">Configuration</a> **configuration, <span class="keyword">const</span> wxString &amp;filename = {});</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">explicit</span> Emfout(<a class="code" href="classConfiguration.html">Configuration</a> **configuration, std::unique_ptr&lt;Cell&gt; &amp;&amp;tree, <span class="keyword">const</span> wxString &amp;filename = {});</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">explicit</span> Emfout(<span class="keyword">const</span> <a class="code" href="classConfiguration.html">Configuration</a> * <span class="keyword">const</span> *configuration, <span class="keyword">const</span> wxString &amp;filename = {});</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">explicit</span> Emfout(<span class="keyword">const</span> <a class="code" href="classConfiguration.html">Configuration</a> * <span class="keyword">const</span> *configuration, std::unique_ptr&lt;Cell&gt; &amp;&amp;tree, <span class="keyword">const</span> wxString &amp;filename = {});</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  ~Emfout();</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  wxSize Render(std::unique_ptr&lt;Cell&gt; &amp;&amp;tree);</div>

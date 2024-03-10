@@ -39,7 +39,7 @@ var searchData=
   ['loadmanualanchorsfromxml_734',['LoadManualAnchorsFromXML',['../classMaximaManual.html#acddcb69633df12600c39ebea000ef9c2',1,'MaximaManual']]],
   ['loadsave_735',['LoadSave',['../classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805',1,'ConfigDialogue']]],
   ['loadsymbols_736',['LoadSymbols',['../classAutoComplete.html#a6022d262109966147cbda01d6166d2ca',1,'AutoComplete::LoadSymbols()'],['../classWorksheet.html#aaa5b37aee0c005bb6f303c7dd84c64d1',1,'Worksheet::LoadSymbols()']]],
-  ['localedir_737',['LocaleDir',['../classDirstructure.html#a854184b4fd40416aab4f26021f895544',1,'Dirstructure']]],
+  ['localedir_737',['LocaleDir',['../classDirstructure.html#a07774426dee2c4edafa95ce9f7465661',1,'Dirstructure']]],
   ['loggingmessagedialog_738',['LoggingMessageDialog',['../classLoggingMessageDialog.html',1,'']]],
   ['loggingmessagedialog_2eh_739',['LoggingMessageDialog.h',['../LoggingMessageDialog_8h.html',1,'']]],
   ['loggingtostderr_740',['LoggingToStdErr',['../classErrorRedirector.html#a9f48ea9be43e7a04ce60f4166f3d7321',1,'ErrorRedirector']]],
