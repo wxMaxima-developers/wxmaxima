@@ -1410,9 +1410,9 @@ const wxString GroupCell::GetToolTip(const wxPoint point) const {
     // TODO: Why do we keep iterating? Is there a reason to return the
     // tooltip of the last cell with a tooltip, instead of the first one?
 
-    auto &toolTip = tmp.GetToolTip(point);
+    auto toolTip = tmp.GetToolTip(point);
     if (!toolTip.empty())
-      retval = &toolTip;
+      retval = toolTip;
   }
 
   return *retval;
