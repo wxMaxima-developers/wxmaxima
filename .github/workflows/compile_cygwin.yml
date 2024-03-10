@@ -11,7 +11,9 @@ jobs:
   setup_cygwin:
     runs-on: windows-latest
     steps:
-      - run: git config --global core.autocrlf input
+      - run: |
+             git config --global core.autocrlf input
+             git config --global --add safe.directory /cygdrive/d/a/wxmaxima/wxmaxima
       - name: setup_cygwin
         uses: cygwin/cygwin-install-action@v4
         with:
