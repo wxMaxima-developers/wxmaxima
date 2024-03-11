@@ -351,10 +351,9 @@ bool Worksheet::RedrawIfRequested() {
           UnsetToolTip();
 
         if (m_cellPointers.m_cellUnderPointer) {
-          if ((m_cellPointers.m_cellUnderPointer->GetType() == MC_TYPE_IMAGE) ||
-              (m_cellPointers.m_cellUnderPointer->GetType() == MC_TYPE_SLIDE)) {
-            const ImgCellBase *image = dynamic_cast<ImgCellBase *>(
-                                                                   m_cellPointers.m_cellUnderPointer.get());
+          if (dynamic_cast<ImgCellBase *>(m_cellPointers.m_cellUnderPointer.get()) != NULL) {
+            const ImgCellBase *image =
+              dynamic_cast<ImgCellBase *>(m_cellPointers.m_cellUnderPointer.get());
             StatusText(wxString::Format(
                                         _("%s image, %li×%li, %li ppi"),
                                         image->GetExtension().ToUTF8().data(),
@@ -1350,8 +1349,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         popupMenu.Append(EventIDs::popid_animation_start, _("Start Animation"),
                          wxEmptyString, wxITEM_NORMAL);
       } else {
-        if (m_cellPointers.m_selectionStart->GetGroup()->GetGroupType() ==
-            GC_TYPE_IMAGE) {
+        if (dynamic_cast<ImgCell *>(m_cellPointers.m_selectionStart->GetGroup()) != NULL) {
           popupMenu.AppendSeparator();
           popupMenu.Append(EventIDs::popid_maxsizechooser, _("Restrict Maximum size"),
                            wxEmptyString, wxITEM_NORMAL);
@@ -1581,7 +1579,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                           m_configuration->CheckKeepPercent());
         }
         if ((GetSelectionStart() != NULL) &&
-            (GetSelectionStart()->GetType() == MC_TYPE_TEXT) &&
+            (dynamic_cast<TextCell *>(GetSelectionStart()) != NULL) &&
             (dynamic_cast<TextCell *>(GetSelectionStart())->IsOperator())) {
           if (popupMenu.GetMenuItemCount() > 0)
             popupMenu.AppendSeparator();
@@ -2355,7 +2353,7 @@ void Worksheet::OnMouseLeftUp(wxMouseEvent &event) {
 
   if (GetSelectionStart() && GetSelectionStart() == GetSelectionEnd() &&
       m_leftDownPosition == wxPoint(event.GetX(), event.GetY()) &&
-      GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
+      (dynamic_cast<AnimationCell *>(GetSelectionStart()) != NULL))
     dynamic_cast<AnimationCell *>(GetSelectionStart())
       ->AnimationRunning(!dynamic_cast<AnimationCell *>(GetSelectionStart())
                          ->AnimationRunning());
@@ -4430,7 +4428,7 @@ bool Worksheet::CopyBitmap() const {
 
 bool Worksheet::CopyAnimation() const {
   if (GetSelectionStart() && GetSelectionStart() == GetSelectionEnd() &&
-      GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
+      (dynamic_cast<AnimationCell *>(GetSelectionStart()) != NULL))
     return dynamic_cast<AnimationCell *>(GetSelectionStart())
       ->CopyAnimationToClipboard();
   else
@@ -4521,8 +4519,7 @@ void Worksheet::TOCdnd() {
   while ((m_cellPointers.m_selectionEnd) &&
          ((m_cellPointers.m_selectionEnd->GetNext() != NULL) &&
           (dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetNext())
-           ->IsLesserGCType(dynamic_cast<GroupCell *>(
-                                                      m_cellPointers.m_selectionEnd.get())
+           ->IsLesserGCType(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd.get())
                             ->GetGroupType()))))
     m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionEnd->GetNext();
 
@@ -5283,7 +5280,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
 
           // Export the chunk.
 
-          if (chunk->GetType() == MC_TYPE_SLIDE) {
+          if (dynamic_cast<AnimationCell *>(&(*chunk)) != NULL) {
             dynamic_cast<AnimationCell *>(&(*chunk))->ToGif(
                                                             imgDir + wxS("/") + filename +
                                                             wxString::Format(wxS("_%d.gif"), count));
@@ -5294,7 +5291,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
                                _("_%d.gif\"  alt=\"Animated Diagram\" "
                                  "loading=\"lazy\" style=\"max-width:90%%;\" />\n"),
                                count);
-          } else if (chunk->GetType() != MC_TYPE_IMAGE) {
+          } else if (dynamic_cast<ImgCellBase *>(&(*chunk)) == NULL) {
             switch (m_configuration->HTMLequationFormat()) {
             case Configuration::mathJaX_TeX: {
               wxString line = chunk->ListToTeX();

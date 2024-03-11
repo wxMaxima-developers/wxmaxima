@@ -987,7 +987,7 @@ public:
   bool CanAnimate() const
     {
       return m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd &&
-        m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE;
+        (dynamic_cast<AnimationCell *>(GetSelectionStart()) != NULL);
     }
 
   /*! Animate the current slide show
