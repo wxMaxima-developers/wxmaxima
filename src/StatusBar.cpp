@@ -31,6 +31,7 @@
 #include "ArtProvider.h"
 #include "SvgBitmap.h"
 #include "wxm_statusbar_images.h"
+#include "wxm_toolbar_images.h"
 #include <wx/artprov.h>
 #include <wx/display.h>
 #include <wx/mstream.h>

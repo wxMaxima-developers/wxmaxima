@@ -72,8 +72,8 @@ function(BIN2H)
 
     # declares byte array and the length variables
     # Change for wxMaxima: const unsigned char to unsigned char 
-    set(arrayDefinition "unsigned char ${BIN2H_VARIABLE_NAME}[] = { ${arrayValues} };")
-    set(arraySizeDefinition "size_t ${BIN2H_VARIABLE_NAME}_SIZE = ${arraySize};")
+    set(arrayDefinition "static unsigned char ${BIN2H_VARIABLE_NAME}[] = { ${arrayValues} };")
+    set(arraySizeDefinition "static size_t ${BIN2H_VARIABLE_NAME}_SIZE = ${arraySize};")
 
     set(declarations "${arrayDefinition}\n\n${arraySizeDefinition}\n\n")
     if(BIN2H_APPEND)

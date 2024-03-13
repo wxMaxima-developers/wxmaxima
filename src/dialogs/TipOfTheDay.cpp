@@ -30,7 +30,8 @@
 #include "TipOfTheDay.h"
 #include "Image.h"
 #include "SvgBitmap.h"
-#include "wxm_tipoftheday_images.h"
+#include "wxm_media_playback_start_svg.h"
+#include "wxm_media_playback_reverse_svg.h"
 #include <cstdlib>
 #include <wx/config.h>
 #include <wx/display.h>
@@ -267,8 +268,8 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
   wxButton *backButton = new wxButton(this, -1);
-  backButton->SetBitmap(GetImage(MEDIA_PLAYBACK_START_REVERSE1_SVG_GZ,
-                                 MEDIA_PLAYBACK_START_REVERSE1_SVG_GZ_SIZE));
+  backButton->SetBitmap(GetImage(MEDIA_PLAYBACK_REVERSE_SVG_GZ,
+                                 MEDIA_PLAYBACK_REVERSE_SVG_GZ_SIZE));
   backButton->Connect(wxEVT_BUTTON,
                       wxCommandEventHandler(TipOfTheDay::OnPreviousButton),
                       NULL, this);
@@ -277,8 +278,8 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
                              wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL),
             wxSizerFlags().Proportion(10).Center());
   wxButton *forwardButton = new wxButton(this, -1);
-  forwardButton->SetBitmap(GetImage(MEDIA_PLAYBACK_START1_SVG_GZ,
-                                    MEDIA_PLAYBACK_START1_SVG_GZ_SIZE));
+  forwardButton->SetBitmap(GetImage(MEDIA_PLAYBACK_START_SVG_GZ,
+                                    MEDIA_PLAYBACK_START_SVG_GZ_SIZE));
   forwardButton->Connect(wxEVT_BUTTON,
                          wxCommandEventHandler(TipOfTheDay::OnNextButton), NULL,
                          this);

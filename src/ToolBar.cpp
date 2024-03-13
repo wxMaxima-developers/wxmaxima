@@ -32,6 +32,8 @@
 #include "SvgBitmap.h"
 #include "ArtProvider.h"
 #include "wxm_toolbar_images.h"
+#include "wxm_media_playback_start_svg.h"
+#include "wxm_media_playback_reverse_svg.h"
 #include <cstdlib>
 #include <wx/artprov.h>
 #include <wx/display.h>
