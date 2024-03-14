@@ -302,9 +302,18 @@ wxString History::GetCommand(bool next) {
   if (m_commands.size() == 0)
     return wxEmptyString;
 
-  auto current = m_current + (next ? +1 : -1);
+  size_t current = m_current;
+
+  if(next)
+    {
+      current++;
+    }
+  else
+    {
+      if(current > 0)
+      current--;
+    }  
   if (current >= m_history->GetCount()) current = m_history->GetCount()-1;
-  if (current < 0) current = 0;
   SetCurrent(current);
   return m_history->GetString(current);
 }
