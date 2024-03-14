@@ -38,6 +38,9 @@
 #ifndef STATUSBAR_H
 #define STATUSBAR_H
 
+extern unsigned char GO_NEXT_SVG_GZ[];
+extern size_t GO_NEXT_SVG_GZ_SIZE;
+
 /*! The class that draws the status bar
  */
 class StatusBar : public wxStatusBar

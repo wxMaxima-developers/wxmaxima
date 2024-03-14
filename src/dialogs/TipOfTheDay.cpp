@@ -30,8 +30,6 @@
 #include "TipOfTheDay.h"
 #include "Image.h"
 #include "SvgBitmap.h"
-#include "wxm_media_playback_start_svg.h"
-#include "wxm_media_playback_reverse_svg.h"
 #include <cstdlib>
 #include <wx/config.h>
 #include <wx/display.h>
@@ -42,6 +40,13 @@
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
 #include <algorithm>
+
+/* declared in wxm_media_playback_start_svg.h / wxm_media_playback_reverse_svg.h,
+   which is included in Toolbar.cpp */
+extern unsigned char MEDIA_PLAYBACK_START_SVG_GZ[];
+extern size_t MEDIA_PLAYBACK_START_SVG_GZ_SIZE;
+extern unsigned char MEDIA_PLAYBACK_REVERSE_SVG_GZ[];
+extern size_t MEDIA_PLAYBACK_REVERSE_SVG_GZ_SIZE;
 
 #define ICON_SCALE (0.35)
 

@@ -29,7 +29,6 @@
 */
 
 #include "ConfigDialogue.h"
-#include "wxm_media_playback_start_svg.h"
 #include "WXMformat.h"
 #include "BTextCtrl.h"
 #include "cells/Cell.h"
@@ -61,6 +60,14 @@
 #include "sampleWorksheet.h"
 #include <utility>
 #include <algorithm>
+
+extern unsigned char GTK_PRINT_SVG_GZ[];
+extern size_t GTK_PRINT_SVG_GZ_SIZE;
+
+/* declared in wxm_media_playback_start_svg.h,
+   which is included in Toolbar.cpp */
+extern unsigned char MEDIA_PLAYBACK_START_SVG_GZ[];
+extern size_t MEDIA_PLAYBACK_START_SVG_GZ_SIZE;
 
 #define CONFIG_ICON_SCALE (1.0)
 

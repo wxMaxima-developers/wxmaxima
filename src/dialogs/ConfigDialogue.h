@@ -55,7 +55,6 @@ extern unsigned char view_refresh_svg_gz[];
 #include "cells/TextStyle.h"
 #include "../Worksheet.h"
 #include "../Configuration.h"
-#include "wxm_toolbar_images.h"
 
 enum
 {
