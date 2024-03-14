@@ -29,6 +29,7 @@
 */
 
 #include "ConfigDialogue.h"
+#include "wxm_media_playback_start_svg.h"
 #include "WXMformat.h"
 #include "BTextCtrl.h"
 #include "cells/Cell.h"
@@ -198,8 +199,8 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
                                          EDIT_COPY_CONFDIALOGUE_SVG_GZ,
                                          EDIT_COPY_CONFDIALOGUE_SVG_GZ_SIZE));
   m_imageList->Add(ArtProvider::GetImage(this, wxS("media-playback-start"), imgSize,
-                                         MEDIA_PLAYBACK_START_CONFDIALOGUE_SVG_GZ,
-                                         MEDIA_PLAYBACK_START_CONFDIALOGUE_SVG_GZ_SIZE));
+                                         MEDIA_PLAYBACK_START_SVG_GZ,
+                                         MEDIA_PLAYBACK_START_SVG_GZ_SIZE));
   m_imageList->Add(ArtProvider::GetImage(this, wxS("gtk-print"), imgSize, GTK_PRINT_SVG_GZ,
                                          GTK_PRINT_SVG_GZ_SIZE));
   m_imageList->Add(ArtProvider::GetImage(this, wxS("edit-undo"), imgSize, VIEW_REFRESH_SVG_GZ,
