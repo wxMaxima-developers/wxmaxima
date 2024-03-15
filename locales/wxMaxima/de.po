@@ -963,7 +963,6 @@ msgid "Calculate mean value"
 msgstr "Mittelwert berechnen"
 
 #: ../../src/wxMaxima.cpp:9406
-#, fuzzy
 msgid "Calculate median value"
 msgstr "Medianwert berechnen"
 
@@ -1084,9 +1083,9 @@ msgstr ""
 "Der Kommunikationsendpunkt kann nicht auf \"Dieser Rechner\" gesetzt werden."
 
 #: ../../src/wxMaxima.cpp:2534
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot set the communication port to %li."
-msgstr "Kann den Kommunikationsport nicht auf %i setzen."
+msgstr "Kann den Kommunikationsport nicht auf %li setzen."
 
 #: ../../src/wxMaxima.cpp:3543 ../../src/wxMaxima.cpp:6185
 msgid "Cannot start gnuplot"
@@ -1371,7 +1370,6 @@ msgid "Column number:"
 msgstr "Spalten Nummer:"
 
 #: ../../src/wxMaxima.cpp:7776
-#, fuzzy
 msgid "Column numbers:"
 msgstr "Spalten Nummern:"
 
@@ -1407,7 +1405,6 @@ msgid "Comma-separated expressions"
 msgstr "Durch Kommata getrennte Ausdrücke"
 
 #: ../../src/wxMaxima.cpp:7025
-#, fuzzy
 msgid "Comma-separated expressions that shall be converted to a string"
 msgstr "Durch Kommata getrennte Ausdrücke, die zu Strings konvertiert werden sollen"
 
@@ -1622,7 +1619,6 @@ msgid "Contract Logarithms"
 msgstr "L&ogarithmen zusammenfassen"
 
 #: ../../src/wxMaximaFrame.cpp:1166
-#, fuzzy
 msgid "Conversions"
 msgstr "Konvertierungen"
 
@@ -1703,7 +1699,6 @@ msgid "Convert to &Rectform"
 msgstr "&Standarddarstellung"
 
 #: ../../src/wxMaximaFrame.cpp:1171
-#, fuzzy
 msgid "Convert to downcase..."
 msgstr "Konvertiere in Kleinbuchstaben..."
 
@@ -1852,7 +1847,6 @@ msgstr ""
 "Textverarbeitungen als 2D-Formel dargestellt wird."
 
 #: ../../src/wxMaxima.cpp:7213
-#, fuzzy
 msgid "Copy string"
 msgstr "String kopieren"
 
@@ -1953,11 +1947,11 @@ msgstr "Eine Liste erzeugen"
 
 #: ../../src/Worksheet.cpp:6006
 msgid "Created a .zip archive (the .wxmx file technically is a .zip file)"
-msgstr ""
+msgstr "ZIP-Archiv erzeugt (eine .wxmx-Datei ist technisch gesehen eine .zip-Datei)"
 
 #: ../../src/wxMaximaFrame.cpp:1354
 msgid "Creates an independent matrix with the same contents"
-msgstr ""
+msgstr "Erzeugt eine unabhängige Matrix mit demselben Inhalt"
 
 #: ../../src/Configuration.cpp:98
 msgid "Cursor color"
@@ -2689,7 +2683,6 @@ msgid "Evaluate string"
 msgstr "String auswerten"
 
 #: ../../src/wxMaximaFrame.cpp:1156
-#, fuzzy
 msgid "Evaluate string..."
 msgstr "String auswerten..."
 
@@ -2811,7 +2804,7 @@ msgstr "Export als Maxima-Bibliothek ist fehlgeschlagen!"
 
 #: ../../src/wxMaximaFrame.cpp:571
 msgid "Exporting..."
-msgstr "Exportieren ..."
+msgstr "Exportiere..."
 
 #: ../../src/wxMaxima.cpp:6336 ../../src/wxMaxima.cpp:6342
 #: ../../src/wxMaxima.cpp:8018 ../../src/wxMaxima.cpp:8440
@@ -2834,7 +2827,7 @@ msgstr "Ausdruck, wessen Ausgabe als Eingabe von Maxima verwendet wird."
 
 #: ../../src/wxMaxima.cpp:7024
 msgid "Expression(s):"
-msgstr "Ausdruck:"
+msgstr "Ausdruck/Ausdrücke:"
 
 #: ../../src/wxMaxima.cpp:8738 ../../src/wxMaxima.cpp:8746
 #: ../../src/wxMaxima.cpp:8757 ../../src/wxMaxima.cpp:8782
@@ -2910,14 +2903,12 @@ msgid "Extract dir from path..."
 msgstr "Extrahiert ein Verzeichnis aus einem Pfad..."
 
 #: ../../src/wxMaxima.cpp:7415
-#, fuzzy
 msgid "Extract directory part"
 msgstr "Extrahiere den Verzeichnis-Anteil"
 
 #: ../../src/wxMaxima.cpp:7427
-#, fuzzy
 msgid "Extract file type extension"
-msgstr "Extrahiere Elemente der Liste"
+msgstr "Extrahiere die Datei-Extension"
 
 #: ../../src/wxMaximaFrame.cpp:1214
 msgid "Extract filename from path..."
@@ -3002,13 +2993,13 @@ msgid "Failed to delete gnuplot data file %s"
 msgstr "Konnte die Gnuplot Datendatei %s nicht löschen"
 
 #: ../../src/Image.cpp:124 ../../src/Image.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to delete gnuplot file %s"
 msgstr "Konnte die Gnuplotdatei %s nicht löschen"
 
 #: ../../src/wxMaximaFrame.cpp:1423
 msgid "Fast fortran routines that perform numerical tasks"
-msgstr ""
+msgstr "Schnelle Fortran-Routinen die numerische Aufgaben erledigen"
 
 #: ../../src/wxMaximaFrame.cpp:1931
 msgid "Fast list access"
@@ -3179,15 +3170,15 @@ msgstr "Finde eine Nullstelle (numerische Lösung)"
 #: ../../src/wxMaxima.cpp:7860 ../../src/wxMaxima.cpp:7881
 #, fuzzy
 msgid "Find the maximum absolute value of a matrix entry"
-msgstr "Eigenwerte einer Matrix berechnen"
+msgstr "Finde den maximalen absoluten Wert eines Matrix-Elements"
 
 #: ../../src/wxMaxima.cpp:7866 ../../src/wxMaxima.cpp:7887
 msgid "Find the maximum sum of the absolute values of a matrix column"
-msgstr ""
+msgstr "Berechne die maximale Summe der Absolutbeträge einer Matrixspalte"
 
 #: ../../src/wxMaxima.cpp:7871 ../../src/wxMaxima.cpp:7892
 msgid "Find the maximum sum of the absolute values of a matrix row"
-msgstr ""
+msgstr "Berechne die maximale Summe der Absolutbeträge einer Matrixzeile"
 
 #: ../../src/wxMaximaFrame.cpp:1837
 msgid "Fine-tune the display of engineering-format numbers"
@@ -3469,9 +3460,9 @@ msgid "Gnuplot has closed."
 msgstr "Gnuplot wurde beendet."
 
 #: ../../src/wxMaxima.cpp:3512
-#, fuzzy, c-format
+#, c-format
 msgid "Gnuplot not found, using the default: %s"
-msgstr "Gnuplot nicht gefunden. Verwende: "
+msgstr "Gnuplot nicht gefunden. Verwende: %s"
 
 #: ../../src/wxMaxima.cpp:9245 ../../src/wxMaximaFrame.cpp:1897
 msgid "Go to URL"
@@ -3697,7 +3688,7 @@ msgstr ""
 
 #: ../../src/Worksheet.cpp:5530
 msgid "ImageCell without image."
-msgstr ""
+msgstr "Bild-Zelle ohne Bild."
 
 #: ../../src/MathParser.cpp:349
 msgid "Importing compressed gnuplot sources for an animation"
@@ -3773,9 +3764,8 @@ msgid "Initial Value Problem (&2)..."
 msgstr "Anfangswertproblem (&2) ..."
 
 #: ../../src/wxMaxima.cpp:8850
-#, fuzzy
 msgid "Initial estimates:"
-msgstr "Anfangswert:"
+msgstr "Anfangswerte:"
 
 #: ../../src/wxMaxima.cpp:7640
 msgid "Initial x:"
@@ -4064,7 +4054,6 @@ msgid "Is a printable char?"
 msgstr "Ist es ein druckbares Zeichen?"
 
 #: ../../src/Worksheet.cpp:1963
-#, fuzzy
 msgid "Is a real variable"
 msgstr "Ist es eine reelle Variable"
 
@@ -4098,7 +4087,6 @@ msgid "Is an imaginary variable"
 msgstr "Ist es eine imaginäre Variable"
 
 #: ../../src/Worksheet.cpp:1974
-#, fuzzy
 msgid "Is an integer variable"
 msgstr "Ist es eine ganzzahlige Variable"
 
@@ -4123,9 +4111,8 @@ msgid "Is lowercase?..."
 msgstr ""
 
 #: ../../src/Worksheet.cpp:1976
-#, fuzzy
 msgid "Is no integer variable"
-msgstr "Liste der selbstdefinierten Variablen"
+msgstr "Ist es keine ganzzahlige Variable"
 
 #: ../../src/wxMaximaFrame.cpp:1124
 msgid "Is printable?..."
@@ -4148,7 +4135,6 @@ msgid "Item"
 msgstr "Element"
 
 #: ../../src/wxMaxima.cpp:8390
-#, fuzzy
 msgid "Iterator name:"
 msgstr "Laufvariable:"
 
