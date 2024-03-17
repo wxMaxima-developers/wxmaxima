@@ -1,34 +1,8 @@
 # The wxMaxima user manual
 
-WxMaxima is a graphical user interface (GUI) for the _Maxima_ computer algebra system (CAS). WxMaxima allows one to use all of _Maxima_’s functions. In addition, it provides convenient wizards for accessing the most commonly used features. This manual describes some of the features that make wxMaxima one of the most popular GUIs for _Maxima_.
+WxMaxima is a graphical user interface (GUI) for the _Maxima_ computer algebra system (CAS). WxMaxima allows one to use all of _Maxima_'s functions. In addition, it provides convenient wizards for accessing the most commonly used features. This manual describes some of the features that make wxMaxima one of the most popular GUIs for _Maxima_.
 
 ![wxMaxima logo](./wxMaximaLogo.png){ id=img_wxMaximaLogo }
-
-Before we look at the content a few points regarding navigation are in order. Immediately below is a short table of contents. Clicking on any of the listed items moves the cursor to the top of the indicated section of the manual. Clicking on [Contents](#TOC) moves the cursor to an extended table of contents. This extended table can be used to navigate more directly to specific parts of the manual. The Contents link appears at locations throughout the text for navigational purposes.
-
-- [Introduction to wxMaxima](#introduction-to-wxmaxima "Introduction to wxMaxima"):
-
-WxMaxima basics
-
-- [Extensions to Maxima](#extensions-to-maxima "Extensions"):
-
-The commands wxMaxima adds to _Maxima_
-
-- [Troubleshooting](#troubleshooting "Troubleshooting"):
-
-What to do if wxMaxima does not work as expected?
-
-- [FAQ](#faq "FAQ"):
-
-Frequently asked questions
-
-- [CommandLine arguments](#command-line-arguments "_Maxima_ Command Line"):
-
-The command-line arguments wxMaxima supports.
-
-- [About the program, contributing to wxMaxima](#about-the-program-contributing-to-wxmaxima "About the program, contributing to wxMaxima"):
-
-How can you contribute to the development of wxMaxima?
 
 ______________________________________________________________________
 
