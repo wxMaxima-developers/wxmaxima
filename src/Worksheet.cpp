@@ -5487,8 +5487,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
                                                     tmp.GetEditable()->ToString())
                      << wxS("\n");
               output << wxS("<br>\n");
-              if ((tmp.GetLabel()->GetType() == MC_TYPE_SLIDE) &&
-                  (tmp.GetOutput() != NULL)) {
+              if (dynamic_cast<AnimationCell *>(tmp.GetOutput()) != NULL) {
                 dynamic_cast<AnimationCell *>(tmp.GetOutput())
                   ->ToGif(imgDir + wxS("/") + filename +
                           wxString::Format(wxS("_%d.gif"), count));
@@ -5501,16 +5500,20 @@ bool Worksheet::ExportToHTML(const wxString &file) {
                        << wxS("\n");
               } else {
                 ImgCellBase *imgCell = dynamic_cast<ImgCellBase *>(out);
-                imgCell->ToImageFile(imgDir + wxS("/") + filename +
-                                     wxString::Format(wxS("_%d."), count) +
-                                     imgCell->GetExtension());
-                output
-                  << wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
-                  filename_encoded +
-                  wxString::Format(
-                                   wxS("_%d.%s\" alt=\"Diagram\" "
-                                       "style=\"max-width:90%%;\" loading=\"lazy\" />"),
-                                   count, imgCell->GetExtension().utf8_str());
+                wxASSERT(imgCell);
+                if(imgCell)
+                  {
+                    imgCell->ToImageFile(imgDir + wxS("/") + filename +
+                                         wxString::Format(wxS("_%d."), count) +
+                                         imgCell->GetExtension());
+                    output
+                      << wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
+                      filename_encoded +
+                      wxString::Format(
+                                       wxS("_%d.%s\" alt=\"Diagram\" "
+                                           "style=\"max-width:90%%;\" loading=\"lazy\" />"),
+                                       count, imgCell->GetExtension().utf8_str());
+                  }
               }
               output << wxS("</div>\n");
               count++;
