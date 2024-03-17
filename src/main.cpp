@@ -70,6 +70,14 @@
 // We have to force gnome_print support to be linked in static builds of
 // wxMaxima.
 
+
+// We require Unicode support now.
+// It is always on by default and builds without unicode support are strongly
+// discouraged by the wxWidgets team
+#if wxUSE_UNICODE == 0
+#error "wxWidgets builds without Unicode support are strongly discouraged and not supported"
+#endif
+
 #if defined wxUSE_LIBGNOMEPRINT
 #if wxUSE_LIBGNOMEPRINT
 #include <wx/html/forcelnk.h>

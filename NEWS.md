@@ -2,6 +2,9 @@
 
 - Faster discarding of maths that is too long to read
 - Resolved a crash on closing the last window (#1898)
+- Now only wxWidgets builds with Unicode support (default) are allowed.
+  Builds without Unicode support are strongly discouraged
+  by the wxWidgets team.
 
 # 24.02.2
 

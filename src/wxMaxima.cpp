@@ -9280,8 +9280,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
       //cppcheck-suppress syntaxError
       description += wxString::Format("\n(Build from Git version: " WXMAXIMA_GIT_SHORT_HASH ")");
 #endif
-      description += wxString::Format(
-                                      _("\n\nUsing: %s\nUnicode support: %s"), wxVERSION_STRING, _("yes").utf8_str());
+      description += wxString::Format(_("\n\nUsing: %s"), wxVERSION_STRING);
 
       if (GetWorksheet()->GetMaximaVersion() != wxEmptyString)
         {
