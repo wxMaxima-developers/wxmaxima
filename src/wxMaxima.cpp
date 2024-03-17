@@ -9270,7 +9270,6 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
   else if(event.GetId() == wxID_ABOUT){ {
       wxAboutDialogInfo info;
       wxString description;
-
       description = _(
                       "wxMaxima is a cross-platform graphical user interface for the "
                       "computer algebra system Maxima based on wxWidgets.\nFor rendering svg "
@@ -9282,8 +9281,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
       description += wxString::Format("\n(Build from Git version: " WXMAXIMA_GIT_SHORT_HASH ")");
 #endif
       description += wxString::Format(
-                                      _("\n\nwxWidgets: %d.%d.%d\nUnicode support: %s"), wxMAJOR_VERSION,
-                                      wxMINOR_VERSION, wxRELEASE_NUMBER, _("yes").utf8_str());
+                                      _("\n\nUsing: %s\nUnicode support: %s"), wxVERSION_STRING, _("yes").utf8_str());
 
       if (GetWorksheet()->GetMaximaVersion() != wxEmptyString)
         {
