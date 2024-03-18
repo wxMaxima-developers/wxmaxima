@@ -9270,24 +9270,21 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
   else if(event.GetId() == wxID_ABOUT){ {
       wxAboutDialogInfo info;
       wxString description;
-      description = _(
-                      "wxMaxima is a cross-platform graphical user interface for the "
-                      "computer algebra system Maxima based on wxWidgets.\nFor rendering svg "
-                      "graphics it uses nanosvg (https://github.com/memononen/nanosvg).\nThe "
-                      "unicode character list has been compiled by the Unicode Consortium.");
+      description = _("wxMaxima is a cross-platform graphical user interface for the "
+                      "computer algebra system Maxima based on wxWidgets.\n");
 
 #if defined(WXMAXIMA_GIT_SHORT_HASH)
       //cppcheck-suppress syntaxError
-      description += wxString::Format("\n(Build from Git version: " WXMAXIMA_GIT_SHORT_HASH ")");
+      description += wxString::Format(_("Build from Git version: %s\n"), WXMAXIMA_GIT_SHORT_HASH);
 #endif
-      description += wxString::Format(_("\n\nUsing: %s"), wxVERSION_STRING);
+      description += wxString::Format(_("Using: %s\n\n"), wxVERSION_STRING);
 
       if (GetWorksheet()->GetMaximaVersion() != wxEmptyString)
         {
-          description += _("\nMaxima version: ") + GetWorksheet()->GetMaximaVersion() +
-            " (" + m_maximaArch + ")";
+          description += _("Maxima version: ") + GetWorksheet()->GetMaximaVersion() +
+            " (" + m_maximaArch + ")\n";
           if (m_lispVersion != wxEmptyString)
-            description += _("\nMaxima was compiled using: ") +
+            description += _("Maxima was compiled using: ") +
               m_configuration.LispType() + " " + m_lispVersion;
         }
       else
