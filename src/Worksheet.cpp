@@ -351,7 +351,7 @@ bool Worksheet::RedrawIfRequested() {
           UnsetToolTip();
 
         if (m_cellPointers.m_cellUnderPointer) {
-          const ImgCellBase *image = GetSelectedImgCellBase(); 
+          const ImgCellBase * const image = GetSelectedImgCellBase(); 
           if (image != NULL) {
             StatusText(wxString::Format(
                                         _("%s image, %li×%li, %li ppi"),
@@ -1348,7 +1348,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         popupMenu.Append(EventIDs::popid_animation_start, _("Start Animation"),
                          wxEmptyString, wxITEM_NORMAL);
       } else {
-        ImgCell *img = GetSelectedImgCell();
+        ImgCell * const img = GetSelectedImgCell();
         if (img != NULL) {
           popupMenu.AppendSeparator();
           popupMenu.Append(EventIDs::popid_maxsizechooser, _("Restrict Maximum size"),
@@ -1564,7 +1564,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         }
 
         {
-          TextCell *textCell = GetSelectedTextCell();
+          TextCell * const textCell = GetSelectedTextCell();
           if (textCell != NULL)
             {
               if(textCell->GetTextStyle() == TS_SPECIAL_CONSTANT) {
@@ -2346,12 +2346,9 @@ void Worksheet::OnMouseLeftUp(wxMouseEvent &event) {
   if (HasCapture())
     ReleaseMouse();
 
-  if (GetSelectionStart() && GetSelectionStart() == GetSelectionEnd() &&
-      m_leftDownPosition == wxPoint(event.GetX(), event.GetY()) &&
-      (dynamic_cast<AnimationCell *>(GetSelectionStart()) != NULL))
-    dynamic_cast<AnimationCell *>(GetSelectionStart())
-      ->AnimationRunning(!dynamic_cast<AnimationCell *>(GetSelectionStart())
-                         ->AnimationRunning());
+  AnimationCell * const animCell = GetSelectedAnimation();
+  if (animCell != NULL)
+    animCell->ToggleAnimationRunning();
 
   m_leftDown = false;
   m_mouseDrag = false;
@@ -3918,12 +3915,13 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
 
   case WXK_UP:
   case WXK_LEFT:
-    if (CanAnimate()) {
-      AnimationCell *animation =
-        dynamic_cast<AnimationCell *>(GetSelectionStart());
-      animation->AnimationRunning(false);
-      StepAnimation(-1);
-      break;
+    {
+      AnimationCell * const animCell = GetSelectedAnimation();
+      if (animCell != NULL) {
+        animCell->AnimationRunning(false);
+        StepAnimation(-1);
+        break;
+      }
     }
 
     ScrolledAwayFromEvaluation(true);
@@ -3983,12 +3981,13 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
 
   case WXK_DOWN:
   case WXK_RIGHT:
-    if (CanAnimate()) {
-      AnimationCell *animation =
-        dynamic_cast<AnimationCell *>(GetSelectionStart());
-      animation->AnimationRunning(false);
-      StepAnimation(1);
-      break;
+    {
+      AnimationCell * const animation = GetSelectedAnimation();
+      if (animation != NULL) {
+        animation->AnimationRunning(false);
+        StepAnimation(1);
+        break;
+      }
     }
     ScrolledAwayFromEvaluation(true);
     if (m_hCaretActive) {
@@ -4365,7 +4364,7 @@ void Worksheet::OnTimer(wxTimerEvent &event) {
   default: {
     // Determine if the timer that has expired belongs to a slide show cell.
     Cell *const cell = m_cellPointers.GetCellForTimerId(event.GetId());
-    AnimationCell *const animation = dynamic_cast<AnimationCell *>(cell);
+    AnimationCell *const animation = dynamic_cast<AnimationCell * const>(cell);
     if (animation) {
       int pos = animation->GetDisplayedIndex() + 1;
 
@@ -4422,10 +4421,9 @@ bool Worksheet::CopyBitmap() const {
 }
 
 bool Worksheet::CopyAnimation() const {
-  if (GetSelectionStart() && GetSelectionStart() == GetSelectionEnd() &&
-      (dynamic_cast<AnimationCell *>(GetSelectionStart()) != NULL))
-    return dynamic_cast<AnimationCell *>(GetSelectionStart())
-      ->CopyAnimationToClipboard();
+  AnimationCell * const animation = GetSelectedAnimation();
+  if (animation != NULL)
+    return animation->CopyAnimationToClipboard();
   else
     return false;
 }

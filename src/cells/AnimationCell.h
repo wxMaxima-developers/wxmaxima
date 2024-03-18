@@ -160,6 +160,7 @@ public:
 
   bool AnimationRunning() const { return m_animationRunning; }
   void AnimationRunning(bool run);
+  void ToggleAnimationRunning(){AnimationRunning(!AnimationRunning());}
   bool CanPopOut() const override
     { return m_images.at(m_displayed) && (m_images.at(m_displayed)->HasGnuplotSource()); }
 
