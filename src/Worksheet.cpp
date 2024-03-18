@@ -351,9 +351,8 @@ bool Worksheet::RedrawIfRequested() {
           UnsetToolTip();
 
         if (m_cellPointers.m_cellUnderPointer) {
-          if (dynamic_cast<ImgCellBase *>(m_cellPointers.m_cellUnderPointer.get()) != NULL) {
-            const ImgCellBase *image =
-              dynamic_cast<ImgCellBase *>(m_cellPointers.m_cellUnderPointer.get());
+          const ImgCellBase *image = GetSelectedImgCellBase(); 
+          if (image != NULL) {
             StatusText(wxString::Format(
                                         _("%s image, %li×%li, %li ppi"),
                                         image->GetExtension().ToUTF8().data(),
@@ -1349,17 +1348,15 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         popupMenu.Append(EventIDs::popid_animation_start, _("Start Animation"),
                          wxEmptyString, wxITEM_NORMAL);
       } else {
-        if (dynamic_cast<ImgCell *>(m_cellPointers.m_selectionStart->GetGroup()) != NULL) {
+        ImgCell *img = GetSelectedImgCell();
+        if (img != NULL) {
           popupMenu.AppendSeparator();
           popupMenu.Append(EventIDs::popid_maxsizechooser, _("Restrict Maximum size"),
                            wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_resolutionchooser, _("Set image resolution"),
                            wxEmptyString, wxITEM_NORMAL);
 
-          Cell *cell = m_cellPointers.m_selectionStart->GetGroup()
-            ->GetGroup()
-            ->GetLabel();
-          wxString imgFile = dynamic_cast<ImgCell *>(cell)->GetOrigImageFile();
+          wxString imgFile = img->GetOrigImageFile();
 
           // Disable the reload menu item if the original file name is unknown.
           if (imgFile.Length() == 0) {
@@ -1566,42 +1563,40 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                            wxEmptyString, wxITEM_NORMAL);
         }
 
-        if ((GetSelectionStart() != NULL) &&
-            (GetSelectionStart()->GetType() == MC_TYPE_TEXT) &&
-            (dynamic_cast<TextCell *>(GetSelectionStart())->GetTextStyle() ==
-             TS_SPECIAL_CONSTANT)) {
-          if (popupMenu.GetMenuItemCount() > 0)
-            popupMenu.AppendSeparator();
-          popupMenu.AppendCheckItem(EventIDs::popid_special_constant_percent,
-                                    _("Show \"%\" in special constants"),
-                                    wxEmptyString);
-          popupMenu.Check(EventIDs::popid_special_constant_percent,
-                          m_configuration->CheckKeepPercent());
+        {
+          TextCell *textCell = GetSelectedTextCell();
+          if (textCell != NULL)
+            {
+              if(textCell->GetTextStyle() == TS_SPECIAL_CONSTANT) {
+                if (popupMenu.GetMenuItemCount() > 0)
+                  popupMenu.AppendSeparator();
+                popupMenu.AppendCheckItem(EventIDs::popid_special_constant_percent,
+                                          _("Show \"%\" in special constants"),
+                                          wxEmptyString);
+                popupMenu.Check(EventIDs::popid_special_constant_percent,
+                                m_configuration->CheckKeepPercent());
+              }
+              if (textCell->IsOperator()) {
+                if (popupMenu.GetMenuItemCount() > 0)
+                  popupMenu.AppendSeparator();
+                popupMenu.AppendCheckItem(EventIDs::popid_hideasterisk,
+                                          _("Hide multiplication dots"), wxEmptyString);
+                popupMenu.Check(EventIDs::popid_hideasterisk,
+                                m_configuration->HidemultiplicationSign());
+                popupMenu.AppendCheckItem(EventIDs::popid_changeasterisk,
+                                          _("Show * as multiplication dot"),
+                                          wxEmptyString);
+                popupMenu.Check(EventIDs::popid_changeasterisk,
+                                m_configuration->GetChangeAsterisk());
+              }
+              if (textCell->GetTextStyle() == TS_VARIABLE) {
+                if (popupMenu.GetMenuItemCount() > 0)
+                  popupMenu.AppendSeparator();
+                popupMenu.Append(EventIDs::popid_add_watch, _("Add to watchlist"),
+                                 wxEmptyString, wxITEM_NORMAL);
+              }
+            }
         }
-        if ((GetSelectionStart() != NULL) &&
-            (dynamic_cast<TextCell *>(GetSelectionStart()) != NULL) &&
-            (dynamic_cast<TextCell *>(GetSelectionStart())->IsOperator())) {
-          if (popupMenu.GetMenuItemCount() > 0)
-            popupMenu.AppendSeparator();
-          popupMenu.AppendCheckItem(
-                                    EventIDs::popid_hideasterisk, _("Hide multiplication dots"), wxEmptyString);
-          popupMenu.Check(EventIDs::popid_hideasterisk,
-                          m_configuration->HidemultiplicationSign());
-          popupMenu.AppendCheckItem(EventIDs::popid_changeasterisk,
-                                    _("Show * as multiplication dot"),
-                                    wxEmptyString);
-          popupMenu.Check(EventIDs::popid_changeasterisk,
-                          m_configuration->GetChangeAsterisk());
-        }
-        if ((GetSelectionStart() != NULL) &&
-            (GetSelectionStart() == GetSelectionEnd()) &&
-            (GetSelectionStart()->GetTextStyle() == TS_VARIABLE)) {
-          if (popupMenu.GetMenuItemCount() > 0)
-            popupMenu.AppendSeparator();
-          popupMenu.Append(EventIDs::popid_add_watch, _("Add to watchlist"),
-                           wxEmptyString, wxITEM_NORMAL);
-        }
-
         if (IsSelected(MC_TYPE_DEFAULT) || IsSelected(MC_TYPE_LABEL)) {
           popupMenu.AppendSeparator();
           popupMenu.Append(EventIDs::popid_float, _("To Float"), wxEmptyString,
