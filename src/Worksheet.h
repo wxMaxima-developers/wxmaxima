@@ -50,6 +50,9 @@
 #include "Notification.h"
 #include "cells/Cell.h"
 #include "cells/EditorCell.h"
+#include "cells/ImgCell.h"
+#include "cells/ImgCellBase.h"
+#include "cells/AnimationCell.h"
 #include "cells/GroupCell.h"
 #include "cells/TextCell.h"
 #include "EvaluationQueue.h"
@@ -982,6 +985,38 @@ public:
     Used for the "delete current cell" shortcut.
   */
   void DeleteCurrentCell();
+
+  //! Returns the selected cell - or NULL, if the selection isn't an animation 
+  AnimationCell *GetSelectedAnimation() const
+    {
+      if(m_cellPointers.m_selectionStart != m_cellPointers.m_selectionEnd)
+        return NULL;
+      return dynamic_cast<AnimationCell *>(GetSelectionStart());
+    }
+
+  //! Returns the selected cell - or NULL, if the selection isn't an image 
+  ImgCell *GetSelectedImgCell() const
+    {
+      if(m_cellPointers.m_selectionStart != m_cellPointers.m_selectionEnd)
+        return NULL;
+      return dynamic_cast<ImgCell *>(GetSelectionStart());
+    }
+  
+  //! Returns the selected cell - or NULL, if the selection isn't image nor animation
+  ImgCellBase *GetSelectedImgCellBase() const
+    {
+      if(m_cellPointers.m_selectionStart != m_cellPointers.m_selectionEnd)
+        return NULL;
+      return dynamic_cast<ImgCellBase *>(GetSelectionStart());
+    }
+
+  //! Returns the selected cell - or NULL, if the selection isn't a text cell
+  TextCell *GetSelectedTextCell() const
+    {
+      if(m_cellPointers.m_selectionStart != m_cellPointers.m_selectionEnd)
+        return NULL;
+      return dynamic_cast<TextCell *>(GetSelectionStart());
+    }
 
   //! Does it make sense to enable the "Play" button and the slider now?
   bool CanAnimate() const
