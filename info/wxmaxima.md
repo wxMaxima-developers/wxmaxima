@@ -896,6 +896,12 @@ using: `dpkg-reconfigure locales`
 
 You can find these symbols in the Unicode sidebar (search for 'double-struck capital'). But the selected font must also support these symbols. If they do not display properly, select another font.
 
+## How can a Maxima script determine, if it is running under wxMaxima or command line Maxima?
+
+If wxMaxima is used, the Maxima variable `maxima_frontend` is set to `wxmaxima`. The Maxima variable `maxima_frontend_version` contains the wxMaxima version in this case.
+
+If no frontend is used (you are using command line Maxima), these variables are `false`.
+
 ______________________________________________________________________
 
 # Command-line arguments
