@@ -472,6 +472,22 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a44a5e3323192e062b545679849522fa3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a44a5e3323192e062b545679849522fa3">DeleteCurrentCell</a> ()</td></tr>
 <tr class="memdesc:a44a5e3323192e062b545679849522fa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete the currently active cell - or the cell above this one.  <a href="classWorksheet.html#a44a5e3323192e062b545679849522fa3">More...</a><br /></td></tr>
 <tr class="separator:a44a5e3323192e062b545679849522fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2706ead3b5e81e56fbabd26233b55c12"><td class="memItemLeft" align="right" valign="top"><a id="a2706ead3b5e81e56fbabd26233b55c12"></a>
+<a class="el" href="classAnimationCell.html">AnimationCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a2706ead3b5e81e56fbabd26233b55c12">GetSelectedAnimation</a> () const</td></tr>
+<tr class="memdesc:a2706ead3b5e81e56fbabd26233b55c12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or NULL, if the selection isn't an animation. <br /></td></tr>
+<tr class="separator:a2706ead3b5e81e56fbabd26233b55c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac853da7c91c1efb7355a501dd87eaf93"><td class="memItemLeft" align="right" valign="top"><a id="ac853da7c91c1efb7355a501dd87eaf93"></a>
+<a class="el" href="classImgCell.html">ImgCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ac853da7c91c1efb7355a501dd87eaf93">GetSelectedImgCell</a> () const</td></tr>
+<tr class="memdesc:ac853da7c91c1efb7355a501dd87eaf93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or NULL, if the selection isn't an image. <br /></td></tr>
+<tr class="separator:ac853da7c91c1efb7355a501dd87eaf93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac704f293dd718742e4a1bc0975ade63e"><td class="memItemLeft" align="right" valign="top"><a id="ac704f293dd718742e4a1bc0975ade63e"></a>
+<a class="el" href="classImgCellBase.html">ImgCellBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ac704f293dd718742e4a1bc0975ade63e">GetSelectedImgCellBase</a> () const</td></tr>
+<tr class="memdesc:ac704f293dd718742e4a1bc0975ade63e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or NULL, if the selection isn't image nor animation. <br /></td></tr>
+<tr class="separator:ac704f293dd718742e4a1bc0975ade63e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03cf41469757a4cb10a3be4373fed182"><td class="memItemLeft" align="right" valign="top"><a id="a03cf41469757a4cb10a3be4373fed182"></a>
+<a class="el" href="classTextCell.html">TextCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a03cf41469757a4cb10a3be4373fed182">GetSelectedTextCell</a> () const</td></tr>
+<tr class="memdesc:a03cf41469757a4cb10a3be4373fed182"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the selected cell - or NULL, if the selection isn't a text cell. <br /></td></tr>
+<tr class="separator:a03cf41469757a4cb10a3be4373fed182"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6cf2965a1983631e048b9a51e548991f"><td class="memItemLeft" align="right" valign="top"><a id="a6cf2965a1983631e048b9a51e548991f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a6cf2965a1983631e048b9a51e548991f">CanAnimate</a> () const</td></tr>
 <tr class="memdesc:a6cf2965a1983631e048b9a51e548991f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does it make sense to enable the "Play" button and the slider now? <br /></td></tr>
@@ -1069,7 +1085,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Can we merge the selected cells into one? </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
 
 </div>
 </div>
@@ -1255,7 +1271,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Export the file to an html document. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
 
 </div>
 </div>
@@ -1304,7 +1320,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Export a region of the file to a .wxm or .mac file maxima's load command can read. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
 
 </div>
 </div>
@@ -1399,7 +1415,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Do an incremental search from the cursor or the point the last search started at. </p>
-<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
+<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
 
 </div>
 </div>
@@ -2129,7 +2145,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Scrolls to a point on the worksheet. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
 <p>Test case:</p><ul>
 <li>Create a code cell</li>
 <li>Press the "hide all code cells" button.</li>
