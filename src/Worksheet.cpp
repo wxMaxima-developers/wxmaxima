@@ -7245,11 +7245,9 @@ bool Worksheet::IsSelected(CellType type) {
 //! Starts playing the animation of a cell generated with the with_slider_*
 //! commands
 void Worksheet::Animate(bool run) const {
-  if (CanAnimate()) {
-    AnimationCell *animation =
-      dynamic_cast<AnimationCell *>(GetSelectionStart());
+  AnimationCell * const animation = GetSelectedAnimation();
+  if(animation != NULL)
     animation->AnimationRunning(run);
-  }
 }
 
 bool Worksheet::IsSelectionInWorkingGroup() {
