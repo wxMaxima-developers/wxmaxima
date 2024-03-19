@@ -461,20 +461,18 @@ bool MaximaManual::LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument,
 }
 
 wxString MaximaManual::GetHelpfileURL(wxString keyword) {
-  const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
+  wxString anchor;
   if (m_configuration->SinglePageManual()) {
-    auto anchor = m_helpFileURLs_singlePage.find(keyword);
-    if (anchor == m_helpFileURLs_singlePage.end())
-      return GetHelpfileUrl_FilePerChapter(keyword);
-    else
-      return GetHelpfileUrl_Singlepage(keyword);
-  } else {
-    auto anchor = m_helpFileURLs_filePerChapter.find(keyword);
-    if (anchor == m_helpFileURLs_filePerChapter.end())
-      return GetHelpfileUrl_Singlepage(keyword);
-    else
-      return GetHelpfileUrl_FilePerChapter(keyword);
+    anchor = GetHelpfileUrl_Singlepage(keyword);
+    if(anchor.IsEmpty())
+      anchor = GetHelpfileUrl_FilePerChapter(keyword);
   }
+  else {
+    anchor = GetHelpfileUrl_FilePerChapter(keyword);
+    if(anchor.IsEmpty())
+      anchor = GetHelpfileUrl_Singlepage(keyword);
+  }
+  return anchor;
 }
 
 void MaximaManual::FindMaximaHtmlDir(wxString docDir) {
