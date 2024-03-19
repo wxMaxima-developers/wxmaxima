@@ -254,7 +254,6 @@ public:
 private:
   bool m_fromWxFS = false;
   bool m_gnuplotDataThreadRunning = false;
-  //  static std::atomic<int> m_numberOfThreads;
   //! A zipped version of the gnuplot commands that produced this image.
   wxMemoryBuffer m_gnuplotSource_Compressed;
   //! A zipped version of the gnuplot data needed in order to create this image.

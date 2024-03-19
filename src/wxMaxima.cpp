@@ -2155,8 +2155,9 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, AppendOpt opts,
   if (textCell)
     {
       textCell->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
+      bool breakLine = cell->BreakLineHere();
       GetWorksheet()->InsertLine(std::move(cell),
-                                 (opts & AppendOpt::NewLine) || cell->BreakLineHere());
+                                 (opts & AppendOpt::NewLine) || breakLine);
     }
 }
 

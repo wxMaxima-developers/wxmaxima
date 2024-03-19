@@ -2042,6 +2042,8 @@ bool wxMaximaFrame::ToolbarIsShown() {
 void wxMaximaFrame::PopulateRecentDocumentsMenu(wxMenu *menu, int firstEntry,
                                                 const std::list<wxString> &items)
 {
+  if(!menu)
+    return;
   int id = firstEntry;
   for(const auto &name:items)
     {

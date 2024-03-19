@@ -162,58 +162,58 @@ protected:
   //! Issued if a notification is closed.
   void OnNotificationClose(wxCommandEvent WXUNUSED(&event));
   //! The status bar
-  StatusBar *m_statusBar;
+  StatusBar *m_statusBar = NULL;
   //! The menu bar
-  MainMenuBar *m_MenuBar;
+  MainMenuBar *m_MenuBar = NULL;
   //! The "demo" sub-menu
-  wxMenu *m_demo_sub;
+  wxMenu *m_demo_sub = NULL;
   //! The submenus for the various "demo" sub-submenus
   std::vector<wxMenu *> m_demoSubs;
   //! The "view" menu
-  wxMenu *m_viewMenu;
+  wxMenu *m_viewMenu = NULL;
   //! The gentran menu
-  wxMenu *m_gentranMenu;
+  wxMenu *m_gentranMenu = NULL;
   //! The subst submenu
-  wxMenu *m_subst_Sub;
+  wxMenu *m_subst_Sub = NULL;
   //! The logexpand submenu
-  wxMenu * m_logexpand_Sub;
+  wxMenu * m_logexpand_Sub = NULL;
   //! The file menu.
-  wxMenu *m_FileMenu;
+  wxMenu *m_FileMenu = NULL;
   //! The edit menu.
-  wxMenu *m_EditMenu;
+  wxMenu *m_EditMenu = NULL;
   //! The cell menu.
-  wxMenu *m_CellMenu;
+  wxMenu *m_CellMenu = NULL;
   //! The zoom submenu
-  wxMenu *m_Edit_Zoom_Sub;
+  wxMenu *m_Edit_Zoom_Sub = NULL;
   //! The panes submenu
-  wxMenu *m_Maxima_Panes_Sub;
+  wxMenu *m_Maxima_Panes_Sub = NULL;
   //! The equations menu.
-  wxMenu *m_EquationsMenu;
+  wxMenu *m_EquationsMenu = NULL;
   //! The maxima menu.
-  wxMenu *m_MaximaMenu;
+  wxMenu *m_MaximaMenu = NULL;
   //! The matrix menu.
-  wxMenu *m_matrix_menu;
+  wxMenu *m_matrix_menu = NULL;
   //! The simplify menu
-  wxMenu *m_SimplifyMenu;
+  wxMenu *m_SimplifyMenu = NULL;
   //! The factorials and gamma submenu
-  wxMenu *m_Simplify_Gamma_Sub;
+  wxMenu *m_Simplify_Gamma_Sub = NULL;
   //! Contains the menu for the debugger trigger settingxc
-  wxMenu *m_debugTypeMenu;
+  wxMenu *m_debugTypeMenu = NULL;
   //! The trigonometric submenu
-  wxMenu *m_Simplify_Trig_Sub;
+  wxMenu *m_Simplify_Trig_Sub = NULL;
   //! The complex submenu
-  wxMenu *m_Simplify_Complex_Sub;
+  wxMenu *m_Simplify_Complex_Sub = NULL;
   //! The calculus menu
-  wxMenu *m_CalculusMenu;
+  wxMenu *m_CalculusMenu = NULL;
 
   //! The plot menu
-  wxMenu *m_PlotMenu;
+  wxMenu *m_PlotMenu = NULL;
   //! The list menu
-  wxMenu *m_listMenu;
+  wxMenu *m_listMenu = NULL;
   //! The numeric menu
-  wxMenu *m_NumericMenu;
+  wxMenu *m_NumericMenu = NULL;
   //! The help menu
-  wxMenu *m_HelpMenu;
+  wxMenu *m_HelpMenu = NULL;
   //! Remove an eventual temporary autosave file.
   void RemoveTempAutosavefile();
   //! Re-read the configuration.
@@ -329,12 +329,12 @@ protected:
   LogPane *m_logPane;
   RecentDocuments m_recentDocuments;
   RecentDocuments m_recentPackages;
-  wxMenu *m_recentDocumentsMenu;
-  wxMenu *m_unsavedDocumentsMenu;
-  wxMenu *m_recentPackagesMenu;
-  wxMenu *m_autoSubscriptMenu;
-  wxMenu *m_equationTypeMenuMenu;
-  wxMenu *m_roundedMatrixParensMenu;
+  wxMenu *m_recentDocumentsMenu = NULL;
+  wxMenu *m_unsavedDocumentsMenu = NULL;
+  wxMenu *m_recentPackagesMenu = NULL;
+  wxMenu *m_autoSubscriptMenu = NULL;
+  wxMenu *m_equationTypeMenuMenu = NULL;
+  wxMenu *m_roundedMatrixParensMenu = NULL;
 };
 
 #endif // WXMAXIMAFRAME_H
