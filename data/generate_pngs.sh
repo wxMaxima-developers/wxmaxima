@@ -7,7 +7,7 @@
 /* SVG images are converted to PNG (using inkscape) and then converted to C using xxd   */
 /* This file is part of wxMaxima.                                                       */
 
-/* Copyright (C) 2022 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
+/* Copyright (C) 2024 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
 
 /* This program is free software; you can redistribute it and/or modify                 */
 /* it under the terms of the GNU General Public License as published by                 */
@@ -22,6 +22,10 @@
 /* You should have received a copy of the GNU General Public License                    */
 /* along with this program; if not, write to the Free Software                          */
 /* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA         */
+
+#ifndef WXM_ICON_H
+#define WXM_ICON_H
+
 END
 
 for i in io.github.wxmaxima_developers.wxMaxima.svg; do
@@ -31,3 +35,4 @@ for i in io.github.wxmaxima_developers.wxMaxima.svg; do
     which optipng >/dev/null && optipng -o 9 "$PNGIMAGENAME"  # optimize image, if optipng is available
     xxd -i "$PNGIMAGENAME" >> icon.h
 done
+echo "#endif" >>icon.h

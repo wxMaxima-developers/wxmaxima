@@ -1,7 +1,7 @@
 /* Automatically generated file using generate_unicodedata.sh                           */
 /* This file is part of wxMaxima.                                                       */
 
-/* Copyright (C) 2023 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
+/* Copyright (C) 2024 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
 
 /* This program is free software; you can redistribute it and/or modify                 */
 /* it under the terms of the GNU General Public License as published by                 */
@@ -22,6 +22,8 @@
 /* UnicodeData.txt was downloaded from:                                                 */
 /* https://www.unicode.org/Public/15.1.0/ucd/UnicodeData.txt                            */
 
+#ifndef WXM_UNICODEDATA_H
+#define WXM_UNICODEDATA_H
 unsigned char UnicodeData_txt_gz[] = {
   0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x9c, 0xfd,
   0xdb, 0x8e, 0xe3, 0xba, 0x12, 0x2d, 0x0a, 0xbe, 0xef, 0xaf, 0xc8, 0x1f,
@@ -18982,3 +18984,4 @@ unsigned char UnicodeData_txt_gz[] = {
   0xbc, 0x3d, 0x11, 0x00
 };
 unsigned int UnicodeData_txt_gz_len = 227476;
+#endif

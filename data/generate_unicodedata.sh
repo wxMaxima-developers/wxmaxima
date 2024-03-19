@@ -8,7 +8,7 @@ cat >UnicodeData.h <<END
 /* Automatically generated file using generate_unicodedata.sh                           */
 /* This file is part of wxMaxima.                                                       */
 
-/* Copyright (C) 2023 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
+/* Copyright (C) 2024 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
 
 /* This program is free software; you can redistribute it and/or modify                 */
 /* it under the terms of the GNU General Public License as published by                 */
@@ -29,6 +29,8 @@ cat >UnicodeData.h <<END
 /* UnicodeData.txt was downloaded from:                                                 */
 /* $UNICODEURL                            */
 
+#ifndef WXM_UNICODEDATA_H
+#define WXM_UNICODEDATA_H
 END
 
 echo "Fetching UnicodeData.txt from: $UNICODEURL"
@@ -36,5 +38,6 @@ curl $UNICODEURL >UnicodeData.txt
 echo "Converting UnicodeData.txt to embeddable C code UnicodeData.h"
 cut -d ";" -f 1-2 <UnicodeData.txt | gzip -c -n >UnicodeData.txt.gz
 xxd -i "UnicodeData.txt.gz" >>UnicodeData.h
+echo "#endif" >>UnicodeData.h
 rm -f UnicodeData.txt.gz UnicodeData.txt
 
