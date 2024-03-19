@@ -27,6 +27,7 @@
 
 #include "main.h"
 #include "Maxima.h"
+#include "NullLog.h"
 #include "Dirstructure.h"
 #include "StackToStdErr.h"
 #include "wxMathml.h"
@@ -487,7 +488,7 @@ int MyApp::OnExit() {
 }
 
 int MyApp::OnRun() {
-  wxLogStderr noErrorDialogs;
+  wxLog::SetActiveTarget(new NullLog);
   wxApp::OnRun();
   return 0;
 }
