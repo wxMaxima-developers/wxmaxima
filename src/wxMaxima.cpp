@@ -8533,7 +8533,7 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_ratsubst){
     CommandWiz(_("Smart substitution"),
-               _("ŕatsubst works like subst, but it knows some basic maths, if "
+               _("ratsubst works like subst, but it knows some basic maths, if "
                  "needed."),
                wxEmptyString, wxS("ratsubst(#2#,#1#);"), wxS("Expression"),
                wxS("%"), wxEmptyString, wxS("Substituents"), wxS("x^2=u"),
