@@ -1,6 +1,17 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-
+find_program(PO4A po4a)
+if(PO4A)
+	# Get po4a-translate version number
+	execute_process(COMMAND ${PO4A} --version OUTPUT_VARIABLE PO4A_VERSION_TEXT)
+	string(REGEX REPLACE "^po4a version ([^\n]*).*" "\\1"  PO4A_VERSION "${PO4A_VERSION_TEXT}")
+	string(REGEX REPLACE "\\.$" ""  PO4A_VERSION "${PO4A_VERSION}") # remove trailing dot.
+	message(STATUS "Found po4a: ${PO4A} (found version \"${PO4A_VERSION}\")")
+	execute_process(COMMAND ${PO4A} ${CMAKE_BINARY_DIR}/locales/manual/po4a.cfg)
+else()
+	message(STATUS "po4a-translate not found. Disable the generation of localized documentation.")
+endif()
+	
 find_program(PANDOC pandoc)
 if(PANDOC)
 	execute_process(
@@ -17,7 +28,6 @@ if(PANDOC)
 	function(generate_wxmaxima_documentation_html FILEBASENAME)
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.html
-			DEPENDS ${FILEBASENAME}.md
 			COMMAND ${PANDOC} ${FILEBASENAME}.md -t html5 "--include-in-header=${CMAKE_CURRENT_SOURCE_DIR}/header.html" -o ${FILEBASENAME}.html --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="WxMaxima"
 			COMMAND ${REMOVE_HTML5SHIV}
 			COMMENT "Generating ${FILEBASENAME}.html")
@@ -40,7 +50,6 @@ if(PANDOC)
 
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.pdf
-			DEPENDS ${FILEBASENAME}.md
 			COMMAND ${PANDOC} ${FILEBASENAME}.md -t latex -o ${FILEBASENAME}.pdf -M lang=${PDFLANG} -V 'mainfont:NotoSerif-Regular.ttf' -V 'sansfont:NotoSans-Regular.ttf' -V 'monofont:NotoSansMono-Regular.ttf' -V 'mathfont:NotoSansMath-Regular.ttf' -V 'CJKmainfont:NotoSerifCJK-Regular.ttc' --number-sections --table-of-contents --standalone --metadata title="wxMaxima" --pdf-engine=${WXMAXIMA_LATEX_COMMAND}
 			COMMENT "Generating ${FILEBASENAME}.pdf")
 		add_custom_target(build_${FILEBASENAME}.pdf DEPENDS ${FILEBASENAME}.pdf)
@@ -51,7 +60,6 @@ if(PANDOC)
 	function(generate_wxmaxima_documentation_epub FILEBASENAME)
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.epub
-			DEPENDS ${FILEBASENAME}.md
 			COMMAND ${PANDOC} ${FILEBASENAME}.md -t epub -o ${FILEBASENAME}.epub --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="wxMaxima"
 			COMMENT "Generating ${FILEBASENAME}.epub")
 		add_custom_target(build_${FILEBASENAME}.epub DEPENDS ${FILEBASENAME}.epub)
@@ -80,19 +88,15 @@ if(PANDOC)
             message(STATUS "Xelatex or Lualatex not found. PDF documentation can not be converted from Markdown.")
 	endif()
 
-	find_program(PO4A_TRANSLATE po4a-translate)
-	if(PO4A_TRANSLATE)
-		# Get po4a-translate version number, only >= 0.55 works for wxMaxima.
-		execute_process(COMMAND ${PO4A_TRANSLATE} --version
-			OUTPUT_VARIABLE PO4A_TRANSLATE_VERSION_TEXT)
-		string(REGEX REPLACE "^po4a-translate version ([^\n]*).*" "\\1"  PO4A_TRANSLATE_VERSION "${PO4A_TRANSLATE_VERSION_TEXT}")
-		string(REGEX REPLACE "\\.$" ""  PO4A_TRANSLATE_VERSION "${PO4A_TRANSLATE_VERSION}") # remove trailing dot.
-		message(STATUS "Found po4a-translate: ${PO4A_TRANSLATE} (found version \"${PO4A_TRANSLATE_VERSION}\")")
-		if(PO4A_TRANSLATE_VERSION VERSION_LESS 0.55)
-			message(WARNING "po4a-translate Version < 0.55 found. Please upgrade po4a, that version does not work. "
-							"Disable po4a and the generation of localized documentation.")
-			set(PO4A_TRANSLATE "")
-		endif()
+	find_program(PO4A po4a)
+	if(PO4A)
+		# Get po4a-translate version number
+		execute_process(COMMAND ${PO4A} --version
+			OUTPUT_VARIABLE PO4A_VERSION_TEXT)
+		string(REGEX REPLACE "^po4a version ([^\n]*).*" "\\1"  PO4A_VERSION "${PO4A_VERSION_TEXT}")
+		string(REGEX REPLACE "\\.$" ""  PO4A_VERSION "${PO4A_VERSION}") # remove trailing dot.
+		message(STATUS "Found po4a: ${PO4A} (found version \"${PO4A_VERSION}\")")
+		execute_process(COMMAND ${PO4A} ${CMAKE_BINARY_DIR}/locales/manual/po4a.cfg)
 	else()
 		message(STATUS "po4a-translate not found. Disable the generation of localized documentation.")
 	endif()
@@ -108,16 +112,10 @@ if(PANDOC)
 		generate_wxmaxima_documentation_pdf("wxmaxima")
     endif()
 
-	if(PO4A_TRANSLATE)
+	if(PO4A)
 		foreach(BASENAME ${BASENAMES})
 			string(REGEX REPLACE "wxmaxima.(.*)$" "\\1" LANG ${BASENAME})
 			string(REGEX REPLACE "wxmaxima$" "" LANG ${LANG})
-
-			add_custom_command(
-				OUTPUT ${BASENAME}.md
-				DEPENDS ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
-				COMMAND ${PO4A_TRANSLATE} -k 0 -f text -o markdown -m ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -p ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
-
 			generate_wxmaxima_documentation_html("${BASENAME}")
 			generate_wxmaxima_documentation_epub("${BASENAME}")
 			if(WXMAXIMA_LATEX_COMMAND)
