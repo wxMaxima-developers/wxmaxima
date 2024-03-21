@@ -7,7 +7,7 @@ if(PO4A)
 	string(REGEX REPLACE "^po4a version ([^\n]*).*" "\\1"  PO4A_VERSION "${PO4A_VERSION_TEXT}")
 	string(REGEX REPLACE "\\.$" ""  PO4A_VERSION "${PO4A_VERSION}") # remove trailing dot.
 	message(STATUS "Found po4a: ${PO4A} (found version \"${PO4A_VERSION}\")")
-	execute_process(COMMAND ${PO4A} ${CMAKE_BINARY_DIR}/locales/manual/po4a.cfg)
+	execute_process(COMMAND ${PO4A} ${CMAKE_BINARY_DIR}/po4a.cfg)
 else()
 	message(STATUS "po4a-translate not found. Disable the generation of localized documentation.")
 endif()
