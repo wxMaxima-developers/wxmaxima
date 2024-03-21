@@ -797,6 +797,20 @@ The folder where this file has to be placed is system- and installation-specific
 :lisp (sb-impl::userinit-pathname)
 ```
 
+## Note concerning Wayland (recent Linux/BSD distributions)
+
+There seem to be issues with the Wayland Display Server and wxWidgets.
+WxMaxima may be affected, e.g. that sidebars are not moveable.
+
+You can either disable Wayland and use X11 instead (globally)
+or just tell, that wxMaxima should use the X Window System by setting:
+`GDK_BACKEND=x11`
+
+E.g. start wxMaxima with:
+
+`GDK_BACKEND=x11 wxmaxima`
+
+
 ## Plotting
 
 ### Can I make _wxMaxima_ output both image files and embedded plots at once?
