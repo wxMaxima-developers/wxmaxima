@@ -147,7 +147,6 @@ if(Git_FOUND)
                         OUTPUT_VARIABLE WXMAXIMA_GIT_SHORT_HASH
                         OUTPUT_STRIP_TRAILING_WHITESPACE)
         message(STATUS "Building from git development tree, revision: ${WXMAXIMA_GIT_SHORT_HASH}")
-        add_definitions("-DWXMAXIMA_GIT_SHORT_HASH=\"${WXMAXIMA_GIT_SHORT_HASH}\"")
     endif()
 endif()
 
