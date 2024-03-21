@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-14 22:23+0100\n"
+"POT-Creation-Date: 2024-03-21 22:27+0100\n"
 "PO-Revision-Date: 2020-05-08 07:53+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -15,14 +15,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. type: Title #
-#: ../../info/wxmaxima.md:1
-#, no-wrap
-msgid "The wxMaxima user manual"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:2
+#, fuzzy
+#| msgid "The wxMaxima user manual"
+msgid "# The wxMaxima user manual"
 msgstr "Das Handbuch von wxMaxima"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:4
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:4
 #, fuzzy
 #| msgid ""
 #| "wxMaxima is a graphical user interface (GUI) for the _Maxima_ computer "
@@ -32,7 +33,7 @@ msgstr "Das Handbuch von wxMaxima"
 #| "that make wxMaxima one of the most popular GUIs for _Maxima_."
 msgid ""
 "WxMaxima is a graphical user interface (GUI) for the _Maxima_ computer "
-"algebra system (CAS). WxMaxima allows one to use all of _Maxima_’s "
+"algebra system (CAS). WxMaxima allows one to use all of _Maxima_'s "
 "functions. In addition, it provides convenient wizards for accessing the "
 "most commonly used features. This manual describes some of the features that "
 "make wxMaxima one of the most popular GUIs for _Maxima_."
@@ -44,93 +45,37 @@ msgstr ""
 "graphischen Benutzerumgebung für Maxima gemacht haben."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:6
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:6
 msgid "![wxMaxima logo](./wxMaximaLogo.png){ id=img_wxMaximaLogo }"
 msgstr "![wxMaxima Logo](./wxMaximaLogo.png){ id=img_wxMaximaLogo }"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:8
-msgid ""
-"Before we look at the content a few points regarding navigation are in "
-"order. Immediately below is a short table of contents. Clicking on any of "
-"the listed items moves the cursor to the top of the indicated section of the "
-"manual. Clicking on [Contents](#TOC) moves the cursor to an extended table "
-"of contents. This extended table can be used to navigate more directly to "
-"specific parts of the manual. The Contents link appears at locations "
-"throughout the text for navigational purposes."
-msgstr ""
-"Vor dem eigentlichen Inhalt ist es vielleicht angebracht, die Navigation zu "
-"erklären: Die nun folgende Liste enthält Hyperlinks auf die einzelnen "
-"Kapitel der Dokumentation. Ein Klick auf [Inhaltsverzeichnis](#TOC) führt zu "
-"einem detaillierten Inhaltsverzeichnis. Dieser Link kommt öfter vor, um die "
-"Navigation zu erleichtern."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:10
-msgid "[Introduction](#introduction-to-wxmaxima \"Introduction to wxMaxima\"):"
-msgstr "[Einführung](#einführung-in-wxmaxima \"Einführung in wxMaxima\"):"
-
-#. type: Plain text
-#: ../../info/wxmaxima.md:12
-msgid "WxMaxima basics"
-msgstr "Die Grundlagen von WxMaxima"
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:14
-msgid "[Extensions](#extensions-to-maxima \"Extensions\"):"
-msgstr "[Erweiterungen](#erweiterungen-für-maxima \"Erweiterungen\"):"
-
-#. type: Plain text
-#: ../../info/wxmaxima.md:16
-msgid "The commands wxMaxima adds to _Maxima_"
-msgstr "Die Kommandos, mittels deren wxMaxima _Maxima_ erweitert"
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:18
-msgid "[Troubleshooting](#troubleshooting \"Troubleshooting\"):"
-msgstr "[Fehlersuche](#fehlersuche \"Fehlersuche\"):"
-
-#. type: Plain text
-#: ../../info/wxmaxima.md:20
-msgid "What to do if wxMaxima does not work as expected"
-msgstr "Was tun, wenn wxMaxima nicht wie erwartet funktioniert"
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:22
-msgid "[FAQ](#faq \"FAQ\"):"
-msgstr "[FAQ](#häufig-gestellte-fragen \"Häufig gestellte Fragen\"):"
-
-#. type: Plain text
-#: ../../info/wxmaxima.md:24
-msgid "Frequently asked questions"
-msgstr "Häufig gestellte Fragen"
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:26
-msgid "[CommandLine](#command-line-arguments \"_Maxima_ Command Line\"):"
-msgstr ""
-"[Befehlszeile](#kommandozeilen-optionen \"Kommandozeilenparameter für "
-"Maxima\"):"
-
-#. type: Plain text
-#: ../../info/wxmaxima.md:28
-msgid "The command-line arguments wxMaxima supports"
-msgstr "Die Kommandozeilenargumente von wxMaxima"
-
-#. type: Title #
-#: ../../info/wxmaxima.md:31
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:7
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:350
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:704
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:876
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:919
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:943
 #, no-wrap
-msgid "Introduction to wxMaxima"
+msgid "______________________________________________________________________\n"
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:10
+#, fuzzy
+#| msgid "Introduction to wxMaxima"
+msgid "# Introduction to wxMaxima"
 msgstr "Einführung in wxMaxima"
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:33
-#, no-wrap
-msgid "_Maxima_ and wxMaxima"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:12
+#, fuzzy
+#| msgid "_Maxima_ and wxMaxima"
+msgid "## _Maxima_ and wxMaxima"
 msgstr "_Maxima_ und wxMaxima"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:36
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:14
 msgid ""
 "In the open-source domain, big systems are normally split into smaller "
 "projects that are easier to handle for small groups of developers. For "
@@ -152,13 +97,13 @@ msgstr ""
 "Brennprogramm aus einem Kommandozeilentool zusammengesetzt, das die CDs "
 "brennt und eine graphische Benutzerumgebung, die dieses Tool bedient. Ein "
 "Vorteil dieses Ansatzes ist es, daß dasselbe Kommandozeilenprogramm von "
-"vielen Stellen aus genutzt werden: Das Brennprogramm, ein \"Sende an die "
-"CD\"-Knopf und beispielsweise ein Backup-Tool. Ein weiterer Vorteil ist es, "
+"vielen Stellen aus genutzt werden: Das Brennprogramm, ein \"Sende an die CD"
+"\"-Knopf und beispielsweise ein Backup-Tool. Ein weiterer Vorteil ist es, "
 "dass auf diese Weise für eine Funktionalität mehrere Benutzerinterfaces "
 "angeboten werden können."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:38
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:16
 msgid ""
 "A computer algebra system (CAS) like _Maxima_ fits into this framework. A "
 "CAS can provide the logic behind an arbitrary precision calculator "
@@ -175,14 +120,15 @@ msgstr ""
 "verwendet werden. Dies kann von der Kommandozeile aus geschehen, oder von "
 "wxMaxima aus, das eine komfortablere Bedienung unterstützt."
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:39
-#, no-wrap
-msgid "_Maxima_"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:18
+#, fuzzy
+#| msgid "_Maxima_"
+msgid "### _Maxima_"
 msgstr "_Maxima_"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:42
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:20
 msgid ""
 "_Maxima_ is a full-featured computer algebra system (CAS). A CAS is a "
 "program that can solve mathematical problems by rearranging formulas and "
@@ -200,7 +146,7 @@ msgstr ""
 "Lösungen existieren."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:44
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:22
 msgid ""
 "![Maxima screenshot, command line](./maxima_screenshot.png)"
 "{ id=img_maxima_screenshot }"
@@ -209,19 +155,38 @@ msgstr ""
 "{ id=img_maxima_screenshot }"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:46
-#, no-wrap
-msgid "Extensive documentation for _Maxima_ is  [available in the internet](https://maxima.sourceforge.io/documentation.html). Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the <kbd>F1</kbd> key) causes _wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual page for the command at the cursor.\n"
-msgstr "Umfangreiche Dokumentation für Maxima ist [im Internet verfügbar](https://maxima.sourceforge.io/documentation.html). Teile davon sind auch im Hilfe-Menü von wxMaxima verfügbar. Ein Druck auf die Hilfe-Taste (auf den meisten Systemen ist dies die <kbd>F1</kbd>-Taste) springt automatisch zur Stelle im _Maxima_-Handbuch, wo das Kommando unter dem Cursor erklärt wird.\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:24
+#, fuzzy
+#| msgid ""
+#| "Extensive documentation for _Maxima_ is  [available in the internet]"
+#| "(https://maxima.sourceforge.io/documentation.html). Part of this "
+#| "documentation is also available in wxMaxima’s help menu. Pressing the "
+#| "Help key (on most systems the <kbd>F1</kbd> key) causes _wxMaxima_’s "
+#| "context-sensitive help feature to automatically jump to _Maxima_’s manual "
+#| "page for the command at the cursor.\n"
+msgid ""
+"Extensive documentation for _Maxima_ is [available in the internet](https://"
+"maxima.sourceforge.io/documentation.html). Part of this documentation is "
+"also available in wxMaxima’s help menu. Pressing the Help key (on most "
+"systems the <kbd>F1</kbd> key) causes _wxMaxima_’s context-sensitive help "
+"feature to automatically jump to _Maxima_’s manual page for the command at "
+"the cursor."
+msgstr ""
+"Umfangreiche Dokumentation für Maxima ist [im Internet verfügbar](https://"
+"maxima.sourceforge.io/documentation.html). Teile davon sind auch im Hilfe-"
+"Menü von wxMaxima verfügbar. Ein Druck auf die Hilfe-Taste (auf den meisten "
+"Systemen ist dies die <kbd>F1</kbd>-Taste) springt automatisch zur Stelle im "
+"_Maxima_-Handbuch, wo das Kommando unter dem Cursor erklärt wird.\n"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:47
-#, no-wrap
-msgid "WxMaxima"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:26
+#, fuzzy
+#| msgid "WxMaxima"
+msgid "### WxMaxima"
 msgstr "WxMaxima"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:50
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:28
 #, fuzzy
 #| msgid ""
 #| "_wxMaxima_ is a graphical user interface that provides the full "
@@ -256,12 +221,12 @@ msgstr ""
 "help.html) gefunden werden, oder über das Hilfemenü."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:52
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:30
 msgid "![wxMaxima window](./wxMaximaWindow.png){ id=img_wxMaximaWindow }"
 msgstr "![wxMaxima Fenster](./wxMaximaWindow.png){ id=img_wxMaximaWindow }"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:54
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:32
 msgid ""
 "The calculations that are entered in _wxMaxima_ are performed by the "
 "_Maxima_ command-line tool in the background."
@@ -269,14 +234,15 @@ msgstr ""
 "_wxMaxima_ lässt alle Berechnungen im Hintergrund durch das Kommandozeilen-"
 "Werkzeug _Maxima_ durchführen."
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:55
-#, no-wrap
-msgid "Workbook basics"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:34
+#, fuzzy
+#| msgid "Workbook basics"
+msgid "## Workbook basics"
 msgstr "Grundlagen zum Arbeitsblatt"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:58
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:36
 msgid ""
 "Much of _wxMaxima_ is self-explaining, but some details require attention. "
 "[This site](https://wxMaxima-developers.github.io/wxmaxima/help.html) "
@@ -292,14 +258,15 @@ msgstr ""
 "an, wovon das \"10-Minuten-Tutorial\" besonders zu empfehlen ist. Dieses "
 "Handbuch beschreibt einige zusätzliche Aspekte von wxMaxima."
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:59
-#, no-wrap
-msgid "The workbook approach"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:38
+#, fuzzy
+#| msgid "The workbook approach"
+msgid "### The workbook approach"
 msgstr "Der Arbeitsblatt-Ansatz"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:62
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:40
 #, fuzzy
 #| msgid ""
 #| "One of the very few things that are not standard in _wxMaxima_ is that it "
@@ -335,7 +302,7 @@ msgstr ""
 "Zellen im das Arbeitsblatt neu auszuwerten, oft viel Zeit."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:64
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:42
 msgid ""
 "If text is typed into _wxMaxima_ it automatically creates a new worksheet "
 "cell. The type of this cell can be selected in the toolbar. If a code cell "
@@ -349,17 +316,17 @@ msgstr ""
 "angezeigt, wie unten abgebildet."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:66
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:44
 msgid "![Input/output cell](./InputCell.png){ id=img_InputCell }"
 msgstr "![Eingabe/Ausgabe Zelle](./InputCell.png){ id=img_InputCell }"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:68
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:46
 #, fuzzy
 #| msgid ""
 #| "On evaluation of an input cell's contents the input cell _Maxima_ assigns "
-#| "a label to the input (by default shown in red and recognizable by the "
-#| "`%i`) by which it can be referenced later in the _wxMaxima_ session. The "
+#| "a label to the input (by default shown in red and recognizable by the `"
+#| "%i`) by which it can be referenced later in the _wxMaxima_ session. The "
 #| "output that _Maxima_ generates also gets a label that begins with `%o` "
 #| "and by default is hidden, except if the user assigns the output a name. "
 #| "In this case by default the user-defined label is displayed. The `%o`\\-"
@@ -374,14 +341,14 @@ msgid ""
 "auto-generates will also be accessible, though."
 msgstr ""
 "Wird eine Code-Zelle ausgewertet, weist ihr _Maxima_ eine Marke zu "
-"(standardmäßig ist diese in roter Schrift gehalten und beginnt mit einem "
-"`%i`), über das sie später wieder referenziert werden kann. Für die Ausgabe "
+"(standardmäßig ist diese in roter Schrift gehalten und beginnt mit einem `"
+"%i`), über das sie später wieder referenziert werden kann. Für die Ausgabe "
 "wird eine Marke generiert, die standardmäßig mit `%o` beginnt und nicht "
 "angezeigt wird, außer der Benutzer hat der Formel einen sprechenden Namen "
 "gegeben, der stattdessen angezeigt werden kann."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:70
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:48
 msgid ""
 "Besides the input cells _wxMaxima_ allows for text cells for documentation, "
 "image cells, title cells, chapter cells and section cells. Every cell has "
@@ -397,7 +364,7 @@ msgstr ""
 "eigenen Speicher für die Rückgängigmachen-Funktion."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:72
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:50
 msgid ""
 "The figure below shows different cell types (title cells, section cells, "
 "subsection cells, text cells, input/output cells and image cells)."
@@ -406,64 +373,38 @@ msgstr ""
 "Untertitelzellen, Textzellen, Eingabe/Ausgabezellen und eine Bildzelle)."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:74
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:52
 msgid ""
 "![Example of different wxMaxima cells](./cell-example.png){ id=img_cell-"
 "example }"
 msgstr "![Ein Beispiel verschiedener wxMaxima Zelltypen](./cell-example.png)"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:75
-#, no-wrap
-msgid "Cells"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:54
+#, fuzzy
+#| msgid "Cells"
+msgid "### Cells"
 msgstr "Zellen"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:78
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:56
 msgid ""
 "The worksheet is organized in cells. WxMaxima knows the following cell types:"
 msgstr ""
-"Das Arbeitsblatt ist in Zellen aufgeteilt. WxMaxima kennt die folgenden Zelltypen:"
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:85
-msgid "Math cells, containing one or more lines of _Maxima_ input."
-msgstr ""
-"Mathematik-Eingabezellen beinhalten eine oder mehrere Eingabe-Zeilen für "
-"_Maxima_"
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:85
-msgid "Output of, or a question from, _Maxima_."
-msgstr "Ausgaben oder Fragen von _Maxima_."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:85
-msgid "Image cells."
-msgstr "Bild-Zellen."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:85
-msgid "Text cells, that can for example be used for documentation."
-msgstr ""
-"Text-Zellen, die beispielsweise für Dokumentation verwendet werden können."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:85
-msgid ""
-"A title, section or a subsection. 6 levels of different headings are "
-"possible."
-msgstr ""
-"Ein Titel, Überschrift oder Unterüberschrift. 6 unterschiedliche "
-"Überschriftenebenen sind möglich."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:85
-msgid "Page breaks."
-msgstr "Seitenumbrüche."
+"Das Arbeitsblatt ist in Zellen aufgeteilt. WxMaxima kennt die folgenden "
+"Zelltypen:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:87
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:63
+msgid ""
+"- Math cells, containing one or more lines of _Maxima_ input.  - Output of, "
+"or a question from, _Maxima_.  - Image cells.  - Text cells, that can for "
+"example be used for documentation.  - A title, section or a subsection. 6 "
+"levels of different headings are possible.  - Page breaks."
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:65
 msgid ""
 "The default behavior of _wxMaxima_ when text is entered is to automatically "
 "create a math cell. Cells of other types can be created using the Cell menu, "
@@ -478,30 +419,31 @@ msgstr ""
 "erzeugt wurde, wird alles was eingetippt wird, als Text interpretiert."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:89
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:67
 msgid ""
 "A (C-style) [comment text](https://maxima.sourceforge.io/docs/manual/"
 "maxima_singlepage.html#Comments) can be part of a math cell as follows: `/* "
 "This comment will be ignored by Maxima */`"
 msgstr ""
-"Ein [Kommentar](https://maxima.sourceforge.io/docs/manual/"
-"maxima_singlepage.html#Comments) (wie in der Programmiersprache C) kann als Teil einer "
+"Ein [Kommentar](https://maxima.sourceforge.io/docs/manual/maxima_singlepage."
+"html#Comments) (wie in der Programmiersprache C) kann als Teil einer "
 "Mathematik-Eingabezelle eingegeben werden: `/* Dieser Kommentar wird von "
 "Maxima ignoriert */`."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:91
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:69
 msgid "\"`/*`\" marks the start of the comment, \"`*/`\" the end."
 msgstr "\"`/*`\" markiert den Beginn des Kommentars, \"`*/`\" das Ende."
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:92
-#, no-wrap
-msgid "Horizontal and vertical cursors"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:71
+#, fuzzy
+#| msgid "Horizontal and vertical cursors"
+msgid "### Horizontal and vertical cursors"
 msgstr "Horizontale und vertikale Cursors"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:95
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:73
 #, fuzzy
 #| msgid ""
 #| "If the user tries to select a complete sentence a word processor will try "
@@ -520,7 +462,7 @@ msgstr ""
 "Zelle ausgewählt wird, die Auswahl auf ganze Zellen ausdehnen."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:97
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:75
 msgid ""
 "What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by "
 "defining two types of cursors. _WxMaxima_ will switch between them "
@@ -530,33 +472,35 @@ msgstr ""
 "vertikalen oder einen horizontalen Cursor darstellen kann. _wxMaxima_ "
 "wechselt zwischen ihnen nach Bedarf:"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:100
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:78
+#, fuzzy
+#| msgid ""
+#| "A vertical cursor that works inside a cell. This cursor is activated by "
+#| "moving the cursor inside a cell using the mouse pointer or the cursor "
+#| "keys and works much like the cursor in a text editor."
 msgid ""
-"The cursor is drawn horizontally if it is moved in the space between two "
-"cells or by clicking there."
+"- The cursor is drawn horizontally if it is moved in the space between two "
+"cells or by clicking there.  - A vertical cursor that works inside a cell. "
+"This cursor is activated by moving the cursor inside a cell using the mouse "
+"pointer or the cursor keys and works much like the cursor in a text editor."
 msgstr ""
-"Der Cursor wird vertikal dargestellt wird, wenn er zwischen zwei Zellen zu "
-"liegen kommt."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:100
-msgid ""
-"A vertical cursor that works inside a cell. This cursor is activated by "
-"moving the cursor inside a cell using the mouse pointer or the cursor keys "
-"and works much like the cursor in a text editor."
-msgstr "Innerhalb einer Zelle wird der Cursor vertikal dargestellt. "
-"Der Cursor wird mit dem Mauszeiger oder den Cursortasten in einer Textzelle aktiviert "
-"und funktioniert ähnlich wie in einem Text-Editor."
+"Innerhalb einer Zelle wird der Cursor vertikal dargestellt. Der Cursor wird "
+"mit dem Mauszeiger oder den Cursortasten in einer Textzelle aktiviert und "
+"funktioniert ähnlich wie in einem Text-Editor."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:102
-#, no-wrap
-msgid "When you start wxMaxima, you will only see the blinking horizontal cursor. If you start typing, a math cell will be automatically created and the cursor will change to a regular vertical one (you will see a right arrow as \"prompt\", after the Math cell is evaluated (<kbd>CTRL+ENTER</kbd>), you will see the labels, e.g. `(%i1)`, `(%o1)`).\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:80
+msgid ""
+"When you start wxMaxima, you will only see the blinking horizontal cursor. "
+"If you start typing, a math cell will be automatically created and the "
+"cursor will change to a regular vertical one (you will see a right arrow as "
+"\"prompt\", after the Math cell is evaluated (<kbd>CTRL</kbd>+<kbd>ENTER</"
+"kbd>), you will see the labels, e.g. `(%i1)`, `(%o1)`)."
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:104
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:82
 msgid ""
 "![(blinking) horizontal cursor after wxMaxima start](./horizontal-cursor-"
 "only.png){ id=img_horizontal_cursor_only }"
@@ -565,7 +509,7 @@ msgstr ""
 "horizontal-cursor-only.png){ id=img_horizontal_cursor_only }"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:106
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:84
 msgid ""
 "You might want to create a different cell type (using the \"Cell\" menu), "
 "maybe a title cell or text cell, which describes, what will be done, when "
@@ -576,7 +520,7 @@ msgstr ""
 "Arbeitsblatt machen wird, wenn Sie beginnen, ein Arbeitsblatt zu erstellen."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:108
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:86
 msgid ""
 "If you navigate between the different cells, you will also see the "
 "(blinking) horizontal cursor, where you can insert a cell into your "
@@ -589,7 +533,7 @@ msgstr ""
 "eingegeben wird), oder eine andere Zelle (unter Verwendung des Zellen-Menüs)."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:110
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:88
 msgid ""
 "![(blinking) horizontal cursor between cells](./horizontal-cursor-between-"
 "cells.png){ id=img_horizontal_cursor_between_cells }"
@@ -597,51 +541,104 @@ msgstr ""
 "![(Blinkender) Horizontaler Cursor zwischen den Zellen](./horizontal-cursor-"
 "between-cells.png){ id=img_horizontal_cursor_between_cells }"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:111
-#, no-wrap
-msgid "Sending cells to Maxima"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:90
+#, fuzzy
+#| msgid "Sending cells to Maxima"
+msgid "### Sending cells to Maxima"
 msgstr "Eingabezellen an _Maxima_ schicken"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:114
-#, fuzzy, no-wrap
-#| msgid "The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed. The _wxMaxima_ default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but _wxMaxima_ can be configured to execute commands in response to <kbd>ENTER</kbd>.\n"
-msgid "The command in a code cell is executed once by pressing <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad. The _wxMaxima_ default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but _wxMaxima_ can be configured to execute commands in response to <kbd>ENTER</kbd>.\n"
-msgstr "Die Befehle in einer Codezelle werden ausgeführt, sobald die <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> oder <kbd>ENTER</kbd> Taste im Nummernblock gedrückt wird. _wxMaxima_ nimmt Befehle mit <kbd>CTRL+ENTER</kbd> oder <kbd>SHIFT+ENTER</kbd> entgegen, aber _wxMaxima_ kann auch konfiguriert werden, dass Befehle nach <kbd>ENTER</kbd> ausgeführt werden..\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:92
+#, fuzzy
+#| msgid ""
+#| "The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</"
+#| "kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on "
+#| "the keypad is pressed. The _wxMaxima_ default is to enter commands when "
+#| "either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but "
+#| "_wxMaxima_ can be configured to execute commands in response to "
+#| "<kbd>ENTER</kbd>.\n"
+msgid ""
+"The command in a code cell is executed once by pressing <kbd>CTRL</kbd>"
+"+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> "
+"key on the keypad. The _wxMaxima_ default is to enter commands when either "
+"<kbd>CTRL</kbd>+<kbd>ENTER</kbd> or <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> is "
+"entered, but _wxMaxima_ can be configured to execute commands in response to "
+"<kbd>ENTER</kbd>."
+msgstr ""
+"Die Befehle in einer Codezelle werden ausgeführt, sobald die <kbd>CTRL</kbd>"
+"+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> oder <kbd>ENTER</kbd> "
+"Taste im Nummernblock gedrückt wird. _wxMaxima_ nimmt Befehle mit <kbd>CTRL"
+"+ENTER</kbd> oder <kbd>SHIFT+ENTER</kbd> entgegen, aber _wxMaxima_ kann auch "
+"konfiguriert werden, dass Befehle nach <kbd>ENTER</kbd> ausgeführt werden..\n"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:115
-#, no-wrap
-msgid "Command autocompletion"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:94
+#, fuzzy
+#| msgid "Command autocompletion"
+msgid "### Command autocompletion"
 msgstr "Auto-Vervollständigung"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:118
-#, fuzzy, no-wrap
-#| msgid "_wxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within a unit specification for ezUnits it will offer a list of applicable units.\n"
-msgid "_WxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example, if activated within a unit specification for ezUnits it will offer a list of applicable units.\n"
-msgstr "wxMaxima versucht, automatisch die Namen von Befehlen oder Variablen zu vervollständigen, wenn der Menüpunkt (Vervollständige Befehl) angewählt wird, oder die Tastenkombination <kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt wird. Die automatische Vervollständigung erkennt oft den Kontext, in dem sie ausgeführt wird, und kann beispielsweise Dateinamen oder Einheiten für ezUnits vorschlagen.\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:96
+#, fuzzy
+#| msgid ""
+#| "_wxMaxima_ contains an autocompletion feature that is triggered via the "
+#| "menu (Cell/Complete Word) or alternatively by pressing the key "
+#| "combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is "
+#| "context-sensitive. For example if activated within a unit specification "
+#| "for ezUnits it will offer a list of applicable units.\n"
+msgid ""
+"_WxMaxima_ contains an autocompletion feature that is triggered via the menu "
+"(Cell/Complete Word) or alternatively by pressing the key combination "
+"<kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. "
+"For example, if activated within a unit specification for ezUnits it will "
+"offer a list of applicable units."
+msgstr ""
+"wxMaxima versucht, automatisch die Namen von Befehlen oder Variablen zu "
+"vervollständigen, wenn der Menüpunkt (Vervollständige Befehl) angewählt "
+"wird, oder die Tastenkombination <kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt "
+"wird. Die automatische Vervollständigung erkennt oft den Kontext, in dem sie "
+"ausgeführt wird, und kann beispielsweise Dateinamen oder Einheiten für "
+"ezUnits vorschlagen.\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:120
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:98
 msgid "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
 msgstr "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:122
-#, no-wrap
-msgid "Besides completing a file name, a unit name, or the current command or variable name, the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).\n"
-msgstr "Außer der Vervollständigung des Namens einer Datei, einer Einheit, eines Kommandos oder eines Variablennamens kann für viele Befehle eine Liste der erwarteten Argumente angezeigt werden. Hierfür muss einfach <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt werden, oder der entsprechende Menüeintrag gewählt (Zelle/Zeige Parameter).\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:100
+#, fuzzy
+#| msgid ""
+#| "Besides completing a file name, a unit name, or the current command or "
+#| "variable name, the autocompletion is able to show a template for most of "
+#| "the commands indicating the type (and meaning) of the parameters this "
+#| "program expects. To activate this feature press <kbd>SHIFT</kbd>"
+#| "+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item "
+#| "(Cell/Show Template).\n"
+msgid ""
+"Besides completing a file name, a unit name, or the current command or "
+"variable name, the autocompletion is able to show a template for most of the "
+"commands indicating the type (and meaning) of the parameters this program "
+"expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>"
+"+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template)."
+msgstr ""
+"Außer der Vervollständigung des Namens einer Datei, einer Einheit, eines "
+"Kommandos oder eines Variablennamens kann für viele Befehle eine Liste der "
+"erwarteten Argumente angezeigt werden. Hierfür muss einfach <kbd>SHIFT</kbd>"
+"+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt werden, oder der entsprechende "
+"Menüeintrag gewählt (Zelle/Zeige Parameter).\n"
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:123
-#, no-wrap
-msgid "Greek characters"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:102
+#, fuzzy
+#| msgid "Greek characters"
+msgid "#### Greek characters"
 msgstr "Griechische Zeichen"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:126
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:104
 msgid ""
 "Computers traditionally stored characters in 8-bit values. This allows for a "
 "maximum of 256 different characters. All letters, numbers, and control "
@@ -655,7 +652,7 @@ msgstr ""
 "zusammengesetzt werden können, weniger als dies."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:128
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:106
 msgid ""
 "For most countries, the codepage of 256 characters that has been chosen does "
 "not include things like Greek letters, though, that are frequently used in "
@@ -667,12 +664,12 @@ msgstr ""
 "Zeichen definiert worden, die allerdings in den meisten Ländern "
 "beispielsweise keine griechischen Buchstaben beinhaltet, die in der "
 "Mathematik oft verwendet werden. Um diese Begrenzung zu umgehen, wurde "
-"[Unicode](https://home.unicode.org/) entwickelt: Eine Zeichencodierung, "
-"die englischen Text wie gewohnt aussehen lässt, aber viel mehr "
-"als 256 Zeichen ermöglicht."
+"[Unicode](https://home.unicode.org/) entwickelt: Eine Zeichencodierung, die "
+"englischen Text wie gewohnt aussehen lässt, aber viel mehr als 256 Zeichen "
+"ermöglicht."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:130
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:108
 msgid ""
 "_Maxima_ allows Unicode if it was compiled using a Lisp compiler that either "
 "supports Unicode or that doesn't care about the font encoding. As at least "
@@ -684,22 +681,19 @@ msgstr ""
 "unterstützt es Unicode. Da meist eine dieser Bedingungen gegeben ist, bietet "
 "_WxMaxima_ eine Methode an, griechische Zeichen mit der Tastatur einzugeben:"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:133
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:111
+#, fuzzy
+#| msgid ""
+#| "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter "
+#| "(or two for the Greek letter omicron) and <kbd>ESC</kbd> again. In this "
+#| "case the following letters are supported:"
 msgid ""
-"A Greek letter can be entered by pressing the <kbd>ESC</kbd> key and then "
-"starting to type the Greek character's name."
-msgstr ""
-"Ein griechischer Buchstabe kann eingegeben werden, indem erst auf die "
-"<kbd>ESC</kbd>-Taste gedrückt wird, und dann sein Name einzugeben begonnen "
-"wird."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:133
-msgid ""
-"Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or "
-"two for the Greek letter omicron) and <kbd>ESC</kbd> again. In this case the "
-"following letters are supported:"
+"- A Greek letter can be entered by pressing the <kbd>ESC</kbd> key and then "
+"starting to type the Greek character's name.  - Alternatively it can be "
+"entered by pressing <kbd>ESC</kbd>, one letter (or two for the Greek letter "
+"omicron) and <kbd>ESC</kbd> again. In this case the following letters are "
+"supported:"
 msgstr ""
 "Ebenso kann er eingegeben werden, indem <kbd>ESC</kbd> gedrückt wird, ein "
 "Buchstabe (bzw. zwei für den griechischen Buchstaben omicron) und dann "
@@ -707,7 +701,7 @@ msgstr ""
 "unterstützt:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:152
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:130
 #, no-wrap
 msgid ""
 "| key | Greek letter | key | Greek letter | key | Greek letter |\n"
@@ -749,7 +743,28 @@ msgstr ""
 "|  T      |    Theta               |  P      |      Pi               |  O      |    Omega               |\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:154
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:132
+msgid ""
+"You can also use the \"Greek letters\"-sidebar to enter the Greek letters."
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:146
+msgid ""
+"> **_Attention:_** Lookalike characters > > Several Latin letters look like "
+"the Greek letters, e.g. the Latin letter \"A\" > and the Greek letter \"Alpha"
+"\". Although they look identical, they are two > different Unicode "
+"characters, represented by different Unicode code points (numbers).  > > "
+"This might be problematic, if you assign a value to the Variable A and later "
+"> use the Greek letter Alpha to do something with this variable, especially "
+"on printouts.  > For the greek letter my (which is also used as prefix for "
+"micro) there are also two > different unicode code points.  > > The \"Greek "
+"letters\"-sidebar therefore has the option, that lookalike characters > are "
+"not available (which can be changed using a right-click menu)."
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:148
 msgid ""
 "The same mechanism also allows to enter some miscellaneous mathematical "
 "symbols:"
@@ -758,7 +773,7 @@ msgstr ""
 "einzugeben:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:205
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:199
 #, no-wrap
 msgid ""
 "| keys to enter  | mathematical symbol                                   |\n"
@@ -814,20 +829,41 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:207
-#, fuzzy, no-wrap
-#| msgid "If a special symbol isn’t in the list it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.\n"
-msgid "If a special symbol isn’t in the list, it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> \\[number of the character (hexadecimal)\\] <kbd>ESC</kbd>.\n"
-msgstr "Wenn das gewünschte Zeichen auf diese Weise nicht erreichbar ist, können Zeichen auch als <kbd>ESC</kbd> (Nummer des Zeichens (hexadezimal)) <kbd>ESC</kbd> eingegeben werden.\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:201
+msgid ""
+"You can also use the \"Symbols\"-sidebar to enter these Mathematical symbols."
+msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:209
-#, no-wrap
-msgid "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an `a`.\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:203
+#, fuzzy
+#| msgid ""
+#| "If a special symbol isn’t in the list it is possible to input arbitrary "
+#| "Unicode characters by pressing <kbd>ESC</kbd> [number of the character "
+#| "(hexadecimal)] <kbd>ESC</kbd>.\n"
+msgid ""
+"If a special symbol isn’t in the list, it is possible to input arbitrary "
+"Unicode characters by pressing <kbd>ESC</kbd> \\[number of the character "
+"(hexadecimal)\\] <kbd>ESC</kbd>. Additionally the \"symbols\" sidebar has a "
+"right-click menu that allow to display a list of all available unicode "
+"symbols one can add to this toolbar or to the worksheet."
+msgstr ""
+"Wenn das gewünschte Zeichen auf diese Weise nicht erreichbar ist, können "
+"Zeichen auch als <kbd>ESC</kbd> (Nummer des Zeichens (hexadezimal)) "
+"<kbd>ESC</kbd> eingegeben werden.\n"
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:205
+#, fuzzy
+#| msgid ""
+#| "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an `a`.\n"
+msgid ""
+"<kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> therefore results in an "
+"`a`."
 msgstr "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> erzeugt daher ein `a`.\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:211
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:207
 msgid ""
 "Please note that most of these symbols (notable exceptions are the logic "
 "symbols) do not have a special meaning in _Maxima_ and therefore will be "
@@ -840,26 +876,48 @@ msgstr ""
 "Unicode nicht unterstützt, kann das eine Fehlermeldung verursachen."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:214
-#, fuzzy, no-wrap
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:210
+#, fuzzy
 #| msgid ""
-#| "It may be the case, that e.g. greek characters or mathematical symbols are not included in the selected font, then they can not be displayed.\n"
-#| "To solve that problem, select other fonts (using: Edit -> Configure -> Style).\n"
+#| "It may be the case, that e.g. greek characters or mathematical symbols "
+#| "are not included in the selected font, then they can not be displayed.\n"
+#| "To solve that problem, select other fonts (using: Edit -> Configure -> "
+#| "Style).\n"
 msgid ""
-"It may be the case that e.g. greek characters or mathematical symbols are not included in the selected font, then they can not be displayed.\n"
-"To solve that problem, select other fonts (using: Edit -> Configure -> Style).\n"
+"It may be the case that e.g. Greek characters or mathematical symbols are "
+"not included in the selected font, then they can not be displayed.  To solve "
+"that problem, select other fonts (using: Edit -> Configure -> Style)."
 msgstr ""
-"Es kann passieren, dass z.B. griechische Buchstaben oder mathematische Symbole in der ausgewählten Schriftart nicht vorhanden sind, dann können sie nicht dargestellt werden.\n"
-"Um das Problem zu lösen, bitte eine andere Schriftart wählen (Bearbeiten -> Einstellungen -> Stil).\n"
+"Es kann passieren, dass z.B. griechische Buchstaben oder mathematische "
+"Symbole in der ausgewählten Schriftart nicht vorhanden sind, dann können sie "
+"nicht dargestellt werden.\n"
+"Um das Problem zu lösen, bitte eine andere Schriftart wählen (Bearbeiten -> "
+"Einstellungen -> Stil).\n"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:215
-#, no-wrap
-msgid "Side Panes"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:212
+msgid "### Unicode replacement"
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:214
+msgid ""
+"wxMaxima will replace several Unicode characters with their respective "
+"Maxima expressions, e.g. \"²\" with \"^2\", \"³\" with \"^3\", the square "
+"root sign with the function `sqrt()`, the (mathematical) Sigma sign (which "
+"is not the same unicode character as the corresponding greek letter) with "
+"`sum()`, etc."
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:216
+#, fuzzy
+#| msgid "Side Panes"
+msgid "### Side Panes"
 msgstr "Seitenleisten"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:218
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:218
 #, fuzzy
 #| msgid ""
 #| "Shortcuts to the most important _Maxima_ commands or things like a table "
@@ -884,14 +942,14 @@ msgstr ""
 "griechische Buchstaben einzugeben."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:220
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:220
 msgid "![Example of different side panes](./SidePanes.png){ id=img_SidePanes }"
 msgstr ""
 "![Beispiele verschiedener Seitenbereiche](./SidePanes.png)"
 "{ id=img_SidePanes }"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:223
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:223
 msgid ""
 "In the \"table of contents\" side pane, one can increase or decrease a "
 "heading by just clicking on the heading with the right mouse button and "
@@ -899,54 +957,73 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:225
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:225
 msgid ""
 "![Increase or decrease headings in the TOC side pane](./Sidepane-TOC-convert-"
 "headings.png){ id=Sidepane-TOC-convert-headings }"
 msgstr ""
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:226
-#, no-wrap
-msgid "MathML output"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:227
+#, fuzzy
+#| msgid "MathML output"
+msgid "### MathML output"
 msgstr "MathML-Ausgabe"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:229
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:229
+#, fuzzy
+#| msgid ""
+#| "Several word processors and similar programs either recognize [MathML]"
+#| "(https://www.w3.org/Math/) input and automatically insert it as an "
+#| "editable 2D equation - or (like LibreOffice 5.1) have an equation editor "
+#| "that offers an “import MathML from clipboard” feature. Others support RTF "
+#| "maths. _WxMaxima_, therefore, offers several entries in the right-click "
+#| "menu."
 msgid ""
 "Several word processors and similar programs either recognize [MathML]"
 "(https://www.w3.org/Math/) input and automatically insert it as an editable "
-"2D equation - or (like LibreOffice 5.1) have an equation editor that offers "
-"an “import MathML from clipboard” feature. Others support RTF maths. "
+"2D equation - or (like LibreOffice) have an equation editor that offers an "
+"“import MathML from clipboard” feature. Others support RTF maths. "
 "_WxMaxima_, therefore, offers several entries in the right-click menu."
 msgstr ""
-"Einige Textverarbeitungen verstehen entweder [MathML](https://www.w3.org/Math/) (Der Formeleditor von "
-"LibreOffice 5.1 kann zumindest entsprechende Gleichungen importieren). "
-"Andere unterstützen Mathematik im RTF-Format. _wxMaxima_ bietet daher einige "
-"entsprechende Optionen im Rechtsklick-Menü an. "
+"Einige Textverarbeitungen verstehen entweder [MathML](https://www.w3.org/"
+"Math/) (Der Formeleditor von LibreOffice 5.1 kann zumindest entsprechende "
+"Gleichungen importieren). Andere unterstützen Mathematik im RTF-Format. "
+"_wxMaxima_ bietet daher einige entsprechende Optionen im Rechtsklick-Menü "
+"an. "
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:230
-#, no-wrap
-msgid "Markdown support"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:231
+#, fuzzy
+#| msgid "Markdown support"
+msgid "### Markdown support"
 msgstr "Markdown-Unterstützung"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:233
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:233
 msgid ""
 "_WxMaxima_ offers a set of standard [Markdown](https://en.wikipedia.org/wiki/"
 "Markdown) conventions that don't collide with mathematical notation. One of "
 "these elements is bullet lists."
 msgstr ""
 "_WxMaxima_ unterstützt einige [Markdown](https://en.wikipedia.org/wiki/"
-"Markdown)-Kommandos, die nicht mit Konstrukten "
-"kollidieren, die in mathematischen Formeln vorkommen. Eines dieser Elemente "
-"sind Aufzählungen:"
+"Markdown)-Kommandos, die nicht mit Konstrukten kollidieren, die in "
+"mathematischen Formeln vorkommen. Eines dieser Elemente sind Aufzählungen:"
 
-#. type: Fenced code block
-#: ../../info/wxmaxima.md:234
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:243
+#, fuzzy, no-wrap
+#| msgid ""
+#| "Ordinary text\n"
+#| " * One item, indentation level 1\n"
+#| " * Another item at indentation level 1\n"
+#| "   * An item at a second indentation level\n"
+#| "   * A second item at the second indentation level\n"
+#| " * A third item at the first indentation level\n"
+#| "Ordinary text\n"
 msgid ""
+"```\n"
 "Ordinary text\n"
 " * One item, indentation level 1\n"
 " * Another item at indentation level 1\n"
@@ -954,6 +1031,7 @@ msgid ""
 "   * A second item at the second indentation level\n"
 " * A third item at the first indentation level\n"
 "Ordinary text\n"
+"```\n"
 msgstr ""
 "Normaler Text\n"
 " * Ein eingerückter Aufzählungspunkt\n"
@@ -964,20 +1042,25 @@ msgstr ""
 "Normaler text\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:245
-#, no-wrap
-msgid "_WxMaxima_ will recognize text starting with `>` chars as block quotes:\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:245
+#, fuzzy
+#| msgid ""
+#| "_WxMaxima_ will recognize text starting with `>` chars as block quotes:\n"
+msgid "_WxMaxima_ will recognize text starting with `>` chars as block quotes:"
 msgstr "_WxMaxima_ erkennt Text, der mit einem `>` beginnt, als ein Zitat:\n"
 
-#. type: Fenced code block
-#: ../../info/wxmaxima.md:246
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:253
+#, fuzzy
+#| msgid ""
+#| "Ordinary text\n"
+#| "> quote quote quote quote\n"
+#| "> quote quote quote quote\n"
+#| "> quote quote quote quote\n"
+#| "Ordinary text\n"
 msgid ""
-"Ordinary text\n"
-"> quote quote quote quote\n"
-"> quote quote quote quote\n"
-"> quote quote quote quote\n"
-"Ordinary text\n"
+"``` Ordinary text > quote quote quote quote > quote quote quote quote > "
+"quote quote quote quote Ordinary text ```"
 msgstr ""
 "Normaler Text\n"
 "> Zitat Zitat Zitat\n"
@@ -987,31 +1070,53 @@ msgstr ""
 "Normaler Text\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:255
-#, no-wrap
-msgid "_WxMaxima_'s TeX and HTML output will also recognize `=>` and replace it by the corresponding Unicode sign:\n"
-msgstr "Die TeX- und HTML-Ausgabe von _WxMaxima_ erkennt auch `=>` und ersetzt es durch das entsprechende Unicode-Symbol:\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:255
+#, fuzzy
+#| msgid ""
+#| "_WxMaxima_'s TeX and HTML output will also recognize `=>` and replace it "
+#| "by the corresponding Unicode sign:\n"
+msgid ""
+"_WxMaxima_'s TeX and HTML output will also recognize `=>` and replace it by "
+"the corresponding Unicode sign:"
+msgstr ""
+"Die TeX- und HTML-Ausgabe von _WxMaxima_ erkennt auch `=>` und ersetzt es "
+"durch das entsprechende Unicode-Symbol:\n"
 
-#. type: Fenced code block
-#: ../../info/wxmaxima.md:256
-#, no-wrap
-msgid "cogito => sum.\n"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:259
+#, fuzzy
+#| msgid "cogito => sum.\n"
+msgid "``` cogito => sum.  ```"
 msgstr "cogito => sum.\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:261
-#, no-wrap
-msgid "Other symbols the HTML and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single-headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.\n"
-msgstr "Andere Symbole, die vom HTML- und TeX-Export erkannt werden, sind `<=` und `>=` (Vergleichsoperatoren), ein Doppelpfeil (`<=>`), einfache Pfeile (`<->`, `->` und `<-`) und `+/-`. Die TeX-Ausgabe erkennt zusätzlich `<<` und `>>`.\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:261
+#, fuzzy
+#| msgid ""
+#| "Other symbols the HTML and TeX export will recognize are `<=` and `>=` "
+#| "for comparisons, a double-pointed double arrow (`<=>`), single-headed "
+#| "arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX "
+#| "output also `<<` and `>>` are recognized.\n"
+msgid ""
+"Other symbols the HTML and TeX export will recognize are `<=` and `>=` for "
+"comparisons, a double-pointed double arrow (`<=>`), single-headed arrows (`<-"
+">`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also "
+"`<<` and `>>` are recognized."
+msgstr ""
+"Andere Symbole, die vom HTML- und TeX-Export erkannt werden, sind `<=` und "
+"`>=` (Vergleichsoperatoren), ein Doppelpfeil (`<=>`), einfache Pfeile (`<-"
+">`, `->` und `<-`) und `+/-`. Die TeX-Ausgabe erkennt zusätzlich `<<` und "
+"`>>`.\n"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:262
-#, no-wrap
-msgid "Hotkeys"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:263
+#, fuzzy
+#| msgid "Hotkeys"
+msgid "### Hotkeys"
 msgstr "Tastenkürzel"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:265
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:265
 msgid ""
 "Most hotkeys can be found in the text of the respective menus. Since they "
 "are actually taken from the menu text and thus can be customized by the "
@@ -1023,38 +1128,30 @@ msgstr ""
 "diesen übersetzt werden können, falls die Tastatur der aktuellen Sprache "
 "dies erforderlich macht. Nicht dort dokumentiert ist:"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:269
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:269
+#, fuzzy
+#| msgid ""
+#| "<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>"
+#| "+<kbd>TAB</kbd> triggers the auto-completion mechanism."
 msgid ""
-"<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell."
-msgstr ""
-"<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> löscht eine komplette "
-"Zelle."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:269
-msgid ""
-"<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</"
-"kbd> triggers the auto-completion mechanism."
+"- <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete "
+"cell.  - <kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>"
+"+<kbd>TAB</kbd> triggers the auto-completion mechanism.  - <kbd>SHIFT</kbd>"
+"+<kbd>SPACE</kbd> inserts a non-breaking space."
 msgstr ""
 "<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</"
 "kbd> startet das automatische Vervollständigen."
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:269
-msgid "<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space."
-msgstr ""
-"<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> fügt ein nicht-umbrechbares Leerzeichen "
-"ein."
-
-#. type: Title ###
-#: ../../info/wxmaxima.md:270
-#, no-wrap
-msgid "Raw TeX in the TeX export"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:271
+#, fuzzy
+#| msgid "Raw TeX in the TeX export"
+msgid "### Raw TeX in the TeX export"
 msgstr "Direkte Eingabe von TeX-Befehlen"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:273
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:273
 msgid ""
 "If a text cell begins with `TeX:` the TeX export contains the literal text "
 "that follows the `TeX:` marker. Using this feature allows the entry of TeX "
@@ -1063,27 +1160,29 @@ msgstr ""
 "Wenn eine Textzelle mit \"TeX:\" beginnt, wird der Rest ihres Inhalts bei "
 "der Konvertierung des Dokuments nach TeX unverändert ausgegeben."
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:274
-#, no-wrap
-msgid "File Formats"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:275
+#, fuzzy
+#| msgid "File Formats"
+msgid "## File Formats"
 msgstr "Dateiformate"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:277
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:277
 msgid ""
 "The material that is developed in a _wxMaxima_ session can be stored for "
 "later use in any of three ways:"
 msgstr "Das Arbeitsblatt kann auf verschiedene Weisen gespeichert werden:"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:278
-#, no-wrap
-msgid ".mac"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:279
+#, fuzzy
+#| msgid ".mac"
+msgid "### .mac"
 msgstr ".mac"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:281
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:281
 msgid ""
 "`.mac` files are ordinary text files that contain _Maxima_ commands. They "
 "can be read using _Maxima_’s `batch()` or `load()` command or _wxMaxima_’s "
@@ -1094,7 +1193,7 @@ msgstr ""
 "File laden\" gelesen werden."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:284
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:284
 msgid ""
 "One example is shown below. `Quadratic.mac` defines a function and afterward "
 "generates a plot with `wxdraw2d()`.  Afterward the contents of the file "
@@ -1102,18 +1201,18 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:286
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:286
 #, fuzzy
 #| msgid ""
 #| "![Loading a `.mac` file with `batch()`](./BatchImage.png)"
 #| "{ id=img_BatchImage }"
-msgid "![Loading a file with ](./BatchImage.png){ id=img_BatchImage }"
+msgid "![Loading a file with `batch()`](./BatchImage.png){ id=img_BatchImage }"
 msgstr ""
 "![Laden einer `.mac` Datei mit `batch()`](./BatchImage.png)"
 "{ id=img_BatchImage }"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:288
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:288
 msgid ""
 "Attention: Although the file `Quadratic.mac` has a usual _Maxima_ extension "
 "(`.mac`), it can only be read by _wxMaxima_, since the command `wxdraw2d()` "
@@ -1124,7 +1223,7 @@ msgstr ""
 "`wxdraw2d()` ist eine wxMaxima-Erweiterung für _Maxima_."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:290
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:290
 msgid ""
 "You can be use `.mac` files for writing your own library of macros. But "
 "since they don’t contain enough structural information they cannot be read "
@@ -1135,27 +1234,44 @@ msgstr ""
 "Arbeitsblatts, dass sie es erlauben, dieses wieder zu rekonstruieren, "
 "enthalten sie aber nicht."
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:291
-#, no-wrap
-msgid ".wxm"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:292
+#, fuzzy
+#| msgid ".wxm"
+msgid "### .wxm"
 msgstr ".wxm"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:294
-#, no-wrap
-msgid ".wxm files contain the worksheet except for _Maxima_'s output. On Maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format, it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.\n"
-msgstr ".wxm-Dateien sollten das Arbeitsblatt außer _Maxima_'s Ausgabe enthalten. _Maxima_ >5.38 kann `.wxm-Dateien über den `load()`-Befehl lesen (wie `.mac`-Dateien). Worksheets, die neue Features enthalten, sind - wenn sie in diesem "
-"textbasierten Format gespeichert werden, manchmal nicht abwärtskompatibel zu älteren Versionen von _wxMaxima_.\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:294
+#, fuzzy
+#| msgid ""
+#| ".wxm files contain the worksheet except for _Maxima_'s output. On Maxima "
+#| "versions >5.38 they can be read using _Maxima_'s `load()` function just "
+#| "as .mac files can be. With this plain-text format, it sometimes is "
+#| "unavoidable that worksheets that use new features are not downwards-"
+#| "compatible with older versions of _wxMaxima_.\n"
+msgid ""
+".wxm files contain the worksheet except for _Maxima_'s output. On Maxima "
+"versions >5.38 they can be read using _Maxima_'s `load()` function just as ."
+"mac files can be. With this plain-text format, it sometimes is unavoidable "
+"that worksheets that use new features are not downwards-compatible with "
+"older versions of _wxMaxima_."
+msgstr ""
+".wxm-Dateien sollten das Arbeitsblatt außer _Maxima_'s Ausgabe enthalten. "
+"_Maxima_ >5.38 kann `.wxm-Dateien über den `load()`-Befehl lesen (wie `.mac`-"
+"Dateien). Worksheets, die neue Features enthalten, sind - wenn sie in diesem "
+"textbasierten Format gespeichert werden, manchmal nicht abwärtskompatibel zu "
+"älteren Versionen von _wxMaxima_.\n"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:295
-#, no-wrap
-msgid ".wxmx"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:296
+#, fuzzy
+#| msgid ".wxmx"
+msgid "### .wxmx"
 msgstr ".wxmx"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:298
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:298
 msgid ""
 "This XML-based file format saves the complete worksheet including things "
 "like the zoom factor and the watchlist. It is the preferred file format."
@@ -1164,14 +1280,15 @@ msgstr ""
 "Eigenschaften wie den Zoom-Faktor oder die Watchlist. Es ist das empfohlene "
 "Dateiformat für wxMaxima-Arbeitsblätter."
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:299
-#, no-wrap
-msgid "Configuration options"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:300
+#, fuzzy
+#| msgid "Configuration options"
+msgid "## Configuration options"
 msgstr "Auto-Vervollständigung"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:302
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:302
 msgid ""
 "For some common configuration variables _wxMaxima_ offers two ways of "
 "configuring:"
@@ -1179,23 +1296,22 @@ msgstr ""
 "Einige Variablen, über die Maxima konfiguriert wird, können auf zwei Arten "
 "eingestellt werden:"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:305
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:305
+#, fuzzy
+#| msgid ""
+#| "Also, the values for most configuration variables can be changed for the "
+#| "current session only by overwriting their values from the worksheet, as "
+#| "shown below."
 msgid ""
-"The configuration dialog box below lets you change their default values for "
-"the current and subsequent sessions."
-msgstr "Die können global im Konfigurationsdialog eingestellt werden."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:305
-msgid ""
-"Also, the values for most configuration variables can be changed for the "
-"current session only by overwriting their values from the worksheet, as "
-"shown below."
+"- The configuration dialog box below lets you change their default values "
+"for the current and subsequent sessions.  - Also, the values for most "
+"configuration variables can be changed for the current session only by "
+"overwriting their values from the worksheet, as shown below."
 msgstr "Ebenso können sie von Maxima aus überschrieben werden."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:307
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:307
 msgid ""
 "![wxMaxima configuration 1](./wxMaxima_configuration_001.png)"
 "{ id=img_wxMaxima_configuration_001 }"
@@ -1203,14 +1319,15 @@ msgstr ""
 "![wxMaxima Konfiguration 1](./wxMaxima_configuration_001.png)"
 "{ id=img_wxMaxima_configuration_001 }"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:308
-#, no-wrap
-msgid "Default animation framerate"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:309
+#, fuzzy
+#| msgid "Default animation framerate"
+msgid "### Default animation framerate"
 msgstr "Die Standard-Bildwiederholrate bei Animationen"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:311
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:311
 msgid ""
 "The animation framerate that is used for new animations is kept in the "
 "variable `wxanimate_framerate`. The initial value this variable will contain "
@@ -1220,14 +1337,15 @@ msgstr ""
 "`wxanimate_framerate` gespeichert. wxMaxima setzt sie auf den Wert aus dem "
 "Konfigurationsdialog, wenn ein neues _Maxima_ gestartet wird."
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:312
-#, no-wrap
-msgid "Default plot size for new _maxima_ sessions"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:313
+#, fuzzy
+#| msgid "Default plot size for new _maxima_ sessions"
+msgid "### Default plot size for new _maxima_ sessions"
 msgstr "Die Standardgröße der Diagramme bei neuen Maxima Sitzungen"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:315
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:315
 #, fuzzy
 #| msgid ""
 #| "After the next start plots embedded into the worksheet will be created "
@@ -1240,7 +1358,7 @@ msgstr ""
 "eingebauten Diagramme sind."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:317
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:317
 msgid ""
 "In order to set the plot size of a single graph only use the following "
 "notation can be used that sets a variable’s value for one command only:"
@@ -1248,16 +1366,25 @@ msgstr ""
 "Diese Variable kann notfalls auch nur für das aktuelle Diagramm gesetzt "
 "werden:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:318
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:326
+#, fuzzy, no-wrap
+#| msgid ""
+#| "wxdraw2d(\n"
+#| "   explicit(\n"
+#| "       x^2,\n"
+#| "\t   x,-5,5\n"
+#| "   )\n"
+#| "), wxplot_size=[480,480]$\n"
 msgid ""
+"```maxima\n"
 "wxdraw2d(\n"
 "   explicit(\n"
 "       x^2,\n"
 "\t   x,-5,5\n"
 "   )\n"
 "), wxplot_size=[480,480]$\n"
+"```\n"
 msgstr ""
 "wxdraw2d(\n"
 "   explicit(\n"
@@ -1266,43 +1393,42 @@ msgstr ""
 "   )\n"
 "), wxplot_size=[480,480]$\n"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:327
-#, no-wrap
-msgid "Match parenthesis in text controls"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:328
+#, fuzzy
+#| msgid "Match parenthesis in text controls"
+msgid "### Match parenthesis in text controls"
 msgstr "Automatisches Schließen von Klammern"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:330
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:330
 msgid "This option enables two things:"
 msgstr "Diese Option schaltet zwei Funktionen ein:"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:333
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:333
+#, fuzzy
+#| msgid ""
+#| "If an opening parenthesis, bracket, or double quote is entered _wxMaxima_ "
+#| "will insert a closing one after it."
 msgid ""
-"If an opening parenthesis, bracket, or double quote is entered _wxMaxima_ "
-"will insert a closing one after it."
+"- If an opening parenthesis, bracket, or double quote is entered _wxMaxima_ "
+"will insert a closing one after it.  - If text is selected if any of these "
+"keys is pressed the selected text will be put between the matched signs."
 msgstr ""
-"Wenn eine öffnende Klammer, eckige Klammer oder ein Anführungszeichen eingegeben wird, "
-"fügt _wxMaxima_ automatisch das schließende Zeichen danach ein."
+"Wenn eine öffnende Klammer, eckige Klammer oder ein Anführungszeichen "
+"eingegeben wird, fügt _wxMaxima_ automatisch das schließende Zeichen danach "
+"ein."
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:333
-msgid ""
-"If text is selected if any of these keys is pressed the selected text will "
-"be put between the matched signs."
-msgstr ""
-"Markierter Text wird, wenn man eine geöffnete Klammer einzugeben versucht, "
-"automatisch in Klammern gesetzt."
-
-#. type: Title ###
-#: ../../info/wxmaxima.md:334
-#, no-wrap
-msgid "Don't save the worksheet automatically"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:335
+#, fuzzy
+#| msgid "Don't save the worksheet automatically"
+msgid "### Don't save the worksheet automatically"
 msgstr "Arbeitsblatt nicht automatisch speichern"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:337
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:337
 msgid ""
 "If this option is set, the file where the worksheet is will be overwritten "
 "only the request of the user. In case of a crash/power loss/... a recent "
@@ -1313,57 +1439,81 @@ msgstr ""
 "Verzeichnis abgelegt."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:339
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:339
 msgid ""
 "If this option isn't set _wxMaxima_ behaves more like a modern cellphone app:"
 msgstr ""
 "Ist diese Option nicht angewählt, arbeitet _wxMaxima_ wie eine moderne Handy-"
 "Applikation:"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:342
-msgid "Files are saved automatically on exit"
-msgstr "Dateien werden beim Schließen automatisch gespeichert"
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:342
-msgid "And the file will automatically be saved every 3 minutes."
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:342
+#, fuzzy
+#| msgid "And the file will automatically be saved every 3 minutes."
+msgid ""
+"- Files are saved automatically on exit - And the file will automatically be "
+"saved every 3 minutes."
 msgstr "Und die Datei wird automatisch alle 3 Minuten gespeichert."
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:343
-#, no-wrap
-msgid "Where is the configuration saved?"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:344
+#, fuzzy
+#| msgid "Where is the configuration saved?"
+msgid "### Where is the configuration saved?"
 msgstr "Wo wird die Konfiguration gespeichert?"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:347
-#, no-wrap
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:347
+#, fuzzy
+#| msgid ""
+#| "If you are using Unix/Linux, the configuration information will be saved "
+#| "in a file `.wxMaxima` in your home directory (if you are using wxWidgets "
+#| "\\< 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= "
+#| "3.1.1 is used). You can retrieve the wxWidgets version from the command "
+#| "`wxbuild_info();` or by using the menu option Help->About. [wxWidgets]"
+#| "(https://www.wxwidgets.org/) is the cross-platform GUI library, which is "
+#| "the base for _wxMaxima_ (therefore the `wx` in the name).\n"
+#| "(Since the filename starts with a dot, `.wxMaxima` or `.config` will be "
+#| "hidden).\n"
 msgid ""
-"If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your home directory (if you are using wxWidgets \\< 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for _wxMaxima_ (therefore the `wx` in the name).\n"
-"(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).\n"
+"If you are using Unix/Linux, the configuration information will be saved in "
+"a file `.wxMaxima` in your home directory (if you are using wxWidgets \\< "
+"3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is "
+"used). You can retrieve the wxWidgets version from the command "
+"`wxbuild_info();` or by using the menu option Help->About. [wxWidgets]"
+"(https://www.wxwidgets.org/) is the cross-platform GUI library, which is the "
+"base for _wxMaxima_ (therefore the `wx` in the name).  (Since the filename "
+"starts with a dot, `.wxMaxima` or `.config` will be hidden)."
 msgstr ""
-"Auf Linux/Unix-Rechnern wird die Konfiguration im Home-Verzeichnis in der Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/wxMaxima.conf` (XDG-Standard). Die wxWidgets-Version kann über `wxbuild_info()` oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://www.wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich ist.\n"
-"(Da der Dateiname mit einem Punkt beginnt, ist `.wxMaxima` oder `.config` eine versteckte Datei).\n"
+"Auf Linux/Unix-Rechnern wird die Konfiguration im Home-Verzeichnis in der "
+"Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/"
+"wxMaxima.conf` (XDG-Standard). Die wxWidgets-Version kann über "
+"`wxbuild_info()` oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets]"
+"(https://www.wxwidgets.org/) ist eine Bibliothek für graphische "
+"Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für "
+"das `wx` im Namen von wxMaxima verantwortlich ist.\n"
+"(Da der Dateiname mit einem Punkt beginnt, ist `.wxMaxima` oder `.config` "
+"eine versteckte Datei).\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:349
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:349
 msgid ""
 "If you are using Windows, the configuration will be stored in the registry. "
 "You will find the entries for _wxMaxima_ at the following position in the "
 "registry: `HKEY_CURRENT_USER\\Software\\wxMaxima`"
 msgstr ""
-"Unter Windows wird die Konfiguration in der Registry unter "
-"`HKEY_CURRENT_USER\\Software\\wxMaxima` gespeichert."
+"Unter Windows wird die Konfiguration in der Registry unter `HKEY_CURRENT_USER"
+"\\Software\\wxMaxima` gespeichert."
 
-#. type: Title #
-#: ../../info/wxmaxima.md:352
-#, no-wrap
-msgid "Extensions to _Maxima_"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:353
+#, fuzzy
+#| msgid "Extensions to _Maxima_"
+msgid "# Extensions to _Maxima_"
 msgstr "Erweiterungen für _Maxima_"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:355
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:355
 #, fuzzy
 #| msgid ""
 #| "_wxMaxima_ is primarily a graphical user interface for _Maxima_. As such, "
@@ -1386,62 +1536,66 @@ msgstr ""
 "darzustellen. An einigen Stellen fügt es jedoch Funktionalitäten zu _Maxima_ "
 "hinzu:"
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:356
-#, no-wrap
-msgid "Subscripted variables"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:357
+#, fuzzy
+#| msgid "Subscripted variables"
+msgid "## Subscripted variables"
 msgstr "Variablen mit tiefgestelltem Index"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:359
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:359
 msgid ""
 "`wxsubscripts` specifies, if (and how) _wxMaxima_ will autosubscript "
 "variable names:"
 msgstr ""
-"`wxsubscripts` gibt an, wie (und ob) _wxMaxima_ Variablennamen automatisch tiefstellen wird:"
+"`wxsubscripts` gibt an, wie (und ob) _wxMaxima_ Variablennamen automatisch "
+"tiefstellen wird:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:361
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:361
 msgid ""
 "If it is `false`, the functionality is off, wxMaxima will not autosubscript "
 "part of variable names after an underscore."
-msgstr "Falls es `false` gesetzt wird, wird die Funktion deaktiviert, "
-"wxMaxima wird nicht Teile von Variablennamen nach einem Unterstrich tiefstellen."
+msgstr ""
+"Falls es `false` gesetzt wird, wird die Funktion deaktiviert, wxMaxima wird "
+"nicht Teile von Variablennamen nach einem Unterstrich tiefstellen."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:363
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:363
 msgid ""
 "If it is set to `'all`, everything after an underscore will be subscripted."
-msgstr "Falls es auf `'all` gesetzt wird, wird alles nach einem Unterstrich tiefgestellt."
+msgstr ""
+"Falls es auf `'all` gesetzt wird, wird alles nach einem Unterstrich "
+"tiefgestellt."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:365
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:365
 msgid ""
 "If it is set to `true` variable names of the format `x_y` are displayed "
 "using a subscript if"
 msgstr ""
-"Wenn es auf `true` gesetzt ist, werden Variablennamen im Format "
-"`x_y` mit einem tiefgestellten `y` dargestellt, wenn"
+"Wenn es auf `true` gesetzt ist, werden Variablennamen im Format `x_y` mit "
+"einem tiefgestellten `y` dargestellt, wenn"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:368
-msgid "Either `x` or `y` is a single letter or"
-msgstr "Entweder `x` oder `y` ist ein einzelner Buchstabe ist oder"
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:368
-msgid "`y` is an integer (can include more than one character)."
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:368
+#, fuzzy
+#| msgid "`y` is an integer (can include more than one character)."
+msgid ""
+"- Either `x` or `y` is a single letter or - `y` is an integer (can include "
+"more than one character)."
 msgstr "`y` ist eine ganze Zahl (kann mehr als ein Zeichen lang sein) ist."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:370
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:370
 msgid ""
 "![How variables are autosubscripted using wxsubscripts](./wxsubscripts.png)"
 "{ id=img_wxsubscripts }"
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:372
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:372
 #, fuzzy
 #| msgid ""
 #| "If the variable name doesn’t match these requirements it can still be "
@@ -1465,19 +1619,19 @@ msgstr ""
 "`wxdeclare_subscript(variablenname,false);`"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:374
-#, no-wrap
-msgid "You can use the menu \"View->Autosubscript\" to set these values.\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:374
+msgid "You can use the menu \"View->Autosubscript\" to set these values."
 msgstr ""
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:375
-#, no-wrap
-msgid "User feedback in the status bar"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:376
+#, fuzzy
+#| msgid "User feedback in the status bar"
+msgid "## User feedback in the status bar"
 msgstr "Meldungen in der Statusleiste"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:378
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:378
 msgid ""
 "Long-running commands can provide user feedback in the status bar. This user "
 "feedback is replaced by any new feedback that is placed there (allowing to "
@@ -1495,10 +1649,20 @@ msgstr ""
 "sie von Maxima einfach als undefinierte Funktion betrachtet und nicht weiter "
 "bearbeitet."
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:379
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:389
+#, fuzzy, no-wrap
+#| msgid ""
+#| "for i:1 thru 10 do (\n"
+#| "    /* Tell the user how far we got */\n"
+#| "    wxstatusbar(concat(\"Pass \",i)),\n"
+#| "    /* (sleep n) is a Lisp function, which can be used */\n"
+#| "    /* with the character \"?\" before. It delays the */\n"
+#| "    /* program execution (here: for 3 seconds) */\n"
+#| "    ?sleep(3)\n"
+#| ")$\n"
 msgid ""
+"```maxima\n"
 "for i:1 thru 10 do (\n"
 "    /* Tell the user how far we got */\n"
 "    wxstatusbar(concat(\"Pass \",i)),\n"
@@ -1507,6 +1671,7 @@ msgid ""
 "    /* program execution (here: for 3 seconds) */\n"
 "    ?sleep(3)\n"
 ")$\n"
+"```\n"
 msgstr ""
 "    for i:1 thru 10 do (\n"
 "        /* Gib dem User Bescheid, wie weit wir schon sind */\n"
@@ -1518,14 +1683,16 @@ msgstr ""
 "        ?sleep(3)\n"
 "    )$\n"
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:390 ../../info/wxmaxima.md:800
-#, no-wrap
-msgid "Plotting"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:391
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:815
+#, fuzzy
+#| msgid "Plotting"
+msgid "## Plotting"
 msgstr "Diagramme"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:393
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:393
 msgid ""
 "Plotting (having fundamentally to do with graphics) is a place where a "
 "graphical user interface will have to provide some extensions to the "
@@ -1534,14 +1701,15 @@ msgstr ""
 "Diagramme haben per definitionem mit einer graphischen Benutzerumgebung zu "
 "tun, weswegen an dieser Stelle Erweiterungen von Maxima zu erwarten sind."
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:394
-#, no-wrap
-msgid "Embedding a plot into the worksheet"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:395
+#, fuzzy
+#| msgid "Embedding a plot into the worksheet"
+msgid "### Embedding a plot into the worksheet"
 msgstr "Der Einbau von Diagrammen in das Arbeitsblatt"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:397
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:397
 #, fuzzy
 #| msgid ""
 #| "_Maxima_ normally instructs the external program _gnuplot_ to open a "
@@ -1567,12 +1735,12 @@ msgstr ""
 "`histogram`, aber betten das Resultat ein."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:399
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:399
 msgid "The following plotting functions have wx-counterparts:"
 msgstr "Die folgenden Plot-Funktionen haben wx-Äquivalente:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:413
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:413
 #, no-wrap
 msgid ""
 "| wxMaxima's plot function | Maxima's plot function                                                                          |\n"
@@ -1591,20 +1759,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:415
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:415
 msgid ""
 "If a `wxm`-file is read by (console) Maxima, these functions are ignored "
 "(and printed as output, as other unknown functions in Maxima)."
 msgstr ""
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:416
-#, no-wrap
-msgid "Making embedded plots bigger or smaller"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:417
+#, fuzzy
+#| msgid "Making embedded plots bigger or smaller"
+msgid "### Making embedded plots bigger or smaller"
 msgstr "Eingebettete Diagramme größer oder kleiner machen"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:419
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:419
 #, fuzzy
 #| msgid ""
 #| "As noted above, the configure dialog provides a way to change the default "
@@ -1623,10 +1792,19 @@ msgstr ""
 "`wxplot_size` definiert werden. Ihr Inhalt kann jederzeit gelesen oder "
 "geändert werden:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:420
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:429
+#, fuzzy, no-wrap
+#| msgid ""
+#| "wxplot_size:[1200,800]$\n"
+#| "wxdraw2d(\n"
+#| "    explicit(\n"
+#| "        sin(x),\n"
+#| "        x,1,10\n"
+#| "    )\n"
+#| ")$\n"
 msgid ""
+"```maxima\n"
 "wxplot_size:[1200,800]$\n"
 "wxdraw2d(\n"
 "    explicit(\n"
@@ -1634,6 +1812,7 @@ msgid ""
 "        x,1,10\n"
 "    )\n"
 ")$\n"
+"```\n"
 msgstr ""
 "    wxplot_size:[1200,800]$\n"
 "    wxdraw2d(\n"
@@ -1644,7 +1823,7 @@ msgstr ""
 "    )$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:431
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:431
 msgid ""
 "If the size of only one plot is to be changed _Maxima_ provides a canonical "
 "way to change an attribute only for the current cell. In this usage the "
@@ -1656,16 +1835,25 @@ msgstr ""
 "`wxplot_size = [wert1, wert2]` an den `wxdraw2d( )` Befehl angehängt, es ist "
 "nicht Teil des `wxdraw2d` Befehls."
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:432
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:440
+#, fuzzy, no-wrap
+#| msgid ""
+#| "wxdraw2d(\n"
+#| "    explicit(\n"
+#| "        sin(x),\n"
+#| "        x,1,10\n"
+#| "    )\n"
+#| "),wxplot_size=[1600,800]$\n"
 msgid ""
+"```maxima\n"
 "wxdraw2d(\n"
 "    explicit(\n"
 "        sin(x),\n"
 "        x,1,10\n"
 "    )\n"
 "),wxplot_size=[1600,800]$\n"
+"```\n"
 msgstr ""
 "    wxdraw2d(\n"
 "        explicit(\n"
@@ -1675,7 +1863,7 @@ msgstr ""
 "    ),wxplot_size=[1600,800]$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:442
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:442
 msgid ""
 "Setting the size of embedded plot with `wxplot_size` works for embedded "
 "plots using e.g. `wxplot`, `wxdraw`, `wxcontour_plot` and `wximplicit_plot` "
@@ -1683,14 +1871,15 @@ msgid ""
 "commands."
 msgstr ""
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:443
-#, no-wrap
-msgid "Better quality plots"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:444
+#, fuzzy
+#| msgid "Better quality plots"
+msgid "### Better quality plots"
 msgstr "Hochqualitativere Diagramme"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:446
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:446
 #, fuzzy
 #| msgid ""
 #| "_Gnuplot_ doesn’t seem to provide a portable way of determining whether "
@@ -1717,14 +1906,15 @@ msgstr ""
 "ein. Wurde Gnuplot ohne Cairo-Unterstützung compiliert, führt "
 "`wxplot_pngcairo:true` jedoch zu Fehlermeldungen anstelle von Plots."
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:447
-#, no-wrap
-msgid "Opening embedded plots in interactive _gnuplot_ windows"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:448
+#, fuzzy
+#| msgid "Opening embedded plots in interactive _gnuplot_ windows"
+msgid "### Opening embedded plots in interactive _gnuplot_ windows"
 msgstr "Öffnen eingebetteter Diagramme in interaktiven _gnuplot_ Fenstern"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:450
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:450
 msgid ""
 "If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and "
 "`wxplot3d` isn't supported by this feature) and the file size of the "
@@ -1736,14 +1926,15 @@ msgstr ""
 "Datei nicht allzu lang ist, bietet _wxMaxima_ einen Rechts-Klick-Menüpunkt "
 "an, der das Diagramm in einem interaktiven Gnuplot-Fenster öffnet."
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:451
-#, no-wrap
-msgid "Opening gnuplot's command console in `plot` windows"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:452
+#, fuzzy
+#| msgid "Opening gnuplot's command console in `plot` windows"
+msgid "### Opening gnuplot's command console in `plot` windows"
 msgstr "Öffnen der Gnuplot Kommandozeile in `plot` Fenstern"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:454
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:454
 msgid ""
 "On MS Windows, if in _Maxima_'s variable `gnuplot_command` \"gnuplot\" is "
 "replaced by \"wgnuplot\", _gnuplot_ offers the possibility to open a console "
@@ -1756,14 +1947,15 @@ msgstr ""
 "Mal, wenn ein Diagramm gezeichnet wird, den Tastaturfokus für kurze Zeit "
 "(die Zeichen, die währenddessen eingegeben werden, verschwinden)."
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:455
-#, no-wrap
-msgid "Embedding animations into the spreadsheet"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:456
+#, fuzzy
+#| msgid "Embedding animations into the spreadsheet"
+msgid "### Embedding animations into the spreadsheet"
 msgstr "Einbetten von Animationen in das Arbeitsblatt"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:458
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:458
 #, fuzzy
 #| msgid ""
 #| "3D diagrams tend to make it hard to read quantitative data. A viable "
@@ -1787,7 +1979,7 @@ msgstr ""
 "Datei exportieren."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:460
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:460
 msgid ""
 "The first two arguments for `with_slider_draw` are the name of the variable "
 "that is stepped between the plots and a list of the values of these "
@@ -1799,10 +1991,20 @@ msgstr ""
 "annehmen soll. Darauf folgen die ganz normalen Argumente, die `wxdraw2d` "
 "akzeptiert:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:461
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:471
+#, fuzzy, no-wrap
+#| msgid ""
+#| "with_slider_draw(\n"
+#| "    f,[1,2,3,4,5,6,7,10],\n"
+#| "    title=concat(\"f=\",f,\"Hz\"),\n"
+#| "    explicit(\n"
+#| "        sin(2*%pi*f*x),\n"
+#| "        x,0,1\n"
+#| "    ),grid=true\n"
+#| ");\n"
 msgid ""
+"```maxima\n"
 "with_slider_draw(\n"
 "    f,[1,2,3,4,5,6,7,10],\n"
 "    title=concat(\"f=\",f,\"Hz\"),\n"
@@ -1811,6 +2013,7 @@ msgid ""
 "        x,0,1\n"
 "    ),grid=true\n"
 ");\n"
+"```\n"
 msgstr ""
 "with_slider_draw(\n"
 "    f,[1,2,3,4,5,6,7,10],\n"
@@ -1822,7 +2025,7 @@ msgstr ""
 ");\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:473
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:473
 msgid ""
 "The same functionality for 3D plots is accessible as `with_slider_draw3d`, "
 "which allows for rotating 3d plots:"
@@ -1830,10 +2033,26 @@ msgstr ""
 "Für 3D-Diagramme ist dieselbe Funktionalität als `with_slider_draw3d` "
 "verfügbar, die auch rotierende 3D-Diagramme erstellen kann:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:474
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:490
+#, fuzzy, no-wrap
+#| msgid ""
+#| "wxanimate_autoplay:true;\n"
+#| "wxanimate_framerate:20;\n"
+#| "with_slider_draw3d(\n"
+#| "    α,makelist(i,i,1,360,3),\n"
+#| "    title=sconcat(\"α=\",α),\n"
+#| "    surface_hide=true,\n"
+#| "    contour=both,\n"
+#| "    view=[60,α],\n"
+#| "    explicit(\n"
+#| "        sin(x)*sin(y),\n"
+#| "        x,-π,π,\n"
+#| "        y,-π,π\n"
+#| "    )\n"
+#| ")$\n"
 msgid ""
+"```maxima\n"
 "wxanimate_autoplay:true;\n"
 "wxanimate_framerate:20;\n"
 "with_slider_draw3d(\n"
@@ -1848,6 +2067,7 @@ msgid ""
 "        y,-π,π\n"
 "    )\n"
 ")$\n"
+"```\n"
 msgstr ""
 "wxanimate_autoplay:true;\n"
 "wxanimate_framerate:20;\n"
@@ -1865,7 +2085,7 @@ msgstr ""
 ")$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:492
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:492
 msgid ""
 "If the general shape of the plot is what matters it might suffice to move "
 "the plot just a little bit in order to make its 3D nature available to the "
@@ -1874,8 +2094,8 @@ msgstr ""
 "Wenn es nur um die generelle Form der Kurve geht, reicht es oft, das Bild "
 "ein wenig zu bewegen, so, dass es von der Intuition erfasst werden kann:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:493
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:509
 #, fuzzy, no-wrap
 #| msgid ""
 #| "wxanimate_autoplay:true;\n"
@@ -1893,6 +2113,7 @@ msgstr ""
 #| "    )\n"
 #| ")$\n"
 msgid ""
+"```maxima\n"
 "wxanimate_autoplay:true;\n"
 "wxanimate_framerate:20;\n"
 "with_slider_draw3d(\n"
@@ -1907,6 +2128,7 @@ msgid ""
 "        y,-2*π,2*π\n"
 "    )\n"
 ")$\n"
+"```\n"
 msgstr ""
 "wxanimate_autoplay:true;\n"
 "wxanimate_framerate:20;\n"
@@ -1924,7 +2146,7 @@ msgstr ""
 ")$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:511
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:511
 #, fuzzy
 #| msgid ""
 #| "For those more familiar with `plot` than with `draw` there is a second "
@@ -1936,18 +2158,15 @@ msgstr ""
 "Wer `plot` `draw` vorzieht, dem steht ein zweiter Satz an Funktionen zur "
 "Verfügung:"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:514
-msgid "`with_slider` and"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:514
+#, fuzzy
+#| msgid "`with_slider` and"
+msgid "- `with_slider` and - `wxanimate`."
 msgstr "`with_slider` und"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:514
-msgid "`wxanimate`."
-msgstr "`wxanimate`."
-
 #. type: Plain text
-#: ../../info/wxmaxima.md:516
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:516
 #, fuzzy
 #| msgid ""
 #| "Normally the animations are played back or exported with the frame rate "
@@ -1962,18 +2181,23 @@ msgstr ""
 "von _wxMaxima_ eingestellt werden. Um die Geschwindigkeit einer einzelnen "
 "Animation zu ändern, kann die Variable `wxanimate_framerate` geändert werden:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:517
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:521
+#, fuzzy, no-wrap
+#| msgid ""
+#| "wxanimate(a, 10,\n"
+#| "    sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
 msgid ""
+"```maxima\n"
 "wxanimate(a, 10,\n"
 "    sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
+"```\n"
 msgstr ""
 "    wxanimate(a, 10,\n"
 "        sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:523
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:523
 #, fuzzy
 #| msgid ""
 #| "The animation functions use _Maxima_'s `makelist` command and therefore "
@@ -1991,10 +2215,19 @@ msgstr ""
 "wird nur eingesetzt, wenn die Variable direkt sichtbar ist. Das folgende "
 "Beispiel scheitert daher:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:524
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:533
+#, fuzzy, no-wrap
+#| msgid ""
+#| "f:sin(a*x);\n"
+#| "with_slider_draw(\n"
+#| "    a,makelist(i/2,i,1,10),\n"
+#| "    title=concat(\"a=\",float(a)),\n"
+#| "    grid=true,\n"
+#| "    explicit(f,x,0,10)\n"
+#| ")$\n"
 msgid ""
+"```maxima\n"
 "f:sin(a*x);\n"
 "with_slider_draw(\n"
 "    a,makelist(i/2,i,1,10),\n"
@@ -2002,6 +2235,7 @@ msgid ""
 "    grid=true,\n"
 "    explicit(f,x,0,10)\n"
 ")$\n"
+"```\n"
 msgstr ""
 "f:sin(a*x);\n"
 "with_slider_draw(\n"
@@ -2012,7 +2246,7 @@ msgstr ""
 ")$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:535
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:535
 msgid ""
 "If _Maxima_ is explicitly asked to substitute the slider’s value plotting "
 "works fine instead:"
@@ -2020,10 +2254,22 @@ msgstr ""
 "Wenn _Maxima_ explizit gebeten wird, den Wert einzusetzen, funktioniert der "
 "Befehl stattdessen:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:536
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:548
+#, fuzzy, no-wrap
+#| msgid ""
+#| "f:sin(a*x);\n"
+#| "with_slider_draw(\n"
+#| "    b,makelist(i/2,i,1,10),\n"
+#| "    title=concat(\"a=\",float(b)),\n"
+#| "    grid=true,\n"
+#| "    explicit(\n"
+#| "        subst(a=b,f),\n"
+#| "        x,0,10\n"
+#| "    )\n"
+#| ")$\n"
 msgid ""
+"```maxima\n"
 "f:sin(a*x);\n"
 "with_slider_draw(\n"
 "    b,makelist(i/2,i,1,10),\n"
@@ -2034,6 +2280,7 @@ msgid ""
 "        x,0,10\n"
 "    )\n"
 ")$\n"
+"```\n"
 msgstr ""
 "f:sin(a*x);\n"
 "with_slider_draw(\n"
@@ -2046,14 +2293,15 @@ msgstr ""
 "    )\n"
 ")$\n"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:549
-#, no-wrap
-msgid "Opening multiple plots in contemporaneous windows"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:550
+#, fuzzy
+#| msgid "Opening multiple plots in contemporaneous windows"
+msgid "### Opening multiple plots in contemporaneous windows"
 msgstr "Mehrere Diagramme gleichzeitig in Fenstern öffnen"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:552
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:552
 #, fuzzy
 #| msgid ""
 #| "While not being a provided by _wxMaxima_ this feature of _Maxima_ (on "
@@ -2067,52 +2315,65 @@ msgstr ""
 "Strenggenommen kein Feature von _wxMaxima_. Aber Maxima erlaubt auf vielen "
 "Systemen das folgende Beispiel von Mario Rodriguez auszuführen:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:553
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:555
+#, fuzzy, no-wrap
+#| msgid "    load(draw);\n"
+msgid ""
+"```maxima\n"
+"    load(draw);\n"
+msgstr "    load(draw);\n"
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:558
 #, fuzzy, no-wrap
 #| msgid ""
-#| "    load(draw);\n"
-#| "    \n"
 #| "    /* Parabola in window #1 */\n"
 #| "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-#| "    \n"
+msgid ""
+"    /* Parabola in window #1 */\n"
+"    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+msgstr ""
+"    /* Eine Parabel in Fenster #1 */\n"
+"    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:561
+#, fuzzy, no-wrap
+#| msgid ""
 #| "    /* Parabola in window #2 */\n"
 #| "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-#| "    \n"
+msgid ""
+"    /* Parabola in window #2 */\n"
+"    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+msgstr ""
+"    /* Eine Parabel in Fenster #2 */\n"
+"    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:565
+#, fuzzy, no-wrap
+#| msgid ""
 #| "    /* Paraboloid in window #3 */\n"
 #| "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 msgid ""
-"    load(draw);\n"
-"\n"
-"    /* Parabola in window #1 */\n"
-"    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-"\n"
-"    /* Parabola in window #2 */\n"
-"    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-"\n"
 "    /* Paraboloid in window #3 */\n"
 "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+"```\n"
 msgstr ""
-"    load(draw);\n"
-"    \n"
-"    /* Parabel in Fenster #1 */\n"
-"    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-"    \n"
-"    /* Parabel in Fenster #2 */\n"
-"    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-"    \n"
-"    /* Paraboloid in Fenster #3 */\n"
+"    /* Ein Paraboloid in Fenster #3 */\n"
 "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:567
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:567
 msgid "Plotting multiple plots in the same window is possible, too:"
 msgstr "Mehrere Diagramme im gleichen Fenster plotten ist auch möglich:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:568
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:578
 #, no-wrap
 msgid ""
+"```maxima\n"
 "\twxdraw(\n"
 "\t\tgr2d(\n"
 "\t    \tkey=\"sin (x)\",grid=[2,2],\n"
@@ -2121,16 +2382,18 @@ msgid ""
 "\t   \tkey=\"cos (x)\",grid=[2,2],\n"
 "\t   \texplicit(cos(x),x,0,2*%pi))\n"
 "\t );\n"
+"```\n"
 msgstr ""
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:579
-#, no-wrap
-msgid "The \"Plot using draw\" side pane"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:580
+#, fuzzy
+#| msgid "The \"Plot using draw\" side pane"
+msgid "### The \"Plot using draw\" side pane"
 msgstr "Die \"Plotte mittels Draw\"-Seitenleiste"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:582
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:582
 #, fuzzy
 #| msgid ""
 #| "The \"Plot using draw\" sidebar hides a simple code generator that allows "
@@ -2145,14 +2408,13 @@ msgstr ""
 "erlaubt, einen Teil der Flexibilität des _draw_-Pakets von _Maxima_ zu "
 "nutzen."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:583
-#, no-wrap
-msgid "2D"
-msgstr "2D"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:584
+msgid "#### 2D"
+msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:586
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:586
 msgid ""
 "Generates the skeleton of a `draw()` command that draws a 2D scene. This "
 "scene later has to be filled with commands that generate the scene's "
@@ -2163,7 +2425,7 @@ msgstr ""
 "Seitenleiste mit einer 2D-Szene gefüllt werden kann."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:588
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:588
 #, fuzzy
 #| msgid ""
 #| "One helpful feature of the 2D button is that it allows to setup the scene "
@@ -2180,14 +2442,13 @@ msgstr ""
 "werden soll: Ein sich bewegendes flaches Diagramm ist einfacher abzulesen, "
 "als ein räumliches Solches."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:589
-#, no-wrap
-msgid "3D"
-msgstr "3D"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:590
+msgid "#### 3D"
+msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:592
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:592
 #, fuzzy
 #| msgid ""
 #| "Generates the skeleton of a `draw()` command that draws a 3D scene. If "
@@ -2199,14 +2460,15 @@ msgid ""
 "scene that contains the command the button generates."
 msgstr "Wie \"2D\", aber für dreidimensionale Diagramme."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:593
-#, no-wrap
-msgid "Expression"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:594
+#, fuzzy
+#| msgid "Expression"
+msgid "#### Expression"
 msgstr "Ausdruck"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:596
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:596
 msgid ""
 "Appends a standard plot of an expression like `sin(x)`, `x*sin(x)` or "
 "`x^2+2*x-4` to the `draw()` command the cursor currently is in. If there is "
@@ -2218,14 +2480,15 @@ msgstr ""
 "automatisch eine 2D-Szene erzeugt. Jede Szene kann beliebig viele Plots "
 "beinhalten."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:597
-#, no-wrap
-msgid "Implicit plot"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:598
+#, fuzzy
+#| msgid "Implicit plot"
+msgid "#### Implicit plot"
 msgstr "Impliziter Plot"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:600
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:600
 msgid ""
 "Tries to find all points an expression like `y=sin(x)`, `y*sin(x)=3` or "
 "`x^2+y^2=4` is true at and plots the resulting curve in the `draw()` command "
@@ -2236,14 +2499,15 @@ msgstr ""
 "oder `x^2+y^2=4` erfüllt ist und zeichnet diese Kurve in das aktuelle "
 "Diagramm ein. Gibt es kein aktuelles Diagramm, wird ein 2D-Diagramm erzeugt."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:601
-#, no-wrap
-msgid "Parametric plot"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:602
+#, fuzzy
+#| msgid "Parametric plot"
+msgid "#### Parametric plot"
 msgstr "Parametrische Plots"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:604
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:604
 msgid ""
 "Steps a variable from a lower limit to an upper limit and uses two "
 "expressions like `t*sin(t)` and `t*cos(t)` for generating the x, y (and in "
@@ -2254,14 +2518,15 @@ msgstr ""
 "getrennte Ausdrücke wie `t*sin(t)` und `t*cos(t)`, um die x-, die y- (und in "
 "3D-Diagrammen auch die z-) Koordinaten zu generieren."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:605
-#, no-wrap
-msgid "Points"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:606
+#, fuzzy
+#| msgid "Points"
+msgid "#### Points"
 msgstr "Punkte"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:608
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:608
 msgid ""
 "Draws many points that can optionally be joined. The coordinates of the "
 "points are taken from a list of lists, a 2D array or one list or array for "
@@ -2272,36 +2537,39 @@ msgstr ""
 "dimensionalen Array oder einer Liste oder einem Array pro Achse entnommen "
 "werden."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:609
-#, no-wrap
-msgid "Diagram title"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:610
+#, fuzzy
+#| msgid "Diagram title"
+msgid "#### Diagram title"
 msgstr "Diagrammtitel"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:612
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:612
 msgid "Draws a title on the upper end of the diagram,"
 msgstr "Bestimmt den Titel des Diagramms."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:613
-#, no-wrap
-msgid "Axis"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:614
+#, fuzzy
+#| msgid "Axis"
+msgid "#### Axis"
 msgstr "Achsen"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:616
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:616
 msgid "Sets up the axis."
 msgstr "Die Einstellungen für die Achsen."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:617
-#, no-wrap
-msgid "Contour"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:618
+#, fuzzy
+#| msgid "Contour"
+msgid "#### Contour"
 msgstr "Höhenlinien"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:620
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:620
 #, fuzzy
 #| msgid ""
 #| "(Only for 3D plots): Adds contour lines similar to the ones one can find "
@@ -2320,14 +2588,15 @@ msgstr ""
 "Oberfläche, dem Boden des Diagramms oder auf Beiden. Kann optional auch nur "
 "die Höhenlinien in der Ansicht von Oben zeichnen."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:621
-#, no-wrap
-msgid "Plot name"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:622
+#, fuzzy
+#| msgid "Plot name"
+msgid "#### Plot name"
 msgstr "Name der Kurve"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:624
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:624
 msgid ""
 "Adds a legend entry showing the next plot's name to the legend of the "
 "diagram. An empty name disables generating legend entries for the following "
@@ -2337,28 +2606,30 @@ msgstr ""
 "leerer Name bedeutet, dass die nun folgenden Objekte keinen eigenen Eintrag "
 "erhalten."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:625
-#, no-wrap
-msgid "Line colour"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:626
+#, fuzzy
+#| msgid "Line colour"
+msgid "#### Line colour"
 msgstr "Linienfarbe"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:628
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:628
 msgid ""
 "Sets the line colour for the following plots the current draw command "
 "contains."
 msgstr ""
 "Setzt die Linienfarbe für die nun folgenden Plots des aktuellen draw-Befehls."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:629
-#, no-wrap
-msgid "Fill colour"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:630
+#, fuzzy
+#| msgid "Fill colour"
+msgid "#### Fill colour"
 msgstr "Füllfarbe"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:632
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:632
 msgid ""
 "Sets the fill colour for the following plots the current draw command "
 "contains."
@@ -2366,25 +2637,27 @@ msgstr ""
 "Setzt die Füllfarbe für die nun folgenden Objekte des aktuellen `draw`-"
 "Kommandos."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:633
-#, no-wrap
-msgid "Grid"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:634
+#, fuzzy
+#| msgid "Grid"
+msgid "#### Grid"
 msgstr "Gitter"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:636
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:636
 msgid "Pops up a wizard that allows to set up grid lines."
 msgstr "Ein Assistent, der die Gitterlinien einzustellen hilft."
 
-#. type: Title ####
-#: ../../info/wxmaxima.md:637
-#, no-wrap
-msgid "Accuracy"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:638
+#, fuzzy
+#| msgid "Accuracy"
+msgid "#### Accuracy"
 msgstr "Genauigkeit"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:640
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:640
 msgid ""
 "Allows to select an adequate point in the speed vs. accuracy tradeoff that "
 "is part of any plot program."
@@ -2392,14 +2665,15 @@ msgstr ""
 "Erlaubt das Wählen zwischen Geschwindigkeit und Genauigkeit bei der "
 "Erstellung der folgenden Kurven."
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:641
-#, no-wrap
-msgid "Embedding graphics"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:642
+#, fuzzy
+#| msgid "Embedding graphics"
+msgid "## Embedding graphics"
 msgstr "Einbetten von Bildern"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:644
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:644
 msgid ""
 "If the `.wxmx` file format is being used embedding files in a _wxMaxima_ "
 "project can be done as easily as per drag-and-drop. But sometimes (for "
@@ -2410,21 +2684,23 @@ msgstr ""
 "Manchmal (z.B. wenn die Bildinhalte sich später während einer Sitzung ändern "
 "könnten) ist es besser, die Bilddatei während der Auswertung zu laden:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:645
-#, no-wrap
-msgid "show_image(\"man.png\");\n"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:648
+#, fuzzy
+#| msgid "show_image(\"man.png\");\n"
+msgid "```maxima show_image(\"man.png\"); ```"
 msgstr "show_image(\"Mensch.png\");\n"
 
 # ## Startbefehle
-#. type: Title ##
-#: ../../info/wxmaxima.md:649
-#, no-wrap
-msgid "Startup files"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:650
+#, fuzzy
+#| msgid "Startup files"
+msgid "## Startup files"
 msgstr "Startbefehle"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:652
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:652
 msgid ""
 "The config dialogue of _wxMaxima_ offers to edit two files with commands "
 "that are executed on startup:"
@@ -2432,26 +2708,22 @@ msgstr ""
 "Der Konfigurationsdialog von _wxMaxima_ bietet an, zwei Dateien mit _Maxima_-"
 "Befehlen zu bearbeiten:"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:655
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:655
+#, fuzzy
+#| msgid ""
+#| "one file of additional commands that are executed if _wxMaxima_ is "
+#| "starting _Maxima_: `wxmaxima-init.mac`"
 msgid ""
-"A file that contains commands that are executed on starting up _Maxima_: "
-"`maxima-init.mac`"
-msgstr ""
-"Eine Datei mit Befehlen, die _Maxima_ beim Hochfahren ausführt: `maxima-init."
-"mac`"
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:655
-msgid ""
-"one file of additional commands that are executed if _wxMaxima_ is starting "
-"_Maxima_: `wxmaxima-init.mac`"
+"- A file that contains commands that are executed on starting up _Maxima_: "
+"`maxima-init.mac` - one file of additional commands that are executed if "
+"_wxMaxima_ is starting _Maxima_: `wxmaxima-init.mac`"
 msgstr ""
 "Eine Datei mit zusätzlichen Kommandos, die ausgeführt werden, wenn _Maxima_ "
 "von _wxMaxima_ gestartet wird: `wxmaxima-init.mac`"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:657
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:657
 msgid ""
 "These files are in the Maxima user directory (usually `maxima` in Windows, `."
 "maxima` otherwise) in the user's home directory / user profile directory. "
@@ -2461,106 +2733,46 @@ msgstr ""
 "Ordner `.maxima` im Home-Verzeichnis. Der genaue Ort kann über das Kommando "
 "`maxima_userdir;` ermittelt werden."
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:658
-#, no-wrap
-msgid "Special variables wx..."
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:659
+#, fuzzy
+#| msgid "Special variables wx..."
+msgid "## Special variables wx..."
 msgstr "Spezielle Variablen, die wxMaxima definiert"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:670
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:670
 msgid ""
-"`wxsubscripts` tells _Maxima_ if it should convert variable names that "
+"- `wxsubscripts` tells _Maxima_ if it should convert variable names that "
 "contain an underscore (`R_150` or the like) into subscripted variables. See "
 "`wxdeclare_subscript` for details which variable names are automatically "
-"converted."
-msgstr ""
-"`wxsubscripts` informiert _Maxima_, welche Variablen mit Unterstrich (z.B. "
-"`R_150`) in Variablen mit Subscript konvertieren soll. Details werden unter "
-"`wxdeclare_subscript` beschrieben."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:670
-msgid ""
-"`wxfilename`: This variable contains the name of the file currently opened "
-"in _wxMaxima_."
-msgstr ""
-"`wxfilename`: Diese Variable sagt, welchen Dateinamen das Arbeitsblatt laut "
-"_wxMaxima_ besitzt."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:670
-msgid ""
-"`wxdirname`: This variable contains the name the directory, in which the "
-"file currently opened in _wxMaxima_ is."
-msgstr ""
-"`wxdirname`: Diese Variable enthält den Namen des Verzeichnisses, in welchem "
-"die aktuelle Datei geöffnet wurde."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:670
-msgid ""
+"converted.  - `wxfilename`: This variable contains the name of the file "
+"currently opened in _wxMaxima_.  - `wxdirname`: This variable contains the "
+"name the directory, in which the file currently opened in _wxMaxima_ is.  - "
 "`wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo "
 "terminal that provides more line styles and a better overall graphics "
-"quality."
-msgstr ""
-"`wxplot_pngcairo` sagt Maxima, ob es versuchen soll, gnuplot zu instruieren, "
-"pngcairo zu nutzen, um hochqualitative Bilder zu nutzen."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:670
-msgid "`wxplot_size` defines the resolution of embedded plots."
-msgstr "`wxplot_size` legt die Größe eingebetteter Diagramme fest."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:670
-msgid ""
+"quality.  - `wxplot_size` defines the resolution of embedded plots.  - "
 "`wxchangedir`: On most operating systems _wxMaxima_ automatically sets "
 "_Maxima_’s working directory to the directory of the current file. This "
 "allows file I/O (e.g. by `read_matrix`) to work without specifying the whole "
 "path to the file that has to be read or written. On Windows this feature "
 "sometimes causes error messages and therefore can be set to `false` from the "
-"config dialogue."
-msgstr ""
-"`wxchangedir`: Normalerweise setzt _wxMaxima_ _Maxima_'s Arbeitsverzeichnis "
-"auf dasjenige, in dem sich das Arbeitsblatt befindet. Dies ist praktisch, "
-"wenn Maxima auf Dateien zugreifen soll (z.B. via `read_matrix`). Unter "
-"Windows geht dieses Feature manchmal schief und kann daher auf `false` "
-"gesetzt werden."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:670
-msgid ""
-"`wxanimate_framerate`: The number of frames per second the following "
-"animations have to be played back with."
-msgstr ""
-"`wxanimate_framerate`: Die Geschwindigkeit, mit der Animationen abgespielt "
-"werden sollen."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:670
-msgid "`wxanimate_autoplay`: Automatically play animations by default?"
-msgstr ""
-"`wxanimate_autoplay`: Sollen Animationen automatisch abgespielt werden?"
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:670
-msgid "`wxmaximaversion`: Returns the version number of _wxMaxima_."
+"config dialogue.  - `wxanimate_framerate`: The number of frames per second "
+"the following animations have to be played back with.  - "
+"`wxanimate_autoplay`: Automatically play animations by default? - "
+"`wxmaximaversion`: Returns the version number of _wxMaxima_.  - "
+"`wxwidgetsversion`: Returns the wxWidgets version _wxMaxima_ is using."
 msgstr ""
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:670
-msgid "`wxwidgetsversion`: Returns the wxWidgets version _wxMaxima_ is using."
-msgstr ""
-
-#. type: Title ##
-#: ../../info/wxmaxima.md:671
-#, no-wrap
-msgid "Pretty-printing 2D output"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:672
+#, fuzzy
+#| msgid "Pretty-printing 2D output"
+msgid "## Pretty-printing 2D output"
 msgstr "2D-Tabellen sauber ausgeben"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:674
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:674
 msgid ""
 "The function `table_form()` displays a 2D list in a form that is more "
 "readable than the output from _Maxima_’s default output routine. The input "
@@ -2575,16 +2787,25 @@ msgstr ""
 "abschließende `done` kann durch Verwendung eines `$` anstelle eines `;` "
 "unterdrückt werden."
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:675
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:683
+#, fuzzy, no-wrap
+#| msgid ""
+#| "table_form(\n"
+#| "    [\n"
+#| "        [1,2],\n"
+#| "        [3,4]\n"
+#| "    ]\n"
+#| ")$\n"
 msgid ""
+"```maxima\n"
 "table_form(\n"
 "    [\n"
 "        [1,2],\n"
 "        [3,4]\n"
 "    ]\n"
 ")$\n"
+"```\n"
 msgstr ""
 "    table_form(\n"
 "        [\n"
@@ -2594,7 +2815,7 @@ msgstr ""
 "    )$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:685
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:685
 msgid ""
 "As the next example shows, the lists that are assembled by the `table_form` "
 "command can be created before the command is executed."
@@ -2603,7 +2824,7 @@ msgstr ""
 "Tabelle."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:687
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:687
 msgid ""
 "![A third table example](./MatrixTableExample.png)"
 "{ id=img_MatrixTableExample }"
@@ -2612,7 +2833,7 @@ msgstr ""
 "{ id=img_MatrixTableExample }"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:689
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:689
 msgid ""
 "Also, because a matrix is a list of lists, matrices can be converted to "
 "tables in a similar fashion."
@@ -2621,20 +2842,21 @@ msgstr ""
 "verwandelt werden."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:691
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:691
 msgid ""
 "![Another table_form example](./SecondTableExample.png)"
 "{ id=img_SecondTableExample }"
 msgstr "![Ein anderes table_form Beispiel](./SecondTableExample.png)"
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:692
-#, no-wrap
-msgid "Bug reporting"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:693
+#, fuzzy
+#| msgid "Bug reporting"
+msgid "## Bug reporting"
 msgstr "Fehler melden"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:695
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:695
 #, fuzzy
 #| msgid ""
 #| "_wxMaxima_ provides a few functions that gather bug reporting information "
@@ -2644,28 +2866,28 @@ msgid ""
 "about the current system:"
 msgstr "_wxMaxima_ bietet einige Funktionen für das Melden von Fehlern an:"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:698
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:698
+#, fuzzy
+#| msgid ""
+#| "`wxbuild_info()` gathers information about the currently running version "
+#| "of _wxMaxima_"
 msgid ""
-"`wxbuild_info()` gathers information about the currently running version of "
-"_wxMaxima_"
+"- `wxbuild_info()` gathers information about the currently running version "
+"of _wxMaxima_ - `wxbug_report()` tells how and where to file bugs"
 msgstr ""
 "`wxbuild_info()` sammelt Informationen über die derzeit ausgeführte Version "
 "von _wxMaxima_"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:698
-msgid "`wxbug_report()` tells how and where to file bugs"
-msgstr "`wxbug_report()` sagt, wo und wie Fehler gemeldet werden können"
-
-#. type: Title ##
-#: ../../info/wxmaxima.md:699
-#, no-wrap
-msgid "Marking output being drawn in red"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:700
+#, fuzzy
+#| msgid "Marking output being drawn in red"
+msgid "## Marking output being drawn in red"
 msgstr "Rotes Markieren von Formelteilen"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:703
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:703
 #, fuzzy
 #| msgid ""
 #| "_Maxima_'s `box()` command causes _wxMaxima_ to print its argument with a "
@@ -2676,20 +2898,22 @@ msgid ""
 "`highlight`."
 msgstr "Der `box()`-Befehl stellt sein Argument in _wxMaxima_ rot dar."
 
-#. type: Title #
-#: ../../info/wxmaxima.md:706
-#, no-wrap
-msgid "Troubleshooting"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:707
+#, fuzzy
+#| msgid "Troubleshooting"
+msgid "# Troubleshooting"
 msgstr "Fehlersuche"
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:708
-#, no-wrap
-msgid "Cannot connect to _Maxima_"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:709
+#, fuzzy
+#| msgid "Cannot connect to _Maxima_"
+msgid "## Cannot connect to _Maxima_"
 msgstr "Keine Verbindung zu _Maxima_ möglich"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:711
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:711
 #, fuzzy
 #| msgid ""
 #| "Since _Maxima_ (the program that does the actual mathematics) and "
@@ -2725,7 +2949,7 @@ msgstr ""
 "unter Namen wie sbcl, gcl, ccl, lisp.exe oder ähnlichen firmiert."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:713
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:713
 #, fuzzy
 #| msgid ""
 #| "On Un\\*x computers another possible reason would be that the loopback "
@@ -2739,14 +2963,15 @@ msgstr ""
 "Auf Unix/Linux-Rechnern kann ein weiterer Grund sein, dass das \"loopback\"-"
 "Netzwerkgerät nicht korrekt eingestellt ist."
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:714
-#, no-wrap
-msgid "How to save data from a broken .wxmx file"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:715
+#, fuzzy
+#| msgid "How to save data from a broken .wxmx file"
+msgid "## How to save data from a broken .wxmx file"
 msgstr "Wie repariere ich kaputte .wxmx-Dateien?"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:717
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:717
 msgid ""
 "Internally most modern XML-based formats are ordinary zip files. _WxMaxima_ "
 "doesn't turn on compression, so the contents of `.wxmx` files can be viewed "
@@ -2757,7 +2982,7 @@ msgstr ""
 "ein, weswegen ihr Inhalt in einem normalen Texteditor lesbar ist."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:719
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:719
 #, fuzzy
 #| msgid ""
 #| "If the zip signature at the end of the file is still intact after "
@@ -2785,13 +3010,34 @@ msgstr ""
 "funktionierende `wxmx~`-Datei."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:721
-#, no-wrap
-msgid "And even if there isn’t such a file: The `.wxmx` file is a container format and the XML portion is stored uncompressed. It it is possible to rename the `.wxmx` file to a `.txt` file and to use a text editor to recover the XML portion of the file's contents (it starts with `<?xml version=\"1.0\" encoding=\"UTF-8\"?>` and ends with `</wxMaximaDocument>`. Before and after that text you will see some unreadable binary contents in the text editor).\n"
-msgstr "Und auch wenn diese Datei nicht existiert: Eine `.wxmx`-Datei ist ein Containerformat, und der XML-Anteil wird unkomprimiert gespeichert. Es ist möglich, die `.wxmx`-Datei in eine `.txt`Datei umzubenennen und mit einem Texteditor den XML-Anteil der Datei (beginnt mit `<?xml version=\"1.0\" encoding=\"UTF-8\"?>` und endet mit `</wxMaximaDocument>` zu sichern. Vor und nach diesem Text wird unlesbarer (binärer) Inhalt im Texteditor sichtbar sein).\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:721
+#, fuzzy
+#| msgid ""
+#| "And even if there isn’t such a file: The `.wxmx` file is a container "
+#| "format and the XML portion is stored uncompressed. It it is possible to "
+#| "rename the `.wxmx` file to a `.txt` file and to use a text editor to "
+#| "recover the XML portion of the file's contents (it starts with `<?xml "
+#| "version=\"1.0\" encoding=\"UTF-8\"?>` and ends with `</"
+#| "wxMaximaDocument>`. Before and after that text you will see some "
+#| "unreadable binary contents in the text editor).\n"
+msgid ""
+"And even if there isn’t such a file: The `.wxmx` file is a container format "
+"and the XML portion is stored uncompressed. It it is possible to rename the "
+"`.wxmx` file to a `.txt` file and to use a text editor to recover the XML "
+"portion of the file's contents (it starts with `<?xml version=\"1.0\" "
+"encoding=\"UTF-8\"?>` and ends with `</wxMaximaDocument>`. Before and after "
+"that text you will see some unreadable binary contents in the text editor)."
+msgstr ""
+"Und auch wenn diese Datei nicht existiert: Eine `.wxmx`-Datei ist ein "
+"Containerformat, und der XML-Anteil wird unkomprimiert gespeichert. Es ist "
+"möglich, die `.wxmx`-Datei in eine `.txt`Datei umzubenennen und mit einem "
+"Texteditor den XML-Anteil der Datei (beginnt mit `<?xml version=\"1.0\" "
+"encoding=\"UTF-8\"?>` und endet mit `</wxMaximaDocument>` zu sichern. Vor "
+"und nach diesem Text wird unlesbarer (binärer) Inhalt im Texteditor sichtbar "
+"sein).\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:723
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:723
 msgid ""
 "If a text file containing only these contents (e.g. copy and paste this text "
 "into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know "
@@ -2801,14 +3047,21 @@ msgstr ""
 "neue Datei eingefügt wird) als `.xml`-Datei gespeichert, weiß _wxMaxima_, "
 "wie man den Text-Teil des Dokuments rekonstruiert."
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:724
-#, no-wrap
-msgid "I want some debug info to be displayed on the screen before my command has finished"
-msgstr "Ich will Statusmeldungen am Bildschirm ausgeben, während mein Befehl ausgeführt wird"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:725
+#, fuzzy
+#| msgid ""
+#| "I want some debug info to be displayed on the screen before my command "
+#| "has finished"
+msgid ""
+"## I want some debug info to be displayed on the screen before my command "
+"has finished"
+msgstr ""
+"Ich will Statusmeldungen am Bildschirm ausgeben, während mein Befehl "
+"ausgeführt wird"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:727
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:727
 msgid ""
 "Normally _wxMaxima_ waits for the whole 2D formula to be transferred before "
 "it begins to typeset. This saves time for making many attempts to typeset a "
@@ -2819,10 +3072,19 @@ msgstr ""
 "Normalerweise gibt _wxMaxima_ erst etwas aus, wenn die komplette Ausgabe "
 "steht. Das `disp`-Kommando wird hingegen sofort ausgeführt:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:728
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:737
+#, fuzzy, no-wrap
+#| msgid ""
+#| "for i:1 thru 10 do (\n"
+#| "   disp(i),\n"
+#| "   /* (sleep n) is a Lisp function, which can be used */\n"
+#| "   /* with the character \"?\" before. It delays the */\n"
+#| "   /* program execution (here: for 3 seconds) */\n"
+#| "   ?sleep(3)\n"
+#| ")$\n"
 msgid ""
+"```maxima\n"
 "for i:1 thru 10 do (\n"
 "   disp(i),\n"
 "   /* (sleep n) is a Lisp function, which can be used */\n"
@@ -2830,6 +3092,7 @@ msgid ""
 "   /* program execution (here: for 3 seconds) */\n"
 "   ?sleep(3)\n"
 ")$\n"
+"```\n"
 msgstr ""
 "for i:1 thru 10 do (\n"
 "   disp(i),\n"
@@ -2840,14 +3103,17 @@ msgstr ""
 "   ?sleep(3)\n"
 ")$\n"
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:738
-#, no-wrap
-msgid "Plotting only shows a closed empty envelope with an error message"
-msgstr "Statt eines Diagramms wird ein Briefumschlag mit einer Fehlermeldung dargestellt"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:739
+#, fuzzy
+#| msgid "Plotting only shows a closed empty envelope with an error message"
+msgid "## Plotting only shows a closed empty envelope with an error message"
+msgstr ""
+"Statt eines Diagramms wird ein Briefumschlag mit einer Fehlermeldung "
+"dargestellt"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:741
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:741
 msgid ""
 "This means that _wxMaxima_ could not read the file _Maxima_ that was "
 "supposed to instruct _gnuplot_ to create."
@@ -2856,67 +3122,37 @@ msgstr ""
 "generieren, nicht lesen."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:743
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:743
 msgid "Possible reasons for this error are:"
 msgstr "Mögliche Gründe für diesen Fehler sind:"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:748
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:748
 msgid ""
-"The plotting command is part of a third-party package like `implicit_plot` "
+"- The plotting command is part of a third-party package like `implicit_plot` "
 "but this package was not loaded by _Maxima_’s `load()` command before trying "
-"to plot."
+"to plot.  - _Maxima_ tried to do something the currently installed version "
+"of _gnuplot_ isn’t able to understand. In this case, a file ending in `."
+"gnuplot` located in the directory, which _Maxima_’s variable "
+"`maxima_userdir` is pointing, contains the instructions from _Maxima_ to "
+"_gnuplot_. Most of the time, this file’s contents therefore are helpful when "
+"debugging the problem.  - Gnuplot was instructed to use the pngCairo library "
+"that provides antialiasing and additional line styles, but it was not "
+"compiled to support this possibility. Solution: Uncheck the \"Use the Cairo "
+"terminal for the plot\" checkbox in the configuration dialog and don’t set "
+"`wxplot_pngCairo` to true from _Maxima_.  - Gnuplot didn’t output a valid `."
+"png` file."
 msgstr ""
-"`implicit_plot` wurde verwendet, ohne vorher via `load()` geladen zu werden."
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:748
-msgid ""
-"_Maxima_ tried to do something the currently installed version of _gnuplot_ "
-"isn’t able to understand. In this case, a file ending in `.gnuplot` located "
-"in the directory, which _Maxima_’s variable `maxima_userdir` is pointing, "
-"contains the instructions from _Maxima_ to _gnuplot_. Most of the time, this "
-"file’s contents therefore are helpful when debugging the problem."
-msgstr ""
-"_Maxima_ hat versucht, _Gnuplot_ zu etwas zu bewegen, was die installierte  "
-"Version von _Gnuplot_ nicht versteht. In diesem Fall stehen die betreffenden "
-"Befehle in dem Verzeichnis, auf das `maxima_userdir` zeigt in einer Datei "
-"mit der Endung `.gnuplot`. Der Inhalt dieser Datei ist oft hilfreich, um den "
-"Fehler zu suchen."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:748
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:750
 #, fuzzy
-#| msgid ""
-#| "Gnuplot was instructed to use the pngcairo library that provides "
-#| "antialiasing and additional line styles, but it was not compiled to "
-#| "support this possibility. Solution: Uncheck the \"Use the cairo terminal "
-#| "for plot\" checkbox in the configuration dialog and don’t set "
-#| "`wxplot_pngcairo` to true from _Maxima_."
-msgid ""
-"Gnuplot was instructed to use the pngCairo library that provides "
-"antialiasing and additional line styles, but it was not compiled to support "
-"this possibility. Solution: Uncheck the \"Use the Cairo terminal for the "
-"plot\" checkbox in the configuration dialog and don’t set `wxplot_pngCairo` "
-"to true from _Maxima_."
-msgstr ""
-"Gnuplot wurde über _wxMaxima_'s Konfigurationsdialog instruiert, pngcairo zu "
-"verwenden, unterstützt diese Ausgabefunktionen aber nicht. Dies ist auf dem "
-"Mac ein typisches Problem."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:748
-msgid "Gnuplot didn’t output a valid `.png` file."
-msgstr "Gnuplot hat keine gültige `.png`-Datei ausgegeben."
-
-#. type: Title ##
-#: ../../info/wxmaxima.md:749
-#, no-wrap
-msgid "Plotting an animation results in “error: undefined variable”"
+#| msgid "Plotting an animation results in “error: undefined variable”"
+msgid "## Plotting an animation results in “error: undefined variable”"
 msgstr "Animationen enden in \"Error: Undefined Variable\""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:752
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:752
 #, fuzzy
 #| msgid ""
 #| "The value of the slider variable by default is only substituted into the "
@@ -2937,15 +3173,15 @@ msgstr ""
 "für _Maxima_ nicht sichtbar. Ein explizites `subst()` behebt dieses Problem, "
 "wie in einem Beispiel weiter oben gezeigt wird."
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:753
-#, fuzzy, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:754
+#, fuzzy
 #| msgid "I lost a cell contents and undo doesn’t remember"
-msgid "I lost cell content and undo doesn’t remember"
+msgid "## I lost cell content and undo doesn’t remember"
 msgstr "Rückgängig-machen erinnert sich nicht an das, was ich brauche"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:756
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:756
 msgid ""
 "There are separate undo functions for cell operations and for changes inside "
 "of cells so chances are low that this ever happens. If it does there are "
@@ -2954,64 +3190,34 @@ msgstr ""
 "Es gibt zwei Rückgängigmach- Funktionen, die beide die wichtige Information "
 "enthalten können:"
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:761
-#, fuzzy
-#| msgid ""
-#| "_wxMaxima_ actually has two undo features: The global undo buffer that is "
-#| "active if no cell is selected and a per-cell undo buffer that is active "
-#| "if the cursor is inside a cell. It is worth trying to use both undo "
-#| "options in order to see if an old value can still be accessed."
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:761
 msgid ""
-"_WxMaxima_ actually has two undo features: The global undo buffer that is "
+"- _WxMaxima_ actually has two undo features: The global undo buffer that is "
 "active if no cell is selected and a per-cell undo buffer that is active if "
 "the cursor is inside a cell. It is worth trying to use both undo options in "
-"order to see if an old value can still be accessed."
+"order to see if an old value can still be accessed.  - If you still have a "
+"way to find out what label _Maxima_ has assigned to the cell just type in "
+"the cell’s label and its contents will reappear.  - If you don’t: Don’t "
+"panic. In the “View” menu there is a way to show a history pane that shows "
+"all _Maxima_ commands that have been issued recently.  - If nothing else "
+"helps _Maxima_ contains a replay feature:"
 msgstr ""
-"Ein Rückgängigmach-Speicher für die aktuell ausgewählte Zelle und einer für "
-"das gesamte Arbeitsblatt, der aktiv ist, wenn keine Zelle ausgewählt ist.Es "
-"lohnt sich, beide Rückgängigmach-Optionen zu probieren, um zu sehen, ob ein "
-"alter Wert wiederhergestellt werden kann."
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:761
-msgid ""
-"If you still have a way to find out what label _Maxima_ has assigned to the "
-"cell just type in the cell’s label and its contents will reappear."
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:765
+msgid "```maxima playback(); ```"
 msgstr ""
-"Wenn die Ausgabe einer Marke (z.B. `%o20`) zugewiesen wurde, kann diese "
-"Marke eingegeben werden und der betreffende Text erscheint."
 
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:761
-msgid ""
-"If you don’t: Don’t panic. In the “View” menu there is a way to show a "
-"history pane that shows all _Maxima_ commands that have been issued recently."
-msgstr ""
-"Wenn nicht: Keine Panik: Im “Ansicht”-Menü kann eine Seitenleiste "
-"eingeschaltet werden, die die letzten Befehle anzeigt."
-
-#. type: Bullet: '- '
-#: ../../info/wxmaxima.md:761
-msgid "If nothing else helps _Maxima_ contains a replay feature:"
-msgstr ""
-"Wenn nichts anderes funktioniert, bietet Maxima die Möglichkeit an, alle "
-"bisherigen Befehle nochmals auszuführen:"
-
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:762
-#, no-wrap
-msgid "playback();\n"
-msgstr "playback();\n"
-
-#. type: Title ##
-#: ../../info/wxmaxima.md:766
-#, no-wrap
-msgid "_WxMaxima_ starts up with the message “Maxima process terminated.”"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:767
+#, fuzzy
+#| msgid "_WxMaxima_ starts up with the message “Maxima process terminated.”"
+msgid "## _WxMaxima_ starts up with the message “Maxima process terminated.”"
 msgstr "_WxMaxima_ meldet gleich beim Hochfahren \"Maxima hat sich beendet.\""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:769
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:769
 msgid ""
 "One possible reason is that _Maxima_ cannot be found in the location that is "
 "set in the “Maxima” tab of _wxMaxima_’s configuration dialog and therefore "
@@ -3022,14 +3228,15 @@ msgstr ""
 "dies in wxMaxima's Konfigurationsdialog angegeben ist. Korrektur des dort "
 "angegebenen Pfades zum Programm löst dieses Problem."
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:770
-#, no-wrap
-msgid "Maxima is forever calculating and not responding to input"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:771
+#, fuzzy
+#| msgid "Maxima is forever calculating and not responding to input"
+msgid "## Maxima is forever calculating and not responding to input"
 msgstr "Maxima hört nicht auf zu rechnen und reagiert nicht auf Eingaben"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:773
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:773
 msgid ""
 "It is theoretically possible that _wxMaxima_ doesn’t realize that _Maxima_ "
 "has finished calculating and therefore never gets informed it can send new "
@@ -3041,14 +3248,15 @@ msgstr ""
 "diesem Fall kann der Befehl 'Trigger Evaluation' die Synchronisation wieder "
 "herstellen."
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:774
-#, no-wrap
-msgid "My SBCL-based _Maxima_ runs out of memory"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:775
+#, fuzzy
+#| msgid "My SBCL-based _Maxima_ runs out of memory"
+msgid "## My SBCL-based _Maxima_ runs out of memory"
 msgstr "SBCL beschwert sich über einen Mangel an Speicher"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:777
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:777
 #, fuzzy
 #| msgid ""
 #| "The Lisp compiler SBCL by default comes with a memory limit that allows "
@@ -3079,7 +3287,7 @@ msgstr ""
 "was notwendig ist um das Lapack-Paket zu compilieren."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:779
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:779
 msgid ""
 "One way to provide _Maxima_ (and thus SBCL) with command line parameters is "
 "the \"Additional parameters for Maxima\" field of _wxMaxima_’s configuration "
@@ -3089,18 +3297,19 @@ msgstr ""
 "_wxMaxima_'s Konfigurationsdialog eingegeben werden."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:781
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:781
 msgid "![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }"
 msgstr "![SBCL Speicherkonfiguration](./sbclMemory.png){ id=img_sbclMemory }"
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:782
-#, no-wrap
-msgid "Input sometimes is sluggish/ignoring keys on Ubuntu"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:783
+#, fuzzy
+#| msgid "Input sometimes is sluggish/ignoring keys on Ubuntu"
+msgid "## Input sometimes is sluggish/ignoring keys on Ubuntu"
 msgstr "Ubuntu: Die Tastatur ist langsam oder ignoriert einzelne Tasten"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:785
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:785
 msgid ""
 "Installing the package `ibus-gtk` should resolve this issue. See ([https://"
 "bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs."
@@ -3111,14 +3320,17 @@ msgstr ""
 "launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558)) findet man genauere "
 "Angaben dazu."
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:786
-#, no-wrap
-msgid "_WxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts"
-msgstr "_WxMaxima_ stoppt, wenn _Maxima_ griechische Buchstaben oder Umlaute verarbeitet"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:787
+#, fuzzy
+#| msgid "_WxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts"
+msgid "## _WxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts"
+msgstr ""
+"_WxMaxima_ stoppt, wenn _Maxima_ griechische Buchstaben oder Umlaute "
+"verarbeitet"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:789
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:789
 msgid ""
 "If your _Maxima_ is based on SBCL the following lines have to be added to "
 "your `.sbclrc`:"
@@ -3126,14 +3338,15 @@ msgstr ""
 "Wenn _Maxima_ mittels SBCL compiliert wurde, können die folgenden Befehle "
 "zur `.sbclrc` hinzugefügt werden:"
 
-#. type: Fenced code block (commonlisp)
-#: ../../info/wxmaxima.md:790
-#, no-wrap
-msgid "(setf sb-impl::*default-external-format* :utf-8)\n"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:793
+#, fuzzy
+#| msgid "(setf sb-impl::*default-external-format* :utf-8)\n"
+msgid "```commonlisp (setf sb-impl::*default-external-format* :utf-8)  ```"
 msgstr "(setf sb-impl::*default-external-format* :utf-8)\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:795
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:795
 #, fuzzy
 #| msgid ""
 #| "The folder this file has to be placed in is system- and installation-"
@@ -3150,20 +3363,54 @@ msgstr ""
 "compiliertes Maxima kann durch den folgenden Befehl angewiesen werden, den "
 "Ort zu nennen:"
 
-#. type: Fenced code block
-#: ../../info/wxmaxima.md:796
-#, no-wrap
-msgid ":lisp (sb-impl::userinit-pathname)\n"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:799
+#, fuzzy
+#| msgid ":lisp (sb-impl::userinit-pathname)\n"
+msgid "``` :lisp (sb-impl::userinit-pathname)  ```"
 msgstr ":lisp (sb-impl::userinit-pathname)\n"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:802
-#, no-wrap
-msgid "Can I make _wxMaxima_ output both image files and embedded plots at once?"
-msgstr "Kann _wxMaxima_ das eingebettete Diagramm gleich noch als Datei ausgeben?"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:801
+msgid "## Note concerning Wayland (recent Linux/BSD distributions)"
+msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:805
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:804
+msgid ""
+"There seem to be issues with the Wayland Display Server and wxWidgets.  "
+"WxMaxima may be affected, e.g. that sidebars are not moveable."
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:808
+msgid ""
+"You can either disable Wayland and use X11 instead (globally)  or just tell, "
+"that wxMaxima should use the X Window System by setting: `GDK_BACKEND=x11`"
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:810
+msgid "E.g. start wxMaxima with:"
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:812
+msgid "`GDK_BACKEND=x11 wxmaxima`"
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:817
+#, fuzzy
+#| msgid ""
+#| "Can I make _wxMaxima_ output both image files and embedded plots at once?"
+msgid ""
+"### Can I make _wxMaxima_ output both image files and embedded plots at once?"
+msgstr ""
+"Kann _wxMaxima_ das eingebettete Diagramm gleich noch als Datei ausgeben?"
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:819
 msgid ""
 "The worksheet embeds .png files. _WxMaxima_ allows the user to specify where "
 "they should be generated:"
@@ -3171,8 +3418,8 @@ msgstr ""
 "Das Arbeitsblatt enthält png-Dateien. _WxMaxima_ erlaubt dem User anzugeben, "
 "wo sie generiert werden sollen:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:806
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:826
 #, fuzzy, no-wrap
 #| msgid ""
 #| "~~~~\n"
@@ -3182,10 +3429,12 @@ msgstr ""
 #| ");\n"
 #| "~~~~\n"
 msgid ""
+"```maxima\n"
 "wxdraw2d(\n"
 "    file_name=\"test\",\n"
 "    explicit(sin(x),x,1,10)\n"
 ");\n"
+"```\n"
 msgstr ""
 "wxdraw2d(\n"
 "    file_name=\"test\",\n"
@@ -3193,7 +3442,7 @@ msgstr ""
 ");\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:814
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:828
 msgid ""
 "If a different format is to be used, it is easier to generate the images and "
 "then import them into the worksheet again:"
@@ -3201,8 +3450,8 @@ msgstr ""
 "Wenn ein unterschiedliches Format benutzt wird, ist es einfacher, Bilder zu "
 "generieren und dann in das Arbeitsblatt zu importieren:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:815
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:847
 #, fuzzy, no-wrap
 #| msgid ""
 #| "~~~~\n"
@@ -3224,6 +3473,7 @@ msgstr ""
 #| "pngdraw2d(name,[contents]):=\n"
 #| "    pngdraw(name,gr2d(contents));\n"
 msgid ""
+"```maxima\n"
 "load(\"draw\");\n"
 "pngdraw(name,[contents]):=\n"
 "(\n"
@@ -3241,10 +3491,6 @@ msgid ""
 ");\n"
 "pngdraw2d(name,[contents]):=\n"
 "    pngdraw(name,gr2d(contents));\n"
-"\n"
-"pngdraw2d(\"Test\",\n"
-"        explicit(sin(x),x,1,10)\n"
-");\n"
 msgstr ""
 "~~~~\n"
 "load(\\\"draw\\\");\n"
@@ -3265,19 +3511,39 @@ msgstr ""
 "pngdraw2d(name,[contents]):=\n"
 "    pngdraw(name,gr2d(contents)\n"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:839
-#, no-wrap
-msgid "Can I set the aspect ratio of a plot?"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:852
+#, fuzzy, no-wrap
+#| msgid ""
+#| "pngdraw2d(\"Test\",\n"
+#| "        explicit(sin(x),x,1,10)\n"
+#| ");\n"
+#| "~~~~\n"
+msgid ""
+"pngdraw2d(\"Test\",\n"
+"        explicit(sin(x),x,1,10)\n"
+");\n"
+"```\n"
+msgstr ""
+"pngdraw2d(\\\"Test\\\",\n"
+"        explicit(sin(x),x,1,10)\n"
+");\n"
+"~~~~\n"
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:854
+#, fuzzy
+#| msgid "Can I set the aspect ratio of a plot?"
+msgid "### Can I set the aspect ratio of a plot?"
 msgstr "Kann ich das Seitenverhältnis des Plots angeben?"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:842
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:856
 msgid "Not directly using _Maxima_. But there are Gnuplot commands for it:"
 msgstr "Nicht direkt bei _Maxima_. Aber es gibt Gnuplot-Kommandos dafür:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:843
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:863
 #, fuzzy, no-wrap
 #| msgid ""
 #| "     wxdraw2d(\n"
@@ -3285,80 +3551,108 @@ msgstr "Nicht direkt bei _Maxima_. Aber es gibt Gnuplot-Kommandos dafür:"
 #| "         explicit(sin(x),x,1,10)\n"
 #| "     ),wxplot_size=[1000,1000];\n"
 msgid ""
+"```maxima\n"
 "wxdraw2d(\n"
 "    proportional_axis=xy,\n"
 "    explicit(sin(x),x,1,10)\n"
 "),wxplot_size=[1000,1000];\n"
+"```\n"
 msgstr ""
 "     wxdraw2d(\n"
 "         proportional_axis=xy,\n"
 "         explicit(sin(x),x,1,10)\n"
 "     ),wxplot_size=[1000,1000];\n"
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:850
-#, no-wrap
-msgid "After upgrading to MacOS 13.1 plot and/or draw commands output error messages like"
-msgstr "Nach dem Upgrade auf MacOS 13.1 geben Plot- oder Draw Befehle Fehlermeldungen aus, wie"
-
-#. type: Fenced code block
-#: ../../info/wxmaxima.md:852
-#, no-wrap
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:865
+#, fuzzy
+#| msgid ""
+#| "After upgrading to MacOS 13.1 plot and/or draw commands output error "
+#| "messages like"
 msgid ""
-"\n"
-"1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102\n"
-"2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52\n"
-"3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408\n"
-"...\n"
+"### After upgrading to MacOS 13.1 plot and/or draw commands output error "
+"messages like"
+msgstr ""
+"Nach dem Upgrade auf MacOS 13.1 geben Plot- oder Draw Befehle "
+"Fehlermeldungen aus, wie"
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:867
+msgid "```"
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:861
-#, no-wrap
-msgid "This might be an issue with the operating system. Disable the hiding of the menu bar (SystemSettings => Desktop & Dock => Menu Bar) might solve the issue. See [wxMaxima issue #1746](https://github.com/wxMaxima-developers/wxmaxima/issues/1746) for more information.\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:873
+msgid ""
+"1 HIToolbox 0x00007ff80cd91726 "
+"_ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102 2 HIToolbox "
+"0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52 3 HIToolbox "
+"0x00007ff80cd35908 SetMenuBarObscured + 408 ...  ```"
 msgstr ""
 
-#. type: Title #
-#: ../../info/wxmaxima.md:864
-#, no-wrap
-msgid "FAQ"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:875
+msgid ""
+"This might be an issue with the operating system. Disable the hiding of the "
+"menu bar (SystemSettings => Desktop & Dock => Menu Bar) might solve the "
+"issue. See [wxMaxima issue #1746](https://github.com/wxMaxima-developers/"
+"wxmaxima/issues/1746) for more information."
 msgstr ""
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:866
-#, no-wrap
-msgid "Is there a way to make more text fit on a LaTeX page?"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:879
+msgid "# FAQ"
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:881
+#, fuzzy
+#| msgid "Is there a way to make more text fit on a LaTeX page?"
+msgid "## Is there a way to make more text fit on a LaTeX page?"
 msgstr "Gibt es eine Möglichkeit mehr Text auf eine LaTeX-Seite zu schreiben?"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:869
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:883
 msgid ""
 "Yes. Use the [LaTeX package \"geometry\"](https://ctan.org/pkg/geometry) to "
 "specify the size of the borders."
 msgstr ""
-"Ja. Verwenden Sie das [LaTeX Paket \"geometry\"](https://ctan.org/pkg/geometry) um die Größe der Ränder "
-"anzugeben."
+"Ja. Verwenden Sie das [LaTeX Paket \"geometry\"](https://ctan.org/pkg/"
+"geometry) um die Größe der Ränder anzugeben."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:871
-#, no-wrap
-msgid "You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"), to set borders of 1cm):\n"
-msgstr "Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann (z.B. indem sie das entsprechende Feld im Konfigurationsdialog (\"Exportieren\"->\"Zusätzliche Zeilen für die LaTeX preamble\") angeben.\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:885
+#, fuzzy
+#| msgid ""
+#| "You can add the following line to the LaTeX preamble (for example by "
+#| "using the respective field in the config dialogue (\"Export\"->"
+#| "\"Additional lines for the TeX preamble\"), to set borders of 1cm):\n"
+msgid ""
+"You can add the following line to the LaTeX preamble (for example by using "
+"the respective field in the config dialogue (\"Export\"->\"Additional lines "
+"for the TeX preamble\"), to set borders of 1cm):"
+msgstr ""
+"Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann (z.B. "
+"indem sie das entsprechende Feld im Konfigurationsdialog (\"Exportieren\"->"
+"\"Zusätzliche Zeilen für die LaTeX preamble\") angeben.\n"
 
-#. type: Fenced code block (latex)
-#: ../../info/wxmaxima.md:872
-#, no-wrap
-msgid "\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:889
+#, fuzzy
+#| msgid "\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
+msgid ""
+"```latex \\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry} ```"
 msgstr "\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:876
-#, no-wrap
-msgid "Is there a dark mode?"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:891
+#, fuzzy
+#| msgid "Is there a dark mode?"
+msgid "## Is there a dark mode?"
 msgstr "Gibt es einen Dark Mode?"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:879
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:893
 #, fuzzy
 #| msgid ""
 #| "If wxWidgets is new enough _wxMaxima_ will automatically be in dark mode "
@@ -3381,32 +3675,58 @@ msgstr ""
 "die Helligkeit des Arbeitsblattes`, das Arbeitsblatt schnell zwischen hell "
 "und dunkel umzustellen."
 
-#. type: Title ##
-#: ../../info/wxmaxima.md:880
-#, no-wrap
-msgid "_WxMaxima_ sometimes hangs for several seconds once in the first minute"
-msgstr "_WxMaxima_ hängt manchmal in der ersten Minute einmal für mehrere Sekunden"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:895
+#, fuzzy
+#| msgid ""
+#| "_WxMaxima_ sometimes hangs for several seconds once in the first minute"
+msgid ""
+"## _WxMaxima_ sometimes hangs for several seconds once in the first minute"
+msgstr ""
+"_WxMaxima_ hängt manchmal in der ersten Minute einmal für mehrere Sekunden"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:883
-#, fuzzy, no-wrap
-#| msgid "_WxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.\n"
-msgid "_WxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.\n"
-msgstr "WxMaxima lagert große Aufgaben, wie das Interpretieren des >1000-Seiten-Handbuchs von Maxima an Hintergrundtasks aus. Solange die Ergebnisse dieser Tasks nicht benötigt werden, kann während dieser Zeit ganz normal weitergearbeitet werden. Wird aber eine Aktion ausgeführt, für die die Ergebnisse eines Tasks benötigt werden, muss wxMaxima warten, bis dieser beendet ist.\n"
-
-#. type: Title ##
-#: ../../info/wxmaxima.md:884
-#, no-wrap
-msgid "Especially when testing new locale settings, a message box \"locale 'xx_YY' can not be set\" occurs"
-msgstr "Speziell wenn man neue Spracheinstellungen testet, kann eine Nachrichtenbox \"locale 'xx_YY' can not be set\" angezeigt werden."
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:897
+#, fuzzy
+#| msgid ""
+#| "_WxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-"
+#| "manual to background tasks, which normally goes totally unnoticed. In the "
+#| "moment the result of such a task is needed, though, it is possible that "
+#| "_wxMaxima_ needs to wait a couple of seconds before it can continue its "
+#| "work.\n"
+msgid ""
+"_WxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-"
+"manual to background tasks, which normally goes totally unnoticed. At the "
+"moment the result of such a task is needed, though, it is possible that "
+"_wxMaxima_ needs to wait a couple of seconds before it can continue its work."
+msgstr ""
+"WxMaxima lagert große Aufgaben, wie das Interpretieren des >1000-Seiten-"
+"Handbuchs von Maxima an Hintergrundtasks aus. Solange die Ergebnisse dieser "
+"Tasks nicht benötigt werden, kann während dieser Zeit ganz normal "
+"weitergearbeitet werden. Wird aber eine Aktion ausgeführt, für die die "
+"Ergebnisse eines Tasks benötigt werden, muss wxMaxima warten, bis dieser "
+"beendet ist.\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:887
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:899
+#, fuzzy
+#| msgid ""
+#| "Especially when testing new locale settings, a message box \"locale "
+#| "'xx_YY' can not be set\" occurs"
+msgid ""
+"## Especially when testing new locale settings, a message box \"locale "
+"'xx_YY' can not be set\" occurs"
+msgstr ""
+"Speziell wenn man neue Spracheinstellungen testet, kann eine Nachrichtenbox "
+"\"locale 'xx_YY' can not be set\" angezeigt werden."
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:901
 msgid "![Locale warning](./locale-warning.png){ id=img_locale_warning}"
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:891
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:905
 msgid ""
 "(The same problem can occur with other applications too). The translations "
 "seem okay after you click on 'OK'. WxMaxima does not only use its own "
@@ -3418,63 +3738,82 @@ msgstr ""
 "Übersetzungen des wxWidgets Frameworks."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:894
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:908
 msgid ""
 "These locales maybe not present in the system. On Ubuntu/Debian systems they "
 "can be generated using: `dpkg-reconfigure locales`"
 msgstr ""
-"Diese Übersetzungen sind möglicherweise im System nicht vorhanden. Auf Ubuntu/"
-"Debian Linux-Systemen können sie mit `dpkg-reconfigure locales` erzeugt "
-"werden."
-
-#. type: Title ##
-#: ../../info/wxmaxima.md:895
-#, no-wrap
-msgid "How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?"
-msgstr "Wie kann man Symbole für reele Zahlen, ganze Zahlen (ℝ, ℕ), etc. verwenden?"
+"Diese Übersetzungen sind möglicherweise im System nicht vorhanden. Auf "
+"Ubuntu/Debian Linux-Systemen können sie mit `dpkg-reconfigure locales` "
+"erzeugt werden."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:898
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:910
+#, fuzzy
+#| msgid ""
+#| "How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?"
+msgid ""
+"## How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?"
+msgstr ""
+"Wie kann man Symbole für reele Zahlen, ganze Zahlen (ℝ, ℕ), etc. verwenden?"
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:912
 msgid ""
 "You can find these symbols in the Unicode sidebar (search for 'double-struck "
 "capital'). But the selected font must also support these symbols. If they do "
 "not display properly, select another font."
 msgstr ""
 
-#. type: Title #
-#: ../../info/wxmaxima.md:901
-#, no-wrap
-msgid "Command-line arguments"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:914
+msgid ""
+"## How can a Maxima script determine, if it is running under wxMaxima or "
+"command line Maxima?"
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:916
+msgid ""
+"If wxMaxima is used, the Maxima variable `maxima_frontend` is set to "
+"`wxmaxima`. The Maxima variable `maxima_frontend_version` contains the "
+"wxMaxima version in this case."
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:918
+msgid ""
+"If no frontend is used (you are using command line Maxima), these variables "
+"are `false`."
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:922
+#, fuzzy
+#| msgid "Command-line arguments"
+msgid "# Command-line arguments"
 msgstr "Kommandozeilen-Optionen"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:904
-#, fuzzy
-#| msgid ""
-#| "Most operating systems provide less complicated ways of starting programs "
-#| "than the command line so this possibility is only rarely used. _WxMaxima_ "
-#| "still provides some command line switches, though."
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:924
 msgid ""
-"Most operating systems provide less complicated ways of starting programs "
-"than the command-line so this possibility is only rarely used. _WxMaxima_ "
-"still provides some command-line switches, though."
+"Usually you can start programs with a graphical user interface just by "
+"clicking on a desktop icon or desktop menu entry. WxMaxima - if started from "
+"the command line - still provides some command-line switches, though."
 msgstr ""
-"Die meisten Betriebssysteme bieten unkompliziertere Arten, um ein GUI-"
-"Programm zu starten, als die Kommandozeile. _WxMaxima_ bietet trotzdem "
-"mehrere Kommandozeilenoptionen an."
 
 #. type: Bullet: '- '
-#: ../../info/wxmaxima.md:920
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:940
 msgid "`-v` or `--version`: Output the version information"
 msgstr "`-v` oder `--version`: Gibt die Versionsnummer aus"
 
 #. type: Bullet: '- '
-#: ../../info/wxmaxima.md:920
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:940
 msgid "`-h` or `--help`: Output a short help text"
 msgstr "`-h` oder `--help`: Gibt einen kurzen Hilfetext aus"
 
 #. type: Bullet: '- '
-#: ../../info/wxmaxima.md:920
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:940
 msgid ""
 "`-o` or `--open=<str>`: Open the filename given as an argument to this "
 "command-line switch"
@@ -3483,12 +3822,12 @@ msgstr ""
 "Kommandozeilenoption angegeben wurde."
 
 #. type: Bullet: '- '
-#: ../../info/wxmaxima.md:920
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:940
 msgid "`-e` or `--eval`: Evaluate the file after opening it."
 msgstr "`-e` oder `--eval`: Evaluiere die Datei nach dem Öffnen."
 
 #. type: Bullet: '- '
-#: ../../info/wxmaxima.md:920
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:940
 #, fuzzy
 #| msgid ""
 #| "`-b` or `--batch`: If the command-line opens a file all cells in this "
@@ -3515,7 +3854,7 @@ msgstr ""
 "User weitergereicht."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:920
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:940
 #, fuzzy, no-wrap
 #| msgid ""
 #| "* `--logtostderr`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
@@ -3550,7 +3889,7 @@ msgstr ""
 "* `--enableipc`: Lässt Maxima wxMaxima über Interprozesskommunikation ansteuern. Diese Option vorsichtig verwenden.\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:922
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:942
 #, fuzzy
 #| msgid ""
 #| "Instead of a minus some operating systems might use a dash in front of "
@@ -3562,34 +3901,51 @@ msgstr ""
 "Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen "
 "Schrägstrich statt eines Minuszeichens."
 
-#. type: Title #
-#: ../../info/wxmaxima.md:925
-#, no-wrap
-msgid "About the program, contributing to wxMaxima"
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:946
+#, fuzzy
+#| msgid "About the program, contributing to wxMaxima"
+msgid "# About the program, contributing to wxMaxima"
 msgstr "Über das Programm, zu wxMaxima beitragen"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:928
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:948
 msgid ""
-"wxMaxima is mainly developed using the program language C++ using the "
-"wxWidgets framework, as build system we use CMake, a small part is written "
-"in Lisp. You can contribute to wxMaxima, join the wxMaxima project at "
-"<https://github.com/wxMaxima-developers/wxmaxima>, if you have knowledge of "
-"these programming languages and want to help and contribute to the open "
-"source project wxMaxima."
+"wxMaxima is mainly developed using the programming language C++ using the "
+"[wxWidgets framework](https://www.wxwidgets.org), as build system we use "
+"CMake, a small part is written in Lisp. You can contribute to wxMaxima, join "
+"the wxMaxima project at <https://github.com/wxMaxima-developers/wxmaxima>, "
+"if you have knowledge of these programming languages and want to help and "
+"contribute to the open source project wxMaxima."
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:930
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:950
+msgid ""
+"But not only programmers are necessary! You can also contribute to wxMaxima, "
+"if you help to improve the documentation, find and report bugs (and maybe "
+"bugfixes), suggest new features, help to translate wxMaxima or the manual to "
+"your language (read the Readme in the [locale subdirectory](https://github."
+"com/wxMaxima-developers/wxmaxima/tree/main/locales) how wxMaxima and the "
+"manual can be translated)."
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:952
+msgid "Or answer questions of other users in the discussion forum."
+msgstr ""
+
+#. type: Plain text
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:954
 msgid ""
 "The source code of wxMaxima is documented using Doxygen [here](https://"
 "wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/)."
 msgstr ""
-"Der Quellcode von wxMaxima ist mit Doxygen [hier](https://"
-"wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/) dokumentiert."
+"Der Quellcode von wxMaxima ist mit Doxygen [hier](https://wxmaxima-"
+"developers.github.io/wxmaxima/Doxygen-documentation/) dokumentiert."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:932
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:956
 msgid ""
 "The program is nearly self-contained, so except for system libraries (and "
 "the wxWidgets library), no external dependencies (like graphic files or the "
@@ -3598,12 +3954,342 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:933
-#, no-wrap
-msgid "If you are a developer, you might want to try out a modified `wxmathML.lisp`-file without recompiling everything, one can use the command line option `--wxmathml-lisp=<str>` to use another Lisp file, not the included one.\n"
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:957
+msgid ""
+"If you are a developer, you might want to try out a modified `wxmathML.lisp`-"
+"file without recompiling everything, one can use the command line option `--"
+"wxmathml-lisp=<str>` to use another Lisp file, not the included one."
 msgstr ""
 
-#, no-wrap
+#~ msgid ""
+#~ "Before we look at the content a few points regarding navigation are in "
+#~ "order. Immediately below is a short table of contents. Clicking on any of "
+#~ "the listed items moves the cursor to the top of the indicated section of "
+#~ "the manual. Clicking on [Contents](#TOC) moves the cursor to an extended "
+#~ "table of contents. This extended table can be used to navigate more "
+#~ "directly to specific parts of the manual. The Contents link appears at "
+#~ "locations throughout the text for navigational purposes."
+#~ msgstr ""
+#~ "Vor dem eigentlichen Inhalt ist es vielleicht angebracht, die Navigation "
+#~ "zu erklären: Die nun folgende Liste enthält Hyperlinks auf die einzelnen "
+#~ "Kapitel der Dokumentation. Ein Klick auf [Inhaltsverzeichnis](#TOC) führt "
+#~ "zu einem detaillierten Inhaltsverzeichnis. Dieser Link kommt öfter vor, "
+#~ "um die Navigation zu erleichtern."
+
+#~ msgid ""
+#~ "[Introduction](#introduction-to-wxmaxima \"Introduction to wxMaxima\"):"
+#~ msgstr "[Einführung](#einführung-in-wxmaxima \"Einführung in wxMaxima\"):"
+
+#~ msgid "WxMaxima basics"
+#~ msgstr "Die Grundlagen von WxMaxima"
+
+#~ msgid "[Extensions](#extensions-to-maxima \"Extensions\"):"
+#~ msgstr "[Erweiterungen](#erweiterungen-für-maxima \"Erweiterungen\"):"
+
+#~ msgid "The commands wxMaxima adds to _Maxima_"
+#~ msgstr "Die Kommandos, mittels deren wxMaxima _Maxima_ erweitert"
+
+#~ msgid "[Troubleshooting](#troubleshooting \"Troubleshooting\"):"
+#~ msgstr "[Fehlersuche](#fehlersuche \"Fehlersuche\"):"
+
+#~ msgid "What to do if wxMaxima does not work as expected"
+#~ msgstr "Was tun, wenn wxMaxima nicht wie erwartet funktioniert"
+
+#~ msgid "[FAQ](#faq \"FAQ\"):"
+#~ msgstr "[FAQ](#häufig-gestellte-fragen \"Häufig gestellte Fragen\"):"
+
+#~ msgid "Frequently asked questions"
+#~ msgstr "Häufig gestellte Fragen"
+
+#~ msgid "[CommandLine](#command-line-arguments \"_Maxima_ Command Line\"):"
+#~ msgstr ""
+#~ "[Befehlszeile](#kommandozeilen-optionen \"Kommandozeilenparameter für "
+#~ "Maxima\"):"
+
+#~ msgid "The command-line arguments wxMaxima supports"
+#~ msgstr "Die Kommandozeilenargumente von wxMaxima"
+
+#~ msgid "Math cells, containing one or more lines of _Maxima_ input."
+#~ msgstr ""
+#~ "Mathematik-Eingabezellen beinhalten eine oder mehrere Eingabe-Zeilen für "
+#~ "_Maxima_"
+
+#~ msgid "Output of, or a question from, _Maxima_."
+#~ msgstr "Ausgaben oder Fragen von _Maxima_."
+
+#~ msgid "Image cells."
+#~ msgstr "Bild-Zellen."
+
+#~ msgid "Text cells, that can for example be used for documentation."
+#~ msgstr ""
+#~ "Text-Zellen, die beispielsweise für Dokumentation verwendet werden können."
+
+#~ msgid ""
+#~ "A title, section or a subsection. 6 levels of different headings are "
+#~ "possible."
+#~ msgstr ""
+#~ "Ein Titel, Überschrift oder Unterüberschrift. 6 unterschiedliche "
+#~ "Überschriftenebenen sind möglich."
+
+#~ msgid "Page breaks."
+#~ msgstr "Seitenumbrüche."
+
+#~ msgid ""
+#~ "The cursor is drawn horizontally if it is moved in the space between two "
+#~ "cells or by clicking there."
+#~ msgstr ""
+#~ "Der Cursor wird vertikal dargestellt wird, wenn er zwischen zwei Zellen "
+#~ "zu liegen kommt."
+
+#~ msgid ""
+#~ "A Greek letter can be entered by pressing the <kbd>ESC</kbd> key and then "
+#~ "starting to type the Greek character's name."
+#~ msgstr ""
+#~ "Ein griechischer Buchstabe kann eingegeben werden, indem erst auf die "
+#~ "<kbd>ESC</kbd>-Taste gedrückt wird, und dann sein Name einzugeben "
+#~ "begonnen wird."
+
+#~ msgid ""
+#~ "<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete "
+#~ "cell."
+#~ msgstr ""
+#~ "<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> löscht eine komplette "
+#~ "Zelle."
+
+#~ msgid "<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space."
+#~ msgstr ""
+#~ "<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> fügt ein nicht-umbrechbares Leerzeichen "
+#~ "ein."
+
+#~ msgid ""
+#~ "The configuration dialog box below lets you change their default values "
+#~ "for the current and subsequent sessions."
+#~ msgstr "Die können global im Konfigurationsdialog eingestellt werden."
+
+#~ msgid ""
+#~ "If text is selected if any of these keys is pressed the selected text "
+#~ "will be put between the matched signs."
+#~ msgstr ""
+#~ "Markierter Text wird, wenn man eine geöffnete Klammer einzugeben "
+#~ "versucht, automatisch in Klammern gesetzt."
+
+#~ msgid "Files are saved automatically on exit"
+#~ msgstr "Dateien werden beim Schließen automatisch gespeichert"
+
+#~ msgid "Either `x` or `y` is a single letter or"
+#~ msgstr "Entweder `x` oder `y` ist ein einzelner Buchstabe ist oder"
+
+#~ msgid "`wxanimate`."
+#~ msgstr "`wxanimate`."
+
+#, fuzzy
+#~| msgid ""
+#~| "    load(draw);\n"
+#~| "    \n"
+#~| "    /* Parabola in window #1 */\n"
+#~| "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+#~| "    \n"
+#~| "    /* Parabola in window #2 */\n"
+#~| "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+#~| "    \n"
+#~| "    /* Paraboloid in window #3 */\n"
+#~| "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+#~ msgid ""
+#~ "    load(draw);\n"
+#~ "\n"
+#~ "    /* Parabola in window #1 */\n"
+#~ "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+#~ "\n"
+#~ "    /* Parabola in window #2 */\n"
+#~ "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+#~ "\n"
+#~ "    /* Paraboloid in window #3 */\n"
+#~ "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+#~ msgstr ""
+#~ "    load(draw);\n"
+#~ "    \n"
+#~ "    /* Parabel in Fenster #1 */\n"
+#~ "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+#~ "    \n"
+#~ "    /* Parabel in Fenster #2 */\n"
+#~ "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+#~ "    \n"
+#~ "    /* Paraboloid in Fenster #3 */\n"
+#~ "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+
+#~ msgid "2D"
+#~ msgstr "2D"
+
+#~ msgid "3D"
+#~ msgstr "3D"
+
+#~ msgid ""
+#~ "A file that contains commands that are executed on starting up _Maxima_: "
+#~ "`maxima-init.mac`"
+#~ msgstr ""
+#~ "Eine Datei mit Befehlen, die _Maxima_ beim Hochfahren ausführt: `maxima-"
+#~ "init.mac`"
+
+#~ msgid ""
+#~ "`wxsubscripts` tells _Maxima_ if it should convert variable names that "
+#~ "contain an underscore (`R_150` or the like) into subscripted variables. "
+#~ "See `wxdeclare_subscript` for details which variable names are "
+#~ "automatically converted."
+#~ msgstr ""
+#~ "`wxsubscripts` informiert _Maxima_, welche Variablen mit Unterstrich (z."
+#~ "B. `R_150`) in Variablen mit Subscript konvertieren soll. Details werden "
+#~ "unter `wxdeclare_subscript` beschrieben."
+
+#~ msgid ""
+#~ "`wxfilename`: This variable contains the name of the file currently "
+#~ "opened in _wxMaxima_."
+#~ msgstr ""
+#~ "`wxfilename`: Diese Variable sagt, welchen Dateinamen das Arbeitsblatt "
+#~ "laut _wxMaxima_ besitzt."
+
+#~ msgid ""
+#~ "`wxdirname`: This variable contains the name the directory, in which the "
+#~ "file currently opened in _wxMaxima_ is."
+#~ msgstr ""
+#~ "`wxdirname`: Diese Variable enthält den Namen des Verzeichnisses, in "
+#~ "welchem die aktuelle Datei geöffnet wurde."
+
+#~ msgid ""
+#~ "`wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s "
+#~ "pngcairo terminal that provides more line styles and a better overall "
+#~ "graphics quality."
+#~ msgstr ""
+#~ "`wxplot_pngcairo` sagt Maxima, ob es versuchen soll, gnuplot zu "
+#~ "instruieren, pngcairo zu nutzen, um hochqualitative Bilder zu nutzen."
+
+#~ msgid "`wxplot_size` defines the resolution of embedded plots."
+#~ msgstr "`wxplot_size` legt die Größe eingebetteter Diagramme fest."
+
+#~ msgid ""
+#~ "`wxchangedir`: On most operating systems _wxMaxima_ automatically sets "
+#~ "_Maxima_’s working directory to the directory of the current file. This "
+#~ "allows file I/O (e.g. by `read_matrix`) to work without specifying the "
+#~ "whole path to the file that has to be read or written. On Windows this "
+#~ "feature sometimes causes error messages and therefore can be set to "
+#~ "`false` from the config dialogue."
+#~ msgstr ""
+#~ "`wxchangedir`: Normalerweise setzt _wxMaxima_ _Maxima_'s "
+#~ "Arbeitsverzeichnis auf dasjenige, in dem sich das Arbeitsblatt befindet. "
+#~ "Dies ist praktisch, wenn Maxima auf Dateien zugreifen soll (z.B. via "
+#~ "`read_matrix`). Unter Windows geht dieses Feature manchmal schief und "
+#~ "kann daher auf `false` gesetzt werden."
+
+#~ msgid ""
+#~ "`wxanimate_framerate`: The number of frames per second the following "
+#~ "animations have to be played back with."
+#~ msgstr ""
+#~ "`wxanimate_framerate`: Die Geschwindigkeit, mit der Animationen "
+#~ "abgespielt werden sollen."
+
+#~ msgid "`wxanimate_autoplay`: Automatically play animations by default?"
+#~ msgstr ""
+#~ "`wxanimate_autoplay`: Sollen Animationen automatisch abgespielt werden?"
+
+#~ msgid "`wxbug_report()` tells how and where to file bugs"
+#~ msgstr "`wxbug_report()` sagt, wo und wie Fehler gemeldet werden können"
+
+#~ msgid ""
+#~ "The plotting command is part of a third-party package like "
+#~ "`implicit_plot` but this package was not loaded by _Maxima_’s `load()` "
+#~ "command before trying to plot."
+#~ msgstr ""
+#~ "`implicit_plot` wurde verwendet, ohne vorher via `load()` geladen zu "
+#~ "werden."
+
+#~ msgid ""
+#~ "_Maxima_ tried to do something the currently installed version of "
+#~ "_gnuplot_ isn’t able to understand. In this case, a file ending in `."
+#~ "gnuplot` located in the directory, which _Maxima_’s variable "
+#~ "`maxima_userdir` is pointing, contains the instructions from _Maxima_ to "
+#~ "_gnuplot_. Most of the time, this file’s contents therefore are helpful "
+#~ "when debugging the problem."
+#~ msgstr ""
+#~ "_Maxima_ hat versucht, _Gnuplot_ zu etwas zu bewegen, was die "
+#~ "installierte  Version von _Gnuplot_ nicht versteht. In diesem Fall stehen "
+#~ "die betreffenden Befehle in dem Verzeichnis, auf das `maxima_userdir` "
+#~ "zeigt in einer Datei mit der Endung `.gnuplot`. Der Inhalt dieser Datei "
+#~ "ist oft hilfreich, um den Fehler zu suchen."
+
+#, fuzzy
+#~| msgid ""
+#~| "Gnuplot was instructed to use the pngcairo library that provides "
+#~| "antialiasing and additional line styles, but it was not compiled to "
+#~| "support this possibility. Solution: Uncheck the \"Use the cairo terminal "
+#~| "for plot\" checkbox in the configuration dialog and don’t set "
+#~| "`wxplot_pngcairo` to true from _Maxima_."
+#~ msgid ""
+#~ "Gnuplot was instructed to use the pngCairo library that provides "
+#~ "antialiasing and additional line styles, but it was not compiled to "
+#~ "support this possibility. Solution: Uncheck the \"Use the Cairo terminal "
+#~ "for the plot\" checkbox in the configuration dialog and don’t set "
+#~ "`wxplot_pngCairo` to true from _Maxima_."
+#~ msgstr ""
+#~ "Gnuplot wurde über _wxMaxima_'s Konfigurationsdialog instruiert, pngcairo "
+#~ "zu verwenden, unterstützt diese Ausgabefunktionen aber nicht. Dies ist "
+#~ "auf dem Mac ein typisches Problem."
+
+#~ msgid "Gnuplot didn’t output a valid `.png` file."
+#~ msgstr "Gnuplot hat keine gültige `.png`-Datei ausgegeben."
+
+#, fuzzy
+#~| msgid ""
+#~| "_wxMaxima_ actually has two undo features: The global undo buffer that "
+#~| "is active if no cell is selected and a per-cell undo buffer that is "
+#~| "active if the cursor is inside a cell. It is worth trying to use both "
+#~| "undo options in order to see if an old value can still be accessed."
+#~ msgid ""
+#~ "_WxMaxima_ actually has two undo features: The global undo buffer that is "
+#~ "active if no cell is selected and a per-cell undo buffer that is active "
+#~ "if the cursor is inside a cell. It is worth trying to use both undo "
+#~ "options in order to see if an old value can still be accessed."
+#~ msgstr ""
+#~ "Ein Rückgängigmach-Speicher für die aktuell ausgewählte Zelle und einer "
+#~ "für das gesamte Arbeitsblatt, der aktiv ist, wenn keine Zelle ausgewählt "
+#~ "ist.Es lohnt sich, beide Rückgängigmach-Optionen zu probieren, um zu "
+#~ "sehen, ob ein alter Wert wiederhergestellt werden kann."
+
+#~ msgid ""
+#~ "If you still have a way to find out what label _Maxima_ has assigned to "
+#~ "the cell just type in the cell’s label and its contents will reappear."
+#~ msgstr ""
+#~ "Wenn die Ausgabe einer Marke (z.B. `%o20`) zugewiesen wurde, kann diese "
+#~ "Marke eingegeben werden und der betreffende Text erscheint."
+
+#~ msgid ""
+#~ "If you don’t: Don’t panic. In the “View” menu there is a way to show a "
+#~ "history pane that shows all _Maxima_ commands that have been issued "
+#~ "recently."
+#~ msgstr ""
+#~ "Wenn nicht: Keine Panik: Im “Ansicht”-Menü kann eine Seitenleiste "
+#~ "eingeschaltet werden, die die letzten Befehle anzeigt."
+
+#~ msgid "If nothing else helps _Maxima_ contains a replay feature:"
+#~ msgstr ""
+#~ "Wenn nichts anderes funktioniert, bietet Maxima die Möglichkeit an, alle "
+#~ "bisherigen Befehle nochmals auszuführen:"
+
+#~ msgid "playback();\n"
+#~ msgstr "playback();\n"
+
+#, fuzzy
+#~| msgid ""
+#~| "Most operating systems provide less complicated ways of starting "
+#~| "programs than the command line so this possibility is only rarely used. "
+#~| "_WxMaxima_ still provides some command line switches, though."
+#~ msgid ""
+#~ "Most operating systems provide less complicated ways of starting programs "
+#~ "than the command-line so this possibility is only rarely used. _WxMaxima_ "
+#~ "still provides some command-line switches, though."
+#~ msgstr ""
+#~ "Die meisten Betriebssysteme bieten unkompliziertere Arten, um ein GUI-"
+#~ "Programm zu starten, als die Kommandozeile. _WxMaxima_ bietet trotzdem "
+#~ "mehrere Kommandozeilenoptionen an."
+
 #~ msgid ""
 #~ "FAQ\n"
 #~ "===\n"
@@ -3635,7 +4321,7 @@ msgstr ""
 #~ "dieser Befehle (ohne die Pfade, die darin enthalten sind) sieht "
 #~ "folgendermaßen aus:"
 
-#, fuzzy, no-wrap
+#, fuzzy
 #~ msgid ""
 #~ "\n"
 #~ "read(\"test.mac\");\n"
@@ -3691,44 +4377,6 @@ msgstr ""
 #~ "auf dem aktuellen System nicht installiert sind, können sie von [dieser "
 #~ "Seite](https://www.mpim-bonn.mpg.de/node/258). heruntergeladen werden, wo "
 #~ "es auch eine Installationsanleitung gibt."
-
-#, fuzzy
-#~| msgid "    load(draw);\n"
-#~ msgid "    load(draw);\n"
-#~ msgstr "    load(draw);\n"
-
-#, fuzzy
-#~| msgid ""
-#~| "    /* Parabola in window #1 */\n"
-#~| "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-#~ msgid ""
-#~ "    /* Parabola in window #1 */\n"
-#~ "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-#~ msgstr ""
-#~ "    /* Eine Parabel in Fenster #1 */\n"
-#~ "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-
-#, fuzzy
-#~| msgid ""
-#~| "    /* Parabola in window #2 */\n"
-#~| "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-#~ msgid ""
-#~ "    /* Parabola in window #2 */\n"
-#~ "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-#~ msgstr ""
-#~ "    /* Eine Parabel in Fenster #2 */\n"
-#~ "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-
-#, fuzzy
-#~| msgid ""
-#~| "    /* Paraboloid in window #3 */\n"
-#~| "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
-#~ msgid ""
-#~ "    /* Paraboloid in window #3 */\n"
-#~ "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
-#~ msgstr ""
-#~ "    /* Ein Paraboloid in Fenster #3 */\n"
-#~ "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 
 #, fuzzy
 #~| msgid ""
@@ -3943,23 +4591,6 @@ msgstr ""
 
 #~ msgid "lisp"
 #~ msgstr "lisp"
-
-#, fuzzy
-#~| msgid ""
-#~| "pngdraw2d(\"Test\",\n"
-#~| "        explicit(sin(x),x,1,10)\n"
-#~| ");\n"
-#~| "~~~~\n"
-#~ msgid ""
-#~ "pngdraw2d(\"Test\",\n"
-#~ "        explicit(sin(x),x,1,10)\n"
-#~ ");\n"
-#~ "~~~\n"
-#~ msgstr ""
-#~ "pngdraw2d(\\\"Test\\\",\n"
-#~ "        explicit(sin(x),x,1,10)\n"
-#~ ");\n"
-#~ "~~~~\n"
 
 #~ msgid ""
 #~ "A horizontal cursor that is able to select any number of whole cells. "
