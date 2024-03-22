@@ -9,7 +9,7 @@ var searchData=
   ['unfoldall_3046',['UnfoldAll',['../classGroupCell.html#aa53341c4c978ce683242b28cd6c74835',1,'GroupCell::UnfoldAll()'],['../classWorksheet.html#a3b39c76c8bd9e25b3c743607a70db892',1,'Worksheet::UnfoldAll()']]],
   ['unhidetree_3047',['UnhideTree',['../classGroupCell.html#a3670bf4a157be63688d1554e78f8eb93',1,'GroupCell']]],
   ['unicodesidebar_3048',['UnicodeSidebar',['../classUnicodeSidebar.html#ab880d1a15ee6873c5149b96d5fc169c0',1,'UnicodeSidebar']]],
-  ['unicodetomaxima_3049',['UnicodeToMaxima',['../classWorksheet.html#a45c713f9156f3faeb36cb7a10d99654a',1,'Worksheet']]],
+  ['unicodetomaxima_3049',['UnicodeToMaxima',['../classWorksheet.html#a0aeae79d8c7dadb1b4f622bc3c646d39',1,'Worksheet']]],
   ['unsetcellstyle_3050',['UnsetCellStyle',['../classToolBar.html#a56051971c1b3ca42d5208d9577e8bf48',1,'ToolBar']]],
   ['updatebitmaps_3051',['UpdateBitmaps',['../classStatusBar.html#a2c9183506f9702f92ac60c2b673ec64e',1,'StatusBar::UpdateBitmaps()'],['../classToolBar.html#a16d14207612dc5460b523a4cf904fe52',1,'ToolBar::UpdateBitmaps()']]],
   ['updateconfig_3052',['UpdateConfig',['../classWorksheet.html#a5241f3c8ca8043a6b70dad9c9e7ec5d1',1,'Worksheet']]],

@@ -13,7 +13,7 @@ var searchData=
   ['unicodesidebar_1551',['UnicodeSidebar',['../classUnicodeSidebar.html',1,'UnicodeSidebar'],['../classUnicodeSidebar.html#ab880d1a15ee6873c5149b96d5fc169c0',1,'UnicodeSidebar::UnicodeSidebar()']]],
   ['unicodesidebar_2ecpp_1552',['UnicodeSidebar.cpp',['../UnicodeSidebar_8cpp.html',1,'']]],
   ['unicodesidebar_2eh_1553',['UnicodeSidebar.h',['../UnicodeSidebar_8h.html',1,'']]],
-  ['unicodetomaxima_1554',['UnicodeToMaxima',['../classWorksheet.html#a45c713f9156f3faeb36cb7a10d99654a',1,'Worksheet']]],
+  ['unicodetomaxima_1554',['UnicodeToMaxima',['../classWorksheet.html#a0aeae79d8c7dadb1b4f622bc3c646d39',1,'Worksheet']]],
   ['unit_1555',['unit',['../classAutoComplete.html#a6225a91b46c0459755a62de137620b29ac18a9c878b44c379ca78faedaac2cd6c',1,'AutoComplete']]],
   ['unorderedequalsmatcher_1556',['UnorderedEqualsMatcher',['../structCatch_1_1Matchers_1_1Vector_1_1UnorderedEqualsMatcher.html',1,'Catch::Matchers::Vector']]],
   ['unsetcellstyle_1557',['UnsetCellStyle',['../classToolBar.html#a56051971c1b3ca42d5208d9577e8bf48',1,'ToolBar']]],

@@ -356,9 +356,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a5241f3c8ca8043a6b70dad9c9e7ec5d1">UpdateConfig</a> ()</td></tr>
 <tr class="memdesc:a5241f3c8ca8043a6b70dad9c9e7ec5d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-read the configuration. <br /></td></tr>
 <tr class="separator:a5241f3c8ca8043a6b70dad9c9e7ec5d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45c713f9156f3faeb36cb7a10d99654a"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a45c713f9156f3faeb36cb7a10d99654a">UnicodeToMaxima</a> (wxString s)</td></tr>
-<tr class="memdesc:a45c713f9156f3faeb36cb7a10d99654a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a few unicode characters interpretable by maxima.  <a href="classWorksheet.html#a45c713f9156f3faeb36cb7a10d99654a">More...</a><br /></td></tr>
-<tr class="separator:a45c713f9156f3faeb36cb7a10d99654a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0aeae79d8c7dadb1b4f622bc3c646d39"><td class="memItemLeft" align="right" valign="top">const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a0aeae79d8c7dadb1b4f622bc3c646d39">UnicodeToMaxima</a> (wxString s)</td></tr>
+<tr class="memdesc:a0aeae79d8c7dadb1b4f622bc3c646d39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a few unicode characters interpretable by maxima.  <a href="classWorksheet.html#a0aeae79d8c7dadb1b4f622bc3c646d39">More...</a><br /></td></tr>
+<tr class="separator:a0aeae79d8c7dadb1b4f622bc3c646d39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac81b31416b9f059cdaaad32402b071ac"><td class="memItemLeft" align="right" valign="top"><a id="ac81b31416b9f059cdaaad32402b071ac"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ac81b31416b9f059cdaaad32402b071ac">ScrollToStart</a> ()</td></tr>
 <tr class="memdesc:ac81b31416b9f059cdaaad32402b071ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scroll to the start of the worksheet. <br /></td></tr>
@@ -1085,7 +1085,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Can we merge the selected cells into one? </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
 
 </div>
 </div>
@@ -1271,7 +1271,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Export the file to an html document. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
 
 </div>
 </div>
@@ -1320,7 +1320,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Export a region of the file to a .wxm or .mac file maxima's load command can read. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
 
 </div>
 </div>
@@ -1415,7 +1415,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Do an incremental search from the cursor or the point the last search started at. </p>
-<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
+<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
 
 </div>
 </div>
@@ -2145,7 +2145,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Scrolls to a point on the worksheet. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
 <p>Test case:</p><ul>
 <li>Create a code cell</li>
 <li>Press the "hide all code cells" button.</li>
@@ -2242,14 +2242,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a45c713f9156f3faeb36cb7a10d99654a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45c713f9156f3faeb36cb7a10d99654a">&#9670;&nbsp;</a></span>UnicodeToMaxima()</h2>
+<a id="a0aeae79d8c7dadb1b4f622bc3c646d39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0aeae79d8c7dadb1b4f622bc3c646d39">&#9670;&nbsp;</a></span>UnicodeToMaxima()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">wxString Worksheet::UnicodeToMaxima </td>
+          <td class="memname">const wxString Worksheet::UnicodeToMaxima </td>
           <td>(</td>
           <td class="paramtype">wxString&#160;</td>
           <td class="paramname"><em>s</em></td><td>)</td>
