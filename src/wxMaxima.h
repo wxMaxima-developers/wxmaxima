@@ -763,8 +763,8 @@ protected:
   //! The first prompt maxima will output
   static wxString m_firstPrompt;
   bool m_dispReadOut;               //!< what is displayed in statusbar
-  int m_gnuplot_process_id;
-  int m_maxima_process_id;
+  wxWindowIDRef m_gnuplot_process_id;
+  wxWindowIDRef m_maxima_process_id;
   wxString m_lastPrompt;
   wxString m_lastPath;
   std::unique_ptr<wxPrintData> m_printData;

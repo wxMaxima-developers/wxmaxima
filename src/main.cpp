@@ -482,8 +482,7 @@ bool MyApp::OnInit() {
 }
 
 int MyApp::OnExit() {
-  std::cout << std::flush;
-  std::cerr << std::flush;
+  wxLog::SetActiveTarget(new NullLog);
   return wxMaxima::GetExitCode();
 }
 
