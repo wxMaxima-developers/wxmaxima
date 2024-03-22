@@ -34,7 +34,7 @@
 #include <wx/wx.h>
 
 MaximaTokenizer::MaximaTokenizer(wxString commands,
-                                 Configuration *configuration)
+                                 const Configuration * const configuration)
   : m_configuration(configuration) {
   if (m_hardcodedFunctions.empty()) {
     m_hardcodedFunctions["for"] = 1;
@@ -353,7 +353,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands,
 }
 
 MaximaTokenizer::MaximaTokenizer(wxString commands,
-                                 Configuration *configuration,
+                                 const Configuration * const configuration,
                                  const TokenList &initialTokens)
   : MaximaTokenizer(commands, configuration) {
   // cppcheck-suppress useInitializationList

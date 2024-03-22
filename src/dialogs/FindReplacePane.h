@@ -43,6 +43,7 @@
 class FindReplacePane : public wxPanel
 {
 public:
+  virtual ~FindReplacePane();
   class FindReplaceData: public wxFindReplaceData
   {
   public:

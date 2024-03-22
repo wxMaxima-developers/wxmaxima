@@ -5727,7 +5727,7 @@ bool Worksheet::ExportToTeX(const wxString &file) {
 
 void Worksheet::LoadSymbols() { m_autocomplete.LoadSymbols(); }
 
-wxString Worksheet::UnicodeToMaxima(wxString s) {
+const wxString Worksheet::UnicodeToMaxima(wxString s) {
   s.Replace(wxS("\u2052"), "-"); // commercial minus sign
   s.Replace(wxS("\uFE63"), "-"); // unicode small minus sign
   s.Replace(wxS("\uFF0D"), "-"); // unicode big minus sign
