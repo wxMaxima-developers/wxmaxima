@@ -7,7 +7,7 @@ add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
 # Set the locale to default C to prevent issues due to localization of commands.
-# This is necessary as we call commands like "po4a-translate --version"
+# This is necessary as we call commands like "po4a --version"
 set(ENV{LANG} C)
 
 if(WIN32)
@@ -197,7 +197,7 @@ list(REMOVE_AT AUTHORSLINES 0 1) # remove main heading line.
 
 add_definitions(-DwxNO_UNSAFE_WXSTRING_CONV)
 
-file(RELATIVE_PATH RELPATH_TO_PO4ACFG "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}/locales/manual")
+file(RELATIVE_PATH RELPATH_TO_PO4A_PO_DIRECTORY "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}/locales/manual")
 configure_file(${CMAKE_SOURCE_DIR}/locales/manual/po4a.cfg.in po4a.cfg)
 
 add_subdirectory(src)
