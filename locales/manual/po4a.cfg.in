@@ -1,2 +1,2 @@
-[po_directory] ${CMAKE_SOURCE_DIR}/locales/manual
+[po_directory] ${RELPATH_TO_PO4ACFG}
 [type: text] ${CMAKE_SOURCE_DIR}/info/wxmaxima.md $lang:${CMAKE_BINARY_DIR}/info/wxmaxima.$lang.md opt:"-k 5"

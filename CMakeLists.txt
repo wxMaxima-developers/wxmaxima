@@ -197,6 +197,7 @@ list(REMOVE_AT AUTHORSLINES 0 1) # remove main heading line.
 
 add_definitions(-DwxNO_UNSAFE_WXSTRING_CONV)
 
+file(RELATIVE_PATH RELPATH_TO_PO4ACFG "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}/locales/manual")
 configure_file(${CMAKE_SOURCE_DIR}/locales/manual/po4a.cfg.in po4a.cfg)
 
 add_subdirectory(src)
