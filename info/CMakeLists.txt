@@ -2,16 +2,16 @@
 
 find_program(PO4A po4a)
 if(PO4A)
-	# Get po4a-translate version number
+	# Get po4a version number
 	execute_process(COMMAND ${PO4A} --version OUTPUT_VARIABLE PO4A_VERSION_TEXT)
 	string(REGEX REPLACE "^po4a version ([^\n]*).*" "\\1"  PO4A_VERSION "${PO4A_VERSION_TEXT}")
 	string(REGEX REPLACE "\\.$" ""  PO4A_VERSION "${PO4A_VERSION}") # remove trailing dot.
 	message(STATUS "Found po4a: ${PO4A} (found version \"${PO4A_VERSION}\")")
 	execute_process(COMMAND ${PO4A} --verbose ${CMAKE_BINARY_DIR}/po4a.cfg)
 else()
-	message(STATUS "po4a-translate not found. Disable the generation of localized documentation.")
+	message(STATUS "po4a not found. Disable the generation of localized documentation.")
 endif()
-	
+
 find_program(PANDOC pandoc)
 if(PANDOC)
 	execute_process(
@@ -87,20 +87,6 @@ if(PANDOC)
         else()
             message(STATUS "Xelatex or Lualatex not found. PDF documentation can not be converted from Markdown.")
 	endif()
-
-	find_program(PO4A po4a)
-	if(PO4A)
-		# Get po4a-translate version number
-		execute_process(COMMAND ${PO4A} --version
-			OUTPUT_VARIABLE PO4A_VERSION_TEXT)
-		string(REGEX REPLACE "^po4a version ([^\n]*).*" "\\1"  PO4A_VERSION "${PO4A_VERSION_TEXT}")
-		string(REGEX REPLACE "\\.$" ""  PO4A_VERSION "${PO4A_VERSION}") # remove trailing dot.
-		message(STATUS "Found po4a: ${PO4A} (found version \"${PO4A_VERSION}\")")
-		execute_process(COMMAND ${PO4A} ${CMAKE_BINARY_DIR}/locales/manual/po4a.cfg)
-	else()
-		message(STATUS "po4a-translate not found. Disable the generation of localized documentation.")
-	endif()
-
 
 	file(GLOB IMAGEFILES ${CMAKE_CURRENT_SOURCE_DIR}/*.png)
 	file(COPY ${IMAGEFILES} DESTINATION .)
