@@ -137,6 +137,13 @@ FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
   this->SetSizerAndFit(mainSizer);
 }
 
+FindReplacePane::~FindReplacePane()
+{
+  wxConfig::Get()->Write(wxS("Find/Flags"), m_findReplaceData->GetFlags());
+  wxConfig::Get()->Write(wxS("Find/RegexSearch"), m_findReplaceData->GetRegexSearch());
+
+}
+
 FindReplacePane::FindReplaceData::FindReplaceData() :
   wxFindReplaceData(),
   m_regexSearch(false)

@@ -55,7 +55,7 @@ public:
     \param commands The maxima commands to tokenize
     \param configuration A pointer to the configuration object
   */
-  MaximaTokenizer(wxString commands, Configuration *configuration);
+  MaximaTokenizer(wxString commands, const Configuration * const configuration);
 
   //! A maxima code snippet from this tokenizer
   class Token
@@ -88,7 +88,7 @@ public:
   TokenList PopTokens() && { return std::move(m_tokens); }
 
   //! A constructor that adds additional words to the token list
-  MaximaTokenizer(wxString commands, Configuration *configuration,
+  MaximaTokenizer(wxString commands, const Configuration * const configuration,
                   const TokenList &initialTokens);
 
 protected:
@@ -111,7 +111,7 @@ protected:
   //! Operators
   static const wxString m_operators;
 
-  Configuration *m_configuration;
+  const Configuration * const m_configuration;
 
   typedef std::unordered_map <wxString, int, wxStringHash> StringHash;
   /*! Names of functions that don't require parenthesis

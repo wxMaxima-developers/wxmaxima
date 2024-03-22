@@ -748,6 +748,7 @@ public:
   //! The marker for the end of a input prompt
   const static wxString m_promptSuffix;
 protected:
+  void QuestionAnswered(){if(GetWorksheet()) GetWorksheet()->QuestionAnswered();}
     //! Is called when we get a new list of demo files
   //! Is called when we get a new list of demo files
   void OnNewDemoFiles(wxCommandEvent &event);

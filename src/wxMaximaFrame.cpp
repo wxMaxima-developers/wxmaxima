@@ -167,10 +167,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   // Now it is time to construct more of the window contents.
   // The table of contents
-  GetWorksheet()->m_tableOfContents = new TableOfContents(
-                                                       this, -1,
-                                                       &m_configuration,
-                                                       GetWorksheet()->GetTreeAddress());
+  if(GetWorksheet())
+    GetWorksheet()->m_tableOfContents = new TableOfContents(this, -1,
+                                                            &m_configuration,
+                                                            GetWorksheet()->GetTreeAddress());
 
   m_xmlInspector = new XmlInspector(this, -1);
   //  wxWindowUpdateLocker xmlInspectorBlocker(m_xmlInspector);
@@ -207,77 +207,85 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   m_sidebarNames[EventIDs::menu_pane_console] = wxS("console");
   m_sidebarCaption[EventIDs::menu_pane_console] = _("The worksheet");
-  m_manager.AddPane(GetWorksheet(),
-                    wxAuiPaneInfo()
-                    .Name(m_sidebarNames[EventIDs::menu_pane_console])
-                    .Center()
-                    .CloseButton(false)
-                    .CaptionVisible(false)
-                    .TopDockable(true)
-                    .BottomDockable(true)
-                    .LeftDockable(true)
-                    .RightDockable(true)
-                    .MinSize(wxSize(100 * GetContentScaleFactor(),
-                                    100 * GetContentScaleFactor()))
-                    .PaneBorder(false)
-                    .Row(2));
-
-  GetWorksheet()->m_mainToolBar = new ToolBar(this);
-  m_sidebarNames[EventIDs::menu_pane_toolbar] = wxS("toolbar");
-  m_sidebarCaption[EventIDs::menu_pane_toolbar] = _("The main toolbar");
-  m_manager.AddPane(GetWorksheet()->m_mainToolBar,
-                    wxAuiPaneInfo()
-                    .Name(m_sidebarNames[EventIDs::menu_pane_toolbar])
-                    .Top()
-                    .TopDockable(true)
-                    .BottomDockable(true)
-                    // .ToolbarPane().
-                    .CaptionVisible(false)
-                    .CloseButton(false)
-                    .LeftDockable(false)
-                    .DockFixed()
-                    .Floatable(false)
-                    .RightDockable(false)
-                    .Gripper(false)
-                    .Row(0));
-
+  if(GetWorksheet())
+    {
+      m_manager.AddPane(GetWorksheet(),
+                        wxAuiPaneInfo()
+                        .Name(m_sidebarNames[EventIDs::menu_pane_console])
+                        .Center()
+                        .CloseButton(false)
+                        .CaptionVisible(false)
+                        .TopDockable(true)
+                        .BottomDockable(true)
+                        .LeftDockable(true)
+                        .RightDockable(true)
+                        .MinSize(wxSize(100 * GetContentScaleFactor(),
+                                        100 * GetContentScaleFactor()))
+                        .PaneBorder(false)
+                        .Row(2));
+      
+      
+      GetWorksheet()->m_mainToolBar = new ToolBar(this);
+      m_sidebarNames[EventIDs::menu_pane_toolbar] = wxS("toolbar");
+      m_sidebarCaption[EventIDs::menu_pane_toolbar] = _("The main toolbar");
+      m_manager.AddPane(GetWorksheet()->m_mainToolBar,
+                        wxAuiPaneInfo()
+                        .Name(m_sidebarNames[EventIDs::menu_pane_toolbar])
+                        .Top()
+                        .TopDockable(true)
+                        .BottomDockable(true)
+                        // .ToolbarPane().
+                        .CaptionVisible(false)
+                        .CloseButton(false)
+                        .LeftDockable(false)
+                        .DockFixed()
+                        .Floatable(false)
+                        .RightDockable(false)
+                        .Gripper(false)
+                        .Row(0));
+    }
   m_sidebarNames[EventIDs::menu_pane_history] = wxS("history");
   m_sidebarCaption[EventIDs::menu_pane_history] = _("History");
   m_manager.AddPane(m_history, wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_history])
                     .Right());
 
-  m_sidebarNames[EventIDs::menu_pane_structure] = wxS("structure");
-  m_sidebarCaption[EventIDs::menu_pane_structure] = _("Table of Contents");
-  m_manager.AddPane(GetWorksheet()->m_tableOfContents, wxAuiPaneInfo()
-                    .Name(m_sidebarNames[EventIDs::menu_pane_structure])
-                    .Right());
-
-  m_sidebarNames[EventIDs::menu_pane_xmlInspector] = wxS("XmlInspector");
-  m_sidebarCaption[EventIDs::menu_pane_xmlInspector] = _("Raw XML monitor");
-  m_manager.AddPane(m_xmlInspector, wxAuiPaneInfo()
-                    .Name(m_sidebarNames[EventIDs::menu_pane_xmlInspector])
-                    .Right());
-
+  if(GetWorksheet())
+    {
+      m_sidebarNames[EventIDs::menu_pane_structure] = wxS("structure");
+      m_sidebarCaption[EventIDs::menu_pane_structure] = _("Table of Contents");
+      m_manager.AddPane(GetWorksheet()->m_tableOfContents, wxAuiPaneInfo()
+                        .Name(m_sidebarNames[EventIDs::menu_pane_structure])
+                        .Right());
+      
+      m_sidebarNames[EventIDs::menu_pane_xmlInspector] = wxS("XmlInspector");
+      m_sidebarCaption[EventIDs::menu_pane_xmlInspector] = _("Raw XML monitor");
+      m_manager.AddPane(m_xmlInspector, wxAuiPaneInfo()
+                        .Name(m_sidebarNames[EventIDs::menu_pane_xmlInspector])
+                        .Right());
+    }
   m_sidebarNames[EventIDs::menu_pane_stats] = wxS("stats");
   m_sidebarCaption[EventIDs::menu_pane_stats] = _("Statistics");
   m_manager.AddPane(new StatSidebar(this), wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_stats])
                     .Left());
 
-  m_sidebarNames[EventIDs::menu_pane_greek] = wxS("greek");
-  m_sidebarCaption[EventIDs::menu_pane_greek] = _("Greek Letters");
-  m_manager.AddPane(new GreekSidebar(this, &m_configuration, GetWorksheet()), wxAuiPaneInfo()
-                    .Name(m_sidebarNames[EventIDs::menu_pane_greek])
-                    .Left());
-
-  m_sidebarNames[EventIDs::menu_pane_unicode] = wxS("unicode");
-  m_sidebarCaption[EventIDs::menu_pane_unicode] = _("Unicode characters");
-  //  wxWindowUpdateLocker unicodeBlocker(unicodePane);
-  m_manager.AddPane(new UnicodeSidebar(this, GetWorksheet(), &m_configuration), wxAuiPaneInfo()
-                    .Name(m_sidebarNames[EventIDs::menu_pane_unicode])
-                    .Left());
-
+  if(GetWorksheet())
+    {
+      m_sidebarNames[EventIDs::menu_pane_greek] = wxS("greek");
+      m_sidebarCaption[EventIDs::menu_pane_greek] = _("Greek Letters");
+      m_manager.AddPane(new GreekSidebar(this, &m_configuration, GetWorksheet()), wxAuiPaneInfo()
+                        .Name(m_sidebarNames[EventIDs::menu_pane_greek])
+                        .Left());
+      
+      m_sidebarNames[EventIDs::menu_pane_unicode] = wxS("unicode");
+      m_sidebarCaption[EventIDs::menu_pane_unicode] = _("Unicode characters");
+      //  wxWindowUpdateLocker unicodeBlocker(unicodePane);
+      m_manager.AddPane(new UnicodeSidebar(this, GetWorksheet(), &m_configuration), wxAuiPaneInfo()
+                        .Name(m_sidebarNames[EventIDs::menu_pane_unicode])
+                        .Left());
+    }
+  
   m_sidebarNames[EventIDs::menu_pane_log] = wxS("log");
   m_sidebarCaption[EventIDs::menu_pane_log] = _("Debug messages");
   m_manager.AddPane(m_logPane, wxAuiPaneInfo()
@@ -287,22 +295,25 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // Avoid the strange non-responsive see-through log window on the mac
   wxWindowUpdateLocker avoidMacError(m_logPane);
 
-  m_sidebarNames[EventIDs::menu_pane_variables] = wxS("variables");
-  m_sidebarCaption[EventIDs::menu_pane_variables] = _("Variables");
-  GetWorksheet()->m_variablesPane = new Variablespane(this, wxID_ANY);
-  m_manager.AddPane(
-                    GetWorksheet()->m_variablesPane,
-                    wxAuiPaneInfo()
-                    .Name(m_sidebarNames[EventIDs::menu_pane_variables])
-                    .Bottom());
-
-  m_sidebarNames[EventIDs::menu_pane_symbols] = wxS("symbols");
-  m_sidebarCaption[EventIDs::menu_pane_symbols] = _("Mathematical Symbols");
-  m_symbolsSidebar = new SymbolsSidebar(this, &m_configuration, GetWorksheet());
-  m_manager.AddPane(m_symbolsSidebar,
-                    wxAuiPaneInfo()
-                    .Name(m_sidebarNames[EventIDs::menu_pane_symbols])
-                    .Left());
+  if(GetWorksheet())
+    {
+      m_sidebarNames[EventIDs::menu_pane_variables] = wxS("variables");
+      m_sidebarCaption[EventIDs::menu_pane_variables] = _("Variables");
+      GetWorksheet()->m_variablesPane = new Variablespane(this, wxID_ANY);
+      m_manager.AddPane(
+                        GetWorksheet()->m_variablesPane,
+                        wxAuiPaneInfo()
+                        .Name(m_sidebarNames[EventIDs::menu_pane_variables])
+                        .Bottom());
+      
+      m_sidebarNames[EventIDs::menu_pane_symbols] = wxS("symbols");
+      m_sidebarCaption[EventIDs::menu_pane_symbols] = _("Mathematical Symbols");
+      m_symbolsSidebar = new SymbolsSidebar(this, &m_configuration, GetWorksheet());
+      m_manager.AddPane(m_symbolsSidebar,
+                        wxAuiPaneInfo()
+                        .Name(m_sidebarNames[EventIDs::menu_pane_symbols])
+                        .Left());
+    }
 
   m_sidebarNames[EventIDs::menu_pane_math] = wxS("math");
   m_sidebarCaption[EventIDs::menu_pane_math] = _("General Math");
@@ -310,16 +321,18 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                     .Name(m_sidebarNames[EventIDs::menu_pane_math])
                     .Left());
 
-  m_sidebarNames[EventIDs::menu_pane_wizard] = wxS("wizard");
-  m_sidebarCaption[EventIDs::menu_pane_wizard] = _("The current Wizard");
-  m_manager.AddPane(m_wizard =
-                    new ScrollingGenWizPanel(
-                                             this, &m_configuration,
-                                             GetWorksheet()->GetMaximaManual()),
-                    wxAuiPaneInfo()
-                    .Name(m_sidebarNames[EventIDs::menu_pane_wizard])
-                    .Caption(wxS("Example Wizard")));
-
+  if(GetWorksheet())
+    {
+      m_sidebarNames[EventIDs::menu_pane_wizard] = wxS("wizard");
+      m_sidebarCaption[EventIDs::menu_pane_wizard] = _("The current Wizard");
+      m_manager.AddPane(m_wizard =
+                        new ScrollingGenWizPanel(
+                                                 this, &m_configuration,
+                                                 GetWorksheet()->GetMaximaManual()),
+                        wxAuiPaneInfo()
+                        .Name(m_sidebarNames[EventIDs::menu_pane_wizard])
+                        .Caption(wxS("Example Wizard")));
+    }
 
   m_sidebarNames[EventIDs::menu_pane_format] = wxS("format");
   m_sidebarCaption[EventIDs::menu_pane_format] = _("Insert");
@@ -335,14 +348,17 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                     .Left());
 
 #ifdef USE_WEBVIEW
-  m_sidebarNames[EventIDs::menu_pane_help] = wxS("help");
-  m_sidebarCaption[EventIDs::menu_pane_help] = _("Help");
-  m_manager.AddPane(m_helpPane = new HelpBrowser(
-                                                 this, &m_configuration, GetWorksheet()->GetMaximaManual(),
-                                                 wxS("file://") + wxMaximaManualLocation()),
-                    wxAuiPaneInfo()
-                    .Name(m_sidebarNames[EventIDs::menu_pane_help])
-                    .Right());
+  if(GetWorksheet())
+    {
+      m_sidebarNames[EventIDs::menu_pane_help] = wxS("help");
+      m_sidebarCaption[EventIDs::menu_pane_help] = _("Help");
+      m_manager.AddPane(m_helpPane = new HelpBrowser(
+                                                     this, &m_configuration, GetWorksheet()->GetMaximaManual(),
+                                                     wxS("file://") + wxMaximaManualLocation()),
+                        wxAuiPaneInfo()
+                        .Name(m_sidebarNames[EventIDs::menu_pane_help])
+                        .Right());
+    }
 #endif
 
   for(const auto &pane: m_sidebarNames)
@@ -368,7 +384,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     m_manager.LoadPerspective(perspective, false);
   }
 
-  GetWorksheet()->m_mainToolBar->Realize();
+  if(GetWorksheet())
+    GetWorksheet()->m_mainToolBar->Realize();
 
   // Loading the perspective rarely fails. But it might - and in this case we want
   // to set the common properties of our sidebars after loading them: This way we
@@ -507,12 +524,14 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
         break;
       case StatusBar::MaximaStatus::waiting:
         m_bytesFromMaxima_last = 0;
-        GetWorksheet()->SetWorkingGroup(NULL);
-        // If we evaluated a cell that produces no output we still want the
-        // cell to be unselected after evaluating it.
-        if (GetWorksheet()->FollowEvaluation())
-          GetWorksheet()->ClearSelection();
-
+        if(GetWorksheet())
+          {
+            GetWorksheet()->SetWorkingGroup(NULL);
+            // If we evaluated a cell that produces no output we still want the
+            // cell to be unselected after evaluating it.
+            if (GetWorksheet()->FollowEvaluation())
+              GetWorksheet()->ClearSelection();
+          }
         m_MenuBar->EnableItem(EventIDs::menu_remove_output, true);
         // We don't evaluate any cell right now.
         break;
@@ -587,8 +606,8 @@ void wxMaximaFrame::StatusExportFailed() {
 wxMaximaFrame::~wxMaximaFrame() {
   m_bytesReadDisplayTimer.Stop();
   wxString perspective = m_manager.SavePerspective();
-
   wxConfig::Get()->Write(wxS("AUI/perspective"), perspective);
+  wxConfig::Get()->Flush();
   m_manager.UnInit();
 }
 
@@ -856,44 +875,48 @@ void wxMaximaFrame::SetupViewMenu() {
 void wxMaximaFrame::SetupCellMenu() {
   // Cell menu
   m_CellMenu = new wxMenu;
-  {
-    wxMenuItem *it =
-      new wxMenuItem(m_CellMenu, EventIDs::menu_evaluate, _("Evaluate Cell(s)"),
-                     _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
-    it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalBitmap(
-                                                            wxRendererNative::Get().GetCheckBoxSize(this)));
-    m_CellMenu->Append(it);
-  }
+  if(GetWorksheet())
+    {
+      wxMenuItem *it =
+        new wxMenuItem(m_CellMenu, EventIDs::menu_evaluate, _("Evaluate Cell(s)"),
+                       _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
+      it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalBitmap(
+                                                                 wxRendererNative::Get().GetCheckBoxSize(this)));
+      m_CellMenu->Append(it);
+    }
   m_CellMenu->Append(
                      EventIDs::EventIDs::menu_evaluate_all_visible, _("Evaluate All Visible Cells\tCtrl+R"),
                      _("Evaluate all visible cells in the document"), wxITEM_NORMAL);
-  {
-    wxMenuItem *it = new wxMenuItem(
-                                    m_CellMenu, EventIDs::menu_evaluate_all, _("Evaluate All Cells\tCtrl+Shift+R"),
-                                    _("Evaluate all cells in the document"), wxITEM_NORMAL);
-    it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalAllBitmap(
-                                                               wxRendererNative::Get().GetCheckBoxSize(this)));
-    m_CellMenu->Append(it);
-  }
-  {
-    wxMenuItem *it = new wxMenuItem(
-                                    m_CellMenu, ToolBar::tb_evaltillhere,
-                                    _("Evaluate Cells Above\tCtrl+Shift+P"),
-                                    _("Re-evaluate all cells above the one the cursor is in"),
-                                    wxITEM_NORMAL);
-    it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalTillHereBitmap(
+  if(GetWorksheet())
+    {
+      wxMenuItem *it = new wxMenuItem(
+                                      m_CellMenu, EventIDs::menu_evaluate_all, _("Evaluate All Cells\tCtrl+Shift+R"),
+                                      _("Evaluate all cells in the document"), wxITEM_NORMAL);
+      it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalAllBitmap(
                                                                     wxRendererNative::Get().GetCheckBoxSize(this)));
-    m_CellMenu->Append(it);
-  }
-  {
-    wxMenuItem *it = new wxMenuItem(
-                                    m_CellMenu, ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"),
-                                    _("Re-evaluate all cells below the one the cursor is in"),
-                                    wxITEM_NORMAL);
-    it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalRestBitmap(
-                                                                wxRendererNative::Get().GetCheckBoxSize(this)));
-    m_CellMenu->Append(it);
-  }
+      m_CellMenu->Append(it);
+    }
+  if(GetWorksheet())
+    {
+      wxMenuItem *it = new wxMenuItem(
+                                      m_CellMenu, ToolBar::tb_evaltillhere,
+                                      _("Evaluate Cells Above\tCtrl+Shift+P"),
+                                      _("Re-evaluate all cells above the one the cursor is in"),
+                                      wxITEM_NORMAL);
+      it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalTillHereBitmap(
+                                                                         wxRendererNative::Get().GetCheckBoxSize(this)));
+      m_CellMenu->Append(it);
+    }
+  if(GetWorksheet())
+    {
+      wxMenuItem *it = new wxMenuItem(
+                                      m_CellMenu, ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"),
+                                      _("Re-evaluate all cells below the one the cursor is in"),
+                                      wxITEM_NORMAL);
+      it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalRestBitmap(
+                                                                     wxRendererNative::Get().GetCheckBoxSize(this)));
+      m_CellMenu->Append(it);
+    }
   m_CellMenu->Append(EventIDs::menu_remove_output, _("Remove All Output"),
                      _("Remove output from input cells"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
@@ -959,23 +982,25 @@ void wxMaximaFrame::SetupCellMenu() {
 void wxMaximaFrame::SetupMaximaMenu() {
   m_MaximaMenu = new wxMenu;
 
-  {
-    wxMenuItem *it =
-      new wxMenuItem(m_MaximaMenu, EventIDs::menu_interrupt_id, _("&Interrupt\tCtrl+G"),
-                     _("Interrupt current computation"), wxITEM_NORMAL);
-    it->SetBitmap(GetWorksheet()->m_mainToolBar->GetInterruptBitmap(
-                                                                 wxRendererNative::Get().GetCheckBoxSize(this)));
-    m_MaximaMenu->Append(it);
-  }
+  if(GetWorksheet())
+    {
+      wxMenuItem *it =
+        new wxMenuItem(m_MaximaMenu, EventIDs::menu_interrupt_id, _("&Interrupt\tCtrl+G"),
+                       _("Interrupt current computation"), wxITEM_NORMAL);
+      it->SetBitmap(GetWorksheet()->m_mainToolBar->GetInterruptBitmap(
+                                                                      wxRendererNative::Get().GetCheckBoxSize(this)));
+      m_MaximaMenu->Append(it);
+    }
 
-  {
-    wxMenuItem *it = new wxMenuItem(m_MaximaMenu, ToolBar::menu_restart_id,
-                                    _("&Restart Maxima\tCtrl+Alt+R"), _("Restart Maxima"),
-                                    wxITEM_NORMAL);
-    it->SetBitmap(GetWorksheet()->m_mainToolBar->GetRestartBitmap(
-                                                               wxRendererNative::Get().GetCheckBoxSize(this)));
-    m_MaximaMenu->Append(it);
-  }
+  if(GetWorksheet())
+    {
+      wxMenuItem *it = new wxMenuItem(m_MaximaMenu, ToolBar::menu_restart_id,
+                                      _("&Restart Maxima\tCtrl+Alt+R"), _("Restart Maxima"),
+                                      wxITEM_NORMAL);
+      it->SetBitmap(GetWorksheet()->m_mainToolBar->GetRestartBitmap(
+                                                                    wxRendererNative::Get().GetCheckBoxSize(this)));
+      m_MaximaMenu->Append(it);
+    }
   wxMenu *m_undefSub = new wxMenu;
   m_undefSub->Append(EventIDs::menu_kill, _("Delete named object..."),
                       _("Delete all objects with a given name"),
@@ -2090,14 +2115,18 @@ void wxMaximaFrame::UpdateRecentDocuments() {
   PopulateRecentDocumentsMenu(m_recentDocumentsMenu, EventIDs::menu_recent_document_0,
                               m_recentDocuments.Get());
 
-  PopulateRecentDocumentsMenu(m_unsavedDocumentsMenu, EventIDs::menu_unsaved_document_0,
-                              GetWorksheet()->m_unsavedDocuments.Get());
+  if(GetWorksheet())
+    PopulateRecentDocumentsMenu(m_unsavedDocumentsMenu, EventIDs::menu_unsaved_document_0,
+                                GetWorksheet()->m_unsavedDocuments.Get());
 
   PopulateRecentPackagesMenu(m_recentPackagesMenu, EventIDs::menu_recent_package_0,
                              m_recentPackages.Get());
 }
 
-void wxMaximaFrame::ReadConfig() { GetWorksheet()->UpdateConfig(); }
+void wxMaximaFrame::ReadConfig() {
+  if(GetWorksheet())
+    GetWorksheet()->UpdateConfig();
+}
 
 void wxMaximaFrame::ReReadConfig() {
   // On wxMac re-reading the config isn't necessary as all windows share the
@@ -2134,7 +2163,8 @@ void wxMaximaFrame::RegisterAutoSaveFile() {
   ReReadConfig();
   wxConfigBase *config = wxConfig::Get();
   config->Read("AutoSaveFiles", &autoSaveFiles);
-  GetWorksheet()->m_unsavedDocuments.AddDocument(m_tempfileName);
+  if(GetWorksheet())
+    GetWorksheet()->m_unsavedDocuments.AddDocument(m_tempfileName);
   ReReadConfig();
 }
 
@@ -2142,7 +2172,7 @@ void wxMaximaFrame::RemoveTempAutosavefile() {
   if (m_tempfileName != wxEmptyString) {
     // Don't delete the file if we have opened it and haven't saved it under a
     // different name yet.
-    if (wxFileExists(m_tempfileName) &&
+    if ((!!GetWorksheet()) && wxFileExists(m_tempfileName) &&
         (m_tempfileName != GetWorksheet()->m_currentFile)) {
       SuppressErrorDialogs logNull;
       wxRemoveFile(m_tempfileName);

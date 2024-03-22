@@ -803,7 +803,7 @@ public:
 
     Does convert the not equal sign to a '#' and similar.
   */
-  wxString UnicodeToMaxima(wxString s);
+  const wxString UnicodeToMaxima(wxString s);
 
   //! Scroll to the start of the worksheet.
   void ScrollToStart() { Scroll(0, 0); }
