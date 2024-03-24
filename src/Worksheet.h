@@ -59,7 +59,6 @@
 #include "dialogs/FindReplaceDialog.h"
 #include "Autocomplete.h"
 #include "AutocompletePopup.h"
-#include "sidebars/TableOfContents.h"
 #include "sidebars/UnicodeSidebar.h"
 #include "ToolBar.h"
 #include <thread>
@@ -670,9 +669,9 @@ public:
   void NumberSections() const;
 
   //! Make this chapter/section/... a section/subsection/... changing its subheadings, too.
-  bool SectioningMoveIn();
+  bool SectioningMoveIn(GroupCell *parent);
   //! Make this section/subsection/... a chapter/section/... changing its subheadings, too.
-  bool SectioningMoveOut();
+  bool SectioningMoveOut(GroupCell *parent);
 //! A error notification message
   stx::optional<Notification> m_notificationMessage;
   //! Is this window active?
@@ -725,7 +724,7 @@ public:
     This function actually only schedules the update of the table-of-contents-tab.
     The actual update is done when wxMaxima is idle.
   */
-  void UpdateTableOfContents() { m_scheduleUpdateToc = true; }
+  void UpdateTableOfContents();
 
   /*! Handle redrawing the worksheet or of parts of it
 
@@ -813,12 +812,6 @@ public:
 
   //! The find-and-replace-dialog
   FindReplaceDialog *m_findDialog = NULL;
-
-  /*! True = schedule an update of the table of contents
-
-    used by UpdateTableOfContents() and the idle task.
-  */
-  bool m_scheduleUpdateToc;
 
   //! Is the vertically-drawn cursor active?
   bool HCaretActive() const { return m_hCaretActive; }
@@ -972,7 +965,7 @@ public:
   */
   void DeleteSelection();
 
-  void TOCdnd();
+  void TOCdnd(GroupCell *dndStart, GroupCell *dndEnd);
 
   //! Is it possible to delete the cells between start and end?
   bool CanDeleteRegion(GroupCell *start, const GroupCell *end) const;
@@ -1112,13 +1105,6 @@ public:
 
   //! Export the file to a text file maxima's load command can read
   bool ExportToMAC(const wxString &file);
-
-  /*! export to xml compatible file
-    \param file The file name
-    \param markAsSaved false means that this action doesn't clear the
-    worksheet's "modified" status.
-  */
-  bool ExportToWXMX(const wxString &file, bool markAsSaved = true);
 
   //! The start of a RTF document
   wxString RTFStart() const;
@@ -1509,9 +1495,6 @@ public:
 
   void OpenNextOrCreateCell();
 
-  //! The table of contents pane
-  TableOfContents *m_tableOfContents;
-
   //! Called when the "Scroll to currently evaluated" button is pressed.
   void OnFollow();
 
@@ -1573,9 +1556,6 @@ public:
     {return m_maximaManual.GetHelpfileAnchorName(keyword);}
   wxString GetHelpfileURL(wxString keyword)
     {return m_maximaManual.GetHelpfileURL(keyword);}
-  //! The panel the user can display variable contents in
-  Variablespane *m_variablesPane = NULL;
-
   //! Returns the index in (%i...) or (%o...)
   int GetCellIndex(Cell *cell) const;
 
@@ -1656,5 +1636,7 @@ inline Worksheet *Cell::GetWorksheet() const
   wxASSERT(worksheet != NULL);
   return static_cast<Worksheet*>(worksheet);
 }
+
+wxDECLARE_EVENT(TOC_UPDATE_NEEDED_EVENT, wxCommandEvent);
 
 #endif // WORKSHEET_H

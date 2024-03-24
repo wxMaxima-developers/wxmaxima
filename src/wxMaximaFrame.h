@@ -42,6 +42,7 @@
 #include <wx/aui/aui.h>
 #include <wx/notifmsg.h>
 #include <wx/wrapsizer.h>
+#include "sidebars/TableOfContents.h"
 #include "sidebars/DrawSidebar.h"
 
 #include "wizards/ScrollingGenWizPanel.h"
@@ -152,6 +153,10 @@ public:
   void StatusExportFailed();
 
 protected:
+  //! The panel the user can display variable contents in
+  Variablespane *m_variablesPane = NULL;
+  //! The table of contents pane
+  TableOfContents *m_tableOfContents;
   Configuration m_configuration;
   //! How many bytes did maxima send us until now?
   long m_bytesFromMaxima = 0;

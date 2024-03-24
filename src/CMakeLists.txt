@@ -166,6 +166,7 @@ set(SOURCE_FILES
     Worksheet.cpp
     WrappingStaticText.cpp
     WXMformat.cpp
+    WXMXformat.cpp
     levenshtein/levenshtein.cpp
     main.cpp
     wxImagePanel.cpp
