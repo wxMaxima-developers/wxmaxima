@@ -84,6 +84,7 @@
 #include "dialogs/TipOfTheDay.h"
 #include "Version.h"
 #include "WXMformat.h"
+#include "WXMXformat.h"
 #include "wxMathml.h"
 #include "wxMaxima.h"
 #include "wxMaximaIcon.h"
@@ -634,6 +635,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
     GetWorksheet()->m_autocomplete.Connect(NEW_DEMO_FILES_EVENT,
                                            wxCommandEventHandler(wxMaxima::OnNewDemoFiles),
                                            NULL, this);
+  Connect(TOC_UPDATE_NEEDED_EVENT,
+          wxCommandEventHandler(wxMaxima::OnUpdateTOCEvent),
+          NULL, this);
   Connect(wxID_HELP, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
           NULL, this);
   Connect(wxID_HELP, EventIDs::menu_help_demo_for_command,
@@ -2853,10 +2857,10 @@ void wxMaxima::KillMaxima(bool logMessage) {
   }
   m_discardAllData = true;
   m_closing = true;
-  if(GetWorksheet() && (GetWorksheet()->m_variablesPane))
+  if(GetWorksheet() && (m_variablesPane))
     {
-      GetWorksheet()->m_variablesPane->ResetValues();
-      m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
+      m_variablesPane->ResetValues();
+      m_varNamesToQuery = m_variablesPane->GetEscapedVarnames();
     }
   m_configCommands.Clear();
   // The new maxima process will be in its initial condition => mark it as such.
@@ -3347,8 +3351,8 @@ void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {
             }
 
             if (bound) {
-              if(GetWorksheet() && (GetWorksheet()->m_variablesPane))
-                GetWorksheet()->m_variablesPane->VariableValue(name, value);
+              if(GetWorksheet() && (m_variablesPane))
+                m_variablesPane->VariableValue(name, value);
 
               // Undo an eventual stringdisp:true adding quoting marks to strings
               if (value.StartsWith("\"") && value.EndsWith("\""))
@@ -3358,8 +3362,8 @@ void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {
               if (varFunc != m_variableReadActions.end())
                 CALL_MEMBER_FN(*this, varFunc->second)(value);
             } else {
-              if(GetWorksheet() && (GetWorksheet()->m_variablesPane))
-                GetWorksheet()->m_variablesPane->VariableUndefined(name);
+              if(GetWorksheet() && (m_variablesPane))
+                m_variablesPane->VariableUndefined(name);
               auto varFunc = m_variableUndefinedActions.find(name);
               if (varFunc != m_variableUndefinedActions.end())
                 CALL_MEMBER_FN(*this, varFunc->second)();
@@ -3852,8 +3856,8 @@ void wxMaxima::ReadAddVariables(const wxXmlDocument &xmldoc) {
               wxXmlNode *valnode = var->GetChildren();
               if (valnode)
                 {
-                  if(GetWorksheet() && (GetWorksheet()->m_variablesPane))
-                    GetWorksheet()->m_variablesPane->AddWatch(valnode->GetContent());
+                  if(GetWorksheet() && (m_variablesPane))
+                    m_variablesPane->AddWatch(valnode->GetContent());
                 }
             }
           }
@@ -3891,9 +3895,9 @@ bool wxMaxima::QueryVariableValue() {
           SendMaxima(wxS(":lisp-quiet (wxPrint_autocompletesymbols)\n"));
         m_updateAutocompletion = false;
       }
-    if (GetWorksheet() && (GetWorksheet()->m_variablesPane) &&
-        (GetWorksheet()->m_variablesPane->GetEscapedVarnames().size() != 0))
-      GetWorksheet()->m_variablesPane->UpdateSize();
+    if (GetWorksheet() && (m_variablesPane) &&
+        (m_variablesPane->GetEscapedVarnames().size() != 0))
+      m_variablesPane->UpdateSize();
 
     return false;
   }
@@ -4453,14 +4457,14 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   if (!VariablesNumberString.ToLong(&VariablesNumber))
     VariablesNumber = 0;
   if (VariablesNumber > 0) {
-    if(GetWorksheet() && (GetWorksheet()->m_variablesPane))
-      GetWorksheet()->m_variablesPane->Clear();
+    if(GetWorksheet() && (m_variablesPane))
+      m_variablesPane->Clear();
 
     for (long i = 0; i < VariablesNumber; i++) {
       wxString variable =
         xmldoc.GetRoot()->GetAttribute(wxString::Format("variables_%li", static_cast<long>(i)));
-      if(GetWorksheet() && (GetWorksheet()->m_variablesPane))
-        GetWorksheet()->m_variablesPane->AddWatch(variable);
+      if(GetWorksheet() && (m_variablesPane))
+        m_variablesPane->AddWatch(variable);
     }
   }
 
@@ -5091,8 +5095,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   // If we have set the flag that tells us we should update the table of
   // contents sooner or later we should do so now that wxMaxima is idle.
-  if ((GetWorksheet()->m_scheduleUpdateToc) && (GetWorksheet()->m_tableOfContents)) {
-    GetWorksheet()->m_scheduleUpdateToc = false;
+  if (m_scheduleUpdateToc && m_tableOfContents) {
+    m_scheduleUpdateToc = false;
     GroupCell *cursorPos;
     if (GetWorksheet()->GetActiveCell())
       cursorPos = GetWorksheet()->GetActiveCell()->GetGroup();
@@ -5102,7 +5106,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       else
         cursorPos = GetWorksheet()->FirstVisibleGC();
     }
-    GetWorksheet()->m_tableOfContents->UpdateTableOfContents(cursorPos);
+    m_tableOfContents->UpdateTableOfContents(cursorPos);
     event.RequestMore();
     return;
   }
@@ -5548,10 +5552,10 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
     wxString filename(GetWorksheet()->m_currentFile);
     SetCWD(std::move(filename));
   }
-  if (GetWorksheet()->m_tableOfContents != NULL) {
-    GetWorksheet()->m_scheduleUpdateToc = false;
-    GetWorksheet()->m_tableOfContents->UpdateTableOfContents(
-                                                          GetWorksheet()->GetHCaret());
+  if (m_tableOfContents != NULL) {
+    m_scheduleUpdateToc = false;
+    m_tableOfContents->UpdateTableOfContents(
+                                             GetWorksheet()->GetHCaret());
   }
 
   if (!retval)
@@ -5578,6 +5582,12 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
 
   return retval;
 }
+
+void wxMaxima::OnUpdateTOCEvent(wxCommandEvent &WXUNUSED(event))
+{
+  m_scheduleUpdateToc = true;
+}
+
 
 bool wxMaxima::SaveFile(bool forceSave) {
   // Show a busy cursor as long as we export a file.
@@ -5651,11 +5661,15 @@ bool wxMaxima::SaveFile(bool forceSave) {
           GetWorksheet()->m_currentFile = file;
       }
     } else {
-      if (!GetWorksheet()->ExportToWXMX(file)) {
+      if (!Format::ExportToWXMX(GetWorksheet()->GetTree(), file, &m_configuration,
+                                &GetWorksheet()->GetCellPointers(),
+                                m_variablesPane->GetVarnames(),
+                                GetWorksheet()->GetHCaret())) {
         StatusSaveFailed();
         StartAutoSaveTimer();
         return false;
       } else {
+        GetWorksheet()->SetSaved(true);
         RemoveTempAutosavefile();
         if (file != m_tempfileName)
           GetWorksheet()->m_currentFile = file;
@@ -5936,10 +5950,15 @@ bool wxMaxima::AutoSave() {
 
   if (m_configuration.AutoSaveAsTempFile() ||
       GetWorksheet()->m_currentFile.IsEmpty()) {
-    bool saved = GetWorksheet()->ExportToWXMX(m_tempfileName);
-
+    bool saved = Format::ExportToWXMX(GetWorksheet()->GetTree(), GetWorksheet()->m_currentFile,
+                                      &m_configuration,
+                                      &GetWorksheet()->GetCellPointers(),
+                                      m_variablesPane->GetVarnames(),
+                                      GetWorksheet()->GetHCaret());
+    
     wxLogMessage(_("Autosaving as temp file %s"), m_tempfileName.utf8_str());
     if ((m_tempfileName != oldTempFile) && saved) {
+      GetWorksheet()->SetSaved(true);
       if (!oldTempFile.IsEmpty()) {
         if (wxFileExists(oldTempFile)) {
           SuppressErrorDialogs blocker;
@@ -9790,13 +9809,13 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       GetWorksheet()->UpdateTableOfContents();
   }
   else if(event.GetId() == EventIDs::popid_Fold){
-    if (GetWorksheet()->m_tableOfContents != NULL) {
+    if (m_tableOfContents != NULL) {
       // We only update the table of contents when there is time => no guarantee
       // that the cell that was clicked at actually still is part of the tree.
       if ((GetWorksheet()->GetTree()) &&
           (GetWorksheet()->GetTree()->Contains(
-                                            GetWorksheet()->m_tableOfContents->RightClickedOn()))) {
-        GetWorksheet()->m_tableOfContents->RightClickedOn()->Fold();
+                                            m_tableOfContents->RightClickedOn()))) {
+        m_tableOfContents->RightClickedOn()->Fold();
         GetWorksheet()->Recalculate();
         GetWorksheet()->RequestRedraw();
         GetWorksheet()->UpdateTableOfContents();
@@ -9804,13 +9823,13 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
     }
   }
   else if(event.GetId() == EventIDs::popid_Unfold){
-    if (GetWorksheet()->m_tableOfContents != NULL) {
+    if (m_tableOfContents != NULL) {
       // We only update the table of contents when there is time => no guarantee
       // that the cell that was clicked at actually still is part of the tree.
       if ((GetWorksheet()->GetTree()) &&
           (GetWorksheet()->GetTree()->Contains(
-                                            GetWorksheet()->m_tableOfContents->RightClickedOn()))) {
-        GetWorksheet()->m_tableOfContents->RightClickedOn()->Unfold();
+                                            m_tableOfContents->RightClickedOn()))) {
+        m_tableOfContents->RightClickedOn()->Unfold();
         GetWorksheet()->Recalculate();
         GetWorksheet()->RequestRedraw();
         GetWorksheet()->UpdateTableOfContents();
@@ -9818,10 +9837,10 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
     }
   }
   else if(event.GetId() == EventIDs::popid_SelectTocChapter){
-    if (GetWorksheet()->m_tableOfContents != NULL) {
-      if (GetWorksheet()->m_tableOfContents->RightClickedOn()) {
+    if (m_tableOfContents != NULL) {
+      if (m_tableOfContents->RightClickedOn()) {
         GroupCell *SelectionStart =
-          GetWorksheet()->m_tableOfContents->RightClickedOn();
+          m_tableOfContents->RightClickedOn();
         // We only update the table of contents when there is time => no
         // guarantee that the cell that was clicked at actually still is part of
         // the tree.
@@ -9843,13 +9862,13 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::popid_EvalTocChapter){
       GroupCell *SelectionStart =
-        GetWorksheet()->m_tableOfContents->RightClickedOn();
+        m_tableOfContents->RightClickedOn();
       // We only update the table of contents when there is time => no guarantee
       // that the cell that was clicked at actually still is part of the tree.
       if ((GetWorksheet()->GetTree()) &&
           (GetWorksheet()->GetTree()->Contains(SelectionStart))) {
         GetWorksheet()->AddSectionToEvaluationQueue(
-                                                 GetWorksheet()->m_tableOfContents->RightClickedOn());
+                                                 m_tableOfContents->RightClickedOn());
         TriggerEvaluation();
       }
   }
@@ -9866,17 +9885,17 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       GetWorksheet()->UpdateTableOfContents();
   }
   else if(event.GetId() == EventIDs::popid_tocdnd){
-      GetWorksheet()->TOCdnd();
+    GetWorksheet()->TOCdnd(m_tableOfContents->DNDStart(), m_tableOfContents->DNDEnd());
   }
   else if(event.GetId() == EventIDs::popid_tocMoveIn){
-    GetWorksheet()->SectioningMoveIn();
+    GetWorksheet()->SectioningMoveIn(m_tableOfContents->RightClickedOn());
     GetWorksheet()->NumberSections();
     GetWorksheet()->Recalculate();
     GetWorksheet()->RequestRedraw();
     GetWorksheet()->UpdateTableOfContents();
   }
   else if(event.GetId() == EventIDs::popid_tocMoveOut){
-    GetWorksheet()->SectioningMoveOut();
+    GetWorksheet()->SectioningMoveOut(m_tableOfContents->RightClickedOn());
     GetWorksheet()->NumberSections();
     GetWorksheet()->Recalculate();
     GetWorksheet()->RequestRedraw();
@@ -10269,8 +10288,8 @@ void wxMaxima::VarAddAllEvent(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event)) {
-  if(GetWorksheet()->m_variablesPane)
-    m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
+  if(m_variablesPane)
+    m_varNamesToQuery = m_variablesPane->GetEscapedVarnames();
   QueryVariableValue();
 }
 
@@ -10552,8 +10571,8 @@ void wxMaxima::TriggerEvaluation() {
       m_maximaBusy = true;
       // Now that we have sent a command we need to query all variable values
       // anew
-      if(GetWorksheet()->m_variablesPane)
-        m_varNamesToQuery = GetWorksheet()->m_variablesPane->GetEscapedVarnames();
+      if(m_variablesPane)
+        m_varNamesToQuery = m_variablesPane->GetEscapedVarnames();
       // And the gui is interested in a few variable names
       m_readMaximaVariables = true;
       m_configCommands.Clear();
@@ -10654,15 +10673,15 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
       selectionString = GetWorksheet()->GetActiveCell()->GetSelectionString();
       if (selectionString.IsEmpty())
         selectionString = GetWorksheet()->GetActiveCell()->GetWordUnderCaret();
-      if(GetWorksheet()->m_variablesPane)
-        GetWorksheet()->m_variablesPane->AddWatchCode(selectionString);
+      if(m_variablesPane)
+        m_variablesPane->AddWatchCode(selectionString);
       wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
     }
     if (selectionString.IsEmpty() && (GetWorksheet()->GetSelectionStart() != NULL))
       selectionString = GetWorksheet()->GetSelectionStart()->ToString();
     if (!selectionString.IsEmpty()) {
-      if(GetWorksheet()->m_variablesPane)
-        GetWorksheet()->m_variablesPane->AddWatchCode(selectionString);
+      if(m_variablesPane)
+        m_variablesPane->AddWatchCode(selectionString);
       wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
     }
     return;
@@ -10676,8 +10695,8 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
         selectionString = selectionString.Right(selectionString.Length() - 1);
       if (selectionString.EndsWith(")"))
         selectionString = selectionString.Left(selectionString.Length() - 1);
-      if(GetWorksheet()->m_variablesPane)
-        GetWorksheet()->m_variablesPane->AddWatchCode(selectionString);
+      if(m_variablesPane)
+        m_variablesPane->AddWatchCode(selectionString);
       wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
     }
     return;
@@ -10989,7 +11008,7 @@ void wxMaxima::HistoryDClick(wxCommandEvent &event) {
 
 void wxMaxima::TableOfContentsSelection(wxListEvent &event) {
   GroupCell *selection =
-    GetWorksheet()->m_tableOfContents->GetCell(event.GetIndex())->GetGroup();
+    m_tableOfContents->GetCell(event.GetIndex())->GetGroup();
 
   // We only update the table of contents when there is time => no guarantee
   // that the cell that was clicked at actually still is part of the tree.

@@ -33,6 +33,7 @@
 
 #include <vector>
 #include "wxMaximaFrame.h"
+#include "WXMXformat.h"
 #include "MathParser.h"
 #include "MaximaIPC.h"
 #include "Dirstructure.h"
@@ -51,23 +52,6 @@
 #include <windows.h>
 #endif
 #include <unordered_map>
-#define DOCUMENT_VERSION_MAJOR 1
-/*! The part of the .wxmx format version number that appears after the dot.
-
-  - Updated to version 1.1 after user selectable animation-speeds were introduced:
-  Old wxMaxima versions play them back in the default speed instead but still
-  open the file.
-  - Bumped to version 1.2 after saving highlighting was introduced: Older versions
-  of wxMaxima will ignore the highlighting on opening .wxmx files.
-  - Bumped to version 1.3 after sub-subsections were introduced:
-  Old wxMaxima versions interpret them as subsections but still open the file.
-  - Bumped to version 1.4 when we started allowing to embed .jpg images in a .wxmx
-  file. wxMaxima versions between 13.04 and 15.08 replace these images by a
-  "image cannot be loaded" marker but will correctly display the rest of the file.
-  - Bumped to version 1.5 when GroupCells were added an attribute that allows them to
-  be used as an answer to questions.
-*/
-#define DOCUMENT_VERSION_MINOR 5
 
 //! How many milliseconds should we wait between polling for stdout+cpu power?
 #define MAXIMAPOLLMSECS 2000
@@ -748,12 +732,20 @@ public:
   //! The marker for the end of a input prompt
   const static wxString m_promptSuffix;
 protected:
+  /*! True = schedule an update of the table of contents
+
+    used by UpdateTableOfContents() and the idle task.
+  */
+  bool m_scheduleUpdateToc = false;
   void QuestionAnswered(){if(GetWorksheet()) GetWorksheet()->QuestionAnswered();}
     //! Is called when we get a new list of demo files
   //! Is called when we get a new list of demo files
   void OnNewDemoFiles(wxCommandEvent &event);
   //! Is called when a demo file menu is clicked
   void OnDemoFileMenu(wxCommandEvent &ev);
+
+  //! Is called when something requests an update of the table of contents
+  void OnUpdateTOCEvent(wxCommandEvent &event);
 
   void OnSize(wxSizeEvent &event);
   void OnMove(wxMoveEvent &event);

@@ -167,10 +167,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   // Now it is time to construct more of the window contents.
   // The table of contents
-  if(GetWorksheet())
-    GetWorksheet()->m_tableOfContents = new TableOfContents(this, -1,
-                                                            &m_configuration,
-                                                            GetWorksheet()->GetTreeAddress());
+  m_tableOfContents = new TableOfContents(this, -1,
+                                          &m_configuration,
+                                          GetWorksheet()->GetTreeAddress());
 
   m_xmlInspector = new XmlInspector(this, -1);
   //  wxWindowUpdateLocker xmlInspectorBlocker(m_xmlInspector);
@@ -250,14 +249,14 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                     .Name(m_sidebarNames[EventIDs::menu_pane_history])
                     .Right());
 
+  m_sidebarNames[EventIDs::menu_pane_structure] = wxS("structure");
+  m_sidebarCaption[EventIDs::menu_pane_structure] = _("Table of Contents");
+  m_manager.AddPane(m_tableOfContents, wxAuiPaneInfo()
+                    .Name(m_sidebarNames[EventIDs::menu_pane_structure])
+                    .Right());
+      
   if(GetWorksheet())
     {
-      m_sidebarNames[EventIDs::menu_pane_structure] = wxS("structure");
-      m_sidebarCaption[EventIDs::menu_pane_structure] = _("Table of Contents");
-      m_manager.AddPane(GetWorksheet()->m_tableOfContents, wxAuiPaneInfo()
-                        .Name(m_sidebarNames[EventIDs::menu_pane_structure])
-                        .Right());
-      
       m_sidebarNames[EventIDs::menu_pane_xmlInspector] = wxS("XmlInspector");
       m_sidebarCaption[EventIDs::menu_pane_xmlInspector] = _("Raw XML monitor");
       m_manager.AddPane(m_xmlInspector, wxAuiPaneInfo()
@@ -299,9 +298,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     {
       m_sidebarNames[EventIDs::menu_pane_variables] = wxS("variables");
       m_sidebarCaption[EventIDs::menu_pane_variables] = _("Variables");
-      GetWorksheet()->m_variablesPane = new Variablespane(this, wxID_ANY);
+      m_variablesPane = new Variablespane(this, wxID_ANY);
       m_manager.AddPane(
-                        GetWorksheet()->m_variablesPane,
+                        m_variablesPane,
                         wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_variables])
                         .Bottom());
