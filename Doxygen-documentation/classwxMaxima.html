@@ -843,6 +843,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#aedc32d7597d28bb2936aa001dd43e6e4">OnDemoFileMenu</a> (wxCommandEvent &amp;ev)</td></tr>
 <tr class="memdesc:aedc32d7597d28bb2936aa001dd43e6e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is called when a demo file menu is clicked. <br /></td></tr>
 <tr class="separator:aedc32d7597d28bb2936aa001dd43e6e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46887ce86609e2f849908cb9fd892467"><td class="memItemLeft" align="right" valign="top"><a id="a46887ce86609e2f849908cb9fd892467"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a46887ce86609e2f849908cb9fd892467">OnUpdateTOCEvent</a> (wxCommandEvent &amp;event)</td></tr>
+<tr class="memdesc:a46887ce86609e2f849908cb9fd892467"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is called when something requests an update of the table of contents. <br /></td></tr>
+<tr class="separator:a46887ce86609e2f849908cb9fd892467"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3591c5218ebeac3f9d16a89af0bf8d8"><td class="memItemLeft" align="right" valign="top"><a id="ab3591c5218ebeac3f9d16a89af0bf8d8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSize</b> (wxSizeEvent &amp;event)</td></tr>
 <tr class="separator:ab3591c5218ebeac3f9d16a89af0bf8d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -959,6 +963,9 @@ wxInputStream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a0b4330ab50309004698913613ac9b980">m_port</a></td></tr>
 <tr class="memdesc:a0b4330ab50309004698913613ac9b980"><td class="mdescLeft">&#160;</td><td class="mdescRight">The port the actual maxima process (not its wrapper script) runs at. <br /></td></tr>
 <tr class="separator:a0b4330ab50309004698913613ac9b980"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e8eaa35b0984d6d0ccd0ce166552d33"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a0e8eaa35b0984d6d0ccd0ce166552d33">m_scheduleUpdateToc</a> = false</td></tr>
+<tr class="memdesc:a0e8eaa35b0984d6d0ccd0ce166552d33"><td class="mdescLeft">&#160;</td><td class="mdescRight">True = schedule an update of the table of contents.  <a href="classwxMaxima.html#a0e8eaa35b0984d6d0ccd0ce166552d33">More...</a><br /></td></tr>
+<tr class="separator:a0e8eaa35b0984d6d0ccd0ce166552d33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d537e0a9cd600272cc58a0f9a758094"><td class="memItemLeft" align="right" valign="top"><a id="a0d537e0a9cd600272cc58a0f9a758094"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a0d537e0a9cd600272cc58a0f9a758094">m_dispReadOut</a></td></tr>
 <tr class="memdesc:a0d537e0a9cd600272cc58a0f9a758094"><td class="mdescLeft">&#160;</td><td class="mdescRight">what is displayed in statusbar <br /></td></tr>
@@ -1017,6 +1024,14 @@ std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="memitem:a5b39c4c83ab2ee948ddce5ebfddf4b2a"><td class="memItemLeft" align="right" valign="top"><a id="a5b39c4c83ab2ee948ddce5ebfddf4b2a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaBusy</b></td></tr>
 <tr class="separator:a5b39c4c83ab2ee948ddce5ebfddf4b2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4bf94a0227d710b60cc474e2ae52e72"><td class="memItemLeft" align="right" valign="top"><a id="ae4bf94a0227d710b60cc474e2ae52e72"></a>
+<a class="el" href="classVariablespane.html">Variablespane</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#ae4bf94a0227d710b60cc474e2ae52e72">m_variablesPane</a> = NULL</td></tr>
+<tr class="memdesc:ae4bf94a0227d710b60cc474e2ae52e72"><td class="mdescLeft">&#160;</td><td class="mdescRight">The panel the user can display variable contents in. <br /></td></tr>
+<tr class="separator:ae4bf94a0227d710b60cc474e2ae52e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22067c8ee54dca1103ed43cb5265e4a8"><td class="memItemLeft" align="right" valign="top"><a id="a22067c8ee54dca1103ed43cb5265e4a8"></a>
+<a class="el" href="classTableOfContents.html">TableOfContents</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a22067c8ee54dca1103ed43cb5265e4a8">m_tableOfContents</a></td></tr>
+<tr class="memdesc:a22067c8ee54dca1103ed43cb5265e4a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The table of contents pane. <br /></td></tr>
+<tr class="separator:a22067c8ee54dca1103ed43cb5265e4a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e520d8380e27029f4a2af509d90a488"><td class="memItemLeft" align="right" valign="top"><a id="a4e520d8380e27029f4a2af509d90a488"></a>
 <a class="el" href="classConfiguration.html">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_configuration</b></td></tr>
 <tr class="separator:a4e520d8380e27029f4a2af509d90a488"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2734,6 +2749,31 @@ Plot Slider</h2>
 
 <p>Did we tell maxima to close? </p>
 <p>If we didn't we respan an unexpectedly-closing maxima. </p>
+
+</div>
+</div>
+<a id="a0e8eaa35b0984d6d0ccd0ce166552d33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e8eaa35b0984d6d0ccd0ce166552d33">&#9670;&nbsp;</a></span>m_scheduleUpdateToc</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wxMaxima::m_scheduleUpdateToc = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>True = schedule an update of the table of contents. </p>
+<p>used by UpdateTableOfContents() and the idle task. </p>
 
 </div>
 </div>
