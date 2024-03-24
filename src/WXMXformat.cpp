@@ -177,14 +177,12 @@ namespace Format {
         xmlText << DOCUMENT_VERSION_MINOR << wxS("\" zoom=\"");
         xmlText << int(100.0 * configuration->GetZoomFactor()) << wxS("\"");
 
-        std::size_t ActiveCellNumber;
-        if (cursorCell == NULL)
-          ActiveCellNumber = 0;
+        std::size_t ActiveCellNumber = 0;
 
         // We want to save the information that the cursor is in the nth cell.
         // Count the cells until then.
         bool found = false;
-        if (cells && ActiveCellNumber > 0)
+        if (cells)
           for (const GroupCell &tmp : OnList(cells)) {
             if (&tmp == cursorCell) {
               found = true;
