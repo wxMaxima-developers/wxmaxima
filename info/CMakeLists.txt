@@ -2,13 +2,32 @@
 
 find_program(PO4A po4a)
 if(PO4A)
-	# Get po4a version number
+        # Get po4a version number
 	execute_process(COMMAND ${PO4A} --version OUTPUT_VARIABLE PO4A_VERSION_TEXT)
 	string(REGEX REPLACE "^po4a version ([^\n]*).*" "\\1"  PO4A_VERSION "${PO4A_VERSION_TEXT}")
 	string(REGEX REPLACE "\\.$" ""  PO4A_VERSION "${PO4A_VERSION}") # remove trailing dot.
 	message(STATUS "Found po4a: ${PO4A} (found version \"${PO4A_VERSION}\")")
-	execute_process(COMMAND ${PO4A} --verbose --no-update ${CMAKE_BINARY_DIR}/po4a.cfg)
-	message(STATUS "Calling po4a with the option --no-update - not updating the po/pot files in the source tree.")
+        add_custom_command(
+                OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.de.md
+                COMMAND ${PO4A} ARGS --verbose ${CMAKE_BINARY_DIR}/po4a.cfg
+                COMMENT "Internationalizing the manuals"
+                DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
+                        ${CMAKE_SOURCE_DIR}/locales/manual/de.po
+                        ${CMAKE_SOURCE_DIR}/locales/manual/es.po
+                        ${CMAKE_SOURCE_DIR}/locales/manual/it.po
+                        ${CMAKE_SOURCE_DIR}/locales/manual/tr.po
+                        ${CMAKE_SOURCE_DIR}/locales/manual/uk.po
+                        ${CMAKE_SOURCE_DIR}/locales/manual/zh_CN.po
+        )
+        add_custom_target(wxmaxima_manual_translations
+                DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
+                        ${CMAKE_SOURCE_DIR}/locales/manual/de.po
+                        ${CMAKE_SOURCE_DIR}/locales/manual/es.po
+                        ${CMAKE_SOURCE_DIR}/locales/manual/it.po
+                        ${CMAKE_SOURCE_DIR}/locales/manual/tr.po
+                        ${CMAKE_SOURCE_DIR}/locales/manual/uk.po
+                        ${CMAKE_SOURCE_DIR}/locales/manual/zh_CN.po)
+        add_dependencies(wxmaxima wxmaxima_manual_translations)
 else()
 	message(STATUS "po4a not found. Disable the generation of localized documentation.")
 endif()

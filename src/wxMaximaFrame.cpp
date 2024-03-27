@@ -325,8 +325,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       m_sidebarNames[EventIDs::menu_pane_wizard] = wxS("wizard");
       m_sidebarCaption[EventIDs::menu_pane_wizard] = _("The current Wizard");
       m_manager.AddPane(m_wizard =
-                        new ScrollingGenWizPanel(
-                                                 this, &m_configuration,
+                        new ScrollingGenWizPanel(this, &m_configuration,
                                                  GetWorksheet()->GetMaximaManual()),
                         wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_wizard])
@@ -351,8 +350,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     {
       m_sidebarNames[EventIDs::menu_pane_help] = wxS("help");
       m_sidebarCaption[EventIDs::menu_pane_help] = _("Help");
-      m_manager.AddPane(m_helpPane = new HelpBrowser(
-                                                     this, &m_configuration, GetWorksheet()->GetMaximaManual(),
+      m_manager.AddPane(m_helpPane = new HelpBrowser(this, &m_configuration,
+                                                     GetWorksheet()->GetMaximaManual(),
                                                      wxS("file://") + wxMaximaManualLocation()),
                         wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_help])
