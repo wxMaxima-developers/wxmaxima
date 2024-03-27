@@ -38,6 +38,9 @@ jobs:
              cd build
              cmake --build .
              cd ..
+      - name: git-diff
+        # run git diff to see, if the configure/build process has changed the source files (po4a can do that)
+        run: git diff --compact-summary
       - name: update-locale
         run: |
              cd build
@@ -126,4 +129,7 @@ jobs:
              cd build
              cmake --build .
              cd ..
+      - name: git-diff
+        # run git diff to see, if the configure/build process has changed the source files (po4a can do that)
+        run: git diff --compact-summary
 
