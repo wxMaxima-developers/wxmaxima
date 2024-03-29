@@ -5,6 +5,9 @@
 - Now only wxWidgets builds with Unicode support (default) are allowed.
   Builds without Unicode support are strongly discouraged
   by the wxWidgets team.
+- Update German and Italian translations
+- Use po4a instaead of po4a-translate. po4a-translate is deprecated (#1899)
+- Allow compiliation with the current wxWidgets development version
 
 # 24.02.2
 
