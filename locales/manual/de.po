@@ -823,13 +823,10 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:205
-#, fuzzy
-#| msgid ""
-#| "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an `a`.\n"
 msgid ""
 "<kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> therefore results in an "
 "`a`."
-msgstr "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> erzeugt daher ein `a`.\n"
+msgstr "<kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> erzeugt daher ein `a`.\n"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:207
@@ -846,12 +843,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:210
-#, fuzzy
-#| msgid ""
-#| "It may be the case, that e.g. greek characters or mathematical symbols "
-#| "are not included in the selected font, then they can not be displayed.\n"
-#| "To solve that problem, select other fonts (using: Edit -> Configure -> "
-#| "Style).\n"
 msgid ""
 "It may be the case that e.g. Greek characters or mathematical symbols are "
 "not included in the selected font, then they can not be displayed.  To solve "
@@ -859,14 +850,14 @@ msgid ""
 msgstr ""
 "Es kann passieren, dass z.B. griechische Buchstaben oder mathematische "
 "Symbole in der ausgewählten Schriftart nicht vorhanden sind, dann können sie "
-"nicht dargestellt werden.\n"
+"nicht dargestellt werden."
 "Um das Problem zu lösen, bitte eine andere Schriftart wählen (Bearbeiten -> "
-"Einstellungen -> Stil).\n"
+"Einstellungen -> Stil)."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:212
 msgid "### Unicode replacement"
-msgstr ""
+msgstr "### Unicode Ersetzung"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:214
@@ -880,10 +871,8 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:216
-#, fuzzy
-#| msgid "Side Panes"
 msgid "### Side Panes"
-msgstr "Seitenleisten"
+msgstr "### Seitenleisten"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:218
@@ -1156,14 +1145,8 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:286
-#, fuzzy
-#| msgid ""
-#| "![Loading a `.mac` file with `batch()`](./BatchImage.png)"
-#| "{ id=img_BatchImage }"
 msgid "![Loading a file with `batch()`](./BatchImage.png){ id=img_BatchImage }"
-msgstr ""
-"![Laden einer `.mac` Datei mit `batch()`](./BatchImage.png)"
-"{ id=img_BatchImage }"
+msgstr "![Laden einer Datei mit `batch()`](./BatchImage.png){ id=img_BatchImage }"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:288
@@ -1232,10 +1215,8 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:300
-#, fuzzy
-#| msgid "Configuration options"
 msgid "## Configuration options"
-msgstr "Auto-Vervollständigung"
+msgstr "## Konfigurations-Optionen"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:302
@@ -1314,14 +1295,7 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:326
-#, fuzzy, no-wrap
-#| msgid ""
-#| "wxdraw2d(\n"
-#| "   explicit(\n"
-#| "       x^2,\n"
-#| "\t   x,-5,5\n"
-#| "   )\n"
-#| "), wxplot_size=[480,480]$\n"
+#, no-wrap
 msgid ""
 "```maxima\n"
 "wxdraw2d(\n"
@@ -1332,19 +1306,19 @@ msgid ""
 "), wxplot_size=[480,480]$\n"
 "```\n"
 msgstr ""
+"```maxima\n"
 "wxdraw2d(\n"
 "   explicit(\n"
 "       x^2,\n"
 "\t   x,-5,5\n"
 "   )\n"
 "), wxplot_size=[480,480]$\n"
+"```\n"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:328
-#, fuzzy
-#| msgid "Match parenthesis in text controls"
 msgid "### Match parenthesis in text controls"
-msgstr "Automatisches Schließen von Klammern"
+msgstr "### Automatisches Schließen von Klammern"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:330
@@ -1392,12 +1366,10 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:342
-#, fuzzy
-#| msgid "And the file will automatically be saved every 3 minutes."
 msgid ""
 "- Files are saved automatically on exit - And the file will automatically be "
 "saved every 3 minutes."
-msgstr "Und die Datei wird automatisch alle 3 Minuten gespeichert."
+msgstr "- Dateien werden beim Beenden automatisch gespeichert - Und die Datei wird automatisch alle 3 Minuten gespeichert."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:344
@@ -1524,6 +1496,8 @@ msgid ""
 "![How variables are autosubscripted using wxsubscripts](./wxsubscripts.png)"
 "{ id=img_wxsubscripts }"
 msgstr ""
+"![Wie Variablen mit wxsubscripts automatisch tiefgestellt werden](./wxsubscripts.png)"
+"{ id=img_wxsubscripts }"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:372
@@ -3366,10 +3340,8 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:881
-#, fuzzy
-#| msgid "Is there a way to make more text fit on a LaTeX page?"
 msgid "## Is there a way to make more text fit on a LaTeX page?"
-msgstr "Gibt es eine Möglichkeit mehr Text auf eine LaTeX-Seite zu schreiben?"
+msgstr "## Gibt es eine Möglichkeit mehr Text auf eine LaTeX-Seite zu schreiben?"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:883
@@ -3406,10 +3378,8 @@ msgstr "\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:891
-#, fuzzy
-#| msgid "Is there a dark mode?"
 msgid "## Is there a dark mode?"
-msgstr "Gibt es einen Dark Mode?"
+msgstr "## Gibt es einen Dark Mode?"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:893
@@ -3437,9 +3407,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:895
-#, fuzzy
-#| msgid ""
-#| "_WxMaxima_ sometimes hangs for several seconds once in the first minute"
 msgid ""
 "## _WxMaxima_ sometimes hangs for several seconds once in the first minute"
 msgstr ""
@@ -3447,13 +3414,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:897
-#, fuzzy
-#| msgid ""
-#| "_WxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-"
-#| "manual to background tasks, which normally goes totally unnoticed. In the "
-#| "moment the result of such a task is needed, though, it is possible that "
-#| "_wxMaxima_ needs to wait a couple of seconds before it can continue its "
-#| "work.\n"
 msgid ""
 "_WxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-"
 "manual to background tasks, which normally goes totally unnoticed. At the "
@@ -3464,15 +3424,11 @@ msgstr ""
 "Handbuchs von Maxima an Hintergrundtasks aus. Solange die Ergebnisse dieser "
 "Tasks nicht benötigt werden, kann während dieser Zeit ganz normal "
 "weitergearbeitet werden. Wird aber eine Aktion ausgeführt, für die die "
-"Ergebnisse eines Tasks benötigt werden, muss wxMaxima warten, bis dieser "
+"Ergebnisse eines Tasks benötigt werden, muss _wxMaxima_ warten, bis dieser "
 "beendet ist.\n"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:899
-#, fuzzy
-#| msgid ""
-#| "Especially when testing new locale settings, a message box \"locale "
-#| "'xx_YY' can not be set\" occurs"
 msgid ""
 "## Especially when testing new locale settings, a message box \"locale "
 "'xx_YY' can not be set\" occurs"
@@ -3509,13 +3465,10 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:910
-#, fuzzy
-#| msgid ""
-#| "How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?"
 msgid ""
 "## How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?"
 msgstr ""
-"Wie kann man Symbole für reele Zahlen, ganze Zahlen (ℝ, ℕ), etc. verwenden?"
+"## Wie kann man Symbole für reele Zahlen, ganze Zahlen (ℝ, ℕ), etc. verwenden?"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:912
@@ -3549,10 +3502,8 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:922
-#, fuzzy
-#| msgid "Command-line arguments"
 msgid "# Command-line arguments"
-msgstr "Kommandozeilen-Optionen"
+msgstr "# Kommandozeilen-Optionen"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:924
@@ -3650,10 +3601,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:942
-#, fuzzy
-#| msgid ""
-#| "Instead of a minus some operating systems might use a dash in front of "
-#| "the command-line switches."
 msgid ""
 "Instead of a minus, some operating systems might use a dash in front of the "
 "command-line switches."
@@ -3663,10 +3610,8 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:946
-#, fuzzy
-#| msgid "About the program, contributing to wxMaxima"
 msgid "# About the program, contributing to wxMaxima"
-msgstr "Über das Programm, zu wxMaxima beitragen"
+msgstr "# Über das Programm, zu wxMaxima beitragen"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:948
@@ -3693,7 +3638,7 @@ msgstr ""
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:952
 msgid "Or answer questions of other users in the discussion forum."
-msgstr ""
+msgstr "Oder Fragen von anderen Benutzern im Diskussionsforum beantworten."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:954
