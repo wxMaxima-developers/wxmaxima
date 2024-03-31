@@ -612,7 +612,8 @@ wxMaximaFrame::~wxMaximaFrame() {
 #if wxCHECK_VERSION(3, 1, 4)
 #else
   m_manager->UnInit();
-  #endif
+#endif
+  m_manager->Destroy();
 }
 
 #define APPEND_MENU_ITEM(menu, id, label, help, stock)  \
