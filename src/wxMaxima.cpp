@@ -9682,7 +9682,7 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
   }
   wxLogNull blocker;
   wxConfig::Get()->Write(wxS("lastPath"), m_lastPath);
-  // Destroy();
+ Destroy();
 }
 
 void wxMaxima::PopupMenu(wxCommandEvent &event) {
