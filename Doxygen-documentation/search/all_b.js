@@ -82,7 +82,7 @@ var searchData=
   ['m_5flogowned_826',['m_logOwned',['../classErrorRedirector.html#af6df8cee03280f08c6a04c763184b2b9',1,'ErrorRedirector']]],
   ['m_5flogpane_827',['m_logPane',['../classwxMaximaFrame.html#adac1b28d94eb55cc627759b1547afb1b',1,'wxMaximaFrame']]],
   ['m_5fmaintoolbar_828',['m_mainToolBar',['../classWorksheet.html#a7e8f804aed06ee62de5e09ad7be3d6b1',1,'Worksheet']]],
-  ['m_5fmanager_829',['m_manager',['../classwxMaximaFrame.html#ad1f3fbb9bc7e6dce8f83486f492254f1',1,'wxMaximaFrame']]],
+  ['m_5fmanager_829',['m_manager',['../classwxMaximaFrame.html#a0450e7e4b84daa927456863701d20b1b',1,'wxMaximaFrame']]],
   ['m_5fmathfontsize_830',['m_mathFontSize',['../classConfigDialogue.html#a02f8ed84057b4ff0387da6a2f0fd9dc2',1,'ConfigDialogue']]],
   ['m_5fmathprefix1_831',['m_mathPrefix1',['../classwxMaxima.html#a7ae148f0df1c157c4b2478844f45602e',1,'wxMaxima']]],
   ['m_5fmathprefix2_832',['m_mathPrefix2',['../classwxMaxima.html#ae87534d837f1f8bdfb620dfcda37e64b',1,'wxMaxima']]],
