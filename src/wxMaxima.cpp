@@ -1876,13 +1876,18 @@ void wxMaxima::StartAutoSaveTimer() {
 }
 
 wxMaxima::~wxMaxima() {
-  KillMaxima(false);
+  // If the gnuplot processes still exist we sever bonds with them
+  // so they don't inform us about anything if wxMaxima no more
+  // exists
   if(m_gnuplotTerminalQueryProcess)
     m_gnuplotTerminalQueryProcess ->Detach();
   if(m_gnuplotProcess)
     m_gnuplotProcess ->Detach();
-  if(m_maximaProcess)
-    m_maximaProcess ->Detach();
+
+  // Kill maxima
+  KillMaxima(false);
+
+  // stop log messages arrive at this window
   wxMaxima *newLogTarget = NULL;
   wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
   if((m_logPane) && (m_logPane->IsLogTarget()))
@@ -1916,6 +1921,8 @@ wxMaxima::~wxMaxima() {
           wxLog::EnableLogging(false);
         }
     }
+
+  // In debug mode: Create a file describing what we know about maxima commands
   if(m_configuration.GetDebugmode() && (!Dirstructure::Get()->UserConfDir().IsEmpty()))
     {
       std::unordered_map<wxString, std::int_fast8_t, wxStringHash> knownWords;
@@ -1961,8 +1968,17 @@ wxMaxima::~wxMaxima() {
           line += i + wxS("\n");
           txtstrm.WriteString(line);
         }
+      fil.Close();
     }
-
+  
+  // Allow the operating system to keep the clipboard's contents even after we
+  // exit - if that option is supported by the OS.
+  if (wxTheClipboard->Open()) {
+    wxTheClipboard->Flush();
+    wxTheClipboard->Close();
+  }
+  if (m_fileSaved)
+    RemoveTempAutosavefile();
 }
 
 #if wxUSE_DRAG_AND_DROP
@@ -2883,7 +2899,6 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_maximaProcess = NULL;
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
-
   m_client = nullptr;
 
   // Just to be absolutely sure: Additionally try to kill maxima
@@ -5146,7 +5161,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   // Tell our maxima interface if it needs to send events to the XML inspector
   if(m_client)
-    m_client->XmlInspectorActive(m_manager.GetPane(wxS("XmlInspector")).IsShown());
+    m_client->XmlInspectorActive(m_manager->GetPane(wxS("XmlInspector")).IsShown());
   event.Skip();
 
   if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
@@ -9323,13 +9338,13 @@ void wxMaxima::CommandWiz(
                       std::move(tooltip7), std::move(label8), std::move(defaultval8),
                       std::move(tooltip8), std::move(label9), std::move(defaultval9),
                       std::move(tooltip9));
-  m_manager.GetPane("wizard").Show(true).Caption(title);
-  m_manager.Update();
+  m_manager->GetPane("wizard").Show(true).Caption(title);
+  m_manager->Update();
 }
 
 void wxMaxima::OnWizardAbort(wxCommandEvent &WXUNUSED(event)) {
-  m_manager.GetPane("wizard").Show(false);
-  m_manager.Update();
+  m_manager->GetPane("wizard").Show(false);
+  m_manager->Update();
   m_configuration.LastActiveTextCtrl(NULL);
 }
 
@@ -9665,29 +9680,9 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
     event.Veto();
     return;
   }
-  if (event.GetEventType() == wxEVT_END_SESSION)
-    KillMaxima();
-
   wxLogNull blocker;
-  KillMaxima(false);
-  // We have saved the file and will close now => No need to have the
-  // timer around any longer.
-  m_autoSaveTimer.Stop();
-  m_closing = true;
-  wxConfigBase *config = wxConfig::Get();
-  if (m_lastPath.Length() > 0)
-    config->Write(wxS("lastPath"), m_lastPath);
-  m_maximaStdout = NULL;
-  m_maximaStderr = NULL;
-  // Allow the operating system to keep the clipboard's contents even after we
-  // exit - if that option is supported by the OS.
-  if (wxTheClipboard->Open()) {
-    wxTheClipboard->Flush();
-    wxTheClipboard->Close();
-  }
-  if (m_fileSaved)
-    RemoveTempAutosavefile();
-  Destroy();
+  wxConfig::Get()->Write(wxS("lastPath"), m_lastPath);
+  // Destroy();
 }
 
 void wxMaxima::PopupMenu(wxCommandEvent &event) {
@@ -10985,9 +10980,9 @@ void wxMaxima::OnKeyDown(wxKeyEvent &event) {
 }
 
 void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(event)) {
-  m_manager.GetPane(wxS("XmlInspector"))
-    .Show(!m_manager.GetPane(wxS("XmlInspector")).IsShown());
-  m_manager.Update();
+  m_manager->GetPane(wxS("XmlInspector"))
+    .Show(!m_manager->GetPane(wxS("XmlInspector")).IsShown());
+  m_manager->Update();
 }
 
 void wxMaxima::MaximaDClick(wxCommandEvent &WXUNUSED(event)) {
@@ -10995,9 +10990,9 @@ void wxMaxima::MaximaDClick(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void wxMaxima::StatusMsgDClick(wxCommandEvent &WXUNUSED(event)) {
-  m_manager.GetPane(wxS("log"))
-    .Show(!m_manager.GetPane(wxS("log")).IsShown());
-  m_manager.Update();
+  m_manager->GetPane(wxS("log"))
+    .Show(!m_manager->GetPane(wxS("log")).IsShown());
+  m_manager->Update();
 }
 
 void wxMaxima::HistoryDClick(wxCommandEvent &event) {

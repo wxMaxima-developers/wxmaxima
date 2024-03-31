@@ -318,7 +318,7 @@ protected:
 
   bool ToolbarIsShown();
   //! The manager for dynamic screen layouts
-  wxAuiManager m_manager;
+  wxAuiManager *m_manager;
 private:
   //! The worksheet itself
 protected:
