@@ -7,7 +7,7 @@ var searchData=
   ['m_5fautocomplete_751',['m_autocomplete',['../classWorksheet.html#a7e5c6914a8a34f0b314b670a7cc666fb',1,'Worksheet']]],
   ['m_5fautodetectmathjax_752',['m_autodetectMathJaX',['../classConfigDialogue.html#a370ee9d5121d579b62c97902151917c4',1,'ConfigDialogue']]],
   ['m_5fautodetectmaxima_753',['m_autodetectMaxima',['../classConfigDialogue.html#a3a224221dc6260f2c741872d5545b123',1,'ConfigDialogue']]],
-  ['m_5fbytesfrommaxima_754',['m_bytesFromMaxima',['../classwxMaximaFrame.html#aee0aa0ac10647a51bc3d18556bc09685',1,'wxMaximaFrame']]],
+  ['m_5fbytesfrommaxima_754',['m_bytesFromMaxima',['../classwxMaximaFrame.html#ab34ca0282896021d6e9f9e18d45b6458',1,'wxMaximaFrame']]],
   ['m_5fcalculusmenu_755',['m_CalculusMenu',['../classwxMaximaFrame.html#a977f7622335e2cc6227d02f97c75981e',1,'wxMaximaFrame']]],
   ['m_5fcellkeyboardselectionstartedin_756',['m_cellKeyboardSelectionStartedIn',['../classCellPointers.html#a5565f97fa0cf5089d315882baceb9fd1',1,'CellPointers']]],
   ['m_5fcellmenu_757',['m_CellMenu',['../classwxMaximaFrame.html#ae114cad80009f1ae8e63e1cfc115fd06',1,'wxMaximaFrame']]],
