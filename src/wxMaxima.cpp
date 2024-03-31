@@ -217,7 +217,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
       &wxMaxima::VariableActionNumer;
     m_variableReadActions[wxS("display2d_unicode")] =
       &wxMaxima::VariableActionDisplay2d_Unicode;
-  m_variableReadActions[wxS("maxima_userdir")] =
+    m_variableReadActions[wxS("maxima_userdir")] =
       &wxMaxima::VariableActionUserDir;
     m_variableReadActions[wxS("sinnpiflag")] =
       &wxMaxima::VariableActionSinnpiflag;
@@ -274,10 +274,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
       &wxMaxima::VariableActionSinnpiflagUndefined;
   }
 
-  // Will be corrected by ConfigChanged()
-  m_maxOutputCellsPerCommand = -1;
-  m_exitAfterEval = false;
-  m_exitOnError = false;
   wxString lang;
   if (wxGetEnv("LANG", &lang))
     wxLogMessage("LANG=%s", lang.mb_str());
@@ -285,42 +281,19 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
   //  wxWindowUpdateLocker noUpdates(this);
-  m_maximaBusy = true;
-  m_evalOnStartup = false;
-  m_dataFromMaximaIs = false;
-  m_gnuplotProcess = NULL;
-  m_openInitialFileError = false;
-  m_maximaJiffies_old = 0;
-  m_cpuTotalJiffies_old = 0;
 
-  m_commandIndex = -1;
-  m_isActive = true;
   wxConfigBase *config = wxConfig::Get();
   // If maxima fails to come up directly on startup of wxMaxima there is no need
   // to retry.
-  m_unsuccessfulConnectionAttempts = 11;
-  m_outputCellsFromCurrentCommand = 0;
   m_CWD.Clear();
-  m_pid = -1;
-  m_hasEvaluatedCells = false;
-  m_maximaProcess = NULL;
-  m_maximaStdout = NULL;
-  m_maximaStderr = NULL;
-  m_ready = false;
-  m_first = true;
-  m_dispReadOut = false;
   m_gnuplot_process_id = wxWindow::NewControlId();
   m_maxima_process_id = wxWindow::NewControlId();
   config->Read(wxS("lastPath"), &m_lastPath);
   m_lastPrompt.Clear();
 
-  m_closing = false;
-  m_fileSaved = true;
-
   UpdateRecentDocuments();
 
   m_oldFindString.Clear();
-  m_oldFindFlags = 0;
   int findFlags = wxFR_DOWN | wxFR_MATCHCASE;
   wxConfig::Get()->Read(wxS("Find/Flags"), &findFlags);
   m_findData.SetFlags(findFlags);

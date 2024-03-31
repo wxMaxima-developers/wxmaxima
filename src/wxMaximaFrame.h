@@ -129,10 +129,8 @@ public:
   void StatusMaximaBusy(StatusBar::MaximaStatus status){m_StatusMaximaBusy_next = status;}
   void UpdateStatusMaximaBusy();
 
-  //! True=Maxima is currently busy.
-  StatusBar::MaximaStatus m_StatusMaximaBusy;
-
-  StatusBar::MaximaStatus m_StatusMaximaBusy_next;
+  StatusBar::MaximaStatus m_StatusMaximaBusy = StatusBar::wait_for_start;
+  StatusBar::MaximaStatus m_StatusMaximaBusy_next = StatusBar::wait_for_start;
 
   //! Set the status to "Maxima is saving"
   void StatusSaveStart();
@@ -156,12 +154,12 @@ protected:
   //! The panel the user can display variable contents in
   Variablespane *m_variablesPane = NULL;
   //! The table of contents pane
-  TableOfContents *m_tableOfContents;
+  TableOfContents *m_tableOfContents = NULL;
   Configuration m_configuration;
   //! How many bytes did maxima send us until now?
   long m_bytesFromMaxima = 0;
   //! The process id of maxima. Is determined by ReadFirstPrompt.
-  long m_pid;
+  long m_pid = -1;
   //! The last name GetTempAutosavefileName() has returned.
   wxString m_tempfileName;
   //! Issued if a notification is closed.
@@ -253,10 +251,10 @@ private:
   //! The names our dockable sidebars are shown with
   std::unordered_map<int, wxString> m_sidebarCaption;
   //! How many bytes did maxima send us when we updated the statusbar?
-  long m_bytesFromMaxima_last;
+  std::size_t m_bytesFromMaxima_last = 0;
   wxTimer m_bytesReadDisplayTimer;
   //! True=We are currently saving.
-  bool m_StatusSaving;
+  bool m_StatusSaving = false;
 
   void SetupToolBar();
 
@@ -293,9 +291,9 @@ protected:
   //! The default size for the window.
   virtual wxSize DoGetBestClientSize() const;
   //! The sidebar with the draw commands
-  DrawSidebar *m_drawPane;
+  DrawSidebar *m_drawPane = NULL;
 #ifdef USE_WEBVIEW
-  HelpBrowser *m_helpPane;
+  HelpBrowser *m_helpPane = NULL;
 #endif
 
   //! Looks up which demo file belongs to a wxWindowID
@@ -307,31 +305,31 @@ protected:
 
   SymbolsSidebar *m_symbolsSidebar = NULL;
   //! The current length of the evaluation queue of commands we still need to send to maxima
-  int m_EvaluationQueueLength;
+  int m_EvaluationQueueLength = 0;
   //! Do we need to update the display showing the evaluation queue length?
-  bool m_updateEvaluationQueueLengthDisplay;
+  bool m_updateEvaluationQueueLengthDisplay = true;
   //! The number of commands left in the current of the evaluation queue item
-  int m_commandsLeftInCurrentCell;
+  int m_commandsLeftInCurrentCell = 0;
 
   //! Do we expect the 1st prompt from maxima to appear?
-  bool m_first;
+  bool m_first = true;
 
   bool ToolbarIsShown();
   //! The manager for dynamic screen layouts
-  wxAuiManager *m_manager;
+  std::unique_ptr<wxAuiManager> m_manager;
 private:
   //! The worksheet itself
 protected:
   //! The worksheet
   Worksheet * const m_worksheet = NULL;
   //! The history pane
-  History * const m_history;
+  History * const m_history = NULL;
   //! A XmlInspector-like xml monitor
-  XmlInspector *m_xmlInspector;
+  XmlInspector *m_xmlInspector = NULL;
   //! true=force an update of the status bar at the next call of StatusMaximaBusy()
-  bool m_forceStatusbarUpdate;
+  bool m_forceStatusbarUpdate = false;
   //! The panel the log and debug messages will appear on
-  LogPane *m_logPane;
+  LogPane *m_logPane = NULL;
   RecentDocuments m_recentDocuments;
   RecentDocuments m_recentPackages;
   wxMenu *m_recentDocumentsMenu = NULL;

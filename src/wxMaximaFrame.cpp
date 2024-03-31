@@ -148,22 +148,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   wxLogMessage(_("wxWidgets is using GTK 2"));
 #endif
 #endif
-
   if (Configuration::m_configfileLocation_override != wxEmptyString)
     wxLogMessage(_("Reading the config from %s."),
                  Configuration::m_configfileLocation_override.utf8_str());
   else
     wxLogMessage(_("Reading the config from the default location."));
-
-  // Some default values
-  m_updateEvaluationQueueLengthDisplay = true;
-  m_recentDocumentsMenu = NULL;
-  m_unsavedDocumentsMenu = NULL;
-  m_recentPackagesMenu = NULL;
-  m_drawPane = NULL;
-  m_EvaluationQueueLength = 0;
-  m_commandsLeftInCurrentCell = 0;
-  m_forceStatusbarUpdate = false;
 
   // Now it is time to construct more of the window contents.
   // The table of contents
@@ -603,17 +592,16 @@ void wxMaximaFrame::StatusExportFailed() {
 }
 
 wxMaximaFrame::~wxMaximaFrame() {
-  m_bytesReadDisplayTimer.Stop();
   wxString perspective = m_manager->SavePerspective();
   wxConfig::Get()->Write(wxS("AUI/perspective"), perspective);
   wxConfig::Get()->Flush();
 
-  // In modern wxWidgets wxAUIManager does destroy itself on closing the window
+  // In modern wxWidgets wxAUIManager does unit itself.
 #if wxCHECK_VERSION(3, 1, 4)
 #else
   m_manager->UnInit();
 #endif
-  m_manager->Destroy();
+  m_manager = NULL;
 }
 
 #define APPEND_MENU_ITEM(menu, id, label, help, stock)  \

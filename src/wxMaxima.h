@@ -157,9 +157,9 @@ public:
     friend bool operator<(const VersionNumber& v1, const VersionNumber& v2);
     friend bool operator>(const VersionNumber& v1, const VersionNumber& v2);
   private:
-    long m_major;
-    long m_minor;
-    long m_patchlevel;
+    long m_major = -1;
+    long m_minor = -1;
+    long m_patchlevel = -1;
   };
 
   //! Use this maxima command (from a command line option) instead of the configured path
@@ -188,13 +188,13 @@ private:
   std::vector<wxString> m_varNamesToQuery;
 
   //! Is true if opening the file from the command line failed before updating the statusbar.
-  bool m_openInitialFileError;
+  bool m_openInitialFileError = false;
   //! Escape strings into a format lisp accepts
   wxString EscapeForLisp(wxString str);
   //! The number of Jiffies Maxima had used the last time we asked
-  long long m_maximaJiffies_old;
+  long long m_maximaJiffies_old = 0;
   //! The number of Jiffies the CPU had made the last time
-  long long m_cpuTotalJiffies_old;
+  long long m_cpuTotalJiffies_old = 0;
   //! Do we need to update the menus + toolbars?
   //! All configuration commands we still have to send to maxima
   wxString m_configCommands;
@@ -205,28 +205,28 @@ private:
   //! This string allows us to detect when the string we search for has changed.
   wxString m_oldFindString;
   //! This string allows us to detect when the string we search for has changed.
-  int m_oldFindFlags;
+  int m_oldFindFlags = 0;
   //! On opening a new file we only need a new maxima process if the old one ever evaluated cells.
-  bool m_hasEvaluatedCells;
+  bool m_hasEvaluatedCells = false;
   //! The number of output cells the current command has produced so far.
-  long m_outputCellsFromCurrentCommand;
+  long m_outputCellsFromCurrentCommand = 0;
   //! The maximum number of lines per command we will display
-  long m_maxOutputCellsPerCommand;
+  long m_maxOutputCellsPerCommand = 0;
   /*! Double the number of consecutive unsuccessful attempts to connect to the maxima server
 
     Each prompt is deemed as but one hint for a working maxima while each crash counts twice
     which hinders us from endlessly restarting in case maxima crashes, outputs something
     seemingly sensible and crashes again.
   */
-  int m_unsuccessfulConnectionAttempts;
+  int m_unsuccessfulConnectionAttempts = 11;
   //! The current working directory maxima's file I/O is relative to.
   wxString m_CWD;
   //! Do we want to evaluate the file after startup?
-  bool m_evalOnStartup;
+  bool m_evalOnStartup = false;
   //! Do we want to exit the program after the evaluation was successful?
-  bool m_exitAfterEval;
+  bool m_exitAfterEval = false;
   //! Can we display the "ready" prompt right now?
-  bool m_ready;
+  bool m_ready = false;
 
   /*! A human-readable presentation of eventual unmatched-parenthesis type errors
 
@@ -263,7 +263,7 @@ protected:
   //! Info about the gnuplot process we start for querying the terminals it supports
   wxProcess *m_gnuplotTerminalQueryProcess = NULL;
   //! Is this window active?
-  bool m_isActive;
+  bool m_isActive = true;
   //! Called when this window is focussed or defocussed.
   void OnFocus(wxFocusEvent &event);
 
@@ -324,7 +324,7 @@ protected:
     is too busy to execute the idle task at all.
   */
   void OnIdle(wxIdleEvent &event);
-  bool m_dataFromMaximaIs;
+  bool m_dataFromMaximaIs = false;
 
   void MenuCommand(const wxString &cmd);           //!< Inserts command cmd into the worksheet
   void FileMenu(wxCommandEvent &event);            //!< Processes "file menu" clicks
@@ -715,13 +715,13 @@ protected:
   */
   std::unique_ptr<wxSocketServer,  ServerDeleter> m_server;
 
-  wxProcess *m_maximaProcess;
+  wxProcess *m_maximaProcess = NULL;
   //! The stdout of the maxima process
-  wxInputStream *m_maximaStdout;
+  wxInputStream *m_maximaStdout = NULL;
   //! The stderr of the maxima process
-  wxInputStream *m_maximaStderr;
+  wxInputStream *m_maximaStderr = NULL;
   //! The port the actual maxima process (not its wrapper script) runs at
-  int m_port;
+  int m_port = -1;
   //! A marker for the start of maths
   static wxString m_mathPrefix1;
   //! A marker for the start of maths
@@ -755,7 +755,7 @@ protected:
   void GnuplotCommandName(wxString gnuplot);
   //! The first prompt maxima will output
   static wxString m_firstPrompt;
-  bool m_dispReadOut;               //!< what is displayed in statusbar
+  bool m_dispReadOut = false;               //!< what is displayed in statusbar
   wxWindowIDRef m_gnuplot_process_id;
   wxWindowIDRef m_maxima_process_id;
   wxString m_lastPrompt;
@@ -765,11 +765,11 @@ protected:
 
     If we didn't we respan an unexpectedly-closing maxima.
   */
-  bool m_closing;
+  bool m_closing = false;
   //! The directory with maxima's temp files
   wxString m_maximaTempDir;
   wxString m_maximaHtmlDir;
-  bool m_fileSaved;
+  bool m_fileSaved = true;
   wxString m_maximaArch;
   wxString m_lispVersion;
   wxString m_lispType;
@@ -777,14 +777,14 @@ protected:
   //! Maxima's idea about gnuplot's location
   wxString m_gnuplotcommand;
   //! The Char the current command starts at in the current WorkingGroup
-  std::size_t m_commandIndex;
+  long m_commandIndex = -1;
   FindReplacePane::FindReplaceData m_findData;
   static wxRegEx m_funRegEx;
   static wxRegEx m_varRegEx;
   static wxRegEx m_blankStatementRegEx;
   static wxRegEx m_sbclCompilationRegEx;
   MathParser m_parser;
-  bool m_maximaBusy;
+  bool m_maximaBusy = true;
 private:
   bool m_fourierLoaded = false;
   //! The value of maxima's logexpand variable
@@ -889,7 +889,7 @@ public:
   bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &files);
 
 private:
-  wxMaxima *m_wxmax;
+  wxMaxima *m_wxmax = NULL;
 };
 
 #endif
