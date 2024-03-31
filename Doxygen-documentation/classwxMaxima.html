@@ -273,11 +273,10 @@ wxTimer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memdesc:a53cec59ccdca65b3f4e629df76db0e01"><td class="mdescLeft">&#160;</td><td class="mdescRight">A timer that polls for output from the maxima process. <br /></td></tr>
 <tr class="separator:a53cec59ccdca65b3f4e629df76db0e01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57ca46afa9fc58fee77518ce8cda75e8"><td class="memItemLeft" align="right" valign="top"><a id="a57ca46afa9fc58fee77518ce8cda75e8"></a>
-StatusBar::MaximaStatus&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a57ca46afa9fc58fee77518ce8cda75e8">m_StatusMaximaBusy</a></td></tr>
-<tr class="memdesc:a57ca46afa9fc58fee77518ce8cda75e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">True=<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is currently busy. <br /></td></tr>
+StatusBar::MaximaStatus&#160;</td><td class="memItemRight" valign="bottom"><b>m_StatusMaximaBusy</b> = StatusBar::wait_for_start</td></tr>
 <tr class="separator:a57ca46afa9fc58fee77518ce8cda75e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23c394b707e0fa66d31d4a03bc535ae6"><td class="memItemLeft" align="right" valign="top"><a id="a23c394b707e0fa66d31d4a03bc535ae6"></a>
-StatusBar::MaximaStatus&#160;</td><td class="memItemRight" valign="bottom"><b>m_StatusMaximaBusy_next</b></td></tr>
+StatusBar::MaximaStatus&#160;</td><td class="memItemRight" valign="bottom"><b>m_StatusMaximaBusy_next</b> = StatusBar::wait_for_start</td></tr>
 <tr class="separator:a23c394b707e0fa66d31d4a03bc535ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
@@ -915,11 +914,11 @@ wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="memdesc:ac57d86df2f36cc8707282576fc84d870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Info about the gnuplot process we start for querying the terminals it supports. <br /></td></tr>
 <tr class="separator:ac57d86df2f36cc8707282576fc84d870"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f9c267c29a8f462cb89d933016a06ed"><td class="memItemLeft" align="right" valign="top"><a id="a2f9c267c29a8f462cb89d933016a06ed"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a2f9c267c29a8f462cb89d933016a06ed">m_isActive</a></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a2f9c267c29a8f462cb89d933016a06ed">m_isActive</a> = true</td></tr>
 <tr class="memdesc:a2f9c267c29a8f462cb89d933016a06ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this window active? <br /></td></tr>
 <tr class="separator:a2f9c267c29a8f462cb89d933016a06ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14240f899646de1805c1bbad9628a386"><td class="memItemLeft" align="right" valign="top"><a id="a14240f899646de1805c1bbad9628a386"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_dataFromMaximaIs</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_dataFromMaximaIs</b> = false</td></tr>
 <tr class="separator:a14240f899646de1805c1bbad9628a386"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe19644e32b4793af7a33ea55a49cf6f"><td class="memItemLeft" align="right" valign="top"><a id="abe19644e32b4793af7a33ea55a49cf6f"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaVariable_wxSubscripts</b></td></tr>
@@ -949,25 +948,25 @@ std::unique_ptr&lt; <a class="el" href="classMaxima.html">Maxima</a> &gt;&#160;<
 <tr class="memdesc:a520d1fc61b8ce43169f51904c068056a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The server maxima connects to as client.  <a href="classwxMaxima.html#a520d1fc61b8ce43169f51904c068056a">More...</a><br /></td></tr>
 <tr class="separator:a520d1fc61b8ce43169f51904c068056a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d7bfc768a5bff21ac312378a99f646f"><td class="memItemLeft" align="right" valign="top"><a id="a4d7bfc768a5bff21ac312378a99f646f"></a>
-wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaProcess</b></td></tr>
+wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaProcess</b> = NULL</td></tr>
 <tr class="separator:a4d7bfc768a5bff21ac312378a99f646f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ac7385ecd5b838d00b25a8ed62ce37a"><td class="memItemLeft" align="right" valign="top"><a id="a4ac7385ecd5b838d00b25a8ed62ce37a"></a>
-wxInputStream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a4ac7385ecd5b838d00b25a8ed62ce37a">m_maximaStdout</a></td></tr>
+wxInputStream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a4ac7385ecd5b838d00b25a8ed62ce37a">m_maximaStdout</a> = NULL</td></tr>
 <tr class="memdesc:a4ac7385ecd5b838d00b25a8ed62ce37a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The stdout of the maxima process. <br /></td></tr>
 <tr class="separator:a4ac7385ecd5b838d00b25a8ed62ce37a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82c85e2499ede35b5d9333c6282cef3d"><td class="memItemLeft" align="right" valign="top"><a id="a82c85e2499ede35b5d9333c6282cef3d"></a>
-wxInputStream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a82c85e2499ede35b5d9333c6282cef3d">m_maximaStderr</a></td></tr>
+wxInputStream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a82c85e2499ede35b5d9333c6282cef3d">m_maximaStderr</a> = NULL</td></tr>
 <tr class="memdesc:a82c85e2499ede35b5d9333c6282cef3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The stderr of the maxima process. <br /></td></tr>
 <tr class="separator:a82c85e2499ede35b5d9333c6282cef3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b4330ab50309004698913613ac9b980"><td class="memItemLeft" align="right" valign="top"><a id="a0b4330ab50309004698913613ac9b980"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a0b4330ab50309004698913613ac9b980">m_port</a></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a0b4330ab50309004698913613ac9b980">m_port</a> = -1</td></tr>
 <tr class="memdesc:a0b4330ab50309004698913613ac9b980"><td class="mdescLeft">&#160;</td><td class="mdescRight">The port the actual maxima process (not its wrapper script) runs at. <br /></td></tr>
 <tr class="separator:a0b4330ab50309004698913613ac9b980"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e8eaa35b0984d6d0ccd0ce166552d33"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a0e8eaa35b0984d6d0ccd0ce166552d33">m_scheduleUpdateToc</a> = false</td></tr>
 <tr class="memdesc:a0e8eaa35b0984d6d0ccd0ce166552d33"><td class="mdescLeft">&#160;</td><td class="mdescRight">True = schedule an update of the table of contents.  <a href="classwxMaxima.html#a0e8eaa35b0984d6d0ccd0ce166552d33">More...</a><br /></td></tr>
 <tr class="separator:a0e8eaa35b0984d6d0ccd0ce166552d33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d537e0a9cd600272cc58a0f9a758094"><td class="memItemLeft" align="right" valign="top"><a id="a0d537e0a9cd600272cc58a0f9a758094"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a0d537e0a9cd600272cc58a0f9a758094">m_dispReadOut</a></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a0d537e0a9cd600272cc58a0f9a758094">m_dispReadOut</a> = false</td></tr>
 <tr class="memdesc:a0d537e0a9cd600272cc58a0f9a758094"><td class="mdescLeft">&#160;</td><td class="mdescRight">what is displayed in statusbar <br /></td></tr>
 <tr class="separator:a0d537e0a9cd600272cc58a0f9a758094"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3312d64d16e70dc20f59045c9019f645"><td class="memItemLeft" align="right" valign="top"><a id="a3312d64d16e70dc20f59045c9019f645"></a>
@@ -985,7 +984,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lastPath</b></t
 <tr class="memitem:a30c941b1cfaf0bbd89643fe823f63d8a"><td class="memItemLeft" align="right" valign="top"><a id="a30c941b1cfaf0bbd89643fe823f63d8a"></a>
 std::unique_ptr&lt; wxPrintData &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_printData</b></td></tr>
 <tr class="separator:a30c941b1cfaf0bbd89643fe823f63d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ecc598661f55af9f94c9d7a3c244264"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a9ecc598661f55af9f94c9d7a3c244264">m_closing</a></td></tr>
+<tr class="memitem:a9ecc598661f55af9f94c9d7a3c244264"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a9ecc598661f55af9f94c9d7a3c244264">m_closing</a> = false</td></tr>
 <tr class="memdesc:a9ecc598661f55af9f94c9d7a3c244264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Did we tell maxima to close?  <a href="classwxMaxima.html#a9ecc598661f55af9f94c9d7a3c244264">More...</a><br /></td></tr>
 <tr class="separator:a9ecc598661f55af9f94c9d7a3c244264"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa46b240aaabe1fee1715604e81abfe77"><td class="memItemLeft" align="right" valign="top"><a id="aa46b240aaabe1fee1715604e81abfe77"></a>
@@ -996,7 +995,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaHtmlDir</b></td></tr>
 <tr class="separator:aef262ba7311de54c6229766ff523afb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9223dfe66d8c14b86b446b533a5fe6da"><td class="memItemLeft" align="right" valign="top"><a id="a9223dfe66d8c14b86b446b533a5fe6da"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_fileSaved</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_fileSaved</b> = true</td></tr>
 <tr class="separator:a9223dfe66d8c14b86b446b533a5fe6da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac49b26ea956a6b4dc144bc342bde34d"><td class="memItemLeft" align="right" valign="top"><a id="aac49b26ea956a6b4dc144bc342bde34d"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaArch</b></td></tr>
@@ -1011,10 +1010,10 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lispType</b></t
 wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ae4b0ef16e901c44866fee1b5074e0e72">m_gnuplotcommand</a></td></tr>
 <tr class="memdesc:ae4b0ef16e901c44866fee1b5074e0e72"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s idea about gnuplot's location. <br /></td></tr>
 <tr class="separator:ae4b0ef16e901c44866fee1b5074e0e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fc188a029db96d747c3c9a862cc284b"><td class="memItemLeft" align="right" valign="top"><a id="a4fc188a029db96d747c3c9a862cc284b"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a4fc188a029db96d747c3c9a862cc284b">m_commandIndex</a></td></tr>
-<tr class="memdesc:a4fc188a029db96d747c3c9a862cc284b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Char the current command starts at in the current WorkingGroup. <br /></td></tr>
-<tr class="separator:a4fc188a029db96d747c3c9a862cc284b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab86cbc6191813f2a046a10c0640c5b13"><td class="memItemLeft" align="right" valign="top"><a id="ab86cbc6191813f2a046a10c0640c5b13"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ab86cbc6191813f2a046a10c0640c5b13">m_commandIndex</a> = -1</td></tr>
+<tr class="memdesc:ab86cbc6191813f2a046a10c0640c5b13"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Char the current command starts at in the current WorkingGroup. <br /></td></tr>
+<tr class="separator:ab86cbc6191813f2a046a10c0640c5b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1804c9c6228d7fd2b2aad619d059fe77"><td class="memItemLeft" align="right" valign="top"><a id="a1804c9c6228d7fd2b2aad619d059fe77"></a>
 <a class="el" href="classFindReplacePane_1_1FindReplaceData.html">FindReplacePane::FindReplaceData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_findData</b></td></tr>
 <tr class="separator:a1804c9c6228d7fd2b2aad619d059fe77"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1022,14 +1021,14 @@ std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <a class="el" href="classMathParser.html">MathParser</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_parser</b></td></tr>
 <tr class="separator:a43a8191d83bd055bfd873e7b31230c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b39c4c83ab2ee948ddce5ebfddf4b2a"><td class="memItemLeft" align="right" valign="top"><a id="a5b39c4c83ab2ee948ddce5ebfddf4b2a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaBusy</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaBusy</b> = true</td></tr>
 <tr class="separator:a5b39c4c83ab2ee948ddce5ebfddf4b2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4bf94a0227d710b60cc474e2ae52e72"><td class="memItemLeft" align="right" valign="top"><a id="ae4bf94a0227d710b60cc474e2ae52e72"></a>
 <a class="el" href="classVariablespane.html">Variablespane</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#ae4bf94a0227d710b60cc474e2ae52e72">m_variablesPane</a> = NULL</td></tr>
 <tr class="memdesc:ae4bf94a0227d710b60cc474e2ae52e72"><td class="mdescLeft">&#160;</td><td class="mdescRight">The panel the user can display variable contents in. <br /></td></tr>
 <tr class="separator:ae4bf94a0227d710b60cc474e2ae52e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22067c8ee54dca1103ed43cb5265e4a8"><td class="memItemLeft" align="right" valign="top"><a id="a22067c8ee54dca1103ed43cb5265e4a8"></a>
-<a class="el" href="classTableOfContents.html">TableOfContents</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a22067c8ee54dca1103ed43cb5265e4a8">m_tableOfContents</a></td></tr>
+<a class="el" href="classTableOfContents.html">TableOfContents</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a22067c8ee54dca1103ed43cb5265e4a8">m_tableOfContents</a> = NULL</td></tr>
 <tr class="memdesc:a22067c8ee54dca1103ed43cb5265e4a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The table of contents pane. <br /></td></tr>
 <tr class="separator:a22067c8ee54dca1103ed43cb5265e4a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e520d8380e27029f4a2af509d90a488"><td class="memItemLeft" align="right" valign="top"><a id="a4e520d8380e27029f4a2af509d90a488"></a>
@@ -1040,7 +1039,7 @@ long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:aee0aa0ac10647a51bc3d18556bc09685"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many bytes did maxima send us until now? <br /></td></tr>
 <tr class="separator:aee0aa0ac10647a51bc3d18556bc09685"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacbfb0677c03361806ec252d651f4263"><td class="memItemLeft" align="right" valign="top"><a id="aacbfb0677c03361806ec252d651f4263"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#aacbfb0677c03361806ec252d651f4263">m_pid</a></td></tr>
+long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#aacbfb0677c03361806ec252d651f4263">m_pid</a> = -1</td></tr>
 <tr class="memdesc:aacbfb0677c03361806ec252d651f4263"><td class="mdescLeft">&#160;</td><td class="mdescRight">The process id of maxima. Is determined by ReadFirstPrompt. <br /></td></tr>
 <tr class="separator:aacbfb0677c03361806ec252d651f4263"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58afeb9d6fff57e4ca72b6e4c8afdbb2"><td class="memItemLeft" align="right" valign="top"><a id="a58afeb9d6fff57e4ca72b6e4c8afdbb2"></a>
@@ -1171,7 +1170,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr class="memdesc:a3d22c452da8d2de05bb06a66c4c4314f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The text for the Left half of the Status Bar. <br /></td></tr>
 <tr class="separator:a3d22c452da8d2de05bb06a66c4c4314f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad41749ea6ea9116d33925a14b7696ed5"><td class="memItemLeft" align="right" valign="top"><a id="ad41749ea6ea9116d33925a14b7696ed5"></a>
-<a class="el" href="classDrawSidebar.html">DrawSidebar</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#ad41749ea6ea9116d33925a14b7696ed5">m_drawPane</a></td></tr>
+<a class="el" href="classDrawSidebar.html">DrawSidebar</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#ad41749ea6ea9116d33925a14b7696ed5">m_drawPane</a> = NULL</td></tr>
 <tr class="memdesc:ad41749ea6ea9116d33925a14b7696ed5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sidebar with the draw commands. <br /></td></tr>
 <tr class="separator:ad41749ea6ea9116d33925a14b7696ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a324068ed3d61cca697253548d5f86367"><td class="memItemLeft" align="right" valign="top"><a id="a324068ed3d61cca697253548d5f86367"></a>
@@ -1184,42 +1183,42 @@ std::unordered_map&lt; wxWindowID, wxString &gt;&#160;</td><td class="memItemRig
 <a class="el" href="classSymbolsSidebar.html">SymbolsSidebar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_symbolsSidebar</b> = NULL</td></tr>
 <tr class="separator:aab0d89ee3e72c89c85a814037899980c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8edb4efa89d0627a9eb61fffbf2222b8"><td class="memItemLeft" align="right" valign="top"><a id="a8edb4efa89d0627a9eb61fffbf2222b8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a8edb4efa89d0627a9eb61fffbf2222b8">m_EvaluationQueueLength</a></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a8edb4efa89d0627a9eb61fffbf2222b8">m_EvaluationQueueLength</a> = 0</td></tr>
 <tr class="memdesc:a8edb4efa89d0627a9eb61fffbf2222b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current length of the evaluation queue of commands we still need to send to maxima. <br /></td></tr>
 <tr class="separator:a8edb4efa89d0627a9eb61fffbf2222b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5669cdf269699dfcad2f5f56578ac5e4"><td class="memItemLeft" align="right" valign="top"><a id="a5669cdf269699dfcad2f5f56578ac5e4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a5669cdf269699dfcad2f5f56578ac5e4">m_updateEvaluationQueueLengthDisplay</a></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a5669cdf269699dfcad2f5f56578ac5e4">m_updateEvaluationQueueLengthDisplay</a> = true</td></tr>
 <tr class="memdesc:a5669cdf269699dfcad2f5f56578ac5e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we need to update the display showing the evaluation queue length? <br /></td></tr>
 <tr class="separator:a5669cdf269699dfcad2f5f56578ac5e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30b787ac938b5f749ee6f6aacec8d762"><td class="memItemLeft" align="right" valign="top"><a id="a30b787ac938b5f749ee6f6aacec8d762"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a30b787ac938b5f749ee6f6aacec8d762">m_commandsLeftInCurrentCell</a></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a30b787ac938b5f749ee6f6aacec8d762">m_commandsLeftInCurrentCell</a> = 0</td></tr>
 <tr class="memdesc:a30b787ac938b5f749ee6f6aacec8d762"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of commands left in the current of the evaluation queue item. <br /></td></tr>
 <tr class="separator:a30b787ac938b5f749ee6f6aacec8d762"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a169f822863394dee3954e5b202bcd372"><td class="memItemLeft" align="right" valign="top"><a id="a169f822863394dee3954e5b202bcd372"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a169f822863394dee3954e5b202bcd372">m_first</a></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a169f822863394dee3954e5b202bcd372">m_first</a> = true</td></tr>
 <tr class="memdesc:a169f822863394dee3954e5b202bcd372"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we expect the 1st prompt from maxima to appear? <br /></td></tr>
 <tr class="separator:a169f822863394dee3954e5b202bcd372"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0450e7e4b84daa927456863701d20b1b"><td class="memItemLeft" align="right" valign="top"><a id="a0450e7e4b84daa927456863701d20b1b"></a>
-wxAuiManager *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a0450e7e4b84daa927456863701d20b1b">m_manager</a></td></tr>
-<tr class="memdesc:a0450e7e4b84daa927456863701d20b1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The manager for dynamic screen layouts. <br /></td></tr>
-<tr class="separator:a0450e7e4b84daa927456863701d20b1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae66f540ec9db700ca8e0b8730d510e73"><td class="memItemLeft" align="right" valign="top"><a id="ae66f540ec9db700ca8e0b8730d510e73"></a>
+std::unique_ptr&lt; wxAuiManager &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#ae66f540ec9db700ca8e0b8730d510e73">m_manager</a></td></tr>
+<tr class="memdesc:ae66f540ec9db700ca8e0b8730d510e73"><td class="mdescLeft">&#160;</td><td class="mdescRight">The manager for dynamic screen layouts. <br /></td></tr>
+<tr class="separator:ae66f540ec9db700ca8e0b8730d510e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2869d450f22a0b5fd340dbbc7b67964"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWorksheet.html">Worksheet</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#af2869d450f22a0b5fd340dbbc7b67964">m_worksheet</a> = NULL</td></tr>
 <tr class="memdesc:af2869d450f22a0b5fd340dbbc7b67964"><td class="mdescLeft">&#160;</td><td class="mdescRight">The worksheet itself.  <a href="classwxMaximaFrame.html#af2869d450f22a0b5fd340dbbc7b67964">More...</a><br /></td></tr>
 <tr class="separator:af2869d450f22a0b5fd340dbbc7b67964"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bd088851c2448772b4c4f955db6af05"><td class="memItemLeft" align="right" valign="top"><a id="a8bd088851c2448772b4c4f955db6af05"></a>
-<a class="el" href="classHistory.html">History</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a8bd088851c2448772b4c4f955db6af05">m_history</a></td></tr>
+<a class="el" href="classHistory.html">History</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a8bd088851c2448772b4c4f955db6af05">m_history</a> = NULL</td></tr>
 <tr class="memdesc:a8bd088851c2448772b4c4f955db6af05"><td class="mdescLeft">&#160;</td><td class="mdescRight">The history pane. <br /></td></tr>
 <tr class="separator:a8bd088851c2448772b4c4f955db6af05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a662bf1bd2689a78873096d294efb93f9"><td class="memItemLeft" align="right" valign="top"><a id="a662bf1bd2689a78873096d294efb93f9"></a>
-<a class="el" href="classXmlInspector.html">XmlInspector</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a662bf1bd2689a78873096d294efb93f9">m_xmlInspector</a></td></tr>
+<a class="el" href="classXmlInspector.html">XmlInspector</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a662bf1bd2689a78873096d294efb93f9">m_xmlInspector</a> = NULL</td></tr>
 <tr class="memdesc:a662bf1bd2689a78873096d294efb93f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">A XmlInspector-like xml monitor. <br /></td></tr>
 <tr class="separator:a662bf1bd2689a78873096d294efb93f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70150ff5867ddc73af06868b0fd75ff4"><td class="memItemLeft" align="right" valign="top"><a id="a70150ff5867ddc73af06868b0fd75ff4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a70150ff5867ddc73af06868b0fd75ff4">m_forceStatusbarUpdate</a></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a70150ff5867ddc73af06868b0fd75ff4">m_forceStatusbarUpdate</a> = false</td></tr>
 <tr class="memdesc:a70150ff5867ddc73af06868b0fd75ff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">true=force an update of the status bar at the next call of <a class="el" href="classwxMaximaFrame.html#ac9011a5c9856563224d92b3b119b03d9" title="Set the status according to if maxima is calculating.">StatusMaximaBusy()</a> <br /></td></tr>
 <tr class="separator:a70150ff5867ddc73af06868b0fd75ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adac1b28d94eb55cc627759b1547afb1b"><td class="memItemLeft" align="right" valign="top"><a id="adac1b28d94eb55cc627759b1547afb1b"></a>
-<a class="el" href="classLogPane.html">LogPane</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#adac1b28d94eb55cc627759b1547afb1b">m_logPane</a></td></tr>
+<a class="el" href="classLogPane.html">LogPane</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#adac1b28d94eb55cc627759b1547afb1b">m_logPane</a> = NULL</td></tr>
 <tr class="memdesc:adac1b28d94eb55cc627759b1547afb1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The panel the log and debug messages will appear on. <br /></td></tr>
 <tr class="separator:adac1b28d94eb55cc627759b1547afb1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5ddd6afb747c28c56bebfb84b7dffbb"><td class="memItemLeft" align="right" valign="top"><a id="af5ddd6afb747c28c56bebfb84b7dffbb"></a>
@@ -1668,7 +1667,7 @@ Appending stuff to output</h2>
 </div><div class="memdoc">
 
 <p>Spawn the "configure" menu. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
 
 </div>
 </div>
@@ -2357,7 +2356,7 @@ Dealing with stuff read from the socket</h2>
 
 <p>Setup maxima's variables. </p>
 <p>This method is called once when maxima starts. It loads wxmathml.lisp and sets some option variables.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
 
 </div>
 </div>
@@ -2737,7 +2736,7 @@ Plot Slider</h2>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool wxMaxima::m_closing</td>
+          <td class="memname">bool wxMaxima::m_closing = false</td>
         </tr>
       </table>
   </td>
