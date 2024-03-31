@@ -43,6 +43,7 @@
 #include <wx/filename.h>
 #include "precomp.h"
 #include "Configuration.h"
+#include "Version.h"
 #include <unordered_map>
 
 /* The autocompletion logic
@@ -115,7 +116,7 @@ private:
   //    m_configuration.MaximaShareDir(dir);
 
   //! The thread the help file anchors are compiled in
-  std::thread m_helpfileanchorsThread;
+  jthread m_helpfileanchorsThread;
   std::mutex m_helpFileAnchorsLock;
   //! The configuration storage
   Configuration *m_configuration;

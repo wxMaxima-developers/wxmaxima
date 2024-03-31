@@ -209,7 +209,7 @@ void Maxima::ReadSocket() {
   // it to wxMaxima
   m_abortParserThread = false;
   if(m_configuration->UseThreads())
-    m_parserTask = std::thread(&Maxima::SendToWxMaxima, this);
+    m_parserTask = jthread(&Maxima::SendToWxMaxima, this);
   else
     SendToWxMaxima();
 }

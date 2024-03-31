@@ -45,6 +45,7 @@
 #include <wx/hashmap.h>
 #include "Configuration.h"
 #include "precomp.h"
+#include "Version.h"
 #include <unordered_map>
 /* The autocompletion logic
 
@@ -323,8 +324,8 @@ private:
       }
   };
  
-  std::thread m_addSymbols_backgroundThread;
-  std::thread m_addFiles_backgroundThread;
+  jthread m_addSymbols_backgroundThread;
+  jthread m_addFiles_backgroundThread;
   //! Is locked when someone accesses a keyword list
   std::mutex m_keywordsLock;
   //! The lists of autocompletable symbols for the classes defined in autoCompletionType

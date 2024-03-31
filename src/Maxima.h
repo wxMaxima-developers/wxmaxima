@@ -42,6 +42,7 @@
 #include <atomic>
 #include <mutex>
 #include "Configuration.h"
+#include "Version.h"
 
 /*! Interface to the Maxima process
  *
@@ -125,7 +126,7 @@ private:
   //! The configuration of our wxMaxima process
   Configuration *m_configuration;
   //! The thread handler for SendDataTowxMaxima, the thread that parses the data from maxima.
-  std::thread m_parserTask;
+  jthread m_parserTask;
   //! Handles events on the open client socket
   void SocketEvent(wxSocketEvent &event);
   //! Handles timer events

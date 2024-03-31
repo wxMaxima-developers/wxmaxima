@@ -210,10 +210,10 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
   std::unique_ptr<ThreadNumberLimiter> limiter(new
                                                ThreadNumberLimiter(&m_gnuplotDataThreadRunning));
   if(m_configuration->UseThreads())
-    m_loadGnuplotSourceTask = std::thread(&Image::LoadGnuplotSource_Backgroundtask,
-                                          this,
-                                          std::move(limiter),
-                                          m_gnuplotSource, m_gnuplotData, wxmxFile);
+    m_loadGnuplotSourceTask = jthread(&Image::LoadGnuplotSource_Backgroundtask,
+                                      this,
+                                      std::move(limiter),
+                                      m_gnuplotSource, m_gnuplotData, wxmxFile);
   else
     LoadGnuplotSource_Backgroundtask(
       std::move(limiter),
@@ -263,12 +263,12 @@ void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilen
   m_gnuplotData = std::move(dataFilename);
   if(m_configuration->UseThreads())
     m_loadGnuplotSourceTask =
-      std::thread(&Image::LoadCompressedGnuplotSource_Backgroundtask,
-                  this,
-                  std::move(limiter),
-                  m_gnuplotSource,
-                  m_gnuplotData,
-                  wxmxFile);
+      jthread(&Image::LoadCompressedGnuplotSource_Backgroundtask,
+              this,
+              std::move(limiter),
+              m_gnuplotSource,
+              m_gnuplotData,
+              wxmxFile);
   else
     LoadCompressedGnuplotSource_Backgroundtask(
       std::move(limiter),
@@ -780,11 +780,11 @@ void Image::LoadImage(wxString image, wxString wxmxFile,
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
   if(m_configuration->UseThreads())
-    m_loadImageTask = std::thread(&Image::LoadImage_Backgroundtask,
-                                  this,
-                                  std::move(limiter),
-                                  std::move(image), std::move(wxmxFile),
-                                  remove
+    m_loadImageTask = jthread(&Image::LoadImage_Backgroundtask,
+                              this,
+                              std::move(limiter),
+                              std::move(image), std::move(wxmxFile),
+                              remove
       );
   else
     LoadImage_Backgroundtask(

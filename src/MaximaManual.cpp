@@ -539,12 +539,12 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir,
       wxLogMessage(_("Background task that compiles the Manual anchors scheduled."));
       m_abortBackgroundTask = false;
       if(m_configuration->UseThreads())
-        m_helpfileanchorsThread = std::thread(&MaximaManual::CompileHelpFileAnchors,
-                                              this,
-                                              m_maximaHtmlDir,
-                                              m_maximaVersion,
-                                              Dirstructure::AnchorsCacheFile()
-                                              );
+        m_helpfileanchorsThread = jthread(&MaximaManual::CompileHelpFileAnchors,
+                                          this,
+                                          m_maximaHtmlDir,
+                                          m_maximaVersion,
+                                          Dirstructure::AnchorsCacheFile()
+                                          );
       else
         CompileHelpFileAnchors(
                                m_maximaHtmlDir,

@@ -33,6 +33,7 @@
 #include <thread>
 #include "ThreadNumberLimiter.h"
 #include "precomp.h"
+#include "Version.h"
 #include "Configuration.h"
 #include <wx/image.h>
 #include <wx/buffer.h>
@@ -270,11 +271,11 @@ private:
   wxString m_gnuplotSource;
   //! The gnuplot data file for this image, if any.
   wxString m_gnuplotData;
-  mutable std::thread m_loadImageTask;
+  mutable jthread m_loadImageTask;
   void LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limiter,
                                 wxString image, wxString wxmxFile,
                                 bool remove);
-  std::thread m_loadGnuplotSourceTask;
+  jthread m_loadGnuplotSourceTask;
   void LoadGnuplotSource_Backgroundtask(
     std::unique_ptr<ThreadNumberLimiter> limiter,
     wxString gnuplotFile, wxString dataFile, wxString wxmxFile);
