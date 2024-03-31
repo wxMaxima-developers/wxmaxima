@@ -37,6 +37,8 @@ option(WXM_UNIT_TESTS
     "Compile unit tests and enable the tests." OFF)
 option(WXM_INTERPROCEDURAL_OPTIMIZATION
     "Enable interprocedural optimization (IPO/LTO)." OFF)
+option(WXM_PO4A_UPDATE_MANUAL_PO_POT_FILES
+    "Update the po/pot locale files in the source tree." OFF)
 
 if(DEFINED MACOSX_VERSION_MIN)
     set(CMAKE_OSX_DEPLOYMENT_TARGET ${MACOSX_VERSION_MIN} CACHE STRING FORCE)
