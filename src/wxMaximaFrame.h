@@ -157,7 +157,7 @@ protected:
   TableOfContents *m_tableOfContents = NULL;
   Configuration m_configuration;
   //! How many bytes did maxima send us until now?
-  long m_bytesFromMaxima = 0;
+  std::size_t m_bytesFromMaxima = 0;
   //! The process id of maxima. Is determined by ReadFirstPrompt.
   long m_pid = -1;
   //! The last name GetTempAutosavefileName() has returned.
