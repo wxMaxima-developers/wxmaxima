@@ -77,7 +77,7 @@ void EvaluationQueue::AddToQueue(GroupCell *gr) {
     m_workingGroupChanged = true;
   }
   m_size++;
-  m_queue.push_back(gr);
+  m_queue.push_back(CellPtr<GroupCell>(gr));
 }
 
 /**

@@ -80,7 +80,7 @@ private:
   //! The label the user has assigned to the current command.
   wxString m_userLabel;
   //! The groupCells in the evaluation Queue.
-  std::vector<GroupCell *> m_queue;
+  std::vector<CellPtr<GroupCell>> m_queue;
 
   //! Adds all commands in commandString as separate tokens to the queue.
   void AddTokens(const GroupCell *cell);
