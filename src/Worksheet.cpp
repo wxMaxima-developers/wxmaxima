@@ -383,7 +383,7 @@ void Worksheet::RequestRedraw(GroupCell *start) {
   if (start == NULL)
     m_redrawStart = GetTree();
   else {
-    if (m_redrawStart != NULL) {
+    if (m_redrawStart) {
       // No need to waste time avoiding to waste time in a refresh when we don't
       // know our cell's position.
       if ((start->GetCurrentPoint().y < 0) ||
@@ -560,8 +560,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
       //
       // Draw the horizontal caret
       //
-      if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) &&
-          (m_hCaretBlinkVisible) && (m_hasFocus) && (m_hCaretPosition != NULL)) {
+      if ((m_hCaretActive) && (!m_hCaretPositionStart) &&
+          (m_hCaretBlinkVisible) && (m_hasFocus) && (m_hCaretPosition)) {
         dc.SetPen(*(wxThePenList->FindOrCreatePen(
                                                   m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
         dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
@@ -575,8 +575,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
                          m_configuration->GetCursorWidth());
       }
 
-      if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hasFocus) &&
-          (m_hCaretPosition == NULL)) {
+      if ((m_hCaretActive) && (!m_hCaretPositionStart) && (m_hasFocus) &&
+          (!m_hCaretPosition)) {
         if (!m_hCaretBlinkVisible) {
           dc.SetBrush(
                       m_configuration->GetBackgroundBrush());
