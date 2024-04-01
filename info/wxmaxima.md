@@ -290,7 +290,44 @@ You can be use `.mac` files for writing your own library of macros. But since th
 
 ### .wxm
 
-.wxm files contain the worksheet except for _Maxima_'s output. On Maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format, it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.
+`.wxm` files contain the worksheet except for _Maxima_'s output. On Maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format, it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.
+
+#### File format of wxm files
+
+This is just a plain text file (you can open it with a text editor), containing the cell contents as some special Maxima comments.
+
+It starts with the following comment:
+
+```
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */
+```
+
+And then the cells follow, encoded as Maxima comments, e.g. a section cell:
+
+```
+/* [wxMaxima: section start ]
+Title of the section
+   [wxMaxima: section end   ] */
+```
+
+or (in a Math cell the input is of course *not* commented out (the output is not saved in a `wxm` file)):
+
+```
+/* [wxMaxima: input   start ] */
+f(x):=x^2+1$
+f(2);
+/* [wxMaxima: input   end   ] */
+```
+
+Images are [Base64 encoded](https://en.wikipedia.org/wiki/Base64) with the image type as first line):
+
+```
+/* [wxMaxima: image   start ]
+jpg
+[very chaotic looking character sequence]
+   [wxMaxima: image   end   ] */
+```
 
 ### .wxmx
 
