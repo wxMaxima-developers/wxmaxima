@@ -2872,7 +2872,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_maximaProcess = NULL;
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
-  m_client = nullptr;
+  m_client.reset();
 
   // Just to be absolutely sure: Additionally try to kill maxima
   if (m_pid > 0) {

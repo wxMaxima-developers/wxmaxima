@@ -105,19 +105,19 @@ private:
   //! The storage for UpdateControlsNeeded()
   bool m_updateControls = true;
   //! Is a scroll to the cursor scheduled?
-  bool m_scrollToCaret;
+  bool m_scrollToCaret = false;
   //! The pointers to cells that can be deleted by these cells on deletion of the cells.
   CellPointers m_cellPointers;
   // The x position to scroll to
-  int m_newxPosition;
+  int m_newxPosition = -1;
   // The y position to scroll to
-  int m_newyPosition;
+  int m_newyPosition = -1;
   //! Which zoom level were we at when we started the zoom gesture?
-  double m_zoomAtGestureStart;
+  double m_zoomAtGestureStart = 1.0;
   //! If m_cellPointers.m_scrollToCell = true: Do we want to scroll to the top of this cell?
-  bool m_scrollToTopOfCell;
+  bool m_scrollToTopOfCell = false;
   //! Is our window currently active?
-  bool m_windowActive;
+  bool m_windowActive = true;
   //! The rectangle we need to refresh.
   wxRegion m_regionToRefresh;
   /*! The size of a scroll step
@@ -126,16 +126,16 @@ private:
     scroll step, but besides that also the accuracy wxScrolledCanvas
     calculates some widths in.
   */
-  int m_scrollUnit;
+  int m_scrollUnit = 10;
   /*! The drawing context used for calculating sizes.
 
     Drawing is done from a wxPaintDC in OnPaint() instead.
   */
   wxClientDC m_dc;
   //! Where do we need to start the repainting of the worksheet?
-  GroupCell *m_redrawStart;
+  GroupCell *m_redrawStart = NULL;
   //! Do we need to redraw the worksheet?
-  bool m_fullRedrawRequested;
+  bool m_fullRedrawRequested = false;
   //! The clipboard format "mathML"
 
   //! A class that publishes wxm data to the clipboard
@@ -210,11 +210,11 @@ private:
   };
 
 //! true, if we have the current focus.
-  bool m_hasFocus;
+  bool m_hasFocus = true;
   //! The last beginning for the area being drawn
-  long m_lastTop;
+  long m_lastTop = 0;
   //! The last ending for the area being drawn
-  long m_lastBottom;
+  long m_lastBottom = 0;
   /*! \defgroup UndoBufferFill Undo methods for cell additions/deletions:
 
     Each EditorCell has its own private undo buffer Additionally wxMaxima
@@ -396,10 +396,7 @@ private:
   void TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart, GroupCell *end);
   //! @}
 
-  bool m_scrolledAwayFromEvaluation;
-
-  //! The cell the current question from maxima is being kept in.
-  EditorCell *m_answerCell;
+  bool m_scrolledAwayFromEvaluation = false;
 
   /*! Escape all chars that aren't allowed in html.
 
@@ -449,12 +446,6 @@ private:
 
   //! Is executed if a timer associated with Worksheet has expired.
   void OnTimer(wxTimerEvent &event);
-
-  /*! Has the autosave interval expired?
-
-    True means: A save will be issued after the user stops typing.
-  */
-  bool m_autoSaveIntervalExpired;
 
 #if wxCHECK_VERSION(3, 1, 1)
   //! Handle pinch-to-zoom-events using the gesture interface
@@ -589,29 +580,29 @@ private:
     See m_hCaretPosition and EditorCell::GetActiveCell() for the position of the two
     types of cursors.
   */
-  bool m_hCaretActive;
+  bool m_hCaretActive = true;
   /*! The group above the hcaret, NULL for the top of the document
     See EditorCell::GetActiveCell() for the position if the cursor that is drawn as a
     vertical line.
   */
-  GroupCell *m_hCaretPosition;
+  GroupCell *m_hCaretPosition = NULL;
   /*! The start for the selection when selecting group with the horizontally drawn cursor
 
     This cell does define were the selection was actually started and therefore does not need
     to be above m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionStart.
   */
-  GroupCell *m_hCaretPositionStart;
+  GroupCell *m_hCaretPositionStart = NULL;
   /*! The end of the selection when selecting group with the horizontally drawn cursor
 
     This cell does define where the selection was actually ended and therefore does not need
     to be below m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionEnd.
   */
-  GroupCell *m_hCaretPositionEnd;
-  bool m_leftDown;
+  GroupCell *m_hCaretPositionEnd = NULL;
+  bool m_leftDown = false;
   //! Do we want to automatically scroll to a cell as soon as it is being evaluated?
-  bool m_followEvaluation;
-  bool m_mouseDrag;
-  bool m_mouseOutside;
+  bool m_followEvaluation = true;
+  bool m_mouseDrag = false;
+  bool m_mouseOutside = false;
   //! The list of tree that contains the document itself
   std::unique_ptr<GroupCell> m_tree;
   //! A pointer to the last cell of this worksheet
@@ -620,13 +611,12 @@ private:
   mutable bool m_adjustWorksheetSizeNeeded = false;
   //! Returns a pointer to the last cell of this worksheet
   GroupCell *GetLastCellInWorksheet() const;
-  int m_clickType;
-  int m_clickType_selectionStart;
-  GroupCell *m_clickInGC;
+  int m_clickType = CLICK_TYPE_NONE;
+  GroupCell *m_clickInGC = NULL;
   //! true = blink the cursor
-  bool m_blinkDisplayCaret;
+  bool m_blinkDisplayCaret = true;
   //! Is the blinking vertically-drawn cursor currently visible?
-  bool m_hCaretBlinkVisible;
+  bool m_hCaretBlinkVisible = true;
   //! Time step for autoscrolll when the mouse is outside the window
   wxTimer m_timer;
   //! The cursor blink rate. Also the timeout for redrawing the worksheet
@@ -634,7 +624,7 @@ private:
   //! True if no changes have to be saved.
   bool m_saved = true;
   std::vector<wxString> m_completions;
-  bool m_autocompleteTemplates;
+  bool m_autocompleteTemplates = true;
   AutocompletePopup *m_autocompletePopup;
 
 public:
@@ -691,7 +681,7 @@ private:
   static std::mutex m_drawDCLock;
   /*! The pointer to thesettings storage
    */
-  Configuration *m_configuration;
+  Configuration *m_configuration = NULL;
 public:
   //! The storage for the autocompletion feature
   AutoComplete m_autocomplete;
@@ -1499,7 +1489,7 @@ public:
   void OnFollow();
 
   //! The toolbar of the main window: We need to access it and therefore have it defined here.
-  ToolBar *m_mainToolBar;
+  ToolBar *m_mainToolBar = NULL;
 
   //! Set this cell as the currently selected one
   void SelectGroupCell(GroupCell *cell);
@@ -1513,7 +1503,7 @@ public:
   void QuestionAnswered();
 
   //! true = the last reply from maxima was a question
-  bool m_questionPrompt;
+  bool m_questionPrompt = false;
 
   /*! Does maxima wait for the answer of a question?
 
@@ -1600,8 +1590,8 @@ public:
                                  int *childId, wxAccessible **childObject);
     wxAccStatus GetDescription(int childId, wxString *description);
   private:
-    wxWindow *m_parent;
-    Worksheet *m_worksheet;
+    wxWindow *m_parent = NULL;
+    Worksheet *m_worksheet = NULL;
   };
 #endif
   MaximaManual m_maximaManual;
@@ -1609,23 +1599,23 @@ public:
 protected:
   void FocusTextControl();
   wxString m_lastQuestion;
-  int m_virtualWidth_Last;
-  int m_virtualHeight_Last;
+  int m_virtualWidth_Last = -1;
+  int m_virtualHeight_Last = -1;
   //! A memory we can manually buffer the contents of the area that is to be redrawn in
   wxBitmap m_memory;
   virtual wxSize DoGetBestClientSize() const override;
 #if wxUSE_ACCESSIBILITY
-  AccessibilityInfo *m_accessibilityInfo;
+  AccessibilityInfo *m_accessibilityInfo = NULL;
 #endif
   void UpdateConfigurationClientSize();
   //! Where to start recalculation. NULL = No recalculation needed.
-  GroupCell *m_recalculateStart;
+  GroupCell *m_recalculateStart = NULL;
   //! The x position of the mouse pointer
-  int m_pointer_x;
+  int m_pointer_x = -1;
   //! The y position of the mouse pointer
-  int m_pointer_y;
+  int m_pointer_y = -1;
   //! Was there a mouse motion we didn't react to until now?
-  bool m_mouseMotionWas;
+  bool m_mouseMotionWas = false;
   //! Is there an active popup menu?
   bool m_inPopupMenu = false;
 };

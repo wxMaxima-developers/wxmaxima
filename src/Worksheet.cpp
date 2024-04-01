@@ -92,9 +92,6 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_cellPointers(this), m_dc(this), m_configuration(config),
   m_autocomplete(config),
   m_maximaManual(m_configuration) {
-  m_scrollToCaret = false;
-  m_newxPosition = -1;
-  m_newyPosition = -1;
   m_autocompletePopup = NULL;
 #ifdef __WXGTK__
   wxString gtk_input_method;
@@ -110,8 +107,6 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   // This is somehow needed for wxAutoBufferedPaintDC
   SetBackgroundStyle(wxBG_STYLE_PAINT);
   GetTargetWindow()->SetBackgroundStyle(wxBG_STYLE_PAINT);
-  m_virtualWidth_Last = -1;
-  m_virtualHeight_Last = -1;
 
 #if wxUSE_ACCESSIBILITY
   m_accessibilityInfo = NULL;
@@ -119,53 +114,28 @@ Worksheet::Worksheet(wxWindow *parent, int id,
 #if wxCHECK_VERSION(3, 1, 1)
   EnableTouchEvents(wxTOUCH_ZOOM_GESTURE);
 #endif
-  m_zoomAtGestureStart = 1.0;
-  m_scrollToTopOfCell = false;
-  m_pointer_x = -1;
-  m_pointer_y = -1;
-  m_recalculateStart = NULL;
-  m_mouseMotionWas = false;
   m_configuration->SetWorkSheet(this);
   m_configuration->ReadConfig();
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
 
   m_configuration->SetBackgroundBrush(*(wxTheBrushList->FindOrCreateBrush(
                                                                           m_configuration->DefaultBackgroundColor(), wxBRUSHSTYLE_SOLID)));
-  m_redrawStart = NULL;
-  m_fullRedrawRequested = false;
   m_autocompletePopup = NULL;
   m_wxmFormat = wxDataFormat(wxS("text/x-wxmaxima-batch"));
   m_mathmlFormat = wxDataFormat(wxS("MathML"));
   m_mathmlFormat2 = wxDataFormat(wxS("application/mathml-presentation+xml"));
   m_rtfFormat = wxDataFormat(wxS("application/rtf"));
   m_rtfFormat2 = wxDataFormat(wxS("text/rtf"));
-  m_hCaretBlinkVisible = true;
-  m_hasFocus = true;
-  m_windowActive = true;
-  m_lastTop = 0;
-  m_lastBottom = 0;
-  m_followEvaluation = true;
   TreeUndo_ActiveCell = NULL;
-  m_questionPrompt = false;
-  m_scrolledAwayFromEvaluation = false;
-  m_mainToolBar = NULL;
-  m_clickType = CLICK_TYPE_NONE;
   m_clickInGC = NULL;
   m_last = nullptr;
-  m_hCaretActive = true;
-  m_hCaretPosition = NULL; // horizontal caret at the top of document
-  m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-  m_leftDown = false;
-  m_mouseDrag = false;
-  m_mouseOutside = false;
-  m_blinkDisplayCaret = true;
   m_timer.SetOwner(this, TIMER_ID);
   m_caretTimer.SetOwner(this, CARET_TIMER_ID);
   m_displayTimeoutTimer.SetOwner(this, DISPLAY_TIMEOUT_ID);
 
   SetSaved(false);
   AdjustSize();
-  m_autocompleteTemplates = false;
+  m_autocompleteTemplates = true;
   int blinktime = wxCaret::GetBlinkTime();
   if (blinktime < 200)
     blinktime = 200;
@@ -2319,7 +2289,6 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event) {
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
     ScrolledAwayFromEvaluation(true);
   }
-  m_clickType_selectionStart = m_clickType;
   RequestRedraw(clickedInGC);
   // Re-calculate the table of contents
   UpdateTableOfContents();
