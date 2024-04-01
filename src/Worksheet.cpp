@@ -3641,13 +3641,13 @@ void Worksheet::SelectWithChar(int ccode) {
         prev = prev->GetPrevious();
 
       if (prev) {
-        if ((m_hCaretPosition != NULL) &&
-            m_hCaretPosition->GetNext() == m_hCaretPositionEnd)
+        if ((m_hCaretPosition) &&
+            m_hCaretPosition->GetNext() == m_hCaretPositionEnd.get())
           m_hCaretPositionStart = prev;
         m_hCaretPositionEnd = prev;
       }
-      if (m_hCaretPositionEnd != NULL)
-        ScheduleScrollToCell(m_hCaretPositionEnd, false);
+      if (m_hCaretPositionEnd)
+        ScheduleScrollToCell(m_hCaretPositionEnd.get(), false);
     }
   } else {
     // We arrive here on WXK_DOWN.
