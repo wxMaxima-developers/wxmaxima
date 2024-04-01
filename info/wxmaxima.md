@@ -329,6 +329,20 @@ jpg
    [wxMaxima: image   end   ] */
 ```
 
+A page break is just one line containing:
+
+```
+/* [wxMaxima: page break    ] */
+```
+
+And folded cells marked by:
+
+```
+/* [wxMaxima: fold    start ] */
+...
+/* [wxMaxima: fold    end   ] */
+```
+
 ### .wxmx
 
 This XML-based file format saves the complete worksheet including things like the zoom factor and the watchlist. It is the preferred file format.
