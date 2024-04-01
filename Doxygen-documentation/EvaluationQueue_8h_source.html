@@ -126,12 +126,12 @@ $(function() {
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span> AddEnding() { m_command += <span class="stringliteral">&quot;;&quot;</span>; }</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">int</span> GetIndex()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_indexStart; }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">int</span> m_indexStart;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">long</span> m_indexStart = -1;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    wxString m_command;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  };</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  std::vector&lt;EvaluationQueue::Command&gt; m_commands;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">int</span> m_size;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  std::size_t m_size;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  wxString m_userLabel;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  std::vector&lt;GroupCell *&gt; m_queue;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
@@ -149,7 +149,7 @@ $(function() {
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    }</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keywordtype">bool</span> m_workingGroupChanged;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keywordtype">bool</span> m_workingGroupChanged = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <a class="code" href="classEvaluationQueue.html">EvaluationQueue</a>();</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>

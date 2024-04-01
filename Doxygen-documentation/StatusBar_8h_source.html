@@ -166,20 +166,20 @@ $(function() {
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  std::unique_ptr&lt;<span class="keyword">struct </span>wxm_NSVGrasterizer, decltype(std::free)*&gt; m_svgRast{<span class="keyword">nullptr</span>, std::free};</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  wxSize m_ppi;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="keywordtype">float</span> m_maximaPercentage;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keywordtype">float</span> m_oldmaximaPercentage;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <a class="code" href="classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8">networkState</a> m_oldNetworkState;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  wxSize m_ppi = wxSize(75, 75);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="keywordtype">float</span> m_maximaPercentage = -1;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keywordtype">float</span> m_oldmaximaPercentage = -1;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <a class="code" href="classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8">networkState</a> m_oldNetworkState = receive;</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  wxString m_stdToolTip;</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  wxString m_networkErrToolTip;</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  wxString m_noConnectionToolTip;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <a class="code" href="classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8">networkState</a> m_networkState;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <span class="keywordtype">bool</span> m_icon_shows_receive;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="keywordtype">bool</span> m_icon_shows_transmit;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  wxPanel *m_statusTextPanel;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  wxStaticText *m_statusText;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  wxStaticBitmap *m_networkStatus;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  wxStaticBitmap *m_maximaStatus;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <a class="code" href="classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8">networkState</a> m_networkState = offline;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <span class="keywordtype">bool</span> m_icon_shows_receive = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="keywordtype">bool</span> m_icon_shows_transmit = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  wxPanel *m_statusTextPanel = NULL;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  wxStaticText *m_statusText = NULL;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  wxStaticBitmap *m_networkStatus = NULL;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  wxStaticBitmap *m_maximaStatus = NULL;</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  wxBitmap m_network_error;</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  wxBitmap m_network_offline;</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  wxBitmap m_network_transmit;</div>
@@ -206,10 +206,10 @@ $(function() {
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
 <div class="ttc" id="aclassStatusBar_html"><div class="ttname"><a href="classStatusBar.html">StatusBar</a></div><div class="ttdoc">The class that draws the status bar.</div><div class="ttdef"><b>Definition:</b> StatusBar.h:47</div></div>
-<div class="ttc" id="aclassStatusBar_html_a2c9183506f9702f92ac60c2b673ec64e"><div class="ttname"><a href="classStatusBar.html#a2c9183506f9702f92ac60c2b673ec64e">StatusBar::UpdateBitmaps</a></div><div class="ttdeci">void UpdateBitmaps()</div><div class="ttdoc">Update the bitmaps to the Right size for the Resolution.</div><div class="ttdef"><b>Definition:</b> StatusBar.cpp:105</div></div>
+<div class="ttc" id="aclassStatusBar_html_a2c9183506f9702f92ac60c2b673ec64e"><div class="ttname"><a href="classStatusBar.html#a2c9183506f9702f92ac60c2b673ec64e">StatusBar::UpdateBitmaps</a></div><div class="ttdeci">void UpdateBitmaps()</div><div class="ttdoc">Update the bitmaps to the Right size for the Resolution.</div><div class="ttdef"><b>Definition:</b> StatusBar.cpp:100</div></div>
 <div class="ttc" id="aclassStatusBar_html_a3de8a6b955f99bb7a534c6ddfb47f9d8"><div class="ttname"><a href="classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8">StatusBar::networkState</a></div><div class="ttdeci">networkState</div><div class="ttdoc">The network states that can be passed to NetworkStatus()</div><div class="ttdef"><b>Definition:</b> StatusBar.h:53</div></div>
 <div class="ttc" id="aclassStatusBar_html_a47625898d570191fc10f684df87c8b46"><div class="ttname"><a href="classStatusBar.html#a47625898d570191fc10f684df87c8b46">StatusBar::SetMaximaCPUPercentage</a></div><div class="ttdeci">void SetMaximaCPUPercentage(float percentage)</div><div class="ttdoc">Inform the status bar how many percents of the available CPU power maxima uses.</div><div class="ttdef"><b>Definition:</b> StatusBar.h:77</div></div>
-<div class="ttc" id="aclassStatusBar_html_addf51766d62198da4dd162f7f2a05c6f"><div class="ttname"><a href="classStatusBar.html#addf51766d62198da4dd162f7f2a05c6f">StatusBar::NetworkStatus</a></div><div class="ttdeci">void NetworkStatus(networkState status)</div><div class="ttdoc">Informs the status bar about networking events.</div><div class="ttdef"><b>Definition:</b> StatusBar.cpp:301</div></div>
+<div class="ttc" id="aclassStatusBar_html_addf51766d62198da4dd162f7f2a05c6f"><div class="ttname"><a href="classStatusBar.html#addf51766d62198da4dd162f7f2a05c6f">StatusBar::NetworkStatus</a></div><div class="ttdeci">void NetworkStatus(networkState status)</div><div class="ttdoc">Informs the status bar about networking events.</div><div class="ttdef"><b>Definition:</b> StatusBar.cpp:296</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

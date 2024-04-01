@@ -216,11 +216,11 @@ $(function() {
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment"></span>  wxString m_userDefinedLabel;</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  <span class="keyword">static</span> wxRegEx m_graphRegex;</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  <a class="code" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> m_ParserStyle;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  <a class="code" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> m_ParserStyle = MC_TYPE_DEFAULT;</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  <a class="code" href="classFracCell.html#a707d51907c28eebb33894f128d76917b">FracCell::FracType</a> m_FracStyle;</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  <a class="code" href="classCellPtr.html">CellPtr&lt;GroupCell&gt;</a> m_group;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  <span class="keywordtype">bool</span> m_highlight;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  <a class="code" href="classConfiguration.html">Configuration</a> *m_configuration = NULL;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  <span class="keywordtype">bool</span> m_highlight = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  wxString m_wxmxFile; <span class="comment">// if not wxEmptyString: The wxmx file to load images from</span></div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;  <span class="keyword">static</span> wxString m_unknownXMLTagToolTip;</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;};</div>
