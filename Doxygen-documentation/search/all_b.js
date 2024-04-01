@@ -122,7 +122,7 @@ var searchData=
   ['m_5fprompttooltip_866',['m_promptTooltip',['../classTextCell.html#abc72edb63ab7cdfcb2739807452d9019',1,'TextCell']]],
   ['m_5fquestionprompt_867',['m_questionPrompt',['../classWorksheet.html#a8512089d7ec41796ef78ce68edc26a74',1,'Worksheet']]],
   ['m_5frd_868',['m_rd',['../classConfiguration.html#a5897be9039afeb0aa6e0edb510eafa11',1,'Configuration']]],
-  ['m_5frecalculatestart_869',['m_recalculateStart',['../classWorksheet.html#a3b67212794e550fed3dfe0b727c100a0',1,'Worksheet']]],
+  ['m_5frecalculatestart_869',['m_recalculateStart',['../classWorksheet.html#a99054f96fd2492ffa0793700f322f52f',1,'Worksheet']]],
   ['m_5freplacementsforcurrentword_870',['m_replacementsForCurrentWord',['../classWorksheet.html#ae52d845f761bd3e0e13a468f4ea5b1e3',1,'Worksheet']]],
   ['m_5frightstatustext_871',['m_rightStatusText',['../classwxMaximaFrame.html#a5b22628caa0969deedbd790500ba945f',1,'wxMaximaFrame']]],
   ['m_5fscheduleupdatetoc_872',['m_scheduleUpdateToc',['../classwxMaxima.html#a0e8eaa35b0984d6d0ccd0ce166552d33',1,'wxMaxima']]],
