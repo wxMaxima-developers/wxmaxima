@@ -946,7 +946,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
       wxStopWatch stopwatch;
       bool recalculated = false;
       bool stopwatchStarted = false;
-      for (auto &cell : OnList(m_recalculateStart)) {
+      for (auto &cell : OnList(m_recalculateStart.get())) {
         recalculated |= cell.Recalculate();
         if((cell.GetRect().GetTop() > m_configuration->GetVisibleRegion().GetBottom()) &&
            recalculated)
@@ -969,7 +969,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
     }
   else
     {
-      for (auto &cell : OnList(m_recalculateStart)) {
+      for (auto &cell : OnList(m_recalculateStart.get())) {
         m_adjustWorksheetSizeNeeded |= cell.Recalculate();
         if(cell.GetNext() == NULL)
           {
@@ -6097,7 +6097,8 @@ void Worksheet::AddSelectionToEvaluationQueue(GroupCell *start,
 
 void Worksheet::AddDocumentTillHereToEvaluationQueue() {
   FollowEvaluation(true);
-  const GroupCell *stop = m_hCaretActive ? m_hCaretPosition : nullptr;
+  const GroupCell *stop = m_hCaretPosition.get();
+  if(!m_hCaretActive) stop = nullptr;
   if (!stop) {
     if (!GetActiveCell())
       return;

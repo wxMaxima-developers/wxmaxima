@@ -133,7 +133,7 @@ private:
   */
   wxClientDC m_dc;
   //! Where do we need to start the repainting of the worksheet?
-  GroupCell *m_redrawStart = NULL;
+  CellPtr<GroupCell> m_redrawStart;
   //! Do we need to redraw the worksheet?
   bool m_fullRedrawRequested = false;
   //! The clipboard format "mathML"
@@ -330,7 +330,7 @@ private:
 
     This pointer is needed for keeping track of cell contents changes.
   */
-  GroupCell *TreeUndo_ActiveCell;
+  CellPtr<GroupCell> TreeUndo_ActiveCell;
 
   //! Drop actions from the back of the undo list until itis within the undo limit.
   void TreeUndo_LimitUndoBuffer();
@@ -585,19 +585,19 @@ private:
     See EditorCell::GetActiveCell() for the position if the cursor that is drawn as a
     vertical line.
   */
-  GroupCell *m_hCaretPosition = NULL;
+  CellPtr<GroupCell> m_hCaretPosition;
   /*! The start for the selection when selecting group with the horizontally drawn cursor
 
     This cell does define were the selection was actually started and therefore does not need
     to be above m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionStart.
   */
-  GroupCell *m_hCaretPositionStart = NULL;
+  CellPtr<GroupCell> m_hCaretPositionStart;
   /*! The end of the selection when selecting group with the horizontally drawn cursor
 
     This cell does define where the selection was actually ended and therefore does not need
     to be below m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionEnd.
   */
-  GroupCell *m_hCaretPositionEnd = NULL;
+  CellPtr<GroupCell> m_hCaretPositionEnd;
   bool m_leftDown = false;
   //! Do we want to automatically scroll to a cell as soon as it is being evaluated?
   bool m_followEvaluation = true;
@@ -612,7 +612,7 @@ private:
   //! Returns a pointer to the last cell of this worksheet
   GroupCell *GetLastCellInWorksheet() const;
   int m_clickType = CLICK_TYPE_NONE;
-  GroupCell *m_clickInGC = NULL;
+  CellPtr<GroupCell> m_clickInGC;
   //! true = blink the cursor
   bool m_blinkDisplayCaret = true;
   //! Is the blinking vertically-drawn cursor currently visible?
@@ -1609,7 +1609,7 @@ protected:
 #endif
   void UpdateConfigurationClientSize();
   //! Where to start recalculation. NULL = No recalculation needed.
-  GroupCell *m_recalculateStart = NULL;
+  CellPtr<GroupCell> m_recalculateStart;
   //! The x position of the mouse pointer
   int m_pointer_x = -1;
   //! The y position of the mouse pointer

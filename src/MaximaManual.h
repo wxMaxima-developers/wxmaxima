@@ -119,7 +119,7 @@ private:
   jthread m_helpfileanchorsThread;
   std::mutex m_helpFileAnchorsLock;
   //! The configuration storage
-  Configuration *m_configuration;
+  Configuration *m_configuration = NULL;
   //! All anchors for keywords maxima's helpfile contains (singlepage version)
 
   HelpFileAnchors m_helpFileURLs_singlePage;
