@@ -295,7 +295,7 @@ private:
   void LoadImage(wxString image, wxString wxmxFile, bool remove = true);
   //! Reads the compressed image into a memory buffer
   static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
-  Configuration *m_configuration;
+  Configuration *m_configuration = NULL;
   /*! The upper width limit for displaying this image
    */
   wxCoord m_maxWidth = -1;

@@ -161,7 +161,6 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
     m_groupTags[wxS("heading5")] = &MathParser::GroupCellHeading5Tag;
     m_groupTags[wxS("heading6")] = &MathParser::GroupCellHeading6Tag;
   }
-  m_highlight = false;
   m_wxmxFile = zipfile;
 }
 

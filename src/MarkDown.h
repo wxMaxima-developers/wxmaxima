@@ -45,7 +45,7 @@
 class MarkDownParser
 {
 protected:
-  Configuration *m_configuration;
+  Configuration *m_configuration = NULL;
 
   //! A pair of a regExp and a string that has to replace the matches.
   class RegexReplacer : public wxRegEx

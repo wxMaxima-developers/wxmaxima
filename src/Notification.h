@@ -59,10 +59,10 @@ public:
   //! Returns a pointer to the main window or NULL, if no main window is set.
   wxWindow *GetParent() { return m_parent; }
   //! The cell we signal an error for
-  GroupCell *m_errorNotificationCell;
+  GroupCell *m_errorNotificationCell = NULL;
 private:
   //! The main window we notify for.
-  wxWindow *m_parent;
+  wxWindow *m_parent = NULL;
 protected:
   //! Called on clicking at the notification, if the OS supports that.
   void OnClick(wxCommandEvent &event);

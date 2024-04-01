@@ -64,7 +64,7 @@ private:
     void AddEnding() { m_command += ";"; }
     int GetIndex() const { return m_indexStart; }
   private:
-    int m_indexStart;
+    long m_indexStart = -1;
     wxString m_command;
   };
 
@@ -76,7 +76,7 @@ private:
     - we need to know when to switch to the next cell
   */
   std::vector<EvaluationQueue::Command> m_commands;
-  int m_size;
+  std::size_t m_size;
   //! The label the user has assigned to the current command.
   wxString m_userLabel;
   //! The groupCells in the evaluation Queue.
@@ -103,7 +103,7 @@ public:
         return -1;
     }
 
-  bool m_workingGroupChanged;
+  bool m_workingGroupChanged = false;
 
   EvaluationQueue();
 

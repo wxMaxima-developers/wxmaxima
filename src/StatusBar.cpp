@@ -42,8 +42,6 @@ StatusBar::StatusBar(wxWindow *parent, int id)
   : wxStatusBar(parent, id), m_ppi(wxSize(-1, -1)) {
   m_svgRast.reset(wxm_nsvgCreateRasterizer());
   int widths[] = {-1, GetSize().GetHeight(), GetSize().GetHeight()};
-  m_maximaPercentage = -1;
-  m_oldmaximaPercentage = -1;
   SetFieldsCount(3, widths);
   int styles[] = {wxSB_NORMAL, wxSB_NORMAL, wxSB_FLAT};
   SetStatusStyles(3, styles);
@@ -85,10 +83,7 @@ StatusBar::StatusBar(wxWindow *parent, int id)
   m_networkStatus->SetToolTip(m_stdToolTip);
   ReceiveTimer.SetOwner(this, wxID_ANY);
   SendTimer.SetOwner(this, wxID_ANY);
-  m_icon_shows_receive = m_icon_shows_transmit = false;
-  m_networkState = offline;
   // Mark the network state as "to be changed"
-  m_oldNetworkState = receive;
   Connect(wxEVT_SIZE, wxSizeEventHandler(StatusBar::OnSize));
   Connect(wxEVT_TIMER, wxTimerEventHandler(StatusBar::OnTimerEvent));
 }

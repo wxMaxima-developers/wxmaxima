@@ -48,7 +48,7 @@ public:
     }
 
 private:
-  bool m_skipTab;
+  bool m_skipTab = true;
 
   bool MatchParenthesis(int code);
 
@@ -57,7 +57,7 @@ private:
   void OnChar(wxKeyEvent &event);
   void OnFocus(wxFocusEvent &event);
 
-  Configuration *m_config;
+  Configuration *m_config = NULL;
 };
 
 #endif // BTEXTCTRL_H

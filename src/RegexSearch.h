@@ -50,8 +50,8 @@ public:
     std::size_t GetLength() const {return m_length;}
     std::size_t GetEnd() const {return m_start + m_length;}
   private:
-    std::size_t m_start;
-    std::size_t m_length;
+    std::size_t m_start = 0;
+    std::size_t m_length = 0;
     bool m_found = false;
   };
   explicit RegexSearch(wxString regex);

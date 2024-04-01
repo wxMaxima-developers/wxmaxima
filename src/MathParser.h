@@ -257,11 +257,11 @@ private:
   //! A RegEx that catches the last graphics placeholder
   static wxRegEx m_graphRegex;
 
-  CellType m_ParserStyle;
+  CellType m_ParserStyle = MC_TYPE_DEFAULT;
   FracCell::FracType m_FracStyle;
   CellPtr<GroupCell> m_group;
-  Configuration *m_configuration;
-  bool m_highlight;
+  Configuration *m_configuration = NULL;
+  bool m_highlight = false;
   wxString m_wxmxFile; // if not wxEmptyString: The wxmx file to load images from
   static wxString m_unknownXMLTagToolTip;
 };

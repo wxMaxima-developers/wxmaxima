@@ -107,35 +107,35 @@ protected:
 private:
   std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The display resolution
-  wxSize m_ppi;
+  wxSize m_ppi = wxSize(75, 75);
   /*! How many percents of the available CPU power does maxima use?
 
     See m_maximaPercentage and SetMaximaCPUPercentage()
   */
-  float m_maximaPercentage;
+  float m_maximaPercentage = -1;
   /*! How many percents of the available CPU power did maxima use when updating the network icon last?
 
     See m_maximaPercentage and SetMaximaCPUPercentage()
   */
-  float m_oldmaximaPercentage;
-  networkState m_oldNetworkState;
+  float m_oldmaximaPercentage = -1;
+  networkState m_oldNetworkState = receive;
   wxString m_stdToolTip;
   wxString m_networkErrToolTip;
   wxString m_noConnectionToolTip;
   //! The basic network state we currently display without receive or transmit info
-  networkState m_networkState;
+  networkState m_networkState = offline;
   //! Does the icon show that we currently receive data?
-  bool m_icon_shows_receive;
+  bool m_icon_shows_receive = false;
   //! Does the icon show that we currently transmit data?
-  bool m_icon_shows_transmit;
+  bool m_icon_shows_transmit = false;
   //! The background for m_statusText;
-  wxPanel *m_statusTextPanel;
+  wxPanel *m_statusTextPanel = NULL;
   //! The currently shown network status bitmap
-  wxStaticText *m_statusText;
+  wxStaticText *m_statusText = NULL;
   //! The currently shown network status bitmap
-  wxStaticBitmap *m_networkStatus;
+  wxStaticBitmap *m_networkStatus = NULL;
   //! The currently shown network status bitmap
-  wxStaticBitmap *m_maximaStatus;
+  wxStaticBitmap *m_maximaStatus = NULL;
   //! The bitmap shown on network errors
   wxBitmap m_network_error;
   //! The bitmap shown while not connected to the network

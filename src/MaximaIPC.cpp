@@ -30,7 +30,7 @@
 #include "MaximaIPC.h"
 #include "wxMaxima.h"
 
-bool MaximaIPC::m_enabled;
+bool MaximaIPC::m_enabled = false;
 
 MaximaIPC::MaximaIPC(wxMaxima *wxm)
   : m_wxMaxima(wxm), m_eventTargets{
