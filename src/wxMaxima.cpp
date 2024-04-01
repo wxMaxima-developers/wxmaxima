@@ -136,7 +136,7 @@ wxDECLARE_APP(MyApp);
 #define CALL_MEMBER_FN(object, ptrToMember) ((object).*(ptrToMember))
 
 void wxMaxima::ConfigChanged() {
-  
+
   if (GetWorksheet() && (GetWorksheet()->GetTree()))
     GetWorksheet()->GetTree()->FontsChangedList();
 
@@ -1943,7 +1943,7 @@ wxMaxima::~wxMaxima() {
         }
       fil.Close();
     }
-  
+
   // Allow the operating system to keep the clipboard's contents even after we
   // exit - if that option is supported by the OS.
   if (wxTheClipboard->Open()) {
@@ -2015,9 +2015,9 @@ void wxMaxima::ConsoleAppend(wxXmlDocument xml, CellType type,
                                   const wxString &userLabel) {
   if(!GetWorksheet())
     return;
-  
+
   // If we want to append an error message to the worksheet and there is no cell
-  // that can contain it we need to create such a cell.  
+  // that can contain it we need to create such a cell.
   if (GetWorksheet()->GetTree() == NULL)
     GetWorksheet()->InsertGroupCells(
                                   std::make_unique<GroupCell>(&m_configuration, GC_TYPE_CODE));
@@ -2336,7 +2336,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
         {
           if (m_varRegEx.Matches(line))
             GetWorksheet()->AddSymbol(m_varRegEx.GetMatch(line, 1));
-          
+
           if (m_funRegEx.Matches(line)) {
             wxString funName = m_funRegEx.GetMatch(line, 1);
             GetWorksheet()->AddSymbol(funName);
@@ -3898,7 +3898,7 @@ void wxMaxima::ReadPrompt(const wxString &data) {
   m_evalOnStartup = false;
   if(!GetWorksheet())
     return;
-  
+
   GetWorksheet()->SetCurrentTextCell(nullptr);
 
   // Assume we don't have a question prompt
@@ -4137,7 +4137,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
   wxTextFile inputFile(file);
 
   if (!inputFile.Open()) {
-    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file,
+    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file + " (Maybe a permission problem?)",
                       _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
     StatusText(_("File could not be opened"));
@@ -4146,7 +4146,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
 
   if (inputFile.GetFirstLine() != Format::WXMFirstLine) {
     inputFile.Close();
-    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file,
+    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file + " (File format (WXM version 1, first line of the file) not recognized)", // FIXME: The error message could be improved...
                       _("Error"), wxOK | wxICON_EXCLAMATION);
     return false;
   }
@@ -5943,7 +5943,7 @@ bool wxMaxima::AutoSave() {
                                       &GetWorksheet()->GetCellPointers(),
                                       m_variablesPane->GetVarnames(),
                                       GetWorksheet()->GetHCaret());
-    
+
     wxLogMessage(_("Autosaving as temp file %s"), m_tempfileName.utf8_str());
     if ((m_tempfileName != oldTempFile) && saved) {
       GetWorksheet()->SetSaved(true);
