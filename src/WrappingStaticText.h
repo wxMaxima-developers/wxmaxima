@@ -42,7 +42,7 @@ public:
 protected:
   void OnSize(wxSizeEvent &event);
 private:
-  wxStaticText *m_textCtrl;
+  wxStaticText *m_textCtrl = NULL;
   wxString m_label;
 };
 

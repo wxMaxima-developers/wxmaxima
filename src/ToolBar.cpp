@@ -95,8 +95,8 @@ ToolBar::~ToolBar() { m_plotSlider = NULL; }
 void ToolBar::UpdateSlider(AnimationCell *cell) {
   if (cell == NULL)
     return;
-  int animationDisplayedIndex = cell->GetDisplayedIndex();
-  int animationMaxIndex = cell->Length();
+  std::size_t animationDisplayedIndex = cell->GetDisplayedIndex();
+  std::size_t animationMaxIndex = cell->Length();
 
   if ((m_animationDisplayedIndex != animationDisplayedIndex) ||
       (m_animationMaxIndex != animationMaxIndex)) {
@@ -127,13 +127,7 @@ ToolBar::ToolBar(wxWindow *parent)
     m_worksheetEmpty_old(false)
 {
   m_svgRast.reset(wxm_nsvgCreateRasterizer());
-
-  m_needsInformation = false;
-  m_AnimationStartStopState = Inactive;
-
   SetGripperVisible(false);
-  m_plotSlider = NULL;
-  m_textStyle = NULL;
   SetToolBitmapSize(GetOptimalBitmapSize());
   AddTools();
 
@@ -299,8 +293,7 @@ void ToolBar::AddTools() {
                            _("After clicking on animations created with with_slider_draw() or "
                              "similar this slider allows to change the current frame."));
   m_plotSlider->Enable(false);
-  m_animationMaxIndex = -1;
-  m_animationDisplayedIndex = -1;
+  m_animationMaxIndex = 0;
   AddControl(m_plotSlider);
   AddStretchSpacer(100);
   if (ShowHelp())
@@ -567,8 +560,8 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state) {
       m_plotSlider->SetToolTip(
                                _("After clicking on animations created with with_slider_draw() or "
                                  "similar this slider allows to change the current frame."));
-      m_animationMaxIndex = -1;
-      m_animationDisplayedIndex = -1;
+      m_animationMaxIndex = 0;
+      m_animationDisplayedIndex = 0;
 
       if (m_AnimationStartStopState == Running) {
         SetToolBitmap(tb_animation_startStop, m_PlayButton);

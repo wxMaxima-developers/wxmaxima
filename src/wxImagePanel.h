@@ -40,7 +40,7 @@ class wxImagePanel : public wxPanel
 {
   wxImage m_image;
   wxBitmap m_resized;
-  int m_w, m_h;
+  wxCoord m_w = -1, m_h = -1;
 
 public:
   wxImagePanel(wxWindow* parent, unsigned char *data, std::size_t len);

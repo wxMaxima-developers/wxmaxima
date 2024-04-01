@@ -107,7 +107,7 @@ public:
   };
 
   //! The slider for animations
-  wxSlider *m_plotSlider;
+  wxSlider *m_plotSlider = NULL;
 
   wxBitmap  m_undoIcon;
   wxBitmap  m_redoIcon;
@@ -289,13 +289,13 @@ private:
   //! The ppi rate.
   wxSize m_ppi;
   //! The default style for new cells.
-  GroupType m_defaultCellStyle;
+  GroupType m_defaultCellStyle = GC_TYPE_CODE;
   //! The drop-down-box for text styles
-  wxChoice *m_textStyle;
+  wxChoice *m_textStyle = NULL;
   //! The position in the current animation at the last call of UpdateSlider()
-  int m_animationDisplayedIndex;
+  std::size_t m_animationDisplayedIndex = 0;
   //! The length of the current animation at the last call of UpdateSlider()
-  int m_animationMaxIndex;
+  std::size_t m_animationMaxIndex;
   bool m_canRedo_old = true;
   bool m_canUndo_old = true;
   bool m_canCopy_old = true;
@@ -305,10 +305,10 @@ private:
   bool m_canEvalTillHere_old = true;
   bool m_canEvalThisCell_old = true;
   std::unique_ptr<struct wxm_NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
-  bool m_worksheetEmpty_old  = false ;
-  AnimationStartStopState m_AnimationStartStopState;
+  bool m_worksheetEmpty_old  = false;
+  AnimationStartStopState m_AnimationStartStopState = Inactive;
   //! True if we show the "needs information" button.
-  bool m_needsInformation;
+  bool m_needsInformation = false;
 };
 
 #endif
