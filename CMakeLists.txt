@@ -179,7 +179,7 @@ endfunction()
 #
 
 # Convert AUTHORS.md to a C++ include, which can be included in wxMaxima.cpp
-file(WRITE "${CMAKE_BINARY_DIR}/contributors.h" "") # create an empty file
+file(WRITE "${CMAKE_BINARY_DIR}/contributors.h.tmp" "") # create an empty file
 file(STRINGS AUTHORS.md AUTHORSLINES ENCODING UTF-8)
 list(REMOVE_AT AUTHORSLINES 0 1) # remove main heading line.
     foreach(l ${AUTHORSLINES})
@@ -193,9 +193,11 @@ list(REMOVE_AT AUTHORSLINES 0 1) # remove main heading line.
         set(AUTHORTYPE "AddDocWriter")
       else()
         string(REPLACE "- " "" l2 "${l}")
-        file(APPEND "${CMAKE_BINARY_DIR}/contributors.h" "info.${AUTHORTYPE}(wxT(\"${l2}\"));\n")
+        file(APPEND "${CMAKE_BINARY_DIR}/contributors.h.tmp" "info.${AUTHORTYPE}(wxT(\"${l2}\"));\n")
       endif()
     endforeach()
+# write to a *.tmp file first and then 'copy_if_different' prevents rebuilding source files, if nothing (but a timestamp) changed.
+execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_BINARY_DIR}/contributors.h.tmp" "${CMAKE_BINARY_DIR}/contributors.h")
 
 add_definitions(-DwxNO_UNSAFE_WXSTRING_CONV)
 
