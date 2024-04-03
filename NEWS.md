@@ -6,9 +6,14 @@
   Builds without Unicode support are strongly discouraged
   by the wxWidgets team.
 - Update German and Italian translations
-- Use po4a instaead of po4a-translate. po4a-translate is deprecated (#1899)
+- Use po4a instaead of po4a-translate for the generation of
+  internationalized manuals. po4a-translate is deprecated (#1899)
 - Allow compiliation with the current wxWidgets development version
 - Code reorganization to promote stability
+- Security: Use a standard function (CreateTempFileName) for creating
+  temporary filenames instead of using the process id as 'random' number.
+- Security: (autosaved) temporary files now use secure permissions,
+  are not readable by everyone.
 
 # 24.02.2
 

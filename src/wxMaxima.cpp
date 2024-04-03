@@ -5931,10 +5931,9 @@ bool wxMaxima::AutoSave() {
   bool savedWas = GetWorksheet()->IsSaved();
   wxString oldTempFile = m_tempfileName;
   wxString oldFilename = GetWorksheet()->m_currentFile;
-  m_tempfileName =
-    wxStandardPaths::Get().GetTempDir() +
-    wxString::Format("/untitled_%li_%li.wxmx", static_cast<long>(wxGetProcessId()),
-                     static_cast<long>(m_pid));
+  m_tempfileName = wxFileName::CreateTempFileName("untitled_");
+  wxRenameFile(m_tempfileName,  m_tempfileName + ".wxmx");
+  m_tempfileName = m_tempfileName + ".wxmx";
 
   /* if the current filename is empty - the file was not saved under a given name - save it using a temporary file name */
   if (m_configuration.AutoSaveAsTempFile() || GetWorksheet()->m_currentFile.IsEmpty()) {
@@ -5943,6 +5942,8 @@ bool wxMaxima::AutoSave() {
                                       &GetWorksheet()->GetCellPointers(),
                                       m_variablesPane->GetVarnames(),
                                       GetWorksheet()->GetHCaret());
+    wxFileName m_tempfileName_permissions(m_tempfileName);
+    m_tempfileName_permissions.SetPermissions(wxPOSIX_USER_READ | wxPOSIX_USER_WRITE);
 
     wxLogMessage(_("Autosaving as temp file %s"), m_tempfileName.utf8_str());
     if ((m_tempfileName != oldTempFile) && saved) {
