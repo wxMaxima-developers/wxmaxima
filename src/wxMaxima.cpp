@@ -5936,9 +5936,9 @@ bool wxMaxima::AutoSave() {
     wxString::Format("/untitled_%li_%li.wxmx", static_cast<long>(wxGetProcessId()),
                      static_cast<long>(m_pid));
 
-  if (m_configuration.AutoSaveAsTempFile() ||
-      GetWorksheet()->m_currentFile.IsEmpty()) {
-    bool saved = Format::ExportToWXMX(GetWorksheet()->GetTree(), GetWorksheet()->m_currentFile,
+  /* if the current filename is empty - the file was not saved under a given name - save it using a temporary file name */
+  if (m_configuration.AutoSaveAsTempFile() || GetWorksheet()->m_currentFile.IsEmpty()) {
+    bool saved = Format::ExportToWXMX(GetWorksheet()->GetTree(), m_tempfileName,
                                       &m_configuration,
                                       &GetWorksheet()->GetCellPointers(),
                                       m_variablesPane->GetVarnames(),
