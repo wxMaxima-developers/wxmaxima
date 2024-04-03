@@ -6,7 +6,7 @@
   Builds without Unicode support are strongly discouraged
   by the wxWidgets team.
 - Update German and Italian translations
-- Use po4a instaead of po4a-translate for the generation of
+- Use po4a instead of po4a-translate for the generation of
   internationalized manuals. po4a-translate is deprecated (#1899)
 - Allow compiliation with the current wxWidgets development version
 - Code reorganization to promote stability
