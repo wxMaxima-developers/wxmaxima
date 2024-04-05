@@ -119,7 +119,10 @@ void UnicodeSidebar::UpdateDisplay() {
   int rows = m_grid->GetNumberRows() - 1;
   for (int i = 0; i < rows; i++) {
     wxString name = m_grid->GetCellValue(i, 2).Lower();
-    if (m_regex->Matches(name))
+    wxString unicodenumberLower = m_grid->GetCellValue(i, 0).Lower();
+    wxString unicodenumberUpper = m_grid->GetCellValue(i, 0).Upper();
+    // Match either the name of the unicode character or the hex code of the unicode char
+    if (m_regex->Matches(name) || m_regex->Matches(unicodenumberLower) || m_regex->Matches(unicodenumberUpper))
       m_grid->ShowRow(i);
     else
       m_grid->HideRow(i);
