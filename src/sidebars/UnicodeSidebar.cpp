@@ -116,7 +116,7 @@ void UnicodeSidebar::OnChangeAttempt(wxGridEvent &event) { event.Veto(); }
 
 void UnicodeSidebar::UpdateDisplay() {
   wxGridUpdateLocker speedUp(m_grid);
-  int rows = m_grid->GetNumberRows() - 1;
+  int rows = m_grid->GetNumberRows();
   for (int i = 0; i < rows; i++) {
     wxString name = m_grid->GetCellValue(i, 2).Lower();
     wxString unicodenumberLower = m_grid->GetCellValue(i, 0).Lower();
