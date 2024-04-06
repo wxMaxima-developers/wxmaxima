@@ -4137,7 +4137,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
   wxTextFile inputFile(file);
 
   if (!inputFile.Open()) {
-    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file + " (Maybe a permission problem?)",
+    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file + " " + _("(Maybe a permission problem?)"),
                       _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
     StatusText(_("File could not be opened"));
@@ -4146,7 +4146,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
 
   if (inputFile.GetFirstLine() != Format::WXMFirstLine) {
     inputFile.Close();
-    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file + " (File format (WXM version 1, first line of the file) not recognized)", // FIXME: The error message could be improved...
+    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file + " " + _(" (File format (WXM version 1, first line of the file) not recognized)"), // FIXME: The error message could be improved...
                       _("Error"), wxOK | wxICON_EXCLAMATION);
     return false;
   }
