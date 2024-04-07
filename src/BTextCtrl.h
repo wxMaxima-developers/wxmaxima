@@ -52,7 +52,7 @@ private:
 
   bool MatchParenthesis(int code);
 
-  void CloseParenthesis(wxString open, wxString close, bool fromOpen);
+  void CloseParenthesis(const wxString &open, const wxString &close, bool fromOpen);
 
   void OnChar(wxKeyEvent &event);
   void OnFocus(wxFocusEvent &event);

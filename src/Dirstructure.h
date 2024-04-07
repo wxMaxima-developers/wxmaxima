@@ -79,7 +79,7 @@ public:
   //! The directory the help file is stored in
   wxString HelpDir() const {return m_helpDir;}
   //! Set the directory the help file is stored in
-  void HelpDir(wxString helpDir){m_helpDir = helpDir;}
+  void HelpDir(const wxString &helpDir){m_helpDir = helpDir;}
 
   /*! The file private accelerator key information is stored in
 

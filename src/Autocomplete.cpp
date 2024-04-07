@@ -91,7 +91,7 @@ void AutoComplete::LoadBuiltinSymbols() {
   m_wordList.at(command).erase(newEnd, m_wordList.at(command).end());
 }
 
-bool AutoComplete::HasDemofile(wxString commandname)
+bool AutoComplete::HasDemofile(const wxString &commandname)
 {
   const std::lock_guard<std::mutex> lock(m_keywordsLock);
   return std::any_of(m_wordList.at(demofile).begin(),

@@ -643,7 +643,7 @@ public:
   class TextsnippetToDraw
   {
   public:
-    TextsnippetToDraw(const wxPoint &pos, const wxString &text, const wxColor color):
+    TextsnippetToDraw(const wxPoint &pos, const wxString &text, const wxColor &color):
       m_pos(pos),
       m_text(text),
       m_color(color)
@@ -840,7 +840,7 @@ public:
   bool CopyMathMLHTML() const {return m_copyMathMLHTML;}
   void CopyMathMLHTML(bool copyMathMLHTML){ m_copyMathMLHTML = copyMathMLHTML; }
   bool HideMarkerForThisMessage(wxString message);
-  void HideMarkerForThisMessage(wxString message, bool hide)
+  void HideMarkerForThisMessage(const wxString &message, bool hide)
     {m_hideMarkerForThisMessage[message] = hide;}
   bool CopyRTF() const {return m_copyRTF;}
   void CopyRTF(bool copyRTF) { m_copyRTF = copyRTF; }
@@ -1067,7 +1067,7 @@ public:
   void RecalculateForce() { m_cellCfgCnt++; }
   static bool UseThreads(){return m_use_threads;}
   static void UseThreads(bool use){m_use_threads = use;}
-  static void SetMaximaLang(wxString LANG){m_maxima_LANG = LANG;}
+  static void SetMaximaLang(const wxString &LANG){m_maxima_LANG = LANG;}
   static wxString GetMaximaLang(){return m_maxima_LANG;}
 private:
   //! Which LANG environment variable to communicate to maxima?

@@ -118,7 +118,7 @@ bool BTextCtrl::MatchParenthesis(int code) {
   return skip;
 }
 
-void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen) {
+void BTextCtrl::CloseParenthesis(const wxString &open, const wxString &close, bool fromOpen) {
   long from, to;
   GetSelection(&from, &to);
 

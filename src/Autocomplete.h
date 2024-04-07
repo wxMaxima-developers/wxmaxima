@@ -127,7 +127,7 @@ public:
   //! Returns a list of Symbols we know
   std::vector<wxString> GetSymbolList();
   //! Does a demo file for this command exist?
-  bool HasDemofile(wxString commandname);
+  bool HasDemofile(const wxString &commandname);
 
 private:
   //! The configuration storage
@@ -150,7 +150,7 @@ private:
   public:
     explicit GetGeneralFiles(std::vector<wxString>& files,
                              std::mutex *lock,
-                             wxString prefix = wxEmptyString) :
+                             const wxString &prefix = wxEmptyString) :
       m_files(files), m_lock(lock), m_prefix(prefix) { }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
@@ -192,7 +192,7 @@ private:
   public:
     explicit GetMacFiles_includingSubdirs(std::vector<wxString>& files,
                                           std::mutex *lock,
-                                          wxString prefix = wxEmptyString) :
+                                          const wxString &prefix = wxEmptyString) :
       m_files(files), m_lock(lock), m_prefix(prefix)  { }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
@@ -241,7 +241,7 @@ private:
   public:
     explicit GetMacFiles(std::vector<wxString>& files,
                          std::mutex *lock,
-                         wxString prefix = wxEmptyString) :
+                         const wxString &prefix = wxEmptyString) :
       GetMacFiles_includingSubdirs(files, lock, prefix){ }
     wxDirTraverseResult OnDir(const wxString& dirname) override
       {
@@ -263,7 +263,7 @@ private:
   public:
     explicit GetDemoFiles_includingSubdirs(std::vector<wxString>& files,
                                            std::mutex *lock,
-                                           wxString prefix = wxEmptyString) :
+                                           const wxString &prefix = wxEmptyString) :
       m_files(files), m_lock(lock), m_prefix(prefix) { }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
@@ -308,7 +308,7 @@ private:
   public:
     explicit GetDemoFiles(std::vector<wxString>& files,
                           std::mutex *lock,
-                          wxString prefix = wxEmptyString) :
+                          const wxString &prefix = wxEmptyString) :
       GetDemoFiles_includingSubdirs(files, lock, prefix){ }
     virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
