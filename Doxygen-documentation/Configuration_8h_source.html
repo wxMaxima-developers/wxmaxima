@@ -577,7 +577,7 @@ $(function() {
 <div class="line"><a name="l00643"></a><span class="lineno"><a class="line" href="classConfiguration_1_1TextsnippetToDraw.html">  643</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classConfiguration_1_1TextsnippetToDraw.html">TextsnippetToDraw</a></div>
 <div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;  {</div>
 <div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;    <a class="code" href="classConfiguration_1_1TextsnippetToDraw.html">TextsnippetToDraw</a>(<span class="keyword">const</span> wxPoint &amp;pos, <span class="keyword">const</span> wxString &amp;text, <span class="keyword">const</span> wxColor color):</div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;    <a class="code" href="classConfiguration_1_1TextsnippetToDraw.html">TextsnippetToDraw</a>(<span class="keyword">const</span> wxPoint &amp;pos, <span class="keyword">const</span> wxString &amp;text, <span class="keyword">const</span> wxColor &amp;color):</div>
 <div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;      m_pos(pos),</div>
 <div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;      m_text(text),</div>
 <div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;      m_color(color)</div>
@@ -739,7 +739,7 @@ $(function() {
 <div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;  <span class="keywordtype">bool</span> CopyMathMLHTML()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_copyMathMLHTML;}</div>
 <div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;  <span class="keywordtype">void</span> CopyMathMLHTML(<span class="keywordtype">bool</span> copyMathMLHTML){ m_copyMathMLHTML = copyMathMLHTML; }</div>
 <div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;  <span class="keywordtype">bool</span> HideMarkerForThisMessage(wxString message);</div>
-<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;  <span class="keywordtype">void</span> HideMarkerForThisMessage(wxString message, <span class="keywordtype">bool</span> hide)</div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;  <span class="keywordtype">void</span> HideMarkerForThisMessage(<span class="keyword">const</span> wxString &amp;message, <span class="keywordtype">bool</span> hide)</div>
 <div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;    {m_hideMarkerForThisMessage[message] = hide;}</div>
 <div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;  <span class="keywordtype">bool</span> CopyRTF()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_copyRTF;}</div>
 <div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;  <span class="keywordtype">void</span> CopyRTF(<span class="keywordtype">bool</span> copyRTF) { m_copyRTF = copyRTF; }</div>
@@ -910,7 +910,7 @@ $(function() {
 <div class="line"><a name="l01067"></a><span class="lineno"> 1067</span>&#160;  <span class="keywordtype">void</span> RecalculateForce() { m_cellCfgCnt++; }</div>
 <div class="line"><a name="l01068"></a><span class="lineno"> 1068</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> UseThreads(){<span class="keywordflow">return</span> m_use_threads;}</div>
 <div class="line"><a name="l01069"></a><span class="lineno"> 1069</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> UseThreads(<span class="keywordtype">bool</span> use){m_use_threads = use;}</div>
-<div class="line"><a name="l01070"></a><span class="lineno"> 1070</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> SetMaximaLang(wxString LANG){m_maxima_LANG = LANG;}</div>
+<div class="line"><a name="l01070"></a><span class="lineno"> 1070</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> SetMaximaLang(<span class="keyword">const</span> wxString &amp;LANG){m_maxima_LANG = LANG;}</div>
 <div class="line"><a name="l01071"></a><span class="lineno"> 1071</span>&#160;  <span class="keyword">static</span> wxString GetMaximaLang(){<span class="keywordflow">return</span> m_maxima_LANG;}</div>
 <div class="line"><a name="l01072"></a><span class="lineno"> 1072</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l01074"></a><span class="lineno"> 1074</span>&#160;  <span class="keyword">static</span> wxString m_maxima_LANG;</div>
