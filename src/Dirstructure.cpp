@@ -78,7 +78,7 @@ Dirstructure::Dirstructure():
   m_userConfDir += "/";
 }
 
-void Dirstructure::UserConfDir(wxString userConfDir) {
+void Dirstructure::UserConfDir(const wxString &userConfDir) {
   wxFileName dir(userConfDir + wxS("/"));
   dir.MakeAbsolute();
   m_userConfDir = dir.GetFullPath();

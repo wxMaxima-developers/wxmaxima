@@ -74,7 +74,7 @@ public:
   explicit Image(Configuration *config);
 
   //! A constructor that loads the compressed file from a wxMemoryBuffer
-  Image(Configuration *config, wxMemoryBuffer image, wxString type);
+  Image(Configuration *config, const wxMemoryBuffer &image, const wxString &type);
 
   /*! A constructor that loads a bitmap
 

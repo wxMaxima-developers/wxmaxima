@@ -628,7 +628,7 @@ private:
   AutocompletePopup *m_autocompletePopup;
 
 public:
-  void SetMaximaVersion(wxString version){m_maximaVersion = version;}
+  void SetMaximaVersion(const wxString &version){m_maximaVersion = version;}
   wxString GetMaximaVersion() const {return m_maximaVersion;}
   //! Is this worksheet empty?
   bool IsEmpty() const
@@ -1181,7 +1181,7 @@ private:
   wxString m_statusText_old;
   bool m_statusTextHas = false;
   bool m_statusTextHas_old = false;
-  void StatusText(wxString text){m_statusText = text; m_statusTextHas = true;}
+  void StatusText(const wxString &text){m_statusText = text; m_statusTextHas = true;}
   void UnsetStatusText(){m_statusTextHas = false;}
   bool ActivateInput(int direction);
 
@@ -1473,7 +1473,7 @@ public:
     { m_autocomplete.AddSymbol(fun, type); }
 
   //! Add a xml-encoded list of symbols to the autocompletion list
-  void AddSymbols(wxString xml)
+  void AddSymbols(const wxString &xml)
     { m_autocomplete.AddSymbols(xml); }
   //! Add a xml-encoded list of symbols to the autocompletion list
   void AddSymbols(wxXmlDocument xml)
@@ -1519,7 +1519,7 @@ public:
   void QuestionPending(bool pending)
     { m_questionPrompt = pending; }
 
-  void SetMaximaDocDir(wxString dir)
+  void SetMaximaDocDir(const wxString &dir)
     {
       m_maximaDocDir = dir;
     }
@@ -1540,11 +1540,11 @@ public:
   */
   GroupCell *GetWorkingGroup(bool resortToLast = false) const;
   //! Tries to parse maxima's manual in order to find out which anchors it contains
-  void LoadHelpFileAnchors(wxString docdir, wxString maximaVersion)
+  void LoadHelpFileAnchors(const wxString &docdir, const wxString &maximaVersion)
     {m_maximaManual.LoadHelpFileAnchors(docdir, maximaVersion);}
-  wxString GetHelpfileAnchorName(wxString keyword)
+  wxString GetHelpfileAnchorName(const wxString &keyword)
     {return m_maximaManual.GetHelpfileAnchorName(keyword);}
-  wxString GetHelpfileURL(wxString keyword)
+  wxString GetHelpfileURL(const wxString &keyword)
     {return m_maximaManual.GetHelpfileURL(keyword);}
   //! Returns the index in (%i...) or (%o...)
   int GetCellIndex(Cell *cell) const;

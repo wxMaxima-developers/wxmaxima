@@ -68,7 +68,7 @@ public:
   //! The directory the user stores its data in.
   static wxString UserConfDir() {return m_userConfDir;}
   //! Set the directory the user stores its data in.
-  static void UserConfDir(wxString userConfDir);
+  static void UserConfDir(const wxString &userConfDir);
 
   //! The directory general data is stored in
   static wxString DataDir();

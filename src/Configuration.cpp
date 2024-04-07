@@ -579,7 +579,7 @@ void Configuration::SetBackgroundBrush(const wxBrush &brush) {
   m_tooltipBrush.SetColour(wxColour(255, 255, 192, 128));
 }
 
-bool Configuration::MaximaFound(wxString location) {
+bool Configuration::MaximaFound(const wxString &location) {
   if (location == wxEmptyString)
     return false;
 
@@ -1077,7 +1077,7 @@ void Configuration::SetZoomFactor(double newzoom) {
 
   RecalculateForce();
 
-  for (auto &i: m_styles)
+  for (const auto &i: m_styles)
     i.ClearCache();
   if (newzoom > GetMaxZoomFactor())
     newzoom = GetMaxZoomFactor();

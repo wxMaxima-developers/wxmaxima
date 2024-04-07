@@ -55,7 +55,7 @@ Image::Image(Configuration *config) {
   InvalidBitmap();
 }
 
-Image::Image(Configuration *config, wxMemoryBuffer image, wxString type) {
+Image::Image(Configuration *config, const wxMemoryBuffer &image, const wxString &type) {
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
   m_compressedImage = image;
@@ -87,7 +87,6 @@ Image::Image(Configuration *config, const wxBitmap &bitmap) {
 }
 
 // constructor which loads an image
-// cppcheck-suppress performance symbolName=filesystem
 Image::Image(Configuration *config, wxString image,
              wxString wxmxFile, bool remove)
 {
@@ -993,7 +992,6 @@ void Image::Recalculate(double scale) {
 }
 
 const wxString Image::GetBadImageToolTip() {
-  // cppcheck-suppress returnTempReference
   return _(
     "The image could not be displayed. It may be broken, in a wrong format "
     "or "

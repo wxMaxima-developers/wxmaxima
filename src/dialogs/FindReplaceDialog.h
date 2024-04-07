@@ -54,7 +54,7 @@ public:
   bool GetRegexSearch() const {return m_contents->GetRegexSearch();}
 
   //! Set the string we are currently searching for
-  void SetFindString(wxString strng)
+  void SetFindString(const wxString &strng)
     { m_contents->SetFindString(strng); }
 
 protected:

@@ -808,7 +808,7 @@ public:
     If location == wxEmptyString the default location from the configuration
     is taken.
   */
-  static bool MaximaFound(wxString location = wxEmptyString);
+  static bool MaximaFound(const wxString &location = wxEmptyString);
 
   //! Renumber out-of-order cell labels on saving.
   bool FixReorderedIndices() const

@@ -113,7 +113,7 @@ public:
     { return m_origImageFile; }
 
   //! Sets the name of the file the image was originally created from
-  void SetOrigImageFile(wxString file)
+  void SetOrigImageFile(const wxString &file)
     { m_origImageFile = file; }
 
   //! Returns the original compressed version of the image
