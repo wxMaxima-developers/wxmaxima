@@ -42,7 +42,7 @@ var searchData=
   ['updateyposition_1578',['UpdateYPosition',['../classGroupCell.html#abc7409da7ff7321e82ec5ae51f769b9f',1,'GroupCell']]],
   ['usecolour_1579',['UseColour',['../structCatch_1_1UseColour.html',1,'Catch']]],
   ['userautocompletefile_1580',['UserAutocompleteFile',['../classDirstructure.html#a9983e2d05056f5e55105a9d5c6cb63b9',1,'Dirstructure']]],
-  ['userconfdir_1581',['UserConfDir',['../classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791',1,'Dirstructure::UserConfDir()'],['../classDirstructure.html#af1f29e662949f33bdd49b3e087d1290b',1,'Dirstructure::UserConfDir(wxString userConfDir)']]],
+  ['userconfdir_1581',['UserConfDir',['../classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791',1,'Dirstructure::UserConfDir()'],['../classDirstructure.html#a098445ee58c9399ff512e3ed20137f5e',1,'Dirstructure::UserConfDir(const wxString &amp;userConfDir)']]],
   ['usesvgchanged_1582',['UsesvgChanged',['../classConfigDialogue.html#ac87a1da42c1b7996d250f5959bbef56f',1,'ConfigDialogue']]],
   ['useuserlabels_1583',['UseUserLabels',['../classConfiguration.html#ae7cc009bfac177678abcc37e3ccc566e',1,'Configuration']]]
 ];

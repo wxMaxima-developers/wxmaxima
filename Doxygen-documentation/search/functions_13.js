@@ -35,7 +35,7 @@ var searchData=
   ['updateusersymbols_3070',['UpdateUserSymbols',['../classSymbolsSidebar.html#a096e679c86ed06e25caabe6e8ec3f90d',1,'SymbolsSidebar']]],
   ['updateyposition_3071',['UpdateYPosition',['../classGroupCell.html#abc7409da7ff7321e82ec5ae51f769b9f',1,'GroupCell']]],
   ['userautocompletefile_3072',['UserAutocompleteFile',['../classDirstructure.html#a9983e2d05056f5e55105a9d5c6cb63b9',1,'Dirstructure']]],
-  ['userconfdir_3073',['UserConfDir',['../classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791',1,'Dirstructure::UserConfDir()'],['../classDirstructure.html#af1f29e662949f33bdd49b3e087d1290b',1,'Dirstructure::UserConfDir(wxString userConfDir)']]],
+  ['userconfdir_3073',['UserConfDir',['../classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791',1,'Dirstructure::UserConfDir()'],['../classDirstructure.html#a098445ee58c9399ff512e3ed20137f5e',1,'Dirstructure::UserConfDir(const wxString &amp;userConfDir)']]],
   ['usesvgchanged_3074',['UsesvgChanged',['../classConfigDialogue.html#ac87a1da42c1b7996d250f5959bbef56f',1,'ConfigDialogue']]],
   ['useuserlabels_3075',['UseUserLabels',['../classConfiguration.html#ae7cc009bfac177678abcc37e3ccc566e',1,'Configuration']]]
 ];

@@ -210,7 +210,7 @@ var searchData=
   ['maximadclick_954',['MaximaDClick',['../classwxMaxima.html#ac47280c1797dfd093e0d5665125d1e32',1,'wxMaxima']]],
   ['maximadefaultlocation_955',['MaximaDefaultLocation',['../classConfiguration.html#a408780614dd19920537cfdc7310115f2',1,'Configuration::MaximaDefaultLocation()'],['../classDirstructure.html#a280d3ee7cd41633a0c3a79d4a19d04ee',1,'Dirstructure::MaximaDefaultLocation()']]],
   ['maximaevent_956',['MaximaEvent',['../classwxMaxima.html#a331a2a90d1806f91122656ff2649ad02',1,'wxMaxima']]],
-  ['maximafound_957',['MaximaFound',['../classConfiguration.html#a0e5c3f0d285912e0f72d36b8eff1d664',1,'Configuration']]],
+  ['maximafound_957',['MaximaFound',['../classConfiguration.html#a37393582309534625c1cd5c837e30717',1,'Configuration']]],
   ['maximaipc_958',['MaximaIPC',['../classMaximaIPC.html',1,'']]],
   ['maximalocation_959',['MaximaLocation',['../classConfiguration.html#a6d90ad4232c786592219a4afc370d675',1,'Configuration']]],
   ['maximalocationchanged_960',['MaximaLocationChanged',['../classConfigDialogue.html#afb768e417c6f1394bd3bc905a10543ea',1,'ConfigDialogue']]],

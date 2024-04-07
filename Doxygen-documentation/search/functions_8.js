@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['image_2621',['Image',['../classImage.html#aaa1a1ecd05aa79a052c3eb61cb1e764a',1,'Image::Image(Configuration *config, wxMemoryBuffer image, wxString type)'],['../classImage.html#a2462b18d6cd2f5009980fa2fef7bdcc0',1,'Image::Image(Configuration *config)'],['../classImage.html#ac2ffd64b2b12795bc6a6a0fcb1816e8c',1,'Image::Image(Configuration *config, wxString image, wxString wxmxFile, bool remove=true)'],['../classImage.html#a5914663cd2c7958ef99bad1c8d0b4a7c',1,'Image::Image(Configuration *config, const wxBitmap &amp;bitmap)']]],
+  ['image_2621',['Image',['../classImage.html#abbf705de16b0887f2df265f6a12f6ec2',1,'Image::Image(Configuration *config, const wxMemoryBuffer &amp;image, const wxString &amp;type)'],['../classImage.html#a2462b18d6cd2f5009980fa2fef7bdcc0',1,'Image::Image(Configuration *config)'],['../classImage.html#ac2ffd64b2b12795bc6a6a0fcb1816e8c',1,'Image::Image(Configuration *config, wxString image, wxString wxmxFile, bool remove=true)'],['../classImage.html#a5914663cd2c7958ef99bad1c8d0b4a7c',1,'Image::Image(Configuration *config, const wxBitmap &amp;bitmap)']]],
   ['indentmaths_2622',['IndentMaths',['../classConfiguration.html#a6b462da78c1de14b200236724520ba2f',1,'Configuration']]],
   ['inevaluationqueue_2623',['InEvaluationQueue',['../classGroupCell.html#a9baabf290b054214b91f5ba60fd66714',1,'GroupCell']]],
   ['initstyles_2624',['InitStyles',['../classConfiguration.html#a9af08347ef09515dbf02e4f780588f65',1,'Configuration']]],

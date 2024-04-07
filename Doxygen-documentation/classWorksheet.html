@@ -103,9 +103,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7fa3389f9d19984185ad8df1e74535b4"><td class="memItemLeft" align="right" valign="top"><a id="a7fa3389f9d19984185ad8df1e74535b4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateControlsNeeded</b> (bool updateControlsNeeded)</td></tr>
 <tr class="separator:a7fa3389f9d19984185ad8df1e74535b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e0482af91f0480f9400dcb15c66b762"><td class="memItemLeft" align="right" valign="top"><a id="a5e0482af91f0480f9400dcb15c66b762"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaximaVersion</b> (wxString version)</td></tr>
-<tr class="separator:a5e0482af91f0480f9400dcb15c66b762"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6d6324611814404d3f1c155ee633a66"><td class="memItemLeft" align="right" valign="top"><a id="aa6d6324611814404d3f1c155ee633a66"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaximaVersion</b> (const wxString &amp;version)</td></tr>
+<tr class="separator:aa6d6324611814404d3f1c155ee633a66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3422fa906a9ac7cb31e9b330b26ac79b"><td class="memItemLeft" align="right" valign="top"><a id="a3422fa906a9ac7cb31e9b330b26ac79b"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetMaximaVersion</b> () const</td></tr>
 <tr class="separator:a3422fa906a9ac7cb31e9b330b26ac79b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -193,9 +193,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetWorkingGroup</b> (
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a3d30157e25a0e4ba2bf780de877fed10">QuestionPending</a> (bool pending)</td></tr>
 <tr class="memdesc:a3d30157e25a0e4ba2bf780de877fed10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does maxima currently wait for the answer of a question? <br /></td></tr>
 <tr class="separator:a3d30157e25a0e4ba2bf780de877fed10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e7f177ed0ea628e32c6a799264560b5"><td class="memItemLeft" align="right" valign="top"><a id="a1e7f177ed0ea628e32c6a799264560b5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaximaDocDir</b> (wxString dir)</td></tr>
-<tr class="separator:a1e7f177ed0ea628e32c6a799264560b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3943d490be874a169016452d1d20817"><td class="memItemLeft" align="right" valign="top"><a id="ae3943d490be874a169016452d1d20817"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaximaDocDir</b> (const wxString &amp;dir)</td></tr>
+<tr class="separator:ae3943d490be874a169016452d1d20817"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92c6619ceb9d584d6fe13093fdc7b863"><td class="memItemLeft" align="right" valign="top"><a id="a92c6619ceb9d584d6fe13093fdc7b863"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a92c6619ceb9d584d6fe13093fdc7b863">GCContainsCurrentQuestion</a> (const <a class="el" href="classGroupCell.html">GroupCell</a> *cell)</td></tr>
 <tr class="memdesc:a92c6619ceb9d584d6fe13093fdc7b863"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> cell points to contain the question currently asked by maxima? <br /></td></tr>
@@ -211,16 +211,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:af57ef1cf7e60d3e9160bcd22a4563bf5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#af57ef1cf7e60d3e9160bcd22a4563bf5">GetWorkingGroup</a> (bool resortToLast=false) const</td></tr>
 <tr class="memdesc:af57ef1cf7e60d3e9160bcd22a4563bf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cell maxima currently works on.  <a href="classWorksheet.html#af57ef1cf7e60d3e9160bcd22a4563bf5">More...</a><br /></td></tr>
 <tr class="separator:af57ef1cf7e60d3e9160bcd22a4563bf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfd29d21d377a247566aa99deb37acd8"><td class="memItemLeft" align="right" valign="top"><a id="acfd29d21d377a247566aa99deb37acd8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#acfd29d21d377a247566aa99deb37acd8">LoadHelpFileAnchors</a> (wxString docdir, wxString maximaVersion)</td></tr>
-<tr class="memdesc:acfd29d21d377a247566aa99deb37acd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to parse maxima's manual in order to find out which anchors it contains. <br /></td></tr>
-<tr class="separator:acfd29d21d377a247566aa99deb37acd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c70d411488cca46a9410d7edf795355"><td class="memItemLeft" align="right" valign="top"><a id="a6c70d411488cca46a9410d7edf795355"></a>
-wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetHelpfileAnchorName</b> (wxString keyword)</td></tr>
-<tr class="separator:a6c70d411488cca46a9410d7edf795355"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99c08236c2767dd7118befc71168247c"><td class="memItemLeft" align="right" valign="top"><a id="a99c08236c2767dd7118befc71168247c"></a>
-wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetHelpfileURL</b> (wxString keyword)</td></tr>
-<tr class="separator:a99c08236c2767dd7118befc71168247c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2df6bd0d0d77d61ff730792363efd993"><td class="memItemLeft" align="right" valign="top"><a id="a2df6bd0d0d77d61ff730792363efd993"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a2df6bd0d0d77d61ff730792363efd993">LoadHelpFileAnchors</a> (const wxString &amp;docdir, const wxString &amp;maximaVersion)</td></tr>
+<tr class="memdesc:a2df6bd0d0d77d61ff730792363efd993"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to parse maxima's manual in order to find out which anchors it contains. <br /></td></tr>
+<tr class="separator:a2df6bd0d0d77d61ff730792363efd993"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22626a245d0a006a8a65be0e335d0bee"><td class="memItemLeft" align="right" valign="top"><a id="a22626a245d0a006a8a65be0e335d0bee"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetHelpfileAnchorName</b> (const wxString &amp;keyword)</td></tr>
+<tr class="separator:a22626a245d0a006a8a65be0e335d0bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98d3095d15a7e7a1b97a566b976bc3bd"><td class="memItemLeft" align="right" valign="top"><a id="a98d3095d15a7e7a1b97a566b976bc3bd"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetHelpfileURL</b> (const wxString &amp;keyword)</td></tr>
+<tr class="separator:a98d3095d15a7e7a1b97a566b976bc3bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad276ac7366afcc147d437480d8f70b2b"><td class="memItemLeft" align="right" valign="top"><a id="ad276ac7366afcc147d437480d8f70b2b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ad276ac7366afcc147d437480d8f70b2b">GetCellIndex</a> (<a class="el" href="classCell.html">Cell</a> *cell) const</td></tr>
 <tr class="memdesc:ad276ac7366afcc147d437480d8f70b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index in (i...) or (o...) <br /></td></tr>
@@ -869,10 +869,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#acd1214dd3460f81d0ce150fa622516f3">AddSymbol</a> (const wxString &amp;fun, <a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">AutoComplete::autoCompletionType</a> type=AutoComplete::command)</td></tr>
 <tr class="memdesc:acd1214dd3460f81d0ce150fa622516f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a symbol to the autocompletion list. <br /></td></tr>
 <tr class="separator:acd1214dd3460f81d0ce150fa622516f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17b11b274e07998d2a80725ab93efb13"><td class="memItemLeft" align="right" valign="top"><a id="a17b11b274e07998d2a80725ab93efb13"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a17b11b274e07998d2a80725ab93efb13">AddSymbols</a> (wxString xml)</td></tr>
-<tr class="memdesc:a17b11b274e07998d2a80725ab93efb13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a xml-encoded list of symbols to the autocompletion list. <br /></td></tr>
-<tr class="separator:a17b11b274e07998d2a80725ab93efb13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a167121b0981451aeeb3575fc3de63a38"><td class="memItemLeft" align="right" valign="top"><a id="a167121b0981451aeeb3575fc3de63a38"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a167121b0981451aeeb3575fc3de63a38">AddSymbols</a> (const wxString &amp;xml)</td></tr>
+<tr class="memdesc:a167121b0981451aeeb3575fc3de63a38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a xml-encoded list of symbols to the autocompletion list. <br /></td></tr>
+<tr class="separator:a167121b0981451aeeb3575fc3de63a38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cb1429aeb617ec09d17eb99fba3a5f2"><td class="memItemLeft" align="right" valign="top"><a id="a2cb1429aeb617ec09d17eb99fba3a5f2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a2cb1429aeb617ec09d17eb99fba3a5f2">AddSymbols</a> (wxXmlDocument xml)</td></tr>
 <tr class="memdesc:a2cb1429aeb617ec09d17eb99fba3a5f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a xml-encoded list of symbols to the autocompletion list. <br /></td></tr>
@@ -1071,7 +1071,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Can we merge the selected cells into one? </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
 
 </div>
 </div>
@@ -1257,7 +1257,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Export the file to an html document. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
 
 </div>
 </div>
@@ -1306,7 +1306,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Export a region of the file to a .wxm or .mac file maxima's load command can read. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
 
 </div>
 </div>
@@ -1364,7 +1364,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Do an incremental search from the cursor or the point the last search started at. </p>
-<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
+<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
 
 </div>
 </div>
@@ -2094,7 +2094,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Scrolls to a point on the worksheet. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
 <p>Test case:</p><ul>
 <li>Create a code cell</li>
 <li>Press the "hide all code cells" button.</li>
