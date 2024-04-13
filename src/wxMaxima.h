@@ -64,9 +64,9 @@ class Maxima; // The Maxima process interface
 class wxMaxima : public wxMaximaFrame
 {
 public:
-  wxMaxima(wxWindow *parent, int id, const wxString title,
+  wxMaxima(wxWindow *parent, int id, const wxString &title,
            const wxString &filename = wxEmptyString,
-           const wxString initialWorksheetContents = wxEmptyString,
+           const wxString &initialWorksheetContents = wxEmptyString,
            const wxPoint pos = wxDefaultPosition, const wxSize size = wxDefaultSize);
 
   virtual ~wxMaxima();

@@ -91,8 +91,8 @@ public:
     Empty when loading from a standalone file from the filesystem.
     \param remove true = Delete the file after loading it
   */
-  Image(Configuration *config, wxString image,
-        wxString wxmxFile, bool remove = true);
+  Image(Configuration *config, const wxString &image,
+        const wxString &wxmxFile, bool remove = true);
 
   Image(Configuration *config, const Image &image);
   Image(const Image &image) = delete;
@@ -129,13 +129,13 @@ public:
     memory in their compressed form.
   */
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                     wxString wxmxFile = wxEmptyString);
+                     const wxString &wxmxFile = wxEmptyString);
 
   /*! Loads the compressed gnuplot source and data file for this image
 
    */
   void CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                               wxString wxmxFile = wxEmptyString);
+                               const wxString &wxmxFile = wxEmptyString);
 
 /*! Returns the gnuplot source file name of this image
 
@@ -292,7 +292,7 @@ private:
                                                   wxString wxmxFile
     );
   //! Loads an image from a file
-  void LoadImage(wxString image, wxString wxmxFile, bool remove = true);
+  void LoadImage(wxString image, const wxString &wxmxFile, bool remove = true);
   //! Reads the compressed image into a memory buffer
   static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
   Configuration *m_configuration = NULL;

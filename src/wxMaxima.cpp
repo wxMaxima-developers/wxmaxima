@@ -196,8 +196,8 @@ void wxMaxima::ConfigChanged() {
 }
 
 wxMaxima::wxMaxima(wxWindow *parent, int id,
-                   const wxString title, const wxString &filename,
-                   const wxString initialWorksheetContents,
+                   const wxString &title, const wxString &filename,
+                   const wxString &initialWorksheetContents,
                    const wxPoint pos, const wxSize size)
   : wxMaximaFrame(parent, id, title, pos, size,
                   wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION),

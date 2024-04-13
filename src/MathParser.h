@@ -64,7 +64,7 @@ public:
   MathParser& operator=(const MathParser&) = delete;
   virtual ~MathParser();
 
-  void SetUserLabel(wxString label){ m_userDefinedLabel = label; }
+  void SetUserLabel(const wxString &label){ m_userDefinedLabel = label; }
   /***
    * Parse the string s, which is (correct) xml fragment.
    * Put the result in line.

@@ -145,9 +145,9 @@ void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors) {
   }
 }
 
-void MaximaManual::CompileHelpFileAnchors(wxString maximaHtmlDir,
-                                          wxString maximaVersion,
-                                          wxString saveName) {
+void MaximaManual::CompileHelpFileAnchors(const wxString &maximaHtmlDir,
+                                          const wxString &maximaVersion,
+                                          const wxString &saveName) {
   SuppressErrorDialogs suppressor;
   
   std::size_t foundAnchorsTotal = 0;
@@ -307,9 +307,9 @@ MaximaManual::GetHTMLFiles_Recursive::OnDir(const wxString &WXUNUSED(dirname)) {
   return wxDIR_CONTINUE;
 }
 
-void MaximaManual::SaveManualAnchorsToCache(wxString maximaHtmlDir,
-                                            wxString maximaVersion,
-                                            wxString saveName) {
+void MaximaManual::SaveManualAnchorsToCache(const wxString &maximaHtmlDir,
+                                            const wxString &maximaVersion,
+                                            const wxString &saveName) {
   const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   auto num = m_helpFileURLs_singlePage.size();
   if (num <= 50) {

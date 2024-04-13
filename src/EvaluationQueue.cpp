@@ -159,7 +159,7 @@ wxString EvaluationQueue::GetCommand() {
   if (m_commands.empty())
     return {};
 
-  const auto retval = m_commands.front().GetString();
+  const auto &retval = m_commands.front().GetString();
 
   m_userLabel.Clear();
   wxString userLabel;

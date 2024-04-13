@@ -87,8 +87,8 @@ Image::Image(Configuration *config, const wxBitmap &bitmap) {
 }
 
 // constructor which loads an image
-Image::Image(Configuration *config, wxString image,
-             wxString wxmxFile, bool remove)
+Image::Image(Configuration *config, const wxString &image,
+             const wxString &wxmxFile, bool remove)
 {
   m_svgImage = NULL;
   m_configuration = config;
@@ -200,7 +200,7 @@ std::size_t Image::GetOriginalHeight() const {
 }
 
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                          wxString wxmxFile) {
+                          const wxString &wxmxFile) {
   SuppressErrorDialogs suppressor;
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
@@ -252,7 +252,7 @@ void Image::LoadGnuplotSource_Backgroundtask(
 }
 
 void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                                    wxString wxmxFile) {
+                                    const wxString &wxmxFile) {
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
   std::unique_ptr<ThreadNumberLimiter> limiter(new
@@ -311,8 +311,6 @@ void Image::LoadGnuplotSource(
     while (!source->Eof()) {
       line = textIn.ReadLine();
       if (replaceDataFileName.Matches(line)) {
-        wxString dataFileName;
-        dataFileName = replaceDataFileName.GetMatch(line);
         replaceDataFileName.Replace(&line, wxS("'<DATAFILENAME>'"));
       }
       textOut << line + wxS("\n");
@@ -767,7 +765,7 @@ wxString Image::GetExtension() const {
   return m_extension;
 }
 
-void Image::LoadImage(wxString image, wxString wxmxFile,
+void Image::LoadImage(wxString image, const wxString &wxmxFile,
                       bool remove) {
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();
@@ -788,7 +786,7 @@ void Image::LoadImage(wxString image, wxString wxmxFile,
   else
     LoadImage_Backgroundtask(
       std::move(limiter),
-      std::move(image), std::move(wxmxFile),
+      std::move(image), wxmxFile,
       remove
       );
 }

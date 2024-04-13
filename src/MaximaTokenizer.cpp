@@ -33,7 +33,7 @@
 #include <wx/string.h>
 #include <wx/wx.h>
 
-MaximaTokenizer::MaximaTokenizer(wxString commands,
+MaximaTokenizer::MaximaTokenizer(const wxString &commands,
                                  const Configuration * const configuration)
   : m_configuration(configuration) {
   if (m_hardcodedFunctions.empty()) {
@@ -352,12 +352,12 @@ MaximaTokenizer::MaximaTokenizer(wxString commands,
   }
 }
 
-MaximaTokenizer::MaximaTokenizer(wxString commands,
+MaximaTokenizer::MaximaTokenizer(const wxString &commands,
                                  const Configuration * const configuration,
                                  const TokenList &initialTokens)
-  : MaximaTokenizer(commands, configuration) {
-  // cppcheck-suppress useInitializationList
-  m_tokens = initialTokens;
+  : MaximaTokenizer(commands, configuration)
+{
+  m_tokens = std::move(initialTokens);
 }
 
 bool MaximaTokenizer::IsAlpha(wxChar ch) {
