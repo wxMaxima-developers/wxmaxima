@@ -6,6 +6,6 @@ var searchData=
   ['write_3117',['Write',['../classStyle.html#a259bf27abcb1f6d66dbb02bc9bc9f6cb',1,'Style::Write()'],['../classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be',1,'Maxima::Write()']]],
   ['writesettings_3118',['WriteSettings',['../classConfiguration.html#a53af46fba084e7e9f45fabbfb8eb4030',1,'Configuration::WriteSettings()'],['../classConfigDialogue.html#a6a3d11ed034adf263350d8aa54a7e28d',1,'ConfigDialogue::WriteSettings()']]],
   ['writestyles_3119',['WriteStyles',['../classConfiguration.html#a4f7f692a8178c2062765ddafd0fd4782',1,'Configuration']]],
-  ['wxmaxima_3120',['wxMaxima',['../classwxMaxima.html#af47ff8ece9e9eaf9177b78d2c75bbdb1',1,'wxMaxima']]],
+  ['wxmaxima_3120',['wxMaxima',['../classwxMaxima.html#ac3af71ddf7eff2efad68b9267c77c522',1,'wxMaxima']]],
   ['wxmaximaicon_3121',['wxMaximaIcon',['../wxMaximaIcon_8cpp.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp'],['../wxMaximaIcon_8h.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp']]]
 ];

@@ -3,7 +3,7 @@ var searchData=
   ['save_2873',['Save',['../classRecentDocuments.html#abbd247917995390a8979fd9d0813dcc9',1,'RecentDocuments']]],
   ['savedocumentp_2874',['SaveDocumentP',['../classwxMaxima.html#a34fa83e2711da43d163504dc49cb5923',1,'wxMaxima']]],
   ['savefile_2875',['SaveFile',['../classwxMaxima.html#a15a1c73bbcc82dd8e4aa43ae0cafe984',1,'wxMaxima']]],
-  ['savemanualanchorstocache_2876',['SaveManualAnchorsToCache',['../classMaximaManual.html#aa2c6ed4d1be9dc5c5fa09bb6d0873888',1,'MaximaManual']]],
+  ['savemanualanchorstocache_2876',['SaveManualAnchorsToCache',['../classMaximaManual.html#aa74be5b159c5fd06c5a0ef7e082f8f12',1,'MaximaManual']]],
   ['savenecessary_2877',['SaveNecessary',['../classwxMaxima.html#ac541b74bd76204cda3f0c24bbf8bfdd3',1,'wxMaxima']]],
   ['saveonclose_2878',['SaveOnClose',['../classwxMaxima.html#afd30649f345c221f8e0e75a0465fca21',1,'wxMaxima']]],
   ['savevalue_2879',['SaveValue',['../classEditorCell.html#aa88a731df7f58bb234301e55189cfb28',1,'EditorCell']]],
