@@ -56,10 +56,10 @@ public:
   };
   explicit RegexSearch(wxString regex);
   virtual ~RegexSearch();
-  Match FindNext(wxString string, std::size_t start);
-  Match FindNext_Reverse(wxString string, std::size_t start);
-  Match Replace(wxString *string, std::size_t start, wxString replacement);
-  Match Replace_Reverse(wxString *string, std::size_t start, wxString replacement);
+  Match FindNext(const wxString &string, std::size_t start);
+  Match FindNext_Reverse(const wxString &string, std::size_t start);
+  Match Replace(wxString *string, std::size_t start, const wxString &replacement);
+  Match Replace_Reverse(wxString *string, std::size_t start, const wxString &replacement);
 };
 
 #endif // REGEXSEARCH_H

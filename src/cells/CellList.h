@@ -119,8 +119,8 @@ public:
   //! appended.
   T *DynamicAppend(Cell *cells)
     {
-      return static_cast<T *>(
-        base_DynamicAppend(std::unique_ptr<Cell>(cells), DynamicCast));
+      return std::move(static_cast<T *>(
+                         base_DynamicAppend(std::unique_ptr<Cell>(cells), DynamicCast)));
     }
 
   //! Appends one or more cells if they are all of the correct type, otherwise

@@ -55,7 +55,7 @@ namespace Format {
 */
   bool ExportToWXMX(GroupCell *cells, const wxString &file,
                     Configuration *configuration, CellPointers *cellPointers,
-                    std::vector<wxString> variables, GroupCell *cursorCell) {
+                    const std::vector<wxString> &variables, GroupCell * const cursorCell) {
   // Show a busy cursor as long as we export a file.
   wxBusyCursor crs;
   // Clear the list of files we need to embed

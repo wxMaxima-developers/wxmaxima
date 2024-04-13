@@ -166,7 +166,7 @@ private:
   class wxmDataObject : public wxCustomDataObject
   {
   public:
-    explicit wxmDataObject(wxString data);
+    explicit wxmDataObject(const wxString &data);
 
     wxmDataObject();
 
@@ -177,7 +177,7 @@ private:
   class MathMLDataObject2 : public wxCustomDataObject
   {
   public:
-    explicit MathMLDataObject2(wxString data);
+    explicit MathMLDataObject2(const wxString &data);
 
     MathMLDataObject2();
 
@@ -190,7 +190,7 @@ private:
   class RtfDataObject : public wxCustomDataObject
   {
   public:
-    explicit RtfDataObject(wxString data);
+    explicit RtfDataObject(const wxString &data);
 
     RtfDataObject();
 
@@ -201,7 +201,7 @@ private:
   class RtfDataObject2 : public wxCustomDataObject
   {
   public:
-    explicit RtfDataObject2(wxString data);
+    explicit RtfDataObject2(const wxString &data);
 
     RtfDataObject2();
 

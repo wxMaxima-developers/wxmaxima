@@ -23,7 +23,7 @@
 #include "RecentDocuments.h"
 #include <wx/filename.h>
 
-RecentDocuments::RecentDocuments(wxString documentType)
+RecentDocuments::RecentDocuments(const wxString &documentType)
   : m_documentType(documentType) {
   Load();
 }

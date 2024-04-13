@@ -44,7 +44,7 @@ public:
 //! A constructor that loads the data into a wxBitmap
   SvgBitmap(wxWindow *window, const unsigned char *data, const size_t len, int width = 640, int height = 480);
   SvgBitmap(wxWindow *window, const unsigned char *data, const std::size_t len, wxSize siz);
-  SvgBitmap(wxWindow *window, const wxString data, wxSize siz);
+  SvgBitmap(wxWindow *window, const wxString &data, wxSize siz);
   virtual ~SvgBitmap() override;
   SvgBitmap(SvgBitmap &&) = delete;
   SvgBitmap &operator=(SvgBitmap &&o) noexcept;

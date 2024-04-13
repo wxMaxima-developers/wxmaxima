@@ -39,7 +39,7 @@ public:
   explicit wxMathML(Configuration *config);
   wxString GetCmd();
   //! Read the wxMathML.lisp from the file filename instead from the builtin data.
-  static void Set_MathML_Filename(wxString filename) {m_wxMathML_file = filename;}
+  static void Set_MathML_Filename(const wxString &filename) {m_wxMathML_file = filename;}
   //! The name to read wxMathML.lisp from. If empty we use the builtin file.
   static const wxString& Get_MathML_Filename() {return m_wxMathML_file;}
 private:

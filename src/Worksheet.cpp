@@ -1317,7 +1317,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         popupMenu.Append(EventIDs::popid_animation_start, _("Start Animation"),
                          wxEmptyString, wxITEM_NORMAL);
       } else {
-        ImgCell * const img = GetSelectedImgCell();
+        const ImgCell * const img = GetSelectedImgCell();
         if (img != NULL) {
           popupMenu.AppendSeparator();
           popupMenu.Append(EventIDs::popid_maxsizechooser, _("Restrict Maximum size"),
@@ -1533,7 +1533,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         }
 
         {
-          TextCell * const textCell = GetSelectedTextCell();
+          const TextCell * const textCell = GetSelectedTextCell();
           if (textCell != NULL)
             {
               if(textCell->GetTextStyle() == TS_SPECIAL_CONSTANT) {
@@ -7838,7 +7838,7 @@ Worksheet::MathMLDataObject::MathMLDataObject(const wxString &data)
 
 Worksheet::wxmDataObject::wxmDataObject() : wxCustomDataObject(m_wxmFormat) {}
 
-Worksheet::wxmDataObject::wxmDataObject(wxString data) :
+Worksheet::wxmDataObject::wxmDataObject(const wxString &data) :
   wxCustomDataObject(m_wxmFormat),
   m_databuf(data.utf8_str()){
   SetData(m_databuf.length(), m_databuf.data());
@@ -7847,7 +7847,7 @@ Worksheet::wxmDataObject::wxmDataObject(wxString data) :
 Worksheet::MathMLDataObject2::MathMLDataObject2()
   : wxCustomDataObject(m_mathmlFormat2) {}
 
-Worksheet::MathMLDataObject2::MathMLDataObject2(wxString data)
+Worksheet::MathMLDataObject2::MathMLDataObject2(const wxString &data)
   : wxCustomDataObject(m_mathmlFormat2),
     m_databuf(data.utf8_str())
 {
@@ -7856,7 +7856,7 @@ Worksheet::MathMLDataObject2::MathMLDataObject2(wxString data)
 
 Worksheet::RtfDataObject::RtfDataObject() : wxCustomDataObject(m_rtfFormat) {}
 
-Worksheet::RtfDataObject::RtfDataObject(wxString data)
+Worksheet::RtfDataObject::RtfDataObject(const wxString &data)
   : wxCustomDataObject(m_rtfFormat),
     m_databuf(data.utf8_str())
 {
@@ -7866,7 +7866,7 @@ Worksheet::RtfDataObject::RtfDataObject(wxString data)
 Worksheet::RtfDataObject2::RtfDataObject2()
   : wxCustomDataObject(m_rtfFormat2) {}
 
-Worksheet::RtfDataObject2::RtfDataObject2(wxString data)
+Worksheet::RtfDataObject2::RtfDataObject2(const wxString &data)
   : wxCustomDataObject(m_rtfFormat2),
     m_databuf(data.utf8_str())
 {

@@ -52,7 +52,7 @@ public:
     * temporary save files for unsaved files and
     * maxima packages
     */
-  explicit RecentDocuments(wxString documentType);
+  explicit RecentDocuments(const wxString &documentType);
   //! Add a new recent document.
   void AddDocument(wxString name);
   //! Load the recent documents list.

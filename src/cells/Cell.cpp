@@ -1100,8 +1100,6 @@ wxColour Cell::GetForegroundColor() const {
   return color;
 }
 
-// cppcheck-suppress functionStatic
-// cppcheck-suppress functionConst
 // Set the pen in device context according to the style of the cell.
 void Cell::SetPen(wxDC *dc, double lineWidth) const {
   wxPen pen = *(wxThePenList->FindOrCreatePen(

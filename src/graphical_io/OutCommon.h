@@ -82,7 +82,7 @@ public:
   //! Get the configuration for the file/bitmap/... output
   Configuration *GetConfiguration() { return &m_thisconfig; }
   //! Get the configuration for the screen output
-  const Configuration &GetScreenConfig() { return *(*m_configuration); }
+  const Configuration &GetScreenConfig() const { return *(*m_configuration); }
   wxSize getPPI() const { return m_ppi; }
 
   //! Sets the context for the configuration used in recalculating the cell dimensions.
