@@ -116,7 +116,7 @@ var searchData=
   ['getrecalcdc_2559',['GetRecalcDC',['../classConfiguration.html#a5bff55fbfebd2265ec6620034e730d81',1,'Configuration']]],
   ['getrect_2560',['GetRect',['../classGroupCell.html#a5ce94d5adb8176267439335240927526',1,'GroupCell::GetRect()'],['../classCell.html#a2f7416c87bf13e37367ceb256805db06',1,'Cell::GetRect()']]],
   ['getscaledsize_2561',['GetScaledSize',['../classOutCommon.html#a3431e70b2cc4b086174f76bed1600ced',1,'OutCommon']]],
-  ['getscreenconfig_2562',['GetScreenConfig',['../classOutCommon.html#a670097e6e6049e21f976c74ab25e2d21',1,'OutCommon']]],
+  ['getscreenconfig_2562',['GetScreenConfig',['../classOutCommon.html#a1354db554dc0cad98fdd1be3dd586d96',1,'OutCommon']]],
   ['getselectedanimation_2563',['GetSelectedAnimation',['../classWorksheet.html#a2706ead3b5e81e56fbabd26233b55c12',1,'Worksheet']]],
   ['getselectedimgcell_2564',['GetSelectedImgCell',['../classWorksheet.html#ac853da7c91c1efb7355a501dd87eaf93',1,'Worksheet']]],
   ['getselectedimgcellbase_2565',['GetSelectedImgCellBase',['../classWorksheet.html#ac704f293dd718742e4a1bc0975ade63e',1,'Worksheet']]],

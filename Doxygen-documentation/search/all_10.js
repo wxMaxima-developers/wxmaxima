@@ -29,7 +29,7 @@ var searchData=
   ['recalculateinput_1190',['RecalculateInput',['../classGroupCell.html#a52f3475c4945cdcbf1c7d0f0c920ede4',1,'GroupCell']]],
   ['recalculatelist_1191',['RecalculateList',['../classCell.html#afde82a5f0708410ea828e65254e62531',1,'Cell']]],
   ['recalculateoutput_1192',['RecalculateOutput',['../classGroupCell.html#a51a935cd9ea554d24e7b332d8211a5a1',1,'GroupCell']]],
-  ['recentdocuments_1193',['RecentDocuments',['../classRecentDocuments.html#a878bf0ae6a8c72d5ccf89400e9fc931c',1,'RecentDocuments::RecentDocuments()'],['../classRecentDocuments.html',1,'RecentDocuments']]],
+  ['recentdocuments_1193',['RecentDocuments',['../classRecentDocuments.html#a4743c092143f37db5c97a0629fd7dfde',1,'RecentDocuments::RecentDocuments()'],['../classRecentDocuments.html',1,'RecentDocuments']]],
   ['recentdocuments_2eh_1194',['RecentDocuments.h',['../RecentDocuments_8h.html',1,'']]],
   ['redo_1195',['Redo',['../classEditorCell.html#a584468dc380d1c48090d7e4cf8da1042',1,'EditorCell']]],
   ['redrawifrequested_1196',['RedrawIfRequested',['../classWorksheet.html#ad2b226dda3a0d2182adcef198dcabc33',1,'Worksheet']]],

@@ -160,8 +160,8 @@ $(function() {
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
 <div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="classCellListBuilder.html#a1023b91074207a0b0ed6d7cde65dc5c2">  120</a></span>&#160;  T *<a class="code" href="classCellListBuilder.html#a1023b91074207a0b0ed6d7cde65dc5c2">DynamicAppend</a>(<a class="code" href="classCell.html">Cell</a> *cells)</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    {</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T *<span class="keyword">&gt;</span>(</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <a class="code" href="classCellListBuilderBase.html#a912afbac8cd712b3bc7fd3b1de3ebd6d">base_DynamicAppend</a>(std::unique_ptr&lt;Cell&gt;(cells), DynamicCast));</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      <span class="keywordflow">return</span> std::move(<span class="keyword">static_cast&lt;</span>T *<span class="keyword">&gt;</span>(</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                         <a class="code" href="classCellListBuilderBase.html#a912afbac8cd712b3bc7fd3b1de3ebd6d">base_DynamicAppend</a>(std::unique_ptr&lt;Cell&gt;(cells), DynamicCast)));</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    }</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
 <div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="classCellListBuilder.html#a7c764bfe32fda08732fafec5ad1981c2">  129</a></span>&#160;  T *<a class="code" href="classCellListBuilder.html#a7c764bfe32fda08732fafec5ad1981c2">DynamicAppend</a>(std::unique_ptr&lt;Cell&gt; &amp;&amp;cells)</div>

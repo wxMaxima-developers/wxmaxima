@@ -29,7 +29,7 @@ var searchData=
   ['selectwordundercaret_2899',['SelectWordUnderCaret',['../classEditorCell.html#a6d39bbbff8b47de635ca8710e2b6f2de',1,'EditorCell']]],
   ['sendmaxima_2900',['SendMaxima',['../classwxMaxima.html#aa016bda957373ae990156b6eca9ba5b8',1,'wxMaxima']]],
   ['serverevent_2901',['ServerEvent',['../classwxMaxima.html#ae6d5f8b51712e4b6d66a03d63c4c8a3f',1,'wxMaxima']]],
-  ['set_5fmathml_5ffilename_2902',['Set_MathML_Filename',['../classwxMathML.html#a8af90738f0a1920ea7711e771d6fb1e1',1,'wxMathML']]],
+  ['set_5fmathml_5ffilename_2902',['Set_MathML_Filename',['../classwxMathML.html#a3685ca4412520e5457b57fa8d5e6812d',1,'wxMathML']]],
   ['set_5fmaxima_5fcommandline_5ffilename_2903',['Set_Maxima_Commandline_Filename',['../classwxMaxima.html#ad806736ccf59c017343ffb7d3c1e6b87',1,'wxMaxima']]],
   ['setactivecell_2904',['SetActiveCell',['../classWorksheet.html#addd4563d9e3b3526a423bd95e887d1a3',1,'Worksheet']]],
   ['setaltcopytext_2905',['SetAltCopyText',['../classSubCell.html#a656938c921eacd228544cc6812669684',1,'SubCell::SetAltCopyText()'],['../classTextCell.html#af18c197bcddc094a8ba38bc44a16c841',1,'TextCell::SetAltCopyText()'],['../classSumCell.html#a7ff6af1448700c3d1d00fd8cfc152ab5',1,'SumCell::SetAltCopyText()'],['../classSubSupCell.html#a8235971425a34c8e3944aebde0260436',1,'SubSupCell::SetAltCopyText()'],['../classFunCell.html#acb98e5c219932bd7e37b8345f21676ef',1,'FunCell::SetAltCopyText()'],['../classExptCell.html#aae916ad7eddc77e56eb4b97cd6ec3541',1,'ExptCell::SetAltCopyText()'],['../classCell.html#a9207003df22435bf118c8af14fafaf81',1,'Cell::SetAltCopyText()']]],
