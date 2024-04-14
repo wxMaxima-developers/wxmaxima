@@ -40,8 +40,6 @@ ConjugateCell::ConjugateCell(GroupCell *group, Configuration *config,
 }
 
 // Old cppcheck bugs:
-// cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_open
-// cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_close
 ConjugateCell::ConjugateCell(GroupCell *group, const ConjugateCell &cell)
   : ConjugateCell(group, cell.m_configuration,
                   CopyList(group, cell.m_innerCell.get())) {

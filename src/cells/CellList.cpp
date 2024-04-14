@@ -48,7 +48,6 @@ Cell *CellListBuilderBase::base_DynamicAppend(std::unique_ptr<Cell> &&cells,
   return theCells;
 }
 
-//
 
 void CellList::Check(const Cell *cell) {
   if (!cell)

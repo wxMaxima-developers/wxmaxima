@@ -117,10 +117,17 @@ public:
   //! Appends one or more cells if they are all of the correct type, otherwise
   //! deletes them. \returns the appended cells, or null if they weren't
   //! appended.
+  //!
+  //! \todo CPPCheck warns here about returning a pointer to an already-invalid
+  //! object. As far as I can see the thing is that std::unique_ptr<Cell>(cells)
+  //! deletes the cells when the pointer stops to exist. Then we no more mention
+  //! that pointer and CPPCheck doesn't know that base_DynamicAppend moves the
+  //! pointer to a list, which means the pointer lives on even if this function
+  //! exits.
   T *DynamicAppend(Cell *cells)
     {
-      return std::move(static_cast<T *>(
-                         base_DynamicAppend(std::unique_ptr<Cell>(cells), DynamicCast)));
+      return static_cast<T *>(
+        base_DynamicAppend(std::move(std::unique_ptr<Cell>(cells)), DynamicCast));
     }
 
   //! Appends one or more cells if they are all of the correct type, otherwise

@@ -39,9 +39,6 @@ BoxCell::BoxCell(GroupCell *group, Configuration *config,
   SetStyle(TS_VARIABLE);
 }
 
-// Old cppcheck bugs:
-// cppcheck-suppress uninitMemberVar symbolName=BoxCell::m_open
-// cppcheck-suppress uninitMemberVar symbolName=BoxCell::m_close
 BoxCell::BoxCell(GroupCell *group, const BoxCell &cell)
   : BoxCell(group, cell.m_configuration,
             CopyList(group, cell.m_innerCell.get())) {
