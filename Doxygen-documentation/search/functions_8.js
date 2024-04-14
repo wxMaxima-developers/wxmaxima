@@ -12,7 +12,7 @@ var searchData=
   ['internalhelpbrowser_2630',['InternalHelpBrowser',['../classConfiguration.html#a61bcdd32b26cb7618e2c43b1e6ffaa21',1,'Configuration::InternalHelpBrowser(bool useInternalHelpBrowser)'],['../classConfiguration.html#ac86046404f403903a5ae145117bfb2e4',1,'Configuration::InternalHelpBrowser() const']]],
   ['interrupt_2631',['Interrupt',['../classwxMaxima.html#ab15fdc4e2b74903b68813ad96d4a9b1f',1,'wxMaxima']]],
   ['inupdateregion_2632',['InUpdateRegion',['../classCell.html#a0835d4dd3d72ed0013aa5a091d64d9ab',1,'Cell::InUpdateRegion()'],['../classConfiguration.html#a4d8ad50245bbb73bc5d4bcd91bcc001c',1,'Configuration::InUpdateRegion()']]],
-  ['invalidbitmap_2633',['InvalidBitmap',['../classImage.html#a100d5935a1e23c89d905b3075a72f60b',1,'Image']]],
+  ['invalidbitmap_2633',['InvalidBitmap',['../classImage.html#a6ccd0e3975f525d9e2ba8270bc0f1e0c',1,'Image']]],
   ['invertcolour_2634',['InvertColour',['../classConfiguration.html#a2c02a3cf06a1d52dd15bbba628b0899c',1,'Configuration']]],
   ['isactive_2635',['IsActive',['../classCell.html#a2b727bd0956468c57342bd88484d9316',1,'Cell::IsActive()'],['../classEditorCell.html#a1cd32f9f2a818fb8e37459da063e7fe2',1,'EditorCell::IsActive()']]],
   ['isactiveinlast_2636',['IsActiveInLast',['../classWorksheet.html#a05859cfef68a4cdc040b9e9a336606b1',1,'Worksheet']]],

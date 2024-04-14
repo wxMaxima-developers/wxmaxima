@@ -146,10 +146,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a56ae003c7565ea8f70074861fecbea72">DocumentSaved</a> ()</td></tr>
 <tr class="memdesc:a56ae003c7565ea8f70074861fecbea72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this document need saving? <br /></td></tr>
 <tr class="separator:a56ae003c7565ea8f70074861fecbea72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a4826538b58db187f5ee253c6445c67"><td class="memItemLeft" align="right" valign="top"><a id="a7a4826538b58db187f5ee253c6445c67"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a7a4826538b58db187f5ee253c6445c67">LoadImage</a> (wxString file)</td></tr>
-<tr class="memdesc:a7a4826538b58db187f5ee253c6445c67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a file into the worksheet. <br /></td></tr>
-<tr class="separator:a7a4826538b58db187f5ee253c6445c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c78de2506c518c7804f6690f27c5102"><td class="memItemLeft" align="right" valign="top"><a id="a6c78de2506c518c7804f6690f27c5102"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a6c78de2506c518c7804f6690f27c5102">LoadImage</a> (const wxString &amp;file)</td></tr>
+<tr class="memdesc:a6c78de2506c518c7804f6690f27c5102"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a file into the worksheet. <br /></td></tr>
+<tr class="separator:a6c78de2506c518c7804f6690f27c5102"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acee1bc4f6279f20c43e8063a1ea1ccd6"><td class="memItemLeft" align="right" valign="top"><a id="acee1bc4f6279f20c43e8063a1ea1ccd6"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#acee1bc4f6279f20c43e8063a1ea1ccd6">QueryVariableValue</a> ()</td></tr>
 <tr class="memdesc:acee1bc4f6279f20c43e8063a1ea1ccd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the value of a new maxima variable. <br /></td></tr>
@@ -251,10 +251,10 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a2f0f0d79dfcb0df2455c1de2fd3169b7">ExtraMaximaArgs</a> ()</td></tr>
 <tr class="memdesc:a2f0f0d79dfcb0df2455c1de2fd3169b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which additional maxima arguments did we get from the command line? <br /></td></tr>
 <tr class="separator:a2f0f0d79dfcb0df2455c1de2fd3169b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad806736ccf59c017343ffb7d3c1e6b87"><td class="memItemLeft" align="right" valign="top"><a id="ad806736ccf59c017343ffb7d3c1e6b87"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ad806736ccf59c017343ffb7d3c1e6b87">Set_Maxima_Commandline_Filename</a> (wxString filename)</td></tr>
-<tr class="memdesc:ad806736ccf59c017343ffb7d3c1e6b87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this maxima command (from a command line option) instead of the configured path. <br /></td></tr>
-<tr class="separator:ad806736ccf59c017343ffb7d3c1e6b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60fe027724ed9145f5f9d6a6591943c2"><td class="memItemLeft" align="right" valign="top"><a id="a60fe027724ed9145f5f9d6a6591943c2"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a60fe027724ed9145f5f9d6a6591943c2">Set_Maxima_Commandline_Filename</a> (const wxString &amp;filename)</td></tr>
+<tr class="memdesc:a60fe027724ed9145f5f9d6a6591943c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this maxima command (from a command line option) instead of the configured path. <br /></td></tr>
+<tr class="separator:a60fe027724ed9145f5f9d6a6591943c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ba85ccf1efa3e7b6b9bf283985f5ef0"><td class="memItemLeft" align="right" valign="top"><a id="a2ba85ccf1efa3e7b6b9bf283985f5ef0"></a>
 static const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a2ba85ccf1efa3e7b6b9bf283985f5ef0">Get_Maxima_Commandline_Filename</a> ()</td></tr>
 <tr class="memdesc:a2ba85ccf1efa3e7b6b9bf283985f5ef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maxima command, if we use the &ndash;maxima=&lt;str&gt; command. If empty we use the configured path, not a command line option &ndash;maxima=&lt;str&gt;. <br /></td></tr>
@@ -1667,7 +1667,7 @@ Appending stuff to output</h2>
 </div><div class="memdoc">
 
 <p>Spawn the "configure" menu. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
 
 </div>
 </div>
@@ -2356,7 +2356,7 @@ Dealing with stuff read from the socket</h2>
 
 <p>Setup maxima's variables. </p>
 <p>This method is called once when maxima starts. It loads wxmathml.lisp and sets some option variables.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000021">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
 
 </div>
 </div>
