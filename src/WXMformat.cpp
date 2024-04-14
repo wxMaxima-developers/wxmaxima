@@ -149,10 +149,10 @@ namespace Format {
     case GC_TYPE_CODE:
       if (wxm)
         retval << Headers.GetStart(groupType) << '\n'
-               << cell->GetEditable()->ToString() << '\n'
+               << cell->GetEditable()->ToString(true) << '\n'
                << Headers.GetEnd(groupType) << '\n';
       else {
-        retval << cell->GetEditable()->ToString() << '\n';
+        retval << cell->GetEditable()->ToString(true) << '\n';
         trailingNewline = false;
       }
 
@@ -173,10 +173,10 @@ namespace Format {
     case GC_TYPE_TEXT:
       if (wxm)
         retval << Headers.GetStart(groupType) << '\n'
-               << cell->GetEditable()->ToString() << '\n'
+               << cell->GetEditable()->ToString(true) << '\n'
                << Headers.GetEnd(groupType) << '\n';
       else {
-        retval << wxS("/* ") << cell->GetEditable()->ToString() << wxS(" */\n");
+        retval << wxS("/* ") << cell->GetEditable()->ToString(true) << wxS(" */\n");
         trailingNewline = false;
       }
       break;
@@ -187,12 +187,12 @@ namespace Format {
     case GC_TYPE_HEADING6:
     case GC_TYPE_TITLE:
       retval << Headers.GetStart(groupType) << '\n'
-             << cell->GetEditable()->ToString() << '\n'
+             << cell->GetEditable()->ToString(true) << '\n'
              << Headers.GetEnd(groupType) << '\n';
       break;
     case GC_TYPE_IMAGE:
       retval << Headers.GetStart(groupType) << '\n'
-             << cell->GetEditable()->ToString() << '\n'
+             << cell->GetEditable()->ToString(true) << '\n'
              << Headers.GetEnd(groupType) << '\n';
       if (cell->GetLabel() && cell->GetLabel()->GetType() == MC_TYPE_IMAGE) {
         const ImgCell *image = dynamic_cast<ImgCell *>(cell->GetLabel());

@@ -339,7 +339,7 @@ void Cell::ClearToolTip() {
     m_toolTip = &wxm::emptyString;
 }
 
-void Cell::SetToolTip(const wxString tooltip) {
+void Cell::SetToolTip(const wxString &tooltip) {
   if (m_ownsToolTip)
     const_cast<wxString &>(*m_toolTip) = tooltip;
   else {

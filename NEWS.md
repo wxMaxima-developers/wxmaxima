@@ -14,6 +14,7 @@
   temporary filenames instead of using the process id as 'random' number.
 - Security: (autosaved) temporary files now use secure permissions,
   are not readable by everyone.
+- wxm files no more truncate text (#1908)
 
 # 24.02.2
 
