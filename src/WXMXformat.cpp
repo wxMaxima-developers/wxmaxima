@@ -55,7 +55,7 @@ namespace Format {
 */
   bool ExportToWXMX(GroupCell *cells, const wxString &file,
                     Configuration *configuration, CellPointers *cellPointers,
-                    const std::vector<wxString> &variables, GroupCell * const cursorCell) {
+                    const std::vector<wxString> &variables, const GroupCell * const cursorCell) {
   // Show a busy cursor as long as we export a file.
   wxBusyCursor crs;
   // Clear the list of files we need to embed
@@ -191,10 +191,8 @@ namespace Format {
             ActiveCellNumber++;
           }
 
-        // Paranoia: What happens if we didn't find the cursor?
-        if (!cells || !found)
-          ActiveCellNumber = 0;
-        else
+        // Paranoia: Test if we did find the cursor
+        if (cells && found)
           // If we know where the cursor was we save this piece of information.
           // If not we omit it.
           xmlText << wxString::Format(wxS(" activecell=\"%li\""),

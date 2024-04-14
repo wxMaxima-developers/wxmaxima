@@ -54,7 +54,7 @@ public:
     std::size_t m_length = 0;
     bool m_found = false;
   };
-  explicit RegexSearch(wxString regex);
+  explicit RegexSearch(const wxString &regex);
   virtual ~RegexSearch();
   Match FindNext(const wxString &string, std::size_t start);
   Match FindNext_Reverse(const wxString &string, std::size_t start);

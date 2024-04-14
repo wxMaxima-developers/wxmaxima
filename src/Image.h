@@ -120,7 +120,7 @@ public:
     m_ppi = ppi;}
 
   //! Creates a bitmap showing an error message
-  void InvalidBitmap(wxString message = wxEmptyString);
+  void InvalidBitmap(const wxString &message = wxEmptyString);
 
   /*! Sets the name of the gnuplot source and data file of this image
 
@@ -248,7 +248,7 @@ public:
   class WxmxStream: public wxZipInputStream
   {
   public:
-    WxmxStream(wxInputStream &wxmxFile, wxString fileInWxmx);
+    WxmxStream(wxInputStream &wxmxFile, const wxString &fileInWxmx);
   };
 
   bool HasGnuplotSource() const {return m_gnuplotSource_Compressed.GetDataLen() > 20;}

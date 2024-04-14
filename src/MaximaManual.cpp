@@ -67,7 +67,7 @@ wxString MaximaManual::GetHelpfileAnchorName(wxString keyword) {
     return anchor->second;
 }
 
-wxString MaximaManual::GetHelpfileUrl_Singlepage(wxString keyword) {
+wxString MaximaManual::GetHelpfileUrl_Singlepage(const wxString &keyword) {
   const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   auto anchor = m_helpFileURLs_singlePage.find(keyword);
   if (anchor == m_helpFileURLs_singlePage.end())
@@ -75,7 +75,7 @@ wxString MaximaManual::GetHelpfileUrl_Singlepage(wxString keyword) {
   else
     return anchor->second;
 }
-wxString MaximaManual::GetHelpfileUrl_FilePerChapter(wxString keyword) {
+wxString MaximaManual::GetHelpfileUrl_FilePerChapter(const wxString &keyword) {
   const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
 
   auto anchor = m_helpFileURLs_filePerChapter.find(keyword);
@@ -460,7 +460,7 @@ bool MaximaManual::LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument,
   return !m_helpFileURLs_singlePage.empty();
 }
 
-wxString MaximaManual::GetHelpfileURL(wxString keyword) {
+wxString MaximaManual::GetHelpfileURL(const wxString &keyword) {
   wxString anchor;
   if (m_configuration->SinglePageManual()) {
     anchor = GetHelpfileUrl_Singlepage(keyword);
@@ -475,7 +475,7 @@ wxString MaximaManual::GetHelpfileURL(wxString keyword) {
   return anchor;
 }
 
-void MaximaManual::FindMaximaHtmlDir(wxString docDir) {
+void MaximaManual::FindMaximaHtmlDir(const wxString &docDir) {
   // One may set the help file location in the wxMaxima configuration (on Unix:
   // ~/.wxMaxima), e.g.
   // helpFile=/usr/local/share/maxima/5.44.0/doc/html/maxima_singlepage.html
@@ -521,8 +521,8 @@ void MaximaManual::FindMaximaHtmlDir(wxString docDir) {
   }
 }
 
-void MaximaManual::LoadHelpFileAnchors(wxString docdir,
-                                       wxString maximaVersion) {
+void MaximaManual::LoadHelpFileAnchors(const wxString &docdir,
+                                       const wxString &maximaVersion) {
   FindMaximaHtmlDir(docdir);
   m_maximaVersion = maximaVersion;
   {

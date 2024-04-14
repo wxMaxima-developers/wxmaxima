@@ -53,7 +53,7 @@ namespace Format
 {
   bool ExportToWXMX(GroupCell *cells, const wxString &file,
                     Configuration *configuration, CellPointers *cellPointers,
-                    const std::vector<wxString> &variables, GroupCell * const cursorCell = NULL);
+                    const std::vector<wxString> &variables, const GroupCell * const cursorCell = NULL);
 
 }
 

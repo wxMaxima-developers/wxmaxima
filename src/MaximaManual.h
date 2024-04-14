@@ -61,13 +61,13 @@ public:
   explicit MaximaManual(Configuration *configuration);
   typedef std::unordered_map <wxString, wxString, wxStringHash> HelpFileAnchors;
   HelpFileAnchors GetHelpfileAnchors();
-  void FindMaximaHtmlDir(wxString docDir);
+  void FindMaximaHtmlDir(const wxString &docDir);
   wxString GetHelpfileAnchorName(wxString keyword);
-  wxString GetHelpfileUrl_Singlepage(wxString keyword);
-  wxString GetHelpfileUrl_FilePerChapter(wxString keyword);
-  wxString GetHelpfileURL(wxString keyword);
+  wxString GetHelpfileUrl_Singlepage(const wxString &keyword);
+  wxString GetHelpfileUrl_FilePerChapter(const wxString &keyword);
+  wxString GetHelpfileURL(const wxString &keyword);
   //! Search maxima's help file for command and variable names
-  void LoadHelpFileAnchors(wxString docdir, wxString maximaVersion);
+  void LoadHelpFileAnchors(const wxString &docdir, const wxString &maximaVersion);
   //! Collect all keyword anchors in the help file
   void CompileHelpFileAnchors(const wxString &maximaHtmlDir,
                               const wxString &maximaVersion,

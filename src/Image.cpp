@@ -397,7 +397,7 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
   }
 }
 
-Image::WxmxStream::WxmxStream(wxInputStream &wxmxFile, wxString fileInWxmx):
+Image::WxmxStream::WxmxStream(wxInputStream &wxmxFile, const wxString &fileInWxmx):
   wxZipInputStream(wxmxFile, wxConvLocal)
 {
   while(!Eof())
@@ -688,7 +688,7 @@ wxBitmap Image::GetBitmap(double scale) {
   return m_scaledBitmap;
 }
 
-void Image::InvalidBitmap(wxString message) {
+void Image::InvalidBitmap(const wxString &message) {
   m_originalWidth = m_width = 1200 * m_ppi / 96;
   m_originalHeight = m_height = 900 * m_ppi / 96;
   // Create a "image not loaded" bitmap.

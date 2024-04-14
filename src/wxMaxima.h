@@ -140,7 +140,7 @@ public:
     { return m_fileSaved; }
 
   //! Load an image from a file into the worksheet.
-  void LoadImage(wxString file)
+  void LoadImage(const wxString &file)
     { GetWorksheet()->OpenHCaret(file, GC_TYPE_IMAGE); }
 
   //! Query the value of a new maxima variable
@@ -163,7 +163,8 @@ public:
   };
 
   //! Use this maxima command (from a command line option) instead of the configured path
-  static void Set_Maxima_Commandline_Filename(wxString filename) {maxima_command_line_filename = filename;}
+  static void Set_Maxima_Commandline_Filename(const wxString &filename)
+    {maxima_command_line_filename = filename;}
   //! The maxima command, if we use the --maxima=<str> command. If empty we use the configured path, not a command line option --maxima=<str>.
   static const wxString Get_Maxima_Commandline_Filename() {return maxima_command_line_filename;}
 

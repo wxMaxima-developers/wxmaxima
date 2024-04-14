@@ -96,7 +96,7 @@ bool AutoComplete::HasDemofile(const wxString &commandname)
   const std::lock_guard<std::mutex> lock(m_keywordsLock);
   return std::any_of(m_wordList.at(demofile).begin(),
                      m_wordList.at(demofile).end(),
-                     [commandname](wxString file){return file == "\"" + commandname + "\"";});
+                     [commandname](const wxString &file){return file == "\"" + commandname + "\"";});
 }
 
 
@@ -389,7 +389,7 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
   QueueEvent(event);
 }
 
-void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
+void AutoComplete::UpdateDemoFiles(wxString partial, const wxString &maximaDir) {
   // Remove the opening quote from the partial.
   if (partial.at(0) == wxS('\"'))
     partial = partial.Right(partial.Length() - 1);
@@ -425,7 +425,7 @@ void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir) {
   }
 }
 
-void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir) {
+void AutoComplete::UpdateGeneralFiles(wxString partial, const wxString &maximaDir) {
   // Remove the opening quote from the partial.
   if (partial.at(0) == wxS('\"'))
     partial = partial.Right(partial.Length() - 1);
@@ -458,7 +458,7 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir) {
   }
 }
 
-void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir) {
+void AutoComplete::UpdateLoadFiles(wxString partial, const wxString &maximaDir) {
   wxLogMessage(_("Scheduling a background task that scans for autocompletable "
                  "file names."));
   // Remove the opening quote from the partial.
@@ -515,7 +515,6 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
   if ((type != tmplte) && (type >=0 ) && (type < numberOfTypes )) {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for (const auto &i : m_wordList.at(type)) {
-      //cppcheck-suppress useStlAlgorithm
       if (i.StartsWith(partial) &&
           (std::find(completions.begin(), completions.end(), i) == completions.end()))
         completions.push_back(i);

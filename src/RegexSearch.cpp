@@ -31,7 +31,7 @@
 #include <string>
 #include <wx/log.h>
 
-RegexSearch::RegexSearch(wxString regex)
+RegexSearch::RegexSearch(const wxString &regex)
   : wxRegEx(regex) {}
 
 RegexSearch::~RegexSearch()

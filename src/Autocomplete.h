@@ -103,11 +103,11 @@ public:
 
 
   //! Replace the list of files in the directory the worksheet file is in to the demo files list
-  void UpdateDemoFiles(wxString partial, wxString maximaDir);
+  void UpdateDemoFiles(wxString partial, const wxString &maximaDir);
   //! Replace the list of files in the directory the worksheet file is in to the load files list
-  void UpdateLoadFiles(wxString partial, wxString maximaDir);
+  void UpdateLoadFiles(wxString partial, const wxString &maximaDir);
   //! Assemble a list of files
-  void UpdateGeneralFiles(wxString partial, wxString maximaDir);
+  void UpdateGeneralFiles(wxString partial, const wxString &maximaDir);
 
   //! Add words to the list of words that appear in the workSheet's code cells
   void AddWorksheetWords(const WordList &words);
