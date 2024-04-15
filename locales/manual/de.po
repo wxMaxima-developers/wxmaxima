@@ -3299,15 +3299,11 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:865
-#, fuzzy
-#| msgid ""
-#| "After upgrading to MacOS 13.1 plot and/or draw commands output error "
-#| "messages like"
 msgid ""
 "### After upgrading to MacOS 13.1 plot and/or draw commands output error "
 "messages like"
 msgstr ""
-"Nach dem Upgrade auf MacOS 13.1 geben Plot- oder Draw Befehle "
+"### Nach dem Upgrade auf MacOS 13.1 geben Plot- oder Draw Befehle "
 "Fehlermeldungen aus, wie"
 
 #. type: Plain text
@@ -3410,7 +3406,7 @@ msgstr ""
 msgid ""
 "## _WxMaxima_ sometimes hangs for several seconds once in the first minute"
 msgstr ""
-"_WxMaxima_ hängt manchmal in der ersten Minute einmal für mehrere Sekunden"
+"## _WxMaxima_ hängt manchmal in der ersten Minute einmal für mehrere Sekunden"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:897
@@ -3439,7 +3435,7 @@ msgstr ""
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:901
 msgid "![Locale warning](./locale-warning.png){ id=img_locale_warning}"
-msgstr ""
+msgstr "![Locale Warnung](./locale-warning.png){ id=img_locale_warning}"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:905
@@ -3484,6 +3480,8 @@ msgid ""
 "## How can a Maxima script determine, if it is running under wxMaxima or "
 "command line Maxima?"
 msgstr ""
+"## Wie kann ein Maxima-Skript feststellen, ob es unter wxMaxima oder "
+"Kommandozeilen-Maxima läuft?"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:916
@@ -3492,13 +3490,17 @@ msgid ""
 "`wxmaxima`. The Maxima variable `maxima_frontend_version` contains the "
 "wxMaxima version in this case."
 msgstr ""
+"Wenn wxMaxima verwendet wird, hat die Maxima-Variable `maxima_frontend` "
+"den Wert wxmaxima`. Die Maxima-Variable `maxima_frontend_version` enthält "
+"dann die wxMaxima-Version."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:918
 msgid ""
 "If no frontend is used (you are using command line Maxima), these variables "
 "are `false`."
-msgstr ""
+msgstr "Wenn kein Frontend verwendet wird (Kommandozeilen-Maxima wird verwendet), "
+"dann haben diese Variablen den Wert `false`)."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:922
@@ -3512,6 +3514,10 @@ msgid ""
 "clicking on a desktop icon or desktop menu entry. WxMaxima - if started from "
 "the command line - still provides some command-line switches, though."
 msgstr ""
+"Üblicherweise werden Programme mit einer graphischen Oberfläche einfach mit "
+"einem Mausklick auf ein Desktop-Icon oder einen Desktop-Menüeintrag gestartet. "
+"WxMaxima - falls es von der Kommandozeile aus gestartet wird - bietet doch einige "
+"Kommandozeilen-Optionen."
 
 #. type: Bullet: '- '
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:940
@@ -3623,6 +3629,12 @@ msgid ""
 "if you have knowledge of these programming languages and want to help and "
 "contribute to the open source project wxMaxima."
 msgstr ""
+"WxMaxima wird hauptsächlich in der Programmiersprache C++ entwickelt, "
+"verwendet das [wxWidgets framework](https://www.wxwidgets.org), als Build-System "
+"verwenden wir CMake, ein kleiner Teil ist in Lisp geschrieben. Sie können zu "
+"wxMaxima beitragen, werden Sie Teil des wxMaxima-Projekts auf "
+"<https://github.com/wxMaxima-developers/wxmaxima>, wenn Sie Kenntnisse dieser "
+"Programmiersprachen haben und zum Open-Source-Projekt wxMaxima etwas beitragen können."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:950
@@ -3634,6 +3646,11 @@ msgid ""
 "com/wxMaxima-developers/wxmaxima/tree/main/locales) how wxMaxima and the "
 "manual can be translated)."
 msgstr ""
+"Aber nicht nur Programmierer sind notwendig! Sie können auch zu wxMaxima beitragen, "
+"indem Sie die Dokumentation verbessern, Fehler finden und melden (und vielleicht "
+"auch Fehlerlösungen) oder wxMaxima oder die Anleitung übersetzen helfen "
+"(Siehe die Readme-Datei im [locale subdirectory](https://github."
+"com/wxMaxima-developers/wxmaxima/tree/main/locales), wie das übersetzen funktioniert."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:952
@@ -3657,6 +3674,10 @@ msgid ""
 "Lisp part (the `wxmathML.lisp`-file) is needed, these files are included in "
 "the executable."
 msgstr ""
+"Das Programm ist nahezu unabhängig, ausser einiger Systembibliotheken (und der "
+"wxWidgets-Bibliothek) sind keine externen Abhängigkeiten (z.B. externe Graphiken "
+"oder der Lisp-Teil (die `wxMathML.lisp`-Datei) notwendig, diese Dateien sind alle "
+"in wxMaxima eingebaut."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:957
@@ -3665,6 +3686,9 @@ msgid ""
 "file without recompiling everything, one can use the command line option `--"
 "wxmathml-lisp=<str>` to use another Lisp file, not the included one."
 msgstr ""
+"Wenn Sie ein Entwickler sind und eine modifizierte `wxmathML.lisp`-Datei "
+"verwenden wollen, ohne alles neu zu compilieren, kann mit der Kommandozeilenoption "
+"`--wxmathml-lisp=<str>` eine andere Lisp-Datei verwendet werden, nicht die eincompilierte Variante."
 
 #~ msgid ""
 #~ "Before we look at the content a few points regarding navigation are in "
