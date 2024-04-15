@@ -15,6 +15,11 @@
 - Security: (autosaved) temporary files now use secure permissions,
   are not readable by everyone.
 - wxm files no more truncate text (#1908)
+- Unicode sidebar: Allow searching for unicode numbers too, not only the
+  character name.
+- Unicode sidebar: Correct the search filter, the last char was always
+  shown, even if there was no match.
+- Improvements of the manual.
 
 # 24.02.2
 
