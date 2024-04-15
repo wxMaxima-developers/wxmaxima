@@ -596,9 +596,8 @@ wxMaximaFrame::~wxMaximaFrame() {
   wxConfig::Get()->Write(wxS("AUI/perspective"), perspective);
   wxConfig::Get()->Flush();
 
-  // In modern wxWidgets wxAUIManager does unit itself.
-#if wxCHECK_VERSION(3, 1, 4)
-#else
+  // In modern wxWidgets wxAUIManager does UnInit() itself.
+#if !wxCHECK_VERSION(3, 1, 4)
   m_manager->UnInit();
 #endif
   m_manager = NULL;
