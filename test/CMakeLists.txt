@@ -292,7 +292,7 @@ add_test(
 )
 
 # The test for the argument of load() was added in Maxima 5.46.0
-if (MAXIMA_VERSION VERSION_GREATER_EQUAL "5.46.0")
+if(MAXIMA_VERSION VERSION_GREATER_EQUAL "5.46.0")
     add_test(
         NAME load_symbol
         COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "load(engineering-format);" "argument must be a string, symbol, or pathname")

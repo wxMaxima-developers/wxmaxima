@@ -209,8 +209,7 @@ if(WXM_USE_CPPCHECK)
 	    "--inline-suppr"
 	    "--language=c++"
 	    "--template=gcc"
-	    "--suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt"
-	)
+	    "--suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt")
     else()
 	message(STATUS "cppcheck not found.")
         set(CMAKE_CXX_CPPCHECK "")

@@ -46,8 +46,7 @@ if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
 	add_custom_target(
 	    ${LANG}_po
 	    DEPENDS ${LANG}.po
-	    DEPENDS wxMaxima.pot
-	    )
+	    DEPENDS wxMaxima.pot)
 	add_custom_command(
 	    TARGET ${LANG}_po
 	    DEPENDS ${LANG}.po
