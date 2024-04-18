@@ -81,7 +81,8 @@ Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Fink, Home
 <div class="line">                                # (-j 4 means: Use 4 CPU cores).</div>
 <div class="line">                                # Adjust the number for your CPU.</div>
 <div class="line">sudo cmake --build . -- install # install it</div>
-</div><!-- fragment --><p>If you want to install into a special prefix (not <code>/usr/local</code>), add <code>-DCMAKE_INSTALL_PREFIX=/your/installation/prefix</code> to the first cmake invocation. E.g.</p>
+</div><!-- fragment --><p>You can use (or test) a fresh compiled <a class="el" href="classwxMaxima.html">wxMaxima</a> (without installation) by calling <code>./wxmaxima-local</code> from the build-directory.</p>
+<p>If you want to install into a special prefix (not <code>/usr/local</code>), add <code>-DCMAKE_INSTALL_PREFIX=/your/installation/prefix</code> to the first cmake invocation. E.g.</p>
 <div class="fragment"><div class="line">cmake -DCMAKE_INSTALL_PREFIX=/opt/wxmaxima ../wxmaxima</div>
 </div><!-- fragment --><p>Of course you can use the CMake GUI (<code>cmake-gui</code>) or curses based CMake (<code>ccmake</code>) for the configure step and change some CMake variables.</p>
 <p>If you want to create binary packages (tar.gz, tar.bz2, DEB &amp; RPM, on macOS also .dmg), the following command will create them:</p>
