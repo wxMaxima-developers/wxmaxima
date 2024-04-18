@@ -25,6 +25,9 @@ Assume you start inside wxmaxima source tree root folder. Then:
     sudo cmake --build . -- install # install it
 ```
 
+You can use (or test) a fresh compiled wxMaxima (without installation) by calling
+`./wxmaxima-local` from the build-directory.
+
 If you want to install into a special prefix (not `/usr/local`), add
 `-DCMAKE_INSTALL_PREFIX=/your/installation/prefix` to the first
 cmake invocation. E.g.
