@@ -170,10 +170,10 @@ void OutCommon::GetMaxPoint(Cell *tree, int *width, int *height) const {
                 currentHeight += MC_LINE_SKIP;
             *height = currentHeight;
             currentWidth = tmp.GetWidth();
-            *width = wxMax(currentWidth, *width);
+            *width = std::max(currentWidth, *width);
         } else {
             currentWidth += (tmp.GetWidth());
-            *width = wxMax(currentWidth, *width);
+            *width = std::max(currentWidth, *width);
         }
         bigSkip = tmp.HasBigSkip();
     }
