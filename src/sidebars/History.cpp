@@ -235,7 +235,7 @@ void History::OnMenu(wxCommandEvent &event) {
     LoggingMessageBox(_("Exporting to .mac file failed!"), _("Error!"), wxOK);
 }
 
-void History::SetSavePlace(wxString saveplace)
+void History::SetSavePlace(const wxString &saveplace)
 {
   m_saveplace = saveplace + "/wxMaximaHistory.xml";
   wxConfig::Get()->Write("history/saveplace", m_saveplace);

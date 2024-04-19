@@ -65,7 +65,7 @@ bool HelpBrowser::AllowOnlineManualP(Configuration *configuration, wxWindow *par
 
 #ifdef USE_WEBVIEW
 HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
-                         MaximaManual *manual, wxString url)
+                         MaximaManual *manual, const wxString &url)
   : wxPanel(parent, wxID_ANY), m_maximaManual(manual),
     m_configuration(configuration), m_startUrl(url) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -176,7 +176,7 @@ void HelpBrowser::OnWebviewKeyDown(wxKeyEvent &event) {
     event.Skip();
 }
 
-void HelpBrowser::JumpToKeyword(wxString keyword) {
+void HelpBrowser::JumpToKeyword(const wxString &keyword) {
   //  wxWindowUpdateLocker speedUp(this);
   wxString maximaHelpURL = m_maximaManual->GetHelpfileURL(keyword);
   m_topicPanel->Show(false);
@@ -227,7 +227,7 @@ void HelpBrowser::SelectKeywords(const std::vector<wxString> &keywords) {
   Layout();
 }
 
-void HelpBrowser::SetURL(wxString url) {
+void HelpBrowser::SetURL(const wxString &url) {
   CreateIfNeeded();
   m_browserPanel->Show(true);
   m_topicPanel->Show(false);

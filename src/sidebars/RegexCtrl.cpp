@@ -27,7 +27,8 @@
 #include <wx/config.h>
 #include <wx/log.h>
 
-RegexCtrl::RegexCtrl(wxWindow *parent, wxWindowID id, Configuration *cfg, wxString configName)
+RegexCtrl::RegexCtrl(wxWindow *parent, wxWindowID id, Configuration *cfg,
+                     const wxString &configName)
   : BTextCtrl(parent, id, cfg),
     m_configName(configName)
 {

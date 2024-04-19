@@ -43,7 +43,7 @@ class RegexCtrl : public BTextCtrl
   };
 public:
   RegexCtrl(wxWindow *parent,
-            wxWindowID id, Configuration *cfg, wxString configName);
+            wxWindowID id, Configuration *cfg, const wxString &configName);
   bool Matches(wxString text);
 
 protected:

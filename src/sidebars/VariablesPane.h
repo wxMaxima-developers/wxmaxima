@@ -91,9 +91,9 @@ public:
   //! Convert a variable name maxima understands to human-readable
   static wxString UnescapeVarname(wxString var);
   //! Tell the variables pane about a variable value
-  void VariableValue(wxString var, wxString val);
+  void VariableValue(const wxString &var, const wxString &val);
   //! Sets the variable var to "undefined"
-  void VariableUndefined(wxString var);
+  void VariableUndefined(const wxString &var);
   void UpdateSize();
   //! The destructor
   ~Variablespane();
@@ -101,7 +101,7 @@ private:
   // The spreadsheet with the variable names
   wxGrid *m_grid;
   bool m_updateSizeNeeded = false;
-  static wxString InvertCase(wxString var);
+  static wxString InvertCase(const wxString &var);
   typedef std::unordered_map <wxString, int, wxStringHash> IntHash;
 
   //! A list of all symbols that can be entered using Esc-Codes

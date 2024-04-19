@@ -83,7 +83,7 @@ public:
   //! Actually update the history sidebar. Called when no other work is to be done.
   bool UpdateDeferred();
   //! Where to save thi history
-  void SetSavePlace(wxString saveplace);
+  void SetSavePlace(const wxString &saveplace);
 
 private:
   //! Called on right-clicks on the history panel

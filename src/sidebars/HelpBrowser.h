@@ -51,10 +51,10 @@ public:
   static bool AllowOnlineManualP(Configuration *configuration, wxWindow *parent);
   //! Ask the user if we are allowed to access an online manual
   explicit HelpBrowser(wxWindow *parent, Configuration *configuration, MaximaManual *manual,
-                       wxString url);
+                       const wxString &url);
 #ifdef USE_WEBVIEW
-  void SetURL(wxString url);
-  void JumpToKeyword(wxString keyword);
+  void SetURL(const wxString &url);
+  void JumpToKeyword(const wxString &keyword);
   void SelectKeywords(const std::vector<wxString> &keywords);
   wxString GetKeyword(wxWindowID id) const;
 

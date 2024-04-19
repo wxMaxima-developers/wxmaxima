@@ -289,7 +289,7 @@ void Variablespane::OnTextChange(wxGridEvent &event) {
   m_grid->EndBatch();
 }
 
-void Variablespane::VariableValue(wxString var, wxString val) {
+void Variablespane::VariableValue(const wxString &var, const wxString &val) {
   for (int i = 0; i < m_grid->GetNumberRows(); i++)
     if (m_grid->GetCellValue(i, 0) == UnescapeVarname(var)) {
       m_grid->SetCellTextColour(i, 1, *wxBLACK);
@@ -301,7 +301,7 @@ void Variablespane::VariableValue(wxString var, wxString val) {
     }
 }
 
-void Variablespane::VariableUndefined(wxString var) {
+void Variablespane::VariableUndefined(const wxString &var) {
   for (int i = 0; i < m_grid->GetNumberRows(); i++)
     if (m_grid->GetCellValue(i, 0) == UnescapeVarname(var)) {
       m_grid->SetCellTextColour(i, 1, *wxLIGHT_GREY);
@@ -329,7 +329,7 @@ std::vector<wxString> Variablespane::GetVarnames() {
   return retVal;
 }
 
-wxString Variablespane::InvertCase(wxString var) {
+wxString Variablespane::InvertCase(const wxString &var) {
   wxString retval;
   for (auto const &i: var) {
     if (wxIsupper(i))
