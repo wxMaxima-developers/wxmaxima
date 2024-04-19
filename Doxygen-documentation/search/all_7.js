@@ -16,7 +16,7 @@ var searchData=
   ['hasvalidposition_580',['HasValidPosition',['../classCell.html#a4656062552dad1dda4b9d5620760d35f',1,'Cell']]],
   ['hasvalidsize_581',['HasValidSize',['../classCell.html#a7174a01fa482461ffecc4c239cdfb204',1,'Cell']]],
   ['hcaretactive_582',['HCaretActive',['../classWorksheet.html#a338c8d1a351010a4a4e8526bfff8a6d5',1,'Worksheet']]],
-  ['helpbrowser_583',['HelpBrowser',['../classHelpBrowser.html#a32f4d36e99b96d0c1ca951a045212be1',1,'HelpBrowser::HelpBrowser()'],['../classHelpBrowser.html',1,'HelpBrowser']]],
+  ['helpbrowser_583',['HelpBrowser',['../classHelpBrowser.html#aa30aa60b164108f643cac263f3006a77',1,'HelpBrowser::HelpBrowser()'],['../classHelpBrowser.html',1,'HelpBrowser']]],
   ['helpbrowser_2ecpp_584',['HelpBrowser.cpp',['../HelpBrowser_8cpp.html',1,'']]],
   ['helpbrowser_2eh_585',['HelpBrowser.h',['../HelpBrowser_8h.html',1,'']]],
   ['helpbrowseruserlocation_586',['HelpBrowserUserLocation',['../classConfiguration.html#a8704e8f0514e29f02578230d39e30e27',1,'Configuration::HelpBrowserUserLocation(wxString helpBrowser)'],['../classConfiguration.html#a0c5f8dc5f190f8c061097f230e6070be',1,'Configuration::HelpBrowserUserLocation() const']]],

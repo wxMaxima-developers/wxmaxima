@@ -9,7 +9,7 @@ var searchData=
   ['hasvalidposition_2610',['HasValidPosition',['../classCell.html#a4656062552dad1dda4b9d5620760d35f',1,'Cell']]],
   ['hasvalidsize_2611',['HasValidSize',['../classCell.html#a7174a01fa482461ffecc4c239cdfb204',1,'Cell']]],
   ['hcaretactive_2612',['HCaretActive',['../classWorksheet.html#a338c8d1a351010a4a4e8526bfff8a6d5',1,'Worksheet']]],
-  ['helpbrowser_2613',['HelpBrowser',['../classHelpBrowser.html#a32f4d36e99b96d0c1ca951a045212be1',1,'HelpBrowser']]],
+  ['helpbrowser_2613',['HelpBrowser',['../classHelpBrowser.html#aa30aa60b164108f643cac263f3006a77',1,'HelpBrowser']]],
   ['helpbrowseruserlocation_2614',['HelpBrowserUserLocation',['../classConfiguration.html#a0c5f8dc5f190f8c061097f230e6070be',1,'Configuration::HelpBrowserUserLocation() const'],['../classConfiguration.html#a8704e8f0514e29f02578230d39e30e27',1,'Configuration::HelpBrowserUserLocation(wxString helpBrowser)']]],
   ['helpdir_2615',['HelpDir',['../classDirstructure.html#ad67a848e54d1e40f97453a8e4279f59c',1,'Dirstructure::HelpDir() const'],['../classDirstructure.html#a566f3960bf573e37465b6a09b34eaddf',1,'Dirstructure::HelpDir(const wxString &amp;helpDir)']]],
   ['helpmenu_2616',['HelpMenu',['../classwxMaxima.html#acf36a7f8cc1a859f1ff47974722b513c',1,'wxMaxima']]],

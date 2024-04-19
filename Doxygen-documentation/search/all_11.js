@@ -102,7 +102,7 @@ var searchData=
   ['setprinting_1346',['SetPrinting',['../classConfiguration.html#a3fa0f73520c7f84e872fa0839e89fe06',1,'Configuration']]],
   ['setrecalccontext_1347',['SetRecalcContext',['../classConfiguration.html#a79d082d194ecfaf6d336a329f10e02fd',1,'Configuration']]],
   ['setrecalculationcontext_1348',['SetRecalculationContext',['../classOutCommon.html#a3333a0acbf5f44cece70ea840ceac484',1,'OutCommon']]],
-  ['setsaveplace_1349',['SetSavePlace',['../classHistory.html#ac68189c51c7f0d0ee3a1014ece792742',1,'History']]],
+  ['setsaveplace_1349',['SetSavePlace',['../classHistory.html#a38ab8fc84c8058edaca62405a41deee6',1,'History']]],
   ['setselection_1350',['SetSelection',['../classWorksheet.html#aa4bc904a6a9a9c50e8f0197145cdb923',1,'Worksheet::SetSelection(Cell *sel)'],['../classWorksheet.html#a13aa0b04f76b0869309a40e37d63cf0a',1,'Worksheet::SetSelection(Cell *start, Cell *end)']]],
   ['setsize_1351',['SetSize',['../classOutCommon.html#a5be214796dc3b0d333aee035591644d4',1,'OutCommon::SetSize()'],['../classSvgBitmap.html#ab8b5c714e33eaaf36236390ad946d6e4',1,'SvgBitmap::SetSize(int width, int height)'],['../classSvgBitmap.html#aa41cbbaf33d84f805f2b0fdba06897df',1,'SvgBitmap::SetSize(wxSize siz)']]],
   ['setstyle_1352',['SetStyle',['../classTextCell.html#a1b1dbb3d78f32f5a147f25d6a484678d',1,'TextCell::SetStyle()'],['../classLabelCell.html#a8cd08fad6d06a2c48007e9ab4dca1653',1,'LabelCell::SetStyle()'],['../classCell.html#aa16985efe118cc2442bde2452e7a3942',1,'Cell::SetStyle()'],['../classEditorCell.html#ac3c056651749fe30aa51f60006bae05a',1,'EditorCell::SetStyle()']]],
