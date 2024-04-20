@@ -20,6 +20,7 @@
 - Unicode sidebar: Correct the search filter, the last char was always
   shown, even if there was no match.
 - Improvements of the manual.
+- Performance: Replaced many copy operations by references to const
 
 # 24.02.2
 
