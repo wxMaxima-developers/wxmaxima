@@ -23,7 +23,7 @@
 #include <wx/intl.h>
 #include <wx/log.h>
 #include <iostream>
-FontVariantCache::FontVariantCache(wxString fontName):
+FontVariantCache::FontVariantCache(const wxString &fontName):
   m_fontName(fontName)
 {
 }

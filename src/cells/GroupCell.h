@@ -162,13 +162,13 @@ public:
     doesn't contain other GroupCells that can export images and therefore
     need to enumerate them.
   */
-  wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter) const;
+  wxString ToTeX(const wxString &imgDir, const wxString &filename, std::size_t *imgCounter) const;
 
   wxString ToRTF() const override;
 
-  wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter) const;
+  wxString ToTeXCodeCell(const wxString &imgDir, const wxString &filename, std::size_t *imgCounter) const;
 
-  static wxString ToTeXImage(const Cell *tmp, wxString imgDir, wxString filename, int *imgCounter);
+  static wxString ToTeXImage(const Cell *tmp, const wxString &imgDir, const wxString &filename, std::size_t *imgCounter);
 
   wxString ToTeX() const override;
 

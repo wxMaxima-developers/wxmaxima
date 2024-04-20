@@ -33,16 +33,13 @@
 #include "StringUtils.h"
 
 LabelCell::LabelCell(GroupCell *group, Configuration *config,
-                     wxString automaticLabel, TextStyle style)
+                     const wxString &automaticLabel, TextStyle style)
   : TextCell(group, config, automaticLabel, style)
 {
   InitBitFields_LabelCell();
   m_width = Scale_Px(m_configuration->GetLabelWidth());
 }
 
-// cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_alt
-// cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_altJs
-// cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_initialToolTip
 LabelCell::LabelCell(GroupCell *group, const LabelCell &cell)
   : TextCell(group, cell.m_configuration),
     m_userDefinedLabel(cell.m_userDefinedLabel) {}

@@ -60,12 +60,6 @@ IntCell::IntCell(GroupCell *group, Configuration *config,
             std::make_unique<TextCell>(group, config),
             std::make_unique<TextCell>(group, config), std::move(var)) {}
 
-// Old cppcheck bugs:
-// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_signHeight
-// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_signWidth
-// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_signTop
-// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charHeight
-// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charWidth
 IntCell::IntCell(GroupCell *group, const IntCell &cell)
   : IntCell(group, cell.m_configuration, CopyList(group, cell.m_base.get()),
             CopyList(group, cell.m_lowerLimit.get()),

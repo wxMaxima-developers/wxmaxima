@@ -24,8 +24,8 @@
 #include "Gen3Wiz.h"
 #include <wx/persist/toplevel.h>
 
-Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3, wxString val1,
-                 wxString val2, wxString val3, Configuration *cfg,
+Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3, const wxString &val1,
+                 const wxString &val2, const wxString &val3, Configuration *cfg,
                  wxWindow *parent, int id, const wxString &title, bool eq,
                  const wxString &warning, const wxString &warningToolTip,
                  const wxPoint &pos, const wxSize &size, long style)

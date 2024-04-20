@@ -43,9 +43,6 @@ NamedBoxCell::NamedBoxCell(GroupCell *group, Configuration *config,
   SetStyle(TS_VARIABLE);
 }
 
-// Old cppcheck bugs:
-// cppcheck-suppress uninitMemberVar symbolName=NamedBoxCell::m_open
-// cppcheck-suppress uninitMemberVar symbolName=NamedBoxCell::m_close
 NamedBoxCell::NamedBoxCell(GroupCell *group, const NamedBoxCell &cell)
   : NamedBoxCell(group, cell.m_configuration,
                  CopyList(group, cell.m_innerCell.get()),

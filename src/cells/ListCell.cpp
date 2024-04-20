@@ -49,20 +49,6 @@ ListCell::ListCell(GroupCell *group, Configuration *config,
   m_close->SetStyle(TS_FUNCTION);
 }
 
-// These false-positive warnings only appear in old versions of cppcheck
-// that don't fully understand constructor delegation, still.
-// cppcheck-suppress uninitMemberVar symbolName=ListCell::m_last1
-// cppcheck-suppress uninitMemberVar symbolName=ListCell::m_print
-// cppcheck-suppress uninitMemberVar symbolName=ListCell::m_numberOfExtensions
-// cppcheck-suppress uninitMemberVar symbolName=ListCell::m_charWidth
-// cppcheck-suppress uninitMemberVar symbolName=ListCell::m_charHeight
-// cppcheck-suppress uninitMemberVar symbolName=ListCell::m_charWidth1
-// cppcheck-suppress uninitMemberVar symbolName=ListCell::m_charHeight1
-// cppcheck-suppress uninitMemberVar symbolName=ListCell::m_signWidth
-// cppcheck-suppress uninitMemberVar symbolName=ListCell::m_signHeight
-// cppcheck-suppress uninitMemberVar symbolName=ListCell::m_signTopHeight
-// cppcheck-suppress uninitMemberVar symbolName=ListCell::m_signBotHeight
-// cppcheck-suppress uninitMemberVar symbolName=ListCell::m_extendHeight
 ListCell::ListCell(GroupCell *group, const ListCell &cell)
   : ListCell(group, cell.m_configuration,
              CopyList(group, cell.m_innerCell.get())) {

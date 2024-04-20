@@ -47,18 +47,6 @@ ParenCell::ParenCell(GroupCell *group, Configuration *config,
   m_close->SetStyle(TS_FUNCTION);
 }
 
-// These false-positive warnings only appear in old versions of cppcheck
-// that don't fully understand constructor delegation, still.
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_last1
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_print
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_numberOfExtensions
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charWidth1
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charHeight1
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signWidth
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signHeight
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signTopHeight
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signBotHeight
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_extendHeight
 ParenCell::ParenCell(GroupCell *group, const ParenCell &cell)
   : ParenCell(group, cell.m_configuration,
               CopyList(group, cell.m_innerCell.get())) {

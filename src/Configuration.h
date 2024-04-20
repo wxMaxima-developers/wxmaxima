@@ -1020,7 +1020,7 @@ public:
   //! Initialize the text styles on construction.
   void InitStyles();
   //! True if we are confident that the font renders this char
-  bool FontRendersChar(wxChar ch, const wxFont &font = *wxNORMAL_FONT);
+  bool FontRendersChar(wxUniChar ch, const wxFont &font = *wxNORMAL_FONT);
   wxTextCtrl *LastActiveTextCtrl() const { return m_lastActiveTextCtrl; }
   void LastActiveTextCtrl(wxTextCtrl *last);
 
@@ -1082,7 +1082,7 @@ private:
   RenderablecharsHash m_renderableChars;
   RenderablecharsHash m_nonRenderableChars;
   //! True if drawing the char this button displays alters at least one pixel
-  static bool FontDisplaysChar(wxChar ch, const wxFont &font = *wxNORMAL_FONT);
+  static bool FontDisplaysChar(wxUniChar ch, const wxFont &font = *wxNORMAL_FONT);
   //! True if drawing the char this button displays differs visibly from otherChar
   static bool CharVisiblyDifferent(wxChar ch, wxChar otherChar, const wxFont &font = *wxNORMAL_FONT);
   mathDisplayMode m_displayMode = display_2d;

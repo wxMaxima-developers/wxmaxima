@@ -245,14 +245,6 @@ wxString EditorCell::PrependNBSP(wxString input) {
   return retval;
 }
 
-// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_wordList
-// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_styledText
-// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_textHistory
-// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_positionHistory
-// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_startHistory
-// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_endHistory
-// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_fontName
-// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_tokens
 EditorCell::EditorCell(GroupCell *group, const EditorCell &cell)
   : EditorCell(group, cell.m_configuration, cell.m_text) {
   CopyCommonData(cell);
@@ -934,7 +926,7 @@ void EditorCell::SetFont(wxDC *dc) const {
 }
 
 wxSize EditorCell::GetTextSize(wxString const &text) {
-  wxDC *dc = m_configuration->GetRecalcDC();
+  const wxDC * const dc = m_configuration->GetRecalcDC();
   StringHash::const_iterator it = m_widths.find(text);
 
   // If we already know this text piece's size we return the cached value
@@ -2811,7 +2803,7 @@ bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry, Acti
 
   return true;
 }
-bool EditorCell::History::AddState(wxString text, long long selStart, long long selEnd,
+bool EditorCell::History::AddState(const wxString &text, long long selStart, long long selEnd,
                                    Action action)
 {
   return AddState(EditorCell::History::HistoryEntry(text, selStart, selEnd), action);
@@ -3399,7 +3391,7 @@ size_t EditorCell::ReplaceAll(wxString oldString, const wxString &newString,
   return count;
 }
 
-size_t EditorCell::ReplaceAll_RegEx(wxString oldString, const wxString &newString) {
+size_t EditorCell::ReplaceAll_RegEx(const wxString &oldString, const wxString &newString) {
   if (oldString == wxEmptyString)
     return 0;
 
@@ -3705,7 +3697,7 @@ TextStyle EditorCell::GetSelectionStyle() const {
 
   if (SelectionActive()) {
     for (const auto &textSnippet: m_styledText) {
-      wxString text = textSnippet.GetText();
+      const wxString &text = textSnippet.GetText();
       if ((SelectionLeft() <= pos) &&
           (pos + text.Length() < SelectionRight())) {
         if (textSnippet.IsStyleSet())
@@ -3717,7 +3709,7 @@ TextStyle EditorCell::GetSelectionStyle() const {
     }
   } else {
     for (const auto &textSnippet: m_styledText) {
-      wxString text = textSnippet.GetText();
+      const wxString &text = textSnippet.GetText();
       if ((CursorPosition() >= pos) &&
           (CursorPosition() < pos + text.Length())) {
         if (textSnippet.IsStyleSet())

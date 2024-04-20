@@ -42,9 +42,6 @@ AbsCell::AbsCell(GroupCell *group, Configuration *config,
   SetStyle(TS_VARIABLE);
 }
 
-// Old cppcheck bugs:
-// cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_open
-// cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_close
 AbsCell::AbsCell(GroupCell *group, const AbsCell &cell)
   : AbsCell(group, cell.m_configuration,
             CopyList(group, cell.m_innerCell.get())) {

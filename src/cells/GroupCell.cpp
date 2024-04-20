@@ -991,9 +991,9 @@ wxString GroupCell::ToRTF() const {
   return retval;
 }
 
-wxString GroupCell::ToTeX(wxString imgDir, wxString filename,
-                          int *imgCounter) const {
-  int myImgCounter = 0;
+wxString GroupCell::ToTeX(const wxString &imgDir, const wxString &filename,
+                          std::size_t *imgCounter) const {
+  std::size_t myImgCounter = 0;
   if (imgCounter == NULL)
     imgCounter = &myImgCounter;
   wxString str;
@@ -1078,15 +1078,15 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename,
   return str;
 }
 
-wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
-                                  int *imgCounter) const {
+wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filename,
+                                  std::size_t *imgCounter) const {
   wxString str;
 
   // Input cells
   if (m_configuration->ShowCodeCells()) {
     // For LaTeX export we must use a dot as decimal separator
     // Save LC_NUMERIC, set it to "C", print out the float and then restore it.
-    char *old_lc_numeric;
+    const char *old_lc_numeric;
     wxString saved_lc_numeric("C");
     old_lc_numeric =
       std::setlocale(LC_NUMERIC, NULL); // get current LC_NUMERIC locale
@@ -1162,8 +1162,8 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename,
   return str;
 }
 
-wxString GroupCell::ToTeXImage(const Cell *tmp, wxString imgDir, wxString filename,
-                               int *imgCounter) {
+wxString GroupCell::ToTeXImage(const Cell *tmp, const wxString &imgDir, const wxString &filename,
+                               std::size_t *imgCounter) {
   wxASSERT_MSG((imgCounter != NULL), _("Bug: No image counter to write to!"));
   if(tmp == NULL) {
       wxLogMessage(_("No image to export"));
@@ -1418,7 +1418,6 @@ const wxString GroupCell::GetToolTip(const wxPoint point) const {
   return retval;
 }
 
-// cppcheck-suppress functionConst
 bool GroupCell::SetEditableContent(const wxString &text) {
   if (GetEditable()) {
     GetEditable()->SetValue(text);
@@ -1428,7 +1427,7 @@ bool GroupCell::SetEditableContent(const wxString &text) {
 }
 
 void GroupCell::BreakLines() {
-  Cell *cell = m_output.get();
+  const Cell * const cell = m_output.get();
 
   if (cell == NULL)
     return;
@@ -1825,16 +1824,13 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId) {
 void CellList::Check(const GroupCell *c) {
   if (!c)
     return;
-  //cppcheck-suppress knownPointerToBool
   wxASSERT_MSG(!c->m_next || dynamic_cast<GroupCell *>(c->m_next.get()),
                _("Bug: The successor to a GroupCell is not a GroupCell."));
-  //cppcheck-suppress knownPointerToBool
   wxASSERT_MSG(!c->m_previous || dynamic_cast<GroupCell *>(c->m_previous),
                _("Bug: The predecessor to a GroupCell is not a GroupCell."));
   CellList::Check(static_cast<const Cell *>(c));
 }
 
-// cppcheck-suppress unknownMacro
 wxString GroupCell::m_lookalikeChars(wxS("µ") wxS("\u03bc") wxS("\u2126") wxS("\u03a9") wxS("C") wxS(
                                                                                                      "\u03F2") wxS("C") wxS("\u0421") wxS("\u03F2") wxS("\u0421") wxS("A")
                                      wxS("\u0391") wxS("A") wxS("\u0410") wxS("\u0391") wxS("\u0410") wxS(

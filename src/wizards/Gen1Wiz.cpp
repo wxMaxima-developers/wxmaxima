@@ -90,7 +90,7 @@ void Gen1Wiz::do_layout() {
   Layout();
 }
 
-void GetTextFromUser(wxString label, wxString title, Configuration *cfg,
+void GetTextFromUser(const wxString &label, const wxString &title, Configuration *cfg,
                      wxString value, wxWindow *parent, std::function<void (wxString)> callback) {
   wxWindowPtr<Gen1Wiz> wiz(new Gen1Wiz(parent, -1, cfg, title, label));
   wiz->SetValue(value);

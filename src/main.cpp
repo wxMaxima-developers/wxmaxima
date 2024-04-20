@@ -315,9 +315,7 @@ bool MyApp::OnInit() {
      * https://github.com/wxWidgets/wxWidgets/commit/ded4da5 */
     /* so try to load a catalog with this suffix */
     wxTranslations::Get()->AddCatalog("wxstd-"
-                                      // cppcheck-suppress unknownMacro
                                       wxSTRINGIZE(wxMAJOR_VERSION) "."
-                                      // cppcheck-suppress unknownMacro
                                       wxSTRINGIZE(wxMINOR_VERSION));
     wxTranslations::Get()->AddCatalog(wxS("wxstd"));
   }

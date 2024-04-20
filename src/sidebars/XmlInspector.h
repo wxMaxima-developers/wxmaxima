@@ -49,9 +49,9 @@ public:
   virtual void Clear();
 
   //! Add some text we sent to maxima.
-  void Add_ToMaxima(wxString text);
+  void Add_ToMaxima(const wxString &text);
   //! Add some text we have received from maxima.
-  void Add_FromMaxima(wxString text);
+  void Add_FromMaxima(const wxString &text);
   //! Actually draw the updates
   void UpdateContents();
   //! Do we need to update the XmlInspector's display?

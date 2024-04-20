@@ -45,7 +45,7 @@ class FontVariantCache final
   FontVariantCache &operator=(const FontVariantCache &) = delete;
 public:
   //! Creates a font variant cache for the font named fontName.
-  explicit FontVariantCache(wxString fontName);
+  explicit FontVariantCache(const wxString &fontName);
   ~FontVariantCache(){}
   //! Clear this font variant cache
   void ClearCache() const;

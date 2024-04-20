@@ -56,21 +56,6 @@ IntervalCell::IntervalCell(GroupCell *group, Configuration *config,
   m_close->SetStyle(TS_FUNCTION);
 }
 
-// These false-positive warnings only appear in old versions of cppcheck
-// that don't fully understand constructor delegation, still.
-// cppcheck-suppress uninitMemberVar symbolName=IntervalCell::m_last1
-// cppcheck-suppress uninitMemberVar symbolName=IntervalCell::m_print
-// cppcheck-suppress uninitMemberVar
-// symbolName=IntervalCell::m_numberOfExtensions cppcheck-suppress
-// uninitMemberVar symbolName=IntervalCell::m_charWidth cppcheck-suppress
-// uninitMemberVar symbolName=IntervalCell::m_charHeight cppcheck-suppress
-// uninitMemberVar symbolName=IntervalCell::m_charWidth1 cppcheck-suppress
-// uninitMemberVar symbolName=IntervalCell::m_charHeight1 cppcheck-suppress
-// uninitMemberVar symbolName=IntervalCell::m_signWidth cppcheck-suppress
-// uninitMemberVar symbolName=IntervalCell::m_signHeight cppcheck-suppress
-// uninitMemberVar symbolName=IntervalCell::m_signTopHeight cppcheck-suppress
-// uninitMemberVar symbolName=IntervalCell::m_signBotHeight cppcheck-suppress
-// uninitMemberVar symbolName=IntervalCell::m_extendHeight
 IntervalCell::IntervalCell(GroupCell *group, const IntervalCell &cell)
   : IntervalCell(group, cell.m_configuration,
                  CopyList(group, cell.m_start.get()),

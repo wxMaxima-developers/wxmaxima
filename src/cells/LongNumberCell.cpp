@@ -40,9 +40,6 @@ LongNumberCell::LongNumberCell(GroupCell *group, Configuration *config,
   InitBitFields_LongNumberCell();
 }
 
-// cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_alt
-// cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_altJs
-// cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_initialToolTip
 LongNumberCell::LongNumberCell(GroupCell *group, const LongNumberCell &cell)
   : LongNumberCell(group, cell.m_configuration, cell.m_text) {}
 

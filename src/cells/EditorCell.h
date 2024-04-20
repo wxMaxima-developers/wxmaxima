@@ -367,7 +367,7 @@ public:
       long long m_selEnd = -1;
     };
     bool AddState(HistoryEntry entry, Action action = any);
-    bool AddState(wxString text, long long selStart, long long selEnd, Action action = any);
+    bool AddState(const wxString &text, long long selStart, long long selEnd, Action action = any);
     bool Undo();
     bool Redo();
     bool CanUndo() const;
@@ -407,7 +407,7 @@ public:
   /*! Replaces all occurrences of a given string
    */
   size_t ReplaceAll(wxString oldString, const wxString &newString, bool ignoreCase);
-  size_t ReplaceAll_RegEx(wxString oldString, const wxString &newString);
+  size_t ReplaceAll_RegEx(const wxString &oldString, const wxString &newString);
 
   /*! Finds the next occurrences of a string
 

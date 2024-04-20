@@ -39,13 +39,6 @@ SqrtCell::SqrtCell(GroupCell *group, Configuration *config,
   SetStyle(TS_VARIABLE);
 }
 
-// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_open
-// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_comma
-// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signWidth
-// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signSize
-// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signTop
-// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signType
-// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signFontScale
 SqrtCell::SqrtCell(GroupCell *group, const SqrtCell &cell)
   : SqrtCell(group, cell.m_configuration,
              CopyList(group, cell.m_innerCell.get())) {

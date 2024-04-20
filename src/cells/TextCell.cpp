@@ -120,9 +120,6 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
   TextCell::SetValue(text);
 }
 
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_alt
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_altJs
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_initialToolTip
 TextCell::TextCell(GroupCell *group, const TextCell &cell)
   : Cell(group, cell.m_configuration), m_text(cell.m_text),
     m_displayedText(cell.m_displayedText) {

@@ -34,7 +34,7 @@ class Gen3Wiz : public wxDialog
 {
 public:
   Gen3Wiz(wxString lab1, wxString lab2, wxString lab3,
-          wxString val1, wxString val2, wxString val3,
+          const wxString &val1, const wxString &val2, const wxString &val3,
           Configuration *cfg,
           wxWindow *parent, int id, const wxString &title,
           bool eq = false,

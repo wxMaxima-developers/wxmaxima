@@ -5590,7 +5590,7 @@ bool Worksheet::ExportToTeX(const wxString &file) {
 
   wxFileName::SplitPath(file, &path, &filename, &ext);
   imgDir = path + wxS("/") + filename + wxS("_img");
-  int imgCounter = 0;
+  std::size_t imgCounter = 0;
 
   wxFileOutputStream outfile(file);
   if (!outfile.IsOk())

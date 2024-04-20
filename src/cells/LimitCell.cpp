@@ -44,9 +44,6 @@ LimitCell::LimitCell(GroupCell *group, Configuration *config,
   SetStyle(TS_VARIABLE);
 }
 
-// cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_open
-// cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_comma
-// cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_close
 LimitCell::LimitCell(GroupCell *group, const LimitCell &cell)
   : LimitCell(group, cell.m_configuration, CopyList(group, cell.m_base.get()),
               CopyList(group, cell.m_under.get()),

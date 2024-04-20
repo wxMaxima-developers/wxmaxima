@@ -2552,11 +2552,8 @@ void ConfigDialogue::ExamplePanel::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 
   dc.SetTextForeground(style.GetColor());
 
-  if (!style.IsFontOk())
-    style.SetFontName({});
-
-  // cppcheck-suppress duplicateCondition
   if (!style.IsFontOk()) {
+    style.SetFontName({});
     style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
     style.SetFontSize(m_style.GetFontSize());
   }

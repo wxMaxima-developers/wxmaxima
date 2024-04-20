@@ -71,7 +71,7 @@ private:
   wxString m_warningText;
 };
 
-void GetTextFromUser(wxString label, wxString title, Configuration *cfg, wxString value,
+void GetTextFromUser(const wxString &label, const wxString &title, Configuration *cfg, wxString value,
                      wxWindow *parent, std::function<void (wxString)> callback);
 
 #endif // GEN1WIZ_H

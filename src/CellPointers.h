@@ -61,7 +61,7 @@ public:
 
   wxString WXMXGetNewFileName();
 
-  int WXMXImageCount() const { return m_wxmxImgCounter; }
+  std::size_t WXMXImageCount() const { return m_wxmxImgCounter; }
 
   bool HasCellsSelected() const { return m_selectionStart && m_selectionEnd; }
 
@@ -188,7 +188,7 @@ private:
   //! The object of the function to call if an animation has to be stepped.
   wxScrolledCanvas *const m_worksheet;
   //! The image counter for saving .wxmx files
-  int m_wxmxImgCounter = 0;
+  std::size_t m_wxmxImgCounter = 0;
 public:
   //! Is scrolling to a cell scheduled?
   bool m_scrollToCell = false;

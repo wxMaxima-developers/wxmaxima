@@ -1410,7 +1410,7 @@ bool Configuration::InUpdateRegion(wxRect const rect) const {
   return updateRegion.Intersects(rect);
 }
 
-bool Configuration::FontRendersChar(wxChar ch, const wxFont &font) {
+bool Configuration::FontRendersChar(wxUniChar ch, const wxFont &font) {
   wxString fontName = font.GetNativeFontInfoDesc();
   fontName.Replace("/", "_");
   if (m_renderableChars[fontName].Contains(ch))
@@ -1424,14 +1424,14 @@ bool Configuration::FontRendersChar(wxChar ch, const wxFont &font) {
     CharVisiblyDifferent(ch, L'\uF000', font);
 
   if (retval)
-    m_renderableChars[fontName] += wxString(ch);
+    m_renderableChars[fontName] += ch;
   else
-    m_nonRenderableChars[fontName] += wxString(ch);
+    m_nonRenderableChars[fontName] += ch;
 
   return retval;
 }
 
-bool Configuration::FontDisplaysChar(wxChar ch, const wxFont &font) {
+bool Configuration::FontDisplaysChar(wxUniChar ch, const wxFont &font) {
   int width = 200;
   int height = 200;
 
@@ -1455,7 +1455,7 @@ bool Configuration::FontDisplaysChar(wxChar ch, const wxFont &font) {
 
   // Now draw the character our button shows into one of these bitmaps and see
   // if that changed any aspect of the bitmap
-  characterDC.DrawText(wxString(ch), 100, 100);
+  characterDC.DrawText(ch, 100, 100);
   wxImage characterImage = characterBitmap.ConvertToImage();
   wxImage referenceImage = referenceBitmap.ConvertToImage();
   for (int x = 0; x < width; x++)
