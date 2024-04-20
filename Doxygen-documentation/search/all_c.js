@@ -10,7 +10,7 @@ var searchData=
   ['networkdclick_1023',['NetworkDClick',['../classwxMaxima.html#a557dc63c643231d0705b64676c00ce35',1,'wxMaxima']]],
   ['networkstate_1024',['networkState',['../classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8',1,'StatusBar']]],
   ['networkstatus_1025',['NetworkStatus',['../classStatusBar.html#addf51766d62198da4dd162f7f2a05c6f',1,'StatusBar']]],
-  ['newwizard_1026',['NewWizard',['../classGenWizPanel.html#a40dbfb3c81c2a38b228f8a7a522c0540',1,'GenWizPanel']]],
+  ['newwizard_1026',['NewWizard',['../classGenWizPanel.html#a8507f4f29497da6ca8182239812a5a0a',1,'GenWizPanel']]],
   ['nocliptodrawregion_1027',['NoClipToDrawRegion',['../classNoClipToDrawRegion.html',1,'']]],
   ['noncopyable_1028',['NonCopyable',['../classCatch_1_1NonCopyable.html',1,'Catch']]],
   ['notification_1029',['Notification',['../classNotification.html',1,'Notification'],['../classNotification.html#a1d2014b23265060cebccfb542a60e75a',1,'Notification::Notification()'],['../classNotification.html#a318b399339a243424905d071abc553c8',1,'Notification::Notification(const wxString &amp;title, const wxString &amp;message={}, wxWindow *parent=NULL, int flags=wxICON_INFORMATION)']]],

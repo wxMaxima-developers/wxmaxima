@@ -203,15 +203,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AppendOutput</b> (std
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a5fa0abf647c52da31dcf2670bbb3f2a3">UpdateConfusableCharWarnings</a> ()</td></tr>
 <tr class="memdesc:a5fa0abf647c52da31dcf2670bbb3f2a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">GroupCells warn if they contain both greek and latin lookalike chars. <br /></td></tr>
 <tr class="separator:a5fa0abf647c52da31dcf2670bbb3f2a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8505ca020298392224983a3a6e6358a"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#ad8505ca020298392224983a3a6e6358a">ToTeX</a> (wxString imgDir, wxString filename, int *imgCounter) const</td></tr>
-<tr class="memdesc:ad8505ca020298392224983a3a6e6358a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the cell to TeX code.  <a href="classGroupCell.html#ad8505ca020298392224983a3a6e6358a">More...</a><br /></td></tr>
-<tr class="separator:ad8505ca020298392224983a3a6e6358a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ebc89c937661ae02395bc459f1335f6"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a0ebc89c937661ae02395bc459f1335f6">ToTeX</a> (const wxString &amp;imgDir, const wxString &amp;filename, std::size_t *imgCounter) const</td></tr>
+<tr class="memdesc:a0ebc89c937661ae02395bc459f1335f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the cell to TeX code.  <a href="classGroupCell.html#a0ebc89c937661ae02395bc459f1335f6">More...</a><br /></td></tr>
+<tr class="separator:a0ebc89c937661ae02395bc459f1335f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a401f67e7ce23adbf2a34b9493c86e99e"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a401f67e7ce23adbf2a34b9493c86e99e">ToRTF</a> () const override</td></tr>
 <tr class="memdesc:a401f67e7ce23adbf2a34b9493c86e99e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cell's representation as RTF.  <a href="classGroupCell.html#a401f67e7ce23adbf2a34b9493c86e99e">More...</a><br /></td></tr>
 <tr class="separator:a401f67e7ce23adbf2a34b9493c86e99e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae052873d26a13b113765516230ec5602"><td class="memItemLeft" align="right" valign="top"><a id="ae052873d26a13b113765516230ec5602"></a>
-wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ToTeXCodeCell</b> (wxString imgDir, wxString filename, int *imgCounter) const</td></tr>
-<tr class="separator:ae052873d26a13b113765516230ec5602"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2338c890ada92bf73a2ad41bd7300bc5"><td class="memItemLeft" align="right" valign="top"><a id="a2338c890ada92bf73a2ad41bd7300bc5"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ToTeXCodeCell</b> (const wxString &amp;imgDir, const wxString &amp;filename, std::size_t *imgCounter) const</td></tr>
+<tr class="separator:a2338c890ada92bf73a2ad41bd7300bc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37fb80968a90257f8dfc49877b065fd3"><td class="memItemLeft" align="right" valign="top"><a id="a37fb80968a90257f8dfc49877b065fd3"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a37fb80968a90257f8dfc49877b065fd3">ToTeX</a> () const override</td></tr>
 <tr class="memdesc:a37fb80968a90257f8dfc49877b065fd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to its LaTeX representation. <br /></td></tr>
@@ -868,9 +868,9 @@ std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a5752c878bd0f993896a68481057db289"><td class="memItemLeft" align="right" valign="top"><a id="a5752c878bd0f993896a68481057db289"></a>
-static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ToTeXImage</b> (const <a class="el" href="classCell.html">Cell</a> *tmp, wxString imgDir, wxString filename, int *imgCounter)</td></tr>
-<tr class="separator:a5752c878bd0f993896a68481057db289"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31e6b7d74121472d8bf8625e37d6d2e4"><td class="memItemLeft" align="right" valign="top"><a id="a31e6b7d74121472d8bf8625e37d6d2e4"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ToTeXImage</b> (const <a class="el" href="classCell.html">Cell</a> *tmp, const wxString &amp;imgDir, const wxString &amp;filename, std::size_t *imgCounter)</td></tr>
+<tr class="separator:a31e6b7d74121472d8bf8625e37d6d2e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7425b9481ec817268e10b9eadddbc877"><td class="memItemLeft" align="right" valign="top"><a id="a7425b9481ec817268e10b9eadddbc877"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>TexEscapeOutputCell</b> (wxString Input)</td></tr>
 <tr class="separator:a7425b9481ec817268e10b9eadddbc877"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2988,7 +2988,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
@@ -3053,8 +3053,8 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 
 </div>
 </div>
-<a id="ad8505ca020298392224983a3a6e6358a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8505ca020298392224983a3a6e6358a">&#9670;&nbsp;</a></span>ToTeX()</h2>
+<a id="a0ebc89c937661ae02395bc459f1335f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ebc89c937661ae02395bc459f1335f6">&#9670;&nbsp;</a></span>ToTeX()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3062,19 +3062,19 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
         <tr>
           <td class="memname">wxString GroupCell::ToTeX </td>
           <td>(</td>
-          <td class="paramtype">wxString&#160;</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
           <td class="paramname"><em>imgDir</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">wxString&#160;</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
           <td class="paramname"><em>filename</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int *&#160;</td>
+          <td class="paramtype">std::size_t *&#160;</td>
           <td class="paramname"><em>imgCounter</em>&#160;</td>
         </tr>
         <tr>

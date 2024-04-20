@@ -2,8 +2,8 @@ var searchData=
 [
   ['activatecursor_2236',['ActivateCursor',['../classEditorCell.html#ac3aaa6e05945f0185ff534a310d94e99',1,'EditorCell']]],
   ['add_2237',['Add',['../classCellPointers_1_1ErrorList.html#a6e567d54d7002b58bcafc74bce27e70a',1,'CellPointers::ErrorList']]],
-  ['add_5ffrommaxima_2238',['Add_FromMaxima',['../classXmlInspector.html#a9ba652c4a4c11749e63825a187ac5477',1,'XmlInspector']]],
-  ['add_5ftomaxima_2239',['Add_ToMaxima',['../classXmlInspector.html#af1a3b1385cc958c11e936e84c825401f',1,'XmlInspector']]],
+  ['add_5ffrommaxima_2238',['Add_FromMaxima',['../classXmlInspector.html#af1d1f42687fbdf57b2f03eadc83dbdba',1,'XmlInspector']]],
+  ['add_5ftomaxima_2239',['Add_ToMaxima',['../classXmlInspector.html#a1c9c7ce67fcb1d912b8dfcc07df5d36d',1,'XmlInspector']]],
   ['addcelltoevaluationqueue_2240',['AddCellToEvaluationQueue',['../classWorksheet.html#aa51a61c8b5499b6e5556e4289146b5ad',1,'Worksheet']]],
   ['adddocument_2241',['AddDocument',['../classRecentDocuments.html#a6f7dd2b73ece9a6d3540303375eceb6b',1,'RecentDocuments']]],
   ['adddocumenttillheretoevaluationqueue_2242',['AddDocumentTillHereToEvaluationQueue',['../classWorksheet.html#a6b3e6aefe1ab8510f2dbd23914b40fcc',1,'Worksheet']]],
