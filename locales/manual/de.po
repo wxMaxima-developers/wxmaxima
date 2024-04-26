@@ -141,14 +141,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:24
-#, fuzzy
-#| msgid ""
-#| "Extensive documentation for _Maxima_ is  [available in the internet]"
-#| "(https://maxima.sourceforge.io/documentation.html). Part of this "
-#| "documentation is also available in wxMaxima’s help menu. Pressing the "
-#| "Help key (on most systems the <kbd>F1</kbd> key) causes _wxMaxima_’s "
-#| "context-sensitive help feature to automatically jump to _Maxima_’s manual "
-#| "page for the command at the cursor.\n"
 msgid ""
 "Extensive documentation for _Maxima_ is [available in the internet](https://"
 "maxima.sourceforge.io/documentation.html). Part of this documentation is "
@@ -161,7 +153,7 @@ msgstr ""
 "maxima.sourceforge.io/documentation.html). Teile davon sind auch im Hilfe-"
 "Menü von wxMaxima verfügbar. Ein Druck auf die Hilfe-Taste (auf den meisten "
 "Systemen ist dies die <kbd>F1</kbd>-Taste) springt automatisch zur Stelle im "
-"_Maxima_-Handbuch, wo das Kommando unter dem Cursor erklärt wird.\n"
+"_Maxima_-Handbuch, wo das Kommando unter dem Cursor erklärt wird."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:26
@@ -246,20 +238,6 @@ msgstr "### Der Arbeitsblatt-Ansatz"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:40
-#, fuzzy
-#| msgid ""
-#| "One of the very few things that are not standard in _wxMaxima_ is that it "
-#| "organizes the data for _Maxima_ into cells that are evaluated (which "
-#| "means: sent to _Maxima_) only when the user requests this. When a cell is "
-#| "evaluated, all commands in that cell, and only that cell, are evaluated "
-#| "as a batch. (The preceding statement is not quite accurate: One can "
-#| "select a set of adjacent cells and evaluate them together. Also, one can "
-#| "instruct _Maxima_ to evaluate all cells in a workbook in one pass.) "
-#| "_wxMaxima_'s approach to submitting commands for execution might feel "
-#| "unfamiliar at the first sight. It does, however, drastically ease work "
-#| "with big documents (where the user does not want every change to "
-#| "automatically trigger a full re-evaluation of the whole document). Also, "
-#| "this approach is very handy for debugging."
 msgid ""
 "One of the very few things that are not standard in _wxMaxima_ is that it "
 "organizes the data for _Maxima_ into cells that are evaluated (which means: "
@@ -276,9 +254,14 @@ msgid ""
 msgstr ""
 "Eine der Sachen, die neue Benutzer oft verwirrt, ist, dass das Arbeitsblatt "
 "von wxMaxima in Zellen aufgeteilt ist, die nur auf Befehl vom Benutzer an "
-"_Maxima_ gesendet werden. Dieser Ansatz ist jedoch für die Fehlersuche "
-"praktisch. Auch hat der gegenüber der Alternative, nach jeder Änderung alle "
-"Zellen im das Arbeitsblatt neu auszuwerten, oft viel Zeit."
+"_Maxima_ gesendet werden. Wenn eine Zelle ausgewertet wird, werden alle "
+"Maxima-Befehle (nur) dieser Zelle als Batch-Befehle ausgewertet. "
+"Man kann auch mehrere Zellen ausäwhlen und gleichzeitig auswählen. "
+"Oder das gesamte Arbeitsblatt auf einmal auswerten "
+"_WxMaxima_'s Ansatz für die Auswertung von Befehlen mag seltsam erscheinen. "
+"Es vereinfacht aber die Arbeit mit großen Dokumenten (wo man nicht jede "
+"Änderung eine komplette Neu-Evaluierung des ganzen Dokuments auslösen will. "
+"Ausserdem ist dieser Ansatz für die Fehlersuche praktisch."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:42
@@ -301,15 +284,6 @@ msgstr "![Eingabe/Ausgabe Zelle](./InputCell.png){ id=img_InputCell }"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:46
-#, fuzzy
-#| msgid ""
-#| "On evaluation of an input cell's contents the input cell _Maxima_ assigns "
-#| "a label to the input (by default shown in red and recognizable by the `"
-#| "%i`) by which it can be referenced later in the _wxMaxima_ session. The "
-#| "output that _Maxima_ generates also gets a label that begins with `%o` "
-#| "and by default is hidden, except if the user assigns the output a name. "
-#| "In this case by default the user-defined label is displayed. The `%o`\\-"
-#| "style label _Maxima_ auto-generates will also be accessible, though."
 msgid ""
 "On evaluation of an input cell's contents the input cell _Maxima_ assigns a "
 "label to the input (by default shown in red and recognizable by the `%i`) by "
@@ -320,11 +294,12 @@ msgid ""
 "auto-generates will also be accessible, though."
 msgstr ""
 "Wird eine Code-Zelle ausgewertet, weist ihr _Maxima_ eine Marke zu "
-"(standardmäßig ist diese in roter Schrift gehalten und beginnt mit einem `"
-"%i`), über das sie später wieder referenziert werden kann. Für die Ausgabe "
+"(standardmäßig ist diese in roter Schrift gehalten und beginnt mit einem "
+"`%i`), über das sie später wieder referenziert werden kann. Für die Ausgabe "
 "wird eine Marke generiert, die standardmäßig mit `%o` beginnt und nicht "
 "angezeigt wird, außer der Benutzer hat der Formel einen sprechenden Namen "
-"gegeben, der stattdessen angezeigt werden kann."
+"gegeben, der stattdessen angezeigt werden kann. Der `%o`-Label den Maxima "
+"automatisch erzeugt, ist trotzdem verwendbar."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:48
@@ -419,12 +394,6 @@ msgstr "### Horizontale und vertikale Cursors"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:73
-#, fuzzy
-#| msgid ""
-#| "If the user tries to select a complete sentence a word processor will try "
-#| "to extend the selection to automatically begin and end with a word "
-#| "boundary. Likewise _wxMaxima_ if more than one cell is selected will "
-#| "extend the selection to whole cells."
 msgid ""
 "If the user tries to select a complete sentence, a word processor will try "
 "to extend the selection to automatically begin and end with a word boundary. "
@@ -523,14 +492,6 @@ msgstr "### Eingabezellen an _Maxima_ schicken"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:92
-#, fuzzy
-#| msgid ""
-#| "The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</"
-#| "kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on "
-#| "the keypad is pressed. The _wxMaxima_ default is to enter commands when "
-#| "either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but "
-#| "_wxMaxima_ can be configured to execute commands in response to "
-#| "<kbd>ENTER</kbd>.\n"
 msgid ""
 "The command in a code cell is executed once by pressing <kbd>CTRL</kbd>"
 "+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> "
@@ -541,9 +502,9 @@ msgid ""
 msgstr ""
 "Die Befehle in einer Codezelle werden ausgeführt, sobald die <kbd>CTRL</kbd>"
 "+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> oder <kbd>ENTER</kbd> "
-"Taste im Nummernblock gedrückt wird. _wxMaxima_ nimmt Befehle mit <kbd>CTRL"
+"Taste im Nummernblock gedrückt wird. Standardmässig nimmt _wxMaxima_ Befehle mit <kbd>CTRL"
 "+ENTER</kbd> oder <kbd>SHIFT+ENTER</kbd> entgegen, aber _wxMaxima_ kann auch "
-"konfiguriert werden, dass Befehle nach <kbd>ENTER</kbd> ausgeführt werden..\n"
+"konfiguriert werden, dass Befehle nach <kbd>ENTER</kbd> ausgeführt werden."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:94
@@ -552,13 +513,6 @@ msgstr "### Auto-Vervollständigung"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:96
-#, fuzzy
-#| msgid ""
-#| "_wxMaxima_ contains an autocompletion feature that is triggered via the "
-#| "menu (Cell/Complete Word) or alternatively by pressing the key "
-#| "combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is "
-#| "context-sensitive. For example if activated within a unit specification "
-#| "for ezUnits it will offer a list of applicable units.\n"
 msgid ""
 "_WxMaxima_ contains an autocompletion feature that is triggered via the menu "
 "(Cell/Complete Word) or alternatively by pressing the key combination "
@@ -566,12 +520,12 @@ msgid ""
 "For example, if activated within a unit specification for ezUnits it will "
 "offer a list of applicable units."
 msgstr ""
-"wxMaxima versucht, automatisch die Namen von Befehlen oder Variablen zu "
-"vervollständigen, wenn der Menüpunkt (Vervollständige Befehl) angewählt "
+"_WxMaxima_ versucht, automatisch die Namen von Befehlen oder Variablen zu "
+"vervollständigen, wenn der Menüpunkt (Zellen/Vervollständige Befehl) angewählt "
 "wird, oder die Tastenkombination <kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt "
 "wird. Die automatische Vervollständigung erkennt oft den Kontext, in dem sie "
 "ausgeführt wird, und kann beispielsweise Dateinamen oder Einheiten für "
-"ezUnits vorschlagen.\n"
+"ezUnits vorschlagen."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:98
@@ -580,14 +534,6 @@ msgstr "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:100
-#, fuzzy
-#| msgid ""
-#| "Besides completing a file name, a unit name, or the current command or "
-#| "variable name, the autocompletion is able to show a template for most of "
-#| "the commands indicating the type (and meaning) of the parameters this "
-#| "program expects. To activate this feature press <kbd>SHIFT</kbd>"
-#| "+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item "
-#| "(Cell/Show Template).\n"
 msgid ""
 "Besides completing a file name, a unit name, or the current command or "
 "variable name, the autocompletion is able to show a template for most of the "
@@ -599,7 +545,7 @@ msgstr ""
 "Kommandos oder eines Variablennamens kann für viele Befehle eine Liste der "
 "erwarteten Argumente angezeigt werden. Hierfür muss einfach <kbd>SHIFT</kbd>"
 "+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt werden, oder der entsprechende "
-"Menüeintrag gewählt (Zelle/Zeige Parameter).\n"
+"Menüeintrag gewählt (Zelle/Zeige Parameter)."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:102
@@ -892,7 +838,8 @@ msgid ""
 "the _wxMaxima_ window. Other useful panes is the one that allows to input "
 "Greek letters using the mouse."
 msgstr ""
-"Die meisten _Maxima_-Befehle und eine Liste der zuletzt verwendeten Befehle "
+"Die meisten _Maxima_-Befehle, ein Inhaltsverzeichnis, Debug-Meldungen oder "
+"die Liste der zuletzt verwendeten Befehle "
 "werden in Seitenleisten angeboten, die über das \"Ansicht\"-Menü aktiviert "
 "und an beliebige Stellen in oder außerhalb des _wxMaxima_-Fensters "
 "verschoben werden können. Ebenso kann eine Seitenleiste mit griechischen "
@@ -928,14 +875,6 @@ msgstr "### MathML-Ausgabe"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:229
-#, fuzzy
-#| msgid ""
-#| "Several word processors and similar programs either recognize [MathML]"
-#| "(https://www.w3.org/Math/) input and automatically insert it as an "
-#| "editable 2D equation - or (like LibreOffice 5.1) have an equation editor "
-#| "that offers an “import MathML from clipboard” feature. Others support RTF "
-#| "maths. _WxMaxima_, therefore, offers several entries in the right-click "
-#| "menu."
 msgid ""
 "Several word processors and similar programs either recognize [MathML]"
 "(https://www.w3.org/Math/) input and automatically insert it as an editable "
@@ -944,8 +883,9 @@ msgid ""
 "_WxMaxima_, therefore, offers several entries in the right-click menu."
 msgstr ""
 "Einige Textverarbeitungen verstehen entweder [MathML](https://www.w3.org/"
-"Math/) (Der Formeleditor von LibreOffice 5.1 kann zumindest entsprechende "
-"Gleichungen importieren). Andere unterstützen Mathematik im RTF-Format. "
+"Math/) oder (wie LibreOffice) haben einen Formeleditor, der die Option "
+"“importiere MathML aus der Zwischenablage” unterstützt. Andere "
+"unterstützen Mathematik im RTF-Format. "
 "_wxMaxima_ bietet daher einige entsprechende Optionen im Rechtsklick-Menü "
 "an. "
 
@@ -1022,16 +962,12 @@ msgstr ""
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:255
-#, fuzzy
-#| msgid ""
-#| "_WxMaxima_'s TeX and HTML output will also recognize `=>` and replace it "
-#| "by the corresponding Unicode sign:\n"
 msgid ""
 "_WxMaxima_'s TeX and HTML output will also recognize `=>` and replace it by "
 "the corresponding Unicode sign:"
 msgstr ""
 "Die TeX- und HTML-Ausgabe von _WxMaxima_ erkennt auch `=>` und ersetzt es "
-"durch das entsprechende Unicode-Symbol:\n"
+"durch das entsprechende Unicode-Symbol:"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:259
@@ -1042,12 +978,6 @@ msgstr "cogito => sum.\n"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:261
-#, fuzzy
-#| msgid ""
-#| "Other symbols the HTML and TeX export will recognize are `<=` and `>=` "
-#| "for comparisons, a double-pointed double arrow (`<=>`), single-headed "
-#| "arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX "
-#| "output also `<<` and `>>` are recognized.\n"
 msgid ""
 "Other symbols the HTML and TeX export will recognize are `<=` and `>=` for "
 "comparisons, a double-pointed double arrow (`<=>`), single-headed arrows (`<-"
@@ -1057,7 +987,7 @@ msgstr ""
 "Andere Symbole, die vom HTML- und TeX-Export erkannt werden, sind `<=` und "
 "`>=` (Vergleichsoperatoren), ein Doppelpfeil (`<=>`), einfache Pfeile (`<-"
 ">`, `->` und `<-`) und `+/-`. Die TeX-Ausgabe erkennt zusätzlich `<<` und "
-"`>>`.\n"
+"`>>`."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:263
@@ -1178,13 +1108,6 @@ msgstr "### .wxm"
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:294
-#, fuzzy
-#| msgid ""
-#| ".wxm files contain the worksheet except for _Maxima_'s output. On Maxima "
-#| "versions >5.38 they can be read using _Maxima_'s `load()` function just "
-#| "as .mac files can be. With this plain-text format, it sometimes is "
-#| "unavoidable that worksheets that use new features are not downwards-"
-#| "compatible with older versions of _wxMaxima_.\n"
 msgid ""
 ".wxm files contain the worksheet except for _Maxima_'s output. On Maxima "
 "versions >5.38 they can be read using _Maxima_'s `load()` function just as ."
@@ -1196,7 +1119,7 @@ msgstr ""
 "_Maxima_ >5.38 kann `.wxm-Dateien über den `load()`-Befehl lesen (wie `.mac`-"
 "Dateien). Worksheets, die neue Features enthalten, sind - wenn sie in diesem "
 "textbasierten Format gespeichert werden, manchmal nicht abwärtskompatibel zu "
-"älteren Versionen von _wxMaxima_.\n"
+"älteren Versionen von _wxMaxima_."
 
 #. type: Plain text
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:296
