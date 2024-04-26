@@ -35,7 +35,7 @@
 #include "Configuration.h"
 #include "StringUtils.h"
 #include "TextStyle.h"
-#include "utils/CachedValue.h"
+#include "CachedValue.h"
 #include <wx/defs.h>
 #if wxUSE_ACCESSIBILITY
 #include <wx/access.h>
