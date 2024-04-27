@@ -4484,7 +4484,7 @@ void Worksheet::TOCdnd(GroupCell *dndStart, GroupCell *dndEnd) {
            dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd.get()) &&
            (dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetNext())
             ->IsLesserGCType(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd.get())
-                             ->GetGroupType()))))
+                             ->GetGroupType())))))
     m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionEnd->GetNext();
 
   // Copy the region we want to move
