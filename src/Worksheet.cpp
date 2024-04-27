@@ -3071,6 +3071,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
     NumberSections();
   UpdateTableOfContents();
   Recalculate();
+  UpdateMLast();
   RequestRedraw();
   SetSaved(false);
 }
@@ -4479,9 +4480,11 @@ void Worksheet::TOCdnd(GroupCell *dndStart, GroupCell *dndEnd) {
     m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionEnd->GetNext();
   while ((m_cellPointers.m_selectionEnd) &&
          ((m_cellPointers.m_selectionEnd->GetNext() != NULL) &&
-          (dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetNext())
-           ->IsLesserGCType(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd.get())
-                            ->GetGroupType()))))
+          (dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetNext()) &&
+           dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd.get()) &&
+           (dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetNext())
+            ->IsLesserGCType(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd.get())
+                             ->GetGroupType()))))
     m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionEnd->GetNext();
 
   // Copy the region we want to move

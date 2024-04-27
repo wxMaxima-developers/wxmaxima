@@ -1178,6 +1178,8 @@ wxString GroupCell::ToTeXImage(const Cell *tmp, const wxString &imgDir, const wx
     // TODO: Is this the right Group?
     auto const copy = tmp->Copy(tmp->GetGroup());
     auto *const imgCopy = dynamic_cast<ImgCell *>(copy.get());
+    if(!imgCopy)
+      return wxEmptyString;
     (*imgCounter)++;
     wxString image = filename + wxString::Format(wxS("_%d"), *imgCounter);
     if (!wxDirExists(imgDir))

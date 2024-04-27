@@ -100,7 +100,7 @@ void GetTextFromUser(const wxString &label, const wxString &title, Configuration
       wxString val = wiz->GetValue();
       val.Trim();
       val.Trim(false);
-      callback(val);
+      callback(std::move(val));
     }
   });
 }
