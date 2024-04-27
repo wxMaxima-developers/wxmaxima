@@ -157,7 +157,7 @@ jobs:
           fetch-depth: 15
       - name: Install macports
         run: |
-          if test -e "/opt/local/bin"; then echo Macports already installed; else aria2c https://github.com/macports/macports-base/releases/download/v2.9.1/MacPorts-2.9.1-12-Monterey.pkg && sudo installer -pkg MacPorts-2.9.1-12-Monterey.pkg -target /; fi
+          if test -e "/opt/local/bin"; then echo Macports already installed; else aria2c https://github.com/macports/macports-base/releases/download/v2.9.3/MacPorts-2.9.3-10.14-Mojave.pkg && sudo installer -pkg MacPorts-2.9.3-10.14-Mojave.pkg -target /; fi
           echo "/opt/local/bin" >> $GITHUB_PATH
       - name: Update macports
         run: |
