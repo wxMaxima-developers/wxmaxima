@@ -2432,14 +2432,11 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
 
 GroupCell *Worksheet::GetLastCellInWorksheet() const
 {
-  if((m_last == nullptr) || (m_last->GetNext() != nullptr))
-    {
-      GroupCell *last = GetTree();
-      if (last)
-        last = last->last();
-      m_last = last;
-      m_adjustWorksheetSizeNeeded = true;
-    }
+  GroupCell *last = GetTree();
+  if (last)
+    last = last->last();
+  m_last = last;
+  m_adjustWorksheetSizeNeeded = true;
   return m_last;
 }
 
