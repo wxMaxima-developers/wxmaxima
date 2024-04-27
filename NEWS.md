@@ -21,6 +21,7 @@
   shown, even if there was no match.
 - Improvements of the manual.
 - Performance: Replaced many copy operations by references to const
+- Correctly hande deletion of the last cell (#1911)
 
 # 24.02.2
 
