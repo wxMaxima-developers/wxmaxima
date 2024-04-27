@@ -774,25 +774,6 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
   return lastOfCellsToInsert;
 }
 
-// this goes through GetTree() with m_next, to set the correct m_last
-// you can call this after folding, unfolding cells to make sure
-// m_last is correct
-GroupCell *Worksheet::UpdateMLast() {
-  GroupCell *last = GetTree();
-  if (last)
-    last = last->last();
-  return UpdateMLast(last);
-}
-
-GroupCell *Worksheet::UpdateMLast(GroupCell *gc)
-{
-  if(GetLastCellInWorksheet() == gc)
-    return gc;
-  if (GetLastCellInWorksheet())
-    m_adjustWorksheetSizeNeeded = true;
-  return GetLastCellInWorksheet();
-}
-
 void Worksheet::ScrollToError() {
   GroupCell *errorCell = m_cellPointers.m_errorList.LastError();
 
@@ -960,7 +941,6 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
           {
             wxLogMessage(_("Recalculation hit the end of the worksheet => Updating its size"));
             m_recalculateStart = {};
-            UpdateMLast(&cell);
             AdjustSize();
           }
         if(stopwatch.Time() > 50)
@@ -974,8 +954,6 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
         if(cell.GetNext() == NULL)
           {
             wxLogMessage(_("Recalculated the whole worksheet at once => Updating its size"));
-
-            UpdateMLast(&cell);
           }
       }
       m_recalculateStart = {};
@@ -1177,7 +1155,6 @@ bool Worksheet::IsLesserGCType(int type, int comparedTo) {
  */
 void Worksheet::FoldOccurred() {
   OutputChanged();
-  UpdateMLast();
 }
 
 /**
@@ -2435,8 +2412,9 @@ GroupCell *Worksheet::GetLastCellInWorksheet() const
   GroupCell *last = GetTree();
   if (last)
     last = last->last();
+  if(m_last != last)
+    m_adjustWorksheetSizeNeeded = true;
   m_last = last;
-  m_adjustWorksheetSizeNeeded = true;
   return m_last;
 }
 
@@ -3068,7 +3046,6 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
     NumberSections();
   UpdateTableOfContents();
   Recalculate();
-  UpdateMLast();
   RequestRedraw();
   SetSaved(false);
 }

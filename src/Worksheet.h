@@ -1389,18 +1389,6 @@ public:
   //! The list of cells that have to be evaluated
   EvaluationQueue m_evaluationQueue;
 
-  /*! Update the info which cell is the last of the worksheet
-
-    Also adjusts the scrollbar range to the worksheet length
-  */
-  GroupCell *UpdateMLast();
-  /*! Update the info which cell is the last of the worksheet
-
-    Also adjusts the scrollbar range to the worksheet length
-    \param gc The last GroupCell of the worksheet
-  */
-  GroupCell *UpdateMLast(GroupCell *gc);
-
   void FoldOccurred();
 
   // methods for folding

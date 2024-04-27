@@ -372,7 +372,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
       if(GetWorksheet())
         {
           GetWorksheet()->InsertGroupCells(Format::TreeFromWXM(lines, &m_configuration));
-          GetWorksheet()->UpdateMLast();
           GetWorksheet()->SetSaved(true);
         }
     }
@@ -5566,8 +5565,6 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
 
   GetWorksheet()->Recalculate();
   UpdateMenus();
-  GetWorksheet()->UpdateMLast();
-
   return retval;
 }
 
