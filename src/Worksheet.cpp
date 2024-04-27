@@ -3046,6 +3046,8 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
     NumberSections();
   UpdateTableOfContents();
   Recalculate();
+  if(GetTree())
+    GetTree()->UpdateYPositionList();
   RequestRedraw();
   SetSaved(false);
 }

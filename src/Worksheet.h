@@ -603,10 +603,6 @@ private:
   bool m_followEvaluation = true;
   bool m_mouseDrag = false;
   bool m_mouseOutside = false;
-  //! The list of tree that contains the document itself
-  std::unique_ptr<GroupCell> m_tree;
-  //! A pointer to the last cell of this worksheet
-  mutable CellPtr<GroupCell> m_last;
   //! Request adjusting the worksheet size?
   mutable bool m_adjustWorksheetSizeNeeded = false;
   //! Returns a pointer to the last cell of this worksheet
@@ -677,6 +673,10 @@ public:
   //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent &event);
 private:
+  //! The list of tree that contains the document itself
+  std::unique_ptr<GroupCell> m_tree;
+  //! A pointer to the last cell of this worksheet
+  mutable CellPtr<GroupCell> m_last;
 //  std::vector<std::thread> m_drawThreads;
   static std::mutex m_drawDCLock;
   /*! The pointer to thesettings storage
