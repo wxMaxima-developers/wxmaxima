@@ -612,7 +612,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           NULL, this);
   Connect(wxID_HELP, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
           NULL, this);
-  Connect(wxID_HELP, EventIDs::menu_help_demo_for_command,
+  Connect(EventIDs::menu_help_demo_for_command, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::HelpMenu),
+          NULL, this);
+  Connect(EventIDs::menu_help_maxima_homepage, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu),
           NULL, this);
   Connect(EventIDs::menu_help_tutorials, wxEVT_MENU,
@@ -9454,10 +9457,11 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
   }
 
   else if(event.GetId() == EventIDs::menu_help_tutorials){
-    wxLaunchDefaultBrowser(
-                           wxS("https://wxMaxima-developers.github.io/wxmaxima/help.html"));
+    wxLaunchDefaultBrowser(wxS("https://wxMaxima-developers.github.io/wxmaxima/help.html"));
   }
-
+  else if(event.GetId() == EventIDs::menu_help_maxima_homepage){
+    wxLaunchDefaultBrowser(wxS("https://maxima.sourceforge.io/documentation.html"));
+  }
   else if(event.GetId() == EventIDs::menu_check_updates){
     CheckForUpdates(true);
   }

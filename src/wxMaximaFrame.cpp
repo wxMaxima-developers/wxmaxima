@@ -1949,6 +1949,8 @@ void wxMaximaFrame::SetupHelpMenu() {
   m_HelpMenu->Append(wxWindow::NewControlId(), _("Tutorials"), tutorials_sub);
   m_demo_sub = new wxMenu;
   m_HelpMenu->Append(wxWindow::NewControlId(), _("Demos"), m_demo_sub);
+  m_HelpMenu->Append(EventIDs::menu_help_maxima_homepage,
+                     _(wxS("↗Documentation on maxima's homepage")));
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_internal_help,
                               _("Maxima shows help in the console"),

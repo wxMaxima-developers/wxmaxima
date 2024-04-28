@@ -542,6 +542,7 @@ const wxWindowIDRef EventIDs::menu_format_title(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_format_image(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_format_pagebreak(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_tutorials(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_help_maxima_homepage(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_demo_for_command(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_tutorials_start(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_solving(wxWindow::NewControlId());

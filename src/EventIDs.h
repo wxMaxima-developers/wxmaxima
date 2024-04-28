@@ -613,6 +613,7 @@ public:
   static const wxWindowIDRef menu_regex_isTextSearch;
   static const wxWindowIDRef menu_help_demo_for_command;
   static const wxWindowIDRef menu_help_tutorials;
+  static const wxWindowIDRef menu_help_maxima_homepage;
   static const wxWindowIDRef menu_help_tutorials_start; //! Start of bundled tutorials
   static const wxWindowIDRef menu_help_solving;
   static const wxWindowIDRef menu_help_casvsprogramming;

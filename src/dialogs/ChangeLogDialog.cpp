@@ -52,7 +52,7 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
   wxFont fnt = m_changelog->GetFont();
   wxClientDC dc(this);
   dc.SetFont(fnt);
-  wxRegEx issueLink("#([0-9][0-9]*)");
+  wxRegEx issueLink("#[0-9][0-9]*");
   wxRegEx bullet("^ -");
 
   bool inBulletList = false;
@@ -101,11 +101,10 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
           size_t start;
           size_t length;
           issueLink.GetMatch(&start, &length);
-          wxString match = line.SubString(start, length - 1);
-          wxString rest  = line.Right(line.Length() - start - length - 1);
+          wxString match = line.substr(start, length);
+          wxString rest  = line.Right(line.Length() - start - length);
           wxString url   = wxS("https://github.com/wxMaxima-developers/wxmaxima/issues/")
             + match.Right(match.Length() - 1);
-          url = url.Left(url.Length() - 2);
           m_changelog->WriteText(line.Left(start));
           m_changelog->BeginURL(url);
           m_changelog->WriteText(wxS("↗") + match);
