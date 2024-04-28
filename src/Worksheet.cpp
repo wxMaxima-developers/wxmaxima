@@ -1335,11 +1335,11 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
           {
             popupMenu.Append(wxID_HELP, wxString::Format(_("Help on \"%s\""),
                                                          wordUnderCursor));
-            if(m_autocomplete.HasDemofile(wordUnderCursor))
-              popupMenu.Append(EventIDs::menu_help_demo_for_command,
-                               wxString::Format(_("Demo for \"%s\""),
-                                                wordUnderCursor));
           }
+          if(m_autocomplete.HasDemofile(wordUnderCursor))
+            popupMenu.Append(EventIDs::menu_help_demo_for_command,
+                             wxString::Format(_("Demo for \"%s\""),
+                                              wordUnderCursor));
           popupMenu.AppendSeparator();
         }
       }
@@ -1736,11 +1736,11 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
             {
               popupMenu.Append(wxID_HELP, wxString::Format(_("Help on \"%s\""),
                                                            wordUnderCursor));
-              if(m_autocomplete.HasDemofile(wordUnderCursor))
-                popupMenu.Append(EventIDs::menu_help_demo_for_command,
-                                 wxString::Format(_("Demo for \"%s\""),
-                                                  wordUnderCursor));
             }
+          if(m_autocomplete.HasDemofile(wordUnderCursor))
+            popupMenu.Append(EventIDs::menu_help_demo_for_command,
+                             wxString::Format(_("Demo for \"%s\""),
+                                              wordUnderCursor));
 
           MaximaManual::HelpFileAnchors helpFileAnchors =
             m_maximaManual.GetHelpfileAnchors();

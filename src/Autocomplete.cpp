@@ -96,7 +96,8 @@ bool AutoComplete::HasDemofile(const wxString &commandname)
   const std::lock_guard<std::mutex> lock(m_keywordsLock);
   return std::any_of(m_wordList.at(demofile).begin(),
                      m_wordList.at(demofile).end(),
-                     [commandname](const wxString &file){return file == "\"" + commandname + "\"";});
+                     [commandname](const wxString &file){
+                       return file == wxS("\"") + commandname + wxS("\"");});
 }
 
 
