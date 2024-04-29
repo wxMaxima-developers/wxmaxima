@@ -752,6 +752,20 @@ _WxMaxima_ provides a few functions that gather bug reporting information about 
 _Maxima_'s `box()` command causes _wxMaxima_ to print its argument with a red foreground, if
 the second argument to the command is the text `highlight`.
 
+# Help menu
+
+WxMaxima's help menu provides access to the Maxima and wxMaxima manual, tips, some example worksheets and in command line Maxima included demos (the `demo()` command).
+
+Please notice, that the demos write:
+
+~~~
+At the '_' prompt, type ';' and <enter> to proceed with the demonstration.
+~~~
+
+That is valid for command-line Maxima, however in wxMaxima by default it is necessary to continue the demonstration with: <kbd>CTRL</kbd>+<kbd>ENTER</kbd>
+
+(That can be configured in the Configure->Worksheet->"Hotkeys for sending commands to Maxima" menu.)
+
 ______________________________________________________________________
 
 # Troubleshooting
