@@ -995,7 +995,7 @@ ______________________________________________________________________
 
 # About the program, contributing to wxMaxima
 
-wxMaxima is mainly developed using the programming language C++ using the [wxWidgets framework](https://www.wxwidgets.org), as build system we use CMake, a small part is written in Lisp. You can contribute to wxMaxima, join the wxMaxima project at <https://github.com/wxMaxima-developers/wxmaxima>, if you have knowledge of these programming languages and want to help and contribute to the open source project wxMaxima.
+wxMaxima is mainly developed using the programming language C++ using the [wxWidgets framework](https://www.wxwidgets.org), as build system we use [CMake](https://www.cmake.org), a small part is written in Lisp. You can contribute to wxMaxima, join the wxMaxima project at <https://github.com/wxMaxima-developers/wxmaxima>, if you have knowledge of these programming languages and want to help and contribute to the open source project wxMaxima.
 
 But not only programmers are necessary! You can also contribute to wxMaxima, if you help to improve the documentation, find and report bugs (and maybe bugfixes), suggest new features, help to translate wxMaxima or the manual to your language (read the Readme in the [locale subdirectory](https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales) how wxMaxima and the manual can be translated).
 
