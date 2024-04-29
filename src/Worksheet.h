@@ -99,7 +99,6 @@ public:
   bool UpdateControlsNeeded(){bool result = m_updateControls; m_updateControls = false; return result;}
   void UpdateControlsNeeded(bool updateControlsNeeded){m_updateControls = updateControlsNeeded;}
 private:
-  wxString m_maximaVersion;
   //! The directory with maxima's documentation
   wxString m_maximaDocDir;
   //! The storage for UpdateControlsNeeded()
@@ -624,8 +623,6 @@ private:
   AutocompletePopup *m_autocompletePopup;
 
 public:
-  void SetMaximaVersion(const wxString &version){m_maximaVersion = version;}
-  wxString GetMaximaVersion() const {return m_maximaVersion;}
   //! Is this worksheet empty?
   bool IsEmpty() const
     { return !m_tree || (!m_tree->GetNext() && m_tree->GetEditable()->GetValue().Length() <= 1); }

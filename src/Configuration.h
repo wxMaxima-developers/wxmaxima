@@ -1016,6 +1016,9 @@ public:
   wxString TexPreamble() const {return m_texPreamble;}
   void TexPreamble(wxString texPreamble) {m_texPreamble = std::move(texPreamble);}
 
+  void SetMaximaVersion(const wxString &version){m_maximaVersion = version;}
+  wxString GetMaximaVersion() const {return m_maximaVersion;}
+
   Style m_styles[NUMBEROFSTYLES];
   //! Initialize the text styles on construction.
   void InitStyles();
@@ -1043,6 +1046,7 @@ public:
   void MaximaHelpFormat(maximaHelpFormat format) {m_maximaHelpFormat = format;}
 
 private:
+  wxString m_maximaVersion;
   //! The options this class got at initialization time
   InitOpt m_initOpts;
   /*! The id of the current configuration

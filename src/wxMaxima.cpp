@@ -3456,7 +3456,7 @@ void wxMaxima::VariableActionDebugmode(const wxString &value) {
 
 void wxMaxima::VariableActionAutoconfVersion(const wxString &value) {
   if(GetWorksheet())
-    GetWorksheet()->SetMaximaVersion(value);
+    m_configuration.SetMaximaVersion(value);
   wxLogMessage(_("Maxima version: %s"), value.utf8_str());
 }
 void wxMaxima::VariableActionAutoconfHost(const wxString &value) {
@@ -3481,7 +3481,7 @@ void wxMaxima::VariableActionMaximaHtmldir(const wxString &value) {
     {
       GetWorksheet()->SetMaximaDocDir(dir_canonical);
       GetWorksheet()->LoadHelpFileAnchors(dir_canonical,
-                                          GetWorksheet()->GetMaximaVersion());
+                                          m_configuration.GetMaximaVersion());
     }
 }
 void wxMaxima::GnuplotCommandName(wxString gnuplot) {
@@ -9368,9 +9368,9 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
 #endif
       description += wxString::Format(_("Using: %s\n\n"), wxVERSION_STRING);
 
-      if (GetWorksheet()->GetMaximaVersion() != wxEmptyString)
+      if (m_configuration.GetMaximaVersion() != wxEmptyString)
         {
-          description += _("Maxima version: ") + GetWorksheet()->GetMaximaVersion() +
+          description += _("Maxima version: ") + m_configuration.GetMaximaVersion() +
             " (" + m_maximaArch + ")\n";
           if (m_lispVersion != wxEmptyString)
             description += _("Maxima was compiled using: ") +
