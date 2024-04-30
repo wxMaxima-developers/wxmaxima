@@ -3460,7 +3460,7 @@ void wxMaxima::VariableActionAutoconfVersion(const wxString &value) {
   wxLogMessage(_("Maxima version: %s"), value.utf8_str());
 }
 void wxMaxima::VariableActionAutoconfHost(const wxString &value) {
-  m_maximaArch = value;
+  m_configuration.SetMaximaArch(value);
   wxLogMessage(_("Maxima architecture: %s"), value.utf8_str());
 }
 void wxMaxima::VariableActionMaximaInfodir(const wxString &value) {
@@ -3602,11 +3602,11 @@ void wxMaxima::VariableActionMaximaSharedir(const wxString &value) {
 }
 
 void wxMaxima::VariableActionLispName(const wxString &value) {
-  m_configuration.LispType(value);
+  m_configuration.SetLispType(value);
   wxLogMessage(_("Maxima was compiled using %s"), value.utf8_str());
 }
 void wxMaxima::VariableActionLispVersion(const wxString &value) {
-  m_lispVersion = value;
+  m_configuration.SetLispVersion(value);
   wxLogMessage(_("Lisp version: %s"), value.utf8_str());
 }
 void wxMaxima::VariableActionWxLoadFileName(const wxString &value) {
@@ -9371,10 +9371,10 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
       if (m_configuration.GetMaximaVersion() != wxEmptyString)
         {
           description += _("Maxima version: ") + m_configuration.GetMaximaVersion() +
-            " (" + m_maximaArch + ")\n";
-          if (m_lispVersion != wxEmptyString)
+            " (" + m_configuration.GetMaximaArch() + ")\n";
+          if (m_configuration.GetLispVersion() != wxEmptyString)
             description += _("Maxima was compiled using: ") +
-              m_configuration.LispType() + " " + m_lispVersion;
+              m_configuration.GetLispType() + " " + m_configuration.GetLispVersion();
         }
       else
         description += _("\nNot connected to Maxima.");

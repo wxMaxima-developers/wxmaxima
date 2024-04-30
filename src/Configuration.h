@@ -858,8 +858,6 @@ public:
   long ShowLength() const {return m_showLength;}
   //! The "maximum output length to display" setting in cells
   std::size_t ShowLength_Bytes() const;
-  void LispType(wxString type) { m_lispType = std::move(type); }
-  wxString LispType() const {return m_lispType;}
 
   //! Which way do we want to draw parenthesis?
   void SetParenthesisDrawMode(drawMode mode) {
@@ -1018,6 +1016,12 @@ public:
 
   void SetMaximaVersion(const wxString &version){m_maximaVersion = version;}
   wxString GetMaximaVersion() const {return m_maximaVersion;}
+  void SetMaximaArch(const wxString &arch){m_maximaArch = arch;}
+  wxString GetMaximaArch() const {return m_maximaArch;}
+  void SetLispVersion(const wxString &version){m_lispVersion = version;}
+  wxString GetLispVersion() const {return m_lispVersion;}
+  void SetLispType(const wxString &type){m_lispType = type;}
+  wxString GetLispType() const {return m_lispType;}
 
   Style m_styles[NUMBEROFSTYLES];
   //! Initialize the text styles on construction.
@@ -1046,6 +1050,9 @@ public:
   void MaximaHelpFormat(maximaHelpFormat format) {m_maximaHelpFormat = format;}
 
 private:
+  wxString m_maximaArch;
+  wxString m_lispVersion;
+  wxString m_lispType;
   wxString m_maximaVersion;
   //! The options this class got at initialization time
   InitOpt m_initOpts;
@@ -1257,7 +1264,6 @@ private:
   bool m_invertBackground;
   long m_undoLimit;
   long m_recentItems;
-  wxString m_lispType;
   int m_bitmapScale;
   int m_defaultFramerate;
   int m_tocDepth;

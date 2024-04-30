@@ -771,9 +771,6 @@ protected:
   wxString m_maximaTempDir;
   wxString m_maximaHtmlDir;
   bool m_fileSaved = true;
-  wxString m_maximaArch;
-  wxString m_lispVersion;
-  wxString m_lispType;
   static int m_exitCode;
   //! Maxima's idea about gnuplot's location
   wxString m_gnuplotcommand;
