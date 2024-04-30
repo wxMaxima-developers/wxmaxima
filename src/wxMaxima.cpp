@@ -87,8 +87,6 @@
 #include "WXMXformat.h"
 #include "wxMathml.h"
 #include "wxMaxima.h"
-#include "wxMaximaIcon.h"
-#include <wx/aboutdlg.h>
 #include <wx/app.h>
 #include <wx/apptrait.h>
 #include <wx/base64.h>
@@ -9357,36 +9355,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
 #endif
     }
   else if(event.GetId() == wxID_ABOUT){
-      wxAboutDialogInfo info;
-      wxString description;
-      description = _("wxMaxima is a cross-platform graphical user interface for the "
-                      "computer algebra system Maxima based on wxWidgets.\n");
-
-#if defined(WXMAXIMA_GIT_SHORT_HASH)
-      //cppcheck-suppress syntaxError
-      description += wxString::Format(_("Build from Git version: %s\n"), WXMAXIMA_GIT_SHORT_HASH);
-#endif
-      description += wxString::Format(_("Using: %s\n\n"), wxVERSION_STRING);
-
-      if (m_configuration.GetMaximaVersion() != wxEmptyString)
-        {
-          description += _("Maxima version: ") + m_configuration.GetMaximaVersion() +
-            " (" + m_configuration.GetMaximaArch() + ")\n";
-          if (m_configuration.GetLispVersion() != wxEmptyString)
-            description += _("Maxima was compiled using: ") +
-              m_configuration.GetLispType() + " " + m_configuration.GetLispVersion();
-        }
-      else
-        description += _("\nNot connected to Maxima.");
-
-      info.SetIcon(wxMaximaIcon());
-      info.SetDescription(description);
-      info.SetName(_("wxMaxima"));
-      info.SetVersion(wxS(GITVERSION));
-      info.SetCopyright(wxS("(C) 2004-2024 The wxMaxima Team"));
-      info.SetWebSite(wxS("https://wxMaxima-developers.github.io/wxmaxima/"));
-#include "contributors.h"
-      wxAboutBox(info);
+    
     }
 
   else if(event.GetId() == EventIDs::menu_license){

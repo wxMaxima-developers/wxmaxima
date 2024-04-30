@@ -119,6 +119,7 @@ set(GRAPHICAL_IO_SOURCE_FILES
 list_transform_prepend(GRAPHICAL_IO_SOURCE_FILES graphical_io/)
 
 set(DIALOG_SOURCE_FILES
+    AboutDialog.cpp
     ChangeLogDialog.cpp
     FindReplaceDialog.cpp
     FindReplacePane.cpp

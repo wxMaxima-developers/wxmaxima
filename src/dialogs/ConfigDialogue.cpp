@@ -1494,7 +1494,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
   sizer2->Add(new wxStaticText(configSizer->GetStaticBox(), wxID_ANY,
                                _("choose between installed maxima versions")),
               wxSizerFlags());
-  if (m_configuration->LispType().Lower().Contains(wxS("sbcl"))) {
+  if (m_configuration->GetLispType().Lower().Contains(wxS("sbcl"))) {
     wxString sbclMemoryParameter1;
     wxString sbclMemoryParameter2;
 #ifdef __WXMSW__
