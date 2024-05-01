@@ -29,11 +29,6 @@
 
 #include "precomp.h"
 #include "../Configuration.h"
-#include <wx/wx.h>
-#include <wx/button.h>
-#include <wx/dialog.h>
-#include <wx/aboutdlg.h>
-#include <wx/persist/toplevel.h>
 
 //! A dialog that shows the program's license.
 class AboutDialog

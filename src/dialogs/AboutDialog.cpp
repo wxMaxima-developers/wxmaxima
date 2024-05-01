@@ -27,6 +27,11 @@
 
 #include "AboutDialog.h"
 #include "../wxMaximaIcon.h"
+#include <wx/wx.h>
+#include <wx/button.h>
+#include <wx/dialog.h>
+#include <wx/aboutdlg.h>
+#include <wx/persist/toplevel.h>
 
 AboutDialog::AboutDialog(wxWindow *WXUNUSED(parent), Configuration *config) {
       wxAboutDialogInfo info;

@@ -50,6 +50,7 @@
 #include "wizards/BC2Wiz.h"
 #include "cells/CellList.h"
 #include "dialogs/ConfigDialogue.h"
+#include "dialogs/AboutDialog.h"
 #include "wizards/CsvWiz.h"
 #include "wizards/DrawWiz.h"
 #include "cells/EditorCell.h"
@@ -9355,9 +9356,8 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
 #endif
     }
   else if(event.GetId() == wxID_ABOUT){
-    
+    AboutDialog aboutdlg(this, &m_configuration);
     }
-
   else if(event.GetId() == EventIDs::menu_license){
       LicenseDialog *dlg = new LicenseDialog(this);
       dlg->Show();
