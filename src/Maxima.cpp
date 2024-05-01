@@ -93,6 +93,8 @@ Maxima::~Maxima() {
   Disconnect(wxEVT_SOCKET);
   Disconnect(EVT_MAXIMA);
   m_abortParserThread = true;
+
+  // Exit all threads before the program ends
   if(m_parserTask.joinable())
     m_parserTask.join();
   if(IsConnected())
@@ -178,6 +180,11 @@ void Maxima::ReadSocket() {
   const bool collectRawData = m_xmlInspector || GetPipeToStdErr();
   if(collectRawData)
     rawData.Alloc(1000000);
+  m_socketInputData.Alloc(1000000);
+
+  // We want to modify m_socketInputData, which is the variable we share with the
+  // background thread. In order not to modify it while the background thread
+  // accesses it we wait for the backgroundthread to finish.
   if(m_parserTask.joinable())
     m_parserTask.join();
   do
@@ -206,7 +213,8 @@ void Maxima::ReadSocket() {
       QueueEvent(event);
     }
   // The string we have received now is broken into tags by a background task before sending
-  // it to wxMaxima
+  // it to wxMaxima. As the main task no more accesses the string while that thread is running
+  // we don't need any locks or similar for that.
   m_abortParserThread = false;
   if(m_configuration->UseThreads())
     m_parserTask = jthread(&Maxima::SendToWxMaxima, this);
@@ -216,6 +224,9 @@ void Maxima::ReadSocket() {
 
 void Maxima::SendToWxMaxima()
 {
+  // This thread shares m_socketInputData with the main thread. But it accesses
+  // that variable only when the main thread doesn't and vice versa, therefore
+  // that doesn't cause a race condition
   if(m_socketInputData.IsEmpty())
     return;
   size_t size_before;
@@ -276,7 +287,6 @@ void Maxima::SendToWxMaxima()
     for(; it < m_socketInputData.end(); ++it)
         rest += *it;
     m_socketInputData = rest;
-    m_socketInputData.Alloc(1000000);
     if(m_abortParserThread)
       return;
     
@@ -334,7 +344,6 @@ void Maxima::SendToWxMaxima()
               event->SetString(dataToSend);
             QueueEvent(event);
             m_socketInputData = rest;
-            m_socketInputData.Alloc(1000000);
           }
       }
   } while ((m_socketInputData.Length() != size_before) && (!m_socketInputData.IsEmpty()));
