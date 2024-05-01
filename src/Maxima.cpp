@@ -225,8 +225,8 @@ void Maxima::SendToWxMaxima()
     wxString rest;
     std::unordered_map<wxString, EventCause, wxStringHash>::const_iterator tag =
       m_knownTags.end();
-    wxString::const_iterator it = m_socketInputData.begin();
-    while(it != m_socketInputData.end())
+    wxString::const_iterator it;
+    for(it = m_socketInputData.begin(); it < m_socketInputData.end(); ++it)
       {
         if(*it == wxS('<'))
           {
@@ -259,7 +259,6 @@ void Maxima::SendToWxMaxima()
             QueueEvent(event);
             dataToSend.Clear();
           }
-        ++it;
       }
     if(!dataToSend.IsEmpty())
       {
@@ -274,11 +273,8 @@ void Maxima::SendToWxMaxima()
           QueueEvent(event);
         }
       }
-    while(it != m_socketInputData.end())
-      {
+    for(; it < m_socketInputData.end(); ++it)
         rest += *it;
-        ++it;
-      }
     m_socketInputData = rest;
     m_socketInputData.Alloc(1000000);
     if(m_abortParserThread)
