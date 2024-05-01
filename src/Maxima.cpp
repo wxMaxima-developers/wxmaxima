@@ -243,9 +243,9 @@ void Maxima::SendToWxMaxima()
           {
             // Extract the starting tag, if this is one.
             wxString::const_iterator it2 = it;
-            size_t i = 0;
+            std::size_t i = 0;
             wxString tagStart;
-            while((i < 20) && (it2 != m_socketInputData.end()))
+            while((i < 20) && (it2 < m_socketInputData.end()))
               {
                 tagStart += *it2;
                 i++; ++it2;
