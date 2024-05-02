@@ -68,7 +68,6 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
       m_knownTags[wxS("math")] = XML_MATHS;
       m_knownTags[wxS("wxxml-key")] = XML_WXXML_KEY;
     }
-  m_socketInputData.Alloc(1000000);
   wxASSERT(socket);
   Bind(wxEVT_TIMER, wxTimerEventHandler(Maxima::TimerEvent), this);
   Bind(wxEVT_SOCKET, wxSocketEventHandler(Maxima::SocketEvent), this);
@@ -111,6 +110,7 @@ Maxima::~Maxima() {
       wxCharBuffer buf = closeCommand.ToUTF8();
       m_socket->Write(buf.data(), buf.length());
     }
+  std::lock_guard<std::mutex> lock(m_socketInputMutex);
   m_socket->Close();
   wxEvtHandler::DeletePendingEvents();
 }
@@ -163,10 +163,6 @@ void Maxima::ReadSocket() {
   if (!m_socket->IsConnected() || !m_socket->IsData())
     return;
 
-  // Avoid frequent (slow) malloc() calls.
-  m_socketInputData.Alloc(1000000);
-
-
   {
     wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
     event->SetInt(READ_PENDING);
@@ -180,38 +176,45 @@ void Maxima::ReadSocket() {
   const bool collectRawData = m_xmlInspector || GetPipeToStdErr();
   if(collectRawData)
     rawData.Alloc(1000000);
-  m_socketInputData.Alloc(1000000);
+
 
   // We want to modify m_socketInputData, which is the variable we share with the
   // background thread. In order not to modify it while the background thread
   // accesses it we wait for the backgroundthread to finish.
   if(m_parserTask.joinable())
     m_parserTask.join();
-  do
-    {
-      ch = m_textInput.GetChar();
-      if(ch == wxS('\0'))
-        continue;
-      if(collectRawData)
-        rawData.Append(ch);
-      if(ch == wxS('\r'))
-        {
-          if(lastch != wxS('\n'))
-            m_socketInputData.Append(wxS('\n'));
-          lastch = ch;
+  
+  {
+    std::lock_guard<std::mutex> lock(m_socketInputMutex);
+    // Try to avoid frequent (slow) reallocs on appending to the string
+    m_socketInputData.Alloc(m_socketInputData.Length() + 1000000);
+    
+    do
+      {
+        ch = m_textInput.GetChar();
+        if(ch == wxS('\0'))
           continue;
-        }
-      m_socketInputData.Append(ch);
-      lastch = ch;
-    }  while (m_socket->LastReadCount() > 0);
+        if(collectRawData)
+          rawData.Append(ch);
+        if(ch == wxS('\r'))
+          {
+            if(lastch != wxS('\n'))
+              m_socketInputData.Append(wxS('\n'));
+            lastch = ch;
+            continue;
+          }
+        m_socketInputData.Append(ch);
+        lastch = ch;
+      }  while (m_socket->LastReadCount() > 0);
 
-  if(collectRawData)
-    {
-      wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
-      event->SetInt(STRING_FOR_XMLINSPECTOR);
-      event->SetString(rawData);
-      QueueEvent(event);
-    }
+    if(collectRawData)
+      {
+        wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);
+        event->SetInt(STRING_FOR_XMLINSPECTOR);
+        event->SetString(rawData);
+        QueueEvent(event);
+      }
+  }
   // The string we have received now is broken into tags by a background task before sending
   // it to wxMaxima. As the main task no more accesses the string while that thread is running
   // we don't need any locks or similar for that.
@@ -224,6 +227,7 @@ void Maxima::ReadSocket() {
 
 void Maxima::SendToWxMaxima()
 {
+  std::lock_guard<std::mutex> lock(m_socketInputMutex);
   // This thread shares m_socketInputData with the main thread. But it accesses
   // that variable only when the main thread doesn't and vice versa, therefore
   // that doesn't cause a race condition

@@ -24,6 +24,7 @@
 - Correctly hande deletion of the last cell (#1911, #1840)
 - A link from the help menu to maxima's help page
 - Offer more maxima demos in the right-click menu
+- Resolved a threading race condition (#1912)
 
 # 24.02.2
 

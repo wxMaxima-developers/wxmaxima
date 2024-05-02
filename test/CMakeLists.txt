@@ -66,6 +66,11 @@ add_test(
     COMMAND wxmaxima --debug --batch unicode.wxm boxes.wxm)
 
 add_test(
+    NAME multiple_batch_files_inverse
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --batch boxes.wxm unicode.wxm)
+
+add_test(
     NAME multiple_batch_files2
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --batch --single_process unicode.wxm boxes.wxm)

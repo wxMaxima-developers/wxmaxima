@@ -131,8 +131,8 @@ private:
   void SocketEvent(wxSocketEvent &event);
   //! Handles timer events
   void TimerEvent(wxTimerEvent &event);
-
   std::unique_ptr<wxSocketBase> m_socket;
+  std::mutex m_socketInputMutex; 
   //! The data we receive from Maxima
   wxSocketInputStream m_socketInput;
   /*! Splits data we receive from Maxima to UTF-8
