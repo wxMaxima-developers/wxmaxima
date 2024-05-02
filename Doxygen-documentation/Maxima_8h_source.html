@@ -155,8 +155,8 @@ $(function() {
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  jthread m_parserTask;</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keywordtype">void</span> SocketEvent(wxSocketEvent &amp;event);</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <span class="keywordtype">void</span> TimerEvent(wxTimerEvent &amp;event);</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  std::unique_ptr&lt;wxSocketBase&gt; m_socket;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  std::unique_ptr&lt;wxSocketBase&gt; m_socket;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  std::mutex m_socketInputMutex; </div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  wxSocketInputStream m_socketInput;</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  wxTextInputStream m_textInput;</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
