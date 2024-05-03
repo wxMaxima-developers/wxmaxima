@@ -552,6 +552,8 @@ wxString TextCell::ToMatlab() const {
   wxString text = ToString();
   if (text == wxS("%e"))
     text = wxS("e");
+  if (text == wxS("%catalan"))
+    text = wxS("catalan");
   else if (text == wxS("%i"))
     text = wxS("i");
   else if (text == wxS("%pi"))
@@ -615,6 +617,8 @@ wxString TextCell::ToTeX() const {
   if (!m_configuration->CheckKeepPercent()) {
     if (text == wxS("%e"))
       text = wxS("e");
+    if (text == wxS("%catalan"))
+      text = wxS("G");
     else if (text == wxS("%i"))
       text = wxS("i");
     else if (text == wxS("%pi"))
@@ -932,6 +936,8 @@ wxString TextCell::ToTeX() const {
       return wxS("\\infty ");
     else if (text == wxS("%e"))
       return wxS("e");
+    else if (text == wxS("%catalan"))
+      return wxS("G");
     else if (text == wxS("%i"))
       return wxS("i");
     else if (text == wxS("\\% pi"))
@@ -1028,6 +1034,8 @@ wxString TextCell::ToMathML() const {
     if (!keepPercent) {
       if (text == wxS("%e"))
         text = wxS("e");
+      if (text == wxS("%catalan"))
+        text = wxS("catalan");
       else if (text == wxS("%i"))
         text = wxS("i");
     }
@@ -1103,6 +1111,8 @@ wxString TextCell::ToOMML() const {
     if (!keepPercent) {
       if (text == wxS("%e"))
         text = wxS("e");
+      if (text == wxS("%catalan"))
+        text = wxS("catalan");
       else if (text == wxS("%i"))
         text = wxS("i");
     }
@@ -1387,6 +1397,8 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent) const {
   if (!keepPercent) {
     if (m_text == wxS("%e"))
       return wxS("e");
+    if (m_text == wxS("%catalan"))
+      return wxS("catalan");
     else if (m_text == wxS("%i"))
       return wxS("i");
     else if (m_text == wxS("%pi"))
