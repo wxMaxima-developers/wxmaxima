@@ -780,7 +780,7 @@ void Image::LoadImage(wxString image, const wxString &wxmxFile,
     m_loadImageTask = jthread(&Image::LoadImage_Backgroundtask,
                               this,
                               std::move(limiter),
-                              std::move(image), std::move(wxmxFile),
+                              std::move(image), wxmxFile,
                               remove
       );
   else

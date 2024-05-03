@@ -357,7 +357,7 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
                                  const TokenList &initialTokens)
   : MaximaTokenizer(commands, configuration)
 {
-  m_tokens = std::move(initialTokens);
+  m_tokens = initialTokens;
 }
 
 bool MaximaTokenizer::IsAlpha(wxChar ch) {
