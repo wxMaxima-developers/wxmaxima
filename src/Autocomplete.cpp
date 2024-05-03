@@ -534,10 +534,10 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
     }
   }
 
+  const std::lock_guard<std::mutex> lock(m_keywordsLock);
   // Add a list of words that were defined on the work sheet but that aren't
   // defined as maxima commands or functions.
   if (type == command) {
-    const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for (const auto &it : m_worksheetWords) {
       if (it.first.StartsWith(partial)) {
         if (std::find(completions.begin(), completions.end(), it.first) == completions.end()) {
@@ -547,13 +547,13 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
     }
   }
 
-  const std::lock_guard<std::mutex> lock(m_keywordsLock);
   std::sort(completions.begin(), completions.end());
   auto newEnd = std::unique(completions.begin(), completions.end());
   completions.erase(newEnd, completions.end());
   if (perfectCompletions.size() > 0)
     return perfectCompletions;
-  return completions;
+  else
+    return completions;
 }
 
 void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
