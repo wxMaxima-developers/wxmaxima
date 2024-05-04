@@ -26,6 +26,7 @@
 - Offer more maxima demos in the right-click menu
 - Resolved a threading race condition (#1912)
 - Printing integral, sum and product signs on MS Windows (#1909)
+- Resolved literally hundreds of warnings from static analysis tools
 
 # 24.02.2
 
