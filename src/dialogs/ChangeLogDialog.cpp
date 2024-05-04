@@ -31,7 +31,7 @@
 #include <wx/string.h>
 #include <wx/txtstrm.h>
 #include <wx/regex.h>
-  #include <wx/utils.h>
+#include <wx/utils.h>
 
 ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
   : wxDialog(parent, -1, _("ChangeLog"), wxDefaultPosition, wxDefaultSize,
@@ -57,6 +57,7 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
 
   bool inBulletList = false;
   bool isCaption = false;
+  bool firstLine = true;
   while (!istream.Eof()) {
     line = textIn.ReadLine();
     {
@@ -95,7 +96,12 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
       line.Trim(false);
       line += " ";
       if(isCaption)
-        m_changelog->BeginBold();
+        {
+          if(!firstLine)
+            m_changelog->Newline();
+          firstLine = false;
+          m_changelog->BeginBold();
+        }
       while(issueLink.Matches(line))
         {
           size_t start;
@@ -116,6 +122,7 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
         m_changelog->EndBold();
       isCaption = false;
     }
+    firstLine = false;
   }
 
   m_changelog->SetMinSize(wxSize(350 * GetContentScaleFactor(),
