@@ -136,7 +136,7 @@ wxBitmap Cell::BitmapFromSVG(wxString svgData, wxSize size)
 {
   svgData.Replace("\"currentColor\"",
                   "\"#" + wxColor2HtmlString(GetForegroundColor()) + "\"");
-  svgData.Replace("\"currentBackground\"",
+  svgData.Replace("\"#FFFFFF\"",
                   "\"#" + wxColor2HtmlString(m_configuration->DefaultBackgroundColor()) + "\"");
 #if wxCHECK_VERSION(3, 1, 6)
   wxBitmapBundle sumbitmap = wxBitmapBundle::FromSVG(svgData.c_str(),
