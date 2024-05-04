@@ -25,6 +25,7 @@
 - A link from the help menu to maxima's help page
 - Offer more maxima demos in the right-click menu
 - Resolved a threading race condition (#1912)
+- Printing integral, sum and product signs on MS Windows (#1909)
 
 # 24.02.2
 
