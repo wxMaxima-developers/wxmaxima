@@ -27,6 +27,7 @@
 - Resolved a threading race condition (#1912)
 - Printing integral, sum and product signs on MS Windows (#1909)
 - Resolved literally hundreds of warnings from static analysis tools
+- Support for the %catalan constant
 
 # 24.02.2
 
