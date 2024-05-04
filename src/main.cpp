@@ -287,7 +287,6 @@ bool MyApp::OnInit() {
     if ((wxLocale::IsAvailable(lang)) && (lang != wxLANGUAGE_DEFAULT)) {
       // Set maxima's language, as well.
       wxString localeName = wxLocale().GetCanonicalName();
-      wxLogDebug("Locale name: %s", localeName);
       if(localeName.IsEmpty())
         localeName = wxS("C");
       if ((!localeName.Upper().EndsWith(wxS("UTF-8"))) &&
