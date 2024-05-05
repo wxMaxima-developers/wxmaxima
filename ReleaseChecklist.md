@@ -27,7 +27,7 @@
   if you see the release as an anonymous user too.
 - Update the release info in the files download.html and in version.txt
   in the gh_pages branch.
-- Append "-DevelopmentSnapshot" to the version number in CMakeLists.txt for the new development version.
+- Set VERSION_SUFFIX to "DevelopmentSnapshot" in CMakeLists.txt for the new development version.
 - Download the tarball (.tar.gz and .zip version) and run the following command on them:
   gpg --armor --detach-sign <filename>
 - On the release page on github modify the release to contain the two .asc files
