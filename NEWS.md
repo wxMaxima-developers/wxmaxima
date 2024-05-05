@@ -28,7 +28,7 @@
 - Printing integral, sum and product signs on MS Windows (#1909)
 - Resolved literally hundreds of warnings from static analysis tools
 - Support for the %catalan constant
-- On MSW wxWidgets 3.2 now is mandatory for getting high-DPI support
+- On MSW wxWidgets >=3.2 now is mandatory for getting high-DPI support
 
 # 24.02.2
 
