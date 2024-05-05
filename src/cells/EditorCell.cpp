@@ -3455,25 +3455,20 @@ bool EditorCell::FindNext(wxString str, const bool &down,
   if (IsActive()) {
     // If the last search already has marked a match for our word we want
     // to search for the next match.
-    if ((SelectionLength() == str.Length()) &&
-        (text.Right(text.Length() - SelectionLeft())
-         .StartsWith(str))) {
+    if (GetSelectionString() == str) {
       if (down)
-        start = SelectionLeft() + 1;
+        {
+          start = SelectionLeft() + 1;
+          if(start >= m_text.Length())
+            return false;
+        }
       else
         {
-          if(SelectionRight() > 0)
-            {
-              if(SelectionRight() > 1)
-                start = SelectionRight() - 2;
-              else
-                start = SelectionRight() - 1;
-            }
+          if(SelectionRight() > 1)
+            start = SelectionRight() - 2;
           else
-            start = 0;
+            return false;
         }
-      if(start >= m_text.Length())
-        return false;
     } else {
       // We are at the start of a match, but the search expression has changed
       if (SelectionStart() > 0) {
@@ -3489,7 +3484,10 @@ bool EditorCell::FindNext(wxString str, const bool &down,
         if((start >= m_text.Length()))
           return false;
       } else {
-        start = CursorPosition();
+        if (down)
+          start = SelectionLeft();
+        else
+          start = SelectionRight();
       }
     }
   } else { // Inactive cell => try to make sure we start at a sane position
@@ -3512,14 +3510,17 @@ bool EditorCell::FindNext(wxString str, const bool &down,
       SetSelection(static_cast<size_t>(strStart) + str.Length(), static_cast<size_t>(strStart));
     return true;
   }
-  if (IsActive()) {
-    if (down) {
-      CursorPosition(0);
-    } else {
-      CursorPosition(m_text.Length());
+  else
+    {
+      if (IsActive()) {
+        if (down) {
+          CursorPosition(0);
+        } else {
+          CursorPosition(m_text.Length());
+        }
+      } 
+      return false;
     }
-  }
-  return false;
 }
 
 
