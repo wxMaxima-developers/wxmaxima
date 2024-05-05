@@ -87,7 +87,8 @@ if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
     # Safely handle exceptions everywhere
     add_compile_options(/EHsc)
-    set_property(TARGET foo APPEND PROPERTY LINK_FLAGS /MANIFEST:NO)
+    # Tell MSVC not to generate its own manifest file
+    #set_property(TARGET foo APPEND PROPERTY LINK_FLAGS /MANIFEST:NO)
 endif()
 
 if(MSYS OR MINGW)
