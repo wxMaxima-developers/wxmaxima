@@ -304,11 +304,8 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.rc.in" wxmaxima.rc)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.manifest.in" wxmaxima.manifest)
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
-if(WIN32)
-    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.bat.in" ../wxmaxima-local.bat)
-else()
-    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.in" ../wxmaxima-local)
-endif()
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.bat.in" ../wxmaxima-local.bat)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.in" ../wxmaxima-local)
 
 target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
