@@ -6594,6 +6594,7 @@ void wxMaxima::OnFind(wxFindDialogEvent &event) {
                                            !!(event.GetFlags() & wxFR_DOWN)))
             LoggingMessageBox(_("No matches found!"));
         }
+      CallAfter([this]{GetWorksheet()->m_findDialog->SetFocus();});
     }
   event.Skip();
 }
@@ -6624,6 +6625,7 @@ void wxMaxima::OnReplace(wxFindDialogEvent &event) {
       else
         GetWorksheet()->UpdateTableOfContents();
     }
+  CallAfter([this]{GetWorksheet()->m_findDialog->SetFocus();});
 }
 
 void wxMaxima::OnReplaceAll(wxFindDialogEvent &event) {
