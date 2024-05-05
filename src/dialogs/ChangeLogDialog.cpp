@@ -99,7 +99,6 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
         {
           if(!firstLine)
             m_changelog->Newline();
-          firstLine = false;
           m_changelog->BeginBold();
         }
       while(issueLink.Matches(line))

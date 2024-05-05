@@ -11053,13 +11053,11 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate) {
 
       if (myVersion < currVersion) {
         bool visit =
-          LoggingMessageBox(
-                            wxString::Format(
-                                             _("You have version %s. Current version is %s.\n\n"
+          LoggingMessageBox(wxString::Format(_("You have version %s. The newest version source code is available for is %s.\n\n"
                                                "Select OK to visit the wxMaxima webpage."),
                                              wxS(GITVERSION), version.utf8_str()),
                             _("Upgrade"), wxOK | wxCANCEL | wxICON_INFORMATION) == wxOK;
-
+        
         if (visit)
           wxLaunchDefaultBrowser(
                                  wxS("https://wxMaxima-developers.github.io/wxmaxima"));
