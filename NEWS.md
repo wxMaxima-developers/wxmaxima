@@ -1,4 +1,4 @@
-# Current
+# 24.05.0
 
 - Faster discarding of maths that is too long to read
 - Resolved a crash on closing the last window (#1898)

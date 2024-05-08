@@ -16,9 +16,9 @@ endif()
 
 
 set(VERSION_MAJOR 24)
-set(VERSION_MINOR 02)
-set(VERSION_PATCHLEVEL 2)
-set(VERSION_SUFFIX "DevelopmentSnapshot")
+set(VERSION_MINOR 05)
+set(VERSION_PATCHLEVEL 0)
+set(VERSION_SUFFIX "")
 string(COMPARE EQUAL "${VERSION_SUFFIX}" "" no_version_suffix)
 if(no_version_suffix)
         set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCHLEVEL})
