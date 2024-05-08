@@ -195,8 +195,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 ;; It also includes more info, e.g. the directory information from Maxima.
 (defun $wxbuild_info ()
   (progv  '(seconds minute hour day month year) cl-user:*maxima-build-time*
-    (format t "~30a~a~%" "wxMaxima version:" $wxmaximaversion)
-    (format t "~30a~a~%" "using wxWidgets version:" $wxwidgetsversion)
+    (format t "~30a~a~%" "WxMaxima version:" $wxmaximaversion)
+    (format t "~30a~a~%" "Using wxWidgets version:" $wxwidgetsversion)
     (format t "~30a~a~%" "Maxima version:" *autoconf-version*)
     (format t "~30a~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~%" "Maxima build date:"
            year month day hour minute seconds)
@@ -204,7 +204,7 @@ Submit bug reports by following the 'New issue' link on that page."))
     (format t "~30a~a ~a ~a~%" "System type:" (software-type) (software-version) (machine-type))
     (format t "~30a~a~%" "Lisp implementation type:" (lisp-implementation-type))
     (format t "~30a~a~%" "Lisp implementation version:" (lisp-implementation-version))
-    (format t "~30a~a~%~a~%" "wxMaxima help dir:" wxHelpDir "----------" ))
+    (format t "~30a~a~%~a~%" "WxMaxima help dir:" wxHelpDir "----------" ))
     (format t "~%~%Maxima's idea of the directory layout is:~%")
     (format t "~a~%" (print-directories))
   "")
@@ -213,7 +213,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 ;; TODO: Make this to maxima's bug_report() when everybody uses a maxima that shows
 ;; our extensions to that command.
 (defmfun $wxbug_report ()
-  (format t "wxMaxima is a graphical front end for Maxima, which does the mathematics in the background.~%")
+  (format t "WxMaxima is a graphical front end for Maxima, which does the mathematics in the background.~%")
   (format t "If you encounter a mathematical problem, it is probably a Maxima bug and should be submitted there.~%")
   (format t "~%The Maxima bug database is available at~%")
   (format t "    https://sourceforge.net/p/maxima/bugs~%")
