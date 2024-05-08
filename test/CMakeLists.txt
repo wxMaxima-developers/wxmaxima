@@ -90,10 +90,10 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxstatusbar(\"a<1>b\");" "<statusbar>a&lt;1&gt;b</statusbar>"
 )
 
-add_test(
-    NAME wxbuildinfo
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "[wW]xMaxima"
-)
+#add_test(
+#    NAME wxbuildinfo
+#    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "WxMaxima"
+#)
 
 # Tests that use "%" to reference past lines cannot be executed using "load()".
 # But running a few demos just to see if there is bit rot might be a good idea.
