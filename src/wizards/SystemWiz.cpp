@@ -64,7 +64,7 @@ void SysWiz::do_layout() {
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxStaticText *text;
   for (long i = 1; i <= m_size; i++) {
-    text = new wxStaticText(this, -1, wxString::Format(_("Equation %d:"), i));
+    text = new wxStaticText(this, -1, wxString::Format(_("Equation %ld:"), i));
     grid_sizer_2->Add(text, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                       5);
     grid_sizer_2->Add(m_inputs[static_cast<size_t>(i) - 1], 0, wxALL, 5);
