@@ -1,0 +1,23 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 24.02.1 ] */
+/* [wxMaxima: section start ]
+Drawing in °C and °K at the same time
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxdraw2d(
+    grid=[5,5],
+    xrange_secondary=[0,100]+273.25,
+    xtics_secondary=true,
+    xlabel_secondary="T [K]",
+    xlabel="T [°C]",
+    xrange=[0,100],
+    explicit(subst(T=Celsius+273.25,T^4/1e9),Celsius,0,100)
+);
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 24.02.1"$

@@ -12,6 +12,7 @@ set(WXM_FILES
 	"solvingEquations"
 	"toleranceCalculations"
 	"variableNames"
+        "draw2d"
 )
 
 # Copy the .wxm files to the binary dir so they can be used as test case without
