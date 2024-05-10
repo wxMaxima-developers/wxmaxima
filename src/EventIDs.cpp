@@ -552,6 +552,7 @@ const wxWindowIDRef EventIDs::menu_help_numberformats(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_tolerances(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_listaccess(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_memoizing(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_help_2d(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_3d(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_varnames(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_help_fittingData(wxWindow::NewControlId());

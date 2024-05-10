@@ -1931,6 +1931,8 @@ void wxMaximaFrame::SetupHelpMenu() {
   tutorials_sub->Append(EventIDs::menu_help_tolerances,
                         _("Tolerance calculations with Maxima"), "",
                         wxITEM_NORMAL);
+  tutorials_sub->Append(EventIDs::menu_help_2d, _("Advanced 2d plotting"), "",
+                        wxITEM_NORMAL);
   tutorials_sub->Append(EventIDs::menu_help_3d, _("Displaying 3d curves"), "",
                         wxITEM_NORMAL);
   tutorials_sub->Append(EventIDs::menu_help_diffequations,

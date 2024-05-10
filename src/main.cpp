@@ -56,6 +56,7 @@
 #include "Version.h"
 #include "examples/CASvsProgrammingLanguage.h"
 #include "examples/diffEquations.h"
+#include "examples/draw2d.h"
 #include "examples/displaying3DCurves.h"
 #include "examples/fastListAccess.h"
 #include "examples/fittingEquations.h"
@@ -533,6 +534,11 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
     {
       NewWindow(wxEmptyString, false, false, NUMBERFORMATS_WXM,
                 NUMBERFORMATS_WXM_SIZE);
+    }
+  else if(ev.GetId() == EventIDs::menu_help_2d)
+    {
+      NewWindow(wxEmptyString, false, false, DRAW2D_WXM,
+                DRAW2D_WXM_SIZE);
     }
   else if(ev.GetId() == EventIDs::menu_help_3d)
     {

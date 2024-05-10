@@ -622,6 +622,7 @@ public:
   static const wxWindowIDRef menu_help_tolerances;
   static const wxWindowIDRef menu_help_listaccess;
   static const wxWindowIDRef menu_help_memoizing;
+  static const wxWindowIDRef menu_help_2d;
   static const wxWindowIDRef menu_help_3d;
   static const wxWindowIDRef menu_help_varnames;
   static const wxWindowIDRef menu_help_fittingData;

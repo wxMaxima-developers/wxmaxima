@@ -1,8 +1,20 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
 /* [ Created with wxMaxima version 24.02.1 ] */
+/* [wxMaxima: title   start ]
+Advanced visualization examples
+   [wxMaxima: title   end   ] */
+
+
 /* [wxMaxima: section start ]
-Drawing in °C and °K at the same time
+Changing the physical units being used
    [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+The following examples uses two approaches to changing the scale:
+ * A subst that moves T from the Kelvin to the Celsius scale
+ * Adding a second axis that uses a different set units
+   [wxMaxima: comment end   ] */
 
 
 /* [wxMaxima: input   start ] */
@@ -14,7 +26,67 @@ wxdraw2d(
     xlabel="T [°C]",
     xrange=[0,100],
     explicit(subst(T=Celsius+273.25,T^4/1e9),Celsius,0,100)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Drawing physical objects
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+If the plot functions are told to use the same scale for all axis and not to plot the coordinate system they can be misused for drawing pictures of everyday objects:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxdraw2d(
+    /* Make the X and Y scale identical */
+    proportional_axes=xy,
+    /* Disable the coordinate system */
+    axis_top=false,axis_left=false,axis_bottom=false,axis_right=false,
+    yaxis=false,yaxis=false,
+    xtics=false,ytics=false,
+    /* make the curves use more points than maxima normally believes to be necessary*/
+    nticks=500,
+    color=black, line_width=2,
+    parametric(
+        sin(α)*(1+.1*sin(α*50)),
+        cos(α)*(1+.1*sin(α*50)),
+        α,
+        .02*π,1.96*π
+    ),
+    subst(
+        α=.02*π,
+        parametric(
+            sin(α)*(1+.1*sin(α*50)),
+            cos(α)*(1+.1*sin(α*50))+y,
+            y,0,.4
+        )
+    ),
+    subst(
+        α=1.96*π,
+        parametric(
+            sin(α)*(1+.1*sin(α*50)),
+            cos(α)*(1+.1*sin(α*50))+y,
+            y,0,.4
+        )
+    )    
 );
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+subst(
+    α=.02*π,
+
+        parametric(
+            sin(α)*(1+.1*sin(α*50)),
+            cos(α)*(1+.1*sin(α*50))+y,
+            y,0,.2
+        )
+    );
 /* [wxMaxima: input   end   ] */
 
 
