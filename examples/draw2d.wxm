@@ -31,6 +31,26 @@ wxdraw2d(
 
 
 /* [wxMaxima: section start ]
+Improving the plot accuracy
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima's plot functions try to determine in which region it makes sense to invest much effort. If  that results into too coarse curves setting nticks high enough normally helps
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxdraw2d(
+    key="nticks=(the default value)",color=red,
+    parametric(sin(φ)*φ,cos(φ)*φ,φ,1,20*π),
+    nticks=2000,key="nticks=2000",color=blue,
+    parametric(sin(φ)*φ,cos(φ)*φ,φ,1,20*π)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
 Drawing physical objects
    [wxMaxima: section end   ] */
 
