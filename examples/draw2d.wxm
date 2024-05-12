@@ -6,6 +6,60 @@ Advanced visualization examples
 
 
 /* [wxMaxima: section start ]
+Embedding plots
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Embedding a plot into the worksheet is easy: Just prepend the plot()- or draw()-command with a "wx":
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+draw2d(
+    grid=[5,5],
+    explicit(
+        sin(x),
+        x,0,4*π
+    )
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxdraw2d(
+    grid=[5,5],
+    explicit(
+        sin(x),
+        x,0,4*π
+    )
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Logarithmic axes
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxdraw2d(
+    logx=false,logy=true,
+    grid=[5,10],
+    key="3^x",color=green,line_type=1,
+    explicit(3^x,x,1,10),
+    key="10·3^x",line_type=2,
+    explicit(10*3^x,x,1,10),
+    key="5^x",color=red,line_type=1,
+    explicit(5^x,x,1,10),
+    key="10·5^x",line_type=2,
+    explicit(10*5^x,x,1,10),
+    key_pos='top_left
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
 Changing the physical units being used
    [wxMaxima: section end   ] */
 
@@ -23,7 +77,7 @@ wxdraw2d(
     xrange_secondary=[0,100]+273.25,
     xtics_secondary=true,
     xlabel_secondary="T [K]",
-    xlabel="T [°C]",
+    xlabel="T [°C]",ylabel="Heat dissipation [unitless]",
     xrange=[0,100],
     explicit(subst(T=Celsius+273.25,T^4/1e9),Celsius,0,100)
 )$
@@ -46,6 +100,46 @@ wxdraw2d(
     parametric(sin(φ)*φ,cos(φ)*φ,φ,1,20*π),
     nticks=2000,key="nticks=2000",color=blue,
     parametric(sin(φ)*φ,cos(φ)*φ,φ,1,20*π)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Drawing discrete data
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+By default maxima draws discrete data as points, but one can tell it to connect them using lines.
+The tick mark (') in front of the bottom_right tells maxima to use the name bottom_right even if the variable bottom_right happens to have been assigned a value to.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+xcoord:makelist(t,t,0,30)$
+ycoord:makelist(sin(1/10*2*π*t),t,xcoord)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxdraw(
+        gr2d(
+        points_joined=true,point_type='none,color=black,
+        yrange=[-1,1],
+        points(xcoord,ycoord),
+        xrange=[0,15]
+    ),
+    gr2d(
+        color=red,key="sin(2/10·π·t)",
+        explicit(sin(1/10*2*π*t),t,0,30),
+        color=blue,key="sin(22/10·π·t)",
+        explicit(sin(11/10*2*π*t),t,0,30),
+        key="Samples",color=black,
+        point_type=2,point_size=2,
+        points(xcoord,ycoord),
+        xrange=[0,15],
+        key_pos='bottom_right
+    )
 )$
 /* [wxMaxima: input   end   ] */
 
@@ -93,20 +187,7 @@ wxdraw2d(
             y,0,.4
         )
     )    
-);
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-subst(
-    α=.02*π,
-
-        parametric(
-            sin(α)*(1+.1*sin(α*50)),
-            cos(α)*(1+.1*sin(α*50))+y,
-            y,0,.2
-        )
-    );
+)$
 /* [wxMaxima: input   end   ] */
 
 
