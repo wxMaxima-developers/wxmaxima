@@ -26,7 +26,14 @@
 */
 
 #include "DrawWiz.h"
-#include "wxm_draw_images.h"
+#include "art/draw/Draw_ContourNone.h"
+#include "art/draw/Draw_Implicit.h"
+#include "art/draw/Draw_ContourBase.h"
+#include "art/draw/Draw_ContourSurface.h"
+#include "art/draw/Draw_Parametric.h"
+#include "art/draw/Draw_ContourBoth.h"
+#include "art/draw/Draw_ContourMap.h"
+#include "art/draw/Draw_Explicit.h"
 #include <wx/display.h>
 #include <wx/mstream.h>
 #include <wx/persist/toplevel.h>
