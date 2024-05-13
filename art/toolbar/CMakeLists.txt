@@ -30,7 +30,6 @@ set(IMAGE_FILES
         text
         gtk-help
         view-refresh1
-
 )
 
 foreach(file ${IMAGE_FILES})
@@ -38,7 +37,7 @@ foreach(file ${IMAGE_FILES})
 	    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${file}.h
 	    COMMAND ${CMAKE_COMMAND} ARGS
 	    -DBIN2H_SOURCE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/${file}.svg.gz"
-	    -DBIN2H_VARIABLE_NAME=${file}_WXM
+	    -DBIN2H_VARIABLE_NAME=${file}_SVG_GZ
 	    -DBIN2H_HEADER_FILE="${CMAKE_CURRENT_BINARY_DIR}/${file}.h"
 	    -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
 	    -P "${CMAKE_SOURCE_DIR}/src/bin2h.cmake"
