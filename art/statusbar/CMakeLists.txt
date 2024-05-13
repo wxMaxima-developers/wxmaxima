@@ -1,35 +1,31 @@
 include("${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake")
 
-set(HEADER_FILE "${CMAKE_BINARY_DIR}/wxm_statusbar_images.h")
-message(STATUS "Embedding following files into header file ${HEADER_FILE}")
-
-file(WRITE "${HEADER_FILE}.tmp"
-    "#ifndef WXM_STATUSBAR_IMAGES_H\n"
-    "#define WXM_STATUSBAR_IMAGES_H\n")
-
 set(IMAGE_FILES
-  network-idle.svg.gz
-  Dialog-accept.svg.gz
-  network-offline.svg.gz
-  Emblem-equal-defined.svg.gz
-  network-receive.svg.gz
-  Emblem-important.svg.gz
-  network-transmit-receive.svg.gz
-  Go-previous.svg.gz
-  network-transmit.svg.gz
-  Go-up.svg.gz
-  System-lock-screen.svg.gz
-  network-error.svg.gz
-  Waiting.svg.gz)
+  network-idle
+  Dialog-accept
+  network-offline
+  Emblem-equal-defined
+  network-receive
+  Emblem-important
+  network-transmit-receive
+  Go-previous
+  network-transmit
+  Go-up
+  System-lock-screen
+  network-error
+  Waiting)
 
 foreach(file ${IMAGE_FILES})
-    message(STATUS "   Processing: ${file}")
-    get_filename_component(variableName ${file} NAME)
-    file(APPEND "${HEADER_FILE}.tmp" "/* Data for the file: ${variableName} */\n")
-    bin2h(SOURCE_FILE ${file} HEADER_FILE "${HEADER_FILE}.tmp" VARIABLE_NAME ${variableName} APPEND NULL_TERMINATE)
-    file(APPEND "${HEADER_FILE}.tmp" "\n")
+        add_custom_command(
+	    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${file}.h
+	    COMMAND ${CMAKE_COMMAND} ARGS
+	    -DBIN2H_SOURCE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/${file}.svg.gz"
+	    -DBIN2H_VARIABLE_NAME=${file}_WXM
+	    -DBIN2H_HEADER_FILE="${CMAKE_CURRENT_BINARY_DIR}/${file}.h"
+	    -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+	    -P "${CMAKE_SOURCE_DIR}/src/bin2h.cmake"
+	    COMMENT "Embedding ${file}.svg.gz"
+	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${file}.svg.gz ${CMAKE_SOURCE_DIR}/src/bin2h.cmake)
+	add_custom_target(build_${file}.h DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${file}.h)
+	add_dependencies(wxmaxima build_${file}.h)
 endforeach()
-
-file(APPEND "${HEADER_FILE}.tmp" "#endif // WXM_STATUSBAR_IMAGES_H\n")
-# write to a *.tmp file first and then 'copy_if_different' prevents rebuilding source files, if nothing (but a timestamp) changed.
-execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different "${HEADER_FILE}.tmp" "${HEADER_FILE}")
