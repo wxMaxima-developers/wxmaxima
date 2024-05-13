@@ -3,6 +3,7 @@ add_subdirectory(config)
 add_subdirectory(draw)
 add_subdirectory(toolbar)
 add_subdirectory(worksheet)
+add_subdirectory(menu)
 
 include("${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake")
 file(WRITE "${CMAKE_BINARY_DIR}/wxm_media_playback_start_svg.h.tmp"
