@@ -60,8 +60,8 @@
 #include "art/toolbar/text.h"
 #include "art/toolbar/gtk-help.h"
 #include "art/toolbar/view-refresh1.h"
-#include "wxm_media_playback_start_svg.h"
-#include "wxm_media_playback_reverse_svg.h"
+#include "art/media-playback-start.h"
+#include "art/media-playback-reverse.h"
 #include <cstdlib>
 #include <wx/artprov.h>
 #include <wx/display.h>
