@@ -1342,7 +1342,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
           }
           if(m_autocomplete.HasDemofile(wordUnderCursor))
             {
-              wxMenuItem *demoItem = new wxMenuItem(NULL,
+              wxMenuItem *demoItem = new wxMenuItem(&popupMenu,
                                                    EventIDs::menu_help_demo_for_command,
                                                    wxString::Format(_("Demo for \"%s\""),
                                                                     wordUnderCursor));
@@ -1750,7 +1750,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
             }
           if(m_autocomplete.HasDemofile(wordUnderCursor))
             {
-              wxMenuItem *demoItem = new wxMenuItem(NULL,
+              wxMenuItem *demoItem = new wxMenuItem(&popupMenu,
                                                     EventIDs::menu_help_demo_for_command,
                                                     wxString::Format(_("Demo for \"%s\""),
                                                                      wordUnderCursor));
