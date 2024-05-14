@@ -138,8 +138,8 @@ You can also use the "Greek letters"-sidebar to enter the Greek letters.
 >
 > This might be problematic, if you assign a value to the Variable A and later
 > use the Greek letter Alpha to do something with this variable, especially on printouts.
-> For the greek letter my (which is also used as prefix for micro) there are also two
-> different unicode code points.
+> For the Greek letter my (which is also used as prefix for micro) there are also two
+> different Unicode code points.
 >
 > The "Greek letters"-sidebar therefore has the option, that lookalike characters
 > are not available (which can be changed using a right-click menu).
@@ -199,7 +199,7 @@ The same mechanism also allows to enter some miscellaneous mathematical symbols:
 
 You can also use the "Symbols"-sidebar to enter these Mathematical symbols.
 
-If a special symbol isn’t in the list, it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> \[number of the character (hexadecimal)\] <kbd>ESC</kbd>. Additionally the "symbols" sidebar has a right-click menu that allow to display a list of all available unicode symbols one can add to this toolbar or to the worksheet.
+If a special symbol isn’t in the list, it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> \[number of the character (hexadecimal)\] <kbd>ESC</kbd>. Additionally the "symbols" sidebar has a right-click menu that allow to display a list of all available Unicode symbols one can add to this toolbar or to the worksheet.
 
 <kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> therefore results in an `a`.
 
@@ -210,7 +210,7 @@ To solve that problem, select other fonts (using: Edit -> Configure -> Style).
 
 ### Unicode replacement
 
-wxMaxima will replace several Unicode characters with their respective Maxima expressions, e.g. "²" with "^2", "³" with "^3", the square root sign with the function `sqrt()`, the (mathematical) Sigma sign (which is not the same unicode character as the corresponding greek letter) with `sum()`, etc.
+wxMaxima will replace several Unicode characters with their respective Maxima expressions, e.g. "²" with "^2", "³" with "^3", the square root sign with the function `sqrt()`, the (mathematical) Sigma sign (which is not the same Unicode character as the corresponding Greek letter) with `sum()`, etc.
 
 ### Side Panes
 
@@ -444,7 +444,7 @@ Plotting (having fundamentally to do with graphics) is a place where a graphical
 
 ### Embedding a plot into the worksheet
 
-_Maxima_ normally instructs the external program _gnuplot_ to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the worksheet instead _wxMaxima_ provides its own set of plot functions that don’t differ from the corresponding _maxima_ functions save in their name: They are all prefixed by a “wx”.
+_Maxima_ normally instructs the external program _Gnuplot_ to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the worksheet instead _wxMaxima_ provides its own set of plot functions that don’t differ from the corresponding _maxima_ functions save in their name: They are all prefixed by a “wx”.
 
 The following plotting functions have wx-counterparts:
 
@@ -493,15 +493,15 @@ Setting the size of embedded plot with `wxplot_size` works for embedded plots us
 
 ### Better quality plots
 
-_Gnuplot_ doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output that the Cairo library provides. On systems where _gnuplot_ is compiled to use this library the pngCairo option from the configuration menu (that can be overridden by the variable `wxplot_pngcairo`) enables support for antialiasing and additional line styles. If `wxplot_pngCairo` is set without _gnuplot_ supporting this the result will be error messages instead of graphics.
+_Gnuplot_ doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output that the Cairo library provides. On systems where _Gnuplot_ is compiled to use this library the pngCairo option from the configuration menu (that can be overridden by the variable `wxplot_pngcairo`) enables support for antialiasing and additional line styles. If `wxplot_pngCairo` is set without _Gnuplot_ supporting this the result will be error messages instead of graphics.
 
-### Opening embedded plots in interactive _gnuplot_ windows
+### Opening embedded plots in interactive _Gnuplot_ windows
 
-If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and `wxplot3d` isn't supported by this feature) and the file size of the underlying _gnuplot_ project isn't way too high _wxMaxima_ offers a right-click menu that allows to open the plot in an interactive _gnuplot_ window.
+If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and `wxplot3d` isn't supported by this feature) and the file size of the underlying _Gnuplot_ project isn't way too high _wxMaxima_ offers a right-click menu that allows to open the plot in an interactive _Gnuplot_ window.
 
-### Opening gnuplot's command console in `plot` windows
+### Opening Gnuplot's command console in `plot` windows
 
-On MS Windows, if in _Maxima_'s variable `gnuplot_command` "gnuplot" is replaced by "wgnuplot", _gnuplot_ offers the possibility to open a console window, where _gnuplot_ commands can be entered into. Unfortunately, enabling this feature causes _gnuplot_ to "steal" the keyboard focus for a short time every time a plot is prepared.
+On MS Windows, if in _Maxima_'s variable `gnuplot_command` "gnuplot" is replaced by "wgnuplot", _Gnuplot_ offers the possibility to open a console window, where _gnuplot_ commands can be entered into. Unfortunately, enabling this feature causes _Gnuplot_ to "steal" the keyboard focus for a short time every time a plot is prepared.
 
 ### Embedding animations into the spreadsheet
 
@@ -711,7 +711,7 @@ These files are in the Maxima user directory (usually `maxima` in Windows, `.max
 - `wxsubscripts` tells _Maxima_ if it should convert variable names that contain an underscore (`R_150` or the like) into subscripted variables. See `wxdeclare_subscript` for details which variable names are automatically converted.
 - `wxfilename`: This variable contains the name of the file currently opened in _wxMaxima_.
 - `wxdirname`: This variable contains the name the directory, in which the file currently opened in _wxMaxima_ is.
-- `wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo terminal that provides more line styles and a better overall graphics quality.
+- `wxplot_pngcairo` tells whether _wxMaxima_ tries to use _Gnuplot_’s pngcairo terminal that provides more line styles and a better overall graphics quality.
 - `wxplot_size` defines the resolution of embedded plots.
 - `wxchangedir`: On most operating systems _wxMaxima_ automatically sets _Maxima_’s working directory to the directory of the current file. This allows file I/O (e.g. by `read_matrix`) to work without specifying the whole path to the file that has to be read or written. On Windows this feature sometimes causes error messages and therefore can be set to `false` from the config dialogue.
 - `wxanimate_framerate`: The number of frames per second the following animations have to be played back with.
@@ -802,13 +802,13 @@ for i:1 thru 10 do (
 
 ## Plotting only shows a closed empty envelope with an error message
 
-This means that _wxMaxima_ could not read the file _Maxima_ that was supposed to instruct _gnuplot_ to create.
+This means that _wxMaxima_ could not read the file _Maxima_ that was supposed to instruct _Gnuplot_ to create.
 
 Possible reasons for this error are:
 
 - The plotting command is part of a third-party package like `implicit_plot` but this package was not loaded by _Maxima_’s `load()` command before trying to plot.
-- _Maxima_ tried to do something the currently installed version of _gnuplot_ isn’t able to understand. In this case, a file ending in `.gnuplot` located in the directory, which  _Maxima_’s variable `maxima_userdir` is pointing, contains the instructions from _Maxima_ to _gnuplot_. Most of the time, this file’s contents therefore are helpful when debugging the problem.
-- Gnuplot was instructed to use the pngCairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the Cairo terminal for the plot" checkbox in the configuration dialog and don’t set `wxplot_pngCairo` to true from _Maxima_.
+- _Maxima_ tried to do something the currently installed version of _Gnuplot_ isn’t able to understand. In this case, a file ending in `.gnuplot` located in the directory, which  _Maxima_’s variable `maxima_userdir` is pointing, contains the instructions from _Maxima_ to _Gnuplot_. Most of the time, this file’s contents therefore are helpful when debugging the problem.
+- Gnuplot was instructed to use the pngCairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the Cairo terminal for the plot" checkbox in the configuration dialog and don’t set `wxplot_pngcairo` to true from _Maxima_.
 - Gnuplot didn’t output a valid `.png` file.
 
 ## Plotting an animation results in “error: undefined variable”
@@ -1011,7 +1011,7 @@ ______________________________________________________________________
 
 wxMaxima is mainly developed using the programming language C++ using the [wxWidgets framework](https://www.wxwidgets.org), as build system we use [CMake](https://www.cmake.org), a small part is written in Lisp. You can contribute to wxMaxima, join the wxMaxima project at <https://github.com/wxMaxima-developers/wxmaxima>, if you have knowledge of these programming languages and want to help and contribute to the open source project wxMaxima.
 
-But not only programmers are necessary! You can also contribute to wxMaxima, if you help to improve the documentation, find and report bugs (and maybe bugfixes), suggest new features, help to translate wxMaxima or the manual to your language (read the Readme in the [locale subdirectory](https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales) how wxMaxima and the manual can be translated).
+But not only programmers are necessary! You can also contribute to wxMaxima, if you help to improve the documentation, find and report bugs (and maybe bugfixes), suggest new features, help to translate wxMaxima or the manual to your language (read the README.md in the [locale subdirectory](https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales) how wxMaxima and the manual can be translated).
 
 Or answer questions of other users in the discussion forum.
 

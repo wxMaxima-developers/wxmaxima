@@ -90,10 +90,10 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxstatusbar(\"a<1>b\");" "<statusbar>a&lt;1&gt;b</statusbar>"
 )
 
-#add_test(
-#    NAME wxbuildinfo
-#    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "WxMaxima"
-#)
+add_test(
+    NAME wxbuildinfo
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "WxMaxima"
+)
 
 # Tests that use "%" to reference past lines cannot be executed using "load()".
 # But running a few demos just to see if there is bit rot might be a good idea.
@@ -158,7 +158,7 @@ endforeach()
 
 add_test(
     NAME wxbug_report
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbug_report();" "wxMaxima is a graphical front end for Maxima, which does the mathematics in the background"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbug_report();" "WxMaxima is a graphical front end for Maxima, which does the mathematics in the background"
 )
 
 add_test(
