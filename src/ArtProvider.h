@@ -28,6 +28,9 @@
 
 #include <wx/bitmap.h>
 #include <wx/window.h>
+#if wxCHECK_VERSION(3, 2, 0)
+#include <wx/bmpbndl.h>
+#endif
 
 #ifndef _ARTPROVIDER_H
 #define _ARTPROVIDER_H
@@ -39,6 +42,12 @@ public:
   static wxBitmap GetImage(wxWindow *win, const wxString &name, int width,
                            unsigned const char *data,
                            std::size_t dataLen);
+  static wxBitmap GetQuestionmarkBitmap(wxWindow *win, wxSize siz);
+#if wxCHECK_VERSION(3, 2, 0)
+  static wxBitmapBundle GetQuestionmarkBundle();
+private:
+  static wxBitmapBundle m_questionmarkBundle;
+#endif
 };
 
 #endif

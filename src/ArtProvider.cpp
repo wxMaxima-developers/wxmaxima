@@ -32,6 +32,7 @@
 #include "SvgBitmap.h"
 #include "nanosvg_private.h"
 #include "nanosvgrast_private.h"
+#include "art/menu/Text-questionmark.h"
 
 wxBitmap ArtProvider::GetImage(wxWindow *win, const wxString &name, int width,
                                unsigned const char *data, std::size_t dataLen) {
@@ -77,3 +78,19 @@ wxBitmap ArtProvider::GetImage(wxWindow *win, const wxString &name, int width,
 #endif
   return bmp;
 }
+
+wxBitmap ArtProvider::GetQuestionmarkBitmap(wxWindow *win, wxSize siz)
+{
+  return GetImage(win, wxS("dialog-question"), siz.x,
+                  TEXT_QUESTIONMARK_SVG, TEXT_QUESTIONMARK_SVG_SIZE);
+}
+
+#if wxCHECK_VERSION(3, 2, 0)
+wxBitmapBundle ArtProvider::GetQuestionmarkBundle()
+{
+  return m_questionmarkBundle;
+}
+wxBitmapBundle ArtProvider::m_questionmarkBundle =
+  wxBitmapBundle::FromSVG(reinterpret_cast<char *>(TEXT_QUESTIONMARK_SVG), wxSize(16,16));
+#endif
+

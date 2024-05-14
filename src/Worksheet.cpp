@@ -47,6 +47,7 @@
 #include "levenshtein/levenshtein.h"
 #include "wxMaxima.h"
 #include "wxMaximaFrame.h"
+#include "ArtProvider.h"
 #include <algorithm>
 #include <memory>
 #include <vector>
@@ -77,6 +78,9 @@
 #include <wx/xml/xml.h>
 #include <wx/zipstrm.h>
 #include <cmath>
+#if wxCHECK_VERSION(3, 2, 0)
+#include <wx/bmpbndl.h>
+#endif
 
 //! This class represents the worksheet shown in the middle of the wxMaxima
 //! window.
@@ -1337,9 +1341,16 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                                                          wordUnderCursor));
           }
           if(m_autocomplete.HasDemofile(wordUnderCursor))
-            popupMenu.Append(EventIDs::menu_help_demo_for_command,
-                             wxString::Format(_("Demo for \"%s\""),
-                                              wordUnderCursor));
+            {
+              wxMenuItem *demoItem = new wxMenuItem(&popupMenu,
+                                                   EventIDs::menu_help_demo_for_command,
+                                                   wxString::Format(_("Demo for \"%s\""),
+                                                                    wordUnderCursor));
+#if wxCHECK_VERSION(3, 2, 0)
+              demoItem->SetBitmap(ArtProvider::GetQuestionmarkBundle());
+#endif 
+              popupMenu.Append(demoItem);
+            }
           popupMenu.AppendSeparator();
         }
       }
@@ -1738,10 +1749,16 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                                                            wordUnderCursor));
             }
           if(m_autocomplete.HasDemofile(wordUnderCursor))
-            popupMenu.Append(EventIDs::menu_help_demo_for_command,
-                             wxString::Format(_("Demo for \"%s\""),
-                                              wordUnderCursor));
-
+            {
+              wxMenuItem *demoItem = new wxMenuItem(&popupMenu,
+                                                    EventIDs::menu_help_demo_for_command,
+                                                    wxString::Format(_("Demo for \"%s\""),
+                                                                     wordUnderCursor));
+#if wxCHECK_VERSION(3, 2, 0)
+              demoItem->SetBitmap(ArtProvider::GetQuestionmarkBundle());
+#endif 
+              popupMenu.Append(demoItem);
+            }
           MaximaManual::HelpFileAnchors helpFileAnchors =
             m_maximaManual.GetHelpfileAnchors();
           for (const auto &it : helpFileAnchors) {
