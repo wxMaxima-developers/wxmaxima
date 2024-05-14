@@ -5,19 +5,24 @@ add_subdirectory(toolbar)
 add_subdirectory(worksheet)
 
 include("${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake")
-file(WRITE "${CMAKE_BINARY_DIR}/wxm_media_playback_start_svg.h.tmp"
-    "#ifndef WXM_MEDIA_PLAYBACK_START_SVG_H\n"
-    "#define WXM_MEDIA_PLAYBACK_START_SVG_H\n")
 
-bin2h(SOURCE_FILE "media-playback-start.svg.gz" HEADER_FILE "${CMAKE_BINARY_DIR}/wxm_media_playback_start_svg.h.tmp" VARIABLE_NAME "MEDIA_PLAYBACK_START_SVG_GZ" APPEND NULL_TERMINATE)
-file(APPEND "${CMAKE_BINARY_DIR}/wxm_media_playback_start_svg.h.tmp" "\n#endif\n")
-# write to a *.tmp file first and then 'copy_if_different' prevents rebuilding source files, if nothing (but a timestamp) changed.
-execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_BINARY_DIR}/wxm_media_playback_start_svg.h.tmp" "${CMAKE_BINARY_DIR}/wxm_media_playback_start_svg.h")
 
-file(WRITE "${CMAKE_BINARY_DIR}/wxm_media_playback_reverse_svg.h.tmp"
-    "#ifndef WXM_MEDIA_PLAYBACK_REVERSE_SVG_H\n"
-    "#define WXM_MEDIA_PLAYBACK_REVERSE_SVG_H\n")
-bin2h(SOURCE_FILE "media-playback-reverse.svg.gz" HEADER_FILE "${CMAKE_BINARY_DIR}/wxm_media_playback_reverse_svg.h.tmp" VARIABLE_NAME "MEDIA_PLAYBACK_REVERSE_SVG_GZ" APPEND NULL_TERMINATE)
-file(APPEND "${CMAKE_BINARY_DIR}/wxm_media_playback_reverse_svg.h.tmp" "\n#endif\n")
-# write to a *.tmp file first and then 'copy_if_different' prevents rebuilding source files, if nothing (but a timestamp) changed.
-execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_BINARY_DIR}/wxm_media_playback_reverse_svg.h.tmp" "${CMAKE_BINARY_DIR}/wxm_media_playback_reverse_svg.h")
+set(IMAGE_FILES
+        media-playback-start
+        media-playback-reverse
+)
+
+foreach(file ${IMAGE_FILES})
+        add_custom_command(
+	    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${file}.h
+	    COMMAND ${CMAKE_COMMAND} ARGS
+	    -DBIN2H_SOURCE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/${file}.svg.gz"
+	    -DBIN2H_VARIABLE_NAME=${file}_SVG_GZ
+	    -DBIN2H_HEADER_FILE="${CMAKE_CURRENT_BINARY_DIR}/${file}.h"
+	    -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+	    -P "${CMAKE_SOURCE_DIR}/src/bin2h.cmake"
+	    COMMENT "Embedding ${file}.svg.gz"
+	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${file}.svg.gz ${CMAKE_SOURCE_DIR}/src/bin2h.cmake)
+	add_custom_target(build_${file}.h DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${file}.h)
+	add_dependencies(wxmaxima build_${file}.h)
+endforeach()
