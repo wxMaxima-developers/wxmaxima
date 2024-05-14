@@ -45,6 +45,8 @@ public:
   static wxBitmap GetQuestionmarkBitmap(wxWindow *win, wxSize siz);
 #if wxCHECK_VERSION(3, 2, 0)
   static wxBitmapBundle GetQuestionmarkBundle();
+private:
+  static wxBitmapBundle m_questionmarkBundle;
 #endif
 };
 
