@@ -44,9 +44,11 @@ public:
                            std::size_t dataLen);
   static wxBitmap GetQuestionmarkBitmap(wxWindow *win, wxSize siz);
 #if wxCHECK_VERSION(3, 2, 0)
-  static wxBitmapBundle GetQuestionmarkBundle();
+  static wxBitmapBundle GetQuestionmarkBundle(){return m_questionmarkBundle;}
+  static wxBitmapBundle GetDivideCellBundle(){return m_dividecellBundle;}
 private:
   static wxBitmapBundle m_questionmarkBundle;
+  static wxBitmapBundle m_dividecellBundle;
 #endif
 };
 

@@ -1,5 +1,6 @@
 set(SVG_FILES
 	"Text-questionmark"
+	"cell-divide"
 )
 
 # Embed the .svg files into .h files

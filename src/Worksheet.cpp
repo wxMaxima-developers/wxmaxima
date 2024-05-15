@@ -1685,9 +1685,15 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                        wxITEM_NORMAL);
 
     if (!clickInSelection)
-      popupMenu.Append(EventIDs::popid_divide_cell, _("Divide Cell"), wxEmptyString,
-                       wxITEM_NORMAL);
-
+      {
+        wxMenuItem *item = new wxMenuItem(&popupMenu,
+                                          EventIDs::popid_divide_cell,
+                                          _("Divide Cell"));
+#if wxCHECK_VERSION(3, 2, 0)
+        item->SetBitmap(ArtProvider::GetDivideCellBundle());
+#endif 
+        popupMenu.Append(item);
+      }
     GroupCell *group = NULL;
     if (GetActiveCell()) {
       wxASSERT(GetActiveCell()->GetGroup());

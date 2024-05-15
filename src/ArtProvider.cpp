@@ -33,6 +33,7 @@
 #include "nanosvg_private.h"
 #include "nanosvgrast_private.h"
 #include "art/menu/Text-questionmark.h"
+#include "art/menu/cell-divide.h"
 
 wxBitmap ArtProvider::GetImage(wxWindow *win, const wxString &name, int width,
                                unsigned const char *data, std::size_t dataLen) {
@@ -86,11 +87,9 @@ wxBitmap ArtProvider::GetQuestionmarkBitmap(wxWindow *win, wxSize siz)
 }
 
 #if wxCHECK_VERSION(3, 2, 0)
-wxBitmapBundle ArtProvider::GetQuestionmarkBundle()
-{
-  return m_questionmarkBundle;
-}
 wxBitmapBundle ArtProvider::m_questionmarkBundle =
   wxBitmapBundle::FromSVG(reinterpret_cast<char *>(TEXT_QUESTIONMARK_SVG), wxSize(16,16));
+wxBitmapBundle ArtProvider::m_dividecellBundle =
+  wxBitmapBundle::FromSVG(reinterpret_cast<char *>(CELL_DIVIDE_SVG), wxSize(16,16));
 #endif
 
