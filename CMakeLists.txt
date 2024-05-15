@@ -224,7 +224,7 @@ add_definitions(-DwxNO_UNSAFE_WXSTRING_CONV)
 # (and assume, that cmake is called from the build dir.
 # TODO: This can probably solved using the output of 'cd', better would be a *portable* way to
 # get the working directory from CMake.
-if(WIN32)
+if(WIN32 OR CYGWIN)
     file(RELATIVE_PATH RELPATH_TO_PO4A_PO_DIRECTORY "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}/locales/manual")
 else()
     file(RELATIVE_PATH RELPATH_TO_PO4A_PO_DIRECTORY "$ENV{PWD}" "${CMAKE_SOURCE_DIR}/locales/manual")
