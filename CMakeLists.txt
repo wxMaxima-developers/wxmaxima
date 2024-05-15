@@ -214,7 +214,21 @@ execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_BINARY_DI
 
 add_definitions(-DwxNO_UNSAFE_WXSTRING_CONV)
 
-file(RELATIVE_PATH RELPATH_TO_PO4A_PO_DIRECTORY "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}/locales/manual")
+# It is complicated. po4a expects that [po_directory] is a relative path. Don't know why.
+#
+# But just creating a relative path from CMAKE_BINARY_DIR won't work too, one can call CMake from
+# an other directory and specify the build directory using -B <path>
+# See issue https://github.com/wxMaxima-developers/wxmaxima/issues/1917
+# So for Unix use "$ENV{PWD}" to compute the relative path.
+# For Windows the environment variable PWD does not exist, so - for now - just use the CMAKE_BINARY_DIR
+# (and assume, that cmake is called from the build dir.
+# TODO: This can probably solved using the output of 'cd', better would be a *portable* way to
+# get the working directory from CMake.
+if(WIN32)
+    file(RELATIVE_PATH RELPATH_TO_PO4A_PO_DIRECTORY "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}/locales/manual")
+else()
+    file(RELATIVE_PATH RELPATH_TO_PO4A_PO_DIRECTORY "$ENV{PWD}" "${CMAKE_SOURCE_DIR}/locales/manual")
+endif()
 configure_file(${CMAKE_SOURCE_DIR}/locales/manual/po4a.cfg.in po4a.cfg)
 
 add_subdirectory(src)
