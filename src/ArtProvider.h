@@ -46,9 +46,11 @@ public:
 #if wxCHECK_VERSION(3, 2, 0)
   static wxBitmapBundle GetQuestionmarkBundle(){return m_questionmarkBundle;}
   static wxBitmapBundle GetDivideCellBundle(){return m_dividecellBundle;}
+  static wxBitmapBundle GetAddToWatchlistBundle(){return m_addToWatchlistBundle;}
 private:
   static wxBitmapBundle m_questionmarkBundle;
   static wxBitmapBundle m_dividecellBundle;
+  static wxBitmapBundle m_addToWatchlistBundle;
 #endif
 };
 

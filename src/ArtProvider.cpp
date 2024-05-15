@@ -34,6 +34,7 @@
 #include "nanosvgrast_private.h"
 #include "art/menu/Text-questionmark.h"
 #include "art/menu/cell-divide.h"
+#include "art/menu/watchlist.h"
 
 wxBitmap ArtProvider::GetImage(wxWindow *win, const wxString &name, int width,
                                unsigned const char *data, std::size_t dataLen) {
@@ -91,5 +92,7 @@ wxBitmapBundle ArtProvider::m_questionmarkBundle =
   wxBitmapBundle::FromSVG(reinterpret_cast<char *>(TEXT_QUESTIONMARK_SVG), wxSize(16,16));
 wxBitmapBundle ArtProvider::m_dividecellBundle =
   wxBitmapBundle::FromSVG(reinterpret_cast<char *>(CELL_DIVIDE_SVG), wxSize(16,16));
+wxBitmapBundle ArtProvider::m_addToWatchlistBundle =
+  wxBitmapBundle::FromSVG(reinterpret_cast<char *>(WATCHLIST_SVG), wxSize(16,16));
 #endif
 

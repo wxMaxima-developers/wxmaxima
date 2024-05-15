@@ -1681,8 +1681,15 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
     if (!selectionString.IsEmpty() && !selectionString.Contains("\n") &&
         !selectionString.Contains("\r") && !selectionString.Contains(":") &&
         ((selectionString.at(0) < '0') || (selectionString.at(0) > '9')))
-      popupMenu.Append(EventIDs::popid_add_watch, _("Add to watchlist"), wxEmptyString,
-                       wxITEM_NORMAL);
+      {
+        wxMenuItem *item = new wxMenuItem(&popupMenu,
+                                          EventIDs::popid_add_watch,
+                                          _("Add to watchlist"));
+#if wxCHECK_VERSION(3, 2, 0)
+        item->SetBitmap(ArtProvider::GetAddToWatchlistBundle());
+#endif 
+        popupMenu.Append(item);
+      }
 
     if (!clickInSelection)
       {
