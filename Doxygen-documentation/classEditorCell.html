@@ -1091,7 +1091,7 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </ul>
 <p>Since Unicode doesn't provide us with a "soft linebreak" letter we use <code>\r</code> as a marker that this line has to be broken here if we don't want it to extend beyond the right margin of the screen.</p>
 <p>In a few places we use wxString::const_iterator instead of accessing individual letters within the string using the [] operator. This might look overly complicated. But in UTF-8 all non-standard-ASCII-characters use more than one byte making iterating over every single char of the string the only way of determining which address char n is at. An iterator is the only way of not having to determine the address of every single char independently.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Draw only tokens that are in the redraw region. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>Draw only tokens that are in the redraw region. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac3aaa6e05945f0185ff534a310d94e99"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac3aaa6e05945f0185ff534a310d94e99">&#9670;&nbsp;</a></span>ActivateCursor()</h2>
@@ -2887,7 +2887,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
@@ -2954,7 +2954,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>Implement the actual TAB expansion </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Implement the actual TAB expansion </dd></dl>
 
 </div>
 </div>

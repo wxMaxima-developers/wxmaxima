@@ -163,7 +163,7 @@ template&lt;typename T  = Cell&gt; </div>
 
 <p>Appends one or more cells if they are all of the correct type, otherwise deletes them. </p>
 <dl class="section return"><dt>Returns</dt><dd>the appended cells, or null if they weren't appended.</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>CPPCheck warns here about returning a pointer to an already-invalid object. As far as I can see the thing is that std::unique_ptr&lt;Cell&gt;(cells) deletes the cells when the pointer stops to exist. Then we no more mention that pointer and CPPCheck doesn't know that base_DynamicAppend moves the pointer to a list, which means the pointer lives on even if this function exits. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>CPPCheck warns here about returning a pointer to an already-invalid object. As far as I can see the thing is that std::unique_ptr&lt;Cell&gt;(cells) deletes the cells when the pointer stops to exist. Then we no more mention that pointer and CPPCheck doesn't know that base_DynamicAppend moves the pointer to a list, which means the pointer lives on even if this function exits. </dd></dl>
 
 </div>
 </div>
@@ -224,7 +224,7 @@ template&lt;typename T  = Cell&gt; </div>
 </div><div class="memdoc">
 
 <p>Releases the ownership of the list head of the list to the caller. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>This function is deprecated. It is provided temporarily to support porting to unique_ptr-based <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> ownership. It should be removed after the porting is done. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>This function is deprecated. It is provided temporarily to support porting to unique_ptr-based <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> ownership. It should be removed after the porting is done. </dd></dl>
 
 </div>
 </div>
