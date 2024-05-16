@@ -31,6 +31,7 @@
   is defined in wxMaxima.
 */
 #include "wxMaximaFrame.h"
+#include "ArtProvider.h"
 #include "Dirstructure.h"
 #include <string>
 #include <memory>
@@ -958,11 +959,24 @@ void wxMaximaFrame::SetupCellMenu() {
   m_CellMenu->Append(EventIDs::menu_history_next, _("Next Command\tAlt+Down"),
                      _("Recall next command from history"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
-  m_CellMenu->Append(EventIDs::popid_merge_cells, _("Merge Cells\tCtrl+M"),
-                     _("Merge the text from two input cells into one"),
-                     wxITEM_NORMAL);
-  m_CellMenu->Append(EventIDs::popid_divide_cell, _("Divide Cell\tCtrl+D"),
-                     _("Divide this input cell into two cells"), wxITEM_NORMAL);
+  {
+    wxMenuItem *item = new wxMenuItem(m_CellMenu,
+                                      EventIDs::popid_merge_cells,
+                                      _("Merge Cells"));
+#if wxCHECK_VERSION(3, 2, 0)
+    item->SetBitmap(ArtProvider::GetCellMergeBundle());
+#endif 
+    m_CellMenu->Append(item);
+  }
+  {
+        wxMenuItem *item = new wxMenuItem(m_CellMenu,
+                                          EventIDs::popid_divide_cell,
+                                          _("Divide Cell"));
+#if wxCHECK_VERSION(3, 2, 0)
+        item->SetBitmap(ArtProvider::GetDivideCellBundle());
+#endif 
+        m_CellMenu->Append(item);
+  }
   m_CellMenu->AppendSeparator();
   m_CellMenu->AppendCheckItem(
                               EventIDs::popid_auto_answer, _("Automatically answer questions"),

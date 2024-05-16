@@ -1,6 +1,7 @@
 set(SVG_FILES
 	"Text-questionmark"
 	"cell-divide"
+	"cell-merge"
 	"watchlist"
 )
 

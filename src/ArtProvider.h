@@ -47,10 +47,12 @@ public:
   static wxBitmapBundle GetQuestionmarkBundle(){return m_questionmarkBundle;}
   static wxBitmapBundle GetDivideCellBundle(){return m_dividecellBundle;}
   static wxBitmapBundle GetAddToWatchlistBundle(){return m_addToWatchlistBundle;}
+  static wxBitmapBundle GetCellMergeBundle(){return m_cellMergeBundle;}
 private:
   static wxBitmapBundle m_questionmarkBundle;
   static wxBitmapBundle m_dividecellBundle;
   static wxBitmapBundle m_addToWatchlistBundle;
+  static wxBitmapBundle m_cellMergeBundle;
 #endif
 };
 

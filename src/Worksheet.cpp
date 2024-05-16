@@ -1396,10 +1396,17 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         if (m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd)
           popupMenu.Append(ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"),
                            wxEmptyString, wxITEM_NORMAL);
-
+        
         if (CanMergeSelection())
-          popupMenu.Append(EventIDs::popid_merge_cells, _("Merge Cells"), wxEmptyString,
-                           wxITEM_NORMAL);
+          {
+            wxMenuItem *item = new wxMenuItem(&popupMenu,
+                                              EventIDs::popid_merge_cells,
+                                              _("Merge Cells"));
+#if wxCHECK_VERSION(3, 2, 0)
+            item->SetBitmap(ArtProvider::GetCellMergeBundle());
+#endif 
+            popupMenu.Append(item);
+          }
 
         // Add a "evaluate this <sectioning unit>" context menu entry.
         GroupCell *group;
