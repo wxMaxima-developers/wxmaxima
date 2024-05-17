@@ -32,22 +32,22 @@ BinaryNameCtrl::BinaryNameCtrl(wxWindow *parent, int id)
   : wxPanel(parent, id) {
   wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
   m_binaryName =
-    new wxTextCtrl(invocationSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
+    new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
                    wxSize(250 * GetContentScaleFactor(), -1), wxTE_RICH);
   m_binaryName->AutoCompleteFileNames();
   m_binaryName->Connect(wxEVT_COMMAND_TEXT_UPDATED,
-                        wxCommandEventHandler(BinaryNameCtrl::TextChanged), NULL, this);
-  hbox->Add(m_maximaUserLocation,
+                        wxCommandEventHandler(BinaryNameCtrl::TextChangedEvent), NULL, this);
+  hbox->Add(m_binaryName,
             wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   m_browseButton =
-    new wxButton(invocationSizer->GetStaticBox(), wxID_OPEN, _("Browse"));
-  Open->Connect(wxEVT_BUTTON,
-                wxCommandEventHandler(ConfigDialogue::OnBrowse), NULL,
+    new wxButton(this, wxID_OPEN, _("Browse"));
+  m_browseButton->Connect(wxEVT_BUTTON,
+                wxCommandEventHandler(BinaryNameCtrl::OnBrowse), NULL,
                 this);
   SetSizerAndFit(hbox);
 }
 
-void BinaryNameCtrl::TextChanged(wxCommandEvent &evt) {
+void BinaryNameCtrl::TextChangedEvent(wxCommandEvent &evt) {
   evt.Skip();
   TextChanged();
 }

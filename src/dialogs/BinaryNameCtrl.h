@@ -44,7 +44,7 @@ public:
   void SetValue(const wxString &val)  {m_binaryName->SetValue(val);}
   void SetToolTip(const wxString tip){m_binaryName->SetToolTip(tip);}
 protected:
-  void TextChanged(wxCommandEvent evt);
+  void TextChangedEvent(wxCommandEvent &evt);
   void TextChanged();
   void OnBrowse(wxCommandEvent &event);
 private:
