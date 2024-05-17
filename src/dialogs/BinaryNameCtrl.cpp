@@ -44,6 +44,7 @@ BinaryNameCtrl::BinaryNameCtrl(wxWindow *parent, int id)
   m_browseButton->Connect(wxEVT_BUTTON,
                 wxCommandEventHandler(BinaryNameCtrl::OnBrowse), NULL,
                 this);
+  hbox->Add(m_browseButton, wxSizerFlags());
   SetSizerAndFit(hbox);
 }
 
