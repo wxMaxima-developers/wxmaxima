@@ -579,18 +579,25 @@ void Configuration::SetBackgroundBrush(const wxBrush &brush) {
   m_tooltipBrush.SetColour(wxColour(255, 255, 192, 128));
 }
 
-bool Configuration::MaximaFound(const wxString &location) {
-  if (location == wxEmptyString)
-    return false;
+wxString Configuration::FindProgram(const wxString &location) {
+  if (location.IsEmpty())
+    return location;
 
-  bool maximaFound = false;
   if (wxFileExists(location))
-    maximaFound = true;
+    return location;
+  
+  wxString exePath;
+  #if defined __WXOSX__
+  // Find the program within our application bundle.
+  exePath = wxStandardPaths::Get().GetExecutablePath() + wxS("/Contents/Resources/") + location;
+  if (wxFileExists(exePath))
+    return exePath;
+  #endif
 
-  // Find a maxima within an application package.
-  if (wxFileExists(location + wxS("/Contents/Resources/maxima.sh")))
-    maximaFound = true;
-
+  exePath = wxStandardPaths::Get().GetExecutablePath() + location;
+  if (wxFileExists(exePath))
+    return exePath;
+  
   // Don't complain if PATH doesn't yield a result.
   SuppressErrorDialogs logNull;
 
@@ -599,9 +606,22 @@ bool Configuration::MaximaFound(const wxString &location) {
     pathlist.AddEnvList(wxS("PATH"));
     wxString path = pathlist.FindAbsoluteValidPath(location);
     if (!path.empty())
-      maximaFound = true;
+      return path;
+    #if defined __WXMSW__
+    pathlist.FindAbsoluteValidPath(location + wxS(".exe"));
+    if (!path.empty())
+      return path;
+    pathlist.FindAbsoluteValidPath(location + wxS(".bat"));
+    if (!path.empty())
+      return path;
+    #endif
+    #if defined __WXOSX__
+    pathlist.FindAbsoluteValidPath(location + wxS(".app"));
+    if (!path.empty())
+      return path;
+    #endif
   }
-  return maximaFound;
+  return wxEmptyString;
 }
 
 void Configuration::ReadConfig() {

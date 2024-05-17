@@ -34,6 +34,7 @@ extern unsigned char view_refresh_svg_gz[];
 
 #include "precomp.h"
 #include <wx/wx.h>
+#include "BinaryNameCtrl.h"
 #include <wx/image.h>
 #include <wx/grid.h>
 #include <wx/hashmap.h>
@@ -260,13 +261,12 @@ protected:
   wxTextCtrl *m_startupCommands;
   //! A textbox containing wxMaxima's startup commands
   wxTextCtrl *m_wxStartupCommands;
-  wxTextCtrl *m_maximaUserLocation;
-  wxTextCtrl *m_helpBrowserUserLocation;
+  BinaryNameCtrl *m_maximaUserLocation;
+  BinaryNameCtrl *m_helpBrowserUserLocation;
   wxTextCtrl *m_documentclass;
   wxTextCtrl *m_documentclassOptions;
   wxTextCtrl *m_texPreamble;
   wxCheckBox *m_autoSave;
-  wxButton *m_mpBrowse;
   wxButton *m_wxMathMLBrowse;
   wxTextCtrl *m_additionalParameters;
   wxTextCtrl *m_mathJaxURL;
@@ -347,8 +347,6 @@ protected:
   wxSpinCtrl *m_autosaveMinutes;
   wxTextCtrl *m_autoMathJaxURL;
   int m_maximaEmvRightClickRow = 0;
-  //! Is called when the path to the maxima binary was changed.
-  void MaximaLocationChanged(wxCommandEvent &unused);
 
   //! Is called when the path to the maxima binary was changed.
   void UsesvgChanged(wxCommandEvent &event);
@@ -356,12 +354,7 @@ protected:
   //! Is called when the configuration dialog is closed.
   void OnClose(wxCloseEvent &event);
 
-  //! Starts the file chooser that allows selecting where the maxima binary lies
-  void OnMpBrowse(wxCommandEvent &event);
-
   void OnwxMathMLBrowse(wxCommandEvent &event);
-
-  void OnHelpBrowserBrowse(wxCommandEvent&  event);
 
   void OnIdle(wxIdleEvent &event);
 

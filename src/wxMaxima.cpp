@@ -4738,7 +4738,7 @@ void wxMaxima::SetupVariables() {
 wxString wxMaxima::GetCommand(bool params) {
   wxString command;
   if (Get_Maxima_Commandline_Filename().IsEmpty()) {
-    command = m_configuration.MaximaLocation();
+    command = Configuration::FindProgram(m_configuration.MaximaLocation());
     wxLogMessage(_("Using configured Maxima path."));
   } else {
     command = Get_Maxima_Commandline_Filename();
@@ -4833,7 +4833,7 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
       } else {
         wxString command;
         std::vector<char *>argv;
-        wxCharBuffer commandnamebuffer = m_configuration.HelpBrowserUserLocation().mb_str();
+        wxCharBuffer commandnamebuffer = Configuration::FindProgram(m_configuration.HelpBrowserUserLocation()).mb_str();
         wxCharBuffer urlbuffer = uri.mb_str();
         argv.push_back(commandnamebuffer.data());
         argv.push_back(urlbuffer.data());
