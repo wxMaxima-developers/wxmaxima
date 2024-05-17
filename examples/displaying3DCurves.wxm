@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 20.01.2-DevelopmentSnapshot ] */
+/* [ Created with wxMaxima version 24.02.1 ] */
 /* [wxMaxima: title   start ]
 Visualizing 3D curves
    [wxMaxima: title   end   ] */
@@ -176,6 +176,37 @@ In order to view this picture just click on it and move the mouse wheel. The fac
    [wxMaxima: comment end   ] */
 
 
+/* [wxMaxima: subsect start ]
+A weird filled areas example
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxdraw2d(
+    nticks=200,x_voxel=200,y_voxel=200,fill_density=1,
+    proportional_axes='xy,
+    fill_color='yellow,
+    region(
+        ((x-.3)^2+y^2<1) and ((x+.3)^2+y^2<1),
+        x,-2,2,y,-2,2
+    ),
+    fill_color='green,
+    region(
+        (not ((x-.3)^2+y^2<1)) and ((x+.3)^2+y^2<1),
+        x,-2,2,y,-2,2
+    ),
+    fill_color='red,
+    region(
+        (not ((x+.3)^2+y^2<1)) and ((x-.3)^2+y^2<1),
+        x,-2,2,y,-2,2
+    ),
+    color='black,
+    parametric(sin(φ)+.3,cos(φ),φ,0,2*π),
+    parametric(sin(φ)-.3,cos(φ),φ,0,2*π)
+);
+/* [wxMaxima: input   end   ] */
+
+
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 20.01.2-DevelopmentSnapshot"$
+"Created with wxMaxima 24.02.1"$

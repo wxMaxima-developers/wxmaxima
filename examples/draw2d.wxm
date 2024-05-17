@@ -187,7 +187,67 @@ wxdraw2d(
             y,0,.4
         )
     )    
-)$
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+A weird filled areas example
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: input   start ] */
+region_red:((x-.3)^2+y^2<1);
+region_green:((x+.3)^2+y^2<1);
+region_blue:(x^2+(y+.3*sqrt(3))^2<1);
+wxdraw2d(
+    /* Increase the accuracy */
+    nticks=50,x_voxel=150,y_voxel=150,fill_density=1,
+    /* Make the X and Y scale identical */
+    proportional_axes='xy,
+    /* The filled areas */
+    fill_color='red,
+    region(
+        region_red and (not (region_green or region_blue)),
+        x,-2,2,y,-2,2
+    ),
+    fill_color='green,
+    region(
+        (region_green and (not (region_red or region_blue))),
+        x,-2,2,y,-2,2
+    ),
+    fill_color='blue,
+    region(
+        (region_blue and (not (region_red or region_green))),
+        x,-2,2,y,-2,2
+    ),
+    fill_color='yellow,
+    region(
+        (not region_blue) and (region_red and region_green),
+        x,-2,2,y,-2,2
+    ),
+    fill_color='magenta,
+    region(
+        (not region_green) and (region_red and region_blue),
+        x,-2,2,y,-2,2
+    ),
+    fill_color='cyan,
+    region(
+        (not region_red) and (region_green and region_blue),
+        x,-2,2,y,-2,2
+    ),
+    fill_color='white,
+    region(
+        region_blue and region_red and region_green,
+        x,-2,2,y,-2,2
+    ),
+    /* The borders of said areas*/
+    color='black,
+    parametric(sin(φ),cos(φ)-.3*sqrt(3),φ,0,2*π),
+    parametric(sin(φ)+.3,cos(φ),φ,0,2*π),
+    parametric(sin(φ)-.3,cos(φ),φ,0,2*π)
+);
+
 /* [wxMaxima: input   end   ] */
 
 
