@@ -8113,14 +8113,13 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_gen_mat_lambda){
     CommandWiz(
                _("Generate matrix from a rule"),
-               _("Generates a rectangular matrix and fills each element with the "
-                 "result "
-                 "of the expression \"Rule\"."),
+               _("Generates a matrix and fills each element with the "
+                 "result of the expression \"Rule\"."),
                wxEmptyString,
-               wxS("apply('matrix,makelist(makelist(#1#,#2#,1,#4#),#3#,1,#5#));"),
+               wxS("apply('matrix,makelist(makelist(#1#,#3#,1,#4#),#2#,1,#5#));"),
                _("Rule"), expr, wxEmptyString, _("Var #1"), wxS("i"), wxEmptyString,
-               _("Var #2"), wxS("j"), wxEmptyString, _("Matrix width"), wxS("5"),
-               wxEmptyString, _("Matrix height"), wxS("6"), wxEmptyString);
+               _("Var #2"), wxS("j"), wxEmptyString, _("Columns"), wxS("5"),
+               wxEmptyString, _("Rows"), wxS("6"), wxEmptyString);
   }
   else if((event.GetId() == EventIDs::button_map) ||
           (event.GetId() == EventIDs::menu_map)){
@@ -11059,7 +11058,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate) {
                                                "Select OK to visit the wxMaxima webpage."),
                                              wxS(GITVERSION), version.utf8_str()),
                             _("Upgrade"), wxOK | wxCANCEL | wxICON_INFORMATION) == wxOK;
-        
+
         if (visit)
           wxLaunchDefaultBrowser(
                                  wxS("https://wxMaxima-developers.github.io/wxmaxima"));
