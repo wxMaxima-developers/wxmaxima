@@ -636,7 +636,7 @@ void Worksheet::DrawGroupCell_UsingBitmap(wxDC *dc, GroupCell *cell)
     return;
   wxSize sz(drawRect.GetWidth(), drawRect.GetHeight());
 
-  // Create a bitap of the size of our drawRect
+  // Create a bitmap of the size of our drawRect
 #ifdef __WXMAC__
   wxBitmap bmp =
     wxBitmap(sz * wxWindow::GetContentScaleFactor(), wxBITMAP_SCREEN_DEPTH,

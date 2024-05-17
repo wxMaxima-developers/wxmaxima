@@ -138,7 +138,7 @@ void OutCommon::BreakLines(Cell *tree) const {
         // if (tmp.SoftLineBreak(false))
         //     // Note: This ResetData() call was unconditional in EMFout and SVGout.
         //     // The condition check was only performed in BitmapOut. That was likely
-        //     // an ommission. This note is here in case bugs were found in this area.
+        //     // an omission. This note is here in case bugs were found in this area.
         //     tmp.ResetSize_Recursively();
 
         if (tmp.BreakLineHere() || (currentWidth + tmp.GetWidth() >= fullWidth)) {

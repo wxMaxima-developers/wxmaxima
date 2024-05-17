@@ -82,7 +82,7 @@ public:
 
   //! Actually update the history sidebar. Called when no other work is to be done.
   bool UpdateDeferred();
-  //! Where to save thi history
+  //! Where to save the history?
   void SetSavePlace(const wxString &saveplace);
 
 private:
