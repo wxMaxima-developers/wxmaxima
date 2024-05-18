@@ -103,7 +103,7 @@ wxdraw2d(
 
 
 /* [wxMaxima: comment start ]
-Besides lsquares_estimates_approximate the lsquares package also provides a command named lsquares_estimates that tries to find the exact optimum by running the problem through solve() before finding the answer numerically. But as it is always the case with computers if the problem that is to be solved is complex one does never know in advance how long it will take and if it ever will finish. lsquares_estimates_approximate doesn't have this drawback.
+Besides lsquares_estimates_approximate the lsquares package also provides a command named lsquares_estimates that tries to find the exact optimum by running the problem through solve() before finding the answer numerically. But as it is always the case with computers if the problem that is to be solved is complex one does not know in advance how long it will take and if it ever will finish. lsquares_estimates_approximate doesn't have this drawback.
    [wxMaxima: comment end   ] */
 
 
@@ -194,7 +194,7 @@ Generating evenly-spaced samples from this curve
 
 
 /* [wxMaxima: comment start ]
-First we generate the new data and time vector. As always the fact that a subst() is necessary in this step is caused by a bug in makelist.
+First, we generate the new data and time vector. As always, the fact that a subst() is necessary in this step is caused by a bug in makelist.
    [wxMaxima: comment end   ] */
 
 
