@@ -1177,9 +1177,9 @@ static wxColour&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a408780614dd19920537cfdc7310115f2">MaximaDefaultLocation</a> ()</td></tr>
 <tr class="memdesc:a408780614dd19920537cfdc7310115f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The auto-detected maxima location. <br /></td></tr>
 <tr class="separator:a408780614dd19920537cfdc7310115f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37393582309534625c1cd5c837e30717"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a37393582309534625c1cd5c837e30717">MaximaFound</a> (const wxString &amp;location=wxEmptyString)</td></tr>
-<tr class="memdesc:a37393582309534625c1cd5c837e30717"><td class="mdescLeft">&#160;</td><td class="mdescRight">Could a maxima binary be found in the path we expect it to be in?  <a href="classConfiguration.html#a37393582309534625c1cd5c837e30717">More...</a><br /></td></tr>
-<tr class="separator:a37393582309534625c1cd5c837e30717"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a970cab8c8c88114f5bb0a5062f4e7f"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a2a970cab8c8c88114f5bb0a5062f4e7f">FindProgram</a> (const wxString &amp;location)</td></tr>
+<tr class="memdesc:a2a970cab8c8c88114f5bb0a5062f4e7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Could a maxima binary be found in the path we expect it to be in?  <a href="classConfiguration.html#a2a970cab8c8c88114f5bb0a5062f4e7f">More...</a><br /></td></tr>
+<tr class="separator:a2a970cab8c8c88114f5bb0a5062f4e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12fefa90a95f9790c3c0670b8a0e7c16"><td class="memItemLeft" align="right" valign="top"><a id="a12fefa90a95f9790c3c0670b8a0e7c16"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>MathJaXURL_Auto</b> ()</td></tr>
 <tr class="separator:a12fefa90a95f9790c3c0670b8a0e7c16"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1355,6 +1355,40 @@ static std::unordered_map&lt; <a class="el" href="TextStyle_8h.html#a68ac52da612
 
 <p>A counter that increases every time we need to recalculate all worksheet cells. </p>
 <p>If that counter eventually wraps that should be fine: The cells will have been recalculated before that and if someone trying to do a speed run with <a class="el" href="classwxMaxima.html">wxMaxima</a> manages to accumulate billions of config changes before the worksheet manages to recalculate itself the worst thing that can happen is a visual glitch. </p>
+
+</div>
+</div>
+<a id="a2a970cab8c8c88114f5bb0a5062f4e7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a970cab8c8c88114f5bb0a5062f4e7f">&#9670;&nbsp;</a></span>FindProgram()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString Configuration::FindProgram </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>location</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Could a maxima binary be found in the path we expect it to be in? </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">location</td><td>The location to search for maxima in. If location == wxEmptyString the default location from the configuration is taken. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1576,40 +1610,6 @@ static std::unordered_map&lt; <a class="el" href="TextStyle_8h.html#a68ac52da612
 
 <p>Make this color differ from the background by a noticeable amount. </p>
 <p>Useful for black/white background theme changes </p>
-
-</div>
-</div>
-<a id="a37393582309534625c1cd5c837e30717"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37393582309534625c1cd5c837e30717">&#9670;&nbsp;</a></span>MaximaFound()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Configuration::MaximaFound </td>
-          <td>(</td>
-          <td class="paramtype">const wxString &amp;&#160;</td>
-          <td class="paramname"><em>location</em> = <code>wxEmptyString</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Could a maxima binary be found in the path we expect it to be in? </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">location</td><td>The location to search for maxima in. If location == wxEmptyString the default location from the configuration is taken. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
