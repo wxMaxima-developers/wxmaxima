@@ -2567,7 +2567,11 @@ bool wxMaxima::StartServer() {
     m_statusBar->NetworkStatus(StatusBar::error);
     LoggingMessageBox(_("wxMaxima could not start a server.\n\n"
                         "Please check you have network support\n"
-                        "enabled and try again!"),
+                        "enabled, that no internet safety appliance is configured "
+                        "to intercept creation of servers even if said server only accepts "
+                        "connections from local application (maxima insists on the graphical "
+                        "frontend acting as a server it can connect on over a local socket) "
+                        "and try again!"),
                       _("Fatal error"), wxOK | wxICON_ERROR);
 
     return false;
