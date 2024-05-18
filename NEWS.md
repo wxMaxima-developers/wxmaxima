@@ -4,6 +4,7 @@
 - Resolved a CMake error on configuration with -B switch (#1917)
 - More menu icons
 - A better dialogue if maxima isn't found
+- Better search for the maxima binary
 
 # 24.05.0
 
