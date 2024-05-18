@@ -39,7 +39,8 @@ public:
                           const wxPoint &pos = wxDefaultPosition,
                           const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
   
-
+protected:
+  void OnOkPress(wxCommandEvent &event);
 private:
   //! Autodetect the maxima location?
   wxRadioButton *m_autodetectMaxima;
@@ -50,6 +51,7 @@ private:
   wxButton *button_1;
   wxButton *button_2;
   Configuration *m_configuration;
+
 };
 
 #endif // MAXIMANOTSTARTINGDIALOG_H

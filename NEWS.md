@@ -1,6 +1,9 @@
 # Current
 
 - An advanced plotting tutorial
+- Resolved a CMake error on configuration with -B switch (#1917)
+- More menu icons
+- A better dialogue if maxima isn't found
 
 # 24.05.0
 
