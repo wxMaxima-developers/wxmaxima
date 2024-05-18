@@ -50,6 +50,7 @@
 #include "wizards/BC2Wiz.h"
 #include "cells/CellList.h"
 #include "dialogs/ConfigDialogue.h"
+#include "dialogs/MaximaNotStartingDialog.h"
 #include "dialogs/AboutDialog.h"
 #include "wizards/CsvWiz.h"
 #include "wizards/DrawWiz.h"
@@ -2681,15 +2682,8 @@ bool wxMaxima::StartMaxima(bool force) {
         m_maximaStdout = NULL;
         m_maximaStderr = NULL;
         m_statusBar->NetworkStatus(StatusBar::offline);
-        LoggingMessageBox(
-                          _("Can not start Maxima. The most probable cause is that Maxima "
-                            "isn't installed (it can be downloaded from "
-                            "https://maxima.sourceforge.io) or in wxMaxima's config dialogue "
-                            "the setting for Maxima's location is wrong. Another cause "
-                            "might be that something hinders maxima and wxMaxima to "
-                            "communicate through a local network connection in the port "
-                            "range they are setup to try to find a port in."),
-                          _("Error"), wxOK | wxICON_ERROR);
+        MaximaNotStartingDialog *dlg = new MaximaNotStartingDialog(this, -1, &m_configuration, _("Failed to start Maxima"));
+        dlg->ShowModal();
         return false;
       }
       m_maximaStdout = m_maximaProcess->GetInputStream();
@@ -4738,7 +4732,7 @@ void wxMaxima::SetupVariables() {
 wxString wxMaxima::GetCommand(bool params) {
   wxString command;
   if (Get_Maxima_Commandline_Filename().IsEmpty()) {
-    command = m_configuration.MaximaLocation();
+    command = Configuration::FindProgram(m_configuration.MaximaLocation());
     wxLogMessage(_("Using configured Maxima path."));
   } else {
     command = Get_Maxima_Commandline_Filename();
@@ -4833,7 +4827,7 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
       } else {
         wxString command;
         std::vector<char *>argv;
-        wxCharBuffer commandnamebuffer = m_configuration.HelpBrowserUserLocation().mb_str();
+        wxCharBuffer commandnamebuffer = Configuration::FindProgram(m_configuration.HelpBrowserUserLocation()).mb_str();
         wxCharBuffer urlbuffer = uri.mb_str();
         argv.push_back(commandnamebuffer.data());
         argv.push_back(urlbuffer.data());

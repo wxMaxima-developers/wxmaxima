@@ -32,6 +32,7 @@
 #include "WXMformat.h"
 #include "BTextCtrl.h"
 #include "cells/Cell.h"
+#include "BinaryNameCtrl.h"
 #include "Dirstructure.h"
 #include "ArtProvider.h"
 #include "WrappingStaticText.h"
@@ -290,18 +291,9 @@ void ConfigDialogue::UsesvgChanged(
     m_usesvg->SetForegroundColour(*wxRED);
   } else {
     wxSystemSettings systemSettings;
-    m_usesvg->SetForegroundColour(
-                                  systemSettings.GetColour(wxSYS_COLOUR_WINDOWTEXT));
+    m_usesvg->SetForegroundColour(systemSettings.GetColour(wxSYS_COLOUR_WINDOWTEXT));
   }
 #endif
-}
-
-void ConfigDialogue::MaximaLocationChanged(wxCommandEvent &WXUNUSED(unused)) {
-  if (m_configuration->MaximaFound(m_maximaUserLocation->GetValue()))
-    m_noAutodetectMaxima->SetForegroundColour(
-                                              wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
-  else
-    m_noAutodetectMaxima->SetForegroundColour(*wxRED);
 }
 
 void ConfigDialogue::SetCheckboxValues() {
@@ -490,8 +482,6 @@ void ConfigDialogue::SetCheckboxValues() {
   m_maximaEnvVariables->GetParent()->GetParent()->Layout();
 
   m_maximaUserLocation->SetValue(configuration->MaximaUserLocation());
-  wxCommandEvent dummy;
-  MaximaLocationChanged(dummy);
 
   m_additionalParameters->SetValue(configuration->MaximaParameters());
   m_usesvg->SetValue(configuration->UseSVG());
@@ -1348,11 +1338,10 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
   wxStaticBoxSizer *invocationSizer =
     new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima Location"));
 
-  wxFlexGridSizer *nameSizer = new wxFlexGridSizer(9, 3, 0, 0);
+  wxFlexGridSizer *nameSizer = new wxFlexGridSizer(9, 2, 0, 0);
   nameSizer->Add(new wxStaticText(invocationSizer->GetStaticBox(), wxID_ANY,
                                   _("Maxima program:")),
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
-  nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   m_autodetectMaxima =
     new wxRadioButton(invocationSizer->GetStaticBox(), wxID_ANY, _("Autodetect"),
@@ -1363,35 +1352,20 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
                                 invocationSizer->GetStaticBox(), wxID_ANY,
                                 m_configuration->MaximaDefaultLocation(), wxDefaultPosition,
                                 wxSize(250 * GetContentScaleFactor(), -1), wxTE_RICH | wxTE_READONLY));
-  nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
 
   m_noAutodetectMaxima =
     new wxRadioButton(invocationSizer->GetStaticBox(), wxID_ANY,
                       _("User specified"));
   nameSizer->Add(m_noAutodetectMaxima,
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
-  m_maximaUserLocation =
-    new wxTextCtrl(
-                   invocationSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
-                   wxSize(250 * GetContentScaleFactor(), -1), wxTE_RICH);
-  m_maximaUserLocation->AutoCompleteFileNames();
-  m_mpBrowse =
-    new wxButton(invocationSizer->GetStaticBox(), wxID_OPEN, _("Open"));
-  m_mpBrowse->Connect(wxEVT_BUTTON,
-                      wxCommandEventHandler(ConfigDialogue::OnMpBrowse), NULL,
-                      this);
+  m_maximaUserLocation = new BinaryNameCtrl(invocationSizer->GetStaticBox(), wxID_ANY);
 
   nameSizer->Add(m_maximaUserLocation,
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
-  nameSizer->Add(m_mpBrowse, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
-  m_maximaUserLocation->Connect(
-                                wxEVT_COMMAND_TEXT_UPDATED,
-                                wxCommandEventHandler(ConfigDialogue::MaximaLocationChanged), NULL, this);
 
   nameSizer->Add(
                  new wxStaticText(invocationSizer->GetStaticBox(), wxID_ANY, _("Help browser:")),
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
-  nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   m_internalHelpBrowser =
     new wxRadioButton(invocationSizer->GetStaticBox(), wxID_ANY, _("Internal"),
@@ -1400,13 +1374,11 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   m_internalHelpBrowser->Show(m_configuration->OfferInternalHelpBrowser());
   nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
-  nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   m_autodetectHelpBrowser =
     new wxRadioButton(invocationSizer->GetStaticBox(), wxID_ANY, _("Autodetect"),
                       wxDefaultPosition, wxDefaultSize);
   nameSizer->Add(m_autodetectHelpBrowser,
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
-  nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   nameSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
 
   m_noAutodetectHelpBrowser =
@@ -1416,19 +1388,11 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
 
   m_helpBrowserUserLocation =
-    new wxTextCtrl(
-                   invocationSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
-                   wxSize(250 * GetContentScaleFactor(), -1), wxTE_RICH);
-  m_helpBrowserUserLocation->AutoCompleteFileNames();
-  wxButton *mpBrowse2 =
-    new wxButton(invocationSizer->GetStaticBox(), wxID_OPEN, _("Open"));
-  mpBrowse2->Connect(wxEVT_BUTTON,
-                     wxCommandEventHandler(ConfigDialogue::OnHelpBrowserBrowse),
-                     NULL, this);
+    new BinaryNameCtrl(
+                   invocationSizer->GetStaticBox());
 
   nameSizer->Add(m_helpBrowserUserLocation,
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
-  nameSizer->Add(mpBrowse2, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   m_singlePageManual =
     new wxCheckBox(invocationSizer->GetStaticBox(), wxID_ANY,
                    _("Prefer the all-in-one-file >1000 page manual"));
@@ -2272,47 +2236,6 @@ void ConfigDialogue::WriteSettings() {
     }
   }
   config->Write(wxS("ConfigDialogTab"), m_notebook->GetSelection());
-}
-
-
-void ConfigDialogue::OnMpBrowse(wxCommandEvent &WXUNUSED(event)) {
-  wxConfigBase *config = wxConfig::Get();
-  wxString dd;
-  config->Read(wxS("maxima"), &dd);
-  wxString file = wxFileSelector(_("Select Maxima program"), wxPathOnly(dd),
-                                 wxFileNameFromPath(dd), wxEmptyString,
-#if defined __WXMSW__
-                                 _("Bat files (*.bat)|*.bat|All|*"),
-#else
-                                 _("All|*"),
-#endif
-                                 wxFD_OPEN);
-
-  if (file.Length()) {
-    if (file.Right(8).Lower() == wxS("wxmaxima") ||
-        file.Right(12).Lower() == wxS("wxmaxima.exe"))
-      LoggingMessageBox(_("Invalid entry for Maxima program.\n\nPlease enter "
-                          "the path to Maxima program again."),
-                        _("Error"), wxOK | wxICON_ERROR);
-    else
-      m_maximaUserLocation->SetValue(file);
-  }
-}
-
-void ConfigDialogue::OnHelpBrowserBrowse(wxCommandEvent &WXUNUSED(event)) {
-  wxString dd = m_configuration->HelpBrowserUserLocation();
-  wxString file =
-    wxFileSelector(_("Select help browser"), wxPathOnly(dd),
-                   wxFileNameFromPath(dd), wxEmptyString,
-#if defined __WXMSW__
-                   _("Bat files (*.bat)|*.bat|Exe files (*.exe)||All|*"),
-#else
-                   _("All|*"),
-#endif
-                   wxFD_OPEN);
-
-  if (file.Length())
-    m_helpBrowserUserLocation->SetValue(file);
 }
 
 void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &WXUNUSED(event)) {

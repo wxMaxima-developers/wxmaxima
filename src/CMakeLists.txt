@@ -129,6 +129,8 @@ set(DIALOG_SOURCE_FILES
     ResolutionChooser.cpp
     TipOfTheDay.cpp
     ConfigDialogue.cpp
+    MaximaNotStartingDialog.cpp
+    BinaryNameCtrl.cpp
 )
 list_transform_prepend(DIALOG_SOURCE_FILES dialogs/)
 
