@@ -800,6 +800,8 @@ for i:1 thru 10 do (
 )$
 ```
 
+Alternatively one can look for the `wxstatusbar()` command above.
+
 ## Plotting only shows a closed empty envelope with an error message
 
 This means that _wxMaxima_ could not read the file _Maxima_ that was supposed to instruct _Gnuplot_ to create.
@@ -875,6 +877,20 @@ E.g. start wxMaxima with:
 
 `GDK_BACKEND=x11 wxmaxima`
 
+## The manual browser
+
+### Why is the integrated manual browser not offered on my Windows PC?
+
+Either wxWidgets wasn't compiled with support for Microsoft's webview2 or
+Microsoft's webview2 isn't installed.
+
+### Why is the external manual browser not working on my Linux box?
+
+The HTML browser might be a snap, flatpack or appimage version. All of these typically 
+cannot access files that are installed on your local system. Another reason might be
+that maxima or wxMaxima is installed as a snap, flatpack or something else that doesn't
+give the host system access to its contents. A third reason might be that the maxima
+HTML manual isn't installed and the online one cannot be accessed.
 
 ## Plotting
 
