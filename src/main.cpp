@@ -645,7 +645,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
       argslist.push_back(NULL);
       // Let's generate an unique pointer to that one so C++ automatically destroys it
       // once it is no more needed.
-      wxExecute(argslist.data());
+      wxExecute(argslist.data(), wxEXEC_HIDE_CONSOLE | wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER);
       wxLogMessage(_("Starting a new wxMaxima process for a new window"));
     }
   }
