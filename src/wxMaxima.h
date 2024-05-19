@@ -863,6 +863,7 @@ public:
   virtual void MacOpenFile(const wxString &file);
 
 private:
+  static std::vector<wxProcess *> m_wxMaximaProcesses;
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
   void GenerateDebugReport(wxDebugReport::Context ctx);
 #endif
@@ -871,11 +872,7 @@ private:
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
   Dirstructure m_dirstruct;
-#if defined __WXOSX__
-  bool m_allWindowsInOneProcess = true;
-#else
-  bool m_allWindowsInOneProcess = false;
-#endif
+  static bool m_allWindowsInOneProcess;
 };
 
 class MyDropTarget : public wxFileDropTarget

@@ -481,6 +481,8 @@ bool MyApp::OnInit() {
 
 int MyApp::OnExit() {
   wxLog::SetActiveTarget(new NullLog);
+  for(auto i:m_wxMaximaProcesses)
+    i->Detach();
   return wxMaxima::GetExitCode();
 }
 
@@ -643,9 +645,13 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
         argslist.push_back(static_cast<char *>(i.data()));
       // Add an "end of arguments list" marker to the list of arguments
       argslist.push_back(NULL);
+      wxProcess *prcss = new wxProcess;
       // Let's generate an unique pointer to that one so C++ automatically destroys it
       // once it is no more needed.
-      wxExecute(argslist.data(), wxEXEC_HIDE_CONSOLE | wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER);
+      wxExecute(argslist.data(),
+                wxEXEC_HIDE_CONSOLE | wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER,
+                prcss);
+      m_wxMaximaProcesses.push_back(prcss);
       wxLogMessage(_("Starting a new wxMaxima process for a new window"));
     }
   }
@@ -758,3 +764,10 @@ void MyApp::GenerateDebugReport(wxDebugReport::Context ctx)
     }
 }
 #endif
+
+#if defined __WXOSX__
+  bool MyApp::m_allWindowsInOneProcess = true;
+#else
+  bool MyApp::m_allWindowsInOneProcess = false;
+#endif
+std::vector<wxProcess *> MyApp::m_wxMaximaProcesses;
