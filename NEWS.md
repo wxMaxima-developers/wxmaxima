@@ -5,6 +5,7 @@
 - More menu icons
 - A better dialogue if maxima isn't found
 - Better search for the maxima binary
+- Find Gnuplot on Windows if wxMaxima is packaged alone.
 
 # 24.05.0
 

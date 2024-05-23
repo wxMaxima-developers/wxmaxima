@@ -123,6 +123,7 @@
 #include <memory>
 #include <wx/sstream.h>
 #include <wx/url.h>
+#include "Configuration.h"
 wxDECLARE_APP(MyApp);
 
 #if defined __WXOSX__
@@ -3498,6 +3499,16 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
     pathlist.Add(
                  wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath() +
                  "/../gnuplot/bin");
+#ifdef __WXMSW__
+    // Windows: Gnuplot is stored in the directory ../gnuplot/bin relative to *maxima.bat*
+    // If wxMaxima is packaged separate (we provide Windows installers with wxMaxima only now),
+    // add that path too:
+    // One must specify the path to Maxima in that case, so use the m_maximaUserLocation.
+    wxString maximapath = wxFileName(m_configuration.MaximaUserLocation()).GetFullPath();
+    if (!maximapath.IsEmpty()) {
+      pathlist.Add(maximapath + "/../gnuplot/bin");
+    }
+#endif
     // Add paths from the PATH environment variable
     pathlist.AddEnvList(wxS("PATH"));
 
