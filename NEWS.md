@@ -5,7 +5,8 @@
 - More menu icons
 - A better dialogue if maxima isn't found
 - Better search for the maxima binary
-- Find Gnuplot on Windows if wxMaxima is packaged alone.
+- Find Gnuplot on Windows if wxMaxima is packaged alone. This
+  is needed for the 'Popout interactively' function of wxdraw().
 
 # 24.05.0
 
