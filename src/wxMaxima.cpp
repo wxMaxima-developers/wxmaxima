@@ -3541,10 +3541,10 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
 #ifdef __WXMSW__
     // If not successful, Find executable "gnuplot.exe" in our list of paths
     if (m_gnuplotcommand == wxEmptyString)
-      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot + wxS(".exe"));
+      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("wgnuplot.exe"));
     // If not successful, Find executable "gnuplot.bat" in our list of paths
     if (m_gnuplotcommand == wxEmptyString)
-      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot + wxS(".bat"));
+      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("gnuplot.exe"));
 #endif
 #ifdef __WXOSX__
     if (m_gnuplotcommand == wxEmptyString)
@@ -6266,7 +6266,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
       if (!output.IsOk())
         return;
       wxTextOutputStream textOut(output);
-
+#ifdef __WXMSW__
+      textOut << "set term windows\n";
+#endif
       textIn.ReadLine();
       textIn.ReadLine();
 
