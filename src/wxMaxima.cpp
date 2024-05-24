@@ -3504,7 +3504,7 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
     // If wxMaxima is packaged separate (we provide Windows installers with wxMaxima only now),
     // add that path too:
     // One must specify the path to Maxima in that case, so use the m_maximaUserLocation.
-    wxString maximapath = wxFileName(m_configuration.MaximaUserLocation()).GetFullPath();
+    wxString maximapath = wxFileName(m_configuration.MaximaUserLocation()).GetPath();
     if (!maximapath.IsEmpty()) {
       pathlist.Add(maximapath + "/../gnuplot/bin");
     }
