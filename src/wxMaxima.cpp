@@ -6279,8 +6279,8 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
       }
       // tell gnuplot to wait for the window to close - or for 10 minutex
       // if gnuplot is too old to understand that.
-      textOut << "if(GPVAL_VERSION >= 5.0) bind \"Close\" \"exit gnuplot\"\n";
-      textOut << "if(GPVAL_VERSION >= 5.0) pause mouse close; else pause 600\n";
+      textOut << "bind \"Close\" \"exit gnuplot\"\n";
+      textOut << "pause mouse close\n";
       textOut << "quit\n";
       textOut.Flush();
     }
