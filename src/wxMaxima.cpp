@@ -6277,21 +6277,17 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
         line = textIn.ReadLine();
         textOut << line + wxS("\n");
       }
-      // tell gnuplot to wait for the window to close - or for 10 minutex
-      // if gnuplot is too old to understand that.
-      textOut << "bind \"Close\" \"exit gnuplot\"\n";
-      textOut << "pause mouse close\n";
-      textOut << "quit\n";
       textOut.Flush();
     }
 
     // Execute gnuplot
     std::vector<char *> argv;
     wxCharBuffer commandnamebuffer = m_gnuplotcommand.mb_str();
-    wxString uri = gnuplotSource + wxS(".popout");
-    wxCharBuffer urlbuffer = uri.mb_str();
     argv.push_back(commandnamebuffer.data());
+    wxCharBuffer urlbuffer = wxString(gnuplotSource + wxS(".popout")).mb_str();
     argv.push_back(urlbuffer.data());
+    wxCharBuffer persist_opt = wxString(wxS("--persist")).mb_str();
+    argv.push_back(persist_opt.data());
     argv.push_back(NULL);
 
     wxLogMessage(_("Running %s on the file %s: "), commandnamebuffer, urlbuffer);
