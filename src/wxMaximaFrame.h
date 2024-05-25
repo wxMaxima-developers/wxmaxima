@@ -150,6 +150,7 @@ public:
   //! Set the status to "Exporting has failed"
   void StatusExportFailed();
 
+  Configuration &GetConfiguration() {return m_configuration;}
 protected:
   //! The panel the user can display variable contents in
   Variablespane *m_variablesPane = NULL;

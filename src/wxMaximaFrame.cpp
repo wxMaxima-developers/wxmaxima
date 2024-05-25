@@ -158,7 +158,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // Now it is time to construct more of the window contents.
   // The table of contents
   m_tableOfContents = new TableOfContents(this, -1,
-                                          &m_configuration,
+                                          &GetConfiguration(),
                                           GetWorksheet()->GetTreeAddress());
 
   m_xmlInspector = new XmlInspector(this, -1);
@@ -263,14 +263,14 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     {
       m_sidebarNames[EventIDs::menu_pane_greek] = wxS("greek");
       m_sidebarCaption[EventIDs::menu_pane_greek] = _("Greek Letters");
-      m_manager->AddPane(new GreekSidebar(this, &m_configuration, GetWorksheet()), wxAuiPaneInfo()
+      m_manager->AddPane(new GreekSidebar(this, &GetConfiguration(), GetWorksheet()), wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_greek])
                         .Left());
       
       m_sidebarNames[EventIDs::menu_pane_unicode] = wxS("unicode");
       m_sidebarCaption[EventIDs::menu_pane_unicode] = _("Unicode characters");
       //  wxWindowUpdateLocker unicodeBlocker(unicodePane);
-      m_manager->AddPane(new UnicodeSidebar(this, GetWorksheet(), &m_configuration), wxAuiPaneInfo()
+      m_manager->AddPane(new UnicodeSidebar(this, GetWorksheet(), &GetConfiguration()), wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_unicode])
                         .Left());
     }
@@ -297,7 +297,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       
       m_sidebarNames[EventIDs::menu_pane_symbols] = wxS("symbols");
       m_sidebarCaption[EventIDs::menu_pane_symbols] = _("Mathematical Symbols");
-      m_symbolsSidebar = new SymbolsSidebar(this, &m_configuration, GetWorksheet());
+      m_symbolsSidebar = new SymbolsSidebar(this, &GetConfiguration(), GetWorksheet());
       m_manager->AddPane(m_symbolsSidebar,
                         wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_symbols])
@@ -316,7 +316,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       m_sidebarCaption[EventIDs::menu_pane_wizard] = _("The current Wizard");
       m_manager->AddPane(m_wizard =
                         new ScrollingGenWizPanel(
-                                                 this, &m_configuration,
+                                                 this, &GetConfiguration(),
                                                  GetWorksheet()->GetMaximaManual()),
                         wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_wizard])
@@ -342,7 +342,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       m_sidebarNames[EventIDs::menu_pane_help] = wxS("help");
       m_sidebarCaption[EventIDs::menu_pane_help] = _("Help");
       m_manager->AddPane(m_helpPane = new HelpBrowser(
-                                                     this, &m_configuration, GetWorksheet()->GetMaximaManual(),
+                                                     this, &GetConfiguration(), GetWorksheet()->GetMaximaManual(),
                                                      wxS("file://") + wxMaximaManualLocation()),
                         wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_help])
@@ -861,7 +861,7 @@ void wxMaximaFrame::SetupViewMenu() {
   m_viewMenu->AppendCheckItem(EventIDs::menu_invertWorksheetBackground,
                               _("Invert worksheet brightness"));
   m_viewMenu->Check(EventIDs::menu_invertWorksheetBackground,
-                    m_configuration.InvertBackground());
+                    GetConfiguration().InvertBackground());
 
   m_MenuBar->Append(m_viewMenu, _("View"));
 }
@@ -1583,7 +1583,7 @@ void wxMaximaFrame::SetupSimplifyMenu() {
                                      "Maxima option variable logexpand:false"));
 
   wxString warningSign = wxT("\u26A0");
-  if (!m_configuration.FontRendersChar(L'\u26A0', *wxNORMAL_FONT))
+  if (!GetConfiguration().FontRendersChar(L'\u26A0', *wxNORMAL_FONT))
     warningSign = _("Warning:");
   m_logexpand_Sub->AppendRadioItem(
                                    EventIDs::menu_logexpand_true,
@@ -1864,7 +1864,7 @@ void wxMaximaFrame::SetupNumericMenu() {
 
   wxMenu *quadpack_sub = new wxMenu;
   wxString integralSign = wxS("\u222B");
-  if (!m_configuration.FontRendersChar(L'\u222B', *wxNORMAL_FONT))
+  if (!GetConfiguration().FontRendersChar(L'\u222B', *wxNORMAL_FONT))
     integralSign = wxS("integrate");
   quadpack_sub->Append(EventIDs::menu_quad_qag,
                        integralSign + _("(f(x),x,a,b), strategy of Aind"));
@@ -1919,19 +1919,19 @@ void wxMaximaFrame::SetupHelpMenu() {
   m_HelpMenu->Append(EventIDs::menu_apropos, _("&Apropos..."),
                      _("Show commands similar to"), wxITEM_NORMAL);
 #ifdef USE_WEBVIEW
-  if(m_configuration.GetDebugmode())
+  if(GetConfiguration().GetDebugmode())
     m_HelpMenu->Append(EventIDs::menu_goto_url, _("Go to URL"));
 #endif
   APPEND_MENU_ITEM(m_HelpMenu, EventIDs::menu_show_tip, _("Show &Tips..."),
                    _("Show a tip"), wxART_TIP);
-  if(m_configuration.OfferInternalHelpBrowser())
+  if(GetConfiguration().OfferInternalHelpBrowser())
     {
       m_HelpMenu->AppendSeparator();
       m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_sidebar,
                                   _("wxMaxima shows help in the sidebar"));
       m_HelpMenu->AppendRadioItem(EventIDs::menu_wxmaxima_uses_help_browser,
                                   _("wxMaxima shows help in a browser"));
-      if(m_configuration.InternalHelpBrowser())
+      if(GetConfiguration().InternalHelpBrowser())
         m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_sidebar, true);
       else
         m_HelpMenu->Check(EventIDs::menu_wxmaxima_uses_help_browser, true);
@@ -1972,7 +1972,7 @@ void wxMaximaFrame::SetupHelpMenu() {
                               _("Maxima shows help in the console"),
                               _("Tells maxima to show the help for ?, ?? and "
                                 "describe() on the console"));
-  if (m_configuration.OfferInternalHelpBrowser())
+  if (GetConfiguration().OfferInternalHelpBrowser())
     m_HelpMenu->AppendRadioItem(EventIDs::menu_maxima_uses_wxmaxima_help,
                                 _("Maxima shows help in a sidebar"),
                                 _("Tells maxima to show the help for ?, ?? and "
