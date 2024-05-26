@@ -6255,30 +6255,28 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
       return;
 
     // Create a gnuplot file that doesn't select a terminal and output file
-    {
-      wxFileInputStream input(gnuplotSource);
-      if (!input.IsOk())
-        return;
-      wxTextInputStream textIn(input, wxS('\t'),
-                               wxConvAuto(wxFONTENCODING_UTF8));
+    wxFileInputStream input(gnuplotSource);
+    if (!input.IsOk())
+      return;
+    wxTextInputStream textIn(input, wxS('\t'),
+                             wxConvAuto(wxFONTENCODING_UTF8));
 
-      wxFileOutputStream output(gnuplotSource + wxS(".popout"));
-      if (!output.IsOk())
-        return;
-      wxTextOutputStream textOut(output);
+    wxFileOutputStream output(gnuplotSource + wxS(".popout"));
+    if (!output.IsOk())
+      return;
+    wxTextOutputStream textOut(output);
 #ifdef __WXMSW__
-      textOut << "set term windows\n";
+    textOut << "set term windows\n";
 #endif
-      textIn.ReadLine();
-      textIn.ReadLine();
+    textIn.ReadLine();
+    textIn.ReadLine();
 
-      wxString line;
-      while (!input.Eof()) {
-        line = textIn.ReadLine();
-        textOut << line + wxS("\n");
-      }
-      textOut.Flush();
+    wxString line;
+    while (!input.Eof()) {
+      line = textIn.ReadLine();
+      textOut << line + wxS("\n");
     }
+    textOut.Flush();
 
     // Execute gnuplot
     std::vector<char *> argv;
