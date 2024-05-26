@@ -6260,8 +6260,8 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
       return;
     wxTextInputStream textIn(input, wxS('\t'),
                              wxConvAuto(wxFONTENCODING_UTF8));
-
-    wxFileOutputStream output(gnuplotSource + wxS(".popout"));
+    wxString gnuplot_popout_tempfilename = wxFileName::CreateTempFileName("wxmaxima_gnuplot_popout_");
+    wxFileOutputStream output(gnuplot_popout_tempfilename);
     if (!output.IsOk())
       return;
     wxTextOutputStream textOut(output);
@@ -6282,7 +6282,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     std::vector<char *> argv;
     wxCharBuffer commandnamebuffer = m_gnuplotcommand.mb_str();
     argv.push_back(commandnamebuffer.data());
-    wxCharBuffer urlbuffer = wxString(gnuplotSource + wxS(".popout")).mb_str();
+    wxCharBuffer urlbuffer = wxString(gnuplot_popout_tempfilename).mb_str();
     argv.push_back(urlbuffer.data());
     wxCharBuffer persist_opt = wxString(wxS("--persist")).mb_str();
     argv.push_back(persist_opt.data());

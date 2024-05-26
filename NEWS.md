@@ -7,6 +7,9 @@
 - Better search for the maxima binary
 - Find Gnuplot on Windows if wxMaxima is packaged alone. This
   is needed for the 'Popout interactively' function of wxdraw().
+- Security: Use a standard function (CreateTempFileName) for
+  creating a temporary file for the 'popout interactively'
+  function of wxdraw.
 
 # 24.05.0
 
