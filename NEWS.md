@@ -10,6 +10,7 @@
 - Security: Use a standard function (CreateTempFileName) for
   creating a temporary file for the 'popout interactively'
   function of wxdraw.
+- Security: Add a random number to lisp generated temporary files.
 
 # 24.05.0
 

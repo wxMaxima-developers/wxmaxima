@@ -1660,22 +1660,23 @@ Submit bug reports by following the 'New issue' link on that page."))
 (defvar *image-counter* 0)
 
 ;; A suitable name for a .gnuplot file
+;; There is no standard function for creating temp file names, add a random number to make it not easily guessable.
 (defun wxplot-gnuplotfilename ()
   (incf *wx-plot-num*)
-  (format nil "maxout_~d_~d.gnuplot" (getpid) *wx-plot-num*))
+  (format nil "maxout_~d_~d_~d.gnuplot" (getpid) *wx-plot-num* (random 1000000)))
 
 ;; A suitable name for a .data file
 (defun wxplot-datafilename ()
   (incf *wx-plot-num*)
-  (format nil "maxout_~d_~d.data" (getpid) *wx-plot-num*))
+  (format nil "maxout_~d_~d_~d.data" (getpid) *wx-plot-num* (random 1000000)))
 
 (defun wxplot-filename (&optional (suff t))
   (incf *image-counter*)
   (plot-temp-file (if suff
 		      (format nil (if
-				   $wxplot_usesvg "maxout_~d_~d.svg" "maxout_~d_~d.png")
-			      (getpid) *image-counter*)
-		      (format nil "maxout_~d_~d" (getpid) *image-counter*))))
+				   $wxplot_usesvg "maxout_~d_~d_~d.svg" "maxout_~d_~d_~d.png")
+			      (getpid) *image-counter* (random 1000000))
+		      (format nil "maxout_~d_~d_~d" (getpid) *image-counter* (random 1000000)))))
 
 (defun $wxplot_preamble ()
   (let ((frmt

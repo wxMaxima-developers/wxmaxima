@@ -307,7 +307,7 @@ void Image::LoadGnuplotSource(
     // want to move a data file into the temp directory of a new computer
     // that locates its temp data somewhere strange).
     // TODO: Manipulates a variable that isn't used at all.
-    wxRegEx replaceDataFileName("'[^']*maxout_[^']*_[0-9]*\\.data'");
+    wxRegEx replaceDataFileName("'[^']*maxout_[^']*_[_0-9]*\\.data'");
     while (!source->Eof()) {
       line = textIn.ReadLine();
       if (replaceDataFileName.Matches(line)) {
