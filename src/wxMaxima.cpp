@@ -3504,7 +3504,7 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
     // If wxMaxima is packaged separate (we provide Windows installers with wxMaxima only now),
     // add that path too:
     // One must specify the path to Maxima in that case, so use the m_maximaUserLocation.
-    wxString maximapath = wxFileName(m_configuration.MaximaUserLocation()).GetFullPath();
+    wxString maximapath = wxFileName(m_configuration.MaximaUserLocation()).GetPath();
     if (!maximapath.IsEmpty()) {
       pathlist.Add(maximapath + "/../gnuplot/bin");
     }
@@ -3541,10 +3541,10 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
 #ifdef __WXMSW__
     // If not successful, Find executable "gnuplot.exe" in our list of paths
     if (m_gnuplotcommand == wxEmptyString)
-      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot + wxS(".exe"));
+      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("wgnuplot.exe"));
     // If not successful, Find executable "gnuplot.bat" in our list of paths
     if (m_gnuplotcommand == wxEmptyString)
-      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot + wxS(".bat"));
+      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("gnuplot.exe"));
 #endif
 #ifdef __WXOSX__
     if (m_gnuplotcommand == wxEmptyString)
@@ -6255,41 +6255,37 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
       return;
 
     // Create a gnuplot file that doesn't select a terminal and output file
-    {
-      wxFileInputStream input(gnuplotSource);
-      if (!input.IsOk())
-        return;
-      wxTextInputStream textIn(input, wxS('\t'),
-                               wxConvAuto(wxFONTENCODING_UTF8));
+    wxFileInputStream input(gnuplotSource);
+    if (!input.IsOk())
+      return;
+    wxTextInputStream textIn(input, wxS('\t'),
+                             wxConvAuto(wxFONTENCODING_UTF8));
+    wxString gnuplot_popout_tempfilename = wxFileName::CreateTempFileName("wxmaxima_gnuplot_popout_");
+    wxFileOutputStream output(gnuplot_popout_tempfilename);
+    if (!output.IsOk())
+      return;
+    wxTextOutputStream textOut(output);
+#ifdef __WXMSW__
+    textOut << "set term windows\n";
+#endif
+    textIn.ReadLine();
+    textIn.ReadLine();
 
-      wxFileOutputStream output(gnuplotSource + wxS(".popout"));
-      if (!output.IsOk())
-        return;
-      wxTextOutputStream textOut(output);
-
-      textIn.ReadLine();
-      textIn.ReadLine();
-
-      wxString line;
-      while (!input.Eof()) {
-        line = textIn.ReadLine();
-        textOut << line + wxS("\n");
-      }
-      // tell gnuplot to wait for the window to close - or for 10 minutex
-      // if gnuplot is too old to understand that.
-      textOut << "if(GPVAL_VERSION >= 5.0) bind \"Close\" \"exit gnuplot\"\n";
-      textOut << "if(GPVAL_VERSION >= 5.0) pause mouse close; else pause 600\n";
-      textOut << "quit\n";
-      textOut.Flush();
+    wxString line;
+    while (!input.Eof()) {
+      line = textIn.ReadLine();
+      textOut << line + wxS("\n");
     }
+    textOut.Flush();
 
     // Execute gnuplot
     std::vector<char *> argv;
     wxCharBuffer commandnamebuffer = m_gnuplotcommand.mb_str();
-    wxString uri = gnuplotSource + wxS(".popout");
-    wxCharBuffer urlbuffer = uri.mb_str();
     argv.push_back(commandnamebuffer.data());
+    wxCharBuffer urlbuffer = wxString(gnuplot_popout_tempfilename).mb_str();
     argv.push_back(urlbuffer.data());
+    wxCharBuffer persist_opt = wxString(wxS("--persist")).mb_str();
+    argv.push_back(persist_opt.data());
     argv.push_back(NULL);
 
     wxLogMessage(_("Running %s on the file %s: "), commandnamebuffer, urlbuffer);
