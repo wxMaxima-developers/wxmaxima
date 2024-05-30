@@ -2868,8 +2868,14 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_CWD.Clear();
   QuestionAnswered();
   if(m_maximaProcess)
-    m_maximaProcess->Detach();
-  m_maximaProcess = NULL;
+    {
+      // If maxima no more has a stdout it should automatically close
+      m_maximaProcess->CloseOutput();
+      // Tell wxWidgets that we are no more interested in "process exited" signals
+      // from our maxima process
+      m_maximaProcess->Detach();
+      m_maximaProcess = NULL;
+    }
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
   m_client.reset();
@@ -2878,6 +2884,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
   if (m_pid > 0) {
     // wxProcess::kill will fail on MSW. Something with a console.
     wxLogNull logNull;
+    wxProcess::Kill(m_pid, wxSIGTERM, wxKILL_CHILDREN);
     if (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) != wxKILL_OK) {
       if(wxProcess::Kill(m_pid, wxSIGKILL) != wxKILL_OK) {
         wxKillError wxKillError_result;
