@@ -3,14 +3,15 @@
 - An advanced plotting tutorial
 - Resolved a CMake error on configuration with -B switch (#1917)
 - More menu icons
-- A better dialogue if maxima isn't found
-- Better search for the maxima binary
+- A better dialogue if Maxima isn't found
+- Better search for the Maxima binary
 - Find Gnuplot on Windows if wxMaxima is packaged alone. This
   is needed for the 'Popout interactively' function of wxdraw().
 - Security: Use a standard function (CreateTempFileName) for
   creating a temporary file for the 'popout interactively'
   function of wxdraw.
 - Security: Add a random number to lisp generated temporary files.
+- Fix the 'Gnuplot command window' (#771, #1680 and #1732).
 
 # 24.05.0
 
@@ -90,7 +91,7 @@
 - Rescaling affected size calculations for code only with a delay
 - Mac Os: way higher stability if multiple windows are open
 - The context menu in the "greek letters" sidebar now works (#1878)
-- Resolved an assert if the internal help browser was disabled, 
+- Resolved an assert if the internal help browser was disabled,
   but requested (#1881)
 - wxMaxima now preserves history entries between sessions
 - Better LibreOffice compatibility with the MathML output
@@ -100,9 +101,9 @@
 
 # 23.12.0
 
-- Input text selection was cleared when right-clicking 
+- Input text selection was cleared when right-clicking
   on it (#1845)
-- Pressing both mouse buttons simultaneously caused an 
+- Pressing both mouse buttons simultaneously caused an
   assert (#1844)
 - Corrected the cursor position after unsuccessful autocompletes
 - Corrected the handling of question prompts from maxima (#1827)
