@@ -2878,6 +2878,8 @@ void wxMaxima::KillMaxima(bool logMessage) {
     }
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
+  // This closes maxima's network connection - which should close maxima, as well.
+  // Additionally this sends a "quit();" command to maxima.
   m_client.reset();
 
   // Just to be absolutely sure: Additionally try to kill maxima
