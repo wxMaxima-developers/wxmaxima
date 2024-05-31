@@ -39,13 +39,15 @@ jobs:
 
       - name: Install winget
         uses: Cyberboss/install-winget@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install Ninja
         run: |
-            winget install -e --id Ninja-build.Ninja
+            winget install -e --id Ninja-build.Ninja --disable-interactivity --accept-source-agreements
 
       - name: Install GetText
         run: |
-            winget install -e --id GnuWin32.GetText
+            winget install -e --id GnuWin32.GetText --disable-interactivity --accept-source-agreements
 
       - name: Cache wxWidgets
         uses: actions/cache@v4
