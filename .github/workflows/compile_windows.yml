@@ -39,7 +39,11 @@ jobs:
 
       - name: Install Ninja
         run: |
-            choco install ninja
+            winget install -e --id Ninja-build.Ninja
+
+      - name: Install GetText
+        run: |
+            winget install -e --id GnuWin32.GetText
 
       - name: Cache wxWidgets
         uses: actions/cache@v4
