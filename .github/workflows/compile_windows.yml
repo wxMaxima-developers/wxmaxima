@@ -37,6 +37,8 @@ jobs:
           fetch-depth: 15
           path: wxMaxima
 
+      - name: Install winget
+        uses: Cyberboss/install-winget@v1
       - name: Install Ninja
         run: |
             winget install -e --id Ninja-build.Ninja
