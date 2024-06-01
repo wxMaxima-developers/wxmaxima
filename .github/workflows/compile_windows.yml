@@ -48,6 +48,8 @@ jobs:
       - name: Install GetText
         run: |
             winget install -e --id GnuWin32.GetText --disable-interactivity --accept-source-agreements
+            Add-Content $env:GITHUB_PATH "${env:ProgramFiles(x86)}/GnuWin32/bin"
+
 
       - name: Cache wxWidgets
         uses: actions/cache@v4
