@@ -44,6 +44,7 @@ jobs:
       - name: Install Ninja
         run: |
             winget install -e --id Ninja-build.Ninja --disable-interactivity --accept-source-agreements
+            Add-Content $env:GITHUB_PATH "$env:LOCALAPPDATA}/Microsoft/WinGet/Links"
 
       - name: Install GetText
         run: |
