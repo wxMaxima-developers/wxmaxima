@@ -179,7 +179,7 @@ set(SOURCE_FILES
 )
 
 if(NOT CYGWIN)
-    list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.rc)
+    list(APPEND SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.rc)
 endif()
 list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest)
 
@@ -302,7 +302,6 @@ endif()
 
 file(RELATIVE_PATH TRANSLATIONS_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/locales/wxMaxima/)
 
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.rc.in" wxmaxima.rc)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.manifest.in" wxmaxima.manifest)
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
