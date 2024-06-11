@@ -12,6 +12,7 @@
   function of wxdraw.
 - Security: Add a random number to lisp generated temporary files.
 - Fix the 'Gnuplot command window' (on Windows) (issues #771, #1680 and #1732).
+- A Spanish translation update by cyphra
 
 # 24.05.0
 
