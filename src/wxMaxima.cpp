@@ -2648,7 +2648,7 @@ bool wxMaxima::StartMaxima(bool force) {
     if (!command.IsEmpty()) {
       command.Append(wxString::Format(wxS(" -s %d "), (int)m_port));
 
-      m_maximaProcess = new wxProcess(this, m_maxima_process_id);
+      m_maximaProcess = std::unique_ptr<wxProcess>(new wxProcess(this, m_maxima_process_id));
       m_maximaProcess->Redirect();
       //      m_maximaProcess->SetPriority(wxPRIORITY_MAX);
       m_first = true;
@@ -2679,7 +2679,7 @@ bool wxMaxima::StartMaxima(bool force) {
       environment["MAXIMA_AUTH_CODE"] = m_maximaAuthString;
 
       env->env = std::move(environment);
-      if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_maximaProcess,
+      if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_maximaProcess.get(),
                     env.get()) <= 0) {
         StatusMaximaBusy(StatusBar::MaximaStatus::process_wont_start);
         StatusText(_("Cannot start the maxima binary"));
@@ -3548,12 +3548,15 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
     // Find executable "gnuplot" in our list of paths
     m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot);
 #ifdef __WXMSW__
-    // If not successful, Find executable "gnuplot.exe" in our list of paths
+    // If not successful, Find executable "wgnuplot.exe" in our list of paths
     if (m_gnuplotcommand == wxEmptyString)
       m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("wgnuplot.exe"));
-    // If not successful, Find executable "gnuplot.bat" in our list of paths
+    // If not successful, Find executable "gnuplot.exe" in our list of paths
     if (m_gnuplotcommand == wxEmptyString)
       m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("gnuplot.exe"));
+    // If not successful, Find executable "gnuplot.bat" in our list of paths
+    if (m_gnuplotcommand == wxEmptyString)
+      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("gnuplot.bat"));
 #endif
 #ifdef __WXOSX__
     if (m_gnuplotcommand == wxEmptyString)
@@ -3585,14 +3588,14 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   wxGetEnvMap(&environment);
 
   m_gnuplotTerminalQueryProcess =
-    new wxProcess(this, EventIDs::gnuplot_query_terminals_id);
+    std::unique_ptr<wxProcess>(new wxProcess(this, EventIDs::gnuplot_query_terminals_id));
   m_gnuplotTerminalQueryProcess->Redirect();
   // We don't want error dialogues here.
   SuppressErrorDialogs suppressor;
   std::unique_ptr<wxExecuteEnv> env(new wxExecuteEnv);
   env->env = std::move(environment);
   if (wxExecute(m_gnuplotcommand, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE,
-                m_gnuplotTerminalQueryProcess, env.get()) < 0)
+                m_gnuplotTerminalQueryProcess.get(), env.get()) < 0)
     wxLogMessage(_("Cannot start gnuplot"));
   else {
     wxOutputStream *ostream = m_gnuplotTerminalQueryProcess->GetOutputStream();
@@ -6298,9 +6301,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     argv.push_back(NULL);
 
     wxLogMessage(_("Running %s on the file %s: "), commandnamebuffer, urlbuffer);
-    m_gnuplotProcess = new wxProcess(this, m_gnuplot_process_id);
+    m_gnuplotProcess = std::unique_ptr<wxProcess>(new wxProcess(this, m_gnuplot_process_id));
     if (wxExecute(argv.data(), wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE,
-                  m_gnuplotProcess) < 0)
+                  m_gnuplotProcess.get()) < 0)
       wxLogMessage(_("Cannot start gnuplot"));
   }
   else if(event.GetId() == wxID_PREFERENCES) {

@@ -481,7 +481,7 @@ bool MyApp::OnInit() {
 
 int MyApp::OnExit() {
   wxLog::SetActiveTarget(new NullLog);
-  for(auto i:m_wxMaximaProcesses)
+  for(auto &i:m_wxMaximaProcesses)
     i->Detach();
   return wxMaxima::GetExitCode();
 }
@@ -654,7 +654,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
       wxExecute(argslist.data(),
                 wxEXEC_HIDE_CONSOLE | wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER,
                 prcss);
-      m_wxMaximaProcesses.push_back(prcss);
+      m_wxMaximaProcesses.push_back(std::unique_ptr<wxProcess>(prcss));
       wxLogMessage(_("Starting a new wxMaxima process for a new window"));
     }
   }
@@ -773,4 +773,4 @@ void MyApp::GenerateDebugReport(wxDebugReport::Context ctx)
 #else
   bool MyApp::m_allWindowsInOneProcess = false;
 #endif
-std::vector<wxProcess *> MyApp::m_wxMaximaProcesses;
+std::vector<std::unique_ptr<wxProcess>> MyApp::m_wxMaximaProcesses;

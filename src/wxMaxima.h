@@ -260,9 +260,9 @@ protected:
   //! Looks if this opening tag is actually complete.
   static wxRegEx m_xmlOpeningTag;
   //! The gnuplot process info
-  wxProcess *m_gnuplotProcess = NULL;
+  std::unique_ptr<wxProcess> m_gnuplotProcess;
   //! Info about the gnuplot process we start for querying the terminals it supports
-  wxProcess *m_gnuplotTerminalQueryProcess = NULL;
+  std::unique_ptr<wxProcess>  m_gnuplotTerminalQueryProcess;
   //! Is this window active?
   bool m_isActive = true;
   //! Called when this window is focussed or defocussed.
@@ -716,7 +716,7 @@ protected:
   */
   std::unique_ptr<wxSocketServer,  ServerDeleter> m_server;
 
-  wxProcess *m_maximaProcess = NULL;
+  std::unique_ptr<wxProcess>  m_maximaProcess;
   //! The stdout of the maxima process
   wxInputStream *m_maximaStdout = NULL;
   //! The stderr of the maxima process
@@ -863,7 +863,7 @@ public:
   virtual void MacOpenFile(const wxString &file);
 
 private:
-  static std::vector<wxProcess *> m_wxMaximaProcesses;
+  static std::vector<std::unique_ptr<wxProcess>> m_wxMaximaProcesses;
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
   void GenerateDebugReport(wxDebugReport::Context ctx);
 #endif
