@@ -2679,7 +2679,8 @@ bool wxMaxima::StartMaxima(bool force) {
       environment["MAXIMA_AUTH_CODE"] = m_maximaAuthString;
 
       env->env = std::move(environment);
-      if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_maximaProcess.get(),
+      if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
+                    m_maximaProcess.get(),
                     env.get()) <= 0) {
         StatusMaximaBusy(StatusBar::MaximaStatus::process_wont_start);
         StatusText(_("Cannot start the maxima binary"));
@@ -3594,7 +3595,7 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   SuppressErrorDialogs suppressor;
   std::unique_ptr<wxExecuteEnv> env(new wxExecuteEnv);
   env->env = std::move(environment);
-  if (wxExecute(m_gnuplotcommand, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE,
+  if (wxExecute(m_gnuplotcommand, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
                 m_gnuplotTerminalQueryProcess.get(), env.get()) < 0)
     wxLogMessage(_("Cannot start gnuplot"));
   else {
@@ -4839,7 +4840,7 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
           {
             wxLogMessage(_("Launching the system's default help browser as %s."),
                          command.mb_str());
-            wxExecute(command);
+            wxExecute(command, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER);
           }
         else
           {
@@ -4859,7 +4860,7 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
         argv.push_back(commandnamebuffer.data());
         argv.push_back(urlbuffer.data());
         argv.push_back(NULL);
-        wxExecute(argv.data());
+        wxExecute(argv.data(), wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER);
       }
     }
 }
@@ -6302,7 +6303,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
 
     wxLogMessage(_("Running %s on the file %s: "), commandnamebuffer, urlbuffer);
     m_gnuplotProcess = std::unique_ptr<wxProcess>(new wxProcess(this, m_gnuplot_process_id));
-    if (wxExecute(argv.data(), wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE,
+    if (wxExecute(argv.data(), wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
                   m_gnuplotProcess.get()) < 0)
       wxLogMessage(_("Cannot start gnuplot"));
   }
