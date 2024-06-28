@@ -728,6 +728,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 (wx-defprop $alpha "<g>alpha</g>" wxxmlword)
 (wx-defprop $%beta "<g>%beta</g>" wxxmlword)
 (wx-defprop $beta "<g>beta</g>" wxxmlword)
+(wx-defprop %beta "<g>beta</g>" wxxmlword) ; Maxima commit [446bc6] requires, that $beta must be replaced with %beta, keep both, so that older and younger Maxima versions work.
 (wx-defprop $%gamma "<g>%gamma</g>" wxxmlword)
 (wx-defprop %gamma "<g>gamma</g>" wxxmlword)
 (wx-defprop $%delta "<g>%delta</g>" wxxmlword)
