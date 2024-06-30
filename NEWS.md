@@ -13,6 +13,7 @@
 - Security: Add a random number to lisp generated temporary files.
 - Fix the 'Gnuplot command window' (on Windows) (issues #771, #1680 and #1732).
 - A Spanish translation update by cyphra
+- Fix the greek letter replacement for 'beta' with newer Maxima versions (#1921).
 
 # 24.05.0
 
