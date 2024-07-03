@@ -5064,7 +5064,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       {
         event.RequestMore();
         return;
-.      }
+      }
   }
 
   // If nothing which is visible has changed nothing that would cause us to need
