@@ -3584,6 +3584,8 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   wxEnvVariableHashMap environment;
   // gnuplot uses the PAGER variable only on un*x - and on un*x there is cat.
   environment["PAGER"] = "cat";
+  environment["LINES"] = "10000";
+  environment["LESS_LINES"] = "10000";
   if(!Configuration::GetMaximaLang().IsEmpty())
     environment["LANG"] = Configuration::GetMaximaLang();
   wxGetEnvMap(&environment);
@@ -4987,15 +4989,11 @@ void wxMaxima::ShowMaximaHelp(wxString keyword) {
 ///--------------------------------------------------------------------------------
 
 void wxMaxima::OnIdle(wxIdleEvent &event) {
-  // Make sure everybody else who wants to process idle events gets this one.
-  event.Skip();
-
   // Update the info what maxima is currently doing
   UpdateStatusMaximaBusy();
 
   // Update the info how long the evaluation queue is
   if (m_updateEvaluationQueueLengthDisplay) {
-    m_updateEvaluationQueueLengthDisplay = false;
     if ((m_EvaluationQueueLength > 0) || (m_commandsLeftInCurrentCell >= 1)) {
       wxString statusLine = wxString::Format(_("%li cells in evaluation queue"),
                                              static_cast<long>(m_EvaluationQueueLength));
@@ -5018,6 +5016,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     }
 
     event.RequestMore();
+    m_updateEvaluationQueueLengthDisplay = false;
     return;
   }
 
@@ -5033,8 +5032,6 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     if ((m_oldFindString !=
          GetWorksheet()->m_findDialog->GetData()->GetFindString()) ||
         (m_oldFindFlags != GetWorksheet()->m_findDialog->GetData()->GetFlags())) {
-      m_oldFindFlags = GetWorksheet()->m_findDialog->GetData()->GetFlags();
-      m_oldFindString = GetWorksheet()->m_findDialog->GetData()->GetFindString();
 
       if ((m_configuration.IncrementalSearch()) &&
           (GetWorksheet()->m_findDialog != NULL)) {
@@ -5045,11 +5042,13 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
         else
           GetWorksheet()->FindIncremental_RegEx(m_findData.GetFindString(),
                                              m_findData.GetFlags() & wxFR_DOWN);
+        GetWorksheet()->RequestRedraw();
+        m_oldFindFlags = GetWorksheet()->m_findDialog->GetData()->GetFlags();
+        m_oldFindString = GetWorksheet()->m_findDialog->GetData()->GetFindString();
+        event.RequestMore();
+        return;
       }
 
-      GetWorksheet()->RequestRedraw();
-      event.RequestMore();
-      return;
     }
   }
 
@@ -5061,12 +5060,11 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       event.RequestMore();
       return;
     }
-
     if (GetWorksheet()->RedrawIfRequested())
       {
         event.RequestMore();
         return;
-      }
+.      }
   }
 
   // If nothing which is visible has changed nothing that would cause us to need
@@ -5075,6 +5073,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     UpdateMenus();
     UpdateToolBar();
     ResetTitle(GetWorksheet()->IsSaved());
+    GetWorksheet()->UpdateControlsNeeded(false);
     event.RequestMore();
     return;
   }
@@ -5151,20 +5150,19 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       GetWorksheet()->RequestRedraw();
       GetWorksheet()->UpdateControlsNeeded(true);
     }
-  // If we reach this point wxMaxima truly is idle
-  // => Tell wxWidgets it can process its own idle commands, as well.
-  event.Skip();
 
   // Tell our maxima interface if it needs to send events to the XML inspector
   if(m_client)
     m_client->XmlInspectorActive(m_manager->GetPane(wxS("XmlInspector")).IsShown());
-  event.Skip();
 
   if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
     {
       SaveFile(false);
       CallAfter([this]{Close();});
     }
+  // If we reach this point wxMaxima truly is idle
+  // => Tell wxWidgets it can process its own idle commands, as well.
+  event.Skip();
 }
 
 bool wxMaxima::UpdateDrawPane() {

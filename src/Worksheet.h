@@ -880,7 +880,12 @@ public:
   //! The group that the line's cells will belong to - used by InsertLine
   GroupCell *GetInsertGroup() const;
 
-  // Actually recalculate the worksheet.
+  /*! Actually recalculate the worksheet.
+
+    \todo We check here if the recalc start is within the worksheet. Would it make
+    more sense to store the recalculation start in a CellPointer that automagically
+    zeroes itself if that isn't the case?
+   */
   bool RecalculateIfNeeded(bool timeout = false);
 
   //! Schedule a recalculation of the worksheet starting with the cell start.

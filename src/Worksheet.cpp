@@ -960,11 +960,11 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
             wxLogMessage(_("Recalculated the whole worksheet at once => Updating its size"));
           }
       }
-      m_recalculateStart = {};
     }
   if (m_adjustWorksheetSizeNeeded)
     AdjustSize();
 
+  m_recalculateStart = {};
   return true;
 }
 

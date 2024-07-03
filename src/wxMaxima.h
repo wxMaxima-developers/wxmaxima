@@ -313,16 +313,24 @@ protected:
     sure that they will be processed in order - but makes a gui a
     more or less single-processor-task.
 
-    If the queue is empty (which means that the computer has caught
-    up with the incoming events) this function is called once.
+    This function now is called once every time the event queue is
+    empty (which means: wxMaxima has caught up with all events
+    from the GUI). An event.RequestMore() inside that function tells
+    the OS to call OnIdle immediately again when OnIdl finishes while
+    the event queue is still empty.
 
-    Moving the screen update to this function makes sure that we
-    don't do many subsequent updates slowing down the computer any
-    further if there are still a handful of key presses to process
-    lowering the average response times of the program.
+    Moving things to the OnIdle() function makes them nearly feel like
+    they were in a low-priority background thread without the
+    disadvantage that background threads cannot access the GUI.
 
-    The worksheet is refreshed by a timer task in case the computer
-    is too busy to execute the idle task at all.
+    Moving the screen update to this function, as well, makes sure that
+    if we get events faster than we can update the screen that doesn't
+    cause lag, but causes screen updates for old events to be dropped
+    if we already have new ones.
+    This normally makes programs feel way more responsive.
+
+    The worksheet is additionally refreshed by a timer task in case
+    that th computer is too busy to ever reach the idle task at all.
   */
   void OnIdle(wxIdleEvent &event);
   bool m_dataFromMaximaIs = false;
