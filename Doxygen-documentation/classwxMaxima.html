@@ -1930,9 +1930,10 @@ Menu and button events</h2>
 
 <p>The idle task that refreshes the gui (worksheet, menus, title line,...) </p>
 <p>In GUIs normally all events (mouse events, key presses,...) are put into a queue and then are executed one by one. This makes sure that they will be processed in order - but makes a gui a more or less single-processor-task.</p>
-<p>If the queue is empty (which means that the computer has caught up with the incoming events) this function is called once.</p>
-<p>Moving the screen update to this function makes sure that we don't do many subsequent updates slowing down the computer any further if there are still a handful of key presses to process lowering the average response times of the program.</p>
-<p>The worksheet is refreshed by a timer task in case the computer is too busy to execute the idle task at all.</p>
+<p>This function now is called once every time the event queue is empty (which means: <a class="el" href="classwxMaxima.html">wxMaxima</a> has caught up with all events from the GUI). An event.RequestMore() inside that function tells the OS to call OnIdle immediately again when OnIdl finishes while the event queue is still empty.</p>
+<p>Moving things to the <a class="el" href="classwxMaxima.html#a0526c00a10c9ee202d52857da8dd31b4" title="The idle task that refreshes the gui (worksheet, menus, title line,...)">OnIdle()</a> function makes them nearly feel like they were in a low-priority background thread without the disadvantage that background threads cannot access the GUI.</p>
+<p>Moving the screen update to this function, as well, makes sure that if we get events faster than we can update the screen that doesn't cause lag, but causes screen updates for old events to be dropped if we already have new ones. This normally makes programs feel way more responsive.</p>
+<p>The worksheet is additionally refreshed by a timer task in case that th computer is too busy to ever reach the idle task at all.</p>
 <hr  />
  <h2><a class="anchor" id="autotoc_md188"></a>
 Idle event</h2>
