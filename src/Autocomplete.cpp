@@ -125,13 +125,13 @@ void AutoComplete::AddSymbols(wxXmlDocument xml) {
     }
   wxLogMessage(_("Scheduling a background task that compiles a new list "
                  "of autocompletable maxima commands."));
-  
+
   if(m_configuration->UseThreads())
     m_addSymbols_backgroundThread = jthread(&AutoComplete::AddSymbols_Backgroundtask,
                                                 this, std::move(xml));
   else
     AddSymbols_Backgroundtask(std::move(xml));
-    
+
 }
 
 void AutoComplete::AddSymbols_Backgroundtask_string(wxString xml) {
@@ -228,6 +228,9 @@ void AutoComplete::LoadSymbols() {
   wxString sharedir = m_configuration->MaximaShareDir();
   sharedir.Replace("\n", "");
   sharedir.Replace("\r", "");
+  wxString demodir = m_configuration->MaximaDemoDir();
+  demodir.Replace("\n", "");
+  demodir.Replace("\r", "");
   if(m_addFiles_backgroundThread.joinable())
     {
       wxLogMessage(_("Waiting for m_addFiles_backgroundThread to finish"));
@@ -243,12 +246,12 @@ void AutoComplete::LoadSymbols() {
       m_addSymbols_backgroundThread = jthread(&AutoComplete::BuiltinSymbols_BackgroundTask,
                                               this);
       m_addFiles_backgroundThread = jthread(&AutoComplete::LoadableFiles_BackgroundTask,
-                                            this, sharedir);
+                                            this, sharedir, demodir);
     }
   else
     {
       BuiltinSymbols_BackgroundTask();
-      LoadableFiles_BackgroundTask(sharedir);
+      LoadableFiles_BackgroundTask(sharedir, demodir);
     }
 }
 
@@ -341,7 +344,7 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
   }
 }
 
-void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
+void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir, wxString demodir) {
   // Error dialogues need to be created by the foreground thread.
   SuppressErrorDialogs suppressor;
 
@@ -369,11 +372,8 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir) {
 
   // Prepare a list of all built-in demos of maxima.
   {
-    wxFileName shareDir(sharedir + "/");
-    shareDir.MakeAbsolute();
-    wxFileName demoDir(shareDir.GetFullPath() + "/");
+    wxFileName demoDir(demodir + "/");
     demoDir.MakeAbsolute();
-    demoDir.RemoveLastDir();
     GetDemoFiles_includingSubdirs maximaLispIterator(m_builtInDemoFiles, &m_keywordsLock);
     wxDir maximadir(demoDir.GetFullPath());
     if (maximadir.IsOpened())

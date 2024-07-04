@@ -133,7 +133,7 @@ private:
   //! The configuration storage
   Configuration *m_configuration;
   //! Loads the list of loadable files and can be run in a background task
-  void LoadableFiles_BackgroundTask(wxString sharedir);
+  void LoadableFiles_BackgroundTask(wxString sharedir, wxString demodir);
   //! Prepares the list of built-in symbols and can be run in a background task
   void BuiltinSymbols_BackgroundTask();
 

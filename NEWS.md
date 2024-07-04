@@ -14,6 +14,9 @@
 - Fix the 'Gnuplot command window' (on Windows) (issues #771, #1680 and #1732).
 - A Spanish translation update by cyphra
 - Fix the greek letter replacement for 'beta' with newer Maxima versions (#1921).
+- Fix a problem, when 'maxima-local' (a not installed version of Maxima)
+  was chosen as Maxima. WxMaxima did not finish on File->Exit and used
+  much CPU power. 
 
 # 24.05.0
 
