@@ -947,6 +947,8 @@ public:
   wxPoint GetWorksheetPosition() const {return m_worksheetPosition;}
   wxString MaximaShareDir() const {return m_maximaShareDir;}
   void MaximaShareDir(wxString dir){m_maximaShareDir = std::move(dir);}
+  wxString MaximaDemoDir() const {return m_maximaDemoDir;}
+  void MaximaDemoDir(wxString dir){m_maximaDemoDir = std::move(dir);}
   void InLispMode(bool lisp){m_inLispMode = lisp;}
   bool InLispMode() const {return m_inLispMode;}
   void BitmapScale(int factor){m_bitmapScale = factor;}
@@ -1196,6 +1198,7 @@ private:
   double m_zoomFactor;
   wxDC *m_dc;
   wxString m_maximaShareDir;
+  wxString m_maximaDemoDir;
   bool m_forceUpdate;
   bool m_clipToDrawRegion = true;
   bool m_outdated;

@@ -241,6 +241,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
       &wxMaxima::VariableActionGnuplotCommand;
     m_variableReadActions[wxS("*maxima-sharedir*")] =
       &wxMaxima::VariableActionMaximaSharedir;
+    m_variableReadActions[wxS("*maxima-demodir*")] =
+      &wxMaxima::VariableActionMaximaDemodir;
     m_variableReadActions[wxS("*lisp-name*")] =
       &wxMaxima::VariableActionLispName;
     m_variableReadActions[wxS("*lisp-version*")] =
@@ -3622,6 +3624,14 @@ void wxMaxima::VariableActionMaximaSharedir(const wxString &value) {
   /// READ FUNCTIONS FOR AUTOCOMPLETION
   if(GetWorksheet())
     GetWorksheet()->LoadSymbols();
+}
+
+void wxMaxima::VariableActionMaximaDemodir(const wxString &value) {
+  wxString dir = value;
+  dir.Trim(true);
+  m_configuration.MaximaDemoDir(dir);
+  wxLogMessage(_("Maxima's demo files lie in directory %s"),
+               dir.utf8_str());
 }
 
 void wxMaxima::VariableActionLispName(const wxString &value) {

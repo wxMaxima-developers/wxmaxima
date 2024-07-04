@@ -574,6 +574,8 @@ protected:
   void VariableActionGnuplotCommand(const wxString &value);
   //! Called if maxima tells us the maxima share dir.
   void VariableActionMaximaSharedir(const wxString &value);
+  //! Called if maxima tells us the maxima demo dir.
+  void VariableActionMaximaDemodir(const wxString &value);
   //! Called if maxima tells us the lisp name.
   void VariableActionLispName(const wxString &value);
   //! Called if maxima tells us the lisp version.
