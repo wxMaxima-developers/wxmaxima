@@ -3606,7 +3606,7 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
 #if defined __WXMSW__
   // We want this gnuplot process to exit after it has finished its work,
   // not to stay around until someone closes its terminal
-  gnuplotcommand.replace(wxS("wgnuplot"), wxS("gnuplot"));
+  gnuplotcommand.Replace(wxS("wgnuplot"), wxS("gnuplot"));
 #endif
   if (wxExecute(gnuplotcommand, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
                 m_gnuplotTerminalQueryProcess, env.get()) < 0)
