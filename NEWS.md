@@ -3,6 +3,7 @@
 - An advanced plotting tutorial
 - Try harder to kill maxima on closing it
 - Try harder to clean up maxima's temporary files on closing it
+- Resolved a race condition on closing multiple windows
 - Resolved a CMake error on configuration with -B switch (#1917)
 - More menu icons
 - A better dialogue if Maxima isn't found

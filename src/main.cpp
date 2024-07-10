@@ -655,6 +655,8 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
                 wxEXEC_HIDE_CONSOLE | wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER,
                 prcss);
       m_wxMaximaProcesses.push_back(prcss);
+      // Tell wxWidgets that we don't want any signals from this process
+      prcss->Detach();
       wxLogMessage(_("Starting a new wxMaxima process for a new window"));
     }
   }
