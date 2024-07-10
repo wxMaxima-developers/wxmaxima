@@ -2874,36 +2874,55 @@ void wxMaxima::KillMaxima(bool logMessage) {
     {
       // If maxima no more has a stdout it should automatically close
       m_maximaProcess->CloseOutput();
-      // Tell wxWidgets that we are no more interested in "process exited" signals
-      // from our maxima process
-      m_maximaProcess->Detach();
-      m_maximaProcess = NULL;
     }
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
   // This closes maxima's network connection - which should close maxima, as well.
-  // Additionally this sends a "quit();" command to maxima.
+  // Additionally closinf the cliend automatically sends a "quit();" command to maxima.
   m_client.reset();
 
-  // Just to be absolutely sure: Additionally try to kill maxima
-  if (m_pid > 0) {
-    // wxProcess::kill will fail on MSW. Something with a console.
-    wxLogNull logNull;
-    wxProcess::Kill(m_pid, wxSIGTERM, wxKILL_CHILDREN);
-    wxProcess::Kill(m_maximaProcess->GetPid(), wxSIGTERM, wxKILL_CHILDREN);
-    if (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) != wxKILL_OK) {
-      if (wxProcess::Kill(m_maximaProcess->GetPid(), wxSIGKILL, wxKILL_CHILDREN) != wxKILL_OK) {
-        if(wxProcess::Kill(m_pid, wxSIGKILL) != wxKILL_OK) {
-          wxKillError wxKillError_result;
-          if (wxKill(m_pid, wxSIGKILL, &wxKillError_result, wxKILL_CHILDREN) != 0) {
-            wxLogMessage(_("Killing Maxima failed. wxKillError = %d"), wxKillError_result);
-          }
-        }
-      }
-    }
-  }
+  /* Just to be absolutely sure: Additionally try to kill maxima
+
+     On Linux and MacOs the kill() command is meant as a means for inter-process
+     communication and it works fine. On MS Windows, though, there are three
+     flavours of kill():
+     One sends a Ctrl+C to a console application, but as far as I can see we
+     don't have the rights to issue that.
+     One tells a gui application to gracefully close. That one might not apply to
+     maxima as a console application, and
+     One that forces an application to close without even unitializing its DLLs.
+     I hope we have the rights to issue that and we can try them both on maxima.bat
+     and the actual maxima process. AFAICS we started maxima with flags that tell
+     the batch file to automatically kill maxima on exit.
+   */
+  // Many of our wxProcess::kill commands will fail
+  wxLogNull logNull;
+  bool killed = false;
+  if (m_pid > 0)
+    killed = (wxProcess::Kill(m_pid, wxSIGTERM, wxKILL_CHILDREN) == wxKILL_OK);
+  if(m_maximaProcess && (!killed) && (m_maximaProcess->GetPid() > 0))
+    killed = (wxProcess::Kill(m_maximaProcess->GetPid(),
+                              wxSIGTERM, wxKILL_CHILDREN) == wxKILL_OK);
+  if ((!killed) && (m_pid > 0))
+    killed = (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
+  
+  if(m_maximaProcess && (!killed) && (m_maximaProcess->GetPid() > 0))
+    killed = (wxProcess::Kill(m_maximaProcess->GetPid(),
+                              wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
+  if ((!killed) && (m_pid > 0))
+    killed = (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
+  if (!killed) 
+    wxLogMessage(_("Killing Maxima failed. But we sent a \"quit();\" to it."));
   m_configuration.InLispMode(false);
 
+  // Wait for maxima to actually exit before we clean up its temporary files
+  int count = 40;
+  while((m_pid > 0) && wxProcess::Exists(m_pid) && (count > 0))
+    {
+      wxMilliSleep(50);
+      count--;
+    }
+  
   // As we might have killed maxima before it was able to clean up its
   // temp files we try to do so manually now:
   if (m_maximaTempDir != wxEmptyString) {
@@ -2934,6 +2953,14 @@ void wxMaxima::KillMaxima(bool logMessage) {
                    wxString::Format("%li.xmaxima", static_cast<long>(m_pid)));
   }
   m_pid = -1;
+  
+  // We don't need to be informed any more if the maxima process we just tried to
+  // kill actually exits.
+  if(m_maximaProcess)
+    {
+      m_maximaProcess->Detach();
+      m_maximaProcess = NULL;
+    }
 }
 
 void wxMaxima::OnGnuplotQueryTerminals(wxProcessEvent &event) {
