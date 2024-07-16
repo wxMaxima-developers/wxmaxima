@@ -763,6 +763,9 @@ void Configuration::ReadConfig() {
   if (m_maxClipbrd_BitmapMegabytes < 0)
     m_maxClipbrd_BitmapMegabytes = 1;
   config->Read(wxS("wizardTab"), &m_wizardTab);
+  #ifdef __WXMSW__
+  config->Read("usewgnuplot", &m_useWgnuplot);
+  #endif
   config->Read(wxS("numpadEnterEvaluates"), &m_numpadEnterEvaluates);
   config->Read(wxS("saveImgFileName"), &m_saveImgFileName);
   config->Read(wxS("usePartialForDiff"), &m_usePartialForDiff);
@@ -1335,7 +1338,7 @@ void Configuration::WriteSettings(const wxString &file) {
     config->Write(wxS("suppressYellowMarkerMessages"),
                   hideMessagesConfigString);
   }
-
+  config->Write("usewgnuplot", m_useWgnuplot);  
   config->Write("maximaHelpFormat", static_cast<long>(m_maximaHelpFormat));
   config->Write(wxS("Print/Margin/Top"), m_printMargin_Top);
   config->Write(wxS("Print/Margin/Bot"), m_printMargin_Bot);

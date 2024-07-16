@@ -3578,12 +3578,28 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
     pathlist.Add(OSX_MACPORTS_PREFIX "/bin");
 #endif
 
-    // Find executable "gnuplot" in our list of paths
-    m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot);
+    if(m_configuration.UseWGnuplot())
+      {
+        long pos = gnuplot.rfind(wxS("gnuplot"));
+        wxString wgnuplot = gnuplot;
+        // if pos is not wxNOT_FOUND it is 6 or higher.
+        if(pos != wxNOT_FOUND)
+          {
+            wgnuplot = gnuplot.Left(pos) + wxS("w") + gnuplot.Right(gnuplot.Length() - pos);
+            if (m_gnuplotcommand == wxEmptyString)
+              m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wgnuplot);
+          }
+      }
 #ifdef __WXMSW__
-    // If not successful, Find executable "wgnuplot.exe" in our list of paths
     if (m_gnuplotcommand == wxEmptyString)
-      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("wgnuplot.exe"));
+      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot);
+
+    if(m_configuration.UseWGnuplot())
+      {
+        // If not successful, Find executable "wgnuplot.exe" in our list of paths
+        if (m_gnuplotcommand == wxEmptyString)
+          m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("wgnuplot.exe"));
+      }
     // If not successful, Find executable "gnuplot.exe" in our list of paths
     if (m_gnuplotcommand == wxEmptyString)
       m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("gnuplot.exe"));
@@ -3633,7 +3649,14 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
 #if defined __WXMSW__
   // We want this gnuplot process to exit after it has finished its work,
   // not to stay around until someone closes its terminal
-  gnuplotcommand.Replace(wxS("wgnuplot"), wxS("gnuplot"));
+  if(m_configuration.UseWGnuplot())
+    {
+      long pos = gnuplotcommand.rfind(wxS("gnuplot"));
+      // if pos is not wxNOT_FOUND it is 6 or higher.
+      if(pos != wxNOT_FOUND)
+        gnuplotcommand = gnuplotcommand.Left(pos) +
+          gnuplotcommand.Right(gnuplot.Length() - pos - 1);
+    }
 #endif
   if (wxExecute(gnuplotcommand, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
                 m_gnuplotTerminalQueryProcess, env.get()) < 0)
