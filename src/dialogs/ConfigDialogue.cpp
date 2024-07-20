@@ -1536,6 +1536,21 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
   vsizer->Add(handlingSizer, wxSizerFlags().Expand().Border(
                                                             wxALL, 5 * GetContentScaleFactor()));
 
+#ifdef __WXMSW__
+  wxStaticBoxSizer *gnuplotSizer =
+    new wxStaticBoxSizer(wxVERTICAL, panel, _("Gnuplot flavour"));
+  m_useGnuplot = new wxRadioButton(gnuplotSizer->GetStaticBox(), wxID_ANY, _("gnuplot: Without command console"));
+  gnuplotSizer->Add(m_useGnuplot,
+                   wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  m_useWgnuplot = new wxRadioButton(gnuplotSizer->GetStaticBox(), wxID_ANY, _("wgnuplot: Steals the mouse focus during plotting"));
+  gnuplotSizer->Add(m_useWgnuplot,
+                   wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
+  m_useWgnuplot->SetValue(m_configuration->UseWGnuplot());
+  m_useGnuplot->SetValue(!m_configuration->UseWGnuplot());
+
+  vsizer->Add(gnuplotSizer, wxSizerFlags().Expand().Border(
+                                                            wxALL, 5 * GetContentScaleFactor()));
+#endif
   panel->FitInside();
   return panel;
 }
@@ -2094,6 +2109,10 @@ void ConfigDialogue::WriteSettings() {
     configuration->MaximaUsesHtmlBrowser(true);
     configuration->MaximaUsesWxmaximaBrowser(false);
   }
+#ifdef __WXMSW__
+  m_configuration->UseWGnuplot(m_useWgnuplot->GetValue());
+#endif
+  
   if (m_maximaUsesInternalHelp->GetValue()) {
     configuration->MaximaUsesHtmlBrowser(false);
     configuration->MaximaUsesWxmaximaBrowser(false);

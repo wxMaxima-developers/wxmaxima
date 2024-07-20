@@ -250,6 +250,8 @@ protected:
   wxRadioButton *m_autodetectMathJaX;
   //! The radio button that is set if m_autodetectMathJaX is unset
   wxRadioButton *m_noAutodetectMathJaX;
+  wxRadioButton *m_useGnuplot;
+  wxRadioButton *m_useWgnuplot;
   //! Called if the currently active dialogue sheet is changed.
   void OnTabChange(wxBookCtrlEvent &event);
 
