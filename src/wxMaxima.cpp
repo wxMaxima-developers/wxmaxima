@@ -3655,7 +3655,7 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
       // if pos is not wxNOT_FOUND it is 6 or higher.
       if(pos != wxNOT_FOUND)
         gnuplotcommand = gnuplotcommand.Left(pos) +
-          gnuplotcommand.Right(gnuplot.Length() - pos - 1);
+          gnuplotcommand.Right(gnuplotcommand.Length() - pos - 1);
     }
 #endif
   if (wxExecute(gnuplotcommand, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
