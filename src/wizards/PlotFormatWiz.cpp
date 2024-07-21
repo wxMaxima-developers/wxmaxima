@@ -37,8 +37,7 @@ PlotFormatWiz::PlotFormatWiz(wxWindow *parent, int id,
     wxS("gnuplot_pipes"),
     wxS("geomview"),
 #endif
-    wxS("xmaxima"),
-    wxS("mgnuplot")
+    wxS("xmaxima")
   };
   combo_box_1 = new wxComboBox(
                                this, -1, combo_box_1_choices[0], wxDefaultPosition, wxSize(140, -1),
