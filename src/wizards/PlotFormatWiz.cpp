@@ -31,10 +31,9 @@ PlotFormatWiz::PlotFormatWiz(wxWindow *parent, int id,
   label_1 = new wxStaticText(this, -1, _("Choose new plot format:"));
   const wxString combo_box_1_choices[] = {
     wxS("gnuplot"),
-#if !defined(__WXMSW__)
-    /* gnuplot_pipes is not available on Windows, geomview requires Motif, which
-       is not available on Windows */
     wxS("gnuplot_pipes"),
+#if !defined(__WXMSW__)
+    /* geomview requires Motif, which is not available on Windows */
     wxS("geomview"),
 #endif
     wxS("xmaxima")
