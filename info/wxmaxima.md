@@ -501,7 +501,8 @@ If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and `wxplot
 
 ### Opening Gnuplot’s command console in `plot` windows
 
-On MS Windows, if in _Maxima_’s variable `gnuplot_command` "gnuplot" is replaced by "wgnuplot", _Gnuplot_ offers the possibility to open a console window, where _gnuplot_ commands can be entered into. Unfortunately, enabling this feature causes _Gnuplot_ to "steal" the keyboard focus for a short time every time a plot is prepared.
+On MS Windows, there are two Gnuplot programs, `gnuplot.exe` and `wgnuplot.exe`.
+You can configure, which command should be used using the configuration menu. `wgnuplot.exe` offers the possibility to open a console window, where _gnuplot_ commands can be entered into, `gnuplot.exe` does not offer this possibility. Unfortunately, `wgnuplot.exe` causes _Gnuplot_ to "steal" the keyboard focus for a short time every time a plot is prepared.
 
 ### Embedding animations into the spreadsheet
 
