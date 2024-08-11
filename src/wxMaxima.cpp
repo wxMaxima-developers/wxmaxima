@@ -3581,6 +3581,7 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
     wxString wgnuplot = gnuplot;
     if(m_configuration.UseWGnuplot())
       {
+        wxLogMessage(_("Instructed to prefer wgnuplot over gnuplot"));
         long pos = gnuplot.rfind(wxS("gnuplot"));
         // if pos is not wxNOT_FOUND it is 6 or higher.
         if(pos != wxNOT_FOUND)
@@ -3589,6 +3590,10 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
             if (!m_gnuplotcommand.IsEmpty())
               m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wgnuplot);
           }
+      }
+    else
+      {
+        wxLogMessage(_("Instructed to prefer gnuplot over wgnuplot"));
       }
 #ifdef __WXMSW__
     if (m_gnuplotcommand.IsEmpty())
@@ -3614,11 +3619,16 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
     // If not successful, use the original command (better than empty for error
     // messages)
     if (m_gnuplotcommand.IsEmpty()) {
-      wxLogMessage(_("Gnuplot not found, using the default: %s"), gnuplot.mb_str());
       if(m_configuration.UseWGnuplot())
-        m_gnuplotcommand = wgnuplot;
+        {
+          m_gnuplotcommand = wgnuplot;
+          wxLogMessage(_("Gnuplot not found, using the default: %s"), wgnuplot.mb_str());
+        }
       else
-        m_gnuplotcommand = gnuplot;
+        {
+          m_gnuplotcommand = gnuplot;
+          wxLogMessage(_("Gnuplot not found, using the default: %s"), gnuplot.mb_str());
+        }
     } else {
       wxLogMessage(_("Gnuplot found at: %s"), m_gnuplotcommand.mb_str());
     }
