@@ -36,18 +36,19 @@
 
 DigitCell::DigitCell(GroupCell *group, Configuration *config,
                      const wxString &text, TextStyle style)
-  : TextCell(group, config, text, style) {}
+  : TextCell(group, config, text, style) {m_displayedText = m_text;}
 
 DigitCell::DigitCell(GroupCell *group, const DigitCell &cell)
-  : DigitCell(group, cell.m_configuration, cell.m_text, cell.GetTextStyle()) {}
+  : DigitCell(group, cell.m_configuration, cell.m_text, cell.GetTextStyle()) {m_displayedText = cell.m_text;}
 
 DEFINE_CELL(DigitCell)
 
 void DigitCell::Recalculate(AFontSize fontsize) {
   if (NeedsRecalculation(fontsize)) {
+    //    Cell::Recalculate(fontsize);
     SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);
     wxSize sz =
-      CalculateTextSize(m_configuration->GetRecalcDC(), m_displayedText, cellText);
+      CalculateTextSize(m_configuration->GetRecalcDC(), m_text, cellText);
     m_width = sz.GetWidth();
     m_height = sz.GetHeight();
     m_height += 2 * MC_TEXT_PADDING;

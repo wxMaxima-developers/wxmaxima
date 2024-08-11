@@ -379,6 +379,7 @@ wxSize TextCell::CalculateTextSize(wxDC *const dc, const wxString &text,
 }
 
 void TextCell::UpdateDisplayedText() {
+  wxString displayedText_old = m_displayedText;
   m_displayedText = m_text;
 
   m_displayedText.Replace(wxS("\xDCB6"),
@@ -417,6 +418,8 @@ void TextCell::UpdateDisplayedText() {
     if (m_displayedText == wxS("#"))
       m_displayedText = wxS("\u2260");
   }
+  if(displayedText_old != m_displayedText)
+    ScheduleRecalculation();
 }
 
 void TextCell::Recalculate(AFontSize fontsize) {

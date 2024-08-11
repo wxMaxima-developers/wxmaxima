@@ -20,6 +20,8 @@
 - Fix a problem, when 'maxima-local' (a not installed version of Maxima)
   was chosen as Maxima. WxMaxima did not finish on File->Exit and used
   much CPU power. 
+- Size calculations for numbers that were broken into lines failed the first time
+  (#1931)
 
 # 24.05.0
 

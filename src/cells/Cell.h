@@ -469,6 +469,8 @@ public:
   //! True, if something that affects the cell size has changed.
   virtual bool NeedsRecalculation(AFontSize fontSize) const;
 
+  //! Cause this cell to be recalculated the next time
+  void ScheduleRecalculation(){m_cellCfgCnt_last = m_configuration->CellCfgCnt() - 1 ;}
   //! Has the configuration changed since the last recalculation of this cell?
   bool ConfigChanged() const {return m_configuration->CellCfgCnt() != m_cellCfgCnt_last;}
   /*!
