@@ -57,8 +57,6 @@ private:
   std::unique_ptr<Cell> m_innerCell;
   //! The "not all digits displayed" message.
   wxString m_ellipsis;
-  //! Last few digits (also used for user defined label)
-  wxString m_numEnd;
 
   //** 4-byte objects (12 bytes)
   //**

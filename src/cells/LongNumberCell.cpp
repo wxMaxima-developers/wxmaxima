@@ -55,11 +55,9 @@ void LongNumberCell::UpdateDisplayedText() {
     m_numStart = m_displayedText.Left(left);
     m_ellipsis = wxString::Format(_("[%li digits]"),
                                   static_cast<long>(m_displayedText.Length()) - 2 * left);
-    m_numEnd = m_displayedText.Right(left);
   } else {
     m_numStart.clear();
     m_ellipsis.clear();
-    m_numEnd.clear();
   }
   m_sizeCache.clear();
 }
@@ -85,7 +83,6 @@ void LongNumberCell::Recalculate(AFontSize fontsize) {
       m_center = 0;
       m_numStart.clear();
       m_ellipsis.clear();
-      m_numEnd.clear();
     } else {
       if (m_numStart.IsEmpty())
         TextCell::Recalculate(fontsize);
@@ -94,13 +91,11 @@ void LongNumberCell::Recalculate(AFontSize fontsize) {
         SetFont(dc, m_fontSize_Scaled);
         auto numStartSize = CalculateTextSize(dc, m_numStart, numberStart);
         auto ellipsisSize = CalculateTextSize(dc, m_ellipsis, ellipsis);
-        auto numEndSize = CalculateTextSize(dc, m_numEnd, numberEnd);
         m_numStartWidth = numStartSize.GetWidth();
         m_ellipsisWidth = ellipsisSize.GetWidth();
-        m_width = m_numStartWidth + m_ellipsisWidth + numEndSize.GetWidth();
+        m_width = m_numStartWidth + m_ellipsisWidth;
         m_height =
-          std::max(std::max(numStartSize.GetHeight(), ellipsisSize.GetHeight()),
-                numEndSize.GetHeight());
+          std::max(numStartSize.GetHeight(), ellipsisSize.GetHeight());
         m_center = m_height / 2;
       }
     }
@@ -121,10 +116,6 @@ void LongNumberCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       SetTextColor(dc);
       SetFont(dc, m_fontSize_Scaled);
       dc->DrawText(m_numStart, point.x + MC_TEXT_PADDING,
-                   point.y - m_center + MC_TEXT_PADDING);
-      dc->DrawText(m_numEnd,
-                   point.x + MC_TEXT_PADDING + m_numStartWidth +
-                   m_ellipsisWidth,
                    point.y - m_center + MC_TEXT_PADDING);
       wxColor textColor = dc->GetTextForeground();
       wxColor backgroundColor = dc->GetTextBackground();
