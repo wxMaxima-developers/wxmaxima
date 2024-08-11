@@ -22,6 +22,7 @@
   much CPU power. 
 - Size calculations for numbers that were broken into lines failed the first time
   (#1931)
+- On MS Windows one can now choose between Gnuplot and wGnuplot (#1934)
 
 # 24.05.0
 

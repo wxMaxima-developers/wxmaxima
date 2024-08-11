@@ -3578,44 +3578,47 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
     pathlist.Add(OSX_MACPORTS_PREFIX "/bin");
 #endif
 
+    wxString wgnuplot = gnuplot;
     if(m_configuration.UseWGnuplot())
       {
         long pos = gnuplot.rfind(wxS("gnuplot"));
-        wxString wgnuplot = gnuplot;
         // if pos is not wxNOT_FOUND it is 6 or higher.
         if(pos != wxNOT_FOUND)
           {
             wgnuplot = gnuplot.Left(pos) + wxS("w") + gnuplot.Right(gnuplot.Length() - pos);
-            if (m_gnuplotcommand == wxEmptyString)
+            if (!m_gnuplotcommand.IsEmpty())
               m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wgnuplot);
           }
       }
 #ifdef __WXMSW__
-    if (m_gnuplotcommand == wxEmptyString)
+    if (m_gnuplotcommand.IsEmpty())
       m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot);
 
     if(m_configuration.UseWGnuplot())
       {
         // If not successful, Find executable "wgnuplot.exe" in our list of paths
-        if (m_gnuplotcommand == wxEmptyString)
+        if (m_gnuplotcommand.IsEmpty())
           m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("wgnuplot.exe"));
       }
     // If not successful, Find executable "gnuplot.exe" in our list of paths
-    if (m_gnuplotcommand == wxEmptyString)
+    if (m_gnuplotcommand.IsEmpty())
       m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("gnuplot.exe"));
     // If not successful, Find executable "gnuplot.bat" in our list of paths
-    if (m_gnuplotcommand == wxEmptyString)
+    if (m_gnuplotcommand.IsEmpty())
       m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("gnuplot.bat"));
 #endif
 #ifdef __WXOSX__
-    if (m_gnuplotcommand == wxEmptyString)
+    if (m_gnuplotcommand.IsEmpty())
       m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot + wxS(".app"));
 #endif
     // If not successful, use the original command (better than empty for error
     // messages)
-    if (m_gnuplotcommand == wxEmptyString) {
+    if (m_gnuplotcommand.IsEmpty()) {
       wxLogMessage(_("Gnuplot not found, using the default: %s"), gnuplot.mb_str());
-      m_gnuplotcommand = gnuplot;
+      if(m_configuration.UseWGnuplot())
+        m_gnuplotcommand = wgnuplot;
+      else
+        m_gnuplotcommand = gnuplot;
     } else {
       wxLogMessage(_("Gnuplot found at: %s"), m_gnuplotcommand.mb_str());
     }
