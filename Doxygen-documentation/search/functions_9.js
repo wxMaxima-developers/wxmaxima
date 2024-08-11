@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['keyboardselectionstart_2668',['KeyboardSelectionStart',['../classWorksheet.html#ab47c06c7c9f204c57bedf9bb6ad63602',1,'Worksheet']]],
-  ['keyboardselectionstartedhere_2669',['KeyboardSelectionStartedHere',['../classEditorCell.html#a657f28462a91ec41213a446b5b85bc31',1,'EditorCell']]],
-  ['killmaxima_2670',['KillMaxima',['../classwxMaxima.html#a8da4fe8ce1571a6e9f1a6cdf7cd8e270',1,'wxMaxima']]]
+  ['keyboardselectionstart_2669',['KeyboardSelectionStart',['../classWorksheet.html#ab47c06c7c9f204c57bedf9bb6ad63602',1,'Worksheet']]],
+  ['keyboardselectionstartedhere_2670',['KeyboardSelectionStartedHere',['../classEditorCell.html#a657f28462a91ec41213a446b5b85bc31',1,'EditorCell']]],
+  ['killmaxima_2671',['KillMaxima',['../classwxMaxima.html#a8da4fe8ce1571a6e9f1a6cdf7cd8e270',1,'wxMaxima']]]
 ];
