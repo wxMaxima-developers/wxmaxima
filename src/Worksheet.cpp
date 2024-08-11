@@ -208,6 +208,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
           wxScrollWinEventHandler(Worksheet::OnScrollEvent));
   Connect(wxEVT_SCROLL_THUMBTRACK,
           wxScrollWinEventHandler(Worksheet::OnScrollEvent));
+  CallAfter([this] {m_configuration->SetCanvasSize(GetClientSize());});
 }
 
 void Worksheet::OnSidebarKey(wxCommandEvent &event) {
