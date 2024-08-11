@@ -53,7 +53,7 @@ void LongNumberCell::UpdateDisplayedText() {
     if (left > 30)
       left = 30;
     m_numStart = m_displayedText.Left(left);
-    m_ellipsis = wxString::Format(_("[%li digits]"),
+    m_ellipsis = wxString::Format(_(wxS("\u2026[%li digits]")),
                                   static_cast<long>(m_displayedText.Length()) - 2 * left);
   } else {
     m_numStart.clear();
