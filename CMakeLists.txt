@@ -88,7 +88,7 @@ if(MSVC)
     # Safely handle exceptions everywhere
     add_compile_options(/EHsc)
     # Tell MSVC not to generate its own manifest file
-    #set_property(TARGET wxmaxima APPEND PROPERTY LINK_FLAGS /MANIFEST:NO)
+    set_property(TARGET wxmaxima APPEND PROPERTY LINK_FLAGS /MANIFEST:NO)
 endif()
 
 if(MSYS OR MINGW)
