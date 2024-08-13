@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['contributors_20to_20wxmaxima_3404',['Contributors to wxMaxima',['../md_AUTHORS.html',1,'']]],
-  ['current_3405',['Current',['../md_NEWS.html',1,'']]]
+  ['bug_20list_0',['Bug List',['../bug.html',1,'']]],
+  ['building_20wxmaxima_20from_20source_1',['Building wxMaxima from source',['../md_Compiling.html',1,'']]]
 ];

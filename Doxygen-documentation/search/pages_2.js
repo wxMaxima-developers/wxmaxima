@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['data_3406',['Data',['../md_data_README.html',1,'']]]
+  ['contributors_20to_20wxmaxima_0',['Contributors to wxMaxima',['../md_AUTHORS.html',1,'']]],
+  ['current_1',['Current',['../md_NEWS.html',1,'']]]
 ];

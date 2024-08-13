@@ -1,19 +1,17 @@
 var searchData=
 [
-  ['randomfloatinggenerator_1941',['RandomFloatingGenerator',['../classCatch_1_1Generators_1_1RandomFloatingGenerator.html',1,'Catch::Generators']]],
-  ['randomintegergenerator_1942',['RandomIntegerGenerator',['../classCatch_1_1Generators_1_1RandomIntegerGenerator.html',1,'Catch::Generators']]],
-  ['range_1943',['Range',['../structCell_1_1Range.html',1,'Cell']]],
-  ['rangegenerator_1944',['RangeGenerator',['../classCatch_1_1Generators_1_1RangeGenerator.html',1,'Catch::Generators']]],
-  ['recentdocuments_1945',['RecentDocuments',['../classRecentDocuments.html',1,'']]],
-  ['regexctrl_1946',['RegexCtrl',['../classRegexCtrl.html',1,'']]],
-  ['regexmatcher_1947',['RegexMatcher',['../structCatch_1_1Matchers_1_1StdString_1_1RegexMatcher.html',1,'Catch::Matchers::StdString']]],
-  ['regexreplacer_1948',['RegexReplacer',['../classMarkDownParser_1_1RegexReplacer.html',1,'MarkDownParser']]],
-  ['regexsearch_1949',['RegexSearch',['../classRegexSearch.html',1,'']]],
-  ['registrarfortagaliases_1950',['RegistrarForTagAliases',['../structCatch_1_1RegistrarForTagAliases.html',1,'Catch']]],
-  ['repeatgenerator_1951',['RepeatGenerator',['../classCatch_1_1Generators_1_1RepeatGenerator.html',1,'Catch::Generators']]],
-  ['resolutionchooser_1952',['ResolutionChooser',['../classResolutionChooser.html',1,'']]],
-  ['resultdisposition_1953',['ResultDisposition',['../structCatch_1_1ResultDisposition.html',1,'Catch']]],
-  ['resultwas_1954',['ResultWas',['../structCatch_1_1ResultWas.html',1,'Catch']]],
-  ['reusablestringstream_1955',['ReusableStringStream',['../classCatch_1_1ReusableStringStream.html',1,'Catch']]],
-  ['runtests_1956',['RunTests',['../structCatch_1_1RunTests.html',1,'Catch']]]
+  ['par_5ftest_0',['Par_Test',['../classPar__Test.html',1,'']]],
+  ['parametricwiz_1',['ParametricWiz',['../classParametricWiz.html',1,'']]],
+  ['parencell_2',['ParenCell',['../classParenCell.html',1,'']]],
+  ['plot2ddiscrete_3',['Plot2DDiscrete',['../classPlot2DDiscrete.html',1,'']]],
+  ['plot2dpar_4',['Plot2DPar',['../classPlot2DPar.html',1,'']]],
+  ['plot2dwiz_5',['Plot2DWiz',['../classPlot2DWiz.html',1,'']]],
+  ['plot3dwiz_6',['Plot3DWiz',['../classPlot3DWiz.html',1,'']]],
+  ['plotformatwiz_7',['PlotFormatWiz',['../classPlotFormatWiz.html',1,'']]],
+  ['pluralise_8',['pluralise',['../structCatch_1_1pluralise.html',1,'Catch']]],
+  ['predicatematcher_9',['PredicateMatcher',['../classCatch_1_1Matchers_1_1Generic_1_1PredicateMatcher.html',1,'Catch::Matchers::Generic']]],
+  ['printing_10',['Printing',['../classPrinting.html',1,'']]],
+  ['printout_11',['Printout',['../classPrintout.html',1,'']]],
+  ['productcell_12',['ProductCell',['../classProductCell.html',1,'']]],
+  ['pyclass_13',['PyClass',['../classdocstring_1_1PyClass.html',1,'docstring.PyClass'],['../classpyexample_1_1PyClass.html',1,'pyexample.PyClass']]]
 ];

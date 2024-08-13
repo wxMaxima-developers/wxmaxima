@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['description_3146',['description',['../structCharButton_1_1Definition.html#ab873b11925f89f2e13c50e507c4e4319',1,'CharButton::Definition']]]
+  ['base_0',['base',['../structVehicle.html#ad7970f528d429f6fc1725173e93a77c2',1,'Vehicle::base()'],['../structCar.html#ab8ff28306286da5a8b14fa9bdccaafaa',1,'Car::base()'],['../structTruck.html#ad0ac321609dda1a6c552488b05ec7ac8',1,'Truck::base()']]]
 ];

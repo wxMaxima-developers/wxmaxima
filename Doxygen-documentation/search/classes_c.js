@@ -1,10 +1,16 @@
 var searchData=
 [
-  ['observed_1922',['Observed',['../classObserved.html',1,'']]],
-  ['option_1923',['Option',['../classCatch_1_1Option.html',1,'Catch']]],
-  ['optional_1924',['optional',['../classSTX__NAMESPACE__NAME_1_1optional.html',1,'STX_NAMESPACE_NAME']]],
-  ['optional_3c_20t_20_26_20_3e_1925',['optional&lt; T &amp; &gt;',['../classSTX__NAMESPACE__NAME_1_1optional_3_01T_01_6_01_4.html',1,'STX_NAMESPACE_NAME']]],
-  ['optional_3c_20t_20_26_26_20_3e_1926',['optional&lt; T &amp;&amp; &gt;',['../classSTX__NAMESPACE__NAME_1_1optional_3_01T_01_6_6_01_4.html',1,'STX_NAMESPACE_NAME']]],
-  ['optional_5fbase_1927',['optional_base',['../structSTX__NAMESPACE__NAME_1_1optional__base.html',1,'STX_NAMESPACE_NAME']]],
-  ['outcommon_1928',['OutCommon',['../classOutCommon.html',1,'']]]
+  ['nameandtags_0',['NameAndTags',['../structCatch_1_1NameAndTags.html',1,'Catch']]],
+  ['namedboxcell_1',['NamedBoxCell',['../classNamedBoxCell.html',1,'']]],
+  ['nocliptodrawregion_2',['NoClipToDrawRegion',['../classNoClipToDrawRegion.html',1,'']]],
+  ['noncopyable_3',['NonCopyable',['../classCatch_1_1NonCopyable.html',1,'Catch']]],
+  ['notification_4',['Notification',['../classNotification.html',1,'']]],
+  ['nsvggradient_5',['NSVGgradient',['../structNSVGgradient.html',1,'']]],
+  ['nsvggradientstop_6',['NSVGgradientStop',['../structNSVGgradientStop.html',1,'']]],
+  ['nsvgimage_7',['NSVGimage',['../structNSVGimage.html',1,'']]],
+  ['nsvgpaint_8',['NSVGpaint',['../structNSVGpaint.html',1,'']]],
+  ['nsvgpath_9',['NSVGpath',['../structNSVGpath.html',1,'']]],
+  ['nsvgshape_10',['NSVGshape',['../structNSVGshape.html',1,'']]],
+  ['nulllog_11',['NullLog',['../classNullLog.html',1,'']]],
+  ['nullopt_5ft_12',['nullopt_t',['../structSTX__NAMESPACE__NAME_1_1nullopt__t.html',1,'STX_NAMESPACE_NAME']]]
 ];
