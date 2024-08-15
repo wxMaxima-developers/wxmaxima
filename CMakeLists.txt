@@ -87,8 +87,6 @@ if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
     # Safely handle exceptions everywhere
     add_compile_options(/EHsc)
-    # Tell MSVC not to generate its own manifest file
-    set_property(TARGET wxmaxima APPEND PROPERTY LINK_FLAGS /MANIFEST:NO)
 endif()
 
 if(MSYS OR MINGW)
@@ -232,6 +230,12 @@ endif()
 configure_file(${CMAKE_SOURCE_DIR}/locales/manual/po4a.cfg.in po4a.cfg)
 
 add_subdirectory(src)
+if(MSVC)
+    # Tell MSVC not to generate its own manifest file.
+    # Must be done after the target was created.
+    set_property(TARGET wxmaxima APPEND PROPERTY LINK_FLAGS /MANIFEST:NO)
+endif()
+
 if(NOT CYGWIN)
     add_subdirectory(Doxygen)
 endif()
