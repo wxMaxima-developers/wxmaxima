@@ -38,7 +38,7 @@ class LoggingMessageDialog : public wxMessageDialog
 {
 public:
   LoggingMessageDialog(wxWindow *parent, const wxString &message,
-                       const wxString &caption = wxMessageBoxCaptionStr,
+                       wxString caption = wxMessageBoxCaptionStr,
                        long style = wxOK|wxCENTRE, const wxPoint &pos = wxDefaultPosition):
     wxMessageDialog (parent, message, caption, style, pos)
     {

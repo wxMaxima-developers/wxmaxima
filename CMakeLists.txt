@@ -16,7 +16,7 @@ endif()
 
 
 set(VERSION_MAJOR 24)
-set(VERSION_MINOR 05)
+set(VERSION_MINOR 08)
 set(VERSION_PATCHLEVEL 0)
 set(VERSION_SUFFIX "DevelopmentSnapshot")
 string(COMPARE EQUAL "${VERSION_SUFFIX}" "" no_version_suffix)

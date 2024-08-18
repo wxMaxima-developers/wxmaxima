@@ -1,4 +1,4 @@
-# Current
+# 24.08.0
 
 - An advanced plotting tutorial
 - Try harder to kill maxima on closing it
@@ -23,6 +23,7 @@
 - Size calculations for numbers that were broken into lines failed the first time
   (#1931)
 - On MS Windows one can now choose between Gnuplot and wGnuplot (#1934)
+- Fixed the error message about dual manifest files on MSVC
 
 # 24.05.0
 
