@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['a_20documentation_20page_0',['A documentation page',['../page1.html',1,'']]],
-  ['another_20page_1',['Another page',['../page2.html',1,'']]]
+  ['24_2e08_2e0_0',['24.08.0',['../md_NEWS.html',1,'']]]
 ];
