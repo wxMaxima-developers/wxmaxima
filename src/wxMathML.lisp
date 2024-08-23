@@ -252,9 +252,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 ;; array, not the contents thereof.
 ;;
 ;; Adapted from DIMENSION-ARRAY and DIMENSION-INDICES in Maxima src/displa.lisp.
-(defun wxxml-array (x l r &aux base-symbol)
-  (if (eq (caar x) 'mqapply)
-      (setq base-symbol (cadr x) x (cdr x))
+(defun wxxml-array (x l r &aux (base-symbol nil))
+  (unless (eq (caar x) 'mqapply)
       (setq base-symbol (caar x)))
   (let
       ((display-indices (safe-mget base-symbol 'display-indices))
