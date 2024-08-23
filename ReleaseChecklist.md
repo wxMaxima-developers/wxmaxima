@@ -21,13 +21,17 @@
 - Update the included HTML manuals.
 - Create an (annotated: using "git tag -a") git tag for the release
 - Push the tag to GitHub, using: git push origin --tags
+- When building binaries (RPM, DEB, binary tar.gz, ...) do a RELEASE build:
+  configure wxMaxima with `cmake -DCMAKE_BUILD_TYPE=Release ..`
+  This will not append the Suffix "_DevelopmentSnapshot" to the file names of
+  the generated packages. (This is done, when building (default) "Debug" builds,
+  so that Development versions can be clearly recognized.
 - Go to the releases page GitHub and convert the tag into a release.
   If possible add an Windows installer too.
   Be sure, to remove the 'draft' status. Log out from GitHub and check,
   if you see the release as an anonymous user too.
 - Update the release info in the files download.html and in version.txt
   in the gh_pages branch.
-- Set VERSION_SUFFIX to "DevelopmentSnapshot" in CMakeLists.txt for the new development version.
 - Download the tarball (.tar.gz and .zip version) and run the following command on them:
   gpg --armor --detach-sign <filename>
 - On the release page on github modify the release to contain the two .asc files
