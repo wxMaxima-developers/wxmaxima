@@ -657,7 +657,8 @@ Startup files</h2>
 <li><a class="el" href="classA.html">A</a> file that contains commands that are executed on starting up <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>: <code>maxima-init.mac</code></li>
 <li>one file of additional commands that are executed if <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> is starting <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>: <code>wxmaxima-init.mac</code></li>
 </ul>
-<p>These files are in the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> user directory (usually <code>maxima</code> in Windows, <code>.maxima</code> otherwise) in the user’s home directory / user profile directory. The location can be found out with the command: <code>maxima_userdir;</code></p>
+<p>For example, if Gnuplot is installed in <code>/opt</code> (maybe on MacOS), you can add <code>gnuplot_command:"/opt/local/bin/gnuplot"$</code> (or <code>/opt/gnuplot/bin/gnuplot</code> or any other path) to these files.</p>
+<p>These files are in the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> user directory (usually <code>USERPROFILE%/maxima</code> in Windows, <code>$HOME/.maxima</code> otherwise). The location can be found out with the command: <code>maxima_userdir;</code></p>
 <h2><a class="anchor" id="autotoc_md97"></a>
 Special variables wx...</h2>
 <ul>
