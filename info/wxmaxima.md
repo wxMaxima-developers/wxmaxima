@@ -705,7 +705,9 @@ The config dialogue of _wxMaxima_ offers to edit two files with commands that ar
 - A file that contains commands that are executed on starting up _Maxima_: `maxima-init.mac`
 - one file of additional commands that are executed if _wxMaxima_ is starting _Maxima_: `wxmaxima-init.mac`
 
-These files are in the Maxima user directory (usually `maxima` in Windows, `.maxima` otherwise) in the user’s home directory / user profile directory. The location can be found out with the command: `maxima_userdir;`
+For example, if Gnuplot is installed in `/opt` (maybe on MacOS), you can add `gnuplot_command:"/opt/local/bin/gnuplot"$` (or `/opt/gnuplot/bin/gnuplot` or any other path) to these files.
+
+These files are in the Maxima user directory (usually `%USERPROFILE%/maxima` in Windows, `$HOME/.maxima` otherwise). The location can be found out with the command: `maxima_userdir;`
 
 ## Special variables wx...
 
