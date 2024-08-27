@@ -1,3 +1,7 @@
+# Current
+
+- A Spanish translation update by cyphra.
+
 # 24.08.0
 
 - An advanced plotting tutorial
