@@ -368,7 +368,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 			 ($get sub-symb '$wxxml_subscript)
 			 )
 		     (ignore-errors (not
-				     (member '$WXXML_SUBSCRIPTED (cadr (properties x))))))))
+				     (member '$WXXML_SUBSCRIPTED (cdr (properties x))))))))
 	  (format nil  "<munder altCopy=\"~A\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
 		  (wxxml-alt-copy-text x)
 		  (format nil "<mi>~a</mi>" (wxxml-fix-string (format nil "~A" sub-var)))
