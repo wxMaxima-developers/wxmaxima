@@ -2905,13 +2905,13 @@ void wxMaxima::KillMaxima(bool logMessage) {
                               wxSIGTERM, wxKILL_CHILDREN) == wxKILL_OK);
   if ((!killed) && (m_pid > 0))
     killed = (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
-  
+
   if(m_maximaProcess && (!killed) && (m_maximaProcess->GetPid() > 0))
     killed = (wxProcess::Kill(m_maximaProcess->GetPid(),
                               wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
   if ((!killed) && (m_pid > 0))
     killed = (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
-  if (!killed) 
+  if (!killed)
     wxLogMessage(_("Killing Maxima failed. But we sent a \"quit();\" to it."));
   m_configuration.InLispMode(false);
 
@@ -2922,7 +2922,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
       wxMilliSleep(50);
       count--;
     }
-  
+
   // As we might have killed maxima before it was able to clean up its
   // temp files we try to do so manually now:
   if (m_maximaTempDir != wxEmptyString) {
@@ -2953,7 +2953,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
                    wxString::Format("%li.xmaxima", static_cast<long>(m_pid)));
   }
   m_pid = -1;
-  
+
   // We don't need to be informed any more if the maxima process we just tried to
   // kill actually exits.
   if(m_maximaProcess)
@@ -3671,19 +3671,14 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
           gnuplotcommand.Right(gnuplotcommand.Length() - pos - 1);
     }
 #endif
-  if (wxExecute(gnuplotcommand, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
-                m_gnuplotTerminalQueryProcess, env.get()) < 0)
+  wxArrayString gnuplot_output, gnuplot_errors;
+  const wxString gnuplot_terminal_command = gnuplotcommand + " -e \"print GPVAL_TERMINALS\"";
+  if (wxExecute(gnuplot_terminal_command, gnuplot_output, gnuplot_errors, wxEXEC_SYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER, NULL) < 0)
     wxLogMessage(_("Cannot start gnuplot"));
   else {
-    wxOutputStream *ostream = m_gnuplotTerminalQueryProcess->GetOutputStream();
-    if (ostream != NULL) {
-      wxTextOutputStream textout(*ostream);
-      textout << "print "
-        "GPVAL_TERMINALS;quit;\n\n\n\n\n\n\n\n\n\n\n:q\n:q\n:q\n:q\n:"
-        "q\n:q\n:q\n:q\n:q\n:q\n";
-      //      ostream->Close();
-    } else
-      wxLogMessage("Cannot get gnuplot's output stream!");
+    wxString gnuplot_terminals = wxJoin(gnuplot_output, ' ');
+    wxLogMessage(wxS("Gnuplot terminals: ") + gnuplot_terminals);
+    /* FIXME: What should happen with the result? Returned by the function? Stored anywhere? Currently the result is nowhere used... */
   }
 }
 
