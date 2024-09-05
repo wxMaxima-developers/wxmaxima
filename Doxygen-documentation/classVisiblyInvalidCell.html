@@ -162,6 +162,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFont</b> (wxDC *dc
 <tr class="memitem:ae34197ddbbdece9ef6d98139d30a0766"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#ae34197ddbbdece9ef6d98139d30a0766">ToString</a> () const override</td></tr>
 <tr class="memdesc:ae34197ddbbdece9ef6d98139d30a0766"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cell's representation as a string.  <br /></td></tr>
 <tr class="separator:ae34197ddbbdece9ef6d98139d30a0766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac150ffbf773c3591d4324f22a804ed47"><td class="memItemLeft" align="right" valign="top">virtual const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#ac150ffbf773c3591d4324f22a804ed47">GetDisplayedString</a> () const override</td></tr>
+<tr class="separator:ac150ffbf773c3591d4324f22a804ed47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22ee78b7d0af748e1557c2893b50cdbb"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextCell.html#a22ee78b7d0af748e1557c2893b50cdbb">ToTeX</a> () const override</td></tr>
 <tr class="memdesc:a22ee78b7d0af748e1557c2893b50cdbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to its LaTeX representation.  <br /></td></tr>
 <tr class="separator:a22ee78b7d0af748e1557c2893b50cdbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1754,6 +1756,33 @@ static wxRegEx&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundingE
 
 </div>
 </div>
+<a id="ac150ffbf773c3591d4324f22a804ed47" name="ac150ffbf773c3591d4324f22a804ed47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac150ffbf773c3591d4324f22a804ed47">&#9670;&#160;</a></span>GetDisplayedString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const wxString TextCell::GetDisplayedString </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classCell.html">Cell</a>.</p>
+
+</div>
+</div>
 <a id="ae178639e3a07cafe420855d48f4b9a27" name="ae178639e3a07cafe420855d48f4b9a27"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae178639e3a07cafe420855d48f4b9a27">&#9670;&#160;</a></span>GetDrop()</h2>
 
@@ -3153,7 +3182,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
