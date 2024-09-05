@@ -555,6 +555,7 @@ public:
   virtual void SetValue(const wxString &WXUNUSED(text)) {}
   //! Gets the text this text cell contains
   virtual const wxString &GetValue() const;
+  virtual const wxString GetDisplayedString() const {return GetValue();}
 
   //! Get the first cell in this list of cells
   Cell *first() const;

@@ -70,6 +70,7 @@ public:
   wxString ToOMML() const override;
   wxString ToRTF() const override;
   virtual wxString ToString() const override;
+  virtual const wxString GetDisplayedString() const override {return m_displayedText;}
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
