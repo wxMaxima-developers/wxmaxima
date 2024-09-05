@@ -1411,9 +1411,12 @@ wxColor Configuration::MakeColorDifferFromBackground(wxColor color) {
     return InvertColour(color);
   } else {
     int maxOldCol = std::max(std::max(color.Red(), color.Green()), color.Blue());
-    return wxColour(newBrightness * color.Red() / maxOldCol,
-                    newBrightness * color.Green() / maxOldCol,
-                    newBrightness * color.Blue() / maxOldCol);
+    if (maxOldCol < 1)
+      return *wxWHITE;
+    else
+      return wxColour(newBrightness * color.Red() / maxOldCol,
+                      newBrightness * color.Green() / maxOldCol,
+                      newBrightness * color.Blue() / maxOldCol);
   }
 }
 

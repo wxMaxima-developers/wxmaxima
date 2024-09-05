@@ -1,6 +1,7 @@
 # Current
 
 - A Spanish translation update by cyphra.
+- Resolved a crash when inverting the worksheet (#1951)
 
 # 24.08.0
 
