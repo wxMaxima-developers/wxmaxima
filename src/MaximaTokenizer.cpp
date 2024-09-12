@@ -166,10 +166,10 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
           breakCommand += wxString(*it3);
           ++it3;
         }
-        if (breakCommand.StartsWith(":lisp ") ||
-            breakCommand.StartsWith(":lisp-quiet ") ||
-            breakCommand.StartsWith(":lisp\t") ||
-            breakCommand.StartsWith(":lisp-quiet\t")) {
+        if (breakCommand.Lower().StartsWith(":lisp ") ||
+            breakCommand.Lower().StartsWith(":lisp-quiet ") ||
+            breakCommand.Lower().StartsWith(":lisp\t") ||
+            breakCommand.Lower().StartsWith(":lisp-quiet\t")) {
           wxString token;
           while ((it < commands.end()) && (*it != '\n')) {
             token += wxString(*it);
