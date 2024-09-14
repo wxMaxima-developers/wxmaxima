@@ -1011,7 +1011,7 @@ wxString TextCell::ToTeX() const {
 wxString TextCell::ToMathML() const {
   if (m_displayedText == wxEmptyString)
     return wxEmptyString;
-  wxString text = XMLescape(ToString());
+  wxString text = XMLescape(GetDisplayedString());
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if (IsHidden() ||
