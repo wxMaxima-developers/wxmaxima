@@ -1909,17 +1909,23 @@ wxMaxima::~wxMaxima() {
       for(const auto &i : GetWorksheet()->m_maximaManual.GetHelpfileAnchors())
         knownWords[i.first] |= 2;
 
-      wxFileInputStream builtintxt(m_configuration.MaximaShareDir() + "/builtins-list.txt");
-      if(builtintxt.IsOk())
+      wxString maxima_share_dir = m_configuration.MaximaShareDir();
+
+      if (maxima_share_dir.length () > 0)
         {
-          wxTextInputStream txt(builtintxt);
-          while(!builtintxt.Eof())
+          wxFileInputStream builtintxt(maxima_share_dir + "/builtins-list.txt");
+          if(builtintxt.IsOk())
             {
-              wxString line;
-              line = txt.ReadLine();
-              knownWords[line] |= 4;
+              wxTextInputStream txt(builtintxt);
+              while(!builtintxt.Eof())
+                {
+                  wxString line;
+                  line = txt.ReadLine();
+                  knownWords[line] |= 4;
+                }
             }
         }
+
       std::vector<wxString> knownwords_sorted;
       for(const auto &i : knownWords)
         knownwords_sorted.push_back(i.first);
