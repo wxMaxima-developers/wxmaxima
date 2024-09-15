@@ -25,9 +25,6 @@ Assume you start inside wxmaxima source tree root folder. Then:
     sudo cmake --build . -- install # install it
 ```
 
-You can use (or test) a fresh compiled wxMaxima (without installation) by calling
-`./wxmaxima-local` from the build-directory.
-
 If you want to install into a special prefix (not `/usr/local`), add
 `-DCMAKE_INSTALL_PREFIX=/your/installation/prefix` to the first
 cmake invocation. E.g.
@@ -45,6 +42,24 @@ also .dmg), the following command will create them:
 ```
 cmake --build . -- package
 ```
+
+#### Testing wxMaxima
+
+You can use (or test) a fresh compiled wxMaxima (without installation) by calling
+`./wxmaxima-local` from the build-directory.
+
+wxMaxima comes with several tests, which can be run using
+
+```
+ctest
+```
+
+from the build directory. If you want to run a single test, you can use the option `-R <name-of-the-test>`
+when calling `ctest`. The tests (and their names) can be seen in the file `test/CMakeLists.txt` of the source code.
+
+On Linux/Unix the tests usually require a X Server; if you start the tests without an X server (e.g.
+automatic tests using cron, when doing tests using a continuous integration system, etc.)
+you can use `xvfb-run` to create a virtual X Server environment, e.g. just run: `xvfb-run ctest`
 
 #### macOS: Creating a portable .apk and .dmg installer
 
@@ -111,7 +126,7 @@ you build wxmaxima. You can get some inspiration about how to do both
 of these steps by examining the PowerShell scripts that do the building
 within `.appveyor.yml` file.
 
-### Note for the Mingw-w64 compiler and crosscompiler
+#### Note for the Mingw-w64 compiler and crosscompiler
 
 These compilers come with two forms of thread support - win32 and posix.
 The win32 thread version does not support std::thread, which wxMaxima
@@ -159,24 +174,6 @@ might allow cmake to find wxWidgets at the cost of loosing the integrated
 dockable help browser.
 
 ## Additional information for packagers
-
-### Running the test suite on a virtual machine
-
-On Linux, wxMaxima's test suite requires a display to work with.
-Since you likely don't want the test suite to pollute your screen,
-or may even be running a headless virtual machine without an X server,
-the `xvfb-run` wrapper should be used:
-
-```
-xvfb-run ctest
-```
-
-On macOS or Windows, X displays aren't used, and the test suite can be
-run directly:
-
-```
-ctest
-```
 
 ### Creating a standalone wxMaxima
 
