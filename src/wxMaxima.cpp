@@ -2331,14 +2331,11 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
     if (addToHistory)
       AddToHistory(s);
 
-    StripLispComments(s);
-
     if (s.StartsWith(wxS(":lisp ")) || s.StartsWith(wxS(":lisp\n")))
       s.Replace(wxS("\n"), wxS(" "));
 
     s.Trim(true);
     s.Append(wxS("\n"));
-
     /// Check for function/variable definitions
     wxStringTokenizer commands(s, wxS(";$"));
     while (commands.HasMoreTokens()) {
