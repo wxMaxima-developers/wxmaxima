@@ -40,6 +40,19 @@
 
 ;; TODO: outchar isn't properly escaped in xml
 
+;; Maxima (compiled with gcl) creates an error, when called with:
+;; maxima --init-lisp=path/to/wxMathML.lisp
+;; and the command :lisp-quiet (wx-print-gui-variables)
+;; is entered:
+;; Maxima encountered a Lisp error:
+;;
+;; Condition in MACSYMA-TOP-LEVEL [or a callee]: INTERNAL-SIMPLE-ERROR: Caught fatal error [memory may be damaged]
+;;
+;; Camm recommends that command to solve the problem
+;; (see https://groups.google.com/g/linux.debian.bugs.dist/c/YJRvUrVUHGQ)
+;; and indeed it seems to solve the issue.
+#+gcl (si::readline-off)
+
 (format t "<wxxml-key>~A</wxxml-key>~%" (maxima-getenv "MAXIMA_AUTH_CODE"))
 
 (in-package :maxima)
