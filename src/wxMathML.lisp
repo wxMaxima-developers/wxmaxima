@@ -42,7 +42,7 @@
 
 ;; Maxima (compiled with gcl) creates an error, when called with:
 ;; maxima --init-lisp=path/to/wxMathML.lisp
-;; and the command :lisp-quiet (wx-print-gui-variables)
+;; and the command :lisp-quiet (wxPrint_autocompletesymbols)
 ;; is entered:
 ;; Maxima encountered a Lisp error:
 ;;
