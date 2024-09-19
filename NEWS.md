@@ -3,6 +3,7 @@
 - A Spanish translation update by cyphra.
 - Resolved a crash when inverting the worksheet (#1951)
 - Do not strip Lisp commnents before sending the input to Maxima (#1953)
+- Correctly copy superscript when CopyAsMathML (#1945)
 
 # 24.08.0
 

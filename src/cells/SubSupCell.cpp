@@ -294,7 +294,7 @@ wxString SubSupCell::ToMathML() const {
     else
       retval += "<mrow/>";
     if (m_postSupCell)
-      m_postSupCell->ListToMathML();
+      retval += m_postSupCell->ListToMathML();
     else
       retval += "<mrow/>";
     retval += "</msubsup>\n";
