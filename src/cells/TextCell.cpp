@@ -1032,8 +1032,7 @@ wxString TextCell::ToMathML() const {
     // doesn't support this currently => Commenting it out. if((GetTextStyle() ==
     // TS_SPECIAL_CONSTANT) && (text == wxS("d")))
     //   text = wxS("&#2146;");
-    bool keepPercent = m_configuration->CheckKeepPercent();
-    if (!keepPercent) {
+    if (!m_configuration->CheckKeepPercent()) {
       if (text == wxS("%e"))
         text = wxS("e");
       if (text == wxS("%catalan"))
@@ -1045,9 +1044,7 @@ wxString TextCell::ToMathML() const {
   case TS_VARIABLE: {
     text = GetGreekStringUnicode();
 
-    bool keepPercent = m_configuration->CheckKeepPercent();
-
-    if (!keepPercent) {
+    if (!m_configuration->CheckKeepPercent()) {
       if (text == wxS("%pi"))
         text = wxS("\u03C0");
     }
@@ -1113,8 +1110,7 @@ wxString TextCell::ToOMML() const {
     // doesn't support this currently => Commenting it out. if((GetTextStyle() ==
     // TS_SPECIAL_CONSTANT) && (text == wxS("d")))
     //   text = wxS("&#2146;");
-    bool keepPercent = m_configuration->CheckKeepPercent();
-    if (!keepPercent) {
+    if (!m_configuration->CheckKeepPercent()) {
       if (text == wxS("%e"))
         text = wxS("e");
       if (text == wxS("%catalan"))
