@@ -156,7 +156,7 @@ void TextCell::UpdateToolTip() {
                  "declare() command. If that isn't possible the \"Automatically "
                  "answer questions\" button makes wxMaxima automatically fill in "
                  "all answers it still remembers from a previous run."));
-  
+
   if (m_text.empty())
     return;
 
@@ -167,7 +167,7 @@ void TextCell::UpdateToolTip() {
       SetToolTip(_(
                    "Either positive, negative or zero.\n"
                    "Normally the result of sign() if the sign cannot be determined."));
-    
+
     else if (m_text == wxS("pz"))
       SetToolTip(_("Either positive or zero.\n"
                    "A possible result of sign()."));
@@ -175,7 +175,7 @@ void TextCell::UpdateToolTip() {
     else if (m_text == wxS("nz"))
       SetToolTip(_("Either negative or zero.\n"
                    "A possible result of sign()."));
-    
+
     else if (m_text == wxS("und"))
       SetToolTip(_("The result was undefined."));
     else if (m_text == wxS("ind"))
@@ -233,7 +233,7 @@ void TextCell::UpdateToolTip() {
                    "infinity or decreased to -infinity. It also can indicate that an "
                    "attempt was made to fit data to an equation that actually matches "
                    "the data best if one parameter is set to +/- infinity."));
-    
+
     else if (m_text.StartsWith(S_("incorrect syntax")) &&
              m_text.Contains(S_("is not an infix operator")))
       SetToolTip(_("A command or number wasn't preceded by a \":\", a \"$\", a "
@@ -1021,7 +1021,6 @@ wxString TextCell::ToMathML() const {
     if (text != wxS("&#8290;"))
       text.Clear();
   }
-  text.Replace(wxS("*"), wxS("\u00B7"));
 
   switch (GetTextStyle()) {
   case TS_GREEK_CONSTANT:
@@ -1057,9 +1056,13 @@ wxString TextCell::ToMathML() const {
     text = GetGreekStringUnicode();
     if (text == wxS("inf"))
       text = wxS("\u221e");
-    if ((text == wxS("+")) || (text == wxS("-")) || (text == wxS("*")) ||
-        (text == wxS("/")))
-      return wxS("<mo>") + text + wxS("</mo>\n");
+    if ((text == wxS("+")) || (text == wxS("-")) || (text == wxS("*")) || (text == wxS("/"))) {
+      if ((m_configuration->GetChangeAsterisk()) && (text == wxS("*"))) {
+        return wxS("<mo>\u00B7</mo>\n"); // return an Unicode centered dot instead of "*"
+      } else {
+        return wxS("<mo>") + text + wxS("</mo>\n");
+      }
+    }
     else
       return wxS("<mi>") + text + wxS("</mi>\n");
   case TS_NUMBER:
