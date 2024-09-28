@@ -152,6 +152,6 @@ var searchData=
   ['csvimportwiz_149',['CsvImportWiz',['../classCsvImportWiz.html',1,'']]],
   ['csvwiz_2ecpp_150',['CsvWiz.cpp',['../CsvWiz_8cpp.html',1,'']]],
   ['csvwiz_2eh_151',['CsvWiz.h',['../CsvWiz_8h.html',1,'']]],
-  ['current_152',['Current',['../md_NEWS.html',1,'']]],
+  ['current_20development_20version_152',['Current development version',['../md_NEWS.html',1,'']]],
   ['cuttoclipboard_153',['CutToClipboard',['../classWorksheet.html#a19df468bef53424aa02222a21ee3bb5a',1,'Worksheet::CutToClipboard()'],['../classEditorCell.html#abe5e2eb147aca9cf6ae58f60ead0ad7b',1,'EditorCell::CutToClipboard()'],['../classCell.html#ad96add356d2a246e0053262fce4d8010',1,'Cell::CutToClipboard()']]]
 ];
