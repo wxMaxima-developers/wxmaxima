@@ -325,7 +325,7 @@ bool Worksheet::RedrawIfRequested() {
           UnsetToolTip();
 
         if (m_cellPointers.m_cellUnderPointer) {
-          const ImgCellBase * const image = GetSelectedImgCellBase(); 
+          const ImgCellBase * const image = GetSelectedImgCellBase();
           if (image != NULL) {
             StatusText(wxString::Format(
                                         _("%s image, %li×%li, %li ppi"),
@@ -1349,7 +1349,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                                                                     wordUnderCursor));
 #if wxCHECK_VERSION(3, 2, 0)
               demoItem->SetBitmap(ArtProvider::GetQuestionmarkBundle());
-#endif 
+#endif
               popupMenu.Append(demoItem);
             }
           popupMenu.AppendSeparator();
@@ -1397,7 +1397,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         if (m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd)
           popupMenu.Append(ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"),
                            wxEmptyString, wxITEM_NORMAL);
-        
+
         if (CanMergeSelection())
           {
             wxMenuItem *item = new wxMenuItem(&popupMenu,
@@ -1405,7 +1405,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                                               _("Merge Cells"));
 #if wxCHECK_VERSION(3, 2, 0)
             item->SetBitmap(ArtProvider::GetCellMergeBundle());
-#endif 
+#endif
             popupMenu.Append(item);
           }
 
@@ -1695,7 +1695,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                                           _("Add to watchlist"));
 #if wxCHECK_VERSION(3, 2, 0)
         item->SetBitmap(ArtProvider::GetAddToWatchlistBundle());
-#endif 
+#endif
         popupMenu.Append(item);
       }
 
@@ -1706,7 +1706,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                                           _("Divide Cell"));
 #if wxCHECK_VERSION(3, 2, 0)
         item->SetBitmap(ArtProvider::GetDivideCellBundle());
-#endif 
+#endif
         popupMenu.Append(item);
       }
     GroupCell *group = NULL;
@@ -1777,7 +1777,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
                                                                      wordUnderCursor));
 #if wxCHECK_VERSION(3, 2, 0)
               demoItem->SetBitmap(ArtProvider::GetQuestionmarkBundle());
-#endif 
+#endif
               popupMenu.Append(demoItem);
             }
           MaximaManual::HelpFileAnchors helpFileAnchors =
@@ -4125,7 +4125,7 @@ void Worksheet::OnChar(wxKeyEvent &event) {
         !(event.GetKeyCode() == WXK_HOME) && !(event.GetKeyCode() == WXK_END))
       event.Skip();
   }
-  
+
   // Forward cell creation hotkeys to the class wxMaxima
   if (event.CmdDown() && !event.AltDown()) {
     if ((event.GetKeyCode() == WXK_ESCAPE) ||
@@ -5523,10 +5523,13 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     std::vector<wxString> dummy;
     Format::ExportToWXMX(GetTree(), wxmxfileName, m_configuration,
                          &GetCellPointers(), dummy, GetHCaret());
+    wxURI wxmxfileName_uri(wxmxfileName_rel);
+    wxString wxmxfileName_encoded = wxmxfileName_uri.BuildURI(); /* handle HTML entities like " " => "%20" */
+
     output
       << wxS(" <small> The source of this Maxima session can be downloaded "
              "<a href=\"") +
-      wxmxfileName_rel + wxS("\">here</a>.</small>\n");
+      wxmxfileName_encoded + wxS("\">here</a>.</small>\n");
   }
 
   //
