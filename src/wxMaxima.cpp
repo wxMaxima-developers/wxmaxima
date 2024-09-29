@@ -116,7 +116,6 @@
 #include <wx/persist/toplevel.h>
 #include <wx/sckstrm.h>
 #include <wx/txtstrm.h>
-#include <wx/wfstream.h>
 
 #include "main.h"
 #include <list>
