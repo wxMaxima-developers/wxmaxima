@@ -2,7 +2,7 @@
 
 - A Spanish translation update by cyphra.
 - Resolved a crash when inverting the worksheet (#1951)
-- Do not strip Lisp commnents before sending the input to Maxima (#1953)
+- Do not strip Lisp comments before sending the input to Maxima (#1953)
 - Correctly copy superscript when CopyAsMathML (#1945)
 - MathML export: Use a centered dot instead of *, if configured (#1946)
 
@@ -43,7 +43,7 @@
 - Update German and Italian translations
 - Use po4a instead of po4a-translate for the generation of
   internationalized manuals. po4a-translate is deprecated (#1899)
-- Allow compiliation with the current wxWidgets development version
+- Allow compilation with the current wxWidgets development version
 - Code reorganization to promote stability
 - Security: Use a standard function (CreateTempFileName) for creating
   temporary filenames instead of using the process id as 'random' number.
