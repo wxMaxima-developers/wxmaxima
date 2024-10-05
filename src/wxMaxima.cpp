@@ -2256,7 +2256,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
     CellListBuilder<Cell> tree;
     while (tokens.HasMoreTokens()) {
       wxString token = tokens.GetNextToken();
-      // Move endles streams of compilation messages to the status bar...
+      // Move endless streams of compilation messages to the status bar...
       if (m_sbclCompilationRegEx.Matches(token)) {
         wxString fileName = token;
         m_sbclCompilationRegEx.Replace(&fileName, wxS("\\1"));
@@ -2640,12 +2640,12 @@ bool wxMaxima::StartMaxima(bool force) {
     // Maxima isn't asking questions
     QuestionAnswered();
 
-    // If we have an open file tell maxima to start in the directory the file is
+    // If we have an open file tell Maxima to start in the directory the file is
     // in
     wxUnsetEnv("MAXIMA_INITIAL_FOLDER");
     if (!dirname.IsEmpty()) {
       if (wxDirExists(dirname)) {
-        // Tell maxima to start in the directory the file is in
+        // Tell Maxima to start in the directory the file is in
         wxSetEnv(wxS("MAXIMA_INITIAL_FOLDER"), dirname);
       } else {
         wxLogWarning(wxS("Directory %s doesn't exist. Maxima "
@@ -2670,8 +2670,8 @@ bool wxMaxima::StartMaxima(bool force) {
       wxEnvVariableHashMap environment;
       environment = m_configuration.MaximaEnvVars();
       wxGetEnvMap(&environment);
-      // Tell maxima we want to be able to kill it on Ctrl+G by sending it a
-      // signal Strictly necessary only on MS Windows where we don'r have a
+      // Tell Maxima we want to be able to kill it on Ctrl+G by sending it a
+      // signal. Strictly necessary only on MS Windows where we don't have a
       // kill() command.
       environment["MAXIMA_SIGNALS_THREAD"] = "1";
       if(!Configuration::GetMaximaLang().IsEmpty())
@@ -2741,7 +2741,7 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
     // Winkill tries to find a shared memory region maxima provides we can set
     // signals in that maxima can listen to.
     //
-    // For maxima's end of this means of communication see
+    // For Maxima's end of this means of communication see
     // interfaces/xmaxima/win32/win_signals.lisp
     // and interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
     HANDLE sharedMemoryHandle = 0;
@@ -2888,7 +2888,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
   // This closes maxima's network connection - which should close maxima, as well.
-  // Additionally closinf the cliend automatically sends a "quit();" command to maxima.
+  // Additionally closing the client automatically sends a "quit();" command to maxima.
   m_client.reset();
 
   /* Just to be absolutely sure: Additionally try to kill maxima
@@ -2900,7 +2900,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
      don't have the rights to issue that.
      One tells a gui application to gracefully close. That one might not apply to
      maxima as a console application, and
-     One that forces an application to close without even unitializing its DLLs.
+     One that forces an application to close without even uninitializing its DLLs.
      I hope we have the rights to issue that and we can try them both on maxima.bat
      and the actual maxima process. AFAICS we started maxima with flags that tell
      the batch file to automatically kill maxima on exit.
@@ -6394,7 +6394,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == wxID_PREFERENCES) {
     // wxGTK uses wxFileConf. ...and wxFileConf loads the config file only once
-    // on inintialisation => Let's reload the config file before entering the
+    // on initialisation => Let's reload the config file before entering the
     // config dialogue.
     ReReadConfig();
     wxConfigBase *config = wxConfig::Get();
