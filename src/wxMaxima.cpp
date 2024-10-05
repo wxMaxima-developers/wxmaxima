@@ -208,7 +208,15 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   wxLogMessage(_("Will try to generate a stack backtrace, if the program ever crashes"));
 #endif
   GnuplotCommandName(wxS("gnuplot"));
-  wxLog::SetActiveTarget(new NullLog);
+
+  wxLogMessage(_("Stop logging to the debug messages side pane, if it is closed, logging messages would cause message popup windows."));
+  wxLogMessage(_("Logging to stderr (if enabled using the command line) will continue."));
+  // If we log to stderr, still keep logging there.
+  if (ErrorRedirector::LoggingToStdErr()) {
+    wxLog::SetActiveTarget(new wxLogStderr());
+  } else {
+    wxLog::SetActiveTarget(new NullLog);
+  }
 
   if (m_variableReadActions.empty()) {
     m_variableReadActions[wxS("gentranlang")] =
