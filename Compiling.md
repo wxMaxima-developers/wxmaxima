@@ -43,6 +43,12 @@ also .dmg), the following command will create them:
 cmake --build . -- package
 ```
 
+To update the locale files (po and pot) in the source code:
+
+```
+cmake --build . -- update-locale
+```
+
 #### Testing wxMaxima
 
 You can use (or test) a fresh compiled wxMaxima (without installation) by calling
