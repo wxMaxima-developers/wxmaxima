@@ -93,6 +93,8 @@ Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Fink, Home
 </div><!-- fragment --><p>Of course you can use the CMake GUI (<code>cmake-gui</code>) or curses based CMake (<code>ccmake</code>) for the configure step and change some CMake variables.</p>
 <p>If you want to create binary packages (tar.gz, tar.bz2, DEB &amp; RPM, on macOS also .dmg), the following command will create them:</p>
 <div class="fragment"><div class="line">cmake --build . -- package</div>
+</div><!-- fragment --><p>To update the locale files (po and pot) in the source code:</p>
+<div class="fragment"><div class="line">cmake --build . -- update-locale</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md9"></a>
 Testing wxMaxima</h3>
 <p>You can use (or test) a fresh compiled <a class="el" href="classwxMaxima.html">wxMaxima</a> (without installation) by calling <code>./wxmaxima-local</code> from the build-directory.</p>
