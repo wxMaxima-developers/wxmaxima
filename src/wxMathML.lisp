@@ -2474,6 +2474,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 (format t "</suppressOutput>~%")
 ;; Publish all new global variables maxima might contain to wxMaxima's
 ;; autocompletion feature.
+(wxPrint_autocompletesymbols)
 (wx-print-variables)
 (wx-print-gui-variables)
 ;; Declare that we want all builtins with underscore not to be printed with subscript
