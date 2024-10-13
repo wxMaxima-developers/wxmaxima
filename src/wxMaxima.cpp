@@ -3685,7 +3685,7 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   if (wxExecute(gnuplot_terminal_command, gnuplot_output, gnuplot_errors, wxEXEC_SYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER, NULL) < 0)
     wxLogMessage(_("Cannot start gnuplot"));
   else {
-    wxString gnuplot_terminals = wxJoin(gnuplot_output, ' ');
+    wxString gnuplot_terminals = wxJoin(gnuplot_errors, ' ', 0); // REMARK: In the documentation of wxJoin, NULL is suggested as 3rd argument ("If the escape character is non-NULL, ..."), but NULL causes an warning. (warning: passing NULL to non-pointer argument 3). Therefore I use 0 here.
     wxLogMessage(wxS("Gnuplot terminals: ") + gnuplot_terminals);
     /* FIXME: What should happen with the result? Returned by the function? Stored anywhere? Currently the result is nowhere used... */
   }
