@@ -561,6 +561,10 @@ wxString TextCell::ToMatlab() const {
     text = wxS("i");
   else if (text == wxS("%pi"))
     text = wxString(wxS("pi"));
+  else if (text == wxS("inf"))
+    text = wxString(wxS("Inf"));
+  else if (text == wxS("minf"))
+    text = wxString(wxS("-Inf"));
   switch (GetTextStyle()) {
   case TS_VARIABLE:
   case TS_FUNCTION:
