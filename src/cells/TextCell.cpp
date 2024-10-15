@@ -937,6 +937,8 @@ wxString TextCell::ToTeX() const {
   if (GetTextStyle() == TS_SPECIAL_CONSTANT) {
     if (text == wxS("inf"))
       return wxS("\\infty ");
+    else if (text == wxS("minf"))
+      return wxS("-\\infty ");
     else if (text == wxS("%e"))
       return wxS("e");
     else if (text == wxS("%catalan"))
@@ -1053,6 +1055,8 @@ wxString TextCell::ToMathML() const {
     text = GetGreekStringUnicode();
     if (text == wxS("inf"))
       text = wxS("\u221e");
+    if (text == wxS("minf"))
+      text = wxS("-\u221e");
     if ((text == wxS("+")) || (text == wxS("-")) || (text == wxS("*")) || (text == wxS("/"))) {
       if ((m_configuration->GetChangeAsterisk()) && (text == wxS("*"))) {
         return wxS("<mo>\u00B7</mo>\n"); // return an Unicode centered dot instead of "*"
@@ -1130,6 +1134,8 @@ wxString TextCell::ToOMML() const {
     text = GetGreekStringUnicode();
     if (text == wxS("inf"))
       text = wxS("\u221e");
+    if (text == wxS("minf"))
+      text = wxS("-\u221e");
     break;
   case TS_NUMBER:
     break;
@@ -1358,6 +1364,8 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent) const {
     return wxS("=");
   else if (m_text == wxS("inf"))
     return wxS("\u221E");
+  else if (m_text == wxS("minf"))
+    return wxS("-\u221E");
   else if (m_text == wxS("%pi"))
     return wxS("\u03C0");
   else if (m_text == wxS("<="))
@@ -1525,6 +1533,8 @@ wxString TextCell::GetGreekStringTeX() const {
 wxString TextCell::GetSymbolTeX() const {
   if (m_text == wxS("inf"))
     return wxS("\u0031");
+  if (m_text == wxS("minf"))
+    return wxS("-\u0031");
   else if (m_text == wxS("+"))
     return wxS("+");
   else if (m_text == wxS("%pi"))

@@ -833,7 +833,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 (wx-defprop $%i "<s>%i</s>" wxxmlword)
 (wx-defprop $%e "<s>%e</s>" wxxmlword)
 (wx-defprop $inf "<s>inf</s>" wxxmlword)
-(wx-defprop $minf "<mo>-</mo><s>inf</s>" wxxmlword)
+(wx-defprop $minf "<s>minf</s>" wxxmlword)
 
 (wx-defprop mreturn "return" wxxmlword)
 
