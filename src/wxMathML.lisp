@@ -106,7 +106,6 @@
   "Recognize TeX-style subscripts")
 (defvar $wxplot_usesvg nil "Create scalable plots?")
 (defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
-(defmvar $wxplot_old_gnuplot nil)
 
 ;; A string replace function that we later use excessively
 (defun wxxml-string-substitute (newstring oldchar x &aux matchpos)
@@ -1691,7 +1690,6 @@ Submit bug reports by following the 'New issue' link on that page."))
 (defun $wxplot_preamble ()
   (let ((frmt
 	 (cond
-	   ($wxplot_old_gnuplot "set terminal png picsize ~d ~d; set zeroaxis;")
 	   ((and (not $wxplot_usesvg) $wxplot_pngcairo) "set terminal pngcairo dashed background \"white\" enhanced font \"arial,10\" fontscale 1.0 size ~d,~d; set zeroaxis;")
 	   ((and (not $wxplot_usesvg) (not $wxplot_pngcairo)) "set terminal png size ~d,~d; set zeroaxis;")
 	   (t "set terminal svg size ~d,~d; set zeroaxis;"))))
