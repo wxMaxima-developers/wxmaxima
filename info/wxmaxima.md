@@ -690,6 +690,28 @@ Pops up a wizard that allows to set up grid lines.
 
 Allows to select an adequate point in the speed vs. accuracy tradeoff that is part of any plot program.
 
+### Modify font and font size for plots.
+
+Especially when you use a high resolution display, the default font size might be very small. For the `draw`-based commands, you can set the font / font size using options like `font=...`, `font_size=...`, e.g.:
+
+~~~maxima
+wxdraw2d(
+     font="Helvetica",
+     font_size=30,
+     explicit(sin(x),x,1,10));
+~~~
+
+For the `plot`-commands (e.g. `wxplot2d`, `wxplot3d`) font sizes and fonts can be set using the `gnuplot_preamble` command, e.g.:
+
+~~~maxima
+wxplot2d(sin(x),[x,1,10],
+         [gnuplot_preamble, "set tics font \"Arial, 30\"; set xlabel font \",20\"; set ylabel font \",20\";"]);
+~~~
+
+This sets the font for the numbers to Arial with size 30, the size for the xlabel and ylabel font to 20 (with the default font).
+
+Read the Maxima and Gnuplot documentation for further information.
+
 ## Embedding graphics
 
 If the `.wxmx` file format is being used embedding files in a _wxMaxima_ project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:
