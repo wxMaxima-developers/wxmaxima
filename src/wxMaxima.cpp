@@ -3688,6 +3688,8 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
     wxString gnuplot_terminals = wxJoin(gnuplot_errors, ' ', 0); // REMARK: In the documentation of wxJoin, NULL is suggested as 3rd argument ("If the escape character is non-NULL, ..."), but NULL causes an warning. (warning: passing NULL to non-pointer argument 3). Therefore I use 0 here.
     wxLogMessage(wxS("Gnuplot terminals: ") + gnuplot_terminals);
     /* FIXME: What should happen with the result? Returned by the function? Stored anywhere? Currently the result is nowhere used... */
+    m_configuration.UsePngCairo(gnuplot_terminals.Contains(wxS("pngcairo")));
+    wxLogMessage(m_configuration.UsePngCairo() ? wxS("Gnuplot Cairo: yes") : wxS("Gnuplot Cairo: no"));
   }
 }
 
