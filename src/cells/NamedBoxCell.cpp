@@ -171,14 +171,12 @@ wxString NamedBoxCell::ToTeX() const {
   if (IsBrokenIntoLines())
     return wxEmptyString;
   else
-    return wxS("\\fbox{") + m_innerCell->ListToTeX() + wxS("}");
+    return wxS("\\fbox{") + m_innerCell->ListToTeX() + wxS("} % Named Box, Name: ") + m_boxname->ListToTeX() + wxS("\n");
 }
 
 wxString NamedBoxCell::ToMathML() const {
-  return wxS("<apply><box/><ci>") + m_innerCell->ListToMathML() +
-    wxS("</ci><ci>") +
-    m_boxname->ListToMathML() +
-    wxS("</apply>");
+  return wxS("<menclose notation=\"box\">") + m_innerCell->ListToMathML() +
+    wxS("</menclose><!-- Named Box, Name: " + m_boxname->ListToMathML() + " -->\n");
 }
 
 wxString NamedBoxCell::ToOMML() const {

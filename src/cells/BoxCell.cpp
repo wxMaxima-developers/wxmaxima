@@ -137,8 +137,8 @@ wxString BoxCell::ToTeX() const {
 }
 
 wxString BoxCell::ToMathML() const {
-  return wxS("<apply><box/><ci>") + m_innerCell->ListToMathML() +
-    wxS("</ci></apply>");
+  return wxS("<menclose notation=\"box\">") + m_innerCell->ListToMathML() +
+    wxS("</menclose>");
 }
 
 wxString BoxCell::ToOMML() const {
