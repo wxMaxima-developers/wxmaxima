@@ -716,7 +716,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 	  r (append '("</hl></mrow>") r))
     (append l r))
   )
-;; (caddr x) should return the oütional argument
+;; (caddr x) should return the optional argument
 
 (defun wxxml-mqapply (x l r)
   (setq l (wxxml (cadr x) (append l '("<fn>"))
