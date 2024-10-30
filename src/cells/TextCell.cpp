@@ -1014,6 +1014,11 @@ wxString TextCell::ToTeX() const {
   return text;
 }
 
+// NOTE: MathML provides tags for mathematical constants like %pi, %i, %e, ...: <pi/>, <imaginaryi/>, <exponentiale/>, ...
+// (e.g. https://www.w3.org/TR/MathML3/chapter4.html#contm.imaginaryi, https://www.w3.org/TR/MathML3/chapter4.html#contm.pi, ...
+// That would be the right thing(tm) to return for Maxima constants %pi, %i, ...
+// But now (Oct 2024) these tags are ignored by Chrome, Firefox, or various MathML render pages on the web,
+// so wxMaxima does not use these tags.
 wxString TextCell::ToMathML() const {
   if (m_displayedText == wxEmptyString)
     return wxEmptyString;
