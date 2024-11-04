@@ -347,6 +347,20 @@ And folded cells marked by:
 
 This XML-based file format saves the complete worksheet including things like the zoom factor and the watchlist. It is the preferred file format.
 
+#### File format of wxmx files
+
+A `wxmx`-file seems to be a binary format, but one can handle it with tools, which are included in your OS. It is a zip file, one can decompress it with `unzip` (maybe rename it before, so that is recognized by the unzip program of your OS).
+We do not use the compression function, just the possibility to merge several files into one file - images are already compressed and the rest is simple text (probably much smaller, than huge images, which are included).
+
+It does contain the following files:
+
+* `mimetype`: this file does contain the mimetype of wxMaxima files: `text/x-wxmathml`
+* `format.txt`: a short description about wxMaxima and the wxmx file format
+* Images (e.g. png, jpeg): inline plots which were produced in the wxMaxima session and included images.
+* `content.xml`: a XML document, which contains the various cells of your document in XML format.
+
+So, if something goes wrong, you can unzip a wxMaxima document (maybe rename it before to a `zip`-file), maybe make changes in the `content.xml` file with a text editor, or replace an broken image, zip the files again, probably rename the `zip` to a `wxmx`-file - and you get another modified `wxmx`-file.
+
 ## Configuration options
 
 For some common configuration variables _wxMaxima_ offers two ways of configuring:
