@@ -130,13 +130,13 @@ _Maxima_ allows Unicode if it was compiled using a Lisp compiler that either sup
 
 You can also use the "Greek letters"-sidebar to enter the Greek letters.
 
-**Attention: Lookalike characters**
+##### Attention: Lookalike characters
 
 Several Latin letters look like the Greek letters, e.g. the Latin letter "A"
 and the Greek letter "Alpha". Although they look identical, they are two
 different Unicode characters, represented by different Unicode code points (numbers).
 
-This might be problematic, if you assign a value to the Variable A and later
+This might be problematic, if you assign a value to the variable A and later
 use the Greek letter Alpha to do something with this variable, especially on printouts.
 For the Greek letter my (which is also used as prefix for micro) there are also two
 different Unicode code points.
@@ -354,10 +354,10 @@ We do not use the compression function, just the possibility to merge several fi
 
 It does contain the following files:
 
-* `mimetype`: this file does contain the mimetype of wxMaxima files: `text/x-wxmathml`
-* `format.txt`: a short description about wxMaxima and the wxmx file format
-* Images (e.g. png, jpeg): inline plots which were produced in the wxMaxima session and included images.
-* `content.xml`: a XML document, which contains the various cells of your document in XML format.
+- `mimetype`: this file does contain the mimetype of wxMaxima files: `text/x-wxmathml`
+- `format.txt`: a short description about wxMaxima and the wxmx file format
+- Images (e.g. png, jpeg): inline plots which were produced in the wxMaxima session and included images.
+- `content.xml`: a XML document, which contains the various cells of your document in XML format.
 
 So, if something goes wrong, you can unzip a wxMaxima document (maybe rename it before to a `zip`-file), maybe make changes in the `content.xml` file with a text editor, or replace an broken image, zip the files again, probably rename the `zip` to a `wxmx`-file - and you get another modified `wxmx`-file.
 
@@ -384,7 +384,7 @@ In order to set the plot size of a single graph only use the following notation 
 wxdraw2d(
    explicit(
        x^2,
-	   x,-5,5
+       x,-5,5
    )
 ), wxplot_size=[480,480]$
 ```
@@ -617,29 +617,29 @@ with_slider_draw(
 While not being provided by _wxMaxima_ this feature of _Maxima_ (on setups that support it) sometimes comes in handily. The following example comes from a post from Mario Rodriguez to the _Maxima_ mailing list:
 
 ```maxima
-    load(draw);
+load(draw);
 
-    /* Parabola in window #1 */
-    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));
+/* Parabola in window #1 */
+draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));
 
-    /* Parabola in window #2 */
-    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
+/* Parabola in window #2 */
+draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
 
-    /* Paraboloid in window #3 */
-    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
+/* Paraboloid in window #3 */
+draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
 ```
 
 Plotting multiple plots in the same window is possible, too:
 
 ```maxima
-	wxdraw(
-		gr2d(
-	    	key="sin (x)",grid=[2,2],
-	    	explicit(sin(x),x,0,2*%pi)),
-		gr2d(
-	   	key="cos (x)",grid=[2,2],
-	   	explicit(cos(x),x,0,2*%pi))
-	 );
+wxdraw(
+  gr2d(
+    key="sin (x)",grid=[2,2],
+    explicit(sin(x),x,0,2*%pi)),
+  gr2d(
+    key="cos (x)",grid=[2,2],
+    explicit(cos(x),x,0,2*%pi))
+);
 ```
 
 ### The "Plot using draw" side pane
@@ -916,14 +916,12 @@ E.g. start wxMaxima with:
 
 `GDK_BACKEND=x11 wxmaxima`
 
-## The manual browser
-
-### Why is the integrated manual browser not offered on my Windows PC?
+## Why is the integrated manual browser not offered on my Windows PC?
 
 Either wxWidgets wasn’t compiled with support for Microsoft’s webview2 or
 Microsoft’s webview2 isn’t installed.
 
-### Why is the external manual browser not working on my Linux box?
+## Why is the external manual browser not working on my Linux box?
 
 The HTML browser might be a snap, flatpack or appimage version. All of these typically
 cannot access files that are installed on your local system. Another reason might be
@@ -931,15 +929,13 @@ that maxima or wxMaxima is installed as a snap, flatpack or something else that 
 give the host system access to its contents. A third reason might be that the maxima
 HTML manual isn’t installed and the online one cannot be accessed.
 
-## Plotting
+## Can I make _wxMaxima_ output both image files and embedded plots at once?
 
-### Can I make _wxMaxima_ output both image files and embedded plots at once?
-
-The worksheet embeds .png files. _WxMaxima_ allows the user to specify where they should be generated:
+The worksheet embeds `.png files. _WxMaxima_ allows the user to specify where they should be generated:
 
 ```maxima
 wxdraw2d(
-    file_name="test",
+    file_name="test",  /* extension .png automatically added */
     explicit(sin(x),x,1,10)
 );
 ```
@@ -970,21 +966,19 @@ pngdraw2d("Test",
 );
 ```
 
-### Can I set the aspect ratio of a plot?
+## Can I set the aspect ratio of an embedded plot?
 
-Not directly using _Maxima_. But there are Gnuplot commands for it:
+Use the variable `wxplot_size`:
 
 ```maxima
 wxdraw2d(
-    proportional_axis=xy,
     explicit(sin(x),x,1,10)
 ),wxplot_size=[1000,1000];
 ```
 
-### After upgrading to MacOS 13.1 plot and/or draw commands output error messages like
+## After upgrading to MacOS 13.1 plot and/or draw commands output error messages like
 
 ```
-
 1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102
 2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52
 3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408
