@@ -284,7 +284,7 @@ Afterward the contents of the file `Quadratic.mac` are printed and newly defined
 
 ![Loading a file with `batch()`](./BatchImage.png){ id=img_BatchImage }
 
-Attention: Although the file `Quadratic.mac` has a usual _Maxima_ extension (`.mac`), it can only be read by _wxMaxima_, since the command `wxdraw2d()` is a wxMaxima-extension to _Maxima_.
+Attention: Although the file `Quadratic.mac` has a usual _Maxima_ extension (`.mac`), it can only be read by _wxMaxima_, since the command `wxdraw2d()` is a wxMaxima-extension to _Maxima_. (Command line) Maxima will ignore the unknown command `wxdraw2d()` and print it as output again.
 
 You can be use `.mac` files for writing your own library of macros. But since they don’t contain enough structural information they cannot be read back as a _wxMaxima_ session.
 
@@ -629,7 +629,7 @@ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
 draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
 ```
 
-Plotting multiple plots in the same window is possible, too:
+Plotting multiple plots in the same window is possible, too (the same is possible in command line Maxima with the standard `draw()` command):
 
 ```maxima
 wxdraw(
@@ -725,6 +725,7 @@ wxplot2d(sin(x),[x,1,10],
 This sets the font for the numbers to Arial with size 30, the size for the xlabel and ylabel font to 20 (with the default font).
 
 Read the Maxima and Gnuplot documentation for further information.
+Note: Gnuplot seems to have issues with larger font sizes, see [wxMaxima issue 1966](https://github.com/wxMaxima-developers/wxmaxima/issues/1966).
 
 ## Embedding graphics
 
