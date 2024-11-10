@@ -10,6 +10,7 @@
 - Correct display/handling of minf.
 - WxMaxima was not responsive in the 1st minute.
 - Fix display of subscripts. (#1584, #1807)
+- Allow Maxima strings with newlines. (#76)
 
 # 24.08.0
 
