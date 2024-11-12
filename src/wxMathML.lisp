@@ -2309,9 +2309,10 @@ Submit bug reports by following the 'New issue' link on that page."))
          ;;; shipped with debian and ubuntu (at least in Feb 2017) doesn't.
 	  #+gcl (xchdir dir)
 	  #+gcl (setf *default-pathname-defaults* dir)
+	  #+abcl (setf *default-pathname-defaults* (truename dir))
 
 	  (ignore-errors (setf *default-pathname-defaults* dir))
-	  #-(or allegro clisp cmu cormanlisp gcl lispworks lucid sbcl ccl ecl) (format t
+	  #-(or allegro clisp cmu cormanlisp gcl lispworks lucid sbcl ccl ecl abcl) (format t
 										       "Info: wxMathml.cpp: Changing the working dir during a maxima session isn't implemented for this lisp.")
   	  (namestring dir)
 	  (wx-print-variables)
