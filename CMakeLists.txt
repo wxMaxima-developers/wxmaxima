@@ -16,7 +16,7 @@ endif()
 
 
 set(VERSION_MAJOR 24)
-set(VERSION_MINOR 08)
+set(VERSION_MINOR 11)
 set(VERSION_PATCHLEVEL 0)
 set(VERSION_SUFFIX "DevelopmentSnapshot")
 if(CMAKE_BUILD_TYPE STREQUAL "Release")

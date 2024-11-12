@@ -1,4 +1,4 @@
-# Current development version
+# 24.11.0
 
 - A Spanish translation update by cyphra.
 - Resolved a crash when inverting the worksheet (#1951)
