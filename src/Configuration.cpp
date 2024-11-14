@@ -662,6 +662,8 @@ void Configuration::ReadConfig() {
     config->Read(wxS("showAllDigits"), &m_showAllDigits);
     config->Read(wxS("lineBreaksInLongNums"), &m_lineBreaksInLongNums);
     config->Read(wxS("autoSaveMinutes"), &m_autoSaveMinutes);
+    if (m_autoSaveMinutes <= 0)
+      m_autoSaveMinutes = 3;
     config->Read(wxS("wrapLatexMath"), &m_wrapLatexMath);
     config->Read(wxS("allowNetworkHelp"), &m_allowNetworkHelp);
     config->Read(wxS("exportContainsWXMX"), &m_exportContainsWXMX);
