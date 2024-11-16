@@ -4,7 +4,7 @@
 - Resolved a crash when inverting the worksheet (#1951)
 - Do not strip Lisp comments before sending the input to Maxima (#1953)
 - Correctly copy superscript when CopyAsMathML (#1945)
-- MathML export: Use a centered dot instead of *, if configured (#1956)
+- Copy as MathML: Use a centered dot instead of *, if configured (#1956)
 - Fix superfluous quote marks in text copied by "Copy as MathML" (#1946)
 - Fix copy as MathML for boxes.
 - Correct display/handling of minf.
