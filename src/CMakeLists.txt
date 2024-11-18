@@ -1,22 +1,7 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-# Prepends a prefix to all elements in a list. Needed only in
-# cmake < 3.12, but we claim to support 3.10, so this is needed.
-# Usage: list_transform_prepend(FILES_TO_TRANSLATE "prefix/")
-# See https://stackoverflow.com/a/59155344/1329652
-#
-# According to #1388 cmake 3.19.2 requires this to be defined
-# in each source file separately
-
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in ${CMAKE_CURRENT_BINARY_DIR}/Info.plist)
 
-function(list_transform_prepend var prefix)
-    set(temp "")
-    foreach(f ${${var}})
-        list(APPEND temp "${prefix}${f}")
-    endforeach()
-    set(${var} "${temp}" PARENT_SCOPE)
-endfunction()
 
 find_package(Threads REQUIRED)
 
@@ -59,7 +44,7 @@ set(CELL_SOURCE_FILES
     TextStyle.cpp
     FontVariantCache.cpp
 )
-list_transform_prepend(CELL_SOURCE_FILES cells/)
+list(TRANSFORM CELL_SOURCE_FILES PREPEND cells/)
 
 set(WIZARD_SOURCE_FILES
     ActualValuesStorageWiz.cpp
@@ -87,7 +72,7 @@ set(WIZARD_SOURCE_FILES
     SystemWiz.cpp
     WizardHelp.cpp
 )
-list_transform_prepend(WIZARD_SOURCE_FILES wizards/)
+list(TRANSFORM WIZARD_SOURCE_FILES PREPEND wizards/)
 
 set(SIDEBAR_SOURCE_FILES
     GreekSidebar.cpp
@@ -107,7 +92,7 @@ set(SIDEBAR_SOURCE_FILES
     RegexCtrl.cpp
     HelpBrowser.cpp
 )
-list_transform_prepend(SIDEBAR_SOURCE_FILES sidebars/)
+list(TRANSFORM SIDEBAR_SOURCE_FILES PREPEND sidebars/)
 
 set(GRAPHICAL_IO_SOURCE_FILES
     BitmapOut.cpp
@@ -116,7 +101,7 @@ set(GRAPHICAL_IO_SOURCE_FILES
     Printout.cpp
     SVGout.cpp
 )
-list_transform_prepend(GRAPHICAL_IO_SOURCE_FILES graphical_io/)
+list(TRANSFORM GRAPHICAL_IO_SOURCE_FILES PREPEND graphical_io/)
 
 set(DIALOG_SOURCE_FILES
     AboutDialog.cpp
@@ -132,7 +117,7 @@ set(DIALOG_SOURCE_FILES
     MaximaNotStartingDialog.cpp
     BinaryNameCtrl.cpp
 )
-list_transform_prepend(DIALOG_SOURCE_FILES dialogs/)
+list(TRANSFORM DIALOG_SOURCE_FILES PREPEND dialogs/)
 
 set(SOURCE_FILES
     ArtProvider.cpp
