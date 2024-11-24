@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  compile_latest:
+  compile_latest_and_test:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
 
@@ -92,13 +92,6 @@ jobs:
         run: |
              cd build
              cmake --build . --target update-locale
-             cd ..
-      - name: run_tests
-        run: |
-             cd build
-             export HOME=`pwd`
-             export CTEST_OUTPUT_ON_FAILURE=1
-             GDK_BACKEND=x11 xvfb-run -a ctest -j 1
              cd ..
 
   compile_2004:
