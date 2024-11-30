@@ -1215,18 +1215,18 @@ void wxMaximaFrame::SetupMaximaMenu() {
   stringMenu->Append(wxWindow::NewControlId(), _("Transformations"), transformMenu);
   m_MaximaMenu->Append(wxWindow::NewControlId(), _("String"), stringMenu);
   wxMenu *regexMenu = new wxMenu;
-  regexMenu->Append(EventIDs::menu_sregex_load, _("Load the regex processor"));
-  regexMenu->Append(EventIDs::menu_sregex_regex_compile, _("Compile a regex"));
+  regexMenu->Append(EventIDs::menu_sregex_load, _("Load the regular expression package (sregex)"));
+  regexMenu->Append(EventIDs::menu_sregex_regex_compile, _("Compile a regular expression"));
   regexMenu->Append(EventIDs::menu_sregex_regex_match_pos, _("Position of a match"));
   regexMenu->Append(EventIDs::menu_sregex_regex_match, _("Return a match"));
   regexMenu->Append(EventIDs::menu_sregex_regex_split, _("Split on match"));
   regexMenu->Append(EventIDs::menu_sregex_subst_first, _("Substitute first match"));
   regexMenu->Append(EventIDs::menu_sregex_regex_subst, _("Substitute all matches"));
   regexMenu->Append(EventIDs::menu_sregex_string_to_regex,
-                    _("Regex that matches a string"));
-  stringMenu->Append(wxWindow::NewControlId(), _("RegEx"), regexMenu);
+                    _("Regular expression that matches a string"));
+  stringMenu->Append(wxWindow::NewControlId(), _("Regular expressions"), regexMenu);
   wxMenu *operatingSystemMenu = new wxMenu;
-  regexMenu->Append(EventIDs::menu_opsyst_load, _("Load the file/dir operations"));
+  operatingSystemMenu->Append(EventIDs::menu_opsyst_load, _("Load the file/dir operations (operatingsystem)"));
   wxMenu *dirMenu = new wxMenu;
   dirMenu->Append(EventIDs::menu_opsyst_directory, _("List directory"));
   dirMenu->Append(EventIDs::menu_opsyst_getcurrentdirectory, _("Get current directory"));
@@ -1249,17 +1249,17 @@ void wxMaximaFrame::SetupMaximaMenu() {
   wxMenu *envMenu = new wxMenu;
   envMenu->Append(EventIDs::menu_opsyst_getenv, _("Read environment variable..."));
   operatingSystemMenu->Append(wxWindow::NewControlId(), _("Environment variables"), envMenu);
-  m_MaximaMenu->Append(wxWindow::NewControlId(), _("mkdir,..."), operatingSystemMenu);
+  m_MaximaMenu->Append(wxWindow::NewControlId(), _("File/directory functions"), operatingSystemMenu);
 
   m_gentranMenu = new wxMenu;
-  m_gentranMenu->Append(EventIDs::gentran_load, _("Load the translation generator"));
+  m_gentranMenu->Append(EventIDs::gentran_load, _("Load the translation generator (gentran)"));
   m_gentranMenu->AppendRadioItem(EventIDs::gentran_lang_c, _("Output C"));
   m_gentranMenu->AppendRadioItem(EventIDs::gentran_lang_fortran, _("Output Fortran"));
   m_gentranMenu->AppendRadioItem(EventIDs::gentran_lang_ratfor,
                                  _("Output Rational Fortran"));
   m_gentranMenu->Append(EventIDs::gentran_to_stdout, _("Convert"));
   m_gentranMenu->Append(EventIDs::gentran_to_file, _("Convert + Write to file"));
-  m_MaximaMenu->Append(wxWindow::NewControlId(), _("maxima to other language"), m_gentranMenu);
+  m_MaximaMenu->Append(wxWindow::NewControlId(), _("Maxima to other language"), m_gentranMenu);
   m_MenuBar->Append(m_MaximaMenu, _("&Maxima"));
 }
 
