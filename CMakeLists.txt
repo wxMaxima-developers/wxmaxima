@@ -1,7 +1,17 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
 cmake_minimum_required(VERSION 3.16)
-project(wxMaxima LANGUAGES CXX)
+
+if (POLICY CMP0048)
+    cmake_policy(SET CMP0048 NEW)
+endif (POLICY CMP0048)
+
+project(wxMaxima
+        DESCRIPTION "wxMaxima is a document based interface for the computer algebra system Maxima."
+        HOMEPAGE_URL "https://wxmaxima-developers.github.io/wxmaxima/"
+        VERSION 24.11.0
+        LANGUAGES CXX
+       )
 
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
@@ -14,15 +24,11 @@ if(WIN32)
     enable_language(RC)
 endif()
 
-
-set(VERSION_MAJOR 24)
-set(VERSION_MINOR 11)
-set(VERSION_PATCHLEVEL 0)
-set(VERSION_SUFFIX "DevelopmentSnapshot")
+# if we build a "Relase", do not add "-DevelopmentSnapshot", otherwise do that.
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
-        set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCHLEVEL})
+        set(WXMAXIMA_VERSION ${PROJECT_VERSION})
 else()
-        set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCHLEVEL}_${VERSION_SUFFIX})
+        set(WXMAXIMA_VERSION "${PROJECT_VERSION}-DevelopmentSnapshot")
 endif()
 
 set(GITVERSION ${VERSION})

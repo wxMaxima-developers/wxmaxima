@@ -4783,7 +4783,7 @@ void wxMaxima::SetupVariables() {
     default:
       SendMaxima(":lisp-quiet (msetq $output_format_for_help '$frontend)");
     }
-  wxString wxmaximaversion_lisp(wxS(GITVERSION));
+  wxString wxmaximaversion_lisp(WXMAXIMA_VERSION);
 
 #ifdef __WXMSW__
   wxmaximaversion_lisp += "_MSW";
@@ -10924,12 +10924,12 @@ void wxMaxima::ResetTitle(bool saved, bool force) {
 #ifndef __WXOSX__
       if (saved)
         SetTitle(wxString::Format(
-                                  _("wxMaxima %s (%s) "), wxS(GITVERSION),
+                                  _("wxMaxima %s (%s) "), WXMAXIMA_VERSION,
                                   wxPlatformInfo::Get().GetOperatingSystemDescription()) +
                  _("[ unsaved ]"));
       else
         SetTitle(wxString::Format(
-                                  _("wxMaxima %s (%s) "), wxS(GITVERSION),
+                                  _("wxMaxima %s (%s) "), WXMAXIMA_VERSION,
                                   wxPlatformInfo::Get().GetOperatingSystemDescription()) +
                  _("[ unsaved* ]"));
 #endif
@@ -10940,12 +10940,12 @@ void wxMaxima::ResetTitle(bool saved, bool force) {
 #ifndef __WXOSX__
       if (m_fileSaved)
         SetTitle(wxString::Format(
-                                  _("wxMaxima %s (%s) "), wxS(GITVERSION),
+                                  _("wxMaxima %s (%s) "), WXMAXIMA_VERSION,
                                   wxPlatformInfo::Get().GetOperatingSystemDescription()) +
                  wxS(" [ ") + name + wxS(".") + ext + wxS(" ]"));
       else
         SetTitle(wxString::Format(
-                                  _("wxMaxima %s (%s) "), wxS(GITVERSION),
+                                  _("wxMaxima %s (%s) "), WXMAXIMA_VERSION,
                                   wxPlatformInfo::Get().GetOperatingSystemDescription()) +
                  wxS(" [ ") + name + wxS(".") + ext + wxS("* ]"));
 #else
@@ -11153,14 +11153,14 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate) {
       version = version.Mid(11, version.Length());
       version.Trim(true);
       version.Trim(false);
-      VersionNumber myVersion(wxS(GITVERSION));
+      VersionNumber myVersion(wxS(WXMAXIMA_VERSION));
       VersionNumber currVersion(version);
 
       if (myVersion < currVersion) {
         bool visit =
           LoggingMessageBox(wxString::Format(_("You have version %s. The newest version source code is available for is %s.\n\n"
                                                "Select OK to visit the wxMaxima webpage."),
-                                             wxS(GITVERSION), version.utf8_str()),
+                                             WXMAXIMA_VERSION, version.utf8_str()),
                             _("Upgrade"), wxOK | wxCANCEL | wxICON_INFORMATION) == wxOK;
 
         if (visit)

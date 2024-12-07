@@ -43,8 +43,8 @@ Dirstructure::Dirstructure():
   m_dirStructure = this;
 
   // The path Gentoo hides the manual at
-  if (wxDirExists(m_helpDir + wxString::Format("/doc/wxmaxima-%s", GITVERSION)))
-    m_helpDir += wxString::Format("/doc/wxmaxima-%s", GITVERSION);
+  if (wxDirExists(m_helpDir + wxString::Format("/doc/wxmaxima-%s", WXMAXIMA_VERSION)))
+    m_helpDir += wxString::Format("/doc/wxmaxima-%s", WXMAXIMA_VERSION);
   if (wxDirExists(m_helpDir + wxS("/doc/wxmaxima")))
     m_helpDir += wxS("/doc/wxmaxima");
 

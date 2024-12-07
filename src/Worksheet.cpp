@@ -4847,7 +4847,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   output << wxS("  <link rel=\"stylesheet\" type=\"text/css\" href=\"") +
     encoded_css_url + wxS("\">\n");
 
-  wxString version(wxS(GITVERSION));
+  wxString version(wxS(WXMAXIMA_VERSION));
 
   wxString versionString = "Created with wxMaxima version " + version;
   wxString versionPad;
@@ -5624,7 +5624,7 @@ bool Worksheet::ExportToTeX(const wxString &file) {
     output << "\\documentclass[" + m_configuration->DocumentclassOptions() +
       "]{" + m_configuration->Documentclass() + "}\n\n";
   // cppcheck-suppress unknownMacro
-  output << wxS("%% Created with wxMaxima " GITVERSION "\n\n");
+  output << wxS("%% Created with wxMaxima " WXMAXIMA_VERSION "\n\n");
   output << wxS("\\setlength{\\parskip}{\\medskipamount}\n");
   output << wxS("\\setlength{\\parindent}{0pt}\n");
   output << wxS("\\usepackage{iftex}\n");
@@ -5891,7 +5891,7 @@ bool Worksheet::ExportToMAC(const wxString &file) {
 
   if (wxm) {
     AddLineToFile(backupfile, Format::WXMFirstLine);
-    wxString version(wxS(GITVERSION));
+    wxString version(wxS(WXMAXIMA_VERSION));
     AddLineToFile(backupfile, wxS("/* [ Created with wxMaxima version ") +
                   version + wxS(" ] */"));
   }
@@ -5908,7 +5908,7 @@ bool Worksheet::ExportToMAC(const wxString &file) {
   if (wxm) {
     AddLineToFile(backupfile, wxS("/* Old versions of Maxima abort on loading "
                                   "files that end in a comment. */"));
-    AddLineToFile(backupfile, wxS("\"Created with wxMaxima " GITVERSION "\"$"));
+    AddLineToFile(backupfile, wxS("\"Created with wxMaxima " WXMAXIMA_VERSION "\"$"));
   }
 
   // Try to save the file.

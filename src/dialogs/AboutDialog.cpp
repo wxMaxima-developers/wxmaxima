@@ -59,7 +59,7 @@ AboutDialog::AboutDialog(wxWindow *WXUNUSED(parent), Configuration *config) {
       info.SetIcon(wxMaximaIcon());
       info.SetDescription(description);
       info.SetName(_("wxMaxima"));
-      info.SetVersion(wxS(GITVERSION));
+      info.SetVersion(wxS(WXMAXIMA_VERSION));
       info.SetCopyright(wxS("(C) 2004-2024 The wxMaxima Team"));
       info.SetWebSite(wxS("https://wxMaxima-developers.github.io/wxmaxima/"));
 #include "contributors.h"

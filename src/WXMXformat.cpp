@@ -166,7 +166,7 @@ namespace Format {
         wxString xmlText;
 
         xmlText << wxS("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-        xmlText << wxS("\n<!--   Created using wxMaxima ") << wxS(GITVERSION)
+        xmlText << wxS("\n<!--   Created using wxMaxima ") << wxS(WXMAXIMA_VERSION)
                 << wxS("   -->");
         xmlText << wxS(
                        "\n<!--https://wxMaxima-developers.github.io/wxmaxima/-->\n");

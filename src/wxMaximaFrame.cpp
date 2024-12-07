@@ -113,7 +113,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // about this program.
   m_logPane = new LogPane(this);
 
-  wxLogMessage(wxString::Format(_("wxMaxima version %s"), GITVERSION));
+  wxLogMessage(wxString::Format(_("wxMaxima version %s"), WXMAXIMA_VERSION));
 #ifdef __WXMSW__
   if (wxSystemOptions::IsFalse("msw.display.directdraw"))
     wxLogMessage(_("Running on MS Windows"));
@@ -187,7 +187,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 #endif
 #ifndef __WXOSX__
   SetTitle(
-           wxString::Format(_("wxMaxima %s (%s) "), wxS(GITVERSION),
+           wxString::Format(_("wxMaxima %s (%s) "), wxS(WXMAXIMA_VERSION),
                             wxPlatformInfo::Get().GetOperatingSystemDescription()) +
            _("[ unsaved ]"));
 #else
