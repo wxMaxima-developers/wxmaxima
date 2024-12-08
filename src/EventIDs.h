@@ -55,8 +55,6 @@ public:
   static constexpr int NumberOfRecentFiles()  {return 30;}
   //! How many IDs we have reserved for suggestions of similar command names?
   static constexpr int NumberOfSuggestions()  {return 10;}
-  //! How many IDs we have reserved for label width choices?
-  static constexpr int NumberOfLabelWidths()  {return 10;}
   //! How many IDs have we reserved for table of contents depths
   static constexpr int NumberOfTocLevels()  {return 6;}
 /*! @{

@@ -1628,8 +1628,12 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
         popupMenu.Check(EventIDs::popid_labels_disable,
                         m_configuration->GetLabelChoice() ==
                         Configuration::labels_none);
+        /***********************
+           Label width popup menu commented out.
+           (a) does not work at all. Selections here have no influence.
+           (b) Source of the issue: https://github.com/wxMaxima-developers/wxmaxima/issues/1964
         wxMenu *labelWidthMenu = new wxMenu();
-        for(int i = 3; i < EventIDs::NumberOfLabelWidths(); i++)
+        for(int i = LABELWIDTH_MIN; i <= LABELWIDTH_MAX; i++)
           {
             labelWidthMenu->AppendRadioItem(EventIDs::popid_labelwidth1 + i,
                                             wxString::Format(wxS("%li em"),
@@ -1638,6 +1642,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
               labelWidthMenu->Check(EventIDs::popid_labelwidth1 + i, true);
           }
         popupMenu.Append(EventIDs::popid_labelwidth, _("Label width"), labelWidthMenu);
+        ************************/
       }
     }
 

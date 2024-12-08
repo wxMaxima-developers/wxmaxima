@@ -65,6 +65,9 @@
 static constexpr AFontSize MC_MIN_SIZE{ 6.0f };
 static constexpr AFontSize MC_MAX_SIZE{ 48.0f };
 
+// The minimal and maximal label width
+#define LABELWIDTH_MIN 3
+#define LABELWIDTH_MAX 10
 class Cell;
 
 /*! The configuration storage for the current worksheet.

@@ -1249,7 +1249,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           NULL, this);
   Connect(EventIDs::menu_zoom_300, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
           NULL, this);
-  Connect(EventIDs::popid_labelwidth1, EventIDs::popid_labelwidth1 + EventIDs::NumberOfLabelWidths() - 1,
+  Connect(EventIDs::popid_labelwidth1, EventIDs::popid_labelwidth1 + LABELWIDTH_MAX - LABELWIDTH_MIN,
           wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::popid_digits_all, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
@@ -6279,7 +6279,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
 
   wxString expr = GetDefaultEntry();
   if(((event.GetId()) >= EventIDs::popid_labelwidth1) &&
-     ((event.GetId()) < EventIDs::popid_labelwidth1 + EventIDs::NumberOfLabelWidths())){
+     ((event.GetId()) < EventIDs::popid_labelwidth1 + LABELWIDTH_MAX - LABELWIDTH_MIN)) {
     m_configuration.LabelWidth(EventIDs::popid_labelwidth1 + 1 - event.GetId());
     GetWorksheet()->Recalculate();
     GetWorksheet()->RequestRedraw();

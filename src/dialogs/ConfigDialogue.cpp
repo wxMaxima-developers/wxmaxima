@@ -678,7 +678,7 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
                   wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   m_labelWidth = new wxSpinCtrl(
                                 displaySizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
-                                wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 3, 10);
+                                wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, LABELWIDTH_MIN, LABELWIDTH_MAX);
   grid_sizer->Add(m_labelWidth, 0, wxUP | wxDOWN, 5 * GetContentScaleFactor());
 
   grid_sizer->Add(
