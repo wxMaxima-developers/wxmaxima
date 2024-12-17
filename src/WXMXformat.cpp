@@ -49,7 +49,7 @@ namespace Format {
   Save the data as wxmx file
 
   First saves the data to a backup file ending in .wxmx~ so if anything goes
-  horribly wrong in this stepp all that is lost is the data that was input
+  horribly wrong in this step all that is lost is the data that was input
   since the last save. Then the original .wxmx file is replaced in a
   (hopefully) atomic operation.
 */
@@ -268,8 +268,7 @@ namespace Format {
 
           // wxWidgets could pretty-print the XML document now. But as no-one
           // will look at it, anyway, there might be no good reason to do so.
-          if (cells != NULL)
-            output << xmlText;
+          output << xmlText;
           zip.CloseEntry();
           wxLogMessage(_("Wrote the XML representation of the document to the zip archive"));
 

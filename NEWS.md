@@ -4,6 +4,8 @@
   It was not working at all and caused crashes. And I think the
   label width is not changed so often, so that a (working)
   possibility in the configuration menu is enough.
+- If a empty worksheet is saved as wxmx, allow it to be read again (#1978).
+  The generated contentx.xml was empty, which was no valid XML.
 
 # 24.11.0
 
