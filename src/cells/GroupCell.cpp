@@ -1008,7 +1008,7 @@ wxString GroupCell::ToTeX(const wxString &imgDir, const wxString &filename,
       auto const copy = m_output->Copy(&parent);
       auto *const imgCopy = dynamic_cast<ImgCell *>(copy.get());
       (*imgCounter)++;
-      wxString image = filename + wxString::Format(wxS("_%d"), *imgCounter);
+      wxString image = filename + wxString::Format(wxS("_%zu"), *imgCounter);
       wxString file;
 
       if (!wxDirExists(imgDir))
@@ -1181,7 +1181,7 @@ wxString GroupCell::ToTeXImage(const Cell *tmp, const wxString &imgDir, const wx
     if(!imgCopy)
       return wxEmptyString;
     (*imgCounter)++;
-    wxString image = filename + wxString::Format(wxS("_%d"), *imgCounter);
+    wxString image = filename + wxString::Format(wxS("_%zu"), *imgCounter);
     if (!wxDirExists(imgDir))
       if (!wxMkdir(imgDir))
         return wxEmptyString;

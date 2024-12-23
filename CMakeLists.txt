@@ -24,7 +24,7 @@ if(WIN32)
     enable_language(RC)
 endif()
 
-# if we build a "Relase", do not add "-DevelopmentSnapshot", otherwise do that.
+# if we build a "Release", do not add "-DevelopmentSnapshot", otherwise do that.
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
         set(WXMAXIMA_VERSION ${PROJECT_VERSION})
 else()
