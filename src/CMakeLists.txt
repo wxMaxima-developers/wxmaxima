@@ -216,10 +216,7 @@ if(APPLE)
       ${CMAKE_SOURCE_DIR}/info/*.html
       ${CMAKE_SOURCE_DIR}/info/*.png
       ${CMAKE_SOURCE_DIR}/data/PkgInfo
-      ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf
       ${CMAKE_SOURCE_DIR}/locales/wxwin/*.mo
-      ${CMAKE_SOURCE_DIR}/data/fonts/*.otf
-      ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf
       ${CMAKE_BINARY_DIR}/locale/*.mo
       )
 endif()
