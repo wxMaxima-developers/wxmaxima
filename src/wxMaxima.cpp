@@ -4737,7 +4737,7 @@ wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells,
       }
     }
   }
-  return tree;
+  return std::move(tree);
 }
 
 wxString wxMaxima::EscapeForLisp(wxString str) {

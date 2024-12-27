@@ -6,6 +6,7 @@
   possibility in the configuration menu is enough.
 - If an empty worksheet is saved as wxmx, allow it to be read again (#1978).
   The generated content.xml was empty, which was no valid XML.
+- Fix compiling with clang++.
 
 # 24.11.0
 
