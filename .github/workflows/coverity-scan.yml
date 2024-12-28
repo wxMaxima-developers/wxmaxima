@@ -32,7 +32,7 @@ jobs:
              mkdir build
              touch build build/build.ninja
              cd build
-             cmake -DCMAKE_BUILD_TYPE=debug ..
+             cmake -DCMAKE_BUILD_TYPE=Debug ..
              cd ..
       - name: Create build dir
         run: |

@@ -59,7 +59,7 @@ jobs:
           mkdir build
           touch build build/build.ninja
           cd build
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=debug ..
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug ..
           cmake --build .
           cd ..
 
