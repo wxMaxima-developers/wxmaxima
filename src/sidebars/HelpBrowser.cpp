@@ -44,7 +44,7 @@ bool HelpBrowser::AllowOnlineManualP(Configuration *configuration, wxWindow *par
     return true;
 
   LoggingMessageDialog dialog(parent,
-                              _("Allow to access a online manual for maxima?"),
+                              _("Allow to access an online manual?"),
                               "Manual", wxCENTER | wxYES_NO | wxCANCEL);
 
   dialog.SetExtendedMessage(_("Didn't find an installed offline manual."));
