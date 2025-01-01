@@ -1343,7 +1343,7 @@ $(function() {
 <div class="line"><a id="l01265" name="l01265"></a><span class="lineno"> 1265</span>                <span class="keywordflow">while</span> (*str &amp;&amp; nsvg__isdigit(*str)) str++;  <span class="comment">// skip fractional part</span></div>
 <div class="line"><a id="l01266" name="l01266"></a><span class="lineno"> 1266</span>            }</div>
 <div class="line"><a id="l01267" name="l01267"></a><span class="lineno"> 1267</span>            <span class="keywordflow">if</span> (*str == <span class="charliteral">&#39;%&#39;</span>) str++; <span class="keywordflow">else</span> <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01268" name="l01268"></a><span class="lineno"> 1268</span>            <span class="keywordflow">while</span> (nsvg__isspace(*str)) str++;</div>
+<div class="line"><a id="l01268" name="l01268"></a><span class="lineno"> 1268</span>            <span class="keywordflow">while</span> (*str &amp;&amp; nsvg__isspace(*str)) str++;</div>
 <div class="line"><a id="l01269" name="l01269"></a><span class="lineno"> 1269</span>            <span class="keywordflow">if</span> (*str == delimiter[i]) str++;</div>
 <div class="line"><a id="l01270" name="l01270"></a><span class="lineno"> 1270</span>            <span class="keywordflow">else</span> <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l01271" name="l01271"></a><span class="lineno"> 1271</span>        }</div>
