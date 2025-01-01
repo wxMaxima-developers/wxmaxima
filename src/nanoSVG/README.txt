@@ -1,2 +1,2 @@
 These files are from https://github.com/memononen/nanosvg/
-(current commit: 93ce879dc4c04a3ef1758428ec80083c38610b1f)
+(current commit: ea6a6aca009422bba0dbad4c80df6e6ba0c82183)

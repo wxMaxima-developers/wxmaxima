@@ -1,6 +1,6 @@
 # Current development version
 
-- Remove the change label witdth popup menu (#1964)
+- Remove the change label width popup menu (#1964).
   It was not working at all and caused crashes. And I think the
   label width is not changed so often, so that a (working)
   possibility in the configuration menu is enough.
