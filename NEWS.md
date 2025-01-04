@@ -7,6 +7,7 @@
 - If an empty worksheet is saved as wxmx, allow it to be read again (#1978).
   The generated content.xml was empty, which was no valid XML.
 - Fix compiling with clang++.
+- CopyAsMathML: encode "<" and ">" as "&lt;" and "&gt;" (valid XML).
 
 # 24.11.0
 

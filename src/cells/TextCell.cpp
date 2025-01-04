@@ -1073,6 +1073,12 @@ wxString TextCell::ToMathML() const {
         return wxS("<mo>") + text + wxS("</mo>\n");
       }
     }
+    if (text == wxS("<")) {
+      return wxS("<mo>&lt;</mo>");
+    }
+    if (text == wxS(">")) {
+      return wxS("<mo>&gt;</mo>");
+    }
     else
       return wxS("<mi>") + text + wxS("</mi>\n");
   case TS_NUMBER:
