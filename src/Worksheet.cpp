@@ -1824,7 +1824,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
           for (unsigned int i = 0; i < m_replacementsForCurrentWord.size();
                i++)
             popupMenu.Append(EventIDs::popid_suggestion1 + i,
-                             m_replacementsForCurrentWord.at(i));
+                             _("Suggestion: ") + m_replacementsForCurrentWord.at(i));
         }
         popupMenu.AppendSeparator();
         if ((group->ContainsSavedAnswers()) ||
