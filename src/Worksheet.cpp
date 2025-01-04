@@ -5272,7 +5272,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
               filename_encoded +
               wxString::Format(
                                _("_%d.gif\"  alt=\"Animated Diagram\" "
-                                 "loading=\"lazy\" style=\"max-width:90%%;\" />\n"),
+                                 "loading=\"lazy\" style=\"max-width:90%%;\">\n"),
                                count);
           } else if (dynamic_cast<ImgCellBase *>(&(*chunk)) == NULL) {
             switch (m_configuration->HTMLequationFormat()) {
@@ -5312,7 +5312,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
                                  wxS("_%d.svg\" width=\"%li\" style=\"max-width:90%%;\" "
                                      "loading=\"lazy\" alt=\""),
                                  count, static_cast<long>(svgout.GetSize().x)) +
-                alttext + wxS("\" /><br>\n");
+                alttext + wxS("\"><br>\n");
 
               output << line + "\n";
               break;
@@ -5338,7 +5338,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
                                  count, ext.utf8_str(),
                                  static_cast<long>(size.x) / m_configuration->BitmapScale() -
                                  2 * borderwidth) +
-                alttext + wxS("\" /><br>\n");
+                alttext + wxS("\"><br>\n");
 
               output << line + "\n";
               break;
@@ -5372,7 +5372,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
                                    "loading=\"lazy\" alt=\""),
                                static_cast<long>(count),
                                ext.utf8_str(), static_cast<long>(size.x) - 2 * borderwidth) +
-              alttext + wxS("\" /><br>\n");
+              alttext + wxS("\"><br>\n");
 
             output << line + "\n";
           }
@@ -5478,7 +5478,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
                   filename_encoded +
                   wxString::Format(
                                    _("_%d.gif\" alt=\"Animated Diagram\" "
-                                     "style=\"max-width:90%%;\" loading=\"lazy\" />"),
+                                     "style=\"max-width:90%%;\" loading=\"lazy\">"),
                                    count)
                        << wxS("\n");
               } else {
@@ -5494,7 +5494,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
                       filename_encoded +
                       wxString::Format(
                                        wxS("_%d.%s\" alt=\"Diagram\" "
-                                           "style=\"max-width:90%%;\" loading=\"lazy\" />"),
+                                           "style=\"max-width:90%%;\" loading=\"lazy\">"),
                                        count, imgCell->GetExtension().utf8_str());
                   }
               }
