@@ -124,8 +124,8 @@ wxString AbsCell::ToTeX() const {
 }
 
 wxString AbsCell::ToMathML() const {
-  return wxS("<row><mo>|</mo>") + m_innerCell->ListToMathML() +
-    wxS("<mo>|</mo></row>\n");
+  return wxS("<mrow><mo>|</mo>") + m_innerCell->ListToMathML() +
+    wxS("<mo>|</mo></mrow>\n");
   //  return wxS("<apply><abs/><ci>") + m_innerCell->ListToMathML() +
   //  wxS("</ci></apply>");
 }
