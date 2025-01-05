@@ -1023,6 +1023,7 @@ wxString TextCell::ToMathML() const {
   if (m_displayedText == wxEmptyString)
     return wxEmptyString;
   wxString text = XMLescape(GetDisplayedString());
+  text.Replace(wxS("\u2212"), wxS("-")); // unicode minus sign
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if (IsHidden() ||
@@ -1066,7 +1067,7 @@ wxString TextCell::ToMathML() const {
       text = wxS("\u221e");
     if (text == wxS("minf"))
       text = wxS("-\u221e");
-    if ((text == wxS("+")) || (text == wxS("-")) || (text == wxS("*")) || (text == wxS("/"))) {
+    if ((text == wxS("+")) || (text == wxS("-")) || (text == wxS("*")) || (text == wxS("/")) || (text == wxS("="))) {
       if ((m_configuration->GetChangeAsterisk()) && (text == wxS("*"))) {
         return wxS("<mo>\u00B7</mo>\n"); // return an Unicode centered dot instead of "*"
       } else {
@@ -1078,6 +1079,9 @@ wxString TextCell::ToMathML() const {
     }
     if (text == wxS(">")) {
       return wxS("<mo>&gt;</mo>");
+    }
+    if (text == wxS("\x2212")) { // Unicode - sign
+      return wxS("<mo>-</mo>");
     }
     else
       return wxS("<mi>") + text + wxS("</mi>\n");
@@ -1096,7 +1100,7 @@ wxString TextCell::ToMathML() const {
       return wxS("<mo>") + text + wxS("</mo>\n");
   }
 
-  return wxS("<mo>") + text + wxS("</mo>\n");
+  return wxS("<mi>") + text + wxS("</mi>\n");
 }
 
 wxString TextCell::ToOMML() const {

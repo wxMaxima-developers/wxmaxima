@@ -8,6 +8,7 @@
   The generated content.xml was empty, which was no valid XML.
 - Fix compiling with clang++.
 - CopyAsMathML: encode "<" and ">" as "&lt;" and "&gt;" (valid XML).
+- CopyAsMathML: improvements (operators and identifiers)
 
 # 24.11.0
 
