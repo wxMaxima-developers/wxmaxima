@@ -33,7 +33,6 @@
 */
 
 #include "MaximaTokenizer.h"
-#include "NullLog.h"
 #include <wx/notifmsg.h>
 #if defined __WXMSW__
 //#include <wchar.h>
@@ -209,13 +208,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 #endif
   GnuplotCommandName(wxS("gnuplot"));
 
-  wxLogMessage(_("Stop logging to the debug messages side pane, if it is closed, logging messages would cause message popup windows."));
-  wxLogMessage(_("Logging to stderr (if enabled using the command line) will continue."));
   // If we log to stderr, still keep logging there.
   if (ErrorRedirector::LoggingToStdErr()) {
     wxLog::SetActiveTarget(new wxLogStderr());
-  } else {
-    wxLog::SetActiveTarget(new NullLog);
   }
 
   if (m_variableReadActions.empty()) {
@@ -1901,7 +1896,6 @@ wxMaxima::~wxMaxima() {
           // If there is no window that can take over the log any more the program
           // is about to close and cannot instantiate new gui loggers.
           m_logPane->DropLogTarget();
-          wxLog::SetActiveTarget(new NullLog);
           // Only affects the current thread, alas!
           wxLog::EnableLogging(false);
         }
@@ -2905,7 +2899,6 @@ void wxMaxima::KillMaxima(bool logMessage) {
      the batch file to automatically kill maxima on exit.
    */
   // Many of our wxProcess::kill commands will fail
-  wxLogNull logNull;
   bool killed = false;
   if (m_pid > 0)
     killed = (wxProcess::Kill(m_pid, wxSIGTERM, wxKILL_CHILDREN) == wxKILL_OK);

@@ -21,7 +21,6 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "LogPane.h"
-#include "../NullLog.h"
 #include <memory>
 LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget)
   : wxPanel(parent, id) {
@@ -48,7 +47,6 @@ LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget)
 void LogPane::DropLogTarget() {
   if (m_errorRedirector) {
     m_errorRedirector.reset();
-    wxLog::SetActiveTarget(new NullLog);
   }
   m_logPanelTarget.reset();
 }

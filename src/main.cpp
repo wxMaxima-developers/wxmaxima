@@ -27,7 +27,6 @@
 
 #include "main.h"
 #include "Maxima.h"
-#include "NullLog.h"
 #include "Dirstructure.h"
 #include "StackToStdErr.h"
 #include "wxMathml.h"
@@ -282,7 +281,7 @@ bool MyApp::OnInit() {
 
     /* Maxima depending on the lisp it was compiled by and the lisp's version
        might only support Unicode if LANG tells it so.
-       
+
        Do we reckon we improve something if we set maxima's language, as well?
     */
     if ((wxLocale::IsAvailable(lang)) && (lang != wxLANGUAGE_DEFAULT)) {
@@ -480,14 +479,12 @@ bool MyApp::OnInit() {
 }
 
 int MyApp::OnExit() {
-  wxLog::SetActiveTarget(new NullLog);
   for(auto i:m_wxMaximaProcesses)
     i->Detach();
   return wxMaxima::GetExitCode();
 }
 
 int MyApp::OnRun() {
-  wxLog::SetActiveTarget(new NullLog);
   wxApp::OnRun();
   return 0;
 }
@@ -606,7 +603,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
       // Compile a list of arguments we want to pass to the new process
       std::vector<wxString> args;
       args.push_back(wxStandardPaths::Get().GetExecutablePath().mb_str());
- 
+
       if (Configuration::m_configfileLocation_override != wxEmptyString)
         {
           args.push_back("-f");
@@ -641,7 +638,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
           wxCharBuffer buf = i.utf8_str();
           args_c_strings.push_back(buf);
         }
-      
+
       // Additionally wxExecute expects these C strings in a C array.
       std::vector<char *> argslist;
       for(auto &i : args_c_strings)
