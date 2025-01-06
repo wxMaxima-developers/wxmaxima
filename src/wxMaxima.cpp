@@ -2547,14 +2547,10 @@ bool wxMaxima::StartServer() {
     wxLogMessage(_("Trying to start the socket a maxima on the local "
                    "machine can connect to on port %li"),
                  static_cast<long>(m_port));
-#if wxUSE_IPV6
-    // wxIPV6address seems to be broken on KoenGu's development computer in 01/2024:
-    // Maxima if IPv6 is used outputs some whitespace and exits.
-    // wxIPV6address addr;
+
+    // Currently, only wxIPV4address is implemented (current wxWidgets 3.2.6)
+    // https://docs.wxwidgets.org/3.2.6/classwx_i_paddress.htmlwxIPV6address
     wxIPV4address addr;
-#else
-    wxIPV4address addr;
-#endif
     if (!addr.LocalHost())
       wxLogMessage(_("Cannot set the communication address to localhost."));
     if (!addr.Service(m_port))
