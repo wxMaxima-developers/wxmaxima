@@ -2549,7 +2549,7 @@ bool wxMaxima::StartServer() {
                  static_cast<long>(m_port));
 
     // Currently, only wxIPV4address is implemented (current wxWidgets 3.2.6)
-    // https://docs.wxwidgets.org/3.2.6/classwx_i_paddress.htmlwxIPV6address
+    // https://docs.wxwidgets.org/3.2.6/classwx_i_paddress.html
     wxIPV4address addr;
     if (!addr.LocalHost())
       wxLogMessage(_("Cannot set the communication address to localhost."));
