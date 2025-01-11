@@ -2895,24 +2895,55 @@ void wxMaxima::KillMaxima(bool logMessage) {
      the batch file to automatically kill maxima on exit.
    */
   // Many of our wxProcess::kill commands will fail
+  //
+  // I (daute) assume, that since commit e6601c4d that is no longer necessary, it seems to work with the first call...
+  // Add some log messages and keep the further tries, but I assume, they will not be executed.
+
   bool killed = false;
-  if (m_pid > 0)
-    killed = (wxProcess::Kill(m_pid, wxSIGTERM, wxKILL_CHILDREN) == wxKILL_OK);
-  if(m_maximaProcess && (!killed) && (m_maximaProcess->GetPid() > 0))
-    killed = (wxProcess::Kill(m_maximaProcess->GetPid(),
-                              wxSIGTERM, wxKILL_CHILDREN) == wxKILL_OK);
-  if ((!killed) && (m_pid > 0))
-    killed = (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
+  wxLogMessage("Killing Maxima1: m_pid=%ld, m_maximaProcess->GetPid()=%ld", m_pid, m_maximaProcess->GetPid());
+  if (m_pid > 0) {
+#ifdef __WINDOWS__
+    // It seems complicated. First, wxSIGTERM seems not be enough. Ok. Send wxSIGKILL.
+    // "You need to use wxSIGKILL for the processes without windows under Windows.". See:
+    // https://github.com/wxWidgets/wxWidgets/issues/15356
+    // int killresult = wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN);
+    //
+    // However - that seems not work too. It either does not send wxSIGKILL (but another signal) to the children or
+    // only to the direct children and not their child processes. So use taskkill (/F: force, /T: treekill):
+    wxArrayString taskkill_out, taskkill_err;
+    wxExecute(wxString::Format("taskkill /PID %d /F /T", m_pid), taskkill_out, taskkill_err, wxEXEC_SYNC);
+    for (size_t i=0; i<taskkill_out.GetCount(); ++i)
+      wxLogMessage("taskkill_out: " + taskkill_out.Item(i));
+    for (size_t i=0; i<taskkill_err.GetCount(); ++i)
+      wxLogMessage("taskkill_err: " + taskkill_err.Item(i));
+    // And just assume, it worked...
+    int killresult = wxKILL_OK;
+#else
+    int killresult = wxProcess::Kill(m_pid, wxSIGTERM, wxKILL_CHILDREN);
+#endif
+    killed = (killresult == wxKILL_OK);
+    wxLogMessage("Killresult1. killresult=%d (0=wxKILL_OK), killed=%d (1=true)", killresult, killed);
+  }
+  // Maybe the following code is obsolete, as the kill procedure above hopefully worked...
+  if (!killed) {
+    if(m_maximaProcess && (!killed) && (m_maximaProcess->GetPid() > 0))
+      killed = (wxProcess::Kill(m_maximaProcess->GetPid(),
+                                wxSIGTERM, wxKILL_CHILDREN) == wxKILL_OK);
+    wxLogMessage("Killing Maxima2. m_pid=%ld, m_maximaProcess->GetPid()=%ld",m_pid, m_maximaProcess->GetPid());
+    if ((!killed) && (m_pid > 0))
+      killed = (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
 
-  if(m_maximaProcess && (!killed) && (m_maximaProcess->GetPid() > 0))
-    killed = (wxProcess::Kill(m_maximaProcess->GetPid(),
-                              wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
-  if ((!killed) && (m_pid > 0))
-    killed = (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
-  if (!killed)
-    wxLogMessage(_("Killing Maxima failed. But we sent a \"quit();\" to it."));
-  m_configuration.InLispMode(false);
-
+    if(m_maximaProcess && (!killed) && (m_maximaProcess->GetPid() > 0))
+      killed = (wxProcess::Kill(m_maximaProcess->GetPid(),
+                                wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
+    wxLogMessage("Killing Maxima3. m_pid=%ld, m_maximaProcess->GetPid()=%ld",m_pid, m_maximaProcess->GetPid());
+    if ((!killed) && (m_pid > 0))
+      killed = (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
+    wxLogMessage("Killing Maxima4. m_pid=%ld, m_maximaProcess->GetPid()=%ld",m_pid, m_maximaProcess->GetPid());
+    if (!killed)
+      wxLogMessage(_("Killing Maxima failed. But we sent a \"quit();\" to it."));
+    m_configuration.InLispMode(false);
+  }
   // Wait for maxima to actually exit before we clean up its temporary files
   int count = 40;
   while((m_pid > 0) && wxProcess::Exists(m_pid) && (count > 0))
