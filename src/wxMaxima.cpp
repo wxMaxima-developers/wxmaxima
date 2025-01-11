@@ -3627,12 +3627,15 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
 #ifdef __WXMSW__
     if (m_gnuplotcommand.IsEmpty())
       m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot);
+    m_gnuplotcommand_commandline = pathlist.FindAbsoluteValidPath(wxS("gnuplot.exe"));
 
     if(m_configuration.UseWGnuplot())
       {
         // If not successful, Find executable "wgnuplot.exe" in our list of paths
-        if (m_gnuplotcommand.IsEmpty())
+        if (m_gnuplotcommand.IsEmpty()) {
           m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("wgnuplot.exe"));
+          m_gnuplotcommand_commandline = pathlist.FindAbsoluteValidPath(wxS("gnuplot.exe"));
+        }
       }
     // If not successful, Find executable "gnuplot.exe" in our list of paths
     if (m_gnuplotcommand.IsEmpty())
@@ -3660,6 +3663,9 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
         }
     } else {
       wxLogMessage(_("Gnuplot found at: %s"), m_gnuplotcommand.mb_str());
+#ifdef __WINDOWS__
+      wxLogMessage(_("Gnuplot (command line) found at: %s"), m_gnuplotcommand_commandline.mb_str());
+#endif
     }
   }
   if (m_gnuplotcommand.Contains(" ") && (!m_gnuplotcommand.StartsWith("\"")) &&
@@ -3701,8 +3707,12 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
     }
 #endif
   wxArrayString gnuplot_output, gnuplot_errors;
-  const wxString gnuplot_terminal_command = gnuplotcommand + " -e \"print GPVAL_TERMINALS\"";
-  if (wxExecute(gnuplot_terminal_command, gnuplot_output, gnuplot_errors, wxEXEC_SYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER, NULL) < 0)
+#ifdef __WINDOWS__
+  wxString gnuplot_query=m_gnuplotcommand_commandline + " -e \"print GPVAL_TERMINALS\"";
+#else
+  wxString gnuplot_query=m_gnuplotcommand + " -e \"print GPVAL_TERMINALS\"";
+#endif
+  if (wxExecute(gnuplot_query, gnuplot_output, gnuplot_errors, wxEXEC_SYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER, NULL) < 0)
     wxLogMessage(_("Cannot start gnuplot"));
   else {
     wxString gnuplot_terminals = wxJoin(gnuplot_errors, ' ', 0); // REMARK: In the documentation of wxJoin, NULL is suggested as 3rd argument ("If the escape character is non-NULL, ..."), but NULL causes an warning. (warning: passing NULL to non-pointer argument 3). Therefore I use 0 here.

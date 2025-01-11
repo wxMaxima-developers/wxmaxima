@@ -784,7 +784,13 @@ protected:
   static int m_exitCode;
   //! Maxima's idea about gnuplot's location
   wxString m_gnuplotcommand;
+#ifdef __WINDOWS__
+  // For Windows, store "gnuplot.exe", even if wgnuplot.exe is preferred.
+  // We query the terminals using: gnuplot -e "print GPVAL_TERMINALS"
+  // and that does only work with gnuplot, not wgnuplot.
   //! The Char the current command starts at in the current WorkingGroup
+  wxString m_gnuplotcommand_commandline;
+#endif
   long m_commandIndex = -1;
   FindReplacePane::FindReplaceData m_findData;
   static wxRegEx m_funRegEx;

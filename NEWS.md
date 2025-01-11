@@ -9,6 +9,7 @@
 - Fix compiling with clang++.
 - CopyAsMathML: encode "<" and ">" as "&lt;" and "&gt;" (valid XML).
 - CopyAsMathML: improvements (operators and identifiers)
+- Fix the check for Gnuplot-Cairo on Windows.
 
 # 24.11.0
 
