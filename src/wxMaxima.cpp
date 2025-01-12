@@ -2910,6 +2910,11 @@ void wxMaxima::KillMaxima(bool logMessage) {
     //
     // However - that seems not work too. It either does not send wxSIGKILL (but another signal) to the children or
     // only to the direct children and not their child processes. So use taskkill (/F: force, /T: treekill):
+    //
+    // I identified a wxWidgets issue, that only the direct children are killed:
+    // https://github.com/wxWidgets/wxWidgets/issues/25069
+    // Since it will take some time until wxWidgets distributions with this fix are released and in use,
+    // use the taskkill solution now.
     wxArrayString taskkill_out, taskkill_err;
     wxExecute(wxString::Format("taskkill /PID %d /F /T", m_pid), taskkill_out, taskkill_err, wxEXEC_SYNC);
     for (size_t i=0; i<taskkill_out.GetCount(); ++i)
