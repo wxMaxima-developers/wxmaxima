@@ -1436,7 +1436,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(EventIDs::popid_ToggleTOCshowsSectionNumbers, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_tocLevel1, EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels(), wxEVT_MENU,
+  Connect(EventIDs::popid_tocLevel1, EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(EventIDs::popid_tocMoveIn, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
@@ -1575,12 +1575,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::popid_hide_tooltipMarkerForThisMessage, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_recent_document_0, EventIDs::menu_recent_document_0 + EventIDs::NumberOfRecentFiles() - 1,
+  Connect(EventIDs::menu_recent_document_0, EventIDs::menu_recent_document_0 + EventIDs::NumberOfRecentFiles - 1,
           wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_package_0, EventIDs::menu_recent_package_0 + EventIDs::NumberOfRecentFiles() - 1, wxEVT_MENU,
+  Connect(EventIDs::menu_recent_package_0, EventIDs::menu_recent_package_0 + EventIDs::NumberOfRecentFiles - 1, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_unsaved_document_0, EventIDs::menu_unsaved_document_0 + EventIDs::NumberOfRecentFiles() - 1, wxEVT_MENU,
+  Connect(EventIDs::menu_unsaved_document_0, EventIDs::menu_unsaved_document_0 + EventIDs::NumberOfRecentFiles - 1, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
   Connect(EventIDs::menu_insert_image, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
@@ -1667,7 +1667,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           this);
   Connect(SYMBOLADDEVENT, wxCommandEventHandler(wxMaxima::OnSymbolAdd), NULL,
           this);
-  Connect(EventIDs::popid_suggestion1, EventIDs::popid_suggestion1 + EventIDs::NumberOfSuggestions() - 1, wxEVT_MENU,
+  Connect(EventIDs::popid_suggestion1, EventIDs::popid_suggestion1 + EventIDs::NumberOfSuggestions - 1, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
   Connect(EventIDs::popid_property_real, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
@@ -9952,11 +9952,11 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       m_configuration.TocShowsSectionNumbers(event.IsChecked());
       GetWorksheet()->UpdateTableOfContents();
   }
-  else if((event.GetId() >= EventIDs::popid_tocLevel1) && (event.GetId() < EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels() - 2)) {
+  else if((event.GetId() >= EventIDs::popid_tocLevel1) && (event.GetId() < EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels - 2)) {
     m_configuration.TocDepth(event.GetId() - EventIDs::popid_tocLevel1 + 1 );
     GetWorksheet()->UpdateTableOfContents();
   }
-  else if(event.GetId() == EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels() -1){
+  else if(event.GetId() == EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels -1){
       m_configuration.TocDepth(255);
       GetWorksheet()->UpdateTableOfContents();
   }

@@ -50,13 +50,13 @@ class EventIDs
 public:
   EventIDs();
   //! How many IDs we have reserved for autocompletion keywords?
-  static constexpr int NumberOfAutocompleteKeywords() {return 25;}
+  static constexpr int NumberOfAutocompleteKeywords = 25;
   //! How many IDs we have reserved for recent files/packages?
-  static constexpr int NumberOfRecentFiles()  {return 30;}
+  static constexpr int NumberOfRecentFiles = 30;
   //! How many IDs we have reserved for suggestions of similar command names?
-  static constexpr int NumberOfSuggestions()  {return 10;}
+  static constexpr int NumberOfSuggestions = 10;
   //! How many IDs have we reserved for table of contents depths
-  static constexpr int NumberOfTocLevels()  {return 6;}
+  static constexpr int NumberOfTocLevels = 6;
 /*! @{
   This list serves several purposes:
   - wxwidgets uses this list to tell us what kind of events it has to inform us about.

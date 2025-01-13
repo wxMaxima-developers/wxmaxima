@@ -112,7 +112,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // Redirect all debug messages to a dockable panel and output some info
   // about this program.
   m_logPane = new LogPane(this);
-
   wxLogMessage(wxString::Format(_("wxMaxima version %s"), WXMAXIMA_VERSION));
 #ifdef __WXMSW__
   if (wxSystemOptions::IsFalse("msw.display.directdraw"))
@@ -212,8 +211,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                                         100 * GetContentScaleFactor()))
                         .PaneBorder(false)
                         .Row(2));
-      
-      
+
+
       GetWorksheet()->m_mainToolBar = new ToolBar(this);
       m_sidebarNames[EventIDs::menu_pane_toolbar] = wxS("toolbar");
       m_sidebarCaption[EventIDs::menu_pane_toolbar] = _("The main toolbar");
@@ -244,7 +243,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_manager->AddPane(m_tableOfContents, wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_structure])
                     .Right());
-      
+
   if(GetWorksheet())
     {
       m_sidebarNames[EventIDs::menu_pane_xmlInspector] = wxS("XmlInspector");
@@ -266,7 +265,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       m_manager->AddPane(new GreekSidebar(this, &GetConfiguration(), GetWorksheet()), wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_greek])
                         .Left());
-      
+
       m_sidebarNames[EventIDs::menu_pane_unicode] = wxS("unicode");
       m_sidebarCaption[EventIDs::menu_pane_unicode] = _("Unicode characters");
       //  wxWindowUpdateLocker unicodeBlocker(unicodePane);
@@ -274,7 +273,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                         .Name(m_sidebarNames[EventIDs::menu_pane_unicode])
                         .Left());
     }
-  
+
   m_sidebarNames[EventIDs::menu_pane_log] = wxS("log");
   m_sidebarCaption[EventIDs::menu_pane_log] = _("Debug messages");
   m_manager->AddPane(m_logPane, wxAuiPaneInfo()
@@ -294,7 +293,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                         wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_variables])
                         .Bottom());
-      
+
       m_sidebarNames[EventIDs::menu_pane_symbols] = wxS("symbols");
       m_sidebarCaption[EventIDs::menu_pane_symbols] = _("Mathematical Symbols");
       m_symbolsSidebar = new SymbolsSidebar(this, &GetConfiguration(), GetWorksheet());
@@ -456,7 +455,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
 std::size_t wxMaximaFrame::CountWindows() {
   size_t numberOfWindows = 1;
-  
+
   wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
   while (node) {
     // Only count windows of the type wxMaxima
@@ -965,7 +964,7 @@ void wxMaximaFrame::SetupCellMenu() {
                                       _("Merge Cells"));
 #if wxCHECK_VERSION(3, 2, 0)
     item->SetBitmap(ArtProvider::GetCellMergeBundle());
-#endif 
+#endif
     m_CellMenu->Append(item);
   }
   {
@@ -974,7 +973,7 @@ void wxMaximaFrame::SetupCellMenu() {
                                           _("Divide Cell"));
 #if wxCHECK_VERSION(3, 2, 0)
         item->SetBitmap(ArtProvider::GetDivideCellBundle());
-#endif 
+#endif
         m_CellMenu->Append(item);
   }
   m_CellMenu->AppendSeparator();
@@ -2017,11 +2016,11 @@ void wxMaximaFrame::SetupMenu() {
 #endif
   SetupFileMenu();
   SetupEditMenu();
-  SetupViewMenu(); 
-  SetupCellMenu(); 
-  SetupMaximaMenu(); 
-  SetupEquationsMenu(); 
-  SetupMatrixMenu(); 
+  SetupViewMenu();
+  SetupCellMenu();
+  SetupMaximaMenu();
+  SetupEquationsMenu();
+  SetupMatrixMenu();
   SetupCalculusMenu();
   SetupSimplifyMenu();
   SetupListMenu();
@@ -2092,7 +2091,7 @@ void wxMaximaFrame::PopulateRecentDocumentsMenu(wxMenu *menu, int firstEntry,
       menu->Enable(id, wxFileExists(name));
 
       id++;
-      if(id >= firstEntry + EventIDs::NumberOfRecentFiles())
+      if(id >= firstEntry + EventIDs::NumberOfRecentFiles)
         return;
     }
 }
@@ -2108,7 +2107,7 @@ void wxMaximaFrame::PopulateRecentPackagesMenu(wxMenu *menu, int firstEntry,
       else
         menu->Append(id, name);
       id++;
-      if(id >= firstEntry + EventIDs::NumberOfRecentFiles())
+      if(id >= firstEntry + EventIDs::NumberOfRecentFiles)
         return;
     }
 }
@@ -2119,7 +2118,7 @@ void wxMaximaFrame::UpdateRecentDocuments() {
 
   if (recentItems < 5)
     recentItems = 5;
-  if (recentItems > EventIDs::NumberOfRecentFiles())
+  if (recentItems > EventIDs::NumberOfRecentFiles)
     recentItems = 30;
 
   PopulateRecentDocumentsMenu(m_recentDocumentsMenu, EventIDs::menu_recent_document_0,

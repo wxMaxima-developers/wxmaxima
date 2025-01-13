@@ -168,7 +168,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
           this);
   Connect(wxEVT_ERASE_BACKGROUND,
           wxEraseEventHandler(Worksheet::EraseBackground));
-  Connect(EventIDs::popid_autocomplete_keyword1, EventIDs::popid_autocomplete_keyword1 + EventIDs::NumberOfAutocompleteKeywords() - 1,
+  Connect(EventIDs::popid_autocomplete_keyword1, EventIDs::popid_autocomplete_keyword1 + EventIDs::NumberOfAutocompleteKeywords - 1,
           wxEVT_MENU,
           wxCommandEventHandler(Worksheet::OnComplete));
   Connect(wxEVT_SIZE, wxSizeEventHandler(Worksheet::OnSize));
@@ -7661,7 +7661,7 @@ void Worksheet::OnComplete(wxCommandEvent &event) {
 
   int item = event.GetId() - EventIDs::popid_autocomplete_keyword1;
   wxASSERT(item >= 0);
-  wxASSERT(item < EventIDs::NumberOfAutocompleteKeywords());
+  wxASSERT(item < EventIDs::NumberOfAutocompleteKeywords);
 
   if (!editor->GetSelectionString().empty())
     editor->ReplaceSelection(editor->GetSelectionString(),
