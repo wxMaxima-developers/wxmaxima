@@ -10,6 +10,7 @@
 - CopyAsMathML: encode "<" and ">" as HTML entities (valid XML).
 - CopyAsMathML: improvements (operators and identifiers)
 - Fix the check for Gnuplot-Cairo on Windows.
+- Fix the (Windows) crash in the suggestions menu (#1980).
 
 # 24.11.0
 

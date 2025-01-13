@@ -54,6 +54,8 @@ public:
   //! How many IDs we have reserved for recent files/packages?
   static constexpr int NumberOfRecentFiles = 30;
   //! How many IDs we have reserved for suggestions of similar command names?
+  // Note: If this value is changed, the enum with the IDs (popid_suggestion1, ...)
+  // must be changed too.
   static constexpr int NumberOfSuggestions = 10;
   //! How many IDs have we reserved for table of contents depths
   static constexpr int NumberOfTocLevels = 6;
@@ -711,6 +713,9 @@ public:
   static const wxWindowIDRef popid_resolutionchooser;
   static const wxWindowIDRef popid_reloadimage;
 
+  // remark: popid_suggestion2 .. popid_suggestion10 is nowhere used in the code.
+  // But we need NumberOfSuggestions (currently 10) IDs, and maybe later the enum
+  // with the IDs will be extended.
   enum {
     popid_suggestion1 = wxID_HIGHEST+1,
     popid_suggestion2,
