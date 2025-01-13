@@ -710,16 +710,19 @@ public:
   static const wxWindowIDRef popid_maxsizechooser;
   static const wxWindowIDRef popid_resolutionchooser;
   static const wxWindowIDRef popid_reloadimage;
-  static const wxWindowIDRef popid_suggestion1;
-  static const wxWindowIDRef popid_suggestion2;
-  static const wxWindowIDRef popid_suggestion3;
-  static const wxWindowIDRef popid_suggestion4;
-  static const wxWindowIDRef popid_suggestion5;
-  static const wxWindowIDRef popid_suggestion6;
-  static const wxWindowIDRef popid_suggestion7;
-  static const wxWindowIDRef popid_suggestion8;
-  static const wxWindowIDRef popid_suggestion9;
-  static const wxWindowIDRef popid_suggestion10;
+
+  enum {
+    popid_suggestion1 = wxID_HIGHEST+1,
+    popid_suggestion2,
+    popid_suggestion3,
+    popid_suggestion4,
+    popid_suggestion5,
+    popid_suggestion6,
+    popid_suggestion7,
+    popid_suggestion8,
+    popid_suggestion9,
+    popid_suggestion10
+  };
   static const wxWindowIDRef popid_hide_tooltipMarker;
   static const wxWindowIDRef popid_hide_tooltipMarkerForThisMessage;
   static const wxWindowIDRef popid_property_real;

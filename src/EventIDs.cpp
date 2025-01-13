@@ -645,7 +645,6 @@ const wxWindowIDRef EventIDs::popid_unfold(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_maxsizechooser(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_resolutionchooser(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_reloadimage(wxWindow::NewControlId());
-const wxWindowIDRef EventIDs::popid_suggestion1(wxWindow::NewControlId(NumberOfSuggestions()));
 const wxWindowIDRef EventIDs::popid_hide_tooltipMarker(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_hide_tooltipMarkerForThisMessage(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_property_real(wxWindow::NewControlId());
