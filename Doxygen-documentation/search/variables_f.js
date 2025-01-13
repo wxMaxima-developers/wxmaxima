@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['x_0',['x',['../structCoordStruct.html#a183d7226fc5a8470ce9b9f04f9cb69bb',1,'CoordStruct']]]
+  ['wizard_5fparametric_5fplot_0',['wizard_parametric_plot',['../classEventIDs.html#a95017fc059b222493b76c640a4aab03e',1,'EventIDs']]]
 ];
