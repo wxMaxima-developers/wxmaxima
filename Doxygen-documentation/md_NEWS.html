@@ -76,7 +76,7 @@ $(function() {
 <li>Remove the change label width popup menu (#1964). It was not working at all and caused crashes. And I think the label width is not changed so often, so that a (working) possibility in the configuration menu is enough.</li>
 <li>If an empty worksheet is saved as wxmx, allow it to be read again (#1978). The generated content.xml was empty, which was no valid XML.</li>
 <li>Fix compiling with clang++.</li>
-<li>CopyAsMathML: encode "&lt;" and "&gt;" as "&amp;lt;" and "&amp;gt;" (valid XML).</li>
+<li>CopyAsMathML: encode "&lt;" and "&gt;" as HTML entities (valid XML).</li>
 <li>CopyAsMathML: improvements (operators and identifiers)</li>
 <li>Fix the check for Gnuplot-Cairo on Windows.</li>
 </ul>
