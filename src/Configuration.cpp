@@ -1340,7 +1340,9 @@ void Configuration::WriteSettings(const wxString &file) {
     config->Write(wxS("suppressYellowMarkerMessages"),
                   hideMessagesConfigString);
   }
-  config->Write("usewgnuplot", m_useWgnuplot);  
+#ifdef __WXMSW__
+  config->Write("usewgnuplot", m_useWgnuplot);
+#endif
   config->Write("maximaHelpFormat", static_cast<long>(m_maximaHelpFormat));
   config->Write(wxS("Print/Margin/Top"), m_printMargin_Top);
   config->Write(wxS("Print/Margin/Bot"), m_printMargin_Bot);

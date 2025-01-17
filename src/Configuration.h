@@ -1006,8 +1006,8 @@ public:
   void Display2d_Unicode(bool unicode){m_display2d_Unicode = unicode;}
   bool Display2d_Unicode() const {return m_display2d_Unicode;}
 
-  bool UseWGnuplot() const {return m_useWgnuplot;}
   #ifdef __WXMSW__
+  bool UseWGnuplot() const {return m_useWgnuplot;}
   void UseWGnuplot(bool usewgnuplot) {m_useWgnuplot = usewgnuplot;}
   #endif
   wxString TexPreamble() const {return m_texPreamble;}
@@ -1259,10 +1259,9 @@ private:
   wxBrush m_BackgroundBrush;
   wxBrush m_tooltipBrush;
   bool m_greekSidebar_ShowLatinLookalikes;
-  #ifndef __WXMSW__
-  const
-  #endif
+  #ifdef __WXMSW__
   bool m_useWgnuplot = false;
+  #endif
   bool m_greekSidebar_Show_mu;
   wxString m_symbolPaneAdditionalChars;
   bool m_invertBackground;

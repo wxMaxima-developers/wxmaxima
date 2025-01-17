@@ -3612,6 +3612,7 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
     pathlist.Add(OSX_MACPORTS_PREFIX "/bin");
 #endif
 
+#ifdef __WXMSW__
     wxString wgnuplot = gnuplot;
     if(m_configuration.UseWGnuplot())
       {
@@ -3629,7 +3630,6 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
       {
         wxLogMessage(_("Instructed to prefer gnuplot over wgnuplot"));
       }
-#ifdef __WXMSW__
     if (m_gnuplotcommand.IsEmpty())
       m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot);
     m_gnuplotcommand_commandline = pathlist.FindAbsoluteValidPath(wxS("gnuplot.exe"));
@@ -3656,6 +3656,7 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
     // If not successful, use the original command (better than empty for error
     // messages)
     if (m_gnuplotcommand.IsEmpty()) {
+#ifdef __WXMSW__
       if(m_configuration.UseWGnuplot())
         {
           m_gnuplotcommand = wgnuplot;
@@ -3666,6 +3667,7 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
           m_gnuplotcommand = gnuplot;
           wxLogMessage(_("Gnuplot not found, using the default: %s"), gnuplot.mb_str());
         }
+#endif
     } else {
       wxLogMessage(_("Gnuplot found at: %s"), m_gnuplotcommand.mb_str());
 #ifdef __WINDOWS__
