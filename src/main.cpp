@@ -310,13 +310,11 @@ bool MyApp::OnInit() {
       }
     }
     wxTranslations::Get()->AddCatalog(wxS("wxMaxima"));
-    /* wxWidgets introduced version suffixes to gettext catalogs, see:
-     * https://github.com/wxWidgets/wxWidgets/commit/ded4da5 */
-    /* so try to load a catalog with this suffix */
-    wxTranslations::Get()->AddCatalog("wxstd-"
-                                      wxSTRINGIZE(wxMAJOR_VERSION) "."
-                                      wxSTRINGIZE(wxMINOR_VERSION));
-    wxTranslations::Get()->AddCatalog(wxS("wxstd"));
+    /* Add standard wxWidgets catalogs ("wxstd" and possible port-specific catalogs). */
+    /* returns false, if no suitable catalog was found, in this case log that. */
+    if (wxTranslations::Get()->AddStdCatalog() == false) {
+      wxLogMessage("Translations: no standard wxWidgets catalogs were found");
+    }
   }
 
   bool exitAfterEval = false;
