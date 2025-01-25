@@ -706,7 +706,7 @@ Pops up a wizard that allows to set up grid lines.
 
 Allows to select an adequate point in the speed vs. accuracy tradeoff that is part of any plot program.
 
-### Modify font and font size for plots.
+### Modify font and font size for plots
 
 Especially when you use a high resolution display, the default font size might be very small. For the `draw`-based commands, you can set the font / font size using options like `font=...`, `font_size=...`, e.g.:
 
