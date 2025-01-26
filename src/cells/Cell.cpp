@@ -288,7 +288,7 @@ int Cell::GetLineWidth() const {
     if (&tmp != this)
       if (tmp.m_isBrokenIntoLines || tmp.m_breakLine ||
           (tmp.m_type == MC_TYPE_MAIN_PROMPT))
-        break; 
+        break;
     width += tmp.m_width;
   }
   return width;
@@ -516,7 +516,7 @@ void Cell::BreakLines_List()
   ResetSize_RecursivelyList();
 }
 
-bool Cell::BreakUpCells() {  
+bool Cell::BreakUpCells() {
   int clientWidth =
     .8 * m_configuration->GetCanvasSize().x - m_configuration->GetIndent();
   if (clientWidth < Scale_Px(50))
@@ -544,7 +544,7 @@ bool Cell::UnBreakUpCells() {
   }
   if(retval)
     ResetSize_RecursivelyList();
-    
+
   return retval;
 }
 
@@ -745,14 +745,14 @@ wxString Cell::ListToMathML(bool startofline) const {
   if (highlight)
     retval += wxS("</mrow>");
 
-  // If we grouped multiple cells as a single object we need to cose this group
+  // If we grouped multiple cells as a single object we need to close this group
   // now
   if ((multiCell) && (!needsTable))
     retval = wxS("<mrow>") + retval + wxS("</mrow>\n");
 
   // If we put the region we exported into a table we need to end this table now
   if (needsTable)
-    retval = wxS("<mtable>\n<mlabeledtr columnalign=\"left\"><mtd>") + retval +
+    retval = wxS("<mtable side=\"left\">\n<mlabeledtr><mtd>") + retval +
       wxS("</mtd></mlabeledtr>\n</mtable>");
   return retval;
 }

@@ -11,6 +11,7 @@
 - CopyAsMathML: improvements (operators and identifiers)
 - Fix the check for Gnuplot-Cairo on Windows.
 - Fix the (Windows) crash in the suggestions menu (#1980).
+- HMTL export: print the output labels on the left side.
 
 # 24.11.0
 
