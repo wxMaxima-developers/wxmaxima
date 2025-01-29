@@ -312,9 +312,10 @@ bool MyApp::OnInit() {
     wxTranslations::Get()->AddCatalog(wxS("wxMaxima"));
     /* Add standard wxWidgets catalogs ("wxstd" and possible port-specific catalogs). */
     /* returns false, if no suitable catalog was found, in this case log that. */
-    if (wxTranslations::Get()->AddStdCatalog() == false) {
-      wxLogMessage("Translations: no standard wxWidgets catalogs were found");
-    }
+    wxTranslations::Get()->AddStdCatalog();
+    // if (wxTranslations::Get()->AddStdCatalog() == false) {
+    //   wxLogMessage("Translations: no standard wxWidgets catalogs were found");
+    // }
   }
 
   bool exitAfterEval = false;
