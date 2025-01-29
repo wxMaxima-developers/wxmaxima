@@ -1,4 +1,4 @@
-# Current development version
+# 25.01.0
 
 - Remove the change label width popup menu (#1964).
   It was not working at all and caused crashes. And I think the
@@ -11,7 +11,7 @@
 - CopyAsMathML: improvements (operators and identifiers)
 - Fix the check for Gnuplot-Cairo on Windows.
 - Fix the (Windows) crash in the suggestions menu (#1980).
-- HMTL export: print the output labels on the left side.
+- HTML export: print the output labels on the left side.
 
 # 24.11.0
 
