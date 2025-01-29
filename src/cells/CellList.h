@@ -158,7 +158,7 @@ public:
   /*! Replaces the successor of a given cell, and returns the old one (if any).
    *
    * \param cell is the cell to modify.
-   * \param next is the replacement succssor. It can be a list, or a single cell,
+   * \param next is the replacement successor. It can be a list, or a single cell,
    * or null. Null means that the cell won't have a successor.
    */
   static std::unique_ptr<Cell> SetNext(Cell *cell, std::unique_ptr<Cell> &&next);
