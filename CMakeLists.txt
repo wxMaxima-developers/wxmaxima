@@ -16,6 +16,9 @@ project(wxMaxima
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
+# define C++ macro DEBUG=1 if CMAKE_BUILD_TYPE=Debug
+add_compile_definitions("DEBUG=$<CONFIG:Debug>")
+
 # Set the locale to default C to prevent issues due to localization of commands.
 # This is necessary as we call commands like "po4a --version"
 set(ENV{LANG} C)

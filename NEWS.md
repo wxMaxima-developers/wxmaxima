@@ -1,3 +1,10 @@
+# Current development version
+
+- Use the (standard) wxWidgets log window instead of our own log pane.
+  Less code to maintain, more features (e.g. clear log, save log).
+  In "Release" builds the log window will be hidden (and can be enabled
+  using View->Show log window, otherwise it is shown.
+
 # 25.01.0
 
 - Remove the change label width popup menu (#1964).
@@ -49,7 +56,7 @@
 - Fix the greek letter replacement for 'beta' with newer Maxima versions (#1921).
 - Fix a problem, when 'maxima-local' (a not installed version of Maxima)
   was chosen as Maxima. WxMaxima did not finish on File->Exit and used
-  much CPU power. 
+  much CPU power.
 - Size calculations for numbers that were broken into lines failed the first time
   (#1931)
 - On MS Windows one can now choose between Gnuplot and wGnuplot (#1934)

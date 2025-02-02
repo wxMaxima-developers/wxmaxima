@@ -68,7 +68,6 @@
 #include "dialogs/ChangeLogDialog.h"
 #include "wizards/LimitWiz.h"
 #include "wizards/ListSortWiz.h"
-#include "dialogs/LoggingMessageDialog.h"
 #include "wizards/MatWiz.h"
 #include "dialogs/MaxSizeChooser.h"
 #include "Maxima.h"
@@ -122,6 +121,9 @@
 #include <wx/sstream.h>
 #include <wx/url.h>
 #include "Configuration.h"
+
+extern wxLogWindow * wxm_logwindow; // declared in main.cpp
+
 wxDECLARE_APP(MyApp);
 
 #if defined __WXOSX__
@@ -208,10 +210,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 #endif
   GnuplotCommandName(wxS("gnuplot"));
 
-  // If we log to stderr, still keep logging there.
-  if (ErrorRedirector::LoggingToStdErr()) {
-    wxLog::SetActiveTarget(new wxLogStderr());
-  }
+
 
   if (m_variableReadActions.empty()) {
     m_variableReadActions[wxS("gentranlang")] =
@@ -1304,6 +1303,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::menu_invertWorksheetBackground, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(EventIDs::menu_show_logwindow, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(ToolBar::tb_hideCode, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(EventIDs::menu_copy_as_bitmap, wxEVT_MENU,
@@ -1867,39 +1868,6 @@ wxMaxima::~wxMaxima() {
   // Kill maxima
   KillMaxima(false);
 
-  // stop log messages arrive at this window
-  wxMaxima *newLogTarget = NULL;
-  wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
-  if((m_logPane) && (m_logPane->IsLogTarget()))
-    {
-      // Try to find a other wxMaxima window that can log messages from now on
-      while (node)
-        {
-          wxWindow *win = node->GetData();
-          if((win != NULL) && (node->GetData() != this))
-            {
-              newLogTarget = dynamic_cast<wxMaxima *>(win);
-              // win is a window. If it is not a wxMaxima one newLogTarget will result in
-              // a NULL
-              if(newLogTarget != NULL)
-                  break;
-            }
-          node = node->GetNext();
-        }
-      if(newLogTarget != NULL)
-        {
-          m_logPane->DropLogTarget();
-          newLogTarget->BecomeLogTarget();
-        }
-      else
-        {
-          // If there is no window that can take over the log any more the program
-          // is about to close and cannot instantiate new gui loggers.
-          m_logPane->DropLogTarget();
-          // Only affects the current thread, alas!
-          wxLog::EnableLogging(false);
-        }
-    }
 
   // In debug mode: Create a file describing what we know about maxima commands
   if(m_configuration.GetDebugmode() && (!Dirstructure::Get()->UserConfDir().IsEmpty()))
@@ -3508,7 +3476,6 @@ void wxMaxima::VariableActionTempDir(const wxString &value) {
   {
     // Sometimes people delete their temp dir
     // and gnuplot won't create a new one for them.
-    wxLogNull logNull;
     wxMkdir(value, wxS_DIR_DEFAULT);
   }
 }
@@ -3929,7 +3896,6 @@ void wxMaxima::VariableActionOperators(const wxString &value) {
   wxString newOperators;
   wxStringInputStream xmlStream(value);
   {
-    wxLogNull noErrorDialog;
     xmldoc.Load(xmlStream);
   }
   if(!xmldoc.IsOk())
@@ -3964,8 +3930,7 @@ void wxMaxima::VariableActionOperators(const wxString &value) {
           contents = contents->GetNext();
         }
         if (!newOperators.IsEmpty()) {
-          wxLogMessage(_("New maxima Operators detected: %s"),
-                       newOperators.utf8_str());
+          wxLogMessage(_("New maxima Operators detected: %s"), newOperators.utf8_str());
           if(GetWorksheet())
             GetWorksheet()->Recalculate();
         }
@@ -6636,6 +6601,16 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
                       m_configuration.InvertBackground());
     GetWorksheet()->RequestRedraw();
   }
+  else if(event.GetId() == EventIDs::menu_show_logwindow) {
+    // FIXME: The checkbox should also toggle, if the log window
+    // is closed manually. Currently one have to click 2 times
+    // to re-enable the log window, the first click deactivates
+    // the checkbox (and hides the (already hidden) log window,
+    // the second click checks the checkbox and shows the log window.
+    wxLogWarning("Logwindow check: %d", event.IsChecked());
+    wxm_logwindow->Show(event.IsChecked());
+  }
+
   else if(event.GetId() == ToolBar::tb_hideCode) {
     m_configuration.ShowCodeCells(!m_configuration.ShowCodeCells());
     GetWorksheet()->CodeCellVisibilityChanged();
@@ -9763,7 +9738,6 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
     event.Veto();
     return;
   }
-  wxLogNull blocker;
   wxConfig::Get()->Write(wxS("lastPath"), m_lastPath);
  Destroy();
 }

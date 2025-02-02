@@ -79,7 +79,6 @@ set(SIDEBAR_SOURCE_FILES
     CharButton.cpp
     UnicodeSidebar.cpp
     SymbolsSidebar.cpp
-    LogPane.cpp
     History.cpp
     TableOfContents.cpp
     VariablesPane.cpp

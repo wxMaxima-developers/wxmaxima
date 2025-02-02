@@ -94,7 +94,6 @@ public:
   static const wxWindowIDRef menu_pane_format;    //!< Both the "toggle the format pane" command and the format pane
   static const wxWindowIDRef menu_pane_greek;     //!< Both the "toggle the greek pane" command and the "greek" pane
   static const wxWindowIDRef menu_pane_unicode;   //!< Both the "toggle the unicode pane" command and the "unicode" pane
-  static const wxWindowIDRef menu_pane_log;       //!< Both the "toggle the log pane" command and the "log" pane
   static const wxWindowIDRef menu_pane_variables; //!< Both the "toggle the variables pane" command and the "variables" pane
   static const wxWindowIDRef menu_pane_draw;      //!< Both the "toggle the draw pane" command for the "draw" pane
   static const wxWindowIDRef menu_pane_help;      //!< Both the "toggle the draw pane" command for the help browser
@@ -544,6 +543,7 @@ public:
   static const wxWindowIDRef menu_autocomplete_templates;
   static const wxWindowIDRef menu_paste_input;
   static const wxWindowIDRef menu_fullscreen;
+  static const wxWindowIDRef menu_show_logwindow;
   static const wxWindowIDRef menu_remove_output;
   static const wxWindowIDRef menu_list_create_from_elements;
   static const wxWindowIDRef menu_list_create_from_rule;

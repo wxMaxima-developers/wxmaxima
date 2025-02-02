@@ -55,7 +55,6 @@
 #include "sidebars/History.h"
 #include "sidebars/XmlInspector.h"
 #include "StatusBar.h"
-#include "sidebars/LogPane.h"
 #include "sidebars/ButtonWrapSizer.h"
 #include <list>
 
@@ -330,7 +329,6 @@ protected:
   //! true=force an update of the status bar at the next call of StatusMaximaBusy()
   bool m_forceStatusbarUpdate = false;
   //! The panel the log and debug messages will appear on
-  LogPane *m_logPane = NULL;
   RecentDocuments m_recentDocuments;
   RecentDocuments m_recentPackages;
   wxMenu *m_recentDocumentsMenu = NULL;

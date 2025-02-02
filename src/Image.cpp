@@ -111,7 +111,6 @@ Image::Image(Configuration *config, const Image &image) {
 }
 
 Image::~Image() {
-  wxLogNull logNull;
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();
   if(m_loadGnuplotSourceTask.joinable())

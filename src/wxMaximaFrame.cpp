@@ -59,6 +59,8 @@
 #include <vector>
 #include <unordered_map>
 
+extern wxLogWindow * wxm_logwindow; // declared in main.cpp
+
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                              const wxString &title, const wxPoint &pos,
                              const wxSize &size, long style)
@@ -109,9 +111,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   wxAcceleratorTable accel(entries.size(), entries.data());
   SetAcceleratorTable(accel);
 
-  // Redirect all debug messages to a dockable panel and output some info
-  // about this program.
-  m_logPane = new LogPane(this);
   wxLogMessage(wxString::Format(_("wxMaxima version %s"), WXMAXIMA_VERSION));
 #ifdef __WXMSW__
   if (wxSystemOptions::IsFalse("msw.display.directdraw"))
@@ -274,14 +273,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                         .Left());
     }
 
-  m_sidebarNames[EventIDs::menu_pane_log] = wxS("log");
-  m_sidebarCaption[EventIDs::menu_pane_log] = _("Debug messages");
-  m_manager->AddPane(m_logPane, wxAuiPaneInfo()
-                    .Name(m_sidebarNames[EventIDs::menu_pane_log])
-                    .Left());
-
-  // Avoid the strange non-responsive see-through log window on the mac
-  wxWindowUpdateLocker avoidMacError(m_logPane);
 
   if(GetWorksheet())
     {
@@ -743,7 +734,6 @@ void wxMaximaFrame::SetupViewMenu() {
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_help,
                                       _("The integrated help browser"));
 #endif
-  m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_log, _("Debug messages"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_variables, _("Variables"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_xmlInspector,
                                       _("Raw XML monitor"));
@@ -861,7 +851,13 @@ void wxMaximaFrame::SetupViewMenu() {
                               _("Invert worksheet brightness"));
   m_viewMenu->Check(EventIDs::menu_invertWorksheetBackground,
                     GetConfiguration().InvertBackground());
-
+  m_viewMenu->AppendCheckItem(EventIDs::menu_show_logwindow, wxS("Show log window"), _("Show the wxMaxima logging messages"));
+  // if DEBUG=1 show the logwindow at start (and check the checkbox), else hide it.
+#if (DEBUG==1)
+  m_viewMenu->Check(EventIDs::menu_show_logwindow, true);
+#else
+  m_viewMenu->Check(EventIDs::menu_show_logwindow, false);
+#endif
   m_MenuBar->Append(m_viewMenu, _("View"));
 }
 void wxMaximaFrame::SetupCellMenu() {
@@ -2006,9 +2002,6 @@ void wxMaximaFrame::SetupHelpMenu() {
 }
 
 void wxMaximaFrame::SetupMenu() {
-  // Silence a few warnings about non-existing icons.
-  SuppressErrorDialogs iconWarningBlocker;
-
   m_MenuBar = new MainMenuBar();
   // Enables the window list on MacOs.
 #ifdef __WXMAC__
@@ -2183,7 +2176,6 @@ void wxMaximaFrame::RemoveTempAutosavefile() {
     // different name yet.
     if ((!!GetWorksheet()) && wxFileExists(m_tempfileName) &&
         (m_tempfileName != GetWorksheet()->m_currentFile)) {
-      SuppressErrorDialogs logNull;
       wxRemoveFile(m_tempfileName);
     }
   }
@@ -2267,7 +2259,4 @@ void wxMaximaFrame::ShowToolBar(bool show) {
   m_manager->Update();
 }
 
-void wxMaximaFrame::BecomeLogTarget() {
-  if (m_logPane != NULL)
-    m_logPane->BecomeLogTarget();
-}
+

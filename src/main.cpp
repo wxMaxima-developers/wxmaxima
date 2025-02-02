@@ -188,17 +188,20 @@ int WINAPI WinMain(_In_ HINSTANCE hI, _In_opt_ HINSTANCE hPrevI, _In_ LPSTR lpCm
 }
 #endif
 
+wxLogWindow * wxm_logwindow;
 bool MyApp::OnInit() {
-  wxLogStderr noErrorDialogs;
+  // if DEBUG=1 show the logwindow at start, else hide it.
+#if (DEBUG==1)
+  wxm_logwindow = new wxLogWindow( NULL, wxS("wxMaxima log window"), true, false);
+#else
+  wxm_logwindow = new wxLogWindow( NULL, wxS("wxMaxima log window"), false, false);
+#endif
   // Needed for making wxSocket work for multiple threads. We currently don't
   // use this feature. But it doesn't harm to be prepared
   wxSocketBase::Initialize();
 
   m_translations = std::unique_ptr<wxTranslations>(new wxTranslations());
   wxTranslations::Set(m_translations.get());
-  // connect to wxMaxima. We therefore delay all output to the log until there
-  // is a window that can display it on the GUI instead.
-  wxLogBuffer noStdErr;
   {
     // If supported: Generate symbolic backtraces on crashes.
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
@@ -253,7 +256,6 @@ bool MyApp::OnInit() {
 
     {
 #if wxCHECK_VERSION(3, 1, 6)
-      wxLogNull suppressErrorMessages;
       wxUILocale::UseDefault();
 #else
       m_locale = std::unique_ptr<wxLocale>(new wxLocale);
@@ -345,7 +347,7 @@ bool MyApp::OnInit() {
     wxConfig::Set(new wxConfig(wxS("wxMaxima")));
 
   if (cmdLineParser.Found(wxS("logtostderr")))
-    ErrorRedirector::LogToStdErr();
+    wxLogChain *logChain = new wxLogChain(new wxLogStderr);
 
   if (cmdLineParser.Found(wxS("debug")))
     Configuration::SetDebugmode();
@@ -468,11 +470,6 @@ bool MyApp::OnInit() {
   if (!windowOpened)
     NewWindow();
 
-  // Now we can finally send our debug output to a window without making
-  // std::cerr confusing the mac.
-  wxString logMessagesSoFar = noStdErr.GetBuffer();
-  if (!logMessagesSoFar.IsEmpty())
-    wxLogMessage("Log messages during early startup: %s", logMessagesSoFar.mb_str());
   return true;
 }
 
@@ -612,8 +609,6 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
           args.push_back("-m");
           args.push_back(wxMaxima::Get_Maxima_Commandline_Filename());
         }
-      if (ErrorRedirector::LoggingToStdErr())
-        args.push_back("--logtostderr");
       if (Configuration::GetDebugmode())
         args.push_back("--debug");
       if (Maxima::GetPipeToStdErr())

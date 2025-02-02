@@ -119,10 +119,6 @@ public:
   void ExitAfterEval(bool exitaftereval)
     {
       m_exitAfterEval = exitaftereval;
-      if(exitaftereval)
-      {
-        m_logPane->SetBatchMode();
-      }
     }
 
   void StripLispComments(wxString &s);
@@ -874,7 +870,6 @@ public:
   void OnFileMenu(wxCommandEvent &ev);
 
   virtual void MacNewFile();
-  void BecomeLogTarget();
 
   virtual void MacOpenFile(const wxString &file);
 
