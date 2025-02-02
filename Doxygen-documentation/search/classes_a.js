@@ -8,6 +8,5 @@ var searchData=
   ['listcell_5',['ListCell',['../classListCell.html',1,'']]],
   ['listsortwiz_6',['ListSortWiz',['../classListSortWiz.html',1,'']]],
   ['loggingmessagedialog_7',['LoggingMessageDialog',['../classLoggingMessageDialog.html',1,'']]],
-  ['logpane_8',['LogPane',['../classLogPane.html',1,'']]],
-  ['longnumbercell_9',['LongNumberCell',['../classLongNumberCell.html',1,'']]]
+  ['longnumbercell_8',['LongNumberCell',['../classLongNumberCell.html',1,'']]]
 ];

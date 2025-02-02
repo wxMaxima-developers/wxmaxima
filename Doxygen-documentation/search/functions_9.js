@@ -29,14 +29,13 @@ var searchData=
   ['isinqueue_26',['IsInQueue',['../classEvaluationQueue.html#a3fc92ab0d096d0983dad74443c09c81d',1,'EvaluationQueue']]],
   ['islastinqueue_27',['IsLastInQueue',['../classEvaluationQueue.html#a0dca8a9fb427d333a75d1612162e8bd2',1,'EvaluationQueue']]],
   ['islessergctype_28',['IsLesserGCType',['../classGroupCell.html#aeffb98409072154212d9481319d6914a',1,'GroupCell']]],
-  ['islogtarget_29',['IsLogTarget',['../classLogPane.html#a318562f83818b3a4bf3bae1e4f0355c6',1,'LogPane']]],
-  ['ismath_30',['IsMath',['../classCell.html#adc34d37cd08670497ee5d0a5bb2a4925',1,'Cell']]],
-  ['isok_31',['IsOk',['../classBitmapOut.html#af46705bab0e3319705367c1ae275a072',1,'BitmapOut']]],
-  ['isoperator_32',['IsOperator',['../classCell.html#ad9ead4b4296d8f1f1fe50f8e8c83868c',1,'Cell::IsOperator()'],['../classFracCell.html#a1ae2e54a7fe858f0f21c2fc031e0ed80',1,'FracCell::IsOperator()'],['../classTextCell.html#a4cf54ff09e85bfa8eba366072df3e883',1,'TextCell::IsOperator()'],['../classConfiguration.html#ae4d6699f5f7ce4330b1e6806b05d286b',1,'Configuration::IsOperator()']]],
-  ['ispanedisplayed_33',['IsPaneDisplayed',['../classwxMaximaFrame.html#aca9ae11de0e947738270669867ec3b0e',1,'wxMaximaFrame']]],
-  ['ispointinselection_34',['IsPointInSelection',['../classEditorCell.html#aacd184cb9e7f5ef35176df9f5735b4cc',1,'EditorCell']]],
-  ['isselected_35',['IsSelected',['../classWorksheet.html#a8dfd3c377a9520702e5c6cba30edd5e5',1,'Worksheet']]],
-  ['isselectioninworkinggroup_36',['IsSelectionInWorkingGroup',['../classWorksheet.html#aaf379a135e0cf51b54fb7e1aef2208dd',1,'Worksheet']]],
-  ['isshortnum_37',['IsShortNum',['../classCell.html#a4c9f48de399a16a801e0e3c53f805b4e',1,'Cell::IsShortNum()'],['../classTextCell.html#a8915bfe798fc73eeeeda6bcd7025d6f8',1,'TextCell::IsShortNum()']]],
-  ['isvalidvariable_38',['IsValidVariable',['../classVariablespane.html#a7ad9c02ee28a4e8dedab236c44ef1994',1,'Variablespane']]]
+  ['ismath_29',['IsMath',['../classCell.html#adc34d37cd08670497ee5d0a5bb2a4925',1,'Cell']]],
+  ['isok_30',['IsOk',['../classBitmapOut.html#af46705bab0e3319705367c1ae275a072',1,'BitmapOut']]],
+  ['isoperator_31',['IsOperator',['../classCell.html#ad9ead4b4296d8f1f1fe50f8e8c83868c',1,'Cell::IsOperator()'],['../classFracCell.html#a1ae2e54a7fe858f0f21c2fc031e0ed80',1,'FracCell::IsOperator()'],['../classTextCell.html#a4cf54ff09e85bfa8eba366072df3e883',1,'TextCell::IsOperator()'],['../classConfiguration.html#ae4d6699f5f7ce4330b1e6806b05d286b',1,'Configuration::IsOperator()']]],
+  ['ispanedisplayed_32',['IsPaneDisplayed',['../classwxMaximaFrame.html#aca9ae11de0e947738270669867ec3b0e',1,'wxMaximaFrame']]],
+  ['ispointinselection_33',['IsPointInSelection',['../classEditorCell.html#aacd184cb9e7f5ef35176df9f5735b4cc',1,'EditorCell']]],
+  ['isselected_34',['IsSelected',['../classWorksheet.html#a8dfd3c377a9520702e5c6cba30edd5e5',1,'Worksheet']]],
+  ['isselectioninworkinggroup_35',['IsSelectionInWorkingGroup',['../classWorksheet.html#aaf379a135e0cf51b54fb7e1aef2208dd',1,'Worksheet']]],
+  ['isshortnum_36',['IsShortNum',['../classCell.html#a4c9f48de399a16a801e0e3c53f805b4e',1,'Cell::IsShortNum()'],['../classTextCell.html#a8915bfe798fc73eeeeda6bcd7025d6f8',1,'TextCell::IsShortNum()']]],
+  ['isvalidvariable_37',['IsValidVariable',['../classVariablespane.html#a7ad9c02ee28a4e8dedab236c44ef1994',1,'Variablespane']]]
 ];

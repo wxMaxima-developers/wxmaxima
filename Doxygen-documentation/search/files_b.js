@@ -5,7 +5,5 @@ var searchData=
   ['nanosvg_2ecpp_2',['nanoSVG.cpp',['../nanoSVG_8cpp.html',1,'']]],
   ['nanosvgtest_2ecpp_3',['nanoSVGTest.cpp',['../nanoSVGTest_8cpp.html',1,'']]],
   ['notification_2ecpp_4',['Notification.cpp',['../Notification_8cpp.html',1,'']]],
-  ['notification_2eh_5',['Notification.h',['../Notification_8h.html',1,'']]],
-  ['nulllog_2ecpp_6',['NullLog.cpp',['../NullLog_8cpp.html',1,'']]],
-  ['nulllog_2eh_7',['NullLog.h',['../NullLog_8h.html',1,'']]]
+  ['notification_2eh_5',['Notification.h',['../Notification_8h.html',1,'']]]
 ];

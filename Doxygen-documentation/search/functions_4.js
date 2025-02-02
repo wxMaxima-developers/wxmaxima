@@ -24,7 +24,6 @@ var searchData=
   ['drawmenu_21',['DrawMenu',['../classwxMaxima.html#aa836f1dfcb1b2f56ee9e674acb797c1a',1,'wxMaxima']]],
   ['drawrect_22',['drawRect',['../classOverload__Test.html#a840305784a1944b4de9826a1f4204365',1,'Overload_Test::drawRect(int, int, int, int)'],['../classOverload__Test.html#a7a613f50092cbc0ef830a818d9f3409c',1,'Overload_Test::drawRect(const Rect &amp;r)']]],
   ['drawthiscell_23',['DrawThisCell',['../classCell.html#aba053036ee0d29402130a116989a9756',1,'Cell::DrawThisCell(wxPoint point)'],['../classCell.html#a843593aae2abe1a871907b895f697123',1,'Cell::DrawThisCell()']]],
-  ['droplogtarget_24',['DropLogTarget',['../classLogPane.html#a110e52972f06c6abca3c547c70d28b21',1,'LogPane']]],
-  ['dynamic_5funique_5fptr_5fcast_25',['dynamic_unique_ptr_cast',['../CellPtr_8h.html#a1ffe8176d4a398d39ce60e2c2e036f21',1,'CellPtr.h']]],
-  ['dynamicappend_26',['DynamicAppend',['../classCellListBuilder.html#a74f512fe3ebf8fdc153b63d044e6722c',1,'CellListBuilder::DynamicAppend(Cell *cells)'],['../classCellListBuilder.html#a1aec3bfc435500cb8d57d885c01b3968',1,'CellListBuilder::DynamicAppend(std::unique_ptr&lt; Cell &gt; &amp;&amp;cells)']]]
+  ['dynamic_5funique_5fptr_5fcast_24',['dynamic_unique_ptr_cast',['../CellPtr_8h.html#a1ffe8176d4a398d39ce60e2c2e036f21',1,'CellPtr.h']]],
+  ['dynamicappend_25',['DynamicAppend',['../classCellListBuilder.html#a74f512fe3ebf8fdc153b63d044e6722c',1,'CellListBuilder::DynamicAppend(Cell *cells)'],['../classCellListBuilder.html#a1aec3bfc435500cb8d57d885c01b3968',1,'CellListBuilder::DynamicAppend(std::unique_ptr&lt; Cell &gt; &amp;&amp;cells)']]]
 ];

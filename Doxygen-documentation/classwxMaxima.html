@@ -1221,12 +1221,9 @@ std::unique_ptr&lt; wxAuiManager &gt;&#160;</td><td class="memItemRight" valign=
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_forceStatusbarUpdate</b> = false</td></tr>
 <tr class="memdesc:a70150ff5867ddc73af06868b0fd75ff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">true=force an update of the status bar at the next call of <a class="el" href="classwxMaximaFrame.html#ac9011a5c9856563224d92b3b119b03d9" title="Set the status according to if maxima is calculating.">StatusMaximaBusy()</a> <br /></td></tr>
 <tr class="separator:a70150ff5867ddc73af06868b0fd75ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adac1b28d94eb55cc627759b1547afb1b"><td class="memItemLeft" align="right" valign="top"><a id="adac1b28d94eb55cc627759b1547afb1b" name="adac1b28d94eb55cc627759b1547afb1b"></a>
-<a class="el" href="classLogPane.html">LogPane</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_logPane</b> = NULL</td></tr>
-<tr class="memdesc:adac1b28d94eb55cc627759b1547afb1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The panel the log and debug messages will appear on. <br /></td></tr>
-<tr class="separator:adac1b28d94eb55cc627759b1547afb1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5ddd6afb747c28c56bebfb84b7dffbb"><td class="memItemLeft" align="right" valign="top"><a id="af5ddd6afb747c28c56bebfb84b7dffbb" name="af5ddd6afb747c28c56bebfb84b7dffbb"></a>
 <a class="el" href="classRecentDocuments.html">RecentDocuments</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_recentDocuments</b></td></tr>
+<tr class="memdesc:af5ddd6afb747c28c56bebfb84b7dffbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The panel the log and debug messages will appear on. <br /></td></tr>
 <tr class="separator:af5ddd6afb747c28c56bebfb84b7dffbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad12ef420a6599fb28f06de4dcf4ecd9b"><td class="memItemLeft" align="right" valign="top"><a id="ad12ef420a6599fb28f06de4dcf4ecd9b" name="ad12ef420a6599fb28f06de4dcf4ecd9b"></a>
 <a class="el" href="classRecentDocuments.html">RecentDocuments</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_recentPackages</b></td></tr>
@@ -1567,7 +1564,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaIPC</b></td></
 
 <p>append maxima output to console </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md185"></a>
+ <h2><a class="anchor" id="autotoc_md186"></a>
 Appending stuff to output</h2>
 
 </div>
@@ -1671,7 +1668,7 @@ Appending stuff to output</h2>
 </div><div class="memdoc">
 
 <p>Spawn the "configure" menu. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
 
 </div>
 </div>
@@ -1729,7 +1726,7 @@ Appending stuff to output</h2>
 
 <p>returns the command to start maxima </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md189"></a>
+ <h2><a class="anchor" id="autotoc_md190"></a>
 Getting configuration</h2>
 
 </div>
@@ -1878,7 +1875,7 @@ Getting configuration</h2>
 
 <p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends or receives data, or disconnects. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md186"></a>
+ <h2><a class="anchor" id="autotoc_md187"></a>
 Socket stuff</h2>
 
 </div>
@@ -1909,7 +1906,7 @@ Socket stuff</h2>
 
 <p>Inserts command cmd into the worksheet. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md192"></a>
+ <h2><a class="anchor" id="autotoc_md193"></a>
 Menu and button events</h2>
 
 </div>
@@ -1945,7 +1942,7 @@ Menu and button events</h2>
 <p>Moving the screen update to this function, as well, makes sure that if we get events faster than we can update the screen that doesn't cause lag, but causes screen updates for old events to be dropped if we already have new ones. This normally makes programs feel way more responsive.</p>
 <p>The worksheet is additionally refreshed by a timer task in case that th computer is too busy to ever reach the idle task at all.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md191"></a>
+ <h2><a class="anchor" id="autotoc_md192"></a>
 Idle event</h2>
 
 </div>
@@ -1974,7 +1971,7 @@ Idle event</h2>
 </table>
 </div><div class="memdoc">
 <hr  />
- <h2><a class="anchor" id="autotoc_md193"></a>
+ <h2><a class="anchor" id="autotoc_md194"></a>
 Menu and button events</h2>
 
 </div>
@@ -2016,7 +2013,7 @@ Menu and button events</h2>
   </dd>
 </dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md188"></a>
+ <h2><a class="anchor" id="autotoc_md189"></a>
 Dealing with stuff read from the socket</h2>
 
 </div>
@@ -2361,7 +2358,7 @@ Dealing with stuff read from the socket</h2>
 
 <p>Setup maxima's variables. </p>
 <p>This method is called once when maxima starts. It loads wxmathml.lisp and sets some option variables.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
 
 </div>
 </div>
@@ -2464,7 +2461,7 @@ Dealing with stuff read from the socket</h2>
       </table>
 </div><div class="memdoc">
 <hr  />
- <h2><a class="anchor" id="autotoc_md190"></a>
+ <h2><a class="anchor" id="autotoc_md191"></a>
 Tips and help</h2>
 
 </div>
@@ -2543,7 +2540,7 @@ Tips and help</h2>
 <hr  />
  </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md187"></a>
+<h2><a class="anchor" id="autotoc_md188"></a>
 Maxima process stuff</h2>
 
 </div>
@@ -2696,7 +2693,7 @@ Maxima process stuff</h2>
 
 <p>Updates the slider to show the right frame. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md194"></a>
+ <h2><a class="anchor" id="autotoc_md195"></a>
 Plot Slider</h2>
 
 </div>
