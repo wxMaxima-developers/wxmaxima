@@ -23,7 +23,6 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "OutCommon.h"
-#include "ErrorRedirector.h"
 #include "cells/GroupCell.h"
 #include "Worksheet.h"
 #include <cmath>
@@ -61,9 +60,6 @@ OutCommon::OutCommon(const Configuration * const *configuration, int fullWidth, 
 
 OutCommon::~OutCommon() {
     if (wxFileExists(m_tempFilename)) {
-        // We don't want a braindead virus scanner that disallows us to delete our
-        // temp files to trigger asserts.
-        SuppressErrorDialogs messageBlocker;
 
         if (!wxRemoveFile(m_tempFilename))
             wxLogMessage(_("Cannot remove the file %s"), m_tempFilename.mb_str());
@@ -256,9 +252,6 @@ OutCommon::GetDataObject(const wxDataFormat &format) {
     }
 
     if ((!m_filename.empty()) && wxFileExists(m_filename)) {
-        // Don't output error messages if the worst thing that can happen is that we
-        // cannot clean up a temp file
-        SuppressErrorDialogs messageBlocker;
         wxRemoveFile(m_filename);
     }
     m_filename.clear();

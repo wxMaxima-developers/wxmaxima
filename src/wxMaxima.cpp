@@ -54,7 +54,6 @@
 #include "wizards/CsvWiz.h"
 #include "wizards/DrawWiz.h"
 #include "cells/EditorCell.h"
-#include "ErrorRedirector.h"
 #include "wizards/Gen1Wiz.h"
 #include "wizards/Gen2Wiz.h"
 #include "wizards/Gen3Wiz.h"
@@ -2928,7 +2927,6 @@ void wxMaxima::KillMaxima(bool logMessage) {
   // As we might have killed maxima before it was able to clean up its
   // temp files we try to do so manually now:
   if (m_maximaTempDir != wxEmptyString) {
-    SuppressErrorDialogs logNull;
     if (wxFileExists(m_maximaTempDir + wxS("/maxout") +
                      wxString::Format("%li.gnuplot", static_cast<long>(m_pid))))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout") +
@@ -3663,8 +3661,6 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   m_gnuplotTerminalQueryProcess =
     new wxProcess(this, EventIDs::gnuplot_query_terminals_id);
   m_gnuplotTerminalQueryProcess->Redirect();
-  // We don't want error dialogues here.
-  SuppressErrorDialogs suppressor;
   std::unique_ptr<wxExecuteEnv> env(new wxExecuteEnv);
   env->env = std::move(environment);
   wxString gnuplotcommand = m_gnuplotcommand;
@@ -4937,7 +4933,6 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
         else
           {
 #ifdef USE_WEBVIEW
-            SuppressErrorDialogs suppressor;
             if(wxLaunchDefaultBrowser(uri))
               wxLogMessage(_("Didn't get a help browser launch program command line, but can request the system's default help browser."));
             else
@@ -5786,7 +5781,6 @@ bool wxMaxima::SaveFile(bool forceSave) {
 }
 
 void wxMaxima::ReadStdErr() {
-  SuppressErrorDialogs blocker;
   // Maxima will never send us any data via stderr after it has finished
   // starting up and will send data via stdout only in rare cases:
   // It rather sends us the data over the network.
@@ -6059,7 +6053,6 @@ bool wxMaxima::AutoSave() {
       GetWorksheet()->SetSaved(true);
       if (!oldTempFile.IsEmpty()) {
         if (wxFileExists(oldTempFile)) {
-          SuppressErrorDialogs blocker;
           wxLogMessage(_("Trying to remove the old temp file %s"), oldTempFile.utf8_str());
           wxRemoveFile(oldTempFile);
         }
@@ -9713,7 +9706,6 @@ bool wxMaxima::SaveOnClose() {
     }
   } else {
     {
-      SuppressErrorDialogs blocker;
       if(SaveFile())
         return true;
     }

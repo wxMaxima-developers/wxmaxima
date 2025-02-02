@@ -29,7 +29,6 @@
 
 #include "MaximaManual.h"
 #include "Dirstructure.h"
-#include "ErrorRedirector.h"
 #include "main.h"
 #include "wxm_manual_anchors_xml.h"
 #include <wx/busyinfo.h>
@@ -97,7 +96,6 @@ bool MaximaManual::LoadBuiltInManualAnchors() {
 }
 
 bool MaximaManual::LoadManualAnchorsFromCache() {
-  SuppressErrorDialogs suppressor;
   wxString anchorsFile = Dirstructure::Get()->AnchorsCacheFile();
   if (!wxFileExists(anchorsFile)) {
     wxLogMessage(_("No file with the subjects the manual contained in the last "
@@ -148,7 +146,6 @@ void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors) {
 void MaximaManual::CompileHelpFileAnchors(const wxString &maximaHtmlDir,
                                           const wxString &maximaVersion,
                                           const wxString &saveName) {
-  SuppressErrorDialogs suppressor;
   
   std::size_t foundAnchorsTotal = 0;
   if (!(m_maximaHtmlDir.IsEmpty())) {

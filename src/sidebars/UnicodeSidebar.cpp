@@ -39,7 +39,6 @@
 #include <wx/wupdlock.h>
 #include <wx/zstream.h>
 
-#include "ErrorRedirector.h"
 #include "UnicodeSidebar.h"
 wxDEFINE_EVENT(SIDEBARKEYEVENT, SidebarKeyEvent);
 wxDEFINE_EVENT(SYMBOLADDEVENT, SymboladdEvent);

@@ -43,7 +43,6 @@
 #include <wx/sizer.h>
 #include <wx/txtstrm.h>
 #include <wx/wupdlock.h>
-#include "../ErrorRedirector.h"
 History::History(wxWindow *parent, int id, Configuration *cfg)
   : wxPanel(parent, id) {
   wxConfig::Get()->Read(m_showCurrentSessionOnlyKey, &m_showCurrentSessionOnly);
@@ -71,7 +70,6 @@ History::History(wxWindow *parent, int id, Configuration *cfg)
 
   wxConfig::Get()->Read("history/saveplace", &m_saveplace);
   if(!m_saveplace.IsEmpty() && wxFile::Exists(m_saveplace)) {
-      SuppressErrorDialogs suppressor;
       wxXmlDocument doc;
       wxFileInputStream fstrm(m_saveplace);
       if (fstrm.IsOk()) {

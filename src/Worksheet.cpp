@@ -36,7 +36,6 @@
 #include "cells/CellList.h"
 #include "CompositeDataObject.h"
 #include "graphical_io/EMFout.h"
-#include "ErrorRedirector.h"
 #include "cells/ImgCell.h"
 #include "MarkDown.h"
 #include "dialogs/MaxSizeChooser.h"
@@ -5925,9 +5924,6 @@ bool Worksheet::ExportToMAC(const wxString &file) {
     return false;
 
   {
-    // We try a few times to overwrite the original file: On MSW sometimes
-    // virus scanners lock files for a while
-    SuppressErrorDialogs suppressor;
     // If we succeeded in saving the backup file we now can overwrite the Real
     // Thing.
     done = wxRenameFile(file + wxS("~"), file, true);
@@ -6657,10 +6653,6 @@ void Worksheet::PasteFromClipboard() {
     wxString inputs;
 
     {
-      // Opening assert dialogues in this context might cause gtk to end up in
-      // an endless wait before the dialogue's buttons can be displayed.
-      SuppressErrorDialogs suppressor;
-
       if (wxTheClipboard->IsSupported(m_wxmFormat)) {
         wxmDataObject data;
         wxTheClipboard->GetData(data);

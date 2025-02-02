@@ -32,7 +32,6 @@
 #include <vector>
 #include "WXMXformat.h"
 #include "CellPointers.h"
-#include "ErrorRedirector.h"
 #include "cells/CellList.h"
 #include "cells/ImgCell.h"
 #include <wx/debug.h>
@@ -338,9 +337,7 @@ namespace Format {
   wxLogMessage(_("Verified that we are able to read the whole .zip archive we produced."));
 
   {
-    bool done;
-    SuppressErrorDialogs suppressor;
-    done = wxRenameFile(backupfile, file, true);
+    bool done = wxRenameFile(backupfile, file, true);
     if (!done) {
       // We might have failed to move the file because an over-eager virus
       // scanner wants to scan it and a design decision of a filesystem driver

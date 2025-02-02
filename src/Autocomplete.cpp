@@ -31,7 +31,6 @@
 
 #include "Autocomplete.h"
 #include "Dirstructure.h"
-#include "ErrorRedirector.h"
 #include <wx/filename.h>
 #include <wx/sstream.h>
 #include <wx/textfile.h>
@@ -324,7 +323,6 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
     }
     priv.Close();
   } else {
-    SuppressErrorDialogs logNull;
     wxFileOutputStream output(privateList);
     if (output.IsOk()) {
       wxTextOutputStream text(output);
@@ -345,9 +343,6 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
 }
 
 void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir, wxString demodir) {
-  // Error dialogues need to be created by the foreground thread.
-  SuppressErrorDialogs suppressor;
-
   // Prepare a list of all built-in loadable files of maxima.
   {
     GetMacFiles_includingSubdirs maximaLispIterator(m_builtInLoadFiles, &m_keywordsLock);

@@ -127,7 +127,6 @@ set(SOURCE_FILES
     CompositeDataObject.cpp
     Configuration.cpp
     Dirstructure.cpp
-    ErrorRedirector.cpp
     EvaluationQueue.cpp
     EventIDs.cpp
     Image.cpp

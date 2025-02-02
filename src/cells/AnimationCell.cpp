@@ -31,7 +31,6 @@
 #define PRINT_SIZE_MULTIPLIER (72.0 / 96.0)
 
 #include "AnimationCell.h"
-#include "../ErrorRedirector.h"
 #include "CellImpl.h"
 #include "CellPointers.h"
 #include "ImgCell.h"
@@ -183,7 +182,6 @@ void AnimationCell::LoadImages(wxMemoryBuffer imageData) {
 }
 
 void AnimationCell::LoadImages(wxString imageFile) {
-  SuppressErrorDialogs logNull;
   wxImage images;
   size_t count = wxImage::GetImageCount(imageFile);
 

@@ -31,7 +31,6 @@
 #include "cells/Cell.h"
 #include "cells/TextStyle.h"
 #include "Dirstructure.h"
-#include "ErrorRedirector.h"
 #include "StringUtils.h"
 #include <wx/config.h>
 #include <wx/fileconf.h>
@@ -598,8 +597,6 @@ wxString Configuration::FindProgram(const wxString &location) {
   if (wxFileExists(exePath))
     return exePath;
   
-  // Don't complain if PATH doesn't yield a result.
-  SuppressErrorDialogs logNull;
 
   if (!(location.EndsWith("/") || location.EndsWith("\\"))) {
     wxPathList pathlist;
@@ -651,9 +648,6 @@ void Configuration::ReadConfig() {
   config->SetPath("/");
 
   {
-    // If this preference cannot be loaded we don't want an error message about
-    // it
-    SuppressErrorDialogs suppressor;
     wxString hideMessagesConfigString;
     config->Read(wxS("Print/Margin/Top"), &m_printMargin_Top);
     config->Read(wxS("Print/Margin/Bot"), &m_printMargin_Bot);

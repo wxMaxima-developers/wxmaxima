@@ -33,7 +33,6 @@
 #include <wx/intl.h>
 #include <wx/sstream.h>
 #include <wx/tokenzr.h>
-#include "ErrorRedirector.h"
 
 #include "MathParser.h"
 
@@ -376,7 +375,6 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node) {
       }
     } else {
     if (node->GetAttribute(wxS("del"), wxS("yes")) != wxS("no")) {
-      SuppressErrorDialogs suppressor;
       if ((!wxFileExists(filename)) || (wxImage::GetImageCount(filename) < 2))
         imageCell = std::make_unique<ImgCell>(m_group, m_configuration,
                                               filename, wxEmptyString, true);
@@ -384,7 +382,6 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node) {
         return std::make_unique<AnimationCell>(m_group, m_configuration,
                                                filename, true);
     } else {
-      SuppressErrorDialogs suppressor;
       // This is the only case show_image() produces ergo this is the only
       // case we might get a local path
       if ((!wxFileExists(filename)) &&

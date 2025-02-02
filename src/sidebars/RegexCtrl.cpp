@@ -23,7 +23,6 @@
 #include "RegexCtrl.h"
 #include "../EventIDs.h"
 #include "../Configuration.h"
-#include "../ErrorRedirector.h"
 #include <wx/config.h>
 #include <wx/log.h>
 

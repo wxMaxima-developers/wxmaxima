@@ -28,7 +28,6 @@
 #include "precomp.h"
 #include "cells/Cell.h"
 #include "Version.h"
-#include "ErrorRedirector.h"
 #include <wx/image.h>
 #include <wx/rawbmp.h>
 
@@ -159,7 +158,6 @@ wxBitmap Image::GetUnscaledBitmap() {
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();
 
-  SuppressErrorDialogs logNull;
   if (m_svgRast) {
     std::vector<unsigned char> imgdata(m_originalWidth * m_originalHeight * 4);
 
@@ -200,7 +198,6 @@ std::size_t Image::GetOriginalHeight() const {
 
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
                           const wxString &wxmxFile) {
-  SuppressErrorDialogs suppressor;
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
   m_gnuplotSource = std::move(gnuplotFilename);
@@ -223,7 +220,6 @@ void Image::LoadGnuplotSource_Backgroundtask(
   wxString gnuplotFile, wxString dataFile, wxString wxmxFile)
 {
   std::unique_ptr<ThreadNumberLimiter> threadNumLimit = std::move(limiter);
-  SuppressErrorDialogs suppressor;
   if(wxmxFile.IsEmpty())
   {
     {
@@ -364,9 +360,6 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
   ) {
   std::unique_ptr<ThreadNumberLimiter> threadNumLimit = std::move(limiter);
   {
-    // Error dialogues need to be created by the foreground thread.
-    SuppressErrorDialogs suppressor;
-
     // Read the gnuplot source
     {
       wxFileInputStream wxmx(wxmxFile);
@@ -832,7 +825,6 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
       InvalidBitmap(errorAggregator.GetBuffer());
   }
 
-  SuppressErrorDialogs suppressor;
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0) {
     if ((m_extension == "svg") || (m_extension == "svgz")) {
