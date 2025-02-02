@@ -680,13 +680,6 @@ void MyApp::OnFatalException()
 // Adapted from wxWidget's report sample
 void MyApp::GenerateDebugReport(wxDebugReport::Context ctx)
 {
-  if(ErrorRedirector::LoggingToStdErr())
-    {
-      StackToStdErr stackWalker;
-      stackWalker.Walk(0);
-      return;
-    }
-  else
     {
       wxDebugReportCompress *report = new wxDebugReportCompress;
 
