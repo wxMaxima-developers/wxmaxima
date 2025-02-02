@@ -61,11 +61,10 @@ var searchData=
   ['subsupcell_58',['SubSupCell',['../classSubSupCell.html',1,'']]],
   ['sumcell_59',['SumCell',['../classSumCell.html',1,'']]],
   ['sumwiz_60',['SumWiz',['../classSumWiz.html',1,'']]],
-  ['suppresserrordialogs_61',['SuppressErrorDialogs',['../classSuppressErrorDialogs.html',1,'']]],
-  ['svgbitmap_62',['SvgBitmap',['../classSvgBitmap.html',1,'']]],
-  ['svgout_63',['Svgout',['../classSvgout.html',1,'']]],
-  ['svgpanel_64',['SvgPanel',['../classSvgPanel.html',1,'']]],
-  ['symboladdevent_65',['SymboladdEvent',['../classSymboladdEvent.html',1,'']]],
-  ['symbolssidebar_66',['SymbolsSidebar',['../classSymbolsSidebar.html',1,'']]],
-  ['syswiz_67',['SysWiz',['../classSysWiz.html',1,'']]]
+  ['svgbitmap_61',['SvgBitmap',['../classSvgBitmap.html',1,'']]],
+  ['svgout_62',['Svgout',['../classSvgout.html',1,'']]],
+  ['svgpanel_63',['SvgPanel',['../classSvgPanel.html',1,'']]],
+  ['symboladdevent_64',['SymboladdEvent',['../classSymboladdEvent.html',1,'']]],
+  ['symbolssidebar_65',['SymbolsSidebar',['../classSymbolsSidebar.html',1,'']]],
+  ['syswiz_66',['SysWiz',['../classSysWiz.html',1,'']]]
 ];

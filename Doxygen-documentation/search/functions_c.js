@@ -25,7 +25,5 @@ var searchData=
   ['loadsave_22',['LoadSave',['../classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805',1,'ConfigDialogue']]],
   ['loadsymbols_23',['LoadSymbols',['../classAutoComplete.html#a6022d262109966147cbda01d6166d2ca',1,'AutoComplete::LoadSymbols()'],['../classWorksheet.html#aaa5b37aee0c005bb6f303c7dd84c64d1',1,'Worksheet::LoadSymbols()']]],
   ['localedir_24',['LocaleDir',['../classDirstructure.html#a07774426dee2c4edafa95ce9f7465661',1,'Dirstructure']]],
-  ['loggingtostderr_25',['LoggingToStdErr',['../classErrorRedirector.html#a9f48ea9be43e7a04ce60f4166f3d7321',1,'ErrorRedirector']]],
-  ['logtostderr_26',['LogToStdErr',['../classErrorRedirector.html#aaca20190ba4fd8a278141d5952479a34',1,'ErrorRedirector']]],
-  ['longnumbercell_27',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell']]]
+  ['longnumbercell_25',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell']]]
 ];

@@ -13,13 +13,12 @@ var searchData=
   ['equals_10',['Equals',['../structAFontSize_1_1Equals.html',1,'AFontSize']]],
   ['equalsmatcher_11',['EqualsMatcher',['../structCatch_1_1Matchers_1_1StdString_1_1EqualsMatcher.html',1,'Catch::Matchers::StdString::EqualsMatcher'],['../structCatch_1_1Matchers_1_1Vector_1_1EqualsMatcher.html',1,'Catch::Matchers::Vector::EqualsMatcher&lt; T, AllocComp, AllocMatch &gt;']]],
   ['errorlist_12',['ErrorList',['../classCellPointers_1_1ErrorList.html',1,'CellPointers']]],
-  ['errorredirector_13',['ErrorRedirector',['../classErrorRedirector.html',1,'']]],
-  ['evaluationqueue_14',['EvaluationQueue',['../classEvaluationQueue.html',1,'']]],
-  ['eventids_15',['EventIDs',['../classEventIDs.html',1,'']]],
-  ['example_5ftest_16',['Example_Test',['../classExample__Test.html',1,'']]],
-  ['exceptionmessagematcher_17',['ExceptionMessageMatcher',['../classCatch_1_1Matchers_1_1Exception_1_1ExceptionMessageMatcher.html',1,'Catch::Matchers::Exception']]],
-  ['exceptiontranslatorregistrar_18',['ExceptionTranslatorRegistrar',['../classCatch_1_1ExceptionTranslatorRegistrar.html',1,'Catch']]],
-  ['explicitwiz_19',['ExplicitWiz',['../classExplicitWiz.html',1,'']]],
-  ['exprlhs_20',['ExprLhs',['../classCatch_1_1ExprLhs.html',1,'Catch']]],
-  ['exptcell_21',['ExptCell',['../classExptCell.html',1,'']]]
+  ['evaluationqueue_13',['EvaluationQueue',['../classEvaluationQueue.html',1,'']]],
+  ['eventids_14',['EventIDs',['../classEventIDs.html',1,'']]],
+  ['example_5ftest_15',['Example_Test',['../classExample__Test.html',1,'']]],
+  ['exceptionmessagematcher_16',['ExceptionMessageMatcher',['../classCatch_1_1Matchers_1_1Exception_1_1ExceptionMessageMatcher.html',1,'Catch::Matchers::Exception']]],
+  ['exceptiontranslatorregistrar_17',['ExceptionTranslatorRegistrar',['../classCatch_1_1ExceptionTranslatorRegistrar.html',1,'Catch']]],
+  ['explicitwiz_18',['ExplicitWiz',['../classExplicitWiz.html',1,'']]],
+  ['exprlhs_19',['ExprLhs',['../classCatch_1_1ExprLhs.html',1,'Catch']]],
+  ['exptcell_20',['ExptCell',['../classExptCell.html',1,'']]]
 ];

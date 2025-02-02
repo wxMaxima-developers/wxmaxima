@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['labelcell_0',['LabelCell',['../classLabelCell.html#a00cf44447f4482f9d66e0354ca53a314',1,'LabelCell::LabelCell()'],['../classLabelCell.html',1,'LabelCell']]],
+  ['labelcell_0',['LabelCell',['../classLabelCell.html',1,'LabelCell'],['../classLabelCell.html#a00cf44447f4482f9d66e0354ca53a314',1,'LabelCell::LabelCell()']]],
   ['labelcell_2ecpp_1',['LabelCell.cpp',['../LabelCell_8cpp.html',1,'']]],
-  ['labelwidth_2',['LabelWidth',['../classConfiguration.html#a77a60713054dd9d878976dd81c00f81e',1,'Configuration::LabelWidth() const'],['../classConfiguration.html#af3b0f8fb4028e08a740f513ba164c260',1,'Configuration::LabelWidth(long labelWidth)']]],
+  ['labelwidth_2',['LabelWidth',['../classConfiguration.html#af3b0f8fb4028e08a740f513ba164c260',1,'Configuration::LabelWidth(long labelWidth)'],['../classConfiguration.html#a77a60713054dd9d878976dd81c00f81e',1,'Configuration::LabelWidth() const']]],
   ['last_3',['last',['../classCell.html#a67b0906e71228e806a3ff42a571fe91c',1,'Cell']]],
   ['lasterror_4',['LastError',['../classCellPointers_1_1ErrorList.html#a23dd22751cea1491cb8b5960b1629304',1,'CellPointers::ErrorList']]],
   ['lastinevaluationqueue_5',['LastInEvaluationQueue',['../classGroupCell.html#aab4904e9f44700e09f7aeb2192ec4db2',1,'GroupCell']]],
@@ -33,8 +33,8 @@ var searchData=
   ['loadbuiltinmanualanchors_30',['LoadBuiltInManualAnchors',['../classMaximaManual.html#ad09c01d401285181a342780dba6d3753',1,'MaximaManual']]],
   ['loadbuiltinsymbols_31',['LoadBuiltinSymbols',['../classAutoComplete.html#a9ea854df696c5e1ab20e9834dfef8a37',1,'AutoComplete']]],
   ['loadfile_32',['loadfile',['../classAutoComplete.html#a6225a91b46c0459755a62de137620b29ae79474d174763269e5ba387002436e43',1,'AutoComplete']]],
-  ['loadhelpfileanchors_33',['LoadHelpFileAnchors',['../classMaximaManual.html#a951e46e3290566074f0c09b2c9652991',1,'MaximaManual::LoadHelpFileAnchors()'],['../classWorksheet.html#a2df6bd0d0d77d61ff730792363efd993',1,'Worksheet::LoadHelpFileAnchors()']]],
-  ['loadimage_34',['LoadImage',['../classImage.html#a07e9f48042ddd9004c24c3ff9e899094',1,'Image::LoadImage()'],['../classwxMaxima.html#a6c78de2506c518c7804f6690f27c5102',1,'wxMaxima::LoadImage()']]],
+  ['loadhelpfileanchors_33',['LoadHelpFileAnchors',['../classWorksheet.html#a2df6bd0d0d77d61ff730792363efd993',1,'Worksheet::LoadHelpFileAnchors()'],['../classMaximaManual.html#a951e46e3290566074f0c09b2c9652991',1,'MaximaManual::LoadHelpFileAnchors()']]],
+  ['loadimage_34',['LoadImage',['../classwxMaxima.html#a6c78de2506c518c7804f6690f27c5102',1,'wxMaxima::LoadImage()'],['../classImage.html#a07e9f48042ddd9004c24c3ff9e899094',1,'Image::LoadImage()']]],
   ['loadmanualanchorsfromcache_35',['LoadManualAnchorsFromCache',['../classMaximaManual.html#a8f70e3615c5761666ac92b7902cc96bc',1,'MaximaManual']]],
   ['loadmanualanchorsfromxml_36',['LoadManualAnchorsFromXML',['../classMaximaManual.html#acddcb69633df12600c39ebea000ef9c2',1,'MaximaManual']]],
   ['loadsave_37',['LoadSave',['../classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805',1,'ConfigDialogue']]],
@@ -42,8 +42,6 @@ var searchData=
   ['localedir_39',['LocaleDir',['../classDirstructure.html#a07774426dee2c4edafa95ce9f7465661',1,'Dirstructure']]],
   ['loggingmessagedialog_40',['LoggingMessageDialog',['../classLoggingMessageDialog.html',1,'']]],
   ['loggingmessagedialog_2eh_41',['LoggingMessageDialog.h',['../LoggingMessageDialog_8h.html',1,'']]],
-  ['loggingtostderr_42',['LoggingToStdErr',['../classErrorRedirector.html#a9f48ea9be43e7a04ce60f4166f3d7321',1,'ErrorRedirector']]],
-  ['logtostderr_43',['LogToStdErr',['../classErrorRedirector.html#aaca20190ba4fd8a278141d5952479a34',1,'ErrorRedirector']]],
-  ['longnumbercell_44',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell::LongNumberCell()'],['../classLongNumberCell.html',1,'LongNumberCell']]],
-  ['longnumbercell_2ecpp_45',['LongNumberCell.cpp',['../LongNumberCell_8cpp.html',1,'']]]
+  ['longnumbercell_42',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell::LongNumberCell()'],['../classLongNumberCell.html',1,'LongNumberCell']]],
+  ['longnumbercell_2ecpp_43',['LongNumberCell.cpp',['../LongNumberCell_8cpp.html',1,'']]]
 ];
