@@ -789,6 +789,16 @@ _WxMaxima_ provides a few functions that gather bug reporting information about 
 - `wxbuild_info()` gathers information about the currently running version of _wxMaxima_
 - `wxbug_report()` tells how and where to file bugs
 
+### Logging
+
+WxMaxima can log many events. Most log entries will be helpful for developers, especially in case of problems or bugs. If you run a "Release"-Build,
+the log windows is not shown by default, if you run a development version, it is shown by default as a second window. You can enable and disable
+this window using the "View->Show log window" menu entry.
+
+Messages are not 'lost', if the log window is not shown, if you select to show the menu later, you will see past log messages (if you did not clear the messages).
+
+Such messages may be helpful, when you create bug reports (or trying to find a bug by yourself).
+
 ## Marking output being drawn in red
 
 _Maxima_’s `box()` command causes _wxMaxima_ to print its argument with a red foreground, if
