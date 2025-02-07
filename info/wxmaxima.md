@@ -793,9 +793,9 @@ _WxMaxima_ provides a few functions that gather bug reporting information about 
 
 WxMaxima can log many events. Most log entries will be helpful for developers, especially in case of problems or bugs. If you run a "Release"-Build,
 the log windows is not shown by default, if you run a development version, it is shown by default as a second window. You can enable and disable
-this window using the "View->Show log window" menu entry.
+this window using the "View->Toggle log window" menu entry.
 
-Messages are not 'lost', if the log window is not shown, if you select to show the menu later, you will see past log messages (if you did not clear the messages).
+Messages are not 'lost', if the log window is not shown, if you select to show the log window later, you will see past log messages (if you did not clear the messages).
 
 Such messages may be helpful, when you create bug reports (or trying to find a bug by yourself).
 
