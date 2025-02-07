@@ -6595,13 +6595,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     GetWorksheet()->RequestRedraw();
   }
   else if(event.GetId() == EventIDs::menu_show_logwindow) {
-    // FIXME: The checkbox should also toggle, if the log window
-    // is closed manually. Currently one have to click 2 times
-    // to re-enable the log window, the first click deactivates
-    // the checkbox (and hides the (already hidden) log window,
-    // the second click checks the checkbox and shows the log window.
-    wxLogWarning("Logwindow check: %d", event.IsChecked());
-    wxm_logwindow->Show(event.IsChecked());
+    wxm_logwindow->Show(!wxm_logwindow->GetFrame()->IsShown());
   }
 
   else if(event.GetId() == ToolBar::tb_hideCode) {
@@ -9731,6 +9725,9 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
     return;
   }
   wxConfig::Get()->Write(wxS("lastPath"), m_lastPath);
+  // The log window should be destroyed as child process of wxMaxima, but it does not seem to work on Windows,
+  // => call Destroy() for that Frame...
+  wxm_logwindow->GetFrame()->Destroy();
  Destroy();
 }
 

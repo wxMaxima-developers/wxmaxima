@@ -851,13 +851,7 @@ void wxMaximaFrame::SetupViewMenu() {
                               _("Invert worksheet brightness"));
   m_viewMenu->Check(EventIDs::menu_invertWorksheetBackground,
                     GetConfiguration().InvertBackground());
-  m_viewMenu->AppendCheckItem(EventIDs::menu_show_logwindow, wxS("Show log window"), _("Show the wxMaxima logging messages"));
-  // if DEBUG=1 show the logwindow at start (and check the checkbox), else hide it.
-#if (DEBUG==1)
-  m_viewMenu->Check(EventIDs::menu_show_logwindow, true);
-#else
-  m_viewMenu->Check(EventIDs::menu_show_logwindow, false);
-#endif
+  m_viewMenu->Append(EventIDs::menu_show_logwindow, wxS("Toggle log window"), _("Show or hide the wxMaxima logging window"), wxITEM_NORMAL);
   m_MenuBar->Append(m_viewMenu, _("View"));
 }
 void wxMaximaFrame::SetupCellMenu() {
