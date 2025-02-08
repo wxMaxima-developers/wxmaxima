@@ -3,7 +3,7 @@
 - Use the (standard) wxWidgets log window instead of our own log pane.
   Less code to maintain, more features (e.g. clear log, save log).
   In "Release" builds the log window will be hidden (and can be enabled
-  using View->Show log window, otherwise it is shown.
+  using View->Toggle log window, otherwise it is shown.
 
 # 25.01.0
 
