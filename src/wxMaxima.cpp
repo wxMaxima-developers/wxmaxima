@@ -3689,7 +3689,7 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
     wxLogMessage(wxS("Gnuplot terminals: ") + gnuplot_terminals);
     /* FIXME: What should happen with the result? Returned by the function? Stored anywhere? Currently the result is nowhere used... */
     m_configuration.UsePngCairo(gnuplot_terminals.Contains(wxS("pngcairo")));
-    wxLogMessage(m_configuration.UsePngCairo() ? wxS("Gnuplot Cairo: yes") : wxS("Gnuplot Cairo: no"));
+    wxLogMessage(m_configuration.UsePngCairo() ? wxS("Gnuplot pngcairo terminal: yes") : wxS("Gnuplot pngcairo terminal: no"));
   }
 }
 
