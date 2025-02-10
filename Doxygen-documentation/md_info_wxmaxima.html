@@ -852,33 +852,33 @@ After upgrading to MacOS 13.1 plot and/or draw commands output error messages li
 <div class="line">...</div>
 </div><!-- fragment --><p>This might be an issue with the operating system. Disable the hiding of the menu bar (SystemSettings =&gt; Desktop &amp; Dock =&gt; Menu Bar) might solve the issue. See <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">wxMaxima issue #1746</a> for more information.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md125"></a>
+<h1><a class="anchor" id="autotoc_md124"></a>
 FAQ</h1>
-<h2><a class="anchor" id="autotoc_md126"></a>
+<h2><a class="anchor" id="autotoc_md125"></a>
 Is there a way to make more text fit on a LaTeX page?</h2>
 <p>Yes. Use the <a href="https://ctan.org/pkg/geometry">LaTeX package "geometry"</a> to specify the size of the borders.</p>
 <p>You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"-&gt;"Additional lines for the TeX preamble"), to set borders of 1cm):</p>
 <div class="fragment"><div class="line">\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md129"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md126"></a>
 Is there a dark mode?</h2>
 <p>If wxWidgets is new enough, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively, there is a <code>View/Invert worksheet brightness</code> menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.</p>
-<h2><a class="anchor" id="autotoc_md131"></a>
+<h2><a class="anchor" id="autotoc_md127"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; sometimes hangs for several seconds once in the first minute</h2>
 <p><em>WxMaxima</em> delegates some big tasks like parsing <em>Maxima_’s &gt;1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima</em> needs to wait a couple of seconds before it can continue its work.</p>
-<h2><a class="anchor" id="autotoc_md132"></a>
+<h2><a class="anchor" id="autotoc_md128"></a>
 Especially when testing new locale settings, a message box "locale ’xx_YY’ can not be set" occurs</h2>
 <p><img src="./locale-warning.png" alt="Locale warning" class="inline"/></p>
 <p>(The same problem can occur with other applications too). The translations seem okay after you click on ’OK’. WxMaxima does not only use its own translations but the translations of the wxWidgets framework too.</p>
 <p>These locales maybe not present in the system. On Ubuntu/Debian systems they can be generated using: <code>dpkg-reconfigure locales</code></p>
-<h2><a class="anchor" id="autotoc_md133"></a>
+<h2><a class="anchor" id="autotoc_md129"></a>
 How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?</h2>
 <p>You can find these symbols in the Unicode sidebar (search for ’double-struck capital’). But the selected font must also support these symbols. If they do not display properly, select another font.</p>
-<h2><a class="anchor" id="autotoc_md134"></a>
+<h2><a class="anchor" id="autotoc_md130"></a>
 How can a Maxima script determine, if it is running under wxMaxima or command line Maxima?</h2>
 <p>If <a class="el" href="classwxMaxima.html">wxMaxima</a> is used, the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> variable <code>maxima_frontend</code> is set to <code>wxmaxima</code>. The <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> variable <code>maxima_frontend_version</code> contains the <a class="el" href="classwxMaxima.html">wxMaxima</a> version in this case.</p>
 <p>If no frontend is used (you are using command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>), these variables are <code>false</code>.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md135"></a>
+<h1><a class="anchor" id="autotoc_md131"></a>
 Command-line arguments</h1>
 <p>Usually you can start programs with a graphical user interface just by clicking on a desktop icon or desktop menu entry. WxMaxima - if started from the command line - still provides some command-line switches, though.</p>
 <ul>
@@ -900,7 +900,7 @@ Command-line arguments</h1>
 </ul>
 <p>Instead of a minus, some operating systems might use a dash in front of the command-line switches.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md136"></a>
+<h1><a class="anchor" id="autotoc_md132"></a>
 About the program, contributing to wxMaxima</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is mainly developed using the programming language C++ using the <a href="https://www.wxwidgets.org">wxWidgets framework</a>, as build system we use <a href="https://www.cmake.org">CMake</a>, a small part is written in Lisp. You can contribute to <a class="el" href="classwxMaxima.html">wxMaxima</a>, join the <a class="el" href="classwxMaxima.html">wxMaxima</a> project at <a href="https://github.com/wxMaxima-developers/wxmaxima">https://github.com/wxMaxima-developers/wxmaxima</a>, if you have knowledge of these programming languages and want to help and contribute to the open source project <a class="el" href="classwxMaxima.html">wxMaxima</a>.</p>
 <p>But not only programmers are necessary! You can also contribute to <a class="el" href="classwxMaxima.html">wxMaxima</a>, if you help to improve the documentation, find and report bugs (and maybe bugfixes), suggest new features, help to translate <a class="el" href="classwxMaxima.html">wxMaxima</a> or the manual to your language (read the README.md in the <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">locale subdirectory</a> how <a class="el" href="classwxMaxima.html">wxMaxima</a> and the manual can be translated).</p>
