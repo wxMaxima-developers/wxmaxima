@@ -1135,7 +1135,7 @@ wxWindow *ConfigDialogue::CreateExportPanel() {
   htmlGrid_sizer->Add(mju, wxSizerFlags());
   htmlGrid_sizer->Add(m_exportWithMathJAX, wxSizerFlags());
   wxStaticText *mj = new wxStaticText(html_sizer->GetStaticBox(), wxID_ANY,
-                                      _("URL MathJaX.js lies at:"));
+                                      _("URL MathJaX.js is located at:"));
   htmlGrid_sizer->Add(mj, wxSizerFlags());
   htmlGrid_sizer->Add(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor());
 

@@ -627,7 +627,7 @@ void EditorCell::Recalculate(AFontSize fontsize) {
           m_height = (m_charHeight) + 2 * Scale_Px(2);
 
       }
-      // The center lies in the middle of the 1st line
+      // The center is in the middle of the 1st line
       m_center = m_charHeight / 2;
       m_height = std::max(m_height, m_charHeight + 2 * Scale_Px(2));
 

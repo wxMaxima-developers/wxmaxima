@@ -92,7 +92,7 @@
 ;; Define a few variables whose value will be set by wxMaxima
 (defvar *wx-plot-num* 0 "The serial number of the current plot")
 (defvar $wxfilename "" "The filename of the current wxMaxima worksheet")
-(defvar $wxdirname "" "The directory the current wxMaxima worksheet lies in")
+(defvar $wxdirname "" "The directory the current wxMaxima worksheet is located")
 (defvar $wxanimate_autoplay nil "Automatically playback new animations?")
 (defvar wxUserConfDir "" "The location wxMaxima looks for maxima's config files in")
 (defvar wxHelpDir "" "The location wxMaxima searches for help files in")

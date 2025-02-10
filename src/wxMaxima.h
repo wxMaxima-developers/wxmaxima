@@ -552,9 +552,9 @@ protected:
   void VariableActionSinnpiflagUndefined();
   //! Called if maxima tells us the value of the maxima variable logexpand.
   void VariableActionLogexpand(const wxString &value);
-  //! Called if maxima tells us where the user files lie.
+  //! Called if maxima tells us where the user files are located.
   void VariableActionUserDir(const wxString &value);
-  //! Called if maxima tells us where the temp files lie.
+  //! Called if maxima tells us where the temp files are located.
   void VariableActionTempDir(const wxString &value);
   //! Called if maxima tells us the value of the maxima variable debugmode.
   void VariableActionDebugmode(const wxString &value);

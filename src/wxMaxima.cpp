@@ -3424,7 +3424,7 @@ void wxMaxima::VariableActionSinnpiflagUndefined() { m_fourierLoaded = false; }
 void wxMaxima::VariableActionUserDir(const wxString &value) {
   Dirstructure::Get()->UserConfDir(value);
   m_history->SetSavePlace(value);
-  wxLogMessage(_("Maxima user configuration lies in directory %s"), value.utf8_str());
+  wxLogMessage(_("Maxima user configuration is located in directory %s"), value.utf8_str());
 }
 
 void wxMaxima::VariableActionDisplay2d_Unicode(const wxString &value) {
@@ -3505,7 +3505,7 @@ void wxMaxima::VariableActionAutoconfHost(const wxString &value) {
 void wxMaxima::VariableActionMaximaInfodir(const wxString &value) {
   // Make sure that we get out all ".." and "~" of the path as they seem to
   // confuse the help browser logic
-  wxLogMessage(_("Maxima's manual lies in directory %s"),
+  wxLogMessage(_("Maxima's manual is located in directory %s"),
                value.utf8_str());
 }
 
@@ -3697,7 +3697,7 @@ void wxMaxima::VariableActionMaximaSharedir(const wxString &value) {
   wxString dir = value;
   dir.Trim(true);
   m_configuration.MaximaShareDir(dir);
-  wxLogMessage(_("Maxima's share files lie in directory %s"),
+  wxLogMessage(_("Maxima's share files are located in directory %s"),
                dir.utf8_str());
   /// READ FUNCTIONS FOR AUTOCOMPLETION
   if(GetWorksheet())
@@ -3708,7 +3708,7 @@ void wxMaxima::VariableActionMaximaDemodir(const wxString &value) {
   wxString dir = value;
   dir.Trim(true);
   m_configuration.MaximaDemoDir(dir);
-  wxLogMessage(_("Maxima's demo files lie in directory %s"),
+  wxLogMessage(_("Maxima's demo files are located in directory %s"),
                dir.utf8_str());
 }
 
@@ -4029,7 +4029,7 @@ void wxMaxima::ReadPrompt(const wxString &data) {
   label.Trim(true);
   label.Trim(false);
   // Input prompts have a length > 0 and end in a number followed by a ")".
-  // Depending on ibase the digits of the number might lie between 'A' and 'Z',
+  // Depending on ibase the digits of the number might be between 'A' and 'Z',
   // too. Input prompts also begin with a "(". Questions (hopefully)
   // don't do that; Lisp prompts look like question prompts.
   //
