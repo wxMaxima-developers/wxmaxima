@@ -163,7 +163,6 @@ set(SOURCE_FILES
 if(NOT CYGWIN)
     list(APPEND SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.rc)
 endif()
-list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest)
 
 list(APPEND SOURCE_FILES
   ${CELL_SOURCE_FILES}
@@ -277,7 +276,7 @@ endif()
 
 file(RELATIVE_PATH TRANSLATIONS_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/locales/wxMaxima/)
 
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.manifest.in" wxmaxima.manifest)
+configure_file("wxmaxima.exe.manifest.in" wxmaxima.exe.manifest)
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.bat.in" ../wxmaxima-local.bat)
@@ -303,6 +302,13 @@ if(APPLE)
 	     RESOURCE DESTINATION resource)
 else()
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
+endif()
+# Windows: Install the manifest file as wxmaxima.exe.manifest, see
+# https://learn.microsoft.com/en-us/windows/win32/sbscs/application-manifests
+# We do (currently) not try to include it in the wxmaxima binary,
+# an extra file is valid too and might help to test various entries in that file.
+if(WIN32)
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.exe.manifest" DESTINATION bin)
 endif()
 
 # Build Packages
