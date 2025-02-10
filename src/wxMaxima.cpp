@@ -3471,7 +3471,7 @@ void wxMaxima::VariableActionLogexpand(const wxString &value) {
 void wxMaxima::VariableActionTempDir(const wxString &value) {
   m_maximaTempDir = value;
   wxLogMessage(_("Maxima uses temp directory %s"), value.utf8_str());
-  {
+  if (!wxDirExists(value)) {
     // Sometimes people delete their temp dir
     // and gnuplot won't create a new one for them.
     wxMkdir(value, wxS_DIR_DEFAULT);
