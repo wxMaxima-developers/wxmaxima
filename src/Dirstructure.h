@@ -57,7 +57,7 @@
 class Dirstructure
 {
 public:
-  //! The constructor
+  //! The constructor and destructor
   Dirstructure();
   ~Dirstructure(){ m_dirStructure = NULL; }
 private:
@@ -72,9 +72,6 @@ public:
 
   //! The directory general data is stored in
   static wxString DataDir();
-
-  //! The directory our private fonts are stored in
-  static wxString FontDir() {return DataDir()+wxS("/../fonts");}
 
   //! The directory the help file is stored in
   wxString HelpDir() const {return m_helpDir;}
@@ -100,8 +97,7 @@ public:
   //! The executable file path to the maxima executable (or .bat on Windows)
   static wxString MaximaDefaultLocation();
 
-  static wxString
-  AnchorsCacheFile()
+  static wxString AnchorsCacheFile()
     {
       return UserConfDir() + "/manual_anchors.xml";
     }
