@@ -398,8 +398,6 @@ bool MyApp::OnInit() {
                             wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
   }
 #if wxCHECK_VERSION(3, 1, 1)
-  wxString fontPrefix = m_dirstruct.FontDir() + wxS("/");
-
   wxSetWorkingDirectory(oldWorkingDir);
 #endif
 #endif
