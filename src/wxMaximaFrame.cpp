@@ -932,11 +932,11 @@ void wxMaximaFrame::SetupCellMenu() {
                      _("Insert a new heading5 cell"));
   insert_sub->Append(EventIDs::menu_add_heading6, _("Insert heading6 Cell\tCtrl+7"),
                      _("Insert a new heading6 cell"));
-  insert_sub->Append(EventIDs::menu_add_pagebreak, _("Insert Page Break"),
-                     _("Insert a page break"));
   m_CellMenu->Append(wxWindow::NewControlId(), _("Insert textbased cell"), insert_sub);
   m_CellMenu->Append(EventIDs::menu_insert_image, _("Insert Image..."), _("Insert image"),
                      wxITEM_NORMAL);
+  m_CellMenu->Append(EventIDs::menu_add_pagebreak, _("Insert Page Break"),
+                     _("Insert a page break"));
   m_CellMenu->AppendSeparator();
   m_CellMenu->Append(EventIDs::menu_fold_all_cells, _("Fold All\tCtrl+Alt+["),
                      _("Fold all sections"), wxITEM_NORMAL);
