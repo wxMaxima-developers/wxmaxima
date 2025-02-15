@@ -261,7 +261,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   m_num = 0;
   wxConfigBase *config = wxConfig::Get();
 
-  // If nm is negative the if will make it posigive.
+  // If nm is negative, the if will make it positive.
   long nm;
   config->Read(wxS("tipNum"), &nm);
   m_num = nm;
