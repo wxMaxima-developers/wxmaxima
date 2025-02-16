@@ -9726,8 +9726,8 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
   }
   wxConfig::Get()->Write(wxS("lastPath"), m_lastPath);
   // The log window should be destroyed as child process of wxMaxima, but it does not seem to work on Windows,
-  // => call Destroy() for that Frame...
-  wxm_logwindow->GetFrame()->Destroy();
+  // => hide that Frame...
+  wxm_logwindow->GetFrame()->Show(false);
  Destroy();
 }
 
