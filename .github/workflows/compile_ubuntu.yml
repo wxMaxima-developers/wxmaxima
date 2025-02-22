@@ -94,8 +94,8 @@ jobs:
              cmake --build . --target update-locale
              cd ..
 
-  compile_2004:
-    runs-on: ubuntu-20.04
+  compile_2204:
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
 
     steps:
