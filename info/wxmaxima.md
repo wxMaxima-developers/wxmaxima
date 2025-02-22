@@ -799,6 +799,9 @@ Messages are not 'lost', if the log window is not shown, if you select to show t
 
 Such messages may be helpful, when you create bug reports (or trying to find a bug by yourself).
 
+Log messages can (additionally) be printed to STDERR, when using the command line option "--logtostderr". On Windows a separate
+text console will be opened, as a Windows GUI application does not have the standard IO connected.
+
 ## Marking output being drawn in red
 
 _Maxima_’s `box()` command causes _wxMaxima_ to print its argument with a red foreground, if

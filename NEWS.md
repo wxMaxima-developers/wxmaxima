@@ -4,6 +4,9 @@
   Less code to maintain, more features (e.g. clear log, save log).
   In "Release" builds the log window will be hidden (and can be enabled
   using View->Toggle log window, otherwise it is shown.
+- Make the option "--logtostderr" work on Windows.
+  (Windows GUI applications, do not have STDIN, STDOUT and STDERR assigned,
+  an extra 'text window' with the log messages will be opened at startup).
 
 # 25.01.0
 

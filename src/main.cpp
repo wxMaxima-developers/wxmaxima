@@ -346,8 +346,24 @@ bool MyApp::OnInit() {
   } else
     wxConfig::Set(new wxConfig(wxS("wxMaxima")));
 
-  if (cmdLineParser.Found(wxS("logtostderr")))
+  if (cmdLineParser.Found(wxS("logtostderr"))) {
+#ifdef __WXMSW__
+    // Windows *GUI applications* do not have stderr (and stdout/stdin) assigned.
+    // Assign them, as we want to output something there. (log messages on STDERR
+    // when using the option --logtostderr).
+    // A seperate "text window" will be opened, where the messages will be shown.
+    FreeConsole(); // it does not seem to work without the FreeConsole() / AllocConsole() calls.
+    // create a separate new console window
+    AllocConsole();
+    // attach the new console to this application's process
+    AttachConsole(GetCurrentProcessId());
+    // reopen the std I/O streams to redirect I/O to the new console
+    freopen("CON", "w", stdout);
+    freopen("CON", "w", stderr);
+    freopen("CON", "r", stdin);
+#endif
     wxLogChain *logChain = new wxLogChain(new wxLogStderr);
+  }
 
   if (cmdLineParser.Found(wxS("debug")))
     Configuration::SetDebugmode();
