@@ -9,20 +9,24 @@ CMake >= 3.16 installed.
 wxMaxima is built using the CMake build system.
 
 The following steps will build and install wxMaxima using CMake.
-Assume you start inside wxmaxima source tree root folder. Then:
+Download and extract wxMaxima and change in the wxMaxima tree. Then:
 
 ```
-    mkdir -p ../build-wxm           # create a build directory
-    cd ../build-wxm                 # change to the build directory
-    cmake ../wxmaxima               # configure the build
-                                    # ../wxmaxima is the path to the wxMaxima sources.
-    cmake --build .                 # build wxMaxima
-                                    # You can speed up the build, if you
-                                    # have multiple CPU cores, using
-                                    # cmake --build . -- -j 4
-                                    # (-j 4 means: Use 4 CPU cores).
-                                    # Adjust the number for your CPU.
-    sudo cmake --build . -- install # install it
+    mkdir -p build          # create a build directory (may even be outside the wxmaxima code)
+    cd build                # change to the build directory
+    cmake ..                # configure the build.
+                            # .. is the path to the extracted wxMaxima code - if you use another build directory, adjust.
+    cmake --build .         # build wxMaxima
+                            # You can speed up the build, if you have multiple CPU cores, using
+                            # cmake --build . -- -j 4
+                            # (-j 4 means: Use 4 CPU cores). Adjust the number for your CPU.
+```
+
+Now you can test your wxMaxima build (without installing it) by calling: `./wxmaxima-local`
+
+If everything is okay install it with:
+```
+    sudo cmake --build . -- install
 ```
 
 If you want to install into a special prefix (not `/usr/local`), add
@@ -30,7 +34,7 @@ If you want to install into a special prefix (not `/usr/local`), add
 cmake invocation. E.g.
 
 ```
-cmake -DCMAKE_INSTALL_PREFIX=/opt/wxmaxima ../wxmaxima
+cmake -DCMAKE_INSTALL_PREFIX=/opt/wxmaxima ..
 ```
 
 Of course you can use the CMake GUI (`cmake-gui`) or curses based CMake
@@ -69,7 +73,8 @@ you can use `xvfb-run` to create a virtual X Server environment, e.g. just run: 
 
 #### macOS: Creating a portable .apk and .dmg installer
 
-This requires wxWidgets to be installed, e.G. using MacPorts
+This requires wxWidgets to be installed, e.G. using MacPorts.
+If you are in the extracted wxMaxima directory, call e.g.
 
 ```
 mkdir ../build-wxm
@@ -81,8 +86,11 @@ cmake --build ../build-wxm --install
 #### Ubuntu or Debian build prerequisites
 
 ```
-sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a
+sudo apt-get install build-essential libwxgtk3.2-gtk3-dev libwxgtk-webview3.2-gtk3-dev wx3.2-i18n ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a
 ```
+
+On Ubuntu < 24.04 install an older wxWidgets version (`libwxbase3.0-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev` instead of the version 3.2).
+
 
 beforehand or (if apt-get is configured to load the source package
 repositories and not only the binary packages) by the simpler
@@ -94,12 +102,6 @@ sudo apt-get build-dep wxmaxima
 You must use the apt-get install command when the version you are building has dependencies
 which are not listed as dependencies in your distro's repository version of wxmaxima.
 
-#### CentOS and Redhat build prerequisites
-
-CentOS / Redhat have rather old versions of CMake and wxWidgets installed,
-install `cmake3` and `wxGTK3-devel` from the "Extra Packages for Enterprise Linux (EPEL)"
-repository, to compile wxMaxima. (and use `cmake3` instead of `cmake` to call
-the newer version of CMake in the commands above).
 
 #### macOS X prerequisites
 
