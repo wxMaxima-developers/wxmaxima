@@ -117,14 +117,8 @@ Additional information about building on macOS:
 
 ### Compiling on Windows
 
-You can install MinGW (https://osdn.net/projects/mingw/). In
-the installation process make sure you select `g++`, `MSYS Basic System`
-and `MinGW Developer ToolKit` in the `Select components` page
-of the installer. Also select po4a, cmake and install pandoc.
-Then run the MinGW Shell and follow the instructions for compiling
-wxWidgets and wxMaxima with cmake.
 
-Another compiler option would be MinGW-w64 (https://www.mingw-w64.org/).
+You can use the MinGW-w64 (https://www.mingw-w64.org/) compilers.
 
 You can also build using MS Visual Studio 2019 or newer. Since MSVS
 provides adequate versions of both cmake and ninja, there's no need
