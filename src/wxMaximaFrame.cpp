@@ -59,8 +59,6 @@
 #include <vector>
 #include <unordered_map>
 
-extern wxLogWindow * wxm_logwindow; // declared in main.cpp
-
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                              const wxString &title, const wxPoint &pos,
                              const wxSize &size, long style)
