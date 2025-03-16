@@ -531,7 +531,7 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
   }
   wxMaxima *frame = new wxMaxima(NULL, wxID_ANY, title, file, initialContents);
   // Set the new created wxMaxima frame as parent frame of the log window.
-  // FIXME: if the log window was closed as the parent 'disable' the toggle function, otherwise we risk a crash.
+  // FIXME: if the log window was closed do not try to reparent the window.
   if (wxm_logwindow->GetFrame() != NULL) {
     wxm_logwindow->GetFrame()->Reparent(frame);
   };
