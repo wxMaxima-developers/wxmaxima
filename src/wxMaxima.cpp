@@ -6595,7 +6595,10 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     GetWorksheet()->RequestRedraw();
   }
   else if(event.GetId() == EventIDs::menu_show_logwindow) {
-    wxm_logwindow->Show(!wxm_logwindow->GetFrame()->IsShown());
+    // FIXME: if the log window was closed as the parent 'disable' the toggle function, otherwise we risk a crash.
+    if (wxm_logwindow->GetFrame() != NULL) {
+      wxm_logwindow->Show(!wxm_logwindow->GetFrame()->IsShown());
+    };
   }
 
   else if(event.GetId() == ToolBar::tb_hideCode) {
@@ -9725,12 +9728,7 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
     return;
   }
   wxConfig::Get()->Write(wxS("lastPath"), m_lastPath);
-  // The log window should be destroyed as child process of wxMaxima, but it does not seem to work on Windows,
-  // => show the Frame, so that the user has the chance to close it. And
-  // maybe some log messages are of interest. Otherwise hidden wxMaxima
-  // processes are accumulated int the task manager.
-  wxm_logwindow->GetFrame()->Show(true);
- Destroy();
+  Destroy();
 }
 
 void wxMaxima::PopupMenu(wxCommandEvent &event) {

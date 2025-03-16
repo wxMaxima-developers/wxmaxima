@@ -530,6 +530,11 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
     initialContents += _(block);
   }
   wxMaxima *frame = new wxMaxima(NULL, wxID_ANY, title, file, initialContents);
+  // Set the new created wxMaxima frame as parent frame of the log window.
+  // FIXME: if the log window was closed as the parent 'disable' the toggle function, otherwise we risk a crash.
+  if (wxm_logwindow->GetFrame() != NULL) {
+    wxm_logwindow->GetFrame()->Reparent(frame);
+  };
 
   frame->EvalOnStartup(evalOnStartup);
   frame->ExitAfterEval(exitAfterEval);
