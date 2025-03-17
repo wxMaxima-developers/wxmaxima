@@ -11,6 +11,9 @@
 - Make the option "--logtostderr" work on Windows.
   (Windows GUI applications, do not have STDIN, STDOUT and STDERR assigned,
   an extra 'text window' with the log messages will be opened at startup).
+- Do not set lmxchar/rmxchar. It did not work at all. And Maxima provides
+  a reasonalbe default - and people probably expect the same, if they are
+  using command line Maxima and wxMaxima. (#1926)
 
 # 25.01.0
 
