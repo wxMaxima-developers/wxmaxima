@@ -66,13 +66,6 @@
  (special lop rop $inchar)
  (*expr wxxml-lbp wxxml-rbp))
 
-;; Use rounded parenthesis for matrices by default
-;; Other possible values would be #\| or #\[
-;;
-;; TODO: Why don't we use maxima's default value here, but assign our own?
-(setq $lmxchar #\()
-(setq $rmxchar #\))
-
 (setf *prompt-prefix* "<PROMPT>")
 (setf *prompt-suffix* "</PROMPT>")
 ;; Permanently assign a property named indic with the value val to the symbol sym
