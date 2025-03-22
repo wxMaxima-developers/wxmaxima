@@ -17,12 +17,12 @@ configuration:
  
 environment:
   # The wxWidgets version as referred to in the source package
-  WXVERSION: 3.2.6
+  WXVERSION: 3.2.7
   # The wxWidgets version as referred to in the build folder
   # Typically it'd be the wxWidgets version with an optional suffix
   # to indicate build "epoch". The epoch changes are used to invalidate
   # a cached wxWidgets build and force a rebuild.
-  WXBUILDVER: 3.2.6_0
+  WXBUILDVER: 3.2.7_0
   CMAKEGEN: "Ninja"
   matrix:
     - TOOLKIT_INIT: ".appveyor\\MSVC_2022_x64.ps1"

@@ -19,7 +19,7 @@ on:
 env:
   build: '${{ github.workspace }}/build'
   config: Debug
-  WXVERSION: 3.2.6
+  WXVERSION: 3.2.7
 
 permissions:
   contents: read
