@@ -2809,7 +2809,7 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
 
 void wxMaxima::KillMaxima(bool logMessage) {
   if (logMessage && (m_closing || (m_maximaProcess == NULL) || (m_pid > 0))) {
-    wxLogMessage(_("Killing Maxima."));
+    wxLogMessage("Killing Maxima. PID=%ld", m_pid);
     if (m_history)
       m_history->MaximaSessionStart();
   }
@@ -2831,98 +2831,60 @@ void wxMaxima::KillMaxima(bool logMessage) {
     }
   EvaluationQueueLength(0);
 
-  // We start checking for maximas output again as soon as we send some data to
+  // We start checking for Maximas output again as soon as we send some data to
   // the program.
   m_statusBar->SetMaximaCPUPercentage(0);
   m_CWD.Clear();
   QuestionAnswered();
-  if(m_maximaProcess)
-    {
-      // If maxima no more has a stdout it should automatically close
-      m_maximaProcess->CloseOutput();
-    }
+  // Finally found a long outstanding problem with leftover Lisp processes
+  // (using debugging with command line Maxima and netcat):
+  //
+  // On Windows just closing the network (kill the netcat server) does NOT
+  // terminate the Lisp, which is running in the background.
+  // Don't know why. But do not try to do that, just kill the Maxima process (using "taskkill")!
+#ifndef __WINDOWS__
+  if(m_maximaProcess) {
+    // If Maxima no more has a stdout it should automatically close
+    m_maximaProcess->CloseOutput();
+  }
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
-  // This closes maxima's network connection - which should close maxima, as well.
-  // Additionally closing the client automatically sends a "quit();" command to maxima.
+  // This closes Maxima's network connection - which should close maxima, as well.
+  // Additionally closing the client automatically sends a "quit();" command to Maxima.
   m_client.reset();
-
-  /* Just to be absolutely sure: Additionally try to kill maxima
-
-     On Linux and MacOs the kill() command is meant as a means for inter-process
-     communication and it works fine. On MS Windows, though, there are three
-     flavours of kill():
-     One sends a Ctrl+C to a console application, but as far as I can see we
-     don't have the rights to issue that.
-     One tells a gui application to gracefully close. That one might not apply to
-     maxima as a console application, and
-     One that forces an application to close without even uninitializing its DLLs.
-     I hope we have the rights to issue that and we can try them both on maxima.bat
-     and the actual maxima process. AFAICS we started maxima with flags that tell
-     the batch file to automatically kill maxima on exit.
-   */
-  // Many of our wxProcess::kill commands will fail
-  //
-  // I (daute) assume, that since commit e6601c4d that is no longer necessary, it seems to work with the first call...
-  // Add some log messages and keep the further tries, but I assume, they will not be executed.
-
-  bool killed = false;
-  wxLogMessage("Killing Maxima1: m_pid=%ld, m_maximaProcess->GetPid()=%ld", m_pid, m_maximaProcess->GetPid());
-  if (m_pid > 0) {
-#ifdef __WINDOWS__
-    // It seems complicated. First, wxSIGTERM seems not be enough. Ok. Send wxSIGKILL.
-    // "You need to use wxSIGKILL for the processes without windows under Windows.". See:
-    // https://github.com/wxWidgets/wxWidgets/issues/15356
-    // int killresult = wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN);
-    //
-    // However - that seems not work too. It either does not send wxSIGKILL (but another signal) to the children or
-    // only to the direct children and not their child processes. So use taskkill (/F: force, /T: treekill):
-    //
-    // I identified a wxWidgets issue, that only the direct children are killed:
-    // https://github.com/wxWidgets/wxWidgets/issues/25069
-    // Since it will take some time until wxWidgets distributions with this fix are released and in use,
-    // use the taskkill solution now.
-    wxArrayString taskkill_out, taskkill_err;
-    wxExecute(wxString::Format("taskkill /PID %d /F /T", m_pid), taskkill_out, taskkill_err, wxEXEC_SYNC);
-    for (size_t i=0; i<taskkill_out.GetCount(); ++i)
-      wxLogMessage("taskkill_out: " + taskkill_out.Item(i));
-    for (size_t i=0; i<taskkill_err.GetCount(); ++i)
-      wxLogMessage("taskkill_err: " + taskkill_err.Item(i));
-    // And just assume, it worked...
-    int killresult = wxKILL_OK;
+  // If the process really exists after that, kill it with Signals.
+  wxKillError killresult;
+  if (wxProcess::Exists(m_pid)) {
+    killresult = wxProcess::Kill(m_pid, wxSIGTERM, wxKILL_CHILDREN);
+    wxLogMessage("Kill Maxima (SIGTERM). killresult=%d  [0=wxKILL_OK]", killresult);
+  }
+  if (wxProcess::Exists(m_pid)) {
+    killresult = wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN);
+    wxLogMessage("Kill Maxima (SIGKILL). killresult=%d  [0=wxKILL_OK]", killresult);
+  }
 #else
-    int killresult = wxProcess::Kill(m_pid, wxSIGTERM, wxKILL_CHILDREN);
+  // Windows: it is complicated
+  // wxSIGTERM seems not be enough, we need wxSIGKILL. See:
+  // https://github.com/wxWidgets/wxWidgets/issues/15356
+  //
+  // However - I identified a wxWidgets issue, that only the direct children are killed
+  // with wxKill(..., wxKILL_CHILDREN):
+  // https://github.com/wxWidgets/wxWidgets/issues/25069
+  // Since it will take some time until wxWidgets distributions with this fix are released and in use,
+  // use the "taskkill" solution now.
+  wxArrayString taskkill_out, taskkill_err;
+  wxExecute(wxString::Format("taskkill /PID %d /F /T", m_pid), taskkill_out, taskkill_err, wxEXEC_SYNC);
+  for (size_t i=0; i<taskkill_out.GetCount(); ++i)
+    wxLogMessage("taskkill_out: " + taskkill_out.Item(i));
+  for (size_t i=0; i<taskkill_err.GetCount(); ++i)
+    wxLogMessage("taskkill_err: " + taskkill_err.Item(i));
 #endif
-    killed = (killresult == wxKILL_OK);
-    wxLogMessage("Killresult1. killresult=%d (0=wxKILL_OK), killed=%d (1=true)", killresult, killed);
-  }
-  // Maybe the following code is obsolete, as the kill procedure above hopefully worked...
-  if (!killed) {
-    if(m_maximaProcess && (!killed) && (m_maximaProcess->GetPid() > 0))
-      killed = (wxProcess::Kill(m_maximaProcess->GetPid(),
-                                wxSIGTERM, wxKILL_CHILDREN) == wxKILL_OK);
-    wxLogMessage("Killing Maxima2. m_pid=%ld, m_maximaProcess->GetPid()=%ld",m_pid, m_maximaProcess->GetPid());
-    if ((!killed) && (m_pid > 0))
-      killed = (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
-
-    if(m_maximaProcess && (!killed) && (m_maximaProcess->GetPid() > 0))
-      killed = (wxProcess::Kill(m_maximaProcess->GetPid(),
-                                wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
-    wxLogMessage("Killing Maxima3. m_pid=%ld, m_maximaProcess->GetPid()=%ld",m_pid, m_maximaProcess->GetPid());
-    if ((!killed) && (m_pid > 0))
-      killed = (wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) == wxKILL_OK);
-    wxLogMessage("Killing Maxima4. m_pid=%ld, m_maximaProcess->GetPid()=%ld",m_pid, m_maximaProcess->GetPid());
-    if (!killed)
-      wxLogMessage(_("Killing Maxima failed. But we sent a \"quit();\" to it."));
-    m_configuration.InLispMode(false);
-  }
-  // Wait for maxima to actually exit before we clean up its temporary files
+  // Wait for Maxima to actually exit before we clean up its temporary files
   int count = 40;
-  while((m_pid > 0) && wxProcess::Exists(m_pid) && (count > 0))
-    {
-      wxMilliSleep(50);
-      count--;
-    }
+  while (wxProcess::Exists(m_pid) && (count > 0)) {
+    wxMilliSleep(50);
+    count--;
+  }
 
   // As we might have killed maxima before it was able to clean up its
   // temp files we try to do so manually now:
@@ -2952,15 +2914,15 @@ void wxMaxima::KillMaxima(bool logMessage) {
       wxRemoveFile(m_maximaTempDir + wxS("/maxout_") +
                    wxString::Format("%li.xmaxima", static_cast<long>(m_pid)));
   }
+  // Set m_pid to -1.The process really shouldn't exist any more.
   m_pid = -1;
 
   // We don't need to be informed any more if the maxima process we just tried to
   // kill actually exits.
-  if(m_maximaProcess)
-    {
-      m_maximaProcess->Detach();
-      m_maximaProcess = NULL;
-    }
+  if(m_maximaProcess) {
+    m_maximaProcess->Detach();
+    m_maximaProcess = NULL;
+  }
 }
 
 void wxMaxima::OnGnuplotQueryTerminals(wxProcessEvent &event) {
@@ -3006,9 +2968,8 @@ void wxMaxima::OnGnuplotClose(wxProcessEvent &event) {
 }
 
 void wxMaxima::OnMaximaClose(){
+  if (wxProcess::Exists(m_pid)) KillMaxima();
   m_maximaProcess = NULL;
-  wxLogMessage(_("Maxima process (pid %li) has terminated\n"),
-               static_cast<long>(m_pid));
   m_pid = -1;
   if (m_maximaStdout) {
     wxTextInputStream istrm(*m_maximaStdout, wxS('\t'),
@@ -3069,8 +3030,9 @@ void wxMaxima::OnMaximaClose(){
     if(GetWorksheet())
       GetWorksheet()->m_evaluationQueue.Clear();
   }
-  else
-    StartMaxima(true);
+  // We did close Maxima on purpose (m_closing==true) - do not restart it.
+  //else
+  //  StartMaxima(true);
 
   StatusMaximaBusy(StatusBar::MaximaStatus::disconnected);
   UpdateToolBar();
