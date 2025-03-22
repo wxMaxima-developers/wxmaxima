@@ -12,7 +12,7 @@
   (Windows GUI applications, do not have STDIN, STDOUT and STDERR assigned,
   an extra 'text window' with the log messages will be opened at startup).
 - Do not set lmxchar/rmxchar (used for displaying a matrix in text mode).
-  It did not work at all. And Maxima provides a reasonalbe default - and
+  It did not work at all. Maxima provides a reasonable default - and
   people probably expect the same, if they are using command line Maxima
   and wxMaxima. (#1926)
 - Kill Lisp (e.g. sbcl.exe) on closing wxMaxima. (#1963, #1922, #1824)
@@ -97,7 +97,7 @@
   shown, even if there was no match.
 - Improvements of the manual.
 - Performance: Replaced many copy operations by references to const
-- Correctly hande deletion of the last cell (#1911, #1840)
+- Correctly handle deletion of the last cell (#1911, #1840)
 - A link from the help menu to maxima's help page
 - Offer more maxima demos in the right-click menu
 - Resolved a threading race condition (#1912)
