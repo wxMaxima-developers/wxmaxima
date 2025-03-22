@@ -146,7 +146,7 @@ void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors) {
 void MaximaManual::CompileHelpFileAnchors(const wxString &maximaHtmlDir,
                                           const wxString &maximaVersion,
                                           const wxString &saveName) {
-  
+
   std::size_t foundAnchorsTotal = 0;
   if (!(m_maximaHtmlDir.IsEmpty())) {
     std::vector<wxString> helpFiles;
@@ -254,7 +254,7 @@ void MaximaManual::CompileHelpFileAnchors(const wxString &maximaHtmlDir,
         AnchorAliasses(m_helpFileURLs_singlePage);
       }
     }
-    
+
     if(foundAnchorsTotal < 100)
       {
         wxLogMessage(_("Have only %li keyword anchors at the end of parsing the maxima manual => "
@@ -452,7 +452,7 @@ bool MaximaManual::LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument,
   wxLogMessage(_("Found %li anchors, URLs (individual files): %li, URLs (singlepage): %li"),
                static_cast<long>(anchors),
                static_cast<long>(urls_FilePerChapter),
-               static_cast<long>((long)urls_SinglePage));
+               static_cast<long>(urls_SinglePage));
   const std::lock_guard<std::mutex> lock(m_helpFileAnchorsLock);
   return !m_helpFileURLs_singlePage.empty();
 }

@@ -183,9 +183,9 @@ void wxMaxima::ConfigChanged() {
   m_configCommands += wxString::Format(wxS(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
                                        EscapeForLisp(Dirstructure::Get()->HelpDir()).utf8_str());
 
-  m_configCommands += wxString::Format(wxS(":lisp-quiet (setq $wxplot_size '((mlist simp) %li %li))\n"),
-                                       static_cast<long>(m_configuration.DefaultPlotWidth()),
-                                       static_cast<long>(m_configuration.DefaultPlotHeight()));
+  m_configCommands += wxString::Format(wxS(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
+                                       m_configuration.DefaultPlotWidth(),
+                                       m_configuration.DefaultPlotHeight());
 
   if (GetWorksheet() && (GetWorksheet()->m_currentFile != wxEmptyString)) {
     wxString filename(GetWorksheet()->m_currentFile);
@@ -2511,9 +2511,8 @@ bool wxMaxima::StartServer() {
   m_port = m_configuration.DefaultPort() + m_unsuccessfulConnectionAttempts;
 
   do {
-    wxLogMessage(_("Trying to start the socket a maxima on the local "
-                   "machine can connect to on port %li"),
-                 static_cast<long>(m_port));
+    wxLogMessage(_("Trying to start the socket a Maxima on the local "
+                   "machine can connect to on port %i"), m_port);
 
     // Currently, only wxIPV4address is implemented (current wxWidgets 3.2.6)
     // https://docs.wxwidgets.org/3.2.6/classwx_i_paddress.html
@@ -2521,7 +2520,7 @@ bool wxMaxima::StartServer() {
     if (!addr.LocalHost())
       wxLogMessage(_("Cannot set the communication address to localhost."));
     if (!addr.Service(m_port))
-      wxLogMessage(_("Cannot set the communication port to %li."), static_cast<long>(m_port));
+      wxLogMessage(_("Cannot set the communication port to %i."), m_port);
     m_server = std::unique_ptr<wxSocketServer,
                                ServerDeleter>(
                                               new wxSocketServer(addr, wxSOCKET_WAITALL_WRITE));
@@ -2890,29 +2889,29 @@ void wxMaxima::KillMaxima(bool logMessage) {
   // temp files we try to do so manually now:
   if (m_maximaTempDir != wxEmptyString) {
     if (wxFileExists(m_maximaTempDir + wxS("/maxout") +
-                     wxString::Format("%li.gnuplot", static_cast<long>(m_pid))))
+                     wxString::Format("%li.gnuplot", m_pid)))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout") +
-                   wxString::Format("%li.gnuplot", static_cast<long>(m_pid)));
+                   wxString::Format("%li.gnuplot", m_pid));
     if (wxFileExists(m_maximaTempDir + wxS("/data") +
-                     wxString::Format("%li.gnuplot", static_cast<long>(m_pid))))
+                     wxString::Format("%li.gnuplot", m_pid)))
       wxRemoveFile(m_maximaTempDir + wxS("/data") +
-                   wxString::Format("%li.gnuplot", static_cast<long>(m_pid)));
+                   wxString::Format("%li.gnuplot", m_pid));
     if (wxFileExists(m_maximaTempDir + wxS("/maxout") +
-                     wxString::Format("%li.xmaxima", static_cast<long>(m_pid))))
+                     wxString::Format("%li.xmaxima", m_pid)))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout") +
-                   wxString::Format("%li.xmaxima", static_cast<long>(m_pid)));
+                   wxString::Format("%li.xmaxima", m_pid));
     if (wxFileExists(m_maximaTempDir + wxS("/maxout_") +
-                     wxString::Format("%li.gnuplot", static_cast<long>(m_pid))))
+                     wxString::Format("%li.gnuplot", m_pid)))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout_") +
-                   wxString::Format("%li.gnuplot", static_cast<long>(m_pid)));
+                   wxString::Format("%li.gnuplot", m_pid));
     if (wxFileExists(m_maximaTempDir + wxS("/data_") +
-                     wxString::Format("%li.gnuplot", static_cast<long>(m_pid))))
+                     wxString::Format("%li.gnuplot", m_pid)))
       wxRemoveFile(m_maximaTempDir + wxS("/data_") +
-                   wxString::Format("%li.gnuplot", static_cast<long>(m_pid)));
+                   wxString::Format("%li.gnuplot", m_pid));
     if (wxFileExists(m_maximaTempDir + wxS("/maxout_") +
-                     wxString::Format("%li.xmaxima", static_cast<long>(m_pid))))
+                     wxString::Format("%li.xmaxima", m_pid)))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout_") +
-                   wxString::Format("%li.xmaxima", static_cast<long>(m_pid)));
+                   wxString::Format("%li.xmaxima", m_pid));
   }
   // Set m_pid to -1.The process really shouldn't exist any more.
   m_pid = -1;
@@ -3088,7 +3087,7 @@ void wxMaxima::ReadFirstPrompt(const wxString &data) {
 
   wxLogMessage(_("Received maxima's first prompt: %s"), prompt_compact.utf8_str());
 
-  wxLogMessage(_("Maxima's PID is %li"), static_cast<long>(m_pid));
+  wxLogMessage(_("Maxima's PID is %li"), m_pid);
 
   if (GetWorksheet() && (GetWorksheet()->m_evaluationQueue.Empty())) {
     // Inform the user that the evaluation queue is empty.
@@ -4523,7 +4522,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
 
     for (long i = 0; i < VariablesNumber; i++) {
       wxString variable =
-        xmldoc.GetRoot()->GetAttribute(wxString::Format("variables_%li", static_cast<long>(i)));
+        xmldoc.GetRoot()->GetAttribute(wxString::Format("variables_%li", i));
       if(GetWorksheet() && (m_variablesPane))
         m_variablesPane->AddWatch(variable);
     }
@@ -5042,12 +5041,12 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   // Update the info how long the evaluation queue is
   if (m_updateEvaluationQueueLengthDisplay) {
     if ((m_EvaluationQueueLength > 0) || (m_commandsLeftInCurrentCell >= 1)) {
-      wxString statusLine = wxString::Format(_("%li cells in evaluation queue"),
-                                             static_cast<long>(m_EvaluationQueueLength));
+      wxString statusLine = wxString::Format(_("%i cells in evaluation queue"),
+                                             m_EvaluationQueueLength);
       if (m_commandsLeftInCurrentCell > 1)
         statusLine +=
-          wxString::Format(_("; %li commands left in the current cell"),
-                           static_cast<long>(m_commandsLeftInCurrentCell) - 1);
+          wxString::Format(_("; %i commands left in the current cell"),
+                           m_commandsLeftInCurrentCell - 1);
       StatusText(statusLine, false);
     } else {
       if (m_first) {
@@ -5895,7 +5894,7 @@ long long wxMaxima::GetMaximaCpuTime() {
   }
 #endif
   int maximaJiffies = 0;
-  wxString statFileName = wxString::Format("/proc/%li/stat", static_cast<long>(m_pid));
+  wxString statFileName = wxString::Format("/proc/%li/stat", m_pid);
   if (wxFileExists(statFileName)) {
     wxFileInputStream input(statFileName);
     if (input.IsOk()) {
@@ -6708,7 +6707,7 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent &event) {
   else
     count =
       GetWorksheet()->ReplaceAll_RegEx(event.GetFindString(), event.GetReplaceString());
-  LoggingMessageBox(wxString::Format(_("Replaced %li occurrences."), static_cast<long>(count)));
+  LoggingMessageBox(wxString::Format(_("Replaced %li occurrences."), count));
   if (count > 0)
     GetWorksheet()->UpdateTableOfContents();
 }
