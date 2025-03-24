@@ -1391,8 +1391,13 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
           popupMenu.Append(ToolBar::tb_evaltillhere, _("Evaluate Cells Above"),
                            wxEmptyString, wxITEM_NORMAL);
 
-        popupMenu.Append(EventIDs::popid_evaluate, _("Evaluate Cell(s)"), wxEmptyString,
-                         wxITEM_NORMAL);
+        if (m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd)
+          popupMenu.Append(EventIDs::popid_evaluate, _("Evaluate Cell"), wxEmptyString,
+                           wxITEM_NORMAL);
+        else
+          popupMenu.Append(EventIDs::popid_evaluate, _("Evaluate Cell(s)"), wxEmptyString,
+                           wxITEM_NORMAL);
+
         if (m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd)
           popupMenu.Append(ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"),
                            wxEmptyString, wxITEM_NORMAL);
