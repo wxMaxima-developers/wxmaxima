@@ -9,13 +9,13 @@
   But I think, the log window is mainly for developers, so that is not a severe
   issue for end users.]
 - Make the option "--logtostderr" work on Windows.
-  (Windows GUI applications, do not have STDIN, STDOUT and STDERR assigned,
+  (Windows GUI applications do not have STDIN, STDOUT and STDERR assigned,
   an extra 'text window' with the log messages will be opened at startup).
 - Do not set lmxchar/rmxchar (used for displaying a matrix in text mode).
   It did not work at all. Maxima provides a reasonable default - and
   people probably expect the same, if they are using command line Maxima
   and wxMaxima. (#1926)
-- Kill Lisp (e.g. sbcl.exe) on closing wxMaxima. (#1963, #1922, #1824)
+- Kill Lisp (e.g. sbcl.exe) when closing wxMaxima. (#1963, #1922, #1824, #1199)
 
 # 25.01.0
 
