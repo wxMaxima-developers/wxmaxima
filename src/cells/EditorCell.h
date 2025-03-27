@@ -532,14 +532,14 @@ private:
     /*! The text of this text portion
      */
     wxString m_text;
+    //! The color of this text portion
+    TextStyle m_style = TS_CODE_DEFAULT;
     //! Chars that mark continued indentation
     wxString m_indentChar;
     //! The cached width of this piece of text
     wxCoord m_width = -1;
     //! By How many pixels we want to indent this line?
     wxCoord m_indentPixels = 0;
-    //! The color of this text portion
-    TextStyle m_style = TS_CODE_DEFAULT;
     //! Do we really want to style this text portion different than the default?
     bool m_styleThisText = false;
   public:
@@ -548,9 +548,9 @@ private:
       : m_text(text), m_style(style), m_styleThisText(true) {}
 
     //! Defines a piece of text with the default style that possibly is indented
-    explicit StyledText(const wxString &text, wxCoord indentPixels = 0,
+    explicit StyledText(const wxString &text, TextStyle style, wxCoord indentPixels = 0,
                         const wxString &indentChar = {})
-      : m_text(text), m_indentChar(indentChar), m_indentPixels(indentPixels)  {}
+      : m_text(text), m_style(style), m_indentChar(indentChar), m_indentPixels(indentPixels)  {}
 
     void SetWidth(wxCoord width){m_width = width;}
     void ResetSize(){SetWidth(-1);}

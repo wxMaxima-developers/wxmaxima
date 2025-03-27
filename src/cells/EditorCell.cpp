@@ -2957,12 +2957,12 @@ void EditorCell::StyleTextCode() {
       // All spaces except the last one (that could cause a line break)
       // share the same token
       if (tokenString.Length() > 1)
-        m_styledText.push_back(StyledText(tokenString.Right(tokenString.Length() - 1)));
+        m_styledText.push_back(StyledText(tokenString.Right(tokenString.Length() - 1), GetTextStyle()));
 
       // Now we push the last space to the list of tokens and remember this
       // space as the space that potentially serves as the next point to
       // introduce a soft line break.
-      m_styledText.push_back(StyledText(wxS(" ")));
+      m_styledText.push_back(StyledText(wxS(" "), GetTextStyle()));
       lastSpace = &m_styledText.back();
       lastSpacePos = pos + tokenString.Length() - 1;
       continue;
@@ -3131,7 +3131,8 @@ void EditorCell::StyleTextTexts() {
       if (FirstLineOnlyEditor()) {
         m_styledText.push_back(
                                StyledText(line + wxString::Format(_(" ... + %li hidden lines"),
-                                                                  static_cast<long>(m_text.Freq(wxS('\n'))))));
+                                                                  GetTextStyle(),
+                                                                  static_cast<long>(m_text.Freq(wxS('\n')))), GetTextStyle()));
         break;
       }
 
@@ -3201,7 +3202,7 @@ void EditorCell::StyleTextTexts() {
           m_styledText.back().SetIndentation(indent);
       }
       // Store the indented line in the list of styled text snippets
-      m_styledText.push_back(StyledText(line, 0, indentChar));
+      m_styledText.push_back(StyledText(line, GetTextStyle(), 0, indentChar));
 
       if (it < m_text.end()) {
         // If the cell doesn't end with the last char of this line we have to
@@ -3209,9 +3210,9 @@ void EditorCell::StyleTextTexts() {
         if ((i + 1 < m_text.Length()) || (m_text.at(i) == wxS('\n'))) {
           // Store the line ending in the list of styled text snippets
           if (*it == wxS('\n'))
-            m_styledText.push_back(StyledText(wxS("\n"), 0, indentChar));
+            m_styledText.push_back(StyledText(wxS("\n"), GetTextStyle(), 0, indentChar));
           else
-            m_styledText.push_back(StyledText(wxS("\r"), 0, indentChar));
+            m_styledText.push_back(StyledText(wxS("\r"), GetTextStyle(), 0, indentChar));
         }
       }
 
@@ -3231,13 +3232,13 @@ void EditorCell::StyleTextTexts() {
         m_styledText.push_back(
                                StyledText(line + wxString::Format(_(" ... + %li hidden lines"),
                                                                   static_cast<long>(m_text.Freq(wxS('\n')))),
-                                          0, wxEmptyString));
+                                          GetTextStyle(), 0, wxEmptyString));
         break;
       }
 
-      m_styledText.push_back(StyledText(line, 0, wxEmptyString));
+      m_styledText.push_back(StyledText(line, GetTextStyle(), 0, wxEmptyString));
       if ((lines.HasMoreTokens()))
-        m_styledText.push_back(StyledText(wxS("\n"), 0, wxEmptyString));
+        m_styledText.push_back(StyledText(wxS("\n"), GetTextStyle()));
     }
   }
 } // Style text, not code?
