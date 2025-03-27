@@ -10316,14 +10316,8 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
     GroupCell *group = NULL;
     if (GetWorksheet()->GetSelectionStart()) {
       // More than one cell is selected
-      group = GetWorksheet()->GetSelectionStart();
-      while(group)
-        {
-          if((group->GetEditable() != NULL) &&
-             (group->GetEditable()->GetType() == MC_TYPE_INPUT))
-            GetWorksheet()->AddCellToEvaluationQueue(group);
-          group = group->GetNext();
-        }
+      group = GetWorksheet()->GetSelectionStart()->GetGroup();
+      GetWorksheet()->AddSelectionToEvaluationQueue();
     }
     else
       {
