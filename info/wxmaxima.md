@@ -789,18 +789,6 @@ _WxMaxima_ provides a few functions that gather bug reporting information about 
 - `wxbuild_info()` gathers information about the currently running version of _wxMaxima_
 - `wxbug_report()` tells how and where to file bugs
 
-### Logging
-
-WxMaxima can log many events. Most log entries will be helpful for developers, especially in case of problems or bugs. If you run a "Release"-Build,
-the log windows is not shown by default, if you run a development version, it is shown by default as a second window. You can enable and disable
-this window using the "View->Toggle log window" menu entry.
-
-Messages are not 'lost', if the log window is not shown, if you select to show the log window later, you will see past log messages (if you did not clear the messages).
-
-Such messages may be helpful, when you create bug reports (or trying to find a bug by yourself).
-
-Log messages can (additionally) be printed to STDERR, when using the command line option "--logtostderr". On Windows a separate
-text console will be opened, as a Windows GUI application does not have the standard IO connected.
 
 ## Marking output being drawn in red
 
@@ -1002,6 +990,19 @@ wxdraw2d(
 ```
 
 This might be an issue with the operating system. Disable the hiding of the menu bar (SystemSettings => Desktop & Dock => Menu Bar) might solve the issue. See [wxMaxima issue #1746](https://github.com/wxMaxima-developers/wxmaxima/issues/1746) for more information.
+
+## Logging
+
+Log messages might be helpful to debug problems. WxMaxima can log many events. Most log entries will be helpful for developers, especially in case of problems or bugs. If you run a "Release"-Build,
+the log windows is not shown by default, if you run a development version, it is shown by default as a second window. You can enable and disable
+this window using the "View->Toggle log window" menu entry.
+
+Messages are not 'lost', if the log window is not shown, if you select to show the log window later, you will see past log messages (if you did not clear the messages).
+
+Such messages may be helpful, when you create bug reports (or trying to find a bug by yourself).
+
+Log messages can (additionally) be printed to STDERR, when using the command line option "--logtostderr". On Windows a separate
+text console will be opened, as a Windows GUI application does not have the standard IO connected.
 
 ______________________________________________________________________
 
