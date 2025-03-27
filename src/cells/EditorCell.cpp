@@ -3238,7 +3238,7 @@ void EditorCell::StyleTextTexts() {
 
       m_styledText.push_back(StyledText(line, GetTextStyle(), 0, wxEmptyString));
       if ((lines.HasMoreTokens()))
-        m_styledText.push_back(StyledText(wxS("\n"), GetTextStyle()));
+        m_styledText.push_back(StyledText(wxS("\n"), GetTextStyle(), 0, wxEmptyString));
     }
   }
 } // Style text, not code?
