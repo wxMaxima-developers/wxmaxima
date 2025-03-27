@@ -10314,24 +10314,35 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
 
   if (editor == NULL) {
     GroupCell *group = NULL;
-    if (GetWorksheet()->HCaretActive()) {
-      group = GetWorksheet()->GetHCaret();
-      if (group == NULL)
-        group = GetWorksheet()->GetTree();
-      else
-        group = group->GetNext();
-      while ((group != NULL) &&
-             (!((group->GetEditable() != NULL) &&
-                (group->GetEditable()->GetType() == MC_TYPE_INPUT)) &&
-              (!GetWorksheet()->m_evaluationQueue.IsLastInQueue(group))))
-        group = group->GetNext();
+    if (GetWorksheet()->HasCellsSelected()) {
+      // More than one cell is selected
+      GetWorksheet()->AddSelectionToEvaluationQueue();
     }
-    if ((group != NULL) && (group->GetEditable() != NULL) &&
-        (group->GetEditable()->GetType() == MC_TYPE_INPUT))
-      editor = group->GetEditable();
+    else
+      {
+        if (GetWorksheet()->HCaretActive()) {
+          group = GetWorksheet()->GetHCaret();
+          if (group == NULL)
+            // If the cursor is before the 1st cell of the worksheet hcaret reads NULL.
+            group = GetWorksheet()->GetTree();
+          else
+            // The HCaret points to the cell before the horizontal cursor.
+            group = group->GetNext();
+          
+          // Now we search for the first cell below the cursor that actually contains code.
+          while ((group != NULL) &&
+                 (!((group->GetEditable() != NULL) &&
+                    (group->GetEditable()->GetType() == MC_TYPE_INPUT)) &&
+                  (!GetWorksheet()->m_evaluationQueue.IsLastInQueue(group))))
+            group = group->GetNext();
+        }
+        if ((group != NULL) && (group->GetEditable() != NULL) &&
+            (group->GetEditable()->GetType() == MC_TYPE_INPUT))
+          editor = group->GetEditable();
+      }
   }
 
-  if (editor != NULL) // we have an active cell
+  if (editor != NULL) // The cursor is in an active cell
     {
       if (editor->GetType() == MC_TYPE_INPUT && (!m_configuration.InLispMode()))
         editor->AddEnding();
