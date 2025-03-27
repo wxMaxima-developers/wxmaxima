@@ -10314,9 +10314,8 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
 
   if (editor == NULL) {
     GroupCell *group = NULL;
-    if (GetWorksheet()->GetSelectionStart()) {
+    if (GetWorksheet()->HasCellsSelected()) {
       // More than one cell is selected
-      group = GetWorksheet()->GetSelectionStart()->GetGroup();
       GetWorksheet()->AddSelectionToEvaluationQueue();
     }
     else
