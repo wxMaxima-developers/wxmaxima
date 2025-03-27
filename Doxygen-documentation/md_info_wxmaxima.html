@@ -715,15 +715,15 @@ Bug reporting</h2>
 <li><code>wxbuild_info()</code> gathers information about the currently running version of <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em></li>
 <li><code>wxbug_report()</code> tells how and where to file bugs</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md102"></a>
-Logging</h3>
-<p>WxMaxima can log many events. Most log entries will be helpful for developers, especially in case of problems or bugs. If you run a "Release"-Build, the log windows is not shown by default, if you run a development version, it is shown by default as a second window. You can enable and disable this window using the "View-&gt;Toggle log window" menu entry.</p>
-<p>Messages are not 'lost', if the log window is not shown, if you select to show the log window later, you will see past log messages (if you did not clear the messages).</p>
-<p>Such messages may be helpful, when you create bug reports (or trying to find a bug by yourself).</p>
-<p>Log messages can (additionally) be printed to STDERR, when using the command line option "--logtostderr". On Windows a separate text console will be opened, as a Windows GUI application does not have the standard IO connected.</p>
-<h2><a class="anchor" id="autotoc_md103"></a>
+<h2><a class="anchor" id="autotoc_md102"></a>
 Marking output being drawn in red</h2>
 <p><em>Maxima_’s <code>box()</code> command causes _wxMaxima</em> to print its argument with a red foreground, if the second argument to the command is the text <code>highlight</code>.</p>
+<h2><a class="anchor" id="autotoc_md103"></a>
+Output rendering.</h2>
+<p>With <code>set_display()</code> one can set, how <a class="el" href="classwxMaxima.html">wxMaxima</a> will render the output.</p>
+<p><code>set_display('xml)</code> is the default value. Here <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> speaks to <a class="el" href="classwxMaxima.html">wxMaxima</a> using an (machine readable) XML-dialect (can be seen in the "Raw XML sidebar") and outputs the resulting formulas nicely rendered, e.g. pretty Matrices, Square root signs, fractions, etc.</p>
+<p><code>set_display('ascii)</code> causes <a class="el" href="classwxMaxima.html">wxMaxima</a> to output formulas as in command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> - as ASCII-Art.</p>
+<p><code>set_display('none)</code> causes 'one-line' ASCII results - the same as the command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command <code>display2d:false;</code> does.</p>
 <h1><a class="anchor" id="autotoc_md104"></a>
 Help menu</h1>
 <p>WxMaxima’s help menu provides access to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> and <a class="el" href="classwxMaxima.html">wxMaxima</a> manual, tips, some example worksheets and in command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> included demos (the <code>demo()</code> command).</p>
@@ -852,34 +852,40 @@ After upgrading to MacOS 13.1 plot and/or draw commands output error messages li
 <div class="line">3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408</div>
 <div class="line">...</div>
 </div><!-- fragment --><p>This might be an issue with the operating system. Disable the hiding of the menu bar (SystemSettings =&gt; Desktop &amp; Dock =&gt; Menu Bar) might solve the issue. See <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">wxMaxima issue #1746</a> for more information.</p>
+<h2><a class="anchor" id="autotoc_md123"></a>
+Logging</h2>
+<p>Log messages might be helpful to debug problems. WxMaxima can log many events. Most log entries will be helpful for developers, especially in case of problems or bugs. If you run a "Release"-Build, the log windows is not shown by default, if you run a development version, it is shown by default as a second window. You can enable and disable this window using the "View-&gt;Toggle log window" menu entry.</p>
+<p>Messages are not 'lost', if the log window is not shown, if you select to show the log window later, you will see past log messages (if you did not clear the messages).</p>
+<p>Such messages may be helpful, when you create bug reports (or trying to find a bug by yourself).</p>
+<p>Log messages can (additionally) be printed to STDERR, when using the command line option "--logtostderr". On Windows a separate text console will be opened, as a Windows GUI application does not have the standard IO connected.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md123"></a>
+<h1><a class="anchor" id="autotoc_md124"></a>
 FAQ</h1>
-<h2><a class="anchor" id="autotoc_md124"></a>
+<h2><a class="anchor" id="autotoc_md125"></a>
 Is there a way to make more text fit on a LaTeX page?</h2>
 <p>Yes. Use the <a href="https://ctan.org/pkg/geometry">LaTeX package "geometry"</a> to specify the size of the borders.</p>
 <p>You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"-&gt;"Additional lines for the TeX preamble"), to set borders of 1cm):</p>
 <div class="fragment"><div class="line">\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md125"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md126"></a>
 Is there a dark mode?</h2>
 <p>If wxWidgets is new enough, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively, there is a <code>View/Invert worksheet brightness</code> menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.</p>
-<h2><a class="anchor" id="autotoc_md126"></a>
+<h2><a class="anchor" id="autotoc_md127"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; sometimes hangs for several seconds once in the first minute</h2>
 <p><em>WxMaxima</em> delegates some big tasks like parsing <em>Maxima_’s &gt;1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima</em> needs to wait a couple of seconds before it can continue its work.</p>
-<h2><a class="anchor" id="autotoc_md127"></a>
+<h2><a class="anchor" id="autotoc_md128"></a>
 Especially when testing new locale settings, a message box "locale ’xx_YY’ can not be set" occurs</h2>
 <p><img src="./locale-warning.png" alt="Locale warning" class="inline"/></p>
 <p>(The same problem can occur with other applications too). The translations seem okay after you click on ’OK’. WxMaxima does not only use its own translations but the translations of the wxWidgets framework too.</p>
 <p>These locales maybe not present in the system. On Ubuntu/Debian systems they can be generated using: <code>dpkg-reconfigure locales</code></p>
-<h2><a class="anchor" id="autotoc_md128"></a>
+<h2><a class="anchor" id="autotoc_md129"></a>
 How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?</h2>
 <p>You can find these symbols in the Unicode sidebar (search for ’double-struck capital’). But the selected font must also support these symbols. If they do not display properly, select another font.</p>
-<h2><a class="anchor" id="autotoc_md129"></a>
+<h2><a class="anchor" id="autotoc_md130"></a>
 How can a Maxima script determine, if it is running under wxMaxima or command line Maxima?</h2>
 <p>If <a class="el" href="classwxMaxima.html">wxMaxima</a> is used, the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> variable <code>maxima_frontend</code> is set to <code>wxmaxima</code>. The <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> variable <code>maxima_frontend_version</code> contains the <a class="el" href="classwxMaxima.html">wxMaxima</a> version in this case.</p>
 <p>If no frontend is used (you are using command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>), these variables are <code>false</code>.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md130"></a>
+<h1><a class="anchor" id="autotoc_md131"></a>
 Command-line arguments</h1>
 <p>Usually you can start programs with a graphical user interface just by clicking on a desktop icon or desktop menu entry. WxMaxima - if started from the command line - still provides some command-line switches, though.</p>
 <ul>
@@ -901,7 +907,7 @@ Command-line arguments</h1>
 </ul>
 <p>Instead of a minus, some operating systems might use a dash in front of the command-line switches.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md131"></a>
+<h1><a class="anchor" id="autotoc_md132"></a>
 About the program, contributing to wxMaxima</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is mainly developed using the programming language C++ using the <a href="https://www.wxwidgets.org">wxWidgets framework</a>, as build system we use <a href="https://www.cmake.org">CMake</a>, a small part is written in Lisp. You can contribute to <a class="el" href="classwxMaxima.html">wxMaxima</a>, join the <a class="el" href="classwxMaxima.html">wxMaxima</a> project at <a href="https://github.com/wxMaxima-developers/wxmaxima">https://github.com/wxMaxima-developers/wxmaxima</a>, if you have knowledge of these programming languages and want to help and contribute to the open source project <a class="el" href="classwxMaxima.html">wxMaxima</a>.</p>
 <p>But not only programmers are necessary! You can also contribute to <a class="el" href="classwxMaxima.html">wxMaxima</a>, if you help to improve the documentation, find and report bugs (and maybe bugfixes), suggest new features, help to translate <a class="el" href="classwxMaxima.html">wxMaxima</a> or the manual to your language (read the README.md in the <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">locale subdirectory</a> how <a class="el" href="classwxMaxima.html">wxMaxima</a> and the manual can be translated).</p>
