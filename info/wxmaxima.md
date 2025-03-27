@@ -795,6 +795,17 @@ _WxMaxima_ provides a few functions that gather bug reporting information about 
 _Maxima_’s `box()` command causes _wxMaxima_ to print its argument with a red foreground, if
 the second argument to the command is the text `highlight`.
 
+## Output rendering.
+
+With `set_display()` one can set, how wxMaxima will render the output.
+
+`set_display('xml)` is the default value. Here Maxima speaks to wxMaxima using an (machine readable) XML-dialect (can be seen in the "Raw XML sidebar") and outputs the resulting formulas nicely rendered, e.g. pretty Matrices, Square root signs, fractions, etc.
+
+<!--- Currently that does not work as it should, the line with the output label is shifted right (issue: #2006) -->
+`set_display('ascii)` causes wxMaxima to output formulas as in command line Maxima - as ASCII-Art.
+
+`set_display('none)` causes 'one-line' ASCII results - the same as the command line Maxima command `display2d:false;` does.
+
 # Help menu
 
 WxMaxima’s help menu provides access to the Maxima and wxMaxima manual, tips, some example worksheets and in command line Maxima included demos (the `demo()` command).
