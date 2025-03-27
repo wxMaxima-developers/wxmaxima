@@ -16,6 +16,7 @@
   people probably expect the same, if they are using command line Maxima
   and wxMaxima. (#1926)
 - Kill Lisp (e.g. sbcl.exe) when closing wxMaxima. (#1963, #1922, #1824, #1199)
+- Correct heading colors (#2005)
 
 # 25.01.0
 
