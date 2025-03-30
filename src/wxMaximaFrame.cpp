@@ -591,19 +591,11 @@ wxMaximaFrame::~wxMaximaFrame() {
   m_manager = NULL;
 }
 
-#define APPEND_MENU_ITEM(menu, id, label, help, stock)  \
-  (menu)->Append((id), (label), (help), wxITEM_NORMAL);
 
 void wxMaximaFrame::SetupFileMenu() {
   m_FileMenu = new wxMenu;
-#if defined __WXOSX__
   m_FileMenu->Append(wxID_NEW, _("New\tCtrl+N"), _("Open a new window"));
-#else
-  APPEND_MENU_ITEM(m_FileMenu, wxID_NEW, _("New\tCtrl+N"),
-                   _("Open a new window"), wxS("gtk-new"));
-#endif
-  APPEND_MENU_ITEM(m_FileMenu, wxID_OPEN, _("&Open...\tCtrl+O"),
-                   _("Open a document"), wxS("gtk-open"));
+  m_FileMenu->Append(wxID_OPEN, _("&Open...\tCtrl+O"), _("Open a document"));
   m_recentDocumentsMenu = new wxMenu();
   m_FileMenu->Append(EventIDs::menu_recent_documents, _("Open recent"),
                      m_recentDocumentsMenu);
@@ -613,10 +605,8 @@ void wxMaximaFrame::SetupFileMenu() {
   m_FileMenu->AppendSeparator();
   m_FileMenu->Append(wxID_CLOSE, _("Close\tCtrl+W"), _("Close window"),
                      wxITEM_NORMAL);
-  APPEND_MENU_ITEM(m_FileMenu, wxID_SAVE, _("&Save\tCtrl+S"),
-                   _("Save document"), wxS("gtk-save"));
-  APPEND_MENU_ITEM(m_FileMenu, wxID_SAVEAS, _("Save As...\tShift+Ctrl+S"),
-                   _("Save document as"), wxS("gtk-save"));
+  m_FileMenu->Append(wxID_SAVE, _("&Save\tCtrl+S"), _("Save document"));
+  m_FileMenu->Append(wxID_SAVEAS, _("Save As...\tShift+Ctrl+S"), _("Save document as"));
   m_FileMenu->Append(EventIDs::menu_load_id, _("&Load Package...\tCtrl+L"),
                      _("Load a Maxima package file"), wxITEM_NORMAL);
   m_recentPackagesMenu = new wxMenu();
@@ -629,12 +619,10 @@ void wxMaximaFrame::SetupFileMenu() {
                      _("Export document to a HTML or LaTeX file"),
                      wxITEM_NORMAL);
   m_FileMenu->AppendSeparator();
-  APPEND_MENU_ITEM(m_FileMenu, wxID_PRINT, _("&Print...\tCtrl+P"),
-                   _("Print document"), wxS("gtk-print"));
+  m_FileMenu->Append(wxID_PRINT, _("&Print...\tCtrl+P"), _("Print document"));
 
   m_FileMenu->AppendSeparator();
-  APPEND_MENU_ITEM(m_FileMenu, wxID_EXIT, _("E&xit\tCtrl+Q"),
-                   _("Exit wxMaxima"), wxS("gtk-quit"));
+  m_FileMenu->Append(wxID_EXIT, _("E&xit\tCtrl+Q"), _("Exit wxMaxima"));
   m_MenuBar->Append(m_FileMenu, _("&File"));
 }
 
@@ -647,8 +635,7 @@ void wxMaximaFrame::SetupEditMenu() {
   m_EditMenu->AppendSeparator();
   m_EditMenu->Append(wxID_CUT, _("Cut\tCtrl+X"), _("Cut selection"),
                      wxITEM_NORMAL);
-  APPEND_MENU_ITEM(m_EditMenu, wxID_COPY, _("&Copy\tCtrl+C"),
-                   _("Copy selection"), wxS("gtk-copy"));
+  m_EditMenu->Append(wxID_COPY, _("&Copy\tCtrl+C"), _("Copy selection"));
   m_EditMenu->Append(EventIDs::menu_copy_text_from_worksheet,
                      _("Copy as Text\tCtrl+Shift+C"),
                      _("Copy selection from document as text"), wxITEM_NORMAL);
@@ -694,11 +681,10 @@ void wxMaximaFrame::SetupEditMenu() {
                      _("Comment out the currently selected text"), wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
 #if defined __WXOSX__
-  APPEND_MENU_ITEM(m_EditMenu, wxID_PREFERENCES, _("Preferences...\tCtrl+,"),
-                   _("Configure wxMaxima"), wxS("gtk-preferences"));
+  // is it really necessary to name the menu on OSX other as the default?
+  m_EditMenu->Append(wxID_PREFERENCES, _("Preferences...\tCtrl+,"), _("Configure wxMaxima"));
 #else
-  APPEND_MENU_ITEM(m_EditMenu, wxID_PREFERENCES, _("C&onfigure"),
-                   _("Configure wxMaxima"), wxS("gtk-preferences"));
+  m_EditMenu->Append(wxID_PREFERENCES, _("C&onfigure"), _("Configure wxMaxima"));
 #endif
   m_MenuBar->Append(m_EditMenu, _("&Edit"));
 }
@@ -816,10 +802,8 @@ void wxMaximaFrame::SetupViewMenu() {
                               _("Display string quotation marks"));
 
   m_viewMenu->AppendSeparator();
-  APPEND_MENU_ITEM(m_viewMenu, wxID_ZOOM_IN, _("Zoom &In\tCtrl++"),
-                   _("Zoom in 10%"), wxS("gtk-zoom-in"));
-  APPEND_MENU_ITEM(m_viewMenu, wxID_ZOOM_OUT, _("Zoom Ou&t\tCtrl+-"),
-                   _("Zoom out 10%"), wxS("gtk-zoom-out"));
+  m_viewMenu->Append(wxID_ZOOM_IN, _("Zoom &In\tCtrl++"), _("Zoom in 10%"));
+  m_viewMenu->Append(wxID_ZOOM_OUT, _("Zoom Ou&t\tCtrl+-"), _("Zoom out 10%"));
   // zoom submenu
   m_Edit_Zoom_Sub = new wxMenu;
   m_Edit_Zoom_Sub->Append(EventIDs::menu_zoom_80, wxS("80%"), _("Set zoom to 80%"),
@@ -1028,8 +1012,7 @@ void wxMaximaFrame::SetupMaximaMenu() {
                       _("Lisp normally frees memory only when it has time or runs out of space"));
   m_MaximaMenu->Append(wxWindow::NewControlId(), _("Memory"), m_memorySub);
 
-  APPEND_MENU_ITEM(m_MaximaMenu, EventIDs::menu_add_path, _("Add to &Path..."),
-                   _("Add a directory to search path"), wxS("gtk-add"));
+  m_MaximaMenu->Append(EventIDs::menu_add_path, _("Add to &Path..."), _("Add a directory to search path"));
 
   m_MaximaMenu->AppendSeparator();
   wxMenu *infolists_sub = new wxMenu;
@@ -1890,26 +1873,20 @@ void wxMaximaFrame::SetupNumericMenu() {
 void wxMaximaFrame::SetupHelpMenu() {
   m_HelpMenu = new wxMenu;
 #if defined __WXOSX__
-  m_HelpMenu->Append(wxID_HELP, _("Context-sensitive &Help\tCtrl+?"),
-                     _("Show wxMaxima help"), wxITEM_NORMAL);
+  // Is it really necessary to use another shortcut than the default on OSX?
+  m_HelpMenu->Append(wxID_HELP, _("Context-sensitive &Help\tCtrl+?"), _("Show wxMaxima help"));
 #else
-  APPEND_MENU_ITEM(m_HelpMenu, wxID_HELP, _("Context-sensitive &Help\tF1"),
-                   _("Show wxMaxima help"), wxS("gtk-help"));
+  m_HelpMenu->Append(wxID_HELP, _("Context-sensitive &Help\tF1"), _("Show wxMaxima help"));
 #endif
-  m_HelpMenu->Append(EventIDs::menu_wxmaximahelp, _("wxMaxima help"),
-                     _("The manual of wxMaxima"), wxITEM_NORMAL);
-  m_HelpMenu->Append(EventIDs::menu_maximahelp, _("&Maxima help"),
-                     _("The manual of Maxima"), wxITEM_NORMAL);
-  m_HelpMenu->Append(EventIDs::menu_example, _("&Example..."),
-                     _("Show an example of usage"), wxITEM_NORMAL);
-  m_HelpMenu->Append(EventIDs::menu_apropos, _("&Apropos..."),
-                     _("Show commands similar to"), wxITEM_NORMAL);
+  m_HelpMenu->Append(EventIDs::menu_wxmaximahelp, _("wxMaxima help"), _("The manual of wxMaxima"));
+  m_HelpMenu->Append(EventIDs::menu_maximahelp, _("&Maxima help"), _("The manual of Maxima"));
+  m_HelpMenu->Append(EventIDs::menu_example, _("&Example..."), _("Show an example of usage"));
+  m_HelpMenu->Append(EventIDs::menu_apropos, _("&Apropos..."), _("Show commands similar to"));
 #ifdef USE_WEBVIEW
   if(GetConfiguration().GetDebugmode())
     m_HelpMenu->Append(EventIDs::menu_goto_url, _("Go to URL"));
 #endif
-  APPEND_MENU_ITEM(m_HelpMenu, EventIDs::menu_show_tip, _("Show &Tips..."),
-                   _("Show a tip"), wxART_TIP);
+  m_HelpMenu->Append(EventIDs::menu_show_tip, _("Show &Tips..."), _("Show a tip"));
   if(GetConfiguration().OfferInternalHelpBrowser())
     {
       m_HelpMenu->AppendSeparator();
@@ -1981,12 +1958,11 @@ void wxMaximaFrame::SetupHelpMenu() {
                      _("Check if a newer version of wxMaxima is available."),
                      wxITEM_NORMAL);
 #ifndef __WXOSX__
+  // Is the separator and slightly other text on OSX necessary?
   m_HelpMenu->AppendSeparator();
-  APPEND_MENU_ITEM(m_HelpMenu, wxID_ABOUT, _("About"), _("About wxMaxima"),
-                   wxS("stock_about"));
+  m_HelpMenu->Append(wxID_ABOUT, _("About"), _("About wxMaxima"));
 #else
-  APPEND_MENU_ITEM(m_HelpMenu, wxID_ABOUT, _("About wxMaxima"),
-                   _("About wxMaxima"), wxS("stock_about"));
+  m_HelpMenu->Append(wxID_ABOUT, _("About wxMaxima"), _("About wxMaxima"));
 #endif
 
   m_MenuBar->Append(m_HelpMenu, _("&Help"));
@@ -2013,7 +1989,6 @@ void wxMaximaFrame::SetupMenu() {
   SetupHelpMenu();
 
   SetMenuBar(m_MenuBar);
-#undef APPEND_MENU_ITEM
 }
 
 wxString wxMaximaFrame::GetDemoFile(wxWindowID id) const
