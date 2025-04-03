@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
-<li>Use the (standard) wxWidgets log window instead of our own log pane. Less code to maintain, more features (e.g. clear log, save log). In "Release" builds the log window will be hidden (and can be enabled using View-&gt;Toggle log window, otherwise it is shown. [If you open multiple documents and close one <a class="el" href="classwxMaxima.html">wxMaxima</a> session, the log window is destroyed and the toggle log window menu does no longer work. But I think, the log window is mainly for developers, so that is not a severe issue for end users.]</li>
+<li>Use the (standard) wxWidgets log window instead of our own log pane. Less code to maintain, more features (e.g. clear log, save log). In "Release" builds the log window will be hidden (and can be enabled using View-&gt;Toggle log window, otherwise it is shown.</li>
 <li>Make the option "--logtostderr" work on Windows. (Windows GUI applications do not have STDIN, STDOUT and STDERR assigned, an extra 'text window' with the log messages will be opened at startup).</li>
 <li>Do not set lmxchar/rmxchar (used for displaying a matrix in text mode). It did not work at all. <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> provides a reasonable default - and people probably expect the same, if they are using command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> and <a class="el" href="classwxMaxima.html">wxMaxima</a>. (#1926)</li>
 <li>Kill Lisp (e.g. sbcl.exe) when closing <a class="el" href="classwxMaxima.html">wxMaxima</a>. (#1963, #1922, #1824, #1199)</li>
