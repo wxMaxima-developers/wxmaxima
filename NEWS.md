@@ -4,10 +4,6 @@
   Less code to maintain, more features (e.g. clear log, save log).
   In "Release" builds the log window will be hidden (and can be enabled
   using View->Toggle log window, otherwise it is shown.
-  [If you open multiple documents and close one wxMaxima session,
-  the log window is destroyed and the toggle log window menu does no longer work.
-  But I think, the log window is mainly for developers, so that is not a severe
-  issue for end users.]
 - Make the option "--logtostderr" work on Windows.
   (Windows GUI applications do not have STDIN, STDOUT and STDERR assigned,
   an extra 'text window' with the log messages will be opened at startup).

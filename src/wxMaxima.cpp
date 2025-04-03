@@ -121,7 +121,9 @@
 #include <wx/url.h>
 #include "Configuration.h"
 
+// TODO: "C++ify" the code, don't use global variables.
 extern wxLogWindow * wxm_logwindow; // declared in main.cpp
+extern int windowcount; // declared in main.cpp
 
 wxDECLARE_APP(MyApp);
 
@@ -1761,6 +1763,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   if(GetWorksheet())
     CallAfter([this]{GetWorksheet()->SetFocus();});
   StartAutoSaveTimer();
+  windowcount++;
 }
 
 #ifdef wxHAS_POWER_EVENTS
@@ -1931,6 +1934,12 @@ wxMaxima::~wxMaxima() {
   }
   if (m_fileSaved)
     RemoveTempAutosavefile();
+  wxLogMessage("Window count (before closing the current window): %d", windowcount);
+  windowcount--;
+  // If we deleted the last Window, delete the log Window
+  if (windowcount == 0) {
+    wxDELETE(wxm_logwindow);
+  }
 }
 
 #if wxUSE_DRAG_AND_DROP
@@ -10328,7 +10337,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
           else
             // The HCaret points to the cell before the horizontal cursor.
             group = group->GetNext();
-          
+
           // Now we search for the first cell below the cursor that actually contains code.
           while ((group != NULL) &&
                  (!((group->GetEditable() != NULL) &&

@@ -188,7 +188,11 @@ int WINAPI WinMain(_In_ HINSTANCE hI, _In_opt_ HINSTANCE hPrevI, _In_ LPSTR lpCm
 }
 #endif
 
-wxLogWindow * wxm_logwindow;
+
+// TODO: "C++ify" the code, don't use global variables.
+// In wxMaxima.cpp they are used as 'extern' variables.
+wxLogWindow * wxm_logwindow; // The wxWidgets log window, we use.
+int windowcount = 0; // How many wxMaxima windows are open (in the current process)?
 bool MyApp::OnInit() {
   // if DEBUG=1 show the logwindow at start, else hide it.
 #if (DEBUG==1)
@@ -530,12 +534,6 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
     initialContents += _(block);
   }
   wxMaxima *frame = new wxMaxima(NULL, wxID_ANY, title, file, initialContents);
-  // Set the new created wxMaxima frame as parent frame of the log window.
-  // FIXME: if the log window was closed do not try to reparent the window.
-  if (wxm_logwindow->GetFrame() != NULL) {
-    wxm_logwindow->GetFrame()->Reparent(frame);
-  };
-
   frame->EvalOnStartup(evalOnStartup);
   frame->ExitAfterEval(exitAfterEval);
   frame->Show(true);
