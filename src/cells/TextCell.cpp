@@ -960,7 +960,13 @@ wxString TextCell::ToTeX() const {
     if (GetPrevious())
       conditionalLinebreak = wxS("\\]\n\\[");
     text.Trim(true);
-    wxString label = text.SubString(1, text.Length() - 2);
+    // A automatically generated output label contains a "(" and ")", the "\tag{}" does also add them,
+    // remove them in the case of standard label "(%onn)".
+    wxString label = text;
+    if (GetTextStyle() == TS_LABEL) {
+      label.Replace(wxS("("), wxS(""));
+      label.Replace(wxS(")"), wxS(""));
+    }
     text = conditionalLinebreak + wxS("\\tag{") + label + wxS("}");
     label.Replace(wxS("\\% "), wxS(""));
     // Would be a good idea, but apparently breaks mathJaX
