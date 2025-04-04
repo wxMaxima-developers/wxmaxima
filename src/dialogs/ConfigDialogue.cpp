@@ -1510,7 +1510,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
 
   dynamicMemory->Add(new wxStaticText(
       configSizer->GetStaticBox(), wxID_ANY,
-      _("Overwrite Maxima Default Memory [MB]: ")), wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 20);
+      _("Overwrite Maxima Default Memory Limit [MB]: ")), wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 20);
 
   m_enableDynamicMemorySpace = new wxCheckBox(
       configSizer->GetStaticBox(), wxID_ANY, _(""), wxDefaultPosition);
