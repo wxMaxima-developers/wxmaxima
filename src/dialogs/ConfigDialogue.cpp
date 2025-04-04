@@ -329,6 +329,11 @@ void ConfigDialogue::SetCheckboxValues() {
                                    _("Enter the path to the Maxima executable."));
   m_additionalParameters->SetToolTip(_("Additional parameters for Maxima"
                                        " (e.g. -l clisp)."));
+
+  m_enableDynamicMemorySpace->SetToolTip(_("If enabled the value in the spinbox is used new memory limit for maxima "
+                                           "equal to: -X \"--dynamic-space-size <value>\""));
+  m_dynamicMemorySpace->SetToolTip(_("The new memory limit for maxima in MB"));
+
   m_mathJaxURL->SetToolTip(
                            _("The URL MathJaX.js should be downloaded from by our HTML export."));
   m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble "
@@ -484,6 +489,9 @@ void ConfigDialogue::SetCheckboxValues() {
   m_maximaUserLocation->SetValue(configuration->MaximaUserLocation());
 
   m_additionalParameters->SetValue(configuration->MaximaParameters());
+  m_enableDynamicMemorySpace->SetValue(configuration->MaximaEnableCustomDynamicMemory());
+  m_dynamicMemorySpace->SetValue(configuration->MaximaCustomDynamicMemory());
+
   m_usesvg->SetValue(configuration->UseSVG());
 
   m_TeXExponentsAfterSubscript->SetValue(
@@ -1333,6 +1341,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
 
   wxFlexGridSizer *sizer = new wxFlexGridSizer(5, 2, 0, 0);
   wxFlexGridSizer *sizer2 = new wxFlexGridSizer(6, 2, 0, 0);
+  wxFlexGridSizer *dynamicMemory = new wxFlexGridSizer(1, 3, 0, 0);
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(vsizer);
   wxStaticBoxSizer *invocationSizer =
@@ -1496,6 +1505,27 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
   configSizer->Add(
                    m_additionalParameters,
                    wxSizerFlags().Border(wxRIGHT, 10 * GetContentScaleFactor()).Expand());
+
+  configSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
+
+  dynamicMemory->Add(new wxStaticText(
+      configSizer->GetStaticBox(), wxID_ANY,
+      _("Overwrite Maxima Default Memory [MB]: ")), wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 20);
+
+  m_enableDynamicMemorySpace = new wxCheckBox(
+      configSizer->GetStaticBox(), wxID_ANY, _(""), wxDefaultPosition);
+  dynamicMemory->Add(
+      m_enableDynamicMemorySpace,
+      wxSizerFlags().Border(wxRIGHT, 10 * GetContentScaleFactor()).Expand());
+
+  m_dynamicMemorySpace = new wxSpinCtrl(configSizer->GetStaticBox(), wxID_ANY, _(""), wxDefaultPosition);
+  m_dynamicMemorySpace->SetRange(1000, std::numeric_limits<int>::max());
+  m_dynamicMemorySpace->SetValue(1000);
+  dynamicMemory->Add(
+      m_dynamicMemorySpace,
+      wxSizerFlags().Border(wxRIGHT, 10 * GetContentScaleFactor()).Expand());
+
+  configSizer->Add(dynamicMemory);
 
   configSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   m_maximaEnvVariables = new wxGrid(configSizer->GetStaticBox(), wxID_ANY);
@@ -2129,6 +2159,8 @@ void ConfigDialogue::WriteSettings() {
     configuration->AutodetectHelpBrowser(m_autodetectHelpBrowser->GetValue());
   }
   configuration->MaximaParameters(m_additionalParameters->GetValue());
+  configuration->MaximaEnableCustomDynamicMemory(m_enableDynamicMemorySpace->GetValue());
+  configuration->MaximaCustomDynamicMemory(m_dynamicMemorySpace->GetValue());
   configuration->SetMatchParens(m_matchParens->GetValue());
   configuration->ShowMatchingParens(m_showMatchingParens->GetValue());
   configuration->ShowLength(m_showLength->GetSelection());

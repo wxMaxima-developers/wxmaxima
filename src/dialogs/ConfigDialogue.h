@@ -271,6 +271,8 @@ protected:
   wxCheckBox *m_autoSave;
   wxButton *m_wxMathMLBrowse;
   wxTextCtrl *m_additionalParameters;
+  wxCheckBox *m_enableDynamicMemorySpace;
+  wxSpinCtrl *m_dynamicMemorySpace;
   wxTextCtrl *m_mathJaxURL;
   wxChoice *m_language;
   wxTextCtrl *m_symbolPaneAdditionalChars;
