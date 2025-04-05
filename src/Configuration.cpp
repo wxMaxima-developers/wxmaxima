@@ -801,6 +801,8 @@ void Configuration::ReadConfig() {
   config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
   config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
   config->Read("parameters", &m_maximaParameters);
+  config->Read("enableCustomDynamicMemory", &m_maximaEnableCustomDynamicMemory);
+  config->Read("customDynamicMemory", &m_maximaCustomDynamicMemory);
   config->Read("autodetectHelpBrowser", &m_autodetectHelpBrowser);
   config->Read(wxS("useInternalHelpBrowser"), &m_useInternalHelpBrowser);
   config->Read(wxS("singlePageManual"), &m_singlePageManual);
@@ -1617,6 +1619,8 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write(wxS("printBrackets"), m_printBrackets);
   config->Write(wxS("autodetectMaxima"), m_autodetectMaxima);
   config->Write(wxS("parameters"), m_maximaParameters);
+  config->Write(wxS("enableCustomDynamicMemory"), m_maximaEnableCustomDynamicMemory);
+  config->Write(wxS("customDynamicMemory"), m_maximaCustomDynamicMemory);
   config->Write(wxS("maxima"), m_maximaUserLocation);
   config->Write(wxS("autodetectHelpBrowser"), m_autodetectHelpBrowser);
   if (OfferInternalHelpBrowser())

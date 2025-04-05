@@ -4850,6 +4850,9 @@ wxString wxMaxima::GetCommand(bool params) {
   } else {
     command = wxS("\"") + command + wxS("\"");
   }
+  if (m_configuration.MaximaEnableCustomDynamicMemory()) {
+      command = command + wxS(" -X \"--dynamic-space-size ") + wxString::Format(wxT("%i"), m_configuration.MaximaCustomDynamicMemory()) + wxS("\"");
+  }
   wxString extraMaximaArgs = ExtraMaximaArgs();
   if (!extraMaximaArgs.IsEmpty())
     {
