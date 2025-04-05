@@ -146,7 +146,7 @@ private:
     { return wxS("</li>\n"); }
 
   virtual wxString NewLine() override
-    { return wxS("<br/>"); }
+    { return wxS("<br>"); }
 };
 
 #endif // MARKDOWN_H
