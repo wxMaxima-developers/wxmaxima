@@ -830,8 +830,8 @@ wxString TextCell::ToTeX() const {
           text.Replace(wxS("*"), wxS("\\, "));
           text.Replace(wxS("\u00B7"), wxS("\\, "));
         } else {
-          text.Replace(wxS("*"), wxS("\\ensuremath{\\cdot}"));
-          text.Replace(wxS("\u00B7"), wxS("\\ensuremath{\\cdot}}"));
+          text.Replace(wxS("*"), wxS("\\cdot "));
+          text.Replace(wxS("\u00B7"), wxS("\\cdot "));
         }
       }
     }
@@ -994,8 +994,8 @@ wxString TextCell::ToTeX() const {
       if (text.Length() > 1)
         text = wxS("\\] \\texttt{%error\n") + text + wxS("}") + wxS("\\[");
     } else if (GetTextStyle() == TS_MATH) {
-      if ((text.Length() > 2) && (text != wxS("\\,")) && (text != wxS("\\, ")))
-        text = wxS("\\mbox{%default\n") + text + wxS("}");
+      if ((text.Length() > 2) && (text != wxS("\\,")) && (text != wxS("\\, ") && text != wxS("\\cdot ")))
+        text = wxS("\\mbox{") + text + wxS("}");
     }
   }
 
