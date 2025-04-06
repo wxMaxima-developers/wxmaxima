@@ -5150,7 +5150,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     for( auto const &i: m_statusTextHistory)
       if(!i.IsEmpty()) toolTip += i + "\n";
 
-    toolTip += "\nDouble-click in order to toggle the dockable sidebar with all past messages.";
+    toolTip += _("\nUse the menu \"View->Toggle log window\" to show/hide a log window with all debug messages.");
 
     m_statusBar->GetStatusTextElement()->SetToolTip(toolTip);
 
