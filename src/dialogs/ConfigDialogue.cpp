@@ -1446,7 +1446,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
   sizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   configSizer->Add(sizer);
   wxStaticText *ap = new wxStaticText(configSizer->GetStaticBox(), wxID_ANY,
-                                      _("Additional parameters for maxima"));
+                                      _("Additional parameters for Maxima (restart Maxima after changes)"));
   sizer2->Add(ap, wxSizerFlags());
   sizer2->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   wxStaticText *ap1 =
@@ -1457,15 +1457,17 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
               new wxStaticText(configSizer->GetStaticBox(), wxID_ANY, _("      -l <name>")),
               wxSizerFlags());
   sizer2->Add(new wxStaticText(configSizer->GetStaticBox(), wxID_ANY,
-                               _("choose a lisp maxima was compiled with")),
+                               _("Choose a Lisp Maxima was compiled with")),
               wxSizerFlags());
   sizer2->Add(
-              new wxStaticText(configSizer->GetStaticBox(), wxID_ANY, _("      -u <number>")),
+              new wxStaticText(configSizer->GetStaticBox(), wxID_ANY, _("      -u <versionnumber>")),
               wxSizerFlags());
   sizer2->Add(new wxStaticText(configSizer->GetStaticBox(), wxID_ANY,
-                               _("choose between installed maxima versions")),
+                               _("Choose between installed Maxima versions")),
               wxSizerFlags());
-  if (m_configuration->GetLispType().Lower().Contains(wxS("sbcl"))) {
+  // currently that doesnt work, I don't see why (now). Disable the if check if SBCL is used for now.
+  wxLogMessage("GetLispType: " + m_configuration->GetLispType());
+  // if (m_configuration->GetLispType().Lower().Contains(wxS("sbcl"))) {
     wxString sbclMemoryParameter1;
     wxString sbclMemoryParameter2;
 #ifdef __WXMSW__
@@ -1479,16 +1481,16 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
                 new wxStaticText(configSizer->GetStaticBox(), wxID_ANY, sbclMemoryParameter1),
                 wxSizerFlags());
     sizer2->Add(new wxStaticText(configSizer->GetStaticBox(), wxID_ANY,
-                                 _("sbcl: use <int>Mbytes of heap")),
+                                 _("SBCL: use <int>Mbytes of heap")),
                 wxSizerFlags());
     sizer2->Add(
                 new wxStaticText(configSizer->GetStaticBox(), wxID_ANY, sbclMemoryParameter2),
                 wxSizerFlags());
     sizer2->Add(new wxStaticText(
                                  configSizer->GetStaticBox(), wxID_ANY,
-                                 _("sbcl: use <int>Mbytes of stack for function calls")),
+                                 _("SBCL: use <int>Mbytes of stack for function calls")),
                 wxSizerFlags());
-  }
+  // }
   configSizer->Add(sizer2);
   m_additionalParameters = new wxTextCtrl(
                                           configSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
@@ -2112,7 +2114,7 @@ void ConfigDialogue::WriteSettings() {
 #ifdef __WXMSW__
   m_configuration->UseWGnuplot(m_useWgnuplot->GetValue());
 #endif
-  
+
   if (m_maximaUsesInternalHelp->GetValue()) {
     configuration->MaximaUsesHtmlBrowser(false);
     configuration->MaximaUsesWxmaximaBrowser(false);
