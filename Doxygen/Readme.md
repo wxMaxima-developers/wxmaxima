@@ -15,7 +15,7 @@ wxMaxima is a full-featured graphical frontend for maxima, a full-featured
 computer algebra system that will do numeric calculations, if one wants to.
 But it is specialized in manipulating and solving symbolic equations.
 
-\\image html wxMaxima.gif "A random screenshot of wxMaxima"
+\image html wxMaxima.gif "A random screenshot of wxMaxima"
 
 ## How does wxMaxima work?
 
@@ -128,7 +128,7 @@ displaying all of its contents.
 ## Naming rules
 
 Keeping the code more or less homogenous increases the readability. In
-order to archieve that wxMaxima uses a few naming rules:
+order to achieve that wxMaxima uses a few naming rules:
 
 - The names of member variables are prefixed with `m_` for "member".
 - The names of member functions (aka methods) are written in CamelCase.
@@ -136,7 +136,7 @@ order to archieve that wxMaxima uses a few naming rules:
   they are they are used in context where it is obvious that they name an
   enum type so there aren't any rules for the names of enums right now.
 
-\\def `WXUNUSED` Tell the C++ compiler that it is OK that one parameter is unused.
+`WXUNUSED` Tell the C++ compiler that it is OK that one parameter is unused.
 
 ```
     #define WXUNUSED(x) x
