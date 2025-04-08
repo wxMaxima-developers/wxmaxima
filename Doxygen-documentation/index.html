@@ -79,7 +79,10 @@ What is this file about?</h1>
 <h1><a class="anchor" id="autotoc_md25"></a>
 What is wxMaxima?</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a full-featured graphical frontend for maxima, a full-featured computer algebra system that will do numeric calculations, if one wants to. But it is specialized in manipulating and solving symbolic equations.</p>
-<p>\image html wxMaxima.gif "A random screenshot of wxMaxima"</p>
+<div class="image">
+<img src="wxMaxima.gif" alt=""/>
+<div class="caption">
+A random screenshot of wxMaxima</div></div>
 <h1><a class="anchor" id="autotoc_md26"></a>
 How does wxMaxima work?</h1>
 <p>The main things that are important to know are:</p>
@@ -136,13 +139,13 @@ Breaking long 2D objects into lines</h1>
 <p>Objects that are broken apart this way technically aren't displayed any more. Instead the lists of objects they contain are. If an object isn't broken apart it is displayed directly and automatically handles displaying all of its contents.</p>
 <h1><a class="anchor" id="autotoc_md31"></a>
 Naming rules</h1>
-<p>Keeping the code more or less homogenous increases the readability. In order to archieve that <a class="el" href="classwxMaxima.html">wxMaxima</a> uses a few naming rules:</p>
+<p>Keeping the code more or less homogenous increases the readability. In order to achieve that <a class="el" href="classwxMaxima.html">wxMaxima</a> uses a few naming rules:</p>
 <ul>
 <li>The names of member variables are prefixed with <code>m_</code> for "member".</li>
 <li>The names of member functions (aka methods) are written in CamelCase.</li>
 <li>The names of enums do not really matter as they are rarely used and if they are they are used in context where it is obvious that they name an enum type so there aren't any rules for the names of enums right now.</li>
 </ul>
-<p>\def <code>WXUNUSED</code> Tell the C++ compiler that it is OK that one parameter is unused.</p>
+<p><code>WXUNUSED</code> Tell the C++ compiler that it is OK that one parameter is unused.</p>
 <div class="fragment"><div class="line">#define WXUNUSED(x) x</div>
 </div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
