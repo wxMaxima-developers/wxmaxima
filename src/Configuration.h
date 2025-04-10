@@ -760,6 +760,15 @@ public:
   //! The parameters we pass to the maxima binary
   void MaximaParameters(wxString parameters){m_maximaParameters = std::move(parameters);}
 
+  //! Dynamic memory parameter to maxima binary
+  bool MaximaEnableCustomDynamicMemory() const {return m_maximaEnableCustomDynamicMemory;}
+  //! The dynamic memory parameter for the maxima binary
+  void MaximaEnableCustomDynamicMemory(bool enable) {m_maximaEnableCustomDynamicMemory = enable;}
+  //! Dynamic memory parameter to maxima binary if MaximaEnableCustomDynamicMemory() is true. Otherwise this parameter is ignored
+  int MaximaCustomDynamicMemory() const {return m_maximaCustomDynamicMemory;}
+  //! The dynamic memory parameter for the maxima binary if MaximaEnableCustomDynamicMemory() is true. Otherwise this parameter is ignored
+  void MaximaCustomDynamicMemory(int memory) {m_maximaCustomDynamicMemory = memory;}
+
   //! The auto-detected maxima location
   static wxString MaximaDefaultLocation();
 
@@ -1200,6 +1209,8 @@ private:
   bool m_clipToDrawRegion = true;
   bool m_outdated;
   wxString m_maximaParameters;
+  bool m_maximaEnableCustomDynamicMemory{false};
+  int m_maximaCustomDynamicMemory{1000};
   bool m_keepPercent;
   bool m_restartOnReEvaluation;
   wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
