@@ -1258,7 +1258,7 @@ void wxMaximaFrame::SetupEquationsMenu() {
                         _("Numerical solutions of polynomial..."),
                         _("Find all roots of a polynomial"), wxITEM_NORMAL);
   solveNum1_sub->Append(
-                        EventIDs::menu_bfallroots, _("Numerical solutions of polynomial..."),
+                        EventIDs::menu_bfallroots, _("Numerical solutions of polynomial (bfloat)..."),
                         _("Find all roots of a polynomial (bfloat)"), wxITEM_NORMAL);
   m_EquationsMenu->Append(wxWindow::NewControlId(), _("Solve numerical, 1 Variable"),
                           solveNum1_sub);
