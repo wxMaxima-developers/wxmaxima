@@ -7769,6 +7769,14 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_solve_num) {
     if (expr.StartsWith(wxS("%")))
       expr = wxS("''(") + expr + wxS(")");
+    CommandWiz(
+      _("Solve equations numerically"),
+      _("Tries to find a value of the variable that solves the equation between the two bonds"), wxEmptyString,
+      wxT("find_root(#1#,#2#,#3#,#4#);"),
+      _("Equation:"), expr, wxEmptyString,
+      _("Variable:"), wxT("x"), wxEmptyString,
+      _("Lower bound:"), wxT("-1"), wxEmptyString,
+      _("Upper bound:"), wxT("1"), wxEmptyString);
   }
   else if((event.GetId() == EventIDs::button_solve_ode) ||
           (event.GetId() == EventIDs::menu_solve_ode)) {

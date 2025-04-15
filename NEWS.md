@@ -13,6 +13,7 @@
   and wxMaxima. (#1926)
 - Kill Lisp (e.g. sbcl.exe) when closing wxMaxima. (#1963, #1922, #1824, #1199)
 - Correct heading colors (#2005)
+- Repaired the Equations->Solve numerical->Find numerical solution" menu (#2010)
 
 # 25.01.0
 
