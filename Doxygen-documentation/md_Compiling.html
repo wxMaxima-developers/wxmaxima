@@ -89,6 +89,7 @@ Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Fink, Home
 <p>If everything is okay install it with: </p><div class="fragment"><div class="line">sudo cmake --build . -- install</div>
 </div><!-- fragment --><p>If you want to install into a special prefix (not <code>/usr/local</code>), add <code>-DCMAKE_INSTALL_PREFIX=/your/installation/prefix</code> to the first cmake invocation. E.g.</p>
 <div class="fragment"><div class="line">cmake -DCMAKE_INSTALL_PREFIX=/opt/wxmaxima ..</div>
+</div><!-- fragment --><p>By default a "Debug" build will be made (less optimization, debug symbols) - and this build shows the <a class="el" href="classwxMaxima.html">wxMaxima</a> log window (may contain helpful log messages) when started; if you want to create a "Release" build (more optimization, the log window is not shown by default, it can be toggled on and off using "View-&gt;Toggle log window") set the build type (CMake supports other build types too) using: </p><div class="fragment"><div class="line">cmake -DCMAKE_BUILD_TYPE=Release ..</div>
 </div><!-- fragment --><p>Of course you can use the CMake GUI (<code>cmake-gui</code>) or curses based CMake (<code>ccmake</code>) for the configure step and change some CMake variables.</p>
 <p>If you want to create binary packages (tar.gz, tar.bz2, DEB &amp; RPM, on macOS also .dmg), the following command will create them:</p>
 <div class="fragment"><div class="line">cmake --build . -- package</div>
