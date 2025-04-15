@@ -37,6 +37,15 @@ cmake invocation. E.g.
 cmake -DCMAKE_INSTALL_PREFIX=/opt/wxmaxima ..
 ```
 
+By default a "Debug" build will be made (less optimization, debug symbols) - and this build shows the
+wxMaxima log window (may contain helpful log messages) when started; if you want to create a
+"Release" build (more optimization, the log window is not shown by default, it can be toggled
+on and off using "View->Toggle log window") set the build type (CMake supports other build types too) using:
+```
+cmake -DCMAKE_BUILD_TYPE=Release ..
+```
+
+
 Of course you can use the CMake GUI (`cmake-gui`) or curses based CMake
 (`ccmake`) for the configure step and change some CMake variables.
 
