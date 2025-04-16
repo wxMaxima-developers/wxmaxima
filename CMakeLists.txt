@@ -58,6 +58,8 @@ option(WXM_INTERPROCEDURAL_OPTIMIZATION
     "Enable interprocedural optimization (IPO/LTO)." OFF)
 option(WXM_PO4A_UPDATE_MANUAL_PO_POT_FILES
     "Update the po/pot locale files in the source tree." OFF)
+option(WXM_MAXIMA_DEMO_TESTS
+    "Run Maxima demo files as test." OFF)
 
 if(DEFINED MACOSX_VERSION_MIN)
     set(CMAKE_OSX_DEPLOYMENT_TARGET ${MACOSX_VERSION_MIN} CACHE STRING FORCE)

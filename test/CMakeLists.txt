@@ -95,6 +95,8 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "WxMaxima"
 )
 
+# run Maxima demo files as test?
+if(WXM_MAXIMA_DEMO_TESTS)
 # Tests that use "%" to reference past lines cannot be executed using "load()".
 # But running a few demos just to see if there is bit rot might be a good idea.
 #
@@ -155,6 +157,7 @@ foreach(f ${DEMO_FILES})
 	      NAME ${f}
     	      COMMAND wxmaxima --debug --logtostderr --pipe --batch automatic_test_files/${f}.wxm)
 endforeach()
+endif()
 
 add_test(
     NAME wxbug_report
