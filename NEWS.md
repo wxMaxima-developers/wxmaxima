@@ -14,6 +14,8 @@
 - Kill Lisp (e.g. sbcl.exe) when closing wxMaxima. (#1963, #1922, #1824, #1199)
 - Correct heading colors (#2005)
 - Repaired the Equations->Solve numerical->Find numerical solution" menu (#2010)
+- One included example (10MinuteTutorial.wxm) was affected by the Maxima/Gnuplot 6
+  problem. (see #1960)
 
 # 25.01.0
 
