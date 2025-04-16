@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 23.03.0-DevelopmentSnapshot ] */
+/* [ Created with wxMaxima version 25.01.0-DevelopmentSnapshot ] */
 /* [wxMaxima: title   start ]
 10 minute (wx)Maxima tutorial
    [wxMaxima: title   end   ] */
@@ -137,7 +137,7 @@ a question:
 integrate( 1 / (x^2 + a), x);
 /* [wxMaxima: input   end   ] */
 /* [wxMaxima: question  start ] */
-<math><mrow lisp="mtext"><mrow lisp="mtext"><st>Is </st><mi>a</mi><st> positive or negative?</st></mrow></mrow></math>
+<math><st>Is </st><mi>a</mi><st> positive or negative?</st></math>
 /* [wxMaxima: question  end   ] */
 /* [wxMaxima: answer  start ] */
 p;
@@ -149,7 +149,7 @@ p;
 p;
 /* [wxMaxima: answer  end   ] */
 /* [wxMaxima: question  start ] */
-<math><st>Is </st><mi>a</mi><st> positive or negative?</st></math>
+<math><mrow lisp="mtext"><mrow lisp="mtext"><st>Is </st><mi>a</mi><st> positive or negative?</st></mrow></mrow></math>
 /* [wxMaxima: question  end   ] */
 /* [wxMaxima: answer  start ] */
 p;
@@ -215,7 +215,9 @@ Let's do a 2D and a 3D plot!
 
 /* [wxMaxima: input   start ] */
 wxplot2d([sin(x), cos(x)], [x,0, 2*%pi]);
-wxplot3d( exp(-x^2 - y^2), [x,-2,2],[y,-2,2]);
+/* The option [gnuplot_pm3d,false] is necessary for an issue with Maxima and Gnuplot 6 */
+/* see: wxMaxima issue 1960, Maxima issue 2947 */
+wxplot3d( exp(-x^2 - y^2), [x,-2,2],[y,-2,2],[gnuplot_pm3d,false]);
 /* [wxMaxima: input   end   ] */
 
 
@@ -260,4 +262,4 @@ Enjoy using Maxima and wxMaxima!
 
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 23.03.0-DevelopmentSnapshot"$
+"Created with wxMaxima 25.01.0-DevelopmentSnapshot"$
