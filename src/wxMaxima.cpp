@@ -9500,7 +9500,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
   }
 
   else if(event.GetId() == EventIDs::menu_build_info){
-    MenuCommand(wxS("build_info();"));
+    MenuCommand(wxS("wxbuild_info()$"));
   }
 
   else if(event.GetId() == EventIDs::menu_bug_report){
