@@ -366,7 +366,7 @@ void Cell::AddToolTip(const wxString &tip) {
     return;
   if (m_ownsToolTip) {
     auto &wrToolTip = const_cast<wxString &>(*m_toolTip);
-    if (!m_toolTip->empty() && !wxm::EndsWithChar(*m_toolTip, '\n'))
+    if (!m_toolTip->empty() && !m_toolTip->EndsWith(wxS("\n")))
       wrToolTip << '\n';
     wrToolTip << tip;
   } else

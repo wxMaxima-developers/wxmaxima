@@ -74,21 +74,6 @@ namespace wxm {
  */
 #define S_(string) ([]()->const wxString &{ static const wxString str(wxS(string)); return str; }())
 
-// String Comparisons
-
-//! Whether a string begins with a given character
-  bool StartsWithChar(const wxString &str, wxUniChar ch);
-//! Whether a string begins with a given character
-  bool StartsWithChar(const wxString &str, wxStringCharType ch);
-//! Whether a string begins with a given character
-  bool StartsWithChar(const wxString &str, char ch);
-
-//! Whether a string ends with a given character
-  bool EndsWithChar(const wxString &str, wxUniChar ch);
-//! Whether a string begins with a given character
-  bool EndsWithChar(const wxString &str, wxStringCharType ch);
-//! Whether a string begins with a given character
-  bool EndsWithChar(const wxString &str, char ch);
 
 // String normalization
 
