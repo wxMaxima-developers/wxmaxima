@@ -394,7 +394,6 @@ const wxString MaximaTokenizer::m_not_alphas =
   wxS("\uFE63") wxS("\uFF0D");
 const wxString MaximaTokenizer::m_spaces =
   wxS(" ") wxS("\u00A0") // A non-breakable space
-  wxS("\xDCB6")          // A non-breakable space (alternate version)
   wxS("\u1680")          // Ogham space mark
   wxS("\u2000")          // en quad
   wxS("\u2001")          // em quad

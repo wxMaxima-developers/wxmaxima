@@ -96,8 +96,6 @@ void LabelCell::UpdateDisplayedText() {
       }
     }
   }
-  m_displayedText.Replace(wxS("\xDCB6"),
-                          wxS("\u00A0")); // A non-breakable space
   m_displayedText.Replace(wxS("\n"), wxEmptyString);
   m_displayedText.Replace(wxS("-->"), wxS("\u2794"));
   m_displayedText.Replace(wxS(" -->"), wxS("\u2794"));

@@ -382,8 +382,6 @@ void TextCell::UpdateDisplayedText() {
   wxString displayedText_old = m_displayedText;
   m_displayedText = m_text;
 
-  m_displayedText.Replace(wxS("\xDCB6"),
-                          wxS("\u00A0")); // A non-breakable space
   m_displayedText.Replace(wxS("\n"), wxEmptyString);
   m_displayedText.Replace(wxS("-->"), wxS("\u2794"));
   m_displayedText.Replace(wxS(" -->"), wxS("\u2794"));
@@ -1086,7 +1084,7 @@ wxString TextCell::ToMathML() const {
     if (text == wxS(">")) {
       return wxS("<mo>&gt;</mo>");
     }
-    if (text == wxS("\x2212")) { // Unicode - sign
+    if (text == wxS("\u2212")) { // Unicode - sign
       return wxS("<mo>-</mo>");
     }
     else
