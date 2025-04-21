@@ -62,7 +62,6 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
   // --------------------- Break a line into tokens -----------------
   // ----------------------------------------------------------------
   wxString::const_iterator it = commands.begin();
-
   if (configuration->InLispMode()) {
     wxString token;
     while ((it < commands.end()) && ((!token.EndsWith("(to-maxima)"))) &&
@@ -70,17 +69,18 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
       token += *it;
       ++it;
     }
+
     token.Trim(true);
     if (!token.IsEmpty())
       m_tokens.emplace_back(token, TS_CODE_LISP);
   }
   while (it < commands.end()) {
     // Determine the current char and the one that will follow it
-    wxChar Ch = *it;
+    wxUniChar Ch = *it;
     wxString::const_iterator it2(it);
     if (it2 < commands.end())
       ++it2;
-    wxChar nextChar;
+    wxUniChar nextChar;
 
     if (it2 < commands.end())
       nextChar = *it2;
@@ -89,7 +89,7 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
 
     // Handle newline characters (hard+soft line break)
     if (m_linebreaks.Contains(Ch)) {
-      m_tokens.emplace_back(wxChar(Ch));
+      m_tokens.emplace_back(wxUniChar(Ch));
       ++it;
       continue;
     }
@@ -119,7 +119,7 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
         wxString::const_iterator it3(it);
         if (it3 < commands.end())
           ++it3;
-        wxChar nextCh = ' ';
+        wxUniChar nextCh = ' ';
         if (it3 < commands.end())
           nextCh = *it3;
 
@@ -160,7 +160,7 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
       if (Ch == ':') {
         wxString breakCommand;
         wxString::const_iterator it3(it);
-        int len = 14;
+        int len = 14;  // why 14??
         while ((len > 0) && (it3 < commands.end())) {
           len--;
           breakCommand += wxString(*it3);
@@ -226,7 +226,7 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
     // and can contain a + or - that follows an e, f, g, h or l.
     if (IsNum(Ch)) {
       wxString token;
-      wxChar lastChar = *it;
+      wxUniChar lastChar = *it;
       while (
              (it < commands.end()) &&
              ((IsNum(*it) || ((*it >= 'a') && (*it <= 'z')) ||
@@ -236,7 +236,7 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
                 (lastChar == 'h') || (lastChar == 'H') || (lastChar == 'l') ||
                 (lastChar == 'L')) &&
                ((m_plusSigns.Contains(*it)) || (m_minusSigns.Contains(*it)))))) {
-        wxChar ch = *it;
+        wxUniChar ch = *it;
         for (wxString::const_iterator it3 = m_plusSigns.begin();
              it3 != m_plusSigns.end(); ++it3)
           if (ch == *it3)
@@ -360,7 +360,7 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
   m_tokens = initialTokens;
 }
 
-bool MaximaTokenizer::IsAlpha(wxChar ch) {
+bool MaximaTokenizer::IsAlpha(wxUniChar ch) {
   if (wxIsalpha(ch))
     return true;
 
@@ -370,21 +370,21 @@ bool MaximaTokenizer::IsAlpha(wxChar ch) {
   if (IsSpace(ch))
     return false;
 
-  // If it cannot be converted to asciiand we didn't detect it as a char we know
-  // how to deal with it (in maxima's view) is an ordinary letter.
+  // If it cannot be converted to ASCII and we didn't detect it as a char we know
+  // how to deal with it (in Maxima's view) is an ordinary letter.
   if (ch > 127)
     return true;
 
   return (m_additional_alphas.Find(ch) != wxNOT_FOUND);
 }
 
-bool MaximaTokenizer::IsSpace(wxChar ch) {
+bool MaximaTokenizer::IsSpace(wxUniChar ch) {
   return m_spaces.Find(ch) != wxNOT_FOUND;
 }
 
-bool MaximaTokenizer::IsNum(wxChar ch) { return ch >= '0' && ch <= '9'; }
+bool MaximaTokenizer::IsNum(wxUniChar ch) { return ch >= '0' && ch <= '9'; }
 
-bool MaximaTokenizer::IsAlphaNum(wxChar ch) { return IsAlpha(ch) || IsNum(ch); }
+bool MaximaTokenizer::IsAlphaNum(wxUniChar ch) { return IsAlpha(ch) || IsNum(ch); }
 
 const wxString MaximaTokenizer::m_additional_alphas = wxS("\\_%µ");
 const wxString MaximaTokenizer::m_not_alphas =
@@ -415,11 +415,5 @@ const wxString MaximaTokenizer::m_plusSigns =
 const wxString MaximaTokenizer::m_minusSigns =
   "-" wxS("\u2796") wxS("\uFE63") wxS("\uFF0D");
 
-const wxString MaximaTokenizer::m_unicodeNumbers =
-  wxS("\u00BD\u00B2\u00B3\u221E");
-
-const wxString MaximaTokenizer::m_operators =
-  wxS("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b\u2264\u2265\u2211"
-      "\u2260+-*/^:=#'!()[]{}");
 
 MaximaTokenizer::StringHash MaximaTokenizer::m_hardcodedFunctions;

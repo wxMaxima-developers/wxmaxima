@@ -77,12 +77,17 @@ public:
     wxString m_text;
     TextStyle m_style = TS_CODE_DEFAULT;
   };
-  static bool IsAlpha(wxChar ch);
-  static bool IsNum(wxChar ch);
-  static bool IsAlphaNum(wxChar ch);
-  static bool IsSpace(wxChar ch);
-  static const wxString &UnicodeNumbers() { return m_unicodeNumbers; }
-  static const wxString &Operators() { return m_operators; }
+  static bool IsAlpha(wxUniChar ch);
+  static bool IsNum(wxUniChar ch);
+  static bool IsAlphaNum(wxUniChar ch);
+  static bool IsSpace(wxUniChar ch);
+  static const wxString UnicodeNumbers() {
+    return wxS("\u00BD\u00B2\u00B3\u221E"); // VULGAR FRACTION ONE HALF, SUPERSCRIPT TWO, SUPERSCRIPT THREE, INFINITY
+  }
+  static const wxString Operators() {
+    return wxS("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b\u2264\u2265\u2211"
+      "\u2260+-*/^:=#'!()[]{}");
+  }
 
   using TokenList = std::vector<Token>;
   TokenList PopTokens() && { return std::move(m_tokens); }
@@ -106,10 +111,6 @@ protected:
   static const wxString m_minusSigns;
   //! Linebreak characters
   static const wxString m_linebreaks;
-  //! Unicode numbers
-  static const wxString m_unicodeNumbers;
-  //! Operators
-  static const wxString m_operators;
 
   const Configuration * const m_configuration = NULL;
 
@@ -122,6 +123,7 @@ protected:
     argument. These fake functions are kept in this hash.
   */
   static StringHash m_hardcodedFunctions;
+
 };
 
 #endif // MAXIMATOKENIZER_H

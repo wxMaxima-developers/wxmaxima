@@ -16,6 +16,7 @@
 - Repaired the Equations->Solve numerical->Find numerical solution" menu (#2010)
 - Included examples (10MinuteTutorial.wxm, testbench_simple.wxmx) were affected
   by the Maxima/Gnuplot 6 problem. (see issue #1960)
+- Support wxWidgets, if it was build with '--enable-utf8=yes' (#2012)
 
 # 25.01.0
 
