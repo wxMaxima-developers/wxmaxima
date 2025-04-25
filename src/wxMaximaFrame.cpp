@@ -824,7 +824,7 @@ void wxMaximaFrame::SetupViewMenu() {
   m_viewMenu->Append(EventIDs::menu_fullscreen, _("Full Screen\tF11"),
                      _("Toggle full screen editing"), wxITEM_NORMAL);
 #else
-  m_viewMenu->Append(EventIDs::menu_fullscreen, _("Full Screen\tAlt-Enter"),
+  m_viewMenu->Append(EventIDs::menu_fullscreen, _("Full Screen\tAlt+Enter"),
                      _("Toggle full screen editing"), wxITEM_NORMAL);
 #endif
   m_viewMenu->AppendSeparator();
