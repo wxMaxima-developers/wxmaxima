@@ -17,6 +17,8 @@
 - Included examples (10MinuteTutorial.wxm, testbench_simple.wxmx) were affected
   by the Maxima/Gnuplot 6 problem. (see issue #1960)
 - Support wxWidgets, if it was build with '--enable-utf8=yes' (#2012)
+- Fix compiling with wxWidgets without webview.
+- HTML export/Mathjax: Don't remove 1st/last label char (#2003)
 
 # 25.01.0
 
