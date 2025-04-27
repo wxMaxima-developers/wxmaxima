@@ -242,6 +242,8 @@ class="toc-section-number">3.8</span> Bug reporting</a></li>
 id="toc-marking-output-being-drawn-in-red"><span
 class="toc-section-number">3.9</span> Marking output being drawn in
 red</a></li>
+<li><a href="#output-rendering." id="toc-output-rendering."><span
+class="toc-section-number">3.10</span> Output rendering.</a></li>
 </ul></li>
 <li><a href="#help-menu" id="toc-help-menu"><span
 class="toc-section-number">4</span> Help menu</a></li>
@@ -324,6 +326,8 @@ href="#after-upgrading-to-macos-13.1-plot-andor-draw-commands-output-error-messa
 id="toc-after-upgrading-to-macos-13.1-plot-andor-draw-commands-output-error-messages-like"><span
 class="toc-section-number">5.17</span> After upgrading to MacOS 13.1
 plot and/or draw commands output error messages like</a></li>
+<li><a href="#logging" id="toc-logging"><span
+class="toc-section-number">5.18</span> Logging</a></li>
 </ul></li>
 <li><a href="#faq" id="toc-faq"><span
 class="toc-section-number">6</span> FAQ</a>
@@ -1841,6 +1845,20 @@ red</h2>
 <p><em>Maxima</em>’s <code>box()</code> command causes <em>wxMaxima</em>
 to print its argument with a red foreground, if the second argument to
 the command is the text <code>highlight</code>.</p>
+<h2 data-number="3.10" id="output-rendering."><span
+class="header-section-number">3.10</span> Output rendering.</h2>
+<p>With <code>set_display()</code> one can set, how wxMaxima will render
+the output.</p>
+<p><code>set_display('xml)</code> is the default value. Here Maxima
+speaks to wxMaxima using an (machine readable) XML-dialect (can be seen
+in the “Raw XML sidebar”) and outputs the resulting formulas nicely
+rendered, e.g. pretty Matrices, Square root signs, fractions, etc.</p>
+<!--- Currently that does not work as it should, the line with the output label is shifted right (issue: #2006) -->
+<p><code>set_display('ascii)</code> causes wxMaxima to output formulas
+as in command line Maxima - as ASCII-Art.</p>
+<p><code>set_display('none)</code> causes ‘one-line’ ASCII results - the
+same as the command line Maxima command <code>display2d:false;</code>
+does.</p>
 <h1 data-number="4" id="help-menu"><span
 class="header-section-number">4</span> Help menu</h1>
 <p>WxMaxima’s help menu provides access to the Maxima and wxMaxima
@@ -2124,6 +2142,23 @@ of the menu bar (SystemSettings =&gt; Desktop &amp; Dock =&gt; Menu Bar)
 might solve the issue. See <a
 href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">wxMaxima
 issue #1746</a> for more information.</p>
+<h2 data-number="5.18" id="logging"><span
+class="header-section-number">5.18</span> Logging</h2>
+<p>Log messages might be helpful to debug problems. WxMaxima can log
+many events. Most log entries will be helpful for developers, especially
+in case of problems or bugs. If you run a “Release”-Build, the log
+windows is not shown by default, if you run a development version, it is
+shown by default as a second window. You can enable and disable this
+window using the “View-&gt;Toggle log window” menu entry.</p>
+<p>Messages are not ‘lost’, if the log window is not shown, if you
+select to show the log window later, you will see past log messages (if
+you did not clear the messages).</p>
+<p>Such messages may be helpful, when you create bug reports (or trying
+to find a bug by yourself).</p>
+<p>Log messages can (additionally) be printed to STDERR, when using the
+command line option “–logtostderr”. On Windows a separate text console
+will be opened, as a Windows GUI application does not have the standard
+IO connected.</p>
 <hr />
 <h1 data-number="6" id="faq"><span
 class="header-section-number">6</span> FAQ</h1>

@@ -242,6 +242,8 @@ class="toc-section-number">3.8</span> Bug reporting</a></li>
 id="toc-marking-output-being-drawn-in-red"><span
 class="toc-section-number">3.9</span> Marking output being drawn in
 red</a></li>
+<li><a href="#output-rendering." id="toc-output-rendering."><span
+class="toc-section-number">3.10</span> Output rendering.</a></li>
 </ul></li>
 <li><a href="#help-menu" id="toc-help-menu"><span
 class="toc-section-number">4</span> Help menu</a></li>
@@ -325,6 +327,8 @@ href="#after-upgrading-to-macos-13.1-plot-andor-draw-commands-output-error"
 id="toc-after-upgrading-to-macos-13.1-plot-andor-draw-commands-output-error"><span
 class="toc-section-number">5.17</span> After upgrading to MacOS 13.1
 plot and/or draw commands output error</a></li>
+<li><a href="#logging" id="toc-logging"><span
+class="toc-section-number">5.18</span> Logging</a></li>
 </ul></li>
 <li><a href="#faq" id="toc-faq"><span
 class="toc-section-number">6</span> FAQ</a>
@@ -517,14 +521,14 @@ class="header-section-number">2.2.2</span> Cells</h3>
 <p>Робочий аркуш складається з комірок. У wxMaxima передбачено такі типи
 комірок:</p>
 <ul>
-<li>Math cells, containing one or more lines of <em>Maxima</em>
-input.</li>
-<li>Output of, or a question from, <em>Maxima</em>.</li>
-<li>Image cells.</li>
-<li>Text cells, that can for example be used for documentation.</li>
-<li>A title, section or a subsection. 6 levels of different headings are
-possible.</li>
-<li>Page breaks.</li>
+<li>Математичні комірки, у яких міститься один або декілька рядків
+вхідних даних <em>Maxima</em>.</li>
+<li>Виведені дані або питання від <em>Maxima</em></li>
+<li>Комірки зображень.</li>
+<li>Текстові комірки, які можуть бути, наприклад, документацією</li>
+<li>Заголовок, розділ або підрозділ. Передбачено 6 різних рівнів
+заголовків.</li>
+<li>Межі сторінок.</li>
 </ul>
 <p>Типовою поведінкою <em>wxMaxima</em> при введенні тексту є
 автоматичне створення комірки формули. Комірки інших типів можна
@@ -550,8 +554,9 @@ cursors</h3>
 flexibility by defining two types of cursors. <em>WxMaxima</em> will
 switch between them automatically when needed:</p>
 <ul>
-<li>The cursor is drawn horizontally if it is moved in the space between
-two cells or by clicking there.</li>
+<li>Курсор буде намальовано горизонтально, якщо його пересунуто до
+проміжку між двома комірками, або якщо користувач клацнув кнопкою миші у
+проміжку між двома комірками.</li>
 <li>A vertical cursor that works inside a cell. This cursor is activated
 by moving the cursor inside a cell using the mouse pointer or the cursor
 keys and works much like the cursor in a text editor.</li>
@@ -1089,12 +1094,12 @@ class="header-section-number">2.2.10</span> Hotkeys</h3>
 підручнику. Втім, декілька клавіатурних скорочень все ж не документовано
 у меню:</p>
 <ul>
-<li><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a
-complete cell.</li>
+<li><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> вилучає увесь
+вміст комірки.</li>
 <li><kbd>CTRL</kbd>+<kbd>TAB</kbd> or
 <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> triggers the
 auto-completion mechanism.</li>
-<li><kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space.</li>
+<li><kbd>SHIFT</kbd>+<kbd>ПРОБІЛ</kbd> вставляє нерозривний пробіл.</li>
 </ul>
 <h3 data-number="2.2.11" id="raw-tex-in-the-tex-export"><span
 class="header-section-number">2.2.11</span> Raw TeX in the TeX
@@ -1209,8 +1214,9 @@ class="header-section-number">2.4</span> Configuration options</h2>
 <p>Для деяких типових змінних налаштувань у <em>wxMaxima</em>
 передбачено два способи налаштовування:</p>
 <ul>
-<li>The configuration dialog box below lets you change their default
-values for the current and subsequent sessions.</li>
+<li>За допомогою діалогової панелі налаштовування, знімок якої наведено
+нижче, ви можете змінити типові значення для поточного і наступних
+сеансі роботи програми.</li>
 <li>Also, the values for most configuration variables can be changed for
 the current session only by overwriting their values from the worksheet,
 as shown below.</li>
@@ -1251,8 +1257,9 @@ controls</h3>
 <ul>
 <li>If an opening parenthesis, bracket, or double quote is entered
 <em>wxMaxima</em> will insert a closing one after it.</li>
-<li>If text is selected if any of these keys is pressed the selected
-text will be put between the matched signs.</li>
+<li>Якщо при натисканні якоїсь із цих комбінацій клавіш було позначено
+фрагмент тексту, цей текст буде вставлено між відповідними
+символами.</li>
 </ul>
 <h3 data-number="2.4.4"
 id="donât-save-the-worksheet-automatically"><span
@@ -1265,7 +1272,7 @@ automatically</h3>
 <p>If this option isnât set <em>wxMaxima</em> behaves more like a modern
 cellphone app:</p>
 <ul>
-<li>Files are saved automatically on exit</li>
+<li>Файли автоматично зберігаються під час виходу з програми</li>
 <li>And the file will automatically be saved every 3 minutes.</li>
 </ul>
 <h3 data-number="2.4.5" id="where-is-the-configuration-saved"><span
@@ -1310,7 +1317,7 @@ will be subscripted.</p>
 <code>wxsubscripts</code>, назви змінних у форматі <code>x_y</code> буде
 показано як літеру із нижнім індексом, якщо</p>
 <ul>
-<li>Either <code>x</code> or <code>y</code> is a single letter or</li>
+<li><code>x</code> або <code>y</code> є одинарною літерою або</li>
 <li><code>y</code> is an integer (can include more than one
 character).</li>
 </ul>
@@ -1760,7 +1767,7 @@ class="header-section-number">3.5</span> Startup files</h2>
 можливість редагування двох файлів із командами, які виконуються під час
 запуску програми:</p>
 <ul>
-<li>A file that contains commands that are executed on starting up
+<li>Файла, у якому містяться команди, які виконуються під час запуску
 <em>Maxima</em>: <code>maxima-init.mac</code></li>
 <li>one file of additional commands that are executed if
 <em>wxMaxima</em> is starting <em>Maxima</em>:
@@ -1778,20 +1785,20 @@ otherwise). The location can be found out with the command:
 <h2 data-number="3.6" id="special-variables-wx"><span
 class="header-section-number">3.6</span> Special variables wx…</h2>
 <ul>
-<li><code>wxsubscripts</code> tells <em>Maxima</em> if it should convert
-variable names that contain an underscore (<code>R_150</code> or the
-like) into subscripted variables. See <code>wxdeclare_subscript</code>
-for details which variable names are automatically converted.</li>
-<li><code>wxfilename</code>: This variable contains the name of the file
-currently opened in <em>wxMaxima</em>.</li>
-<li><code>wxdirname</code>: This variable contains the name the
-directory, in which the file currently opened in <em>wxMaxima</em>
-is.</li>
+<li><code>wxsubscripts</code> вказує <em>Maxima</em>, чи слід
+перетворювати назви змінних, які містять символ підкреслювання
+(<code>R_150</code> або подібні змінні) на змінні із нижніми індексами.
+Див. <code>wxdeclare_subscript</code>, щоб дізнатися більше про те, які
+саме назви змінних буде перетворено автоматично.</li>
+<li><code>wxfilename</code>: у цій змінній зберігається назва файла,
+який зараз відкрито у <em>wxMaxima</em>.</li>
+<li><code>wxdirname</code>: у цій змінній зберігається назва каталогу, у
+якому зберігається поточний відкритий <em>wxMaxima</em> файл.</li>
 <li><code>wxplot_pngcairo</code> tells whether <em>wxMaxima</em> tries
 to use _Gnuplot_âs pngcairo terminal that provides more line styles and
 a better overall graphics quality.</li>
-<li><code>wxplot_size</code> defines the resolution of embedded
-plots.</li>
+<li><code>wxplot_size</code> визначає роздільну здатність для вбудованих
+креслень.</li>
 <li><code>wxchangedir</code>: On most operating systems
 <em>wxMaxima</em> automatically sets _Maxima_âs working directory to the
 directory of the current file. This allows file I/O (e.g. by
@@ -1799,14 +1806,14 @@ directory of the current file. This allows file I/O (e.g. by
 the file that has to be read or written. On Windows this feature
 sometimes causes error messages and therefore can be set to
 <code>false</code> from the config dialogue.</li>
-<li><code>wxanimate_framerate</code>: The number of frames per second
-the following animations have to be played back with.</li>
-<li><code>wxanimate_autoplay</code>: Automatically play animations by
-default?</li>
-<li><code>wxmaximaversion</code>: Returns the version number of
+<li><code>wxanimate_framerate</code>: частота у кадрах на секунду, із
+якою відтворюватимуться наступі анімації.</li>
+<li><code>wxanimate_autoplay</code>: типово автоматично відтворювати
+анімації?</li>
+<li><code>wxmaximaversion</code>: повертає номер версії
 <em>wxMaxima</em>.</li>
-<li><code>wxwidgetsversion</code>: Returns the wxWidgets version
-<em>wxMaxima</em> is using.</li>
+<li><code>wxwidgetsversion</code>: повертає версію wxWidgets, яку
+використано у <em>wxMaxima</em>.</li>
 </ul>
 <h2 data-number="3.7" id="pretty-printing-2d-output"><span
 class="header-section-number">3.7</span> Pretty-printing 2D output</h2>
@@ -1842,7 +1849,8 @@ class="header-section-number">3.8</span> Bug reporting</h2>
 <ul>
 <li><code>wxbuild_info()</code> gathers information about the currently
 running version of <em>wxMaxima</em></li>
-<li><code>wxbug_report()</code> tells how and where to file bugs</li>
+<li><code>wxbug_report()</code> надає відомості щодо того, як і де слід
+повідомляти про вади</li>
 </ul>
 <h2 data-number="3.9" id="marking-output-being-drawn-in-red"><span
 class="header-section-number">3.9</span> Marking output being drawn in
@@ -1850,6 +1858,21 @@ red</h2>
 <p>_Maxima_âs <code>box()</code> command causes <em>wxMaxima</em> to
 print its argument with a red foreground, if the second argument to the
 command is the text <code>highlight</code>.</p>
+<h2 data-number="3.10" id="output-rendering."><span
+class="header-section-number">3.10</span> Output rendering.</h2>
+<p>With <code>set_display()</code> one can set, how wxMaxima will render
+the output.</p>
+<p><code>set_display('xml)</code> is the default value. Here Maxima
+speaks to wxMaxima using an (machine readable) XML-dialect (can be seen
+in the “Raw XML sidebar”) and outputs the resulting formulas nicely
+rendered, e.g. pretty Matrices, Square root signs, fractions, etc.</p>
+<!--- Currently that does not work as it should, the line with the output
+label is shifted right (issue: #2006) -->
+<p><code>set_display('ascii)</code> causes wxMaxima to output formulas
+as in command line Maxima - as ASCII-Art.</p>
+<p><code>set_display('none)</code> causes ‘one-line’ ASCII results - the
+same as the command line Maxima command <code>display2d:false;</code>
+does.</p>
 <h1 data-number="4" id="help-menu"><span
 class="header-section-number">4</span> Help menu</h1>
 <p>WxMaximaâs help menu provides access to the Maxima and wxMaxima
@@ -1978,19 +2001,20 @@ doesnât remember</h2>
 рідкісною. Якщо таке все ж сталося, існує декілька способів відновити
 дані:</p>
 <ul>
-<li><em>WxMaxima</em> actually has two undo features: The global undo
-buffer that is active if no cell is selected and a per-cell undo buffer
-that is active if the cursor is inside a cell. It is worth trying to use
-both undo options in order to see if an old value can still be
-accessed.</li>
+<li>У <em>wxMaxima</em> є два списки скасовування дій: загальний буфер
+скасовування, який є активним, якщо не позначено жодної комірки, та
+окремі буфери комірок, які є активним, якщо курсор перебуває у
+відповідній комірці. Варто спробувати скористатися обома варіантами
+скасовування, щоб спробувати дістатися потрібного вам попереднього
+значення.</li>
 <li>If you still have a way to find out what label <em>Maxima</em> has
 assigned to the cell just type in the cellâs label and its contents will
 reappear.</li>
 <li>If you donât: Donât panic. In the âViewâ menu there is a way to show
 a history pane that shows all <em>Maxima</em> commands that have been
 issued recently.</li>
-<li>If nothing else helps <em>Maxima</em> contains a replay
-feature:</li>
+<li>Якщо ніщо інше не допомагає, у <em>Maxima</em> є функція для
+відтворення усіх команд:</li>
 </ul>
 <p><code>maxima playback();</code></p>
 <h2 data-number="5.7"
@@ -2134,6 +2158,23 @@ of the menu bar (SystemSettings =&gt; Desktop &amp; Dock =&gt; Menu Bar)
 might solve the issue. See <a
 href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">wxMaxima
 issue #1746</a> for more information.</p>
+<h2 data-number="5.18" id="logging"><span
+class="header-section-number">5.18</span> Logging</h2>
+<p>Log messages might be helpful to debug problems. WxMaxima can log
+many events. Most log entries will be helpful for developers, especially
+in case of problems or bugs. If you run a “Release”-Build, the log
+windows is not shown by default, if you run a development version, it is
+shown by default as a second window. You can enable and disable this
+window using the “View-&gt;Toggle log window” menu entry.</p>
+<p>Messages are not ‘lost’, if the log window is not shown, if you
+select to show the log window later, you will see past log messages (if
+you did not clear the messages).</p>
+<p>Such messages may be helpful, when you create bug reports (or trying
+to find a bug by yourself).</p>
+<p>Log messages can (additionally) be printed to STDERR, when using the
+command line option “–logtostderr”. On Windows a separate text console
+will be opened, as a Windows GUI application does not have the standard
+IO connected.</p>
 <hr />
 <h1 data-number="6" id="faq"><span
 class="header-section-number">6</span> FAQ</h1>

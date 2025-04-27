@@ -242,6 +242,8 @@ class="toc-section-number">3.8</span> Bug reporting</a></li>
 id="toc-marking-output-being-drawn-in-red"><span
 class="toc-section-number">3.9</span> Marking output being drawn in
 red</a></li>
+<li><a href="#output-rendering." id="toc-output-rendering."><span
+class="toc-section-number">3.10</span> Output rendering.</a></li>
 </ul></li>
 <li><a href="#help-menu" id="toc-help-menu"><span
 class="toc-section-number">4</span> Help menu</a></li>
@@ -325,6 +327,8 @@ href="#after-upgrading-to-macos-13.1-plot-andor-draw-commands-output-error"
 id="toc-after-upgrading-to-macos-13.1-plot-andor-draw-commands-output-error"><span
 class="toc-section-number">5.17</span> After upgrading to MacOS 13.1
 plot and/or draw commands output error</a></li>
+<li><a href="#logging" id="toc-logging"><span
+class="toc-section-number">5.18</span> Logging</a></li>
 </ul></li>
 <li><a href="#faq" id="toc-faq"><span
 class="toc-section-number">6</span> FAQ</a>
@@ -522,8 +526,7 @@ word boundary. Likewise, if more than one cell is selected,
 flexibility by defining two types of cursors. <em>WxMaxima</em> will
 switch between them automatically when needed:</p>
 <ul>
-<li>The cursor is drawn horizontally if it is moved in the space between
-two cells or by clicking there.</li>
+<li>如果光标在两个单元格之间移动或单击，则会使用水平光标；</li>
 <li>A vertical cursor that works inside a cell. This cursor is activated
 by moving the cursor inside a cell using the mouse pointer or the cursor
 keys and works much like the cursor in a text editor.</li>
@@ -1052,12 +1055,12 @@ class="header-section-number">2.2.10</span> Hotkeys</h3>
 wxMaxima
 的翻译文本进行定制，以满足本地用户的需求，因此我们不在这里记录它们。但是，一些快捷键或其别名并没有记录在菜单中：</p>
 <ul>
-<li><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a
-complete cell.</li>
+<li><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd>
+删除一个单元格。</li>
 <li><kbd>CTRL</kbd>+<kbd>TAB</kbd> or
 <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> triggers the
 auto-completion mechanism.</li>
-<li><kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space.</li>
+<li><kbd>SHIFT</kbd>+<kbd>SPACE</kbd> 插入一个不可断行的空格。</li>
 </ul>
 <h3 data-number="2.2.11" id="raw-tex-in-the-tex-export"><span
 class="header-section-number">2.2.11</span> Raw TeX in the TeX
@@ -1166,8 +1169,7 @@ image, zip the files again, probably rename the <code>zip</code> to a
 class="header-section-number">2.4</span> Configuration options</h2>
 <p>对于一些常见的可设置变量，wxMaxima提供了两种设置方法：</p>
 <ul>
-<li>The configuration dialog box below lets you change their default
-values for the current and subsequent sessions.</li>
+<li>下面的设置对话框允许用户更改当前和后续会话的默认值。</li>
 <li>Also, the values for most configuration variables can be changed for
 the current session only by overwriting their values from the worksheet,
 as shown below.</li>
@@ -1205,8 +1207,7 @@ controls</h3>
 <ul>
 <li>If an opening parenthesis, bracket, or double quote is entered
 <em>wxMaxima</em> will insert a closing one after it.</li>
-<li>If text is selected if any of these keys is pressed the selected
-text will be put between the matched signs.</li>
+<li>如果在输入前述字符中的任何一个时选择了文本，则所选文本将被放在配对的两个字符之间。</li>
 </ul>
 <h3 data-number="2.4.4"
 id="donât-save-the-worksheet-automatically"><span
@@ -1219,7 +1220,7 @@ directory, though.</p>
 <p>If this option isnât set <em>wxMaxima</em> behaves more like a modern
 cellphone app:</p>
 <ul>
-<li>Files are saved automatically on exit</li>
+<li>文件在退出时被自动保存；</li>
 <li>And the file will automatically be saved every 3 minutes.</li>
 </ul>
 <h3 data-number="2.4.5" id="where-is-the-configuration-saved"><span
@@ -1517,7 +1518,7 @@ class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb13-1"><a h
 <code>draw</code>, there is a second set of functions:</p>
 <ul>
 <li><code>with_slider</code> and</li>
-<li><code>wxanimate</code>.</li>
+<li><code>wxanimate</code>。</li>
 </ul>
 <p>Normally the animations are played back or exported with the frame
 rate chosen in the configuration of <em>wxMaxima</em>. To set the speed
@@ -1689,8 +1690,8 @@ class="header-section-number">3.5</span> Startup files</h2>
 <p>在 wxMaxima
 的设置对话框中可以编辑两个文件的命令，这些命令在启动时被执行：</p>
 <ul>
-<li>A file that contains commands that are executed on starting up
-<em>Maxima</em>: <code>maxima-init.mac</code></li>
+<li>文件 <code>maxima-init.mac</code> 中包含每次启动 Maxima
+时被执行的命令；</li>
 <li>one file of additional commands that are executed if
 <em>wxMaxima</em> is starting <em>Maxima</em>:
 <code>wxmaxima-init.mac</code></li>
@@ -1707,20 +1708,19 @@ otherwise). The location can be found out with the command:
 <h2 data-number="3.6" id="special-variables-wx"><span
 class="header-section-number">3.6</span> Special variables wx…</h2>
 <ul>
-<li><code>wxsubscripts</code> tells <em>Maxima</em> if it should convert
-variable names that contain an underscore (<code>R_150</code> or the
-like) into subscripted variables. See <code>wxdeclare_subscript</code>
-for details which variable names are automatically converted.</li>
-<li><code>wxfilename</code>: This variable contains the name of the file
-currently opened in <em>wxMaxima</em>.</li>
+<li><code>wxsubscripts</code> ：告诉 Maxima
+是否应将包含下划线的变量名（例如
+<code>R_150</code>）转换为带下标的变量名。有关自动转换哪些变量名的详细信息，请参见
+<code>wxdeclare_subscript</code>。</li>
+<li><code>wxfilename</code>：此变量包含当前在 wxMaxima
+中打开的文件的名称。</li>
 <li><code>wxdirname</code>: This variable contains the name the
 directory, in which the file currently opened in <em>wxMaxima</em>
 is.</li>
 <li><code>wxplot_pngcairo</code> tells whether <em>wxMaxima</em> tries
 to use _Gnuplot_âs pngcairo terminal that provides more line styles and
 a better overall graphics quality.</li>
-<li><code>wxplot_size</code> defines the resolution of embedded
-plots.</li>
+<li><code>wxplot_size</code>：定义嵌入绘图的分辨率。</li>
 <li><code>wxchangedir</code>: On most operating systems
 <em>wxMaxima</em> automatically sets _Maxima_âs working directory to the
 directory of the current file. This allows file I/O (e.g. by
@@ -1728,10 +1728,8 @@ directory of the current file. This allows file I/O (e.g. by
 the file that has to be read or written. On Windows this feature
 sometimes causes error messages and therefore can be set to
 <code>false</code> from the config dialogue.</li>
-<li><code>wxanimate_framerate</code>: The number of frames per second
-the following animations have to be played back with.</li>
-<li><code>wxanimate_autoplay</code>: Automatically play animations by
-default?</li>
+<li><code>wxanimate_framerate</code>：下一个动图回放的帧率。</li>
+<li><code>wxanimate_autoplay</code>：是否在默认情况下自动播放动图。</li>
 <li><code>wxmaximaversion</code>: Returns the version number of
 <em>wxMaxima</em>.</li>
 <li><code>wxwidgetsversion</code>: Returns the wxWidgets version
@@ -1770,7 +1768,7 @@ information about the current system:</p>
 <ul>
 <li><code>wxbuild_info()</code> gathers information about the currently
 running version of <em>wxMaxima</em></li>
-<li><code>wxbug_report()</code> tells how and where to file bugs</li>
+<li><code>wxbug_report()</code> 说明如何以及在何处提交错误报告。</li>
 </ul>
 <h2 data-number="3.9" id="marking-output-being-drawn-in-red"><span
 class="header-section-number">3.9</span> Marking output being drawn in
@@ -1778,6 +1776,21 @@ red</h2>
 <p>_Maxima_âs <code>box()</code> command causes <em>wxMaxima</em> to
 print its argument with a red foreground, if the second argument to the
 command is the text <code>highlight</code>.</p>
+<h2 data-number="3.10" id="output-rendering."><span
+class="header-section-number">3.10</span> Output rendering.</h2>
+<p>With <code>set_display()</code> one can set, how wxMaxima will render
+the output.</p>
+<p><code>set_display('xml)</code> is the default value. Here Maxima
+speaks to wxMaxima using an (machine readable) XML-dialect (can be seen
+in the “Raw XML sidebar”) and outputs the resulting formulas nicely
+rendered, e.g. pretty Matrices, Square root signs, fractions, etc.</p>
+<!--- Currently that does not work as it should, the line with the output
+label is shifted right (issue: #2006) -->
+<p><code>set_display('ascii)</code> causes wxMaxima to output formulas
+as in command line Maxima - as ASCII-Art.</p>
+<p><code>set_display('none)</code> causes ‘one-line’ ASCII results - the
+same as the command line Maxima command <code>display2d:false;</code>
+does.</p>
 <h1 data-number="4" id="help-menu"><span
 class="header-section-number">4</span> Help menu</h1>
 <p>WxMaximaâs help menu provides access to the Maxima and wxMaxima
@@ -1912,8 +1925,7 @@ reappear.</li>
 <li>If you donât: Donât panic. In the âViewâ menu there is a way to show
 a history pane that shows all <em>Maxima</em> commands that have been
 issued recently.</li>
-<li>If nothing else helps <em>Maxima</em> contains a replay
-feature:</li>
+<li>如果以上都没有帮助，可以调用 Maxima 的回放功能：</li>
 </ul>
 <p><code>maxima playback();</code></p>
 <h2 data-number="5.7"
@@ -2052,6 +2064,23 @@ of the menu bar (SystemSettings =&gt; Desktop &amp; Dock =&gt; Menu Bar)
 might solve the issue. See <a
 href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">wxMaxima
 issue #1746</a> for more information.</p>
+<h2 data-number="5.18" id="logging"><span
+class="header-section-number">5.18</span> Logging</h2>
+<p>Log messages might be helpful to debug problems. WxMaxima can log
+many events. Most log entries will be helpful for developers, especially
+in case of problems or bugs. If you run a “Release”-Build, the log
+windows is not shown by default, if you run a development version, it is
+shown by default as a second window. You can enable and disable this
+window using the “View-&gt;Toggle log window” menu entry.</p>
+<p>Messages are not ‘lost’, if the log window is not shown, if you
+select to show the log window later, you will see past log messages (if
+you did not clear the messages).</p>
+<p>Such messages may be helpful, when you create bug reports (or trying
+to find a bug by yourself).</p>
+<p>Log messages can (additionally) be printed to STDERR, when using the
+command line option “–logtostderr”. On Windows a separate text console
+will be opened, as a Windows GUI application does not have the standard
+IO connected.</p>
 <hr />
 <h1 data-number="6" id="faq"><span
 class="header-section-number">6</span> FAQ</h1>
