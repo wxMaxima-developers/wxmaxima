@@ -7919,7 +7919,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_construct_fraction){
     CommandWiz(_("Construct a fraction"), wxEmptyString, wxEmptyString,
-               wxS("(#1#)/(#2#)"), _("Enumerator:"), expr, wxEmptyString,
+               wxS("((#1#)/(#2#))"), _("Enumerator:"), expr, wxEmptyString,
                _("Denominator:"), wxS("1"), wxEmptyString);
   }
 }
