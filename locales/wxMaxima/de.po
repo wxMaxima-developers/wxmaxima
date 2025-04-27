@@ -59,8 +59,8 @@ msgid "\"..\" means \"one directory up\"."
 msgstr "\"..\" bedeutet \"eine Verzeichnishierarchie nach oben\"."
 
 #: ../../src/wxMaxima.cpp:5053
-#, fuzzy, c-format
-msgid "%i cells in evaluation queue"
+#, c-format
+msgid "%li cells in evaluation queue"
 msgstr "%li Zellen warten auf Evaluierung"
 
 #: ../../src/Worksheet.cpp:330
@@ -303,11 +303,11 @@ msgstr ""
 
 #: ../../src/MathParser.cpp:1288
 msgid "(Invalid XML from maxima)"
-msgstr ""
+msgstr "(Ungültiges XML von Maxima)"
 
 #: ../../src/wxMaxima.cpp:4221
 msgid "(Maybe a permission problem?)"
-msgstr ""
+msgstr "(Vielleicht ein Rechte-Problem?)"
 
 #: ../../src/wxMaxima.cpp:9248
 msgid "(f(x),x,a,b)), Epsilon algorithm"
@@ -366,9 +366,9 @@ msgid "2D equations using ASCII Art with unicode characters, if available"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:5057
-#, fuzzy, c-format
+#, c-format
 msgid "; %i commands left in the current cell"
-msgstr "; %li ausstehende Befehle in aktueller Zelle"
+msgstr "; %i ausstehende Befehle in aktueller Zelle"
 
 #: ../../src/wxMaxima.cpp:10617
 msgid ""
@@ -1067,9 +1067,9 @@ msgstr ""
 "Der Kommunikationsendpunkt kann nicht auf \"Dieser Rechner\" gesetzt werden."
 
 #: ../../src/wxMaxima.cpp:2532
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot set the communication port to %i."
-msgstr "Kann den Kommunikationsport nicht auf %li setzen."
+msgstr "Kann den Kommunikationsport nicht auf %i setzen."
 
 #: ../../src/wxMaxima.cpp:3656 ../../src/wxMaxima.cpp:6359
 msgid "Cannot start gnuplot"
@@ -1581,14 +1581,12 @@ msgid "Connection to Maxima lost."
 msgstr "Verbindung mit Maxima verloren."
 
 #: ../../src/wxMaxima.cpp:7921
-#, fuzzy
 msgid "Construct a fraction"
-msgstr "&Kettenbruch"
+msgstr "Bruch eingeben"
 
 #: ../../src/wxMaximaFrame.cpp:1305
-#, fuzzy
 msgid "Construct fraction..."
-msgstr "&Kettenbruch"
+msgstr "Bruch eingeben..."
 
 #: ../../src/wxMaxima.cpp:7158
 msgid "Contents:"
@@ -2586,9 +2584,8 @@ msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "Alle sichtbaren Zellen neu auswerten\tCtrl+R"
 
 #: ../../src/Worksheet.cpp:1395
-#, fuzzy
 msgid "Evaluate Cell"
-msgstr "Zelle(n) auswerten"
+msgstr "Zelle auswerten"
 
 #: ../../src/Worksheet.cpp:1398 ../../src/wxMaximaFrame.cpp:844
 msgid "Evaluate Cell(s)"
@@ -3048,9 +3045,8 @@ msgid "File you tried to open does not exist."
 msgstr "Datei existiert nicht."
 
 #: ../../src/wxMaximaFrame.cpp:1221
-#, fuzzy
 msgid "File/directory functions"
-msgstr "Verzeichnisoperationen"
+msgstr "Datei/Verzeichnisoperationen"
 
 #: ../../src/wxMaxima.cpp:7027
 msgid "Filename or a list of comma-separated file names"
@@ -3444,9 +3440,8 @@ msgid "Get the real part of complex expression"
 msgstr "Realteil eines komplexen Ausdrucks bestimmen"
 
 #: ../../src/wxMaxima.cpp:3609
-#, fuzzy, c-format
 msgid "Gnuplot (command line) found at: %s"
-msgstr "Gnuplot kann unter %s gefunden werden"
+msgstr "Gnuplot (Kommandozeilenversion) gefunden als: %s"
 
 #: ../../src/wxMaxima.cpp:3607
 #, c-format
@@ -4381,17 +4376,14 @@ msgid "Load lisp..."
 msgstr "Lade Lisp..."
 
 #: ../../src/wxMaximaFrame.cpp:1198
-#, fuzzy
 msgid "Load the file/dir operations (operatingsystem)"
-msgstr "Lade Datei/Directory operationen"
+msgstr "Lade Datei/Directory operationen (operatingsystem)"
 
 #: ../../src/wxMaximaFrame.cpp:1187
-#, fuzzy
 msgid "Load the regular expression package (sregex)"
-msgstr "Lade das Reguläre-Ausdruck-Paket"
+msgstr "Lade das Reguläre-Ausdruck-Paket (sregex)"
 
 #: ../../src/wxMaximaFrame.cpp:1224
-#, fuzzy
 msgid "Load the translation generator (gentran)"
 msgstr "Lade das Paket für andere Programmiersprachen (gentran)"
 
@@ -4660,24 +4652,21 @@ msgid "Maxima started. Waiting for connection..."
 msgstr "Maxima gestartet. Warte auf Verbindung ..."
 
 #: ../../src/StatusBar.cpp:228
-#, fuzzy
 msgid "Maxima started. Waiting for initial prompt..."
-msgstr "Maxima gestartet. Warte auf Verbindung ..."
+msgstr "Maxima gestartet. Warte auf den ersten Prompt..."
 
 #: ../../src/wxMaximaFrame.cpp:1231
-#, fuzzy
 msgid "Maxima to other language"
 msgstr "Maxima in eine andere Programmiersprache konvertieren"
 
 #: ../../src/wxMaxima.cpp:7213
-#, fuzzy
 msgid "Maxima to string"
-msgstr "Maxima-Binary"
+msgstr "Maxima als String"
 
 #: ../../src/wxMaxima.cpp:3397
-#, fuzzy, c-format
+#, c-format
 msgid "Maxima user configuration is located in directory %s"
-msgstr "Die Konfigurationsdateien von Maxima liegen unter %s"
+msgstr "Die (Benutzer)Konfigurationsdateien von Maxima liegen unter %s"
 
 #: ../../src/wxMaxima.cpp:3443
 #, c-format
@@ -4718,17 +4707,17 @@ msgid "Maxima's PID is %li"
 msgstr "Die Prozess-ID von Maxima ist %li"
 
 #: ../../src/wxMaxima.cpp:3681
-#, fuzzy, c-format
+#, c-format
 msgid "Maxima's demo files are located in directory %s"
-msgstr "Die Zusatzdateien für Maxima liegen unter %s"
+msgstr "Die Demo-Dateien von Maxima liegen unter %s"
 
 #: ../../src/wxMaxima.cpp:3478
-#, fuzzy, c-format
+#, c-format
 msgid "Maxima's manual is located in directory %s"
 msgstr "Maxima's Handbuch liegt im Ordner %s"
 
 #: ../../src/wxMaxima.cpp:3670
-#, fuzzy, c-format
+#, c-format
 msgid "Maxima's share files are located in directory %s"
 msgstr "Die Zusatzdateien für Maxima liegen unter %s"
 
@@ -4915,9 +4904,8 @@ msgid "New maxima Operators detected: %s"
 msgstr "Neue Maxima Operatoren erkannt: %s"
 
 #: ../../src/wxMaxima.cpp:7390
-#, fuzzy
 msgid "New part:"
-msgstr "Neue Variable:"
+msgstr "Neuer Abschnitt:"
 
 #: ../../src/wxMaxima.cpp:8900 ../../src/wxMaxima.cpp:8920
 #: ../../src/wxMaxima.cpp:9000 ../../src/wxMaxima.cpp:9005
@@ -5057,12 +5045,10 @@ msgid "Numerical solution..."
 msgstr "Numerische Lösung..."
 
 #: ../../src/wxMaximaFrame.cpp:1261
-#, fuzzy
 msgid "Numerical solutions of polynomial (bfloat)..."
-msgstr "Numerische Nullstellen eines Polynoms suchen..."
+msgstr "Numerische Nullstellen eines Polynoms suchen (bfloat)..."
 
 #: ../../src/wxMaximaFrame.cpp:1258
-#, fuzzy
 msgid "Numerical solutions of polynomial..."
 msgstr "Numerische Nullstellen eines Polynoms suchen..."
 
@@ -5313,9 +5299,8 @@ msgid "Parse string"
 msgstr "String auswerten"
 
 #: ../../src/wxMaximaFrame.cpp:1152
-#, fuzzy
 msgid "Parse string only..."
-msgstr "Nur String auswerten"
+msgstr "Nur String auswerten..."
 
 #: ../../src/StatusBar.cpp:240
 msgid "Parsing output"
@@ -5602,7 +5587,7 @@ msgstr ""
 #: ../../src/main.cpp:367
 #, fuzzy
 msgid "Re-opening STDIN failed."
-msgstr "Öffne Datei"
+msgstr "Standardeingabe neu öffnen hat nicht funktioniert."
 
 #: ../../src/main.cpp:365
 msgid "Re-opening STDOUT failed."
@@ -5758,14 +5743,12 @@ msgid "Regex match position"
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1195
-#, fuzzy
 msgid "Regular expression that matches a string"
 msgstr "Regulärer Ausdruck, der einem String entspricht"
 
 #: ../../src/wxMaximaFrame.cpp:1196
-#, fuzzy
 msgid "Regular expressions"
-msgstr "Ausdruck integrieren"
+msgstr "Regulärer Ausdruck"
 
 #: ../../src/Worksheet.cpp:1314
 msgid "Reload Image"
@@ -5850,9 +5833,8 @@ msgid "Rename file..."
 msgstr "Datei umbenennen..."
 
 #: ../../src/wxMaximaFrame.cpp:1527
-#, fuzzy
 msgid "Reorganize an expression using horner's rule"
-msgstr "Faktorisiere einen Ausdruck in komplexe Zahlen"
+msgstr "Ausdruck neu umformen (Horner-Schema)"
 
 #: ../../src/wxMaximaFrame.cpp:1346
 msgid "Repetitive element-by-element multiplication"
@@ -5884,9 +5866,8 @@ msgid "Report bug"
 msgstr "Einen Fehler berichten"
 
 #: ../../src/wxMaximaFrame.cpp:996
-#, fuzzy
 msgid "Reset option variables"
-msgstr "Variable ersetzen"
+msgstr "Optionsvariablen zurücksetzen"
 
 #: ../../src/ToolBar.cpp:229 ../../src/wxMaximaFrame.cpp:974
 msgid "Restart Maxima"
@@ -5978,9 +5959,8 @@ msgid "Right Matrix:"
 msgstr "Rechte Matrix:"
 
 #: ../../src/wxMaxima.cpp:8190
-#, fuzzy
 msgid "Right end"
-msgstr "Pfeil nach rechts"
+msgstr "Rechtes Ende"
 
 #: ../../src/wxMaximaFrame.cpp:1301
 msgid "Right side to the \"=\""
@@ -6212,9 +6192,8 @@ msgid "Section cell (Heading 2)"
 msgstr "Sektion (2. Gliederungsebene)"
 
 #: ../../src/wxMaxima.cpp:7218
-#, fuzzy
 msgid "Seek to position"
-msgstr "Pade-Approximation"
+msgstr "Position suchen"
 
 #: ../../src/BTextCtrl.cpp:45
 msgid "Seems like something is broken with a font."
@@ -6333,16 +6312,14 @@ msgid "Set image resolution"
 msgstr "Bildauflösung einstellen"
 
 #: ../../src/wxMaximaFrame.cpp:1510
-#, fuzzy
 msgid "Set main variable..."
-msgstr "Eine Variable löschen"
+msgstr "Hauptvariable definieren..."
 
 #: ../../src/wxMaximaFrame.cpp:1773
 msgid "Set plot format"
 msgstr "Das Plot-Format einstellen"
 
 #: ../../src/wxMaximaFrame.cpp:1101
-#, fuzzy
 msgid "Set position..."
 msgstr "Die Position einstellen..."
 
@@ -6405,9 +6382,8 @@ msgid "Setting gnuplot_binary to %s"
 msgstr "Setze die Adresse von Gnuplot auf %s"
 
 #: ../../src/wxMaxima.cpp:4804
-#, fuzzy
 msgid "Setting prompt and help format"
-msgstr "Das Plot-Format einstellen"
+msgstr "Prompt- und Hilfe-Format einstellen"
 
 #: ../../src/wxMaximaFrame.cpp:1292
 msgid "Setup atvalues for solving ODE with Laplace transformation"
@@ -6490,9 +6466,8 @@ msgid "Show equations in their linear form"
 msgstr "Zeigt Gleichungen in der linearen Form an"
 
 #: ../../src/wxMaximaFrame.cpp:1073
-#, fuzzy
 msgid "Show function &Definition..."
-msgstr "Zeige &Definition ..."
+msgstr "Zeige Funktions-&Definition..."
 
 #: ../../src/wxMaximaFrame.cpp:896
 msgid "Show function template"
@@ -6503,9 +6478,8 @@ msgid "Show input labels"
 msgstr "Eingabemarken anzeigen"
 
 #: ../../src/wxMaximaFrame.cpp:750
-#, fuzzy
 msgid "Show lisp representation"
-msgstr "Auch sehr lange Ausdrücke anzeigen:"
+msgstr "Lisp Darstellung anzeigen"
 
 #: ../../src/Worksheet.cpp:1604
 msgid "Show max. 100 digits"
@@ -6568,9 +6542,8 @@ msgid "Show used + to-be-freed memory"
 msgstr "Zeige benutzten und freizugebenden Speicher"
 
 #: ../../src/wxMaximaFrame.cpp:1033
-#, fuzzy
 msgid "Show user definitions"
-msgstr "Zeige die Definition der Funktion:"
+msgstr "Zeige Benutzer-Definitionen"
 
 #: ../../src/ToolBar.cpp:328 ../../src/wxMaximaFrame.cpp:1877
 #: ../../src/wxMaximaFrame.cpp:1879
@@ -6719,9 +6692,8 @@ msgid "Solve equation(s) with to_poly_solve"
 msgstr "Gleichung(en) mit to_poly_solve lösen"
 
 #: ../../src/wxMaxima.cpp:7773
-#, fuzzy
 msgid "Solve equations numerically"
-msgstr "Gleichung(en) lösen"
+msgstr "Gleichungen numerisch lösen"
 
 #: ../../src/wxMaxima.cpp:7757
 #, fuzzy
@@ -6757,24 +6729,21 @@ msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "Gewöhnliche DGL mit Laplacetransformation lösen"
 
 #: ../../src/wxMaxima.cpp:7708
-#, fuzzy
 msgid "Solve polynomials numerically"
-msgstr "Gleichung(en) lösen"
+msgstr "Polynome numerisch lösen"
 
 #: ../../src/wxMaxima.cpp:7718
-#, fuzzy
 msgid "Solve polynomials numerically (bfloats)"
-msgstr "Gleichung(en) lösen"
+msgstr "Polynome numerisch lösen (bfloats)"
 
 #: ../../src/wxMaxima.cpp:7729
 #, fuzzy
 msgid "Solve polynomials numerically (real roots)"
-msgstr "Gleichung(en) lösen"
+msgstr "Polynome numerisch löschen (real roots)"
 
 #: ../../src/wxMaximaFrame.cpp:1249
-#, fuzzy
 msgid "Solve symbolically"
-msgstr "Gleichung(en) lösen"
+msgstr "Symbolisch lösen"
 
 #: ../../src/Worksheet.cpp:1574
 msgid "Solve..."
@@ -6844,18 +6813,16 @@ msgid "Square"
 msgstr "Rechteckig"
 
 #: ../../src/Configuration.cpp:86
-#, fuzzy
 msgid "Standard Text"
-msgstr "Standard Optionen"
+msgstr "Standard Text"
 
 #: ../../src/Worksheet.cpp:1298
 msgid "Start Animation"
 msgstr "Starte Animation"
 
 #: ../../src/wxMaxima.cpp:7842
-#, fuzzy
 msgid "Start of t:"
-msgstr "Beginn des x-Werts"
+msgstr "Beginn des t-Werts"
 
 #: ../../src/ToolBar.cpp:305
 msgid "Start or Stop animation"
@@ -7010,13 +6977,12 @@ msgid "Substitute"
 msgstr "Substituieren"
 
 #: ../../src/wxMaximaFrame.cpp:1193
-#, fuzzy
 msgid "Substitute all matches"
-msgstr "Substituieren ..."
+msgstr "Ersetze alle Fundstellen"
 
 #: ../../src/wxMaximaFrame.cpp:1192
 msgid "Substitute first match"
-msgstr ""
+msgstr "Ersetze erste Fundstelle"
 
 #: ../../src/wxMaximaFrame.cpp:1646
 #, fuzzy
@@ -7076,9 +7042,8 @@ msgid "Subsubsection cell (Heading 4)"
 msgstr "Unter-Untersektion (4. Gliederungsebene)"
 
 #: ../../src/Worksheet.cpp:1831
-#, fuzzy
 msgid "Suggestion: "
-msgstr "Unterkapitel"
+msgstr "Empfehlung: "
 
 #: ../../src/Worksheet.cpp:2030
 msgid "Suitable as flag for ev()"
@@ -7541,17 +7506,15 @@ msgstr "Toleranzberechnungen mit Maxima"
 
 #: ../../src/wxMaxima.cpp:8192
 msgid "Top end"
-msgstr ""
+msgstr "Oberes Ende"
 
 #: ../../src/wxMaximaFrame.cpp:1078
-#, fuzzy
 msgid "Trace a function..."
-msgstr "Eine Funktion löschen"
+msgstr "Eine Funktion verfolgen..."
 
 #: ../../src/wxMaxima.cpp:7084
-#, fuzzy
 msgid "Trace function(s)"
-msgstr "Lösche die Funktion(en):"
+msgstr "Verfolge die Funktion(en)"
 
 #: ../../src/wxMaximaFrame.cpp:1184
 msgid "Transformations"
@@ -7690,13 +7653,13 @@ msgid "Trying to restart maxima."
 msgstr "Versuche, Maxima neuzustarten."
 
 #: ../../src/wxMaxima.cpp:2523
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Trying to start the socket a Maxima on the local machine can connect to on "
 "port %i"
 msgstr ""
 "Versuche, den Netzwerksocket des lokalen Rechners, zu dem sich Maxima "
-"verbinden kann an Port %li zu erstellen."
+"verbinden kann an Port %i zu erstellen."
 
 #: ../../src/wxMaximaFrame.cpp:1928
 msgid "Tutorials"
@@ -7942,9 +7905,8 @@ msgstr "Wert an diesem Punkt:"
 
 #: ../../src/wxMaxima.cpp:7812 ../../src/wxMaxima.cpp:7825
 #: ../../src/wxMaxima.cpp:7827
-#, fuzzy
 msgid "Value y at that point:"
-msgstr "&Zellen bis hier evaluieren"
+msgstr "Wert von y an dieser Stelle:"
 
 #: ../../src/wxMaxima.cpp:7910
 msgid "Value:"
