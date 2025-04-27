@@ -1,4 +1,4 @@
-# Current development version
+# 25.04.0
 
 - Use the (standard) wxWidgets log window instead of our own log pane.
   Less code to maintain, more features (e.g. clear log, save log).

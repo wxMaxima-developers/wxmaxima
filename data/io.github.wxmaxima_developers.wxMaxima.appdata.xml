@@ -57,6 +57,34 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+<release version="25.04.0" date="2025-04-27T14:30:00Z">
+  <description>
+    <p>
+      Fix some bugs.
+    </p>
+<ul dir="auto">
+<li>Use the (standard) wxWidgets log window instead of our own log pane.
+Less code to maintain, more features (e.g. clear log, save log).
+In "Release" builds the log window will be hidden (and can be enabled
+using View-&gt;Toggle log window, otherwise it is shown.</li>
+<li>Make the option "--logtostderr" work on Windows.
+(Windows GUI applications do not have STDIN, STDOUT and STDERR assigned,
+an extra 'text window' with the log messages will be opened at startup).</li>
+<li>Do not set lmxchar/rmxchar (used for displaying a matrix in text mode).
+It did not work at all. Maxima provides a reasonable default - and
+people probably expect the same, if they are using command line Maxima
+and wxMaxima. (#1926)</li>
+<li>Kill Lisp (e.g. sbcl.exe) when closing wxMaxima. (#1963, #1922, #1824, #1199)</li>
+<li>Correct heading colors (#2005)</li>
+<li>Repaired the Equations-&gt;Solve numerical-&gt;Find numerical solution" menu (#2010)</li>
+<li>Included examples (10MinuteTutorial.wxm, testbench_simple.wxmx) were affected
+by the Maxima/Gnuplot 6 problem. (see issue #1960)</li>
+<li>Support wxWidgets, if it was build with '--enable-utf8=yes' (#2012)</li>
+<li>Fix compiling with wxWidgets without webview.</li>
+<li>HTML export/Mathjax: Don't remove 1st/last label char (#2003)</li>
+</ul>
+  </description>
+</release>
 <release version="25.01.0" date="2025-01-29T21:45:00Z">
   <description>
     <p>
