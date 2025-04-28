@@ -28,7 +28,6 @@
 #include "main.h"
 #include "Maxima.h"
 #include "Dirstructure.h"
-#include "StackToStdErr.h"
 #include "wxMathml.h"
 #include <iostream>
 #include <wx/cmdline.h>

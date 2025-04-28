@@ -141,7 +141,6 @@ set(SOURCE_FILES
     Notification.cpp
     RecentDocuments.cpp
     RegexSearch.cpp
-    StackToStdErr.cpp
     StatusBar.cpp
     StringUtils.cpp
     SvgBitmap.cpp
