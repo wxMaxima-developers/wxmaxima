@@ -2,7 +2,7 @@
 # https://github.com/Ifsttar/I-Simpa/blob/master/appveyor.yml
 
 
-version: '24.08.0-DevelopmentSnapshot_{build}'
+version: '25.04.0-DevelopmentSnapshot_{build}'
 
 image:
  - Visual Studio 2022 # For MSVC 2022 builds only
@@ -17,7 +17,7 @@ configuration:
  
 environment:
   # The wxWidgets version as referred to in the source package
-  WXVERSION: 3.2.7
+  WXVERSION: 3.2.8
   # The wxWidgets version as referred to in the build folder
   # Typically it'd be the wxWidgets version with an optional suffix
   # to indicate build "epoch". The epoch changes are used to invalidate
