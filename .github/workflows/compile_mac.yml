@@ -73,6 +73,8 @@ jobs:
       - name: Check Info.plist
         run: |
              ls -l build-wxm/src/Info.plist
+             cat build-wxm/src/Info.plist
+             plutil build-wxm/src/Info.plist
       - name: Compile wxMaxima
         run: |
              cmake --build build-wxm
