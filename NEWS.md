@@ -1,3 +1,13 @@
+# Current development version
+
+- Keep the wxm/mac difference when saving wxm/exporting mac.
+  This omits unneeded comments (/* [wxMaxima: input   start ] */
+  (and input end) in a mac file (structural comments (section, ...)
+  are still saved) and especially omits question/answer comments -
+  they are unreadable by Maxima (see #2014, not only wxm files but
+  also mac files were problematic). At least the issue with mac
+  files is solved.
+
 # 25.04.0
 
 - Use the (standard) wxWidgets log window instead of our own log pane.

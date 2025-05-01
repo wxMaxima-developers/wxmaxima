@@ -5844,7 +5844,7 @@ void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm,
   // Write contents
   //
   for (auto &tmp : OnList(tree)) {
-    AddLineToFile(output, Format::TreeToWXM(&tmp));
+    AddLineToFile(output, Format::TreeToWXM(&tmp, wxm));
 
     if (wxm && tmp.GetGroupType() == GC_TYPE_CODE) {
       const EditorCell *txt = tmp.GetEditable();
