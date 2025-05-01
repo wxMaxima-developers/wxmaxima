@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['data_0',['Data',['../md_data_README.html',1,'']]]
+  ['pag_5fexample_0',['pag_example',['../pag_example.html',1,'']]]
 ];
