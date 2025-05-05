@@ -7,6 +7,7 @@
   they are unreadable by Maxima (see #2014, not only wxm files but
   also mac files were problematic). At least the issue with mac
   files is solved.
+- Replace unicode fractions in math input.
 
 # 25.04.0
 

@@ -5816,7 +5816,26 @@ const wxString Worksheet::UnicodeToMaxima(wxString s) {
 
   retval.Replace(wxS("\u00B2"), "^2");
   retval.Replace(wxS("\u00B3"), "^3");
+  retval.Replace(wxS("\u00BC"), "(1/4)");
   retval.Replace(wxS("\u00BD"), "(1/2)");
+  retval.Replace(wxS("\u00BE"), "(3/4)");
+  retval.Replace(wxS("\u2150"), "(1/7)");
+  retval.Replace(wxS("\u2151"), "(1/9)");
+  retval.Replace(wxS("\u2152"), "(1/10)");
+  retval.Replace(wxS("\u2153"), "(1/3)");
+  retval.Replace(wxS("\u2154"), "(2/3)");
+  retval.Replace(wxS("\u2155"), "(1/5)");
+  retval.Replace(wxS("\u2156"), "(2/5)");
+  retval.Replace(wxS("\u2157"), "(3/5)");
+  retval.Replace(wxS("\u2158"), "(4/5)");
+  retval.Replace(wxS("\u2159"), "(1/6)");
+  retval.Replace(wxS("\u215A"), "(5/6)");
+  retval.Replace(wxS("\u215B"), "(1/8)");
+  retval.Replace(wxS("\u215C"), "(3/8)");
+  retval.Replace(wxS("\u215D"), "(5/8)");
+  retval.Replace(wxS("\u215E"), "(7/8)");
+  retval.Replace(wxS("\u215F"), "1/"); // not a exact mathematical expression
+  retval.Replace(wxS("\u2189"), "(0/3)"); // used in baseball??
   retval.Replace(wxS("\u2205"), "[]"); // An empty list
   retval.Replace(wxS("\u2212"), "-");
   retval.Replace(wxS("\u2260"), "#"); // The "not equal" sign
