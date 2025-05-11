@@ -210,7 +210,15 @@ To solve that problem, select other fonts (using: Edit -> Configure -> Style).
 
 ### Unicode replacement
 
-wxMaxima will replace several Unicode characters with their respective Maxima expressions, e.g. "²" with "^2", "³" with "^3", the square root sign with the function `sqrt()`, the (mathematical) Sigma sign (which is not the same Unicode character as the corresponding Greek letter) with `sum()`, etc.
+wxMaxima will replace several Unicode characters with their respective Maxima expressions, e.g. `²` with `^2`, `³` with `^3`, the square root sign with the function `sqrt()`, the (mathematical) Sigma sign (which is not the same Unicode character as the corresponding Greek letter) with `sum()`, etc.
+
+Unicode has several "common" fractions encoded as one Unicode code point:
+`¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞`
+
+wxMaxima will replace them with their Maxima representations, e.g `(1/4)` before the input is sent do Maxima. There are also `⅟`, which will be replaced by `1/` and `↉` (used in baseball), which will be replaced by `(0/3)`.
+
+It is recommended to use **Maxima code** (not these Unicode code points) in input cells (Rationale: (a) the used font for math input does not contain them; (b) if you save the document as `wxm`-file, it is usually readable by command line Maxima, but these changes will of course not work in command line Maxima); but they may occur, if you cut&paste a formula from another document.
+
 
 ### Side Panes
 
