@@ -217,7 +217,7 @@ Unicode has several "common" fractions encoded as one Unicode code point:
 
 wxMaxima will replace them with their Maxima representations, e.g `(1/4)` before the input is sent do Maxima. There are also `⅟`, which will be replaced by `1/` and `↉` (used in baseball), which will be replaced by `(0/3)`.
 
-It is recommended to use **Maxima code** (not these Unicode code points) in input cells (Rationale: (a) the used font for math input does not contain them; (b) if you save the document as `wxm`-file, it is usually readable by command line Maxima, but these changes will of course not work in command line Maxima); but they may occur, if you cut&paste a formula from another document.
+It is recommended to use **Maxima code** (not these Unicode code points) in input cells (Rationale: (a) it might be possible, that the used font for math input does not contain them; (b) if you save the document as `wxm`-file, it is usually readable by (command line) Maxima, but these changes will of course not work in command line Maxima); but they may occur, if you cut&paste a formula from another document.
 
 
 ### Side Panes
