@@ -22,7 +22,7 @@ environment:
   # Typically it'd be the wxWidgets version with an optional suffix
   # to indicate build "epoch". The epoch changes are used to invalidate
   # a cached wxWidgets build and force a rebuild.
-  WXBUILDVER: 3.2.7_0
+  WXBUILDVER: 3.2.8_0
   CMAKEGEN: "Ninja"
   matrix:
     - TOOLKIT_INIT: ".appveyor\\MSVC_2022_x64.ps1"
