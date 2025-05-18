@@ -1059,10 +1059,10 @@ wxString GroupCell::ToTeX(const wxString &imgDir, const wxString &filename,
         str = wxS("\n\\subsubsection{") + str.Trim() + wxS("}");
         break;
       case TS_HEADING5:
-        str = wxS("\n\\paragraph{") + str.Trim() + wxS("}");
+        str = wxS("\n\\paragraph{") + str.Trim() + wxS("}\\mbox{}\\newline\n");
         break;
       case TS_HEADING6:
-        str = wxS("\n\\subparagraph{") + str.Trim() + wxS("}");
+        str = wxS("\n\\subparagraph{") + str.Trim() + wxS("}\\mbox{}\\newline\n");
         break;
       default:
         if (str.StartsWith(wxS("TeX:"))) {
