@@ -4550,7 +4550,12 @@ std::unique_ptr<Cell> Worksheet::CopySelection(Cell *start, Cell *end,
         break;
     }
 
-  return std::move(copy);
+  /* The warning from gcc is correct. But an old MacOs compiler errors out
+     on correct code, here. */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wredundant-move"
+    return std::move(copy);
+#pragma GCC diagnostic pop
 }
 
 void Worksheet::AddLineToFile(wxTextFile &output, const wxString &s) {

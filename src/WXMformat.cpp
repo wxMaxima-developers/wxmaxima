@@ -361,7 +361,12 @@ namespace Format {
 
       tree.Append(std::move(cell));
     }
+  /* The warning from gcc is correct. But an old MacOs compiler errors out
+     on correct code, here. */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wredundant-move"
     return std::move(tree);
+#pragma GCC diagnostic pop
   }
 
   std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &text,
@@ -522,7 +527,12 @@ namespace Format {
     if (!line.empty())
       tree.Append(std::make_unique<GroupCell>(config, GC_TYPE_CODE, line));
     
+  /* The warning from gcc is correct. But an old MacOs compiler errors out
+     on correct code, here. */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wredundant-move"
     return std::move(tree);
+#pragma GCC diagnostic pop
   }
   
   std::unique_ptr<GroupCell> ParseMACFile(wxTextBuffer &text, bool xMaximaFile,

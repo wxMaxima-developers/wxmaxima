@@ -1235,7 +1235,13 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all) {
       break;
   }
 
+ 
+  /* The warning from gcc is correct. But an old MacOs compiler errors out
+     on correct code, here. */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wredundant-move"
   return std::move(tree);
+#pragma GCC diagnostic pop
 }
 
 std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
