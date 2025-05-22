@@ -1,12 +1,12 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 23.12.0-DevelopmentSnapshot ] */
+/* [ Created with wxMaxima version 25.04.0-DevelopmentSnapshot ] */
 /* [wxMaxima: title   start ]
 Memoizing
    [wxMaxima: title   end   ] */
 
 
 /* [wxMaxima: section start ]
-s
+Introduction
    [wxMaxima: section end   ] */
 
 
@@ -142,21 +142,21 @@ arrayinfo(primes);
 
 
 /* [wxMaxima: comment start ]
-Calculating primes[10000] in one go requires to calculate primes[9999], which in turn requires to calculate primes[9998], which (as this effectively is a recursive function call) eventually exceeds the lisp's stack limit. Calculating primes[10000] in several steps is possible, instead:
+Calculating primes[1000] in one go requires to calculate primes[999], which in turn requires to calculate primes[998], which (as this effectively is a recursive function call) eventually exceeds the lisp's stack limit. Calculating primes[1000] in several steps is possible, instead:
    [wxMaxima: comment end   ] */
 
 
 /* [wxMaxima: input   start ] */
+primes[100];
+primes[200];
+primes[300];
+primes[400];
+primes[500];
+primes[600];
+primes[700];
+primes[800];
+primes[900];
 primes[1000];
-primes[2000];
-primes[3000];
-primes[4000];
-primes[5000];
-primes[6000];
-primes[7000];
-primes[8000];
-primes[9000];
-primes[10000];
 /* [wxMaxima: input   end   ] */
 
 
@@ -171,12 +171,12 @@ showtime:true$
 
 
 /* [wxMaxima: input   start ] */
-primes[11000];
+primes[1100];
 /* [wxMaxima: input   end   ] */
 
 
 /* [wxMaxima: input   start ] */
-primes[11000];
+primes[1100];
 /* [wxMaxima: input   end   ] */
 
 
@@ -212,4 +212,4 @@ fib[10];
 
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 23.12.0-DevelopmentSnapshot"$
+"Created with wxMaxima 25.04.0-DevelopmentSnapshot"$
