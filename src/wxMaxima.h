@@ -874,6 +874,7 @@ public:
   virtual void MacOpenFile(const wxString &file);
 
 private:
+  std::unique_ptr<wxLogChain> m_logChain;
   static std::vector<wxProcess *> m_wxMaximaProcesses;
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
   void GenerateDebugReport(wxDebugReport::Context ctx);
