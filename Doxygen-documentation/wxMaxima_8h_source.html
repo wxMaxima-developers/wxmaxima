@@ -600,35 +600,36 @@ $(function() {
 <div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> MacOpenFile(<span class="keyword">const</span> wxString &amp;file);</div>
 <div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span> </div>
 <div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>  <span class="keyword">static</span> std::vector&lt;wxProcess *&gt; m_wxMaximaProcesses;</div>
-<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span><span class="preprocessor">#if wxUSE_ON_FATAL_EXCEPTION &amp;&amp; wxUSE_CRASHREPORT</span></div>
-<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span>  <span class="keywordtype">void</span> GenerateDebugReport(wxDebugReport::Context ctx);</div>
-<div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span>  std::unique_ptr&lt;wxLocale&gt; m_locale;</div>
-<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>  std::unique_ptr&lt;wxTranslations&gt; m_translations;</div>
-<div class="line"><a id="l00884" name="l00884"></a><span class="lineno">  884</span>  wxString m_configFileName;</div>
-<div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span>  <a class="code hl_class" href="classDirstructure.html">Dirstructure</a> m_dirstruct;</div>
-<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> m_allWindowsInOneProcess;</div>
-<div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span>};</div>
-<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span> </div>
-<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span><span class="keyword">class </span>MyDropTarget : <span class="keyword">public</span> wxFileDropTarget</div>
-<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>{</div>
-<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>  <span class="keyword">explicit</span> MyDropTarget(<a class="code hl_class" href="classwxMaxima.html">wxMaxima</a> *wxmax)</div>
-<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>    { m_wxmax = wxmax; }</div>
-<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span> </div>
-<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>  <span class="keywordtype">bool</span> OnDropFiles(wxCoord x, wxCoord y, <span class="keyword">const</span> wxArrayString &amp;files);</div>
-<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span> </div>
-<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>  <a class="code hl_class" href="classwxMaxima.html">wxMaxima</a> *m_wxmax = NULL;</div>
-<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>};</div>
-<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span> </div>
-<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span> </div>
+<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>  std::unique_ptr&lt;wxLogChain&gt; m_logChain;</div>
+<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>  <span class="keyword">static</span> std::vector&lt;wxProcess *&gt; m_wxMaximaProcesses;</div>
+<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span><span class="preprocessor">#if wxUSE_ON_FATAL_EXCEPTION &amp;&amp; wxUSE_CRASHREPORT</span></div>
+<div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span>  <span class="keywordtype">void</span> GenerateDebugReport(wxDebugReport::Context ctx);</div>
+<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>  std::unique_ptr&lt;wxLocale&gt; m_locale;</div>
+<div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span>  std::unique_ptr&lt;wxTranslations&gt; m_translations;</div>
+<div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span>  wxString m_configFileName;</div>
+<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>  <a class="code hl_class" href="classDirstructure.html">Dirstructure</a> m_dirstruct;</div>
+<div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> m_allWindowsInOneProcess;</div>
+<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>};</div>
+<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span> </div>
+<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span><span class="keyword">class </span>MyDropTarget : <span class="keyword">public</span> wxFileDropTarget</div>
+<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>{</div>
+<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>  <span class="keyword">explicit</span> MyDropTarget(<a class="code hl_class" href="classwxMaxima.html">wxMaxima</a> *wxmax)</div>
+<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>    { m_wxmax = wxmax; }</div>
+<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span> </div>
+<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>  <span class="keywordtype">bool</span> OnDropFiles(wxCoord x, wxCoord y, <span class="keyword">const</span> wxArrayString &amp;files);</div>
+<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span> </div>
+<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>  <a class="code hl_class" href="classwxMaxima.html">wxMaxima</a> *m_wxmax = NULL;</div>
+<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>};</div>
+<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span> </div>
+<div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span> </div>
-<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span><span class="comment">// cppcheck-suppress noConstructor</span></div>
-<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span> </div>
-<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span><span class="preprocessor">#endif </span><span class="comment">// WXMAXIMA_H</span></div>
+<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span> </div>
+<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span><span class="comment">// cppcheck-suppress noConstructor</span></div>
+<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span> </div>
+<div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span><span class="preprocessor">#endif </span><span class="comment">// WXMAXIMA_H</span></div>
 <div class="ttc" id="aCell_8h_html_accb32ccb3ff8f2c6736a6ebe544894fd"><div class="ttname"><a href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a></div><div class="ttdeci">CellType</div><div class="ttdoc">The supported types of math cells.</div><div class="ttdef"><b>Definition:</b> Cell.h:64</div></div>
 <div class="ttc" id="aDirstructure_8h_html"><div class="ttname"><a href="Dirstructure_8h.html">Dirstructure.h</a></div><div class="ttdoc">This file declares the class DirStructure.</div></div>
 <div class="ttc" id="aMathParser_8h_html"><div class="ttname"><a href="MathParser_8h.html">MathParser.h</a></div><div class="ttdoc">The header file for the xml cell parser.</div></div>
