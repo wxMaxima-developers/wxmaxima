@@ -39,7 +39,7 @@
 #include <Image.h>
 #include <vector>
 #include <utility>
-#include "wx/log.h"
+#include <wx/log.h>
 #include "StringUtils.h"
 #include "SvgBitmap.h"
 #include <wx/mstream.h>
