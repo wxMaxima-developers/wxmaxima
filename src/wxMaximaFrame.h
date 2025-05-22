@@ -235,12 +235,6 @@ protected:
   wxString wxMaximaManualLocation();
 public:
 
-  /*! Makes this window the debug log target of all windows from this maxima process
-
-    Only necessary on the mac where the same process creates loads of windows.
-  */
-  void BecomeLogTarget();
-
   //! Get the list of human-readable sidebarnames and IDs
   const std::unordered_map<int, wxString>  &GetSidebarNames() const {return m_sidebarNames;}
 protected:
