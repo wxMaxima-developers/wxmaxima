@@ -202,7 +202,6 @@ void SymbolsSidebar::UpdateUserSymbols() {
   if (m_userSymbols == NULL)
     return;
 
-  wxLogNull blocker;
 
   // Clear the user symbols pane
   if(!m_userSymbols_Last.IsEmpty())
@@ -217,7 +216,6 @@ void SymbolsSidebar::AddUserSymbols() {
   if (m_userSymbols == NULL)
     return;
 
-  wxLogNull blocker;
   
   // Populate the pane with a button per user symbol
   for (auto ch : m_configuration->SymbolPaneAdditionalChars()) {

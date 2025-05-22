@@ -339,7 +339,6 @@ void Maxima::SendToWxMaxima()
                     event->SetInt(tag->second);
                     wxXmlDocument xmldoc;
                     wxStringInputStream xmlStream(dataToSend);
-                    wxLogNull suppressErrorDialogs;
                     xmldoc.Load(xmlStream);
                     event->SetPayload(xmldoc);
                   }

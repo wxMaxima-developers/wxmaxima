@@ -240,7 +240,6 @@ namespace Format {
               wxTextOutputStream txtstrm(ostream);
               txtstrm.WriteString(xmlText);
               wxMemoryInputStream istream(ostream);
-              wxLogNull suppressErrorMessages;
               doc.Load(istream);
             }
 
