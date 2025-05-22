@@ -1939,6 +1939,10 @@ wxMaxima::~wxMaxima() {
   // If we deleted the last Window, delete the log Window
   if (windowcount == 0) {
     wxDELETE(wxm_logwindow);
+    /* On the mac wxMaxima might still run if the last window has closed.
+       This means we have no log window and therefore cannot log anything without
+       creating pop-ups. */
+    wxLog::EnableLogging(false);
   }
 }
 
