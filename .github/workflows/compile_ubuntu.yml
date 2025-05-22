@@ -23,7 +23,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt-get update
-             sudo apt-get install appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dpkg-dev po4a
+             sudo apt-get install appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dpkg-dev po4a rpmlint lintian
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra -ansi"
@@ -50,6 +50,8 @@ jobs:
         run: |
              cd build
              cmake --build . --target package
+             lintian *.deb
+             rpmlint *.rpm
              cd ..
       - name: run_tests
         run: |
