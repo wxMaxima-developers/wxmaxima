@@ -365,7 +365,7 @@ bool MyApp::OnInit() {
     if (!freopen("CON", "w", stderr)) wxLogMessage(_("Re-opening STDERR failed."));
     if (!freopen("CON", "r", stdin)) wxLogMessage(_("Re-opening STDIN failed."));
 #endif
-    m_logChain = new wxLogChain(new wxLogStderr);
+    m_logChain = std::unique_ptr<wxLogChain>(new wxLogChain(new wxLogStderr));
   }
 
   if (cmdLineParser.Found(wxS("debug")))
