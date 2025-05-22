@@ -5557,6 +5557,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   // Indent the document and test it for validity.
   wxXmlDocument doc;
   {
+    wxLogNull suppressErrorMessages;
     wxMemoryOutputStream ostream;
     wxTextOutputStream txtstrm(ostream);
     txtstrm.WriteString(output);

@@ -40,6 +40,7 @@ RegexSearch::~RegexSearch()
 
 RegexSearch::Match RegexSearch::FindNext(const wxString &string, std::size_t start)
 {
+  wxLogNull suppress;
   Match retval;
   if(start >= string.Length())
     return retval;
@@ -56,6 +57,7 @@ RegexSearch::Match RegexSearch::FindNext(const wxString &string, std::size_t sta
 
 RegexSearch::Match RegexSearch::Replace(wxString *string, std::size_t start, const wxString &replacement)
 {
+  wxLogNull suppress;
   Match retval;
   if(start >= string->Length())
     return retval;
@@ -82,6 +84,7 @@ RegexSearch::Match RegexSearch::Replace_Reverse(wxString *string, std::size_t st
 
 RegexSearch::Match RegexSearch::FindNext_Reverse(const wxString &string, std::size_t start)
 {
+  wxLogNull suppress;
   Match retval;
   std::size_t matchstart;
   std::size_t length;

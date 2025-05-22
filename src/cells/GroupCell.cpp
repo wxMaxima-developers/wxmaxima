@@ -928,6 +928,7 @@ wxRect GroupCell::HideRect() const {
 
 wxString GroupCell::ToString() const {
   // We don't want illegal strings to pop up assert dialogues
+  wxLogNull logNull;
   wxString str;
 
   if (m_inputLabel != NULL) {

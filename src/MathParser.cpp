@@ -1277,6 +1277,7 @@ std::unique_ptr<Cell> MathParser::ParseLine(wxString s, CellType style) {
     wxStringInputStream xmlStream(s);
 
     {
+      wxLogNull suppressErrorMessages;
 #if wxCHECK_VERSION(3, 3, 0)
       xml.Load(xmlStream, wxXMLDOC_KEEP_WHITESPACE_NODES);
 #else

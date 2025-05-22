@@ -243,6 +243,7 @@ void History::SetSavePlace(const wxString &saveplace)
 History::~History() {
   if(!m_saveplace.IsEmpty())
     {
+      wxLogNull suppressor;
       wxString history_xml = "<history>\n";
       long start = m_commands.size() - 301;
       if(start < 0)

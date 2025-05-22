@@ -242,6 +242,7 @@ void FindReplacePane::OnFindStringChange(wxCommandEvent &event) {
   m_findReplaceData->SetFindString(m_searchText->GetValue());
   if(m_findReplaceData->GetRegexSearch())
     {
+      wxLogNull suppressor;
       wxRegEx test(m_searchText->GetValue());
       if(test.IsValid())
         m_searchText->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));

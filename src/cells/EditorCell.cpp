@@ -557,6 +557,7 @@ void EditorCell::ConvertNumToUNicodeChar() {
 
   wxString newChar;
   {
+    wxLogNull suppressConversationErrors;
     newChar = wxChar(number);
   }
   m_text = m_text.Left(CursorPosition()) + newChar +
@@ -3395,6 +3396,7 @@ size_t EditorCell::ReplaceAll_RegEx(const wxString &oldString, const wxString &n
   if (oldString == wxEmptyString)
     return 0;
 
+  wxLogNull suppressor;
   SaveValue();
   wxString newText;
   size_t count = 0;
@@ -3527,6 +3529,7 @@ bool EditorCell::FindNext_RegEx(wxString str, const bool &down) {
   wxString text(m_text);
   text.Replace(wxS('\r'), wxS(' '));
 
+  wxLogNull suppressor;
   RegexSearch regexSearch(str);
   RegexSearch::Match match;
 
@@ -3662,6 +3665,7 @@ bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
                                         const wxString &newString) {
   wxString text(m_text);
   text.Replace(wxS("\r"), wxS(" "));
+  wxLogNull suppressor;
 
   auto start = SelectionLeft();
   auto end   = SelectionRight();
