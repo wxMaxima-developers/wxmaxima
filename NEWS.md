@@ -8,6 +8,8 @@
   also mac files were problematic). At least the issue with mac
   files is solved.
 - Replace unicode fractions in math input.
+- Use wxArtProvider images for the copy/print icons in the config dialogue.
+  They were very small on Linux (Ubuntu).
 
 # 25.04.0
 

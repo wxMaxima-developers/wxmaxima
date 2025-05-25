@@ -69,8 +69,6 @@
 #include <utility>
 #include <algorithm>
 
-extern unsigned char GTK_PRINT_SVG_GZ[];
-extern size_t GTK_PRINT_SVG_GZ_SIZE;
 
 /* declared in wxm_media_playback_start_svg.h,
    which is included in Toolbar.cpp */
@@ -210,14 +208,11 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
                                          DOCUMENT_EXPORT_SVG_GZ_SIZE));
   m_imageList->Add(ArtProvider::GetImage(this, wxS("options"), imgSize, OPTIONS_SVG_GZ,
                                          OPTIONS_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxS("edit-copy"), imgSize,
-                                         EDIT_COPY_CONFDIALOGUE_SVG_GZ,
-                                         EDIT_COPY_CONFDIALOGUE_SVG_GZ_SIZE));
+  m_imageList->Add(wxArtProvider::GetBitmap(wxART_COPY, wxART_OTHER, wxSize(imgSize, imgSize)));
   m_imageList->Add(ArtProvider::GetImage(this, wxS("media-playback-start"), imgSize,
                                          MEDIA_PLAYBACK_START_SVG_GZ,
                                          MEDIA_PLAYBACK_START_SVG_GZ_SIZE));
-  m_imageList->Add(ArtProvider::GetImage(this, wxS("gtk-print"), imgSize, GTK_PRINT_SVG_GZ,
-                                         GTK_PRINT_SVG_GZ_SIZE));
+  m_imageList->Add(wxArtProvider::GetBitmap(wxART_PRINT, wxART_OTHER, wxSize(imgSize, imgSize)));
   m_imageList->Add(ArtProvider::GetImage(this, wxS("edit-undo"), imgSize, VIEW_REFRESH_SVG_GZ,
                                          VIEW_REFRESH_SVG_GZ_SIZE));
   m_notebook->SetImageList(m_imageList.get());
