@@ -130,7 +130,6 @@ void AutoComplete::AddSymbols(wxXmlDocument xml) {
                                                 this, std::move(xml));
   else
     AddSymbols_Backgroundtask(std::move(xml));
-
 }
 
 void AutoComplete::AddSymbols_Backgroundtask_string(wxString xml) {

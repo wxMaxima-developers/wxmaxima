@@ -38,10 +38,10 @@
 #include <wx/tokenzr.h>
 
 namespace Format {
-  
+
   const wxString WXMFirstLine =
     wxS("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/");
-  
+
   struct WXMHeader //-V730
   {
     WXMHeaderId id;

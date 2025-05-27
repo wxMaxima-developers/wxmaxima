@@ -584,7 +584,7 @@ wxString Configuration::FindProgram(const wxString &location) {
 
   if (wxFileExists(location))
     return location;
-  
+
   wxString exePath;
   #if defined __WXOSX__
   // Find the program within our application bundle.
@@ -596,7 +596,7 @@ wxString Configuration::FindProgram(const wxString &location) {
   exePath = wxStandardPaths::Get().GetExecutablePath() + location;
   if (wxFileExists(exePath))
     return exePath;
-  
+
 
   if (!(location.EndsWith("/") || location.EndsWith("\\"))) {
     wxPathList pathlist;

@@ -318,7 +318,6 @@ void Maxima::SendToWxMaxima()
                     if(charsInTag == 0)
                       --charsInTag;
                   }
-                
               }
 
             wxThreadEvent *event = new wxThreadEvent(EVT_MAXIMA);

@@ -41,7 +41,7 @@ public:
   class Match
   {
   public:
-    Match(){m_start=wxNOT_FOUND;m_length = 0;}
+    Match(){m_start=wxNOT_FOUND; m_length = 0;}
     void SetStart(std::size_t start){m_start = start; m_found = true;}
     void SetNotFound(){m_found = false;}
     bool Found() const {return m_found;}

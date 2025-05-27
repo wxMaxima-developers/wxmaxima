@@ -71,7 +71,7 @@ public:
   EditorCell(GroupCell *group, Configuration *config, wxString text = {});
   EditorCell(GroupCell *group, const EditorCell &cell);
   void UpdateSelectionString();
-  void SetSelection(size_t start, size_t end){m_selectionStart = start; m_selectionEnd = end;UpdateSelectionString();}
+  void SetSelection(size_t start, size_t end){m_selectionStart = start; m_selectionEnd = end; UpdateSelectionString();}
   bool SelectionActive() const {return m_selectionStart != m_selectionEnd;}
   void ClearSelection() {SelectionEnd(SelectionEnd());}
   void SelectionStart(size_t start) {m_selectionStart = start; UpdateSelectionString();}

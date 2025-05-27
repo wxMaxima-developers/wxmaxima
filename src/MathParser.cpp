@@ -1235,7 +1235,7 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all) {
       break;
   }
 
- 
+
   /* The warning from gcc is correct. But an old MacOs compiler errors out
      on correct code, here. */
 #pragma GCC diagnostic push

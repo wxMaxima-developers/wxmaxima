@@ -323,7 +323,7 @@ private:
         return wxDIR_IGNORE;
       }
   };
- 
+
   jthread m_addSymbols_backgroundThread;
   jthread m_addFiles_backgroundThread;
   //! Is locked when someone accesses a keyword list

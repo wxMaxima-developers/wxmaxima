@@ -234,7 +234,6 @@ protected:
 
   wxString wxMaximaManualLocation();
 public:
-
   //! Get the list of human-readable sidebarnames and IDs
   const std::unordered_map<int, wxString>  &GetSidebarNames() const {return m_sidebarNames;}
 protected:
@@ -293,7 +292,7 @@ protected:
   //! Looks up which demo file belongs to a wxWindowID
   wxString GetDemoFile(wxWindowID id) const;
 protected:
-  std::array<wxString,10> m_statusTextHistory;
+  std::array<wxString, 10> m_statusTextHistory;
   void OnMenuStatusText(wxMenuEvent &event);
   std::unordered_map<wxWindowID, wxString> m_demoFilesIDs;
 

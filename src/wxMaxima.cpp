@@ -8178,7 +8178,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
           wxWindowPtr<MatWiz> mwiz(new MatWiz(this, -1, &m_configuration, _("Enter matrix"),
                                               type, h, w));
           // wiz->Centre(wxBOTH);
-          mwiz->ShowWindowModalThenDo([this,mwiz,cmd](int retcode) {
+          mwiz->ShowWindowModalThenDo([this, mwiz, cmd](int retcode) {
             if (retcode == wxID_OK) {
               MenuCommand(cmd + mwiz->GetValue());
             }
@@ -8416,7 +8416,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_draw_accuracy){
       wxWindowPtr<WizDrawAccuracy> wiz(new WizDrawAccuracy(this, &m_configuration, dimensions));
       // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this,wiz,dimensions](int retcode) {
+      wiz->ShowWindowModalThenDo([this, wiz, dimensions](int retcode) {
         if (retcode == wxID_OK)
           AddDrawParameter(wiz->GetValue(), dimensions);
       });

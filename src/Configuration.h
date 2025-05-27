@@ -265,7 +265,7 @@ public:
   void SetZoomFactor_temporarily(double newzoom){
     if(m_zoomFactor != newzoom)
       RecalculateForce();
-    m_zoomFactor = newzoom; ;
+    m_zoomFactor = newzoom;
   }
 
   /*! Scales a distance [in pixels] according to the zoom factor
