@@ -61,7 +61,7 @@ namespace Format {
   configuration->ClearFilesToSave();
   // Don't update the worksheet whilst exporting
   //  wxWindowUpdateLocker noUpdates(this);
-  wxLogMessage(_("Starting to save the worksheet as .wxmx"));
+  wxLogMessage(_("Starting to save the worksheet as .wxmx. Filename: %s"), file);
   // delete temp file if it already exists
   wxString backupfile = file + wxS("~");
   if (wxFileExists(backupfile)) {
