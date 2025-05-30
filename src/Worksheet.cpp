@@ -4861,9 +4861,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   output << wxS("  <link rel=\"stylesheet\" type=\"text/css\" href=\"") +
     encoded_css_url + wxS("\">\n");
 
-  wxString version(wxS(WXMAXIMA_VERSION));
-
-  wxString versionString = "Created with wxMaxima version " + version;
+  wxString versionString = wxS("Created with wxMaxima version " WXMAXIMA_VERSION);
   wxString versionPad;
   for (unsigned int i = 0; i < versionString.Length(); i++)
     versionPad += "*";
@@ -5924,9 +5922,7 @@ bool Worksheet::ExportToMAC(const wxString &file) {
 
   if (wxm) {
     AddLineToFile(backupfile, Format::WXMFirstLine);
-    wxString version(wxS(WXMAXIMA_VERSION));
-    AddLineToFile(backupfile, wxS("/* [ Created with wxMaxima version ") +
-                  version + wxS(" ] */"));
+    AddLineToFile(backupfile, wxS("/* [ Created with wxMaxima version " WXMAXIMA_VERSION " ] */"));
   }
 
   bool fixReorderedIndices = m_configuration->FixReorderedIndices();
