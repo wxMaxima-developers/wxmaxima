@@ -6,6 +6,8 @@ if (POLICY CMP0048)
     cmake_policy(SET CMP0048 NEW)
 endif (POLICY CMP0048)
 
+# Note: The VERSION in the project command should only contain digits and periods.
+# I it used for Mac Info.plist and there this is a requirement.
 project(wxMaxima
         DESCRIPTION "wxMaxima is a document based interface for the computer algebra system Maxima."
         HOMEPAGE_URL "https://wxmaxima-developers.github.io/wxmaxima/"
