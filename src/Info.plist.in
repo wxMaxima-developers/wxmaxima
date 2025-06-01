@@ -19,9 +19,9 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>@WXMAXIMA_VERSION@</string>
+    <string>@PROJECT_VERSION@</string>
     <key>CFBundleVersion</key>
-    <string>@VERSION@</string>
+    <string>@PROJECT_VERSION@</string>
     <key>LSMinimumSystemVersion</key>
     <string>10.4.0</string>
 
@@ -75,8 +75,6 @@
     <string>${MACOSX_BUNDLE_GUI_IDENTIFIER}</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
-    <key>CFBundleLongVersionString</key>
-    <string>${MACOSX_BUNDLE_LONG_VERSION_STRING}</string>
     <key>CFBundleName</key>
     <string>${MACOSX_BUNDLE_BUNDLE_NAME}</string>
     <key>CFBundleSignature</key>
