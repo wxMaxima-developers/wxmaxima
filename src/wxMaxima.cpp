@@ -5724,6 +5724,7 @@ bool wxMaxima::SaveFile(bool forceSave) {
       config->Write(wxS("defaultExt"), wxS("wxm"));
       if (!GetWorksheet()->ExportToMAC(file)) {
         StatusSaveFailed();
+        LoggingMessageBox(_("Saving failed!"), _("Error!"), wxOK);
         StartAutoSaveTimer();
         return false;
       } else {
@@ -5737,6 +5738,7 @@ bool wxMaxima::SaveFile(bool forceSave) {
                                 m_variablesPane->GetVarnames(),
                                 GetWorksheet()->GetHCaret())) {
         StatusSaveFailed();
+        LoggingMessageBox(_("Saving failed!"), _("Error!"), wxOK);
         StartAutoSaveTimer();
         return false;
       } else {
@@ -6453,6 +6455,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
                                      "GIF image (*.gif)|*.gif|"
                                      "Scaleable vector graphics (*.svg)|*.svg|"
                                      "Windows bitmap (*.bmp)|*.bmp|"
+#if wxCHECK_VERSION(3, 3, 0)
+                                     "WebP (*.webp)|*.webp|"
+#endif                                     
                                      "Portable anymap (*.pnm)|*.pnm|"
                                      "Tagged image file format (*.tif)|*.tif|"
                                      "X pixmap (*.xpm)|*.xpm"),
@@ -10119,6 +10124,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
                                "JPEG image (*.jpg)|*.jpg|"
                                "GIF image (*.gif)|*.gif|"
                                "Windows bitmap (*.bmp)|*.bmp|"
+#if wxCHECK_VERSION(3, 3, 0)
+                                     "WebP (*.webp)|*.webp|"
+#endif                                     
                                "Portable anymap (*.pnm)|*.pnm|"
                                "Tagged image file format (*.tif)|*.tif|"
                                "X pixmap (*.xpm)|*.xpm");
@@ -10126,6 +10134,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
             selectorString = _("PNG image (*.png)|*.png|"
                                "JPEG image (*.jpg)|*.jpg|"
                                "Windows bitmap (*.bmp)|*.bmp|"
+#if wxCHECK_VERSION(3, 3, 0)
+                               "WebP (*.webp)|*.webp|"
+#endif                                     
                                "GIF image (*.gif)|*.gif|"
                                "Portable anymap (*.pnm)|*.pnm|"
                                "Tagged image file format (*.tif)|*.tif|"
@@ -10153,8 +10164,17 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
 
       wxString newImg = wxFileSelector(
                                        _("Change Image"), m_lastPath, wxEmptyString, wxEmptyString,
-                                       _("Image files (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, "
-                                         "*.svgz)|*.png;*.jpg;*.bmp;*.xpm;*.gif;*.svg;*.svgz"),
+                                       _("Image files (*.png, *.jpg, "
+#if wxCHECK_VERSION(3, 3, 0)
+                                         "*.webp, "
+#endif                                     
+
+                                         "*.bmp, *.xpm, *.gif, *.svg, "
+                                         "*.svgz)|*.png;*.jpg;"
+#if wxCHECK_VERSION(3, 3, 0)
+                                         "*.webp;"
+#endif                                     
+                                         "*.bmp;*.xpm;*.gif;*.svg;*.svgz"),
                                        wxFD_OPEN);
 
       if (!newImg.Length()) {
@@ -10861,8 +10881,17 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
           (event.GetId() == EventIDs::menu_format_image)){
       wxString file = wxFileSelector(
                                      _("Insert Image"), m_lastPath, wxEmptyString, wxEmptyString,
-                                     _("Image files (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, "
-                                       "*.svgz)|*.png;*.jpg;*.bmp;*.xpm;*.gif;*.svg;*.svgz"),
+                                     _("Image files (*.png, *.jpg,"
+#if wxCHECK_VERSION(3, 3, 0)
+                                         "*.webp,"
+#endif                                     
+
+                                       "*.bmp, *.xpm, *.gif, *.svg, "
+                                       "*.svgz)|*.png;*.jpg;"
+#if wxCHECK_VERSION(3, 3, 0)
+                                         "*.webp;"
+#endif                                     
+                                       "*.bmp;*.xpm;*.gif;*.svg;*.svgz"),
                                      wxFD_OPEN);
       if (file != wxEmptyString)
         GetWorksheet()->OpenHCaret(file, GC_TYPE_IMAGE);
