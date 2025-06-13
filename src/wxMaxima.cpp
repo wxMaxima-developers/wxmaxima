@@ -6450,17 +6450,26 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_copy_to_file) {
     wxString file = wxFileSelector(_("Save Selection to Image"), m_lastPath,
                                    wxS("image.png"), wxS("png"),
+#if wxCHECK_VERSION(3, 3, 0)
                                    _("PNG image (*.png)|*.png|"
                                      "JPEG image (*.jpg)|*.jpg|"
                                      "GIF image (*.gif)|*.gif|"
                                      "Scaleable vector graphics (*.svg)|*.svg|"
                                      "Windows bitmap (*.bmp)|*.bmp|"
-#if wxCHECK_VERSION(3, 3, 0)
                                      "WebP (*.webp)|*.webp|"
-#endif                                     
                                      "Portable anymap (*.pnm)|*.pnm|"
                                      "Tagged image file format (*.tif)|*.tif|"
                                      "X pixmap (*.xpm)|*.xpm"),
+#else
+                                   _("PNG image (*.png)|*.png|"
+                                     "JPEG image (*.jpg)|*.jpg|"
+                                     "GIF image (*.gif)|*.gif|"
+                                     "Scaleable vector graphics (*.svg)|*.svg|"
+                                     "Windows bitmap (*.bmp)|*.bmp|"
+                                     "Portable anymap (*.pnm)|*.pnm|"
+                                     "Tagged image file format (*.tif)|*.tif|"
+                                     "X pixmap (*.xpm)|*.xpm"),
+#endif
                                    wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     if (file.Length()) {
       GetWorksheet()->CopyToFile(file);
@@ -10126,7 +10135,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
                                "Windows bitmap (*.bmp)|*.bmp|"
 #if wxCHECK_VERSION(3, 3, 0)
                                      "WebP (*.webp)|*.webp|"
-#endif                                     
+#endif
                                "Portable anymap (*.pnm)|*.pnm|"
                                "Tagged image file format (*.tif)|*.tif|"
                                "X pixmap (*.xpm)|*.xpm");
@@ -10136,7 +10145,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
                                "Windows bitmap (*.bmp)|*.bmp|"
 #if wxCHECK_VERSION(3, 3, 0)
                                "WebP (*.webp)|*.webp|"
-#endif                                     
+#endif
                                "GIF image (*.gif)|*.gif|"
                                "Portable anymap (*.pnm)|*.pnm|"
                                "Tagged image file format (*.tif)|*.tif|"
@@ -10167,13 +10176,13 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
                                        _("Image files (*.png, *.jpg, "
 #if wxCHECK_VERSION(3, 3, 0)
                                          "*.webp, "
-#endif                                     
+#endif
 
                                          "*.bmp, *.xpm, *.gif, *.svg, "
                                          "*.svgz)|*.png;*.jpg;"
 #if wxCHECK_VERSION(3, 3, 0)
                                          "*.webp;"
-#endif                                     
+#endif
                                          "*.bmp;*.xpm;*.gif;*.svg;*.svgz"),
                                        wxFD_OPEN);
 
@@ -10884,13 +10893,13 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
                                      _("Image files (*.png, *.jpg,"
 #if wxCHECK_VERSION(3, 3, 0)
                                          "*.webp,"
-#endif                                     
+#endif
 
                                        "*.bmp, *.xpm, *.gif, *.svg, "
                                        "*.svgz)|*.png;*.jpg;"
 #if wxCHECK_VERSION(3, 3, 0)
                                          "*.webp;"
-#endif                                     
+#endif
                                        "*.bmp;*.xpm;*.gif;*.svg;*.svgz"),
                                      wxFD_OPEN);
       if (file != wxEmptyString)
