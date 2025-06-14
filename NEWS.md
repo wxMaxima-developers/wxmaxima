@@ -10,6 +10,7 @@
 - Replace unicode fractions in math input.
 - Use wxArtProvider images for the copy/print icons in the config dialogue.
   They were very small on Linux (Ubuntu).
+- Support webp images if wxWidgets >= 3.3.0 is used.
 
 # 25.04.0
 
