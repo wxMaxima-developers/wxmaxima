@@ -10195,7 +10195,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
 
       wxString newImg = wxFileSelector(
                                        _("Change Image"), m_lastPath, wxEmptyString, wxEmptyString,
-                                       _("Image files") + "(*.png, *.jpg, "
+                                       _("Image files") + " (*.png, *.jpg, "
 #if wxCHECK_VERSION(3, 3, 0)
                                          "*.webp, "
 #endif
@@ -10912,7 +10912,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
           (event.GetId() == EventIDs::menu_format_image)){
       wxString file = wxFileSelector(
                                      _("Insert Image"), m_lastPath, wxEmptyString, wxEmptyString,
-                                     _("Image files") + "(*.png, *.jpg,"
+                                     _("Image files") + " (*.png, *.jpg,"
 #if wxCHECK_VERSION(3, 3, 0)
                                          "*.webp,"
 #endif
