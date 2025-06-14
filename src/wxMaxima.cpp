@@ -4711,10 +4711,14 @@ wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells,
   }
   /* The warning from gcc is correct. But an old MacOs compiler errors out
      on correct code, here. */
+#ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wredundant-move"
+#endif
   return std::move(tree);
+#ifdef __GNUC__
 #pragma GCC diagnostic pop
+#endif
 }
 
 wxString wxMaxima::EscapeForLisp(wxString str) {

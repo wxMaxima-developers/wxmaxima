@@ -194,10 +194,14 @@ std::unique_ptr<Cell> Cell::CopyList(GroupCell *group) const {
     copy.Append(src.Copy(group));
   /* The warning from gcc is correct. But an old MacOs compiler errors out
      on correct code, here. */
+#ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wredundant-move"
+#endif
   return std::move(copy);
+#ifdef __GNUC__
 #pragma GCC diagnostic pop
+#endif
 }
 
 std::unique_ptr<Cell> Cell::CopyList(GroupCell *group, const Cell *cell) {

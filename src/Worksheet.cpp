@@ -4552,10 +4552,14 @@ std::unique_ptr<Cell> Worksheet::CopySelection(Cell *start, Cell *end,
 
   /* The warning from gcc is correct. But an old MacOs compiler errors out
      on correct code, here. */
+#ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wredundant-move"
+#endif
     return std::move(copy);
+#ifdef __GNUC__
 #pragma GCC diagnostic pop
+#endif
 }
 
 void Worksheet::AddLineToFile(wxTextFile &output, const wxString &s) {
