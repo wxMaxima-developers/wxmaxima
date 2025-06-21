@@ -7,7 +7,7 @@ env:
 
 permissions:
   contents: read
-  
+
 jobs:
   # Commented out, because github has no ARM runners
   #
@@ -103,7 +103,7 @@ jobs:
         with:
           name: wxMaxima_ia64.dmg.sha512
           path: wxMaxima.dmg.sha512
-          
+
   compile_Make:
     runs-on: macos-latest
 
@@ -158,7 +158,7 @@ jobs:
           # a pull request then we can checkout the head.
           fetch-depth: 15
       - name: Install macports
-        run: | 
+        run: |
           if test -e "/opt/local/bin"; then echo Macports already installed; else aria2c https://github.com/macports/macports-base/releases/download/v2.9.3/MacPorts-2.9.3-14-Sonoma.pkg && sudo installer -pkg MacPorts-2.9.3-14-Sonoma.pkg -target /; fi
           echo "/opt/local/bin" >> $GITHUB_PATH
       - name: Update macports
@@ -188,3 +188,34 @@ jobs:
       - name: Cleanup
         run: |
              port -f uninstall inactive || echo "No cleanup necessary"
+
+  # The following step is for solving issue build problems mentioned in issue #2016
+  # There is an 'old build system' and a 'new one'. This should check, if the configure
+  # step with the "new build system" works with Xcode.
+  configure_Xcode:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout wxMaxima from git
+        uses: actions/checkout@v4
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 15
+      - name: Install the dependencies
+        run: |
+             export PATH=$PATH:/usr/local/opt/gettext/bin
+             export HOMEBREW_NO_AUTO_UPDATE=1
+             set -e
+             brew install gettext ninja pandoc wxwidgets
+             set +e
+      - name: xcode-select
+        run: |
+             xcode-select -print-path
+             sudo xcode-select --reset
+             xcode-select -print-path
+      - name: Configure wxMaxima with Xcode
+        run: |
+             mkdir build-wxm
+             cd build-wxm
+             cmake -G Xcode ..
