@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>To build <a class="el" href="classwxMaxima.html">wxMaxima</a> from sources you need to have a C++ compiler (C++14), wxWidgets &gt;= 3.0 (including development headers) and CMake &gt;= 3.16 installed.</p>
-<h2><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md11"></a>
 Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Fink, Homebrew,...)</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is built using the CMake build system.</p>
 <p>The following steps will build and install <a class="el" href="classwxMaxima.html">wxMaxima</a> using CMake. Download and extract <a class="el" href="classwxMaxima.html">wxMaxima</a> and change in the <a class="el" href="classwxMaxima.html">wxMaxima</a> tree. Then:</p>
@@ -95,60 +95,60 @@ Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Fink, Home
 <div class="fragment"><div class="line">cmake --build . -- package</div>
 </div><!-- fragment --><p>To update the locale files (po and pot) in the source code:</p>
 <div class="fragment"><div class="line">cmake --build . -- update-locale</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md9"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md12"></a>
 Testing wxMaxima</h3>
 <p>You can use (or test) a fresh compiled <a class="el" href="classwxMaxima.html">wxMaxima</a> (without installation) by calling <code>./wxmaxima-local</code> from the build-directory.</p>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> comes with several tests, which can be run using</p>
 <div class="fragment"><div class="line">ctest</div>
 </div><!-- fragment --><p>from the build directory. If you want to run a single test, you can use the option <code>-R &lt;name-of-the-test&gt;</code> when calling <code>ctest</code>. The tests (and their names) can be seen in the file <code>test/CMakeLists.txt</code> of the source code.</p>
 <p>On Linux/Unix the tests usually require a X Server; if you start the tests without an X server (e.g. automatic tests using cron, when doing tests using a continuous integration system, etc.) you can use <code>xvfb-run</code> to create a virtual X Server environment, e.g. just run: <code>xvfb-run ctest</code></p>
-<h3><a class="anchor" id="autotoc_md10"></a>
+<h3><a class="anchor" id="autotoc_md13"></a>
 macOS: Creating a portable .apk and .dmg installer</h3>
 <p>This requires wxWidgets to be installed, e.G. using MacPorts. If you are in the extracted <a class="el" href="classwxMaxima.html">wxMaxima</a> directory, call e.g.</p>
 <div class="fragment"><div class="line">mkdir ../build-wxm</div>
 <div class="line">cmake -S . -B ../build-wxm -DCMAKE_INSTALL_PREFIX=.</div>
 <div class="line">cmake --build ../build-wxm</div>
 <div class="line">cmake --build ../build-wxm --install</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md11"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md14"></a>
 Ubuntu or Debian build prerequisites</h3>
 <div class="fragment"><div class="line">sudo apt-get install build-essential libwxgtk3.2-gtk3-dev libwxgtk-webview3.2-gtk3-dev wx3.2-i18n ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a</div>
 </div><!-- fragment --><p>On Ubuntu &lt; 24.04 install an older wxWidgets version (<code>libwxbase3.0-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev</code> instead of the version 3.2).</p>
 <p>beforehand or (if apt-get is configured to load the source package repositories and not only the binary packages) by the simpler</p>
 <div class="fragment"><div class="line">sudo apt-get build-dep wxmaxima</div>
 </div><!-- fragment --><p>You must use the apt-get install command when the version you are building has dependencies which are not listed as dependencies in your distro's repository version of wxmaxima.</p>
-<h3><a class="anchor" id="autotoc_md12"></a>
+<h3><a class="anchor" id="autotoc_md15"></a>
 macOS X prerequisites</h3>
 <p>On macOS X you most probably need the command-line compiler one can tell Xcode to install. Additionally wxWidgets needs to be installed, which can be done using Homebrew, Fink or MacPorts and should be named wxWidgets or wxMac there. XCode versions older than version 13.0 have problems compiling <a class="el" href="classwxMaxima.html">wxMaxima</a>.</p>
 <p>Additional information about building on macOS:</p>
 <ul>
 <li><a href="https://themaximalist.org/about/my-mac-os-installation/">https://themaximalist.org/about/my-mac-os-installation/</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<h2><a class="anchor" id="autotoc_md16"></a>
 Compiling on Windows</h2>
 <p>You can use the MinGW-w64 (<a href="https://www.mingw-w64.org/">https://www.mingw-w64.org/</a>) compilers.</p>
 <p>You can also build using MS Visual Studio 2019 or newer. Since MSVS provides adequate versions of both cmake and ninja, there's no need to install those. The build has to start from within the <em>x64 Native Tools Command Prompt</em>, and you have to first build wxWidgets before you build wxmaxima. You can get some inspiration about how to do both of these steps by examining the PowerShell scripts that do the building within <code>.appveyor.yml</code> file.</p>
-<h3><a class="anchor" id="autotoc_md14"></a>
+<h3><a class="anchor" id="autotoc_md17"></a>
 Note for the Mingw-w64 compiler and crosscompiler</h3>
 <p>These compilers come with two forms of thread support - win32 and posix. The win32 thread version does not support std::thread, which <a class="el" href="classwxMaxima.html">wxMaxima</a> uses for multithreading, so be sure to install or reconfigure the posix version.</p>
 <p>On Ubuntu Linux the crosscompiler <code>x86_64-w64-mingw32-g++</code> can be reconfigured using:</p>
 <div class="fragment"><div class="line">update-alternatives --config x86_64-w64-mingw32-g++</div>
 </div><!-- fragment --><p>(For 32 bit the same works for the 32 bit crosscompiler <code>i686-w64-mingw32-g++</code>.)</p>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md18"></a>
 Compiling for Android 9</h2>
 <p>Some information how to build for Android 9 can be found in the <a class="el" href="classwxMaxima.html">wxMaxima</a> discussion forum: <a href="https://github.com/wxMaxima-developers/wxmaxima/discussions/1594">https://github.com/wxMaxima-developers/wxmaxima/discussions/1594</a></p>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<h2><a class="anchor" id="autotoc_md19"></a>
 Documentation of the source</h2>
 <p>An HTML version of <a class="el" href="classwxMaxima.html">wxMaxima</a>'s source code documentation can be found at <a href="https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/">https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/</a></p>
 <p><a class="el" href="classA.html">A</a> local version of the documentation of <a class="el" href="classwxMaxima.html">wxMaxima</a>'s source can be generated using doxygen and the <code>doxygen</code> target:</p>
 <div class="fragment"><div class="line">cmake --build ../build-wxm -- doxygen</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md17"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md20"></a>
 wxWidgets isn't found</h2>
 <p>CMake has currently (Feb 2022) problems finding a wxWidgets that was compiled using CMake. If that is the reason maybe wxWidgets was compiled without wxWebView. In that case</p>
 <div class="fragment"><div class="line">cmake -S . -B ../build-wxm -DWXM_DISABLE_WEBVIEW=on</div>
 </div><!-- fragment --><p>might allow cmake to find wxWidgets at the cost of loosing the integrated dockable help browser.</p>
-<h1><a class="anchor" id="autotoc_md18"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 Additional information for packagers</h1>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 Creating a standalone wxMaxima</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a>, if linked statically, is pretty standalone and therefore fit for creating a portable app:</p>
 <ul>
@@ -160,7 +160,7 @@ Creating a standalone wxMaxima</h2>
 <li>If the translation files are not found, the program will still work, but will be using english.</li>
 <li>And if there are no manual files <a class="el" href="classwxMaxima.html">wxMaxima</a> will redirect the system's web browser to an online version of the manual, instead.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md23"></a>
 Troubleshooting</h2>
 <p>If you have problems when compiling <a class="el" href="classwxMaxima.html">wxMaxima</a>, maybe a look in the configurations for various CI-Systems (<code>.appveyor.yml</code> and files in <code>.github/workflows/</code>) may be helpful to see, how <a class="el" href="classwxMaxima.html">wxMaxima</a> is compiled on these systems. </p>
 </div></div><!-- contents -->
