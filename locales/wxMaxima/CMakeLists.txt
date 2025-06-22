@@ -39,9 +39,12 @@ if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
 	# too (at build time, not at install time), so that running ./wxmaxima-local
 	# (without installing it) can find the message files and i18n works.
 	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES")
-	add_custom_target(wxmaxima-locale-${LANG} ALL
+	add_custom_command(OUTPUT "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES/wxMaxima.mo"
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES/wxMaxima.mo"
-            DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo")
+            DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
+            COMMENT "Copying ${LANG}.gmo to ${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES/wxMaxima.mo for ./wxmaxima_local")
+	add_custom_target(copy_mo_file_${LANG}_for_wxmaxima_local ALL DEPENDS "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES/wxMaxima.mo")
+
 
 	add_custom_target(
 	    ${LANG}_po
@@ -59,7 +62,6 @@ if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
 
     message(STATUS "The updated POT and PO files were generated in the build directory.")
     message(STATUS "Call 'make update-locale' to update the .po files in the source tree, too.")
-    file(GLOB NEW_PO_FILES "${CMAKE_BINARY_DIR}/locales/*.po")
 else()
     message(STATUS "Gettext not found - translations of wxMaxima will be disabled")
 endif()
