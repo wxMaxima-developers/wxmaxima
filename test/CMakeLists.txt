@@ -889,7 +889,6 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --debug --logtostderr --pipe  --batch displaying3DCurves.wxm)
 
-# Halts in the CI. No idea, why.
 add_test(
    NAME tutorial_memoizing
    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
