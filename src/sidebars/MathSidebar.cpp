@@ -92,7 +92,14 @@ MathSidebar::MathSidebar(wxWindow *parent, int ID)
   grid->Add(new wxButton(this, EventIDs::button_plot3, _("Plot 3D..."),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-
+  Connect(wxEVT_SIZE, wxSizeEventHandler(MathSidebar::OnSize), NULL, this);
   SetSizer(grid);
   FitInside();
+}
+
+void MathSidebar::OnSize(wxSizeEvent &event) {
+  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is
+  // shrinking
+  SetVirtualSize(GetClientSize());
+  event.Skip();
 }

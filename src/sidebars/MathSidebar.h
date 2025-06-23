@@ -43,6 +43,8 @@
 
 class MathSidebar : public wxScrolled<wxPanel>
 {
+protected:
+  void OnSize(wxSizeEvent &event);
 public:
   explicit MathSidebar(wxWindow *parent, int ID = wxID_ANY);
 };
