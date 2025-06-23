@@ -22,7 +22,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*!\file
-  This file declares the class StatSidebar, that provides some statistics buttons.
+  This file declares the class FormatSidebar, that provides buttons for inserting wxMaxima cells.
 */
 #ifndef FORMATSIDEBAR_H
 #define FORMATSIDEBAR_H
@@ -36,6 +36,9 @@
 
 class FormatSidebar : public wxScrolled<wxPanel>
 {
+protected:
+  void OnSize(wxSizeEvent &event);
+
 public:
   explicit FormatSidebar(wxWindow *parent, int ID = wxID_ANY);
 };

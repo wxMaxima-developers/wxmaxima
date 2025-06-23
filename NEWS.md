@@ -12,6 +12,8 @@
   They were very small on Linux (Ubuntu).
 - Support webp images if wxWidgets >= 3.3.0 is used.
 - Fix the General Math sidebar resize issue (#2022)
+- Fix the resizing of the 'Insert cell' sidebar (same problem as
+  the General Math sidebar.
 
 # 25.04.0
 

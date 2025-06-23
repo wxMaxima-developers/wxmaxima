@@ -26,7 +26,7 @@
 /*! \file
   This file defines the class FormatSidebar
 
-  FormatSidebar shows some miscellaneous unicode symbols the user might find useful.
+  FormatSidebar shows buttons to insert wxMaxima cell types.
 */
 #include "FormatSidebar.h"
 #include "ButtonWrapSizer.h"
@@ -70,6 +70,14 @@ FormatSidebar::FormatSidebar(wxWindow *parent, int ID)
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
 
+  Connect(wxEVT_SIZE, wxSizeEventHandler(FormatSidebar::OnSize), NULL, this);
   SetSizer(grid);
   FitInside();
+}
+
+void FormatSidebar::OnSize(wxSizeEvent &event) {
+  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is
+  // shrinking
+  SetVirtualSize(GetClientSize());
+  event.Skip();
 }
