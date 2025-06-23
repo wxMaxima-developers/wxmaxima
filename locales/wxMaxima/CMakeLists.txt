@@ -35,14 +35,19 @@ if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
 	    DESTINATION "share/locale/${LANG}/LC_MESSAGES/"
 	    RENAME "wxMaxima.mo")
 
-	# 'install' message files in the directory "${CMAKE_BINARY_DIR}/share/locale/..."
-	# too (at build time, not at install time), so that running ./wxmaxima-local
-	# (without installing it) can find the message files and i18n works.
-	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES")
-	add_custom_target(copy_mo_file_${LANG}_for_wxmaxima_local ALL DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
-            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES/wxMaxima.mo"
-            COMMENT "Copying ${LANG}.gmo to ${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES/wxMaxima.mo for ./wxmaxima_local")
-
+  if(NOT APPLE)
+    # 'install' message files in the directory "${CMAKE_BINARY_DIR}/share/locale/..."
+    # too (at build time, not at install time), so that running ./wxmaxima-local
+    # (without installing it) can find the message files and i18n works.
+    #
+    # This does not work with Apple XCode - they only support a 'new' build system, and I have NO idea how to fix it.
+    # ./wxmaxima-local will probably work, but maybe only with English locale.
+    # if someone knows, how to solve the issue, we are happy to hear from you.
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES")
+    add_custom_target(copy_mo_file_${LANG}_for_wxmaxima_local ALL DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
+              COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES/wxMaxima.mo"
+              COMMENT "Copying ${LANG}.gmo to ${CMAKE_BINARY_DIR}/share/locale/${LANG}/LC_MESSAGES/wxMaxima.mo for ./wxmaxima_local")
+  endif()
 
 	add_custom_target(
 	    ${LANG}_po
