@@ -14,6 +14,9 @@
 - Fix the General Math sidebar resize issue (#2022).
 - Fix the resizing of the 'Insert cell' sidebar (same problem as
   the 'General Math' sidebar).
+- Fix debug message boxes after closing a file (#2016).
+- Fix build with current Mac XCode ('old'/new' build system).
+  (reported in a comment in issue #2016).
 
 # 25.04.0
 
