@@ -280,102 +280,91 @@ $(function() {
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classToolBar.html#af5e4cbfe4c18f5419d204d88cfa8c58c">SetDefaultCellStyle</a>();</div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classToolBar.html#a16d14207612dc5460b523a4cf904fe52">UpdateBitmaps</a>();</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  wxBitmap GetCopyBitmap(wxSize siz);</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  wxBitmap GetPasteBitmap(wxSize siz);</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  wxBitmap GetEvalAllBitmap(wxSize siz);</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  wxBitmap GetEvalBitmap(wxSize siz);</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  wxBitmap GetNewBitmap(wxSize siz);</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  wxBitmap GetOpenBitmap(wxSize siz);</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  wxBitmap GetSaveBitmap(wxSize siz);</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  wxBitmap GetPrintBitmap(wxSize siz);</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  wxBitmap GetPreferencesBitmap(wxSize siz);</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  wxBitmap GetCutBitmap(wxSize siz);</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  wxBitmap GetUndoBitmap(wxSize siz);</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  wxBitmap GetRedoBitmap(wxSize siz);</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  wxBitmap GetSelectAllBitmap(wxSize siz);</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  wxBitmap GetFindBitmap(wxSize siz);</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  wxBitmap GetRestartBitmap(wxSize siz);</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  wxBitmap GetInterruptBitmap(wxSize siz);</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  wxBitmap GetEvalTillHereBitmap(wxSize siz);</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  wxBitmap GetHelpBitmap(wxSize siz);</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  wxBitmap GetEvalRestBitmap(wxSize siz);</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  wxBitmap GetHideCodeBitmap(wxSize siz);</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  wxSize GetOptimalBitmapSize();</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  wxSize GetPPI();</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  <span class="keywordtype">bool</span> ShowUndoRedo(){<span class="keywordtype">bool</span> show = <span class="keyword">false</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showUndoRedo&quot;</span>, &amp;show);</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="keywordflow">return</span> show;}</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  <span class="keywordtype">void</span> ShowUndoRedo(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showUndoRedo&quot;</span>, show);}</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  <span class="keywordtype">bool</span> ShowCopyPaste(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showCopyPaste&quot;</span>, &amp;show);</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="keywordflow">return</span> show;}</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <span class="keywordtype">void</span> ShowCopyPaste(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showCopyPaste&quot;</span>, show);}</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <span class="keywordtype">bool</span> ShowOpenSave(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showOpenSave&quot;</span>, &amp;show);</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="keywordflow">return</span> show;}</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  <span class="keywordtype">void</span> ShowOpenSave(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showOpenSave&quot;</span>, show);}</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  <span class="keywordtype">bool</span> ShowNew(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showNew&quot;</span>, &amp;show);</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    <span class="keywordflow">return</span> show;}</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  <span class="keywordtype">void</span> ShowNew(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showNew&quot;</span>, show);}</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <span class="keywordtype">bool</span> ShowSearch(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showSearch&quot;</span>, &amp;show);</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    <span class="keywordflow">return</span> show;}</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  <span class="keywordtype">void</span> ShowSearch(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showSearch&quot;</span>, show);}</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  <span class="keywordtype">bool</span> ShowHelp(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showHelp&quot;</span>, &amp;show);</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="keywordflow">return</span> show;}</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  <span class="keywordtype">void</span> ShowHelp(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showHelp&quot;</span>, show);}</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  <span class="keywordtype">bool</span> ShowPrint(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showPrint&quot;</span>, &amp;show);</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    <span class="keywordflow">return</span> show;}</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  <span class="keywordtype">void</span> ShowPrint(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showPrint&quot;</span>, show);}</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  <span class="keywordtype">bool</span> ShowOptions(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showOptions&quot;</span>, &amp;show);</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    <span class="keywordflow">return</span> show;}</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <span class="keywordtype">void</span> ShowOptions(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showOptions&quot;</span>, show);}</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  <span class="keywordtype">bool</span> ShowSelectAll(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showSelectAll&quot;</span>, &amp;show);</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="keywordflow">return</span> show;}</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  <span class="keywordtype">void</span> ShowSelectAll(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showSelectAll&quot;</span>, show);}</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  <span class="keywordtype">void</span> OnSize(wxSizeEvent &amp;event);</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  <span class="keywordtype">void</span> OnMouseRightDown(wxMouseEvent &amp;event);</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  <span class="keywordtype">void</span> OnMenu(wxMenuEvent &amp;event);</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  wxSize m_ppi;</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  <a class="code hl_enumeration" href="GroupCell_8h.html#ac96e474603b83b95ba1717acefc3e831">GroupType</a> m_defaultCellStyle = GC_TYPE_CODE;</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  wxChoice *m_textStyle = NULL;</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  std::size_t m_animationDisplayedIndex = 0;</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>  std::size_t m_animationMaxIndex;</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>  <span class="keywordtype">bool</span> m_canRedo_old = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  <span class="keywordtype">bool</span> m_canUndo_old = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>  <span class="keywordtype">bool</span> m_canCopy_old = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>  <span class="keywordtype">bool</span> m_canCut_old  = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  <span class="keywordtype">bool</span> m_canSave_old = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  <span class="keywordtype">bool</span> m_canPrint_old = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  <span class="keywordtype">bool</span> m_canEvalTillHere_old = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  <span class="keywordtype">bool</span> m_canEvalThisCell_old = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  std::unique_ptr&lt;<span class="keyword">struct </span>wxm_NSVGrasterizer, decltype(std::free)*&gt; m_svgRast{<span class="keyword">nullptr</span>, std::free};</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  <span class="keywordtype">bool</span> m_worksheetEmpty_old  = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  <a class="code hl_enumeration" href="classToolBar.html#a327b655c366e7932f751d2815cc629fc">AnimationStartStopState</a> m_AnimationStartStopState = <a class="code hl_enumvalue" href="classToolBar.html#a327b655c366e7932f751d2815cc629fca8b0edf47e7aef5c0e26028bd98b43ee4">Inactive</a>;</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="keywordtype">bool</span> m_needsInformation = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>};</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  wxBitmap GetEvalAllBitmap(wxSize siz);</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  wxBitmap GetEvalBitmap(wxSize siz);</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  wxBitmap GetPreferencesBitmap(wxSize siz);</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  wxBitmap GetSelectAllBitmap(wxSize siz);</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  wxBitmap GetRestartBitmap(wxSize siz);</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  wxBitmap GetInterruptBitmap(wxSize siz);</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  wxBitmap GetEvalTillHereBitmap(wxSize siz);</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  wxBitmap GetEvalRestBitmap(wxSize siz);</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  wxBitmap GetHideCodeBitmap(wxSize siz);</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  wxSize GetOptimalBitmapSize();</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  wxSize GetPPI();</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  <span class="keywordtype">bool</span> ShowUndoRedo(){<span class="keywordtype">bool</span> show = <span class="keyword">false</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showUndoRedo&quot;</span>, &amp;show);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <span class="keywordflow">return</span> show;}</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="keywordtype">void</span> ShowUndoRedo(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showUndoRedo&quot;</span>, show);}</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  <span class="keywordtype">bool</span> ShowCopyPaste(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showCopyPaste&quot;</span>, &amp;show);</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="keywordflow">return</span> show;}</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  <span class="keywordtype">void</span> ShowCopyPaste(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showCopyPaste&quot;</span>, show);}</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  <span class="keywordtype">bool</span> ShowOpenSave(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showOpenSave&quot;</span>, &amp;show);</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="keywordflow">return</span> show;}</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <span class="keywordtype">void</span> ShowOpenSave(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showOpenSave&quot;</span>, show);}</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  <span class="keywordtype">bool</span> ShowNew(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showNew&quot;</span>, &amp;show);</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keywordflow">return</span> show;}</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <span class="keywordtype">void</span> ShowNew(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showNew&quot;</span>, show);}</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  <span class="keywordtype">bool</span> ShowSearch(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showSearch&quot;</span>, &amp;show);</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="keywordflow">return</span> show;}</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  <span class="keywordtype">void</span> ShowSearch(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showSearch&quot;</span>, show);}</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  <span class="keywordtype">bool</span> ShowHelp(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showHelp&quot;</span>, &amp;show);</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    <span class="keywordflow">return</span> show;}</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <span class="keywordtype">void</span> ShowHelp(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showHelp&quot;</span>, show);}</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <span class="keywordtype">bool</span> ShowPrint(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showPrint&quot;</span>, &amp;show);</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="keywordflow">return</span> show;}</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <span class="keywordtype">void</span> ShowPrint(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showPrint&quot;</span>, show);}</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <span class="keywordtype">bool</span> ShowOptions(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showOptions&quot;</span>, &amp;show);</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    <span class="keywordflow">return</span> show;}</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  <span class="keywordtype">void</span> ShowOptions(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showOptions&quot;</span>, show);}</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  <span class="keywordtype">bool</span> ShowSelectAll(){<span class="keywordtype">bool</span> show = <span class="keyword">true</span>; wxConfig::Get()-&gt;Read(<span class="stringliteral">&quot;Toolbar/showSelectAll&quot;</span>, &amp;show);</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    <span class="keywordflow">return</span> show;}</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  <span class="keywordtype">void</span> ShowSelectAll(<span class="keywordtype">bool</span> show){wxConfig::Get()-&gt;Write(<span class="stringliteral">&quot;Toolbar/showSelectAll&quot;</span>, show);}</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  <span class="keywordtype">void</span> OnSize(wxSizeEvent &amp;event);</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  <span class="keywordtype">void</span> OnMouseRightDown(wxMouseEvent &amp;event);</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  <span class="keywordtype">void</span> OnMenu(wxMenuEvent &amp;event);</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  wxSize m_ppi;</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  <a class="code hl_enumeration" href="GroupCell_8h.html#ac96e474603b83b95ba1717acefc3e831">GroupType</a> m_defaultCellStyle = GC_TYPE_CODE;</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  wxChoice *m_textStyle = NULL;</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  std::size_t m_animationDisplayedIndex = 0;</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  std::size_t m_animationMaxIndex;</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  <span class="keywordtype">bool</span> m_canRedo_old = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  <span class="keywordtype">bool</span> m_canUndo_old = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  <span class="keywordtype">bool</span> m_canCopy_old = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  <span class="keywordtype">bool</span> m_canCut_old  = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  <span class="keywordtype">bool</span> m_canSave_old = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  <span class="keywordtype">bool</span> m_canPrint_old = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  <span class="keywordtype">bool</span> m_canEvalTillHere_old = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <span class="keywordtype">bool</span> m_canEvalThisCell_old = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  std::unique_ptr&lt;<span class="keyword">struct </span>wxm_NSVGrasterizer, decltype(std::free)*&gt; m_svgRast{<span class="keyword">nullptr</span>, std::free};</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  <span class="keywordtype">bool</span> m_worksheetEmpty_old  = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>  <a class="code hl_enumeration" href="classToolBar.html#a327b655c366e7932f751d2815cc629fc">AnimationStartStopState</a> m_AnimationStartStopState = <a class="code hl_enumvalue" href="classToolBar.html#a327b655c366e7932f751d2815cc629fca8b0edf47e7aef5c0e26028bd98b43ee4">Inactive</a>;</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  <span class="keywordtype">bool</span> m_needsInformation = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>};</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aAnimationCell_8h_html"><div class="ttname"><a href="AnimationCell_8h.html">AnimationCell.h</a></div><div class="ttdoc">This file declares the class AnimationCell.</div></div>
 <div class="ttc" id="aGroupCell_8h_html"><div class="ttname"><a href="GroupCell_8h.html">GroupCell.h</a></div><div class="ttdoc">This file defines the class GroupCell that bundles input and output in the worksheet.</div></div>
 <div class="ttc" id="aGroupCell_8h_html_ac96e474603b83b95ba1717acefc3e831"><div class="ttname"><a href="GroupCell_8h.html#ac96e474603b83b95ba1717acefc3e831">GroupType</a></div><div class="ttdeci">GroupType</div><div class="ttdoc">All types a GroupCell can be of.</div><div class="ttdef"><b>Definition:</b> GroupCell.h:42</div></div>
 <div class="ttc" id="aclassAnimationCell_html"><div class="ttname"><a href="classAnimationCell.html">AnimationCell</a></div><div class="ttdef"><b>Definition:</b> AnimationCell.h:46</div></div>
 <div class="ttc" id="aclassToolBar_html"><div class="ttname"><a href="classToolBar.html">ToolBar</a></div><div class="ttdef"><b>Definition:</b> ToolBar.h:41</div></div>
-<div class="ttc" id="aclassToolBar_html_a0d54cfda2bfa40f035d6ee1d72c8d9e2"><div class="ttname"><a href="classToolBar.html#a0d54cfda2bfa40f035d6ee1d72c8d9e2">ToolBar::AddTools</a></div><div class="ttdeci">void AddTools()</div><div class="ttdoc">Remove all ools and then add all tools that are requested/fit in the toolbar/...</div><div class="ttdef"><b>Definition:</b> ToolBar.cpp:169</div></div>
+<div class="ttc" id="aclassToolBar_html_a0d54cfda2bfa40f035d6ee1d72c8d9e2"><div class="ttname"><a href="classToolBar.html#a0d54cfda2bfa40f035d6ee1d72c8d9e2">ToolBar::AddTools</a></div><div class="ttdeci">void AddTools()</div><div class="ttdoc">Remove all ools and then add all tools that are requested/fit in the toolbar/...</div><div class="ttdef"><b>Definition:</b> ToolBar.cpp:155</div></div>
 <div class="ttc" id="aclassToolBar_html_a0d5ce6075969191ba8ee8cf6a3ea6264"><div class="ttname"><a href="classToolBar.html#a0d5ce6075969191ba8ee8cf6a3ea6264">ToolBar::ShowUserInputBitmap</a></div><div class="ttdeci">void ShowUserInputBitmap()</div><div class="ttdoc">Show that user input is needed for maxima to continue.</div><div class="ttdef"><b>Definition:</b> ToolBar.h:69</div></div>
-<div class="ttc" id="aclassToolBar_html_a0e6954f95c0b9c16ae79ebb2cbde086f"><div class="ttname"><a href="classToolBar.html#a0e6954f95c0b9c16ae79ebb2cbde086f">ToolBar::SetCellStyle</a></div><div class="ttdeci">void SetCellStyle(GroupType style)</div><div class="ttdoc">Set the cell style to show for the current cell.</div><div class="ttdef"><b>Definition:</b> ToolBar.cpp:523</div></div>
+<div class="ttc" id="aclassToolBar_html_a0e6954f95c0b9c16ae79ebb2cbde086f"><div class="ttname"><a href="classToolBar.html#a0e6954f95c0b9c16ae79ebb2cbde086f">ToolBar::SetCellStyle</a></div><div class="ttdeci">void SetCellStyle(GroupType style)</div><div class="ttdoc">Set the cell style to show for the current cell.</div><div class="ttdef"><b>Definition:</b> ToolBar.cpp:460</div></div>
 <div class="ttc" id="aclassToolBar_html_a0fac15979055383ed52ddeddec55558e"><div class="ttname"><a href="classToolBar.html#a0fac15979055383ed52ddeddec55558e">ToolBar::m_plotSlider</a></div><div class="ttdeci">wxSlider * m_plotSlider</div><div class="ttdoc">The slider for animations.</div><div class="ttdef"><b>Definition:</b> ToolBar.h:110</div></div>
-<div class="ttc" id="aclassToolBar_html_a16d14207612dc5460b523a4cf904fe52"><div class="ttname"><a href="classToolBar.html#a16d14207612dc5460b523a4cf904fe52">ToolBar::UpdateBitmaps</a></div><div class="ttdeci">void UpdateBitmaps()</div><div class="ttdoc">Update the bitmaps on ppi changes.</div><div class="ttdef"><b>Definition:</b> ToolBar.cpp:352</div></div>
-<div class="ttc" id="aclassToolBar_html_a2069a79d6de58c7385b71e69612f0a36"><div class="ttname"><a href="classToolBar.html#a2069a79d6de58c7385b71e69612f0a36">ToolBar::UpdateSlider</a></div><div class="ttdeci">void UpdateSlider(AnimationCell *cell)</div><div class="ttdoc">Updates the slider to match the Slide Show cell.</div><div class="ttdef"><b>Definition:</b> ToolBar.cpp:123</div></div>
+<div class="ttc" id="aclassToolBar_html_a16d14207612dc5460b523a4cf904fe52"><div class="ttname"><a href="classToolBar.html#a16d14207612dc5460b523a4cf904fe52">ToolBar::UpdateBitmaps</a></div><div class="ttdeci">void UpdateBitmaps()</div><div class="ttdoc">Update the bitmaps on ppi changes.</div><div class="ttdef"><b>Definition:</b> ToolBar.cpp:334</div></div>
+<div class="ttc" id="aclassToolBar_html_a2069a79d6de58c7385b71e69612f0a36"><div class="ttname"><a href="classToolBar.html#a2069a79d6de58c7385b71e69612f0a36">ToolBar::UpdateSlider</a></div><div class="ttdeci">void UpdateSlider(AnimationCell *cell)</div><div class="ttdoc">Updates the slider to match the Slide Show cell.</div><div class="ttdef"><b>Definition:</b> ToolBar.cpp:109</div></div>
 <div class="ttc" id="aclassToolBar_html_a327b655c366e7932f751d2815cc629fc"><div class="ttname"><a href="classToolBar.html#a327b655c366e7932f751d2815cc629fc">ToolBar::AnimationStartStopState</a></div><div class="ttdeci">AnimationStartStopState</div><div class="ttdoc">All states the &quot;start/stop animation&quot; toolbar button can be in.</div><div class="ttdef"><b>Definition:</b> ToolBar.h:47</div></div>
 <div class="ttc" id="aclassToolBar_html_a327b655c366e7932f751d2815cc629fca8126b37041204f33de2e1b8601f27ac8"><div class="ttname"><a href="classToolBar.html#a327b655c366e7932f751d2815cc629fca8126b37041204f33de2e1b8601f27ac8">ToolBar::Stopped</a></div><div class="ttdeci">@ Stopped</div><div class="ttdoc">The animation is stopped.</div><div class="ttdef"><b>Definition:</b> ToolBar.h:49</div></div>
 <div class="ttc" id="aclassToolBar_html_a327b655c366e7932f751d2815cc629fca8b0edf47e7aef5c0e26028bd98b43ee4"><div class="ttname"><a href="classToolBar.html#a327b655c366e7932f751d2815cc629fca8b0edf47e7aef5c0e26028bd98b43ee4">ToolBar::Inactive</a></div><div class="ttdeci">@ Inactive</div><div class="ttdoc">No animation is currently running.</div><div class="ttdef"><b>Definition:</b> ToolBar.h:50</div></div>
@@ -384,8 +373,8 @@ $(function() {
 <div class="ttc" id="aclassToolBar_html_a53fd9ea2ce47343c71adafaa76e144ce"><div class="ttname"><a href="classToolBar.html#a53fd9ea2ce47343c71adafaa76e144ce">ToolBar::ShowFollowBitmap</a></div><div class="ttdeci">void ShowFollowBitmap()</div><div class="ttdoc">Stop showing that user input is needed for maxima to continue.</div><div class="ttdef"><b>Definition:</b> ToolBar.h:79</div></div>
 <div class="ttc" id="aclassToolBar_html_a56051971c1b3ca42d5208d9577e8bf48"><div class="ttname"><a href="classToolBar.html#a56051971c1b3ca42d5208d9577e8bf48">ToolBar::UnsetCellStyle</a></div><div class="ttdeci">void UnsetCellStyle()</div><div class="ttdoc">Called if there is no cell to show the style for.</div><div class="ttdef"><b>Definition:</b> ToolBar.h:216</div></div>
 <div class="ttc" id="aclassToolBar_html_a70cc9d7a523d9d4fcb418fb7b05332c2"><div class="ttname"><a href="classToolBar.html#a70cc9d7a523d9d4fcb418fb7b05332c2">ToolBar::Event</a></div><div class="ttdeci">Event</div><div class="ttdoc">A list of all events the Toolbar can receive.</div><div class="ttdef"><b>Definition:</b> ToolBar.h:93</div></div>
-<div class="ttc" id="aclassToolBar_html_ac12d5ee35ac3608662a83f0d9ad975b4"><div class="ttname"><a href="classToolBar.html#ac12d5ee35ac3608662a83f0d9ad975b4">ToolBar::GetCellType</a></div><div class="ttdeci">GroupType GetCellType()</div><div class="ttdoc">Get the cell style for new cells.</div><div class="ttdef"><b>Definition:</b> ToolBar.cpp:498</div></div>
-<div class="ttc" id="aclassToolBar_html_af5e4cbfe4c18f5419d204d88cfa8c58c"><div class="ttname"><a href="classToolBar.html#af5e4cbfe4c18f5419d204d88cfa8c58c">ToolBar::SetDefaultCellStyle</a></div><div class="ttdeci">void SetDefaultCellStyle()</div><div class="ttdoc">The current style is the new style for new cells.</div><div class="ttdef"><b>Definition:</b> ToolBar.cpp:467</div></div>
+<div class="ttc" id="aclassToolBar_html_ac12d5ee35ac3608662a83f0d9ad975b4"><div class="ttname"><a href="classToolBar.html#ac12d5ee35ac3608662a83f0d9ad975b4">ToolBar::GetCellType</a></div><div class="ttdeci">GroupType GetCellType()</div><div class="ttdoc">Get the cell style for new cells.</div><div class="ttdef"><b>Definition:</b> ToolBar.cpp:435</div></div>
+<div class="ttc" id="aclassToolBar_html_af5e4cbfe4c18f5419d204d88cfa8c58c"><div class="ttname"><a href="classToolBar.html#af5e4cbfe4c18f5419d204d88cfa8c58c">ToolBar::SetDefaultCellStyle</a></div><div class="ttdeci">void SetDefaultCellStyle()</div><div class="ttdoc">The current style is the new style for new cells.</div><div class="ttdef"><b>Definition:</b> ToolBar.cpp:404</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
