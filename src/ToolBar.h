@@ -221,25 +221,14 @@ public:
   //! Update the bitmaps on ppi changes.
   void UpdateBitmaps();
 
-
-  wxBitmap GetCopyBitmap(wxSize siz);
-  wxBitmap GetPasteBitmap(wxSize siz);
+;
   wxBitmap GetEvalAllBitmap(wxSize siz);
   wxBitmap GetEvalBitmap(wxSize siz);
-  wxBitmap GetNewBitmap(wxSize siz);
-  wxBitmap GetOpenBitmap(wxSize siz);
-  wxBitmap GetSaveBitmap(wxSize siz);
-  wxBitmap GetPrintBitmap(wxSize siz);
   wxBitmap GetPreferencesBitmap(wxSize siz);
-  wxBitmap GetCutBitmap(wxSize siz);
-  wxBitmap GetUndoBitmap(wxSize siz);
-  wxBitmap GetRedoBitmap(wxSize siz);
   wxBitmap GetSelectAllBitmap(wxSize siz);
-  wxBitmap GetFindBitmap(wxSize siz);
   wxBitmap GetRestartBitmap(wxSize siz);
   wxBitmap GetInterruptBitmap(wxSize siz);
   wxBitmap GetEvalTillHereBitmap(wxSize siz);
-  wxBitmap GetHelpBitmap(wxSize siz);
   wxBitmap GetEvalRestBitmap(wxSize siz);
   wxBitmap GetHideCodeBitmap(wxSize siz);
 

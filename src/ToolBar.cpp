@@ -32,33 +32,19 @@
 #include "SvgBitmap.h"
 #include "ArtProvider.h"
 #include "art/toolbar/arrow-up-square.h"
-#include "art/toolbar/gtk-new.h"
-#include "art/toolbar/gtk-open.h"
 #include "art/toolbar/dialog-information.h"
-#include "art/toolbar/gtk-paste.h"
-#include "art/toolbar/edit-copy.h"
 #include "art/toolbar/gtk-preferences.h"
-#include "art/toolbar/edit-cut.h"
-#include "art/toolbar/gtk-print.h"
-#include "art/toolbar/edit-find.h"
-#include "art/toolbar/gtk-redo.h"
 #include "art/toolbar/eye-slash.h"
-#include "art/toolbar/gtk-save.h"
 #include "art/toolbar/go-bottom.h"
 #include "art/toolbar/gtk-select-all.h"
 #include "art/toolbar/go-jump.h"
 #include "art/toolbar/gtk-stop.h"
 #include "art/toolbar/go-last.h"
-#include "art/toolbar/gtk-undo.h"
 #include "art/toolbar/go-next.h"
 #include "art/toolbar/input.h"
-#include "art/toolbar/gtk-copy.h"
 #include "art/toolbar/media-playback-stop.h"
-#include "art/toolbar/gtk-cut.h"
 #include "art/toolbar/software-update-urgent.h"
-#include "art/toolbar/gtk-find.h"
 #include "art/toolbar/text.h"
-#include "art/toolbar/gtk-help.h"
 #include "art/toolbar/view-refresh1.h"
 #include "art/media-playback-start.h"
 #include "art/media-playback-reverse.h"
@@ -171,33 +157,32 @@ void ToolBar::AddTools() {
   Clear();
   m_ppi = wxSize(-1, -1);
   if (ShowNew())
-    AddTool(wxID_NEW, _("New"), GetNewBitmap(bitmapSize), _("New document"));
+    AddTool(wxID_NEW, _("New"), wxArtProvider::GetBitmapBundle(wxART_NEW, wxART_TOOLBAR), _("New document"));
   if (ShowOpenSave()) {
-    AddTool(wxID_OPEN, _("Open"), GetOpenBitmap(bitmapSize), _("Open document"));
-    AddTool(wxID_SAVE, _("Save"), GetSaveBitmap(bitmapSize), _("Save document"));
+    AddTool(wxID_OPEN, _("Open"), wxArtProvider::GetBitmapBundle(wxART_FILE_OPEN, wxART_TOOLBAR), _("Open document"));
+    AddTool(wxID_SAVE, _("Save"), wxArtProvider::GetBitmapBundle(wxART_FILE_SAVE, wxART_TOOLBAR), _("Save document"));
   }
   if (ShowPrint()) {
 #ifndef __WXOSX__
     if (ShowOpenSave() || ShowNew())
       AddSeparator();
 #endif
-    AddTool(wxID_PRINT, _("Print"), GetPrintBitmap(bitmapSize), _("Print document"));
+    AddTool(wxID_PRINT, _("Print"), wxArtProvider::GetBitmapBundle(wxART_PRINT, wxART_TOOLBAR), _("Print document"));
   }
   if (ShowUndoRedo()) {
 #ifndef __WXOSX__
     if (ShowOpenSave() || ShowNew())
       AddSeparator();
 #endif
-    AddTool(wxID_UNDO, _("Undo"), GetUndoBitmap(bitmapSize));
-    AddTool(wxID_REDO, _("Redo"), GetRedoBitmap(bitmapSize));
+    AddTool(wxID_UNDO, _("Undo"), wxArtProvider::GetBitmapBundle(wxART_UNDO, wxART_TOOLBAR));
+    AddTool(wxID_REDO, _("Redo"), wxArtProvider::GetBitmapBundle(wxART_REDO, wxART_TOOLBAR));
   }
   if (ShowOptions()) {
 #ifndef __WXOSX__
     if (ShowOpenSave() || ShowNew() || ShowUndoRedo())
       AddSeparator();
 #endif
-    AddTool(wxID_PREFERENCES, _("Options"), GetPreferencesBitmap(bitmapSize),
-            _("Configure wxMaxima"));
+    AddTool(wxID_PREFERENCES, _("Options"), GetPreferencesBitmap(bitmapSize), _("Configure wxMaxima"));
   }
   if (ShowCopyPaste()) {
 #ifndef __WXOSX__
@@ -205,21 +190,19 @@ void ToolBar::AddTools() {
         ShowUndoRedo())
       AddSeparator();
 #endif
-    AddTool(wxID_CUT, _("Cut"), GetCutBitmap(bitmapSize), _("Cut selection"));
-    AddTool(wxID_COPY, _("Copy"), GetCopyBitmap(bitmapSize), _("Copy selection"));
-    AddTool(wxID_PASTE, _("Paste"), GetPasteBitmap(bitmapSize),
-            _("Paste from clipboard"));
+    AddTool(wxID_CUT, _("Cut"), wxArtProvider::GetBitmapBundle(wxART_CUT, wxART_TOOLBAR), _("Cut selection"));
+    AddTool(wxID_COPY, _("Copy"), wxArtProvider::GetBitmapBundle(wxART_COPY, wxART_TOOLBAR), _("Copy selection"));
+    AddTool(wxID_PASTE, _("Paste"), wxArtProvider::GetBitmapBundle(wxART_PASTE, wxART_TOOLBAR), _("Paste from clipboard"));
   }
   if (ShowSelectAll())
-    AddTool(wxID_SELECTALL, _("Select all"), GetSelectAllBitmap(bitmapSize),
-            _("Select all"));
+    AddTool(wxID_SELECTALL, _("Select all"), GetSelectAllBitmap(bitmapSize), _("Select all"));
   if (ShowSearch()) {
 #ifndef __WXOSX__
     if (ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() ||
         ShowUndoRedo() || ShowCopyPaste())
       AddSeparator();
 #endif
-    AddTool(wxID_FIND, _("Find"), GetFindBitmap(bitmapSize), _("Find and replace"));
+    AddTool(wxID_FIND, _("Find"), wxArtProvider::GetBitmapBundle(wxART_FIND_AND_REPLACE, wxART_TOOLBAR), _("Find and replace"));
   }
 #ifndef __WXOSX__
   if (ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() ||
@@ -251,8 +234,7 @@ void ToolBar::AddTools() {
   AddTool(tb_eval_all, _("Evaluate all"), GetEvalAllBitmap(bitmapSize),
           _("Send all cells to maxima"));
 
-  AddTool(
-          tb_evaltillhere, _("Evaluate to point"), GetEvalTillHereBitmap(bitmapSize),
+  AddTool(tb_evaltillhere, _("Evaluate to point"), GetEvalTillHereBitmap(bitmapSize),
           _("Evaluate the file from its beginning to the cell above the cursor"));
 
   AddTool(tb_evaluate_rest, _("Evaluate the rest"), GetEvalRestBitmap(bitmapSize),
@@ -325,7 +307,7 @@ void ToolBar::AddTools() {
   AddControl(m_plotSlider);
   AddStretchSpacer(100);
   if (ShowHelp())
-    AddTool(wxID_HELP, _("Help"), GetHelpBitmap(bitmapSize), _("Show wxMaxima help"));
+    AddTool(wxID_HELP, _("Help"), wxArtProvider::GetBitmapBundle(wxART_HELP, wxART_TOOLBAR), _("Show wxMaxima help"));
   Connect(wxEVT_SIZE, wxSizeEventHandler(ToolBar::OnSize), NULL, this);
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(ToolBar::OnMouseRightDown),
           NULL, this);
@@ -365,18 +347,8 @@ void ToolBar::UpdateBitmaps() {
 
   SetToolBitmap(tb_eval, GetEvalBitmap(bitmapSize));
   SetToolBitmap(tb_eval_all, GetEvalAllBitmap(bitmapSize));
-  SetToolBitmap(wxID_NEW, GetNewBitmap(bitmapSize));
-  SetToolBitmap(wxID_OPEN, GetOpenBitmap(bitmapSize));
-  SetToolBitmap(wxID_SAVE, GetSaveBitmap(bitmapSize));
-  SetToolBitmap(wxID_UNDO, GetUndoBitmap(bitmapSize));
-  SetToolBitmap(wxID_REDO, GetRedoBitmap(bitmapSize));
-  SetToolBitmap(wxID_PRINT, GetPrintBitmap(bitmapSize));
   SetToolBitmap(wxID_PREFERENCES, GetPreferencesBitmap(bitmapSize));
-  SetToolBitmap(wxID_CUT, GetCutBitmap(bitmapSize));
-  SetToolBitmap(wxID_COPY, GetCopyBitmap(bitmapSize));
-  SetToolBitmap(wxID_PASTE, GetPasteBitmap(bitmapSize));
   SetToolBitmap(wxID_SELECTALL, GetSelectAllBitmap(bitmapSize));
-  SetToolBitmap(wxID_FIND, GetFindBitmap(bitmapSize));
   SetToolBitmap(menu_restart_id, GetRestartBitmap(bitmapSize));
   SetToolBitmap(tb_interrupt, GetInterruptBitmap(bitmapSize));
   m_followIcon = ArtProvider::GetImage(this, wxS("arrow_up_square"), bitmapWidth, ARROW_UP_SQUARE_SVG_GZ,
@@ -395,7 +367,6 @@ void ToolBar::UpdateBitmaps() {
     ArtProvider::GetImage(this, wxS("media-playback-stop"), bitmapWidth, MEDIA_PLAYBACK_STOP_SVG_GZ,
                           MEDIA_PLAYBACK_STOP_SVG_GZ_SIZE);
   SetToolBitmap(tb_animation_startStop, m_PlayButton);
-  SetToolBitmap(wxID_HELP, GetHelpBitmap(bitmapSize));
   Realize();
 }
 
@@ -405,44 +376,13 @@ wxBitmap ToolBar::GetEvalAllBitmap(wxSize siz) {
 wxBitmap ToolBar::GetEvalBitmap(wxSize siz) {
   return ArtProvider::GetImage(this, wxS("go-next"), siz.x, GO_NEXT_SVG_GZ, GO_NEXT_SVG_GZ_SIZE);
 }
-wxBitmap ToolBar::GetNewBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-new"), siz.x, GTK_NEW_SVG_GZ, GTK_NEW_SVG_GZ_SIZE);
-}
-
-wxBitmap ToolBar::GetPrintBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-print"), siz.x, GTK_PRINT_SVG_GZ, GTK_PRINT_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetOpenBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-open"), siz.x, GTK_OPEN_SVG_GZ, GTK_OPEN_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetSaveBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-save"), siz.x, GTK_SAVE_SVG_GZ, GTK_SAVE_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetUndoBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-undo"), siz.x, GTK_UNDO_SVG_GZ, GTK_UNDO_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetRedoBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-redo"), siz.x, GTK_REDO_SVG_GZ, GTK_REDO_SVG_GZ_SIZE);
-}
 wxBitmap ToolBar::GetPreferencesBitmap(wxSize siz) {
   return ArtProvider::GetImage(this, wxS("gtk-preferences"), siz.x, GTK_PREFERENCES_SVG_GZ,
                                GTK_PREFERENCES_SVG_GZ_SIZE);
 }
-wxBitmap ToolBar::GetCutBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-cut"), siz.x, GTK_CUT_SVG_GZ, GTK_CUT_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetCopyBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-copy"), siz.x, GTK_COPY_SVG_GZ, GTK_COPY_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetPasteBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-paste"), siz.x, GTK_PASTE_SVG_GZ, GTK_PASTE_SVG_GZ_SIZE);
-}
 wxBitmap ToolBar::GetSelectAllBitmap(wxSize siz) {
   return ArtProvider::GetImage(this, wxS("gtk-select-all"), siz.x, GTK_SELECT_ALL_SVG_GZ,
                                GTK_SELECT_ALL_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetFindBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-find"), siz.x, GTK_FIND_SVG_GZ, GTK_FIND_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetRestartBitmap(wxSize siz) {
   return ArtProvider::GetImage(this, wxS("view-refresh"), siz.x, VIEW_REFRESH1_SVG_GZ,
@@ -453,9 +393,6 @@ wxBitmap ToolBar::GetInterruptBitmap(wxSize siz) {
 }
 wxBitmap ToolBar::GetEvalTillHereBitmap(wxSize siz) {
   return ArtProvider::GetImage(this, wxS("go-bottom"), siz.x, GO_BOTTOM_SVG_GZ, GO_BOTTOM_SVG_GZ_SIZE);
-}
-wxBitmap ToolBar::GetHelpBitmap(wxSize siz) {
-  return ArtProvider::GetImage(this, wxS("gtk-help"), siz.x, GTK_HELP_SVG_GZ, GTK_HELP_SVG_GZ_SIZE);
 }
 wxBitmap ToolBar::GetEvalRestBitmap(wxSize siz) {
   return ArtProvider::GetImage(this, wxS("go-last"), siz.x, GO_LAST_SVG_GZ, GO_LAST_SVG_GZ_SIZE);

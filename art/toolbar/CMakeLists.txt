@@ -2,33 +2,19 @@ include("${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake")
 
 set(IMAGE_FILES
         arrow-up-square
-        gtk-new
-        gtk-open
         dialog-information
-        gtk-paste
-        edit-copy
         gtk-preferences
-        edit-cut
-        gtk-print
-        edit-find
-        gtk-redo
         eye-slash
-        gtk-save
         go-bottom
         gtk-select-all
         go-jump
         gtk-stop
         go-last
-        gtk-undo
         go-next
         input
-        gtk-copy
         media-playback-stop
-        gtk-cut
         software-update-urgent
-        gtk-find
         text
-        gtk-help
         view-refresh1
 )
 
