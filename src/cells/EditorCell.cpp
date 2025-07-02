@@ -3130,7 +3130,7 @@ void EditorCell::StyleTextTexts() {
       // If we fold the cell we only show the first line of text.
       if (FirstLineOnlyEditor()) {
         m_styledText.push_back(
-                               StyledText(line + wxString::Format(_(" ... + %li hidden lines"),
+                               StyledText(line + wxString::Format(_(" ... + %d hidden lines"),
                                                                   GetTextStyle(),
                                                                   static_cast<long>(m_text.Freq(wxS('\n')))), GetTextStyle()));
         break;

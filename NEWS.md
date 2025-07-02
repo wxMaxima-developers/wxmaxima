@@ -17,6 +17,7 @@
 - MacOS: Fix debug message boxes after closing a file (#2016).
 - Fix build with current Mac XCode ('old'/new' build system).
   (reported in a comment in issue #2016).
+- Fix a crash when copying a input cell (collapsed to only show the input).
 
 # 25.04.0
 
