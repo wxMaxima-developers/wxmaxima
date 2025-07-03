@@ -2774,7 +2774,7 @@ bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry, Acti
   if((m_lastAction == action) && (action != any))
     return false;
   m_lastAction = action;
-  
+
   if(!m_history.empty())
     {
       if(m_history.back().GetText() == entry.GetText())
@@ -2797,7 +2797,7 @@ bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry, Acti
       while(m_historyPosition < m_history.size())
         m_history.pop_back();
     }
-  
+
   m_history.push_back(entry);
   m_historyPosition = m_history.size();
 
@@ -2853,7 +2853,7 @@ void EditorCell::Undo() {
   // Save the value before issuing the first undo so we can undo that undo, if we want.
   if(!m_history.CanRedo())
       SaveValue();
-  
+
   // Now actually undo the last change.
   m_history.Undo();
 
@@ -3130,8 +3130,7 @@ void EditorCell::StyleTextTexts() {
       // If we fold the cell we only show the first line of text.
       if (FirstLineOnlyEditor()) {
         m_styledText.push_back(
-                               StyledText(line + wxString::Format(_(" ... + %d hidden lines"),
-                                                                  GetTextStyle(),
+                               StyledText(line + wxString::Format(_(" ... + %li hidden lines"),
                                                                   static_cast<long>(m_text.Freq(wxS('\n')))), GetTextStyle()));
         break;
       }
@@ -3519,7 +3518,7 @@ bool EditorCell::FindNext(wxString str, const bool &down,
         } else {
           CursorPosition(m_text.Length());
         }
-      } 
+      }
       return false;
     }
 }
