@@ -39,7 +39,7 @@
 #include <wx/mstream.h>
 #include <wx/string.h>
 #include <wx/txtstrm.h>
-#ifdef USE_WEBVIEW
+#if !defined(WXM_DISABLE_WEBVIEW)
 #include <wx/webview.h>
 #ifdef __WXMSW__
 #include <wx/msw/webview_ie.h>
@@ -1540,7 +1540,7 @@ bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar,
 }
 
 bool Configuration::OfferInternalHelpBrowser() const {
-#ifdef USE_WEBVIEW
+#if !defined(WXM_DISABLE_WEBVIEW)
 #ifdef __WINDOWS__
 #if wxCHECK_VERSION(3, 1, 5)
   return wxWebView::IsBackendAvailable(wxWebViewBackendEdge);

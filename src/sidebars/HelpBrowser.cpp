@@ -32,7 +32,7 @@
 #include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/textctrl.h>
-#ifdef USE_WEBVIEW
+#if !defined(WXM_DISABLE_WEBVIEW)
 #include <wx/wupdlock.h>
 #ifdef __WXMSW__
 #include <wx/msw/webview_ie.h>
@@ -63,7 +63,7 @@ bool HelpBrowser::AllowOnlineManualP(Configuration *configuration, wxWindow *par
   return false;
 }
 
-#ifdef USE_WEBVIEW
+#if !defined(WXM_DISABLE_WEBVIEW)
 HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
                          MaximaManual *manual, const wxString &url)
   : wxPanel(parent, wxID_ANY), m_maximaManual(manual),

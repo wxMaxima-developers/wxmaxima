@@ -285,7 +285,7 @@ protected:
   virtual wxSize DoGetBestClientSize() const;
   //! The sidebar with the draw commands
   DrawSidebar *m_drawPane = NULL;
-#ifdef USE_WEBVIEW
+#if !defined(WXM_DISABLE_WEBVIEW)
   HelpBrowser *m_helpPane = NULL;
 #endif
 

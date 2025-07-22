@@ -39,7 +39,7 @@
 #include <vector>
 #include <algorithm>
 #include <wx/wupdlock.h>
-#ifdef USE_WEBVIEW
+#if !defined(WXM_DISABLE_WEBVIEW)
 #include <wx/webview.h>
 #ifdef __WXMSW__
 #include <wx/msw/webview_ie.h>

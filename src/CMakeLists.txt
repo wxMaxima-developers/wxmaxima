@@ -261,12 +261,6 @@ if(WXM_INTERPROCEDURAL_OPTIMIZATION)
     endif()
 endif()
 
-if(WXM_DISABLE_WEBVIEW)
-  set(USE_WEBVIEW "0")
-else()
-  set(USE_WEBVIEW "1")
-endif()
-
 if(WXM_ENABLE_PRECOMPILED_HEADERS)
   target_precompile_headers(wxmaxima PUBLIC "precomp.h")
 else()
