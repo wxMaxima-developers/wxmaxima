@@ -104,7 +104,7 @@ $(function() {
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#include &lt;wx/dir.h&gt;</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#include &quot;precomp.h&quot;</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &lt;wx/wx.h&gt;</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#ifdef USE_WEBVIEW</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#if !defined(WXM_DISABLE_WEBVIEW)</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &lt;wx/webview.h&gt;</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#include &lt;wx/panel.h&gt;</span></div>
@@ -119,9 +119,9 @@ $(function() {
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>{</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classHelpBrowser.html#a97f1f32d8d5ba72a03e76a5fd8d94e7f">AllowOnlineManualP</a>(<a class="code hl_class" href="classConfiguration.html">Configuration</a> *configuration, wxWindow *parent);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classHelpBrowser.html#aa30aa60b164108f643cac263f3006a77">   53</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classHelpBrowser.html#aa30aa60b164108f643cac263f3006a77">HelpBrowser</a>(wxWindow *parent, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *configuration, <a class="code hl_class" href="classMaximaManual.html">MaximaManual</a> *manual,</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classHelpBrowser.html">HelpBrowser</a>(wxWindow *parent, <a class="code hl_class" href="classConfiguration.html">Configuration</a> *configuration, <a class="code hl_class" href="classMaximaManual.html">MaximaManual</a> *manual,</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                       <span class="keyword">const</span> wxString &amp;url);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#ifdef USE_WEBVIEW</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#if !defined(WXM_DISABLE_WEBVIEW)</span></div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordtype">void</span> SetURL(<span class="keyword">const</span> wxString &amp;url);</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordtype">void</span> JumpToKeyword(<span class="keyword">const</span> wxString &amp;keyword);</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordtype">void</span> SelectKeywords(<span class="keyword">const</span> std::vector&lt;wxString&gt; &amp;keywords);</div>
@@ -136,7 +136,7 @@ $(function() {
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordtype">void</span> OnWebviewKeyDown(wxKeyEvent &amp;event);</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordtype">void</span> OnActivate(wxActivateEvent &amp;event);</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordtype">void</span> OnTopicButton(wxCommandEvent&amp; event);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classHelpBrowser.html#a97f1f32d8d5ba72a03e76a5fd8d94e7f">AllowOnlineManualP</a>(){<span class="keywordflow">return</span> <a class="code hl_function" href="classHelpBrowser.html#a97f1f32d8d5ba72a03e76a5fd8d94e7f">AllowOnlineManualP</a>(m_configuration, <span class="keyword">this</span>);}</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordtype">bool</span> AllowOnlineManualP(){<span class="keywordflow">return</span> AllowOnlineManualP(m_configuration, <span class="keyword">this</span>);}</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  wxWindowIDRef m_topicButtonID0;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  std::vector&lt;wxWindowIDRef&gt; m_topicButtonIDs;</div>
@@ -159,7 +159,6 @@ $(function() {
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:90</div></div>
 <div class="ttc" id="aclassHelpBrowser_html"><div class="ttname"><a href="classHelpBrowser.html">HelpBrowser</a></div><div class="ttdef"><b>Definition:</b> HelpBrowser.h:48</div></div>
 <div class="ttc" id="aclassHelpBrowser_html_a97f1f32d8d5ba72a03e76a5fd8d94e7f"><div class="ttname"><a href="classHelpBrowser.html#a97f1f32d8d5ba72a03e76a5fd8d94e7f">HelpBrowser::AllowOnlineManualP</a></div><div class="ttdeci">static bool AllowOnlineManualP(Configuration *configuration, wxWindow *parent)</div><div class="ttdoc">Ask the user if we are allowed to access an online manual.</div><div class="ttdef"><b>Definition:</b> HelpBrowser.cpp:42</div></div>
-<div class="ttc" id="aclassHelpBrowser_html_aa30aa60b164108f643cac263f3006a77"><div class="ttname"><a href="classHelpBrowser.html#aa30aa60b164108f643cac263f3006a77">HelpBrowser::HelpBrowser</a></div><div class="ttdeci">HelpBrowser(wxWindow *parent, Configuration *configuration, MaximaManual *manual, const wxString &amp;url)</div><div class="ttdoc">Ask the user if we are allowed to access an online manual.</div></div>
 <div class="ttc" id="aclassMaximaManual_html"><div class="ttname"><a href="classMaximaManual.html">MaximaManual</a></div><div class="ttdef"><b>Definition:</b> MaximaManual.h:59</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
