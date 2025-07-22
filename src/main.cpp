@@ -524,13 +524,13 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
     while (!istream.Eof()) {
       line = textIn.ReadLine();
       if ((line.StartsWith("/*")) || (line.EndsWith("*/"))) {
-        initialContents += _(block);
+        initialContents += block;
         initialContents += line + "\n";
         block.Clear();
       } else
         block += line + "\n";
     }
-    initialContents += _(block);
+    initialContents += block;
   }
   wxMaxima *frame = new wxMaxima(NULL, wxID_ANY, title, file, initialContents);
   frame->EvalOnStartup(evalOnStartup);
