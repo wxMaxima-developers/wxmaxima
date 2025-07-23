@@ -27,7 +27,7 @@
 #include <wx/panel.h>
 #include <wx/textctrl.h>
 #include <wx/checkbox.h>
-#if !defined(WXM_DISABLE_WEBVIEW)
+#ifdef USE_WEBVIEW
 #include <wx/webview.h>
 #ifdef __WXMSW__
 #include <wx/msw/webview_ie.h>

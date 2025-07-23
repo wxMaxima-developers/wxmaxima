@@ -323,7 +323,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                     .Name(m_sidebarNames[EventIDs::menu_pane_draw])
                     .Left());
 
-#if !defined(WXM_DISABLE_WEBVIEW)
+#ifdef USE_WEBVIEW
   if(GetWorksheet())
     {
       m_sidebarNames[EventIDs::menu_pane_help] = wxS("help");
@@ -713,7 +713,7 @@ void wxMaximaFrame::SetupViewMenu() {
                                       _("Insert Cell\tAlt+Shift+C"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_draw, _("Plot using Draw"));
 
-#if !defined(WXM_DISABLE_WEBVIEW)
+#ifdef USE_WEBVIEW
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_help,
                                       _("The integrated help browser"));
 #endif
@@ -1882,7 +1882,7 @@ void wxMaximaFrame::SetupHelpMenu() {
   m_HelpMenu->Append(EventIDs::menu_maximahelp, _("&Maxima help"), _("The manual of Maxima"));
   m_HelpMenu->Append(EventIDs::menu_example, _("&Example..."), _("Show an example of usage"));
   m_HelpMenu->Append(EventIDs::menu_apropos, _("&Apropos..."), _("Show commands similar to"));
-#if !defined(WXM_DISABLE_WEBVIEW)
+#ifdef USE_WEBVIEW
   if(GetConfiguration().GetDebugmode())
     m_HelpMenu->Append(EventIDs::menu_goto_url, _("Go to URL"));
 #endif

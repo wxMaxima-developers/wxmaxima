@@ -3242,7 +3242,7 @@ void wxMaxima::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
               }
               if (topics.size() == 0)
                 wxLogMessage(_("No topics found in topic flag"));
-#if !defined(WXM_DISABLE_WEBVIEW)
+#ifdef USE_WEBVIEW
               else
                 {
                   m_helpPane->SelectKeywords(topics);
@@ -4894,7 +4894,7 @@ void wxMaxima::ShowTip(bool force) {
 }
 
 void wxMaxima::LaunchHelpBrowser(wxString uri) {
-#if !defined(WXM_DISABLE_WEBVIEW)
+#ifdef USE_WEBVIEW
   if (m_configuration.InternalHelpBrowser()) {
     m_helpPane->SetURL(uri);
     wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
@@ -4915,7 +4915,7 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
           }
         else
           {
-#if !defined(WXM_DISABLE_WEBVIEW)
+#ifdef USE_WEBVIEW
             if(wxLaunchDefaultBrowser(uri))
               wxLogMessage(_("Didn't get a help browser launch program command line, but can request the system's default help browser."));
             else
@@ -9455,7 +9455,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
                                          _("Go to URL"), wxEmptyString, wxEmptyString, wxEmptyString,
                                          _("URL"), wxEmptyString, wxEmptyString));
       // wiz->Centre(wxBOTH);
-#if !defined(WXM_DISABLE_WEBVIEW)
+#ifdef USE_WEBVIEW
       wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
         if (retcode == wxID_OK) {
           m_helpPane->SetURL((*wiz)[0]);

@@ -33,7 +33,7 @@
 #include <wx/dir.h>
 #include "precomp.h"
 #include <wx/wx.h>
-#if !defined(WXM_DISABLE_WEBVIEW)
+#ifdef USE_WEBVIEW
 #include <wx/webview.h>
 #endif
 #include <wx/panel.h>
@@ -52,7 +52,7 @@ public:
   //! Ask the user if we are allowed to access an online manual
   explicit HelpBrowser(wxWindow *parent, Configuration *configuration, MaximaManual *manual,
                        const wxString &url);
-#if !defined(WXM_DISABLE_WEBVIEW)
+#ifdef USE_WEBVIEW
   void SetURL(const wxString &url);
   void JumpToKeyword(const wxString &keyword);
   void SelectKeywords(const std::vector<wxString> &keywords);
