@@ -258,7 +258,7 @@ $(function() {
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno"><a class="line" href="classwxMaximaFrame.html#a3d22c452da8d2de05bb06a66c4c4314f">  283</a></span>  wxString <a class="code hl_variable" href="classwxMaximaFrame.html#a3d22c452da8d2de05bb06a66c4c4314f">m_leftStatusText</a>;</div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  <span class="keyword">virtual</span> wxSize <a class="code hl_function" href="classwxMaximaFrame.html#a4ae1d3b87df6c6a4bbf99548149ad950">DoGetBestClientSize</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno"><a class="line" href="classwxMaximaFrame.html#ad41749ea6ea9116d33925a14b7696ed5">  287</a></span>  <a class="code hl_class" href="classDrawSidebar.html">DrawSidebar</a> *<a class="code hl_variable" href="classwxMaximaFrame.html#ad41749ea6ea9116d33925a14b7696ed5">m_drawPane</a> = NULL;</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="preprocessor">#if !defined(WXM_DISABLE_WEBVIEW)</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="preprocessor">#ifdef USE_WEBVIEW</span></div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  <a class="code hl_class" href="classHelpBrowser.html">HelpBrowser</a> *m_helpPane = NULL;</div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
