@@ -39,17 +39,12 @@
 #include <wx/mstream.h>
 #include <wx/string.h>
 #include <wx/txtstrm.h>
-#ifdef USE_WEBVIEW
-#include <wx/webview.h>
-#ifdef __WXMSW__
-#include <wx/msw/webview_ie.h>
-#endif
-#endif
 #include <wx/wfstream.h>
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
 #include <algorithm>
 #include <limits>
+#include <wx/webview.h>
 
 Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_initOpts(options),

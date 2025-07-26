@@ -39,12 +39,6 @@
 #include <vector>
 #include <algorithm>
 #include <wx/wupdlock.h>
-#ifdef USE_WEBVIEW
-#include <wx/webview.h>
-#ifdef __WXMSW__
-#include <wx/msw/webview_ie.h>
-#endif
-#endif
 
 #define MC_LINE_SKIP Scale_Px(2)
 #define MC_TEXT_PADDING Scale_Px(1)
