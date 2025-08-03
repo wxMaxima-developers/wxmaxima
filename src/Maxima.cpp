@@ -75,7 +75,11 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG |
                       wxSOCKET_LOST_FLAG);
   m_socket->Notify(true);
+#if wxCHECK_VERSION(3, 3, 2)
+  m_socket->SetFlags(wxSOCKET_NOWAIT_READ | wxSOCKET_WAITALL_WRITE);
+#else
   m_socket->SetFlags(wxSOCKET_NOWAIT_READ);
+#endif
   m_socket->SetTimeout(120);
 
   // There are some hints in the code history that wxSOCKET_INPUT
