@@ -75,6 +75,10 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG |
                       wxSOCKET_LOST_FLAG);
   m_socket->Notify(true);
+  // In issue #2028 a Maxima/wxMaxima communication on OpenBSD was reported.
+  // The flag wxSOCKET_WAITALL_WRITE fixes this, but that combination does only work
+  // with a very new wxWidgets release (3.3.2, not yet released (2025-08-04)).
+  // See https://github.com/wxWidgets/wxWidgets/commit/943e4fb18d7b2a3b717628dcc576132837945905
 #if wxCHECK_VERSION(3, 3, 2)
   m_socket->SetFlags(wxSOCKET_NOWAIT_READ | wxSOCKET_WAITALL_WRITE);
 #else
