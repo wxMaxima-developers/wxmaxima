@@ -405,8 +405,7 @@ bool MyApp::OnInit() {
   wxImage::AddHandler(new wxXPMHandler);
   wxImage::AddHandler(new wxJPEGHandler);
   wxImage::AddHandler(new wxGIFHandler);
-// FIXME: wxWidgets (3.3.0 and above) can be compiled with and without webp support - but how to check that?
-#if wxCHECK_VERSION(3, 3, 0)
+#ifdef wwxUSE_LIBWEB
   wxImage::AddHandler(new wxWEBPHandler);
 #endif
 
