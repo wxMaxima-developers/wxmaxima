@@ -6458,11 +6458,11 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
                                      "JPEG image (*.jpg)|*.jpg|"
                                      "GIF image (*.gif)|*.gif|"
                                      "Scaleable vector graphics (*.svg)|*.svg|"
-                                     "Windows bitmap (*.bmp)|*.bmp|"
+                                     "Windows bitmap (*.bmp)|*.bmp|") +
 #ifdef wwxUSE_LIBWEB
-                                     "WebP (*.webp)|*.webp|"
+                                     _("WebP (*.webp)|*.webp|") +
 #endif
-                                     "Portable anymap (*.pnm)|*.pnm|"
+                                     _("Portable anymap (*.pnm)|*.pnm|"
                                      "Tagged image file format (*.tif)|*.tif|"
                                      "X pixmap (*.xpm)|*.xpm"),
                                    wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -10127,21 +10127,21 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
                                "PNG image (*.png)|*.png|"
                                "JPEG image (*.jpg)|*.jpg|"
                                "GIF image (*.gif)|*.gif|"
-                               "Windows bitmap (*.bmp)|*.bmp|"
+                               "Windows bitmap (*.bmp)|*.bmp|") +
 #ifdef wwxUSE_LIBWEB
-                               "WebP (*.webp)|*.webp|"
+                               _("WebP (*.webp)|*.webp|") +
 #endif
-                               "Portable anymap (*.pnm)|*.pnm|"
+                               _("Portable anymap (*.pnm)|*.pnm|"
                                "Tagged image file format (*.tif)|*.tif|"
                                "X pixmap (*.xpm)|*.xpm");
           else
             selectorString = _("PNG image (*.png)|*.png|"
                                "JPEG image (*.jpg)|*.jpg|"
-                               "Windows bitmap (*.bmp)|*.bmp|"
+                               "Windows bitmap (*.bmp)|*.bmp|") +
 #ifdef wwxUSE_LIBWEB
-                               "WebP (*.webp)|*.webp|"
+                               _("WebP (*.webp)|*.webp|") +
 #endif
-                               "GIF image (*.gif)|*.gif|"
+                               _("GIF image (*.gif)|*.gif|"
                                "Portable anymap (*.pnm)|*.pnm|"
                                "Tagged image file format (*.tif)|*.tif|"
                                "X pixmap (*.xpm)|*.xpm");
@@ -10885,15 +10885,15 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
           (event.GetId() == EventIDs::menu_format_image)){
       wxString file = wxFileSelector(
                                      _("Insert Image"), m_lastPath, wxEmptyString, wxEmptyString,
-                                     _("Image files") + " (*.png, *.jpg,"
+                                     _("Image files") + " (*.png, *.jpg," +
 #ifdef wwxUSE_LIBWEB
-                                         "*.webp,"
+                                         "*.webp," +
 #endif
 
                                        "*.bmp, *.xpm, *.gif, *.svg, "
-                                       "*.svgz)|*.png;*.jpg;"
+                                       "*.svgz)|*.png;*.jpg;" +
 #ifdef wwxUSE_LIBWEB
-                                         "*.webp;"
+                                         "*.webp;" +
 #endif
                                        "*.bmp;*.xpm;*.gif;*.svg;*.svgz",
                                      wxFD_OPEN);
