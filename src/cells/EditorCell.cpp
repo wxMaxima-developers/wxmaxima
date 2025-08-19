@@ -2472,8 +2472,8 @@ bool EditorCell::IsPointInSelection(wxPoint point) {
     positionOfCaret++;
   }
   positionOfCaret = std::min(positionOfCaret, text.Length());
-  return ((SelectionStart() <= positionOfCaret) &&
-           (positionOfCaret < SelectionEnd()));
+  return ((SelectionLeft() <= positionOfCaret) &&
+           (positionOfCaret < SelectionRight()));
 }
 
 wxString EditorCell::DivideAtCaret() {
