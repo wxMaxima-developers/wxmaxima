@@ -67,8 +67,9 @@ void BTextCtrl::OnFocus(wxFocusEvent &event) {
 }
 
 BTextCtrl::~BTextCtrl() {
-  if (m_config->LastActiveTextCtrl() == this)
-    m_config->LastActiveTextCtrl(NULL);
+// The configuration object might not exist. This caused an issue on OpenBSD (issue #2027)
+//  if (m_config->LastActiveTextCtrl() == this)
+//    m_config->LastActiveTextCtrl(NULL);
 }
 
 void BTextCtrl::OnChar(wxKeyEvent &event) {
