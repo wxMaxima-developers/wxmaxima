@@ -123,6 +123,7 @@ wxMaxima.
 Additional information about building on macOS:
 
 - https://themaximalist.org/about/my-mac-os-installation/
+- https://github.com/wxMaxima-developers/wxmaxima/issues/2026#issuecomment-3172804134
 
 ### Compiling on Windows
 
