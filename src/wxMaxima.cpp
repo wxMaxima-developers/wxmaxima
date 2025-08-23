@@ -297,6 +297,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   m_lastPrompt.Clear();
 
   UpdateRecentDocuments();
+  bool logwindow_shown;
+  // Read the last state (shown/not shown) of the log window from the configuration. If it was hidden before, hide it, else show it.
+  // This is for issue #2033.
+  if (config->Read(wxS("LogWindow"), &logwindow_shown)) {
+    wxm_logwindow->GetFrame()->Show(logwindow_shown);
+  }
 
   m_oldFindString.Clear();
   int findFlags = wxFR_DOWN | wxFR_MATCHCASE;
@@ -1938,6 +1944,8 @@ wxMaxima::~wxMaxima() {
   windowcount--;
   // If we deleted the last Window, delete the log Window
   if (windowcount == 0) {
+    // save the current state of the log window (shown/hidden) in the configuration.
+    wxConfig::Get()->Write("LogWindow", wxm_logwindow->GetFrame()->IsShown());
     wxDELETE(wxm_logwindow);
     /* On the mac wxMaxima might still run if the last window has closed.
        This means we have no log window and therefore cannot log anything without

@@ -194,6 +194,7 @@ wxLogWindow * wxm_logwindow; // The wxWidgets log window, we use.
 int windowcount = 0; // How many wxMaxima windows are open (in the current process)?
 bool MyApp::OnInit() {
   // if DEBUG=1 show the logwindow at start, else hide it.
+  // in wxMaxima.cpp we later read a configuration variable (LogWindow) and show/hide it, according to the previous state (issue #2033).
 #if (DEBUG==1)
   wxm_logwindow = new wxLogWindow( NULL, wxS("wxMaxima log window"), true, false);
 #else
