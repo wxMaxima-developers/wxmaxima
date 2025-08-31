@@ -254,7 +254,6 @@ public:
   bool HasGnuplotSource() const {return m_gnuplotSource_Compressed.GetDataLen() > 20;}
 private:
   bool m_fromWxFS = false;
-  bool m_gnuplotDataThreadRunning = false;
   //! A zipped version of the gnuplot commands that produced this image.
   wxMemoryBuffer m_gnuplotSource_Compressed;
   //! A zipped version of the gnuplot data needed in order to create this image.

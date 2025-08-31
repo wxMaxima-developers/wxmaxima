@@ -30,19 +30,32 @@
 #define THREADNUMBERLIMITER_H
 
 #include <mutex>
+#include <atomic>
 
+/*! Waits until more cores are available than threads are running
 
-//! A dialog that shows the program's license.
+  How it works:
+
+  * Each thread that tries to avoid running more threads than there are CPUs available
+    creates variable of the type ThreadNumberLimiter.
+  * This ThreadNumberLimiter at start-up increases m_numberOfBackgroundThreads and waits
+    until that number is low enough-
+  * When the block the variable was instantiated in ends m_numberOfBackgroundThreads is
+    decremented, again.
+*/
+
 class ThreadNumberLimiter
 {
 public:
-  explicit ThreadNumberLimiter(bool *running = NULL);
+  //! Increments m_numberOfBackgroundThreads and blocks, until this number lowers again.
+  explicit ThreadNumberLimiter();
+  //! Decrements m_numberOfBackgroundThreads and waits.
   virtual ~ThreadNumberLimiter();
 private:
-  static int m_numberOfBackgroundThreads;
+  //! The number of background thread we currently have ThreadNumberLimiter's for.
+  static std::atomic<int> m_numberOfBackgroundThreads;
   static std::mutex m_mutex;
   static std::mutex m_counterMutex;
-  bool *m_runningIndicator = NULL;
 };
 
 #endif // THREADNUMBERLIMITER_H

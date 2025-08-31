@@ -33,13 +33,10 @@
 
 std::mutex ThreadNumberLimiter::m_counterMutex;
 std::mutex ThreadNumberLimiter::m_mutex;
-int ThreadNumberLimiter::m_numberOfBackgroundThreads;
+std::atomic<int> ThreadNumberLimiter::m_numberOfBackgroundThreads;
 
-ThreadNumberLimiter::ThreadNumberLimiter(bool *running):
-  m_runningIndicator(running)
+ThreadNumberLimiter::ThreadNumberLimiter()
 {
-  if(m_runningIndicator)
-    *m_runningIndicator = true;
   m_mutex.lock();
   int maxThreads =  std::thread::hardware_concurrency();
   if(maxThreads < 1)
@@ -60,6 +57,4 @@ ThreadNumberLimiter::~ThreadNumberLimiter()
   std::lock_guard<std::mutex> lock_guard(m_counterMutex);
   m_numberOfBackgroundThreads--;
   m_mutex.unlock();
-  if(m_runningIndicator)
-    *m_runningIndicator = false;
 }
