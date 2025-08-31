@@ -18,6 +18,8 @@
 - Fix build with current Mac XCode ('old'/new' build system).
   (reported in a comment in issue #2016).
 - Fix a crash when copying a input cell (collapsed to only show the input).
+- Fix a crash when closing the configuration menu on OpenBSD (#2027).
+- Fix a problem with wxplot2d/wxplot3d on OpenBSD (#2027).
 
 # 25.04.0
 
