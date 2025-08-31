@@ -75,19 +75,26 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="classA.html">A</a> dialog that shows the program's license.  
+<p>Waits until more cores are available than threads are running.  
  <a href="classThreadNumberLimiter.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ThreadNumberLimiter_8h_source.html">ThreadNumberLimiter.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a77b2eb935afdc3efe45df05371976a7e"><td class="memItemLeft" align="right" valign="top"><a id="a77b2eb935afdc3efe45df05371976a7e" name="a77b2eb935afdc3efe45df05371976a7e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ThreadNumberLimiter</b> (bool *running=NULL)</td></tr>
-<tr class="separator:a77b2eb935afdc3efe45df05371976a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfd5aeeed5dd65f16ccb90ae9c0e1f80"><td class="memItemLeft" align="right" valign="top"><a id="acfd5aeeed5dd65f16ccb90ae9c0e1f80" name="acfd5aeeed5dd65f16ccb90ae9c0e1f80"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ThreadNumberLimiter</b> ()</td></tr>
+<tr class="memdesc:acfd5aeeed5dd65f16ccb90ae9c0e1f80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increments m_numberOfBackgroundThreads and blocks, until this number lowers again. <br /></td></tr>
+<tr class="separator:acfd5aeeed5dd65f16ccb90ae9c0e1f80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af52165b6309c238c48395dbd583949ff"><td class="memItemLeft" align="right" valign="top"><a id="af52165b6309c238c48395dbd583949ff" name="af52165b6309c238c48395dbd583949ff"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~ThreadNumberLimiter</b> ()</td></tr>
+<tr class="memdesc:af52165b6309c238c48395dbd583949ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrements m_numberOfBackgroundThreads and waits. <br /></td></tr>
+<tr class="separator:af52165b6309c238c48395dbd583949ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classA.html">A</a> dialog that shows the program's license. </p>
+<div class="textblock"><p>Waits until more cores are available than threads are running. </p>
+<p>How it works:</p>
+<p>Each thread that tries to avoid running more threads than there are CPUs available creates variable of the type <a class="el" href="classThreadNumberLimiter.html" title="Waits until more cores are available than threads are running.">ThreadNumberLimiter</a>. This <a class="el" href="classThreadNumberLimiter.html" title="Waits until more cores are available than threads are running.">ThreadNumberLimiter</a> at start-up increases m_numberOfBackgroundThreads and waits until that number is low enough- When the block the variable was instantiated in ends m_numberOfBackgroundThreads is decremented, again. </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="ThreadNumberLimiter_8h_source.html">ThreadNumberLimiter.h</a></li>
 <li>src/<a class="el" href="ThreadNumberLimiter_8cpp.html">ThreadNumberLimiter.cpp</a></li>

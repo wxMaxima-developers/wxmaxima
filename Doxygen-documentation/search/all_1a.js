@@ -9,8 +9,9 @@ var searchData=
   ['_7enotification_6',['~Notification',['../classNotification.html#aa52a58a4842d10dd15e2b1da73fd2d95',1,'Notification']]],
   ['_7eqtstyle_5ftest_7',['~QTstyle_Test',['../classQTstyle__Test.html#a7e82397d534d9a867f0857da01a46e9e',1,'QTstyle_Test']]],
   ['_7erecentdocuments_8',['~RecentDocuments',['../classRecentDocuments.html#a07fcb44d7e7e6e0a92805d7cb9780414',1,'RecentDocuments']]],
-  ['_7evariablespane_9',['~Variablespane',['../classVariablespane.html#a24455eb3a4b44eff8ea4eed83015bab6',1,'Variablespane']]],
-  ['_7eworksheet_10',['~Worksheet',['../classWorksheet.html#a17069f8e054407fb170285892fc99349',1,'Worksheet']]],
-  ['_7ewxmaximaframe_11',['~wxMaximaFrame',['../classwxMaximaFrame.html#a184c356bdc682c194ec349fb58130de3',1,'wxMaximaFrame']]],
-  ['_7exmlinspector_12',['~XmlInspector',['../classXmlInspector.html#a9d8cb605490465aad6e75c6fcaa45f92',1,'XmlInspector']]]
+  ['_7ethreadnumberlimiter_9',['~ThreadNumberLimiter',['../classThreadNumberLimiter.html#af52165b6309c238c48395dbd583949ff',1,'ThreadNumberLimiter']]],
+  ['_7evariablespane_10',['~Variablespane',['../classVariablespane.html#a24455eb3a4b44eff8ea4eed83015bab6',1,'Variablespane']]],
+  ['_7eworksheet_11',['~Worksheet',['../classWorksheet.html#a17069f8e054407fb170285892fc99349',1,'Worksheet']]],
+  ['_7ewxmaximaframe_12',['~wxMaximaFrame',['../classwxMaximaFrame.html#a184c356bdc682c194ec349fb58130de3',1,'wxMaximaFrame']]],
+  ['_7exmlinspector_13',['~XmlInspector',['../classXmlInspector.html#a9d8cb605490465aad6e75c6fcaa45f92',1,'XmlInspector']]]
 ];
