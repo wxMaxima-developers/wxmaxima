@@ -39,7 +39,7 @@ ThreadNumberLimiter::ThreadNumberLimiter()
 {
   m_mutex.lock();
   int maxThreads =  std::thread::hardware_concurrency();
-  if(maxThreads < 1)
+  if(maxThreads < 2)
     maxThreads = 8;
   if(maxThreads < 4)
     maxThreads = 4;
