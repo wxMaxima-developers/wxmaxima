@@ -31,30 +31,32 @@
 #include <wx/log.h>
 #include <wx/string.h>
 
-std::mutex ThreadNumberLimiter::m_counterMutex;
 std::mutex ThreadNumberLimiter::m_mutex;
+std::condition_variable ThreadNumberLimiter::m_block;
 std::atomic<int> ThreadNumberLimiter::m_numberOfBackgroundThreads;
 
 ThreadNumberLimiter::ThreadNumberLimiter()
 {
-  m_mutex.lock();
+  // Prevent new threads from being created until we have determined if we
+  // have CPUs available for them.
+  std::unique_lock<std::mutex> lock(m_mutex);
+
+  // Determine how many CPUs we can run threads on
   int maxThreads =  std::thread::hardware_concurrency();
   if(maxThreads < 2)
     maxThreads = 8;
   if(maxThreads < 4)
     maxThreads = 4;
-  bool unlock;
-  {
-    std::lock_guard<std::mutex> lock_guard(m_counterMutex);
-    unlock = m_numberOfBackgroundThreads++ < maxThreads;
-  }
-  if(unlock)
-    m_mutex.unlock();
+
+  if(m_numberOfBackgroundThreads++ > maxThreads)
+    m_block.wait(lock);
 }
 
 ThreadNumberLimiter::~ThreadNumberLimiter()
 {
-  std::lock_guard<std::mutex> lock_guard(m_counterMutex);
+  // Prevent new threads from being created until we have determined if we
+  // have CPUs available for them.
+  std::unique_lock<std::mutex> lock(m_mutex);
   m_numberOfBackgroundThreads--;
-  m_mutex.unlock();
+  m_block.notify_one();
 }

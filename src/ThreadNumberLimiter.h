@@ -31,6 +31,7 @@
 
 #include <mutex>
 #include <atomic>
+#include <condition_variable>
 
 /*! Waits until more cores are available than threads are running
 
@@ -54,8 +55,10 @@ public:
 private:
   //! The number of background thread we currently have ThreadNumberLimiter's for.
   static std::atomic<int> m_numberOfBackgroundThreads;
+  //! The mutex that prevents us to use the condition_variable from 2 threads at once
   static std::mutex m_mutex;
-  static std::mutex m_counterMutex;
+  //! The thing that blocks if we have too many threads
+  static std::condition_variable m_block;
 };
 
 #endif // THREADNUMBERLIMITER_H
