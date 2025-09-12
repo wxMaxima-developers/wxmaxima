@@ -1083,6 +1083,10 @@ void Cell::BreakUpAndMark() {
       ResetSize_Recursively();
       m_isBrokenIntoLines = true;
     }
+  m_height = 0;
+  m_width = 0;
+  m_center = 0;
+  
 }
 
 void Cell::Unbreak() {
