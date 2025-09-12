@@ -52,12 +52,14 @@ FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
                         wxEVT_TEXT, wxCommandEventHandler(FindReplacePane::OnFindStringChange),
                         NULL, this);
   grid_sizer->Add(m_searchText, wxSizerFlags(1).Expand().Border(wxALL, 5));
+  m_searchText->Activate();
 
   m_searchButton = new wxButton(this, wxID_FIND);
   button_sizer->Add(m_searchButton, wxSizerFlags().Expand().Border(wxALL, 5));
   m_searchButton->Connect(wxEVT_BUTTON,
                           wxCommandEventHandler(FindReplacePane::OnSearch),
                           NULL, this);
+  m_searchButton->SetDefault();
 
   grid_sizer->Add(new wxStaticText(this, -1, _("Replacement:")),
                   wxSizerFlags().Right().Center().Border(wxALL, 5));
