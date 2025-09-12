@@ -68,7 +68,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_history(new History(this, -1, &m_configuration)),
   m_recentDocuments(wxS("document")),
   m_recentPackages(wxS("packages")) {
-  m_worksheet->SetDefault();
   m_worksheet->SetFocus();
   // console
   // Suppress window updates until this window has fully been created.
