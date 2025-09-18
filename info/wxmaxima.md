@@ -148,7 +148,7 @@ The same mechanism also allows to enter some miscellaneous mathematical symbols:
 
 | keys to enter  | mathematical symbol                                   |
 | -------------- | ----------------------------------------------------- |
-| hbar           | Planck’s constant: a h with a horizontal bar above it |
+| hbar           | Planck constant: a h with a horizontal bar above it   |
 | Hbar           | a H with a horizontal bar above it                    |
 | 2              | squared                                               |
 | 3              | to the power of three                                 |
