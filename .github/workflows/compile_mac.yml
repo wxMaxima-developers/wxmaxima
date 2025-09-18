@@ -159,7 +159,7 @@ jobs:
           fetch-depth: 15
       - name: Install macports
         run: |
-          if test -e "/opt/local/bin"; then echo Macports already installed; else aria2c https://github.com/macports/macports-base/releases/download/v2.9.3/MacPorts-2.9.3-14-Sonoma.pkg && sudo installer -pkg MacPorts-2.9.3-14-Sonoma.pkg -target /; fi
+          if test -e "/opt/local/bin"; then echo Macports already installed; else aria2c https://github.com/macports/macports-base/releases/download/v2.11.5/MacPorts-2.11.5-15-Sequoia.pkg && sudo installer -pkg MacPorts-2.11.5-15-Sequoia.pkg -target /; fi
           echo "/opt/local/bin" >> $GITHUB_PATH
       - name: Update macports
         run: |
