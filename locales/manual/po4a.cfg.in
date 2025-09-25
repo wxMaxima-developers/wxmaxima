@@ -1,2 +1,4 @@
-[po_directory] ${RELPATH_TO_PO4A_PO_DIRECTORY}
+[options] --srcdir="${CMAKE_CURRENT_SOURCE_DIR}"
+[po4a_langs] de es fr it ru tr uk zh_CN
+[po4a_paths] ${CMAKE_SOURCE_DIR}/locales/manual/wxmaxima.md.pot $lang:${CMAKE_SOURCE_DIR}/locales/manual/$lang.po
 [type: text] ${CMAKE_SOURCE_DIR}/info/wxmaxima.md $lang:${CMAKE_BINARY_DIR}/info/wxmaxima.$lang.md opt:"-k 5"
