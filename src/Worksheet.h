@@ -1158,7 +1158,7 @@ public:
 private:
   /* ! A timer that tells us to urgently update the display
 
-     Normally we priorize tasks: If there are GUI actions to process we do so.
+     Normally we prioritize tasks: If there are GUI actions to process we do so.
      If not we look if there is data from maxima to process. If not we
      If not we recalculate the worksheet element sizes and positions and if
      there still is no pressing task we update the display. This way we
