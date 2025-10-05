@@ -20,6 +20,7 @@
 - Fix a crash when copying a input cell (collapsed to only show the input).
 - Fix a crash when closing the configuration menu on OpenBSD (#2027).
 - Fix a problem with wxplot2d/wxplot3d on OpenBSD (#2027).
+- Fix a crash when deleting a text cell (#2041).
 
 # 25.04.0
 
