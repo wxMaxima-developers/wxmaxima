@@ -31,6 +31,8 @@ msgid ""
 "\n"
 "Image was loaded from a .wxmx file"
 msgstr ""
+"\n"
+"Bild wurde aus einer wxmx-Datei geladen"
 
 #: ../../src/wxMaxima.cpp:5153
 msgid ""
@@ -41,17 +43,19 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:4230
 msgid " (File format (WXM version 1, first line of the file) not recognized)"
-msgstr ""
+msgstr "(Dateiformat (WXM Version 1, erste Zeile der Datei) nicht erkannt)"
 
 #: ../../src/wxMaximaFrame.cpp:1559
 msgid " Wrong, if a is complex"
-msgstr ""
+msgstr "Falsch, wenn a komplex ist"
 
 #: ../../src/wxMaxima.cpp:7601
 msgid ""
 "\".\" = \"The current directory\"\n"
 "\"..\" = \"One directory up\""
 msgstr ""
+"\".\" = \"Das aktuelle Verzeichnis\"\n"
+"\"..\" = \"Ein Verzeichnis nach oben\""
 
 #: ../../src/wxMaxima.cpp:7557 ../../src/wxMaxima.cpp:7563
 #: ../../src/wxMaxima.cpp:7568
@@ -66,7 +70,7 @@ msgstr "%li Zellen warten auf Evaluierung"
 #: ../../src/Worksheet.cpp:330
 #, c-format
 msgid "%s image, %li×%li, %li ppi"
-msgstr ""
+msgstr "%s Bild, %li×%li, %li PPI"
 
 #: ../../src/Autocomplete.cpp:319
 #, c-format
@@ -183,7 +187,7 @@ msgstr "&Funktionen"
 
 #: ../../src/wxMaximaFrame.cpp:1490
 msgid "&Greatest Common Divisor..."
-msgstr "&GGT ..."
+msgstr "&Größter gemeinsamer Teiler..."
 
 #: ../../src/wxMaximaFrame.cpp:1968
 msgid "&Help"
@@ -335,7 +339,7 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:9361 ../../src/wxMaximaFrame.cpp:1867
 msgid "(f(x),x,y) with singularities+discontinuities"
-msgstr ""
+msgstr "(f(x),x,y) mit Singularitäten und Unstetigkeiten"
 
 #: ../../src/wxMaxima.cpp:2065
 msgid ""
@@ -351,7 +355,7 @@ msgstr ".wxm-Daten in Zwischenablage mit unüblichem Header"
 
 #: ../../src/wxMaxima.cpp:8047
 msgid "1×n Matrix b:"
-msgstr "1xn Matrix b:"
+msgstr "1×n Matrix b:"
 
 #: ../../src/wxMaximaFrame.cpp:1312
 msgid "2D Array to Matrix..."
@@ -403,7 +407,7 @@ msgstr "Eine irrationale Variable"
 
 #: ../../src/Worksheet.cpp:2016
 msgid "A left-associative function"
-msgstr ""
+msgstr "Eine links-assoziative Funktion"
 
 #: ../../src/Worksheet.cpp:2019
 msgid "A linear function"
@@ -423,7 +427,7 @@ msgstr "Eine rechts-assoziative Funktion"
 
 #: ../../src/wxMaximaFrame.cpp:1634
 msgid "A search-and-replace for equations"
-msgstr ""
+msgstr "Suchen und Ersetzen für Gleichungen"
 
 #: ../../src/wxMaximaFrame.cpp:1636
 msgid "A subst with basic maths knowledge"
@@ -1474,7 +1478,6 @@ msgid "Compile a function"
 msgstr "Eine Funktion compilieren"
 
 #: ../../src/wxMaximaFrame.cpp:1188
-#, fuzzy
 msgid "Compile a regular expression"
 msgstr "Einen regulären Ausdruck compilieren"
 
@@ -1618,7 +1621,7 @@ msgstr "Konvertiere und schreibe als Datei"
 
 #: ../../src/wxMaximaFrame.cpp:1434
 msgid "Convert Column to list..."
-msgstr "Konvrtiere Spalte in Liste..."
+msgstr "Konvertiere Spalte in Liste..."
 
 #: ../../src/wxMaximaFrame.cpp:1430
 msgid "Convert Row to list..."
@@ -1994,7 +1997,7 @@ msgstr "Deklariere Text, der stets als Subscript darzustellen ist"
 #: ../../src/Worksheet.cpp:2044
 #, c-format
 msgid "Declare facts about %s"
-msgstr ""
+msgstr "Deklariere Fakten über %s"
 
 #: ../../src/wxMaxima.cpp:8800
 msgid "Declare main variable:"
@@ -2113,9 +2116,8 @@ msgid "Delete named object(s)"
 msgstr "Lösche die Funktion(en):"
 
 #: ../../src/wxMaximaFrame.cpp:981
-#, fuzzy
 msgid "Delete named object..."
-msgstr "F&unktion löschen ..."
+msgstr "Benanntes Objekt löschen ..."
 
 #: ../../src/wxMaxima.cpp:7674
 msgid "Delete variable(s)"
