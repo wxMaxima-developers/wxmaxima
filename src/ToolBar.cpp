@@ -157,25 +157,43 @@ void ToolBar::AddTools() {
   Clear();
   m_ppi = wxSize(-1, -1);
   if (ShowNew())
+#if wxCHECK_VERSION(3, 1, 6)
+    AddTool(wxID_NEW, _("New"), wxArtProvider::GetBitmapBundle(wxART_NEW, wxART_TOOLBAR), _("New document"));
+#else
     AddTool(wxID_NEW, _("New"), wxArtProvider::GetBitmap(wxART_NEW, wxART_TOOLBAR), _("New document"));
+#endif
   if (ShowOpenSave()) {
+#if wxCHECK_VERSION(3, 1, 6)
+    AddTool(wxID_OPEN, _("Open"), wxArtProvider::GetBitmapBundle(wxART_FILE_OPEN, wxART_TOOLBAR), _("Open document"));
+    AddTool(wxID_SAVE, _("Save"), wxArtProvider::GetBitmapBundle(wxART_FILE_SAVE, wxART_TOOLBAR), _("Save document"));
+#else
     AddTool(wxID_OPEN, _("Open"), wxArtProvider::GetBitmap(wxART_FILE_OPEN, wxART_TOOLBAR), _("Open document"));
     AddTool(wxID_SAVE, _("Save"), wxArtProvider::GetBitmap(wxART_FILE_SAVE, wxART_TOOLBAR), _("Save document"));
+#endif
   }
   if (ShowPrint()) {
 #ifndef __WXOSX__
     if (ShowOpenSave() || ShowNew())
       AddSeparator();
 #endif
+#if wxCHECK_VERSION(3, 1, 6)
+    AddTool(wxID_PRINT, _("Print"), wxArtProvider::GetBitmapBundle(wxART_PRINT, wxART_TOOLBAR), _("Print document"));
+#else
     AddTool(wxID_PRINT, _("Print"), wxArtProvider::GetBitmap(wxART_PRINT, wxART_TOOLBAR), _("Print document"));
+#endif
   }
   if (ShowUndoRedo()) {
 #ifndef __WXOSX__
     if (ShowOpenSave() || ShowNew())
       AddSeparator();
 #endif
+#if wxCHECK_VERSION(3, 1, 6)
+    AddTool(wxID_UNDO, _("Undo"), wxArtProvider::GetBitmapBundle(wxART_UNDO, wxART_TOOLBAR));
+    AddTool(wxID_REDO, _("Redo"), wxArtProvider::GetBitmapBundle(wxART_REDO, wxART_TOOLBAR));
+#else
     AddTool(wxID_UNDO, _("Undo"), wxArtProvider::GetBitmap(wxART_UNDO, wxART_TOOLBAR));
     AddTool(wxID_REDO, _("Redo"), wxArtProvider::GetBitmap(wxART_REDO, wxART_TOOLBAR));
+#endif
   }
   if (ShowOptions()) {
 #ifndef __WXOSX__
@@ -190,19 +208,30 @@ void ToolBar::AddTools() {
         ShowUndoRedo())
       AddSeparator();
 #endif
+#if wxCHECK_VERSION(3, 1, 6)
+    AddTool(wxID_CUT, _("Cut"), wxArtProvider::GetBitmapBundle(wxART_CUT, wxART_TOOLBAR), _("Cut selection"));
+    AddTool(wxID_COPY, _("Copy"), wxArtProvider::GetBitmapBundle(wxART_COPY, wxART_TOOLBAR), _("Copy selection"));
+    AddTool(wxID_PASTE, _("Paste"), wxArtProvider::GetBitmapBundle(wxART_PASTE, wxART_TOOLBAR), _("Paste from clipboard"));
+#else
     AddTool(wxID_CUT, _("Cut"), wxArtProvider::GetBitmap(wxART_CUT, wxART_TOOLBAR), _("Cut selection"));
     AddTool(wxID_COPY, _("Copy"), wxArtProvider::GetBitmap(wxART_COPY, wxART_TOOLBAR), _("Copy selection"));
     AddTool(wxID_PASTE, _("Paste"), wxArtProvider::GetBitmap(wxART_PASTE, wxART_TOOLBAR), _("Paste from clipboard"));
+#endif
   }
   if (ShowSelectAll())
-    AddTool(wxID_SELECTALL, _("Select all"), GetSelectAllBitmap(bitmapSize), _("Select all"));
+    AddTool(wxID_SELECTALL, _("Select all"), GetSelectAllBitmap(bitmapSize), _("Select all"));  // Maybe GetSelectAllBitmapBundle would be good?
+
   if (ShowSearch()) {
 #ifndef __WXOSX__
     if (ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() ||
         ShowUndoRedo() || ShowCopyPaste())
       AddSeparator();
 #endif
+#if wxCHECK_VERSION(3, 1, 6)
+    AddTool(wxID_FIND, _("Find"), wxArtProvider::GetBitmapBundle(wxART_FIND_AND_REPLACE, wxART_TOOLBAR), _("Find and replace"));
+#else
     AddTool(wxID_FIND, _("Find"), wxArtProvider::GetBitmap(wxART_FIND_AND_REPLACE, wxART_TOOLBAR), _("Find and replace"));
+#endif
   }
 #ifndef __WXOSX__
   if (ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() ||
@@ -307,7 +336,11 @@ void ToolBar::AddTools() {
   AddControl(m_plotSlider);
   AddStretchSpacer(100);
   if (ShowHelp())
+#if wxCHECK_VERSION(3, 1, 6)
+    AddTool(wxID_HELP, _("Help"), wxArtProvider::GetBitmapBundle(wxART_HELP, wxART_TOOLBAR), _("Show wxMaxima help"));
+#else
     AddTool(wxID_HELP, _("Help"), wxArtProvider::GetBitmap(wxART_HELP, wxART_TOOLBAR), _("Show wxMaxima help"));
+#endif
   Connect(wxEVT_SIZE, wxSizeEventHandler(ToolBar::OnSize), NULL, this);
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(ToolBar::OnMouseRightDown),
           NULL, this);
