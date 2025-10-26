@@ -746,7 +746,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 (wx-defprop $%kappa "<g>%kappa</g>" wxxmlword)
 (wx-defprop $kappa "<g>kappa</g>" wxxmlword)
 (wx-defprop $%lambda "<g>%lambda</g>" wxxmlword)
-(wx-defprop lambda "<g>lambda</g>" wxxmlword) ; No preceding "$" required, see https://sourceforge.net/p/maxima/mailman/message/37764771/
+(wx-defprop lambda "<g>lambda</g>" wxxmlword) ; No preceding "$" required, see https://sourceforge.net/p/maxima/mailman/message/37764771/ - "lambda" is treated differently (than other greek letters) in share/contrib/lurkmathml/mathml.lisp in the (current) Maxima source code. But this causes several issues in wxMaxima...
 (wx-defprop $%mu "<g>%mu</g>" wxxmlword)
 (wx-defprop $mu "<g>mu</g>" wxxmlword)
 (wx-defprop $%nu "<g>%nu</g>" wxxmlword)
