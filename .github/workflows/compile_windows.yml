@@ -86,7 +86,7 @@ jobs:
             cmake --build .
             cd ..
             cd ..
-      - name Check Manifest file
+      - name: Check Manifest file
         run: "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\mt.exe" -manifest wxMaxima/build/src/wxmaxima.manifest -validate_manifest
       - name: Package wxMaxima
         run: |
