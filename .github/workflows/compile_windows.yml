@@ -85,7 +85,11 @@ jobs:
       - name: Check Manifest file
         shell: cmd
         run: |
-            "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\mt.exe" -manifest D:\a\wxmaxima\wxmaxima\wxMaxima\build\src\wxmaxima.manifest -validate_manifest
+            cd wxMaxima
+            cd build
+            cd src
+            dir wxmaxima.manifest
+            "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\mt.exe" -manifest wxmaxima.manifest -validate_manifest
       - name: Package wxMaxima
         run: |
             cd wxMaxima
