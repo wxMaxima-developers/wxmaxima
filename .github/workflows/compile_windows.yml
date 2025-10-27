@@ -89,7 +89,7 @@ jobs:
             cd build
             cd src
             dir
-            "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\mt.exe" -manifest /wxmaxima.exe.manifest -validate_manifest
+            "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\mt.exe" -manifest wxmaxima.exe.manifest -validate_manifest
       - name: Package wxMaxima
         run: |
             cd wxMaxima
