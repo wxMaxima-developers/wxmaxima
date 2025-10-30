@@ -355,6 +355,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 	     (sub (subseq name (+ pos 1)))
 	     ;; sub-var is the part of x in front of the "_"
 	     (sub-var (subseq name 0 pos))
+	     (sub-var-symb (read-from-string (concatenate 'string "$" sub-var)))
 	     (sub-symb (read-from-string (concatenate 'string "$" sub)))
 	     ;; sub-int is the part of x after the "_" converted to integer
 	     (sub-int (ignore-errors
@@ -373,7 +374,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 				     (member '$WXXML_SUBSCRIPTED (cdr (properties x))))))))
 	  (format nil  "<munder altCopy=\"~A\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
 		  (wxxml-alt-copy-text x)
-		  (format nil "<mi>~a</mi>" (wxxml-fix-string (format nil "~A" sub-var)))
+		  (or (get sub-var-symb 'wxxmlword) (format nil "<mi>~a</mi>" (wxxml-fix-string (format nil "~A" sub-var))))
 		  (format nil "<mi>~a</mi>" (wxxml-fix-string (format nil "~A" sub)))))))))
 
 (defun wxxmlescapenum (atom)

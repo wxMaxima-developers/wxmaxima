@@ -21,6 +21,7 @@
 - Fix a crash when closing the configuration menu on OpenBSD (#2027).
 - Fix a problem with wxplot2d/wxplot3d on OpenBSD (#2027).
 - Fix a crash when deleting a text cell (#2041).
+- Fix subscripts of greek letters (#2045).
 
 # 25.04.0
 
