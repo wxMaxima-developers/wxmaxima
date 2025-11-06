@@ -223,20 +223,6 @@ msgstr "### Der Arbeitsblatt-Ansatz"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:40
-#, fuzzy
-#| msgid ""
-#| "One of the very few things that are not standard in _wxMaxima_ is that it "
-#| "organizes the data for _Maxima_ into cells that are evaluated (which "
-#| "means: sent to _Maxima_) only when the user requests this. When a cell is "
-#| "evaluated, all commands in that cell, and only that cell, are evaluated "
-#| "as a batch. (The preceding statement is not quite accurate: One can "
-#| "select a set of adjacent cells and evaluate them together. Also, one can "
-#| "instruct _Maxima_ to evaluate all cells in a workbook in one pass.) "
-#| "_WxMaxima_'s approach to submitting commands for execution might feel "
-#| "unfamiliar at the first sight. It does, however, drastically ease work "
-#| "with big documents (where the user does not want every change to "
-#| "automatically trigger a full re-evaluation of the whole document). Also, "
-#| "this approach is very handy for debugging."
 msgid ""
 "One of the very few things that are not standard in _wxMaxima_ is that it "
 "organizes the data for _Maxima_ into cells that are evaluated (which means: "
@@ -255,7 +241,7 @@ msgstr ""
 "von wxMaxima in Zellen aufgeteilt ist, die nur auf Befehl vom Benutzer an "
 "_Maxima_ gesendet werden. Wenn eine Zelle ausgewertet wird, werden alle "
 "Maxima-Befehle (nur) dieser Zelle als Batch-Befehle ausgewertet. Man kann "
-"auch mehrere Zellen ausäwhlen und gleichzeitig auswählen. Oder das gesamte "
+"auch mehrere Zellen auswählen und gleichzeitig auswählen. Oder das gesamte "
 "Arbeitsblatt auf einmal auswerten _WxMaxima_'s Ansatz für die Auswertung von "
 "Befehlen mag seltsam erscheinen. Es vereinfacht aber die Arbeit mit großen "
 "Dokumenten (wo man nicht jede Änderung eine komplette Neu-Evaluierung des "
@@ -544,13 +530,6 @@ msgstr "### Auto-Vervollständigung"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:96
-#, fuzzy
-#| msgid ""
-#| "_WxMaxima_ contains an autocompletion feature that is triggered via the "
-#| "menu (Cell/Complete Word) or alternatively by pressing the key "
-#| "combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is "
-#| "context-sensitive. For example, if activated within a unit specification "
-#| "for ezUnits it will offer a list of applicable units."
 msgid ""
 "_WxMaxima_ contains an autocompletion feature that is triggered via the menu "
 "(Cell/Complete Word) or alternatively by pressing the key combination "
@@ -572,14 +551,6 @@ msgstr "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:100
-#, fuzzy
-#| msgid ""
-#| "Besides completing a file name, a unit name, or the current command or "
-#| "variable name, the autocompletion is able to show a template for most of "
-#| "the commands indicating the type (and meaning) of the parameters this "
-#| "program expects. To activate this feature press <kbd>SHIFT</"
-#| "kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item "
-#| "(Cell/Show Template)."
 msgid ""
 "Besides completing a file name, a unit name, or the current command or "
 "variable name, the autocompletion is able to show a template for most of the "
@@ -596,8 +567,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:102
-#, fuzzy
-#| msgid "#### Greek characters"
 msgid "#### Greek characters"
 msgstr "#### Griechische Zeichen"
 
@@ -647,10 +616,6 @@ msgstr ""
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:111
-#, fuzzy
-#| msgid ""
-#| "A Greek letter can be entered by pressing the <kbd>ESC</kbd> key and then "
-#| "starting to type the Greek character's name."
 msgid ""
 "A Greek letter can be entered by pressing the <kbd>ESC</kbd> key and then "
 "starting to type the Greek character’s name."
@@ -661,11 +626,6 @@ msgstr ""
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:111
-#, fuzzy
-#| msgid ""
-#| "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter "
-#| "(or two for the Greek letter omicron) and <kbd>ESC</kbd> again. In this "
-#| "case the following letters are supported:"
 msgid ""
 "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or "
 "two for the Greek letter omicron) and <kbd>ESC</kbd> again. In this case the "
@@ -895,10 +855,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:205
-#, fuzzy
-#| msgid ""
-#| "<kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> therefore results in "
-#| "an `a`."
 msgid ""
 "<kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> therefore results in an "
 "`a`."
@@ -920,12 +876,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:210
-#, fuzzy
-#| msgid ""
-#| "It may be the case that e.g. Greek characters or mathematical symbols are "
-#| "not included in the selected font, then they can not be displayed.  To "
-#| "solve that problem, select other fonts (using: Edit -> Configure -> "
-#| "Style)."
 msgid ""
 "It may be the case that e.g. Greek characters or mathematical symbols are "
 "not included in the selected font, then they can not be displayed.  To solve "
@@ -933,7 +883,7 @@ msgid ""
 msgstr ""
 "Es kann passieren, dass z.B. griechische Buchstaben oder mathematische "
 "Symbole in der ausgewählten Schriftart nicht vorhanden sind, dann können sie "
-"nicht dargestellt werden.Um das Problem zu lösen, bitte eine andere "
+"nicht dargestellt werden. Um das Problem zu lösen, bitte eine andere "
 "Schriftart wählen (Bearbeiten -> Einstellungen -> Stil)."
 
 #. type: Plain text
@@ -2454,7 +2404,8 @@ msgstr ""
 msgid ""
 "Plotting multiple plots in the same window is possible, too (the same is "
 "possible in command line Maxima with the standard `draw()` command):"
-msgstr ""
+msgstr "Mehrere Diagramme in einem Fenster sind auch möglich "
+"(dies ist auch möglich in Kommandozeilen-Maxima mit dem Standard-`draw()`-Befehl:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:654
@@ -2474,8 +2425,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:656
-#, fuzzy
-#| msgid "### The \"Plot using draw\" side pane"
 msgid "### The \"Plot using draw\" side pane"
 msgstr "### Die \"Plotte mittels Draw\"-Seitenleiste"
 
@@ -2550,8 +2499,6 @@ msgstr "Wie \"2D\", aber für dreidimensionale Diagramme."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:670
-#, fuzzy
-#| msgid "#### Expression"
 msgid "#### Expression"
 msgstr "#### Ausdruck"
 
@@ -2570,8 +2517,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:674
-#, fuzzy
-#| msgid "#### Implicit plot"
 msgid "#### Implicit plot"
 msgstr "#### Impliziter Plot"
 
@@ -2589,10 +2534,8 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:678
-#, fuzzy
-#| msgid "#### Parametric plot"
 msgid "#### Parametric plot"
-msgstr "#### Parametrische Plots"
+msgstr "#### Parametrischer Plot"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:680
@@ -2608,8 +2551,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:682
-#, fuzzy
-#| msgid "#### Points"
 msgid "#### Points"
 msgstr "#### Punkte"
 
@@ -2627,8 +2568,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:686
-#, fuzzy
-#| msgid "#### Diagram title"
 msgid "#### Diagram title"
 msgstr "#### Diagrammtitel"
 
@@ -2639,10 +2578,8 @@ msgstr "Bestimmt den Titel des Diagramms."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:690
-#, fuzzy
-#| msgid "#### 2D"
 msgid "#### Axis"
-msgstr "#### 2D"
+msgstr "#### Achsen"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:692
@@ -2651,8 +2588,6 @@ msgstr "Die Einstellungen für die Achsen."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:694
-#, fuzzy
-#| msgid "#### Contour"
 msgid "#### Contour"
 msgstr "#### Höhenlinien"
 
@@ -2678,10 +2613,8 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:698
-#, fuzzy
-#| msgid "#### Plot name"
 msgid "#### Plot name"
-msgstr "#### Name der Kurve"
+msgstr "#### Name des Plots"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:700
@@ -2696,8 +2629,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:702
-#, fuzzy
-#| msgid "#### Line colour"
 msgid "#### Line colour"
 msgstr "#### Linienfarbe"
 
@@ -2711,8 +2642,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:706
-#, fuzzy
-#| msgid "#### Fill colour"
 msgid "#### Fill colour"
 msgstr "#### Füllfarbe"
 
@@ -2727,10 +2656,8 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:710
-#, fuzzy
-#| msgid "#### 2D"
 msgid "#### Grid"
-msgstr "#### 2D"
+msgstr "#### Gitternetz"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:712
@@ -2739,8 +2666,6 @@ msgstr "Ein Assistent, der die Gitterlinien einzustellen hilft."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:714
-#, fuzzy
-#| msgid "#### Accuracy"
 msgid "#### Accuracy"
 msgstr "#### Genauigkeit"
 
@@ -2756,7 +2681,7 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:718
 msgid "### Modify font and font size for plots"
-msgstr ""
+msgstr "### Schrift und Schriftgröße for Plots ändern"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:720
@@ -2821,8 +2746,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:741
-#, fuzzy
-#| msgid "## Embedding graphics"
 msgid "## Embedding graphics"
 msgstr "## Einbetten von Bildern"
 
@@ -2848,8 +2771,6 @@ msgstr "show_image(\"Mensch.png\");\n"
 # ## Startbefehle
 #. type: Plain text
 #: ../../info/wxmaxima.md:749
-#, fuzzy
-#| msgid "## Startup files"
 msgid "## Startup files"
 msgstr "## Startbefehle"
 
@@ -2911,8 +2832,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:760
-#, fuzzy
-#| msgid "## Special variables wx..."
 msgid "## Special variables wx..."
 msgstr "## Spezielle Variablen, die wxMaxima definiert"
 
@@ -2948,18 +2867,13 @@ msgstr ""
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:771
-#, fuzzy
-#| msgid ""
-#| "`wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s "
-#| "pngcairo terminal that provides more line styles and a better overall "
-#| "graphics quality."
 msgid ""
 "`wxplot_pngcairo` tells whether _wxMaxima_ tries to use _Gnuplot_’s pngcairo "
 "terminal that provides more line styles and a better overall graphics "
 "quality."
 msgstr ""
-"`wxplot_pngcairo` sagt Maxima, ob es versuchen soll, gnuplot zu instruieren, "
-"pngcairo zu nutzen, um hochqualitative Bilder zu nutzen."
+"`wxplot_pngcairo` sagt Maxima, ob es versuchen soll, Gnuplot zu instruieren, "
+"pngcairo zu nutzen, das mehr Linientypen und hochqualitative Bilder unterstützt."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:771
@@ -3000,17 +2914,15 @@ msgstr ""
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:771
 msgid "`wxmaximaversion`: Returns the version number of _wxMaxima_."
-msgstr ""
+msgstr "`wxmaximaversion`: Ergibt die Versionsnummer von _wxMaxima_."
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:771
 msgid "`wxwidgetsversion`: Returns the wxWidgets version _wxMaxima_ is using."
-msgstr ""
+msgstr "`wxwidgetsversion`: Ergibt die Versionsnummer der verwendeten wxWidgets-Version."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:773
-#, fuzzy
-#| msgid "## Pretty-printing 2D output"
 msgid "## Pretty-printing 2D output"
 msgstr "## 2D-Tabellen sauber ausgeben"
 
@@ -3093,28 +3005,18 @@ msgstr "![Ein anderes table_form Beispiel](./SecondTableExample.png)"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:794
-#, fuzzy
-#| msgid "## Bug reporting"
 msgid "## Bug reporting"
 msgstr "## Fehler melden"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:796
-#, fuzzy
-#| msgid ""
-#| "_wxMaxima_ provides a few functions that gather bug reporting information "
-#| "about the current system:"
 msgid ""
 "_WxMaxima_ provides a few functions that gather bug reporting information "
 "about the current system:"
-msgstr "_wxMaxima_ bietet einige Funktionen für das Melden von Fehlern an:"
+msgstr "_WxMaxima_ bietet einige Funktionen für das Melden von Fehlern an:"
 
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:799
-#, fuzzy
-#| msgid ""
-#| "`wxbuild_info()` gathers information about the currently running version "
-#| "of _wxMaxima_"
 msgid ""
 "`wxbuild_info()` gathers information about the currently running version of "
 "_wxMaxima_"
@@ -4153,8 +4055,7 @@ msgid ""
 "## How can a Maxima script determine, if it is running under wxMaxima or "
 "command line Maxima?"
 msgstr ""
-"## Wie kann ein Maxima-Skript feststellen, ob es unter wxMaxima oder "
-"Kommandozeilen-Maxima läuft?"
+"## Wie kann ein Maxima-Skript feststellen, ob es unter wxMaxima oder Kommandozeilen-Maxima läuft?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1066
