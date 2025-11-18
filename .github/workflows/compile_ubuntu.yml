@@ -41,6 +41,9 @@ jobs:
       - name: git-diff
         # run git diff to see, if the configure/build process has changed the source files (po4a can do that)
         run: git diff --compact-summary
+      - name: cat_german_translation
+        # output the german translation - how does it look like on Ubuntu 24.04?
+        run: cat build/info/wxmaxima.de.md
       - name: update-locale
         run: |
              cd build
@@ -127,4 +130,8 @@ jobs:
       - name: git-diff
         # run git diff to see, if the configure/build process has changed the source files (po4a can do that)
         run: git diff --compact-summary
+      - name: cat_german_translation
+        # output the german translation - how does it look like on Ubuntu 22.04?
+        run: cat build/info/wxmaxima.de.md
+
 
