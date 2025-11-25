@@ -48,10 +48,11 @@ if(PANDOC)
 		if("${PDFLANG}" STREQUAL "")
 			set(PDFLANG "en")
 		endif()
-		# For Chinese use English, I have not found out, what must be
-		# set for chinese (at least on my system, nothing worked).
+		# For Chinese use "zh_Hans", which is "Simplified Chinese". At least keywords like "Figure" or
+		# "Contents" have a translation now (hopefully a correct one).
+		# "zh_Hant" (Traditional Chinese) might also be possible, don't know which is 'correct'.
 		if("${PDFLANG}" STREQUAL "zh_CN")
-			set(PDFLANG "en")
+			set(PDFLANG "zh_Hans")
 		endif()
 
 		add_custom_command(
