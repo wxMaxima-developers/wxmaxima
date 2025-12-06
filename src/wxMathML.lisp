@@ -1,8 +1,8 @@
 (format t "~:@csuppressOutput~:@c~%" (code-char 60) (code-char 62))
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
-;; Andrej Vodopivec,  2004-2014
-;; Gunter Königsmann, 2014-2023
-;; Robert Dodier,     2019-2020
+;; Andrej Vodopivec,   2004-2014
+;; Gunter Koenigsmann, 2014-2023
+;; Robert Dodier,      2019-2020
 ;;  SPDX-License-Identifier: GPL-2.0+
 
 ;; This file isn't directly loaded by maxima on startup of wxMaxima.
