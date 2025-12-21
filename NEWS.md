@@ -24,6 +24,7 @@
 - Fix subscripts of greek letters (#2045).
 - Fix the "Numerical solutions of polynomial" (with and without bigfloats) wizards.
   The allroots() and bfallroots() functions use only one argument, not two.
+- Save the chosen invertion status in the configuration. Fixes issue #2049.
 
 # 25.04.0
 
