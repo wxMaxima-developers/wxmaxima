@@ -7736,8 +7736,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
                  "Might be able to detect solutions in non-polynomials, as well, if "
                  "the expression is approximated by an polynomial, beforehand:\n\n"
                  "    allroots(ratdisrep(taylor(expression,0,30)));"),
-               wxEmptyString, wxS("allroots(#1#,#2#);"), _("Polynomial:"), expr,
-               wxEmptyString, _("Variable:"), wxS("x"), wxEmptyString);
+               wxEmptyString, wxS("allroots(#1#);"), _("Polynomial:"), expr);
   }
   else if(event.GetId() == EventIDs::menu_bfallroots){
     CommandWiz(
@@ -7747,8 +7746,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event) {
                  "Might be able to detect solutions in non-polynomials, as well, if "
                  "the expression is approximated by an polynomial, beforehand:\n\n"
                  "    bfallroots(ratdisrep(taylor(expression,0,30)));"),
-               wxEmptyString, wxS("bfallroots(#1#,#2#);"), _("Polynomial:"), expr,
-               wxEmptyString, _("Variable:"), wxS("x"), wxEmptyString);
+               wxEmptyString, wxS("bfallroots(#1#);"), _("Polynomial:"), expr);
   }
   else if(event.GetId() == EventIDs::menu_realroots){
     CommandWiz(

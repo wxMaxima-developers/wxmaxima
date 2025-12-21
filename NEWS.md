@@ -22,6 +22,8 @@
 - Fix a problem with wxplot2d/wxplot3d on OpenBSD (#2027).
 - Fix a crash when deleting a text cell (#2041).
 - Fix subscripts of greek letters (#2045).
+- Fix the "Numerical solutions of polynomial" (with and without bigfloats) wizards.
+  The allroots() and bfallroots() functions use only one argument, not two.
 
 # 25.04.0
 
