@@ -500,6 +500,7 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
         // We don't evaluate any cell right now.
         break;
       case StatusBar::MaximaStatus::waiting:
+      case StatusBar::MaximaStatus::maximaerror:
         m_bytesFromMaxima_last = 0;
         if(GetWorksheet())
           {
