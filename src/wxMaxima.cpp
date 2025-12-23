@@ -5438,6 +5438,7 @@ void wxMaxima::UpdateToolBar() {
   case StatusBar::MaximaStatus::waitingForAuth:
   case StatusBar::MaximaStatus::waitingForPrompt:
   case StatusBar::MaximaStatus::waiting:
+  case StatusBar::MaximaStatus::maximaerror:
   case StatusBar::MaximaStatus::sending:
     GetWorksheet()->m_mainToolBar->ShowFollowBitmap();
     if (GetWorksheet()->GetWorkingGroup() == NULL) {
@@ -10664,6 +10665,8 @@ void wxMaxima::TriggerEvaluation() {
     } else {
       // Manually mark the current cell as the one that has caused an error.
       GetWorksheet()->GetErrorList().Add(tmp);
+      // Inform the status bar about the error
+      StatusMaximaBusy(StatusBar::MaximaStatus::maximaerror);
       // Inform the user about the error (which automatically causes the
       // worksheet to the cell we marked as erroneous a few seconds ago.
       auto cell =

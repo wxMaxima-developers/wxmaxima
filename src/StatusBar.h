@@ -92,6 +92,7 @@ public:
     parsing,
     transferring,
     userinput,
+    maximaerror,
     disconnected
   };
 
