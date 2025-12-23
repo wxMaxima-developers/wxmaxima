@@ -500,6 +500,7 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
         // We don't evaluate any cell right now.
         break;
       case StatusBar::MaximaStatus::waiting:
+      case StatusBar::MaximaStatus::maximaerror:
         m_bytesFromMaxima_last = 0;
         if(GetWorksheet())
           {
@@ -591,8 +592,11 @@ wxMaximaFrame::~wxMaximaFrame() {
 #endif
   m_manager = NULL;
 }
-
-
+#if wxCHECK_VERSION(3, 1, 0)
+#ifdef __WXMSW__
+#include <wx/taskbarbutton.h>
+#endif
+#endif
 void wxMaximaFrame::SetupFileMenu() {
   m_FileMenu = new wxMenu;
   m_FileMenu->Append(wxID_NEW, _("New\tCtrl+N"), _("Open a new window"));

@@ -49,6 +49,11 @@
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
+#if wxCHECK_VERSION(3, 1, 0)
+#ifdef __WXMSW__
+#include <wx/taskbarbutton.h>
+#endif
+#endif
 
 StatusBar::StatusBar(wxWindow *parent, int id)
   : wxStatusBar(parent, id), m_ppi(wxSize(-1, -1)) {
@@ -205,41 +210,91 @@ void StatusBar::UpdateBitmaps() {
 
 void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFromMaxima)
 {
+  #if wxCHECK_VERSION(3, 1, 0)
+  #ifdef __WXMSW__
+  wxFrame *frame = dynamic_cast<wxFrame *>(wxGetTopLevelParent(this));
+  #endif
+  #endif
   switch(status)
     {
     case wait_for_start:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      #endif
+      #endif
       m_maximaStatus->SetBitmap(m_bitmap_waitForStart);
       m_maximaStatus->SetToolTip(_("Maxima started. Waiting for connection..."));
       break;
     case process_wont_start:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_ERROR);
+      #endif
+      #endif
       m_maximaStatus->SetBitmap(m_bitmap_process_wont_start);
       m_maximaStatus->SetToolTip(_("Cannot start the maxima binary"));
       break;
     case sending:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      #endif
+      #endif
       m_maximaStatus->SetBitmap(m_bitmap_sending);
       m_maximaStatus->SetToolTip(_("Sending a command to Maxima"));
       break;
     case waiting:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_NORMAL);
+      #endif
+      #endif
       m_maximaStatus->SetBitmap(m_bitmap_waiting);
       m_maximaStatus->SetToolTip(_("Ready for user input"));
       break;
     case waitingForPrompt:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      #endif
+      #endif
       m_maximaStatus->SetBitmap(m_bitmap_waitingForPrompt);
       m_maximaStatus->SetToolTip(_("Maxima started. Waiting for initial prompt..."));
       break;
     case waitingForAuth:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      #endif
+      #endif
       m_maximaStatus->SetBitmap(m_bitmap_waitingForAuth);
       m_maximaStatus->SetToolTip(_("Maxima started. Waiting for authentication..."));
       break;
     case calculating:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      #endif
+      #endif
       m_maximaStatus->SetBitmap(m_bitmap_calculating);
       m_maximaStatus->SetToolTip(_("Maxima is calculating"));
       break;
     case parsing:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      #endif
+      #endif
       m_maximaStatus->SetBitmap(m_bitmap_parsing);
       m_maximaStatus->SetToolTip(_("Parsing output"));
       break;
     case transferring:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      #endif
+      #endif
       m_maximaStatus->SetBitmap(m_bitmap_transferring);
       if (bytesFromMaxima == 0)
         m_maximaStatus->SetToolTip(_("Reading Maxima output"));
@@ -248,10 +303,29 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
                                                     static_cast<long>(bytesFromMaxima)));
       break;
     case userinput:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_PAUSED);
+      #endif
+      #endif
       m_maximaStatus->SetBitmap(m_bitmap_userinput);
       m_maximaStatus->SetToolTip(_("Maxima asks a question"));
       break;
+    case maximaerror:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_PAUSED);
+      #endif
+      #endif
+      m_maximaStatus->SetBitmap(m_bitmap_userinput);
+      m_maximaStatus->SetToolTip(_("Maxima returned an error message"));
+      break;
     case disconnected:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_ERROR);
+      #endif
+      #endif
       m_maximaStatus->SetBitmap(m_bitmap_disconnected);
       m_maximaStatus->SetToolTip(_("Not connected to Maxima"));
       break;
