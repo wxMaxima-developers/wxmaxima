@@ -220,7 +220,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
     case wait_for_start:
       #if wxCHECK_VERSION(3, 1, 0)
       #ifdef __WXMSW__
-      frame->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
       #endif
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_waitForStart);
@@ -229,7 +229,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
     case process_wont_start:
       #if wxCHECK_VERSION(3, 1, 0)
       #ifdef __WXMSW__
-      frame->SetProgressState(wxTASKBAR_BUTTON_ERROR);
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_ERROR);
       #endif
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_process_wont_start);
@@ -238,7 +238,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
     case sending:
       #if wxCHECK_VERSION(3, 1, 0)
       #ifdef __WXMSW__
-      frame->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
       #endif
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_sending);
@@ -247,7 +247,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
     case waiting:
       #if wxCHECK_VERSION(3, 1, 0)
       #ifdef __WXMSW__
-      frame->SetProgressState(wxTASKBAR_BUTTON_NORMAL);
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_NORMAL);
       #endif
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_waiting);
@@ -256,7 +256,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
     case waitingForPrompt:
       #if wxCHECK_VERSION(3, 1, 0)
       #ifdef __WXMSW__
-      frame->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
       #endif
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_waitingForPrompt);
@@ -265,7 +265,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
     case waitingForAuth:
       #if wxCHECK_VERSION(3, 1, 0)
       #ifdef __WXMSW__
-      frame->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
       #endif
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_waitingForAuth);
@@ -274,7 +274,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
     case calculating:
       #if wxCHECK_VERSION(3, 1, 0)
       #ifdef __WXMSW__
-      frame->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
       #endif
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_calculating);
@@ -283,7 +283,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
     case parsing:
       #if wxCHECK_VERSION(3, 1, 0)
       #ifdef __WXMSW__
-      frame->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
       #endif
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_parsing);
@@ -292,7 +292,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
     case transferring:
       #if wxCHECK_VERSION(3, 1, 0)
       #ifdef __WXMSW__
-      frame->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_INDETERMINATE);
       #endif
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_transferring);
@@ -305,7 +305,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
     case userinput:
       #if wxCHECK_VERSION(3, 1, 0)
       #ifdef __WXMSW__
-      frame->SetProgressState(wxTASKBAR_BUTTON_PAUSED);
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_PAUSED);
       #endif
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_userinput);
@@ -314,7 +314,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
     case maximaerror:
       #if wxCHECK_VERSION(3, 1, 0)
       #ifdef __WXMSW__
-      frame->SetProgressState(wxTASKBAR_BUTTON_PAUSED);
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_PAUSED);
       #endif
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_userinput);
@@ -323,7 +323,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
     case disconnected:
       #if wxCHECK_VERSION(3, 1, 0)
       #ifdef __WXMSW__
-      frame->SetProgressState(wxTASKBAR_BUTTON_ERROR);
+      frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_ERROR);
       #endif
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_disconnected);
