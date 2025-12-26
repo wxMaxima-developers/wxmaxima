@@ -65,6 +65,7 @@ if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
 
     message(STATUS "The updated POT and PO files were generated in the build directory.")
     message(STATUS "Call 'make update-locale' to update the .po files in the source tree, too.")
+    message(STATUS "Call 'make update-locale-manual-in-source' to do the same with the manual.")
 else()
     message(STATUS "Gettext not found - translations of wxMaxima will be disabled")
 endif()
