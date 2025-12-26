@@ -6,7 +6,7 @@ find_program(PO4A po4a)
 # which languages are supported?
 file(GLOB TRANSLATION_FILES *.po)
 
-if(PO4A-)
+if(PO4A)
     add_custom_target(update-locale-manual-in-source) # update all po files for the manual *in the source tree*.
     foreach(POFILE ${TRANSLATION_FILES})
         string(REGEX REPLACE ".*/(.*).po$" "\\1" LANG ${POFILE})
