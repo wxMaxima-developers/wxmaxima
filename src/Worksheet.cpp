@@ -862,7 +862,9 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
 }
 
 void Worksheet::SetZoomFactor(double newzoom) {
-  // Restrict zoom factors to tenths
+  // Restrict zoom factors to tenths: If we allow arbitraty floats we sometimes
+  // recalculate on requests to change the zoom factor by amounts that are too small to
+  // make any effect.
   newzoom = round(newzoom * 10) / 10.0;
 
   if (newzoom < m_configuration->GetMinZoomFactor())
@@ -896,9 +898,13 @@ void Worksheet::SetZoomFactor(double newzoom) {
       cellToScrollTo = cellToScrollTo->GetNext();
     }
   }
-  Recalculate();
-  RequestRedraw();
-  ScheduleScrollToCell(cellToScrollTo);
+  if(GetTree())
+    {
+      GetTree()->ResetSizeList();
+      Recalculate();
+      RequestRedraw();
+      ScheduleScrollToCell(cellToScrollTo);
+    }
 }
 
 bool Worksheet::RecalculateIfNeeded(bool timeout) {
