@@ -1,4 +1,4 @@
 [po4a_langs] ${LANGUAGES_SPACESEPARATED}
 [po4a_paths] ${CMAKE_SOURCE_DIR}/locales/manual/wxmaxima.md.pot $lang:${CMAKE_SOURCE_DIR}/locales/manual/$lang.po
-[type: text] ${CMAKE_SOURCE_DIR}/info/wxmaxima.md $lang:${CMAKE_SOURCE_DIR}/locales/manual/$lang.po opt:"-k 5"
+[type: text] ${WXMAXIMA_MD_RELATIVE} $lang:${CMAKE_SOURCE_DIR}/info/wxmaxima.$lang.md opt:"-k 5"
 

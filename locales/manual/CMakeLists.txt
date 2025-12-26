@@ -8,6 +8,7 @@ file(GLOB TRANSLATION_FILES *.po)
 file(GLOB LANGUAGES *.po)
 list(TRANSFORM LANGUAGES REPLACE ".*/(.*).po$" "\\1")
 string(REPLACE ";" " " LANGUAGES_SPACESEPARATED "${LANGUAGES}")
+file(RELATIVE_PATH WXMAXIMA_MD_RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}/info/wxmaxima.md")
 
 
 configure_file("po4a.cfg.in" "po4a.cfg")
