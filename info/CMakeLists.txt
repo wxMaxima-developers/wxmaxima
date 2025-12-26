@@ -34,7 +34,7 @@ if(PANDOC)
 	function(generate_wxmaxima_documentation_html FILEBASENAME)
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.html
-			COMMAND ${PANDOC} ${FILEBASENAME}.md -t html5 "--include-in-header=${CMAKE_CURRENT_SOURCE_DIR}/header.html" -o ${FILEBASENAME}.html --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="WxMaxima"
+			COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/${FILEBASENAME}.md -t html5 "--include-in-header=${CMAKE_CURRENT_SOURCE_DIR}/header.html" -o ${FILEBASENAME}.html --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="WxMaxima"
 			COMMAND ${REMOVE_HTML5SHIV}
 			COMMENT "Generating ${FILEBASENAME}.html")
 		add_custom_target(build_${FILEBASENAME}.html DEPENDS ${FILEBASENAME}.html)
