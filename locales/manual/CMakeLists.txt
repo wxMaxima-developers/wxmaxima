@@ -5,6 +5,12 @@ find_program(PO4A-UPDATEPO po4a-updatepo)
 
 # which languages are supported?
 file(GLOB TRANSLATION_FILES *.po)
+file(GLOB LANGUAGES *.po)
+list(TRANSFORM LANGUAGES REPLACE ".*/(.*).po$" "\\1")
+string(REPLACE ";" " " LANGUAGES_SPACESEPARATED "${LANGUAGES}")
+
+
+configure_file("po4a.cfg.in" "po4a.cfg")
 
 if(PO4A-UPDATEPO)
     add_custom_target(update-locale-manual-in-source) # update all po files for the manual *in the source tree*.

@@ -1,2 +1,5 @@
 [po_directory] ${RELPATH_TO_PO4A_PO_DIRECTORY}
-[type: text] ${CMAKE_SOURCE_DIR}/info/wxmaxima.md $lang:${CMAKE_BINARY_DIR}/info/wxmaxima.$lang.md opt:"-k 5"
+[type: markdown] ${CMAKE_SOURCE_DIR}/info/wxmaxima.md $lang:${CMAKE_BINARY_DIR}/info/wxmaxima.$lang.md opt:"-k 5"
+[po4a_langs] ${LANGUAGES_SPACESEPARATED}
+[po4a_paths] ${CMAKE_SOURCE_DIR}/info/ ${CMAKE_SOURCE_DIR}/locales/manual/
+
