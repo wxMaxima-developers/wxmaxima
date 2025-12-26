@@ -1404,7 +1404,7 @@ public:
   void UnfoldAll();
 
   // methods for zooming the document in and out
-  void SetZoomFactor(double newzoom, bool recalc = true);
+  void SetZoomFactor(double newzoom);
 
   void CommentSelection();
 

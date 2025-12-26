@@ -4563,8 +4563,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
     long int zoom = 100;
     if (!(doczoom.ToLong(&zoom)))
       zoom = 100;
-    document->SetZoomFactor(static_cast<double>(zoom) / 100.0,
-                            false); // Set zoom if opening, don't recalculate
+    document->SetZoomFactor(static_cast<double>(zoom) / 100.0);
   }
 
   document->InsertGroupCells(

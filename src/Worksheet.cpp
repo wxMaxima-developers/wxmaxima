@@ -861,7 +861,7 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
   }
 }
 
-void Worksheet::SetZoomFactor(double newzoom, bool recalc) {
+void Worksheet::SetZoomFactor(double newzoom) {
   // Restrict zoom factors to tenths
   newzoom = round(newzoom * 10) / 10.0;
 
@@ -896,10 +896,8 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc) {
       cellToScrollTo = cellToScrollTo->GetNext();
     }
   }
-  if (recalc) {
-    Recalculate();
-    RequestRedraw();
-  }
+  Recalculate();
+  RequestRedraw();
   ScheduleScrollToCell(cellToScrollTo);
 }
 
