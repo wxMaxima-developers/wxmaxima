@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['security_20policy_0',['Security Policy',['../md_SECURITY.html',1,'']]],
-  ['src_1',['Src',['../md_src_README.html',1,'']]]
+  ['manuel_20de_20l_27utilisateur_20de_20wxmaxima_0',['Manuel de l&apos;utilisateur de wxMaxima',['../md_info_wxmaxima_fr.html',1,'']]]
 ];
