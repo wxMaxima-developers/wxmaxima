@@ -25,6 +25,10 @@
 - Fix the "Numerical solutions of polynomial" (with and without bigfloats) wizards.
   The allroots() and bfallroots() functions use only one argument, not two.
 - Save the chosen invertion status in the configuration. Fixes issue #2049.
+- Try to highlight input text that coincides with selected output text.
+- diff() now doesn't add a ",1" if only the 1st derivate is meant.
+- A more consistent worksheet zoom feature.
+- Maxima's state should now be displayed in the windows task bar.
 
 # 25.04.0
 
