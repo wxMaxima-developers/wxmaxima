@@ -2556,7 +2556,6 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
               break;
             cell = cell->GetNext();
           }
-        std::cerr<<m_cellPointers.m_selectionString<<"\n";
       }
       break;
 
