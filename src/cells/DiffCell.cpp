@@ -112,6 +112,10 @@ wxString DiffCell::ToString() const {
     s += tmp->ListToString();
   s += m_diffCell->ListToString();
   s += wxS(")");
+
+  // If we use the 1st derivation we can do without the trailing ",1":
+  if (s.EndsWith(",1)"))
+    s = s.Left(s.Length()-3) + ")";
   return s;
 }
 
