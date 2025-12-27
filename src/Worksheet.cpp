@@ -2390,6 +2390,7 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event) {
 }
 
 void Worksheet::OnMouseMotion(wxMouseEvent &event) {
+  m_cellPointers.m_selectionString.Clear();
   event.Skip();
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_pointer_x,
                          &m_pointer_y);
@@ -2475,7 +2476,7 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
   const Cell *selectionStartOld = m_cellPointers.m_selectionStart,
     *selectionEndOld = m_cellPointers.m_selectionEnd;
   wxRect rect;
-
+  
   int ytop = std::min(down.y, up.y);
   int ybottom = std::max(down.y, up.y);
 
@@ -2546,6 +2547,16 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
         auto const sel = m_clickInGC->GetCellsInOutputRect(rect, down, up);
         m_cellPointers.m_selectionStart = sel.first;
         m_cellPointers.m_selectionEnd = sel.last;
+        
+        Cell *cell=sel.first;
+        while(cell)
+          {
+            m_cellPointers.m_selectionString.Append(cell->ToString());
+            if(cell == sel.last)
+              break;
+            cell = cell->GetNext();
+          }
+        std::cerr<<m_cellPointers.m_selectionString<<"\n";
       }
       break;
 
