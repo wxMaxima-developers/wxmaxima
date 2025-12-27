@@ -97,8 +97,10 @@ if(PANDOC)
 
 	file(GLOB IMAGEFILES ${CMAKE_CURRENT_SOURCE_DIR}/*.png)
 	file(COPY ${IMAGEFILES} DESTINATION .)
-	file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md DESTINATION .)
-
+        configure_file(wxmaxima.md wxmaxima.md COPYONLY)
+	foreach(BASENAME ${BASENAMES})
+                configure_file(${BASENAME}.md ${BASENAME}.md COPYONLY)
+	endforeach()
 	generate_wxmaxima_documentation_html("wxmaxima")
 	generate_wxmaxima_documentation_epub("wxmaxima")
 	if(WXMAXIMA_LATEX_COMMAND)
