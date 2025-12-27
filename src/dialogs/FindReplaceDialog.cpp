@@ -28,13 +28,16 @@
 
 #include "FindReplaceDialog.h"
 #include "cells/EditorCell.h"
+#include <wx/persist/toplevel.h>
 
 FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
                                      FindReplacePane::FindReplaceData *data,
                                      const wxString &title,
                                      FindReplaceDialog **pointerToDialogue, int style)
-  : wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
-             style) {
+  : wxDialog() {
+  SetBackgroundStyle(wxBG_STYLE_PAINT);
+  Create(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
+         style);
   m_pointerToDialogue = pointerToDialogue;
   if(m_pointerToDialogue != NULL)
     *m_pointerToDialogue = this;
@@ -49,6 +52,9 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
     SetPosition(m_windowPos);
   if (m_windowSize.x > 0)
     SetSize(wxSize(m_windowSize.x, GetSize().y));
+  SetName("FindDialog");
+  wxPersistenceManager::Get().RegisterAndRestore(this);
+
   Connect(wxEVT_ACTIVATE, wxActivateEventHandler(FindReplaceDialog::OnActivateEvent),
           NULL, this);
   Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplaceDialog::OnKeyDown),
@@ -77,6 +83,7 @@ void FindReplaceDialog::OnActivateEvent(wxActivateEvent &event) {
       m_activateDuringConstruction = false;
       return;
     }
+    
   if (event.GetActive())
     SetTransparent(255);
   else
