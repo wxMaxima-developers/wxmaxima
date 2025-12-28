@@ -281,9 +281,6 @@ int Cell::GetMaxDrop() const {
 int Cell::GetHeightList() const { return GetCenterList() + GetMaxDrop(); }
 
 int Cell::GetFullWidth() const {
-  // We begin this calculation with a negative offset since the full width of
-  // only a single cell doesn't contain the space that separates two cells -
-  // that is automatically added to every cell in the next step.
   int fullWidth = 0;
   for (const Cell &tmp : OnDrawList(this)) {
     fullWidth += tmp.m_width;
