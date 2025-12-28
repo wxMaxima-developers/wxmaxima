@@ -75,7 +75,7 @@ void DiffCell::Recalculate(AFontSize fontsize) {
     m_baseCell->RecalculateList(fontsize);
     m_diffCell->RecalculateList(fontsize);
     if (!IsBrokenIntoLines()) {
-      m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
+      m_width = m_baseCell->SumOfWidths() + m_diffCell->SumOfWidths();
       m_center = std::max(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
       m_height =
         m_center + std::max(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
@@ -97,7 +97,7 @@ void DiffCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     df.y = point.y;
     m_diffCell->DrawList(df, dc, antialiassingDC);
 
-    bs.x = point.x + m_diffCell->GetFullWidth();
+    bs.x = point.x + m_diffCell->SumOfWidths();
     bs.y = point.y;
     m_baseCell->DrawList(bs, dc, antialiassingDC);
   }

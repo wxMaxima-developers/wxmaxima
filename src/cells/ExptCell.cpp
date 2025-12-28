@@ -77,7 +77,7 @@ void ExptCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     bs.y = point.y;
     m_baseCell->DrawList(bs, dc, antialiassingDC);
 
-    point.x += m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
+    point.x += m_baseCell->SumOfWidths() - MC_TEXT_PADDING;
     point.y -= m_expt_yoffset;
     m_exptCell->DrawList(point, dc, antialiassingDC);
   }
@@ -97,7 +97,7 @@ void ExptCell::Recalculate(AFontSize fontsize) {
       m_open->RecalculateList(fontsize);
       m_close->RecalculateList(fontsize);
     } else {
-      m_width = m_baseCell->GetFullWidth() + m_exptCell->GetFullWidth() -
+      m_width = m_baseCell->SumOfWidths() + m_exptCell->SumOfWidths() -
         MC_TEXT_PADDING;
       m_expt_yoffset = m_exptCell->GetMaxDrop() + PowRise();
 

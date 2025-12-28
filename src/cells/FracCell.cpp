@@ -122,8 +122,8 @@ void FracCell::Recalculate(AFontSize fontsize) {
         else
           m_horizontalGapRight = 0;
 
-        m_width = std::max(m_displayedNum->GetFullWidth(),
-                           m_displayedDenom->GetFullWidth()) +
+        m_width = std::max(m_displayedNum->SumOfWidths(),
+                           m_displayedDenom->SumOfWidths()) +
           2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
         m_height =
           Num()->GetHeightList() + Denom()->GetHeightList() + Scale_Px(6.5);
@@ -145,9 +145,9 @@ void FracCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     if (m_inExponent) {
       num = point;
       wxPoint divide(point);
-      divide.x += m_displayedNum->GetFullWidth();
+      divide.x += m_displayedNum->SumOfWidths();
       denom = divide;
-      denom.x += m_divide->GetFullWidth();
+      denom.x += m_divide->SumOfWidths();
 
       m_displayedNum->DrawList(num, dc, antialiassingDC);
       m_divide->Draw(divide, dc, antialiassingDC);
@@ -155,7 +155,7 @@ void FracCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     } else {
       num.x = point.x + m_horizontalGapLeft +
         (m_width - m_horizontalGapLeft - m_horizontalGapRight -
-         m_displayedNum->GetFullWidth()) /
+         m_displayedNum->SumOfWidths()) /
         2;
       num.y = point.y - m_displayedNum->GetHeightList() +
         m_displayedNum->GetCenterList();
@@ -163,7 +163,7 @@ void FracCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
       denom.x = point.x + m_horizontalGapLeft +
         (m_width - m_horizontalGapLeft - m_horizontalGapRight -
-         m_displayedDenom->GetFullWidth()) /
+         m_displayedDenom->SumOfWidths()) /
         2;
       denom.y = point.y + m_displayedDenom->GetCenterList() + Scale_Px(4);
       m_displayedDenom->DrawList(denom, dc, antialiassingDC);

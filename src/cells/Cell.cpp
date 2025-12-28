@@ -280,7 +280,7 @@ int Cell::GetMaxDrop() const {
 
 int Cell::GetHeightList() const { return GetCenterList() + GetMaxDrop(); }
 
-int Cell::GetFullWidth() const {
+int Cell::SumOfWidths() const {
   int fullWidth = 0;
   for (const Cell &tmp : OnDrawList(this)) {
     fullWidth += tmp.m_width;

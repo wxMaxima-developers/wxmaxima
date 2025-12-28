@@ -71,7 +71,7 @@ void MatrCell::Recalculate(AFontSize const fontsize) {
       wxCoord width = 0;
       for (size_t j = 0; j < m_matHeight; j++) {
         if ((m_matWidth * j + i) < m_cells.size())
-          width = std::max(width, GetInnerCell(j, i)->GetFullWidth());
+          width = std::max(width, GetInnerCell(j, i)->SumOfWidths());
       }
       m_widths.emplace_back(width);
       m_width += (width + Scale_Px(10));
@@ -113,7 +113,7 @@ void MatrCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
           wxPoint mp1(mp);
           mp1.x =
             mp.x +
-            (m_widths[i] - GetInnerCell(j, i)->GetFullWidth()) / 2;
+            (m_widths[i] - GetInnerCell(j, i)->SumOfWidths()) / 2;
           GetInnerCell(j, i)->DrawList(mp1, dc, antialiassingDC);
           mp.y += (m_dropCenters[j].drop + Scale_Px(10));
         }

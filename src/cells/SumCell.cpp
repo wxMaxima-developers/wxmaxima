@@ -171,8 +171,8 @@ void SumCell::Recalculate(AFontSize fontsize) {
     } else {
       m_over->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
       m_under->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
-      m_width = std::max(std::max(m_signSize.x, m_over->GetFullWidth()),
-                         m_under->GetFullWidth()) + DisplayedBase()->GetFullWidth();
+      m_width = std::max(std::max(m_signSize.x, m_over->SumOfWidths()),
+                         m_under->SumOfWidths()) + DisplayedBase()->SumOfWidths();
     
       m_center = std::max(m_signSize.y / 2 + Scale_Px(2)
                           + m_over->GetHeightList(),
@@ -192,14 +192,14 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
     wxPoint base(point), under(point), over(point), sign(point);
 
-    wxCoord signCenter_horizontal = std::max(std::max(m_signSize.x, m_over->GetFullWidth()),
-                                             m_under->GetFullWidth()) / 2;
+    wxCoord signCenter_horizontal = std::max(std::max(m_signSize.x, m_over->SumOfWidths()),
+                                             m_under->SumOfWidths()) / 2;
 
-    under.x += signCenter_horizontal - m_under->GetFullWidth() / 2;
+    under.x += signCenter_horizontal - m_under->SumOfWidths() / 2;
     under.y += + m_signSize.y / 2 + Scale_Px(2) + m_under->GetCenterList();
     m_under->DrawList(under, dc, antialiassingDC);
 
-    over.x += signCenter_horizontal - m_over->GetFullWidth() / 2;
+    over.x += signCenter_horizontal - m_over->SumOfWidths() / 2;
     over.y -= m_signSize.y / 2 + m_over->GetMaxDrop() + Scale_Px(2);
     m_over->DrawList(over, dc, antialiassingDC);
 
@@ -208,8 +208,8 @@ void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     antialiassingDC->DrawBitmap(BitmapFromSVG(GetSvgSymbolData(),
                                               wxSize(m_signSize.x, m_signSize.y)),
                                 sign.x, sign.y, true);    
-    base.x += std::max(std::max(m_signSize.x, m_over->GetFullWidth()),
-                         m_under->GetFullWidth());
+    base.x += std::max(std::max(m_signSize.x, m_over->SumOfWidths()),
+                         m_under->SumOfWidths());
     DisplayedBase()->DrawList(base, dc, antialiassingDC);
   }
 }

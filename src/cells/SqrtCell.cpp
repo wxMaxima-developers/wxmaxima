@@ -60,7 +60,7 @@ void SqrtCell::Recalculate(AFontSize fontsize) {
   if (NeedsRecalculation(fontsize)) {
     m_innerCell->RecalculateList(fontsize);
     
-    m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
+    m_width = m_innerCell->SumOfWidths() + Scale_Px(13) + 1;
     if (!IsBrokenIntoLines()) {
       auto openHeight = 0; // m_open->GetHeightList();
       auto openCenter = 0; // m_open->GetCenterList();

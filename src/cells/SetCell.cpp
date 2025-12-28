@@ -53,7 +53,7 @@ void SetCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     if (m_drawAsAscii) {
       innerCellPos.x += m_open->GetWidth();
       m_open->DrawList(point, dc, antialiassingDC);
-      m_close->DrawList(wxPoint(point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(),
+      m_close->DrawList(wxPoint(point.x + m_open->GetWidth() + m_innerCell->SumOfWidths(),
                                 point.y), dc, antialiassingDC);
     } else {
       innerCellPos.y +=

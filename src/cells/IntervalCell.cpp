@@ -99,8 +99,8 @@ void IntervalCell::Recalculate(AFontSize fontsize) {
       m_height = 0;
       m_center = 0;
     } else {
-      m_width = m_signWidth + m_start->GetFullWidth() + m_ellipsis->GetWidth() +
-        m_stop->GetFullWidth() + m_signWidth;
+      m_width = m_signWidth + m_start->SumOfWidths() + m_ellipsis->GetWidth() +
+        m_stop->SumOfWidths() + m_signWidth;
 
       m_height = std::max(std::max(m_signHeight, m_start->GetHeightList()),
                           m_stop->GetHeightList()) +
@@ -118,13 +118,13 @@ void IntervalCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
     if (m_drawAsAscii) {
       m_openBracket->DrawList(point, dc, antialiassingDC);
-      point.x += m_openBracket->GetFullWidth();
+      point.x += m_openBracket->SumOfWidths();
       m_start->DrawList(point, dc, antialiassingDC);
-      point.x += m_start->GetFullWidth();
+      point.x += m_start->SumOfWidths();
       m_ellipsis->DrawList(point, dc, antialiassingDC);
-      point.x += m_ellipsis->GetFullWidth();
+      point.x += m_ellipsis->SumOfWidths();
       m_stop->DrawList(point, dc, antialiassingDC);
-      point.x += m_stop->GetFullWidth();
+      point.x += m_stop->SumOfWidths();
       m_closeBracket->DrawList(point, dc, antialiassingDC);
     } else {
       SetPen(dc, 1.5);
@@ -149,7 +149,7 @@ void IntervalCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       startCellPos.y +=
         (m_start->GetCenterList() - m_start->GetHeightList() / 2);
       m_start->DrawList(startCellPos, dc, antialiassingDC);
-      innerCellPos.x += m_start->GetFullWidth();
+      innerCellPos.x += m_start->SumOfWidths();
       m_ellipsis->DrawList(innerCellPos, dc, antialiassingDC);
       innerCellPos.x += m_ellipsis->GetWidth();
       wxPoint stopCellPos(innerCellPos);

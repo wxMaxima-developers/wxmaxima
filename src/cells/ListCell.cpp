@@ -80,7 +80,7 @@ void ListCell::Recalculate(AFontSize fontsize) {
       m_height = 0;
       m_center = 0;
     } else {
-      m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
+      m_width = m_innerCell->SumOfWidths() + m_signWidth * 2;
       m_height = std::max(m_signHeight, m_innerCell->GetHeightList()) + Scale_Px(4);
       m_center = m_height / 2;
     }
@@ -97,7 +97,7 @@ void ListCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       innerCellPos.x += m_open->GetWidth();
       m_open->DrawList(point, dc, antialiassingDC);
       m_close->DrawList(wxPoint(
-                                point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(),
+                                point.x + m_open->GetWidth() + m_innerCell->SumOfWidths(),
                                 point.y), dc, antialiassingDC);
     } else {
       innerCellPos.y +=

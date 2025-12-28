@@ -71,8 +71,8 @@ void LimitCell::Recalculate(AFontSize fontsize) {
                              {MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE});
     m_name->RecalculateList(fontsize);
     if (!IsBrokenIntoLines()) {
-      m_width = std::max(m_name->GetFullWidth(), m_under->GetFullWidth()) +
-        m_base->GetFullWidth();
+      m_width = std::max(m_name->SumOfWidths(), m_under->SumOfWidths()) +
+        m_base->SumOfWidths();
       m_center = std::max(m_base->GetCenterList(), m_name->GetCenterList());
       m_height = m_center + std::max(m_name->GetMaxDrop() + m_under->GetHeightList(),
                                      m_base->GetMaxDrop());
@@ -92,18 +92,18 @@ void LimitCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     wxPoint base(point), under(point), name(point);
 
     name.x = point.x +
-      std::max(m_name->GetFullWidth(), m_under->GetFullWidth()) / 2 -
-      m_name->GetFullWidth() / 2;
+      std::max(m_name->SumOfWidths(), m_under->SumOfWidths()) / 2 -
+      m_name->SumOfWidths() / 2;
     m_name->DrawList(name, dc, antialiassingDC);
 
     under.x = point.x +
-      std::max(m_name->GetFullWidth(), m_under->GetFullWidth()) / 2 -
-      m_under->GetFullWidth() / 2;
+      std::max(m_name->SumOfWidths(), m_under->SumOfWidths()) / 2 -
+      m_under->SumOfWidths() / 2;
 
     under.y = point.y + m_name->GetMaxDrop() + m_under->GetCenterList();
     m_under->DrawList(under, dc, antialiassingDC);
 
-    base.x += std::max(m_name->GetFullWidth(), m_under->GetFullWidth());
+    base.x += std::max(m_name->SumOfWidths(), m_under->SumOfWidths());
     m_base->DrawList(base, dc, antialiassingDC);
   }
 }

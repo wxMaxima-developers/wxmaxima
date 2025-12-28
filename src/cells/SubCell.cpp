@@ -55,7 +55,7 @@ void SubCell::Recalculate(AFontSize fontsize) {
     m_baseCell->RecalculateList(fontsize);
     m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - SUB_DEC});
     m_width =
-    m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() - Scale_Px(2);
+    m_baseCell->SumOfWidths() + m_indexCell->SumOfWidths() - Scale_Px(2);
     m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
       Scale_Px(.8 * fontsize + MC_EXP_INDENT);
     m_center = m_baseCell->GetCenter();
@@ -72,7 +72,7 @@ void SubCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     bs.y = point.y;
     m_baseCell->DrawList(bs, dc, antialiassingDC);
 
-    in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
+    in.x = point.x + m_baseCell->SumOfWidths() - Scale_Px(2);
     in.y = point.y + m_baseCell->GetMaxDrop() + m_indexCell->GetCenterList() -
       .8 * m_fontSize_Scaled + MC_EXP_INDENT;
     m_indexCell->DrawList(in, dc, antialiassingDC);

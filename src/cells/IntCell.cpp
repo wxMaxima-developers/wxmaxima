@@ -114,9 +114,9 @@ void IntCell::Recalculate(AFontSize fontsize) {
       // The sign width in this case is defined by the sign height and the sign's aspect
       // ratio
       m_signWidth = m_signHeight * 19.879 / 51.781;
-      m_width = m_signWidth + m_base->GetFullWidth() +
-        std::max(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth()) +
-        m_var->GetFullWidth() + Scale_Px(4);
+      m_width = m_signWidth + m_base->SumOfWidths() +
+        std::max(m_upperLimit->SumOfWidths(), m_lowerLimit->SumOfWidths()) +
+        m_var->SumOfWidths() + Scale_Px(4);
       if (HasLimits()) {
 
         m_center = std::max(std::max(m_signHeight / 2,
@@ -141,7 +141,7 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   if (DrawThisCell(point)) {
     wxPoint base(point), lowerLimit(point), upperLimit(point), var(point), sign(point);
     base.x += m_signWidth;
-    base.x += std::max(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth());
+    base.x += std::max(m_upperLimit->SumOfWidths(), m_lowerLimit->SumOfWidths());
 
     SetPen(antialiassingDC, 1.5);
 
@@ -161,12 +161,12 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       m_upperLimit->DrawList(upperLimit, dc, antialiassingDC);
       m_lowerLimit->DrawList(lowerLimit, dc, antialiassingDC);
       
-      base.x += std::max(m_upperLimit->GetFullWidth(), m_lowerLimit->GetFullWidth());
+      base.x += std::max(m_upperLimit->SumOfWidths(), m_lowerLimit->SumOfWidths());
     }
 
     m_base->DrawList(base, dc, antialiassingDC);
 
-    var.x = base.x + m_base->GetFullWidth();
+    var.x = base.x + m_base->SumOfWidths();
     m_var->DrawList(var, dc, antialiassingDC);
   }
 }

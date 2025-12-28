@@ -62,7 +62,7 @@ void FunCell::Recalculate(AFontSize fontsize) {
       m_width = m_center = m_height = 0;
     } else {
       m_width =
-        m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() - Scale_Px(1);
+        m_nameCell->SumOfWidths() + m_argCell->SumOfWidths() - Scale_Px(1);
       m_center = std::max(m_nameCell->GetCenterList(), m_argCell->GetCenterList());
       m_height =
         m_center + std::max(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
@@ -77,7 +77,7 @@ void FunCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     wxPoint name(point), arg(point);
     m_nameCell->DrawList(name, dc, antialiassingDC);
 
-    arg.x += m_nameCell->GetFullWidth();
+    arg.x += m_nameCell->SumOfWidths();
     m_argCell->DrawList(arg, dc, antialiassingDC);
   }
 }

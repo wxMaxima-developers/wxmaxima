@@ -347,7 +347,7 @@ void GroupCell::RemoveOutput() {
 
   m_height = m_inputHeight;
   if (m_inputLabel)
-    m_width = m_inputLabel->GetFullWidth();
+    m_width = m_inputLabel->SumOfWidths();
   else
     m_width = 50;
 
@@ -518,7 +518,7 @@ void GroupCell::RecalculateInput() {
 
       if (m_inputLabel) {
         m_inputLabel->Recalculate(EditorFontSize());
-        m_inputWidth = m_width = m_inputLabel->GetFullWidth();
+        m_inputWidth = m_width = m_inputLabel->SumOfWidths();
         m_center = m_inputLabel->GetCenterList();
         m_inputHeight = m_height = m_inputLabel->GetHeightList();
       }

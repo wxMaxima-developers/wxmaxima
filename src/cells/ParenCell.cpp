@@ -92,7 +92,7 @@ void ParenCell::Recalculate(AFontSize fontsize) {
     }
     int innerCellWidth = 0;
     if(m_innerCell)
-      innerCellWidth = m_innerCell->GetFullWidth();
+      innerCellWidth = m_innerCell->SumOfWidths();
     m_width = innerCellWidth + m_signWidth * 2;
     if (IsBrokenIntoLines())
       m_width = 0;
@@ -156,7 +156,7 @@ void ParenCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
         m_open->DrawList(point, dc, antialiassingDC);
         int innerCellWidth = 0;
         if(m_innerCell)
-          innerCellWidth = m_innerCell->GetFullWidth();
+          innerCellWidth = m_innerCell->SumOfWidths();
 
         m_close->DrawList(wxPoint(point.x + m_open->GetWidth() + innerCellWidth,
                                   point.y), dc, antialiassingDC);

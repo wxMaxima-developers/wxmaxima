@@ -62,7 +62,7 @@ void BoxCell::Recalculate(AFontSize fontsize) {
     m_innerCell->RecalculateList(fontsize);
 
     if (!IsBrokenIntoLines()) {
-      m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
+      m_width = m_innerCell->SumOfWidths() + Scale_Px(8);
       m_height = m_innerCell->GetHeightList() + Scale_Px(8);
       m_center = m_innerCell->GetCenterList() + Scale_Px(4);
     } else {

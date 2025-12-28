@@ -68,9 +68,9 @@ void NamedBoxCell::Recalculate(AFontSize fontsize) {
     m_innerCell->RecalculateList(fontsize);
     m_boxname->RecalculateList(fontsize);
 
-    m_innerCellWidth = m_innerCell->GetFullWidth();
+    m_innerCellWidth = m_innerCell->SumOfWidths();
     m_innerCellHeight = m_innerCell->GetHeightList();
-    m_nameWidth = m_boxname->GetFullWidth();
+    m_nameWidth = m_boxname->SumOfWidths();
     m_nameHeight = m_boxname->GetHeightList();
 
     if (!IsBrokenIntoLines()) {

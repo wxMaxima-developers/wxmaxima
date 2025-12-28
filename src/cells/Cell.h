@@ -435,12 +435,12 @@ public:
   wxCoord GetHeightList() const;
 
   //! How many pixels is this list of cells wide, if we don't break it into lines?
-  wxCoord GetFullWidth() const;
+  wxCoord SumOfWidths() const;
 
   /*! How many pixels is the current line of this list of cells wide?
 
     This command returns the real line width when all line breaks are really performed.
-    See GetFullWidth().
+    See SumOfWidths().
   */
   wxCoord GetLineWidth() const;
 
