@@ -278,10 +278,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasValidPosition</b> 
 <tr class="memitem:a351fb091b88d97bf44c95505b0198bfd"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a351fb091b88d97bf44c95505b0198bfd">GetHeightList</a> () const</td></tr>
 <tr class="memdesc:a351fb091b88d97bf44c95505b0198bfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the total height of this line.  <br /></td></tr>
 <tr class="separator:a351fb091b88d97bf44c95505b0198bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbd7c62536711b122ed70d7f8fb6c804"><td class="memItemLeft" align="right" valign="top"><a id="afbd7c62536711b122ed70d7f8fb6c804" name="afbd7c62536711b122ed70d7f8fb6c804"></a>
-wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>GetFullWidth</b> () const</td></tr>
-<tr class="memdesc:afbd7c62536711b122ed70d7f8fb6c804"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many pixels is this list of cells wide, if we don't break it into lines? <br /></td></tr>
-<tr class="separator:afbd7c62536711b122ed70d7f8fb6c804"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c188747e83c42019f7d8c6e87e9829f"><td class="memItemLeft" align="right" valign="top"><a id="a9c188747e83c42019f7d8c6e87e9829f" name="a9c188747e83c42019f7d8c6e87e9829f"></a>
+wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>SumOfWidths</b> () const</td></tr>
+<tr class="memdesc:a9c188747e83c42019f7d8c6e87e9829f"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many pixels is this list of cells wide, if we don't break it into lines? <br /></td></tr>
+<tr class="separator:a9c188747e83c42019f7d8c6e87e9829f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4c30056412188aac10dd2dc97df4020"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa4c30056412188aac10dd2dc97df4020">GetLineWidth</a> () const</td></tr>
 <tr class="memdesc:aa4c30056412188aac10dd2dc97df4020"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many pixels is the current line of this list of cells wide?  <br /></td></tr>
 <tr class="separator:aa4c30056412188aac10dd2dc97df4020"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1903,7 +1903,7 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>m_width</b> = -1</
 </div><div class="memdoc">
 
 <p>How many pixels is the current line of this list of cells wide? </p>
-<p>This command returns the real line width when all line breaks are really performed. See <a class="el" href="classCell.html#afbd7c62536711b122ed70d7f8fb6c804" title="How many pixels is this list of cells wide, if we don&#39;t break it into lines?">GetFullWidth()</a>. </p>
+<p>This command returns the real line width when all line breaks are really performed. See <a class="el" href="classCell.html#a9c188747e83c42019f7d8c6e87e9829f" title="How many pixels is this list of cells wide, if we don&#39;t break it into lines?">SumOfWidths()</a>. </p>
 
 </div>
 </div>
@@ -3212,7 +3212,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
