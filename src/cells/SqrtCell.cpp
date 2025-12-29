@@ -146,7 +146,7 @@ wxString SqrtCell::ToXML() const {
   return wxS("<q") + flags + wxS(">") + m_innerCell->ListToXML() + wxS("</q>");
 }
 
-bool SqrtCell::BreakUp() {
+bool SqrtCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
@@ -159,7 +159,7 @@ bool SqrtCell::BreakUp() {
   return true;
 }
 
-void SqrtCell::SetNextToDraw(Cell *next) {
+void SqrtCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

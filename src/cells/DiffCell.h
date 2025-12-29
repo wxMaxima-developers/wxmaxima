@@ -50,9 +50,9 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  void SetNextToDraw(Cell *next) override;
+  void SetNextToDraw(Cell *next) const override;
 
-  bool BreakUp() override;
+  bool BreakUp() const override;
 
 private:
   void MakeBreakupCells();

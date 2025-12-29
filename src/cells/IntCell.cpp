@@ -326,7 +326,7 @@ wxString IntCell::ToXML() const {
       wxS("</in>");
 }
 
-bool IntCell::BreakUp() {
+bool IntCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
@@ -353,7 +353,7 @@ bool IntCell::BreakUp() {
   return true;
 }
 
-void IntCell::SetNextToDraw(Cell *next) {
+void IntCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

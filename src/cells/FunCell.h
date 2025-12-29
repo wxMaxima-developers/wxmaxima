@@ -77,9 +77,9 @@ public:
   void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
-  bool BreakUp() override;
+  bool BreakUp() const override;
 
-  void SetNextToDraw(Cell *next) override;
+  void SetNextToDraw(Cell *next) const override;
 
 private:
   //! Text that should end up on the clipboard if this cell is copied as text.

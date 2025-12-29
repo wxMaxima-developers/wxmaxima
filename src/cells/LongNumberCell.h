@@ -40,8 +40,8 @@ public:
 
   void Recalculate(const AFontSize fontsize) const override;
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
-  bool BreakUp() override;
-  void SetNextToDraw(Cell *next) override;
+  bool BreakUp() const override;
+  void SetNextToDraw(Cell *next) const override;
   size_t GetInnerCellCount() const override { if(m_innerCell) return 1; else return 0; }
   // cppcheck-suppress objectIndex
   Cell *GetInnerCell(size_t index) const override;

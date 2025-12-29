@@ -195,7 +195,7 @@ wxString ListCell::ToXML() const {
           wxS("<t listdelim=\"true\">]</t></r>"));
 }
 
-bool ListCell::BreakUp() {
+bool ListCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
@@ -207,7 +207,7 @@ bool ListCell::BreakUp() {
   return true;
 }
 
-void ListCell::SetNextToDraw(Cell *next) {
+void ListCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

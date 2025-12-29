@@ -296,7 +296,7 @@ void FracCell::SetIsExponent() {
   }
 }
 
-void FracCell::SetupBreakUps() {
+void FracCell::SetupBreakUps() const {
   m_displayedNum = m_numParenthesis.get();
   m_displayedDenom = m_denomParenthesis.get();
   if (m_fracStyle == FC_CHOOSE) {
@@ -310,7 +310,7 @@ void FracCell::SetupBreakUps() {
   }
 }
 
-bool FracCell::BreakUp() {
+bool FracCell::BreakUp() const {
   if (m_fracStyle == FC_DIFF || IsBrokenIntoLines())
     return false;
 
@@ -328,7 +328,7 @@ bool FracCell::BreakUp() {
   return true;
 }
 
-void FracCell::SetNextToDraw(Cell *next) {
+void FracCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_displayedDenom->SetNextToDraw(next);
   else

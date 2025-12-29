@@ -227,20 +227,20 @@ public:
   bool InUpdateRegion() const;
 
   //! Do we want this cell to start with a linebreak?
-  void SoftLineBreak(bool breakLine = true) { m_breakLine = breakLine; }
+  void SoftLineBreak(bool breakLine = true) const { m_breakLine = breakLine; }
   
   /*! Cell list: Convert 2d math objects bigger than the screen width into linear form.
     
     \retval true, if this action has changed the height of cells.
   */
-  bool BreakUpCells();
+  bool BreakUpCells() const;
 
   /*! Convert all maths objects in this call list into their 2D form */
-  bool UnBreakUpCells();
+  bool UnBreakUpCells() const;
 
   /* Break lines in this list of cells
    */
-  void BreakLines_List();
+  void BreakLines_List() const;
 
   /*! If this were the beginning of a line: How far do we need to indent it? */
   int GetLineIndent() const;
@@ -255,7 +255,7 @@ public:
 
     \retval true = This cell was split into lines.
   */
-  virtual bool BreakUp();
+  virtual bool BreakUp() const;
 
 protected:
   /*! Break up the internal cells of this cell, and mark it as broken up.
@@ -263,7 +263,7 @@ protected:
     Sets the cell's size to 0, as in broken up state the contents of the cell
     will be displayed in 1D mode while this cell won't be displayed, at all.
    */
-  void BreakUpAndMark();
+  void BreakUpAndMark() const;
 
 protected:
   //! Renders a bitmap from svgData at the requested size.
@@ -688,7 +688,7 @@ public:
 
     This function tries to return a cell to the single-line form.
   */
-  virtual void Unbreak();
+  virtual void Unbreak() const;
 
   /*! Unbreak this line
 
@@ -697,7 +697,7 @@ public:
 
     This function tries to return a list of cells to the single-line form.
   */
-  virtual void UnbreakList();
+  virtual void UnbreakList() const;
 
   //! Returns a pointer to the previous cell in the current cell list
   Cell *GetPrevious() const { return m_previous; }
@@ -719,7 +719,7 @@ public:
     If the cell is broken into lines this sets the pointer of the last of the
     list of cells this cell is displayed as.
   */
-  virtual void SetNextToDraw(Cell *next) { m_nextToDraw = next; }
+  virtual void SetNextToDraw(Cell *next) const { m_nextToDraw = next; }
   template <typename T, typename Del,
             typename std::enable_if<std::is_base_of<Cell, T>::value, bool>::type = true>
   /*! Tells this cell which one should be the next cell to be drawn
@@ -984,7 +984,7 @@ protected:
   CellPtr<GroupCell> m_group;
   //! The next cell in the draw list. This has been factored into Cell temporarily to
   //! reduce the change "noise" when it will be subsequently removed.
-  CellPtr<Cell> m_nextToDraw;
+  mutable CellPtr<Cell> m_nextToDraw;
 
   //! A pointer to the configuration responsible for this worksheet
   Configuration *m_configuration;
@@ -1052,12 +1052,12 @@ private:
   //! Whether the cell owns its m_tooltip - otherwise it points to a static string.
   bool m_ownsToolTip : 1 /* InitBitFields_Cell */;
   bool m_bigSkip : 1 /* InitBitFields_Cell */;
-  bool m_isBrokenIntoLines : 1 /* InitBitFields_Cell */;
+  mutable bool m_isBrokenIntoLines : 1 /* InitBitFields_Cell */;
   bool m_isHidden : 1 /* InitBitFields_Cell */;
   bool m_isHidableMultSign : 1 /* InitBitFields_Cell */;
   bool m_suppressMultiplicationDot : 1 /* InitBitFields_Cell */;
   //! Are we allowed to add a line break before this cell?
-  bool m_breakLine : 1 /* InitBitFields_Cell */;
+  mutable bool m_breakLine : 1 /* InitBitFields_Cell */;
   bool m_forceBreakLine : 1 /* InitBitFields_Cell */;
   bool m_highlight : 1 /* InitBitFields_Cell */;
 

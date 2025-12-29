@@ -320,7 +320,7 @@ wxString ParenCell::ToXML() const {
   return ((m_print) ? wxS("<r><p") + flags + wxS(">") + s + wxS("</p></r>") : s);
 }
 
-bool ParenCell::BreakUp() {
+bool ParenCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
@@ -337,7 +337,7 @@ bool ParenCell::BreakUp() {
   return true;
 }
 
-void ParenCell::SetNextToDraw(Cell *next) {
+void ParenCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

@@ -239,7 +239,7 @@ public:
   void RecalculateOutput() const;
 
   //! Break this cell into lines
-  void BreakLines();
+  void BreakLines() const;
 
   /*! Reset the input label of the current cell.
 

@@ -72,8 +72,8 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  bool BreakUp() override;
-  void SetNextToDraw(Cell *next) override;
+  bool BreakUp() const override;
+  void SetNextToDraw(Cell *next) const override;
 
   //! Does this integral have limits?
   bool HasLimits() const {return (m_intStyle == INT_DEF) &&
@@ -81,7 +81,7 @@ public:
   
 private:
   wxCoord IntSignLimitYoffset() const { return Scale_Px(8); }
-  void MakeBreakUpCells();
+  void MakeBreakUpCells() const;
   const static wxString m_svgIntegralSign;
   // The pointers below point to inner cells and must be kept contiguous.
   // ** This is the draw list order. All pointers must be the same:

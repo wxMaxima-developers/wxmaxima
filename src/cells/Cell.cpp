@@ -476,7 +476,7 @@ int Cell::GetLineIndent() const {
   return 0;
 }
 
-void Cell::BreakLines_List()
+void Cell::BreakLines_List() const
 {
   // 1st step: Tell all cells to display as beautiful 2d object, if that is
   // possible.
@@ -504,7 +504,7 @@ void Cell::BreakLines_List()
   // 4th step: break the output into lines.
   if (!IsHidden()) {
     bool prevBroken = false;
-    for (Cell &tmp : OnDrawList(this)) {
+    for (const Cell &tmp : OnDrawList(this)) {
       if (prevBroken) {
         currentWidth += tmp.GetLineIndent();
         prevBroken = false;
@@ -522,7 +522,7 @@ void Cell::BreakLines_List()
   ResetSize_RecursivelyList();
 }
 
-bool Cell::BreakUpCells() {
+bool Cell::BreakUpCells() const {
   int clientWidth =
     .8 * m_configuration->GetCanvasSize().x - m_configuration->GetIndent();
   if (clientWidth < Scale_Px(50))
@@ -530,7 +530,7 @@ bool Cell::BreakUpCells() {
 
   bool lineHeightsChanged = false;
   if (!IsHidden())
-    for (Cell &tmp : OnDrawList(this)) {
+    for (const Cell &tmp : OnDrawList(this)) {
         if (tmp.GetWidth() < 0)
           tmp.Recalculate(m_configuration->GetMathFontSize());
         if (tmp.GetWidth() > clientWidth)
@@ -539,10 +539,10 @@ bool Cell::BreakUpCells() {
   return lineHeightsChanged;
 }
 
-bool Cell::UnBreakUpCells() {
+bool Cell::UnBreakUpCells() const {
 
   bool retval = false;
-  for (Cell &tmp : OnDrawList(this)) {
+  for (const Cell &tmp : OnDrawList(this)) {
     if (tmp.IsBrokenIntoLines()) {
       tmp.Unbreak();
       retval = true;
@@ -1070,9 +1070,9 @@ Cell *Cell::last() const {
   return const_cast<Cell *>(tmp);
 }
 
-bool Cell::BreakUp() { return false; }
+bool Cell::BreakUp() const { return false; }
 
-void Cell::BreakUpAndMark() {
+void Cell::BreakUpAndMark() const {
   wxASSERT(!m_isBrokenIntoLines);
   if (!m_isBrokenIntoLines)
     {
@@ -1085,7 +1085,7 @@ void Cell::BreakUpAndMark() {
   m_center = 0;
 }
 
-void Cell::Unbreak() {
+void Cell::Unbreak() const {
   if (m_isBrokenIntoLines) {
     ResetSize_Recursively();
     // Unbreak the inner cells, too
@@ -1096,8 +1096,8 @@ void Cell::Unbreak() {
   SetNextToDraw(GetNext());
 }
 
-void Cell::UnbreakList() {
-  for (Cell &tmp : OnList(this))
+void Cell::UnbreakList() const {
+  for (const Cell &tmp : OnList(this))
     tmp.Unbreak();
 }
 

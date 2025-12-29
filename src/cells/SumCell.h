@@ -66,9 +66,9 @@ public:
   void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
-  bool BreakUp() override;
-  void SetNextToDraw(Cell *next) override;
-  void Unbreak() override final;
+  bool BreakUp() const override;
+  void SetNextToDraw(Cell *next) const override;
+  void Unbreak() const override final;
 
 protected:
   //! What maxima command name corresponds to this cell?
@@ -92,7 +92,7 @@ protected:
   
 private:
   std::unique_ptr<Cell> MakeStart(Cell *under) const;
-  void MakeBreakUpCells();
+  void MakeBreakUpCells() const;
   const static wxString m_svgSumSign;
 
   ParenCell *Paren() const;

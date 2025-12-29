@@ -63,7 +63,7 @@ public:
 
   virtual void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-  bool BreakUp() override;
+  bool BreakUp() const override;
 
   wxString ToMathML() const override;
   virtual wxString ToMatlab() const override;
@@ -72,7 +72,7 @@ public:
   virtual wxString ToTeX() const override;
   virtual wxString ToXML() const override;
 
-  void SetNextToDraw(Cell *next) override;
+  void SetNextToDraw(Cell *next) const override;
 
 protected:
   void DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) const;

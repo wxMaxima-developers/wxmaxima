@@ -129,7 +129,7 @@ void LongNumberCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   }
 }
 
-bool LongNumberCell::BreakUp() {
+bool LongNumberCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
@@ -162,7 +162,7 @@ bool LongNumberCell::BreakUp() {
   return true;
 }
 
-void LongNumberCell::SetNextToDraw(Cell *next) {
+void LongNumberCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_innerCell->last()->SetNextToDraw(next);
   else

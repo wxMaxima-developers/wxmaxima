@@ -77,7 +77,7 @@ public:
 
   void IsMatrix(bool isMatrix) { m_isMatrix = isMatrix; }
 
-  bool BreakUp() override;
+  bool BreakUp() const override;
 
   void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
   const wxString &GetAltCopyText() const override { return m_altCopyText; }

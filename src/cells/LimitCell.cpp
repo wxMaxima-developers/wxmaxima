@@ -212,7 +212,7 @@ wxString LimitCell::ToOMML() const {
     m_base->ListToOMML() + wxS("</m:e></m:func>");
 }
 
-bool LimitCell::BreakUp() {
+bool LimitCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
@@ -228,7 +228,7 @@ bool LimitCell::BreakUp() {
   return true;
 }
 
-void LimitCell::SetNextToDraw(Cell *next) {
+void LimitCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

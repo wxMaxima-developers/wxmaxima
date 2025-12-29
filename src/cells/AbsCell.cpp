@@ -40,12 +40,14 @@ AbsCell::AbsCell(GroupCell *group, Configuration *config,
   : Cell(group, config), m_innerCell(std::move(inner)) {
   InitBitFields_AbsCell();
   SetStyle(TS_VARIABLE);
+  MakeBreakupCells();
 }
 
 AbsCell::AbsCell(GroupCell *group, const AbsCell &cell)
   : AbsCell(group, cell.m_configuration,
             CopyList(group, cell.m_innerCell.get())) {
   CopyCommonData(cell);
+  MakeBreakupCells();
 }
 
 DEFINE_CELL(AbsCell)
@@ -143,11 +145,10 @@ wxString AbsCell::ToXML() const {
   return wxS("<a") + flags + wxS(">") + m_innerCell->ListToXML() + wxS("</a>");
 }
 
-bool AbsCell::BreakUp() {
+bool AbsCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  MakeBreakupCells();
   Cell::BreakUpAndMark();
   m_open->SetNextToDraw(m_innerCell);
   m_innerCell->last()->SetNextToDraw(m_close);
@@ -156,7 +157,7 @@ bool AbsCell::BreakUp() {
   return true;
 }
 
-void AbsCell::SetNextToDraw(Cell *next) {
+void AbsCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

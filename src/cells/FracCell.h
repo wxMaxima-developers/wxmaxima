@@ -81,12 +81,11 @@ public:
   //! Fractions in exponents are shown in their linear form.
   void SetIsExponent() override;
 
-  bool BreakUp() override;
+  bool BreakUp() const override;
 
-  void SetupBreakUps();
+  void SetupBreakUps() const;
 
-  void SetNextToDraw(Cell *next) override;
-
+  void SetNextToDraw(Cell *next) const override;
 private:
   //! Makes the division sign cell, used in linear form - whether when broken
   //! into lines, or when the exponent flag is set.

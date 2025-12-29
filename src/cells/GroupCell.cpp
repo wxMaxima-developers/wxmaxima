@@ -1428,7 +1428,7 @@ bool GroupCell::SetEditableContent(const wxString &text) {
     return false;
 }
 
-void GroupCell::BreakLines() {
+void GroupCell::BreakLines() const {
   const Cell * const cell = m_output.get();
 
   if (cell == NULL)

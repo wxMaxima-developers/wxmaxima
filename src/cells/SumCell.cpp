@@ -332,12 +332,12 @@ wxString SumCell::ToMathML() const {
   return (wxS("<mrow>") + retval + wxS("</mrow>"));
 }
 
-void SumCell::Unbreak() {
+void SumCell::Unbreak() const {
   m_displayParen = true;
   Cell::Unbreak();
 }
 
-bool SumCell::BreakUp() {
+bool SumCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
@@ -363,7 +363,7 @@ bool SumCell::BreakUp() {
   return true;
 }
 
-void SumCell::SetNextToDraw(Cell *next) {
+void SumCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else
