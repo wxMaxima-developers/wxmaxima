@@ -526,9 +526,8 @@ wxString TextCell::ToString() const {
           lastChar = text[text.Length() - 1];
           text = text.Left(text.Length() - 1);
         }
-        for (size_t i = 0; i < charsNeedingQuotes.Length(); i++)
-          text.Replace(charsNeedingQuotes[i],
-                       wxS("\\") + wxString(charsNeedingQuotes[i]));
+        for (const auto &chr : m_configuration->CharsNeedingQuotes())
+          text.Replace(chr, wxString(wxS("\\")) + chr);
         text += lastChar;
       }
       break;
