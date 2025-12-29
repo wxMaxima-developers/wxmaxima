@@ -151,9 +151,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaxWidth</
 <tr class="memitem:a60d8586436e750bf8bb51b23e52a520c"><td class="memItemLeft" align="right" valign="top"><a id="a60d8586436e750bf8bb51b23e52a520c" name="a60d8586436e750bf8bb51b23e52a520c"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaxHeight</b> (wxCoord height)=0</td></tr>
 <tr class="separator:a60d8586436e750bf8bb51b23e52a520c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4391605853fa2655f108f57392859054"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCellBase.html#a4391605853fa2655f108f57392859054">Recalculate</a> (<a class="el" href="classAFontSize.html">AFontSize</a> fontsize) override=0</td></tr>
-<tr class="memdesc:a4391605853fa2655f108f57392859054"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate the size of the cell and the difference between top and center.  <br /></td></tr>
-<tr class="separator:a4391605853fa2655f108f57392859054"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa10874ee2bf6fb10f9326c32a7b9bbd6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCellBase.html#aa10874ee2bf6fb10f9326c32a7b9bbd6">Recalculate</a> (const <a class="el" href="classAFontSize.html">AFontSize</a> fontsize) const override=0</td></tr>
+<tr class="memdesc:aa10874ee2bf6fb10f9326c32a7b9bbd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate the size of the cell and the difference between top and center.  <br /></td></tr>
+<tr class="separator:aa10874ee2bf6fb10f9326c32a7b9bbd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6608e561bf1cf8ec9a657813ecadaf9c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCellBase.html#a6608e561bf1cf8ec9a657813ecadaf9c">Draw</a> (wxPoint point, wxDC *dc, wxDC *antialiassingDC) override=0</td></tr>
 <tr class="memdesc:a6608e561bf1cf8ec9a657813ecadaf9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw this cell.  <br /></td></tr>
 <tr class="separator:a6608e561bf1cf8ec9a657813ecadaf9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,20 +192,20 @@ wxRect&#160;</td><td class="memItemRight" valign="bottom"><b>CropToUpdateRegion<
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>InUpdateRegion</b> () const</td></tr>
 <tr class="memdesc:a0835d4dd3d72ed0013aa5a091d64d9ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this cell inside the region that is currently drawn? <br /></td></tr>
 <tr class="separator:a0835d4dd3d72ed0013aa5a091d64d9ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0643f773658a9d4a4890c1414a48e73"><td class="memItemLeft" align="right" valign="top"><a id="ac0643f773658a9d4a4890c1414a48e73" name="ac0643f773658a9d4a4890c1414a48e73"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SoftLineBreak</b> (bool breakLine=true)</td></tr>
-<tr class="memdesc:ac0643f773658a9d4a4890c1414a48e73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we want this cell to start with a linebreak? <br /></td></tr>
-<tr class="separator:ac0643f773658a9d4a4890c1414a48e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9baf109da0cd2df6abe641f023621f32"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a9baf109da0cd2df6abe641f023621f32">BreakUpCells</a> ()</td></tr>
-<tr class="memdesc:a9baf109da0cd2df6abe641f023621f32"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> list: Convert 2d math objects bigger than the screen width into linear form.  <br /></td></tr>
-<tr class="separator:a9baf109da0cd2df6abe641f023621f32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a019da23c82fc926396f365711d7f9468"><td class="memItemLeft" align="right" valign="top"><a id="a019da23c82fc926396f365711d7f9468" name="a019da23c82fc926396f365711d7f9468"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>UnBreakUpCells</b> ()</td></tr>
-<tr class="memdesc:a019da23c82fc926396f365711d7f9468"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert all maths objects in this call list into their 2<a class="el" href="classD.html">D</a> form. <br /></td></tr>
-<tr class="separator:a019da23c82fc926396f365711d7f9468"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30113158532dd3d31d7c4e17cf5574d0"><td class="memItemLeft" align="right" valign="top"><a id="a30113158532dd3d31d7c4e17cf5574d0" name="a30113158532dd3d31d7c4e17cf5574d0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>BreakLines_List</b> ()</td></tr>
-<tr class="separator:a30113158532dd3d31d7c4e17cf5574d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2463f044f3e56f7d5791eda6e16a4ebd"><td class="memItemLeft" align="right" valign="top"><a id="a2463f044f3e56f7d5791eda6e16a4ebd" name="a2463f044f3e56f7d5791eda6e16a4ebd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SoftLineBreak</b> (bool breakLine=true) const</td></tr>
+<tr class="memdesc:a2463f044f3e56f7d5791eda6e16a4ebd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we want this cell to start with a linebreak? <br /></td></tr>
+<tr class="separator:a2463f044f3e56f7d5791eda6e16a4ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd62b60c7511a29394071d4ef85671fd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#acd62b60c7511a29394071d4ef85671fd">BreakUpCells</a> () const</td></tr>
+<tr class="memdesc:acd62b60c7511a29394071d4ef85671fd"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> list: Convert 2d math objects bigger than the screen width into linear form.  <br /></td></tr>
+<tr class="separator:acd62b60c7511a29394071d4ef85671fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdf7d9da0a2a4f055d4621193d6e561b"><td class="memItemLeft" align="right" valign="top"><a id="acdf7d9da0a2a4f055d4621193d6e561b" name="acdf7d9da0a2a4f055d4621193d6e561b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>UnBreakUpCells</b> () const</td></tr>
+<tr class="memdesc:acdf7d9da0a2a4f055d4621193d6e561b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert all maths objects in this call list into their 2<a class="el" href="classD.html">D</a> form. <br /></td></tr>
+<tr class="separator:acdf7d9da0a2a4f055d4621193d6e561b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81b738e213a8390ed10aefe8d286ce9d"><td class="memItemLeft" align="right" valign="top"><a id="a81b738e213a8390ed10aefe8d286ce9d" name="a81b738e213a8390ed10aefe8d286ce9d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>BreakLines_List</b> () const</td></tr>
+<tr class="separator:a81b738e213a8390ed10aefe8d286ce9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46f7e39c86f5a7a33bf861890496678a"><td class="memItemLeft" align="right" valign="top"><a id="a46f7e39c86f5a7a33bf861890496678a" name="a46f7e39c86f5a7a33bf861890496678a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLineIndent</b> () const</td></tr>
 <tr class="memdesc:a46f7e39c86f5a7a33bf861890496678a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this were the beginning of a line: How far do we need to indent it? <br /></td></tr>
@@ -218,9 +218,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>BreakLineHere</b> () 
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasHardLineBreak</b> () const</td></tr>
 <tr class="memdesc:a5a5d819c65594c03a045838db113a1eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this cell begin with a manual linebreak? <br /></td></tr>
 <tr class="separator:a5a5d819c65594c03a045838db113a1eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ab849301d09982f7b84ae8b5c679699"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a3ab849301d09982f7b84ae8b5c679699">BreakUp</a> ()</td></tr>
-<tr class="memdesc:a3ab849301d09982f7b84ae8b5c679699"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to split this command into lines to make it fit on the screen.  <br /></td></tr>
-<tr class="separator:a3ab849301d09982f7b84ae8b5c679699"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3bba95038366ea5bccefa8f76e1571e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ad3bba95038366ea5bccefa8f76e1571e">BreakUp</a> () const</td></tr>
+<tr class="memdesc:ad3bba95038366ea5bccefa8f76e1571e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to split this command into lines to make it fit on the screen.  <br /></td></tr>
+<tr class="separator:ad3bba95038366ea5bccefa8f76e1571e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a548e6a31266214d7ea370fb913d6e3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a9a548e6a31266214d7ea370fb913d6e3">ContainsRect</a> (const wxRect &amp;sm, bool all=true) const</td></tr>
 <tr class="memdesc:a9a548e6a31266214d7ea370fb913d6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is a part of this cell inside a certain rectangle?  <br /></td></tr>
 <tr class="separator:a9a548e6a31266214d7ea370fb913d6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -257,9 +257,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawList</b> (wxDC *d
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>DrawThisCell</b> ()</td></tr>
 <tr class="memdesc:a843593aae2abe1a871907b895f697123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this cell currently visible in the window? <br /></td></tr>
 <tr class="separator:a843593aae2abe1a871907b895f697123"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8beef7f5a92c048650d8dca737629319"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a8beef7f5a92c048650d8dca737629319">ForceBreakLine</a> (bool force=true)</td></tr>
-<tr class="memdesc:a8beef7f5a92c048650d8dca737629319"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert (or remove) a forced linebreak at the beginning of this cell.  <br /></td></tr>
-<tr class="separator:a8beef7f5a92c048650d8dca737629319"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ec3f174a6e515f986a29951198bbbcd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2ec3f174a6e515f986a29951198bbbcd">ForceBreakLine</a> (bool force=true) const</td></tr>
+<tr class="memdesc:a2ec3f174a6e515f986a29951198bbbcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert (or remove) a forced linebreak at the beginning of this cell.  <br /></td></tr>
+<tr class="separator:a2ec3f174a6e515f986a29951198bbbcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42e273c4824ddce9e7e1845abb0d886f"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a42e273c4824ddce9e7e1845abb0d886f">GetHeight</a> () const</td></tr>
 <tr class="memdesc:a42e273c4824ddce9e7e1845abb0d886f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the height of this cell.  <br /></td></tr>
 <tr class="separator:a42e273c4824ddce9e7e1845abb0d886f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -313,10 +313,10 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>SumOfWidths</b> ()
 <tr class="memitem:aa0cc4910d52a26419062952d95d294bf"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa0cc4910d52a26419062952d95d294bf">NeedsRecalculation</a> (<a class="el" href="classAFontSize.html">AFontSize</a> fontSize) const</td></tr>
 <tr class="memdesc:aa0cc4910d52a26419062952d95d294bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if something that affects the cell size has changed.  <br /></td></tr>
 <tr class="separator:aa0cc4910d52a26419062952d95d294bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae57a05b5b50498ebb0a462acbd79fd2"><td class="memItemLeft" align="right" valign="top"><a id="aae57a05b5b50498ebb0a462acbd79fd2" name="aae57a05b5b50498ebb0a462acbd79fd2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ScheduleRecalculation</b> ()</td></tr>
-<tr class="memdesc:aae57a05b5b50498ebb0a462acbd79fd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cause this cell to be recalculated the next time. <br /></td></tr>
-<tr class="separator:aae57a05b5b50498ebb0a462acbd79fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3dbad2cf8343f483cf08f35d2cf5165"><td class="memItemLeft" align="right" valign="top"><a id="aa3dbad2cf8343f483cf08f35d2cf5165" name="aa3dbad2cf8343f483cf08f35d2cf5165"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ScheduleRecalculation</b> () const</td></tr>
+<tr class="memdesc:aa3dbad2cf8343f483cf08f35d2cf5165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cause this cell to be recalculated the next time. <br /></td></tr>
+<tr class="separator:aa3dbad2cf8343f483cf08f35d2cf5165"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01f036f4f68d223e2464097a7728def3"><td class="memItemLeft" align="right" valign="top"><a id="a01f036f4f68d223e2464097a7728def3" name="a01f036f4f68d223e2464097a7728def3"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConfigChanged</b> () const</td></tr>
 <tr class="memdesc:a01f036f4f68d223e2464097a7728def3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Has the configuration changed since the last recalculation of this cell? <br /></td></tr>
@@ -324,28 +324,28 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConfigChanged</b> () 
 <tr class="memitem:a7954c7c66fe91d4003388d80b9d8f95d"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a7954c7c66fe91d4003388d80b9d8f95d">GetDiffPart</a> () const</td></tr>
 <tr class="memdesc:a7954c7c66fe91d4003388d80b9d8f95d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the part for diff tag support.  <br /></td></tr>
 <tr class="separator:a7954c7c66fe91d4003388d80b9d8f95d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afde82a5f0708410ea828e65254e62531"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#afde82a5f0708410ea828e65254e62531">RecalculateList</a> (<a class="el" href="classAFontSize.html">AFontSize</a> fontsize)</td></tr>
-<tr class="memdesc:afde82a5f0708410ea828e65254e62531"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate both width and height of this list of cells.  <br /></td></tr>
-<tr class="separator:afde82a5f0708410ea828e65254e62531"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ae334bf5a2cfb124329e61576f9ce74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a7ae334bf5a2cfb124329e61576f9ce74">RecalculateList</a> (<a class="el" href="classAFontSize.html">AFontSize</a> fontsize) const</td></tr>
+<tr class="memdesc:a7ae334bf5a2cfb124329e61576f9ce74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate both width and height of this list of cells.  <br /></td></tr>
+<tr class="separator:a7ae334bf5a2cfb124329e61576f9ce74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeefb0377b33712b91fe52218b434d101"><td class="memItemLeft" align="right" valign="top"><a id="aeefb0377b33712b91fe52218b434d101" name="aeefb0377b33712b91fe52218b434d101"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FontsChangedList</b> ()</td></tr>
 <tr class="memdesc:aeefb0377b33712b91fe52218b434d101"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell a whole list of cells that their fonts have changed. <br /></td></tr>
 <tr class="separator:aeefb0377b33712b91fe52218b434d101"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5cf6e28db66e6990c81142930ee3511b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a5cf6e28db66e6990c81142930ee3511b">ResetSize_Recursively</a> ()</td></tr>
-<tr class="memdesc:a5cf6e28db66e6990c81142930ee3511b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark all cached size information as "to be calculated".  <br /></td></tr>
-<tr class="separator:a5cf6e28db66e6990c81142930ee3511b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c5b9466a86d9ff645a8d9110b326fd2"><td class="memItemLeft" align="right" valign="top"><a id="a2c5b9466a86d9ff645a8d9110b326fd2" name="a2c5b9466a86d9ff645a8d9110b326fd2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetSize_RecursivelyList</b> ()</td></tr>
-<tr class="memdesc:a2c5b9466a86d9ff645a8d9110b326fd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark all cached size information of this cell list as "to be calculated". <br /></td></tr>
-<tr class="separator:a2c5b9466a86d9ff645a8d9110b326fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a690cfa46a6173e9ae0a4a14efa28354d"><td class="memItemLeft" align="right" valign="top"><a id="a690cfa46a6173e9ae0a4a14efa28354d" name="a690cfa46a6173e9ae0a4a14efa28354d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetSize</b> ()</td></tr>
-<tr class="memdesc:a690cfa46a6173e9ae0a4a14efa28354d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the cached height and width information as "to be calculated". <br /></td></tr>
-<tr class="separator:a690cfa46a6173e9ae0a4a14efa28354d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd681dfa0f3761287dc7fea4532271ff"><td class="memItemLeft" align="right" valign="top"><a id="acd681dfa0f3761287dc7fea4532271ff" name="acd681dfa0f3761287dc7fea4532271ff"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetSizeList</b> ()</td></tr>
-<tr class="memdesc:acd681dfa0f3761287dc7fea4532271ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the cached height information of the whole list of cells as "to be calculated". <br /></td></tr>
-<tr class="separator:acd681dfa0f3761287dc7fea4532271ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5d258cb7f8d84456de9c7ddd8a1fa7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ad5d258cb7f8d84456de9c7ddd8a1fa7d">ResetSize_Recursively</a> () const</td></tr>
+<tr class="memdesc:ad5d258cb7f8d84456de9c7ddd8a1fa7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark all cached size information as "to be calculated".  <br /></td></tr>
+<tr class="separator:ad5d258cb7f8d84456de9c7ddd8a1fa7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15d1ea87ac6654fc7aa84de6a016a8ce"><td class="memItemLeft" align="right" valign="top"><a id="a15d1ea87ac6654fc7aa84de6a016a8ce" name="a15d1ea87ac6654fc7aa84de6a016a8ce"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetSize_RecursivelyList</b> () const</td></tr>
+<tr class="memdesc:a15d1ea87ac6654fc7aa84de6a016a8ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark all cached size information of this cell list as "to be calculated". <br /></td></tr>
+<tr class="separator:a15d1ea87ac6654fc7aa84de6a016a8ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba34d673b3ea182c1c9cf797e4090d33"><td class="memItemLeft" align="right" valign="top"><a id="aba34d673b3ea182c1c9cf797e4090d33" name="aba34d673b3ea182c1c9cf797e4090d33"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetSize</b> () const</td></tr>
+<tr class="memdesc:aba34d673b3ea182c1c9cf797e4090d33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the cached height and width information as "to be calculated". <br /></td></tr>
+<tr class="separator:aba34d673b3ea182c1c9cf797e4090d33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7785c87e388349707fc5fe645d2d546d"><td class="memItemLeft" align="right" valign="top"><a id="a7785c87e388349707fc5fe645d2d546d" name="a7785c87e388349707fc5fe645d2d546d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetSizeList</b> () const</td></tr>
+<tr class="memdesc:a7785c87e388349707fc5fe645d2d546d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the cached height information of the whole list of cells as "to be calculated". <br /></td></tr>
+<tr class="separator:a7785c87e388349707fc5fe645d2d546d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19b98df0b020de66035c40967b188f34"><td class="memItemLeft" align="right" valign="top"><a id="a19b98df0b020de66035c40967b188f34" name="a19b98df0b020de66035c40967b188f34"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetBigSkip</b> (bool skip)</td></tr>
 <tr class="memdesc:a19b98df0b020de66035c40967b188f34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell this cell to cause an additional vertical space. <br /></td></tr>
@@ -465,12 +465,12 @@ virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ListToRTF
 <tr class="memitem:a986122b0a11dcba1aff6480733bd650c"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a986122b0a11dcba1aff6480733bd650c">ToMathML</a> () const</td></tr>
 <tr class="memdesc:a986122b0a11dcba1aff6480733bd650c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to a representation fit for saving in a .wxmx file.  <br /></td></tr>
 <tr class="separator:a986122b0a11dcba1aff6480733bd650c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af678aad9b9d05f0d631b83c11a25ba7e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#af678aad9b9d05f0d631b83c11a25ba7e">Unbreak</a> ()</td></tr>
-<tr class="memdesc:af678aad9b9d05f0d631b83c11a25ba7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo breaking this cell into multiple lines.  <br /></td></tr>
-<tr class="separator:af678aad9b9d05f0d631b83c11a25ba7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb69c093987a3f0f6db927d3e0e2a705"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#acb69c093987a3f0f6db927d3e0e2a705">UnbreakList</a> ()</td></tr>
-<tr class="memdesc:acb69c093987a3f0f6db927d3e0e2a705"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unbreak this line.  <br /></td></tr>
-<tr class="separator:acb69c093987a3f0f6db927d3e0e2a705"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46a532b8571add09c58a65540ad60af8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a46a532b8571add09c58a65540ad60af8">Unbreak</a> () const</td></tr>
+<tr class="memdesc:a46a532b8571add09c58a65540ad60af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo breaking this cell into multiple lines.  <br /></td></tr>
+<tr class="separator:a46a532b8571add09c58a65540ad60af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a219839333a616ee9f837d3e8a8ffcf1a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a219839333a616ee9f837d3e8a8ffcf1a">UnbreakList</a> () const</td></tr>
+<tr class="memdesc:a219839333a616ee9f837d3e8a8ffcf1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unbreak this line.  <br /></td></tr>
+<tr class="separator:a219839333a616ee9f837d3e8a8ffcf1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54d62db52a88a5829aa0c1e3ffcbddf6"><td class="memItemLeft" align="right" valign="top"><a id="a54d62db52a88a5829aa0c1e3ffcbddf6" name="a54d62db52a88a5829aa0c1e3ffcbddf6"></a>
 <a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetPrevious</b> () const</td></tr>
 <tr class="memdesc:a54d62db52a88a5829aa0c1e3ffcbddf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the previous cell in the current cell list. <br /></td></tr>
@@ -482,9 +482,9 @@ virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ListToRTF
 <tr class="memitem:a24a76c329051ab9bb62d3ae6a8a3cc5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a24a76c329051ab9bb62d3ae6a8a3cc5b">GetNextToDraw</a> () const</td></tr>
 <tr class="memdesc:a24a76c329051ab9bb62d3ae6a8a3cc5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the next cell that needs to be drawn.  <br /></td></tr>
 <tr class="separator:a24a76c329051ab9bb62d3ae6a8a3cc5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7622b681639f89920988a849f4ecb1af"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a7622b681639f89920988a849f4ecb1af">SetNextToDraw</a> (<a class="el" href="classCell.html">Cell</a> *next)</td></tr>
-<tr class="memdesc:a7622b681639f89920988a849f4ecb1af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this cell which one should be the next cell to be drawn.  <br /></td></tr>
-<tr class="separator:a7622b681639f89920988a849f4ecb1af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9e4dc4eef0a49d313138c0348c304be"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ab9e4dc4eef0a49d313138c0348c304be">SetNextToDraw</a> (<a class="el" href="classCell.html">Cell</a> *next) const</td></tr>
+<tr class="memdesc:ab9e4dc4eef0a49d313138c0348c304be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this cell which one should be the next cell to be drawn.  <br /></td></tr>
+<tr class="separator:ab9e4dc4eef0a49d313138c0348c304be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base_of&lt; <a class="el" href="classCell.html">Cell</a>, T &gt;::value, bool &gt;::type  = true&gt; </td></tr>
 <tr class="memitem:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classCell.html#aa9203114af1b15d15a3ab9d40ff2b7ff">SetNextToDraw</a> (const std::unique_ptr&lt; T, Del &gt; &amp;ptr)</td></tr>
 <tr class="memdesc:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this cell which one should be the next cell to be drawn.  <br /></td></tr>
@@ -495,9 +495,9 @@ virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ListToRTF
 <tr class="memitem:a135386822998257ed1de2a1aa6812163"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a135386822998257ed1de2a1aa6812163">IsHidden</a> () const</td></tr>
 <tr class="memdesc:a135386822998257ed1de2a1aa6812163"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this cell is not to be drawn.  <br /></td></tr>
 <tr class="separator:a135386822998257ed1de2a1aa6812163"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab284ff699941a6e13dd730a92b872b47"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ab284ff699941a6e13dd730a92b872b47">FirstLineOnlyEditor</a> ()</td></tr>
-<tr class="memdesc:ab284ff699941a6e13dd730a92b872b47"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> is folded and its editor shows only its first line.  <br /></td></tr>
-<tr class="separator:ab284ff699941a6e13dd730a92b872b47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f799e3b2067908868779c6a8f54683c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a5f799e3b2067908868779c6a8f54683c">FirstLineOnlyEditor</a> () const</td></tr>
+<tr class="memdesc:a5f799e3b2067908868779c6a8f54683c"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> is folded and its editor shows only its first line.  <br /></td></tr>
+<tr class="separator:a5f799e3b2067908868779c6a8f54683c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87f7f4583027ae2e5e5baf664d488dc2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a87f7f4583027ae2e5e5baf664d488dc2">Hide</a> (bool hide=true)</td></tr>
 <tr class="memdesc:a87f7f4583027ae2e5e5baf664d488dc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hide this cell. See <a class="el" href="classCell.html#a135386822998257ed1de2a1aa6812163" title="Whether this cell is not to be drawn.">IsHidden()</a> for details.  <br /></td></tr>
 <tr class="separator:a87f7f4583027ae2e5e5baf664d488dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -575,14 +575,14 @@ std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearToolTip</b> ()</td></tr>
 <tr class="memdesc:a3f4a38a604b18e83c75df7454fc035bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove this cell's tooltip. <br /></td></tr>
 <tr class="separator:a3f4a38a604b18e83c75df7454fc035bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85a23b56a30cfa18901313e6cd2926bb"><td class="memItemLeft" align="right" valign="top"><a id="a85a23b56a30cfa18901313e6cd2926bb" name="a85a23b56a30cfa18901313e6cd2926bb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetToolTip</b> (const wxString &amp;tooltip)</td></tr>
-<tr class="memdesc:a85a23b56a30cfa18901313e6cd2926bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the tooltip to a given string. <br /></td></tr>
-<tr class="separator:a85a23b56a30cfa18901313e6cd2926bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4623cb9c2726dc180faa22afdfa02465"><td class="memItemLeft" align="right" valign="top"><a id="a4623cb9c2726dc180faa22afdfa02465" name="a4623cb9c2726dc180faa22afdfa02465"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetToolTip</b> (const wxString *toolTip)</td></tr>
-<tr class="memdesc:a4623cb9c2726dc180faa22afdfa02465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the tooltip of this math cell - it must be exist at least as long as the cell does. Translation results behave that way. I.e. it must be a static string! <br /></td></tr>
-<tr class="separator:a4623cb9c2726dc180faa22afdfa02465"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab27b49ba13453045c707439f265ad3b"><td class="memItemLeft" align="right" valign="top"><a id="aab27b49ba13453045c707439f265ad3b" name="aab27b49ba13453045c707439f265ad3b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetToolTip</b> (const wxString &amp;tooltip) const</td></tr>
+<tr class="memdesc:aab27b49ba13453045c707439f265ad3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the tooltip to a given string. <br /></td></tr>
+<tr class="separator:aab27b49ba13453045c707439f265ad3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51c55220826103d657314a4d49dcc760"><td class="memItemLeft" align="right" valign="top"><a id="a51c55220826103d657314a4d49dcc760" name="a51c55220826103d657314a4d49dcc760"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetToolTip</b> (const wxString *toolTip) const</td></tr>
+<tr class="memdesc:a51c55220826103d657314a4d49dcc760"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the tooltip of this math cell - it must be exist at least as long as the cell does. Translation results behave that way. I.e. it must be a static string! <br /></td></tr>
+<tr class="separator:a51c55220826103d657314a4d49dcc760"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66b16ea2bad4c2e129cc3ba448911927"><td class="memItemLeft" align="right" valign="top"><a id="a66b16ea2bad4c2e129cc3ba448911927" name="a66b16ea2bad4c2e129cc3ba448911927"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddToolTip</b> (const wxString &amp;tip)</td></tr>
 <tr class="memdesc:a66b16ea2bad4c2e129cc3ba448911927"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add another tooltip to this cell. <br /></td></tr>
@@ -671,9 +671,9 @@ static size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetLiveContr
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a57878bfc0ce007d7288bda097eb18f03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a57878bfc0ce007d7288bda097eb18f03">BreakUpAndMark</a> ()</td></tr>
-<tr class="memdesc:a57878bfc0ce007d7288bda097eb18f03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break up the internal cells of this cell, and mark it as broken up.  <br /></td></tr>
-<tr class="separator:a57878bfc0ce007d7288bda097eb18f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e96373d1087101e9c1bb115e0320805"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2e96373d1087101e9c1bb115e0320805">BreakUpAndMark</a> () const</td></tr>
+<tr class="memdesc:a2e96373d1087101e9c1bb115e0320805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break up the internal cells of this cell, and mark it as broken up.  <br /></td></tr>
+<tr class="separator:a2e96373d1087101e9c1bb115e0320805"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad505b47f50298511e9de2da7d220c990"><td class="memItemLeft" align="right" valign="top"><a id="ad505b47f50298511e9de2da7d220c990" name="ad505b47f50298511e9de2da7d220c990"></a>
 wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><b>BitmapFromSVG</b> (wxString svgData, wxSize size)</td></tr>
 <tr class="memdesc:ad505b47f50298511e9de2da7d220c990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a bitmap from svgData at the requested size. <br /></td></tr>
@@ -690,9 +690,9 @@ std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td>
 <tr class="memitem:aaa79c7d39bed74def76eff2484278a52"><td class="memItemLeft" align="right" valign="top"><a id="aaa79c7d39bed74def76eff2484278a52" name="aaa79c7d39bed74def76eff2484278a52"></a>
 <a class="el" href="classWorksheet.html">Worksheet</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetWorksheet</b> () const</td></tr>
 <tr class="separator:aaa79c7d39bed74def76eff2484278a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad78e4711af2ccac297ab020782decf70"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ad78e4711af2ccac297ab020782decf70">FontsChanged</a> ()</td></tr>
-<tr class="memdesc:ad78e4711af2ccac297ab020782decf70"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be called if the font has changed.  <br /></td></tr>
-<tr class="separator:ad78e4711af2ccac297ab020782decf70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3674fadbc6fb3ac58bd603b386015b8c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a3674fadbc6fb3ac58bd603b386015b8c">FontsChanged</a> () const</td></tr>
+<tr class="memdesc:a3674fadbc6fb3ac58bd603b386015b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be called if the font has changed.  <br /></td></tr>
+<tr class="separator:a3674fadbc6fb3ac58bd603b386015b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ff267c7f20bd27efee6854d5b795294"><td class="memItemLeft" align="right" valign="top"><a id="a6ff267c7f20bd27efee6854d5b795294" name="a6ff267c7f20bd27efee6854d5b795294"></a>
 <a class="el" href="classCellPointers.html">CellPointers</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetCellPointers</b> () const</td></tr>
 <tr class="separator:a6ff267c7f20bd27efee6854d5b795294"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -776,8 +776,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 
 </div>
 </div>
-<a id="a3ab849301d09982f7b84ae8b5c679699" name="a3ab849301d09982f7b84ae8b5c679699"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ab849301d09982f7b84ae8b5c679699">&#9670;&#160;</a></span>BreakUp()</h2>
+<a id="ad3bba95038366ea5bccefa8f76e1571e" name="ad3bba95038366ea5bccefa8f76e1571e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3bba95038366ea5bccefa8f76e1571e">&#9670;&#160;</a></span>BreakUp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -789,7 +789,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
           <td class="memname">bool Cell::BreakUp </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -807,12 +807,12 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classAbsCell.html#a24d281e37a5f6b477bb16208fbb30979">AbsCell</a>, <a class="el" href="classBoxCell.html#a6015dd49a82afc97e9b9e6a669fffe7f">BoxCell</a>, <a class="el" href="classConjugateCell.html#a41b3e26837e9c7f9ef01619b3ea4727d">ConjugateCell</a>, <a class="el" href="classDiffCell.html#a5f363325017a9da5c6dbed202acad68b">DiffCell</a>, <a class="el" href="classExptCell.html#ae91986a579c30930eaab4606fdfee0d2">ExptCell</a>, <a class="el" href="classFracCell.html#aa45eeadc510421fbffd25debf16569e6">FracCell</a>, <a class="el" href="classFunCell.html#ae9fd7e0463a52789fc4a7a8c2b6d531f">FunCell</a>, <a class="el" href="classIntCell.html#ac4b2075341c049d1e0d88555531d5b86">IntCell</a>, <a class="el" href="classIntervalCell.html#a500fe4b12e255eb5c14b75e229c22a17">IntervalCell</a>, <a class="el" href="classLimitCell.html#a4e33dc30d0bb938cb343f8fd5f5a4c1f">LimitCell</a>, <a class="el" href="classListCell.html#a1b16d275a41d044768a972ee1889cc06">ListCell</a>, <a class="el" href="classLongNumberCell.html#ab5d63f810ab8f2634b64608524d35e39">LongNumberCell</a>, <a class="el" href="classNamedBoxCell.html#ab9a7d0db911bc12137e6dc13d967c585">NamedBoxCell</a>, <a class="el" href="classParenCell.html#afdbbc3dcf548a8ce3111b6c84a957f6c">ParenCell</a>, <a class="el" href="classSqrtCell.html#a5c66a3711c7ab487ccc51b44239a0155">SqrtCell</a>, and <a class="el" href="classSumCell.html#a1a5cbc09825935b01ae5b08fc211ee40">SumCell</a>.</p>
+<p>Reimplemented in <a class="el" href="classAbsCell.html#a75eed8cb55ce9ed431b34a6283096776">AbsCell</a>, <a class="el" href="classBoxCell.html#a1f6546212f6f9f11e4e122a92e5f5a73">BoxCell</a>, <a class="el" href="classConjugateCell.html#a8f13e82a4a5365cb0f0b18be2334de03">ConjugateCell</a>, <a class="el" href="classDiffCell.html#aea472fc499870769c87004d7e3c82919">DiffCell</a>, <a class="el" href="classExptCell.html#a678885076b3ef24df2ff9c4609e2caab">ExptCell</a>, <a class="el" href="classFracCell.html#a9916008c00c4f9d14a4e26e2fef17002">FracCell</a>, <a class="el" href="classFunCell.html#a9b167e6d655d88fd6cca22892f0cd53f">FunCell</a>, <a class="el" href="classIntCell.html#a54aef1712d2665de48c6d470415fb89c">IntCell</a>, <a class="el" href="classIntervalCell.html#ac79ad1cae785ab584e411555c5f3f719">IntervalCell</a>, <a class="el" href="classLimitCell.html#a55284c774443a267f348b8136dbf9329">LimitCell</a>, <a class="el" href="classListCell.html#a3fd50a7cf8ddc44844e7c123421f30c6">ListCell</a>, <a class="el" href="classLongNumberCell.html#a85f2d4566d956cf7cd342ea160745bfb">LongNumberCell</a>, <a class="el" href="classNamedBoxCell.html#acd7d923e96554000762c049d9bd06f91">NamedBoxCell</a>, <a class="el" href="classParenCell.html#a09b2339a7ec516687ddf91f8a5347a5d">ParenCell</a>, <a class="el" href="classSqrtCell.html#acc87770eb02065b951f602f97944b13c">SqrtCell</a>, and <a class="el" href="classSumCell.html#a1cb45264c52230827105aeb64c075a37">SumCell</a>.</p>
 
 </div>
 </div>
-<a id="a57878bfc0ce007d7288bda097eb18f03" name="a57878bfc0ce007d7288bda097eb18f03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57878bfc0ce007d7288bda097eb18f03">&#9670;&#160;</a></span>BreakUpAndMark()</h2>
+<a id="a2e96373d1087101e9c1bb115e0320805" name="a2e96373d1087101e9c1bb115e0320805"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e96373d1087101e9c1bb115e0320805">&#9670;&#160;</a></span>BreakUpAndMark()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -824,7 +824,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
           <td class="memname">void Cell::BreakUpAndMark </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -839,8 +839,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 
 </div>
 </div>
-<a id="a9baf109da0cd2df6abe641f023621f32" name="a9baf109da0cd2df6abe641f023621f32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9baf109da0cd2df6abe641f023621f32">&#9670;&#160;</a></span>BreakUpCells()</h2>
+<a id="acd62b60c7511a29394071d4ef85671fd" name="acd62b60c7511a29394071d4ef85671fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd62b60c7511a29394071d4ef85671fd">&#9670;&#160;</a></span>BreakUpCells()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -852,7 +852,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
           <td class="memname">bool Cell::BreakUpCells </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -1416,8 +1416,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 
 </div>
 </div>
-<a id="ab284ff699941a6e13dd730a92b872b47" name="ab284ff699941a6e13dd730a92b872b47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab284ff699941a6e13dd730a92b872b47">&#9670;&#160;</a></span>FirstLineOnlyEditor()</h2>
+<a id="a5f799e3b2067908868779c6a8f54683c" name="a5f799e3b2067908868779c6a8f54683c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f799e3b2067908868779c6a8f54683c">&#9670;&#160;</a></span>FirstLineOnlyEditor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1429,7 +1429,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
           <td class="memname">bool Cell::FirstLineOnlyEditor </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -1441,12 +1441,12 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 
 <p>True, if this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> is folded and its editor shows only its first line. </p>
 
-<p>Reimplemented in <a class="el" href="classGroupCell.html#a7961b9ababcda614dce6b53c04b7fd3f">GroupCell</a>.</p>
+<p>Reimplemented in <a class="el" href="classGroupCell.html#a12f2ce396c76b3363117ba17af5b6d4e">GroupCell</a>.</p>
 
 </div>
 </div>
-<a id="ad78e4711af2ccac297ab020782decf70" name="ad78e4711af2ccac297ab020782decf70"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad78e4711af2ccac297ab020782decf70">&#9670;&#160;</a></span>FontsChanged()</h2>
+<a id="a3674fadbc6fb3ac58bd603b386015b8c" name="a3674fadbc6fb3ac58bd603b386015b8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3674fadbc6fb3ac58bd603b386015b8c">&#9670;&#160;</a></span>FontsChanged()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1458,7 +1458,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
           <td class="memname">virtual void Cell::FontsChanged </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -1470,12 +1470,12 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 
 <p>To be called if the font has changed. </p>
 
-<p>Reimplemented in <a class="el" href="classTextCell.html#a5cc73e63429c80a527c1867061fc837c">TextCell</a>.</p>
+<p>Reimplemented in <a class="el" href="classTextCell.html#ad9f5566f915963fd9c1814d6467d2659">TextCell</a>.</p>
 
 </div>
 </div>
-<a id="a8beef7f5a92c048650d8dca737629319" name="a8beef7f5a92c048650d8dca737629319"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8beef7f5a92c048650d8dca737629319">&#9670;&#160;</a></span>ForceBreakLine()</h2>
+<a id="a2ec3f174a6e515f986a29951198bbbcd" name="a2ec3f174a6e515f986a29951198bbbcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ec3f174a6e515f986a29951198bbbcd">&#9670;&#160;</a></span>ForceBreakLine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1488,7 +1488,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>force</em> = <code>true</code></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -1771,7 +1771,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 </div><div class="memdoc">
 
 <p>Get the height of this cell. </p>
-<p>This value is recalculated by <a class="el" href="classImgCellBase.html#a4391605853fa2655f108f57392859054" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a></p>
+<p>This value is recalculated by <a class="el" href="classImgCellBase.html#aa10874ee2bf6fb10f9326c32a7b9bbd6" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a></p>
 <div class="image">
 <object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
 </div>
@@ -2142,7 +2142,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 </div><div class="memdoc">
 
 <p>Get the width of this cell. </p>
-<p>This value is recalculated by <a class="el" href="classImgCellBase.html#a4391605853fa2655f108f57392859054" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a></p>
+<p>This value is recalculated by <a class="el" href="classImgCellBase.html#aa10874ee2bf6fb10f9326c32a7b9bbd6" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a></p>
 <div class="image">
 <object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
 </div>
@@ -2539,8 +2539,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 
 </div>
 </div>
-<a id="a4391605853fa2655f108f57392859054" name="a4391605853fa2655f108f57392859054"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4391605853fa2655f108f57392859054">&#9670;&#160;</a></span>Recalculate()</h2>
+<a id="aa10874ee2bf6fb10f9326c32a7b9bbd6" name="aa10874ee2bf6fb10f9326c32a7b9bbd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa10874ee2bf6fb10f9326c32a7b9bbd6">&#9670;&#160;</a></span>Recalculate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2551,9 +2551,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
         <tr>
           <td class="memname">virtual void ImgCellBase::Recalculate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td>
           <td class="paramname"><em>fontsize</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -2572,14 +2572,14 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="classCell.html#a8649d560ddcfc2f22509700f618a03d2">Cell</a>.</p>
+<p>Reimplemented from <a class="el" href="classCell.html#aedd0bcab37da23ed8be1cddbd5fb7473">Cell</a>.</p>
 
-<p>Implemented in <a class="el" href="classImgCell.html#a6164dc8a644de0fc4c7c3ef42af4e6ca">ImgCell</a>.</p>
+<p>Implemented in <a class="el" href="classImgCell.html#a107cdb81e715facd442ed21acd277719">ImgCell</a>.</p>
 
 </div>
 </div>
-<a id="afde82a5f0708410ea828e65254e62531" name="afde82a5f0708410ea828e65254e62531"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afde82a5f0708410ea828e65254e62531">&#9670;&#160;</a></span>RecalculateList()</h2>
+<a id="a7ae334bf5a2cfb124329e61576f9ce74" name="a7ae334bf5a2cfb124329e61576f9ce74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ae334bf5a2cfb124329e61576f9ce74">&#9670;&#160;</a></span>RecalculateList()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2592,7 +2592,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
           <td>(</td>
           <td class="paramtype"><a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td>
           <td class="paramname"><em>fontsize</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -2607,8 +2607,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 
 </div>
 </div>
-<a id="a5cf6e28db66e6990c81142930ee3511b" name="a5cf6e28db66e6990c81142930ee3511b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5cf6e28db66e6990c81142930ee3511b">&#9670;&#160;</a></span>ResetSize_Recursively()</h2>
+<a id="ad5d258cb7f8d84456de9c7ddd8a1fa7d" name="ad5d258cb7f8d84456de9c7ddd8a1fa7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5d258cb7f8d84456de9c7ddd8a1fa7d">&#9670;&#160;</a></span>ResetSize_Recursively()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2620,7 +2620,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
           <td class="memname">void Cell::ResetSize_Recursively </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -2912,8 +2912,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 
 </div>
 </div>
-<a id="a7622b681639f89920988a849f4ecb1af" name="a7622b681639f89920988a849f4ecb1af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7622b681639f89920988a849f4ecb1af">&#9670;&#160;</a></span>SetNextToDraw() <span class="overload">[1/2]</span></h2>
+<a id="ab9e4dc4eef0a49d313138c0348c304be" name="ab9e4dc4eef0a49d313138c0348c304be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9e4dc4eef0a49d313138c0348c304be">&#9670;&#160;</a></span>SetNextToDraw() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2926,7 +2926,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
           <td>(</td>
           <td class="paramtype"><a class="el" href="classCell.html">Cell</a> *&#160;</td>
           <td class="paramname"><em>next</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -2940,7 +2940,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
 <p>If the cell is displayed as 2d object this sets the pointer to the next cell.</p>
 <p>If the cell is broken into lines this sets the pointer of the last of the list of cells this cell is displayed as. </p>
 
-<p>Reimplemented in <a class="el" href="classAbsCell.html#aa78da02e6dd907bf0d5f8aa968558f77">AbsCell</a>, <a class="el" href="classBoxCell.html#aa687c3725053c71583fabc383b2bbab4">BoxCell</a>, <a class="el" href="classConjugateCell.html#a114d6cc1448603f38392bf29713d1170">ConjugateCell</a>, <a class="el" href="classDiffCell.html#a08a775b476e5e4cfc9bccfddce89905d">DiffCell</a>, <a class="el" href="classFracCell.html#ace4aad4d307b73972b0140400253d6c0">FracCell</a>, <a class="el" href="classFunCell.html#a5473fbdaeca4499c7b6b864bc4a41dc9">FunCell</a>, <a class="el" href="classIntCell.html#a078abe7d3cffa23217d1be00cee84820">IntCell</a>, <a class="el" href="classIntervalCell.html#af67678b4976d1f3a58026f199c15c1af">IntervalCell</a>, <a class="el" href="classLimitCell.html#a4fd32092ecbb103a121a3a62cf62fc41">LimitCell</a>, <a class="el" href="classListCell.html#a19ca9959379d5323986d37c1377ac652">ListCell</a>, <a class="el" href="classLongNumberCell.html#afdbc63525bcf8e673b951e0a7fa4e817">LongNumberCell</a>, <a class="el" href="classNamedBoxCell.html#ab048149f934bac49afb9d2284fbf4aae">NamedBoxCell</a>, <a class="el" href="classParenCell.html#afdef400116646020a56b2a7cfa6d7d07">ParenCell</a>, <a class="el" href="classSqrtCell.html#adc5f45c469b9d9b9d1379a6107210203">SqrtCell</a>, and <a class="el" href="classSumCell.html#a4bc1650e928173027d321bcb00ff44f6">SumCell</a>.</p>
+<p>Reimplemented in <a class="el" href="classAbsCell.html#a829d4f662165ef014f26917449631d5f">AbsCell</a>, <a class="el" href="classBoxCell.html#a6fb0efd453e0833f9ccaa59afdb2d01e">BoxCell</a>, <a class="el" href="classConjugateCell.html#a73bc40a8d4b47f6934a7511cb0041bc2">ConjugateCell</a>, <a class="el" href="classDiffCell.html#a82819f5247995710f0ef90265405f092">DiffCell</a>, <a class="el" href="classFracCell.html#adc8385c1b5304507bb624f06be1b716f">FracCell</a>, <a class="el" href="classFunCell.html#a6dc2c8cd690a77c4835b9a55e49cb5fb">FunCell</a>, <a class="el" href="classIntCell.html#a8876fd38dab3b50fc6fdd235831b103d">IntCell</a>, <a class="el" href="classIntervalCell.html#a4ce9ce632443febb506c2f194af422ab">IntervalCell</a>, <a class="el" href="classLimitCell.html#a4c08f6e3e8dcd0bf42a6261f9032d6c0">LimitCell</a>, <a class="el" href="classListCell.html#ad2d01a31d5aa7ef704dca9263733830e">ListCell</a>, <a class="el" href="classLongNumberCell.html#a2ad6f4a693800814975aa579bb32c475">LongNumberCell</a>, <a class="el" href="classNamedBoxCell.html#acc0eb2b10cdbfc6d25369c5b97a237e8">NamedBoxCell</a>, <a class="el" href="classParenCell.html#aba3a87acd39970e9ba2ad6f48bd25741">ParenCell</a>, <a class="el" href="classSqrtCell.html#a9ceb0b6983ec05d324053504ca67e41d">SqrtCell</a>, and <a class="el" href="classSumCell.html#a1b926a184279449b87a672c0143b5580">SumCell</a>.</p>
 
 </div>
 </div>
@@ -3091,7 +3091,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
@@ -3370,8 +3370,8 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 
 </div>
 </div>
-<a id="af678aad9b9d05f0d631b83c11a25ba7e" name="af678aad9b9d05f0d631b83c11a25ba7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af678aad9b9d05f0d631b83c11a25ba7e">&#9670;&#160;</a></span>Unbreak()</h2>
+<a id="a46a532b8571add09c58a65540ad60af8" name="a46a532b8571add09c58a65540ad60af8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46a532b8571add09c58a65540ad60af8">&#9670;&#160;</a></span>Unbreak()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3383,7 +3383,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
           <td class="memname">void Cell::Unbreak </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -3397,12 +3397,12 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 <p>Some cells have different representations when they contain a line break. Examples for this are fractions or a set of parenthesis.</p>
 <p>This function tries to return a cell to the single-line form. </p>
 
-<p>Reimplemented in <a class="el" href="classSumCell.html#a5af87b01d89682eb1a952096974d448a">SumCell</a>.</p>
+<p>Reimplemented in <a class="el" href="classSumCell.html#aa519823cf1b8fe4302aef4906249cf0f">SumCell</a>.</p>
 
 </div>
 </div>
-<a id="acb69c093987a3f0f6db927d3e0e2a705" name="acb69c093987a3f0f6db927d3e0e2a705"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb69c093987a3f0f6db927d3e0e2a705">&#9670;&#160;</a></span>UnbreakList()</h2>
+<a id="a219839333a616ee9f837d3e8a8ffcf1a" name="a219839333a616ee9f837d3e8a8ffcf1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a219839333a616ee9f837d3e8a8ffcf1a">&#9670;&#160;</a></span>UnbreakList()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3414,7 +3414,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
           <td class="memname">void Cell::UnbreakList </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -3474,7 +3474,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -3501,7 +3501,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -3534,7 +3534,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
