@@ -154,7 +154,7 @@ wxBitmap Cell::BitmapFromSVG(wxString svgData, wxSize size)
   return bmp;
 }
 
-bool Cell::FirstLineOnlyEditor()
+bool Cell::FirstLineOnlyEditor() const
 {
   wxASSERT(GetGroup()->GetType() == MC_TYPE_GROUP);
   return GetGroup()->FirstLineOnlyEditor();
@@ -262,7 +262,7 @@ int Cell::GetCenterList() const {
     if ((&tmp != this) && (tmp.m_breakLine))
       break;
     if (!tmp.m_isBrokenIntoLines)
-      maxCenter = std::max(maxCenter, tmp.m_center);
+      maxCenter = std::max(maxCenter, tmp.GetCenter());
   }
   return maxCenter;
 }
@@ -273,7 +273,7 @@ int Cell::GetMaxDrop() const {
     if ((&tmp != this) && (tmp.m_breakLine))
       break;
     if (!tmp.m_isBrokenIntoLines)
-      maxDrop = std::max(maxDrop, tmp.m_height - tmp.m_center);
+      maxDrop = std::max(maxDrop, tmp.GetHeight() - tmp.GetCenter());
   }
   return maxDrop;
 }
@@ -283,19 +283,19 @@ int Cell::GetHeightList() const { return GetCenterList() + GetMaxDrop(); }
 int Cell::SumOfWidths() const {
   int fullWidth = 0;
   for (const Cell &tmp : OnDrawList(this)) {
-    fullWidth += tmp.m_width;
+    fullWidth += tmp.GetWidth();
   }
   return fullWidth;
 }
 
 int Cell::GetLineWidth() const {
-  int width = m_width;
+  int width = GetWidth();
   for (const Cell &tmp : OnDrawList(this)) {
     if (&tmp != this)
       if (tmp.m_isBrokenIntoLines || tmp.m_breakLine ||
           (tmp.m_type == MC_TYPE_MAIN_PROMPT))
         break;
-    width += tmp.m_width;
+    width += tmp.GetWidth();
   }
   return width;
 }
@@ -310,8 +310,8 @@ void Cell::Draw(wxPoint point, wxDC *dc, wxDC *WXUNUSED(antialiassingDC)) {
     {
       if(!m_isHidden)
         {
-          wxASSERT(m_width  >= 0);
-          wxASSERT(m_height >= 0);
+          wxASSERT(GetWidth()  >= 0);
+          wxASSERT(GetHeight() >= 0);
         }
     }
   m_configuration->NotifyOfCellRedraw(this);
@@ -347,7 +347,7 @@ void Cell::ClearToolTip() {
     m_toolTip = &wxm::emptyString;
 }
 
-void Cell::SetToolTip(const wxString &tooltip) {
+void Cell::SetToolTip(const wxString &tooltip) const {
   if (m_ownsToolTip)
     const_cast<wxString &>(*m_toolTip) = tooltip;
   else {
@@ -357,7 +357,7 @@ void Cell::SetToolTip(const wxString &tooltip) {
   }
 }
 
-void Cell::SetToolTip(const wxString *toolTip) {
+void Cell::SetToolTip(const wxString *toolTip) const {
   if (!toolTip)
     toolTip = &wxm::emptyString;
   if (m_ownsToolTip) {
@@ -401,17 +401,17 @@ void Cell::SetIsExponent() {
 void Cell::DrawList(wxPoint point, wxDC *dc, wxDC *adc) {
   for (Cell &tmp : OnDrawList(this)) {
     tmp.Draw(point, dc, adc);
-    point.x += tmp.m_width;
+    point.x += tmp.GetWidth();
   }
 }
 
-void Cell::RecalculateList(AFontSize fontsize) {
-  for (Cell &tmp : OnList(this))
+void Cell::RecalculateList(AFontSize fontsize) const {
+  for (const Cell &tmp : OnList(this))
     tmp.Recalculate(fontsize);
 }
 
-void Cell::ResetSizeList() {
-  for (Cell &tmp : OnList(this))
+void Cell::ResetSizeList() const {
+  for (const Cell &tmp : OnList(this))
     {
       tmp.ResetSize();
       for (Cell &cell : OnInner(&tmp))
@@ -419,7 +419,7 @@ void Cell::ResetSizeList() {
     }
 }
 
-void Cell::Recalculate(AFontSize fontsize) {
+void Cell::Recalculate(const AFontSize fontsize) const {
   if(NeedsRecalculation(fontsize))
     {
       m_cellCfgCnt_last = m_configuration->CellCfgCnt();
@@ -444,11 +444,11 @@ bool Cell::DrawThisCell(wxPoint point) {
 }
 
 bool Cell::HasValidSize() const {
-  return m_width >= 0 && m_height >= 0 && m_center >= 0;
+  return GetWidth() >= 0 && GetHeight() >= 0 && GetCenter() >= 0;
 }
 
 bool Cell::HasStaleSize() const {
-  return m_width >= 0 && m_height >= 0 && m_center >= 0;
+  return GetWidth() >= 0 && GetHeight() >= 0 && GetCenter() >= 0;
 }
 
 bool Cell::HasValidPosition() const {
@@ -476,7 +476,7 @@ int Cell::GetLineIndent() const {
   return 0;
 }
 
-void Cell::BreakLines_List()
+void Cell::BreakLines_List() const
 {
   // 1st step: Tell all cells to display as beautiful 2d object, if that is
   // possible.
@@ -504,7 +504,7 @@ void Cell::BreakLines_List()
   // 4th step: break the output into lines.
   if (!IsHidden()) {
     bool prevBroken = false;
-    for (Cell &tmp : OnDrawList(this)) {
+    for (const Cell &tmp : OnDrawList(this)) {
       if (prevBroken) {
         currentWidth += tmp.GetLineIndent();
         prevBroken = false;
@@ -522,7 +522,7 @@ void Cell::BreakLines_List()
   ResetSize_RecursivelyList();
 }
 
-bool Cell::BreakUpCells() {
+bool Cell::BreakUpCells() const {
   int clientWidth =
     .8 * m_configuration->GetCanvasSize().x - m_configuration->GetIndent();
   if (clientWidth < Scale_Px(50))
@@ -530,7 +530,7 @@ bool Cell::BreakUpCells() {
 
   bool lineHeightsChanged = false;
   if (!IsHidden())
-    for (Cell &tmp : OnDrawList(this)) {
+    for (const Cell &tmp : OnDrawList(this)) {
         if (tmp.GetWidth() < 0)
           tmp.Recalculate(m_configuration->GetMathFontSize());
         if (tmp.GetWidth() > clientWidth)
@@ -539,10 +539,10 @@ bool Cell::BreakUpCells() {
   return lineHeightsChanged;
 }
 
-bool Cell::UnBreakUpCells() {
+bool Cell::UnBreakUpCells() const {
 
   bool retval = false;
-  for (Cell &tmp : OnDrawList(this)) {
+  for (const Cell &tmp : OnDrawList(this)) {
     if (tmp.IsBrokenIntoLines()) {
       tmp.Unbreak();
       retval = true;
@@ -560,8 +560,8 @@ wxRect Cell::GetRect(bool wholeList) const {
     return wxRect(m_currentPoint.x, m_currentPoint.y - GetCenterList(),
                   GetLineWidth(), GetHeightList());
   else
-    return wxRect(m_currentPoint.x, m_currentPoint.y - m_center, m_width,
-                  m_height);
+    return wxRect(m_currentPoint.x, m_currentPoint.y - GetCenter(), GetWidth(),
+                  GetHeight());
 }
 
 bool Cell::InUpdateRegion() const {
@@ -1036,19 +1036,19 @@ bool Cell::ContainsRect(const wxRect &sm, bool all) const {
   as well as the vertical position of the center. Then repeats this
   with
 */
-void Cell::ResetSize_Recursively() {
+void Cell::ResetSize_Recursively() const {
   ResetSize();
   for (Cell &cell : OnInner(this))
     for (Cell &tmp : OnList(&cell))
       tmp.ResetSize_Recursively();
 }
 
-void Cell::ResetSize_RecursivelyList() {
-  for (Cell &tmp : OnList(this))
+void Cell::ResetSize_RecursivelyList() const {
+  for (const Cell &tmp : OnList(this))
     tmp.ResetSize_Recursively();
 }
 
-void Cell::ResetSize() {
+void Cell::ResetSize() const {
   m_cellCfgCnt_last--;
 }
 
@@ -1070,9 +1070,9 @@ Cell *Cell::last() const {
   return const_cast<Cell *>(tmp);
 }
 
-bool Cell::BreakUp() { return false; }
+bool Cell::BreakUp() const { return false; }
 
-void Cell::BreakUpAndMark() {
+void Cell::BreakUpAndMark() const {
   wxASSERT(!m_isBrokenIntoLines);
   if (!m_isBrokenIntoLines)
     {
@@ -1083,10 +1083,9 @@ void Cell::BreakUpAndMark() {
   m_height = 0;
   m_width = 0;
   m_center = 0;
-  
 }
 
-void Cell::Unbreak() {
+void Cell::Unbreak() const {
   if (m_isBrokenIntoLines) {
     ResetSize_Recursively();
     // Unbreak the inner cells, too
@@ -1097,8 +1096,8 @@ void Cell::Unbreak() {
   SetNextToDraw(GetNext());
 }
 
-void Cell::UnbreakList() {
-  for (Cell &tmp : OnList(this))
+void Cell::UnbreakList() const {
+  for (const Cell &tmp : OnList(this))
     tmp.Unbreak();
 }
 

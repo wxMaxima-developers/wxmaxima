@@ -210,7 +210,7 @@ private:
 
   int GetImageBorderWidth() const override { return m_imageBorderWidth; }
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 

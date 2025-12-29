@@ -43,6 +43,7 @@ FracCell::FracCell(GroupCell *group, Configuration *config,
   InitBitFields_FracCell();
   SetStyle(TS_VARIABLE);
   SetupBreakUps();
+  MakeDivideCell();
 }
 
 FracCell::FracCell(GroupCell *group, const FracCell &cell)
@@ -53,6 +54,7 @@ FracCell::FracCell(GroupCell *group, const FracCell &cell)
   SetupBreakUps();
   if (cell.m_inExponent)
     SetIsExponent();
+  MakeDivideCell();
 }
 
 DEFINE_CELL(FracCell)
@@ -83,7 +85,7 @@ void FracCell::MakeDivideCell() {
   m_divide = m_divideOwner.get();
 }
 
-void FracCell::Recalculate(AFontSize fontsize) {
+void FracCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     if (m_inExponent || IsBrokenIntoLines()) {
       m_displayedNum->RecalculateList(fontsize);
@@ -296,7 +298,7 @@ void FracCell::SetIsExponent() {
   }
 }
 
-void FracCell::SetupBreakUps() {
+void FracCell::SetupBreakUps() const {
   m_displayedNum = m_numParenthesis.get();
   m_displayedDenom = m_denomParenthesis.get();
   if (m_fracStyle == FC_CHOOSE) {
@@ -310,11 +312,10 @@ void FracCell::SetupBreakUps() {
   }
 }
 
-bool FracCell::BreakUp() {
+bool FracCell::BreakUp() const {
   if (m_fracStyle == FC_DIFF || IsBrokenIntoLines())
     return false;
 
-  MakeDivideCell();
   Cell::BreakUpAndMark();
   if (Num() && Num()->GetNext())
     m_displayedNum = m_numParenthesis.get();
@@ -328,7 +329,7 @@ bool FracCell::BreakUp() {
   return true;
 }
 
-void FracCell::SetNextToDraw(Cell *next) {
+void FracCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_displayedDenom->SetNextToDraw(next);
   else

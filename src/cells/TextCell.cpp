@@ -368,7 +368,7 @@ void TextCell::SetValue(const wxString &text) {
 AFontSize TextCell::GetScaledTextSize() const { return m_fontSize_Scaled; }
 
 wxSize TextCell::CalculateTextSize(wxDC *const dc, const wxString &text,
-                                   TextCell::TextIndex const index) {
+                                   TextCell::TextIndex const index) const {
   AFontSize const fontSize = GetScaledTextSize();
   if (text.empty())
     return {};
@@ -378,7 +378,7 @@ wxSize TextCell::CalculateTextSize(wxDC *const dc, const wxString &text,
   return size;
 }
 
-void TextCell::UpdateDisplayedText() {
+void TextCell::UpdateDisplayedText() const {
   wxString displayedText_old = m_displayedText;
   m_displayedText = m_text;
 
@@ -420,7 +420,7 @@ void TextCell::UpdateDisplayedText() {
     ScheduleRecalculation();
 }
 
-void TextCell::Recalculate(AFontSize fontsize) {
+void TextCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     if (GetTextStyle() == TS_ASCIIMATHS)
       ForceBreakLine(true);
@@ -467,7 +467,7 @@ void TextCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   }
 }
 
-void TextCell::SetFont(wxDC *dc, AFontSize fontsize) {
+void TextCell::SetFont(wxDC *dc, AFontSize fontsize) const {
   if(dc == NULL)
     {
       wxLogMessage(_("Bug: dc == NULL"));

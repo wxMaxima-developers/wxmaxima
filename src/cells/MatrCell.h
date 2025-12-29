@@ -40,7 +40,7 @@ public:
   Cell *GetInnerCell(long x, long y) const {
     return m_cells[static_cast<size_t>(x) * m_matWidth + y].get(); }
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
@@ -84,8 +84,8 @@ private:
   //! Collection of pointers to inner cells.
   std::vector<std::unique_ptr<Cell>> m_cells;
 
-  std::vector<wxCoord> m_widths;
-  std::vector<DropCenter> m_dropCenters;
+  mutable std::vector<wxCoord> m_widths;
+  mutable std::vector<DropCenter> m_dropCenters;
 
   size_t m_matWidth = 0;
   size_t m_matHeight = 0;

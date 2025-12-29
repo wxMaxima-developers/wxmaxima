@@ -52,7 +52,7 @@ public:
   // cppcheck-suppress objectIndex
   Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
@@ -66,9 +66,9 @@ public:
   void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
-  bool BreakUp() override;
-  void SetNextToDraw(Cell *next) override;
-  void Unbreak() override final;
+  bool BreakUp() const override;
+  void SetNextToDraw(Cell *next) const override;
+  void Unbreak() const override final;
 
 protected:
   //! What maxima command name corresponds to this cell?
@@ -116,7 +116,7 @@ private:
   std::unique_ptr<Cell> m_under;
   // The pointers above point to inner cells and must be kept contiguous.
 
-  wxSize m_signSize;
+  mutable wxSize m_signSize;
 
 //** Bitfield objects (1 bytes)
 //**
@@ -127,7 +127,7 @@ private:
     }
 
   //! Display m_paren if true, or Base() if false
-  bool m_displayParen : 1 /* InitBitFields_SumCell */;
+  mutable bool m_displayParen : 1 /* InitBitFields_SumCell */;
 };
 
 #endif // SUMCELL_H

@@ -37,6 +37,7 @@ ConjugateCell::ConjugateCell(GroupCell *group, Configuration *config,
   : Cell(group, config), m_innerCell(std::move(inner)) {
   InitBitFields_ConjungateCell();
   SetStyle(TS_VARIABLE);
+  MakeBreakupCells();
 }
 
 // Old cppcheck bugs:
@@ -44,6 +45,7 @@ ConjugateCell::ConjugateCell(GroupCell *group, const ConjugateCell &cell)
   : ConjugateCell(group, cell.m_configuration,
                   CopyList(group, cell.m_innerCell.get())) {
   CopyCommonData(cell);
+  MakeBreakupCells();
 }
 
 DEFINE_CELL(ConjugateCell)
@@ -58,7 +60,7 @@ void ConjugateCell::MakeBreakupCells() {
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
-void ConjugateCell::Recalculate(AFontSize fontsize) {
+void ConjugateCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_innerCell->RecalculateList(fontsize);
 
@@ -138,11 +140,10 @@ wxString ConjugateCell::ToXML() const {
     wxS("</cj>");
 }
 
-bool ConjugateCell::BreakUp() {
+bool ConjugateCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  MakeBreakupCells();
   Cell::BreakUpAndMark();
   m_open->SetNextToDraw(m_innerCell);
   m_innerCell->last()->SetNextToDraw(m_close);
@@ -151,7 +152,7 @@ bool ConjugateCell::BreakUp() {
   return true;
 }
 
-void ConjugateCell::SetNextToDraw(Cell *next) {
+void ConjugateCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

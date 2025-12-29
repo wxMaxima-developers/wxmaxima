@@ -62,7 +62,7 @@ public:
     FC_DIFF
   };
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
@@ -81,12 +81,11 @@ public:
   //! Fractions in exponents are shown in their linear form.
   void SetIsExponent() override;
 
-  bool BreakUp() override;
+  bool BreakUp() const override;
 
-  void SetupBreakUps();
+  void SetupBreakUps() const;
 
-  void SetNextToDraw(Cell *next) override;
-
+  void SetNextToDraw(Cell *next) const override;
 private:
   //! Makes the division sign cell, used in linear form - whether when broken
   //! into lines, or when the exponent flag is set.
@@ -108,29 +107,29 @@ private:
   // ** This is the draw list order. All pointers must be the same:
   // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
   //! The displayed version of the numerator, if needed with parenthesis
-  Cell* m_displayedNum = {};
+  mutable Cell* m_displayedNum = {};
   //! The "/" sign
   Cell* m_divide = {};
   //! The displayed version of the denominator, if needed with parenthesis
-  Cell* m_displayedDenom = {};
+  mutable Cell* m_displayedDenom = {};
   // The pointers above point to inner cells and must be kept contiguous.
 
   //! How much wider should the horizontal line be on both ends than num or denom?
-  int m_protrusion = 0;
+  mutable int m_protrusion = 0;
   /*! The horizontal gap between this frac and any minus before it
 
     This gap hinders avoids the horizontal rule of a fraction from building a straight
     nearly-uninterrupted horizontal line together with a minus. It is only introduced
     if there is an actual minus.
   */
-  int m_horizontalGapLeft = 0;
+  mutable int m_horizontalGapLeft = 0;
   /*! The horizontal gap between this frac and any minus that follows it
 
     This gap hinders avoids the horizontal rule of a fraction from building a straight
     nearly-uninterrupted horizontal line together with a minus. It is only introduced
     if there is an actual minus.
   */
-  int m_horizontalGapRight = 0;
+  mutable int m_horizontalGapRight = 0;
 
   //! The way the fraction should be displayed
   FracType m_fracStyle = FC_NORMAL;

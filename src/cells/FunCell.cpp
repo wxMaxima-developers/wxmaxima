@@ -53,7 +53,7 @@ FunCell::FunCell(GroupCell *group, const FunCell &cell)
 
 DEFINE_CELL(FunCell)
 
-void FunCell::Recalculate(AFontSize fontsize) {
+void FunCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_argCell->RecalculateList(fontsize);
     m_nameCell->RecalculateList(fontsize);
@@ -153,7 +153,7 @@ wxString FunCell::ToOMML() const {
   return m_nameCell->ListToOMML() + m_argCell->ListToOMML();
 }
 
-bool FunCell::BreakUp() {
+bool FunCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
@@ -164,7 +164,7 @@ bool FunCell::BreakUp() {
   return true;
 }
 
-void FunCell::SetNextToDraw(Cell *next) {
+void FunCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_argCell->last()->SetNextToDraw(next);
   else

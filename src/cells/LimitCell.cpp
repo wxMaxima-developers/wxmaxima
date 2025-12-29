@@ -42,6 +42,7 @@ LimitCell::LimitCell(GroupCell *group, Configuration *config,
     m_under(std::move(under)) {
   InitBitFields_LimitCell();
   SetStyle(TS_VARIABLE);
+  MakeBreakUpCells();
 }
 
 LimitCell::LimitCell(GroupCell *group, const LimitCell &cell)
@@ -64,7 +65,7 @@ void LimitCell::MakeBreakUpCells() {
   m_close->SetStyle(TS_FUNCTION);
 }
 
-void LimitCell::Recalculate(AFontSize fontsize) {
+void LimitCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_base->RecalculateList(fontsize);
     m_under->RecalculateList(
@@ -212,11 +213,10 @@ wxString LimitCell::ToOMML() const {
     m_base->ListToOMML() + wxS("</m:e></m:func>");
 }
 
-bool LimitCell::BreakUp() {
+bool LimitCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  MakeBreakUpCells();
   Cell::BreakUpAndMark();
   m_name->last()->SetNextToDraw(m_open);
   m_open->SetNextToDraw(m_base);
@@ -228,7 +228,7 @@ bool LimitCell::BreakUp() {
   return true;
 }
 
-void LimitCell::SetNextToDraw(Cell *next) {
+void LimitCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

@@ -59,7 +59,7 @@ MatrCell::MatrCell(GroupCell *group, const MatrCell &cell)
 
 DEFINE_CELL(MatrCell)
 
-void MatrCell::Recalculate(AFontSize const fontsize) {
+void MatrCell::Recalculate(AFontSize const fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     AFontSize const fontsize_entry{MC_MIN_SIZE, fontsize - 2};
     for (size_t i = 0; i < m_cells.size(); i++)

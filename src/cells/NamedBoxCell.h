@@ -60,9 +60,9 @@ public:
   // cppcheck-suppress objectIndex
   Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
 
-  bool BreakUp() override;
+  bool BreakUp() const override;
 
-  void SetNextToDraw(Cell *next) override;
+  void SetNextToDraw(Cell *next) const override;
 
 private:
   void MakeBreakupCells();
@@ -84,7 +84,7 @@ private:
       // of bit fields in this class!
     }
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
@@ -94,10 +94,10 @@ private:
   wxString ToString() const override;
   wxString ToTeX() const override;
   wxString ToXML() const override;
-  int m_innerCellWidth = -1;
-  int m_innerCellHeight = -1;
-  int m_nameWidth = -1;
-  int m_nameHeight = -1;
+  mutable int m_innerCellWidth = -1;
+  mutable int m_innerCellHeight = -1;
+  mutable int m_nameWidth = -1;
+  mutable int m_nameHeight = -1;
 };
 
 #endif // NAMEDBOXCELL_H

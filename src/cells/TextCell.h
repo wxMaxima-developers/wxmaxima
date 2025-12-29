@@ -50,14 +50,14 @@ public:
   //! Set the text contained in this cell
   void SetValue(const wxString &text) override;
 
-  virtual void Recalculate(AFontSize fontsize) override;
+  virtual void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
   const wxFont &GetFont(AFontSize fontsize) const {
     return m_configuration->GetStyle(GetTextStyle())->GetFont(fontsize);
   }
   //cppcheck-suppress functionConst
-  void SetFont(wxDC *dc, AFontSize fontsize);
+  void SetFont(wxDC *dc, AFontSize fontsize) const;
 
   /*! Calling this function signals that the "(" this cell ends in isn't part of the function name
 
@@ -99,12 +99,12 @@ protected:
   //! Returns the XML flags this cell needs in wxMathML
   virtual wxString GetXMLFlags() const;
   //! The text we actually display depends on many factors, unfortunately
-  virtual void UpdateDisplayedText();
+  virtual void UpdateDisplayedText() const;
   //! Update the tooltip for this cell
   void UpdateToolTip();
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
-  void FontsChanged() override
+  void FontsChanged() const override
     {
       m_sizeCache.clear();
     }
@@ -128,7 +128,7 @@ protected:
     SizeEntry() = default;
   };
 
-  wxSize CalculateTextSize(wxDC *dc, const wxString &text, TextCell::TextIndex const index);
+  wxSize CalculateTextSize(wxDC *dc, const wxString &text, TextCell::TextIndex const index) const;
 
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
@@ -141,8 +141,8 @@ protected:
   //! The text we keep inside this cell
   wxString m_text;
   //! The text we display: We might want to convert some characters or do similar things
-  wxString m_displayedText;
-  std::vector<SizeEntry> m_sizeCache;
+  mutable wxString m_displayedText;
+  mutable std::vector<SizeEntry> m_sizeCache;
 
 //** Bitfield objects (1 bytes)
 //**

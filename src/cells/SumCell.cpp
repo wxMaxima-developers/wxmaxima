@@ -45,6 +45,7 @@ SumCell::SumCell(GroupCell *group, Configuration *config,
   if (!m_over)
     m_over = std::make_unique<TextCell>(group, config);
   wxASSERT(Base());
+  MakeBreakUpCells();
 }
 
 SumCell::SumCell(GroupCell *group, const SumCell &cell)
@@ -150,7 +151,7 @@ const wxString SumCell::GetXMLType() const
   return type;
 }
 
-void SumCell::Recalculate(AFontSize fontsize) {
+void SumCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     DisplayedBase()->RecalculateList(fontsize);
     m_start->RecalculateList(fontsize);
@@ -332,16 +333,15 @@ wxString SumCell::ToMathML() const {
   return (wxS("<mrow>") + retval + wxS("</mrow>"));
 }
 
-void SumCell::Unbreak() {
+void SumCell::Unbreak() const {
   m_displayParen = true;
   Cell::Unbreak();
 }
 
-bool SumCell::BreakUp() {
+bool SumCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  MakeBreakUpCells();
   Cell::BreakUpAndMark();
   m_displayParen = false;
 
@@ -363,7 +363,7 @@ bool SumCell::BreakUp() {
   return true;
 }
 
-void SumCell::SetNextToDraw(Cell *next) {
+void SumCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

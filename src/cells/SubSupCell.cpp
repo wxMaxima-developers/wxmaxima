@@ -105,7 +105,7 @@ void SubSupCell::SetExponent(std::unique_ptr<Cell> &&expt) {
   m_postSupCell = std::move(expt);
 }
 
-void SubSupCell::Recalculate(AFontSize const fontsize) {
+void SubSupCell::Recalculate(AFontSize const fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     AFontSize const smallerFontSize{MC_MIN_SIZE, fontsize - SUBSUP_DEC};
 

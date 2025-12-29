@@ -46,7 +46,7 @@ public:
   void SetPostSub(std::unique_ptr<Cell> &&index);
   void SetPostSup(std::unique_ptr<Cell> &&index);
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 

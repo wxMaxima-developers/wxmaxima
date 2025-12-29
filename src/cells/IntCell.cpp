@@ -52,6 +52,7 @@ IntCell::IntCell(GroupCell *group, Configuration *config,
     m_lowerLimit(std::move(lowerLimit)), m_upperLimit(std::move(upperLimit)) {
   InitBitFields_IntCell();
   SetStyle(TS_VARIABLE);
+  MakeBreakUpCells();
 }
 
 IntCell::IntCell(GroupCell *group, Configuration *config,
@@ -81,7 +82,7 @@ void IntCell::MakeBreakUpCells() {
   m_comma3 = std::make_unique<TextCell>(m_group, m_configuration, ",");
 }
 
-void IntCell::Recalculate(AFontSize fontsize) {
+void IntCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     wxASSERT(fontsize.IsValid());
 
@@ -326,11 +327,10 @@ wxString IntCell::ToXML() const {
       wxS("</in>");
 }
 
-bool IntCell::BreakUp() {
+bool IntCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  MakeBreakUpCells();
   Cell::BreakUpAndMark();
   m_close->SetNextToDraw(m_nextToDraw);
   m_nextToDraw = m_open;
@@ -353,7 +353,7 @@ bool IntCell::BreakUp() {
   return true;
 }
 
-void IntCell::SetNextToDraw(Cell *next) {
+void IntCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

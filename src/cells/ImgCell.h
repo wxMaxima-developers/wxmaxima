@@ -124,7 +124,7 @@ public:
   void SetMaxWidth(wxCoord width) override { if (m_image) m_image->SetMaxWidth(width); }
   void SetMaxHeight(wxCoord height) override { if (m_image) m_image->SetMaxHeight(height); }
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
@@ -145,7 +145,7 @@ private:
 
   CellPointers *const m_cellPointers = GetCellPointers();
 
-  int m_imageBorderWidth = 0;
+  mutable int m_imageBorderWidth = 0;
 
 //** Bitfield objects (1 bytes)
 //**

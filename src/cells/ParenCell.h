@@ -64,11 +64,11 @@ public:
   void SetPrint(bool print) { m_print = print; }
 
   //! \todo m_open and m_close are recalculated in handdrawn mode, too.
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-  bool BreakUp() override;
+  bool BreakUp() const override;
 
   wxString ToMathML() const override;
   wxString ToMatlab() const override;
@@ -77,7 +77,7 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  void SetNextToDraw(Cell *next) override;
+  void SetNextToDraw(Cell *next) const override;
 
 private:
   // The pointers below point to inner cells and must be kept contiguous.
@@ -89,9 +89,9 @@ private:
   // The pointers above point to inner cells and must be kept contiguous.
 
   //! How to create a big parenthesis sign?
-  Configuration::drawMode m_bigParenType = Configuration::ascii;
-  int m_charWidth1 = 12, m_charHeight1 = 12;
-  int m_signWidth = 12, m_signHeight = 50;
+  mutable Configuration::drawMode m_bigParenType = Configuration::ascii;
+  mutable int m_charWidth1 = 12, m_charHeight1 = 12;
+  mutable int m_signWidth = 12, m_signHeight = 50;
 
 //** Bitfield objects (1 bytes)
 //**

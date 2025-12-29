@@ -52,7 +52,7 @@ public:
   // cppcheck-suppress objectIndex
   Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
@@ -72,8 +72,8 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  bool BreakUp() override;
-  void SetNextToDraw(Cell *next) override;
+  bool BreakUp() const override;
+  void SetNextToDraw(Cell *next) const override;
 
   //! Does this integral have limits?
   bool HasLimits() const {return (m_intStyle == INT_DEF) &&
@@ -104,11 +104,11 @@ private:
   // The pointers above point to inner cells and must be kept contiguous.
 
   //! The height of the integral sign
-  wxCoord m_signHeight = 35;
+  mutable wxCoord m_signHeight = 35;
   //! The width of the integral sign
-  wxCoord m_signWidth = 18;
+  mutable wxCoord m_signWidth = 18;
   //! How far is the integral sign's center from the top of this cell?
-  wxCoord m_signTop = m_signHeight / 2;
+  mutable wxCoord m_signTop = m_signHeight / 2;
 #if defined __WXMSW__
   wxCoord m_charHeight = 12;
   wxCoord m_charWidth = 12;

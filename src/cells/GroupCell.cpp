@@ -429,7 +429,7 @@ void GroupCell::UpdateConfusableCharWarnings() {
   m_updateConfusableCharWarnings = false;
 }
 
-bool GroupCell::Recalculate() {
+bool GroupCell::Recalculate() const {
   bool retval = NeedsRecalculation(EditorFontSize());
 
   if (retval == true) {
@@ -488,7 +488,7 @@ AFontSize GroupCell::EditorFontSize() const {
   return fontSize;
 }
 
-void GroupCell::RecalculateInput() {
+void GroupCell::RecalculateInput() const {
   m_currentPoint.x = m_configuration->GetIndent();
 
   if (m_inputLabel)
@@ -533,7 +533,7 @@ void GroupCell::RecalculateInput() {
   m_width = m_inputWidth;
 }
 
-void GroupCell::RecalculateOutput() {
+void GroupCell::RecalculateOutput() const {
   m_outputRect = wxRect(m_currentPoint.x, m_currentPoint.y + m_center, 0, 0);
   if (IsHidden())
     return;
@@ -591,12 +591,12 @@ bool GroupCell::NeedsRecalculation(AFontSize fontSize) const {
   return Cell::NeedsRecalculation(fontSize) || m_cellsAppended;
 }
 
-void GroupCell::UpdateYPositionList() {
-  for (auto &tmp : OnList(this))
+void GroupCell::UpdateYPositionList() const {
+  for (const auto &tmp : OnList(this))
     tmp.UpdateYPosition();
 }
 
-void GroupCell::UpdateYPosition() {
+void GroupCell::UpdateYPosition() const {
   const Cell *const previous = GetPrevious();
 
   wxPoint point(m_configuration->GetIndent(), GetCenter());
@@ -616,11 +616,11 @@ void GroupCell::UpdateYPosition() {
     editor->SetCurrentPoint(CalculateInputPosition());
 }
 
-wxPoint GroupCell::CalculateInputPosition() {
+wxPoint GroupCell::CalculateInputPosition() const {
   return wxPoint(m_currentPoint.x + GetInputIndent(), m_currentPoint.y);
 }
 
-wxCoord GroupCell::GetInputIndent() {
+wxCoord GroupCell::GetInputIndent() const {
   int labelWidth = 0;
   if (m_configuration->IndentMaths())
     labelWidth = Scale_Px(m_configuration->GetLabelWidth()) + MC_TEXT_PADDING;
@@ -638,7 +638,7 @@ wxCoord GroupCell::GetInputIndent() {
   return labelWidth;
 }
 
-void GroupCell::UpdateOutputPositions() {
+void GroupCell::UpdateOutputPositions() const {
   UpdateYPosition();
   if (m_output && !IsHidden()) {
     wxPoint in = GetCurrentPoint();
@@ -1428,7 +1428,7 @@ bool GroupCell::SetEditableContent(const wxString &text) {
     return false;
 }
 
-void GroupCell::BreakLines() {
+void GroupCell::BreakLines() const {
   const Cell * const cell = m_output.get();
 
   if (cell == NULL)
@@ -1458,7 +1458,7 @@ Cell::Range GroupCell::GetCellsInOutput() const {
   return r;
 }
 
-bool GroupCell::FirstLineOnlyEditor()
+bool GroupCell::FirstLineOnlyEditor() const
 {
   return(IsHidden() && (!IsHeading()));
 }

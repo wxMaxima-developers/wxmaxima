@@ -227,20 +227,20 @@ public:
   bool InUpdateRegion() const;
 
   //! Do we want this cell to start with a linebreak?
-  void SoftLineBreak(bool breakLine = true) { m_breakLine = breakLine; }
+  void SoftLineBreak(bool breakLine = true) const { m_breakLine = breakLine; }
   
   /*! Cell list: Convert 2d math objects bigger than the screen width into linear form.
     
     \retval true, if this action has changed the height of cells.
   */
-  bool BreakUpCells();
+  bool BreakUpCells() const;
 
   /*! Convert all maths objects in this call list into their 2D form */
-  bool UnBreakUpCells();
+  bool UnBreakUpCells() const;
 
   /* Break lines in this list of cells
    */
-  void BreakLines_List();
+  void BreakLines_List() const;
 
   /*! If this were the beginning of a line: How far do we need to indent it? */
   int GetLineIndent() const;
@@ -255,7 +255,7 @@ public:
 
     \retval true = This cell was split into lines.
   */
-  virtual bool BreakUp();
+  virtual bool BreakUp() const;
 
 protected:
   /*! Break up the internal cells of this cell, and mark it as broken up.
@@ -263,7 +263,7 @@ protected:
     Sets the cell's size to 0, as in broken up state the contents of the cell
     will be displayed in 1D mode while this cell won't be displayed, at all.
    */
-  void BreakUpAndMark();
+  void BreakUpAndMark() const;
 
 protected:
   //! Renders a bitmap from svgData at the requested size.
@@ -347,7 +347,7 @@ public:
     - true: Insert a forced linebreak
     - false: Remove the forced linebreak
   */
-  void ForceBreakLine(bool force = true) { m_forceBreakLine = m_breakLine = force; }
+  void ForceBreakLine(bool force = true) const { m_forceBreakLine = m_breakLine = force; }
 
   /*! Get the height of this cell
 
@@ -358,7 +358,11 @@ public:
     \image rtf CellHeights.png
   */
   wxCoord GetHeight() const
-    { return m_height; }
+    {
+//      if(!HasValidSize())
+//        Recalculate(m_fontSize_Scaled); 
+      return m_height;
+    }
 
   /*! Get the width of this cell
 
@@ -369,7 +373,11 @@ public:
     \image rtf CellHeights.png
 */
   int GetWidth() const
-    { return m_width; }
+    {
+//      if(!HasValidSize())
+//        Recalculate(m_fontSize_Scaled); 
+      return m_width;
+    }
 
   /*! Get the distance between the top and the center of this cell.
 
@@ -381,7 +389,11 @@ public:
     \image rtf CellHeights.png
   */
   wxCoord GetCenter() const
-    { return m_center; }
+    {
+//      if(!HasValidSize())
+//        Recalculate(m_fontSize_Scaled); 
+      return m_center;
+    }
 
   //! Is the size valid and not pending a recalculation?
   bool HasValidSize() const;
@@ -470,7 +482,7 @@ public:
   virtual bool NeedsRecalculation(AFontSize fontSize) const;
 
   //! Cause this cell to be recalculated the next time
-  void ScheduleRecalculation(){m_cellCfgCnt_last = m_configuration->CellCfgCnt() - 1 ;}
+  void ScheduleRecalculation() const {m_cellCfgCnt_last = m_configuration->CellCfgCnt() - 1 ;}
   //! Has the configuration changed since the last recalculation of this cell?
   bool ConfigChanged() const {return m_configuration->CellCfgCnt() != m_cellCfgCnt_last;}
   /*!
@@ -488,28 +500,28 @@ public:
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
   */
-  virtual void Recalculate(AFontSize fontsize);
+  virtual void Recalculate(AFontSize fontsize) const;
 
   /*! Recalculate both width and height of this list of cells.
 
     Is faster than a <code>RecalculateHeightList();RecalculateWidths();</code>.
   */
-  void RecalculateList(AFontSize fontsize);
+  void RecalculateList(AFontSize fontsize) const;
 
   //! Tell a whole list of cells that their fonts have changed
   void FontsChangedList();
 
   //! Mark all cached size information as "to be calculated".
-  void ResetSize_Recursively();
+  void ResetSize_Recursively() const;
 
   //! Mark all cached size information of this cell list as "to be calculated".
-  void ResetSize_RecursivelyList();
+  void ResetSize_RecursivelyList() const;
 
   //! Mark the cached height and width information as "to be calculated".
-  void ResetSize();
+  void ResetSize() const;
 
   //! Mark the cached height information of the whole list of cells as "to be calculated".
-  void ResetSizeList();
+  void ResetSizeList() const;
 
   //! Tell this cell to cause an additional vertical space
   void SetBigSkip(bool skip) { m_bigSkip = skip; }
@@ -676,7 +688,7 @@ public:
 
     This function tries to return a cell to the single-line form.
   */
-  virtual void Unbreak();
+  virtual void Unbreak() const;
 
   /*! Unbreak this line
 
@@ -685,7 +697,7 @@ public:
 
     This function tries to return a list of cells to the single-line form.
   */
-  virtual void UnbreakList();
+  virtual void UnbreakList() const;
 
   //! Returns a pointer to the previous cell in the current cell list
   Cell *GetPrevious() const { return m_previous; }
@@ -707,7 +719,7 @@ public:
     If the cell is broken into lines this sets the pointer of the last of the
     list of cells this cell is displayed as.
   */
-  virtual void SetNextToDraw(Cell *next) { m_nextToDraw = next; }
+  virtual void SetNextToDraw(Cell *next) const { m_nextToDraw = next; }
   template <typename T, typename Del,
             typename std::enable_if<std::is_base_of<Cell, T>::value, bool>::type = true>
   /*! Tells this cell which one should be the next cell to be drawn
@@ -742,7 +754,7 @@ public:
   bool IsHidden() const { return m_isHidden; }
 
   //! True, if this GroupCell is folded and its editor shows only its first line.
-  virtual bool FirstLineOnlyEditor();
+  virtual bool FirstLineOnlyEditor() const;
   
   //! Hide this cell. See IsHidden() for details.
   virtual void Hide(bool hide = true) { m_isHidden = hide; }
@@ -862,11 +874,11 @@ public:
   //! Remove this cell's tooltip
   void ClearToolTip();
   //! Set the tooltip to a given string
-  void SetToolTip(const wxString &tooltip);
+  void SetToolTip(const wxString &tooltip) const ;
   //! Set the tooltip of this math cell - it must be exist at least as long
   //! as the cell does. Translation results behave that way. I.e. it must be
   //! a static string!
-  void SetToolTip(const wxString *toolTip);
+  void SetToolTip(const wxString *toolTip) const;
   //! Add another tooltip to this cell
   void AddToolTip(const wxString &tip);
   //! Tells this cell where it is placed on the worksheet
@@ -946,7 +958,7 @@ protected:
     - for EditorCells by it's GroupCell's RecalculateHeight and
     - for Cells when they are drawn.
   */
-  wxPoint m_currentPoint{-1, -1};
+  mutable wxPoint m_currentPoint{-1, -1};
 
 protected:
 //** 8/4-byte objects (40 + 8* bytes)
@@ -954,7 +966,7 @@ protected:
 
 private:
   //! the "timestamp" of the configuration the last time we recalculated the cell's size
-  std::int_fast32_t m_cellCfgCnt_last = -1;
+  mutable std::int_fast32_t m_cellCfgCnt_last = -1;
   //! The next cell in the list of cells, or null if it's the last cell.
   std::unique_ptr<Cell> m_next;
 
@@ -972,14 +984,14 @@ protected:
   CellPtr<GroupCell> m_group;
   //! The next cell in the draw list. This has been factored into Cell temporarily to
   //! reduce the change "noise" when it will be subsequently removed.
-  CellPtr<Cell> m_nextToDraw;
+  mutable CellPtr<Cell> m_nextToDraw;
 
   //! A pointer to the configuration responsible for this worksheet
   Configuration *m_configuration;
 
   //! This tooltip is owned by us when m_ownsToolTip is true. Otherwise,
   //! it points to a "static" string.
-  const wxString *m_toolTip /* initialized in the constructor */;
+  mutable const wxString *m_toolTip /* initialized in the constructor */;
 
 //** 4-byte objects (28 bytes)
 //**
@@ -990,23 +1002,23 @@ protected:
     \image latex CellHeights.png
     \image rtf CellHeights.png
   */
-  wxCoord m_height = -1;
+  mutable wxCoord m_height = -1;
   /*! The width of this cell; is recalculated by RecalculateHeight.
 
    */
-  wxCoord m_width = -1;
+  mutable wxCoord m_width = -1;
   /*! The distance between the top and the insertion point of this cell
 
     \image html CellHeights.svg
     \image latex CellHeights.png
     \image rtf CellHeights.png
   */
-  wxCoord m_center = -1;
+  mutable wxCoord m_center = -1;
 protected:
 //** 2-byte objects (2 bytes)
 //**
   //! The font size is smaller in super- and subscripts.
-  AFontSize m_fontSize_Scaled = {};
+  mutable AFontSize m_fontSize_Scaled = {};
 
 //** 1-byte objects (2 bytes)
 //**
@@ -1038,15 +1050,15 @@ private:
   // to verify that all bit fields are initialized.
 
   //! Whether the cell owns its m_tooltip - otherwise it points to a static string.
-  bool m_ownsToolTip : 1 /* InitBitFields_Cell */;
+  mutable bool m_ownsToolTip : 1 /* InitBitFields_Cell */;
   bool m_bigSkip : 1 /* InitBitFields_Cell */;
-  bool m_isBrokenIntoLines : 1 /* InitBitFields_Cell */;
+  mutable bool m_isBrokenIntoLines : 1 /* InitBitFields_Cell */;
   bool m_isHidden : 1 /* InitBitFields_Cell */;
   bool m_isHidableMultSign : 1 /* InitBitFields_Cell */;
   bool m_suppressMultiplicationDot : 1 /* InitBitFields_Cell */;
   //! Are we allowed to add a line break before this cell?
-  bool m_breakLine : 1 /* InitBitFields_Cell */;
-  bool m_forceBreakLine : 1 /* InitBitFields_Cell */;
+  mutable bool m_breakLine : 1 /* InitBitFields_Cell */;
+  mutable bool m_forceBreakLine : 1 /* InitBitFields_Cell */;
   bool m_highlight : 1 /* InitBitFields_Cell */;
 
 protected:
@@ -1060,7 +1072,7 @@ protected:
   inline Worksheet *GetWorksheet() const;
 
   //! To be called if the font has changed.
-  virtual void FontsChanged()
+  virtual void FontsChanged() const
     { ResetSize_Recursively(); }
 
   CellPointers *GetCellPointers() const;

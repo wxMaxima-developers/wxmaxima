@@ -65,7 +65,7 @@ IntervalCell::IntervalCell(GroupCell *group, const IntervalCell &cell)
 
 DEFINE_CELL(IntervalCell)
 
-void IntervalCell::Recalculate(AFontSize fontsize) {
+void IntervalCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     if (IsBrokenIntoLines()) {
       m_comma->RecalculateList(fontsize);
@@ -242,7 +242,7 @@ wxString IntervalCell::ToXML() const {
     m_stop->ListToXML() + wxS("</r></p></r>") + wxS("</fn>");
 }
 
-bool IntervalCell::BreakUp() {
+bool IntervalCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
@@ -256,7 +256,7 @@ bool IntervalCell::BreakUp() {
   return true;
 }
 
-void IntervalCell::SetNextToDraw(Cell *next) {
+void IntervalCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

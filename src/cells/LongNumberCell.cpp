@@ -45,7 +45,7 @@ LongNumberCell::LongNumberCell(GroupCell *group, const LongNumberCell &cell)
 
 DEFINE_CELL(LongNumberCell)
 
-void LongNumberCell::UpdateDisplayedText() {
+void LongNumberCell::UpdateDisplayedText() const {
   unsigned int displayedDigits = m_configuration->GetDisplayedDigits();
   if ((m_displayedText.Length() > displayedDigits) &&
       (!m_configuration->ShowAllDigits())) {
@@ -70,7 +70,7 @@ Cell *LongNumberCell::GetInnerCell(size_t index) const
     return m_innerCell.get();
 }
 
-void LongNumberCell::Recalculate(AFontSize fontsize) {
+void LongNumberCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     // If the config settings about how many digits to display has changed we
     // need to regenerate the info which number to show.
@@ -129,7 +129,7 @@ void LongNumberCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   }
 }
 
-bool LongNumberCell::BreakUp() {
+bool LongNumberCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
@@ -162,7 +162,7 @@ bool LongNumberCell::BreakUp() {
   return true;
 }
 
-void LongNumberCell::SetNextToDraw(Cell *next) {
+void LongNumberCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_innerCell->last()->SetNextToDraw(next);
   else

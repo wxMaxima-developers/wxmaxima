@@ -175,7 +175,7 @@ public:
   wxString ToXML() const override;
 
   void Hide(bool hide) override;
-  virtual bool FirstLineOnlyEditor() override;
+  virtual bool FirstLineOnlyEditor() const override;
   void SwitchHide();
 
   wxRect HideRect() const;
@@ -224,22 +224,22 @@ public:
     The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
   */
-  void Recalculate(AFontSize WXUNUSED(fontsize)) override {Recalculate();}
-  bool Recalculate();
-  wxPoint CalculateInputPosition();
+  void Recalculate(const AFontSize WXUNUSED(fontsize)) const override {Recalculate();}
+  bool Recalculate() const;
+  wxPoint CalculateInputPosition() const;
 
   //! Recalculate the height of the input part of the cell
-  void RecalculateInput();
+  void RecalculateInput() const;
   wxRect GetRect(bool all = false) const override;
   /*! Recalculate the height of the output part of the cell
 
     \attention Needs to be in sync with the height calculation done during Draw() and
     during RecalculateAppended.
   */
-  void RecalculateOutput();
+  void RecalculateOutput() const;
 
   //! Break this cell into lines
-  void BreakLines();
+  void BreakLines() const;
 
   /*! Reset the input label of the current cell.
 
@@ -375,23 +375,23 @@ public:
 #endif
 
   //! Recalculate the cell's y position using the position and height of the last one.
-  void UpdateYPosition();
+  void UpdateYPosition() const;
 
-  void UpdateOutputPositions();
+  void UpdateOutputPositions() const;
 
-  void UpdateYPositionList();
+  void UpdateYPositionList() const;
 
   bool GetSuppressTooltipMarker() const { return m_suppressTooltipMarker; }
   void SetSuppressTooltipMarker(bool suppress) { m_suppressTooltipMarker = suppress; }
 
 protected:
-  wxCoord GetInputIndent();
+  wxCoord GetInputIndent() const;
   bool NeedsRecalculation(AFontSize fontSize) const override;
   void UpdateCellsInGroup();
 
 //** 16-byte objects (16 bytes)
 //**
-  wxRect m_outputRect{-1, -1, 0, 0};
+  mutable wxRect m_outputRect{-1, -1, 0, 0};
 
 //** 8/4 byte objects (40 bytes)
 //**
@@ -411,8 +411,8 @@ protected:
 
 //** 4-byte objects (16 bytes)
 //**
-  int m_labelWidth_cached = 0;
-  int m_inputWidth, m_inputHeight;
+  mutable int m_labelWidth_cached = 0;
+  mutable int m_inputWidth, m_inputHeight;
 protected:
 //** 2-byte objects (6 bytes)
 //**
@@ -420,7 +420,7 @@ protected:
   int16_t m_cellsInGroup = 1;
   mutable int16_t m_numberedAnswersCount = 0;
 
-  AFontSize m_mathFontSize;
+  mutable AFontSize m_mathFontSize;
 
 //** 1-byte objects (1 byte)
 //**
@@ -447,7 +447,7 @@ protected:
   bool m_updateConfusableCharWarnings : 1 /* InitBitFields_GroupCell */;
   //! Suppress the yellow ToolTip marker?
   bool m_suppressTooltipMarker : 1 /* InitBitFields_GroupCell */;
-  bool m_cellsAppended : 1; /* InitBitFields_GroupCell */
+  mutable bool m_cellsAppended :1 ; /* InitBitFields_GroupCell */
 
   static wxString m_lookalikeChars;
 };

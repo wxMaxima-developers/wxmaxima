@@ -39,7 +39,7 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 };
 

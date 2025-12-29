@@ -41,6 +41,7 @@ NamedBoxCell::NamedBoxCell(GroupCell *group, Configuration *config,
 {
   InitBitFields_NamedBoxCell();
   SetStyle(TS_VARIABLE);
+  MakeBreakupCells();
 }
 
 NamedBoxCell::NamedBoxCell(GroupCell *group, const NamedBoxCell &cell)
@@ -48,6 +49,7 @@ NamedBoxCell::NamedBoxCell(GroupCell *group, const NamedBoxCell &cell)
                  CopyList(group, cell.m_innerCell.get()),
                  cell.m_boxname->GetValue()) {
   CopyCommonData(cell);
+  MakeBreakupCells();
 }
 
 DEFINE_CELL(NamedBoxCell)
@@ -63,7 +65,7 @@ void NamedBoxCell::MakeBreakupCells() {
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
-void NamedBoxCell::Recalculate(AFontSize fontsize) {
+void NamedBoxCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_innerCell->RecalculateList(fontsize);
     m_boxname->RecalculateList(fontsize);
@@ -195,11 +197,10 @@ wxString NamedBoxCell::ToXML() const {
     wxS("</hl>");
 }
 
-bool NamedBoxCell::BreakUp() {
+bool NamedBoxCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  MakeBreakupCells();
   Cell::BreakUpAndMark();
   m_open->SetNextToDraw(m_innerCell);
   m_innerCell->last()->SetNextToDraw(m_comma);
@@ -210,7 +211,7 @@ bool NamedBoxCell::BreakUp() {
   return true;
 }
 
-void NamedBoxCell::SetNextToDraw(Cell *next) {
+void NamedBoxCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

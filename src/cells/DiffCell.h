@@ -39,7 +39,7 @@ public:
   // cppcheck-suppress objectIndex
   Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
@@ -50,9 +50,9 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  void SetNextToDraw(Cell *next) override;
+  void SetNextToDraw(Cell *next) const override;
 
-  bool BreakUp() override;
+  bool BreakUp() const override;
 
 private:
   void MakeBreakupCells();

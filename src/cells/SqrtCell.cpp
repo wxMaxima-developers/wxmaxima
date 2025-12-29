@@ -37,12 +37,14 @@ SqrtCell::SqrtCell(GroupCell *group, Configuration *config,
   : Cell(group, config), m_innerCell(std::move(inner)) {
   InitBitFields_SqrtCell();
   SetStyle(TS_VARIABLE);
+  MakeBreakUpCells();
 }
 
 SqrtCell::SqrtCell(GroupCell *group, const SqrtCell &cell)
   : SqrtCell(group, cell.m_configuration,
              CopyList(group, cell.m_innerCell.get())) {
   CopyCommonData(cell);
+  MakeBreakUpCells();
 }
 
 DEFINE_CELL(SqrtCell)
@@ -56,7 +58,7 @@ void SqrtCell::MakeBreakUpCells() {
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
-void SqrtCell::Recalculate(AFontSize fontsize) {
+void SqrtCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_innerCell->RecalculateList(fontsize);
     
@@ -146,11 +148,10 @@ wxString SqrtCell::ToXML() const {
   return wxS("<q") + flags + wxS(">") + m_innerCell->ListToXML() + wxS("</q>");
 }
 
-bool SqrtCell::BreakUp() {
+bool SqrtCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  MakeBreakUpCells();
   Cell::BreakUpAndMark();
   m_open->SetNextToDraw(m_innerCell);
   m_innerCell->last()->SetNextToDraw(m_close);
@@ -159,7 +160,7 @@ bool SqrtCell::BreakUp() {
   return true;
 }
 
-void SqrtCell::SetNextToDraw(Cell *next) {
+void SqrtCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

@@ -51,6 +51,7 @@ DiffCell::DiffCell(GroupCell *group, Configuration *config,
          (m_baseCell->ToString() == wxS("\u00B7")))
       m_baseCell->Hide(true);
     }
+  MakeBreakupCells();
 }
 
 DiffCell::DiffCell(GroupCell *group, const DiffCell &cell)
@@ -58,6 +59,7 @@ DiffCell::DiffCell(GroupCell *group, const DiffCell &cell)
              CopyList(group, cell.m_baseCell.get()),
              CopyList(group, cell.m_diffCell.get())) {
   CopyCommonData(cell);
+  MakeBreakupCells();
 }
 
 DEFINE_CELL(DiffCell)
@@ -70,7 +72,7 @@ void DiffCell::MakeBreakupCells() {
   m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
 }
 
-void DiffCell::Recalculate(AFontSize fontsize) {
+void DiffCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_baseCell->RecalculateList(fontsize);
     m_diffCell->RecalculateList(fontsize);
@@ -177,11 +179,10 @@ wxString DiffCell::ToXML() const {
     m_baseCell->ListToXML() + wxS("</d>");
 }
 
-bool DiffCell::BreakUp() {
+bool DiffCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  MakeBreakupCells();
   Cell::BreakUpAndMark();
   m_open->SetNextToDraw(m_baseCell);
   m_baseCell->last()->SetNextToDraw(m_comma);
@@ -192,7 +193,7 @@ bool DiffCell::BreakUp() {
   return true;
 }
 
-void DiffCell::SetNextToDraw(Cell *next) {
+void DiffCell::SetNextToDraw(Cell *next) const {
   if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else

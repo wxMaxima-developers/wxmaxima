@@ -58,11 +58,11 @@ public:
   // cppcheck-suppress objectIndex
   Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   virtual void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
-  bool BreakUp() override;
+  bool BreakUp() const override;
 
   wxString ToMathML() const override;
   virtual wxString ToMatlab() const override;
@@ -71,7 +71,7 @@ public:
   virtual wxString ToTeX() const override;
   virtual wxString ToXML() const override;
 
-  void SetNextToDraw(Cell *next) override;
+  void SetNextToDraw(Cell *next) const override;
 
 protected:
   // The pointers below point to inner cells and must be kept contiguous.
@@ -82,7 +82,7 @@ protected:
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
 
-  int m_signWidth = 12, m_signHeight = -1;
+  mutable int m_signWidth = 12, m_signHeight = -1;
 
 //** Bitfield objects (1 bytes)
 //**
@@ -92,7 +92,7 @@ protected:
       m_drawAsAscii = true;
     }
   //! How to create a big parenthesis sign?
-  bool m_drawAsAscii : 1 /* InitBitFields_ListCell */;
+  mutable bool m_drawAsAscii : 1 /* InitBitFields_ListCell */;
 };
 
 #endif // LISTCELL_H

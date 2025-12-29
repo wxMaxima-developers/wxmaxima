@@ -78,7 +78,7 @@ void LabelCell::SetUserDefinedLabel(const wxString &userDefinedLabel) {
   UpdateDisplayedText();
 }
 
-void LabelCell::UpdateDisplayedText() {
+void LabelCell::UpdateDisplayedText() const {
   m_displayedText = m_text;
 
   if ((GetTextStyle() == TS_USERLABEL) || (GetTextStyle() == TS_LABEL)) {
@@ -167,7 +167,7 @@ wxString LabelCell::GetXMLFlags() const {
   return flags;
 }
 
-void LabelCell::Recalculate(AFontSize fontsize) {
+void LabelCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     TextCell::Recalculate(fontsize);
     m_width = std::max(m_width, Scale_Px(m_configuration->GetLabelWidth())  +

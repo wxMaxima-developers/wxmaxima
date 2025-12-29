@@ -40,6 +40,7 @@ ExptCell::ExptCell(GroupCell *group, Configuration *config,
     m_exptCell(std::move(expt)) {
   InitBitFields_ExptCell();
   SetStyle(TS_VARIABLE);
+  MakeBreakupCells();
 }
 
 ExptCell::ExptCell(GroupCell *group, const ExptCell &cell)
@@ -48,6 +49,7 @@ ExptCell::ExptCell(GroupCell *group, const ExptCell &cell)
              CopyList(group, cell.m_exptCell.get())) {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
+  MakeBreakupCells();
 }
 
 DEFINE_CELL(ExptCell)
@@ -83,7 +85,7 @@ void ExptCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   }
 }
 
-void ExptCell::Recalculate(AFontSize fontsize) {
+void ExptCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_baseCell->RecalculateList(fontsize);
     if (IsBrokenIntoLines())
@@ -188,11 +190,10 @@ wxString ExptCell::ToXML() const {
     wxS("</r><r>") + m_exptCell->ListToXML() + wxS("</r></e>");
 }
 
-bool ExptCell::BreakUp() {
+bool ExptCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  MakeBreakupCells();
   Cell::BreakUpAndMark();
   m_baseCell->last()->SetNextToDraw(m_exp);
   m_exp->SetNextToDraw(m_open);

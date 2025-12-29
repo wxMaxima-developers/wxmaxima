@@ -42,7 +42,7 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
   void SetStyle(TextStyle style) override;
   wxString ToString() const override;
@@ -50,7 +50,7 @@ public:
   void SetUserDefinedLabel(const wxString &userDefinedLabel);
   //! Returns the XML flags this cell needs in wxMathML
   wxString GetXMLFlags() const override;
-  void UpdateDisplayedText() override;
+  void UpdateDisplayedText() const override;
   const wxString &GetAltCopyText() const override;
   void SetAltCopyText(const wxString &WXUNUSED(text)) override;
   wxString ToXML() const override;
