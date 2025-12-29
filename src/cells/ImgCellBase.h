@@ -94,7 +94,7 @@ public:
   virtual void SetMaxWidth(wxCoord width) = 0;
   virtual void SetMaxHeight(wxCoord height) = 0;
 
-  virtual void Recalculate(AFontSize fontsize) override = 0;
+  virtual void Recalculate(const AFontSize fontsize) const override = 0;
 
   virtual void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override = 0;
 

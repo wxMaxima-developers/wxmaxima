@@ -65,7 +65,7 @@ IntervalCell::IntervalCell(GroupCell *group, const IntervalCell &cell)
 
 DEFINE_CELL(IntervalCell)
 
-void IntervalCell::Recalculate(AFontSize fontsize) {
+void IntervalCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     if (IsBrokenIntoLines()) {
       m_comma->RecalculateList(fontsize);

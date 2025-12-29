@@ -57,7 +57,7 @@ void BoxCell::MakeBreakupCells() {
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
-void BoxCell::Recalculate(AFontSize fontsize) {
+void BoxCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_innerCell->RecalculateList(fontsize);
 

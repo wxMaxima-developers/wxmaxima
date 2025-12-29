@@ -38,7 +38,7 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;
@@ -47,21 +47,21 @@ public:
   Cell *GetInnerCell(size_t index) const override;
 
 protected:
-  virtual void UpdateDisplayedText() override;
+  virtual void UpdateDisplayedText() const override;
 private:
   //** Large objects (144 bytes)
   //**
   //! The first few digits
-  wxString m_numStart;
+  mutable wxString m_numStart;
   //! The inividual digits, if this cell is broken into lines
   std::unique_ptr<Cell> m_innerCell;
   //! The "not all digits displayed" message.
-  wxString m_ellipsis;
+  mutable wxString m_ellipsis;
 
   //** 4-byte objects (12 bytes)
   //**
-  int m_numStartWidth = 0;
-  int m_ellipsisWidth = 0;
+  mutable int m_numStartWidth = 0;
+  mutable int m_ellipsisWidth = 0;
 
   //** Bitfield objects (0 bytes)
   //**

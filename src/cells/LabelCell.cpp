@@ -167,7 +167,7 @@ wxString LabelCell::GetXMLFlags() const {
   return flags;
 }
 
-void LabelCell::Recalculate(AFontSize fontsize) {
+void LabelCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     TextCell::Recalculate(fontsize);
     m_width = std::max(m_width, Scale_Px(m_configuration->GetLabelWidth())  +

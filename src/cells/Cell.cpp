@@ -262,7 +262,7 @@ int Cell::GetCenterList() const {
     if ((&tmp != this) && (tmp.m_breakLine))
       break;
     if (!tmp.m_isBrokenIntoLines)
-      maxCenter = std::max(maxCenter, tmp.m_center);
+      maxCenter = std::max(maxCenter, tmp.GetCenter());
   }
   return maxCenter;
 }
@@ -273,7 +273,7 @@ int Cell::GetMaxDrop() const {
     if ((&tmp != this) && (tmp.m_breakLine))
       break;
     if (!tmp.m_isBrokenIntoLines)
-      maxDrop = std::max(maxDrop, tmp.m_height - tmp.m_center);
+      maxDrop = std::max(maxDrop, tmp.GetHeight() - tmp.GetCenter());
   }
   return maxDrop;
 }
@@ -283,19 +283,19 @@ int Cell::GetHeightList() const { return GetCenterList() + GetMaxDrop(); }
 int Cell::SumOfWidths() const {
   int fullWidth = 0;
   for (const Cell &tmp : OnDrawList(this)) {
-    fullWidth += tmp.m_width;
+    fullWidth += tmp.GetWidth();
   }
   return fullWidth;
 }
 
 int Cell::GetLineWidth() const {
-  int width = m_width;
+  int width = GetWidth();
   for (const Cell &tmp : OnDrawList(this)) {
     if (&tmp != this)
       if (tmp.m_isBrokenIntoLines || tmp.m_breakLine ||
           (tmp.m_type == MC_TYPE_MAIN_PROMPT))
         break;
-    width += tmp.m_width;
+    width += tmp.GetWidth();
   }
   return width;
 }
@@ -310,8 +310,8 @@ void Cell::Draw(wxPoint point, wxDC *dc, wxDC *WXUNUSED(antialiassingDC)) {
     {
       if(!m_isHidden)
         {
-          wxASSERT(m_width  >= 0);
-          wxASSERT(m_height >= 0);
+          wxASSERT(GetWidth()  >= 0);
+          wxASSERT(GetHeight() >= 0);
         }
     }
   m_configuration->NotifyOfCellRedraw(this);
@@ -401,12 +401,12 @@ void Cell::SetIsExponent() {
 void Cell::DrawList(wxPoint point, wxDC *dc, wxDC *adc) {
   for (Cell &tmp : OnDrawList(this)) {
     tmp.Draw(point, dc, adc);
-    point.x += tmp.m_width;
+    point.x += tmp.GetWidth();
   }
 }
 
-void Cell::RecalculateList(AFontSize fontsize) {
-  for (Cell &tmp : OnList(this))
+void Cell::RecalculateList(AFontSize fontsize) const {
+  for (const Cell &tmp : OnList(this))
     tmp.Recalculate(fontsize);
 }
 
@@ -419,7 +419,7 @@ void Cell::ResetSizeList() {
     }
 }
 
-void Cell::Recalculate(AFontSize fontsize) {
+void Cell::Recalculate(const AFontSize fontsize) const {
   if(NeedsRecalculation(fontsize))
     {
       m_cellCfgCnt_last = m_configuration->CellCfgCnt();
@@ -444,11 +444,11 @@ bool Cell::DrawThisCell(wxPoint point) {
 }
 
 bool Cell::HasValidSize() const {
-  return m_width >= 0 && m_height >= 0 && m_center >= 0;
+  return GetWidth() >= 0 && GetHeight() >= 0 && GetCenter() >= 0;
 }
 
 bool Cell::HasStaleSize() const {
-  return m_width >= 0 && m_height >= 0 && m_center >= 0;
+  return GetWidth() >= 0 && GetHeight() >= 0 && GetCenter() >= 0;
 }
 
 bool Cell::HasValidPosition() const {
@@ -560,8 +560,8 @@ wxRect Cell::GetRect(bool wholeList) const {
     return wxRect(m_currentPoint.x, m_currentPoint.y - GetCenterList(),
                   GetLineWidth(), GetHeightList());
   else
-    return wxRect(m_currentPoint.x, m_currentPoint.y - m_center, m_width,
-                  m_height);
+    return wxRect(m_currentPoint.x, m_currentPoint.y - GetCenter(), GetWidth(),
+                  GetHeight());
 }
 
 bool Cell::InUpdateRegion() const {
@@ -1083,7 +1083,6 @@ void Cell::BreakUpAndMark() {
   m_height = 0;
   m_width = 0;
   m_center = 0;
-  
 }
 
 void Cell::Unbreak() {

@@ -62,7 +62,7 @@ public:
   //! By how much do we want to rise the power?
   double PowRise() const {return .3 * m_fontSize_Scaled;}
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 

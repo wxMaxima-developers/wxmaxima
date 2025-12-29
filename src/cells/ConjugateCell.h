@@ -81,7 +81,7 @@ private:
       // of bit fields in this class!
     }
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 

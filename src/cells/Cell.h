@@ -358,7 +358,11 @@ public:
     \image rtf CellHeights.png
   */
   wxCoord GetHeight() const
-    { return m_height; }
+    {
+//      if(!HasValidSize())
+//        Recalculate(m_fontSize_Scaled); 
+      return m_height;
+    }
 
   /*! Get the width of this cell
 
@@ -369,7 +373,11 @@ public:
     \image rtf CellHeights.png
 */
   int GetWidth() const
-    { return m_width; }
+    {
+//      if(!HasValidSize())
+//        Recalculate(m_fontSize_Scaled); 
+      return m_width;
+    }
 
   /*! Get the distance between the top and the center of this cell.
 
@@ -381,7 +389,11 @@ public:
     \image rtf CellHeights.png
   */
   wxCoord GetCenter() const
-    { return m_center; }
+    {
+//      if(!HasValidSize())
+//        Recalculate(m_fontSize_Scaled); 
+      return m_center;
+    }
 
   //! Is the size valid and not pending a recalculation?
   bool HasValidSize() const;
@@ -488,13 +500,13 @@ public:
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
   */
-  virtual void Recalculate(AFontSize fontsize);
+  virtual void Recalculate(AFontSize fontsize) const;
 
   /*! Recalculate both width and height of this list of cells.
 
     Is faster than a <code>RecalculateHeightList();RecalculateWidths();</code>.
   */
-  void RecalculateList(AFontSize fontsize);
+  void RecalculateList(AFontSize fontsize) const;
 
   //! Tell a whole list of cells that their fonts have changed
   void FontsChangedList();
@@ -954,7 +966,7 @@ protected:
 
 private:
   //! the "timestamp" of the configuration the last time we recalculated the cell's size
-  std::int_fast32_t m_cellCfgCnt_last = -1;
+  mutable std::int_fast32_t m_cellCfgCnt_last = -1;
   //! The next cell in the list of cells, or null if it's the last cell.
   std::unique_ptr<Cell> m_next;
 
@@ -990,23 +1002,23 @@ protected:
     \image latex CellHeights.png
     \image rtf CellHeights.png
   */
-  wxCoord m_height = -1;
+  mutable wxCoord m_height = -1;
   /*! The width of this cell; is recalculated by RecalculateHeight.
 
    */
-  wxCoord m_width = -1;
+  mutable wxCoord m_width = -1;
   /*! The distance between the top and the insertion point of this cell
 
     \image html CellHeights.svg
     \image latex CellHeights.png
     \image rtf CellHeights.png
   */
-  wxCoord m_center = -1;
+  mutable wxCoord m_center = -1;
 protected:
 //** 2-byte objects (2 bytes)
 //**
   //! The font size is smaller in super- and subscripts.
-  AFontSize m_fontSize_Scaled = {};
+  const AFontSize m_fontSize_Scaled = {};
 
 //** 1-byte objects (2 bytes)
 //**

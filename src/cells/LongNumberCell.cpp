@@ -70,7 +70,7 @@ Cell *LongNumberCell::GetInnerCell(size_t index) const
     return m_innerCell.get();
 }
 
-void LongNumberCell::Recalculate(AFontSize fontsize) {
+void LongNumberCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     // If the config settings about how many digits to display has changed we
     // need to regenerate the info which number to show.

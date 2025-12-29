@@ -569,7 +569,7 @@ bool EditorCell::NeedsRecalculation(AFontSize fontSize) const {
   return Cell::NeedsRecalculation(fontSize) || m_isDirty;
 }
 
-void EditorCell::Recalculate(AFontSize fontsize) {
+void EditorCell::Recalculate(AFontSize fontsize) const {
   if(NeedsRecalculation(fontsize))
     {
       // Needs to be before the StyleText() as it sets m_fontsize_scaled

@@ -53,7 +53,7 @@ FunCell::FunCell(GroupCell *group, const FunCell &cell)
 
 DEFINE_CELL(FunCell)
 
-void FunCell::Recalculate(AFontSize fontsize) {
+void FunCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_argCell->RecalculateList(fontsize);
     m_nameCell->RecalculateList(fontsize);

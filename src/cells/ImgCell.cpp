@@ -140,7 +140,7 @@ const wxString ImgCell::GetToolTip(const wxPoint point) const {
   return GetLocalToolTip();
 }
 
-void ImgCell::Recalculate(AFontSize fontsize) {
+void ImgCell::Recalculate(AFontSize fontsize) const {
   if (m_image) {
     // Here we recalculate the height, as well:
     //  - This doesn't cost much time and

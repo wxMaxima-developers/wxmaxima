@@ -140,7 +140,7 @@ public:
   //! Convert all but the first of a row of multiple spaces to non-breakable
   static wxString PrependNBSP(wxString input);
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   virtual void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 

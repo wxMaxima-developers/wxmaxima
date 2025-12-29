@@ -420,7 +420,7 @@ void TextCell::UpdateDisplayedText() {
     ScheduleRecalculation();
 }
 
-void TextCell::Recalculate(AFontSize fontsize) {
+void TextCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     if (GetTextStyle() == TS_ASCIIMATHS)
       ForceBreakLine(true);

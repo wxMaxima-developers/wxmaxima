@@ -56,7 +56,7 @@ void SqrtCell::MakeBreakUpCells() {
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
-void SqrtCell::Recalculate(AFontSize fontsize) {
+void SqrtCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_innerCell->RecalculateList(fontsize);
     

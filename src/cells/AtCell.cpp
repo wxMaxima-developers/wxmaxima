@@ -49,7 +49,7 @@ AtCell::AtCell(GroupCell *group, const AtCell &cell)
 
 DEFINE_CELL(AtCell)
 
-void AtCell::Recalculate(AFontSize fontsize) {
+void AtCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_baseCell->RecalculateList(fontsize);
     m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - 3});

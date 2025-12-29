@@ -57,7 +57,7 @@ ListCell::ListCell(GroupCell *group, const ListCell &cell)
 
 DEFINE_CELL(ListCell)
 
-void ListCell::Recalculate(AFontSize fontsize) {
+void ListCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_innerCell->RecalculateList(fontsize);
     m_open->RecalculateList(fontsize);

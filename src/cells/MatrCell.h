@@ -40,7 +40,7 @@ public:
   Cell *GetInnerCell(long x, long y) const {
     return m_cells[static_cast<size_t>(x) * m_matWidth + y].get(); }
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 

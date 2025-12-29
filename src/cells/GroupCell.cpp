@@ -429,7 +429,7 @@ void GroupCell::UpdateConfusableCharWarnings() {
   m_updateConfusableCharWarnings = false;
 }
 
-bool GroupCell::Recalculate() {
+bool GroupCell::Recalculate() const {
   bool retval = NeedsRecalculation(EditorFontSize());
 
   if (retval == true) {

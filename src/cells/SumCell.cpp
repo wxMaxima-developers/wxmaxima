@@ -150,7 +150,7 @@ const wxString SumCell::GetXMLType() const
   return type;
 }
 
-void SumCell::Recalculate(AFontSize fontsize) {
+void SumCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     DisplayedBase()->RecalculateList(fontsize);
     m_start->RecalculateList(fontsize);

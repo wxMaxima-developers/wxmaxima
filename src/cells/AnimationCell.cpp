@@ -252,7 +252,7 @@ void AnimationCell::SetMaxHeight(wxCoord height) {
     (*i).SetMaxHeight(height);
 }
 
-void AnimationCell::Recalculate(AFontSize fontsize) {
+void AnimationCell::Recalculate(AFontSize fontsize) const {
   // Assuming a minimum size maybe isn't that bad.
   m_height = m_width = 10 + 2 * m_imageBorderWidth;
 

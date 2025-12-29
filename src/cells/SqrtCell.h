@@ -57,7 +57,7 @@ public:
   // cppcheck-suppress objectIndex
   Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 

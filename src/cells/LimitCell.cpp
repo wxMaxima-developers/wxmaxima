@@ -64,7 +64,7 @@ void LimitCell::MakeBreakUpCells() {
   m_close->SetStyle(TS_FUNCTION);
 }
 
-void LimitCell::Recalculate(AFontSize fontsize) {
+void LimitCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_base->RecalculateList(fontsize);
     m_under->RecalculateList(

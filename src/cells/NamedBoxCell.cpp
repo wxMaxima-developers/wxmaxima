@@ -63,7 +63,7 @@ void NamedBoxCell::MakeBreakupCells() {
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
-void NamedBoxCell::Recalculate(AFontSize fontsize) {
+void NamedBoxCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_innerCell->RecalculateList(fontsize);
     m_boxname->RecalculateList(fontsize);

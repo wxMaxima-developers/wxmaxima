@@ -83,7 +83,7 @@ void ExptCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   }
 }
 
-void ExptCell::Recalculate(AFontSize fontsize) {
+void ExptCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_baseCell->RecalculateList(fontsize);
     if (IsBrokenIntoLines())

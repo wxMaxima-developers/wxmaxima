@@ -70,7 +70,7 @@ void DiffCell::MakeBreakupCells() {
   m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
 }
 
-void DiffCell::Recalculate(AFontSize fontsize) {
+void DiffCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_baseCell->RecalculateList(fontsize);
     m_diffCell->RecalculateList(fontsize);

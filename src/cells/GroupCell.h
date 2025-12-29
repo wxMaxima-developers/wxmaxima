@@ -224,8 +224,8 @@ public:
     The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
   */
-  void Recalculate(AFontSize WXUNUSED(fontsize)) override {Recalculate();}
-  bool Recalculate();
+  void Recalculate(const AFontSize WXUNUSED(fontsize)) const override {Recalculate();}
+  bool Recalculate() const;
   wxPoint CalculateInputPosition();
 
   //! Recalculate the height of the input part of the cell
@@ -420,7 +420,7 @@ protected:
   int16_t m_cellsInGroup = 1;
   mutable int16_t m_numberedAnswersCount = 0;
 
-  AFontSize m_mathFontSize;
+  mutable AFontSize m_mathFontSize;
 
 //** 1-byte objects (1 byte)
 //**
@@ -437,7 +437,6 @@ protected:
       m_lastInEvaluationQueue = false;
       m_updateConfusableCharWarnings = true;
       m_suppressTooltipMarker = false;
-      m_cellsAppended = false;
     }
 
   //! Does this GroupCell automatically fill in the answer to questions?
@@ -447,7 +446,7 @@ protected:
   bool m_updateConfusableCharWarnings : 1 /* InitBitFields_GroupCell */;
   //! Suppress the yellow ToolTip marker?
   bool m_suppressTooltipMarker : 1 /* InitBitFields_GroupCell */;
-  bool m_cellsAppended : 1; /* InitBitFields_GroupCell */
+  mutable bool m_cellsAppended = false; /* InitBitFields_GroupCell */
 
   static wxString m_lookalikeChars;
 };

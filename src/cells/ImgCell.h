@@ -124,7 +124,7 @@ public:
   void SetMaxWidth(wxCoord width) override { if (m_image) m_image->SetMaxWidth(width); }
   void SetMaxHeight(wxCoord height) override { if (m_image) m_image->SetMaxHeight(height); }
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 

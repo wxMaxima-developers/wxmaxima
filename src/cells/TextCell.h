@@ -50,7 +50,7 @@ public:
   //! Set the text contained in this cell
   void SetValue(const wxString &text) override;
 
-  virtual void Recalculate(AFontSize fontsize) override;
+  virtual void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
   const wxFont &GetFont(AFontSize fontsize) const {
@@ -99,7 +99,7 @@ protected:
   //! Returns the XML flags this cell needs in wxMathML
   virtual wxString GetXMLFlags() const;
   //! The text we actually display depends on many factors, unfortunately
-  virtual void UpdateDisplayedText();
+  virtual void UpdateDisplayedText() const;
   //! Update the tooltip for this cell
   void UpdateToolTip();
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
@@ -141,7 +141,7 @@ protected:
   //! The text we keep inside this cell
   wxString m_text;
   //! The text we display: We might want to convert some characters or do similar things
-  wxString m_displayedText;
+  mutable wxString m_displayedText;
   std::vector<SizeEntry> m_sizeCache;
 
 //** Bitfield objects (1 bytes)

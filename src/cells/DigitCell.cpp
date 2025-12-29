@@ -43,7 +43,7 @@ DigitCell::DigitCell(GroupCell *group, const DigitCell &cell)
 
 DEFINE_CELL(DigitCell)
 
-void DigitCell::Recalculate(AFontSize fontsize) {
+void DigitCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     //    Cell::Recalculate(fontsize);
     SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);

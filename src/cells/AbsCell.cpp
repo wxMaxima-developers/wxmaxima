@@ -59,7 +59,7 @@ void AbsCell::MakeBreakupCells() {
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
 }
 
-void AbsCell::Recalculate(AFontSize fontsize) {
+void AbsCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_innerCell->RecalculateList(fontsize);
     if (IsBrokenIntoLines()) {

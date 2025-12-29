@@ -84,7 +84,7 @@ private:
       // of bit fields in this class!
     }
 
-  void Recalculate(AFontSize fontsize) override;
+  void Recalculate(const AFontSize fontsize) const override;
 
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
@@ -94,10 +94,10 @@ private:
   wxString ToString() const override;
   wxString ToTeX() const override;
   wxString ToXML() const override;
-  int m_innerCellWidth = -1;
-  int m_innerCellHeight = -1;
-  int m_nameWidth = -1;
-  int m_nameHeight = -1;
+  mutable int m_innerCellWidth = -1;
+  mutable int m_innerCellHeight = -1;
+  mutable int m_nameWidth = -1;
+  mutable int m_nameHeight = -1;
 };
 
 #endif // NAMEDBOXCELL_H

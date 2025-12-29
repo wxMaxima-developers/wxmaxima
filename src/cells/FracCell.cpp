@@ -83,7 +83,7 @@ void FracCell::MakeDivideCell() {
   m_divide = m_divideOwner.get();
 }
 
-void FracCell::Recalculate(AFontSize fontsize) {
+void FracCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     if (m_inExponent || IsBrokenIntoLines()) {
       m_displayedNum->RecalculateList(fontsize);
