@@ -287,7 +287,10 @@ public:
   wxString GetSymbolFontName() const;
 
   //! Returns a list of chars we need to escape in maxima
-  const wxString CharsNeedingQuotes() const {return ("\\'\"()[]-{}^+*/&§?:;=#<>$");}
+  static const wxString CharsNeedingQuotes()
+    {
+      return wxString(wxS("°,\\'\"()[]-{}^+*/&§?:;=#<>$"));
+    }
 
   wxFontWeight IsBold(long st) const;
 
