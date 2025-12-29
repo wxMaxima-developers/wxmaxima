@@ -286,6 +286,9 @@ public:
   // cppcheck-suppress functionConst
   wxString GetSymbolFontName() const;
 
+  //! Returns a list of chars we need to escape in maxima
+  const wxString CharsNeedingQuotes() const {return ("\\'\"()[]-{}^+*/&§?:;=#<>$");}
+
   wxFontWeight IsBold(long st) const;
 
   wxFontStyle IsItalic(long st) const;

@@ -507,7 +507,7 @@ wxString TextCell::ToString() const {
     // are quoted by a backslash: They cannot be quoted by quotation
     // marks since maxima wouldn't allow strings here.
     {
-      wxString charsNeedingQuotes("\\'\"()[]-{}^+*/&§?:;=#<>$");
+      wxString charsNeedingQuotes = m_configuration->CharsNeedingQuotes();
       bool isOperator = true;
       if (m_text.Length() > 1) {
         for (size_t i = 0; i < m_text.Length(); i++) {
