@@ -194,10 +194,10 @@ public:
     For cells containing text instead of code this function adds a <code>\\r</code> as a marker
     that this line is to be broken here until the window's width changes.
   */
-  void StyleText();
+  void StyleText() const;
   /*! Is Called by StyleText() if this is a code cell */
-  void StyleTextCode();
-  void StyleTextTexts();
+  void StyleTextCode() const;
+  void StyleTextTexts() const;
 
   void Reset();
 
@@ -508,9 +508,9 @@ public:
     }
 
   //! Get the list of commands, parenthesis, strings and whitespaces in a code cell
-  const MaximaTokenizer::TokenList &GetDisplayedTokens();
+//  const MaximaTokenizer::TokenList &GetDisplayedTokens() const;
   //! Get the list of commands, parenthesis, strings and whitespaces including hidden ones
-  const MaximaTokenizer::TokenList &GetAllTokens();
+  const MaximaTokenizer::TokenList &GetAllTokens() const;
 
 private:
   size_t m_selectionStart = 0;
@@ -582,7 +582,7 @@ private:
   bool HandleSpecialKey(wxKeyEvent &event);
   bool HandleOrdinaryKey(wxKeyEvent &event);
 
-  void FontsChanged() override
+  void FontsChanged() const override
     {
       m_widths.clear();
     }
@@ -594,14 +594,14 @@ private:
     the indentation algorithm scans the text again) which is unfortunate.
   */
   void HandleSoftLineBreaks_Code(StyledText *&lastSpace, wxCoord &lineWidth, const wxString &token, size_t charInCell,
-                                 wxString &text, const size_t &lastSpacePos, wxCoord &indentationPixels);
+                                 wxString &text, const size_t &lastSpacePos, wxCoord &indentationPixels) const;
 
   /*! How many chars do we need to indent text at the position the caret is currently at?
 
     \todo We should provide an alternative function that allows to resume the calculation
     for the next word/line - which would provide an additional speedup.
   */
-  size_t GetIndentDepth(wxString text, size_t  positionOfCaret);
+  size_t GetIndentDepth(wxString text, size_t  positionOfCaret) const;
 
   /*! Handle ESC shortcuts for special characters
 
@@ -615,7 +615,7 @@ private:
   void MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle style);
 
   //! Determines the size of a text snippet
-  wxSize GetTextSize(const wxString &text);
+  wxSize GetTextSize(const wxString &text) const;
 
   //! The memory for the undo history
   History m_history;  
@@ -628,20 +628,20 @@ private:
 //**
   typedef std::unordered_map <wxString, wxSize, wxStringHash> StringHash;
   //! Cached widths of text snippets, one width per style
-  StringHash m_widths;
+  mutable StringHash m_widths;
 
   //! A list of all potential autoComplete targets within this cell
-  std::vector<wxString> m_wordList;
+  mutable std::vector<wxString> m_wordList;
 
   //! The individual commands, parenthesis, strings and whitespaces a code cell consists of
-  MaximaTokenizer::TokenList m_tokens;
+  mutable MaximaTokenizer::TokenList m_tokens;
   //! The individual commands, parenthesis, strings and whitespaces including hidden lines
-  MaximaTokenizer::TokenList m_tokens_including_hidden;
+  mutable MaximaTokenizer::TokenList m_tokens_including_hidden;
 
   /*! The text this Editor contains
    */
-  wxString m_text;
-  std::vector<StyledText> m_styledText;
+  mutable wxString m_text;
+  mutable std::vector<StyledText> m_styledText;
 
 //** 8/4 bytes
 //**
@@ -650,8 +650,8 @@ private:
 //** 4 bytes
 //**
   size_t m_errorIndex = 1;
-  size_t m_numberOfLines = 1;
-  wxCoord m_charHeight = 12;
+  mutable size_t m_numberOfLines = 1;
+  mutable wxCoord m_charHeight = 12;
   long m_paren1 = -1, m_paren2 = -1;
 
 //** 2 bytes
@@ -661,9 +661,9 @@ private:
 
 
   //! Does the list of tokens including hidden items need to be recalculated?
-  bool m_tokens_including_hidden_valid = false;
+  mutable bool m_tokens_including_hidden_valid = false;
   //! Does the list of displayed tokens need to be recalculated?
-  bool m_tokens_valid = false;
+  mutable bool m_tokens_valid = false;
 
 
 //** Bitfield objects (2 bytes)
@@ -676,7 +676,6 @@ private:
       m_containsChangesCheck = false;
       m_displayCaret = false;
       m_hasFocus = false;
-      m_isDirty = false;
       m_selectionChanged = false;
       m_underlined = false;
       m_errorIndexSet = false;
@@ -685,16 +684,16 @@ private:
   //! Mark this cell as "Automatically answer questions".
   bool m_autoAnswer : 1 /* InitBitFields_EditorCell */;
   //! true, if this function has changed since the last evaluation by maxima
-  bool m_containsChanges : 1 /* InitBitFields_EditorCell */;
+  mutable bool m_containsChanges : 1 /* InitBitFields_EditorCell */;
   bool m_containsChangesCheck : 1 /* InitBitFields_EditorCell */;
   bool m_displayCaret : 1 /* InitBitFields_EditorCell */;
   bool m_hasFocus : 1 /* InitBitFields_EditorCell */;
-  bool m_isDirty : 1 /* InitBitFields_EditorCell */;
   bool m_errorIndexSet : 1 /* InitBitFields_EditorCell */;
   //! Has the selection changed since the last draw event?
   bool m_selectionChanged : 1 /* InitBitFields_EditorCell */;
   //! Does this cell's size have to be recalculated?
   bool m_underlined : 1 /* InitBitFields_EditorCell */;
+  mutable bool m_isDirty = true /* InitBitFields_EditorCell */;
 };
 
 #endif // EDITORCELL_H

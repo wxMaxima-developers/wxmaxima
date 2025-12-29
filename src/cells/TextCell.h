@@ -57,7 +57,7 @@ public:
     return m_configuration->GetStyle(GetTextStyle())->GetFont(fontsize);
   }
   //cppcheck-suppress functionConst
-  void SetFont(wxDC *dc, AFontSize fontsize);
+  void SetFont(wxDC *dc, AFontSize fontsize) const;
 
   /*! Calling this function signals that the "(" this cell ends in isn't part of the function name
 
@@ -104,7 +104,7 @@ protected:
   void UpdateToolTip();
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
-  void FontsChanged() override
+  void FontsChanged() const override
     {
       m_sizeCache.clear();
     }
@@ -128,7 +128,7 @@ protected:
     SizeEntry() = default;
   };
 
-  wxSize CalculateTextSize(wxDC *dc, const wxString &text, TextCell::TextIndex const index);
+  wxSize CalculateTextSize(wxDC *dc, const wxString &text, TextCell::TextIndex const index) const;
 
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
@@ -142,7 +142,7 @@ protected:
   wxString m_text;
   //! The text we display: We might want to convert some characters or do similar things
   mutable wxString m_displayedText;
-  std::vector<SizeEntry> m_sizeCache;
+  mutable std::vector<SizeEntry> m_sizeCache;
 
 //** Bitfield objects (1 bytes)
 //**

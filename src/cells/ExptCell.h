@@ -98,7 +98,7 @@ private:
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
 
-  int m_expt_yoffset = 0;
+  mutable int m_expt_yoffset = 0;
 
 //** Bitfield objects (1 bytes)
 //**

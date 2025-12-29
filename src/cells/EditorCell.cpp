@@ -925,7 +925,7 @@ void EditorCell::SetFont(wxDC *dc) const {
     dc->SetFont(font);
 }
 
-wxSize EditorCell::GetTextSize(wxString const &text) {
+wxSize EditorCell::GetTextSize(wxString const &text) const {
   const wxDC * const dc = m_configuration->GetRecalcDC();
   StringHash::const_iterator it = m_widths.find(text);
 
@@ -1153,7 +1153,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event) {
   m_displayCaret = true;
 }
 
-size_t EditorCell::GetIndentDepth(wxString text, size_t positionOfCaret) {
+size_t EditorCell::GetIndentDepth(wxString text, size_t positionOfCaret) const {
   // Don't indent parenthesis that aren't part of code cells.
   if (m_type != MC_TYPE_INPUT)
     return 0;
@@ -2877,7 +2877,7 @@ void EditorCell::SaveValue(History::Action action) {
 void EditorCell::HandleSoftLineBreaks_Code(
                                            StyledText *&lastSpace, wxCoord &lineWidth, const wxString &token,
                                            size_t charInCell, wxString &text, size_t const &lastSpacePos,
-                                           wxCoord &indentationPixels) {
+                                           wxCoord &indentationPixels) const {
   // If we don't want to autowrap code we don't do nothing here.
   // cppcheck-suppress knownConditionTrueFalse
   if (!m_configuration->GetAutoWrapCode())
@@ -2910,7 +2910,7 @@ void EditorCell::HandleSoftLineBreaks_Code(
   }
 }
 
-void EditorCell::StyleTextCode() {
+void EditorCell::StyleTextCode() const {
   // We have to style code
   StyledText *lastSpace = NULL;
   size_t lastSpacePos = 0;
@@ -2997,7 +2997,7 @@ void EditorCell::StyleTextCode() {
     m_styledText.push_back(StyledText(TS_CODE_COMMENT, suppressedLinesInfo));
 }
 
-void EditorCell::StyleTextTexts() {
+void EditorCell::StyleTextTexts() const {
   // Remove all bullets of item lists as we will introduce them again in the
   // next step, as well.
   m_text.Replace(wxS("\u2022"), wxS("*"));
@@ -3242,7 +3242,7 @@ void EditorCell::StyleTextTexts() {
   }
 } // Style text, not code?
 
-const MaximaTokenizer::TokenList &EditorCell::GetAllTokens() {
+const MaximaTokenizer::TokenList &EditorCell::GetAllTokens() const {
   if(FirstLineOnlyEditor())
     {
       if(!m_tokens_including_hidden_valid)
@@ -3261,7 +3261,7 @@ const MaximaTokenizer::TokenList &EditorCell::GetAllTokens() {
     }
 }
 
-void EditorCell::StyleText() {
+void EditorCell::StyleText() const {
   wxASSERT(m_configuration->GetRecalcDC() != NULL);
   if(!m_configuration->GetRecalcDC())
     {

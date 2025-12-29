@@ -145,7 +145,7 @@ private:
 
   CellPointers *const m_cellPointers = GetCellPointers();
 
-  int m_imageBorderWidth = 0;
+  mutable int m_imageBorderWidth = 0;
 
 //** Bitfield objects (1 bytes)
 //**

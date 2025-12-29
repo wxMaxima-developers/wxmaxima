@@ -154,7 +154,7 @@ wxBitmap Cell::BitmapFromSVG(wxString svgData, wxSize size)
   return bmp;
 }
 
-bool Cell::FirstLineOnlyEditor()
+bool Cell::FirstLineOnlyEditor() const
 {
   wxASSERT(GetGroup()->GetType() == MC_TYPE_GROUP);
   return GetGroup()->FirstLineOnlyEditor();
@@ -410,8 +410,8 @@ void Cell::RecalculateList(AFontSize fontsize) const {
     tmp.Recalculate(fontsize);
 }
 
-void Cell::ResetSizeList() {
-  for (Cell &tmp : OnList(this))
+void Cell::ResetSizeList() const {
+  for (const Cell &tmp : OnList(this))
     {
       tmp.ResetSize();
       for (Cell &cell : OnInner(&tmp))
@@ -1036,19 +1036,19 @@ bool Cell::ContainsRect(const wxRect &sm, bool all) const {
   as well as the vertical position of the center. Then repeats this
   with
 */
-void Cell::ResetSize_Recursively() {
+void Cell::ResetSize_Recursively() const {
   ResetSize();
   for (Cell &cell : OnInner(this))
     for (Cell &tmp : OnList(&cell))
       tmp.ResetSize_Recursively();
 }
 
-void Cell::ResetSize_RecursivelyList() {
-  for (Cell &tmp : OnList(this))
+void Cell::ResetSize_RecursivelyList() const {
+  for (const Cell &tmp : OnList(this))
     tmp.ResetSize_Recursively();
 }
 
-void Cell::ResetSize() {
+void Cell::ResetSize() const {
   m_cellCfgCnt_last--;
 }
 

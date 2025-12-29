@@ -116,21 +116,21 @@ private:
   // The pointers above point to inner cells and must be kept contiguous.
 
   //! How much wider should the horizontal line be on both ends than num or denom?
-  int m_protrusion = 0;
+  mutable int m_protrusion = 0;
   /*! The horizontal gap between this frac and any minus before it
 
     This gap hinders avoids the horizontal rule of a fraction from building a straight
     nearly-uninterrupted horizontal line together with a minus. It is only introduced
     if there is an actual minus.
   */
-  int m_horizontalGapLeft = 0;
+  mutable int m_horizontalGapLeft = 0;
   /*! The horizontal gap between this frac and any minus that follows it
 
     This gap hinders avoids the horizontal rule of a fraction from building a straight
     nearly-uninterrupted horizontal line together with a minus. It is only introduced
     if there is an actual minus.
   */
-  int m_horizontalGapRight = 0;
+  mutable int m_horizontalGapRight = 0;
 
   //! The way the fraction should be displayed
   FracType m_fracStyle = FC_NORMAL;

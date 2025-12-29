@@ -512,16 +512,16 @@ public:
   void FontsChangedList();
 
   //! Mark all cached size information as "to be calculated".
-  void ResetSize_Recursively();
+  void ResetSize_Recursively() const;
 
   //! Mark all cached size information of this cell list as "to be calculated".
-  void ResetSize_RecursivelyList();
+  void ResetSize_RecursivelyList() const;
 
   //! Mark the cached height and width information as "to be calculated".
-  void ResetSize();
+  void ResetSize() const;
 
   //! Mark the cached height information of the whole list of cells as "to be calculated".
-  void ResetSizeList();
+  void ResetSizeList() const;
 
   //! Tell this cell to cause an additional vertical space
   void SetBigSkip(bool skip) { m_bigSkip = skip; }
@@ -754,7 +754,7 @@ public:
   bool IsHidden() const { return m_isHidden; }
 
   //! True, if this GroupCell is folded and its editor shows only its first line.
-  virtual bool FirstLineOnlyEditor();
+  virtual bool FirstLineOnlyEditor() const;
   
   //! Hide this cell. See IsHidden() for details.
   virtual void Hide(bool hide = true) { m_isHidden = hide; }
@@ -958,7 +958,7 @@ protected:
     - for EditorCells by it's GroupCell's RecalculateHeight and
     - for Cells when they are drawn.
   */
-  wxPoint m_currentPoint{-1, -1};
+  mutable wxPoint m_currentPoint{-1, -1};
 
 protected:
 //** 8/4-byte objects (40 + 8* bytes)
@@ -1018,7 +1018,7 @@ protected:
 //** 2-byte objects (2 bytes)
 //**
   //! The font size is smaller in super- and subscripts.
-  const AFontSize m_fontSize_Scaled = {};
+  mutable AFontSize m_fontSize_Scaled = {};
 
 //** 1-byte objects (2 bytes)
 //**
@@ -1072,7 +1072,7 @@ protected:
   inline Worksheet *GetWorksheet() const;
 
   //! To be called if the font has changed.
-  virtual void FontsChanged()
+  virtual void FontsChanged() const
     { ResetSize_Recursively(); }
 
   CellPointers *GetCellPointers() const;
