@@ -565,6 +565,11 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
   auto spacepos = fun.Find(" ");
   if(spacepos != wxNOT_FOUND)
     fun = fun.Left(spacepos);
+
+  /// Escape letters that need escaping in maxima
+    for (const auto &chr : m_configuration->CharsNeedingQuotes())
+      fun.Replace(chr, wxString(wxS("\\")) + chr);
+  
   /// Add symbols
   {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
