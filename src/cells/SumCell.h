@@ -92,7 +92,7 @@ protected:
   
 private:
   std::unique_ptr<Cell> MakeStart(Cell *under) const;
-  void MakeBreakUpCells() const;
+  void MakeBreakUpCells();
   const static wxString m_svgSumSign;
 
   ParenCell *Paren() const;
@@ -116,7 +116,7 @@ private:
   std::unique_ptr<Cell> m_under;
   // The pointers above point to inner cells and must be kept contiguous.
 
-  wxSize m_signSize;
+  mutable wxSize m_signSize;
 
 //** Bitfield objects (1 bytes)
 //**
@@ -127,7 +127,7 @@ private:
     }
 
   //! Display m_paren if true, or Base() if false
-  bool m_displayParen : 1 /* InitBitFields_SumCell */;
+  mutable bool m_displayParen : 1 /* InitBitFields_SumCell */;
 };
 
 #endif // SUMCELL_H

@@ -54,7 +54,7 @@ private:
   //! The first few digits
   mutable wxString m_numStart;
   //! The inividual digits, if this cell is broken into lines
-  std::unique_ptr<Cell> m_innerCell;
+  mutable std::unique_ptr<Cell> m_innerCell;
   //! The "not all digits displayed" message.
   mutable wxString m_ellipsis;
 

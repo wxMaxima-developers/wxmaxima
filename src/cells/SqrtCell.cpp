@@ -37,12 +37,14 @@ SqrtCell::SqrtCell(GroupCell *group, Configuration *config,
   : Cell(group, config), m_innerCell(std::move(inner)) {
   InitBitFields_SqrtCell();
   SetStyle(TS_VARIABLE);
+  MakeBreakUpCells();
 }
 
 SqrtCell::SqrtCell(GroupCell *group, const SqrtCell &cell)
   : SqrtCell(group, cell.m_configuration,
              CopyList(group, cell.m_innerCell.get())) {
   CopyCommonData(cell);
+  MakeBreakUpCells();
 }
 
 DEFINE_CELL(SqrtCell)
@@ -150,7 +152,6 @@ bool SqrtCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  MakeBreakUpCells();
   Cell::BreakUpAndMark();
   m_open->SetNextToDraw(m_innerCell);
   m_innerCell->last()->SetNextToDraw(m_close);

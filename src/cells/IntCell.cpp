@@ -52,6 +52,7 @@ IntCell::IntCell(GroupCell *group, Configuration *config,
     m_lowerLimit(std::move(lowerLimit)), m_upperLimit(std::move(upperLimit)) {
   InitBitFields_IntCell();
   SetStyle(TS_VARIABLE);
+  MakeBreakUpCells();
 }
 
 IntCell::IntCell(GroupCell *group, Configuration *config,
@@ -330,7 +331,6 @@ bool IntCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  MakeBreakUpCells();
   Cell::BreakUpAndMark();
   m_close->SetNextToDraw(m_nextToDraw);
   m_nextToDraw = m_open;

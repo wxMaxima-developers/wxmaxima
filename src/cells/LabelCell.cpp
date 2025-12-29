@@ -78,7 +78,7 @@ void LabelCell::SetUserDefinedLabel(const wxString &userDefinedLabel) {
   UpdateDisplayedText();
 }
 
-void LabelCell::UpdateDisplayedText() {
+void LabelCell::UpdateDisplayedText() const {
   m_displayedText = m_text;
 
   if ((GetTextStyle() == TS_USERLABEL) || (GetTextStyle() == TS_LABEL)) {

@@ -45,7 +45,7 @@ LongNumberCell::LongNumberCell(GroupCell *group, const LongNumberCell &cell)
 
 DEFINE_CELL(LongNumberCell)
 
-void LongNumberCell::UpdateDisplayedText() {
+void LongNumberCell::UpdateDisplayedText() const {
   unsigned int displayedDigits = m_configuration->GetDisplayedDigits();
   if ((m_displayedText.Length() > displayedDigits) &&
       (!m_configuration->ShowAllDigits())) {

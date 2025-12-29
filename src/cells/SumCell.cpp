@@ -45,6 +45,7 @@ SumCell::SumCell(GroupCell *group, Configuration *config,
   if (!m_over)
     m_over = std::make_unique<TextCell>(group, config);
   wxASSERT(Base());
+  MakeBreakUpCells();
 }
 
 SumCell::SumCell(GroupCell *group, const SumCell &cell)
@@ -341,7 +342,6 @@ bool SumCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  MakeBreakUpCells();
   Cell::BreakUpAndMark();
   m_displayParen = false;
 

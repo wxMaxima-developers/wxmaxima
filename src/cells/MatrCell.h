@@ -84,8 +84,8 @@ private:
   //! Collection of pointers to inner cells.
   std::vector<std::unique_ptr<Cell>> m_cells;
 
-  std::vector<wxCoord> m_widths;
-  std::vector<DropCenter> m_dropCenters;
+  mutable std::vector<wxCoord> m_widths;
+  mutable std::vector<DropCenter> m_dropCenters;
 
   size_t m_matWidth = 0;
   size_t m_matHeight = 0;

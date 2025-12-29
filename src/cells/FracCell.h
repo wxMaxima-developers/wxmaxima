@@ -107,11 +107,11 @@ private:
   // ** This is the draw list order. All pointers must be the same:
   // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
   //! The displayed version of the numerator, if needed with parenthesis
-  Cell* m_displayedNum = {};
+  mutable Cell* m_displayedNum = {};
   //! The "/" sign
   Cell* m_divide = {};
   //! The displayed version of the denominator, if needed with parenthesis
-  Cell* m_displayedDenom = {};
+  mutable Cell* m_displayedDenom = {};
   // The pointers above point to inner cells and must be kept contiguous.
 
   //! How much wider should the horizontal line be on both ends than num or denom?

@@ -347,7 +347,7 @@ public:
     - true: Insert a forced linebreak
     - false: Remove the forced linebreak
   */
-  void ForceBreakLine(bool force = true) { m_forceBreakLine = m_breakLine = force; }
+  void ForceBreakLine(bool force = true) const { m_forceBreakLine = m_breakLine = force; }
 
   /*! Get the height of this cell
 
@@ -482,7 +482,7 @@ public:
   virtual bool NeedsRecalculation(AFontSize fontSize) const;
 
   //! Cause this cell to be recalculated the next time
-  void ScheduleRecalculation(){m_cellCfgCnt_last = m_configuration->CellCfgCnt() - 1 ;}
+  void ScheduleRecalculation() const {m_cellCfgCnt_last = m_configuration->CellCfgCnt() - 1 ;}
   //! Has the configuration changed since the last recalculation of this cell?
   bool ConfigChanged() const {return m_configuration->CellCfgCnt() != m_cellCfgCnt_last;}
   /*!
@@ -874,11 +874,11 @@ public:
   //! Remove this cell's tooltip
   void ClearToolTip();
   //! Set the tooltip to a given string
-  void SetToolTip(const wxString &tooltip);
+  void SetToolTip(const wxString &tooltip) const ;
   //! Set the tooltip of this math cell - it must be exist at least as long
   //! as the cell does. Translation results behave that way. I.e. it must be
   //! a static string!
-  void SetToolTip(const wxString *toolTip);
+  void SetToolTip(const wxString *toolTip) const;
   //! Add another tooltip to this cell
   void AddToolTip(const wxString &tip);
   //! Tells this cell where it is placed on the worksheet
@@ -991,7 +991,7 @@ protected:
 
   //! This tooltip is owned by us when m_ownsToolTip is true. Otherwise,
   //! it points to a "static" string.
-  const wxString *m_toolTip /* initialized in the constructor */;
+  mutable const wxString *m_toolTip /* initialized in the constructor */;
 
 //** 4-byte objects (28 bytes)
 //**
@@ -1050,7 +1050,7 @@ private:
   // to verify that all bit fields are initialized.
 
   //! Whether the cell owns its m_tooltip - otherwise it points to a static string.
-  bool m_ownsToolTip : 1 /* InitBitFields_Cell */;
+  mutable bool m_ownsToolTip : 1 /* InitBitFields_Cell */;
   bool m_bigSkip : 1 /* InitBitFields_Cell */;
   mutable bool m_isBrokenIntoLines : 1 /* InitBitFields_Cell */;
   bool m_isHidden : 1 /* InitBitFields_Cell */;
@@ -1058,7 +1058,7 @@ private:
   bool m_suppressMultiplicationDot : 1 /* InitBitFields_Cell */;
   //! Are we allowed to add a line break before this cell?
   mutable bool m_breakLine : 1 /* InitBitFields_Cell */;
-  bool m_forceBreakLine : 1 /* InitBitFields_Cell */;
+  mutable bool m_forceBreakLine : 1 /* InitBitFields_Cell */;
   bool m_highlight : 1 /* InitBitFields_Cell */;
 
 protected:

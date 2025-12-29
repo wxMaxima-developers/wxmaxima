@@ -42,6 +42,7 @@ LimitCell::LimitCell(GroupCell *group, Configuration *config,
     m_under(std::move(under)) {
   InitBitFields_LimitCell();
   SetStyle(TS_VARIABLE);
+  MakeBreakUpCells();
 }
 
 LimitCell::LimitCell(GroupCell *group, const LimitCell &cell)
@@ -216,7 +217,6 @@ bool LimitCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  MakeBreakUpCells();
   Cell::BreakUpAndMark();
   m_name->last()->SetNextToDraw(m_open);
   m_open->SetNextToDraw(m_base);

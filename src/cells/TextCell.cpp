@@ -378,7 +378,7 @@ wxSize TextCell::CalculateTextSize(wxDC *const dc, const wxString &text,
   return size;
 }
 
-void TextCell::UpdateDisplayedText() {
+void TextCell::UpdateDisplayedText() const {
   wxString displayedText_old = m_displayedText;
   m_displayedText = m_text;
 

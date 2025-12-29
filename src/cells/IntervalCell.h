@@ -92,7 +92,7 @@ protected:
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
 
-  int m_signWidth = 12, m_signHeight = -1;
+  mutable int m_signWidth = 12, m_signHeight = -1;
 
 //** Bitfield objects (1 bytes)
 //**
@@ -102,7 +102,7 @@ protected:
       m_drawAsAscii = true;
     }
   //! How to create a big parenthesis sign?
-  bool m_drawAsAscii : 1 /* InitBitFields_IntervalCell */;
+  mutable bool m_drawAsAscii : 1 /* InitBitFields_IntervalCell */;
 };
 
 #endif // INTERVALCELL_H

@@ -81,7 +81,7 @@ public:
   
 private:
   wxCoord IntSignLimitYoffset() const { return Scale_Px(8); }
-  void MakeBreakUpCells() const;
+  void MakeBreakUpCells();
   const static wxString m_svgIntegralSign;
   // The pointers below point to inner cells and must be kept contiguous.
   // ** This is the draw list order. All pointers must be the same:
@@ -104,11 +104,11 @@ private:
   // The pointers above point to inner cells and must be kept contiguous.
 
   //! The height of the integral sign
-  wxCoord m_signHeight = 35;
+  mutable wxCoord m_signHeight = 35;
   //! The width of the integral sign
-  wxCoord m_signWidth = 18;
+  mutable wxCoord m_signWidth = 18;
   //! How far is the integral sign's center from the top of this cell?
-  wxCoord m_signTop = m_signHeight / 2;
+  mutable wxCoord m_signTop = m_signHeight / 2;
 #if defined __WXMSW__
   wxCoord m_charHeight = 12;
   wxCoord m_charWidth = 12;

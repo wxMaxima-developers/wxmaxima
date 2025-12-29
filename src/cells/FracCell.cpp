@@ -43,6 +43,7 @@ FracCell::FracCell(GroupCell *group, Configuration *config,
   InitBitFields_FracCell();
   SetStyle(TS_VARIABLE);
   SetupBreakUps();
+  MakeDivideCell();
 }
 
 FracCell::FracCell(GroupCell *group, const FracCell &cell)
@@ -53,6 +54,7 @@ FracCell::FracCell(GroupCell *group, const FracCell &cell)
   SetupBreakUps();
   if (cell.m_inExponent)
     SetIsExponent();
+  MakeDivideCell();
 }
 
 DEFINE_CELL(FracCell)
@@ -314,7 +316,6 @@ bool FracCell::BreakUp() const {
   if (m_fracStyle == FC_DIFF || IsBrokenIntoLines())
     return false;
 
-  MakeDivideCell();
   Cell::BreakUpAndMark();
   if (Num() && Num()->GetNext())
     m_displayedNum = m_numParenthesis.get();

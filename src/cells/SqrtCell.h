@@ -73,7 +73,7 @@ public:
   void SetNextToDraw(Cell *next) const override;
 
 private:
-  void MakeBreakUpCells() const;
+  void MakeBreakUpCells();
 
   // The pointers below point to inner cells and must be kept contiguous.
   // ** This is the draw list order. All pointers must be the same:
