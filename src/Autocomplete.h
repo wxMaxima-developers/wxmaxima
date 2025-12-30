@@ -143,7 +143,6 @@ private:
   std::vector<wxString> m_builtInLoadFiles;
   //! The list of demo files maxima provides
   std::vector<wxString> m_builtInDemoFiles;
-
   //! Scans the maxima directory for a list of loadable files
   class GetGeneralFiles : public wxDirTraverser
   {
@@ -151,7 +150,10 @@ private:
     explicit GetGeneralFiles(std::vector<wxString>& files,
                              std::mutex *lock,
                              const wxString &prefix = wxEmptyString) :
-      m_files(files), m_lock(lock), m_prefix(prefix) { }
+      m_files(files), m_lock(lock), m_prefix(prefix) {
+      for(const auto &i : m_files)
+        m_filesHash[i];
+    }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
         wxFileName newItemName(filename);
@@ -159,8 +161,11 @@ private:
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
         {
           const std::lock_guard<std::mutex> lock(*m_lock);
-          if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+          if (m_filesHash.find(newItem) == m_filesHash.end())
+          {
             m_files.push_back(newItem);
+            m_filesHash[newItem];
+          }
         }
         return wxDIR_CONTINUE;
       }
@@ -171,8 +176,11 @@ private:
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
         {
           const std::lock_guard<std::mutex> lock(*m_lock);
-          if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+          if (m_filesHash.find(newItem) == m_filesHash.end())
+          {
             m_files.push_back(newItem);
+            m_filesHash[newItem];
+          }
         }
         return wxDIR_IGNORE;
       }
@@ -181,7 +189,10 @@ private:
       return m_files;
     }
   protected:
+    //! The list of files we generate
     std::vector<wxString>& m_files;
+    //! A hash that allows us to detect duplicate names faster than m_files
+    std::unordered_map<wxString, wxEvtHandler*, wxStringHash> m_filesHash;
     std::mutex *m_lock;
     wxString m_prefix;
   };
@@ -193,7 +204,11 @@ private:
     explicit GetMacFiles_includingSubdirs(std::vector<wxString>& files,
                                           std::mutex *lock,
                                           const wxString &prefix = wxEmptyString) :
-      m_files(files), m_lock(lock), m_prefix(prefix)  { }
+      m_files(files), m_lock(lock), m_prefix(prefix)
+      {
+        for(const auto &i : m_files)
+        m_filesHash[i];
+      }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
         if(
@@ -207,8 +222,11 @@ private:
           newItem.Replace(wxFileName::GetPathSeparator(), "/");
           {
             const std::lock_guard<std::mutex> lock(*m_lock);
-            if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+            if (m_filesHash.find(newItem) == m_filesHash.end())
+            {
               m_files.push_back(newItem);
+              m_filesHash[newItem];
+            }
           }
         }
         return wxDIR_CONTINUE;
@@ -230,7 +248,10 @@ private:
       return m_files;
     }
   protected:
+    //! The list of files we generate
     std::vector<wxString>& m_files;
+    //! A hash that allows us to detect duplicate names faster than m_files
+    std::unordered_map<wxString, wxEvtHandler*, wxStringHash> m_filesHash;
     std::mutex *m_lock;
     wxString m_prefix;
   };
@@ -250,8 +271,11 @@ private:
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
         {
           const std::lock_guard<std::mutex> lock(*m_lock);
-          if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+          if (m_filesHash.find(newItem) == m_filesHash.end())
+          {
             m_files.push_back(newItem);
+            m_filesHash[newItem];
+          }
         }
         return wxDIR_IGNORE;
       }
@@ -264,7 +288,11 @@ private:
     explicit GetDemoFiles_includingSubdirs(std::vector<wxString>& files,
                                            std::mutex *lock,
                                            const wxString &prefix = wxEmptyString) :
-      m_files(files), m_lock(lock), m_prefix(prefix) { }
+      m_files(files), m_lock(lock), m_prefix(prefix)
+      {
+        for(const auto &i : m_files)
+        m_filesHash[i];
+      }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
         if(filename.EndsWith(".dem"))
@@ -274,8 +302,11 @@ private:
           newItem.Replace(wxFileName::GetPathSeparator(), "/");
           {
             const std::lock_guard<std::mutex> lock(*m_lock);
-            if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+            if (m_filesHash.find(newItem) == m_filesHash.end())
+            {
               m_files.push_back(newItem);
+              m_filesHash[newItem];
+            }
           }
         }
         return wxDIR_CONTINUE;
@@ -297,7 +328,10 @@ private:
       return m_files;
     }
   protected:
+    //! The list of files we generate
     std::vector<wxString>& m_files;
+    //! A hash that allows us to detect duplicate names faster than m_files
+    std::unordered_map<wxString, wxEvtHandler*, wxStringHash> m_filesHash;
     std::mutex *m_lock;
     wxString m_prefix;
   };
@@ -317,8 +351,11 @@ private:
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
         {
           const std::lock_guard<std::mutex> lock(*m_lock);
-          if(std::find(m_files.begin(), m_files.end(), newItem) == m_files.end())
+          if (m_filesHash.find(newItem) == m_filesHash.end())
+          {
             m_files.push_back(newItem);
+            m_filesHash[newItem];
+          }
         }
         return wxDIR_IGNORE;
       }
