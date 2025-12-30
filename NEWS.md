@@ -1,4 +1,4 @@
-# Current development version
+# 25.12.0
 
 - Keep the wxm/mac difference when saving wxm/exporting mac.
   This omits unneeded comments (/* [wxMaxima: input   start ] */
