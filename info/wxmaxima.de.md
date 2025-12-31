@@ -397,7 +397,7 @@ Einige Textverarbeitungen verstehen entweder
 [MathML](https://www.w3.org/Math/) oder (wie LibreOffice) haben einen
 Formeleditor, der die Option “importiere MathML aus der Zwischenablage”
 unterstützt. Andere unterstützen Mathematik im RTF-Format. _wxMaxima_ bietet
-daher einige entsprechende Optionen im Rechtsklick-Menü an.
+daher einige entsprechende Optionen im Rechtsklick-Menü an. 
 
 ### Markdown Unterstützung
 
@@ -418,13 +418,8 @@ Normaler text
 
 _WxMaxima_ erkennt Text, der mit einem `>` beginnt, als ein Zitat:
 
-```
-Ordinary text
-> quote quote quote quote
-> quote quote quote quote
-> quote quote quote quote
-Ordinary text
-```
+``` Ordinary text > quote quote quote quote > quote quote quote quote >
+quote quote quote quote Ordinary text ```
 
 Die TeX- und HTML-Ausgabe von _WxMaxima_ erkennt auch `=>` und ersetzt es
 durch das entsprechende Unicode-Symbol:
@@ -497,10 +492,8 @@ containing the cell contents as some special Maxima comments.
 
 It starts with the following comment:
 
-```
-/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */
-```
+``` /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/ /* [
+Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */ ```
 
 And then the cells follow, encoded as Maxima comments, e.g. a section cell:
 
@@ -929,16 +922,14 @@ with_slider_draw(
 Strenggenommen kein Feature von _wxMaxima_. Aber Maxima erlaubt auf vielen
 Systemen das folgende Beispiel von Mario Rodriguez auszuführen:
 
-```maxima
-load(draw);
+```maxima load(draw);
 
 /* Parabola in window #1 */ draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));
 
 /* Parabola in window #2 */ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
 
 /* Paraboloid in window #3 */
-draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
-```
+draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1)); ```
 
 Mehrere Diagramme in einem Fenster sind auch möglich (dies ist auch möglich
 in Kommandozeilen-Maxima mit dem Standard-`draw()`-Befehl:
@@ -1193,10 +1184,8 @@ tips, some example worksheets and in command line Maxima included demos (the
 
 Please notice, that the demos write:
 
-~~~
-At the ’_’ prompt, type ’;’ and <enter> to proceed with the
-demonstration.
-~~~
+~~~ At the ’_’ prompt, type ’;’ and <enter> to proceed with the
+demonstration.  ~~~
 
 That is valid for command-line Maxima, however in wxMaxima by default it is
 necessary to continue the demonstration with:
@@ -1253,7 +1242,8 @@ Wird eine Textdatei mit diesem Text (z.B. indem er mit Copy+Paste in eine
 neue Datei eingefügt wird) als `.xml`-Datei gespeichert, weiß _wxMaxima_,
 wie man den Text-Teil des Dokuments rekonstruiert.
 
-## Ich will Statusmeldungen am Bildschirm ausgeben, während mein Befehl ausgeführt wird
+## Ich will Statusmeldungen am Bildschirm ausgeben, während mein Befehl
+ausgeführt wird
 
 Normalerweise gibt _wxMaxima_ erst etwas aus, wenn die komplette Ausgabe
 steht. Das `disp`-Kommando wird hingegen sofort ausgeführt:
@@ -1271,7 +1261,8 @@ for i:1 thru 10 do (
 
 Alternativ kann man sich das `wxstatusbar()`-Kommando oben ansehen.
 
-## Statt eines Diagramms wird ein Briefumschlag mit einer Fehlermeldung dargestellt
+## Statt eines Diagramms wird ein Briefumschlag mit einer Fehlermeldung
+dargestellt
 
 _wxMaxima_ konnte die Datei, die _Maxima_ _Gnuplot_ instruiert hat, zu
 generieren, nicht lesen.
@@ -1333,7 +1324,8 @@ der Berechnung fertig ist und daher nie neue Befehle an Maxima sendet. In
 diesem Fall kann der Befehl 'Trigger Evaluation' die Synchronisation wieder
 herstellen.
 
-## _Maxima_ (mit SBCL compilliert) beschwert sich über einen Mangel an Speicher
+## _Maxima_ (mit SBCL compilliert) beschwert sich über einen Mangel an
+Speicher
 
 The Lisp compiler SBCL by default comes with a memory limit that allows it
 to run even on low-end computers. When compiling a big software package like
@@ -1361,17 +1353,13 @@ verarbeitet
 Wenn _Maxima_ mittels SBCL compiliert wurde, können die folgenden Befehle
 zur `.sbclrc` hinzugefügt werden:
 
-```commonlisp
-(setf sb-impl::*default-external-format* :utf-8)
-```
+```commonlisp (setf sb-impl::*default-external-format* :utf-8)  ```
 
 Wo diese Datei abgelegt werden muss, ist systemabhängig. Aber ein mit SBCL
 compiliertes Maxima kann durch den folgenden Befehl angewiesen werden, den
 Ort zu nennen:
 
-```
-:lisp (sb-impl::userinit-pathname)
-```
+``` :lisp (sb-impl::userinit-pathname)  ```
 
 ## Anmerkung bezüglich Wayland (aktuelle Linux/BSD Distributionen)
 
@@ -1450,14 +1438,13 @@ Verwenden Sie die Variable `wxplot_size`:
      ),wxplot_size=[1000,1000];
 ```
 
-### Nach dem Upgrade auf MacOS 13.1 geben Plot- oder Draw Befehle Fehlermeldungen aus, wie
+### Nach dem Upgrade auf MacOS 13.1 geben Plot- oder Draw Befehle
+Fehlermeldungen aus, wie
 
-```
-1 HIToolbox 0x00007ff80cd91726
+``` 1 HIToolbox 0x00007ff80cd91726
 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102 2 HIToolbox
 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52 3 HIToolbox
-0x00007ff80cd35908 SetMenuBarObscured + 408 ...
-```
+0x00007ff80cd35908 SetMenuBarObscured + 408 ...  ```
 
 This might be an issue with the operating system. Disable the hiding of the
 menu bar (SystemSettings => Desktop & Dock => Menu Bar) might solve the
@@ -1501,9 +1488,7 @@ Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann
 ("Exportieren"->"Zusätzliche Zeilen für die LaTeX preamble") angeben, um
 Ränder von 1cm zu setzen):
 
-```latex
-\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
-```
+```latex \usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry} ```
 
 ## Gibt es einen Dark Mode?
 
@@ -1514,7 +1499,8 @@ otherwise. Alternatively, there is a `View/Invert worksheet brightness` menu
 entry that allows to quickly convert the worksheet from dark to bright and
 vice versa.
 
-## _WxMaxima_ hängt manchmal in der ersten Minute einmal für mehrere Sekunden
+## _WxMaxima_ hängt manchmal in der ersten Minute einmal für mehrere
+Sekunden
 
 WxMaxima lagert große Aufgaben, wie das Interpretieren des
 >1000-Seiten-Handbuchs von Maxima an Hintergrundtasks aus. Solange die
@@ -1537,13 +1523,15 @@ Diese Übersetzungen sind möglicherweise im System nicht vorhanden. Auf
 Ubuntu/Debian Linux-Systemen können sie mit `dpkg-reconfigure locales`
 erzeugt werden.
 
-## Wie kann man Symbole für reele Zahlen, ganze Zahlen (ℝ, ℕ), etc. verwenden?
+## Wie kann man Symbole für reele Zahlen, ganze Zahlen (ℝ, ℕ),
+etc. verwenden?
 
 You can find these symbols in the Unicode sidebar (search for ’double-struck
 capital’). But the selected font must also support these symbols. If they do
 not display properly, select another font.
 
-## Wie kann ein Maxima-Skript feststellen, ob es unter wxMaxima oder Kommandozeilen-Maxima läuft?
+## Wie kann ein Maxima-Skript feststellen, ob es unter wxMaxima oder
+Kommandozeilen-Maxima läuft?
 
 Wenn wxMaxima verwendet wird, hat die Maxima-Variable `maxima_frontend` den
 Wert wxmaxima`. Die Maxima-Variable `maxima_frontend_version` enthält dann
