@@ -873,7 +873,10 @@ public:
 
   virtual void MacOpenFile(const wxString &file);
 
-private:
+public:
+  static wxLogWindow *m_logWindow; // The wxWidgets log window, we use.
+  static int m_windowcount;
+
   std::unique_ptr<wxLogChain> m_logChain;
   static std::vector<wxProcess *> m_wxMaximaProcesses;
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT

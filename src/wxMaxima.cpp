@@ -121,10 +121,6 @@
 #include <wx/url.h>
 #include "Configuration.h"
 
-// TODO: "C++ify" the code, don't use global variables.
-extern wxLogWindow * wxm_logwindow; // declared in main.cpp
-extern int windowcount; // declared in main.cpp
-
 wxDECLARE_APP(MyApp);
 
 #if defined __WXOSX__
@@ -301,7 +297,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   // Read the last state (shown/not shown) of the log window from the configuration. If it was hidden before, hide it, else show it.
   // This is for issue #2033.
   if (config->Read(wxS("LogWindow"), &logwindow_shown)) {
-    wxm_logwindow->GetFrame()->Show(logwindow_shown);
+    MyApp::m_logWindow->GetFrame()->Show(logwindow_shown);
   }
 
   m_oldFindString.Clear();
@@ -1769,7 +1765,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   if(GetWorksheet())
     CallAfter([this]{GetWorksheet()->SetFocus();});
   StartAutoSaveTimer();
-  windowcount++;
+  MyApp::m_windowcount++;
 }
 
 #ifdef wxHAS_POWER_EVENTS
@@ -1940,13 +1936,13 @@ wxMaxima::~wxMaxima() {
   }
   if (m_fileSaved)
     RemoveTempAutosavefile();
-  wxLogMessage("Window count (before closing the current window): %d", windowcount);
-  windowcount--;
+  wxLogMessage("Window count (before closing the current window): %d", MyApp::m_windowcount);
+  MyApp::m_windowcount--;
   // If we deleted the last Window, delete the log Window
-  if (windowcount == 0) {
+  if (MyApp::m_windowcount == 0) {
     // save the current state of the log window (shown/hidden) in the configuration.
-    wxConfig::Get()->Write("LogWindow", wxm_logwindow->GetFrame()->IsShown());
-    wxDELETE(wxm_logwindow);
+    wxConfig::Get()->Write("LogWindow", MyApp::m_logWindow->GetFrame()->IsShown());
+    wxDELETE(MyApp::m_logWindow);
     /* On the mac wxMaxima might still run if the last window has closed.
        This means we have no log window and therefore cannot log anything without
        creating pop-ups. */
@@ -6594,8 +6590,8 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_show_logwindow) {
     // FIXME: if the log window was closed as the parent 'disable' the toggle function, otherwise we risk a crash.
-    if (wxm_logwindow->GetFrame() != NULL) {
-      wxm_logwindow->Show(!wxm_logwindow->GetFrame()->IsShown());
+    if (MyApp::m_logWindow->GetFrame() != NULL) {
+      MyApp::m_logWindow->Show(!MyApp::m_logWindow->GetFrame()->IsShown());
     };
   }
 
@@ -11342,4 +11338,5 @@ wxString wxMaxima::m_firstPrompt(wxS("(%i1) "));
 wxMaxima::VarReadFunctionHash wxMaxima::m_variableReadActions;
 wxMaxima::VarUndefinedFunctionHash wxMaxima::m_variableUndefinedActions;
 wxString wxMaxima::maxima_command_line_filename;
-
+wxLogWindow *MyApp::m_logWindow;
+int MyApp::m_windowcount = 0;

@@ -2390,7 +2390,6 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event) {
 }
 
 void Worksheet::OnMouseMotion(wxMouseEvent &event) {
-  m_cellPointers.m_selectionString.Clear();
   event.Skip();
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_pointer_x,
                          &m_pointer_y);
@@ -2537,6 +2536,7 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
       break;
 
     case CLICK_TYPE_OUTPUT_SELECTION:
+      m_cellPointers.m_selectionString.Clear();
       ClearSelection();
       rect.x = std::min(down.x, up.x);
       rect.y = std::min(down.y, up.y);

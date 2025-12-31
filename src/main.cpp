@@ -188,17 +188,13 @@ int WINAPI WinMain(_In_ HINSTANCE hI, _In_opt_ HINSTANCE hPrevI, _In_ LPSTR lpCm
 #endif
 
 
-// TODO: "C++ify" the code, don't use global variables.
-// In wxMaxima.cpp they are used as 'extern' variables.
-wxLogWindow * wxm_logwindow; // The wxWidgets log window, we use.
-int windowcount = 0; // How many wxMaxima windows are open (in the current process)?
 bool MyApp::OnInit() {
   // if DEBUG=1 show the logwindow at start, else hide it.
   // in wxMaxima.cpp we later read a configuration variable (LogWindow) and show/hide it, according to the previous state (issue #2033).
 #if (DEBUG==1)
-  wxm_logwindow = new wxLogWindow( NULL, wxS("wxMaxima log window"), true, false);
+  m_logWindow = new wxLogWindow(NULL, wxS("wxMaxima log window"), true, false);
 #else
-  wxm_logwindow = new wxLogWindow( NULL, wxS("wxMaxima log window"), false, false);
+  m_logWindow = new wxLogWindow(NULL, wxS("wxMaxima log window"), false, false);
 #endif
   // Needed for making wxSocket work for multiple threads. We currently don't
   // use this feature. But it doesn't harm to be prepared
