@@ -210,33 +210,47 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 
 
   if (m_variableReadActions.empty()) {
+    // good
     m_variableReadActions[wxS("gentranlang")] =
       &wxMaxima::VariableActionGentranlang;
+    // good
     m_variableReadActions[wxS("numer")] =
       &wxMaxima::VariableActionNumer;
+    // good
     m_variableReadActions[wxS("display2d_unicode")] =
       &wxMaxima::VariableActionDisplay2d_Unicode;
+    // good
     m_variableReadActions[wxS("maxima_userdir")] =
       &wxMaxima::VariableActionUserDir;
+    // good
     m_variableReadActions[wxS("sinnpiflag")] =
       &wxMaxima::VariableActionSinnpiflag;
+    // good
     m_variableReadActions[wxS("logexpand")] =
       &wxMaxima::VariableActionLogexpand;
+    // good
     m_variableReadActions[wxS("opsubst")] = &wxMaxima::VariableActionOpSubst;
+    // good
     m_variableReadActions[wxS("maxima_tempdir")] =
       &wxMaxima::VariableActionTempDir;
+    // good
     m_variableReadActions[wxS("debugmode")] =
       &wxMaxima::VariableActionDebugmode;
+    // good
     m_variableReadActions[wxS("*autoconf-version*")] =
       &wxMaxima::VariableActionAutoconfVersion;
-    m_variableReadActions[wxS("*autoconf-host*")] =
-      &wxMaxima::VariableActionAutoconfHost;
-    m_variableReadActions[wxS("*maxima-infodir*")] =
-      &wxMaxima::VariableActionMaximaInfodir;
-    m_variableReadActions[wxS("*maxima-htmldir*")] =
-      &wxMaxima::VariableActionMaximaHtmldir;
-    m_variableReadActions[wxS("gnuplot_command")] =
-      &wxMaxima::VariableActionGnuplotCommand;
+    // bad
+    //    m_variableReadActions[wxS("*autoconf-host*")] =
+    //  &wxMaxima::VariableActionAutoconfHost;
+    // bad
+    //  m_variableReadActions[wxS("*maxima-infodir*")] =
+    //  &wxMaxima::VariableActionMaximaInfodir;
+    // bad
+    //m_variableReadActions[wxS("*maxima-htmldir*")] =
+    //  &wxMaxima::VariableActionMaximaHtmldir;
+    // bad
+    //m_variableReadActions[wxS("gnuplot_command")] =
+    //  &wxMaxima::VariableActionGnuplotCommand;
     m_variableReadActions[wxS("*maxima-sharedir*")] =
       &wxMaxima::VariableActionMaximaSharedir;
     m_variableReadActions[wxS("*maxima-demodir*")] =
