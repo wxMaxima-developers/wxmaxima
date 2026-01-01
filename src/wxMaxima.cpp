@@ -5224,7 +5224,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   // Tell our maxima interface if it needs to send events to the XML inspector
   if(m_client)
-    m_client->XmlInspectorActive(m_manager.GetPane(wxS("XmlInspector")).IsShown());
+    m_client->XmlInspectorActive(IsXMLInspectorShown());
 
   if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
     {
@@ -9415,13 +9415,11 @@ void wxMaxima::CommandWiz(
                       std::move(tooltip7), std::move(label8), std::move(defaultval8),
                       std::move(tooltip8), std::move(label9), std::move(defaultval9),
                       std::move(tooltip9));
-  m_manager.GetPane("wizard").Show(true).Caption(title);
-  m_manager.Update();
+  ShowWizardPane(title);
 }
 
 void wxMaxima::OnWizardAbort(wxCommandEvent &WXUNUSED(event)) {
-  m_manager.GetPane("wizard").Show(false);
-  m_manager.Update();
+  HideWizardPane();
   m_configuration.LastActiveTextCtrl(NULL);
 }
 
@@ -11063,9 +11061,7 @@ void wxMaxima::OnKeyDown(wxKeyEvent &event) {
 }
 
 void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(event)) {
-  m_manager.GetPane(wxS("XmlInspector"))
-    .Show(!m_manager.GetPane(wxS("XmlInspector")).IsShown());
-  m_manager.Update();
+  ToggleXMLInspector();
 }
 
 void wxMaxima::MaximaDClick(wxCommandEvent &WXUNUSED(event)) {
@@ -11073,9 +11069,7 @@ void wxMaxima::MaximaDClick(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void wxMaxima::StatusMsgDClick(wxCommandEvent &WXUNUSED(event)) {
-  m_manager.GetPane(wxS("log"))
-    .Show(!m_manager.GetPane(wxS("log")).IsShown());
-  m_manager.Update();
+  ToggleLogPane();
 }
 
 void wxMaxima::HistoryDClick(wxCommandEvent &event) {
