@@ -124,7 +124,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   int minor = 0;
   wxGetOsVersion(&major, &minor);
   wxLogMessage(_("OS: %s Version %li.%li"),
-               wxGetOsDescription().utf8_str(),
+               wxGetOsDescription(),
                static_cast<long>(major), static_cast<long>(minor));
 
 #ifdef __WXMOTIF__
@@ -150,7 +150,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 #endif
   if (Configuration::m_configfileLocation_override != wxEmptyString)
     wxLogMessage(_("Reading the config from %s."),
-                 Configuration::m_configfileLocation_override.utf8_str());
+                 Configuration::m_configfileLocation_override);
   else
     wxLogMessage(_("Reading the config from the default location."));
 
@@ -2118,7 +2118,7 @@ void wxMaximaFrame::ReReadConfig() {
         wxConfig::Set(new wxConfig(wxS("wxMaxima")));
       } else {
         wxLogMessage(_("Re-Reading the config from %s."),
-                     Configuration::m_configfileLocation_override.utf8_str());
+                     Configuration::m_configfileLocation_override);
         wxConfig::Set(
                       new wxFileConfig(wxS("wxMaxima"), wxEmptyString,
                                        Configuration::m_configfileLocation_override));
@@ -2183,7 +2183,7 @@ void  wxMaximaFrame::StatusText(const wxString &text, bool saveInLog)
   m_leftStatusText = text;
   if(saveInLog)
     {
-      wxLogMessage("%s", text.mb_str());
+      wxLogMessage("%s", text);
       for(auto i = m_statusTextHistory.size() - 1; i > 0; i--)
         m_statusTextHistory[i] = m_statusTextHistory[i-1];
       m_statusTextHistory[0] = text;
