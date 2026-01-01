@@ -1765,6 +1765,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
     CallAfter([this]{GetWorksheet()->SetFocus();});
   StartAutoSaveTimer();
   MyApp::m_windowcount++;
+  Layout();
 }
 
 #ifdef wxHAS_POWER_EVENTS
@@ -1779,6 +1780,7 @@ void wxMaxima::OnSize(wxSizeEvent &event){
   wxConfig::Get()->Write("MainWindowPos/height", event.GetSize().GetHeight());
   bool maximized = false;
   wxConfig::Get()->Write("MainWindowPos/maximized", maximized);
+  Layout();
   event.Skip();
 }
 
@@ -1833,6 +1835,7 @@ void wxMaxima::OnNewDemoFiles(wxCommandEvent &WXUNUSED(event))
                          subMenuContents.front() + wxS(" - ") + subMenuContents.back(),
                          subMenu);
     }
+  Layout();
 }
 
 void wxMaxima::OnDemoFileMenu(wxCommandEvent &ev)
@@ -1852,6 +1855,7 @@ void wxMaxima::OnMove(wxMoveEvent &event){
 void wxMaxima::OnMaximize(wxCommandEvent &event){
   bool maximized = true;
   wxConfig::Get()->Write("MainWindowPos/maximized", maximized);
+  Layout();
   event.Skip();
 }
 

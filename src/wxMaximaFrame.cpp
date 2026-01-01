@@ -441,7 +441,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
           wxMenuEventHandler(wxMaximaFrame::OnMenuStatusText), NULL, this);
   Connect(EventIDs::menu_pane_dockAll, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
-
   m_worksheet->SetFocus();
 }
 
