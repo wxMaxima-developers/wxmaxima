@@ -62,12 +62,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                              const wxString &title, const wxPoint &pos,
                              const wxSize &size, long style)
 : wxFrame(parent, id, title, pos, size, style),
-  m_manager(new wxAuiManager(this, wxAUI_MGR_ALLOW_FLOATING | wxAUI_MGR_ALLOW_ACTIVE_PANE |
-                             wxAUI_MGR_TRANSPARENT_HINT | wxAUI_MGR_HINT_FADE)),
   m_worksheet(new Worksheet(this, wxID_ANY, &m_configuration)),
   m_history(new History(this, -1, &m_configuration)),
   m_recentDocuments(wxS("document")),
   m_recentPackages(wxS("packages")) {
+  m_manager.SetManagedWindow(this);
+  m_manager.SetFlags(wxAUI_MGR_ALLOW_FLOATING | wxAUI_MGR_ALLOW_ACTIVE_PANE |
+                     wxAUI_MGR_TRANSPARENT_HINT | wxAUI_MGR_HINT_FADE);
+  SetupMenu();
+  SetMenuBar(m_MenuBar);
+
   // console
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
@@ -193,7 +197,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_sidebarCaption[EventIDs::menu_pane_console] = _("The worksheet");
   if(GetWorksheet())
     {
-      m_manager->AddPane(GetWorksheet(),
+      m_manager.AddPane(GetWorksheet(),
                         wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_console])
                         .Center()
@@ -212,7 +216,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       GetWorksheet()->m_mainToolBar = new ToolBar(this);
       m_sidebarNames[EventIDs::menu_pane_toolbar] = wxS("toolbar");
       m_sidebarCaption[EventIDs::menu_pane_toolbar] = _("The main toolbar");
-      m_manager->AddPane(GetWorksheet()->m_mainToolBar,
+      m_manager.AddPane(GetWorksheet()->m_mainToolBar,
                         wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_toolbar])
                         .Top()
@@ -230,13 +234,13 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     }
   m_sidebarNames[EventIDs::menu_pane_history] = wxS("history");
   m_sidebarCaption[EventIDs::menu_pane_history] = _("History");
-  m_manager->AddPane(m_history, wxAuiPaneInfo()
+  m_manager.AddPane(m_history, wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_history])
                     .Right());
 
   m_sidebarNames[EventIDs::menu_pane_structure] = wxS("structure");
   m_sidebarCaption[EventIDs::menu_pane_structure] = _("Table of Contents");
-  m_manager->AddPane(m_tableOfContents, wxAuiPaneInfo()
+  m_manager.AddPane(m_tableOfContents, wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_structure])
                     .Right());
 
@@ -244,13 +248,13 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     {
       m_sidebarNames[EventIDs::menu_pane_xmlInspector] = wxS("XmlInspector");
       m_sidebarCaption[EventIDs::menu_pane_xmlInspector] = _("Raw XML monitor");
-      m_manager->AddPane(m_xmlInspector, wxAuiPaneInfo()
+      m_manager.AddPane(m_xmlInspector, wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_xmlInspector])
                         .Right());
     }
   m_sidebarNames[EventIDs::menu_pane_stats] = wxS("stats");
   m_sidebarCaption[EventIDs::menu_pane_stats] = _("Statistics");
-  m_manager->AddPane(new StatSidebar(this), wxAuiPaneInfo()
+  m_manager.AddPane(new StatSidebar(this), wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_stats])
                     .Left());
 
@@ -258,14 +262,14 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     {
       m_sidebarNames[EventIDs::menu_pane_greek] = wxS("greek");
       m_sidebarCaption[EventIDs::menu_pane_greek] = _("Greek Letters");
-      m_manager->AddPane(new GreekSidebar(this, &GetConfiguration(), GetWorksheet()), wxAuiPaneInfo()
+      m_manager.AddPane(new GreekSidebar(this, &GetConfiguration(), GetWorksheet()), wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_greek])
                         .Left());
 
       m_sidebarNames[EventIDs::menu_pane_unicode] = wxS("unicode");
       m_sidebarCaption[EventIDs::menu_pane_unicode] = _("Unicode characters");
       //  wxWindowUpdateLocker unicodeBlocker(unicodePane);
-      m_manager->AddPane(new UnicodeSidebar(this, GetWorksheet(), &GetConfiguration()), wxAuiPaneInfo()
+      m_manager.AddPane(new UnicodeSidebar(this, GetWorksheet(), &GetConfiguration()), wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_unicode])
                         .Left());
     }
@@ -276,7 +280,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       m_sidebarNames[EventIDs::menu_pane_variables] = wxS("variables");
       m_sidebarCaption[EventIDs::menu_pane_variables] = _("Variables");
       m_variablesPane = new Variablespane(this, wxID_ANY);
-      m_manager->AddPane(
+      m_manager.AddPane(
                         m_variablesPane,
                         wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_variables])
@@ -285,7 +289,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
       m_sidebarNames[EventIDs::menu_pane_symbols] = wxS("symbols");
       m_sidebarCaption[EventIDs::menu_pane_symbols] = _("Mathematical Symbols");
       m_symbolsSidebar = new SymbolsSidebar(this, &GetConfiguration(), GetWorksheet());
-      m_manager->AddPane(m_symbolsSidebar,
+      m_manager.AddPane(m_symbolsSidebar,
                         wxAuiPaneInfo()
                         .Name(m_sidebarNames[EventIDs::menu_pane_symbols])
                         .Left());
@@ -293,7 +297,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   m_sidebarNames[EventIDs::menu_pane_math] = wxS("math");
   m_sidebarCaption[EventIDs::menu_pane_math] = _("General Math");
-  m_manager->AddPane(new MathSidebar(this, wxID_ANY), wxAuiPaneInfo()
+  m_manager.AddPane(new MathSidebar(this, wxID_ANY), wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_math])
                     .Left());
 
@@ -301,7 +305,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     {
       m_sidebarNames[EventIDs::menu_pane_wizard] = wxS("wizard");
       m_sidebarCaption[EventIDs::menu_pane_wizard] = _("The current Wizard");
-      m_manager->AddPane(m_wizard =
+      m_manager.AddPane(m_wizard =
                         new ScrollingGenWizPanel(
                                                  this, &GetConfiguration(),
                                                  GetWorksheet()->GetMaximaManual()),
@@ -312,13 +316,13 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   m_sidebarNames[EventIDs::menu_pane_format] = wxS("format");
   m_sidebarCaption[EventIDs::menu_pane_format] = _("Insert");
-  m_manager->AddPane(new FormatSidebar(this), wxAuiPaneInfo()
+  m_manager.AddPane(new FormatSidebar(this), wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_format])
                     .Left());
 
   m_sidebarNames[EventIDs::menu_pane_draw] = wxS("draw");
   m_sidebarCaption[EventIDs::menu_pane_draw] = _("Plot using Draw");
-  m_manager->AddPane(m_drawPane = new DrawSidebar(this, -1),
+  m_manager.AddPane(m_drawPane = new DrawSidebar(this, -1),
                     wxAuiPaneInfo()
                     .Name(m_sidebarNames[EventIDs::menu_pane_draw])
                     .Left());
@@ -328,7 +332,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     {
       m_sidebarNames[EventIDs::menu_pane_help] = wxS("help");
       m_sidebarCaption[EventIDs::menu_pane_help] = _("Help");
-      m_manager->AddPane(m_helpPane = new HelpBrowser(
+      m_manager.AddPane(m_helpPane = new HelpBrowser(
                                                      this, &GetConfiguration(), GetWorksheet()->GetMaximaManual(),
                                                      wxS("file://") + wxMaximaManualLocation()),
                         wxAuiPaneInfo()
@@ -338,8 +342,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 #endif
 
   for(const auto &pane: m_sidebarNames)
-    if(m_manager->GetPane(pane.second).IsOk())
-      m_manager->GetPane(pane.second).
+    if(m_manager.GetPane(pane.second).IsOk())
+      m_manager.GetPane(pane.second).
         Show(
              (pane.first == EventIDs::menu_pane_toolbar) ||
              (pane.first == EventIDs::menu_pane_console) ||
@@ -355,7 +359,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     // Loads the window states. We tell wxaui not to recalculate and display the
     // results of this step now as we will do so manually after
     // eventually adding the toolbar.
-    m_manager->LoadPerspective(perspective, false);
+    m_manager.LoadPerspective(perspective, false);
   }
 
   if(GetWorksheet())
@@ -372,10 +376,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   for(const auto &pane: m_sidebarNames)
     {
       wxSize minSiz;
-      if(m_manager->GetPane(pane.second).IsOk())
+      if(m_manager.GetPane(pane.second).IsOk())
         {
-          if(m_manager->GetPane(pane.second).window != NULL)
-            minSiz = m_manager->GetPane(pane.second).window->GetMinClientSize();
+          if(m_manager.GetPane(pane.second).window != NULL)
+            minSiz = m_manager.GetPane(pane.second).window->GetMinClientSize();
           else
             minSiz = wxSize(300 * GetContentScaleFactor(), 300 * GetContentScaleFactor());
 
@@ -388,7 +392,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
              (pane.first != EventIDs::menu_pane_console) &&
              (pane.first != EventIDs::menu_pane_toolbar)
              )
-            m_manager->GetPane(pane.second)
+            m_manager.GetPane(pane.second)
               .Caption(m_sidebarCaption[pane.first])
               .CloseButton(true)
               .Layer(0)
@@ -409,16 +413,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     }
 
   // We still have no wizard we can show => hide the wizard until it is invoked.
-  m_manager->GetPane(m_sidebarNames[EventIDs::menu_pane_wizard]).Show(false);
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_wizard]).Show(false);
   // The xml inspector slows down everything => close it at startup
-  m_manager->GetPane(m_sidebarNames[EventIDs::menu_pane_xmlInspector]).Show(false);
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_xmlInspector]).Show(false);
   // The unicode selector needs loads of time for starting up
   // => close it at startup
-  m_manager->GetPane(m_sidebarNames[EventIDs::menu_pane_unicode]).Show(false);
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_unicode]).Show(false);
 
   // It somehow is possible to hide the Maxima worksheet - which renders
   // wxMaxima basically useless => force it to be enabled.
-  m_manager->GetPane(m_sidebarNames[EventIDs::menu_pane_console]).Show(true)
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_console]).Show(true)
     .Center()
     .Show(true)
     .CloseButton(false)
@@ -431,15 +435,13 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     .PaneBorder(false)
     .Row(2);
 
-  m_manager->Update();
+  m_manager.Update();
 
   Connect(wxEVT_MENU_HIGHLIGHT,
           wxMenuEventHandler(wxMaximaFrame::OnMenuStatusText), NULL, this);
   Connect(EventIDs::menu_pane_dockAll, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
 
-  this->Layout();
-  SetupMenu();
   m_worksheet->SetFocus();
 }
 
@@ -583,20 +585,17 @@ void wxMaximaFrame::StatusExportFailed() {
 }
 
 wxMaximaFrame::~wxMaximaFrame() {
-  wxString perspective = m_manager->SavePerspective();
+  wxString perspective = m_manager.SavePerspective();
   wxConfig::Get()->Write(wxS("AUI/perspective"), perspective);
   wxConfig::Get()->Flush();
 
   // In modern wxWidgets wxAUIManager does UnInit() itself.
 #if !wxCHECK_VERSION(3, 1, 4)
-  m_manager->UnInit();
+  m_manager.UnInit();
 #endif
-  m_manager = NULL;
 }
 #if wxCHECK_VERSION(3, 1, 0)
-#ifdef __WXMSW__
 #include <wx/taskbarbutton.h>
-#endif
 #endif
 void wxMaximaFrame::SetupFileMenu() {
   m_FileMenu = new wxMenu;
@@ -1993,8 +1992,6 @@ void wxMaximaFrame::SetupMenu() {
   SetupPlotMenu();
   SetupNumericMenu();
   SetupHelpMenu();
-
-  SetMenuBar(m_MenuBar);
 }
 
 wxString wxMaximaFrame::GetDemoFile(wxWindowID id) const
@@ -2158,7 +2155,7 @@ bool wxMaximaFrame::IsPaneDisplayed(int id) {
   auto item = m_sidebarNames.find(id);
   //  wxASSERT(item != m_sidebarNames.end());
   if(item != m_sidebarNames.end())
-    return m_manager->GetPane(item->second).IsShown();
+    return m_manager.GetPane(item->second).IsShown();
   else
     return false;
 }
@@ -2176,8 +2173,8 @@ void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
 }
 void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   for(const auto &pane: m_sidebarNames)
-    m_manager->GetPane(pane.second).Dock();
-  m_manager->Update();
+    m_manager.GetPane(pane.second).Dock();
+  m_manager.Update();
 }
 
 void  wxMaximaFrame::StatusText(const wxString &text, bool saveInLog)
@@ -2210,7 +2207,7 @@ void wxMaximaFrame::ShowPane(int id, bool show) {
           if(
              (pane.first != EventIDs::menu_pane_console)
              )
-            m_manager->GetPane(pane.second).Show(false);
+            m_manager.GetPane(pane.second).Show(false);
         }
     }
   else
@@ -2220,15 +2217,15 @@ void wxMaximaFrame::ShowPane(int id, bool show) {
         auto item = m_sidebarNames.find(id);
         //  wxASSERT(item != m_sidebarNames.end());
         if(item != m_sidebarNames.end())
-          m_manager->GetPane(item->second).Show(show);
+          m_manager.GetPane(item->second).Show(show);
       }
     }
-  m_manager->Update();
+  m_manager.Update();
 }
 
 void wxMaximaFrame::ShowToolBar(bool show) {
-  m_manager->GetPane(wxS("toolbar")).Show(show);
-  m_manager->Update();
+  m_manager.GetPane(wxS("toolbar")).Show(show);
+  m_manager.Update();
 }
 
 

@@ -210,47 +210,33 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 
 
   if (m_variableReadActions.empty()) {
-    // good
     m_variableReadActions[wxS("gentranlang")] =
       &wxMaxima::VariableActionGentranlang;
-    // good
     m_variableReadActions[wxS("numer")] =
       &wxMaxima::VariableActionNumer;
-    // good
     m_variableReadActions[wxS("display2d_unicode")] =
       &wxMaxima::VariableActionDisplay2d_Unicode;
-    // good
     m_variableReadActions[wxS("maxima_userdir")] =
       &wxMaxima::VariableActionUserDir;
-    // good
     m_variableReadActions[wxS("sinnpiflag")] =
       &wxMaxima::VariableActionSinnpiflag;
-    // good
     m_variableReadActions[wxS("logexpand")] =
       &wxMaxima::VariableActionLogexpand;
-    // good
     m_variableReadActions[wxS("opsubst")] = &wxMaxima::VariableActionOpSubst;
-    // good
     m_variableReadActions[wxS("maxima_tempdir")] =
       &wxMaxima::VariableActionTempDir;
-    // good
     m_variableReadActions[wxS("debugmode")] =
       &wxMaxima::VariableActionDebugmode;
-    // good
     m_variableReadActions[wxS("*autoconf-version*")] =
       &wxMaxima::VariableActionAutoconfVersion;
-    // bad
-       m_variableReadActions[wxS("*autoconf-host*")] =
-     &wxMaxima::VariableActionAutoconfHost;
-    // bad
-    //  m_variableReadActions[wxS("*maxima-infodir*")] =
-    //  &wxMaxima::VariableActionMaximaInfodir;
-    // bad
-    //m_variableReadActions[wxS("*maxima-htmldir*")] =
-    //  &wxMaxima::VariableActionMaximaHtmldir;
-    // bad
-    //m_variableReadActions[wxS("gnuplot_command")] =
-    //  &wxMaxima::VariableActionGnuplotCommand;
+    m_variableReadActions[wxS("*autoconf-host*")] =
+      &wxMaxima::VariableActionAutoconfHost;
+    m_variableReadActions[wxS("*maxima-infodir*")] =
+      &wxMaxima::VariableActionMaximaInfodir;
+    m_variableReadActions[wxS("*maxima-htmldir*")] =
+      &wxMaxima::VariableActionMaximaHtmldir;
+    m_variableReadActions[wxS("gnuplot_command")] =
+      &wxMaxima::VariableActionGnuplotCommand;
     m_variableReadActions[wxS("*maxima-sharedir*")] =
       &wxMaxima::VariableActionMaximaSharedir;
     m_variableReadActions[wxS("*maxima-demodir*")] =
@@ -5238,7 +5224,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   // Tell our maxima interface if it needs to send events to the XML inspector
   if(m_client)
-    m_client->XmlInspectorActive(m_manager->GetPane(wxS("XmlInspector")).IsShown());
+    m_client->XmlInspectorActive(m_manager.GetPane(wxS("XmlInspector")).IsShown());
 
   if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
     {
@@ -9429,13 +9415,13 @@ void wxMaxima::CommandWiz(
                       std::move(tooltip7), std::move(label8), std::move(defaultval8),
                       std::move(tooltip8), std::move(label9), std::move(defaultval9),
                       std::move(tooltip9));
-  m_manager->GetPane("wizard").Show(true).Caption(title);
-  m_manager->Update();
+  m_manager.GetPane("wizard").Show(true).Caption(title);
+  m_manager.Update();
 }
 
 void wxMaxima::OnWizardAbort(wxCommandEvent &WXUNUSED(event)) {
-  m_manager->GetPane("wizard").Show(false);
-  m_manager->Update();
+  m_manager.GetPane("wizard").Show(false);
+  m_manager.Update();
   m_configuration.LastActiveTextCtrl(NULL);
 }
 
@@ -11077,9 +11063,9 @@ void wxMaxima::OnKeyDown(wxKeyEvent &event) {
 }
 
 void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(event)) {
-  m_manager->GetPane(wxS("XmlInspector"))
-    .Show(!m_manager->GetPane(wxS("XmlInspector")).IsShown());
-  m_manager->Update();
+  m_manager.GetPane(wxS("XmlInspector"))
+    .Show(!m_manager.GetPane(wxS("XmlInspector")).IsShown());
+  m_manager.Update();
 }
 
 void wxMaxima::MaximaDClick(wxCommandEvent &WXUNUSED(event)) {
@@ -11087,9 +11073,9 @@ void wxMaxima::MaximaDClick(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void wxMaxima::StatusMsgDClick(wxCommandEvent &WXUNUSED(event)) {
-  m_manager->GetPane(wxS("log"))
-    .Show(!m_manager->GetPane(wxS("log")).IsShown());
-  m_manager->Update();
+  m_manager.GetPane(wxS("log"))
+    .Show(!m_manager.GetPane(wxS("log")).IsShown());
+  m_manager.Update();
 }
 
 void wxMaxima::HistoryDClick(wxCommandEvent &event) {

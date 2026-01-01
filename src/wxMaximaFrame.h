@@ -309,7 +309,7 @@ protected:
 
   bool ToolbarIsShown();
   //! The manager for dynamic screen layouts
-  std::unique_ptr<wxAuiManager> m_manager;
+  wxAuiManager m_manager;
 private:
   //! The worksheet itself
 protected:
