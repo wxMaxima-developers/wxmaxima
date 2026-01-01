@@ -240,8 +240,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
     m_variableReadActions[wxS("*autoconf-version*")] =
       &wxMaxima::VariableActionAutoconfVersion;
     // bad
-    //    m_variableReadActions[wxS("*autoconf-host*")] =
-    //  &wxMaxima::VariableActionAutoconfHost;
+       m_variableReadActions[wxS("*autoconf-host*")] =
+     &wxMaxima::VariableActionAutoconfHost;
     // bad
     //  m_variableReadActions[wxS("*maxima-infodir*")] =
     //  &wxMaxima::VariableActionMaximaInfodir;

@@ -68,7 +68,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_history(new History(this, -1, &m_configuration)),
   m_recentDocuments(wxS("document")),
   m_recentPackages(wxS("packages")) {
-  SetupMenu();
   // console
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
@@ -440,6 +439,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
 
   this->Layout();
+  SetupMenu();
   m_worksheet->SetFocus();
 }
 
