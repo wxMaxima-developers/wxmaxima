@@ -2227,5 +2227,3 @@ void wxMaximaFrame::ShowToolBar(bool show) {
   m_manager.GetPane(wxS("toolbar")).Show(show);
   m_manager.Update();
 }
-
-

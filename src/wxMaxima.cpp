@@ -1747,7 +1747,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
   Connect(EventIDs::popid_property_evflag, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Layout();
   // Make wxWidgets remember the size and position of the wxMaxima window
   SetName(wxS("wxMaxima"));
   if (!wxPersistenceManager::Get().RegisterAndRestore(this)) {
