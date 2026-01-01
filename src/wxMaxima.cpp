@@ -1780,7 +1780,6 @@ void wxMaxima::OnSize(wxSizeEvent &event){
   wxConfig::Get()->Write("MainWindowPos/height", event.GetSize().GetHeight());
   bool maximized = false;
   wxConfig::Get()->Write("MainWindowPos/maximized", maximized);
-  Layout();
   event.Skip();
 }
 
@@ -1855,7 +1854,6 @@ void wxMaxima::OnMove(wxMoveEvent &event){
 void wxMaxima::OnMaximize(wxCommandEvent &event){
   bool maximized = true;
   wxConfig::Get()->Write("MainWindowPos/maximized", maximized);
-  Layout();
   event.Skip();
 }
 
