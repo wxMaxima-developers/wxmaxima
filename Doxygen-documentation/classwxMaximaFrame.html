@@ -125,8 +125,28 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>PopulateRecentPackage
 <tr class="memitem:a62626062c146e5622367d84d5d29e300"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#a62626062c146e5622367d84d5d29e300">ShowPane</a> (int id, bool show=true)</td></tr>
 <tr class="memdesc:a62626062c146e5622367d84d5d29e300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show or hide a sidebar.  <br /></td></tr>
 <tr class="separator:a62626062c146e5622367d84d5d29e300"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a417d6b9fde48cc771065d3d8b2c06ab5"><td class="memItemLeft" align="right" valign="top"><a id="a417d6b9fde48cc771065d3d8b2c06ab5" name="a417d6b9fde48cc771065d3d8b2c06ab5"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsXMLInspectorShown</b> ()</td></tr>
+<tr class="memdesc:a417d6b9fde48cc771065d3d8b2c06ab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the XML inspector shown? <br /></td></tr>
+<tr class="separator:a417d6b9fde48cc771065d3d8b2c06ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5753994295388053891b8a2c4f139bd0"><td class="memItemLeft" align="right" valign="top"><a id="a5753994295388053891b8a2c4f139bd0" name="a5753994295388053891b8a2c4f139bd0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleXMLInspector</b> ()</td></tr>
+<tr class="memdesc:a5753994295388053891b8a2c4f139bd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hide or unhide the XML inspector. <br /></td></tr>
+<tr class="separator:a5753994295388053891b8a2c4f139bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0ccdcc367f2a24a51c5e4ebbcab92d9"><td class="memItemLeft" align="right" valign="top"><a id="ad0ccdcc367f2a24a51c5e4ebbcab92d9" name="ad0ccdcc367f2a24a51c5e4ebbcab92d9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleLogPane</b> ()</td></tr>
+<tr class="memdesc:ad0ccdcc367f2a24a51c5e4ebbcab92d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle the visibility of the log pane. <br /></td></tr>
+<tr class="separator:ad0ccdcc367f2a24a51c5e4ebbcab92d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacb1598bfb464a0a87062054c42ec7df"><td class="memItemLeft" align="right" valign="top"><a id="aacb1598bfb464a0a87062054c42ec7df" name="aacb1598bfb464a0a87062054c42ec7df"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowWizardPane</b> (wxString title)</td></tr>
+<tr class="memdesc:aacb1598bfb464a0a87062054c42ec7df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the pane the wizards are in. <br /></td></tr>
+<tr class="separator:aacb1598bfb464a0a87062054c42ec7df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06898227960815a673d0fd3640d4c618"><td class="memItemLeft" align="right" valign="top"><a id="a06898227960815a673d0fd3640d4c618" name="a06898227960815a673d0fd3640d4c618"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>HideWizardPane</b> ()</td></tr>
+<tr class="separator:a06898227960815a673d0fd3640d4c618"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a311755fe55465181b763f9df4d79b390"><td class="memItemLeft" align="right" valign="top"><a id="a311755fe55465181b763f9df4d79b390" name="a311755fe55465181b763f9df4d79b390"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>TogglePaneVisibility</b> (int id)</td></tr>
+<tr class="memdesc:a311755fe55465181b763f9df4d79b390"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hides or unhides the pane with the given ID. <br /></td></tr>
 <tr class="separator:a311755fe55465181b763f9df4d79b390"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afff839d14ed86af29c04ff1b8d44a1ae"><td class="memItemLeft" align="right" valign="top"><a id="afff839d14ed86af29c04ff1b8d44a1ae" name="afff839d14ed86af29c04ff1b8d44a1ae"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddToHistory</b> (const wxString &amp;cmd)</td></tr>
@@ -415,12 +435,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_commandsLeftInCurren
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_first</b> = true</td></tr>
 <tr class="memdesc:a169f822863394dee3954e5b202bcd372"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we expect the 1st prompt from maxima to appear? <br /></td></tr>
 <tr class="separator:a169f822863394dee3954e5b202bcd372"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae66f540ec9db700ca8e0b8730d510e73"><td class="memItemLeft" align="right" valign="top"><a id="ae66f540ec9db700ca8e0b8730d510e73" name="ae66f540ec9db700ca8e0b8730d510e73"></a>
-std::unique_ptr&lt; wxAuiManager &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_manager</b></td></tr>
-<tr class="memdesc:ae66f540ec9db700ca8e0b8730d510e73"><td class="mdescLeft">&#160;</td><td class="mdescRight">The manager for dynamic screen layouts. <br /></td></tr>
-<tr class="separator:ae66f540ec9db700ca8e0b8730d510e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2869d450f22a0b5fd340dbbc7b67964"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWorksheet.html">Worksheet</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#af2869d450f22a0b5fd340dbbc7b67964">m_worksheet</a> = NULL</td></tr>
-<tr class="memdesc:af2869d450f22a0b5fd340dbbc7b67964"><td class="mdescLeft">&#160;</td><td class="mdescRight">The worksheet itself.  <br /></td></tr>
+<tr class="memitem:af2869d450f22a0b5fd340dbbc7b67964"><td class="memItemLeft" align="right" valign="top"><a id="af2869d450f22a0b5fd340dbbc7b67964" name="af2869d450f22a0b5fd340dbbc7b67964"></a>
+<a class="el" href="classWorksheet.html">Worksheet</a> *const&#160;</td><td class="memItemRight" valign="bottom"><b>m_worksheet</b> = NULL</td></tr>
+<tr class="memdesc:af2869d450f22a0b5fd340dbbc7b67964"><td class="mdescLeft">&#160;</td><td class="mdescRight">The worksheet itself. <br /></td></tr>
 <tr class="separator:af2869d450f22a0b5fd340dbbc7b67964"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bd088851c2448772b4c4f955db6af05"><td class="memItemLeft" align="right" valign="top"><a id="a8bd088851c2448772b4c4f955db6af05" name="a8bd088851c2448772b4c4f955db6af05"></a>
 <a class="el" href="classHistory.html">History</a> *const&#160;</td><td class="memItemRight" valign="bottom"><b>m_history</b> = NULL</td></tr>
@@ -644,32 +661,6 @@ wxMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>m_roundedMatrixPa
 
 <p>Update the recent documents list. </p>
 <p>Copies the string array containing the list of recent documents to the recent documents menu. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Field Documentation</h2>
-<a id="af2869d450f22a0b5fd340dbbc7b67964" name="af2869d450f22a0b5fd340dbbc7b67964"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2869d450f22a0b5fd340dbbc7b67964">&#9670;&#160;</a></span>m_worksheet</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classWorksheet.html">Worksheet</a>* const wxMaximaFrame::m_worksheet = NULL</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The worksheet itself. </p>
-<p>The worksheet </p>
 
 </div>
 </div>
