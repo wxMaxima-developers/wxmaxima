@@ -266,13 +266,6 @@ public:
 protected:
   Worksheet *GetWorksheet() const {return m_worksheet;}
 private:
-  /*! The panel the AUI with the dockable sidebars is in.
-
-    Theoretically we don't need this panel. In reality in Jan 2026 KDE seems to have
-    a bug that makes the object that is managed by the AUI not reserve space for its
-    menu.
-  */
-  wxPanel *m_auiPanel;
   //! The names our dockable sidebars are identified with in the config
   std::unordered_map<int, wxString> m_sidebarNames;
   //! The names our dockable sidebars are shown with
