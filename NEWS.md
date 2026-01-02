@@ -1,4 +1,4 @@
-# 25.12.0
+# 26.01.0
 
 - Keep the wxm/mac difference when saving wxm/exporting mac.
   This omits unneeded comments (/* [wxMaxima: input   start ] */
