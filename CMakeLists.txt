@@ -222,6 +222,11 @@ if(WIN32 OR CYGWIN)
 else()
     file(RELATIVE_PATH RELPATH_TO_PO4A_PO_DIRECTORY "$ENV{PWD}" "${CMAKE_SOURCE_DIR}/locales/manual")
 endif()
+file(GLOB MANUAL_LANGUAGES "${CMAKE_CURRENT_SOURCE_DIR}/locales/manual/*.po")
+list(TRANSFORM MANUAL_LANGUAGES REPLACE ".*/(.*).po$" "\\1")
+string(REPLACE ";" " " LANGUAGES_SPACESEPARATED "${MANUAL_LANGUAGES}")
+file(RELATIVE_PATH WXMAXIMA_MD_RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}/info/wxmaxima.md")
+
 configure_file(${CMAKE_SOURCE_DIR}/locales/manual/po4a.cfg.in po4a.cfg)
 
 add_subdirectory(src)
