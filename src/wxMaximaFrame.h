@@ -108,6 +108,33 @@ public:
     - false: hide it
   */
   void ShowPane(int id, bool show = true);
+  //! Is the XML inspector shown?
+  bool IsXMLInspectorShown(){return m_manager.GetPane(wxS("XmlInspector")).IsShown();}
+  //! Hide or unhide the XML inspector
+  void ToggleXMLInspector()
+    {
+      m_manager.GetPane(wxS("XmlInspector")).Show(!IsXMLInspectorShown());
+      m_manager.Update();
+    }
+  //! Toggle the visibility of the log pane
+  void ToggleLogPane()
+    {
+      m_manager.GetPane(wxS("log"))
+        .Show(!m_manager.GetPane(wxS("log")).IsShown());
+      m_manager.Update();
+    }
+  //! Show the pane the wizards are in
+  void ShowWizardPane(wxString title)
+    {
+      m_manager.GetPane("wizard").Show(true).Caption(title);
+      m_manager.Update();
+    }
+  void HideWizardPane()
+    {
+        m_manager.GetPane("wizard").Show(false);
+        m_manager.Update();
+    }
+  //! Hides or unhides the pane with the given ID.
   void TogglePaneVisibility(int id);
 
   //! Adds a command to the list  of recently used maxima commands
@@ -308,12 +335,11 @@ protected:
   bool m_first = true;
 
   bool ToolbarIsShown();
-  //! The manager for dynamic screen layouts
-  std::unique_ptr<wxAuiManager> m_manager;
 private:
-  //! The worksheet itself
+  //! The manager for dynamic screen layouts
+  wxAuiManager m_manager;
 protected:
-  //! The worksheet
+  //! The worksheet itself
   Worksheet * const m_worksheet = NULL;
   //! The history pane
   History * const m_history = NULL;
