@@ -1834,7 +1834,6 @@ void wxMaxima::OnNewDemoFiles(wxCommandEvent &WXUNUSED(event))
                          subMenuContents.front() + wxS(" - ") + subMenuContents.back(),
                          subMenu);
     }
-  Layout();
 }
 
 void wxMaxima::OnDemoFileMenu(wxCommandEvent &ev)
