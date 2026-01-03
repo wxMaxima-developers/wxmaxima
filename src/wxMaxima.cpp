@@ -5798,7 +5798,7 @@ void wxMaxima::ReadStdErr() {
 
     o = _("Message from the stdout of Maxima: ") + o;
     if ((o_trimmed != wxEmptyString) &&
-        (!o.StartsWith("Connecting Maxima to server on port")) && (!m_first)) {
+        (!o_trimmed.StartsWith("Connecting Maxima to server on port")) && (!m_first)) {
       DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
       if (Maxima::GetPipeToStdErr())
         std::cerr << o;
