@@ -31,9 +31,6 @@
 #include <wx/sstream.h>
 #include <wx/tokenzr.h>
 
-//! The time, in ms, we'll wait for an end of string to arrive from maxima after
-//! the input was first read.
-static constexpr int STRING_END_TIMEOUT = 5000;
 //! The period, in ms, with which we may force a read from Maxima in case we
 //! expect some input but got no notifications for it.
 #ifdef __WINDOWS__
