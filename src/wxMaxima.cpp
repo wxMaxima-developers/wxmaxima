@@ -9158,7 +9158,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
 
   wxString expr = GetDefaultEntry();
   wxString integralSign = wxS("∫");
-  if (!m_configuration.FontRendersChar(L'∫', *wxNORMAL_FONT))
+  if (!m_configuration.FontRendersChar(L'\u222B', *wxNORMAL_FONT)) //  \u222B = integral sign
     integralSign = wxS("integrate");
 
   if(event.GetId() == EventIDs::popid_special_constant_percent){
