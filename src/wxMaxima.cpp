@@ -6625,6 +6625,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
         GetWorksheet()->m_findDialog->SetFindString(selected);
     }
     GetWorksheet()->m_findDialog->Show();
+    GetWorksheet()->m_findDialog->Raise();
   }
   else if(event.GetId() == EventIDs::menu_history_next) {
     m_history->UpdateDeferred();
