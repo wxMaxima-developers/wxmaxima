@@ -1,3 +1,9 @@
+# Current development version
+
+- Fix search and replace. Before in a longer string - e.g. "aaaaaaaaa"
+  only every second occurence was replaced, when (e.g.) one wanted to
+  replace "a" by "b".
+
 # 26.01.0
 
 - Keep the wxm/mac difference when saving wxm/exporting mac.

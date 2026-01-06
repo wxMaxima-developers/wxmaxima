@@ -3638,7 +3638,7 @@ bool EditorCell::ReplaceSelection(const wxString &oldStr,
   StyleText();
 
   m_containsChanges = true;
-  CursorPosition(start + newString.Length());
+  CursorPosition(start + newString.Length() - oldStr.Length());
 
   if (replaceMaximaString) {
     if ((newString.EndsWith("\"") || (text_right.StartsWith("\"")))) {
