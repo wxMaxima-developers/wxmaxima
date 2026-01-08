@@ -75,13 +75,13 @@ $(function() {
 <div class="textblock"><p>WxMaxima is a graphical user interface (GUI) for the <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> computer algebra system (CAS). WxMaxima allows one to use all of <em>Maxima_’s functions. In addition, it provides convenient wizards for accessing the most commonly used features. This manual describes some of the features that make <a class="el" href="classwxMaxima.html">wxMaxima</a> one of the most popular GUIs for _Maxima</em>.</p>
 <p><img src="./wxMaximaLogo.png" alt="wxMaxima 的 logo" class="inline"/></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md671"></a>
+<h1><a class="anchor" id="autotoc_md664"></a>
 Introduction to wxMaxima</h1>
-<h2><a class="anchor" id="autotoc_md672"></a>
+<h2><a class="anchor" id="autotoc_md666"></a>
 &lt;em&gt;Maxima&lt;/em&gt; and wxMaxima</h2>
 <p>In the open-source domain, big systems are normally split into smaller projects that are easier to handle for small groups of developers. For example a CD burner program will consist of a command-line tool that actually burns the CD and a graphical user interface that allows users to implement it without having to learn about all the command line switches and in fact without using the command line at all. One advantage of this approach is that the developing work that was invested into the command-line program can be shared by many programs: The same CD-burner command-line program can be used as a “send-to-CD”-plug-in for a file manager application, for the “burn to CD” function of a music player and as the CD writer for a DVD backup tool. Another advantage is that splitting one big task into smaller parts allows the developers to provide several user interfaces for the same program.</p>
 <p>一个像 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 这样的计算机代数系统（CAS，computer algebra system）也适合前述框架。Maxima 可以用作任意精度计算器程序的底层软件，也可以在更大计算系统中作为公式转换程序来帮助计算（例如 <a href="https://www.sagemath.org/">Sage</a>）。Maxima 也可以直接作为独立的计算系统使用，它可以通过命令行来访问。然而，在通常情况下，像 <a class="el" href="classwxMaxima.html">wxMaxima</a> 这样的用户界面是使用 <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 的一种更有效的方法，特别是对于新手而言更是如此。</p>
-<h3><a class="anchor" id="autotoc_md673"></a>
+<h3><a class="anchor" id="autotoc_md672"></a>
 &lt;em&gt;Maxima&lt;/em&gt;</h3>
 <p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 是一个功能齐全的计算机代数系统（CAS）。CAS 是一个程序，它可以通过对公式变形并找到问题的解来求解数学问题，而不是仅仅输出结果的数值。换言之，Maxima 可以作为一个计算器，给出变量的数值表示，也可以提供解析解。此外，它还提供了一系列数值分析方法，用于求解没有解析解的方程或方程组。</p>
 <p><img src="./maxima_screenshot.png" alt="Maxima 截图，命令行" class="inline"/></p>
