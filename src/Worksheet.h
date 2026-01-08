@@ -680,6 +680,11 @@ private:
    */
   Configuration *m_configuration = NULL;
 public:
+  void FocusFindDialogue()
+    {
+      if(m_findDialog)
+        m_findDialog->SetFocus();
+    }
   //! The storage for the autocompletion feature
   AutoComplete m_autocomplete;
 

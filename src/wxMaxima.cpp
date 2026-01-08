@@ -6611,7 +6611,6 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
                                 (GetWorksheet()->m_findDialog->IsShown()));
     if (GetWorksheet()->m_findDialog == NULL)
       new FindReplaceDialog(this, &m_findData, _("Find and Replace"), &GetWorksheet()->m_findDialog);
-
     if (GetWorksheet()->GetActiveCell() != NULL) {
       wxString selected = GetWorksheet()->GetActiveCell()->GetSelectionString();
 
@@ -6626,7 +6625,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     }
     GetWorksheet()->m_findDialog->Show();
     GetWorksheet()->m_findDialog->Raise();
-  }
+    GetWorksheet()->FocusFindDialogue();
+    CallAfter([this]{GetWorksheet()->FocusFindDialogue();});
+ }
   else if(event.GetId() == EventIDs::menu_history_next) {
     m_history->UpdateDeferred();
     wxString command = m_history->GetCommand(true);
@@ -6692,7 +6693,7 @@ void wxMaxima::OnFind(wxFindDialogEvent &event) {
                                            !!(event.GetFlags() & wxFR_DOWN)))
             LoggingMessageBox(_("No matches found!"));
         }
-      CallAfter([this]{GetWorksheet()->m_findDialog->SetFocus();});
+      CallAfter([this]{GetWorksheet()->FocusFindDialogue();});
     }
   event.Skip();
 }
@@ -6723,7 +6724,7 @@ void wxMaxima::OnReplace(wxFindDialogEvent &event) {
       else
         GetWorksheet()->UpdateTableOfContents();
     }
-  CallAfter([this]{GetWorksheet()->m_findDialog->SetFocus();});
+    CallAfter([this]{GetWorksheet()->FocusFindDialogue();});
 }
 
 void wxMaxima::OnReplaceAll(wxFindDialogEvent &event) {
