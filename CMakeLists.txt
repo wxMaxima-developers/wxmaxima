@@ -36,7 +36,8 @@ else()
         set(WXMAXIMA_VERSION "${PROJECT_VERSION}-DevelopmentSnapshot")
 endif()
 
-set(CMAKE_CXX_STANDARD 14)
+# Set a CACHE variable - make it overrideable via command line.
+set(CMAKE_CXX_STANDARD 14 CACHE STRING "The target C++ standard. wxMaxima requires C++14 or higher.")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(MACOSX_BUNDLE_COPYRIGHT "GPL2+")
 set(MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION})
