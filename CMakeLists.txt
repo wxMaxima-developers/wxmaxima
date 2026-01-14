@@ -37,8 +37,10 @@ else()
 endif()
 
 # Set a CACHE variable - make it overrideable via command line.
-set(CMAKE_CXX_STANDARD 14 CACHE STRING "The target C++ standard. wxMaxima requires C++14 or higher.")
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 20 CACHE STRING "The target C++ standard. wxMaxima requires C++14 or higher.")
+if(CMAKE_CXX_STANDARD EQUAL 98 OR CMAKE_CXX_STANDARD EQUAL 11)
+    message(FATAL_ERROR "At least C++14 is required to build wxMaxima.")
+endif()
 set(MACOSX_BUNDLE_COPYRIGHT "GPL2+")
 set(MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION})
 set(MACOSX_BUNDLE_BUNDLE_NAME "wxMaxima")
