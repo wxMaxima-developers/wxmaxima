@@ -132,8 +132,8 @@ void BTextCtrl::CloseParenthesis(const wxString &open, const wxString &close, bo
       if (!fromOpen && charHere == close)
         SetInsertionPoint(insp + 1);
       else {
-        wxString newtext = (insp > 0 ? wxString(text.SubString(0, insp - 1)) : wxS("")) +
-          (fromOpen ? open : wxS("")) + close +
+        wxString newtext = (insp > 0 ? text.SubString(0, insp - 1) : wxString("")) +
+          (fromOpen ? open : wxString("")) + close +
           text.SubString(insp, text.length());
 
         ChangeValue(newtext);
