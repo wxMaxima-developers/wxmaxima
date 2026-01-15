@@ -9,7 +9,7 @@
 #cmakedefine WXMAXIMA_GIT_SHORT_HASH "@WXMAXIMA_GIT_SHORT_HASH@"
 
 #include <thread>
-#if __cplusplus >= 202002L
+#ifdef __cpp_lib_jthread
     #define jthread std::jthread
 #else
     #define jthread std::thread
