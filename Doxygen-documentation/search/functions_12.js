@@ -58,7 +58,7 @@ var searchData=
   ['returntoselectionfrombot_55',['ReturnToSelectionFromBot',['../classEditorCell.html#a7e79ef516d61bc1fdb9aa57deb4633d5',1,'EditorCell']]],
   ['returntoselectionfromtop_56',['ReturnToSelectionFromTop',['../classEditorCell.html#af8c41297bc9ae89c41fb11168920e1e3',1,'EditorCell']]],
   ['revealhidden_57',['RevealHidden',['../classGroupCell.html#a14813b23871489b3f575ee0cb0046ee1',1,'GroupCell']]],
-  ['rgba2wxbitmap_58',['RGBA2wxBitmap',['../classImage.html#acc688550db7846124d84bdbe4d7f0969',1,'Image']]],
+  ['rgba2wxbitmap_58',['RGBA2wxBitmap',['../classImage.html#a705e57f7d6439e9b2917795f3946c685',1,'Image']]],
   ['rightclickedon_59',['RightClickedOn',['../classTableOfContents.html#a4f47fdcaa0d02480a61e94c455d8d641',1,'TableOfContents']]],
   ['rtfend_60',['RTFEnd',['../classWorksheet.html#a377e690362492a35b801df92ce527a40',1,'Worksheet']]],
   ['rtfescape_61',['RTFescape',['../classCell.html#a6ea50434cf209c0179201dfaae87cb5c',1,'Cell']]],

@@ -79,7 +79,7 @@ var searchData=
   ['returntoselectionfromtop_76',['ReturnToSelectionFromTop',['../classEditorCell.html#af8c41297bc9ae89c41fb11168920e1e3',1,'EditorCell']]],
   ['reusablestringstream_77',['ReusableStringStream',['../classCatch_1_1ReusableStringStream.html',1,'Catch']]],
   ['revealhidden_78',['RevealHidden',['../classGroupCell.html#a14813b23871489b3f575ee0cb0046ee1',1,'GroupCell']]],
-  ['rgba2wxbitmap_79',['RGBA2wxBitmap',['../classImage.html#acc688550db7846124d84bdbe4d7f0969',1,'Image']]],
+  ['rgba2wxbitmap_79',['RGBA2wxBitmap',['../classImage.html#a705e57f7d6439e9b2917795f3946c685',1,'Image']]],
   ['rightclickedon_80',['RightClickedOn',['../classTableOfContents.html#a4f47fdcaa0d02480a61e94c455d8d641',1,'TableOfContents']]],
   ['rtfend_81',['RTFEnd',['../classWorksheet.html#a377e690362492a35b801df92ce527a40',1,'Worksheet']]],
   ['rtfescape_82',['RTFescape',['../classCell.html#a6ea50434cf209c0179201dfaae87cb5c',1,'Cell']]],
