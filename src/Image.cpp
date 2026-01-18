@@ -163,8 +163,7 @@ wxBitmap Image::GetUnscaledBitmap() {
 
     wxm_nsvgRasterize(m_svgRast.get(), m_svgImage, 0, 0, 1, imgdata.data(),
                       m_originalWidth, m_originalHeight, m_originalWidth * 4);
-    return RGBA2wxBitmap(imgdata.data(), m_originalWidth,
-                         m_originalHeight);
+    return RGBA2wxBitmap(imgdata.data(), m_originalWidth, m_originalHeight);
   } else {
     wxMemoryInputStream istream(m_compressedImage.GetData(),
                                 m_compressedImage.GetDataLen());
@@ -991,19 +990,8 @@ const wxString Image::GetBadImageToolTip() {
 }
 
 wxBitmap Image::RGBA2wxBitmap(const unsigned char imgdata[],
-                              const int &width, const int &height,
-
-#if defined __WXOSX__
-                              const int &scaleFactor
-#else
-                              const int &WXUNUSED(scaleFactor)
-#endif
-  ) {
-#if defined __WXOSX__
-  wxBitmap retval = wxBitmap(wxSize(width, height), 32, scaleFactor);
-#else
+                              const int &width, const int &height) {
   wxBitmap retval = wxBitmap(wxSize(width, height), 32);
-#endif
   const unsigned char *rgba = imgdata;
   if (!retval.Ok())
     return retval;

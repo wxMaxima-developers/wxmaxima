@@ -101,8 +101,7 @@ public:
 
   //! Converts rgba data to a wxBitmap
   static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],
-                                const int &width, const int &height,
-                                const int &scaleFactor = 1);
+                                const int &width, const int &height);
 
   void SetConfiguration(Configuration *config){
     if(m_loadImageTask.joinable())

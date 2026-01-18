@@ -85,18 +85,7 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height) {
   if (height < 1)
     height = 1;
   // Set the bitmap to the new size
-#if defined __WXOSX__
-  int scaleFactor = 1;
-  if (m_window != NULL)
-    scaleFactor = m_window->GetContentScaleFactor();
-  if (scaleFactor < 1)
-    scaleFactor = 1;
-  if (scaleFactor > 16)
-    scaleFactor = 16;
-  this->wxBitmap::operator=(wxBitmap(wxSize(width, height), 32, scaleFactor));
-#else
   this->wxBitmap::operator=(wxBitmap(wxSize(width, height), 32));
-#endif
 
   if (!m_svgImage) {
     this->wxBitmap::operator=(GetInvalidBitmap(width));
@@ -143,21 +132,7 @@ SvgBitmap &SvgBitmap::operator=(SvgBitmap &&o) noexcept {
 wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize) {
   wxImage img = wxImage(invalidImage_xpm);
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
-  wxBitmap retval;
-#if defined __WXOSX__
-  int scaleFactor = 1;
-  if (m_window != NULL)
-    scaleFactor = m_window->GetContentScaleFactor();
-  if (scaleFactor < 1)
-    scaleFactor = 1;
-  if (scaleFactor > 16)
-    scaleFactor = 16;
-  retval =
-    wxBitmap(img, wxBITMAP_SCREEN_DEPTH, scaleFactor);
-#else
-  retval = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
-#endif
-  return retval;
+  return wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
 }
 
 struct wxm_NSVGrasterizer *SvgBitmap::m_svgRast = NULL;
