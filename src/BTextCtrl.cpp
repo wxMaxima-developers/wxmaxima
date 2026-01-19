@@ -119,7 +119,7 @@ bool BTextCtrl::MatchParenthesis(int code) {
   return skip;
 }
 
-void BTextCtrl::CloseParenthesis(const wxString &open, const wxString &close, bool fromOpen) {
+void BTextCtrl::CloseParenthesis(const wxString &openP, const wxString &closeP, bool fromOpen) {
   long from, to;
   GetSelection(&from, &to);
 
@@ -129,11 +129,11 @@ void BTextCtrl::CloseParenthesis(const wxString &open, const wxString &close, bo
       wxString charHere = wxS(" "); // text.GetChar((std::size_t)GetInsertionPoint());
       std::size_t insp = GetInsertionPoint();
 
-      if (!fromOpen && charHere == close)
+      if (!fromOpen && charHere == closeP)
         SetInsertionPoint(insp + 1);
       else {
         wxString newtext = (insp > 0 ? text.SubString(0, insp - 1) : wxString("")) +
-          (fromOpen ? open : wxString("")) + close +
+          (fromOpen ? openP : wxString("")) + closeP +
           text.SubString(insp, text.length());
 
         ChangeValue(newtext);
@@ -145,7 +145,7 @@ void BTextCtrl::CloseParenthesis(const wxString &open, const wxString &close, bo
 
     if(from >= 0) {
       wxString newtext = text.SubString(0, static_cast<std::size_t>(from) - 1) +
-        open + text.SubString(from, static_cast<std::size_t>(to) - 1) + close +
+        openP + text.SubString(from, static_cast<std::size_t>(to) - 1) + closeP +
         text.SubString(to, text.length());
 
       ChangeValue(newtext);
