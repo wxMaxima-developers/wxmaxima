@@ -2230,7 +2230,6 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
     }
 
     wxStringTokenizer tokens(s, wxS("\n"));
-    int count = 0;
     CellListBuilder<Cell> tree;
     while (tokens.HasMoreTokens()) {
       wxString token = tokens.GetNextToken();
@@ -2255,7 +2254,6 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
         if (breakLine)
           tree.GetLastAppended()->ForceBreakLine(true);
       }
-      count++;
     }
     GetWorksheet()->InsertLine(std::move(tree), true);
   }

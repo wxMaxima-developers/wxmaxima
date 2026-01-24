@@ -166,7 +166,6 @@ void MaximaManual::CompileHelpFileAnchors(const wxString &maximaHtmlDir,
       if(m_abortBackgroundTask)
             return;
       bool is_Singlepage = file.Contains("_singlepage.");
-      std::size_t foundAnchors = 0;
       wxString fileURI = wxURI(wxS("file://") + file).BuildURI();
       // wxWidgets cannot automatically replace a # as it doesn't know if it is
       // a anchor separator
@@ -241,7 +240,6 @@ void MaximaManual::CompileHelpFileAnchors(const wxString &maximaHtmlDir,
                     m_helpFileAnchors[token] = id;
                   }
                   foundAnchorsTotal++;
-                  foundAnchors++;
                 }
             }
           }

@@ -83,12 +83,6 @@ private:
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
 
-  double m_signFontScale = 0;
-  int m_signWidth = 18;
-  int m_signSize = 50;
-  int m_signTop = m_signSize / 2;
-  int m_signType = 0;
-
 //** Bitfield objects (0 bytes)
 //**
   static void InitBitFields_SqrtCell()
