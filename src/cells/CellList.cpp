@@ -20,6 +20,7 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
+#include "Cell.h"
 #include "CellList.h"
 #include "GroupCell.h"
 #include <utility>
