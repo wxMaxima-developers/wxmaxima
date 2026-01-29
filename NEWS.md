@@ -3,6 +3,9 @@
 - Fix search and replace. Before in a longer string - e.g. "aaaaaaaaa"
   only every second occurrence was replaced, when (e.g.) one wanted to
   replace "a" by "b".
+- Update Hungarian and Russian translations.
+- Fix crashes at startup on MacOS 26.2 "Tahoe" (#2060).
+
 
 # 26.01.0
 
