@@ -5,6 +5,7 @@
   replace "a" by "b".
 - Update Hungarian and Russian translations.
 - Fix crashes at startup on MacOS 26.2 "Tahoe" (#2060).
+- Improvements in Plot2dWiz and Plot3dWiz.
 
 
 # 26.01.0

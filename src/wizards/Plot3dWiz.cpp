@@ -51,11 +51,11 @@ Plot3DWiz::Plot3DWiz(wxWindow *parent, int id, Configuration *cfg,
                               wxSize(70, -1));
   label_9 = new wxStaticText(this, -1, _("Grid:"));
   text_ctrl_8 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                               wxSize(70, -1), wxSP_ARROW_KEYS, 0, 100, 30);
+                               wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 30);
   text_ctrl_8->SetValue(30);
-  label_10 = new wxStaticText(this, -1, wxS("x"));
+  label_10 = new wxStaticText(this, -1, L'\u00D7'); // Unicode 'times' symbol
   text_ctrl_9 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                               wxSize(70, -1), wxSP_ARROW_KEYS, 0, 100, 30);
+                               wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 30);
   text_ctrl_9->SetValue(30);
   label_11 = new wxStaticText(this, -1, _("Format:"));
   const wxString combo_box_1_choices[] = {_("default"), _("inline"),

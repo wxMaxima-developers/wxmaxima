@@ -66,7 +66,7 @@ Plot2DWiz::Plot2DWiz(wxWindow *parent, int id, Configuration *cfg,
   check_box_2 = new wxCheckBox(this, -1, _("logscale"));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
   text_ctrl_8 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
-                               wxSize(70, -1), wxSP_ARROW_KEYS, 0, 1000, 10);
+                               wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000, 10);
   text_ctrl_8->SetValue(10);
   label_10 = new wxStaticText(this, -1, _("Format:"));
   const wxString combo_box_1_choices[] = {_("default"), _("inline"),
