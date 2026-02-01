@@ -83,7 +83,7 @@ Plot2DWiz::Plot2DWiz(wxWindow *parent, int id, Configuration *cfg,
                    wxSize(280, -1), 4, combo_box_2_choices, wxCB_DROPDOWN);
   combo_box_2->Connect(wxEVT_COMBOBOX, wxCommandEventHandler(Plot2DWiz::OnCombobox), NULL, this);
 
-  label_12 = new wxStaticText(this, -1, _("File:"));
+  label_12 = new wxStaticText(this, -1, _("Plot to file:"));
   text_ctrl_9 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(280, -1));
   button_4 = new wxBitmapButton(
