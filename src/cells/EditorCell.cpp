@@ -2297,7 +2297,7 @@ wxPoint EditorCell::PositionToPoint(size_t pos) {
   wxCoord x = m_currentPoint.x, y = m_currentPoint.y;
 
   if ((x < 0) || (y < 0))
-    return wxPoint(-1, -1);
+    return wxDefaultPosition;
 
   wxCoord width;
   size_t cX, cY;

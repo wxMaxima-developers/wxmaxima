@@ -826,11 +826,11 @@ public:
 
   //! Locates a char in the editable text of this cell
   virtual wxPoint PositionToPoint(size_t WXUNUSED(pos))
-    { return wxPoint(-1, -1); }
+    { return wxDefaultPosition; }
 
   //! Locates the cursor in the editable text of this cell
   virtual wxPoint PositionToPoint()
-    { return wxPoint(-1, -1); }
+    { return wxDefaultPosition; }
 
   //! Is this cell marked as "from an old maxima run"?
   virtual bool IsDirty() const

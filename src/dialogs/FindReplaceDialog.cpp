@@ -48,7 +48,7 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
   m_activateDuringConstruction = true;
   // Remember how wide the user wanted the dialogue to be the last time it was
   // used.
-  if (m_windowPos != wxPoint(-1, -1))
+  if (m_windowPos != wxDefaultPosition)
     SetPosition(m_windowPos);
   if (m_windowSize.x > 0)
     SetSize(wxSize(m_windowSize.x, GetSize().y));
@@ -91,4 +91,4 @@ void FindReplaceDialog::OnActivateEvent(wxActivateEvent &event) {
 }
 
 wxSize FindReplaceDialog::m_windowSize = wxDefaultSize;
-wxPoint FindReplaceDialog::m_windowPos = wxPoint(-1, -1);
+wxPoint FindReplaceDialog::m_windowPos = wxDefaultPosition;
