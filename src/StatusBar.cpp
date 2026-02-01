@@ -56,7 +56,7 @@
 #endif
 
 StatusBar::StatusBar(wxWindow *parent, int id)
-  : wxStatusBar(parent, id), m_ppi(wxSize(-1, -1)) {
+  : wxStatusBar(parent, id), m_ppi(wxDefaultSize) {
   m_svgRast.reset(wxm_nsvgCreateRasterizer());
   int widths[] = {-1, GetSize().GetHeight(), GetSize().GetHeight()};
   SetFieldsCount(3, widths);

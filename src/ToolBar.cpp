@@ -155,7 +155,7 @@ ToolBar::ToolBar(wxWindow *parent)
 void ToolBar::AddTools() {
   wxSize bitmapSize = GetOptimalBitmapSize();
   Clear();
-  m_ppi = wxSize(-1, -1);
+  m_ppi = wxDefaultSize;
   if (ShowNew())
 #if wxCHECK_VERSION(3, 1, 6)
     AddTool(wxID_NEW, _("New"), wxArtProvider::GetBitmapBundle(wxART_NEW, wxART_TOOLBAR), _("New document"));

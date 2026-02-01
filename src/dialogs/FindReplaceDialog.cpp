@@ -90,5 +90,5 @@ void FindReplaceDialog::OnActivateEvent(wxActivateEvent &event) {
     SetTransparent(180);
 }
 
-wxSize FindReplaceDialog::m_windowSize = wxSize(-1, -1);
+wxSize FindReplaceDialog::m_windowSize = wxDefaultSize;
 wxPoint FindReplaceDialog::m_windowPos = wxPoint(-1, -1);

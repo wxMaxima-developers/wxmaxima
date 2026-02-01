@@ -502,7 +502,7 @@ wxSize AnimationCell::ToGif(wxString file) {
                       m_images[1]->GetOriginalHeight());
     }
   }
-  return wxSize(-1, -1);
+  return wxDefaultSize;
 }
 
 void AnimationCell::ClearCache() {

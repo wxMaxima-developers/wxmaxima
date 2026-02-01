@@ -557,13 +557,13 @@ wxSize Image::ToImageFile(wxString filename) {
   if (filename.Lower().EndsWith(GetExtension().Lower())) {
     wxFile file(filename, wxFile::write);
     if (!file.IsOpened())
-      return wxSize(-1, -1);
+      return wxDefaultSize;
 
     file.Write(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
     if (file.Close())
       return wxSize(m_originalWidth, m_originalHeight);
     else
-      return wxSize(-1, -1);
+      return wxDefaultSize;
   }
 
   if ((filename.Lower().EndsWith(".svg")) && (m_extension == "svgz")) {
@@ -573,7 +573,7 @@ wxSize Image::ToImageFile(wxString filename) {
                                 m_compressedImage.GetDataLen());
     wxZlibInputStream zstream(istream);
     if (!zstream.IsOk())
-      return wxSize(-1, -1);
+      return wxDefaultSize;
     wxTextInputStream textIn(zstream);
     wxString line;
     while (!zstream.Eof()) {
@@ -582,14 +582,14 @@ wxSize Image::ToImageFile(wxString filename) {
     }
     wxFile file(filename, wxFile::write);
     if (!file.IsOpened())
-      return wxSize(-1, -1);
+      return wxDefaultSize;
     wxFileOutputStream output(file);
     wxTextOutputStream text(output);
     text << svgContents_string;
     if (file.Close())
       return wxSize(m_originalWidth, m_originalHeight);
     else
-      return wxSize(-1, -1);
+      return wxDefaultSize;
   } else {
     wxBitmap bitmap = GetUnscaledBitmap();
     wxImage image = bitmap.ConvertToImage();
@@ -611,10 +611,10 @@ wxSize Image::ToImageFile(wxString filename) {
     else if (ext.Lower() == wxS("cur"))
       mimetype = wxBITMAP_TYPE_CUR;
     else
-      return (wxSize(-1, -1));
+      return wxDefaultSize;
 
     if (!image.SaveFile(filename, mimetype))
-      return wxSize(-1, -1);
+      return wxDefaultSize;
     return image.GetSize();
   }
 }
