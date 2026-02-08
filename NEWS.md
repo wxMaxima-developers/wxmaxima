@@ -6,7 +6,8 @@
 - Update Hungarian and Russian translations.
 - Fix crashes at startup on MacOS 26.2 "Tahoe" (#2060).
 - Improvements in Plot2dWiz and Plot3dWiz.
-
+- Fix the "Hide all Sidebars" menu option, it did not work.
+  (Changed from "Hide all Toolbars"), it hides sidebars, not the toolbar.
 
 # 26.01.0
 

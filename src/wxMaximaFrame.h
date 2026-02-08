@@ -258,6 +258,7 @@ protected:
     re-docking windows.
   */
   void DockAllSidebars(wxCommandEvent &ev);
+  void HideAllSidebars(wxCommandEvent &ev);
 
   wxString wxMaximaManualLocation();
 public:

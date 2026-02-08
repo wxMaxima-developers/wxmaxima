@@ -441,6 +441,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
           wxMenuEventHandler(wxMaximaFrame::OnMenuStatusText), NULL, this);
   Connect(EventIDs::menu_pane_dockAll, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
+  Connect(EventIDs::menu_pane_hideall, wxEVT_MENU,
+          wxCommandEventHandler(wxMaximaFrame::HideAllSidebars), NULL, this);
   m_worksheet->SetFocus();
 }
 
@@ -728,7 +730,7 @@ void wxMaximaFrame::SetupViewMenu() {
   m_Maxima_Panes_Sub->AppendCheckItem(ToolBar::tb_hideCode,
                                       _("Hide Code Cells\tAlt+Ctrl+H"));
   m_Maxima_Panes_Sub->Append(EventIDs::menu_pane_hideall,
-                             _("Hide All Toolbars\tAlt+Shift+-"),
+                             _("Hide all Sidebars\tAlt+Shift+-"),
                              _("Hide all panes"), wxITEM_NORMAL);
 
   m_viewMenu->Append(wxWindow::NewControlId(), _("Sidebars"), m_Maxima_Panes_Sub,
@@ -2175,6 +2177,21 @@ void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   m_manager.Update();
 }
 
+void wxMaximaFrame::HideAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_math]).Hide();
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_stats]).Hide();
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_greek]).Hide();
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_symbols]).Hide();
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_unicode]).Hide();
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_history]).Hide();
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_structure]).Hide();
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_format]).Hide();
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_draw]).Hide();
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_help]).Hide();
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_variables]).Hide();;
+  m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_xmlInspector]).Hide();
+  m_manager.Update();
+}
 void  wxMaximaFrame::StatusText(const wxString &text, bool saveInLog)
 {
   m_newStatusText = true;
