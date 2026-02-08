@@ -697,8 +697,6 @@ void wxMaximaFrame::SetupViewMenu() {
   m_viewMenu = new wxMenu;
   // Sidebars
   m_Maxima_Panes_Sub = new wxMenu;
-  m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_toolbar,
-                                      _("Main Toolbar\tAlt+Shift+B"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_math,
                                       _("General Math\tAlt+Shift+M"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_stats,
@@ -837,6 +835,7 @@ void wxMaximaFrame::SetupViewMenu() {
   m_viewMenu->Check(EventIDs::menu_invertWorksheetBackground,
                     GetConfiguration().InvertBackground());
   m_viewMenu->Append(EventIDs::menu_show_logwindow, wxS("Toggle log window"), _("Show or hide the wxMaxima logging window"), wxITEM_NORMAL);
+  m_viewMenu->AppendCheckItem(EventIDs::menu_pane_toolbar, _("Main Toolbar\tShift+Alt+B"));
   m_MenuBar->Append(m_viewMenu, _("View"));
 }
 void wxMaximaFrame::SetupCellMenu() {
