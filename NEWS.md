@@ -8,6 +8,10 @@
 - Improvements in Plot2dWiz and Plot3dWiz.
 - Fix the "Hide all Sidebars" menu option, it did not work.
   (Changed from "Hide all Toolbars"), it hides sidebars, not the toolbar.
+- Build system: Allow changing the C++ standard using CMAKE_CXX_STANDARD.
+- Build system: Use C++20 by default, if the compiler supports it.
+  C++14 still works.
+- Build system: Fix compiling with C++20, C++23 and C++26.
 
 # 26.01.0
 
