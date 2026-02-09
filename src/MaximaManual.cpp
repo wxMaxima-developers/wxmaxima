@@ -119,24 +119,24 @@ bool MaximaManual::LoadManualAnchorsFromCache() {
 }
 
 void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors) {
-  HelpFileAnchors aliasses;
-  aliasses["%solve"] = "to_poly_solve";
-  aliasses["find_root_error"] = "find_root";
-  aliasses["wxbarsplot"] = "barsplot";
-  aliasses["wxboxplot"] = "boxplot";
-  aliasses["wxhistogram"] = "histogram";
-  aliasses["wxpiechart"] = "piechart";
-  aliasses["wxscatterplot"] = "scatterplot";
-  aliasses["wxstarplot"] = "starplot";
-  aliasses["wxdrawdf"] = "drawdf";
-  aliasses["wxdraw"] = "draw";
-  aliasses["wxdraw2d"] = "draw2d";
-  aliasses["wxdraw3d"] = "draw3d";
-  aliasses["with_slider_draw"] = "draw";
-  aliasses["with_slider_draw2d"] = "draw2d";
-  aliasses["with_slider_draw3d"] = "draw3d";
+  HelpFileAnchors aliases;
+  aliases["%solve"] = "to_poly_solve";
+  aliases["find_root_error"] = "find_root";
+  aliases["wxbarsplot"] = "barsplot";
+  aliases["wxboxplot"] = "boxplot";
+  aliases["wxhistogram"] = "histogram";
+  aliases["wxpiechart"] = "piechart";
+  aliases["wxscatterplot"] = "scatterplot";
+  aliases["wxstarplot"] = "starplot";
+  aliases["wxdrawdf"] = "drawdf";
+  aliases["wxdraw"] = "draw";
+  aliases["wxdraw2d"] = "draw2d";
+  aliases["wxdraw3d"] = "draw3d";
+  aliases["with_slider_draw"] = "draw";
+  aliases["with_slider_draw2d"] = "draw2d";
+  aliases["with_slider_draw3d"] = "draw3d";
 
-  for (auto it = aliasses.begin(); it != aliasses.end(); ++it) {
+  for (auto it = aliases.begin(); it != aliases.end(); ++it) {
     if ((anchors.find(it->first) == anchors.end()) &&
         (anchors.find(it->second) != anchors.end()))
       anchors[it->first] = anchors[it->second];

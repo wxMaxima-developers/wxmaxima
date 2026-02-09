@@ -862,7 +862,7 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
 }
 
 void Worksheet::SetZoomFactor(double newzoom) {
-  // Restrict zoom factors to tenths: If we allow arbitraty floats we sometimes
+  // Restrict zoom factors to tenths: If we allow arbitrary floats we sometimes
   // recalculate on requests to change the zoom factor by amounts that are too small to
   // make any effect.
   newzoom = round(newzoom * 10) / 10.0;

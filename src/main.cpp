@@ -351,7 +351,7 @@ bool MyApp::OnInit() {
     // Windows *GUI applications* do not have stderr (and stdout/stdin) assigned.
     // Assign them, as we want to output something there. (log messages on STDERR
     // when using the option --logtostderr).
-    // A seperate "text window" will be opened, where the messages will be shown.
+    // A separate "text window" will be opened, where the messages will be shown.
     FreeConsole(); // it does not seem to work without the FreeConsole() / AllocConsole() calls.
     // create a separate new console window
     AllocConsole();
