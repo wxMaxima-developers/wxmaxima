@@ -144,11 +144,6 @@ ToolBar::ToolBar(wxWindow *parent)
   SetGripperVisible(false);
   SetToolBitmapSize(GetOptimalBitmapSize());
   AddTools();
-
-  // For some reason overflow and re-sizing don't play together in some cases if
-  // we don't do the following:
-  Realize();
-  SetInitialSize(wxSize(100000, GetBestSize().y));
   Realize();
 }
 
