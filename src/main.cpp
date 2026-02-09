@@ -402,7 +402,7 @@ bool MyApp::OnInit() {
   wxImage::AddHandler(new wxXPMHandler);
   wxImage::AddHandler(new wxJPEGHandler);
   wxImage::AddHandler(new wxGIFHandler);
-#ifdef wwxUSE_LIBWEB
+#ifdef wxUSE_LIBWEBP
   wxImage::AddHandler(new wxWEBPHandler);
 #endif
 

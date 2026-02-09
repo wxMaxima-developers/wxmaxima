@@ -6462,7 +6462,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
                                      "GIF image (*.gif)|*.gif|"
                                      "Scaleable vector graphics (*.svg)|*.svg|"
                                      "Windows bitmap (*.bmp)|*.bmp|") +
-#ifdef wwxUSE_LIBWEB
+#ifdef wxUSE_LIBWEBP
                                      _("WebP (*.webp)|*.webp|") +
 #endif
                                      _("Portable anymap (*.pnm)|*.pnm|"
@@ -10131,7 +10131,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
                                "JPEG image (*.jpg)|*.jpg|"
                                "GIF image (*.gif)|*.gif|"
                                "Windows bitmap (*.bmp)|*.bmp|") +
-#ifdef wwxUSE_LIBWEB
+#ifdef wxUSE_LIBWEBP
                                _("WebP (*.webp)|*.webp|") +
 #endif
                                _("Portable anymap (*.pnm)|*.pnm|"
@@ -10141,7 +10141,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
             selectorString = _("PNG image (*.png)|*.png|"
                                "JPEG image (*.jpg)|*.jpg|"
                                "Windows bitmap (*.bmp)|*.bmp|") +
-#ifdef wwxUSE_LIBWEB
+#ifdef wxUSE_LIBWEBP
                                _("WebP (*.webp)|*.webp|") +
 #endif
                                _("GIF image (*.gif)|*.gif|"
@@ -10172,13 +10172,13 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       wxString newImg = wxFileSelector(
                                        _("Change Image"), m_lastPath, wxEmptyString, wxEmptyString,
                                        _("Image files") + " (*.png, *.jpg, "
-#ifdef wwxUSE_LIBWEB
+#ifdef wxUSE_LIBWEBP
                                          "*.webp, "
 #endif
 
                                          "*.bmp, *.xpm, *.gif, *.svg, "
                                          "*.svgz)|*.png;*.jpg;"
-#ifdef wwxUSE_LIBWEB
+#ifdef wxUSE_LIBWEBP
                                          "*.webp;"
 #endif
                                          "*.bmp;*.xpm;*.gif;*.svg;*.svgz",
@@ -10891,13 +10891,13 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
       wxString file = wxFileSelector(
                                      _("Insert Image"), m_lastPath, wxEmptyString, wxEmptyString,
                                      _("Image files") + " (*.png, *.jpg," +
-#ifdef wwxUSE_LIBWEB
+#ifdef wxUSE_LIBWEBP
                                          "*.webp," +
 #endif
 
                                        "*.bmp, *.xpm, *.gif, *.svg, "
                                        "*.svgz)|*.png;*.jpg;" +
-#ifdef wwxUSE_LIBWEB
+#ifdef wxUSE_LIBWEBP
                                          "*.webp;" +
 #endif
                                        "*.bmp;*.xpm;*.gif;*.svg;*.svgz",

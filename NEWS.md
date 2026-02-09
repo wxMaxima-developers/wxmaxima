@@ -12,6 +12,7 @@
 - Build system: Use C++20 by default, if the compiler supports it.
   C++14 still works.
 - Build system: Fix compiling with C++20, C++23 and C++26.
+- Fix webp support for wxWidgets >= 3.3.0.
 
 # 26.01.0
 
