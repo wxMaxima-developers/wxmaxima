@@ -13,6 +13,7 @@
   C++14 still works.
 - Build system: Fix compiling with C++20, C++23 and C++26.
 - Fix webp support for wxWidgets >= 3.3.0.
+- Fix 2nd 'Special constant' button in the integrate wizard.
 
 # 26.01.0
 

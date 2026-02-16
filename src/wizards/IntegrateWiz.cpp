@@ -47,7 +47,7 @@ IntegrateWiz::IntegrateWiz(wxWindow *parent, int id, Configuration *cfg,
   label_5 = new wxStaticText(this, -1, _("To:"));
   text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxS("1"), wxDefaultPosition,
                               wxSize(110, -1));
-  button_4 = new wxButton(this, special_to, _("Special"));
+  button_4 = new wxButton(this, EventIDs::wizard_special_to, _("Special"));
   button_4->Connect(wxEVT_BUTTON, wxCommandEventHandler(IntegrateWiz::OnButton), NULL, this);
   checkbox_2 = new wxCheckBox(this, EventIDs::wizard_numeric_id, _("&Numerical integration"));
   checkbox_2->Connect(wxEVT_CHECKBOX, wxCommandEventHandler(IntegrateWiz::OnCheckbox), NULL, this);
