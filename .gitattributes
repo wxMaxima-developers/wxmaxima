@@ -32,3 +32,15 @@ README           text working-tree-encoding=UTF-8 eol=lf
 *.in             text working-tree-encoding=UTF-8 eol=lf
 *.txt            text working-tree-encoding=UTF-8 eol=lf
 *.xpm            text working-tree-encoding=UTF-8 eol=lf
+# ignore several dot files for the release.
+.github export-ignore
+.appveyor export-ignore
+.appveyor.yml export-ignore
+.clang-format export-ignore
+.codacy.yaml export-ignore
+.coverity export-ignore
+.editorconfig export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+.stylelintrc export-ignore
+.mdlrc export-ignore

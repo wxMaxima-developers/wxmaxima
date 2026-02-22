@@ -17,6 +17,7 @@
 - Fix many issues in the integrate numerically menu (#2069).
   Also mentioned "QUADPACK" in the menu, so that one knows, from what
   Maxima package these special functions come.
+- Don't include dot files in the release archive (#2068).
 
 # 26.01.0
 
