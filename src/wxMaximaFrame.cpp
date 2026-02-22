@@ -1871,7 +1871,7 @@ void wxMaximaFrame::SetupNumericMenu() {
                        integralSign +
                        _("(f(x),x,y) with singularities+discontinuities"));
 
-  m_NumericMenu->Append(wxWindow::NewControlId(), _("Integrate numerically"), quadpack_sub);
+  m_NumericMenu->Append(wxWindow::NewControlId(), _("Integrate numerically (QUADPACK)"), quadpack_sub);
   m_MenuBar->Append(m_NumericMenu, _("&Numeric"));
 }
 

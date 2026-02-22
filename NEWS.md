@@ -14,6 +14,9 @@
 - Build system: Fix compiling with C++20, C++23 and C++26.
 - Fix webp support for wxWidgets >= 3.3.0.
 - Fix 2nd 'Special constant' button in the integrate wizard.
+- Fix many issues in the integrate numerically menu (#2069).
+  Also mentioned "QUADPACK" in the menu, so that one knows, from what
+  Maxima package these special functions come.
 
 # 26.01.0
 
