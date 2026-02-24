@@ -9258,52 +9258,64 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  integralSign + _("(f(x),x,a,b)), Strategy of Aind"), wxEmptyString,
                  wxEmptyString,
                  wxS("quad_qag(#1#,#2#,#3#,#4#,#5#,'epsrel=#6#,'epsabs=#7#,'limit=#8#)"),
-                 wxS("f(x)"), wxS("%"), wxEmptyString, wxS("x"), wxS("x"), wxEmptyString,
-                 wxS("a"), wxS("0"), wxEmptyString, wxS("b"), wxS("10"), wxEmptyString,
-                 wxS("key"), wxS("4"),
-                 _("An integer between 1..6; Higher numbers work better for oscillating "
-                   "integrands"),
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString, wxS("epsabs"), wxS("0"),
-                 wxEmptyString, wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("f(x)"), wxS("%"), wxEmptyString,
+                 wxS("x"), wxS("x"), wxEmptyString,
+                 wxS("a"), wxS("0"), wxEmptyString,
+                 wxS("b"), wxS("10"), wxEmptyString,
+                 wxS("key"), wxS("4"), _("An integer between 1..6; Higher numbers work better for oscillating integrands"),
+                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
+                 wxS("epsabs"), wxS("0"), wxEmptyString,
+                 wxS("limit"), wxS("200"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_quad_qags){
       CommandWiz(
                  integralSign + _("(f(x),x,a,b)), Epsilon algorithm"), wxEmptyString,
                  wxEmptyString,
                  wxS("quad_qags(#1#,#2#,#3#,#4#,'epsrel=#5#,'epsabs=#6#,'limit=#7#)"),
-                 wxS("f(x)"), wxS("%"), wxEmptyString, wxS("x"), wxS("x"), wxEmptyString,
-                 wxS("a"), wxS("0"), wxEmptyString, wxS("b"), wxS("10"), wxEmptyString,
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString, wxS("epsabs"), wxS("0"),
-                 wxEmptyString, wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("f(x)"), wxS("%"), wxEmptyString,
+                 wxS("x"), wxS("x"), wxEmptyString,
+                 wxS("a"), wxS("0"), wxEmptyString,
+                 wxS("b"), wxS("10"), wxEmptyString,
+                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
+                 wxS("epsabs"), wxS("0"), wxEmptyString,
+                 wxS("limit"), wxS("200"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_quad_qagi){
       CommandWiz(
                  integralSign + _("(f(x),x,a,b), (semi-) infinite interval"),
                  wxEmptyString, wxEmptyString,
                  wxS("quad_qagi(#1#,#2#,#3#,#4#,'epsrel=#5#,'epsabs=#6#,'limit=#7#)"),
-                 wxS("f(x)"), wxS("%"), wxEmptyString, wxS("x"), wxS("x"), wxEmptyString,
-                 wxS("a"), wxS("0"), wxEmptyString, wxS("b"), wxS("10"), wxEmptyString,
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString, wxS("epsabs"), wxS("0"),
-                 wxEmptyString, wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("f(x)"), wxS("%"), wxEmptyString,
+                 wxS("x"), wxS("x"), wxEmptyString,
+                 wxS("a"), wxS("0"), wxEmptyString,
+                 wxS("b"), wxS("10"), wxEmptyString,
+                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
+                 wxS("epsabs"), wxS("0"), wxEmptyString,
+                 wxS("limit"), wxS("200"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_quad_qawc){
       CommandWiz(
                  _("Cauchy principal value of f(x)/(x-c), finite interval"),
                  wxEmptyString, wxEmptyString,
                  wxS("quad_qawc(#1#,#2#,#3#,#4#,'epsrel=#5#,'epsabs=#6#,'limit=#7#)"),
-                 wxS("f(x)"), wxS("%"), wxEmptyString, wxS("x"), wxS("x"), wxEmptyString,
-                 wxS("c"), wxS("4"), wxEmptyString, wxS("a"), wxS("0"), wxEmptyString,
-                 wxS("b"), wxS("10"), wxEmptyString, wxS("epsrel"), wxS("1d-8"),
-                 wxEmptyString, wxS("epsabs"), wxS("0"), wxEmptyString, wxS("limit"),
-                 wxS("200"), wxEmptyString);
+                 wxS("f(x)"), wxS("%"), wxEmptyString,
+                 wxS("x"), wxS("x"), wxEmptyString,
+                 wxS("c"), wxS("4"), wxEmptyString,
+                 wxS("a"), wxS("0"), wxEmptyString,
+                 wxS("b"), wxS("10"), wxEmptyString,
+                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
+                 wxS("epsabs"), wxS("0"), wxEmptyString,
+                 wxS("limit"), wxS("200"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_quad_qawf_sin){
       CommandWiz(integralSign + wxS("(f(x)*sin(ω·x),x,a,∞)"), wxEmptyString,
                  wxEmptyString,
                  wxS("quad_qawf(#1#,#2#,#3#,#4#,'sin,'epsabs=#5#,'limit=#6#,'maxp1=#7#,'limlst=#8#)"),
-                 wxS("f(x)"), wxS("%"), wxEmptyString, wxS("x"), wxS("x"),
-                 wxEmptyString, wxS("a"), wxS("a"), wxEmptyString, wxS("ω"),
-                 wxS("2"), wxEmptyString, wxS("epsabs"), wxS("1d-10"), wxEmptyString,
+                 wxS("f(x)"), wxS("%"), wxEmptyString,
+                 wxS("x"), wxS("x"), wxEmptyString,
+                 wxS("a"), wxS("a"), wxEmptyString,
+                 wxS("ω"), wxS("2"), wxEmptyString,
+                 wxS("epsabs"), wxS("1d-10"), wxEmptyString,
                  wxS("limit"), wxS("200"), wxEmptyString,
                  wxS("maxp1"), wxS("100"), wxEmptyString,
                  wxS("limlst"), wxS("10"), wxEmptyString);
@@ -9312,9 +9324,11 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
       CommandWiz(integralSign + wxS("(f(x)*cos(ω·x),x,a,∞)"), wxEmptyString,
                  wxEmptyString,
                  wxS("quad_qawf(#1#,#2#,#3#,#4#,'cos,'epsabs=#5#,'limit=#6#,'maxp1=#7#,'limlst=#8#)"),
-                 wxS("f(x)"), wxS("%"), wxEmptyString, wxS("x"), wxS("x"),
-                 wxEmptyString, wxS("a"), wxS("a"), wxEmptyString, wxS("ω"),
-                 wxS("2"), wxEmptyString, wxS("epsabs"), wxS("1d-10"), wxEmptyString,
+                 wxS("f(x)"), wxS("%"), wxEmptyString,
+                 wxS("x"), wxS("x"), wxEmptyString,
+                 wxS("a"), wxS("a"), wxEmptyString,
+                 wxS("ω"), wxS("2"), wxEmptyString,
+                 wxS("epsabs"), wxS("1d-10"), wxEmptyString,
                  wxS("limit"), wxS("200"), wxEmptyString,
                  wxS("maxp1"), wxS("100"), wxEmptyString,
                  wxS("limlst"), wxS("10"), wxEmptyString);
@@ -9324,22 +9338,26 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  wxEmptyString,
                  wxS("quad_qawo(#1#,#2#,#3#,#4#,#5#,'sin,'epsrel=#6#,'epsabs=#7#,"
                      "'limit=#8#)"),
-                 wxS("f(x)"), wxS("%"), wxEmptyString, wxS("x"), wxS("x"),
-                 wxEmptyString, wxS("a"), wxS("a"), wxEmptyString, wxS("b"),
-                 wxS("b"), wxEmptyString, wxS("ω"), wxS("2"), wxEmptyString,
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString, wxS("epsabs"),
-                 wxS("0"), wxEmptyString, wxS("limit"), wxS("200"),
-                 wxEmptyString);
+                 wxS("f(x)"), wxS("%"), wxEmptyString,
+                 wxS("x"), wxS("x"), wxEmptyString,
+                 wxS("a"), wxS("a"), wxEmptyString,
+                 wxS("b"), wxS("b"), wxEmptyString,
+                 wxS("ω"), wxS("2"), wxEmptyString,
+                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
+                 wxS("epsabs"), wxS("0"), wxEmptyString,
+                 wxS("limit"), wxS("200"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_quad_qawo_cos){
       CommandWiz(integralSign + wxS("(f(x)*cos(ω·x),x,a,b)"), wxEmptyString,
                  wxEmptyString,
                  wxS("quad_qawo(#1#,#2#,#3#,#4#,#5#,'cos,'epsrel=#6#,'epsabs=#7#,"
                      "'limit=#8#)"),
-                 wxS("f(x)"), wxS("%"), wxEmptyString, wxS("x"), wxS("x"),
-                 wxEmptyString, wxS("a"), wxS("a"), wxEmptyString, wxS("ω"),
-                 wxS("2"), wxEmptyString, wxS("epsrel"), wxS("1d-8"),
-                 wxEmptyString, wxS("epsabs"), wxS("0"), wxEmptyString,
+                 wxS("f(x)"), wxS("%"), wxEmptyString,
+                 wxS("x"), wxS("x"), wxEmptyString,
+                 wxS("a"), wxS("a"), wxEmptyString,
+                 wxS("ω"), wxS("2"), wxEmptyString,
+                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
+                 wxS("epsabs"), wxS("0"), wxEmptyString,
                  wxS("limit"), wxS("200"), wxEmptyString);
   }
 
@@ -9348,55 +9366,74 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  integralSign + wxS("(f(x)*(x-a)^α(b-x)^β,x,a,b)"), wxEmptyString,
                  wxEmptyString,
                  wxS("quad_qaws(#1#,#2#,#3#,#4#,#5#,#6#,1,'epsrel=#7#,'epsabs=#8#,'limit=#9#)"),
-                 wxS("f(x)"), wxS("%"), wxEmptyString, wxS("x"), wxS("x"), wxEmptyString,
-                 wxS("a"), wxS("1"), wxEmptyString, wxS("b"), wxS("2"), wxEmptyString,
-                 wxS("α"), wxS("-0.5"), wxEmptyString, wxS("β"), wxS("-0.5"), wxEmptyString, // Values for alpha and beta from the example in the documentation
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString, wxS("epsabs"), wxS("0"),
-                 wxEmptyString, wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("f(x)"), wxS("%"), wxEmptyString,
+                 wxS("x"), wxS("x"), wxEmptyString,
+                 wxS("a"), wxS("1"), wxEmptyString,
+                 wxS("b"), wxS("2"), wxEmptyString,
+                 wxS("α"), wxS("-0.5"), wxEmptyString,
+                 wxS("β"), wxS("-0.5"), wxEmptyString, // Values for alpha and beta from the example in the documentation
+                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
+                 wxS("epsabs"), wxS("0"), wxEmptyString,
+                 wxS("limit"), wxS("200"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_quad_qaws2){
       CommandWiz(
                  integralSign + wxS("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"),
                  wxEmptyString, wxEmptyString,
                  wxS("quad_qaws(#1#,#2#,#3#,#4#,#5#,#6#,2,'epsrel=#7#,'epsabs=#8#,'limit=#9#)"),
-                 wxS("f(x)"), wxS("%"), wxEmptyString, wxS("x"), wxS("x"), wxEmptyString,
-                 wxS("a"), wxS("1"), wxEmptyString, wxS("b"), wxS("2"), wxEmptyString,
-                 wxS("α"), wxS("-0.5"), wxEmptyString, wxS("β"), wxS("-0.5"), wxEmptyString, // Values for alpha and beta from the example in the documentation
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString, wxS("epsabs"), wxS("0"),
-                 wxEmptyString, wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("f(x)"), wxS("%"), wxEmptyString,
+                 wxS("x"), wxS("x"), wxEmptyString,
+                 wxS("a"), wxS("1"), wxEmptyString,
+                 wxS("b"), wxS("2"), wxEmptyString,
+                 wxS("α"), wxS("-0.5"), wxEmptyString,
+                 wxS("β"), wxS("-0.5"), wxEmptyString, // Values for alpha and beta from the example in the documentation
+                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
+                 wxS("epsabs"), wxS("0"), wxEmptyString,
+                 wxS("limit"), wxS("200"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_quad_qaws3){
       CommandWiz(
                  integralSign + wxS("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"),
                  wxEmptyString, wxEmptyString,
                  wxS("quad_qaws(#1#,#2#,#3#,#4#,#5#,#6#,3,'epsrel=#7#,'epsabs=#8#,'limit=#9#)"),
-                 wxS("f(x)"), wxS("%"), wxEmptyString, wxS("x"), wxS("x"), wxEmptyString,
-                 wxS("a"), wxS("1"), wxEmptyString, wxS("b"), wxS("2"), wxEmptyString,
-                 wxS("α"), wxS("-0.5"), wxEmptyString, wxS("β"), wxS("-0.5"), wxEmptyString, // Values for alpha and beta from the example in the documentation
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString, wxS("epsabs"), wxS("0"),
-                 wxEmptyString, wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("f(x)"), wxS("%"), wxEmptyString,
+                 wxS("x"), wxS("x"), wxEmptyString,
+                 wxS("a"), wxS("1"), wxEmptyString,
+                 wxS("b"), wxS("2"), wxEmptyString,
+                 wxS("α"), wxS("-0.5"), wxEmptyString,
+                 wxS("β"), wxS("-0.5"), wxEmptyString, // Values for alpha and beta from the example in the documentation
+                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
+                 wxS("epsabs"), wxS("0"), wxEmptyString,
+                 wxS("limit"), wxS("200"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_quad_qaws4){
       CommandWiz(
                  integralSign + wxS("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"),
                  wxEmptyString, wxEmptyString,
                  wxS("quad_qaws(#1#,#2#,#3#,#4#,#5#,#6#,4,'epsrel=#7#,'epsabs=#8#,'limit=#9#)"),
-                 wxS("f(x)"), wxS("%"), wxEmptyString, wxS("x"), wxS("x"), wxEmptyString,
-                 wxS("a"), wxS("1"), wxEmptyString, wxS("b"), wxS("2"), wxEmptyString,
-                 wxS("α"), wxS("-0.5"), wxEmptyString, wxS("β"), wxS("-0.5"), wxEmptyString, // Values for alpha and beta from the example in the documentation
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString, wxS("epsabs"), wxS("0"),
-                 wxEmptyString, wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("f(x)"), wxS("%"), wxEmptyString,
+                 wxS("x"), wxS("x"), wxEmptyString,
+                 wxS("a"), wxS("1"), wxEmptyString,
+                 wxS("b"), wxS("2"), wxEmptyString,
+                 wxS("α"), wxS("-0.5"), wxEmptyString,
+                 wxS("β"), wxS("-0.5"), wxEmptyString, // Values for alpha and beta from the example in the documentation
+                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
+                 wxS("epsabs"), wxS("0"), wxEmptyString,
+                 wxS("limit"), wxS("200"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_quad_qagp){
     CommandWiz(
                integralSign + _("(f(x),x,y) with singularities+discontinuities"),
                wxEmptyString, wxEmptyString,
                wxS("quad_qagp(#1#,#2#,#3#,#4#,[#5#],'epsrel=#6#,'epsabs=#7#,'limit=#8#)"),
-               wxS("f(x)"), wxS("%"), wxEmptyString, wxS("x"), wxS("x"), wxEmptyString,
-               wxS("a"), wxS("1"), wxEmptyString, wxS("b"), wxS("2"), wxEmptyString,
-               wxS("points"), wxS(".5,.75"), wxEmptyString, wxS("epsrel"), wxS("1d-8"),
-               wxEmptyString, wxS("epsabs"), wxS("0"), wxEmptyString, wxS("limit"),
-               wxS("200"), wxEmptyString);
+               wxS("f(x)"), wxS("%"), wxEmptyString,
+               wxS("x"), wxS("x"), wxEmptyString,
+               wxS("a"), wxS("1"), wxEmptyString,
+               wxS("b"), wxS("2"), wxEmptyString,
+               wxS("points"), wxS(".5,.75"), wxEmptyString,
+               wxS("epsrel"), wxS("1d-8"), wxEmptyString,
+               wxS("epsabs"), wxS("0"), wxEmptyString,
+               wxS("limit"), wxS("200"), wxEmptyString);
   }
 }
 
