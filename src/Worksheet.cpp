@@ -773,7 +773,6 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
   if (undoBuffer)
     TreeUndo_MarkCellsAsAdded(firstOfCellsToInsert, lastOfCellsToInsert,
                               undoBuffer);
-
   AdjustSize();
   return lastOfCellsToInsert;
 }
@@ -4208,6 +4207,7 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
  * Adjust the virtual size and scrollbars.
  */
 void Worksheet::AdjustSize() {
+  RecalculateIfNeeded();
   int width = 40, height = 40;
   int virtualHeight = 40;
   int clientWidth, clientHeight;
