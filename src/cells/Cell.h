@@ -1138,4 +1138,4 @@ inline auto OnInner(C *cell) { return InnerCellAdapter(cell); }
 inline size_t InnerCellIterator::GetInnerCellCount(const Cell *cell) { return cell->GetInnerCellCount(); }
 inline Cell *InnerCellIterator::GetInnerCell(const Cell *cell, size_t index) { return cell->GetInnerCell(index); }
 
-#endif // CEL_H
+#endif // CELL_H
