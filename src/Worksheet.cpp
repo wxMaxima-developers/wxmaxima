@@ -6725,6 +6725,7 @@ void Worksheet::PasteFromClipboard() {
 
       // Add the result of the last operation to the worksheet.
       if (contents) {
+        contents->SetConfigurationList(m_configuration);
         // ! Tell the rest of this function that we have found cells
         cells = true;
 
@@ -6752,6 +6753,7 @@ void Worksheet::PasteFromClipboard() {
         NumberSections();
         Recalculate();
         RequestRedraw();
+        RedrawIfRequested();
         SetHCaret(end);
       }
     }
