@@ -773,7 +773,6 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
   if (undoBuffer)
     TreeUndo_MarkCellsAsAdded(firstOfCellsToInsert, lastOfCellsToInsert,
                               undoBuffer);
-
   AdjustSize();
   return lastOfCellsToInsert;
 }
@@ -6725,6 +6724,7 @@ void Worksheet::PasteFromClipboard() {
 
       // Add the result of the last operation to the worksheet.
       if (contents) {
+        contents->SetConfigurationList(m_configuration);
         // ! Tell the rest of this function that we have found cells
         cells = true;
 
@@ -6752,6 +6752,7 @@ void Worksheet::PasteFromClipboard() {
         NumberSections();
         Recalculate();
         RequestRedraw();
+        RedrawIfRequested();
         SetHCaret(end);
       }
     }
@@ -7033,17 +7034,11 @@ void Worksheet::SaveValue() {
 }
 
 void Worksheet::RemoveAllOutput() {
-  // We don't want to remove all output if maxima is currently evaluating.
-  if (GetWorkingGroup())
-    return;
-
   if (HasCellsSelected()) {
     // If the selection is in the output we want to remove the selection.
     if (m_cellPointers.m_selectionStart->GetType() != MC_TYPE_GROUP)
       ClearSelection();
   }
-
-  SetActiveCell(NULL);
 
   RemoveAllOutput(GetTree());
   OutputChanged();
@@ -7059,7 +7054,8 @@ void Worksheet::RemoveAllOutput(GroupCell *cell) {
   for (auto &tmp : OnList(cell)) {
     // If this function actually does do something we
     // should enable the "save" button.
-    tmp.RemoveOutput();
+    if(GetWorkingGroup() != &tmp)
+      tmp.RemoveOutput();
 
     GroupCell *sub = tmp.GetHiddenTree();
     if (sub)
