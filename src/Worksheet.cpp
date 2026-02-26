@@ -4207,7 +4207,6 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
  * Adjust the virtual size and scrollbars.
  */
 void Worksheet::AdjustSize() {
-  RecalculateIfNeeded();
   int width = 40, height = 40;
   int virtualHeight = 40;
   int clientWidth, clientHeight;
