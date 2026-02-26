@@ -48,7 +48,7 @@ var searchData=
   ['cmppointers_45',['cmpPointers',['../classCellPtrBase.html#a0de21cedfa166aa830acda35184dd231',1,'CellPtrBase']]],
   ['codecellvisibilitychanged_46',['CodeCellVisibilityChanged',['../classWorksheet.html#ab5933436512be0418142944bf19f5836',1,'Worksheet']]],
   ['commandsleftincell_47',['CommandsLeftInCell',['../classEvaluationQueue.html#aa2d62d074c9b0112eddb9f97e1256105',1,'EvaluationQueue']]],
-  ['commandwiz_48',['CommandWiz',['../classwxMaxima.html#a3b1e17abaea9346d17d4854d60ed34c7',1,'wxMaxima']]],
+  ['commandwiz_48',['CommandWiz',['../classwxMaxima.html#a5deb121b24bddcbcec77253c349980b8',1,'wxMaxima']]],
   ['compilehelpfileanchors_49',['CompileHelpFileAnchors',['../classMaximaManual.html#acbba90888ccbd805858cb1117d3701bc',1,'MaximaManual']]],
   ['completesymbol_50',['CompleteSymbol',['../classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3',1,'AutoComplete']]],
   ['compressedgnuplotsource_51',['CompressedGnuplotSource',['../classImage.html#ae4ca9ced3889fdb12d0e659ea813fd91',1,'Image']]],
