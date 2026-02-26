@@ -567,8 +567,7 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
     fun = fun.Left(spacepos);
 
   /// Escape letters that need escaping in maxima
-    for (const auto &chr : m_configuration->CharsNeedingQuotes())
-      fun.Replace(chr, wxString(wxS("\\")) + chr);
+  fun = Configuration::EscapeForMaxima(fun);
   
   /// Add symbols
   {

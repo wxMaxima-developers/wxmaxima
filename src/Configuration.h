@@ -289,9 +289,16 @@ public:
   //! Returns a list of chars we need to escape in maxima
   static const wxString CharsNeedingQuotes()
     {
-      return wxString(wxS("°,\\'\"()[]-{}^+*/&§?:;=#<>$"));
+      return wxString(wxS("!°,\\'\"()[]-{}^+*/&§?:;=#<>$"));
     }
 
+  static const wxString EscapeForMaxima(wxString str)
+    {
+      for (const auto &chr : CharsNeedingQuotes())
+        str.Replace(chr, wxString(wxS("\\")) + chr);
+      return str;
+    }
+  
   wxFontWeight IsBold(long st) const;
 
   wxFontStyle IsItalic(long st) const;

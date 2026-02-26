@@ -10832,14 +10832,14 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_convert_to_code){
     if (GetWorksheet()->GetActiveCell()) {
       GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_CODE);
-      GetWorksheet()->Recalculate();
+      GetWorksheet()->Recalculate(GetWorksheet()->GetActiveCell()->GetGroup());
       GetWorksheet()->RequestRedraw();
     }
   }
   else if(event.GetId() == EventIDs::menu_convert_to_comment){
     if (GetWorksheet()->GetActiveCell()) {
       GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TEXT);
-      GetWorksheet()->Recalculate();
+      GetWorksheet()->Recalculate(GetWorksheet()->GetActiveCell()->GetGroup());
       GetWorksheet()->RequestRedraw();
     }
   }
@@ -10853,7 +10853,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_convert_to_title){
     if (GetWorksheet()->GetActiveCell()) {
       GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TITLE);
-      GetWorksheet()->Recalculate();
+      GetWorksheet()->Recalculate(GetWorksheet()->GetActiveCell()->GetGroup());
       GetWorksheet()->RequestRedraw();
     }
   }
@@ -10865,7 +10865,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_convert_to_section){
     if (GetWorksheet()->GetActiveCell()) {
       GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_SECTION);
-      GetWorksheet()->Recalculate();
+      GetWorksheet()->Recalculate(GetWorksheet()->GetActiveCell()->GetGroup());
       GetWorksheet()->RequestRedraw();
     }
   }
@@ -10878,7 +10878,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
     if (GetWorksheet()->GetActiveCell()) {
       GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(
                                                              GC_TYPE_SUBSECTION);
-      GetWorksheet()->Recalculate();
+      GetWorksheet()->Recalculate(GetWorksheet()->GetActiveCell()->GetGroup());
       GetWorksheet()->RequestRedraw();
     }
   }
@@ -10891,21 +10891,21 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
     if (GetWorksheet()->GetActiveCell()) {
       GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(
                                                              GC_TYPE_SUBSUBSECTION);
-      GetWorksheet()->Recalculate();
+      GetWorksheet()->Recalculate(GetWorksheet()->GetActiveCell()->GetGroup());
       GetWorksheet()->RequestRedraw();
     }
   }
   else if(event.GetId() == EventIDs::menu_convert_to_heading5){
     if (GetWorksheet()->GetActiveCell()) {
       GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING5);
-      GetWorksheet()->Recalculate();
+      GetWorksheet()->Recalculate(GetWorksheet()->GetActiveCell()->GetGroup());
       GetWorksheet()->RequestRedraw();
     }
   }
   else if(event.GetId() == EventIDs::menu_convert_to_heading6){
     if (GetWorksheet()->GetActiveCell()) {
       GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING6);
-      GetWorksheet()->Recalculate();
+      GetWorksheet()->Recalculate(GetWorksheet()->GetActiveCell()->GetGroup());
       GetWorksheet()->RequestRedraw();
     }
   }

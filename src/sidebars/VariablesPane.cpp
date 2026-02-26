@@ -21,6 +21,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "VariablesPane.h"
+#include "Configuration.h"
 #include <memory>
 #include <algorithm>
 
@@ -378,33 +379,8 @@ wxString Variablespane::UnescapeVarname(wxString var) {
 }
 
 wxString Variablespane::EscapeVarname(wxString var) {
-  var.Replace("\\", "\\\\");
-  var.Replace("+", "\\+");
-  var.Replace("#", "\\#");
-  var.Replace("'", "\\'");
-  var.Replace("\"", "\\\"");
-  var.Replace("!", "\\!");
-  var.Replace("-", "\\-");
-  var.Replace("*", "\\*");
-  var.Replace("/", "\\/");
-  var.Replace("^", "\\^");
-  var.Replace("$", "\\$");
-  var.Replace(";", "\\;");
-  var.Replace(",", "\\,");
-  var.Replace("<", "\\<");
-  var.Replace(">", "\\>");
-  var.Replace("@", "\\@");
-  var.Replace("!", "\\!");
-  var.Replace("~", "\\~");
-  var.Replace("`", "\\`");
-  var.Replace("?", "\\?");
-  var.Replace("(", "\\(");
-  var.Replace(")", "\\)");
-  var.Replace("{", "\\{");
-  var.Replace("}", "\\}");
-  var.Replace("[", "\\[");
-  var.Replace("]", "\\]");
-  var.Replace(" ", "\\ ");
+    var = Configuration::EscapeForMaxima(fun);
+
   if (var.StartsWith("\\?"))
     var = var.Right(var.Length() - 1);
   if (!var.StartsWith(wxS("?")))
