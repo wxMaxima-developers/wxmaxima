@@ -379,7 +379,7 @@ wxString Variablespane::UnescapeVarname(wxString var) {
 }
 
 wxString Variablespane::EscapeVarname(wxString var) {
-    var = Configuration::EscapeForMaxima(fun);
+    var = Configuration::EscapeForMaxima(var);
 
   if (var.StartsWith("\\?"))
     var = var.Right(var.Length() - 1);
