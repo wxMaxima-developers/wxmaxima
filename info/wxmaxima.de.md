@@ -479,11 +479,17 @@ rekonstruieren, enthalten sie aber nicht.
 
 ### .wxm
 
-.wxm-Dateien sollten das Arbeitsblatt außer _Maxima_'s Ausgabe
-enthalten. _Maxima_ >5.38 kann `.wxm-Dateien über den `load()`-Befehl lesen
-(wie `.mac`-Dateien). Worksheets, die neue Features enthalten, sind - wenn
-sie in diesem textbasierten Format gespeichert werden, manchmal nicht
-abwärtskompatibel zu älteren Versionen von _wxMaxima_.
+`.wxm` files contain the worksheet except for _Maxima_’s output. On Maxima
+versions >5.38 they can be read using _Maxima_’s `load()` function just as
+.mac files. Well - mostly. Questions (like `asksign(x)`) are problematic, as
+the answer is written in the `.wxm` file (so that it can be suggested after
+loading), but that can Maxima not evaluate.  You can prevent Maxima from
+asking questions by using `assume()` to declare some properties, Maxima
+wants to know.
+
+With this plain-text format, it sometimes is unavoidable that worksheets
+that use new features are not downwards-compatible with older versions of
+_wxMaxima_.
 
 #### Dateiformat von wxm-Dateien
 

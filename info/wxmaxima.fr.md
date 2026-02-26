@@ -531,12 +531,17 @@ session _wxMaxima_.
 
 ### .wxm
 
-Les fichiers `.wxm` contiennent la feuille de travail, à l’exception des
-sorties de _Maxima_. À partir des versions de _Maxima_ >5.38, ils peuvent
-être lus avec la fonction `load()` de _Maxima_, tout comme les fichiers
-`.mac`. Avec ce format en texte brut, il est parfois inévitable que les
-feuilles de travail utilisant de nouvelles fonctionnalités ne soient pas
-rétrocompatibles avec les anciennes versions de _wxMaxima_.
+`.wxm` files contain the worksheet except for _Maxima_’s output. On Maxima
+versions >5.38 they can be read using _Maxima_’s `load()` function just as
+.mac files. Well - mostly. Questions (like `asksign(x)`) are problematic, as
+the answer is written in the `.wxm` file (so that it can be suggested after
+loading), but that can Maxima not evaluate.  You can prevent Maxima from
+asking questions by using `assume()` to declare some properties, Maxima
+wants to know.
+
+With this plain-text format, it sometimes is unavoidable that worksheets
+that use new features are not downwards-compatible with older versions of
+_wxMaxima_.
 
 #### Format de fichier des fichiers wxm
 
