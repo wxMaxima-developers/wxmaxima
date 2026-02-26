@@ -53,7 +53,8 @@ public:
               const wxString &label6 = {}, const wxString &defaultval6 = {}, const wxString &tooltip6 = {},
               const wxString &label7 = {}, const wxString &defaultval7 = {}, const wxString &tooltip7 = {},
               const wxString &label8 = {}, const wxString &defaultval8 = {}, const wxString &tooltip8 = {},
-              const wxString &label9 = {}, const wxString &defaultval9 = {}, const wxString &tooltip9 = {});
+              const wxString &label9 = {}, const wxString &defaultval9 = {}, const wxString &tooltip9 = {},
+              const wxString &label10 = {}, const wxString &defaultval10 = {}, const wxString &tooltip10 = {});
 
   GenWizPanel(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
               const wxString &description = {}, const wxString &description_tooltip = {},
@@ -66,7 +67,8 @@ public:
               const wxString &label6 = {}, const wxString &defaultval6 = {}, const wxString &tooltip6 = {},
               const wxString &label7 = {}, const wxString &defaultval7 = {}, const wxString &tooltip7 = {},
               const wxString &label8 = {}, const wxString &defaultval8 = {}, const wxString &tooltip8 = {},
-              const wxString &label9 = {}, const wxString &defaultval9 = {}, const wxString &tooltip9 = {});
+              const wxString &label9 = {}, const wxString &defaultval9 = {}, const wxString &tooltip9 = {},
+              const wxString &label10 = {}, const wxString &defaultval10 = {}, const wxString &tooltip10 = {});
 
   //! Replace the contents of this panel with a new wizard
   void NewWizard(wxString description, const wxString &description_tooltip,
@@ -79,7 +81,8 @@ public:
                  const wxString &label6, const wxString &defaultval6, const wxString &tooltip6,
                  const wxString &label7, const wxString &defaultval7, const wxString &tooltip7,
                  const wxString &label8, const wxString &defaultval8, const wxString &tooltip8,
-                 const wxString &label9, const wxString &defaultval9, const wxString &tooltip9);
+                 const wxString &label9, const wxString &defaultval9, const wxString &tooltip9,
+                 const wxString &label10, const wxString &defaultval10, const wxString &tooltip10);
 
   //! Returns the contents of the nth field.
   wxString operator[](int i) const { return m_textctrl[i]->GetValue(); }

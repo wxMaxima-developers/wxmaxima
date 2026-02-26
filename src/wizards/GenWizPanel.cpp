@@ -37,7 +37,8 @@ GenWizPanel::GenWizPanel(
                          const wxString &defaultval6, const wxString &tooltip6, const wxString &label7,
                          const wxString &defaultval7, const wxString &tooltip7, const wxString &label8,
                          const wxString &defaultval8, const wxString &tooltip8, const wxString &label9,
-                         const wxString &defaultval9, const wxString &tooltip9)
+                         const wxString &defaultval9, const wxString &tooltip9, const wxString &label10,
+                         const wxString &defaultval10, const wxString &tooltip10)
 : GenWizPanel(std::move(parent), std::move(cfg), std::move(manual),
               description, description_tooltip,
               commandRule, false, label1,
@@ -49,7 +50,8 @@ GenWizPanel::GenWizPanel(
               defaultval6, tooltip6, label7,
               defaultval7, tooltip7, label8,
               defaultval8, tooltip8, label9,
-              defaultval9, tooltip9) {}
+              defaultval9, tooltip9, label10,
+              defaultval10, tooltip10) {}
 
 GenWizPanel::GenWizPanel(
                          wxWindow *parent, Configuration *cfg, MaximaManual *manual,
@@ -63,12 +65,13 @@ GenWizPanel::GenWizPanel(
                          const wxString &defaultval6, const wxString &tooltip6, const wxString &label7,
                          const wxString &defaultval7, const wxString &tooltip7, const wxString &label8,
                          const wxString &defaultval8, const wxString &tooltip8, const wxString &label9,
-                         const wxString &defaultval9, const wxString &tooltip9)
+                         const wxString &defaultval9, const wxString &tooltip9, const wxString &label10,
+                         const wxString &defaultval10, const wxString &tooltip10)
 : wxPanel(parent, wxID_ANY), m_commandRule(commandRule),
   m_description(description), m_descriptionToolTip(description_tooltip),
   m_configuration(cfg), m_maximaManual(manual) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  for (int i = 0; i < 9; i++) {
+  for (int i = 0; i < 10; i++) {
     m_label.push_back(new wxStaticText(this, -1, wxEmptyString));
     m_textctrl.push_back(new BTextCtrl(
                                        this, -1, cfg, wxEmptyString, wxDefaultPosition,
@@ -79,7 +82,7 @@ GenWizPanel::GenWizPanel(
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(
                                                     2, wxSize(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor()));
   grid_sizer->AddGrowableCol(1);
-  for (int i = 0; i < 9; i++) {
+  for (int i = 0; i < 10; i++) {
     grid_sizer->Add(m_label[i], 0, wxALIGN_CENTER_VERTICAL, 0);
     m_textctrl[i]->Connect(wxEVT_TEXT,
                            wxCommandEventHandler(GenWizPanel::OnParamChange),
@@ -134,7 +137,7 @@ GenWizPanel::GenWizPanel(
             tooltip3, label4, defaultval4, tooltip4, label5, defaultval5,
             tooltip5, label6, defaultval6, tooltip6, label7, defaultval7,
             tooltip7, label8, defaultval8, tooltip8, label9, defaultval9,
-            tooltip9);
+            tooltip9, label10, defaultval10, tooltip10);
   Connect(wxEVT_SIZE, wxSizeEventHandler(GenWizPanel::OnSize), NULL, this);
   m_notebook->Connect(wxEVT_NOTEBOOK_PAGE_CHANGED,
                       wxBookCtrlEventHandler(GenWizPanel::OnNotebookPageChange),
@@ -157,7 +160,8 @@ void GenWizPanel::NewWizard(
                             const wxString &defaultval6, const wxString &tooltip6, const wxString &label7,
                             const wxString &defaultval7, const wxString &tooltip7, const wxString &label8,
                             const wxString &defaultval8, const wxString &tooltip8, const wxString &label9,
-                            const wxString &defaultval9, const wxString &tooltip9) {
+                            const wxString &defaultval9, const wxString &tooltip9, const wxString &label10,
+                            const wxString &defaultval10, const wxString &tooltip10) {
   wxString::const_iterator it = commandRule.begin();
 
   m_manualKeywords.clear();
@@ -194,6 +198,7 @@ void GenWizPanel::NewWizard(
   hashFinder.Replace(wxS("#7#"), wxEmptyString);
   hashFinder.Replace(wxS("#8#"), wxEmptyString);
   hashFinder.Replace(wxS("#9#"), wxEmptyString);
+  hashFinder.Replace(wxS("#10#"), wxEmptyString);
   if (hashFinder.Contains(wxS("#")))
     m_manualKeywords[wxS("#")] = 1;
   m_ignorePageChange = true;
@@ -311,6 +316,13 @@ void GenWizPanel::NewWizard(
   m_label[8]->Show(!label9.IsEmpty());
   m_textctrl[8]->Show(!label9.IsEmpty());
   m_textctrl[8]->SetToolTip(tooltip9);
+
+  m_label[9]->SetLabel(label10);
+  m_textctrl[9]->SetValue(defaultval10);
+  m_label[9]->Show(!label10.IsEmpty());
+  m_textctrl[9]->Show(!label10.IsEmpty());
+  m_textctrl[9]->SetToolTip(tooltip10);
+
   Layout();
   m_ignorePageChange = false;
 }

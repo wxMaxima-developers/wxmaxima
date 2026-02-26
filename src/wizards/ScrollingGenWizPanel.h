@@ -42,7 +42,8 @@ public:
                        const wxString &label6 = {}, const wxString &defaultval6 = {}, const wxString &tooltip6 = {},
                        const wxString &label7 = {}, const wxString &defaultval7 = {}, const wxString &tooltip7 = {},
                        const wxString &label8 = {}, const wxString &defaultval8 = {}, const wxString &tooltip8 = {},
-                       const wxString &label9 = {}, const wxString &defaultval9 = {}, const wxString &tooltip9 = {});
+                       const wxString &label9 = {}, const wxString &defaultval9 = {}, const wxString &tooltip9 = {},
+                       const wxString &label10 = {}, const wxString &defaultval10 = {}, const wxString &tooltip10 = {});
 
   wxString operator[](int i) const { return m_panel->operator[](i); }
 
@@ -58,7 +59,8 @@ public:
                  const wxString &label6, const wxString &defaultval6, const wxString &tooltip6,
                  const wxString &label7, const wxString &defaultval7, const wxString &tooltip7,
                  const wxString &label8, const wxString &defaultval8, const wxString &tooltip8,
-                 const wxString &label9, const wxString &defaultval9, const wxString &tooltip9)
+                 const wxString &label9, const wxString &defaultval9, const wxString &tooltip9,
+                 const wxString &label10, const wxString &defaultval10, const wxString &tooltip10)
     {
       m_panel->NewWizard(description, description_tooltip,
                          commandRule,
@@ -70,7 +72,8 @@ public:
                          label6, defaultval6, tooltip6,
                          label7, defaultval7, tooltip7,
                          label8, defaultval8, tooltip8,
-                         label9, defaultval9, tooltip9
+                         label9, defaultval9, tooltip9,
+                         label10, defaultval10, tooltip10
         );
     }
 

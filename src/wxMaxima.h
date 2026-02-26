@@ -246,7 +246,8 @@ protected:
                   wxString label6 = {}, wxString defaultval6 = {}, wxString tooltip6 = {},
                   wxString label7 = {}, wxString defaultval7 = {}, wxString tooltip7 = {},
                   wxString label8 = {}, wxString defaultval8 = {}, wxString tooltip8 = {},
-                  wxString label9 = {}, wxString defaultval9 = {}, wxString tooltip9 = {}
+                  wxString label9 = {}, wxString defaultval9 = {}, wxString tooltip9 = {},
+                  wxString label10 = {}, wxString defaultval10 = {}, wxString tooltip10 = {}
     );
   //! Reads a potentially unclosed XML tag and closes it
   wxString ReadPotentiallyUnclosedTag(wxStringTokenizer &lines, wxString firstLine);

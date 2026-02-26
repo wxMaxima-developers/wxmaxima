@@ -35,7 +35,8 @@ ScrollingGenWizPanel::ScrollingGenWizPanel(
                                            const wxString &defaultval6, const wxString &tooltip6, const wxString &label7,
                                            const wxString &defaultval7, const wxString &tooltip7, const wxString &label8,
                                            const wxString &defaultval8, const wxString &tooltip8, const wxString &label9,
-                                           const wxString &defaultval9, const wxString &tooltip9)
+                                           const wxString &defaultval9, const wxString &tooltip9, const wxString &label10,
+                                           const wxString &defaultval10, const wxString &tooltip10)
                                            : wxScrolled<wxPanel>(parent, wxID_ANY) {
   wxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   m_panel = new GenWizPanel(

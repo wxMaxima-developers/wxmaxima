@@ -9263,9 +9263,9 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  wxS("a"), wxS("0"), wxEmptyString,
                  wxS("b"), wxS("10"), wxEmptyString,
                  wxS("key"), wxS("4"), _("An integer between 1..6; Higher numbers work better for oscillating integrands"),
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
-                 wxS("epsabs"), wxS("0"), wxEmptyString,
-                 wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("epsrel"), wxS("1d-8"), _("Desired relative error of approximation."),
+                 wxS("epsabs"), wxS("0"), _("Desired absolute error of approximation."),
+                 wxS("limit"), wxS("200"), _("Size of internal work array. limit is the maximum number of subintervals to use."));
   }
   else if(event.GetId() == EventIDs::menu_quad_qags){
       CommandWiz(
@@ -9276,9 +9276,9 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  wxS("x"), wxS("x"), wxEmptyString,
                  wxS("a"), wxS("0"), wxEmptyString,
                  wxS("b"), wxS("10"), wxEmptyString,
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
-                 wxS("epsabs"), wxS("0"), wxEmptyString,
-                 wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("epsrel"), wxS("1d-8"), _("Desired relative error of approximation."),
+                 wxS("epsabs"), wxS("0"), _("Desired absolute error of approximation."),
+                 wxS("limit"), wxS("200"), _("Size of internal work array. limit is the maximum number of subintervals to use."));
   }
   else if(event.GetId() == EventIDs::menu_quad_qagi){
       CommandWiz(
@@ -9289,9 +9289,9 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  wxS("x"), wxS("x"), wxEmptyString,
                  wxS("a"), wxS("0"), wxEmptyString,
                  wxS("b"), wxS("10"), wxEmptyString,
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
-                 wxS("epsabs"), wxS("0"), wxEmptyString,
-                 wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("epsrel"), wxS("1d-8"), _("Desired relative error of approximation."),
+                 wxS("epsabs"), wxS("0"), _("Desired absolute error of approximation."),
+                 wxS("limit"), wxS("200"), _("Size of internal work array. limit is the maximum number of subintervals to use."));
   }
   else if(event.GetId() == EventIDs::menu_quad_qawc){
       CommandWiz(
@@ -9303,9 +9303,9 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  wxS("c"), wxS("4"), wxEmptyString,
                  wxS("a"), wxS("0"), wxEmptyString,
                  wxS("b"), wxS("10"), wxEmptyString,
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
-                 wxS("epsabs"), wxS("0"), wxEmptyString,
-                 wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("epsrel"), wxS("1d-8"), _("Desired relative error of approximation."),
+                 wxS("epsabs"), wxS("0"), _("Desired absolute error of approximation."),
+                 wxS("limit"), wxS("200"), _("Size of internal work array. limit is the maximum number of subintervals to use."));
   }
   else if(event.GetId() == EventIDs::menu_quad_qawf_sin){
       CommandWiz(integralSign + wxS("(f(x)*sin(ω·x),x,a,∞)"), wxEmptyString,
@@ -9315,10 +9315,10 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  wxS("x"), wxS("x"), wxEmptyString,
                  wxS("a"), wxS("a"), wxEmptyString,
                  wxS("ω"), wxS("2"), wxEmptyString,
-                 wxS("epsabs"), wxS("1d-10"), wxEmptyString,
-                 wxS("limit"), wxS("200"), wxEmptyString,
-                 wxS("maxp1"), wxS("100"), wxEmptyString,
-                 wxS("limlst"), wxS("10"), wxEmptyString);
+                 wxS("epsabs"), wxS("1d-10"), _("Desired absolute error of approximation."),
+                 wxS("limit"), wxS("200"), _("Size of internal work array. (limit - limlst)/2 is the maximum number of subintervals to use."),
+                 wxS("maxp1"), wxS("100"), _("Maximum number of Chebyshev moments. Must be greater than 0."),
+                 wxS("limlst"), wxS("10"), _("Upper bound on the number of cycles. Must be greater than or equal to 3."));
   }
   else if(event.GetId() == EventIDs::menu_quad_qawf_cos){
       CommandWiz(integralSign + wxS("(f(x)*cos(ω·x),x,a,∞)"), wxEmptyString,
@@ -9328,37 +9328,39 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  wxS("x"), wxS("x"), wxEmptyString,
                  wxS("a"), wxS("a"), wxEmptyString,
                  wxS("ω"), wxS("2"), wxEmptyString,
-                 wxS("epsabs"), wxS("1d-10"), wxEmptyString,
-                 wxS("limit"), wxS("200"), wxEmptyString,
-                 wxS("maxp1"), wxS("100"), wxEmptyString,
-                 wxS("limlst"), wxS("10"), wxEmptyString);
+                 wxS("epsabs"), wxS("1d-10"), _("Desired absolute error of approximation."),
+                 wxS("limit"), wxS("200"), _("Size of internal work array. (limit - limlst)/2 is the maximum number of subintervals to use."),
+                 wxS("maxp1"), wxS("100"), _("Maximum number of Chebyshev moments. Must be greater than 0."),
+                 wxS("limlst"), wxS("10"), _("Upper bound on the number of cycles. Must be greater than or equal to 3."));
   }
   else if(event.GetId() == EventIDs::menu_quad_qawo_sin){
       CommandWiz(integralSign + wxS("(f(x)*sin(ω·x),x,a,b)"), wxEmptyString,
                  wxEmptyString,
-                 wxS("quad_qawo(#1#,#2#,#3#,#4#,#5#,'sin,'epsrel=#6#,'epsabs=#7#,"
-                     "'limit=#8#)"),
+                 wxS("quad_qawo(#1#,#2#,#3#,#4#,#5#,'sin,'epsrel=#6#,'epsabs=#7#,'limit=#8#,'maxp1=#9#,'limlst=#10#)"),
                  wxS("f(x)"), wxS("%"), wxEmptyString,
                  wxS("x"), wxS("x"), wxEmptyString,
                  wxS("a"), wxS("a"), wxEmptyString,
                  wxS("b"), wxS("b"), wxEmptyString,
                  wxS("ω"), wxS("2"), wxEmptyString,
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
-                 wxS("epsabs"), wxS("0"), wxEmptyString,
-                 wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("epsrel"), wxS("1d-8"), _("Desired relative error of approximation."),
+                 wxS("epsabs"), wxS("0"), _("Desired absolute error of approximation."),
+                 wxS("limit"), wxS("200"), _("Size of internal work array. limit/2 is the maximum number of subintervals to use."),
+                 wxS("maxp1"), wxS("100"), _("Maximum number of Chebyshev moments. Must be greater than 0."),
+                 wxS("limlst"), wxS("10"), _("Upper bound on the number of cycles. Must be greater than or equal to 3."));
   }
   else if(event.GetId() == EventIDs::menu_quad_qawo_cos){
       CommandWiz(integralSign + wxS("(f(x)*cos(ω·x),x,a,b)"), wxEmptyString,
                  wxEmptyString,
-                 wxS("quad_qawo(#1#,#2#,#3#,#4#,#5#,'cos,'epsrel=#6#,'epsabs=#7#,"
-                     "'limit=#8#)"),
+                 wxS("quad_qawo(#1#,#2#,#3#,#4#,#5#,'cos,'epsrel=#6#,'epsabs=#7#,'limit=#8#,'maxp1=#9#,'limlst=#10#)"),
                  wxS("f(x)"), wxS("%"), wxEmptyString,
                  wxS("x"), wxS("x"), wxEmptyString,
                  wxS("a"), wxS("a"), wxEmptyString,
                  wxS("ω"), wxS("2"), wxEmptyString,
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
-                 wxS("epsabs"), wxS("0"), wxEmptyString,
-                 wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("epsrel"), wxS("1d-8"), _("Desirx^(-1/2)*exp(-2^(-2)*x)ed relative error of approximation."),
+                 wxS("epsabs"), wxS("0"), _("Desired absolute error of approximation."),
+                 wxS("limit"), wxS("200"), _("Size of internal work array. limit/2 is the maximum number of subintervals to use."),
+                 wxS("maxp1"), wxS("100"), _("Maximum number of Chebyshev moments. Must be greater than 0."),
+                 wxS("limlst"), wxS("10"), _("Upper bound on the number of cycles. Must be greater than or equal to 3."));
   }
 
   else if(event.GetId() == EventIDs::menu_quad_qaws1){
@@ -9372,9 +9374,9 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  wxS("b"), wxS("2"), wxEmptyString,
                  wxS("α"), wxS("-0.5"), wxEmptyString,
                  wxS("β"), wxS("-0.5"), wxEmptyString, // Values for alpha and beta from the example in the documentation
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
-                 wxS("epsabs"), wxS("0"), wxEmptyString,
-                 wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("epsrel"), wxS("1d-8"), _("Desired relative error of approximation."),
+                 wxS("epsabs"), wxS("0"), _("Desired absolute error of approximation."),
+                 wxS("limit"), wxS("200"), _("Size of internal work array. limit is the maximum number of subintervals to use."));
   }
   else if(event.GetId() == EventIDs::menu_quad_qaws2){
       CommandWiz(
@@ -9387,9 +9389,9 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  wxS("b"), wxS("2"), wxEmptyString,
                  wxS("α"), wxS("-0.5"), wxEmptyString,
                  wxS("β"), wxS("-0.5"), wxEmptyString, // Values for alpha and beta from the example in the documentation
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
-                 wxS("epsabs"), wxS("0"), wxEmptyString,
-                 wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("epsrel"), wxS("1d-8"), _("Desired relative error of approximation."),
+                 wxS("epsabs"), wxS("0"), _("Desired absolute error of approximation."),
+                 wxS("limit"), wxS("200"), _("Size of internal work array. limit is the maximum number of subintervals to use."));
   }
   else if(event.GetId() == EventIDs::menu_quad_qaws3){
       CommandWiz(
@@ -9402,9 +9404,9 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  wxS("b"), wxS("2"), wxEmptyString,
                  wxS("α"), wxS("-0.5"), wxEmptyString,
                  wxS("β"), wxS("-0.5"), wxEmptyString, // Values for alpha and beta from the example in the documentation
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
-                 wxS("epsabs"), wxS("0"), wxEmptyString,
-                 wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("epsrel"), wxS("1d-8"), _("Desired relative error of approximation."),
+                 wxS("epsabs"), wxS("0"), _("Desired absolute error of approximation."),
+                 wxS("limit"), wxS("200"), _("Size of internal work array. limit is the maximum number of subintervals to use."));
   }
   else if(event.GetId() == EventIDs::menu_quad_qaws4){
       CommandWiz(
@@ -9417,9 +9419,9 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  wxS("b"), wxS("2"), wxEmptyString,
                  wxS("α"), wxS("-0.5"), wxEmptyString,
                  wxS("β"), wxS("-0.5"), wxEmptyString, // Values for alpha and beta from the example in the documentation
-                 wxS("epsrel"), wxS("1d-8"), wxEmptyString,
-                 wxS("epsabs"), wxS("0"), wxEmptyString,
-                 wxS("limit"), wxS("200"), wxEmptyString);
+                 wxS("epsrel"), wxS("1d-8"), _("Desired relative error of approximation."),
+                 wxS("epsabs"), wxS("0"), _("Desired absolute error of approximation."),
+                 wxS("limit"), wxS("200"), _("Size of internal work array. limit is the maximum number of subintervals to use."));
   }
   else if(event.GetId() == EventIDs::menu_quad_qagp){
     CommandWiz(
@@ -9431,9 +9433,9 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                wxS("a"), wxS("1"), wxEmptyString,
                wxS("b"), wxS("2"), wxEmptyString,
                wxS("points"), wxS(".5,.75"), wxEmptyString,
-               wxS("epsrel"), wxS("1d-8"), wxEmptyString,
-               wxS("epsabs"), wxS("0"), wxEmptyString,
-               wxS("limit"), wxS("200"), wxEmptyString);
+               wxS("epsrel"), wxS("1d-8"), _("Desired relative error of approximation."),
+               wxS("epsabs"), wxS("0"), _("Desired absolute error of approximation."),
+               wxS("limit"), wxS("200"), _("Size of internal work array. limit is the maximum number of subintervals to use."));
   }
 }
 
@@ -9448,7 +9450,8 @@ void wxMaxima::CommandWiz(
                           wxString defaultval6, wxString tooltip6, wxString label7,
                           wxString defaultval7, wxString tooltip7, wxString label8,
                           wxString defaultval8, wxString tooltip8, wxString label9,
-                          wxString defaultval9, wxString tooltip9) {
+                          wxString defaultval9, wxString tooltip9, wxString label10,
+                          wxString defaultval10, wxString tooltip10) {
   m_wizard->NewWizard(
                       description, description_tooltip,
                       commandRule, std::move(label1), std::move(defaultval1),
@@ -9460,7 +9463,8 @@ void wxMaxima::CommandWiz(
                       std::move(tooltip6), std::move(label7), std::move(defaultval7),
                       std::move(tooltip7), std::move(label8), std::move(defaultval8),
                       std::move(tooltip8), std::move(label9), std::move(defaultval9),
-                      std::move(tooltip9));
+                      std::move(tooltip9), std::move(label10), std::move(defaultval10),
+                      std::move(tooltip10));
   ShowWizardPane(title);
 }
 
