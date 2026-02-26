@@ -72,96 +72,96 @@ $(function() {
   <div class="headertitle"><div class="title">Руководство пользователя <a class="el" href="classwxMaxima.html">wxMaxima</a> </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>WxMaxima — графический интерфейс пользователя для системы компьютерной алгебры (СКА) <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. WxMaxima позволяет использовать все функции <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. А также предоставляет ряд удобных мастеров для работы с наиболее распространёнными функциями. Данное руководство описывает некоторые из этих функций, которые делают <a class="el" href="classwxMaxima.html">wxMaxima</a> одним из наиболее популярных графических интерфейсов для <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
+<div class="textblock"><p>WxMaxima — графический интерфейс пользователя для системы компьютерной алгебры (СКА) <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. WxMaxima позволяет использовать все функции <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. А также предоставляет ряд удобных мастеров для работы с наиболее часто используемыми функциями. Данное руководство описывает некоторые из тех функций, которые делают <a class="el" href="classwxMaxima.html">wxMaxima</a> одним из наиболее популярных графических интерфейсов для <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
 <p><img src="./wxMaximaLogo.png" alt="Логотип wxMaxima" class="inline"/></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md443"></a>
+<h1><a class="anchor" id="autotoc_md456"></a>
 Введение в wxMaxima</h1>
-<h2><a class="anchor" id="autotoc_md444"></a>
+<h2><a class="anchor" id="autotoc_md457"></a>
 &lt;em&gt;Maxima&lt;/em&gt; и wxMaxima</h2>
-<p>В области открытого программного обеспечения большие системы обычно делятся на небольшие проекты, которые проще обслуживать небольшим группам разработчиков. Например, программа записи компакт-дисков будет состоять из средства командной строки, которое фактически выполняет запись CD, и графического интерфейса пользователя, позволяющего выполнять запись без необходимости изучения всех ключей командной строки, как и вообще без необходимости использования консоли. Одним из преимуществ такого подхода является возможность применить силы и средства, вложенные в разработку консольной программы, в работе сразу нескольких программ: Одна и та же программа записи компакт-дисков может использоваться и в виде модуля файлового менеджера «Отправить на CD», и в качестве функции музыкального проигрывателя «Запись на CD», и в качестве программы записи CD в составе системы резервного копирования DVD. Другим преимуществом такого подхода является разделение одной большой задачи на меньшие части, позволяющее разработчикам создавать несколько интерфейсов для одной и той же программы.</p>
-<p>Система компьютерной алгебры (СКА) в исполнении <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> вполне вписывается в эту парадигму. СКА может выполнять роль логики калькулятора произвольной точности, либо выполнять автоматические преобразования формул в составе более крупной системы, например, <a href="https://www.sagemath.org/">Sage</a>). И при этом вполне может применяться и в качестве независимой системы. Работать с <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> можно в командной строке. Однако часто интерфейс в стиле <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> обеспечивает более эффективную работу с ПО, особенно новичкам.</p>
-<h3><a class="anchor" id="autotoc_md445"></a>
+<p>В области открытого программного обеспечения большие системы обычно делятся на небольшие проекты, которые проще обслуживать небольшим группам разработчиков. Например, программа записи компакт-дисков будет состоять из средства командной строки, которое фактически выполняет запись CD, и графического интерфейса пользователя, позволяющего выполнять запись без необходимости изучения всех ключей командной строки, как и вообще без необходимости использования консоли. Одним из преимуществ такого подхода является возможность применить силы и средства, вложенные в разработку консольной программы, в работе сразу нескольких программ: одна и та же программа записи компакт-дисков может использоваться и в виде модуля файлового менеджера «Отправить на CD», и в качестве функции музыкального проигрывателя «Запись на CD», и в качестве программы записи CD в составе системы резервного копирования DVD. Другим преимуществом такого подхода является разделение одной большой задачи на меньшие части, позволяющее разработчикам создавать несколько интерфейсов для одной и той же программы.</p>
+<p>Система компьютерной алгебры (СКА) в исполнении <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> вполне вписывается в эту парадигму. СКА может выполнять роль логики калькулятора произвольной точности, либо осуществлять автоматические преобразования формул в составе более крупной системы (например, <a href="https://www.sagemath.org/">Sage</a>). И при этом вполне может применяться и в качестве независимой системы. Работать с <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> можно в командной строке. Однако часто интерфейс в стиле <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> обеспечивает более эффективную работу с ПО, особенно новичкам.</p>
+<h3><a class="anchor" id="autotoc_md459"></a>
 &lt;em&gt;Maxima&lt;/em&gt;</h3>
-<p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> является полноценной системой компьютерной алгебры (СКА). СКА представляет собой программу, которая решает математические задачи путём преобразования формул для нахождения формулы, способной решить заданную задачу, в противоположность простому выводу числового значения результата. Иными словами, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> может служить в качестве калькулятора, выводящего числовые представления переменных, и вместе с тем может выдавать и аналитические решения. Более того, она предлагает ряд числовых методов анализа для уравнений или систем уравнений, которые не могут быть решены аналитически.</p>
+<p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> является полноценной системой компьютерной алгебры (СКА). СКА представляет собой программу, которая решает математические задачи путём преобразования формул для нахождения формулы, способной решить заданную задачу, в противоположность простому выводу численного значения результата. Иными словами, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> может служить в качестве калькулятора, выводящего численные представления переменных, и вместе с тем может выдавать и аналитические решения. Более того, она предлагает ряд численных методов анализа для уравнений или систем уравнений, которые не могут быть решены аналитически.</p>
 <p><img src="./maxima_screenshot.png" alt="Снимок экрана Maxima, командная строка" class="inline"/></p>
-<p>Исчерпывающая документация <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> <a href="https://maxima.sourceforge.io/documentation.html">доступна в сети Интернет</a>. Часть этой документации также доступна в меню справки <a class="el" href="classwxMaxima.html">wxMaxima</a>. При нажатии клавиши Help (на большинстве систем эту функцию выполняет клавиша <code>F1</code>) контекстно-зависимая функция справки <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> автоматически переходит на страницу руководства <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> с описанием команды, заданной в поле ввода.</p>
-<h3><a class="anchor" id="autotoc_md446"></a>
+<p>Исчерпывающая документация <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> <a href="https://maxima.sourceforge.io/documentation.html">доступна в сети Интернет</a>. Часть этой документации также доступна в меню справки <a class="el" href="classwxMaxima.html">wxMaxima</a>. При нажатии клавиши «Справка» (в большинстве систем эту функцию выполняет клавиша <code>F1</code>) контекстно-зависимая функция справки <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> автоматически переходит на страницу руководства <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> с описанием команды, заданной в поле ввода.</p>
+<h3><a class="anchor" id="autotoc_md463"></a>
 WxMaxima</h3>
-<p><em>WxMaxima</em> — это графический интерфейс пользователя, полностью сохраняющий функциональность и гибкость <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. WxMaxima предлагает пользователям графическое отображение наряду с множеством функциональных возможностей, позволяющих сделать работу с <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> более простой и приятной. Например, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> может экспортировать содержимое любой ячейки (а при необходимости и любой части формулы) в виде текста в формате LaTeX или MathML одним щелчком правой клавиши мыши. Это позволяет экспортировать целую книгу либо в виде HTML-файла, либо в виде файла LaTeX. Документация <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, включая рабочие книги для иллюстрации аспектов использования программы, доступна онлайн на <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">сайте справки</a> <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, а также в меню справки программы.</p>
+<p><em>WxMaxima</em> — это графический интерфейс пользователя, полностью сохраняющий функциональность и гибкость <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. WxMaxima предлагает пользователям графическое отображение наряду с множеством функциональных возможностей, позволяющих сделать работу с <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> более простой и приятной. Например, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> может экспортировать содержимое любого поля (а при необходимости и любой части формулы) в виде текста в формате LaTeX или MathML по щелчку правой клавиши мыши. Это позволяет экспортировать целую книгу либо в виде HTML-файла, либо в виде файла LaTeX. Документация <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, включая рабочие книги для иллюстрации аспектов использования программы, доступна онлайн на <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">сайте справки</a> <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, а также в меню справки программы.</p>
 <p><img src="./wxMaximaWindow.png" alt="Окно wxMaxima" class="inline"/></p>
 <p>Введённые в <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> вычисления выполняются в фоновом режиме консольной программой <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
-<h2><a class="anchor" id="autotoc_md447"></a>
+<h2><a class="anchor" id="autotoc_md469"></a>
 Основная информация о рабочей книге</h2>
 <p>Большая часть интерфейса <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> интуитивно понятна, но некоторые детали требуют особенного внимания. <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">Этот сайт</a> содержит несколько рабочих книг, помогающих разобраться в различных аспектах работы с <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>. Проработка некоторых из них (особенно «_(wx)Maxima_ за 10 минут») позволит лучше ознакомиться как с содержимым <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, так и с использованием <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> во взаимодействии с <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. Это руководство концентрируется на описании таких аспектов <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, которые не будут интуитивно понятны, и описание которых может отсутствовать в материалах, доступных онлайн.</p>
-<h3><a class="anchor" id="autotoc_md448"></a>
+<h3><a class="anchor" id="autotoc_md474"></a>
 Метод работы с использованием рабочих книг</h3>
-<p>Одним из незначительного числа нестандартных подходов, нашедших применение в <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> является организация данных для работы с <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> по полям, которые вычисляются (имеется в виду «отправляются в <em>Maxima_») только по требованию пользователя. При вычислении ячейки все команды в этом поле, и только в этом поле, вычисляются путём пакетной обработки. (Предыдущее высказывание не совсем точно: Можно выбрать несколько смежных полей для совместного вычисления. Также _Maxima</em> может вычислять сразу все поля в рабочей книге за один проход.) Принятый в <em>WxMaxima</em> подход к отправке команд для вычисления на первый взгляд может показаться необычным. Однако он значительно упрощает работу с большими документами (где пользователь не хочет, чтобы каждое изменение автоматически запускало полный пересчёт целого документа). А также данный подход очень удобен для отладки.</p>
-<p>При вводе текста <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> автоматически создаёт новое поле рабочего листа. Тип этого поля можно выбрать в панели инструментов. Если создано поле кода, то это поле может быть отправлено в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, после чего ниже этого кода выводится результат вычисления. Пара таких команд показана ниже.</p>
+<p>Одним из незначительного числа нестандартных подходов, нашедших применение в <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, является организация данных для работы с <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> по полям, которые вычисляются (имеется в виду «отправляются в <em>Maxima_») только по требованию пользователя. При вычислении поля все команды в этом поле, и только в этом поле, вычисляются путём пакетной обработки. (Предыдущее высказывание не совсем точно: можно выбрать несколько смежных полей для совместного вычисления. Также _Maxima</em> может вычислять сразу все поля в рабочей книге за один проход.) Принятый в <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> подход к отправке команд для вычисления на первый взгляд может показаться необычным. Однако он значительно упрощает работу с большими документами (где пользователю не нужно, чтобы каждое изменение автоматически запускало полный пересчёт целого документа). А также данный подход очень удобен для отладки.</p>
+<p>При вводе текста <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> автоматически создаёт новое поле рабочего листа. Тип этого поля можно выбрать на панели инструментов. Если создано поле кода, то его можно отправить в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, после чего под этим кодом выводится результат вычисления. Пара таких команд показана ниже.</p>
 <p><img src="./InputCell.png" alt="Поле ввода/вывода" class="inline"/></p>
-<p>При вычислении содержимого, введённого в поле ввода, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> назначает вводу метку (по умолчанию отображается красным и распознаётся по <code>i</code>), который позволяет адресовать её позднее в сеансе <em>wxMaximma</em>. Сгенерированный в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> вывод также получает заголовок, начинающийся с <code>o</code> и по умолчанию скрыт, если только пользователь не назначит выводу имя. Тогда заданный пользователем заголовок будет по умолчанию отображаться. Хотя автоматически создаваемый в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> заголовок в виде <code>o</code> также будет доступен.</p>
-<p>Рядом с полями ввода <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> позволяет разместить текстовые поля для документации, поля изображений, поля заголовков, поля глав и поля разделов. Каждая ячейка имеет свой собственный буфер отмены действий, поэтому отладка путём внесения изменения в значения нескольких полей с последовательной отменой ненужных изменений выполняется несложно. Более того, рабочий лист также имеет глобальный буфер отмены действий, который может отменять изменения полей, добавления и удаления.</p>
-<p>На рисунке внизу показаны различные типы полей (поля заголовков, поля разделов, поля подразделов, текстовые поля, поля ввода/вывода и поля изображений).</p>
+<p>При вычислении содержимого, введённого в поле ввода, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> назначает вводу метку (по умолчанию отображается красным и распознаётся по <code>i</code>), позволяющую позднее сослаться на него в сеансе <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>. Сгенерированный в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> вывод также получает метку, начинающуюся с <code>o</code> и по умолчанию скрытую, если только пользователь не назначит выводу имя. Тогда по умолчанию будет показана заданная пользователем метка. Но и автоматически создаваемая в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> метка в виде <code>o</code> также будет доступна.</p>
+<p>Помимо полей ввода, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> позволяет создавать текстовые поля для документации, поля изображений, поля заголовков, поля глав и поля разделов. Каждое поле имеет свой собственный буфер отмены действий, поэтому можно легко выполнять отладку, изменяя значения нескольких полей и затем постепенно отменяя ненужные изменения. Более того, сам рабочий лист имеет глобальный буфер отмены действий, позволяющий отменять изменение, добавление и удаление полей.</p>
+<p>На рисунке ниже показаны различные типы полей (поля заголовков, поля разделов, поля подразделов, текстовые поля, поля ввода/вывода и поля изображений).</p>
 <p><img src="./cell-example.png" alt="Пример различных полей wxMaxima" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md449"></a>
+<h3><a class="anchor" id="autotoc_md483"></a>
 Поля</h3>
 <p>Рабочий лист состоит из полей. WxMaxima оперирует следующими их типами:</p>
 <ul>
-<li>Math cells, containing one or more lines of <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> input.</li>
-<li>Output of, or a question from, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</li>
-<li><a class="el" href="classImage.html" title="Manages an auto-scaling image.">Image</a> cells.</li>
-<li>Text cells, that can for example be used for documentation.</li>
-<li><a class="el" href="classA.html">A</a> title, section or a subsection. 6 levels of different headings are possible.</li>
-<li>Page breaks.</li>
+<li>Математические поля, содержащие одну или несколько строк ввода <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</li>
+<li>Вывод программы <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> или вопрос от неё.</li>
+<li>Поля изображений.</li>
+<li>Текстовые поля, которые могут использоваться, например, для документации.</li>
+<li>Заголовок, раздел или подраздел. Поддерживаются шесть уровней разных заголовков.</li>
+<li>Разрывы страниц.</li>
 </ul>
-<p>По умолчанию при вводе текста в <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> автоматически создаётся математическое поле. Поля других типов можно создавать с помощью меню «Поле», с помощью указанных в меню сочетаний клавиш или раскрывающегося списка в панели инструментов. При создании не-математической ячейки любой текст, введённый в файл, интерпретируется как текст.</p>
+<p>По умолчанию при вводе текста в <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> автоматически создаётся математическое поле. Поля других типов можно создавать через меню «Поле», с помощью указанных там сочетаний клавиш или раскрывающегося списка на панели инструментов. При создании не-математического поля любой текст, введённый в файл, интерпретируется как текст.</p>
 <p><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Comments">Текст комментария</a> (в стиле языка <a class="el" href="classC.html">C</a>) может использоваться в математических полях следующим образом: <code>/* Этот комментарий будет игнорироваться <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> */</code></p>
 <p>«<code>/*</code>» указывает начало комментария, «<code>*/</code>» указывает его конец.</p>
-<h3><a class="anchor" id="autotoc_md450"></a>
+<h3><a class="anchor" id="autotoc_md489"></a>
 Горизонтальный и вертикальный курсоры</h3>
 <p>Если пользователь пытается выделить предложение полностью, текстовый процессор будет автоматически пытаться расширить выделение, чтобы оно начиналось и завершалось на границе слова. Подобным образом при выборе более одного поля <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> расширяет выделение до целых полей.</p>
-<p>Необычной возможностью <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> является гибкость при перетаскивании, осуществляемая путём определения двух типов курсоров. При необходимости <em>WxMaxima</em> переключается между ними автоматически:</p>
+<p>Необычной возможностью <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> является гибкость при перетаскивании, реализованная благодаря определению двух типов курсоров. При необходимости <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> переключается между ними автоматически:</p>
 <ul>
-<li>The cursor is drawn horizontally if it is moved in the space between two cells or by clicking there.</li>
-<li><a class="el" href="classA.html">A</a> vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.</li>
+<li>Курсор отображается горизонтально при наведении или щелчке в пространстве между двумя полями.</li>
+<li>Вертикальный курсор отображается при работе внутри поля. Этот курсор активируется при помещении курсора внутрь поля указателем мыши или клавишами со стрелками и в работе очень напоминает курсор текстового редактора.</li>
 </ul>
-<p>После загрузки <a class="el" href="classwxMaxima.html">wxMaxima</a> отображается только мигающий горизонтальный курсор. Если начать ввод, автоматически создаётся математическое поле и курсор принимает обычную вертикальную форму (стрелка вправо играет роль «приглашения ввода», после вычисления математического поля (<code>CTRL</code>+<code>ENTER</code>), выводятся метки, например, <code>(i1)</code>, <code>(o1)</code>).</p>
-<p><img src="./horizontal-cursor-only.png" alt="(blinking) Горизонтальный курсор после запуска
+<p>После загрузки <a class="el" href="classwxMaxima.html">wxMaxima</a> отображается только мигающий горизонтальный курсор. Если начать ввод, автоматически создаётся математическое поле и курсор принимает обычную вертикальную форму. Появится стрелка вправо — «запрос на ввод». После вычисления математического поля (<code>CTRL</code>+<code>ENTER</code>) будут показаны метки, например: <code>(i1)</code>, <code>(o1)</code>.</p>
+<p><img src="./horizontal-cursor-only.png" alt="(Мигающий) горизонтальный курсор после запуска
 wxMaxima" class="inline"/></p>
-<p>Может потребоваться создание поля другого типа (с помощью меню «Поле»), например, поля заголовка или текстового поля, в котором будет содержаться описание назначения работы, выполняемое при создании рабочего листа.</p>
-<p>При переходе по различным полям также отображается горизонтальный (мигающий) курсор в местах, где в рабочий лист можно ввести поле (математическое поле простым вводом формулы, либо поле другого типа с помощью меню).</p>
-<p><img src="./horizontal-cursor-between-cells.png" alt="(мигающий) горизонтальный курсор между
+<p>Может понадобиться создать поле другого типа (с помощью меню «Поле»), например, поле заголовка или текстовое поле с описанием того, что будет сделано, при начале создания рабочего листа.</p>
+<p>При переходе по различным полям также отображается (мигающий) горизонтальный курсор в местах, где в рабочий лист можно вставить поле (математическое поле — простым вводом формулы, поле другого типа — с помощью меню).</p>
+<p><img src="./horizontal-cursor-between-cells.png" alt="(Мигающий) горизонтальный курсор между
 полями" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md451"></a>
+<h3><a class="anchor" id="autotoc_md507"></a>
 Отправка полей в Maxima</h3>
-<p>Команда в поле кода исполняется однажды путём нажатия сочетания клавиш <code>CTRL</code>+<code>ENTER</code>, <code>SHIFT</code>+<code>ENTER</code> или клавиши <code>ENTER</code> на клавиатуре. По умолчанию <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> вводит команды при нажатии <code>CTRL</code>+<code>ENTER</code> или <code>SHIFT</code>+<code>ENTER</code>, но после соответствующей настройки <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> будет выполнять команды нажатием <code>ENTER</code>.</p>
-<h3><a class="anchor" id="autotoc_md452"></a>
+<p>Команда в поле кода исполняется однократно по нажатию сочетания клавиш <code>CTRL</code>+<code>ENTER</code>, <code>SHIFT</code>+<code>ENTER</code> или клавиши <code>ENTER</code> на клавиатуре. По умолчанию <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> вводит команды при нажатии <code>CTRL</code>+<code>ENTER</code> или <code>SHIFT</code>+<code>ENTER</code>, но после соответствующей настройки <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> будет выполнять команды по нажатию <code>ENTER</code>.</p>
+<h3><a class="anchor" id="autotoc_md512"></a>
 Автодополнение команд</h3>
-<p><em>WxMaxima</em> содержит функцию автодополнения, которая включается через меню («Поле/Завершить слово»), либо путём нажатия сочетания клавиш <code>CTRL</code>+<code>SPACE</code>. Автодополнение зависит от контекста. Например, при активации из спецификации модулей для ezUnits будет предлагаться список применимых модулей.</p>
+<p><em>WxMaxima</em> содержит функцию автодополнения, которая включается через меню («Поле/Завершить слово») или по нажатию сочетания клавиш <code>CTRL</code>+<code>ПРОБЕЛ</code>. Автодополнение зависит от контекста. Например, при активации внутри спецификации модулей для ezUnits будет предлагаться список применимых модулей.</p>
 <p><img src="./ezUnits.png" alt="ezUnits" class="inline"/></p>
-<p>Помимо дополнения имени файла, имени модуля, текущей команды или имени переменной, автодополнение может отображать шаблон большинства команд с указанием типа (и значения) необходимых для неё параметров. Для включения этой функции нажмите <code>SHIFT</code>+<code>CTRL</code>+<code>SPACE</code> или выберите соответствующий элемент меню («Поле/Показать шаблон»).</p>
-<h4><a class="anchor" id="autotoc_md453"></a>
+<p>Помимо дополнения имени файла, имени модуля, текущей команды или имени переменной, автодополнение может отображать шаблон большинства команд с указанием типа (и значения) ожидаемых программой параметров. Для включения этой функции нажмите <code>SHIFT</code>+<code>CTRL</code>+<code>ПРОБЕЛ</code> или выберите соответствующий пункт меню («Поле/Показать шаблон»).</p>
+<h4><a class="anchor" id="autotoc_md517"></a>
 Греческие символы</h4>
-<p>Компьютеры традиционно хранят символы в 8-разрядных значениях. Это позволяет создать набор из 256 различных символов. В такой набор можно включить все буквы, числа и символы управления (конец передачи, конец строки, линии и углы для рисования прямоугольников меню <em>и т.д.</em>.) практически любого языка.</p>
-<p>Для большинства стран выбранная кодовая страница из 256 символов не включает дополнительные символы, такие как греческие буквы, хотя они часто используются в математике. Для преодоления данного ограничения был разработан <a href="https://home.unicode.org/">Юникод</a>: кодировка, позволяющая стандартно использовать латиницу, но содержит намного больше 256 символов.</p>
-<p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> позволяет использовать Юникод, если она была скомпилирована компилятором Lisp, который либо поддерживает Юникод, либо не занимается вопросом кодирования символов. Поскольку из пары представленных условий по крайней мере одно может оказаться справедливым, <em>WxMaxima</em> поддерживает метод ввода греческих символов с помощью клавиатуры:</p>
+<p>Компьютеры традиционно хранят символы в 8-разрядных значениях. Это позволяет создать набор из 256 различных символов. В такой набор можно включить все буквы, цифры и управляющие символы (конец передачи, конец строки, линии и углы для рисования прямоугольников меню <em>и т.д.</em>.) практически любого языка.</p>
+<p>Для большинства стран в кодовую страницу из выбранных 256 символов не входят греческие буквы, хотя они часто используются в математике. Для преодоления данного ограничения был разработан <a href="https://home.unicode.org/">Юникод</a>: кодировка, позволяющая использовать латиницу как обычно, но при этом содержащая намного больше 256 символов.</p>
+<p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> позволяет использовать Юникод, если её сборка выполнялась компилятором Lisp, который либо поддерживает Юникод, либо не принимает во внимание кодировку шрифта. Поскольку из пары представленных условий по крайней мере одно может оказаться справедливым, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> поддерживает ввод греческих символов с помощью клавиатуры:</p>
 <ul>
-<li><a class="el" href="classA.html">A</a> Greek letter can be entered by pressing the <code>ESC</code> key and then starting to type the Greek character’s name.</li>
-<li>Alternatively it can be entered by pressing <code>ESC</code>, one letter (or two for the Greek letter omicron) and <code>ESC</code> again. In this case the following letters are supported:</li>
+<li>Греческую букву можно ввести путём нажатия клавиши <code>ESC</code> с последующим вводом имени греческого символа.</li>
+<li>Также можно нажать <code>ESC</code>, ввести одну букву (или две для греческой буквы омикрон) и снова нажать <code>ESC</code>. Такой способ ввода поддерживается для следующих букв:</li>
 </ul>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadCenter">кл.   </th><th class="markdownTableHeadCenter">Греч. буква   </th><th class="markdownTableHeadCenter">кл.   </th><th class="markdownTableHeadCenter">Греч. буква   </th><th class="markdownTableHeadCenter">кл.   </th><th class="markdownTableHeadCenter">Греч. буква    </th></tr>
+<th class="markdownTableHeadCenter">кл.   </th><th class="markdownTableHeadCenter">греч. буква   </th><th class="markdownTableHeadCenter">кл.   </th><th class="markdownTableHeadCenter">греч. буква   </th><th class="markdownTableHeadCenter">кл.   </th><th class="markdownTableHeadCenter">греч. буква    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter">a   </td><td class="markdownTableBodyCenter">альфа   </td><td class="markdownTableBodyCenter">i   </td><td class="markdownTableBodyCenter">йота   </td><td class="markdownTableBodyCenter">r   </td><td class="markdownTableBodyCenter">ро    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter">b   </td><td class="markdownTableBodyCenter">бета   </td><td class="markdownTableBodyCenter">k   </td><td class="markdownTableBodyCenter">каппа   </td><td class="markdownTableBodyCenter">s   </td><td class="markdownTableBodyCenter">сигма    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">g   </td><td class="markdownTableBodyCenter">гамма   </td><td class="markdownTableBodyCenter">l   </td><td class="markdownTableBodyCenter">ламбда   </td><td class="markdownTableBodyCenter">t   </td><td class="markdownTableBodyCenter">тау    </td></tr>
+<td class="markdownTableBodyCenter">g   </td><td class="markdownTableBodyCenter">гамма   </td><td class="markdownTableBodyCenter">l   </td><td class="markdownTableBodyCenter">лямбда   </td><td class="markdownTableBodyCenter">t   </td><td class="markdownTableBodyCenter">тау    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter">d   </td><td class="markdownTableBodyCenter">дельта   </td><td class="markdownTableBodyCenter">m   </td><td class="markdownTableBodyCenter">мю   </td><td class="markdownTableBodyCenter">u   </td><td class="markdownTableBodyCenter">ипсилон    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">e   </td><td class="markdownTableBodyCenter">епсилон   </td><td class="markdownTableBodyCenter">n   </td><td class="markdownTableBodyCenter">ню   </td><td class="markdownTableBodyCenter">f   </td><td class="markdownTableBodyCenter">фи    </td></tr>
+<td class="markdownTableBodyCenter">e   </td><td class="markdownTableBodyCenter">эпсилон   </td><td class="markdownTableBodyCenter">n   </td><td class="markdownTableBodyCenter">ню   </td><td class="markdownTableBodyCenter">f   </td><td class="markdownTableBodyCenter">фи    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter">z   </td><td class="markdownTableBodyCenter">дзета   </td><td class="markdownTableBodyCenter">x   </td><td class="markdownTableBodyCenter">кси   </td><td class="markdownTableBodyCenter">c   </td><td class="markdownTableBodyCenter">хи    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -173,7 +173,7 @@ wxMaxima" class="inline"/></p>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter"><a class="el" href="classB.html">B</a>   </td><td class="markdownTableBodyCenter">Бета   </td><td class="markdownTableBodyCenter">K   </td><td class="markdownTableBodyCenter">Каппа   </td><td class="markdownTableBodyCenter">S   </td><td class="markdownTableBodyCenter">Сигма    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">G   </td><td class="markdownTableBodyCenter">Гамма   </td><td class="markdownTableBodyCenter">L   </td><td class="markdownTableBodyCenter">Ламбда   </td><td class="markdownTableBodyCenter">T   </td><td class="markdownTableBodyCenter">Тау    </td></tr>
+<td class="markdownTableBodyCenter">G   </td><td class="markdownTableBodyCenter">Гамма   </td><td class="markdownTableBodyCenter">L   </td><td class="markdownTableBodyCenter">Лямбда   </td><td class="markdownTableBodyCenter">T   </td><td class="markdownTableBodyCenter">Тау    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter"><a class="el" href="classD.html">D</a>   </td><td class="markdownTableBodyCenter">Дельта   </td><td class="markdownTableBodyCenter">M   </td><td class="markdownTableBodyCenter">Мю   </td><td class="markdownTableBodyCenter">U   </td><td class="markdownTableBodyCenter">Ипсилон    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -186,16 +186,16 @@ wxMaxima" class="inline"/></p>
 <td class="markdownTableBodyCenter">T   </td><td class="markdownTableBodyCenter">Тэта   </td><td class="markdownTableBodyCenter">P   </td><td class="markdownTableBodyCenter">Пи   </td><td class="markdownTableBodyCenter">O   </td><td class="markdownTableBodyCenter">Омега   </td></tr>
 </table>
 <p>Для ввода греческих букв также можно воспользоваться боковой панелью «Греческие буквы».</p>
-<p><a class="anchor" id="autotoc_md454"></a> </p><h5>Внимание: Похожие буквы</h5>
-<p>Несколько букв латиницы схожи с греческими буквами. Например, латинская «A» и греческая буква «Альфа». Однако, не смотря на кажущееся сходство, они являются разными символами, и представлены в Юникоде различными кодовыми точками (числами).</p>
-<p>Это может привести к возникновению проблем, если задать значение переменной <a class="el" href="classA.html">A</a>, но впоследствии пытаться использовать греческую букву Альфа для выполнения каких-либо операций с этой переменной, особенно при печати. Для греческой буквы Мю (которая может использоваться и в качестве приставки микро-) также существует две различных кодовых точки Юникода.</p>
+<p><a class="anchor" id="autotoc_md530"></a> </p><h5>Внимание: похожие буквы</h5>
+<p>Несколько букв латиницы схожи с греческими буквами. Например, латинская «A» и греческая буква «Альфа». Однако, несмотря на кажущееся сходство, это два разных символа, представленных разными кодовыми точками (числами) в Юникоде.</p>
+<p>Могут возникнуть проблемы, если задать значение переменной <a class="el" href="classA.html">A</a>, но впоследствии пытаться использовать греческую букву Альфа для выполнения каких-либо операций с этой переменной, особенно при печати. Для греческой буквы Мю (которая может использоваться и в качестве приставки микро-) также есть две разных кодовых точки Юникода.</p>
 <p>Поэтому на боковой панели «Греческие буквы» имеется параметр, позволяющий сделать схожие буквы недоступными (изменяется в контекстном меню).</p>
-<p>Подобный механизм существует для ввода различных математических символов:</p>
+<p>Тот же механизм позволяет вводить различные математические символы:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">клавиши ввода   </th><th class="markdownTableHeadNone">математический символ    </th></tr>
+<th class="markdownTableHeadNone">клавиши для ввода   </th><th class="markdownTableHeadNone">математический символ    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">hbar   </td><td class="markdownTableBodyNone">Постоянная Планка: h с горизонтальной линией сверху    </td></tr>
+<td class="markdownTableBodyNone">hbar   </td><td class="markdownTableBodyNone">постоянная Планка: h с горизонтальной линией сверху    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Hbar   </td><td class="markdownTableBodyNone">H с горизонтальной линией сверху    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -215,7 +215,7 @@ wxMaxima" class="inline"/></p>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">ee   </td><td class="markdownTableBodyNone">элемент    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">in   </td><td class="markdownTableBodyNone">включает    </td></tr>
+<td class="markdownTableBodyNone">in   </td><td class="markdownTableBodyNone">включается    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">impl implies   </td><td class="markdownTableBodyNone">импликация    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -291,43 +291,43 @@ wxMaxima" class="inline"/></p>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">--&gt;   </td><td class="markdownTableBodyNone">длинная стрелка направо   </td></tr>
 </table>
-<p>Точно также для ввода математических символов можно использовать боковую панель «Математические символы».</p>
-<p>Если специальный символ отсутствует в списке, то произвольный символ Юникода можно ввести нажатием <code>ESC</code> [код символа (шестнадцатеречный)] <code>ESC</code>. С помощью контекстного меню боковой панели «Математические символы» можно также отобразить список всех доступных символов Юникод, которые можно добавить на эту панель или в рабочий лист.</p>
+<p>Для ввода математических символов также можно использовать боковую панель «Математические символы».</p>
+<p>Если специальный символ отсутствует в списке, то произвольный символ Юникода можно ввести нажатием <code>ESC</code> [код символа (шестнадцатеричный)] <code>ESC</code>. Кроме того, с помощью контекстного меню боковой панели «Математические символы» можно отобразить список всех доступных символов Юникода, которые можно добавить на эту панель или в рабочий лист.</p>
 <p>Таким образом комбинация <code>ESC</code><code>6</code><code>1</code><code>ESC</code> позволяет ввести символ «a».</p>
-<p>Обратите внимание, что большая часть этих символов (заметным исключением являются логические символы) не имеют специального значения в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> и поэтому будут интерпретироваться как обычные символы. Если <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> собирается в компиляторе Lisp, не имеющем поддержки символов Юникода, то при использовании их может быть выведено сообщение об ошибке.</p>
-<p>Также может случится, что греческие или математические символы отсутствуют в выбранном шрифте, в силу чего отображение их будет невозможно. Для решения проблемы в данном случае необходимо выбрать другие шрифты (с помощью меню: «Правка -&gt; Настройка -&gt; Стиль»).</p>
-<h3><a class="anchor" id="autotoc_md455"></a>
+<p>Обратите внимание, что большая часть этих символов (заметным исключением являются логические символы) не имеют специального значения в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> и поэтому будут интерпретироваться как обычные символы. Если <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> собрана в компиляторе Lisp, не имеющем поддержки символов Юникода, то при их использовании может быть выведено сообщение об ошибке.</p>
+<p>Также бывает, что греческие или математические символы отсутствуют в выбранном шрифте, из-за чего их отображение невозможно. Для решения этой проблемы необходимо выбрать другие шрифты (с помощью меню «Правка -&gt; Настройка -&gt; Стиль»).</p>
+<h3><a class="anchor" id="autotoc_md531"></a>
 Замена символов Юникода</h3>
-<p><a class="el" href="classwxMaxima.html">wxMaxima</a> will replace several Unicode characters with their respective <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> expressions, e.g. <code>²</code> with <code>^2</code>, <code>³</code> with <code>^3</code>, the square root sign with the function <code>sqrt()</code>, the (mathematical) Sigma sign (which is not the same Unicode character as the corresponding Greek letter) with <code>sum()</code>, etc.</p>
-<p>Unicode has several "common" fractions encoded as one Unicode code point: <code>¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞</code></p>
-<p><a class="el" href="classwxMaxima.html">wxMaxima</a> will replace them with their <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> representations, e.g <code>(1/4)</code> before the input is sent do <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. There are also <code>⅟</code>, which will be replaced by <code>1/</code> and <code>↉</code> (used in baseball), which will be replaced by <code>(0/3)</code>.</p>
-<p>It is recommended to use <b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> code</b> (not these Unicode code points) in input cells (Rationale: (a) it might be possible, that the used font for math input does not contain them; (b) if you save the document as <code>wxm</code>-file, it is usually readable by (command line) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, but these changes will of course not work in command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>); but they may occur, if you cut&amp;paste a formula from another document.</p>
-<h3><a class="anchor" id="autotoc_md456"></a>
+<p><a class="el" href="classwxMaxima.html">wxMaxima</a> заменяет некоторые символы Юникода на соответствующие выражения <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, например, <code>²</code> на <code>^2</code>, <code>³</code> на <code>^3</code>, знак квадратного корня на функцию <code>sqrt()</code>, (математический) знак Сигма (отличающийся от символа Юникода для соответствующей греческой буквы) на <code>sum()</code> и так далее.</p>
+<p>В Юникоде есть несколько «правильных» дробей, представленных в виде одной кодовой точки Юникода: <code>¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞</code></p>
+<p><a class="el" href="classwxMaxima.html">wxMaxima</a> заменит их соответствующими представлениями <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (например, <code>(1/4)</code>) перед отправкой ввода в <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. Кроме того, <code>⅟</code> заменяется на <code>1/</code>, а <code>↉</code> (используется в бейсболе) — на <code>(0/3)</code>.</p>
+<p>В полях ввода рекомендуется использовать <b>код <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></b> (а не эти кодовые точки Юникода) (обоснование: (a) их может не быть в используемом для ввода математических данных шрифте; (b) если сохранить документ как файл <code>wxm</code>, он будет доступен для чтения (командной строкой) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, но эти изменения не будут работать в командной строке <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>); но они могут появиться при вырезании и вставке формулы из другого документа.</p>
+<h3><a class="anchor" id="autotoc_md532"></a>
 Боковые панели</h3>
-<p>Ярлыки для наиболее важных команд <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, таких как содержание, окна с отладочными сообщениями или история последних введённых команд, могут размещаться на боковых панелях. Включаются они с помощью меню «Вид», а также могут перемещаться в другие места внутри или снаружи окна <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>. Другие полезные панели позволяют вводить греческие буквы с помощью мыши.</p>
+<p>Наиболее важные команды <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, а также содержание, окна с отладочными сообщениями и журнал последних отданных команд доступны на соответствующих боковых панелях. Их можно активировать с помощью меню «Вид» и переместить в любое место внутри или за пределами окна <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>. Также можно открыть панель, позволяющую вводить греческие буквы с помощью мыши.</p>
 <p><img src="./SidePanes.png" alt="Пример различных боковых панелей" class="inline"/></p>
-<p>Боковая панель «Содержание» позволяет увеличивать или уменьшать заголовок путём щелчка по заголовку правой клавишей мыши с последующим выбором верхнего или нижнего типа заголовка.</p>
-<p><img src="./Sidepane-TOC-convert-headings.png" alt="Увеличение или уменьшение заголовка на боковой панели
+<p>Боковая панель «Содержание» позволяет повышать или понижать уровень заголовка путём щелчка по нему правой клавишей мыши с последующим выбором ближайшего более высокого или низкого уровня.</p>
+<p><img src="./Sidepane-TOC-convert-headings.png" alt="Повышение или понижение уровня заголовков на боковой панели
 «Содержание»" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md457"></a>
+<h3><a class="anchor" id="autotoc_md533"></a>
 Вывод MathML</h3>
-<p>Несколько текстовых процессоров и подобных им программ способы распознать ввод <a href="https://www.w3.org/Math/">MathML</a> и автоматически вставить его в виде редактируемого двумерного уравнения, либо (как LibreOffice) имеют редактор уравнений, позволяющий «импортировать MathML из буфера обмена». Другие поддерживают RTF maths. Поэтому в контекстном меню <em>WxMaxima</em> содержится несколько элементов.</p>
-<h3><a class="anchor" id="autotoc_md458"></a>
+<p>Несколько текстовых процессоров и подобных им программ либо способны распознать ввод <a href="https://www.w3.org/Math/">MathML</a> и автоматически вставить его в виде редактируемого двухмерного уравнения, либо (как LibreOffice) имеют редактор уравнений, позволяющий «импортировать MathML из буфера обмена». Другие поддерживают RTF maths. Поэтому в контекстном меню <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> доступно несколько пунктов.</p>
+<h3><a class="anchor" id="autotoc_md534"></a>
 Поддержка Markdown</h3>
 <p><em>WxMaxima</em> поддерживает стандартные элементы форматирования <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a>, которые не конфликтуют с математической записью. Одним из таких элементов являются маркированные списки.</p>
 <div class="fragment"><div class="line">Обычный текст</div>
 <div class="line"> * Один элемент, уровень отступа 1</div>
 <div class="line"> * Другой элемент с уровнем отступа 1</div>
 <div class="line">   * Элемент на втором уровне отступа</div>
-<div class="line">   * Второй элемента на втором уровне отступа</div>
+<div class="line">   * Второй элемент на втором уровне отступа</div>
 <div class="line"> * Третий элемент на первом уровне отступа</div>
 <div class="line">Обычный текст</div>
 </div><!-- fragment --><p><em>WxMaxima</em> считает цитатой текст, начинающийся символом <code>&gt;</code>:</p>
 <div class="fragment"><div class="line">цитата &gt; цитата цитата цитата цитата Обычный текст </div>
-</div><!-- fragment --><p>Вывод <em>WxMaxima</em> в формате TeX и HTML также распознаёт <code>=&gt;</code> и заменяет его на соответствующий символ Юникода:</p>
-<div class="fragment"><div class="line">Другие символы, которые распознаются при экспорте HTML и TeX: `&lt;=` и `&gt;=`</div>
+</div><!-- fragment --><p>Вывод <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> в формате TeX и HTML также распознаёт <code>=&gt;</code> и заменяет его на соответствующий символ Юникода:</p>
+<div class="fragment"><div class="line">Другие символы, которые распознаются при экспорте в HTML и TeX: `&lt;=` и `&gt;=`</div>
 <div class="line">для сравнений, двойная двухсторонняя стрелка (`&lt;=&gt;`), односторонние стрелки</div>
-<div class="line">(`&lt;-&gt;`, `-&gt;` и `&lt;-`) и `+/-` в качестве соответствующих заков. Для вывода</div>
+<div class="line">(`&lt;-&gt;`, `-&gt;` и `&lt;-`) и `+/-` в качестве соответствующего знака. Для вывода</div>
 <div class="line">TeX также распознаются `&lt;&lt;` и `&gt;&gt;`.</div>
 <div class="line"> </div>
 <div class="line">### Сочетания клавиш</div>
@@ -335,32 +335,31 @@ wxMaxima" class="inline"/></p>
 <div class="line">Большинство сочетаний клавиш можно найти в тексте соответствующих</div>
 <div class="line">меню. Поскольку они фактически берутся из текста меню и могут быть</div>
 <div class="line">локализованы при переводе _wxMaxima_ для использования клавиатур с</div>
-<div class="line">соответствующими локальными настройками, то мы не будем приводить их</div>
+<div class="line">соответствующими локальными настройками, мы не будем приводить их</div>
 <div class="line">здесь. Хотя несколько сочетаний клавиш с их псевдонимами в меню отсутствуют:</div>
 <div class="line"> </div>
-<div class="line">- &lt;kbd&gt;CTRL&lt;/kbd&gt;+&lt;kbd&gt;SHIFT&lt;/kbd&gt;+&lt;kbd&gt;DELETE&lt;/kbd&gt; deletes a complete</div>
-<div class="line">  cell.</div>
-<div class="line">- &lt;kbd&gt;CTRL&lt;/kbd&gt;+&lt;kbd&gt;TAB&lt;/kbd&gt; or</div>
-<div class="line">  &lt;kbd&gt;CTRL&lt;/kbd&gt;+&lt;kbd&gt;SHIFT&lt;/kbd&gt;+&lt;kbd&gt;TAB&lt;/kbd&gt; triggers the</div>
-<div class="line">  auto-completion mechanism.</div>
-<div class="line">- &lt;kbd&gt;SHIFT&lt;/kbd&gt;+&lt;kbd&gt;SPACE&lt;/kbd&gt; inserts a non-breaking space.</div>
+<div class="line">- &lt;kbd&gt;CTRL&lt;/kbd&gt;+&lt;kbd&gt;SHIFT&lt;/kbd&gt;+&lt;kbd&gt;DELETE&lt;/kbd&gt; полностью удаляет поле.</div>
+<div class="line">- &lt;kbd&gt;CTRL&lt;/kbd&gt;+&lt;kbd&gt;TAB&lt;/kbd&gt; или</div>
+<div class="line">  &lt;kbd&gt;CTRL&lt;/kbd&gt;+&lt;kbd&gt;SHIFT&lt;/kbd&gt;+&lt;kbd&gt;TAB&lt;/kbd&gt; запускает механизм</div>
+<div class="line">  автодополнения.</div>
+<div class="line">- &lt;kbd&gt;SHIFT&lt;/kbd&gt;+&lt;kbd&gt;ПРОБЕЛ&lt;/kbd&gt; вставляет неразрывный пробел.</div>
 <div class="line"> </div>
 <div class="line">### Код TeX при экспорте в TeX</div>
 <div class="line"> </div>
-<div class="line">Если поле начинается с `TeX:` экспорт TeX будет содержать дословно текст,</div>
-<div class="line">который который следует за меткой `TeX:`. Эта функция позволяет вводить</div>
-<div class="line">разметку TeX непосредственно в рабочую книгу _wxMaxima_.</div>
+<div class="line">Если текстовое поле начинается с `TeX:` экспорт в TeX будет содержать</div>
+<div class="line">дословный текст, который который следует за меткой `TeX:`. Эта функция</div>
+<div class="line">позволяет вводить разметку TeX непосредственно в рабочую книгу _wxMaxima_.</div>
 <div class="line"> </div>
 <div class="line">## Форматы файлов</div>
 <div class="line"> </div>
-<div class="line">Разрабатываемые в сеансе _wxMaxima_ материалы могут сохранятся для</div>
+<div class="line">Разрабатываемые в сеансе _wxMaxima_ материалы можно сохранять для</div>
 <div class="line">дальнейшего использования одним из трёх способов:</div>
 <div class="line"> </div>
 <div class="line">### .mac</div>
 <div class="line"> </div>
 <div class="line">Файлы `.mac` представляют собой обычные текстовые файлы, содержащие команды</div>
 <div class="line">_Maxima_. Их можно считывать с помощью команд _Maxima_ `batch()` или</div>
-<div class="line">`load()`, либо с помощью меню _wxMaxima_ «Файл/Пакетный файл».</div>
+<div class="line">`load()`, либо с помощью пункта меню _wxMaxima_ «Файл/Пакетный файл».</div>
 <div class="line"> </div>
 <div class="line">Ниже приводится один пример. `Quadratic.mac` определяет функцию, после чего</div>
 <div class="line">генерирует график с помощью `wxdraw2d()`. Впоследствии выводится содержимое</div>
@@ -368,27 +367,33 @@ wxMaxima" class="inline"/></p>
 <div class="line"> </div>
 <div class="line">![Загрузка файла с помощью `batch()`](./BatchImage.png){ id=img_BatchImage }</div>
 <div class="line"> </div>
-<div class="line">Внимание: Не смотря на то, что файл `Quadratic.mac` имеет обычное расширение</div>
+<div class="line">Внимание: несмотря на то, что файл `Quadratic.mac` имеет обычное расширение</div>
 <div class="line">_Maxima_ (`.mac`), прочитать его сможет только _wxMaxima_, поскольку команда</div>
-<div class="line">`wxdraw2d()` является расширение wxMaxima для _Maxima_. (Командная строка)</div>
+<div class="line">`wxdraw2d()` является расширением wxMaxima для _Maxima_. (Командная строка)</div>
 <div class="line">Maxima проигнорирует неизвестную команду `wxdraw2d()`, просто продублировав</div>
 <div class="line">её имя в выводе.</div>
 <div class="line"> </div>
 <div class="line">Файлы `.mac` можно использовать для создания собственной библиотеки</div>
 <div class="line">макросов. Но, поскольку они не содержат достаточно информации по структуре,</div>
-<div class="line">то не могут быть считаны как сеанс _wxMaxima_.</div>
+<div class="line">они не могут быть считаны как сеанс _wxMaxima_.</div>
 <div class="line"> </div>
 <div class="line">### .wxm</div>
 <div class="line"> </div>
-<div class="line">Файлы `.wxm` содержат рабочий лист, за исключением вывода _Maxima_. В</div>
-<div class="line">версиях Maxima &gt;5.38 эти файлы можно читать с помощью функции _Maxima_</div>
-<div class="line">`load()` точно также как и файлы .mac. Но неизбежной проблемой этого</div>
-<div class="line">текстового формата является несовместимость рабочих листов, использующих</div>
-<div class="line">новые функции, со старыми версиями _wxMaxima_.</div>
+<div class="line">`.wxm` files contain the worksheet except for _Maxima_’s output. On Maxima</div>
+<div class="line">versions &gt;5.38 they can be read using _Maxima_’s `load()` function just as</div>
+<div class="line">.mac files. Well - mostly. Questions (like `asksign(x)`) are problematic, as</div>
+<div class="line">the answer is written in the `.wxm` file (so that it can be suggested after</div>
+<div class="line">loading), but that can Maxima not evaluate.  You can prevent Maxima from</div>
+<div class="line">asking questions by using `assume()` to declare some properties, Maxima</div>
+<div class="line">wants to know.</div>
+<div class="line"> </div>
+<div class="line">With this plain-text format, it sometimes is unavoidable that worksheets</div>
+<div class="line">that use new features are not downwards-compatible with older versions of</div>
+<div class="line">_wxMaxima_.</div>
 <div class="line"> </div>
 <div class="line">#### Формат файлов wxm</div>
 <div class="line"> </div>
-<div class="line">Это простой текстовый файл (открывается в текстовом редакторе), в котором</div>
+<div class="line">Это файл с обычным текстом (открывается в текстовом редакторе), в котором</div>
 <div class="line">содержимое полей хранится в виде специальных комментариев Maxima.</div>
 <div class="line"> </div>
 <div class="line">Файл начинается со следующего комментария:</div>
@@ -399,7 +404,7 @@ wxMaxima" class="inline"/></p>
 <div class="fragment"><div class="line">/* [wxMaxima: section start ]</div>
 <div class="line">Заголовок раздела</div>
 <div class="line">   [wxMaxima: section end   ] */</div>
-</div><!-- fragment --><p>или (разумеется, в математическом поле ввод будет <em>не</em> закомментирован (вывод в файле <code>wxm</code> не сохраняется)):</p>
+</div><!-- fragment --><p>или (разумеется, в математическом поле ввод будет <em>не</em> закомментирован (вывод не сохраняется в файле <code>wxm</code>)):</p>
 <div class="fragment"><div class="line">/* [wxMaxima: input   start ] */</div>
 <div class="line">f(x):=x^2+1$</div>
 <div class="line">f(2);</div>
@@ -411,103 +416,103 @@ wxMaxima" class="inline"/></p>
 <div class="line">   [wxMaxima: image   end   ] */</div>
 </div><!-- fragment --><p>Разрыв страницы представляет собой одну строку следующего содержания:</p>
 <div class="fragment"><div class="line">/* [wxMaxima: page break    ] */</div>
-</div><!-- fragment --><p>При этом для свёрнутых полей используется разметка:</p>
+</div><!-- fragment --><p>Свёрнутые поля обозначаются так:</p>
 <div class="fragment"><div class="line">/* [wxMaxima: fold    start ] */</div>
 <div class="line">...</div>
 <div class="line">/* [wxMaxima: fold    end   ] */</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md459"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md535"></a>
 .wxmx</h3>
-<p>Этот файл на основе формата XML сохраняет рабочий лист целиком, включающая такие параметры, как масштаб отображения и список отслеживания. Этот формат самый предпочтительный.</p>
-<h4><a class="anchor" id="autotoc_md460"></a>
+<p>Этот файл на основе формата XML сохраняет рабочий лист целиком, включая такие параметры, как масштаб отображения и список отслеживания. Это рекомендуемый формат.</p>
+<h4><a class="anchor" id="autotoc_md536"></a>
 Формат файлов wxmx</h4>
-<p>Файл <code>wxmx</code> похож на двоичный формат, но работать с ним можно с помощью базовых инструментов ОС. Это файл zip, который можно разархивировать с помощью программы <code>unzip</code> (рекомендуется переименовать файл, чтобы программа <code>unzip</code> могла распознать его в ОС). При создании файла используется не функция сжатия, а способность объединять несколько файлов в один - изображения уже сжаты, а всё остальное представлено простым текстом (занимает куда меньший объём, чем громадные включаемые изображения).</p>
+<p>Файл <code>wxmx</code> похож на двоичный формат, но работать с ним можно с помощью базовых инструментов ОС. Это файл zip, который можно разархивировать с помощью программы <code>unzip</code> (рекомендуется переименовать файл, чтобы программа <code>unzip</code> могла распознать его в ОС). При создании файла используется не функция сжатия, а возможность объединять несколько файлов в один — изображения уже сжаты, а всё остальное представлено простым текстом (занимает куда меньший объём, чем громадные включаемые изображения).</p>
 <p>Содержит следующие файлы:</p>
 <ul>
-<li><code>mimetype</code>: this file does contain the mimetype of <a class="el" href="classwxMaxima.html">wxMaxima</a> files: <code>text/x-wxmathml</code></li>
-<li><code>format.txt</code>: a short description about <a class="el" href="classwxMaxima.html">wxMaxima</a> and the wxmx file format</li>
-<li>Images (e.g. png, jpeg): inline plots which were produced in the <a class="el" href="classwxMaxima.html">wxMaxima</a> session and included images.</li>
-<li><code>content.xml</code>: a XML document, which contains the various cells of your document in XML format.</li>
+<li><code>mimetype</code>: этот файл содержит тип MIME файлов <a class="el" href="classwxMaxima.html">wxMaxima</a>: <code>text/x-wxmathml</code>.</li>
+<li><code>format.txt</code>: краткое описание <a class="el" href="classwxMaxima.html">wxMaxima</a> и формата файлов wxmx.</li>
+<li>Изображения (например, png, jpeg): встроенные графики, которые были созданы в сеансе <a class="el" href="classwxMaxima.html">wxMaxima</a>, и включённые изображения.</li>
+<li><code>content.xml</code>: документ XML, содержащий различные поля документа в формате XML.</li>
 </ul>
-<p>Таким образом, в случае появления ошибок можно разархивировать документ <a class="el" href="classwxMaxima.html">wxMaxima</a> (рекомендуется сначала переименовать его в файл <code>zip</code>), внести изменения в файл <code>content.xml</code> в текстовом редакторе, либо заменить сломанное изображение, снова собрать файл zip и заменить расширение <code>zip</code> на <code>wxmx</code> - и получаем отредактированный файл <code>wxmx</code>.</p>
-<h2><a class="anchor" id="autotoc_md461"></a>
+<p>Таким образом, в случае появления ошибок можно разархивировать документ <a class="el" href="classwxMaxima.html">wxMaxima</a> (рекомендуется сначала переименовать его в файл <code>zip</code>), внести изменения в файл <code>content.xml</code> в текстовом редакторе или заменить повреждённое изображение, снова добавить файлы в архив и заменить расширение <code>zip</code> на <code>wxmx</code> — и получаем отредактированный файл <code>wxmx</code>.</p>
+<h2><a class="anchor" id="autotoc_md537"></a>
 Параметры конфигурации</h2>
-<p>Для некоторых общих переменных конфигурации <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> обеспечивает два вида установки параметров конфигурации:</p>
+<p>Для некоторых общих переменных конфигурации <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> обеспечивает два вида настройки:</p>
 <ul>
-<li>The configuration dialog box below lets you change their default values for the current and subsequent sessions.</li>
-<li>Also, the values for most configuration variables can be changed for the current session only by overwriting their values from the worksheet, as shown below.</li>
+<li>Диалоговое окно параметров конфигурации, представленное ниже, позволяет изменять значения параметров по умолчанию для текущего и последующих сеансов.</li>
+<li>Кроме того, для текущего сеанса возможно изменение значений большинства переменных конфигурации путём перезаписи их значений из рабочего листа, как показано ниже.</li>
 </ul>
 <p><img src="./wxMaxima_configuration_001.png" alt="Конфигурация wxMaxima 1" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md462"></a>
+<h3><a class="anchor" id="autotoc_md538"></a>
 Частота кадров анимации по умолчанию</h3>
-<p>Значение частоты кадров анимации, использующееся при создании новых анимаций, содержится в переменной <code>wxanimate_framerate</code>. Начальное значение этой переменной, которое будет содержаться в новом рабочем листе, можно изменить в диалоговом окне настройки параметров конфигурации.</p>
-<h3><a class="anchor" id="autotoc_md463"></a>
-Размер графика по умолчанию для новых сеансов &lt;em&gt;maxima&lt;/em&gt;</h3>
-<p>Начиная со следующего запуска, указанный размер будет использоваться для создания графиков, встраиваемых в рабочий лист, если значение параметра <code>wxplot_size</code> не изменялось <em>maxima</em>.</p>
-<p>Чтобы задать размер одного графика используйте следующую запись при установке значения переменной для одной команды:</p>
+<p>Значение частоты кадров анимации, использующееся при создании новых анимаций, хранится в переменной <code>wxanimate_framerate</code>. Начальное значение этой переменной, которое будет содержаться в новом рабочем листе, можно изменить в диалоговом окне настройки параметров конфигурации.</p>
+<h3><a class="anchor" id="autotoc_md539"></a>
+Размер графика по умолчанию для новых сеансов &lt;em&gt;Maxima&lt;/em&gt;</h3>
+<p>Начиная со следующего запуска, указанный размер будет использоваться для создания графиков, встраиваемых в рабочий лист, если значение параметра <code>wxplot_size</code> не изменялось <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
+<p>Чтобы задать размер одного графика, используйте следующую запись при установке значения переменной для одной команды:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
 <div class="line">   explicit(</div>
 <div class="line">       x^2,</div>
 <div class="line">       x,-5,5</div>
 <div class="line">   )</div>
 <div class="line">), wxplot_size=[480,480]$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md464"></a>
-Создание парных скобок в текстовых элементах управления</h3>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md540"></a>
+Проверять расстановку скобок в текстовом вводе</h3>
 <p>Этот параметр активирует сразу две функции:</p>
 <ul>
-<li>If an opening parenthesis, bracket, or double quote is entered <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> will insert a closing one after it.</li>
-<li>If text is selected if any of these keys is pressed the selected text will be put between the matched signs.</li>
+<li>При вводе открывающей круглой скобки, квадратной скобки или двойной кавычки <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> вставляет закрывающую после неё.</li>
+<li>При выделении текста, если нажать любую из этих клавиш, выделенный текст помещается между парой этих знаков.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md465"></a>
-Не сохраняйте рабочий лист автоматически</h3>
+<h3><a class="anchor" id="autotoc_md541"></a>
+Не сохранять рабочий лист автоматически</h3>
 <p>При включении этого параметра файл с рабочим листом перезаписывается только по требованию пользователя. В случае сбоя/отключении питания/... свежая резервная копия остаётся доступной во временном каталоге.</p>
 <p>Если этот параметр не включён, работа <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> больше напоминает современное приложение сотового телефона:</p>
 <ul>
-<li>Files are saved automatically on exit</li>
-<li>And the file will automatically be saved every 3 minutes.</li>
+<li>Файлы автоматически сохраняются при выходе.</li>
+<li>Также файл автоматически сохраняется каждые 3 минуты.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md466"></a>
+<h3><a class="anchor" id="autotoc_md542"></a>
 Где сохраняется конфигурация параметров?</h3>
-<p>При использовании Unix/Linux параметры конфигурации сохраняются в домашнем каталоге в файле <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> (если используется wxWidgets &lt; 3.1.1) или в <code>.config/wxMaxima.conf</code> ((XDG-Standard), если используется wxWidgets &gt;= 3.1.1). Версию wxWidgets можно посмотреть с помощью команды <code>wxbuild_info();</code> или в меню «Справка-&gt;О программе». <a href="https://www.wxwidgets.org/">wxWidgets</a> представляет собой кросс-платформенную библиотеку пользовательского интерфейса, на которой основан интерфейс <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (отсюда <code>wx</code> в имени). (Поскольку имя файла начинается с точки, <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> или <code>.config</code> будут скрытыми файлами).</p>
-<p>При использовании Windows параметры конфигурации будут храниться в реестре. Записи <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> в реестре будут храниться на следующем месте: <code>HKEY_CURRENT_USER\Software\<a class="el" href="classwxMaxima.html">wxMaxima</a></code></p>
+<p>При использовании Unix/Linux параметры конфигурации сохраняются в домашнем каталоге в файле <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> (если используется wxWidgets &lt; 3.1.1) или в <code>.config/wxMaxima.conf</code> (XDG-Standard) (если используется wxWidgets &gt;= 3.1.1). Версию wxWidgets можно посмотреть с помощью команды <code>wxbuild_info();</code> или в меню «Справка -&gt; О программе». <a href="https://www.wxwidgets.org/">wxWidgets</a> — кросс-платформенная библиотека для построения графического интерфейса пользователя, на которой основан интерфейс <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (отсюда <code>wx</code> в имени). (Поскольку имя файла начинается с точки, <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> или <code>.config</code> будут скрытыми файлами.)</p>
+<p>При использовании Windows параметры конфигурации будут храниться в реестре. Расположение записей <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> в реестре: <code>HKEY_CURRENT_USER\Software\<a class="el" href="classwxMaxima.html">wxMaxima</a></code></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md467"></a>
+<h1><a class="anchor" id="autotoc_md543"></a>
 Расширения &lt;em&gt;Maxima&lt;/em&gt;</h1>
-<p><em>WxMaxima</em> является прежде всего графическим интерфейсом <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. В этом качестве её главной целью является передача команд <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> и получение результатов выполнения этих команд. Однако в некоторых случаях <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> позволяет дополнить функциональные возможности <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. Уже упоминалась способность <em>WxMaxima</em> генерировать отчёты путём экспорта содержимого рабочей книги в файлы HTML и LaTeX. Этот раздел описывает способы, которые использует <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> для усовершенствования использования графики в сеансе.</p>
-<h2><a class="anchor" id="autotoc_md468"></a>
-Переменные в нижнем регистре</h2>
-<p>Параметр <code>wxsubscripts</code> указывает, если (и как) <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> будет автоматически переводить в нижний регистр имена переменных:</p>
-<p>При значении <code>false</code> функциональная возможность отключена и <a class="el" href="classwxMaxima.html">wxMaxima</a> не будет автоматически переводить в нижний регистр часть имён переменных после символа подчёркивания.</p>
-<p>При значении <code>'all</code> весь текст после символа подчёркивания будет переводиться в нижний регистр.</p>
-<p>При значении <code>true</code> имена переменных отображаются в формате <code>x_y</code> в нижнем регистре, если</p>
+<p><em>WxMaxima</em> является прежде всего графическим интерфейсом пользователя для <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. В этом качестве её главной целью является передача команд <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> и получение результатов выполнения этих команд. Однако в некоторых случаях <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> позволяет дополнить функциональные возможности <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. Уже упоминалась способность <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> генерировать отчёты путём экспорта содержимого рабочей книги в файлы HTML и LaTeX. Этот раздел описывает способы, которые <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> использует для усовершенствования использования графики в сеансе.</p>
+<h2><a class="anchor" id="autotoc_md544"></a>
+Переменные в нижнем индексе</h2>
+<p>Параметр <code>wxsubscripts</code> указывает, будет ли (и как) <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> автоматически переводить в нижний индекс имена переменных:</p>
+<p>При значении <code>false</code> эта функциональная возможность отключена; <a class="el" href="classwxMaxima.html">wxMaxima</a> не будет автоматически переводить в нижний индекс часть имён переменных после символа подчёркивания.</p>
+<p>При значении <code>'all</code> весь текст после символа подчёркивания будет переводиться в нижний индекс.</p>
+<p>При значении <code>true</code> имена переменных в формате <code>x_y</code> отображаются как нижний индекс, если:</p>
 <ul>
-<li>Either <code>x</code> or <code>y</code> is a single letter or</li>
-<li><code>y</code> is an integer (can include more than one character).</li>
+<li>Либо <code>x</code> или <code>y</code> представлены одной буквой,</li>
+<li>либо <code>y</code> представлена целым числом (может включать более одного символа).</li>
 </ul>
-<p><img src="./wxsubscripts.png" alt="Как переменные переводятся в нижний регистр с помощью
+<p><img src="./wxsubscripts.png" alt="Как переменные автоматически переводятся в нижний индекс с помощью
 wxsubscripts" class="inline"/></p>
-<p>Если имя переменной не соответствует этим требованиям, её всё равно можно объявить в качестве «переводимой в нижний регистр» с помощью команды <code>wxdeclare_subscript(variable_name);</code> или <code>wxdeclare_subscript([variable_name1,variable_name2,...]);</code> Объявление переменной, в качестве переводимой в нижний регистр, можно обратить с помощью команды: <code>wxdeclare_subscript(variable_name,false);</code></p>
-<p>Для установки этих значений можно воспользоваться меню «Вид-&gt;Автоперевод в нижний индекс».</p>
-<h2><a class="anchor" id="autotoc_md469"></a>
+<p>Если имя переменной не соответствует этим требованиям, её всё равно можно объявить в качестве «подлежащей переводу в нижний индекс» с помощью команды <code>wxdeclare_subscript(variable_name);</code> или <code>wxdeclare_subscript([variable_name1,variable_name2,...]);</code> Объявление переменной в качестве переведённой в нижний индекс можно отменить с помощью команды: <code>wxdeclare_subscript(variable_name,false);</code></p>
+<p>Для установки этих значений можно воспользоваться меню «Вид -&gt; Автоперевод в нижний индекс».</p>
+<h2><a class="anchor" id="autotoc_md545"></a>
 Информация в строке состояния</h2>
-<p>Долго работающие команды могут выводить информацию в строку состояния. Новая информация последовательно заменяет размещённую там старую (позволяя использовать строку состояния в качестве индикатора выполнения) и удаляется сразу по завершении выполнения отправленной в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> текущей команды. Безопасно использовать <code>wxstatusbar()</code> можно даже в библиотеках, использующих только команды <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (в противоположность <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>): При отсутствии <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> команда <code>wxstatusbar()</code> просто не будет выполняться.</p>
+<p>Работающие на протяжении длительного времени команды могут выводить информацию в строку состояния. Новая информация последовательно заменяет размещённую там старую (что позволяет использовать строку состояния в качестве индикатора хода выполнения) и удаляется сразу по завершении выполнения текущей отправленной в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> команды. Можно использовать <code>wxstatusbar()</code> даже в тех библиотеках, которые могут работать с обычной <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (а не <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>): при отсутствии <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> команда <code>wxstatusbar()</code> просто не будет обрабатываться.</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
-<div class="line">    /* Визуализация процесса выполнения */</div>
+<div class="line">    /* Информирование о ходе выполнения */</div>
 <div class="line">    wxstatusbar(concat(&quot;Pass &quot;,i)),</div>
-<div class="line">    /* (sleep n) — функция Lisp, которая может */</div>
-<div class="line">    /* предваряться символом &quot;?&quot;. Она откладывает */</div>
+<div class="line">    /* (sleep n) — функция Lisp, которую можно вызывать */</div>
+<div class="line">    /* путём предварения символом &quot;?&quot;. Она откладывает */</div>
 <div class="line">    /* выполнение программы (здесь: на 3 секунды) */</div>
 <div class="line">    ?sleep(3)</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md470"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md546"></a>
 Построение графиков</h2>
-<p>Построение графиков (в основном связано с графической системой) необходимо предполагает, что графический интерфейс пользователя обеспечит здесь ряд расширений к исходной программе.</p>
-<h3><a class="anchor" id="autotoc_md471"></a>
-Включение графиков в рабочий лист</h3>
-<p>Обычно <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> использует внешнюю программу <em>Gnuplot</em>, которая открывает отдельное окно для каждого создаваемого графика. Поскольку во многих случаях удобнее вставлять графики в рабочий лист, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> предлагает вместо этого собственный набор графических функций, которые ничем не отличаются от соответствующих функций <em>maxima</em>, за исключением имени: Все они имеют префикс “wx”.</p>
+<p>Построение графиков (в основном в связи с графической системой) предполагает, что графический интерфейс пользователя предоставит ряд расширений для исходной программы.</p>
+<h3><a class="anchor" id="autotoc_md547"></a>
+Встраивание графика в рабочий лист</h3>
+<p>Обычно <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> использует внешнюю программу <em>Gnuplot</em>, которая открывает отдельное окно для каждого создаваемого графика. Поскольку часто удобнее не делать так, а встраивать графики в рабочий лист, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> предоставляет собственный набор графических функций, которые отличаются от соответствующих функций <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> только именем: все они имеют префикс “wx”.</p>
 <p>Следующие графические функции имеют wx-аналоги:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Графические функции <a class="el" href="classwxMaxima.html">wxMaxima</a>   </th><th class="markdownTableHeadNone">Графические функции <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>    </th></tr>
+<th class="markdownTableHeadNone">Графическая функция <a class="el" href="classwxMaxima.html">wxMaxima</a>   </th><th class="markdownTableHeadNone">Графическая функция <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>wxplot2d()</code>   </td><td class="markdownTableBodyNone"><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#plot2d">plot2d</a>    </td></tr>
 <tr class="markdownTableRowEven">
@@ -532,10 +537,10 @@ wxsubscripts" class="inline"/></p>
 <td class="markdownTableBodyNone"><code>wxboxplot()</code>   </td><td class="markdownTableBodyNone"><a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#boxplot">boxplot</a>   </td></tr>
 </table>
 <p>Если <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> прочитает файл <code>wxm</code> (в консоли), то эти функции игнорируются (печатаются в выводе, как и другие неизвестные функции в <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>).</p>
-<p>If you got problems with one of these functions, please check, if the problem exists in the the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> function too (e.g. you got an error with <code>wxplot2d()</code>, check the same plot in the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command <code>plot2d()</code> (which opens the plot in a separate Window)). If the problem does not disappear, it is most likely a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> issue and should be reported in the <a href="https://sourceforge.net/p/maxima/bugs/">Maxima bugtracker</a>. Or maybe a Gnuplot issue.</p>
-<h3><a class="anchor" id="autotoc_md472"></a>
-Увеличение или уменьшение вложенных графиков</h3>
-<p>Как указано выше, диалоговое окно настройки конфигурации позволяет изменять размер по умолчанию для создаваемых графиков, устанавливая начальное значение параметра <code>wxplot_size</code>. Графические процедуры <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> используют эту переменную для получения размера графика в пикселах. Этот размер всегда можно запросить или использовать для установки размера последующих графиков:</p>
+<p>При появлении проблем с работой одной из этих функций рекомендуется проверить, существуют ли эти проблемы также и для функции <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (например, если <code>wxplot2d()</code> возвращает ошибку, проверьте тот же график с помощью команды <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>plot2d()</code> (она открывает график в отдельном окне)). Если проблемы остались, вероятнее всего, что дело в ошибке <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>; следует сообщить о ней с помощью <a href="https://sourceforge.net/p/maxima/bugs/">системы отслеживания ошибок Maxima</a>. Либо это может быть ошибкой Gnuplot.</p>
+<h3><a class="anchor" id="autotoc_md548"></a>
+Увеличение или уменьшение встроенных графиков</h3>
+<p>Как указано выше, диалоговое окно настройки конфигурации позволяет изменять размер по умолчанию для создаваемых графиков, устанавливая начальное значение параметра <code>wxplot_size</code>. Графические процедуры <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> используют эту переменную для получения размера графика в пикселах. Её значение всегда можно запросить или использовать для установки размера последующих графиков:</p>
 <div class="fragment"><div class="line">wxplot_size:[1200,800]$</div>
 <div class="line">wxdraw2d(</div>
 <div class="line">    explicit(</div>
@@ -543,7 +548,7 @@ wxsubscripts" class="inline"/></p>
 <div class="line">        x,1,10</div>
 <div class="line">    )</div>
 <div class="line">)$</div>
-</div><!-- fragment --><p>Если изменить размер необходимо только у одного графика, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> обеспечивает канонический путь изменения атрибута только для текущего поля. В этом случае строка установки параметра <code>wxplot_size = [value1, value2]</code> присоединяется к команде <code>wxdraw2d( )</code>, и не является частью команды <code>wxdraw2d</code>.</p>
+</div><!-- fragment --><p>Если изменить размер необходимо только у одного графика, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> обеспечивает канонический путь изменения атрибута только для текущего поля. В этом случае строка установки параметра <code>wxplot_size = [value1, value2]</code> добавляется к команде <code>wxdraw2d( )</code> и не является частью команды <code>wxdraw2d</code>.</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
 <div class="line">    explicit(</div>
 <div class="line">        sin(x),</div>
@@ -551,19 +556,19 @@ wxsubscripts" class="inline"/></p>
 <div class="line">    )</div>
 <div class="line">),wxplot_size=[1600,800]$</div>
 </div><!-- fragment --><p>Установка размера встроенного графика с помощью параметра <code>wxplot_size</code> работает для встроенного графика при использовании команд <code>wxplot</code>, <code>wxdraw</code>, <code>wxcontour_plot</code> и <code>wximplicit_plot</code>, а также для встроенных анимаций при использовании команд <code>with_slider_draw</code> и <code>wxanimate</code>.</p>
-<h3><a class="anchor" id="autotoc_md473"></a>
+<h3><a class="anchor" id="autotoc_md549"></a>
 Улучшение качества графиков</h3>
-<p>По всей видимости в <em>Gnuplot</em> не реализован универсальный способ определения наличия поддержки вывода растрового изображения в улучшенном качестве, реализуемый библиотекой Cairo. На системах, где <em>Gnuplot</em> скомпилирован с поддержкой этой библиотеки, параметр pngCairo в меню настройки конфигурации (может быть перезаписана с помощью переменной <code>wxplot_pngcairo</code>) включает поддержку сглаживания и дополнительные стили линий. Если включить параметр <code>wxplot_pngCairo</code> на системах без поддержки <em>Gnuplot</em>, то вместо графического изображения будут получены сообщения об ошибке.</p>
-<h3><a class="anchor" id="autotoc_md474"></a>
+<p>По всей видимости в <em>Gnuplot</em> не реализован универсальный способ определения наличия поддержки вывода растрового изображения в улучшенном качестве, реализуемого библиотекой Cairo. В системах, где <em>Gnuplot</em> скомпилирован с поддержкой этой библиотеки, параметр pngCairo в меню настройки конфигурации (может быть переопределён переменной <code>wxplot_pngcairo</code>) включает поддержку сглаживания и дополнительные стили линий. Если включить параметр <code>wxplot_pngCairo</code> в системах без поддержки этой библиотеки в <em>Gnuplot</em>, то вместо графического изображения будут получены сообщения об ошибке.</p>
+<h3><a class="anchor" id="autotoc_md550"></a>
 Открытие встроенных графиков в интерактивных окнах &lt;em&gt;Gnuplot&lt;/em&gt;</h3>
-<p>Если график был создан с помощью команд типа <code>wxdraw</code> (<code>wxplot2d</code> и <code>wxplot3d</code> в этой функции не поддерживаются) и размер файла основного проекта <em>Gnuplot</em> не слишком высок, то можно использовать контекстное меню <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, которое позволяет открыть график в интерактивном окне <em>Gnuplot</em>.</p>
-<h3><a class="anchor" id="autotoc_md475"></a>
+<p>Если график был создан с помощью команд типа <code>wxdraw</code> (<code>wxplot2d</code> и <code>wxplot3d</code> в этой функции не поддерживаются) и размер файла основного проекта <em>Gnuplot</em> не слишком велик, то можно использовать контекстное меню <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, которое позволяет открыть график в интерактивном окне <em>Gnuplot</em>.</p>
+<h3><a class="anchor" id="autotoc_md551"></a>
 Открытие командной строки Gnuplot в окне &lt;tt&gt;plot&lt;/tt&gt;</h3>
 <p>В MS Windows существует две программы Gnuplot: <code>gnuplot.exe</code> и <code>wgnuplot.exe</code>. Выбрать ту из них, которая будет использоваться, можно в меню настройки конфигурации. При этом <code>wgnuplot.exe</code> позволяет открыть окно командной строки для ввода команд <em>gnuplot</em>, а <code>gnuplot.exe</code> такой возможности не предоставляет. К сожалению, <code>wgnuplot.exe</code> позволяет <em>Gnuplot</em> на некоторое время «захватывать» фокус клавиатуры каждый раз при подготовке графика.</p>
-<h3><a class="anchor" id="autotoc_md476"></a>
-Вставка анимаций в электронную таблицу</h3>
-<p>Трёхмерные графики затрудняют чтение количественных данных. В качестве возможной альтернативы можно назначить третий параметр колёсику мыши. Команда <code>with_slider_draw</code> является версией команды <code>wxdraw2d</code>, позволяющей подготовить несколько графиков и переключаться между ними путём перемещения движка в верхней части экрана. <em>WxMaxima</em> позволяет экспортировать эту анимацию в виде анимированного файла gif.</p>
-<p>Первые два аргумента команды <code>with_slider_draw</code> представляют собой имя переменной, значение которой пошагово изменяется в графиках, и список этих значений. За ними следуют обычные аргументы для <code>wxdraw2d</code>:</p>
+<h3><a class="anchor" id="autotoc_md552"></a>
+Встраивание анимаций в электронную таблицу</h3>
+<p>Трёхмерные графики затрудняют чтение количественных данных. В качестве возможной альтернативы можно назначить третий параметр колесу мыши. Команда <code>with_slider_draw</code> является версией команды <code>wxdraw2d</code>, позволяющей подготовить несколько графиков и переключаться между ними путём перемещения ползунка в верхней части экрана. <em>WxMaxima</em> позволяет экспортировать эту анимацию в виде анимированного файла gif.</p>
+<p>Первые два аргумента команды <code>with_slider_draw</code> представляют собой имя переменной, значение которой пошагово изменяется в графиках, и список значений этой переменной. За ними следуют обычные аргументы для <code>wxdraw2d</code>:</p>
 <div class="fragment"><div class="line">with_slider_draw(</div>
 <div class="line">    f,[1,2,3,4,5,6,7,10],</div>
 <div class="line">    title=concat(&quot;f=&quot;,f,&quot;Hz&quot;),</div>
@@ -604,13 +609,13 @@ wxsubscripts" class="inline"/></p>
 <div class="line">)$</div>
 </div><!-- fragment --><p>Для тех, кто лучше знаком с <code>plot</code>, чем с <code>draw</code>, имеется другой набор функций:</p>
 <ul>
-<li><code>with_slider</code> and</li>
+<li><code>with_slider</code> и</li>
 <li><code>wxanimate</code>.</li>
 </ul>
-<p>Обычно анимации воспроизводятся или экспортируются с частотой кадров, заданной в конфигурации <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>. Для установки скорости воспроизведения отдельным анимациям можно воспользоваться параметром <code>wxanimate_framerate</code>:</p>
+<p>Обычно анимации воспроизводятся или экспортируются с частотой кадров, заданной в конфигурации <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>. Для установки скорости воспроизведения отдельной анимации можно воспользоваться параметром <code>wxanimate_framerate</code>:</p>
 <div class="fragment"><div class="line">wxanimate(a, 10,</div>
 <div class="line">    sin(a*x), [x,-5,5]), wxanimate_framerate=6$</div>
-</div><!-- fragment --><p>Функции анимации используют команду <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> <code>makelist</code> и подвержены тем же недостаткам, в связи с которыми значение переменной движка передаётся в выражение только когда переменная непосредственно видима в выражении. Поэтому следующий ниже пример вызовет появление ошибки:</p>
+</div><!-- fragment --><p>Функции анимации используют команду <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> <code>makelist</code> и подвержены тем же недостаткам, в связи с которыми значение переменной ползунка подставляется в выражение только тогда, когда эта переменная непосредственно видима в выражении. Поэтому приведённый далее пример вызовет появление ошибки:</p>
 <div class="fragment"><div class="line">f:sin(a*x);</div>
 <div class="line">with_slider_draw(</div>
 <div class="line">    a,makelist(i/2,i,1,10),</div>
@@ -618,7 +623,7 @@ wxsubscripts" class="inline"/></p>
 <div class="line">    grid=true,</div>
 <div class="line">    explicit(f,x,0,10)</div>
 <div class="line">)$</div>
-</div><!-- fragment --><p>Но при отправке <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> явного запроса на передачу значения движка, построение графиков работает прекрасно:</p>
+</div><!-- fragment --><p>Если же отправить <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> явный запрос на подстановку значения ползунка, построение графиков работает прекрасно:</p>
 <div class="fragment"><div class="line">f:sin(a*x);</div>
 <div class="line">with_slider_draw(</div>
 <div class="line">    b,makelist(i/2,i,1,10),</div>
@@ -629,14 +634,14 @@ wxsubscripts" class="inline"/></p>
 <div class="line">        x,0,10</div>
 <div class="line">    )</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md477"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md553"></a>
 Одновременное открытие нескольких графиков в нескольких окнах</h3>
-<p>Эта функция <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (на системах, которые её поддерживают) не реализована в <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, но иногда может быть очень удобной. Следующий пример взят из письма, которое Mario Rodriguez отправил в рассылку <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>:</p>
+<p>Эта функция <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (в системах, которые её поддерживают) не реализована в <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, но иногда может быть очень удобной. Следующий пример взят из письма, которое Mario Rodriguez отправил в рассылку <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>:</p>
 <div class="fragment"><div class="line">/* Парабола в окне #1 */ draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));</div>
 <div class="line"> </div>
 <div class="line">/* Парабола в окне #2 */ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));</div>
 <div class="line"> </div>
-<div class="line">/* Парабола в окне #3 */</div>
+<div class="line">/* Параболоид в окне #3 */</div>
 <div class="line">draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1)); </div>
 </div><!-- fragment --><p>Также возможно создание нескольких графиков в одном окне (то же самое возможно в командной строке <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> при использовании стандартной команды <code>draw()</code>):</p>
 <div class="fragment"><div class="line">wxdraw(</div>
@@ -647,55 +652,55 @@ wxsubscripts" class="inline"/></p>
 <div class="line">    key=&quot;cos (x)&quot;,grid=[2,2],</div>
 <div class="line">    explicit(cos(x),x,0,2*%pi))</div>
 <div class="line">);</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md478"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md554"></a>
 Боковая панель «График с помощью Draw»</h3>
-<p>Боковая панель «График с помощью Draw» работает как простой генератор кода, который позволяет создавать сцены, использующие гибкие возможности пакета <em>draw</em>, поставляемого с <em>maxima</em>.</p>
-<h4><a class="anchor" id="autotoc_md479"></a>
-Двумерный график</h4>
-<p>Генерирует основную конструкцию команды <code>draw()</code>, которая рисует двумерную сцену. Эту сцену далее необходимо заполнить командами, формирующими её наполнение, например, с помощью кнопок в строке под кнопкой «2D».</p>
-<p>Одной из полезных функций кнопки «2D» является возможность задать сцену в виде анимации, где переменная (по умолчанию используется <em>t</em>) имеет разное значение в каждом кадре: Часто бывает проще понять анимированный двумерный график, чем те же самые данные в неподвижной трёхмерной сцене.</p>
-<h4><a class="anchor" id="autotoc_md480"></a>
+<p>Боковая панель «График с помощью Draw» работает как простой генератор кода, который позволяет создавать сцены, использующие гибкие возможности пакета <em>draw</em>, поставляемого с <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
+<h4><a class="anchor" id="autotoc_md555"></a>
+Двухмерный график</h4>
+<p>Генерирует основную конструкцию команды <code>draw()</code>, которая рисует двухмерную сцену. Эту сцену далее необходимо заполнить командами, формирующими её наполнение, например, с помощью кнопок в строках под кнопкой «2D».</p>
+<p>Одной из полезных функций кнопки «2D» является возможность задать сцену в виде анимации, где переменная (по умолчанию используется <em>t</em>) имеет разное значение в каждом кадре: часто бывает проще понять анимированный двухмерный график, чем те же самые данные в неподвижной трёхмерной сцене.</p>
+<h4><a class="anchor" id="autotoc_md556"></a>
 Трёхмерный график</h4>
-<p>Генерирует основную конструкцию команды <code>draw()</code>, которая рисует трёхмерную сцену. Если ни двумерная, ни трёхмерная сцена не заданы, при нажатии всех остальных кнопок создаётся двумерная сцена, содержащая генерируемую кнопкой команду.</p>
-<h4><a class="anchor" id="autotoc_md481"></a>
+<p>Генерирует основную конструкцию команды <code>draw()</code>, которая рисует трёхмерную сцену. Если ни двухмерная, ни трёхмерная сцена не заданы, при нажатии всех остальных кнопок создаётся двухмерная сцена, содержащая генерируемую кнопкой команду.</p>
+<h4><a class="anchor" id="autotoc_md557"></a>
 Выражение</h4>
-<p>Добавляет стандартный график выражения, подобного <code>sin(x)</code>, <code>x*sin(x)</code> или <code>x^2+2*x-4</code>, в команду <code>draw()</code>, в которой в данный момент находится курсор. Если команда draw отсутствует, то будет создана двумерная сцена. Каждая сцена может быть заполнена любым количеством графиков.</p>
-<h4><a class="anchor" id="autotoc_md482"></a>
+<p>Добавляет стандартный график выражения, подобного <code>sin(x)</code>, <code>x*sin(x)</code> или <code>x^2+2*x-4</code>, в команду <code>draw()</code>, в которой в данный момент находится курсор. Если команда draw отсутствует, то будет создана двухмерная сцена. Каждая сцена может быть заполнена любым количеством графиков.</p>
+<h4><a class="anchor" id="autotoc_md558"></a>
 График неявной функции</h4>
 <p>Пытается найти все точки, для которых истинны выражения, подобные <code>y=sin(x)</code>, <code>y*sin(x)=3</code> или <code>x^2+y^2=4</code>, и помещает итоговую кривую в команду <code>draw()</code>, в которой в данный момент находится курсор. Если команда draw отсутствует, то будет создана двухмерная сцена.</p>
-<h4><a class="anchor" id="autotoc_md483"></a>
+<h4><a class="anchor" id="autotoc_md559"></a>
 График параметрической функции</h4>
 <p>Проводит переменную по шагам от нижнего до верхнего предела с использованием двух выражений, подобных <code>t*sin(t)</code> и <code>t*cos(t)</code>, для генерации координат x, y (а в трёхмерных графиках ещё и z) для кривой, заданной в текущей команде draw.</p>
-<h4><a class="anchor" id="autotoc_md484"></a>
+<h4><a class="anchor" id="autotoc_md560"></a>
 Точки</h4>
-<p>Рисует несколько точек, которые при необходимости можно соединить. Координаты точек берутся из списка списков, двумерного массива, либо из одного списка или массива для каждой оси.</p>
-<h4><a class="anchor" id="autotoc_md485"></a>
+<p>Рисует несколько точек, которые при необходимости можно соединить. Координаты точек берутся из списка списков, двухмерного массива, либо из одного списка или массива для каждой оси.</p>
+<h4><a class="anchor" id="autotoc_md561"></a>
 Заголовок диаграммы</h4>
-<p>Рисует заголовок в верхней части диаграммы,</p>
-<h4><a class="anchor" id="autotoc_md486"></a>
+<p>Рисует заголовок в верхней части диаграммы.</p>
+<h4><a class="anchor" id="autotoc_md562"></a>
 Ось</h4>
 <p>Задаёт ось.</p>
-<h4><a class="anchor" id="autotoc_md487"></a>
+<h4><a class="anchor" id="autotoc_md563"></a>
 Контур</h4>
-<p>(Только для трёхмерных графиков): Добавляет отображение контурных линий, подобных изображаемым на картах гор, в команды создания графиков, которые следуют за текущей командой <code>draw()</code>, и/или на нижнюю плоскость графика. Данный мастер также позволяет полностью исключить начертание кривых, оставляя на графике только контуры.</p>
-<h4><a class="anchor" id="autotoc_md488"></a>
-Имя графика</h4>
-<p>Добавляет запись с отображением имени следующего графика к легенде диаграммы. Пустое имя отключает формирование легенды для последующих графиков.</p>
-<h4><a class="anchor" id="autotoc_md489"></a>
+<p>(Только для трёхмерных графиков): добавляет отображение контурных линий, подобных изображаемым на картах гор, в команды создания графиков, которые следуют за текущей командой <code>draw()</code>, и/или на нижнюю плоскость графика. Данный мастер также позволяет полностью исключить начертание кривых, оставляя на графике только контуры.</p>
+<h4><a class="anchor" id="autotoc_md564"></a>
+Название графика</h4>
+<p>Добавляет запись с отображением имени следующего графика к легенде диаграммы. Пустое имя отключает формирование записей легенды для последующих графиков.</p>
+<h4><a class="anchor" id="autotoc_md565"></a>
 Цвет линии</h4>
 <p>Задаёт цвет линии для последующих графиков, содержащихся в составе текущей команды draw.</p>
-<h4><a class="anchor" id="autotoc_md490"></a>
-Цвет заполнения</h4>
-<p>Задаёт цвет заполнения для последующих графиков, передаваемых в составе команды draw.</p>
-<h4><a class="anchor" id="autotoc_md491"></a>
+<h4><a class="anchor" id="autotoc_md566"></a>
+Цвет заливки</h4>
+<p>Задаёт цвет заливки для последующих графиков, передаваемых в составе команды draw.</p>
+<h4><a class="anchor" id="autotoc_md567"></a>
 Сетка</h4>
 <p>Выводит мастер, позволяющий задать линии сетки.</p>
-<h4><a class="anchor" id="autotoc_md492"></a>
+<h4><a class="anchor" id="autotoc_md568"></a>
 Точность</h4>
-<p>Позволяет выбрать приемлемое значение компромисса между скоростью и точностью, являющейся неотъемлемой частью любой программы формирования графиков.</p>
-<h3><a class="anchor" id="autotoc_md493"></a>
-Modify font and font size for plots</h3>
-<p>Размер шрифта по умолчанию может оказаться слишком маленьким, особенно при использовании мониторов с высоким разрешением. Для команд на основе <code>draw</code> установка шрифта / размера шрифта выполняется с помощью таких параметров, как <code>font=...</code>, <code>font_size=...</code>, и подобных им:</p>
+<p>Позволяет выбрать приемлемое значение компромисса между скоростью и точностью, являющегося неотъемлемой частью любой программы формирования графиков.</p>
+<h3><a class="anchor" id="autotoc_md569"></a>
+Изменение шрифта и размера шрифта для графиков</h3>
+<p>Размер шрифта по умолчанию может оказаться слишком маленьким, особенно при использовании мониторов с высоким разрешением. Для команд на основе <code>draw</code> установка шрифта / размера шрифта выполняется с помощью таких параметров, как <code>font=...</code>, <code>font_size=...</code>, например:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
 <div class="line">     font=&quot;Helvetica&quot;,</div>
 <div class="line">     font_size=30,</div>
@@ -703,61 +708,65 @@ Modify font and font size for plots</h3>
 </div><!-- fragment --><p>Для команд построения диаграмм (например, <code>wxplot2d</code>, <code>wxplot3d</code>) размеры шрифтов и шрифты можно задавать с помощью команды <code>gnuplot_preamble</code>, например:</p>
 <div class="fragment"><div class="line">wxplot2d(sin(x),[x,1,10],</div>
 <div class="line">         [gnuplot_preamble, &quot;set tics font \&quot;Arial, 30\&quot;; set xlabel font \&quot;,20\&quot;; set ylabel font \&quot;,20\&quot;;&quot;]);</div>
-</div><!-- fragment --><p>Это позволяет в качестве шрифта для чисел установить Arial с размером 30, размер шрифта для xlabel и ylabel будет 20 (с шрифтом по умолчанию).</p>
-<p>Изучите документацию <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> и Gnuplot для получения более подробной информации. Примечание: Известно о наличии у Gnuplot проблем с шрифтами большого размера, см. <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1966">wxMaxima issue 1966</a>.</p>
-<h2><a class="anchor" id="autotoc_md494"></a>
+</div><!-- fragment --><p>Это позволяет установить Arial с размером 30 в качестве шрифта для чисел. Размер шрифта для xlabel и ylabel будет равен 20 (со шрифтом по умолчанию).</p>
+<p>Изучите документацию <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> и Gnuplot для получения более подробной информации. Примечание: известно о наличии у Gnuplot проблем с шрифтами большого размера, смотрите <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1966">ошибку wxMaxima #1966</a>.</p>
+<h2><a class="anchor" id="autotoc_md570"></a>
 Встраивание графики</h2>
 <p>При использовании формата файла <code>.wxmx</code> встраивание графики в проект <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> выполняется простым перетаскиванием. Но иногда (например, если содержимое изображения может измениться позднее во время сеанса) лучше задать загрузку файла изображения после проведения вычислений:</p>
 <div class="fragment"><div class="line">## Файлы запуска</div>
 <div class="line"> </div>
-<div class="line">В диалоговом окне настройки конфигурации _wxMaxima_ позволяет внести</div>
-<div class="line">изменения в два файла с командами, которые запускаются при загрузке:</div>
+<div class="line">В диалоге настройки _wxMaxima_ можно внести изменения в два файла с</div>
+<div class="line">командами, которые выполняются при запуске:</div>
 <div class="line"> </div>
-<div class="line">- A file that contains commands that are executed on starting up _Maxima_:</div>
-<div class="line">  `maxima-init.mac`</div>
-<div class="line">- one file of additional commands that are executed if _wxMaxima_ is</div>
-<div class="line">  starting _Maxima_: `wxmaxima-init.mac`</div>
+<div class="line">- Файл с командами, которые выполняются при запуске _Maxima_:</div>
+<div class="line">  `maxima-init.mac`.</div>
+<div class="line">- Один файл с дополнительными командами, которые выполняются, когда</div>
+<div class="line">  _wxMaxima_ запускает _Maxima_: `wxmaxima-init.mac`.</div>
 <div class="line"> </div>
-<div class="line">Например, если Gnuplot установлен в `/opt` (может быть на MacOS), в эти</div>
-<div class="line">файлы можно добавить`gnuplot_command:&quot;/opt/local/bin/gnuplot&quot;$` (либо</div>
+<div class="line">Например, если Gnuplot установлен в `/opt` (может быть в MacOS), в эти файлы</div>
+<div class="line">можно добавить`gnuplot_command:&quot;/opt/local/bin/gnuplot&quot;$` (либо</div>
 <div class="line">`/opt/gnuplot/bin/gnuplot` или любой другой путь).</div>
 <div class="line"> </div>
-<div class="line">Эти файлы находятся в каталоге пользователя Maxima (обычно</div>
-<div class="line">`%USERPROFILE%/maxima` в Windows, либо в `$HOME/.maxima`). Местоположение</div>
-<div class="line">можно выяснить с помощью команды: `maxima_userdir;`</div>
+<div class="line">Эти файлы находятся в каталоге пользователя Maxima (в Windows это обычно</div>
+<div class="line">`%USERPROFILE%/maxima`, в других ОС — `$HOME/.maxima`). Местоположение можно</div>
+<div class="line">выяснить с помощью команды: `maxima_userdir;`</div>
 <div class="line"> </div>
 <div class="line">## Специальные переменные wx…</div>
 <div class="line"> </div>
-<div class="line">- `wxsubscripts` tells _Maxima_ if it should convert variable names that</div>
-<div class="line">  contain an underscore (`R_150` or the like) into subscripted</div>
-<div class="line">  variables. See `wxdeclare_subscript` for details which variable names are</div>
-<div class="line">  automatically converted.</div>
-<div class="line">- `wxfilename`: This variable contains the name of the file currently opened</div>
-<div class="line">  in _wxMaxima_.</div>
-<div class="line">- `wxdirname`: This variable contains the name the directory, in which the</div>
-<div class="line">  file currently opened in _wxMaxima_ is.</div>
-<div class="line">- `wxplot_pngcairo` tells whether _wxMaxima_ tries to use _Gnuplot_’s</div>
-<div class="line">  pngcairo terminal that provides more line styles and a better overall</div>
-<div class="line">  graphics quality.</div>
-<div class="line">- `wxplot_size` defines the resolution of embedded plots.</div>
-<div class="line">- `wxchangedir`: On most operating systems _wxMaxima_ automatically sets</div>
-<div class="line">  _Maxima_’s working directory to the directory of the current file. This</div>
-<div class="line">  allows file I/O (e.g. by `read_matrix`) to work without specifying the</div>
-<div class="line">  whole path to the file that has to be read or written. On Windows this</div>
-<div class="line">  feature sometimes causes error messages and therefore can be set to</div>
-<div class="line">  `false` from the config dialogue.</div>
-<div class="line">- `wxanimate_framerate`: The number of frames per second the following</div>
-<div class="line">  animations have to be played back with.</div>
-<div class="line">- `wxanimate_autoplay`: Automatically play animations by default?</div>
-<div class="line">- `wxmaximaversion`: Returns the version number of _wxMaxima_.</div>
-<div class="line">- `wxwidgetsversion`: Returns the wxWidgets version _wxMaxima_ is using.</div>
+<div class="line">- `wxsubscripts` указывает _Maxima_, следует ли преобразовать имена</div>
+<div class="line">  переменных, которые содержат символ подчёркивания (`R_150` или аналог), в</div>
+<div class="line">  переменные в нижнем индексе. Подробные сведения о том, какие имена</div>
+<div class="line">  переменных преобразуются автоматически, доступны в описании команды</div>
+<div class="line">  `wxdeclare_subscript`.</div>
+<div class="line">- `wxfilename`: эта переменная содержит имя файла, который в настоящее время</div>
+<div class="line">  открыт в _wxMaxima_.</div>
+<div class="line">- `wxdirname`: эта переменная содержит имя каталога, в котором находится</div>
+<div class="line">  текущий открытый в _wxMaxima_ файл.</div>
+<div class="line">- `wxplot_pngcairo` определяет, будет ли _wxMaxima_ пытаться использовать</div>
+<div class="line">  терминал pngcairo _Gnuplot_, который предоставляет дополнительные стили</div>
+<div class="line">  линий и обеспечивает лучшее качество графики в целом.</div>
+<div class="line">- `wxplot_size` определяет разрешение встроенных графиков.</div>
+<div class="line">- `wxchangedir`: в большинстве операционных систем _wxMaxima_ автоматически</div>
+<div class="line">  устанавливает в качестве рабочего каталога _Maxima_ тот каталог, где</div>
+<div class="line">  располагается текущий файл. Это позволяет файловому вводу/выводу</div>
+<div class="line">  (например, по `read_matrix`) работать без указания полного пути к файлу,</div>
+<div class="line">  который следует прочитать или записать. В Windows эта возможность иногда</div>
+<div class="line">  приводит к появлению сообщений об ошибках; её можно установить в значение</div>
+<div class="line">  `false` в диалоге настройки.</div>
+<div class="line">- `wxanimate_framerate`: количество кадров в секунду, с которым следует</div>
+<div class="line">  воспроизводить следующие анимации.</div>
+<div class="line">- `wxanimate_autoplay`: следует ли автоматически воспроизводить анимации по</div>
+<div class="line">  умолчанию.</div>
+<div class="line">- `wxmaximaversion`: возвращает номер версии _wxMaxima_.</div>
+<div class="line">- `wxwidgetsversion`: возвращает версию wxWidgets, которую использует</div>
+<div class="line">  _wxMaxima_.</div>
 <div class="line"> </div>
 <div class="line">## Структурный вывод двухмерных данных</div>
 <div class="line"> </div>
-<div class="line">Функция `table_form()` отображает двумерный список в более удобочитаемой</div>
+<div class="line">Функция `table_form()` отображает двухмерный список в более удобочитаемой</div>
 <div class="line">форме, нежели при стандартном выводе процедуры _Maxima_. Ввод осуществляется</div>
-<div class="line">в виде списка одного или нескольких списков. Как и команда «print», данная</div>
-<div class="line">команда отображает вывод, даже когда завершается символом</div>
+<div class="line">в виде списка, содержащего один или нескольких списков. Как и команда</div>
+<div class="line">«print», данная команда отображает вывод, даже когда завершается символом</div>
 <div class="line">доллара. Завершение команды символом точки с запятой приводит к выводу такой</div>
 <div class="line">же таблицы вместе с сообщением «done».</div>
 <div class="line"> </div>
@@ -768,142 +777,137 @@ Modify font and font size for plots</h3>
 <div class="line">        [3,4]</div>
 <div class="line">    ]</div>
 <div class="line">)$</div>
-</div><!-- fragment --><p>Согласно примеру, представленному ниже, списки, собранные командой <code>table_form</code>, могут создаваться до выполнения команды.</p>
+</div><!-- fragment --><p>Согласно примеру, представленному ниже, списки, которые собираются командой <code>table_form</code>, могут создаваться до выполнения команды.</p>
 <p><img src="./MatrixTableExample.png" alt="Третий пример таблицы" class="inline"/></p>
 <p>Также, поскольку матрица является списком списков, матрицы могут схожим образом преобразовываться в таблицы.</p>
 <p><img src="./SecondTableExample.png" alt="Другой пример table_form" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md495"></a>
+<h2><a class="anchor" id="autotoc_md571"></a>
 Отчёты об ошибках</h2>
-<p><em>WxMaxima</em> содержит новые функции, которые собирают информацию о текущей системе для формирования отчёта об ошибках:</p>
+<p><em>WxMaxima</em> предоставляет несколько функций, которые собирают информацию о текущей системе для формирования отчёта об ошибках:</p>
 <ul>
-<li><code>wxbuild_info()</code> gathers information about the currently running version of <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em></li>
-<li><code>wxbug_report()</code> tells how and where to file bugs</li>
+<li><code>wxbuild_info()</code> собирает информацию о версии запущенной программы <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>.</li>
+<li><code>wxbug_report()</code> определяет, как и куда отправлять отчёты об ошибках.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md496"></a>
+<h2><a class="anchor" id="autotoc_md572"></a>
 Выделение вывода красным цветом</h2>
-<p>Команда <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> <code>box()</code> вызывает вывод аргументов <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> с выделением красным цветом, если второй аргумент команды содержит текст <code>highlight</code>.</p>
-<h2><a class="anchor" id="autotoc_md497"></a>
-Output rendering.</h2>
-<p>With <code>set_display()</code> one can set, how <a class="el" href="classwxMaxima.html">wxMaxima</a> will render the output.</p>
-<p><code>set_display('xml)</code> is the default value. Here <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> speaks to <a class="el" href="classwxMaxima.html">wxMaxima</a> using an (machine readable) XML-dialect (can be seen in the "Raw XML
-sidebar") and outputs the resulting formulas nicely rendered, e.g. pretty Matrices, Square root signs, fractions, etc.</p>
-<p><code>set_display('ascii)</code> causes <a class="el" href="classwxMaxima.html">wxMaxima</a> to output formulas as in command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> - as ASCII-Art.</p>
-<p><code>set_display('none)</code> causes 'one-line' ASCII results - the same as the command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command <code>display2d:false;</code> does.</p>
-<h1><a class="anchor" id="autotoc_md498"></a>
+<p>Команда <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> <code>box()</code> вызывает вывод аргументов <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> с выделением красным цветом, если второй аргумент команды представляет собой текст <code>highlight</code>.</p>
+<h2><a class="anchor" id="autotoc_md573"></a>
+Визуализация вывода</h2>
+<p><code>set_display()</code> позволяет указать, как <a class="el" href="classwxMaxima.html">wxMaxima</a> следует визуализировать вывод.</p>
+<p><code>set_display('xml)</code> — значение по умолчанию. Здесь <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> обращается к <a class="el" href="classwxMaxima.html">wxMaxima</a> с помощью (машиночитаемого) XML-диалекта (доступен для просмотра на боковой панели «Отслеживание необработанных XML-данных») и выводит получившиеся формулы в удобном для восприятия пользователем виде; например, матрицы, знаки квадратного корня, дроби и так далее.</p>
+<p><code>set_display('ascii)</code> заставляет <a class="el" href="classwxMaxima.html">wxMaxima</a> выводить формулы как в командной строке <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, то есть в виде символов ASCII.</p>
+<p><code>set_display('none)</code> — «однострочные» выходные данные ASCII — эта команда делает то же самое, что и команда <code>display2d:false;</code> командной строки <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>.</p>
+<h1><a class="anchor" id="autotoc_md574"></a>
 Меню справки</h1>
-<p>Меню справки WxMaxima предоставляет доступ к руководству, подсказкам и некоторым примерам рабочих листов <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> и <a class="el" href="classwxMaxima.html">wxMaxima</a>, а также к демонстрациям в командной строке <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (команда <code>demo()</code>).</p>
-<p>Обратите внимание на вывод демонстраций:</p>
+<p>Меню справки <a class="el" href="classwxMaxima.html">wxMaxima</a> предоставляет доступ к руководству, подсказкам и некоторым примерам рабочих листов <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> и <a class="el" href="classwxMaxima.html">wxMaxima</a>, а также к демонстрационным примерам в командной строке <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (команда <code>demo()</code>).</p>
+<p>Обратите внимание на вывод демонстрационных примеров:</p>
 <div class="fragment"><div class="line">продолжения демонстрации.  </div>
-</div><!-- fragment --><p>Это работает в командной строке <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, но в <a class="el" href="classwxMaxima.html">wxMaxima</a> для продолжения демонстрации необходимо использовать сочетания клавиш: <code>CTRL</code>+<code>ENTER</code></p>
-<p>(Это можно настроить в меню «Настройка-&gt;Worksheet-&gt;Hotkeys for sending commands to Maxima».)</p>
+</div><!-- fragment --><p>Это работает в командной строке <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, но в <a class="el" href="classwxMaxima.html">wxMaxima</a> для продолжения демонстрации необходимо использовать сочетание клавиш <code>CTRL</code>+<code>ENTER</code></p>
+<p>(Сочетание клавиш можно настроить в меню «Настройка -&gt; Лист -&gt; Комбинации клавиш для отправки команд в Maxima».)</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md499"></a>
+<h1><a class="anchor" id="autotoc_md575"></a>
 Устранение неполадок</h1>
-<h2><a class="anchor" id="autotoc_md500"></a>
+<h2><a class="anchor" id="autotoc_md576"></a>
 Не удаётся установить соединение с &lt;em&gt;Maxima&lt;/em&gt;</h2>
-<p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (программа, которая фактически выполняет математические расчёты) и <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (обеспечивает работу удобного пользовательского интерфейса) представляют собой отдельные программы, которые общаются посредством локальной вычислительной сети. Поэтому наиболее вероятной причиной проблемы могут быть сбои в работе соединения. Например, межсетевой экран может быть настроен таким образом, что не только предотвращает несанкционированные соединения, поступающие из сети Интернет (а возможно и некоторые соединения в обратном направлении), но также блокирует взаимодействие между процессами на одном и том же компьютере. Поскольку <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> работает на процессоре Lisp, блокируемые процессы не обязательно будут носить имя «maxima». Для открытия сетевых соединений обычно используются программы: sbcl, gcl, ccl, lisp.exe или подобные им.</p>
+<p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (программа, которая фактически выполняет математические расчёты) и <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (предоставляет удобный интерфейс пользователя) — отдельные программы, которые обмениваются данными по локальной сети. Поэтому наиболее вероятной причиной проблемы могут быть сбои в работе соединения. Например, межсетевой экран может быть настроен таким образом, что не только предотвращает несанкционированные соединения, поступающие из сети Интернет (а возможно, и некоторые соединения в обратном направлении), но также блокирует взаимодействие между процессами на одном и том же компьютере. Поскольку <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> работает на процессоре Lisp, блокируемые процессы не обязательно будут носить имя «maxima». Сетевые соединения обычно открывают программы sbcl, gcl, ccl, lisp.exe или подобные им.</p>
 <p>На компьютерах с Unix другой возможной причиной может быть неправильная конфигурация закольцованной сети, обеспечивающей сетевое соединение между двумя программами на одном компьютере.</p>
-<h2><a class="anchor" id="autotoc_md501"></a>
+<h2><a class="anchor" id="autotoc_md577"></a>
 Как сохранить данные из повреждённого файла .wxmx</h2>
 <p>Большинство современных форматов на основе XML представляют собой обычные zip-файлы. <em>WxMaxima</em> не использует функцию сжатия, поэтому содержимое файлов <code>.wxmx</code> можно просматривать в текстовом редакторе.</p>
-<p>Если сигнатура в конце zip-файла после переименования повреждённого файла <code>.wxmx</code> в <code>.zip</code> остаётся нетронутой, то большинство операционных систем смогут обеспечить извлечение любой части находящихся в нём данных. Это может быть сделано при необходимости восстановления исходных файлов изображений из текстового документа. И даже повреждение сигнатуры zip файла не означает, что всё потеряно: Если во время сохранения <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> возникли проблемы, то остаётся файл <code>.wxmx~</code>, содержимое которого может оказаться полезным.</p>
-<p>И даже если этого файла нет: Формат файла <code>.wxmx</code> представляет собой контейнер, содержимое XML в котором хранится без сжатия. Можно переименовать файл <code>.wxmx</code> в файл <code>.txt</code> и с помощью текстового редактора восстановить XML-содержимое файла (которое начинается со строки <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> и завершается строкой <code>&lt;/wxMaximaDocument&gt;</code>. До и после этих строк в текстовом редакторе располагается нечитаемый двоичный код).</p>
-<p>Если извлечь это содержимое (например, скопировать и вставить этот текст в новый файл) и сохранить отдельно в текстовый файл с расширением <code>.xml</code>, то <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> сможет восстановить текст из этого документа.</p>
-<h2><a class="anchor" id="autotoc_md502"></a>
-Требуется вывод отладочной информации на экран до завершения работы</h2>
-<p>команды</p>
-<p>Обычно <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> начинает вёрстку только после полной передачи двумерной формулы. Это сделано, чтобы не тратить время на выполнение нескольких попыток вёрстки частично завершённого уравнения. При этом существует команда <code>disp</code>, которая обеспечивает непосредственный вывод отладочной информации без ожидания завершения работы текущей команды <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>:</p>
+<p>Если zip-сигнатура в конце файла осталась нетронутой после переименования повреждённого файла <code>.wxmx</code> в <code>.zip</code>, то большинство операционных систем смогут обеспечить извлечение любой части находящихся в нём данных. Это может быть сделано при необходимости восстановления исходных файлов изображений из текстового документа. И даже повреждение zip-сигнатуры не означает, что всё потеряно: если во время сохранения <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> удалось определить, что что-то пошло не так, появится файл <code>.wxmx~</code>, содержимое которого может оказаться полезным.</p>
+<p>И даже если этого файла нет: формат файла <code>.wxmx</code> представляет собой контейнер, XML-содержимое в котором хранится без сжатия. Можно переименовать файл <code>.wxmx</code> в файл <code>.txt</code> и с помощью текстового редактора восстановить XML-содержимое файла (оно начинается со строки <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> и завершается строкой <code>&lt;/wxMaximaDocument&gt;</code>, а перед этим текстом и после него в текстовом редакторе располагается нечитаемый двоичный код).</p>
+<p>Если извлечь это содержимое (например, скопировать и вставить этот текст в новый файл) и сохранить полученный текстовый файл с расширением <code>.xml</code>, то <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> сможет восстановить текст из этого документа.</p>
+<h2><a class="anchor" id="autotoc_md578"></a>
+Как вывести отладочную информацию на экран до завершения работы команды</h2>
+<p>Обычно <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> начинает вёрстку только после полной передачи двухмерной формулы. Это сделано, чтобы не тратить время на выполнение нескольких попыток вёрстки частично завершённого уравнения. Тем не менее, существует команда <code>disp</code>, которая обеспечивает незамедлительный вывод отладочной информации без ожидания завершения выполнения текущей команды <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>:</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
 <div class="line">   disp(i),</div>
-<div class="line">   /* (sleep n) функция Lisp, которой должно предшествовать */</div>
-<div class="line">   /* указание символа &quot;?&quot;. Она откладывает исполнение */</div>
-<div class="line">   /* программы (здесь: на 3 секунды) */</div>
+<div class="line">   /* (sleep n) — функция Lisp, которую можно вызывать */</div>
+<div class="line">   /* путём предварения символом &quot;?&quot;. Она откладывает */</div>
+<div class="line">   /* выполнение программы (здесь: на 3 секунды) */</div>
 <div class="line">   ?sleep(3)</div>
 <div class="line">)$</div>
-</div><!-- fragment --><p>С другой стороны, можно рассмотреть использование представленной выше команды <code>wxstatusbar()</code>.</p>
-<h2><a class="anchor" id="autotoc_md503"></a>
+</div><!-- fragment --><p>Альтернативный вариант — воспользоваться командой <code>wxstatusbar()</code> (её описание приводилось выше).</p>
+<h2><a class="anchor" id="autotoc_md579"></a>
 Функция построения графика показывает только закрытый пустой конверт с</h2>
 <p>сообщением об ошибке</p>
-<p>Это означает, что <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> не смогла прочитать файл <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, который должен содержать данные для создания графика с помощью <em>Gnuplot</em>.</p>
+<p>Это означает, что <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> не удалось прочитать файл, который должен был быть создан <em>Gnuplot</em> по инструкции от <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
 <p>Возможные причины ошибки:</p>
 <ul>
-<li>The plotting command is part of a third-party package like <code>implicit_plot</code> but this package was not loaded by <em>Maxima_’s <code>load()</code> command before trying to plot.</em></li>
-<li><em>_Maxima</em> tried to do something the currently installed version of <em>Gnuplot</em> isn’t able to understand. In this case, a file ending in <code>.gnuplot</code> located in the directory, which <em>Maxima_’s variable <code>maxima_userdir</code> is pointing, contains the instructions from _Maxima</em> to <em>Gnuplot</em>. Most of the time, this file’s contents therefore are helpful when debugging the problem.</li>
-<li>Gnuplot was instructed to use the pngCairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the Cairo terminal
-  for the plot" checkbox in the configuration dialog and don’t set <code>wxplot_pngcairo</code> to true from <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</li>
-<li>Gnuplot didn’t output a valid <code>.png</code> file.</li>
+<li>Команда построения входит в состав стороннего пакета наподобие <code>implicit_plot</code>, но этот пакет не был загружен с помощью команды <code>load()</code> <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> перед попыткой построить график.</li>
+<li>Текущей установленной версии <em>Gnuplot</em> не удалось распознать действие, которое пыталась выполнить <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. Файл с заканчивающимся на <code>.gnuplot</code> именем, который расположен в каталоге, указанном переменной <code>maxima_userdir</code> <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, содержит инструкции от <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> для <em>Gnuplot</em>. Чаще всего содержимое этого файла помогает при отладке.</li>
+<li>Для Gnuplot было задано использование библиотеки pngCairo, которая предоставляет сглаживание и дополнительные стили линий, но компиляция была выполнена без поддержки такой возможности. Решение: снимите флажок «Использовать Cairo для улучшения качества графиков» в диалоговом окне параметров конфигурации и не устанавливайте <code>wxplot_pngcairo</code> в значение «true» в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</li>
+<li>Вывод Gnuplot — некорректный файл <code>.png</code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md504"></a>
+<h2><a class="anchor" id="autotoc_md580"></a>
 При создании анимации выводится ошибка «error: undefined variable»</h2>
-<p>По умолчанию значение переменной движка передаётся в выражение, которое печатается только когда оно видимо на графике. Проблему решает использование команды <code>subst</code>, которая передаёт переменную движка в уравнение для формирования графика. В завершении раздела Вставка анимаций в электронную таблицу, имеется соответствующий пример.</p>
-<h2><a class="anchor" id="autotoc_md505"></a>
-Содержимое поля потеряно и отмена действия не может помочь в его</h2>
+<p>По умолчанию значение переменной ползунка подставляется в выражение только тогда, когда эта переменная непосредственно видима в выражении. Проблему решает использование команды <code>subst</code>, которая подставляет переменную ползунка в уравнение для формирования графика. В конце раздела Встраивание анимаций в электронную таблицу есть соответствующий пример.</p>
+<h2><a class="anchor" id="autotoc_md581"></a>
+Содержимое поля потеряно, и отмена действия не может помочь в его</h2>
 <p>восстановлении</p>
-<p>Операции с полями и изменением их содержимого имеют свои отдельные функции отмены действий. Поэтому возникновение такой ситуации крайне маловероятно. Если же это случилось, то имеется несколько способов восстановления данных:</p>
+<p>Операции с полями и действия по изменению их содержимого имеют свои отдельные функции отмены. Поэтому возникновение такой ситуации крайне маловероятно. Если же это случилось, то имеется несколько способов восстановления данных:</p>
 <ul>
-<li><em>WxMaxima</em> actually has two undo features: The global undo buffer that is active if no cell is selected and a per-cell undo buffer that is active if the cursor is inside a cell. It is worth trying to use both undo options in order to see if an old value can still be accessed.</li>
-<li>If you still have a way to find out what label <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> has assigned to the cell just type in the cell’s label and its contents will reappear.</li>
-<li>If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that shows all <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> commands that have been issued recently.</li>
-<li>If nothing else helps <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> contains a replay feature:</li>
+<li>В <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> есть две функции отмены: глобальный буфер отмены (активен, когда не выбрано ни одного поля) и буфер отмены для поля (активен, когда курсор находится внутри поля). Стоит попробовать воспользоваться обеими функциями, чтобы увидеть, можно ли ещё получить доступ к старому значению.</li>
+<li>Если ещё можно узнать, какую метку <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> присвоила полю, просто введите эту метку, чтобы содержимое поля появилось вновь.</li>
+<li>Если нельзя, не переживайте. В меню «Вид» доступна панель журнала, где показаны все недавно отданные команды <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</li>
+<li>Если больше ничего не помогло, в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> есть функция повторного воспроизведения:</li>
 </ul>
 <div class="fragment"><div class="line">## _WxMaxima_ запускается с выводом сообщения «Процесс Maxima неожиданно</div>
 <div class="line">завершился.»</div>
 <div class="line"> </div>
-<div class="line">Одна возможная причина заключается в том, что _Maxima_ не может быть найдена</div>
-<div class="line">в расположении, которое задано на вкладке «Maxima» диалогового окна</div>
-<div class="line">параметров конфигурации _wxMaxima_ и поэтому не может запуститься в</div>
-<div class="line">принципе. Проблема решается указанием пути к рабочему исполняемому файлу</div>
-<div class="line">_Maxima_.</div>
+<div class="line">Одна из возможных причин — _Maxima_ не удалось найти в расположении, которое</div>
+<div class="line">задано на вкладке «Maxima» диалогового окна параметров конфигурации</div>
+<div class="line">_wxMaxima_, и поэтому программа не может запуститься в принципе. Проблема</div>
+<div class="line">решается указанием пути к рабочему исполняемому файлу _Maxima_.</div>
 <div class="line"> </div>
 <div class="line">## Maxima слишком долго выполняет вычисление и не отвечает на ввод</div>
 <div class="line"> </div>
-<div class="line">Теоретически возможно, что _wxMaxima_ не подозревает о том, что _Maxima_ уже</div>
+<div class="line">Теоретически возможно, что _wxMaxima_ не распознаёт, что _Maxima_ уже</div>
 <div class="line">завершила вычисление, и поэтому не получает уведомление о том, что пора</div>
 <div class="line">отправлять новые данные для _Maxima_. Если дело в этом, то “Trigger</div>
-<div class="line">evaluation” может помочь повторно синхронизировать две программы.</div>
+<div class="line">evaluation” может помочь повторно синхронизировать эти две программы.</div>
 <div class="line"> </div>
 <div class="line">## При работе _Maxima_ на основе SBCL заканчивается свободная память</div>
 <div class="line"> </div>
 <div class="line">Компилятор Lisp SBCL по умолчанию поставляется с ограничением памяти,</div>
-<div class="line">которое позволяет работать даже на очень слабых компьютерах. В процессе</div>
-<div class="line">компилирования такого большого программного пакета, как Lapack, или при</div>
-<div class="line">работе с бесконечно большими списками уравнений этот лимит может оказаться</div>
-<div class="line">слишком низким. Для увеличения этого ограничения, SBCL можно запустить с</div>
-<div class="line">параметром командной строки `--dynamic-space-size`, который указывает SBCL</div>
-<div class="line">сколько мегабайт нужно резервировать. SBCL для 32-разрядной версии Windows</div>
-<div class="line">может резервировать до 999 Мегабайт. 64-разрядная версия SBCL для Windows</div>
-<div class="line">может резервировать более 1280 Мегабайт, необходимых для компилирования</div>
-<div class="line">Lapack.</div>
+<div class="line">которое позволяет ему работать даже на очень слабых компьютерах. В процессе</div>
+<div class="line">компиляции такого большого программного пакета, как Lapack, или при работе с</div>
+<div class="line">огромными списками уравнений этот лимит может оказаться слишком низким. Для</div>
+<div class="line">увеличения лимита SBCL можно запустить с параметром командной строки</div>
+<div class="line">`--dynamic-space-size`, который указывает SBCL сколько мегабайт нужно</div>
+<div class="line">зарезервировать. SBCL для 32-разрядной версии Windows может зарезервировать</div>
+<div class="line">до 999 мегабайт. 64-разрядная версия SBCL для Windows позволяет</div>
+<div class="line">зарезервировать более 1280 мегабайт, необходимых для компилирования Lapack.</div>
 <div class="line"> </div>
-<div class="line">Единственная возможность указать параметры командной строки для _Maxima_ (а</div>
-<div class="line">значит и для SBCL), это использовать поле «Additional parameters for Maxima»</div>
-<div class="line">в диалоговом окне настройки параметров конфигурации _wxMaxima_.</div>
+<div class="line">Один из способов указать параметры командной строки для _Maxima_ (а значит,</div>
+<div class="line">и для SBCL) — использовать поле «Дополнительные параметры команды Maxima» в</div>
+<div class="line">диалоговом окне настройки параметров конфигурации _wxMaxima_.</div>
 <div class="line"> </div>
-<div class="line">![память sbcl](./sbclMemory.png){ id=img_sbclMemory }</div>
+<div class="line">![Память sbcl](./sbclMemory.png){ id=img_sbclMemory }</div>
 <div class="line"> </div>
-<div class="line">## Иногда ввод бывает медленным/игнорирует нажатия клавиш на Ubuntu</div>
+<div class="line">## Иногда ввод бывает медленным/игнорирует нажатия клавиш в Ubuntu</div>
 <div class="line"> </div>
 <div class="line">Установка пакета `ibus-gtk` должна решить этот вопрос. Более подробную</div>
-<div class="line">информацию см. на</div>
+<div class="line">информацию смотрите по адресу</div>
 <div class="line">([https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558)).</div>
 <div class="line"> </div>
 <div class="line">## _WxMaxima_ зависает, когда _Maxima_ обрабатывает греческие символы или</div>
 <div class="line">умляуты</div>
 <div class="line"> </div>
-<div class="line">Если версия _Maxima_ основана на SBCL, то в `.sbclrc` необходимо добавить</div>
-<div class="line">следующие строки:</div>
+<div class="line">Если используемая версия _Maxima_ основана на SBCL, то в `.sbclrc`</div>
+<div class="line">необходимо добавить следующие строки:</div>
 <div class="line"> </div>
 <div class="line">```commonlisp (setf sb-impl::*default-external-format* :utf-8)  </div>
-</div><!-- fragment --><p>Папка, где размещается этот файл зависит от конкретной системы и установки. Но любая версия <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> на основе SBCL, у которой в текущем сеансе уже производилось вычисление поля, всегда укажет его местонахождение после получения следующей команды:</p>
+</div><!-- fragment --><p>Папка, в которой размещается этот файл, зависит от конкретной системы и установки. Но любая версия <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> на основе SBCL, в которой в текущем сеансе уже производилось вычисление поля, всегда укажет его местонахождение после получения следующей команды:</p>
 <div class="fragment"><div class="line">## Примечание касательно Wayland (свежие дистрибутивы Linux/BSD)</div>
 <div class="line"> </div>
 <div class="line">Возможны проблемы с работой протокола графического сервера Wayland и</div>
-<div class="line">wxWidgets. На WxMaxima также могут возникнуть проблемы, например, могут</div>
-<div class="line">перестать двигаться боковые панели.</div>
+<div class="line">wxWidgets. Это может затронуть wxMaxima (например, будет невозможно</div>
+<div class="line">перемещать боковые панели).</div>
 <div class="line"> </div>
-<div class="line">Можно либо отключить Wayland и использовать вместо него X11 (глобально),</div>
-<div class="line">либо просто указать, что wxMaxima должна использовать X Window System,</div>
-<div class="line">установкой параметра: `GDK_BACKEND=x11`</div>
+<div class="line">Можно либо отключить Wayland и использовать вместо этой подсистемы X11</div>
+<div class="line">(глобально), либо просто указать, что wxMaxima должна использовать X Window</div>
+<div class="line">System, установкой параметра: `GDK_BACKEND=x11`</div>
 <div class="line"> </div>
 <div class="line">Например, запустить wxMaxima с параметром:</div>
 <div class="line"> </div>
@@ -911,24 +915,24 @@ sidebar") and outputs the resulting formulas nicely rendered, e.g. pretty Matric
 <div class="line"> </div>
 <div class="line">## Почему встроенный браузер руководства отсутствует на ПК с Windows?</div>
 <div class="line"> </div>
-<div class="line">Либо wxWidgets был скомпилирован без поддержки Microsoft’s webview2, либо не</div>
-<div class="line">установлен Microsoft’s webview2.</div>
+<div class="line">Либо компиляция wxWidgets была выполнена без поддержки webview2 от</div>
+<div class="line">Microsoft, либо компонент webview2 от Microsoft не был установлен.</div>
 <div class="line"> </div>
-<div class="line">## Почему внешний браузер руководства не работает на Linux?</div>
+<div class="line">## Почему внешний браузер руководства не работает в Linux?</div>
 <div class="line"> </div>
 <div class="line">Браузер HTML может быть реализован в виде версии пакета snap, flatpack или</div>
 <div class="line">appimage. Все они обычно не имеют доступа к файлам, установленным локально в</div>
-<div class="line">системе. Другая причина может заключаться в том, что maxima или wxMaxima</div>
+<div class="line">системе. Другая причина может заключаться в том, что Maxima или wxMaxima</div>
 <div class="line">установлена в виде версии пакета snap, flatpack или ещё чего-то, что не</div>
 <div class="line">предоставляет доступа к содержимому операционной системы. Третьей причиной</div>
-<div class="line">может быть то, что HTML-руководство maxima локально не установлено, а</div>
-<div class="line">получить доступ к руководству онлайн не получается.</div>
+<div class="line">может быть то, что HTML-руководство maxima не установлено локально, а</div>
+<div class="line">получить доступ к онлайн-руководству не получается.</div>
 <div class="line"> </div>
 <div class="line">## Можно ли сделать вывод _wxMaxima_ одновременно в виде файлов изображений</div>
 <div class="line">и встроенных в документ графиков?</div>
 <div class="line"> </div>
 <div class="line">В рабочий лист встраиваются .png-файлы. _WxMaxima_ позволяет пользователю</div>
-<div class="line">указать где они должны генерироваться:</div>
+<div class="line">указать, где они должны генерироваться:</div>
 <div class="line"> </div>
 <div class="line">```maxima</div>
 <div class="line">wxdraw2d(</div>
@@ -957,85 +961,85 @@ sidebar") and outputs the resulting formulas nicely rendered, e.g. pretty Matric
 <div class="line">pngdraw2d(&quot;Test&quot;,</div>
 <div class="line">        explicit(sin(x),x,1,10)</div>
 <div class="line">);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md506"></a>
-Как узнать соотношение сторон встроенного графика?</h2>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md582"></a>
+Как задать соотношение сторон встроенного графика?</h2>
 <p>С помощью переменной <code>wxplot_size</code>:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
 <div class="line">    explicit(sin(x),x,1,10)</div>
 <div class="line">),wxplot_size=[1000,1000];</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md507"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md583"></a>
 После обновления до MacOS 13.1 команды plot и/или draw возвращают</h2>
-<p>следующее сообщение об ошибке:</p>
+<p>сообщения об ошибках, например:</p>
 <div class="fragment"><div class="line">_ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102 2 HIToolbox</div>
 <div class="line">0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52 3 HIToolbox</div>
 <div class="line">0x00007ff80cd35908 SetMenuBarObscured + 408 ...  </div>
-</div><!-- fragment --><p>Эта ошибка может быть связана с операционной системой. Отключение скрытия панели меню (SystemSettings =&gt; Desktop &amp; Dock =&gt; Menu Bar) может решить проблему. Более подробную информацию см. на <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">wxMaxima issue #1746</a>.</p>
-<h2><a class="anchor" id="autotoc_md508"></a>
-Logging</h2>
-<p>Log messages might be helpful to debug problems. WxMaxima can log many events. Most log entries will be helpful for developers, especially in case of problems or bugs. If you run a "Release"-Build, the log windows is not shown by default, if you run a development version, it is shown by default as a second window. You can enable and disable this window using the "View-&gt;Toggle log window" menu entry.</p>
-<p>Messages are not 'lost', if the log window is not shown, if you select to show the log window later, you will see past log messages (if you did not clear the messages).</p>
-<p>Such messages may be helpful, when you create bug reports (or trying to find a bug by yourself).</p>
-<p>Log messages can (additionally) be printed to STDERR, when using the command line option "--logtostderr". On Windows a separate text console will be opened, as a Windows GUI application does not have the standard IO connected.</p>
+</div><!-- fragment --><p>Эта ошибка может быть связана с операционной системой. Отключение скрытия строки меню (Системные настройки =&gt; Рабочий стол и Dock =&gt; Строка меню) может решить проблему. Более подробная информация доступна в [ошибке <a class="el" href="classwxMaxima.html">wxMaxima</a> #1746](<a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">https://github.com/wxMaxima-developers/wxmaxima/issues/1746</a>).</p>
+<h2><a class="anchor" id="autotoc_md584"></a>
+Журналирование</h2>
+<p>Сообщения журнала могут быть полезны при отладке. WxMaxima поддерживает журналирование широкого спектра событий. Большинство записей журнала пригодятся разработчикам, особенно при появлении проблем или внутренних ошибок. Если запущена сборка выпуска, журнал не отображается по умолчанию. Если же запущена сборка разработки, журнал по умолчанию отображается как второе окно. Это окно можно включать и отключать с помощью пункта меню «Вид -&gt; Переключить окно журнала».</p>
+<p>Сообщения не «теряются»; если окно журнала не показано, то при последующем включении его отображения будут доступны для просмотра также и прошлые сообщения журнала (если они не были очищены пользователем).</p>
+<p>Такие сообщения могут быть полезны при создании отчётов об ошибках (или при самостоятельном поиске ошибок).</p>
+<p>Сообщения журнала можно (дополнительно) выводить в STDERR с помощью параметра командной строки «&ndash;logtostderr». В Windows будет открыта отдельная текстовая консоль, так как у приложения Windows с графическим интерфейсом пользователя не подключён стандартный ввод/вывод.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md509"></a>
+<h1><a class="anchor" id="autotoc_md585"></a>
 Вопросы и ответы</h1>
-<h2><a class="anchor" id="autotoc_md510"></a>
-Существует ли возможность поместить больше текста на страницу LaTeX?</h2>
-<p>Да. Можно использовать <a href="https://ctan.org/pkg/geometry">Пакет LaTeX «geometry»</a>, который позволяет указать размеры границ.</p>
-<p>Можно добавить следующую строку к преамбуле LaTeX (например, путём использования соответствующего поля в диалоговом окне настройки конфигурации («Экспорт-&gt;Additional lines for the TeX preamble»), чтобы установить границы размером 1см):</p>
+<h2><a class="anchor" id="autotoc_md586"></a>
+Есть ли возможность поместить больше текста на страницу LaTeX?</h2>
+<p>Да. Можно использовать <a href="https://ctan.org/pkg/geometry">пакет LaTeX «geometry»</a>, который позволяет указать размеры границ.</p>
+<p>Можно добавить следующую строку к преамбуле LaTeX (например, путём использования соответствующего поля в диалоге настройки («Экспорт -&gt; Дополнительные строки для преамбулы TeX»), чтобы установить границы размером 1 см):</p>
 <p><code>latex \usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</code></p>
-<h2><a class="anchor" id="autotoc_md511"></a>
-Существует ли тёмная тема?</h2>
-<p>Если версия wxWidgets достаточно свежая, то <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> автоматически поставляется в тёмной теме, если вся остальная операционная система настроена на работу в ней. Сам по себе рабочий лист по умолчанию оснащён светлым фоном, но можно установить тёмный. С другой стороны, имеется элемент меню «Вид/Инвертировать яркость рабочего листа», позволяющий быстро преобразовывать рабочий лист из тёмного в светлый и обратно.</p>
-<h2><a class="anchor" id="autotoc_md512"></a>
-&lt;em&gt;WxMaxima&lt;/em&gt; иногда зависает на несколько секунд один раз на первой минуте</h2>
-<p><em>WxMaxima</em> делегирует ряд больших задач, таких как обработка &gt;1000-страничного руководства <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, фоновым задачам, что обычно происходит абсолютно незаметно. В данный момент ожидается получение результата такой задачи, и вполне возможно, что <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> должна подождать пару секунд пока снова сможет продолжить работу.</p>
-<h2><a class="anchor" id="autotoc_md513"></a>
+<h2><a class="anchor" id="autotoc_md587"></a>
+Имеется ли тёмная тема?</h2>
+<p>Если версия wxWidgets достаточно свежая, то <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> автоматически использует тёмную тему, когда вся остальная операционная система настроена на работу в ней. Сам по себе рабочий лист по умолчанию оснащён светлым фоном, но можно установить тёмный. Кроме того, имеется пункт меню «Вид/Инвертировать яркость рабочего листа», позволяющий быстро преобразовывать рабочий лист из тёмного в светлый и обратно.</p>
+<h2><a class="anchor" id="autotoc_md588"></a>
+&lt;em&gt;WxMaxima&lt;/em&gt; иногда зависает на несколько секунд в течение первой минуты</h2>
+<p><em>WxMaxima</em> делегирует ряд больших задач, таких как обработка &gt;1000-страничного руководства <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, фоновым задачам, что обычно происходит абсолютно незаметно. Когда требуется получить результат выполнения такой задачи, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> может понадобиться подождать пару секунд перед продолжением работы.</p>
+<h2><a class="anchor" id="autotoc_md589"></a>
 Часто при тестировании новых настроек локали выводится сообщение «locale</h2>
 <p>’xx_YY’ can not be set»</p>
 <p><img src="./locale-warning.png" alt="Предупреждение локали" class="inline"/></p>
 <p>(Та же ошибка может возникать и с другими приложениями). После нажатия кнопки «ОК» никаких проблем с переводом не обнаруживается. WxMaxima использует не только свои собственные переводы, но и переводы платформы wxWidgets.</p>
-<p>Указанные локали могут отсутствовать в системе. На системах Ubuntu/Debian они могут генерироваться с помощью: <code>dpkg-reconfigure locales</code></p>
-<h2><a class="anchor" id="autotoc_md514"></a>
-Каким образом использовать символы для вещественных чисел, натуральных</h2>
-<p>чисел (ℝ, ℕ), и так далее?</p>
+<p>Указанные локали могут отсутствовать в системе. В системах Ubuntu/Debian их можно сгенерировать с помощью команды <code>dpkg-reconfigure locales</code></p>
+<h2><a class="anchor" id="autotoc_md590"></a>
+Как использовать символы для вещественных чисел, натуральных чисел (ℝ, ℕ)</h2>
+<p>и так далее?</p>
 <p>Эти символы доступны на боковой панели «Юникод» (выполните поиск по ’double-struck capital’). Но такие символы должен поддерживать и выбранный шрифт. Выберите другой шрифт, если символы отображаются неправильно.</p>
-<h2><a class="anchor" id="autotoc_md515"></a>
-Каким образом сценарий Maxima может определить, что он работает из под</h2>
-<p><a class="el" href="classwxMaxima.html">wxMaxima</a> или из под командной строки <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>?</p>
+<h2><a class="anchor" id="autotoc_md591"></a>
+Каким образом сценарий Maxima может определить, работает ли он под</h2>
+<p>управлением <a class="el" href="classwxMaxima.html">wxMaxima</a> или командной строки <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>?</p>
 <p>Если используется <a class="el" href="classwxMaxima.html">wxMaxima</a>, то переменная <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>maxima_frontend</code> установлена в значение <code>wxmaxima</code>. Переменная <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>maxima_frontend_version</code> в этом случае содержит версию <a class="el" href="classwxMaxima.html">wxMaxima</a>.</p>
-<p>Если графический интерфейс не используется (работа выполняется в командной строке <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>), то эти переменные содержат значение <code>false</code>.</p>
+<p>Если графический интерфейс не используется (работа выполняется в командной строке <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>), то эти переменные имеют значение <code>false</code>.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md516"></a>
+<h1><a class="anchor" id="autotoc_md592"></a>
 Аргументы командной строки</h1>
-<p>Обычно программы с графическим интерфейсом можно запускать простым щелчком по значку на рабочем столе или элементу меню рабочего стола. Тем не менее WxMaxima - при запуске из командной строки - может использовать некоторые аргументы командной строки.</p>
+<p>Обычно программы с графическим интерфейсом пользователя можно запускать простым щелчком по значку на рабочем столе или пункту меню рабочего стола. Тем не менее, <a class="el" href="classwxMaxima.html">wxMaxima</a> — при запуске из командной строки — позволяет использовать некоторые аргументы командной строки.</p>
 <ul>
-<li><code>-v</code> или <code>--version</code>: Вывести информацию о версии</li>
-<li><code>-h</code> или <code>--help</code>: Вывести краткую справочную информацию</li>
-<li><code>-o</code> или <code>--open=&lt;str&gt;</code>: Открыть имя файла, заданное в виде аргумента к этому ключу командной строки</li>
-<li><code>-e</code> или <code>--eval</code>: Выполнить вычисление файла после его открытия.</li>
-<li><code>-b</code> или <code>--batch</code>: Если файл открывается из командной строки, то все поля в этом файле вычисляются, после чего выполняется сохранение файла. Например, это полезно, когда сеанс, описанный в файле заставляет <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> генерировать файлы вывода. Пакетная обработка будет остановлена, если <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> обнаруживает, что <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> вывела сообщение об ошибке, либо приостанавливается, если у <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> возникает вопрос: Математика по своей природе обладает некоторой интерактивностью, поэтому при обработке пакета соблюдение абсолютной неинтерактивности не всегда возможно.</li>
-<li><code>--logtostderr</code>: Заводить в журнал в том числе и «отладочные сообщения» из боковой панели в stderr.</li>
-<li><code>--pipe</code>: Перенаправлять сообщения из <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> в stdout.</li>
-<li><code>--exit-on-error</code>: Закрывать программу при любой ошибке maxima.</li>
-<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Использовать файл init, переданный в качестве аргумента данному ключу командной строки.</li>
-<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Использовать версию maxima <code>&lt;str&gt;</code>.</li>
-<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Использовать <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, скомпилированную компилятором Lisp<code>&lt;str&gt;</code>.</li>
-<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Позволяет указать внешние аргументы <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>.</li>
-<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: Позволяет указать расположение двоичного файла <em>maxima</em>.</li>
-<li><code>--enableipc</code>: Позволяет <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> использовать межпроцессорное взаимодействие для управления <a class="el" href="classwxMaxima.html">wxMaxima</a>. Используйте этот параметр с осторожностью.</li>
-<li><code>--wxmathml-lisp=&lt;str&gt;</code>: Расположение wxMathML.lisp (если необходимо использовать не встроенный файл; предназначено, главным образом, для разработчиков).</li>
+<li><code>-v</code> или <code>--version</code>: вывести информацию о версии.</li>
+<li><code>-h</code> или <code>--help</code>: вывести краткую справочную информацию.</li>
+<li><code>-o</code> или <code>--open=&lt;str&gt;</code>: открыть файл, заданный в виде аргумента к этому ключу командной строки.</li>
+<li><code>-e</code> или <code>--eval</code>: выполнить вычисление файла после его открытия.</li>
+<li><code>-b</code> или <code>--batch</code>: если файл открывается из командной строки, то все поля в этом файле вычисляются, после чего выполняется его сохранение. Например, это полезно, когда сеанс, описанный в файле, заставляет <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> генерировать файлы вывода. Пакетная обработка будет остановлена, если <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> обнаруживает, что <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> вывела сообщение об ошибке, либо приостановлена, если у <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> возникает вопрос: математические вычисления по своей природе обладают некоторой интерактивностью, поэтому при пакетной обработке её полное отсутствие не всегда возможно.</li>
+<li><code>--logtostderr</code>: журналировать все «отладочные сообщения» из боковой панели также и в stderr.</li>
+<li><code>--pipe</code>: перенаправлять сообщения из <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> в stdout.</li>
+<li><code>--exit-on-error</code>: закрывать программу при любой ошибке <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>.</li>
+<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: использовать файл init, переданный в качестве аргумента данному ключу командной строки.</li>
+<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: использовать версию <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>&lt;str&gt;</code>.</li>
+<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: использовать <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, скомпилированную компилятором Lisp<code>&lt;str&gt;</code>.</li>
+<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: позволяет указать дополнительные аргументы <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>.</li>
+<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: позволяет указать расположение двоичного файла <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</li>
+<li><code>--enableipc</code>: позволяет <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> использовать межпроцессное взаимодействие для управления <a class="el" href="classwxMaxima.html">wxMaxima</a>. Используйте этот параметр с осторожностью.</li>
+<li><code>--wxmathml-lisp=&lt;str&gt;</code>: расположение wxMathML.lisp (если необходимо использовать не встроенный файл; предназначено, главным образом, для разработчиков).</li>
 </ul>
-<p>Вместо минуса некоторые операционные системы перед ключами командной строки могут использовать тире.</p>
+<p>Вместо минуса в некоторых операционных системах перед ключами командной строки может использоваться тире.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md517"></a>
-О программе, вклад в wxMaxima</h1>
+<h1><a class="anchor" id="autotoc_md593"></a>
+О программе, участие в разработке wxMaxima</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> написана большей частью на языке программирования C++ с использованием <a href="https://www.wxwidgets.org">платформы wxWidgets</a>, в качестве системы сборки используется <a href="https://www.cmake.org">CMake</a>, небольшая часть написана на Lisp. Можно принять участие в разработке <a class="el" href="classwxMaxima.html">wxMaxima</a>. Для этого необходимо присоединиться к проекту <a class="el" href="classwxMaxima.html">wxMaxima</a> на <a href="https://github.com/wxMaxima-developers/wxmaxima">https://github.com/wxMaxima-developers/wxmaxima</a> при наличии навыков программирования на этих языках и желании внести вклад в разработку проекта <a class="el" href="classwxMaxima.html">wxMaxima</a> с открытым исходным кодом.</p>
-<p>Но требуются не только программисты! Внести вклад в разработку <a class="el" href="classwxMaxima.html">wxMaxima</a> можно также в виде улучшения документации, поиска и нахождения (а также исправления) ошибок, предложения новых функциональных возможностей, помощи в переводе интерфейса или документации <a class="el" href="classwxMaxima.html">wxMaxima</a> на другие языки (для получения информации о порядке перевода интерфейса и документации <a class="el" href="classwxMaxima.html">wxMaxima</a> изучите файл README.md в <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">подкаталоге локализации</a>).</p>
-<p>А также предоставляя ответы на вопросы других пользователей на дискуссионном форуме.</p>
+<p>Но требуются не только программисты! Внести вклад в разработку <a class="el" href="classwxMaxima.html">wxMaxima</a> можно также путём улучшения документации, поиска ошибок и отправки соответствующих отчётов (а также, возможно, исправлений), предложения новых функциональных возможностей, помощи с переводом интерфейса или документации <a class="el" href="classwxMaxima.html">wxMaxima</a> на другие языки (для получения информации о порядке перевода интерфейса и документации <a class="el" href="classwxMaxima.html">wxMaxima</a> изучите файл README.md в <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">подкаталоге локализации</a>).</p>
+<p>Также можно отвечать на вопросы других пользователей на дискуссионном форуме.</p>
 <p>Исходный код <a class="el" href="classwxMaxima.html">wxMaxima</a> документирован с помощью Doxygen <a href="https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/">здесь</a>.</p>
-<p>Программа практически полностью автономна, поэтому за исключением системных библиотек (и библиотек wxWidgets), не имеется никаких внешних зависимостей (например, графических файлов или части на языке Lisp (файл <code>wxmathML.lisp</code>), так как эти файлы включены в исполняемый файл.</p>
-<p>Если вы разработчик, то можете опробовать изменённый файл <code>wxmathML.lisp</code> без выполнения полной перекомпиляции. Указать другой файл Lisp (нестандартный файл) можно при указании параметра командной строки <code>--wxmathml-lisp=&lt;str&gt;</code>. </p>
+<p>Программа практически полностью автономна, поэтому — за исключением системных библиотек (и библиотеки wxWidgets) — для её работы не требуется внешних зависимостей (например, графических файлов или части на языке Lisp (файл <code>wxmathML.lisp</code>); эти файлы включены в исполняемый файл).</p>
+<p>Если вы разработчик, то вы можете поработать с изменённым файлом <code>wxmathML.lisp</code> без выполнения полной перекомпиляции. Указать другой файл Lisp (нестандартный файл) можно с помощью параметра командной строки <code>--wxmathml-lisp=&lt;str&gt;</code>. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
