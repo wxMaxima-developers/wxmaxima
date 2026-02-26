@@ -167,9 +167,6 @@ GroupCell::GroupCell(GroupCell const &cell)
 DEFINE_CELL(GroupCell)
 
 void GroupCell::SetGroupType(GroupType groupType) {
-  if(groupType == m_groupType)
-    return;
-  
   CellType type = MC_TYPE_DEFAULT;
   switch (groupType) {
   case GC_TYPE_CODE:

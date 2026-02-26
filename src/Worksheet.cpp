@@ -6752,7 +6752,7 @@ void Worksheet::PasteFromClipboard() {
         NumberSections();
         Recalculate();
         RequestRedraw();
-        RedrawIfRequested();
+        RecalculateIfNeeded();
         SetHCaret(end);
       }
     }
