@@ -216,11 +216,6 @@ public:
   //! Can be called to specify a specific scale
   void Recalculate(double scale = 1.0);
 
-  //! The width of the scaled image
-  long m_width = 1;
-  //! The height of the scaled image
-  long m_height = 1;
-
   //! Returns the original image in its compressed form
   const wxMemoryBuffer GetCompressedImage() const;
 
@@ -251,7 +246,14 @@ public:
   };
 
   bool HasGnuplotSource() const {return m_gnuplotSource_Compressed.GetDataLen() > 20;}
+  long GetWidth() const {return m_width;}
+  long GetHeight() const {return m_height;}
 private:
+  //! The width of the scaled image
+  long m_width = 1;
+  //! The height of the scaled image
+  long m_height = 1;
+
   bool m_fromWxFS = false;
   //! A zipped version of the gnuplot commands that produced this image.
   wxMemoryBuffer m_gnuplotSource_Compressed;

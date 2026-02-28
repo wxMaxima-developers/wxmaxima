@@ -153,8 +153,8 @@ void ImgCell::Recalculate(AFontSize fontsize) const {
       m_imageBorderWidth = Scale_Px(1);
     } else
       m_image->Recalculate();
-    m_width = m_image->m_width + 2 * m_imageBorderWidth;
-    m_height = m_image->m_height + 2 * m_imageBorderWidth;
+    m_width = m_image->GetWidth() + 2 * m_imageBorderWidth;
+    m_height = m_image->GetHeight() + 2 * m_imageBorderWidth;
     m_center = m_height / 2;
   }
 }

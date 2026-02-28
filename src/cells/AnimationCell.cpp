@@ -270,12 +270,12 @@ void AnimationCell::Recalculate(AFontSize fontsize) const {
           i->Recalculate();
         }
         if (GetWidth() < i->GetWidth() + 2 * m_imageBorderWidth)
-          GetWidth() = i->GetWidth() + 2 * m_imageBorderWidth;
+          m_width = i->GetWidth() + 2 * m_imageBorderWidth;
         if (GetHeight() < i->GetHeight() + 2 * m_imageBorderWidth)
-          GetHeight() = i->GetHeight() + 2 * m_imageBorderWidth;
+          m_height = i->GetHeight() + 2 * m_imageBorderWidth;
       }
   }
-  m_center = GetHeight() / 2;
+  m_center = m_height / 2;
 }
 
 void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

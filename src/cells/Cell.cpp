@@ -421,6 +421,9 @@ void Cell::ResetSizeList() const {
 }
 
 void Cell::Recalculate(const AFontSize fontsize) const {
+  if((this != GetGroup()) && (GetGroup()-NeedsRecalculation()))
+    GetGroup()->Recalculate();
+  
   if(NeedsRecalculation(fontsize))
     {
       m_cellCfgCnt_last = m_configuration->CellCfgCnt() - 1;
