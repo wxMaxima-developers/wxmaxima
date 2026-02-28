@@ -107,6 +107,7 @@ protected:
   void FontsChanged() const override
     {
       m_sizeCache.clear();
+      ScheduleRecalculation();
     }
 
   enum TextIndex : int8_t

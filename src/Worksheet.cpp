@@ -900,8 +900,6 @@ void Worksheet::SetZoomFactor(double newzoom) {
   if(GetTree())
     {
       GetTree()->FontsChangedList();
-      GetTree()->ResetSizeList();
-      GetTree()->ClearCacheList();
       Recalculate();
       RequestRedraw();
       ScheduleScrollToCell(cellToScrollTo);

@@ -1073,7 +1073,7 @@ protected:
 
   //! To be called if the font has changed.
   virtual void FontsChanged() const
-    { ResetSize_Recursively(); }
+    { ResetSize_Recursively(); ScheduleRecalculation(); }
 
   CellPointers *GetCellPointers() const;
 

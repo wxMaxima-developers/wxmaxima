@@ -422,7 +422,7 @@ void Cell::ResetSizeList() const {
 void Cell::Recalculate(const AFontSize fontsize) const {
   if(NeedsRecalculation(fontsize))
     {
-      m_cellCfgCnt_last = m_configuration->CellCfgCnt();
+      m_cellCfgCnt_last = m_configuration->CellCfgCnt() - 1;
       m_fontSize_Scaled = Scale_Px(fontsize);
     }
 }
