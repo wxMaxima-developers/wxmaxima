@@ -91,15 +91,15 @@ void AbsCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
     dc->DrawLine(
                  point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
-                 point.y - m_center + Scale_Px(2),
+                 point.y - GetCenter() + Scale_Px(2),
                  point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
-                 point.y - m_center + m_height - Scale_Px(2));
-    dc->DrawLine(point.x + m_width - Scale_Px(2) - 1 -
+                 point.y - GetCenter() + GetHeight() - Scale_Px(2));
+    dc->DrawLine(point.x + GetWidth() - Scale_Px(2) - 1 -
                  m_configuration->GetDefaultLineWidth() / 2,
-                 point.y - m_center + Scale_Px(2),
-                 point.x + m_width - Scale_Px(2) - 1 -
+                 point.y - GetCenter() + Scale_Px(2),
+                 point.x + GetWidth() - Scale_Px(2) - 1 -
                  m_configuration->GetDefaultLineWidth() / 2,
-                 point.y - m_center + m_height - Scale_Px(2));
+                 point.y - GetCenter() + GetHeight() - Scale_Px(2));
   }
 }
 

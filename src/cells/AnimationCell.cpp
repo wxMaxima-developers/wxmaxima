@@ -269,13 +269,13 @@ void AnimationCell::Recalculate(AFontSize fontsize) const {
         } else {
           i->Recalculate();
         }
-        if (m_width < i->m_width + 2 * m_imageBorderWidth)
-          m_width = i->m_width + 2 * m_imageBorderWidth;
-        if (m_height < i->m_height + 2 * m_imageBorderWidth)
-          m_height = i->m_height + 2 * m_imageBorderWidth;
+        if (GetWidth() < i->GetWidth() + 2 * m_imageBorderWidth)
+          GetWidth() = i->GetWidth() + 2 * m_imageBorderWidth;
+        if (GetHeight() < i->GetHeight() + 2 * m_imageBorderWidth)
+          GetHeight() = i->GetHeight() + 2 * m_imageBorderWidth;
       }
   }
-  m_center = m_height / 2;
+  m_center = GetHeight() / 2;
 }
 
 void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
@@ -305,7 +305,7 @@ void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
                                                  m_configuration->GetColor(TS_SELECTION))));
     else
       dc->SetPen(*wxRED_PEN);
-    dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
+    dc->DrawRectangle(wxRect(point.x, point.y - GetCenter(), GetWidth(), GetHeight()));
 
     wxBitmap bitmap =
       (m_configuration->GetPrinting()
@@ -319,11 +319,11 @@ void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       imageBorderWidth = Scale_Px(3);
       dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
                                                        m_configuration->GetColor(TS_SELECTION))));
-      dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
+      dc->DrawRectangle(wxRect(point.x, point.y - GetCenter(), GetWidth(), GetHeight()));
     }
 
-    dc->Blit(point.x + imageBorderWidth, point.y - m_center + imageBorderWidth,
-             m_width - 2 * imageBorderWidth, m_height - 2 * imageBorderWidth,
+    dc->Blit(point.x + imageBorderWidth, point.y - GetCenter() + imageBorderWidth,
+             GetWidth() - 2 * imageBorderWidth, GetHeight() - 2 * imageBorderWidth,
              &bitmapDC, imageBorderWidth - m_imageBorderWidth,
              imageBorderWidth - m_imageBorderWidth);
   } else

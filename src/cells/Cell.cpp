@@ -66,6 +66,7 @@ Cell::Cell(GroupCell *group, Configuration *config)
   wxASSERT((!group) || ((group->GetType() == MC_TYPE_GROUP || group == this)));
   InitBitFields_Cell();
   ResetSize();
+  ConfigChanged();
 }
 
 Cell::~Cell() {

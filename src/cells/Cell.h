@@ -964,7 +964,7 @@ protected:
 
 private:
   //! the "timestamp" of the configuration the last time we recalculated the cell's size
-  mutable std::int_fast32_t m_cellCfgCnt_last = -1;
+  mutable std::int_fast32_t m_cellCfgCnt_last;
   //! The next cell in the list of cells, or null if it's the last cell.
   std::unique_ptr<Cell> m_next;
 
@@ -1016,7 +1016,7 @@ protected:
 //** 2-byte objects (2 bytes)
 //**
   //! The font size is smaller in super- and subscripts.
-  mutable AFontSize m_fontSize_Scaled = {};
+  mutable AFontSize m_fontSize_Scaled = AFontSize(10.0f);
 
 //** 1-byte objects (2 bytes)
 //**
