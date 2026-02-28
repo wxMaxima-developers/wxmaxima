@@ -433,7 +433,6 @@ bool GroupCell::Recalculate() const {
   bool retval = NeedsRecalculation(EditorFontSize());
 
   if (retval == true) {
-    Cell::Recalculate(m_configuration->GetDefaultFontSize());
     if (m_groupType == GC_TYPE_PAGEBREAK) {
       // Recalculating pagebreak cells is simple
       retval = NeedsRecalculation(EditorFontSize());
@@ -452,6 +451,7 @@ bool GroupCell::Recalculate() const {
       m_height = m_outputRect.GetHeight() + m_inputHeight;
     }
     m_cellsAppended = false;
+    Cell::Recalculate(m_configuration->GetDefaultFontSize());
   }
   // Move all cells that follow the current one down by the amount this cell
   // has grown.
