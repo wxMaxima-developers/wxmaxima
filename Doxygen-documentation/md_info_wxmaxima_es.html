@@ -425,10 +425,10 @@ Asistente Markdown</h3>
 <div class="fragment"><div class="line">/* [wxMaxima: carpeta    inicio ] */</div>
 <div class="line">...</div>
 <div class="line">/* [wxMaxima: carpeta    final  ] */</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md131"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md132"></a>
 .wxmx</h3>
 <p>Este archivo cuyo formato está basado en XML guarda la hoja de trabajo completa incluyendo cosas como el factor de zoom y el listado de vigía. Es el formato de archivo preferido.</p>
-<h4><a class="anchor" id="autotoc_md132"></a>
+<h4><a class="anchor" id="autotoc_md133"></a>
 Formato de archivo de archivos wxm</h4>
 <p><a class="el" href="classA.html">A</a> <code>wxmx</code>-file seems to be a binary format, but one can handle it with tools, which are included in your OS. It is a zip file, one can decompress it with <code>unzip</code> (maybe rename it before, so that is recognized by the unzip program of your OS). We do not use the compression function, just the possibility to merge several files into one file - images are already compressed and the rest is simple text (probably much smaller, than huge images, which are included).</p>
 <p>It does contain the following files:</p>
@@ -439,7 +439,7 @@ Formato de archivo de archivos wxm</h4>
 <li><code>content.xml</code>: a XML document, which contains the various cells of your document in XML format.</li>
 </ul>
 <p>So, if something goes wrong, you can unzip a <a class="el" href="classwxMaxima.html">wxMaxima</a> document (maybe rename it before to a <code>zip</code>-file), maybe make changes in the <code>content.xml</code> file with a text editor, or replace an broken image, zip the files again, probably rename the <code>zip</code> to a <code>wxmx</code>-file - and you get another modified <code>wxmx</code>-file.</p>
-<h2><a class="anchor" id="autotoc_md133"></a>
+<h2><a class="anchor" id="autotoc_md134"></a>
 Opciones de configuración</h2>
 <p>Para algunas configuraciones comunes de variables <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> ofrecen dos maneras de configurarlas:</p>
 <ul>
@@ -447,10 +447,10 @@ Opciones de configuración</h2>
 <li>Also, the values for most configuration variables can be changed for the current session only by overwriting their values from the worksheet, as shown below.</li>
 </ul>
 <p><img src="./wxMaxima_configuration_001.png" alt="Configuración de wxMaxima 1" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md134"></a>
+<h3><a class="anchor" id="autotoc_md135"></a>
 Velocidad de cuadros de animación predeterminada</h3>
 <p>La tasa del marco de animación que se utiliza para animaciones nuevas se conserva dentro de la variable <code>wxanimate_framerate</code>. El valor inicial de esta variable contiene dentro una hoja de trabajo nueva que puede ser modificada utilizando el diálogo de configuración.</p>
-<h3><a class="anchor" id="autotoc_md135"></a>
+<h3><a class="anchor" id="autotoc_md136"></a>
 Tamaño de trama predet. para sesiones &lt;em&gt;maxima&lt;/em&gt; nuevas</h3>
 <p>Tras el siguiente inicio, tramas empotradas a la hoja del trabajo será creada con este tamaño si el valor de <code>wxplot_size</code> no es modificado por <em>maxima</em>.</p>
 <p>Con la intención de establecer el tamaño de trama de un grafo único solamente utilice la notación siguiente puede ser utilizada que fija un valor de variable solamente para una sola instrucción:</p>
@@ -460,14 +460,14 @@ Tamaño de trama predet. para sesiones &lt;em&gt;maxima&lt;/em&gt; nuevas</h3>
 <div class="line">       x,-5,5</div>
 <div class="line">   )</div>
 <div class="line">), wxplot_size=[480,480]$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md136"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md137"></a>
 Coincide paréntesis en controles de texto</h3>
 <p>Esta opción habilita dos cosas:</p>
 <ul>
 <li>If an opening parenthesis, bracket, or double quote is entered <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> will insert a closing one after it.</li>
 <li>Si el texto está seleccionad si cualquiera de estas teclas es pulsada el texto seleccionado será puedes entre los signos coincidan.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md137"></a>
+<h3><a class="anchor" id="autotoc_md138"></a>
 No guardar automáticamente la hoja de trabajo</h3>
 <p>Si esta opción está puesta, el archivo donde la hoja de trabajo será sobrescrita solamente al solicitar el usuario. En caso de un cuelgue/corte de luz/... sin embargo, aún está disponible una copia de respaldo reciente dentro del directorio temporal ‘temp’.</p>
 <p>Si esta opción no está fijada <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> se comporta más como una app telefónica moderna:</p>
