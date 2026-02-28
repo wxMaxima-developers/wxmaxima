@@ -397,8 +397,6 @@ public:
 
   //! Is the size valid and not pending a recalculation?
   bool HasValidSize() const;
-  //! Is the size valid, whether a recalculation is pending or not?
-  bool HasStaleSize() const;
   //! Is the position valid?
   bool HasValidPosition() const;
 

@@ -447,10 +447,6 @@ bool Cell::HasValidSize() const {
   return GetWidth() >= 0 && GetHeight() >= 0 && GetCenter() >= 0;
 }
 
-bool Cell::HasStaleSize() const {
-  return GetWidth() >= 0 && GetHeight() >= 0 && GetCenter() >= 0;
-}
-
 bool Cell::HasValidPosition() const {
   return (m_currentPoint.x >= 0) && (m_currentPoint.y >= 0);
 }
@@ -567,7 +563,7 @@ wxRect Cell::GetRect(bool wholeList) const {
 bool Cell::InUpdateRegion() const {
   if (!m_configuration->ClipToDrawRegion())
     return true;
-  if (HasStaleSize())
+  if (HasValidSize() && HasValidPosition())
     return m_configuration->InUpdateRegion(GetRect());
   if (HasValidPosition()) {
     // The cell hasn't been recalculated yet: we perform a best-attempt
