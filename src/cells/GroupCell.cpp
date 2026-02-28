@@ -456,7 +456,6 @@ bool GroupCell::Recalculate() const {
   // Move all cells that follow the current one down by the amount this cell
   // has grown.
   UpdateYPosition();
-  //wxASSERT(!NeedsRecalculation(m_configuration->GetDefaultFontSize()));
   return retval;
 }
 
@@ -665,6 +664,8 @@ void GroupCell::UpdateOutputPositions() const {
 }
 
 void GroupCell::Draw(wxPoint const point, wxDC *dc, wxDC *antialiassingDC) {
+  if(NeedsRecalculation(m_configuration->GetDefaultFontSize()))
+    Recalculate(m_configuration->GetDefaultFontSize());
   Cell::Draw(point, dc, antialiassingDC);
   if (m_configuration->ShowBrackets())
     DrawBracket(dc, antialiassingDC);
@@ -746,6 +747,8 @@ bool GroupCell::AddEnding() {
 }
 
 wxRect GroupCell::GetRect(bool WXUNUSED(all)) const {
+  if(NeedsRecalculation(m_configuration->GetDefaultFontSize()))
+    Recalculate(m_configuration->GetDefaultFontSize());
   return wxRect(m_currentPoint.x, m_currentPoint.y - m_center, m_width,
                 m_height);
 }

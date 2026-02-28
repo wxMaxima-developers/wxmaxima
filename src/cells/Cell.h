@@ -359,8 +359,8 @@ public:
   */
   wxCoord GetHeight() const
     {
-//      if(!HasValidSize())
-//        Recalculate(m_fontSize_Scaled); 
+      if(!HasValidSize())
+        Recalculate(m_fontSize_Scaled); 
       return m_height;
     }
 
@@ -374,8 +374,8 @@ public:
 */
   int GetWidth() const
     {
-//      if(!HasValidSize())
-//        Recalculate(m_fontSize_Scaled); 
+      if(!HasValidSize())
+        Recalculate(m_fontSize_Scaled); 
       return m_width;
     }
 
@@ -390,8 +390,8 @@ public:
   */
   wxCoord GetCenter() const
     {
-//      if(!HasValidSize())
-//        Recalculate(m_fontSize_Scaled); 
+      if(!HasValidSize())
+        Recalculate(m_fontSize_Scaled); 
       return m_center;
     }
 

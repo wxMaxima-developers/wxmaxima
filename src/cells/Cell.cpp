@@ -444,7 +444,8 @@ bool Cell::DrawThisCell(wxPoint point) {
 }
 
 bool Cell::HasValidSize() const {
-  return GetWidth() >= 0 && GetHeight() >= 0 && GetCenter() >= 0;
+  // Here we cannot use GetWidth() and so on since they in turn use HasValidSize() again
+  return m_width >= 0 && m_height >= 0 && m_center >= 0;
 }
 
 bool Cell::HasValidPosition() const {
