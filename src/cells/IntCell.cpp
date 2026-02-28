@@ -84,6 +84,7 @@ void IntCell::MakeBreakUpCells() {
 
 void IntCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     wxASSERT(fontsize.IsValid());
 
     m_base->RecalculateList(fontsize);
@@ -133,7 +134,6 @@ void IntCell::Recalculate(AFontSize fontsize) const {
         m_height = m_center + std::max(m_signHeight / 2, m_base->GetMaxDrop());
       }
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

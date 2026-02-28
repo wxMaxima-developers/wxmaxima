@@ -61,6 +61,7 @@ DEFINE_CELL(MatrCell)
 
 void MatrCell::Recalculate(AFontSize const fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     AFontSize const fontsize_entry{MC_MIN_SIZE, fontsize - 2};
     for (size_t i = 0; i < m_cells.size(); i++)
       m_cells[i]->RecalculateList(fontsize_entry);
@@ -94,7 +95,6 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
     if (m_height == 0)
       m_height = fontsize + Scale_Px(10);
     m_center = m_height / 2;
-    Cell::Recalculate(fontsize);
   }
 }
 

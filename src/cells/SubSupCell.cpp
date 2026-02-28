@@ -107,6 +107,7 @@ void SubSupCell::SetExponent(std::unique_ptr<Cell> &&expt) {
 
 void SubSupCell::Recalculate(AFontSize const fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     AFontSize const smallerFontSize{MC_MIN_SIZE, fontsize - SUBSUP_DEC};
 
     m_baseCell->RecalculateList(fontsize);
@@ -143,7 +144,6 @@ void SubSupCell::Recalculate(AFontSize const fontsize) const {
 
     m_center = supHeight + m_baseCell->GetCenterList() -
       Scale_Px(.8 * fontsize.Get() + MC_EXP_INDENT);
-    Cell::Recalculate(fontsize);
   }
 }
 

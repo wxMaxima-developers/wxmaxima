@@ -74,6 +74,7 @@ void DiffCell::MakeBreakupCells() {
 
 void DiffCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     m_baseCell->RecalculateList(fontsize);
     m_diffCell->RecalculateList(fontsize);
     if (!IsBrokenIntoLines()) {
@@ -87,7 +88,6 @@ void DiffCell::Recalculate(AFontSize fontsize) const {
       m_comma->RecalculateList(fontsize);
       m_close->RecalculateList(fontsize);
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

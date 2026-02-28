@@ -153,6 +153,7 @@ const wxString SumCell::GetXMLType() const
 
 void SumCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     DisplayedBase()->RecalculateList(fontsize);
     m_start->RecalculateList(fontsize);
     m_var->RecalculateList(fontsize);
@@ -182,7 +183,6 @@ void SumCell::Recalculate(AFontSize fontsize) const {
         std::max(m_under->GetHeightList() +  Scale_Px(2) + m_signSize.y / 2,
                  DisplayedBase()->GetMaxDrop());
     }    
-    Cell::Recalculate(fontsize);
   } 
 }
 

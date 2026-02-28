@@ -67,6 +67,7 @@ void NamedBoxCell::MakeBreakupCells() {
 
 void NamedBoxCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     m_innerCell->RecalculateList(fontsize);
     m_boxname->RecalculateList(fontsize);
 
@@ -90,7 +91,6 @@ void NamedBoxCell::Recalculate(AFontSize fontsize) const {
       m_comma->RecalculateList(fontsize);
       m_close->RecalculateList(fontsize);
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

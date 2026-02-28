@@ -422,6 +422,7 @@ void TextCell::UpdateDisplayedText() const {
 
 void TextCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     if (GetTextStyle() == TS_ASCIIMATHS)
       ForceBreakLine(true);
     if (ConfigChanged())
@@ -445,7 +446,6 @@ void TextCell::Recalculate(AFontSize fontsize) const {
     if (m_height < Scale_Px(4))
       m_height = Scale_Px(4);
     m_center = m_height / 2;
-    Cell::Recalculate(fontsize);
   }
 }
 

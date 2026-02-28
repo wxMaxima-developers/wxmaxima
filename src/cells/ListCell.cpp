@@ -59,6 +59,7 @@ DEFINE_CELL(ListCell)
 
 void ListCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     m_innerCell->RecalculateList(fontsize);
     m_open->RecalculateList(fontsize);
     m_close->RecalculateList(fontsize);
@@ -84,7 +85,6 @@ void ListCell::Recalculate(AFontSize fontsize) const {
       m_height = std::max(m_signHeight, m_innerCell->GetHeightList()) + Scale_Px(4);
       m_center = m_height / 2;
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

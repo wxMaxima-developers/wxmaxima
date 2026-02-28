@@ -60,6 +60,7 @@ void SqrtCell::MakeBreakUpCells() {
 
 void SqrtCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     m_innerCell->RecalculateList(fontsize);
     
     m_width = m_innerCell->SumOfWidths() + Scale_Px(13) + 1;
@@ -73,7 +74,6 @@ void SqrtCell::Recalculate(AFontSize fontsize) const {
       m_open->Recalculate(fontsize);
       m_close->Recalculate(fontsize);
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

@@ -52,6 +52,7 @@ DEFINE_CELL(SubCell)
 
 void SubCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     m_baseCell->RecalculateList(fontsize);
     m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - SUB_DEC});
     m_width =
@@ -59,7 +60,6 @@ void SubCell::Recalculate(AFontSize fontsize) const {
     m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
       Scale_Px(.8 * fontsize + MC_EXP_INDENT);
     m_center = m_baseCell->GetCenter();
-    Cell::Recalculate(fontsize);
   }
 }
 

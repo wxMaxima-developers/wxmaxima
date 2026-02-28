@@ -62,6 +62,7 @@ void ConjugateCell::MakeBreakupCells() {
 
 void ConjugateCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     m_innerCell->RecalculateList(fontsize);
 
     if (!IsBrokenIntoLines()) {
@@ -78,7 +79,6 @@ void ConjugateCell::Recalculate(AFontSize fontsize) const {
       m_open->RecalculateList(fontsize);
       m_close->RecalculateList(fontsize);
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

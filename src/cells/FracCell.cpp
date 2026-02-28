@@ -87,6 +87,7 @@ void FracCell::MakeDivideCell() {
 
 void FracCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     if (m_inExponent || IsBrokenIntoLines()) {
       m_displayedNum->RecalculateList(fontsize);
       m_displayedDenom->RecalculateList(fontsize);
@@ -132,7 +133,6 @@ void FracCell::Recalculate(AFontSize fontsize) const {
         m_center = Num()->GetHeightList() + Scale_Px(3);
       }
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

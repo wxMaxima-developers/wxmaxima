@@ -253,6 +253,9 @@ void AnimationCell::SetMaxHeight(wxCoord height) {
 }
 
 void AnimationCell::Recalculate(AFontSize fontsize) const {
+  if(NeedsRecalculation(fontsize))
+    Cell::Recalculate(fontsize);
+    
   // Assuming a minimum size maybe isn't that bad.
   m_height = m_width = 10 + 2 * m_imageBorderWidth;
 
@@ -273,8 +276,6 @@ void AnimationCell::Recalculate(AFontSize fontsize) const {
       }
   }
   m_center = m_height / 2;
-  if(NeedsRecalculation(fontsize))
-    Cell::Recalculate(fontsize);
 }
 
 void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

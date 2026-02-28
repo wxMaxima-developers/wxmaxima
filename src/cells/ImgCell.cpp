@@ -141,6 +141,7 @@ const wxString ImgCell::GetToolTip(const wxPoint point) const {
 }
 
 void ImgCell::Recalculate(AFontSize fontsize) const {
+  Cell::Recalculate(fontsize);
   if (m_image) {
     // Here we recalculate the height, as well:
     //  - This doesn't cost much time and
@@ -156,7 +157,6 @@ void ImgCell::Recalculate(AFontSize fontsize) const {
     m_height = m_image->m_height + 2 * m_imageBorderWidth;
     m_center = m_height / 2;
   }
-  Cell::Recalculate(fontsize);
 }
 
 void ImgCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
