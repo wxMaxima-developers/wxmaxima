@@ -383,10 +383,10 @@ public:
 
   bool GetSuppressTooltipMarker() const { return m_suppressTooltipMarker; }
   void SetSuppressTooltipMarker(bool suppress) { m_suppressTooltipMarker = suppress; }
+  bool NeedsRecalculation(AFontSize fontSize) const override;
 
 protected:
   wxCoord GetInputIndent() const;
-  bool NeedsRecalculation(AFontSize fontSize) const override;
   void UpdateCellsInGroup();
 
 //** 16-byte objects (16 bytes)
