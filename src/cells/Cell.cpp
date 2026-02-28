@@ -307,6 +307,8 @@ int Cell::GetLineWidth() const {
   and then call MathCell::Draw(...).
 */
 void Cell::Draw(wxPoint point, wxDC *dc, wxDC *WXUNUSED(antialiassingDC)) {
+  if(!HasValidSize())
+    Recalculate(m_fontSize_Scaled); 
   if(m_configuration->GetDebugmode())
     {
       if(!m_isHidden)
