@@ -372,6 +372,17 @@ protected:
       LogAssignment(o);
       using namespace std;
       swap(m_ptr, o.m_ptr);
+
+      // Claude tells to remove the "observed" pointer from our old contents..
+      auto *otherObserved = o.m_ptr.GetObserved();
+      if (otherObserved)
+      {
+        wxASSERT(otherObserved->m_ptr.GetCellPtrBase() == &o);
+        otherObserved->LogDeref(&o);
+        otherObserved->LogRef(this);
+        otherObserved->m_ptr = this;
+      }
+
       return *this;
     }
 
