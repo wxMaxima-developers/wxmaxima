@@ -3426,14 +3426,7 @@ void Worksheet::UpdateConfigurationClientSize() {
 void Worksheet::OnCharInActive(wxKeyEvent &event) {
   bool needRecalculate = false;
 
-  if ((event.GetKeyCode() == WXK_UP || event.GetKeyCode() == WXK_PAGEUP
-#ifdef WXK_PRIOR
-       || (event.GetKeyCode() != WXK_PRIOR)
-#endif
-#ifdef WXK_NUMPAD_PRIOR
-       || (event.GetKeyCode() != WXK_NUMPAD_PRIOR)
-#endif
-       ) &&
+  if ((event.GetKeyCode() == WXK_UP || event.GetKeyCode() == WXK_PAGEUP) &&
       GetActiveCell()->CaretAtStart()) {
     // Get the first previous cell that isn't hidden
     GroupCell *previous = GetActiveCell()->GetGroup()->GetPrevious();
@@ -3473,14 +3466,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
     return;
   }
 
-  if ((event.GetKeyCode() == WXK_DOWN || event.GetKeyCode() == WXK_PAGEDOWN
-#ifdef WXK_NEXT
-       || (event.GetKeyCode() != WXK_NEXT)
-#endif
-#ifdef WXK_NUMPAD_NEXT
-       || (event.GetKeyCode() != WXK_NUMPAD_NEXT)
-#endif
-       ) &&
+  if ((event.GetKeyCode() == WXK_DOWN || event.GetKeyCode() == WXK_PAGEDOWN) &&
       GetActiveCell()->CaretAtEnd()) {
     // Get the first next cell that isn't hidden
     GroupCell *start = GetActiveCell()->GetGroup();
@@ -3783,12 +3769,6 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
 
   switch (ccode) {
   case WXK_PAGEUP:
-#ifdef WXK_PRIOR
-  case WXK_PRIOR: // Is on some systems a replacement for WXK_PAGEUP
-#endif
-#ifdef WXK_NUMPAD_PRIOR
-  case WXK_NUMPAD_PRIOR:
-#endif
     {
       wxPoint topleft;
       int width;
@@ -3815,12 +3795,6 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
       SetHCaret(CellToScrollTo);
       break;
     }
-#ifdef WXK_NEXT // Is on some systems a replacement for WXK_PAGEDOWN
-  case WXK_NEXT:
-#endif
-#ifdef WXK_NUMPAD_NEXT
-  case WXK_NUMPAD_NEXT:
-#endif
   case WXK_PAGEDOWN: {
     wxPoint topleft;
     int width;

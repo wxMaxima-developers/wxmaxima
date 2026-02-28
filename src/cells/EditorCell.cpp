@@ -1517,12 +1517,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
     break;
 
   case WXK_PAGEDOWN:
-#ifdef WXK_NEXT
-  case WXK_NEXT:
-#endif
-#ifdef WXK_NUMPAD_NEXT
-  case WXK_NUMPAD_NEXT:
-#endif
     {
       auto pos = CursorPosition();
       SaveValue();
@@ -1573,12 +1567,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
     break;
 
   case WXK_PAGEUP:
-#ifdef WXK_PRIOR
-  case WXK_PRIOR:
-#endif
-#ifdef WXK_NUMPAD_PRIOR
-  case WXK_NUMPAD_PRIOR:
-#endif
     {
       auto pos = CursorPosition();
       SaveValue();
