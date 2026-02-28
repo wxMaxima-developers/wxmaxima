@@ -907,7 +907,7 @@ public:
   //! Whether this is a hidable multiplication sign
   bool GetHidableMultSign() const { return m_isHidableMultSign; }
   void SetHidableMultSign(bool val) { m_isHidableMultSign = val; }
-
+  AFontSize GetScaledFontSize() const {return m_fontSize_Scaled;}
   /*! What should end up if placing this cell on the clipboard?
 
     AltCopyTexts for example make sense for subCells: a_n looks like a[n], even if both

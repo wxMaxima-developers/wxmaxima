@@ -421,7 +421,7 @@ void Cell::ResetSizeList() const {
 }
 
 void Cell::Recalculate(const AFontSize fontsize) const {
-  if((this != GetGroup()) && (GetGroup()-NeedsRecalculation()))
+  if((this != GetGroup()) && (GetGroup()->NeedsRecalculation(GetGroup()->GetScaledFontSize())))
     GetGroup()->Recalculate();
   
   if(NeedsRecalculation(fontsize))
