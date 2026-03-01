@@ -1543,7 +1543,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
         CursorPosition(pos);
       break;
     }
-    break;
 
   case WXK_DOWN:
     {
