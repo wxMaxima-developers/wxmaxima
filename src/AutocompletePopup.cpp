@@ -131,7 +131,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
     if (!m_editor->IsActive())
       m_editor->ActivateCursor();
     return void(Destroy());
-  } break;
+  }
   case WXK_LEFT:
   case WXK_ESCAPE:
     if ((m_type == AutoComplete::esccommand) && (m_partial != wxEmptyString)) {
