@@ -556,13 +556,13 @@ wxsubscripts" class="inline"/></p>
 <div class="line">    )</div>
 <div class="line">),wxplot_size=[1600,800]$</div>
 </div><!-- fragment --><p>Установка размера встроенного графика с помощью параметра <code>wxplot_size</code> работает для встроенного графика при использовании команд <code>wxplot</code>, <code>wxdraw</code>, <code>wxcontour_plot</code> и <code>wximplicit_plot</code>, а также для встроенных анимаций при использовании команд <code>with_slider_draw</code> и <code>wxanimate</code>.</p>
-<h3><a class="anchor" id="autotoc_md474"></a>
+<h3><a class="anchor" id="autotoc_md473"></a>
 Улучшение качества графиков</h3>
 <p>По всей видимости в <em>Gnuplot</em> не реализован универсальный способ определения наличия поддержки вывода растрового изображения в улучшенном качестве, реализуемого библиотекой Cairo. В системах, где <em>Gnuplot</em> скомпилирован с поддержкой этой библиотеки, параметр pngCairo в меню настройки конфигурации (может быть переопределён переменной <code>wxplot_pngcairo</code>) включает поддержку сглаживания и дополнительные стили линий. Если включить параметр <code>wxplot_pngCairo</code> в системах без поддержки этой библиотеки в <em>Gnuplot</em>, то вместо графического изображения будут получены сообщения об ошибке.</p>
-<h3><a class="anchor" id="autotoc_md475"></a>
+<h3><a class="anchor" id="autotoc_md474"></a>
 Открытие встроенных графиков в интерактивных окнах &lt;em&gt;Gnuplot&lt;/em&gt;</h3>
 <p>Если график был создан с помощью команд типа <code>wxdraw</code> (<code>wxplot2d</code> и <code>wxplot3d</code> в этой функции не поддерживаются) и размер файла основного проекта <em>Gnuplot</em> не слишком велик, то можно использовать контекстное меню <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, которое позволяет открыть график в интерактивном окне <em>Gnuplot</em>.</p>
-<h3><a class="anchor" id="autotoc_md476"></a>
+<h3><a class="anchor" id="autotoc_md475"></a>
 Открытие командной строки Gnuplot в окне &lt;tt&gt;plot&lt;/tt&gt;</h3>
 <p>В MS Windows существует две программы Gnuplot: <code>gnuplot.exe</code> и <code>wgnuplot.exe</code>. Выбрать ту из них, которая будет использоваться, можно в меню настройки конфигурации. При этом <code>wgnuplot.exe</code> позволяет открыть окно командной строки для ввода команд <em>gnuplot</em>, а <code>gnuplot.exe</code> такой возможности не предоставляет. К сожалению, <code>wgnuplot.exe</code> позволяет <em>Gnuplot</em> на некоторое время «захватывать» фокус клавиатуры каждый раз при подготовке графика.</p>
 <h3><a class="anchor" id="autotoc_md477"></a>

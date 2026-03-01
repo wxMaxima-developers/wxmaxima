@@ -135,12 +135,12 @@ celdas" class="inline"/></p>
 <h3><a class="anchor" id="autotoc_md123"></a>
 Enviar celdas a “Maxima”</h3>
 <p>La instrucción dentro de una celda de código es ejecutada una vez pulsando <code>CTRL</code>+<code>ENTRAR</code>, <code>MAYÚS</code>+<code>ENTRAR</code> o la tecla <code>ENTRAR</code> en el teclado numérico. Lo predeterminado de <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> es introducir instrucciones cuando se introduzca <code>CTRL</code>+<code>ENTRAR</code> o <code>MAYÚS</code>+<code>ENTRAR</code>, pero <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> puede ser configurado para ejecutar instrucciones como respuesta al <code>ENTRAR</code>.</p>
-<h3><a class="anchor" id="autotoc_md124"></a>
+<h3><a class="anchor" id="autotoc_md125"></a>
 Instrucción con auto-completado</h3>
 <p><em>WxMaxima</em> contiene una característica de auto-completado que es disparada a través del menú (Celda/Palabra Completa) o alternativamente pulsando la combinación de teclas <code>CTRL</code>+<code>ESPACIO</code>. El auto-completado distingue MAYÚS/minús. Por ejemplo si está activado dentro de una especificación unitaria para ezUnits ofrecerá un listado de unidades aplicables.</p>
 <p><img src="./ezUnits.png" alt="ezUnits" class="inline"/></p>
 <p>Al lado de completar un nombre de archivo, un nombre de unidad o la instrucción actual o el nombre de variable, el auto-completado es capas de mostrar una plantilla para muchas de las instrucciones iniciando el tipo (y significado) de los parámetros que este programa espera. Para activar esta característica presione <code>MAYÚS</code>+<code>CTRL</code>+<code>ESPACIO</code> o seleccione el ítem del menú respectivo (Celda/Mostrar plantilla).</p>
-<h4><a class="anchor" id="autotoc_md125"></a>
+<h4><a class="anchor" id="autotoc_md126"></a>
 Caracteres griegos</h4>
 <p>Equipos tradicionalmente almacenados en valores 8-bit. Esto permite para un máximo de 256 caracteres diferentes. Todas las letras, números t y símbolos de control (final de transmisión, final de cadena, líneas y bordes para dibujar rectángulos para menús :etc_.) de cerca cualquier idioma puede caber dentro de ese límite.</p>
 <p>Para muchos países, la página de código de 256 caracteres que han sido elegidos no incluyen cosas como letras griegas, por lo que, eso es utilizado frecuentemente en matemáticas. Para solucionar este tipo de limitación [Unicode] (<a href="https://home.unicode.org/">https://home.unicode.org/</a>) ha sido inventado: una codificación que hace que el texto inglés funcione como normal, pero para utilizar más que los 256 caracteres.</p>
@@ -186,7 +186,7 @@ Caracteres griegos</h4>
 <td class="markdownTableBodyCenter">T   </td><td class="markdownTableBodyCenter">Teta   </td><td class="markdownTableBodyCenter">P   </td><td class="markdownTableBodyCenter">Pi   </td><td class="markdownTableBodyCenter">O   </td><td class="markdownTableBodyCenter">Omega   </td></tr>
 </table>
 <p>Además puede utilizar la barra lateral de «Teclas griegas» para introducir las letras griegas.</p>
-<p><a class="anchor" id="autotoc_md126"></a> </p><h5>Attention: Lookalike characters</h5>
+<p><a class="anchor" id="autotoc_md127"></a> </p><h5>Attention: Lookalike characters</h5>
 <p>Several Latin letters look like the Greek letters, e.g. the Latin letter "A" and the Greek letter "Alpha". Although they look identical, they are two different Unicode characters, represented by different Unicode code points (numbers).</p>
 <p>This might be problematic, if you assign a value to the variable <a class="el" href="classA.html">A</a> and later use the Greek letter Alpha to do something with this variable, especially on printouts. For the Greek letter my (which is also used as prefix for micro) there are also two different Unicode code points.</p>
 <p>The "Greek letters"-sidebar therefore has the option, that lookalike characters are not available (which can be changed using a right-click menu).</p>
@@ -298,23 +298,23 @@ Caracteres griegos</h4>
 <p><code>ESC</code><code>6</code><code>1</code><code>ESC</code> por tanto los resultados en una <code>a</code>.</p>
 <p>Note que muchos de estos símbolos (notablemente excepciones son los símbolos lógicos) no tiene un significado especial dentro de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> y por lo tanto serán interpretados como caracteres ordinarios. Si <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> está compilado utilizando un Lisp que no admite caracteres Unicode quizá cause un mensaje de error.</p>
 <p>Puede ser el caso que p.ej. caracteres griegos o símbolos matemáticos no estén incluidos dentro de la tipografía seleccionada, entonces puede no ser reproducibles. Para resolver ese problema, seleccione otras tipografías (utilizando: Editar→Configurar→Estilo).</p>
-<h3><a class="anchor" id="autotoc_md127"></a>
+<h3><a class="anchor" id="autotoc_md128"></a>
 Sustitución Unicode</h3>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> sustituirá varios caracteres Unicode por sus expresiones respectivas de <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, p.ej. "²" por "^2", "³" por "^3", el signo de raíz cuadrada por la función <code>sqrt()</code>, el signo Sigma (matemático) el cual no es el mismo carácter Unicode como la letra griega correspondiente) por <code>sum()</code>, etc.</p>
 <p>Unicode has several "common" fractions encoded as one Unicode code point: <code>¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞</code></p>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> will replace them with their <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> representations, e.g <code>(1/4)</code> before the input is sent do <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. There are also <code>⅟</code>, which will be replaced by <code>1/</code> and <code>↉</code> (used in baseball), which will be replaced by <code>(0/3)</code>.</p>
 <p>It is recommended to use <b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> code</b> (not these Unicode code points) in input cells (Rationale: (a) it might be possible, that the used font for math input does not contain them; (b) if you save the document as <code>wxm</code>-file, it is usually readable by (command line) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, but these changes will of course not work in command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>); but they may occur, if you cut&amp;paste a formula from another document.</p>
-<h3><a class="anchor" id="autotoc_md128"></a>
+<h3><a class="anchor" id="autotoc_md129"></a>
 Paneles Laterales</h3>
 <p>Enlaces para las instrucciones de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> más importantes, cosas como un índice de contenido, ventanas con mensajes de depuración o un historial de las últimas instrucciones emitidas pueden ser accedidas utilizando los paneles laterales. Puede ser habilitados utilizando el menú de "Vistas". Todos ellos pueden ser trasladas a otras localización dentro o fuera de la ventana de _wxMaxima. Otro de los paneles útiles es el que permite introducir letras griegas utilizando el ratón.</p>
 <p><img src="./SidePanes.png" alt="Ejemplo de diferentes paneles laterales" class="inline"/></p>
 <p>En el panal lateral de "table de contenido", uno puede incrementar o decrementar un encabezado tan solo pulsando sobre la cabecera con el botón de ratón secundario y seleccionar el siguiente tipo de cabecera más alto o bajo.</p>
 <p><img src="./Sidepane-TOC-convert-headings.png" alt="Incrementa o decrementa cabeceras dentro del panel lateral
 TOC" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md129"></a>
+<h3><a class="anchor" id="autotoc_md130"></a>
 Salida MathML</h3>
 <p>Varios procesadores de palabras y programas similares o bien reconocen entradas de <a href="https://www.w3.org/Math/">MathML</a> y lo insertan automáticamente como una ecuación editable 2<a class="el" href="classD.html">D</a> - o bien (como LibreOffice 5.1) tiene un editor de ecuación que ofrece una característica “importar MathML desde portapapeles”. Otros admiten matemáticas RTF. <em>WxMaxima</em> por lo tanto ofrece varios apuntes dentro del menú a través de la pulsación secundaria del menú.</p>
-<h3><a class="anchor" id="autotoc_md130"></a>
+<h3><a class="anchor" id="autotoc_md131"></a>
 Asistente Markdown</h3>
 <p><em>WxMaxima</em> ofrece un conjunto de convenciones de <a href="https://es.wikipedia.org/wiki/Markdown">Markdown</a> estándar que no colisione con la notación matemática. Una vez que estos elementos son listados de puntos.</p>
 <div class="fragment"><div class="line">Texto ordinario</div>
