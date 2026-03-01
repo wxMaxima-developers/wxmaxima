@@ -11209,18 +11209,20 @@ bool operator>(const wxMaxima::VersionNumber &v1,
  * see if there is a newer version available.
  */
 void wxMaxima::CheckForUpdates(bool reportUpToDate) {
+  // Attention: wxHTTP does only http connections, not https!!
+  wxURL version_url("http://wxMaxima-developers.github.io/wxmaxima/version.txt");
+  wxASSERT(version_url.GetError() == wxURL_NOERR);
   wxHTTP connection;
   connection.SetHeader(wxS("Content-type"), wxS("text/html; charset=utf-8"));
   connection.SetTimeout(2);
 
-  if (!connection.Connect(wxS("wxMaxima-developers.github.io"))) {
+  if (!connection.Connect(version_url.GetServer())) {
     LoggingMessageBox(_("Can not connect to the web server."), _("Error"),
                       wxOK | wxICON_ERROR);
     return;
   }
 
-  std::unique_ptr<wxInputStream> inputStream = std::unique_ptr<wxInputStream>(
-                                                                              connection.GetInputStream(_T("/wxmaxima/version.txt")));
+  std::unique_ptr<wxInputStream> inputStream = std::unique_ptr<wxInputStream>(connection.GetInputStream(version_url.GetPath()));
 
   if (connection.GetError() == wxPROTO_NOERR) {
     wxString version;
@@ -11228,7 +11230,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate) {
     inputStream->Read(outputStream);
 
     if (version.StartsWith(wxS("wxmaxima ="))) {
-      version = version.Mid(11, version.Length());
+      version = version.Mid(wxString("wxmaxima =").Length(), version.Length());
       version.Trim(true);
       version.Trim(false);
       VersionNumber myVersion(wxS(WXMAXIMA_VERSION));
@@ -11236,22 +11238,18 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate) {
 
       if (myVersion < currVersion) {
         bool visit =
-          LoggingMessageBox(wxString::Format(_("You have version %s. The newest version source code is available for is %s.\n\n"
+          LoggingMessageBox(wxString::Format(_("You have version %s. The newest wxMaxima release is %s.\n\n"
                                                "Select OK to visit the wxMaxima webpage."),
                                              WXMAXIMA_VERSION, version),
                             _("Upgrade"), wxOK | wxCANCEL | wxICON_INFORMATION) == wxOK;
 
         if (visit)
-          wxLaunchDefaultBrowser(
-                                 wxS("https://wxMaxima-developers.github.io/wxmaxima"));
+          wxLaunchDefaultBrowser(wxS("https://wxMaxima-developers.github.io/wxmaxima/"));
       } else if (reportUpToDate)
         LoggingMessageBox(_("Your version of wxMaxima is up to date."),
                           _("Upgrade"), wxOK | wxICON_INFORMATION);
     } else {
-      LoggingMessageBox(
-                        _("Unable to interpret the version info I got from "
-                          "http://wxMaxima-developers.github.io/wxmaxima/version.txt: ") +
-                        version,
+      LoggingMessageBox(wxString::Format(_("Unable to interpret the version info I got from %s: %s"), version_url.BuildURI(), version),
                         _("Upgrade"), wxOK | wxICON_INFORMATION);
     }
   } else {
