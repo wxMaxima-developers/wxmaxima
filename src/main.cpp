@@ -37,7 +37,9 @@
 #include <wx/image.h>
 #include <wx/intl.h>
 #include <wx/translation.h>
+#ifdef USE_QA
 #include <wx/debugrpt.h>
+#endif
 #if wxCHECK_VERSION(3, 1, 6)
 #include <wx/uilocale.h>
 #endif
@@ -687,6 +689,7 @@ void MyApp::MacNewFile() {
 
 void MyApp::MacOpenFile(const wxString &file) { NewWindow(file); }
 
+#ifdef USE_QA
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
 void MyApp::OnFatalException()
 {
@@ -767,6 +770,7 @@ void MyApp::GenerateDebugReport(wxDebugReport::Context ctx)
       delete report;
     }
 }
+#endif
 #endif
 
 #if defined __WXOSX__

@@ -185,6 +185,11 @@ cmake -S . -B ../build-wxm -DWXM_DISABLE_WEBVIEW=on
 might allow cmake to find wxWidgets at the cost of loosing the integrated
 dockable help browser.
 
+
+### wxWidgets without QA component
+
+One can use the option `-DWXM_DISABLE_WEBVIEW=on` to disable that library.
+
 ## Additional information for packagers
 
 ### Creating a standalone wxMaxima

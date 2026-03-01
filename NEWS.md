@@ -18,6 +18,7 @@
   Also mentioned "QUADPACK" in the menu, so that one knows, from what
   Maxima package these special functions come.
 - Don't include dot files in the release archive (#2068).
+- New compile option WXM_DISABLE_QA (#2064).
 
 # 26.01.0
 

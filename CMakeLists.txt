@@ -51,6 +51,8 @@ set(MACOSX_BUNDLE_BUNDLE_NAME "wxMaxima")
 
 option(WXM_DISABLE_WEBVIEW
     "Disable webview for https://trac.macports.org/ticket/62904" OFF)
+option(WXM_DISABLE_QA
+    "Disable wxWidgets qa for https://github.com/wxMaxima-developers/wxmaxima/issues/2064" OFF)
 option(WXM_ENABLE_PRECOMPILED_HEADERS
     "Enable precompiled headers to potentially speed up compilation." OFF)
 option(WXM_USE_CPPCHECK
@@ -156,9 +158,17 @@ message(STATUS "Looking for wxWidgets libraries in: ${wxWidgets_LIB_DIR}")
 # The root dependency (base) must come last.
 #
 if(WXM_DISABLE_WEBVIEW)
-	find_package(wxWidgets 3 REQUIRED richtext aui adv net qa html xml core base)
+  if(WXM_DISABLE_QA)
+    find_package(wxWidgets 3 REQUIRED richtext aui adv net html xml core base)
+  else()
+    find_package(wxWidgets 3 REQUIRED richtext aui adv net qa html xml core base)
+  endif()
 else()
-	find_package(wxWidgets 3 REQUIRED richtext aui adv webview net qa html xml core base)
+  if(WXM_DISABLE_QA)
+    find_package(wxWidgets 3 REQUIRED richtext aui adv webview net html xml core base)
+  else()
+    find_package(wxWidgets 3 REQUIRED richtext aui adv webview net qa html xml core base)
+  endif()
 endif()
 message(STATUS "Found wxWidgets: (found version \"${wxWidgets_VERSION_STRING}\")")
 include(${wxWidgets_USE_FILE})

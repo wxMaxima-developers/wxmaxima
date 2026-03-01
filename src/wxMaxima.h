@@ -46,7 +46,9 @@
 #include <wx/sckstrm.h>
 #include <wx/buffer.h>
 #include <wx/power.h>
+#ifdef USE_QA
 #include <wx/debugrpt.h>
+#endif
 #include <memory>
 #ifdef __WXMSW__
 #include <windows.h>
@@ -880,8 +882,10 @@ public:
 
   std::unique_ptr<wxLogChain> m_logChain;
   static std::vector<wxProcess *> m_wxMaximaProcesses;
+#ifdef USE_QA
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
   void GenerateDebugReport(wxDebugReport::Context ctx);
+#endif
 #endif
   std::unique_ptr<wxLocale> m_locale;
   std::unique_ptr<wxTranslations> m_translations;
