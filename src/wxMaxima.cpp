@@ -11209,6 +11209,12 @@ bool operator>(const wxMaxima::VersionNumber &v1,
 /***
  * Checks the file http://wxMaxima-developers.github.io/wxmaxima/version.txt to
  * see if there is a newer version available.
+ *
+ * Remark/TODO: Instead of our self created/updated version.txt file, it might
+ * be possible to get the version info using the Github API as machine readable json file:
+ * https://api.github.com/repos/wxMaxima-developers/wxmaxima/releases/latest
+ * (only as HTTPS). There we could even parse more info abotut the latest release,
+ * e.g. release date, changelog, available downloads, etc.
  */
 void wxMaxima::CheckForUpdates(bool reportUpToDate) {
 #if wxCHECK_VERSION(3, 1, 5)
