@@ -113,7 +113,9 @@
 #include <wx/persist/toplevel.h>
 #include <wx/sckstrm.h>
 #include <wx/txtstrm.h>
-
+#if wxCHECK_VERSION(3, 1, 5)
+#include <wx/webrequest.h>
+#endif
 #include "main.h"
 #include <list>
 #include <memory>
@@ -11209,6 +11211,57 @@ bool operator>(const wxMaxima::VersionNumber &v1,
  * see if there is a newer version available.
  */
 void wxMaxima::CheckForUpdates(bool reportUpToDate) {
+#if wxCHECK_VERSION(3, 1, 5)
+  // wxWebRequest can handle https, not only http.
+  // Create the request object
+
+  wxWebRequest request = wxWebSession::GetDefault().CreateRequest(this, "https://wxMaxima-developers.github.io/wxmaxima/version.txt");
+
+  if ( !request.IsOk() ) {
+    LoggingMessageBox(_("Can not download version info."), _("Error"), wxOK | wxICON_ERROR);
+    return;
+  }
+
+  // Bind state event
+  Bind(wxEVT_WEBREQUEST_STATE, [](wxWebRequestEvent& evt) {
+    switch (evt.GetState()) {
+      // Request completed
+      case wxWebRequest::State_Completed:
+        {
+          wxString version = evt.GetResponse().AsString();
+          if (version.StartsWith(wxS("wxmaxima ="))) {
+            version = version.Mid(wxString("wmmaxima =").Length(), version.Length());
+            version.Trim(true);
+            version.Trim(false);
+            VersionNumber myVersion(wxS(WXMAXIMA_VERSION));
+            VersionNumber currVersion(version);
+
+            if (myVersion < currVersion) {
+              bool visit =
+                LoggingMessageBox(wxString::Format(_("You have version %s. The newest wxMaxima release is %s.\n\n"
+                                                  "Select OK to visit the wxMaxima webpage."),
+                                                  WXMAXIMA_VERSION, version),
+                                                  _("Upgrade"), wxOK | wxCANCEL | wxICON_INFORMATION) == wxOK;
+
+              if (visit)
+                wxLaunchDefaultBrowser(wxS("https://wxMaxima-developers.github.io/wxmaxima/"));
+            } else
+              LoggingMessageBox(_("Your version of wxMaxima is up to date."), _("Upgrade"), wxOK | wxICON_INFORMATION);
+          } else {
+            LoggingMessageBox(wxString::Format(_("Unable to interpret the version info I got: %s"), version), _("Upgrade"), wxOK | wxICON_ERROR);
+          }
+          break;
+        }
+        // Request failed
+        case wxWebRequest::State_Failed:
+            LoggingMessageBox(_("Can not download version info."), _("Error"), wxOK | wxICON_ERROR);
+            break;
+    }
+  });
+
+  // Start the request
+  request.Start();
+#else
   // Attention: wxHTTP does only http connections, not https!!
   wxURL version_url("http://wxMaxima-developers.github.io/wxmaxima/version.txt");
   wxASSERT(version_url.GetError() == wxURL_NOERR);
@@ -11217,8 +11270,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate) {
   connection.SetTimeout(2);
 
   if (!connection.Connect(version_url.GetServer())) {
-    LoggingMessageBox(_("Can not connect to the web server."), _("Error"),
-                      wxOK | wxICON_ERROR);
+    LoggingMessageBox(_("Can not connect to the web server."), _("Error"), wxOK | wxICON_ERROR);
     return;
   }
 
@@ -11246,17 +11298,16 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate) {
         if (visit)
           wxLaunchDefaultBrowser(wxS("https://wxMaxima-developers.github.io/wxmaxima/"));
       } else if (reportUpToDate)
-        LoggingMessageBox(_("Your version of wxMaxima is up to date."),
-                          _("Upgrade"), wxOK | wxICON_INFORMATION);
+        LoggingMessageBox(_("Your version of wxMaxima is up to date."), _("Upgrade"), wxOK | wxICON_INFORMATION);
     } else {
       LoggingMessageBox(wxString::Format(_("Unable to interpret the version info I got from %s: %s"), version_url.BuildURI(), version),
                         _("Upgrade"), wxOK | wxICON_INFORMATION);
     }
   } else {
-    LoggingMessageBox(_("Can not download version info."), _("Error"),
-                      wxOK | wxICON_ERROR);
+    LoggingMessageBox(_("Can not download version info."), _("Error"), wxOK | wxICON_ERROR);
   }
   connection.Close();
+#endif
 }
 
 int wxMaxima::SaveDocumentP() {
