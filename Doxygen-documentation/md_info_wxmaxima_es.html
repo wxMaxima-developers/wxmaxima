@@ -186,7 +186,7 @@ Caracteres griegos</h4>
 <td class="markdownTableBodyCenter">T   </td><td class="markdownTableBodyCenter">Teta   </td><td class="markdownTableBodyCenter">P   </td><td class="markdownTableBodyCenter">Pi   </td><td class="markdownTableBodyCenter">O   </td><td class="markdownTableBodyCenter">Omega   </td></tr>
 </table>
 <p>Además puede utilizar la barra lateral de «Teclas griegas» para introducir las letras griegas.</p>
-<p><a class="anchor" id="autotoc_md128"></a> </p><h5>Attention: Lookalike characters</h5>
+<p><a class="anchor" id="autotoc_md127"></a> </p><h5>Attention: Lookalike characters</h5>
 <p>Several Latin letters look like the Greek letters, e.g. the Latin letter "A" and the Greek letter "Alpha". Although they look identical, they are two different Unicode characters, represented by different Unicode code points (numbers).</p>
 <p>This might be problematic, if you assign a value to the variable <a class="el" href="classA.html">A</a> and later use the Greek letter Alpha to do something with this variable, especially on printouts. For the Greek letter my (which is also used as prefix for micro) there are also two different Unicode code points.</p>
 <p>The "Greek letters"-sidebar therefore has the option, that lookalike characters are not available (which can be changed using a right-click menu).</p>
@@ -298,23 +298,23 @@ Caracteres griegos</h4>
 <p><code>ESC</code><code>6</code><code>1</code><code>ESC</code> por tanto los resultados en una <code>a</code>.</p>
 <p>Note que muchos de estos símbolos (notablemente excepciones son los símbolos lógicos) no tiene un significado especial dentro de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> y por lo tanto serán interpretados como caracteres ordinarios. Si <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> está compilado utilizando un Lisp que no admite caracteres Unicode quizá cause un mensaje de error.</p>
 <p>Puede ser el caso que p.ej. caracteres griegos o símbolos matemáticos no estén incluidos dentro de la tipografía seleccionada, entonces puede no ser reproducibles. Para resolver ese problema, seleccione otras tipografías (utilizando: Editar→Configurar→Estilo).</p>
-<h3><a class="anchor" id="autotoc_md129"></a>
+<h3><a class="anchor" id="autotoc_md128"></a>
 Sustitución Unicode</h3>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> sustituirá varios caracteres Unicode por sus expresiones respectivas de <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, p.ej. "²" por "^2", "³" por "^3", el signo de raíz cuadrada por la función <code>sqrt()</code>, el signo Sigma (matemático) el cual no es el mismo carácter Unicode como la letra griega correspondiente) por <code>sum()</code>, etc.</p>
 <p>Unicode has several "common" fractions encoded as one Unicode code point: <code>¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞</code></p>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> will replace them with their <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> representations, e.g <code>(1/4)</code> before the input is sent do <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. There are also <code>⅟</code>, which will be replaced by <code>1/</code> and <code>↉</code> (used in baseball), which will be replaced by <code>(0/3)</code>.</p>
 <p>It is recommended to use <b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> code</b> (not these Unicode code points) in input cells (Rationale: (a) it might be possible, that the used font for math input does not contain them; (b) if you save the document as <code>wxm</code>-file, it is usually readable by (command line) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, but these changes will of course not work in command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>); but they may occur, if you cut&amp;paste a formula from another document.</p>
-<h3><a class="anchor" id="autotoc_md130"></a>
+<h3><a class="anchor" id="autotoc_md129"></a>
 Paneles Laterales</h3>
 <p>Enlaces para las instrucciones de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> más importantes, cosas como un índice de contenido, ventanas con mensajes de depuración o un historial de las últimas instrucciones emitidas pueden ser accedidas utilizando los paneles laterales. Puede ser habilitados utilizando el menú de "Vistas". Todos ellos pueden ser trasladas a otras localización dentro o fuera de la ventana de _wxMaxima. Otro de los paneles útiles es el que permite introducir letras griegas utilizando el ratón.</p>
 <p><img src="./SidePanes.png" alt="Ejemplo de diferentes paneles laterales" class="inline"/></p>
 <p>En el panal lateral de "table de contenido", uno puede incrementar o decrementar un encabezado tan solo pulsando sobre la cabecera con el botón de ratón secundario y seleccionar el siguiente tipo de cabecera más alto o bajo.</p>
 <p><img src="./Sidepane-TOC-convert-headings.png" alt="Incrementa o decrementa cabeceras dentro del panel lateral
 TOC" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md131"></a>
+<h3><a class="anchor" id="autotoc_md130"></a>
 Salida MathML</h3>
 <p>Varios procesadores de palabras y programas similares o bien reconocen entradas de <a href="https://www.w3.org/Math/">MathML</a> y lo insertan automáticamente como una ecuación editable 2<a class="el" href="classD.html">D</a> - o bien (como LibreOffice 5.1) tiene un editor de ecuación que ofrece una característica “importar MathML desde portapapeles”. Otros admiten matemáticas RTF. <em>WxMaxima</em> por lo tanto ofrece varios apuntes dentro del menú a través de la pulsación secundaria del menú.</p>
-<h3><a class="anchor" id="autotoc_md132"></a>
+<h3><a class="anchor" id="autotoc_md131"></a>
 Asistente Markdown</h3>
 <p><em>WxMaxima</em> ofrece un conjunto de convenciones de <a href="https://es.wikipedia.org/wiki/Markdown">Markdown</a> estándar que no colisione con la notación matemática. Una vez que estos elementos son listados de puntos.</p>
 <div class="fragment"><div class="line">Texto ordinario</div>
@@ -425,10 +425,10 @@ Asistente Markdown</h3>
 <div class="fragment"><div class="line">/* [wxMaxima: carpeta    inicio ] */</div>
 <div class="line">...</div>
 <div class="line">/* [wxMaxima: carpeta    final  ] */</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md133"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md132"></a>
 .wxmx</h3>
 <p>Este archivo cuyo formato está basado en XML guarda la hoja de trabajo completa incluyendo cosas como el factor de zoom y el listado de vigía. Es el formato de archivo preferido.</p>
-<h4><a class="anchor" id="autotoc_md134"></a>
+<h4><a class="anchor" id="autotoc_md133"></a>
 Formato de archivo de archivos wxm</h4>
 <p><a class="el" href="classA.html">A</a> <code>wxmx</code>-file seems to be a binary format, but one can handle it with tools, which are included in your OS. It is a zip file, one can decompress it with <code>unzip</code> (maybe rename it before, so that is recognized by the unzip program of your OS). We do not use the compression function, just the possibility to merge several files into one file - images are already compressed and the rest is simple text (probably much smaller, than huge images, which are included).</p>
 <p>It does contain the following files:</p>
@@ -439,7 +439,7 @@ Formato de archivo de archivos wxm</h4>
 <li><code>content.xml</code>: a XML document, which contains the various cells of your document in XML format.</li>
 </ul>
 <p>So, if something goes wrong, you can unzip a <a class="el" href="classwxMaxima.html">wxMaxima</a> document (maybe rename it before to a <code>zip</code>-file), maybe make changes in the <code>content.xml</code> file with a text editor, or replace an broken image, zip the files again, probably rename the <code>zip</code> to a <code>wxmx</code>-file - and you get another modified <code>wxmx</code>-file.</p>
-<h2><a class="anchor" id="autotoc_md135"></a>
+<h2><a class="anchor" id="autotoc_md134"></a>
 Opciones de configuración</h2>
 <p>Para algunas configuraciones comunes de variables <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> ofrecen dos maneras de configurarlas:</p>
 <ul>
@@ -447,10 +447,10 @@ Opciones de configuración</h2>
 <li>Also, the values for most configuration variables can be changed for the current session only by overwriting their values from the worksheet, as shown below.</li>
 </ul>
 <p><img src="./wxMaxima_configuration_001.png" alt="Configuración de wxMaxima 1" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md136"></a>
+<h3><a class="anchor" id="autotoc_md135"></a>
 Velocidad de cuadros de animación predeterminada</h3>
 <p>La tasa del marco de animación que se utiliza para animaciones nuevas se conserva dentro de la variable <code>wxanimate_framerate</code>. El valor inicial de esta variable contiene dentro una hoja de trabajo nueva que puede ser modificada utilizando el diálogo de configuración.</p>
-<h3><a class="anchor" id="autotoc_md137"></a>
+<h3><a class="anchor" id="autotoc_md136"></a>
 Tamaño de trama predet. para sesiones &lt;em&gt;maxima&lt;/em&gt; nuevas</h3>
 <p>Tras el siguiente inicio, tramas empotradas a la hoja del trabajo será creada con este tamaño si el valor de <code>wxplot_size</code> no es modificado por <em>maxima</em>.</p>
 <p>Con la intención de establecer el tamaño de trama de un grafo único solamente utilice la notación siguiente puede ser utilizada que fija un valor de variable solamente para una sola instrucción:</p>
@@ -460,14 +460,14 @@ Tamaño de trama predet. para sesiones &lt;em&gt;maxima&lt;/em&gt; nuevas</h3>
 <div class="line">       x,-5,5</div>
 <div class="line">   )</div>
 <div class="line">), wxplot_size=[480,480]$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md138"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md137"></a>
 Coincide paréntesis en controles de texto</h3>
 <p>Esta opción habilita dos cosas:</p>
 <ul>
 <li>If an opening parenthesis, bracket, or double quote is entered <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> will insert a closing one after it.</li>
 <li>Si el texto está seleccionad si cualquiera de estas teclas es pulsada el texto seleccionado será puedes entre los signos coincidan.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md139"></a>
+<h3><a class="anchor" id="autotoc_md138"></a>
 No guardar automáticamente la hoja de trabajo</h3>
 <p>Si esta opción está puesta, el archivo donde la hoja de trabajo será sobrescrita solamente al solicitar el usuario. En caso de un cuelgue/corte de luz/... sin embargo, aún está disponible una copia de respaldo reciente dentro del directorio temporal ‘temp’.</p>
 <p>Si esta opción no está fijada <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> se comporta más como una app telefónica moderna:</p>
@@ -475,15 +475,15 @@ No guardar automáticamente la hoja de trabajo</h3>
 <li>Ficheros son guardados automáticamente al salir</li>
 <li>And the file will automatically be saved every 3 minutes.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md140"></a>
+<h3><a class="anchor" id="autotoc_md139"></a>
 ¿Donde está la configuración guardada?</h3>
 <p>Si está utilizando Unix/Linux, la información de la configuración será guardada dentro de un archivo <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> dentro de su directorio personal (si está utilizando wxWidgets &lt; 3.1.1), o <code>.config/wxMaxima.conf</code>((XDG-Estandarizado) si wxWidgets ≥ 3.1.1). Puede obtener la versión de wxWidgets desde la instrucción <code>wxbuild_info();</code> o para utilizar la opción del menú Ayuda→Acerca de. <a href="https://www.wxwidgets.org/">wxWidgets</a> es la biblioteca IGU de plataforma cruzada lo cual es la base para <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (por lo tanto el <code>wx</code> dentro del nombre). (Cuando el nombre del archivo comience con un punto, <code>.wxmaxima</code> o <code>.config</code> estarán ocultos).</p>
 <p>Si está utilizando Windows, la configuración será almacenada dentro del registro. Encontrará los apuntes para <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> en la posición siguiente dentro del registro: <code>HKEY_CURRENT_USER\Software\<a class="el" href="classwxMaxima.html">wxMaxima</a></code></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md141"></a>
+<h1><a class="anchor" id="autotoc_md140"></a>
 Extensiones para &lt;em&gt;Maxima&lt;/em&gt;</h1>
 <p><em>WxMaxima</em> es primariamente un interfaz gráfico de usuario para <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. Por lo tanto, su propósito principal es enviar órdenes a <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> y comunicar los resultados de ejecutar esas órdenes. En algunos casos, sin embargo, <em><a class="el" href="classwxMaxima.html">wxMaxima</a> agrega funcionalidades a _Maxima</em>. La capacidad de <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> para generar informes exportando un contenido del cuaderno a HTML y LaTeX ha sido mencionado. Esta sección considera algunas maneras que <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> mejora la inclusión de gráficos dentro de una sesión.</p>
-<h2><a class="anchor" id="autotoc_md142"></a>
+<h2><a class="anchor" id="autotoc_md141"></a>
 Variables subescritas</h2>
 <p>Especificidades <code>wxsubscripts</code>, si (y como) <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> auto-suscribirá nombres de variable:</p>
 <p>Si es falso, la funcionalidad está apagada, <a class="el" href="classwxMaxima.html">wxMaxima</a> no auto-suscribirá parte de nombres de variable tras un subrayado.</p>
@@ -497,7 +497,7 @@ Variables subescritas</h2>
 wxsubscripts" class="inline"/></p>
 <p>Si el nombre de variable no coincide estos requerimientos, aún puede ser declarado como "para ser sub-guionado" utilizando la instrucción <code>wxdeclare_subscript(nombre_variable);</code> o <code>wxdeclare_subscript([nombre_variable1,nombre_variable2,...]);</code> declarando una variable como sub-guion puede ser revertido utilizando la instrucción siguiente: <code>wxdeclare_subscript(nombre_variable,false);</code></p>
 <p>Puede utilizar el menú «Vista→Auto-subguion» para fijar estos valores.</p>
-<h2><a class="anchor" id="autotoc_md143"></a>
+<h2><a class="anchor" id="autotoc_md142"></a>
 Comentario del usuario en la barra de estado</h2>
 <p>Las instrucciones de ejecución largas pueden proporcionar al usuario su estado dentro de la barra de estado. Esta comentario es sustituído por cualquier comentario devuelto que es colocada allí (permitiendo utilizarlo como un indicador de progreso) y es borrado tan pronto como la instrucción actual enviada a <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ha finalizado. Es seguro de utilizar <code>wxstatusbar()</code> incluso dentro de bibliotecas que tal vez sean utilizadas con el simple <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (como opuesto a <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>): si <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> no está presente la instrucción <code>wxstatusbar()</code> será tan solo dejada sin evaluar.</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -508,10 +508,10 @@ Comentario del usuario en la barra de estado</h2>
 <div class="line">    /* la ejecución del programa (aquí: para 3 segundos) */</div>
 <div class="line">    ?sleep(3)</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md144"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md143"></a>
 Tramar</h2>
 <p>Tramar (teniendo fundamentalmente hacerlo con gráficas) es un lugar donde un interfaz gráfico del usuario tendrá para proporcionar algunas extensiones para el programa original.</p>
-<h3><a class="anchor" id="autotoc_md145"></a>
+<h3><a class="anchor" id="autotoc_md144"></a>
 Empotrar una trama dentro de la hoja de trabajo</h3>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> normalmente instrumenta el programa <em>Gnuplot</em> externo para abrir una ventana separada por cada diagrama que crea. Debido a que muchas veces es conveniente empotrar grafos a la hoja de trabajo en vez que <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> proporcione su propio conjunto de funciones de trama que no difieran desde las funciones correspondientes a <em>maxima</em> que guarda dentro de su nombre: todo está prefijado por un “wx”.</p>
 <p>Las siguientes funciones de tramado tienen contrapartes wx:</p>
@@ -543,7 +543,7 @@ Empotrar una trama dentro de la hoja de trabajo</h3>
 </table>
 <p>Si un archivo de <code>wxm</code> es leído por (consola) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, estas funciones son ignoradas (y escritas como salida, como otras funciones desconocidas en <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>).</p>
 <p>If you got problems with one of these functions, please check, if the problem exists in the the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> function too (e.g. you got an error with <code>wxplot2d()</code>, check the same plot in the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command <code>plot2d()</code> (which opens the plot in a separate Window)). If the problem does not disappear, it is most likely a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> issue and should be reported in the <a href="https://sourceforge.net/p/maxima/bugs/">Maxima bugtracker</a>. Or maybe a Gnuplot issue.</p>
-<h3><a class="anchor" id="autotoc_md146"></a>
+<h3><a class="anchor" id="autotoc_md145"></a>
 Creación de tramas empotradas más mayores o menores</h3>
 <p>Tal como notó arriba, el dialogo de configuración proporciona una manera de modificar el tamaño de trama predeterminada lo cual fija el valor de inicio de <code>wxplot_size</code>. Las rutinas de tramado de <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> respeta esta variable que especifica el tamaño de una trama en píxeles. Siempre puede ser solicitado o utilizado para fijar el tamaño de las tramas siguientes:</p>
 <div class="fragment"><div class="line">wxplot_size:[1200,800]$</div>
@@ -561,16 +561,16 @@ Creación de tramas empotradas más mayores o menores</h3>
 <div class="line">    )</div>
 <div class="line">),wxplot_size=[1600,800]$</div>
 </div><!-- fragment --><p>Estableciendo el tamaño de trazas empotradas con <code>wxplot_size</code> funciona para trazos empotrados utilizando p.e. instrucciones <code>wxplot</code>, <code>wxdraw</code>, <code>wxcontour_plot</code> y <code>wximplicit_plot</code> y para animaciones empotradas con instrucciones <code>with_slider_draw</code> y <code>wxanimate</code>.</p>
-<h2><a class="anchor" id="autotoc_md147"></a>
+<h2><a class="anchor" id="autotoc_md146"></a>
 Tramas de mayor calidad</h2>
 <p><em>Gnuplot</em> parece no proporcionar una manera portable de determinar si admite bitmap de salida de calidad alta que la biblioteca Cairo proporciona. En los sistemas donde está compilado <em>Gnuplot</em> para utilizar esta biblioteca la opción pngCairo desde el menú de configuración (que puede ser sobrescrito por la variable <code>wxplot_pngcairo</code>) habilita el mantenimiento para antialias y estilos de línea adicional. Si <code>wxplot_pngCairo</code> está establecido sin <em>Gnuplot</em> admitiendo esto el resultado dará mensajes de error en vez de gráficos.</p>
-<h3><a class="anchor" id="autotoc_md148"></a>
+<h3><a class="anchor" id="autotoc_md147"></a>
 Abriendo tramados empotrados en ventanas &lt;em&gt;Gnuplot&lt;/em&gt; interactivas</h3>
 <p>Si fue generada una trama utilizando las instrucciones de tipo <code>wxdraw</code> (<code>wxplot2d</code> y <code>wxplot3d</code> no son admitidas por esta característica) y el tamaño del archivo del proyecto <em>Gnuplot</em> subyacente no es una manera demasiado buena que <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> ofrezca un menú de pulsación secundaria que permita abrir el tramado dentro de una ventana interactiva de <em>Gnuplot</em>.</p>
-<h3><a class="anchor" id="autotoc_md149"></a>
+<h3><a class="anchor" id="autotoc_md148"></a>
 Abrir consola para instrucciones Gnuplot en las ventanas &lt;tt&gt;tramado&lt;/tt&gt;</h3>
 <p>On MS Windows, there are two Gnuplot programs, <code>gnuplot.exe</code> and <code>wgnuplot.exe</code>. You can configure, which command should be used using the configuration menu. <code>wgnuplot.exe</code> offers the possibility to open a console window, where <em>gnuplot</em> commands can be entered into, <code>gnuplot.exe</code> does not offer this possibility. Unfortunately, <code>wgnuplot.exe</code> causes <em>Gnuplot</em> to "steal" the keyboard focus for a short time every time a plot is prepared.</p>
-<h3><a class="anchor" id="autotoc_md150"></a>
+<h3><a class="anchor" id="autotoc_md149"></a>
 Empotrar animaciones dentro de la hoja de cálculo</h3>
 <p>Diagramas 3<a class="el" href="classD.html">D</a> tienden hacerlo difícil para lectura de datos cuantitativos. Una alternativa viable sería asignar el 3er parámetro a la rueda del ratón. La instrucción <code>with_slider_draw</code> es una versión de <code>wxdraw2d</code> que prepara múltiples tramados y permite conmutar entre ellos moviendo el arrastre en la cima de la pantalla. <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> permite exportar esta animación como un gif animado.</p>
 <p>Los primeros dos argumentos para <code>with_slider_draw</code> son el nombre de la variable que está pasada entre las tramas y un listado de los valores de estas variables. Los argumentos que siguen son los argumentos ordinarios para <code>wxdraw2d</code>:</p>
@@ -639,7 +639,7 @@ Empotrar animaciones dentro de la hoja de cálculo</h3>
 <div class="line">        x,0,10</div>
 <div class="line">    )</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md151"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md150"></a>
 Abrir múltiples tramas en ventanas contemporáneas</h3>
 <p>Mientras no sean proporcionados por <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> esta característica de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (sobre configuraciones que la admitan) algunas veces vienen manualmente. Los siguientes ejemplos vienen desde una carta desde Mario Rodríguez al listado de correo de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>:</p>
 <div class="fragment"><div class="line">/* Parabola in window #1 */ draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));</div>
@@ -657,10 +657,10 @@ Abrir múltiples tramas en ventanas contemporáneas</h3>
 <div class="line">    key=&quot;cos (x)&quot;,grid=[2,2],</div>
 <div class="line">    explicit(cos(x),x,0,2*%pi))</div>
 <div class="line">);</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md152"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md151"></a>
 El panel lateral «Tramado utilizando dibujo»</h3>
 <p>La barra lateral «Tramado utilizando dibujo» oculta un generador de código simple que permite generar escenas que hagan uso de alguna de la flexibilidad del paquete <em>draw</em> con el que <em>maxima</em> viene.</p>
-<h4><a class="anchor" id="autotoc_md153"></a>
+<h4><a class="anchor" id="autotoc_md152"></a>
 2D</h4>
 <p>Genera el esqueleto de una instrucción <code>draw()</code> que dibuja una escena 2<a class="el" href="classD.html">D</a>. Esta escena posterior tiene que ser completada con instrucciones que generan los contenidos de la escena, por ejemplo utilizando los botones dentro de las filas debajo del botón "2D".</p>
 <p>La característica de ayuda del botón 2<a class="el" href="classD.html">D</a> es que permite configurar la escena como una animación en la cual una variable (por defecto es <em>t</em>) tiene un valor diferente dentro de cada marco: a menudo un movimiento de trama 2<a class="el" href="classD.html">D</a> permite una interpretación más fácil que el de datos dentro de uno sin movimiento 3<a class="el" href="classD.html">D</a>.</p>
