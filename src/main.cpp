@@ -67,6 +67,9 @@
 #include "examples/variableNames.h"
 
 #include "wxMaxima.h"
+#if wxCHECK_VERSION(3, 2, 0)
+#include "wxMaximaArtProvider.h"
+#endif
 
 // On wxGTK2 we support printing only if wxWidgets is compiled with gnome_print.
 // We have to force gnome_print support to be linked in static builds of
@@ -202,6 +205,9 @@ bool MyApp::OnInit() {
   // use this feature. But it doesn't harm to be prepared
   wxSocketBase::Initialize();
 
+#if wxCHECK_VERSION(3, 2, 0)
+  wxArtProvider::Push(new wxMaximaArtProvider);
+#endif
   m_translations = std::unique_ptr<wxTranslations>(new wxTranslations());
   wxTranslations::Set(m_translations.get());
   {

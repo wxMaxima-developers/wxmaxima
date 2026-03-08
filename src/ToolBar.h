@@ -230,7 +230,9 @@ public:
   wxBitmap GetInterruptBitmap(wxSize siz);
   wxBitmap GetEvalTillHereBitmap(wxSize siz);
   wxBitmap GetEvalRestBitmap(wxSize siz);
+#if !wxCHECK_VERSION(3, 2, 0)
   wxBitmap GetHideCodeBitmap(wxSize siz);
+#endif
 
   wxSize GetOptimalBitmapSize();
   wxSize GetPPI();

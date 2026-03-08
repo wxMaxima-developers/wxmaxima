@@ -34,7 +34,9 @@
 #include "art/toolbar/arrow-up-square.h"
 #include "art/toolbar/dialog-information.h"
 #include "art/toolbar/gtk-preferences.h"
+#if !wxCHECK_VERSION(3, 2, 0)
 #include "art/toolbar/eye-slash.h"
+#endif
 #include "art/toolbar/go-bottom.h"
 #include "art/toolbar/gtk-select-all.h"
 #include "art/toolbar/go-jump.h"
@@ -48,6 +50,9 @@
 #include "art/toolbar/view-refresh1.h"
 #include "art/media-playback-start.h"
 #include "art/media-playback-reverse.h"
+#if wxCHECK_VERSION(3, 2, 0)
+#include "wxMaximaArtProvider.h"
+#endif
 #include <cstdlib>
 #include <wx/artprov.h>
 #include <wx/display.h>
@@ -267,8 +272,12 @@ void ToolBar::AddTools() {
 #ifndef __WXOSX__
   AddSeparator();
 #endif
-  AddTool(tb_hideCode, _("Hide Code"), GetHideCodeBitmap(bitmapSize),
-          _("Toggle the visibility of code cells"));
+#if wxCHECK_VERSION(3, 2, 0)
+  AddTool(tb_hideCode, _("Hide Code"), wxArtProvider::GetBitmapBundle(wxmaximaART_EYE_SLASH, wxART_TOOLBAR), _("Toggle the visibility of code cells"));
+#else
+  AddTool(tb_hideCode, _("Hide Code"), GetHideCodeBitmap(bitmapSize), _("Toggle the visibility of code cells"));
+#endif
+
 #ifndef __WXOSX__
   AddSeparator();
 #endif
@@ -387,7 +396,11 @@ void ToolBar::UpdateBitmaps() {
   SetToolBitmap(tb_follow, m_followIcon);
   SetToolBitmap(tb_evaltillhere, GetEvalTillHereBitmap(bitmapSize));
   SetToolBitmap(tb_evaluate_rest, GetEvalRestBitmap(bitmapSize));
+#if wxCHECK_VERSION(3, 2, 0)
+  SetToolBitmap(tb_hideCode, wxArtProvider::GetBitmapBundle(wxmaximaART_EYE_SLASH, wxART_TOOLBAR));
+#else
   SetToolBitmap(tb_hideCode, GetHideCodeBitmap(bitmapSize));
+#endif
   m_PlayButton =
     ArtProvider::GetImage(this, wxS("media-playback-start"), bitmapWidth, MEDIA_PLAYBACK_START_SVG_GZ,
                           MEDIA_PLAYBACK_START_SVG_GZ_SIZE);
@@ -425,10 +438,11 @@ wxBitmap ToolBar::GetEvalTillHereBitmap(wxSize siz) {
 wxBitmap ToolBar::GetEvalRestBitmap(wxSize siz) {
   return ArtProvider::GetImage(this, wxS("go-last"), siz.x, GO_LAST_SVG_GZ, GO_LAST_SVG_GZ_SIZE);
 }
+#if !wxCHECK_VERSION(3, 2, 0)
 wxBitmap ToolBar::GetHideCodeBitmap(wxSize siz) {
   return ArtProvider::GetImage(this, wxS("eye-slash"), siz.x, EYE_SLASH_SVG_GZ, EYE_SLASH_SVG_GZ_SIZE);
 }
-
+#endif
 void ToolBar::SetDefaultCellStyle() {
   switch (m_textStyle->GetSelection()) {
   case 0:

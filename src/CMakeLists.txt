@@ -157,6 +157,7 @@ set(SOURCE_FILES
     wxMaxima.cpp
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
+    wxMaximaArtProvider.cpp
 )
 
 if(NOT CYGWIN)
