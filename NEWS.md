@@ -20,6 +20,8 @@
 - Don't include dot files in the release archive (#2068).
 - New compile option WXM_DISABLE_QA (#2064).
 - Fix the 'Create a list from a list' menu (mentioned in the discussion forum).
+- Fix the 'Extract nth element of a list' menu.
+- Fix the 'Do for all list elements' menu.
 
 # 26.01.0
 

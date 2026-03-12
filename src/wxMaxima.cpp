@@ -8571,7 +8571,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
                _("Attention: Extracting a random list element isn't efficient for "
                  "long lists."
                  "Iterating over lists using makelist() or for loops is way faster."),
-               wxEmptyString, wxS("#1#[#2];"), _("List"), expr, wxEmptyString,
+               wxEmptyString, wxS("#1#[#2#];"), _("List"), expr, wxEmptyString,
                _("Element number"), wxEmptyString, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_map){
@@ -8602,7 +8602,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_list_do_for_each_element){
     CommandWiz(
                _("Do for each list element"), wxEmptyString, wxEmptyString,
-               wxS("for #2# om #1# do #3#;"), _("List:"), expr,
+               wxS("for #2# in #1# do #3#;"), _("List:"), expr,
                _("Comma-separated list entry in the format val1=1,val2=2"),
                _("Iterator name:"), wxS("i"),
                _("The variable the value of the current source item is stored in."),
