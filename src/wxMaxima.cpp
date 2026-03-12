@@ -8486,7 +8486,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_list_create_from_rule){
     CommandWiz(
                _("Create a list from a rule"), wxEmptyString, wxEmptyString,
-               wxS("makelist(#1#,#2#,#3#,#4#,#5#)$"), _("Rule:"), expr,
+               wxS("makelist(#1#,#2#,#3#,#4#,#5#);"), _("Rule:"), expr,
                _("The rule that explains how to generate the value of a list item.\n"
                  "Might be something like \"i\", \"i^2\" or \"sin(i)\""),
                _("Index variable:"), wxS("i"),
@@ -8498,10 +8498,11 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
 
   else if(event.GetId() == EventIDs::menu_list_create_from_list){
     CommandWiz(
-               _("Create a list from a rule"), wxEmptyString, wxEmptyString,
-               wxS("makelist(#1#,#2#,#3#)$"), _("Rule:"), expr,
-               _("The rule that explains how to generate the value of a list item.\n"
-                 "Might be something like \"i\", \"i^2\" or \"sin(i)\""),
+               _("Create a list from a list"), wxEmptyString, wxEmptyString,
+               wxS("makelist(#1#,#2#,#3#);"), _("Expr:"), expr,
+               _("The ‘j’th element is equal to ‘ev (<expr>, <x>=<list>[j])’ \n"
+                 "j are the elements of the source list.\n"
+                 "Might be something like \"x=i\""),
                _("Index variable:"), wxS("i"),
                _("The variable the value of the current source item is stored in."),
                _("Source list:"), wxS("[1,8,32]"), wxEmptyString);
