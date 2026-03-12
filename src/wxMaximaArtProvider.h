@@ -41,6 +41,10 @@ protected:
                                     const wxArtClient& client,
                                     const wxSize& size) override;
 
+private:
+  // gunzip the (gzip compressed) SVG in Memory
+  wxString gunzip(unsigned char * svg_gz, size_t svg_gz_size);
+
 };
 
 #endif

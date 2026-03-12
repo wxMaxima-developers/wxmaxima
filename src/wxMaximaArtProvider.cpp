@@ -30,17 +30,36 @@
 
 #include <wx/bmpbndl.h>
 
-#include "wxMaximaArtProvider.h"
 
-#include "./art/toolbar/eye-slash.svg.h"
+#include <wx/mstream.h>
+#include <wx/zstream.h>
+#include <wx/txtstrm.h>
+
+#include "wxMaximaArtProvider.h"
+#include "art/toolbar/eye-slash.h"
+
+// Used to gunzip the (gzip compressed) SVG in Memory
+wxString wxMaximaArtProvider::gunzip(unsigned char * svg_gz, size_t svg_gz_size)
+{
+    wxMemoryInputStream memIn(svg_gz, svg_gz_size);
+    wxZlibInputStream gzipInput(memIn, wxZLIB_GZIP);
+    wxTextInputStream svgText(gzipInput);
+    wxString svg_unzipped = wxEmptyString;
+    while (!gzipInput.Eof()) {
+        svg_unzipped = svg_unzipped + svgText.ReadLine();
+    }
+    return svg_unzipped;
+}
 
 wxBitmapBundle wxMaximaArtProvider::CreateBitmapBundle(const wxArtID& id,
                                     const wxArtClient& client,
                                     const wxSize& size)
 {
   if (id == wxmaximaART_EYE_SLASH) {
-    return wxBitmapBundle::FromSVG(reinterpret_cast<char *>(EYE_SLASH_SVG), GetSizeHint(client));
+    return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(EYE_SLASH_SVG_GZ, EYE_SLASH_SVG_GZ_SIZE).mb_str(), GetSizeHint(client));
   }
   return wxNullBitmap;
 }
+
+
 #endif
