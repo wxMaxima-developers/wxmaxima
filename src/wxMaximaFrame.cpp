@@ -1669,8 +1669,8 @@ void wxMaximaFrame::SetupListMenu() {
   listcreateSub->Append(EventIDs::menu_list_create_from_list, _("from a list"),
                         _("Generate a new list using a lists' elements"),
                         wxITEM_NORMAL);
-  listcreateSub->Append(EventIDs::menu_csv2list, _("Read List from csv file..."),
-                        _("Load a list from a csv file"), wxITEM_NORMAL);
+  listcreateSub->Append(EventIDs::menu_csv2list, _("Read nested list from csv file..."),
+                        _("Load a nested list from a csv file"), wxITEM_NORMAL);
   listcreateSub->Append(EventIDs::menu_list_actual_values_storage,
                         _("as storage for actual values for variables"),
                         _("Generate a storage for variable values that can be "

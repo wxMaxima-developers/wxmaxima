@@ -22,6 +22,9 @@
 - Fix the 'Create a list from a list' menu (mentioned in the discussion forum).
 - Fix the 'Extract nth element of a list' menu.
 - Fix the 'Do for all list elements' menu.
+- Fix the 'export list to csv file' and 'read list from csv file' menu.
+  It was not working at all. Renamed to 'read nested list from csv file', the
+  menu item is using read_nested_list(). Mentioned in the discussion forum.
 
 # 26.01.0
 

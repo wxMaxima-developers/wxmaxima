@@ -1518,6 +1518,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
   Connect(EventIDs::menu_list_create_from_args, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
+  Connect(EventIDs::menu_csv2list, wxEVT_MENU, wxCommandEventHandler(wxMaxima::ListMenu),
+          NULL, this);
+  Connect(EventIDs::menu_list2csv, wxEVT_MENU, wxCommandEventHandler(wxMaxima::ListMenu),
+          NULL, this);
   Connect(EventIDs::menu_draw_2d, wxEVT_MENU, wxCommandEventHandler(wxMaxima::DrawMenu),
           NULL, this);
   Connect(EventIDs::menu_draw_2d, wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::DrawMenu),
