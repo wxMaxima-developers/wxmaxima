@@ -188,7 +188,7 @@ dockable help browser.
 
 ### wxWidgets without QA component
 
-One can use the option `-DWXM_DISABLE_WEBVIEW=on` to disable that library.
+One can use the option `-DWXM_DISABLE_QA=on` to disable that library.
 
 ## Additional information for packagers
 
