@@ -4,29 +4,32 @@ To build wxMaxima from sources you need to have a C++ compiler (C++14),
 wxWidgets >= 3.0 (including development headers) and
 CMake >= 3.16 installed.
 
-### Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Fink, Homebrew,...)
+### Compiling wxMaxima on Linux / Unix systems and Linux-like systems (Cygwin, WSL, MacPorts, Fink, Homebrew,...)
 
 wxMaxima is built using the CMake build system.
 
 The following steps will build and install wxMaxima using CMake.
-Download and extract wxMaxima and change in the wxMaxima tree. Then:
+Download and extract wxMaxima (the latest release or a git clone or zip snapshot of the latest development version) and change in the wxMaxima tree. Then:
 
 ```
-    mkdir -p build          # create a build directory (may even be outside the wxmaxima code)
-    cd build                # change to the build directory
-    cmake ..                # configure the build.
-                            # .. is the path to the extracted wxMaxima code - if you use another build directory, adjust.
-    cmake --build .         # build wxMaxima
-                            # You can speed up the build, if you have multiple CPU cores, using
-                            # cmake --build . -- -j 4
-                            # (-j 4 means: Use 4 CPU cores). Adjust the number for your CPU.
+mkdir -p build          # create a build directory (may even be outside the wxmaxima code)
+cd build                # change to the build directory
+cmake ..                # configure the build.
+                        # .. is the path to the extracted wxMaxima code - if you use another build directory, adjust.
+cmake --build .         # build wxMaxima
+                        # You can speed up the build, if you have multiple CPU cores, using
+                        # cmake --build . -- -j 4
+                        # (-j 4 means: Use 4 CPU cores). Adjust the number for your CPU.
 ```
 
-Now you can test your wxMaxima build (without installing it) by calling: `./wxmaxima-local`
-
-If everything is okay install it with:
+Now you can test your wxMaxima build (or just use it without installation) by calling:
 ```
-    sudo cmake --build . -- install
+./wxmaxima-local
+```
+
+If everything is okay install wxMaxima with:
+```
+sudo cmake --build . -- install
 ```
 
 If you want to install into a special prefix (not `/usr/local`), add
@@ -188,7 +191,8 @@ dockable help browser.
 
 ### wxWidgets without QA component
 
-One can use the option `-DWXM_DISABLE_QA=on` to disable that library.
+One can use the option `-DWXM_DISABLE_QA=on` to disable that library, if necessary.
+Reported in [issue #2064](https://github.com/wxMaxima-developers/wxmaxima/issues/2064).
 
 ## Additional information for packagers
 
@@ -215,3 +219,6 @@ might not be the end of the world, neither:
 If you have problems when compiling wxMaxima, maybe a look in the configurations
 for various CI-Systems (`.appveyor.yml` and files in `.github/workflows/`)
 may be helpful to see, how wxMaxima is compiled on these systems.
+
+If something is not clear / should be improved in that document, please open an issue. This document
+should help YOU to compile wxMaxima.
