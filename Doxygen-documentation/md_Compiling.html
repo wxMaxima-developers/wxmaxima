@@ -74,9 +74,9 @@ $(function() {
 <div class="contents">
 <div class="textblock"><p>To build <a class="el" href="classwxMaxima.html">wxMaxima</a> from sources you need to have a C++ compiler (C++14), wxWidgets &gt;= 3.0 (including development headers) and CMake &gt;= 3.16 installed.</p>
 <h2><a class="anchor" id="autotoc_md8"></a>
-Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Fink, Homebrew,...)</h2>
+Compiling wxMaxima on Linux / Unix systems and Linux-like systems (Cygwin, WSL, MacPorts, Fink, Homebrew,...)</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is built using the CMake build system.</p>
-<p>The following steps will build and install <a class="el" href="classwxMaxima.html">wxMaxima</a> using CMake. Download and extract <a class="el" href="classwxMaxima.html">wxMaxima</a> and change in the <a class="el" href="classwxMaxima.html">wxMaxima</a> tree. Then:</p>
+<p>The following steps will build and install <a class="el" href="classwxMaxima.html">wxMaxima</a> using CMake. Download and extract <a class="el" href="classwxMaxima.html">wxMaxima</a> (the latest release or a git clone or zip snapshot of the latest development version) and change in the <a class="el" href="classwxMaxima.html">wxMaxima</a> tree. Then:</p>
 <div class="fragment"><div class="line">mkdir -p build          # create a build directory (may even be outside the wxmaxima code)</div>
 <div class="line">cd build                # change to the build directory</div>
 <div class="line">cmake ..                # configure the build.</div>
@@ -85,8 +85,8 @@ Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Fink, Home
 <div class="line">                        # You can speed up the build, if you have multiple CPU cores, using</div>
 <div class="line">                        # cmake --build . -- -j 4</div>
 <div class="line">                        # (-j 4 means: Use 4 CPU cores). Adjust the number for your CPU.</div>
-</div><!-- fragment --><p>Now you can test your <a class="el" href="classwxMaxima.html">wxMaxima</a> build (without installing it) by calling: <code>./wxmaxima-local</code></p>
-<p>If everything is okay install it with: </p><div class="fragment"><div class="line">sudo cmake --build . -- install</div>
+</div><!-- fragment --><p>Now you can test your <a class="el" href="classwxMaxima.html">wxMaxima</a> build (or just use it without installation) by calling: </p><div class="fragment"><div class="line">./wxmaxima-local</div>
+</div><!-- fragment --><p>If everything is okay install <a class="el" href="classwxMaxima.html">wxMaxima</a> with: </p><div class="fragment"><div class="line">sudo cmake --build . -- install</div>
 </div><!-- fragment --><p>If you want to install into a special prefix (not <code>/usr/local</code>), add <code>-DCMAKE_INSTALL_PREFIX=/your/installation/prefix</code> to the first cmake invocation. E.g.</p>
 <div class="fragment"><div class="line">cmake -DCMAKE_INSTALL_PREFIX=/opt/wxmaxima ..</div>
 </div><!-- fragment --><p>By default a "Debug" build will be made (less optimization, debug symbols) - and this build shows the <a class="el" href="classwxMaxima.html">wxMaxima</a> log window (may contain helpful log messages) when started; if you want to create a "Release" build (more optimization, the log window is not shown by default, it can be toggled on and off using "View-&gt;Toggle log window") set the build type (CMake supports other build types too) using: </p><div class="fragment"><div class="line">cmake -DCMAKE_BUILD_TYPE=Release ..</div>
@@ -149,7 +149,7 @@ wxWidgets isn't found</h2>
 </div><!-- fragment --><p>might allow cmake to find wxWidgets at the cost of loosing the integrated dockable help browser.</p>
 <h2><a class="anchor" id="autotoc_md18"></a>
 wxWidgets without QA component</h2>
-<p>One can use the option <code>-DWXM_DISABLE_WEBVIEW=on</code> to disable that library.</p>
+<p>One can use the option <code>-DWXM_DISABLE_QA=on</code> to disable that library, if necessary. Reported in <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/2064">issue #2064</a>.</p>
 <h1><a class="anchor" id="autotoc_md19"></a>
 Additional information for packagers</h1>
 <h2><a class="anchor" id="autotoc_md20"></a>
@@ -166,7 +166,8 @@ Creating a standalone wxMaxima</h2>
 </ul>
 <h2><a class="anchor" id="autotoc_md21"></a>
 Troubleshooting</h2>
-<p>If you have problems when compiling <a class="el" href="classwxMaxima.html">wxMaxima</a>, maybe a look in the configurations for various CI-Systems (<code>.appveyor.yml</code> and files in <code>.github/workflows/</code>) may be helpful to see, how <a class="el" href="classwxMaxima.html">wxMaxima</a> is compiled on these systems. </p>
+<p>If you have problems when compiling <a class="el" href="classwxMaxima.html">wxMaxima</a>, maybe a look in the configurations for various CI-Systems (<code>.appveyor.yml</code> and files in <code>.github/workflows/</code>) may be helpful to see, how <a class="el" href="classwxMaxima.html">wxMaxima</a> is compiled on these systems.</p>
+<p>If something is not clear / should be improved in that document, please open an issue. This document should help YOU to compile <a class="el" href="classwxMaxima.html">wxMaxima</a>. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
