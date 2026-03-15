@@ -61,7 +61,7 @@ void SqrtCell::MakeBreakUpCells() {
 void SqrtCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     m_innerCell->RecalculateList(fontsize);
-    
+
     m_width = m_innerCell->SumOfWidths() + Scale_Px(13) + 1;
     if (!IsBrokenIntoLines()) {
       auto openHeight = 0; // m_open->GetHeightList();
@@ -102,8 +102,17 @@ void SqrtCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
         // The horizontal line
         {m_width - Scale_Px(1), -m_center + Scale_Px(2)},
         // The serif at the end of the root
-        {m_width - Scale_Px(1), -m_center + Scale_Px(6)}};
-      antialiassingDC->DrawLines(12, points, point.x, point.y);
+        {m_width - Scale_Px(1), -m_center + Scale_Px(6)}
+      };
+      // Draw the sqrt symbol without the small 'vertical line' at the end (as TeX does by default).
+      // Requested in the discussion forum: https://github.com/wxMaxima-developers/wxmaxima/discussions/2073
+      // The Latex Wikibook writes, that that habit is not normally used when writing with a computer:
+      // https://en.wikibooks.org/wiki/LaTeX/Mathematics#Roots
+      // But I don't know, what is 'correct'.
+      //
+      // If that small line should be drawn, just replace 11 by 12 in the command below,
+      // so that the last part of the points-array above will be drawn too:
+      antialiassingDC->DrawLines(11, points, point.x, point.y);
     }
 
     m_innerCell->DrawList(in, dc, antialiassingDC);
