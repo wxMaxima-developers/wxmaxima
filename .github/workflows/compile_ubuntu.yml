@@ -61,7 +61,7 @@ jobs:
              cd build
              export HOME=`pwd`
              export CTEST_OUTPUT_ON_FAILURE=1
-             GTK_USE_PORTAL=0 GDK_BACKEND=x11 xvfb-run -a ctest -j 1
+             GDK_BACKEND=x11 xvfb-run -a ctest -j 1
              cd ..
 
   compile_without_webview:
