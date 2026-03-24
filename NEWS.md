@@ -25,6 +25,7 @@
 - Fix the 'export list to csv file' and 'read list from csv file' menu.
   It was not working at all. Renamed to 'read nested list from csv file', the
   menu item is using read_nested_list(). Mentioned in the discussion forum.
+- Fix the 'Apply a function to each list element' menu. Mentioned in the discussion forum.
 
 # 26.01.0
 

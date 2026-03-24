@@ -8580,7 +8580,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_list_map){
     CommandWiz(_("Apply a function to each list element"), wxEmptyString,
-               wxEmptyString, wxS("map(#1#,#2);"), _("function"), expr,
+               wxEmptyString, wxS("map(#1#,#2#);"), _("function"), expr,
                wxEmptyString, _("list"), wxEmptyString, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_use_actual_values){
