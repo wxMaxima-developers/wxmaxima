@@ -49,7 +49,6 @@ void CompositeDataObject::Add(wxDataObject *object, bool preferred) {
     for (auto addedFormat = addedFormats.begin();
          addedFormat != addedFormats.end();) {
       if (priorEntry.format == *addedFormat) {
-        priorEntry.format = *addedFormat;
         priorEntry.object = objPtr;
         addedFormat = addedFormats.erase(addedFormat);
         continue;
