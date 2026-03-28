@@ -42,6 +42,7 @@
 #include "wizards/Gen1Wiz.h"
 #include "sidebars/GreekSidebar.h"
 #include "sidebars/UnicodeSidebar.h"
+#include "wxMaximaOSDescription.h"
 #include "wxMaximaIcon.h"
 #include <wx/artprov.h>
 #include <wx/config.h>
@@ -187,7 +188,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 #ifndef __WXOSX__
   SetTitle(
            wxString::Format(_("wxMaxima %s (%s) "), wxS(WXMAXIMA_VERSION),
-                            wxPlatformInfo::Get().GetOperatingSystemDescription()) +
+                            wxMaximaOperatingSystemDescription()) +
            _("[ unsaved ]"));
 #else
   SetTitle(_("untitled"));
