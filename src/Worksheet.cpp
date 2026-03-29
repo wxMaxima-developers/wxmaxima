@@ -102,7 +102,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
     if (gtk_input_method == wxS("xim")) {
       wxLogError(_("GTK_IM_MODULE is set to \"xim\". Expect the program to "
                    "hideously flicker and hotkeys to be broken, see for "
-                   "example https://trac.wxwidgets.org/ticket/18462."));
+                   "example https://github.com/wxWidgets/wxWidgets/issues/18462."));
     }
   }
 #endif
@@ -4066,7 +4066,7 @@ void Worksheet::SetNotification(const wxString &message, int flags) {
 
   // In wxGTK 3.1.0 Leaving the notification message object alive until the
   // message hits its timeout causes a crash
-  // (https://trac.wxwidgets.org/ticket/17876). Let's work around this crash by
+  // (https://github.com/wxWidgets/wxWidgets/issues/17876). Let's work around this crash by
   // deleting the object as fast as we can. The crash is fixed in version 3.1.1.
 #if wxCHECK_VERSION(3, 1, 2)
 #else

@@ -254,7 +254,7 @@ protected:
   void RegisterAutoSaveFile();
   /*! An instant single-window mode
 
-    A last resort if https://trac.wxwidgets.org/ticket/18815 hinders one from
+    A last resort if https://github.com/wxWidgets/wxWidgets/issues/18815 hinders one from
     re-docking windows.
   */
   void DockAllSidebars(wxCommandEvent &ev);

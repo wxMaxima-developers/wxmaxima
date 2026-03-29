@@ -38,7 +38,7 @@
   Stealing Prevention makes it pop up below wxMaxima (which means the user
   has no means of finding out it needs closing).
 
-  For details see https://trac.wxwidgets.org/ticket/17974.
+  For details see https://github.com/wxWidgets/wxWidgets/issues/17974
 */
 class TipOfTheDay : public wxDialog
 {
