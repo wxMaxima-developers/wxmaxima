@@ -81,6 +81,7 @@
 #include "wizards/SumWiz.h"
 #include "wizards/SystemWiz.h"
 #include "dialogs/TipOfTheDay.h"
+#include "wxMaximaOSDescription.h"
 #include "Version.h"
 #include "WXMformat.h"
 #include "WXMXformat.h"
@@ -11004,6 +11005,11 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
 }
 
 void wxMaxima::ResetTitle(bool saved, bool force) {
+#ifndef __WXOSX__
+  static wxString TitlePreambleSep = wxString::Format(
+                    _("wxMaxima %s (%s) "), WXMAXIMA_VERSION,
+                    wxMaximaOperatingSystemDescription());
+#endif
   SetRepresentedFilename(GetWorksheet()->m_currentFile);
   OSXSetModified((saved != m_fileSaved) || (force));
 
@@ -11012,15 +11018,9 @@ void wxMaxima::ResetTitle(bool saved, bool force) {
     if (GetWorksheet()->m_currentFile.Length() == 0) {
 #ifndef __WXOSX__
       if (saved)
-        SetTitle(wxString::Format(
-                                  _("wxMaxima %s (%s) "), WXMAXIMA_VERSION,
-                                  wxPlatformInfo::Get().GetOperatingSystemDescription()) +
-                 _("[ unsaved ]"));
+        SetTitle(TitlePreambleSep + _("[ unsaved ]"));
       else
-        SetTitle(wxString::Format(
-                                  _("wxMaxima %s (%s) "), WXMAXIMA_VERSION,
-                                  wxPlatformInfo::Get().GetOperatingSystemDescription()) +
-                 _("[ unsaved* ]"));
+        SetTitle(TitlePreambleSep + _("[ unsaved* ]"));
 #endif
     } else {
       wxString name, ext;
@@ -11028,14 +11028,10 @@ void wxMaxima::ResetTitle(bool saved, bool force) {
                             &ext);
 #ifndef __WXOSX__
       if (m_fileSaved)
-        SetTitle(wxString::Format(
-                                  _("wxMaxima %s (%s) "), WXMAXIMA_VERSION,
-                                  wxPlatformInfo::Get().GetOperatingSystemDescription()) +
+        SetTitle(TitlePreambleSep +
                  wxS(" [ ") + name + wxS(".") + ext + wxS(" ]"));
       else
-        SetTitle(wxString::Format(
-                                  _("wxMaxima %s (%s) "), WXMAXIMA_VERSION,
-                                  wxPlatformInfo::Get().GetOperatingSystemDescription()) +
+        SetTitle(TitlePreambleSep +
                  wxS(" [ ") + name + wxS(".") + ext + wxS("* ]"));
 #else
       SetTitle(name + wxS(".") + ext);

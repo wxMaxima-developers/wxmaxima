@@ -27,6 +27,7 @@
 
 #include "AboutDialog.h"
 #include "../wxMaximaIcon.h"
+#include "../wxMaximaOSDescription.h"
 #include <wx/wx.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
@@ -55,6 +56,9 @@ AboutDialog::AboutDialog(wxWindow *WXUNUSED(parent), Configuration *config) {
         }
       else
         description += _("\nNot connected to Maxima.");
+
+      description += wxString::Format(_("\n\nOperating System: %s\n"),
+        wxMaximaOperatingSystemLongDescription());
 
       info.SetIcon(wxMaximaIcon());
       info.SetDescription(description);
