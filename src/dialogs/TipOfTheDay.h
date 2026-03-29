@@ -31,11 +31,6 @@
 #include <wx/checkbox.h>
 #include <wx/stattext.h>
 
-extern unsigned char media_playback_start_svg_gz[];
-extern unsigned int  media_playback_start_svg_gz_len;
-extern unsigned char media_playback_start_reverse_svg_gz[];
-extern unsigned int  media_playback_start_reverse_svg_gz_len;
-
 /*! A minimalistic Tip of the day dialogue
 
   We roll our own dialogue here as the one from wxWidgets is modal (which

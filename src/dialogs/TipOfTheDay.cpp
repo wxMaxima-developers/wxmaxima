@@ -31,6 +31,7 @@
 #include "Image.h"
 #include "SvgBitmap.h"
 #include <cstdlib>
+#include <wx/artprov.h>
 #include <wx/config.h>
 #include <wx/display.h>
 #include <wx/mstream.h>
@@ -41,12 +42,6 @@
 #include <wx/zstream.h>
 #include <algorithm>
 
-/* declared in wxm_media_playback_start_svg.h / wxm_media_playback_reverse_svg.h,
-   which is included in Toolbar.cpp */
-extern unsigned char MEDIA_PLAYBACK_START_SVG_GZ[];
-extern size_t MEDIA_PLAYBACK_START_SVG_GZ_SIZE;
-extern unsigned char MEDIA_PLAYBACK_REVERSE_SVG_GZ[];
-extern size_t MEDIA_PLAYBACK_REVERSE_SVG_GZ_SIZE;
 
 #define ICON_SCALE (0.35)
 
@@ -272,19 +267,15 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   SetTitle(_("Tip of the day"));
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
-  wxButton *backButton = new wxButton(this, -1);
-  backButton->SetBitmap(GetImage(MEDIA_PLAYBACK_REVERSE_SVG_GZ,
-                                 MEDIA_PLAYBACK_REVERSE_SVG_GZ_SIZE));
+  wxButton *backButton = new wxButton(this, wxID_BACKWARD);
   backButton->Connect(wxEVT_BUTTON,
                       wxCommandEventHandler(TipOfTheDay::OnPreviousButton),
                       NULL, this);
   hbox->Add(backButton, wxSizerFlags().Expand());
-  hbox->Add(new wxStaticText(this, -1, _("Did you know?"), wxDefaultPosition,
+  hbox->Add(new wxStaticText(this, -1, _(" Did you know? "), wxDefaultPosition,
                              wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL),
             wxSizerFlags().Proportion(10).Center());
-  wxButton *forwardButton = new wxButton(this, -1);
-  forwardButton->SetBitmap(GetImage(MEDIA_PLAYBACK_START_SVG_GZ,
-                                    MEDIA_PLAYBACK_START_SVG_GZ_SIZE));
+  wxButton *forwardButton = new wxButton(this, wxID_FORWARD);
   forwardButton->Connect(wxEVT_BUTTON,
                          wxCommandEventHandler(TipOfTheDay::OnNextButton), NULL,
                          this);
