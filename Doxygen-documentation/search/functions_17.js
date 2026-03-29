@@ -8,5 +8,6 @@ var searchData=
   ['writesettings_5',['WriteSettings',['../classConfiguration.html#a53af46fba084e7e9f45fabbfb8eb4030',1,'Configuration::WriteSettings()'],['../classConfigDialogue.html#a6a3d11ed034adf263350d8aa54a7e28d',1,'ConfigDialogue::WriteSettings()']]],
   ['writestyles_6',['WriteStyles',['../classConfiguration.html#a4f7f692a8178c2062765ddafd0fd4782',1,'Configuration']]],
   ['wxmaxima_7',['wxMaxima',['../classwxMaxima.html#ac3af71ddf7eff2efad68b9267c77c522',1,'wxMaxima']]],
-  ['wxmaximaicon_8',['wxMaximaIcon',['../wxMaximaIcon_8cpp.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp'],['../wxMaximaIcon_8h.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp']]]
+  ['wxmaximaicon_8',['wxMaximaIcon',['../wxMaximaIcon_8cpp.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp'],['../wxMaximaIcon_8h.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp']]],
+  ['wxmaximaoperatingsystemdescription_9',['wxMaximaOperatingSystemDescription',['../wxMaximaOSDescription_8cpp.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp'],['../wxMaximaOSDescription_8h.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp']]]
 ];

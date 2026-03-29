@@ -42,10 +42,13 @@ var searchData=
   ['wxmaximaicon_39',['wxMaximaIcon',['../wxMaximaIcon_8h.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp'],['../wxMaximaIcon_8cpp.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp']]],
   ['wxmaximaicon_2ecpp_40',['wxMaximaIcon.cpp',['../wxMaximaIcon_8cpp.html',1,'']]],
   ['wxmaximaicon_2eh_41',['wxMaximaIcon.h',['../wxMaximaIcon_8h.html',1,'']]],
-  ['wxmheader_42',['WXMHeader',['../structFormat_1_1WXMHeader.html',1,'Format']]],
-  ['wxmheadercollection_43',['WXMHeaderCollection',['../classFormat_1_1WXMHeaderCollection.html',1,'Format']]],
-  ['wxmxstream_44',['WxmxStream',['../classImage_1_1WxmxStream.html',1,'Image']]],
-  ['wxscrolled_45',['wxScrolled',['../classwxScrolled.html',1,'']]],
-  ['wxscrolled_3c_20wxpanel_20_3e_46',['wxScrolled&lt; wxPanel &gt;',['../classwxScrolled.html',1,'']]],
-  ['wxscrolled_3c_20wxwindow_20_3e_47',['wxScrolled&lt; wxWindow &gt;',['../classwxScrolled.html',1,'']]]
+  ['wxmaximaoperatingsystemdescription_42',['wxMaximaOperatingSystemDescription',['../wxMaximaOSDescription_8cpp.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp'],['../wxMaximaOSDescription_8h.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp']]],
+  ['wxmaximaosdescription_2ecpp_43',['wxMaximaOSDescription.cpp',['../wxMaximaOSDescription_8cpp.html',1,'']]],
+  ['wxmaximaosdescription_2eh_44',['wxMaximaOSDescription.h',['../wxMaximaOSDescription_8h.html',1,'']]],
+  ['wxmheader_45',['WXMHeader',['../structFormat_1_1WXMHeader.html',1,'Format']]],
+  ['wxmheadercollection_46',['WXMHeaderCollection',['../classFormat_1_1WXMHeaderCollection.html',1,'Format']]],
+  ['wxmxstream_47',['WxmxStream',['../classImage_1_1WxmxStream.html',1,'Image']]],
+  ['wxscrolled_48',['wxScrolled',['../classwxScrolled.html',1,'']]],
+  ['wxscrolled_3c_20wxpanel_20_3e_49',['wxScrolled&lt; wxPanel &gt;',['../classwxScrolled.html',1,'']]],
+  ['wxscrolled_3c_20wxwindow_20_3e_50',['wxScrolled&lt; wxWindow &gt;',['../classwxScrolled.html',1,'']]]
 ];
