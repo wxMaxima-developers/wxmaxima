@@ -542,7 +542,7 @@ Incorporare un diagramma nel foglio di lavoro</h3>
 </table>
 <p>If a <code>wxm</code>-file is read by (console) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, these functions are ignored (and printed as output, as other unknown functions in <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>).</p>
 <p>If you got problems with one of these functions, please check, if the problem exists in the the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> function too (e.g. you got an error with <code>wxplot2d()</code>, check the same plot in the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command <code>plot2d()</code> (which opens the plot in a separate Window)). If the problem does not disappear, it is most likely a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> issue and should be reported in the <a href="https://sourceforge.net/p/maxima/bugs/">Maxima bugtracker</a>. Or maybe a Gnuplot issue.</p>
-<h3><a class="anchor" id="autotoc_md303"></a>
+<h3><a class="anchor" id="autotoc_md304"></a>
 Rendere i diagrammi incorporati più grandi o più piccoli</h3>
 <p>Come evidenziato sopra, la finestra di dialogo di configurazione fornisce un modo per modificare le dimensioni predefinite dei grafici creati impostando il valore iniziale di <code>wxplot_size</code>. Le routine di graficazione di <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> rispettano questa variabile che specifica la dimensione di un grafico in pixel. Può sempre essere interrogata o utilizzata per impostare la dimensione dei seguenti grafici:</p>
 <div class="fragment"><div class="line">wxplot_size:[1200,800]$</div>
@@ -558,10 +558,10 @@ Rendere i diagrammi incorporati più grandi o più piccoli</h3>
         x,1,10
     ) ),wxplot_size=[1600,800]$</p>
 <p>Setting the size of embedded plot with <code>wxplot_size</code> works for embedded plots using e.g. <code>wxplot</code>, <code>wxdraw</code>, <code>wxcontour_plot</code> and <code>wximplicit_plot</code> commands and for embedded animations with <code>with_slider_draw</code> and <code>wxanimate</code> commands.</p>
-<h3><a class="anchor" id="autotoc_md304"></a>
+<h3><a class="anchor" id="autotoc_md305"></a>
 Grafici di qualità superiore</h3>
 <p><em>Gnuplot</em> doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output that the Cairo library provides. On systems where <em>Gnuplot</em> is compiled to use this library the pngCairo option from the configuration menu (that can be overridden by the variable <code>wxplot_pngcairo</code>) enables support for antialiasing and additional line styles. If <code>wxplot_pngCairo</code> is set without <em>Gnuplot</em> supporting this the result will be error messages instead of graphics.</p>
-<h3><a class="anchor" id="autotoc_md305"></a>
+<h3><a class="anchor" id="autotoc_md306"></a>
 Aprire grafici incorporati in finestre interattive &lt;em&gt;gnuplot&lt;/em&gt;</h3>
 <p>If a plot was generated using the <code>wxdraw</code>-type commands (<code>wxplot2d</code> and <code>wxplot3d</code> isn’t supported by this feature) and the file size of the underlying <em>Gnuplot</em> project isn’t way too high <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> offers a right-click menu that allows to open the plot in an interactive <em>Gnuplot</em> window.</p>
 <h3><a class="anchor" id="autotoc_md307"></a>
