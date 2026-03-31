@@ -27,11 +27,33 @@
 
 // only use that for recent wxWidgets versions
 #include <wx/version.h>
-#if wxCHECK_VERSION(3, 2, 0)
+#if wxCHECK_VERSION(3, 1, 6)
 
 #include <wx/artprov.h>
 
-#define wxmaximaART_EYE_SLASH                 wxART_MAKE_ART_ID(wxmaximaART_EYE_SLASH)
+// from art:
+#define wxmaximaART_MEDIA_PLAYBACK_START    wxART_MAKE_ART_ID(wxmaximaART_MEDIA_PLAYBACK_START)
+#define wxmaximaART_MEDIA_PLAYBACK_REVERSE  wxART_MAKE_ART_ID(wxmaximaART_MEDIA_PLAYBACK_REVERSE)
+
+// from art/toolbar:
+#define wxmaximaART_ARROW_UP_SQUARE         wxART_MAKE_ART_ID(wxmaximaART_ARROW_UP_SQUARE)
+#define wxmaximaART_DIALOG_INFORMATION      wxART_MAKE_ART_ID(wxmaximaART_DIALOG_INFORMATION)
+#define wxmaximaART_EYE_SLASH               wxART_MAKE_ART_ID(wxmaximaART_EYE_SLASH)
+#define wxmaximaART_GO_BOTTOM               wxART_MAKE_ART_ID(wxmaximaART_GO_BOTTOM)
+#define wxmaximaART_GO_JUMP                 wxART_MAKE_ART_ID(wxmaximaART_GO_JUMP)
+#define wxmaximaART_GO_LAST                 wxART_MAKE_ART_ID(wxmaximaART_GO_LAST)
+#define wxmaximaART_GO_NEXT                 wxART_MAKE_ART_ID(wxmaximaART_GO_NEXT)
+#define wxmaximaART_GTK_PREFERENCES         wxART_MAKE_ART_ID(wxmaximaART_GTK_PREFERENCES)
+#define wxmaximaART_GTK_SELECT_ALL          wxART_MAKE_ART_ID(wxmaximaART_GTK_SELECT_ALL)
+#define wxmaximaART_GTK_STOP                wxART_MAKE_ART_ID(wxmaximaART_GTK_STOP)
+#define wxmaximaART_INPUT                   wxART_MAKE_ART_ID(wxmaximaART_INPUT)
+#define wxmaximaART_MEDIA_PLAYBACK_STOP     wxART_MAKE_ART_ID(wxmaximaART_MEDIA_PLAYBACK_STOP)
+#define wxmaximaART_SOFTWARE_UPDATE_URGENT  wxART_MAKE_ART_ID(wxmaximaART_SOFTWARE_UPDATE_URGENT)
+#define wxmaximaART_TEXT                    wxART_MAKE_ART_ID(wxmaximaART_TEXT)
+#define wxmaximaART_VIEW_REFRESH1           wxART_MAKE_ART_ID(wxmaximaART_VIEW_REFRESH1)
+
+
+
 class wxMaximaArtProvider : public wxArtProvider
 {
 protected:
@@ -44,7 +66,5 @@ protected:
 private:
   // gunzip the (gzip compressed) SVG in Memory
   wxString gunzip(unsigned char * svg_gz, size_t svg_gz_size);
-
 };
-
 #endif

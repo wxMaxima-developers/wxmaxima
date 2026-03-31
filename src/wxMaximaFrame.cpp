@@ -839,8 +839,8 @@ void wxMaximaFrame::SetupCellMenu() {
       wxMenuItem *it =
         new wxMenuItem(m_CellMenu, EventIDs::menu_evaluate, _("Evaluate Cell(s)"),
                        _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
-      it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalBitmap(
-                                                                 wxRendererNative::Get().GetCheckBoxSize(this)));
+      // it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalBitmap(
+      //                                                            wxRendererNative::Get().GetCheckBoxSize(this)));
       m_CellMenu->Append(it);
     }
   m_CellMenu->Append(
@@ -851,8 +851,8 @@ void wxMaximaFrame::SetupCellMenu() {
       wxMenuItem *it = new wxMenuItem(
                                       m_CellMenu, EventIDs::menu_evaluate_all, _("Evaluate All Cells\tCtrl+Shift+R"),
                                       _("Evaluate all cells in the document"), wxITEM_NORMAL);
-      it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalAllBitmap(
-                                                                    wxRendererNative::Get().GetCheckBoxSize(this)));
+      // it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalAllBitmap(
+      //                                                               wxRendererNative::Get().GetCheckBoxSize(this)));
       m_CellMenu->Append(it);
     }
   if(GetWorksheet())
@@ -862,8 +862,8 @@ void wxMaximaFrame::SetupCellMenu() {
                                       _("Evaluate Cells Above\tCtrl+Shift+P"),
                                       _("Re-evaluate all cells above the one the cursor is in"),
                                       wxITEM_NORMAL);
-      it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalTillHereBitmap(
-                                                                         wxRendererNative::Get().GetCheckBoxSize(this)));
+      // it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalTillHereBitmap(
+      //                                                                    wxRendererNative::Get().GetCheckBoxSize(this)));
       m_CellMenu->Append(it);
     }
   if(GetWorksheet())
@@ -871,9 +871,9 @@ void wxMaximaFrame::SetupCellMenu() {
       wxMenuItem *it = new wxMenuItem(
                                       m_CellMenu, ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"),
                                       _("Re-evaluate all cells below the one the cursor is in"),
-                                      wxITEM_NORMAL);
+                                      wxITEM_NORMAL);/*
       it->SetBitmap(GetWorksheet()->m_mainToolBar->GetEvalRestBitmap(
-                                                                     wxRendererNative::Get().GetCheckBoxSize(this)));
+                                                                     wxRendererNative::Get().GetCheckBoxSize(this)));*/
       m_CellMenu->Append(it);
     }
   m_CellMenu->Append(EventIDs::menu_remove_output, _("Remove All Output"),
@@ -959,8 +959,8 @@ void wxMaximaFrame::SetupMaximaMenu() {
       wxMenuItem *it =
         new wxMenuItem(m_MaximaMenu, EventIDs::menu_interrupt_id, _("&Interrupt\tCtrl+G"),
                        _("Interrupt current computation"), wxITEM_NORMAL);
-      it->SetBitmap(GetWorksheet()->m_mainToolBar->GetInterruptBitmap(
-                                                                      wxRendererNative::Get().GetCheckBoxSize(this)));
+      // it->SetBitmap(GetWorksheet()->m_mainToolBar->GetInterruptBitmap(
+      //                                                                 wxRendererNative::Get().GetCheckBoxSize(this)));
       m_MaximaMenu->Append(it);
     }
 
@@ -969,8 +969,8 @@ void wxMaximaFrame::SetupMaximaMenu() {
       wxMenuItem *it = new wxMenuItem(m_MaximaMenu, ToolBar::menu_restart_id,
                                       _("&Restart Maxima\tCtrl+Alt+R"), _("Restart Maxima"),
                                       wxITEM_NORMAL);
-      it->SetBitmap(GetWorksheet()->m_mainToolBar->GetRestartBitmap(
-                                                                    wxRendererNative::Get().GetCheckBoxSize(this)));
+      // it->SetBitmap(GetWorksheet()->m_mainToolBar->GetRestartBitmap(
+      //                                                               wxRendererNative::Get().GetCheckBoxSize(this)));
       m_MaximaMenu->Append(it);
     }
   wxMenu *m_undefSub = new wxMenu;

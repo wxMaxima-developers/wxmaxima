@@ -66,7 +66,7 @@ wxBitmap ArtProvider::GetQuestionmarkBitmap(wxWindow *win, wxSize siz)
                   TEXT_QUESTIONMARK_SVG, TEXT_QUESTIONMARK_SVG_SIZE);
 }
 
-#if wxCHECK_VERSION(3, 2, 0)
+#if wxCHECK_VERSION(3, 1, 6)
 wxBitmapBundle ArtProvider::m_questionmarkBundle =
   wxBitmapBundle::FromSVG(reinterpret_cast<char *>(TEXT_QUESTIONMARK_SVG), wxSize(16, 16));
 wxBitmapBundle ArtProvider::m_dividecellBundle =
