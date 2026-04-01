@@ -8537,7 +8537,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_list_push){
     CommandWiz(_("Push an element to a list"), wxEmptyString, wxEmptyString,
-               wxS("push(#1#,#2#);"), _("List:"), expr, wxEmptyString,
+               wxS("push(#2#,#1#);"), _("List:"), expr, wxEmptyString,
                _("Element:"), wxEmptyString, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_pop){

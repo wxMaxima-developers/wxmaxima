@@ -26,6 +26,7 @@
   It was not working at all. Renamed to 'read nested list from csv file', the
   menu item is using read_nested_list(). Mentioned in the discussion forum.
 - Fix the 'Apply a function to each list element' menu. Mentioned in the discussion forum.
+- Fix the List/Push menu (wrong order of arguments). Mentioned in the discussion forum.
 
 # 26.01.0
 
