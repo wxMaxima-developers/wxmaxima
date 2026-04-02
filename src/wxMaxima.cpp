@@ -2934,6 +2934,15 @@ void wxMaxima::KillMaxima(bool logMessage) {
                      wxString::Format("%li.xmaxima", m_pid)))
       wxRemoveFile(m_maximaTempDir + wxS("/maxout_") +
                    wxString::Format("%li.xmaxima", m_pid));
+
+    // Remove leftover png images from with_slider_draw, etc. (issue #2081).
+    wxDir dir(m_maximaTempDir);
+    wxString file;
+    bool cont = dir.GetFirst(&file, wxString::Format("maxout_%li_*.png", m_pid), wxDIR_FILES);
+    while (cont) {
+      wxRemoveFile(m_maximaTempDir + wxS("/") + file);
+      cont = dir.GetNext(&file);
+    }
   }
   // Set m_pid to -1.The process really shouldn't exist any more.
   m_pid = -1;

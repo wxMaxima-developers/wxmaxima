@@ -27,6 +27,8 @@
   menu item is using read_nested_list(). Mentioned in the discussion forum.
 - Fix the 'Apply a function to each list element' menu. Mentioned in the discussion forum.
 - Fix the List/Push menu (wrong order of arguments). Mentioned in the discussion forum.
+- Provide a relevant OSDescription in the top bar.
+- Discard intermediate PNG plots from with_slider_draw (#2081).
 
 # 26.01.0
 
