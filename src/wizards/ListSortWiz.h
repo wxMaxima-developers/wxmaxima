@@ -51,14 +51,14 @@ protected:
   wxChoice *m_choice = NULL;
   wxRadioButton *m_sortTraditional;
   wxRadioButton *m_sortFunction;
-  wxRadioButton *m_sortLambda;
+  wxRadioButton *m_sortAscending;
+  wxRadioButton *m_sortDescending;
+
   wxTextCtrl *m_list;
   wxTextCtrl *m_CriterionFunc;
-  wxTextCtrl *m_Criterion;
   wxButton *button_1;
   wxButton *button_2;
   void OnFunctionChange(wxGridEvent &WXUNUSED(unused)){m_sortFunction->SetValue(true);}
-  void OnLambdaChange(wxGridEvent &WXUNUSED(unused)){m_sortLambda->SetValue(true);}
 };
 
 #endif // LISTSORTWIZ_H

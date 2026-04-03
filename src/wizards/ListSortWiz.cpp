@@ -29,7 +29,7 @@ ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg), wxWindow *parent, int id,
   : wxDialog(parent, id, title, pos, size, style) {
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   wxPanel *choicePanel = new wxPanel(this, -1);
-  wxFlexGridSizer *grid = new wxFlexGridSizer(5, 2, 0, 0);
+  wxFlexGridSizer *grid = new wxFlexGridSizer(6, 2, 0, 0);
 
   wxStaticText *listText = new wxStaticText(choicePanel, -1, _("List name:"));
   grid->Add(listText, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
@@ -43,10 +43,21 @@ ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg), wxWindow *parent, int id,
   grid->Add(10, 10);
 
   m_sortTraditional = new wxRadioButton(
-                                        choicePanel, -1, _("a>b"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+                                        choicePanel, -1, _("a<b (Maxima default)"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
   grid->Add(m_sortTraditional, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
   grid->Add(10, 10);
   m_sortTraditional->SetValue(true);
+
+    m_sortAscending = new wxRadioButton(choicePanel, wxID_ANY, _("Ascending by magnitude (numeric only)"), wxDefaultPosition, wxDefaultSize);
+  grid->Add(m_sortAscending, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
+  grid->Add(10, 10);
+  m_sortAscending->SetValue(false);
+
+  m_sortDescending = new wxRadioButton(choicePanel, wxID_ANY, _("Descending by magnitude (numeric only)"), wxDefaultPosition, wxDefaultSize);
+  grid->Add(m_sortDescending, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
+  grid->Add(10, 10);
+  m_sortDescending->SetValue(false);
+
 
   m_sortFunction =
     new wxRadioButton(choicePanel, -1, _("A function f(a,b), named"));
@@ -59,15 +70,6 @@ ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg), wxWindow *parent, int id,
                            NULL, this);
   grid->Add(m_CriterionFunc, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
 
-  m_sortLambda = new wxRadioButton(choicePanel, -1,
-                                   _("Create f(a,b) on-the-fly, contents:"));
-  grid->Add(m_sortLambda, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
-  m_Criterion = new wxTextCtrl(choicePanel, -1, wxEmptyString,
-                               wxDefaultPosition, wxSize(300, wxDefaultSize.y));
-  m_Criterion->SetValue(wxS("a<b"));
-  m_Criterion->Connect(
-                       wxEVT_TEXT, wxGridEventHandler(ListSortWiz::OnLambdaChange), NULL, this);
-  grid->Add(m_Criterion, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
   choicePanel->SetSizerAndFit(grid);
   vsizer->Add(choicePanel, wxSizerFlags().Expand().Border(wxALL, 0));
 
@@ -103,8 +105,11 @@ wxString ListSortWiz::GetValue() {
   wxString retval = wxS("sort(") + m_list->GetValue();
   if (m_sortFunction->GetValue())
     retval += wxS(",") + m_CriterionFunc->GetValue();
-  if (m_sortLambda->GetValue())
-    retval += wxS(",lambda([a,b],") + m_Criterion->GetValue() + wxS(")");
+  if (m_sortAscending->GetValue())
+    retval += wxS(", \"<\"");
+  if (m_sortDescending->GetValue())
+    retval += wxS(", \">\"");
+
   retval += wxS(")");
   return retval;
 }

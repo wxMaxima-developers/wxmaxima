@@ -29,6 +29,7 @@
 - Fix the List/Push menu (wrong order of arguments). Mentioned in the discussion forum.
 - Provide a relevant OSDescription in the top bar.
 - Discard intermediate PNG plots from with_slider_draw (#2081).
+- A better 'List sort' wizard. (Mentioned in the discussion forum).
 
 # 26.01.0
 
