@@ -30,6 +30,7 @@
 - Provide a relevant OSDescription in the top bar.
 - Discard intermediate PNG plots from with_slider_draw (#2081).
 - A better 'List sort' wizard. (Mentioned in the discussion forum).
+- Fix the Help->Example and Help->Apropos menus.
 
 # 26.01.0
 

@@ -9553,12 +9553,12 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
 
   else if(event.GetId() == EventIDs::menu_example){
     CommandWiz(_("Show an example for the command:"), wxEmptyString,
-               wxEmptyString, wxS("example(#1);"), _("Command:"), wxS("%"),
+               wxEmptyString, wxS("example(#1#);"), _("Command:"), wxS("%"),
                wxEmptyString);
   }
 
   else if(event.GetId() == EventIDs::menu_apropos){
-    CommandWiz(_("Apropos"), wxEmptyString, wxEmptyString, wxS("apropos(#1);"),
+    CommandWiz(_("Apropos"), wxEmptyString, wxEmptyString, wxS("apropos(#1#);"),
                _("Show all commands similar to:"), wxS("%"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_wxmaxima_uses_help_browser){
