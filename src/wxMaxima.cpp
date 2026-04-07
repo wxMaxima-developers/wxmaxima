@@ -9373,7 +9373,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event) {
                  wxS("x"), wxS("x"), wxEmptyString,
                  wxS("a"), wxS("a"), wxEmptyString,
                  wxS("ω"), wxS("2"), wxEmptyString,
-                 wxS("epsrel"), wxS("1d-8"), _("Desirx^(-1/2)*exp(-2^(-2)*x)ed relative error of approximation."),
+                 wxS("epsrel"), wxS("1d-8"), _("Desired relative error of approximation."),
                  wxS("epsabs"), wxS("0"), _("Desired absolute error of approximation."),
                  wxS("limit"), wxS("200"), _("Size of internal work array. limit/2 is the maximum number of subintervals to use."),
                  wxS("maxp1"), wxS("100"), _("Maximum number of Chebyshev moments. Must be greater than 0."),
