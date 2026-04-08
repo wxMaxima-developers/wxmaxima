@@ -9623,31 +9623,31 @@ void wxMaxima::StatsMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_stats_barsplot){
     CommandWiz(_("Plot as bars"), wxEmptyString, wxEmptyString,
-               wxS("wxbarsplot(#1);"), _("Data:"), wxS("%"), wxEmptyString);
+               wxS("wxbarsplot(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stats_boxplot){
     CommandWiz(_("Plot as error bars"), wxEmptyString, wxEmptyString,
-               wxS("wxboxplot(#1);"), _("Data:"), wxS("%"), wxEmptyString);
+               wxS("wxboxplot(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stats_piechart){
     CommandWiz(_("Plot as pie chart"), wxEmptyString, wxEmptyString,
-               wxS("wxpiechart(#1);"), _("Data:"), wxS("%"), wxEmptyString);
+               wxS("wxpiechart(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stats_mean){
     CommandWiz(_("Calculate mean value"), wxEmptyString, wxEmptyString,
-               wxS("mean(#1);"), _("Data:"), wxS("%"), wxEmptyString);
+               wxS("mean(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stats_median){
     CommandWiz(_("Calculate median value"), wxEmptyString, wxEmptyString,
-               wxS("median(#1);"), _("Data:"), wxS("%"), wxEmptyString);
+               wxS("median(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stats_var){
     CommandWiz(_("Calculate variation"), wxEmptyString, wxEmptyString,
-               wxS("var(#1);"), _("Data:"), wxS("%"), wxEmptyString);
+               wxS("var(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stats_dev){
     CommandWiz(_("Calculate standard deviation"), wxEmptyString, wxEmptyString,
-               wxS("std(#1);"), _("Data:"), wxS("%"), wxEmptyString);
+               wxS("std(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stats_tt1){
     CommandWiz(_("One sample t-test"), wxEmptyString, wxEmptyString,
