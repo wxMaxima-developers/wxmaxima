@@ -31,6 +31,7 @@
 - Discard intermediate PNG plots from with_slider_draw (#2081).
 - A better 'List sort' wizard. (Mentioned in the discussion forum).
 - Fix the Help->Example and Help->Apropos menus.
+- Fix the Matrix->Row and columns operations->Remove rows or columns menu.
 
 # 26.01.0
 

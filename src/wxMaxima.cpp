@@ -8012,7 +8012,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_submatrix){
     CommandWiz(_("Remove rows and/or columns"), wxEmptyString, wxEmptyString,
-               wxS("submatrix(#1,[#2#],[#3#]);"), _("Matrix:"), expr,
+               wxS("submatrix(#2#,#1#,#3#);"), _("Matrix:"), expr,
                wxEmptyString, _("Row numbers:"), wxEmptyString, wxEmptyString,
                _("Column numbers:"), wxEmptyString, wxEmptyString);
   }
