@@ -140,7 +140,8 @@ public:
   static const wxWindowIDRef menu_matrix_col;
   static const wxWindowIDRef menu_matrix_row_list;
   static const wxWindowIDRef menu_matrix_col_list;
-  static const wxWindowIDRef menu_submatrix;
+  static const wxWindowIDRef menu_submatrix_rows;
+  static const wxWindowIDRef menu_submatrix_columns;
   static const wxWindowIDRef menu_matrix_multiply;
   static const wxWindowIDRef menu_matrix_exponent;
   static const wxWindowIDRef menu_matrix_hadamard_product;

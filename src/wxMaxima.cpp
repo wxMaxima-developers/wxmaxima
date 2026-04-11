@@ -513,7 +513,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           NULL, this);
   Connect(EventIDs::menu_mat2csv, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MatrixMenu),
           NULL, this);
-  Connect(EventIDs::menu_submatrix, wxEVT_MENU,
+  Connect(EventIDs::menu_submatrix_rows, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
+  Connect(EventIDs::menu_submatrix_columns, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(EventIDs::menu_matrix_multiply, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
@@ -8010,11 +8012,15 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
                wxEmptyString, wxS("transpose(#1#)[#2#];"), _("Matrix:"), expr,
                wxEmptyString, _("Row number:"), wxEmptyString, wxEmptyString);
   }
-  else if(event.GetId() == EventIDs::menu_submatrix){
-    CommandWiz(_("Remove rows and/or columns"), wxEmptyString, wxEmptyString,
-               wxS("submatrix(#2#,#1#,#3#);"), _("Matrix:"), expr,
-               wxEmptyString, _("Row numbers:"), wxEmptyString, wxEmptyString,
-               _("Column numbers:"), wxEmptyString, wxEmptyString);
+  else if(event.GetId() == EventIDs::menu_submatrix_columns){
+    CommandWiz(_("Remove matrix columns"), wxEmptyString, wxEmptyString,
+               wxS("submatrix(#2#,#1#);"), _("Matrix:"), expr,
+               wxEmptyString, _("Column numbers:"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_submatrix_rows){
+    CommandWiz(_("Remove matrix rows"), wxEmptyString, wxEmptyString,
+               wxS("submatrix(#1#,#2#);"), _("Matrix:"), expr,
+               wxEmptyString, _("Row numbers:"), wxEmptyString, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_matrix_multiply){
     CommandWiz(_("Multiply two matrices"), wxEmptyString, wxEmptyString,

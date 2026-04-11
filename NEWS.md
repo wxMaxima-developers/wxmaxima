@@ -32,6 +32,7 @@
 - A better 'List sort' wizard. (Mentioned in the discussion forum).
 - Fix the Help->Example and Help->Apropos menus.
 - Fix the Matrix->Row and columns operations->Remove rows or columns menu.
+  Change to one 'Remove rows' and one 'Remove columns' menu.
 - Fix statistics sidebar
   (wxbarsplot, wxboxplot, wxpiechart, mean, median, std were not working)
 

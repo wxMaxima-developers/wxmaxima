@@ -1419,8 +1419,11 @@ void wxMaximaFrame::SetupMatrixMenu() {
   matrix_rowOp_sub->Append(EventIDs::menu_matrix_col, _("Extract Column..."),
                            _("Extract a column from the matrix"),
                            wxITEM_NORMAL);
-  matrix_rowOp_sub->Append(EventIDs::menu_submatrix, _("Remove Rows or Columns..."),
-                           _("Remove rows and/or columns from the matrix"),
+  matrix_rowOp_sub->Append(EventIDs::menu_submatrix_rows, _("Remove Rows..."),
+                           _("Remove rows from the a matrix"),
+                           wxITEM_NORMAL);
+  matrix_rowOp_sub->Append(EventIDs::menu_submatrix_columns, _("Remove Columns..."),
+                           _("Remove columns from a matrix"),
                            wxITEM_NORMAL);
   matrix_rowOp_sub->Append(
                            EventIDs::menu_matrix_row_list, _("Convert Row to list..."),
