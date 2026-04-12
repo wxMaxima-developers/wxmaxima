@@ -8014,12 +8014,12 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_submatrix_columns){
     CommandWiz(_("Remove matrix columns"), wxEmptyString, wxEmptyString,
-               wxS("submatrix(#2#,#1#);"), _("Matrix:"), expr,
+               wxS("submatrix(#1#,#2#);"), _("Matrix:"), expr,
                wxEmptyString, _("Column numbers:"), wxEmptyString, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_submatrix_rows){
     CommandWiz(_("Remove matrix rows"), wxEmptyString, wxEmptyString,
-               wxS("submatrix(#1#,#2#);"), _("Matrix:"), expr,
+               wxS("submatrix(#2#,#1#);"), _("Matrix:"), expr,
                wxEmptyString, _("Row numbers:"), wxEmptyString, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_matrix_multiply){
