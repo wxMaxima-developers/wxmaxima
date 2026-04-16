@@ -62,6 +62,9 @@ Image::Image(Configuration *config, const wxMemoryBuffer &image, const wxString 
 
   wxLogBuffer errorAggregator;
   wxImage Image;
+  // Remark for issue #2087:
+  // That works, if the image is a usual image format (png, jpeg, ...). For "svgz" (and "svg") we must first convert them
+  // image with wxBitmapBundle::FromSVG (if wxWidgets is new enough) and then load the image.
   if (m_compressedImage.GetDataLen() > 0) {
     wxMemoryInputStream istream(m_compressedImage.GetData(),
                                 m_compressedImage.GetDataLen());
