@@ -35,6 +35,7 @@
   Change to one 'Remove rows' and one 'Remove columns' menu.
 - Fix statistics sidebar
   (wxbarsplot, wxboxplot, wxpiechart, mean, median, std were not working)
+- Fix inconsistent behavior in the list menu (mentioned in the discussion forum)
 
 # 26.01.0
 

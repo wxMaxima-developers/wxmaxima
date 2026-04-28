@@ -8493,10 +8493,12 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
                wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_list2matrix){
-    MenuCommand(wxS("apply('matrix,") + expr + wxS(")"));
+    CommandWiz(_("Matrix to nested list"), wxEmptyString, wxEmptyString,
+               wxS("apply('matrix, #1#);"), _("List:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_matrix2list){
-    MenuCommand(wxS("args(") + expr + wxS(")"));
+    CommandWiz(_("Nested list to matrix"), wxEmptyString, wxEmptyString,
+               wxS("args(#1#);"), _("List:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_create_from_elements){
     CommandWiz(_("Create list from comma-separated elements"), wxEmptyString,
@@ -8548,7 +8550,9 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
       });
     }
   else if(event.GetId() == EventIDs::menu_list_length){
-    MenuCommand(wxS("length(") + expr + wxS(")"));
+    CommandWiz(_("Returns the number of elements of a list"), wxEmptyString, wxEmptyString,
+               wxS("length(#1#);"), _("List:"), expr, wxEmptyString);
+
   }
   else if(event.GetId() == EventIDs::menu_list_push){
     CommandWiz(_("Push an element to a list"), wxEmptyString, wxEmptyString,
@@ -8556,16 +8560,21 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
                _("Element:"), wxEmptyString, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_pop){
-    MenuCommand(wxS("pop(") + expr + wxS(")"));
+    CommandWiz(_("Remove and return the first element of a list"), wxEmptyString, wxEmptyString,
+               wxS("pop(#1#);"), _("List:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_reverse){
-    MenuCommand(wxS("reverse(") + expr + wxS(")"));
+    CommandWiz(_("Reverses the order of the members of a list"), wxEmptyString, wxEmptyString,
+               wxS("reverse(#1#);"), _("List:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_first){
-    MenuCommand(wxS("first(") + expr + wxS(")"));
+    CommandWiz(_("Returns the first element of a list"), wxEmptyString, wxEmptyString,
+               wxS("first(#1#);"), _("List:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_last){
-    MenuCommand(wxS("last(") + expr + wxS(")"));
+    CommandWiz(_("Returns the last element of a list"), wxEmptyString, wxEmptyString,
+               wxS("last(#1#);"), _("List:"), expr, wxEmptyString);
+
   }
   else if(event.GetId() == EventIDs::menu_list_rest){
     CommandWiz(_("Drop the first n list elements"),
@@ -8632,7 +8641,8 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
                  "expression in the parenthesis is used."));
   }
   else if(event.GetId() == EventIDs::menu_list_remove_duplicates){
-    MenuCommand(wxS("unique(") + expr + wxS(")"));
+    CommandWiz(_(" Returns the unique elements of the list"), wxEmptyString, wxEmptyString,
+               wxS("unique(#1#);"), _("List:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_remove_element){
     CommandWiz(_("Remove an element from a list"), wxEmptyString, wxEmptyString,
