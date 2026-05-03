@@ -805,7 +805,7 @@ mathematical symbols:</p>
 <tbody>
 <tr class="odd">
 <td>hbar</td>
-<td>Planck’s constant: a h with a horizontal bar above it</td>
+<td>Planck constant: a h with a horizontal bar above it</td>
 </tr>
 <tr class="even">
 <td>Hbar</td>
@@ -1019,10 +1019,26 @@ To solve that problem, select other fonts (using: Edit -&gt; Configure
 <h3 data-number="2.2.6" id="unicode-replacement"><span
 class="header-section-number">2.2.6</span> Unicode replacement</h3>
 <p>wxMaxima will replace several Unicode characters with their
-respective Maxima expressions, e.g. “²” with “^2”, “³” with “^3”, the
-square root sign with the function <code>sqrt()</code>, the
-(mathematical) Sigma sign (which is not the same Unicode character as
-the corresponding Greek letter) with <code>sum()</code>, etc.</p>
+respective Maxima expressions, e.g. <code>²</code> with <code>^2</code>,
+<code>³</code> with <code>^3</code>, the square root sign with the
+function <code>sqrt()</code>, the (mathematical) Sigma sign (which is
+not the same Unicode character as the corresponding Greek letter) with
+<code>sum()</code>, etc.</p>
+<p>Unicode has several “common” fractions encoded as one Unicode code
+point:
+<code>¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞</code></p>
+<p>wxMaxima will replace them with their Maxima representations, e.g
+<code>(1/4)</code> before the input is sent do Maxima. There are also
+<code>⅟</code>, which will be replaced by <code>1/</code> and
+<code>↉</code> (used in baseball), which will be replaced by
+<code>(0/3)</code>.</p>
+<p>It is recommended to use <strong>Maxima code</strong> (not these
+Unicode code points) in input cells (Rationale: (a) it might be
+possible, that the used font for math input does not contain them; (b)
+if you save the document as <code>wxm</code>-file, it is usually
+readable by (command line) Maxima, but these changes will of course not
+work in command line Maxima); but they may occur, if you cut&amp;paste a
+formula from another document.</p>
 <h3 data-number="2.2.7" id="side-panes"><span
 class="header-section-number">2.2.7</span> Side Panes</h3>
 <p>Shortcuts to the most important <em>Maxima</em> commands, things like
@@ -1137,8 +1153,13 @@ they cannot be read back as a <em>wxMaxima</em> session.</p>
 class="header-section-number">2.3.2</span> .wxm</h3>
 <p><code>.wxm</code> files contain the worksheet except for
 <em>Maxima</em>’s output. On Maxima versions &gt;5.38 they can be read
-using <em>Maxima</em>’s <code>load()</code> function just as .mac files
-can be. With this plain-text format, it sometimes is unavoidable that
+using <em>Maxima</em>’s <code>load()</code> function just as .mac files.
+Well - mostly. Questions (like <code>asksign(x)</code>) are problematic,
+as the answer is written in the <code>.wxm</code> file (so that it can
+be suggested after loading), but that can Maxima not evaluate. You can
+prevent Maxima from asking questions by using <code>assume()</code> to
+declare some properties, Maxima wants to know.</p>
+<p>With this plain-text format, it sometimes is unavoidable that
 worksheets that use new features are not downwards-compatible with older
 versions of <em>wxMaxima</em>.</p>
 <h4 data-number="2.3.2.1" id="file-format-of-wxm-files"><span
