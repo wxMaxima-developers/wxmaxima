@@ -57,6 +57,52 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+<release version="26.05.0" date="2026-05-03T19:30:00Z">
+  <description>
+    <p>
+      Fix many bugs, especially not working menu items.
+    </p>
+<ul dir="auto">
+<li>Fix search and replace. Before in a longer string - e.g. "aaaaaaaaa"
+only every second occurrence was replaced, when (e.g.) one wanted to
+replace "a" by "b".</li>
+<li>Update Hungarian and Russian translations.</li>
+<li>Fix crashes at startup on MacOS 26.2 "Tahoe" (#2060).</li>
+<li>Improvements in Plot2dWiz and Plot3dWiz.</li>
+<li>Fix the "Hide all Sidebars" menu option, it did not work.
+(Changed from "Hide all Toolbars"), it hides sidebars, not the toolbar.</li>
+<li>Build system: Allow changing the C++ standard using CMAKE_CXX_STANDARD.</li>
+<li>Build system: Use C++20 by default, if the compiler supports it.
+C++14 still works.</li>
+<li>Build system: Fix compiling with C++20, C++23 and C++26.</li>
+<li>Fix webp support for wxWidgets &gt;= 3.3.0.</li>
+<li>Fix 2nd 'Special constant' button in the integrate wizard.</li>
+<li>Fix many issues in the integrate numerically menu (#2069).
+Also mentioned "QUADPACK" in the menu, so that one knows, from what
+Maxima package these special functions come.</li>
+<li>Don't include dot files in the release archive (#2068).</li>
+<li>New compile option WXM_DISABLE_QA (#2064).</li>
+<li>Fix the 'Create a list from a list' menu (mentioned in the discussion forum).</li>
+<li>Fix the 'Extract nth element of a list' menu.</li>
+<li>Fix the 'Do for all list elements' menu.</li>
+<li>Fix the 'export list to csv file' and 'read list from csv file' menu.
+It was not working at all. Renamed to 'read nested list from csv file', the
+menu item is using read_nested_list(). Mentioned in the discussion forum.</li>
+<li>Fix the 'Apply a function to each list element' menu. Mentioned in the discussion forum.</li>
+<li>Fix the List/Push menu (wrong order of arguments). Mentioned in the discussion forum.</li>
+<li>Provide a relevant OSDescription in the top bar.</li>
+<li>Discard intermediate PNG plots from with_slider_draw (#2081).</li>
+<li>A better 'List sort' wizard. (Mentioned in the discussion forum).</li>
+<li>Fix the Help-&gt;Example and Help-&gt;Apropos menus.</li>
+<li>Fix the Matrix-&gt;Row and columns operations-&gt;Remove rows or columns menu.
+Change to one 'Remove rows' and one 'Remove columns' menu.</li>
+<li>Fix statistics sidebar
+(wxbarsplot, wxboxplot, wxpiechart, mean, median, std were not working)</li>
+<li>Fix inconsistent behavior in the list menu (mentioned in the discussion forum)</li>
+<li>Make toolbar icons HDPI (#2074).</li>
+</ul>
+  </description>
+</release>
 <release version="26.01.0" date="2026-01-02T19:30:00Z">
   <description>
     <p>

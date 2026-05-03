@@ -1,4 +1,4 @@
-# Current development version
+# 26.05.0
 
 - Fix search and replace. Before in a longer string - e.g. "aaaaaaaaa"
   only every second occurrence was replaced, when (e.g.) one wanted to
