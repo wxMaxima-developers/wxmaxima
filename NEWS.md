@@ -36,6 +36,7 @@
 - Fix statistics sidebar
   (wxbarsplot, wxboxplot, wxpiechart, mean, median, std were not working)
 - Fix inconsistent behavior in the list menu (mentioned in the discussion forum)
+- Make toolbar icons HDPI (#2074).
 
 # 26.01.0
 
