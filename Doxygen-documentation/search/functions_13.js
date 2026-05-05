@@ -65,7 +65,7 @@ var searchData=
   ['setfromfont_62',['SetFromFont',['../classStyle.html#a8bd1e2dac2cb164001669fcaaff3b41c',1,'Style']]],
   ['setgroup_63',['SetGroup',['../classMathParser.html#ad0fbc23e1d108a73e2718893fb7bf7e2',1,'MathParser']]],
   ['sethcaret_64',['SetHCaret',['../classWorksheet.html#a91468c7a3ff61a3834a3f07105cd721f',1,'Worksheet']]],
-  ['sethiddentreeparent_65',['SetHiddenTreeParent',['../classGroupCell.html#afd237743be752d8eda9e320ae441d5f2',1,'GroupCell']]],
+  ['sethiddentreeparent_65',['SetHiddenTreeParent',['../classGroupCell.html#a64ddf7f0b92addeac26ccf9f58e08fda',1,'GroupCell']]],
   ['sethighlight_66',['SetHighlight',['../classCell.html#a70c5319baaa2d9708429040a8eaf1c97',1,'Cell']]],
   ['setindent_67',['SetIndent',['../classConfiguration.html#aa93cf22c39034da4adcf23f6f533e6b0',1,'Configuration']]],
   ['setintstyle_68',['SetIntStyle',['../classIntCell.html#a845493fd24b5de3aa9faf17343b1db4c',1,'IntCell']]],

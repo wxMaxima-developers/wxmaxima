@@ -834,9 +834,9 @@ std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&
 <tr class="memitem:a14813b23871489b3f575ee0cb0046ee1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a14813b23871489b3f575ee0cb0046ee1">RevealHidden</a> ()</td></tr>
 <tr class="memdesc:a14813b23871489b3f575ee0cb0046ee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unfold all that is needed to make the current cell seen.  <br /></td></tr>
 <tr class="separator:a14813b23871489b3f575ee0cb0046ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd237743be752d8eda9e320ae441d5f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#afd237743be752d8eda9e320ae441d5f2">SetHiddenTreeParent</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *parent)</td></tr>
-<tr class="memdesc:afd237743be752d8eda9e320ae441d5f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the parent cell of hidden cells.  <br /></td></tr>
-<tr class="separator:afd237743be752d8eda9e320ae441d5f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64ddf7f0b92addeac26ccf9f58e08fda"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a64ddf7f0b92addeac26ccf9f58e08fda">SetHiddenTreeParent</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *parent, <a class="el" href="classGroupCell.html">GroupCell</a> *last=nullptr)</td></tr>
+<tr class="memdesc:a64ddf7f0b92addeac26ccf9f58e08fda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the parent cell of hidden cells.  <br /></td></tr>
+<tr class="separator:a64ddf7f0b92addeac26ccf9f58e08fda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a0bfd0bc4dbb4081891d162fcdf3834"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a9a0bfd0bc4dbb4081891d162fcdf3834">Fold</a> ()</td></tr>
 <tr class="memdesc:a9a0bfd0bc4dbb4081891d162fcdf3834"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold this cell.  <br /></td></tr>
 <tr class="separator:a9a0bfd0bc4dbb4081891d162fcdf3834"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3430,8 +3430,8 @@ true if any cells were unfolded. </dd></dl>
 
 </div>
 </div>
-<a id="afd237743be752d8eda9e320ae441d5f2" name="afd237743be752d8eda9e320ae441d5f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd237743be752d8eda9e320ae441d5f2">&#9670;&#160;</a></span>SetHiddenTreeParent()</h2>
+<a id="a64ddf7f0b92addeac26ccf9f58e08fda" name="a64ddf7f0b92addeac26ccf9f58e08fda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64ddf7f0b92addeac26ccf9f58e08fda">&#9670;&#160;</a></span>SetHiddenTreeParent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3440,8 +3440,18 @@ true if any cells were unfolded. </dd></dl>
           <td class="memname">void GroupCell::SetHiddenTreeParent </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
-          <td class="paramname"><em>parent</em></td><td>)</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>last</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3659,7 +3669,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

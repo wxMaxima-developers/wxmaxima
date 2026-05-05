@@ -114,55 +114,75 @@ $(function() {
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classIntervalCell.html#a488dc43f5283f4b37a4478596db0e3ab">   56</a></span>  <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code hl_class" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;<a class="code hl_function" href="classIntervalCell.html#a488dc43f5283f4b37a4478596db0e3ab">GetInfo</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classIntervalCell.html#a91cf0aefa8d04ff40e7438da22effa6e">   58</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="classIntervalCell.html#a91cf0aefa8d04ff40e7438da22effa6e">GetInnerCellCount</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> 8; }</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="comment">// cppcheck-suppress objectIndex</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classIntervalCell.html#aef495868050764d3bca40fd8c7dce648">   60</a></span>  <a class="code hl_class" href="classCell.html">Cell</a> *<a class="code hl_function" href="classIntervalCell.html#aef495868050764d3bca40fd8c7dce648">GetInnerCell</a>(<span class="keywordtype">size_t</span> index)<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> (&amp;m_open)[index].get(); }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classIntervalCell.html#ac9cbac0e22b28ad2360befeda1ae7a68">Recalculate</a>(<span class="keyword">const</span> <a class="code hl_class" href="classAFontSize.html">AFontSize</a> fontsize) <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classIntervalCell.html#a52a1d2ac7d708418b3482f39a5709b73">Draw</a>(wxPoint point, wxDC *dc, wxDC *antialiassingDC) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classIntervalCell.html#ac79ad1cae785ab584e411555c5f3f719">BreakUp</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  wxString <a class="code hl_function" href="classIntervalCell.html#ac08ed5aba2a37ea4923a546b93253bc9">ToMathML</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">virtual</span> wxString <a class="code hl_function" href="classIntervalCell.html#a3707755c8f56eda2a528a124cda2453d">ToMatlab</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  wxString <a class="code hl_function" href="classIntervalCell.html#aa54fd737efaeae02fa8d9355ff7d8531">ToOMML</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">virtual</span> wxString <a class="code hl_function" href="classIntervalCell.html#a9b178ac0e8c87f25423749b773410e73">ToString</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">virtual</span> wxString <a class="code hl_function" href="classIntervalCell.html#a066f492491b2566a8bd212ff8778808d">ToTeX</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">virtual</span> wxString <a class="code hl_function" href="classIntervalCell.html#a5b93670fad8ee271f019485685934469">ToXML</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classIntervalCell.html#a4ce9ce632443febb506c2f194af422ab">SetNextToDraw</a>(<a class="code hl_class" href="classCell.html">Cell</a> *next) <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordtype">void</span> DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordtype">void</span> DrawBigRightOpenBracket(wxDC *dc, wxPoint point) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordtype">bool</span> m_leftBracketOpensLeft;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordtype">bool</span> m_rightBracketOpensRight;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="comment">// The pointers below point to inner cells and must be kept contiguous.</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="comment">// ** This is the draw list order. All pointers must be the same:</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="comment">// ** either Cell * or std::unique_ptr&lt;Cell&gt;. NO OTHER TYPES are allowed.</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  std::unique_ptr&lt;Cell&gt; m_open;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  std::unique_ptr&lt;Cell&gt; m_openBracket;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  std::unique_ptr&lt;Cell&gt; m_start;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  std::unique_ptr&lt;TextCell&gt; m_comma;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  std::unique_ptr&lt;TextCell&gt; m_ellipsis;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  std::unique_ptr&lt;Cell&gt; m_stop;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  std::unique_ptr&lt;Cell&gt; m_closeBracket;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  std::unique_ptr&lt;Cell&gt; m_close;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="comment">// The pointers above point to inner cells and must be kept contiguous.</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classIntervalCell.html#aef495868050764d3bca40fd8c7dce648">   59</a></span>  <a class="code hl_class" href="classCell.html">Cell</a> *<a class="code hl_function" href="classIntervalCell.html#aef495868050764d3bca40fd8c7dce648">GetInnerCell</a>(<span class="keywordtype">size_t</span> index)<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keywordflow">switch</span> (index) {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">case</span> 0:</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <span class="keywordflow">return</span> m_open.get();</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">case</span> 1:</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      <span class="keywordflow">return</span> m_openBracket.get();</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">case</span> 2:</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      <span class="keywordflow">return</span> m_start.get();</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">case</span> 3:</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <span class="keywordflow">return</span> m_comma.get();</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">case</span> 4:</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      <span class="keywordflow">return</span> m_ellipsis.get();</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">case</span> 5:</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <span class="keywordflow">return</span> m_stop.get();</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">case</span> 6:</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      <span class="keywordflow">return</span> m_closeBracket.get();</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">case</span> 7:</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      <span class="keywordflow">return</span> m_close.get();</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    }</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classIntervalCell.html#ac9cbac0e22b28ad2360befeda1ae7a68">Recalculate</a>(<span class="keyword">const</span> <a class="code hl_class" href="classAFontSize.html">AFontSize</a> fontsize) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classIntervalCell.html#a52a1d2ac7d708418b3482f39a5709b73">Draw</a>(wxPoint point, wxDC *dc, wxDC *antialiassingDC) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classIntervalCell.html#ac79ad1cae785ab584e411555c5f3f719">BreakUp</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  wxString <a class="code hl_function" href="classIntervalCell.html#ac08ed5aba2a37ea4923a546b93253bc9">ToMathML</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">virtual</span> wxString <a class="code hl_function" href="classIntervalCell.html#a3707755c8f56eda2a528a124cda2453d">ToMatlab</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  wxString <a class="code hl_function" href="classIntervalCell.html#aa54fd737efaeae02fa8d9355ff7d8531">ToOMML</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keyword">virtual</span> wxString <a class="code hl_function" href="classIntervalCell.html#a9b178ac0e8c87f25423749b773410e73">ToString</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keyword">virtual</span> wxString <a class="code hl_function" href="classIntervalCell.html#a066f492491b2566a8bd212ff8778808d">ToTeX</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keyword">virtual</span> wxString <a class="code hl_function" href="classIntervalCell.html#a5b93670fad8ee271f019485685934469">ToXML</a>() <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keyword">mutable</span> <span class="keywordtype">int</span> m_signWidth = 12, m_signHeight = -1;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classIntervalCell.html#a4ce9ce632443febb506c2f194af422ab">SetNextToDraw</a>(<a class="code hl_class" href="classCell.html">Cell</a> *next) <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment">//** Bitfield objects (1 bytes)</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">//**</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordtype">void</span> InitBitFields_IntervalCell()</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    { <span class="comment">// Keep the initialization order below same as the order</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      <span class="comment">// of bit fields in this class!</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      <a class="code hl_variable" href="classIntervalCell.html#abc81c91f133eba7e35ebdbb6f4c670ce">m_drawAsAscii</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    }</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="classIntervalCell.html#abc81c91f133eba7e35ebdbb6f4c670ce">  105</a></span>  <span class="keyword">mutable</span> <span class="keywordtype">bool</span> <a class="code hl_variable" href="classIntervalCell.html#abc81c91f133eba7e35ebdbb6f4c670ce">m_drawAsAscii</a> : 1 <span class="comment">/* InitBitFields_IntervalCell */</span>;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>};</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="preprocessor">#endif </span><span class="comment">// INTERVALCELL_H</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordtype">void</span> DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordtype">void</span> DrawBigRightOpenBracket(wxDC *dc, wxPoint point) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keywordtype">bool</span> m_leftBracketOpensLeft;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordtype">bool</span> m_rightBracketOpensRight;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="comment">// The pointers below point to inner cells and must be kept contiguous.</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="comment">// ** This is the draw list order. All pointers must be the same:</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="comment">// ** either Cell * or std::unique_ptr&lt;Cell&gt;. NO OTHER TYPES are allowed.</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  std::unique_ptr&lt;Cell&gt; m_open;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  std::unique_ptr&lt;Cell&gt; m_openBracket;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  std::unique_ptr&lt;Cell&gt; m_start;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  std::unique_ptr&lt;TextCell&gt; m_comma;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  std::unique_ptr&lt;TextCell&gt; m_ellipsis;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  std::unique_ptr&lt;Cell&gt; m_stop;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  std::unique_ptr&lt;Cell&gt; m_closeBracket;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  std::unique_ptr&lt;Cell&gt; m_close;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="comment">// The pointers above point to inner cells and must be kept contiguous.</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keyword">mutable</span> <span class="keywordtype">int</span> m_signWidth = 12, m_signHeight = -1;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="comment">//** Bitfield objects (1 bytes)</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment">//**</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordtype">void</span> InitBitFields_IntervalCell()</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    { <span class="comment">// Keep the initialization order below same as the order</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      <span class="comment">// of bit fields in this class!</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      <a class="code hl_variable" href="classIntervalCell.html#abc81c91f133eba7e35ebdbb6f4c670ce">m_drawAsAscii</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    }</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="classIntervalCell.html#abc81c91f133eba7e35ebdbb6f4c670ce">  125</a></span>  <span class="keyword">mutable</span> <span class="keywordtype">bool</span> <a class="code hl_variable" href="classIntervalCell.html#abc81c91f133eba7e35ebdbb6f4c670ce">m_drawAsAscii</a> : 1 <span class="comment">/* InitBitFields_IntervalCell */</span>;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>};</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#endif </span><span class="comment">// INTERVALCELL_H</span></div>
 <div class="ttc" id="aCell_8h_html"><div class="ttname"><a href="Cell_8h.html">Cell.h</a></div><div class="ttdoc">The definition of the base class of all cells the worksheet consists of.</div></div>
 <div class="ttc" id="aclassAFontSize_html"><div class="ttname"><a href="classAFontSize.html">AFontSize</a></div><div class="ttdoc">A Type-Safe Fixed-Point Font Size.</div><div class="ttdef"><b>Definition:</b> FontAttribs.h:98</div></div>
 <div class="ttc" id="aclassCellTypeInfo_html"><div class="ttname"><a href="classCellTypeInfo.html">CellTypeInfo</a></div><div class="ttdoc">A class that carries information about the type of a cell.</div><div class="ttdef"><b>Definition:</b> Cell.h:93</div></div>
@@ -180,11 +200,11 @@ $(function() {
 <div class="ttc" id="aclassIntervalCell_html_a91cf0aefa8d04ff40e7438da22effa6e"><div class="ttname"><a href="classIntervalCell.html#a91cf0aefa8d04ff40e7438da22effa6e">IntervalCell::GetInnerCellCount</a></div><div class="ttdeci">size_t GetInnerCellCount() const override</div><div class="ttdoc">The number of inner cells - for use by the iterators.</div><div class="ttdef"><b>Definition:</b> IntervalCell.h:58</div></div>
 <div class="ttc" id="aclassIntervalCell_html_a9b178ac0e8c87f25423749b773410e73"><div class="ttname"><a href="classIntervalCell.html#a9b178ac0e8c87f25423749b773410e73">IntervalCell::ToString</a></div><div class="ttdeci">virtual wxString ToString() const override</div><div class="ttdoc">Returns the cell's representation as a string.</div><div class="ttdef"><b>Definition:</b> IntervalCell.cpp:179</div></div>
 <div class="ttc" id="aclassIntervalCell_html_aa54fd737efaeae02fa8d9355ff7d8531"><div class="ttname"><a href="classIntervalCell.html#aa54fd737efaeae02fa8d9355ff7d8531">IntervalCell::ToOMML</a></div><div class="ttdeci">wxString ToOMML() const override</div><div class="ttdoc">Returns the cell's representation as OMML.</div><div class="ttdef"><b>Definition:</b> IntervalCell.cpp:205</div></div>
-<div class="ttc" id="aclassIntervalCell_html_abc81c91f133eba7e35ebdbb6f4c670ce"><div class="ttname"><a href="classIntervalCell.html#abc81c91f133eba7e35ebdbb6f4c670ce">IntervalCell::m_drawAsAscii</a></div><div class="ttdeci">bool m_drawAsAscii</div><div class="ttdoc">How to create a big parenthesis sign?</div><div class="ttdef"><b>Definition:</b> IntervalCell.h:105</div></div>
+<div class="ttc" id="aclassIntervalCell_html_abc81c91f133eba7e35ebdbb6f4c670ce"><div class="ttname"><a href="classIntervalCell.html#abc81c91f133eba7e35ebdbb6f4c670ce">IntervalCell::m_drawAsAscii</a></div><div class="ttdeci">bool m_drawAsAscii</div><div class="ttdoc">How to create a big parenthesis sign?</div><div class="ttdef"><b>Definition:</b> IntervalCell.h:125</div></div>
 <div class="ttc" id="aclassIntervalCell_html_ac08ed5aba2a37ea4923a546b93253bc9"><div class="ttname"><a href="classIntervalCell.html#ac08ed5aba2a37ea4923a546b93253bc9">IntervalCell::ToMathML</a></div><div class="ttdeci">wxString ToMathML() const override</div><div class="ttdoc">Convert this cell to a representation fit for saving in a .wxmx file.</div><div class="ttdef"><b>Definition:</b> IntervalCell.cpp:216</div></div>
 <div class="ttc" id="aclassIntervalCell_html_ac79ad1cae785ab584e411555c5f3f719"><div class="ttname"><a href="classIntervalCell.html#ac79ad1cae785ab584e411555c5f3f719">IntervalCell::BreakUp</a></div><div class="ttdeci">bool BreakUp() const override</div><div class="ttdoc">Try to split this command into lines to make it fit on the screen.</div><div class="ttdef"><b>Definition:</b> IntervalCell.cpp:245</div></div>
 <div class="ttc" id="aclassIntervalCell_html_ac9cbac0e22b28ad2360befeda1ae7a68"><div class="ttname"><a href="classIntervalCell.html#ac9cbac0e22b28ad2360befeda1ae7a68">IntervalCell::Recalculate</a></div><div class="ttdeci">void Recalculate(const AFontSize fontsize) const override</div><div class="ttdoc">Recalculate the size of the cell and the difference between top and center.</div><div class="ttdef"><b>Definition:</b> IntervalCell.cpp:68</div></div>
-<div class="ttc" id="aclassIntervalCell_html_aef495868050764d3bca40fd8c7dce648"><div class="ttname"><a href="classIntervalCell.html#aef495868050764d3bca40fd8c7dce648">IntervalCell::GetInnerCell</a></div><div class="ttdeci">Cell * GetInnerCell(size_t index) const override</div><div class="ttdoc">Retrieve an inner cell with given index which must be less than GetInnerCellCount.</div><div class="ttdef"><b>Definition:</b> IntervalCell.h:60</div></div>
+<div class="ttc" id="aclassIntervalCell_html_aef495868050764d3bca40fd8c7dce648"><div class="ttname"><a href="classIntervalCell.html#aef495868050764d3bca40fd8c7dce648">IntervalCell::GetInnerCell</a></div><div class="ttdeci">Cell * GetInnerCell(size_t index) const override</div><div class="ttdoc">Retrieve an inner cell with given index which must be less than GetInnerCellCount.</div><div class="ttdef"><b>Definition:</b> IntervalCell.h:59</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
