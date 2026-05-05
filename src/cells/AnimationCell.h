@@ -117,7 +117,7 @@ public:
   int GetDisplayedIndex() const { return m_displayed; }
 
   wxImage GetBitmap(int n) const
-    { return m_images[n]->GetUnscaledBitmap().ConvertToImage(); }
+    { return m_images.at(n)->GetUnscaledBitmap().ConvertToImage(); }
 
   void SetDisplayedIndex(int ind);
 
@@ -166,11 +166,11 @@ public:
 
   void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
                      const wxString &wxmxFile)
-    { m_images[image]->GnuplotSource(std::move(gnuplotFilename),
+    { m_images.at(image)->GnuplotSource(std::move(gnuplotFilename),
                                      std::move(dataFilename), wxmxFile); }
   void CompressedGnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename,
                                const wxString &wxmxFile)
-    { m_images[image]->CompressedGnuplotSource(std::move(gnuplotFilename),
+    { m_images.at(image)->CompressedGnuplotSource(std::move(gnuplotFilename),
                                                std::move(dataFilename),
                                                wxmxFile); }
 

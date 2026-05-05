@@ -511,8 +511,8 @@ wxString TextCell::ToString() const {
       bool isOperator = true;
       if (m_text.Length() > 1) {
         for (size_t i = 0; i < m_text.Length(); i++) {
-          if ((m_text[i] == wxS(' ')) ||
-              (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND)) {
+          if ((m_text.at(i) == wxS(' ')) ||
+              (charsNeedingQuotes.Find(m_text.at(i)) == wxNOT_FOUND)) {
             isOperator = false;
             break;
           }
@@ -522,8 +522,8 @@ wxString TextCell::ToString() const {
       if (!isOperator) {
         wxString lastChar;
         if ((m_dontEscapeOpeningParenthesis) && (text.Length() > 0) &&
-            (text[text.Length() - 1] == wxS('('))) {
-          lastChar = text[text.Length() - 1];
+            (text.at(text.Length() - 1) == wxS('('))) {
+          lastChar = text.at(text.Length() - 1);
           text = text.Left(text.Length() - 1);
         }
         for (const auto &chr : m_configuration->CharsNeedingQuotes())
@@ -573,8 +573,8 @@ wxString TextCell::ToMatlab() const {
       wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
       bool isOperator = true;
       for (size_t i = 0; i < m_text.Length(); i++) {
-        if ((m_text[i] == wxS(' ')) ||
-            (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND)) {
+        if ((m_text.at(i) == wxS(' ')) ||
+            (charsNeedingQuotes.Find(m_text.at(i)) == wxNOT_FOUND)) {
           isOperator = false;
           break;
         }
@@ -583,13 +583,13 @@ wxString TextCell::ToMatlab() const {
       if (!isOperator) {
         wxString lastChar;
         if ((m_dontEscapeOpeningParenthesis) && (text.Length() > 0) &&
-            (text[text.Length() - 1] == wxS('('))) {
-          lastChar = text[text.Length() - 1];
+            (text.at(text.Length() - 1) == wxS('('))) {
+          lastChar = text.at(text.Length() - 1);
           text = text.Left(text.Length() - 1);
         }
         for (size_t i = 0; i < charsNeedingQuotes.Length(); i++)
-          text.Replace(charsNeedingQuotes[i],
-                       wxS("\\") + wxString(charsNeedingQuotes[i]));
+          text.Replace(charsNeedingQuotes.at(i),
+                       wxS("\\") + wxString(charsNeedingQuotes.at(i)));
         text += lastChar;
       }
       break;
@@ -977,7 +977,7 @@ wxString TextCell::ToTeX() const {
     } else if ((GetTextStyle() == TS_VARIABLE) ||
                (GetTextStyle() == TS_GREEK_CONSTANT) ||
                (GetTextStyle() == TS_SPECIAL_CONSTANT)) {
-      if ((m_displayedText.Length() > 1) && (text[1] != wxS('_')))
+      if ((m_displayedText.Length() > 1) && (text.at(1) != wxS('_')))
         text = wxS("\\ensuremath{\\mathrm{") + text + wxS("}}");
       if (text == wxS("\\% pi"))
         text = wxS("\\ensuremath{\\pi} ");
@@ -1276,7 +1276,7 @@ bool TextCell::IsShortNum() const {
 wxString TextCell::GetGreekStringUnicode() const {
   wxString txt(m_text);
 
-  if (!txt.empty() && txt[0] != '%')
+  if (!txt.empty() && txt.at(0) != '%')
     txt.Prepend(wxS("%"));
 
   if (txt == wxS("%alpha"))
@@ -1449,7 +1449,7 @@ wxString TextCell::GetGreekStringTeX() const {
     return wxS("\u00C9");
 
   wxString txt(m_text);
-  if (txt[0] != '%')
+  if (txt.at(0) != '%')
     txt = wxS("%") + txt;
 
   if (txt == wxS("%alpha"))

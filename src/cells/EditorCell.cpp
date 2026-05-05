@@ -227,7 +227,7 @@ wxString EditorCell::PrependNBSP(wxString input) {
   input.Replace(wxS("\r"), wxS(" "));
 
   for (size_t i = 0; i < input.Length(); i++) {
-    wxChar ch = input.GetChar(i);
+    wxChar ch = input.at(i);
     if (ch == wxS('\n'))
       firstSpace = true;
 
@@ -698,8 +698,8 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
   while (pos_right <
          end) // go through selection, draw a rect for each line of selection
     {
-      while (pos_right < end && m_text.GetChar(pos_right) != '\n' &&
-             m_text.GetChar(pos_right) != '\r')
+      while (pos_right < end && m_text.at(pos_right) != '\n' &&
+             m_text.at(pos_right) != '\r')
         pos_right++;
 
       point = PositionToPoint(pos_left);  // left  point
@@ -812,14 +812,14 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
           }
           wxPoint matchPoint = PositionToPoint(m_paren1);
           wxCoord width, height;
-          dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
+          dc->GetTextExtent(m_text.at(m_paren1), &width, &height);
           wxRect matchRect(matchPoint.x + 1,
                            matchPoint.y + Scale_Px(2) - m_center + 1, width - 1,
                            height - 1);
           if (m_configuration->InUpdateRegion(matchRect))
             dc->DrawRectangle(CropToUpdateRegion(matchRect));
           matchPoint = PositionToPoint(m_paren2);
-          dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
+          dc->GetTextExtent(m_text.at(m_paren1), &width, &height);
           matchRect =
             wxRect(matchPoint.x + 1, matchPoint.y + Scale_Px(2) - m_center + 1,
                    width - 1, height - 1);
@@ -1484,8 +1484,8 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
         pos = m_text.Length();
       } else {
         while (pos < m_text.Length() &&
-               m_text.GetChar(pos) != '\n' &&
-               m_text.GetChar(pos) != '\r')
+               m_text.at(pos) != '\n' &&
+               m_text.at(pos) != '\r')
           pos++;
       }
 
@@ -1705,14 +1705,14 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
               size_t right = pos;
               if (pos < m_text.Length() &&
                   m_configuration->GetMatchParens() &&
-                  ((m_text.GetChar(pos - 1) == '[' &&
-                    m_text.GetChar(pos) == ']') ||
-                   (m_text.GetChar(pos - 1) == '(' &&
-                    m_text.GetChar(pos) == ')') ||
-                   (m_text.GetChar(pos - 1) == '{' &&
-                    m_text.GetChar(pos) == '}') ||
-                   (m_text.GetChar(pos - 1) == '"' &&
-                    m_text.GetChar(pos) == '"')))
+                  ((m_text.at(pos - 1) == '[' &&
+                    m_text.at(pos) == ']') ||
+                   (m_text.at(pos - 1) == '(' &&
+                    m_text.at(pos) == ')') ||
+                   (m_text.at(pos - 1) == '{' &&
+                    m_text.at(pos) == '}') ||
+                   (m_text.at(pos - 1) == '"' &&
+                    m_text.at(pos) == '"')))
                 right++;
               m_text = m_text.SubString(0, pos - 2) +
                 m_text.SubString(right, m_text.Length());
@@ -1990,7 +1990,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
         break;
       case '"':
         if (CursorPosition() < m_text.Length() &&
-            m_text.GetChar(CursorPosition()) == '"')
+            m_text.at(CursorPosition()) == '"')
           m_text = m_text.SubString(0, CursorPosition() - 2) +
             m_text.SubString(CursorPosition(), m_text.Length());
         else
@@ -1999,19 +1999,19 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
         break;
       case ')': // jump over ')'
         if (CursorPosition() < m_text.Length() &&
-            m_text.GetChar(CursorPosition()) == ')')
+            m_text.at(CursorPosition()) == ')')
           m_text = m_text.SubString(0, CursorPosition() - 2) +
             m_text.SubString(CursorPosition(), m_text.Length());
         break;
       case ']': // jump over ']'
         if (CursorPosition() < m_text.Length() &&
-            m_text.GetChar(CursorPosition()) == ']')
+            m_text.at(CursorPosition()) == ']')
           m_text = m_text.SubString(0, CursorPosition() - 2) +
             m_text.SubString(CursorPosition(), m_text.Length());
         break;
       case '}': // jump over '}'
         if (CursorPosition() < m_text.Length() &&
-            m_text.GetChar(CursorPosition()) == '}')
+            m_text.at(CursorPosition()) == '}')
           m_text = m_text.SubString(0, CursorPosition() - 2) +
             m_text.SubString(CursorPosition(), m_text.Length());
         break;
@@ -2082,7 +2082,7 @@ void EditorCell::FindMatchingParens() {
   if (CursorPosition() >= m_text.Length())
     return;
 
-  wxChar charUnderCursor = m_text.GetChar(CursorPosition());
+  wxChar charUnderCursor = m_text.at(CursorPosition());
   if (charUnderCursor == wxS('\"')) {
     FindMatchingQuotes();
     return;
@@ -2382,8 +2382,8 @@ void EditorCell::SelectPointText(const wxPoint point) {
     posInCell.x -= indentPixels;
 
     while (pos < text.Length() &&
-           text.GetChar(pos) != '\n' &&
-           text.GetChar(pos) != '\r') {
+           text.at(pos) != '\n' &&
+           text.at(pos) != '\r') {
       wxCoord width;
       width =
         GetTextSize(text.SubString(lineStart, pos)).GetWidth();
@@ -2447,8 +2447,8 @@ bool EditorCell::IsPointInSelection(wxPoint point) {
   posInCell.x -= indentPixels;
 
   while (positionOfCaret < text.Length() &&
-         text.GetChar(positionOfCaret) != '\n' &&
-         text.GetChar(positionOfCaret) != '\r') {
+         text.at(positionOfCaret) != '\n' &&
+         text.at(positionOfCaret) != '\r') {
     wxCoord width;
     wxString strng = text.SubString(lineStart, positionOfCaret);
     width =

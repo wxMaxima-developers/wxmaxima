@@ -36,9 +36,9 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   size_t GetInnerCellCount() const override { return m_cells.size(); }
-  Cell *GetInnerCell(size_t index) const override { return m_cells[index].get(); }
-  Cell *GetInnerCell(long x, long y) const {
-    return m_cells[static_cast<size_t>(x) * m_matWidth + y].get(); }
+  Cell *GetInnerCell(size_t index) const override { return m_cells.at(index).get(); }
+  Cell *GetInnerCell(int x, int y) const {
+    return m_cells.at(static_cast<size_t>(x) * m_matWidth + y).get(); }
 
   void Recalculate(const AFontSize fontsize) const override;
 

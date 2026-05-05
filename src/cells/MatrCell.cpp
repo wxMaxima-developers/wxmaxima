@@ -48,7 +48,7 @@ MatrCell::MatrCell(GroupCell *group, const MatrCell &cell)
   m_matHeight = cell.m_matHeight;
   for (size_t i = 0; i < cell.m_matWidth * cell.m_matHeight; i++)
     if (i < cell.m_cells.size())
-      m_cells.emplace_back(cell.m_cells[i]->CopyList(group));
+      m_cells.emplace_back(cell.m_cells.at(i)->CopyList(group));
 
   for (size_t i = 0; i < m_matHeight; i++)
     m_dropCenters.emplace_back(-1, -1);
@@ -63,7 +63,7 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     AFontSize const fontsize_entry{MC_MIN_SIZE, fontsize - 2};
     for (size_t i = 0; i < m_cells.size(); i++)
-      m_cells[i]->RecalculateList(fontsize_entry);
+      m_cells.at(i)->RecalculateList(fontsize_entry);
 
     m_width = 0;
     m_widths.clear();
@@ -109,16 +109,16 @@ void MatrCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       mp.y = point.y - m_center + Scale_Px(5);
       for (size_t j = 0; j < m_matHeight; j++) {
         if ((j * m_matWidth + i) < m_cells.size()) {
-          mp.y += m_dropCenters[j].center;
+          mp.y += m_dropCenters.at(j).center;
           wxPoint mp1(mp);
           mp1.x =
             mp.x +
-            (m_widths[i] - GetInnerCell(j, i)->SumOfWidths()) / 2;
+            (m_widths.at(i) - GetInnerCell(j, i)->SumOfWidths()) / 2;
           GetInnerCell(j, i)->DrawList(mp1, dc, antialiassingDC);
-          mp.y += (m_dropCenters[j].drop + Scale_Px(10));
+          mp.y += (m_dropCenters.at(j).drop + Scale_Px(10));
         }
       }
-      mp.x += (m_widths[i] + Scale_Px(10));
+      mp.x += (m_widths.at(i) + Scale_Px(10));
     }
     SetPen(antialiassingDC, 1.5);
     if (m_specialMatrix) {
@@ -127,16 +127,16 @@ void MatrCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
                                   point.x + Scale_Px(1), point.y + m_center - Scale_Px(2));
       else {
         if (m_rowNames)
-          antialiassingDC->DrawLine(point.x + m_widths[0] + 2 * Scale_Px(5),
+          antialiassingDC->DrawLine(point.x + m_widths.at(0) + 2 * Scale_Px(5),
                                     point.y - m_center + Scale_Px(2),
-                                    point.x + m_widths[0] + 2 * Scale_Px(5),
+                                    point.x + m_widths.at(0) + 2 * Scale_Px(5),
                                     point.y + m_center - Scale_Px(2));
         if (m_colNames)
           antialiassingDC->DrawLine(
                                     point.x + Scale_Px(1),
-                                    point.y - m_center + m_dropCenters[0].Sum() + 2 * Scale_Px(5),
+                                    point.y - m_center + m_dropCenters.at(0).Sum() + 2 * Scale_Px(5),
                                     point.x + Scale_Px(1) + m_width,
-                                    point.y - m_center + m_dropCenters[0].Sum() + 2 * Scale_Px(5));
+                                    point.y - m_center + m_dropCenters.at(0).Sum() + 2 * Scale_Px(5));
       }
     } else {
       switch (m_parenType) {

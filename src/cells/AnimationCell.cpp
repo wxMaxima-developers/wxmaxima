@@ -198,7 +198,7 @@ void AnimationCell::LoadImages(wxArrayString images, bool deleteRead) {
   wxString dataFilename;
 
   if (images.GetCount() == 1) {
-    LoadImages(images[0]);
+    LoadImages(images.Item(0));
   } else
     for (auto const &i: images) {
       if (i.EndsWith(wxS(".gnuplot")))
@@ -390,8 +390,8 @@ wxString AnimationCell::ToXML() const {
   wxString flags;
   flags = wxS(" gnuplotSources_gz=\"") + gnuplotSourceFiles + wxS("\"");
   flags += wxS(" gnuplotData_gz=\"") + gnuplotDataFiles + "\"";
-  if ((Length() > 0) && (m_images[0] != NULL))
-    flags += wxString::Format(wxS(" ppi=\"%li\""), static_cast<long>(m_images[0]->GetPPI()));
+  if ((Length() > 0) && (m_images.at(0) != NULL))
+    flags += wxString::Format(wxS(" ppi=\"%li\""), static_cast<long>(m_images.at(0)->GetPPI()));
   if (HasHardLineBreak())
     flags += wxS(" breakline=\"true\"");
   if (m_animationRunning)
@@ -498,8 +498,8 @@ wxSize AnimationCell::ToGif(wxString file) {
       wxGIFHandler gif;
 
       if (gif.SaveAnimation(gifFrames, &outStream, true, 1000 / GetFrameRate()))
-        return wxSize(m_images[1]->GetOriginalWidth(),
-                      m_images[1]->GetOriginalHeight());
+        return wxSize(m_images.at(1)->GetOriginalWidth(),
+                      m_images.at(1)->GetOriginalHeight());
     }
   }
   return wxDefaultSize;

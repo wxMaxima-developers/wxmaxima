@@ -123,7 +123,7 @@ wxString SetCell::ToTeX() const {
     // character.
     bool needsLeftRight = false;
     for (size_t i = 0; i < innerCell.Length(); i++)
-      if (!wxIsalnum(innerCell[i])) {
+      if (!wxIsalnum(innerCell.at(i))) {
         needsLeftRight = true;
         break;
       }
