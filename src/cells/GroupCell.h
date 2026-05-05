@@ -99,8 +99,16 @@ public:
   void SetAnswer(const wxString &question, const wxString &answer);
 
   size_t GetInnerCellCount() const override { return (m_groupType == GC_TYPE_PAGEBREAK) ? 0 : 2; }
-  // cppcheck-suppress objectIndex
-  Cell *GetInnerCell(size_t index) const override { return (&m_inputLabel)[index].get(); }
+  Cell *GetInnerCell(size_t index) const override {
+    switch (index) {
+    case 0:
+      return m_inputLabel.get();
+    case 1:
+      return m_output.get();
+    default:
+      return nullptr;
+    }
+  }
 
   /*! Which GroupCell was the last maxima was working on?
 
@@ -278,7 +286,7 @@ public:
   bool RevealHidden();
 
   //! Set the parent cell of hidden cells
-  void SetHiddenTreeParent(GroupCell *parent);
+  void SetHiddenTreeParent(GroupCell *parent, GroupCell *last = nullptr);
 
   /*! Fold this cell
 

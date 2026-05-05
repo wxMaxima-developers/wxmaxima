@@ -91,7 +91,7 @@ wxString HelpBrowser::GetKeyword(wxWindowID id) const {
   id -= m_topicButtonID0;
   if (static_cast<unsigned>(id) > m_keywords.size())
     return wxEmptyString;
-  return m_keywords[id];
+  return m_keywords.at(id);
 }
 
 void HelpBrowser::OnActivate(wxActivateEvent &WXUNUSED(event)) {
@@ -203,7 +203,7 @@ void HelpBrowser::SelectKeywords(const std::vector<wxString> &keywords) {
     return;
 
   if (keywords.size() == 1) {
-    JumpToKeyword(keywords[0]);
+    JumpToKeyword(keywords.at(0));
     return;
   }
 

@@ -284,7 +284,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   Connect(wxEVT_TEXT_URL, wxTextUrlEventHandler(TipOfTheDay::OnTextURLEvent),
           NULL, this);
 
-  m_tip = new wxTextCtrl(this, -1, m_tips[m_num], wxDefaultPosition,
+  m_tip = new wxTextCtrl(this, -1, m_tips.Item(m_num), wxDefaultPosition,
                          wxDefaultSize, wxTE_READONLY | wxTE_MULTILINE | wxTE_AUTO_URL);
   vbox->Add(m_tip, wxSizerFlags().Expand().Proportion(10));
 
@@ -371,7 +371,7 @@ void TipOfTheDay::OnNextButton(wxCommandEvent &WXUNUSED(dummy)) {
   m_num++;
   if (m_num >= m_tips.GetCount())
     m_num = 0;
-  m_tip->SetValue(m_tips[m_num]);
+  m_tip->SetValue(m_tips.Item(m_num));
 }
 
 void TipOfTheDay::OnPreviousButton(wxCommandEvent &WXUNUSED(dummy)) {
@@ -379,7 +379,7 @@ void TipOfTheDay::OnPreviousButton(wxCommandEvent &WXUNUSED(dummy)) {
     m_num--;
   else
     m_num = m_tips.GetCount() - 1;
-  m_tip->SetValue(m_tips[m_num]);
+  m_tip->SetValue(m_tips.Item(m_num));
 }
 
 void TipOfTheDay::OnOkButton(wxCommandEvent &WXUNUSED(dummy)) {

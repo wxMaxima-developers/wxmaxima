@@ -1559,7 +1559,7 @@ public:
 
 
     inline wxChar operator*() const
-      { return input[pos]; }
+      { return input.at(pos); }
 
     std::size_t pos;
 

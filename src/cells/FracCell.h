@@ -51,8 +51,18 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   size_t GetInnerCellCount() const override { return 3; }
-  // cppcheck-suppress objectIndex
-  Cell *GetInnerCell(size_t index) const override { return (&m_displayedNum)[index]; }
+  Cell *GetInnerCell(size_t index) const override {
+    switch (index) {
+    case 0:
+      return m_displayedNum;
+    case 1:
+      return m_divide;
+    case 2:
+      return m_displayedDenom;
+    default:
+      return nullptr;
+    }
+  }
 
   //! All types of fractions we support
   enum FracType : int8_t

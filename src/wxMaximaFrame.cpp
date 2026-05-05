@@ -2194,7 +2194,7 @@ void  wxMaximaFrame::StatusText(const wxString &text, bool saveInLog)
     {
       wxLogMessage("%s", text);
       for(auto i = m_statusTextHistory.size() - 1; i > 0; i--)
-        m_statusTextHistory[i] = m_statusTextHistory[i-1];
+        m_statusTextHistory.at(i) = m_statusTextHistory.at(i-1);
       m_statusTextHistory[0] = text;
     }
 }

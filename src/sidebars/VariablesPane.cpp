@@ -418,7 +418,7 @@ bool Variablespane::IsValidVariable(wxString var) {
 
   if (var == wxEmptyString)
     return false;
-  if ((var[0] >= '0') && (var[0] <= '9'))
+  if ((var.at(0) >= '0') && (var.at(0) <= '9'))
     return false;
   if (var.Contains(":"))
     return false;

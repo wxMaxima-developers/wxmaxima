@@ -36,8 +36,22 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 
   size_t GetInnerCellCount() const override { return 5; }
-  // cppcheck-suppress objectIndex
-  Cell *GetInnerCell(size_t index) const override { return (&m_baseCell)[index].get(); }
+  Cell *GetInnerCell(size_t index) const override {
+    switch (index) {
+    case 0:
+      return m_baseCell.get();
+    case 1:
+      return m_postSubCell.get();
+    case 2:
+      return m_postSupCell.get();
+    case 3:
+      return m_preSubCell.get();
+    case 4:
+      return m_preSupCell.get();
+    default:
+      return nullptr;
+    }
+  }
 
   void SetIndex(std::unique_ptr<Cell> &&index);
   void SetExponent(std::unique_ptr<Cell> &&expt);

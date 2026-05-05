@@ -56,8 +56,28 @@ public:
   virtual const CellTypeInfo &GetInfo() override;
 
   size_t GetInnerCellCount() const override { return 8; }
-  // cppcheck-suppress objectIndex
-  Cell *GetInnerCell(size_t index) const override { return (&m_open)[index].get(); }
+  Cell *GetInnerCell(size_t index) const override {
+    switch (index) {
+    case 0:
+      return m_open.get();
+    case 1:
+      return m_openBracket.get();
+    case 2:
+      return m_start.get();
+    case 3:
+      return m_comma.get();
+    case 4:
+      return m_ellipsis.get();
+    case 5:
+      return m_stop.get();
+    case 6:
+      return m_closeBracket.get();
+    case 7:
+      return m_close.get();
+    default:
+      return nullptr;
+    }
+  }
 
   void Recalculate(const AFontSize fontsize) const override;
 

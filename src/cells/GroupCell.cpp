@@ -161,6 +161,11 @@ GroupCell::GroupCell(GroupCell const &cell)
     SetInput(cell.m_inputLabel->CopyList(this));
   if (cell.m_output)
     SetOutput(cell.m_output->CopyList(this));
+  if (cell.m_hiddenTree) {
+    m_hiddenTree =
+      static_unique_ptr_cast<GroupCell>(Cell::CopyList(this, cell.m_hiddenTree.get()));
+    m_hiddenTree->SetHiddenTreeParent(this);
+  }
   SetAutoAnswer(cell.m_autoAnswer);
 }
 
@@ -1538,9 +1543,12 @@ bool GroupCell::RevealHidden() {
  * This way, the field can be used to traverse up the tree no matter which
  * child we are on. In other words, every child knows its parent node.
  */
-void GroupCell::SetHiddenTreeParent(GroupCell *parent) {
-  for (auto &cell : OnList(this))
+void GroupCell::SetHiddenTreeParent(GroupCell *parent, GroupCell *last) {
+  for (auto &cell : OnList(this)) {
     cell.m_hiddenTreeParent = parent;
+    if (&cell == last)
+      break;
+  }
 }
 
 GroupCell *GroupCell::Fold() {
@@ -1586,7 +1594,8 @@ GroupCell *GroupCell::Unfold() {
 
   m_cellsAppended = true;
   auto splicedIn = CellList::SpliceInAfter(this, std::move(m_hiddenTree));
-  GetNext()->SetHiddenTreeParent(m_hiddenTreeParent);
+  GetNext()->SetHiddenTreeParent(m_hiddenTreeParent,
+                                 dynamic_cast<GroupCell *>(splicedIn.lastSpliced));
   return dynamic_cast<GroupCell *>(splicedIn.lastSpliced);
 }
 

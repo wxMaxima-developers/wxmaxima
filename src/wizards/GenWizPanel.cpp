@@ -78,19 +78,19 @@ GenWizPanel::GenWizPanel(
                                        wxSize(50 * GetContentScaleFactor(), -1), wxTE_PROCESS_ENTER));
   }
 
-  m_textctrl[0]->SetFocus();
+  m_textctrl.at(0)->SetFocus();
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(
                                                     2, wxSize(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor()));
   grid_sizer->AddGrowableCol(1);
   for (int i = 0; i < 10; i++) {
-    grid_sizer->Add(m_label[i], 0, wxALIGN_CENTER_VERTICAL, 0);
-    m_textctrl[i]->Connect(wxEVT_TEXT,
+    grid_sizer->Add(m_label.at(i), 0, wxALIGN_CENTER_VERTICAL, 0);
+    m_textctrl.at(i)->Connect(wxEVT_TEXT,
                            wxCommandEventHandler(GenWizPanel::OnParamChange),
                            NULL, this);
-    m_textctrl[i]->Connect(wxEVT_TEXT_ENTER,
+    m_textctrl.at(i)->Connect(wxEVT_TEXT_ENTER,
                            wxCommandEventHandler(GenWizPanel::OnTextEnter),
                            NULL, this);
-    grid_sizer->Add(m_textctrl[i], wxSizerFlags(0).Expand());
+    grid_sizer->Add(m_textctrl.at(i), wxSizerFlags(0).Expand());
   }
 
   vbox->Add(grid_sizer, wxSizerFlags(0).Expand().Border(
@@ -264,16 +264,16 @@ void GenWizPanel::NewWizard(
     m_notebook->ChangeSelection(page);
 
   m_descriptionToolTip = description_tooltip;
-  m_textctrl[0]->SetValue(defaultval1);
-  m_label[0]->SetLabel(label1);
-  m_textctrl[0]->SetToolTip(tooltip1);
-  m_textctrl[0]->SetFocus();
+  m_textctrl.at(0)->SetValue(defaultval1);
+  m_label.at(0)->SetLabel(label1);
+  m_textctrl.at(0)->SetToolTip(tooltip1);
+  m_textctrl.at(0)->SetFocus();
 
-  m_textctrl[1]->SetValue(defaultval2);
-  m_label[1]->SetLabel(label2);
-  m_label[1]->Show(!label2.IsEmpty());
-  m_textctrl[1]->Show(!label2.IsEmpty());
-  m_textctrl[1]->SetToolTip(tooltip2);
+  m_textctrl.at(1)->SetValue(defaultval2);
+  m_label.at(1)->SetLabel(label2);
+  m_label.at(1)->Show(!label2.IsEmpty());
+  m_textctrl.at(1)->Show(!label2.IsEmpty());
+  m_textctrl.at(1)->SetToolTip(tooltip2);
 
   m_textctrl[2]->SetValue(defaultval3);
   m_label[2]->SetLabel(label3);
@@ -354,7 +354,7 @@ void GenWizPanel::UpdateOutput() {
 
   wxString output(m_commandRule);
   for (unsigned int i = 0; i < m_textctrl.size(); i++)
-    output.Replace(wxString::Format("#%i#", i + 1), m_textctrl[i]->GetValue());
+    output.Replace(wxString::Format("#%i#", i + 1), m_textctrl.at(i)->GetValue());
   if (m_output)
     m_output->SetValue(output);
 }

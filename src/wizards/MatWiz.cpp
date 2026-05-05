@@ -76,8 +76,8 @@ void MatWiz::set_properties() {
   button_2->SetDefault();
 #endif
 
-  m_inputs[0]->SetFocus();
-  m_inputs[0]->SetSelection(-1, -1);
+  m_inputs.at(0)->SetFocus();
+  m_inputs.at(0)->SetSelection(-1, -1);
 }
 
 void MatWiz::do_layout() {

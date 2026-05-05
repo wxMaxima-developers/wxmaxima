@@ -172,7 +172,7 @@ void TableOfContents::OnDragStart(wxListEvent &evt) {
       if (!tmp->IsLesserGCType(
                                m_displayedGroupCells[evt.GetIndex()]->GetGroupType()))
         break;
-      if (m_displayedGroupCells[index] == tmp) {
+      if (m_displayedGroupCells.at(index) == tmp) {
         index++;
         m_numberOfCaptionsDragged++;
       }
@@ -325,15 +325,15 @@ void TableOfContents::UpdateDisplay() {
 
   if ((m_dragStart >= 0) && (m_dragCurrentPos >= 0) &&
       (m_dragStart != m_dragCurrentPos)) {
-    m_dndStartCell = m_displayedGroupCells[m_dragStart];
+    m_dndStartCell = m_displayedGroupCells.at(m_dragStart);
 
     std::list<GroupCell *> m_draggedCells;
     std::list<GroupCell *> m_otherCells;
     for (size_t i = 0; i < m_structure.size(); i++) {
       if ((i >= static_cast<std::size_t>(m_dragStart)) && (i < static_cast<unsigned long>(m_dragStart) + m_numberOfCaptionsDragged))
-        m_draggedCells.push_back(m_displayedGroupCells[i]);
+        m_draggedCells.push_back(m_displayedGroupCells.at(i));
       else
-        m_otherCells.push_back(m_displayedGroupCells[i]);
+        m_otherCells.push_back(m_displayedGroupCells.at(i));
     }
 
     m_dndEndCell = NULL;
@@ -390,12 +390,12 @@ void TableOfContents::UpdateDisplay() {
       if ((i < m_displayedItems->GetItemCount()) &&
           (m_displayedItems->GetItemCount() > 0))
         m_displayedItems->SetItemText(
-                                      i, TocEntryString(displayedCells_dndOrder[i]));
+                                      i, TocEntryString(displayedCells_dndOrder.at(i)));
       else
         m_displayedItems->InsertItem(
-                                     i, TocEntryString(displayedCells_dndOrder[i]));
+                                     i, TocEntryString(displayedCells_dndOrder.at(i)));
 
-      if (displayedCells_dndOrder[i]->GetHiddenTree())
+      if (displayedCells_dndOrder.at(i)->GetHiddenTree())
         m_displayedItems->SetItemTextColour(
                                             i, wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
       else
@@ -410,7 +410,7 @@ GroupCell *TableOfContents::GetCell(std::size_t index) {
   if (index > m_structure.size())
     return NULL;
 
-  return m_displayedGroupCells[index];
+  return m_displayedGroupCells.at(index);
 }
 
 wxString TableOfContents::TocEntryString(GroupCell *cell) {

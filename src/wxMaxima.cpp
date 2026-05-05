@@ -3269,7 +3269,7 @@ void wxMaxima::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
                   wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
                 }
 #else
-              ShowMaximaHelp(topics[1]);
+              ShowMaximaHelp(topics.at(1));
 #endif
             }
             entry = entry->GetNext();
@@ -4976,7 +4976,7 @@ void wxMaxima::ShowWxMaximaHelp() {
     // the web browser - which doesn't support cygwin paths => convert the path
     // to a native windows pathname if needed.
     if (helpfile.Length() > 1 && helpfile.at(0) == wxS('/')) {
-      helpfile.at(0) = helpfile[1];
+      helpfile.at(0) = helpfile.at(1);
       helpfile.at(1) = wxS(':');
     }
 #endif // __CYGWIN__

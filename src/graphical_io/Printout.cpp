@@ -95,7 +95,7 @@ bool Printout::OnPrintPage(int num) {
   wxLogMessage(_("printOut: Setting the page size to (%li,%li)"),
                static_cast<long>(pageWidth),
                static_cast<long>(pageHeight));
-  GroupCell *group = m_pages[static_cast<size_t>(num) - 1]->GetGroup();
+  GroupCell *group = m_pages.at(static_cast<size_t>(num) - 1)->GetGroup();
   if (!group)
     return true;
   if (group->GetGroupType() == GC_TYPE_PAGEBREAK)
@@ -108,7 +108,7 @@ bool Printout::OnPrintPage(int num) {
   wxPoint deviceOrigin(
                        m_configuration.PrintMargin_Left(),
                        m_configuration.PrintMargin_Top() -
-                       m_pages[static_cast<size_t>(num) - 1]->GetRect(true).GetTop());
+                       m_pages.at(static_cast<size_t>(num) - 1)->GetRect(true).GetTop());
   wxLogMessage(_("Printout: Setting the device origin to %lix%li"),
                static_cast<long>(deviceOrigin.x),
                static_cast<long>(deviceOrigin.y)
@@ -119,11 +119,11 @@ bool Printout::OnPrintPage(int num) {
   const Cell *end = NULL;
   wxCoord startpoint;
   wxCoord endpoint;
-  startpoint = m_pages[static_cast<size_t>(num) - 1]->GetRect(true).GetTop();
+  startpoint = m_pages.at(static_cast<size_t>(num) - 1)->GetRect(true).GetTop();
 
   if (m_pages.size() > (unsigned)num) {
-    endpoint = m_pages[num]->GetRect(true).GetTop() - 1;
-    end = m_pages[num];
+    endpoint = m_pages.at(num)->GetRect(true).GetTop() - 1;
+    end = m_pages.at(num);
   }
   else {
     endpoint = startpoint + pageHeight;
@@ -189,13 +189,13 @@ void Printout::BreakPages() {
   // Now see where the next pages should start    
   for (const auto &i : lineStarts) {
     wxCoord pageStart = 0;
-    pageStart = m_pages[m_pages.size() - 1]->GetRect(true).GetTop();
+    pageStart = m_pages.at(m_pages.size() - 1)->GetRect(true).GetTop();
     wxCoord pageEnd = i->GetRect(true).GetBottom();
     if(i->GetNext())
       pageEnd = i->GetNext()->GetRect(true).GetBottom();
     if(pageEnd - pageStart > canvasSize.y)
       {
-        if(i != m_pages[m_pages.size() - 1])
+        if(i != m_pages.at(m_pages.size() - 1))
           {
             wxCoord pageHeight = i->GetRect(true).GetTop() - pageStart;
             wxLogMessage(_("Printout: PageStart=%li, PageHeight=%li, canvasSize=%li"),

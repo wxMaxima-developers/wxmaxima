@@ -54,8 +54,8 @@ void SysWiz::set_properties() {
   button_2->SetDefault();
 #endif
 
-  m_inputs[0]->SetFocus();
-  m_inputs[0]->SetSelection(-1, -1);
+  m_inputs.at(0)->SetFocus();
+  m_inputs.at(0)->SetSelection(-1, -1);
 }
 
 void SysWiz::do_layout() {
@@ -88,7 +88,7 @@ void SysWiz::do_layout() {
 wxString SysWiz::GetValue() {
   wxString cmd = wxS("([");
   for (int i = 0; i < m_size; i++) {
-    cmd += m_inputs[i]->GetValue();
+    cmd += m_inputs.at(i)->GetValue();
     if (i < m_size - 1)
       cmd += wxS(", ");
   }

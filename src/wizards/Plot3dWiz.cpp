@@ -206,110 +206,110 @@ void Plot3DWiz::Parse(wxString s) {
   if (s.StartsWith(wxS("["))) {
     int depth = 0;
     do {
-      if (s.GetChar(i) == '[') {
+      if (s.at(i) == '[') {
         depth++;
         if (depth > 1)
-          curr += s.GetChar(i);
-      } else if (s.GetChar(i) == ']') {
+          curr += s.at(i);
+      } else if (s.at(i) == ']') {
         depth--;
         if (depth > 0)
-          curr += s.GetChar(i);
+          curr += s.at(i);
       } else
-        curr += s.GetChar(i);
+        curr += s.at(i);
       i++;
     } while (depth > 0);
   } else {
-    while (i < s.Length() && s.GetChar(i) != ',') {
-      curr += s.GetChar(i);
+    while (i < s.Length() && s.at(i) != ',') {
+      curr += s.at(i);
       i++;
     }
   }
   text_ctrl_1->SetValue(curr);
   // Independent variable 1
-  while (i < s.Length() && s.GetChar(i) != '[')
+  while (i < s.Length() && s.at(i) != '[')
     i++;
   i++;
   curr.Clear();
-  while (i < s.Length() && s.GetChar(i) != ',') {
-    curr += s.GetChar(i);
+  while (i < s.Length() && s.at(i) != ',') {
+    curr += s.at(i);
     i++;
   }
   text_ctrl_2->SetValue(curr);
   i++;
   curr.Clear();
-  while (i < s.Length() && s.GetChar(i) != ',') {
-    curr += s.GetChar(i);
+  while (i < s.Length() && s.at(i) != ',') {
+    curr += s.at(i);
     i++;
   }
   text_ctrl_3->SetValue(curr);
   i++;
   curr.Clear();
-  while (i < s.Length() && s.GetChar(i) != ']') {
-    curr += s.GetChar(i);
+  while (i < s.Length() && s.at(i) != ']') {
+    curr += s.at(i);
     i++;
   }
   text_ctrl_4->SetValue(curr);
   i++;
   // Independent variable 2
-  while (i < s.Length() && s.GetChar(i) != '[')
+  while (i < s.Length() && s.at(i) != '[')
     i++;
   i++;
   curr.Clear();
-  while (i < s.Length() && s.GetChar(i) != ',') {
-    curr += s.GetChar(i);
+  while (i < s.Length() && s.at(i) != ',') {
+    curr += s.at(i);
     i++;
   }
   text_ctrl_5->SetValue(curr);
   i++;
   curr.Clear();
-  while (i < s.Length() && s.GetChar(i) != ',') {
-    curr += s.GetChar(i);
+  while (i < s.Length() && s.at(i) != ',') {
+    curr += s.at(i);
     i++;
   }
   text_ctrl_6->SetValue(curr);
   i++;
   curr.Clear();
-  while (i < s.Length() && s.GetChar(i) != ']') {
-    curr += s.GetChar(i);
+  while (i < s.Length() && s.at(i) != ']') {
+    curr += s.at(i);
     i++;
   }
   text_ctrl_7->SetValue(curr);
   i++;
   // Optional parameters
   while (i < s.Length()) {
-    if (s.GetChar(i) == '[') {
+    if (s.at(i) == '[') {
       i++;
       curr.Clear();
-      while (i < s.Length() && s.GetChar(i) != ',') {
-        curr += s.GetChar(i);
+      while (i < s.Length() && s.at(i) != ',') {
+        curr += s.at(i);
         i++;
       }
       curr.Trim();
       curr.Trim(false);
       if (curr == wxS("gnuplot_postamble")) {
-        while (i < s.Length() && s.GetChar(i) != '"')
+        while (i < s.Length() && s.at(i) != '"')
           i++;
         i++;
         curr.Clear();
-        while (i < s.Length() && s.GetChar(i) != '"') {
-          curr += s.GetChar(i);
+        while (i < s.Length() && s.at(i) != '"') {
+          curr += s.at(i);
           i++;
         }
         combo_box_2->SetValue(curr);
       } else if (curr == wxS("gnuplot_out_file")) {
-        while (i < s.Length() && s.GetChar(i) != '"')
+        while (i < s.Length() && s.at(i) != '"')
           i++;
         i++;
         curr.Clear();
-        while (i < s.Length() && s.GetChar(i) != '"') {
-          curr += s.GetChar(i);
+        while (i < s.Length() && s.at(i) != '"') {
+          curr += s.at(i);
           i++;
         }
         text_ctrl_10->SetValue(curr);
       } else if (curr == wxS("gnuplot_pm3d")) {
         curr.Clear();
-        while (i < s.Length() && s.GetChar(i) != ']') {
-          curr += s.GetChar(i);
+        while (i < s.Length() && s.at(i) != ']') {
+          curr += s.at(i);
           i++;
         }
         if (curr.Find(wxS("true")) > -1)

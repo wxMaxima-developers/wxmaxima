@@ -217,51 +217,51 @@ void Plot2DWiz::Parse(wxString s) {
   s = s.SubString(7, s.Length());
   // Function to plot
   do {
-    if (s.GetChar(i) == '[') {
+    if (s.at(i) == '[') {
       depth++;
       if (depth > 1)
-        curr += s.GetChar(i);
-    } else if (s.GetChar(i) == ']') {
+        curr += s.at(i);
+    } else if (s.at(i) == ']') {
       depth--;
       if (depth > 0)
-        curr += s.GetChar(i);
+        curr += s.at(i);
     } else
-      curr += s.GetChar(i);
+      curr += s.at(i);
     i++;
   } while (depth > 0);
   text_ctrl_1->SetValue(curr);
   // Independent variable
-  while (i < s.Length() && s.GetChar(i) != '[')
+  while (i < s.Length() && s.at(i) != '[')
     i++;
   i++;
   curr.Clear();
-  while (i < s.Length() && s.GetChar(i) != ',') {
-    curr += s.GetChar(i);
+  while (i < s.Length() && s.at(i) != ',') {
+    curr += s.at(i);
     i++;
   }
   text_ctrl_2->SetValue(curr);
   i++;
   curr.Clear();
-  while (i < s.Length() && s.GetChar(i) != ',') {
-    curr += s.GetChar(i);
+  while (i < s.Length() && s.at(i) != ',') {
+    curr += s.at(i);
     i++;
   }
   text_ctrl_3->SetValue(curr);
   i++;
   curr.Clear();
-  while (i < s.Length() && s.GetChar(i) != ']') {
-    curr += s.GetChar(i);
+  while (i < s.Length() && s.at(i) != ']') {
+    curr += s.at(i);
     i++;
   }
   text_ctrl_4->SetValue(curr);
   i++;
   // Optional parameters
   while (i < s.Length()) {
-    if (s.GetChar(i) == '[') {
+    if (s.at(i) == '[') {
       i++;
       curr.Clear();
-      while (i < s.Length() && s.GetChar(i) != ',' && s.GetChar(i) != ']') {
-        curr += s.GetChar(i);
+      while (i < s.Length() && s.at(i) != ',' && s.at(i) != ']') {
+        curr += s.at(i);
         i++;
       }
       curr.Trim();
@@ -269,56 +269,56 @@ void Plot2DWiz::Parse(wxString s) {
       if (curr == wxS("y")) {
         curr.Clear();
         i++;
-        while (i < s.Length() && s.GetChar(i) != ',') {
-          curr += s.GetChar(i);
+        while (i < s.Length() && s.at(i) != ',') {
+          curr += s.at(i);
           i++;
         }
         text_ctrl_6->SetValue(curr);
         i++;
         curr.Clear();
-        while (i < s.Length() && s.GetChar(i) != ']') {
-          curr += s.GetChar(i);
+        while (i < s.Length() && s.at(i) != ']') {
+          curr += s.at(i);
           i++;
         }
         text_ctrl_7->SetValue(curr);
         i++;
       } else if (curr == wxS("gnuplot_postamble")) {
-        while (i < s.Length() && s.GetChar(i) != '"')
+        while (i < s.Length() && s.at(i) != '"')
           i++;
         i++;
         curr.Clear();
-        while (i < s.Length() && s.GetChar(i) != '"') {
-          curr += s.GetChar(i);
+        while (i < s.Length() && s.at(i) != '"') {
+          curr += s.at(i);
           i++;
         }
         combo_box_2->SetValue(curr);
       } else if (curr == wxS("gnuplot_out_file")) {
-        while (i < s.Length() && s.GetChar(i) != '"')
+        while (i < s.Length() && s.at(i) != '"')
           i++;
         i++;
         curr.Clear();
-        while (i < s.Length() && s.GetChar(i) != '"') {
-          curr += s.GetChar(i);
+        while (i < s.Length() && s.at(i) != '"') {
+          curr += s.at(i);
           i++;
         }
         text_ctrl_9->SetValue(curr);
       } else if (curr == wxS("nticks")) {
         curr.Clear();
-        while (i < s.Length() && s.GetChar(i) != ',')
+        while (i < s.Length() && s.at(i) != ',')
           i++;
         i++;
-        while (i < s.Length() && s.GetChar(i) != ']') {
-          curr += s.GetChar(i);
+        while (i < s.Length() && s.at(i) != ']') {
+          curr += s.at(i);
           i++;
         }
         text_ctrl_8->SetValue(curr);
       } else if (curr == wxS("logx")) {
         check_box_1->SetValue(true);
-        while (i < s.Length() && s.GetChar(i) != ']')
+        while (i < s.Length() && s.at(i) != ']')
           i++;
       } else if (curr == wxS("logy")) {
         check_box_2->SetValue(true);
-        while (i < s.Length() && s.GetChar(i) != ']')
+        while (i < s.Length() && s.at(i) != ']')
           i++;
       }
     }

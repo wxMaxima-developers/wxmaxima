@@ -47,7 +47,7 @@ void AutocompletePopup::UpdateResults() {
     if ((m_type == AutoComplete::esccommand) && (m_partial.Length() < 2)) {
       DeleteAllItems();
       for (unsigned int i = 0; i < m_completions.size(); i++)
-        InsertItem(i, m_completions[i]);
+        InsertItem(i, m_completions.at(i));
 
       Select(0);
       Focus(0);
@@ -76,7 +76,7 @@ void AutocompletePopup::UpdateResults() {
   default:
     DeleteAllItems();
     for (unsigned int i = 0; i < m_completions.size(); i++)
-      InsertItem(i, m_completions[i]);
+      InsertItem(i, m_completions.at(i));
 
     Select(0);
     Focus(0);

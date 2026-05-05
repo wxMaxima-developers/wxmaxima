@@ -85,7 +85,7 @@ public:
                  const wxString &label10, const wxString &defaultval10, const wxString &tooltip10);
 
   //! Returns the contents of the nth field.
-  wxString operator[](int i) const { return m_textctrl[i]->GetValue(); }
+  wxString operator[](int i) const { return m_textctrl.at(i)->GetValue(); }
 
   //! Returns the command the wizard has generated, if commandRule wasn't empty
   wxString GetOutput() const {return m_output->GetValue();}
