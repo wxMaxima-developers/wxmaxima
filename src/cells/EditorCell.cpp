@@ -2545,10 +2545,10 @@ wxString EditorCell::GetWordUnderCaret() {
 
     if (*it == '\\') {
       ++it;
-      if (it != m_text.end()) {
-        retval += *it;
-        pos++;
-      }
+      if (it == m_text.end())
+        break;
+      retval += *it;
+      pos++;
     }
   }
   return retval;
@@ -2570,10 +2570,10 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens),
   for (wxString::const_iterator it = m_text.begin(); it != m_text.end(); ++it) {
     if (*it == '\\') {
       pos++;
-      if (it != m_text.end()) {
-        ++it;
-        pos++;
-      }
+      ++it;
+      if (it == m_text.end())
+        break;
+      pos++;
       continue;
     }
     if (!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '?') &&
@@ -3149,10 +3149,16 @@ void EditorCell::StyleTextTexts() const {
             indentChar.Clear();
 
           // Equip bullet lists with real bullets
-          if (line_trimmed.StartsWith(wxS("* ")))
-            line.at(line.find("*")) = L'\u2022';
-          if (line_trimmed.StartsWith(L"\u00B7 "))
-            line.at(line.find(L"\u00B7")) = L'\u2022';
+          if (line_trimmed.StartsWith(wxS("* "))) {
+            auto posOfBullet = line.find("*");
+            if (posOfBullet != wxString::npos)
+              line.at(posOfBullet) = L'\u2022';
+          }
+          if (line_trimmed.StartsWith(L"\u00B7 ")) {
+            auto posOfBullet = line.find(L"\u00B7");
+            if (posOfBullet != wxString::npos)
+              line.at(posOfBullet) = L'\u2022';
+          }
 
           // Remember what a continuation for this indenting object would begin
           // with
@@ -3189,23 +3195,27 @@ void EditorCell::StyleTextTexts() const {
       // Store the indented line in the list of styled text snippets
       m_styledText.push_back(StyledText(line, GetTextStyle(), 0, indentChar));
 
-      if (it < m_text.end()) {
+      if (it != m_text.end()) {
         // If the cell doesn't end with the last char of this line we have to
         // add a line ending to the list of styled text snippets
-        if ((i + 1 < m_text.Length()) || (m_text.at(i) == wxS('\n'))) {
+        if ((i + 1 < m_text.Length()) ||
+            (i < m_text.Length() && m_text.at(i) == wxS('\n'))) {
           // Store the line ending in the list of styled text snippets
           if (*it == wxS('\n'))
-            m_styledText.push_back(StyledText(wxS("\n"), GetTextStyle(), 0, indentChar));
+            m_styledText.push_back(
+                                   StyledText(wxS("\n"), GetTextStyle(), 0, indentChar));
           else
-            m_styledText.push_back(StyledText(wxS("\r"), GetTextStyle(), 0, indentChar));
+            m_styledText.push_back(
+                                   StyledText(wxS("\r"), GetTextStyle(), 0, indentChar));
         }
+
+        // Is this a real new line of comment - or did we insert a soft
+        // linebreak?
+        newLine = ((i + 1 >= m_text.Length()) || (*it == wxS('\n')));
+
+        ++i;
+        ++it;
       }
-
-      // Is this a real new line of comment - or did we insert a soft linebreak?
-      newLine = ((i + 1 >= m_text.Length()) || (*it == wxS('\n')));
-
-      ++i;
-      ++it;
     } // The loop that loops over all lines
   }   // Do we want to autowrap lines?
   else {
