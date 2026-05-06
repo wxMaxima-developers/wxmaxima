@@ -88,7 +88,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
 : wxScrolled<wxWindow>(parent, id, pos, size,
                        wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
 #if defined __WXMSW__
-                       | wxSUNKEN_BORDER
+                       | wxBORDER_SUNKEN
 #endif
                        ),
   m_unsavedDocuments(wxS("unsaved")),
