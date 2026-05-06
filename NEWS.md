@@ -1,3 +1,7 @@
+# Current development version
+
+- Fix the cursor position after autocompletion (#2090).
+
 # 26.05.0
 
 - Fix search and replace. Before in a longer string - e.g. "aaaaaaaaa"
