@@ -62,7 +62,7 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group,
   CopyCommonData(cell);
 }
 
-DEFINE_CELL(VisiblyInvalidCell)
+DEFINE_CELL_TYPEINFO(VisiblyInvalidCell)
 
 std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell() const {
   return std::make_unique<VisiblyInvalidCell>(m_group, m_configuration);

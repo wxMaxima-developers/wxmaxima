@@ -47,10 +47,6 @@ LabelCell::LabelCell(GroupCell *group, const LabelCell &cell)
 
 DEFINE_CELL(LabelCell)
 
-std::unique_ptr<Cell> LabelCell::Copy(GroupCell *group) const {
-  return std::make_unique<LabelCell>(group, *this);
-}
-
 void LabelCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point) &&
