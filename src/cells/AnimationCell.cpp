@@ -51,19 +51,6 @@
 #include <wx/window.h>
 
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
-                             const wxString &wxmxFile,
-                             int framerate)
-: ImgCellBase(group, config),
-  m_timer(m_cellPointers->GetWorksheet(), wxWindow::NewControlId()),
-  m_framerate(framerate), m_displayed(0),
-  m_imageBorderWidth(Scale_Px(1)),
-  m_wxmxFile(wxmxFile) {
-  InitBitFields_AnimationCell();
-  m_type = MC_TYPE_SLIDE;
-  ReloadTimer();
-}
-
-AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
                              int framerate)
   : ImgCellBase(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxWindow::NewControlId()),
@@ -71,6 +58,13 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
   InitBitFields_AnimationCell();
   m_type = MC_TYPE_SLIDE;
   ReloadTimer();
+}
+
+AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
+                             const wxString &wxmxFile,
+                             int framerate)
+: AnimationCell(group, config, framerate) {
+  m_wxmxFile = wxmxFile;
 }
 
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,

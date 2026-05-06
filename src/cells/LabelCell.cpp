@@ -41,14 +41,15 @@ LabelCell::LabelCell(GroupCell *group, Configuration *config,
 }
 
 LabelCell::LabelCell(GroupCell *group, const LabelCell &cell)
-  : TextCell(group, cell.m_configuration),
-    m_userDefinedLabel(cell.m_userDefinedLabel) {}
+  : LabelCell(group, cell.m_configuration, cell.m_text, cell.GetTextStyle()) {
+  m_userDefinedLabel = cell.m_userDefinedLabel;
+}
 
 DEFINE_CELL_TYPEINFO(LabelCell)
 
-std::unique_ptr<Cell> LabelCell::Copy(GroupCell *group) const
-{
-  std::unique_ptr<LabelCell> rr = std::make_unique<LabelCell>(group, m_configuration, m_displayedText, GetTextStyle() );
+std::unique_ptr<Cell> LabelCell::Copy(GroupCell *group) const {
+  auto rr = std::make_unique<LabelCell>(group, *this);
+  rr->CopyCommonData(*this);
   return rr;
 }
 

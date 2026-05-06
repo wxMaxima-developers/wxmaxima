@@ -46,15 +46,13 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config,
                                        wxString &&toolTip)
-  : TextCell(group, config, cellContents, TS_ERROR) {
-  InitBitFields_VisiblyInvalidCell();
+  : VisiblyInvalidCell(group, config) {
   SetToolTip(std::move(toolTip));
 }
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config,
                                        const wxString *toolTip)
-  : TextCell(group, config, cellContents, TS_ERROR) {
-  InitBitFields_VisiblyInvalidCell();
+  : VisiblyInvalidCell(group, config) {
   SetToolTip(toolTip);
 }
 

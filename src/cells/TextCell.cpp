@@ -121,10 +121,7 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
 }
 
 TextCell::TextCell(GroupCell *group, const TextCell &cell)
-  : Cell(group, cell.m_configuration), m_text(cell.m_text),
-    m_displayedText(cell.m_displayedText) {
-  InitBitFields_TextCell();
-  m_type = cell.m_type;
+  : TextCell(group, cell.m_configuration, cell.m_text, cell.GetTextStyle()) {
   CopyCommonData(cell);
   SetBigSkip(cell.HasBigSkip());
   SetHighlight(cell.GetHighlight());

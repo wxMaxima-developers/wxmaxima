@@ -51,18 +51,14 @@ ImgCell::ImgCell(GroupCell *group, Configuration *config)
 
 ImgCell::ImgCell(GroupCell *group, Configuration *config,
                  const wxMemoryBuffer &image, const wxString &type)
-  : ImgCellBase(group, config),
-    m_image(new Image(m_configuration, image, type)), m_imageBorderWidth(1) {
-  InitBitFields_ImgCell();
-  m_type = MC_TYPE_IMAGE;
+  : ImgCell(group, config) {
+  m_image = std::make_unique<Image>(m_configuration, image, type);
 }
 
 ImgCell::ImgCell(GroupCell *group, Configuration *config,
                  const wxBitmap &bitmap)
-  : ImgCellBase(group, config), m_image(new Image(m_configuration, bitmap)),
-    m_imageBorderWidth(1) {
-  InitBitFields_ImgCell();
-  m_type = MC_TYPE_IMAGE;
+  : ImgCell(group, config) {
+  m_image = std::make_unique<Image>(m_configuration, bitmap);
 }
 
 int ImgCell::s_counter = 0;
@@ -70,9 +66,7 @@ int ImgCell::s_counter = 0;
 // constructor which load image
 ImgCell::ImgCell(GroupCell *group, Configuration *config, const wxString &image,
                  const wxString &wxmFile, bool remove)
-  : ImgCellBase(group, config), m_imageBorderWidth(1) {
-  InitBitFields_ImgCell();
-  m_type = MC_TYPE_IMAGE;
+  : ImgCell(group, config) {
   if (image != wxEmptyString) {
     m_image =
       std::make_shared<Image>(m_configuration, image, wxmFile, remove);
@@ -87,9 +81,8 @@ void ImgCell::SetConfiguration(Configuration *config) {
 }
 
 ImgCell::ImgCell(GroupCell *group, const ImgCell &cell)
-  : ImgCellBase(group, cell.m_configuration), m_imageBorderWidth(1) {
-  InitBitFields_ImgCell();
-  m_type = MC_TYPE_IMAGE;
+  : ImgCell(group, cell.m_configuration) {
+  CopyCommonData(cell);
   m_image = std::make_shared<Image>(cell.m_configuration, *cell.m_image);
   m_drawBoundingBox = cell.m_drawBoundingBox;
 }
