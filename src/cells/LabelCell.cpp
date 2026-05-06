@@ -45,12 +45,10 @@ LabelCell::LabelCell(GroupCell *group, const LabelCell &cell)
   m_userDefinedLabel = cell.m_userDefinedLabel;
 }
 
-DEFINE_CELL_TYPEINFO(LabelCell)
+DEFINE_CELL(LabelCell)
 
 std::unique_ptr<Cell> LabelCell::Copy(GroupCell *group) const {
-  auto rr = std::make_unique<LabelCell>(group, *this);
-  rr->CopyCommonData(*this);
-  return rr;
+  return std::make_unique<LabelCell>(group, *this);
 }
 
 void LabelCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
