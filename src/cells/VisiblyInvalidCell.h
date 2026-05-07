@@ -39,7 +39,7 @@ public:
   VisiblyInvalidCell(GroupCell *group, Configuration *config, const wxString *toolTip);
   VisiblyInvalidCell(GroupCell *group, const VisiblyInvalidCell &cell);
   virtual ~VisiblyInvalidCell(){}
-//  std::unique_ptr<Cell> Copy(GroupCell *cell) const override;
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
 private:

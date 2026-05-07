@@ -47,9 +47,7 @@ LabelCell::LabelCell(GroupCell *group, const LabelCell &cell)
 
 DEFINE_CELL(LabelCell)
 
-std::unique_ptr<Cell> LabelCell::Copy(GroupCell *group) const {
-  return std::make_unique<LabelCell>(group, *this);
-}
+
 
 void LabelCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(point, dc, antialiassingDC);
@@ -169,9 +167,9 @@ wxString LabelCell::GetXMLFlags() const {
 void LabelCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     TextCell::Recalculate(fontsize);
-    m_width = std::max(m_width, Scale_Px(m_configuration->GetLabelWidth())  +
+    m_width = std::max(m_width.GetOrElse(0), Scale_Px(m_configuration->GetLabelWidth())  +
                        MC_TEXT_PADDING);
-    m_height = std::max(m_height, static_cast<wxCoord>(m_fontSize_Scaled.Get() + Scale_Px(2)));
+    m_height = std::max(m_height.GetOrElse(0), static_cast<wxCoord>(m_fontSize_Scaled.Get() + Scale_Px(2)));
     m_center = m_height / 2;
     if(ConfigChanged())
       UpdateDisplayedText();

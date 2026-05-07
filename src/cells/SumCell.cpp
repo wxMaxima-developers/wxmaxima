@@ -156,34 +156,32 @@ void SumCell::Recalculate(AFontSize fontsize) const {
     DisplayedBase()->RecalculateList(fontsize);
     m_start->RecalculateList(fontsize);
     m_var->RecalculateList(fontsize);
-    
+    m_over->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
+    m_under->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
+    m_comma1->RecalculateList(fontsize);
+    m_comma2->RecalculateList(fontsize);
+    m_comma3->RecalculateList(fontsize);
+    m_open->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
+
     m_signSize = GetSymbolSize();
     if (IsBrokenIntoLines()) {
-      m_over->RecalculateList(fontsize);
-      m_under->RecalculateList(fontsize);
-      m_comma1->RecalculateList(fontsize);
-      m_comma2->RecalculateList(fontsize);
-      m_comma3->RecalculateList(fontsize);
-      m_open->RecalculateList(fontsize);
-      m_close->RecalculateList(fontsize);
       m_width = 0;
       m_center = 0;
       m_height = 0;
     } else {
-      m_over->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
-      m_under->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
       m_width = std::max(std::max(m_signSize.x, m_over->SumOfWidths()),
                          m_under->SumOfWidths()) + DisplayedBase()->SumOfWidths();
-    
+
       m_center = std::max(m_signSize.y / 2 + Scale_Px(2)
                           + m_over->GetHeightList(),
                           DisplayedBase()->GetCenterList());
       m_height = m_center +
         std::max(m_under->GetHeightList() +  Scale_Px(2) + m_signSize.y / 2,
                  DisplayedBase()->GetMaxDrop());
-    }    
+    }
     Cell::Recalculate(fontsize);
-  } 
+  }
 }
 
 void SumCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {

@@ -76,9 +76,9 @@ void NamedBoxCell::Recalculate(AFontSize fontsize) const {
     m_nameHeight = m_boxname->GetHeightList();
 
     if (!IsBrokenIntoLines()) {
-      m_width = std::max(m_innerCellWidth, m_nameWidth) + Scale_Px(8);
-      m_height = m_innerCellHeight + m_nameHeight + Scale_Px(16);
-      m_center = m_innerCell->GetCenterList() + m_nameHeight + Scale_Px(8);
+      m_width = std::max(m_innerCellWidth.GetOrElse(0), m_nameWidth.GetOrElse(0)) + Scale_Px(8);
+      m_height = m_innerCellHeight.GetOrElse(0) + m_nameHeight.GetOrElse(0) + Scale_Px(16);
+      m_center = m_innerCell->GetCenterList() + m_nameHeight.GetOrElse(0) + Scale_Px(8);
     } else {
       // The NamedBoxCell itself isn't displayed if it is broken into lines.
       // instead m_open, m_innerCell and m_close are => We can set our size to 0

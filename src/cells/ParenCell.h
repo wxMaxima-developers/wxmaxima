@@ -101,7 +101,8 @@ private:
   //! How to create a big parenthesis sign?
   mutable Configuration::drawMode m_bigParenType = Configuration::ascii;
   mutable int m_charWidth1 = 12, m_charHeight1 = 12;
-  mutable int m_signWidth = 12, m_signHeight = 50;
+  mutable int m_signWidth = 12;
+  mutable CachedInteger<int> m_signHeight;
 
 //** Bitfield objects (1 bytes)
 //**

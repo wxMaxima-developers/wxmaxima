@@ -90,11 +90,11 @@ void FracCell::Recalculate(AFontSize fontsize) const {
     if (m_inExponent || IsBrokenIntoLines()) {
       m_displayedNum->RecalculateList(fontsize);
       m_displayedDenom->RecalculateList(fontsize);
-      m_divide->RecalculateList(fontsize);
     } else {
       m_displayedNum->RecalculateList({MC_MIN_SIZE, fontsize - FRAC_DEC});
       m_displayedDenom->RecalculateList({MC_MIN_SIZE, fontsize - FRAC_DEC});
     }
+    m_divide->RecalculateList(fontsize);
 
     if (IsBrokenIntoLines()) {
       m_height = 0;

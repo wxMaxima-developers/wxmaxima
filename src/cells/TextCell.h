@@ -97,7 +97,7 @@ public:
 protected:
   mutable wxString m_altCopyText;
   //! Returns the XML flags this cell needs in wxMathML
-  virtual wxString GetXMLFlags() const;
+  wxString GetXMLFlags() const override;
   //! The text we actually display depends on many factors, unfortunately
   virtual void UpdateDisplayedText() const;
   //! Update the tooltip for this cell

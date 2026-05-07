@@ -444,11 +444,11 @@ bool Cell::DrawThisCell(wxPoint point) {
 }
 
 bool Cell::HasValidSize() const {
-  return GetWidth() >= 0 && GetHeight() >= 0 && GetCenter() >= 0;
+  return m_width.IsValid() && m_height.IsValid() && m_center.IsValid();
 }
 
 bool Cell::HasStaleSize() const {
-  return GetWidth() >= 0 && GetHeight() >= 0 && GetCenter() >= 0;
+  return m_width.IsValid() && m_height.IsValid() && m_center.IsValid();
 }
 
 bool Cell::HasValidPosition() const {
@@ -576,9 +576,9 @@ bool Cell::InUpdateRegion() const {
     wxRect cellRect;
     cellRect.SetPosition(m_currentPoint);
     cellRect.SetWidth(m_configuration->GetCanvasSize().x);
-    if(GetHeight() > 0)
+    if(m_height.IsValid() && m_height > 0)
       {
-        cellRect.SetHeight(GetHeight());
+        cellRect.SetHeight(m_height);
       }
     else
       {
@@ -699,6 +699,13 @@ wxString Cell::ListToTeX() const {
 }
 
 wxString Cell::ToXML() const { return {}; }
+
+wxString Cell::GetXMLFlags() const {
+  wxString flags;
+  if (HasHardLineBreak())
+    flags += wxS(" breakline=\"true\"");
+  return flags;
+}
 
 wxString Cell::ToMathML() const { return {}; }
 
@@ -1050,6 +1057,9 @@ void Cell::ResetSize_RecursivelyList() const {
 
 void Cell::ResetSize() const {
   m_cellCfgCnt_last--;
+  m_width.Invalidate();
+  m_height.Invalidate();
+  m_center.Invalidate();
 }
 
 Cell *Cell::first() const {

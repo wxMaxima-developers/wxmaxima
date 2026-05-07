@@ -102,7 +102,7 @@ void IntervalCell::Recalculate(AFontSize fontsize) const {
       m_width = m_signWidth + m_start->SumOfWidths() + m_ellipsis->GetWidth() +
         m_stop->SumOfWidths() + m_signWidth;
 
-      m_height = std::max(std::max(m_signHeight, m_start->GetHeightList()),
+      m_height = std::max(std::max(m_signHeight.GetOrElse(0), m_start->GetHeightList()),
                           m_stop->GetHeightList()) +
         Scale_Px(4);
       m_center = m_height / 2;
