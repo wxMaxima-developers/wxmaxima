@@ -112,7 +112,8 @@ protected:
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
 
-  mutable int m_signWidth = 12, m_signHeight = -1;
+  mutable int m_signWidth = 12;
+  mutable CachedInteger<int> m_signHeight;
 
 //** Bitfield objects (1 bytes)
 //**

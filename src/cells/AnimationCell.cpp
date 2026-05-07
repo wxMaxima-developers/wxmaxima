@@ -54,7 +54,9 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
                              int framerate)
   : ImgCellBase(group, config),
     m_timer(m_cellPointers->GetWorksheet(), wxWindow::NewControlId()),
-    m_framerate(framerate), m_displayed(0), m_imageBorderWidth(Scale_Px(1)) {
+    m_displayed(0), m_imageBorderWidth(Scale_Px(1)) {
+  if (framerate != -1)
+    m_framerate = framerate;
   InitBitFields_AnimationCell();
   m_type = MC_TYPE_SLIDE;
   ReloadTimer();
@@ -113,7 +115,7 @@ DEFINE_CELL(AnimationCell)
 int AnimationCell::GetFrameRate() const {
   int framerate = 2;
 
-  if (m_framerate > -1)
+  if (m_framerate.IsValid())
     framerate = m_framerate;
   else {
     framerate = m_configuration->DefaultFramerate();
@@ -147,18 +149,17 @@ void AnimationCell::AnimationRunning(bool run) {
 }
 
 int AnimationCell::SetFrameRate(int Freq) {
-  m_framerate = Freq;
-
   if (Freq < 0)
-    m_framerate = -1;
+    m_framerate.Invalidate();
   else {
+    m_framerate = Freq;
     if (Freq < 1)
       m_framerate = 1;
     if (Freq > 200)
       m_framerate = 200;
   }
 
-  return m_framerate;
+  return m_framerate.GetOrElse(m_configuration->DefaultFramerate());
 }
 
 void AnimationCell::LoadImages(wxMemoryBuffer imageData) {
@@ -394,7 +395,7 @@ wxString AnimationCell::ToXML() const {
     flags += wxS(" running=\"false\"");
   flags += wxString::Format(wxS(" frame=\"%li\""), static_cast<long>(m_displayed));
 
-  if (m_framerate > 0)
+  if (m_framerate.GetOrElse(0) > 0)
     flags += wxString::Format(wxS(" fr=\"%li\""), static_cast<long>(GetFrameRate()));
   return wxS("\n<slide") + flags + wxS(">") + images + wxS("</slide>");
 }

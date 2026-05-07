@@ -1190,7 +1190,7 @@ wxString TextCell::ToRTF() const {
 }
 
 wxString TextCell::GetXMLFlags() const {
-  wxString flags;
+  wxString flags = Cell::GetXMLFlags();
   if (HasHardLineBreak() && (GetTextStyle() != TS_LABEL) &&
       (GetTextStyle() != TS_USERLABEL))
     flags += wxS(" breakline=\"true\"");

@@ -537,7 +537,7 @@ private:
     //! Chars that mark continued indentation
     wxString m_indentChar;
     //! The cached width of this piece of text
-    wxCoord m_width = -1;
+    mutable CachedInteger<wxCoord> m_width;
     //! By How many pixels we want to indent this line?
     wxCoord m_indentPixels = 0;
     //! Do we really want to style this text portion different than the default?
@@ -553,9 +553,9 @@ private:
       : m_text(text), m_style(style), m_indentChar(indentChar), m_indentPixels(indentPixels)  {}
 
     void SetWidth(wxCoord width){m_width = width;}
-    void ResetSize(){SetWidth(-1);}
+    void ResetSize(){m_width.Invalidate();}
     wxCoord GetWidth() const {return m_width;}
-    bool SizeKnown() const {return GetWidth() >= 0;}
+    bool SizeKnown() const {return m_width.IsValid();}
     //! Returns the piece of text
     const wxString &GetText() const { return m_text; }
     //! Changes the piece of text kept in this token

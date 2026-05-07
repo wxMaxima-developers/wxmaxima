@@ -120,20 +120,20 @@ void IntCell::Recalculate(AFontSize fontsize) const {
         m_var->SumOfWidths() + Scale_Px(4);
       if (HasLimits()) {
 
-        m_center = std::max(std::max(m_signHeight / 2,
+        m_center = std::max(std::max(m_signHeight.GetOrElse(0) / 2,
                                      m_base->GetCenterList()),
                             m_upperLimit->GetHeightList() + IntSignLimitYoffset()
                             );
-        m_height = m_center + std::max(std::max(m_signHeight / 2,
+        m_height = m_center + std::max(std::max(m_signHeight.GetOrElse(0) / 2,
                                                 m_base->GetMaxDrop()),
                                        m_lowerLimit->GetHeightList() + IntSignLimitYoffset()
                                        );
       } else {
-        m_center = std::max(m_signHeight / 2, m_base->GetCenterList());
-        m_height = m_center + std::max(m_signHeight / 2, m_base->GetMaxDrop());
+        m_center = std::max(m_signHeight.GetOrElse(0) / 2, m_base->GetCenterList());
+        m_height = m_center + std::max(m_signHeight.GetOrElse(0) / 2, m_base->GetMaxDrop());
       }
-    }
     Cell::Recalculate(fontsize);
+    }
   }
 }
 
@@ -141,18 +141,18 @@ void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   Cell::Draw(point, dc, antialiassingDC);
   if (DrawThisCell(point)) {
     wxPoint base(point), lowerLimit(point), upperLimit(point), var(point), sign(point);
-    base.x += m_signWidth;
+    base.x += m_signWidth.GetOrElse(0);
     base.x += std::max(m_upperLimit->SumOfWidths(), m_lowerLimit->SumOfWidths());
 
     SetPen(antialiassingDC, 1.5);
 
-    sign.y -= .5 * m_signHeight;
-    dc->DrawBitmap(BitmapFromSVG(m_svgIntegralSign, wxSize(m_signWidth, m_signHeight)),
-                   sign.x, sign.y, true);
+    sign.y -= .5 * m_signHeight.GetOrElse(0);
+    dc->DrawBitmap(BitmapFromSVG(m_svgIntegralSign, wxSize(m_signWidth.GetOrElse(0), m_signHeight.GetOrElse(0))),
+                   sign.x, sign.y);
   
     if (HasLimits()) {
-      lowerLimit.x += m_signWidth;
-      upperLimit.x += m_signWidth;
+      lowerLimit.x += m_signWidth.GetOrElse(0);
+      upperLimit.x += m_signWidth.GetOrElse(0);
  
       upperLimit.y -= IntSignLimitYoffset();
       upperLimit.y -= m_upperLimit->GetMaxDrop();

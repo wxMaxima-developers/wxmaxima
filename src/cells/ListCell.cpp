@@ -81,7 +81,7 @@ void ListCell::Recalculate(AFontSize fontsize) const {
       m_center = 0;
     } else {
       m_width = m_innerCell->SumOfWidths() + m_signWidth * 2;
-      m_height = std::max(m_signHeight, m_innerCell->GetHeightList()) + Scale_Px(4);
+      m_height = std::max(m_signHeight.GetOrElse(0), m_innerCell->GetHeightList()) + Scale_Px(4);
       m_center = m_height / 2;
     }
     Cell::Recalculate(fontsize);

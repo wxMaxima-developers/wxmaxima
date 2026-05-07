@@ -108,10 +108,10 @@ private:
   wxString ToString() const override;
   wxString ToTeX() const override;
   wxString ToXML() const override;
-  mutable int m_innerCellWidth = -1;
-  mutable int m_innerCellHeight = -1;
-  mutable int m_nameWidth = -1;
-  mutable int m_nameHeight = -1;
+  mutable CachedInteger<int> m_innerCellWidth;
+  mutable CachedInteger<int> m_innerCellHeight;
+  mutable CachedInteger<int> m_nameWidth;
+  mutable CachedInteger<int> m_nameHeight;
 };
 
 #endif // NAMEDBOXCELL_H

@@ -108,7 +108,8 @@ void ImgCell::LoadImage(wxString image, bool remove) {
 }
 
 void ImgCell::SetBitmap(const wxBitmap &bitmap) {
-  m_width = m_height = -1;
+  m_width.Invalidate();
+  m_height.Invalidate();
   m_image = std::make_shared<Image>(m_configuration, bitmap);
 }
 

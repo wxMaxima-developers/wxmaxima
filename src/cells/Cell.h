@@ -359,8 +359,8 @@ public:
   */
   wxCoord GetHeight() const
     {
-//      if(!HasValidSize())
-//        Recalculate(m_fontSize_Scaled); 
+      if(!HasValidSize())
+        Recalculate(m_fontSize_Scaled); 
       return m_height;
     }
 
@@ -374,8 +374,8 @@ public:
 */
   int GetWidth() const
     {
-//      if(!HasValidSize())
-//        Recalculate(m_fontSize_Scaled); 
+      if(!HasValidSize())
+        Recalculate(m_fontSize_Scaled); 
       return m_width;
     }
 
@@ -390,8 +390,8 @@ public:
   */
   wxCoord GetCenter() const
     {
-//      if(!HasValidSize())
-//        Recalculate(m_fontSize_Scaled); 
+      if(!HasValidSize())
+        Recalculate(m_fontSize_Scaled); 
       return m_center;
     }
 
@@ -416,7 +416,7 @@ public:
     \image rtf CellHeights.png
   */
   wxCoord GetDrop() const
-    { return m_height - m_center; }
+    { return GetHeight() - GetCenter(); }
 
   /*!
     Returns the type of this cell.
@@ -669,6 +669,7 @@ public:
   virtual wxString ToTeX() const;
   //! Convert this cell to a representation fit for saving in a .wxmx file
   virtual wxString ToXML() const;
+  virtual wxString GetXMLFlags() const;
   //! Convert this cell to a representation fit for saving in a .wxmx file
   virtual wxString ToMathML() const;
 
@@ -1002,18 +1003,18 @@ protected:
     \image latex CellHeights.png
     \image rtf CellHeights.png
   */
-  mutable wxCoord m_height = -1;
+  mutable CachedInteger<wxCoord> m_height;
   /*! The width of this cell; is recalculated by RecalculateHeight.
 
    */
-  mutable wxCoord m_width = -1;
+  mutable CachedInteger<wxCoord> m_width;
   /*! The distance between the top and the insertion point of this cell
 
     \image html CellHeights.svg
     \image latex CellHeights.png
     \image rtf CellHeights.png
   */
-  mutable wxCoord m_center = -1;
+  mutable CachedInteger<wxCoord> m_center;
 protected:
 //** 2-byte objects (2 bytes)
 //**

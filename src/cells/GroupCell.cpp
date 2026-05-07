@@ -473,7 +473,7 @@ void GroupCell::InputHeightChanged() {
   if (m_output != NULL) {
     m_height += m_outputRect.GetHeight();
     m_outputRect.y = m_currentPoint.y + m_center;
-    m_width = std::max(m_width, m_output->GetLineWidth());
+    m_width = std::max(m_width.GetOrElse(0), m_output->GetLineWidth());
   }
   UpdateYPositionList();
 }
@@ -578,8 +578,8 @@ void GroupCell::RecalculateOutput() const {
   for (const Cell &tmp : OnDrawList(m_output.get())) {
     if (tmp.BreakLineHere()) {
       int height_Delta = tmp.GetHeightList();
-      m_width = std::max(m_width, tmp.GetLineWidth());
-      m_outputRect.width = std::max(m_outputRect.width, m_width);
+      m_width = std::max(m_width.GetOrElse(0), tmp.GetLineWidth());
+      m_outputRect.width = std::max(m_outputRect.width, static_cast<wxCoord>(m_width));
       m_outputRect.height += height_Delta;
 
       if (tmp.GetPrevious() &&

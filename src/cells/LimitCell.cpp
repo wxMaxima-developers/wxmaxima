@@ -1,8 +1,7 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
-// nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,16 +22,11 @@
 
 /*! \file
   This file defines the class LimitCell
-
-  LimitCell is the Cell type that represents maxima's <code>limit()</code>
-  command.
 */
 
 #include "LimitCell.h"
 #include "CellImpl.h"
-
-static constexpr AFontSize MIN_LIMIT_FONT_SIZE{8.0f};
-static constexpr float LIMIT_FONT_SIZE_DECREASE{1.0f};
+#include "TextCell.h"
 
 LimitCell::LimitCell(GroupCell *group, Configuration *config,
                      std::unique_ptr<Cell> &&base,
@@ -55,15 +49,13 @@ LimitCell::LimitCell(GroupCell *group, const LimitCell &cell)
 DEFINE_CELL(LimitCell)
 
 void LimitCell::MakeBreakUpCells() {
-  if (m_open)
-    return;
-  m_open = std::make_unique<TextCell>(m_group, m_configuration, wxS("("));
-  m_open->SetStyle(TS_FUNCTION);
-  m_comma = std::make_unique<TextCell>(m_group, m_configuration, wxS(","));
-  m_comma->SetStyle(TS_FUNCTION);
-  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxS(")"));
-  m_close->SetStyle(TS_FUNCTION);
+  m_open = std::make_unique<TextCell>(GetGroup(), m_configuration, wxS("limit("));
+  m_comma = std::make_unique<TextCell>(GetGroup(), m_configuration, wxS(","));
+  m_close = std::make_unique<TextCell>(GetGroup(), m_configuration, wxS(")"));
 }
+
+static constexpr int LIMIT_FONT_SIZE_DECREASE = 2;
+static constexpr AFontSize MIN_LIMIT_FONT_SIZE = MC_MIN_SIZE;
 
 void LimitCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
@@ -71,6 +63,7 @@ void LimitCell::Recalculate(AFontSize fontsize) const {
     m_under->RecalculateList(
                              {MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE});
     m_name->RecalculateList(fontsize);
+
     if (!IsBrokenIntoLines()) {
       m_width = std::max(m_name->SumOfWidths(), m_under->SumOfWidths()) +
         m_base->SumOfWidths();
@@ -118,119 +111,65 @@ wxString LimitCell::ToString() const {
   wxString to;
   if(arrowpos >= 0)
     {
-      var = under.SubString(0, static_cast<size_t>(arrowpos) - 1);
-      to = under.SubString(static_cast<size_t>(arrowpos) + 2, under.Length() - 1);
+      var = under.Left(arrowpos);
+      to = under.Right(under.Length() - arrowpos - 2);
     }
-  if (to.Right(1) == wxS("+"))
-    to = to.Left(to.Length() - 1) + wxS(",plus");
-  if (to.Right(1) == wxS("-"))
-    to = to.Left(to.Length() - 1) + wxS(",minus");
-
+  else
+    {
+      var = under;
+      to = wxEmptyString;
+    }
   s += wxS("(") + base + wxS(",") + var + wxS(",") + to + wxS(")");
   return s;
 }
 
 wxString LimitCell::ToMatlab() const {
-  wxString s(wxS("limit"));
-  wxString under = m_under->ListToMatlab();
-  wxString base = m_base->ListToMatlab();
-  wxString var;
-  wxString to;
-  auto arrowpos = under.Find(wxS("->"));
-  if(arrowpos >= 0)
-    {
-      var = under.SubString(0, static_cast<size_t>(arrowpos) - 1);
-      to = under.SubString(static_cast<size_t>(arrowpos) + 2, under.Length() - 1);
-    }
-  if (to.Right(1) == wxS("+"))
-    to = to.Left(to.Length() - 1) + wxS(",plus");
-  if (to.Right(1) == wxS("-"))
-    to = to.Left(to.Length() - 1) + wxS(",minus");
-
-  s += wxS("(") + base + wxS(",") + var + wxS(",") + to + wxS(")");
+  wxString s(wxS("limit("));
+  s += m_base->ListToMatlab() + wxS(",") + m_under->ListToMatlab() + wxS(")");
   return s;
 }
 
 wxString LimitCell::ToTeX() const {
-  wxString under = m_under->ListToTeX();
-  wxString base = m_base->ListToTeX();
-  auto varEnd = under.Find(wxS("->"));
-  int toStart = 0;
-  wxString var;
-  wxString to;
-  if (varEnd == wxNOT_FOUND) {
-    varEnd = under.Find(wxS("\\mbox{\\rightarrow }"));
-    if (varEnd != wxNOT_FOUND) {
-      toStart = varEnd + 19;
-      if(varEnd > 0)
-        varEnd -= 1;
-    }
-  } else {
-    toStart = varEnd + 2;
-    if(varEnd > 0)
-      varEnd -= 1;
-  }
-  if(varEnd >= 0)
-    var = under.SubString(0, varEnd);
-  if(toStart >= 0)
-    to = under.SubString(toStart, under.Length() - 1);
-  wxString s =
-    wxS("\\lim_{") + var + wxS("\\to ") + to + wxS("}{") + base + wxS("}");
+  wxString s(wxS("\\lim_{"));
+  s += m_under->ListToTeX() + wxS("} ") + m_base->ListToTeX();
   return s;
 }
 
 wxString LimitCell::ToMathML() const {
-  wxString base = m_base->ListToMathML();
-
-  wxString from;
-  if (m_under)
-    from = m_under->ListToMathML();
-
-  wxString retval;
-  if (from.IsEmpty())
-    retval = wxS("<mo>lim</mo>") + base;
-  else
-    retval = wxS("<munder><mo>lim</mo>") + from + wxS("</munder>\n");
-  return (retval);
-}
-
-wxString LimitCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
-
-  return _T("<lm") + flags + wxS("><r>") + m_name->ListToXML() + _T("</r><r>") +
-    m_under->ListToXML() + _T("</r><r>") + m_base->ListToXML() +
-    _T("</r></lm>");
+  wxString s(wxS("<munder><mi>limit</mi>"));
+  s += m_under->ListToMathML() + wxS("</munder>");
+  s += m_base->ListToMathML();
+  return s;
 }
 
 wxString LimitCell::ToOMML() const {
-  wxString under = m_under->ListToOMML();
-  under.Replace(wxS("->"), wxS("\u2192"));
+  wxString s(wxS("<m:limLow><m:lim>"));
+  s += m_under->ListToOMML() + wxS("</m:lim>");
+  s += wxS("<m:e>") + m_base->ListToOMML() + wxS("</m:e></m:limLow>");
+  return s;
+}
 
-  return wxS("<m:func><m:fName><m:limLow><m:e><m:r>lim</m:r></m:e><m:lim>") +
-    under + wxS("</m:lim></m:limLow></m:fName><m:e>") +
-    m_base->ListToOMML() + wxS("</m:e></m:func>");
+wxString LimitCell::ToXML() const {
+  wxString s = wxS("<limit") + GetXMLFlags() + wxS(">");
+  s += wxS("<base>") + m_base->ListToXML() + wxS("</base>");
+  s += wxS("<under>") + m_under->ListToXML() + wxS("</under>");
+  s += wxS("<name>") + m_name->ListToXML() + wxS("</name>");
+  s += wxS("</limit>");
+  return s;
 }
 
 bool LimitCell::BreakUp() const {
   if (IsBrokenIntoLines())
     return false;
 
-  Cell::BreakUpAndMark();
-  m_name->last()->SetNextToDraw(m_open);
-  m_open->SetNextToDraw(m_base);
-  m_base->last()->SetNextToDraw(m_comma);
-  m_comma->SetNextToDraw(m_under);
-  m_under->last()->SetNextToDraw(m_close);
+  BreakUpAndMark();
   m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_name;
   return true;
 }
 
 void LimitCell::SetNextToDraw(Cell *next) const {
-  if (IsBrokenIntoLines())
+  if (IsBrokenIntoLines()) {
     m_close->SetNextToDraw(next);
-  else
+  } else
     m_nextToDraw = next;
 }

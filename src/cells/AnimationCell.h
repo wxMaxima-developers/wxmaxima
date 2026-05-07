@@ -189,9 +189,9 @@ private:
 
   /*! The framerate of this cell.
 
-    Can contain a frame rate [in Hz] or a -1, which means: Use the default frame rate.
+    Can contain a frame rate [in Hz] or an invalid value, which means: Use the default frame rate.
   */
-  int m_framerate = -1;
+  mutable CachedInteger<int> m_framerate;
   int m_displayed = 0;
   int m_imageBorderWidth = 0;
 

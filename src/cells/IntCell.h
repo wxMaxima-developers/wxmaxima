@@ -126,11 +126,11 @@ private:
   // The pointers above point to inner cells and must be kept contiguous.
 
   //! The height of the integral sign
-  mutable wxCoord m_signHeight = 35;
+  mutable CachedInteger<wxCoord> m_signHeight;
   //! The width of the integral sign
-  mutable wxCoord m_signWidth = 18;
+  mutable CachedInteger<wxCoord> m_signWidth;
   //! How far is the integral sign's center from the top of this cell?
-  mutable wxCoord m_signTop = m_signHeight / 2;
+  mutable CachedInteger<wxCoord> m_signTop;
 #if defined __WXMSW__
   wxCoord m_charHeight = 12;
   wxCoord m_charWidth = 12;

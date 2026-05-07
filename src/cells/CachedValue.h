@@ -50,14 +50,21 @@ public:
   constexpr CachedInteger() = default;
   constexpr CachedInteger(const CachedInteger &) = default;
   constexpr CachedInteger &operator=(const CachedInteger &) = default;
+  const CachedInteger &operator=(T newValue) const { SetCached(newValue); return *this; }
+  const CachedInteger &operator+=(T delta) const { SetCached(Get() + delta); return *this; }
+  const CachedInteger &operator-=(T delta) const { SetCached(Get() - delta); return *this; }
   constexpr bool IsValid() const { return m_value != invalid; }
   constexpr bool IsInvalid() const { return m_value == invalid; }
   constexpr void Invalidate() const { m_value = invalid; }
-  operator T() const { return Get(); }
+  operator T() const { return GetOrElse(T{}); }
   T Get() const
     {
       wxASSERT_MSG(m_value != invalid, "Attempted to use an invalid cached value");
       return (m_value != invalid) ? m_value : T{};
+    }
+  T GetOrElse(T defaultValue) const
+    {
+      return (m_value != invalid) ? m_value : defaultValue;
     }
   void SetCached(T newValue) const
     {

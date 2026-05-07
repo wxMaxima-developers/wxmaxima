@@ -629,7 +629,7 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
       }
       // The center is in the middle of the 1st line
       m_center = m_charHeight / 2;
-      m_height = std::max(m_height, m_charHeight + 2 * Scale_Px(2));
+      m_height = std::max(m_height.GetOrElse(0), m_charHeight + 2 * Scale_Px(2));
 
       m_containsChanges = false;
     }
@@ -741,6 +741,8 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
   if (!IsHidden() && (DrawThisCell())) {
     wxRect rect = GetRect();
+    if (m_height.IsInvalid() || m_width.IsInvalid())
+      return;
     wxCoord y = rect.GetY();
     if((m_height < 1) || (m_width < 1) || (y < 0))
       return;
@@ -819,7 +821,7 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
           if (m_configuration->InUpdateRegion(matchRect))
             dc->DrawRectangle(CropToUpdateRegion(matchRect));
           matchPoint = PositionToPoint(m_paren2);
-          dc->GetTextExtent(m_text.at(m_paren1), &width, &height);
+          dc->GetTextExtent(m_text.at(m_paren2), &width, &height);
           matchRect =
             wxRect(matchPoint.x + 1, matchPoint.y + Scale_Px(2) - m_center + 1,
                    width - 1, height - 1);
@@ -1026,21 +1028,10 @@ wxString EditorCell::TabExpand(const wxString &input_, size_t posInLine) {
     }
 
     if (*ch == wxS('\t')) {
-      switch (posInLine - (posInLine / 4) * 4) {
-      case 0:
-        retval += wxS("    ");
-        break;
-      case 1:
-        retval += wxS("   ");
-        break;
-      case 2:
-        retval += wxS("  ");
-        break;
-      case 3:
+      size_t spacesToAdd = 4 - (posInLine % 4);
+      for (size_t i = 0; i < spacesToAdd; ++i)
         retval += wxS(" ");
-        break;
-      }
-      posInLine = 0;
+      posInLine += spacesToAdd;
       ++ch;
       continue;
     } else
@@ -1050,7 +1041,6 @@ wxString EditorCell::TabExpand(const wxString &input_, size_t posInLine) {
       ++posInLine;
     }
   }
-  // TODO: Implement the actual TAB expansion
   return retval;
 }
 
@@ -1162,11 +1152,11 @@ size_t EditorCell::GetIndentDepth(wxString text, size_t positionOfCaret) const {
   std::vector<size_t> indentChars;
   indentChars.push_back(0);
 
-  wxString::const_iterator it = m_text.begin();
+  wxString::const_iterator it = text.begin();
 
   // Determine how many parenthesis this cell opens or closes before the point
   size_t pos = 0;
-  while ((pos < positionOfCaret) && (it < m_text.end())) {
+  while ((pos < positionOfCaret) && (it < text.end())) {
     wxChar ch = *it;
     if (ch == wxS('\\')) {
       ++pos;
@@ -1177,7 +1167,7 @@ size_t EditorCell::GetIndentDepth(wxString text, size_t positionOfCaret) const {
     if (ch == wxS('\"')) {
       ++pos;
       ++it;
-      while ((it < m_text.end()) && (pos < positionOfCaret) &&
+      while ((it < text.end()) && (pos < positionOfCaret) &&
              (*it != wxS('\"'))) {
         ++pos;
         ++it;
@@ -1227,10 +1217,10 @@ size_t EditorCell::GetIndentDepth(wxString text, size_t positionOfCaret) const {
       wxString::const_iterator it2(it);
       wxString rest(*it2);
       ++it2;
-      if (it2 < m_text.end()) {
+      if (it2 < text.end()) {
         rest += wxString(*it2);
         ++it2;
-        if (it2 < m_text.end())
+        if (it2 < text.end())
           rest += wxString(*it2);
       }
       // Handle a "do"
@@ -1256,13 +1246,13 @@ size_t EditorCell::GetIndentDepth(wxString text, size_t positionOfCaret) const {
       }
     }
 
-    if (it < m_text.end()) {
+    if (it < text.end()) {
       ++pos;
       ++it;
     }
   }
 
-  if (it < m_text.end()) {
+  if (it < text.end()) {
     if ((text.at(positionOfCaret) == wxS(')')) ||
         (text.at(positionOfCaret) == wxS(']')) ||
         (text.at(positionOfCaret) == wxS('}'))) {
@@ -1280,7 +1270,7 @@ size_t EditorCell::GetIndentDepth(wxString text, size_t positionOfCaret) const {
   // A fast way to get the next 5 characters
   wxString rightOfCursor;
   for (int i = 0; i < 5; i++) {
-    if (it >= m_text.end())
+    if (it >= text.end())
       break;
 
     rightOfCursor += *it;
@@ -2222,7 +2212,8 @@ bool EditorCell::AddEnding() {
 
   if (endingNeeded) {
     m_text += wxS(";");
-    m_paren1 = m_paren2 = m_width = -1;
+      m_paren1 = m_paren2 = -1;
+      m_width.Invalidate();
     StyleText();
     return true;
   }
@@ -2650,7 +2641,9 @@ bool EditorCell::CutToClipboard() {
 
   ClearSelection();
   m_paren1 = m_paren2 = -1;
-  m_width = m_height = m_center = -1;
+  m_width.Invalidate();
+  m_height.Invalidate();
+  m_center.Invalidate();
 
   return true;
 }
@@ -2670,7 +2663,9 @@ void EditorCell::InsertText(wxString text) {
   m_text.Replace(wxS("\u2028"), "\n");
   m_text.Replace(wxS("\u2029"), "\n");
 
-  //  m_width = m_height = m_center = -1;
+  //  m_width.Invalidate();
+  m_height.Invalidate();
+  m_center.Invalidate();
   //  InvalidateMaxDrop();
   StyleText();
 }
@@ -2827,7 +2822,9 @@ void EditorCell::SetState(const EditorCell::History::HistoryEntry &state) {
   StyleText();
   m_paren1 = m_paren2 = -1;
   m_isDirty = true;
-  m_width = m_height = m_center = -1;
+  m_width.Invalidate();
+  m_height.Invalidate();
+  m_center.Invalidate();
   SetSelection(state.SelectionStart(), state.SelectionEnd());
 }
 
