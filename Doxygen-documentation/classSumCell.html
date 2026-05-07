@@ -86,7 +86,7 @@ Inheritance diagram for SumCell:</div>
 <div class="dynheader">
 Collaboration diagram for SumCell:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classSumCell__coll__graph.svg" width="656" height="375"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classSumCell__coll__graph.svg" width="100%" height="531"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -442,6 +442,8 @@ virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ListToRTF
 <tr class="memitem:afe07195285a0666f89fc025d2d0ecbc7"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#afe07195285a0666f89fc025d2d0ecbc7">ToRTF</a> () const</td></tr>
 <tr class="memdesc:afe07195285a0666f89fc025d2d0ecbc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cell's representation as RTF.  <br /></td></tr>
 <tr class="separator:afe07195285a0666f89fc025d2d0ecbc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c533b16aad3335b0c98c5c37ed60b59"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a8c533b16aad3335b0c98c5c37ed60b59">GetXMLFlags</a> () const</td></tr>
+<tr class="separator:a8c533b16aad3335b0c98c5c37ed60b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a219839333a616ee9f837d3e8a8ffcf1a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a219839333a616ee9f837d3e8a8ffcf1a">UnbreakList</a> () const</td></tr>
 <tr class="memdesc:a219839333a616ee9f837d3e8a8ffcf1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unbreak this line.  <br /></td></tr>
 <tr class="separator:a219839333a616ee9f837d3e8a8ffcf1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -717,16 +719,16 @@ Protected Attributes</h2></td></tr>
 const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip</b></td></tr>
 <tr class="memdesc:af15234aeba226b598457e1e3210f0ae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This tooltip is owned by us when m_ownsToolTip is true. Otherwise, it points to a "static" string. <br /></td></tr>
 <tr class="separator:af15234aeba226b598457e1e3210f0ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa518e1df02a1e40cad0d2353971768f0"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa518e1df02a1e40cad0d2353971768f0">m_height</a> = -1</td></tr>
-<tr class="memdesc:aa518e1df02a1e40cad0d2353971768f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The height of this cell.  <br /></td></tr>
-<tr class="separator:aa518e1df02a1e40cad0d2353971768f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb09f9524b29f0298d97079b4f75d2bc"><td class="memItemLeft" align="right" valign="top"><a id="abb09f9524b29f0298d97079b4f75d2bc" name="abb09f9524b29f0298d97079b4f75d2bc"></a>
-wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>m_width</b> = -1</td></tr>
-<tr class="memdesc:abb09f9524b29f0298d97079b4f75d2bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The width of this cell; is recalculated by RecalculateHeight. <br /></td></tr>
-<tr class="separator:abb09f9524b29f0298d97079b4f75d2bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5e75ef074e2fc6474aa10bdfee6ca71"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ab5e75ef074e2fc6474aa10bdfee6ca71">m_center</a> = -1</td></tr>
-<tr class="memdesc:ab5e75ef074e2fc6474aa10bdfee6ca71"><td class="mdescLeft">&#160;</td><td class="mdescRight">The distance between the top and the insertion point of this cell.  <br /></td></tr>
-<tr class="separator:ab5e75ef074e2fc6474aa10bdfee6ca71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a989770dc9a23a87a2a4e503e89118677"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a989770dc9a23a87a2a4e503e89118677">m_height</a></td></tr>
+<tr class="memdesc:a989770dc9a23a87a2a4e503e89118677"><td class="mdescLeft">&#160;</td><td class="mdescRight">The height of this cell.  <br /></td></tr>
+<tr class="separator:a989770dc9a23a87a2a4e503e89118677"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad19e726260dea8a153b6723b3c66b80f"><td class="memItemLeft" align="right" valign="top"><a id="ad19e726260dea8a153b6723b3c66b80f" name="ad19e726260dea8a153b6723b3c66b80f"></a>
+<a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_width</b></td></tr>
+<tr class="memdesc:ad19e726260dea8a153b6723b3c66b80f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The width of this cell; is recalculated by RecalculateHeight. <br /></td></tr>
+<tr class="separator:ad19e726260dea8a153b6723b3c66b80f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8042a8ef0fa19a190e67eac4b82c372"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ae8042a8ef0fa19a190e67eac4b82c372">m_center</a></td></tr>
+<tr class="memdesc:ae8042a8ef0fa19a190e67eac4b82c372"><td class="mdescLeft">&#160;</td><td class="mdescRight">The distance between the top and the insertion point of this cell.  <br /></td></tr>
+<tr class="separator:ae8042a8ef0fa19a190e67eac4b82c372"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acffb390e78cd8ca25cf3bc2c051618b0"><td class="memItemLeft" align="right" valign="top"><a id="acffb390e78cd8ca25cf3bc2c051618b0" name="acffb390e78cd8ca25cf3bc2c051618b0"></a>
 <a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_fontSize_Scaled</b> = {}</td></tr>
 <tr class="memdesc:acffb390e78cd8ca25cf3bc2c051618b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The font size is smaller in super- and subscripts. <br /></td></tr>
@@ -2274,6 +2276,33 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>m_width</b> = -1</
    
 </div>
 </div>
+<a id="a8c533b16aad3335b0c98c5c37ed60b59" name="a8c533b16aad3335b0c98c5c37ed60b59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c533b16aad3335b0c98c5c37ed60b59">&#9670;&#160;</a></span>GetXMLFlags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString Cell::GetXMLFlags </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classLabelCell.html#a213ef8ecd518db65ab812edf62da0517">LabelCell</a>, and <a class="el" href="classTextCell.html#ab128864cd5250dcde94386a139a4ca9d">TextCell</a>.</p>
+
+</div>
+</div>
 <a id="a276e6df0f28a2974cb3916c0704965a0" name="a276e6df0f28a2974cb3916c0704965a0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a276e6df0f28a2974cb3916c0704965a0">&#9670;&#160;</a></span>GetXMLType()</h2>
 
@@ -3538,8 +3567,8 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div>
 </div>
 <h2 class="groupheader">Field Documentation</h2>
-<a id="ab5e75ef074e2fc6474aa10bdfee6ca71" name="ab5e75ef074e2fc6474aa10bdfee6ca71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5e75ef074e2fc6474aa10bdfee6ca71">&#9670;&#160;</a></span>m_center</h2>
+<a id="ae8042a8ef0fa19a190e67eac4b82c372" name="ae8042a8ef0fa19a190e67eac4b82c372"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8042a8ef0fa19a190e67eac4b82c372">&#9670;&#160;</a></span>m_center</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3548,7 +3577,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">wxCoord Cell::m_center = -1</td>
+          <td class="memname"><a class="el" href="classCachedInteger.html">CachedInteger</a>&lt;wxCoord&gt; Cell::m_center</td>
         </tr>
       </table>
   </td>
@@ -3598,8 +3627,8 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 
 </div>
 </div>
-<a id="aa518e1df02a1e40cad0d2353971768f0" name="aa518e1df02a1e40cad0d2353971768f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa518e1df02a1e40cad0d2353971768f0">&#9670;&#160;</a></span>m_height</h2>
+<a id="a989770dc9a23a87a2a4e503e89118677" name="a989770dc9a23a87a2a4e503e89118677"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a989770dc9a23a87a2a4e503e89118677">&#9670;&#160;</a></span>m_height</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3608,7 +3637,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">wxCoord Cell::m_height = -1</td>
+          <td class="memname"><a class="el" href="classCachedInteger.html">CachedInteger</a>&lt;wxCoord&gt; Cell::m_height</td>
         </tr>
       </table>
   </td>

@@ -162,7 +162,7 @@ var searchData=
   ['getworkinggroup_159',['GetWorkingGroup',['../classCellPointers.html#a1af0ce48a76face7ef18b27ff3727d06',1,'CellPointers::GetWorkingGroup()'],['../classWorksheet.html#af57ef1cf7e60d3e9160bcd22a4563bf5',1,'Worksheet::GetWorkingGroup()']]],
   ['getworksheet_160',['GetWorkSheet',['../classConfiguration.html#a3c3fbc2fbb19d025c061f01d4c4c95ac',1,'Configuration']]],
   ['getwritablestyle_161',['GetWritableStyle',['../classConfiguration.html#a52eae5b3d909fc63a406c1a6c3c9a59b',1,'Configuration']]],
-  ['getxmlflags_162',['GetXMLFlags',['../classLabelCell.html#a213ef8ecd518db65ab812edf62da0517',1,'LabelCell::GetXMLFlags()'],['../classTextCell.html#a84b7373654da245242b61341e93e37d4',1,'TextCell::GetXMLFlags()']]],
+  ['getxmlflags_162',['GetXMLFlags',['../classLabelCell.html#a213ef8ecd518db65ab812edf62da0517',1,'LabelCell::GetXMLFlags()'],['../classTextCell.html#ab128864cd5250dcde94386a139a4ca9d',1,'TextCell::GetXMLFlags()']]],
   ['getxmltype_163',['GetXMLType',['../classProductCell.html#a39c1e95e69202059c498e92dc7d7bde3',1,'ProductCell::GetXMLType()'],['../classSumCell.html#a276e6df0f28a2974cb3916c0704965a0',1,'SumCell::GetXMLType()']]],
   ['getzoomfactor_164',['GetZoomFactor',['../classConfiguration.html#a623c8493cc60caa8663a146bc9eb89fa',1,'Configuration']]],
   ['gifdataobject_165',['GifDataObject',['../classAnimationCell_1_1GifDataObject.html',1,'AnimationCell']]],
