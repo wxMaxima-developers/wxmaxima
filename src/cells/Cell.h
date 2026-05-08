@@ -359,8 +359,8 @@ public:
   */
   wxCoord GetHeight() const
     {
-      if(!HasValidSize())
-        Recalculate(m_fontSize_Scaled); 
+      if(NeedsRecalculation())
+        Recalculate(m_fontSize); 
       return m_height;
     }
 
@@ -374,8 +374,8 @@ public:
 */
   int GetWidth() const
     {
-      if(!HasValidSize())
-        Recalculate(m_fontSize_Scaled); 
+      if(NeedsRecalculation())
+        Recalculate(m_fontSize); 
       return m_width;
     }
 
@@ -390,8 +390,8 @@ public:
   */
   wxCoord GetCenter() const
     {
-      if(!HasValidSize())
-        Recalculate(m_fontSize_Scaled); 
+      if(NeedsRecalculation())
+        Recalculate(m_fontSize); 
       return m_center;
     }
 
@@ -480,6 +480,8 @@ public:
 
   //! True, if something that affects the cell size has changed.
   virtual bool NeedsRecalculation(AFontSize fontSize) const;
+  //! True, if something that affects the cell size has changed.
+  bool NeedsRecalculation() const { return NeedsRecalculation(m_fontSize); }
 
   //! Cause this cell to be recalculated the next time
   void ScheduleRecalculation() const {m_cellCfgCnt_last = m_configuration->CellCfgCnt() - 1 ;}
@@ -1020,6 +1022,8 @@ protected:
 //**
   //! The font size is smaller in super- and subscripts.
   mutable AFontSize m_fontSize_Scaled = {};
+  //! The unscaled font size.
+  mutable AFontSize m_fontSize = {};
 
 //** 1-byte objects (2 bytes)
 //**

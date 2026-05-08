@@ -61,8 +61,7 @@ const wxString Cell::GetToolTip(const wxPoint point) const {
 }
 
 Cell::Cell(GroupCell *group, Configuration *config)
-  : m_group(group), m_configuration(config), m_toolTip(&wxm::emptyString),
-    m_fontSize_Scaled(-1) {
+  : m_group(group), m_configuration(config), m_toolTip(&wxm::emptyString) {
   wxASSERT((!group) || ((group->GetType() == MC_TYPE_GROUP || group == this)));
   InitBitFields_Cell();
   ResetSize();
@@ -423,7 +422,15 @@ void Cell::Recalculate(const AFontSize fontsize) const {
   if(NeedsRecalculation(fontsize))
     {
       m_cellCfgCnt_last = m_configuration->CellCfgCnt();
+      m_fontSize = fontsize;
       m_fontSize_Scaled = Scale_Px(fontsize);
+
+      if(!HasValidSize())
+        {
+          m_width = 0;
+          m_height = 0;
+          m_center = 0;
+        }
     }
 }
 
@@ -444,7 +451,7 @@ bool Cell::DrawThisCell(wxPoint point) {
 }
 
 bool Cell::HasValidSize() const {
-  return m_width.IsValid() && m_height.IsValid() && m_center.IsValid();
+  return m_width.IsValid() && m_height.IsValid() && m_center.IsValid() && !ConfigChanged();
 }
 
 bool Cell::HasStaleSize() const {
@@ -519,7 +526,6 @@ void Cell::BreakLines_List() const
       currentWidth += cellWidth;
     }
   }
-  ResetSize_RecursivelyList();
 }
 
 bool Cell::BreakUpCells() const {
@@ -548,8 +554,6 @@ bool Cell::UnBreakUpCells() const {
       retval = true;
     }
   }
-  if(retval)
-    ResetSize_RecursivelyList();
 
   return retval;
 }
