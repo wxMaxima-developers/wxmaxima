@@ -1277,7 +1277,7 @@ private:
   wxString m_wxMathML_Filename;
   maximaHelpFormat m_maximaHelpFormat;
   wxTextCtrl *m_lastActiveTextCtrl = NULL;
-  std::int_fast32_t m_cellCfgCnt = 0;
+  std::atomic<std::int_fast32_t> m_cellCfgCnt{0};
   static bool m_use_threads;
 };
 

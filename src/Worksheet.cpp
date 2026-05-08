@@ -648,9 +648,9 @@ void Worksheet::DrawGroupCell_UsingBitmap(wxDC *dc, GroupCell *cell)
   wxASSERT(bmp.IsOk());
   {
     // Create a DrawContext that draws on a bitmap the size of our drawRect
-    m_drawDCLock.lock();
+    std::unique_lock<std::mutex> lock(m_drawDCLock);
     wxMemoryDC dcm(bmp);
-    m_drawDCLock.unlock();
+    lock.unlock();
     dcm.SetUserScale(wxWindow::GetContentScaleFactor(),
                      wxWindow::GetContentScaleFactor());
     dcm.SetDeviceOrigin(-drawRect.GetLeft(), -drawRect.GetTop());
@@ -669,12 +669,11 @@ void Worksheet::DrawGroupCell_UsingBitmap(wxDC *dc, GroupCell *cell)
     DrawGroupCell(dcm, antiAliassingDC, *cell);
 
     // This lock does guard the destruction of the memory DC, as well as the blit
-    m_drawDCLock.lock();
+    lock.lock();
     // Blit the bitmap onto the destination dc
     dc->Blit(drawRect.GetLeft(), drawRect.GetTop(), drawRect.GetWidth(), drawRect.GetHeight(),
              &dcm, drawRect.GetLeft(), drawRect.GetTop());
   }
-  m_drawDCLock.unlock();
 }
 
 void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
