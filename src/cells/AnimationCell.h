@@ -184,7 +184,7 @@ public:
 
 private:
   CellPointers *const m_cellPointers = GetCellPointers(); // must come before m_timer (!)
-  wxTimer m_timer;
+  std::unique_ptr<wxTimer> m_timer;
   std::vector<std::shared_ptr<Image>> m_images;
 
   /*! The framerate of this cell.

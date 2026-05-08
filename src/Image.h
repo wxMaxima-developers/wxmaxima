@@ -120,6 +120,10 @@ public:
 
   //! Creates a bitmap showing an error message
   void InvalidBitmap(const wxString &message = wxEmptyString);
+  void GenerateInvalidBitmap();
+
+  wxString m_invalidBitmapMessage;
+  bool m_isInvalid = false;
 
   /*! Sets the name of the gnuplot source and data file of this image
 
