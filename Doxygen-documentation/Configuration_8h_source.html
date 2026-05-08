@@ -1065,7 +1065,7 @@ $(function() {
 <div class="line"><a id="l01277" name="l01277"></a><span class="lineno"> 1277</span>  wxString m_wxMathML_Filename;</div>
 <div class="line"><a id="l01278" name="l01278"></a><span class="lineno"> 1278</span>  maximaHelpFormat m_maximaHelpFormat;</div>
 <div class="line"><a id="l01279" name="l01279"></a><span class="lineno"> 1279</span>  wxTextCtrl *m_lastActiveTextCtrl = NULL;</div>
-<div class="line"><a id="l01280" name="l01280"></a><span class="lineno"> 1280</span>  std::int_fast32_t m_cellCfgCnt = 0;</div>
+<div class="line"><a id="l01280" name="l01280"></a><span class="lineno"> 1280</span>  std::atomic&lt;std::int_fast32_t&gt; m_cellCfgCnt{0};</div>
 <div class="line"><a id="l01281" name="l01281"></a><span class="lineno"> 1281</span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> m_use_threads;</div>
 <div class="line"><a id="l01282" name="l01282"></a><span class="lineno"> 1282</span>};</div>
 <div class="line"><a id="l01283" name="l01283"></a><span class="lineno"> 1283</span> </div>
