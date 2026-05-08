@@ -38,6 +38,7 @@
 #include <list>
 #include <vector>
 #include <algorithm>
+#include <atomic>
 #include <wx/wupdlock.h>
 
 #define MC_LINE_SKIP Scale_Px(2)
