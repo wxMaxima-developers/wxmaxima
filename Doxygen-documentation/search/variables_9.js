@@ -47,7 +47,7 @@ var searchData=
   ['m_5ffinddialog_44',['m_findDialog',['../classWorksheet.html#addddaa53ec91efeaf93ed6ebebae4c7b',1,'Worksheet']]],
   ['m_5ffirst_45',['m_first',['../classwxMaximaFrame.html#a169f822863394dee3954e5b202bcd372',1,'wxMaximaFrame']]],
   ['m_5ffirstprompt_46',['m_firstPrompt',['../classwxMaxima.html#afbd55f4e27494e45a8744f0a3e70c2fd',1,'wxMaxima']]],
-  ['m_5ffontsize_47',['m_fontSize',['../classConfigDialogue.html#a5a48cca32905adcdd5c4a1ff891b9130',1,'ConfigDialogue']]],
+  ['m_5ffontsize_47',['m_fontSize',['../classConfigDialogue.html#a5a48cca32905adcdd5c4a1ff891b9130',1,'ConfigDialogue::m_fontSize()'],['../classCell.html#a83826e248dea53b0e5aeed9510f317a0',1,'Cell::m_fontSize()']]],
   ['m_5ffontsize_5fscaled_48',['m_fontSize_Scaled',['../classCell.html#acffb390e78cd8ca25cf3bc2c051618b0',1,'Cell']]],
   ['m_5fforcestatusbarupdate_49',['m_forceStatusbarUpdate',['../classwxMaximaFrame.html#a70150ff5867ddc73af06868b0fd75ff4',1,'wxMaximaFrame']]],
   ['m_5fgentranmenu_50',['m_gentranMenu',['../classwxMaximaFrame.html#a56e60d9bf736a742efca0630c5b081d3',1,'wxMaximaFrame']]],
