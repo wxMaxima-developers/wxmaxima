@@ -21,6 +21,10 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
+/*!\file
+  The file that defines the interface to the maxima process
+*/
+
 #include "Maxima.h"
 #include <wx/socket.h>
 #include <wx/sckstrm.h>
@@ -36,7 +40,8 @@
 
 wxDEFINE_EVENT(EVT_MAXIMA, wxThreadEvent);
 
-#define INPUT_RESTART_PERIOD 100
+//! How often we should monitor the progress of input, and only act if we expected some but none came.
+#define INPUT_RESTART_PERIOD 20
 
 Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_configuration(config),
@@ -63,13 +68,19 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
         }
   }
   wxASSERT(socket);
+  Bind(wxEVT_TIMER, wxTimerEventHandler(Maxima::TimerEvent), this);
+  Bind(wxEVT_SOCKET, wxSocketEventHandler(Maxima::SocketEvent), this);
+  Bind(wxEVT_IDLE, wxIdleEventHandler(Maxima::OnIdle), this);
   
-  // COMPLETELY isolate the socket from the main thread event loop.
-  // This is crucial to avoid GLib assertion failures related to FD monitoring.
-  m_socket->SetNotify(0);
-  m_socket->Notify(false);
-  m_socket->SetFlags(wxSOCKET_BLOCK); // We will use WaitForRead with timeout in thread.
-  m_socket->SetTimeout(1);
+  m_socket->SetEventHandler(*this);
+  m_socket->SetNotify(wxSOCKET_LOST_FLAG);
+  m_socket->Notify(true);
+  
+  m_socket->SetFlags(wxSOCKET_NOWAIT);
+  m_socket->SetTimeout(120);
+
+  if (INPUT_RESTART_PERIOD > 0)
+    m_readIdleTimer.Start(INPUT_RESTART_PERIOD);
 
   m_workerThread = jthread(&Maxima::WorkerThread, this);
 }
@@ -81,6 +92,7 @@ Maxima::~Maxima() {
 
   Disconnect(wxEVT_TIMER);
   Disconnect(wxEVT_SOCKET);
+  Disconnect(wxEVT_IDLE);
   Disconnect(EVT_MAXIMA);
 
   if (m_socket) {
@@ -106,10 +118,27 @@ bool Maxima::Write(const void *buffer, std::size_t length) {
   return true;
 }
 
-void Maxima::SocketEvent(wxSocketEvent &WXUNUSED(event)) {
+void Maxima::SocketEvent(wxSocketEvent &event) {
+  switch (event.GetSocketEvent()) {
+  case wxSOCKET_LOST: {
+      wxThreadEvent *evt = new wxThreadEvent(EVT_MAXIMA);
+      evt->SetInt(DISCONNECTED);
+    QueueEvent(evt);
+    break;
+  }
+  default:
+    break;
+  }
 }
 
-void Maxima::TimerEvent(wxTimerEvent &WXUNUSED(event)) {
+void Maxima::TimerEvent(wxTimerEvent &event) {
+  if (&event.GetTimer() == &m_readIdleTimer) {
+      ReadSocket();
+  }
+}
+
+void Maxima::OnIdle(wxIdleEvent &WXUNUSED(event)) {
+    ReadSocket();
 }
 
 void Maxima::ReadSocket() {
@@ -151,13 +180,6 @@ void Maxima::WorkerThread() {
   while (!m_workerThreadAbort) {
     bool activity = false;
 
-    if (!m_socket->IsConnected()) {
-        wxThreadEvent *evt = new wxThreadEvent(EVT_MAXIMA);
-        evt->SetInt(DISCONNECTED);
-        QueueEvent(evt);
-        break;
-    }
-
     // 1. Handle Output Queue
     std::vector<std::vector<char>> toWrite;
     {
@@ -168,26 +190,28 @@ void Maxima::WorkerThread() {
     }
     
     for (const auto& data : toWrite) {
-        m_socket->Write(data.data(), data.size());
-        activity = true;
-        if (m_socket->Error()) {
-            wxThreadEvent *sendevent = new wxThreadEvent(EVT_MAXIMA);
-            sendevent->SetInt(WRITE_ERROR);
-            QueueEvent(sendevent);
+        if (m_socket->IsConnected()) {
+            m_socket->Write(data.data(), data.size());
+            activity = true;
         }
     }
 
     // 2. Handle Input
-    if (m_socket->WaitForRead(0, 50)) {
-        activity = true;
-        while (m_socket->IsData()) {
-            wxUniChar ch = m_textInput.GetChar();
-            if (ch == wxS('\0')) break;
-            if (ch == wxS('\r')) continue;
-            m_processingBuffer += ch;
+    if (m_socket->IsConnected()) {
+        if (m_socket->WaitForRead(0, 50)) {
+            activity = true;
+            while (m_socket->IsData()) {
+                wxUniChar ch = m_textInput.GetChar();
+                if (ch == wxS('\0')) break;
+                if (ch == wxS('\r')) continue;
+                m_processingBuffer += ch;
+            }
         }
+    } else {
+        break;
     }
 
+    // Process every 100ms or if buffer is large to avoid overwhelming the main thread.
     wxMilliClock_t now = wxGetLocalTimeMillis();
     if (!m_processingBuffer.IsEmpty() && (now - lastProcessTime > 100 || m_processingBuffer.Length() > 10000)) {
         ProcessData();
@@ -277,7 +301,7 @@ void Maxima::ProcessData()
         std::lock_guard<std::mutex> lock(m_interpretedQueueMutex);
         m_interpretedQueue.insert(m_interpretedQueue.end(), newItems.begin(), newItems.end());
         if (!m_readPendingQueued.exchange(true)) {
-            CallAfter([this]{ ReadSocket(); });
+            wxWakeUpIdle();
         }
     }
 }

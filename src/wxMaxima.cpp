@@ -368,6 +368,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
                                                NULL,
                                                this);
 
+  if (!StartMaxima())
+    StatusText(_("Starting Maxima process failed"));
+
   if (!filename.IsEmpty()) {
     m_openInitialFileError = !OpenFile(filename);
     //! wxm data the worksheet is populated from
@@ -387,8 +390,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
     }
   }
 
-  if (!StartMaxima())
-    StatusText(_("Starting Maxima process failed"));
   Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(wxMaxima::SliderEvent),
           NULL, this);
   Connect(wxID_CLOSE, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
@@ -2615,6 +2616,19 @@ bool wxMaxima::StartServer() {
 bool wxMaxima::StartMaxima(bool force) {
   if (!StartServer())
     return false;
+
+  // We only need to start or restart maxima if we aren't connected to a maxima
+  // that till now never has done anything and therefore is in perfect working
+  // order.
+  if ((!m_hasEvaluatedCells) && (!force))
+    {
+      if ((m_maximaProcess != NULL) && (m_client) && (m_client->IsConnected()))
+        return true;
+
+      // If maxima is still starting up we don't need to kill and to restart it, neither.
+      if (m_maximaProcess != NULL)
+        return true;
+    }
 
   if ((m_maximaProcess != NULL) || (m_pid >= 0) || (m_client))
     {
