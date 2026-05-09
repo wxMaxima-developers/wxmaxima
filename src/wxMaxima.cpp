@@ -2430,28 +2430,58 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
     ReadSuppressedOutput(event.GetString());
     break;
   case Maxima::XML_WXXMLSYMBOLS:
-    m_statusBar->NetworkStatus(StatusBar::receive);
-    ReadLoadSymbols(event.GetPayload<wxXmlDocument>());
+    {
+      wxXmlDocument xmldoc;
+      wxStringInputStream xmlStream(event.GetString());
+      xmldoc.Load(xmlStream);
+      m_statusBar->NetworkStatus(StatusBar::receive);
+      ReadLoadSymbols(xmldoc);
+    }
     break;
   case Maxima::XML_VARIABLES:
-    m_statusBar->NetworkStatus(StatusBar::receive);
-    ReadVariables(event.GetPayload<wxXmlDocument>());
+    {
+      wxXmlDocument xmldoc;
+      wxStringInputStream xmlStream(event.GetString());
+      xmldoc.Load(xmlStream);
+      m_statusBar->NetworkStatus(StatusBar::receive);
+      ReadVariables(xmldoc);
+    }
     break;
   case Maxima::XML_WATCH_VARIABLES_ADD:
-    m_statusBar->NetworkStatus(StatusBar::receive);
-    ReadAddVariables(event.GetPayload<wxXmlDocument>());
+    {
+      wxXmlDocument xmldoc;
+      wxStringInputStream xmlStream(event.GetString());
+      xmldoc.Load(xmlStream);
+      m_statusBar->NetworkStatus(StatusBar::receive);
+      ReadAddVariables(xmldoc);
+    }
     break;
   case Maxima::XML_STATUSBAR:
-    m_statusBar->NetworkStatus(StatusBar::receive);
-    ReadStatusBar(event.GetPayload<wxXmlDocument>());
+    {
+      wxXmlDocument xmldoc;
+      wxStringInputStream xmlStream(event.GetString());
+      xmldoc.Load(xmlStream);
+      m_statusBar->NetworkStatus(StatusBar::receive);
+      ReadStatusBar(xmldoc);
+    }
     break;
   case Maxima::XML_HTML_MANUAL_KEYWORDS:
-    m_statusBar->NetworkStatus(StatusBar::receive);
-    ReadManualTopicNames(event.GetPayload<wxXmlDocument>());
+    {
+      wxXmlDocument xmldoc;
+      wxStringInputStream xmlStream(event.GetString());
+      xmldoc.Load(xmlStream);
+      m_statusBar->NetworkStatus(StatusBar::receive);
+      ReadManualTopicNames(xmldoc);
+    }
     break;
   case Maxima::XML_MATHS:
-    m_statusBar->NetworkStatus(StatusBar::receive);
-    ReadMath(event.GetPayload<wxXmlDocument>());
+    {
+      wxXmlDocument xmldoc;
+      wxStringInputStream xmlStream(event.GetString());
+      xmldoc.Load(xmlStream);
+      m_statusBar->NetworkStatus(StatusBar::receive);
+      ReadMath(xmldoc);
+    }
     break;
   case Maxima::XML_TOOLONGMATHS:
     m_statusBar->NetworkStatus(StatusBar::receive);
