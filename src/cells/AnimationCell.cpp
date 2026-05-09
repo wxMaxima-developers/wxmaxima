@@ -53,13 +53,11 @@
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
                              int framerate)
   : ImgCellBase(group, config),
-    m_timer(m_cellPointers->GetWorksheet(), wxWindow::NewControlId()),
     m_displayed(0), m_imageBorderWidth(Scale_Px(1)) {
   if (framerate != -1)
     m_framerate = framerate;
   InitBitFields_AnimationCell();
   m_type = MC_TYPE_SLIDE;
-  ReloadTimer();
 }
 
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
@@ -128,16 +126,21 @@ int AnimationCell::GetFrameRate() const {
 }
 
 void AnimationCell::ReloadTimer() {
-  if (!m_timer.IsRunning()) {
+  if (!m_timer)
+    m_timer = std::make_unique<wxTimer>(m_cellPointers->GetWorksheet(), wxWindow::NewControlId());
+
+  if (!m_timer->IsRunning()) {
     // Tell MathCtrl about our timer.
-    m_cellPointers->SetTimerIdForCell(this, m_timer.GetId());
-    m_timer.StartOnce(1000 / GetFrameRate());
+    m_cellPointers->SetTimerIdForCell(this, m_timer->GetId());
+    m_timer->StartOnce(1000 / GetFrameRate());
   }
 }
 
 void AnimationCell::StopTimer() {
-  m_timer.Stop();
-  m_cellPointers->RemoveTimerIdForCell(this);
+  if (m_timer) {
+    m_timer->Stop();
+    m_cellPointers->RemoveTimerIdForCell(this);
+  }
 }
 
 void AnimationCell::AnimationRunning(bool run) {

@@ -123,22 +123,27 @@ public:
 private:
   //! If this is set to true by XmlInspectorActive we send all data we get to the XML inspector
   bool m_xmlInspector = false;
-  /*! Send still-unsent data to wxMaxima
 
-    \todo As we tell wxWidgets to send all data in one go at the end of a write command
-    there should no more be unsent data.
-   */
-  void SendDataTowxMaxima();
   //! The configuration of our wxMaxima process
   Configuration *m_configuration;
-  //! The thread handler for SendDataTowxMaxima, the thread that parses the data from maxima.
-  jthread m_parserTask;
+
+  //! The background thread that reads and parses data from Maxima.
+  jthread m_workerThread;
+  //! True if the worker thread should exit.
+  std::atomic_bool m_workerThreadAbort;
+  //! True if a READ_PENDING event is already in the queue.
+  std::atomic_bool m_readPendingQueued;
+
   //! Handles events on the open client socket
   void SocketEvent(wxSocketEvent &event);
   //! Handles timer events
   void TimerEvent(wxTimerEvent &event);
+  //! Handles idle events
+  void OnIdle(wxIdleEvent &event);
+
   std::unique_ptr<wxSocketBase> m_socket;
-  std::mutex m_socketInputMutex;
+  //! Mutex protecting all socket and stream access.
+  std::mutex m_socketMutex;
   //! The data we receive from Maxima
   wxSocketInputStream m_socketInput;
   /*! Splits data we receive from Maxima to UTF-8
@@ -153,11 +158,30 @@ private:
 
   /*! The data we received from Maxima
 
-    Used by the main thread and by the thread SendDataTowxMaxima() runs in.
-    We still don't need a mutex to protect it, though, as the main thread
-    waits for the other to exit before writing new data to this variable.
+    Used by the worker thread.
    */
   wxString m_socketInputData;
+
+  /*! Buffer used for tag splitting and processing.
+      Previously static, now per-instance for thread safety.
+   */
+  wxString m_processingBuffer;
+
+  /*! Queue of data to be written to the socket.
+      All socket operations will happen in the worker thread.
+   */
+  std::vector<std::vector<char>> m_outputQueue;
+  std::mutex m_outputQueueMutex;
+
+  /*! Queue of interpreted items (cause + data) to be processed by main thread.
+   */
+  struct InterpretedItem {
+      EventCause cause;
+      wxString data;
+  };
+  std::vector<InterpretedItem> m_interpretedQueue;
+  std::mutex m_interpretedQueueMutex;
+
   /*! Data we didn't manage to send to wxMaxima until now
 
     \todo Do we still need this variable? We tell wxWidgets to send all data in
@@ -170,11 +194,14 @@ private:
   //! true = copy all data we receive to StdErr.
   static bool m_pipeToStderr;
 
-  /*! Search m_socketInputData for complete commands and send them to wxMaxima
+  /*! Background task that reads and interprets data from Maxima.
 
-    This is a restartable process that is meant to be run as a background thread
-    that interprets the data maxima has sent us and sends it to wxMaxima one
-    item at a time.
+    This task runs in m_workerThread. It waits for data on the socket,
+    reads it, and sends events to the main thread for each interpreted item.
+   */
+  void WorkerThread();
+
+  /*! Search m_socketInputData for complete commands and send them to wxMaxima
 
     Items that this task recognizes:
      - All XML tags registered in m_knownTags are sent as a whole before
@@ -183,14 +210,8 @@ private:
      - All text between such commands is left as it is and sent to wxMaxima
        as a string.
      .
-
-    If m_abortParserThread = true this process exits as fast as possible in
-    order to allow the main thread to append data to m_socketInputData, as fast
-    as possible: If maxima hasn't finished sending data it is highly probable
-    that m_socketInputData will contain the beginning of an XML tag, but not
-    its end and therefore cannot do anything, anyway.
    */
-  void SendToWxMaxima();
+  void ProcessData();
 
   /*! A timer that triggers reading data from maxima
 
@@ -203,12 +224,7 @@ private:
   wxTimer m_readIdleTimer{this};
   //! The names of maxima tags we want to send to wxMaxima in whole
   static std::unordered_map<wxString, EventCause, wxStringHash> m_knownTags;
-  /*! True = abort SendToWxMaxima() thread as fast as possible since new data has arrived.
-
-    If new data has arrived the probability is high that m_socketInputData does contain
-    the start of a command, but not its end.
-   */
-  std::atomic_bool m_abortParserThread;
+  static std::mutex m_knownTagsMutex;
 };
 
 wxDECLARE_EVENT(EVT_MAXIMA, wxThreadEvent);

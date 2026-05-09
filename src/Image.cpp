@@ -85,7 +85,6 @@ Image::Image(Configuration *config, const wxMemoryBuffer &image, const wxString 
 Image::Image(Configuration *config, const wxBitmap &bitmap) {
   m_configuration = config;
   LoadImage(bitmap);
-  m_scaledBitmap.Create(1, 1);
 }
 
 // constructor which loads an image
@@ -94,7 +93,6 @@ Image::Image(Configuration *config, const wxString &image,
 {
   m_svgImage = NULL;
   m_configuration = config;
-  m_scaledBitmap.Create(1, 1);
   m_ppi = m_configuration->GetPPI().x;
   LoadImage(image, wxmxFile, remove);
 }
@@ -160,6 +158,9 @@ wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data) {
 wxBitmap Image::GetUnscaledBitmap() {
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();
+
+  if (m_isInvalid)
+    GenerateInvalidBitmap();
 
   if (m_svgRast) {
     std::vector<unsigned char> imgdata(m_originalWidth * m_originalHeight * 4);
@@ -628,6 +629,9 @@ wxBitmap Image::GetBitmap(double scale) {
   // Recalculate contains its own WaitForLoad object.
   Recalculate(scale);
 
+  if (m_isInvalid)
+    GenerateInvalidBitmap();
+
   wxLogBuffer errorAggregator;
   // Let's see if we have cached the scaled bitmap with the right size
   if (m_scaledBitmap.GetWidth() == m_width)
@@ -683,6 +687,16 @@ wxBitmap Image::GetBitmap(double scale) {
 void Image::InvalidBitmap(const wxString &message) {
   m_originalWidth = m_width = 1200 * m_ppi / 96;
   m_originalHeight = m_height = 900 * m_ppi / 96;
+  m_isInvalid = true;
+  m_invalidBitmapMessage = message;
+  m_compressedImage.Clear();
+}
+
+void Image::GenerateInvalidBitmap() {
+  if (!m_isInvalid)
+    return;
+  m_isInvalid = false;
+
   // Create a "image not loaded" bitmap.
   m_scaledBitmap.Create(m_width, m_height);
   wxString fileSystemMessage;
@@ -691,19 +705,19 @@ void Image::InvalidBitmap(const wxString &message) {
   wxString error;
   if (m_imageName != wxEmptyString)
   {
-    if(message.IsEmpty())
+    if(m_invalidBitmapMessage.IsEmpty())
       error =
         wxString::Format(_("Error: Cannot render %s."), m_imageName.utf8_str())  + fileSystemMessage;
     else
       error =
-        wxString::Format(_("Error: Cannot render %s:\n%s"), m_imageName.utf8_str(), message.utf8_str()) + fileSystemMessage;
+        wxString::Format(_("Error: Cannot render %s:\n%s"), m_imageName.utf8_str(), m_invalidBitmapMessage.utf8_str()) + fileSystemMessage;
   }
   else
   {
-    if(message.IsEmpty())
+    if(m_invalidBitmapMessage.IsEmpty())
       error = wxString::Format(_("Error: Cannot render the image.")) + fileSystemMessage;
     else
-      error = wxString::Format(_("Error: Cannot render the image:\n%s"), message.utf8_str()) + fileSystemMessage;
+      error = wxString::Format(_("Error: Cannot render the image:\n%s"), m_invalidBitmapMessage.utf8_str()) + fileSystemMessage;
   }
 
   {
