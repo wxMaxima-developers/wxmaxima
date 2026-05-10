@@ -1069,6 +1069,10 @@ If wxMaxima is used, the Maxima variable `maxima_frontend` is set to `wxmaxima`.
 
 If no frontend is used (you are using command line Maxima), these variables are `false`.
 
+## Help! I can not save my document!
+
+If saving as wxmx file does not work, try saving the document as wxm file (and vice versa). And you can also try to remove all output (Menu Cell->Remove all output) and save that file, maybe some unexpected output causes issues during the save process.
+
 ______________________________________________________________________
 
 # Command-line arguments
