@@ -1461,7 +1461,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
                                _("Choose between installed Maxima versions")),
               wxSizerFlags());
   // currently that doesn't work, I don't see why (now). Disable the if check if SBCL is used for now.
-  wxLogMessage("GetLispType: " + m_configuration->GetLispType());
+  wxLogMessage("GetLispType: %s", m_configuration->GetLispType());
   // if (m_configuration->GetLispType().Lower().Contains(wxS("sbcl"))) {
     wxString sbclMemoryParameter1;
     wxString sbclMemoryParameter2;

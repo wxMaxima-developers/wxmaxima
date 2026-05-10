@@ -2936,9 +2936,9 @@ void wxMaxima::KillMaxima(bool logMessage) {
   wxArrayString taskkill_out, taskkill_err;
   wxExecute(wxString::Format("taskkill /PID %d /F /T", m_pid), taskkill_out, taskkill_err, wxEXEC_SYNC);
   for (size_t i=0; i<taskkill_out.GetCount(); ++i)
-    wxLogMessage("taskkill_out: " + taskkill_out.Item(i));
+    wxLogMessage("taskkill_out: %s", taskkill_out.Item(i));
   for (size_t i=0; i<taskkill_err.GetCount(); ++i)
-    wxLogMessage("taskkill_err: " + taskkill_err.Item(i));
+    wxLogMessage("taskkill_err: %s", taskkill_err.Item(i));
 #endif
   // Wait for Maxima to actually exit before we clean up its temporary files
   int count = 40;
@@ -3728,7 +3728,7 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
     wxLogMessage(_("Cannot start gnuplot"));
   else {
     wxString gnuplot_terminals = wxJoin(gnuplot_errors, ' ', 0); // REMARK: In the documentation of wxJoin, NULL is suggested as 3rd argument ("If the escape character is non-NULL, ..."), but NULL causes an warning. (warning: passing NULL to non-pointer argument 3). Therefore I use 0 here.
-    wxLogMessage(wxS("Gnuplot terminals: ") + gnuplot_terminals);
+    wxLogMessage(wxS("Gnuplot terminals: %s"), gnuplot_terminals);
     /* FIXME: What should happen with the result? Returned by the function? Stored anywhere? Currently the result is nowhere used... */
     m_configuration.UsePngCairo(gnuplot_terminals.Contains(wxS("pngcairo")));
     wxLogMessage(m_configuration.UsePngCairo() ? wxS("Gnuplot pngcairo terminal: yes") : wxS("Gnuplot pngcairo terminal: no"));
