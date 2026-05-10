@@ -216,113 +216,126 @@ void Plot2DWiz::Parse(wxString s) {
 
   s = s.SubString(7, s.Length());
   // Function to plot
+  wxString::const_iterator it = s.begin() + i;
   do {
-    if (s.at(i) == '[') {
+    if (it == s.end()) break;
+    if (*it == '[') {
       depth++;
       if (depth > 1)
-        curr += s.at(i);
-    } else if (s.at(i) == ']') {
+        curr += *it;
+    } else if (*it == ']') {
       depth--;
       if (depth > 0)
-        curr += s.at(i);
+        curr += *it;
     } else
-      curr += s.at(i);
-    i++;
+      curr += *it;
+    ++it;
   } while (depth > 0);
   text_ctrl_1->SetValue(curr);
   // Independent variable
-  while (i < s.Length() && s.at(i) != '[')
-    i++;
-  i++;
+  while (it != s.end() && *it != '[')
+    ++it;
+  if (it != s.end())
+    ++it;
   curr.Clear();
-  while (i < s.Length() && s.at(i) != ',') {
-    curr += s.at(i);
-    i++;
+  while (it != s.end() && *it != ',') {
+    curr += *it;
+    ++it;
   }
   text_ctrl_2->SetValue(curr);
-  i++;
+  if (it != s.end())
+    ++it;
   curr.Clear();
-  while (i < s.Length() && s.at(i) != ',') {
-    curr += s.at(i);
-    i++;
+  while (it != s.end() && *it != ',') {
+    curr += *it;
+    ++it;
   }
   text_ctrl_3->SetValue(curr);
-  i++;
+  if (it != s.end())
+    ++it;
   curr.Clear();
-  while (i < s.Length() && s.at(i) != ']') {
-    curr += s.at(i);
-    i++;
+  while (it != s.end() && *it != ']') {
+    curr += *it;
+    ++it;
   }
   text_ctrl_4->SetValue(curr);
-  i++;
+  if (it != s.end())
+    ++it;
   // Optional parameters
-  while (i < s.Length()) {
-    if (s.at(i) == '[') {
-      i++;
+  while (it != s.end()) {
+    if (*it == '[') {
+      ++it;
       curr.Clear();
-      while (i < s.Length() && s.at(i) != ',' && s.at(i) != ']') {
-        curr += s.at(i);
-        i++;
+      while (it != s.end() && *it != ',' && *it != ']') {
+        curr += *it;
+        ++it;
       }
       curr.Trim();
       curr.Trim(false);
       if (curr == wxS("y")) {
         curr.Clear();
-        i++;
-        while (i < s.Length() && s.at(i) != ',') {
-          curr += s.at(i);
-          i++;
+        if (it != s.end())
+          ++it;
+        while (it != s.end() && *it != ',') {
+          curr += *it;
+          ++it;
         }
         text_ctrl_6->SetValue(curr);
-        i++;
+        if (it != s.end())
+          ++it;
         curr.Clear();
-        while (i < s.Length() && s.at(i) != ']') {
-          curr += s.at(i);
-          i++;
+        while (it != s.end() && *it != ']') {
+          curr += *it;
+          ++it;
         }
         text_ctrl_7->SetValue(curr);
-        i++;
+        if (it != s.end())
+          ++it;
       } else if (curr == wxS("gnuplot_postamble")) {
-        while (i < s.Length() && s.at(i) != '"')
-          i++;
-        i++;
+        while (it != s.end() && *it != '"')
+          ++it;
+        if (it != s.end())
+          ++it;
         curr.Clear();
-        while (i < s.Length() && s.at(i) != '"') {
-          curr += s.at(i);
-          i++;
+        while (it != s.end() && *it != '"') {
+          curr += *it;
+          ++it;
         }
         combo_box_2->SetValue(curr);
       } else if (curr == wxS("gnuplot_out_file")) {
-        while (i < s.Length() && s.at(i) != '"')
-          i++;
-        i++;
+        while (it != s.end() && *it != '"')
+          ++it;
+        if (it != s.end())
+          ++it;
         curr.Clear();
-        while (i < s.Length() && s.at(i) != '"') {
-          curr += s.at(i);
-          i++;
+        while (it != s.end() && *it != '"') {
+          curr += *it;
+          ++it;
         }
         text_ctrl_9->SetValue(curr);
       } else if (curr == wxS("nticks")) {
         curr.Clear();
-        while (i < s.Length() && s.at(i) != ',')
-          i++;
-        i++;
-        while (i < s.Length() && s.at(i) != ']') {
-          curr += s.at(i);
-          i++;
+        while (it != s.end() && *it != ',')
+          ++it;
+        if (it != s.end())
+          ++it;
+        while (it != s.end() && *it != ']') {
+          curr += *it;
+          ++it;
         }
         text_ctrl_8->SetValue(curr);
       } else if (curr == wxS("logx")) {
         check_box_1->SetValue(true);
-        while (i < s.Length() && s.at(i) != ']')
-          i++;
+        while (it != s.end() && *it != ']')
+          ++it;
       } else if (curr == wxS("logy")) {
         check_box_2->SetValue(true);
-        while (i < s.Length() && s.at(i) != ']')
-          i++;
+        while (it != s.end() && *it != ']')
+          ++it;
       }
     }
-    i++;
+    if (it != s.end())
+      ++it;
   }
 }
 

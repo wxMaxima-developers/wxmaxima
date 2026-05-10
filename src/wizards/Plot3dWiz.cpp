@@ -199,118 +199,130 @@ void Plot3DWiz::SetValue(wxString s) {
 }
 
 void Plot3DWiz::Parse(wxString s) {
-  unsigned int i = 0;
+  int depth = 0;
   wxString curr;
   s = s.SubString(7, s.Length());
+  wxString::const_iterator it = s.begin();
   // Function to plot
-  if (s.StartsWith(wxS("["))) {
-    int depth = 0;
+  if (it != s.end() && *it == '[') {
     do {
-      if (s.at(i) == '[') {
+      if (it == s.end())
+        break;
+      if (*it == '[') {
         depth++;
         if (depth > 1)
-          curr += s.at(i);
-      } else if (s.at(i) == ']') {
+          curr += *it;
+      } else if (*it == ']') {
         depth--;
         if (depth > 0)
-          curr += s.at(i);
+          curr += *it;
       } else
-        curr += s.at(i);
-      i++;
+        curr += *it;
+      ++it;
     } while (depth > 0);
   } else {
-    while (i < s.Length() && s.at(i) != ',') {
-      curr += s.at(i);
-      i++;
+    while (it != s.end() && *it != ',') {
+      curr += *it;
+      ++it;
     }
   }
   text_ctrl_1->SetValue(curr);
   // Independent variable 1
-  while (i < s.Length() && s.at(i) != '[')
-    i++;
-  i++;
+  while (it != s.end() && *it != '[')
+    ++it;
+  if (it != s.end())
+    ++it;
   curr.Clear();
-  while (i < s.Length() && s.at(i) != ',') {
-    curr += s.at(i);
-    i++;
+  while (it != s.end() && *it != ',') {
+    curr += *it;
+    ++it;
   }
   text_ctrl_2->SetValue(curr);
-  i++;
+  if (it != s.end())
+    ++it;
   curr.Clear();
-  while (i < s.Length() && s.at(i) != ',') {
-    curr += s.at(i);
-    i++;
+  while (it != s.end() && *it != ',') {
+    curr += *it;
+    ++it;
   }
   text_ctrl_3->SetValue(curr);
-  i++;
+  if (it != s.end())
+    ++it;
   curr.Clear();
-  while (i < s.Length() && s.at(i) != ']') {
-    curr += s.at(i);
-    i++;
+  while (it != s.end() && *it != ']') {
+    curr += *it;
+    ++it;
   }
   text_ctrl_4->SetValue(curr);
-  i++;
+  if (it != s.end())
+    ++it;
   // Independent variable 2
-  while (i < s.Length() && s.at(i) != '[')
-    i++;
-  i++;
+  while (it != s.end() && *it != '[')
+    ++it;
+  if (it != s.end())
+    ++it;
   curr.Clear();
-  while (i < s.Length() && s.at(i) != ',') {
-    curr += s.at(i);
-    i++;
+  while (it != s.end() && *it != ',') {
+    curr += *it;
+    ++it;
   }
   text_ctrl_5->SetValue(curr);
-  i++;
+  if (it != s.end())
+    ++it;
   curr.Clear();
-  while (i < s.Length() && s.at(i) != ',') {
-    curr += s.at(i);
-    i++;
+  while (it != s.end() && *it != ',') {
+    curr += *it;
+    ++it;
   }
   text_ctrl_6->SetValue(curr);
-  i++;
+  if (it != s.end())
+    ++it;
   curr.Clear();
-  while (i < s.Length() && s.at(i) != ']') {
-    curr += s.at(i);
-    i++;
+  while (it != s.end() && *it != ']') {
+    curr += *it;
+    ++it;
   }
   text_ctrl_7->SetValue(curr);
-  i++;
+  if (it != s.end())
+    ++it;
   // Optional parameters
-  while (i < s.Length()) {
-    if (s.at(i) == '[') {
-      i++;
+  while (it != s.end()) {
+    if (*it == '[') {
+      ++it;
       curr.Clear();
-      while (i < s.Length() && s.at(i) != ',') {
-        curr += s.at(i);
-        i++;
+      while (it != s.end() && *it != ',') {
+        curr += *it;
+        ++it;
       }
       curr.Trim();
       curr.Trim(false);
       if (curr == wxS("gnuplot_postamble")) {
-        while (i < s.Length() && s.at(i) != '"')
-          i++;
-        i++;
+        while (it != s.end() && *it != '"')
+          ++it;
+        if (it != s.end())
+          ++it;
         curr.Clear();
-        while (i < s.Length() && s.at(i) != '"') {
-          curr += s.at(i);
-          i++;
+        while (it != s.end() && *it != '"') {
+          curr += *it;
+          ++it;
         }
         combo_box_2->SetValue(curr);
       } else if (curr == wxS("gnuplot_out_file")) {
-        while (i < s.Length() && s.at(i) != '"')
-          i++;
-        i++;
+        while (it != s.end() && *it != '"')
+          ++it;
+        if (it != s.end())
+          ++it;
         curr.Clear();
-        while (i < s.Length() && s.at(i) != '"') {
-          curr += s.at(i);
-          i++;
+        while (it != s.end() && *it != '"') {
+          curr += *it;
+          ++it;
         }
         text_ctrl_10->SetValue(curr);
       } else if (curr == wxS("gnuplot_pm3d")) {
         curr.Clear();
-        while (i < s.Length() && s.at(i) != ']') {
-          curr += s.at(i);
-          i++;
+        while (it != s.end() && *it != ']') {
+          curr += *it;
+          ++it;
         }
         if (curr.Find(wxS("true")) > -1)
           check_box_1->SetValue(true);
@@ -318,7 +330,8 @@ void Plot3DWiz::Parse(wxString s) {
           check_box_1->SetValue(false);
       }
     }
-    i++;
+    if (it != s.end())
+      ++it;
   }
 }
 

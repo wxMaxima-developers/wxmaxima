@@ -856,10 +856,12 @@ wxString Cell::RTFescape(wxString input, bool MarkDown) {
 
   // Encode unicode characters in a rather mind-boggling way
   wxString output;
-  for (size_t i = 0; i < input.Length(); i++) {
-    wxChar ch = input.at(i);
+  wxString::const_iterator it = input.begin();
+  wxString::const_iterator last = it;
+  for (; it != input.end(); ++it) {
+    wxChar ch = *it;
     if (ch == wxS('\n')) {
-      if (((i > 0) && (input.at(i - 1) == wxS('\n'))) || !MarkDown)
+      if ((it != input.begin() && *(it - 1) == wxS('\n')) || !MarkDown)
         output += wxS("\\par}\n{\\pard ");
       else
         output += wxS("\n");
