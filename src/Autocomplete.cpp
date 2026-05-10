@@ -107,7 +107,11 @@ void AutoComplete::ClearDemofileList() {
 
 void AutoComplete::AddSymbols(wxString xml) {
   if(m_addSymbols_backgroundThread.joinable())
+  {
+    m_abortBackgroundTask = true;
     m_addSymbols_backgroundThread.join();
+  }
+  m_abortBackgroundTask = false;
 
   if((m_configuration->UseThreads() && xml.Length() > 300))
     m_addSymbols_backgroundThread = jthread(&AutoComplete::AddSymbols_Backgroundtask_string,
@@ -119,9 +123,11 @@ void AutoComplete::AddSymbols(wxString xml) {
 void AutoComplete::AddSymbols(wxXmlDocument xml) {
   if(m_addSymbols_backgroundThread.joinable())
     {
+      m_abortBackgroundTask = true;
       wxLogMessage(_("Waiting for m_addSymbols_backgroundThread to finish"));
       m_addSymbols_backgroundThread.join();
     }
+  m_abortBackgroundTask = false;
   wxLogMessage(_("Scheduling a background task that compiles a new list "
                  "of autocompletable maxima commands."));
 
@@ -144,6 +150,7 @@ void AutoComplete::AddSymbols_Backgroundtask(wxXmlDocument xmldoc) {
   if (node != NULL) {
     wxXmlNode *children = node->GetChildren();
     while (children != NULL) {
+      if (m_abortBackgroundTask) return;
       if (children->GetType() == wxXML_ELEMENT_NODE) {
         if (children->GetName() == wxS("function")) {
           wxXmlNode *val = children->GetChildren();
@@ -183,18 +190,21 @@ void AutoComplete::AddSymbols_Backgroundtask(wxXmlDocument xmldoc) {
       }
       children = children->GetNext();
     }
+    if (m_abortBackgroundTask) return;
     {
       const std::lock_guard<std::mutex> lock(m_keywordsLock);
       std::sort(m_wordList.at(command).begin(), m_wordList.at(command).end());
       auto newEnd = std::unique(m_wordList.at(command).begin(), m_wordList.at(command).end());
       m_wordList.at(command).erase(newEnd, m_wordList.at(command).end());
     }
+    if (m_abortBackgroundTask) return;
     {
       const std::lock_guard<std::mutex> lock(m_keywordsLock);
       std::sort(m_wordList.at(unit).begin(), m_wordList.at(unit).end());
       auto newEnd = std::unique(m_wordList.at(unit).begin(), m_wordList.at(unit).end());
       m_wordList.at(unit).erase(newEnd, m_wordList.at(unit).end());
     }
+    if (m_abortBackgroundTask) return;
     {
       const std::lock_guard<std::mutex> lock(m_keywordsLock);
       std::sort(m_wordList.at(tmplte).begin(), m_wordList.at(tmplte).end());
@@ -216,12 +226,12 @@ void AutoComplete::AddWorksheetWords(const WordList &words) {
 }
 
 AutoComplete::~AutoComplete() {
-   if (m_addSymbols_backgroundThread.joinable())
-     m_addSymbols_backgroundThread.join();
-   if(m_addFiles_backgroundThread.joinable())
-     m_addFiles_backgroundThread.join();
+    m_abortBackgroundTask = true;
+    if (m_addSymbols_backgroundThread.joinable())
+      m_addSymbols_backgroundThread.join();
+    if(m_addFiles_backgroundThread.joinable())
+      m_addFiles_backgroundThread.join();
 }
-
 void AutoComplete::LoadSymbols() {
   wxString sharedir = m_configuration->MaximaShareDir();
   sharedir.Replace("\n", "");
@@ -229,16 +239,21 @@ void AutoComplete::LoadSymbols() {
   wxString demodir = m_configuration->MaximaDemoDir();
   demodir.Replace("\n", "");
   demodir.Replace("\r", "");
-  if(m_addFiles_backgroundThread.joinable())
+  if(m_addFiles_backgroundThread.joinable() || m_addSymbols_backgroundThread.joinable())
     {
-      wxLogMessage(_("Waiting for m_addFiles_backgroundThread to finish"));
-      m_addFiles_backgroundThread.join();
+      m_abortBackgroundTask = true;
+      if(m_addFiles_backgroundThread.joinable())
+        {
+          wxLogMessage(_("Waiting for m_addFiles_backgroundThread to finish"));
+          m_addFiles_backgroundThread.join();
+        }
+      if(m_addSymbols_backgroundThread.joinable())
+        {
+          wxLogMessage(_("Waiting for m_addSymbols_backgroundThread to finish"));
+          m_addSymbols_backgroundThread.join();
+        }
     }
-  if(m_addSymbols_backgroundThread.joinable())
-    {
-      wxLogMessage(_("Waiting for m_addSymbols_backgroundThread to finish"));
-      m_addSymbols_backgroundThread.join();
-    }
+  m_abortBackgroundTask = false;
   if(m_configuration->UseThreads())
     {
       m_addSymbols_backgroundThread = jthread(&AutoComplete::BuiltinSymbols_BackgroundTask,
@@ -260,16 +275,19 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
       wordlist.clear();
   }
   LoadBuiltinSymbols();
+  if (m_abortBackgroundTask) return;
 
   for (auto it = Configuration::EscCodesBegin();
        it != Configuration::EscCodesEnd(); ++it)
     {
+      if (m_abortBackgroundTask) return;
       const std::lock_guard<std::mutex> lock(m_keywordsLock);
       m_wordList.at(esccommand).push_back(it->first);
     }
 
   for(auto &wordlist:m_wordList)
     {
+      if (m_abortBackgroundTask) return;
       const std::lock_guard<std::mutex> lock(m_keywordsLock);
       std::sort(wordlist.begin(), wordlist.end());
       auto newEnd = std::unique(wordlist.begin(), wordlist.end());
@@ -291,6 +309,7 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
     wxRegEx templte("^[tT][eE][mM][pP][lL][aA][tT][eE] *: *");
     wxRegEx unt("^[uU][nN][iI][tT] *: *");
     for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine()) {
+      if (m_abortBackgroundTask) break;
       line.Trim(true);
       line.Trim(false);
       if (!line.StartsWith("#")) {
@@ -344,7 +363,9 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
 void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir, wxString demodir) {
   // Prepare a list of all built-in loadable files of maxima.
   {
-    GetMacFiles_includingSubdirs maximaLispIterator(m_builtInLoadFiles, &m_keywordsLock);
+    m_builtInLoadFiles.clear();
+    m_builtInDemoFiles.clear();
+    GetMacFiles_includingSubdirs maximaLispIterator(m_builtInLoadFiles, &m_keywordsLock, &m_abortBackgroundTask);
     if (sharedir.IsEmpty())
       wxLogMessage(_("Seems like the package with the maxima share files isn't "
                      "installed."));
@@ -355,12 +376,14 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir, wxString demo
       if (maximadir.IsOpened())
         maximadir.Traverse(maximaLispIterator); // todo
     }
-    GetMacFiles userLispIterator(m_builtInLoadFiles, &m_keywordsLock);
+    if (m_abortBackgroundTask) return;
+    GetMacFiles userLispIterator(m_builtInLoadFiles, &m_keywordsLock, &m_abortBackgroundTask);
     wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
     userDir.MakeAbsolute();
     wxDir maximauserfilesdir(userDir.GetFullPath());
     if (maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
+    if (m_abortBackgroundTask) return;
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
   }
 
@@ -368,12 +391,14 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir, wxString demo
   {
     wxFileName demoDir(demodir + "/");
     demoDir.MakeAbsolute();
-    GetDemoFiles_includingSubdirs maximaLispIterator(m_builtInDemoFiles, &m_keywordsLock);
+    GetDemoFiles_includingSubdirs maximaLispIterator(m_builtInDemoFiles, &m_keywordsLock, &m_abortBackgroundTask);
     wxDir maximadir(demoDir.GetFullPath());
     if (maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
+    if (m_abortBackgroundTask) return;
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
   }
+  if (m_abortBackgroundTask) return;
   const std::lock_guard<std::mutex> lock(m_keywordsLock);
   std::sort(m_builtInLoadFiles.begin(), m_builtInLoadFiles.end());
   std::sort(m_builtInDemoFiles.begin(), m_builtInDemoFiles.end());
@@ -413,7 +438,7 @@ void AutoComplete::UpdateDemoFiles(wxString partial, const wxString &maximaDir) 
 
   // Add all files from the maxima directory to the demo file list
   if (partial != wxS("//")) {
-    GetDemoFiles userLispIterator(m_wordList.at(demofile), &m_keywordsLock, prefix);
+    GetDemoFiles userLispIterator(m_wordList.at(demofile), &m_keywordsLock, nullptr, prefix);
     wxDir demofilesdir(partial);
     if (demofilesdir.IsOpened())
       demofilesdir.Traverse(userLispIterator);
@@ -446,7 +471,7 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, const wxString &maximaDi
 
   // Add all files from the maxima directory to the demo file list
   if (partial != wxS("//")) {
-    GetGeneralFiles fileIterator(m_wordList[generalfile], &m_keywordsLock, prefix);
+    GetGeneralFiles fileIterator(m_wordList[generalfile], &m_keywordsLock, nullptr, prefix);
     wxDir generalfilesdir(partial);
     if (generalfilesdir.IsOpened())
       generalfilesdir.Traverse(fileIterator);
@@ -487,7 +512,7 @@ void AutoComplete::UpdateLoadFiles(wxString partial, const wxString &maximaDir) 
 
   // Add all files from the maxima directory to the load file list
   if (partial != wxS("//")) {
-    GetMacFiles userLispIterator(m_wordList.at(loadfile), &m_keywordsLock, prefix);
+    GetMacFiles userLispIterator(m_wordList.at(loadfile), &m_keywordsLock, nullptr, prefix);
     wxDir loadfilesdir(partial);
     if (loadfilesdir.IsOpened())
       loadfilesdir.Traverse(userLispIterator);

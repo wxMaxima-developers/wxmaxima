@@ -111,6 +111,7 @@ Image::Image(Configuration *config, const Image &image) {
 }
 
 Image::~Image() {
+  m_abortBackgroundTask = true;
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();
   if(m_loadGnuplotSourceTask.joinable())
@@ -147,7 +148,7 @@ wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data) {
   wxMemoryBuffer retval;
   std::vector<char> buf(8192);
 
-  while (data->CanRead()) {
+  while (data->CanRead() && !m_abortBackgroundTask) {
     data->Read(buf.data(), buf.size());
     retval.AppendData(buf.data(), data->LastRead());
   }
@@ -202,7 +203,11 @@ std::size_t Image::GetOriginalHeight() const {
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
                           const wxString &wxmxFile) {
   if(m_loadGnuplotSourceTask.joinable())
+  {
+    m_abortBackgroundTask = true;
     m_loadGnuplotSourceTask.join();
+  }
+  m_abortBackgroundTask = false;
   m_gnuplotSource = std::move(gnuplotFilename);
   m_gnuplotData = std::move(dataFilename);
   std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter());
@@ -222,12 +227,14 @@ void Image::LoadGnuplotSource_Backgroundtask(
   wxString gnuplotFile, wxString dataFile, wxString wxmxFile)
 {
   std::unique_ptr<ThreadNumberLimiter> threadNumLimit = std::move(limiter);
+  if (m_abortBackgroundTask) return;
   if(wxmxFile.IsEmpty())
   {
     {
       wxFileInputStream source(gnuplotFile);
       LoadGnuplotSource(&source);
     }
+    if (m_abortBackgroundTask) return;
     {
       wxFileInputStream data(dataFile);
       LoadGnuplotData(&data);
@@ -240,6 +247,7 @@ void Image::LoadGnuplotSource_Backgroundtask(
       WxmxStream source(wxmx, gnuplotFile);
       LoadGnuplotSource(&source);
     }
+    if (m_abortBackgroundTask) return;
     {
       wxFileInputStream wxmx(wxmxFile);
       WxmxStream data(wxmx, dataFile);
@@ -249,11 +257,14 @@ void Image::LoadGnuplotSource_Backgroundtask(
 }
 
 void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename,
-                                    const wxString &wxmxFile) {
+                                     const wxString &wxmxFile) {
   if(m_loadGnuplotSourceTask.joinable())
+  {
+    m_abortBackgroundTask = true;
     m_loadGnuplotSourceTask.join();
+  }
+  m_abortBackgroundTask = false;
   std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter());
-
   m_gnuplotSource = std::move(gnuplotFilename);
   m_gnuplotData = std::move(dataFilename);
   if(m_configuration->UseThreads())
@@ -360,6 +371,7 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
   wxString wxmxFile
   ) {
   std::unique_ptr<ThreadNumberLimiter> threadNumLimit = std::move(limiter);
+  if (m_abortBackgroundTask) return;
   {
     // Read the gnuplot source
     {
@@ -369,11 +381,13 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
         m_gnuplotSource_Compressed.Clear();
         wxMemoryOutputStream mstream;
         source.Read(mstream);
+        if (m_abortBackgroundTask) return;
         m_gnuplotSource_Compressed.AppendData(
           mstream.GetOutputStreamBuffer()->GetBufferStart(),
           mstream.GetOutputStreamBuffer()->GetBufferSize());
       }
     }
+    if (m_abortBackgroundTask) return;
     // Read the gnuplot data
     {
       m_gnuplotData_Compressed.Clear();
@@ -382,6 +396,7 @@ void Image::LoadCompressedGnuplotSource_Backgroundtask(
       if (!data.Eof()) { // open successful
         wxMemoryOutputStream mstream;
         data.Read(mstream);
+        if (m_abortBackgroundTask) return;
         m_gnuplotData_Compressed.AppendData(
           mstream.GetOutputStreamBuffer()->GetBufferStart(),
           mstream.GetOutputStreamBuffer()->GetBufferSize());
@@ -774,7 +789,11 @@ wxString Image::GetExtension() const {
 void Image::LoadImage(wxString image, const wxString &wxmxFile,
                       bool remove) {
   if(m_loadImageTask.joinable())
+  {
+    m_abortBackgroundTask = true;
     m_loadImageTask.join();
+  }
+  m_abortBackgroundTask = false;
   m_fromWxFS = !wxmxFile.IsEmpty();
   m_extension = wxFileName(image).GetExt();
   m_extension = m_extension.Lower();
@@ -802,6 +821,8 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
                                      bool remove) {
   std::unique_ptr<ThreadNumberLimiter> threadNumLimit = std::move(limiter);
   wxLogBuffer errorAggregator;
+
+  if (m_abortBackgroundTask) return;
 
   if (!wxmxFile.IsEmpty()) {
     wxFileInputStream wxmx(wxmxFile);
@@ -838,6 +859,8 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
     else
       InvalidBitmap(errorAggregator.GetBuffer());
   }
+
+  if (m_abortBackgroundTask) return;
 
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0) {

@@ -31,6 +31,7 @@
 
 #include <memory>
 #include <thread>
+#include <atomic>
 #include "ThreadNumberLimiter.h"
 #include "precomp.h"
 #include "Version.h"
@@ -278,6 +279,8 @@ private:
                                 wxString image, wxString wxmxFile,
                                 bool remove);
   jthread m_loadGnuplotSourceTask;
+  //! If set to true, background tasks should abort.
+  std::atomic_bool m_abortBackgroundTask{false};
   void LoadGnuplotSource_Backgroundtask(
     std::unique_ptr<ThreadNumberLimiter> limiter,
     wxString gnuplotFile, wxString dataFile, wxString wxmxFile);
@@ -296,7 +299,7 @@ private:
   //! Loads an image from a file
   void LoadImage(wxString image, const wxString &wxmxFile, bool remove = true);
   //! Reads the compressed image into a memory buffer
-  static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
+  wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
   Configuration *m_configuration = NULL;
   /*! The upper width limit for displaying this image
    */

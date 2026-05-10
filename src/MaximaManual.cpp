@@ -151,16 +151,18 @@ void MaximaManual::CompileHelpFileAnchors(const wxString &maximaHtmlDir,
   if (!(m_maximaHtmlDir.IsEmpty())) {
     std::vector<wxString> helpFiles;
     {
-      GetHTMLFiles htmlFilesTraverser(helpFiles, m_maximaHtmlDir);
+      GetHTMLFiles htmlFilesTraverser(helpFiles, &m_abortBackgroundTask, m_maximaHtmlDir);
       wxDir dir(m_maximaHtmlDir);
       dir.Traverse(htmlFilesTraverser);
     }
+    if (m_abortBackgroundTask) return;
     {
       GetHTMLFiles_Recursive htmlFilesTraverser(
-                                                helpFiles, m_configuration->MaximaShareDir());
+                                                helpFiles, &m_abortBackgroundTask, m_configuration->MaximaShareDir());
       wxDir dir(m_configuration->MaximaShareDir());
       dir.Traverse(htmlFilesTraverser);
     }
+    if (m_abortBackgroundTask) return;
 
     for (const auto &file : helpFiles) {
       if(m_abortBackgroundTask)
@@ -270,6 +272,7 @@ void MaximaManual::CompileHelpFileAnchors(const wxString &maximaHtmlDir,
 
 wxDirTraverseResult
 MaximaManual::GetHTMLFiles::OnFile(const wxString &filename) {
+  if (m_abort && *m_abort) return wxDIR_STOP;
   wxFileName newItemName(filename);
   wxString newItem =
     m_prefix + wxFileName::GetPathSeparator() + newItemName.GetFullName();
@@ -282,11 +285,13 @@ MaximaManual::GetHTMLFiles::OnFile(const wxString &filename) {
 
 wxDirTraverseResult
 MaximaManual::GetHTMLFiles::OnDir(const wxString &WXUNUSED(dirname)) {
+  if (m_abort && *m_abort) return wxDIR_STOP;
   return wxDIR_IGNORE;
 }
 
 wxDirTraverseResult
 MaximaManual::GetHTMLFiles_Recursive::OnFile(const wxString &filename) {
+  if (m_abort && *m_abort) return wxDIR_STOP;
   wxFileName newItemName(filename);
   newItemName.MakeAbsolute();
   wxString newItem = newItemName.GetFullPath();
@@ -299,6 +304,7 @@ MaximaManual::GetHTMLFiles_Recursive::OnFile(const wxString &filename) {
 
 wxDirTraverseResult
 MaximaManual::GetHTMLFiles_Recursive::OnDir(const wxString &WXUNUSED(dirname)) {
+  if (m_abort && *m_abort) return wxDIR_STOP;
   return wxDIR_CONTINUE;
 }
 
@@ -528,6 +534,7 @@ void MaximaManual::LoadHelpFileAnchors(const wxString &docdir,
   if (!LoadManualAnchorsFromCache()) {
     if (!m_maximaHtmlDir.IsEmpty()) {
       if (m_helpfileanchorsThread.joinable()) {
+        m_abortBackgroundTask = true;
         wxLogMessage(_("Waiting for the Manual anchors background task."));
         m_helpfileanchorsThread.join();
       }
