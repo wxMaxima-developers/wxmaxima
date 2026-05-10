@@ -2616,12 +2616,6 @@ bool wxMaxima::StartMaxima(bool force) {
   if (!StartServer())
     return false;
 
-  if ((m_maximaProcess != NULL) || (m_pid >= 0) || (m_client))
-    {
-      m_unsuccessfulConnectionAttempts = 0;
-      KillMaxima();
-    }
-
   wxString dirname;
   {
     wxString filename;
@@ -2641,6 +2635,12 @@ bool wxMaxima::StartMaxima(bool force) {
 
   if ((m_maximaProcess == NULL) || (m_hasEvaluatedCells) || force ||
       (dirname != dirname_Old)) {
+    if ((m_maximaProcess != NULL) || (m_pid >= 0) || (m_client))
+      {
+        m_unsuccessfulConnectionAttempts = 0;
+        KillMaxima();
+      }
+
     if ((m_xmlInspector) && (IsPaneDisplayed(EventIDs::menu_pane_xmlInspector)))
       m_xmlInspector->Clear();
 
