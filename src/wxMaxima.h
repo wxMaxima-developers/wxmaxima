@@ -769,6 +769,7 @@ protected:
   wxWindowIDRef m_gnuplot_process_id;
   wxWindowIDRef m_maxima_process_id;
   wxString m_lastPrompt;
+  wxString m_firstPromptBuffer;
   wxString m_lastPath;
   std::unique_ptr<wxPrintData> m_printData;
   /*! Did we tell maxima to close?

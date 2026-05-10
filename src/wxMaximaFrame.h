@@ -187,6 +187,8 @@ protected:
   std::size_t m_bytesFromMaxima = 0;
   //! The process id of maxima. Is determined by ReadFirstPrompt.
   long m_pid = -1;
+  //! The real process id of maxima (might be a child of m_pid).
+  long m_maximaPid = -1;
   //! The last name GetTempAutosavefileName() has returned.
   wxString m_tempfileName;
   //! Issued if a notification is closed.

@@ -2674,7 +2674,9 @@ bool wxMaxima::StartMaxima(bool force) {
       m_maximaProcess->Redirect();
       //      m_maximaProcess->SetPriority(wxPRIORITY_MAX);
       m_first = true;
+      m_firstPromptBuffer.Clear();
       m_pid = -1;
+      m_maximaPid = -1;
       wxLogMessage(_("Running maxima as: %s"), command);
 
       wxEnvVariableHashMap environment;
@@ -2760,14 +2762,15 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
     // SetConsoleCtrlHandler(NULL, true);
 
     /* First try to send the signal to gcl. */
-    wxWCharBuffer sharedMemoryName(wxString::Format("gcl-%d", m_pid).wc_str());
+    long signalPid = (m_maximaPid > 0) ? m_maximaPid : m_pid;
+    wxWCharBuffer sharedMemoryName(wxString::Format("gcl-%d", signalPid).wc_str());
     sharedMemoryHandle =
       OpenFileMapping(FILE_MAP_WRITE,    /*  Read/write permission.   */
                       FALSE,             /*  Do not inherit the name  */
                       sharedMemoryName.data()); /*  of the mapping object.   */
 
     /* If gcl is not running, send to maxima. */
-    wxWCharBuffer sharedMemoryName2(wxString::Format("maxima-%d", m_pid).wc_str());
+    wxWCharBuffer sharedMemoryName2(wxString::Format("maxima-%d", signalPid).wc_str());
     if (sharedMemoryHandle == NULL) {
       sharedMemoryHandle =
         OpenFileMapping(FILE_MAP_WRITE,    /*  Read/write permission.   */
@@ -2839,6 +2842,7 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
       CloseHandle(sharedMemoryHandle);
       sharedMemoryAddress = NULL;
       sharedMemoryHandle = NULL;
+      return;
     }
   }
 
@@ -2862,7 +2866,11 @@ void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
 
 void wxMaxima::KillMaxima(bool logMessage) {
   if (logMessage && (m_closing || (m_maximaProcess == NULL) || (m_pid > 0))) {
-    wxLogMessage("Killing Maxima. PID=%ld", m_pid);
+    if (m_maximaPid > 0)
+      wxLogMessage("Killing Maxima. Wrapper PID=%ld, Maxima PID=%ld", m_pid,
+                   m_maximaPid);
+    else
+      wxLogMessage("Killing Maxima. PID=%ld", m_pid);
     if (m_history)
       m_history->MaximaSessionStart();
   }
@@ -3112,14 +3120,15 @@ void wxMaxima::OnMaximaClose(wxProcessEvent &event) {
 ///--------------------------------------------------------------------------------
 
 void wxMaxima::ReadFirstPrompt(const wxString &data) {
- auto end = data.Find(m_firstPrompt);
+  m_firstPromptBuffer += data;
+  auto end = m_firstPromptBuffer.Find(m_firstPrompt);
   if (end  == wxNOT_FOUND)
     return;
 
   m_bytesFromMaxima = 0;
 
   int start = 0;
-  start = data.Find(wxS("Maxima "));
+  start = m_firstPromptBuffer.Find(wxS("Maxima "));
   if (start == wxNOT_FOUND)
     start = 0;
   FirstOutput();
@@ -3127,14 +3136,18 @@ void wxMaxima::ReadFirstPrompt(const wxString &data) {
   m_maximaBusy = false;
 
   // Wait for a line maxima informs us about it's process id in.
-  int s = data.Find(wxS("pid=")) + 4;
-  int t = s + data.SubString(s, data.Length()).Find(wxS("\n")) - 1;
+  int s = m_firstPromptBuffer.Find(wxS("pid="));
+  if (s != wxNOT_FOUND) {
+    s += 4;
+    int t =
+        s + m_firstPromptBuffer.SubString(s, m_firstPromptBuffer.Length()).Find(wxS("\n")) - 1;
 
-  // Read this pid
-  if (s < t)
-    if(!data.SubString(s, t).ToLong(&m_pid))
-      wxLogMessage(_("Cannot interpret the numeric value of pid %s"),
-                   data.SubString(s, t));
+    // Read this pid
+    if (s < t)
+      if (!m_firstPromptBuffer.SubString(s, t).ToLong(&m_maximaPid))
+        wxLogMessage(_("Cannot interpret the numeric value of pid %s"),
+                     m_firstPromptBuffer.SubString(s, t));
+  }
 
   if (m_pid > 0)
     m_MenuBar->EnableItem(EventIDs::menu_interrupt_id, true);
@@ -3144,13 +3157,18 @@ void wxMaxima::ReadFirstPrompt(const wxString &data) {
   StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
   m_closing = false; // when restarting maxima this is temporarily true
 
-  wxString prompt_compact = data.Left(start + static_cast<std::size_t>(end) +
-                                      m_firstPrompt.Length() - 1);
+  wxString prompt_compact = m_firstPromptBuffer.Left(
+      start + static_cast<std::size_t>(end) + m_firstPrompt.Length() - 1);
   prompt_compact.Replace(wxS("\n"), wxS("\u21b2"));
 
   wxLogMessage(_("Received maxima's first prompt: %s"), prompt_compact);
 
-  wxLogMessage(_("Maxima's PID is %li"), m_pid);
+  if (m_maximaPid > 0)
+    wxLogMessage(_("Maxima's PID is %li"), m_maximaPid);
+  else
+    wxLogMessage(_("Maxima's PID is %li"), m_pid);
+
+  m_firstPromptBuffer.Clear();
 
   if (GetWorksheet() && (GetWorksheet()->m_evaluationQueue.Empty())) {
     // Inform the user that the evaluation queue is empty.
