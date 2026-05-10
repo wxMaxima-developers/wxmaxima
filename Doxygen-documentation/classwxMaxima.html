@@ -1012,6 +1012,9 @@ wxWindowIDRef&#160;</td><td class="memItemRight" valign="bottom"><b>m_maxima_pro
 <tr class="memitem:a5d0b16119d824c88b4f05dd1b0320ec7"><td class="memItemLeft" align="right" valign="top"><a id="a5d0b16119d824c88b4f05dd1b0320ec7" name="a5d0b16119d824c88b4f05dd1b0320ec7"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lastPrompt</b></td></tr>
 <tr class="separator:a5d0b16119d824c88b4f05dd1b0320ec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55dc7c06e15bb819ddac7c1440021ddb"><td class="memItemLeft" align="right" valign="top"><a id="a55dc7c06e15bb819ddac7c1440021ddb" name="a55dc7c06e15bb819ddac7c1440021ddb"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_firstPromptBuffer</b></td></tr>
+<tr class="separator:a55dc7c06e15bb819ddac7c1440021ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6700e8c3e4f7c91547449ed1c9397222"><td class="memItemLeft" align="right" valign="top"><a id="a6700e8c3e4f7c91547449ed1c9397222" name="a6700e8c3e4f7c91547449ed1c9397222"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lastPath</b></td></tr>
 <tr class="separator:a6700e8c3e4f7c91547449ed1c9397222"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1066,6 +1069,10 @@ std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_bytesFromMax
 long&#160;</td><td class="memItemRight" valign="bottom"><b>m_pid</b> = -1</td></tr>
 <tr class="memdesc:aacbfb0677c03361806ec252d651f4263"><td class="mdescLeft">&#160;</td><td class="mdescRight">The process id of maxima. Is determined by ReadFirstPrompt. <br /></td></tr>
 <tr class="separator:aacbfb0677c03361806ec252d651f4263"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1aed798fae50a996328feb7320aaae6"><td class="memItemLeft" align="right" valign="top"><a id="af1aed798fae50a996328feb7320aaae6" name="af1aed798fae50a996328feb7320aaae6"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaPid</b> = -1</td></tr>
+<tr class="memdesc:af1aed798fae50a996328feb7320aaae6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The real process id of maxima (might be a child of m_pid). <br /></td></tr>
+<tr class="separator:af1aed798fae50a996328feb7320aaae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58afeb9d6fff57e4ca72b6e4c8afdbb2"><td class="memItemLeft" align="right" valign="top"><a id="a58afeb9d6fff57e4ca72b6e4c8afdbb2" name="a58afeb9d6fff57e4ca72b6e4c8afdbb2"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_tempfileName</b></td></tr>
 <tr class="memdesc:a58afeb9d6fff57e4ca72b6e4c8afdbb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last name GetTempAutosavefileName() has returned. <br /></td></tr>
@@ -1657,7 +1664,7 @@ Appending stuff to output</h2>
 </div><div class="memdoc">
 
 <p>Spawn the "configure" menu. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
 
 </div>
 </div>
@@ -2347,7 +2354,7 @@ Dealing with stuff read from the socket</h2>
 
 <p>Setup maxima's variables. </p>
 <p>This method is called once when maxima starts. It loads wxmathml.lisp and sets some option variables.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000023">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
 
 </div>
 </div>
