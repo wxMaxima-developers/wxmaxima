@@ -140,7 +140,7 @@ Instrucción con auto-completado</h3>
 <p><em>WxMaxima</em> contiene una característica de auto-completado que es disparada a través del menú (Celda/Palabra Completa) o alternativamente pulsando la combinación de teclas <code>CTRL</code>+<code>ESPACIO</code>. El auto-completado distingue MAYÚS/minús. Por ejemplo si está activado dentro de una especificación unitaria para ezUnits ofrecerá un listado de unidades aplicables.</p>
 <p><img src="./ezUnits.png" alt="ezUnits" class="inline"/></p>
 <p>Al lado de completar un nombre de archivo, un nombre de unidad o la instrucción actual o el nombre de variable, el auto-completado es capas de mostrar una plantilla para muchas de las instrucciones iniciando el tipo (y significado) de los parámetros que este programa espera. Para activar esta característica presione <code>MAYÚS</code>+<code>CTRL</code>+<code>ESPACIO</code> o seleccione el ítem del menú respectivo (Celda/Mostrar plantilla).</p>
-<h4><a class="anchor" id="autotoc_md127"></a>
+<h4><a class="anchor" id="autotoc_md126"></a>
 Caracteres griegos</h4>
 <p>Equipos tradicionalmente almacenados en valores 8-bit. Esto permite para un máximo de 256 caracteres diferentes. Todas las letras, números t y símbolos de control (final de transmisión, final de cadena, líneas y bordes para dibujar rectángulos para menús :etc_.) de cerca cualquier idioma puede caber dentro de ese límite.</p>
 <p>Para muchos países, la página de código de 256 caracteres que han sido elegidos no incluyen cosas como letras griegas, por lo que, eso es utilizado frecuentemente en matemáticas. Para solucionar este tipo de limitación [Unicode] (<a href="https://home.unicode.org/">https://home.unicode.org/</a>) ha sido inventado: una codificación que hace que el texto inglés funcione como normal, pero para utilizar más que los 256 caracteres.</p>
@@ -186,7 +186,7 @@ Caracteres griegos</h4>
 <td class="markdownTableBodyCenter">T   </td><td class="markdownTableBodyCenter">Teta   </td><td class="markdownTableBodyCenter">P   </td><td class="markdownTableBodyCenter">Pi   </td><td class="markdownTableBodyCenter">O   </td><td class="markdownTableBodyCenter">Omega   </td></tr>
 </table>
 <p>Además puede utilizar la barra lateral de «Teclas griegas» para introducir las letras griegas.</p>
-<p><a class="anchor" id="autotoc_md128"></a> </p><h5>Attention: Lookalike characters</h5>
+<p><a class="anchor" id="autotoc_md127"></a> </p><h5>Attention: Lookalike characters</h5>
 <p>Several Latin letters look like the Greek letters, e.g. the Latin letter "A" and the Greek letter "Alpha". Although they look identical, they are two different Unicode characters, represented by different Unicode code points (numbers).</p>
 <p>This might be problematic, if you assign a value to the variable <a class="el" href="classA.html">A</a> and later use the Greek letter Alpha to do something with this variable, especially on printouts. For the Greek letter my (which is also used as prefix for micro) there are also two different Unicode code points.</p>
 <p>The "Greek letters"-sidebar therefore has the option, that lookalike characters are not available (which can be changed using a right-click menu).</p>
@@ -543,7 +543,7 @@ Empotrar una trama dentro de la hoja de trabajo</h3>
 </table>
 <p>Si un archivo de <code>wxm</code> es leído por (consola) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, estas funciones son ignoradas (y escritas como salida, como otras funciones desconocidas en <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>).</p>
 <p>If you got problems with one of these functions, please check, if the problem exists in the the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> function too (e.g. you got an error with <code>wxplot2d()</code>, check the same plot in the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command <code>plot2d()</code> (which opens the plot in a separate Window)). If the problem does not disappear, it is most likely a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> issue and should be reported in the <a href="https://sourceforge.net/p/maxima/bugs/">Maxima bugtracker</a>. Or maybe a Gnuplot issue.</p>
-<h3><a class="anchor" id="autotoc_md146"></a>
+<h3><a class="anchor" id="autotoc_md147"></a>
 Creación de tramas empotradas más mayores o menores</h3>
 <p>Tal como notó arriba, el dialogo de configuración proporciona una manera de modificar el tamaño de trama predeterminada lo cual fija el valor de inicio de <code>wxplot_size</code>. Las rutinas de tramado de <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> respeta esta variable que especifica el tamaño de una trama en píxeles. Siempre puede ser solicitado o utilizado para fijar el tamaño de las tramas siguientes:</p>
 <div class="fragment"><div class="line">wxplot_size:[1200,800]$</div>
@@ -561,16 +561,16 @@ Creación de tramas empotradas más mayores o menores</h3>
 <div class="line">    )</div>
 <div class="line">),wxplot_size=[1600,800]$</div>
 </div><!-- fragment --><p>Estableciendo el tamaño de trazas empotradas con <code>wxplot_size</code> funciona para trazos empotrados utilizando p.e. instrucciones <code>wxplot</code>, <code>wxdraw</code>, <code>wxcontour_plot</code> y <code>wximplicit_plot</code> y para animaciones empotradas con instrucciones <code>with_slider_draw</code> y <code>wxanimate</code>.</p>
-<h2><a class="anchor" id="autotoc_md147"></a>
+<h2><a class="anchor" id="autotoc_md148"></a>
 Tramas de mayor calidad</h2>
 <p><em>Gnuplot</em> parece no proporcionar una manera portable de determinar si admite bitmap de salida de calidad alta que la biblioteca Cairo proporciona. En los sistemas donde está compilado <em>Gnuplot</em> para utilizar esta biblioteca la opción pngCairo desde el menú de configuración (que puede ser sobrescrito por la variable <code>wxplot_pngcairo</code>) habilita el mantenimiento para antialias y estilos de línea adicional. Si <code>wxplot_pngCairo</code> está establecido sin <em>Gnuplot</em> admitiendo esto el resultado dará mensajes de error en vez de gráficos.</p>
-<h3><a class="anchor" id="autotoc_md148"></a>
+<h3><a class="anchor" id="autotoc_md149"></a>
 Abriendo tramados empotrados en ventanas &lt;em&gt;Gnuplot&lt;/em&gt; interactivas</h3>
 <p>Si fue generada una trama utilizando las instrucciones de tipo <code>wxdraw</code> (<code>wxplot2d</code> y <code>wxplot3d</code> no son admitidas por esta característica) y el tamaño del archivo del proyecto <em>Gnuplot</em> subyacente no es una manera demasiado buena que <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> ofrezca un menú de pulsación secundaria que permita abrir el tramado dentro de una ventana interactiva de <em>Gnuplot</em>.</p>
-<h3><a class="anchor" id="autotoc_md149"></a>
+<h3><a class="anchor" id="autotoc_md150"></a>
 Abrir consola para instrucciones Gnuplot en las ventanas &lt;tt&gt;tramado&lt;/tt&gt;</h3>
 <p>On MS Windows, there are two Gnuplot programs, <code>gnuplot.exe</code> and <code>wgnuplot.exe</code>. You can configure, which command should be used using the configuration menu. <code>wgnuplot.exe</code> offers the possibility to open a console window, where <em>gnuplot</em> commands can be entered into, <code>gnuplot.exe</code> does not offer this possibility. Unfortunately, <code>wgnuplot.exe</code> causes <em>Gnuplot</em> to "steal" the keyboard focus for a short time every time a plot is prepared.</p>
-<h3><a class="anchor" id="autotoc_md150"></a>
+<h3><a class="anchor" id="autotoc_md151"></a>
 Empotrar animaciones dentro de la hoja de cálculo</h3>
 <p>Diagramas 3<a class="el" href="classD.html">D</a> tienden hacerlo difícil para lectura de datos cuantitativos. Una alternativa viable sería asignar el 3er parámetro a la rueda del ratón. La instrucción <code>with_slider_draw</code> es una versión de <code>wxdraw2d</code> que prepara múltiples tramados y permite conmutar entre ellos moviendo el arrastre en la cima de la pantalla. <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> permite exportar esta animación como un gif animado.</p>
 <p>Los primeros dos argumentos para <code>with_slider_draw</code> son el nombre de la variable que está pasada entre las tramas y un listado de los valores de estas variables. Los argumentos que siguen son los argumentos ordinarios para <code>wxdraw2d</code>:</p>
@@ -639,7 +639,7 @@ Empotrar animaciones dentro de la hoja de cálculo</h3>
 <div class="line">        x,0,10</div>
 <div class="line">    )</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md151"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md152"></a>
 Abrir múltiples tramas en ventanas contemporáneas</h3>
 <p>Mientras no sean proporcionados por <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> esta característica de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (sobre configuraciones que la admitan) algunas veces vienen manualmente. Los siguientes ejemplos vienen desde una carta desde Mario Rodríguez al listado de correo de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>:</p>
 <div class="fragment"><div class="line">/* Parabola in window #1 */ draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));</div>
@@ -657,53 +657,53 @@ Abrir múltiples tramas en ventanas contemporáneas</h3>
 <div class="line">    key=&quot;cos (x)&quot;,grid=[2,2],</div>
 <div class="line">    explicit(cos(x),x,0,2*%pi))</div>
 <div class="line">);</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md152"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md153"></a>
 El panel lateral «Tramado utilizando dibujo»</h3>
 <p>La barra lateral «Tramado utilizando dibujo» oculta un generador de código simple que permite generar escenas que hagan uso de alguna de la flexibilidad del paquete <em>draw</em> con el que <em>maxima</em> viene.</p>
-<h4><a class="anchor" id="autotoc_md153"></a>
+<h4><a class="anchor" id="autotoc_md154"></a>
 2D</h4>
 <p>Genera el esqueleto de una instrucción <code>draw()</code> que dibuja una escena 2<a class="el" href="classD.html">D</a>. Esta escena posterior tiene que ser completada con instrucciones que generan los contenidos de la escena, por ejemplo utilizando los botones dentro de las filas debajo del botón "2D".</p>
 <p>La característica de ayuda del botón 2<a class="el" href="classD.html">D</a> es que permite configurar la escena como una animación en la cual una variable (por defecto es <em>t</em>) tiene un valor diferente dentro de cada marco: a menudo un movimiento de trama 2<a class="el" href="classD.html">D</a> permite una interpretación más fácil que el de datos dentro de uno sin movimiento 3<a class="el" href="classD.html">D</a>.</p>
-<h4><a class="anchor" id="autotoc_md154"></a>
+<h4><a class="anchor" id="autotoc_md155"></a>
 3D</h4>
 <p>Genera el esqueleto de una instrucción <code>draw()</code> que dibuja una escena 3<a class="el" href="classD.html">D</a>. Si no está configurada ninguna escena 2<a class="el" href="classD.html">D</a> o 3<a class="el" href="classD.html">D</a>, todo de los otros botones configuran una escena 2<a class="el" href="classD.html">D</a> que contenga la instrucción que el botón genera.</p>
-<h4><a class="anchor" id="autotoc_md155"></a>
+<h4><a class="anchor" id="autotoc_md156"></a>
 Expresión</h4>
 <p>Adjunta una trama común de una expresión como <code>sin(x)</code>, <code>x*sin(x)</code> o <code>x^2+2*x-4</code> para la instrucción <code>draw()</code> el cursor actualmente está dentro. Si no hay ninguna instrucción de dibujo en una escena 2<a class="el" href="classD.html">D</a> con la trama es generada. Cada escena puede ser completada con cualquier número de tramas.</p>
-<h4><a class="anchor" id="autotoc_md156"></a>
+<h4><a class="anchor" id="autotoc_md157"></a>
 Tramado implícito</h4>
 <p>Intenta encontrar todos los puntos como una expresión <code>y=sin(x)</code>, <code>y*sin(x)=3</code> o <code>x^2+y^2=4</code> es verdadero y trama de la curva resultante dentro de la instrucción <code>draw()</code> el cursor actualmente está dentro. Si no hay instrucción de dibujo en escena de 2<a class="el" href="classD.html">D</a> con el trama es generado.</p>
-<h4><a class="anchor" id="autotoc_md157"></a>
+<h4><a class="anchor" id="autotoc_md158"></a>
 Trama paramétrica</h4>
 <p>Para un paso de una variable desde un límite inferior a un límite superior y utiliza dos expresiones como <code>t*sin(t)</code> y <code>t*cos(t)</code> para generar coordenadas x, y (y en tramas 3<a class="el" href="classD.html">D</a> también z) de una curva que es puesta dentro de la instrucción de actual del dibujo.</p>
-<h4><a class="anchor" id="autotoc_md158"></a>
+<h4><a class="anchor" id="autotoc_md159"></a>
 Puntos</h4>
 <p>Dibuja muchos puntos que pueden ser unidos opcionalmente. Las coordenadas de los puntos son tomados desde un listado de listas, una unimatriz 2<a class="el" href="classD.html">D</a> o un listado o unimatriz por cada eje.</p>
-<h4><a class="anchor" id="autotoc_md159"></a>
+<h4><a class="anchor" id="autotoc_md160"></a>
 Título del diagrama</h4>
 <p>Dibuja un título sobre el final superior del diagrama,</p>
-<h4><a class="anchor" id="autotoc_md160"></a>
+<h4><a class="anchor" id="autotoc_md161"></a>
 Axis</h4>
 <p>Establece los ejes.</p>
-<h4><a class="anchor" id="autotoc_md161"></a>
+<h4><a class="anchor" id="autotoc_md162"></a>
 Contorno</h4>
 <p>(Solo para tramas 3<a class="el" href="classD.html">D</a>): agrega líneas de contorno similares a los que puedan ser encontrados dentro de una asociación de una montaña a la trama de instrucciones que continúe dentro de la instrucción ‘draw()’ actual y/o al plano de tierra del diagrama. Alternativamente, este asistente permite descartar el dibujo de las curvas completamente.</p>
-<h4><a class="anchor" id="autotoc_md162"></a>
+<h4><a class="anchor" id="autotoc_md163"></a>
 Nombre de trama</h4>
 <p>Agrega un apunte para leyenda mostrando el nombre del siguiente tramado de la leyenda del diagrama. Un nombre vacío deshabilita generando apuntes de leyenda para las tramas siguientes.</p>
-<h4><a class="anchor" id="autotoc_md163"></a>
+<h4><a class="anchor" id="autotoc_md164"></a>
 Color de línea</h4>
 <p>Establece el color de línea para las tramas seguidas que contiene la instrucción de dibujo actual.</p>
-<h4><a class="anchor" id="autotoc_md164"></a>
+<h4><a class="anchor" id="autotoc_md165"></a>
 Color de relleno</h4>
 <p>Establece un color de relleno para tramas seguidas que contiene la instrucción de dibujo actual.</p>
-<h4><a class="anchor" id="autotoc_md165"></a>
+<h4><a class="anchor" id="autotoc_md166"></a>
 Grid</h4>
 <p>Aparece un asistente que permite establecer las líneas de rejilla.</p>
-<h4><a class="anchor" id="autotoc_md166"></a>
+<h4><a class="anchor" id="autotoc_md167"></a>
 Precisión</h4>
 <p>Permite seleccionar un punto adecuado dentro de la velocidad versus exactitud compensada que es parte de cualquier programa de trama.</p>
-<h3><a class="anchor" id="autotoc_md167"></a>
+<h3><a class="anchor" id="autotoc_md168"></a>
 Modify font and font size for plots</h3>
 <p>Especially when you use a high resolution display, the default font size might be very small. For the <code>draw</code>-based commands, you can set the font / font size using options like <code>font=...</code>, <code>font_size=...</code>, e.g.:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
