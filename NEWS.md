@@ -1,6 +1,7 @@
 # Current development version
 
 - Fix the cursor position after autocompletion (#2090).
+- Fix XML for saving as wxmx, when Maxima warnings are displayed (#2092).
 
 # 26.05.0
 

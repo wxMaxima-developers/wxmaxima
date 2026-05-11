@@ -1191,8 +1191,9 @@ wxString TextCell::ToRTF() const {
 
 wxString TextCell::GetXMLFlags() const {
   wxString flags = Cell::GetXMLFlags();
+  // add  breakline="true" only, if it does not exist already (issue #2092)
   if (HasHardLineBreak() && (GetTextStyle() != TS_LABEL) &&
-      (GetTextStyle() != TS_USERLABEL))
+      (GetTextStyle() != TS_USERLABEL) && (flags.Find(" breakline=\"true\"") == wxNOT_FOUND))
     flags += wxS(" breakline=\"true\"");
 
   if (GetTextStyle() == TS_ASCIIMATHS)
