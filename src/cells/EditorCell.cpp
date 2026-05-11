@@ -1056,6 +1056,8 @@ size_t EditorCell::BeginningOfLine(size_t pos) const {
     if ((*it == wxS('\n')) || (*it == wxS('\r')))
       return (it - m_text.begin()) + 1;
   }
+  if ((*it == wxS('\n')) || (*it == wxS('\r')))
+    return 1;
   return 0;
 }
 
@@ -3023,7 +3025,7 @@ void EditorCell::StyleTextTexts() const {
         if ((*it == '\n') || (nextChar >= m_text.end())) {
           // Can we introduce a soft line break?
           // One of the next questions will be: Do we need to?
-          if (lastSpacePos > 0) {
+          if (lastSpaceIt != m_text.end() && lastSpacePos > 0) {
             // How far has the current line to be indented?
             if ((!indentPixels.empty()) && (!newLine))
               indent = indentPixels.back();
@@ -3041,11 +3043,14 @@ void EditorCell::StyleTextTexts() const {
               it = lastSpaceIt;
               lastLineStart = i + 1;
               lastSpacePos = 0;
-              break;
+              lastSpaceIt = m_text.end();
+              // In this case we have to skip the it++ at the end of the loop
+              // as we want to re-process the character at the new position.
+              goto lineProcessed;
             }
           }
           if ((*it == '\n') || (*it == '\r')) {
-            if (i > 0)
+            if (i > lastLineStart)
               line = m_text.SubString(lastLineStart, i - 1);
             else
               line.Clear();
@@ -3054,6 +3059,9 @@ void EditorCell::StyleTextTexts() const {
 
           lastLineStart = i + 1;
           lastSpacePos = 0;
+          lastSpaceIt = m_text.end();
+          ++it;
+          ++i;
           break;
         } else {
           // We cannot introduce soft linebreaks since there were no spaces we
@@ -3078,7 +3086,7 @@ void EditorCell::StyleTextTexts() const {
             if (width + indent >= m_configuration->GetLineWidth()) {
               // We need a line break. Does the current line contain a space we
               // can break the line at?
-              if (lastSpacePos > 0) {
+              if (lastSpaceIt != m_text.end() && lastSpacePos > 0) {
                 // Introduce a soft line break
                 *lastSpaceIt = wxS('\r');
                 line = m_text.SubString(lastLineStart, lastSpacePos - 1);
@@ -3087,6 +3095,7 @@ void EditorCell::StyleTextTexts() const {
                 ++it;
                 lastLineStart = i;
                 lastSpacePos = 0;
+                lastSpaceIt = m_text.end();
                 break;
               } else {
                 if (*it == wxS(' ')) {
@@ -3094,6 +3103,9 @@ void EditorCell::StyleTextTexts() const {
                   line = m_text.SubString(lastLineStart, i - 1);
                   lastLineStart = i + 1;
                   lastSpacePos = 0;
+                  lastSpaceIt = m_text.end();
+                  ++it;
+                  ++i;
                   break;
                 }
               }
@@ -3108,20 +3120,12 @@ void EditorCell::StyleTextTexts() const {
           lastSpaceIt = it;
         }
 
-        // Go to the next character if we actually had a string in front of this
-        // newline.
-        if ((i > 0) || (*it != wxS('\n'))) {
-          ++it;
-          ++i;
-        }
+        ++it;
+        ++i;
       }
-
-      // If this is the last line of the text we still need to extract it.
-      if (i == m_text.Length())
-        line = m_text.SubString(lastLineStart, i - 1);
-
-      // If we fold the cell we only show the first line of text.
-      if (FirstLineOnlyEditor()) {
+lineProcessed:
+  // If we fold the cell we only show the first line of text.
+  if (FirstLineOnlyEditor()) {
         m_styledText.push_back(
                                StyledText(line + wxString::Format(_(" ... + %li hidden lines"),
                                                                   static_cast<long>(m_text.Freq(wxS('\n')))), GetTextStyle()));

@@ -837,7 +837,7 @@ wxString Cell::XMLescape(wxString input) {
     {
       if((i < wxS('\u001F')) ||
          ((i >= wxS('\u007F')) && (i <= wxS('\u009F'))))
-        output += wxString::Format("&#%03i;", static_cast<int>(i));
+        output += wxString::Format("&#x%02X;", static_cast<int>(i));
       else
         output += i;
     }
