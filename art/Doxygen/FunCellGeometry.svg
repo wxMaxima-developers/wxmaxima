@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="200" viewBox="0 0 500 200">
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="white" />
+
+  <!-- Function Name -->
+  <rect x="50" y="70" width="80" height="60" rx="3" fill="#e8f4f8" stroke="#2980b9" stroke-width="1" stroke-dasharray="2,2" />
+  <text x="90" y="105" font-family="serif" font-style="italic" font-size="24" text-anchor="middle" fill="#2c3e50">f</text>
+
+  <!-- Brackets -->
+  <path d="M 140 40 C 120 40 120 160 140 160" fill="none" stroke="#2c3e50" stroke-width="2" />
+  <path d="M 340 40 C 360 40 360 160 340 160" fill="none" stroke="#2c3e50" stroke-width="2" />
+
+  <!-- Args Box -->
+  <rect x="150" y="50" width="180" height="100" rx="3" fill="#fcf3cf" stroke="#f1c40f" stroke-width="1" stroke-dasharray="4,2" />
+  <text x="240" y="105" font-family="serif" font-style="italic" font-size="24" text-anchor="middle" fill="#2c3e50">arguments</text>
+
+  <!-- Baseline -->
+  <line x1="30" y1="100" x2="400" y2="100" stroke="#7f8c8d" stroke-dasharray="5,5" />
+  <text x="410" y="105" font-family="sans-serif" font-size="12" fill="#7f8c8d">Baseline</text>
+
+</svg>

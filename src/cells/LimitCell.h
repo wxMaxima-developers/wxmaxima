@@ -40,6 +40,7 @@
 class LimitCell final : public Cell
 {
 public:
+  /*! \image html LimitCellGeometry.svg */
   LimitCell(GroupCell *group, Configuration *config,
             std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&under,
             std::unique_ptr<Cell> &&name);

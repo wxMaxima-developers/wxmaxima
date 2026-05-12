@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="100" viewBox="0 0 400 100">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="white" />
+
+  <!-- Num Start Box -->
+  <rect x="50" y="30" width="100" height="40" rx="3" fill="#e8f4f8" stroke="#2980b9" stroke-width="1" stroke-dasharray="2,2" />
+  <text x="100" y="55" font-family="monospace" font-size="16" text-anchor="middle" fill="#2c3e50">12345</text>
+
+  <!-- Ellipsis Box -->
+  <rect x="150" y="30" width="150" height="40" rx="3" fill="#f2f3f4" stroke="#7f8c8d" stroke-width="1" stroke-dasharray="2,2" />
+  <text x="225" y="55" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#7f8c8d">…[100 digits]</text>
+
+  <!-- Total Width -->
+  <line x1="50" y1="80" x2="300" y2="80" stroke="black" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="175" y="95" font-family="sans-serif" font-size="12" text-anchor="middle">GetWidth()</text>
+
+  <!-- Baseline -->
+  <line x1="30" y1="50" x2="350" y2="50" stroke="#7f8c8d" stroke-dasharray="5,5" />
+  <text x="360" y="55" font-family="sans-serif" font-size="12" fill="#7f8c8d">Baseline</text>
+
+</svg>

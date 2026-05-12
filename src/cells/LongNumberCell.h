@@ -32,6 +32,7 @@
 class LongNumberCell final : public TextCell
 {
 public:
+  /*! \image html LongNumberCellGeometry.svg */
   //! The constructor for cell that, if displayed, means that something is amiss
   LongNumberCell(GroupCell *group, Configuration *config, const wxString &number);
   LongNumberCell(GroupCell *group, const LongNumberCell &cell);

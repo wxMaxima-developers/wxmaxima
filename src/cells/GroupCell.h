@@ -73,7 +73,9 @@ std::ostream& operator<<(std::ostream& out, const GroupType grouptype);
 class GroupCell final : public Cell
 {
 public:
-  GroupCell(Configuration *config, GroupType groupType, const wxString &initString = {});
+  /*! \image html GroupCellGeometry.svg */
+  GroupCell(Configuration *config, GroupType groupType,
+ const wxString &initString = {});
   GroupCell(GroupCell const &cell);
   GroupCell(GroupCell *group, const GroupCell &cell);
   std::unique_ptr<Cell> Copy() const;

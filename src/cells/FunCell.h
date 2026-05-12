@@ -53,6 +53,7 @@
 class FunCell final : public Cell
 {
 public:
+  /*! \image html FunCellGeometry.svg */
   FunCell(GroupCell *group, Configuration *config,
           std::unique_ptr<Cell> &&name, std::unique_ptr<Cell> &&arg);
   FunCell(GroupCell *group, const FunCell &cell);
