@@ -113,7 +113,7 @@ var searchData=
   ['configdialogue_2eh_110',['ConfigDialogue.h',['../ConfigDialogue_8h.html',1,'']]],
   ['configuration_111',['Configuration',['../classConfiguration.html',1,'Configuration'],['../classConfiguration.html#ab2cf918eb80018bccec4dd8ff00b8bdc',1,'Configuration::Configuration()']]],
   ['configuration_2ecpp_112',['Configuration.cpp',['../Configuration_8cpp.html',1,'']]],
-  ['conjugatecell_113',['ConjugateCell',['../classConjugateCell.html',1,'']]],
+  ['conjugatecell_113',['ConjugateCell',['../classConjugateCell.html',1,'ConjugateCell'],['../classConjugateCell.html#a50a59c853ae01fc6e179676cd8217eb6',1,'ConjugateCell::ConjugateCell()']]],
   ['conjugatecell_2ecpp_114',['ConjugateCell.cpp',['../ConjugateCell_8cpp.html',1,'']]],
   ['conjugatecell_2eh_115',['ConjugateCell.h',['../ConjugateCell_8h.html',1,'']]],
   ['consoleappend_116',['ConsoleAppend',['../classwxMaxima.html#a2df506e5dc3a7aa8c11f5cc01f51aa0b',1,'wxMaxima::ConsoleAppend(wxString s, CellType type)'],['../classwxMaxima.html#ae397ec8c3fb2c6f8ccc0ae2ae8ca18e7',1,'wxMaxima::ConsoleAppend(wxXmlDocument xml, CellType type, const wxString &amp;userLabel={})']]],

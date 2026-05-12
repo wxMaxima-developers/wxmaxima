@@ -97,8 +97,7 @@ Collaboration diagram for AbsCell:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae1070944251c8ce4b9ee69c2b2cb09cb"><td class="memItemLeft" align="right" valign="top"><a id="ae1070944251c8ce4b9ee69c2b2cb09cb" name="ae1070944251c8ce4b9ee69c2b2cb09cb"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>AbsCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;inner)</td></tr>
+<tr class="memitem:ae1070944251c8ce4b9ee69c2b2cb09cb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbsCell.html#ae1070944251c8ce4b9ee69c2b2cb09cb">AbsCell</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;inner)</td></tr>
 <tr class="separator:ae1070944251c8ce4b9ee69c2b2cb09cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0280856273feae3fde4f6bea398b3862"><td class="memItemLeft" align="right" valign="top"><a id="a0280856273feae3fde4f6bea398b3862" name="a0280856273feae3fde4f6bea398b3862"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>AbsCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, const <a class="el" href="classAbsCell.html">AbsCell</a> &amp;cell)</td></tr>
@@ -732,7 +731,45 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <li>The closing ")".</li>
 </ul>
 <p>If it isn't broken into multiple cells, then m_nextToDraw points to the cell that follows this <a class="el" href="classAbsCell.html" title="A cell that represents an abs(x) block.">AbsCell</a>. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae1070944251c8ce4b9ee69c2b2cb09cb" name="ae1070944251c8ce4b9ee69c2b2cb09cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1070944251c8ce4b9ee69c2b2cb09cb">&#9670;&#160;</a></span>AbsCell()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">AbsCell::AbsCell </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>group</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td>
+          <td class="paramname"><em>config</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>inner</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="image">
+<object type="image/svg+xml" data="AbsCellGeometry.svg" style="pointer-events: none;"></object>
+</div>
+ 
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="af0f18ef99c280e60940d94cd55143cd1" name="af0f18ef99c280e60940d94cd55143cd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af0f18ef99c280e60940d94cd55143cd1">&#9670;&#160;</a></span>AddEnding()</h2>
 
@@ -1516,9 +1553,9 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <p>Get the distance between the top and the center of this cell. </p>
 <p>Remember that (for example with double fractions) the center does not have to be in the middle of a cell even if this object is &mdash; by definition &mdash; center-aligned.</p>
 <div class="image">
-<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+<object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
-   
+ 
 </div>
 </div>
 <a id="a3b385281e2cb77ffa5dfd902802ac692" name="a3b385281e2cb77ffa5dfd902802ac692"></a>
@@ -1662,9 +1699,9 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <p>Remember that (for example with double fractions) the center does not have to be in the middle of an output cell even if the current object is &mdash; by definition &mdash; center-aligned.</p>
 <p>This value is recalculated by Recalculate</p>
 <div class="image">
-<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+<object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
-   
+ 
 </div>
 </div>
 <a id="a42e273c4824ddce9e7e1845abb0d886f" name="a42e273c4824ddce9e7e1845abb0d886f"></a>
@@ -1693,9 +1730,9 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <p>Get the height of this cell. </p>
 <p>This value is recalculated by <a class="el" href="classAbsCell.html#a8d94c4cd02c87ce4164a1eb58b6e1949" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a></p>
 <div class="image">
-<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+<object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
-   
+ 
 </div>
 </div>
 <a id="a351fb091b88d97bf44c95505b0198bfd" name="a351fb091b88d97bf44c95505b0198bfd"></a>
@@ -2088,9 +2125,9 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <p>Get the width of this cell. </p>
 <p>This value is recalculated by <a class="el" href="classAbsCell.html#a8d94c4cd02c87ce4164a1eb58b6e1949" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a></p>
 <div class="image">
-<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+<object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
-   
+ 
 </div>
 </div>
 <a id="a8c533b16aad3335b0c98c5c37ed60b59" name="a8c533b16aad3335b0c98c5c37ed60b59"></a>
@@ -3377,9 +3414,9 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 
 <p>The distance between the top and the insertion point of this cell. </p>
 <div class="image">
-<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+<object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
-   
+ 
 </div>
 </div>
 <a id="a82735e7fb2d5fd1dbefd3a37ae758b32" name="a82735e7fb2d5fd1dbefd3a37ae758b32"></a>
@@ -3437,9 +3474,9 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 
 <p>The height of this cell. </p>
 <div class="image">
-<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+<object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
-   
+ 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

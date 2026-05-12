@@ -201,7 +201,7 @@ var searchData=
   ['mathsidebar_198',['MathSidebar',['../classMathSidebar.html',1,'']]],
   ['mathsidebar_2ecpp_199',['MathSidebar.cpp',['../MathSidebar_8cpp.html',1,'']]],
   ['mathsidebar_2eh_200',['MathSidebar.h',['../MathSidebar_8h.html',1,'']]],
-  ['matrcell_201',['MatrCell',['../classMatrCell.html',1,'']]],
+  ['matrcell_201',['MatrCell',['../classMatrCell.html',1,'MatrCell'],['../classMatrCell.html#a8066381640388fa9f5fa45db9df7e0e2',1,'MatrCell::MatrCell()']]],
   ['matrcell_2ecpp_202',['MatrCell.cpp',['../MatrCell_8cpp.html',1,'']]],
   ['matrixmenu_203',['MatrixMenu',['../classwxMaxima.html#ae8eb0c8fdd7f2fb7f6664a3aa5d9af5a',1,'wxMaxima']]],
   ['matwiz_204',['MatWiz',['../classMatWiz.html',1,'']]],

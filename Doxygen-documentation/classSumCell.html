@@ -92,8 +92,7 @@ Collaboration diagram for SumCell:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af98524a338e2965b0a8970cc1311ae97"><td class="memItemLeft" align="right" valign="top"><a id="af98524a338e2965b0a8970cc1311ae97" name="af98524a338e2965b0a8970cc1311ae97"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SumCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;under, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;over, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;base)</td></tr>
+<tr class="memitem:af98524a338e2965b0a8970cc1311ae97"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#af98524a338e2965b0a8970cc1311ae97">SumCell</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;under, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;over, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;base)</td></tr>
 <tr class="separator:af98524a338e2965b0a8970cc1311ae97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa50c7f42018fe60e0d766a63c3a0397b"><td class="memItemLeft" align="right" valign="top"><a id="aa50c7f42018fe60e0d766a63c3a0397b" name="aa50c7f42018fe60e0d766a63c3a0397b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SumCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, const <a class="el" href="classSumCell.html">SumCell</a> &amp;cell)</td></tr>
@@ -748,6 +747,56 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_textStyle</b> = TS_MATH</td></tr>
 <tr class="separator:ae03803790faeaa324ae8c51eb1e96d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="af98524a338e2965b0a8970cc1311ae97" name="af98524a338e2965b0a8970cc1311ae97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af98524a338e2965b0a8970cc1311ae97">&#9670;&#160;</a></span>SumCell()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SumCell::SumCell </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>group</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td>
+          <td class="paramname"><em>config</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>under</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>over</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>base</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="image">
+<object type="image/svg+xml" data="OperatorCellGeometry.svg" style="pointer-events: none;"></object>
+</div>
+ 
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="af0f18ef99c280e60940d94cd55143cd1" name="af0f18ef99c280e60940d94cd55143cd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af0f18ef99c280e60940d94cd55143cd1">&#9670;&#160;</a></span>AddEnding()</h2>
@@ -1532,9 +1581,9 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <p>Get the distance between the top and the center of this cell. </p>
 <p>Remember that (for example with double fractions) the center does not have to be in the middle of a cell even if this object is &mdash; by definition &mdash; center-aligned.</p>
 <div class="image">
-<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+<object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
-   
+ 
 </div>
 </div>
 <a id="a3b385281e2cb77ffa5dfd902802ac692" name="a3b385281e2cb77ffa5dfd902802ac692"></a>
@@ -1678,9 +1727,9 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <p>Remember that (for example with double fractions) the center does not have to be in the middle of an output cell even if the current object is &mdash; by definition &mdash; center-aligned.</p>
 <p>This value is recalculated by Recalculate</p>
 <div class="image">
-<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+<object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
-   
+ 
 </div>
 </div>
 <a id="a42e273c4824ddce9e7e1845abb0d886f" name="a42e273c4824ddce9e7e1845abb0d886f"></a>
@@ -1709,9 +1758,9 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <p>Get the height of this cell. </p>
 <p>This value is recalculated by <a class="el" href="classSumCell.html#a7cbe7959fe940113e9a3684271d43897" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a></p>
 <div class="image">
-<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+<object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
-   
+ 
 </div>
 </div>
 <a id="a351fb091b88d97bf44c95505b0198bfd" name="a351fb091b88d97bf44c95505b0198bfd"></a>
@@ -2279,9 +2328,9 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <p>Get the width of this cell. </p>
 <p>This value is recalculated by <a class="el" href="classSumCell.html#a7cbe7959fe940113e9a3684271d43897" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a></p>
 <div class="image">
-<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+<object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
-   
+ 
 </div>
 </div>
 <a id="a8c533b16aad3335b0c98c5c37ed60b59" name="a8c533b16aad3335b0c98c5c37ed60b59"></a>
@@ -3597,9 +3646,9 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 
 <p>The distance between the top and the insertion point of this cell. </p>
 <div class="image">
-<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+<object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
-   
+ 
 </div>
 </div>
 <a id="a82735e7fb2d5fd1dbefd3a37ae758b32" name="a82735e7fb2d5fd1dbefd3a37ae758b32"></a>
@@ -3657,9 +3706,9 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 
 <p>The height of this cell. </p>
 <div class="image">
-<object type="image/svg+xml" data="CellHeights.svg" style="pointer-events: none;"></object>
+<object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
-   
+ 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
