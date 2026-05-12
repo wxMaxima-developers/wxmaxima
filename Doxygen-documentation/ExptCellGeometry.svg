@@ -14,8 +14,12 @@
   <text x="100" y="125" font-family="serif" font-style="italic" font-size="30" text-anchor="middle" fill="#2c3e50">base</text>
 
   <!-- Exponent Box -->
-  <rect x="150" y="30" width="80" height="60" rx="3" fill="#fcf3cf" stroke="#f1c40f" stroke-width="1" stroke-dasharray="4,2" />
+  <rect x="150" y="30" width="80" height="60" rx="3" fill="#fcf3cf" stroke="#f1c40f" stroke-width="1" stroke-dasharray="2,2" />
   <text x="190" y="65" font-family="serif" font-style="italic" font-size="20" text-anchor="middle" fill="#2c3e50">expt</text>
+
+  <!-- Total Height -->
+  <line x1="20" y1="30" x2="20" y2="160" stroke="black" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="10" y="95" font-family="sans-serif" font-size="14" text-anchor="middle" transform="rotate(-90 10,95)">GetHeight()</text>
 
   <!-- Baseline -->
   <line x1="30" y1="120" x2="300" y2="120" stroke="#7f8c8d" stroke-dasharray="5,5" />
