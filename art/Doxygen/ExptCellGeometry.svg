@@ -10,23 +10,30 @@
   <rect width="100%" height="100%" fill="white" />
 
   <!-- Base Box -->
-  <rect x="50" y="80" width="100" height="80" rx="3" fill="#e8f4f8" stroke="#2980b9" stroke-width="1" stroke-dasharray="4,2" />
-  <text x="100" y="125" font-family="serif" font-style="italic" font-size="30" text-anchor="middle" fill="#2c3e50">base</text>
+  <rect x="100" y="80" width="100" height="80" rx="3" fill="#e8f4f8" stroke="#2980b9" stroke-width="1" stroke-dasharray="4,2" />
+  <text x="150" y="125" font-family="serif" font-style="italic" font-size="30" text-anchor="middle" fill="#2c3e50">base</text>
 
   <!-- Exponent Box -->
-  <rect x="150" y="30" width="80" height="60" rx="3" fill="#fcf3cf" stroke="#f1c40f" stroke-width="1" stroke-dasharray="2,2" />
-  <text x="190" y="65" font-family="serif" font-style="italic" font-size="20" text-anchor="middle" fill="#2c3e50">expt</text>
+  <rect x="200" y="30" width="80" height="60" rx="3" fill="#fcf3cf" stroke="#f1c40f" stroke-width="1" stroke-dasharray="2,2" />
+  <text x="240" y="65" font-family="serif" font-style="italic" font-size="20" text-anchor="middle" fill="#2c3e50">expt</text>
 
   <!-- Total Height -->
   <line x1="20" y1="30" x2="20" y2="160" stroke="black" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
   <text x="10" y="95" font-family="sans-serif" font-size="14" text-anchor="middle" transform="rotate(-90 10,95)">GetHeight()</text>
 
+  <!-- Sub-cell Heights -->
+  <line x1="90" y1="80" x2="90" y2="160" stroke="#2980b9" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="85" y="120" font-family="sans-serif" font-size="9" text-anchor="middle" transform="rotate(-90 85,120)" fill="#2980b9">Base::GetHeightList()</text>
+
+  <line x1="290" y1="30" x2="290" y2="90" stroke="#f1c40f" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="300" y="60" font-family="sans-serif" font-size="9" fill="#f39c12">Expt::GetHeightList()</text>
+
   <!-- Baseline -->
-  <line x1="30" y1="120" x2="300" y2="120" stroke="#7f8c8d" stroke-dasharray="5,5" />
+  <line x1="30" y1="120" x2="350" y2="120" stroke="#7f8c8d" stroke-dasharray="5,5" />
   <text x="310" y="125" font-family="sans-serif" font-size="12" fill="#7f8c8d">Baseline (point.y)</text>
 
   <!-- Offset Arrow -->
-  <line x1="240" y1="90" x2="240" y2="120" stroke="black" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
-  <text x="245" y="110" font-family="sans-serif" font-size="10">m_expt_yoffset</text>
+  <line x1="280" y1="90" x2="280" y2="120" stroke="black" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="285" y="110" font-family="sans-serif" font-size="10">m_expt_yoffset</text>
 
 </svg>
