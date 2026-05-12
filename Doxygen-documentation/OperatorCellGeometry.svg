@@ -25,8 +25,18 @@
   <text x="230" y="125" font-family="serif" font-style="italic" font-size="30" text-anchor="middle" fill="#2c3e50">base</text>
 
   <!-- Total Height -->
-  <line x1="20" y1="20" x2="20" y2="200" stroke="black" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <line x1="15" y1="20" x2="15" y2="200" stroke="black" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
   <text x="10" y="110" font-family="sans-serif" font-size="14" text-anchor="middle" transform="rotate(-90 10,110)">GetHeight()</text>
+
+  <!-- Sub-cell Heights -->
+  <line x1="70" y1="20" x2="70" y2="60" stroke="#f39c12" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="65" y="40" font-family="sans-serif" font-size="8" text-anchor="middle" transform="rotate(-90 65,40)" fill="#f39c12">Over::GetHeightList()</text>
+
+  <line x1="70" y1="160" x2="70" y2="200" stroke="#f39c12" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="65" y="180" font-family="sans-serif" font-size="8" text-anchor="middle" transform="rotate(-90 65,180)" fill="#f39c12">Under::GetHeightList()</text>
+
+  <line x1="290" y1="70" x2="290" y2="170" stroke="#2980b9" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="295" y="120" font-family="sans-serif" font-size="8" fill="#2980b9">Base::GetHeightList()</text>
 
   <!-- Baseline -->
   <line x1="30" y1="120" x2="350" y2="120" stroke="#7f8c8d" stroke-dasharray="5,5" />
