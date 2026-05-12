@@ -35,12 +35,13 @@ var searchData=
   ['animationcell_32',['AnimationCell',['../classAnimationCell.html#a94e0a814e6f8dd598e16992f8f7a2504',1,'AnimationCell::AnimationCell(GroupCell *group, Configuration *config, const wxString &amp;wxmxFile, int framerate=-1)'],['../classAnimationCell.html#a2b08abd9999571a92775095946058f25',1,'AnimationCell::AnimationCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &amp;image, const wxString &amp;type)']]],
   ['append_33',['Append',['../classCellListBuilder.html#a851472ece32dc6e245f62416d02a0682',1,'CellListBuilder::Append(T *cells)'],['../classCellListBuilder.html#a940143319f938453d4beef2bb6812f84',1,'CellListBuilder::Append(std::unique_ptr&lt; T &gt; &amp;&amp;cells)']]],
   ['appendcell_34',['AppendCell',['../classCellList.html#a5ec4a3a497bd03cba055bf8531757c37',1,'CellList']]],
-  ['autoanswer_35',['AutoAnswer',['../classEditorCell.html#a8613705dab1db8a50d086641afd06262',1,'EditorCell::AutoAnswer()'],['../classGroupCell.html#ab931481284b2319dfda3704e4ba7a51e',1,'GroupCell::AutoAnswer()']]],
-  ['autocomplete_36',['Autocomplete',['../classWorksheet.html#aa5c64de0c9f0d73f698ebc73915e7fbd',1,'Worksheet']]],
-  ['autocompletefile_37',['AutocompleteFile',['../classDirstructure.html#a3195403c7d8480698bb33138fe38ff90',1,'Dirstructure']]],
-  ['autocompletepopup_38',['AutocompletePopup',['../classAutocompletePopup.html#a1a7033ddc45ef7622b8748c829265fda',1,'AutocompletePopup']]],
-  ['autodetecthelpbrowser_39',['AutodetectHelpBrowser',['../classConfiguration.html#aeef043c2f0e8bf9386c3d43fe7df5e29',1,'Configuration::AutodetectHelpBrowser() const'],['../classConfiguration.html#a175bdb5cf609cd908ef25a93a926adc9',1,'Configuration::AutodetectHelpBrowser(bool autodetect)']]],
-  ['autodetectmaxima_40',['AutodetectMaxima',['../classConfiguration.html#a9e0cf486019c3fcaea4618839d02a0b9',1,'Configuration::AutodetectMaxima() const'],['../classConfiguration.html#a8fe525f2332e1cab5fbef7b59725a537',1,'Configuration::AutodetectMaxima(bool autodetectmaxima)']]],
-  ['autolink_5ftest_41',['Autolink_Test',['../classAutolink__Test.html#a278d631f9943428c05b17d78f14488e2',1,'Autolink_Test']]],
-  ['autosave_42',['AutoSave',['../classwxMaxima.html#a0d1105b41fc3c64234e4821f675f74e2',1,'wxMaxima']]]
+  ['atcell_35',['AtCell',['../classAtCell.html#aba6500df75bac08bd66875bab0d0891f',1,'AtCell']]],
+  ['autoanswer_36',['AutoAnswer',['../classEditorCell.html#a8613705dab1db8a50d086641afd06262',1,'EditorCell::AutoAnswer()'],['../classGroupCell.html#ab931481284b2319dfda3704e4ba7a51e',1,'GroupCell::AutoAnswer()']]],
+  ['autocomplete_37',['Autocomplete',['../classWorksheet.html#aa5c64de0c9f0d73f698ebc73915e7fbd',1,'Worksheet']]],
+  ['autocompletefile_38',['AutocompleteFile',['../classDirstructure.html#a3195403c7d8480698bb33138fe38ff90',1,'Dirstructure']]],
+  ['autocompletepopup_39',['AutocompletePopup',['../classAutocompletePopup.html#a1a7033ddc45ef7622b8748c829265fda',1,'AutocompletePopup']]],
+  ['autodetecthelpbrowser_40',['AutodetectHelpBrowser',['../classConfiguration.html#aeef043c2f0e8bf9386c3d43fe7df5e29',1,'Configuration::AutodetectHelpBrowser() const'],['../classConfiguration.html#a175bdb5cf609cd908ef25a93a926adc9',1,'Configuration::AutodetectHelpBrowser(bool autodetect)']]],
+  ['autodetectmaxima_41',['AutodetectMaxima',['../classConfiguration.html#a9e0cf486019c3fcaea4618839d02a0b9',1,'Configuration::AutodetectMaxima() const'],['../classConfiguration.html#a8fe525f2332e1cab5fbef7b59725a537',1,'Configuration::AutodetectMaxima(bool autodetectmaxima)']]],
+  ['autolink_5ftest_42',['Autolink_Test',['../classAutolink__Test.html#a278d631f9943428c05b17d78f14488e2',1,'Autolink_Test']]],
+  ['autosave_43',['AutoSave',['../classwxMaxima.html#a0d1105b41fc3c64234e4821f675f74e2',1,'wxMaxima']]]
 ];

@@ -97,8 +97,7 @@ Collaboration diagram for ParenCell:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a42626cf93d35b00dc070a2b3888e4e15"><td class="memItemLeft" align="right" valign="top"><a id="a42626cf93d35b00dc070a2b3888e4e15" name="a42626cf93d35b00dc070a2b3888e4e15"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ParenCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;inner)</td></tr>
+<tr class="memitem:a42626cf93d35b00dc070a2b3888e4e15"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParenCell.html#a42626cf93d35b00dc070a2b3888e4e15">ParenCell</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;inner)</td></tr>
 <tr class="separator:a42626cf93d35b00dc070a2b3888e4e15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16d12c017d3a874f60782b7d7d60df1e"><td class="memItemLeft" align="right" valign="top"><a id="a16d12c017d3a874f60782b7d7d60df1e" name="a16d12c017d3a874f60782b7d7d60df1e"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ParenCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, const <a class="el" href="classParenCell.html">ParenCell</a> &amp;cell)</td></tr>
@@ -740,7 +739,45 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <li>The closing ")".</li>
 </ul>
 <p>If it isn't broken into multiple cells m_nextToDraw points to the cell that follows this <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a>. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a42626cf93d35b00dc070a2b3888e4e15" name="a42626cf93d35b00dc070a2b3888e4e15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42626cf93d35b00dc070a2b3888e4e15">&#9670;&#160;</a></span>ParenCell()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ParenCell::ParenCell </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>group</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td>
+          <td class="paramname"><em>config</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>inner</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="image">
+<object type="image/svg+xml" data="ParenCellGeometry.svg" style="pointer-events: none;"></object>
+</div>
+ 
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="af0f18ef99c280e60940d94cd55143cd1" name="af0f18ef99c280e60940d94cd55143cd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af0f18ef99c280e60940d94cd55143cd1">&#9670;&#160;</a></span>AddEnding()</h2>
 
@@ -3029,7 +3066,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

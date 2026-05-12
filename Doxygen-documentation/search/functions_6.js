@@ -15,7 +15,7 @@ var searchData=
   ['fold_12',['Fold',['../classGroupCell.html#a9a0bfd0bc4dbb4081891d162fcdf3834',1,'GroupCell']]],
   ['foldall_13',['FoldAll',['../classGroupCell.html#afe3c67676318a1b1ba043fb48dd56a4e',1,'GroupCell::FoldAll()'],['../classWorksheet.html#a16eca996fef1aa7e00cfd9886923671d',1,'Worksheet::FoldAll()']]],
   ['foldoccurred_14',['FoldOccurred',['../classWorksheet.html#a78ceeae9f7262c599b824e0f9a93ad9b',1,'Worksheet']]],
-  ['followevaluation_15',['FollowEvaluation',['../classWorksheet.html#a6b947343c72f5e4da75470bd381907d8',1,'Worksheet::FollowEvaluation(bool followEvaluation)'],['../classWorksheet.html#af02bfd71d23fe6804fc27525f41e84bb',1,'Worksheet::FollowEvaluation() const']]],
+  ['followevaluation_15',['FollowEvaluation',['../classWorksheet.html#af02bfd71d23fe6804fc27525f41e84bb',1,'Worksheet::FollowEvaluation() const'],['../classWorksheet.html#a6b947343c72f5e4da75470bd381907d8',1,'Worksheet::FollowEvaluation(bool followEvaluation)']]],
   ['fontchanged_16',['FontChanged',['../classConfiguration.html#a2c1e5f6af5c57992c025514ba8046c0e',1,'Configuration']]],
   ['fontrenderschar_17',['FontRendersChar',['../classConfiguration.html#a183cf4ad6d4c8a38f3f1c0b958d8b37e',1,'Configuration']]],
   ['fontschanged_18',['FontsChanged',['../classCell.html#a3674fadbc6fb3ac58bd603b386015b8c',1,'Cell::FontsChanged()'],['../classTextCell.html#ad9f5566f915963fd9c1814d6467d2659',1,'TextCell::FontsChanged()']]],
@@ -30,5 +30,6 @@ var searchData=
   ['func1ingroup2_27',['func1InGroup2',['../classMemgrp__Test.html#ab0e6553ddc36ac3cef0ac229c5dd4cdb',1,'Memgrp_Test']]],
   ['func2_28',['func2',['../group__group1.html#ga053929c0809a5f56f7548fd7d9968f31',1,'group.cpp']]],
   ['func2ingroup2_29',['func2InGroup2',['../classMemgrp__Test.html#a9ce862049bb543596343e81ad3ddddff',1,'Memgrp_Test']]],
-  ['func3_30',['func3',['../group__group1.html#gadbf675591ff057ec48ce35b0d5cdf755',1,'group.cpp']]]
+  ['func3_30',['func3',['../group__group1.html#gadbf675591ff057ec48ce35b0d5cdf755',1,'group.cpp']]],
+  ['funcell_31',['FunCell',['../classFunCell.html#a158556bd904e1d137faa0e27425c732d',1,'FunCell']]]
 ];

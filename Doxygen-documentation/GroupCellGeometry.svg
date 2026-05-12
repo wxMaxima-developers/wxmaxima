@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="300" viewBox="0 0 500 300">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="white" />
+
+  <!-- Input Label Box -->
+  <rect x="50" y="40" width="80" height="40" rx="3" fill="#e8f4f8" stroke="#2980b9" stroke-width="1" stroke-dasharray="2,2" />
+  <text x="90" y="65" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">inputLabel</text>
+
+  <!-- Input Content (EditorCell) -->
+  <rect x="140" y="40" width="300" height="60" rx="3" fill="#fcf3cf" stroke="#f1c40f" stroke-width="1" stroke-dasharray="4,2" />
+  <text x="290" y="75" font-family="serif" font-style="italic" font-size="20" text-anchor="middle" fill="#7d6608">input content</text>
+
+  <!-- Output Box -->
+  <rect x="140" y="120" width="300" height="120" rx="3" fill="#d5f5e3" stroke="#27ae60" stroke-width="1" stroke-dasharray="4,2" />
+  <text x="290" y="185" font-family="serif" font-style="italic" font-size="24" text-anchor="middle" fill="#145a32">output content</text>
+
+  <!-- Total Height -->
+  <line x1="20" y1="40" x2="20" y2="240" stroke="black" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="10" y="140" font-family="sans-serif" font-size="14" text-anchor="middle" transform="rotate(-90 10,140)">GetHeight()</text>
+
+  <!-- Output Offset -->
+  <line x1="130" y1="80" x2="130" y2="120" stroke="black" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="125" y="100" font-family="sans-serif" font-size="8" text-anchor="middle" transform="rotate(-90 125,100)">m_inputLabel->GetMaxDrop()</text>
+
+  <!-- Baseline (Input) -->
+  <line x1="40" y1="80" x2="450" y2="80" stroke="#7f8c8d" stroke-dasharray="5,5" />
+  <text x="400" y="95" font-family="sans-serif" font-size="12" fill="#7f8c8d">Baseline</text>
+
+</svg>
