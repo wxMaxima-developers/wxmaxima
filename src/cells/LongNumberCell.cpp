@@ -93,9 +93,9 @@ void LongNumberCell::Recalculate(AFontSize fontsize) const {
         auto ellipsisSize = CalculateTextSize(dc, m_ellipsis, ellipsis);
         m_numStartWidth = numStartSize.GetWidth();
         m_ellipsisWidth = ellipsisSize.GetWidth();
-        m_width = m_numStartWidth + m_ellipsisWidth;
-        m_height =
-          std::max(numStartSize.GetHeight(), ellipsisSize.GetHeight());
+        m_width = m_numStartWidth + m_ellipsisWidth + 2 * MC_TEXT_PADDING;
+        m_height = std::max(numStartSize.GetHeight(), ellipsisSize.GetHeight()) +
+                   2 * MC_TEXT_PADDING;
         m_center = m_height / 2;
       }
     }
