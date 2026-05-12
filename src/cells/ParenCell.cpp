@@ -127,18 +127,20 @@ void ParenCell::Recalculate(AFontSize fontsize) const {
                                      wxPoint(m_currentPoint.x + m_signWidth, m_currentPoint.y));
 
         // Center the argument of all big parenthesis vertically
-        if (m_bigParenType != Configuration::ascii)
+        if (m_bigParenType != Configuration::ascii) {
           m_innerCell->SetCurrentPoint(
                                        wxPoint(m_currentPoint.x + m_signWidth,
                                                m_currentPoint.y + (m_innerCell->GetCenterList() -
                                                                    m_innerCell->GetHeightList() / 2)));
-        else
+          m_height =
+            std::max(m_signHeight.GetOrElse(0), m_innerCell->GetHeightList()) + Scale_Px(4);
+          m_center = m_height / 2;
+        } else {
           m_innerCell->SetCurrentPoint(
                                        wxPoint(m_currentPoint.x + m_signWidth, m_currentPoint.y));
-
-        m_height =
-          std::max(m_signHeight.GetOrElse(0), m_innerCell->GetHeightList()) + Scale_Px(4);
-        m_center = m_height / 2;
+          m_center = std::max(m_open->GetCenterList(), m_innerCell->GetCenterList());
+          m_height = m_center + std::max(m_open->GetMaxDrop(), m_innerCell->GetMaxDrop());
+        }
       }
     }
     Cell::Recalculate(fontsize);
