@@ -159,8 +159,7 @@ void FracCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
         (m_width - m_horizontalGapLeft - m_horizontalGapRight -
          m_displayedNum->SumOfWidths()) /
         2;
-      num.y = point.y - m_displayedNum->GetHeightList() +
-        m_displayedNum->GetCenterList();
+      num.y = point.y - m_displayedNum->GetMaxDrop();
       m_displayedNum->DrawList(num, dc, antialiassingDC);
 
       denom.x = point.x + m_horizontalGapLeft +

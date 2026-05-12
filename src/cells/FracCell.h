@@ -40,11 +40,13 @@
    - As a 2D fraction (\f$ \frac{a}{b} \f$) if the fraction is narrow enough to fit
    on the screen, or
    - as a linear division (\f$ a/b \f$) if it doesn't.
+
+   \image html FracCellGeometry.svg
+   \image html FracCellLinearGeometry.svg
 */
 class FracCell final : public Cell
 {
 public:
-  /*! \image html FracCellGeometry.svg */
   FracCell(GroupCell *group, Configuration *config,
            std::unique_ptr<Cell> &&num, std::unique_ptr<Cell> &&denom);
   FracCell(GroupCell *group, const FracCell &cell);

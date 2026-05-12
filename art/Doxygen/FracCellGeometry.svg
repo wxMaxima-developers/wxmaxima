@@ -35,11 +35,11 @@
   <line x1="140" y1="100" x2="140" y2="160" stroke="#f1c40f" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
   <text x="135" y="130" font-family="sans-serif" font-size="9" text-anchor="middle" transform="rotate(-90 135,130)" fill="#f39c12">Denom::GetHeightList()</text>
 
-  <!-- Num Center to Baseline -->
+  <!-- Num Baseline to Frac Baseline -->
   <line x1="260" y1="50" x2="260" y2="80" stroke="black" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
-  <text x="265" y="65" font-family="sans-serif" font-size="10">Num::GetCenterList()</text>
+  <text x="265" y="65" font-family="sans-serif" font-size="10">Num::GetMaxDrop()</text>
 
-  <!-- Denom Center to Baseline -->
+  <!-- Denom Baseline to Frac Baseline -->
   <line x1="260" y1="80" x2="260" y2="130" stroke="black" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
   <text x="265" y="110" font-family="sans-serif" font-size="10">Denom::GetCenterList() + Scale_Px(4)</text>
 
