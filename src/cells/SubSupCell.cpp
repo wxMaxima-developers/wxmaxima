@@ -138,11 +138,18 @@ void SubSupCell::Recalculate(AFontSize const fontsize) const {
 
     m_width = preWidth + m_baseCell->SumOfWidths() + postWidth;
 
-    m_height = m_baseCell->GetHeightList() + subHeight + supHeight -
-      2 * Scale_Px(.8 * fontsize.Get() + MC_EXP_INDENT);
+    wxCoord const rise =
+        static_cast<wxCoord>(.8 * Scale_Px(fontsize)) - MC_EXP_INDENT;
 
-    m_center = supHeight + m_baseCell->GetCenterList() -
-      Scale_Px(.8 * fontsize.Get() + MC_EXP_INDENT);
+    m_center =
+        std::max(m_baseCell->GetCenterList(), rise - m_baseCell->GetMaxDrop());
+    if (supHeight > 0)
+      m_center = std::max(m_center.GetOrElse(0),
+                          m_baseCell->GetCenterList() + supHeight - rise);
+
+    m_height = std::max(m_baseCell->GetMaxDrop() + subHeight - rise,
+                        m_baseCell->GetMaxDrop()) +
+               m_center;
     Cell::Recalculate(fontsize);
   }
 }
