@@ -41,6 +41,7 @@ class TextCell;
 class SumCell : public Cell
 {
 public:
+  /*! \image html OperatorCellGeometry.svg */
   SumCell(GroupCell *group, Configuration *config,
           std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,
           std::unique_ptr<Cell> &&base);

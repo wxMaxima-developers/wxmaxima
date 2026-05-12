@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="350" viewBox="0 0 500 350">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="white" />
+
+  <!-- Cell 1 -->
+  <rect x="100" y="40" width="200" height="110" rx="5" fill="#e8f4f8" stroke="#2980b9" stroke-width="2" />
+  <!-- A fraction-like content to show non-middle center -->
+  <text x="200" y="70" font-family="serif" font-style="italic" font-size="30" text-anchor="middle" fill="#2c3e50">a</text>
+  <line x1="150" y1="80" x2="250" y2="80" stroke="#2c3e50" stroke-width="2" />
+  <text x="200" y="115" font-family="serif" font-style="italic" font-size="40" text-anchor="middle" fill="#2c3e50">∑</text>
+  <text x="200" y="140" font-family="serif" font-style="italic" font-size="20" text-anchor="middle" fill="#2c3e50">i=0</text>
+  
+  <!-- Baseline Cell 1 -->
+  <line x1="80" y1="80" x2="320" y2="80" stroke="#7f8c8d" stroke-dasharray="5,5" />
+  <text x="330" y="85" font-family="sans-serif" font-size="12" fill="#7f8c8d">Baseline</text>
+
+  <!-- Height Arrow -->
+  <line x1="70" y1="40" x2="70" y2="150" stroke="black" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="60" y="95" font-family="sans-serif" font-size="14" text-anchor="middle" transform="rotate(-90 60,95)">GetHeight()</text>
+
+  <!-- Center Arrow -->
+  <line x1="310" y1="40" x2="310" y2="80" stroke="black" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="320" y="65" font-family="sans-serif" font-size="14">GetCenter()</text>
+
+  <!-- Drop Arrow -->
+  <line x1="310" y1="80" x2="310" y2="150" stroke="black" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="320" y="120" font-family="sans-serif" font-size="14">GetDrop()</text>
+
+  <!-- Spacing -->
+  <line x1="200" y1="150" x2="200" y2="190" stroke="#e74c3c" stroke-width="2" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="210" y="175" font-family="sans-serif" font-size="14" fill="#e74c3c" font-weight="bold">Spacing between cells</text>
+
+  <!-- Cell 2 -->
+  <rect x="100" y="190" width="200" height="80" rx="5" fill="#fcf3cf" stroke="#f1c40f" stroke-width="2" />
+  <text x="200" y="240" font-family="serif" font-style="italic" font-size="30" text-anchor="middle" fill="#7d6608">x² + y²</text>
+
+</svg>

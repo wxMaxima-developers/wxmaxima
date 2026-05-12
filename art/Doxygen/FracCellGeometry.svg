@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="white" />
+
+  <!-- Numerator Box -->
+  <rect x="150" y="20" width="100" height="60" rx="3" fill="#e8f4f8" stroke="#2980b9" stroke-width="1" stroke-dasharray="4,2" />
+  <text x="200" y="55" font-family="serif" font-style="italic" font-size="24" text-anchor="middle" fill="#2c3e50">numerator</text>
+
+  <!-- Denominator Box -->
+  <rect x="150" y="100" width="100" height="60" rx="3" fill="#fcf3cf" stroke="#f1c40f" stroke-width="1" stroke-dasharray="4,2" />
+  <text x="200" y="135" font-family="serif" font-style="italic" font-size="24" text-anchor="middle" fill="#2c3e50">denominator</text>
+
+  <!-- Fraction Line (Baseline) -->
+  <line x1="130" y1="80" x2="270" y2="80" stroke="#2c3e50" stroke-width="2" />
+  
+  <!-- Labels -->
+  <text x="280" y="85" font-family="sans-serif" font-size="12" fill="#7f8c8d">Baseline (point.y)</text>
+
+  <!-- Distances -->
+  <!-- Num Center to Baseline -->
+  <line x1="260" y1="50" x2="260" y2="80" stroke="black" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="265" y="65" font-family="sans-serif" font-size="10">Num::GetCenterList()</text>
+
+  <!-- Denom Center to Baseline -->
+  <line x1="260" y1="80" x2="260" y2="130" stroke="black" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="265" y="110" font-family="sans-serif" font-size="10">Denom::GetCenterList() + Scale_Px(4)</text>
+
+</svg>

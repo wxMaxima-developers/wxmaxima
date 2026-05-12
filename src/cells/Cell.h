@@ -353,9 +353,7 @@ public:
 
     This value is recalculated by Recalculate()
 
-    \image html CellHeights.svg
-    \image latex CellHeights.png
-    \image rtf CellHeights.png
+    \image html CellGeometry.svg
   */
   wxCoord GetHeight() const
     {
@@ -368,9 +366,7 @@ public:
 
     This value is recalculated by Recalculate()
 
-    \image html CellHeights.svg
-    \image latex CellHeights.png
-    \image rtf CellHeights.png
+    \image html CellGeometry.svg
 */
   int GetWidth() const
     {
@@ -384,9 +380,7 @@ public:
     Remember that (for example with double fractions) the center does not have to be in the
     middle of a cell even if this object is --- by definition --- center-aligned.
 
-    \image html CellHeights.svg
-    \image latex CellHeights.png
-    \image rtf CellHeights.png
+    \image html CellGeometry.svg
   */
   wxCoord GetCenter() const
     {
@@ -411,9 +405,7 @@ public:
 
     This value is recalculated by Recalculate
 
-    \image html CellHeights.svg
-    \image latex CellHeights.png
-    \image rtf CellHeights.png
+    \image html CellGeometry.svg
   */
   wxCoord GetDrop() const
     { return GetHeight() - GetCenter(); }
@@ -1000,22 +992,19 @@ protected:
 //**
 protected:
   /*! The height of this cell.
-    
-    \image html CellHeights.svg
-    \image latex CellHeights.png
-    \image rtf CellHeights.png
+
+    \image html CellGeometry.svg
   */
   mutable CachedInteger<wxCoord> m_height;
   /*! The width of this cell; is recalculated by RecalculateHeight.
 
-   */
+    */
   mutable CachedInteger<wxCoord> m_width;
   /*! The distance between the top and the insertion point of this cell
 
-    \image html CellHeights.svg
-    \image latex CellHeights.png
-    \image rtf CellHeights.png
+    \image html CellGeometry.svg
   */
+
   mutable CachedInteger<wxCoord> m_center;
 protected:
 //** 2-byte objects (2 bytes)

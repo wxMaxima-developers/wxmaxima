@@ -44,6 +44,7 @@
 class FracCell final : public Cell
 {
 public:
+  /*! \image html FracCellGeometry.svg */
   FracCell(GroupCell *group, Configuration *config,
            std::unique_ptr<Cell> &&num, std::unique_ptr<Cell> &&denom);
   FracCell(GroupCell *group, const FracCell &cell);

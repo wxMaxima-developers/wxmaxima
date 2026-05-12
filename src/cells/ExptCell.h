@@ -50,6 +50,7 @@
 class ExptCell final : public Cell
 {
 public:
+  /*! \image html ExptCellGeometry.svg */
   ExptCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&expt);
   ExptCell(GroupCell *group, const ExptCell &cell);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;

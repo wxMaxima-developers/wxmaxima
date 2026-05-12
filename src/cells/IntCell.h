@@ -39,6 +39,7 @@
 class IntCell final : public Cell
 {
 public:
+  /*! \image html IntCellGeometry.svg */
   IntCell(GroupCell *group, Configuration *config,
           std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&lowerLimit,
           std::unique_ptr<Cell> &&upperLimit, std::unique_ptr<Cell> &&var);

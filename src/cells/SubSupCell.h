@@ -30,6 +30,7 @@
 class SubSupCell final : public Cell
 {
 public:
+  /*! \image html SubSupCellGeometry.svg */
   SubSupCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&base);
   SubSupCell(GroupCell *group, const SubSupCell &cell);
   const CellTypeInfo &GetInfo() override;

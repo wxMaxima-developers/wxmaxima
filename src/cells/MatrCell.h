@@ -30,6 +30,7 @@
 class MatrCell final : public Cell
 {
 public:
+  /*! \image html MatrCellGeometry.svg */
   MatrCell(GroupCell *group, Configuration *config);
   MatrCell(GroupCell *group, const MatrCell &cell);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
