@@ -55,9 +55,13 @@ void AtCell::Recalculate(AFontSize fontsize) const {
     m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - 3});
     m_width =
       m_baseCell->SumOfWidths() + m_indexCell->SumOfWidths() + Scale_Px(4);
-    m_height =
-      m_baseCell->GetHeightList() + m_indexCell->GetHeightList() - Scale_Px(7);
-    m_center = m_baseCell->GetCenter();
+
+    wxCoord const rise = Scale_Px(7);
+    m_center = std::max(m_baseCell->GetCenterList(),
+                        rise - m_baseCell->GetMaxDrop());
+    m_height = std::max(m_baseCell->GetMaxDrop() + m_indexCell->GetHeightList() - rise,
+                        m_baseCell->GetMaxDrop()) + m_center;
+
     Cell::Recalculate(fontsize);
   }
 }
