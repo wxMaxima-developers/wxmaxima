@@ -9634,16 +9634,16 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_maxima_uses_internal_help){
     m_configuration.MaximaUsesHtmlBrowser(false);
     m_configuration.MaximaUsesWxmaximaBrowser(false);
-    MenuCommand(wxS("output_format_for_help:'text"));
+    MenuCommand(wxS("output_format_for_help:'text$"));
   }
   else if(event.GetId() == EventIDs::menu_maxima_uses_html_help){
     m_configuration.MaximaUsesHtmlBrowser(true);
     m_configuration.MaximaUsesWxmaximaBrowser(false);
-    MenuCommand(wxS("output_format_for_help:'html"));
+    MenuCommand(wxS("output_format_for_help:'html$"));
   }
   else if(event.GetId() == EventIDs::menu_maxima_uses_wxmaxima_help){
     m_configuration.MaximaUsesWxmaximaBrowser(true);
-    MenuCommand(wxS("output_format_for_help:'frontend"));
+    MenuCommand(wxS("output_format_for_help:'frontend$"));
   }
 
   else if(event.GetId() == EventIDs::menu_show_tip){
