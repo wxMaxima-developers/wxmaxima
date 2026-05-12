@@ -16,6 +16,10 @@
   <!-- Sqrt Symbol -->
   <path d="M 50 110 L 70 100 L 95 160 L 110 50 L 300 50 L 300 65" fill="none" stroke="#2c3e50" stroke-width="2" />
 
+  <!-- Total Height -->
+  <line x1="20" y1="50" x2="20" y2="160" stroke="black" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="10" y="105" font-family="sans-serif" font-size="14" text-anchor="middle" transform="rotate(-90 10,105)">GetHeight()</text>
+
   <!-- Baseline -->
   <line x1="30" y1="120" x2="350" y2="120" stroke="#7f8c8d" stroke-dasharray="5,5" />
   <text x="310" y="135" font-family="sans-serif" font-size="12" fill="#7f8c8d">Baseline (point.y)</text>

@@ -27,8 +27,12 @@
   <rect x="200" y="160" width="60" height="40" rx="3" fill="#fcf3cf" stroke="#f1c40f" stroke-width="1" stroke-dasharray="2,2" />
   <text x="230" y="185" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#7d6608">postSub</text>
 
+  <!-- Total Height -->
+  <line x1="10" y1="40" x2="10" y2="200" stroke="black" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="5" y="120" font-family="sans-serif" font-size="14" text-anchor="middle" transform="rotate(-90 5,120)">GetHeight()</text>
+
   <!-- Baseline -->
-  <line x1="10" y1="120" x2="350" y2="120" stroke="#7f8c8d" stroke-dasharray="5,5" />
+  <line x1="15" y1="120" x2="350" y2="120" stroke="#7f8c8d" stroke-dasharray="5,5" />
   <text x="310" y="115" font-family="sans-serif" font-size="12" fill="#7f8c8d">Baseline (point.y)</text>
 
 </svg>
