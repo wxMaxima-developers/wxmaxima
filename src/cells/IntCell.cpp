@@ -320,11 +320,10 @@ wxString IntCell::ToXML() const {
     flags += wxS(" breakline=\"true\"");
 
   if (HasLimits()) {
+    return wxS("<in") + flags + wxS(">") + from + to + base + var + wxS("</in>");
+  } else
     flags += wxS(" def=\"false\"");
     return wxS("<in") + flags + wxS(">") + base + var + wxS("</in>");
-  } else
-    return wxS("<in") + flags + wxS(">") + from + to + base + var +
-      wxS("</in>");
 }
 
 bool IntCell::BreakUp() const {

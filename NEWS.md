@@ -2,6 +2,9 @@
 
 - Fix the cursor position after autocompletion (#2090).
 - Fix XML for saving as wxmx, when Maxima warnings are displayed (#2092).
+- Fix XML output for definite integrals. It was saved (in wxmx format)
+  without the limits. (The input was correct, so re-evaluating solved
+  the problem, but loading a file didn't show the limits).
 
 # 26.05.0
 
