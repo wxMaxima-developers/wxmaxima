@@ -338,10 +338,9 @@ protected:
   bool m_first = true;
 
   bool ToolbarIsShown();
-private:
+protected:
   //! The manager for dynamic screen layouts
   wxAuiManager m_manager;
-protected:
   //! The worksheet itself
   Worksheet * const m_worksheet = NULL;
   //! The history pane

@@ -67,11 +67,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   m_history(new History(this, -1, &m_configuration)),
   m_recentDocuments(wxS("document")),
   m_recentPackages(wxS("packages")) {
+  SetupMenu();
+
   m_manager.SetManagedWindow(this);
   m_manager.SetFlags(wxAUI_MGR_ALLOW_FLOATING | wxAUI_MGR_ALLOW_ACTIVE_PANE |
                      wxAUI_MGR_TRANSPARENT_HINT | wxAUI_MGR_HINT_FADE);
-  SetupMenu();
-  SetMenuBar(m_MenuBar);
 
   // console
   // Suppress window updates until this window has fully been created.

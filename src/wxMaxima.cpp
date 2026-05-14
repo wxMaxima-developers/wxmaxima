@@ -1774,7 +1774,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
     CallAfter([this]{GetWorksheet()->SetFocus();});
   StartAutoSaveTimer();
   MyApp::m_windowcount++;
-  Layout();
+  m_manager.Update();
+  SetMenuBar(m_MenuBar);
 }
 
 #ifdef wxHAS_POWER_EVENTS
