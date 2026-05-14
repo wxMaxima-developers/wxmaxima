@@ -377,7 +377,7 @@ wxString Variablespane::UnescapeVarname(wxString var) {
   return var;
 }
 
-wxString Variablespane::EscapeVarname(wxString var) {
+wxString Variablespane::EscapeVarname(wxString var, bool addPrefix) {
   wxString result;
   result.reserve(var.length() * 2);
 
@@ -388,22 +388,50 @@ wxString Variablespane::EscapeVarname(wxString var) {
   }
 
   for (wxUniChar c : var) {
-    if (c == wxS('\\') || c == wxS('+') || c == wxS('#') || c == wxS('\'') ||
-        c == wxS('\"') || c == wxS('!') || c == wxS('-') || c == wxS('*') ||
-        c == wxS('/') || c == wxS('^') || c == wxS('$') || c == wxS(';') ||
-        c == wxS(',') || c == wxS('<') || c == wxS('>') || c == wxS('@') ||
-        c == wxS('~') || c == wxS('`') || c == wxS('?') || c == wxS('(') ||
-        c == wxS(')') || c == wxS('{') || c == wxS('}') || c == wxS('[') ||
-        c == wxS(']') || c == wxS(' ') || c == wxS('°') || c > 0x7F) {
+    switch (c.GetValue()) {
+    case '\\':
+    case '+':
+    case '#':
+    case '\'':
+    case '\"':
+    case '!':
+    case '-':
+    case '*':
+    case '/':
+    case '^':
+    case '$':
+    case ';':
+    case ',':
+    case '<':
+    case '>':
+    case '@':
+    case '~':
+    case '`':
+    case '?':
+    case '(':
+    case ')':
+    case '{':
+    case '}':
+    case '[':
+    case ']':
+    case ' ':
+    case 0x00B0: // '°'
       result += wxS('\\');
+      break;
+    default:
+      if (c > 0x7F)
+        result += wxS('\\');
+      break;
     }
     result += c;
   }
 
   if (isLisp)
     return wxS("?") + result;
-  else
+  else if (addPrefix)
     return wxS("$") + result;
+  else
+    return result;
 }
 
 bool Variablespane::IsValidVariable(wxString var) {

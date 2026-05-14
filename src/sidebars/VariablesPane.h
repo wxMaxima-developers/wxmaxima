@@ -87,7 +87,7 @@ public:
   //! Remove all entries from the variables list
   void Clear();
   //! Convert a human-readable variable name to one maxima understands
-  static wxString EscapeVarname(wxString var);
+  static wxString EscapeVarname(wxString var, bool addPrefix = true);
   //! Convert a variable name maxima understands to human-readable
   static wxString UnescapeVarname(wxString var);
   //! Tell the variables pane about a variable value
