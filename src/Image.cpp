@@ -48,6 +48,7 @@
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
+#include <wx/sstream.h>
 
 Image::Image(Configuration *config) {
   m_configuration = config;
@@ -65,10 +66,26 @@ Image::Image(Configuration *config, const wxMemoryBuffer &image, const wxString 
   // Remark for issue #2087:
   // That works, if the image is a usual image format (png, jpeg, ...). For "svgz" (and "svg") we must first convert them
   // image with wxBitmapBundle::FromSVG (if wxWidgets is new enough) and then load the image.
+  // (Implemented now, but it does not work - why? Was my assumption false? If so, the commit can be reverted...)
   if (m_compressedImage.GetDataLen() > 0) {
-    wxMemoryInputStream istream(m_compressedImage.GetData(),
-                                m_compressedImage.GetDataLen());
-    Image.LoadFile(istream);
+    if (type == wxS("svgz")) {
+      wxMemoryInputStream memIn(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
+      wxZlibInputStream gzipInput(memIn, wxZLIB_GZIP);
+      // Output to a string and get the result as wxString
+      wxStringOutputStream stringOut;
+      stringOut.Write(gzipInput);
+      wxString decompressedString = stringOut.GetString();
+      // wxBitmapBundle::FromSVG currently does not use the sizes given in the SVG file, but requires a wxSize parameter. Am I right?
+      // Maybe we should read them from the SVG data by ourselves.
+      // For now, just use a constant size...
+      wxBitmapBundle bmb = wxBitmapBundle::FromSVG(decompressedString.mb_str(), wxSize(200,200));
+      Image = bmb.GetBitmap(wxSize(200,200)).ConvertToImage();
+    } else {
+      wxMemoryInputStream istream(m_compressedImage.GetData(),
+                                  m_compressedImage.GetDataLen());
+      Image.LoadFile(istream);
+    }
+    // Image.IsOk() is no true for svgz files too. Before it was not. However, the SVG is still not displayed in WXM files... Strange!
     if(Image.IsOk())
     {
       m_originalWidth = Image.GetWidth();
