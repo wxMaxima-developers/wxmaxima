@@ -33,7 +33,7 @@
 
 #include <wx/mstream.h>
 #include <wx/zstream.h>
-#include <wx/txtstrm.h>
+#include <wx/sstream.h>
 
 #include "wxMaximaArtProvider.h"
 
@@ -62,12 +62,10 @@ wxString wxMaximaArtProvider::gunzip(unsigned char * svg_gz, size_t svg_gz_size)
 {
     wxMemoryInputStream memIn(svg_gz, svg_gz_size);
     wxZlibInputStream gzipInput(memIn, wxZLIB_GZIP);
-    wxTextInputStream svgText(gzipInput);
-    wxString svg_unzipped = wxEmptyString;
-    while (!gzipInput.Eof()) {
-        svg_unzipped = svg_unzipped + svgText.ReadLine();
-    }
-    return svg_unzipped;
+    // Output to a string and return the result as wxString
+    wxStringOutputStream stringOut;
+    stringOut.Write(gzipInput);
+    return stringOut.GetString();
 }
 
 wxBitmapBundle wxMaximaArtProvider::CreateBitmapBundle(const wxArtID& id,
