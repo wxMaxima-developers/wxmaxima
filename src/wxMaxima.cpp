@@ -3719,21 +3719,16 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
           gnuplotcommand.Right(gnuplotcommand.Length() - pos - 1);
     }
 #endif
-  wxArrayString gnuplot_output, gnuplot_errors;
 #ifdef __WINDOWS__
-  wxString gnuplot_query=m_gnuplotcommand_commandline + " -e \"print GPVAL_TERMINALS\"";
+  wxString gnuplot_query =
+      m_gnuplotcommand_commandline + " -e \"print GPVAL_TERMINALS\"";
 #else
-  wxString gnuplot_query=m_gnuplotcommand + " -e \"print GPVAL_TERMINALS\"";
+  wxString gnuplot_query = m_gnuplotcommand + " -e \"print GPVAL_TERMINALS\"";
 #endif
-  if (wxExecute(gnuplot_query, gnuplot_output, gnuplot_errors, wxEXEC_SYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER, NULL) < 0)
+  if (wxExecute(gnuplot_query,
+                wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
+                m_gnuplotTerminalQueryProcess, env.get()) < 0)
     wxLogMessage(_("Cannot start gnuplot"));
-  else {
-    wxString gnuplot_terminals = wxJoin(gnuplot_errors, ' ', 0); // REMARK: In the documentation of wxJoin, NULL is suggested as 3rd argument ("If the escape character is non-NULL, ..."), but NULL causes an warning. (warning: passing NULL to non-pointer argument 3). Therefore I use 0 here.
-    wxLogMessage(wxS("Gnuplot terminals: %s"), gnuplot_terminals);
-    /* FIXME: What should happen with the result? Returned by the function? Stored anywhere? Currently the result is nowhere used... */
-    m_configuration.UsePngCairo(gnuplot_terminals.Contains(wxS("pngcairo")));
-    wxLogMessage(m_configuration.UsePngCairo() ? wxS("Gnuplot pngcairo terminal: yes") : wxS("Gnuplot pngcairo terminal: no"));
-  }
 }
 
 void wxMaxima::VariableActionMaximaSharedir(const wxString &value) {
