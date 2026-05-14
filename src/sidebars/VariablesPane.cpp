@@ -378,38 +378,32 @@ wxString Variablespane::UnescapeVarname(wxString var) {
 }
 
 wxString Variablespane::EscapeVarname(wxString var) {
-  var.Replace("\\", "\\\\");
-  var.Replace("+", "\\+");
-  var.Replace("#", "\\#");
-  var.Replace("'", "\\'");
-  var.Replace("\"", "\\\"");
-  var.Replace("!", "\\!");
-  var.Replace("-", "\\-");
-  var.Replace("*", "\\*");
-  var.Replace("/", "\\/");
-  var.Replace("^", "\\^");
-  var.Replace("$", "\\$");
-  var.Replace(";", "\\;");
-  var.Replace(",", "\\,");
-  var.Replace("<", "\\<");
-  var.Replace(">", "\\>");
-  var.Replace("@", "\\@");
-  var.Replace("!", "\\!");
-  var.Replace("~", "\\~");
-  var.Replace("`", "\\`");
-  var.Replace("?", "\\?");
-  var.Replace("(", "\\(");
-  var.Replace(")", "\\)");
-  var.Replace("{", "\\{");
-  var.Replace("}", "\\}");
-  var.Replace("[", "\\[");
-  var.Replace("]", "\\]");
-  var.Replace(" ", "\\ ");
-  if (var.StartsWith("\\?"))
-    var = var.Right(var.Length() - 1);
-  if (!var.StartsWith(wxS("?")))
-    var = "$" + var;
-  return var;
+  wxString result;
+  result.reserve(var.length() * 2);
+
+  bool isLisp = false;
+  if (var.StartsWith(wxS("?"))) {
+    isLisp = true;
+    var = var.Mid(1);
+  }
+
+  for (wxUniChar c : var) {
+    if (c == wxS('\\') || c == wxS('+') || c == wxS('#') || c == wxS('\'') ||
+        c == wxS('\"') || c == wxS('!') || c == wxS('-') || c == wxS('*') ||
+        c == wxS('/') || c == wxS('^') || c == wxS('$') || c == wxS(';') ||
+        c == wxS(',') || c == wxS('<') || c == wxS('>') || c == wxS('@') ||
+        c == wxS('~') || c == wxS('`') || c == wxS('?') || c == wxS('(') ||
+        c == wxS(')') || c == wxS('{') || c == wxS('}') || c == wxS('[') ||
+        c == wxS(']') || c == wxS(' ') || c == wxS('°') || c > 0x7F) {
+      result += wxS('\\');
+    }
+    result += c;
+  }
+
+  if (isLisp)
+    return wxS("?") + result;
+  else
+    return wxS("$") + result;
 }
 
 bool Variablespane::IsValidVariable(wxString var) {
