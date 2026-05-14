@@ -49,6 +49,9 @@
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
 #include <wx/sstream.h>
+#if wxCHECK_VERSION(3, 1, 6)
+#include <wx/bmpbndl.h>
+#endif
 
 Image::Image(Configuration *config) {
   m_configuration = config;
@@ -68,6 +71,7 @@ Image::Image(Configuration *config, const wxMemoryBuffer &image, const wxString 
   // image with wxBitmapBundle::FromSVG (if wxWidgets is new enough) and then load the image.
   // (Implemented now, but it does not work - why? Was my assumption false? If so, the commit can be reverted...)
   if (m_compressedImage.GetDataLen() > 0) {
+#if wxCHECK_VERSION(3, 1, 6)
     if (type == wxS("svgz")) {
       wxMemoryInputStream memIn(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
       wxZlibInputStream gzipInput(memIn, wxZLIB_GZIP);
@@ -85,7 +89,12 @@ Image::Image(Configuration *config, const wxMemoryBuffer &image, const wxString 
                                   m_compressedImage.GetDataLen());
       Image.LoadFile(istream);
     }
-    // Image.IsOk() is no true for svgz files too. Before it was not. However, the SVG is still not displayed in WXM files... Strange!
+#else
+      wxMemoryInputStream istream(m_compressedImage.GetData(),
+                                  m_compressedImage.GetDataLen());
+      Image.LoadFile(istream);
+#endif
+    // Image.IsOk() is no true for svgz files too (wxWidgets >= 3.1.6). Before it was not. However, the SVG is still not displayed in WXM files... Strange!
     if(Image.IsOk())
     {
       m_originalWidth = Image.GetWidth();
