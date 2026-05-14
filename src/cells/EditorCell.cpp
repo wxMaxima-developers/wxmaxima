@@ -3060,8 +3060,6 @@ void EditorCell::StyleTextTexts() const {
           lastLineStart = i + 1;
           lastSpacePos = 0;
           lastSpaceIt = m_text.end();
-          ++it;
-          ++i;
           break;
         } else {
           // We cannot introduce soft linebreaks since there were no spaces we
@@ -3090,10 +3088,9 @@ void EditorCell::StyleTextTexts() const {
                 // Introduce a soft line break
                 *lastSpaceIt = wxS('\r');
                 line = m_text.SubString(lastLineStart, lastSpacePos - 1);
-                i = lastSpacePos + 1;
+                i = lastSpacePos;
                 it = lastSpaceIt;
-                ++it;
-                lastLineStart = i;
+                lastLineStart = i + 1;
                 lastSpacePos = 0;
                 lastSpaceIt = m_text.end();
                 break;
@@ -3104,8 +3101,6 @@ void EditorCell::StyleTextTexts() const {
                   lastLineStart = i + 1;
                   lastSpacePos = 0;
                   lastSpaceIt = m_text.end();
-                  ++it;
-                  ++i;
                   break;
                 }
               }
