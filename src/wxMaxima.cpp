@@ -2898,6 +2898,16 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_statusBar->SetMaximaCPUPercentage(0);
   m_CWD.Clear();
   QuestionAnswered();
+
+  if(m_maximaProcess) {
+    // If Maxima no more has a stdout it should automatically close
+    m_maximaProcess->CloseOutput();
+  }
+  m_maximaStdout = NULL;
+  m_maximaStderr = NULL;
+  // This closes Maxima's network connection.
+  m_client.reset();
+
   // Finally found a long outstanding problem with leftover Lisp processes
   // (using debugging with command line Maxima and netcat):
   //
@@ -2905,15 +2915,6 @@ void wxMaxima::KillMaxima(bool logMessage) {
   // terminate the Lisp, which is running in the background.
   // Don't know why. But do not try to do that, just kill the Maxima process (using "taskkill")!
 #ifndef __WINDOWS__
-  if(m_maximaProcess) {
-    // If Maxima no more has a stdout it should automatically close
-    m_maximaProcess->CloseOutput();
-  }
-  m_maximaStdout = NULL;
-  m_maximaStderr = NULL;
-  // This closes Maxima's network connection - which should close maxima, as well.
-  // Additionally closing the client automatically sends a "quit();" command to Maxima.
-  m_client.reset();
   // If the process really exists after that, kill it with Signals.
   wxKillError killresult;
   if (wxProcess::Exists(m_pid)) {
@@ -2987,6 +2988,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
   }
   // Set m_pid to -1.The process really shouldn't exist any more.
   m_pid = -1;
+  m_maximaPid = -1;
 
   // We don't need to be informed any more if the maxima process we just tried to
   // kill actually exits.
