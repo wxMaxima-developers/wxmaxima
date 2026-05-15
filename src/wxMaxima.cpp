@@ -11201,8 +11201,10 @@ void wxMaxima::HistoryDClick(wxCommandEvent &event) {
 }
 
 void wxMaxima::TableOfContentsSelection(wxListEvent &event) {
-  GroupCell *selection =
-    m_tableOfContents->GetCell(event.GetIndex())->GetGroup();
+  GroupCell *selection_base = m_tableOfContents->GetCell(event.GetIndex());
+  if (!selection_base)
+    return;
+  GroupCell *selection = selection_base->GetGroup();
 
   // We only update the table of contents when there is time => no guarantee
   // that the cell that was clicked at actually still is part of the tree.

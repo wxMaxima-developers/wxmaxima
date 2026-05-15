@@ -407,7 +407,7 @@ void TableOfContents::UpdateDisplay() {
 }
 
 GroupCell *TableOfContents::GetCell(std::size_t index) {
-  if (index > m_structure.size())
+  if (index >= m_displayedGroupCells.size())
     return NULL;
 
   return m_displayedGroupCells.at(index);

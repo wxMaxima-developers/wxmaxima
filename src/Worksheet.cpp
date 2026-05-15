@@ -4484,6 +4484,14 @@ void Worksheet::TOCdnd(GroupCell *dndStart, GroupCell *dndEnd) {
     return;
   if (!dndStart)
     return;
+
+  // We only update the table of contents when there is time => no guarantee
+  // that the cell that was clicked at actually still is part of the tree.
+  if (!m_tree || !m_tree->Contains(dndStart))
+    return;
+  if (dndEnd && !m_tree->Contains(dndEnd))
+    return;
+
   // Select the region that is to be moved
   m_cellPointers.m_selectionStart = dndStart;
   m_cellPointers.m_selectionEnd = m_cellPointers.m_selectionStart;
