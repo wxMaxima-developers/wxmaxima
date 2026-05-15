@@ -1629,6 +1629,13 @@ versión de wxMaxima en este caso.
 Si no ningún frontend es utilizado (está utilizando Maxima en línea de
 instrucción), estas variables son falsas.
 
+## Help! I can not save my document!
+
+If saving as wxmx file does not work, try saving the document as wxm file
+(and vice versa). And you can also try to remove all output (Menu
+Cell->Remove all output) and save that file, maybe some unexpected output
+causes issues during the save process.
+
 ______________________________________________________________________
 
 # Argumentos de línea de instrucción

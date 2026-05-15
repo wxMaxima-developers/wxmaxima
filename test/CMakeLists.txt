@@ -196,7 +196,7 @@ add_test(
 
 add_test(
     NAME wxxml-mlable2
-    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "outchar:\">\";" "<math><lbl altCopy=\"\\\\&gt;1\">(&gt;1) </lbl><st>&gt;</st></math>"
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "outchar:\">\";" "<math><lbl altCopy=\"\\\\&gt;1\">(&gt;1) </lbl><mi lisp=.*>&gt;</mi></math>"
 )
 
 add_test(

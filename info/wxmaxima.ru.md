@@ -1611,6 +1611,13 @@ wxWidgets.
 Если графический интерфейс не используется (работа выполняется в командной
 строке Maxima), то эти переменные имеют значение `false`.
 
+## Help! I can not save my document!
+
+If saving as wxmx file does not work, try saving the document as wxm file
+(and vice versa). And you can also try to remove all output (Menu
+Cell->Remove all output) and save that file, maybe some unexpected output
+causes issues during the save process.
+
 ______________________________________________________________________
 
 # Аргументы командной строки
