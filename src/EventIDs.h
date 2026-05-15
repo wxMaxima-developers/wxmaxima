@@ -70,6 +70,9 @@ public:
 */
 
 
+  static const wxWindowIDRef menu_copy_uuid;
+  static const wxWindowIDRef menu_jump_to_uuid;
+
   /*! Hide all panes
 
     This event is assigned an ID higher than the highest ID wxWidgets assigns to

@@ -966,6 +966,30 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell) {
   if (node->GetAttribute(wxS("tooltip"), &val))
     if (!val.empty())
       cell->SetToolTip(std::move(val));
+
+  wxXmlAttribute *attr = node->GetAttributes();
+  while (attr) {
+    wxString name = attr->GetName();
+    wxString value = attr->GetValue();
+    if (name == wxS("uuid"))
+      cell->SetUUID(value);
+    else if (name != wxS("breakline") && name != wxS("altCopy") &&
+             name != wxS("tooltip") && name != wxS("type") &&
+             name != wxS("hideToolTip") && name != wxS("hide") &&
+             name != wxS("sectioning_level") && name != wxS("auto_answer") &&
+             !name.StartsWith(wxS("question")) &&
+             !name.StartsWith(wxS("answer")) &&
+             name != wxS("fr") && name != wxS("frame") &&
+             name != wxS("running") && name != wxS("ppi") &&
+             !name.StartsWith(wxS("gnuplot")) &&
+             name != wxS("origImageFile") && name != wxS("del") &&
+             name != wxS("rect") && name != wxS("maxWidth") &&
+             name != wxS("maxHeight") && name != wxS("userdefinedlabel") &&
+             name != wxS("userdefined")) {
+      cell->AddExtraAttribute(name, value);
+    }
+    attr = attr->GetNext();
+  }
 }
 
 void MathParser::ParseCommonGroupCellAttrs(
@@ -975,6 +999,8 @@ void MathParser::ParseCommonGroupCellAttrs(
 
   if (node->GetAttribute(wxS("hideToolTip")) == wxS("true"))
     group->SetSuppressTooltipMarker(true);
+
+  ParseCommonAttrs(node, group.get());
 }
 
 std::unique_ptr<Cell> MathParser::ParseCharCode(wxXmlNode *node) {

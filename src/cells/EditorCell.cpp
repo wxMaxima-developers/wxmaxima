@@ -493,6 +493,7 @@ wxString EditorCell::ToXML() const {
   xmlstring.Replace(wxS("&#0D;"), wxS(" "));
   xmlstring = wxS("<line>") + xmlstring + wxS("</line>\n");
   wxString head = wxS("<editor");
+  head += GetExtraXMLAttributes();
   switch (m_type) {
   case MC_TYPE_TEXT:
     head += wxS(" type=\"text\"");

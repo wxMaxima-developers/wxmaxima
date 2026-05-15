@@ -708,6 +708,7 @@ wxString Cell::GetXMLFlags() const {
   wxString flags;
   if (HasHardLineBreak())
     flags += wxS(" breakline=\"true\"");
+  flags += GetExtraXMLAttributes();
   return flags;
 }
 
@@ -1484,4 +1485,29 @@ std::ostream& operator<<(std::ostream& out, const CellType celltype){
   default: result = "!!!Bug: Unknown cell type!!!";
   }
   return out << result;
+}
+
+void Cell::GenerateUUID() {
+  wxLongLong now = wxDateTime::UNow().GetValue();
+  m_uuid = wxString::Format(wxS("%08lx-%04x-%04x-%04x-%012llx"),
+                            static_cast<long>(now.GetLo() & 0xFFFFFFFF),
+                            static_cast<unsigned int>(rand() & 0xFFFF),
+                            static_cast<unsigned int>(rand() & 0xFFFF),
+                            static_cast<unsigned int>(rand() & 0xFFFF),
+                            now.GetValue());
+}
+
+wxString Cell::GetExtraXMLAttributes() const {
+  wxString flags;
+  if (!m_uuid.IsEmpty())
+    flags += wxS(" uuid=\"") + m_uuid + wxS("\"");
+  for (auto const &it : m_extraAttributes) {
+    flags += wxS(" ") + it.first + wxS("=\"") + Cell::XMLescape(it.second) +
+             wxS("\"");
+  }
+  return flags;
+}
+
+void Cell::AddExtraAttribute(const wxString &name, const wxString &value) {
+  m_extraAttributes[name] = value;
 }

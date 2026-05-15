@@ -977,6 +977,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           NULL, this);
   Connect(EventIDs::menu_add_path, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Connect(EventIDs::menu_copy_uuid, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(EventIDs::menu_jump_to_uuid, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
   Connect(wxID_COPY, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
           NULL, this);
   Connect(EventIDs::menu_copy_text_from_worksheet, wxEVT_MENU,
@@ -5598,13 +5602,21 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
     wxLogError(_("Trying to open a file with an empty name!"));
     return false;
   }
-  if (!(wxFileExists(file))) {
-    wxLogError(_("Trying to open the non-existing file %s"), file);
+
+  wxString realFile = file;
+  wxString uuid;
+  if (file.Contains(wxS("#"))) {
+    realFile = file.BeforeFirst(wxS('#'));
+    uuid = file.AfterFirst(wxS('#'));
+  }
+
+  if (!(wxFileExists(realFile))) {
+    wxLogError(_("Trying to open the non-existing file %s"), realFile);
     return false;
   }
 
-  m_lastPath = wxPathOnly(file);
-  wxString unixFilename(file);
+  m_lastPath = wxPathOnly(realFile);
+  wxString unixFilename(realFile);
 #if defined __WXMSW__
   unixFilename.Replace(wxS("\\"), wxS("/"));
 #endif
@@ -5619,69 +5631,69 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
       UpdateRecentDocuments();
       ReReadConfig();
     }
-  } else if (file.Lower().EndsWith(wxS(".wxm"))) {
-    retval = OpenWXMFile(file, GetWorksheet());
+  } else if (realFile.Lower().EndsWith(wxS(".wxm"))) {
+    retval = OpenWXMFile(realFile, GetWorksheet());
     if (retval) {
       ReReadConfig();
       if (!m_exitAfterEval)
-        m_recentDocuments.AddDocument(file);
+        m_recentDocuments.AddDocument(realFile);
       ReReadConfig();
     }
   }
 
-  else if (file.Lower().EndsWith(wxS(".mac"))) {
-    retval = OpenMACFile(file, GetWorksheet());
+  else if (realFile.Lower().EndsWith(wxS(".mac"))) {
+    retval = OpenMACFile(realFile, GetWorksheet());
     if (retval) {
       ReReadConfig();
       if (!m_exitAfterEval)
-        m_recentDocuments.AddDocument(file);
+        m_recentDocuments.AddDocument(realFile);
       ReReadConfig();
     }
-  } else if (file.Lower().EndsWith(wxS(".out"))) {
-    retval = OpenMACFile(file, GetWorksheet());
+  } else if (realFile.Lower().EndsWith(wxS(".out"))) {
+    retval = OpenMACFile(realFile, GetWorksheet());
     if (retval) {
       ReReadConfig();
       if (!m_exitAfterEval)
-        m_recentDocuments.AddDocument(file);
-      ReReadConfig();
-    }
-  }
-
-  else if (file.EndsWith(wxS(".wxmx")) || file.EndsWith(wxS(".wxmx~")) ) {
-    retval = OpenWXMXFile(file, GetWorksheet());
-    if (retval) {
-      ReReadConfig();
-      if (!m_exitAfterEval)
-        m_recentDocuments.AddDocument(file);
+        m_recentDocuments.AddDocument(realFile);
       ReReadConfig();
     }
   }
 
-  else if (file.Right(4).Lower() == wxS(".zip")) {
-    retval = OpenWXMXFile(file, GetWorksheet());
+  else if (realFile.EndsWith(wxS(".wxmx")) || realFile.EndsWith(wxS(".wxmx~")) ) {
+    retval = OpenWXMXFile(realFile, GetWorksheet());
     if (retval) {
       ReReadConfig();
       if (!m_exitAfterEval)
-        m_recentDocuments.AddDocument(file);
+        m_recentDocuments.AddDocument(realFile);
       ReReadConfig();
     }
   }
 
-  else if (file.Right(4).Lower() == wxS(".dem")) {
+  else if (realFile.Right(4).Lower() == wxS(".zip")) {
+    retval = OpenWXMXFile(realFile, GetWorksheet());
+    if (retval) {
+      ReReadConfig();
+      if (!m_exitAfterEval)
+        m_recentDocuments.AddDocument(realFile);
+      ReReadConfig();
+    }
+  }
+
+  else if (realFile.Right(4).Lower() == wxS(".dem")) {
     MenuCommand(wxS("demo(\"") + unixFilename + wxS("\")$"));
     ReReadConfig();
-    m_recentPackages.AddDocument(file);
+    m_recentPackages.AddDocument(realFile);
     UpdateRecentDocuments();
     ReReadConfig();
   }
 
-  else if (file.Right(4).Lower() == wxS(".xml"))
-    retval = OpenXML(file, GetWorksheet()); // clearDocument = true
+  else if (realFile.Right(4).Lower() == wxS(".xml"))
+    retval = OpenXML(realFile, GetWorksheet()); // clearDocument = true
 
   else {
     MenuCommand(wxS("load(\"") + unixFilename + wxS("\")$"));
     ReReadConfig();
-    m_recentPackages.AddDocument(unixFilename);
+    m_recentPackages.AddDocument(realFile);
     UpdateRecentDocuments();
     ReReadConfig();
   }
@@ -5721,6 +5733,13 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
 
   GetWorksheet()->Recalculate();
   UpdateMenus();
+
+  if (retval && !uuid.IsEmpty()) {
+    Cell *cell = GetWorksheet()->FindCellByUUID(uuid);
+    if (cell)
+      GetWorksheet()->ScheduleScrollToCell(cell);
+  }
+
   return retval;
 }
 
@@ -6189,6 +6208,17 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
     // sluggish, otherwise.
     ResetTitle(GetWorksheet()->IsSaved(), true);
   }
+  else if (event.GetId() == EventIDs::menu_jump_to_uuid) {
+    wxString uuid = wxGetTextFromUser(_("Enter UUID to jump to:"), _("Jump to UUID"));
+    if (!uuid.IsEmpty()) {
+      Cell *cell = GetWorksheet()->FindCellByUUID(uuid);
+      if (cell) {
+        GetWorksheet()->ScheduleScrollToCell(cell);
+      } else {
+        wxLogError(_("Cell with UUID %s not found!"), uuid);
+      }
+    }
+  }
   else if(event.GetId() == EventIDs::menu_export_html) {
     // Determine a sane default file name;
     wxString file = GetWorksheet()->m_currentFile;
@@ -6368,6 +6398,20 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     m_configuration.ShowInputLabels(!m_configuration.ShowInputLabels());
     GetWorksheet()->Recalculate();
     GetWorksheet()->RequestRedraw();
+  }
+  else if (event.GetId() == EventIDs::menu_copy_uuid) {
+    if (GetWorksheet()->GetSelectionStart()) {
+      wxString uuid = GetWorksheet()->GetSelectionStart()->GetUUID();
+      if (uuid.IsEmpty()) {
+        GetWorksheet()->GetSelectionStart()->GenerateUUID();
+        uuid = GetWorksheet()->GetSelectionStart()->GetUUID();
+        GetWorksheet()->SetSaved(false);
+      }
+      if (wxTheClipboard->Open()) {
+        wxTheClipboard->SetData(new wxTextDataObject(uuid));
+        wxTheClipboard->Close();
+      }
+    }
   }
   else if(event.GetId() == EventIDs::popid_labels_autogenerated) {
     m_configuration.SetLabelChoice(Configuration::labels_automatic);

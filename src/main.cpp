@@ -474,19 +474,36 @@ bool MyApp::OnInit() {
   bool windowOpened = false;
 
   if (cmdLineParser.Found(wxS("o"), &file)) {
-    wxFileName FileName = file;
+    wxString realFile = file;
+    wxString uuid;
+    if (file.Contains(wxS("#"))) {
+      realFile = file.BeforeFirst(wxS('#'));
+      uuid = file.AfterFirst(wxS('#'));
+    }
+    wxFileName FileName = realFile;
     FileName.MakeAbsolute();
     wxString canonicalFilename = FileName.GetFullPath();
+    if (!uuid.IsEmpty())
+      canonicalFilename += wxS("#") + uuid;
     NewWindow(canonicalFilename, evalOnStartup, exitAfterEval);
     windowOpened = true;
   }
 
   if (cmdLineParser.GetParamCount() > 0) {
     for (unsigned int i = 0; i < cmdLineParser.GetParamCount(); i++) {
-      wxFileName FileName = cmdLineParser.GetParam(i);
+      wxString fileParam = cmdLineParser.GetParam(i);
+      wxString realFile = fileParam;
+      wxString uuid;
+      if (fileParam.Contains(wxS("#"))) {
+        realFile = fileParam.BeforeFirst(wxS('#'));
+        uuid = fileParam.AfterFirst(wxS('#'));
+      }
+      wxFileName FileName = realFile;
       FileName.MakeAbsolute();
 
       wxString CanonicalFilename = FileName.GetFullPath();
+      if (!uuid.IsEmpty())
+        CanonicalFilename += wxS("#") + uuid;
       NewWindow(CanonicalFilename, evalOnStartup, exitAfterEval);
     }
     windowOpened = true;
@@ -513,9 +530,16 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
                       bool exitAfterEval, unsigned char *wxmData,
                       std::size_t wxmLen) {
 
+  wxString realFile = file;
+  wxString uuid;
+  if (file.Contains(wxS("#"))) {
+    realFile = file.BeforeFirst(wxS('#'));
+    uuid = file.AfterFirst(wxS('#'));
+  }
+
   wxString title = _("wxMaxima");
-  if (file.Length() > 0)
-    title = file;
+  if (realFile.Length() > 0)
+    title = realFile;
 
   size_t numberOfWindows = wxMaximaFrame::CountWindows();
 

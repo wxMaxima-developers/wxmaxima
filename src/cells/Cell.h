@@ -349,6 +349,17 @@ public:
   */
   void ForceBreakLine(bool force = true) const { m_forceBreakLine = m_breakLine = force; }
 
+  //! Returns the UUID of this cell
+  wxString GetUUID() const { return m_uuid; }
+  //! Sets the UUID of this cell
+  void SetUUID(const wxString &uuid) { m_uuid = uuid; }
+  //! Generates a new UUID for this cell
+  void GenerateUUID();
+  //! Returns a string containing all extra XML attributes
+  wxString GetExtraXMLAttributes() const;
+  //! Adds an extra XML attribute to this cell
+  void AddExtraAttribute(const wxString &name, const wxString &value);
+
   /*! Get the height of this cell
 
     This value is recalculated by Recalculate()
@@ -1052,6 +1063,12 @@ private:
   bool m_suppressMultiplicationDot : 1 /* InitBitFields_Cell */;
   //! Are we allowed to add a line break before this cell?
   mutable bool m_breakLine : 1 /* InitBitFields_Cell */;
+protected:
+  //! The UUID of this cell
+  wxString m_uuid;
+  //! Extra XML attributes we don't know yet
+  std::map<wxString, wxString> m_extraAttributes;
+
   mutable bool m_forceBreakLine : 1 /* InitBitFields_Cell */;
   bool m_highlight : 1 /* InitBitFields_Cell */;
 

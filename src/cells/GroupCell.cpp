@@ -1205,8 +1205,11 @@ wxString GroupCell::ToTeXImage(const Cell *tmp, const wxString &imgDir, const wx
 }
 
 wxString GroupCell::ToXML() const {
+  if (m_uuid.IsEmpty())
+    const_cast<GroupCell *>(this)->GenerateUUID();
   wxString str;
   str = wxS("\n<cell"); // start opening tag
+  str += GetExtraXMLAttributes();
   // write "type" according to m_groupType
   switch (m_groupType) {
   case GC_TYPE_CODE: {

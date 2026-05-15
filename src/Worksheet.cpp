@@ -1292,6 +1292,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
   if (!GetActiveCell()) {
     if (IsSelected(MC_TYPE_IMAGE) || IsSelected(MC_TYPE_SLIDE)) {
       popupMenu.Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu.Append(EventIDs::menu_copy_uuid, _("Copy position (UUID)"));
       popupMenu.Append(EventIDs::popid_image, _("Save Image..."), wxEmptyString,
                        wxITEM_NORMAL);
       if (IsSelected(MC_TYPE_SLIDE)) {
@@ -1344,6 +1345,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
             popupMenu.Append(wxID_HELP, wxString::Format(_("Help on \"%s\""),
                                                          wordUnderCursor));
           }
+          popupMenu.Append(EventIDs::menu_copy_uuid, _("Copy position (UUID)"));
           if(m_autocomplete.HasDemofile(wordUnderCursor))
             {
               wxMenuItem *demoItem = new wxMenuItem(&popupMenu,
@@ -1361,6 +1363,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
       if (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP) {
         if (CanCopy()) {
           popupMenu.Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu.Append(EventIDs::menu_copy_uuid, _("Copy position (UUID)"));
           popupMenu.Append(EventIDs::popid_copy_matlab, _("Copy for Octave/Matlab"),
                            wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_copy_tex, _("Copy as LaTeX"), wxEmptyString,
@@ -1500,6 +1503,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
       } else {
         if (CanCopy()) {
           popupMenu.Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu.Append(EventIDs::menu_copy_uuid, _("Copy position (UUID)"));
           popupMenu.Append(EventIDs::popid_copy_matlab, _("Copy for Octave/Matlab"),
                            wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_copy_tex, _("Copy as LaTeX"), wxEmptyString,
@@ -6187,6 +6191,28 @@ void Worksheet::FollowEvaluation(bool followEvaluation) {
   m_followEvaluation = followEvaluation;
   if (followEvaluation)
     ScrolledAwayFromEvaluation(false);
+}
+
+Cell *Worksheet::FindCellByUUID(const wxString &uuid) {
+  if (!GetTree())
+    return nullptr;
+
+  struct FindUUID {
+    Cell *operator()(Cell *cell, const wxString &uuid) {
+      if (cell->GetUUID() == uuid)
+        return cell;
+      for (Cell &inner : OnInner(cell)) {
+        Cell *found = (*this)(&inner, uuid);
+        if (found)
+          return found;
+      }
+      if (cell->GetNext())
+        return (*this)(cell->GetNext(), uuid);
+      return nullptr;
+    }
+  } finder;
+
+  return finder(GetTree(), uuid);
 }
 
 void Worksheet::ScrollToCellIfNeeded() {

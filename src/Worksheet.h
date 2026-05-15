@@ -1145,6 +1145,9 @@ public:
   //! Select the cell range start-end
   void SetSelection(Cell *start, Cell *end);
 
+  //! Find a cell by its UUID
+  Cell *FindCellByUUID(const wxString &uuid);
+
   /*! We can edit the input if the we have the whole input in selection!
    */
   bool CanEdit();

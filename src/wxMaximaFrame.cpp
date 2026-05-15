@@ -619,7 +619,11 @@ void wxMaximaFrame::SetupFileMenu() {
   m_FileMenu->Append(wxID_PRINT, _("&Print...\tCtrl+P"), _("Print document"));
 
   m_FileMenu->AppendSeparator();
-  m_FileMenu->Append(wxID_EXIT, _("E&xit\tCtrl+Q"), _("Exit wxMaxima"));
+  m_FileMenu->Append(wxID_EXIT, _("E&xit\tCtrl+Q"), _("Quit wxMaxima"));
+
+  m_FileMenu->AppendSeparator();
+  m_FileMenu->Append(EventIDs::menu_jump_to_uuid, _("Jump to UUID..."),
+                     _("Scroll to a cell with a certain UUID"));
   m_MenuBar->Append(m_FileMenu, _("&File"));
 }
 

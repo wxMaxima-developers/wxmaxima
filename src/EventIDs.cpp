@@ -28,6 +28,8 @@
 #include "EventIDs.h"
 #include <wx/utils.h>
 #include <wx/window.h>
+const wxWindowIDRef EventIDs::menu_copy_uuid(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_jump_to_uuid(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_hideall(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_math(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_history(wxWindow::NewControlId());
