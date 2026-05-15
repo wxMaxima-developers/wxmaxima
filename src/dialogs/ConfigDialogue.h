@@ -387,7 +387,11 @@ protected:
   int m_mathFontSize;
 
   //! A list containing the pictograms for the tabs.
+#if wxCHECK_VERSION(3, 1, 6)
+  wxVector<wxBitmapBundle> m_imageList;
+#else
   std::unique_ptr<wxImageList> m_imageList;
+#endif
 };
 
 #ifndef __WXMSW__

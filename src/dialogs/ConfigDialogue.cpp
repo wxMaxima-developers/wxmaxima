@@ -36,6 +36,9 @@
 #include "Dirstructure.h"
 #include "ArtProvider.h"
 #include "WrappingStaticText.h"
+#include "wxMaximaArtProvider.h"
+
+#if !wxCHECK_VERSION(3, 1, 6)
 #include "art/config/edit-copy-confdialogue.h"
 #include "art/config/options.h"
 #include "art/config/document-export.h"
@@ -44,6 +47,8 @@
 #include "art/config/edit-copy_backup.h"
 #include "art/config/maxima.h"
 #include "art/config/view-refresh.h"
+#endif
+
 #include "MathParser.h"
 #include "cells/CellList.h"
 #include "ToolBar.h"
@@ -196,6 +201,20 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
 #if defined __WXOSX__
 #else
   int imgSize = GetImageSize();
+#if wxCHECK_VERSION(3, 1, 6)
+  wxVector<wxBitmapBundle> m_imageList;
+  m_imageList.clear();
+  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_EDITING, wxART_OTHER, wxSize(imgSize, imgSize)));
+  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_MAXIMA, wxART_OTHER, wxSize(imgSize, imgSize)));
+  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_STYLES, wxART_OTHER, wxSize(imgSize, imgSize)));
+  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_DOCUMENT_EXPORT, wxART_OTHER, wxSize(imgSize, imgSize)));
+  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_OPTIONS, wxART_OTHER, wxSize(imgSize, imgSize)));
+  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxART_COPY, wxART_OTHER, wxSize(imgSize, imgSize)));
+  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_MEDIA_PLAYBACK_START, wxART_OTHER, wxSize(imgSize, imgSize)));
+  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxART_PRINT, wxART_OTHER, wxSize(imgSize, imgSize)));
+  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_VIEW_REFRESH, wxART_OTHER, wxSize(imgSize, imgSize)));
+  m_notebook->SetImages(m_imageList);
+#else
   m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize, false, 0));
   m_imageList->Add(ArtProvider::GetImage(this, wxS("editing"), imgSize, EDITING_SVG_GZ,
                                          EDITING_SVG_GZ_SIZE));
@@ -216,6 +235,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_imageList->Add(ArtProvider::GetImage(this, wxS("edit-undo"), imgSize, VIEW_REFRESH_SVG_GZ,
                                          VIEW_REFRESH_SVG_GZ_SIZE));
   m_notebook->SetImageList(m_imageList.get());
+#endif
 #endif
   m_notebook->AddPage(CreateWorksheetPanel(), _("Worksheet"), true, 0);
   m_notebook->AddPage(CreateMaximaPanel(), _("Maxima"), false, 1);

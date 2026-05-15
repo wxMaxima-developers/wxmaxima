@@ -52,6 +52,16 @@
 #define wxmaximaART_TEXT                    wxART_MAKE_ART_ID(wxmaximaART_TEXT)
 #define wxmaximaART_VIEW_REFRESH1           wxART_MAKE_ART_ID(wxmaximaART_VIEW_REFRESH1)
 
+// from art/config
+#define wxmaximaART_CONFIG_DOCUMENT_EXPORT        wxART_MAKE_ART_ID(wxmaximaART_CONFIG_DOCUMENT_EXPORT)
+#define wxmaximaART_CONFIG_EDIT_COPY_BACKUP       wxART_MAKE_ART_ID(wxmaximaART_CONFIG_EDIT_COPY_BACKUP)
+#define wxmaximaART_CONFIG_EDIT_COPY_CONFDIALOGUE wxART_MAKE_ART_ID(wxmaximaART_CONFIG_EDIT_COPY_CONFDIALOGUE)
+#define wxmaximaART_CONFIG_EDITING                wxART_MAKE_ART_ID(wxmaximaART_CONFIG_EDITING)
+#define wxmaximaART_CONFIG_MAXIMA                 wxART_MAKE_ART_ID(wxmaximaART_CONFIG_MAXIMA)
+#define wxmaximaART_CONFIG_OPTIONS                wxART_MAKE_ART_ID(wxmaximaART_CONFIG_OPTIONS)
+#define wxmaximaART_CONFIG_STYLES                 wxART_MAKE_ART_ID(wxmaximaART_CONFIG_STYLES)
+#define wxmaximaART_CONFIG_VIEW_REFRESH           wxART_MAKE_ART_ID(wxmaximaART_CONFIG_VIEW_REFRESH)
+#define wxmaximaART_CONFIG_EDITING                wxART_MAKE_ART_ID(wxmaximaART_CONFIG_EDITING)
 
 
 class wxMaximaArtProvider : public wxArtProvider
