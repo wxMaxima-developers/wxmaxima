@@ -67,6 +67,17 @@ public:
   explicit Maxima(wxSocketBase *socket, Configuration *config);
   virtual ~Maxima() override;
 
+  /*! Convert a human-readable maxima variable name to one maxima understands
+
+    - Escapes strange characters
+    - but keeps a "?" at the beginning of the variable name that indicates a lisp variable.
+   */
+  static wxString EscapeVarnameForMaxima(wxString var);
+  //! Invert case of chars that have inverted case in lisp 
+  static wxString InvertCase(const wxString &var);
+  //! Convert a human-readable maxima variable name to one lisp understands
+  static wxString MaximaVarnameToLisp(wxString var);
+
   wxSocketBase *Socket() const { return m_socket.get(); }
 
   //! Are we connected to Maxima?

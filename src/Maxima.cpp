@@ -282,6 +282,87 @@ void Maxima::ProcessData()
     }
 }
 
+wxString Maxima::InvertCase(const wxString &var) {
+  wxString retval;
+  for (auto const &i: var) {
+    if (wxIsupper(i))
+      retval += wxString(i).Lower();
+    else {
+      if (wxIslower(i))
+        retval += wxString(i).Upper();
+      else
+        retval += i;
+    }
+  }
+  return retval;
+}
+
+wxString Maxima::EscapeVarnameForMaxima(wxString var) {
+  wxString result;
+  result.reserve(var.length() * 2);
+
+  bool isLispVar = false;
+  if (var.StartsWith(wxS("?"))) {
+    isLispVar = true;
+    var = var.Mid(1);
+  }
+
+  for (wxUniChar c : var) {
+    switch (c.GetValue()) {
+    case '\\':
+    case '+':
+    case '#':
+    case '\'':
+    case '\"':
+    case '!':
+    case '-':
+    case '*':
+    case '/':
+    case '^':
+    case '$':
+    case ';':
+    case ',':
+    case '<':
+    case '>':
+    case '@':
+    case '~':
+    case '`':
+    case '?':
+    case '(':
+    case ')':
+    case '{':
+    case '}':
+    case '[':
+    case ']':
+    case ' ':
+    case 0x00B0: // '°'
+      result += wxS('\\');
+      break;
+    default:
+      if (c > 0x7F)
+        result += wxS('\\');
+      break;
+    }
+    result += c;
+  }
+
+  if (isLispVar)
+    return (wxS("?") + result);
+  else
+    return result;
+}
+
+wxString Maxima::MaximaVarnameToLisp(wxString var)
+{
+  wxString result;
+  result.reserve(var.length() * 2);
+
+  if (var.StartsWith(wxS("?"))) 
+    return(InvertCase(var.Mid(1)));
+  else
+    return InvertCase("$"+result);
+}
+
 std::unordered_map<wxString, Maxima::EventCause, wxStringHash> Maxima::m_knownTags;
 std::mutex Maxima::m_knownTagsMutex;
 bool Maxima::m_pipeToStderr = false;

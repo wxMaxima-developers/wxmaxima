@@ -21,6 +21,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "VariablesPane.h"
+#include "../Maxima.h"
 #include <memory>
 #include <algorithm>
 
@@ -315,7 +316,7 @@ std::vector<wxString> Variablespane::GetEscapedVarnames() {
   for (int i = 0; i < m_grid->GetNumberRows(); i++) {
     wxString var = m_grid->GetCellValue(i, 0);
     if (IsValidVariable(var))
-      retVal.push_back(InvertCase(EscapeVarname(var)));
+      retVal.push_back(Maxima::MaximaVarnameToLisp(var));
   }
   return retVal;
 }
@@ -329,20 +330,6 @@ std::vector<wxString> Variablespane::GetVarnames() {
   return retVal;
 }
 
-wxString Variablespane::InvertCase(const wxString &var) {
-  wxString retval;
-  for (auto const &i: var) {
-    if (wxIsupper(i))
-      retval += wxString(i).Lower();
-    else {
-      if (wxIslower(i))
-        retval += wxString(i).Upper();
-      else
-        retval += i;
-    }
-  }
-  return retval;
-}
 
 void Variablespane::AddWatchCode(wxString code) {
   m_updateSizeNeeded = true;
@@ -375,63 +362,6 @@ wxString Variablespane::UnescapeVarname(wxString var) {
   else
     var = "?" + var;
   return var;
-}
-
-wxString Variablespane::EscapeVarname(wxString var, bool addPrefix) {
-  wxString result;
-  result.reserve(var.length() * 2);
-
-  bool isLisp = false;
-  if (var.StartsWith(wxS("?"))) {
-    isLisp = true;
-    var = var.Mid(1);
-  }
-
-  for (wxUniChar c : var) {
-    switch (c.GetValue()) {
-    case '\\':
-    case '+':
-    case '#':
-    case '\'':
-    case '\"':
-    case '!':
-    case '-':
-    case '*':
-    case '/':
-    case '^':
-    case '$':
-    case ';':
-    case ',':
-    case '<':
-    case '>':
-    case '@':
-    case '~':
-    case '`':
-    case '?':
-    case '(':
-    case ')':
-    case '{':
-    case '}':
-    case '[':
-    case ']':
-    case ' ':
-    case 0x00B0: // '°'
-      result += wxS('\\');
-      break;
-    default:
-      if (c > 0x7F)
-        result += wxS('\\');
-      break;
-    }
-    result += c;
-  }
-
-  if (isLisp)
-    return wxS("?") + result;
-  else if (addPrefix)
-    return wxS("$") + result;
-  else
-    return result;
 }
 
 bool Variablespane::IsValidVariable(wxString var) {

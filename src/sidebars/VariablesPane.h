@@ -86,8 +86,6 @@ public:
   void ResetValues();
   //! Remove all entries from the variables list
   void Clear();
-  //! Convert a human-readable variable name to one maxima understands
-  static wxString EscapeVarname(wxString var, bool addPrefix = true);
   //! Convert a variable name maxima understands to human-readable
   static wxString UnescapeVarname(wxString var);
   //! Tell the variables pane about a variable value
@@ -101,7 +99,6 @@ private:
   // The spreadsheet with the variable names
   wxGrid *m_grid;
   bool m_updateSizeNeeded = false;
-  static wxString InvertCase(const wxString &var);
   typedef std::unordered_map <wxString, int, wxStringHash> IntHash;
 
   //! A list of all symbols that can be entered using Esc-Codes

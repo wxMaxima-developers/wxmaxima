@@ -31,7 +31,7 @@
 
 #include "Autocomplete.h"
 #include "Dirstructure.h"
-#include "sidebars/VariablesPane.h"
+#include "Maxima.h"
 #include <wx/filename.h>
 #include <wx/sstream.h>
 #include <wx/textfile.h>
@@ -156,12 +156,7 @@ void AutoComplete::AddSymbols_Backgroundtask(wxXmlDocument xmldoc) {
         if (children->GetName() == wxS("function")) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
-            wxString name = val->GetContent();
-
-            // Escape it!
-            name = Variablespane::EscapeVarname(name);
-            // If it starts with $, remove it for autocomplete.
-            if (name.StartsWith(wxS("$"))) name = name.Mid(1);
+            wxString name = Maxima::EscapeVarnameForMaxima(val->GetContent());
 
             const std::lock_guard<std::mutex> lock(m_keywordsLock);
             m_wordList.at(command).push_back(name);
@@ -189,12 +184,7 @@ void AutoComplete::AddSymbols_Backgroundtask(wxXmlDocument xmldoc) {
         if (children->GetName() == wxS("value")) {
           wxXmlNode *val = children->GetChildren();
           if (val) {
-            wxString name = val->GetContent();
-
-            // Escape it!
-            name = Variablespane::EscapeVarname(name);
-            // If it starts with $, remove it for autocomplete.
-            if (name.StartsWith(wxS("$"))) name = name.Mid(1);
+            wxString name = Maxima::EscapeVarnameForMaxima(val->GetContent());
 
             const std::lock_guard<std::mutex> lock(m_keywordsLock);
             m_wordList.at(command).push_back(name);
