@@ -10,7 +10,7 @@ var searchData=
   ['endofline_7',['EndOfLine',['../classEditorCell.html#a58dd02fde1f65448e486de18d4054fed',1,'EditorCell']]],
   ['equationsmenu_8',['EquationsMenu',['../classwxMaxima.html#a2428d7720e004d0c3df47c72ae6ce466',1,'wxMaxima']]],
   ['escapehtmlchars_9',['EscapeHTMLChars',['../classEditorCell.html#af7a4a8ae88746563be0420bb0c242838',1,'EditorCell']]],
-  ['escapevarname_10',['EscapeVarname',['../classVariablespane.html#ac6ef5c224c0ef9a372be3d49e50d0eac',1,'Variablespane']]],
+  ['escapevarnameformaxima_10',['EscapeVarnameForMaxima',['../classMaxima.html#ae61a721a9a8f85d80dcdde2fe6228d4e',1,'Maxima']]],
   ['esccodesbegin_11',['EscCodesBegin',['../classConfiguration.html#a3a91c07eed224ef2eee334a54f6a4828',1,'Configuration']]],
   ['esccodesend_12',['EscCodesEnd',['../classConfiguration.html#aac61256445671388d23ffeb6fcba1376',1,'Configuration']]],
   ['evalonstartup_13',['EvalOnStartup',['../classwxMaxima.html#a424f91348d992b5d78cef4150c4eb341',1,'wxMaxima']]],

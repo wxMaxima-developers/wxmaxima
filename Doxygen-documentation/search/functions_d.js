@@ -18,7 +18,8 @@ var searchData=
   ['maximasessionstart_15',['MaximaSessionStart',['../classHistory.html#a4a50b4c22d87784dee4b52719d06c655',1,'History']]],
   ['maximatokenizer_16',['MaximaTokenizer',['../classMaximaTokenizer.html#a86f0055757187f8b7533adde1d4a32d0',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration)'],['../classMaximaTokenizer.html#aece7dce3250f6c4b86dd977577f74bb5',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration, const TokenList &amp;initialTokens)']]],
   ['maximauserlocation_17',['MaximaUserLocation',['../classConfiguration.html#a52c3103a8a856b7ef2263c50e4ce6711',1,'Configuration::MaximaUserLocation() const'],['../classConfiguration.html#ab243f8140f4f378ddd57caa0dbb2b9b0',1,'Configuration::MaximaUserLocation(wxString maxima)']]],
-  ['member_18',['member',['../classAfterdoc__Test.html#a57ba94e9039ee90a1b191ae0009a05dd',1,'Afterdoc_Test::member()'],['../classAutolink__Test.html#a393ea281f235a2f603d98daf72b0d411',1,'Autolink_Test::member(int)'],['../classAutolink__Test.html#acf783a43c2b4b6cc9dd2361784eca2e1',1,'Autolink_Test::member(int, int)'],['../classFn__Test.html#a823b5c9726bb8f6ece50e57ac8e3092c',1,'Fn_Test::member()']]],
-  ['menucommand_19',['MenuCommand',['../classwxMaxima.html#ac92da2d00f70ebb78bf96233eda45f82',1,'wxMaxima']]],
-  ['mouseselectionstartedhere_20',['MouseSelectionStartedHere',['../classEditorCell.html#aeb91a26e7fbfb314b31bfd8625139abe',1,'EditorCell']]]
+  ['maximavarnametolisp_18',['MaximaVarnameToLisp',['../classMaxima.html#aa463e9595a0b289f322d56d68db9f636',1,'Maxima']]],
+  ['member_19',['member',['../classAfterdoc__Test.html#a57ba94e9039ee90a1b191ae0009a05dd',1,'Afterdoc_Test::member()'],['../classAutolink__Test.html#a393ea281f235a2f603d98daf72b0d411',1,'Autolink_Test::member(int)'],['../classAutolink__Test.html#acf783a43c2b4b6cc9dd2361784eca2e1',1,'Autolink_Test::member(int, int)'],['../classFn__Test.html#a823b5c9726bb8f6ece50e57ac8e3092c',1,'Fn_Test::member()']]],
+  ['menucommand_20',['MenuCommand',['../classwxMaxima.html#ac92da2d00f70ebb78bf96233eda45f82',1,'wxMaxima']]],
+  ['mouseselectionstartedhere_21',['MouseSelectionStartedHere',['../classEditorCell.html#aeb91a26e7fbfb314b31bfd8625139abe',1,'EditorCell']]]
 ];

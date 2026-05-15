@@ -31,7 +31,7 @@ var searchData=
   ['errno_28',['errno',['../structcmd_8h.html#ad65a8842cc674e3ddf69355898c0ecbf',1,'structcmd.h']]],
   ['errorlist_29',['ErrorList',['../classCellPointers_1_1ErrorList.html',1,'CellPointers']]],
   ['escapehtmlchars_30',['EscapeHTMLChars',['../classEditorCell.html#af7a4a8ae88746563be0420bb0c242838',1,'EditorCell']]],
-  ['escapevarname_31',['EscapeVarname',['../classVariablespane.html#ac6ef5c224c0ef9a372be3d49e50d0eac',1,'Variablespane']]],
+  ['escapevarnameformaxima_31',['EscapeVarnameForMaxima',['../classMaxima.html#ae61a721a9a8f85d80dcdde2fe6228d4e',1,'Maxima']]],
   ['esccodesbegin_32',['EscCodesBegin',['../classConfiguration.html#a3a91c07eed224ef2eee334a54f6a4828',1,'Configuration']]],
   ['esccodesend_33',['EscCodesEnd',['../classConfiguration.html#aac61256445671388d23ffeb6fcba1376',1,'Configuration']]],
   ['esccommand_34',['esccommand',['../classAutoComplete.html#a6225a91b46c0459755a62de137620b29aee4022f4d28eb504969b3042359544e4',1,'AutoComplete']]],

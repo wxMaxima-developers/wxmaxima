@@ -151,6 +151,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>XmlInspectorActive</b
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ae61a721a9a8f85d80dcdde2fe6228d4e"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaxima.html#ae61a721a9a8f85d80dcdde2fe6228d4e">EscapeVarnameForMaxima</a> (wxString var)</td></tr>
+<tr class="memdesc:ae61a721a9a8f85d80dcdde2fe6228d4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a human-readable maxima variable name to one maxima understands.  <br /></td></tr>
+<tr class="separator:ae61a721a9a8f85d80dcdde2fe6228d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac168f806cb6ba5108cd61f6ee70cba9b"><td class="memItemLeft" align="right" valign="top"><a id="ac168f806cb6ba5108cd61f6ee70cba9b" name="ac168f806cb6ba5108cd61f6ee70cba9b"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>InvertCase</b> (const wxString &amp;var)</td></tr>
+<tr class="memdesc:ac168f806cb6ba5108cd61f6ee70cba9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invert case of chars that have inverted case in lisp. <br /></td></tr>
+<tr class="separator:ac168f806cb6ba5108cd61f6ee70cba9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa463e9595a0b289f322d56d68db9f636"><td class="memItemLeft" align="right" valign="top"><a id="aa463e9595a0b289f322d56d68db9f636" name="aa463e9595a0b289f322d56d68db9f636"></a>
+static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaVarnameToLisp</b> (wxString var)</td></tr>
+<tr class="memdesc:aa463e9595a0b289f322d56d68db9f636"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a human-readable maxima variable name to one lisp understands. <br /></td></tr>
+<tr class="separator:aa463e9595a0b289f322d56d68db9f636"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8cf6784848689ae743ece4af20b0a02"><td class="memItemLeft" align="right" valign="top"><a id="ac8cf6784848689ae743ece4af20b0a02" name="ac8cf6784848689ae743ece4af20b0a02"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPipeToStdErr</b> (bool pipe)</td></tr>
 <tr class="memdesc:ac8cf6784848689ae743ece4af20b0a02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells us if the user wants all data to maxima to be copied to StdErr. <br /></td></tr>
@@ -196,6 +207,38 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetPipeToStdEr
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae61a721a9a8f85d80dcdde2fe6228d4e" name="ae61a721a9a8f85d80dcdde2fe6228d4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae61a721a9a8f85d80dcdde2fe6228d4e">&#9670;&#160;</a></span>EscapeVarnameForMaxima()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString Maxima::EscapeVarnameForMaxima </td>
+          <td>(</td>
+          <td class="paramtype">wxString&#160;</td>
+          <td class="paramname"><em>var</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert a human-readable maxima variable name to one maxima understands. </p>
+<ul>
+<li>Escapes strange characters</li>
+<li>but keeps a "?" at the beginning of the variable name that indicates a lisp variable. </li>
+</ul>
+
+</div>
+</div>
 <a id="aeb45e2fda6a941f99aa9181b644c75be" name="aeb45e2fda6a941f99aa9181b644c75be"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeb45e2fda6a941f99aa9181b644c75be">&#9670;&#160;</a></span>Write()</h2>
 
