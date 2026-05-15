@@ -307,6 +307,7 @@ wxString Maxima::EscapeVarnameForMaxima(wxString var) {
     var = var.Mid(1);
   }
 
+  bool first = true;
   for (wxUniChar c : var) {
     switch (c.GetValue()) {
     case '\\':
@@ -335,15 +336,21 @@ wxString Maxima::EscapeVarnameForMaxima(wxString var) {
     case '[':
     case ']':
     case ' ':
+    case ':':
+    case '.':
+    case '=':
+    case '|':
+    case '&':
     case 0x00B0: // '°'
       result += wxS('\\');
       break;
     default:
-      if (c > 0x7F)
+      if (c > 0x7F || (first && c >= '0' && c <= '9'))
         result += wxS('\\');
       break;
     }
     result += c;
+    first = false;
   }
 
   if (isLispVar)
@@ -354,13 +361,10 @@ wxString Maxima::EscapeVarnameForMaxima(wxString var) {
 
 wxString Maxima::MaximaVarnameToLisp(wxString var)
 {
-  wxString result;
-  result.reserve(var.length() * 2);
-
   if (var.StartsWith(wxS("?"))) 
     return(InvertCase(var.Mid(1)));
   else
-    return InvertCase("$"+result);
+    return InvertCase("$"+var);
 }
 
 std::unordered_map<wxString, Maxima::EventCause, wxStringHash> Maxima::m_knownTags;
