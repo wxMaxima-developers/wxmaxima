@@ -250,6 +250,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>DrawThisCell</b> ()</
 <tr class="memitem:a2ec3f174a6e515f986a29951198bbbcd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2ec3f174a6e515f986a29951198bbbcd">ForceBreakLine</a> (bool force=true) const</td></tr>
 <tr class="memdesc:a2ec3f174a6e515f986a29951198bbbcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert (or remove) a forced linebreak at the beginning of this cell.  <br /></td></tr>
 <tr class="separator:a2ec3f174a6e515f986a29951198bbbcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f640233f8cf572107672866e7017a1a"><td class="memItemLeft" align="right" valign="top"><a id="a3f640233f8cf572107672866e7017a1a" name="a3f640233f8cf572107672866e7017a1a"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetUUID</b> () const</td></tr>
+<tr class="memdesc:a3f640233f8cf572107672866e7017a1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the UUID of this cell. <br /></td></tr>
+<tr class="separator:a3f640233f8cf572107672866e7017a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91470f1dc81ca9a408a5f8a2e705a448"><td class="memItemLeft" align="right" valign="top"><a id="a91470f1dc81ca9a408a5f8a2e705a448" name="a91470f1dc81ca9a408a5f8a2e705a448"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUUID</b> (const wxString &amp;uuid)</td></tr>
+<tr class="memdesc:a91470f1dc81ca9a408a5f8a2e705a448"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the UUID of this cell. <br /></td></tr>
+<tr class="separator:a91470f1dc81ca9a408a5f8a2e705a448"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba4bda7be8968ebd8329c39ad54679a9"><td class="memItemLeft" align="right" valign="top"><a id="aba4bda7be8968ebd8329c39ad54679a9" name="aba4bda7be8968ebd8329c39ad54679a9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>GenerateUUID</b> ()</td></tr>
+<tr class="memdesc:aba4bda7be8968ebd8329c39ad54679a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a new UUID for this cell. <br /></td></tr>
+<tr class="separator:aba4bda7be8968ebd8329c39ad54679a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf50cf5df8baba2c5441eb36321b5f96"><td class="memItemLeft" align="right" valign="top"><a id="abf50cf5df8baba2c5441eb36321b5f96" name="abf50cf5df8baba2c5441eb36321b5f96"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetExtraXMLAttributes</b> () const</td></tr>
+<tr class="memdesc:abf50cf5df8baba2c5441eb36321b5f96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string containing all extra XML attributes. <br /></td></tr>
+<tr class="separator:abf50cf5df8baba2c5441eb36321b5f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a302f64e663c9d3eaa3b0a8c4772faaaf"><td class="memItemLeft" align="right" valign="top"><a id="a302f64e663c9d3eaa3b0a8c4772faaaf" name="a302f64e663c9d3eaa3b0a8c4772faaaf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddExtraAttribute</b> (const wxString &amp;name, const wxString &amp;value)</td></tr>
+<tr class="memdesc:a302f64e663c9d3eaa3b0a8c4772faaaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an extra XML attribute to this cell. <br /></td></tr>
+<tr class="separator:a302f64e663c9d3eaa3b0a8c4772faaaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42e273c4824ddce9e7e1845abb0d886f"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a42e273c4824ddce9e7e1845abb0d886f">GetHeight</a> () const</td></tr>
 <tr class="memdesc:a42e273c4824ddce9e7e1845abb0d886f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the height of this cell.  <br /></td></tr>
 <tr class="separator:a42e273c4824ddce9e7e1845abb0d886f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -732,6 +752,20 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <tr class="memitem:ae03803790faeaa324ae8c51eb1e96d03"><td class="memItemLeft" align="right" valign="top"><a id="ae03803790faeaa324ae8c51eb1e96d03" name="ae03803790faeaa324ae8c51eb1e96d03"></a>
 <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_textStyle</b> = TS_MATH</td></tr>
 <tr class="separator:ae03803790faeaa324ae8c51eb1e96d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade56a5811726f75868bc676963114cd1"><td class="memItemLeft" align="right" valign="top"><a id="ade56a5811726f75868bc676963114cd1" name="ade56a5811726f75868bc676963114cd1"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_uuid</b></td></tr>
+<tr class="memdesc:ade56a5811726f75868bc676963114cd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The UUID of this cell. <br /></td></tr>
+<tr class="separator:ade56a5811726f75868bc676963114cd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b6bb30cecbaf8f384ba0cdfb656edcf"><td class="memItemLeft" align="right" valign="top"><a id="a0b6bb30cecbaf8f384ba0cdfb656edcf" name="a0b6bb30cecbaf8f384ba0cdfb656edcf"></a>
+std::map&lt; wxString, wxString &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_extraAttributes</b></td></tr>
+<tr class="memdesc:a0b6bb30cecbaf8f384ba0cdfb656edcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extra XML attributes we don't know yet. <br /></td></tr>
+<tr class="separator:a0b6bb30cecbaf8f384ba0cdfb656edcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e69a7c575694780a337056791b70c37"><td class="memItemLeft" align="right" valign="top"><a id="a7e69a7c575694780a337056791b70c37" name="a7e69a7c575694780a337056791b70c37"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_forceBreakLine</b>: 1</td></tr>
+<tr class="separator:a7e69a7c575694780a337056791b70c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85db96d7703ebbd7bc40ddf6ef0e8c75"><td class="memItemLeft" align="right" valign="top"><a id="a85db96d7703ebbd7bc40ddf6ef0e8c75" name="a85db96d7703ebbd7bc40ddf6ef0e8c75"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</td></tr>
+<tr class="separator:a85db96d7703ebbd7bc40ddf6ef0e8c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="af0f18ef99c280e60940d94cd55143cd1" name="af0f18ef99c280e60940d94cd55143cd1"></a>
@@ -3029,7 +3063,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

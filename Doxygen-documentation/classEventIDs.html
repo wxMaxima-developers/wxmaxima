@@ -114,6 +114,11 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>Numbe
 <br />
  }</td></tr>
 <tr class="separator:ac677a34385ac871070b8829ce37ee0e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a880faeebc10c4a36fb9114f7ddbc455e"><td class="memItemLeft" align="right" valign="top">static const wxWindowIDRef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEventIDs.html#a880faeebc10c4a36fb9114f7ddbc455e">menu_copy_uuid</a></td></tr>
+<tr class="separator:a880faeebc10c4a36fb9114f7ddbc455e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add47e881492ca97912141b64b8f3f0b9"><td class="memItemLeft" align="right" valign="top"><a id="add47e881492ca97912141b64b8f3f0b9" name="add47e881492ca97912141b64b8f3f0b9"></a>
+static const wxWindowIDRef&#160;</td><td class="memItemRight" valign="bottom"><b>menu_jump_to_uuid</b></td></tr>
+<tr class="separator:add47e881492ca97912141b64b8f3f0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f3662a75c216142fd3ddec2117483d4"><td class="memItemLeft" align="right" valign="top">static const wxWindowIDRef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEventIDs.html#a5f3662a75c216142fd3ddec2117483d4">menu_pane_hideall</a></td></tr>
 <tr class="memdesc:a5f3662a75c216142fd3ddec2117483d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hide all panes.  <br /></td></tr>
 <tr class="separator:a5f3662a75c216142fd3ddec2117483d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2158,6 +2163,34 @@ static const wxWindowIDRef&#160;</td><td class="memItemRight" valign="bottom"><b
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The class that contains all event IDs <a class="el" href="classwxMaxima.html">wxMaxima</a> needs. </p>
 </div><h2 class="groupheader">Field Documentation</h2>
+<a id="a880faeebc10c4a36fb9114f7ddbc455e" name="a880faeebc10c4a36fb9114f7ddbc455e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a880faeebc10c4a36fb9114f7ddbc455e">&#9670;&#160;</a></span>menu_copy_uuid</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const wxWindowIDRef EventIDs::menu_copy_uuid</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This list serves several purposes:</p><ul>
+<li>wxwidgets uses this list to tell us what kind of events it has to inform us about.</li>
+<li>we use these events for inter process communication.<br  />
+For example the "evaluate this cell" menu is clicked by the enter (or the shift+enter, depending on what option is set in the configuration).</li>
+<li>Thirdly his enum is used for assigning panels an ID that matches the ID of the event that toggles them which makes the handling of these IDs easier. </li>
+</ul>
+
+</div>
+</div>
 <a id="a5f3662a75c216142fd3ddec2117483d4" name="a5f3662a75c216142fd3ddec2117483d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f3662a75c216142fd3ddec2117483d4">&#9670;&#160;</a></span>menu_pane_hideall</h2>
 
@@ -2179,12 +2212,6 @@ static const wxWindowIDRef&#160;</td><td class="memItemRight" valign="bottom"><b
 </div><div class="memdoc">
 
 <p>Hide all panes. </p>
-<p>This list serves several purposes:</p><ul>
-<li>wxwidgets uses this list to tell us what kind of events it has to inform us about.</li>
-<li>we use these events for inter process communication.<br  />
-For example the "evaluate this cell" menu is clicked by the enter (or the shift+enter, depending on what option is set in the configuration).</li>
-<li>Thirdly his enum is used for assigning panels an ID that matches the ID of the event that toggles them which makes the handling of these IDs easier.</li>
-</ul>
 <p>This event is assigned an ID higher than the highest ID wxWidgets assigns to its internal events in order to avoid ID clashes. </p>
 
 </div>
