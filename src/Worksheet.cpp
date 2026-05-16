@@ -6583,8 +6583,8 @@ void Worksheet::SetSelection(Cell *start, Cell *end) {
         m_mainToolBar->UnsetCellStyle();
       else
         {
-          if(start)
-            m_mainToolBar->SetCellStyle(dynamic_cast<GroupCell *>(start)->GetGroupType());
+          if(start && start->GetGroup())
+            m_mainToolBar->SetCellStyle(start->GetGroup()->GetGroupType());
         }
     }
   }
@@ -7210,33 +7210,173 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
   if (!pos)
     return false;
 
-  pos->GetEditable()->SearchStartedHere(pos->GetEditable()->GetCaretPosition());
-
-  // Remember where to go if we need to wrap the search.
-  const GroupCell *start = pos;
-
-  bool wrappedSearch = false;
-  while (pos != start || !wrappedSearch) {
-    EditorCell *editor = pos->GetEditable();
-
-    if (editor) {
-      bool found = editor->FindNext(str, down, ignoreCase);
-
-      if (found) {
-        std::size_t strt, end;
-        editor->GetSelection(&strt, &end);
-        SetActiveCell(editor);
-        editor->SetSelection(strt, end);
-        ScrollToCaret();
+  // If the search string is a UUID, try to find the cell with that UUID
+  if (str.Length() >= 32) {
+    Cell *uuidCell = FindCellByUUID(str);
+    if (uuidCell) {
+      GroupCell *group = uuidCell->GetGroup();
+      if (group) {
+        if (auto *editor = dynamic_cast<EditorCell *>(uuidCell)) {
+          SetActiveCell(editor);
+          ScrollToCaret();
+        } else {
+          SetSelection(uuidCell);
+          ScheduleScrollToCell(uuidCell);
+        }
         UpdateTableOfContents();
         RequestRedraw();
-        if ((wrappedSearch) && warn) {
-          LoggingMessageDialog dialog(m_findDialog, _("Wrapped search"),
-                                      wxEmptyString, wxCENTER | wxOK);
-          dialog.ShowModal();
-        }
         return true;
       }
+    }
+  }
+
+  // Remember where to go if we need to wrap the search.
+  const GroupCell *startGroup = pos;
+
+  bool wrappedSearch = false;
+  bool startInInitial = true;
+  while (pos != startGroup || !wrappedSearch) {
+    bool foundInGroup = false;
+
+    // Search order for 'down': Prompt -> Editor -> Output
+    // For 'up': Output -> Editor -> Prompt
+
+    if (down) {
+      // 1. Prompt
+      bool skipPrompt = startInInitial && (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos));
+      if (!skipPrompt && pos->GetPrompt()) {
+        wxString text = pos->GetPrompt()->ToString();
+        wxString s = str;
+        if (ignoreCase) {
+          text.MakeLower();
+          s.MakeLower();
+        }
+        if (text.Contains(s)) {
+          SetActiveCell(NULL);
+          SetSelection(pos->GetPrompt());
+          foundInGroup = true;
+        }
+      }
+
+      // 2. Editor
+      if (!foundInGroup) {
+        bool skipEditor = startInInitial && (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && !GetActiveCell() && GetSelectionStart() != pos->GetPrompt());
+        if (!skipEditor && pos->GetEditable()) {
+          if (pos->GetEditable()->FindNext(str, down, ignoreCase)) {
+            SetActiveCell(pos->GetEditable());
+            foundInGroup = true;
+          }
+        }
+      }
+
+      // 3. Output
+      if (!foundInGroup && pos->GetLabel()) {
+        bool outputStarted = true;
+        Cell *lastSel = GetSelectionStart();
+        if (startInInitial && lastSel && lastSel->GetGroup() == pos && !GetActiveCell() && lastSel != pos->GetPrompt()) {
+          outputStarted = false;
+        }
+
+        for (const Cell &cell : OnDrawList(pos->GetLabel())) {
+          if (!outputStarted) {
+            if (&cell == lastSel)
+              outputStarted = true;
+            continue;
+          }
+          wxString text = cell.ToString();
+          wxString s = str;
+          if (ignoreCase) {
+            text.MakeLower();
+            s.MakeLower();
+          }
+          if (text.Contains(s)) {
+            SetActiveCell(NULL);
+            SetSelection(const_cast<Cell *>(&cell));
+            foundInGroup = true;
+            break;
+          }
+        }
+      }
+    } else {
+      // Search order for 'up': Output -> Editor -> Prompt
+
+      // 1. Output
+      if (pos->GetLabel()) {
+        bool skipOutput = startInInitial && (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt()));
+        if (!skipOutput) {
+          std::vector<Cell *> outputCells;
+          for (const Cell &cell : OnDrawList(pos->GetLabel())) {
+            outputCells.push_back(const_cast<Cell *>(&cell));
+          }
+
+          int startIndex = outputCells.size() - 1;
+          if (startInInitial && GetSelectionStart() && GetSelectionStart()->GetGroup() == pos) {
+            for (int i = 0; i < (int)outputCells.size(); ++i) {
+              if (outputCells[i] == GetSelectionStart()) {
+                startIndex = i - 1;
+                break;
+              }
+            }
+          }
+
+          for (int i = startIndex; i >= 0; --i) {
+            Cell *cell = outputCells[i];
+            wxString text = cell->ToString();
+            wxString s = str;
+            if (ignoreCase) {
+              text.MakeLower();
+              s.MakeLower();
+            }
+            if (text.Contains(s)) {
+              SetActiveCell(NULL);
+              SetSelection(cell);
+              foundInGroup = true;
+              break;
+            }
+          }
+        }
+      }
+
+      // 2. Editor
+      if (!foundInGroup) {
+        bool skipEditor = startInInitial && (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt());
+        if (!skipEditor && pos->GetEditable()) {
+          if (pos->GetEditable()->FindNext(str, down, ignoreCase)) {
+            SetActiveCell(pos->GetEditable());
+            foundInGroup = true;
+          }
+        }
+      }
+
+      // 3. Prompt
+      if (!foundInGroup && pos->GetPrompt()) {
+        bool skipPrompt = startInInitial && (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt());
+        if (!skipPrompt) {
+          wxString text = pos->GetPrompt()->ToString();
+          wxString s = str;
+          if (ignoreCase) {
+            text.MakeLower();
+            s.MakeLower();
+          }
+          if (text.Contains(s)) {
+            SetActiveCell(NULL);
+            SetSelection(pos->GetPrompt());
+            foundInGroup = true;
+          }
+        }
+      }
+    }
+
+    if (foundInGroup) {
+      ScrollToCaret();
+      UpdateTableOfContents();
+      RequestRedraw();
+      if ((wrappedSearch) && warn) {
+        LoggingMessageDialog dialog(m_findDialog, _("Wrapped search"),
+                                    wxEmptyString, wxCENTER | wxOK);
+        dialog.ShowModal();
+      }
+      return true;
     }
 
     if (down) {
@@ -7252,6 +7392,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
         pos = GetLastCellInWorksheet();
       }
     }
+    startInInitial = false;
   }
   return false;
 }
@@ -7298,33 +7439,137 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
   if (!pos)
     return false;
 
-  pos->GetEditable()->SearchStartedHere(pos->GetEditable()->GetCaretPosition());
+  if (pos->GetEditable())
+    pos->GetEditable()->SearchStartedHere(pos->GetEditable()->GetCaretPosition());
+
+  wxRegEx re(str);
+  if (!re.IsValid())
+    return false;
 
   // Remember where to go if we need to wrap the search.
-  const GroupCell *start = pos;
+  const GroupCell *startGroup = pos;
 
   bool wrappedSearch = false;
-  while (pos != start || !wrappedSearch) {
-    EditorCell *editor = pos->GetEditable();
+  bool startInInitial = true;
+  while (pos != startGroup || !wrappedSearch) {
+    bool foundInGroup = false;
 
-    if (editor) {
-      bool found = editor->FindNext_RegEx(str, down);
-
-      if (found) {
-        std::size_t strt, end;
-        editor->GetSelection(&strt, &end);
-        SetActiveCell(editor);
-        editor->SetSelection(strt, end);
-        ScrollToCaret();
-        UpdateTableOfContents();
-        RequestRedraw();
-        if ((wrappedSearch) && warn) {
-          LoggingMessageDialog dialog(m_findDialog, _("Wrapped search"),
-                                      wxEmptyString, wxCENTER | wxOK);
-          dialog.ShowModal();
+    if (down) {
+      // 1. Prompt
+      bool skipPrompt = startInInitial && (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos));
+      if (!skipPrompt && pos->GetPrompt()) {
+        wxString text = pos->GetPrompt()->ToString();
+        if (re.Matches(text)) {
+          SetActiveCell(NULL);
+          SetSelection(pos->GetPrompt());
+          foundInGroup = true;
         }
-        return true;
       }
+
+      // 2. Editor
+      if (!foundInGroup) {
+        bool skipEditor = startInInitial && (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && !GetActiveCell() && GetSelectionStart() != pos->GetPrompt());
+        if (!skipEditor && pos->GetEditable()) {
+          if (pos->GetEditable()->FindNext_RegEx(str, down)) {
+            SetActiveCell(pos->GetEditable());
+            foundInGroup = true;
+          }
+        }
+      }
+
+      // 3. Output
+      if (!foundInGroup && pos->GetLabel()) {
+        bool outputStarted = true;
+        Cell *lastSel = GetSelectionStart();
+        if (startInInitial && lastSel && lastSel->GetGroup() == pos && !GetActiveCell() && lastSel != pos->GetPrompt()) {
+          outputStarted = false;
+        }
+
+        for (const Cell &cell : OnDrawList(pos->GetLabel())) {
+          if (!outputStarted) {
+            if (&cell == lastSel)
+              outputStarted = true;
+            continue;
+          }
+          wxString text = cell.ToString();
+          if (re.Matches(text)) {
+            SetActiveCell(NULL);
+            SetSelection(const_cast<Cell *>(&cell));
+            foundInGroup = true;
+            break;
+          }
+        }
+      }
+    } else {
+      // Search order for 'up': Output -> Editor -> Prompt
+
+      // 1. Output
+      if (pos->GetLabel()) {
+        bool skipOutput = startInInitial && (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt()));
+        if (!skipOutput) {
+          std::vector<Cell *> outputCells;
+          for (const Cell &cell : OnDrawList(pos->GetLabel())) {
+            outputCells.push_back(const_cast<Cell *>(&cell));
+          }
+
+          int startIndex = outputCells.size() - 1;
+          if (startInInitial && GetSelectionStart() && GetSelectionStart()->GetGroup() == pos) {
+            for (int i = 0; i < (int)outputCells.size(); ++i) {
+              if (outputCells[i] == GetSelectionStart()) {
+                startIndex = i - 1;
+                break;
+              }
+            }
+          }
+
+          for (int i = startIndex; i >= 0; --i) {
+            Cell *cell = outputCells[i];
+            wxString text = cell->ToString();
+            if (re.Matches(text)) {
+              SetActiveCell(NULL);
+              SetSelection(cell);
+              foundInGroup = true;
+              break;
+            }
+          }
+        }
+      }
+
+      // 2. Editor
+      if (!foundInGroup) {
+        bool skipEditor = startInInitial && (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt());
+        if (!skipEditor && pos->GetEditable()) {
+          if (pos->GetEditable()->FindNext_RegEx(str, down)) {
+            SetActiveCell(pos->GetEditable());
+            foundInGroup = true;
+          }
+        }
+      }
+
+      // 3. Prompt
+      if (!foundInGroup && pos->GetPrompt()) {
+        bool skipPrompt = startInInitial && (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt());
+        if (!skipPrompt) {
+          wxString text = pos->GetPrompt()->ToString();
+          if (re.Matches(text)) {
+            SetActiveCell(NULL);
+            SetSelection(pos->GetPrompt());
+            foundInGroup = true;
+          }
+        }
+      }
+    }
+
+    if (foundInGroup) {
+      ScrollToCaret();
+      UpdateTableOfContents();
+      RequestRedraw();
+      if ((wrappedSearch) && warn) {
+        LoggingMessageDialog dialog(m_findDialog, _("Wrapped search"),
+                                    wxEmptyString, wxCENTER | wxOK);
+        dialog.ShowModal();
+      }
+      return true;
     }
 
     if (down) {
@@ -7340,6 +7585,7 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
         pos = GetLastCellInWorksheet();
       }
     }
+    startInInitial = false;
   }
   return false;
 }
