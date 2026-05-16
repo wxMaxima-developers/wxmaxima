@@ -681,6 +681,13 @@ wxString EditorCell::ToHTML() const {
 }
 
 void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle style) {
+  if (start > m_text.Length())
+    start = m_text.Length();
+  if (end > m_text.Length())
+    end = m_text.Length();
+  if (start >= end)
+    return;
+
   wxPoint point, point1;
   size_t pos_right = start, pos_left = start;
 
@@ -814,21 +821,24 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 #endif
             dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION)))); // highlight c.
           }
-          wxPoint matchPoint = PositionToPoint(m_paren1);
-          wxCoord width, height;
-          dc->GetTextExtent(m_text.at(m_paren1), &width, &height);
-          wxRect matchRect(matchPoint.x + 1,
-                           matchPoint.y + Scale_Px(2) - m_center + 1, width - 1,
-                           height - 1);
-          if (m_configuration->InUpdateRegion(matchRect))
-            dc->DrawRectangle(CropToUpdateRegion(matchRect));
-          matchPoint = PositionToPoint(m_paren2);
-          dc->GetTextExtent(m_text.at(m_paren2), &width, &height);
-          matchRect =
-            wxRect(matchPoint.x + 1, matchPoint.y + Scale_Px(2) - m_center + 1,
-                   width - 1, height - 1);
-          if (m_configuration->InUpdateRegion(matchRect))
-            dc->DrawRectangle(CropToUpdateRegion(matchRect));
+          if (m_paren1 >= 0 && static_cast<size_t>(m_paren1) < m_text.Length() &&
+              m_paren2 >= 0 && static_cast<size_t>(m_paren2) < m_text.Length()) {
+            wxPoint matchPoint = PositionToPoint(m_paren1);
+            wxCoord width, height;
+            dc->GetTextExtent(m_text.at(m_paren1), &width, &height);
+            wxRect matchRect(matchPoint.x + 1,
+                             matchPoint.y + Scale_Px(2) - m_center + 1,
+                             width - 1, height - 1);
+            if (m_configuration->InUpdateRegion(matchRect))
+              dc->DrawRectangle(CropToUpdateRegion(matchRect));
+            matchPoint = PositionToPoint(m_paren2);
+            dc->GetTextExtent(m_text.at(m_paren2), &width, &height);
+            matchRect = wxRect(matchPoint.x + 1,
+                               matchPoint.y + Scale_Px(2) - m_center + 1,
+                               width - 1, height - 1);
+            if (m_configuration->InUpdateRegion(matchRect))
+              dc->DrawRectangle(CropToUpdateRegion(matchRect));
+          }
         } // else if (m_paren1 != -1 && m_paren2 != -1)
       }   // if (IsActive())
 
@@ -2179,6 +2189,12 @@ bool EditorCell::ActivateCursor() {
   bool retval = false;
   if (!m_cellPointers->m_activeCell)
     DeactivateCursor();
+
+  // Sanity check: Ensure cursor is within bounds
+  if (m_selectionStart > m_text.Length())
+    m_selectionStart = m_text.Length();
+  if (m_selectionEnd > m_text.Length())
+    m_selectionEnd = m_text.Length();
 
   SaveValue();
   m_displayCaret = true;
