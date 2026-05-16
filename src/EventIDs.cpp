@@ -692,6 +692,7 @@ const wxWindowIDRef EventIDs::popid_Unfold(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_SelectTocChapter(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_EvalTocChapter(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_ToggleTOCshowsSectionNumbers(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::popid_TOCindentation(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_tocLevel1(wxWindow::NewControlId(NumberOfTocLevels));
 const wxWindowIDRef EventIDs::popid_tocdnd(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_tocMoveIn(wxWindow::NewControlId());

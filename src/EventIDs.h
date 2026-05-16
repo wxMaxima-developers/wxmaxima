@@ -776,6 +776,7 @@ public:
   static const wxWindowIDRef popid_SelectTocChapter;
   static const wxWindowIDRef popid_EvalTocChapter;
   static const wxWindowIDRef popid_ToggleTOCshowsSectionNumbers;
+  static const wxWindowIDRef popid_TOCindentation;
   static const wxWindowIDRef popid_tocLevel1;
   static const wxWindowIDRef popid_tocdnd;
   static const wxWindowIDRef popid_tocMoveIn;

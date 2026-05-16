@@ -1449,6 +1449,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(EventIDs::popid_ToggleTOCshowsSectionNumbers, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(EventIDs::popid_TOCindentation, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(EventIDs::popid_tocLevel1, EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(EventIDs::popid_tocMoveIn, wxEVT_MENU,
@@ -10084,7 +10086,11 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
       }
   }
   else if(event.GetId() == EventIDs::popid_ToggleTOCshowsSectionNumbers){
-      m_configuration.TocShowsSectionNumbers(event.IsChecked());
+      m_configuration.TocShowsSectionNumbers(true);
+      GetWorksheet()->UpdateTableOfContents();
+  }
+  else if(event.GetId() == EventIDs::popid_TOCindentation){
+      m_configuration.TocShowsSectionNumbers(false);
       GetWorksheet()->UpdateTableOfContents();
   }
   else if((event.GetId() >= EventIDs::popid_tocLevel1) && (event.GetId() < EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels - 2)) {

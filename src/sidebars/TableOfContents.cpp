@@ -538,10 +538,13 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event) {
 
   if (popupMenu->GetMenuItemCount() > 0)
     popupMenu->AppendSeparator();
-  popupMenu->AppendCheckItem(EventIDs::popid_ToggleTOCshowsSectionNumbers,
-                             _("Show section numbers"));
-  popupMenu->Check(EventIDs::popid_ToggleTOCshowsSectionNumbers,
-                   m_configuration->TocShowsSectionNumbers());
+  popupMenu->AppendRadioItem(EventIDs::popid_TOCindentation, _("Indentation"));
+  popupMenu->AppendRadioItem(EventIDs::popid_ToggleTOCshowsSectionNumbers,
+                             _("Section numbers"));
+  if (m_configuration->TocShowsSectionNumbers())
+    popupMenu->Check(EventIDs::popid_ToggleTOCshowsSectionNumbers, true);
+  else
+    popupMenu->Check(EventIDs::popid_TOCindentation, true);
 
   // create menu if we have any items
   if (popupMenu->GetMenuItemCount() > 0)
