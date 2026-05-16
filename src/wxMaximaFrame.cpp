@@ -436,7 +436,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     .PaneBorder(false)
     .Row(2);
 
-  m_manager.Update();
+  AuiManagerUpdate();
 
   Connect(wxEVT_MENU_HIGHLIGHT,
           wxMenuEventHandler(wxMaximaFrame::OnMenuStatusText), NULL, this);
@@ -2172,7 +2172,7 @@ void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
 void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   for(const auto &pane: m_sidebarNames)
     m_manager.GetPane(pane.second).Dock();
-  m_manager.Update();
+  AuiManagerUpdate();
 }
 
 void wxMaximaFrame::HideAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
@@ -2188,8 +2188,17 @@ void wxMaximaFrame::HideAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_help]).Hide();
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_variables]).Hide();;
   m_manager.GetPane(m_sidebarNames[EventIDs::menu_pane_xmlInspector]).Hide();
-  m_manager.Update();
+  AuiManagerUpdate();
 }
+void wxMaximaFrame::AuiManagerUpdate() {
+  m_manager.Update();
+#ifdef __WXGTK__
+  if (m_MenuBar) {
+    SetMenuBar(m_MenuBar);
+  }
+#endif
+}
+
 void  wxMaximaFrame::StatusText(const wxString &text, bool saveInLog)
 {
   m_newStatusText = true;
@@ -2233,10 +2242,10 @@ void wxMaximaFrame::ShowPane(int id, bool show) {
           m_manager.GetPane(item->second).Show(show);
       }
     }
-  m_manager.Update();
+  AuiManagerUpdate();
 }
 
 void wxMaximaFrame::ShowToolBar(bool show) {
   m_manager.GetPane(wxS("toolbar")).Show(show);
-  m_manager.Update();
+  AuiManagerUpdate();
 }

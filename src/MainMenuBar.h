@@ -39,5 +39,7 @@ public:
   MainMenuBar();
   //! Enable or disable an item - but only if the item needs enabling or disabling
   void EnableItem(int id, bool enable);
+  //! Check or uncheck an item - but only if the item needs checking or unchecking
+  void CheckItem(int id, bool check);
 };
 #endif // MAINMENUBAR_H

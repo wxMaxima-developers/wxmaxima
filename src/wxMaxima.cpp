@@ -1778,8 +1778,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
     CallAfter([this]{GetWorksheet()->SetFocus();});
   StartAutoSaveTimer();
   MyApp::m_windowcount++;
-  m_manager.Update();
-  SetMenuBar(m_MenuBar);
+  AuiManagerUpdate();
 }
 
 #ifdef wxHAS_POWER_EVENTS
@@ -5433,10 +5432,10 @@ void wxMaxima::UpdateMenus() {
 
   for(const auto &pane: GetSidebarNames())
     if(m_MenuBar->FindItem(pane.first) != NULL)
-      m_MenuBar->Check(pane.first, IsPaneDisplayed(pane.first));
+      m_MenuBar->CheckItem(pane.first, IsPaneDisplayed(pane.first));
 
   bool hidecode = !(m_configuration.ShowCodeCells());
-  m_MenuBar->Check(ToolBar::tb_hideCode, hidecode);
+  m_MenuBar->CheckItem(ToolBar::tb_hideCode, hidecode);
 
   if (GetWorksheet()->GetTree()) {
     m_MenuBar->EnableItem(EventIDs::popid_divide_cell,

@@ -33,3 +33,8 @@ void MainMenuBar::EnableItem(int id, bool enable) {
   if (IsEnabled(id) != enable)
     wxMenuBar::Enable(id, enable);
 }
+
+void MainMenuBar::CheckItem(int id, bool check) {
+  if (IsChecked(id) != check)
+    wxMenuBar::Check(id, check);
+}

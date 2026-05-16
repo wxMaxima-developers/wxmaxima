@@ -114,25 +114,25 @@ public:
   void ToggleXMLInspector()
     {
       m_manager.GetPane(wxS("XmlInspector")).Show(!IsXMLInspectorShown());
-      m_manager.Update();
+      AuiManagerUpdate();
     }
   //! Toggle the visibility of the log pane
   void ToggleLogPane()
     {
       m_manager.GetPane(wxS("log"))
         .Show(!m_manager.GetPane(wxS("log")).IsShown());
-      m_manager.Update();
+      AuiManagerUpdate();
     }
   //! Show the pane the wizards are in
   void ShowWizardPane(wxString title)
     {
       m_manager.GetPane("wizard").Show(true).Caption(title);
-      m_manager.Update();
+      AuiManagerUpdate();
     }
   void HideWizardPane()
     {
         m_manager.GetPane("wizard").Show(false);
-        m_manager.Update();
+        AuiManagerUpdate();
     }
   //! Hides or unhides the pane with the given ID.
   void TogglePaneVisibility(int id);
@@ -145,6 +145,9 @@ public:
 
    */
   void EvaluationQueueLength(int length, int numberOfCommands = -1);
+
+  //! Updates the AUI manager and re-asserts the menu bar on GTK to prevent it from disappearing.
+  void AuiManagerUpdate();
 
   /*! Set the status according to if maxima is calculating
 
