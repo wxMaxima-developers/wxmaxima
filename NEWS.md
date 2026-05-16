@@ -5,6 +5,22 @@
 - Fix XML output for definite integrals. It was saved (in wxmx format)
   without the limits. (The input was correct, so re-evaluating solved
   the problem, but loading a file didn't show the limits).
+- Each Group of input and output now has an UUID that can be used to
+  find it again.
+- Opening <file.wxmx>#UUID opens the file and scrolls to the Group with 
+  that UUID
+- Many stability improvements, most of these AI-driven
+- The size of subscripts is now calculated correctly
+- The table of contents can now show section numbers
+- Massive improvement of the search within the worksheet
+- Ctrl+G now interrupts the current command again on MS windows
+- Reduced the time windows in which wxMaxima blocks because it is 
+  processing data
+- MS Windows: The "maxima is running" indicator should now work correctly
+- HI-DPI improvements
+- A few Autocompletion fixes
+- Better SVGZ support
+- Some fixes for selection of output
 
 # 26.05.0
 
