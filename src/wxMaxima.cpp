@@ -5737,8 +5737,10 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
 
   if (retval && !uuid.IsEmpty()) {
     Cell *cell = GetWorksheet()->FindCellByUUID(uuid);
-    if (cell)
+    if (cell) {
+      GetWorksheet()->ScrolledAwayFromEvaluation(true);
       GetWorksheet()->ScheduleScrollToCell(cell);
+    }
   }
 
   return retval;
@@ -6214,6 +6216,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
     if (!uuid.IsEmpty()) {
       Cell *cell = GetWorksheet()->FindCellByUUID(uuid);
       if (cell) {
+        GetWorksheet()->ScrolledAwayFromEvaluation(true);
         GetWorksheet()->ScheduleScrollToCell(cell);
       } else {
         wxLogError(_("Cell with UUID %s not found!"), uuid);
@@ -11261,6 +11264,7 @@ void wxMaxima::TableOfContentsSelection(wxListEvent &event) {
   // that the cell that was clicked at actually still is part of the tree.
   if ((GetWorksheet()->GetTree()) &&
       (GetWorksheet()->GetTree()->Contains(selection))) {
+    GetWorksheet()->ScrolledAwayFromEvaluation(true);
     GetWorksheet()->SetHCaret(selection);
     GetWorksheet()->ScrollToCaret();
     CallAfter([this]{GetWorksheet()->SetFocus();});

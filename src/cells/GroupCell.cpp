@@ -1319,9 +1319,8 @@ wxString GroupCell::ToXML() const {
     }
     break;
   default: {
-    for (const Cell &tmp : OnList(output))
-      // cppcheck-suppress useStlAlgorithm
-      str += tmp.ListToXML();
+    if (output)
+      str += output->ListToXML();
 
     break;
   }
