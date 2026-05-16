@@ -7197,6 +7197,8 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
   // If a cursor is active we start the search there instead
   if (GetActiveCell())
     pos = GetActiveCell()->GetGroup();
+  else if (GetSelectionStart())
+    pos = GetSelectionStart()->GetGroup();
   else if (m_hCaretActive) {
     pos = (down && m_hCaretPosition && m_hCaretPosition->GetNext())
       ? m_hCaretPosition->GetNext()
@@ -7242,8 +7244,14 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
     // For 'up': Output -> Editor -> Prompt
 
     if (down) {
+      // Search order for 'down': Prompt -> Editor -> Output
+
       // 1. Prompt
-      bool skipPrompt = startInInitial && (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos));
+      bool skipPrompt = false;
+      if (startInInitial) {
+        if (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() != pos->GetPrompt()))
+          skipPrompt = true;
+      }
       if (!skipPrompt && pos->GetPrompt()) {
         wxString text = pos->GetPrompt()->ToString();
         wxString s = str;
@@ -7260,7 +7268,11 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
 
       // 2. Editor
       if (!foundInGroup) {
-        bool skipEditor = startInInitial && (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && !GetActiveCell() && GetSelectionStart() != pos->GetPrompt());
+        bool skipEditor = false;
+        if (startInInitial) {
+          if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && !GetActiveCell() && GetSelectionStart() != pos->GetPrompt())
+            skipEditor = true;
+        }
         if (!skipEditor && pos->GetEditable()) {
           if (pos->GetEditable()->FindNext(str, down, ignoreCase)) {
             SetActiveCell(pos->GetEditable());
@@ -7272,14 +7284,14 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
       // 3. Output
       if (!foundInGroup && pos->GetLabel()) {
         bool outputStarted = true;
-        Cell *lastSel = GetSelectionStart();
-        if (startInInitial && lastSel && lastSel->GetGroup() == pos && !GetActiveCell() && lastSel != pos->GetPrompt()) {
-          outputStarted = false;
+        if (startInInitial) {
+          if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() != pos->GetPrompt() && !GetActiveCell())
+            outputStarted = false;
         }
 
         for (const Cell &cell : OnDrawList(pos->GetLabel())) {
           if (!outputStarted) {
-            if (&cell == lastSel)
+            if (&cell == GetSelectionStart())
               outputStarted = true;
             continue;
           }
@@ -7302,7 +7314,12 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
 
       // 1. Output
       if (pos->GetLabel()) {
-        bool skipOutput = startInInitial && (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt()));
+        bool skipOutput = false;
+        if (startInInitial) {
+          if (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt()))
+            skipOutput = true;
+        }
+
         if (!skipOutput) {
           std::vector<Cell *> outputCells;
           for (const Cell &cell : OnDrawList(pos->GetLabel())) {
@@ -7310,7 +7327,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
           }
 
           int startIndex = outputCells.size() - 1;
-          if (startInInitial && GetSelectionStart() && GetSelectionStart()->GetGroup() == pos) {
+          if (startInInitial && GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && !GetActiveCell()) {
             for (int i = 0; i < (int)outputCells.size(); ++i) {
               if (outputCells[i] == GetSelectionStart()) {
                 startIndex = i - 1;
@@ -7339,7 +7356,11 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
 
       // 2. Editor
       if (!foundInGroup) {
-        bool skipEditor = startInInitial && (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt());
+        bool skipEditor = false;
+        if (startInInitial) {
+          if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt())
+            skipEditor = true;
+        }
         if (!skipEditor && pos->GetEditable()) {
           if (pos->GetEditable()->FindNext(str, down, ignoreCase)) {
             SetActiveCell(pos->GetEditable());
@@ -7350,7 +7371,11 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
 
       // 3. Prompt
       if (!foundInGroup && pos->GetPrompt()) {
-        bool skipPrompt = startInInitial && (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt());
+        bool skipPrompt = false;
+        if (startInInitial) {
+          if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt())
+            skipPrompt = true;
+        }
         if (!skipPrompt) {
           wxString text = pos->GetPrompt()->ToString();
           wxString s = str;
@@ -7426,6 +7451,8 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
   // If a cursor is active we start the search there instead
   if (GetActiveCell())
     pos = GetActiveCell()->GetGroup();
+  else if (GetSelectionStart())
+    pos = GetSelectionStart()->GetGroup();
   else if (m_hCaretActive) {
     pos = (down && m_hCaretPosition && m_hCaretPosition->GetNext())
       ? m_hCaretPosition->GetNext()
@@ -7456,7 +7483,11 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
 
     if (down) {
       // 1. Prompt
-      bool skipPrompt = startInInitial && (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos));
+      bool skipPrompt = false;
+      if (startInInitial) {
+        if (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() != pos->GetPrompt()))
+          skipPrompt = true;
+      }
       if (!skipPrompt && pos->GetPrompt()) {
         wxString text = pos->GetPrompt()->ToString();
         if (re.Matches(text)) {
@@ -7468,7 +7499,11 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
 
       // 2. Editor
       if (!foundInGroup) {
-        bool skipEditor = startInInitial && (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && !GetActiveCell() && GetSelectionStart() != pos->GetPrompt());
+        bool skipEditor = false;
+        if (startInInitial) {
+          if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && !GetActiveCell() && GetSelectionStart() != pos->GetPrompt())
+            skipEditor = true;
+        }
         if (!skipEditor && pos->GetEditable()) {
           if (pos->GetEditable()->FindNext_RegEx(str, down)) {
             SetActiveCell(pos->GetEditable());
@@ -7480,14 +7515,14 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
       // 3. Output
       if (!foundInGroup && pos->GetLabel()) {
         bool outputStarted = true;
-        Cell *lastSel = GetSelectionStart();
-        if (startInInitial && lastSel && lastSel->GetGroup() == pos && !GetActiveCell() && lastSel != pos->GetPrompt()) {
-          outputStarted = false;
+        if (startInInitial) {
+          if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() != pos->GetPrompt() && !GetActiveCell())
+            outputStarted = false;
         }
 
         for (const Cell &cell : OnDrawList(pos->GetLabel())) {
           if (!outputStarted) {
-            if (&cell == lastSel)
+            if (&cell == GetSelectionStart())
               outputStarted = true;
             continue;
           }
@@ -7505,7 +7540,12 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
 
       // 1. Output
       if (pos->GetLabel()) {
-        bool skipOutput = startInInitial && (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt()));
+        bool skipOutput = false;
+        if (startInInitial) {
+          if (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt()))
+            skipOutput = true;
+        }
+
         if (!skipOutput) {
           std::vector<Cell *> outputCells;
           for (const Cell &cell : OnDrawList(pos->GetLabel())) {
@@ -7513,7 +7553,7 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
           }
 
           int startIndex = outputCells.size() - 1;
-          if (startInInitial && GetSelectionStart() && GetSelectionStart()->GetGroup() == pos) {
+          if (startInInitial && GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && !GetActiveCell()) {
             for (int i = 0; i < (int)outputCells.size(); ++i) {
               if (outputCells[i] == GetSelectionStart()) {
                 startIndex = i - 1;
@@ -7537,7 +7577,11 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
 
       // 2. Editor
       if (!foundInGroup) {
-        bool skipEditor = startInInitial && (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt());
+        bool skipEditor = false;
+        if (startInInitial) {
+          if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt())
+            skipEditor = true;
+        }
         if (!skipEditor && pos->GetEditable()) {
           if (pos->GetEditable()->FindNext_RegEx(str, down)) {
             SetActiveCell(pos->GetEditable());
@@ -7548,7 +7592,11 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
 
       // 3. Prompt
       if (!foundInGroup && pos->GetPrompt()) {
-        bool skipPrompt = startInInitial && (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt());
+        bool skipPrompt = false;
+        if (startInInitial) {
+          if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt())
+            skipPrompt = true;
+        }
         if (!skipPrompt) {
           wxString text = pos->GetPrompt()->ToString();
           if (re.Matches(text)) {
