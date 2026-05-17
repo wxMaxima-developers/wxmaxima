@@ -197,6 +197,9 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>GetCompress
 <tr class="memitem:ae19d22786d13162f9f589e7bc0a01fb6"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#ae19d22786d13162f9f589e7bc0a01fb6">ToMatlab</a> () const override</td></tr>
 <tr class="memdesc:ae19d22786d13162f9f589e7bc0a01fb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to its Matlab representation.  <br /></td></tr>
 <tr class="separator:ae19d22786d13162f9f589e7bc0a01fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf03ac887447832369ad519fccfb4b26"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#adf03ac887447832369ad519fccfb4b26">ToMathML</a> () const override</td></tr>
+<tr class="memdesc:adf03ac887447832369ad519fccfb4b26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to a representation fit for saving in a .wxmx file.  <br /></td></tr>
+<tr class="separator:adf03ac887447832369ad519fccfb4b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbf7241256e13c1cf94d91718587e6f4"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#abbf7241256e13c1cf94d91718587e6f4">ToRTF</a> () const override</td></tr>
 <tr class="memdesc:abbf7241256e13c1cf94d91718587e6f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cell's representation as RTF.  <br /></td></tr>
 <tr class="separator:abbf7241256e13c1cf94d91718587e6f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -522,9 +525,6 @@ virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ListToRTF
 <tr class="separator:a1841a0db474c9fb662e64fc970f1cc88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c533b16aad3335b0c98c5c37ed60b59"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a8c533b16aad3335b0c98c5c37ed60b59">GetXMLFlags</a> () const</td></tr>
 <tr class="separator:a8c533b16aad3335b0c98c5c37ed60b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a986122b0a11dcba1aff6480733bd650c"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a986122b0a11dcba1aff6480733bd650c">ToMathML</a> () const</td></tr>
-<tr class="memdesc:a986122b0a11dcba1aff6480733bd650c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to a representation fit for saving in a .wxmx file.  <br /></td></tr>
-<tr class="separator:a986122b0a11dcba1aff6480733bd650c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46a532b8571add09c58a65540ad60af8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a46a532b8571add09c58a65540ad60af8">Unbreak</a> () const</td></tr>
 <tr class="memdesc:a46a532b8571add09c58a65540ad60af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo breaking this cell into multiple lines.  <br /></td></tr>
 <tr class="separator:a46a532b8571add09c58a65540ad60af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3398,8 +3398,8 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 
 </div>
 </div>
-<a id="a986122b0a11dcba1aff6480733bd650c" name="a986122b0a11dcba1aff6480733bd650c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a986122b0a11dcba1aff6480733bd650c">&#9670;&#160;</a></span>ToMathML()</h2>
+<a id="adf03ac887447832369ad519fccfb4b26" name="adf03ac887447832369ad519fccfb4b26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf03ac887447832369ad519fccfb4b26">&#9670;&#160;</a></span>ToMathML()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3408,7 +3408,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">wxString Cell::ToMathML </td>
+          <td class="memname">wxString ImgCell::ToMathML </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -3416,14 +3416,14 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Convert this cell to a representation fit for saving in a .wxmx file. </p>
 
-<p>Reimplemented in <a class="el" href="classAbsCell.html#a6e52c6ca6ffcba5e4d9cf0edf3112eb5">AbsCell</a>, <a class="el" href="classAtCell.html#abf5a9e55a3985eafbc670a191733ae86">AtCell</a>, <a class="el" href="classDiffCell.html#ab7838781ffbbb1d5b47aadfb5ab3fbee">DiffCell</a>, <a class="el" href="classExptCell.html#aebb4fce52af90adec0cd714b1ae16bfb">ExptCell</a>, <a class="el" href="classFracCell.html#a6eac60b5ad8cfc02b4d65c2baa2a3850">FracCell</a>, <a class="el" href="classFunCell.html#ab17c426a3121d554b7a0c7b025acfd45">FunCell</a>, <a class="el" href="classIntCell.html#a00f88ef82804c2fafce49d986b8acf80">IntCell</a>, <a class="el" href="classIntervalCell.html#ac08ed5aba2a37ea4923a546b93253bc9">IntervalCell</a>, <a class="el" href="classLimitCell.html#aac34ab9a6f6205541185edbb8cc635da">LimitCell</a>, <a class="el" href="classListCell.html#a6b6613548f19333ddb0bc6bf6d6cbf4c">ListCell</a>, <a class="el" href="classMatrCell.html#a7a2dd28a578620b2501d95bd5147c1a5">MatrCell</a>, <a class="el" href="classParenCell.html#a10195c9b44dbd57377fb485f9cbf98f4">ParenCell</a>, <a class="el" href="classSqrtCell.html#a1e7ed335868e678b045eafe1c8bb489c">SqrtCell</a>, <a class="el" href="classSubCell.html#aed4963acd33b2f4f6adac646302e489f">SubCell</a>, <a class="el" href="classSubSupCell.html#a8048762801bfe0683dda74c715c2ca6d">SubSupCell</a>, <a class="el" href="classSumCell.html#a14934a6057a30c6ae5b193f619579a8b">SumCell</a>, and <a class="el" href="classTextCell.html#a529b250f6cd5306934acda957eb1cfa6">TextCell</a>.</p>
+<p>Reimplemented from <a class="el" href="classCell.html#a986122b0a11dcba1aff6480733bd650c">Cell</a>.</p>
 
 </div>
 </div>
