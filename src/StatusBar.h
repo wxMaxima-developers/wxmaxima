@@ -129,6 +129,7 @@ private:
   bool m_icon_shows_receive = false;
   //! Does the icon show that we currently transmit data?
   bool m_icon_shows_transmit = false;
+  bool m_overlayIconIsSet = false;
   //! The background for m_statusText;
   wxPanel *m_statusTextPanel = NULL;
   //! The currently shown network status bitmap
