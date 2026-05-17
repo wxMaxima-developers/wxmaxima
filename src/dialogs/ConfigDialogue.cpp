@@ -549,6 +549,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_defaultFramerate->SetValue(m_configuration->DefaultFramerate());
   m_maxGnuplotMegabytes->SetValue(configuration->MaxGnuplotMegabytes());
   m_autosaveMinutes->SetValue(configuration->AutosaveMinutes());
+  m_maxLayoutTime->SetValue(configuration->MaxLayoutTime());
   m_defaultPlotWidth->SetValue(configuration->DefaultPlotWidth());
   m_defaultPlotHeight->SetValue(configuration->DefaultPlotHeight());
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
@@ -1294,6 +1295,17 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
                                      wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1, 60);
 
   grid_sizer->Add(m_autosaveMinutes, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
+                  5 * GetContentScaleFactor());
+
+  grid_sizer->Add(new wxStaticText(stdOpts_sizer->GetStaticBox(), wxID_ANY,
+                                   _("Max. layout time [s] (0=no limit)")),
+                  0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
+                  5 * GetContentScaleFactor());
+  m_maxLayoutTime = new wxSpinCtrl(
+                                   stdOpts_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
+                                   wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0, 3600);
+
+  grid_sizer->Add(m_maxLayoutTime, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
                   5 * GetContentScaleFactor());
 
   stdOpts_sizer->Add(grid_sizer,
@@ -2181,6 +2193,7 @@ void ConfigDialogue::WriteSettings() {
   configuration->DefaultFramerate(m_defaultFramerate->GetValue());
   configuration->MaxGnuplotMegabytes(m_maxGnuplotMegabytes->GetValue());
   configuration->AutosaveMinutes(m_autosaveMinutes->GetValue());
+  configuration->MaxLayoutTime(m_maxLayoutTime->GetValue());
   configuration->DefaultPlotWidth(m_defaultPlotWidth->GetValue());
   configuration->DefaultPlotHeight(m_defaultPlotHeight->GetValue());
   configuration->SetDisplayedDigits(m_displayedDigits->GetValue());

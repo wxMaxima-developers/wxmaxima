@@ -564,8 +564,22 @@ void GroupCell::RecalculateOutput() const {
                     : m_configuration->GetDefaultFontSize());
   }
 
-  // Breakup cells and break lines
-  BreakLines();
+  if (!m_layoutSuppressed) {
+    wxStopWatch sw;
+    // Breakup cells and break lines
+    BreakLines();
+
+    if (m_configuration->MaxLayoutTime() > 0 &&
+        sw.Time() > m_configuration->MaxLayoutTime() * 1000) {
+      m_layoutSuppressed = true;
+      const_cast<GroupCell *>(this)->m_output =
+          std::make_unique<TextCell>(const_cast<GroupCell *>(this), m_configuration);
+      TextCell *tc = static_cast<TextCell *>(m_output.get());
+      tc->SetValue(_("(Layout took too long and was suppressed)"));
+      tc->SetType(MC_TYPE_WARNING);
+      tc->Recalculate(m_configuration->GetDefaultFontSize());
+    }
+  }
 
   // Recalculate size of cells again: Their size might have changed during
   // breaking lines

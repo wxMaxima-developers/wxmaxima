@@ -347,6 +347,7 @@ protected:
   ExamplePanel *m_examplePanel;
   wxSpinCtrl *m_maxGnuplotMegabytes;
   wxSpinCtrl *m_autosaveMinutes;
+  wxSpinCtrl *m_maxLayoutTime;
   wxTextCtrl *m_autoMathJaxURL;
   int m_maximaEmvRightClickRow = 0;
 

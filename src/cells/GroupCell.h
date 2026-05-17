@@ -448,6 +448,7 @@ protected:
       m_updateConfusableCharWarnings = true;
       m_suppressTooltipMarker = false;
       m_cellsAppended = false;
+      m_layoutSuppressed = false;
     }
 
   //! Does this GroupCell automatically fill in the answer to questions?
@@ -457,7 +458,8 @@ protected:
   bool m_updateConfusableCharWarnings : 1 /* InitBitFields_GroupCell */;
   //! Suppress the yellow ToolTip marker?
   bool m_suppressTooltipMarker : 1 /* InitBitFields_GroupCell */;
-  mutable bool m_cellsAppended :1 ; /* InitBitFields_GroupCell */
+  mutable bool m_cellsAppended : 1 /* InitBitFields_GroupCell */;
+  mutable bool m_layoutSuppressed : 1 /* InitBitFields_GroupCell */;
 
   static wxString m_lookalikeChars;
 };

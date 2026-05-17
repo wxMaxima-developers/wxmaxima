@@ -249,6 +249,7 @@ void Configuration::ResetAllToDefaults() {
   m_showAllDigits = false;
   m_lineBreaksInLongNums = false;
   m_autoSaveMinutes = 3;
+  m_maxLayoutTime = 5;
   m_numpadEnterEvaluates = true;
   m_saveImgFileName = false;
   m_maximaEnvVars.clear();
@@ -653,6 +654,9 @@ void Configuration::ReadConfig() {
     config->Read(wxS("autoSaveMinutes"), &m_autoSaveMinutes);
     if (m_autoSaveMinutes <= 0)
       m_autoSaveMinutes = 3;
+    config->Read(wxS("MaxLayoutTime"), &m_maxLayoutTime);
+    if (m_maxLayoutTime <= 0)
+      m_maxLayoutTime = 5;
     config->Read(wxS("wrapLatexMath"), &m_wrapLatexMath);
     config->Read(wxS("allowNetworkHelp"), &m_allowNetworkHelp);
     config->Read(wxS("exportContainsWXMX"), &m_exportContainsWXMX);
@@ -1344,6 +1348,7 @@ void Configuration::WriteSettings(const wxString &file) {
   config->Write(wxS("saveUntitled"), m_saveUntitled);
   config->Write(wxS("cursorJump"), m_cursorJump);
   config->Write(wxS("autoSaveMinutes"), m_autoSaveMinutes);
+  config->Write(wxS("MaxLayoutTime"), m_maxLayoutTime);
 
   config->Write(wxS("maxClipbrd_BitmapMegabytes"),
                 m_maxClipbrd_BitmapMegabytes);

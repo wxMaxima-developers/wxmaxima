@@ -385,6 +385,9 @@ public:
 
   void IncrementalSearch(bool incrementalSearch) { m_incrementalSearch = incrementalSearch; }
 
+  int MaxLayoutTime() const { return m_maxLayoutTime; }
+  void MaxLayoutTime(int time) { m_maxLayoutTime = time; }
+
   struct CharsExist {
     wxString chars;
     bool exist;
@@ -1275,6 +1278,7 @@ private:
   int m_tocDepth;
   int m_maxClipbrd_BitmapMegabytes;
   int m_autoSaveMinutes;
+  int m_maxLayoutTime;
   wxString m_wxMathML_Filename;
   maximaHelpFormat m_maximaHelpFormat;
   wxTextCtrl *m_lastActiveTextCtrl = NULL;
