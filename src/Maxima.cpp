@@ -215,7 +215,7 @@ void Maxima::ProcessData()
 
     do {
         progress = false;
-        size_t tagPos = m_processingBuffer.Find(wxS('<'));
+        int tagPos = m_processingBuffer.Find(wxS('<'));
         wxString dataToSend;
         if (tagPos == wxNOT_FOUND) {
             dataToSend = m_processingBuffer;
@@ -243,7 +243,7 @@ void Maxima::ProcessData()
                 progress = true;
             } else {
                 wxString tagEndName = wxS("</") + tag->first + wxS(">");
-                size_t end = m_processingBuffer.Find(tagEndName);
+                int end = m_processingBuffer.Find(tagEndName);
                 if (end != wxNOT_FOUND) {
                     if (!batchedText.IsEmpty()) {
                         newItems.push_back({READ_MISC_TEXT, batchedText});
