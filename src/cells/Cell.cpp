@@ -850,15 +850,10 @@ wxString Cell::RTFescape(wxString input, bool MarkDown) {
   input.Replace(wxS("\\"), wxS("\\\\"));
   input.Replace(wxS("{"), wxS("\\{"));
   input.Replace(wxS("}"), wxS("\\}"));
-  input.Replace(wxS("\r"), wxS("\n"));
-
-  // The Character we will use as a soft line break
-  input.Replace(wxS("\r"), wxm::emptyString);
 
   // Encode unicode characters in a rather mind-boggling way
   wxString output;
   wxString::const_iterator it = input.begin();
-  wxString::const_iterator last = it;
   for (; it != input.end(); ++it) {
     wxChar ch = *it;
     if (ch == wxS('\n')) {
@@ -866,14 +861,25 @@ wxString Cell::RTFescape(wxString input, bool MarkDown) {
         output += wxS("\\par}\n{\\pard ");
       else
         output += wxS("\n");
+    } else if (ch == wxS('\r')) {
+      output += wxS("\\line ");
     } else {
       if ((ch < 128) && (ch > 0)) {
         output += ch;
       } else {
         if (ch < 32768) {
           output += wxString::Format("\\u%li?", static_cast<long>(ch));
-        } else {
+        } else if (ch < 65536) {
           output += wxString::Format("\\u%li?", static_cast<long>(ch) - 65536);
+        } else {
+          // Surrogate pair for characters > 0xFFFF
+          unsigned int cp = static_cast<unsigned int>(ch);
+          unsigned short high =
+              static_cast<unsigned short>(((cp - 0x10000) >> 10) + 0xD800);
+          unsigned short low =
+              static_cast<unsigned short>((cp & 0x3FF) + 0xDC00);
+          output += wxString::Format("\\u%i?\\u%i?", static_cast<int>(high) - 65536,
+                                     static_cast<int>(low) - 65536);
         }
       }
     }

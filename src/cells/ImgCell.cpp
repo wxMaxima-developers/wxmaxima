@@ -258,9 +258,11 @@ wxString ImgCell::ToRTF() const {
                        stream.GetOutputStreamBuffer()->GetBufferSize());
   }
 
-  image += wxString::Format(wxS("\\picw%lu\\pich%lu "),
+  image += wxString::Format(wxS("\\picw%lu\\pich%lu\\picwgoal%lu\\pichgoal%lu "),
                             (unsigned long)m_image->GetOriginalWidth(),
-                            (unsigned long)m_image->GetOriginalHeight());
+                            (unsigned long)m_image->GetOriginalHeight(),
+                            (unsigned long)m_image->GetOriginalWidth() * 1440 / m_image->GetPPI(),
+                            (unsigned long)m_image->GetOriginalHeight() * 1440 / m_image->GetPPI());
 
   // Convert the data into a hexadecimal string
   wxString hexString;
@@ -272,6 +274,10 @@ wxString ImgCell::ToRTF() const {
                  footer.size() + 10);
   result << header << image << hexString << footer;
   return result;
+}
+
+wxString ImgCell::ToMathML() const {
+  return wxS("<mtext>") + _("(Image)") + wxS("</mtext>");
 }
 
 wxString ImgCell::ToXML() const {

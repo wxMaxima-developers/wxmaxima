@@ -328,18 +328,21 @@ wxString EditorCell::ToRTF() const {
       wxS("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") +
       RTFescape(m_text) + wxS("\n");
     break;
+  case MC_TYPE_TEXT:
+    retval += wxS("\\pard\\s0 ") + RTFescape(m_text, true);
+    break;
   case MC_TYPE_INPUT: {
     retval += wxS(" ");
     for (const auto &textSnippet : m_styledText) {
-      wxString text = RTFescape(textSnippet.GetText());
+      wxString escaped = RTFescape(textSnippet.GetText());
 
       if (textSnippet.IsStyleSet()) {
         retval +=
           wxString::Format(wxS("\\cf%li "), static_cast<long>(textSnippet.GetTextStyle()));
-        retval += RTFescape(textSnippet.GetText());
+        retval += escaped;
       } else {
         retval += wxString::Format(wxS("\\cf%li "), static_cast<long>(TS_CODE_DEFAULT));
-        retval += wxS("{") + RTFescape(textSnippet.GetText()) + wxS("}\n");
+        retval += wxS("{") + escaped + wxS("}\n");
       }
       if (textSnippet.GetText().Contains(wxS("\n"))) {
         retval += wxS("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");

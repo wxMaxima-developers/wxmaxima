@@ -330,20 +330,60 @@ wxString MatrCell::ToTeX() const {
 
 wxString MatrCell::ToMathML() const {
   wxString retval;
-  if (!m_specialMatrix)
-    retval = wxS("<mrow><mo>(</mo><mrow>");
+  if (!m_specialMatrix) {
+    wxString open, close;
+    switch (m_parenType) {
+    case paren_rounded:
+      open = wxS("(");
+      close = wxS(")");
+      break;
+    case paren_brackets:
+      open = wxS("[");
+      close = wxS("]");
+      break;
+    case paren_angled:
+      open = wxS("&#x27E8;");
+      close = wxS("&#x27E9;");
+      break;
+    case paren_straight:
+      open = wxS("|");
+      close = wxS("|");
+      break;
+    default:
+      break;
+    }
+    if (m_parenType != paren_none)
+      retval = wxS("<mrow><mo>") + open + wxS("</mo><mrow>");
+  }
   retval += wxS("<mtable>");
 
   for (size_t i = 0; i < m_matHeight; i++) {
     retval += wxS("<mtr>");
     for (size_t j = 0; j < m_matWidth; j++)
-      retval += wxS("<mtd>") + GetInnerCell(i, j)->ListToMathML() +
-        wxS("</mtd>");
+      retval += wxS("<mtd>") + GetInnerCell(i, j)->ListToMathML() + wxS("</mtd>");
     retval += wxS("</mtr>");
   }
   retval += wxS("</mtable>\n");
-  if (!m_specialMatrix)
-    retval += wxS("</mrow><mo>)</mo></mrow>\n");
+  if (!m_specialMatrix && m_parenType != paren_none) {
+    wxString close;
+    switch (m_parenType) {
+    case paren_rounded:
+      close = wxS(")");
+      break;
+    case paren_brackets:
+      close = wxS("]");
+      break;
+    case paren_angled:
+      close = wxS("&#x27E9;");
+      break;
+    case paren_straight:
+      close = wxS("|");
+      break;
+    default:
+      break;
+    }
+    retval += wxS("</mrow><mo>") + close + wxS("</mo></mrow>\n");
+  }
   return retval;
 }
 

@@ -136,7 +136,7 @@ wxString LimitCell::ToTeX() const {
 }
 
 wxString LimitCell::ToMathML() const {
-  wxString s(wxS("<munder><mi>limit</mi>"));
+  wxString s(wxS("<munder><mo>lim</mo>"));
   s += m_under->ListToMathML() + wxS("</munder>");
   s += m_base->ListToMathML();
   return s;

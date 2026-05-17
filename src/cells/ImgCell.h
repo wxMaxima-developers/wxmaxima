@@ -129,6 +129,7 @@ public:
   void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
 
   wxString ToMatlab() const override;
+  wxString ToMathML() const override;
   wxString ToRTF() const override;
   wxString ToString() const override;
   wxString ToTeX() const override;

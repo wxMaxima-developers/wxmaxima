@@ -265,8 +265,13 @@ wxString FracCell::ToTeX() const {
 }
 
 wxString FracCell::ToMathML() const {
-  return wxS("<mfrac>") + Num()->ListToMathML() + Denom()->ListToMathML() +
-    wxS("</mfrac>\n");
+  wxString flags;
+  if (m_fracStyle == FC_CHOOSE)
+    flags = wxS(" linethickness=\"0\"");
+  if (m_inExponent)
+    flags += wxS(" bevelled=\"true\"");
+  return wxS("<mfrac") + flags + wxS(">") + Num()->ListToMathML() +
+    Denom()->ListToMathML() + wxS("</mfrac>\n");
 }
 
 wxString FracCell::ToOMML() const {

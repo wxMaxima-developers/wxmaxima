@@ -123,7 +123,7 @@ wxString ConjugateCell::ToMathML() const {
   //  return wxS("<apply><conjugate/><ci>") + m_innerCell->ListToMathML() +
   //  wxS("</ci></apply>");
   return wxS("<mover accent=\"true\">") + m_innerCell->ListToMathML() +
-    wxS("<mo>&#xaf;</mo></mover>\n");
+    wxS("<mo>&#x0305;</mo></mover>\n");
 }
 
 wxString ConjugateCell::ToOMML() const {

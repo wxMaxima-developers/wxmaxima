@@ -299,11 +299,11 @@ wxString SubSupCell::ToMathML() const {
     if (m_postSubCell)
       retval += m_postSubCell->ListToMathML();
     else
-      retval += "<mrow/>";
+      retval += "<none/>";
     if (m_postSupCell)
       retval += m_postSupCell->ListToMathML();
     else
-      retval += "<mrow/>";
+      retval += "<none/>";
     retval += "</msubsup>\n";
   } else {
     retval = "<mmultiscripts>" + m_baseCell->ListToMathML();

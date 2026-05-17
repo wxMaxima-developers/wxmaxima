@@ -217,7 +217,7 @@ wxString IntervalCell::ToMathML() const {
   wxString open = m_openBracket->ToString();
   wxString close = m_closeBracket->ToString();
   wxString retval = wxString(wxS("<mrow>")) + wxS("<mo>") + open +
-    wxS("</mo>") + m_start->ListToMathML() + wxS(",") +
+    wxS("</mo>") + m_start->ListToMathML() + wxS("<mo>,</mo>") +
     m_stop->ListToMathML() + wxS("<mo>") + close +
     wxS("</mo>") + wxS("</mrow>\n");
 

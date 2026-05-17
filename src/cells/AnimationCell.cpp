@@ -447,15 +447,29 @@ wxString AnimationCell::ToRTF() const {
   }
 
   image += wxString::Format(
-                            wxS("\\picw%lu\\pich%lu "),
+                            wxS("\\picw%lu\\pich%lu\\picwgoal%lu\\pichgoal%lu "),
                             (unsigned long)m_images.at(m_displayed)->GetOriginalWidth(),
-                            (unsigned long)m_images.at(m_displayed)->GetOriginalHeight());
+                            (unsigned long)m_images.at(m_displayed)->GetOriginalHeight(),
+                            (unsigned long)m_images.at(m_displayed)->GetOriginalWidth() * 1440 / m_images.at(m_displayed)->GetPPI(),
+                            (unsigned long)m_images.at(m_displayed)->GetOriginalHeight() * 1440 / m_images.at(m_displayed)->GetPPI());
 
   // Convert the data into a hexadecimal string
-  for (size_t i = 0; i <= imgdata.GetDataLen(); i++)
-    image += wxString::Format("%02x", (static_cast<unsigned char *>(imgdata.GetData()))[i]);
+  char const *const data = static_cast<char *>(imgdata.GetData());
+  char const *const end = data + imgdata.GetDataLen();
+  wxStringBuffer::CharType *out = wxStringBuffer(image, image.length() + 2 * imgdata.GetDataLen());
+  out += image.length();
+
+  for (char const *in = data; in != end; in++) {
+    unsigned char const h = (*in >> 4) & 0xF, l = *in & 0xF;
+    *out++ = (h > 9) ? 'a' + h - 0xA : '0' + h;
+    *out++ = (l > 9) ? 'a' + l - 0xA : '0' + l;
+  }
 
   return header + image + footer;
+}
+
+wxString AnimationCell::ToMathML() const {
+  return wxS("<mtext>") + _("(Animation)") + wxS("</mtext>");
 }
 
 const wxString AnimationCell::GetToolTip(const wxPoint point) const {
