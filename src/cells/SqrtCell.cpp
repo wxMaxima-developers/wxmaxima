@@ -150,11 +150,7 @@ wxString SqrtCell::ToOMML() const {
 }
 
 wxString SqrtCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
-
-  return wxS("<q") + flags + wxS(">") + m_innerCell->ListToXML() + wxS("</q>");
+  return wxS("<q") + GetXMLFlags() + wxS(">") + m_innerCell->ListToXML() + wxS("</q>");
 }
 
 bool SqrtCell::BreakUp() const {

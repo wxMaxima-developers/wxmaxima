@@ -141,13 +141,6 @@ wxString SubCell::ToOMML() const {
 }
 
 wxString SubCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
-
-  if (m_altCopyText != wxEmptyString)
-    flags += wxS(" altCopy=\"") + XMLescape(m_altCopyText) + wxS("\"");
-
-  return wxS("<i") + flags + wxS("><r>") + m_baseCell->ListToXML() +
+  return wxS("<i") + GetXMLFlags() + wxS("><r>") + m_baseCell->ListToXML() +
     wxS("</r><r>") + m_indexCell->ListToXML() + wxS("</r></i>");
 }

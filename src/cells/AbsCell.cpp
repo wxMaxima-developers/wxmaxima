@@ -138,11 +138,7 @@ wxString AbsCell::ToOMML() const {
 }
 
 wxString AbsCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
-
-  return wxS("<a") + flags + wxS(">") + m_innerCell->ListToXML() + wxS("</a>");
+  return wxS("<a") + GetXMLFlags() + wxS(">") + m_innerCell->ListToXML() + wxS("</a>");
 }
 
 bool AbsCell::BreakUp() const {

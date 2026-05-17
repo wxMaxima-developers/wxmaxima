@@ -362,12 +362,7 @@ wxString SubSupCell::ToOMML() const {
 }
 
 wxString SubSupCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += " breakline=\"true\"";
-
-  if (m_altCopyText != wxEmptyString)
-    flags += " altCopy=\"" + XMLescape(m_altCopyText) + "\"";
+  wxString flags = GetXMLFlags();
 
   wxString retval;
   if (m_scriptCells.empty()) {

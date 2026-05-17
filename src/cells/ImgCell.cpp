@@ -289,9 +289,7 @@ wxString ImgCell::ToXML() const {
                                     m_image->GetCompressedImage());
   }
 
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
+  wxString flags = GetXMLFlags();
 
   if (m_image)
     flags += wxString::Format(wxS(" ppi=\"%li\""), static_cast<long>(m_image->GetPPI()));

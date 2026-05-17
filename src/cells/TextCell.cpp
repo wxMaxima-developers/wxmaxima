@@ -1191,10 +1191,6 @@ wxString TextCell::ToRTF() const {
 
 wxString TextCell::GetXMLFlags() const {
   wxString flags = Cell::GetXMLFlags();
-  // add  breakline="true" only, if it does not exist already (issue #2092)
-  if (HasHardLineBreak() && (GetTextStyle() != TS_LABEL) &&
-      (GetTextStyle() != TS_USERLABEL) && (flags.Find(" breakline=\"true\"") == wxNOT_FOUND))
-    flags += wxS(" breakline=\"true\"");
 
   if (GetTextStyle() == TS_ASCIIMATHS)
     flags += wxS(" type=\"ASCII-Art\"");
@@ -1207,12 +1203,6 @@ wxString TextCell::GetXMLFlags() const {
 
   if (GetTextStyle() == TS_WARNING)
     flags += wxS(" type=\"warning\"");
-
-  if (!GetAltCopyText().empty())
-    flags += wxS(" altCopy=\"") + XMLescape(GetAltCopyText()) + wxS("\"");
-
-  if (!GetLocalToolTip().empty())
-    flags += wxS(" tooltip=\"") + XMLescape(GetLocalToolTip()) + wxS("\"");
 
   if (GetTextStyle() == TS_USERLABEL)
     flags += wxS(" userdefined=\"yes\"");

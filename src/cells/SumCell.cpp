@@ -295,10 +295,8 @@ wxString SumCell::ToOMML() const {
 }
   
 wxString SumCell::ToXML() const {
-  wxString type = GetXMLType(); 
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
+  wxString type = GetXMLType();
+  wxString flags = GetXMLFlags();
 
   return wxS("<sm type=\"") + type + "\"" + flags + wxS("><r>") +
     m_under->ListToXML() + _T("</r><r>") + m_over->ListToXML() +

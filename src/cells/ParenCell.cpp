@@ -315,12 +315,9 @@ wxString ParenCell::ToMathML() const {
 
 wxString ParenCell::ToXML() const {
   wxString s;
-  if(m_innerCell)
+  if (m_innerCell)
     s = m_innerCell->ListToXML();
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
-  return ((m_print) ? wxS("<r><p") + flags + wxS(">") + s + wxS("</p></r>") : s);
+  return ((m_print) ? wxS("<r><p") + GetXMLFlags() + wxS(">") + s + wxS("</p></r>") : s);
 }
 
 bool ParenCell::BreakUp() const {

@@ -132,11 +132,7 @@ wxString ConjugateCell::ToOMML() const {
 }
 
 wxString ConjugateCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
-
-  return wxS("<cj") + flags + wxS(">") + m_innerCell->ListToXML() +
+  return wxS("<cj") + GetXMLFlags() + wxS(">") + m_innerCell->ListToXML() +
     wxS("</cj>");
 }
 

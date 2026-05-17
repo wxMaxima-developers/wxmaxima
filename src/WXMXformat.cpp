@@ -203,8 +203,8 @@ namespace Format {
           xmlText += wxString::Format(" variables_num=\"%li\"", static_cast<long>(varcount));
           for (std::size_t i = 0; i < variables.size(); i++)
             xmlText +=
-              wxString::Format(" variables_%li=\"%s\"", static_cast<long>(i),
-                               Cell::XMLescape(variables.at(i)).utf8_str());
+              wxString::Format(wxS(" variables_%li=\"%s\""), static_cast<long>(i),
+                               Cell::XMLescape(variables.at(i)));
         }
 
         xmlText << ">\n";

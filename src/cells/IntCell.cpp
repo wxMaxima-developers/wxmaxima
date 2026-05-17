@@ -315,9 +315,7 @@ wxString IntCell::ToXML() const {
     var = m_var->ListToXML();
   var = wxS("<r>") + var + wxS("</r>");
 
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
+  wxString flags = GetXMLFlags();
 
   if (HasLimits()) {
     return wxS("<in") + flags + wxS(">") + from + to + base + var + wxS("</in>");

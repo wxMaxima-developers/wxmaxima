@@ -129,6 +129,7 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
     m_innerTags[wxS("ie")] = &MathParser::ParseSubSupTag;
     m_innerTags[wxS("mmultiscripts")] = &MathParser::ParseMmultiscriptsTag;
     m_innerTags[wxS("lm")] = &MathParser::ParseLimitTag;
+    m_innerTags[wxS("limit")] = &MathParser::ParseLimitTag;
     m_innerTags[wxS("r")] = &MathParser::ParseRowTag;
     m_innerTags[wxS("mrow")] = &MathParser::ParseRowTag;
     m_innerTags[wxS("tb")] = &MathParser::ParseTableTag;

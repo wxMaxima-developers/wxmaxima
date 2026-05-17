@@ -118,10 +118,6 @@ wxString AtCell::ToOMML() const {
 }
 
 wxString AtCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
-
-  return wxS("<at") + flags + wxS("><r>") + m_baseCell->ListToXML() +
+  return wxS("<at") + GetXMLFlags() + wxS("><r>") + m_baseCell->ListToXML() +
     wxS("</r><r>") + m_indexCell->ListToXML() + wxS("</r></at>");
 }

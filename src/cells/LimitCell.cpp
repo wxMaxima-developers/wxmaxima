@@ -150,11 +150,11 @@ wxString LimitCell::ToOMML() const {
 }
 
 wxString LimitCell::ToXML() const {
-  wxString s = wxS("<limit") + GetXMLFlags() + wxS(">");
-  s += wxS("<base>") + m_base->ListToXML() + wxS("</base>");
-  s += wxS("<under>") + m_under->ListToXML() + wxS("</under>");
-  s += wxS("<name>") + m_name->ListToXML() + wxS("</name>");
-  s += wxS("</limit>");
+  wxString s = wxS("<lm") + GetXMLFlags() + wxS(">");
+  s += wxS("<r>") + m_name->ListToXML() + wxS("</r>");
+  s += wxS("<r>") + m_under->ListToXML() + wxS("</r>");
+  s += wxS("<r>") + m_base->ListToXML() + wxS("</r>");
+  s += wxS("</lm>");
   return s;
 }
 

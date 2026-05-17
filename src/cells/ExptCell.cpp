@@ -182,11 +182,7 @@ wxString ExptCell::ToOMML() const {
 }
 
 wxString ExptCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
-
-  return wxS("<e") + flags + wxS("><r>") + m_baseCell->ListToXML() +
+  return wxS("<e") + GetXMLFlags() + wxS("><r>") + m_baseCell->ListToXML() +
     wxS("</r><r>") + m_exptCell->ListToXML() + wxS("</r></e>");
 }
 

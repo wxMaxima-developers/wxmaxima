@@ -385,13 +385,12 @@ wxString AnimationCell::ToXML() const {
     }
   }
 
-  wxString flags;
-  flags = wxS(" gnuplotSources_gz=\"") + gnuplotSourceFiles + wxS("\"");
+  wxString flags = GetXMLFlags();
+  flags += wxS(" gnuplotSources_gz=\"") + gnuplotSourceFiles + wxS("\"");
   flags += wxS(" gnuplotData_gz=\"") + gnuplotDataFiles + "\"";
   if ((Length() > 0) && (m_images.at(0) != NULL))
     flags += wxString::Format(wxS(" ppi=\"%li\""), static_cast<long>(m_images.at(0)->GetPPI()));
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
+
   if (m_animationRunning)
     flags += wxS(" running=\"true\"");
   else

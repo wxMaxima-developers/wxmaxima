@@ -282,14 +282,12 @@ wxString FracCell::ToOMML() const {
 wxString FracCell::ToXML() const {
   wxString s = (m_fracStyle == FC_NORMAL || m_fracStyle == FC_DIFF)
     ? wxS("")
-    : wxS(" line = \"no\"");
+    : wxS(" line=\"no\"");
   wxString diffStyle;
   if (m_fracStyle == FC_DIFF)
     diffStyle = wxS(" diffstyle=\"yes\"");
-  if (HasHardLineBreak())
-    diffStyle += wxS(" breakline=\"true\"");
 
-  return wxS("<f") + s + diffStyle + wxS("><r>") + Num()->ListToXML() +
+  return wxS("<f") + s + diffStyle + GetXMLFlags() + wxS("><r>") + Num()->ListToXML() +
     wxS("</r><r>") + Denom()->ListToXML() + wxS("</r></f>");
 }
 

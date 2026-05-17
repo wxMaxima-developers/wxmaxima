@@ -138,9 +138,6 @@ wxString SetCell::ToTeX() const {
 
 wxString SetCell::ToXML() const {
   wxString s = m_innerCell->ListToXML();
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
-  return (wxS("<r set=\"true\"") + flags + wxS("><t listdelim=\"true\">{</t>") +
+  return (wxS("<r set=\"true\"") + GetXMLFlags() + wxS("><t listdelim=\"true\">{</t>") +
           s + wxS("<t listdelim=\"true\">}</t></r>"));
 }

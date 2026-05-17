@@ -708,6 +708,13 @@ wxString Cell::GetXMLFlags() const {
   wxString flags;
   if (HasHardLineBreak())
     flags += wxS(" breakline=\"true\"");
+
+  if (!GetAltCopyText().empty())
+    flags += wxS(" altCopy=\"") + Cell::XMLescape(GetAltCopyText()) + wxS("\"");
+
+  if (!GetLocalToolTip().empty())
+    flags += wxS(" tooltip=\"") + Cell::XMLescape(GetLocalToolTip()) + wxS("\"");
+
   flags += GetExtraXMLAttributes();
   return flags;
 }

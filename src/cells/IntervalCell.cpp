@@ -225,9 +225,7 @@ wxString IntervalCell::ToMathML() const {
 }
 
 wxString IntervalCell::ToXML() const {
-  wxString flags = wxS(" interval=\"true\"");
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
+  wxString flags = wxS(" interval=\"true\"") + GetXMLFlags();
   if (m_leftBracketOpensLeft)
     flags += wxS(" leftBracketOpensLeft=\"true\"");
   else

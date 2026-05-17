@@ -135,10 +135,7 @@ wxString FunCell::ToTeX() const {
 }
 
 wxString FunCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
-  return wxS("<fn") + flags + wxS("><r>") + m_nameCell->ListToXML() +
+  return wxS("<fn") + GetXMLFlags() + wxS("><r>") + m_nameCell->ListToXML() +
     wxS("</r>") + m_argCell->ListToXML() + wxS("</fn>");
 }
 

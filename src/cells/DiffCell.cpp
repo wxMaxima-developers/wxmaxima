@@ -171,11 +171,7 @@ wxString DiffCell::ToOMML() const {
 }
 
 wxString DiffCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
-
-  return wxS("<d") + flags + wxS(">") + m_diffCell->ListToXML() +
+  return wxS("<d") + GetXMLFlags() + wxS(">") + m_diffCell->ListToXML() +
     m_baseCell->ListToXML() + wxS("</d>");
 }
 

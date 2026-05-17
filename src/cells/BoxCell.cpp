@@ -149,11 +149,7 @@ wxString BoxCell::ToOMML() const {
 }
 
 wxString BoxCell::ToXML() const {
-  wxString flags;
-  if (HasHardLineBreak())
-    flags += wxS(" breakline=\"true\"");
-
-  return wxS("<hl") + flags + wxS(">") + m_innerCell->ListToXML() +
+  return wxS("<hl") + GetXMLFlags() + wxS(">") + m_innerCell->ListToXML() +
     wxS("</hl>");
 }
 
