@@ -317,7 +317,7 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
       frame->MSWGetTaskBarButton()->SetProgressState(wxTASKBAR_BUTTON_ERROR);
       #endif
       #endif
-      m_maximaStatus->SetBitmap(m_bitmap_userinput);
+      m_maximaStatus->SetBitmap(m_bitmap_process_wont_start);
       m_maximaStatus->SetToolTip(_("Maxima returned an error message"));
       break;
     case disconnected:

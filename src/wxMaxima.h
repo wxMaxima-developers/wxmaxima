@@ -799,6 +799,7 @@ protected:
   static wxRegEx m_sbclCompilationRegEx;
   MathParser m_parser;
   bool m_maximaBusy = true;
+  bool m_maximaError = false;
 private:
   bool m_fourierLoaded = false;
   //! The value of maxima's logexpand variable

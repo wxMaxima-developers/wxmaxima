@@ -203,7 +203,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   : wxMaximaFrame(parent, id, title, pos, size,
                   wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION),
     m_gnuplotcommand(wxS("gnuplot")),
-    m_parser(&m_configuration) {
+    m_parser(&m_configuration),
+    m_maximaError(false) {
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
   wxHandleFatalExceptions();
   wxLogMessage(_("Will try to generate a stack backtrace, if the program ever crashes"));
@@ -2378,9 +2379,10 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
       // If there is no working group and we still are trying to send something
       // we are trying to change maxima's settings from the background and might
       // never get an answer that changes the status again.
-      if (GetWorksheet() && (GetWorksheet()->GetWorkingGroup()))
+      if (GetWorksheet() && (GetWorksheet()->GetWorkingGroup())) {
+        m_maximaError = false;
         StatusMaximaBusy(StatusBar::MaximaStatus::calculating);
-      else
+      } else
         StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
 
       wxScopedCharBuffer const data_raw = s.utf8_str();
@@ -2894,6 +2896,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_configCommands.Clear();
   // The new maxima process will be in its initial condition => mark it as such.
   m_hasEvaluatedCells = false;
+  m_maximaError = false;
 
   if(GetWorksheet())
     {
@@ -4103,7 +4106,10 @@ void wxMaxima::ReadPrompt(const wxString &data) {
     m_outputCellsFromCurrentCommand = 0;
     if (GetWorksheet()->m_evaluationQueue.Empty()) { // queue empty.
       m_exitOnError = false;
-      StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
+      if (m_maximaError)
+        StatusMaximaBusy(StatusBar::MaximaStatus::maximaerror);
+      else
+        StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
       // If we have selected a cell in order to show we are evaluating it
       // we should now remove this marker.
       if (GetWorksheet()->FollowEvaluation()) {
@@ -5932,6 +5938,7 @@ void wxMaxima::ReadStdErr() {
 bool wxMaxima::AbortOnError() {
   // Maxima encountered an error.
   // The question is now if we want to try to send it something new to evaluate.
+  m_maximaError = true;
 
   ExitAfterEval(false);
   EvalOnStartup(false);
