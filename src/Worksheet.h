@@ -1529,9 +1529,8 @@ public:
   bool GCContainsCurrentQuestion(const GroupCell *cell);
 
   /*! Move the cursor to the question maxima currently asks and if needed add a cell for user input
-   */
-  void OpenQuestionCaret(const wxString &txt = {});
-  //! Execute all collected scroll events in one go.
+    */
+  bool OpenQuestionCaret(const wxString &txt = {});  //! Execute all collected scroll events in one go.
   void UpdateScrollPos();
 
   /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.

@@ -4145,15 +4145,17 @@ void wxMaxima::ReadPrompt(const wxString &data) {
     // If the user answers a question additional output might be required even
     // if the question has been preceded by many lines.
     m_outputCellsFromCurrentCommand = 0;
-    if ((GetWorksheet()->GetWorkingGroup() == NULL) ||
-        ((GetWorksheet()->GetWorkingGroup()->m_knownAnswers.empty()) &&
-         GetWorksheet()->GetWorkingGroup()->AutoAnswer()))
-      GetWorksheet()->SetNotification(_("Maxima asks a question!"),
-                                   wxICON_INFORMATION);
+
+    bool autoAnswer = GetWorksheet()->OpenQuestionCaret();
+
+    if (GetWorksheet()->ScrolledAwayFromEvaluation()) {
+      if (GetWorksheet()->m_mainToolBar)
+        GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
+    }
+
     if (!label.IsEmpty()) {
       int options = AppendOpt::NewLine | AppendOpt::BigSkip;
-      if ((!GetWorksheet()->GetWorkingGroup()) ||
-          (!GetWorksheet()->GetWorkingGroup()->AutoAnswer()))
+      if (!autoAnswer)
         options |= AppendOpt::PromptToolTip;
 
       if (std::max(label.Find(m_mathPrefix1), label.Find(m_mathPrefix2)) >= 0)
@@ -4161,12 +4163,15 @@ void wxMaxima::ReadPrompt(const wxString &data) {
       else
         DoRawConsoleAppend(label, MC_TYPE_PROMPT, AppendOpt(options));
     }
-    if (GetWorksheet()->ScrolledAwayFromEvaluation()) {
-      if (GetWorksheet()->m_mainToolBar)
-        GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
-    } else
-      GetWorksheet()->OpenQuestionCaret();
-    StatusMaximaBusy(StatusBar::MaximaStatus::userinput);
+
+    if (!autoAnswer) {
+      if ((GetWorksheet()->GetWorkingGroup() == NULL) ||
+          ((GetWorksheet()->GetWorkingGroup()->m_knownAnswers.empty()) &&
+           GetWorksheet()->GetWorkingGroup()->AutoAnswer()))
+        GetWorksheet()->SetNotification(_("Maxima asks a question!"),
+                                        wxICON_INFORMATION);
+      StatusMaximaBusy(StatusBar::MaximaStatus::userinput);
+    }
   }
   label.Trim(false);
   if (label.StartsWith(wxS("MAXIMA>")) || label.StartsWith("(dbm:")) {

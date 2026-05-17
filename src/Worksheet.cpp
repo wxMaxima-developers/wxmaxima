@@ -3125,11 +3125,11 @@ void Worksheet::SetAnswer(const wxString &answer) {
   answerCell->SetAnswer(m_lastQuestion, answer);
 }
 
-void Worksheet::OpenQuestionCaret(const wxString &txt) {
+bool Worksheet::OpenQuestionCaret(const wxString &txt) {
   GroupCell *group = GetWorkingGroup(true);
   wxASSERT_MSG(group, _("Bug: Got a question but no cell to answer it in"));
   if (!group)
-    return;
+    return false;
 
   // We are leaving the input part of the current cell in this step.
   TreeUndo_CellLeft();
@@ -3143,12 +3143,12 @@ void Worksheet::OpenQuestionCaret(const wxString &txt) {
     Recalculate(group);
   }
 
+  bool autoEvaluate = false;
   // If we still haven't a cell to put the answer in we now create one.
   if (!m_cellPointers.m_answerCell) {
     auto answerCell = std::make_unique<EditorCell>(group, m_configuration);
     m_cellPointers.m_answerCell = answerCell;
     answerCell->SetType(MC_TYPE_INPUT);
-    bool autoEvaluate = false;
 
     if (!txt.empty())
       answerCell->SetValue(txt);
@@ -3176,6 +3176,7 @@ void Worksheet::OpenQuestionCaret(const wxString &txt) {
     SetActiveCell(m_cellPointers.m_answerCell);
 
   RequestRedraw();
+  return autoEvaluate;
 }
 
 void Worksheet::OpenHCaret(const wxString &txt, GroupType type) {
