@@ -142,7 +142,7 @@ Image::~Image() {
     m_loadImageTask.join();
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
-  if (!m_gnuplotSource.IsEmpty()) {
+  if (!m_gnuplotSource.IsEmpty() && IsSafePath(m_gnuplotSource)) {
     if (wxFileExists(m_gnuplotSource))
     {
       if(!wxRemoveFile(m_gnuplotSource))
@@ -158,7 +158,7 @@ Image::~Image() {
     }
   }
 
-  if (!m_gnuplotData.IsEmpty()) {
+  if (!m_gnuplotData.IsEmpty() && IsSafePath(m_gnuplotData)) {
     if (wxFileExists(m_gnuplotData))
     {
       if(!wxRemoveFile(m_gnuplotData))
@@ -869,7 +869,7 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
         m_compressedImage = ReadCompressedImage(strm.get());
 
       file.Close();
-      if (ok && remove) {
+      if (ok && remove && IsSafePath(image)) {
         wxLogNull suppressor;
         if(!wxRemoveFile(image))
         {
@@ -1043,6 +1043,26 @@ void Image::Recalculate(double scale) {
   // we need right now.
   if (m_scaledBitmap.GetWidth() != m_width)
     ClearCache();
+}
+
+#include <wx/stdpaths.h>
+#include <wx/filename.h>
+
+bool Image::IsSafePath(const wxString &path) {
+  if (path.IsEmpty())
+    return false;
+
+  wxFileName fn(path);
+  wxString absolutePath = fn.GetAbsolutePath();
+
+  wxString tempDir = wxStandardPaths::Get().GetTempDir();
+  wxFileName tempFn(tempDir);
+  wxString absoluteTempDir = tempFn.GetAbsolutePath();
+
+  if (absolutePath.StartsWith(absoluteTempDir))
+    return true;
+
+  return false;
 }
 
 const wxString Image::GetBadImageToolTip() {

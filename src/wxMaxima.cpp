@@ -119,6 +119,7 @@
 #endif
 #include "main.h"
 #include <list>
+#include <functional>
 #include <memory>
 #include <wx/sstream.h>
 #include <wx/url.h>
@@ -129,12 +130,6 @@ wxDECLARE_APP(MyApp);
 #if defined __WXOSX__
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
 #endif
-
-/*! Calls a member function from a function pointer
-
-  \todo Replace this by a C++17 construct when we switch to C++17
-*/
-#define CALL_MEMBER_FN(object, ptrToMember) ((object).*(ptrToMember))
 
 void wxMaxima::ConfigChanged() {
 
@@ -3447,13 +3442,13 @@ void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {
 
               auto varFunc = m_variableReadActions.find(name);
               if (varFunc != m_variableReadActions.end())
-                CALL_MEMBER_FN(*this, varFunc->second)(value);
+                std::invoke(varFunc->second, this, value);
             } else {
               if(GetWorksheet() && (m_variablesPane))
                 m_variablesPane->VariableUndefined(name);
               auto varFunc = m_variableUndefinedActions.find(name);
               if (varFunc != m_variableUndefinedActions.end())
-                CALL_MEMBER_FN(*this, varFunc->second)();
+                std::invoke(varFunc->second, this);
             }
 
             var = var->GetNext();

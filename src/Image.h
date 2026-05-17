@@ -249,6 +249,9 @@ public:
   //! The tooltip to use wherever an image that's not Ok is shown.
   static const wxString GetBadImageToolTip();
 
+  //! Returns true if the path is in a safe (temporary) directory for deletion
+  static bool IsSafePath(const wxString &path);
+
   class WxmxStream: public wxZipInputStream
   {
   public:
