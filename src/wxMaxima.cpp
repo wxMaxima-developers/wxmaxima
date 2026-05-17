@@ -5732,6 +5732,8 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
   } else
     StatusText(_("File could not be opened"));
 
+  m_configuration.RecalculateForce();
+  GetWorksheet()->UpdateConfigurationClientSize();
   GetWorksheet()->Recalculate();
   UpdateMenus();
 

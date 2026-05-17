@@ -1148,6 +1148,9 @@ public:
   //! Find a cell by its UUID
   Cell *FindCellByUUID(const wxString &uuid);
 
+  //! Inform the configuration about the current client size.
+  void UpdateConfigurationClientSize();
+
   /*! We can edit the input if the we have the whole input in selection!
    */
   bool CanEdit();
@@ -1605,7 +1608,6 @@ protected:
 #if wxUSE_ACCESSIBILITY
   AccessibilityInfo *m_accessibilityInfo = NULL;
 #endif
-  void UpdateConfigurationClientSize();
   //! Where to start recalculation. NULL = No recalculation needed.
   CellPtr<GroupCell> m_recalculateStart;
   //! The x position of the mouse pointer
