@@ -2196,7 +2196,11 @@ void wxMaximaFrame::AuiManagerUpdate() {
 #ifdef __WXGTK__
     // Re-asserting the menu bar is needed on GTK/KDE to prevent it from disappearing
     // after AUI layout updates.
-    SetMenuBar(m_MenuBar);
+    // Use CallAfter to avoid disrupting current menu interactions.
+    CallAfter([this]() {
+      if (m_MenuBar)
+        SetMenuBar(m_MenuBar);
+    });
 #else
     if (GetMenuBar() != m_MenuBar)
       SetMenuBar(m_MenuBar);
