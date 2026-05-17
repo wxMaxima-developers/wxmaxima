@@ -58,7 +58,7 @@ var searchData=
   ['openfile_55',['OpenFile',['../classwxMaxima.html#a7d564412c10d5cefbc4283d656798736',1,'wxMaxima']]],
   ['openhcaret_56',['OpenHCaret',['../classWorksheet.html#a31518b588d76a655a3bcef0b80834f80',1,'Worksheet::OpenHCaret(const wxString &amp;txt={})'],['../classWorksheet.html#a0a1a93d062578386240e8e974204f4a9',1,'Worksheet::OpenHCaret(const wxString &amp;txt, GroupType type)']]],
   ['openmacfile_57',['OpenMACFile',['../classwxMaxima.html#a8a5650b768d24fe648dd96fd15c522ab',1,'wxMaxima']]],
-  ['openquestioncaret_58',['OpenQuestionCaret',['../classWorksheet.html#ab7897744c4c5aa188a21acc8b9252256',1,'Worksheet']]],
+  ['openquestioncaret_58',['OpenQuestionCaret',['../classWorksheet.html#a8894491a942fff2520b9dd8c8135695c',1,'Worksheet']]],
   ['openwxmfile_59',['OpenWXMFile',['../classwxMaxima.html#ace804fd0a8a7aa024a92d9cab8e4e30b',1,'wxMaxima']]],
   ['openwxmxfile_60',['OpenWXMXFile',['../classwxMaxima.html#a8cf6b30b445dc167ed6b272fc52a2304',1,'wxMaxima']]],
   ['openxml_61',['OpenXML',['../classwxMaxima.html#aab325caccacb9ba3bd6cae1f3019dbff',1,'wxMaxima']]],
