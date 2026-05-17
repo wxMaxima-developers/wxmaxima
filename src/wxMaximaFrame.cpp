@@ -2192,11 +2192,16 @@ void wxMaximaFrame::HideAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
 }
 void wxMaximaFrame::AuiManagerUpdate() {
   m_manager.Update();
-#ifdef __WXGTK__
   if (m_MenuBar) {
+#ifdef __WXGTK__
+    // Re-asserting the menu bar is needed on GTK/KDE to prevent it from disappearing
+    // after AUI layout updates.
     SetMenuBar(m_MenuBar);
-  }
+#else
+    if (!GetMenuBar())
+      SetMenuBar(m_MenuBar);
 #endif
+  }
 }
 
 void  wxMaximaFrame::StatusText(const wxString &text, bool saveInLog)
