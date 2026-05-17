@@ -2198,7 +2198,7 @@ void wxMaximaFrame::AuiManagerUpdate() {
     // after AUI layout updates.
     SetMenuBar(m_MenuBar);
 #else
-    if (!GetMenuBar())
+    if (GetMenuBar() != m_MenuBar)
       SetMenuBar(m_MenuBar);
 #endif
   }
