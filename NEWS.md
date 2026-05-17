@@ -21,6 +21,7 @@
 - A few Autocompletion fixes
 - Better SVGZ support
 - Some fixes for selection of output
+- Improved MathML and RTF output
 
 # 26.05.0
 
