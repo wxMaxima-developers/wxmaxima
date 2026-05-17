@@ -439,7 +439,7 @@ Formato de archivo de archivos wxm</h4>
 <li><code>content.xml</code>: a XML document, which contains the various cells of your document in XML format.</li>
 </ul>
 <p>So, if something goes wrong, you can unzip a <a class="el" href="classwxMaxima.html">wxMaxima</a> document (maybe rename it before to a <code>zip</code>-file), maybe make changes in the <code>content.xml</code> file with a text editor, or replace an broken image, zip the files again, probably rename the <code>zip</code> to a <code>wxmx</code>-file - and you get another modified <code>wxmx</code>-file.</p>
-<h2><a class="anchor" id="autotoc_md135"></a>
+<h2><a class="anchor" id="autotoc_md136"></a>
 Opciones de configuración</h2>
 <p>Para algunas configuraciones comunes de variables <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> ofrecen dos maneras de configurarlas:</p>
 <ul>
@@ -447,10 +447,10 @@ Opciones de configuración</h2>
 <li>Also, the values for most configuration variables can be changed for the current session only by overwriting their values from the worksheet, as shown below.</li>
 </ul>
 <p><img src="./wxMaxima_configuration_001.png" alt="Configuración de wxMaxima 1" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md136"></a>
+<h3><a class="anchor" id="autotoc_md137"></a>
 Velocidad de cuadros de animación predeterminada</h3>
 <p>La tasa del marco de animación que se utiliza para animaciones nuevas se conserva dentro de la variable <code>wxanimate_framerate</code>. El valor inicial de esta variable contiene dentro una hoja de trabajo nueva que puede ser modificada utilizando el diálogo de configuración.</p>
-<h3><a class="anchor" id="autotoc_md137"></a>
+<h3><a class="anchor" id="autotoc_md138"></a>
 Tamaño de trama predet. para sesiones &lt;em&gt;maxima&lt;/em&gt; nuevas</h3>
 <p>Tras el siguiente inicio, tramas empotradas a la hoja del trabajo será creada con este tamaño si el valor de <code>wxplot_size</code> no es modificado por <em>maxima</em>.</p>
 <p>Con la intención de establecer el tamaño de trama de un grafo único solamente utilice la notación siguiente puede ser utilizada que fija un valor de variable solamente para una sola instrucción:</p>
@@ -460,14 +460,14 @@ Tamaño de trama predet. para sesiones &lt;em&gt;maxima&lt;/em&gt; nuevas</h3>
 <div class="line">       x,-5,5</div>
 <div class="line">   )</div>
 <div class="line">), wxplot_size=[480,480]$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md138"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md139"></a>
 Coincide paréntesis en controles de texto</h3>
 <p>Esta opción habilita dos cosas:</p>
 <ul>
 <li>If an opening parenthesis, bracket, or double quote is entered <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> will insert a closing one after it.</li>
 <li>Si el texto está seleccionad si cualquiera de estas teclas es pulsada el texto seleccionado será puedes entre los signos coincidan.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md139"></a>
+<h3><a class="anchor" id="autotoc_md140"></a>
 No guardar automáticamente la hoja de trabajo</h3>
 <p>Si esta opción está puesta, el archivo donde la hoja de trabajo será sobrescrita solamente al solicitar el usuario. En caso de un cuelgue/corte de luz/... sin embargo, aún está disponible una copia de respaldo reciente dentro del directorio temporal ‘temp’.</p>
 <p>Si esta opción no está fijada <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> se comporta más como una app telefónica moderna:</p>
@@ -475,15 +475,15 @@ No guardar automáticamente la hoja de trabajo</h3>
 <li>Ficheros son guardados automáticamente al salir</li>
 <li>And the file will automatically be saved every 3 minutes.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md140"></a>
+<h3><a class="anchor" id="autotoc_md141"></a>
 ¿Donde está la configuración guardada?</h3>
 <p>Si está utilizando Unix/Linux, la información de la configuración será guardada dentro de un archivo <code>.<a class="el" href="classwxMaxima.html">wxMaxima</a></code> dentro de su directorio personal (si está utilizando wxWidgets &lt; 3.1.1), o <code>.config/wxMaxima.conf</code>((XDG-Estandarizado) si wxWidgets ≥ 3.1.1). Puede obtener la versión de wxWidgets desde la instrucción <code>wxbuild_info();</code> o para utilizar la opción del menú Ayuda→Acerca de. <a href="https://www.wxwidgets.org/">wxWidgets</a> es la biblioteca IGU de plataforma cruzada lo cual es la base para <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (por lo tanto el <code>wx</code> dentro del nombre). (Cuando el nombre del archivo comience con un punto, <code>.wxmaxima</code> o <code>.config</code> estarán ocultos).</p>
 <p>Si está utilizando Windows, la configuración será almacenada dentro del registro. Encontrará los apuntes para <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> en la posición siguiente dentro del registro: <code>HKEY_CURRENT_USER\Software\<a class="el" href="classwxMaxima.html">wxMaxima</a></code></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md141"></a>
+<h1><a class="anchor" id="autotoc_md142"></a>
 Extensiones para &lt;em&gt;Maxima&lt;/em&gt;</h1>
 <p><em>WxMaxima</em> es primariamente un interfaz gráfico de usuario para <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. Por lo tanto, su propósito principal es enviar órdenes a <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> y comunicar los resultados de ejecutar esas órdenes. En algunos casos, sin embargo, <em><a class="el" href="classwxMaxima.html">wxMaxima</a> agrega funcionalidades a _Maxima</em>. La capacidad de <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> para generar informes exportando un contenido del cuaderno a HTML y LaTeX ha sido mencionado. Esta sección considera algunas maneras que <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> mejora la inclusión de gráficos dentro de una sesión.</p>
-<h2><a class="anchor" id="autotoc_md142"></a>
+<h2><a class="anchor" id="autotoc_md143"></a>
 Variables subescritas</h2>
 <p>Especificidades <code>wxsubscripts</code>, si (y como) <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> auto-suscribirá nombres de variable:</p>
 <p>Si es falso, la funcionalidad está apagada, <a class="el" href="classwxMaxima.html">wxMaxima</a> no auto-suscribirá parte de nombres de variable tras un subrayado.</p>
@@ -497,7 +497,7 @@ Variables subescritas</h2>
 wxsubscripts" class="inline"/></p>
 <p>Si el nombre de variable no coincide estos requerimientos, aún puede ser declarado como "para ser sub-guionado" utilizando la instrucción <code>wxdeclare_subscript(nombre_variable);</code> o <code>wxdeclare_subscript([nombre_variable1,nombre_variable2,...]);</code> declarando una variable como sub-guion puede ser revertido utilizando la instrucción siguiente: <code>wxdeclare_subscript(nombre_variable,false);</code></p>
 <p>Puede utilizar el menú «Vista→Auto-subguion» para fijar estos valores.</p>
-<h2><a class="anchor" id="autotoc_md143"></a>
+<h2><a class="anchor" id="autotoc_md144"></a>
 Comentario del usuario en la barra de estado</h2>
 <p>Las instrucciones de ejecución largas pueden proporcionar al usuario su estado dentro de la barra de estado. Esta comentario es sustituído por cualquier comentario devuelto que es colocada allí (permitiendo utilizarlo como un indicador de progreso) y es borrado tan pronto como la instrucción actual enviada a <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> ha finalizado. Es seguro de utilizar <code>wxstatusbar()</code> incluso dentro de bibliotecas que tal vez sean utilizadas con el simple <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (como opuesto a <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>): si <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> no está presente la instrucción <code>wxstatusbar()</code> será tan solo dejada sin evaluar.</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -508,10 +508,10 @@ Comentario del usuario en la barra de estado</h2>
 <div class="line">    /* la ejecución del programa (aquí: para 3 segundos) */</div>
 <div class="line">    ?sleep(3)</div>
 <div class="line">)$</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md144"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md145"></a>
 Tramar</h2>
 <p>Tramar (teniendo fundamentalmente hacerlo con gráficas) es un lugar donde un interfaz gráfico del usuario tendrá para proporcionar algunas extensiones para el programa original.</p>
-<h3><a class="anchor" id="autotoc_md145"></a>
+<h3><a class="anchor" id="autotoc_md146"></a>
 Empotrar una trama dentro de la hoja de trabajo</h3>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> normalmente instrumenta el programa <em>Gnuplot</em> externo para abrir una ventana separada por cada diagrama que crea. Debido a que muchas veces es conveniente empotrar grafos a la hoja de trabajo en vez que <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> proporcione su propio conjunto de funciones de trama que no difieran desde las funciones correspondientes a <em>maxima</em> que guarda dentro de su nombre: todo está prefijado por un “wx”.</p>
 <p>Las siguientes funciones de tramado tienen contrapartes wx:</p>
