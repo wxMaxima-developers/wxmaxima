@@ -73,46 +73,20 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
-  <div class="summary">
-<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">MathParser.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>This file defines the class <a class="el" href="classMathParser.html" title="This class handles parsing the xml representation of a cell tree.">MathParser</a> that reads wxmx data and math from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;utility&gt;</code><br />
+<div class="textblock"><code>#include &lt;functional&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;wx/config.h&gt;</code><br />
 <code>#include &lt;wx/intl.h&gt;</code><br />
 <code>#include &lt;wx/sstream.h&gt;</code><br />
 <code>#include &lt;wx/tokenzr.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="MathParser_8h_source.html">MathParser.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="AbsCell_8h_source.html">cells/AbsCell.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="AnimationCell_8h_source.html">cells/AnimationCell.h</a>&quot;</code><br />
-<code>#include &quot;cells/AtCell.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="BoxCell_8h_source.html">cells/BoxCell.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="NamedBoxCell_8h_source.html">cells/NamedBoxCell.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="CellList_8h_source.html">cells/CellList.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="ConjugateCell_8h_source.html">cells/ConjugateCell.h</a>&quot;</code><br />
-<code>#include &quot;cells/DiffCell.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="ExptCell_8h_source.html">cells/ExptCell.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="FunCell_8h_source.html">cells/FunCell.h</a>&quot;</code><br />
-<code>#include &quot;cells/ImgCell.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="IntCell_8h_source.html">cells/IntCell.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="IntervalCell_8h_source.html">cells/IntervalCell.h</a>&quot;</code><br />
-<code>#include &quot;cells/LabelCell.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="LimitCell_8h_source.html">cells/LimitCell.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="ListCell_8h_source.html">cells/ListCell.h</a>&quot;</code><br />
-<code>#include &quot;cells/LongNumberCell.h&quot;</code><br />
-<code>#include &quot;cells/MatrCell.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="ParenCell_8h_source.html">cells/ParenCell.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="SetCell_8h_source.html">cells/SetCell.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="SqrtCell_8h_source.html">cells/SqrtCell.h</a>&quot;</code><br />
-<code>#include &quot;StringUtils.h&quot;</code><br />
-<code>#include &quot;cells/SubCell.h&quot;</code><br />
-<code>#include &quot;cells/SubSupCell.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="SumCell_8h_source.html">cells/SumCell.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ProductCell_8h_source.html">cells/ProductCell.h</a>&quot;</code><br />
 <code>#include &quot;cells/VisiblyInvalidCell.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -121,48 +95,9 @@ Include dependency graph for MathParser.cpp:</div>
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="MathParser_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
-</div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a9c75e3ed4f289dca9f75ac0cd3b8ac7e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="MathParser_8cpp.html#a9c75e3ed4f289dca9f75ac0cd3b8ac7e">CALL_MEMBER_FN</a>(object,  ptrToMember)&#160;&#160;&#160;((object).*(ptrToMember))</td></tr>
-<tr class="memdesc:a9c75e3ed4f289dca9f75ac0cd3b8ac7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls a member function from a function pointer.  <br /></td></tr>
-<tr class="separator:a9c75e3ed4f289dca9f75ac0cd3b8ac7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+</div><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file defines the class <a class="el" href="classMathParser.html" title="This class handles parsing the xml representation of a cell tree.">MathParser</a> that reads wxmx data and math from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. </p>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a9c75e3ed4f289dca9f75ac0cd3b8ac7e" name="a9c75e3ed4f289dca9f75ac0cd3b8ac7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c75e3ed4f289dca9f75ac0cd3b8ac7e">&#9670;&#160;</a></span>CALL_MEMBER_FN</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CALL_MEMBER_FN</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">object, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">ptrToMember&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;((object).*(ptrToMember))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Calls a member function from a function pointer. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Replace this by a C++17 construct when we switch to C++17 </dd></dl>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6

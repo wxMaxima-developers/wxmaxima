@@ -37,9 +37,10 @@ var searchData=
   ['isoperator_34',['IsOperator',['../classCell.html#ad9ead4b4296d8f1f1fe50f8e8c83868c',1,'Cell::IsOperator()'],['../classFracCell.html#a1ae2e54a7fe858f0f21c2fc031e0ed80',1,'FracCell::IsOperator()'],['../classTextCell.html#a4cf54ff09e85bfa8eba366072df3e883',1,'TextCell::IsOperator()'],['../classConfiguration.html#ae4d6699f5f7ce4330b1e6806b05d286b',1,'Configuration::IsOperator()']]],
   ['ispanedisplayed_35',['IsPaneDisplayed',['../classwxMaximaFrame.html#aca9ae11de0e947738270669867ec3b0e',1,'wxMaximaFrame']]],
   ['ispointinselection_36',['IsPointInSelection',['../classEditorCell.html#aacd184cb9e7f5ef35176df9f5735b4cc',1,'EditorCell']]],
-  ['isselected_37',['IsSelected',['../classWorksheet.html#a8dfd3c377a9520702e5c6cba30edd5e5',1,'Worksheet']]],
-  ['isselectioninworkinggroup_38',['IsSelectionInWorkingGroup',['../classWorksheet.html#aaf379a135e0cf51b54fb7e1aef2208dd',1,'Worksheet']]],
-  ['isshortnum_39',['IsShortNum',['../classCell.html#a4c9f48de399a16a801e0e3c53f805b4e',1,'Cell::IsShortNum()'],['../classTextCell.html#a8915bfe798fc73eeeeda6bcd7025d6f8',1,'TextCell::IsShortNum()']]],
-  ['isvalidvariable_40',['IsValidVariable',['../classVariablespane.html#a7ad9c02ee28a4e8dedab236c44ef1994',1,'Variablespane']]],
-  ['isxmlinspectorshown_41',['IsXMLInspectorShown',['../classwxMaximaFrame.html#a417d6b9fde48cc771065d3d8b2c06ab5',1,'wxMaximaFrame']]]
+  ['issafepath_37',['IsSafePath',['../classImage.html#aa9203329d64e99ec87c0ac2640818f25',1,'Image']]],
+  ['isselected_38',['IsSelected',['../classWorksheet.html#a8dfd3c377a9520702e5c6cba30edd5e5',1,'Worksheet']]],
+  ['isselectioninworkinggroup_39',['IsSelectionInWorkingGroup',['../classWorksheet.html#aaf379a135e0cf51b54fb7e1aef2208dd',1,'Worksheet']]],
+  ['isshortnum_40',['IsShortNum',['../classCell.html#a4c9f48de399a16a801e0e3c53f805b4e',1,'Cell::IsShortNum()'],['../classTextCell.html#a8915bfe798fc73eeeeda6bcd7025d6f8',1,'TextCell::IsShortNum()']]],
+  ['isvalidvariable_41',['IsValidVariable',['../classVariablespane.html#a7ad9c02ee28a4e8dedab236c44ef1994',1,'Variablespane']]],
+  ['isxmlinspectorshown_42',['IsXMLInspectorShown',['../classwxMaximaFrame.html#a417d6b9fde48cc771065d3d8b2c06ab5',1,'wxMaximaFrame']]]
 ];
