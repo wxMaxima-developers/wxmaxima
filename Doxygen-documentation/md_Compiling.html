@@ -72,7 +72,7 @@ $(function() {
   <div class="headertitle"><div class="title">Building <a class="el" href="classwxMaxima.html">wxMaxima</a> from source </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>To build <a class="el" href="classwxMaxima.html">wxMaxima</a> from sources you need to have a C++ compiler (C++14), wxWidgets &gt;= 3.0 (including development headers) and CMake &gt;= 3.16 installed.</p>
+<div class="textblock"><p>To build <a class="el" href="classwxMaxima.html">wxMaxima</a> from sources you need to have a C++ compiler (C++14), wxWidgets &gt;= 3.2 (including development headers) and CMake &gt;= 3.16 installed.</p>
 <h2><a class="anchor" id="autotoc_md13"></a>
 Compiling wxMaxima on Linux / Unix systems and Linux-like systems (Cygwin, WSL, MacPorts, Fink, Homebrew,...)</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is built using the CMake build system.</p>
@@ -112,8 +112,7 @@ macOS: Creating a portable .apk and .dmg installer</h3>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md16"></a>
 Ubuntu or Debian build prerequisites</h3>
 <div class="fragment"><div class="line">sudo apt-get install build-essential libwxgtk3.2-gtk3-dev libwxgtk-webview3.2-gtk3-dev wx3.2-i18n ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a</div>
-</div><!-- fragment --><p>On Ubuntu &lt; 24.04 install an older wxWidgets version (<code>libwxbase3.0-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev</code> instead of the version 3.2).</p>
-<p>beforehand or (if apt-get is configured to load the source package repositories and not only the binary packages) by the simpler</p>
+</div><!-- fragment --><p>beforehand or (if apt-get is configured to load the source package repositories and not only the binary packages) by the simpler</p>
 <div class="fragment"><div class="line">sudo apt-get build-dep wxmaxima</div>
 </div><!-- fragment --><p>You must use the apt-get install command when the version you are building has dependencies which are not listed as dependencies in your distro's repository version of wxmaxima.</p>
 <h3><a class="anchor" id="autotoc_md17"></a>
