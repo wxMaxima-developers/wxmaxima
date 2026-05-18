@@ -411,6 +411,9 @@ wxSize ToolBar::GetPPI()
 void ToolBar::UpdateBitmaps() {
   wxSize bitmapSize = GetOptimalBitmapSize();
   SetToolBitmapSize(bitmapSize);
+#if !wxCHECK_VERSION(3, 1, 6)
+  int bitmapWidth = bitmapSize.x;
+#endif
 
   wxSize ppi = GetPPI();
   if ((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
