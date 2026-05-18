@@ -6750,7 +6750,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     GetWorksheet()->m_findDialog->Show();
     GetWorksheet()->m_findDialog->Raise();
     GetWorksheet()->FocusFindDialogue();
+#ifdef __WXMSW__
     CallAfter([this]{GetWorksheet()->FocusFindDialogue();});
+#endif
  }
   else if(event.GetId() == EventIDs::menu_history_next) {
     m_history->UpdateDeferred();

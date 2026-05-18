@@ -155,6 +155,7 @@ FindReplacePane::FindReplaceData::FindReplaceData() :
 void FindReplacePane::SetFindString(wxString strng) {
   m_findReplaceData->SetFindString(strng);
   m_searchText->SetValue(strng);
+  m_searchText->SetFocus();
 }
 
 void FindReplacePane::OnSearch(wxCommandEvent &event) {
