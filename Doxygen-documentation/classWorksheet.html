@@ -916,8 +916,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 <li>If we call the Refresh() method wxWidgets requests us to draw the entire visible part of the worksheet anew and invalidates all cached areas it might have.</li>
 <li>and the RefreshRect() method notifies wxWidgets that a rectangular region contains changes that need to be redrawn.</li>
 </ul>
-<p>The worksheet isn't immediately redrawn on a key press, a mouse click or on maxima outputting new data. Instead all such events are processed in order until <a class="el" href="classwxMaxima.html">wxMaxima</a> has caught up with all the events (which causes wxWidgets to send a Idle event to the <a class="el" href="classwxMaxima.html">wxMaxima</a> object) or until we reach a timeout. If the user manages to type faster than <a class="el" href="classwxMaxima.html">wxMaxima</a> redraws the screen this allows us to skip a few redraws in order to process the keypresses as fast as the user types. Also this keeps us responsive even if maxima outputs data faster than <a class="el" href="classwxMaxima.html">wxMaxima</a> can display it. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p>The worksheet isn't immediately redrawn on a key press, a mouse click or on maxima outputting new data. Instead all such events are processed in order until <a class="el" href="classwxMaxima.html">wxMaxima</a> has caught up with all the events (which causes wxWidgets to send a Idle event to the <a class="el" href="classwxMaxima.html">wxMaxima</a> object) or until we reach a timeout. If the user manages to type faster than <a class="el" href="classwxMaxima.html">wxMaxima</a> redraws the screen this allows us to skip a few redraws in order to process the keypresses as fast as the user types. Also this keeps us responsive even if maxima outputs data faster than <a class="el" href="classwxMaxima.html">wxMaxima</a> can display it.</p>
+<p>The worksheet layout is structured around several key geometric parameters defined in the <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>:</p><ul>
+<li><b>Top Margin</b>: The starting vertical position is defined by GetBaseIndent(), providing initial breathing room at the top of the document.</li>
+<li><b>Horizontal Indentation</b>: The main content is indented by GetIndent(), creating space on the left for cell brackets and evaluation markers.</li>
+<li><b><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> Structure</b>: The worksheet is a sequence of GroupCells. Each <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> manages its own internal layout, separating input (from the user) and output (from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>).</li>
+<li><b>Vertical Spacing</b>: Successive GroupCells are separated by GetGroupSkip(), ensuring a clear visual distinction between different calculation steps.</li>
+</ul>
+<div class="image">
+<object type="image/svg+xml" data="WorksheetLayout.svg" style="pointer-events: none;"></object>
+</div>
+ </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7ba34e68818f5c6b3374773683e5710c" name="a7ba34e68818f5c6b3374773683e5710c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ba34e68818f5c6b3374773683e5710c">&#9670;&#160;</a></span>Worksheet()</h2>
 

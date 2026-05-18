@@ -179,8 +179,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SoftLineBreak</b> (bo
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>UnBreakUpCells</b> () const</td></tr>
 <tr class="memdesc:acdf7d9da0a2a4f055d4621193d6e561b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert all maths objects in this call list into their 2<a class="el" href="classD.html">D</a> form. <br /></td></tr>
 <tr class="separator:acdf7d9da0a2a4f055d4621193d6e561b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81b738e213a8390ed10aefe8d286ce9d"><td class="memItemLeft" align="right" valign="top"><a id="a81b738e213a8390ed10aefe8d286ce9d" name="a81b738e213a8390ed10aefe8d286ce9d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>BreakLines_List</b> () const</td></tr>
+<tr class="memitem:a81b738e213a8390ed10aefe8d286ce9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a81b738e213a8390ed10aefe8d286ce9d">BreakLines_List</a> () const</td></tr>
+<tr class="memdesc:a81b738e213a8390ed10aefe8d286ce9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break lines in this list of cells.  <br /></td></tr>
 <tr class="separator:a81b738e213a8390ed10aefe8d286ce9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46f7e39c86f5a7a33bf861890496678a"><td class="memItemLeft" align="right" valign="top"><a id="a46f7e39c86f5a7a33bf861890496678a" name="a46f7e39c86f5a7a33bf861890496678a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLineIndent</b> () const</td></tr>
@@ -828,6 +828,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 <div class="image">
 <object type="image/svg+xml" data="OperatorCellGeometry.svg" style="pointer-events: none;"></object>
 </div>
+ <div class="image">
+<object type="image/svg+xml" data="SumCellLinearGeometry.svg" style="pointer-events: none;"></object>
+</div>
  
 </div>
 </div>
@@ -860,6 +863,42 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 <p>Reimplemented in <a class="el" href="classEditorCell.html#add4b1605ec516805a42af9d667fdf641">EditorCell</a>, and <a class="el" href="classGroupCell.html#ac592a77ab3fed321981f25d68cc16234">GroupCell</a>.</p>
 
+</div>
+</div>
+<a id="a81b738e213a8390ed10aefe8d286ce9d" name="a81b738e213a8390ed10aefe8d286ce9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81b738e213a8390ed10aefe8d286ce9d">&#9670;&#160;</a></span>BreakLines_List()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Cell::BreakLines_List </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Break lines in this list of cells. </p>
+<p>The layout process follows a three-step mechanism to ensure that mathematical expressions and text fit within the available horizontal space of the worksheet:</p>
+<ol type="1">
+<li><b>Reset to 2<a class="el" href="classD.html">D</a> Form</b>: All cells are first reset to their "beautiful" 2<a class="el" href="classD.html">D</a> representation using <a class="el" href="classCell.html#acdf7d9da0a2a4f055d4621193d6e561b" title="Convert all maths objects in this call list into their 2D form.">UnBreakUpCells()</a>. This ensures we start with the most compact and readable form.</li>
+<li><b>Recursive Breakup</b>: The algorithm identifies any 2<a class="el" href="classD.html">D</a> objects (like fractions, parenthesis, or long numbers) that are wider than a certain percentage of the screen. These objects are told to "BreakUp()", which typically means converting themselves into a linearized 1<a class="el" href="classD.html">D</a> form (e.g., a fraction a/b becomes (a)/(b)). This process is recursive; if the inner components are still too wide, they will be broken up further.</li>
+<li><b>Line Wrapping</b>: Once all objects are either small enough or in their 1<a class="el" href="classD.html">D</a> form, the final layout pass iterates through the flattened list and inserts "soft line breaks" whenever the cumulative width would exceed the line's limit. This pass also handles indentation for subsequent lines of the same expression.</li>
+</ol>
+<div class="image">
+<object type="image/svg+xml" data="LayoutAlgorithm.svg" style="pointer-events: none;"></object>
+</div>
+ 
 </div>
 </div>
 <a id="a1cb45264c52230827105aeb64c075a37" name="a1cb45264c52230827105aeb64c075a37"></a>
@@ -3332,7 +3371,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

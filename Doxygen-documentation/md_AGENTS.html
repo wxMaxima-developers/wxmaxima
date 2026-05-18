@@ -142,7 +142,33 @@ Conventions &amp; Standards</h1>
 <li><b>Auto-Answer UI:</b> When <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> asks a question that <a class="el" href="classwxMaxima.html">wxMaxima</a> can answer automatically (via saved answers in <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code>), intrusive UI indicators like desktop notifications and the "userinput" status bar state (including the question mark overlay) are suppressed to avoid distracting the user.</li>
 <li><b>StyleTextTexts:</b> This function in <code><a class="el" href="EditorCell_8cpp.html" title="This file defines the class EditorCell.">EditorCell.cpp</a></code> handles syntax highlighting and formatting for text cells. Be extremely careful with iterator/index increments when adding soft line breaks to avoid skipping characters.</li>
 <li><b>C++ standard:</b> <a class="el" href="classwxMaxima.html">wxMaxima</a> tries to be about 9 years behind the current C++ standard to allow users with old operating systems to compile it. This means in 2026 C++17 is fine, but C++20 should still be a TODO, not something that can be switched to right now.</li>
-<li><b>wxWidgets version:</b> If possible it would be fine if we supported a fallback to wxWidgets 3.0.5 as some old operating systems still come with that library version. Note that <code>wxFileName::GetAbsolutePath</code> is only available from wxWidgets 3.1 onwards; use <code>MakeAbsolute()</code> followed by <code>GetFullPath()</code> for compatibility with 3.0.5. </li>
+<li><b>wxWidgets version:</b> If possible it would be fine if we supported a fallback to wxWidgets 3.0.5 as some old operating systems still come with that library version. Note that <code>wxFileName::GetAbsolutePath</code> is only available from wxWidgets 3.1 onwards; use <code>MakeAbsolute()</code> followed by <code>GetFullPath()</code> for compatibility with 3.0.5.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md5"></a>
+Layout &amp; Compatibility</h1>
+<ul>
+<li><b>Mathematical <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> Padding:</b> Nearly all text-based mathematical cells (including <code><a class="el" href="classDigitCell.html" title="A Text cell that display a digit of a more-than-one-line-wide number.">DigitCell</a></code> used in broken-up long numbers) MUST include <code>MC_TEXT_PADDING</code> (defined in <code><a class="el" href="Configuration_8h_source.html">Configuration.h</a></code>) in their size calculations.<ul>
+<li><b>Recalculate:</b> <code>m_width</code> should be <code>sz.GetWidth() + 2 * MC_TEXT_PADDING</code>.</li>
+<li><b>Draw:</b> Text should be drawn at <code>point.x + MC_TEXT_PADDING</code>.</li>
+<li><b>Failure Mode:</b> Skipping this padding leads to cumulative horizontal errors, especially in long numbers broken across many lines, causing them to exceed worksheet margins.</li>
+</ul>
+</li>
+<li><b>Three-Step Layout Process:</b> The layout engine follows a strict sequence:<ol type="1">
+<li><code>UnBreakUpCells()</code>: Resets all objects to their compact 2<a class="el" href="classD.html">D</a> form.</li>
+<li><code>BreakUpCells()</code>: Recursively converts over-wide 2<a class="el" href="classD.html">D</a> objects (like fractions or long numbers) into linearized 1<a class="el" href="classD.html">D</a> forms.</li>
+<li><code>BreakLines_List()</code>: Performs final line wrapping and inserts soft line breaks.</li>
+</ol>
+</li>
+<li><b>High-DPI / wxBitmapBundle:</b> For modern wxWidgets (3.1.6+), use <code>wxBitmapBundle</code> for SVG rendering.<ul>
+<li><b>Avoid:</b> Do not call <code>GetPreferredBitmapSizeFor</code> explicitly if the result is not used, as it triggers <code>nodiscard</code> warnings on macOS.</li>
+<li><b>Mandate:</b> <code>wxBitmapBundle::GetBitmap(size)</code> correctly handles scale factors internally for the given logical size.</li>
+</ul>
+</li>
+<li><b>Windows Focus Management:</b> Focus transitions to dialogues (like the Find dialogue) from the worksheet on Windows often require <code>CallAfter</code> to ensure focus is not immediately "stolen" back by the worksheet.<ul>
+<li><b>Dialogue Focus:</b> Always use <code>m_searchText-&gt;SetFocus()</code> within <code>CallAfter</code> when opening or updating a dialogue string from a worksheet event.</li>
+</ul>
+</li>
+<li><b>Constructor Initialization Order:</b> Always order members in the constructor initialization list to match their declaration order in the header file. This prevents <code>-Wreorder</code> warnings and potential uninitialized member access issues. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
