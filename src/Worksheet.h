@@ -90,6 +90,20 @@
   a few redraws in order to process the keypresses as fast as the user types.
   Also this keeps us responsive even if maxima outputs data faster than
   wxMaxima can display it.
+
+  The worksheet layout is structured around several key geometric parameters 
+  defined in the Configuration:
+  - **Top Margin**: The starting vertical position is defined by GetBaseIndent(), 
+    providing initial breathing room at the top of the document.
+  - **Horizontal Indentation**: The main content is indented by GetIndent(), 
+    creating space on the left for cell brackets and evaluation markers.
+  - **GroupCell Structure**: The worksheet is a sequence of GroupCells. Each 
+    GroupCell manages its own internal layout, separating input (from the user) 
+    and output (from Maxima).
+  - **Vertical Spacing**: Successive GroupCells are separated by GetGroupSkip(), 
+    ensuring a clear visual distinction between different calculation steps.
+
+  \image html WorksheetLayout.svg
 */
 class Worksheet : public wxScrolled<wxWindow>
 {

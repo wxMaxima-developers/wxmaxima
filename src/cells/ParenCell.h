@@ -49,7 +49,8 @@
 class ParenCell final : public Cell
 {
 public:
-  /*! \image html ParenCellGeometry.svg */
+  /*! \image html ParenCellGeometry.svg
+      \image html ParenCellLinearGeometry.svg */
   ParenCell(GroupCell *group, Configuration *config,
  std::unique_ptr<Cell> &&inner);
   ParenCell(GroupCell *group, const ParenCell &cell);

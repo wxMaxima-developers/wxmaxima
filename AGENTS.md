@@ -50,3 +50,19 @@ This file contains architectural insights, conventions, and operational knowledg
 - **StyleTextTexts:** This function in `EditorCell.cpp` handles syntax highlighting and formatting for text cells. Be extremely careful with iterator/index increments when adding soft line breaks to avoid skipping characters.
 - **C++ standard:** wxMaxima tries to be about 9 years behind the current C++ standard to allow users with old operating systems to compile it. This means in 2026 C++17 is fine, but C++20 should still be a TODO, not something that can be switched to right now. 
 - **wxWidgets version:** If possible it would be fine if we supported a fallback to wxWidgets 3.0.5 as some old operating systems still come with that library version. Note that `wxFileName::GetAbsolutePath` is only available from wxWidgets 3.1 onwards; use `MakeAbsolute()` followed by `GetFullPath()` for compatibility with 3.0.5.
+
+## Layout & Compatibility
+- **Mathematical Cell Padding:** Nearly all text-based mathematical cells (including `DigitCell` used in broken-up long numbers) MUST include `MC_TEXT_PADDING` (defined in `Configuration.h`) in their size calculations. 
+  - **Recalculate:** `m_width` should be `sz.GetWidth() + 2 * MC_TEXT_PADDING`.
+  - **Draw:** Text should be drawn at `point.x + MC_TEXT_PADDING`.
+  - **Failure Mode:** Skipping this padding leads to cumulative horizontal errors, especially in long numbers broken across many lines, causing them to exceed worksheet margins.
+- **Three-Step Layout Process:** The layout engine follows a strict sequence:
+  1. `UnBreakUpCells()`: Resets all objects to their compact 2D form.
+  2. `BreakUpCells()`: Recursively converts over-wide 2D objects (like fractions or long numbers) into linearized 1D forms.
+  3. `BreakLines_List()`: Performs final line wrapping and inserts soft line breaks.
+- **High-DPI / wxBitmapBundle:** For modern wxWidgets (3.1.6+), use `wxBitmapBundle` for SVG rendering. 
+  - **Avoid:** Do not call `GetPreferredBitmapSizeFor` explicitly if the result is not used, as it triggers `nodiscard` warnings on macOS. 
+  - **Mandate:** `wxBitmapBundle::GetBitmap(size)` correctly handles scale factors internally for the given logical size.
+- **Windows Focus Management:** Focus transitions to dialogues (like the Find dialogue) from the worksheet on Windows often require `CallAfter` to ensure focus is not immediately "stolen" back by the worksheet.
+  - **Dialogue Focus:** Always use `m_searchText->SetFocus()` within `CallAfter` when opening or updating a dialogue string from a worksheet event.
+- **Constructor Initialization Order:** Always order members in the constructor initialization list to match their declaration order in the header file. This prevents `-Wreorder` warnings and potential uninitialized member access issues.

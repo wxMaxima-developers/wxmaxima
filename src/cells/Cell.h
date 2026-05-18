@@ -238,7 +238,27 @@ public:
   /*! Convert all maths objects in this call list into their 2D form */
   bool UnBreakUpCells() const;
 
-  /* Break lines in this list of cells
+  /*! Break lines in this list of cells
+
+    The layout process follows a three-step mechanism to ensure that mathematical 
+    expressions and text fit within the available horizontal space of the worksheet:
+
+    1. **Reset to 2D Form**: All cells are first reset to their "beautiful" 2D 
+       representation using UnBreakUpCells(). This ensures we start with the most 
+       compact and readable form.
+    2. **Recursive Breakup**: The algorithm identifies any 2D objects (like fractions, 
+       parenthesis, or long numbers) that are wider than a certain percentage of 
+       the screen. These objects are told to "BreakUp()", which typically means 
+       converting themselves into a linearized 1D form (e.g., a fraction a/b becomes 
+       (a)/(b)). This process is recursive; if the inner components are still too 
+       wide, they will be broken up further.
+    3. **Line Wrapping**: Once all objects are either small enough or in their 1D 
+       form, the final layout pass iterates through the flattened list and 
+       inserts "soft line breaks" whenever the cumulative width would exceed the 
+       line's limit. This pass also handles indentation for subsequent lines of 
+       the same expression.
+
+    \image html LayoutAlgorithm.svg
    */
   void BreakLines_List() const;
 

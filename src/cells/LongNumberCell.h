@@ -27,12 +27,22 @@
 
 /*! A cell containing a long number
 
-  A specialised TextCell, that can display a long number, or shorten it using an ellipsis.
+  A specialised TextCell that can display a long number in multiple modes:
+  1. **Short Form**: Displays only the first few digits followed by an ellipsis 
+     (e.g., "123..."). This is the default to keep the worksheet clean.
+  2. **Long Form**: Displays the full number. If the number fits in the 
+     horizontal space, it is drawn as a single string.
+  3. **Broken Up**: If a long number exceeds the available width, it is 
+     decomposed into a list of individual DigitCell objects. Each DigitCell 
+     represents a single digit, acting as a potential line-break point. This 
+     allows the layout engine to wrap the number precisely at the right margin 
+     across multiple lines.
 */
 class LongNumberCell final : public TextCell
 {
 public:
-  /*! \image html LongNumberCellGeometry.svg */
+  /*! \image html LongNumberCellGeometry.svg
+      \image html LongNumberLayout.svg */
   //! The constructor for cell that, if displayed, means that something is amiss
   LongNumberCell(GroupCell *group, Configuration *config, const wxString &number);
   LongNumberCell(GroupCell *group, const LongNumberCell &cell);
