@@ -1354,10 +1354,10 @@ void Configuration::WriteSettings(const wxString &file) {
                 m_maxClipbrd_BitmapMegabytes);
 
   WriteStyles(config);
-  for (const auto &i : m_renderableChars)
-    config->Write(wxS("renderability/good/") + i.first, i.second);
-  for (const auto &i : m_nonRenderableChars)
-    config->Write(wxS("renderability/bad/") + i.first, i.second);
+  for (const auto &[fontName, chars] : m_renderableChars)
+    config->Write(wxS("renderability/good/") + fontName, chars);
+  for (const auto &[fontName, chars] : m_nonRenderableChars)
+    config->Write(wxS("renderability/bad/") + fontName, chars);
   if (file != wxEmptyString) {
     config->Flush();
     delete config;

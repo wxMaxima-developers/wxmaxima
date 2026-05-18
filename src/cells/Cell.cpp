@@ -1514,8 +1514,8 @@ wxString Cell::GetExtraXMLAttributes() const {
   wxString flags;
   if (!m_uuid.IsEmpty())
     flags += wxS(" uuid=\"") + m_uuid + wxS("\"");
-  for (auto const &it : m_extraAttributes) {
-    flags += wxS(" ") + it.first + wxS("=\"") + Cell::XMLescape(it.second) +
+  for (auto const &[name, val] : m_extraAttributes) {
+    flags += wxS(" ") + name + wxS("=\"") + Cell::XMLescape(val) +
              wxS("\"");
   }
   return flags;

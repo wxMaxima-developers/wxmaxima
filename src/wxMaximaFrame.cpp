@@ -342,16 +342,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     }
 #endif
 
-  for(const auto &pane: m_sidebarNames)
-    if(m_manager.GetPane(pane.second).IsOk())
-      m_manager.GetPane(pane.second).
+  for(const auto &[id, name]: m_sidebarNames)
+    if(m_manager.GetPane(name).IsOk())
+      m_manager.GetPane(name).
         Show(
-             (pane.first == EventIDs::menu_pane_toolbar) ||
-             (pane.first == EventIDs::menu_pane_console) ||
-             (pane.first == EventIDs::menu_pane_symbols) ||
-             (pane.first == EventIDs::menu_pane_draw) ||
-             (pane.first == EventIDs::menu_pane_greek) ||
-             (pane.first == EventIDs::menu_pane_structure));
+             (id == EventIDs::menu_pane_toolbar) ||
+             (id == EventIDs::menu_pane_console) ||
+             (id == EventIDs::menu_pane_symbols) ||
+             (id == EventIDs::menu_pane_draw) ||
+             (id == EventIDs::menu_pane_greek) ||
+             (id == EventIDs::menu_pane_structure));
 
   // Read the perspektive (the sidebar state and positions).
   wxConfigBase *config = wxConfig::Get();
@@ -374,13 +374,13 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // LoadPerspective() loads the translations of the captions that were correct
   // when SavePerspective() was called.
   // The system's language might have changed since then.
-  for(const auto &pane: m_sidebarNames)
+  for(const auto &[id, name]: m_sidebarNames)
     {
       wxSize minSiz;
-      if(m_manager.GetPane(pane.second).IsOk())
+      if(m_manager.GetPane(name).IsOk())
         {
-          if(m_manager.GetPane(pane.second).window != NULL)
-            minSiz = m_manager.GetPane(pane.second).window->GetMinClientSize();
+          if(m_manager.GetPane(name).window != NULL)
+            minSiz = m_manager.GetPane(name).window->GetMinClientSize();
           else
             minSiz = wxSize(300 * GetContentScaleFactor(), 300 * GetContentScaleFactor());
 
@@ -390,11 +390,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
           if(minSiz.y < 100 * GetContentScaleFactor())
             minSiz.y = 100 * GetContentScaleFactor();
           if(
-             (pane.first != EventIDs::menu_pane_console) &&
-             (pane.first != EventIDs::menu_pane_toolbar)
+             (id != EventIDs::menu_pane_console) &&
+             (id != EventIDs::menu_pane_toolbar)
              )
-            m_manager.GetPane(pane.second)
-              .Caption(m_sidebarCaption[pane.first])
+            m_manager.GetPane(name)
+              .Caption(m_sidebarCaption[id])
               .CloseButton(true)
               .Layer(0)
               .Row(1)
@@ -1994,9 +1994,9 @@ void wxMaximaFrame::SetupMenu() {
 
 wxString wxMaximaFrame::GetDemoFile(wxWindowID id) const
 {
-  for(const auto &i: m_demoFilesIDs)
-    if(i.first == id)
-      return i.second;
+  for(const auto &[demoId, file]: m_demoFilesIDs)
+    if(demoId == id)
+      return file;
   return wxEmptyString;
 }
 
@@ -2170,8 +2170,8 @@ void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
     }
 }
 void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
-  for(const auto &pane: m_sidebarNames)
-    m_manager.GetPane(pane.second).Dock();
+  for(const auto &[id, name]: m_sidebarNames)
+    m_manager.GetPane(name).Dock();
   AuiManagerUpdate();
 }
 
@@ -2223,12 +2223,12 @@ void wxMaximaFrame::TogglePaneVisibility(int id)
 void wxMaximaFrame::ShowPane(int id, bool show) {
   if(id == EventIDs::menu_pane_hideall)
     {
-      for(const auto &pane: m_sidebarNames)
+      for(const auto &[paneId, name]: m_sidebarNames)
         {
           if(
-             (pane.first != EventIDs::menu_pane_console)
+             (paneId != EventIDs::menu_pane_console)
              )
-            m_manager.GetPane(pane.second).Show(false);
+            m_manager.GetPane(name).Show(false);
         }
     }
   else

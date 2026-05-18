@@ -136,10 +136,10 @@ void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors) {
   aliases["with_slider_draw2d"] = "draw2d";
   aliases["with_slider_draw3d"] = "draw3d";
 
-  for (auto it = aliases.begin(); it != aliases.end(); ++it) {
-    if ((anchors.find(it->first) == anchors.end()) &&
-        (anchors.find(it->second) != anchors.end()))
-      anchors[it->first] = anchors[it->second];
+  for (auto const &[alias, target] : aliases) {
+    if ((anchors.find(alias) == anchors.end()) &&
+        (anchors.find(target) != anchors.end()))
+      anchors[alias] = anchors[target];
   }
 }
 

@@ -158,13 +158,12 @@ namespace Format {
 
       // Export the list of known answers
       if (wxm) {
-        for (auto it = cell->m_knownAnswers.begin();
-             it != cell->m_knownAnswers.end(); ++it)
+        for (auto const &[question, answer] : cell->m_knownAnswers)
           retval << Headers.GetStart(WXM_QUESTION) << '\n'
-                 << it->first << '\n'
+                 << question << '\n'
                  << Headers.GetEnd(WXM_QUESTION) << '\n'
                  << Headers.GetStart(WXM_ANSWER) << '\n'
-                 << it->second << '\n'
+                 << answer << '\n'
                  << Headers.GetEnd(WXM_ANSWER) << '\n';
         if (cell->AutoAnswer())
           retval << Headers.GetStart(WXM_AUTOANSWER);

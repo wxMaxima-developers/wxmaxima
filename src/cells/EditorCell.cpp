@@ -944,10 +944,9 @@ void EditorCell::SetFont(wxDC *dc) const {
 
 wxSize EditorCell::GetTextSize(wxString const &text) const {
   const wxDC * const dc = m_configuration->GetRecalcDC();
-  StringHash::const_iterator it = m_widths.find(text);
 
   // If we already know this text piece's size we return the cached value
-  if (it != m_widths.end())
+  if (auto it = m_widths.find(text); it != m_widths.end())
     return it->second;
 
   // Ask wxWidgets to return this text piece's size (slow!)

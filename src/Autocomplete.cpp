@@ -560,10 +560,10 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
   // Add a list of words that were defined on the work sheet but that aren't
   // defined as maxima commands or functions.
   if (type == command) {
-    for (const auto &it : m_worksheetWords) {
-      if (it.first.StartsWith(partial)) {
-        if (std::find(completions.begin(), completions.end(), it.first) == completions.end()) {
-          completions.push_back(it.first);
+    for (const auto &[word, count] : m_worksheetWords) {
+      if (word.StartsWith(partial)) {
+        if (std::find(completions.begin(), completions.end(), word) == completions.end()) {
+          completions.push_back(word);
         }
       }
     }

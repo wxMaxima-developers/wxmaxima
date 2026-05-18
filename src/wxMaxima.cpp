@@ -1599,8 +1599,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
   Connect(EventIDs::menu_insert_image, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  for(const auto &sidebar: GetSidebarNames())
-    Connect(sidebar.first, wxEVT_MENU,
+  for(const auto &[id, name]: GetSidebarNames())
+    Connect(id, wxEVT_MENU,
             wxCommandEventHandler(wxMaxima::ShowPane));
   Connect(EventIDs::menu_pane_toolbar, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);

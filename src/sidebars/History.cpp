@@ -192,7 +192,7 @@ void History::OnMenu(wxCommandEvent &event) {
   }
   case export_session:
     start = size - m_sessionCommands;
-    // fallthrough
+    [[fallthrough]];
 
   case export_all: {
     auto file = AskForFileName(this);

@@ -481,13 +481,11 @@ void ConfigDialogue::SetCheckboxValues() {
   m_maximaEnvVariables->BeginBatch();
   if (m_maximaEnvVariables->GetNumberRows() > 0)
     m_maximaEnvVariables->DeleteRows(0, m_maximaEnvVariables->GetNumberRows());
-  wxEnvVariableHashMap::const_iterator it;
-  for (it = m_configuration->MaximaEnvVars().begin();
-       it != m_configuration->MaximaEnvVars().end(); ++it) {
+  for (auto const &[name, val] : m_configuration->MaximaEnvVars()) {
     m_maximaEnvVariables->AppendRows(1);
     int row = m_maximaEnvVariables->GetNumberRows() - 1;
-    m_maximaEnvVariables->SetCellValue(row, 0, it->first);
-    m_maximaEnvVariables->SetCellValue(row, 1, it->second);
+    m_maximaEnvVariables->SetCellValue(row, 0, name);
+    m_maximaEnvVariables->SetCellValue(row, 1, val);
   }
   m_maximaEnvVariables->AppendRows(1);
   m_maximaEnvVariables->SetColLabelValue(0, _("Variable"));

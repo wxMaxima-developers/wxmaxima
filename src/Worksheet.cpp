@@ -1799,8 +1799,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
             }
           MaximaManual::HelpFileAnchors helpFileAnchors =
             m_maximaManual.GetHelpfileAnchors();
-          for (const auto &it : helpFileAnchors) {
-            wxString cmdName = it.first;
+          for (const auto &[cmdName, anchor] : helpFileAnchors) {
             if (cmdName.Contains(" "))
               continue;
             if (cmdName.EndsWith("_"))
@@ -2168,9 +2167,9 @@ void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event),
   if ((clickedInGC->GetOutputRect()).Contains(m_down)) {
     wxRect rect2(m_down.x, m_down.y, 1, 1);
     wxPoint mmm(m_down.x + 1, m_down.y + 1);
-    auto const sel = clickedInGC->GetCellsInOutputRect(rect2, m_down, mmm);
-    m_cellPointers.m_selectionStart = sel.first;
-    m_cellPointers.m_selectionEnd = sel.last;
+    auto const [first, last] = clickedInGC->GetCellsInOutputRect(rect2, m_down, mmm);
+    m_cellPointers.m_selectionStart = first;
+    m_cellPointers.m_selectionEnd = last;
     if (m_cellPointers.m_selectionStart) {
       m_clickType = CLICK_TYPE_OUTPUT_SELECTION;
       m_clickInGC = clickedInGC;
@@ -2546,15 +2545,15 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
       rect.height = std::max(abs(down.y - up.y), 1);
 
       if (m_clickInGC) {
-        auto const sel = m_clickInGC->GetCellsInOutputRect(rect, down, up);
-        m_cellPointers.m_selectionStart = sel.first;
-        m_cellPointers.m_selectionEnd = sel.last;
+        auto const [first, last] = m_clickInGC->GetCellsInOutputRect(rect, down, up);
+        m_cellPointers.m_selectionStart = first;
+        m_cellPointers.m_selectionEnd = last;
         
-        Cell *cell=sel.first;
+        Cell *cell = first;
         while(cell)
           {
             m_cellPointers.m_selectionString.Append(cell->ToString());
-            if(cell == sel.last)
+            if(cell == last)
               break;
             cell = cell->GetNext();
           }
@@ -6010,9 +6009,9 @@ void Worksheet::OnDoubleClick(wxMouseEvent &event) {
     // FIXME This code path can never get activated, because
     // OnMouseLeftDown clears the selection.
     const GroupCell *parent = m_cellPointers.m_selectionStart->GetGroup();
-    auto sel = parent->GetCellsInOutput();
-    m_cellPointers.m_selectionStart = sel.first;
-    m_cellPointers.m_selectionEnd = sel.last;
+    auto const [first, last] = parent->GetCellsInOutput();
+    m_cellPointers.m_selectionStart = first;
+    m_cellPointers.m_selectionEnd = last;
   }
 
   RequestRedraw();
@@ -7137,9 +7136,9 @@ wxString Worksheet::GetOutputAboveCaret() {
   if (!m_hCaretActive || !m_hCaretPosition)
     return {};
 
-  auto const sel = m_hCaretPosition->GetCellsInOutput();
-  m_cellPointers.m_selectionStart = sel.first;
-  m_cellPointers.m_selectionEnd = sel.last;
+  auto const [first, last] = m_hCaretPosition->GetCellsInOutput();
+  m_cellPointers.m_selectionStart = first;
+  m_cellPointers.m_selectionEnd = last;
 
   wxString output = GetString();
 

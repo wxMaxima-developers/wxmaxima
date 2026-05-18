@@ -261,17 +261,19 @@ const wxString &GroupCell::GetAnswer(size_t answer) const {
     return wxm::emptyString;
 
   wxString const question = wxString::Format(wxS("Question #%li"), static_cast<long>(answer));
-  auto it = m_knownAnswers.find(question);
-  return (it != m_knownAnswers.end()) ? it->second : wxm::emptyString;
+  if (auto it = m_knownAnswers.find(question); it != m_knownAnswers.end())
+    return it->second;
+  return wxm::emptyString;
 }
 
 const wxString &GroupCell::GetAnswer(const wxString &question) const {
   if ((!m_autoAnswer) && (!m_configuration->OfferKnownAnswers()))
     return wxm::emptyString;
 
-  auto it = m_knownAnswers.find(question);
-  return (it != m_knownAnswers.end()) ? it->second
-    : GetAnswer(++m_numberedAnswersCount);
+  if (auto it = m_knownAnswers.find(question); it != m_knownAnswers.end())
+    return it->second;
+
+  return GetAnswer(++m_numberedAnswersCount);
 }
 
 void GroupCell::SetAutoAnswer(bool autoAnswer) {

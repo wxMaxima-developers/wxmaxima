@@ -29,10 +29,14 @@
   commands.
 */
 
+#include <algorithm>
 #include "SumCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
 #include "sumSign_svg.h"
+#include "CellList.h"
+#include "EditorCell.h"
+#include "ParenCell.h"
 
 SumCell::SumCell(GroupCell *group, Configuration *config, 
                  std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,
@@ -76,12 +80,7 @@ ParenCell *SumCell::Paren() const {
 
 Cell *SumCell::Base() const { return Paren() ? Paren()->GetInner() : nullptr; }
 
-Cell *SumCell::DisplayedBase() const {
-  return m_displayParen ? m_paren.get() : Paren()->GetInner();
-}
-
 std::unique_ptr<Cell> SumCell::MakeStart(Cell *under) const {
-  std::unique_ptr<Cell> newStart;
   // m_under consists of a list of cells:
   //  The variable name, that can be more than one cell if there is a subscript.
   //  1 cell containing the text "in" or "=" (TODO: That's heuristics. Is there
@@ -90,18 +89,16 @@ std::unique_ptr<Cell> SumCell::MakeStart(Cell *under) const {
   //                                          this?)
   //  And the rest contains the lower limit.
 
-  bool prevFound = false;
-  for (auto &start : OnList(under)) {
+  auto const &list = OnList(under);
+  auto it = std::find_if(list.begin(), list.end(), [](const Cell &start) {
     auto const &value = start.GetValue();
-    if (prevFound) {
-      newStart = start.CopyList(GetGroup());
-      break;
-    }
-    prevFound = (value == wxS("in")) || (value == wxS("="));
-  }
+    return (value == wxS("in")) || (value == wxS("="));
+  });
 
-  return newStart ? std::move(newStart)
-    : std::make_unique<TextCell>(m_group, m_configuration);
+  if (it != list.end() && std::next(it) != list.end())
+    return std::next(it)->CopyList(GetGroup());
+
+  return std::make_unique<TextCell>(m_group, m_configuration);
 }
 
 const wxSize SumCell::GetSymbolSize() const
