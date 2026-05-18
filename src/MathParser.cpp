@@ -36,7 +36,32 @@
 #include <wx/tokenzr.h>
 
 #include "MathParser.h"
-// ... rest of includes ...
+
+#include "cells/AbsCell.h"
+#include "cells/AnimationCell.h"
+#include "cells/AtCell.h"
+#include "cells/BoxCell.h"
+#include "cells/NamedBoxCell.h"
+#include "cells/CellList.h"
+#include "cells/ConjugateCell.h"
+#include "cells/DiffCell.h"
+#include "cells/ExptCell.h"
+#include "cells/FunCell.h"
+#include "cells/ImgCell.h"
+#include "cells/IntCell.h"
+#include "cells/IntervalCell.h"
+#include "cells/LabelCell.h"
+#include "cells/LimitCell.h"
+#include "cells/ListCell.h"
+#include "cells/LongNumberCell.h"
+#include "cells/MatrCell.h"
+#include "cells/ParenCell.h"
+#include "cells/SetCell.h"
+#include "cells/SqrtCell.h"
+#include "StringUtils.h"
+#include "cells/SubCell.h"
+#include "cells/SubSupCell.h"
+#include "cells/SumCell.h"
 #include "cells/ProductCell.h"
 #include "cells/VisiblyInvalidCell.h"
 
@@ -261,7 +286,7 @@ std::unique_ptr<Cell> MathParser::ParseMiscTextTag(wxXmlNode *node, int depth) {
   }
 }
 
-std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node) {
+std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int depth) {
   wxString gnuplotSources;
   wxString gnuplotData;
   bool del = node->GetAttribute(wxS("del"), wxS("false")) == wxS("true");
@@ -329,7 +354,7 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node) {
   return animation;
 }
 
-std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node) {
+std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node, int depth) {
   std::unique_ptr<ImgCell> imageCell;
   wxString filename(node->GetChildren()->GetContent());
 
@@ -1179,7 +1204,7 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all, int depth)
   if (depth > 250) {
     auto tmp = std::make_unique<VisiblyInvalidCell>(
                                                     m_group, m_configuration,
-                                                    _("XML nesting limit exceeded"));
+                                                    wxString(_("XML nesting limit exceeded")));
     return std::move(tmp);
   }
 

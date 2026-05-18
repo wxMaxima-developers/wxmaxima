@@ -30,12 +30,19 @@
 #include <wx/debug.h>
 #include <memory>
 #include <type_traits>
+#include <iterator>
 
 template <typename Cell> class CellListIterator final {
   static_assert(std::is_class<Cell>::value, "The type argument must be a class");
   Cell *m_ptr = {};
 
 public:
+  using iterator_category = std::forward_iterator_tag;
+  using value_type = Cell;
+  using difference_type = std::ptrdiff_t;
+  using pointer = Cell *;
+  using reference = Cell &;
+
   constexpr CellListIterator() = default;
   constexpr explicit CellListIterator(const std::unique_ptr<Cell> &p)
     : m_ptr(p.get()) {}
@@ -87,6 +94,12 @@ class CellDrawListIterator final {
   Cell *m_ptr = {};
 
 public:
+  using iterator_category = std::forward_iterator_tag;
+  using value_type = Cell;
+  using difference_type = std::ptrdiff_t;
+  using pointer = Cell *;
+  using reference = Cell &;
+
   constexpr CellDrawListIterator() = default;
   constexpr explicit CellDrawListIterator(const std::unique_ptr<Cell> &p) : m_ptr(p.get()) {}
   constexpr explicit CellDrawListIterator(Cell *p) : m_ptr(p) {}
@@ -145,6 +158,12 @@ class InnerCellIterator
   static size_t GetInnerCellCount(const Cell *cell);
   static Cell *GetInnerCell(const Cell *cell, size_t index);
 public:
+  using iterator_category = std::forward_iterator_tag;
+  using value_type = Cell;
+  using difference_type = std::ptrdiff_t;
+  using pointer = Cell *;
+  using reference = Cell &;
+
   InnerCellIterator() = default;
   explicit InnerCellIterator(Cell *parentCell) :
     m_parentCell(parentCell),
