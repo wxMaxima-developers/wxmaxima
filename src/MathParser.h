@@ -195,7 +195,7 @@ private:
   //! Parse a function name tag to a Cell.
   std::unique_ptr<Cell> ParseFunctionNameTag(wxXmlNode *node, int depth = 0){return ParseText(node->GetChildren(), TS_FUNCTION, depth);}
   //! Parse a space tag to a Cell.
-  std::unique_ptr<Cell> ParseSpaceTag(wxXmlNode *WXUNUSED(node), int depth = 0){return std::make_unique<TextCell>(m_group, m_configuration, wxS(" "));}
+  std::unique_ptr<Cell> ParseSpaceTag(wxXmlNode *WXUNUSED(node), int WXUNUSED(depth) = 0){return std::make_unique<TextCell>(m_group, m_configuration, wxS(" "));}
   /*! Parse a math-in-maths tag to a Cell.
 
     \todo Does such a thing actually exist?

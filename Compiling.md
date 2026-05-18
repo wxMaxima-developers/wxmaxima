@@ -1,7 +1,7 @@
 ## Building wxMaxima from source
 
 To build wxMaxima from sources you need to have a C++ compiler (C++14),
-wxWidgets >= 3.0 (including development headers) and
+wxWidgets >= 3.2 (including development headers) and
 CMake >= 3.16 installed.
 
 ### Compiling wxMaxima on Linux / Unix systems and Linux-like systems (Cygwin, WSL, MacPorts, Fink, Homebrew,...)
@@ -100,9 +100,6 @@ cmake --build ../build-wxm --install
 ```
 sudo apt-get install build-essential libwxgtk3.2-gtk3-dev libwxgtk-webview3.2-gtk3-dev wx3.2-i18n ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a
 ```
-
-On Ubuntu < 24.04 install an older wxWidgets version (`libwxbase3.0-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev` instead of the version 3.2).
-
 
 beforehand or (if apt-get is configured to load the source package
 repositories and not only the binary packages) by the simpler

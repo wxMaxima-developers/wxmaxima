@@ -286,7 +286,7 @@ std::unique_ptr<Cell> MathParser::ParseMiscTextTag(wxXmlNode *node, int depth) {
   }
 }
 
-std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int depth) {
+std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int WXUNUSED(depth)) {
   wxString gnuplotSources;
   wxString gnuplotData;
   bool del = node->GetAttribute(wxS("del"), wxS("false")) == wxS("true");
@@ -354,7 +354,7 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int depth) 
   return animation;
 }
 
-std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node, int depth) {
+std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node, int WXUNUSED(depth)) {
   std::unique_ptr<ImgCell> imageCell;
   wxString filename(node->GetChildren()->GetContent());
 
@@ -633,7 +633,7 @@ MathParser::HandleNullPointer(std::unique_ptr<Cell> &&cell) {
   return tmp;
 }
 
-std::unique_ptr<Cell> MathParser::ParseEditorTag(wxXmlNode *node, int depth) {
+std::unique_ptr<Cell> MathParser::ParseEditorTag(wxXmlNode *node, int WXUNUSED(depth)) {
   auto editor = std::make_unique<EditorCell>(m_group, m_configuration);
   wxString type = node->GetAttribute(wxS("type"), wxS("input"));
   if (type == wxS("input"))
@@ -891,7 +891,7 @@ std::unique_ptr<Cell> MathParser::ParseFunTag(wxXmlNode *node, int depth) {
   return fun;
 }
 
-std::unique_ptr<Cell> MathParser::ParseText(wxXmlNode *node, TextStyle style, int depth) {
+std::unique_ptr<Cell> MathParser::ParseText(wxXmlNode *node, TextStyle style, int WXUNUSED(depth)) {
   wxString str;
   CellListBuilder<TextCell> tree;
   if ((node != NULL) && ((str = node->GetContent()) != wxEmptyString)) {
@@ -1011,7 +1011,7 @@ void MathParser::ParseCommonGroupCellAttrs(
   ParseCommonAttrs(node, group.get());
 }
 
-std::unique_ptr<Cell> MathParser::ParseCharCode(wxXmlNode *node, int depth) {
+std::unique_ptr<Cell> MathParser::ParseCharCode(wxXmlNode *node, int WXUNUSED(depth)) {
   auto cell = std::make_unique<TextCell>(m_group, m_configuration);
   wxString str;
   if ((node != NULL) && ((str = node->GetContent()) != wxEmptyString)) {
@@ -1215,7 +1215,7 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all, int depth)
     auto tmp = std::make_unique<VisiblyInvalidCell>(
                                                     m_group, m_configuration,
                                                     wxString(_("XML nesting limit exceeded")));
-    return std::move(tmp);
+    return tmp;
   }
 
   Cell *last = NULL;

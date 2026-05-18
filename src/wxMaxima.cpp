@@ -11369,7 +11369,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate) {
   }
 
   // Bind state event
-  Bind(wxEVT_WEBREQUEST_STATE, [](wxWebRequestEvent& evt) {
+  Bind(wxEVT_WEBREQUEST_STATE, [this, reportUpToDate](wxWebRequestEvent& evt) {
     switch (evt.GetState()) {
       // Request completed
       case wxWebRequest::State_Completed:
@@ -11391,7 +11391,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate) {
 
               if (visit)
                 wxLaunchDefaultBrowser(wxS("https://wxMaxima-developers.github.io/wxmaxima/"));
-            } else
+            } else if (reportUpToDate)
               LoggingMessageBox(_("Your version of wxMaxima is up to date."), _("Upgrade"), wxOK | wxICON_INFORMATION);
           } else {
             LoggingMessageBox(wxString::Format(_("Unable to interpret the version info I got: %s"), version), _("Upgrade"), wxOK | wxICON_ERROR);
@@ -11401,6 +11401,8 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate) {
         // Request failed
         case wxWebRequest::State_Failed:
             LoggingMessageBox(_("Can not download version info."), _("Error"), wxOK | wxICON_ERROR);
+            break;
+        default:
             break;
     }
   });

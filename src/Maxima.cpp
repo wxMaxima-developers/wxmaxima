@@ -40,11 +40,11 @@ wxDEFINE_EVENT(EVT_MAXIMA, wxThreadEvent);
 
 Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_configuration(config),
+  m_workerThreadAbort(false),
+  m_readPendingQueued(false),
   m_socket(socket),
   m_socketInput(*m_socket),
-  m_textInput(m_socketInput, wxS("\n"), wxConvUTF8),
-  m_workerThreadAbort(false),
-  m_readPendingQueued(false)
+  m_textInput(m_socketInput, wxS("\n"), wxConvUTF8)
 {
   {
       std::lock_guard<std::mutex> lock(m_knownTagsMutex);

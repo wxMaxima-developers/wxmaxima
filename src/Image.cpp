@@ -1053,11 +1053,13 @@ bool Image::IsSafePath(const wxString &path) {
     return false;
 
   wxFileName fn(path);
-  wxString absolutePath = fn.GetAbsolutePath();
+  fn.MakeAbsolute();
+  wxString absolutePath = fn.GetFullPath();
 
   wxString tempDir = wxStandardPaths::Get().GetTempDir();
   wxFileName tempFn(tempDir);
-  wxString absoluteTempDir = tempFn.GetAbsolutePath();
+  tempFn.MakeAbsolute();
+  wxString absoluteTempDir = tempFn.GetFullPath();
 
   if (absolutePath.StartsWith(absoluteTempDir))
     return true;

@@ -44,7 +44,8 @@ ScrollingGenWizPanel::ScrollingGenWizPanel(
                             label1, defaultval1, tooltip1, label2, defaultval2, tooltip2, label3,
                             defaultval3, tooltip3, label4, defaultval4, tooltip4, label5, defaultval5,
                             tooltip5, label6, defaultval6, tooltip6, label7, defaultval7, tooltip7,
-                            label8, defaultval8, tooltip8, label9, defaultval9, tooltip9);
+                            label8, defaultval8, tooltip8, label9, defaultval9, tooltip9,
+                            label10, defaultval10, tooltip10);
   vbox->Add(m_panel, wxSizerFlags(1).Expand());
   EnableScrolling(false, true);
   SetScrollRate(5, 5);

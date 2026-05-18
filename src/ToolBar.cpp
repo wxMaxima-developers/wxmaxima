@@ -154,7 +154,9 @@ ToolBar::ToolBar(wxWindow *parent)
 }
 
 void ToolBar::AddTools() {
+#if !wxCHECK_VERSION(3, 1, 6)
   wxSize bitmapSize = GetOptimalBitmapSize();
+#endif
   Clear();
   m_ppi = wxDefaultSize;
   if (ShowNew())
@@ -409,7 +411,6 @@ wxSize ToolBar::GetPPI()
 void ToolBar::UpdateBitmaps() {
   wxSize bitmapSize = GetOptimalBitmapSize();
   SetToolBitmapSize(bitmapSize);
-  int bitmapWidth = bitmapSize.x;
 
   wxSize ppi = GetPPI();
   if ((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
