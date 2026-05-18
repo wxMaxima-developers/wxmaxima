@@ -983,7 +983,17 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell) {
              name != wxS("origImageFile") && name != wxS("del") &&
              name != wxS("rect") && name != wxS("maxWidth") &&
              name != wxS("maxHeight") && name != wxS("userdefinedlabel") &&
-             name != wxS("userdefined")) {
+             name != wxS("userdefined") && name != wxS("boxname") &&
+             name != wxS("diffstyle") && name != wxS("def") &&
+             name != wxS("interval") && name != wxS("leftBracketOpensLeft") &&
+             name != wxS("rightBracketOpensRight") && name != wxS("list") &&
+             name != wxS("set") && name != wxS("roundedParens") &&
+             name != wxS("bracketParens") && name != wxS("straightParens") &&
+             name != wxS("angledParens") && name != wxS("special") &&
+             name != wxS("inference") && name != wxS("rownames") &&
+             name != wxS("colnames") && name != wxS("line") &&
+             name != wxS("print") && name != wxS("mat") &&
+             name != wxS("pos")) {
       cell->AddExtraAttribute(name, value);
     }
     attr = attr->GetNext();
