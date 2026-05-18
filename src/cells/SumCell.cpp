@@ -80,6 +80,10 @@ ParenCell *SumCell::Paren() const {
 
 Cell *SumCell::Base() const { return Paren() ? Paren()->GetInner() : nullptr; }
 
+Cell *SumCell::DisplayedBase() const {
+  return m_displayParen ? static_cast<Cell *>(m_paren.get()) : Base();
+}
+
 std::unique_ptr<Cell> SumCell::MakeStart(Cell *under) const {
   // m_under consists of a list of cells:
   //  The variable name, that can be more than one cell if there is a subscript.
