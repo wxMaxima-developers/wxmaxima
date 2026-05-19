@@ -36,6 +36,7 @@
 class ProductCell final : public SumCell
 {
 public:
+  /*! \image html ProductCellGeometry.svg */
   ProductCell(GroupCell *group, Configuration *config,
           std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,
           std::unique_ptr<Cell> &&base);

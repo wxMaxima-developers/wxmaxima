@@ -50,6 +50,7 @@
 class NamedBoxCell final : public Cell
 {
 public:
+  /*! \image html NamedBoxCellGeometry.svg */
   NamedBoxCell(GroupCell *group, Configuration *config, std::unique_ptr<Cell> &&inner,
                wxString name);
   NamedBoxCell(GroupCell *group, const NamedBoxCell &cell);

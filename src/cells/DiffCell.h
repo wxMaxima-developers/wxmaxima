@@ -29,7 +29,9 @@
 class DiffCell final : public Cell
 {
 public:
-  /*! \image html DiffCellGeometry.svg */
+  /*! \image html DiffCellGeometry.svg
+      \image html DiffCellPartialGeometry.svg
+      \image html DiffCellLinearGeometry.svg */
   DiffCell(GroupCell *group, Configuration *config,
  std::unique_ptr<Cell> &&base,
            std::unique_ptr<Cell> &&diff);
