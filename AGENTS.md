@@ -66,3 +66,14 @@ This file contains architectural insights, conventions, and operational knowledg
 - **Windows Focus Management:** Focus transitions to dialogues (like the Find dialogue) from the worksheet on Windows often require `CallAfter` to ensure focus is not immediately "stolen" back by the worksheet.
   - **Dialogue Focus:** Always use `m_searchText->SetFocus()` within `CallAfter` when opening or updating a dialogue string from a worksheet event.
 - **Constructor Initialization Order:** Always order members in the constructor initialization list to match their declaration order in the header file. This prevents `-Wreorder` warnings and potential uninitialized member access issues.
+
+## Extending Maxima via Lisp (`wxMathML.lisp`)
+- **Central Formatting Hub:** `src/wxMathML.lisp` is the primary location for extending Maxima's output formatting for wxMaxima. It is compiled into the binary as a header file.
+- **Display Wrappers:** New user-facing formatting commands (like `wx_matrix`) should be implemented here to leverage Maxima's expression handling.
+- **Safety:** Always use `unwind-protect` when temporarily modifying global Maxima/Lisp variables (like `$lmxchar`) to ensure they are restored even if the formatting process fails.
+- **Loading:** Wrap new functions in `(no-warning ...)` to prevent "redefined" warnings during the initialization phase.
+
+## Visual Documentation (`art/Doxygen/`)
+- **Geometry Awareness:** The SVG diagrams in `art/Doxygen/` are critical for maintaining the complex layout engine. 
+- **Update Mandate:** If you modify the `Recalculate()` or `Draw()` logic of a cell in a way that changes its internal geometry (padding, center alignment, sub-cell placement), you MUST update the corresponding SVG files.
+- **Visual Consistency:** New cell types should be accompanied by a `*Geometry.svg` diagram and, if they have a linearized fallback, a `*LinearGeometry.svg` diagram.

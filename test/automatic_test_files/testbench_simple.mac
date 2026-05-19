@@ -557,6 +557,30 @@ funmake('matrix,
 /* [wxMaxima: input   end   ] */
 
 
+/* [wxMaxima: subsubsect start ]
+wx_matrix
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+M: matrix(["H1", "H2"], ["R1", 1], ["R2", 2])$
+wx_matrix(M);
+wx_matrix(M, lines=true);
+wx_matrix(M, rownames=true);
+wx_matrix(M, colnames=true);
+wx_matrix(M, lines=true, rownames=true);
+wx_matrix(M, lines=true, colnames=true);
+wx_matrix(M, rownames=true, colnames=true);
+wx_matrix(M, lines=true, rownames=true, colnames=true);
+wx_matrix(M, parenstyle=round);
+wx_matrix(M, parenstyle=square);
+wx_matrix(M, parenstyle=angled);
+wx_matrix(M, parenstyle=straight);
+wx_matrix(M, parenstyle=none);
+wx_matrix(M, lines=true, rownames=true, colnames=true, parenstyle=square);
+/* [wxMaxima: input   end   ] */
+
+
 /* [wxMaxima: subsect start ]
 Parenthesis cells
    [wxMaxima: subsect end   ] */
