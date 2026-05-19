@@ -27,11 +27,28 @@
 
 #include <vector>
 
+/*! A Cell that displays a matrix.
+
+  Matrices can be displayed with various bracket styles and optional internal 
+  lines for row/column headings. While standard Maxima `matrix()` commands use 
+  default formatting, wxMaxima provides a specialized `wx_matrix()` command for 
+  advanced layout:
+
+  **`wx_matrix(matrix, [options])`**
+  - **`lines=true`**: Draws internal separator lines (required for headings).
+  - **`rownames=true`**: Treats the first column as labels.
+  - **`colnames=true`**: Treats the first row as labels.
+  - **`parenstyle=style`**: Sets the bracket type. Supported styles:
+    `round` (), `square` [], `angled` <>, `straight` ||, or `none`.
+
+  Example: `wx_matrix(matrix([1,2],[3,4]), lines=true, rownames=true, parenstyle=square);`
+
+  \image html MatrCellGeometry.svg
+  \image html MatrCellVariations.svg 
+*/
 class MatrCell final : public Cell
 {
 public:
-  /*! \image html MatrCellGeometry.svg
-      \image html MatrCellVariations.svg */
   MatrCell(GroupCell *group, Configuration *config);
   MatrCell(GroupCell *group, const MatrCell &cell);
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;

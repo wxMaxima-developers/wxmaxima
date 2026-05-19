@@ -2370,6 +2370,33 @@ Submit bug reports by following the 'New issue' link on that page."))
 (putprop '$table_form t 'evfun)
 
 (no-warning
+ (defun $wx_matrix (mat &rest opts)
+   (unless ($matrixp mat)
+     (merror "wx_matrix: first argument must be a matrix."))
+   (let ((opts-list (cons '(mlist simp) opts))
+         (mtrx '(special)))
+     (when (eq ($assoc '$lines opts-list) t)
+       (setq mtrx (append mtrx '(special))))
+     (when (eq ($assoc '$rownames opts-list) t)
+       (setq mtrx (append mtrx '(rownames))))
+     (when (eq ($assoc '$colnames opts-list) t)
+       (setq mtrx (append mtrx '(colnames))))
+     (let ((paren ($assoc '$parenstyle opts-list))
+           (lmxchar_old $lmxchar))
+       (unwind-protect
+            (progn
+              (cond
+                ((eq paren '$round) (setq $lmxchar "("))
+                ((eq paren '$square) (setq $lmxchar "["))
+                ((eq paren '$angled) (setq $lmxchar "<"))
+                ((eq paren '$straight) (setq $lmxchar "|"))
+                ((eq paren '$none) (setq $lmxchar " ")))
+              (let ((res (cons (append '($matrix simp) mtrx) (cdr mat))))
+                (displa res)
+                res))
+         (setq $lmxchar lmxchar_old))))))
+
+(no-warning
  (defun mredef-check (fnname)
    (declare (ignore fnname))
    t))
