@@ -359,8 +359,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 	     (sub (subseq name (+ pos 1)))
 	     ;; sub-var is the part of x in front of the "_"
 	     (sub-var (subseq name 0 pos))
-	     (sub-var-symb (intern (concatenate 'string "$" sub-var) :maxima))
-	     (sub-symb (intern (concatenate 'string "$" sub) :maxima))
+	     (sub-var-symb (read-from-string (concatenate 'string "$" sub-var)))
+	     (sub-symb (read-from-string (concatenate 'string "$" sub)))
 	     ;; sub-int is the part of x after the "_" converted to integer
 	     (sub-int (ignore-errors
 			(parse-integer sub))))

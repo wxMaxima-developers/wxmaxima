@@ -96,7 +96,6 @@ void SubSupCell::SetIndex(std::unique_ptr<Cell> &&index) {
     return;
   RemoveCell(m_scriptCells, m_postSubCell);
   m_postSubCell = std::move(index);
-  m_scriptCells.emplace_back(m_postSubCell.get());
 }
 
 void SubSupCell::SetExponent(std::unique_ptr<Cell> &&expt) {
@@ -104,7 +103,6 @@ void SubSupCell::SetExponent(std::unique_ptr<Cell> &&expt) {
     return;
   RemoveCell(m_scriptCells, m_postSupCell);
   m_postSupCell = std::move(expt);
-  m_scriptCells.emplace_back(m_postSupCell.get());
 }
 
 void SubSupCell::Recalculate(AFontSize const fontsize) const {
