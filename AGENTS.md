@@ -77,3 +77,14 @@ This file contains architectural insights, conventions, and operational knowledg
 - **Geometry Awareness:** The SVG diagrams in `art/Doxygen/` are critical for maintaining the complex layout engine. 
 - **Update Mandate:** If you modify the `Recalculate()` or `Draw()` logic of a cell in a way that changes its internal geometry (padding, center alignment, sub-cell placement), you MUST update the corresponding SVG files.
 - **Visual Consistency:** New cell types should be accompanied by a `*Geometry.svg` diagram and, if they have a linearized fallback, a `*LinearGeometry.svg` diagram.
+
+## Lisp Performance & Safety
+- **String Manipulation:** Avoid recursive string substitution or concatenation for large inputs. Use iterative loops with `with-output-to-string` for safety and performance.
+- **Symbol Lookups:** Use `(intern (concatenate 'string "$" name) :maxima)` for dynamic symbol generation. Avoid `read-from-string` as it is less safe and slower.
+- **Global State:** When wrapping Maxima commands, use `unwind-protect` to ensure global variables like `$lmxchar` are restored to their previous state even if an error occurs.
+
+## Key Subsystems Map
+- **Layout Engine:** `src/cells/` (individual cell logic), `src/Worksheet.cpp` (global orchestration).
+- **MathML Formatting:** `src/wxMathML.lisp` (Lisp-to-XML), `src/MathParser.cpp` (XML-to-Cell objects).
+- **Main Application Logic:** `src/wxMaxima.cpp` (event handling, Maxima communication), `src/wxMaximaFrame.cpp` (GUI structure).
+- **Configuration:** `src/Configuration.cpp` (global settings and geometric constants).
