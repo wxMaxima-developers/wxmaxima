@@ -78,6 +78,11 @@ $(function() {
   <div class="headertitle"><div class="title">MatrCell Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="classA.html">A</a> <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> that displays a matrix.  
+ <a href="classMatrCell.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="MatrCell_8h_source.html">MatrCell.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for MatrCell:</div>
 <div class="dyncontent">
@@ -93,7 +98,8 @@ Collaboration diagram for MatrCell:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8066381640388fa9f5fa45db9df7e0e2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrCell.html#a8066381640388fa9f5fa45db9df7e0e2">MatrCell</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config)</td></tr>
+<tr class="memitem:a8066381640388fa9f5fa45db9df7e0e2"><td class="memItemLeft" align="right" valign="top"><a id="a8066381640388fa9f5fa45db9df7e0e2" name="a8066381640388fa9f5fa45db9df7e0e2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MatrCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config)</td></tr>
 <tr class="separator:a8066381640388fa9f5fa45db9df7e0e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b12f6fcedc99b7de325e8874c61f7a8"><td class="memItemLeft" align="right" valign="top"><a id="a1b12f6fcedc99b7de325e8874c61f7a8" name="a1b12f6fcedc99b7de325e8874c61f7a8"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MatrCell</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, const <a class="el" href="classMatrCell.html">MatrCell</a> &amp;cell)</td></tr>
@@ -793,42 +799,23 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_forceBreakLine</b>:
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</td></tr>
 <tr class="separator:a85db96d7703ebbd7bc40ddf6ef0e8c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8066381640388fa9f5fa45db9df7e0e2" name="a8066381640388fa9f5fa45db9df7e0e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8066381640388fa9f5fa45db9df7e0e2">&#9670;&#160;</a></span>MatrCell()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">MatrCell::MatrCell </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
-          <td class="paramname"><em>group</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td>
-          <td class="paramname"><em>config</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="classA.html">A</a> <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> that displays a matrix. </p>
+<p>Matrices can be displayed with various bracket styles and optional internal lines for row/column headings. While standard <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> <code>matrix()</code> commands use default formatting, <a class="el" href="classwxMaxima.html">wxMaxima</a> provides a specialized <code>wx_matrix()</code> command for advanced layout:</p>
+<p><code>wx_matrix(matrix, [options])</code>**</p><ul>
+<li>**<code>lines=true</code>**: Draws internal separator lines (required for headings).</li>
+<li>**<code>rownames=true</code>**: Treats the first column as labels.</li>
+<li>**<code>colnames=true</code>**: Treats the first row as labels.</li>
+<li>**<code>parenstyle=style</code>**: Sets the bracket type. Supported styles: <code>round</code> (), <code>square</code> [], <code>angled</code> &lt;&gt;, <code>straight</code> ||, or <code>none</code>.</li>
+</ul>
+<p>Example: <code>wx_matrix(matrix([1,2],[3,4]), lines=true, rownames=true, parenstyle=square);</code></p>
 <div class="image">
 <object type="image/svg+xml" data="MatrCellGeometry.svg" style="pointer-events: none;"></object>
 </div>
  <div class="image">
 <object type="image/svg+xml" data="MatrCellVariations.svg" style="pointer-events: none;"></object>
 </div>
- 
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+ </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af0f18ef99c280e60940d94cd55143cd1" name="af0f18ef99c280e60940d94cd55143cd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af0f18ef99c280e60940d94cd55143cd1">&#9670;&#160;</a></span>AddEnding()</h2>
 
