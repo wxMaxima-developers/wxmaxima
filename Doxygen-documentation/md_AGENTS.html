@@ -168,7 +168,22 @@ Layout &amp; Compatibility</h1>
 <li><b>Dialogue Focus:</b> Always use <code>m_searchText-&gt;SetFocus()</code> within <code>CallAfter</code> when opening or updating a dialogue string from a worksheet event.</li>
 </ul>
 </li>
-<li><b>Constructor Initialization Order:</b> Always order members in the constructor initialization list to match their declaration order in the header file. This prevents <code>-Wreorder</code> warnings and potential uninitialized member access issues. </li>
+<li><b>Constructor Initialization Order:</b> Always order members in the constructor initialization list to match their declaration order in the header file. This prevents <code>-Wreorder</code> warnings and potential uninitialized member access issues.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md6"></a>
+Extending Maxima via Lisp (&lt;tt&gt;wxMathML.lisp&lt;/tt&gt;)</h1>
+<ul>
+<li><b>Central Formatting Hub:</b> <code>src/wxMathML.lisp</code> is the primary location for extending <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output formatting for <a class="el" href="classwxMaxima.html">wxMaxima</a>. It is compiled into the binary as a header file.</li>
+<li><b>Display Wrappers:</b> New user-facing formatting commands (like <code>wx_matrix</code>) should be implemented here to leverage <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s expression handling.</li>
+<li><b>Safety:</b> Always use <code>unwind-protect</code> when temporarily modifying global Maxima/Lisp variables (like <code>$lmxchar</code>) to ensure they are restored even if the formatting process fails.</li>
+<li><b>Loading:</b> Wrap new functions in <code>(no-warning ...)</code> to prevent "redefined" warnings during the initialization phase.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md7"></a>
+Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)</h1>
+<ul>
+<li><b>Geometry Awareness:</b> The SVG diagrams in <code>art/Doxygen/</code> are critical for maintaining the complex layout engine.</li>
+<li><b>Update Mandate:</b> If you modify the <code>Recalculate()</code> or <code>Draw()</code> logic of a cell in a way that changes its internal geometry (padding, center alignment, sub-cell placement), you MUST update the corresponding SVG files.</li>
+<li><b>Visual Consistency:</b> New cell types should be accompanied by a <code>*Geometry.svg</code> diagram and, if they have a linearized fallback, a <code>*LinearGeometry.svg</code> diagram. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
