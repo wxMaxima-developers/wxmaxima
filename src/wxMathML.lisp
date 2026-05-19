@@ -77,10 +77,12 @@
 ;; a value the new symbol value has to be appended to *builtin-symbol-props*
 ;; but according to #1754 that doesn't work correctly
 (defmacro wx-defprop (sym val indic)
-  `(let ((existing-props (gethash ',sym *builtin-symbol-props*)))
-     (setf (gethash ',sym *builtin-symbol-props*) (append (list ',indic ',val) existing-props)))
-  `(defprop ,sym ,val ,indic)
-  )
+  `(progn
+     (let ((existing-props (and (boundp '*builtin-symbol-props*)
+                                (gethash ',sym *builtin-symbol-props*))))
+       (when existing-props
+         (setf (gethash ',sym *builtin-symbol-props*) (append (list ',indic ',val) existing-props))))
+     (defprop ,sym ,val ,indic)))
 
 ;; Define a few variables whose value will be set by wxMaxima
 (defvar *wx-plot-num* 0 "The serial number of the current plot")
@@ -100,15 +102,14 @@
 (defvar $wxplot_usesvg nil "Create scalable plots?")
 (defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
 
-;; A string replace function that we later use excessively
-(defun wxxml-string-substitute (newstring oldchar x &aux matchpos)
-  (setq matchpos (position oldchar x))
-  (if (null matchpos) x
-      (concatenate 'string
-		   (subseq x 0 matchpos)
-		   newstring
-		   (wxxml-string-substitute newstring oldchar
-					    (subseq x (1+ matchpos))))))
+;; A string replace function that we later use excessively.
+;; Now iterative to avoid stack overflows on large strings.
+(defun wxxml-string-substitute (newstring oldchar x)
+  (with-output-to-string (s)
+    (loop for c across x
+          do (if (char= c oldchar)
+                 (princ newstring s)
+                 (princ c s)))))
 
 
 
@@ -130,11 +131,14 @@
 (declaim (ftype (function (string) string) wxxml-fix-string))
 (defun wxxml-fix-string (x)
   (if (stringp x)
-      (let* ((tmp-x (wxxml-string-substitute "&amp;" #\& x))
-	     (tmp-x (wxxml-string-substitute "&lt;" #\< tmp-x))
-	     (tmp-x (wxxml-string-substitute "&gt;" #\> tmp-x))
-	     (tmp-x (wxxml-string-substitute "&quot;" #\" tmp-x)))
-	tmp-x)
+      (with-output-to-string (s)
+        (loop for c across x
+              do (cond
+                   ((char= c #\&) (princ "&amp;" s))
+                   ((char= c #\<) (princ "&lt;" s))
+                   ((char= c #\>) (princ "&gt;" s))
+                   ((char= c #\") (princ "&quot;" s))
+                   (t (write-char c s)))))
       nil))
 
 
@@ -355,8 +359,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 	     (sub (subseq name (+ pos 1)))
 	     ;; sub-var is the part of x in front of the "_"
 	     (sub-var (subseq name 0 pos))
-	     (sub-var-symb (read-from-string (concatenate 'string "$" sub-var)))
-	     (sub-symb (read-from-string (concatenate 'string "$" sub)))
+	     (sub-var-symb (intern (concatenate 'string "$" sub-var) :maxima))
+	     (sub-symb (intern (concatenate 'string "$" sub) :maxima))
 	     ;; sub-int is the part of x after the "_" converted to integer
 	     (sub-int (ignore-errors
 			(parse-integer sub))))
