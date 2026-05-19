@@ -96,6 +96,7 @@ void SubSupCell::SetIndex(std::unique_ptr<Cell> &&index) {
     return;
   RemoveCell(m_scriptCells, m_postSubCell);
   m_postSubCell = std::move(index);
+  m_scriptCells.emplace_back(m_postSubCell.get());
 }
 
 void SubSupCell::SetExponent(std::unique_ptr<Cell> &&expt) {
@@ -103,6 +104,7 @@ void SubSupCell::SetExponent(std::unique_ptr<Cell> &&expt) {
     return;
   RemoveCell(m_scriptCells, m_postSupCell);
   m_postSupCell = std::move(expt);
+  m_scriptCells.emplace_back(m_postSupCell.get());
 }
 
 void SubSupCell::Recalculate(AFontSize const fontsize) const {
@@ -133,7 +135,7 @@ void SubSupCell::Recalculate(AFontSize const fontsize) const {
     if (m_preSupCell) {
       m_preSupCell->RecalculateList(smallerFontSize);
       preWidth = std::max(preWidth, m_preSupCell->SumOfWidths());
-      supHeight = std::max(subHeight, m_preSupCell->GetHeightList());
+      supHeight = std::max(supHeight, m_preSupCell->GetHeightList());
     }
 
     m_width = preWidth + m_baseCell->SumOfWidths() + postWidth;
@@ -211,17 +213,20 @@ wxString SubSupCell::ToString() const {
     s += "(" + m_baseCell->ListToString() + ")";
   else
     s += m_baseCell->ListToString();
-  if (m_scriptCells.empty()) {
+
+  if (m_preSubCell)
+    s += "[" + m_preSubCell->ListToString() + "]";
+  if (m_preSupCell)
+    s += "^(" + m_preSupCell->ListToString() + ")";
+  if (m_postSubCell)
     s += "[" + m_postSubCell->ListToString() + "]";
+  if (m_postSupCell) {
     s += "^";
     if (m_postSupCell->IsCompound())
       s += "(";
     s += m_postSupCell->ListToString();
     if (m_postSupCell->IsCompound())
       s += ")";
-  } else {
-    for (const Cell * const &cell : m_scriptCells)
-      s += "[" + cell->ListToString() + "]";
   }
   return s;
 }
@@ -232,25 +237,20 @@ wxString SubSupCell::ToMatlab() const {
     s += "(" + m_baseCell->ListToMatlab() + ")";
   else
     s += m_baseCell->ListToMatlab();
-  if (m_scriptCells.empty()) {
+
+  if (m_preSubCell)
+    s += "[" + m_preSubCell->ListToMatlab() + "]";
+  if (m_preSupCell)
+    s += "^(" + m_preSupCell->ListToMatlab() + ")";
+  if (m_postSubCell)
     s += "[" + m_postSubCell->ListToMatlab() + "]";
+  if (m_postSupCell) {
     s += "^";
     if (m_postSupCell->IsCompound())
       s += "(";
     s += m_postSupCell->ListToMatlab();
     if (m_postSupCell->IsCompound())
       s += ")";
-  } else {
-    s += "[";
-    bool first = false;
-
-    for (const Cell * const &cell : m_scriptCells) {
-      if (!first)
-        s += ";";
-      first = true;
-      s += cell->ListToMatlab();
-    }
-    s += "]";
   }
   return s;
 }
@@ -258,37 +258,19 @@ wxString SubSupCell::ToMatlab() const {
 wxString SubSupCell::ToTeX() const {
   wxString s;
 
-  if (m_scriptCells.empty()) {
-    if (m_configuration->TeXExponentsAfterSubscript()) {
-      s = "{{{" + m_baseCell->ListToTeX() + "}";
-      if (m_postSubCell)
-        s += "_{" + m_postSubCell->ListToTeX() + "}";
-      s += "}";
-      if (m_postSupCell)
-        s += "^{" + m_postSupCell->ListToTeX() + "}";
-      s += "}";
-    } else {
-      s = "{{" + m_baseCell->ListToTeX() + "}";
-      if (m_postSubCell)
-        s += "_{" + m_postSubCell->ListToTeX() + "}";
-      if (m_postSupCell)
-        s += "^{" + m_postSupCell->ListToTeX() + "}";
-      s += "}";
-    }
-  } else {
-    if (m_preSupCell || m_preSubCell) {
-      s = "{}";
-      if (m_preSupCell)
-        s += "^{" + m_preSupCell->ListToTeX() + "}";
-      if (m_preSubCell)
-        s += "^{" + m_preSubCell->ListToTeX() + "}";
-    }
-    s += "{" + m_baseCell->ListToTeX() + "}";
-    if (m_postSupCell)
-      s += "^{" + m_postSupCell->ListToTeX() + "}";
-    if (m_postSubCell)
-      s += "^{" + m_postSubCell->ListToTeX() + "}";
+  if (m_preSupCell || m_preSubCell) {
+    s = "{}";
+    if (m_preSupCell)
+      s += "^{" + m_preSupCell->ListToTeX() + "}";
+    if (m_preSubCell)
+      s += "_{" + m_preSubCell->ListToTeX() + "}";
   }
+  s += "{" + m_baseCell->ListToTeX() + "}";
+  if (m_postSupCell)
+    s += "^{" + m_postSupCell->ListToTeX() + "}";
+  if (m_postSubCell)
+    s += "_{" + m_postSubCell->ListToTeX() + "}";
+
   return s;
 }
 
@@ -395,13 +377,19 @@ wxString SubSupCell::GetDiffPart() const {
   else
     s += m_baseCell->ListToString();
 
-  if (m_scriptCells.empty()) {
+  if (m_preSubCell)
+    s += "[" + m_preSubCell->ListToString() + "]";
+  if (m_preSupCell)
+    s += "^(" + m_preSupCell->ListToString() + ")";
+  if (m_postSubCell)
     s += "[" + m_postSubCell->ListToString() + "]";
+  if (m_postSupCell)
+    s += "^(" + m_postSupCell->ListToString() + ")";
+
+  if (m_scriptCells.empty()) {
     s += ",";
     s += m_postSupCell->ListToString();
   } else {
-    for (const Cell * const &cell : m_scriptCells)
-      s += "[" + cell->ListToString() + "]";
     s += ",1";
   }
   return s;
