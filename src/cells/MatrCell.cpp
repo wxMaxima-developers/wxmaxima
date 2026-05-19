@@ -331,29 +331,25 @@ wxString MatrCell::ToTeX() const {
 wxString MatrCell::ToMathML() const {
   wxString retval;
   if (!m_specialMatrix) {
-    wxString open, close;
+    wxString openchar;
     switch (m_parenType) {
     case paren_rounded:
-      open = wxS("(");
-      close = wxS(")");
+      openchar = wxS("(");
       break;
     case paren_brackets:
-      open = wxS("[");
-      close = wxS("]");
+      openchar = wxS("[");
       break;
     case paren_angled:
-      open = wxS("&#x27E8;");
-      close = wxS("&#x27E9;");
+      openchar = wxS("&#x27E8;");
       break;
     case paren_straight:
-      open = wxS("|");
-      close = wxS("|");
+      openchar = wxS("|");
       break;
     default:
       break;
     }
     if (m_parenType != paren_none)
-      retval = wxS("<mrow><mo>") + open + wxS("</mo><mrow>");
+      retval = wxS("<mrow><mo>") + openchar + wxS("</mo><mrow>");
   }
   retval += wxS("<mtable>");
 
@@ -365,24 +361,24 @@ wxString MatrCell::ToMathML() const {
   }
   retval += wxS("</mtable>\n");
   if (!m_specialMatrix && m_parenType != paren_none) {
-    wxString close;
+    wxString closechar;
     switch (m_parenType) {
     case paren_rounded:
-      close = wxS(")");
+      closechar = wxS(")");
       break;
     case paren_brackets:
-      close = wxS("]");
+      closechar = wxS("]");
       break;
     case paren_angled:
-      close = wxS("&#x27E9;");
+      closechar = wxS("&#x27E9;");
       break;
     case paren_straight:
-      close = wxS("|");
+      closechar = wxS("|");
       break;
     default:
       break;
     }
-    retval += wxS("</mrow><mo>") + close + wxS("</mo></mrow>\n");
+    retval += wxS("</mrow><mo>") + closechar + wxS("</mo></mrow>\n");
   }
   return retval;
 }
