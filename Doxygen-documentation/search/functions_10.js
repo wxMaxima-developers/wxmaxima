@@ -17,6 +17,7 @@ var searchData=
   ['printscale_14',['PrintScale',['../classConfiguration.html#a7aa083f8a96209a61f7816980ed36e25',1,'Configuration::PrintScale() const'],['../classConfiguration.html#a979f0fc08df8155b787bd1f01c56c318',1,'Configuration::PrintScale(double scale)']]],
   ['processevent_15',['ProcessEvent',['../classCell.html#ac2c7b0f78b2d1e9e0d2865305fdbe07e',1,'Cell::ProcessEvent()'],['../classEditorCell.html#a4861b52977f38bd665e1ccc7be68c075',1,'EditorCell::ProcessEvent(wxKeyEvent &amp;event) override']]],
   ['processnewline_16',['ProcessNewline',['../classEditorCell.html#aeee97c9a24f0dd8c752a5f7224ba19a6',1,'EditorCell']]],
-  ['propertiesmenu_17',['PropertiesMenu',['../classwxMaxima.html#a95404b3c3175c24b7b557ab060a50e80',1,'wxMaxima']]],
-  ['pymethod_18',['PyMethod',['../classdocstring_1_1PyClass.html#af092e1eacc10334e0e8630531a3473b4',1,'docstring.PyClass.PyMethod()'],['../classpyexample_1_1PyClass.html#a654596774eb28a0c6d26eea565de3a9d',1,'pyexample.PyClass.PyMethod()']]]
+  ['productcell_17',['ProductCell',['../classProductCell.html#a4248f58cdc737fbf445dbafb2b7bd595',1,'ProductCell']]],
+  ['propertiesmenu_18',['PropertiesMenu',['../classwxMaxima.html#a95404b3c3175c24b7b557ab060a50e80',1,'wxMaxima']]],
+  ['pymethod_19',['PyMethod',['../classdocstring_1_1PyClass.html#af092e1eacc10334e0e8630531a3473b4',1,'docstring.PyClass.PyMethod()'],['../classpyexample_1_1PyClass.html#a654596774eb28a0c6d26eea565de3a9d',1,'pyexample.PyClass.PyMethod()']]]
 ];
