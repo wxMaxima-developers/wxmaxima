@@ -437,38 +437,33 @@ wxString MatrCell::ToXML() const {
     flags += wxS(" roundedParens=\"true\"");
     break;
   case paren_brackets:
-    flags += wxS(" roundedParens=\"false\"");
-    flags += wxS(" bracketParens=\"true\"");
+    flags += wxS(" roundedParens=\"false\" bracketParens=\"true\"");
     break;
   case paren_angled:
-    flags += wxS(" roundedParens=\"false\"");
-    flags += wxS(" angledParens=\"true\"");
+    flags += wxS(" roundedParens=\"false\" angledParens=\"true\"");
     break;
   case paren_straight:
-    flags += wxS(" roundedParens=\"false\"");
-    flags += wxS(" straightParens=\"true\"");
+    flags += wxS(" roundedParens=\"false\" straightParens=\"true\"");
     break;
   case paren_none:
-    flags += wxS(" roundedParens=\"false\"");
+    flags += wxS(" roundedParens=\"false\" noneParens=\"true\"");
     break;
   }
 
-  wxString s;
-  if (m_specialMatrix)
-    s = wxString::Format(wxS("<tb") + flags +
-                         wxS(" special=\"true\" inference=\"%s\" "
-                             "rownames=\"%s\" colnames=\"%s\">"),
-                         m_inferenceMatrix ? "true" : "false",
-                         m_rowNames ? "true" : "false",
-                         m_colNames ? "true" : "false");
-  else
-    s = wxS("<tb") + flags + wxS(">");
+  wxString s = wxS("<tb") + flags;
+  if (m_specialMatrix) {
+    s += wxS(" special=\"true\"");
+    s += wxString::Format(wxS(" inference=\"%s\""),
+                          m_inferenceMatrix ? "true" : "false");
+    s += wxString::Format(wxS(" rownames=\"%s\""), m_rowNames ? "true" : "false");
+    s += wxString::Format(wxS(" colnames=\"%s\""), m_colNames ? "true" : "false");
+  }
+  s += wxS(">");
 
   for (size_t i = 0; i < m_matHeight; i++) {
     s += wxS("<mtr>");
     for (size_t j = 0; j < m_matWidth; j++)
-      s += wxS("<mtd>") + GetInnerCell(i, j)->ListToXML() +
-        wxS("</mtd>");
+      s += wxS("<mtd>") + GetInnerCell(i, j)->ListToXML() + wxS("</mtd>");
     s += wxS("</mtr>");
   }
   s += wxS("</tb>");

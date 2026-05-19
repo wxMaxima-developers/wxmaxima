@@ -988,6 +988,7 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell) {
              name != wxS("interval") && name != wxS("leftBracketOpensLeft") &&
              name != wxS("rightBracketOpensRight") && name != wxS("list") &&
              name != wxS("set") && name != wxS("roundedParens") &&
+             name != wxS("noneParens") &&
              name != wxS("bracketParens") && name != wxS("straightParens") &&
              name != wxS("angledParens") && name != wxS("special") &&
              name != wxS("inference") && name != wxS("rownames") &&
@@ -1185,6 +1186,8 @@ std::unique_ptr<Cell> MathParser::ParseTableTag(wxXmlNode *node, int depth) {
     matrix->AngledParens();
   else if (node->GetAttribute(wxS("straightParens")) == wxS("true"))
     matrix->StraightParens();
+  else if (node->GetAttribute(wxS("noneParens")) == wxS("true"))
+    matrix->NoParens();
   else if (node->GetAttribute(wxS("roundedParens"), wxS("true")) == wxS("true"))
     matrix->RoundedParens();
   else matrix->NoParens();
