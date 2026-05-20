@@ -917,6 +917,17 @@ Rückgängig-machen erinnert sich nicht an das, was ich brauche</h2>
 <div class="line"> </div>
 <div class="line">`GDK_BACKEND=x11 wxmaxima`</div>
 <div class="line"> </div>
+<div class="line">## The menu bar disappears on KDE Plasma</div>
+<div class="line"> </div>
+<div class="line">On some KDE Plasma installations the global menu bar disappears when</div>
+<div class="line">clicked.  As this is a bug in the global menu proxy, the only way to avoid</div>
+<div class="line">it is to tell that wxMaxima should use its own menu bar instead of the</div>
+<div class="line">global one.  This is done by setting: `UBUNTU_MENUPROXY=0`</div>
+<div class="line"> </div>
+<div class="line">z.B. Wxmaxima wie folgt starten:</div>
+<div class="line"> </div>
+<div class="line">`UBUNTU_MENUPROXY=0 wxmaxima`</div>
+<div class="line"> </div>
 <div class="line">## Why is the integrated manual browser not offered on my Windows PC?</div>
 <div class="line"> </div>
 <div class="line">Either wxWidgets wasn’t compiled with support for Microsoft’s webview2 or</div>
