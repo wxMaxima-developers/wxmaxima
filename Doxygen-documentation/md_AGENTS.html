@@ -87,6 +87,7 @@ Architecture &amp; GUI</h1>
 <li><b>Linux/GTK Timing:</b> On Linux (especially KDE Plasma with Global Menus), calling <code>m_manager.Update()</code> can disrupt the menu bar if it's already attached. The recommended practice is to check if the menu bar is still attached using <code>if (GetMenuBar() != m_MenuBar)</code> and re-assert it with <code>SetMenuBar(m_MenuBar)</code> within the <code>AuiManagerUpdate()</code> helper. This ensures the menu bar remains visible after layout changes without disrupting active user interactions.</li>
 </ul>
 </li>
+<li><b>Cursors:</b> The worksheet has 2 types of Cursor: <a class="el" href="classA.html">A</a> standard cursor in an <a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> or a hCaret between two worksheet cells. Only one cursor is active at a time.</li>
 <li><b>Key Classes:</b><ul>
 <li><code><a class="el" href="classwxMaxima.html">wxMaxima</a></code>: The main application class (subclass of <code><a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a></code>).</li>
 <li><code><a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a></code>: The base frame class handling layout and sidebars.</li>
