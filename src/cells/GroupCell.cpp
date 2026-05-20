@@ -1815,10 +1815,12 @@ wxAccStatus GroupCell::GetDescription(int childId,
 
 wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId) {
   if (elementId == 0) {
-    rect = wxRect(GetRect().GetTopLeft() +
-                  m_configuration->GetVisibleRegion().GetTopLeft(),
-                  GetRect().GetBottomRight() +
-                  m_configuration->GetVisibleRegion().GetTopLeft());
+    Worksheet *ws = m_configuration->GetWorkSheet();
+    if (!ws)
+      return wxACC_FAIL;
+
+    // Get cell rectangle in worksheet coordinates
+    rect = GetRect();
 
     // Our GroupCell handles the hcaret below the cell, as well as its contents
     rect.SetBottom(rect.GetBottom() + m_configuration->GetGroupSkip());
@@ -1828,24 +1830,40 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId) {
     if (!GetPrevious())
       rect.SetTop(rect.GetTop() - m_configuration->GetGroupSkip());
 
-    if (rect.GetTop() < 0)
-      rect.SetTop(0);
-    if (rect.GetLeft() < 0)
-      rect.SetLeft(0);
-    if (rect.GetBottom() > m_configuration->GetVisibleRegion().GetWidth())
-      rect.SetBottom(m_configuration->GetVisibleRegion().GetWidth());
-    if (rect.GetRight() > m_configuration->GetVisibleRegion().GetHeight())
-      rect.SetRight(m_configuration->GetVisibleRegion().GetHeight());
-    rect =
-      wxRect(rect.GetTopLeft() + m_configuration->GetWorksheetPosition(),
-             rect.GetBottomRight() + m_configuration->GetWorksheetPosition());
+    // Convert to window coordinates by subtracting scroll position
+    int x, y;
+    ws->GetViewStart(&x, &y);
+    int ppuX, ppuY;
+    ws->GetScrollPixelsPerUnit(&ppuX, &ppuY);
+    rect.Offset(-x * ppuX, -y * ppuY);
+
+    // Clip to visible region of the worksheet
+    wxRect clientRect = ws->GetClientRect();
+    rect.Intersect(clientRect);
+
+    if (rect.IsEmpty()) {
+      // Cell is completely scrolled out of view
+      rect = wxRect(0, 0, 0, 0);
+    } else {
+      // Convert to screen coordinates
+      wxPoint screenPos = ws->ClientToScreen(rect.GetTopLeft());
+      rect.SetTopLeft(screenPos);
+    }
+
     return wxACC_OK;
   } else {
     Cell *childCell = nullptr;
-    if (GetChild(elementId, &childCell) == wxACC_OK)
+    if (GetChild(elementId, &childCell) == wxACC_OK && childCell)
       return childCell->GetLocation(rect, 0);
   }
   return wxACC_FAIL;
+}
+
+wxAccStatus GroupCell::GetRole(int WXUNUSED(childId), wxAccRole *role) const {
+  if (!role)
+    return wxACC_FAIL;
+
+  return (*role = wxROLE_SYSTEM_GROUPING), wxACC_OK;
 }
 
 #endif

@@ -396,6 +396,7 @@ public:
 #if wxUSE_ACCESSIBILITY
   wxAccStatus GetDescription(int childId, wxString *description) const override;
   wxAccStatus GetLocation (wxRect &rect, int elementId) override;
+  wxAccStatus GetRole (int childId, wxAccRole *role) const override;
 #endif
 
   //! Recalculate the cell's y position using the position and height of the last one.

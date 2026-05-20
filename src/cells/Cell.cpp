@@ -326,13 +326,6 @@ void Cell::Draw(wxPoint point, wxDC *dc, wxDC *WXUNUSED(antialiassingDC)) {
       dc->DrawRectangle(rect);
     }
   }
-
-  // Tell the screen reader that this cell's contents might have changed.
-#if wxUSE_ACCESSIBILITY
-  if (m_configuration->GetWorkSheet())
-    wxAccessible::NotifyEvent(0, m_configuration->GetWorkSheet(),
-                              wxOBJID_CLIENT, wxOBJID_CLIENT);
-#endif
 }
 
 void Cell::ClearToolTip() {
@@ -1423,21 +1416,33 @@ wxAccStatus CellAccessible::GetLocation(wxRect &rect, int elementId) {
 
 wxAccStatus Cell::GetLocation(wxRect &rect, int elementId) {
   if (elementId == 0) {
-    rect = wxRect(GetRect().GetTopLeft() +
-                  m_configuration->GetVisibleRegion().GetTopLeft(),
-                  GetRect().GetBottomRight() +
-                  m_configuration->GetVisibleRegion().GetTopLeft());
-    if (rect.GetTop() < 0)
-      rect.SetTop(0);
-    if (rect.GetLeft() < 0)
-      rect.SetLeft(0);
-    if (rect.GetBottom() > m_configuration->GetVisibleRegion().GetWidth())
-      rect.SetBottom(m_configuration->GetVisibleRegion().GetWidth());
-    if (rect.GetRight() > m_configuration->GetVisibleRegion().GetHeight())
-      rect.SetRight(m_configuration->GetVisibleRegion().GetHeight());
-    rect =
-      wxRect(rect.GetTopLeft() + m_configuration->GetWorksheetPosition(),
-             rect.GetBottomRight() + m_configuration->GetWorksheetPosition());
+    Worksheet *ws = m_configuration->GetWorkSheet();
+    if (!ws)
+      return wxACC_FAIL;
+
+    // Get cell rectangle in worksheet coordinates
+    rect = GetRect();
+
+    // Convert to window coordinates by subtracting scroll position
+    int x, y;
+    ws->GetViewStart(&x, &y);
+    int ppuX, ppuY;
+    ws->GetScrollPixelsPerUnit(&ppuX, &ppuY);
+    rect.Offset(-x * ppuX, -y * ppuY);
+
+    // Clip to visible region of the worksheet
+    wxRect clientRect = ws->GetClientRect();
+    rect.Intersect(clientRect);
+
+    if (rect.IsEmpty()) {
+      // Cell is completely scrolled out of view
+      rect = wxRect(0, 0, 0, 0);
+    } else {
+      // Convert to screen coordinates
+      wxPoint screenPos = ws->ClientToScreen(rect.GetTopLeft());
+      rect.SetTopLeft(screenPos);
+    }
+
     return wxACC_OK;
   }
 

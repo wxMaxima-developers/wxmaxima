@@ -452,11 +452,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   PrepareDC(dc);
 #endif
 
-#if wxUSE_ACCESSIBILITY
-  if (m_accessibilityInfo != NULL)
-    m_accessibilityInfo->NotifyEvent(0, this, wxOBJID_CLIENT, wxOBJID_CLIENT);
-#endif
-
   // Don't attempt to draw in a window of the size 0.
   if ((GetClientSize().x < 1) || (GetClientSize().y < 1))
     return;
@@ -6538,6 +6533,13 @@ void Worksheet::SetActiveCell(EditorCell *cell) {
   } else if (GetActiveCell())
     GetActiveCell()->DeactivateCursor();
 
+#if wxUSE_ACCESSIBILITY
+  if (m_accessibilityInfo != NULL) {
+    int childId = GetAccessibilityId(cell);
+    wxAccessible::NotifyEvent(wxACC_EVENT_OBJECT_FOCUS, this, wxOBJID_CLIENT, childId);
+  }
+#endif
+
   TreeUndo_CellEntered();
 
   if (cell) {
@@ -8296,6 +8298,18 @@ void Worksheet::OnMouseCaptureLost(wxMouseCaptureLostEvent &event) {
 }
 
 #if wxUSE_ACCESSIBILITY
+int Worksheet::GetAccessibilityId(Cell *cell) const {
+  if (!cell)
+    return 0;
+  int id = 0;
+  for (GroupCell *tmp = GetTree(); tmp; tmp = tmp->GetNext()) {
+    id++;
+    if (tmp == cell || tmp->Contains(cell))
+      return id;
+  }
+  return 0;
+}
+
 Worksheet::AccessibilityInfo::AccessibilityInfo(wxWindow *parent,
                                                 Worksheet *worksheet)
   : wxAccessible(worksheet->GetTargetWindow()) {
@@ -8324,19 +8338,14 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChild(int childId,
     return wxACC_OK;
   }
 
-  int childCount = 0;
   GroupCell *cell = m_worksheet->GetTree();
-  while (cell && childCount < childId) {
-    childCount++;
+  for (int i = 1; cell && i < childId; ++i)
     cell = cell->GetNext();
-  }
 
-  if(cell)
-    {
-      *child = cell->GetAccessible();
-      return wxACC_OK;
-    }
-  else
+  if (cell) {
+    *child = cell->GetAccessible();
+    return wxACC_OK;
+  } else
     return wxACC_FAIL;
 }
 
@@ -8351,9 +8360,11 @@ Worksheet::AccessibilityInfo::GetDefaultAction(int childId,
     return wxACC_OK;
   }
 
-  wxAccessible *acc;
-  GetChild(childId, &acc);
-  return acc ? acc->GetDefaultAction(0, actionName) : wxACC_FAIL;
+  wxAccessible *acc = NULL;
+  if (GetChild(childId, &acc) == wxACC_OK && acc)
+    return acc->GetDefaultAction(0, actionName);
+
+  return wxACC_FAIL;
 }
 
 wxAccStatus Worksheet::AccessibilityInfo::GetParent(wxAccessible **parent) {
@@ -8364,62 +8375,55 @@ wxAccStatus Worksheet::AccessibilityInfo::GetParent(wxAccessible **parent) {
   return *parent ? wxACC_OK : wxACC_FAIL;
 }
 
-// wxAccStatus Worksheet::AccessibilityInfo::GetFocus (int *childId,
-// wxAccessible **child)
-// {
-//   if(!m_worksheet->HasFocus())
-//   {
-//     if(childId != NULL)
-//       *childId = 0;
-//     if(child != NULL)
-//       *child = NULL;
-//     return wxACC_FALSE;
-//   }
-//   else
-//   {
-//     int id = 0;
-//     Cell *cell = m_worksheet->GetTree();
-//     while(cell != NULL)
-//     {
-//       id++;
-//       if(cell->GetFocus(&id, &cell) == wxACC_OK)
-//          {
-//            if(childId != NULL)
-//              *childId = id;
-//            if(child != NULL)
-//              *child = cell;
-//            return wxACC_OK;
-//          }
-//       cell = cell->GetNext();
-//     }
+wxAccStatus Worksheet::AccessibilityInfo::GetFocus(int *childId,
+                                                  wxAccessible **child) {
+  if (!m_worksheet->HasFocus()) {
+    if (childId)
+      *childId = 0;
+    if (child)
+      *child = NULL;
+    return wxACC_FALSE;
+  }
 
-//     if(childId != NULL)
-//       *childId = 0;
-//     if(child != NULL)
-//       *child = this;
+  Cell *activeCell = m_worksheet->GetActiveCell();
+  int id = m_worksheet->GetAccessibilityId(activeCell);
 
-//     return wxACC_OK;
-//   }
-// }
+  if (id > 0) {
+    if (childId)
+      *childId = id;
+    if (child) {
+      GroupCell *cell = m_worksheet->GetTree();
+      for (int i = 1; cell && i < id; ++i)
+        cell = cell->GetNext();
+      *child = cell ? cell->GetAccessible() : NULL;
+    }
+    return wxACC_OK;
+  }
+
+  if (childId)
+    *childId = 0;
+  if (child)
+    *child = this;
+
+  return wxACC_OK;
+}
 
 wxAccStatus Worksheet::AccessibilityInfo::GetLocation(wxRect &rect,
                                                       int elementId) {
   if (elementId == 0) {
-    rect = wxRect(m_worksheet->GetPosition(),
-                  m_worksheet->GetPosition() + m_worksheet->GetClientSize());
-    return GetLocation(rect, 0);
+    rect = m_worksheet->GetScreenRect();
+    return wxACC_OK;
   }
 
   wxAccessible *acc = NULL;
   GetChild(elementId, &acc);
-  return acc ? acc->GetLocation(rect, 0) : wxACC_FAIL;
+  return (acc && acc != this) ? acc->GetLocation(rect, 0) : wxACC_FAIL;
 }
 
 wxAccStatus Worksheet::AccessibilityInfo::HitTest(const wxPoint &pt,
                                                   int *childId,
                                                   wxAccessible **childObject) {
-  wxRect currentRect;
-  GetLocation(currentRect, 0);
+  wxRect currentRect = m_worksheet->GetScreenRect();
   if (!currentRect.Contains(pt)) {
     if (childId)
       *childId = 0;
@@ -8429,11 +8433,10 @@ wxAccStatus Worksheet::AccessibilityInfo::HitTest(const wxPoint &pt,
   }
 
   int id = 0;
-  for (Cell *cell = m_worksheet->GetTree(); cell;) {
+  for (Cell *cell = m_worksheet->GetTree(); cell; cell = cell->GetNext()) {
     id++;
-    cell = cell->GetNext();
     Cell *childCell = nullptr;
-    if (cell && cell->HitTest(pt, childId, &childCell) == wxACC_OK) {
+    if (cell->HitTest(pt, childId, &childCell) == wxACC_OK) {
       if (childId)
         *childId = id;
       if (childObject)
@@ -8461,10 +8464,27 @@ Worksheet::AccessibilityInfo::GetDescription(int childId,
   }
 
   wxAccessible *child;
-  if (GetChild(childId, &child) == wxACC_OK)
+  if (GetChild(childId, &child) == wxACC_OK && child)
     return child->GetDescription(childId, description);
 
   *description = wxString{};
+  return wxACC_FAIL;
+}
+
+wxAccStatus Worksheet::AccessibilityInfo::GetRole(int childId,
+                                                  wxAccRole *role) {
+  if (!role)
+    return wxACC_FAIL;
+
+  if (childId == 0) {
+    *role = wxROLE_SYSTEM_PANE;
+    return wxACC_OK;
+  }
+
+  wxAccessible *child;
+  if (GetChild(childId, &child) == wxACC_OK && child)
+    return child->GetRole(0, role);
+
   return wxACC_FAIL;
 }
 

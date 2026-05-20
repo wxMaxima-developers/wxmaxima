@@ -1565,6 +1565,9 @@ public:
 
   //! Suggestions for how the word that was right-clicked on could continue
   std::vector<wxString> m_replacementsForCurrentWord;
+#if wxUSE_ACCESSIBILITY
+  int GetAccessibilityId(Cell *cell) const;
+#endif
   //Simple iterator over a Maxima input string, skipping comments and strings
   class SimpleMathConfigurationIterator
   {
@@ -1598,11 +1601,12 @@ public:
     wxAccStatus GetChild (int childId, wxAccessible **child);
     wxAccStatus GetDefaultAction(int childId, wxString *actionName);
     wxAccStatus GetParent (wxAccessible ** parent);
-//    wxAccStatus GetFocus (int *childId, wxAccessible **child);
+    wxAccStatus GetFocus (int *childId, wxAccessible **child);
     wxAccStatus GetLocation (wxRect &rect, int elementId);
     wxAccStatus HitTest         (const wxPoint &pt,
                                  int *childId, wxAccessible **childObject);
     wxAccStatus GetDescription(int childId, wxString *description);
+    wxAccStatus GetRole(int childId, wxAccRole *role);
   private:
     wxWindow *m_parent = NULL;
     Worksheet *m_worksheet = NULL;
