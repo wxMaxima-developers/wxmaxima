@@ -8301,10 +8301,17 @@ void Worksheet::OnMouseCaptureLost(wxMouseCaptureLostEvent &event) {
 int Worksheet::GetAccessibilityId(Cell *cell) const {
   if (!cell)
     return 0;
+
+  // Find the top-most group containing this cell
+  GroupCell *targetGroup = cell->GetGroup();
+  while (targetGroup && targetGroup->GetGroup() != targetGroup) {
+    targetGroup = targetGroup->GetGroup();
+  }
+
   int id = 0;
   for (GroupCell *tmp = GetTree(); tmp; tmp = tmp->GetNext()) {
     id++;
-    if (tmp == cell || tmp->Contains(cell))
+    if (tmp == targetGroup)
       return id;
   }
   return 0;
