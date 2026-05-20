@@ -169,6 +169,32 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
 
 #ifndef __WXMSW__
 int main(int argc, char *argv[]) {
+#ifdef __WXGTK__
+#if !wxCHECK_VERSION(3, 3, 0)
+  // Workaround for https://github.com/wxWidgets/wxWidgets/issues/18815
+  // and general KDE Plasma Global Menu issues where the menu disappears
+  // when clicked or when the layout is updated.
+  // This is only needed for wxWidgets <= 3.2.x.
+  bool isAffected = false;
+  wxString desktop;
+  if (wxGetEnv(wxS("XDG_CURRENT_DESKTOP"), &desktop)) {
+    desktop.MakeLower();
+    if (desktop.Contains(wxS("kde")) || desktop.Contains(wxS("unity")) ||
+        desktop.Contains(wxS("ubuntu"))) {
+      isAffected = true;
+    }
+  }
+  wxString modules;
+  if (!isAffected && wxGetEnv(wxS("GTK_MODULES"), &modules)) {
+    if (modules.Contains(wxS("appmenu-gtk-module"))) {
+      isAffected = true;
+    }
+  }
+  if (isAffected) {
+    wxSetEnv(wxS("UBUNTU_MENUPROXY"), wxS("0"));
+  }
+#endif
+#endif
   wxEntryStart(argc, argv);
   cmdLineParser.SetCmdLine(argc, argv);
   cmdLineParser.SetDesc(cmdLineDesc);
