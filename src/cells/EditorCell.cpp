@@ -891,8 +891,7 @@ void EditorCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
         } else
           width = textSnippet.GetWidth();
         wxRect textRect(TextCurrentPoint.x, TextCurrentPoint.y - m_center,
-                        TextCurrentPoint.x + width,
-                        TextCurrentPoint.y - m_center + m_charHeight);
+                        width, m_charHeight);
 
         // Draw the text only if it overlaps the update region
         if (((!m_configuration->ClipToDrawRegion())) ||
