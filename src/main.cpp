@@ -379,8 +379,10 @@ bool MyApp::OnInit() {
   if (cmdLineParser.Found(wxS("pipe")))
     Maxima::SetPipeToStdErr(true);
 
-  if (cmdLineParser.Found(wxS("exit-on-error")))
+  if (cmdLineParser.Found(wxS("exit-on-error"))) {
     wxMaxima::ExitOnError();
+    LoggingMessageDialog::SetNonInteractive();
+  }
 
   if (cmdLineParser.Found(wxS("enableipc")))
     wxMaxima::EnableIPC();
@@ -466,6 +468,7 @@ bool MyApp::OnInit() {
   if (cmdLineParser.Found(wxS("b"))) {
     evalOnStartup = true;
     exitAfterEval = true;
+    LoggingMessageDialog::SetNonInteractive();
   }
 
   if (cmdLineParser.Found(wxS("e")))

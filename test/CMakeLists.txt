@@ -14,6 +14,18 @@ else()
 endif()
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/xmlpatterngen.sh.in" xmlpatterngen.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxMathML.sh.in" check-wxMathML.sh)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-xml-validity.sh.in" check-xml-validity.sh)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxmx-validity.sh.in" check-wxmx-validity.sh)
+
+find_program(XMLLINT xmllint)
+find_program(UNZIP unzip)
+if(NOT XMLLINT)
+    message(STATUS "xmllint not found. XML duplicate attribute validation will be skipped.")
+elseif(NOT UNZIP)
+    message(STATUS "unzip not found. .wxmx file XML validation will be skipped.")
+else()
+    message(STATUS "Found xmllint and unzip. XML validity validation enabled.")
+endif()
 
 # Copy the .wxm files to the binary dir so they can be used as test case without
 # being afraid that we change the test cases somehow.
@@ -63,27 +75,27 @@ add_test(
 add_test(
     NAME multiple_batch_files
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --batch unicode.wxm boxes.wxm)
+    COMMAND wxmaxima --debug --batch --exit-on-error unicode.wxm boxes.wxm)
 
 add_test(
     NAME multiple_batch_files_inverse
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --batch boxes.wxm unicode.wxm)
+    COMMAND wxmaxima --debug --batch --exit-on-error boxes.wxm unicode.wxm)
 
 add_test(
     NAME multiple_batch_files2
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --batch --single_process unicode.wxm boxes.wxm)
+    COMMAND wxmaxima --debug --batch --exit-on-error --single_process unicode.wxm boxes.wxm)
 
 add_test(
     NAME multiple_batch_files_singlethread
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --batch --single_thread unicode.wxm boxes.wxm)
+    COMMAND wxmaxima --debug --batch --exit-on-error --single_thread unicode.wxm boxes.wxm)
 
 add_test(
     NAME multiple_batch_files2_singlethread
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --batch --single_process --single_thread unicode.wxm boxes.wxm)
+    COMMAND wxmaxima --debug --batch --exit-on-error --single_process --single_thread unicode.wxm boxes.wxm)
 
 add_test(
     NAME wxstatusbar
@@ -93,6 +105,38 @@ add_test(
 add_test(
     NAME wxbuildinfo
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxbuild_info();" "WxMaxima"
+)
+
+# Test if the XML output is valid and doesn't contain duplicate attributes
+add_test(
+    NAME check-xml-validity_matrix_default
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-xml-validity.sh" "wx_matrix(matrix([1]));"
+)
+
+add_test(
+    NAME check-xml-validity_matrix_lines
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-xml-validity.sh" "wx_matrix(matrix([1]), lines=true);"
+)
+
+add_test(
+    NAME check-xml-validity_matrix_complex
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-xml-validity.sh" "wx_matrix(matrix([1,2],[3,4]), lines=true, rownames=true, colnames=true, parenstyle=square);"
+)
+
+add_test(
+    NAME check-xml-validity_mfrac
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-xml-validity.sh" "1/2;"
+)
+
+# Test if the content.xml inside .wxmx files is valid
+add_test(
+    NAME check-wxmx-validity_all-celltypes
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxmx-validity.sh" "${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files/all-celltypes.wxmx"
+)
+
+add_test(
+    NAME check-wxmx-validity_intervals
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxmx-validity.sh" "${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files/intervals.wxmx"
 )
 
 # run Maxima demo files as test?
@@ -155,7 +199,7 @@ foreach(f ${DEMO_FILES})
 	  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/automatic_test_files/run_demo_commands.wxm.in ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files/${f}.wxm)
 	  add_test(
 	      NAME ${f}
-    	      COMMAND wxmaxima --debug --logtostderr --pipe --batch automatic_test_files/${f}.wxm)
+    	      COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error automatic_test_files/${f}.wxm)
 endforeach()
 endif()
 
@@ -309,27 +353,27 @@ endif()
 add_test(
     NAME wxmaxima_batch_emptyFile
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch empty_file.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error empty_file.wxm)
 
 add_test(
     NAME wxmaxima_performance
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch performance.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error performance.wxm)
 
 add_test(
     NAME wxmaxima_batch_textcell
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch textcells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error textcells.wxm)
 
 add_test(
     NAME wxmaxima_batch_foreign_characters
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch foreign-characters.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error foreign-characters.wxm)
 
 add_test(
     NAME wxmaxima_load_symbol
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch load_string.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error load_string.wxm)
 
 add_test(
     NAME wxmaxima_version_string
@@ -369,102 +413,102 @@ set_tests_properties(wxmaxima_help_returncode PROPERTIES WILL_FAIL true)
 add_test(
     NAME all_celltypes
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch testbench_all_celltypes.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error testbench_all_celltypes.wxm)
 
 add_test(
     NAME simpleInput
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch simpleInput.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error simpleInput.wxm)
 
 add_test(
     NAME rememberingAnswers
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch rememberingAnswers.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error rememberingAnswers.wxm)
 
 add_test(
     NAME absCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch absCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error absCells.wxm)
 
 add_test(
     NAME absCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch absCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error absCells.wxm)
 
 add_test(
     NAME boxCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch boxCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error boxCells.wxm)
 
 add_test(
     NAME boxCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch boxCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error boxCells.wxm)
 
 add_test(
     NAME diffCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch diffCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error diffCells.wxm)
 
 add_test(
     NAME diffCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch diffCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error diffCells.wxm)
 
 add_test(
     NAME atCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch atCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error atCells.wxm)
 
 add_test(
     NAME atCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch atCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error atCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME atCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch atCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error atCells.wxm)
 
 add_test(
     NAME conjugateCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch conjugateCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error conjugateCells.wxm)
 
 add_test(
     NAME conjugateCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch conjugateCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error conjugateCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME conjugateCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch conjugateCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error conjugateCells.wxm)
 
 add_test(
     NAME exptCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch exptCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error exptCells.wxm)
 
 add_test(
     NAME exptCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch exptCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error exptCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME exptCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch exptCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error exptCells.wxm)
 
 add_test(
     NAME fracCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch fracCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error fracCells.wxm)
 
 add_test(
     NAME fracCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch fracCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error fracCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME fracCells_cmdline_wxmathml_over_network
@@ -476,433 +520,433 @@ add_test(
 add_test(
     NAME fracCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch fracCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error fracCells.wxm)
 
 add_test(
     NAME intCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch intCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error intCells.wxm)
 
 add_test(
     NAME intCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch intCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error intCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME intCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch intCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error intCells.wxm)
 
 add_test(
     NAME intervals_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch intervals.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error intervals.wxm)
 
 add_test(
     NAME intervals_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch intervals.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error intervals.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME intervals
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch intervals.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error intervals.wxm)
 
 add_test(
     NAME functionCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch functionCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error functionCells.wxm)
 
 add_test(
     NAME functionCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch functionCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error functionCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME functionCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch functionCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error functionCells.wxm)
 
 add_test(
     NAME slideshowCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch slideshowCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error slideshowCells.wxm)
 
 add_test(
     NAME imageCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch imageCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error imageCells.wxm)
 
 add_test(
     NAME limitCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch limitCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error limitCells.wxm)
 
 add_test(
     NAME limitCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch limitCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error limitCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME limitCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch limitCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error limitCells.wxm)
 
 add_test(
     NAME matrixCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch matrixCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error matrixCells.wxm)
 
 add_test(
     NAME matrixCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch matrixCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error matrixCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME matrixCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch matrixCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error matrixCells.wxm)
 
 add_test(
     NAME parenthesisCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch parenthesisCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error parenthesisCells.wxm)
 
 add_test(
     NAME parenthesisCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch parenthesisCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error parenthesisCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME parenthesisCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch parenthesisCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error parenthesisCells.wxm)
 
 add_test(
     NAME listCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch listCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error listCells.wxm)
 
 add_test(
     NAME listCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch listCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error listCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME listCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch listCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error listCells.wxm)
 
 add_test(
     NAME setCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch listCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error listCells.wxm)
 
 add_test(
     NAME setCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch setCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error setCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME setCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch setCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error setCells.wxm)
 
 add_test(
     NAME sqrtCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch sqrtCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error sqrtCells.wxm)
 
 add_test(
     NAME sqrtCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch sqrtCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error sqrtCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME sqrtCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch sqrtCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error sqrtCells.wxm)
 
 add_test(
     NAME subCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --pipe --batch subCells.wxm)
+    COMMAND ${MAXIMA} --pipe --batch --exit-on-error subCells.wxm)
 
 add_test(
     NAME subCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --pipe --batch subCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --pipe --batch --exit-on-error subCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME subCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch subCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error subCells.wxm)
 
 add_test(
     NAME subsupCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch subsupCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error subsupCells.wxm)
 
 add_test(
     NAME subsupCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch subsupCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error subsupCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME subsupCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch subsupCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error subsupCells.wxm)
 
 add_test(
     NAME presubsupcells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --pipe --batch presubsupcells.wxm)
+    COMMAND ${MAXIMA} --pipe --batch --exit-on-error presubsupcells.wxm)
 
 add_test(
     NAME presubsupcells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --pipe --batch presubsupcells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --pipe --batch --exit-on-error presubsupcells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME presubsupcells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch presubsupcells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error presubsupcells.wxm)
 
 add_test(
     NAME sumCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch sumCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error sumCells.wxm)
 
 add_test(
     NAME sumCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch sumCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error sumCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME sumCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch sumCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error sumCells.wxm)
 
 add_test(
     NAME productCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch productCells.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error productCells.wxm)
 
 add_test(
     NAME productCells_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch productCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error productCells.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME productCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch productCells.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error productCells.wxm)
 
 add_test(
     NAME printf_simple_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch printf_simple.wxm)
+    COMMAND ${MAXIMA} --batch --exit-on-error printf_simple.wxm)
 
 add_test(
     NAME printf_simple_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --batch printf_simple.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --batch --exit-on-error printf_simple.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME printf_simple
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch printf_simple.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error printf_simple.wxm)
 
 add_test(
     NAME printf_equations_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --pipe --batch printf_equations.wxm)
+    COMMAND ${MAXIMA} --pipe --batch --exit-on-error printf_equations.wxm)
 
 add_test(
     NAME printf_equations_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --pipe --batch printf_equations.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --pipe --batch --exit-on-error printf_equations.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME printf_equations
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch printf_equations.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error printf_equations.wxm)
 
 add_test(
     NAME printf_continuationLines_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --pipe --batch printf_continuationLines.wxm)
+    COMMAND ${MAXIMA} --pipe --batch --exit-on-error printf_continuationLines.wxm)
 
 add_test(
     NAME printf_continuationLines_cmdline_wxmathml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${MAXIMA} --pipe --batch printf_continuationLines.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
+    COMMAND ${MAXIMA} --pipe --batch --exit-on-error printf_continuationLines.wxm -p ${CMAKE_SOURCE_DIR}/src/wxMathML.lisp)
 
 add_test(
     NAME printf_continuationLines
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch printf_continuationLines.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error printf_continuationLines.wxm)
 
 add_test(
     NAME weirdLabels
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch weirdLabels.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error weirdLabels.wxm)
 
 add_test(
     NAME xmlQuote
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch xmlQuote.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error xmlQuote.wxm)
 
 add_test(
     NAME formerCrashes
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch formerCrashes.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error formerCrashes.wxm)
 
 add_test(
     NAME multiplication
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch multiplication.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error multiplication.wxm)
 
 add_test(
     NAME nonsenseConstructs
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch nonsenseConstructs.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error nonsenseConstructs.wxm)
 
 add_test(
     NAME lisp
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch lisp.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error lisp.wxm)
 
 add_test(
     NAME boxes
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch boxes.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error boxes.wxm)
 
 add_test(
     NAME unicode
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch unicode.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error unicode.wxm)
 
 add_test(
     NAME unicode_specialchars
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch unicode_specialchars.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error unicode_specialchars.wxm)
 
 add_test(
     NAME openMacFiles
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe -f autosave.cfg --batch testbench_simple.mac)
+    COMMAND wxmaxima --debug --logtostderr --pipe -f autosave.cfg --batch --exit-on-error testbench_simple.mac)
 
 add_test(
     NAME openMacFiles2
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe -f autosave.cfg --batch testbench_simple2.mac)
+    COMMAND wxmaxima --debug --logtostderr --pipe -f autosave.cfg --batch --exit-on-error testbench_simple2.mac)
 
 add_test(
     NAME tutorial_10Minutes
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe  --batch 10MinuteTutorial.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error 10MinuteTutorial.wxm)
 
 add_test(
     NAME comment_begin
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch commentBegin.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error commentBegin.wxm)
 
 add_test(
     NAME threadtest
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --batch threadtest.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error threadtest.wxm)
 
 add_test(
     NAME autosave
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe -f autosave.cfg --batch unicode.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe -f autosave.cfg --batch --exit-on-error unicode.wxm)
 
 add_test(
     NAME noautosave
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe -f noautosave.cfg --batch unicode.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe -f noautosave.cfg --batch --exit-on-error unicode.wxm)
 
 add_test(
     NAME config_from_19.11
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe -f config_from_19.11.cfg --batch unicode.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe -f config_from_19.11.cfg --batch --exit-on-error unicode.wxm)
 
 add_test(
     NAME invalid_commandline_arg
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --gibberish --batch unicode.wxm)
+    COMMAND wxmaxima --debug --gibberish --batch --exit-on-error unicode.wxm)
 set_tests_properties(invalid_commandline_arg PROPERTIES WILL_FAIL true)
 
 add_test(
     NAME multiwindow
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --single_process --batch unicode.wxm boxes.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --single_process --batch --exit-on-error unicode.wxm boxes.wxm)
 
 add_test(
     NAME multithreadtest
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --single_process --batch threadtest.wxm threadtest2.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe --single_process --batch --exit-on-error threadtest.wxm threadtest2.wxm)
 
 #add_test(
 #    NAME ipc_copypaste1
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#    COMMAND wxmaxima --debug --enableipc --batch ipc_copypaste1.wxm)
+#    COMMAND wxmaxima --debug --enableipc --batch --exit-on-error ipc_copypaste1.wxm)
 
 #add_test(
 #    NAME ipc_copypaste_all-celltypes
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#    COMMAND wxmaxima --debug --enableipc --batch ipc_copypaste_all-celltypes.wxm)
+#    COMMAND wxmaxima --debug --enableipc --batch --exit-on-error ipc_copypaste_all-celltypes.wxm)
 
 add_test(
     NAME config_dialogue_sample
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../data
-    COMMAND wxmaxima --debug --logtostderr --pipe  --batch sampleWorksheet.wxmx)
+    COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error sampleWorksheet.wxmx)
 
 add_test(
     NAME tutorial_fastListAccess
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
-    COMMAND wxmaxima --debug --logtostderr --pipe  --batch fastListAccess.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error fastListAccess.wxm)
 
 add_test(
     NAME tutorial_numberFormats
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
-    COMMAND wxmaxima --debug --logtostderr --pipe  --batch numberFormats.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error numberFormats.wxm)
 
 add_test(
     NAME tutorial_toleranceCalculations
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
-    COMMAND wxmaxima --debug --logtostderr --pipe  --batch toleranceCalculations.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error toleranceCalculations.wxm)
 
 add_test(
     NAME tutorial_fittingEquations
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
-    COMMAND wxmaxima --debug --logtostderr --pipe  --batch fittingEquations.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error fittingEquations.wxm)
 
 add_test(
     NAME tutorial_variableNames
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
-    COMMAND wxmaxima --debug --logtostderr --pipe  --batch variableNames.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error variableNames.wxm)
 
 add_test(
     NAME tutorial_displaying3DCurves
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
-    COMMAND wxmaxima --debug --logtostderr --pipe  --batch displaying3DCurves.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error displaying3DCurves.wxm)
 
 add_test(
    NAME tutorial_memoizing
    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
-   COMMAND wxmaxima --debug --logtostderr --pipe  --batch memoizing.wxm)
+   COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error memoizing.wxm)
 
 add_test(
     NAME tutorial_solvingEquations
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
-    COMMAND wxmaxima --debug --logtostderr --pipe  --batch solvingEquations.wxm)
+    COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error solvingEquations.wxm)
 
 add_test(
     NAME testbench_simple.wxmx
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe  --batch testbench_simple.wxmx)
+    COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error testbench_simple.wxmx)
 
 find_program(DESKTOP_FILE_VALIDATE desktop-file-validate)
 if(DESKTOP_FILE_VALIDATE)

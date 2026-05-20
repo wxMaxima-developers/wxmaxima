@@ -22,8 +22,18 @@
 
 #include "LoggingMessageDialog.h"
 
+bool LoggingMessageDialog::m_nonInteractive = false;
+
+int LoggingMessageDialog::ShowModal() {
+  if (m_nonInteractive)
+    return wxID_OK;
+  return wxMessageDialog::ShowModal();
+}
+
 int LoggingMessageBox(const wxString &message, const wxString &caption,
                       int style, wxWindow *parent, int x, int y) {
   wxLogMessage("%s", message);
+  if (LoggingMessageDialog::IsNonInteractive())
+    return wxID_OK;
   return wxMessageBox(message, caption, style, parent, x, y);
 }

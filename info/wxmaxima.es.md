@@ -1220,6 +1220,21 @@ convertirse a tablas de una aparición similar.
 ![Otro ejemplo de tabla_formulario](./EjemploSegundaTabla.png){
 id=img_EjemploSegundaTabla }
 
+The function `wx_matrix()` is a wrapper for Maxima's `matrix()` command that
+allows for more flexible formatting of matrices in wxMaxima:
+
+**`wx_matrix( <matrix>, [options] )`**
+- **`lines=true`**: Draws internal separator lines between the cells. This is required to visually separate headings from data.
+- **`rownames=true`**: Tells wxMaxima that the first column of the matrix contains labels.
+- **`colnames=true`**: Tells wxMaxima that the first row of the matrix contains labels.
+- **`parenstyle=<style>`**: Sets the type of parenthesis or brackets to draw around the matrix. Supported styles are: `round` `()`, `square` `[]`, `angled` `<>`, `straight` `||`, or `none`.
+
+Example:
+```maxima
+wx_matrix(matrix(["Name", "Value"], ["X", 10], ["Y", 20]), 
+          lines=true, rownames=true, colnames=true, parenstyle=square);
+```
+
 ## Comunicar fallo
 
 _WxMaxima_ proporciona unas pocas funciones que obtenga información de

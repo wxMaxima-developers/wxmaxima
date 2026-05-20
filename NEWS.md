@@ -1,5 +1,17 @@
 # Current development version
 
+- Fix startup keyboard focus: The worksheet now correctly gains focus on application start.
+- New `wx_matrix()` command for advanced matrix formatting (lines, headers, custom brackets).
+- Persistent matrix formatting: Style flags are now saved within the matrix object.
+- Major XML performance optimization: Faster worksheet loading via hash-based attribute filtering.
+- Improved XML integrity: Automated validation tests to prevent duplicate attributes and malformed files.
+- Windows Accessibility: Fixed several bugs in the `wxAccessible` implementation for better screen reader support.
+- Script rendering: Fixed issues where complex subscripts/superscripts would flatten into standard subscripts.
+- High-DPI: Optimized SVG rendering and resolved redundant resource requests.
+- Editor performance: Optimized drawing by rendering only visible text tokens.
+- Stability: Resolved numerous compiler warnings and build errors across Linux, Windows, and macOS.
+- Non-interactive mode: Automated tests now correctly skip blocking modal dialogues.
+- Documented background task and threading architecture in Doxygen.
 - Fix the cursor position after autocompletion (#2090).
 - Fix XML for saving as wxmx, when Maxima warnings are displayed (#2092).
 - Fix XML output for definite integrals. It was saved (in wxmx format)
@@ -22,6 +34,7 @@
 - Better SVGZ support
 - Some fixes for selection of output
 - Improved MathML and RTF output
+- Big find-and-replace functionality fixes
 
 # 26.05.0
 

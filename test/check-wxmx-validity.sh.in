@@ -1,0 +1,32 @@
+#!/bin/sh
+
+WXMX_FILE="$1"
+
+# Check if xmllint is available
+if ! command -v xmllint >/dev/null 2>&1; then
+    echo "Warning: xmllint not found. Skipping XML validation for $WXMX_FILE."
+    exit 0
+fi
+
+# Check if unzip is available
+if ! command -v unzip >/dev/null 2>&1; then
+    echo "Warning: unzip not found. Skipping XML validation for $WXMX_FILE."
+    echo "To enable this test, please install the unzip package."
+    exit 0
+fi
+
+if [ ! -f "$WXMX_FILE" ]; then
+    echo "Error: File $WXMX_FILE not found."
+    exit 1
+fi
+
+echo "Validating content.xml in $WXMX_FILE..."
+
+# Extract content.xml to stdout and pipe to xmllint
+if unzip -p "$WXMX_FILE" content.xml | xmllint --noout - 2>&1; then
+    echo "Success: content.xml is valid and has no duplicate attributes."
+    exit 0
+else
+    echo "Failure: content.xml in $WXMX_FILE is invalid or contains duplicate attributes."
+    exit 1
+fi

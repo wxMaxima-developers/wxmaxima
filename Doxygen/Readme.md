@@ -83,6 +83,35 @@ This naturally depends on what you want to achieve.
 Many of the most important concepts that are important to know are 
 displayed in "Things you have to know."
 
+## Background Tasks and Threading
+
+wxMaxima uses background tasks for time-consuming operations to keep the GUI responsive. 
+These tasks are typically implemented using `jthread` (which resolves to `std::jthread` 
+on C++20 or `std::thread` otherwise).
+
+### Key Background Tasks:
+- **Maxima Reader**: (`Maxima::WorkerThread`) Continuously reads and interprets XML 
+  data from the Maxima process.
+- **Image Loading**: (`Image::LoadImage_Backgroundtask`) Loads and scales images 
+  asynchronously.
+- **Symbol Autocompletion**: (`AutoComplete::AddSymbols_Backgroundtask`) Scans 
+  files for available Maxima functions and variables.
+- **Help File Parsing**: (`MaximaManual::CompileHelpFileAnchors`) Builds an 
+  index of the Maxima manual for the integrated help browser.
+
+### Synchronization and Safety:
+- **Mutexes**: Critical data structures (like the Maxima output queue) are protected 
+  by `std::mutex`.
+- **Main Thread Communication**: Worker threads never modify GUI elements directly. 
+  They use `CallAfter()` or `QueueEvent()` to request actions from the main thread.
+- **Abort Mechanism**: All long-running tasks check an abort flag (like 
+  `m_workerThreadAbort` or `m_abortBackgroundTask`) regularly to ensure they 
+  can be stopped quickly.
+- **Safe Exit**: Destructors for objects managing threads (like `Maxima` or `Image`) 
+  set the abort flag and `join()` the worker threads. This ensures that the 
+  application does not terminate while background jobs are still active, 
+  preventing race conditions and potential deadlocks on exit.
+
 ## Things you have to know
 
 - C++ provides the magic that allows to attach objects of all imaginable

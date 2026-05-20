@@ -1,0 +1,26 @@
+#!/bin/sh
+
+INPUT="$1"
+# Ensure we have a complete XML document for xmllint
+# We wrap the output in a root tag if it doesn't have one
+MAXIMA_OUTPUT=$(echo "$INPUT" | "@MAXIMA@" --quiet --init-lisp="@CMAKE_SOURCE_DIR@/src/wxMathML.lisp")
+
+# Check if xmllint is available
+if ! command -v xmllint >/dev/null 2>&1; then
+    echo "Warning: xmllint not found. Skipping XML duplicate attribute validation."
+    echo "To enable this test, please install the libxml2-utils package (or equivalent)."
+    exit 0
+fi
+
+# Wrap in a root element to make it a valid XML fragment/document
+XML_DOC="<root>$MAXIMA_OUTPUT</root>"
+
+if echo "$XML_DOC" | xmllint --noout - 2>&1; then
+    echo "Success: XML is valid and has no duplicate attributes."
+    exit 0
+else
+    echo "Failure: XML is invalid or contains duplicate attributes."
+    echo "Maxima's output:"
+    echo "$MAXIMA_OUTPUT"
+    exit 1
+fi

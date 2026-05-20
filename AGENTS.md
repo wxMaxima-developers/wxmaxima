@@ -78,13 +78,30 @@ This file contains architectural insights, conventions, and operational knowledg
 - **Update Mandate:** If you modify the `Recalculate()` or `Draw()` logic of a cell in a way that changes its internal geometry (padding, center alignment, sub-cell placement), you MUST update the corresponding SVG files.
 - **Visual Consistency:** New cell types should be accompanied by a `*Geometry.svg` diagram and, if they have a linearized fallback, a `*LinearGeometry.svg` diagram.
 
+## Performance & Documentation Mandates
+- **NEWS.md Updates:** Every non-trivial change or feature addition MUST be accompanied by a concise bullet point in `NEWS.md` under the "# Current development version" section.
+- **Background Tasks:** When adding a new background task or thread, you MUST:
+  1. Use `jthread` for automatic joining and safe teardown.
+  2. Protect shared data with `std::mutex`.
+  3. Regularly check an abort flag.
+  4. Update the "Background Tasks and Threading" section in `Doxygen/Readme.md`.
+
 ## Lisp Performance & Safety
 - **String Manipulation:** Avoid recursive string substitution or concatenation for large inputs. Use iterative loops with `with-output-to-string` for safety and performance.
 - **Symbol Lookups:** Use `(intern (concatenate 'string "$" name) :maxima)` for dynamic symbol generation. Avoid `read-from-string` as it is less safe and slower.
 - **Global State:** When wrapping Maxima commands, use `unwind-protect` to ensure global variables like `$lmxchar` are restored to their previous state even if an error occurs.
+
+## Strict XML Mandate
+- **No Duplicate Attributes:** XML files with duplicate attributes are invalid. 
+- **Attribute Filter List:** Any attribute that is manually added in a `ToXML()` method (e.g., `noneParens="true"`) MUST be added to the `m_knownAttributes` list in `MathParser.cpp`. 
+- **Mechanism:** If an attribute is not in the filter list, `MathParser` will store it in `m_extraAttributes`. When saving, `GetXMLFlags()` will then output it, and if `ToXML()` also manually outputs it, a duplicate is created.
 
 ## Key Subsystems Map
 - **Layout Engine:** `src/cells/` (individual cell logic), `src/Worksheet.cpp` (global orchestration).
 - **MathML Formatting:** `src/wxMathML.lisp` (Lisp-to-XML), `src/MathParser.cpp` (XML-to-Cell objects).
 - **Main Application Logic:** `src/wxMaxima.cpp` (event handling, Maxima communication), `src/wxMaximaFrame.cpp` (GUI structure).
 - **Configuration:** `src/Configuration.cpp` (global settings and geometric constants).
+
+## Error resiliance
+- This file might contain errors. If facts seem to point in that direction don't believe blindly that this file must be right.
+- To err is human => If your instructions don't seem to make sense in any way feel free to ask.

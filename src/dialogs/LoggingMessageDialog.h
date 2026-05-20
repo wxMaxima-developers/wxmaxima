@@ -42,11 +42,16 @@ public:
                        long style = wxOK|wxCENTRE, const wxPoint &pos = wxDefaultPosition):
     wxMessageDialog (parent, message, caption, style, pos)
     {
-      wxString logString = message;
-      logString.Replace(wxS("%"), wxS("%%"));
-      wxLogMessage(logString);
-      wxLogMessage(message);
+      wxLogMessage("%s", message);
     }
+
+  int ShowModal() override;
+
+  static void SetNonInteractive(bool nonInteractive = true) { m_nonInteractive = nonInteractive; }
+  static bool IsNonInteractive() { return m_nonInteractive; }
+
+private:
+  static bool m_nonInteractive;
 };
 
 extern int LoggingMessageBox(   const wxString &        message,

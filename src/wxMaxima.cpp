@@ -385,6 +385,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 
   if (!StartMaxima())
     StatusText(_("Starting Maxima process failed"));
+
+  CallAfter([this] {
+    if (GetWorksheet())
+      GetWorksheet()->SetFocus();
+  });
+
   Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(wxMaxima::SliderEvent),
           NULL, this);
   Connect(wxID_CLOSE, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
@@ -5830,6 +5836,10 @@ bool wxMaxima::SaveFile(bool forceSave) {
         StatusSaveFailed();
         LoggingMessageBox(_("Saving failed!"), _("Error!"), wxOK);
         StartAutoSaveTimer();
+        if (GetExitOnError()) {
+          wxMaxima::m_exitCode = 1;
+          Close();
+        }
         return false;
       } else {
         RemoveTempAutosavefile();
@@ -5844,6 +5854,10 @@ bool wxMaxima::SaveFile(bool forceSave) {
         StatusSaveFailed();
         LoggingMessageBox(_("Saving failed!"), _("Error!"), wxOK);
         StartAutoSaveTimer();
+        if (GetExitOnError()) {
+          wxMaxima::m_exitCode = 1;
+          Close();
+        }
         return false;
       } else {
         GetWorksheet()->SetSaved(true);
