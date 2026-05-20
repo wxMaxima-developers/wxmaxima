@@ -37,7 +37,14 @@
   <text x="310" y="125" font-family="sans-serif" font-size="12" fill="#7f8c8d">Baseline (point.y)</text>
 
   <!-- Offset Arrow -->
-  <line x1="280" y1="90" x2="280" y2="120" stroke="black" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
-  <text x="285" y="110" font-family="sans-serif" font-size="10">m_expt_yoffset</text>
+  <line x1="260" y1="70" x2="260" y2="120" stroke="black" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="250" y="105" font-family="sans-serif" font-size="10" text-anchor="end">m_expt_yoffset</text>
+
+  <!-- PowRise and MaxDrop -->
+  <line x1="310" y1="70" x2="310" y2="90" stroke="#e67e22" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="315" y="83" font-family="sans-serif" font-size="8" fill="#e67e22">Expt::GetMaxDrop()</text>
+
+  <line x1="310" y1="90" x2="310" y2="120" stroke="#e74c3c" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+  <text x="315" y="108" font-family="sans-serif" font-size="8" fill="#e74c3c">PowRise()</text>
 
 </svg>
