@@ -1458,11 +1458,18 @@ wxAccStatus CellAccessible::GetRole(int childId, wxAccRole *role) {
   return m_cell->GetRole(childId, role);
 }
 
-wxAccStatus Cell::GetRole(int WXUNUSED(childId), wxAccRole *role) const {
+wxAccStatus Cell::GetRole(int childId, wxAccRole *role) const {
   if (!role)
     return wxACC_FAIL;
 
-  return (*role = wxROLE_SYSTEM_STATICTEXT), wxACC_OK;
+  if (childId == 0)
+    return (*role = wxROLE_SYSTEM_STATICTEXT), wxACC_OK;
+
+  Cell *childCell = nullptr;
+  if (GetChild(childId, &childCell) == wxACC_OK && childCell)
+    return childCell->GetRole(0, role);
+
+  return wxACC_FAIL;
 }
 
 #endif

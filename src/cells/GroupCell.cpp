@@ -51,59 +51,6 @@
 #include <wx/config.h>
 #include <clocale>
 
-#if wxUSE_ACCESSIBILITY
-// TODO This class is not used anywhere.
-class HCaretCell : public wxAccessible {
-public:
-  explicit HCaretCell(GroupCell *group) : wxAccessible(), m_group(group) {}
-
-  //! Describe the current cell to a Screen Reader
-  wxAccStatus GetDescription(int WXUNUSED(childId),
-                             wxString *description) override {
-    if (description)
-      return (*description = _("A space between GroupCells")), wxACC_OK;
-
-    return wxACC_FAIL;
-  }
-  //! Inform the Screen Reader which cell is the parent of this one
-  wxAccStatus GetParent(wxAccessible **parent) override {
-    if (parent)
-      return (*parent = m_group->GetAccessible()), wxACC_OK;
-
-    return wxACC_FAIL;
-  }
-  //! How many childs of this cell GetChild() can retrieve?
-  wxAccStatus GetChildCount(int *childCount) override {
-    if (childCount)
-      return (*childCount = 0), wxACC_OK;
-
-    return wxACC_FAIL;
-  }
-  //! Retrieve a child cell. childId=0 is the current cell
-  wxAccStatus GetChild(int childId, wxAccessible **child) override {
-    if (childId == 0 && child)
-      return (*child = this), wxACC_OK;
-
-    return wxACC_FAIL;
-  }
-  // //! Does this or a child cell currently own the focus?
-  // wxAccStatus GetFocus (int *childId, wxAccessible **child)
-  //   {
-  //   }
-  // //! Where is this cell to be found?
-  // wxAccStatus GetLocation (wxRect &rect, int elementId)
-  //   {
-  //   }
-  // //! Is pt inside this cell or a child cell?
-  // wxAccStatus HitTest (const wxPoint &pt,
-  //                      int *childId, wxAccessible **childObject);
-  wxAccStatus GetRole(int childId, wxAccRole *role) override;
-
-private:
-  GroupCell *m_group;
-};
-#endif
-
 #define EMPTY_INPUT_LABEL wxS(" -->  ")
 
 GroupCell::GroupCell(Configuration *config, GroupType groupType,
@@ -1860,11 +1807,18 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId) {
   return wxACC_FAIL;
 }
 
-wxAccStatus GroupCell::GetRole(int WXUNUSED(childId), wxAccRole *role) const {
+wxAccStatus GroupCell::GetRole(int childId, wxAccRole *role) const {
   if (!role)
     return wxACC_FAIL;
 
-  return (*role = wxROLE_SYSTEM_GROUPING), wxACC_OK;
+  if (childId == 0)
+    return (*role = wxROLE_SYSTEM_GROUPING), wxACC_OK;
+
+  Cell *childCell = nullptr;
+  if (GetChild(childId, &childCell) == wxACC_OK && childCell)
+    return childCell->GetRole(0, role);
+
+  return wxACC_FAIL;
 }
 
 #endif

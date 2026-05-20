@@ -8324,6 +8324,36 @@ Worksheet::AccessibilityInfo::AccessibilityInfo(wxWindow *parent,
   m_parent = parent;
 }
 
+wxAccStatus Worksheet::AccessibilityInfo::CaretAccessibilityInfo::GetDescription(int WXUNUSED(childId), wxString *description) {
+  if (description)
+    return (*description = _("Insertion point between cells")), wxACC_OK;
+  return wxACC_FAIL;
+}
+
+wxAccStatus Worksheet::AccessibilityInfo::CaretAccessibilityInfo::GetParent(wxAccessible **parent) {
+  if (parent)
+    return (*parent = m_parent), wxACC_OK;
+  return wxACC_FAIL;
+}
+
+wxAccStatus Worksheet::AccessibilityInfo::CaretAccessibilityInfo::GetChildCount(int *childCount) {
+  if (childCount)
+    return (*childCount = 0), wxACC_OK;
+  return wxACC_FAIL;
+}
+
+wxAccStatus Worksheet::AccessibilityInfo::CaretAccessibilityInfo::GetChild(int childId, wxAccessible **child) {
+  if (childId == 0 && child)
+    return (*child = this), wxACC_OK;
+  return wxACC_FAIL;
+}
+
+wxAccStatus Worksheet::AccessibilityInfo::CaretAccessibilityInfo::GetRole(int childId, wxAccRole *role) {
+  if (childId == 0 && role)
+    return (*role = wxROLE_SYSTEM_CARET), wxACC_OK;
+  return wxACC_FAIL;
+}
+
 wxAccStatus Worksheet::AccessibilityInfo::GetChildCount(int *childCount) {
   if (!childCount)
     return wxACC_FAIL;
@@ -8331,6 +8361,8 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChildCount(int *childCount) {
   *childCount = 0;
   for (const auto &cell : OnList(m_worksheet->GetTree()))
     (*childCount)++;
+
+  (*childCount)++; // The caret is the last child
 
   return wxACC_OK;
 }
@@ -8345,15 +8377,30 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChild(int childId,
     return wxACC_OK;
   }
 
+  int count = 0;
   GroupCell *cell = m_worksheet->GetTree();
-  for (int i = 1; cell && i < childId; ++i)
+  for (int i = 1; cell && i < childId; ++i) {
     cell = cell->GetNext();
+    count++;
+  }
 
   if (cell) {
     *child = cell->GetAccessible();
     return wxACC_OK;
-  } else
-    return wxACC_FAIL;
+  } else {
+    // If it's the caret
+    int totalCount = 0;
+    for (const auto &c : OnList(m_worksheet->GetTree())) totalCount++;
+    if (childId == totalCount + 1) {
+      if (!m_caretAccessible) {
+         m_caretAccessible = new CaretAccessibilityInfo(this, m_worksheet);
+      }
+      *child = m_caretAccessible;
+      return wxACC_OK;
+    }
+  }
+
+  return wxACC_FAIL;
 }
 
 wxAccStatus
@@ -8390,6 +8437,20 @@ wxAccStatus Worksheet::AccessibilityInfo::GetFocus(int *childId,
     if (child)
       *child = NULL;
     return wxACC_FALSE;
+  }
+
+  if (m_worksheet->HCaretActive()) {
+    int totalCount = 0;
+    for (const auto &c : OnList(m_worksheet->GetTree())) totalCount++;
+    if (childId)
+      *childId = totalCount + 1;
+    if (child) {
+      if (!m_caretAccessible) {
+         m_caretAccessible = new CaretAccessibilityInfo(this, m_worksheet);
+      }
+      *child = m_caretAccessible;
+    }
+    return wxACC_OK;
   }
 
   Cell *activeCell = m_worksheet->GetActiveCell();
@@ -8472,7 +8533,7 @@ Worksheet::AccessibilityInfo::GetDescription(int childId,
 
   wxAccessible *child;
   if (GetChild(childId, &child) == wxACC_OK && child)
-    return child->GetDescription(childId, description);
+    return child->GetDescription(0, description);
 
   *description = wxString{};
   return wxACC_FAIL;

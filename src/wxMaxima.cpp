@@ -6033,38 +6033,52 @@ long long wxMaxima::GetMaximaCpuTime() {
     }
   }
 #endif
-  int maximaJiffies = 0;
-  wxString statFileName = wxString::Format("/proc/%li/stat", m_pid);
-  if (wxFileExists(statFileName)) {
-    wxFileInputStream input(statFileName);
-    if (input.IsOk()) {
-      wxTextInputStream text(input, wxS('\t'), wxConvAuto(wxFONTENCODING_UTF8));
-      wxString line = text.ReadLine();
+  long long maximaJiffies = 0;
+  bool foundAny = false;
 
-      wxStringTokenizer tokens(line, wxS(" "));
-      for (int i = 0; i < 13; i++) {
-        if (tokens.HasMoreTokens())
-          tokens.GetNextToken();
-        else
-          return -1;
-      }
-
-      for (int i = 0; i < 4; i++) {
-        {
-          if (tokens.HasMoreTokens()) {
-            long additionalJiffies;
-            if (!tokens.GetNextToken().ToLong(&additionalJiffies)) {
-              maximaJiffies = -1;
-              break;
+  wxDir dir(wxS("/proc"));
+  if (dir.IsOpened()) {
+    wxString filename;
+    bool cont = dir.GetFirst(&filename, wxEmptyString, wxDIR_DIRS);
+    while (cont) {
+      long pid;
+      if (filename.ToLong(&pid)) {
+        wxString statFileName = wxString::Format(wxS("/proc/%li/stat"), pid);
+        wxFileInputStream input(statFileName);
+        if (input.IsOk()) {
+          wxTextInputStream text(input, wxS('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+          wxString line = text.ReadLine();
+          
+          int rparen = line.Find(wxS(')'), true);
+          if (rparen != wxNOT_FOUND && rparen + 2 < (int)line.Length()) {
+            wxString rest = line.Mid(rparen + 2);
+            wxStringTokenizer tokens(rest, wxS(" "));
+            
+            if (tokens.CountTokens() >= 13) {
+              wxString state = tokens.GetNextToken();
+              long ppid = 0, pgrp = 0;
+              tokens.GetNextToken().ToLong(&ppid);
+              tokens.GetNextToken().ToLong(&pgrp);
+              
+              if (pid == m_pid || pgrp == m_pid || ppid == m_pid) {
+                foundAny = true;
+                for (int i = 3; i < 11; i++) {
+                  tokens.GetNextToken();
+                }
+                long utime = 0, stime = 0;
+                tokens.GetNextToken().ToLong(&utime);
+                tokens.GetNextToken().ToLong(&stime);
+                maximaJiffies += utime + stime;
+              }
             }
-            maximaJiffies += additionalJiffies;
-          } else
-            return -1;
+          }
         }
       }
+      cont = dir.GetNext(&filename);
     }
   }
-  return maximaJiffies;
+
+  return foundAny ? maximaJiffies : -1;
 }
 
 double wxMaxima::GetMaximaCPUPercentage() {

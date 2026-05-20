@@ -18,6 +18,7 @@ This file contains architectural insights, conventions, and operational knowledg
   - `AutoComplete`: Handles the autocomplete logic for commands, variables, and files.
 
 ## Conventions & Standards
+- **Git Environment:** Note that running `git diff` might launch the visual diff tool `meld` instead of outputting to the terminal. Always use `git diff --no-ext-diff` if you need terminal output.
 - **String Literals:** Use the `wxS()` macro for all string literals for cross-platform character encoding compatibility.
 - **Translations:** Use the `_()` macro for user-facing strings that need to be translatable.
 - **Logging:** Use `wxLogMessage()` for debugging and operational status. These messages are visible in the internal log window (Help -> Show Log Window).

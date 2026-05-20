@@ -1610,6 +1610,22 @@ public:
   private:
     wxWindow *m_parent = NULL;
     Worksheet *m_worksheet = NULL;
+
+    class CaretAccessibilityInfo : public wxAccessible {
+    public:
+      CaretAccessibilityInfo(AccessibilityInfo* parent, Worksheet* worksheet) 
+        : wxAccessible(worksheet->GetTargetWindow()), m_parent(parent), m_worksheet(worksheet) {}
+
+      wxAccStatus GetDescription(int WXUNUSED(childId), wxString *description) override;
+      wxAccStatus GetParent(wxAccessible **parent) override;
+      wxAccStatus GetChildCount(int *childCount) override;
+      wxAccStatus GetChild(int childId, wxAccessible **child) override;
+      wxAccStatus GetRole(int childId, wxAccRole *role) override;
+    private:
+      AccessibilityInfo* m_parent;
+      Worksheet* m_worksheet;
+    };
+    CaretAccessibilityInfo* m_caretAccessible = nullptr;
   };
 #endif
   MaximaManual m_maximaManual;
