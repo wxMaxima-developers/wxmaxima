@@ -1461,6 +1461,17 @@ System, установкой параметра: `GDK_BACKEND=x11`
 
 `GDK_BACKEND=x11 wxmaxima`
 
+## The menu bar disappears on KDE Plasma
+
+On some KDE Plasma installations the global menu bar disappears when
+clicked.  As this is a bug in the global menu proxy, the only way to avoid
+it is to tell that wxMaxima should use its own menu bar instead of the
+global one.  This is done by setting: `UBUNTU_MENUPROXY=0`
+
+Например, запустить wxMaxima с параметром:
+
+`UBUNTU_MENUPROXY=0 wxmaxima`
+
 ## Почему встроенный браузер руководства отсутствует на ПК с Windows?
 
 Либо компиляция wxWidgets была выполнена без поддержки webview2 от

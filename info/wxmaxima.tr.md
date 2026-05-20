@@ -1421,6 +1421,17 @@ E.g. start wxMaxima with:
 
 `GDK_BACKEND=x11 wxmaxima`
 
+## The menu bar disappears on KDE Plasma
+
+On some KDE Plasma installations the global menu bar disappears when
+clicked.  As this is a bug in the global menu proxy, the only way to avoid
+it is to tell that wxMaxima should use its own menu bar instead of the
+global one.  This is done by setting: `UBUNTU_MENUPROXY=0`
+
+E.g. start wxMaxima with:
+
+`UBUNTU_MENUPROXY=0 wxmaxima`
+
 ## Why is the integrated manual browser not offered on my Windows PC?
 
 Either wxWidgets wasn’t compiled with support for Microsoft’s webview2 or

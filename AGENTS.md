@@ -9,7 +9,9 @@ This file contains architectural insights, conventions, and operational knowledg
 
 ## Architecture & GUI
 - **wxAuiManager:** The application uses `wxAuiManager` for its complex layout (sidebars, toolbars, worksheet). 
-  - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. The recommended practice is to check if the menu bar is still attached using `if (GetMenuBar() != m_MenuBar)` and re-assert it with `SetMenuBar(m_MenuBar)` within the `AuiManagerUpdate()` helper. This ensures the menu bar remains visible after layout changes without disrupting active user interactions.
+  - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. This is a known environmental issue in the interaction between wxWidgets, GTK3, and the KDE Global Menu proxy.
+    - **Automated Fix:** On systems with wxWidgets <= 3.2 running on KDE, Unity, or with `appmenu-gtk-module` enabled, wxMaxima automatically sets `UBUNTU_MENUPROXY=0` at startup in `main.cpp` to force menus to remain within the window and prevent disappearance.
+    - If the menu still disappears, clearing `GTK_MODULES` (e.g., `GTK_MODULES=""`) can also restore local menus.
 - **Cursors:** The worksheet has 2 types of Cursor: A standard cursor in an EditorCell or a hCaret between two worksheet cells. Only one cursor is active at a time.
 - **Key Classes:**
   - `wxMaxima`: The main application class (subclass of `wxMaximaFrame`).
@@ -50,6 +52,8 @@ This file contains architectural insights, conventions, and operational knowledg
   - **RTF:** RTF uses **twips** (1/1440th of an inch) for dimensions. When exporting images, always include `\picwgoal` and `\pichgoal` in twips (calculated using the image's PPI) to ensure correct scaling in external word processors. Character escaping via `RTFescape` must handle surrogate pairs for Unicode characters outside the BMP and convert `\r` to `\line` for soft line breaks.
 - **Auto-Answer UI:** When Maxima asks a question that wxMaxima can answer automatically (via saved answers in `GroupCell`), intrusive UI indicators like desktop notifications and the "userinput" status bar state (including the question mark overlay) are suppressed to avoid distracting the user.
 - **StyleTextTexts:** This function in `EditorCell.cpp` handles syntax highlighting and formatting for text cells. Be extremely careful with iterator/index increments when adding soft line breaks to avoid skipping characters.
+- **Process Monitoring (Linux):** To accurately track Maxima's CPU usage on Linux, `GetMaximaCpuTime()` must iterate through `/proc` to sum Jiffies for all processes belonging to the same process group as the main Maxima process (or its direct children). This accounts for the shell script spawning a separate Lisp environment. Always parse `/proc/[pid]/stat` by finding the *last* `)` to skip the `comm` field safely.
+- **Search Implementation:** In `EditorCell::FindNext`, always use case-insensitive logic (`IsSameAs`) when checking if the current selection matches the search string. For Regex, verify the match covers the entire selection starting at index 0. Failing to do so causes the search to get stuck on the first occurrence.
 - **C++ standard:** wxMaxima tries to be about 9 years behind the current C++ standard to allow users with old operating systems to compile it. This means in 2026 C++17 is fine, but C++20 should still be a TODO, not something that can be switched to right now. 
 - **wxWidgets version:** If possible it would be fine if we supported a fallback to wxWidgets 3.0.5 as some old operating systems still come with that library version. Note that `wxFileName::GetAbsolutePath` is only available from wxWidgets 3.1 onwards; use `MakeAbsolute()` followed by `GetFullPath()` for compatibility with 3.0.5.
 
