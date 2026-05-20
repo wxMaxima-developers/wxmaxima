@@ -33,6 +33,7 @@
 #include "GroupCell.h"
 #include "TextCell.h"
 #include "VisiblyInvalidCell.h"
+#include "../Worksheet.h"
 #include "stx/unique_cast.hpp"
 #include <algorithm>
 #include <utility>
@@ -1416,7 +1417,7 @@ wxAccStatus CellAccessible::GetLocation(wxRect &rect, int elementId) {
 
 wxAccStatus Cell::GetLocation(wxRect &rect, int elementId) {
   if (elementId == 0) {
-    Worksheet *ws = m_configuration->GetWorkSheet();
+    Worksheet *ws = GetWorksheet();
     if (!ws)
       return wxACC_FAIL;
 

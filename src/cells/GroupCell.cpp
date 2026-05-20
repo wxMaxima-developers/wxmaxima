@@ -43,6 +43,7 @@
 #include "LabelCell.h"
 #include "MarkDown.h"
 #include "TextCell.h"
+#include "../Worksheet.h"
 #include "stx/unique_cast.hpp"
 #include <wx/clipbrd.h>
 #include <wx/log.h>
@@ -1815,7 +1816,7 @@ wxAccStatus GroupCell::GetDescription(int childId,
 
 wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId) {
   if (elementId == 0) {
-    Worksheet *ws = m_configuration->GetWorkSheet();
+    Worksheet *ws = GetWorksheet();
     if (!ws)
       return wxACC_FAIL;
 
