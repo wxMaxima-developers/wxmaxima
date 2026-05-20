@@ -3461,6 +3461,7 @@ bool EditorCell::FindNext(wxString str, const bool &down,
   else
     start = m_text.Length();
 
+  wxString originalStr = str;
   // Handle soft line breaks and ignore-case
   wxString text(m_text);
   text.Replace(wxS('\r'), wxS(' '));
@@ -3474,7 +3475,7 @@ bool EditorCell::FindNext(wxString str, const bool &down,
   if (IsActive()) {
     // If the last search already has marked a match for our word we want
     // to search for the next match.
-    if (GetSelectionString() == str) {
+    if (GetSelectionString().IsSameAs(originalStr, !ignoreCase)) {
       if (down)
         {
           start = SelectionLeft() + 1;
@@ -3562,10 +3563,8 @@ bool EditorCell::FindNext_RegEx(wxString str, const bool &down) {
   if (IsActive()) {
     // If the last search already has marked a match for our word we want
     // to search for the next match.
-    if (
-        (SelectionLength() == str.Length()) &&
-        (text.Right(text.Length() - SelectionLeft())
-         .StartsWith(str))) {
+    RegexSearch::Match selMatch = regexSearch.FindNext(GetSelectionString(), 0);
+    if (selMatch.Found() && selMatch.GetStart() == 0 && selMatch.GetEnd() == GetSelectionString().Length()) {
       if (down)
         start = SelectionLeft() + 1;
       else
@@ -3580,7 +3579,7 @@ bool EditorCell::FindNext_RegEx(wxString str, const bool &down) {
       // We are at the start of a match, but the search expression has changed
       if (SelectionStart() > 0) {
         if (down)
-          start =SelectionLeft() + 1;
+          start = SelectionLeft() + 1;
         else
           {
             if(SelectionRight() == 0)
@@ -3590,7 +3589,10 @@ bool EditorCell::FindNext_RegEx(wxString str, const bool &down) {
         if(start >= m_text.Length())
           return false;
       } else {
-        start = CursorPosition();
+        if (down)
+          start = SelectionLeft();
+        else
+          start = SelectionRight();
       }
     }
   }

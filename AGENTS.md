@@ -10,6 +10,7 @@ This file contains architectural insights, conventions, and operational knowledg
 ## Architecture & GUI
 - **wxAuiManager:** The application uses `wxAuiManager` for its complex layout (sidebars, toolbars, worksheet). 
   - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. The recommended practice is to check if the menu bar is still attached using `if (GetMenuBar() != m_MenuBar)` and re-assert it with `SetMenuBar(m_MenuBar)` within the `AuiManagerUpdate()` helper. This ensures the menu bar remains visible after layout changes without disrupting active user interactions.
+- **Cursors:** The worksheet has 2 types of Cursor: A standard cursor in an EditorCell or a hCaret between two worksheet cells. Only one cursor is active at a time.
 - **Key Classes:**
   - `wxMaxima`: The main application class (subclass of `wxMaximaFrame`).
   - `wxMaximaFrame`: The base frame class handling layout and sidebars.
