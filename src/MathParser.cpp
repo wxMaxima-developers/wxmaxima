@@ -184,6 +184,7 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
       wxS("leftBracketOpensLeft"),
       wxS("rightBracketOpensRight"),
       wxS("list"),
+      wxS("listdelim"),
       wxS("set"),
       wxS("roundedParens"),
       wxS("noneParens"),
