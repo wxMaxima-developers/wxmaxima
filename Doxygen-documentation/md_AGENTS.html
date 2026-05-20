@@ -99,6 +99,7 @@ Architecture &amp; GUI</h1>
 <h1><a class="anchor" id="autotoc_md3"></a>
 Conventions &amp; Standards</h1>
 <ul>
+<li><b>Git Environment:</b> Note that running <code>git diff</code> might launch the visual diff tool <code>meld</code> instead of outputting to the terminal. Always use <code>git diff --no-ext-diff</code> if you need terminal output.</li>
 <li><b><a class="el" href="classString.html" title="A String class.">String</a> Literals:</b> Use the <code>wxS()</code> macro for all string literals for cross-platform character encoding compatibility.</li>
 <li><b>Translations:</b> Use the <code>_()</code> macro for user-facing strings that need to be translatable.</li>
 <li><b>Logging:</b> Use <code>wxLogMessage()</code> for debugging and operational status. These messages are visible in the internal log window (Help -&gt; Show Log Window).</li>
