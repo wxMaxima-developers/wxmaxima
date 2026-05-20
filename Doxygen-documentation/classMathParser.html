@@ -93,8 +93,8 @@ Public Member Functions</h2></td></tr>
 <a class="el" href="classMathParser.html">MathParser</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classMathParser.html">MathParser</a> &amp;)=delete</td></tr>
 <tr class="memdesc:a6ca730a5b07829d09a795eb919fc003c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class doesn't have a = operator. <br /></td></tr>
 <tr class="separator:a6ca730a5b07829d09a795eb919fc003c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a472798e1fff3d144609718dafc965378"><td class="memItemLeft" align="right" valign="top"><a id="a472798e1fff3d144609718dafc965378" name="a472798e1fff3d144609718dafc965378"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUserLabel</b> (const wxString &amp;label)</td></tr>
+<tr class="memitem:a472798e1fff3d144609718dafc965378"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMathParser.html#a472798e1fff3d144609718dafc965378">SetUserLabel</a> (const wxString &amp;label)</td></tr>
+<tr class="memdesc:a472798e1fff3d144609718dafc965378"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells the parser what user label to assign to the next label cell.  <br /></td></tr>
 <tr class="separator:a472798e1fff3d144609718dafc965378"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab04df1b14063fb857cb05ff9d8beaf05"><td class="memItemLeft" align="right" valign="top"><a id="ab04df1b14063fb857cb05ff9d8beaf05" name="ab04df1b14063fb857cb05ff9d8beaf05"></a>
 std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ParseLine</b> (wxString s, <a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> style=MC_TYPE_DEFAULT)</td></tr>
@@ -153,6 +153,36 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetGroup</b> (<a clas
 
 <p>The constructor. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000011">Todo:</a></b></dt><dd>I guess we could increase the performance further by putting the most-frequently-used tags to the front of the list. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a472798e1fff3d144609718dafc965378" name="a472798e1fff3d144609718dafc965378"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a472798e1fff3d144609718dafc965378">&#9670;&#160;</a></span>SetUserLabel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MathParser::SetUserLabel </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>label</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tells the parser what user label to assign to the next label cell. </p>
+<p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> doesn't tell us what label the user tries to assign to the current command's output, but the code that sends the current command to maxima can try to detemine that and tell us so <a class="el" href="classwxMaxima.html">wxMaxima</a> can display a speaking label to this cell. </p>
 
 </div>
 </div>
