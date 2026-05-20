@@ -186,19 +186,44 @@ Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)</h1>
 <li><b>Visual Consistency:</b> New cell types should be accompanied by a <code>*Geometry.svg</code> diagram and, if they have a linearized fallback, a <code>*LinearGeometry.svg</code> diagram.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md8"></a>
+Performance &amp; Documentation Mandates</h1>
+<ul>
+<li><b>NEWS.md Updates:</b> Every non-trivial change or feature addition MUST be accompanied by a concise bullet point in <code>NEWS.md</code> under the "# Current development version" section.</li>
+<li><b>Background Tasks:</b> When adding a new background task or thread, you MUST:<ol type="1">
+<li>Use <code>jthread</code> for automatic joining and safe teardown.</li>
+<li>Protect shared data with <code>std::mutex</code>.</li>
+<li>Regularly check an abort flag.</li>
+<li>Update the "Background Tasks and Threading" section in <code>Doxygen/Readme.md</code>.</li>
+</ol>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Lisp Performance &amp; Safety</h1>
 <ul>
 <li><b><a class="el" href="classString.html" title="A String class.">String</a> Manipulation:</b> Avoid recursive string substitution or concatenation for large inputs. Use iterative loops with <code>with-output-to-string</code> for safety and performance.</li>
 <li><b>Symbol Lookups:</b> Use <code>(intern (concatenate 'string "$" name) :maxima)</code> for dynamic symbol generation. Avoid <code>read-from-string</code> as it is less safe and slower.</li>
 <li><b>Global State:</b> When wrapping <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands, use <code>unwind-protect</code> to ensure global variables like <code>$lmxchar</code> are restored to their previous state even if an error occurs.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md10"></a>
+Strict XML Mandate</h1>
+<ul>
+<li><b>No Duplicate Attributes:</b> XML files with duplicate attributes are invalid.</li>
+<li><b>Attribute Filter List:</b> Any attribute that is manually added in a <code>ToXML()</code> method (e.g., <code>noneParens="true"</code>) MUST be added to the <code>m_knownAttributes</code> list in <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">MathParser.cpp</a></code>.</li>
+<li><b>Mechanism:</b> If an attribute is not in the filter list, <code><a class="el" href="classMathParser.html" title="This class handles parsing the xml representation of a cell tree.">MathParser</a></code> will store it in <code>m_extraAttributes</code>. When saving, <code>GetXMLFlags()</code> will then output it, and if <code>ToXML()</code> also manually outputs it, a duplicate is created.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Key Subsystems Map</h1>
 <ul>
 <li><b>Layout Engine:</b> <code>src/cells/</code> (individual cell logic), <code><a class="el" href="Worksheet_8cpp.html" title="This file defines the class Worksheet.">src/Worksheet.cpp</a></code> (global orchestration).</li>
 <li><b>MathML Formatting:</b> <code>src/wxMathML.lisp</code> (Lisp-to-XML), <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">src/MathParser.cpp</a></code> (XML-to-Cell objects).</li>
 <li><b>Main Application Logic:</b> <code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">src/wxMaxima.cpp</a></code> (event handling, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> communication), <code><a class="el" href="wxMaximaFrame_8cpp.html" title="This file defines the class wxMaximaFrame.">src/wxMaximaFrame.cpp</a></code> (GUI structure).</li>
-<li><b><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>:</b> <code><a class="el" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage.">src/Configuration.cpp</a></code> (global settings and geometric constants). </li>
+<li><b><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>:</b> <code><a class="el" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage.">src/Configuration.cpp</a></code> (global settings and geometric constants).</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md12"></a>
+Error resiliance</h1>
+<ul>
+<li>This file might contain errors. If facts seem to point in that direction don't believe blindly that this file must be right.</li>
+<li>To err is human =&gt; If your instructions don't seem to make sense in any way feel free to ask. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
