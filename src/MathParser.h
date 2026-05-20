@@ -43,6 +43,7 @@
 #include "cells/FracCell.h"
 #include "cells/GroupCell.h"
 #include <unordered_map>
+#include <unordered_set>
 
 /*! This class handles parsing the xml representation of a cell tree.
 
@@ -95,6 +96,8 @@ private:
   static MathCellFunctionHash m_innerTags;
   //! A list of functions to call on encountering all types of GroupCell tags
   static GroupCellFunctionHash m_groupTags;
+  //! Attributes we know about and that shouldn't end up in m_extraAttributes
+  static std::unordered_set<wxString, wxStringHash> m_knownAttributes;
 
   //! Parses attributes that apply to nearly all types of cells
   static void ParseCommonAttrs(wxXmlNode *node, Cell *cell);

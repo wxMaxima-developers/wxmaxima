@@ -156,6 +156,52 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
     m_groupTags[wxS("heading5")] = &MathParser::GroupCellHeading5Tag;
     m_groupTags[wxS("heading6")] = &MathParser::GroupCellHeading6Tag;
   }
+  if (m_knownAttributes.empty()) {
+    static const wxString known[] = {
+      wxS("breakline"),
+      wxS("altCopy"),
+      wxS("tooltip"),
+      wxS("type"),
+      wxS("hideToolTip"),
+      wxS("hide"),
+      wxS("sectioning_level"),
+      wxS("auto_answer"),
+      wxS("fr"),
+      wxS("frame"),
+      wxS("running"),
+      wxS("ppi"),
+      wxS("origImageFile"),
+      wxS("del"),
+      wxS("rect"),
+      wxS("maxWidth"),
+      wxS("maxHeight"),
+      wxS("userdefinedlabel"),
+      wxS("userdefined"),
+      wxS("boxname"),
+      wxS("diffstyle"),
+      wxS("def"),
+      wxS("interval"),
+      wxS("leftBracketOpensLeft"),
+      wxS("rightBracketOpensRight"),
+      wxS("list"),
+      wxS("set"),
+      wxS("roundedParens"),
+      wxS("noneParens"),
+      wxS("bracketParens"),
+      wxS("straightParens"),
+      wxS("angledParens"),
+      wxS("special"),
+      wxS("inference"),
+      wxS("rownames"),
+      wxS("colnames"),
+      wxS("line"),
+      wxS("print"),
+      wxS("mat"),
+      wxS("pos")
+    };
+    for (const auto &s : known)
+      m_knownAttributes.insert(s);
+  }
   m_wxmxFile = zipfile;
 }
 
@@ -971,30 +1017,10 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell) {
     wxString value = attr->GetValue();
     if (name == wxS("uuid"))
       cell->SetUUID(value);
-    else if (name != wxS("breakline") && name != wxS("altCopy") &&
-             name != wxS("tooltip") && name != wxS("type") &&
-             name != wxS("hideToolTip") && name != wxS("hide") &&
-             name != wxS("sectioning_level") && name != wxS("auto_answer") &&
+    else if (m_knownAttributes.find(name) == m_knownAttributes.end() &&
              !name.StartsWith(wxS("question")) &&
              !name.StartsWith(wxS("answer")) &&
-             name != wxS("fr") && name != wxS("frame") &&
-             name != wxS("running") && name != wxS("ppi") &&
-             !name.StartsWith(wxS("gnuplot")) &&
-             name != wxS("origImageFile") && name != wxS("del") &&
-             name != wxS("rect") && name != wxS("maxWidth") &&
-             name != wxS("maxHeight") && name != wxS("userdefinedlabel") &&
-             name != wxS("userdefined") && name != wxS("boxname") &&
-             name != wxS("diffstyle") && name != wxS("def") &&
-             name != wxS("interval") && name != wxS("leftBracketOpensLeft") &&
-             name != wxS("rightBracketOpensRight") && name != wxS("list") &&
-             name != wxS("set") && name != wxS("roundedParens") &&
-             name != wxS("noneParens") &&
-             name != wxS("bracketParens") && name != wxS("straightParens") &&
-             name != wxS("angledParens") && name != wxS("special") &&
-             name != wxS("inference") && name != wxS("rownames") &&
-             name != wxS("colnames") && name != wxS("line") &&
-             name != wxS("print") && name != wxS("mat") &&
-             name != wxS("pos")) {
+             !name.StartsWith(wxS("gnuplot"))) {
       cell->AddExtraAttribute(name, value);
     }
     attr = attr->GetNext();
@@ -1364,4 +1390,5 @@ std::unique_ptr<Cell> MathParser::ParseLine(const wxXmlDocument &xml, CellType s
 wxRegEx MathParser::m_graphRegex(wxS("[[:cntrl:]]"));
 MathParser::MathCellFunctionHash MathParser::m_innerTags;
 MathParser::GroupCellFunctionHash MathParser::m_groupTags;
+std::unordered_set<wxString, wxStringHash> MathParser::m_knownAttributes;
 wxString MathParser::m_unknownXMLTagToolTip;
