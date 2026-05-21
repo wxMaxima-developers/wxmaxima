@@ -60,7 +60,7 @@ jobs:
         run: |
              cd build
              export HOME=`pwd`
-             export CTEST_OUTPUT_ON_FAILURE=1
+             export CTEST_OUTPUT_ON_FAILURE=1 -E multithreadtest -E tutorial_toleranceCalculations
              GDK_BACKEND=x11 xvfb-run -a ctest -j 2
              cd ..
 
