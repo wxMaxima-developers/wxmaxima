@@ -86,7 +86,7 @@ Inheritance diagram for SumCell:</div>
 <div class="dynheader">
 Collaboration diagram for SumCell:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classSumCell__coll__graph.svg" width="100%" height="531"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classSumCell__coll__graph.svg" width="100%" height="567"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -720,6 +720,9 @@ std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td>
 <tr class="memitem:a6ff267c7f20bd27efee6854d5b795294"><td class="memItemLeft" align="right" valign="top"><a id="a6ff267c7f20bd27efee6854d5b795294" name="a6ff267c7f20bd27efee6854d5b795294"></a>
 <a class="el" href="classCellPointers.html">CellPointers</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetCellPointers</b> () const</td></tr>
 <tr class="separator:a6ff267c7f20bd27efee6854d5b795294"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f8ba5f1d1dcbdba6eadb60b10d24577"><td class="memItemLeft" align="right" valign="top"><a id="a5f8ba5f1d1dcbdba6eadb60b10d24577" name="a5f8ba5f1d1dcbdba6eadb60b10d24577"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>InvalidateListCache</b> () const</td></tr>
+<tr class="separator:a5f8ba5f1d1dcbdba6eadb60b10d24577"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -752,6 +755,15 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <tr class="memitem:ae8042a8ef0fa19a190e67eac4b82c372"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ae8042a8ef0fa19a190e67eac4b82c372">m_center</a></td></tr>
 <tr class="memdesc:ae8042a8ef0fa19a190e67eac4b82c372"><td class="mdescLeft">&#160;</td><td class="mdescRight">The distance between the top and the insertion point of this cell.  <br /></td></tr>
 <tr class="separator:ae8042a8ef0fa19a190e67eac4b82c372"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ea5deadc88360e0e34a998cfc334569"><td class="memItemLeft" align="right" valign="top"><a id="a7ea5deadc88360e0e34a998cfc334569" name="a7ea5deadc88360e0e34a998cfc334569"></a>
+<a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_cachedMaxDrop</b></td></tr>
+<tr class="separator:a7ea5deadc88360e0e34a998cfc334569"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5ee2d5c4a3eb9f01e4122f619bbd7c8"><td class="memItemLeft" align="right" valign="top"><a id="ad5ee2d5c4a3eb9f01e4122f619bbd7c8" name="ad5ee2d5c4a3eb9f01e4122f619bbd7c8"></a>
+<a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_cachedCenterList</b></td></tr>
+<tr class="separator:ad5ee2d5c4a3eb9f01e4122f619bbd7c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eda07b71b0eed1e02795f6fd26a6aa5"><td class="memItemLeft" align="right" valign="top"><a id="a8eda07b71b0eed1e02795f6fd26a6aa5" name="a8eda07b71b0eed1e02795f6fd26a6aa5"></a>
+<a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_cachedSumOfWidths</b></td></tr>
+<tr class="separator:a8eda07b71b0eed1e02795f6fd26a6aa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acffb390e78cd8ca25cf3bc2c051618b0"><td class="memItemLeft" align="right" valign="top"><a id="acffb390e78cd8ca25cf3bc2c051618b0" name="acffb390e78cd8ca25cf3bc2c051618b0"></a>
 <a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_fontSize_Scaled</b> = {}</td></tr>
 <tr class="memdesc:acffb390e78cd8ca25cf3bc2c051618b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The font size is smaller in super- and subscripts. <br /></td></tr>
@@ -3371,7 +3383,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
