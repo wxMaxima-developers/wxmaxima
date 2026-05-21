@@ -52,6 +52,7 @@ DEFINE_CELL(SubCell)
 
 void SubCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     m_baseCell->RecalculateList(fontsize);
     m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - SUB_DEC});
 
@@ -67,7 +68,6 @@ void SubCell::Recalculate(AFontSize fontsize) const {
                             rise,
                         m_baseCell->GetMaxDrop()) +
                m_center;
-    Cell::Recalculate(fontsize);
   }
 }
 

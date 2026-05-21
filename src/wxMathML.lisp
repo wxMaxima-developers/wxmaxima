@@ -97,6 +97,7 @@
 (wx-defprop $wxmaximaversion read-only-assign assign)
 (defvar $wxwidgetsversion t "The wxWidgets version wxMaxima is using.")
 (wx-defprop $wxwidgetsversion read-only-assign assign)
+(defvar *wx-defer-queries* nil "If true, wxMaxima defers querying variables and functions until it leaves batch mode.")
 (defvar $wxsubscripts 'all
   "Recognize TeX-style subscripts")
 (defvar $wxplot_usesvg nil "Create scalable plots?")
@@ -2506,13 +2507,15 @@ Submit bug reports by following the 'New issue' link on that page."))
        (progn
 	 (decf *wxmaxima-nested-loads* )
 	 (if (< *wxmaxima-nested-loads* 1)
-	     (wxPrint_autocompletesymbols)))))))
+	     (unless *wx-defer-queries*
+	       (wxPrint_autocompletesymbols))))))))
 (format t "</suppressOutput>~%")
 ;; Publish all new global variables maxima might contain to wxMaxima's
 ;; autocompletion feature.
-(wxPrint_autocompletesymbols)
-(wx-print-variables)
-(wx-print-gui-variables)
+(unless *wx-defer-queries*
+  (wxPrint_autocompletesymbols)
+  (wx-print-variables)
+  (wx-print-gui-variables))
 ;; Declare that we want all builtins with underscore not to be printed with subscript
 (maphash (lambda (key val)
 	   (declare (ignore val))

@@ -55,6 +55,7 @@ DEFINE_CELL(FunCell)
 
 void FunCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     m_argCell->RecalculateList(fontsize);
     m_nameCell->RecalculateList(fontsize);
 
@@ -67,7 +68,6 @@ void FunCell::Recalculate(AFontSize fontsize) const {
       m_height =
         m_center + std::max(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

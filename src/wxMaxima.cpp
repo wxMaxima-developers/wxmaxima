@@ -2317,7 +2317,7 @@ void wxMaxima::StripLispComments(wxString &s) {
     m_blankStatementRegEx.Replace(&s, wxS(";"));
 }
 
-void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
+void wxMaxima::SendMaxima(wxString s, bool addToHistory, bool background) {
   // Normally we catch parenthesis errors before adding cells to the
   // evaluation queue. But if the error is introduced only after the
   // cell is placed in the evaluation queue we need to catch it here.
@@ -2381,10 +2381,15 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory) {
       // we are trying to change maxima's settings from the background and might
       // never get an answer that changes the status again.
       if (GetWorksheet() && (GetWorksheet()->GetWorkingGroup())) {
-        m_maximaError = false;
+        if (!background)
+          m_maximaError = false;
         StatusMaximaBusy(StatusBar::MaximaStatus::calculating);
-      } else
-        StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
+      } else {
+        if (m_maximaError && background)
+          StatusMaximaBusy(StatusBar::MaximaStatus::maximaerror);
+        else
+          StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
+      }
 
       wxScopedCharBuffer const data_raw = s.utf8_str();
       m_client->Write(data_raw.data(), data_raw.length());
@@ -4034,17 +4039,17 @@ bool wxMaxima::QueryVariableValue() {
 
   if (m_varNamesToQuery.size() > 0) {
     SendMaxima(wxS(":lisp-quiet (wx-query-variable \"") +
-               m_varNamesToQuery.back() + wxS("\")\n"));
+               m_varNamesToQuery.back() + wxS("\")\n"), false, true);
     m_varNamesToQuery.pop_back();
     return true;
   } else {
     if (m_readMaximaVariables) {
-      SendMaxima(wxS(":lisp-quiet (wx-print-gui-variables)\n"));
+      SendMaxima(wxS(":lisp-quiet (wx-print-gui-variables)\n"), false, true);
       m_readMaximaVariables = false;
     } else
       {
         if(m_updateAutocompletion)
-          SendMaxima(wxS(":lisp-quiet (wxPrint_autocompletesymbols)\n"));
+          SendMaxima(wxS(":lisp-quiet (wxPrint_autocompletesymbols)\n"), false, true);
         m_updateAutocompletion = false;
       }
     if (GetWorksheet() && (m_variablesPane) &&
@@ -4813,8 +4818,23 @@ wxString wxMaxima::EscapeForLisp(wxString str) {
   return (str);
 }
 
+void wxMaxima::ExitAfterEval(bool exitaftereval) {
+  if (m_exitAfterEval && !exitaftereval) {
+    // If we leave batch mode we want to have the autocompletion symbols
+    // and the variable list.
+    SendMaxima(wxS(":lisp-quiet (setf *wx-defer-queries* nil) ")
+               wxS("(wxPrint_autocompletesymbols) ")
+               wxS("(wx-print-variables) ")
+               wxS("(wx-print-gui-variables)\n"));
+  }
+  m_exitAfterEval = exitaftereval;
+}
+
 void wxMaxima::SetupVariables() {
   wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
+  if (m_exitAfterEval) {
+    SendMaxima(":lisp-quiet (defvar *wx-defer-queries* t)\n");
+  }
   wxMathML wxmathml(&m_configuration);
   SendMaxima(wxmathml.GetCmd());
   wxString cmd;
@@ -10792,7 +10812,7 @@ void wxMaxima::TriggerEvaluation() {
       GetWorksheet()->SetNotification(_("Maxima has finished calculating."));
 
     if (m_configCommands != wxEmptyString)
-      SendMaxima(m_configCommands);
+      SendMaxima(m_configCommands, false, true);
     m_configCommands.Clear();
     QueryVariableValue();
     return; // empty queue

@@ -118,17 +118,14 @@ public:
     }
 
   //! Do we want to exit the program after evaluation?
-  void ExitAfterEval(bool exitaftereval)
-    {
-      m_exitAfterEval = exitaftereval;
-    }
+  void ExitAfterEval(bool exitaftereval);
 
   void StripLispComments(wxString &s);
 
   //! Launches the help browser on the uri passed as an argument.
   void LaunchHelpBrowser(wxString uri);
 
-  void SendMaxima(wxString s, bool addToHistory = false);
+  void SendMaxima(wxString s, bool addToHistory = false, bool background = false);
 
   //! Open a file
   bool OpenFile(const wxString &file, const wxString &command ={});

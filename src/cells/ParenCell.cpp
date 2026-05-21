@@ -68,6 +68,7 @@ void ParenCell::SetInner(std::unique_ptr<Cell> inner, CellType type) {
 
 void ParenCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     if(m_innerCell)
       m_innerCell->RecalculateList(fontsize);
     m_open->RecalculateList(fontsize);
@@ -143,7 +144,6 @@ void ParenCell::Recalculate(AFontSize fontsize) const {
         }
       }
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

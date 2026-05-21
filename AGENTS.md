@@ -53,15 +53,15 @@ This file contains architectural insights, conventions, and operational knowledg
 - **Auto-Answer UI:** When Maxima asks a question that wxMaxima can answer automatically (via saved answers in `GroupCell`), intrusive UI indicators like desktop notifications and the "userinput" status bar state (including the question mark overlay) are suppressed to avoid distracting the user.
 - **StyleTextTexts:** This function in `EditorCell.cpp` handles syntax highlighting and formatting for text cells. Be extremely careful with iterator/index increments when adding soft line breaks to avoid skipping characters.
 - **Process Monitoring (Linux):** To accurately track Maxima's CPU usage on Linux, `GetMaximaCpuTime()` must iterate through `/proc` to sum Jiffies for all processes belonging to the same process group as the main Maxima process (or its direct children). This accounts for the shell script spawning a separate Lisp environment. Always parse `/proc/[pid]/stat` by finding the *last* `)` to skip the `comm` field safely.
+- **Background Maxima Queries:** Commands sent to Maxima that are purely for updating the UI (like querying variable values) should use `SendMaxima(..., false, true)` to avoid resetting the error state and status bar/taskbar indicators.
 - **Search Implementation:** In `EditorCell::FindNext`, always use case-insensitive logic (`IsSameAs`) when checking if the current selection matches the search string. For Regex, verify the match covers the entire selection starting at index 0. Failing to do so causes the search to get stuck on the first occurrence.
 - **C++ standard:** wxMaxima tries to be about 9 years behind the current C++ standard to allow users with old operating systems to compile it. This means in 2026 C++17 is fine, but C++20 should still be a TODO, not something that can be switched to right now. 
 - **wxWidgets version:** If possible it would be fine if we supported a fallback to wxWidgets 3.0.5 as some old operating systems still come with that library version. Note that `wxFileName::GetAbsolutePath` is only available from wxWidgets 3.1 onwards; use `MakeAbsolute()` followed by `GetFullPath()` for compatibility with 3.0.5.
 
 ## Layout & Compatibility
-- **Mathematical Cell Padding:** Nearly all text-based mathematical cells (including `DigitCell` used in broken-up long numbers) MUST include `MC_TEXT_PADDING` (defined in `Configuration.h`) in their size calculations. 
-  - **Recalculate:** `m_width` should be `sz.GetWidth() + 2 * MC_TEXT_PADDING`.
-  - **Draw:** Text should be drawn at `point.x + MC_TEXT_PADDING`.
-  - **Failure Mode:** Skipping this padding leads to cumulative horizontal errors, especially in long numbers broken across many lines, causing them to exceed worksheet margins.
+- **Mathematical Cell Padding:** Nearly all text-based mathematical cells MUST include `MC_TEXT_PADDING` (defined in `Configuration.h`) in their size calculations. 
+  - **Exception:** `DigitCell` (used in broken-up long numbers) DOES NOT include padding. This ensures that long numbers broken across many lines have the same width as the unbroken version and prevents cumulative horizontal errors from excessive padding between digits.
+  - **Recalculate Order:** Subclasses of `Cell` implementing `Recalculate(fontsize)` MUST call `Cell::Recalculate(fontsize)` at the beginning of their logic to ensure `m_fontSize_Scaled` is up-to-date.
 - **Three-Step Layout Process:** The layout engine follows a strict sequence:
   1. `UnBreakUpCells()`: Resets all objects to their compact 2D form.
   2. `BreakUpCells()`: Recursively converts over-wide 2D objects (like fractions or long numbers) into linearized 1D forms.

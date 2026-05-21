@@ -63,6 +63,7 @@ void AbsCell::MakeBreakupCells() {
 
 void AbsCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     m_innerCell->RecalculateList(fontsize);
     if (IsBrokenIntoLines()) {
       m_width = 0;
@@ -76,7 +77,6 @@ void AbsCell::Recalculate(AFontSize fontsize) const {
       m_height = m_innerCell->GetHeightList() + Scale_Px(4);
       m_center = m_innerCell->GetCenterList() + Scale_Px(2);
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

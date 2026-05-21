@@ -87,6 +87,7 @@ void ExptCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
 void ExptCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     m_baseCell->RecalculateList(fontsize);
     if (IsBrokenIntoLines())
       m_exptCell->RecalculateList(fontsize);
@@ -101,7 +102,7 @@ void ExptCell::Recalculate(AFontSize fontsize) const {
     } else {
       m_width = m_baseCell->SumOfWidths() + m_exptCell->SumOfWidths() -
         MC_TEXT_PADDING;
-      m_expt_yoffset = m_exptCell->GetMaxDrop() + PowRise();
+      m_expt_yoffset = m_exptCell->GetMaxDrop() + .3 * m_fontSize_Scaled;
 
       m_height = m_baseCell->GetHeightList();
       m_center = m_baseCell->GetCenterList();
@@ -116,7 +117,6 @@ void ExptCell::Recalculate(AFontSize fontsize) const {
       } else
         m_expt_yoffset += baseHeight - exptHeight;
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

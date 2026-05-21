@@ -67,6 +67,7 @@ DEFINE_CELL(IntervalCell)
 
 void IntervalCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     if (IsBrokenIntoLines()) {
       m_comma->RecalculateList(fontsize);
       m_open->RecalculateList(fontsize);
@@ -107,7 +108,6 @@ void IntervalCell::Recalculate(AFontSize fontsize) const {
         Scale_Px(4);
       m_center = m_height / 2;
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

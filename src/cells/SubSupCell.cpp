@@ -107,6 +107,7 @@ void SubSupCell::SetExponent(std::unique_ptr<Cell> &&expt) {
 
 void SubSupCell::Recalculate(AFontSize const fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     AFontSize const smallerFontSize{MC_MIN_SIZE, fontsize - SUBSUP_DEC};
 
     m_baseCell->RecalculateList(fontsize);
@@ -150,7 +151,6 @@ void SubSupCell::Recalculate(AFontSize const fontsize) const {
     m_height = std::max(m_baseCell->GetMaxDrop() + subHeight - rise,
                         m_baseCell->GetMaxDrop()) +
                m_center;
-    Cell::Recalculate(fontsize);
   }
 }
 

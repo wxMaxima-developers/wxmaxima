@@ -45,14 +45,13 @@ DEFINE_CELL(DigitCell)
 
 void DigitCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
-    //    Cell::Recalculate(fontsize);
+    Cell::Recalculate(fontsize);
     SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);
     wxSize sz =
       CalculateTextSize(m_configuration->GetRecalcDC(), m_text, cellText);
-    m_width = sz.GetWidth() + 2 * MC_TEXT_PADDING;
-    m_height = sz.GetHeight() + 2 * MC_TEXT_PADDING;
+    m_width = sz.GetWidth();
+    m_height = sz.GetHeight();
     m_center = m_height / 2;
-    Cell::Recalculate(fontsize);
   }
 }
 
@@ -61,7 +60,7 @@ void DigitCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
   if (DrawThisCell(point)) {
     SetTextColor(dc);
     SetFont(dc, m_fontSize_Scaled);
-    dc->DrawText(m_text, point.x + MC_TEXT_PADDING,
-                 point.y - m_center + MC_TEXT_PADDING);
+    dc->DrawText(m_text, point.x,
+                 point.y - m_center);
   }
 }

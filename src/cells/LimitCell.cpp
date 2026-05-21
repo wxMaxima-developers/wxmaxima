@@ -59,6 +59,7 @@ static constexpr AFontSize MIN_LIMIT_FONT_SIZE = MC_MIN_SIZE;
 
 void LimitCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     m_base->RecalculateList(fontsize);
     m_under->RecalculateList(
                              {MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE});
@@ -76,7 +77,6 @@ void LimitCell::Recalculate(AFontSize fontsize) const {
       m_comma->RecalculateList(fontsize);
       m_close->RecalculateList(fontsize);
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

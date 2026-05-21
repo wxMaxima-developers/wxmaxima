@@ -72,6 +72,7 @@ Cell *LongNumberCell::GetInnerCell(size_t index) const
 
 void LongNumberCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     // If the config settings about how many digits to display has changed we
     // need to regenerate the info which number to show.
     if (ConfigChanged())
@@ -99,7 +100,6 @@ void LongNumberCell::Recalculate(AFontSize fontsize) const {
         m_center = m_height / 2;
       }
     }
-    Cell::Recalculate(fontsize);
   }
 }
 

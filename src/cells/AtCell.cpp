@@ -51,6 +51,7 @@ DEFINE_CELL(AtCell)
 
 void AtCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
     m_baseCell->RecalculateList(fontsize);
     m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - 3});
     m_width =
@@ -61,8 +62,6 @@ void AtCell::Recalculate(AFontSize fontsize) const {
                         rise - m_baseCell->GetMaxDrop());
     m_height = std::max(m_baseCell->GetMaxDrop() + m_indexCell->GetHeightList() - rise,
                         m_baseCell->GetMaxDrop()) + m_center;
-
-    Cell::Recalculate(fontsize);
   }
 }
 
