@@ -281,10 +281,11 @@ int Cell::GetHeightList() const
   for (const Cell &tmp : OnDrawList(this)) {
     if ((&tmp != this) && (tmp.m_breakLine))
       break;
+    int center = tmp.GetCenter();
     if (!tmp.m_isBrokenIntoLines)
-      maxCenter = std::max(maxCenter, tmp.GetCenter());
+      maxCenter = std::max(maxCenter, center);
     if (!tmp.m_isBrokenIntoLines)
-      maxDrop = std::max(maxDrop, tmp.GetHeight() - tmp.GetCenter());
+      maxDrop = std::max(maxDrop, tmp.GetHeight() - center);
   }
   return maxCenter + maxDrop;
 }
