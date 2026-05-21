@@ -229,9 +229,10 @@ public:
   //! Do we want this cell to start with a linebreak?
   void SoftLineBreak(bool breakLine = true) const
   {
-    if (m_breakLine != breakLine)
+    bool newBreak = breakLine || m_forceBreakLine;
+    if (m_breakLine != newBreak)
     {
-      m_breakLine = breakLine;
+      m_breakLine = newBreak;
       InvalidateListCache();
     }
   }

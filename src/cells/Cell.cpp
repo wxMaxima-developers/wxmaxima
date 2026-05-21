@@ -1126,9 +1126,6 @@ void Cell::BreakUpAndMark() const {
       ResetSize_Recursively();
       m_isBrokenIntoLines = true;
     }
-  m_height = 0;
-  m_width = 0;
-  m_center = 0;
 }
 
 void Cell::Unbreak() const {
@@ -1139,6 +1136,7 @@ void Cell::Unbreak() const {
       cell.UnbreakList();
     m_isBrokenIntoLines = false;
   }
+  SoftLineBreak(false);
   SetNextToDraw(GetNext());
 }
 
