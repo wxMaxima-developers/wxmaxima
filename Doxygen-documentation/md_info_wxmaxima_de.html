@@ -924,7 +924,11 @@ Rückgängig-machen erinnert sich nicht an das, was ich brauche</h2>
 <div class="line">it is to tell that wxMaxima should use its own menu bar instead of the</div>
 <div class="line">global one.  This is done by setting: `UBUNTU_MENUPROXY=0`</div>
 <div class="line"> </div>
-<div class="line">z.B. Wxmaxima wie folgt starten:</div>
+<div class="line">Starting with version 26.05.0, wxMaxima attempts to set this variable</div>
+<div class="line">automatically if it detects an affected system (KDE, Unity, or Ubuntu with</div>
+<div class="line">older wxWidgets versions).</div>
+<div class="line"> </div>
+<div class="line">If the automatic fix fails, you can manually start wxMaxima with:</div>
 <div class="line"> </div>
 <div class="line">`UBUNTU_MENUPROXY=0 wxmaxima`</div>
 <div class="line"> </div>
