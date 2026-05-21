@@ -104,11 +104,11 @@ void FracCell::Recalculate(AFontSize fontsize) const {
     } else {
       if (m_inExponent) {
         m_protrusion = m_horizontalGapLeft = m_horizontalGapRight = 0;
-        m_width = Num()->GetWidth() + Denom()->GetWidth() + m_divide->GetWidth();
-        m_height = std::max(Num()->GetHeightList(), Denom()->GetHeightList()) +
+        m_width = m_displayedNum->GetWidth() + m_displayedDenom->GetWidth() + m_divide->GetWidth();
+        m_height = std::max(m_displayedNum->GetHeightList(), m_displayedDenom->GetHeightList()) +
           Scale_Px(6.5);
         m_center =
-          std::max(Num()->GetCenterList(), Denom()->GetCenterList()) + Scale_Px(3);
+          std::max(m_displayedNum->GetCenterList(), m_displayedDenom->GetCenterList()) + Scale_Px(3);
       } else {
         m_protrusion = Scale_Px(m_configuration->GetMathFontSize() / 2);
 
@@ -129,8 +129,8 @@ void FracCell::Recalculate(AFontSize fontsize) const {
                            m_displayedDenom->SumOfWidths()) +
           2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
         m_height =
-          Num()->GetHeightList() + Denom()->GetHeightList() + Scale_Px(6.5);
-        m_center = Num()->GetHeightList() + Scale_Px(3);
+          m_displayedNum->GetHeightList() + m_displayedDenom->GetHeightList() + Scale_Px(6.5);
+        m_center = m_displayedNum->GetHeightList() + Scale_Px(3);
       }
     }
   }

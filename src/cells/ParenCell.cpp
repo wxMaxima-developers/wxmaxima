@@ -75,17 +75,17 @@ void ParenCell::Recalculate(AFontSize fontsize) const {
     m_close->RecalculateList(fontsize);
 
     wxDC *dc = m_configuration->GetRecalcDC();
-    auto fontsize1 = Scale_Px(fontsize);
     int size = 0;
     if(m_innerCell)
       size = m_innerCell->GetHeightList();
     // If our font provides all the unicode chars we need we don't need
     // to bother which exotic method we need to use for drawing nice parenthesis.
-    if (fontsize1 * 3 > size) {
-      m_bigParenType = Configuration::ascii;
-      m_signHeight = m_open->GetHeightList();
-      m_signWidth = m_open->GetWidth();
-    } else {
+//    if (1.2 * m_open->GetHeight() >= size) {
+//      m_bigParenType = Configuration::ascii;
+//      m_signHeight = m_open->GetHeightList();
+  //    m_signWidth = m_open->GetWidth();
+//    } else 
+{
       m_bigParenType = Configuration::handdrawn;
       m_signWidth = Scale_Px(6) + m_configuration->GetDefaultLineWidth();
       if (m_signWidth < size / 15)

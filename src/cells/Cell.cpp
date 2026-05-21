@@ -274,7 +274,20 @@ int Cell::GetMaxDrop() const {
   return maxDrop;
 }
 
-int Cell::GetHeightList() const { return GetCenterList() + GetMaxDrop(); }
+int Cell::GetHeightList() const
+{
+  int maxCenter = 0;
+  int maxDrop = 0;
+  for (const Cell &tmp : OnDrawList(this)) {
+    if ((&tmp != this) && (tmp.m_breakLine))
+      break;
+    if (!tmp.m_isBrokenIntoLines)
+      maxCenter = std::max(maxCenter, tmp.GetCenter());
+    if (!tmp.m_isBrokenIntoLines)
+      maxDrop = std::max(maxDrop, tmp.GetHeight() - tmp.GetCenter());
+  }
+  return maxCenter + maxDrop;
+}
 
 int Cell::SumOfWidths() const {
   int fullWidth = 0;
