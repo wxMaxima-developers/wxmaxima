@@ -143,8 +143,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ExitAfterEval</b> (bo
 void&#160;</td><td class="memItemRight" valign="bottom"><b>LaunchHelpBrowser</b> (wxString uri)</td></tr>
 <tr class="memdesc:a4a8f5301a1199dabcc023a24516ad127"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launches the help browser on the uri passed as an argument. <br /></td></tr>
 <tr class="separator:a4a8f5301a1199dabcc023a24516ad127"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa016bda957373ae990156b6eca9ba5b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#aa016bda957373ae990156b6eca9ba5b8">SendMaxima</a> (wxString s, bool addToHistory=false)</td></tr>
-<tr class="separator:aa016bda957373ae990156b6eca9ba5b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f78b934a50dfd76d07da845fd2445a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a9f78b934a50dfd76d07da845fd2445a1">SendMaxima</a> (wxString s, bool addToHistory=false, bool background=false)</td></tr>
+<tr class="separator:a9f78b934a50dfd76d07da845fd2445a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d564412c10d5cefbc4283d656798736"><td class="memItemLeft" align="right" valign="top"><a id="a7d564412c10d5cefbc4283d656798736" name="a7d564412c10d5cefbc4283d656798736"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>OpenFile</b> (const wxString &amp;file, const wxString &amp;command={})</td></tr>
 <tr class="memdesc:a7d564412c10d5cefbc4283d656798736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a file. <br /></td></tr>
@@ -2281,8 +2281,8 @@ Dealing with stuff read from the socket</h2>
 
 </div>
 </div>
-<a id="aa016bda957373ae990156b6eca9ba5b8" name="aa016bda957373ae990156b6eca9ba5b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa016bda957373ae990156b6eca9ba5b8">&#9670;&#160;</a></span>SendMaxima()</h2>
+<a id="a9f78b934a50dfd76d07da845fd2445a1" name="a9f78b934a50dfd76d07da845fd2445a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f78b934a50dfd76d07da845fd2445a1">&#9670;&#160;</a></span>SendMaxima()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2297,7 +2297,13 @@ Dealing with stuff read from the socket</h2>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>addToHistory</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>addToHistory</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>background</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

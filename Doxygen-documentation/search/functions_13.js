@@ -28,7 +28,7 @@ var searchData=
   ['selectpointtext_25',['SelectPointText',['../classCell.html#a8b049153b23f6ca00d142a845ca1186c',1,'Cell::SelectPointText()'],['../classEditorCell.html#adfa73a425db8d54d6b13bfdff40cee54',1,'EditorCell::SelectPointText()']]],
   ['selectrecttext_26',['SelectRectText',['../classCell.html#a954a09093dbf2a1ee076f92cb0c0f62c',1,'Cell::SelectRectText()'],['../classEditorCell.html#aa2766d7df796869feda0879eb85192b3',1,'EditorCell::SelectRectText(wxPoint one, wxPoint two) override']]],
   ['selectwordundercaret_27',['SelectWordUnderCaret',['../classEditorCell.html#a6d39bbbff8b47de635ca8710e2b6f2de',1,'EditorCell']]],
-  ['sendmaxima_28',['SendMaxima',['../classwxMaxima.html#aa016bda957373ae990156b6eca9ba5b8',1,'wxMaxima']]],
+  ['sendmaxima_28',['SendMaxima',['../classwxMaxima.html#a9f78b934a50dfd76d07da845fd2445a1',1,'wxMaxima']]],
   ['serverevent_29',['ServerEvent',['../classwxMaxima.html#ae6d5f8b51712e4b6d66a03d63c4c8a3f',1,'wxMaxima']]],
   ['set_5fmathml_5ffilename_30',['Set_MathML_Filename',['../classwxMathML.html#a3685ca4412520e5457b57fa8d5e6812d',1,'wxMathML']]],
   ['set_5fmaxima_5fcommandline_5ffilename_31',['Set_Maxima_Commandline_Filename',['../classwxMaxima.html#a60fe027724ed9145f5f9d6a6591943c2',1,'wxMaxima']]],

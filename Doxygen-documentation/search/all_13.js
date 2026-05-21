@@ -35,7 +35,7 @@ var searchData=
   ['selectpointtext_32',['SelectPointText',['../classEditorCell.html#adfa73a425db8d54d6b13bfdff40cee54',1,'EditorCell::SelectPointText()'],['../classCell.html#a8b049153b23f6ca00d142a845ca1186c',1,'Cell::SelectPointText()']]],
   ['selectrecttext_33',['SelectRectText',['../classEditorCell.html#aa2766d7df796869feda0879eb85192b3',1,'EditorCell::SelectRectText()'],['../classCell.html#a954a09093dbf2a1ee076f92cb0c0f62c',1,'Cell::SelectRectText()']]],
   ['selectwordundercaret_34',['SelectWordUnderCaret',['../classEditorCell.html#a6d39bbbff8b47de635ca8710e2b6f2de',1,'EditorCell']]],
-  ['sendmaxima_35',['SendMaxima',['../classwxMaxima.html#aa016bda957373ae990156b6eca9ba5b8',1,'wxMaxima']]],
+  ['sendmaxima_35',['SendMaxima',['../classwxMaxima.html#a9f78b934a50dfd76d07da845fd2445a1',1,'wxMaxima']]],
   ['serieswiz_36',['SeriesWiz',['../classSeriesWiz.html',1,'']]],
   ['serverdeleter_37',['ServerDeleter',['../structwxMaxima_1_1ServerDeleter.html',1,'wxMaxima']]],
   ['serverevent_38',['ServerEvent',['../classwxMaxima.html#ae6d5f8b51712e4b6d66a03d63c4c8a3f',1,'wxMaxima']]],
