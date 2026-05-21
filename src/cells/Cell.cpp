@@ -253,48 +253,48 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const {
 }
 
 int Cell::GetCenterList() const {
+  if (m_cachedCenterList.IsValid())
+    return m_cachedCenterList;
+
   int maxCenter = 0;
   for (const Cell &tmp : OnDrawList(this)) {
+    // Stop if tmp isn't us and begins with a line break
     if ((&tmp != this) && (tmp.m_breakLine))
       break;
     if (!tmp.m_isBrokenIntoLines)
       maxCenter = std::max(maxCenter, tmp.GetCenter());
   }
+  m_cachedCenterList = maxCenter;
   return maxCenter;
 }
 
 int Cell::GetMaxDrop() const {
+  if (m_cachedMaxDrop.IsValid())
+    return m_cachedMaxDrop;
+
   int maxDrop = 0;
   for (const Cell &tmp : OnDrawList(this)) {
+    // Stop if tmp isn't us and begins with a line break
     if ((&tmp != this) && (tmp.m_breakLine))
       break;
     if (!tmp.m_isBrokenIntoLines)
       maxDrop = std::max(maxDrop, tmp.GetHeight() - tmp.GetCenter());
   }
+  m_cachedMaxDrop = maxDrop;
   return maxDrop;
 }
 
-int Cell::GetHeightList() const
-{
-  int maxCenter = 0;
-  int maxDrop = 0;
-  for (const Cell &tmp : OnDrawList(this)) {
-    if ((&tmp != this) && (tmp.m_breakLine))
-      break;
-    int center = tmp.GetCenter();
-    if (!tmp.m_isBrokenIntoLines)
-      maxCenter = std::max(maxCenter, center);
-    if (!tmp.m_isBrokenIntoLines)
-      maxDrop = std::max(maxDrop, tmp.GetHeight() - center);
-  }
-  return maxCenter + maxDrop;
-}
+int Cell::GetHeightList() const { return GetCenterList() + GetMaxDrop(); }
 
 int Cell::SumOfWidths() const {
+  if (m_cachedSumOfWidths.IsValid())
+    return m_cachedSumOfWidths;
+
   int fullWidth = 0;
   for (const Cell &tmp : OnDrawList(this)) {
     fullWidth += tmp.GetWidth();
   }
+  m_cachedSumOfWidths = fullWidth;
   return fullWidth;
 }
 
@@ -1084,6 +1084,18 @@ void Cell::ResetSize() const {
   m_width.Invalidate();
   m_height.Invalidate();
   m_center.Invalidate();
+  InvalidateListCache();
+}
+
+void Cell::InvalidateListCache() const {
+  if (m_cachedMaxDrop.IsInvalid() && m_cachedCenterList.IsInvalid() &&
+      m_cachedSumOfWidths.IsInvalid())
+    return;
+  m_cachedMaxDrop.Invalidate();
+  m_cachedCenterList.Invalidate();
+  m_cachedSumOfWidths.Invalidate();
+  if (m_previous)
+    m_previous->InvalidateListCache();
 }
 
 Cell *Cell::first() const {

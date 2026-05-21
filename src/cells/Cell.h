@@ -227,7 +227,14 @@ public:
   bool InUpdateRegion() const;
 
   //! Do we want this cell to start with a linebreak?
-  void SoftLineBreak(bool breakLine = true) const { m_breakLine = breakLine; }
+  void SoftLineBreak(bool breakLine = true) const
+  {
+    if (m_breakLine != breakLine)
+    {
+      m_breakLine = breakLine;
+      InvalidateListCache();
+    }
+  }
   
   /*! Cell list: Convert 2d math objects bigger than the screen width into linear form.
     
@@ -367,7 +374,14 @@ public:
     - true: Insert a forced linebreak
     - false: Remove the forced linebreak
   */
-  void ForceBreakLine(bool force = true) const { m_forceBreakLine = m_breakLine = force; }
+  void ForceBreakLine(bool force = true) const
+  {
+    if (m_forceBreakLine != force || m_breakLine != force)
+    {
+      m_forceBreakLine = m_breakLine = force;
+      InvalidateListCache();
+    }
+  }
 
   //! Returns the UUID of this cell
   wxString GetUUID() const { return m_uuid; }
@@ -1037,6 +1051,9 @@ protected:
   */
 
   mutable CachedInteger<wxCoord> m_center;
+  mutable CachedInteger<wxCoord> m_cachedMaxDrop;
+  mutable CachedInteger<wxCoord> m_cachedCenterList;
+  mutable CachedInteger<wxCoord> m_cachedSumOfWidths;
 protected:
 //** 2-byte objects (2 bytes)
 //**
@@ -1108,8 +1125,7 @@ protected:
 
   CellPointers *GetCellPointers() const;
 
-private:
-  void RecalcCenterListAndMaxDropCache();
+  void InvalidateListCache() const;
 };
 
 // The static cast here requires Cell to be defined

@@ -80,18 +80,18 @@ void ParenCell::Recalculate(AFontSize fontsize) const {
       size = m_innerCell->GetHeightList();
     // If our font provides all the unicode chars we need we don't need
     // to bother which exotic method we need to use for drawing nice parenthesis.
-//    if (1.2 * m_open->GetHeight() >= size) {
-//      m_bigParenType = Configuration::ascii;
-//      m_signHeight = m_open->GetHeightList();
-  //    m_signWidth = m_open->GetWidth();
-//    } else 
-{
-      m_bigParenType = Configuration::handdrawn;
-      m_signWidth = Scale_Px(6) + m_configuration->GetDefaultLineWidth();
-      if (m_signWidth < size / 15)
-        m_signWidth = size / 15;
-      m_signHeight = size;
-    }
+    if (1.2 * m_open->GetHeight() >= size) {
+      m_bigParenType = Configuration::ascii;
+      m_signHeight = std::max(m_open->GetHeight(),m_close->GetHeight());
+      m_signWidth = m_open->GetWidth();
+    } else 
+      {
+        m_bigParenType = Configuration::handdrawn;
+        m_signWidth = Scale_Px(6) + m_configuration->GetDefaultLineWidth();
+        if (m_signWidth < size / 15)
+          m_signWidth = size / 15;
+        m_signHeight = size;
+      }
     int innerCellWidth = 0;
     if(m_innerCell)
       innerCellWidth = m_innerCell->SumOfWidths();
@@ -117,15 +117,14 @@ void ParenCell::Recalculate(AFontSize fontsize) const {
       m_center = std::max(innerCellCenter, m_open->GetCenterList());
     } else {
       if (m_innerCell) {
+        m_innerCell->SetCurrentPoint(
+                                     wxPoint(m_currentPoint.x + m_signWidth, m_currentPoint.y));
         switch (m_bigParenType) {
         case Configuration::ascii:
-          m_signHeight = m_charHeight1;
           break;
         default: {
         }
         }
-        m_innerCell->SetCurrentPoint(
-                                     wxPoint(m_currentPoint.x + m_signWidth, m_currentPoint.y));
 
         // Center the argument of all big parenthesis vertically
         if (m_bigParenType != Configuration::ascii) {

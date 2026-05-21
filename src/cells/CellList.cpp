@@ -75,6 +75,7 @@ std::unique_ptr<Cell> CellList::SetNext(Cell *cell, std::unique_ptr<Cell> &&next
   if (cell->m_next)
     cell->m_next->m_previous = cell;
   cell->SetNextToDraw(cell->m_next);
+  cell->InvalidateListCache();
 
   Check(cell);
   Check(next.get());
