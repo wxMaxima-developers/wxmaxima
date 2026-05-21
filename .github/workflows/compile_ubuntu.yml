@@ -60,8 +60,8 @@ jobs:
         run: |
              cd build
              export HOME=`pwd`
-             export CTEST_OUTPUT_ON_FAILURE=1 -E multithreadtest -E tutorial_toleranceCalculations
-             GDK_BACKEND=x11 xvfb-run -a ctest -j 2
+             export CTEST_OUTPUT_ON_FAILURE=1
+             GDK_BACKEND=x11 xvfb-run -a ctest -j 2 -E multithreadtest -E tutorial_toleranceCalculations
              cd ..
 
   compile_without_webview:
