@@ -1450,15 +1450,15 @@ public:
     Used by the find dialog.
     \todo Keep a list of positions the last few letters were found at?
   */
-  bool FindIncremental(const wxString &str, bool down, bool ignoreCase);
-  bool FindIncremental_RegEx(const wxString &str, bool down);
+  bool FindIncremental(const wxString &str, bool down, bool ignoreCase, bool searchInInput = true, bool searchInOutput = true);
+  bool FindIncremental_RegEx(const wxString &str, bool down, bool searchInInput = true, bool searchInOutput = true);
 
   /*! Find the next occurrence of a string
 
     Used by the find dialog.
   */
-  bool FindNext(const wxString &str, bool down, bool ignoreCase, bool warn = true);
-  bool FindNext_Regex(const wxString &str, const bool &down, bool warn = true);
+  bool FindNext(const wxString &str, bool down, bool ignoreCase, bool searchInInput = true, bool searchInOutput = true, bool warn = true);
+  bool FindNext_Regex(const wxString &str, const bool &down, bool searchInInput = true, bool searchInOutput = true, bool warn = true);
 
   /*! Replace the current occurrence of a string
 
@@ -1471,8 +1471,8 @@ public:
 
     Used by the find dialog.
   */
-  int ReplaceAll(const wxString &oldString, const wxString &newString, bool ignoreCase);
-  int ReplaceAll_RegEx(const wxString &oldString, const wxString &newString);
+  int ReplaceAll(const wxString &oldString, const wxString &newString, bool ignoreCase, bool searchInInput = true, bool searchInOutput = true);
+  int ReplaceAll_RegEx(const wxString &oldString, const wxString &newString, bool searchInInput = true, bool searchInOutput = true);
 
   wxString GetInputAboveCaret();
 

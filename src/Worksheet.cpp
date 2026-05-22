@@ -7151,26 +7151,29 @@ wxString Worksheet::GetOutputAboveCaret() {
 }
 
 bool Worksheet::FindIncremental(const wxString &str, bool down,
-                                bool ignoreCase) {
+                                bool ignoreCase, bool searchInInput,
+                                bool searchInOutput) {
   if (SearchStart()) {
     SetActiveCell(SearchStart());
     SearchStart()->CaretToPosition(IndexSearchStartedAt());
   }
 
-  return (!str.empty()) ? FindNext(str, down, ignoreCase, false) : true;
+  return (!str.empty()) ? FindNext(str, down, ignoreCase, searchInInput, searchInOutput, false) : true;
 }
 
 
-bool Worksheet::FindIncremental_RegEx(const wxString &str, bool down) {
+bool Worksheet::FindIncremental_RegEx(const wxString &str, bool down,
+                                      bool searchInInput, bool searchInOutput) {
   if (SearchStart()) {
     SetActiveCell(SearchStart());
     SearchStart()->CaretToPosition(IndexSearchStartedAt());
   }
 
-  return (!str.empty()) ? FindNext_Regex(str, down, false) : true;
+  return (!str.empty()) ? FindNext_Regex(str, down, searchInInput, searchInOutput, false) : true;
 }
 
 bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
+                         bool searchInInput, bool searchInOutput,
                          bool warn) {
   if (!GetTree())
     return false;
@@ -7239,7 +7242,8 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
 
   bool wrappedSearch = false;
   bool startInInitial = true;
-  while (pos != startGroup || !wrappedSearch) {
+  bool done = false;
+  while (!done) {
     bool foundInGroup = false;
 
     // Search order for 'down': Prompt -> Editor -> Output
@@ -7249,7 +7253,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
       // Search order for 'down': Prompt -> Editor -> Output
 
       // 1. Prompt
-      bool skipPrompt = false;
+      bool skipPrompt = !searchInInput;
       if (startInInitial) {
         if (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() != pos->GetPrompt()))
           skipPrompt = true;
@@ -7270,7 +7274,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
 
       // 2. Editor
       if (!foundInGroup) {
-        bool skipEditor = false;
+        bool skipEditor = !searchInInput;
         if (startInInitial) {
           if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && !GetActiveCell() && GetSelectionStart() != pos->GetPrompt())
             skipEditor = true;
@@ -7284,7 +7288,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
       }
 
       // 3. Output
-      if (!foundInGroup && pos->GetLabel()) {
+      if (!foundInGroup && searchInOutput && pos->GetLabel()) {
         bool outputStarted = true;
         if (startInInitial) {
           if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() != pos->GetPrompt() && !GetActiveCell())
@@ -7315,7 +7319,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
       // Search order for 'up': Output -> Editor -> Prompt
 
       // 1. Output
-      if (pos->GetLabel()) {
+      if (searchInOutput && pos->GetLabel()) {
         bool skipOutput = false;
         if (startInInitial) {
           if (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt()))
@@ -7358,7 +7362,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
 
       // 2. Editor
       if (!foundInGroup) {
-        bool skipEditor = false;
+        bool skipEditor = !searchInInput;
         if (startInInitial) {
           if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt())
             skipEditor = true;
@@ -7373,7 +7377,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
 
       // 3. Prompt
       if (!foundInGroup && pos->GetPrompt()) {
-        bool skipPrompt = false;
+        bool skipPrompt = !searchInInput;
         if (startInInitial) {
           if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt())
             skipPrompt = true;
@@ -7413,22 +7417,28 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
     if (down) {
       pos = pos->GetNext();
       if (!pos) {
+        if (wrappedSearch) break;
         wrappedSearch = true;
         pos = GetTree();
       }
     } else {
       pos = pos->GetPrevious();
       if (!pos) {
+        if (wrappedSearch) break;
         wrappedSearch = true;
         pos = GetLastCellInWorksheet();
       }
     }
+
+    if (pos == startGroup && wrappedSearch)
+      done = true;
     startInInitial = false;
   }
   return false;
 }
 
 bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
+                               bool searchInInput, bool searchInOutput,
                                bool warn) {
   if (!GetTree())
     return false;
@@ -7484,12 +7494,13 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
 
   bool wrappedSearch = false;
   bool startInInitial = true;
-  while (pos != startGroup || !wrappedSearch) {
+  bool done = false;
+  while (!done) {
     bool foundInGroup = false;
 
     if (down) {
       // 1. Prompt
-      bool skipPrompt = false;
+      bool skipPrompt = !searchInInput;
       if (startInInitial) {
         if (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() != pos->GetPrompt()))
           skipPrompt = true;
@@ -7505,7 +7516,7 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
 
       // 2. Editor
       if (!foundInGroup) {
-        bool skipEditor = false;
+        bool skipEditor = !searchInInput;
         if (startInInitial) {
           if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && !GetActiveCell() && GetSelectionStart() != pos->GetPrompt())
             skipEditor = true;
@@ -7519,7 +7530,7 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
       }
 
       // 3. Output
-      if (!foundInGroup && pos->GetLabel()) {
+      if (!foundInGroup && searchInOutput && pos->GetLabel()) {
         bool outputStarted = true;
         if (startInInitial) {
           if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() != pos->GetPrompt() && !GetActiveCell())
@@ -7545,7 +7556,7 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
       // Search order for 'up': Output -> Editor -> Prompt
 
       // 1. Output
-      if (pos->GetLabel()) {
+      if (searchInOutput && pos->GetLabel()) {
         bool skipOutput = false;
         if (startInInitial) {
           if (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt()))
@@ -7583,7 +7594,7 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
 
       // 2. Editor
       if (!foundInGroup) {
-        bool skipEditor = false;
+        bool skipEditor = !searchInInput;
         if (startInInitial) {
           if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt())
             skipEditor = true;
@@ -7598,7 +7609,7 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
 
       // 3. Prompt
       if (!foundInGroup && pos->GetPrompt()) {
-        bool skipPrompt = false;
+        bool skipPrompt = !searchInInput;
         if (startInInitial) {
           if (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() == pos->GetPrompt())
             skipPrompt = true;
@@ -7633,16 +7644,21 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
     if (down) {
       pos = pos->GetNext();
       if (!pos) {
+        if (wrappedSearch) break;
         wrappedSearch = true;
         pos = GetTree();
       }
     } else {
       pos = pos->GetPrevious();
       if (!pos) {
+        if (wrappedSearch) break;
         wrappedSearch = true;
         pos = GetLastCellInWorksheet();
       }
     }
+
+    if (pos == startGroup && wrappedSearch)
+      done = true;
     startInInitial = false;
   }
   return false;
@@ -7740,10 +7756,10 @@ void Worksheet::Replace_RegEx(const wxString &oldString, const wxString &newStri
 }
 
 int Worksheet::ReplaceAll(const wxString &oldString, const wxString &newString,
-                          bool ignoreCase) {
+                          bool ignoreCase, bool searchInInput, bool WXUNUSED(searchInOutput)) {
   m_cellPointers.ResetSearchStart();
 
-  if (!GetTree())
+  if (!GetTree() || !searchInInput)
     return 0;
 
   int count = 0;
@@ -7769,10 +7785,11 @@ int Worksheet::ReplaceAll(const wxString &oldString, const wxString &newString,
   return count;
 }
 
-int Worksheet::ReplaceAll_RegEx(const wxString &oldString, const wxString &newString) {
+int Worksheet::ReplaceAll_RegEx(const wxString &oldString, const wxString &newString,
+                                bool searchInInput, bool WXUNUSED(searchInOutput)) {
   m_cellPointers.ResetSearchStart();
 
-  if (!GetTree())
+  if (!GetTree() || !searchInInput)
     return 0;
 
   int count = 0;

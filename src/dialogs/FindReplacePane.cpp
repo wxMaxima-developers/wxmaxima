@@ -114,6 +114,21 @@ FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
                        wxEVT_RADIOBUTTON,
                        wxCommandEventHandler(FindReplacePane::OnDirectionChange), NULL, this);
 
+  wxSizer *inoutbox = new wxBoxSizer(wxHORIZONTAL);
+  m_searchInInput = new wxCheckBox(this, -1, _("Input"));
+  inoutbox->Add(m_searchInInput, wxSizerFlags().Expand().Border(wxALL, 5));
+  m_searchInOutput = new wxCheckBox(this, -1, _("Output"));
+  inoutbox->Add(m_searchInOutput, wxSizerFlags().Expand().Border(wxALL, 5));
+
+  m_searchInInput->SetValue(!!(data->GetFlags() & wxFR_SEARCH_IN_INPUT));
+  m_searchInOutput->SetValue(!!(data->GetFlags() & wxFR_SEARCH_IN_OUTPUT));
+  m_searchInInput->Connect(wxEVT_CHECKBOX,
+                           wxCommandEventHandler(FindReplacePane::OnSearchIn),
+                           NULL, this);
+  m_searchInOutput->Connect(wxEVT_CHECKBOX,
+                            wxCommandEventHandler(FindReplacePane::OnSearchIn),
+                            NULL, this);
+
   m_replaceAllButton = new wxButton(this, 1, _("Replace All"));
   button_sizer->Add(m_replaceAllButton, wxSizerFlags().Expand().Border(wxALL, 5));
   m_replaceAllButton->Connect(
@@ -124,6 +139,7 @@ FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
 
   mainSizer->Add(top_sizer, wxSizerFlags(1).Expand());
   mainSizer->Add(fbbox, wxSizerFlags().Expand());
+  mainSizer->Add(inoutbox, wxSizerFlags().Expand());
   m_matchCase->Connect(wxEVT_CHECKBOX,
                        wxCommandEventHandler(FindReplacePane::OnMatchCase),
                        NULL, this);
@@ -195,9 +211,10 @@ void FindReplacePane::OnReplaceAll(wxCommandEvent &event) {
 
 void FindReplacePane::OnDirectionChange(wxCommandEvent &event) {
   event.Skip();
-  m_findReplaceData->SetFlags(!((m_findReplaceData->GetFlags() & (~wxFR_DOWN)) |
-                                (m_forward->GetValue() * wxFR_DOWN)));
-  wxConfig::Get()->Write(wxS("findFlags"), m_findReplaceData->GetFlags());
+  m_findReplaceData->SetFlags(
+                              (m_findReplaceData->GetFlags() & (~wxFR_DOWN)) |
+                              (m_backwards->GetValue() * wxFR_DOWN));
+  wxConfig::Get()->Write(wxS("Find/Flags"), m_findReplaceData->GetFlags());
 }
 
 void FindReplacePane::OnRegexSimpleChange(wxCommandEvent &event){
@@ -215,7 +232,21 @@ void FindReplacePane::OnMatchCase(wxCommandEvent &event) {
   m_findReplaceData->SetFlags(
                               (m_findReplaceData->GetFlags() & (~wxFR_MATCHCASE)) |
                               (event.IsChecked() * wxFR_MATCHCASE));
-  wxConfig::Get()->Write(wxS("findFlags"), m_findReplaceData->GetFlags());
+  wxConfig::Get()->Write(wxS("Find/Flags"), m_findReplaceData->GetFlags());
+}
+
+void FindReplacePane::OnSearchIn(wxCommandEvent &event) {
+  if (!m_searchInInput->GetValue() && !m_searchInOutput->GetValue()) {
+    if (event.GetEventObject() == m_searchInInput)
+      m_searchInOutput->SetValue(true);
+    else
+      m_searchInInput->SetValue(true);
+  }
+  m_findReplaceData->SetFlags(
+                              (m_findReplaceData->GetFlags() & (~(wxFR_SEARCH_IN_INPUT | wxFR_SEARCH_IN_OUTPUT))) |
+                              (m_searchInInput->GetValue() * wxFR_SEARCH_IN_INPUT) |
+                              (m_searchInOutput->GetValue() * wxFR_SEARCH_IN_OUTPUT));
+  wxConfig::Get()->Write(wxS("Find/Flags"), m_findReplaceData->GetFlags());
 }
 
 void FindReplacePane::OnActivate(wxActivateEvent &event) {

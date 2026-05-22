@@ -32,6 +32,8 @@
   autocompletion tasks were running.
 - Fixed a bug where finding an item in an output cell didn't trigger a 
   scroll to the found item.
+- New Find/Replace filters: One can now choose to search only in the code 
+  (input) or only in the results (output).
 - MS Windows: The "maxima is running" indicator should now work correctly
 - HI-DPI improvements
 - A few Autocompletion fixes

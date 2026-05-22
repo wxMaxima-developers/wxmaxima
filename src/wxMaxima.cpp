@@ -300,8 +300,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   }
 
   m_oldFindString.Clear();
-  int findFlags = wxFR_DOWN | wxFR_MATCHCASE;
-  wxConfig::Get()->Read(wxS("Find/Flags"), &findFlags);
+  int findFlags = wxFR_DOWN | wxFR_MATCHCASE | FindReplacePane::wxFR_SEARCH_IN_INPUT | FindReplacePane::wxFR_SEARCH_IN_OUTPUT;
+  if (wxConfig::Get()->Read(wxS("Find/Flags"), &findFlags))
+    {
+      if (!(findFlags & (FindReplacePane::wxFR_SEARCH_IN_INPUT | FindReplacePane::wxFR_SEARCH_IN_OUTPUT)))
+        findFlags |= FindReplacePane::wxFR_SEARCH_IN_INPUT | FindReplacePane::wxFR_SEARCH_IN_OUTPUT;
+    }
   m_findData.SetFlags(findFlags);
   bool findRegex = false;
   wxConfig::Get()->Read(wxS("Find/RegexSearch"), &findRegex);
@@ -5212,10 +5216,14 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
         if(!GetWorksheet()->m_findDialog->GetRegexSearch())
           GetWorksheet()->FindIncremental(m_findData.GetFindString(),
                                        m_findData.GetFlags() & wxFR_DOWN,
-                                       !(m_findData.GetFlags() & wxFR_MATCHCASE));
+                                       !(m_findData.GetFlags() & wxFR_MATCHCASE),
+                                       !!(m_findData.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_INPUT),
+                                       !!(m_findData.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_OUTPUT));
         else
           GetWorksheet()->FindIncremental_RegEx(m_findData.GetFindString(),
-                                             m_findData.GetFlags() & wxFR_DOWN);
+                                             m_findData.GetFlags() & wxFR_DOWN,
+                                             !!(m_findData.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_INPUT),
+                                             !!(m_findData.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_OUTPUT));
         GetWorksheet()->RequestRedraw();
         m_oldFindFlags = GetWorksheet()->m_findDialog->GetData()->GetFlags();
         m_oldFindString = GetWorksheet()->m_findDialog->GetData()->GetFindString();
@@ -6857,14 +6865,18 @@ void wxMaxima::OnFind(wxFindDialogEvent &event) {
         {
           if (!GetWorksheet()->FindNext(event.GetFindString(),
                                      event.GetFlags() & wxFR_DOWN,
-                                     !(event.GetFlags() & wxFR_MATCHCASE)
+                                     !(event.GetFlags() & wxFR_MATCHCASE),
+                                     !!(event.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_INPUT),
+                                     !!(event.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_OUTPUT)
                                      ))
             LoggingMessageBox(_("No matches found!"));
         }
       else
         {
           if (!GetWorksheet()->FindNext_Regex(event.GetFindString(),
-                                           !!(event.GetFlags() & wxFR_DOWN)))
+                                           !!(event.GetFlags() & wxFR_DOWN),
+                                           !!(event.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_INPUT),
+                                           !!(event.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_OUTPUT)))
             LoggingMessageBox(_("No matches found!"));
         }
       CallAfter([this]{GetWorksheet()->FocusFindDialogue();});
@@ -6883,7 +6895,9 @@ void wxMaxima::OnReplace(wxFindDialogEvent &event) {
 
       if (!GetWorksheet()->FindNext(event.GetFindString(),
                                  event.GetFlags() & wxFR_DOWN,
-                                 !(event.GetFlags() & wxFR_MATCHCASE)))
+                                 !(event.GetFlags() & wxFR_MATCHCASE),
+                                 !!(event.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_INPUT),
+                                 !!(event.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_OUTPUT)))
         LoggingMessageBox(_("No matches found!"));
       else
         GetWorksheet()->UpdateTableOfContents();
@@ -6893,7 +6907,9 @@ void wxMaxima::OnReplace(wxFindDialogEvent &event) {
       GetWorksheet()->Replace_RegEx(event.GetFindString(), event.GetReplaceString());
 
       if (!GetWorksheet()->FindNext_Regex(event.GetFindString(),
-                                       event.GetFlags() & wxFR_DOWN))
+                                       event.GetFlags() & wxFR_DOWN,
+                                       !!(event.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_INPUT),
+                                       !!(event.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_OUTPUT)))
         LoggingMessageBox(_("No matches found!"));
       else
         GetWorksheet()->UpdateTableOfContents();
@@ -6911,11 +6927,15 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent &event) {
     {
       count =
         GetWorksheet()->ReplaceAll(event.GetFindString(), event.GetReplaceString(),
-                                !(event.GetFlags() & wxFR_MATCHCASE));
+                                !(event.GetFlags() & wxFR_MATCHCASE),
+                                !!(event.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_INPUT),
+                                !!(event.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_OUTPUT));
     }
   else
     count =
-      GetWorksheet()->ReplaceAll_RegEx(event.GetFindString(), event.GetReplaceString());
+      GetWorksheet()->ReplaceAll_RegEx(event.GetFindString(), event.GetReplaceString(),
+                                   !!(event.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_INPUT),
+                                   !!(event.GetFlags() & FindReplacePane::wxFR_SEARCH_IN_OUTPUT));
   LoggingMessageBox(wxString::Format(_("Replaced %li occurrences."), count));
   if (count > 0)
     GetWorksheet()->UpdateTableOfContents();

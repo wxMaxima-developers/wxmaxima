@@ -69,6 +69,8 @@ private:
   wxRadioButton *m_regexSearch;
   wxRadioButton *m_simpleSearch;
   wxCheckBox *m_matchCase;
+  wxCheckBox *m_searchInInput;
+  wxCheckBox *m_searchInOutput;
   //! true means: The next Activation event is generated during construction
   bool m_activateDuringConstruction;
 public:
@@ -83,6 +85,11 @@ public:
 
   wxFindReplaceData *GetData() const
     { return m_findReplaceData; }
+
+  enum {
+    wxFR_SEARCH_IN_INPUT = 0x10,
+    wxFR_SEARCH_IN_OUTPUT = 0x20
+  };
 
 protected:
   void OnActivate(wxActivateEvent &event);
@@ -102,6 +109,8 @@ protected:
   void OnRegexSimpleChange(wxCommandEvent &event);
 
   void OnMatchCase(wxCommandEvent &event);
+
+  void OnSearchIn(wxCommandEvent &event);
 
   void OnKeyDown(wxKeyEvent &event);
 };
