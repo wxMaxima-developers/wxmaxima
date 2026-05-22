@@ -2,9 +2,9 @@ var searchData=
 [
   ['filemenu_0',['FileMenu',['../classwxMaxima.html#a0e54be930d07bc5125647727bd938c8e',1,'wxMaxima']]],
   ['findcellbyuuid_1',['FindCellByUUID',['../classWorksheet.html#a7b35b08a4719616d120be5add09db8bd',1,'Worksheet']]],
-  ['findincremental_2',['FindIncremental',['../classWorksheet.html#acbbbf6f3f7d6c9357c368debcec48dd5',1,'Worksheet']]],
+  ['findincremental_2',['FindIncremental',['../classWorksheet.html#a88fcff5261e945f1297bce4c7b0de6f0',1,'Worksheet']]],
   ['findmatchingquotes_3',['FindMatchingQuotes',['../classEditorCell.html#a81fa08f7b106052e321219c094e937bd',1,'EditorCell']]],
-  ['findnext_4',['FindNext',['../classEditorCell.html#aca3068e7b6ecd6db4cbfb168cf070b09',1,'EditorCell::FindNext()'],['../classWorksheet.html#ae74e366b36f740d0cd174eb95c7b769e',1,'Worksheet::FindNext()']]],
+  ['findnext_4',['FindNext',['../classEditorCell.html#aca3068e7b6ecd6db4cbfb168cf070b09',1,'EditorCell::FindNext()'],['../classWorksheet.html#acd8aa786bd6649191d9e715413b2c1f5',1,'Worksheet::FindNext()']]],
   ['findprogram_5',['FindProgram',['../classConfiguration.html#a2a970cab8c8c88114f5bb0a5062f4e7f',1,'Configuration']]],
   ['first_6',['first',['../classCell.html#af6fdc7ea7b3f746d7b1f56c827cf5cad',1,'Cell']]],
   ['firsterror_7',['FirstError',['../classCellPointers_1_1ErrorList.html#a56d5a4858048355465698f93476c20c8',1,'CellPointers::ErrorList']]],

@@ -53,7 +53,7 @@ var searchData=
   ['render_50',['Render',['../classBitmapOut.html#ad631df01df5b3df5b9599bd18932875c',1,'BitmapOut::Render()'],['../classSvgout.html#a2b61b721a5eb267ce894331a6d1ff9d4',1,'Svgout::Render()']]],
   ['repeatgenerator_51',['RepeatGenerator',['../classCatch_1_1Generators_1_1RepeatGenerator.html',1,'Catch::Generators']]],
   ['replace_52',['Replace',['../classWorksheet.html#a45dd852f44f53430ea492c65414e5440',1,'Worksheet']]],
-  ['replaceall_53',['ReplaceAll',['../classEditorCell.html#a0de5dbe8dcd93b86a51afea42ee251c4',1,'EditorCell::ReplaceAll()'],['../classWorksheet.html#a4b908639059d4dc42d60ce049ff1ff71',1,'Worksheet::ReplaceAll()']]],
+  ['replaceall_53',['ReplaceAll',['../classEditorCell.html#a0de5dbe8dcd93b86a51afea42ee251c4',1,'EditorCell::ReplaceAll()'],['../classWorksheet.html#a2bdd3c976e8ad8c1ceab1c632f93117c',1,'Worksheet::ReplaceAll()']]],
   ['replaceselection_54',['ReplaceSelection',['../classEditorCell.html#a67ea61d6cfa90cd8da86e236e4061460',1,'EditorCell']]],
   ['replacesuggestion_55',['ReplaceSuggestion',['../classwxMaxima.html#a631676fba885bf2e4ca0e85406532133',1,'wxMaxima']]],
   ['reportmultipleredraws_56',['ReportMultipleRedraws',['../classConfiguration.html#a295a632df3661ad823bd4f8b604e6224',1,'Configuration']]],
