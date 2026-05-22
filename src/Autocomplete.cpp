@@ -70,25 +70,51 @@ void AutoComplete::LoadBuiltinSymbols() {
   wxMemoryInputStream istream(BUILTIN_COMMANDS, BUILTIN_COMMANDS_SIZE);
   wxTextInputStream txtstrm(istream);
   wxString line;
-  const std::lock_guard<std::mutex> lock(m_keywordsLock);
-  while(!istream.Eof())
+  {
+    const std::lock_guard<std::mutex> lock(m_keywordsLock);
+    while(!istream.Eof())
+      {
+        line = txtstrm.ReadLine();
+        auto parenPos = line.Find(wxS("("));
+        if(parenPos != wxNOT_FOUND)
+          {
+            m_wordList.at(tmplte).push_back(line);
+            m_wordList.at(command).push_back(line.Left(parenPos));
+          }
+        else
+          m_wordList.at(command).push_back(line);
+      }
+  }
+
+  {
+    WordList wordList;
     {
-      line = txtstrm.ReadLine();
-      auto parenPos = line.Find(wxS("("));
-      if(parenPos != wxNOT_FOUND)
-        {
-          m_wordList.at(tmplte).push_back(line);
-          m_wordList.at(command).push_back(line.Left(parenPos));
-        }
-      else
-        m_wordList.at(command).push_back(line);
+      const std::lock_guard<std::mutex> lock(m_keywordsLock);
+      wordList = m_wordList.at(tmplte);
     }
-  std::sort(m_wordList.at(tmplte).begin(), m_wordList.at(tmplte).end());
-  auto newEnd = std::unique(m_wordList.at(tmplte).begin(), m_wordList.at(tmplte).end());
-  m_wordList.at(tmplte).erase(newEnd, m_wordList.at(tmplte).end());
-  std::sort(m_wordList.at(command).begin(), m_wordList.at(command).end());
-  newEnd = std::unique(m_wordList.at(command).begin(), m_wordList.at(command).end());
-  m_wordList.at(command).erase(newEnd, m_wordList.at(command).end());
+    std::sort(wordList.begin(), wordList.end());
+    auto newEnd = std::unique(wordList.begin(), wordList.end());
+    wordList.erase(newEnd, wordList.end());
+    {
+      const std::lock_guard<std::mutex> lock(m_keywordsLock);
+      m_wordList.at(tmplte) = std::move(wordList);
+    }
+  }
+
+  {
+    WordList wordList;
+    {
+      const std::lock_guard<std::mutex> lock(m_keywordsLock);
+      wordList = m_wordList.at(command);
+    }
+    std::sort(wordList.begin(), wordList.end());
+    auto newEnd = std::unique(wordList.begin(), wordList.end());
+    wordList.erase(newEnd, wordList.end());
+    {
+      const std::lock_guard<std::mutex> lock(m_keywordsLock);
+      m_wordList.at(command) = std::move(wordList);
+    }
+  }
 }
 
 bool AutoComplete::HasDemofile(const wxString &commandname)
@@ -195,24 +221,51 @@ void AutoComplete::AddSymbols_Backgroundtask(wxXmlDocument xmldoc) {
     }
     if (m_abortBackgroundTask) return;
     {
-      const std::lock_guard<std::mutex> lock(m_keywordsLock);
-      std::sort(m_wordList.at(command).begin(), m_wordList.at(command).end());
-      auto newEnd = std::unique(m_wordList.at(command).begin(), m_wordList.at(command).end());
-      m_wordList.at(command).erase(newEnd, m_wordList.at(command).end());
+      WordList wordList;
+      {
+        const std::lock_guard<std::mutex> lock(m_keywordsLock);
+        wordList = m_wordList.at(command);
+      }
+      std::sort(wordList.begin(), wordList.end());
+      auto newEnd = std::unique(wordList.begin(), wordList.end());
+      wordList.erase(newEnd, wordList.end());
+      if (m_abortBackgroundTask) return;
+      {
+        const std::lock_guard<std::mutex> lock(m_keywordsLock);
+        m_wordList.at(command) = std::move(wordList);
+      }
     }
     if (m_abortBackgroundTask) return;
     {
-      const std::lock_guard<std::mutex> lock(m_keywordsLock);
-      std::sort(m_wordList.at(unit).begin(), m_wordList.at(unit).end());
-      auto newEnd = std::unique(m_wordList.at(unit).begin(), m_wordList.at(unit).end());
-      m_wordList.at(unit).erase(newEnd, m_wordList.at(unit).end());
+      WordList wordList;
+      {
+        const std::lock_guard<std::mutex> lock(m_keywordsLock);
+        wordList = m_wordList.at(unit);
+      }
+      std::sort(wordList.begin(), wordList.end());
+      auto newEnd = std::unique(wordList.begin(), wordList.end());
+      wordList.erase(newEnd, wordList.end());
+      if (m_abortBackgroundTask) return;
+      {
+        const std::lock_guard<std::mutex> lock(m_keywordsLock);
+        m_wordList.at(unit) = std::move(wordList);
+      }
     }
     if (m_abortBackgroundTask) return;
     {
-      const std::lock_guard<std::mutex> lock(m_keywordsLock);
-      std::sort(m_wordList.at(tmplte).begin(), m_wordList.at(tmplte).end());
-      auto newEnd = std::unique(m_wordList.at(tmplte).begin(), m_wordList.at(tmplte).end());
-      m_wordList.at(tmplte).erase(newEnd, m_wordList.at(tmplte).end());
+      WordList wordList;
+      {
+        const std::lock_guard<std::mutex> lock(m_keywordsLock);
+        wordList = m_wordList.at(tmplte);
+      }
+      std::sort(wordList.begin(), wordList.end());
+      auto newEnd = std::unique(wordList.begin(), wordList.end());
+      wordList.erase(newEnd, wordList.end());
+      if (m_abortBackgroundTask) return;
+      {
+        const std::lock_guard<std::mutex> lock(m_keywordsLock);
+        m_wordList.at(tmplte) = std::move(wordList);
+      }
     }
   }
 }
@@ -291,10 +344,19 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
   for(auto &wordlist:m_wordList)
     {
       if (m_abortBackgroundTask) return;
-      const std::lock_guard<std::mutex> lock(m_keywordsLock);
-      std::sort(wordlist.begin(), wordlist.end());
-      auto newEnd = std::unique(wordlist.begin(), wordlist.end());
-      wordlist.erase(newEnd, wordlist.end());
+      WordList wordListCopy;
+      {
+        const std::lock_guard<std::mutex> lock(m_keywordsLock);
+        wordListCopy = wordlist;
+      }
+      std::sort(wordListCopy.begin(), wordListCopy.end());
+      auto newEnd = std::unique(wordListCopy.begin(), wordListCopy.end());
+      wordListCopy.erase(newEnd, wordListCopy.end());
+      if (m_abortBackgroundTask) return;
+      {
+        const std::lock_guard<std::mutex> lock(m_keywordsLock);
+        wordlist = std::move(wordListCopy);
+      }
     }
 
   wxString line;
@@ -402,11 +464,13 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir, wxString demo
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
   }
   if (m_abortBackgroundTask) return;
-  const std::lock_guard<std::mutex> lock(m_keywordsLock);
   std::sort(m_builtInLoadFiles.begin(), m_builtInLoadFiles.end());
   std::sort(m_builtInDemoFiles.begin(), m_builtInDemoFiles.end());
-  m_wordList.at(demofile) = m_builtInDemoFiles;
-  m_wordList.at(loadfile) = m_builtInLoadFiles;
+  {
+    const std::lock_guard<std::mutex> lock(m_keywordsLock);
+    m_wordList.at(demofile) = m_builtInDemoFiles;
+    m_wordList.at(loadfile) = m_builtInLoadFiles;
+  }
   // Inform the main thread that there are new demo files
   wxCommandEvent *event = new wxCommandEvent(NEW_DEMO_FILES_EVENT);
   QueueEvent(event);
