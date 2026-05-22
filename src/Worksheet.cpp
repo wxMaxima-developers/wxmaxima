@@ -7395,7 +7395,11 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
     }
 
     if (foundInGroup) {
-      ScrollToCaret();
+      if (GetActiveCell())
+        ScrollToCaret();
+      else if (GetSelectionStart())
+        ScheduleScrollToCell(GetSelectionStart(), false);
+
       UpdateTableOfContents();
       RequestRedraw();
       if ((wrappedSearch) && warn) {
@@ -7611,7 +7615,11 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
     }
 
     if (foundInGroup) {
-      ScrollToCaret();
+      if (GetActiveCell())
+        ScrollToCaret();
+      else if (GetSelectionStart())
+        ScheduleScrollToCell(GetSelectionStart(), false);
+
       UpdateTableOfContents();
       RequestRedraw();
       if ((wrappedSearch) && warn) {
@@ -7690,6 +7698,8 @@ bool Worksheet::ScrollToCaretIfNeeded() {
       }
       wxASSERT(point.y >= 0);
       ShowPoint(point);
+    } else if (GetSelectionStart()) {
+      ScheduleScrollToCell(GetSelectionStart(), false);
     }
   }
   return true;

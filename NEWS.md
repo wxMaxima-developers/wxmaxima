@@ -28,6 +28,10 @@
 - Ctrl+G now interrupts the current command again on MS windows
 - Reduced the time windows in which wxMaxima blocks because it is 
   processing data
+- Fixed a deadlock when closing the application while background 
+  autocompletion tasks were running.
+- Fixed a bug where finding an item in an output cell didn't trigger a 
+  scroll to the found item.
 - MS Windows: The "maxima is running" indicator should now work correctly
 - HI-DPI improvements
 - A few Autocompletion fixes
