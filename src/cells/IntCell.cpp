@@ -85,7 +85,6 @@ void IntCell::MakeBreakUpCells() {
 void IntCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
-    wxASSERT(fontsize.IsValid());
 
     m_base->RecalculateList(fontsize);
     m_var->RecalculateList(fontsize);
