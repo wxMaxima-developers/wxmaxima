@@ -2196,15 +2196,20 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
   if(!GetWorksheet())
     return NULL;
 
+  if (s.IsEmpty())
+    return NULL;
+
+  if (type == MC_TYPE_ERROR)
+    wxLogMessage(wxS("Maxima error: %s"), s);
+  else if (type == MC_TYPE_WARNING)
+    wxLogMessage(wxS("Maxima warning: %s"), s);
+
   TextCell *cell = nullptr;
   // If we want to append an error message to the worksheet and there is no cell
   // that can contain it we need to create such a cell.
   if (GetWorksheet()->GetTree() == NULL)
     GetWorksheet()->InsertGroupCells(
                                   std::make_unique<GroupCell>(&m_configuration, GC_TYPE_CODE));
-
-  if (s.IsEmpty())
-    return NULL;
 
   bool scrollToCaret =
     (!GetWorksheet()->FollowEvaluation() && GetWorksheet()->CaretVisibleIs());
