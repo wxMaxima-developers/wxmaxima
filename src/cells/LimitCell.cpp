@@ -61,21 +61,23 @@ void LimitCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
     m_base->RecalculateList(fontsize);
-    m_under->RecalculateList(
-                             {MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE});
     m_name->RecalculateList(fontsize);
 
+    m_open->RecalculateList(fontsize);
+    m_comma->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
+
     if (!IsBrokenIntoLines()) {
+      m_under->RecalculateList(
+          {MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE});
       m_width = std::max(m_name->SumOfWidths(), m_under->SumOfWidths()) +
-        m_base->SumOfWidths();
+                m_base->SumOfWidths();
       m_center = std::max(m_base->GetCenterList(), m_name->GetCenterList());
       m_height = m_center + std::max(m_name->GetMaxDrop() + m_under->GetHeightList(),
                                      m_base->GetMaxDrop());
     } else {
+      m_under->RecalculateList(fontsize);
       m_width = m_height = m_center = 0;
-      m_open->RecalculateList(fontsize);
-      m_comma->RecalculateList(fontsize);
-      m_close->RecalculateList(fontsize);
     }
   }
 }
@@ -163,7 +165,12 @@ bool LimitCell::BreakUp() const {
     return false;
 
   BreakUpAndMark();
+  m_open->SetNextToDraw(m_base.get());
+  m_base->last()->SetNextToDraw(m_comma.get());
+  m_comma->SetNextToDraw(m_under.get());
+  m_under->last()->SetNextToDraw(m_close.get());
   m_close->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_open.get();
   return true;
 }
 

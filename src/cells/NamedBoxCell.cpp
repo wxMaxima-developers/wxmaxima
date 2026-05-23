@@ -70,6 +70,9 @@ void NamedBoxCell::Recalculate(AFontSize fontsize) const {
     Cell::Recalculate(fontsize);
     m_innerCell->RecalculateList(fontsize);
     m_boxname->RecalculateList(fontsize);
+    m_open->RecalculateList(fontsize);
+    m_comma->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
 
     m_innerCellWidth = m_innerCell->SumOfWidths();
     m_innerCellHeight = m_innerCell->GetHeightList();
@@ -87,9 +90,6 @@ void NamedBoxCell::Recalculate(AFontSize fontsize) const {
       m_width = 0;
       m_height = 0;
       m_center = 0;
-      m_open->RecalculateList(fontsize);
-      m_comma->RecalculateList(fontsize);
-      m_close->RecalculateList(fontsize);
     }
   }
 }

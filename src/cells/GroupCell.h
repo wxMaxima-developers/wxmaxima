@@ -248,7 +248,10 @@ public:
     The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
   */
-  void Recalculate(const AFontSize WXUNUSED(fontsize)) const override {Recalculate();}
+  void Recalculate(const AFontSize WXUNUSED(fontsize)) const override {
+    m_fontSize = m_configuration->GetMathFontSize();
+    Recalculate();
+  }
   bool Recalculate() const;
   wxPoint CalculateInputPosition() const;
 

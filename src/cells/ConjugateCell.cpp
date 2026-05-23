@@ -64,6 +64,8 @@ void ConjugateCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
     m_innerCell->RecalculateList(fontsize);
+    m_open->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
 
     if (!IsBrokenIntoLines()) {
       m_width = m_innerCell->SumOfWidths() + Scale_Px(8);
@@ -76,8 +78,6 @@ void ConjugateCell::Recalculate(AFontSize fontsize) const {
       m_width = 0;
       m_height = 0;
       m_center = 0;
-      m_open->RecalculateList(fontsize);
-      m_close->RecalculateList(fontsize);
     }
   }
 }

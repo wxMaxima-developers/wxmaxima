@@ -109,5 +109,4 @@ This file contains architectural insights, conventions, and operational knowledg
 - **Configuration:** `src/Configuration.cpp` (global settings and geometric constants).
 
 ## Error resiliance
-- This file might contain errors. If facts seem to point in that direction don't believe blindly that this file must be right.
 - To err is human => If your instructions don't seem to make sense in any way feel free to ask.

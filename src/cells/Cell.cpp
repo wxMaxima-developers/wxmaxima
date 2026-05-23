@@ -244,7 +244,39 @@ GroupCell *Cell::GetGroup() const {
   return group;
 }
 
+wxCoord Cell::GetHeight() const {
+  if (NeedsRecalculation()) {
+    // if (!m_fontSize.IsValid())
+    //   GetGroup()->Recalculate(m_configuration->GetMathFontSize());
+    // else
+      Recalculate(m_fontSize);
+  }
+  return m_height;
+}
+
+int Cell::GetWidth() const {
+  if (NeedsRecalculation()) {
+    // if (!m_fontSize.IsValid())
+    //   GetGroup()->Recalculate(m_configuration->GetMathFontSize());
+    // else
+      Recalculate(m_fontSize);
+  }
+  return m_width;
+}
+
+wxCoord Cell::GetCenter() const {
+  if (NeedsRecalculation()) {
+    // if (!m_fontSize.IsValid())
+    //   GetGroup()->Recalculate(m_configuration->GetMathFontSize());
+    // else
+      Recalculate(m_fontSize);
+  }
+  return m_center;
+}
+
 bool Cell::NeedsRecalculation(AFontSize fontSize) const {
+  if (!m_fontSize.IsValid())
+    return true;
   if (!HasValidSize())
     return true;
   if(!EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.1f))
@@ -423,7 +455,7 @@ void Cell::ResetSizeList() const {
 }
 
 void Cell::Recalculate(const AFontSize fontsize) const {
-  wxASSERT(fontsize.IsValid());
+  //  wxASSERT(fontsize.IsValid());
   if(NeedsRecalculation(fontsize))
     {
       m_cellCfgCnt_last = m_configuration->CellCfgCnt();

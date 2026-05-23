@@ -401,12 +401,7 @@ public:
 
     \image html CellGeometry.svg
   */
-  wxCoord GetHeight() const
-    {
-      if(NeedsRecalculation())
-        Recalculate(m_fontSize); 
-      return m_height;
-    }
+  wxCoord GetHeight() const;
 
   /*! Get the width of this cell
 
@@ -414,12 +409,7 @@ public:
 
     \image html CellGeometry.svg
 */
-  int GetWidth() const
-    {
-      if(NeedsRecalculation())
-        Recalculate(m_fontSize); 
-      return m_width;
-    }
+  int GetWidth() const;
 
   /*! Get the distance between the top and the center of this cell.
 
@@ -428,12 +418,7 @@ public:
 
     \image html CellGeometry.svg
   */
-  wxCoord GetCenter() const
-    {
-      if(NeedsRecalculation())
-        Recalculate(m_fontSize); 
-      return m_center;
-    }
+  wxCoord GetCenter() const;
 
   //! Is the size valid and not pending a recalculation?
   bool HasValidSize() const;

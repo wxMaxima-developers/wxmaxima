@@ -155,23 +155,27 @@ const wxString SumCell::GetXMLType() const
 void SumCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
-    DisplayedBase()->RecalculateList(fontsize);
+
+    m_paren->RecalculateList(fontsize);
     m_start->RecalculateList(fontsize);
     m_var->RecalculateList(fontsize);
-    m_over->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
-    m_under->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
     m_comma1->RecalculateList(fontsize);
     m_comma2->RecalculateList(fontsize);
     m_comma3->RecalculateList(fontsize);
     m_open->RecalculateList(fontsize);
     m_close->RecalculateList(fontsize);
 
-    m_signSize = GetSymbolSize();
     if (IsBrokenIntoLines()) {
+      m_over->RecalculateList(fontsize);
+      m_under->RecalculateList(fontsize);
       m_width = 0;
       m_center = 0;
       m_height = 0;
     } else {
+      m_over->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
+      m_under->RecalculateList({MC_MIN_SIZE, fontsize - SUM_DEC});
+
+      m_signSize = GetSymbolSize();
       m_width = std::max(std::max(m_signSize.x, m_over->SumOfWidths()),
                          m_under->SumOfWidths()) + DisplayedBase()->SumOfWidths();
 

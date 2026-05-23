@@ -88,15 +88,16 @@ void IntCell::Recalculate(AFontSize fontsize) const {
 
     m_base->RecalculateList(fontsize);
     m_var->RecalculateList(fontsize);
+    m_open->RecalculateList(fontsize);
+    m_comma1->RecalculateList(fontsize);
+    m_comma2->RecalculateList(fontsize);
+    m_comma3->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
+
     if (IsBrokenIntoLines()) {
       // Cell is being displayed in its linear form. That means: All of its components
       // are printed in the current font size and the 2D object this cell can print
       // isn't displayed at all.
-      m_open->RecalculateList(fontsize);
-      m_comma1->RecalculateList(fontsize);
-      m_comma2->RecalculateList(fontsize);
-      m_comma3->RecalculateList(fontsize);
-      m_close->RecalculateList(fontsize);
       m_upperLimit->RecalculateList(fontsize);
       m_lowerLimit->RecalculateList(fontsize);
       m_center = 0;

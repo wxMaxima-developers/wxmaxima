@@ -89,6 +89,11 @@ void ExptCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
     m_baseCell->RecalculateList(fontsize);
+
+    m_exp->RecalculateList(fontsize);
+    m_open->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
+
     if (IsBrokenIntoLines())
       m_exptCell->RecalculateList(fontsize);
     else
@@ -96,9 +101,6 @@ void ExptCell::Recalculate(AFontSize fontsize) const {
 
     if (IsBrokenIntoLines()) {
       m_height = m_width = m_center = 0;
-      m_exp->RecalculateList(fontsize);
-      m_open->RecalculateList(fontsize);
-      m_close->RecalculateList(fontsize);
     } else {
       m_width = m_baseCell->SumOfWidths() + m_exptCell->SumOfWidths() -
         MC_TEXT_PADDING;
