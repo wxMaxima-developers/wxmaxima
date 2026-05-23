@@ -575,7 +575,7 @@ void GroupCell::UpdateYPosition() const {
       m_inputLabel->SetCurrentPoint(point);
   } else {
     point.y += m_configuration->GetGroupSkip();
-    if (previous->GetCurrentPoint().y > 0)
+    if (previous->GetCurrentPoint().y >= 0)
       point.y += previous->GetCurrentPoint().y + previous->GetMaxDrop();
   }
   m_currentPoint = point;
@@ -583,6 +583,29 @@ void GroupCell::UpdateYPosition() const {
   EditorCell *editor = GetEditable();
   if (editor)
     editor->SetCurrentPoint(CalculateInputPosition());
+
+  if (m_output && !IsHidden()) {
+    wxPoint in = GetCurrentPoint();
+    if (m_configuration->ShowCodeCells() || (m_groupType != GC_TYPE_CODE))
+      in.y += m_inputLabel->GetMaxDrop();
+
+    m_outputRect.SetPosition(in);
+    bool isFirst = true;
+    int drop = 0;
+    for (Cell &tmp : OnDrawList(m_output.get())) {
+      if (isFirst || tmp.BreakLineHere()) {
+        if (!isFirst && tmp.HasBigSkip())
+          in.y += MC_LINE_SKIP;
+
+        in.x = GetCurrentPoint().x + tmp.GetLineIndent();
+        in.y += drop + tmp.GetCenterList();
+        drop = tmp.GetMaxDrop();
+      }
+      tmp.SetCurrentPoint(in);
+      in.x += tmp.GetWidth();
+      isFirst = false;
+    }
+  }
 }
 
 wxPoint GroupCell::CalculateInputPosition() const {
@@ -609,28 +632,6 @@ wxCoord GroupCell::GetInputIndent() const {
 
 void GroupCell::UpdateOutputPositions() const {
   UpdateYPosition();
-  if (m_output && !IsHidden()) {
-    wxPoint in = GetCurrentPoint();
-    if (m_configuration->ShowCodeCells() || (m_groupType != GC_TYPE_CODE))
-      in.y += m_inputLabel->GetMaxDrop();
-
-    m_outputRect.SetPosition(in);
-    bool isFirst = true;
-    int drop = 0;
-    for (Cell &tmp : OnDrawList(m_output.get())) {
-      if (isFirst || tmp.BreakLineHere()) {
-        if (!isFirst && tmp.HasBigSkip())
-          in.y += MC_LINE_SKIP;
-
-        in.x = GetCurrentPoint().x + tmp.GetLineIndent();
-        in.y += drop + tmp.GetCenterList();
-        drop = tmp.GetMaxDrop();
-      }
-      tmp.SetCurrentPoint(in);
-      in.x += tmp.GetWidth();
-      isFirst = false;
-    }
-  }
 }
 
 void GroupCell::Draw(wxPoint const point, wxDC *dc, wxDC *antialiassingDC) {
