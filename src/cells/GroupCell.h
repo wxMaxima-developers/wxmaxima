@@ -390,11 +390,10 @@ public:
   //! Reset the data when the input size changes
   void InputHeightChanged();
 
-  typedef std::unordered_map <wxString, wxString, wxStringHash> StringHash;
   typedef std::unordered_map <wxString, int, wxStringHash> CmdsAndVariables;
 
   //! A list of answers provided by the user
-  StringHash m_knownAnswers;
+  std::vector<std::pair<wxString, wxString>> m_knownAnswers;
 
 #if wxUSE_ACCESSIBILITY
   wxAccStatus GetDescription(int childId, wxString *description) const override;

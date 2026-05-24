@@ -208,9 +208,8 @@ const wxString &GroupCell::GetAnswer(size_t answer) const {
   if ((!m_autoAnswer) && (!m_configuration->OfferKnownAnswers()))
     return wxm::emptyString;
 
-  wxString const question = wxString::Format(wxS("Question #%li"), static_cast<long>(answer));
-  if (auto it = m_knownAnswers.find(question); it != m_knownAnswers.end())
-    return it->second;
+  if (answer > 0 && answer <= m_knownAnswers.size())
+    return m_knownAnswers[answer - 1].second;
   return wxm::emptyString;
 }
 
@@ -218,8 +217,10 @@ const wxString &GroupCell::GetAnswer(const wxString &question) const {
   if ((!m_autoAnswer) && (!m_configuration->OfferKnownAnswers()))
     return wxm::emptyString;
 
-  if (auto it = m_knownAnswers.find(question); it != m_knownAnswers.end())
-    return it->second;
+  for (auto const &[q, a] : m_knownAnswers) {
+    if (q == question)
+      return a;
+  }
 
   return GetAnswer(++m_numberedAnswersCount);
 }
@@ -231,8 +232,15 @@ void GroupCell::SetAutoAnswer(bool autoAnswer) {
 }
 
 void GroupCell::SetAnswer(const wxString &question, const wxString &answer) {
-  if (!answer.empty())
-    m_knownAnswers[question] = answer;
+  if (!answer.empty()) {
+    for (auto &[q, a] : m_knownAnswers) {
+      if (q == question) {
+        a = answer;
+        return;
+      }
+    }
+    m_knownAnswers.emplace_back(question, answer);
+  }
 }
 
 GroupCell *GroupCell::GetLastWorkingGroup() const {
@@ -1180,14 +1188,13 @@ wxString GroupCell::ToXML() const {
   case GC_TYPE_CODE: {
     str += wxS(" type=\"code\"");
     size_t i = 0;
-    for (StringHash::const_iterator it = m_knownAnswers.begin();
-         it != m_knownAnswers.end(); ++it) {
+    for (auto const &[question_text, answer_text] : m_knownAnswers) {
       i++;
       // In theory the attribute should be saved and read verbatim, with the
       // exception of the characters XML wants to be quoted. In reality
       // wxWidget's newline handling seems to be broken => escape newlines.
-      wxString question = Cell::XMLescape(it->first);
-      wxString answer = Cell::XMLescape(it->second);
+      wxString question = Cell::XMLescape(question_text);
+      wxString answer = Cell::XMLescape(answer_text);
       str += wxString::Format(wxS(" question%li=\""), static_cast<long>(i)) +
         question + wxS("\"");
       str += wxString::Format(wxS(" answer%li=\""), static_cast<long>(i)) +

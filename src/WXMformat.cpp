@@ -321,8 +321,10 @@ namespace Format {
         // Read an answer
       case WXM_ANSWER:
         line = getLinesUntil(Headers.GetEnd(headerId));
-        if (last && !question.empty())
+        if (last && !question.empty()) {
           last->SetAnswer(question, line);
+          question.Clear();
+        }
         break;
 
         // Read a question

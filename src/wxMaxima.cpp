@@ -3413,7 +3413,7 @@ void wxMaxima::ReadSuppressedOutput(const wxString &data) {
 }
 
 void wxMaxima::ReadLoadSymbols(const wxXmlDocument &data) {
-  if(GetWorksheet())
+  if(GetWorksheet() && !m_exitAfterEval)
     GetWorksheet()->AddSymbols(data);
 }
 
@@ -3591,8 +3591,9 @@ void wxMaxima::VariableActionMaximaHtmldir(const wxString &value) {
   if(GetWorksheet())
     {
       GetWorksheet()->SetMaximaDocDir(dir_canonical);
-      GetWorksheet()->LoadHelpFileAnchors(dir_canonical,
-                                          m_configuration.GetMaximaVersion());
+      if (!m_exitAfterEval)
+        GetWorksheet()->LoadHelpFileAnchors(dir_canonical,
+                                            m_configuration.GetMaximaVersion());
     }
 }
 void wxMaxima::GnuplotCommandName(wxString gnuplot) {
@@ -3767,7 +3768,7 @@ void wxMaxima::VariableActionMaximaSharedir(const wxString &value) {
   wxLogMessage(_("Maxima's share files are located in directory %s"),
                dir);
   /// READ FUNCTIONS FOR AUTOCOMPLETION
-  if(GetWorksheet())
+  if(GetWorksheet() && !m_exitAfterEval)
     GetWorksheet()->LoadSymbols();
 }
 
