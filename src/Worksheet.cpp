@@ -2471,67 +2471,53 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
   const Cell *selectionStartOld = m_cellPointers.m_selectionStart,
     *selectionEndOld = m_cellPointers.m_selectionEnd;
   wxRect rect;
-  
-  int ytop = std::min(down.y, up.y);
-  int ybottom = std::max(down.y, up.y);
 
-  if ((m_cellPointers.m_cellMouseSelectionStartedIn) &&
-      (!m_cellPointers.m_cellMouseSelectionStartedIn->GetRect()
-       .Inflate(m_configuration->GetGroupSkip(),
-                m_configuration->GetGroupSkip())
-       .Contains(up))) {
-    SelectGroupCells(up, down);
-    if (GetActiveCell()) {
-      GetActiveCell()->SelectNone();
-      SetActiveCell(NULL);
-    }
-  } else
-    switch (m_clickType) {
-    case CLICK_TYPE_NONE:
+  switch (m_clickType) {
+  case CLICK_TYPE_NONE:
+    return;
+
+  case CLICK_TYPE_INPUT_SELECTION:
+    if (!m_cellPointers.m_cellMouseSelectionStartedIn)
       return;
 
-    case CLICK_TYPE_INPUT_SELECTION:
-      if (!m_cellPointers.m_cellMouseSelectionStartedIn)
-        return;
+    {
+      rect = m_cellPointers.m_cellMouseSelectionStartedIn->GetRect();
 
-      {
-        rect = m_cellPointers.m_cellMouseSelectionStartedIn->GetRect();
-
-        // Let's see if we are still inside the cell we started selecting in.
-        if ((ytop < rect.GetTop()) || (ybottom > rect.GetBottom())) {
-          // We have left the cell we started to select in =>
-          // select all group cells between start and end of the selection.
-          SelectGroupCells(up, down);
-
-          // If we have just started selecting GroupCells we have to unselect
-          // the already-selected text in the cell we have started selecting in.
-          if (GetActiveCell()) {
-            GetActiveCell()->SelectNone();
-            m_hCaretActive = true;
-            SetActiveCell(NULL);
-          }
-        } else {
-          // Clean up in case that we have re-entered the cell we started
-          // selecting in.
-          m_hCaretActive = false;
-          ClearSelection();
-          SetActiveCell(m_cellPointers.m_cellMouseSelectionStartedIn);
-          // We are still inside the cell => select inside the current cell.
-          GetActiveCell()->SelectRectText(down, up);
-          m_blinkDisplayCaret = true;
-          RequestRedraw();
-
-          // Remove the marker that we need to refresh
-          selectionStartOld = m_cellPointers.m_selectionStart;
-          selectionEndOld = m_cellPointers.m_selectionEnd;
+      // Let's see if we are still inside the cell we started selecting in.
+      if (!rect.Inflate(m_configuration->GetGroupSkip(),
+                        m_configuration->GetGroupSkip()).Contains(up)) {
+        // If we have just started selecting GroupCells we have to unselect
+        // the already-selected text in the cell we have started selecting in.
+        if (GetActiveCell()) {
+          GetActiveCell()->SelectNone();
+          SetActiveCell(NULL);
         }
-        break;
-      }
-    case CLICK_TYPE_GROUP_SELECTION:
-      SelectGroupCells(up, down);
-      break;
 
-    case CLICK_TYPE_OUTPUT_SELECTION:
+        // we have left the cell we started to select in =>
+        // select all group cells between start and end of the selection.
+        SelectGroupCells(up, down);
+      } else {
+        // Clean up in case that we have re-entered the cell we started
+        // selecting in.
+        m_hCaretActive = false;
+        ClearSelection();
+        SetActiveCell(m_cellPointers.m_cellMouseSelectionStartedIn);
+        // We are still inside the cell => select inside the current cell.
+        GetActiveCell()->SelectRectText(down, up);
+        m_blinkDisplayCaret = true;
+        RequestRedraw();
+
+        // Remove the marker that we need to refresh
+        selectionStartOld = m_cellPointers.m_selectionStart;
+        selectionEndOld = m_cellPointers.m_selectionEnd;
+      }
+      break;
+    }
+  case CLICK_TYPE_GROUP_SELECTION:
+    SelectGroupCells(up, down);
+    break;
+
+  case CLICK_TYPE_OUTPUT_SELECTION:
       m_cellPointers.m_selectionString.Clear();
       ClearSelection();
       rect.x = std::min(down.x, up.x);
