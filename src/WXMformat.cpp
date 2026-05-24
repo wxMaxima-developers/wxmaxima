@@ -134,9 +134,42 @@ namespace Format {
           return c.id;
       return WXM_INVALID;
     }
+    static bool IsEndMarker(const wxString &line) {
+      for (auto &c : WXMHeaders)
+        if (!c.end.empty() && c.end == line)
+          return true;
+      return false;
+    }
+    static bool IsAnyMarker(const wxString &line) {
+      for (auto &c : WXMHeaders)
+        if (c.start == line || (!c.end.empty() && c.end == line))
+          return true;
+      return false;
+    }
   };
 
   static WXMHeaderCollection Headers;
+
+  static wxString EscapeWXMContent(const wxString &content) {
+    wxStringTokenizer tokens(content, wxS('\n'), wxTOKEN_RET_EMPTY_ALL);
+    wxString result;
+    while (tokens.HasMoreTokens()) {
+      wxString line = tokens.GetNextToken();
+      if (Headers.IsAnyMarker(line))
+        result << wxS(" ") << line;
+      else
+        result << line;
+      if (tokens.HasMoreTokens())
+        result << wxS('\n');
+    }
+    return result;
+  }
+
+  static wxString EscapeWXMTextContent(const wxString &content) {
+    wxString result = EscapeWXMContent(content);
+    result.Replace(wxS("*/"), wxS("* /"));
+    return result;
+  }
 
   wxString TreeToWXM(GroupCell *cell, bool wxm) {
     wxString retval;
@@ -149,7 +182,7 @@ namespace Format {
     case GC_TYPE_CODE:
       if (wxm)
         retval << Headers.GetStart(groupType) << '\n'
-               << cell->GetEditable()->ToString(true) << '\n'
+               << EscapeWXMContent(cell->GetEditable()->ToString(true)) << '\n'
                << Headers.GetEnd(groupType) << '\n';
       else {
         retval << cell->GetEditable()->ToString(true) << '\n';
@@ -160,10 +193,10 @@ namespace Format {
       if (wxm) {
         for (auto const &[question, answer] : cell->m_knownAnswers)
           retval << Headers.GetStart(WXM_QUESTION) << '\n'
-                 << question << '\n'
+                 << EscapeWXMTextContent(question) << '\n'
                  << Headers.GetEnd(WXM_QUESTION) << '\n'
                  << Headers.GetStart(WXM_ANSWER) << '\n'
-                 << answer << '\n'
+                 << EscapeWXMTextContent(answer) << '\n'
                  << Headers.GetEnd(WXM_ANSWER) << '\n';
         if (cell->AutoAnswer())
           retval << Headers.GetStart(WXM_AUTOANSWER);
@@ -172,7 +205,7 @@ namespace Format {
     case GC_TYPE_TEXT:
       if (wxm)
         retval << Headers.GetStart(groupType) << '\n'
-               << cell->GetEditable()->ToString(true) << '\n'
+               << EscapeWXMTextContent(cell->GetEditable()->ToString(true)) << '\n'
                << Headers.GetEnd(groupType) << '\n';
       else {
         retval << wxS("/* ") << cell->GetEditable()->ToString(true) << wxS(" */\n");
@@ -186,12 +219,14 @@ namespace Format {
     case GC_TYPE_HEADING6:
     case GC_TYPE_TITLE:
       retval << Headers.GetStart(groupType) << '\n'
-             << cell->GetEditable()->ToString(true) << '\n'
+             << (wxm ? EscapeWXMTextContent(cell->GetEditable()->ToString(true))
+                     : cell->GetEditable()->ToString(true)) << '\n'
              << Headers.GetEnd(groupType) << '\n';
       break;
     case GC_TYPE_IMAGE:
       retval << Headers.GetStart(groupType) << '\n'
-             << cell->GetEditable()->ToString(true) << '\n'
+             << (wxm ? EscapeWXMTextContent(cell->GetEditable()->ToString(true))
+                     : cell->GetEditable()->ToString(true)) << '\n'
              << Headers.GetEnd(groupType) << '\n';
       if (cell->GetLabel() && cell->GetLabel()->GetType() == MC_TYPE_IMAGE) {
         const ImgCell *image = dynamic_cast<ImgCell *>(cell->GetLabel());
@@ -234,12 +269,15 @@ namespace Format {
     const auto getLinesUntil = [&wxmLine, end](const wxString &tag) -> wxString {
       wxString line;
       while (wxmLine != end) {
-        auto const thisLn = wxmLine++;
-        if (*thisLn == tag)
+        wxString thisLn = *wxmLine++;
+        if (thisLn == tag)
           break;
+        if (thisLn.StartsWith(wxS(" ")) && Headers.IsAnyMarker(thisLn.Mid(1)))
+          thisLn = thisLn.Mid(1);
+        thisLn.Replace(wxS("* /"), wxS("*/"));
         if (!line.empty())
           line << '\n';
-        line << *thisLn;
+        line << thisLn;
       }
       return line;
     };
@@ -261,7 +299,8 @@ namespace Format {
     while (wxmLine != end) {
       GroupCell *const last = tree.GetTail();
       std::unique_ptr<GroupCell> cell;
-      WXMHeaderId headerId = Headers.LookupStart(*wxmLine++);
+      const wxString &thisLine = *wxmLine++;
+      WXMHeaderId headerId = Headers.LookupStart(thisLine);
       wxString line;
 
       switch (headerId) {
@@ -355,12 +394,25 @@ namespace Format {
       } break;
 
       case WXM_INVALID:
+        if (last && last->GetEditable()) {
+          wxString content = last->GetEditable()->GetValue();
+          wxString unescaped = thisLine;
+          if (unescaped.StartsWith(wxS(" ")) && Headers.IsAnyMarker(unescaped.Mid(1)))
+            unescaped = unescaped.Mid(1);
+          unescaped.Replace(wxS("* /"), wxS("*/"));
+          if (!content.empty())
+            content << '\n';
+          content << unescaped;
+          last->GetEditable()->SetValue(content);
+        }
+        break;
       case WXM_FOLD_END:
       case WXM_MAX:
         {}
       }
 
-      tree.Append(std::move(cell));
+      if (cell)
+        tree.Append(std::move(cell));
     }
   /* The warning from gcc is correct. But an old MacOs compiler errors out
      on correct code, here. */
