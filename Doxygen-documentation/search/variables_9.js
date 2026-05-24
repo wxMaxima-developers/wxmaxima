@@ -71,7 +71,7 @@ var searchData=
   ['m_5finputlabel_68',['m_inputLabel',['../classGroupCell.html#a5777178e7fc593f6f7e8642aa66225ad',1,'GroupCell']]],
   ['m_5fisactive_69',['m_isActive',['../classwxMaxima.html#a2f9c267c29a8f462cb89d933016a06ed',1,'wxMaxima']]],
   ['m_5fkeyboardinactivetimer_70',['m_keyboardInactiveTimer',['../classWorksheet.html#a4acf248dcae644a601d97f7ccf2bb7b6',1,'Worksheet']]],
-  ['m_5fknownanswers_71',['m_knownAnswers',['../classGroupCell.html#a0e3b9b7fb1441c26bb8194415920d001',1,'GroupCell']]],
+  ['m_5fknownanswers_71',['m_knownAnswers',['../classGroupCell.html#a090b426dc93547f045c535d068aa1d49',1,'GroupCell']]],
   ['m_5flastworkinggroup_72',['m_lastWorkingGroup',['../classCellPointers.html#a237bdf5200ae041e77d7a43b450da282',1,'CellPointers']]],
   ['m_5fleftstatustext_73',['m_leftStatusText',['../classwxMaximaFrame.html#a3d22c452da8d2de05bb06a66c4c4314f',1,'wxMaximaFrame']]],
   ['m_5flinebreaks_74',['m_linebreaks',['../classMaximaTokenizer.html#ad6c261781165f3ff5db9169945e57613',1,'MaximaTokenizer']]],
