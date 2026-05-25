@@ -123,6 +123,12 @@ std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&
 std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CopyList</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group) const</td></tr>
 <tr class="memdesc:ad755e6ec9498e5cfaa60b820cf63c44a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the list of cells beginning with this one. <br /></td></tr>
 <tr class="separator:ad755e6ec9498e5cfaa60b820cf63c44a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab218fae4551a5c2f2bbd3b08276729a8"><td class="memItemLeft" align="right" valign="top"><a id="ab218fae4551a5c2f2bbd3b08276729a8" name="ab218fae4551a5c2f2bbd3b08276729a8"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetMaxDrop</b> () const</td></tr>
+<tr class="separator:ab218fae4551a5c2f2bbd3b08276729a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3088de26b24ee79fc6ccc312b29ef2e8"><td class="memItemLeft" align="right" valign="top"><a id="a3088de26b24ee79fc6ccc312b29ef2e8" name="a3088de26b24ee79fc6ccc312b29ef2e8"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetCenterList</b> () const</td></tr>
+<tr class="separator:a3088de26b24ee79fc6ccc312b29ef2e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acece63a09553509bdd5138209b6183d3"><td class="memItemLeft" align="right" valign="top"><a id="acece63a09553509bdd5138209b6183d3" name="acece63a09553509bdd5138209b6183d3"></a>
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>first</b> () const</td></tr>
 <tr class="separator:acece63a09553509bdd5138209b6183d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -504,12 +510,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasValidPosition</b> 
 <a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetType</b> () const</td></tr>
 <tr class="memdesc:a4cb4a870ceb346a53eae7d154bf73706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the type of this cell. <br /></td></tr>
 <tr class="separator:a4cb4a870ceb346a53eae7d154bf73706"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1be3819e507454d4313f6ccbdac16c5"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ab1be3819e507454d4313f6ccbdac16c5">GetMaxDrop</a> () const</td></tr>
-<tr class="memdesc:ab1be3819e507454d4313f6ccbdac16c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum distance between center and bottom of this line.  <br /></td></tr>
-<tr class="separator:ab1be3819e507454d4313f6ccbdac16c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b385281e2cb77ffa5dfd902802ac692"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a3b385281e2cb77ffa5dfd902802ac692">GetCenterList</a> () const</td></tr>
-<tr class="memdesc:a3b385281e2cb77ffa5dfd902802ac692"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum distance between top and center of this line.  <br /></td></tr>
-<tr class="separator:a3b385281e2cb77ffa5dfd902802ac692"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a351fb091b88d97bf44c95505b0198bfd"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a351fb091b88d97bf44c95505b0198bfd">GetHeightList</a> () const</td></tr>
 <tr class="memdesc:a351fb091b88d97bf44c95505b0198bfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the total height of this line.  <br /></td></tr>
 <tr class="separator:a351fb091b88d97bf44c95505b0198bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1998,34 +1998,6 @@ The y position used here must be in sync with the one calculated by <a class="el
  
 </div>
 </div>
-<a id="a3b385281e2cb77ffa5dfd902802ac692" name="a3b385281e2cb77ffa5dfd902802ac692"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b385281e2cb77ffa5dfd902802ac692">&#9670;&#160;</a></span>GetCenterList()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Cell::GetCenterList </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the maximum distance between top and center of this line. </p>
-<p>Note that the center doesn't need to be exactly in the middle of an object. For a fraction for example the center is exactly at the middle of the horizontal line. </p>
-
-</div>
-</div>
 <a id="ac8d6edb789bd629e144ea0a06daac13a" name="ac8d6edb789bd629e144ea0a06daac13a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac8d6edb789bd629e144ea0a06daac13a">&#9670;&#160;</a></span>GetCurrentX()</h2>
 
@@ -2199,7 +2171,7 @@ The y position used here must be in sync with the one calculated by <a class="el
 </div><div class="memdoc">
 
 <p>Returns the total height of this line. </p>
-<p>Returns <a class="el" href="classCell.html#a3b385281e2cb77ffa5dfd902802ac692" title="Returns the maximum distance between top and center of this line.">GetCenterList()</a>+<a class="el" href="classCell.html#ab1be3819e507454d4313f6ccbdac16c5" title="Returns the maximum distance between center and bottom of this line.">GetMaxDrop()</a> </p>
+<p>Returns GetCenterList()+GetMaxDrop() </p>
 
 </div>
 </div>
@@ -2402,34 +2374,6 @@ The y position used here must be in sync with the one calculated by <a class="el
 
 <p>How many pixels is the current line of this list of cells wide? </p>
 <p>This command returns the real line width when all line breaks are really performed. See <a class="el" href="classCell.html#a9c188747e83c42019f7d8c6e87e9829f" title="How many pixels is this list of cells wide, if we don&#39;t break it into lines?">SumOfWidths()</a>. </p>
-
-</div>
-</div>
-<a id="ab1be3819e507454d4313f6ccbdac16c5" name="ab1be3819e507454d4313f6ccbdac16c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1be3819e507454d4313f6ccbdac16c5">&#9670;&#160;</a></span>GetMaxDrop()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Cell::GetMaxDrop </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the maximum distance between center and bottom of this line. </p>
-<p>Note that the center doesn't need to be exactly in the middle of an object. For a fraction for example the center is exactly at the middle of the horizontal line. </p>
 
 </div>
 </div>
@@ -3862,7 +3806,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
