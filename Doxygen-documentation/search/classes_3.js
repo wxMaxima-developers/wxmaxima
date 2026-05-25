@@ -5,8 +5,9 @@ var searchData=
   ['decomposer_2',['Decomposer',['../structCatch_1_1Decomposer.html',1,'Catch']]],
   ['definition_3',['Definition',['../structCharButton_1_1Definition.html',1,'CharButton']]],
   ['diffcell_4',['DiffCell',['../classDiffCell.html',1,'']]],
-  ['digitcell_5',['DigitCell',['../classDigitCell.html',1,'']]],
-  ['dirstructure_6',['Dirstructure',['../classDirstructure.html',1,'']]],
-  ['drawsidebar_7',['DrawSidebar',['../classDrawSidebar.html',1,'']]],
-  ['drawwiz_8',['DrawWiz',['../classDrawWiz.html',1,'']]]
+  ['diffframe_5',['DiffFrame',['../classDiffFrame.html',1,'']]],
+  ['digitcell_6',['DigitCell',['../classDigitCell.html',1,'']]],
+  ['dirstructure_7',['Dirstructure',['../classDirstructure.html',1,'']]],
+  ['drawsidebar_8',['DrawSidebar',['../classDrawSidebar.html',1,'']]],
+  ['drawwiz_9',['DrawWiz',['../classDrawWiz.html',1,'']]]
 ];
