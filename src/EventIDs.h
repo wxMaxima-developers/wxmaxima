@@ -113,6 +113,7 @@ public:
   static const wxWindowIDRef menu_pane_dockAll;
   static const wxWindowIDRef input_line_id;
   static const wxWindowIDRef refresh_id;
+  static const wxWindowIDRef menu_compare_files;
   static const wxWindowIDRef menu_batch_id;
   static const wxWindowIDRef menu_load_id;
   static const wxWindowIDRef menu_sconsole_id;

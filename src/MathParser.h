@@ -85,6 +85,8 @@ public:
   std::unique_ptr<Cell> ParseTag(wxXmlNode *node, bool all = true, int depth = 0);
   std::unique_ptr<Cell> ParseRowTag(wxXmlNode *node, int depth = 0);
 
+  std::unique_ptr<GroupCell> CreateTreeFromXMLNode(wxXmlNode *xmlcells);
+
   //! Sets the group the newly parsed cells are provided with
   void SetGroup(GroupCell *group) { m_group = group; }
 

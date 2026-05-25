@@ -83,7 +83,7 @@ std::ostream& operator<<(std::ostream& out, const GroupType grouptype);
 
   232 bytes
 */
-class GroupCell final : public Cell
+class GroupCell : public Cell
 {
 public:
   /*! \image html GroupCellGeometry.svg

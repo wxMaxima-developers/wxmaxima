@@ -81,6 +81,7 @@
 #include "wizards/SumWiz.h"
 #include "wizards/SystemWiz.h"
 #include "dialogs/TipOfTheDay.h"
+#include "dialogs/DiffFrame.h"
 #include "wxMaximaOSDescription.h"
 #include "Version.h"
 #include "WXMformat.h"
@@ -649,6 +650,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Connect(wxID_OPEN, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
           NULL, this);
   Connect(EventIDs::menu_batch_id, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
+          NULL, this);
+  Connect(EventIDs::menu_compare_files, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
           NULL, this);
   Connect(EventIDs::menu_ratsimp, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
@@ -4792,34 +4795,7 @@ wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells,
   wxBusyCursor crs;
 
   MathParser mp(&m_configuration, wxmxfilename);
-  CellListBuilder<GroupCell> tree;
-
-  bool warning = true;
-
-  if (xmlcells)
-    xmlcells = xmlcells->GetChildren();
-
-  for (; xmlcells; xmlcells = xmlcells->GetNext()) {
-    if (xmlcells->GetType() != wxXML_TEXT_NODE) {
-      bool ok = tree.DynamicAppend(mp.ParseTag(xmlcells, false));
-      if (!ok && warning) {
-        LoggingMessageBox(
-                          _("Parts of the document will not be loaded correctly!"),
-                          _("Warning"), wxOK | wxICON_WARNING);
-        warning = false;
-      }
-    }
-  }
-  /* The warning from gcc is correct. But an old MacOs compiler errors out
-     on correct code, here. */
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wredundant-move"
-#endif
-  return std::move(tree);
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
+  return mp.CreateTreeFromXMLNode(xmlcells);
 }
 
 wxString wxMaxima::EscapeForLisp(wxString str) {
@@ -6285,6 +6261,22 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
     // Seems like resetting the title on "file/save as" is a little bit
     // sluggish, otherwise.
     ResetTitle(GetWorksheet()->IsSaved(), true);
+  }
+  else if (event.GetId() == EventIDs::menu_compare_files) {
+    wxFileDialog fileDialog(this, _("Select 2 or 3 files to compare"), m_lastPath,
+                            wxEmptyString,
+                            _("wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"),
+                            wxFD_OPEN | wxFD_MULTIPLE);
+    if (fileDialog.ShowModal() == wxID_OK) {
+      wxArrayString paths;
+      fileDialog.GetPaths(paths);
+      if (paths.size() == 2 || paths.size() == 3) {
+        DiffFrame *diffFrame = new DiffFrame(this, paths, &m_configuration);
+        diffFrame->Show();
+      } else {
+        wxLogError(_("Please select exactly 2 or 3 files."));
+      }
+    }
   }
   else if (event.GetId() == EventIDs::menu_jump_to_uuid) {
     wxString uuid = wxGetTextFromUser(_("Enter UUID to jump to:"), _("Jump to UUID"));

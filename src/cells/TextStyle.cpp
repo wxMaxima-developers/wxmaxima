@@ -28,6 +28,7 @@
  */
 
 #include "TextStyle.h"
+#include <wx/app.h>
 #include <array>
 #include <list>
 #include <memory>
@@ -52,14 +53,20 @@ constexpr uint32_t Style::Default_ColorRGB;
 
 Style::Style()
 {
-  SetFontName(wxNORMAL_FONT->GetFaceName());
+  if (wxTheApp)
+    SetFontName(wxNORMAL_FONT->GetFaceName());
+  else
+    SetFontName(wxS("Sans"));
   wxASSERT(m.fontCache != NULL);
 }
 
 Style::Style(AFontSize fontSize)
 {
   SetFontSize(fontSize);
-  SetFontName(wxNORMAL_FONT->GetFaceName());
+  if (wxTheApp)
+    SetFontName(wxNORMAL_FONT->GetFaceName());
+  else
+    SetFontName(wxS("Sans"));
   wxASSERT(m.fontCache != NULL);
 }
 

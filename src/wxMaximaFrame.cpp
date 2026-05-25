@@ -612,6 +612,8 @@ void wxMaximaFrame::SetupFileMenu() {
   m_FileMenu->Append(EventIDs::menu_batch_id, _("&Batch File...\tCtrl+B"),
                      _("Load a Maxima file using the batch command"),
                      wxITEM_NORMAL);
+  m_FileMenu->Append(EventIDs::menu_compare_files, _("Compare files..."),
+                     _("Show the differences between 2 or 3 files"));
   m_FileMenu->Append(EventIDs::menu_export_html, _("&Export..."),
                      _("Export document to a HTML or LaTeX file"),
                      wxITEM_NORMAL);

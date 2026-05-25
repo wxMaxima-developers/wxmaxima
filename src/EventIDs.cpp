@@ -49,6 +49,7 @@ const wxWindowIDRef EventIDs::menu_pane_console(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_pane_dockAll(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::input_line_id(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::refresh_id(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_compare_files(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_batch_id(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_load_id(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_sconsole_id(wxWindow::NewControlId());

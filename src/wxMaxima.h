@@ -34,6 +34,7 @@
 #include <vector>
 #include "wxMaximaFrame.h"
 #include "WXMXformat.h"
+#include "Configuration.h"
 #include "MathParser.h"
 #include "MaximaIPC.h"
 #include "Dirstructure.h"
@@ -892,6 +893,7 @@ public:
   wxString m_configFileName;
   Dirstructure m_dirstruct;
   static bool m_allWindowsInOneProcess;
+  std::unique_ptr<Configuration> m_configuration;
 };
 
 class MyDropTarget : public wxFileDropTarget

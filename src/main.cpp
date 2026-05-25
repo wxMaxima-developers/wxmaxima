@@ -28,6 +28,7 @@
 #include "main.h"
 #include "Maxima.h"
 #include "Dirstructure.h"
+#include "dialogs/DiffFrame.h"
 #include "wxMathml.h"
 #include <iostream>
 #include <wx/cmdline.h>
@@ -123,6 +124,8 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
    wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
   {wxCMD_LINE_OPTION, "o", "open", "Open a file.", wxCMD_LINE_VAL_STRING, 0},
   {wxCMD_LINE_SWITCH, "e", "eval", "Evaluate the file after opening it.",
+   wxCMD_LINE_VAL_NONE, 0},
+  {wxCMD_LINE_SWITCH, "d", "diff", "Compare 2 or 3 files side-by-side.",
    wxCMD_LINE_VAL_NONE, 0},
   {wxCMD_LINE_SWITCH, "", "single_process",
    "Open all worksheets from within the same process.", wxCMD_LINE_VAL_NONE, 0},
@@ -497,10 +500,27 @@ bool MyApp::OnInit() {
     LoggingMessageDialog::SetNonInteractive();
   }
 
+  m_configuration = std::make_unique<Configuration>();
+
   if (cmdLineParser.Found(wxS("e")))
     evalOnStartup = true;
 
   bool windowOpened = false;
+
+  if (cmdLineParser.Found(wxS("d"))) {
+    wxArrayString diffFiles;
+    for (unsigned int i = 0; i < cmdLineParser.GetParamCount(); i++) {
+      diffFiles.push_back(cmdLineParser.GetParam(i));
+    }
+    if (diffFiles.size() >= 2 && diffFiles.size() <= 3) {
+      DiffFrame *diffFrame = new DiffFrame(nullptr, diffFiles, this->m_configuration.get());
+      diffFrame->Show();
+      windowOpened = true;
+    } else {
+      wxLogError(_("The --diff option requires 2 or 3 input files."));
+      return false;
+    }
+  }
 
   if (cmdLineParser.Found(wxS("o"), &file)) {
     wxString realFile = file;
@@ -518,7 +538,7 @@ bool MyApp::OnInit() {
     windowOpened = true;
   }
 
-  if (cmdLineParser.GetParamCount() > 0) {
+  if (cmdLineParser.GetParamCount() > 0 && !cmdLineParser.Found(wxS("d"))) {
     for (unsigned int i = 0; i < cmdLineParser.GetParamCount(); i++) {
       wxString fileParam = cmdLineParser.GetParam(i);
       wxString realFile = fileParam;

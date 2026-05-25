@@ -1237,6 +1237,19 @@ std::unique_ptr<Cell> MathParser::ParseTableTag(wxXmlNode *node, int depth) {
   return matrix;
 }
 
+std::unique_ptr<GroupCell> MathParser::CreateTreeFromXMLNode(wxXmlNode *xmlcells) {
+  CellListBuilder<GroupCell> tree;
+  if (xmlcells)
+    xmlcells = xmlcells->GetChildren();
+
+  for (; xmlcells; xmlcells = xmlcells->GetNext()) {
+    if (xmlcells->GetType() != wxXML_TEXT_NODE) {
+      tree.DynamicAppend(ParseTag(xmlcells, false));
+    }
+  }
+  return tree.TakeHead();
+}
+
 std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all, int depth) {
   CellListBuilder<> tree;
   bool gotInvalid = false;
