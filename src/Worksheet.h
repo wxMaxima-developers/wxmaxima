@@ -702,6 +702,8 @@ public:
   //! The storage for the autocompletion feature
   AutoComplete m_autocomplete;
 
+  Configuration *GetConfig() const { return m_configuration; }
+
   //! Get the currently active EditorCell
   EditorCell *GetActiveCell() const { return m_cellPointers.m_activeCell; }
 

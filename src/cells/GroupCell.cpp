@@ -576,7 +576,7 @@ void GroupCell::UpdateYPositionList() const {
 void GroupCell::UpdateYPosition() const {
   const Cell *const previous = GetPrevious();
 
-  wxPoint point(m_configuration->GetIndent(), GetCenter());
+  wxPoint point(m_configuration->GetIndent(), previous ? GetCenter() : GetCenterList());
   if (!previous) {
     point.y += m_configuration->GetBaseIndent();
     if (m_inputLabel)
@@ -594,7 +594,7 @@ void GroupCell::UpdateYPosition() const {
 
   if (m_output && !IsHidden()) {
     wxPoint in = GetCurrentPoint();
-    if (m_configuration->ShowCodeCells() || (m_groupType != GC_TYPE_CODE))
+    if (m_inputLabel && (m_configuration->ShowCodeCells() || (m_groupType != GC_TYPE_CODE)))
       in.y += m_inputLabel->GetMaxDrop();
 
     m_outputRect.SetPosition(in);
@@ -739,6 +739,14 @@ void GroupCell::CellUnderPointer(GroupCell *cell) {
   m_cellPointers->m_groupCellUnderPointer = cell;
 }
 
+int GroupCell::GetMaxDrop() const {
+  return GetHeight() - GetCenter();
+}
+
+int GroupCell::GetCenterList() const {
+  return GetCenter();
+}
+
 void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
   // If the current cell doesn't know where it is on the screen we don't
   // attempt to draw it's bracket.
@@ -782,6 +790,13 @@ void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
         (m_cellPointers->m_answerCell->GetGroup() == this)) {
       dc->SetPen(*wxYELLOW_PEN);
       dc->SetBrush(*wxYELLOW_BRUSH);
+      drawBracket = true;
+    } else if (GetHighlight()) {
+      dc->SetPen(*(wxThePenList->FindOrCreatePen(
+                                                 m_configuration->GetColor(TS_HIGHLIGHT),
+                                                 m_configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
+                                                       m_configuration->GetColor(TS_HIGHLIGHT))));
       drawBracket = true;
     } else {
       dc->SetBrush(m_configuration->GetBackgroundBrush());

@@ -518,20 +518,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
     // Draw the cell contents
     //
     if (GetTree()) {
-      wxPoint point;
-      point.x = m_configuration->GetIndent();
-      point.y = m_configuration->GetBaseIndent() + GetTree()->GetCenterList();
       dc.SetPen(*(wxThePenList->FindOrCreatePen(
                                                 m_configuration->GetColor(TS_MATH), 1, wxPENSTYLE_SOLID)));
       dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
                                                       m_configuration->GetColor(TS_MATH))));
-      bool atStart = true;
       for (auto &cell : OnList(GetTree())) {
-        if (!atStart) {
-          cell.UpdateYPosition();
-          point = cell.GetCurrentPoint();
-        }
-        atStart = false;
+        cell.UpdateYPosition();
 
         wxRect cellRect = cell.GetRect();
 

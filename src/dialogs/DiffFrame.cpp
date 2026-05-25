@@ -209,6 +209,7 @@ void DiffFrame::AlignCells() {
 
   for (auto ws : m_worksheets) ws->DestroyTree();
 
+  std::vector<GroupCell*> lastCells(numFiles, nullptr);
   for (auto const &row : finalAlignment) {
       std::vector<wxCoord> heights;
       for (size_t i = 0; i < numFiles; ++i) {
@@ -224,15 +225,25 @@ void DiffFrame::AlignCells() {
               auto copy = std::unique_ptr<GroupCell>(dynamic_cast<GroupCell*>(cellLists[i][row[i]]->Copy(nullptr).release()));
               bool modified = false;
               for (size_t j = 0; j < numFiles; ++j) {
-                  if (i != j && row[j] != -1) {
-                      if (cellLists[i][row[i]]->GetEditable()->GetValue() != cellLists[j][row[j]]->GetEditable()->GetValue())
+                  if (i != j) {
+                      if (row[j] == -1) {
                           modified = true;
+                      } else {
+                          auto ed1 = cellLists[i][row[i]]->GetEditable();
+                          auto ed2 = cellLists[j][row[j]]->GetEditable();
+                          if (ed1 && ed2) {
+                              if (ed1->GetValue() != ed2->GetValue())
+                                  modified = true;
+                          } else if (ed1 != ed2) {
+                              modified = true;
+                          }
+                      }
                   }
               }
-              if (modified) copy->SetStyle(TS_HIGHLIGHT);
-              m_worksheets[i]->InsertGroupCells(std::move(copy), m_worksheets[i]->GetLastCell());
+              if (modified) copy->SetHighlight(true);
+              lastCells[i] = m_worksheets[i]->InsertGroupCells(std::move(copy), lastCells[i]);
           } else {
-              m_worksheets[i]->InsertGroupCells(std::make_unique<SpacerGroupCell>(m_configuration, maxHeight), m_worksheets[i]->GetLastCell());
+              lastCells[i] = m_worksheets[i]->InsertGroupCells(std::make_unique<SpacerGroupCell>(m_configuration, maxHeight), lastCells[i]);
           }
       }
   }
