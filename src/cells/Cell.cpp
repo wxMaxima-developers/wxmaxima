@@ -166,7 +166,12 @@ wxString Cell::wxColor2HtmlString(wxColor col)
 }
 
 void Cell::CopyCommonData(const Cell &cell) {
-  wxASSERT(m_toolTip && !m_ownsToolTip);
+  if (m_ownsToolTip) {
+    wxDELETE(m_toolTip);
+    m_ownsToolTip = false;
+  }
+  m_toolTip = &wxm::emptyString;
+
   wxASSERT(cell.m_toolTip);
   if (cell.m_ownsToolTip) {
     m_ownsToolTip = true;
