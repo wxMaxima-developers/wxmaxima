@@ -7811,6 +7811,25 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
   if (type != AutoComplete::esccommand) {
     editor->SelectWordUnderCaret(false, false, true);
     partial = editor->GetSelectionString();
+
+    // If the word we are autocompleting is a placeholder for a file name
+    // we want to autocomplete file names, instead.
+    if ((type == AutoComplete::command) &&
+        ((partial == wxS("file_name")) || (partial == wxS("filename")) ||
+         (partial == wxS("file")) || (partial == wxS("S")) ||
+         (partial == wxS("imagename")) || (partial == wxS("path")) ||
+         (partial == wxS("compiled_filename")) ||
+         (partial == wxS("lisp_filename")))) {
+      size_t left = editor->SelectionLeft();
+      size_t right = editor->SelectionRight();
+      wxString text = editor->GetValue();
+      if ((left > 0) && (right < text.Length()) && (text[left - 1] == wxS('<')) &&
+          (text[right] == wxS('>'))) {
+        editor->SetSelection(left - 1, right + 1);
+        partial = wxS("\"");
+        type = AutoComplete::generalfile;
+      }
+    }
   }
 
   if (type == AutoComplete::command) {
@@ -7849,8 +7868,30 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
       wxString currentCommand = editor->GetCurrentCommand();
       if ((currentCommand == wxS("load")) ||
           (currentCommand == wxS("batchload")) ||
-          (currentCommand == wxS("batch"))) {
-        type = AutoComplete::loadfile;
+          (currentCommand == wxS("batch")) ||
+          (currentCommand == wxS("opena")) ||
+          (currentCommand == wxS("opena_binary")) ||
+          (currentCommand == wxS("openr")) ||
+          (currentCommand == wxS("openr_binary")) ||
+          (currentCommand == wxS("openw")) ||
+          (currentCommand == wxS("openw_binary")) ||
+          (currentCommand == wxS("show_image")) ||
+          (currentCommand == wxS("read_array")) ||
+          (currentCommand == wxS("read_list")) ||
+          (currentCommand == wxS("read_matrix")) ||
+          (currentCommand == wxS("read_binary_array")) ||
+          (currentCommand == wxS("read_binary_list")) ||
+          (currentCommand == wxS("read_binary_matrix")) ||
+          (currentCommand == wxS("read_hashed_array")) ||
+          (currentCommand == wxS("read_nested_list")) ||
+          (currentCommand == wxS("write_data")) ||
+          (currentCommand == wxS("write_binary_data"))) {
+        type = AutoComplete::generalfile;
+        if ((currentCommand == wxS("load")) ||
+            (currentCommand == wxS("batchload")) ||
+            (currentCommand == wxS("batch")))
+          type = AutoComplete::loadfile;
+
         if (partial.empty())
           partial = wxString("\"");
       }
