@@ -427,13 +427,18 @@ void GroupCell::InputHeightChanged() {
   const EditorCell *editorCell = GetEditable();
   if (editorCell == NULL)
     return;
+
+  int oldHeight = m_height;
+  int oldCenter = m_center;
+  ResetSize();
   RecalculateInput();
   if (m_output != NULL) {
     m_height += m_outputRect.GetHeight();
     m_outputRect.y = m_currentPoint.y + m_center;
     m_width = std::max(m_width.GetOrElse(0), m_output->GetLineWidth());
   }
-  UpdateYPositionList();
+  if (m_height != oldHeight || m_center != oldCenter)
+    UpdateYPositionList();
 }
 
 // Called on resize events
