@@ -381,15 +381,9 @@ Markdown Unterstützung</h3>
 <div class="line"> </div>
 <div class="line">`.wxm` files contain the worksheet except for _Maxima_’s output. On Maxima</div>
 <div class="line">versions &gt;5.38 they can be read using _Maxima_’s `load()` function just as</div>
-<div class="line">.mac files. Well - mostly. Questions (like `asksign(x)`) are problematic, as</div>
-<div class="line">the answer is written in the `.wxm` file (so that it can be suggested after</div>
-<div class="line">loading), but that can Maxima not evaluate.  You can prevent Maxima from</div>
-<div class="line">asking questions by using `assume()` to declare some properties, Maxima</div>
-<div class="line">wants to know.</div>
-<div class="line"> </div>
-<div class="line">With this plain-text format, it sometimes is unavoidable that worksheets</div>
-<div class="line">that use new features are not downwards-compatible with older versions of</div>
-<div class="line">_wxMaxima_.</div>
+<div class="line">.mac files can be. With this plain-text format, it sometimes is unavoidable</div>
+<div class="line">that worksheets that use new features are not downwards-compatible with</div>
+<div class="line">older versions of _wxMaxima_.</div>
 <div class="line"> </div>
 <div class="line">#### Dateiformat von wxm-Dateien</div>
 <div class="line"> </div>
@@ -777,16 +771,7 @@ Einbetten von Bildern</h2>
 <p><img src="./MatrixTableExample.png" alt="Ein drittes Tabellen-Beispiel" class="inline"/></p>
 <p>Da Matrizen effektiv Listen von Listen sind, können auch sie in Tabellen verwandelt werden.</p>
 <p><img src="./SecondTableExample.png" alt="Ein anderes table_form Beispiel" class="inline"/></p>
-<p>The function <code>wx_matrix()</code> is a wrapper for <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s <code>matrix()</code> command that allows for more flexible formatting of matrices in <a class="el" href="classwxMaxima.html">wxMaxima</a>:</p>
-<p>**<code>wx_matrix( &lt;matrix&gt;, [options] )</code>**</p><ul>
-<li>**<code>lines=true</code>**: Draws internal separator lines between the cells. This is required to visually separate headings from data.</li>
-<li>**<code>rownames=true</code>**: Tells <a class="el" href="classwxMaxima.html">wxMaxima</a> that the first column of the matrix contains labels.</li>
-<li>**<code>colnames=true</code>**: Tells <a class="el" href="classwxMaxima.html">wxMaxima</a> that the first row of the matrix contains labels.</li>
-<li>**<code>parenstyle=&lt;style&gt;</code>**: Sets the type of parenthesis or brackets to draw around the matrix. Supported styles are: <code>round</code> <code>()</code>, <code>square</code> <code>[]</code>, <code>angled</code> <code>&lt;&gt;</code>, <code>straight</code> <code>||</code>, or <code>none</code>.</li>
-</ul>
-<p>Example: </p><div class="fragment"><div class="line">wx_matrix(matrix([&quot;Name&quot;, &quot;Value&quot;], [&quot;X&quot;, 10], [&quot;Y&quot;, 20]), </div>
-<div class="line">          lines=true, rownames=true, colnames=true, parenstyle=square);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md109"></a>
+<h2><a class="anchor" id="autotoc_md109"></a>
 Fehler melden</h2>
 <p><em>WxMaxima</em> bietet einige Funktionen für das Melden von Fehlern an:</p>
 <ul>
@@ -917,21 +902,6 @@ Rückgängig-machen erinnert sich nicht an das, was ich brauche</h2>
 <div class="line"> </div>
 <div class="line">`GDK_BACKEND=x11 wxmaxima`</div>
 <div class="line"> </div>
-<div class="line">## The menu bar disappears on KDE Plasma</div>
-<div class="line"> </div>
-<div class="line">On some KDE Plasma installations the global menu bar disappears when</div>
-<div class="line">clicked.  As this is a bug in the global menu proxy, the only way to avoid</div>
-<div class="line">it is to tell that wxMaxima should use its own menu bar instead of the</div>
-<div class="line">global one.  This is done by setting: `UBUNTU_MENUPROXY=0`</div>
-<div class="line"> </div>
-<div class="line">Starting with version 26.05.0, wxMaxima attempts to set this variable</div>
-<div class="line">automatically if it detects an affected system (KDE, Unity, or Ubuntu with</div>
-<div class="line">older wxWidgets versions).</div>
-<div class="line"> </div>
-<div class="line">If the automatic fix fails, you can manually start wxMaxima with:</div>
-<div class="line"> </div>
-<div class="line">`UBUNTU_MENUPROXY=0 wxmaxima`</div>
-<div class="line"> </div>
 <div class="line">## Why is the integrated manual browser not offered on my Windows PC?</div>
 <div class="line"> </div>
 <div class="line">Either wxWidgets wasn’t compiled with support for Microsoft’s webview2 or</div>
@@ -1028,11 +998,8 @@ Wie kann ein Maxima-Skript feststellen, ob es unter wxMaxima oder</h2>
 <p>Kommandozeilen-Maxima läuft?</p>
 <p>Wenn <a class="el" href="classwxMaxima.html">wxMaxima</a> verwendet wird, hat die Maxima-Variable <code>maxima_frontend</code> den Wert wxmaxima<code>. Die Maxima-Variable</code>maxima_frontend_version` enthält dann die wxMaxima-Version.</p>
 <p>Wenn kein Frontend verwendet wird (Kommandozeilen-Maxima wird verwendet), dann haben diese Variablen den Wert <code>false</code>).</p>
-<h2><a class="anchor" id="autotoc_md129"></a>
-Help! I can not save my document!</h2>
-<p>If saving as wxmx file does not work, try saving the document as wxm file (and vice versa). And you can also try to remove all output (Menu Cell-&gt;Remove all output) and save that file, maybe some unexpected output causes issues during the save process.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md130"></a>
+<h1><a class="anchor" id="autotoc_md129"></a>
 Kommandozeilen-Optionen</h1>
 <p>Üblicherweise werden Programme mit einer graphischen Oberfläche einfach mit einem Mausklick auf ein Desktop-Icon oder einen Desktop-Menüeintrag gestartet. WxMaxima - falls es von der Kommandozeile aus gestartet wird - bietet doch einige Kommandozeilen-Optionen.</p>
 <ul>
@@ -1054,7 +1021,7 @@ Kommandozeilen-Optionen</h1>
 </ul>
 <p>Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen Schrägstrich statt eines Minuszeichens.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md131"></a>
+<h1><a class="anchor" id="autotoc_md130"></a>
 Über das Programm, zu wxMaxima beitragen</h1>
 <p>WxMaxima wird hauptsächlich in der Programmiersprache C++ entwickelt, verwendet das <a href="https://www.wxwidgets.org">wxWidgets framework</a>, als Build-System verwenden wir CMake, ein kleiner Teil ist in Lisp geschrieben. Sie können zu <a class="el" href="classwxMaxima.html">wxMaxima</a> beitragen, werden Sie Teil des wxMaxima-Projekts auf <a href="https://github.com/wxMaxima-developers/wxmaxima">https://github.com/wxMaxima-developers/wxmaxima</a>, wenn Sie Kenntnisse dieser Programmiersprachen haben und zum Open-Source-Projekt <a class="el" href="classwxMaxima.html">wxMaxima</a> etwas beitragen können.</p>
 <p>Aber nicht nur Programmierer sind notwendig! Sie können auch zu <a class="el" href="classwxMaxima.html">wxMaxima</a> beitragen, indem Sie die Dokumentation verbessern, Fehler finden und melden (und vielleicht auch Fehlerlösungen) oder <a class="el" href="classwxMaxima.html">wxMaxima</a> oder die Anleitung übersetzen helfen (Siehe die Readme-Datei im <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">locale subdirectory</a>, wie das übersetzen funktioniert.</p>
