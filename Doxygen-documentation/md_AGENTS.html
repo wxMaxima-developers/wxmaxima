@@ -197,6 +197,7 @@ Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)</h1>
 Performance &amp; Documentation Mandates</h1>
 <ul>
 <li><b>NEWS.md Updates:</b> Every non-trivial change or feature addition MUST be accompanied by a concise bullet point in <code>NEWS.md</code> under the "# Current development version" section.</li>
+<li><b>Documentation Mandate:</b> Clear, self-describing code is preferred. For complex logic, architectural decisions, or mathematical algorithms (like the LCS alignment in the Diff viewer), you MUST include Doxygen-style comments. Every new class or public method should have a brief description of its purpose and parameters.</li>
 <li><b>Background Tasks:</b> When adding a new background task or thread, you MUST:<ol type="1">
 <li>Use <code>jthread</code> for automatic joining and safe teardown.</li>
 <li>Protect shared data with <code>std::mutex</code>.</li>

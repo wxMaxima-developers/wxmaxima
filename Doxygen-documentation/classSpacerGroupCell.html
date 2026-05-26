@@ -80,6 +80,9 @@ $(function() {
   <div class="headertitle"><div class="title">SpacerGroupCell Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="classA.html">A</a> specialized <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> that provides empty vertical space for alignment.  
+ <a href="classSpacerGroupCell.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for SpacerGroupCell:</div>
 <div class="dyncontent">
@@ -105,7 +108,7 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SpacerGroupCell</b> (<a class="el" href="classConfiguration.html">Configuration</a> *config, wxCoord height)</td></tr>
 <tr class="separator:ac7d03dd3f4178a8e08b3e918ad78d4c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a089a02b06dd824723bc6c5efc4be2621"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpacerGroupCell.html#a089a02b06dd824723bc6c5efc4be2621">Recalculate</a> (<a class="el" href="classAFontSize.html">AFontSize</a> fontsize) const override</td></tr>
-<tr class="memdesc:a089a02b06dd824723bc6c5efc4be2621"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate the size of the cell and the difference between top and center.  <br /></td></tr>
+<tr class="memdesc:a089a02b06dd824723bc6c5efc4be2621"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forces the cell to a specific height determined by its matching counterpart in another worksheet.  <br /></td></tr>
 <tr class="separator:a089a02b06dd824723bc6c5efc4be2621"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa57032c38bb8114b656260dbd7f34410"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpacerGroupCell.html#aa57032c38bb8114b656260dbd7f34410">Copy</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *parent) const override</td></tr>
 <tr class="memdesc:aa57032c38bb8114b656260dbd7f34410"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this cell.  <br /></td></tr>
@@ -1093,7 +1096,10 @@ Static Protected Attributes</h2></td></tr>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lookalikeChars</b></td></tr>
 <tr class="separator:a331a9ed14f577041355781e238b62031"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="classA.html">A</a> specialized <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> that provides empty vertical space for alignment. </p>
+<p>When two or three files are compared and one file lacks a cell that exists in the others, this cell is inserted as a placeholder to keep the corresponding cells in the other worksheets aligned horizontally. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac592a77ab3fed321981f25d68cc16234" name="ac592a77ab3fed321981f25d68cc16234"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac592a77ab3fed321981f25d68cc16234">&#9670;&#160;</a></span>AddEnding()</h2>
 
@@ -2140,7 +2146,7 @@ The y position used here must be in sync with the one calculated by <a class="el
 </div><div class="memdoc">
 
 <p>Get the height of this cell. </p>
-<p>This value is recalculated by <a class="el" href="classSpacerGroupCell.html#a089a02b06dd824723bc6c5efc4be2621" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a></p>
+<p>This value is recalculated by <a class="el" href="classSpacerGroupCell.html#a089a02b06dd824723bc6c5efc4be2621" title="Forces the cell to a specific height determined by its matching counterpart in another worksheet.">Recalculate()</a></p>
 <div class="image">
 <object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
@@ -2585,7 +2591,7 @@ The y position used here must be in sync with the one calculated by <a class="el
 </div><div class="memdoc">
 
 <p>Get the width of this cell. </p>
-<p>This value is recalculated by <a class="el" href="classSpacerGroupCell.html#a089a02b06dd824723bc6c5efc4be2621" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a></p>
+<p>This value is recalculated by <a class="el" href="classSpacerGroupCell.html#a089a02b06dd824723bc6c5efc4be2621" title="Forces the cell to a specific height determined by its matching counterpart in another worksheet.">Recalculate()</a></p>
 <div class="image">
 <object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
@@ -3122,14 +3128,7 @@ The y position used here must be in sync with the one calculated by <a class="el
 </table>
 </div><div class="memdoc">
 
-<p>Recalculate the size of the cell and the difference between top and center. </p>
-<p>Must set: m_height, m_width, m_center.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">fontsize</td><td>In exponents, super- and subscripts the font size is reduced. This cell therefore needs to know which font size it has to be drawn at. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Forces the cell to a specific height determined by its matching counterpart in another worksheet. </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html#aedd0bcab37da23ed8be1cddbd5fb7473">Cell</a>.</p>
 
