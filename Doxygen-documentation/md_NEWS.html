@@ -88,10 +88,11 @@ $(function() {
 <li>Documented background task and threading architecture in Doxygen.</li>
 <li>Fix the cursor position after autocompletion (#2090).</li>
 <li>Fix XML for saving as wxmx, when <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> warnings are displayed (#2092).</li>
-<li>Fix XML output for definite integrals. It was saved (in wxmx format) without the limits. (The input was correct, so re-evaluating solved the problem, but loading a file didn't show the limits).</li>
+<li>Fix XML output for definite integrals. It was saved without the limits.</li>
+<li>Resolved a Crash on encountering some integrals (#2095)</li>
 <li>Each Group of input and output now has an: Implemented synchronized scrolling in the Diff viewer. When comparing files, scrolling one worksheet now automatically aligns its matching cells with the other worksheets using a Meld-like "push" model. Added support for horizontal scroll synchronization with a toggle button and a custom icon. Added an incremental search bar that can find text in the input or jump directly to a cell by its UUID. Fixed bugs in backward search wrap-around and height underestimation for large outputs UUID that can be used to find it again.</li>
 <li>Opening &lt;file.wxmx&gt;#UUID opens the file and scrolls to the Group with that UUID</li>
-<li>Many stability improvements, most of these AI-driven</li>
+<li>Many stability improvements, most of these AI-driven (#2072, #2061)</li>
 <li>The size of subscripts is now calculated correctly</li>
 <li>The table of contents can now show section numbers</li>
 <li>Massive improvement of the search within the worksheet</li>
