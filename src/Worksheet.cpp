@@ -7392,24 +7392,25 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
       return true;
     }
 
+    GroupCell *nextPos;
     if (down) {
-      pos = pos->GetNext();
-      if (!pos) {
-        if (wrappedSearch) break;
+      nextPos = pos->GetNext();
+      if (!nextPos && !wrappedSearch) {
         wrappedSearch = true;
-        pos = GetTree();
+        nextPos = GetTree();
       }
     } else {
-      pos = pos->GetPrevious();
-      if (!pos) {
-        if (wrappedSearch) break;
+      nextPos = pos->GetPrevious();
+      if (!nextPos && !wrappedSearch) {
         wrappedSearch = true;
-        pos = GetLastCellInWorksheet();
+        nextPos = GetLastCellInWorksheet();
       }
     }
 
-    if (pos == startGroup && wrappedSearch)
+    if (!nextPos || (nextPos == startGroup && wrappedSearch))
       done = true;
+    
+    pos = nextPos;
     startInInitial = false;
   }
   return false;
@@ -7619,24 +7620,25 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
       return true;
     }
 
+    GroupCell *nextPos;
     if (down) {
-      pos = pos->GetNext();
-      if (!pos) {
-        if (wrappedSearch) break;
+      nextPos = pos->GetNext();
+      if (!nextPos && !wrappedSearch) {
         wrappedSearch = true;
-        pos = GetTree();
+        nextPos = GetTree();
       }
     } else {
-      pos = pos->GetPrevious();
-      if (!pos) {
-        if (wrappedSearch) break;
+      nextPos = pos->GetPrevious();
+      if (!nextPos && !wrappedSearch) {
         wrappedSearch = true;
-        pos = GetLastCellInWorksheet();
+        nextPos = GetLastCellInWorksheet();
       }
     }
 
-    if (pos == startGroup && wrappedSearch)
+    if (!nextPos || (nextPos == startGroup && wrappedSearch))
       done = true;
+    
+    pos = nextPos;
     startInInitial = false;
   }
   return false;

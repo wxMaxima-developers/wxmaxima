@@ -483,7 +483,17 @@ void GroupCell::RecalculateInput() const {
         m_inputLabel->Recalculate(EditorFontSize());
         m_inputWidth = m_width = m_inputLabel->SumOfWidths();
         m_center = m_inputLabel->GetCenterList();
-        m_inputHeight = m_height = m_inputLabel->GetHeightList();
+        
+        m_inputHeight = 0;
+        for (const Cell &tmp : OnDrawList(m_inputLabel.get())) {
+            if (tmp.BreakLineHere() || &tmp == m_inputLabel.get()) {
+                m_inputHeight += tmp.GetHeightList();
+                if (&tmp != m_inputLabel.get())
+                    m_inputHeight += m_configuration->GetInterEquationSkip();
+                if (tmp.HasBigSkip())
+                    m_inputHeight += MC_LINE_SKIP;
+            }
+        }
       }
       m_height = m_inputHeight;
     } else {
@@ -554,8 +564,7 @@ void GroupCell::RecalculateOutput() const {
       m_outputRect.width = std::max(m_outputRect.width, static_cast<wxCoord>(m_width));
       m_outputRect.height += height_Delta;
 
-      if (tmp.GetPrevious() &&
-          ((tmp.GetTextStyle() == TS_LABEL) || (tmp.GetTextStyle() == TS_USERLABEL)))
+      if (tmp.GetPrevious())
         m_outputRect.height += m_configuration->GetInterEquationSkip();
 
       if (tmp.HasBigSkip())
@@ -689,8 +698,11 @@ void GroupCell::Draw(wxPoint const point, wxDC *dc, wxDC *antialiassingDC) {
           int drop = 0;
           for (Cell &tmp : OnDrawList(m_output.get())) {
             if (isFirst || tmp.BreakLineHere()) {
-              if (!isFirst && tmp.HasBigSkip())
-                in.y += MC_LINE_SKIP;
+              if (!isFirst) {
+                in.y += m_configuration->GetInterEquationSkip();
+                if (tmp.HasBigSkip())
+                  in.y += MC_LINE_SKIP;
+              }
 
               in.x = point.x + tmp.GetLineIndent();
               in.y += drop + tmp.GetCenterList();

@@ -83,6 +83,16 @@ DiffFrame::DiffFrame(wxWindow *parent, const wxArrayString &files, Configuration
   m_searchCtrl->Bind(wxEVT_TEXT_ENTER, &DiffFrame::OnSearch, this);
   m_searchCtrl->Bind(wxEVT_SEARCHCTRL_CANCEL_BTN, &DiffFrame::OnSearchCancel, this);
 
+  toolBar->AddSeparator();
+  m_searchDownRadio = new wxRadioButton(toolBar, wxID_ANY, _("Down"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+  m_searchUpRadio = new wxRadioButton(toolBar, wxID_ANY, _("Up"));
+  m_searchDownRadio->SetValue(true);
+  toolBar->AddControl(m_searchDownRadio);
+  toolBar->AddControl(m_searchUpRadio);
+
+  m_searchDownRadio->Bind(wxEVT_RADIOBUTTON, &DiffFrame::OnSearch, this);
+  m_searchUpRadio->Bind(wxEVT_RADIOBUTTON, &DiffFrame::OnSearch, this);
+
   toolBar->Realize();
 
   wxBoxSizer *mainSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -130,7 +140,12 @@ void DiffFrame::OnToggleHorizontalSync(wxCommandEvent &event) {
 
 void DiffFrame::OnSearch(wxCommandEvent &WXUNUSED(event)) {
   wxString query = m_searchCtrl->GetValue();
-  if (query.IsEmpty()) return;
+  if (query.IsEmpty()) {
+      for (auto ws : m_worksheets) ws->ClearSelection();
+      return;
+  }
+
+  m_searchDown = m_searchDownRadio->GetValue();
 
   // UUIDs in wxMaxima look like {UUID-STRING}
   bool isUUID = query.StartsWith(wxS("{")) && query.EndsWith(wxS("}"));
@@ -142,14 +157,23 @@ void DiffFrame::OnSearch(wxCommandEvent &WXUNUSED(event)) {
                   // Found the UUID. Scroll the worksheet that contains it.
                   // Sync logic will handle the other worksheets.
                   m_worksheets[j]->ScheduleScrollToCell(m_diffEntries[i].cells[j]);
+                  m_worksheets[j]->Refresh();
+                  m_worksheets[j]->Update();
                   return;
               }
           }
       }
   } else {
-      // Incremental search in output cells only
+      // Incremental search in input cells only
       for (auto ws : m_worksheets) {
-          ws->FindIncremental(query, true, true, false, true);
+          if (ws->FindIncremental(query, m_searchDown, true, true, false)) {
+              // Found a match. The worksheet should have requested a redraw/scroll.
+              // We force it here to provide immediate feedback.
+              ws->ScrollToCaret();
+              ws->Refresh();
+              ws->Update();
+              break; 
+          }
       }
   }
 }

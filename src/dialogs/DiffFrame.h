@@ -42,8 +42,11 @@ private:
   std::vector<Worksheet *> m_worksheets;
   Configuration *m_configuration;
   wxSearchCtrl *m_searchCtrl = nullptr;
+  wxRadioButton *m_searchDownRadio = nullptr;
+  wxRadioButton *m_searchUpRadio = nullptr;
   bool m_syncing = false;
   bool m_syncHorizontal = true;
+  bool m_searchDown = true;
 
   void LoadFiles(const wxArrayString &files);
   void AlignCells();
