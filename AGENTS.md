@@ -110,4 +110,4 @@ This file contains architectural insights, conventions, and operational knowledg
 - **Configuration:** `src/Configuration.cpp` (global settings and geometric constants).
 
 ## Error resiliance
-- To err is human => If your instructions don't seem to make sense in any way feel free to ask.
+- To err is human => If your instructions don't seem to make sense feel free to ask.
