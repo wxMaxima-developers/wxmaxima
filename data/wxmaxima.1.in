@@ -4,7 +4,7 @@ wxmaxima \- wxWidgets interface for Maxima
 
 .SH "SYNOPSIS"
 .PP
-\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [--logtostderr] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>] [--enableipc] [input file...]
+\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [-d] [--logtostderr] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>] [--enableipc] [input file...]
 
 .SH "DESCRIPTION"
 .PP
@@ -49,6 +49,10 @@ Open a file at startup.
 .TP
 .I \-e, \-\-eval=<str>
 Evaluate the file after opening it.
+
+.TP
+.I \-d, \-\-diff
+Compare 2 or 3 files side-by-side using the Diff viewer.
 
 .TP
 .I \-\-logtostderr

@@ -125,7 +125,7 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
   {wxCMD_LINE_OPTION, "o", "open", "Open a file.", wxCMD_LINE_VAL_STRING, 0},
   {wxCMD_LINE_SWITCH, "e", "eval", "Evaluate the file after opening it.",
    wxCMD_LINE_VAL_NONE, 0},
-  {wxCMD_LINE_SWITCH, "d", "diff", "Compare 2 or 3 files side-by-side.",
+  {wxCMD_LINE_SWITCH, "d", "diff", "Compare 2 or 3 files side-by-side using the Diff viewer.",
    wxCMD_LINE_VAL_NONE, 0},
   {wxCMD_LINE_SWITCH, "", "single_process",
    "Open all worksheets from within the same process.", wxCMD_LINE_VAL_NONE, 0},

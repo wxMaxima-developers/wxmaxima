@@ -1,5 +1,6 @@
 # Current development version
 
+- Diff Viewer: Implemented synchronized scrolling in the Diff viewer. When comparing files, scrolling one worksheet now automatically aligns its matching cells with the other worksheets using a Meld-like "push" model.
 - Fix startup keyboard focus: The worksheet now correctly gains focus on application start.
 - New `wx_matrix()` command for advanced matrix formatting (lines, headers, custom brackets).
 - Persistent matrix formatting: Style flags are now saved within the matrix object.

@@ -34,7 +34,6 @@ public:
 
 private:
   void OnScroll(wxScrollWinEvent &event);
-  void SyncScroll();
 
   std::vector<Worksheet *> m_worksheets;
   Configuration *m_configuration;
@@ -44,9 +43,10 @@ private:
   void AlignCells();
 
   struct DiffEntry {
-    wxString uuid;
     GroupCell *cells[3]; // 0, 1, 2
   };
+  std::vector<DiffEntry> m_diffEntries;
+  std::vector<int> m_lastScrollY;
 };
 
 #endif // DIFFFRAME_H

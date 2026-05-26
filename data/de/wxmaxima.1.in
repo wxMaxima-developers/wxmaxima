@@ -4,7 +4,7 @@ wxmaxima \- wxWidgets Interface f\(:ur Maxima
 
 .SH "SYNTAX" 
 .PP 
-\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [--logtostderr] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>]  [--enableipc] [input file...]
+\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [-d] [--logtostderr] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>]  [--enableipc] [input file...]
 
 .SH "BESCHREIBUNG" 
 .PP 
@@ -48,6 +48,10 @@ W\(:urde anhalten, wenn Maxima eine Fehlermeldung produziert oder eine Frage ste
 .TP
 .I \-e, \-\-eval=<str>
 \(:Offnet eine Datei und verarbeitet sie nach dem Programmstart.
+
+.TP
+.I \-d, \-\-diff
+Vergleicht 2 oder 3 Dateien nebeneinander mit dem Diff-Viewer.
 
 .TP
 .I \-\-logtostderr

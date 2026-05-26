@@ -86,6 +86,7 @@ This file contains architectural insights, conventions, and operational knowledg
 
 ## Performance & Documentation Mandates
 - **NEWS.md Updates:** Every non-trivial change or feature addition MUST be accompanied by a concise bullet point in `NEWS.md` under the "# Current development version" section.
+- **Documentation Mandate:** Clear, self-describing code is preferred. For complex logic, architectural decisions, or mathematical algorithms (like the LCS alignment in the Diff viewer), you MUST include Doxygen-style comments. Every new class or public method should have a brief description of its purpose and parameters.
 - **Background Tasks:** When adding a new background task or thread, you MUST:
   1. Use `jthread` for automatic joining and safe teardown.
   2. Protect shared data with `std::mutex`.
