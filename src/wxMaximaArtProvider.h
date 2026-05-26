@@ -49,6 +49,7 @@
 #define wxmaximaART_INPUT                   wxART_MAKE_ART_ID(wxmaximaART_INPUT)
 #define wxmaximaART_MEDIA_PLAYBACK_STOP     wxART_MAKE_ART_ID(wxmaximaART_MEDIA_PLAYBACK_STOP)
 #define wxmaximaART_SOFTWARE_UPDATE_URGENT  wxART_MAKE_ART_ID(wxmaximaART_SOFTWARE_UPDATE_URGENT)
+#define wxmaximaART_SYNC_HORIZONTAL         wxART_MAKE_ART_ID(wxmaximaART_SYNC_HORIZONTAL)
 #define wxmaximaART_TEXT                    wxART_MAKE_ART_ID(wxmaximaART_TEXT)
 #define wxmaximaART_VIEW_REFRESH1           wxART_MAKE_ART_ID(wxmaximaART_VIEW_REFRESH1)
 

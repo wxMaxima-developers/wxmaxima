@@ -14,6 +14,7 @@ set(IMAGE_FILES
         input
         media-playback-stop
         software-update-urgent
+        sync-horizontal
         text
         view-refresh1
 )

@@ -23,6 +23,7 @@
 
 #include "Worksheet.h"
 #include <wx/wx.h>
+#include <wx/srchctrl.h>
 #include <vector>
 #include <memory>
 
@@ -34,10 +35,15 @@ public:
 
 private:
   void OnScroll(wxScrollWinEvent &event);
+  void OnToggleHorizontalSync(wxCommandEvent &event);
+  void OnSearch(wxCommandEvent &event);
+  void OnSearchCancel(wxCommandEvent &event);
 
   std::vector<Worksheet *> m_worksheets;
   Configuration *m_configuration;
+  wxSearchCtrl *m_searchCtrl = nullptr;
   bool m_syncing = false;
+  bool m_syncHorizontal = true;
 
   void LoadFiles(const wxArrayString &files);
   void AlignCells();

@@ -21,6 +21,7 @@
 #include "DiffFrame.h"
 #include "WXMformat.h"
 #include "MathParser.h"
+#include "wxMaximaArtProvider.h"
 #include <wx/file.h>
 #include <wx/wfstream.h>
 #include <wx/zipstrm.h>
@@ -64,6 +65,26 @@ private:
 DiffFrame::DiffFrame(wxWindow *parent, const wxArrayString &files, Configuration *config)
     : wxFrame(parent, wxID_ANY, _("wxMaxima Diff Viewer"), wxDefaultPosition, wxSize(1000, 800)),
       m_configuration(config) {
+  wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
+
+  // Add a simple toolbar for synchronization controls
+  wxToolBar *toolBar = CreateToolBar();
+  wxBitmapBundle syncBmp = wxArtProvider::GetBitmapBundle(wxmaximaART_SYNC_HORIZONTAL, wxART_TOOLBAR);
+  toolBar->AddCheckTool(wxID_ANY, _("Sync Horizontal"), syncBmp, wxNullBitmap, _("Toggle horizontal scroll synchronization"));
+  toolBar->ToggleTool(toolBar->GetToolByPos(0)->GetId(), m_syncHorizontal);
+  toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnToggleHorizontalSync, this);
+  
+  toolBar->AddSeparator();
+  m_searchCtrl = new wxSearchCtrl(toolBar, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(200, -1), wxTE_PROCESS_ENTER);
+  m_searchCtrl->SetDescriptiveText(_("Search input / UUID"));
+  m_searchCtrl->ShowCancelButton(true);
+  toolBar->AddControl(m_searchCtrl);
+  m_searchCtrl->Bind(wxEVT_TEXT, &DiffFrame::OnSearch, this);
+  m_searchCtrl->Bind(wxEVT_TEXT_ENTER, &DiffFrame::OnSearch, this);
+  m_searchCtrl->Bind(wxEVT_SEARCHCTRL_CANCEL_BTN, &DiffFrame::OnSearchCancel, this);
+
+  toolBar->Realize();
+
   wxBoxSizer *mainSizer = new wxBoxSizer(wxHORIZONTAL);
 
   m_lastScrollY.assign(files.size(), 0);
@@ -84,9 +105,14 @@ DiffFrame::DiffFrame(wxWindow *parent, const wxArrayString &files, Configuration
     ws->Bind(wxEVT_SCROLLWIN_PAGEDOWN, &DiffFrame::OnScroll, this);
     ws->Bind(wxEVT_SCROLLWIN_TOP, &DiffFrame::OnScroll, this);
     ws->Bind(wxEVT_SCROLLWIN_BOTTOM, &DiffFrame::OnScroll, this);
+
+    // Bind horizontal scroll events
+    ws->Bind(wxEVT_SCROLLWIN_THUMBTRACK, &DiffFrame::OnScroll, this);
+    ws->Bind(wxEVT_SCROLLWIN_THUMBRELEASE, &DiffFrame::OnScroll, this);
   }
 
-  SetSizer(mainSizer);
+  topSizer->Add(mainSizer, 1, wxEXPAND);
+  SetSizer(topSizer);
   
   // Align cells between files and populate the worksheets
   AlignCells();
@@ -97,6 +123,43 @@ DiffFrame::DiffFrame(wxWindow *parent, const wxArrayString &files, Configuration
 }
 
 DiffFrame::~DiffFrame() {}
+
+void DiffFrame::OnToggleHorizontalSync(wxCommandEvent &event) {
+  m_syncHorizontal = event.IsChecked();
+}
+
+void DiffFrame::OnSearch(wxCommandEvent &WXUNUSED(event)) {
+  wxString query = m_searchCtrl->GetValue();
+  if (query.IsEmpty()) return;
+
+  // UUIDs in wxMaxima look like {UUID-STRING}
+  bool isUUID = query.StartsWith(wxS("{")) && query.EndsWith(wxS("}"));
+  
+  if (isUUID) {
+      for (size_t i = 0; i < m_diffEntries.size(); ++i) {
+          for (size_t j = 0; j < m_worksheets.size(); ++j) {
+              if (m_diffEntries[i].cells[j] && m_diffEntries[i].cells[j]->GetUUID() == query) {
+                  // Found the UUID. Scroll the worksheet that contains it.
+                  // Sync logic will handle the other worksheets.
+                  m_worksheets[j]->ScheduleScrollToCell(m_diffEntries[i].cells[j]);
+                  return;
+              }
+          }
+      }
+  } else {
+      // Incremental search in output cells only
+      for (auto ws : m_worksheets) {
+          ws->FindIncremental(query, true, true, false, true);
+      }
+  }
+}
+
+void DiffFrame::OnSearchCancel(wxCommandEvent &WXUNUSED(event)) {
+  m_searchCtrl->SetValue(wxEmptyString);
+  for (auto ws : m_worksheets) {
+      ws->ClearSelection();
+  }
+}
 
 void DiffFrame::OnScroll(wxScrollWinEvent &event) {
   // Prevent recursive calls when we manually scroll other worksheets
@@ -112,8 +175,25 @@ void DiffFrame::OnScroll(wxScrollWinEvent &event) {
   }
   if (src_idx == -1) { event.Skip(); return; }
 
-  // We only synchronize vertical scrolling
+  // We only synchronize vertical scrolling by default
   int orientation = event.GetOrientation();
+  if (orientation == wxHORIZONTAL) {
+      if (!m_syncHorizontal) { event.Skip(); return; }
+      
+      m_syncing = true;
+      int x_new = event.GetPosition();
+      for (auto ws : m_worksheets) {
+          if (ws != ws_src) {
+              int _, uy_other;
+              ws->GetScrollPixelsPerUnit(&_, &uy_other);
+              ws->Scroll(x_new, -1);
+          }
+      }
+      m_syncing = false;
+      event.Skip();
+      return;
+  }
+
   if (orientation != wxVERTICAL) { event.Skip(); return; }
 
   // Get scroll units (pixels per scroll step)

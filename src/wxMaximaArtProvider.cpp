@@ -54,6 +54,7 @@
 #include "art/toolbar/input.h"
 #include "art/toolbar/media-playback-stop.h"
 #include "art/toolbar/software-update-urgent.h"
+#include "art/toolbar/sync-horizontal.h"
 #include "art/toolbar/text.h"
 #include "art/toolbar/view-refresh1.h"
 
@@ -114,6 +115,8 @@ wxBitmapBundle wxMaximaArtProvider::CreateBitmapBundle(const wxArtID& id,
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(MEDIA_PLAYBACK_STOP_SVG_GZ, MEDIA_PLAYBACK_STOP_SVG_GZ_SIZE).mb_str(), artsize);
   } else if (id == wxmaximaART_SOFTWARE_UPDATE_URGENT) {
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(SOFTWARE_UPDATE_URGENT_SVG_GZ, SOFTWARE_UPDATE_URGENT_SVG_GZ_SIZE).mb_str(), artsize);
+  } else if (id == wxmaximaART_SYNC_HORIZONTAL) {
+    return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(SYNC_HORIZONTAL_SVG_GZ, SYNC_HORIZONTAL_SVG_GZ_SIZE).mb_str(), artsize);
   } else if (id == wxmaximaART_TEXT) {
     return wxBitmapBundle::FromSVG(wxMaximaArtProvider::gunzip(TEXT_SVG_GZ, TEXT_SVG_GZ_SIZE).mb_str(), artsize);
   } else if (id == wxmaximaART_VIEW_REFRESH1) {
