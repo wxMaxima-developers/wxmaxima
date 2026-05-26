@@ -1126,9 +1126,6 @@ void Cell::ResetSize() const {
 }
 
 void Cell::InvalidateListCache() const {
-  if (m_cachedMaxDrop.IsInvalid() && m_cachedCenterList.IsInvalid() &&
-      m_cachedSumOfWidths.IsInvalid())
-    return;
   m_cachedMaxDrop.Invalidate();
   m_cachedCenterList.Invalidate();
   m_cachedSumOfWidths.Invalidate();

@@ -1,6 +1,6 @@
 # Current development version
 
-- Diff Viewer: Implemented synchronized scrolling in the Diff viewer. When comparing files, scrolling one worksheet now automatically aligns its matching cells with the other worksheets using a Meld-like "push" model. Added support for horizontal scroll synchronization with a toggle button and a custom icon. Added an incremental search bar that can find text in the input or jump directly to a cell by its UUID. Fixed bugs in backward search wrap-around and height underestimation for large outputs.
+- A Diff Viewer that compares two wxmx files from the same origin that were saved with this wxMaxima version or newer.
 - Fix startup keyboard focus: The worksheet now correctly gains focus on application start.
 - New `wx_matrix()` command for advanced matrix formatting (lines, headers, custom brackets).
 - Persistent matrix formatting: Style flags are now saved within the matrix object.
@@ -10,15 +10,15 @@
 - Script rendering: Fixed issues where complex subscripts/superscripts would flatten into standard subscripts.
 - High-DPI: Optimized SVG rendering and resolved redundant resource requests.
 - Editor performance: Optimized drawing by rendering only visible text tokens.
-- Stability: Resolved numerous compiler warnings and build errors across Linux, Windows, and macOS.
-- Non-interactive mode: Automated tests now correctly skip blocking modal dialogues.
+- Non-interactive mode: Automated tests now skip most blocking modal dialogues.
+- The log now contains errors maxima encountered.
 - Documented background task and threading architecture in Doxygen.
 - Fix the cursor position after autocompletion (#2090).
 - Fix XML for saving as wxmx, when Maxima warnings are displayed (#2092).
 - Fix XML output for definite integrals. It was saved (in wxmx format)
   without the limits. (The input was correct, so re-evaluating solved
   the problem, but loading a file didn't show the limits).
-- Each Group of input and output now has an UUID that can be used to
+- Each Group of input and output now has an: Implemented synchronized scrolling in the Diff viewer. When comparing files, scrolling one worksheet now automatically aligns its matching cells with the other worksheets using a Meld-like "push" model. Added support for horizontal scroll synchronization with a toggle button and a custom icon. Added an incremental search bar that can find text in the input or jump directly to a cell by its UUID. Fixed bugs in backward search wrap-around and height underestimation for large outputs UUID that can be used to
   find it again.
 - Opening <file.wxmx>#UUID opens the file and scrolls to the Group with 
   that UUID
@@ -35,15 +35,13 @@
   scroll to the found item.
 - Fixed a bug where text from long output cells couldn't be selected 
   if the beginning of the cell was scrolled out of view (#2069)
-- New Find/Replace filters: One can now choose to search only in the code 
-  (input) or only in the results (output).
 - MS Windows: The "maxima is running" indicator should now work correctly
 - HI-DPI improvements
 - A few Autocompletion fixes
 - Better SVGZ support
 - Some fixes for selection of output
 - Improved MathML and RTF output
-- Big find-and-replace functionality fixes
+- Big find-and-replace functionality additions
 
 # 26.05.0
 
