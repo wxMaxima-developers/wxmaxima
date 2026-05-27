@@ -79,7 +79,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>This file defines the class <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a>.  
+<p>Core layout and rendering logic for worksheet cells.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="Cell_8h_source.html">Cell.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="CellList_8h_source.html">CellList.h</a>&quot;</code><br />
@@ -109,8 +109,19 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 <tr class="separator:a8c95ef4e61f61447dbae73a1c524c053"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This file defines the class <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a>. </p>
-<p><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> is the base class for all cell- or list-type elements. </p>
+<div class="textblock"><p>Core layout and rendering logic for worksheet cells. </p>
+<h2><a class="anchor" id="autotoc_md824"></a>
+The 3-Pass Layout Pipeline</h2>
+<p>To ensure consistent cell positioning and resolve issues with complex mathematical layouts (fractions, exponents, etc.) and line-breaking, <a class="el" href="classwxMaxima.html">wxMaxima</a> uses a strict three-pass system:</p>
+<h3><a class="anchor" id="autotoc_md825"></a>
+Pass 1: Measure (Recalculate)</h3>
+<p>In this pass, each cell determines its intrinsic size (width, height, and baseline center). This pass is recursive and handles the "BreakUp" (linearization) of wide 2<a class="el" href="classD.html">D</a> objects into their 1<a class="el" href="classD.html">D</a> forms. </p><dl class="section see"><dt>See also</dt><dd>Recalculate()</dd></dl>
+<h3><a class="anchor" id="autotoc_md826"></a>
+Pass 2: Arrange (SetCurrentPoint)</h3>
+<p>Once sizes are known, this pass recursively calculates and assigns absolute worksheet coordinates (<code>m_currentPoint</code>) to every cell in the hierarchy. This is the single source of truth for positioning. </p><dl class="section see"><dt>See also</dt><dd>SetCurrentPoint()</dd></dl>
+<h3><a class="anchor" id="autotoc_md827"></a>
+Pass 3: Paint (Draw)</h3>
+<p>This is a fast, rendering-only pass. It simply draws the cell content using the coordinates pre-calculated in Pass 2. It performs no layout logic itself. </p><dl class="section see"><dt>See also</dt><dd>Draw() </dd></dl>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

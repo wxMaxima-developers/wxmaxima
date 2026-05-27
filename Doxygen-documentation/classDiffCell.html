@@ -112,9 +112,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aec119b040f4f7f9ef405a512c61db772"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDiffCell.html#aec119b040f4f7f9ef405a512c61db772">Recalculate</a> (const <a class="el" href="classAFontSize.html">AFontSize</a> fontsize) const override</td></tr>
 <tr class="memdesc:aec119b040f4f7f9ef405a512c61db772"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate the size of the cell and the difference between top and center.  <br /></td></tr>
 <tr class="separator:aec119b040f4f7f9ef405a512c61db772"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1765bd752fa1e23c64dea3c9ea2e09d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDiffCell.html#ad1765bd752fa1e23c64dea3c9ea2e09d">Draw</a> (wxPoint point, wxDC *dc, wxDC *antialiassingDC) override</td></tr>
-<tr class="memdesc:ad1765bd752fa1e23c64dea3c9ea2e09d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw this cell.  <br /></td></tr>
-<tr class="separator:ad1765bd752fa1e23c64dea3c9ea2e09d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba82337f518186cb627ab58089ab2706"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDiffCell.html#aba82337f518186cb627ab58089ab2706">SetCurrentPoint</a> (wxPoint point) override</td></tr>
+<tr class="memdesc:aba82337f518186cb627ab58089ab2706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
+<tr class="separator:aba82337f518186cb627ab58089ab2706"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e4e38941a2289b551fa9384d8f79d26"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDiffCell.html#a8e4e38941a2289b551fa9384d8f79d26">Draw</a> (wxDC *dc, wxDC *antialiassingDC) override</td></tr>
+<tr class="memdesc:a8e4e38941a2289b551fa9384d8f79d26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 3 (Paint): Renders the cell using pre-calculated coordinates.  <br /></td></tr>
+<tr class="separator:a8e4e38941a2289b551fa9384d8f79d26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7838781ffbbb1d5b47aadfb5ab3fbee"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDiffCell.html#ab7838781ffbbb1d5b47aadfb5ab3fbee">ToMathML</a> () const override</td></tr>
 <tr class="memdesc:ab7838781ffbbb1d5b47aadfb5ab3fbee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to a representation fit for saving in a .wxmx file.  <br /></td></tr>
 <tr class="separator:ab7838781ffbbb1d5b47aadfb5ab3fbee"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,6 +142,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aea472fc499870769c87004d7e3c82919"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDiffCell.html#aea472fc499870769c87004d7e3c82919">BreakUp</a> () const override</td></tr>
 <tr class="memdesc:aea472fc499870769c87004d7e3c82919"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to split this command into lines to make it fit on the screen.  <br /></td></tr>
 <tr class="separator:aea472fc499870769c87004d7e3c82919"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae0a47c1802d5161976694882cd2f4a9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDiffCell.html#aae0a47c1802d5161976694882cd2f4a9">SetCurrentPoint</a> (wxPoint point)</td></tr>
+<tr class="memdesc:aae0a47c1802d5161976694882cd2f4a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
+<tr class="separator:aae0a47c1802d5161976694882cd2f4a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b5a9609ca52761c2f1141d5a324b176"><td class="memItemLeft" align="right" valign="top"><a id="a8b5a9609ca52761c2f1141d5a324b176" name="a8b5a9609ca52761c2f1141d5a324b176"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentPoint</b> (int x, int y)</td></tr>
+<tr class="memdesc:a8b5a9609ca52761c2f1141d5a324b176"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position for the cell and convenience overload. <br /></td></tr>
+<tr class="separator:a8b5a9609ca52761c2f1141d5a324b176"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47609f0f35aa58b174a6d137f7e082b6"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a47609f0f35aa58b174a6d137f7e082b6">Scale_Px</a> (double px) const</td></tr>
 <tr class="memdesc:a47609f0f35aa58b174a6d137f7e082b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale font sizes and line widths according to the zoom factor.  <br /></td></tr>
 <tr class="separator:a47609f0f35aa58b174a6d137f7e082b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -208,21 +218,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetConfigurationList<
 <a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetConfiguration</b> ()</td></tr>
 <tr class="memdesc:a2ca342c7a46c7aead70c118a2f94d407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which configuration object is responsible for this cell? <br /></td></tr>
 <tr class="separator:a2ca342c7a46c7aead70c118a2f94d407"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f03f4c55b0ea22614b97cd7b7d467e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a4f03f4c55b0ea22614b97cd7b7d467e3">DrawList</a> (wxPoint point, wxDC *dc, wxDC *adc)</td></tr>
-<tr class="memdesc:a4f03f4c55b0ea22614b97cd7b7d467e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw this list of cells.  <br /></td></tr>
-<tr class="separator:a4f03f4c55b0ea22614b97cd7b7d467e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c35dea62297500d1f9a339220fb57f9"><td class="memItemLeft" align="right" valign="top"><a id="a8c35dea62297500d1f9a339220fb57f9" name="a8c35dea62297500d1f9a339220fb57f9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawList</b> (wxDC *dc, wxDC *adc)</td></tr>
+<tr class="memitem:a8c35dea62297500d1f9a339220fb57f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a8c35dea62297500d1f9a339220fb57f9">DrawList</a> (wxDC *dc, wxDC *adc)</td></tr>
+<tr class="memdesc:a8c35dea62297500d1f9a339220fb57f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper to draw a list of cells.  <br /></td></tr>
 <tr class="separator:a8c35dea62297500d1f9a339220fb57f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a095e15665c668ae04ff902c010361ce9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a095e15665c668ae04ff902c010361ce9">DrawBoundingBox</a> (wxDC &amp;WXUNUSED(dc), bool all=false)</td></tr>
 <tr class="memdesc:a095e15665c668ae04ff902c010361ce9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a rectangle that marks this cell or this list of cells as selected.  <br /></td></tr>
 <tr class="separator:a095e15665c668ae04ff902c010361ce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba053036ee0d29402130a116989a9756"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aba053036ee0d29402130a116989a9756">DrawThisCell</a> (wxPoint point)</td></tr>
-<tr class="memdesc:aba053036ee0d29402130a116989a9756"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this cell currently visible in the window?  <br /></td></tr>
-<tr class="separator:aba053036ee0d29402130a116989a9756"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a843593aae2abe1a871907b895f697123"><td class="memItemLeft" align="right" valign="top"><a id="a843593aae2abe1a871907b895f697123" name="a843593aae2abe1a871907b895f697123"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>DrawThisCell</b> ()</td></tr>
-<tr class="memdesc:a843593aae2abe1a871907b895f697123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this cell currently visible in the window? <br /></td></tr>
+<tr class="memitem:a843593aae2abe1a871907b895f697123"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a843593aae2abe1a871907b895f697123">DrawThisCell</a> ()</td></tr>
+<tr class="memdesc:a843593aae2abe1a871907b895f697123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this cell currently visible in the window?  <br /></td></tr>
 <tr class="separator:a843593aae2abe1a871907b895f697123"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ec3f174a6e515f986a29951198bbbcd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2ec3f174a6e515f986a29951198bbbcd">ForceBreakLine</a> (bool force=true) const</td></tr>
 <tr class="memdesc:a2ec3f174a6e515f986a29951198bbbcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert (or remove) a forced linebreak at the beginning of this cell.  <br /></td></tr>
@@ -586,18 +589,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetToolTip</b> (const
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddToolTip</b> (const wxString &amp;tip)</td></tr>
 <tr class="memdesc:a66b16ea2bad4c2e129cc3ba448911927"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add another tooltip to this cell. <br /></td></tr>
 <tr class="separator:a66b16ea2bad4c2e129cc3ba448911927"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c89302ef6e0cbbbf5a9382945d89de2"><td class="memItemLeft" align="right" valign="top"><a id="a3c89302ef6e0cbbbf5a9382945d89de2" name="a3c89302ef6e0cbbbf5a9382945d89de2"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentPoint</b> (wxPoint point)</td></tr>
-<tr class="memdesc:a3c89302ef6e0cbbbf5a9382945d89de2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this cell where it is placed on the worksheet. <br /></td></tr>
-<tr class="separator:a3c89302ef6e0cbbbf5a9382945d89de2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b5a9609ca52761c2f1141d5a324b176"><td class="memItemLeft" align="right" valign="top"><a id="a8b5a9609ca52761c2f1141d5a324b176" name="a8b5a9609ca52761c2f1141d5a324b176"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentPoint</b> (int x, int y)</td></tr>
-<tr class="memdesc:a8b5a9609ca52761c2f1141d5a324b176"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this cell where it is placed on the worksheet. <br /></td></tr>
-<tr class="separator:a8b5a9609ca52761c2f1141d5a324b176"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abad02e43ae23b7de040b79d013d41485"><td class="memItemLeft" align="right" valign="top"><a id="abad02e43ae23b7de040b79d013d41485" name="abad02e43ae23b7de040b79d013d41485"></a>
-wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentPoint</b> () const</td></tr>
-<tr class="memdesc:abad02e43ae23b7de040b79d013d41485"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where is this cell placed on the worksheet? <br /></td></tr>
-<tr class="separator:abad02e43ae23b7de040b79d013d41485"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d729564b9738d49cf62ed37720534f3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a0d729564b9738d49cf62ed37720534f3">IsBrokenIntoLines</a> () const</td></tr>
 <tr class="memdesc:a0d729564b9738d49cf62ed37720534f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this cell is broken into two or more lines.  <br /></td></tr>
 <tr class="separator:a0d729564b9738d49cf62ed37720534f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -632,6 +623,24 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasControlBlock</b> (
 <tr class="memitem:a51973edd395e7418e299006b534bee70"><td class="memItemLeft" align="right" valign="top"><a id="a51973edd395e7418e299006b534bee70" name="a51973edd395e7418e299006b534bee70"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasOneCellPtr</b> () const</td></tr>
 <tr class="separator:a51973edd395e7418e299006b534bee70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Layout Engine (3-Pass Pipeline)</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>The layout engine follows a strict 3-pass process to ensure a single source of truth for cell geometry and positioning:</p>
+<ol type="1">
+<li><b>Measure (Recalculate)</b>: Determines intrinsic size (width, height, center).</li>
+<li><b>Arrange (SetCurrentPoint)</b>: Recursively calculates and assigns absolute worksheet coordinates.</li>
+<li><b>Paint (Draw)</b>: Renders the cell using the pre-calculated coordinates. </li>
+</ol>
+</div></td></tr>
+<tr class="memitem:a470b801d5b3d415339b3e4781e28a67c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a470b801d5b3d415339b3e4781e28a67c">SetCurrentPointList</a> (wxPoint point)</td></tr>
+<tr class="memdesc:a470b801d5b3d415339b3e4781e28a67c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper to position a horizontal list of cells.  <br /></td></tr>
+<tr class="separator:a470b801d5b3d415339b3e4781e28a67c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac34f1f3f955219cfe98361ae8abedab6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ac34f1f3f955219cfe98361ae8abedab6">SetCurrentPointDrawList</a> (wxPoint point)</td></tr>
+<tr class="memdesc:ac34f1f3f955219cfe98361ae8abedab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper to position a list of cells using the draw-list logic.  <br /></td></tr>
+<tr class="separator:ac34f1f3f955219cfe98361ae8abedab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abad02e43ae23b7de040b79d013d41485"><td class="memItemLeft" align="right" valign="top"><a id="abad02e43ae23b7de040b79d013d41485" name="abad02e43ae23b7de040b79d013d41485"></a>
+wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentPoint</b> () const</td></tr>
+<tr class="memdesc:abad02e43ae23b7de040b79d013d41485"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pre-calculated worksheet position of the cell. <br /></td></tr>
+<tr class="separator:abad02e43ae23b7de040b79d013d41485"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -1293,8 +1302,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 </div>
 </div>
-<a id="ad1765bd752fa1e23c64dea3c9ea2e09d" name="ad1765bd752fa1e23c64dea3c9ea2e09d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1765bd752fa1e23c64dea3c9ea2e09d">&#9670;&#160;</a></span>Draw()</h2>
+<a id="a8e4e38941a2289b551fa9384d8f79d26" name="a8e4e38941a2289b551fa9384d8f79d26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e4e38941a2289b551fa9384d8f79d26">&#9670;&#160;</a></span>Draw()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1305,12 +1314,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
         <tr>
           <td class="memname">void DiffCell::Draw </td>
           <td>(</td>
-          <td class="paramtype">wxPoint&#160;</td>
-          <td class="paramname"><em>point</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">wxDC *&#160;</td>
           <td class="paramname"><em>dc</em>, </td>
         </tr>
@@ -1318,7 +1321,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">wxDC *&#160;</td>
-          <td class="paramname"><em>antialiassingDC</em>&#160;</td>
+          <td class="paramname"><em>adc</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1333,18 +1336,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 </table>
 </div><div class="memdoc">
 
-<p>Draw this cell. </p>
+<p>Pass 3 (Paint): Renders the cell using pre-calculated coordinates. </p>
 <p>Draw this cell to dc.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">point</td><td>The x and y position this cell is drawn at: All top-level cells get their position during recalculation. But for the cells within them the position needs a second step after determining the dimension of the contents of the top-level cell.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Example: The position of the denominator of a fraction can only be determined after the height of denominator and numerator are known.</p>
-<p>To make this work each derived class must draw the content of the cell and then call MathCell::Draw(...). </p>
+<p>Uses <a class="el" href="classCell.html#abad02e43ae23b7de040b79d013d41485" title="Returns the pre-calculated worksheet position of the cell.">GetCurrentPoint()</a> as the origin.</p>
+<p>To make this work each derived class must draw the content of the cell and then call MathCell::Draw(...).</p>
+<p>Pass 3 (Paint): Renders the cell to the device context.</p>
+<p>This method uses the pre-calculated worksheet coordinates (Pass 2). It is a fast, rendering-only pass. </p>
 
-<p>Reimplemented from <a class="el" href="classCell.html#a8298061e3f2b8c6e8f9e5d65ae7b0526">Cell</a>.</p>
+<p>Reimplemented from <a class="el" href="classCell.html#ab68d11529549439a5e2e1e2aca1a9d30">Cell</a>.</p>
 
 </div>
 </div>
@@ -1397,8 +1396,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 </div>
 </div>
-<a id="a4f03f4c55b0ea22614b97cd7b7d467e3" name="a4f03f4c55b0ea22614b97cd7b7d467e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f03f4c55b0ea22614b97cd7b7d467e3">&#9670;&#160;</a></span>DrawList()</h2>
+<a id="a8c35dea62297500d1f9a339220fb57f9" name="a8c35dea62297500d1f9a339220fb57f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c35dea62297500d1f9a339220fb57f9">&#9670;&#160;</a></span>DrawList()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1409,12 +1408,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
         <tr>
           <td class="memname">void Cell::DrawList </td>
           <td>(</td>
-          <td class="paramtype">wxPoint&#160;</td>
-          <td class="paramname"><em>point</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">wxDC *&#160;</td>
           <td class="paramname"><em>dc</em>, </td>
         </tr>
@@ -1437,18 +1430,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 </table>
 </div><div class="memdoc">
 
-<p>Draw this list of cells. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">point</td><td>The x and y position this cell is drawn at </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Helper to draw a list of cells. </p>
+<p>Iterates through the draw list and calls <a class="el" href="classDiffCell.html#a8e4e38941a2289b551fa9384d8f79d26" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> on each cell. </p>
 
 </div>
 </div>
-<a id="aba053036ee0d29402130a116989a9756" name="aba053036ee0d29402130a116989a9756"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba053036ee0d29402130a116989a9756">&#9670;&#160;</a></span>DrawThisCell()</h2>
+<a id="a843593aae2abe1a871907b895f697123" name="a843593aae2abe1a871907b895f697123"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a843593aae2abe1a871907b895f697123">&#9670;&#160;</a></span>DrawThisCell()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1459,8 +1447,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
         <tr>
           <td class="memname">bool Cell::DrawThisCell </td>
           <td>(</td>
-          <td class="paramtype">wxPoint&#160;</td>
-          <td class="paramname"><em>point</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1472,12 +1459,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 </div><div class="memdoc">
 
 <p>Is this cell currently visible in the window? </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">point</td><td>The point to place this cell at </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Uses <a class="el" href="classCell.html#abad02e43ae23b7de040b79d013d41485" title="Returns the pre-calculated worksheet position of the cell.">GetCurrentPoint()</a> to check visibility. </p>
 
 </div>
 </div>
@@ -2938,6 +2920,140 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 </div>
 </div>
+<a id="aae0a47c1802d5161976694882cd2f4a9" name="aae0a47c1802d5161976694882cd2f4a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae0a47c1802d5161976694882cd2f4a9">&#9670;&#160;</a></span>SetCurrentPoint() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Cell::SetCurrentPoint </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pass 2: Arrangement. </p>
+<p>Sets the absolute position of the cell.</p>
+<p>Overridden by composite cells to recursively position their children. After this call, <a class="el" href="classCell.html#abad02e43ae23b7de040b79d013d41485" title="Returns the pre-calculated worksheet position of the cell.">GetCurrentPoint()</a> returns the definitive location.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">point</td><td>The absolute worksheet coordinates for the cell's baseline/origin. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="classCell.html#aae0a47c1802d5161976694882cd2f4a9">Cell</a>.</p>
+
+</div>
+</div>
+<a id="aba82337f518186cb627ab58089ab2706" name="aba82337f518186cb627ab58089ab2706"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba82337f518186cb627ab58089ab2706">&#9670;&#160;</a></span>SetCurrentPoint() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DiffCell::SetCurrentPoint </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pass 2: Arrangement. </p>
+<p>Sets the absolute position of the cell.</p>
+<p>Overridden by composite cells to recursively position their children. After this call, <a class="el" href="classCell.html#abad02e43ae23b7de040b79d013d41485" title="Returns the pre-calculated worksheet position of the cell.">GetCurrentPoint()</a> returns the definitive location.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">point</td><td>The absolute worksheet coordinates for the cell's baseline/origin. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="classCell.html#aae0a47c1802d5161976694882cd2f4a9">Cell</a>.</p>
+
+</div>
+</div>
+<a id="ac34f1f3f955219cfe98361ae8abedab6" name="ac34f1f3f955219cfe98361ae8abedab6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac34f1f3f955219cfe98361ae8abedab6">&#9670;&#160;</a></span>SetCurrentPointDrawList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Cell::SetCurrentPointDrawList </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper to position a list of cells using the draw-list logic. </p>
+<p>This respects linearized cells (broken into lines) where the cell itself might have 0 width but its children need to be positioned. </p>
+
+</div>
+</div>
+<a id="a470b801d5b3d415339b3e4781e28a67c" name="a470b801d5b3d415339b3e4781e28a67c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a470b801d5b3d415339b3e4781e28a67c">&#9670;&#160;</a></span>SetCurrentPointList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Cell::SetCurrentPointList </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper to position a horizontal list of cells. </p>
+<p>Iterates through the linked list starting at 'this', assigning positions and incrementing the x-coordinate by each cell's width. </p>
+
+</div>
+</div>
 <a id="a6cb012023c40ba183294299e8d20b531" name="a6cb012023c40ba183294299e8d20b531"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6cb012023c40ba183294299e8d20b531">&#9670;&#160;</a></span>SetIsExponent()</h2>
 
@@ -3145,7 +3261,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
