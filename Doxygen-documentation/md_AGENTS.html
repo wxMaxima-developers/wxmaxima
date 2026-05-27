@@ -73,14 +73,14 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the <a class="el" href="classwxMaxima.html">wxMaxima</a> codebase. <b>Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.</b></p>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md1"></a>
 Build System</h1>
 <ul>
 <li><b>Build Tool:</b> <code>ninja</code></li>
 <li><b>Build Directory:</b> <code>build</code></li>
 <li><b>Compilation Command:</b> <code>ninja -<a class="el" href="classC.html">C</a> build</code></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md2"></a>
 Architecture &amp; GUI</h1>
 <ul>
 <li><b>wxAuiManager:</b> The application uses <code>wxAuiManager</code> for its complex layout (sidebars, toolbars, worksheet).<ul>
@@ -101,134 +101,67 @@ Architecture &amp; GUI</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md3"></a>
 Conventions &amp; Standards</h1>
 <ul>
 <li><b>Git Environment:</b> Note that running <code>git diff</code> might launch the visual diff tool <code>meld</code> instead of outputting to the terminal. Always use <code>git diff --no-ext-diff</code> if you need terminal output.</li>
-<li><b><a class="el" href="classString.html" title="A String class.">String</a> Literals:</b> Use the <code>wxS()</code> macro for all string literals for cross-platform character encoding compatibility.</li>
-<li><b>Translations:</b> Use the <code>_()</code> macro for user-facing strings that need to be translatable.</li>
-<li><b>Logging:</b> Use <code>wxLogMessage()</code> for debugging and operational status. These messages are visible in the internal log window (Help -&gt; Show Log Window).</li>
-<li>If the relative position of subcells inside a cell is changed please update the diagrams in 'art/Doxygen/' to reflect it.</li>
-<li><b>Asynchronous Sidebars &amp; Safety:</b> Sidebars like the Table of Contents (TOC) and Variables Pane are often updated in the idle loop or via asynchronous events. Because the worksheet structure can change between an update trigger and a user action (e.g., double-clicking a TOC item), always validate that a <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code> pointer is still valid and present in the worksheet tree (using <code>m_tree-&gt;Contains()</code>) before use.</li>
-<li><b><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> UUIDs &amp; Navigation:</b> Every cell can have a unique identifier (<code>m_uuid</code>).<ul>
-<li><b>Fragment Support:</b> Filenames support <code>#UUID</code> fragments (e.g., <code>file.wxmx#ID</code>) to automatically scroll to a specific cell upon opening.</li>
-<li><b>Copy/Jump:</b> The UI supports copying UUIDs to the clipboard and jumping to a specific UUID via <b>File &gt; Jump to UUID...</b>.</li>
+<li><b><a class="el" href="classString.html" title="A String class.">String</a> Literals &amp; Translations:</b> Use the <code>wxS()</code> macro for all string literals and <code>_()</code> for user-facing translatable strings.</li>
+<li><b>Logging:</b> Use <code>wxLogMessage()</code> for debugging; messages are visible in <b>Help -&gt; Show Log Window</b>.</li>
+<li><b>Asynchronous Sidebars &amp; Safety:</b> Sidebars (TOC, Variables Pane) update asynchronously. Always validate <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code> pointers (using <code>m_tree-&gt;Contains()</code>) before use.</li>
+<li><b><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> UUIDs &amp; Navigation:</b> Cells have unique <code>m_uuid</code>. Filenames support <code>#UUID</code> fragments.</li>
+<li><b>Forward Compatibility:</b> <code>ToXML()</code> implementations MUST call <code>GetXMLFlags()</code> and include its output in the opening tag to preserve unknown attributes.</li>
+<li><b>Serialization Tags:</b> Some cells use shortened tags (e.g., <code><a class="el" href="classLimitCell.html">LimitCell</a></code> uses <code>&lt;lm&gt;</code>). Verify in <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">MathParser.cpp</a></code> before modifying.</li>
+<li><b>Gnuplot Probe:</b> MUST be done asynchronously (e.g., <code>wxEXEC_ASYNC</code>). Synchronous execution blocks the UI and can disrupt the Linux global menu system.</li>
+<li><b>Variable Escaping:</b> Use <code><a class="el" href="classMaxima.html#ae61a721a9a8f85d80dcdde2fe6228d4e" title="Convert a human-readable maxima variable name to one maxima understands.">Maxima::EscapeVarnameForMaxima</a></code> for characters like <code>,</code>, <code>°</code>, and special symbols. <a class="el" href="classA.html">A</a> digit at the <em>start</em> of a variable name must be escaped (e.g., <code>\1a</code>).</li>
+<li><b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> Restart (Windows):</b> Restarting requires a manual reset of the network client (<code>m_client.reset()</code>) and streams in <code>KillMaxima</code> to avoid socket state errors.</li>
+<li><b><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> Search Logic:</b> Traverse in visual order: Prompt $\to$ Editor $\to$ Output (Forward) or Output $\to$ Editor $\to$ Prompt (Reverse). Resume from current caret position.</li>
+<li><b>Layout Timeout:</b> Complex output can trigger a timeout (configurable in Options), replacing slow-to-render cells with a warning.</li>
+<li><b>C++ Standard:</b> The project uses <b>C++17</b>. To support users on older operating systems (like Debian-oldstable or RHEL), <a class="el" href="classwxMaxima.html">wxMaxima</a> aims to stay approximately 10 years behind the current C++ standard.</li>
+<li><b>wxWidgets Version:</b> Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use <code>MakeAbsolute()</code> + <code>GetFullPath()</code> instead of <code>GetAbsolutePath()</code>).</li>
 </ul>
-</li>
-<li><b>Forward Compatibility:</b> To prevent data loss when older versions of <a class="el" href="classwxMaxima.html">wxMaxima</a> save files created with newer versions, <code><a class="el" href="classMathParser.html" title="This class handles parsing the xml representation of a cell tree.">MathParser</a></code> collects unknown XML attributes into a map (<code>m_extraAttributes</code>) in each <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code>. To ensure these (and other standard metadata like <code>uuid</code>, <code>altCopy</code>, and <code>tooltip</code>) are preserved, <b>all <code>ToXML()</code> implementations must call <code>GetXMLFlags()</code></b> and include its output in the opening tag.</li>
-<li><b>Serialization Tags:</b> Some cells use shortened tag names in XML for historical reasons or compatibility (e.g., <code><a class="el" href="classLimitCell.html">LimitCell</a></code> uses <code>&lt;lm&gt;</code>, <code><a class="el" href="classSqrtCell.html" title="This class represents a square root.">SqrtCell</a></code> uses <code>&lt;q&gt;</code>). Always verify the expected tag and child order in <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">MathParser.cpp</a></code> before modifying <code>ToXML()</code> methods.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md11"></a>
-Conventions &amp; Standards</h1>
-<ul>
-<li><b>Gnuplot Probe:</b> Probing Gnuplot for supported terminals MUST be done asynchronously (e.g., using <code>wxEXEC_ASYNC</code> with a <code>wxProcess</code> and event handler). Synchronous execution blocks the UI thread and can cause the Linux global menu system to lose track of the application.</li>
-<li><b>Variable Escaping:</b> Characters like <code>,</code>, <code>°</code>, emojis, and special symbols (<code>:</code>, <code>.</code>, <code>=</code>, <code>|</code>, <code>&amp;</code>) in variable names must be escaped with a backslash before being sent to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>.<ul>
-<li><b>Digits:</b> <a class="el" href="classA.html">A</a> digit at the <em>start</em> of a variable name must be escaped (e.g., <code>\1a</code>), but digits elsewhere do not need escaping.</li>
-<li><code><a class="el" href="classMaxima.html#ae61a721a9a8f85d80dcdde2fe6228d4e" title="Convert a human-readable maxima variable name to one maxima understands.">Maxima::EscapeVarnameForMaxima</a></code> is the central point for this logic. Autocomplete should use these escaped names to ensure user-readable input.</li>
-</ul>
-</li>
-<li><b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> Restart &amp; Connection (Windows):</b> On Windows, restarting <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> requires a manual reset of the network client (<code>m_client.reset()</code>) and all streams in <code>KillMaxima</code>. Failure to do so can cause "New connection attempt whilst already connected" errors because the socket state is not automatically cleaned up when the process is killed via <code>taskkill</code>.</li>
-<li><b>Windows Taskbar Progress:</b> To correctly clear the "busy" state from the Windows taskbar icon, use <code>wxTASKBAR_BUTTON_NOPROGRESS</code>. Using <code>wxTASKBAR_BUTTON_NORMAL</code> with zero progress may still display a green bar overlay on some systems.<ul>
-<li><b>Overlays:</b> When <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> asks a question, a "question mark" overlay icon is set via <code>SetOverlayIcon</code>. This overlay MUST be cleared (using <code>wxNullIcon</code>) when transitioning to any other state to prevent stale notifications.</li>
-</ul>
-</li>
-<li><b><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> Search Logic:</b> Searching (FindNext) traverses <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> components in a specific order to match the visual layout and avoid infinite loops.<ul>
-<li><b>Forward Order:</b> Prompt $\to$ Editor $\to$ Output.</li>
-<li><b>Reverse Order:</b> Output (bottom-to-top) $\to$ Editor $\to$ Prompt.</li>
-<li><b>Resume Logic:</b> Always identify the component where the current selection/cursor is and resume search from there. When searching backwards from an Editor or Prompt, always skip the Output of that same group.</li>
-</ul>
-</li>
-<li><b>Table of Contents (TOC):</b> Indentation and section numbering in the TOC are mutually exclusive. Choosing "Section numbers" via the context menu disables visual indentation to maintain readability.</li>
-<li><b>Layout Timeout:</b> Extremely complex output cells can cause the UI to hang during layout. <a class="el" href="classwxMaxima.html">wxMaxima</a> includes a timeout mechanism (configurable via <b>Max. layout time</b> in Options) that replaces outputs taking too long to layout with a warning marker.</li>
-<li><b>Exports (MathML/RTF):</b><ul>
-<li><b>MathML:</b> Modern MathML 4 grouping standards must be followed. Use <code>&lt;mrow&gt;&lt;mo&gt;...&lt;/mo&gt;...&lt;/mrow&gt;</code> for fenced expressions instead of the deprecated <code>&lt;mfenced&gt;</code>. For missing scripts in <code>mmultiscripts</code> or <code>msubsup</code>, use the standard <code>&lt;none/&gt;</code> tag.</li>
-<li><b>RTF:</b> RTF uses <b>twips</b> (1/1440th of an inch) for dimensions. When exporting images, always include <code>\picwgoal</code> and <code>\pichgoal</code> in twips (calculated using the image's PPI) to ensure correct scaling in external word processors. Character escaping via <code>RTFescape</code> must handle surrogate pairs for Unicode characters outside the BMP and convert <code>\r</code> to <code>\line</code> for soft line breaks.</li>
-</ul>
-</li>
-<li><b>Auto-Answer UI:</b> When <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> asks a question that <a class="el" href="classwxMaxima.html">wxMaxima</a> can answer automatically (via saved answers in <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code>), intrusive UI indicators like desktop notifications and the "userinput" status bar state (including the question mark overlay) are suppressed to avoid distracting the user.</li>
-<li><b>StyleTextTexts:</b> This function in <code><a class="el" href="EditorCell_8cpp.html" title="This file defines the class EditorCell.">EditorCell.cpp</a></code> handles syntax highlighting and formatting for text cells. Be extremely careful with iterator/index increments when adding soft line breaks to avoid skipping characters.</li>
-<li><b>Process Monitoring (Linux):</b> To accurately track <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s CPU usage on Linux, <code>GetMaximaCpuTime()</code> must iterate through <code>/proc</code> to sum Jiffies for all processes belonging to the same process group as the main <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process (or its direct children). This accounts for the shell script spawning a separate Lisp environment. Always parse <code>/proc/[pid]/stat</code> by finding the <em>last</em> <code>)</code> to skip the <code>comm</code> field safely.</li>
-<li><b>Background <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> Queries:</b> Commands sent to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> that are purely for updating the UI (like querying variable values) should use <code>SendMaxima(..., false, true)</code> to avoid resetting the error state and status bar/taskbar indicators.</li>
-<li><b>Search Implementation:</b> In <code><a class="el" href="classEditorCell.html#aca3068e7b6ecd6db4cbfb168cf070b09" title="Finds the next occurrences of a string.">EditorCell::FindNext</a></code>, always use case-insensitive logic (<code>IsSameAs</code>) when checking if the current selection matches the search string. For Regex, verify the match covers the entire selection starting at index 0. Failing to do so causes the search to get stuck on the first occurrence.</li>
-<li><b>C++ standard:</b> <a class="el" href="classwxMaxima.html">wxMaxima</a> tries to be about 9 years behind the current C++ standard to allow users with old operating systems to compile it. This means in 2026 C++17 is fine, but C++20 should still be a TODO, not something that can be switched to right now.</li>
-<li><b>wxWidgets version:</b> If possible it would be fine if we supported a fallback to wxWidgets 3.0.5 as some old operating systems still come with that library version. Note that <code>wxFileName::GetAbsolutePath</code> is only available from wxWidgets 3.1 onwards; use <code>MakeAbsolute()</code> followed by <code>GetFullPath()</code> for compatibility with 3.0.5.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md4"></a>
 Layout &amp; Compatibility</h1>
 <ul>
-<li><b>Mathematical <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> Padding:</b> Nearly all text-based mathematical cells MUST include <code>MC_TEXT_PADDING</code> (defined in <code><a class="el" href="Configuration_8h_source.html">Configuration.h</a></code>) in their size calculations.<ul>
-<li><b>Exception:</b> <code><a class="el" href="classDigitCell.html" title="A Text cell that display a digit of a more-than-one-line-wide number.">DigitCell</a></code> (used in broken-up long numbers) DOES NOT include padding. This ensures that long numbers broken across many lines have the same width as the unbroken version and prevents cumulative horizontal errors from excessive padding between digits.</li>
-<li><b>Recalculate Order:</b> Subclasses of <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> implementing <code>Recalculate(fontsize)</code> MUST call <code>Cell::Recalculate(fontsize)</code> at the beginning of their logic to ensure <code>m_fontSize_Scaled</code> is up-to-date.</li>
-</ul>
-</li>
-<li><b>Three-Step Layout Process:</b> The layout engine follows a strict sequence:<ol type="1">
-<li><code>UnBreakUpCells()</code>: Resets all objects to their compact 2<a class="el" href="classD.html">D</a> form.</li>
-<li><code>BreakUpCells()</code>: Recursively converts over-wide 2<a class="el" href="classD.html">D</a> objects (like fractions or long numbers) into linearized 1<a class="el" href="classD.html">D</a> forms.</li>
-<li><code>BreakLines_List()</code>: Performs final line wrapping and inserts soft line breaks.</li>
+<li><b>Mathematical <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> Padding:</b> Use <code>MC_TEXT_PADDING</code> (in <code><a class="el" href="Configuration_8h_source.html">Configuration.h</a></code>) for text-based cells. <b>Exception:</b> <code><a class="el" href="classDigitCell.html" title="A Text cell that display a digit of a more-than-one-line-wide number.">DigitCell</a></code> does not include padding to ensure visual consistency in broken-up numbers.</li>
+<li><b>Three-Step Layout Process:</b><ol type="1">
+<li><code>UnBreakUpCells()</code>: Reset to 2<a class="el" href="classD.html">D</a>.</li>
+<li><code>BreakUpCells()</code>: Convert wide 2<a class="el" href="classD.html">D</a> objects to 1<a class="el" href="classD.html">D</a> fallback.</li>
+<li><code>BreakLines_List()</code>: Final line wrapping.</li>
 </ol>
 </li>
-<li><b>High-DPI / wxBitmapBundle:</b> For modern wxWidgets (3.1.6+), use <code>wxBitmapBundle</code> for SVG rendering.<ul>
-<li><b>Avoid:</b> Do not call <code>GetPreferredBitmapSizeFor</code> explicitly if the result is not used, as it triggers <code>nodiscard</code> warnings on macOS.</li>
-<li><b>Mandate:</b> <code>wxBitmapBundle::GetBitmap(size)</code> correctly handles scale factors internally for the given logical size.</li>
+<li><b>High-DPI / wxBitmapBundle:</b> Use <code>wxBitmapBundle</code> for SVG rendering. Avoid unnecessary <code>GetPreferredBitmapSizeFor</code> calls on macOS to prevent <code>nodiscard</code> warnings.</li>
+<li><b>Windows Focus Management:</b> Use <code>CallAfter</code> for focus transitions (e.g., <code>m_searchText-&gt;SetFocus()</code>) to prevent the worksheet from "stealing" focus back.</li>
+<li><b>Constructor Initialization:</b> Order initialization lists to match header declaration order to prevent <code>-Wreorder</code> warnings.</li>
 </ul>
-</li>
-<li><b>Windows Focus Management:</b> Focus transitions to dialogues (like the Find dialogue) from the worksheet on Windows often require <code>CallAfter</code> to ensure focus is not immediately "stolen" back by the worksheet.<ul>
-<li><b>Dialogue Focus:</b> Always use <code>m_searchText-&gt;SetFocus()</code> within <code>CallAfter</code> when opening or updating a dialogue string from a worksheet event.</li>
-</ul>
-</li>
-<li><b>Constructor Initialization Order:</b> Always order members in the constructor initialization list to match their declaration order in the header file. This prevents <code>-Wreorder</code> warnings and potential uninitialized member access issues.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md13"></a>
-Extending Maxima via Lisp (&lt;tt&gt;wxMathML.lisp&lt;/tt&gt;)</h1>
-<ul>
-<li><b>Central Formatting Hub:</b> <code>src/wxMathML.lisp</code> is the primary location for extending <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s output formatting for <a class="el" href="classwxMaxima.html">wxMaxima</a>. It is compiled into the binary as a header file.</li>
-<li><b>Display Wrappers:</b> New user-facing formatting commands (like <code>wx_matrix</code>) should be implemented here to leverage <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s expression handling.</li>
-<li><b>Safety:</b> Always use <code>unwind-protect</code> when temporarily modifying global Maxima/Lisp variables (like <code>$lmxchar</code>) to ensure they are restored even if the formatting process fails.</li>
-<li><b>Loading:</b> Wrap new functions in <code>(no-warning ...)</code> to prevent "redefined" warnings during the initialization phase.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md14"></a>
-Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)</h1>
-<ul>
-<li><b>Geometry Awareness:</b> The SVG diagrams in <code>art/Doxygen/</code> are critical for maintaining the complex layout engine.</li>
-<li><b>Update Mandate:</b> If you modify the <code>Recalculate()</code> or <code>Draw()</code> logic of a cell in a way that changes its internal geometry (padding, center alignment, sub-cell placement), you MUST update the corresponding SVG files.</li>
-<li><b>Visual Consistency:</b> New cell types should be accompanied by a <code>*Geometry.svg</code> diagram and, if they have a linearized fallback, a <code>*LinearGeometry.svg</code> diagram.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md5"></a>
 Performance &amp; Documentation Mandates</h1>
 <ul>
-<li><b>NEWS.md Updates:</b> Every non-trivial change or feature addition MUST be accompanied by a concise bullet point in <code>NEWS.md</code> under the "# Current development version" section.</li>
-<li><b>Documentation Mandate:</b> Clear, self-describing code is preferred. For complex logic, architectural decisions, or mathematical algorithms (like the LCS alignment in the Diff viewer), you MUST include Doxygen-style comments. Every new class or public method should have a brief description of its purpose and parameters.</li>
-<li><b>Background Tasks:</b> When adding a new background task or thread, you MUST:<ol type="1">
-<li>Use <code>jthread</code> for automatic joining and safe teardown.</li>
-<li>Protect shared data with <code>std::mutex</code>.</li>
-<li>Regularly check an abort flag.</li>
-<li>Update the "Background Tasks and Threading" section in <code>Doxygen/Readme.md</code>.</li>
-</ol>
+<li><b>NEWS.md Updates:</b> Every non-trivial change MUST be documented in <code>NEWS.md</code> under the "# Current development version" section.</li>
+<li><b>Doxygen Comments:</b> Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.</li>
+<li><b>Background Tasks:</b> Use <code>jthread</code> for automatic joining, protect data with <code>std::mutex</code>, check for abort flags regularly, and update <code>Doxygen/Readme.md</code>.</li>
+<li>**Lisp Performance (<code>wxMathML.lisp</code>):**<ul>
+<li>Use <code>with-output-to-string</code> instead of recursive concatenation for large inputs.</li>
+<li>Use <code>unwind-protect</code> when modifying global state like <code>$lmxchar</code>.</li>
+<li>Prefer <code>(intern ...)</code> over <code>read-from-string</code> for dynamic symbol generation.</li>
+</ul>
 </li>
+<li><b>Strict XML Mandate:</b> To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., <code>noneParens="true"</code>) to the filter list in <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">MathParser.cpp</a></code>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md16"></a>
-Lisp Performance &amp; Safety</h1>
+<h1><a class="anchor" id="autotoc_md6"></a>
+Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)</h1>
 <ul>
-<li><b><a class="el" href="classString.html" title="A String class.">String</a> Manipulation:</b> Avoid recursive string substitution or concatenation for large inputs. Use iterative loops with <code>with-output-to-string</code> for safety and performance.</li>
-<li><b>Symbol Lookups:</b> Use <code>(intern (concatenate 'string "$" name) :maxima)</code> for dynamic symbol generation. Avoid <code>read-from-string</code> as it is less safe and slower.</li>
-<li><b>Global State:</b> When wrapping <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands, use <code>unwind-protect</code> to ensure global variables like <code>$lmxchar</code> are restored to their previous state even if an error occurs.</li>
+<li><b>Geometry Awareness:</b> If modifying <code>Recalculate()</code> or <code>Draw()</code> geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in <code>art/Doxygen/</code>.</li>
+<li><b>Consistency:</b> New cell types should have <code>*Geometry.svg</code> and <code>*LinearGeometry.svg</code> (if applicable) diagrams.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md17"></a>
-Strict XML Mandate</h1>
-<ul>
-<li><b>No Duplicate Attributes:</b> XML files with duplicate attributes are invalid.</li>
-<li><b>Attribute Filter List:</b> Any attribute that is manually added in a <code>ToXML()</code> method (e.g., <code>noneParens="true"</code>) MUST be added to the <code>m_knownAttributes</code> list in <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">MathParser.cpp</a></code>.</li>
-<li><b>Mechanism:</b> If an attribute is not in the filter list, <code><a class="el" href="classMathParser.html" title="This class handles parsing the xml representation of a cell tree.">MathParser</a></code> will store it in <code>m_extraAttributes</code>. When saving, <code>GetXMLFlags()</code> will then output it, and if <code>ToXML()</code> also manually outputs it, a duplicate is created.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md18"></a>
+<h1><a class="anchor" id="autotoc_md7"></a>
 Key Subsystems Map</h1>
 <ul>
-<li><b>Layout Engine:</b> <code>src/cells/</code> (individual cell logic), <code><a class="el" href="Worksheet_8cpp.html" title="This file defines the class Worksheet.">src/Worksheet.cpp</a></code> (global orchestration).</li>
-<li><b>MathML Formatting:</b> <code>src/wxMathML.lisp</code> (Lisp-to-XML), <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">src/MathParser.cpp</a></code> (XML-to-Cell objects).</li>
-<li><b>Main Application Logic:</b> <code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">src/wxMaxima.cpp</a></code> (event handling, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> communication), <code><a class="el" href="wxMaximaFrame_8cpp.html" title="This file defines the class wxMaximaFrame.">src/wxMaximaFrame.cpp</a></code> (GUI structure).</li>
-<li><b><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>:</b> <code><a class="el" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage.">src/Configuration.cpp</a></code> (global settings and geometric constants).</li>
+<li><b>Layout Engine:</b> <code>src/cells/</code> and <code><a class="el" href="Worksheet_8cpp.html" title="This file defines the class Worksheet.">src/Worksheet.cpp</a></code>.</li>
+<li><b>MathML Formatting:</b> <code>src/wxMathML.lisp</code> and <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">src/MathParser.cpp</a></code>.</li>
+<li><b>Main Logic:</b> <code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">src/wxMaxima.cpp</a></code> and <code><a class="el" href="wxMaximaFrame_8cpp.html" title="This file defines the class wxMaximaFrame.">src/wxMaximaFrame.cpp</a></code>.</li>
+<li><b><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>:</b> <code><a class="el" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage.">src/Configuration.cpp</a></code>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md19"></a>
+<h1><a class="anchor" id="autotoc_md8"></a>
 Error resiliance</h1>
 <ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
