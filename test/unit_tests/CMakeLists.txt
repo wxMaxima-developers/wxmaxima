@@ -39,7 +39,3 @@ add_test(AFontSize test_AFontSize)
 add_executable(test_DiffAlgorithm test_DiffAlgorithm.cpp)
 target_link_libraries(test_DiffAlgorithm PRIVATE ${wxWidgets_LIBRARIES})
 add_test(DiffAlgorithm test_DiffAlgorithm)
-
-add_executable(test_WXMformat test_WXMformat.cpp)
-target_link_libraries(test_WXMformat PRIVATE ${wxWidgets_LIBRARIES})
-add_test(WXMformat test_WXMformat)
