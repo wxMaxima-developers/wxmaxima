@@ -380,7 +380,7 @@ int Cell::GetLineWidth() const {
  * This method uses the pre-calculated worksheet coordinates (Pass 2).
  * It is a fast, rendering-only pass.
  */
-void Cell::Draw(wxDC *dc, wxDC *adc) {
+void Cell::Draw(wxDC *dc, wxDC *WXUNUSED(adc)) {
   if (m_configuration->GetDebugmode()) {
     if (!m_isHidden) {
       wxASSERT(GetWidth() >= 0);
