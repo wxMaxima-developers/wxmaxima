@@ -19,10 +19,10 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "DiffFrame.h"
+#include "DiffAlgorithm.h"
 #include "WXMformat.h"
 #include "MathParser.h"
 #include "wxMaximaArtProvider.h"
-#include "levenshtein/levenshtein.h"
 #include <wx/file.h>
 #include <wx/wfstream.h>
 #include <wx/zipstrm.h>
@@ -405,116 +405,6 @@ void DiffFrame::LoadFiles(const wxArrayString &WXUNUSED(files)) {
 }
 
 /**
- * @brief Represents matching metadata for a GroupCell.
- */
-struct CellMatchData {
-    wxString uuid;
-    wxString content;
-    GroupType type;
-};
-
-/**
- * @brief Analyzes the distribution of Levenshtein distances to find an optimal match threshold.
- *
- * By building a histogram of the Levenshtein distances between nearby cells,
- * we can identify a "valley" that separates true matches from random noise.
- */
-static int FindOptimalThreshold(const std::vector<CellMatchData>& s1, 
-                                const std::vector<CellMatchData>& s2) {
-    std::vector<int> histogram(101, 0);
-    int window = 50;
-    for (int i = 0; i < (int)s1.size(); ++i) {
-        int start = std::max(0, i - window);
-        int end = std::min((int)s2.size() - 1, i + window);
-        for (int j = start; j <= end; ++j) {
-            if (s1[i].type != s2[j].type) continue;
-            size_t maxLen = std::max(s1[i].content.Length(), s2[j].content.Length());
-            if (maxLen > 0) {
-                size_t dist = LevenshteinDistance(s1[i].content, s2[j].content);
-                int percent = (int)(100 * dist / maxLen);
-                if (percent <= 100) histogram[percent]++;
-            } else if (s1[i].type == s2[j].type) {
-                histogram[0]++;
-            }
-        }
-    }
-    
-    // Find first local minimum after the peak at 0.
-    for (int i = 5; i < 50; ++i) {
-        if (histogram[i] < histogram[i-1] && histogram[i] < histogram[i+1])
-            return i;
-    }
-    return 20; // Default fallback
-}
-
-/**
- * @brief Computes the optimal alignment between two sequences of cells.
- *
- * This uses a standard Dynamic Programming approach for the Longest Common 
- * Subsequence (LCS) problem, extended with fuzzy matching.
- * 
- * @param s1 Metadata for cells in the first file.
- * @param s2 Metadata for cells in the second file.
- * @param threshold Levenshtein distance threshold (as percentage of length).
- * @return A vector of pairs where each pair (i, j) represents matched indices.
- */
-static std::vector<std::pair<int, int>> Align2(const std::vector<CellMatchData>& s1, 
-                                               const std::vector<CellMatchData>& s2,
-                                               int threshold = 20) {
-    int n = s1.size();
-    int m = s2.size();
-    
-    auto is_match = [&](int i, int j) {
-        const auto& c1 = s1[i];
-        const auto& c2 = s2[j];
-        
-        // Exact UUID match
-        if (!c1.uuid.IsEmpty() && c1.uuid == c2.uuid) return true;
-        
-        // If one has a UUID and the other doesn't, they don't match (prevents accidental hijacking)
-        if (!c1.uuid.IsEmpty() || !c2.uuid.IsEmpty()) return false;
-        
-        // Content-based fuzzy match for cells without UUIDs
-        if (c1.type != c2.type) return false;
-        if (c1.content == c2.content) return true;
-        
-        size_t maxLen = std::max(c1.content.Length(), c2.content.Length());
-        if (maxLen == 0) return true;
-        
-        size_t dist = LevenshteinDistance(c1.content, c2.content);
-        return (int)(100 * dist / maxLen) <= threshold;
-    };
-
-    std::vector<std::vector<int>> dp(n + 1, std::vector<int>(m + 1, 0));
-    for (int i = 1; i <= n; ++i) {
-        for (int j = 1; j <= m; ++j) {
-            if (is_match(i - 1, j - 1))
-                dp[i][j] = dp[i - 1][j - 1] + 1;
-            else
-                dp[i][j] = std::max(dp[i - 1][j], dp[i][j - 1]);
-        }
-    }
-
-    // Backtrack to find the actual alignment path
-    std::vector<std::pair<int, int>> alignment;
-    int i = n, j = m;
-    while (i > 0 || j > 0) {
-        if (i > 0 && j > 0 && is_match(i - 1, j - 1)) {
-            alignment.push_back({i - 1, j - 1});
-            i--; j--;
-        } else if (j > 0 && (i == 0 || dp[i][j - 1] >= dp[i - 1][j])) {
-            alignment.push_back({-1, j - 1});
-            j--;
-        } else {
-            alignment.push_back({i - 1, -1});
-            i--;
-        }
-    }
-    std::reverse(alignment.begin(), alignment.end());
-    return alignment;
-}
-
-/**
  * @brief Coordinates the cell-by-cell alignment of multiple files.
  *
  * This method:
@@ -530,17 +420,17 @@ void DiffFrame::AlignCells() {
 
   std::vector<std::unique_ptr<GroupCell>> sourceTrees;
   std::vector<std::vector<GroupCell*>> cellLists;
-  std::vector<std::vector<CellMatchData>> matchDataLists;
+  std::vector<std::vector<Diff::CellMatchData>> matchDataLists;
 
   // Extract cell structure and metadata from each file
   for (size_t i = 0; i < numFiles; ++i) {
       sourceTrees.push_back(LoadTree(m_worksheets[i]->m_currentFile, m_configuration));
       std::vector<GroupCell*> cells;
-      std::vector<CellMatchData> matchData;
+      std::vector<Diff::CellMatchData> matchData;
       if (sourceTrees.back()) {
           for (auto &c : OnList(sourceTrees.back().get())) {
               cells.push_back(&c);
-              CellMatchData md;
+              Diff::CellMatchData md;
               md.uuid = c.GetUUID();
               md.type = c.GetGroupType();
               auto ed = c.GetEditable();
@@ -556,25 +446,25 @@ void DiffFrame::AlignCells() {
   std::vector<std::vector<int>> finalAlignment; 
 
   if (numFiles == 2) {
-      int threshold = FindOptimalThreshold(matchDataLists[0], matchDataLists[1]);
-      auto a = Align2(matchDataLists[0], matchDataLists[1], threshold);
+      int threshold = Diff::FindOptimalThreshold(matchDataLists[0], matchDataLists[1]);
+      auto a = Diff::Align2(matchDataLists[0], matchDataLists[1], threshold);
       for (auto const &p : a) {
           finalAlignment.push_back({p.first, p.second});
       }
   } else if (numFiles == 3) {
       // For 3-way diff, we perform a 2-step alignment
-      int t12 = FindOptimalThreshold(matchDataLists[0], matchDataLists[1]);
-      auto a12 = Align2(matchDataLists[0], matchDataLists[1], t12);
+      int t12 = Diff::FindOptimalThreshold(matchDataLists[0], matchDataLists[1]);
+      auto a12 = Diff::Align2(matchDataLists[0], matchDataLists[1], t12);
       
       // Create a "merged" metadata sequence for comparison with file 3
-      std::vector<CellMatchData> matchData12;
+      std::vector<Diff::CellMatchData> matchData12;
       for (auto const &p : a12) {
           if (p.first != -1) matchData12.push_back(matchDataLists[0][p.first]);
           else matchData12.push_back(matchDataLists[1][p.second]);
       }
       
-      int t123 = FindOptimalThreshold(matchData12, matchDataLists[2]);
-      auto a123 = Align2(matchData12, matchDataLists[2], t123);
+      int t123 = Diff::FindOptimalThreshold(matchData12, matchDataLists[2]);
+      auto a123 = Diff::Align2(matchData12, matchDataLists[2], t123);
       
       int idx12 = 0;
       for (auto const &p : a123) {

@@ -270,10 +270,10 @@ namespace Format {
       wxString line;
       while (wxmLine != end) {
         wxString thisLn = *wxmLine++;
-        if (thisLn == tag)
-          break;
         if (thisLn.StartsWith(wxS(" ")) && Headers.IsAnyMarker(thisLn.Mid(1)))
           thisLn = thisLn.Mid(1);
+        if (thisLn == tag)
+          break;
         thisLn.Replace(wxS("* /"), wxS("*/"));
         if (!line.empty())
           line << '\n';
@@ -299,7 +299,9 @@ namespace Format {
     while (wxmLine != end) {
       GroupCell *const last = tree.GetTail();
       std::unique_ptr<GroupCell> cell;
-      const wxString &thisLine = *wxmLine++;
+      wxString thisLine = *wxmLine++;
+      if (thisLine.StartsWith(wxS(" ")) && Headers.IsAnyMarker(thisLine.Mid(1)))
+        thisLine = thisLine.Mid(1);
       WXMHeaderId headerId = Headers.LookupStart(thisLine);
       wxString line;
 
@@ -395,10 +397,16 @@ namespace Format {
 
       case WXM_INVALID:
         if (last && last->GetEditable()) {
+          if (thisLine.Trim().IsEmpty())
+            break;
+          if (thisLine.StartsWith(wxS("/* Old versions of Maxima abort on loading files that end in a comment.")) ||
+              thisLine.StartsWith(wxS("\"Created with wxMaxima ")) ||
+              thisLine == WXMFirstLine ||
+              thisLine.StartsWith(wxS("/* [ Created with wxMaxima version ")))
+            break;
+
           wxString content = last->GetEditable()->GetValue();
           wxString unescaped = thisLine;
-          if (unescaped.StartsWith(wxS(" ")) && Headers.IsAnyMarker(unescaped.Mid(1)))
-            unescaped = unescaped.Mid(1);
           unescaped.Replace(wxS("* /"), wxS("*/"));
           if (!content.empty())
             content << '\n';

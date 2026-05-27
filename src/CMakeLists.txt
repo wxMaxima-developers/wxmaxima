@@ -127,6 +127,7 @@ set(SOURCE_FILES
     CellPointers.cpp
     CompositeDataObject.cpp
     Configuration.cpp
+    DiffAlgorithm.cpp
     Dirstructure.cpp
     EvaluationQueue.cpp
     EventIDs.cpp

@@ -2,12 +2,15 @@
 
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 set(CMAKE_CXX_CPPCHECK "")
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/cells
     ${CMAKE_SOURCE_DIR}/test
-    ${CMAKE_SOURCE_DIR}/test/unit_tests)
+    ${CMAKE_SOURCE_DIR}/test/unit_tests
+    ${CMAKE_BINARY_DIR})
 
 # These tests fail on GTK since I don't know how to init GTK for
 # the tests and without initializing GTK using wxNORMAL_FONT causes
@@ -32,3 +35,11 @@ add_executable(test_AFontSize test_AFontSize.cpp)
 target_link_libraries(test_AFontSize PRIVATE ${wxWidgets_LIBRARIES})
 #target_compile_features(test_ImgCell PUBLIC cxx_std_14)
 add_test(AFontSize test_AFontSize)
+
+add_executable(test_DiffAlgorithm test_DiffAlgorithm.cpp)
+target_link_libraries(test_DiffAlgorithm PRIVATE ${wxWidgets_LIBRARIES})
+add_test(DiffAlgorithm test_DiffAlgorithm)
+
+add_executable(test_WXMformat test_WXMformat.cpp)
+target_link_libraries(test_WXMformat PRIVATE ${wxWidgets_LIBRARIES})
+add_test(WXMformat test_WXMformat)
