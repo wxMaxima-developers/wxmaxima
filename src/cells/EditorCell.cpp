@@ -2782,7 +2782,7 @@ wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
       }
   }
 
-  return lineWidth;
+  return std::max(lineWidth, (wxCoord)m_configuration->GetCursorWidth());
 }
 
 bool EditorCell::History::AddState(EditorCell::History::HistoryEntry entry, Action action)
@@ -3300,17 +3300,16 @@ void EditorCell::StyleText() const {
   m_wordList.clear();
   m_styledText.clear();
 
-  if (m_text == wxEmptyString)
-    return;
-
-  // Remove all soft line breaks. They will be re-added in the right places
-  // in the next step
-  m_text.Replace(wxS("\r"), wxS(" "));
-  // Do we need to style code or text?
-  if (m_type == MC_TYPE_INPUT)
-    StyleTextCode();
-  else
-    StyleTextTexts();
+  if (m_text != wxEmptyString) {
+    // Remove all soft line breaks. They will be re-added in the right places
+    // in the next step
+    m_text.Replace(wxS("\r"), wxS(" "));
+    // Do we need to style code or text?
+    if (m_type == MC_TYPE_INPUT)
+      StyleTextCode();
+    else
+      StyleTextTexts();
+  }
   m_tokens_valid = true;
 }
 
