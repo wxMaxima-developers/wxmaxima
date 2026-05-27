@@ -72,6 +72,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Data Fields</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a>  </div>
@@ -92,7 +93,7 @@ Inheritance diagram for Worksheet:</div>
 <div class="dynheader">
 Collaboration diagram for Worksheet:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="590"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -110,6 +111,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateControlsNeeded<
 <tr class="memitem:a7fa3389f9d19984185ad8df1e74535b4"><td class="memItemLeft" align="right" valign="top"><a id="a7fa3389f9d19984185ad8df1e74535b4" name="a7fa3389f9d19984185ad8df1e74535b4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateControlsNeeded</b> (bool updateControlsNeeded)</td></tr>
 <tr class="separator:a7fa3389f9d19984185ad8df1e74535b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf4ec45a1b780ac72ba159358806d376"><td class="memItemLeft" align="right" valign="top"><a id="aaf4ec45a1b780ac72ba159358806d376" name="aaf4ec45a1b780ac72ba159358806d376"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AdjustSize</b> ()</td></tr>
+<tr class="separator:aaf4ec45a1b780ac72ba159358806d376"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34c53e85451c68e9cc78fa31faf1b040"><td class="memItemLeft" align="right" valign="top"><a id="a34c53e85451c68e9cc78fa31faf1b040" name="a34c53e85451c68e9cc78fa31faf1b040"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnEraseBackground</b> (wxEraseEvent &amp;WXUNUSED(event))</td></tr>
+<tr class="memdesc:a34c53e85451c68e9cc78fa31faf1b040"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cannot be static as it is called using a function pointer to an object. <br /></td></tr>
+<tr class="separator:a34c53e85451c68e9cc78fa31faf1b040"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e0117a484f51e9f254e89ce5e21711b"><td class="memItemLeft" align="right" valign="top"><a id="a5e0117a484f51e9f254e89ce5e21711b" name="a5e0117a484f51e9f254e89ce5e21711b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckUnixCopy</b> ()</td></tr>
+<tr class="separator:a5e0117a484f51e9f254e89ce5e21711b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f52cb0f0c9fe59aeb73e58875c2f386"><td class="memItemLeft" align="right" valign="top"><a id="a7f52cb0f0c9fe59aeb73e58875c2f386" name="a7f52cb0f0c9fe59aeb73e58875c2f386"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseMiddleUp</b> (wxMouseEvent &amp;event)</td></tr>
+<tr class="separator:a7f52cb0f0c9fe59aeb73e58875c2f386"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae49982c186a6d147703232f4c42eadde"><td class="memItemLeft" align="right" valign="top"><a id="ae49982c186a6d147703232f4c42eadde" name="ae49982c186a6d147703232f4c42eadde"></a>
+<a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>EndOfSectioningUnit</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *start)</td></tr>
+<tr class="memdesc:ae49982c186a6d147703232f4c42eadde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the end of the current chapter/section/... <br /></td></tr>
+<tr class="separator:ae49982c186a6d147703232f4c42eadde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6be16ee6643068e0e9574bab7ee74824"><td class="memItemLeft" align="right" valign="top"><a id="a6be16ee6643068e0e9574bab7ee74824" name="a6be16ee6643068e0e9574bab7ee74824"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnComplete</b> (wxCommandEvent &amp;event)</td></tr>
+<tr class="memdesc:a6be16ee6643068e0e9574bab7ee74824"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is called if an action from the autocomplete menu is selected. <br /></td></tr>
+<tr class="separator:a6be16ee6643068e0e9574bab7ee74824"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b3e88ac91c894dd9944defa95f5c290"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a7b3e88ac91c894dd9944defa95f5c290">EraseBackground</a> (wxEraseEvent &amp;event)</td></tr>
+<tr class="memdesc:a7b3e88ac91c894dd9944defa95f5c290"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is called if wxWidgets wants to erase the worksheet's background.  <br /></td></tr>
+<tr class="separator:a7b3e88ac91c894dd9944defa95f5c290"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac81919e1d0fd815c635b1fb91dd2ec25"><td class="memItemLeft" align="right" valign="top"><a id="ac81919e1d0fd815c635b1fb91dd2ec25" name="ac81919e1d0fd815c635b1fb91dd2ec25"></a>
+<a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCellInWorksheet</b> () const</td></tr>
+<tr class="memdesc:ac81919e1d0fd815c635b1fb91dd2ec25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the last cell of this worksheet. <br /></td></tr>
+<tr class="separator:ac81919e1d0fd815c635b1fb91dd2ec25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a951258fe33139211b567ef6c73eb335b"><td class="memItemLeft" align="right" valign="top"><a id="a951258fe33139211b567ef6c73eb335b" name="a951258fe33139211b567ef6c73eb335b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsEmpty</b> () const</td></tr>
 <tr class="memdesc:a951258fe33139211b567ef6c73eb335b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this worksheet empty? <br /></td></tr>
@@ -235,11 +264,99 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetCellIndex</b> (<a c
 <a class="el" href="classMaximaManual.html">MaximaManual</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetMaximaManual</b> ()</td></tr>
 <tr class="separator:a3cd056218eb65c8929db7a0b8814a4f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ac9172378ffd18695685cdd506c73934a"><td class="memItemLeft" align="right" valign="top"><a id="ac9172378ffd18695685cdd506c73934a" name="ac9172378ffd18695685cdd506c73934a"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLesserGCType</b> (int type, int comparedTo)</td></tr>
+<tr class="separator:ac9172378ffd18695685cdd506c73934a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f55a81681eb7bc641e299faa9046ae9"><td class="memItemLeft" align="right" valign="top"><a id="a4f55a81681eb7bc641e299faa9046ae9" name="a4f55a81681eb7bc641e299faa9046ae9"></a>
+static <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>StartOfSectioningUnit</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *start)</td></tr>
+<tr class="memdesc:a4f55a81681eb7bc641e299faa9046ae9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the start of the current chapter/section/... <br /></td></tr>
+<tr class="separator:a4f55a81681eb7bc641e299faa9046ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:a07ea367f43d3fb4ffb4f09a1f1b09339"><td class="memItemLeft" align="right" valign="top"><a id="a07ea367f43d3fb4ffb4f09a1f1b09339" name="a07ea367f43d3fb4ffb4f09a1f1b09339"></a>
 <a class="el" href="classRecentDocuments.html">RecentDocuments</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_unsavedDocuments</b></td></tr>
 <tr class="separator:a07ea367f43d3fb4ffb4f09a1f1b09339"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9d41c78803214a699ad82623ae07543"><td class="memItemLeft" align="right" valign="top"><a id="af9d41c78803214a699ad82623ae07543" name="af9d41c78803214a699ad82623ae07543"></a>
+wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>m_leftDownPosition</b></td></tr>
+<tr class="memdesc:af9d41c78803214a699ad82623ae07543"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position the left mouse key was pressed at. <br /></td></tr>
+<tr class="separator:af9d41c78803214a699ad82623ae07543"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a18f31531b0aa5c16cc523ed06a1690"><td class="memItemLeft" align="right" valign="top"><a id="a4a18f31531b0aa5c16cc523ed06a1690" name="a4a18f31531b0aa5c16cc523ed06a1690"></a>
+wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>m_down</b></td></tr>
+<tr class="separator:a4a18f31531b0aa5c16cc523ed06a1690"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac88be8b28cc8d72ed2a2e6501c6a9013"><td class="memItemLeft" align="right" valign="top"><a id="ac88be8b28cc8d72ed2a2e6501c6a9013" name="ac88be8b28cc8d72ed2a2e6501c6a9013"></a>
+wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>m_up</b></td></tr>
+<tr class="separator:ac88be8b28cc8d72ed2a2e6501c6a9013"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2814f7c7a1cfae7a76268b832555af64"><td class="memItemLeft" align="right" valign="top"><a id="a2814f7c7a1cfae7a76268b832555af64" name="a2814f7c7a1cfae7a76268b832555af64"></a>
+wxPoint&#160;</td><td class="memItemRight" valign="bottom"><b>m_mousePoint</b></td></tr>
+<tr class="separator:a2814f7c7a1cfae7a76268b832555af64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75785a5cfd7a6db3fa9281c7682d3093"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a75785a5cfd7a6db3fa9281c7682d3093">m_hCaretActive</a> = true</td></tr>
+<tr class="memdesc:a75785a5cfd7a6db3fa9281c7682d3093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the active cursor the one represented by a horizontal line?  <br /></td></tr>
+<tr class="separator:a75785a5cfd7a6db3fa9281c7682d3093"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb8ba7d7cf8fa405edd8ae39a0da889c"><td class="memItemLeft" align="right" valign="top"><a id="adb8ba7d7cf8fa405edd8ae39a0da889c" name="adb8ba7d7cf8fa405edd8ae39a0da889c"></a>
+<a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_hCaretPosition</b></td></tr>
+<tr class="memdesc:adb8ba7d7cf8fa405edd8ae39a0da889c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The group above the hcaret, NULL for the top of the document See EditorCell::GetActiveCell() for the position if the cursor that is drawn as a vertical line. <br /></td></tr>
+<tr class="separator:adb8ba7d7cf8fa405edd8ae39a0da889c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1cd67d770fe0b554373dce0a7e14880"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#af1cd67d770fe0b554373dce0a7e14880">m_hCaretPositionStart</a></td></tr>
+<tr class="memdesc:af1cd67d770fe0b554373dce0a7e14880"><td class="mdescLeft">&#160;</td><td class="mdescRight">The start for the selection when selecting group with the horizontally drawn cursor.  <br /></td></tr>
+<tr class="separator:af1cd67d770fe0b554373dce0a7e14880"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a825cbf5958db1feaf262a01912eb8cf8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a825cbf5958db1feaf262a01912eb8cf8">m_hCaretPositionEnd</a></td></tr>
+<tr class="memdesc:a825cbf5958db1feaf262a01912eb8cf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The end of the selection when selecting group with the horizontally drawn cursor.  <br /></td></tr>
+<tr class="separator:a825cbf5958db1feaf262a01912eb8cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a860589442822b6f54703efaa12b58517"><td class="memItemLeft" align="right" valign="top"><a id="a860589442822b6f54703efaa12b58517" name="a860589442822b6f54703efaa12b58517"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_leftDown</b> = false</td></tr>
+<tr class="separator:a860589442822b6f54703efaa12b58517"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af71f5a14e1fba3e675778ce1a58fadcb"><td class="memItemLeft" align="right" valign="top"><a id="af71f5a14e1fba3e675778ce1a58fadcb" name="af71f5a14e1fba3e675778ce1a58fadcb"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_followEvaluation</b> = true</td></tr>
+<tr class="memdesc:af71f5a14e1fba3e675778ce1a58fadcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we want to automatically scroll to a cell as soon as it is being evaluated? <br /></td></tr>
+<tr class="separator:af71f5a14e1fba3e675778ce1a58fadcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37c30eec927e90ed3da5c3226e97c352"><td class="memItemLeft" align="right" valign="top"><a id="a37c30eec927e90ed3da5c3226e97c352" name="a37c30eec927e90ed3da5c3226e97c352"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_mouseDrag</b> = false</td></tr>
+<tr class="separator:a37c30eec927e90ed3da5c3226e97c352"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a135c06cb02e7db5522b69df1094d53de"><td class="memItemLeft" align="right" valign="top"><a id="a135c06cb02e7db5522b69df1094d53de" name="a135c06cb02e7db5522b69df1094d53de"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_mouseOutside</b> = false</td></tr>
+<tr class="separator:a135c06cb02e7db5522b69df1094d53de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa2a7264365c0266f0814ba4de8ca46d"><td class="memItemLeft" align="right" valign="top"><a id="aaa2a7264365c0266f0814ba4de8ca46d" name="aaa2a7264365c0266f0814ba4de8ca46d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_adjustWorksheetSizeNeeded</b> = false</td></tr>
+<tr class="memdesc:aaa2a7264365c0266f0814ba4de8ca46d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request adjusting the worksheet size? <br /></td></tr>
+<tr class="separator:aaa2a7264365c0266f0814ba4de8ca46d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72f895de3de211542c4a15b4db3efad7"><td class="memItemLeft" align="right" valign="top"><a id="a72f895de3de211542c4a15b4db3efad7" name="a72f895de3de211542c4a15b4db3efad7"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_clickType</b> = CLICK_TYPE_NONE</td></tr>
+<tr class="separator:a72f895de3de211542c4a15b4db3efad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5514d33a6d7ffeb8ab168e170b528ba"><td class="memItemLeft" align="right" valign="top"><a id="ae5514d33a6d7ffeb8ab168e170b528ba" name="ae5514d33a6d7ffeb8ab168e170b528ba"></a>
+<a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_clickInGC</b></td></tr>
+<tr class="separator:ae5514d33a6d7ffeb8ab168e170b528ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cfce36cae9967efa347d3cb65a6a2f2"><td class="memItemLeft" align="right" valign="top"><a id="a3cfce36cae9967efa347d3cb65a6a2f2" name="a3cfce36cae9967efa347d3cb65a6a2f2"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_blinkDisplayCaret</b> = true</td></tr>
+<tr class="memdesc:a3cfce36cae9967efa347d3cb65a6a2f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">true = blink the cursor <br /></td></tr>
+<tr class="separator:a3cfce36cae9967efa347d3cb65a6a2f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba518db33b4384a2aed29ca8e7393c15"><td class="memItemLeft" align="right" valign="top"><a id="aba518db33b4384a2aed29ca8e7393c15" name="aba518db33b4384a2aed29ca8e7393c15"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_hCaretBlinkVisible</b> = true</td></tr>
+<tr class="memdesc:aba518db33b4384a2aed29ca8e7393c15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the blinking vertically-drawn cursor currently visible? <br /></td></tr>
+<tr class="separator:aba518db33b4384a2aed29ca8e7393c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecd4463c76b2a0d8ed04cf0f84127f6e"><td class="memItemLeft" align="right" valign="top"><a id="aecd4463c76b2a0d8ed04cf0f84127f6e" name="aecd4463c76b2a0d8ed04cf0f84127f6e"></a>
+wxTimer&#160;</td><td class="memItemRight" valign="bottom"><b>m_timer</b></td></tr>
+<tr class="memdesc:aecd4463c76b2a0d8ed04cf0f84127f6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time step for autoscrolll when the mouse is outside the window. <br /></td></tr>
+<tr class="separator:aecd4463c76b2a0d8ed04cf0f84127f6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa4d1f3cb279c59946c9cd3c2ce76f2d"><td class="memItemLeft" align="right" valign="top"><a id="aaa4d1f3cb279c59946c9cd3c2ce76f2d" name="aaa4d1f3cb279c59946c9cd3c2ce76f2d"></a>
+wxTimer&#160;</td><td class="memItemRight" valign="bottom"><b>m_caretTimer</b></td></tr>
+<tr class="memdesc:aaa4d1f3cb279c59946c9cd3c2ce76f2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cursor blink rate. Also the timeout for redrawing the worksheet. <br /></td></tr>
+<tr class="separator:aaa4d1f3cb279c59946c9cd3c2ce76f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cca5971121fdf1af2be7aa52502962e"><td class="memItemLeft" align="right" valign="top"><a id="a9cca5971121fdf1af2be7aa52502962e" name="a9cca5971121fdf1af2be7aa52502962e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_saved</b> = true</td></tr>
+<tr class="memdesc:a9cca5971121fdf1af2be7aa52502962e"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if no changes have to be saved. <br /></td></tr>
+<tr class="separator:a9cca5971121fdf1af2be7aa52502962e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf9be45dcf8b0d0e7b4f77dc9d51f888"><td class="memItemLeft" align="right" valign="top"><a id="adf9be45dcf8b0d0e7b4f77dc9d51f888" name="adf9be45dcf8b0d0e7b4f77dc9d51f888"></a>
+std::vector&lt; wxString &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_completions</b></td></tr>
+<tr class="separator:adf9be45dcf8b0d0e7b4f77dc9d51f888"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea567902c9d248e8fb3a3421fd78fabe"><td class="memItemLeft" align="right" valign="top"><a id="aea567902c9d248e8fb3a3421fd78fabe" name="aea567902c9d248e8fb3a3421fd78fabe"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_autocompleteTemplates</b> = true</td></tr>
+<tr class="separator:aea567902c9d248e8fb3a3421fd78fabe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af11352b6d8998619d8ce40660360998a"><td class="memItemLeft" align="right" valign="top"><a id="af11352b6d8998619d8ce40660360998a" name="af11352b6d8998619d8ce40660360998a"></a>
+<a class="el" href="classAutocompletePopup.html">AutocompletePopup</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_autocompletePopup</b></td></tr>
+<tr class="separator:af11352b6d8998619d8ce40660360998a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af32656bb631b3c42ce4fa2acaac05bc0"><td class="memItemLeft" align="right" valign="top"><a id="af32656bb631b3c42ce4fa2acaac05bc0" name="af32656bb631b3c42ce4fa2acaac05bc0"></a>
 stx::optional&lt; <a class="el" href="classNotification.html">Notification</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_notificationMessage</b></td></tr>
 <tr class="memdesc:af32656bb631b3c42ce4fa2acaac05bc0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> error notification message. <br /></td></tr>
@@ -1230,6 +1347,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
       </table>
 </div><div class="memdoc">
 <p>Set the cursor to a sane place</p>
+
+</div>
+</div>
+<a id="a7b3e88ac91c894dd9944defa95f5c290" name="a7b3e88ac91c894dd9944defa95f5c290"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b3e88ac91c894dd9944defa95f5c290">&#9670;&#160;</a></span>EraseBackground()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::EraseBackground </td>
+          <td>(</td>
+          <td class="paramtype">wxEraseEvent &amp;&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Is called if wxWidgets wants to erase the worksheet's background. </p>
+<p>We don't want to erase the worksheet's background. </p>
 
 </div>
 </div>
@@ -2347,6 +2485,58 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Update the table of contents. </p>
 <p>This function actually only schedules the update of the table-of-contents-tab. The actual update is done when <a class="el" href="classwxMaxima.html">wxMaxima</a> is idle. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="a75785a5cfd7a6db3fa9281c7682d3093" name="a75785a5cfd7a6db3fa9281c7682d3093"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75785a5cfd7a6db3fa9281c7682d3093">&#9670;&#160;</a></span>m_hCaretActive</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::m_hCaretActive = true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Is the active cursor the one represented by a horizontal line? </p>
+<p>See m_hCaretPosition and EditorCell::GetActiveCell() for the position of the two types of cursors. </p>
+
+</div>
+</div>
+<a id="a825cbf5958db1feaf262a01912eb8cf8" name="a825cbf5958db1feaf262a01912eb8cf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a825cbf5958db1feaf262a01912eb8cf8">&#9670;&#160;</a></span>m_hCaretPositionEnd</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCellPtr.html">CellPtr</a>&lt;<a class="el" href="classGroupCell.html">GroupCell</a>&gt; Worksheet::m_hCaretPositionEnd</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The end of the selection when selecting group with the horizontally drawn cursor. </p>
+<p>This cell does define where the selection was actually ended and therefore does not need to be below m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionEnd. </p>
+
+</div>
+</div>
+<a id="af1cd67d770fe0b554373dce0a7e14880" name="af1cd67d770fe0b554373dce0a7e14880"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1cd67d770fe0b554373dce0a7e14880">&#9670;&#160;</a></span>m_hCaretPositionStart</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCellPtr.html">CellPtr</a>&lt;<a class="el" href="classGroupCell.html">GroupCell</a>&gt; Worksheet::m_hCaretPositionStart</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The start for the selection when selecting group with the horizontally drawn cursor. </p>
+<p>This cell does define were the selection was actually started and therefore does not need to be above m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionStart. </p>
 
 </div>
 </div>
