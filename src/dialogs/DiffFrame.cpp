@@ -129,8 +129,22 @@ DiffFrame::DiffFrame(wxWindow *parent, const wxArrayString &files, Configuration
   AlignCells();
   
   for (auto ws : m_worksheets) {
+    ws->UpdateConfigurationClientSize();
     ws->Recalculate();
   }
+
+  Bind(wxEVT_SIZE, [this](wxSizeEvent &event) {
+    event.Skip();
+    for (auto ws : m_worksheets) {
+        ws->UpdateConfigurationClientSize();
+        if (ws->GetTree()) {
+            ws->GetTree()->ResetSize_RecursivelyList();
+            ws->Recalculate();
+        }
+        ws->AdjustSize();
+        ws->Refresh();
+    }
+  });
 }
 
 DiffFrame::~DiffFrame() {}

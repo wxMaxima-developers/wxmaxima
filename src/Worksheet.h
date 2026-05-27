@@ -556,6 +556,7 @@ private:
   // Select all group cells inside the given rectangle;
   void SelectGroupCells(wxPoint down, wxPoint up);
 
+public:
   void AdjustSize();
 
   //! Cannot be static as it is called using a function pointer to an object
