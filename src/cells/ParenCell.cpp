@@ -110,11 +110,9 @@ void ParenCell::Recalculate(AFontSize fontsize) const {
       m_charHeight1 = 2;
 
     if (IsBrokenIntoLines()) {
-      int innerCellCenter = 0;
-      if(m_innerCell)
-        innerCellCenter = m_innerCell->GetCenterList();
-      m_height = std::max(innerCellHeight, m_open->GetHeightList());
-      m_center = std::max(innerCellCenter, m_open->GetCenterList());
+      m_width = 0;
+      m_height = 0;
+      m_center = 0;
     } else {
       if (m_innerCell) {
         m_innerCell->SetCurrentPoint(
@@ -146,87 +144,111 @@ void ParenCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void ParenCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
-    wxPoint innerCellPos(point);
+/**
+ * @brief Pass 2 (Arrange): Positions opening bracket, inner content, and closing bracket.
+ */
+void ParenCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  
+  // Linearized cells (broken into lines) behave as zero-size containers.
+  // Their children are positioned by the flattened GroupCell loop.
+  if (IsBrokenIntoLines())
+    return;
 
+  if (m_innerCell) {
+    wxPoint innerCellPos = point;
     switch (m_bigParenType) {
     case Configuration::ascii:
+      // Simple font-based parenthesis
+      innerCellPos.x += m_open->GetWidth();
+      m_open->SetCurrentPointList(point);
+      m_innerCell->SetCurrentPointList(innerCellPos);
       {
-        innerCellPos.x += m_open->GetWidth();
-        m_open->DrawList(point, dc, antialiassingDC);
         int innerCellWidth = 0;
-        if(m_innerCell)
+        if (m_innerCell)
           innerCellWidth = m_innerCell->SumOfWidths();
-
-        m_close->DrawList(wxPoint(point.x + m_open->GetWidth() + innerCellWidth,
-                                  point.y), dc, antialiassingDC);
-        break;
+        m_close->SetCurrentPointList(
+            wxPoint(point.x + m_open->GetWidth() + innerCellWidth, point.y));
       }
+      break;
     default: {
-      if(m_innerCell)
-        {
-          innerCellPos.y +=
-            (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
-        }
+      // Hand-drawn or Unicode-scaled parenthesis
+      // We center the argument of all big parenthesis vertically
+      innerCellPos.y +=
+          (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
+      innerCellPos.x = point.x + m_signWidth;
+      m_innerCell->SetCurrentPointList(innerCellPos);
+    } break;
+    }
+  }
+}
+
+void ParenCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
+    if (!m_innerCell)
+      return;
+
+    wxPoint point = m_currentPoint;
+    switch (m_bigParenType) {
+    case Configuration::ascii: {
+      m_open->DrawList(dc, antialiassingDC);
+      m_innerCell->DrawList(dc, antialiassingDC);
+      m_close->DrawList(dc, antialiassingDC);
+      break;
+    }
+    default: {
+      m_innerCell->DrawList(dc, antialiassingDC);
       SetPen(antialiassingDC, 1.0);
       SetBrush(antialiassingDC);
 
       int signWidth = m_signWidth - Scale_Px(2);
-      innerCellPos.x = point.x + m_signWidth;
 
       // Left bracket
       const wxPoint pointsL[10] = {
-        {point.x + Scale_Px(1) + signWidth, point.y - m_center + Scale_Px(4)},
-        {point.x + Scale_Px(1) + 3 * signWidth / 4,
-         point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)},
-        {point.x + Scale_Px(1), point.y},
-        {point.x + Scale_Px(1) + 3 * signWidth / 4,
-         point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)},
-        {point.x + Scale_Px(1) + signWidth, point.y + m_center - Scale_Px(4)},
-        // Appending the last point twice should allow for an abrupt 180° turn
-        {point.x + Scale_Px(1) + signWidth, point.y + m_center - Scale_Px(4)},
-        {point.x + Scale_Px(1) + 3 * signWidth / 4,
-         point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)},
-        // The middle point of the 2nd run of the parenthesis is at a
-        // different place making the parenthesis wider here
-        {point.x + Scale_Px(2), point.y},
-        {point.x + Scale_Px(1) + 3 * signWidth / 4,
-         point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)},
-        {point.x + Scale_Px(1) + signWidth,
-         point.y - m_center + Scale_Px(4)}};
+          {point.x + Scale_Px(1) + signWidth, point.y - m_center + Scale_Px(4)},
+          {point.x + Scale_Px(1) + 3 * signWidth / 4,
+           point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)},
+          {point.x + Scale_Px(1), point.y},
+          {point.x + Scale_Px(1) + 3 * signWidth / 4,
+           point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)},
+          {point.x + Scale_Px(1) + signWidth, point.y + m_center - Scale_Px(4)},
+          // Appending the last point twice should allow for an abrupt 180° turn
+          {point.x + Scale_Px(1) + signWidth, point.y + m_center - Scale_Px(4)},
+          {point.x + Scale_Px(1) + 3 * signWidth / 4,
+           point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)},
+          // The middle point of the 2nd run of the parenthesis is at a
+          // different place making the parenthesis wider here
+          {point.x + Scale_Px(2), point.y},
+          {point.x + Scale_Px(1) + 3 * signWidth / 4,
+           point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)},
+          {point.x + Scale_Px(1) + signWidth,
+           point.y - m_center + Scale_Px(4)}};
       antialiassingDC->DrawSpline(10, pointsL);
 
       // Right bracket
       const wxPoint pointsR[10] = {
-        {point.x + m_width - Scale_Px(1) - signWidth,
-         point.y - m_center + Scale_Px(4)},
-        {point.x + m_width - Scale_Px(1) - signWidth / 2,
-         point.y - m_center + signWidth / 2 + Scale_Px(4)},
-        {point.x + m_width - Scale_Px(1), point.y},
-        {point.x + m_width - Scale_Px(1) - signWidth / 2,
-         point.y + m_center - signWidth / 2 - Scale_Px(4)},
-        {point.x + m_width - Scale_Px(1) - signWidth,
-         point.y + m_center - Scale_Px(4)},
-        {point.x + m_width - Scale_Px(1) - signWidth,
-         point.y + m_center - Scale_Px(4)},
-        {point.x + m_width - Scale_Px(1) - signWidth / 2,
-         point.y + m_center - signWidth / 2 - Scale_Px(4)},
-        {point.x + m_width - Scale_Px(2), point.y},
-        {point.x + m_width - Scale_Px(1) - signWidth / 2,
-         point.y - m_center + signWidth / 2 + Scale_Px(4)},
-        {point.x + m_width - Scale_Px(1) - signWidth,
-         point.y - m_center + Scale_Px(4)}};
+          {point.x + m_width - Scale_Px(1) - signWidth,
+           point.y - m_center + Scale_Px(4)},
+          {point.x + m_width - Scale_Px(1) - signWidth / 2,
+           point.y - m_center + signWidth / 2 + Scale_Px(4)},
+          {point.x + m_width - Scale_Px(1), point.y},
+          {point.x + m_width - Scale_Px(1) - signWidth / 2,
+           point.y + m_center - signWidth / 2 - Scale_Px(4)},
+          {point.x + m_width - Scale_Px(1) - signWidth,
+           point.y + m_center - Scale_Px(4)},
+          {point.x + m_width - Scale_Px(1) - signWidth,
+           point.y + m_center - Scale_Px(4)},
+          {point.x + m_width - Scale_Px(1) - signWidth / 2,
+           point.y + m_center - signWidth / 2 - Scale_Px(4)},
+          {point.x + m_width - Scale_Px(2), point.y},
+          {point.x + m_width - Scale_Px(1) - signWidth / 2,
+           point.y - m_center + signWidth / 2 + Scale_Px(4)},
+          {point.x + m_width - Scale_Px(1) - signWidth,
+           point.y - m_center + Scale_Px(4)}};
       antialiassingDC->DrawSpline(10, pointsR);
     } break;
     }
-
-    if (!IsBrokenIntoLines())
-      {
-        if(m_innerCell)
-          m_innerCell->DrawList(innerCellPos, dc, antialiassingDC);
-      }
   }
 }
 

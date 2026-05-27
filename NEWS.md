@@ -17,8 +17,7 @@
 - Fix XML for saving as wxmx, when Maxima warnings are displayed (#2092).
 - Fix XML output for definite integrals. It was saved without the limits.
 - Resolved a Crash on encountering some integrals (#2095)
-- Each Group of input and output now has an: Implemented synchronized scrolling in the Diff viewer. When comparing files, scrolling one worksheet now automatically aligns its matching cells with the other worksheets using a Meld-like "push" model. Added support for horizontal scroll synchronization with a toggle button and a custom icon. Added an incremental search bar that can find text in the input or jump directly to a cell by its UUID. Fixed bugs in backward search wrap-around and height underestimation for large outputs UUID that can be used to
-  find it again.
+- A complete overhaul of the worksheet's layout and display engine.
 - Opening <file.wxmx>#UUID opens the file and scrolls to the Group with 
   that UUID
 - Many stability improvements, most of these AI-driven (#2072, #2061)

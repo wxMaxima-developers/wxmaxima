@@ -154,51 +154,75 @@ void SubSupCell::Recalculate(AFontSize const fontsize) const {
   }
 }
 
-void SubSupCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
-    wxPoint in;
+/**
+ * @brief Pass 2 (Arrange): Positions base and all four possible scripts.
+ */
+void SubSupCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
 
-    wxCoord preWidth = 0;
+  wxCoord preWidth = 0;
 
+  // Calculate the width reserved for pre-scripts (presub/presup)
+  if (m_preSubCell)
+    preWidth = m_preSubCell->SumOfWidths();
+  if (m_preSupCell)
+    preWidth = std::max(preWidth, m_preSupCell->SumOfWidths());
+
+  // Position pre-scripts
+  if (m_preSubCell) {
+    wxPoint presub = point;
+    presub.x += preWidth - m_preSubCell->SumOfWidths();
+    presub.y += m_baseCell->GetMaxDrop() + m_preSubCell->GetCenterList() -
+                static_cast<wxCoord>(.8 * m_fontSize_Scaled.Get()) +
+                MC_EXP_INDENT;
+    m_preSubCell->SetCurrentPointList(presub);
+  }
+
+  if (m_preSupCell) {
+    wxPoint presup = point;
+    presup.x += preWidth - m_preSupCell->SumOfWidths();
+    presup.y -= m_baseCell->GetCenterList() + m_preSupCell->GetHeightList() -
+                m_preSupCell->GetCenterList() -
+                static_cast<wxCoord>(.8 * m_fontSize_Scaled.Get()) +
+                MC_EXP_INDENT;
+    m_preSupCell->SetCurrentPointList(presup);
+  }
+
+  // Position the base cell
+  point.x += preWidth;
+  m_baseCell->SetCurrentPointList(point);
+
+  // Position post-scripts
+  wxPoint in = point;
+  in.x += m_baseCell->SumOfWidths() - Scale_Px(2);
+  if (m_postSubCell) {
+    in.y = point.y + m_baseCell->GetMaxDrop() + m_postSubCell->GetCenterList() -
+           .8 * m_fontSize_Scaled.Get() + MC_EXP_INDENT;
+    m_postSubCell->SetCurrentPointList(in);
+  }
+  if (m_postSupCell) {
+    in.y = point.y - m_baseCell->GetCenterList() -
+           m_postSupCell->GetHeightList() + m_postSupCell->GetCenterList() +
+           .8 * m_fontSize_Scaled.Get() + MC_EXP_INDENT;
+    m_postSupCell->SetCurrentPointList(in);
+  }
+}
+
+void SubSupCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
     if (m_preSubCell)
-      preWidth = m_preSubCell->SumOfWidths();
+      m_preSubCell->DrawList(dc, antialiassingDC);
+
     if (m_preSupCell)
-      preWidth = std::max(preWidth, m_preSupCell->SumOfWidths());
+      m_preSupCell->DrawList(dc, antialiassingDC);
 
-    if (m_preSubCell) {
-      wxPoint presub = point;
-      presub.x += preWidth - m_preSubCell->SumOfWidths();
-      presub.y += m_baseCell->GetMaxDrop() + m_preSubCell->GetCenterList() -
-        static_cast<wxCoord>(.8 * m_fontSize_Scaled.Get()) + MC_EXP_INDENT;
-      m_preSubCell->DrawList(presub, dc, antialiassingDC);
-    }
+    m_baseCell->DrawList(dc, antialiassingDC);
 
-    if (m_preSupCell) {
-      wxPoint presup = point;
-      presup.x += preWidth - m_preSupCell->SumOfWidths();
-      presup.y -= m_baseCell->GetCenterList() + m_preSupCell->GetHeightList() -
-        m_preSupCell->GetCenterList() - static_cast<wxCoord>(.8 * m_fontSize_Scaled.Get()) +
-        MC_EXP_INDENT;
-      m_preSupCell->DrawList(presup, dc, antialiassingDC);
-    }
-
-    point.x += preWidth;
-    m_baseCell->DrawList(point, dc, antialiassingDC);
-
-    in.x = point.x + m_baseCell->SumOfWidths() - Scale_Px(2);
-    if (m_postSubCell) {
-      in.y = point.y + m_baseCell->GetMaxDrop() +
-        m_postSubCell->GetCenterList() - .8 * m_fontSize_Scaled.Get() +
-        MC_EXP_INDENT;
-      m_postSubCell->DrawList(in, dc, antialiassingDC);
-    }
-    if (m_postSupCell) {
-      in.y = point.y - m_baseCell->GetCenterList() -
-        m_postSupCell->GetHeightList() + m_postSupCell->GetCenterList() +
-        .8 * m_fontSize_Scaled.Get() + MC_EXP_INDENT;
-      m_postSupCell->DrawList(in, dc, antialiassingDC);
-    }
+    if (m_postSubCell)
+      m_postSubCell->DrawList(dc, antialiassingDC);
+    if (m_postSupCell)
+      m_postSupCell->DrawList(dc, antialiassingDC);
   }
 }
 

@@ -153,9 +153,14 @@ void ImgCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void ImgCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point) && (m_image != NULL)) {
+void ImgCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+}
+
+void ImgCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell() && (m_image != NULL)) {
+    wxPoint point = GetCurrentPoint();
     if (!InUpdateRegion())
       return;
 

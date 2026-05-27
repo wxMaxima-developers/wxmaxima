@@ -39,10 +39,14 @@ public:
   VisiblyInvalidCell(GroupCell *group, Configuration *config, const wxString *toolTip);
   VisiblyInvalidCell(GroupCell *group, const VisiblyInvalidCell &cell);
   virtual ~VisiblyInvalidCell(){}
-  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+  virtual std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
-private:
+  using Cell::SetCurrentPoint;
+  void SetCurrentPoint(wxPoint point) override;
+  void Draw(wxDC *dc, wxDC *antialiassingDC) override;
+
+  private:
 //** Bitfield objects (0 bytes)
 //**
   static void InitBitFields_VisiblyInvalidCell()

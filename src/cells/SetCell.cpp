@@ -45,16 +45,19 @@ SetCell::SetCell(GroupCell *group, const SetCell &cell)
 
 DEFINE_CELL(SetCell)
 
-void SetCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
+void SetCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+}
+
+void SetCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
+    wxPoint point = m_currentPoint;
     wxPoint innerCellPos(point);
 
     if (m_drawAsAscii) {
-      innerCellPos.x += m_open->GetWidth();
-      m_open->DrawList(point, dc, antialiassingDC);
-      m_close->DrawList(wxPoint(point.x + m_open->GetWidth() + m_innerCell->SumOfWidths(),
-                                point.y), dc, antialiassingDC);
+      m_open->DrawList(dc, antialiassingDC);
+      m_close->DrawList(dc, antialiassingDC);
     } else {
       innerCellPos.y +=
         (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() / 2);
@@ -93,7 +96,7 @@ void SetCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
     }
 
     if (!IsBrokenIntoLines())
-      m_innerCell->DrawList(innerCellPos, dc, antialiassingDC);
+      m_innerCell->DrawList(dc, antialiassingDC);
   }
 }
 

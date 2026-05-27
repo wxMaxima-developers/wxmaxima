@@ -79,7 +79,10 @@ public:
   //! \todo m_open and m_close are recalculated in handdrawn mode, too.
   void Recalculate(const AFontSize fontsize) const override;
 
-  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  using Cell::SetCurrentPoint;
+  void SetCurrentPoint(wxPoint point) override;
+
+  void Draw(wxDC *dc, wxDC *antialiassingDC) override;
 
   bool BreakUp() const override;
 

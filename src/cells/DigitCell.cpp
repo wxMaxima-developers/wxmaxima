@@ -55,9 +55,14 @@ void DigitCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void DigitCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
+void DigitCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+}
+
+void DigitCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
+    wxPoint point = GetCurrentPoint();
     SetTextColor(dc);
     SetFont(dc, m_fontSize_Scaled);
     dc->DrawText(m_text, point.x,

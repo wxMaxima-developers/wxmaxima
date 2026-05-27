@@ -256,6 +256,8 @@ public:
     Recalculate();
   }
   bool Recalculate() const;
+  using Cell::SetCurrentPoint;
+  void SetCurrentPoint(wxPoint point) override;
   wxPoint CalculateInputPosition() const;
 
   //! Recalculate the height of the input part of the cell
@@ -365,7 +367,7 @@ public:
     by RecalculateOutput().
 
   */
-  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  void Draw(wxDC *dc, wxDC *antialiassingDC) override;
 
   bool AddEnding() override;
 

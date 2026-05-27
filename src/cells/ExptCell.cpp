@@ -71,17 +71,31 @@ void ExptCell::MakeBreakupCells() {
   }
 }
 
-void ExptCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
-    wxPoint bs, pw;
-    bs.x = point.x;
-    bs.y = point.y;
-    m_baseCell->DrawList(bs, dc, antialiassingDC);
+/**
+ * @brief Pass 2 (Arrange): Positions the base and the raised exponent.
+ */
+void ExptCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  
+  // Linearized cells (broken into lines) behave as zero-size containers.
+  // Their children are positioned by the flattened GroupCell loop.
+  if (IsBrokenIntoLines())
+    return;
 
-    point.x += m_baseCell->SumOfWidths() - MC_TEXT_PADDING;
-    point.y -= m_expt_yoffset;
-    m_exptCell->DrawList(point, dc, antialiassingDC);
+  // Position the base
+  m_baseCell->SetCurrentPointList(point);
+
+  // Position the exponent (raised by m_expt_yoffset and shifted right)
+  point.x += m_baseCell->SumOfWidths() - MC_TEXT_PADDING;
+  point.y -= m_expt_yoffset;
+  m_exptCell->SetCurrentPointList(point);
+}
+
+void ExptCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
+    m_baseCell->DrawList(dc, antialiassingDC);
+    m_exptCell->DrawList(dc, antialiassingDC);
   }
 }
 

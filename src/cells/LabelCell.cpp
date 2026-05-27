@@ -47,11 +47,14 @@ LabelCell::LabelCell(GroupCell *group, const LabelCell &cell)
 
 DEFINE_CELL(LabelCell)
 
+void LabelCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+}
 
-
-void LabelCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point) &&
+void LabelCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  wxPoint point = m_currentPoint;
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell() &&
       !(IsHidden() ||
         (GetHidableMultSign() && m_configuration->HidemultiplicationSign()))) {
 

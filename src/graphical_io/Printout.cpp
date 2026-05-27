@@ -138,7 +138,7 @@ bool Printout::OnPrintPage(int num) {
 
   while (group && (group->GetGroupType() != GC_TYPE_PAGEBREAK)) {
     {
-      group->Draw(group->GetGroup()->GetCurrentPoint(), dc, dc);
+      group->Draw(dc, dc);
       if(end && (group == end->GetGroup()))
         break;
     }
@@ -163,7 +163,7 @@ void Printout::BreakPages() {
   std::vector <Cell*> lineStarts;
   for (GroupCell &gr : OnList(m_tree.get())) {
     // Drawing a GroupCell makes it calculate the position of its output cells.
-    gr.Draw(gr.GetCurrentPoint(), GetDC(), GetDC());
+    gr.Draw(GetDC(), GetDC());
     // We can introduce a break after the input part of any group cell.
     if(gr.GetPrompt())
       lineStarts.push_back(gr.GetPrompt());

@@ -57,7 +57,9 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
-  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  using Cell::SetCurrentPoint;
+  void SetCurrentPoint(wxPoint point) override;
+  void Draw(wxDC *dc, wxDC *antialiassingDC) override;
 
   wxString ToMatlab() const override;
   wxString ToString() const override;

@@ -250,6 +250,10 @@ void AnimationCell::SetMaxHeight(wxCoord height) {
     (*i).SetMaxHeight(height);
 }
 
+void AnimationCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+}
+
 void AnimationCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize))
     Cell::Recalculate(fontsize);
@@ -276,15 +280,15 @@ void AnimationCell::Recalculate(AFontSize fontsize) const {
   m_center = m_height / 2;
 }
 
-void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
+void AnimationCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
   if (!IsOk())
     return;
   // If the animation leaves the screen the timer is stopped automatically.
   if (m_animationRunning)
     ReloadTimer();
 
-  if (DrawThisCell(point) && (m_images.at(m_displayed) != NULL)) {
+  if (DrawThisCell() && (m_images.at(m_displayed) != NULL)) {
     // Start the timer once the animation appears on the screen.
     // But start it only once: Else the animation could be refreshed
     // more frequent than it can be drawn. Each update of the animation
@@ -303,7 +307,7 @@ void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
                                                  m_configuration->GetColor(TS_SELECTION))));
     else
       dc->SetPen(*wxRED_PEN);
-    dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
+    dc->DrawRectangle(wxRect(m_currentPoint.x, m_currentPoint.y - m_center, m_width, m_height));
 
     wxBitmap bitmap =
       (m_configuration->GetPrinting()
@@ -317,10 +321,10 @@ void AnimationCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       imageBorderWidth = Scale_Px(3);
       dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
                                                        m_configuration->GetColor(TS_SELECTION))));
-      dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
+      dc->DrawRectangle(wxRect(m_currentPoint.x, m_currentPoint.y - m_center, m_width, m_height));
     }
 
-    dc->Blit(point.x + imageBorderWidth, point.y - m_center + imageBorderWidth,
+    dc->Blit(m_currentPoint.x + imageBorderWidth, m_currentPoint.y - m_center + imageBorderWidth,
              m_width - 2 * imageBorderWidth, m_height - 2 * imageBorderWidth,
              &bitmapDC, imageBorderWidth - m_imageBorderWidth,
              imageBorderWidth - m_imageBorderWidth);

@@ -71,14 +71,22 @@ void FunCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void FunCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
-    wxPoint name(point), arg(point);
-    m_nameCell->DrawList(name, dc, antialiassingDC);
+void FunCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  if (IsBrokenIntoLines())
+    return;
+  wxPoint name(point), arg(point);
+  m_nameCell->SetCurrentPointDrawList(name);
 
-    arg.x += m_nameCell->SumOfWidths();
-    m_argCell->DrawList(arg, dc, antialiassingDC);
+  arg.x += m_nameCell->SumOfWidths();
+  m_argCell->SetCurrentPointDrawList(arg);
+}
+
+void FunCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
+    m_nameCell->DrawList(dc, antialiassingDC);
+    m_argCell->DrawList(dc, antialiassingDC);
   }
 }
 

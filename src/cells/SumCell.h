@@ -80,7 +80,9 @@ public:
 
   void Recalculate(const AFontSize fontsize) const override;
 
-  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  using Cell::SetCurrentPoint;
+  void SetCurrentPoint(wxPoint point) override;
+  void Draw(wxDC *dc, wxDC *antialiassingDC) override;
 
   wxString ToMathML() const override;
   wxString ToMatlab() const override;

@@ -43,7 +43,9 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   void Recalculate(const AFontSize fontsize) const override;
-  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  using Cell::SetCurrentPoint;
+  void SetCurrentPoint(wxPoint point) override;
+  void Draw(wxDC *dc, wxDC *antialiassingDC) override;
   void SetStyle(TextStyle style) override;
   wxString ToString() const override;
   //! Set the automatic label maxima has assigned the current equation

@@ -109,25 +109,51 @@ void IntervalCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void IntervalCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
-    wxPoint innerCellPos(point);
+void IntervalCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  if (IsBrokenIntoLines())
+    return;
 
+  if (m_drawAsAscii) {
+    m_openBracket->SetCurrentPointDrawList(point);
+    point.x += m_openBracket->GetWidth();
+    m_start->SetCurrentPointDrawList(point);
+    point.x += m_start->SumOfWidths();
+    m_ellipsis->SetCurrentPointDrawList(point);
+    point.x += m_ellipsis->GetWidth();
+    m_stop->SetCurrentPointDrawList(point);
+    point.x += m_stop->SumOfWidths();
+    m_closeBracket->SetCurrentPointDrawList(point);
+  } else {
+    wxPoint innerCellPos(point);
+    innerCellPos.x += m_signWidth;
+
+    wxPoint startCellPos(innerCellPos);
+    startCellPos.y += (m_start->GetCenterList() - m_start->GetHeightList() / 2);
+    m_start->SetCurrentPointList(startCellPos);
+
+    innerCellPos.x += m_start->SumOfWidths();
+    m_ellipsis->SetCurrentPointList(innerCellPos);
+
+    innerCellPos.x += m_ellipsis->GetWidth();
+    wxPoint stopCellPos(innerCellPos);
+    stopCellPos.y += (m_stop->GetCenterList() - m_stop->GetHeightList() / 2);
+    m_stop->SetCurrentPointList(stopCellPos);
+  }
+}
+
+void IntervalCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
     if (m_drawAsAscii) {
-      m_openBracket->DrawList(point, dc, antialiassingDC);
-      point.x += m_openBracket->SumOfWidths();
-      m_start->DrawList(point, dc, antialiassingDC);
-      point.x += m_start->SumOfWidths();
-      m_ellipsis->DrawList(point, dc, antialiassingDC);
-      point.x += m_ellipsis->SumOfWidths();
-      m_stop->DrawList(point, dc, antialiassingDC);
-      point.x += m_stop->SumOfWidths();
-      m_closeBracket->DrawList(point, dc, antialiassingDC);
+      m_openBracket->DrawList(dc, antialiassingDC);
+      m_start->DrawList(dc, antialiassingDC);
+      m_ellipsis->DrawList(dc, antialiassingDC);
+      m_stop->DrawList(dc, antialiassingDC);
+      m_closeBracket->DrawList(dc, antialiassingDC);
     } else {
       SetPen(dc, 1.5);
-
-      innerCellPos.x = point.x + m_signWidth;
+      wxPoint point = GetCurrentPoint();
 
       // Left bracket
       if (m_leftBracketOpensLeft)
@@ -143,16 +169,9 @@ void IntervalCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       else
         DrawBigRightOpenBracket(antialiassingDC, rightBracketPos);
 
-      wxPoint startCellPos(innerCellPos);
-      startCellPos.y +=
-        (m_start->GetCenterList() - m_start->GetHeightList() / 2);
-      m_start->DrawList(startCellPos, dc, antialiassingDC);
-      innerCellPos.x += m_start->SumOfWidths();
-      m_ellipsis->DrawList(innerCellPos, dc, antialiassingDC);
-      innerCellPos.x += m_ellipsis->GetWidth();
-      wxPoint stopCellPos(innerCellPos);
-      stopCellPos.y += (m_stop->GetCenterList() - m_stop->GetHeightList() / 2);
-      m_stop->DrawList(stopCellPos, dc, antialiassingDC);
+      m_start->DrawList(dc, antialiassingDC);
+      m_ellipsis->DrawList(dc, antialiassingDC);
+      m_stop->DrawList(dc, antialiassingDC);
     }
   }
 }

@@ -130,6 +130,10 @@ TextCell::TextCell(GroupCell *group, const TextCell &cell)
 
 DEFINE_CELL(TextCell)
 
+void TextCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+}
+
 void TextCell::SetStyle(TextStyle style) {
   m_sizeCache.clear();
   Cell::SetStyle(style);
@@ -446,10 +450,10 @@ void TextCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void TextCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
+void TextCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
 
-  if (DrawThisCell(point) &&
+  if (DrawThisCell() &&
       !(IsHidden() ||
         (GetHidableMultSign() && m_configuration->HidemultiplicationSign()))) {
 
@@ -459,8 +463,8 @@ void TextCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
 
     SetFont(dc, m_fontSize_Scaled);
     SetTextColor(dc);
-    dc->DrawText(m_displayedText, point.x + padding,
-                 point.y - m_center + MC_TEXT_PADDING);
+    dc->DrawText(m_displayedText, m_currentPoint.x + padding,
+                 m_currentPoint.y - m_center + MC_TEXT_PADDING);
   }
 }
 

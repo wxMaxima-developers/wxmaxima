@@ -71,19 +71,26 @@ void SubCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void SubCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
-    wxPoint bs, in;
+void SubCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  
+  wxPoint bs, in;
 
-    bs.x = point.x;
-    bs.y = point.y;
-    m_baseCell->DrawList(bs, dc, antialiassingDC);
+  bs.x = point.x;
+  bs.y = point.y;
+  m_baseCell->SetCurrentPointList(bs);
 
-    in.x = point.x + m_baseCell->SumOfWidths() - Scale_Px(2);
-    in.y = point.y + m_baseCell->GetMaxDrop() + m_indexCell->GetCenterList() -
-      .8 * m_fontSize_Scaled + MC_EXP_INDENT;
-    m_indexCell->DrawList(in, dc, antialiassingDC);
+  in.x = point.x + m_baseCell->SumOfWidths() - Scale_Px(2);
+  in.y = point.y + m_baseCell->GetMaxDrop() + m_indexCell->GetCenterList() -
+    .8 * m_fontSize_Scaled.Get() + MC_EXP_INDENT;
+  m_indexCell->SetCurrentPointList(in);
+}
+
+void SubCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
+    m_baseCell->DrawList(dc, antialiassingDC);
+    m_indexCell->DrawList(dc, antialiassingDC);
   }
 }
 

@@ -72,7 +72,9 @@ public:
 
   void Recalculate(const AFontSize fontsize) const override;
 
-  virtual void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  using Cell::SetCurrentPoint;
+  void SetCurrentPoint(wxPoint point) override;
+  virtual void Draw(wxDC *dc, wxDC *antialiassingDC) override;
 
   bool BreakUp() const override;
 

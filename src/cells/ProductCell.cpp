@@ -97,4 +97,12 @@ const wxSize ProductCell::GetSymbolSize() const
   return signSize;
 }
 
+void ProductCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+}
+
+void ProductCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+}
+
 const wxString ProductCell::m_svgProdSign(reinterpret_cast<const char*>(PRODSIGN));

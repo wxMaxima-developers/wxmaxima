@@ -81,14 +81,23 @@ void BoxCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void BoxCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
+void BoxCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  if (IsBrokenIntoLines())
+    return;
+
+  wxPoint in;
+  in.x = point.x + Scale_Px(4);
+  in.y = point.y;
+  m_innerCell->SetCurrentPointDrawList(in);
+}
+
+void BoxCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
+    wxPoint point = GetCurrentPoint();
     SetPen(dc);
-    wxPoint in;
-    in.x = point.x + Scale_Px(4);
-    in.y = point.y;
-    m_innerCell->DrawList(in, dc, antialiassingDC);
+    m_innerCell->DrawList(dc, antialiassingDC);
 
     dc->DrawLine(
                  point.x + Scale_Px(2),

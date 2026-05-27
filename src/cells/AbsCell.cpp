@@ -81,25 +81,41 @@ void AbsCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void AbsCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
+/**
+ * @brief Pass 2 (Arrange): Positions the inner content within absolute value bars.
+ */
+void AbsCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  
+  // Linearized cells (broken into lines) behave as zero-size containers.
+  // Their children are positioned by the flattened GroupCell loop.
+  if (IsBrokenIntoLines())
+    return;
+
+  wxPoint in;
+  // Offset content to account for the left bar and padding
+  in.x = point.x + Scale_Px(4) + m_configuration->GetDefaultLineWidth();
+  in.y = point.y;
+  m_innerCell->SetCurrentPointList(in);
+}
+
+void AbsCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
+    wxPoint point = GetCurrentPoint();
     SetPen(dc);
-    wxPoint in;
-    in.x = point.x + Scale_Px(4) + m_configuration->GetDefaultLineWidth();
-    in.y = point.y;
-    m_innerCell->DrawList(in, dc, antialiassingDC);
+    m_innerCell->DrawList(dc, antialiassingDC);
 
     dc->DrawLine(
-                 point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
-                 point.y - m_center + Scale_Px(2),
-                 point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
-                 point.y - m_center + m_height - Scale_Px(2));
+        point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
+        point.y - m_center + Scale_Px(2),
+        point.x + Scale_Px(2) + m_configuration->GetDefaultLineWidth() / 2,
+        point.y - m_center + m_height - Scale_Px(2));
     dc->DrawLine(point.x + m_width - Scale_Px(2) - 1 -
-                 m_configuration->GetDefaultLineWidth() / 2,
+                     m_configuration->GetDefaultLineWidth() / 2,
                  point.y - m_center + Scale_Px(2),
                  point.x + m_width - Scale_Px(2) - 1 -
-                 m_configuration->GetDefaultLineWidth() / 2,
+                     m_configuration->GetDefaultLineWidth() / 2,
                  point.y - m_center + m_height - Scale_Px(2));
   }
 }

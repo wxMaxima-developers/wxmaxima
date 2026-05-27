@@ -48,6 +48,10 @@ LimitCell::LimitCell(GroupCell *group, const LimitCell &cell)
 
 DEFINE_CELL(LimitCell)
 
+void LimitCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+}
+
 void LimitCell::MakeBreakUpCells() {
   m_open = std::make_unique<TextCell>(GetGroup(), m_configuration, wxS("limit("));
   m_comma = std::make_unique<TextCell>(GetGroup(), m_configuration, wxS(","));
@@ -82,25 +86,26 @@ void LimitCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void LimitCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
+void LimitCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
+    wxPoint point = m_currentPoint;
     wxPoint base(point), under(point), name(point);
 
     name.x = point.x +
       std::max(m_name->SumOfWidths(), m_under->SumOfWidths()) / 2 -
       m_name->SumOfWidths() / 2;
-    m_name->DrawList(name, dc, antialiassingDC);
+    m_name->DrawList(dc, antialiassingDC);
 
     under.x = point.x +
       std::max(m_name->SumOfWidths(), m_under->SumOfWidths()) / 2 -
       m_under->SumOfWidths() / 2;
 
     under.y = point.y + m_name->GetMaxDrop() + m_under->GetCenterList();
-    m_under->DrawList(under, dc, antialiassingDC);
+    m_under->DrawList(dc, antialiassingDC);
 
     base.x += std::max(m_name->SumOfWidths(), m_under->SumOfWidths());
-    m_base->DrawList(base, dc, antialiassingDC);
+    m_base->DrawList(dc, antialiassingDC);
   }
 }
 

@@ -103,14 +103,19 @@ void LongNumberCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void LongNumberCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  if ((point.x >= 0) && (point.y >= 0))
-    SetCurrentPoint(point);
+void LongNumberCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  if (IsBrokenIntoLines() && m_innerCell)
+    m_innerCell->SetCurrentPointList(point);
+}
+
+void LongNumberCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
   if (InUpdateRegion()) {
+    wxPoint point = m_currentPoint;
     if (m_numStart == wxEmptyString)
-      TextCell::Draw(point, dc, antialiassingDC);
+      TextCell::Draw(dc, antialiassingDC);
     else {
-      Cell::Draw(point, dc, antialiassingDC);
+      Cell::Draw(dc, antialiassingDC);
       if (IsBrokenIntoLines())
         return;
       SetTextColor(dc);

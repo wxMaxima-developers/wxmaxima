@@ -77,13 +77,21 @@ void SqrtCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void SqrtCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
-    wxPoint in(point);
+void SqrtCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  if (IsBrokenIntoLines())
+    return;
 
+  wxPoint in(point);
+  in.x += Scale_Px(11) + 1;
+  m_innerCell->SetCurrentPointList(in);
+}
+
+void SqrtCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
+    wxPoint point = m_currentPoint;
     {
-      in.x += Scale_Px(11) + 1;
       SetPen(antialiassingDC, 1.2);
 
       const wxPoint points[12] = {
@@ -115,7 +123,7 @@ void SqrtCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
       antialiassingDC->DrawLines(11, points, point.x, point.y);
     }
 
-    m_innerCell->DrawList(in, dc, antialiassingDC);
+    m_innerCell->DrawList(dc, antialiassingDC);
   }
 }
 

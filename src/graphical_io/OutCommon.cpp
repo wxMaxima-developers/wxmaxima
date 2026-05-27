@@ -184,7 +184,8 @@ void OutCommon::Draw(Cell *tree) {
     for (Cell &tmp : OnDrawList(tree)) {
         const Cell *const next = tmp.GetNext();
         if (!tmp.IsBrokenIntoLines()) {
-            tmp.Draw(point, m_recalculationDc, m_recalculationDc);
+            tmp.SetCurrentPoint(point);
+            tmp.Draw(m_recalculationDc, m_recalculationDc);
             if (next && next->BreakLineHere()) {
                 point.x = 0;
                 point.y += drop + next->GetCenterList();

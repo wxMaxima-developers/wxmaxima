@@ -136,48 +136,74 @@ void FracCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void FracCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
+/**
+ * @brief Pass 2 (Arrange): Positions numerator, denominator, and division sign.
+ */
+void FracCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  
+  // Linearized cells (broken into lines) behave as zero-size containers.
+  // Their children are positioned by the flattened GroupCell loop.
+  if (IsBrokenIntoLines())
+    return;
+
+  wxPoint num, denom;
+
+  if (m_inExponent) {
+    // Linear 1D layout for exponents (a/b)
+    num = point;
+    wxPoint divide(point);
+    divide.x += m_displayedNum->SumOfWidths();
+    denom = divide;
+    denom.x += m_divide->SumOfWidths();
+
+    m_displayedNum->SetCurrentPointList(num);
+    m_divide->SetCurrentPoint(divide);
+    m_displayedDenom->SetCurrentPointList(denom);
+  } else {
+    // 2D Stacked layout
+    // Numerator is centered above the baseline
+    num.x = point.x + m_horizontalGapLeft +
+      (m_width - m_horizontalGapLeft - m_horizontalGapRight -
+       m_displayedNum->SumOfWidths()) /
+      2;
+    num.y = point.y - m_displayedNum->GetMaxDrop();
+    m_displayedNum->SetCurrentPointList(num);
+
+    // Denominator is centered below the baseline
+    denom.x = point.x + m_horizontalGapLeft +
+      (m_width - m_horizontalGapLeft - m_horizontalGapRight -
+       m_displayedDenom->SumOfWidths()) /
+      2;
+    denom.y = point.y + m_displayedDenom->GetCenterList() + Scale_Px(4);
+    m_displayedDenom->SetCurrentPointList(denom);
+  }
+}
+
+void FracCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
     if (IsBrokenIntoLines())
       return;
 
-    wxPoint num, denom;
-
+    wxPoint point = GetCurrentPoint();
     if (m_inExponent) {
-      num = point;
-      wxPoint divide(point);
-      divide.x += m_displayedNum->SumOfWidths();
-      denom = divide;
-      denom.x += m_divide->SumOfWidths();
-
-      m_displayedNum->DrawList(num, dc, antialiassingDC);
-      m_divide->Draw(divide, dc, antialiassingDC);
-      m_displayedDenom->DrawList(denom, dc, antialiassingDC);
+      m_displayedNum->DrawList(dc, antialiassingDC);
+      m_divide->Draw(dc, antialiassingDC);
+      m_displayedDenom->DrawList(dc, antialiassingDC);
     } else {
-      num.x = point.x + m_horizontalGapLeft +
-        (m_width - m_horizontalGapLeft - m_horizontalGapRight -
-         m_displayedNum->SumOfWidths()) /
-        2;
-      num.y = point.y - m_displayedNum->GetMaxDrop();
-      m_displayedNum->DrawList(num, dc, antialiassingDC);
-
-      denom.x = point.x + m_horizontalGapLeft +
-        (m_width - m_horizontalGapLeft - m_horizontalGapRight -
-         m_displayedDenom->SumOfWidths()) /
-        2;
-      denom.y = point.y + m_displayedDenom->GetCenterList() + Scale_Px(4);
-      m_displayedDenom->DrawList(denom, dc, antialiassingDC);
-      if (m_fracStyle != FC_CHOOSE)
-        {
-          SetPen(antialiassingDC, 1.2);
-          antialiassingDC->DrawLine(point.x + m_horizontalGapLeft +
-                                    m_configuration->GetDefaultLineWidth() / 2,
-                                    point.y + Scale_Px(2),
-                                    point.x + m_width - m_horizontalGapRight -
-                                    m_configuration->GetDefaultLineWidth() / 2,
-                                    point.y + Scale_Px(2));
-        }
+      m_displayedNum->DrawList(dc, antialiassingDC);
+      m_displayedDenom->DrawList(dc, antialiassingDC);
+      if (m_fracStyle != FC_CHOOSE) {
+        SetPen(antialiassingDC, 1.2);
+        antialiassingDC->DrawLine(
+            point.x + m_horizontalGapLeft +
+                m_configuration->GetDefaultLineWidth() / 2,
+            point.y + Scale_Px(2),
+            point.x + m_width - m_horizontalGapRight -
+                m_configuration->GetDefaultLineWidth() / 2,
+            point.y + Scale_Px(2));
+      }
     }
   }
 }

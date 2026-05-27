@@ -96,7 +96,7 @@ public:
 
   virtual void Recalculate(const AFontSize fontsize) const override = 0;
 
-  virtual void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override = 0;
+  virtual void Draw(wxDC *dc, wxDC *antialiassingDC) override = 0;
 
   virtual wxString ToMatlab() const override = 0;
   virtual wxString ToRTF() const override = 0;

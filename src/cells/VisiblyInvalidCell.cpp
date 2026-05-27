@@ -72,3 +72,11 @@ std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell(GroupCell *group,
                                                    Configuration *config) {
   return std::make_unique<VisiblyInvalidCell>(group, config);
 }
+
+void VisiblyInvalidCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+}
+
+void VisiblyInvalidCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+}

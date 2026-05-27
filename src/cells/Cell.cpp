@@ -22,11 +22,33 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-/*! \file
-  This file defines the class Cell
-
-  Cell is the base class for all cell- or list-type elements.
-*/
+/**
+ * @file Cell.cpp
+ * @brief Core layout and rendering logic for worksheet cells.
+ * 
+ * ## The 3-Pass Layout Pipeline
+ * 
+ * To ensure consistent cell positioning and resolve issues with complex mathematical 
+ * layouts (fractions, exponents, etc.) and line-breaking, wxMaxima uses a strict 
+ * three-pass system:
+ * 
+ * ### Pass 1: Measure (Recalculate)
+ * In this pass, each cell determines its intrinsic size (width, height, and baseline 
+ * center). This pass is recursive and handles the "BreakUp" (linearization) of wide 
+ * 2D objects into their 1D forms. 
+ * @see Recalculate()
+ * 
+ * ### Pass 2: Arrange (SetCurrentPoint)
+ * Once sizes are known, this pass recursively calculates and assigns absolute 
+ * worksheet coordinates (`m_currentPoint`) to every cell in the hierarchy. This 
+ * is the single source of truth for positioning.
+ * @see SetCurrentPoint()
+ * 
+ * ### Pass 3: Paint (Draw)
+ * This is a fast, rendering-only pass. It simply draws the cell content using 
+ * the coordinates pre-calculated in Pass 2. It performs no layout logic itself.
+ * @see Draw()
+ */
 
 #include "Cell.h"
 #include "CellList.h"
@@ -352,19 +374,20 @@ int Cell::GetLineWidth() const {
   To make this work each derived class must draw the content of the cell
   and then call MathCell::Draw(...).
 */
-void Cell::Draw(wxPoint point, wxDC *dc, wxDC *WXUNUSED(antialiassingDC)) {
-  if(m_configuration->GetDebugmode())
-    {
-      if(!m_isHidden)
-        {
-          wxASSERT(GetWidth()  >= 0);
-          wxASSERT(GetHeight() >= 0);
-        }
+/**
+ * @brief Pass 3 (Paint): Renders the cell to the device context.
+ *
+ * This method uses the pre-calculated worksheet coordinates (Pass 2).
+ * It is a fast, rendering-only pass.
+ */
+void Cell::Draw(wxDC *dc, wxDC *adc) {
+  if (m_configuration->GetDebugmode()) {
+    if (!m_isHidden) {
+      wxASSERT(GetWidth() >= 0);
+      wxASSERT(GetHeight() >= 0);
     }
+  }
   m_configuration->NotifyOfCellRedraw(this);
-
-  if ((point.x >= 0) && (point.y >= 0))
-    SetCurrentPoint(point);
 
   // Mark all cells that contain tooltips
   if (!m_toolTip->empty() && (GetTextStyle() != TS_LABEL) &&
@@ -379,7 +402,6 @@ void Cell::Draw(wxPoint point, wxDC *dc, wxDC *WXUNUSED(antialiassingDC)) {
     }
   }
 }
-
 void Cell::ClearToolTip() {
   if (m_ownsToolTip)
     const_cast<wxString *>(m_toolTip)->Truncate(0); //-V575
@@ -438,10 +460,27 @@ void Cell::SetIsExponent() {
   }
 }
 
-void Cell::DrawList(wxPoint point, wxDC *dc, wxDC *adc) {
-  for (Cell &tmp : OnDrawList(this)) {
-    tmp.Draw(point, dc, adc);
+void Cell::SetCurrentPoint(wxPoint point) {
+  m_currentPoint = point;
+}
+
+void Cell::SetCurrentPointList(wxPoint point) {
+  for (Cell &tmp : OnList(this)) {
+    tmp.SetCurrentPoint(point);
     point.x += tmp.GetWidth();
+  }
+}
+
+void Cell::SetCurrentPointDrawList(wxPoint point) {
+  for (Cell &tmp : OnDrawList(this)) {
+    tmp.SetCurrentPoint(point);
+    point.x += tmp.GetWidth();
+  }
+}
+
+void Cell::DrawList(wxDC *dc, wxDC *adc) {
+  for (Cell &tmp : OnDrawList(this)) {
+    tmp.Draw(dc, adc);
   }
 }
 
@@ -476,9 +515,7 @@ void Cell::Recalculate(const AFontSize fontsize) const {
     }
 }
 
-bool Cell::DrawThisCell(wxPoint point) {
-  SetCurrentPoint(point);
-
+bool Cell::DrawThisCell() {
   // If the cell isn't on the worksheet we don't draw it.
   if (!HasValidPosition())
     return false;

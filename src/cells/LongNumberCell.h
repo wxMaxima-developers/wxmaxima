@@ -50,7 +50,9 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   void Recalculate(const AFontSize fontsize) const override;
-  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  using Cell::SetCurrentPoint;
+  void SetCurrentPoint(wxPoint point) override;
+  void Draw(wxDC *dc, wxDC *antialiassingDC) override;
   bool BreakUp() const override;
   void SetNextToDraw(Cell *next) const override;
   size_t GetInnerCellCount() const override { if(m_innerCell) return 1; else return 0; }

@@ -98,27 +98,36 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
   }
 }
 
-void MatrCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
+void MatrCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  wxPoint mp;
+  mp.x = point.x + Scale_Px(5);
+  for (size_t i = 0; i < m_matWidth; i++) {
+    mp.y = point.y - m_center + Scale_Px(5);
+    for (size_t j = 0; j < m_matHeight; j++) {
+      if ((j * m_matWidth + i) < m_cells.size()) {
+        mp.y += m_dropCenters.at(j).center;
+        wxPoint mp1(mp);
+        mp1.x = mp.x + (m_widths.at(i) - GetInnerCell(j, i)->SumOfWidths()) / 2;
+        GetInnerCell(j, i)->SetCurrentPointList(mp1);
+        mp.y += (m_dropCenters.at(j).drop + Scale_Px(10));
+      }
+    }
+    mp.x += (m_widths.at(i) + Scale_Px(10));
+  }
+}
+
+void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
   SetBrush(dc);
-  if (DrawThisCell(point)) {
-    wxPoint mp;
-    mp.x = point.x + Scale_Px(5);
-    mp.y = point.y - m_center;
+  if (DrawThisCell()) {
+    wxPoint point = m_currentPoint;
     for (size_t i = 0; i < m_matWidth; i++) {
-      mp.y = point.y - m_center + Scale_Px(5);
       for (size_t j = 0; j < m_matHeight; j++) {
         if ((j * m_matWidth + i) < m_cells.size()) {
-          mp.y += m_dropCenters.at(j).center;
-          wxPoint mp1(mp);
-          mp1.x =
-            mp.x +
-            (m_widths.at(i) - GetInnerCell(j, i)->SumOfWidths()) / 2;
-          GetInnerCell(j, i)->DrawList(mp1, dc, antialiassingDC);
-          mp.y += (m_dropCenters.at(j).drop + Scale_Px(10));
+          GetInnerCell(j, i)->DrawList(dc, antialiassingDC);
         }
       }
-      mp.x += (m_widths.at(i) + Scale_Px(10));
     }
     SetPen(antialiassingDC, 1.5);
     if (m_specialMatrix) {

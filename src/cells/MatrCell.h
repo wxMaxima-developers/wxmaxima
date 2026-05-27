@@ -61,7 +61,9 @@ public:
 
   void Recalculate(const AFontSize fontsize) const override;
 
-  void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) override;
+  using Cell::SetCurrentPoint;
+  void SetCurrentPoint(wxPoint point) override;
+  void Draw(wxDC *dc, wxDC *antialiassingDC) override;
 
   void AddNewCell(std::unique_ptr<Cell> &&cell);
 

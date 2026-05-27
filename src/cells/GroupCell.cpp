@@ -590,44 +590,16 @@ void GroupCell::UpdateYPositionList() const {
 void GroupCell::UpdateYPosition() const {
   const Cell *const previous = GetPrevious();
 
-  wxPoint point(m_configuration->GetIndent(), previous ? GetCenter() : GetCenterList());
+  wxPoint point(m_configuration->GetIndent(),
+                previous ? GetCenter() : GetCenterList());
   if (!previous) {
     point.y += m_configuration->GetBaseIndent();
-    if (m_inputLabel)
-      m_inputLabel->SetCurrentPoint(point);
   } else {
     point.y += m_configuration->GetGroupSkip();
     if (previous->GetCurrentPoint().y >= 0)
       point.y += previous->GetCurrentPoint().y + previous->GetMaxDrop();
   }
-  m_currentPoint = point;
-
-  EditorCell *editor = GetEditable();
-  if (editor)
-    editor->SetCurrentPoint(CalculateInputPosition());
-
-  if (m_output && !IsHidden()) {
-    wxPoint in = GetCurrentPoint();
-    if (m_inputLabel && (m_configuration->ShowCodeCells() || (m_groupType != GC_TYPE_CODE)))
-      in.y += m_inputLabel->GetMaxDrop();
-
-    m_outputRect.SetPosition(in);
-    bool isFirst = true;
-    int drop = 0;
-    for (Cell &tmp : OnDrawList(m_output.get())) {
-      if (isFirst || tmp.BreakLineHere()) {
-        if (!isFirst && tmp.HasBigSkip())
-          in.y += MC_LINE_SKIP;
-
-        in.x = GetCurrentPoint().x + tmp.GetLineIndent();
-        in.y += drop + tmp.GetCenterList();
-        drop = tmp.GetMaxDrop();
-      }
-      tmp.SetCurrentPoint(in);
-      in.x += tmp.GetWidth();
-      isFirst = false;
-    }
-  }
+  const_cast<GroupCell *>(this)->SetCurrentPoint(point);
 }
 
 wxPoint GroupCell::CalculateInputPosition() const {
@@ -652,16 +624,79 @@ wxCoord GroupCell::GetInputIndent() const {
   return labelWidth;
 }
 
+/**
+ * @brief Pass 2 (Arrange): Calculates positions for all cells in the output.
+ * 
+ * This is the central logic for laying out mathematical results. It iterates
+ * through the flattened draw list of output cells, handling:
+ * - Line breaks (Soft and Hard).
+ * - Multi-equation spacing and "Big Skips".
+ * - Mathematical indentation (aligning results with the input area).
+ * - Coordinate accumulation (drop and center list).
+ */
 void GroupCell::UpdateOutputPositions() const {
-  UpdateYPosition();
+  if (m_output && !IsHidden()) {
+    wxPoint in = m_currentPoint;
+    // Offset results below the input area
+    if (m_configuration->ShowCodeCells() || (m_groupType != GC_TYPE_CODE))
+      in.y += m_inputLabel->GetMaxDrop();
+
+    // The outputRect defines the bounding box for all results
+    const_cast<GroupCell *>(this)->m_outputRect.SetPosition(in);
+
+    bool isFirst = true;
+    int drop = 0;
+    for (Cell &tmp : OnDrawList(m_output.get())) {
+      if (isFirst || tmp.BreakLineHere()) {
+        if (!isFirst) {
+          // Add inter-equation vertical spacing
+          in.y += m_configuration->GetInterEquationSkip();
+          if (tmp.HasBigSkip())
+            in.y += MC_LINE_SKIP;
+        }
+
+        // Apply horizontal indentation
+        in.x = m_currentPoint.x + tmp.GetLineIndent();
+        
+        // Accumulate vertical height based on previous line's drop and current line's center
+        in.y += drop + tmp.GetCenterList();
+        drop = tmp.GetMaxDrop();
+      }
+      // Recursively position the cell and its children
+      tmp.SetCurrentPoint(in);
+      
+      // Advance horizontally
+      in.x += tmp.GetWidth();
+      isFirst = false;
+    }
+  }
 }
 
-void GroupCell::Draw(wxPoint const point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
+/**
+ * @brief Pass 2 (Arrange): Sets the GroupCell position and triggers child layout.
+ */
+void GroupCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  
+  // 1. Position Input Label (%i1)
+  if (m_inputLabel)
+    m_inputLabel->SetCurrentPointList(m_currentPoint);
+
+  // 2. Position Editor (the code area)
+  EditorCell *editor = GetEditable();
+  if (editor)
+    editor->SetCurrentPoint(CalculateInputPosition());
+
+  // 3. Position Output (the results area)
+  UpdateOutputPositions();
+}
+
+void GroupCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
   if (m_configuration->ShowBrackets())
     DrawBracket(dc, antialiassingDC);
 
-  if (!DrawThisCell(point))
+  if (!DrawThisCell())
     return;
 
   if (m_updateConfusableCharWarnings)
@@ -690,44 +725,22 @@ void GroupCell::Draw(wxPoint const point, wxDC *dc, wxDC *antialiassingDC) {
     SetPen(antialiassingDC);
 
     if (m_output && !IsHidden()) {
-      wxPoint in = point;
-      if (m_configuration->ShowCodeCells() || (m_groupType != GC_TYPE_CODE))
-        in.y += m_inputLabel->GetMaxDrop();
-
-      m_outputRect.SetPosition(in);
-
-      if((!m_configuration->ClipToDrawRegion()) ||
-         (m_configuration->GetUpdateRegion().Intersects(m_outputRect)))
-        {
-          bool isFirst = true;
-          int drop = 0;
-          for (Cell &tmp : OnDrawList(m_output.get())) {
-            if (isFirst || tmp.BreakLineHere()) {
-              if (!isFirst) {
-                in.y += m_configuration->GetInterEquationSkip();
-                if (tmp.HasBigSkip())
-                  in.y += MC_LINE_SKIP;
-              }
-
-              in.x = point.x + tmp.GetLineIndent();
-              in.y += drop + tmp.GetCenterList();
-              drop = tmp.GetMaxDrop();
-            }
-            tmp.Draw(in, dc, antialiassingDC);
-            in.x += tmp.GetWidth();
-            isFirst = false;
-          }
+      if ((!m_configuration->ClipToDrawRegion()) ||
+          (m_configuration->GetUpdateRegion().Intersects(m_outputRect))) {
+        for (Cell &tmp : OnDrawList(m_output.get())) {
+          tmp.Draw(dc, antialiassingDC);
         }
+      }
     }
     if ((m_configuration->ShowCodeCells()) || (m_groupType != GC_TYPE_CODE)) {
       m_configuration->Outdated(false);
 
       EditorCell *input = GetEditable();
       if (input)
-        input->Draw(CalculateInputPosition(), dc, antialiassingDC);
+        input->Draw(dc, antialiassingDC);
 
       if (GetPrompt())
-        GetPrompt()->Draw(point, dc, antialiassingDC);
+        GetPrompt()->Draw(dc, antialiassingDC);
 
       if (m_groupType == GC_TYPE_CODE && input)
         m_configuration->Outdated(input->ContainsChanges());

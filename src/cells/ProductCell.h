@@ -44,6 +44,10 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
+  using Cell::SetCurrentPoint;
+  void SetCurrentPoint(wxPoint point) override;
+  void Draw(wxDC *dc, wxDC *antialiassingDC) override;
+
 protected:
   //! What maxima command name corresponds to this cell?
   virtual const wxString GetMaximaCommandName() const override;

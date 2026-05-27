@@ -137,38 +137,54 @@ void IntCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void IntCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
-    wxPoint base(point), lowerLimit(point), upperLimit(point), var(point), sign(point);
-    base.x += m_signWidth.GetOrElse(0);
-    base.x += std::max(m_upperLimit->SumOfWidths(), m_lowerLimit->SumOfWidths());
+void IntCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  if (IsBrokenIntoLines())
+    return;
+  wxPoint base(point), lowerLimit(point), upperLimit(point), var(point);
+  base.x += m_signWidth.GetOrElse(0);
+  base.x += std::max(m_upperLimit->SumOfWidths(), m_lowerLimit->SumOfWidths());
+
+  if (HasLimits()) {
+    lowerLimit.x += m_signWidth.GetOrElse(0);
+    upperLimit.x += m_signWidth.GetOrElse(0);
+
+    upperLimit.y -= IntSignLimitYoffset();
+    upperLimit.y -= m_upperLimit->GetMaxDrop();
+    lowerLimit.y += IntSignLimitYoffset();
+    lowerLimit.y += m_lowerLimit->GetCenterList();
+
+    m_upperLimit->SetCurrentPointDrawList(upperLimit);
+    m_lowerLimit->SetCurrentPointDrawList(lowerLimit);
+  }
+
+  m_base->SetCurrentPointDrawList(base);
+
+  var.x = base.x + m_base->SumOfWidths();
+  m_var->SetCurrentPointDrawList(var);
+}
+
+void IntCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
+    wxPoint point = GetCurrentPoint();
+    wxPoint sign(point);
 
     SetPen(antialiassingDC, 1.5);
 
     sign.y -= .5 * m_signHeight.GetOrElse(0);
-    dc->DrawBitmap(BitmapFromSVG(m_svgIntegralSign, wxSize(m_signWidth.GetOrElse(0), m_signHeight.GetOrElse(0))),
+    dc->DrawBitmap(BitmapFromSVG(m_svgIntegralSign,
+                                 wxSize(m_signWidth.GetOrElse(0),
+                                        m_signHeight.GetOrElse(0))),
                    sign.x, sign.y);
-  
+
     if (HasLimits()) {
-      lowerLimit.x += m_signWidth.GetOrElse(0);
-      upperLimit.x += m_signWidth.GetOrElse(0);
- 
-      upperLimit.y -= IntSignLimitYoffset();
-      upperLimit.y -= m_upperLimit->GetMaxDrop();
-      lowerLimit.y += IntSignLimitYoffset();
-      lowerLimit.y += m_lowerLimit->GetCenterList();
-      
-      m_upperLimit->DrawList(upperLimit, dc, antialiassingDC);
-      m_lowerLimit->DrawList(lowerLimit, dc, antialiassingDC);
-      
-      base.x += std::max(m_upperLimit->SumOfWidths(), m_lowerLimit->SumOfWidths());
+      m_upperLimit->DrawList(dc, antialiassingDC);
+      m_lowerLimit->DrawList(dc, antialiassingDC);
     }
 
-    m_base->DrawList(base, dc, antialiassingDC);
-
-    var.x = base.x + m_base->SumOfWidths();
-    m_var->DrawList(var, dc, antialiassingDC);
+    m_base->DrawList(dc, antialiassingDC);
+    m_var->DrawList(dc, antialiassingDC);
   }
 }
 

@@ -82,19 +82,27 @@ void ConjugateCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void ConjugateCell::Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC) {
-  Cell::Draw(point, dc, antialiassingDC);
-  if (DrawThisCell(point)) {
+void ConjugateCell::SetCurrentPoint(wxPoint point) {
+  Cell::SetCurrentPoint(point);
+  if (IsBrokenIntoLines())
+    return;
+
+  wxPoint in;
+  in.x = point.x + Scale_Px(4);
+  in.y = point.y;
+  m_innerCell->SetCurrentPointDrawList(in);
+}
+
+void ConjugateCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
+  Cell::Draw(dc, antialiassingDC);
+  if (DrawThisCell()) {
+    wxPoint point = GetCurrentPoint();
     SetPen(dc);
-    wxPoint in;
-    in.x = point.x + Scale_Px(4);
-    in.y = point.y;
-    m_innerCell->DrawList(in, dc, antialiassingDC);
+    m_innerCell->DrawList(dc, antialiassingDC);
 
     dc->DrawLine(point.x + Scale_Px(2), point.y - m_center + Scale_Px(6),
                  point.x + m_width - Scale_Px(2) - 1,
                  point.y - m_center + Scale_Px(6));
-    //                point.y - m_center + m_height - Scale_Px(2));
   }
 }
 

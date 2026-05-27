@@ -333,23 +333,19 @@ public:
   Configuration *GetConfiguration(){return m_configuration;}
 
 
-  /*! Draw this cell
+  /**
+   * @brief Pass 3 (Paint): Renders the cell using pre-calculated coordinates.
+   * 
+   * Uses GetCurrentPoint() as the origin.
+   */
+  virtual void Draw(wxDC *dc, wxDC *antialiassingDC);
 
-    \param point The x and y position this cell is drawn at: All top-level cells get their
-    position during recalculation. But for the cells within them the position needs a
-    second step after determining the dimension of the contents of the top-level cell.
-
-    Example: The position of the denominator of a fraction can only be determined
-    after the height of denominator and numerator are known.
-  */
-  virtual void Draw(wxPoint point, wxDC *dc, wxDC *antialiassingDC);
-
-  /*! Draw this list of cells
-
-    \param point The x and y position this cell is drawn at
-  */
-  void DrawList(wxPoint point, wxDC *dc, wxDC *adc);
-  void DrawList(wxDC *dc, wxDC *adc){DrawList(m_currentPoint, dc, adc);}
+  /**
+   * @brief Helper to draw a list of cells.
+   * 
+   * Iterates through the draw list and calls Draw() on each cell.
+   */
+  void DrawList(wxDC *dc, wxDC *adc);
 
   /*! Draw a rectangle that marks this cell or this list of cells as selected
 
@@ -360,14 +356,12 @@ public:
   */
   virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool all = false);
 
-  /*! Is this cell currently visible in the window?
-
-    \param point The point to place this cell at
-  */
-  bool DrawThisCell(wxPoint point);
-  /*! Is this cell currently visible in the window?
+  /**
+   * @brief Is this cell currently visible in the window?
+   * 
+   * Uses GetCurrentPoint() to check visibility.
    */
-  bool DrawThisCell(){return DrawThisCell(m_currentPoint);}
+  bool DrawThisCell();
 
   /*! Insert (or remove) a forced linebreak at the beginning of this cell.
 
@@ -907,12 +901,56 @@ public:
   void SetToolTip(const wxString *toolTip) const;
   //! Add another tooltip to this cell
   void AddToolTip(const wxString &tip);
-  //! Tells this cell where it is placed on the worksheet
-  virtual void SetCurrentPoint(wxPoint point) { m_currentPoint = point; }
-  //! Tells this cell where it is placed on the worksheet
+
+  /**
+   * @name Layout Engine (3-Pass Pipeline)
+   * 
+   * The layout engine follows a strict 3-pass process to ensure a single source
+   * of truth for cell geometry and positioning:
+   * 
+   * 1. **Measure (Recalculate)**: Determines intrinsic size (width, height, center).
+   * 2. **Arrange (SetCurrentPoint)**: Recursively calculates and assigns absolute 
+   *    worksheet coordinates.
+   * 3. **Paint (Draw)**: Renders the cell using the pre-calculated coordinates.
+   */
+  ///@{
+
+  /**
+   * @brief Pass 2: Arrangement. Sets the absolute position of the cell.
+   * 
+   * Overridden by composite cells to recursively position their children.
+   * After this call, GetCurrentPoint() returns the definitive location.
+   * 
+   * @param point The absolute worksheet coordinates for the cell's baseline/origin.
+   */
+  virtual void SetCurrentPoint(wxPoint point);
+
+  /**
+   * @brief Sets the position for the cell and convenience overload.
+   */
   void SetCurrentPoint(int x, int y) { SetCurrentPoint({x, y}); }
-  //! Where is this cell placed on the worksheet?
+
+  /**
+   * @brief Helper to position a horizontal list of cells.
+   * 
+   * Iterates through the linked list starting at 'this', assigning positions
+   * and incrementing the x-coordinate by each cell's width.
+   */
+  void SetCurrentPointList(wxPoint point);
+
+  /**
+   * @brief Helper to position a list of cells using the draw-list logic.
+   * 
+   * This respects linearized cells (broken into lines) where the cell itself
+   * might have 0 width but its children need to be positioned.
+   */
+  void SetCurrentPointDrawList(wxPoint point);
+
+  /**
+   * @brief Returns the pre-calculated worksheet position of the cell.
+   */
   wxPoint GetCurrentPoint() const {return m_currentPoint;}
+  ///@}
 
   /*! Whether this cell is broken into two or more lines.
    *

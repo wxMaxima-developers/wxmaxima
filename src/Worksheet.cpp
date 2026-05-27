@@ -665,7 +665,7 @@ void Worksheet::DrawGroupCell_UsingBitmap(wxDC *dc, GroupCell *cell)
 
 void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
 {
-  if (cell.DrawThisCell(cell.GetCurrentPoint())) {
+  if (cell.DrawThisCell()) {
     cell.InEvaluationQueue(m_evaluationQueue.IsInQueue(&cell));
     cell.LastInEvaluationQueue(m_evaluationQueue.GetCell() == &cell);
 
@@ -692,7 +692,7 @@ void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
           break;
       }
     }
-    cell.Draw(cell.GetCurrentPoint(), &dc, &adc);
+    cell.Draw(&dc, &adc);
   }
 }
 
