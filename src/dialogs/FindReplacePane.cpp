@@ -34,7 +34,6 @@
 
 FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
   : wxPanel(parent, -1) {
-  m_active = true;
   m_findReplaceData = data;
   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *top_sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -147,9 +146,6 @@ FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
   // If I press <tab> in the search text box I want to arrive in the
   // replacement text box immediately.
   m_replaceText->MoveAfterInTabOrder(m_searchText);
-  Connect(wxEVT_ACTIVATE, wxActivateEventHandler(FindReplacePane::OnActivate),
-          NULL, this);
-  m_activateDuringConstruction = true;
   Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplacePane::OnKeyDown), NULL,
           this);
   this->SetSizerAndFit(mainSizer);
@@ -166,6 +162,10 @@ FindReplacePane::FindReplaceData::FindReplaceData() :
   wxFindReplaceData(),
   m_regexSearch(false)
 {
+}
+
+void FindReplacePane::SetFocus() {
+  m_searchText->SetFocus();
 }
 
 void FindReplacePane::SetFindString(wxString strng) {
@@ -247,28 +247,6 @@ void FindReplacePane::OnSearchIn(wxCommandEvent &event) {
                               (m_searchInInput->GetValue() * wxFR_SEARCH_IN_INPUT) |
                               (m_searchInOutput->GetValue() * wxFR_SEARCH_IN_OUTPUT));
   wxConfig::Get()->Write(wxS("Find/Flags"), m_findReplaceData->GetFlags());
-}
-
-void FindReplacePane::OnActivate(wxActivateEvent &event) {
-  event.Skip();
-  if(m_activateDuringConstruction)
-    {
-      m_activateDuringConstruction = false;
-      return;
-    }
-  if (event.GetActive())
-    {
-      SetTransparent(255);
-      // Call m_searchText->SetFocus(), once this event is over: During the
-      // activation event it seems to be unreliable
-      CallAfter([this]{m_searchText->SetFocus();});
-      m_active = true;
-    }
-  else
-    {
-      SetTransparent(180);
-      m_active = false;
-    }
 }
 
 void FindReplacePane::OnFindStringChange(wxCommandEvent &event) {

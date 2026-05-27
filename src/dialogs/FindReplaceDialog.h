@@ -47,6 +47,9 @@ public:
                     int style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
   ~FindReplaceDialog();
+
+  void SetFocus() override;
+
   //! Returns the standard wxFindReplaceData data structure
   wxFindReplaceData *GetData()
     { return m_contents->GetData(); }

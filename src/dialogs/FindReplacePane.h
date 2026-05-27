@@ -57,8 +57,6 @@ public:
 private:
   //! The storage the search strings and settings are kept in
   FindReplaceData *m_findReplaceData;
-  //! Is this pane currently in focus?
-  bool m_active;
   wxTextCtrl *m_searchText;
   wxTextCtrl *m_replaceText;
   wxButton *m_searchButton;
@@ -71,10 +69,10 @@ private:
   wxCheckBox *m_matchCase;
   wxCheckBox *m_searchInInput;
   wxCheckBox *m_searchInOutput;
-  //! true means: The next Activation event is generated during construction
-  bool m_activateDuringConstruction;
 public:
   FindReplacePane(wxWindow *parent, FindReplaceData *data);
+
+  void SetFocus() override;
 
   bool GetRegexSearch() const {return m_findReplaceData->GetRegexSearch();}
 
@@ -92,8 +90,6 @@ public:
   };
 
 protected:
-  void OnActivate(wxActivateEvent &event);
-
   void OnSearch(wxCommandEvent &event);
 
   void OnReplace(wxCommandEvent &event);

@@ -69,6 +69,10 @@ FindReplaceDialog::~FindReplaceDialog()
     }
 }
 
+void FindReplaceDialog::SetFocus() {
+  m_contents->SetFocus();
+}
+
 void FindReplaceDialog::OnKeyDown(wxKeyEvent &event) {
   if (event.GetKeyCode() == WXK_ESCAPE)
     Close();
@@ -85,7 +89,10 @@ void FindReplaceDialog::OnActivateEvent(wxActivateEvent &event) {
     }
     
   if (event.GetActive())
-    SetTransparent(255);
+    {
+      SetTransparent(255);
+      CallAfter([this] { m_contents->SetFocus(); });
+    }
   else
     SetTransparent(180);
 }
