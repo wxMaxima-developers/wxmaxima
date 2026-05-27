@@ -520,9 +520,15 @@ pueden releer como una sesión _wxMaxima_.
 
 `.wxm` files contain the worksheet except for _Maxima_’s output. On Maxima
 versions >5.38 they can be read using _Maxima_’s `load()` function just as
-.mac files can be. With this plain-text format, it sometimes is unavoidable
-that worksheets that use new features are not downwards-compatible with
-older versions of _wxMaxima_.
+.mac files. Well - mostly. Questions (like `asksign(x)`) are problematic, as
+the answer is written in the `.wxm` file (so that it can be suggested after
+loading), but that can Maxima not evaluate.  You can prevent Maxima from
+asking questions by using `assume()` to declare some properties, Maxima
+wants to know.
+
+With this plain-text format, it sometimes is unavoidable that worksheets
+that use new features are not downwards-compatible with older versions of
+_wxMaxima_.
 
 #### Formato de archivo de archivos wxm
 
@@ -1214,6 +1220,21 @@ convertirse a tablas de una aparición similar.
 ![Otro ejemplo de tabla_formulario](./EjemploSegundaTabla.png){
 id=img_EjemploSegundaTabla }
 
+The function `wx_matrix()` is a wrapper for Maxima's `matrix()` command that
+allows for more flexible formatting of matrices in wxMaxima:
+
+**`wx_matrix( <matrix>, [options] )`**
+- **`lines=true`**: Draws internal separator lines between the cells. This is required to visually separate headings from data.
+- **`rownames=true`**: Tells wxMaxima that the first column of the matrix contains labels.
+- **`colnames=true`**: Tells wxMaxima that the first row of the matrix contains labels.
+- **`parenstyle=<style>`**: Sets the type of parenthesis or brackets to draw around the matrix. Supported styles are: `round` `()`, `square` `[]`, `angled` `<>`, `straight` `||`, or `none`.
+
+Example:
+```maxima
+wx_matrix(matrix(["Name", "Value"], ["X", 10], ["Y", 20]), 
+          lines=true, rownames=true, colnames=true, parenstyle=square);
+```
+
 ## Comunicar fallo
 
 _WxMaxima_ proporciona unas pocas funciones que obtenga información de
@@ -1459,6 +1480,21 @@ P.ej. inicia wxMaxima con:
 
 `GDK_BACKEND=x11 wxmaxima`
 
+## The menu bar disappears on KDE Plasma
+
+On some KDE Plasma installations the global menu bar disappears when
+clicked.  As this is a bug in the global menu proxy, the only way to avoid
+it is to tell that wxMaxima should use its own menu bar instead of the
+global one.  This is done by setting: `UBUNTU_MENUPROXY=0`
+
+Starting with version 26.05.0, wxMaxima attempts to set this variable
+automatically if it detects an affected system (KDE, Unity, or Ubuntu with
+older wxWidgets versions).
+
+If the automatic fix fails, you can manually start wxMaxima with:
+
+`UBUNTU_MENUPROXY=0 wxmaxima`
+
 ### ¿Por qué no es ofrecido el explorador manual integrado en mi PC Windows?
 
 O bien wxWidgets no fueron compilados con mantenimiento para webview2 o
@@ -1622,6 +1658,13 @@ versión de wxMaxima en este caso.
 
 Si no ningún frontend es utilizado (está utilizando Maxima en línea de
 instrucción), estas variables son falsas.
+
+## Help! I can not save my document!
+
+If saving as wxmx file does not work, try saving the document as wxm file
+(and vice versa). And you can also try to remove all output (Menu
+Cell->Remove all output) and save that file, maybe some unexpected output
+causes issues during the save process.
 
 ______________________________________________________________________
 

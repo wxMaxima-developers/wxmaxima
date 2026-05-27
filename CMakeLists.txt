@@ -37,7 +37,7 @@ else()
 endif()
 
 # Set a CACHE variable - make it overrideable via command line.
-set(CMAKE_CXX_STANDARD 20 CACHE STRING "The target C++ standard. wxMaxima requires C++14 or higher.")
+set(CMAKE_CXX_STANDARD 17 CACHE STRING "The target C++ standard. wxMaxima requires C++14 or higher.")
 if(CMAKE_CXX_STANDARD EQUAL 98 OR CMAKE_CXX_STANDARD EQUAL 11)
     message(FATAL_ERROR "At least C++14 is required to build wxMaxima.")
 endif()
