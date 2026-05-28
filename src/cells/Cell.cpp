@@ -615,10 +615,15 @@ bool Cell::BreakUpCells() const {
   bool lineHeightsChanged = false;
   if (!IsHidden())
     for (const Cell &tmp : OnDrawList(this)) {
-        if (tmp.GetWidth() < 0)
-          tmp.Recalculate(m_configuration->GetMathFontSize());
-        if (tmp.GetWidth() > clientWidth)
-          lineHeightsChanged |= tmp.BreakUp();
+      if (tmp.GetWidth() < 0)
+        tmp.Recalculate(m_configuration->GetMathFontSize());
+      if (tmp.GetWidth() > clientWidth) {
+        if (tmp.BreakUp()) {
+          lineHeightsChanged = true;
+          tmp.Recalculate(tmp.IsMath() ? m_configuration->GetMathFontSize()
+                                       : m_configuration->GetDefaultFontSize());
+        }
+      }
     }
   return lineHeightsChanged;
 }
