@@ -44,7 +44,6 @@
 #include "MarkDown.h"
 #include "TextCell.h"
 #include "../Worksheet.h"
-#include "stx/unique_cast.hpp"
 #include <wx/clipbrd.h>
 #include <wx/log.h>
 #include <wx/string.h>
@@ -167,7 +166,7 @@ void GroupCell::SetGroupType(GroupType groupType) {
 std::unique_ptr<GroupCell> GroupCell::CopyList() const {
   GroupCell parent(m_configuration, GC_TYPE_CODE);
   auto copy = Cell::CopyList(&parent);
-  return stx::static_unique_ptr_cast<GroupCell>(std::move(copy));
+  return static_unique_ptr_cast<GroupCell>(std::move(copy));
 }
 
 bool GroupCell::Empty() const {

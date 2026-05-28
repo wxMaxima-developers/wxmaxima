@@ -151,7 +151,7 @@ constexpr AFontSize operator-=(AFontSize &size, double factor)
 
 constexpr AFontSize::value_type AFontSize::ToUSize(float size)
 {
-  return AFontSize::value_type(stx::clamp(size, Minimum_Size, Maximum_Size) / Size_Unit + 0.5f);
+  return AFontSize::value_type(std::clamp(size, Minimum_Size, Maximum_Size) / Size_Unit + 0.5f);
 }
 
 //! Get the numerical value suitable for passing to wxFont/wxFontInfo.

@@ -27,7 +27,7 @@
 #include "StringUtils.cpp"
 #include "TestStubs.cpp"
 #include <catch2/catch.hpp>
-#include <stx/optional.hpp>
+#include <optional>
 #include <array>
 
 class TestCell : public Observed {};
@@ -166,7 +166,7 @@ SCENARIO("One CellPtr tracks Observed") {
     }
 
     WHEN("CellPtr is assigned an object") {
-      stx::optional<TestCell> obs1;
+      std::optional<TestCell> obs1;
       obs1.emplace();
       ptr = &*obs1;
 
@@ -199,7 +199,7 @@ SCENARIO("One CellPtr tracks Observed") {
       }
 
       AND_WHEN("CellPtr is assigned another object") {
-        stx::optional<TestCell> obs2;
+        std::optional<TestCell> obs2;
         obs2.emplace();
         ptr = &*obs2;
         THEN("it points to that object") REQUIRE(ptr.get() == &*obs2);
@@ -230,7 +230,7 @@ SCENARIO("One CellPtr tracks Observed") {
 SCENARIO("A pair of CellPtrs track a pair of Observeds without interference") {
   GIVEN("A pair of CellPtr<Cell>s and a pair of Cells") {
     std::array<CellPtr<TestCell>, 2> ptr;
-    std::array<stx::optional<TestCell>, 2> obs;
+    std::array<std::optional<TestCell>, 2> obs;
 
     obs[0].emplace();
     obs[1].emplace();
@@ -402,7 +402,7 @@ SCENARIO("A CellPtr drops the reference to Observed's control block as soon as i
 {
   GIVEN("a CellPtr and a cell")
   {
-    stx::optional<TestCell> cell;
+    std::optional<TestCell> cell;
     CellPtr<TestCell> ptr1;
     CellPtr<TestCell> ptr2;
 

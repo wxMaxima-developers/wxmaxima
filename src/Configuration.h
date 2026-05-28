@@ -40,6 +40,7 @@
 #include <algorithm>
 #include <atomic>
 #include <wx/wupdlock.h>
+#include <list>
 
 #define MC_LINE_SKIP Scale_Px(2)
 #define MC_TEXT_PADDING Scale_Px(1)

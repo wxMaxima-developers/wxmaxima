@@ -1,6 +1,11 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
 /* [ Created with wxMaxima version 26.05.0-DevelopmentSnapshot ] */
 /* [wxMaxima: input   start ] */
+x(n):=sum(x[i],i,1,n)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
 1+box(x(1))+z;
 /* [wxMaxima: input   end   ] */
 

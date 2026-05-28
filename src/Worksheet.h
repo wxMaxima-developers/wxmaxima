@@ -30,7 +30,7 @@
 #ifndef WORKSHEET_H
 #define WORKSHEET_H
 
-#include "stx/optional.hpp"
+#include <optional>
 #include "precomp.h"
 #include "MaximaManual.h"
 #include "EventIDs.h"
@@ -671,7 +671,7 @@ public:
   //! Make this section/subsection/... a chapter/section/... changing its subheadings, too.
   bool SectioningMoveOut(GroupCell *parent);
 //! A error notification message
-  stx::optional<Notification> m_notificationMessage;
+  std::optional<Notification> m_notificationMessage;
   //! Is this window active?
   void WindowActive(bool active){m_windowActive = active;}
   //! Clears the notification message from SetNotification

@@ -56,7 +56,6 @@
 #include "TextCell.h"
 #include "VisiblyInvalidCell.h"
 #include "../Worksheet.h"
-#include "stx/unique_cast.hpp"
 #include <algorithm>
 #include <utility>
 #include <wx/regex.h>
