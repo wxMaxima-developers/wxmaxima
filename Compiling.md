@@ -1,7 +1,7 @@
 ## Building wxMaxima from source
 
-To build wxMaxima from sources you need to have a C++ compiler (C++14),
-wxWidgets >= 3.2 (including development headers) and
+To build wxMaxima from sources you need to have a C++ compiler (C++20 is required),
+wxWidgets >= 3.0 (>= 3.2 recommended) (including development headers) and
 CMake >= 3.16 installed.
 
 ### Compiling wxMaxima on Linux / Unix systems and Linux-like systems (Cygwin, WSL, MacPorts, Fink, Homebrew,...)

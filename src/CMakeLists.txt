@@ -189,7 +189,7 @@ if(WXM_USE_CPPCHECK)
 	list(APPEND CMAKE_CXX_CPPCHECK
 	    "--enable=warning,style,performance,portability"
 	    "--quiet"
-	    "--std=c++14"
+	    "--std=c++20"
 	    "--force"
 	    #"--inconclusive"
 	    "--inline-suppr"

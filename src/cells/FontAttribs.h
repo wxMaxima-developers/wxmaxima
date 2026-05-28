@@ -54,7 +54,6 @@
 #define WXMAXIMA_FONTATTRIBS_H
 
 #include "EnumWrapper.h"
-#include "stx/clamp.hpp"
 #include <wx/font.h>
 #include <wx/version.h>
 #include <algorithm>

@@ -40,6 +40,7 @@
 - Some fixes for selection of output
 - Improved MathML and RTF output
 - Big find-and-replace functionality additions
+- A compiler supporting C++20 is required now
 
 # 26.05.0
 
