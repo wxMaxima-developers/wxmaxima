@@ -61,7 +61,9 @@ jobs:
              cd build
              export HOME=`pwd`
              export CTEST_OUTPUT_ON_FAILURE=1
-             GDK_BACKEND=x11 xvfb-run -a ctest -j 2 -E "multithreadtest"
+             # tutorial_fittingEquations uses draw which maxima could not load on
+             # ubuntu-latest when this test was disabled
+             GDK_BACKEND=x11 xvfb-run -a ctest -j 2 -E "tutorial_fittingEquations"
              cd ..
 
   compile_without_webview:
