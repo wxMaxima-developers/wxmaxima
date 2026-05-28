@@ -22,7 +22,10 @@
 #include "DiffAlgorithm.h"
 #include "WXMformat.h"
 #include "MathParser.h"
+#if wxCHECK_VERSION(3, 1, 6)
 #include "wxMaximaArtProvider.h"
+#endif
+#include <wx/artprov.h>
 #include <wx/file.h>
 #include <wx/wfstream.h>
 #include <wx/zipstrm.h>
@@ -169,14 +172,27 @@ wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
 
 // Add a simple toolbar for synchronization controls
 wxToolBar *toolBar = CreateToolBar();
-wxBitmapBundle syncBmp = wxArtProvider::GetBitmapBundle(wxmaximaART_SYNC_HORIZONTAL, wxART_TOOLBAR);
-toolBar->AddCheckTool(wxID_ANY, _("Sync Horizontal"), syncBmp, wxNullBitmap, _("Toggle horizontal scroll synchronization"));
+#if wxCHECK_VERSION(3, 1, 6)
+  wxBitmapBundle syncBmp = wxArtProvider::GetBitmapBundle(wxmaximaART_SYNC_HORIZONTAL, wxART_TOOLBAR);
+  toolBar->AddCheckTool(wxID_ANY, _("Sync Horizontal"), syncBmp, wxNullBitmap, _("Toggle horizontal scroll synchronization"));
+#else
+  // old wxWidgets version. Don't use the graphic from wxMaximaArtprovider, but a standard one (wxART_MINUS)
+  // not a such nice graphics, but compiles (and we are going to require wxWidgets >= 3.2 maybe soon...
+  wxBitmap syncBmp = wxArtProvider::GetBitmap(wxART_MINUS, wxART_TOOLBAR);
+  toolBar->AddCheckTool(wxID_ANY, _("Sync Horizontal"), syncBmp, wxNullBitmap, _("Toggle horizontal scroll synchronization"));
+#endif
+
 toolBar->ToggleTool(toolBar->GetToolByPos(0)->GetId(), m_syncHorizontal);
 toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnToggleHorizontalSync, this);
 
 toolBar->AddSeparator();
+#if wxCHECK_VERSION(3, 1, 6)
 wxBitmapBundle prevBmp = wxArtProvider::GetBitmapBundle(wxART_GO_UP, wxART_TOOLBAR);
 wxBitmapBundle nextBmp = wxArtProvider::GetBitmapBundle(wxART_GO_DOWN, wxART_TOOLBAR);
+#else
+wxBitmap prevBmp = wxArtProvider::GetBitmap(wxART_GO_UP, wxART_TOOLBAR);
+wxBitmap nextBmp = wxArtProvider::GetBitmap(wxART_GO_DOWN, wxART_TOOLBAR);
+#endif
 toolBar->AddTool(EventIDs::button_diff_prev, _("Previous Difference"), prevBmp, _("Jump to previous difference"));
 toolBar->AddTool(EventIDs::button_diff_next, _("Next Difference"), nextBmp, _("Jump to next difference"));
 toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnDiffPrev, this, EventIDs::button_diff_prev);
