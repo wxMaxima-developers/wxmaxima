@@ -140,6 +140,19 @@ SCENARIO("Diff alignment correctly identifies matches and gaps") {
       }
     }
   }
+
+  GIVEN("Asymmetric UUID availability") {
+    std::vector<CellMatchData> s1 = {{"u1", "content", GC_TYPE_CODE}};
+    std::vector<CellMatchData> s2 = {{"", "content", GC_TYPE_CODE}};
+
+    WHEN("aligned") {
+      auto alignment = Align2(s1, s2, 100);
+      THEN("they should be matched via content") {
+        REQUIRE(alignment.size() == 1);
+        REQUIRE(alignment[0] == std::make_pair(0, 0));
+      }
+    }
+  }
 }
 
 int main(int argc, char* argv[]) {

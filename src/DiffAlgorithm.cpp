@@ -62,13 +62,14 @@ std::vector<std::pair<int, int>> Align2(const std::vector<CellMatchData>& s1,
         const auto& c1 = s1[i];
         const auto& c2 = s2[j];
         
-        // Exact UUID match
-        if (!c1.uuid.IsEmpty() && c1.uuid == c2.uuid) return true;
+        // If both have UUIDs, they MUST match for the cells to match
+        if (!c1.uuid.IsEmpty() && !c2.uuid.IsEmpty()) {
+            if (c1.uuid == c2.uuid) return true;
+            // Both have UUIDs but they differ - they are different cells.
+            return false;
+        }
         
-        // If one has a UUID and the other doesn't, they don't match (prevents accidental hijacking)
-        if (!c1.uuid.IsEmpty() || !c2.uuid.IsEmpty()) return false;
-        
-        // Content-based fuzzy match for cells without UUIDs
+        // Content-based fuzzy match (used if at least one cell lacks a UUID)
         if (c1.type != c2.type) return false;
         if (c1.content == c2.content) return true;
         
