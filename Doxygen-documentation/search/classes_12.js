@@ -20,7 +20,6 @@ var searchData=
   ['toolbar_17',['ToolBar',['../classToolBar.html',1,'']]],
   ['tornout_18',['TornOut',['../structCellList_1_1TornOut.html',1,'CellList']]],
   ['totals_19',['Totals',['../structCatch_1_1Totals.html',1,'Catch']]],
-  ['trivial_5finit_5ft_20',['trivial_init_t',['../structSTX__NAMESPACE__NAME_1_1trivial__init__t.html',1,'STX_NAMESPACE_NAME']]],
-  ['truck_21',['Truck',['../structTruck.html',1,'']]],
-  ['true_5fgiven_22',['true_given',['../structCatch_1_1true__given.html',1,'Catch']]]
+  ['truck_20',['Truck',['../structTruck.html',1,'']]],
+  ['true_5fgiven_21',['true_given',['../structCatch_1_1true__given.html',1,'Catch']]]
 ];

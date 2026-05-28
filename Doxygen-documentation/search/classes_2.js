@@ -39,12 +39,10 @@ var searchData=
   ['configdialogue_36',['ConfigDialogue',['../classConfigDialogue.html',1,'']]],
   ['configuration_37',['Configuration',['../classConfiguration.html',1,'']]],
   ['conjugatecell_38',['ConjugateCell',['../classConjugateCell.html',1,'']]],
-  ['constexpr_5foptional_5fbase_39',['constexpr_optional_base',['../structSTX__NAMESPACE__NAME_1_1constexpr__optional__base.html',1,'STX_NAMESPACE_NAME']]],
-  ['constexpr_5fstorage_5ft_40',['constexpr_storage_t',['../unionSTX__NAMESPACE__NAME_1_1constexpr__storage__t.html',1,'STX_NAMESPACE_NAME']]],
-  ['containselementmatcher_41',['ContainsElementMatcher',['../structCatch_1_1Matchers_1_1Vector_1_1ContainsElementMatcher.html',1,'Catch::Matchers::Vector']]],
-  ['containsmatcher_42',['ContainsMatcher',['../structCatch_1_1Matchers_1_1StdString_1_1ContainsMatcher.html',1,'Catch::Matchers::StdString::ContainsMatcher'],['../structCatch_1_1Matchers_1_1Vector_1_1ContainsMatcher.html',1,'Catch::Matchers::Vector::ContainsMatcher&lt; T, AllocComp, AllocMatch &gt;']]],
-  ['coordstruct_43',['CoordStruct',['../structCoordStruct.html',1,'']]],
-  ['counts_44',['Counts',['../structCatch_1_1Counts.html',1,'Catch']]],
-  ['csvexportwiz_45',['CsvExportWiz',['../classCsvExportWiz.html',1,'']]],
-  ['csvimportwiz_46',['CsvImportWiz',['../classCsvImportWiz.html',1,'']]]
+  ['containselementmatcher_39',['ContainsElementMatcher',['../structCatch_1_1Matchers_1_1Vector_1_1ContainsElementMatcher.html',1,'Catch::Matchers::Vector']]],
+  ['containsmatcher_40',['ContainsMatcher',['../structCatch_1_1Matchers_1_1StdString_1_1ContainsMatcher.html',1,'Catch::Matchers::StdString::ContainsMatcher'],['../structCatch_1_1Matchers_1_1Vector_1_1ContainsMatcher.html',1,'Catch::Matchers::Vector::ContainsMatcher&lt; T, AllocComp, AllocMatch &gt;']]],
+  ['coordstruct_41',['CoordStruct',['../structCoordStruct.html',1,'']]],
+  ['counts_42',['Counts',['../structCatch_1_1Counts.html',1,'Catch']]],
+  ['csvexportwiz_43',['CsvExportWiz',['../classCsvExportWiz.html',1,'']]],
+  ['csvimportwiz_44',['CsvImportWiz',['../classCsvImportWiz.html',1,'']]]
 ];

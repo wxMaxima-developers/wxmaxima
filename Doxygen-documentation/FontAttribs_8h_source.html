@@ -202,7 +202,7 @@ $(function() {
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="keyword">constexpr</span> AFontSize::value_type AFontSize::ToUSize(<span class="keywordtype">float</span> size)</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>{</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="keywordflow">return</span> AFontSize::value_type(stx::clamp(size, Minimum_Size, Maximum_Size) / Size_Unit + 0.5f);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="keywordflow">return</span> AFontSize::value_type(std::clamp(size, Minimum_Size, Maximum_Size) / Size_Unit + 0.5f);</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>}</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="classAFontSize.html#a23446c7f79bcb1f7a28e62b85038109d">  158</a></span><span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="classAFontSize.html#a23446c7f79bcb1f7a28e62b85038109d">AFontSize::GetForWX</a>()<span class="keyword"> const</span></div>

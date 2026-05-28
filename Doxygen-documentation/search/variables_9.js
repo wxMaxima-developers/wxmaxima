@@ -111,7 +111,7 @@ var searchData=
   ['m_5fnoautodetectmathjax_108',['m_noAutodetectMathJaX',['../classConfigDialogue.html#a1356a742af5a1c95366e4b85393a61c2',1,'ConfigDialogue']]],
   ['m_5fnoautodetectmaxima_109',['m_noAutodetectMaxima',['../classConfigDialogue.html#acf7cc3c884073c6c6b45c065061b835a',1,'ConfigDialogue']]],
   ['m_5fnot_5falphas_110',['m_not_alphas',['../classMaximaTokenizer.html#a4131c11fd748551e6c5f5a56fbea0623',1,'MaximaTokenizer']]],
-  ['m_5fnotificationmessage_111',['m_notificationMessage',['../classWorksheet.html#af32656bb631b3c42ce4fa2acaac05bc0',1,'Worksheet']]],
+  ['m_5fnotificationmessage_111',['m_notificationMessage',['../classWorksheet.html#ad172a124d5fd9a8be4b378310ba5918b',1,'Worksheet']]],
   ['m_5fnumericmenu_112',['m_NumericMenu',['../classwxMaximaFrame.html#adcdd9c7ef56f00850c2616ffe9e6c24d',1,'wxMaximaFrame']]],
   ['m_5foutput_113',['m_output',['../classGroupCell.html#aee37553861fe93a152acd35af7e5f0d2',1,'GroupCell']]],
   ['m_5fpanel_114',['m_panel',['../classGenWiz.html#aee3da9896d726bd60cd2200929c20307',1,'GenWiz']]],
