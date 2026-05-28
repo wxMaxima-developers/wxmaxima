@@ -268,9 +268,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AppendInput</b> (std:
 wxRect&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputRect</b> () const</td></tr>
 <tr class="memdesc:a824ff61ee94c2e70e0742214b62021a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine which rectangle is occupied by this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>. <br /></td></tr>
 <tr class="separator:a824ff61ee94c2e70e0742214b62021a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48d329f83b9e251d58c52e7ed9760fbf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a48d329f83b9e251d58c52e7ed9760fbf">Recalculate</a> (const <a class="el" href="classAFontSize.html">AFontSize</a> WXUNUSED(fontsize)) const override</td></tr>
-<tr class="memdesc:a48d329f83b9e251d58c52e7ed9760fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculates the size of this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> and all cells inside it if needed.  <br /></td></tr>
-<tr class="separator:a48d329f83b9e251d58c52e7ed9760fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf6ea0b67fbf108661e5232e51ee3265"><td class="memItemLeft" align="right" valign="top"><a id="aaf6ea0b67fbf108661e5232e51ee3265" name="aaf6ea0b67fbf108661e5232e51ee3265"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>Recalculate</b> () const</td></tr>
 <tr class="separator:aaf6ea0b67fbf108661e5232e51ee3265"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3091,7 +3088,7 @@ The y position used here must be in sync with the one calculated by <a class="el
 </div>
 </div>
 <a id="a089a02b06dd824723bc6c5efc4be2621" name="a089a02b06dd824723bc6c5efc4be2621"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a089a02b06dd824723bc6c5efc4be2621">&#9670;&#160;</a></span>Recalculate() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a089a02b06dd824723bc6c5efc4be2621">&#9670;&#160;</a></span>Recalculate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3116,36 +3113,7 @@ The y position used here must be in sync with the one calculated by <a class="el
 
 <p>Forces the cell to a specific height determined by its matching counterpart in another worksheet. </p>
 
-<p>Reimplemented from <a class="el" href="classCell.html#aedd0bcab37da23ed8be1cddbd5fb7473">Cell</a>.</p>
-
-</div>
-</div>
-<a id="a48d329f83b9e251d58c52e7ed9760fbf" name="a48d329f83b9e251d58c52e7ed9760fbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48d329f83b9e251d58c52e7ed9760fbf">&#9670;&#160;</a></span>Recalculate() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void GroupCell::Recalculate </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classAFontSize.html">AFontSize</a> &#160;</td>
-          <td class="paramname"><em>WXUNUSED</em>fontsize</td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Recalculates the size of this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> and all cells inside it if needed. </p>
-<p>This command will also assign the <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> a y coordinate it is plotted at. The y coordinate of all output cells of this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> is assigned during <a class="el" href="classGroupCell.html#a008c561f906b2a89e90dfc307b857b09" title="Draw this GroupCell.">GroupCell::Draw()</a> by providing <a class="el" href="classCell.html#ab68d11529549439a5e2e1e2aca1a9d30" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Cell::Draw()</a> with the cell's coordinates. </p>
+<p>Reimplemented from <a class="el" href="classGroupCell.html#a763be2edcc8645b48a49b1da731c83e8">GroupCell</a>.</p>
 
 </div>
 </div>
