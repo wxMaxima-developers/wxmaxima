@@ -363,6 +363,8 @@ const wxWindowIDRef EventIDs::button_trigreduce(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::button_trigrat(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::button_integrate(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::button_diff(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::button_diff_next(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::button_diff_prev(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::button_sum(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::button_product(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::button_button_constant(wxWindow::NewControlId());

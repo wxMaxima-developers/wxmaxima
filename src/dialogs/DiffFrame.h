@@ -38,12 +38,15 @@ private:
   void OnToggleHorizontalSync(wxCommandEvent &event);
   void OnSearch(wxCommandEvent &event);
   void OnSearchCancel(wxCommandEvent &event);
+  void OnDiffNext(wxCommandEvent &event);
+  void OnDiffPrev(wxCommandEvent &event);
 
   std::vector<Worksheet *> m_worksheets;
   Configuration *m_configuration;
   wxSearchCtrl *m_searchCtrl = nullptr;
   wxRadioButton *m_searchDownRadio = nullptr;
   wxRadioButton *m_searchUpRadio = nullptr;
+  int m_currentDiffIdx = -1;
   bool m_syncing = false;
   bool m_syncHorizontal = true;
   bool m_searchDown = true;

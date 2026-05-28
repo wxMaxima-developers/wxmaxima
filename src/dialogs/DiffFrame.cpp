@@ -41,10 +41,14 @@
 class SpacerGroupCell : public GroupCell {
 public:
   SpacerGroupCell(Configuration *config, wxCoord height)
-      : GroupCell(config, GC_TYPE_INVALID), m_forcedHeight(height) {}
-      
+      : GroupCell(config, GC_TYPE_INVALID), m_forcedHeight(height) {
+    m_height = m_forcedHeight;
+    m_width = 0;
+    m_center = 0;
+  }
+
   /**
-   * @brief Forces the cell to a specific height determined by its matching 
+   * @brief Forces the cell to a specific height determined by its matching
    * counterpart in another worksheet.
    */
   void Recalculate(AFontSize fontsize) const override {
@@ -52,8 +56,9 @@ public:
     m_height = m_forcedHeight;
     m_width = 0;
     m_center = 0;
+    UpdateYPosition();
   }
-  
+
   std::unique_ptr<Cell> Copy(GroupCell *parent) const override {
     (void)parent;
     return std::make_unique<SpacerGroupCell>(m_configuration, m_forcedHeight);
@@ -63,19 +68,72 @@ private:
   wxCoord m_forcedHeight;
 };
 
-DiffFrame::DiffFrame(wxWindow *parent, const wxArrayString &files, Configuration *config)
-    : wxFrame(parent, wxID_ANY, _("wxMaxima Diff Viewer"), wxDefaultPosition, wxSize(1000, 800)),
-      m_configuration(config) {
-  wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
+void DiffFrame::OnDiffNext(wxCommandEvent &WXUNUSED(event)) {
+  for (int i = m_currentDiffIdx + 1; i < (int)m_diffEntries.size(); ++i) {
+    bool isDiff = false;
+    for (auto cell : m_diffEntries[i].cells) {
+      if (cell && (cell->GetGroupType() == GC_TYPE_INVALID || cell->GetHighlight())) {
+        isDiff = true;
+        break;
+      }
+    }
+    if (isDiff) {
+      m_currentDiffIdx = i;
+      for (size_t j = 0; j < m_worksheets.size(); ++j) {
+        if (m_diffEntries[i].cells[j]) {
+          m_worksheets[j]->ScheduleScrollToCell(m_diffEntries[i].cells[j]);
+          m_worksheets[j]->Refresh();
+        }
+      }
+      return;
+    }
+  }
+}
 
-  // Add a simple toolbar for synchronization controls
-  wxToolBar *toolBar = CreateToolBar();
-  wxBitmapBundle syncBmp = wxArtProvider::GetBitmapBundle(wxmaximaART_SYNC_HORIZONTAL, wxART_TOOLBAR);
-  toolBar->AddCheckTool(wxID_ANY, _("Sync Horizontal"), syncBmp, wxNullBitmap, _("Toggle horizontal scroll synchronization"));
-  toolBar->ToggleTool(toolBar->GetToolByPos(0)->GetId(), m_syncHorizontal);
-  toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnToggleHorizontalSync, this);
-  
-  toolBar->AddSeparator();
+void DiffFrame::OnDiffPrev(wxCommandEvent &WXUNUSED(event)) {
+  for (int i = m_currentDiffIdx - 1; i >= 0; --i) {
+    bool isDiff = false;
+    for (auto cell : m_diffEntries[i].cells) {
+      if (cell && (cell->GetGroupType() == GC_TYPE_INVALID || cell->GetHighlight())) {
+        isDiff = true;
+        break;
+      }
+    }
+    if (isDiff) {
+      m_currentDiffIdx = i;
+      for (size_t j = 0; j < m_worksheets.size(); ++j) {
+        if (m_diffEntries[i].cells[j]) {
+          m_worksheets[j]->ScheduleScrollToCell(m_diffEntries[i].cells[j]);
+          m_worksheets[j]->Refresh();
+        }
+      }
+      return;
+    }
+  }
+}
+
+DiffFrame::DiffFrame(wxWindow *parent, const wxArrayString &files, Configuration *config)
+  : wxFrame(parent, wxID_ANY, _("wxMaxima Diff Viewer"), wxDefaultPosition, wxSize(1000, 800)),
+    m_configuration(config) {
+wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
+
+// Add a simple toolbar for synchronization controls
+wxToolBar *toolBar = CreateToolBar();
+wxBitmapBundle syncBmp = wxArtProvider::GetBitmapBundle(wxmaximaART_SYNC_HORIZONTAL, wxART_TOOLBAR);
+toolBar->AddCheckTool(wxID_ANY, _("Sync Horizontal"), syncBmp, wxNullBitmap, _("Toggle horizontal scroll synchronization"));
+toolBar->ToggleTool(toolBar->GetToolByPos(0)->GetId(), m_syncHorizontal);
+toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnToggleHorizontalSync, this);
+
+toolBar->AddSeparator();
+wxBitmapBundle prevBmp = wxArtProvider::GetBitmapBundle(wxART_GO_UP, wxART_TOOLBAR);
+wxBitmapBundle nextBmp = wxArtProvider::GetBitmapBundle(wxART_GO_DOWN, wxART_TOOLBAR);
+toolBar->AddTool(EventIDs::button_diff_prev, _("Previous Difference"), prevBmp, _("Jump to previous difference"));
+toolBar->AddTool(EventIDs::button_diff_next, _("Next Difference"), nextBmp, _("Jump to next difference"));
+toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnDiffPrev, this, EventIDs::button_diff_prev);
+toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnDiffNext, this, EventIDs::button_diff_next);
+
+toolBar->AddSeparator();
+
   m_searchCtrl = new wxSearchCtrl(toolBar, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(200, -1), wxTE_PROCESS_ENTER);
   m_searchCtrl->SetDescriptiveText(_("Search input / UUID"));
   m_searchCtrl->ShowCancelButton(true);

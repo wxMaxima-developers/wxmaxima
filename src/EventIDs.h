@@ -427,6 +427,8 @@ public:
   static const wxWindowIDRef button_trigrat;
   static const wxWindowIDRef button_integrate;
   static const wxWindowIDRef button_diff;
+  static const wxWindowIDRef button_diff_next;
+  static const wxWindowIDRef button_diff_prev;
   static const wxWindowIDRef button_sum;
   static const wxWindowIDRef button_product;
   static const wxWindowIDRef button_button_constant;

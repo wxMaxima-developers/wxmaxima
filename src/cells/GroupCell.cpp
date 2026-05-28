@@ -393,33 +393,31 @@ void GroupCell::UpdateConfusableCharWarnings() {
 }
 
 bool GroupCell::Recalculate() const {
-  bool retval = NeedsRecalculation(EditorFontSize());
+  AFontSize fontSize = m_fontSize.IsValid() ? m_fontSize : m_configuration->GetDefaultFontSize();
+  bool retval = NeedsRecalculation(fontSize);
 
   if (retval == true) {
+    Cell::Recalculate(fontSize);
+    m_cellsAppended = false;
     if (m_groupType == GC_TYPE_PAGEBREAK) {
-      // Recalculating pagebreak cells is simple
-      retval = NeedsRecalculation(EditorFontSize());
       m_width = m_configuration->GetCellBracketWidth();
       m_height = Scale_Px(2);
       m_center = Scale_Px(1);
     }
     else {
-      // This cell is no page break cell
       m_mathFontSize = m_configuration->GetMathFontSize();
 
-      if (m_inputLabel != NULL)
-        RecalculateInput();
-
+      RecalculateInput();
       RecalculateOutput();
       m_height = m_outputRect.GetHeight() + m_inputHeight;
     }
-    Cell::Recalculate(m_configuration->GetDefaultFontSize());
+    Cell::Recalculate(fontSize);
     m_cellsAppended = false;
   }
   // Move all cells that follow the current one down by the amount this cell
   // has grown.
   UpdateYPosition();
-  wxASSERT(!NeedsRecalculation(m_configuration->GetDefaultFontSize()));
+  m_cellsAppended = false;
   return retval;
 }
 
@@ -479,6 +477,8 @@ void GroupCell::RecalculateInput() const {
     m_width = 0;
     m_height = 0;
     m_center = 0;
+    m_inputWidth = 0;
+    m_inputHeight = 0;
 
     if ((m_configuration->ShowCodeCells()) || (m_groupType != GC_TYPE_CODE)) {
       if (GetEditable())
@@ -586,8 +586,7 @@ void GroupCell::UpdateYPositionList() const {
 void GroupCell::UpdateYPosition() const {
   const Cell *const previous = GetPrevious();
 
-  wxPoint point(m_configuration->GetIndent(),
-                previous ? GetCenter() : GetCenterList());
+  wxPoint point(m_configuration->GetIndent(), m_center);
   if (!previous) {
     point.y += m_configuration->GetBaseIndent();
   } else {
@@ -766,11 +765,11 @@ void GroupCell::CellUnderPointer(GroupCell *cell) {
 }
 
 int GroupCell::GetMaxDrop() const {
-  return GetHeight() - GetCenter();
+  return m_height - m_center;
 }
 
 int GroupCell::GetCenterList() const {
-  return GetCenter();
+  return m_center;
 }
 
 void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
