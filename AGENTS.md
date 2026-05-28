@@ -23,7 +23,7 @@ This file contains architectural insights, conventions, and operational knowledg
 ## Conventions & Standards
 - **Git Environment:** Note that running `git diff` might launch the visual diff tool `meld` instead of outputting to the terminal. Always use `git diff --no-ext-diff` if you need terminal output.
 - **String Literals & Translations:** Use the `wxS()` macro for all string literals and `_()` for user-facing translatable strings.
-- **Logging:** Use `wxLogMessage()` for debugging; messages are visible in **Help -> Show Log Window**.
+- **Logging:** Use `wxLogMessage()` for debugging; messages are visible in **View -> Toggle Log Window** or by using the option `--logtostderr`.
 - **Asynchronous Sidebars & Safety:** Sidebars (TOC, Variables Pane) update asynchronously. Always validate `GroupCell` pointers (using `m_tree->Contains()`) before use.
 - **Cell UUIDs & Navigation:** Cells have unique `m_uuid`. Filenames support `#UUID` fragments.
 - **Forward Compatibility:** `ToXML()` implementations MUST call `GetXMLFlags()` and include its output in the opening tag to preserve unknown attributes.
@@ -33,7 +33,7 @@ This file contains architectural insights, conventions, and operational knowledg
 - **Maxima Restart (Windows):** Restarting requires a manual reset of the network client (`m_client.reset()`) and streams in `KillMaxima` to avoid socket state errors.
 - **Worksheet Search Logic:** Traverse in visual order: Prompt $\to$ Editor $\to$ Output (Forward) or Output $\to$ Editor $\to$ Prompt (Reverse). Resume from current caret position.
 - **Layout Timeout:** Complex output can trigger a timeout (configurable in Options), replacing slow-to-render cells with a warning.
-- **C++ Standard:** The project uses **C++17**. To support users on older operating systems (like Debian-oldstable or RHEL), wxMaxima aims to stay approximately 10 years behind the current C++ standard.
+- **C++ Standard:** The project uses **C++20**. To support users on older operating systems (like Debian-oldstable or RHEL), wxMaxima aims to stay approximately 10 years behind the current C++ standard.
 - **wxWidgets Version:** Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use `MakeAbsolute()` + `GetFullPath()` instead of `GetAbsolutePath()`).
 
 ## Layout & Compatibility
@@ -66,5 +66,5 @@ This file contains architectural insights, conventions, and operational knowledg
 - **Main Logic:** `src/wxMaxima.cpp` and `src/wxMaximaFrame.cpp`.
 - **Configuration:** `src/Configuration.cpp`.
 
-## Error resiliance
+## Error resilience
 - To err is human => If your instructions don't seem to make sense feel free to ask.
