@@ -251,8 +251,12 @@ public:
     The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
   */
-  void Recalculate(const AFontSize WXUNUSED(fontsize)) const override {
-    m_fontSize = m_configuration->GetMathFontSize();
+  void Recalculate(const AFontSize fontsize) const override {
+    if (fontsize.IsValid())
+      m_mathFontSize = fontsize;
+    else
+      m_mathFontSize = m_configuration->GetMathFontSize();
+    m_fontSize = m_mathFontSize;
     Recalculate();
   }
   bool Recalculate() const;

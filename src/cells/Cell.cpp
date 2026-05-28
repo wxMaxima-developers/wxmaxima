@@ -306,7 +306,7 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const {
     return true;
   if (!HasValidSize())
     return true;
-  if(!EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.1f))
+  if(!EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.01f))
     return true;
   return(ConfigChanged());
 }

@@ -519,8 +519,6 @@ void GroupCell::RecalculateOutput() const {
   if (m_output == NULL)
     return;
 
-  m_mathFontSize = m_configuration->GetMathFontSize();
-
   // The following line is a hack, kind of: Without it the first
   // (and only) line of an image that was included using the gui, not maxima
   // (and that therefore doesn't start in a label that per definition breaks
@@ -529,11 +527,9 @@ void GroupCell::RecalculateOutput() const {
   // that causes its height to be calculated.
   m_output->ForceBreakLine();
 
-  m_mathFontSize = m_configuration->GetMathFontSize(); //-V519
-
   // Recalculate size of all output cells
   for (Cell &tmp : OnList(m_output.get())) {
-    tmp.Recalculate(tmp.IsMath() ? m_configuration->GetMathFontSize()
+    tmp.Recalculate(tmp.IsMath() ? m_mathFontSize
                     : m_configuration->GetDefaultFontSize());
   }
 

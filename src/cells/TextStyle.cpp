@@ -353,7 +353,7 @@ void Style::Write(wxConfigBase *config, const wxString &where) const {
 }
 
 const wxFont &Style::GetFont(AFontSize fontSize) const {
-  return *(m.fontCache->GetFont(fontSize.Get(), IsItalic(), IsBold(), IsUnderlined(),
+  return *(m.fontCache->GetFont(fontSize.GetForWX(), IsItalic(), IsBold(), IsUnderlined(),
                                 IsSlant(), IsStrikethrough()));
 }
 
