@@ -69,7 +69,31 @@ private:
 };
 
 void DiffFrame::OnDiffNext(wxCommandEvent &WXUNUSED(event)) {
-  for (int i = m_currentDiffIdx + 1; i < (int)m_diffEntries.size(); ++i) {
+  int startIdx = m_currentDiffIdx + 1;
+  if (!m_worksheets.empty()) {
+      int y_top = m_lastScrollY[0];
+      int y_bottom = y_top + m_worksheets[0]->GetClientSize().y;
+      
+      bool currentVisible = false;
+      if (m_currentDiffIdx >= 0 && m_currentDiffIdx < (int)m_diffEntries.size()) {
+          GroupCell* cell = m_diffEntries[m_currentDiffIdx].cells[0];
+          if (cell && cell->GetRect().y >= y_top && cell->GetRect().y <= y_bottom) {
+              currentVisible = true;
+          }
+      }
+      
+      if (!currentVisible) {
+          startIdx = 0;
+          for (size_t i = 0; i < m_diffEntries.size(); ++i) {
+              if (m_diffEntries[i].cells[0] && m_diffEntries[i].cells[0]->GetRect().y >= y_top) {
+                  startIdx = (int)i;
+                  break;
+              }
+          }
+      }
+  }
+
+  for (int i = startIdx; i < (int)m_diffEntries.size(); ++i) {
     bool isDiff = false;
     for (auto cell : m_diffEntries[i].cells) {
       if (cell && (cell->GetGroupType() == GC_TYPE_INVALID || cell->GetHighlight())) {
@@ -82,6 +106,7 @@ void DiffFrame::OnDiffNext(wxCommandEvent &WXUNUSED(event)) {
       for (size_t j = 0; j < m_worksheets.size(); ++j) {
         if (m_diffEntries[i].cells[j]) {
           m_worksheets[j]->ScheduleScrollToCell(m_diffEntries[i].cells[j]);
+          m_worksheets[j]->ScrollToCellIfNeeded();
           m_worksheets[j]->Refresh();
         }
       }
@@ -91,7 +116,31 @@ void DiffFrame::OnDiffNext(wxCommandEvent &WXUNUSED(event)) {
 }
 
 void DiffFrame::OnDiffPrev(wxCommandEvent &WXUNUSED(event)) {
-  for (int i = m_currentDiffIdx - 1; i >= 0; --i) {
+  int startIdx = m_currentDiffIdx - 1;
+  if (!m_worksheets.empty()) {
+      int y_top = m_lastScrollY[0];
+      int y_bottom = y_top + m_worksheets[0]->GetClientSize().y;
+      
+      bool currentVisible = false;
+      if (m_currentDiffIdx >= 0 && m_currentDiffIdx < (int)m_diffEntries.size()) {
+          GroupCell* cell = m_diffEntries[m_currentDiffIdx].cells[0];
+          if (cell && cell->GetRect().y >= y_top && cell->GetRect().y <= y_bottom) {
+              currentVisible = true;
+          }
+      }
+      
+      if (!currentVisible) {
+          startIdx = (int)m_diffEntries.size() - 1;
+          for (int i = (int)m_diffEntries.size() - 1; i >= 0; --i) {
+              if (m_diffEntries[i].cells[0] && m_diffEntries[i].cells[0]->GetRect().y < y_top) {
+                  startIdx = i;
+                  break;
+              }
+          }
+      }
+  }
+
+  for (int i = startIdx; i >= 0; --i) {
     bool isDiff = false;
     for (auto cell : m_diffEntries[i].cells) {
       if (cell && (cell->GetGroupType() == GC_TYPE_INVALID || cell->GetHighlight())) {
@@ -104,6 +153,7 @@ void DiffFrame::OnDiffPrev(wxCommandEvent &WXUNUSED(event)) {
       for (size_t j = 0; j < m_worksheets.size(); ++j) {
         if (m_diffEntries[i].cells[j]) {
           m_worksheets[j]->ScheduleScrollToCell(m_diffEntries[i].cells[j]);
+          m_worksheets[j]->ScrollToCellIfNeeded();
           m_worksheets[j]->Refresh();
         }
       }
@@ -230,6 +280,7 @@ void DiffFrame::OnSearch(wxCommandEvent &WXUNUSED(event)) {
                   // Found the UUID. Scroll the worksheet that contains it.
                   // Sync logic will handle the other worksheets.
                   m_worksheets[j]->ScheduleScrollToCell(m_diffEntries[i].cells[j]);
+                  m_worksheets[j]->ScrollToCellIfNeeded();
                   m_worksheets[j]->Refresh();
                   m_worksheets[j]->Update();
                   return;
@@ -243,6 +294,8 @@ void DiffFrame::OnSearch(wxCommandEvent &WXUNUSED(event)) {
               // Found a match. The worksheet should have requested a redraw/scroll.
               // We force it here to provide immediate feedback.
               ws->ScrollToCaret();
+              ws->ScrollToCaretIfNeeded();
+              ws->ScrollToCellIfNeeded();
               ws->Refresh();
               ws->Update();
               break; 
