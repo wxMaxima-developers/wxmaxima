@@ -494,8 +494,8 @@ class IterArrayCell : public FullTestCell {
 public:
   std::unique_ptr<Cell> Copy(GroupCell *WXUNUSED(group)) const override { return std::make_unique<IterArrayCell<N>>(); }
 
-  int GetInnerCellCount() const override { return inner.size(); }
-  Cell *GetInnerCell(int index) const override { return inner[index].get(); }
+  size_t GetInnerCellCount() const override { return inner.size(); }
+  Cell *GetInnerCell(size_t index) const override { return inner[index].get(); }
 
   std::array<std::unique_ptr<Cell>, N> inner;
 };

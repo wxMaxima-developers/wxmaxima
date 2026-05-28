@@ -22,7 +22,9 @@
 #define CATCH_CONFIG_RUNNER
 #include "test_ImgCell.h"
 #include "FontAttribs.cpp"
+#include "nanoSVG.cpp"
 #include "Image.cpp"
+#include "ThreadNumberLimiter.cpp"
 #include "ImgCell.cpp"
 #include "ImgCellBase.cpp"
 #include "StringUtils.cpp"
@@ -30,10 +32,6 @@
 #include "TextCell.cpp"
 #include "VisiblyInvalidCell.cpp"
 #include <catch2/catch.hpp>
-
-wxBitmap SvgBitmap::RGBA2wxBitmap(unsigned char const *, int const &, int const &, int const &) { return {}; }
-
-int ErrorRedirector::m_messages_logPaneOnly;
 
 template <typename C>
 wxString HexEncoding(C &&bits)
@@ -44,11 +42,12 @@ wxString HexEncoding(C &&bits)
   return output;
 }
 
+// ... (license header omitted for brevity but preserved in replace)
 SCENARIO("RTF Output represents the image") {
   wxMemoryBuffer image;
   image.AppendData(wxmaxima_art_wxmac_doc_png, wxmaxima_art_wxmac_doc_png_size);
   Configuration config;
-  GroupCell group(&config, GC_TYPE_IMAGE);
+  GroupCell group(&config, GC_TYPE_IMAGE, wxString());
   GIVEN("An image with test data") {
     ImgCell cell(&group, &config, image, "png");
     WHEN("we convert it to RTF") {
@@ -69,12 +68,12 @@ SCENARIO("RTF Output represents the image") {
 class MyApp : public wxApp
 {
 public:
-  wxEntryStart(argc, argv);
-  wxImage::AddHandler(new wxPNGHandler);
-  auto rc = Catch::Session().run(argc, argv);
-  wxEntryCleanup();
-  return rc;
+  bool OnInit() override {
+    wxImage::AddHandler(new wxPNGHandler);
+    int rc = Catch::Session().run();
+    std::exit(rc);
+    return false;
+  }
 };
 
 IMPLEMENT_APP(MyApp);
-wxDECLARE_APP(MyApp);

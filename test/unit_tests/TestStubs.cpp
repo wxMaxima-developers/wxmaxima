@@ -18,6 +18,10 @@ CellPointers *Cell::GetCellPointers() const { return &pointers; }
 CellPointers *Cell::GetCellPointers() const { return {}; }
 #endif
 
+bool Configuration::m_debugMode = false;
+bool Configuration::m_use_threads = false;
+wxColor Configuration::DefaultBackgroundColor() { return *wxWHITE; }
+
 Configuration::Configuration(wxDC *dc, InitOpt) : m_dc(dc) {}
 Configuration::~Configuration() {}
 bool Configuration::InUpdateRegion(wxRect) const { return true; }
@@ -28,6 +32,7 @@ wxFontStyle Configuration::IsItalic(long) const { return {}; }
 wxColour Configuration::GetColor(TextStyle) { return {}; }
 bool Configuration::HideMarkerForThisMessage(wxString) { return false; }
 void Configuration::NotifyOfCellRedraw(const Cell *) {}
+long Configuration::GetLineWidth() const { return 1; }
 
 // ... (rest of commented out code)
 
@@ -51,6 +56,8 @@ wxString GroupCell::ToRTF() const { return {}; }
 Cell::Range GroupCell::GetInnerCellsInRect(const wxRect &) const { return {}; }
 const wxString GroupCell::GetToolTip(wxPoint) const { return {}; }
 bool GroupCell::AddEnding() { return {}; }
+bool GroupCell::FirstLineOnlyEditor() const { return false; }
+void GroupCell::SetCurrentPoint(wxPoint) {}
 #if wxUSE_ACCESSIBILITY
 wxAccStatus GroupCell::GetDescription(int, wxString *) const { return {}; }
 wxAccStatus GroupCell::GetLocation(wxRect &, int) { return {}; }
