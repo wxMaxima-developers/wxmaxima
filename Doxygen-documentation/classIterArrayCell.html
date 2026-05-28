@@ -96,12 +96,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a05f1aa9a937763e89c9c0b62beed50e7"><td class="memItemLeft" align="right" valign="top"><a id="a05f1aa9a937763e89c9c0b62beed50e7" name="a05f1aa9a937763e89c9c0b62beed50e7"></a>
 std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Copy</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *WXUNUSED(group)) const override</td></tr>
 <tr class="separator:a05f1aa9a937763e89c9c0b62beed50e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6775fa437785332bd300738089ac6e85"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIterArrayCell.html#a6775fa437785332bd300738089ac6e85">GetInnerCellCount</a> () const override</td></tr>
-<tr class="memdesc:a6775fa437785332bd300738089ac6e85"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of inner cells - for use by the iterators.  <br /></td></tr>
-<tr class="separator:a6775fa437785332bd300738089ac6e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52622843fdf276e15ebd99b3cb507b5c"><td class="memItemLeft" align="right" valign="top"><a id="a52622843fdf276e15ebd99b3cb507b5c" name="a52622843fdf276e15ebd99b3cb507b5c"></a>
-<a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetInnerCell</b> (int index) const override</td></tr>
-<tr class="separator:a52622843fdf276e15ebd99b3cb507b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bd15417cb0ff47cbd72fb3f450aa7b0"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIterArrayCell.html#a1bd15417cb0ff47cbd72fb3f450aa7b0">GetInnerCellCount</a> () const override</td></tr>
+<tr class="memdesc:a1bd15417cb0ff47cbd72fb3f450aa7b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of inner cells - for use by the iterators.  <br /></td></tr>
+<tr class="separator:a1bd15417cb0ff47cbd72fb3f450aa7b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a088ea8238025ee4881a860484aceac7a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIterArrayCell.html#a088ea8238025ee4881a860484aceac7a">GetInnerCell</a> (size_t index) const override</td></tr>
+<tr class="memdesc:a088ea8238025ee4881a860484aceac7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve an inner cell with given index which must be less than GetInnerCellCount.  <br /></td></tr>
+<tr class="separator:a088ea8238025ee4881a860484aceac7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f6cc8637357c76150e167716689dacc"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFullTestCell.html#a7f6cc8637357c76150e167716689dacc">Copy</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *group) const override</td></tr>
 <tr class="memdesc:a7f6cc8637357c76150e167716689dacc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this cell.  <br /></td></tr>
 <tr class="separator:a7f6cc8637357c76150e167716689dacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -691,9 +691,6 @@ wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><b>BitmapFromSVG</b>
 <tr class="memitem:a006341264b9c3aa5b3d3d7afbfce4b64"><td class="memItemLeft" align="right" valign="top"><a id="a006341264b9c3aa5b3d3d7afbfce4b64" name="a006341264b9c3aa5b3d3d7afbfce4b64"></a>
 std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>MakeVisiblyInvalidCell</b> () const</td></tr>
 <tr class="separator:a006341264b9c3aa5b3d3d7afbfce4b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6a0a6df9f321348d39583d79df078ad"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ab6a0a6df9f321348d39583d79df078ad">GetInnerCell</a> (size_t index) const</td></tr>
-<tr class="memdesc:ab6a0a6df9f321348d39583d79df078ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve an inner cell with given index which must be less than GetInnerCellCount.  <br /></td></tr>
-<tr class="separator:ab6a0a6df9f321348d39583d79df078ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa79c7d39bed74def76eff2484278a52"><td class="memItemLeft" align="right" valign="top"><a id="aaa79c7d39bed74def76eff2484278a52" name="aaa79c7d39bed74def76eff2484278a52"></a>
 <a class="el" href="classWorksheet.html">Worksheet</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetWorksheet</b> () const</td></tr>
 <tr class="separator:aaa79c7d39bed74def76eff2484278a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1808,38 +1805,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 </div>
 </div>
-<a id="ab6a0a6df9f321348d39583d79df078ad" name="ab6a0a6df9f321348d39583d79df078ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6a0a6df9f321348d39583d79df078ad">&#9670;&#160;</a></span>GetInnerCell()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classCell.html">Cell</a> * Cell::GetInnerCell </td>
-          <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>index</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Retrieve an inner cell with given index which must be less than GetInnerCellCount. </p>
-
-<p>Reimplemented in <a class="el" href="classAbsCell.html#aac9d17763a45ea66fde7442aa181ecb3">AbsCell</a>, <a class="el" href="classAtCell.html#afd53fbdba8286225c0688ebb6664598b">AtCell</a>, <a class="el" href="classBoxCell.html#aefcb10c9832d871caa078ebd97fcafec">BoxCell</a>, <a class="el" href="classConjugateCell.html#aca9d54e9ae71976aed8e6804604b2609">ConjugateCell</a>, <a class="el" href="classDiffCell.html#af5415227b264c1e857cd9e4231f5bac7">DiffCell</a>, <a class="el" href="classExptCell.html#a59765e64ec1ad8e0a74c55b639870fa8">ExptCell</a>, <a class="el" href="classFracCell.html#a328f49de592d0882d614ee8d4e899796">FracCell</a>, <a class="el" href="classFunCell.html#a0300da4f908f010720fe8190a842f140">FunCell</a>, <a class="el" href="classGroupCell.html#ad656801f5c607dc6195573f5aeb97d2d">GroupCell</a>, <a class="el" href="classIntCell.html#a8a9531997bfaa7aeaafd9add3445fc6f">IntCell</a>, <a class="el" href="classIntervalCell.html#aef495868050764d3bca40fd8c7dce648">IntervalCell</a>, <a class="el" href="classLimitCell.html#a4b67dcf10dbab1a5e1d5aafb47808c35">LimitCell</a>, <a class="el" href="classListCell.html#a1eb92166e7444e2a1c8786d81e8234ef">ListCell</a>, <a class="el" href="classLongNumberCell.html#afffdc1fa3432a222f46ebba907ac009f">LongNumberCell</a>, <a class="el" href="classMatrCell.html#a7e3b074ba6b4c3d597bee45d0a3a603a">MatrCell</a>, <a class="el" href="classNamedBoxCell.html#ad351b6d3e47ef2e947e258d3910be70f">NamedBoxCell</a>, <a class="el" href="classParenCell.html#a19271649ddd25bbd4d6f6a26acf5694e">ParenCell</a>, <a class="el" href="classSqrtCell.html#abeae6b93be27e13ccf482e72303d0cf6">SqrtCell</a>, <a class="el" href="classSubCell.html#a68e9e88cc691c94128400111305c9835">SubCell</a>, <a class="el" href="classSubSupCell.html#a5bc82da50b8fecd45e748863ab734dbd">SubSupCell</a>, and <a class="el" href="classSumCell.html#aaff4f18b8d8aeeb19f343b9c251a4cff">SumCell</a>.</p>
-
-</div>
-</div>
-<a id="a6775fa437785332bd300738089ac6e85" name="a6775fa437785332bd300738089ac6e85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6775fa437785332bd300738089ac6e85">&#9670;&#160;</a></span>GetInnerCellCount()</h2>
+<a id="a088ea8238025ee4881a860484aceac7a" name="a088ea8238025ee4881a860484aceac7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a088ea8238025ee4881a860484aceac7a">&#9670;&#160;</a></span>GetInnerCell()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1850,7 +1817,39 @@ template&lt;int N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="classIterArrayCell.html">IterArrayCell</a>&lt; N &gt;::GetInnerCellCount </td>
+          <td class="memname"><a class="el" href="classCell.html">Cell</a> * <a class="el" href="classIterArrayCell.html">IterArrayCell</a>&lt; N &gt;::GetInnerCell </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve an inner cell with given index which must be less than GetInnerCellCount. </p>
+
+<p>Reimplemented from <a class="el" href="classCell.html#ab6a0a6df9f321348d39583d79df078ad">Cell</a>.</p>
+
+</div>
+</div>
+<a id="a1bd15417cb0ff47cbd72fb3f450aa7b0" name="a1bd15417cb0ff47cbd72fb3f450aa7b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bd15417cb0ff47cbd72fb3f450aa7b0">&#9670;&#160;</a></span>GetInnerCellCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="classIterArrayCell.html">IterArrayCell</a>&lt; N &gt;::GetInnerCellCount </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -3180,7 +3179,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
