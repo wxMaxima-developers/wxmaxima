@@ -69,7 +69,8 @@ public:
   //! Search maxima's help file for command and variable names
   void LoadHelpFileAnchors(const wxString &docdir, const wxString &maximaVersion);
   //! Collect all keyword anchors in the help file
-  void CompileHelpFileAnchors(const wxString &maximaHtmlDir,
+  void CompileHelpFileAnchors(std::stop_token stopToken,
+                              const wxString &maximaHtmlDir,
                               const wxString &maximaVersion,
                               const wxString &saveName);
   //! Load the result from the last CompileHelpFileAnchors from the disk cache
@@ -84,7 +85,6 @@ public:
                                 const wxString &saveName);
   virtual ~MaximaManual();
 private:
-  std::atomic_bool m_abortBackgroundTask;
   //! Add our aliases to a list of anchors
   static void AnchorAliasses(HelpFileAnchors &anchors);
   //! Scans the maxima directory for a list of loadable files
@@ -92,37 +92,37 @@ private:
   {
   public:
     explicit GetHTMLFiles(std::vector<wxString>& files,
-                          std::atomic_bool *abort = nullptr,
+                          std::stop_token stopToken = {},
                           const wxString &prefix = wxEmptyString) :
-      m_files(files), m_abort(abort), m_prefix(prefix) { }
+      m_files(files), m_stopToken(stopToken), m_prefix(prefix) { }
     virtual wxDirTraverseResult OnFile(const wxString& filename) override;
     virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
     std::vector<wxString>& GetResult() const {return m_files;}
   protected:
     std::vector<wxString>& m_files;
-    std::atomic_bool *m_abort;
+    std::stop_token m_stopToken;
     wxString m_prefix;
   };
   class GetHTMLFiles_Recursive : public wxDirTraverser
   {
   public:
     explicit GetHTMLFiles_Recursive(std::vector<wxString>& files,
-                                    std::atomic_bool *abort = nullptr,
+                                    std::stop_token stopToken = {},
                                     const wxString &prefix = wxEmptyString) :
-      m_files(files), m_abort(abort), m_prefix(prefix) { }
+      m_files(files), m_stopToken(stopToken), m_prefix(prefix) { }
     virtual wxDirTraverseResult OnFile(const wxString& filename) override;
     virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
     std::vector<wxString>& GetResult() const {return m_files;}
   protected:
     std::vector<wxString>& m_files;
-    std::atomic_bool *m_abort;
+    std::stop_token m_stopToken;
     wxString m_prefix;
   };
 
   //    m_configuration.MaximaShareDir(dir);
 
   //! The thread the help file anchors are compiled in
-  jthread m_helpfileanchorsThread;
+  std::jthread m_helpfileanchorsThread;
   std::mutex m_helpFileAnchorsLock;
   //! The configuration storage
   Configuration *m_configuration = NULL;

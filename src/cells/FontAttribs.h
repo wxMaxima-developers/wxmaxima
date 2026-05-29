@@ -116,10 +116,7 @@ public:
   // cppcheck-suppress operatorEq
   constexpr AFontSize &operator=(const AFontSize &o) = default;
 
-  constexpr bool operator==(AFontSize o) const { return m_uSize == o.m_uSize; }
-  constexpr bool operator!=(AFontSize o) const { return m_uSize != o.m_uSize; }
-  constexpr bool operator<(AFontSize o) const { return m_uSize < o.m_uSize; }
-  constexpr bool operator>(AFontSize o) const { return m_uSize > o.m_uSize; }
+  constexpr auto operator<=>(const AFontSize& o) const = default;
   constexpr float Get() const { return IsValid() ? m_uSize * Size_Unit : Minimum_Size; }
   constexpr long GetAsLong() const { return long(Get() + 0.5f); }
   constexpr auto GetForWX() const;

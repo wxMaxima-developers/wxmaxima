@@ -71,7 +71,7 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_socket->SetFlags(wxSOCKET_BLOCK); // We will use WaitForRead with timeout in thread.
   m_socket->SetTimeout(1);
 
-  m_workerThread = jthread(&Maxima::WorkerThread, this);
+  m_workerThread = std::jthread(&Maxima::WorkerThread, this);
 }
 
 Maxima::~Maxima() {
@@ -246,7 +246,7 @@ void Maxima::ProcessData()
                 int end = m_processingBuffer.Find(tagEndName);
                 if (end != wxNOT_FOUND) {
                     if (!batchedText.IsEmpty()) {
-                        newItems.push_back({READ_MISC_TEXT, batchedText});
+                        newItems.push_back({.cause = READ_MISC_TEXT, .data = batchedText});
                         batchedText.Clear();
                     }
 
@@ -256,7 +256,7 @@ void Maxima::ProcessData()
                     if (m_processingBuffer.StartsWith(wxS("\n")))
                         m_processingBuffer = m_processingBuffer.Mid(1);
                     
-                    newItems.push_back({tag->second, fullTag});
+                    newItems.push_back({.cause = tag->second, .data = fullTag});
                     progress = true;
                 }
             }

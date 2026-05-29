@@ -238,7 +238,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
   m_gnuplotData = std::move(dataFilename);
   std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter());
   if(m_configuration->UseThreads())
-    m_loadGnuplotSourceTask = jthread(&Image::LoadGnuplotSource_Backgroundtask,
+    m_loadGnuplotSourceTask = std::jthread(&Image::LoadGnuplotSource_Backgroundtask,
                                       this,
                                       std::move(limiter),
                                       m_gnuplotSource, m_gnuplotData, wxmxFile);
@@ -295,7 +295,7 @@ void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilen
   m_gnuplotData = std::move(dataFilename);
   if(m_configuration->UseThreads())
     m_loadGnuplotSourceTask =
-      jthread(&Image::LoadCompressedGnuplotSource_Backgroundtask,
+      std::jthread(&Image::LoadCompressedGnuplotSource_Backgroundtask,
               this,
               std::move(limiter),
               m_gnuplotSource,
@@ -828,7 +828,7 @@ void Image::LoadImage(wxString image, const wxString &wxmxFile,
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
   if(m_configuration->UseThreads())
-    m_loadImageTask = jthread(&Image::LoadImage_Backgroundtask,
+    m_loadImageTask = std::jthread(&Image::LoadImage_Backgroundtask,
                               this,
                               std::move(limiter),
                               std::move(image), wxmxFile,
@@ -975,8 +975,7 @@ void Image::LoadImage_Backgroundtask(std::unique_ptr<ThreadNumberLimiter> limite
 void Image::Recalculate(double scale) {
   if(m_loadImageTask.joinable())
     m_loadImageTask.join();
-  // It would better to use a jthread for joining no-more used threads.
-  // But that is C++20, which now (in 2023) is still too early.
+  // We use std::jthread for automatic joining on destruction.
   if(m_loadGnuplotSourceTask.joinable())
     m_loadGnuplotSourceTask.join();
   if(m_loadImageTask.joinable())

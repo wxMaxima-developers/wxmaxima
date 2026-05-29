@@ -98,9 +98,9 @@ public:
   //! Interprets the XML autocompletable symbol list maxima can send us
   void AddSymbols(wxXmlDocument xml);
   //! The real work of AddSymbols is made here and in the background
-  void AddSymbols_Backgroundtask_string(wxString xml);
+  void AddSymbols_Backgroundtask_string(std::stop_token stopToken, wxString xml);
   //! The real work of AddSymbols is made here and in the background
-  void AddSymbols_Backgroundtask(wxXmlDocument xmldoc);
+  void AddSymbols_Backgroundtask(std::stop_token stopToken, wxXmlDocument xmldoc);
 
 
   //! Replace the list of files in the directory the worksheet file is in to the demo files list
@@ -134,12 +134,12 @@ private:
   //! The configuration storage
   Configuration *m_configuration;
   //! Loads the list of loadable files and can be run in a background task
-  void LoadableFiles_BackgroundTask(wxString sharedir, wxString demodir);
+  void LoadableFiles_BackgroundTask(std::stop_token stopToken, wxString sharedir, wxString demodir);
   //! Prepares the list of built-in symbols and can be run in a background task
-  void BuiltinSymbols_BackgroundTask();
+  void BuiltinSymbols_BackgroundTask(std::stop_token stopToken);
 
   //! Replace the list of files in the directory the worksheet file is in to the load files list
-  void UpdateLoadFiles_BackgroundTask(wxString partial, wxString maximaDir);
+  void UpdateLoadFiles_BackgroundTask(std::stop_token stopToken, wxString partial, wxString maximaDir);
   //! The list of loadable files maxima provides
   std::vector<wxString> m_builtInLoadFiles;
   //! The list of demo files maxima provides
@@ -378,8 +378,8 @@ private:
       }
   };
 
-  jthread m_addSymbols_backgroundThread;
-  jthread m_addFiles_backgroundThread;
+  std::jthread m_addSymbols_backgroundThread;
+  std::jthread m_addFiles_backgroundThread;
   //! If set to true, background tasks should abort.
   std::atomic_bool m_abortBackgroundTask{false};
   //! Is locked when someone accesses a keyword list

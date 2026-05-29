@@ -135,49 +135,47 @@ void AutoComplete::ClearDemofileList() {
 void AutoComplete::AddSymbols(wxString xml) {
   if(m_addSymbols_backgroundThread.joinable())
   {
-    m_abortBackgroundTask = true;
+    m_addSymbols_backgroundThread.request_stop();
     m_addSymbols_backgroundThread.join();
   }
-  m_abortBackgroundTask = false;
 
   if((m_configuration->UseThreads() && xml.Length() > 300))
-    m_addSymbols_backgroundThread = jthread(&AutoComplete::AddSymbols_Backgroundtask_string,
+    m_addSymbols_backgroundThread = std::jthread(&AutoComplete::AddSymbols_Backgroundtask_string,
                                                 this, std::move(xml));
   else
-    AddSymbols_Backgroundtask_string(std::move(xml));
+    AddSymbols_Backgroundtask_string({}, std::move(xml));
 }
 
 void AutoComplete::AddSymbols(wxXmlDocument xml) {
   if(m_addSymbols_backgroundThread.joinable())
     {
-      m_abortBackgroundTask = true;
+      m_addSymbols_backgroundThread.request_stop();
       wxLogMessage(_("Waiting for m_addSymbols_backgroundThread to finish"));
       m_addSymbols_backgroundThread.join();
     }
-  m_abortBackgroundTask = false;
   wxLogMessage(_("Scheduling a background task that compiles a new list "
                  "of autocompletable maxima commands."));
 
   if(m_configuration->UseThreads())
-    m_addSymbols_backgroundThread = jthread(&AutoComplete::AddSymbols_Backgroundtask,
+    m_addSymbols_backgroundThread = std::jthread(&AutoComplete::AddSymbols_Backgroundtask,
                                                 this, std::move(xml));
   else
-    AddSymbols_Backgroundtask(std::move(xml));
+    AddSymbols_Backgroundtask({}, std::move(xml));
 }
 
-void AutoComplete::AddSymbols_Backgroundtask_string(wxString xml) {
+void AutoComplete::AddSymbols_Backgroundtask_string(std::stop_token stopToken, wxString xml) {
   wxXmlDocument xmldoc;
   wxStringInputStream xmlStream(xml);
   xmldoc.Load(xmlStream);
-  AddSymbols_Backgroundtask(xmldoc);
+  AddSymbols_Backgroundtask(stopToken, xmldoc);
 }
 
-void AutoComplete::AddSymbols_Backgroundtask(wxXmlDocument xmldoc) {
+void AutoComplete::AddSymbols_Backgroundtask(std::stop_token stopToken, wxXmlDocument xmldoc) {
   wxXmlNode *node = xmldoc.GetRoot();
   if (node != NULL) {
     wxXmlNode *children = node->GetChildren();
     while (children != NULL) {
-      if (m_abortBackgroundTask) return;
+      if (stopToken.stop_requested()) return;
       if (children->GetType() == wxXML_ELEMENT_NODE) {
         if (children->GetName() == wxS("function")) {
           wxXmlNode *val = children->GetChildren();
@@ -219,49 +217,49 @@ void AutoComplete::AddSymbols_Backgroundtask(wxXmlDocument xmldoc) {
       }
       children = children->GetNext();
     }
-    if (m_abortBackgroundTask) return;
+    if (stopToken.stop_requested()) return;
     {
       WordList wordList;
       {
         const std::lock_guard<std::mutex> lock(m_keywordsLock);
         wordList = m_wordList.at(command);
       }
-      std::sort(wordList.begin(), wordList.end());
-      auto newEnd = std::unique(wordList.begin(), wordList.end());
-      wordList.erase(newEnd, wordList.end());
-      if (m_abortBackgroundTask) return;
+      std::ranges::sort(wordList);
+      auto [first, last] = std::ranges::unique(wordList);
+      wordList.erase(first, last);
+      if (stopToken.stop_requested()) return;
       {
         const std::lock_guard<std::mutex> lock(m_keywordsLock);
         m_wordList.at(command) = std::move(wordList);
       }
     }
-    if (m_abortBackgroundTask) return;
+    if (stopToken.stop_requested()) return;
     {
       WordList wordList;
       {
         const std::lock_guard<std::mutex> lock(m_keywordsLock);
         wordList = m_wordList.at(unit);
       }
-      std::sort(wordList.begin(), wordList.end());
-      auto newEnd = std::unique(wordList.begin(), wordList.end());
-      wordList.erase(newEnd, wordList.end());
-      if (m_abortBackgroundTask) return;
+      std::ranges::sort(wordList);
+      auto [first, last] = std::ranges::unique(wordList);
+      wordList.erase(first, last);
+      if (stopToken.stop_requested()) return;
       {
         const std::lock_guard<std::mutex> lock(m_keywordsLock);
         m_wordList.at(unit) = std::move(wordList);
       }
     }
-    if (m_abortBackgroundTask) return;
+    if (stopToken.stop_requested()) return;
     {
       WordList wordList;
       {
         const std::lock_guard<std::mutex> lock(m_keywordsLock);
         wordList = m_wordList.at(tmplte);
       }
-      std::sort(wordList.begin(), wordList.end());
-      auto newEnd = std::unique(wordList.begin(), wordList.end());
-      wordList.erase(newEnd, wordList.end());
-      if (m_abortBackgroundTask) return;
+      std::ranges::sort(wordList);
+      auto [first, last] = std::ranges::unique(wordList);
+      wordList.erase(first, last);
+      if (stopToken.stop_requested()) return;
       {
         const std::lock_guard<std::mutex> lock(m_keywordsLock);
         m_wordList.at(tmplte) = std::move(wordList);
@@ -282,7 +280,8 @@ void AutoComplete::AddWorksheetWords(const WordList &words) {
 }
 
 AutoComplete::~AutoComplete() {
-    m_abortBackgroundTask = true;
+    m_addSymbols_backgroundThread.request_stop();
+    m_addFiles_backgroundThread.request_stop();
     if (m_addSymbols_backgroundThread.joinable())
       m_addSymbols_backgroundThread.join();
     if(m_addFiles_backgroundThread.joinable())
@@ -297,7 +296,8 @@ void AutoComplete::LoadSymbols() {
   demodir.Replace("\r", "");
   if(m_addFiles_backgroundThread.joinable() || m_addSymbols_backgroundThread.joinable())
     {
-      m_abortBackgroundTask = true;
+      m_addFiles_backgroundThread.request_stop();
+      m_addSymbols_backgroundThread.request_stop();
       if(m_addFiles_backgroundThread.joinable())
         {
           wxLogMessage(_("Waiting for m_addFiles_backgroundThread to finish"));
@@ -309,50 +309,49 @@ void AutoComplete::LoadSymbols() {
           m_addSymbols_backgroundThread.join();
         }
     }
-  m_abortBackgroundTask = false;
   if(m_configuration->UseThreads())
     {
-      m_addSymbols_backgroundThread = jthread(&AutoComplete::BuiltinSymbols_BackgroundTask,
+      m_addSymbols_backgroundThread = std::jthread(&AutoComplete::BuiltinSymbols_BackgroundTask,
                                               this);
-      m_addFiles_backgroundThread = jthread(&AutoComplete::LoadableFiles_BackgroundTask,
+      m_addFiles_backgroundThread = std::jthread(&AutoComplete::LoadableFiles_BackgroundTask,
                                             this, sharedir, demodir);
     }
   else
     {
-      BuiltinSymbols_BackgroundTask();
-      LoadableFiles_BackgroundTask(sharedir, demodir);
+      BuiltinSymbols_BackgroundTask({});
+      LoadableFiles_BackgroundTask({}, sharedir, demodir);
     }
 }
 
-void AutoComplete::BuiltinSymbols_BackgroundTask() {
+void AutoComplete::BuiltinSymbols_BackgroundTask(std::stop_token stopToken) {
   {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for(auto &wordlist:m_wordList)
       wordlist.clear();
   }
   LoadBuiltinSymbols();
-  if (m_abortBackgroundTask) return;
+  if (stopToken.stop_requested()) return;
 
   for (auto it = Configuration::EscCodesBegin();
        it != Configuration::EscCodesEnd(); ++it)
     {
-      if (m_abortBackgroundTask) return;
+      if (stopToken.stop_requested()) return;
       const std::lock_guard<std::mutex> lock(m_keywordsLock);
       m_wordList.at(esccommand).push_back(it->first);
     }
 
   for(auto &wordlist:m_wordList)
     {
-      if (m_abortBackgroundTask) return;
+      if (stopToken.stop_requested()) return;
       WordList wordListCopy;
       {
         const std::lock_guard<std::mutex> lock(m_keywordsLock);
         wordListCopy = wordlist;
       }
-      std::sort(wordListCopy.begin(), wordListCopy.end());
-      auto newEnd = std::unique(wordListCopy.begin(), wordListCopy.end());
-      wordListCopy.erase(newEnd, wordListCopy.end());
-      if (m_abortBackgroundTask) return;
+      std::ranges::sort(wordListCopy);
+      auto [first, last] = std::ranges::unique(wordListCopy);
+      wordListCopy.erase(first, last);
+      if (stopToken.stop_requested()) return;
       {
         const std::lock_guard<std::mutex> lock(m_keywordsLock);
         wordlist = std::move(wordListCopy);
@@ -374,7 +373,7 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
     wxRegEx templte("^[tT][eE][mM][pP][lL][aA][tT][eE] *: *");
     wxRegEx unt("^[uU][nN][iI][tT] *: *");
     for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine()) {
-      if (m_abortBackgroundTask) break;
+      if (stopToken.stop_requested()) break;
       line.Trim(true);
       line.Trim(false);
       if (!line.StartsWith("#")) {
@@ -425,12 +424,12 @@ void AutoComplete::BuiltinSymbols_BackgroundTask() {
   }
 }
 
-void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir, wxString demodir) {
+void AutoComplete::LoadableFiles_BackgroundTask(std::stop_token stopToken, wxString sharedir, wxString demodir) {
   // Prepare a list of all built-in loadable files of maxima.
   {
     m_builtInLoadFiles.clear();
     m_builtInDemoFiles.clear();
-    GetMacFiles_includingSubdirs maximaLispIterator(m_builtInLoadFiles, &m_keywordsLock, &m_abortBackgroundTask);
+    GetMacFiles_includingSubdirs maximaLispIterator(m_builtInLoadFiles, &m_keywordsLock, stopToken);
     if (sharedir.IsEmpty())
       wxLogMessage(_("Seems like the package with the maxima share files isn't "
                      "installed."));
@@ -441,14 +440,14 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir, wxString demo
       if (maximadir.IsOpened())
         maximadir.Traverse(maximaLispIterator); // todo
     }
-    if (m_abortBackgroundTask) return;
-    GetMacFiles userLispIterator(m_builtInLoadFiles, &m_keywordsLock, &m_abortBackgroundTask);
+    if (stopToken.stop_requested()) return;
+    GetMacFiles userLispIterator(m_builtInLoadFiles, &m_keywordsLock, stopToken);
     wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
     userDir.MakeAbsolute();
     wxDir maximauserfilesdir(userDir.GetFullPath());
     if (maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
-    if (m_abortBackgroundTask) return;
+    if (stopToken.stop_requested()) return;
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
   }
 
@@ -456,16 +455,16 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir, wxString demo
   {
     wxFileName demoDir(demodir + "/");
     demoDir.MakeAbsolute();
-    GetDemoFiles_includingSubdirs maximaLispIterator(m_builtInDemoFiles, &m_keywordsLock, &m_abortBackgroundTask);
+    GetDemoFiles_includingSubdirs maximaLispIterator(m_builtInDemoFiles, &m_keywordsLock, stopToken);
     wxDir maximadir(demoDir.GetFullPath());
     if (maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
-    if (m_abortBackgroundTask) return;
+    if (stopToken.stop_requested()) return;
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
   }
-  if (m_abortBackgroundTask) return;
-  std::sort(m_builtInLoadFiles.begin(), m_builtInLoadFiles.end());
-  std::sort(m_builtInDemoFiles.begin(), m_builtInDemoFiles.end());
+  if (stopToken.stop_requested()) return;
+  std::ranges::sort(m_builtInLoadFiles);
+  std::ranges::sort(m_builtInDemoFiles);
   {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
     m_wordList.at(demofile) = m_builtInDemoFiles;
@@ -478,7 +477,7 @@ void AutoComplete::LoadableFiles_BackgroundTask(wxString sharedir, wxString demo
 
 void AutoComplete::UpdateDemoFiles(wxString partial, const wxString &maximaDir) {
   // Remove the opening quote from the partial.
-  if (partial.at(0) == wxS('\"'))
+  if (partial.starts_with(wxS('\"')))
     partial = partial.Right(partial.Length() - 1);
 
   partial.Replace(wxFileName::GetPathSeparator(), "/");
@@ -514,7 +513,7 @@ void AutoComplete::UpdateDemoFiles(wxString partial, const wxString &maximaDir) 
 
 void AutoComplete::UpdateGeneralFiles(wxString partial, const wxString &maximaDir) {
   // Remove the opening quote from the partial.
-  if (partial.at(0) == wxS('\"'))
+  if (partial.starts_with(wxS('\"')))
     partial = partial.Right(partial.Length() - 1);
 
   partial.Replace(wxFileName::GetPathSeparator(), "/");
@@ -549,7 +548,7 @@ void AutoComplete::UpdateLoadFiles(wxString partial, const wxString &maximaDir) 
   wxLogMessage(_("Scheduling a background task that scans for autocompletable "
                  "file names."));
   // Remove the opening quote from the partial.
-  if (partial.at(0) == wxS('\"'))
+  if (partial.starts_with(wxS('\"')))
     partial = partial.Right(partial.Length() - 1);
 
   partial.Replace(wxFileName::GetPathSeparator(), "/");
@@ -603,18 +602,17 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for (const auto &i : m_wordList.at(type)) {
       if (i.StartsWith(partial) &&
-          (std::find(completions.begin(), completions.end(), i) == completions.end()))
+          (!std::ranges::contains(completions, i)))
         completions.push_back(i);
     }
   } else if (type == tmplte) {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for (const auto &i: m_wordList.at(type)) {
       if (i.StartsWith(partial)) {
-        if (std::find(completions.begin(), completions.end(), i) == completions.end())
+        if (!std::ranges::contains(completions, i))
           completions.push_back(i);
         if (i.SubString(0, static_cast<std::size_t>(i.Find(wxS("("))) - 1) == partial &&
-            (std::find(perfectCompletions.begin(), perfectCompletions.end(), i) ==
-             perfectCompletions.end()))
+            (!std::ranges::contains(perfectCompletions, i)))
           perfectCompletions.push_back(i);
       }
     }
@@ -626,16 +624,16 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
   if (type == command) {
     for (const auto &[word, count] : m_worksheetWords) {
       if (word.StartsWith(partial)) {
-        if (std::find(completions.begin(), completions.end(), word) == completions.end()) {
+        if (!std::ranges::contains(completions, word)) {
           completions.push_back(word);
         }
       }
     }
   }
 
-  std::sort(completions.begin(), completions.end());
-  auto newEnd = std::unique(completions.begin(), completions.end());
-  completions.erase(newEnd, completions.end());
+  std::ranges::sort(completions);
+  auto [first, last] = std::ranges::unique(completions);
+  completions.erase(first, last);
   if (perfectCompletions.size() > 0)
     return perfectCompletions;
   else
@@ -666,8 +664,7 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
   {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
     if ((type != tmplte) &&
-        (std::find(m_wordList.at(type).begin(), m_wordList.at(type).end(), fun) ==
-         m_wordList.at(type).end()))
+        (!std::ranges::contains(m_wordList.at(type), fun)))
       m_wordList.at(type).push_back(fun);
   }
   /// Add templates - for given function and given argument count we

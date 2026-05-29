@@ -10,9 +10,4 @@
 #cmakedefine WXMAXIMA_GIT_SHORT_HASH "@WXMAXIMA_GIT_SHORT_HASH@"
 
 #include <thread>
-#ifdef __cpp_lib_jthread
-    #define jthread std::jthread
-#else
-    #define jthread std::thread
-#endif
 #endif

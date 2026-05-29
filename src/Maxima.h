@@ -139,9 +139,7 @@ private:
   Configuration *m_configuration;
 
   //! The background thread that reads and parses data from Maxima.
-  jthread m_workerThread;
-  //! True if the worker thread should exit.
-  std::atomic_bool m_workerThreadAbort;
+  std::jthread m_workerThread;
   //! True if a READ_PENDING event is already in the queue.
   std::atomic_bool m_readPendingQueued;
 
@@ -209,8 +207,8 @@ private:
 
     This task runs in m_workerThread. It waits for data on the socket,
     reads it, and sends events to the main thread for each interpreted item.
-   */
-  void WorkerThread();
+    */
+  void WorkerThread(std::stop_token stopToken);
 
   /*! Search m_socketInputData for complete commands and send them to wxMaxima
 
@@ -222,8 +220,7 @@ private:
        as a string.
      .
    */
-  void ProcessData();
-
+  void ProcessData(std::stop_token stopToken);
   /*! A timer that triggers reading data from maxima
 
     On MM Windows sometimes when we receive the signal that maxima has sent us

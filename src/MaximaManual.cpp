@@ -43,7 +43,6 @@
 wxDECLARE_APP(MyApp);
 
 MaximaManual::MaximaManual(Configuration *configuration):
-  m_abortBackgroundTask(false),
   m_configuration(configuration)
 {
 }
@@ -143,7 +142,8 @@ void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors) {
   }
 }
 
-void MaximaManual::CompileHelpFileAnchors(const wxString &maximaHtmlDir,
+void MaximaManual::CompileHelpFileAnchors(std::stop_token stopToken,
+                                          const wxString &maximaHtmlDir,
                                           const wxString &maximaVersion,
                                           const wxString &saveName) {
 
@@ -151,21 +151,21 @@ void MaximaManual::CompileHelpFileAnchors(const wxString &maximaHtmlDir,
   if (!(m_maximaHtmlDir.IsEmpty())) {
     std::vector<wxString> helpFiles;
     {
-      GetHTMLFiles htmlFilesTraverser(helpFiles, &m_abortBackgroundTask, m_maximaHtmlDir);
+      GetHTMLFiles htmlFilesTraverser(helpFiles, stopToken, m_maximaHtmlDir);
       wxDir dir(m_maximaHtmlDir);
       dir.Traverse(htmlFilesTraverser);
     }
-    if (m_abortBackgroundTask) return;
+    if (stopToken.stop_requested()) return;
     {
       GetHTMLFiles_Recursive htmlFilesTraverser(
-                                                helpFiles, &m_abortBackgroundTask, m_configuration->MaximaShareDir());
+                                                helpFiles, stopToken, m_configuration->MaximaShareDir());
       wxDir dir(m_configuration->MaximaShareDir());
       dir.Traverse(htmlFilesTraverser);
     }
-    if (m_abortBackgroundTask) return;
+    if (stopToken.stop_requested()) return;
 
     for (const auto &file : helpFiles) {
-      if(m_abortBackgroundTask)
+      if(stopToken.stop_requested())
             return;
       bool is_Singlepage = file.Contains("_singlepage.");
       wxString fileURI = wxURI(wxS("file://") + file).BuildURI();
@@ -195,7 +195,7 @@ void MaximaManual::CompileHelpFileAnchors(const wxString &maximaHtmlDir,
         wxTextInputStream text(input, wxS('\t'),
                                wxConvAuto(wxFONTENCODING_UTF8));
         while (input.IsOk() && !input.Eof()) {
-          if(m_abortBackgroundTask)
+          if(stopToken.stop_requested())
             return;
           wxString line = text.ReadLine();
           wxStringTokenizer tokens(line, wxS(">"));
@@ -534,14 +534,14 @@ void MaximaManual::LoadHelpFileAnchors(const wxString &docdir,
   if (!LoadManualAnchorsFromCache()) {
     if (!m_maximaHtmlDir.IsEmpty()) {
       if (m_helpfileanchorsThread.joinable()) {
-        m_abortBackgroundTask = true;
+        stopToken.stop_requested() = true;
         wxLogMessage(_("Waiting for the Manual anchors background task."));
         m_helpfileanchorsThread.join();
       }
       wxLogMessage(_("Background task that compiles the Manual anchors scheduled."));
-      m_abortBackgroundTask = false;
+      stopToken.stop_requested() = false;
       if(m_configuration->UseThreads())
-        m_helpfileanchorsThread = jthread(&MaximaManual::CompileHelpFileAnchors,
+        m_helpfileanchorsThread = std::jthread(&MaximaManual::CompileHelpFileAnchors,
                                           this,
                                           m_maximaHtmlDir,
                                           m_maximaVersion,
@@ -563,7 +563,7 @@ void MaximaManual::LoadHelpFileAnchors(const wxString &docdir,
 MaximaManual::~MaximaManual() {
   if(m_helpfileanchorsThread.joinable())
     {
-      m_abortBackgroundTask = true;
+      stopToken.stop_requested() = true;
       wxLogMessage(_("Waiting for the thread that parses the maxima manual to finish"));
       m_helpfileanchorsThread.join();
     }

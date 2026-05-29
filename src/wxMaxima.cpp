@@ -11384,36 +11384,6 @@ wxMaxima::VersionNumber::VersionNumber(const wxString &version)
     }
 }
 
-bool operator<(const wxMaxima::VersionNumber &v1,
-               const wxMaxima::VersionNumber &v2) {
-  if (v1.Major() < v2.Major())
-    return true;
-  if (v1.Major() > v2.Major())
-    return false;
-  if (v1.Minor() < v2.Minor())
-    return true;
-  if (v1.Minor() > v2.Minor())
-    return false;
-  if (v1.Patchlevel() < v2.Patchlevel())
-    return true;
-  return false;
-}
-
-bool operator>(const wxMaxima::VersionNumber &v1,
-               const wxMaxima::VersionNumber &v2) {
-  if (v1.Major() > v2.Major())
-    return true;
-  if (v1.Major() < v2.Major())
-    return false;
-  if (v1.Minor() > v2.Minor())
-    return true;
-  if (v1.Minor() < v2.Minor())
-    return false;
-  if (v1.Patchlevel() > v2.Patchlevel())
-    return true;
-  return false;
-}
-
 /***
  * Checks the file http://wxMaxima-developers.github.io/wxmaxima/version.txt to
  * see if there is a newer version available.
