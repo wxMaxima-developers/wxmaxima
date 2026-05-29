@@ -1078,6 +1078,7 @@ protected:
   mutable CachedInteger<wxCoord> m_cachedMaxDrop;
   mutable CachedInteger<wxCoord> m_cachedCenterList;
   mutable CachedInteger<wxCoord> m_cachedSumOfWidths;
+  mutable CachedInteger<wxCoord> m_cachedLineWidth;
 protected:
 //** 2-byte objects (2 bytes)
 //**

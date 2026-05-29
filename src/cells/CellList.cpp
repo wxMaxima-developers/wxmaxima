@@ -107,9 +107,10 @@ void CellList::AppendCell(Cell *cell, std::unique_ptr<Cell> &&tail) {
   // We want to append to the draw list as well
   // Get the end of the draw list
   auto *lastToDraw = last->GetNextToDraw();
-  if (lastToDraw)
+  if (lastToDraw && lastToDraw->GetNextToDraw()) {
     while (lastToDraw->GetNextToDraw())
       lastToDraw = lastToDraw->GetNextToDraw();
+  }
 
   // Append the cell
   SetNext(last, std::move(tail));

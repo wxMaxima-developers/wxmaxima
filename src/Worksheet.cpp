@@ -270,12 +270,30 @@ bool Worksheet::RedrawIfRequested() {
         m_cellPointers.m_groupCellUnderPointer;
 
       // find out which group cell lies under the pointer
-      for (auto &tmp : OnList(GetTree())) {
-        auto rect = tmp.GetRect();
-        if (m_pointer_y <= rect.GetBottom()) {
-          GetTree()->CellUnderPointer(&tmp);
-          break;
-        }
+      GroupCell *startSearch = m_cellPointers.m_groupCellUnderPointer;
+      if (!startSearch) startSearch = GetTree();
+      
+      if (startSearch && m_pointer_y > startSearch->GetRect().GetBottom()) {
+          for (auto &tmp : OnList(startSearch->GetNext())) {
+              if (m_pointer_y <= tmp.GetRect().GetBottom()) {
+                  GetTree()->CellUnderPointer(&tmp);
+                  break;
+              }
+          }
+      } else if (startSearch && m_pointer_y < startSearch->GetRect().GetTop()) {
+          for (Cell *tmp = startSearch->GetPrevious(); tmp; tmp = tmp->GetPrevious()) {
+              if (m_pointer_y >= tmp->GetRect().GetTop()) {
+                  GetTree()->CellUnderPointer(dynamic_cast<GroupCell *>(tmp));
+                  break;
+              }
+          }
+      } else if (!m_cellPointers.m_groupCellUnderPointer) {
+          for (auto &tmp : OnList(GetTree())) {
+              if (m_pointer_y <= tmp.GetRect().GetBottom()) {
+                  GetTree()->CellUnderPointer(&tmp);
+                  break;
+              }
+          }
       }
 
       // Make the right brackets autohide
@@ -515,10 +533,10 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
       dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
                                                       m_configuration->GetColor(TS_MATH))));
       for (auto &cell : OnList(GetTree())) {
-        wxRect cellRect = cell.GetRect();
+        if (cell.GetCurrentPoint().y + (cell.GetHeight() - cell.GetCenter()) < top) continue;
+        if (cell.GetCurrentPoint().y - cell.GetCenter() > bottom) break;
 
-        if (cellRect.GetBottom() < top) continue;
-        if (cellRect.GetTop() > bottom) break;
+        wxRect cellRect = cell.GetRect();
 
         // Clear the image cache of all cells above or below the viewport.
         if (cellRect.GetTop() >= bottom || cellRect.GetBottom() <= top) {
@@ -723,11 +741,17 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
 
   if (!m_tree) {
     m_tree = std::move(cells);
+    m_last = lastOfCellsToInsert;
   } else if (!where) {
     CellList::SpliceInAfter(lastOfCellsToInsert, std::move(m_tree));
     RequestRedraw(cells.get());
     m_tree = std::move(cells);
+    m_last = nullptr; // finding new last is easier via GetLastCellInWorksheet
   } else {
+    if (where == m_last)
+        m_last = lastOfCellsToInsert;
+    else
+        m_last = nullptr;
     CellList::SpliceInAfter(where, std::move(cells), lastOfCellsToInsert);
     // make sure m_last still points to the last cell of the worksheet!!
   }
@@ -1004,26 +1028,6 @@ void Worksheet::OnSize(wxSizeEvent &event) {
     }
   }
   Recalculate();
-
-
-  const GroupCell *prev = {};
-  for (auto &cell : OnList(GetTree())) {
-    if (!prev)
-      ClearSelection();
-
-    cell.OnSize();
-
-    if (!prev)
-      cell.SetCurrentPoint(m_configuration->GetIndent(),
-                           m_configuration->GetBaseIndent() +
-                           cell.GetCenterList());
-    else
-      cell.SetCurrentPoint(m_configuration->GetIndent(),
-                           prev->GetCurrentPoint().y + prev->GetMaxDrop() +
-                           cell.GetCenterList() +
-                           m_configuration->GetGroupSkip());
-    prev = &cell;
-  }
 
   m_adjustWorksheetSizeNeeded = true;
   RequestRedraw();
@@ -2388,23 +2392,25 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
   wxRect rect;
 
   // find out the group cell the selection begins in
-  for (auto &cell : OnList(GetTree())) {
-    rect = cell.GetRect();
-    if (ytop <= rect.GetBottom()) {
+  GroupCell *startSearch = GetTree();
+  for (auto &cell : OnList(startSearch)) {
+    if (ytop <= cell.GetRect().GetBottom()) {
       m_cellPointers.m_selectionStart = &cell;
       break;
     }
   }
 
   // find out the group cell the selection ends in
-  for (auto &cell : OnList(GetTree())) {
+  GroupCell *endSearch = m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
+  if (!endSearch) endSearch = GetTree();
+  for (auto &cell : OnList(endSearch)) {
     rect = cell.GetRect();
     if (ybottom < rect.GetTop()) {
       m_cellPointers.m_selectionEnd = cell.GetPrevious();
       break;
     }
   }
-  if (!m_cellPointers.m_selectionEnd)
+  if (m_cellPointers.m_selectionStart && !m_cellPointers.m_selectionEnd)
     m_cellPointers.m_selectionEnd = GetLastCellInWorksheet();
 
   if (m_cellPointers.m_selectionStart) {
@@ -2433,11 +2439,10 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
 
 GroupCell *Worksheet::GetLastCellInWorksheet() const
 {
+  if (m_last) return m_last;
   GroupCell *last = GetTree();
   if (last)
     last = last->last();
-  if(m_last != last)
-    m_adjustWorksheetSizeNeeded = true;
   m_last = last;
   return m_last;
 }
@@ -3047,6 +3052,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
   GroupCell *cellBeforeStart = start->GetPrevious();
 
   auto tornOut = CellList::TearOut(start, end);
+  m_last = nullptr;
   if (!tornOut.cellOwner) {
     wxASSERT(m_tree.get() == tornOut.cell);
     tornOut.cellOwner = std::move(m_tree);
@@ -4122,9 +4128,9 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
   int currentHeight = m_configuration->GetIndent();
   *width = m_configuration->GetBaseIndent();
 
+  GroupCell *last = nullptr;
   for (Cell const &tmp : OnList(GetTree())) {
-    currentHeight += tmp.GetHeightList();
-    currentHeight += m_configuration->GetGroupSkip();
+    last = const_cast<GroupCell *>(dynamic_cast<const GroupCell *>(&tmp));
     int currentWidth =
       m_configuration->Scale_Px(m_configuration->GetIndent() +
                                 m_configuration->GetDefaultFontSize()) +
@@ -4133,7 +4139,11 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
                                 m_configuration->GetDefaultFontSize());
     *width = std::max(currentWidth, *width);
   }
-  *height = currentHeight;
+  if (last && last->HasStaleSize()) {
+    *height = last->GetCurrentPoint().y + last->GetMaxDrop();
+  } else {
+    *height = currentHeight;
+  }
 }
 
 /***

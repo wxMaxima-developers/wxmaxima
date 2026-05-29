@@ -357,6 +357,9 @@ int Cell::SumOfWidths() const {
 }
 
 int Cell::GetLineWidth() const {
+  if (m_cachedLineWidth.IsValid())
+    return m_cachedLineWidth;
+
   int width = GetWidth();
   for (const Cell &tmp : OnDrawList(this)) {
     if (&tmp != this)
@@ -365,6 +368,7 @@ int Cell::GetLineWidth() const {
         break;
     width += tmp.GetWidth();
   }
+  m_cachedLineWidth = width;
   return width;
 }
 
@@ -1167,11 +1171,17 @@ void Cell::ResetSize() const {
 }
 
 void Cell::InvalidateListCache() const {
-  m_cachedMaxDrop.Invalidate();
-  m_cachedCenterList.Invalidate();
-  m_cachedSumOfWidths.Invalidate();
-  if (m_previous)
-    m_previous->InvalidateListCache();
+  for (const Cell *walk = this; walk; walk = walk->m_previous) {
+    if (walk->m_cachedMaxDrop.IsInvalid() &&
+        walk->m_cachedCenterList.IsInvalid() &&
+        walk->m_cachedSumOfWidths.IsInvalid() &&
+        walk->m_cachedLineWidth.IsInvalid())
+      break;
+    walk->m_cachedMaxDrop.Invalidate();
+    walk->m_cachedCenterList.Invalidate();
+    walk->m_cachedSumOfWidths.Invalidate();
+    walk->m_cachedLineWidth.Invalidate();
+  }
 }
 
 Cell *Cell::first() const {
