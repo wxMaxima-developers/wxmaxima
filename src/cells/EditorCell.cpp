@@ -1159,8 +1159,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event) {
   if (m_type == MC_TYPE_INPUT)
     FindMatchingParens();
 
-  if (m_isDirty)
+  if (m_isDirty) {
+    if (GetGroup())
+      GetGroup()->MarkNeedsRecalculate();
     StyleText();
+  }
   m_displayCaret = true;
 }
 

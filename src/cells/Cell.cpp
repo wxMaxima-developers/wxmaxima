@@ -1217,6 +1217,8 @@ void Cell::ResetSize() const {
   m_height.Invalidate();
   m_center.Invalidate();
   InvalidateListCache();
+  if (m_group)
+    m_group->MarkNeedsRecalculate();
 }
 
 void Cell::InvalidateListCache() const {

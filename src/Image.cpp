@@ -238,10 +238,13 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
   m_gnuplotData = std::move(dataFilename);
   std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter());
   if(m_configuration->UseThreads())
-    m_loadGnuplotSourceTask = jthread(&Image::LoadGnuplotSource_Backgroundtask,
-                                      this,
-                                      std::move(limiter),
-                                      m_gnuplotSource, m_gnuplotData, wxmxFile);
+    m_loadGnuplotSourceTask = jthread(
+      [this, limiter = std::move(limiter), gnuplotFilename, dataFilename,
+       wxmxFile](stop_token stopToken) mutable {
+        LoadGnuplotSource_Backgroundtask(stopToken, std::move(limiter),
+                                         gnuplotFilename, dataFilename,
+                                         wxmxFile);
+      });
   else
     LoadGnuplotSource_Backgroundtask({},
       std::move(limiter),

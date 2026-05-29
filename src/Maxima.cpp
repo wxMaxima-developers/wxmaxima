@@ -70,7 +70,7 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_socket->SetFlags(wxSOCKET_BLOCK); // We will use WaitForRead with timeout in thread.
   m_socket->SetTimeout(1);
 
-  m_workerThread = jthread(&Maxima::WorkerThread, this);
+  m_workerThread = jthread([this](stop_token stopToken) { WorkerThread(stopToken); });
 }
 
 Maxima::~Maxima() {

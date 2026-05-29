@@ -140,8 +140,9 @@ void AutoComplete::AddSymbols(wxString xml) {
   }
 
   if((m_configuration->UseThreads() && xml.Length() > 300))
-    m_addSymbols_backgroundThread = jthread(&AutoComplete::AddSymbols_Backgroundtask_string,
-                                                this, std::move(xml));
+    m_addSymbols_backgroundThread = jthread([this, xml](stop_token stopToken) {
+      AddSymbols_Backgroundtask_string(stopToken, xml);
+    });
   else
     AddSymbols_Backgroundtask_string({}, std::move(xml));
 }
@@ -157,8 +158,9 @@ void AutoComplete::AddSymbols(wxXmlDocument xml) {
                  "of autocompletable maxima commands."));
 
   if(m_configuration->UseThreads())
-    m_addSymbols_backgroundThread = jthread(&AutoComplete::AddSymbols_Backgroundtask,
-                                                this, std::move(xml));
+    m_addSymbols_backgroundThread = jthread([this, xml](stop_token stopToken) {
+      AddSymbols_Backgroundtask(stopToken, xml);
+    });
   else
     AddSymbols_Backgroundtask({}, std::move(xml));
 }
@@ -311,10 +313,12 @@ void AutoComplete::LoadSymbols() {
     }
   if(m_configuration->UseThreads())
     {
-      m_addSymbols_backgroundThread = jthread(&AutoComplete::BuiltinSymbols_BackgroundTask,
-                                              this);
-      m_addFiles_backgroundThread = jthread(&AutoComplete::LoadableFiles_BackgroundTask,
-                                            this, sharedir, demodir);
+      m_addSymbols_backgroundThread = jthread([this](stop_token stopToken) {
+        BuiltinSymbols_BackgroundTask(stopToken);
+      });
+      m_addFiles_backgroundThread = jthread([this, sharedir, demodir](stop_token stopToken) {
+        LoadableFiles_BackgroundTask(stopToken, sharedir, demodir);
+      });
     }
   else
     {
