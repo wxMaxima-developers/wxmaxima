@@ -472,17 +472,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 
   // Now iterate over all single parts of the region we need to redraw and
   // redraw the worksheet
-  wxRegionIterator region(GetUpdateRegion());
-  while (region) {
-    wxRect rect = region.GetRect();
-
-    // Don't draw rectangles with zero size or height
-    if ((rect.GetWidth() < 1) || (rect.GetHeight() < 1))
-      {
-        region++;
-        continue;
-      }
-
+  wxRect totalRect = GetUpdateRegion().GetBox();
+  if ((totalRect.GetWidth() >= 1) && (totalRect.GetHeight() >= 1)) {
     // Set line pen and fill brushes
     SetBackgroundColour(m_configuration->DefaultBackgroundColor());
     PrepareDrawGC(dc);
@@ -490,8 +481,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 
     // Tell the configuration where to crop in this region
     int xstart, xend, top, bottom;
-    CalcUnscrolledPosition(rect.GetLeft(), rect.GetTop(), &xstart, &top);
-    CalcUnscrolledPosition(rect.GetRight(), rect.GetBottom(), &xend, &bottom);
+    CalcUnscrolledPosition(totalRect.GetLeft(), totalRect.GetTop(), &xstart, &top);
+    CalcUnscrolledPosition(totalRect.GetRight(), totalRect.GetBottom(), &xend, &bottom);
     wxRect unscrolledRect;
     unscrolledRect.SetLeft(xstart);
     unscrolledRect.SetRight(xend);
@@ -524,9 +515,10 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
       dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
                                                       m_configuration->GetColor(TS_MATH))));
       for (auto &cell : OnList(GetTree())) {
-        cell.UpdateYPosition();
-
         wxRect cellRect = cell.GetRect();
+
+        if (cellRect.GetBottom() < top) continue;
+        if (cellRect.GetTop() > bottom) break;
 
         // Clear the image cache of all cells above or below the viewport.
         if (cellRect.GetTop() >= bottom || cellRect.GetBottom() <= top) {
@@ -594,10 +586,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 
     m_lastTop = top;
     m_lastBottom = bottom;
-    // for(auto &i:m_drawThreads)
-    //   if(i.joinable())
-    //     i.join();
-    region++;
   }
 
   m_configuration->ReportMultipleRedraws();
@@ -976,21 +964,15 @@ void Worksheet::Recalculate(Cell *start) {
 
   if (!m_recalculateStart)
     m_recalculateStart = group;
-  else
+  else {
     // Move m_recalculateStart backwards to start, if start comes before
     // m_recalculateStart.
-    for (const GroupCell &cell : OnList(GetTree())) {
-      if (&cell == group) {
-        m_recalculateStart = group;
-        return;
-      }
-
-      if (&cell == m_recalculateStart)
+    for (Cell *walk = group; walk; walk = walk->GetPrevious()) {
+      if (walk == m_recalculateStart)
         return;
     }
-  // If the cells to recalculate neither contain the start nor the tree we
-  // should better recalculate all.
-  m_recalculateStart = GetTree();
+    m_recalculateStart = group;
+  }
 }
 
 /***

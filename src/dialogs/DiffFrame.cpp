@@ -22,6 +22,7 @@
 #include "DiffAlgorithm.h"
 #include "WXMformat.h"
 #include "MathParser.h"
+#include "cells/CellList.h"
 #if wxCHECK_VERSION(3, 1, 6)
 #include "wxMaximaArtProvider.h"
 #endif
@@ -608,7 +609,7 @@ void DiffFrame::AlignCells() {
   for (auto ws : m_worksheets) ws->DestroyTree();
 
   m_diffEntries.clear();
-  std::vector<GroupCell*> lastCells(numFiles, nullptr);
+  std::vector<CellListBuilder<GroupCell>> builders(numFiles);
   for (auto const &row : finalAlignment) {
       // Calculate the maximum height for this "row" of cells
       std::vector<wxCoord> heights;
@@ -647,15 +648,16 @@ void DiffFrame::AlignCells() {
                   }
               }
               if (modified) copy->SetHighlight(true);
-              lastCells[i] = m_worksheets[i]->InsertGroupCells(std::move(copy), lastCells[i]);
+              entry.cells[i] = builders[i].Append(std::move(copy));
           } else {
               // Gap in this file: Insert a SpacerGroupCell to maintain alignment
-              lastCells[i] = m_worksheets[i]->InsertGroupCells(std::make_unique<SpacerGroupCell>(m_configuration, maxHeight), lastCells[i]);
+              entry.cells[i] = builders[i].Append(std::make_unique<SpacerGroupCell>(m_configuration, maxHeight));
           }
-          // Store the actual worksheet cell pointer for scroll synchronization
-          entry.cells[i] = lastCells[i];
       }
       m_diffEntries.push_back(entry);
+  }
+  for (size_t i = 0; i < numFiles; ++i) {
+      m_worksheets[i]->InsertGroupCells(builders[i].TakeHead());
   }
 }
 

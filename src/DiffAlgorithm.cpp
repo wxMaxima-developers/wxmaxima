@@ -73,8 +73,14 @@ std::vector<std::pair<int, int>> Align2(const std::vector<CellMatchData>& s1,
         if (c1.type != c2.type) return false;
         if (c1.content == c2.content) return true;
         
-        size_t maxLen = std::max(c1.content.Length(), c2.content.Length());
+        size_t len1 = c1.content.Length();
+        size_t len2 = c2.content.Length();
+        size_t maxLen = std::max(len1, len2);
         if (maxLen == 0) return true;
+
+        // Fast path: if length difference is greater than threshold, they can't match
+        size_t diffLen = (len1 > len2) ? (len1 - len2) : (len2 - len1);
+        if ((int)(100 * diffLen / maxLen) > threshold) return false;
         
         size_t dist = LevenshteinDistance(c1.content, c2.content);
         return (int)(100 * dist / maxLen) <= threshold;
