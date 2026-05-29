@@ -689,7 +689,7 @@ private:
   std::unique_ptr<GroupCell> m_tree;
   //! A pointer to the last cell of this worksheet
   mutable CellPtr<GroupCell> m_last;
-//  std::vector<std::thread> m_drawThreads;
+//  std::vector<std::jthread> m_drawThreads;
   static std::mutex m_drawDCLock;
   /*! The pointer to thesettings storage
    */
