@@ -125,7 +125,10 @@ Layout &amp; Compatibility</h1>
 <li><b>Mathematical <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> Padding:</b> Use <code>MC_TEXT_PADDING</code> (in <code><a class="el" href="Configuration_8h_source.html">Configuration.h</a></code>) for text-based cells. <b>Exception:</b> <code><a class="el" href="classDigitCell.html" title="A Text cell that display a digit of a more-than-one-line-wide number.">DigitCell</a></code> does not include padding to ensure visual consistency in broken-up numbers.</li>
 <li><b>Three-Step Layout Process:</b><ol type="1">
 <li><code>UnBreakUpCells()</code>: Reset to 2<a class="el" href="classD.html">D</a>.</li>
-<li><code>BreakUpCells()</code>: Convert wide 2<a class="el" href="classD.html">D</a> objects to 1<a class="el" href="classD.html">D</a> fallback.</li>
+<li><code>BreakUpCells()</code>: Convert wide 2<a class="el" href="classD.html">D</a> objects to 1<a class="el" href="classD.html">D</a> fallback.<ul>
+<li><b>Recursive Strategy:</b> If a 2<a class="el" href="classD.html">D</a> object is too wide, <code>CollectWideCells</code> recursively identifies sub-cells that are already &gt;80% of the available width. These sub-cells are also converted to linear form in the same pass. This heuristic accounts for font size increases that occur when a parent object is linearized, preventing redundant O(N^2) size resets and recalculations in deeply nested structures.</li>
+</ul>
+</li>
 <li><code>BreakLines_List()</code>: Final line wrapping.</li>
 </ol>
 </li>

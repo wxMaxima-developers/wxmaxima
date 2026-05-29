@@ -189,6 +189,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SoftLineBreak</b> (bo
 <tr class="memitem:acd62b60c7511a29394071d4ef85671fd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#acd62b60c7511a29394071d4ef85671fd">BreakUpCells</a> () const</td></tr>
 <tr class="memdesc:acd62b60c7511a29394071d4ef85671fd"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> list: Convert 2d math objects bigger than the screen width into linear form.  <br /></td></tr>
 <tr class="separator:acd62b60c7511a29394071d4ef85671fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39f16d4f7fe6e1066fd90874e00a095d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a39f16d4f7fe6e1066fd90874e00a095d">CollectWideCells</a> (std::vector&lt; const <a class="el" href="classCell.html">Cell</a> * &gt; &amp;wideCells, int clientWidth) const</td></tr>
+<tr class="memdesc:a39f16d4f7fe6e1066fd90874e00a095d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively collect all cells that are too wide to fit the line.  <br /></td></tr>
+<tr class="separator:a39f16d4f7fe6e1066fd90874e00a095d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdf7d9da0a2a4f055d4621193d6e561b"><td class="memItemLeft" align="right" valign="top"><a id="acdf7d9da0a2a4f055d4621193d6e561b" name="acdf7d9da0a2a4f055d4621193d6e561b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>UnBreakUpCells</b> () const</td></tr>
 <tr class="memdesc:acdf7d9da0a2a4f055d4621193d6e561b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert all maths objects in this call list into their 2<a class="el" href="classD.html">D</a> form. <br /></td></tr>
@@ -1159,6 +1162,51 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 <p>Clears the cache of the whole list of cells starting with this one. </p>
 <p>For details see <a class="el" href="classCell.html#a68a1275c35dc05ead434ab6b62b56ae1" title="Clears memory from cached items automatically regenerated when the cell is drawn.">ClearCache()</a>. </p>
+
+</div>
+</div>
+<a id="a39f16d4f7fe6e1066fd90874e00a095d" name="a39f16d4f7fe6e1066fd90874e00a095d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39f16d4f7fe6e1066fd90874e00a095d">&#9670;&#160;</a></span>CollectWideCells()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Cell::CollectWideCells </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; const <a class="el" href="classCell.html">Cell</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>wideCells</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>clientWidth</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Recursively collect all cells that are too wide to fit the line. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wideCells</td><td>is the list to add the cells to. </td></tr>
+    <tr><td class="paramname">clientWidth</td><td>is the width available for a line. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -3499,7 +3547,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
