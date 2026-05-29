@@ -250,7 +250,7 @@ elseif(APPLE)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
-target_compile_features(wxmaxima PUBLIC cxx_std_17)
+target_compile_features(wxmaxima PUBLIC cxx_std_20)
 
 if(WXM_INTERPROCEDURAL_OPTIMIZATION)
     # Enable interprocedural optimization (IPO/LTO), if supported.

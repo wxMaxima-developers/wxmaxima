@@ -10,4 +10,27 @@
 #cmakedefine WXMAXIMA_GIT_SHORT_HASH "@WXMAXIMA_GIT_SHORT_HASH@"
 
 #include <thread>
+#include <version>
+#ifdef __cpp_lib_jthread
+    using jthread = std::jthread;
+    using stop_token = std::stop_token;
+#else
+    using jthread = std::thread;
+    struct stop_token {
+        bool stop_requested() const { return false; }
+    };
+#endif
+
+#include <algorithm>
+#include <ranges>
+namespace ranges {
+#if defined(__cpp_lib_ranges_contains) && __cpp_lib_ranges_contains >= 202207L
+    using std::ranges::contains;
+#else
+    template<typename R, typename T>
+    constexpr bool contains(R&& r, const T& value) {
+        return std::ranges::find(r, value) != std::ranges::end(r);
+    }
+#endif
+}
 #endif

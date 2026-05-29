@@ -277,14 +277,14 @@ private:
   wxString m_gnuplotSource;
   //! The gnuplot data file for this image, if any.
   wxString m_gnuplotData;
-  mutable std::jthread m_loadImageTask;
-  void LoadImage_Backgroundtask(std::stop_token stopToken,
+  mutable jthread m_loadImageTask;
+  void LoadImage_Backgroundtask(stop_token stopToken,
                                 std::unique_ptr<ThreadNumberLimiter> limiter,
                                 wxString image, wxString wxmxFile,
                                 bool remove);
-  std::jthread m_loadGnuplotSourceTask;
+  jthread m_loadGnuplotSourceTask;
   void LoadGnuplotSource_Backgroundtask(
-    std::stop_token stopToken,
+    stop_token stopToken,
     std::unique_ptr<ThreadNumberLimiter> limiter,
     wxString gnuplotFile, wxString dataFile, wxString wxmxFile);
   void LoadGnuplotSource(wxInputStream *source);
@@ -294,7 +294,7 @@ private:
     wxInputStream *data);
 
 
-  void LoadCompressedGnuplotSource_Backgroundtask(std::stop_token stopToken,
+  void LoadCompressedGnuplotSource_Backgroundtask(stop_token stopToken,
                                                   std::unique_ptr<ThreadNumberLimiter> limiter,
                                                   wxString sourcefile,
                                                   wxString datafile,

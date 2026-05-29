@@ -142,7 +142,7 @@ void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors) {
   }
 }
 
-void MaximaManual::CompileHelpFileAnchors(std::stop_token stopToken,
+void MaximaManual::CompileHelpFileAnchors(stop_token stopToken,
                                           const wxString &maximaHtmlDir,
                                           const wxString &maximaVersion,
                                           const wxString &saveName) {
@@ -534,21 +534,20 @@ void MaximaManual::LoadHelpFileAnchors(const wxString &docdir,
   if (!LoadManualAnchorsFromCache()) {
     if (!m_maximaHtmlDir.IsEmpty()) {
       if (m_helpfileanchorsThread.joinable()) {
-        stopToken.stop_requested() = true;
+        m_helpfileanchorsThread.request_stop();
         wxLogMessage(_("Waiting for the Manual anchors background task."));
         m_helpfileanchorsThread.join();
       }
       wxLogMessage(_("Background task that compiles the Manual anchors scheduled."));
-      stopToken.stop_requested() = false;
       if(m_configuration->UseThreads())
-        m_helpfileanchorsThread = std::jthread(&MaximaManual::CompileHelpFileAnchors,
+        m_helpfileanchorsThread = jthread(&MaximaManual::CompileHelpFileAnchors,
                                           this,
                                           m_maximaHtmlDir,
                                           m_maximaVersion,
                                           Dirstructure::AnchorsCacheFile()
                                           );
       else
-        CompileHelpFileAnchors(
+        CompileHelpFileAnchors({},
                                m_maximaHtmlDir,
                                m_maximaVersion,
                                Dirstructure::AnchorsCacheFile()
@@ -563,7 +562,7 @@ void MaximaManual::LoadHelpFileAnchors(const wxString &docdir,
 MaximaManual::~MaximaManual() {
   if(m_helpfileanchorsThread.joinable())
     {
-      stopToken.stop_requested() = true;
+      m_helpfileanchorsThread.request_stop();
       wxLogMessage(_("Waiting for the thread that parses the maxima manual to finish"));
       m_helpfileanchorsThread.join();
     }

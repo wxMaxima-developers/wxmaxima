@@ -69,7 +69,7 @@ public:
   //! Search maxima's help file for command and variable names
   void LoadHelpFileAnchors(const wxString &docdir, const wxString &maximaVersion);
   //! Collect all keyword anchors in the help file
-  void CompileHelpFileAnchors(std::stop_token stopToken,
+  void CompileHelpFileAnchors(stop_token stopToken,
                               const wxString &maximaHtmlDir,
                               const wxString &maximaVersion,
                               const wxString &saveName);
@@ -92,7 +92,7 @@ private:
   {
   public:
     explicit GetHTMLFiles(std::vector<wxString>& files,
-                          std::stop_token stopToken = {},
+                          stop_token stopToken = {},
                           const wxString &prefix = wxEmptyString) :
       m_files(files), m_stopToken(stopToken), m_prefix(prefix) { }
     virtual wxDirTraverseResult OnFile(const wxString& filename) override;
@@ -100,14 +100,14 @@ private:
     std::vector<wxString>& GetResult() const {return m_files;}
   protected:
     std::vector<wxString>& m_files;
-    std::stop_token m_stopToken;
+    stop_token m_stopToken;
     wxString m_prefix;
   };
   class GetHTMLFiles_Recursive : public wxDirTraverser
   {
   public:
     explicit GetHTMLFiles_Recursive(std::vector<wxString>& files,
-                                    std::stop_token stopToken = {},
+                                    stop_token stopToken = {},
                                     const wxString &prefix = wxEmptyString) :
       m_files(files), m_stopToken(stopToken), m_prefix(prefix) { }
     virtual wxDirTraverseResult OnFile(const wxString& filename) override;
@@ -115,15 +115,15 @@ private:
     std::vector<wxString>& GetResult() const {return m_files;}
   protected:
     std::vector<wxString>& m_files;
-    std::stop_token m_stopToken;
+    stop_token m_stopToken;
     wxString m_prefix;
   };
 
   //    m_configuration.MaximaShareDir(dir);
 
   //! The thread the help file anchors are compiled in
-  std::jthread m_helpfileanchorsThread;
-  std::mutex m_helpFileAnchorsLock;
+  jthread m_helpfileanchorsThread;
+    std::mutex m_helpFileAnchorsLock;
   //! The configuration storage
   Configuration *m_configuration = NULL;
   //! All anchors for keywords maxima's helpfile contains (singlepage version)

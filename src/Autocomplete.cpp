@@ -140,7 +140,7 @@ void AutoComplete::AddSymbols(wxString xml) {
   }
 
   if((m_configuration->UseThreads() && xml.Length() > 300))
-    m_addSymbols_backgroundThread = std::jthread(&AutoComplete::AddSymbols_Backgroundtask_string,
+    m_addSymbols_backgroundThread = jthread(&AutoComplete::AddSymbols_Backgroundtask_string,
                                                 this, std::move(xml));
   else
     AddSymbols_Backgroundtask_string({}, std::move(xml));
@@ -157,20 +157,20 @@ void AutoComplete::AddSymbols(wxXmlDocument xml) {
                  "of autocompletable maxima commands."));
 
   if(m_configuration->UseThreads())
-    m_addSymbols_backgroundThread = std::jthread(&AutoComplete::AddSymbols_Backgroundtask,
+    m_addSymbols_backgroundThread = jthread(&AutoComplete::AddSymbols_Backgroundtask,
                                                 this, std::move(xml));
   else
     AddSymbols_Backgroundtask({}, std::move(xml));
 }
 
-void AutoComplete::AddSymbols_Backgroundtask_string(std::stop_token stopToken, wxString xml) {
+void AutoComplete::AddSymbols_Backgroundtask_string(stop_token stopToken, wxString xml) {
   wxXmlDocument xmldoc;
   wxStringInputStream xmlStream(xml);
   xmldoc.Load(xmlStream);
   AddSymbols_Backgroundtask(stopToken, xmldoc);
 }
 
-void AutoComplete::AddSymbols_Backgroundtask(std::stop_token stopToken, wxXmlDocument xmldoc) {
+void AutoComplete::AddSymbols_Backgroundtask(stop_token stopToken, wxXmlDocument xmldoc) {
   wxXmlNode *node = xmldoc.GetRoot();
   if (node != NULL) {
     wxXmlNode *children = node->GetChildren();
@@ -311,9 +311,9 @@ void AutoComplete::LoadSymbols() {
     }
   if(m_configuration->UseThreads())
     {
-      m_addSymbols_backgroundThread = std::jthread(&AutoComplete::BuiltinSymbols_BackgroundTask,
+      m_addSymbols_backgroundThread = jthread(&AutoComplete::BuiltinSymbols_BackgroundTask,
                                               this);
-      m_addFiles_backgroundThread = std::jthread(&AutoComplete::LoadableFiles_BackgroundTask,
+      m_addFiles_backgroundThread = jthread(&AutoComplete::LoadableFiles_BackgroundTask,
                                             this, sharedir, demodir);
     }
   else
@@ -323,7 +323,7 @@ void AutoComplete::LoadSymbols() {
     }
 }
 
-void AutoComplete::BuiltinSymbols_BackgroundTask(std::stop_token stopToken) {
+void AutoComplete::BuiltinSymbols_BackgroundTask(stop_token stopToken) {
   {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for(auto &wordlist:m_wordList)
@@ -424,7 +424,7 @@ void AutoComplete::BuiltinSymbols_BackgroundTask(std::stop_token stopToken) {
   }
 }
 
-void AutoComplete::LoadableFiles_BackgroundTask(std::stop_token stopToken, wxString sharedir, wxString demodir) {
+void AutoComplete::LoadableFiles_BackgroundTask(stop_token stopToken, wxString sharedir, wxString demodir) {
   // Prepare a list of all built-in loadable files of maxima.
   {
     m_builtInLoadFiles.clear();
@@ -602,17 +602,17 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for (const auto &i : m_wordList.at(type)) {
       if (i.StartsWith(partial) &&
-          (!std::ranges::contains(completions, i)))
+          (!ranges::contains(completions, i)))
         completions.push_back(i);
     }
   } else if (type == tmplte) {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
     for (const auto &i: m_wordList.at(type)) {
       if (i.StartsWith(partial)) {
-        if (!std::ranges::contains(completions, i))
+        if (!ranges::contains(completions, i))
           completions.push_back(i);
         if (i.SubString(0, static_cast<std::size_t>(i.Find(wxS("("))) - 1) == partial &&
-            (!std::ranges::contains(perfectCompletions, i)))
+            (!ranges::contains(perfectCompletions, i)))
           perfectCompletions.push_back(i);
       }
     }
@@ -624,7 +624,7 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
   if (type == command) {
     for (const auto &[word, count] : m_worksheetWords) {
       if (word.StartsWith(partial)) {
-        if (!std::ranges::contains(completions, word)) {
+        if (!ranges::contains(completions, word)) {
           completions.push_back(word);
         }
       }
@@ -664,7 +664,7 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type) {
   {
     const std::lock_guard<std::mutex> lock(m_keywordsLock);
     if ((type != tmplte) &&
-        (!std::ranges::contains(m_wordList.at(type), fun)))
+        (!ranges::contains(m_wordList.at(type), fun)))
       m_wordList.at(type).push_back(fun);
   }
   /// Add templates - for given function and given argument count we

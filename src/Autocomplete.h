@@ -98,9 +98,9 @@ public:
   //! Interprets the XML autocompletable symbol list maxima can send us
   void AddSymbols(wxXmlDocument xml);
   //! The real work of AddSymbols is made here and in the background
-  void AddSymbols_Backgroundtask_string(std::stop_token stopToken, wxString xml);
+  void AddSymbols_Backgroundtask_string(stop_token stopToken, wxString xml);
   //! The real work of AddSymbols is made here and in the background
-  void AddSymbols_Backgroundtask(std::stop_token stopToken, wxXmlDocument xmldoc);
+  void AddSymbols_Backgroundtask(stop_token stopToken, wxXmlDocument xmldoc);
 
 
   //! Replace the list of files in the directory the worksheet file is in to the demo files list
@@ -134,12 +134,12 @@ private:
   //! The configuration storage
   Configuration *m_configuration;
   //! Loads the list of loadable files and can be run in a background task
-  void LoadableFiles_BackgroundTask(std::stop_token stopToken, wxString sharedir, wxString demodir);
+  void LoadableFiles_BackgroundTask(stop_token stopToken, wxString sharedir, wxString demodir);
   //! Prepares the list of built-in symbols and can be run in a background task
-  void BuiltinSymbols_BackgroundTask(std::stop_token stopToken);
+  void BuiltinSymbols_BackgroundTask(stop_token stopToken);
 
   //! Replace the list of files in the directory the worksheet file is in to the load files list
-  void UpdateLoadFiles_BackgroundTask(std::stop_token stopToken, wxString partial, wxString maximaDir);
+  void UpdateLoadFiles_BackgroundTask(stop_token stopToken, wxString partial, wxString maximaDir);
   //! The list of loadable files maxima provides
   std::vector<wxString> m_builtInLoadFiles;
   //! The list of demo files maxima provides
@@ -150,15 +150,15 @@ private:
   public:
     explicit GetGeneralFiles(std::vector<wxString>& files,
                              std::mutex *lock,
-                             std::atomic_bool *abort = nullptr,
+                             stop_token stopToken = {},
                              const wxString &prefix = wxEmptyString) :
-      m_files(files), m_lock(lock), m_abort(abort), m_prefix(prefix) {
+      m_files(files), m_lock(lock), m_stopToken(stopToken), m_prefix(prefix) {
       for(const auto &i : m_files)
         m_filesHash[i];
     }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
-        if (m_abort && *m_abort) return wxDIR_STOP;
+        if (m_stopToken.stop_requested()) return wxDIR_STOP;
         wxFileName newItemName(filename);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "\"";
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
@@ -174,7 +174,7 @@ private:
       }
     wxDirTraverseResult OnDir(const wxString& dirname) override
       {
-        if (m_abort && *m_abort) return wxDIR_STOP;
+        if (m_stopToken.stop_requested()) return wxDIR_STOP;
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
@@ -198,7 +198,7 @@ private:
     //! A hash that allows us to detect duplicate names faster than m_files
     std::unordered_map<wxString, wxEvtHandler*, wxStringHash> m_filesHash;
     std::mutex *m_lock;
-    std::atomic_bool *m_abort;
+    stop_token m_stopToken;
     wxString m_prefix;
   };
 
@@ -208,16 +208,16 @@ private:
   public:
     explicit GetMacFiles_includingSubdirs(std::vector<wxString>& files,
                                           std::mutex *lock,
-                                          std::atomic_bool *abort = nullptr,
+                                          stop_token stopToken = {},
                                           const wxString &prefix = wxEmptyString) :
-      m_files(files), m_lock(lock), m_abort(abort), m_prefix(prefix)
+      m_files(files), m_lock(lock), m_stopToken(stopToken), m_prefix(prefix)
       {
         for(const auto &i : m_files)
         m_filesHash[i];
       }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
-        if (m_abort && *m_abort) return wxDIR_STOP;
+        if (m_stopToken.stop_requested()) return wxDIR_STOP;
         if(
           (filename.EndsWith(".mac"))||
           (filename.EndsWith(".lisp"))||
@@ -240,7 +240,7 @@ private:
       }
     wxDirTraverseResult OnDir(const wxString& dirname) override
       {
-        if (m_abort && *m_abort) return wxDIR_STOP;
+        if (m_stopToken.stop_requested()) return wxDIR_STOP;
         if((dirname.EndsWith(".git")) ||
            (dirname.EndsWith("/share/share")) ||
            (dirname.EndsWith("/src/src")) ||
@@ -261,7 +261,7 @@ private:
     //! A hash that allows us to detect duplicate names faster than m_files
     std::unordered_map<wxString, wxEvtHandler*, wxStringHash> m_filesHash;
     std::mutex *m_lock;
-    std::atomic_bool *m_abort;
+    stop_token m_stopToken;
     wxString m_prefix;
   };
 
@@ -271,12 +271,12 @@ private:
   public:
     explicit GetMacFiles(std::vector<wxString>& files,
                          std::mutex *lock,
-                         std::atomic_bool *abort = nullptr,
+                         stop_token stopToken = {},
                          const wxString &prefix = wxEmptyString) :
-      GetMacFiles_includingSubdirs(files, lock, abort, prefix){ }
+      GetMacFiles_includingSubdirs(files, lock, stopToken, prefix){ }
     wxDirTraverseResult OnDir(const wxString& dirname) override
       {
-        if (m_abort && *m_abort) return wxDIR_STOP;
+        if (m_stopToken.stop_requested()) return wxDIR_STOP;
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
@@ -298,16 +298,16 @@ private:
   public:
     explicit GetDemoFiles_includingSubdirs(std::vector<wxString>& files,
                                            std::mutex *lock,
-                                           std::atomic_bool *abort = nullptr,
+                                           stop_token stopToken = {},
                                            const wxString &prefix = wxEmptyString) :
-      m_files(files), m_lock(lock), m_abort(abort), m_prefix(prefix)
+      m_files(files), m_lock(lock), m_stopToken(stopToken), m_prefix(prefix)
       {
         for(const auto &i : m_files)
         m_filesHash[i];
       }
     wxDirTraverseResult OnFile(const wxString& filename) override
       {
-        if (m_abort && *m_abort) return wxDIR_STOP;
+        if (m_stopToken.stop_requested()) return wxDIR_STOP;
         if(filename.EndsWith(".dem"))
         {
           wxFileName newItemName(filename);
@@ -326,7 +326,7 @@ private:
       }
     wxDirTraverseResult OnDir(const wxString& dirname) override
       {
-        if (m_abort && *m_abort) return wxDIR_STOP;
+        if (m_stopToken.stop_requested()) return wxDIR_STOP;
         if((dirname.EndsWith(".git")) ||
            (dirname.EndsWith("/share/share")) ||
            (dirname.EndsWith("/src/src")) ||
@@ -347,7 +347,7 @@ private:
     //! A hash that allows us to detect duplicate names faster than m_files
     std::unordered_map<wxString, wxEvtHandler*, wxStringHash> m_filesHash;
     std::mutex *m_lock;
-    std::atomic_bool *m_abort;
+    stop_token m_stopToken;
     wxString m_prefix;
   };
 
@@ -357,12 +357,12 @@ private:
   public:
     explicit GetDemoFiles(std::vector<wxString>& files,
                           std::mutex *lock,
-                          std::atomic_bool *abort = nullptr,
+                          stop_token stopToken = {},
                           const wxString &prefix = wxEmptyString) :
-      GetDemoFiles_includingSubdirs(files, lock, abort, prefix){ }
+      GetDemoFiles_includingSubdirs(files, lock, stopToken, prefix){ }
     virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
-        if (m_abort && *m_abort) return wxDIR_STOP;
+        if (m_stopToken.stop_requested()) return wxDIR_STOP;
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
         newItem.Replace(wxFileName::GetPathSeparator(), "/");
@@ -378,10 +378,8 @@ private:
       }
   };
 
-  std::jthread m_addSymbols_backgroundThread;
-  std::jthread m_addFiles_backgroundThread;
-  //! If set to true, background tasks should abort.
-  std::atomic_bool m_abortBackgroundTask{false};
+  jthread m_addSymbols_backgroundThread;
+  jthread m_addFiles_backgroundThread;
   //! Is locked when someone accesses a keyword list
   std::mutex m_keywordsLock;
   //! The lists of autocompletable symbols for the classes defined in autoCompletionType

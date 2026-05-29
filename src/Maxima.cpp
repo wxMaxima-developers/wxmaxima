@@ -40,7 +40,6 @@ wxDEFINE_EVENT(EVT_MAXIMA, wxThreadEvent);
 
 Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_configuration(config),
-  m_workerThreadAbort(false),
   m_readPendingQueued(false),
   m_socket(socket),
   m_socketInput(*m_socket),
@@ -71,11 +70,11 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
   m_socket->SetFlags(wxSOCKET_BLOCK); // We will use WaitForRead with timeout in thread.
   m_socket->SetTimeout(1);
 
-  m_workerThread = std::jthread(&Maxima::WorkerThread, this);
+  m_workerThread = jthread(&Maxima::WorkerThread, this);
 }
 
 Maxima::~Maxima() {
-  m_workerThreadAbort = true;
+  m_workerThread.request_stop();
   if(m_workerThread.joinable())
     m_workerThread.join();
 
@@ -146,9 +145,9 @@ void Maxima::ReadSocket() {
     fireText();
 }
 
-void Maxima::WorkerThread() {
+void Maxima::WorkerThread(stop_token stopToken) {
   wxMilliClock_t lastProcessTime = wxGetLocalTimeMillis();
-  while (!m_workerThreadAbort) {
+  while (!stopToken.stop_requested()) {
     bool activity = false;
 
     if (!m_socket->IsConnected()) {
@@ -190,21 +189,21 @@ void Maxima::WorkerThread() {
 
     wxMilliClock_t now = wxGetLocalTimeMillis();
     if (!m_processingBuffer.IsEmpty() && (now - lastProcessTime > 100 || m_processingBuffer.Length() > 10000)) {
-        ProcessData();
+        ProcessData(stopToken);
         lastProcessTime = now;
         activity = true;
     }
 
     if (!activity) {
         if (!m_processingBuffer.IsEmpty()) {
-            ProcessData();
+            ProcessData(stopToken);
         }
         wxMilliSleep(20);
     }
   }
 }
 
-void Maxima::ProcessData()
+void Maxima::ProcessData(stop_token stopToken)
 {
     if (m_processingBuffer.IsEmpty())
         return;
@@ -231,6 +230,7 @@ void Maxima::ProcessData()
                 std::lock_guard<std::mutex> lock(m_knownTagsMutex);
                 for(tag = m_knownTags.begin(); tag != m_knownTags.end(); ++tag)
                 {
+                    if (stopToken.stop_requested()) break;
                     wxString tagstartname = wxS("<") + tag->first + wxS(">");
                     if (m_processingBuffer.StartsWith(tagstartname))
                         break;
@@ -249,9 +249,8 @@ void Maxima::ProcessData()
                         newItems.push_back({.cause = READ_MISC_TEXT, .data = batchedText});
                         batchedText.Clear();
                     }
-
-                    size_t tagFullLength = end + tagEndName.Length();
-                    wxString fullTag = m_processingBuffer.Left(tagFullLength);
+                    if (stopToken.stop_requested()) break;
+                    size_t tagFullLength = end + tagEndName.Length();                    wxString fullTag = m_processingBuffer.Left(tagFullLength);
                     m_processingBuffer = m_processingBuffer.Mid(tagFullLength);
                     if (m_processingBuffer.StartsWith(wxS("\n")))
                         m_processingBuffer = m_processingBuffer.Mid(1);
