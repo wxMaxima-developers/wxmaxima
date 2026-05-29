@@ -272,7 +272,7 @@ void MaximaManual::CompileHelpFileAnchors(stop_token stopToken,
 
 wxDirTraverseResult
 MaximaManual::GetHTMLFiles::OnFile(const wxString &filename) {
-  if (m_abort && *m_abort) return wxDIR_STOP;
+  if (m_stopToken.stop_requested()) return wxDIR_STOP;
   wxFileName newItemName(filename);
   wxString newItem =
     m_prefix + wxFileName::GetPathSeparator() + newItemName.GetFullName();
@@ -285,13 +285,13 @@ MaximaManual::GetHTMLFiles::OnFile(const wxString &filename) {
 
 wxDirTraverseResult
 MaximaManual::GetHTMLFiles::OnDir(const wxString &WXUNUSED(dirname)) {
-  if (m_abort && *m_abort) return wxDIR_STOP;
+  if (m_stopToken.stop_requested()) return wxDIR_STOP;
   return wxDIR_IGNORE;
 }
 
 wxDirTraverseResult
 MaximaManual::GetHTMLFiles_Recursive::OnFile(const wxString &filename) {
-  if (m_abort && *m_abort) return wxDIR_STOP;
+  if (m_stopToken.stop_requested()) return wxDIR_STOP;
   wxFileName newItemName(filename);
   newItemName.MakeAbsolute();
   wxString newItem = newItemName.GetFullPath();
@@ -304,7 +304,7 @@ MaximaManual::GetHTMLFiles_Recursive::OnFile(const wxString &filename) {
 
 wxDirTraverseResult
 MaximaManual::GetHTMLFiles_Recursive::OnDir(const wxString &WXUNUSED(dirname)) {
-  if (m_abort && *m_abort) return wxDIR_STOP;
+  if (m_stopToken.stop_requested()) return wxDIR_STOP;
   return wxDIR_CONTINUE;
 }
 

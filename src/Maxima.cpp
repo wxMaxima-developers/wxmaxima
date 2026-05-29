@@ -265,7 +265,7 @@ void Maxima::ProcessData(stop_token stopToken)
             batchedText += dataToSend;
         }
         
-        if (m_workerThreadAbort) break;
+        if (stopToken.stop_requested()) break;
     } while (progress && !m_processingBuffer.IsEmpty());
 
     if (!batchedText.IsEmpty()) {

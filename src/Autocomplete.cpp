@@ -504,7 +504,7 @@ void AutoComplete::UpdateDemoFiles(wxString partial, const wxString &maximaDir) 
 
   // Add all files from the maxima directory to the demo file list
   if (partial != wxS("//")) {
-    GetDemoFiles userLispIterator(m_wordList.at(demofile), &m_keywordsLock, nullptr, prefix);
+    GetDemoFiles userLispIterator(m_wordList.at(demofile), &m_keywordsLock, {}, prefix);
     wxDir demofilesdir(partial);
     if (demofilesdir.IsOpened())
       demofilesdir.Traverse(userLispIterator);
@@ -537,7 +537,7 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, const wxString &maximaDi
 
   // Add all files from the maxima directory to the demo file list
   if (partial != wxS("//")) {
-    GetGeneralFiles fileIterator(m_wordList[generalfile], &m_keywordsLock, nullptr, prefix);
+    GetGeneralFiles fileIterator(m_wordList[generalfile], &m_keywordsLock, {}, prefix);
     wxDir generalfilesdir(partial);
     if (generalfilesdir.IsOpened())
       generalfilesdir.Traverse(fileIterator);
@@ -578,7 +578,7 @@ void AutoComplete::UpdateLoadFiles(wxString partial, const wxString &maximaDir) 
 
   // Add all files from the maxima directory to the load file list
   if (partial != wxS("//")) {
-    GetMacFiles userLispIterator(m_wordList.at(loadfile), &m_keywordsLock, nullptr, prefix);
+    GetMacFiles userLispIterator(m_wordList.at(loadfile), &m_keywordsLock, {}, prefix);
     wxDir loadfilesdir(partial);
     if (loadfilesdir.IsOpened())
       loadfilesdir.Traverse(userLispIterator);

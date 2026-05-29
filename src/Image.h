@@ -303,7 +303,7 @@ private:
   //! Loads an image from a file
   void LoadImage(wxString image, const wxString &wxmxFile, bool remove = true);
   //! Reads the compressed image into a memory buffer
-  wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
+  wxMemoryBuffer ReadCompressedImage(stop_token stopToken, wxInputStream *data);
   Configuration *m_configuration = NULL;
   /*! The upper width limit for displaying this image
    */
