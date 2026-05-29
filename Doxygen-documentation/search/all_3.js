@@ -104,7 +104,7 @@ var searchData=
   ['codecellvisibilitychanged_101',['CodeCellVisibilityChanged',['../classWorksheet.html#ab5933436512be0418142944bf19f5836',1,'Worksheet']]],
   ['commandsleftincell_102',['CommandsLeftInCell',['../classEvaluationQueue.html#aa2d62d074c9b0112eddb9f97e1256105',1,'EvaluationQueue']]],
   ['commandwiz_103',['CommandWiz',['../classwxMaxima.html#a5deb121b24bddcbcec77253c349980b8',1,'wxMaxima']]],
-  ['compilehelpfileanchors_104',['CompileHelpFileAnchors',['../classMaximaManual.html#a50bf45673786d510d1805df4098fd609',1,'MaximaManual']]],
+  ['compilehelpfileanchors_104',['CompileHelpFileAnchors',['../classMaximaManual.html#af723f76d1f02713db987f0befd6f2241',1,'MaximaManual']]],
   ['completesymbol_105',['CompleteSymbol',['../classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3',1,'AutoComplete']]],
   ['compositedataobject_106',['CompositeDataObject',['../classCompositeDataObject.html',1,'']]],
   ['compositedataobject_2eh_107',['CompositeDataObject.h',['../CompositeDataObject_8h.html',1,'']]],

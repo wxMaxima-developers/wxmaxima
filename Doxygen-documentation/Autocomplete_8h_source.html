@@ -156,8 +156,8 @@ $(function() {
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classAutoComplete.html#af6f5cfb1876f21f4503c674288fd64f5">AddSymbol</a>(wxString fun, <a class="code hl_enumeration" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a> type = command);</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classAutoComplete.html#ac01de5cf0f57194e555f845f80063c02">AddSymbols</a>(wxString xml);</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classAutoComplete.html#ac01de5cf0f57194e555f845f80063c02">AddSymbols</a>(wxXmlDocument xml);</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classAutoComplete.html#a8a3afded73c09be3a513bf1cb770626b">AddSymbols_Backgroundtask_string</a>(std::stop_token stopToken, wxString xml);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classAutoComplete.html#aaa3af55e7c397b799e60751a7bef4815">AddSymbols_Backgroundtask</a>(std::stop_token stopToken, wxXmlDocument xmldoc);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classAutoComplete.html#ae66bd2b96eb12998135a446b115726e2">AddSymbols_Backgroundtask_string</a>(stop_token stopToken, wxString xml);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classAutoComplete.html#a5f97fb5d9af17a460051307e5608c30b">AddSymbols_Backgroundtask</a>(stop_token stopToken, wxXmlDocument xmldoc);</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classAutoComplete.html#a454b8ef21c3cb19b634192452bfbb400">UpdateDemoFiles</a>(wxString partial, <span class="keyword">const</span> wxString &amp;maximaDir);</div>
@@ -178,10 +178,10 @@ $(function() {
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <a class="code hl_class" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <span class="keywordtype">void</span> LoadableFiles_BackgroundTask(std::stop_token stopToken, wxString sharedir, wxString demodir);</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <span class="keywordtype">void</span> BuiltinSymbols_BackgroundTask(std::stop_token stopToken);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <span class="keywordtype">void</span> LoadableFiles_BackgroundTask(stop_token stopToken, wxString sharedir, wxString demodir);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <span class="keywordtype">void</span> BuiltinSymbols_BackgroundTask(stop_token stopToken);</div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  <span class="keywordtype">void</span> UpdateLoadFiles_BackgroundTask(std::stop_token stopToken, wxString partial, wxString maximaDir);</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  <span class="keywordtype">void</span> UpdateLoadFiles_BackgroundTask(stop_token stopToken, wxString partial, wxString maximaDir);</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  std::vector&lt;wxString&gt; m_builtInLoadFiles;</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  std::vector&lt;wxString&gt; m_builtInDemoFiles;</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="keyword">class </span>GetGeneralFiles : <span class="keyword">public</span> wxDirTraverser</div>
@@ -189,15 +189,15 @@ $(function() {
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keyword">explicit</span> GetGeneralFiles(std::vector&lt;wxString&gt;&amp; files,</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>                             std::mutex *lock,</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                             std::atomic_bool *abort = <span class="keyword">nullptr</span>,</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                             stop_token stopToken = {},</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                             <span class="keyword">const</span> wxString &amp;prefix = wxEmptyString) :</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      m_files(files), m_lock(lock), m_abort(abort), m_prefix(prefix) {</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      m_files(files), m_lock(lock), m_stopToken(stopToken), m_prefix(prefix) {</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span> &amp;i : m_files)</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        m_filesHash[i];</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    }</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    wxDirTraverseResult OnFile(<span class="keyword">const</span> wxString&amp; filename)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="keyword">      </span>{</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        <span class="keywordflow">if</span> (m_abort &amp;&amp; *m_abort) <span class="keywordflow">return</span> wxDIR_STOP;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        <span class="keywordflow">if</span> (m_stopToken.stop_requested()) <span class="keywordflow">return</span> wxDIR_STOP;</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        wxFileName newItemName(filename);</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetFullName() + <span class="stringliteral">&quot;\&quot;&quot;</span>;</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
@@ -213,7 +213,7 @@ $(function() {
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>      }</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="keyword">      </span>{</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        <span class="keywordflow">if</span> (m_abort &amp;&amp; *m_abort) <span class="keywordflow">return</span> wxDIR_STOP;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        <span class="keywordflow">if</span> (m_stopToken.stop_requested()) <span class="keywordflow">return</span> wxDIR_STOP;</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        wxFileName newItemName(dirname);</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetFullName() + <span class="stringliteral">&quot;/\&quot;&quot;</span>;</div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
@@ -235,7 +235,7 @@ $(function() {
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    std::vector&lt;wxString&gt;&amp; m_files;</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    std::unordered_map&lt;wxString, wxEvtHandler*, wxStringHash&gt; m_filesHash;</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    std::mutex *m_lock;</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    std::atomic_bool *m_abort;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    stop_token m_stopToken;</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    wxString m_prefix;</div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  };</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
@@ -244,16 +244,16 @@ $(function() {
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <span class="keyword">explicit</span> GetMacFiles_includingSubdirs(std::vector&lt;wxString&gt;&amp; files,</div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>                                          std::mutex *lock,</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                                          std::atomic_bool *abort = <span class="keyword">nullptr</span>,</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                                          stop_token stopToken = {},</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>                                          <span class="keyword">const</span> wxString &amp;prefix = wxEmptyString) :</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>      m_files(files), m_lock(lock), m_abort(abort), m_prefix(prefix)</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>      m_files(files), m_lock(lock), m_stopToken(stopToken), m_prefix(prefix)</div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>      {</div>
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span> &amp;i : m_files)</div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        m_filesHash[i];</div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>      }</div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    wxDirTraverseResult OnFile(<span class="keyword">const</span> wxString&amp; filename)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="keyword">      </span>{</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        <span class="keywordflow">if</span> (m_abort &amp;&amp; *m_abort) <span class="keywordflow">return</span> wxDIR_STOP;</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        <span class="keywordflow">if</span> (m_stopToken.stop_requested()) <span class="keywordflow">return</span> wxDIR_STOP;</div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        <span class="keywordflow">if</span>(</div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>          (filename.EndsWith(<span class="stringliteral">&quot;.mac&quot;</span>))||</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>          (filename.EndsWith(<span class="stringliteral">&quot;.lisp&quot;</span>))||</div>
@@ -276,7 +276,7 @@ $(function() {
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>      }</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="keyword">      </span>{</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        <span class="keywordflow">if</span> (m_abort &amp;&amp; *m_abort) <span class="keywordflow">return</span> wxDIR_STOP;</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        <span class="keywordflow">if</span> (m_stopToken.stop_requested()) <span class="keywordflow">return</span> wxDIR_STOP;</div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        <span class="keywordflow">if</span>((dirname.EndsWith(<span class="stringliteral">&quot;.git&quot;</span>)) ||</div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>           (dirname.EndsWith(<span class="stringliteral">&quot;/share/share&quot;</span>)) ||</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>           (dirname.EndsWith(<span class="stringliteral">&quot;/src/src&quot;</span>)) ||</div>
@@ -295,7 +295,7 @@ $(function() {
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    std::vector&lt;wxString&gt;&amp; m_files;</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    std::unordered_map&lt;wxString, wxEvtHandler*, wxStringHash&gt; m_filesHash;</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    std::mutex *m_lock;</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    std::atomic_bool *m_abort;</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    stop_token m_stopToken;</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    wxString m_prefix;</div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  };</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
@@ -304,12 +304,12 @@ $(function() {
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    <span class="keyword">explicit</span> GetMacFiles(std::vector&lt;wxString&gt;&amp; files,</div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>                         std::mutex *lock,</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                         std::atomic_bool *abort = <span class="keyword">nullptr</span>,</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                         stop_token stopToken = {},</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                         <span class="keyword">const</span> wxString &amp;prefix = wxEmptyString) :</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>      GetMacFiles_includingSubdirs(files, lock, abort, prefix){ }</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>      GetMacFiles_includingSubdirs(files, lock, stopToken, prefix){ }</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="keyword">      </span>{</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        <span class="keywordflow">if</span> (m_abort &amp;&amp; *m_abort) <span class="keywordflow">return</span> wxDIR_STOP;</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        <span class="keywordflow">if</span> (m_stopToken.stop_requested()) <span class="keywordflow">return</span> wxDIR_STOP;</div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        wxFileName newItemName(dirname);</div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetFullName() + <span class="stringliteral">&quot;/\&quot;&quot;</span>;</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
@@ -330,16 +330,16 @@ $(function() {
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    <span class="keyword">explicit</span> GetDemoFiles_includingSubdirs(std::vector&lt;wxString&gt;&amp; files,</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>                                           std::mutex *lock,</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>                                           std::atomic_bool *abort = <span class="keyword">nullptr</span>,</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>                                           stop_token stopToken = {},</div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>                                           <span class="keyword">const</span> wxString &amp;prefix = wxEmptyString) :</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>      m_files(files), m_lock(lock), m_abort(abort), m_prefix(prefix)</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>      m_files(files), m_lock(lock), m_stopToken(stopToken), m_prefix(prefix)</div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>      {</div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>        <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span> &amp;i : m_files)</div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>        m_filesHash[i];</div>
 <div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>      }</div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    wxDirTraverseResult OnFile(<span class="keyword">const</span> wxString&amp; filename)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><span class="keyword">      </span>{</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>        <span class="keywordflow">if</span> (m_abort &amp;&amp; *m_abort) <span class="keywordflow">return</span> wxDIR_STOP;</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>        <span class="keywordflow">if</span> (m_stopToken.stop_requested()) <span class="keywordflow">return</span> wxDIR_STOP;</div>
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>        <span class="keywordflow">if</span>(filename.EndsWith(<span class="stringliteral">&quot;.dem&quot;</span>))</div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>        {</div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>          wxFileName newItemName(filename);</div>
@@ -358,7 +358,7 @@ $(function() {
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>      }</div>
 <div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>    wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="keyword">      </span>{</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>        <span class="keywordflow">if</span> (m_abort &amp;&amp; *m_abort) <span class="keywordflow">return</span> wxDIR_STOP;</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>        <span class="keywordflow">if</span> (m_stopToken.stop_requested()) <span class="keywordflow">return</span> wxDIR_STOP;</div>
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>        <span class="keywordflow">if</span>((dirname.EndsWith(<span class="stringliteral">&quot;.git&quot;</span>)) ||</div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>           (dirname.EndsWith(<span class="stringliteral">&quot;/share/share&quot;</span>)) ||</div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>           (dirname.EndsWith(<span class="stringliteral">&quot;/src/src&quot;</span>)) ||</div>
@@ -377,7 +377,7 @@ $(function() {
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    std::vector&lt;wxString&gt;&amp; m_files;</div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    std::unordered_map&lt;wxString, wxEvtHandler*, wxStringHash&gt; m_filesHash;</div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    std::mutex *m_lock;</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    std::atomic_bool *m_abort;</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    stop_token m_stopToken;</div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    wxString m_prefix;</div>
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>  };</div>
 <div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span> </div>
@@ -386,12 +386,12 @@ $(function() {
 <div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    <span class="keyword">explicit</span> GetDemoFiles(std::vector&lt;wxString&gt;&amp; files,</div>
 <div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>                          std::mutex *lock,</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>                          std::atomic_bool *abort = <span class="keyword">nullptr</span>,</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>                          stop_token stopToken = {},</div>
 <div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>                          <span class="keyword">const</span> wxString &amp;prefix = wxEmptyString) :</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>      GetDemoFiles_includingSubdirs(files, lock, abort, prefix){ }</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>      GetDemoFiles_includingSubdirs(files, lock, stopToken, prefix){ }</div>
 <div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    <span class="keyword">virtual</span> wxDirTraverseResult OnDir(<span class="keyword">const</span> wxString&amp; dirname)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span><span class="keyword">      </span>{</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>        <span class="keywordflow">if</span> (m_abort &amp;&amp; *m_abort) <span class="keywordflow">return</span> wxDIR_STOP;</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>        <span class="keywordflow">if</span> (m_stopToken.stop_requested()) <span class="keywordflow">return</span> wxDIR_STOP;</div>
 <div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>        wxFileName newItemName(dirname);</div>
 <div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>        wxString newItem = <span class="stringliteral">&quot;\&quot;&quot;</span> + m_prefix + newItemName.GetFullName() + <span class="stringliteral">&quot;/\&quot;&quot;</span>;</div>
 <div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>        newItem.Replace(wxFileName::GetPathSeparator(), <span class="stringliteral">&quot;/&quot;</span>);</div>
@@ -407,24 +407,24 @@ $(function() {
 <div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>      }</div>
 <div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>  };</div>
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span> </div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  std::jthread m_addSymbols_backgroundThread;</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  std::jthread m_addFiles_backgroundThread;</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  std::atomic_bool m_abortBackgroundTask{<span class="keyword">false</span>};</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>  std::mutex m_keywordsLock;</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  std::vector&lt;std::vector&lt;wxString&gt;&gt; m_wordList;</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>  <span class="keyword">static</span> wxRegEx m_args;</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>  WorksheetWords m_worksheetWords;</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>};</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  jthread m_addSymbols_backgroundThread;</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  jthread m_addFiles_backgroundThread;</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  std::mutex m_keywordsLock;</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>  std::vector&lt;std::vector&lt;wxString&gt;&gt; m_wordList;</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>  <span class="keyword">static</span> wxRegEx m_args;</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  WorksheetWords m_worksheetWords;</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>};</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span> </div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>wxDECLARE_EVENT(NEW_DEMO_FILES_EVENT, wxCommandEvent);</div>
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>wxDECLARE_EVENT(NEW_DEMO_FILES_EVENT, wxCommandEvent);</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span> </div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span><span class="preprocessor">#endif </span><span class="comment">// AUTOCOMPLETE_H</span></div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span><span class="preprocessor">#endif </span><span class="comment">// AUTOCOMPLETE_H</span></div>
 <div class="ttc" id="aclassAutoComplete_html"><div class="ttname"><a href="classAutoComplete.html">AutoComplete</a></div><div class="ttdef"><b>Definition:</b> Autocomplete.h:61</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a0b5d26fd3444fddee6b48ade7ce5f5e6"><div class="ttname"><a href="classAutoComplete.html#a0b5d26fd3444fddee6b48ade7ce5f5e6">AutoComplete::GetSymbolList</a></div><div class="ttdeci">std::vector&lt; wxString &gt; GetSymbolList()</div><div class="ttdoc">Returns a list of Symbols we know.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:63</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a2779fd32c1ad5eb643463b6d3e20dafd"><div class="ttname"><a href="classAutoComplete.html#a2779fd32c1ad5eb643463b6d3e20dafd">AutoComplete::~AutoComplete</a></div><div class="ttdeci">virtual ~AutoComplete()</div><div class="ttdoc">The destructor of AutoComplete.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:282</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a2f20f190106922be54ebde22a119a427"><div class="ttname"><a href="classAutoComplete.html#a2f20f190106922be54ebde22a119a427">AutoComplete::ClearDemofileList</a></div><div class="ttdeci">void ClearDemofileList()</div><div class="ttdoc">Clear the list of files demo() can be applied on.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:130</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a3ce4920608a19ea0cc47df052904619a"><div class="ttname"><a href="classAutoComplete.html#a3ce4920608a19ea0cc47df052904619a">AutoComplete::GetDemoFilesList</a></div><div class="ttdeci">std::vector&lt; wxString &gt; GetDemoFilesList()</div><div class="ttdoc">Returns a list of demo files we know of.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:58</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a454b8ef21c3cb19b634192452bfbb400"><div class="ttname"><a href="classAutoComplete.html#a454b8ef21c3cb19b634192452bfbb400">AutoComplete::UpdateDemoFiles</a></div><div class="ttdeci">void UpdateDemoFiles(wxString partial, const wxString &amp;maximaDir)</div><div class="ttdoc">Replace the list of files in the directory the worksheet file is in to the demo files list.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:478</div></div>
+<div class="ttc" id="aclassAutoComplete_html_a5f97fb5d9af17a460051307e5608c30b"><div class="ttname"><a href="classAutoComplete.html#a5f97fb5d9af17a460051307e5608c30b">AutoComplete::AddSymbols_Backgroundtask</a></div><div class="ttdeci">void AddSymbols_Backgroundtask(stop_token stopToken, wxXmlDocument xmldoc)</div><div class="ttdoc">The real work of AddSymbols is made here and in the background.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:173</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a6022d262109966147cbda01d6166d2ca"><div class="ttname"><a href="classAutoComplete.html#a6022d262109966147cbda01d6166d2ca">AutoComplete::LoadSymbols</a></div><div class="ttdeci">void LoadSymbols()</div><div class="ttdoc">Load all autocomplete symbols wxMaxima knows about by itself.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:290</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">AutoComplete::autoCompletionType</a></div><div class="ttdeci">autoCompletionType</div><div class="ttdoc">All types of things we can autocomplete.</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:68</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29a537040456dba8d9d080cdb4bcd15bcad"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29a537040456dba8d9d080cdb4bcd15bcad">AutoComplete::tmplte</a></div><div class="ttdeci">@ tmplte</div><div class="ttdoc">Command names.</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:70</div></div>
@@ -435,15 +435,14 @@ $(function() {
 <div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29ae79474d174763269e5ba387002436e43"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29ae79474d174763269e5ba387002436e43">AutoComplete::loadfile</a></div><div class="ttdeci">@ loadfile</div><div class="ttdoc">Function templates.</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:71</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a6225a91b46c0459755a62de137620b29aee4022f4d28eb504969b3042359544e4"><div class="ttname"><a href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29aee4022f4d28eb504969b3042359544e4">AutoComplete::esccommand</a></div><div class="ttdeci">@ esccommand</div><div class="ttdoc">general files</div><div class="ttdef"><b>Definition:</b> Autocomplete.h:74</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a820f73cfb05abb20f73ae74f224c39e3"><div class="ttname"><a href="classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3">AutoComplete::CompleteSymbol</a></div><div class="ttdeci">std::vector&lt; wxString &gt; CompleteSymbol(wxString partial, autoCompletionType type=command)</div><div class="ttdoc">Returns a list of possible autocompletions for the string &quot;partial&quot;.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:589</div></div>
-<div class="ttc" id="aclassAutoComplete_html_a8a3afded73c09be3a513bf1cb770626b"><div class="ttname"><a href="classAutoComplete.html#a8a3afded73c09be3a513bf1cb770626b">AutoComplete::AddSymbols_Backgroundtask_string</a></div><div class="ttdeci">void AddSymbols_Backgroundtask_string(std::stop_token stopToken, wxString xml)</div><div class="ttdoc">The real work of AddSymbols is made here and in the background.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:166</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a941963649165b434f37c702b4ac2293c"><div class="ttname"><a href="classAutoComplete.html#a941963649165b434f37c702b4ac2293c">AutoComplete::UpdateLoadFiles</a></div><div class="ttdeci">void UpdateLoadFiles(wxString partial, const wxString &amp;maximaDir)</div><div class="ttdoc">Replace the list of files in the directory the worksheet file is in to the load files list.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:547</div></div>
 <div class="ttc" id="aclassAutoComplete_html_a9ea854df696c5e1ab20e9834dfef8a37"><div class="ttname"><a href="classAutoComplete.html#a9ea854df696c5e1ab20e9834dfef8a37">AutoComplete::LoadBuiltinSymbols</a></div><div class="ttdeci">void LoadBuiltinSymbols()</div><div class="ttdoc">Makes wxMaxima know all its builtin symbols.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:69</div></div>
-<div class="ttc" id="aclassAutoComplete_html_aaa3af55e7c397b799e60751a7bef4815"><div class="ttname"><a href="classAutoComplete.html#aaa3af55e7c397b799e60751a7bef4815">AutoComplete::AddSymbols_Backgroundtask</a></div><div class="ttdeci">void AddSymbols_Backgroundtask(std::stop_token stopToken, wxXmlDocument xmldoc)</div><div class="ttdoc">The real work of AddSymbols is made here and in the background.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:173</div></div>
 <div class="ttc" id="aclassAutoComplete_html_abe1d7b397653ee795eca19f0983b3c90"><div class="ttname"><a href="classAutoComplete.html#abe1d7b397653ee795eca19f0983b3c90">AutoComplete::UpdateGeneralFiles</a></div><div class="ttdeci">void UpdateGeneralFiles(wxString partial, const wxString &amp;maximaDir)</div><div class="ttdoc">Assemble a list of files.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:514</div></div>
 <div class="ttc" id="aclassAutoComplete_html_ac01de5cf0f57194e555f845f80063c02"><div class="ttname"><a href="classAutoComplete.html#ac01de5cf0f57194e555f845f80063c02">AutoComplete::AddSymbols</a></div><div class="ttdeci">void AddSymbols(wxString xml)</div><div class="ttdoc">Interprets the XML autocompletable symbol list maxima can send us.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:135</div></div>
 <div class="ttc" id="aclassAutoComplete_html_ac7caeb6b2a96643d5b7320c011d79e77"><div class="ttname"><a href="classAutoComplete.html#ac7caeb6b2a96643d5b7320c011d79e77">AutoComplete::AddWorksheetWords</a></div><div class="ttdeci">void AddWorksheetWords(const WordList &amp;words)</div><div class="ttdoc">Add words to the list of words that appear in the workSheet's code cells.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:278</div></div>
 <div class="ttc" id="aclassAutoComplete_html_ad0026315422c75170949786143a114dd"><div class="ttname"><a href="classAutoComplete.html#ad0026315422c75170949786143a114dd">AutoComplete::FixTemplate</a></div><div class="ttdeci">static wxString FixTemplate(wxString templ)</div><div class="ttdoc">Basically runs a regex over templates.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:698</div></div>
 <div class="ttc" id="aclassAutoComplete_html_ae1de0de91bf3e6b748e68daa93aade9c"><div class="ttname"><a href="classAutoComplete.html#ae1de0de91bf3e6b748e68daa93aade9c">AutoComplete::HasDemofile</a></div><div class="ttdeci">bool HasDemofile(const wxString &amp;commandname)</div><div class="ttdoc">Does a demo file for this command exist?</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:120</div></div>
+<div class="ttc" id="aclassAutoComplete_html_ae66bd2b96eb12998135a446b115726e2"><div class="ttname"><a href="classAutoComplete.html#ae66bd2b96eb12998135a446b115726e2">AutoComplete::AddSymbols_Backgroundtask_string</a></div><div class="ttdeci">void AddSymbols_Backgroundtask_string(stop_token stopToken, wxString xml)</div><div class="ttdoc">The real work of AddSymbols is made here and in the background.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:166</div></div>
 <div class="ttc" id="aclassAutoComplete_html_af6f5cfb1876f21f4503c674288fd64f5"><div class="ttname"><a href="classAutoComplete.html#af6f5cfb1876f21f4503c674288fd64f5">AutoComplete::AddSymbol</a></div><div class="ttdeci">void AddSymbol(wxString fun, autoCompletionType type=command)</div><div class="ttdoc">Manually add an autocompletable symbol to our symbols lists.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:643</div></div>
 <div class="ttc" id="aclassAutoComplete_html_afb44678be806c87a6ca98562739c7cb6"><div class="ttname"><a href="classAutoComplete.html#afb44678be806c87a6ca98562739c7cb6">AutoComplete::ClearWorksheetWords</a></div><div class="ttdeci">void ClearWorksheetWords()</div><div class="ttdoc">Clear the list of words that appear in the workSheet's code cells.</div><div class="ttdef"><b>Definition:</b> Autocomplete.cpp:53</div></div>
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:86</div></div>
