@@ -616,20 +616,68 @@ bool Cell::BreakUpCells() const {
   if (clientWidth < Scale_Px(50))
     clientWidth = Scale_Px(50);
 
-  bool lineHeightsChanged = false;
-  if (!IsHidden())
-    for (const Cell &tmp : OnDrawList(this)) {
-      if (tmp.GetWidth() < 0)
-        tmp.Recalculate(m_configuration->GetMathFontSize());
-      if (tmp.GetWidth() > clientWidth) {
-        if (tmp.BreakUp()) {
-          lineHeightsChanged = true;
-          tmp.Recalculate(tmp.IsMath() ? m_configuration->GetMathFontSize()
-                                       : m_configuration->GetDefaultFontSize());
+  bool anyChanged = false;
+  bool changedInThisPass = true;
+
+  // We repeat this process until no more cells are converted to linear mode.
+  // This is necessary because converting a parent to linear mode might increase
+  // the font size of its sub-cells, making them too wide for the line.
+  while (changedInThisPass) {
+    changedInThisPass = false;
+    std::vector<const Cell *> wideCells;
+
+    if (!IsHidden()) {
+      for (const Cell &tmp : OnDrawList(this)) {
+        if (!tmp.IsBrokenIntoLines()) {
+          if (tmp.GetWidth() < 0)
+            tmp.Recalculate(m_configuration->GetMathFontSize());
+
+          if (tmp.GetWidth() > clientWidth) {
+            tmp.CollectWideCells(wideCells, clientWidth);
+          }
         }
       }
     }
-  return lineHeightsChanged;
+
+    if (!wideCells.empty()) {
+      for (const Cell *cell : wideCells) {
+        if (cell->BreakUp()) {
+          changedInThisPass = true;
+          anyChanged = true;
+        }
+      }
+      if (changedInThisPass) {
+        RecalculateList(m_configuration->GetMathFontSize());
+      }
+    }
+  }
+
+  return anyChanged;
+}
+
+void Cell::CollectWideCells(std::vector<const Cell *> &wideCells,
+                            int clientWidth) const {
+  if (IsBrokenIntoLines())
+    return;
+
+  // If this cell is already wider than the threshold, it's a candidate for
+  // linearization.
+  if (GetWidth() > clientWidth) {
+    wideCells.push_back(this);
+  }
+
+  // Also recursively check sub-cells. We use a threshold of 80% because
+  // sub-cells often use a smaller font size. If they are already 80% of the
+  // available width at a small font size, they will almost certainly exceed
+  // 100% when their parent is linearized and their font size increases.
+  for (const Cell &inner : OnInner(this)) {
+    // Note: We don't check GetWidth() > 0.8 * clientWidth here directly
+    // because we want to recursively find the deepest wide cells first
+    // if possible, but actually we just collect them all.
+    if (inner.GetWidth() > 0.8 * clientWidth) {
+      inner.CollectWideCells(wideCells, clientWidth);
+    }
+  }
 }
 
 bool Cell::UnBreakUpCells() const {

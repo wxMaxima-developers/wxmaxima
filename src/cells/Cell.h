@@ -243,6 +243,14 @@ public:
   */
   bool BreakUpCells() const;
 
+  /*! Recursively collect all cells that are too wide to fit the line.
+   *
+   * \param wideCells is the list to add the cells to.
+   * \param clientWidth is the width available for a line.
+   */
+  void CollectWideCells(std::vector<const Cell *> &wideCells,
+                        int clientWidth) const;
+
   /*! Convert all maths objects in this call list into their 2D form */
   bool UnBreakUpCells() const;
 

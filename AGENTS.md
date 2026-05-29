@@ -41,6 +41,7 @@ This file contains architectural insights, conventions, and operational knowledg
 - **Three-Step Layout Process:** 
   1. `UnBreakUpCells()`: Reset to 2D.
   2. `BreakUpCells()`: Convert wide 2D objects to 1D fallback.
+     - **Recursive Strategy:** If a 2D object is too wide, `CollectWideCells` recursively identifies sub-cells that are already >80% of the available width. These sub-cells are also converted to linear form in the same pass. This heuristic accounts for font size increases that occur when a parent object is linearized, preventing redundant O(N^2) size resets and recalculations in deeply nested structures.
   3. `BreakLines_List()`: Final line wrapping.
 - **High-DPI / wxBitmapBundle:** Use `wxBitmapBundle` for SVG rendering. Avoid unnecessary `GetPreferredBitmapSizeFor` calls on macOS to prevent `nodiscard` warnings.
 - **Windows Focus Management:** Use `CallAfter` for focus transitions (e.g., `m_searchText->SetFocus()`) to prevent the worksheet from "stealing" focus back.
