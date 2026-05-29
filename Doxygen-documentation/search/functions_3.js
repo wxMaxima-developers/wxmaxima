@@ -50,7 +50,7 @@ var searchData=
   ['codecellvisibilitychanged_47',['CodeCellVisibilityChanged',['../classWorksheet.html#ab5933436512be0418142944bf19f5836',1,'Worksheet']]],
   ['commandsleftincell_48',['CommandsLeftInCell',['../classEvaluationQueue.html#aa2d62d074c9b0112eddb9f97e1256105',1,'EvaluationQueue']]],
   ['commandwiz_49',['CommandWiz',['../classwxMaxima.html#a5deb121b24bddcbcec77253c349980b8',1,'wxMaxima']]],
-  ['compilehelpfileanchors_50',['CompileHelpFileAnchors',['../classMaximaManual.html#acbba90888ccbd805858cb1117d3701bc',1,'MaximaManual']]],
+  ['compilehelpfileanchors_50',['CompileHelpFileAnchors',['../classMaximaManual.html#a50bf45673786d510d1805df4098fd609',1,'MaximaManual']]],
   ['completesymbol_51',['CompleteSymbol',['../classAutoComplete.html#a820f73cfb05abb20f73ae74f224c39e3',1,'AutoComplete']]],
   ['compressedgnuplotsource_52',['CompressedGnuplotSource',['../classImage.html#ae4ca9ced3889fdb12d0e659ea813fd91',1,'Image']]],
   ['configchanged_53',['ConfigChanged',['../classCell.html#a01f036f4f68d223e2464097a7728def3',1,'Cell::ConfigChanged()'],['../classwxMaxima.html#af2f5e80d2d27151a20ffc5efd641bc4e',1,'wxMaxima::ConfigChanged()']]],

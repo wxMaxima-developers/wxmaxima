@@ -106,7 +106,7 @@ Conventions &amp; Standards</h1>
 <ul>
 <li><b>Git Environment:</b> Note that running <code>git diff</code> might launch the visual diff tool <code>meld</code> instead of outputting to the terminal. Always use <code>git diff --no-ext-diff</code> if you need terminal output.</li>
 <li><b><a class="el" href="classString.html" title="A String class.">String</a> Literals &amp; Translations:</b> Use the <code>wxS()</code> macro for all string literals and <code>_()</code> for user-facing translatable strings.</li>
-<li><b>Logging:</b> Use <code>wxLogMessage()</code> for debugging; messages are visible in <b>Help -&gt; Show Log Window</b>.</li>
+<li><b>Logging:</b> Use <code>wxLogMessage()</code> for debugging; messages are visible in <b>View -&gt; Toggle Log Window</b> or by using the option <code>--logtostderr</code>.</li>
 <li><b>Asynchronous Sidebars &amp; Safety:</b> Sidebars (TOC, Variables Pane) update asynchronously. Always validate <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code> pointers (using <code>m_tree-&gt;Contains()</code>) before use.</li>
 <li><b><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> UUIDs &amp; Navigation:</b> Cells have unique <code>m_uuid</code>. Filenames support <code>#UUID</code> fragments.</li>
 <li><b>Forward Compatibility:</b> <code>ToXML()</code> implementations MUST call <code>GetXMLFlags()</code> and include its output in the opening tag to preserve unknown attributes.</li>
@@ -116,7 +116,7 @@ Conventions &amp; Standards</h1>
 <li><b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> Restart (Windows):</b> Restarting requires a manual reset of the network client (<code>m_client.reset()</code>) and streams in <code>KillMaxima</code> to avoid socket state errors.</li>
 <li><b><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> Search Logic:</b> Traverse in visual order: Prompt $\to$ Editor $\to$ Output (Forward) or Output $\to$ Editor $\to$ Prompt (Reverse). Resume from current caret position.</li>
 <li><b>Layout Timeout:</b> Complex output can trigger a timeout (configurable in Options), replacing slow-to-render cells with a warning.</li>
-<li><b>C++ Standard:</b> The project uses <b>C++17</b>. To support users on older operating systems (like Debian-oldstable or RHEL), <a class="el" href="classwxMaxima.html">wxMaxima</a> aims to stay approximately 10 years behind the current C++ standard.</li>
+<li><b>C++ Standard:</b> The project uses <b>C++20</b>. To support users on older operating systems (like Debian-oldstable or RHEL), <a class="el" href="classwxMaxima.html">wxMaxima</a> aims to stay approximately 10 years behind the current C++ standard.</li>
 <li><b>wxWidgets Version:</b> Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use <code>MakeAbsolute()</code> + <code>GetFullPath()</code> instead of <code>GetAbsolutePath()</code>).</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md4"></a>
@@ -162,7 +162,7 @@ Key Subsystems Map</h1>
 <li><b><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>:</b> <code><a class="el" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage.">src/Configuration.cpp</a></code>.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md8"></a>
-Error resiliance</h1>
+Error resilience</h1>
 <ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
 </ul>
