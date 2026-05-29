@@ -109,16 +109,16 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Core layout and rendering logic for worksheet cells. </p>
-<h2><a class="anchor" id="autotoc_md824"></a>
+<h2><a class="anchor" id="autotoc_md825"></a>
 The 3-Pass Layout Pipeline</h2>
 <p>To ensure consistent cell positioning and resolve issues with complex mathematical layouts (fractions, exponents, etc.) and line-breaking, <a class="el" href="classwxMaxima.html">wxMaxima</a> uses a strict three-pass system:</p>
-<h3><a class="anchor" id="autotoc_md825"></a>
+<h3><a class="anchor" id="autotoc_md826"></a>
 Pass 1: Measure (Recalculate)</h3>
 <p>In this pass, each cell determines its intrinsic size (width, height, and baseline center). This pass is recursive and handles the "BreakUp" (linearization) of wide 2<a class="el" href="classD.html">D</a> objects into their 1<a class="el" href="classD.html">D</a> forms. </p><dl class="section see"><dt>See also</dt><dd>Recalculate()</dd></dl>
-<h3><a class="anchor" id="autotoc_md826"></a>
+<h3><a class="anchor" id="autotoc_md827"></a>
 Pass 2: Arrange (SetCurrentPoint)</h3>
 <p>Once sizes are known, this pass recursively calculates and assigns absolute worksheet coordinates (<code>m_currentPoint</code>) to every cell in the hierarchy. This is the single source of truth for positioning. </p><dl class="section see"><dt>See also</dt><dd>SetCurrentPoint()</dd></dl>
-<h3><a class="anchor" id="autotoc_md827"></a>
+<h3><a class="anchor" id="autotoc_md828"></a>
 Pass 3: Paint (Draw)</h3>
 <p>This is a fast, rendering-only pass. It simply draws the cell content using the coordinates pre-calculated in Pass 2. It performs no layout logic itself. </p><dl class="section see"><dt>See also</dt><dd>Draw() </dd></dl>
 </div></div><!-- contents -->
