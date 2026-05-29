@@ -161,6 +161,7 @@ public:
     \param dc The drawing context that is to be used for drawing objects
   */
   explicit Configuration(wxDC *dc = {}, InitOpt options = none);
+  Configuration(const Configuration &o);
 
   //! Reset the whole configuration to its default values
   void ResetAllToDefaults();

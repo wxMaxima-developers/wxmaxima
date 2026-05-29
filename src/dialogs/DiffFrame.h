@@ -42,6 +42,7 @@ private:
   void OnDiffPrev(wxCommandEvent &event);
 
   std::vector<Worksheet *> m_worksheets;
+  std::vector<std::unique_ptr<Configuration>> m_worksheetConfigurations;
   Configuration *m_configuration;
   wxSearchCtrl *m_searchCtrl = nullptr;
   wxRadioButton *m_searchDownRadio = nullptr;

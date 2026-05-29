@@ -305,7 +305,7 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const {
     return true;
   if (!HasValidSize())
     return true;
-  if (fontSize.IsValid() && !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.6f))
+  if (fontSize.IsValid() && !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.2f))
     return true;
   return(ConfigChanged());
 }

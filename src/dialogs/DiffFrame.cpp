@@ -227,7 +227,8 @@ toolBar->AddSeparator();
 
   // Initialize worksheets for each file provided
   for (size_t i = 0; i < files.size(); ++i) {
-    Worksheet *ws = new Worksheet(this, wxID_ANY, m_configuration);
+    m_worksheetConfigurations.push_back(std::make_unique<Configuration>(*m_configuration));
+    Worksheet *ws = new Worksheet(this, wxID_ANY, m_worksheetConfigurations.back().get());
     m_worksheets.push_back(ws);
     ws->m_currentFile = files[i];
     mainSizer->Add(ws, 1, wxEXPAND);
