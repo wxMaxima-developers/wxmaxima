@@ -305,7 +305,7 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const {
     return true;
   if (!HasValidSize())
     return true;
-  if(!EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.01f))
+  if (fontSize.IsValid() && !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.6f))
     return true;
   return(ConfigChanged());
 }
@@ -502,20 +502,21 @@ void Cell::ResetSizeList() const {
 }
 
 void Cell::Recalculate(const AFontSize fontsize) const {
-  //  wxASSERT(fontsize.IsValid());
-  if(NeedsRecalculation(fontsize))
-    {
-      m_cellCfgCnt_last = m_configuration->CellCfgCnt();
-      m_fontSize = fontsize;
-      m_fontSize_Scaled = Scale_Px(fontsize);
+  AFontSize actualFontSize =
+    fontsize.IsValid()
+    ? fontsize
+    : (m_fontSize.IsValid() ? m_fontSize : m_configuration->GetMathFontSize());
+  if (NeedsRecalculation(actualFontSize)) {
+    m_cellCfgCnt_last = m_configuration->CellCfgCnt();
+    m_fontSize = actualFontSize;
+    m_fontSize_Scaled = Scale_Px(actualFontSize);
 
-      if(!HasValidSize())
-        {
-          m_width = 0;
-          m_height = 0;
-          m_center = 0;
-        }
+    if (!HasValidSize()) {
+      m_width = 0;
+      m_height = 0;
+      m_center = 0;
     }
+  }
 }
 
 bool Cell::DrawThisCell() {
