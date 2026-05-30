@@ -58,6 +58,7 @@ const wxString GroupCell::GetToolTip(wxPoint) const { return {}; }
 bool GroupCell::AddEnding() { return {}; }
 bool GroupCell::FirstLineOnlyEditor() const { return false; }
 void GroupCell::SetCurrentPoint(wxPoint) {}
+void GroupCell::MarkNeedsRecalculate() {}
 #if wxUSE_ACCESSIBILITY
 wxAccStatus GroupCell::GetDescription(int, wxString *) const { return {}; }
 wxAccStatus GroupCell::GetLocation(wxRect &, int) { return {}; }
