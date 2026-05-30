@@ -133,7 +133,7 @@ public:
   void XmlInspectorActive(bool active){m_xmlInspector = active;}
 private:
   //! If this is set to true by XmlInspectorActive we send all data we get to the XML inspector
-  bool m_xmlInspector = false;
+  std::atomic_bool m_xmlInspector{false};
 
   //! The configuration of our wxMaxima process
   Configuration *m_configuration;

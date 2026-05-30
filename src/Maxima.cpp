@@ -179,11 +179,20 @@ void Maxima::WorkerThread(stop_token stopToken) {
     // 2. Handle Input
     if (m_socket->WaitForRead(0, 50)) {
         activity = true;
+        wxString incomingData;
         while (m_socket->IsData()) {
             wxUniChar ch = m_textInput.GetChar();
             if (ch == wxS('\0')) break;
             if (ch == wxS('\r')) continue;
             m_processingBuffer += ch;
+            if (m_xmlInspector) incomingData += ch;
+        }
+        if (m_xmlInspector && !incomingData.IsEmpty()) {
+            std::lock_guard<std::mutex> lock(m_interpretedQueueMutex);
+            m_interpretedQueue.push_back({STRING_FOR_XMLINSPECTOR, incomingData});
+            if (!m_readPendingQueued.exchange(true)) {
+                CallAfter([this]{ ReadSocket(); });
+            }
         }
     }
 
