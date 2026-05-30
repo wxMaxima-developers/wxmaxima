@@ -481,7 +481,7 @@ void AutoComplete::LoadableFiles_BackgroundTask(stop_token stopToken, wxString s
 
 void AutoComplete::UpdateDemoFiles(wxString partial, const wxString &maximaDir) {
   // Remove the opening quote from the partial.
-  if (partial.starts_with(wxS('\"')))
+  if (partial.StartsWith(wxS('\"')))
     partial = partial.Right(partial.Length() - 1);
 
   partial.Replace(wxFileName::GetPathSeparator(), "/");
@@ -517,7 +517,7 @@ void AutoComplete::UpdateDemoFiles(wxString partial, const wxString &maximaDir) 
 
 void AutoComplete::UpdateGeneralFiles(wxString partial, const wxString &maximaDir) {
   // Remove the opening quote from the partial.
-  if (partial.starts_with(wxS('\"')))
+  if (partial.StartsWith(wxS('\"')))
     partial = partial.Right(partial.Length() - 1);
 
   partial.Replace(wxFileName::GetPathSeparator(), "/");
@@ -552,7 +552,7 @@ void AutoComplete::UpdateLoadFiles(wxString partial, const wxString &maximaDir) 
   wxLogMessage(_("Scheduling a background task that scans for autocompletable "
                  "file names."));
   // Remove the opening quote from the partial.
-  if (partial.starts_with(wxS('\"')))
+  if (partial.StartsWith(wxS('\"')))
     partial = partial.Right(partial.Length() - 1);
 
   partial.Replace(wxFileName::GetPathSeparator(), "/");
