@@ -113,7 +113,7 @@ public:
   //! Does this GroupCell save the answer to a question?
   bool AutoAnswer() const { return m_autoAnswer; }
   void SetAutoAnswer(bool autoAnswer);
-  void MarkNeedsRecalculate(){m_cellsAppended = true;}
+  void MarkNeedsRecalculate();
   //! Add a new answer to the cell
   void SetAnswer(const wxString &question, const wxString &answer);
 

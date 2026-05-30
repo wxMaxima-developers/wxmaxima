@@ -297,13 +297,12 @@ void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilen
   m_gnuplotSource = std::move(gnuplotFilename);
   m_gnuplotData = std::move(dataFilename);
   if(m_configuration->UseThreads())
-    m_loadGnuplotSourceTask =
-      jthread(&Image::LoadCompressedGnuplotSource_Backgroundtask,
-              this,
-              std::move(limiter),
-              m_gnuplotSource,
-              m_gnuplotData,
-              wxmxFile);
+    m_loadGnuplotSourceTask = jthread(
+      [this, limiter = std::move(limiter), gnuplotSource = m_gnuplotSource,
+       data = m_gnuplotData, wxmxFile](stop_token stopToken) mutable {
+        LoadCompressedGnuplotSource_Backgroundtask(
+          stopToken, std::move(limiter), gnuplotSource, data, wxmxFile);
+      });
   else
     LoadCompressedGnuplotSource_Backgroundtask({},
       std::move(limiter),
@@ -831,12 +830,12 @@ void Image::LoadImage(wxString image, const wxString &wxmxFile,
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
   if(m_configuration->UseThreads())
-    m_loadImageTask = jthread(&Image::LoadImage_Backgroundtask,
-                              this,
-                              std::move(limiter),
-                              std::move(image), wxmxFile,
-                              remove
-      );
+    m_loadImageTask = jthread(
+      [this, limiter = std::move(limiter), image = std::move(image),
+       wxmxFile, remove](stop_token stopToken) mutable {
+        LoadImage_Backgroundtask(stopToken, std::move(limiter), std::move(image),
+                                 wxmxFile, remove);
+      });
   else
     LoadImage_Backgroundtask({},
       std::move(limiter),

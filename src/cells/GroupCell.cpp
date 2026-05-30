@@ -230,6 +230,16 @@ void GroupCell::SetAutoAnswer(bool autoAnswer) {
     GetEditable()->AutoAnswer(autoAnswer);
 }
 
+void GroupCell::MarkNeedsRecalculate() {
+  if (!m_cellsAppended) {
+    m_cellsAppended = true;
+    Worksheet *ws = dynamic_cast<Worksheet *>(m_configuration->GetWorkSheet());
+    if (ws) {
+      ws->Recalculate(this);
+    }
+  }
+}
+
 void GroupCell::SetAnswer(const wxString &question, const wxString &answer) {
   if (!answer.empty()) {
     for (auto &[q, a] : m_knownAnswers) {
@@ -431,7 +441,7 @@ void GroupCell::InputHeightChanged() {
   RecalculateInput();
   if (m_output != NULL) {
     m_height += m_outputRect.GetHeight();
-    m_outputRect.y = m_currentPoint.y + m_center;
+    m_outputRect.y = m_currentPoint.y + (m_inputHeight - m_center);
     m_width = std::max(m_width.GetOrElse(0), m_output->GetLineWidth());
   }
   if (m_height != oldHeight || m_center != oldCenter)
@@ -511,7 +521,7 @@ void GroupCell::RecalculateInput() const {
 }
 
 void GroupCell::RecalculateOutput() const {
-  m_outputRect = wxRect(m_currentPoint.x, m_currentPoint.y + m_center, 0, 0);
+  m_outputRect = wxRect(m_currentPoint.x, m_currentPoint.y + (m_inputHeight - m_center), 0, 0);
   if (IsHidden())
     return;
 

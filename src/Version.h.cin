@@ -15,9 +15,32 @@
     using jthread = std::jthread;
     using stop_token = std::stop_token;
 #else
-    using jthread = std::thread;
     struct stop_token {
         bool stop_requested() const { return false; }
+    };
+    // A minimal jthread shim for compilers without std::jthread
+    class jthread : public std::thread {
+    public:
+        jthread() noexcept = default;
+        template<typename F, typename... Args>
+        explicit jthread(F&& f, Args&&... args)
+            : std::thread([](std::decay_t<F> f, std::decay_t<Args>... args) {
+                if constexpr (std::is_invocable_v<std::decay_t<F>, stop_token, std::decay_t<Args>...>) {
+                    f(stop_token{}, std::move(args)...);
+                } else {
+                    f(std::move(args)...);
+                }
+            }, std::forward<F>(f), std::forward<Args>(args)...) {}
+        
+        jthread& operator=(jthread&& other) noexcept {
+            if (joinable()) join();
+            std::thread::operator=(std::move(other));
+            return *this;
+        }
+        ~jthread() {
+            if (joinable()) join();
+        }
+        void request_stop() noexcept {}
     };
 #endif
 
