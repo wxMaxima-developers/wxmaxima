@@ -379,8 +379,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 				     (member '$WXXML_SUBSCRIPTED (cdr (properties x))))))))
 	  (format nil  "<munder altCopy=\"~A\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
 		  (wxxml-alt-copy-text x)
-		  (or (get sub-var-symb 'wxxmlword) (format nil "<mi>~a</mi>" (wxxml-fix-string (format nil "~A" sub-var))))
-		  (format nil "<mi>~a</mi>" (wxxml-fix-string (format nil "~A" sub)))))))))
+		  (or (get sub-var-symb 'wxxmlword) (format nil "<mi>~a</mi>" (wxxml-fix-string (remove (char "\\" 0) (format nil "~A" sub-var)))))
+		  (format nil "<mi>~a</mi>" (wxxml-fix-string (remove (char "\\" 0) (format nil "~A" sub))))))))))
 
 (defun wxxmlescapenum (atom)
   (wxxml-fix-string

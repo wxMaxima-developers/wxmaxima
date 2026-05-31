@@ -314,6 +314,16 @@ add_test(
 )
 
 add_test(
+    NAME subscriptp_10
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$t_1\\,2;" "<munder altCopy=\"t_1\\\\,2\"><mrow><mi>t</mi></mrow><mrow><mi>1,2</mi></mrow></munder>"
+)
+
+add_test(
+    NAME subscriptp_11
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "wxsubscripts:true\$a\\,b_1;" "a,b"
+)
+
+add_test(
     NAME mprod
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a*2*b;" "<mn>2</mn><h>[*]</h><mi lisp=.*>a</mi><h>[*]</h><mi lisp=.*>b</mi>"
 )
