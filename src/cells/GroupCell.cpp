@@ -643,7 +643,7 @@ void GroupCell::UpdateOutputPositions() const {
     wxPoint in = m_currentPoint;
     // Offset results below the input area
     if (m_configuration->ShowCodeCells() || (m_groupType != GC_TYPE_CODE))
-      in.y += m_inputLabel->GetMaxDrop();
+      in.y += (m_inputHeight - m_center);
 
     // The outputRect defines the bounding box for all results
     const_cast<GroupCell *>(this)->m_outputRect.SetPosition(in);

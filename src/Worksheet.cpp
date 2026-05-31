@@ -3490,6 +3490,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
   ///
   const EditorCell *activeCell = GetActiveCell();
   wxString oldValue = activeCell->GetValue();
+  int oldHeight = activeCell->GetHeight();
 
   switch (event.GetKeyCode()) {
   case WXK_LEFT:
@@ -3536,13 +3537,12 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
   if (activeCell->IsDirty()) {
     SetSaved(false);
 
-    int height = activeCell->GetHeight();
     //   int fontsize = m_configuration->GetDefaultFontSize();
     auto fontsize = m_configuration->GetDefaultFontSize();
 
     GetActiveCell()->Recalculate(std::max(fontsize, MC_MIN_SIZE));
 
-    if (height != GetActiveCell()->GetHeight() ||
+    if (oldHeight != GetActiveCell()->GetHeight() ||
         GetActiveCell()->GetWidth() + GetActiveCell()->GetCurrentPoint().x >=
         GetClientSize().GetWidth() -
         m_configuration->GetCellBracketWidth() -
