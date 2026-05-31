@@ -21,17 +21,59 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxmx-validity.sh.in" check-wxm
 set(WXM_TEST_WRAPPER "${CMAKE_CURRENT_BINARY_DIR}/run_headless.sh")
 file(WRITE "${WXM_TEST_WRAPPER}"
 "#!/bin/sh
-# Headless wrapper for GUI tests
-if command -v weston >/dev/null 2>&1; then
-    # Use weston with a unique socket to allow parallel tests
-    # We use the process ID to ensure uniqueness
-    SOCKET=\"wxmaxima-test-$$\"
-    weston --backend=headless --socket=\"$SOCKET\" -- \"$@\"
-elif command -v xvfb-run >/dev/null 2>&1 && xvfb-run --help >/dev/null 2>&1; then
-    xvfb-run -a \"$@\"
-else
-    \"$@\"
+# Robust headless wrapper for GUI tests
+
+# 1. Setup Environment
+if [ -z \"$XDG_RUNTIME_DIR\" ]; then
+    export XDG_RUNTIME_DIR=\"/tmp/wxmaxima-runtime-$$\"
+    mkdir -p \"$XDG_RUNTIME_DIR\"
+    chmod 700 \"$XDG_RUNTIME_DIR\"
 fi
+
+# 2. Try Weston (Wayland)
+if command -v weston >/dev/null 2>&1; then
+    SOCKET=\"wxmaxima-test-$$\"
+    # Some versions of weston require explicit shell and continue-without-input
+    if weston --backend=headless --shell=desktop-shell.so --socket=\"$SOCKET\" --idle-time=0 --continue-without-input -- \"$@\" >/dev/null 2>&1; then
+        exit $?
+    fi
+fi
+
+# 3. Try xvfb-run (X11)
+if command -v xvfb-run >/dev/null 2>&1; then
+    if xvfb-run -a \"$@\" 2>/dev/null; then
+        exit $?
+    fi
+fi
+
+# 4. Try manual Xvfb (X11)
+if command -v Xvfb >/dev/null 2>&1; then
+    # Find a free display
+    for i in $(seq 100 200); do
+        if ! [ -f \"/tmp/.X$i-lock\" ]; then
+            DISP=\":$i\"
+            Xvfb \"$DISP\" -screen 0 1280x1024x24 >/dev/null 2>&1 &
+            XPID=$!
+            export DISPLAY=\"$DISP\"
+            # Wait for X server (simple sleep or xdpyinfo)
+            if command -v xdpyinfo >/dev/null 2>&1; then
+                for j in $(seq 1 50); do
+                    xdpyinfo -display \"$DISPLAY\" >/dev/null 2>&1 && break
+                    sleep 0.1
+                done
+            else
+                sleep 1
+            fi
+            \"$@\"
+            RET=$?
+            kill $XPID >/dev/null 2>&1
+            exit $RET
+        fi
+    done
+fi
+
+# 5. Last resort: run directly
+\"$@\"
 ")
 execute_process(COMMAND chmod +x "${WXM_TEST_WRAPPER}")
 
