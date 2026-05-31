@@ -23,7 +23,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt-get update
-             sudo apt-get install appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dpkg-dev po4a rpmlint lintian
+             sudo apt-get install appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc at-spi2-core dpkg-dev po4a rpmlint lintian weston
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra -ansi"
@@ -63,7 +63,7 @@ jobs:
              export CTEST_OUTPUT_ON_FAILURE=1
              # tutorial_fittingEquations uses draw which maxima could not load on
              # ubuntu-latest when this test was disabled
-             GDK_BACKEND=x11 xvfb-run -a ctest -j 2 -E "tutorial_fittingEquations"
+             ctest -j 2 -E "tutorial_fittingEquations"
              cd ..
 
   compile_without_webview:
@@ -80,7 +80,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt-get update
-             sudo apt-get install appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core po4a
+             sudo apt-get install appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc at-spi2-core po4a
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra -ansi"
