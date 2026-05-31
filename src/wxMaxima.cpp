@@ -8520,14 +8520,12 @@ void wxMaxima::DrawMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_draw_fgcolor){
       wxColour col = wxGetColourFromUser(this);
       if (col.IsOk())
-        AddDrawParameter(wxString::Format("color=\"#%02x%02x%02x\"", col.Red(),
-                                          col.Green(), col.Blue()));
+        AddDrawParameter("color=\"" + col.GetAsString(wxC2S_HTML_SYNTAX) + "\"");
   }
   else if(event.GetId() == EventIDs::menu_draw_fillcolor){
       wxColour col = wxGetColourFromUser(this);
       if (col.IsOk())
-        AddDrawParameter(wxString::Format("fill_color=\"#%02x%02x%02x\"",
-                                          col.Red(), col.Green(), col.Blue()));
+        AddDrawParameter("fill_color=\"" + col.GetAsString(wxC2S_HTML_SYNTAX) + "\"");
   }
   else if(event.GetId() == EventIDs::menu_draw_title){
       wxWindowPtr<Gen1Wiz> wiz(new Gen1Wiz(
