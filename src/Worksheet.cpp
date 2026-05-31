@@ -48,7 +48,6 @@
 #include "wxMaximaFrame.h"
 #include "ArtProvider.h"
 #include <algorithm>
-#include <format>
 #include <memory>
 #include <vector>
 #include <utility>
@@ -4849,7 +4848,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorBg.Length()) {
     wxColour color(colorBg);
     css << wxS("  background-color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
   }
   css << wxS("}\n");
@@ -4859,7 +4858,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorInput.Length()) {
     wxColour color(colorInput);
     css << wxS("  color: \n") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
   }
   if (boldInput)
@@ -4877,13 +4876,13 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorText.Length()) {
     wxColour color(colorText);
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
   }
   if (colorTextBg.Length()) {
     wxColour color(colorTextBg);
     css << wxS("  background-color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
   }
   css << wxS("  padding: 2mm;\n");
@@ -4894,7 +4893,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeVariable);
     css << wxS(".code_variable {\n");
     css << wxS("  color: \n") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
     css << wxS("}\n");
   }
@@ -4908,7 +4907,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeFunction);
     css << wxS(".code_function {\n\n");
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
     css << wxS("}\n");
   }
@@ -4917,7 +4916,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeComment);
     css << wxS(".code_comment {\n");
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
     css << wxS("}\n");
   }
@@ -4926,7 +4925,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeNumber);
     css << wxS(".code_number {\n");
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
     css << wxS("}\n");
   }
@@ -4935,7 +4934,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeString);
     css << wxS(".code_string {\n");
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
     css << wxS("}\n");
   }
@@ -4944,7 +4943,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeOperator);
     css << wxS(".code_operator {\n");
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
     css << wxS("}\n");
   }
@@ -4953,7 +4952,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeLisp);
     css << wxS(".code_lisp {\n");
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
     css << wxS("}\n");
   }
@@ -4962,7 +4961,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
     wxColour color(colorCodeEndOfLine);
     css << wxS(".code_endofline {\n");
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";");
     css << wxS("}\n");
   }
@@ -4980,7 +4979,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorText.Length()) {
     wxColour color(colorText);
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
   }
   css << wxS("  padding: 2mm;\n");
@@ -4994,7 +4993,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorSection.Length()) {
     wxColour color(colorSection);
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
   }
   if (boldSection)
@@ -5015,7 +5014,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorSubSec.Length()) {
     wxColour color(colorSubSec);
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
   }
   if (boldSubsection)
@@ -5036,7 +5035,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorSubsubSec.Length()) {
     wxColour color(colorSubsubSec);
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
   }
   if (boldSubsubsection)
@@ -5057,7 +5056,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorHeading5.Length()) {
     wxColour color(colorHeading5);
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
   }
   if (boldHeading5)
@@ -5078,7 +5077,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorHeading6.Length()) {
     wxColour color(colorHeading6);
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
   }
   if (boldHeading6)
@@ -5099,7 +5098,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorTitle.Length()) {
     wxColour color(colorTitle);
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
   }
   if (boldTitle)
@@ -5117,7 +5116,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   if (colorPrompt.Length()) {
     wxColour color(colorPrompt);
     css << wxS("  color: ") +
-      wxString(std::format("rgb({},{},{})", color.Red(), color.Green(), color.Blue())) +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
       wxS(";\n");
   }
   if (boldPrompt)
