@@ -1,0 +1,43 @@
+# Start from the official Gemini CLI sandbox image
+ARG GEMINI_CLI_VERSION=0.44.1
+FROM us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:${GEMINI_CLI_VERSION}
+
+# Switch to root to install dependencies
+USER root
+
+# Install standard C++ development tools
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    gdb \
+    git \
+    sed \
+    valgrind \
+    po4a \
+    ninja-build \
+    git \
+    appstream \
+    cmake \
+    desktop-file-utils \
+    doxygen \
+    gettext \
+    gnuplot \
+    gnuplot-x11 \
+    graphviz \
+    libwxgtk3.2-dev \
+    libwxgtk-webview3.2-dev \
+    maxima maxima-share \
+    maxima-doc \
+    netcat-openbsd \
+    ninja-build \
+    pandoc \
+    xvfb \
+    at-spi2-core \
+    dpkg-dev \
+    po4a \
+    rpmlint \
+    lintian \
+    && rm -rf /var/lib/apt/lists/*
+
+# Switch back to the standard non-root user
+USER node
