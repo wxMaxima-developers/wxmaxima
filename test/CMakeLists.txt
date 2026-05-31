@@ -417,7 +417,7 @@ set_tests_properties(wxmaxima_version_string PROPERTIES  PASS_REGULAR_EXPRESSION
 add_test(
     NAME wxmaxima_version_returncode
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${WXM_TEST_WRAPPER} wxmaxima --debug --logtostderr --pipe --version)
+    COMMAND wxmaxima --debug --logtostderr --pipe --version)
 
 #add_test(
 #    NAME maxima_lisp_switch
@@ -440,7 +440,7 @@ add_test(
 add_test(
     NAME wxmaxima_help_returncode
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ${WXM_TEST_WRAPPER} wxmaxima --debug --logtostderr --pipe --help)
+    COMMAND wxmaxima --debug --logtostderr --pipe --help)
 set_tests_properties(wxmaxima_help_returncode PROPERTIES WILL_FAIL true)
 
 add_test(
