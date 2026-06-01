@@ -3552,7 +3552,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
   /// If we need to recalculate then refresh the window
   if (needRecalculate) {
     GroupCell *group = GetActiveCell()->GetGroup();
-    group->ResetSize_Recursively_Force();
+    group->ResetSize_Recursively();
     if (GetActiveCell()->CheckChanges() &&
         (group->GetGroupType() == GC_TYPE_CODE) &&
         (GetActiveCell() == group->GetEditable()))
