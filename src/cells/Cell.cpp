@@ -1206,6 +1206,7 @@ void Cell::ResetSize_Recursively() const {
       tmp.ResetSize_Recursively();
 }
 
+
 void Cell::ResetSize_RecursivelyList() const {
   for (const Cell &tmp : OnList(this))
     tmp.ResetSize_Recursively();
@@ -1223,6 +1224,12 @@ void Cell::ResetSize() const {
 
 void Cell::InvalidateListCache() const {
   for (const Cell *walk = this; walk; walk = walk->m_previous) {
+    if (walk->m_cachedMaxDrop.IsInvalid() &&
+        walk->m_cachedCenterList.IsInvalid() &&
+        walk->m_cachedSumOfWidths.IsInvalid() &&
+        walk->m_cachedLineWidth.IsInvalid())
+      break;
+    
     walk->m_cachedMaxDrop.Invalidate();
     walk->m_cachedCenterList.Invalidate();
     walk->m_cachedSumOfWidths.Invalidate();
