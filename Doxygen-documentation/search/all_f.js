@@ -72,6 +72,7 @@ var searchData=
   ['option_69',['Option',['../classCatch_1_1Option.html',1,'Catch']]],
   ['outcommon_70',['OutCommon',['../classOutCommon.html#a6704b5e575812ea57a8dd4726852c3de',1,'OutCommon::OutCommon()'],['../classOutCommon.html',1,'OutCommon']]],
   ['outcommon_2eh_71',['OutCommon.h',['../OutCommon_8h.html',1,'']]],
-  ['overload_5ftest_72',['Overload_Test',['../classOverload__Test.html',1,'']]],
-  ['unique_5fptr_3c_20t_20_3e_73',['unique_ptr&lt; T &gt;',['../classCellListBuilder.html#af7962cb0f42dd905c9db70d5eb6e54b3',1,'CellListBuilder']]]
+  ['outputheightchanged_72',['OutputHeightChanged',['../classGroupCell.html#a261107dd67c2c3bbd0a3bd561e00ad62',1,'GroupCell']]],
+  ['overload_5ftest_73',['Overload_Test',['../classOverload__Test.html',1,'']]],
+  ['unique_5fptr_3c_20t_20_3e_74',['unique_ptr&lt; T &gt;',['../classCellListBuilder.html#af7962cb0f42dd905c9db70d5eb6e54b3',1,'CellListBuilder']]]
 ];
