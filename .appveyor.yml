@@ -65,7 +65,7 @@ install:
       echo "    Branch: $env:APPVEYOR_REPO_BRANCH"
       echo ''
       echo '- Installing pandoc...'
-      choco install -y --no-progress pandoc
+      choco install -y --no-progress pandoc wxwidgets
 
 before_build:
   - ps: |
