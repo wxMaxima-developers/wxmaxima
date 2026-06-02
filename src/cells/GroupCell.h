@@ -399,6 +399,9 @@ public:
   //! Reset the data when the input size changes
   void InputHeightChanged();
 
+  //! Reset the data when the output size changes
+  void OutputHeightChanged();
+
   typedef std::unordered_map <wxString, int, wxStringHash> CmdsAndVariables;
 
   //! A list of answers provided by the user

@@ -448,6 +448,15 @@ void GroupCell::InputHeightChanged() {
     UpdateYPositionList();
 }
 
+void GroupCell::OutputHeightChanged() {
+  int oldHeight = m_height;
+  ResetSize();
+  RecalculateOutput();
+  m_height = m_outputRect.GetHeight() + m_inputHeight;
+  if (m_height != oldHeight)
+    UpdateYPositionList();
+}
+
 // Called on resize events
 // We need to forget line breaks/breakup cells and
 // breakup cells and compute new line breaks

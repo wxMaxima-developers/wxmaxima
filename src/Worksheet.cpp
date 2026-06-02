@@ -845,9 +845,11 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
   newCell->ForceBreakLine(forceNewLine);
   cell->AppendOutput(std::move(newCell));
 
-  Recalculate(cell);
+  cell->OutputHeightChanged();
+  AdjustSize();
   OutputChanged();
   RequestRedraw(cell);
+  RedrawIfRequested();
 
   if (FollowEvaluation()) {
     ClearSelection();
@@ -3515,9 +3517,6 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
     break;
   default: {
     GetActiveCell()->ProcessEvent(event);
-    GroupCell *parent = GetActiveCell()->GetGroup();
-    parent->InputHeightChanged();
-    RequestRedraw(parent);
   }
   }
 
@@ -3541,11 +3540,18 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
 
     GetActiveCell()->Recalculate(std::max(fontsize, MC_MIN_SIZE));
 
-    if (oldHeight != GetActiveCell()->GetHeight() ||
-        GetActiveCell()->GetWidth() + GetActiveCell()->GetCurrentPoint().x >=
-        GetClientSize().GetWidth() -
-        m_configuration->GetCellBracketWidth() -
-        m_configuration->GetBaseIndent())
+    if (oldHeight != GetActiveCell()->GetHeight()) {
+      GetActiveCell()->GetGroup()->InputHeightChanged();
+      AdjustSize();
+      ScrollToCaret();
+    }
+
+    RequestRedraw(GetActiveCell()->GetGroup());
+    RedrawIfRequested();
+
+    if (GetActiveCell()->GetWidth() + GetActiveCell()->GetCurrentPoint().x >=
+        GetClientSize().GetWidth() - m_configuration->GetCellBracketWidth() -
+            m_configuration->GetBaseIndent())
       needRecalculate = true;
   }
 
@@ -3559,6 +3565,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
       group->ResetInputLabel();
     //    Recalculate(group, false);
     RequestRedraw(group);
+    RedrawIfRequested();
   } else {
     if (GetActiveCell()->IsSelectionChanged()) {
       RequestRedraw(GetActiveCell()->GetGroup());

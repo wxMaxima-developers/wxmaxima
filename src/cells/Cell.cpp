@@ -1224,16 +1224,18 @@ void Cell::ResetSize() const {
 
 void Cell::InvalidateListCache() const {
   for (const Cell *walk = this; walk; walk = walk->m_previous) {
-    if (walk->m_cachedMaxDrop.IsInvalid() &&
-        walk->m_cachedCenterList.IsInvalid() &&
-        walk->m_cachedSumOfWidths.IsInvalid() &&
-        walk->m_cachedLineWidth.IsInvalid())
-      break;
-    
+    const bool alreadyInvalid = walk->m_cachedMaxDrop.IsInvalid() &&
+                                walk->m_cachedCenterList.IsInvalid() &&
+                                walk->m_cachedSumOfWidths.IsInvalid() &&
+                                walk->m_cachedLineWidth.IsInvalid();
+
     walk->m_cachedMaxDrop.Invalidate();
     walk->m_cachedCenterList.Invalidate();
     walk->m_cachedSumOfWidths.Invalidate();
     walk->m_cachedLineWidth.Invalidate();
+
+    if (alreadyInvalid && walk->m_width.IsInvalid() && walk->m_height.IsInvalid())
+      break;
   }
 }
 
