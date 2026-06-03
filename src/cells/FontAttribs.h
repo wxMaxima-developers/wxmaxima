@@ -153,7 +153,11 @@ constexpr AFontSize::value_type AFontSize::ToUSize(float size)
 //! Get the numerical value suitable for passing to wxFont/wxFontInfo.
 constexpr auto AFontSize::GetForWX() const
 {
+#if wxCHECK_VERSION(3, 1, 2)
+  return static_cast<double>(Get());
+#else
   return GetAsLong();
+#endif
 }
 
 //! Whether the difference between to font sizes is below a provided limit value.

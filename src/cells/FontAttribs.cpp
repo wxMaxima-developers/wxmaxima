@@ -66,8 +66,8 @@ bool EqualToWithin(AFontSize left, AFontSize right, float limit) {
     auto const uLimit =
       AFontSize::value_type(limit / AFontSize::Size_Unit + 0.5f);
     if (left.m_uSize >= right.m_uSize)
-      return (left.m_uSize - right.m_uSize) <= uLimit;
-    return (right.m_uSize - left.m_uSize) <= uLimit;
+      return (left.m_uSize - right.m_uSize) < uLimit;
+    return (right.m_uSize - left.m_uSize) < uLimit;
   }
   return left.IsValid() == right.IsValid();
 }
