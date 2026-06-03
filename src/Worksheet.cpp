@@ -931,6 +931,9 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
                        &upperLeftScreenCorner.y);
   m_configuration->SetWorksheetPosition(GetPosition());
 
+  if (m_recalculateStart == GetTree())
+    m_maxWidth_Cached = -1;
+
   if(timeout)
     {
       wxStopWatch stopwatch;
@@ -938,6 +941,14 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
       bool stopwatchStarted = false;
       for (auto &cell : OnList(m_recalculateStart.get())) {
         recalculated |= cell.Recalculate();
+        int currentWidth =
+            m_configuration->Scale_Px(m_configuration->GetIndent() +
+                                      m_configuration->GetDefaultFontSize()) +
+            cell.GetWidth() +
+            m_configuration->Scale_Px(m_configuration->GetIndent() +
+                                      m_configuration->GetDefaultFontSize());
+        m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
+
         if((cell.GetRect().GetTop() > m_configuration->GetVisibleRegion().GetBottom()) &&
            recalculated)
           {
@@ -960,6 +971,14 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
     {
       for (auto &cell : OnList(m_recalculateStart.get())) {
         m_adjustWorksheetSizeNeeded |= cell.Recalculate();
+        int currentWidth =
+            m_configuration->Scale_Px(m_configuration->GetIndent() +
+                                      m_configuration->GetDefaultFontSize()) +
+            cell.GetWidth() +
+            m_configuration->Scale_Px(m_configuration->GetIndent() +
+                                      m_configuration->GetDefaultFontSize());
+        m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
+
         if(cell.GetNext() == NULL)
           {
             wxLogMessage(_("Recalculated the whole worksheet at once => Updating its size"));
@@ -4142,19 +4161,22 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
   int currentHeight = m_configuration->GetIndent();
   *width = m_configuration->GetBaseIndent();
 
-  GroupCell *last = nullptr;
-  for (Cell const &tmp : OnList(GetTree())) {
-    last = const_cast<GroupCell *>(dynamic_cast<const GroupCell *>(&tmp));
-    int currentWidth =
-      m_configuration->Scale_Px(m_configuration->GetIndent() +
-                                m_configuration->GetDefaultFontSize()) +
-      tmp.GetWidth() +
-      m_configuration->Scale_Px(m_configuration->GetIndent() +
-                                m_configuration->GetDefaultFontSize());
-    *width = std::max(currentWidth, *width);
+  if (m_maxWidth_Cached >= 0) {
+    *width = std::max(*width, m_maxWidth_Cached);
+  } else {
+    for (Cell const &tmp : OnList(GetTree())) {
+      int currentWidth =
+          m_configuration->Scale_Px(m_configuration->GetIndent() +
+                                    m_configuration->GetDefaultFontSize()) +
+          tmp.GetWidth() +
+          m_configuration->Scale_Px(m_configuration->GetIndent() +
+                                    m_configuration->GetDefaultFontSize());
+      *width = std::max(currentWidth, *width);
+    }
+    m_maxWidth_Cached = *width;
   }
-  if (last && last->HasStaleSize()) {
-    *height = last->GetCurrentPoint().y + last->GetMaxDrop();
+  if (m_last && m_last->HasStaleSize()) {
+    *height = m_last->GetCurrentPoint().y + m_last->GetMaxDrop();
   } else {
     *height = currentHeight;
   }
@@ -4186,7 +4208,7 @@ void Worksheet::AdjustSize() {
   }
   if (m_virtualWidth_Last != width || m_virtualHeight_Last != virtualHeight) {
     m_virtualWidth_Last = width;
-    m_virtualHeight_Last = height;
+    m_virtualHeight_Last = virtualHeight;
     SetVirtualSize(width, virtualHeight);
     m_scrollUnit = height / 30;
     // Ensure a sane scroll unit even for the fringe case of a very small

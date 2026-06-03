@@ -1638,6 +1638,7 @@ protected:
   wxString m_lastQuestion;
   int m_virtualWidth_Last = -1;
   int m_virtualHeight_Last = -1;
+  int m_maxWidth_Cached = -1;
   //! A memory we can manually buffer the contents of the area that is to be redrawn in
   wxBitmap m_memory;
   virtual wxSize DoGetBestClientSize() const override;

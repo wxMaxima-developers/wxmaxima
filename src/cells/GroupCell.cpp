@@ -416,8 +416,6 @@ bool GroupCell::Recalculate() const {
       m_center = Scale_Px(1);
     }
     else {
-      m_mathFontSize = m_configuration->GetMathFontSize();
-
       RecalculateInput();
       RecalculateOutput();
       m_height = m_outputRect.GetHeight() + m_inputHeight;
@@ -512,6 +510,7 @@ void GroupCell::RecalculateInput() const {
         int max_line_height = 0;
         int max_line_center = 0;
         bool first = true;
+        bool line_height_calculated = false;
         for (const Cell &tmp : OnDrawList(m_inputLabel.get())) {
           if (!first && tmp.BreakLineHere()) {
             m_inputHeight += max_line_height;
@@ -523,9 +522,13 @@ void GroupCell::RecalculateInput() const {
               m_inputHeight += MC_LINE_SKIP;
             max_line_height = 0;
             max_line_center = 0;
+            line_height_calculated = false;
           }
-          max_line_height = std::max(max_line_height, (int)tmp.GetHeightList());
-          max_line_center = std::max(max_line_center, (int)tmp.GetCenterList());
+          if (!line_height_calculated) {
+            max_line_height = tmp.GetHeightList();
+            max_line_center = tmp.GetCenterList();
+            line_height_calculated = true;
+          }
           first = false;
         }
         m_inputHeight += max_line_height;
@@ -585,7 +588,7 @@ void GroupCell::RecalculateOutput() const {
   // Recalculate size of cells again: Their size might have changed during
   // breaking lines
   for (Cell &tmp : OnList(m_output.get())) {
-    tmp.Recalculate(tmp.IsMath() ? m_configuration->GetMathFontSize()
+    tmp.Recalculate(tmp.IsMath() ? m_mathFontSize
                     : m_configuration->GetDefaultFontSize());
   }
 
@@ -1486,7 +1489,7 @@ void GroupCell::BreakLines() const {
     return;
 
   //  if (NeedsRecalculation(EditorFontSize()))
-  m_output->RecalculateList(m_configuration->GetMathFontSize());
+  m_output->RecalculateList(m_mathFontSize);
 
   m_output->BreakLines_List();
 }

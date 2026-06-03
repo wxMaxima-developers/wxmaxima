@@ -255,29 +255,29 @@ void AnimationCell::SetCurrentPoint(wxPoint point) {
 }
 
 void AnimationCell::Recalculate(AFontSize fontsize) const {
-  if (NeedsRecalculation(fontsize))
+  if (NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
 
-  // Assuming a minimum size maybe isn't that bad.
-  m_height = m_width = 10 + 2 * m_imageBorderWidth;
+    // Assuming a minimum size maybe isn't that bad.
+    m_height = m_width = 10 + 2 * m_imageBorderWidth;
 
-  // Make the cell as big as the biggest image plus its border.
-  for (auto &i: m_images) {
-    if(i != NULL)
-      {
+    // Make the cell as big as the biggest image plus its border.
+    for (auto &i : m_images) {
+      if (i != NULL) {
         if (m_configuration->GetPrinting()) {
           i->Recalculate(m_configuration->GetZoomFactor() *
                          PRINT_SIZE_MULTIPLIER);
         } else {
-          i->Recalculate();
+          i->Recalculate(m_configuration->GetZoomFactor());
         }
         if (m_width < i->m_width + 2 * m_imageBorderWidth)
           m_width = i->m_width + 2 * m_imageBorderWidth;
         if (m_height < i->m_height + 2 * m_imageBorderWidth)
           m_height = i->m_height + 2 * m_imageBorderWidth;
       }
+    }
+    m_center = m_height / 2;
   }
-  m_center = m_height / 2;
 }
 
 void AnimationCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
