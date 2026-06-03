@@ -505,18 +505,30 @@ void GroupCell::RecalculateInput() const {
       if (m_inputLabel) {
         m_inputLabel->Recalculate(EditorFontSize());
         m_inputWidth = m_width = m_inputLabel->SumOfWidths();
-        m_center = m_inputLabel->GetCenterList();
-        
+
         m_inputHeight = 0;
+        int max_line_height = 0;
+        int max_line_center = 0;
+        bool first = true;
         for (const Cell &tmp : OnDrawList(m_inputLabel.get())) {
-            if (tmp.BreakLineHere() || &tmp == m_inputLabel.get()) {
-                m_inputHeight += tmp.GetHeightList();
-                if (&tmp != m_inputLabel.get())
-                    m_inputHeight += m_configuration->GetInterEquationSkip();
-                if (tmp.HasBigSkip())
-                    m_inputHeight += MC_LINE_SKIP;
-            }
+          if (!first && tmp.BreakLineHere()) {
+            m_inputHeight += max_line_height;
+            if (m_inputHeight == max_line_height)
+              m_center = max_line_center;
+
+            m_inputHeight += m_configuration->GetInterEquationSkip();
+            if (tmp.HasBigSkip())
+              m_inputHeight += MC_LINE_SKIP;
+            max_line_height = 0;
+            max_line_center = 0;
+          }
+          max_line_height = std::max(max_line_height, (int)tmp.GetHeightList());
+          max_line_center = std::max(max_line_center, (int)tmp.GetCenterList());
+          first = false;
         }
+        m_inputHeight += max_line_height;
+        if (m_inputHeight == max_line_height)
+          m_center = max_line_center;
       }
       m_height = m_inputHeight;
     } else {
