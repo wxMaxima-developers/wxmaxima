@@ -10623,6 +10623,8 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
     GetWorksheet()->FollowEvaluation(true);
 
   EditorCell *editor = GetWorksheet()->GetActiveCell();
+  if (GetWorksheet()->QuestionPending() && GetWorksheet()->GetCellPointers().m_answerCell)
+    editor = GetWorksheet()->GetCellPointers().m_answerCell.get();
 
   if (editor == NULL) {
     GroupCell *group = NULL;

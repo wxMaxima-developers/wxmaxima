@@ -113,6 +113,8 @@ GroupCell::GroupCell(GroupCell const &cell)
       static_unique_ptr_cast<GroupCell>(Cell::CopyList(this, cell.m_hiddenTree.get()));
     m_hiddenTree->SetHiddenTreeParent(this);
   }
+  m_knownAnswers = cell.m_knownAnswers;
+  m_numberedAnswersCount = cell.m_numberedAnswersCount;
   SetAutoAnswer(cell.m_autoAnswer);
 }
 

@@ -3124,17 +3124,25 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
 
     group->AppendOutput(std::move(answerCell));
     Recalculate(group);
-    // If we filled in an answer and "AutoAnswer" is true we issue an evaluation
-    // event here.
-    if (autoEvaluate) {
-      wxMenuEvent *EvaluateEvent =
-        new wxMenuEvent(wxEVT_MENU, EventIDs::menu_evaluate);
-      GetParent()->GetEventHandler()->QueueEvent(EvaluateEvent);
+  } else {
+    if (txt.empty()) {
+      auto const &text = group->GetAnswer(m_lastQuestion);
+      if (!text.empty())
+        autoEvaluate = group->AutoAnswer();
     }
   }
+
+  // If we filled in an answer and "AutoAnswer" is true we issue an evaluation
+  // event here.
+  if (autoEvaluate) {
+    wxMenuEvent *EvaluateEvent =
+      new wxMenuEvent(wxEVT_MENU, EventIDs::menu_evaluate);
+    GetParent()->GetEventHandler()->QueueEvent(EvaluateEvent);
+  }
+
   // If the user wants to be automatically scrolled to the cell evaluation takes
   // place we scroll to this cell.
-  if (FollowEvaluation())
+  if (FollowEvaluation() || autoEvaluate)
     SetActiveCell(m_cellPointers.m_answerCell);
 
   RequestRedraw();
