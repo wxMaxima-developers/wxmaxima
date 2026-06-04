@@ -422,6 +422,9 @@ bool GroupCell::Recalculate() const {
     }
     Cell::Recalculate(fontSize);
     m_cellsAppended = false;
+
+    // Force child repositioning since size or content changed
+    const_cast<GroupCell *>(this)->SetCurrentPoint(m_currentPoint);
   }
   // Move all cells that follow the current one down by the amount this cell
   // has grown.
