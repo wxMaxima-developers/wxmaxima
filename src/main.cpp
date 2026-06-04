@@ -396,9 +396,9 @@ bool MyApp::OnInit() {
     // attach the new console to this application's process
     AttachConsole(GetCurrentProcessId());
     // reopen the std I/O streams to redirect I/O to the new console
-    if (!freopen_s("CON", "w", stdout)) wxLogMessage(_("Re-opening STDOUT failed."));
-    if (!freopen_s("CON", "w", stderr)) wxLogMessage(_("Re-opening STDERR failed."));
-    if (!freopen_s("CON", "r", stdin)) wxLogMessage(_("Re-opening STDIN failed."));
+    if (!freopen("CON", "w", stdout)) wxLogMessage(_("Re-opening STDOUT failed."));
+    if (!freopen("CON", "w", stderr)) wxLogMessage(_("Re-opening STDERR failed."));
+    if (!freopen("CON", "r", stdin)) wxLogMessage(_("Re-opening STDIN failed."));
 #endif
     m_logChain = std::unique_ptr<wxLogChain>(new wxLogChain(new wxLogStderr));
   }
