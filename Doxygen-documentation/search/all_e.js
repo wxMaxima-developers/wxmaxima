@@ -7,7 +7,7 @@ var searchData=
   ['namedboxcell_2eh_4',['NamedBoxCell.h',['../NamedBoxCell_8h.html',1,'']]],
   ['nanosvg_2ecpp_5',['nanoSVG.cpp',['../nanoSVG_8cpp.html',1,'']]],
   ['nanosvgtest_2ecpp_6',['nanoSVGTest.cpp',['../nanoSVGTest_8cpp.html',1,'']]],
-  ['needsrecalculation_7',['NeedsRecalculation',['../classCell.html#af02e5376702194e709fb2d2b493364fc',1,'Cell::NeedsRecalculation()'],['../classGroupCell.html#a2b1a8fb21cbb4f11e3a4c17726645a44',1,'GroupCell::NeedsRecalculation()'],['../classEditorCell.html#a27361d11dfbf4383dcdfa11cb227e5ed',1,'EditorCell::NeedsRecalculation()'],['../classCell.html#aa0cc4910d52a26419062952d95d294bf',1,'Cell::NeedsRecalculation()']]],
+  ['needsrecalculation_7',['NeedsRecalculation',['../classEditorCell.html#a27361d11dfbf4383dcdfa11cb227e5ed',1,'EditorCell::NeedsRecalculation()'],['../classGroupCell.html#af02e5376702194e709fb2d2b493364fc',1,'GroupCell::NeedsRecalculation() const'],['../classGroupCell.html#aa0cc4910d52a26419062952d95d294bf',1,'GroupCell::NeedsRecalculation(AFontSize fontSize) const'],['../classGroupCell.html#a2b1a8fb21cbb4f11e3a4c17726645a44',1,'GroupCell::NeedsRecalculation(AFontSize fontSize) const override'],['../classCell.html#af02e5376702194e709fb2d2b493364fc',1,'Cell::NeedsRecalculation() const'],['../classCell.html#aa0cc4910d52a26419062952d95d294bf',1,'Cell::NeedsRecalculation(AFontSize fontSize) const']]],
   ['networkdclick_8',['NetworkDClick',['../classwxMaxima.html#a557dc63c643231d0705b64676c00ce35',1,'wxMaxima']]],
   ['networkstate_9',['networkState',['../classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8',1,'StatusBar']]],
   ['networkstatus_10',['NetworkStatus',['../classStatusBar.html#addf51766d62198da4dd162f7f2a05c6f',1,'StatusBar']]],

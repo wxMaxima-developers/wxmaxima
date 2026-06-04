@@ -282,6 +282,10 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ExtraMaximaArg
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ExtraMaximaArgs</b> ()</td></tr>
 <tr class="memdesc:a2f0f0d79dfcb0df2455c1de2fd3169b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which additional maxima arguments did we get from the command line? <br /></td></tr>
 <tr class="separator:a2f0f0d79dfcb0df2455c1de2fd3169b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ee718f332e695e9655a6e6a0166ccef"><td class="memItemLeft" align="right" valign="top"><a id="a6ee718f332e695e9655a6e6a0166ccef" name="a6ee718f332e695e9655a6e6a0166ccef"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetWxExecuteFlags</b> (int flags)</td></tr>
+<tr class="memdesc:a6ee718f332e695e9655a6e6a0166ccef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the flags for wxExecute, correctly handling process groups for tests. <br /></td></tr>
+<tr class="separator:a6ee718f332e695e9655a6e6a0166ccef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60fe027724ed9145f5f9d6a6591943c2"><td class="memItemLeft" align="right" valign="top"><a id="a60fe027724ed9145f5f9d6a6591943c2" name="a60fe027724ed9145f5f9d6a6591943c2"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Set_Maxima_Commandline_Filename</b> (const wxString &amp;filename)</td></tr>
 <tr class="memdesc:a60fe027724ed9145f5f9d6a6591943c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this maxima command (from a command line option) instead of the configured path. <br /></td></tr>
@@ -1675,7 +1679,7 @@ Appending stuff to output</h2>
 </div><div class="memdoc">
 
 <p>Spawn the "configure" menu. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
 
 </div>
 </div>
@@ -2371,7 +2375,7 @@ Dealing with stuff read from the socket</h2>
 
 <p>Setup maxima's variables. </p>
 <p>This method is called once when maxima starts. It loads wxmathml.lisp and sets some option variables.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000022">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
 
 </div>
 </div>
