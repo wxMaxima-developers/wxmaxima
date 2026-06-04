@@ -2734,7 +2734,11 @@ bool wxMaxima::StartMaxima(bool force) {
 
       env->env = std::move(environment);
       Configuration::g_stats.maximaProcessesSpawned++;
-      m_pid=wxExecute(command, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER, m_maximaProcess, env.get());
+      m_pid = wxExecute(
+          command,
+          GetWxExecuteFlags(wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE |
+                            wxEXEC_MAKE_GROUP_LEADER),
+          m_maximaProcess, env.get());
       if (m_pid <= 0) {
         StatusMaximaBusy(StatusBar::MaximaStatus::process_wont_start);
         StatusText(_("Cannot start the maxima binary"));
@@ -3760,7 +3764,8 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   wxString gnuplot_query = m_gnuplotcommand + " -e \"print GPVAL_TERMINALS\"";
 #endif
   if (wxExecute(gnuplot_query,
-                wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
+                GetWxExecuteFlags(wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE |
+                                  wxEXEC_MAKE_GROUP_LEADER),
                 m_gnuplotTerminalQueryProcess, env.get()) < 0)
     wxLogMessage(_("Cannot start gnuplot"));
 }
@@ -5004,7 +5009,10 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
           {
             wxLogMessage(_("Launching the system's default help browser as %s."),
                          command);
-            wxExecute(command, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER);
+            wxExecute(
+                command,
+                GetWxExecuteFlags(wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE |
+                                  wxEXEC_MAKE_GROUP_LEADER));
           }
         else
           {
@@ -5023,7 +5031,9 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
         argv.push_back(commandnamebuffer.data());
         argv.push_back(urlbuffer.data());
         argv.push_back(NULL);
-        wxExecute(argv.data(), wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER);
+        wxExecute(argv.data(),
+                  GetWxExecuteFlags(wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE |
+                                    wxEXEC_MAKE_GROUP_LEADER));
       }
     }
 }
@@ -6552,7 +6562,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
 
     wxLogMessage(_("Running %s on the file %s: "), commandnamebuffer, urlbuffer);
     m_gnuplotProcess = new wxProcess(this, m_gnuplot_process_id);
-    if (wxExecute(argv.data(), wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
+    if (wxExecute(argv.data(),
+                  GetWxExecuteFlags(wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE |
+                                    wxEXEC_MAKE_GROUP_LEADER),
                   m_gnuplotProcess) < 0)
       wxLogMessage(_("Cannot start gnuplot"));
   }
@@ -11594,6 +11606,15 @@ wxString wxMaxima::EscapeFilenameForShell(wxString name)
   name.Replace("\\", "\\\\");
   name.Replace("\"", "\\\"");
   return "\"" + name + "\"";
+}
+
+int wxMaxima::GetWxExecuteFlags(int flags) {
+  if (GetExitOnError()) {
+    // In batch mode (tests), we want all children to stay in the same
+    // process group so ctest can kill them all on timeout.
+    return flags & ~wxEXEC_MAKE_GROUP_LEADER;
+  }
+  return flags;
 }
 
 bool wxMaxima::m_exitOnError = false;

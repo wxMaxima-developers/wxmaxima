@@ -425,7 +425,7 @@ bool GroupCell::Recalculate() const {
   }
   // Move all cells that follow the current one down by the amount this cell
   // has grown.
-  UpdateYPosition();
+  Reposition();
   m_cellsAppended = false;
   return retval;
 }
@@ -621,10 +621,10 @@ bool GroupCell::NeedsRecalculation(AFontSize fontSize) const {
 
 void GroupCell::UpdateYPositionList() const {
   for (const auto &tmp : OnList(this))
-    tmp.UpdateYPosition();
+    tmp.Reposition();
 }
 
-void GroupCell::UpdateYPosition() const {
+bool GroupCell::Reposition() const {
   const Cell *const previous = GetPrevious();
 
   wxPoint point(m_configuration->GetIndent(), m_center);
@@ -635,7 +635,11 @@ void GroupCell::UpdateYPosition() const {
     if (previous->GetCurrentPoint().y >= 0)
       point.y += previous->GetCurrentPoint().y + previous->GetMaxDrop();
   }
-  const_cast<GroupCell *>(this)->SetCurrentPoint(point);
+  if (m_currentPoint != point) {
+    const_cast<GroupCell *>(this)->SetCurrentPoint(point);
+    return true;
+  }
+  return false;
 }
 
 wxPoint GroupCell::CalculateInputPosition() const {

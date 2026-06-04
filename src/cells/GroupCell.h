@@ -260,6 +260,9 @@ public:
     Recalculate();
   }
   bool Recalculate() const;
+  bool Reposition() const;
+  using Cell::NeedsRecalculation;
+  bool NeedsRecalculation(AFontSize fontSize) const override;
   using Cell::SetCurrentPoint;
   void SetCurrentPoint(wxPoint point) override;
   wxPoint CalculateInputPosition() const;
@@ -425,7 +428,6 @@ public:
 
 protected:
   wxCoord GetInputIndent() const;
-  bool NeedsRecalculation(AFontSize fontSize) const override;
   void UpdateCellsInGroup();
 
 //** 16-byte objects (16 bytes)

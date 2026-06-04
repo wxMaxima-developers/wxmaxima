@@ -90,6 +90,9 @@ public:
   //! Which additional maxima arguments did we get from the command line?
   static wxString ExtraMaximaArgs(){return m_extraMaximaArgs;}
 
+  //! Return the flags for wxExecute, correctly handling process groups for tests
+  static int GetWxExecuteFlags(int flags);
+
   //! An enum of individual IDs for all timers this class handles
   enum TimerIDs
   {

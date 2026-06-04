@@ -922,13 +922,6 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
   if (!GetTree()->Contains(m_recalculateStart))
     m_recalculateStart = GetTree();
 
-  int width;
-  int height;
-  GetClientSize(&width, &height);
-
-  wxPoint upperLeftScreenCorner;
-  CalcScrolledPosition(0, 0, &upperLeftScreenCorner.x,
-                       &upperLeftScreenCorner.y);
   m_configuration->SetWorksheetPosition(GetPosition());
 
   if (m_recalculateStart == GetTree())
@@ -939,15 +932,35 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
       wxStopWatch stopwatch;
       bool recalculated = false;
       bool stopwatchStarted = false;
+      bool propagationNeeded = true;
       for (auto &cell : OnList(m_recalculateStart.get())) {
-        recalculated |= cell.Recalculate();
-        int currentWidth =
+        GroupCell *group = static_cast<GroupCell *>(&cell);
+        bool neededRecalc = group->NeedsRecalculation();
+        bool movedThisTime = false;
+        bool sizeChanged = false;
+
+        if (neededRecalc) {
+          int oldHeight = group->GetHeight();
+          sizeChanged = group->Recalculate();
+          if (group->GetHeight() != oldHeight)
+            sizeChanged = true;
+          movedThisTime = true;
+          recalculated |= sizeChanged;
+
+          int currentWidth =
             m_configuration->Scale_Px(m_configuration->GetIndent() +
                                       m_configuration->GetDefaultFontSize()) +
             cell.GetWidth() +
             m_configuration->Scale_Px(m_configuration->GetIndent() +
                                       m_configuration->GetDefaultFontSize());
-        m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
+          m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
+        } else if (propagationNeeded) {
+          movedThisTime = group->Reposition();
+        } else {
+          m_recalculateStart = {};
+          break;
+        }
+        propagationNeeded = movedThisTime || sizeChanged;
 
         if((cell.GetRect().GetTop() > m_configuration->GetVisibleRegion().GetBottom()) &&
            recalculated)
@@ -969,15 +982,34 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
     }
   else
     {
+      bool propagationNeeded = true;
       for (auto &cell : OnList(m_recalculateStart.get())) {
-        m_adjustWorksheetSizeNeeded |= cell.Recalculate();
-        int currentWidth =
+        GroupCell *group = static_cast<GroupCell *>(&cell);
+        bool neededRecalc = group->NeedsRecalculation();
+        bool movedThisTime = false;
+        bool sizeChanged = false;
+
+        if (neededRecalc) {
+          int oldHeight = group->GetHeight();
+          sizeChanged = group->Recalculate();
+          if (group->GetHeight() != oldHeight)
+            sizeChanged = true;
+          movedThisTime = true;
+          m_adjustWorksheetSizeNeeded |= sizeChanged;
+
+          int currentWidth =
             m_configuration->Scale_Px(m_configuration->GetIndent() +
                                       m_configuration->GetDefaultFontSize()) +
             cell.GetWidth() +
             m_configuration->Scale_Px(m_configuration->GetIndent() +
                                       m_configuration->GetDefaultFontSize());
-        m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
+          m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
+        } else if (propagationNeeded) {
+          movedThisTime = group->Reposition();
+        } else {
+          break;
+        }
+        propagationNeeded = movedThisTime || sizeChanged;
 
         if(cell.GetNext() == NULL)
           {

@@ -37,20 +37,16 @@ unset WAYLAND_DISPLAY
 if command -v weston >/dev/null 2>&1; then
     export GDK_BACKEND=wayland
     echo \"Attempting headless Weston...\" >&2
-    if weston --backend=headless -- \"$@\"; then
-        exit $?
-    fi
-    echo \"Weston failed.\" >&2
+    # Use exec to ensure signals from ctest reach the process and it's dead on timeout
+    exec weston --backend=headless -- \"$@\"
 fi
 
 # 3. Try xvfb-run (X11)
 if command -v xvfb-run >/dev/null 2>&1; then
     export GDK_BACKEND=x11
     echo \"Attempting xvfb-run...\" >&2
-    if xvfb-run -a \"$@\"; then
-        exit $?
-    fi
-    echo \"xvfb-run failed.\" >&2
+    # Use exec to ensure signals from ctest reach the process and it's dead on timeout
+    exec xvfb-run -a \"$@\"
 fi
 
 # 4. Try manual Xvfb (X11)
@@ -63,6 +59,8 @@ if command -v Xvfb >/dev/null 2>&1; then
             Xvfb \"$DISP\" -screen 0 1280x1024x24 >/dev/null 2>&1 &
             XPID=$!
             export DISPLAY=\"$DISP\"
+            # Ensure Xvfb is dead when we are killed or exit
+            trap \"kill $XPID >/dev/null 2>&1\" EXIT TERM INT HUP
             if command -v xdpyinfo >/dev/null 2>&1; then
                 for j in $(seq 1 50); do
                     xdpyinfo -display \"$DISPLAY\" >/dev/null 2>&1 && break
@@ -71,13 +69,8 @@ if command -v Xvfb >/dev/null 2>&1; then
             else
                 sleep 0.5
             fi
-            if \"$@\"; then
-                RET=0
-            else
-                RET=$?
-            fi
-            kill $XPID >/dev/null 2>&1
-            exit $RET
+            \"$@\"
+            exit $?
         fi
     done
     echo \"Manual Xvfb failed.\" >&2

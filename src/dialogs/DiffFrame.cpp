@@ -60,7 +60,7 @@ public:
     m_height = m_forcedHeight;
     m_width = 0;
     m_center = 0;
-    UpdateYPosition();
+    Reposition();
   }
 
   std::unique_ptr<Cell> Copy(GroupCell *parent) const override {
