@@ -610,7 +610,13 @@ void GroupCell::RecalculateOutput() const {
 }
 
 bool GroupCell::NeedsRecalculation(AFontSize fontSize) const {
-  return Cell::NeedsRecalculation(fontSize) || m_cellsAppended;
+  if (Cell::NeedsRecalculation(fontSize))
+    return true;
+  if (m_cellsAppended) {
+    Configuration::g_stats.recalculationNeeded_CellsAppended++;
+    return true;
+  }
+  return false;
 }
 
 void GroupCell::UpdateYPositionList() const {

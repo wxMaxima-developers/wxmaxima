@@ -301,13 +301,24 @@ wxCoord Cell::GetCenter() const {
 }
 
 bool Cell::NeedsRecalculation(AFontSize fontSize) const {
-  if (!m_fontSize.IsValid())
+  if (!m_fontSize.IsValid()) {
+    Configuration::g_stats.recalculationNeeded_FontInvalid++;
     return true;
-  if (!HasValidSize())
+  }
+  if (!HasValidSize()) {
+    Configuration::g_stats.recalculationNeeded_SizeInvalid++;
     return true;
-  if (fontSize.IsValid() && !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.2f))
+  }
+  if (fontSize.IsValid() &&
+      !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.2f)) {
+    Configuration::g_stats.recalculationNeeded_FontMismatch++;
     return true;
-  return(ConfigChanged());
+  }
+  if (ConfigChanged()) {
+    Configuration::g_stats.recalculationNeeded_ConfigChanged++;
+    return true;
+  }
+  return false;
 }
 
 int Cell::GetCenterList() const {
@@ -643,6 +654,7 @@ bool Cell::BreakUpCells() const {
     if (!wideCells.empty()) {
       for (const Cell *cell : wideCells) {
         if (cell->BreakUp()) {
+          Configuration::g_stats.cellsConvertedToLinear++;
           changedInThisPass = true;
           anyChanged = true;
         }
@@ -682,15 +694,14 @@ void Cell::CollectWideCells(std::vector<const Cell *> &wideCells,
 }
 
 bool Cell::UnBreakUpCells() const {
-
   bool retval = false;
   for (const Cell &tmp : OnDrawList(this)) {
     if (tmp.IsBrokenIntoLines()) {
+      Configuration::g_stats.cellsConvertedTo2D++;
       tmp.Unbreak();
       retval = true;
     }
   }
-
   return retval;
 }
 

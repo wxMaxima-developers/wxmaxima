@@ -85,6 +85,25 @@ class Cell;
 class Configuration
 {
 public:
+  struct PerformanceStats {
+    std::atomic<long> manualAnchorsFromBuiltin{0};
+    std::atomic<long> manualAnchorsFromCache{0};
+    std::atomic<long> manualAnchorsCompiled{0};
+    std::atomic<long> maximaProcessesSpawned{0};
+    std::atomic<long> fontCacheHits{0};
+    std::atomic<long> fontCacheMisses{0};
+    std::atomic<long> recalculationNeeded_FontInvalid{0};
+    std::atomic<long> recalculationNeeded_SizeInvalid{0};
+    std::atomic<long> recalculationNeeded_FontMismatch{0};
+    std::atomic<long> recalculationNeeded_ConfigChanged{0};
+    std::atomic<long> recalculationNeeded_CellsAppended{0};
+    std::atomic<long> recalculationNeeded_EditorDirty{0};
+    std::atomic<long> cellsConvertedToLinear{0};
+    std::atomic<long> cellsConvertedTo2D{0};
+  };
+  static PerformanceStats g_stats;
+  static void ReportPerformanceStats();
+
   enum maximaHelpFormat{
     maxima = 0,
     frontend = 1,

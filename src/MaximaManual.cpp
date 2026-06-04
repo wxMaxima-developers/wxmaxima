@@ -84,6 +84,7 @@ wxString MaximaManual::GetHelpfileUrl_FilePerChapter(const wxString &keyword) {
 }
 
 bool MaximaManual::LoadBuiltInManualAnchors() {
+  Configuration::g_stats.manualAnchorsFromBuiltin++;
   wxLogMessage(_("Using the built-in list of manual anchors."));
   wxMemoryInputStream istream(MANUAL_ANCHORS_XML, MANUAL_ANCHORS_XML_SIZE);
   wxXmlDocument xmlDoc;
@@ -109,6 +110,7 @@ bool MaximaManual::LoadManualAnchorsFromCache() {
   }
 
   if (LoadManualAnchorsFromXML(xmlDocument)) {
+    Configuration::g_stats.manualAnchorsFromCache++;
     wxLogMessage(_("Read the entries the maxima manual offers from %s"),
                  Dirstructure::Get()->AnchorsCacheFile().utf8_str());
     return true;
@@ -146,6 +148,7 @@ void MaximaManual::CompileHelpFileAnchors(stop_token stopToken,
                                           const wxString &maximaHtmlDir,
                                           const wxString &maximaVersion,
                                           const wxString &saveName) {
+  Configuration::g_stats.manualAnchorsCompiled++;
 
   std::size_t foundAnchorsTotal = 0;
   if (!(m_maximaHtmlDir.IsEmpty())) {

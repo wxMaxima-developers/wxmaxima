@@ -567,7 +567,13 @@ void EditorCell::ConvertNumToUNicodeChar() {
 }
 
 bool EditorCell::NeedsRecalculation(AFontSize fontSize) const {
-  return Cell::NeedsRecalculation(fontSize) || m_isDirty;
+  if (Cell::NeedsRecalculation(fontSize))
+    return true;
+  if (m_isDirty) {
+    Configuration::g_stats.recalculationNeeded_EditorDirty++;
+    return true;
+  }
+  return false;
 }
 
 void EditorCell::Recalculate(AFontSize fontsize) const {

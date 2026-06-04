@@ -20,6 +20,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "FontVariantCache.h"
+#include "../Configuration.h"
 #include <wx/intl.h>
 #include <wx/log.h>
 #include <iostream>
@@ -59,6 +60,7 @@ std::shared_ptr<wxFont> FontVariantCache::GetFont (double size,
   auto cachedFont = m_fontCaches[index].find(size);
   if(cachedFont == m_fontCaches[index].end())
   {
+    Configuration::g_stats.fontCacheMisses++;
     wxFontStyle style;
     style = wxFONTSTYLE_NORMAL;
     if(isItalic)
@@ -94,5 +96,6 @@ std::shared_ptr<wxFont> FontVariantCache::GetFont (double size,
     wxLogMessage(_("Caching font variant: %s"), font->GetNativeFontInfoDesc().mb_str());
     return font;
   }
+  Configuration::g_stats.fontCacheHits++;
   return cachedFont->second;
 }

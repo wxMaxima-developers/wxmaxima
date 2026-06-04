@@ -2733,6 +2733,7 @@ bool wxMaxima::StartMaxima(bool force) {
       environment["MAXIMA_AUTH_CODE"] = m_maximaAuthString;
 
       env->env = std::move(environment);
+      Configuration::g_stats.maximaProcessesSpawned++;
       m_pid=wxExecute(command, wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER, m_maximaProcess, env.get());
       if (m_pid <= 0) {
         StatusMaximaBusy(StatusBar::MaximaStatus::process_wont_start);
