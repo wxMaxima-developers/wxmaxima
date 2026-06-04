@@ -1,7 +1,8 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
 # Compile a list of test files
-file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg testbench_simple.wxmx automatic_test_files/*.gif)
+file(GLOB IMAGE_FILES automatic_test_files/*.png automatic_test_files/*.gif)
+file(GLOB TEST_FILES ${IMAGE_FILES} automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg testbench_simple.wxmx)
 
 find_program(MAXIMA maxima)
 if(MAXIMA)
@@ -103,6 +104,13 @@ file(
     COPY
     ${TEST_FILES}
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    FILE_PERMISSIONS OWNER_WRITE OWNER_READ
+    )
+
+file(
+    COPY
+    ${IMAGE_FILES}
+    DESTINATION ${CMAKE_BINARY_DIR}/tex
     FILE_PERMISSIONS OWNER_WRITE OWNER_READ
     )
 
