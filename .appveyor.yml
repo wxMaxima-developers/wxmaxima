@@ -30,6 +30,7 @@ environment:
       EXTRA_CMAKE_ARGS: ""
     - CC: clang
       CXX: clang++
+      WXW_LIB: clang_x64_lib
     - TOOLKIT_INIT: ".appveyor\\MINGW_8.1.0_x64.ps1"
       WXW_LIB: gcc_x64_lib
       EXTRA_CMAKE_ARGS: "-DCMAKE_AR=C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/ar.exe"
@@ -65,7 +66,7 @@ install:
       echo "    Branch: $env:APPVEYOR_REPO_BRANCH"
       echo ''
       echo '- Installing pandoc...'
-      choco install -y --no-progress pandoc wxwidgets
+      choco install -y --no-progress pandoc
 
 before_build:
   - ps: |
