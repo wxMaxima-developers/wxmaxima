@@ -114,7 +114,7 @@ int CommonMain() {
        wxLogDebug("ControlBlock: %zu live instances leaked",
                   Observed::GetLiveControlBlockInstanceCount());
      }
-  Configuration::ReportPerformanceStats();
+  Configuration::g_stats.Report();
   return wxMaxima::GetExitCode();
 }
 wxCmdLineParser cmdLineParser;
@@ -566,7 +566,7 @@ bool MyApp::OnInit() {
 }
 
 int MyApp::OnExit() {
-  Configuration::ReportPerformanceStats();
+  Configuration::g_stats.Report();
   for(auto i:m_wxMaximaProcesses)
     i->Detach();
   return wxMaxima::GetExitCode();

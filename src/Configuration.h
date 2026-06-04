@@ -100,9 +100,9 @@ public:
     std::atomic<long> recalculationNeeded_EditorDirty{0};
     std::atomic<long> cellsConvertedToLinear{0};
     std::atomic<long> cellsConvertedTo2D{0};
+    void Report() const;
   };
   static PerformanceStats g_stats;
-  static void ReportPerformanceStats();
 
   enum maximaHelpFormat{
     maxima = 0,

@@ -1889,22 +1889,30 @@ std::unordered_map<TextStyle, wxString> Configuration::m_styleNames;
 bool Configuration::m_debugMode = false;
 bool Configuration::m_use_threads = true;
 Configuration::PerformanceStats Configuration::g_stats;
-void Configuration::ReportPerformanceStats() {
+void Configuration::PerformanceStats::Report() const {
+  bool wasEnabled = wxLog::EnableLogging(true);
+  std::unique_ptr<wxLogChain> logChain;
+  if (wxTheApp && wxTheApp->GetTopWindow() == nullptr) {
+    logChain = std::make_unique<wxLogChain>(new wxLogStderr);
+  }
+
   wxLogMessage(_("Performance Statistics:"));
-  wxLogMessage(_("  Manual anchors from built-in: %ld"), g_stats.manualAnchorsFromBuiltin.load());
-  wxLogMessage(_("  Manual anchors from cache: %ld"), g_stats.manualAnchorsFromCache.load());
-  wxLogMessage(_("  Manual anchors self-compiled: %ld"), g_stats.manualAnchorsCompiled.load());
-  wxLogMessage(_("  Maxima processes spawned: %ld"), g_stats.maximaProcessesSpawned.load());
-  wxLogMessage(_("  Font cache hits: %ld"), g_stats.fontCacheHits.load());
-  wxLogMessage(_("  Font cache misses: %ld"), g_stats.fontCacheMisses.load());
-  wxLogMessage(_("  Recalculation needed - Font invalid: %ld"), g_stats.recalculationNeeded_FontInvalid.load());
-  wxLogMessage(_("  Recalculation needed - Size invalid: %ld"), g_stats.recalculationNeeded_SizeInvalid.load());
-  wxLogMessage(_("  Recalculation needed - Font mismatch: %ld"), g_stats.recalculationNeeded_FontMismatch.load());
-  wxLogMessage(_("  Recalculation needed - Config changed: %ld"), g_stats.recalculationNeeded_ConfigChanged.load());
-  wxLogMessage(_("  Recalculation needed - Cells appended: %ld"), g_stats.recalculationNeeded_CellsAppended.load());
-  wxLogMessage(_("  Recalculation needed - Editor dirty: %ld"), g_stats.recalculationNeeded_EditorDirty.load());
-  wxLogMessage(_("  Cells converted to linear: %ld"), g_stats.cellsConvertedToLinear.load());
-  wxLogMessage(_("  Cells converted to 2D: %ld"), g_stats.cellsConvertedTo2D.load());
+  wxLogMessage(_("  Manual anchors from built-in: %ld"), manualAnchorsFromBuiltin.load());
+  wxLogMessage(_("  Manual anchors from cache: %ld"), manualAnchorsFromCache.load());
+  wxLogMessage(_("  Manual anchors self-compiled: %ld"), manualAnchorsCompiled.load());
+  wxLogMessage(_("  Maxima processes spawned: %ld"), maximaProcessesSpawned.load());
+  wxLogMessage(_("  Font cache hits: %ld"), fontCacheHits.load());
+  wxLogMessage(_("  Font cache misses: %ld"), fontCacheMisses.load());
+  wxLogMessage(_("  Recalculation needed - Font invalid: %ld"), recalculationNeeded_FontInvalid.load());
+  wxLogMessage(_("  Recalculation needed - Size invalid: %ld"), recalculationNeeded_SizeInvalid.load());
+  wxLogMessage(_("  Recalculation needed - Font mismatch: %ld"), recalculationNeeded_FontMismatch.load());
+  wxLogMessage(_("  Recalculation needed - Config changed: %ld"), recalculationNeeded_ConfigChanged.load());
+  wxLogMessage(_("  Recalculation needed - Cells appended: %ld"), recalculationNeeded_CellsAppended.load());
+  wxLogMessage(_("  Recalculation needed - Editor dirty: %ld"), recalculationNeeded_EditorDirty.load());
+  wxLogMessage(_("  Cells converted to linear: %ld"), cellsConvertedToLinear.load());
+  wxLogMessage(_("  Cells converted to 2D: %ld"), cellsConvertedTo2D.load());
+
+  wxLog::EnableLogging(wasEnabled);
 }
 
 wxString Configuration::m_maxima_LANG;
