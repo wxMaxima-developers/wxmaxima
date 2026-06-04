@@ -1890,11 +1890,16 @@ bool Configuration::m_debugMode = false;
 bool Configuration::m_use_threads = true;
 Configuration::PerformanceStats Configuration::g_stats;
 void Configuration::PerformanceStats::Report() const {
-  bool wasEnabled = wxLog::EnableLogging(true);
-  std::unique_ptr<wxLogChain> logChain;
-  if (wxTheApp && wxTheApp->GetTopWindow() == nullptr) {
-    logChain = std::make_unique<wxLogChain>(new wxLogStderr);
-  }
+  static bool reported = false;
+  if (reported)
+    return;
+  reported = true;
+
+  wxLog::EnableLogging(true);
+  
+  // Ensure we have a log target that doesn't use GUI dialogs.
+  // We don't restore the old target as we are shutting down.
+  wxLog::SetActiveTarget(new wxLogStderr);
 
   wxLogMessage(_("Performance Statistics:"));
   wxLogMessage(_("  Manual anchors from built-in: %ld"), manualAnchorsFromBuiltin.load());
@@ -1912,7 +1917,7 @@ void Configuration::PerformanceStats::Report() const {
   wxLogMessage(_("  Cells converted to linear: %ld"), cellsConvertedToLinear.load());
   wxLogMessage(_("  Cells converted to 2D: %ld"), cellsConvertedTo2D.load());
 
-  wxLog::EnableLogging(wasEnabled);
+  wxLog::FlushActive();
 }
 
 wxString Configuration::m_maxima_LANG;

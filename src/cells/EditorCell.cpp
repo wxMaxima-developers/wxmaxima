@@ -3497,8 +3497,8 @@ bool EditorCell::FindNext(wxString str, const bool &down,
         }
       else
         {
-          if(SelectionRight() > 1)
-            start = SelectionRight() - 2;
+          if(SelectionLeft() > 0)
+            start = SelectionLeft() - 1;
           else
             return false;
         }
