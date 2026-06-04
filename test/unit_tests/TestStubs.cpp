@@ -20,6 +20,7 @@ CellPointers *Cell::GetCellPointers() const { return {}; }
 
 bool Configuration::m_debugMode = false;
 bool Configuration::m_use_threads = false;
+Configuration::PerformanceStats Configuration::g_stats;
 wxColor Configuration::DefaultBackgroundColor() { return *wxWHITE; }
 
 Configuration::Configuration(wxDC *dc, InitOpt) : m_dc(dc) {}
