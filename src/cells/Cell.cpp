@@ -545,7 +545,7 @@ bool Cell::DrawThisCell() {
 }
 
 bool Cell::HasValidSize() const {
-  return m_width.IsValid() && m_height.IsValid() && m_center.IsValid() && !ConfigChanged();
+  return m_width.IsValid() && m_height.IsValid() && m_center.IsValid();
 }
 
 bool Cell::HasStaleSize() const {
