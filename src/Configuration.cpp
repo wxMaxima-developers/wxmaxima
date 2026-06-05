@@ -1706,7 +1706,7 @@ bool Configuration::OfferInternalHelpBrowser() const {
 
 bool Configuration::UpdateNeeded() const
 {
-  long configId;
+  long configId = m_configId;
   wxConfig::Get()->Read(wxS("configID"), &configId);
 
   return m_configId != configId;
