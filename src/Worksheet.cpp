@@ -933,7 +933,9 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
       bool recalculated = false;
       bool stopwatchStarted = false;
       bool propagationNeeded = true;
+      int cellsVisited = 0;
       for (auto &cell : OnList(m_recalculateStart.get())) {
+        cellsVisited++;
         GroupCell *group = static_cast<GroupCell *>(&cell);
         bool neededRecalc = group->NeedsRecalculation();
         bool movedThisTime = false;
@@ -972,7 +974,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
           m_recalculateStart = cell.GetNext();
         else
           {
-            wxLogMessage(_("Recalculation hit the end of the worksheet => Updating its size"));
+            wxLogMessage(_("Recalculation hit the end of the worksheet => Updating its size (Visited %d cells in %ld ms)"), cellsVisited, stopwatch.Time());
             m_recalculateStart = {};
             AdjustSize();
           }
@@ -982,8 +984,11 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
     }
   else
     {
+      wxStopWatch stopwatch;
       bool propagationNeeded = true;
+      int cellsVisited = 0;
       for (auto &cell : OnList(m_recalculateStart.get())) {
+        cellsVisited++;
         GroupCell *group = static_cast<GroupCell *>(&cell);
         bool neededRecalc = group->NeedsRecalculation();
         bool movedThisTime = false;
@@ -1013,7 +1018,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
 
         if(cell.GetNext() == NULL)
           {
-            wxLogMessage(_("Recalculated the whole worksheet at once => Updating its size"));
+            wxLogMessage(_("Recalculated the whole worksheet at once => Updating its size (Visited %d cells in %ld ms)"), cellsVisited, stopwatch.Time());
           }
       }
     }
