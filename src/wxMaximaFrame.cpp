@@ -259,6 +259,13 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
                     .Name(m_sidebarNames[EventIDs::menu_pane_stats])
                     .Left());
 
+  m_sidebarNames[EventIDs::menu_pane_performance] = wxS("performance");
+  m_sidebarCaption[EventIDs::menu_pane_performance] = _("Performance Monitor");
+  m_performanceSidebar = new PerformanceSidebar(this);
+  m_manager.AddPane(m_performanceSidebar, wxAuiPaneInfo()
+                    .Name(m_sidebarNames[EventIDs::menu_pane_performance])
+                    .Right());
+
   if(GetWorksheet())
     {
       m_sidebarNames[EventIDs::menu_pane_greek] = wxS("greek");
@@ -700,6 +707,8 @@ void wxMaximaFrame::SetupViewMenu() {
                                       _("General Math\tAlt+Shift+M"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_stats,
                                       _("Statistics\tAlt+Shift+S"));
+  m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_performance,
+                                      _("Performance Monitor"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_greek,
                                       _("Greek Letters\tAlt+Shift+G"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_symbols,

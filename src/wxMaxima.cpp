@@ -5330,6 +5330,9 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   if(m_client)
     m_client->XmlInspectorActive(IsXMLInspectorShown());
 
+  if (IsPerformanceMonitorShown())
+    m_performanceSidebar->UpdateContents();
+
   if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
     {
       SaveFile(false);

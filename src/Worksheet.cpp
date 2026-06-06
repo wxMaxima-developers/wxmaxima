@@ -4610,7 +4610,8 @@ void Worksheet::AddLineToFile(wxTextFile &output, const wxString &s) {
 
     while (lines.HasMoreTokens()) {
       line = lines.GetNextToken();
-      output.AddLine(line);
+      if (lines.HasMoreTokens() || !line.IsEmpty())
+        output.AddLine(line);
     }
   }
 }

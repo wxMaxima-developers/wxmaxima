@@ -54,6 +54,7 @@
 #include "MainMenuBar.h"
 #include "sidebars/History.h"
 #include "sidebars/XmlInspector.h"
+#include "sidebars/PerformanceSidebar.h"
 #include "StatusBar.h"
 #include "sidebars/ButtonWrapSizer.h"
 #include <list>
@@ -110,6 +111,8 @@ public:
   void ShowPane(int id, bool show = true);
   //! Is the XML inspector shown?
   bool IsXMLInspectorShown(){return m_manager.GetPane(wxS("XmlInspector")).IsShown();}
+  //! Is the performance monitor shown?
+  bool IsPerformanceMonitorShown(){return m_manager.GetPane(wxS("performance")).IsShown();}
   //! Hide or unhide the XML inspector
   void ToggleXMLInspector()
     {
@@ -350,6 +353,8 @@ protected:
   History * const m_history = NULL;
   //! A XmlInspector-like xml monitor
   XmlInspector *m_xmlInspector = NULL;
+  //! The panel showing performance statistics
+  PerformanceSidebar *m_performanceSidebar = NULL;
   //! true=force an update of the status bar at the next call of StatusMaximaBusy()
   bool m_forceStatusbarUpdate = false;
   //! The panel the log and debug messages will appear on

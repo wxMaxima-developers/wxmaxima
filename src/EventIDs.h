@@ -110,6 +110,7 @@ public:
     that this entry stays that of the last pane in this enum.
   */
   static const wxWindowIDRef menu_pane_stats;
+  static const wxWindowIDRef menu_pane_performance;
   static const wxWindowIDRef menu_pane_dockAll;
   static const wxWindowIDRef input_line_id;
   static const wxWindowIDRef refresh_id;

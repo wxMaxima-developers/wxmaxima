@@ -598,6 +598,9 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
       m_charHeight += 2 * MC_TEXT_PADDING;
       wxCoord width = 0, tokenwidth, tokenheight, linewidth = 0;
 
+      if (m_text == wxEmptyString)
+        width = charWidth;
+
       m_numberOfLines = 1;
 
       for (auto &textSnippet : m_styledText) {
@@ -612,28 +615,25 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
           linewidth += tokenwidth;
           width = std::max(width, linewidth);
         }
-
-        // Handle folding
-        if (FirstLineOnlyEditor())
-          m_numberOfLines = 1;
-
-        // Assign empty lines a minimum width
-        if (m_text == wxEmptyString)
-          width = charWidth;
-
-        // Add a line border
-        m_width = width + 2 * Scale_Px(2);
-
-        // Calculate the cell height
-        if (FirstLineOnlyEditor())
-          m_height = m_charHeight + 2 * Scale_Px(2);
-        else
-          m_height = m_numberOfLines * m_charHeight + 2 * static_cast<size_t>(Scale_Px(2));
-
-        if (m_height < m_charHeight + 2 * Scale_Px(2))
-          m_height = (m_charHeight) + 2 * Scale_Px(2);
-
       }
+
+      // Handle folding
+      if (FirstLineOnlyEditor())
+        m_numberOfLines = 1;
+
+      // Add a line border
+      m_width = width + 2 * Scale_Px(2);
+
+      // Calculate the cell height
+      if (FirstLineOnlyEditor())
+        m_height = m_charHeight + 2 * Scale_Px(2);
+      else
+        m_height =
+            m_numberOfLines * m_charHeight + 2 * static_cast<size_t>(Scale_Px(2));
+
+      if (m_height < m_charHeight + 2 * Scale_Px(2))
+        m_height = (m_charHeight) + 2 * Scale_Px(2);
+
       // The center is in the middle of the 1st line
       m_center = m_charHeight / 2;
       m_height = std::max(m_height.GetOrElse(0), m_charHeight + 2 * Scale_Px(2));
@@ -3301,7 +3301,6 @@ void EditorCell::StyleText() const {
       wxLogMessage(_("Bug: dc == NULL"));
       return;
     }
-  ResetSize();
   // We will need to determine the width of text and therefore need to set
   // the font type and size.
   SetFont(m_configuration->GetRecalcDC());

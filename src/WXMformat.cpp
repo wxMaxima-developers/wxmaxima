@@ -268,6 +268,7 @@ namespace Format {
     //! consumes the tag and returns the line.
     const auto getLinesUntil = [&wxmLine, end](const wxString &tag) -> wxString {
       wxString line;
+      bool first = true;
       while (wxmLine != end) {
         wxString thisLn = *wxmLine++;
         if (thisLn.StartsWith(wxS(" ")) && Headers.IsAnyMarker(thisLn.Mid(1)))
@@ -275,9 +276,10 @@ namespace Format {
         if (thisLn == tag)
           break;
         thisLn.Replace(wxS("* /"), wxS("*/"));
-        if (!line.empty())
+        if (!first)
           line << '\n';
         line << thisLn;
+        first = false;
       }
       return line;
     };

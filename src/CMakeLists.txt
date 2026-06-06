@@ -90,6 +90,7 @@ set(SIDEBAR_SOURCE_FILES
     FormatSidebar.cpp
     RegexCtrl.cpp
     HelpBrowser.cpp
+    PerformanceSidebar.cpp
 )
 list(TRANSFORM SIDEBAR_SOURCE_FILES PREPEND sidebars/)
 
