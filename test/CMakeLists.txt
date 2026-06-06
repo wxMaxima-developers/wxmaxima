@@ -452,6 +452,11 @@ add_test(
     COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error 500.wxm)
 
 add_test(
+    NAME wxmaxima_performance3
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error 500.wxmx)
+
+add_test(
     NAME wxmaxima_batch_textcell
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error textcells.wxm)
