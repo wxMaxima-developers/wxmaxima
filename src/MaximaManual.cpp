@@ -375,7 +375,11 @@ void MaximaManual::SaveManualAnchorsToCache(const wxString &maximaHtmlDir,
   xmlDoc.AppendToProlog(commentNode);
   wxLogMessage(_("Trying to cache the list of subjects the "
                  "manual contains in the file %s."), saveName.utf8_str());
-  xmlDoc.Save(saveName);
+  if(!xmlDoc.Save(saveName))
+    {
+      wxLogMessage(_("Cannot save the list of subjects manual contains to the file %s."),
+                   saveName.utf8_str());
+    }
 }
 
 bool MaximaManual::LoadManualAnchorsFromXML(const wxXmlDocument &xmlDocument,
