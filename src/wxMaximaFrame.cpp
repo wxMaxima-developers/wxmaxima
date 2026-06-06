@@ -707,8 +707,6 @@ void wxMaximaFrame::SetupViewMenu() {
                                       _("General Math\tAlt+Shift+M"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_stats,
                                       _("Statistics\tAlt+Shift+S"));
-  m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_performance,
-                                      _("Performance Monitor"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_greek,
                                       _("Greek Letters\tAlt+Shift+G"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_symbols,
@@ -730,6 +728,8 @@ void wxMaximaFrame::SetupViewMenu() {
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_variables, _("Variables"));
   m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_xmlInspector,
                                       _("Raw XML monitor"));
+  m_Maxima_Panes_Sub->AppendCheckItem(EventIDs::menu_pane_performance,
+                                      _("Performance Monitor"));
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->Append(EventIDs::menu_pane_dockAll, _("Dock all Sidebars"));
   m_Maxima_Panes_Sub->AppendSeparator();
