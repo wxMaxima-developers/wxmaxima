@@ -5227,6 +5227,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
     }
   }
 
+  GetWorksheet()->AdjustSize();
+    
   if (!m_fastResponseTimer.IsRunning()) {
     bool requestMore = GetWorksheet()->RecalculateIfNeeded(true);
     GetWorksheet()->ScrollToCellIfNeeded();
@@ -5235,6 +5237,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       event.RequestMore();
       return;
     }
+    
     if (GetWorksheet()->RedrawIfRequested())
       {
         event.RequestMore();
