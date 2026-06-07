@@ -1,5 +1,6 @@
 # Current development version
 
+- Fix redundant Maxima process spawns when opening worksheets and in batch mode.
 - A Diff Viewer that compares two wxmx files from the same origin that were saved with this wxMaxima version or newer.
 - Fix startup keyboard focus: The worksheet now correctly gains focus on application start.
 - New `wx_matrix()` command for advanced matrix formatting (lines, headers, custom brackets).

@@ -2643,9 +2643,6 @@ bool wxMaxima::StartServer() {
 ///--------------------------------------------------------------------------------
 
 bool wxMaxima::StartMaxima(bool force) {
-  if (!StartServer())
-    return false;
-
   wxString dirname;
   {
     wxString filename;
@@ -2665,6 +2662,9 @@ bool wxMaxima::StartMaxima(bool force) {
 
   if ((m_maximaProcess == NULL) || (m_hasEvaluatedCells) || force ||
       (dirname != dirname_Old)) {
+    if (!StartServer())
+      return false;
+
     if ((m_maximaProcess != NULL) || (m_pid >= 0) || (m_client))
       {
         m_unsuccessfulConnectionAttempts = 0;
@@ -4289,9 +4289,9 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document,
   document->InsertGroupCells(std::move(tree), nullptr);
 
   if (clearDocument) {
-    StartMaxima();
     if(GetWorksheet())
       GetWorksheet()->m_currentFile = file;
+    StartMaxima();
     ResetTitle(true, true);
     document->SetSaved(true);
   } else {
@@ -4353,6 +4353,8 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
   // from here on code is identical for wxm and wxmx
   if (clearDocument) {
     document->ClearDocument();
+    if(GetWorksheet())
+      GetWorksheet()->m_currentFile = file;
     StartMaxima();
   }
 
@@ -4444,10 +4446,10 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   //    an entry that creates valid empty .wxmx files.
   if (wxFile(file, wxFile::read).Eof()) {
     document->ClearDocument();
-    StartMaxima();
-
     if(GetWorksheet())
       GetWorksheet()->m_currentFile = file;
+    StartMaxima();
+
     ResetTitle(true, true);
     document->SetSaved(true);
     return true;
@@ -4662,6 +4664,8 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   // from here on code is identical for wxm and wxmx
   if (clearDocument) {
     document->ClearDocument();
+    if(GetWorksheet())
+      GetWorksheet()->m_currentFile = file;
     StartMaxima();
     long int zoom = 100;
     if (!(doczoom.ToLong(&zoom)))
@@ -4775,11 +4779,11 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document) {
   auto tree = CreateTreeFromXMLNode(xmlcells, file);
 
   document->ClearDocument();
+  if(GetWorksheet())
+    GetWorksheet()->m_currentFile = file;
   StartMaxima();
   document->InsertGroupCells(
                              std::move(tree)); // this also requests a recalculate
-  if(GetWorksheet())
-    GetWorksheet()->m_currentFile = file;
   ResetTitle(true, true);
   document->RequestRedraw();
   if(GetWorksheet())
