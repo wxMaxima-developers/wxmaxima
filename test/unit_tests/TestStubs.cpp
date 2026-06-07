@@ -60,6 +60,8 @@ bool GroupCell::AddEnding() { return {}; }
 bool GroupCell::FirstLineOnlyEditor() const { return false; }
 void GroupCell::SetCurrentPoint(wxPoint) {}
 void GroupCell::MarkNeedsRecalculate() {}
+wxCoord GroupCell::GetMaxDrop() const { return {}; }
+wxCoord GroupCell::GetCenterList() const { return {}; }
 #if wxUSE_ACCESSIBILITY
 wxAccStatus GroupCell::GetDescription(int, wxString *) const { return {}; }
 wxAccStatus GroupCell::GetLocation(wxRect &, int) { return {}; }
