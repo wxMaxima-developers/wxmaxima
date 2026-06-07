@@ -4701,9 +4701,6 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   }
   StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
 
-  if(GetWorksheet())
-    GetWorksheet()->Recalculate();
-
   return true;
 }
 
