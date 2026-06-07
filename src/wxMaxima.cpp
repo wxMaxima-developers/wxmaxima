@@ -369,23 +369,18 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
                                                NULL,
                                                this);
 
-  if (!filename.IsEmpty()) {
-    m_openInitialFileError = !OpenFile(filename);
-    //! wxm data the worksheet is populated from
-  }
-  else {
-    if (!initialWorksheetContents.IsEmpty()) {
-      //  Convert the comment block to an array of lines
-      wxStringTokenizer tokenizer(initialWorksheetContents, "\n");
-      std::vector<wxString> lines;
-      while (tokenizer.HasMoreTokens())
-        lines.push_back(tokenizer.GetNextToken());
-      if(GetWorksheet())
-        {
-          GetWorksheet()->InsertGroupCells(Format::TreeFromWXM(lines, &m_configuration));
-          GetWorksheet()->SetSaved(true);
-        }
-    }
+  m_fileToOpen = filename;
+  if (!initialWorksheetContents.IsEmpty()) {
+    //  Convert the comment block to an array of lines
+    wxStringTokenizer tokenizer(initialWorksheetContents, "\n");
+    std::vector<wxString> lines;
+    while (tokenizer.HasMoreTokens())
+      lines.push_back(tokenizer.GetNextToken());
+    if(GetWorksheet())
+      {
+        GetWorksheet()->InsertGroupCells(Format::TreeFromWXM(lines, &m_configuration));
+        GetWorksheet()->SetSaved(true);
+      }
   }
 
   if (!StartMaxima())
@@ -3211,20 +3206,9 @@ void wxMaxima::ReadFirstPrompt(const wxString &data) {
   if (GetWorksheet() && (GetWorksheet()->m_evaluationQueue.Empty())) {
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
-    if (m_evalOnStartup) {
-      wxLogMessage(_("Starting evaluation of the document"));
-      m_evalOnStartup = false;
-      GetWorksheet()->AddDocumentToEvaluationQueue();
-      EvaluationQueueLength(
-                            GetWorksheet()->m_evaluationQueue.Size(),
-                            GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
-      TriggerEvaluation();
-    } else {
-      m_evalOnStartup = false;
-      if (GetWorksheet() && (m_configuration.GetOpenHCaret()) &&
-          (GetWorksheet()->GetActiveCell() == NULL))
-        GetWorksheet()->OpenNextOrCreateCell();
-    }
+    if (GetWorksheet() && (m_configuration.GetOpenHCaret()) &&
+        (GetWorksheet()->GetActiveCell() == NULL))
+      GetWorksheet()->OpenNextOrCreateCell();
   } else
     TriggerEvaluation();
 }
@@ -3421,8 +3405,7 @@ void wxMaxima::ReadSuppressedOutput(const wxString &data) {
 }
 
 void wxMaxima::ReadLoadSymbols(const wxXmlDocument &data) {
-  if(GetWorksheet() && !m_exitAfterEval)
-    GetWorksheet()->AddSymbols(data);
+  GetWorksheet()->AddSymbols(data);
 }
 
 void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {
@@ -3599,9 +3582,8 @@ void wxMaxima::VariableActionMaximaHtmldir(const wxString &value) {
   if(GetWorksheet())
     {
       GetWorksheet()->SetMaximaDocDir(dir_canonical);
-      if (!m_exitAfterEval)
-        GetWorksheet()->LoadHelpFileAnchors(dir_canonical,
-                                            m_configuration.GetMaximaVersion());
+      GetWorksheet()->LoadHelpFileAnchors(dir_canonical,
+                                          m_configuration.GetMaximaVersion());
     }
 }
 void wxMaxima::GnuplotCommandName(wxString gnuplot) {
@@ -5175,18 +5157,50 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
                            m_commandsLeftInCurrentCell - 1);
       StatusText(statusLine, false);
     } else {
-      if (m_first) {
-        if (!m_openInitialFileError)
-          StatusText(_("Welcome to wxMaxima"));
-      } else {
-        if (m_configuration.InLispMode())
-          StatusText(_("Lisp mode."));
-        else
-          StatusText(_("Maxima is ready for input."));
+      if (!m_fileToOpen.IsEmpty()) {
+        m_openInitialFileError = !OpenFile(m_fileToOpen);
+        m_fileToOpen = wxEmptyString;
+        event.RequestMore();
+        return;
       }
-      m_openInitialFileError = false;
+      else {
+        if (m_evalOnStartup) {
+          wxLogMessage(_("Starting evaluation of the document"));
+          m_evalOnStartup = false;
+          GetWorksheet()->AddDocumentToEvaluationQueue();
+          EvaluationQueueLength(
+                                GetWorksheet()->m_evaluationQueue.Size(),
+                                GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
+          TriggerEvaluation();
+          event.RequestMore();
+          return;
+        } else {
+          
+          if (m_first) {
+            if (!m_openInitialFileError)
+              StatusText(_("Welcome to wxMaxima"));
+          } else {
+            if (m_configuration.InLispMode())
+              StatusText(_("Lisp mode."));
+            else
+              StatusText(_("Maxima is ready for input."));
+          }
+        }
+        m_openInitialFileError = false;
+      }
     }
-
+    
+    if (m_evalOnStartup && m_ready && (m_fileToOpen.IsEmpty())) {
+      wxLogMessage(_("Starting evaluation of the document"));
+      m_evalOnStartup = false;
+      EvaluationQueueLength(
+                            GetWorksheet()->m_evaluationQueue.Size(),
+                            GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
+      TriggerEvaluation();
+      event.RequestMore();
+      return;    
+    }
+    
     event.RequestMore();
     m_updateEvaluationQueueLengthDisplay = false;
     return;
@@ -5337,7 +5351,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   if (IsPerformanceMonitorShown())
     m_performanceSidebar->UpdateContents();
 
-  if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty())
+  if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty() &&
+      m_fileToOpen.IsEmpty() && (!m_evalOnStartup))
     {
       SaveFile(false);
       CallAfter([this]{Close();});
@@ -5765,14 +5780,6 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
   if (retval) {
     GetWorksheet()->RequestRedraw();
     StatusText(_("File opened"));
-    if (m_evalOnStartup && m_ready) {
-      wxLogMessage(_("Starting evaluation of the document"));
-      m_evalOnStartup = false;
-      EvaluationQueueLength(
-                            GetWorksheet()->m_evaluationQueue.Size(),
-                            GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
-      TriggerEvaluation();
-    }
   } else
     StatusText(_("File could not be opened"));
 

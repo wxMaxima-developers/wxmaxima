@@ -801,6 +801,7 @@ protected:
   bool m_maximaBusy = true;
   bool m_maximaError = false;
 private:
+  wxString m_fileToOpen;
   bool m_fourierLoaded = false;
   //! The value of maxima's logexpand variable
   wxString m_logexpand;

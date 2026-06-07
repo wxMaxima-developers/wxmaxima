@@ -1075,26 +1075,6 @@ if testval2 # testval then error("The execution of lisp code wasn't successful."
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Lisp ode spread across multiple cells
-   [wxMaxima: comment end   ] */
-
-
-/* [wxMaxima: input   start ] */
-to_lisp();
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-(format nil "test");
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-(to-maxima)
-/* [wxMaxima: input   end   ] */
-
-
 /* [wxMaxima: section start ]
 Miscellaneous things that did get wrong at least once
    [wxMaxima: section end   ] */
