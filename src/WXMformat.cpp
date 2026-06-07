@@ -167,7 +167,6 @@ namespace Format {
 
   static wxString EscapeWXMTextContent(const wxString &content) {
     wxString result = EscapeWXMContent(content);
-    result.Replace(wxS("*/"), wxS("* /"));
     return result;
   }
 
@@ -270,7 +269,6 @@ namespace Format {
           thisLn = thisLn.Mid(1);
         if (thisLn == tag)
           break;
-        thisLn.Replace(wxS("* /"), wxS("*/"));
         if (!first)
           line << '\n';
         line << thisLn;
@@ -404,7 +402,6 @@ namespace Format {
 
           wxString content = last->GetEditable()->GetValue();
           wxString unescaped = thisLine;
-          unescaped.Replace(wxS("* /"), wxS("*/"));
           if (!content.empty())
             content << '\n';
           content << unescaped;
