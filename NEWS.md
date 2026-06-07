@@ -41,6 +41,7 @@
 - Improved MathML and RTF output
 - Big find-and-replace functionality additions
 - A compiler supporting C++20 is required now
+- Files opened by double-clicking now have a consistent layout
 
 # 26.05.0
 
