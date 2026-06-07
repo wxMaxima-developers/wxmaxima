@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
 // nil -*-
 //
 //  Copyright (C) 2008-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
@@ -812,11 +812,11 @@ void GroupCell::CellUnderPointer(GroupCell *cell) {
   m_cellPointers->m_groupCellUnderPointer = cell;
 }
 
-int GroupCell::GetMaxDrop() const {
+wxCoord GroupCell::GetMaxDrop() const {
   return m_height - m_center;
 }
 
-int GroupCell::GetCenterList() const {
+wxCoord GroupCell::GetCenterList() const {
   return m_center;
 }
 

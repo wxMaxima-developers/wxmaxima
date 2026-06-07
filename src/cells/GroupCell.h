@@ -98,8 +98,8 @@ public:
   std::unique_ptr<GroupCell> CopyList() const;
   virtual ~GroupCell();
 
-  int GetMaxDrop() const;
-  int GetCenterList() const;
+  wxCoord GetMaxDrop() const override;
+  wxCoord GetCenterList() const override;
 
   // cppcheck-suppress duplInheritedMember
   GroupCell *first() const { return dynamic_cast<GroupCell*>(Cell::first()); }

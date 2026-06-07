@@ -455,7 +455,7 @@ public:
     For a fraction for example the center is exactly at the middle of the
     horizontal line.
   */
-  wxCoord GetMaxDrop() const;
+  virtual wxCoord GetMaxDrop() const;
 
   /*! Returns the maximum distance between top and center of this line
 
@@ -463,13 +463,13 @@ public:
     For a fraction for example the center is exactly at the middle of the
     horizontal line.
   */
-  wxCoord GetCenterList() const;
+  virtual wxCoord GetCenterList() const;
 
   /*! Returns the total height of this line
 
     Returns GetCenterList()+GetMaxDrop()
   */
-  wxCoord GetHeightList() const;
+  virtual wxCoord GetHeightList() const;
 
   //! How many pixels is this list of cells wide, if we don't break it into lines?
   wxCoord SumOfWidths() const;
