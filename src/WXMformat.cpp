@@ -173,7 +173,6 @@ namespace Format {
 
   wxString TreeToWXM(GroupCell *cell, bool wxm) {
     wxString retval;
-    bool trailingNewline = true;
     if (cell->IsHidden())
       retval += Headers.GetStart(WXM_HIDE) + '\n';
 
@@ -186,7 +185,6 @@ namespace Format {
                << Headers.GetEnd(groupType) << '\n';
       else {
         retval << cell->GetEditable()->ToString(true) << '\n';
-        trailingNewline = false;
       }
 
       // Export the list of known answers
@@ -209,7 +207,6 @@ namespace Format {
                << Headers.GetEnd(groupType) << '\n';
       else {
         retval << wxS("/* ") << cell->GetEditable()->ToString(true) << wxS(" */\n");
-        trailingNewline = false;
       }
       break;
     case GC_TYPE_SECTION:
@@ -253,8 +250,6 @@ namespace Format {
       if (wxm)
         retval += Headers.GetEnd(WXM_FOLD) + '\n';
     }
-    if (trailingNewline)
-      retval += '\n';
 
     return retval;
   }
