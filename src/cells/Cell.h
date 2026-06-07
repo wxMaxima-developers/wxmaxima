@@ -1119,6 +1119,8 @@ private:
       m_highlight = false;
     }
 
+  void UpdateListCaches() const;
+
   // In the boolean bit fields below, InitBitFields_Cell is an indication that
   // the InitBitFields_Cell() method initializes a given field. It should be
   // only added once such initialization is in place. It makes it easier

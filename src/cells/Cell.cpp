@@ -321,66 +321,69 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const {
   return false;
 }
 
-int Cell::GetCenterList() const {
-  if (m_cachedCenterList.IsValid())
-    return m_cachedCenterList;
+void Cell::UpdateListCaches() const {
+  if (m_cachedCenterList.IsValid() && m_cachedMaxDrop.IsValid() &&
+      m_cachedSumOfWidths.IsValid() && m_cachedLineWidth.IsValid())
+    return;
 
   int maxCenter = 0;
+  int maxDrop = 0;
+  int fullWidth = 0;
+  int lineWidth = 0;
+  bool lineWidthBroken = false;
+  bool centerDropBroken = false;
+
   for (const Cell &tmp : OnDrawList(this)) {
-    // Stop if tmp isn't us and begins with a line break
-    if ((&tmp != this) && (tmp.m_breakLine))
-      break;
-    if (!tmp.m_isBrokenIntoLines)
-      maxCenter = std::max(maxCenter, tmp.GetCenter());
+    const int tmpWidth = tmp.GetWidth();
+    fullWidth += tmpWidth;
+
+    if (!lineWidthBroken) {
+      if (&tmp != this) {
+        if (tmp.m_isBrokenIntoLines || tmp.m_breakLine ||
+            (tmp.m_type == MC_TYPE_MAIN_PROMPT))
+          lineWidthBroken = true;
+      }
+      if (!lineWidthBroken)
+        lineWidth += tmpWidth;
+    }
+
+    if (!centerDropBroken) {
+      if ((&tmp != this) && (tmp.m_breakLine))
+        centerDropBroken = true;
+
+      if (!centerDropBroken && !tmp.m_isBrokenIntoLines) {
+        maxCenter = std::max(maxCenter, static_cast<int>(tmp.GetCenter()));
+        maxDrop = std::max(maxDrop, static_cast<int>(tmp.GetHeight() - tmp.GetCenter()));
+      }
+    }
   }
+
   m_cachedCenterList = maxCenter;
-  return maxCenter;
+  m_cachedMaxDrop = maxDrop;
+  m_cachedSumOfWidths = fullWidth;
+  m_cachedLineWidth = lineWidth;
+}
+
+int Cell::GetCenterList() const {
+  UpdateListCaches();
+  return m_cachedCenterList;
 }
 
 int Cell::GetMaxDrop() const {
-  if (m_cachedMaxDrop.IsValid())
-    return m_cachedMaxDrop;
-
-  int maxDrop = 0;
-  for (const Cell &tmp : OnDrawList(this)) {
-    // Stop if tmp isn't us and begins with a line break
-    if ((&tmp != this) && (tmp.m_breakLine))
-      break;
-    if (!tmp.m_isBrokenIntoLines)
-      maxDrop = std::max(maxDrop, tmp.GetHeight() - tmp.GetCenter());
-  }
-  m_cachedMaxDrop = maxDrop;
-  return maxDrop;
+  UpdateListCaches();
+  return m_cachedMaxDrop;
 }
 
 int Cell::GetHeightList() const { return GetCenterList() + GetMaxDrop(); }
 
 int Cell::SumOfWidths() const {
-  if (m_cachedSumOfWidths.IsValid())
-    return m_cachedSumOfWidths;
-
-  int fullWidth = 0;
-  for (const Cell &tmp : OnDrawList(this)) {
-    fullWidth += tmp.GetWidth();
-  }
-  m_cachedSumOfWidths = fullWidth;
-  return fullWidth;
+  UpdateListCaches();
+  return m_cachedSumOfWidths;
 }
 
 int Cell::GetLineWidth() const {
-  if (m_cachedLineWidth.IsValid())
-    return m_cachedLineWidth;
-
-  int width = GetWidth();
-  for (const Cell &tmp : OnDrawList(this)) {
-    if (&tmp != this)
-      if (tmp.m_isBrokenIntoLines || tmp.m_breakLine ||
-          (tmp.m_type == MC_TYPE_MAIN_PROMPT))
-        break;
-    width += tmp.GetWidth();
-  }
-  m_cachedLineWidth = width;
-  return width;
+  UpdateListCaches();
+  return m_cachedLineWidth;
 }
 
 /*! Draw this cell to dc
