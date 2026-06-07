@@ -29,7 +29,7 @@ var searchData=
   ['wxmathml_2eh_26',['wxMathml.h',['../wxMathml_8h.html',1,'']]],
   ['wxmaxima_27',['wxMaxima',['../index.html',1,'']]],
   ['wxmaxima_28',['WxMaxima',['../md_README.html',1,'']]],
-  ['wxmaxima_29',['wxMaxima',['../classwxMaxima.html',1,'wxMaxima'],['../classwxMaxima.html#ac3af71ddf7eff2efad68b9267c77c522',1,'wxMaxima::wxMaxima()']]],
+  ['wxmaxima_29',['wxMaxima',['../classwxMaxima.html',1,'']]],
   ['wxmaxima_20release_20checklist_30',['wxMaxima Release Checklist',['../md_ReleaseChecklist.html',1,'']]],
   ['wxmaxima_27s_20translations_31',['wxMaxima&apos;s Translations',['../md_locales_README.html',1,'']]],
   ['wxmaxima_2ecpp_32',['wxMaxima.cpp',['../wxMaxima_8cpp.html',1,'']]],
