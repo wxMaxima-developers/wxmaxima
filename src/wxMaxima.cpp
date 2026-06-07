@@ -3206,20 +3206,9 @@ void wxMaxima::ReadFirstPrompt(const wxString &data) {
   if (GetWorksheet() && (GetWorksheet()->m_evaluationQueue.Empty())) {
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
-    if (m_evalOnStartup) {
-      wxLogMessage(_("Starting evaluation of the document"));
-      m_evalOnStartup = false;
-      GetWorksheet()->AddDocumentToEvaluationQueue();
-      EvaluationQueueLength(
-                            GetWorksheet()->m_evaluationQueue.Size(),
-                            GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
-      TriggerEvaluation();
-    } else {
-      m_evalOnStartup = false;
-      if (GetWorksheet() && (m_configuration.GetOpenHCaret()) &&
-          (GetWorksheet()->GetActiveCell() == NULL))
-        GetWorksheet()->OpenNextOrCreateCell();
-    }
+    if (GetWorksheet() && (m_configuration.GetOpenHCaret()) &&
+        (GetWorksheet()->GetActiveCell() == NULL))
+      GetWorksheet()->OpenNextOrCreateCell();
   } else
     TriggerEvaluation();
 }
@@ -5171,15 +5160,27 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
         return;
       }
       else {
-        
-        if (m_first) {
-          if (!m_openInitialFileError)
-            StatusText(_("Welcome to wxMaxima"));
+        if (m_evalOnStartup) {
+          wxLogMessage(_("Starting evaluation of the document"));
+          m_evalOnStartup = false;
+          GetWorksheet()->AddDocumentToEvaluationQueue();
+          EvaluationQueueLength(
+                                GetWorksheet()->m_evaluationQueue.Size(),
+                                GetWorksheet()->m_evaluationQueue.CommandsLeftInCell());
+          TriggerEvaluation();
+          event.RequestMore();
+          return;
         } else {
-          if (m_configuration.InLispMode())
-            StatusText(_("Lisp mode."));
-          else
-            StatusText(_("Maxima is ready for input."));
+          
+          if (m_first) {
+            if (!m_openInitialFileError)
+              StatusText(_("Welcome to wxMaxima"));
+          } else {
+            if (m_configuration.InLispMode())
+              StatusText(_("Lisp mode."));
+            else
+              StatusText(_("Maxima is ready for input."));
+          }
         }
         m_openInitialFileError = false;
       }
@@ -5346,7 +5347,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   if (IsPerformanceMonitorShown())
     m_performanceSidebar->UpdateContents();
 
-  if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty() && m_fileToOpen.IsEmpty())
+  if (m_exitAfterEval && GetWorksheet()->m_evaluationQueue.Empty() &&
+      m_fileToOpen.IsEmpty() && (!m_evalOnStartup))
     {
       SaveFile(false);
       CallAfter([this]{Close();});
