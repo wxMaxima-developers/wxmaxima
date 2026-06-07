@@ -252,13 +252,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasValidPosition</b> 
 <a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetType</b> () const</td></tr>
 <tr class="memdesc:a4cb4a870ceb346a53eae7d154bf73706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the type of this cell. <br /></td></tr>
 <tr class="separator:a4cb4a870ceb346a53eae7d154bf73706"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1be3819e507454d4313f6ccbdac16c5"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ab1be3819e507454d4313f6ccbdac16c5">GetMaxDrop</a> () const</td></tr>
+<tr class="memitem:ab1be3819e507454d4313f6ccbdac16c5"><td class="memItemLeft" align="right" valign="top">virtual wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ab1be3819e507454d4313f6ccbdac16c5">GetMaxDrop</a> () const</td></tr>
 <tr class="memdesc:ab1be3819e507454d4313f6ccbdac16c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum distance between center and bottom of this line.  <br /></td></tr>
 <tr class="separator:ab1be3819e507454d4313f6ccbdac16c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b385281e2cb77ffa5dfd902802ac692"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a3b385281e2cb77ffa5dfd902802ac692">GetCenterList</a> () const</td></tr>
+<tr class="memitem:a3b385281e2cb77ffa5dfd902802ac692"><td class="memItemLeft" align="right" valign="top">virtual wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a3b385281e2cb77ffa5dfd902802ac692">GetCenterList</a> () const</td></tr>
 <tr class="memdesc:a3b385281e2cb77ffa5dfd902802ac692"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum distance between top and center of this line.  <br /></td></tr>
 <tr class="separator:a3b385281e2cb77ffa5dfd902802ac692"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a351fb091b88d97bf44c95505b0198bfd"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a351fb091b88d97bf44c95505b0198bfd">GetHeightList</a> () const</td></tr>
+<tr class="memitem:a351fb091b88d97bf44c95505b0198bfd"><td class="memItemLeft" align="right" valign="top">virtual wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a351fb091b88d97bf44c95505b0198bfd">GetHeightList</a> () const</td></tr>
 <tr class="memdesc:a351fb091b88d97bf44c95505b0198bfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the total height of this line.  <br /></td></tr>
 <tr class="separator:a351fb091b88d97bf44c95505b0198bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c188747e83c42019f7d8c6e87e9829f"><td class="memItemLeft" align="right" valign="top"><a id="a9c188747e83c42019f7d8c6e87e9829f" name="a9c188747e83c42019f7d8c6e87e9829f"></a>
@@ -1618,13 +1618,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Returns the maximum distance between top and center of this line. </p>
 <p>Note that the center doesn't need to be exactly in the middle of an object. For a fraction for example the center is exactly at the middle of the horizontal line. </p>
+
+<p>Reimplemented in <a class="el" href="classGroupCell.html#a8ab26daf4c5ce41d7f91ec2a386e2fc7">GroupCell</a>.</p>
 
 </div>
 </div>
@@ -1795,13 +1797,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Returns the total height of this line. </p>
 <p>Returns <a class="el" href="classCell.html#a3b385281e2cb77ffa5dfd902802ac692" title="Returns the maximum distance between top and center of this line.">GetCenterList()</a>+<a class="el" href="classCell.html#ab1be3819e507454d4313f6ccbdac16c5" title="Returns the maximum distance between center and bottom of this line.">GetMaxDrop()</a> </p>
+
+<p>Reimplemented in <a class="el" href="classImgCellBase.html#a870bc260ba6d7cb41eb88a849d41c155">ImgCellBase</a>, and <a class="el" href="classImgCell.html#a7a3f4a7f99c960f5f4b9cf6306828338">ImgCell</a>.</p>
 
 </div>
 </div>
@@ -1969,13 +1973,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Returns the maximum distance between center and bottom of this line. </p>
 <p>Note that the center doesn't need to be exactly in the middle of an object. For a fraction for example the center is exactly at the middle of the horizontal line. </p>
+
+<p>Reimplemented in <a class="el" href="classGroupCell.html#a0063aaddf1b0abe1b8e979bdff4a5967">GroupCell</a>.</p>
 
 </div>
 </div>
