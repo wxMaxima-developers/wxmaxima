@@ -73,6 +73,10 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Add integration tests for long number display flavours (all-in-one, broken into lines, and with ellipsis) using custom configurations.</li>
+<li>Fix scroll position jump to the top of the page when inserting a new cell with the horizontal caret active.</li>
+<li>Optimize drawing during mouse moves (bracket autohide): redraw only the actual height of the cell, rather than drawing all the way to the absolute bottom coordinate.</li>
+<li>Change the "Jump to first error" menu item to "Jump to last error" and fix its implementation to scroll to the most recent error cell.</li>
 <li>Fix handling of to_lisp() and (to-maxima).</li>
 <li>Fix redundant <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process spawns when opening worksheets and in batch mode.</li>
 <li><a class="el" href="classA.html">A</a> Diff Viewer that compares two wxmx files from the same origin that were saved with this <a class="el" href="classwxMaxima.html">wxMaxima</a> version or newer.</li>
@@ -87,7 +91,7 @@ $(function() {
 <li>Editor performance: Optimized drawing by rendering only visible text tokens.</li>
 <li>Non-interactive mode: Automated tests now skip most blocking modal dialogues.</li>
 <li>The log now contains errors maxima encountered.</li>
-<li>Documented background task and threading architecture in Doxygen.</li>
+<li>Many improvements to the Doxygen documentation.</li>
 <li>Fix the cursor position after autocompletion (#2090).</li>
 <li>Fix XML for saving as wxmx, when <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> warnings are displayed (#2092).</li>
 <li>Fix XML output for definite integrals. It was saved without the limits.</li>
@@ -112,6 +116,7 @@ $(function() {
 <li>Big find-and-replace functionality additions</li>
 <li><a class="el" href="classA.html">A</a> compiler supporting C++20 is required now</li>
 <li>Files opened by double-clicking now have a consistent layout</li>
+<li>Added automatic tests and repaired others.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md789"></a>
 26.05.0</h1>
