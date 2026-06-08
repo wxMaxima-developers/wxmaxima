@@ -31,6 +31,8 @@ wxLogNull dontLog;
 #include "VisiblyInvalidCell.cpp"
 
 #include "SqrtCell.cpp"
+#include "DigitCell.cpp"
+#include "LongNumberCell.cpp"
 
 #include <catch2/catch.hpp>
 
@@ -64,6 +66,58 @@ SCENARIO("SqrtCell recalculates") {
         REQUIRE(cell.Copy(&group));
       THEN("when it is copied, the copy can recalculate") {
         auto copy = cell.Copy(&group);
+        copy->Recalculate(AFontSize(10));
+      }
+    }
+  }
+}
+
+SCENARIO("LongNumberCell behaviour") {
+  wxBitmap bitmap(128, 128);
+  wxMemoryDC dc(bitmap);
+  Configuration configuration(&dc);
+  configuration.SetZoomFactor(1.0);
+  configuration.ShowAllDigits(true);
+  configuration.LineBreaksInLongNums(true);
+
+  GroupCell group(&configuration, GC_TYPE_TEXT);
+
+  GIVEN("a LongNumberCell with a 43-digit number") {
+    wxString val = "9647293028308316131448074967389816654817441";
+    LongNumberCell cell(&group, &configuration, val);
+
+    WHEN("recalculating the cell") {
+      cell.Recalculate(AFontSize(10));
+      THEN("it starts not broken into lines") {
+        REQUIRE_FALSE(cell.IsBrokenIntoLines());
+      }
+    }
+
+    WHEN("breaking up the cell") {
+      bool didBreak = cell.BreakUp();
+      THEN("break up succeeds") {
+        REQUIRE(didBreak);
+        REQUIRE(cell.IsBrokenIntoLines());
+      }
+      AND_WHEN("recalculating after breakup") {
+        cell.Recalculate(AFontSize(10));
+        // Verify width/height/center of cell is 0
+        REQUIRE(cell.GetWidth() == 0);
+        // Verify inner cells have some width/height
+        REQUIRE(cell.GetInnerCellCount() == 1);
+        auto inner = cell.GetInnerCell(0);
+        REQUIRE(inner != nullptr);
+        // Verify we can iterate and find all DigitCells
+        int count = 0;
+        for (const Cell &c : OnList(inner)) {
+          count++;
+        }
+        // with groupSize 3, 43 digits should bundle into 15 groups
+        REQUIRE(count == 15);
+
+        // Test copy of broken-up cell
+        auto copy = cell.Copy(&group);
+        REQUIRE(copy != nullptr);
         copy->Recalculate(AFontSize(10));
       }
     }

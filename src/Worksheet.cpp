@@ -303,13 +303,13 @@ bool Worksheet::RedrawIfRequested() {
           RequestRedraw(
                         wxRect(0, oldGroupCellUnderPointer->GetRect().GetTop(),
                                m_configuration->GetIndent() + m_configuration->GetCellBracketWidth() - 1,
-                               oldGroupCellUnderPointer->GetRect().GetBottom()));
+                               oldGroupCellUnderPointer->GetRect().GetHeight()));
         }
         if (m_cellPointers.m_groupCellUnderPointer) {
           RequestRedraw(wxRect(
                                0, m_cellPointers.m_groupCellUnderPointer->GetRect().GetTop(),
                                m_configuration->GetIndent() + m_configuration->GetCellBracketWidth() - 1,
-                               m_cellPointers.m_groupCellUnderPointer->GetRect().GetBottom()));
+                               m_cellPointers.m_groupCellUnderPointer->GetRect().GetHeight()));
         }
       }
     }
@@ -4215,23 +4215,21 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
     }
     m_maxWidth_Cached = *width;
   }
-  if (m_last && m_last->HasStaleSize()) {
-    if (m_last->GetCurrentPoint().y >= 0) {
-      *height = m_last->GetCurrentPoint().y + m_last->GetMaxDrop();
-    } else {
-      // Find the last cell with a valid position and add up the drops of the remaining cells.
-      int extraHeight = m_last->GetMaxDrop();
-      Cell *walk = m_last->GetPrevious();
-      while (walk && (walk->GetCurrentPoint().y < 0)) {
+  if (m_last) {
+    Cell *walk = m_last;
+    int extraHeight = 0;
+    while (walk && (!walk->HasStaleSize() || walk->GetCurrentPoint().y < 0)) {
+      if (walk->HasStaleSize()) {
         extraHeight += walk->GetMaxDrop() + m_configuration->GetGroupSkip();
-        walk = walk->GetPrevious();
-      }
-      if (walk) {
-        extraHeight += m_configuration->GetGroupSkip();
-        *height = walk->GetCurrentPoint().y + walk->GetMaxDrop() + extraHeight;
       } else {
-        *height = m_configuration->GetBaseIndent() + extraHeight;
+        extraHeight += m_configuration->GetGroupSkip() + 20;
       }
+      walk = walk->GetPrevious();
+    }
+    if (walk) {
+      *height = walk->GetCurrentPoint().y + walk->GetMaxDrop() + extraHeight;
+    } else {
+      *height = m_configuration->GetBaseIndent() + extraHeight;
     }
   } else {
     *height = currentHeight;

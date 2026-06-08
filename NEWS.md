@@ -1,5 +1,9 @@
 # Current development version
 
+- Add integration tests for long number display flavours (all-in-one, broken into lines, and with ellipsis) using custom configurations.
+- Fix scroll position jump to the top of the page when inserting a new cell with the horizontal caret active.
+- Optimize drawing during mouse moves (bracket autohide): redraw only the actual height of the cell, rather than drawing all the way to the absolute bottom coordinate.
+- Change the "Jump to first error" menu item to "Jump to last error" and fix its implementation to scroll to the most recent error cell.
 - Fix handling of to_lisp() and (to-maxima).
 - Fix redundant Maxima process spawns when opening worksheets and in batch mode.
 - A Diff Viewer that compares two wxmx files from the same origin that were saved with this wxMaxima version or newer.
@@ -14,7 +18,7 @@
 - Editor performance: Optimized drawing by rendering only visible text tokens.
 - Non-interactive mode: Automated tests now skip most blocking modal dialogues.
 - The log now contains errors maxima encountered.
-- Documented background task and threading architecture in Doxygen.
+- Many improvements to the Doxygen documentation.
 - Fix the cursor position after autocompletion (#2090).
 - Fix XML for saving as wxmx, when Maxima warnings are displayed (#2092).
 - Fix XML output for definite integrals. It was saved without the limits.
@@ -44,6 +48,7 @@
 - Big find-and-replace functionality additions
 - A compiler supporting C++20 is required now
 - Files opened by double-clicking now have a consistent layout
+- Added automatic tests and repaired others.
 
 # 26.05.0
 

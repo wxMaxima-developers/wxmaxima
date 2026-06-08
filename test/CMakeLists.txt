@@ -983,6 +983,21 @@ add_test(
     COMMAND wxmaxima --debug --logtostderr --pipe -f config_from_19.11.cfg --batch --exit-on-error unicode.wxm)
 
 add_test(
+    NAME longnum_ellipsis
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --logtostderr --pipe -f longnum_ellipsis.cfg --batch --exit-on-error longnum_test.wxm)
+
+add_test(
+    NAME longnum_allinone
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --logtostderr --pipe -f longnum_allinone.cfg --batch --exit-on-error longnum_test.wxm)
+
+add_test(
+    NAME longnum_broken
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --logtostderr --pipe -f longnum_broken.cfg --batch --exit-on-error longnum_test.wxm)
+
+add_test(
     NAME invalid_commandline_arg
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --gibberish --batch --exit-on-error unicode.wxm)

@@ -33,6 +33,7 @@
 #include "CellList.h"
 #include "DigitCell.h"
 #include "StringUtils.h"
+#include <clocale>
 
 LongNumberCell::LongNumberCell(GroupCell *group, Configuration *config,
                                const wxString &number)
@@ -72,12 +73,12 @@ Cell *LongNumberCell::GetInnerCell(size_t index) const
 
 void LongNumberCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
-    Cell::Recalculate(fontsize);
     // If the config settings about how many digits to display has changed we
     // need to regenerate the info which number to show.
     if (ConfigChanged())
       UpdateDisplayedText();
     if (IsBrokenIntoLines()) {
+      Cell::Recalculate(fontsize);
       m_innerCell->RecalculateList(fontsize);
       m_width = 0;
       m_height = 0;
@@ -88,6 +89,7 @@ void LongNumberCell::Recalculate(AFontSize fontsize) const {
       if (m_numStart.IsEmpty())
         TextCell::Recalculate(fontsize);
       else {
+        Cell::Recalculate(fontsize);
         wxDC *dc = m_configuration->GetRecalcDC();
         SetFont(dc, m_fontSize_Scaled);
         auto numStartSize = CalculateTextSize(dc, m_numStart, numberStart);
@@ -146,17 +148,117 @@ bool LongNumberCell::BreakUp() const {
     return false;
 
   if (!m_innerCell) {
+    int groupSize = 3;
+    struct lconv *lc = localeconv();
+    if (lc && lc->grouping && lc->grouping[0] > 0 && lc->grouping[0] < 127) {
+      int size = lc->grouping[0];
+      if (size == 3 || size == 4) {
+        groupSize = size;
+      }
+    }
+
+    wxString prefix = "";
+    wxString suffix = "";
+    wxString middle = "";
+
+    int len = m_text.Length();
+    int start = 0;
+    while (start < len) {
+      wxChar c = m_text[start];
+      if (wxIsdigit(c) || c == '.') {
+        break;
+      }
+      prefix += c;
+      start++;
+    }
+
+    int end = len - 1;
+    while (end >= start) {
+      wxChar c = m_text[end];
+      if (wxIsdigit(c) || c == '.') {
+        break;
+      }
+      suffix = c + suffix;
+      end--;
+    }
+
+    if (start <= end) {
+      middle = m_text.Mid(start, end - start + 1);
+    }
+
+    wxString integerPart = "";
+    wxString fractionalPart = "";
+    int dotPos = middle.Find('.');
+    bool hasDot = (dotPos != wxNOT_FOUND);
+    if (hasDot) {
+      integerPart = middle.Left(dotPos);
+      fractionalPart = middle.Mid(dotPos + 1);
+    } else {
+      integerPart = middle;
+    }
+
+    std::vector<wxString> intGroups;
+    int L_int = integerPart.Length();
+    int firstSize = L_int % groupSize;
+    if (firstSize == 0 && L_int > 0) firstSize = groupSize;
+    if (firstSize > 0) {
+      intGroups.push_back(integerPart.Left(firstSize));
+    }
+    for (int i = firstSize; i < L_int; i += groupSize) {
+      intGroups.push_back(integerPart.Mid(i, groupSize));
+    }
+
+    std::vector<wxString> fracGroups;
+    int L_frac = fractionalPart.Length();
+    for (int i = 0; i < L_frac; i += groupSize) {
+      fracGroups.push_back(fractionalPart.Mid(i, groupSize));
+    }
+
+    std::vector<wxString> finalGroups;
+    if (!intGroups.empty()) {
+      finalGroups.push_back(prefix + intGroups[0]);
+      for (size_t i = 1; i < intGroups.size(); ++i) {
+        finalGroups.push_back(intGroups[i]);
+      }
+      if (hasDot) {
+        finalGroups.back() += wxS(".");
+        for (const auto &g : fracGroups) {
+          finalGroups.push_back(g);
+        }
+      }
+    } else {
+      if (hasDot) {
+        if (!fracGroups.empty()) {
+          finalGroups.push_back(prefix + wxS(".") + fracGroups[0]);
+          for (size_t i = 1; i < fracGroups.size(); ++i) {
+            finalGroups.push_back(fracGroups[i]);
+          }
+        } else {
+          finalGroups.push_back(prefix + wxS("."));
+        }
+      } else {
+        if (!prefix.IsEmpty()) {
+          finalGroups.push_back(prefix);
+        }
+      }
+    }
+
+    if (!finalGroups.empty()) {
+      finalGroups.back() += suffix;
+    } else {
+      finalGroups.push_back(prefix + suffix);
+    }
+
     Cell *last = NULL;
-    for (wxString::const_iterator it = m_text.begin(); it != m_text.end();
-         ++it) {
+    for (const auto &groupStr : finalGroups) {
       if (!last) {
         m_innerCell = std::make_unique<DigitCell>(GetGroup(), m_configuration,
-                                                  wxString(*it), TS_NUMBER);
+                                                  groupStr, TS_NUMBER);
         last = m_innerCell.get();
       } else {
         CellList::AppendCell(last, std::make_unique<DigitCell>(GetGroup(),
                                                                m_configuration,
-                                                               wxString(*it), TS_NUMBER));
+                                                               groupStr, TS_NUMBER));
         last = last->GetNext();
       }
     }

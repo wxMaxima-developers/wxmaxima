@@ -1056,8 +1056,8 @@ void wxMaximaFrame::SetupMaximaMenu() {
 
   m_MaximaMenu->AppendSeparator();
   m_MaximaMenu->Append(
-                       EventIDs::menu_jumptoerror, _("Jump to first error"),
-                       _("Jump to the first cell Maxima has reported an error in."),
+                       EventIDs::menu_jumptoerror, _("Jump to last error"),
+                       _("Jump to the last cell Maxima has reported an error in."),
                        wxITEM_NORMAL);
   // debugger type submenu
   m_debugTypeMenu = new wxMenu;

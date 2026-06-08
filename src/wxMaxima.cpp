@@ -7108,13 +7108,13 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   wxString b = wxS("\\");
   wxString f = wxS("/");
   if(event.GetId() == EventIDs::menu_jumptoerror){
-    if (GetWorksheet()->GetErrorList().FirstError()) {
-      GetWorksheet()->SetActiveCell(
-                                 dynamic_cast<GroupCell *>(GetWorksheet()->GetErrorList().FirstError())
-                                 ->GetEditable());
-      dynamic_cast<GroupCell *>(GetWorksheet()->GetErrorList().FirstError())
-        ->GetEditable()
-        ->CaretToEnd();
+    GroupCell *lastError = GetWorksheet()->GetErrorList().LastError();
+    if (lastError) {
+      GetWorksheet()->SetActiveCell(lastError->GetEditable());
+      if (lastError->GetEditable()) {
+        lastError->GetEditable()->CaretToEnd();
+      }
+      GetWorksheet()->ScrollToCaret();
     }
   }
   else if(event.GetId() == ToolBar::menu_restart_id){
