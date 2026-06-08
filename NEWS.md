@@ -1,5 +1,6 @@
 # Current development version
 
+- Fix handling of to_lisp() and (to-maxima).
 - Fix redundant Maxima process spawns when opening worksheets and in batch mode.
 - A Diff Viewer that compares two wxmx files from the same origin that were saved with this wxMaxima version or newer.
 - Fix startup keyboard focus: The worksheet now correctly gains focus on application start.
