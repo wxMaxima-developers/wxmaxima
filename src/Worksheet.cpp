@@ -4215,8 +4215,9 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
     }
     m_maxWidth_Cached = *width;
   }
-  if (m_last) {
-    Cell *walk = m_last;
+  GroupCell *lastCell = GetLastCellInWorksheet();
+  if (lastCell) {
+    Cell *walk = lastCell;
     int extraHeight = 0;
     while (walk && (!walk->HasStaleSize() || walk->GetCurrentPoint().y < 0)) {
       if (walk->HasStaleSize()) {
