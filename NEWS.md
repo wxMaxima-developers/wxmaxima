@@ -1,7 +1,5 @@
-# Current development version
+# 26.06.0
 
-- Add integration tests for long number display flavours (all-in-one, broken into lines, and with ellipsis) using custom configurations.
-- Fix scroll position jump to the top of the page when inserting a new cell with the horizontal caret active.
 - Optimize drawing during mouse moves (bracket autohide): redraw only the actual height of the cell, rather than drawing all the way to the absolute bottom coordinate.
 - Change the "Jump to first error" menu item to "Jump to last error" and fix its implementation to scroll to the most recent error cell.
 - Fix handling of to_lisp() and (to-maxima).
