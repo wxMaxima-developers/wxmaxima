@@ -234,10 +234,7 @@ wxCoord AnimationCell::GetMaxWidth() const {
 }
 
 wxCoord AnimationCell::GetHeightList() const {
-  if (!IsOk())
-    return -1;
-  else
-    return m_images.at(m_displayed)->GetHeightList();
+  return m_height;
 }
 
 void AnimationCell::SetMaxWidth(wxCoord width) {

@@ -987,6 +987,8 @@ public:
   bool UsePartialForDiff() const {return m_usePartialForDiff;}
   void UsePartialForDiff(bool usePartialForDiff)
     {m_usePartialForDiff = usePartialForDiff;}
+  bool GetAdjustWorksheetSizeNeeded() const { return m_adjustWorksheetSizeNeeded; }
+  void SetAdjustWorksheetSizeNeeded(bool val) { m_adjustWorksheetSizeNeeded = val; }
   //! Record that this cell has been drawn to ReportMultipleRedraws()
   void NotifyOfCellRedraw(const Cell *cell);
   //! Clear the memory of ReportMultipleRedraws()
@@ -1243,6 +1245,7 @@ private:
   long m_showLength;
   //!< don't add ; in lisp mode
   bool m_inLispMode;
+  bool m_adjustWorksheetSizeNeeded = false;
   bool m_usepngCairo;
   bool m_enterEvaluates;
   bool m_useSVG;

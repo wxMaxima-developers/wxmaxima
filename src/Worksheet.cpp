@@ -717,7 +717,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
   if (!cells)
     return NULL; // nothing to insert
 
-  m_adjustWorksheetSizeNeeded = true;
+  m_configuration->SetAdjustWorksheetSizeNeeded(true);
   bool renumbersections = false; // only renumber when true
 
   // TODO What we have here is an iteration through all the cells to see if they
@@ -844,7 +844,7 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
 
   newCell->ForceBreakLine(forceNewLine);
   cell->AppendOutput(std::move(newCell));
-  m_adjustWorksheetSizeNeeded = true;
+  m_configuration->SetAdjustWorksheetSizeNeeded(true);
 
   cell->OutputHeightChanged();
   AdjustSize();
@@ -1001,7 +1001,8 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
           if (group->GetHeight() != oldHeight)
             sizeChanged = true;
           movedThisTime = true;
-          m_adjustWorksheetSizeNeeded |= sizeChanged;
+          if (sizeChanged)
+            m_configuration->SetAdjustWorksheetSizeNeeded(true);
 
           int currentWidth =
             m_configuration->Scale_Px(m_configuration->GetIndent() +
@@ -1023,7 +1024,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
           }
       }
     }
-  if (m_adjustWorksheetSizeNeeded)
+  if (m_configuration->GetAdjustWorksheetSizeNeeded())
     AdjustSize();
 
   m_recalculateStart = {};
@@ -1087,7 +1088,7 @@ void Worksheet::OnSize(wxSizeEvent &event) {
   }
   Recalculate();
 
-  m_adjustWorksheetSizeNeeded = true;
+  m_configuration->SetAdjustWorksheetSizeNeeded(true);
   RequestRedraw();
   if (CellToScrollTo)
     ScheduleScrollToCell(CellToScrollTo, false);
@@ -3180,7 +3181,7 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
     answerCell->CaretToEnd();
 
     group->AppendOutput(std::move(answerCell));
-    m_adjustWorksheetSizeNeeded = true;
+    m_configuration->SetAdjustWorksheetSizeNeeded(true);
     Recalculate(group);
   } else {
     if (txt.empty()) {
@@ -3277,7 +3278,7 @@ void Worksheet::Evaluate() {
 void Worksheet::OnKeyDown(wxKeyEvent &event) {
   m_configuration->LastActiveTextCtrl(NULL);
   m_updateControls = true;
-  m_adjustWorksheetSizeNeeded = true;
+  m_configuration->SetAdjustWorksheetSizeNeeded(true);
   ClearNotification();
   // Track the activity of the keyboard. Setting the keyboard
   // to inactive again is done in wxMaxima.cpp
@@ -4121,7 +4122,7 @@ void Worksheet::OnChar(wxKeyEvent &event) {
      looks like navigation (up, down,...) the worksheet looses focus */
   UpdateControlsNeeded(true);
   m_configuration->LastActiveTextCtrl(NULL);
-  m_adjustWorksheetSizeNeeded = true;
+  m_configuration->SetAdjustWorksheetSizeNeeded(true);
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to
   // realize them they need to be passed to it using the event's Skip()
   // function.
@@ -4275,7 +4276,7 @@ void Worksheet::AdjustSize() {
 
     SetScrollRate(m_scrollUnit, m_scrollUnit);
   }
-  m_adjustWorksheetSizeNeeded = false;
+  m_configuration->SetAdjustWorksheetSizeNeeded(false);
 }
 
 /***
@@ -6822,7 +6823,7 @@ void Worksheet::PasteFromClipboard() {
       auto ic =
         std::make_unique<ImgCell>(group, m_configuration, bitmap.GetBitmap());
       group->AppendOutput(std::move(ic));
-      m_adjustWorksheetSizeNeeded = true;
+      m_configuration->SetAdjustWorksheetSizeNeeded(true);
       Recalculate(group);
     }
   }
@@ -7116,7 +7117,7 @@ void Worksheet::RemoveAllOutput(GroupCell *cell) {
     if (sub)
       RemoveAllOutput(sub);
   }
-  m_adjustWorksheetSizeNeeded = true;
+  m_configuration->SetAdjustWorksheetSizeNeeded(true);
   OutputChanged();
   Recalculate();
 }

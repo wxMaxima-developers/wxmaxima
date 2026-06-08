@@ -120,7 +120,7 @@ public:
   wxMemoryBuffer GetCompressedImage() const { return m_image->m_compressedImage; }
 
   wxCoord GetMaxWidth() const override { return m_image ? m_image->GetMaxWidth() : -1; }
-  wxCoord GetHeightList() const override { return m_image ? m_image->GetHeightList() : -1; }
+  wxCoord GetHeightList() const override { return m_height; }
   void SetMaxWidth(wxCoord width) override { if (m_image) m_image->SetMaxWidth(width); }
   void SetMaxHeight(wxCoord height) override { if (m_image) m_image->SetMaxHeight(height); }
 

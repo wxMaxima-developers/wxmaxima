@@ -617,8 +617,7 @@ public:
   bool m_followEvaluation = true;
   bool m_mouseDrag = false;
   bool m_mouseOutside = false;
-  //! Request adjusting the worksheet size?
-  mutable bool m_adjustWorksheetSizeNeeded = false;
+
   //! Returns a pointer to the last cell of this worksheet
   GroupCell *GetLastCellInWorksheet() const;
   int m_clickType = CLICK_TYPE_NONE;

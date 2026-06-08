@@ -331,6 +331,8 @@ void GroupCell::RemoveOutput() {
 
   m_updateConfusableCharWarnings = true;
   ResetSize_Recursively();
+  if (m_configuration)
+    m_configuration->SetAdjustWorksheetSizeNeeded(true);
 }
 
 void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell) {
@@ -349,6 +351,8 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell) {
   UpdateCellsInGroup();
   m_updateConfusableCharWarnings = true;
   m_cellsAppended = true;
+  if (m_configuration)
+    m_configuration->SetAdjustWorksheetSizeNeeded(true);
 }
 
 void GroupCell::UpdateConfusableCharWarnings() {
@@ -447,8 +451,11 @@ void GroupCell::InputHeightChanged() {
     m_outputRect.y = m_currentPoint.y + (m_inputHeight - m_center);
     m_width = std::max(m_width.GetOrElse(0), m_output->GetLineWidth());
   }
-  if (m_height != oldHeight || m_center != oldCenter)
+  if (m_height != oldHeight || m_center != oldCenter) {
     UpdateYPositionList();
+  }
+  if (m_configuration)
+    m_configuration->SetAdjustWorksheetSizeNeeded(true);
 }
 
 void GroupCell::OutputHeightChanged() {
@@ -456,8 +463,11 @@ void GroupCell::OutputHeightChanged() {
   ResetSize();
   RecalculateOutput();
   m_height = m_outputRect.GetHeight() + m_inputHeight;
-  if (m_height != oldHeight)
+  if (m_height != oldHeight) {
     UpdateYPositionList();
+  }
+  if (m_configuration)
+    m_configuration->SetAdjustWorksheetSizeNeeded(true);
 }
 
 // Called on resize events
