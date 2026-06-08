@@ -844,6 +844,7 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
 
   newCell->ForceBreakLine(forceNewLine);
   cell->AppendOutput(std::move(newCell));
+  m_adjustWorksheetSizeNeeded = true;
 
   cell->OutputHeightChanged();
   AdjustSize();
@@ -3179,6 +3180,7 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
     answerCell->CaretToEnd();
 
     group->AppendOutput(std::move(answerCell));
+    m_adjustWorksheetSizeNeeded = true;
     Recalculate(group);
   } else {
     if (txt.empty()) {
@@ -4213,7 +4215,23 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
     m_maxWidth_Cached = *width;
   }
   if (m_last && m_last->HasStaleSize()) {
-    *height = m_last->GetCurrentPoint().y + m_last->GetMaxDrop();
+    if (m_last->GetCurrentPoint().y >= 0) {
+      *height = m_last->GetCurrentPoint().y + m_last->GetMaxDrop();
+    } else {
+      // Find the last cell with a valid position and add up the drops of the remaining cells.
+      int extraHeight = m_last->GetMaxDrop();
+      Cell *walk = m_last->GetPrevious();
+      while (walk && (walk->GetCurrentPoint().y < 0)) {
+        extraHeight += walk->GetMaxDrop() + m_configuration->GetGroupSkip();
+        walk = walk->GetPrevious();
+      }
+      if (walk) {
+        extraHeight += m_configuration->GetGroupSkip();
+        *height = walk->GetCurrentPoint().y + walk->GetMaxDrop() + extraHeight;
+      } else {
+        *height = m_configuration->GetBaseIndent() + extraHeight;
+      }
+    }
   } else {
     *height = currentHeight;
   }
@@ -4243,7 +4261,9 @@ void Worksheet::AdjustSize() {
     // but will make scrolling feel sluggish.
     height = GetClientSize().y;
   }
-  if (m_virtualWidth_Last != width || m_virtualHeight_Last != virtualHeight) {
+  if ((m_virtualWidth_Last != width || m_virtualHeight_Last != virtualHeight) &&
+      virtualHeight > 0)
+    {
     m_virtualWidth_Last = width;
     m_virtualHeight_Last = virtualHeight;
     SetVirtualSize(width, virtualHeight);
@@ -6802,6 +6822,7 @@ void Worksheet::PasteFromClipboard() {
       auto ic =
         std::make_unique<ImgCell>(group, m_configuration, bitmap.GetBitmap());
       group->AppendOutput(std::move(ic));
+      m_adjustWorksheetSizeNeeded = true;
       Recalculate(group);
     }
   }
