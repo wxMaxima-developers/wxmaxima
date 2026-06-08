@@ -1281,12 +1281,12 @@ public:
 
   //! Is the editor active in the last cell of the worksheet?
   bool IsActiveInLast() const
-    { return m_cellPointers.m_activeCell && m_cellPointers.m_activeCell->GetGroup() == m_last; }
+    { return m_cellPointers.m_activeCell && m_cellPointers.m_activeCell->GetGroup() == GetLastCellInWorksheet(); }
 
   //! Returns the last cell of the worksheet
   GroupCell *GetLastCell()
     {
-      return m_last;
+      return GetLastCellInWorksheet();
     }
 
   //! Is the selection in the current working group?
