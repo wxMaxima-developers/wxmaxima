@@ -2220,11 +2220,13 @@ bool EditorCell::ActivateCursor() {
   m_paren1 = m_paren2 = -1;
 
   // upon activation unhide the parent groupcell
-  if(FirstLineOnlyEditor())
-    {
-      GetGroup()->Hide(false);
+  if (FirstLineOnlyEditor()) {
+    GroupCell *group = GetGroup();
+    if (group) {
+      group->Hide(false);
       retval = true;
     }
+  }
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
   return retval;

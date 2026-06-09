@@ -1,5 +1,7 @@
 # Current development version
 
+- Fix a rare access violation (crash) when activating or clicking on an EditorCell that has a null or detached group cell pointer.
+- Fix mouse capture lost warning messages by correctly marking mouse capture loss events as handled in the table of contents and worksheet.
 - Fix the error status being immediately replaced by "awaiting input" on the status bar and taskbar when Maxima encounters an error.
 - Fix layout recalculation of images and plots when window height changes (e.g. at startup or on vertical resizing).
 - Fix duplicate evaluation triggers (sending known answers twice) when Maxima questions are received in multiple chunks.

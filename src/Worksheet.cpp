@@ -1045,6 +1045,8 @@ void Worksheet::Recalculate(Cell *start) {
     return;
 
   GroupCell *group = start->GetGroup();
+  if (!group)
+    return;
 
   if (m_recalculateStart == group)
     return;
@@ -3030,6 +3032,9 @@ void Worksheet::TreeUndo_CellLeft() {
     return;
 
   GroupCell *activeCell = GetActiveCell()->GetGroup();
+  if (!activeCell)
+    return;
+
   if (TreeUndo_ActiveCell) //-V1051
     wxASSERT_MSG(TreeUndo_ActiveCell == activeCell,
                  _("Bug: Cell left but not entered."));
@@ -6573,7 +6578,7 @@ void Worksheet::SetActiveCell(EditorCell *cell) {
     TreeUndo_CellLeft();
 
   if (m_mainToolBar) {
-    if (!cell)
+    if (!cell || !cell->GetGroup())
       m_mainToolBar->UnsetCellStyle();
     else
       m_mainToolBar->SetCellStyle(cell->GetGroup()->GetGroupType());
@@ -8439,9 +8444,8 @@ wxString Worksheet::RTFEnd() const {
   return wxS("}\n}");
 }
 
-void Worksheet::OnMouseCaptureLost(wxMouseCaptureLostEvent &event) {
+void Worksheet::OnMouseCaptureLost(wxMouseCaptureLostEvent &) {
   m_leftDown = false;
-  event.Skip();
 }
 
 #if wxUSE_ACCESSIBILITY

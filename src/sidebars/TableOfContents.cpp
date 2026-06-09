@@ -137,12 +137,11 @@ void TableOfContents::OnMouseMotion(wxMouseEvent &event) {
   event.Skip();
 }
 
-void TableOfContents::OnMouseCaptureLost(wxMouseCaptureLostEvent &event) {
+void TableOfContents::OnMouseCaptureLost(wxMouseCaptureLostEvent &) {
   m_dragStart = -1;
   m_scrollUpTimer.Stop();
   m_scrollDownTimer.Stop();
   UpdateDisplay();
-  event.Skip();
 }
 
 void TableOfContents::OnDragStart(wxListEvent &evt) {

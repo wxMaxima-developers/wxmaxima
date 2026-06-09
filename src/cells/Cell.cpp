@@ -173,8 +173,11 @@ wxBitmap Cell::BitmapFromSVG(wxString svgData, wxSize size)
 
 bool Cell::FirstLineOnlyEditor() const
 {
-  wxASSERT(GetGroup()->GetType() == MC_TYPE_GROUP);
-  return GetGroup()->FirstLineOnlyEditor();
+  GroupCell *group = GetGroup();
+  if (!group)
+    return false;
+  wxASSERT(group->GetType() == MC_TYPE_GROUP);
+  return group->FirstLineOnlyEditor();
 }
 
 wxString Cell::wxColor2HtmlString(wxColor col)
