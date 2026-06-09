@@ -1,6 +1,7 @@
 # Current development version
 
 - Fix scroll position tracking: call ScrolledAwayFromEvaluation(true) when the user manually scrolls so that the active cell is completely outside the visible portion of the worksheet.
+- Fix inserting a new cell (via hCaret) on large worksheets causing the scroll range to shrink to the first screen and the view to jump to the top.
 
 # 26.06.0
 

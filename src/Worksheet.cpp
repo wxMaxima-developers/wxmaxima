@@ -771,7 +771,13 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
   if (undoBuffer)
     TreeUndo_MarkCellsAsAdded(firstOfCellsToInsert, lastOfCellsToInsert,
                               undoBuffer);
-  AdjustSize();
+  // AdjustSize() is intentionally NOT called here. Cell positions are
+  // stale at this point (recalculation has only been scheduled, not
+  // executed). Calling AdjustSize() with stale positions would compute a
+  // virtualHeight that is too small, causing wxWidgets to clamp the scroll
+  // position and jump the view to the top. The flag
+  // SetAdjustWorksheetSizeNeeded(true) (set above) ensures that
+  // RecalculateIfNeeded() will call AdjustSize() after positions are correct.
   return lastOfCellsToInsert;
 }
 
@@ -4255,6 +4261,17 @@ void Worksheet::AdjustSize() {
     height += clientHeight - clientHeight / 8;
     virtualHeight = std::max(clientHeight + 10,
                           height); // ensure we always have VSCROLL active
+
+    // Safety net: never shrink the virtual height below what the current
+    // scroll position requires. If GetMaxPoint() is called with stale cell
+    // positions (e.g. during partial recalculation), it may underestimate
+    // the worksheet height. Shrinking the virtual size would cause
+    // wxWidgets to clamp the scroll position, making the view jump.
+    int scrollX, scrollY;
+    GetViewStart(&scrollX, &scrollY);
+    int currentScrollPixelY = scrollY * m_scrollUnit;
+    virtualHeight = std::max(virtualHeight,
+                             currentScrollPixelY + clientHeight + 10);
 
     // Don't set m_scrollUnit too high for big windows on hi-res screens:
     // Allow scrolling by a tenth of a line doesn't make too much sense,
