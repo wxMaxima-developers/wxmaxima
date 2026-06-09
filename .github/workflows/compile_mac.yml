@@ -150,7 +150,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: /opt/local/
-          key: ${{ runner.os }}-macports-3-${{ hashFiles('macos_build.txt') }}
+          key: ${{ runner.os }}-macports-2-12-15-${{ hashFiles('macos_build.txt') }}
       - name: Checkout wxMaxima from git
         uses: actions/checkout@v6
         with:
@@ -159,7 +159,7 @@ jobs:
           fetch-depth: 15
       - name: Install macports
         run: |
-          if test -e "/opt/local/bin"; then echo Macports already installed; else aria2c https://github.com/macports/macports-base/releases/download/v2.15.5/MacPorts-2.15.5-15-Sequoia.pkg && sudo installer -pkg MacPorts-2.15.5-15-Sequoia.pkg -target /; fi
+          if test -e "/opt/local/bin"; then echo Macports already installed; else aria2c https://github.com/macports/macports-base/releases/download/v2.12.5/MacPorts-2.12.5-15-Sequoia.pkg && sudo installer -pkg MacPorts-2.12.5-15-Sequoia.pkg -target /; fi
           echo "/opt/local/bin" >> $GITHUB_PATH
       - name: Update macports
         run: |
