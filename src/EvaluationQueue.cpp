@@ -138,7 +138,11 @@ void EvaluationQueue::AddTokens(const GroupCell *cell) {
     if (itemStyle == TS_CODE_ENDOFLINE) {
       token.Trim(true);
       token.Trim(false);
-      if (!token.IsEmpty())
+      wxString trimmedToken = token;
+      trimmedToken.Replace(wxS(";"), wxEmptyString);
+      trimmedToken.Replace(wxS("$"), wxEmptyString);
+      trimmedToken.Trim(true).Trim(false);
+      if (!trimmedToken.IsEmpty())
         m_commands.emplace_back(token, index);
       token.Clear();
       continue;
@@ -146,7 +150,11 @@ void EvaluationQueue::AddTokens(const GroupCell *cell) {
   }
   token.Trim(true);
   token.Trim(false);
-  if (!token.IsEmpty())
+  wxString trimmedToken = token;
+  trimmedToken.Replace(wxS(";"), wxEmptyString);
+  trimmedToken.Replace(wxS("$"), wxEmptyString);
+  trimmedToken.Trim(true).Trim(false);
+  if (!trimmedToken.IsEmpty())
     m_commands.emplace_back(token, index);
 }
 

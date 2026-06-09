@@ -1,5 +1,7 @@
 # Current development version
 
+- Fix the Ctrl+F keyboard focus on MS Windows to correctly focus the find dialogue instead of leaving it on the worksheet.
+- Fix syntax errors caused by sending duplicate/consecutive command delimiters to Maxima by filtering out delimiter-only commands and correctly handling unicode non-breaking space characters during ending checks.
 - Fix a rare access violation (crash) when activating or clicking on an EditorCell that has a null or detached group cell pointer.
 - Fix mouse capture lost warning messages by correctly marking mouse capture loss events as handled in the table of contents and worksheet.
 - Fix the error status being immediately replaced by "awaiting input" on the status bar and taskbar when Maxima encounters an error.

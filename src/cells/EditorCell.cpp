@@ -2243,17 +2243,31 @@ bool EditorCell::AddEnding() {
 
   bool endingNeeded = true;
 
+  auto IsWhitespace = [](const wxString& s) {
+    for (size_t i = 0; i < s.length(); ++i) {
+      wxUniChar c = s[i];
+      if (!wxIsspace(c) && c != wxS('\u00a0') && c != wxS('\u2028') && c != wxS('\u2029'))
+        return false;
+    }
+    return true;
+  };
+
   for (auto const &tok : GetAllTokens()) {
     TextStyle itemStyle = tok.GetTextStyle();
     if ((itemStyle == TS_CODE_ENDOFLINE) || (itemStyle == TS_CODE_LISP)) {
       endingNeeded = false;
     } else {
-      if ((!tok.GetText().StartsWith(" ")) &&
-          (!tok.GetText().StartsWith("\t")) &&
-          (!tok.GetText().StartsWith("\n")) &&
-          (!tok.GetText().StartsWith("\r")) &&
-          (!(itemStyle == TS_CODE_COMMENT)))
+      if (!IsWhitespace(tok.GetText()) && (itemStyle != TS_CODE_COMMENT))
         endingNeeded = true;
+    }
+  }
+
+  if (endingNeeded) {
+    wxString trimmed = m_text;
+    trimmed.Replace(wxS("\u00a0"), " ");
+    trimmed.Trim(true);
+    if (trimmed.EndsWith(wxS(";")) || trimmed.EndsWith(wxS("$"))) {
+      endingNeeded = false;
     }
   }
 

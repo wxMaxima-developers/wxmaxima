@@ -61,7 +61,13 @@ private:
       }
 
     const wxString &GetString() const { return m_command; }
-    void AddEnding() { m_command += ";"; }
+    void AddEnding()
+      {
+        wxString trimmed = m_command;
+        trimmed.Trim(true);
+        if (!trimmed.EndsWith(wxS(";")) && !trimmed.EndsWith(wxS("$")))
+          m_command += ";";
+      }
     int GetIndex() const { return m_indexStart; }
   private:
     long m_indexStart = -1;
