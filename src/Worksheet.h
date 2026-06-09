@@ -1441,6 +1441,7 @@ public:
   */
   void OnScrollChanged(wxScrollEvent &ev);
   void OnScrollEvent(wxScrollWinEvent &ev);
+  void CheckIfActiveCellScrolledOut();
   /*! Called if the mouse wheel sents events
 
     The virtual mouse wheel touchpads provide are handled by OnThumbtrack instead.

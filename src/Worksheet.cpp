@@ -7157,7 +7157,7 @@ void Worksheet::OnScrollChanged(wxScrollEvent &ev) {
   // Did we scroll away from the cell that is being currently evaluated?
   // If yes we want to no more follow the evaluation with the scroll and
   // want to enable the button that brings us back.
-  ScrolledAwayFromEvaluation();
+  CallAfter(&Worksheet::CheckIfActiveCellScrolledOut);
 
   // We don't want to start the autosave while the user is scrolling through
   // the document since this will shortly halt the scroll
@@ -7168,8 +7168,28 @@ void Worksheet::OnScrollChanged(wxScrollEvent &ev) {
 void Worksheet::OnScrollEvent(wxScrollWinEvent &ev) {
   m_keyboardInactiveTimer.StartOnce(10000);
   // If we don't Skip() that event we effectively veto it.
-  if (!CanAnimate())
+  if (!CanAnimate()) {
     ev.Skip();
+    CallAfter(&Worksheet::CheckIfActiveCellScrolledOut);
+  }
+}
+
+void Worksheet::CheckIfActiveCellScrolledOut() {
+  if (GetActiveCell()) {
+    int width;
+    int height;
+    GetClientSize(&width, &height);
+
+    wxPoint upperLeftScreenCorner;
+    CalcUnscrolledPosition(0, 0, &upperLeftScreenCorner.x,
+                           &upperLeftScreenCorner.y);
+    wxRect visibleRegion = wxRect(upperLeftScreenCorner,
+                                  upperLeftScreenCorner + wxPoint(width, height));
+
+    if (!visibleRegion.Intersects(GetActiveCell()->GetRect())) {
+      ScrolledAwayFromEvaluation(true);
+    }
+  }
 }
 
 wxString Worksheet::GetInputAboveCaret() {
