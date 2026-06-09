@@ -713,7 +713,8 @@ public:
   //! Sets the size of the current worksheet's visible window.
   void SetCanvasSize(wxSize siz)
     {
-      if(m_canvasSize.GetWidth() != siz.GetWidth())
+      if(m_canvasSize.GetWidth() != siz.GetWidth() ||
+         m_canvasSize.GetHeight() != siz.GetHeight())
         RecalculateForce();
       m_canvasSize = siz;
     }
