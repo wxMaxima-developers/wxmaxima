@@ -296,6 +296,9 @@ void TextCell::UpdateToolTip() {
     else if (m_text.StartsWith(
                                S_("expt: undefined: 0 to a negative exponent.")))
       SetToolTip(_("Division by 0."));
+    else if (m_text.StartsWith(
+                               S_("Refusing to factor polynomial")))
+      SetToolTip(_("This warning can be deactivated by setting factor_max_degree_print_warning to false."));
     else if (m_text.StartsWith(S_("incorrect syntax: parser: incomplete "
                                   "number; missing exponent?")))
       SetToolTip(_("Might also indicate a missing multiplication sign (\"*\")."));
