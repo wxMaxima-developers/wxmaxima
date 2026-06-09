@@ -3189,12 +3189,6 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
     group->AppendOutput(std::move(answerCell));
     m_configuration->SetAdjustWorksheetSizeNeeded(true);
     Recalculate(group);
-  } else {
-    if (txt.empty()) {
-      auto const &text = group->GetAnswer(m_lastQuestion);
-      if (!text.empty())
-        autoEvaluate = group->AutoAnswer();
-    }
   }
 
   // If we filled in an answer and "AutoAnswer" is true we issue an evaluation

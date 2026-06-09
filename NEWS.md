@@ -1,5 +1,8 @@
 # Current development version
 
+- Fix the error status being immediately replaced by "awaiting input" on the status bar and taskbar when Maxima encounters an error.
+- Fix layout recalculation of images and plots when window height changes (e.g. at startup or on vertical resizing).
+- Fix duplicate evaluation triggers (sending known answers twice) when Maxima questions are received in multiple chunks.
 - Fix scroll position tracking: call ScrolledAwayFromEvaluation(true) when the user manually scrolls so that the active cell is completely outside the visible portion of the worksheet.
 - Fix inserting a new cell (via hCaret) on large worksheets causing the scroll range to shrink to the first screen and the view to jump to the top.
 

@@ -10841,7 +10841,10 @@ void wxMaxima::TriggerEvaluation() {
   if (!tmp) {
     wxLogMessage(_("Evaluation ended, since evaluation queue is empty."));
     // Maxima is no more busy.
-    StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
+    if (m_maximaError)
+      StatusMaximaBusy(StatusBar::MaximaStatus::maximaerror);
+    else
+      StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
     // Inform the user that the evaluation queue length now is 0.
     EvaluationQueueLength(0);
     // Now we want to start to display things immediately again
