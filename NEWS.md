@@ -1,4 +1,4 @@
-# Current development version
+# 26.06.1
 
 - Fix the Ctrl+F keyboard focus on MS Windows to correctly focus the find dialogue instead of leaving it on the worksheet.
 - Fix syntax errors caused by sending duplicate/consecutive command delimiters to Maxima by filtering out delimiter-only commands and correctly handling unicode non-breaking space characters during ending checks.
