@@ -72,10 +72,10 @@ $(function() {
   <div class="headertitle"><div class="title"><a class="el" href="classwxMaxima.html">wxMaxima</a> Release Checklist </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md821"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md823"></a>
 GitHub documentation about managing releases:</h1>
 <p><a href="https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository">https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository</a></p>
-<h1><a class="anchor" id="autotoc_md822"></a>
+<h1><a class="anchor" id="autotoc_md824"></a>
 wxMaxima (additional) steps:</h1>
 <ul>
 <li>Does the current git version compile? Do the checks on GitHub work?</li>
@@ -90,7 +90,7 @@ wxMaxima (additional) steps:</h1>
 <li>Update the included HTML manuals.</li>
 <li>Create an (annotated: using "git tag -a") git tag for the release</li>
 <li>Push the tag to GitHub, using: git push origin &ndash;tags</li>
-<li>When building binaries (RPM, DEB, binary tar.gz, ...) do a RELEASE build: configure <a class="el" href="classwxMaxima.html">wxMaxima</a> with <code>cmake -DCMAKE_BUILD_TYPE=Release ..</code> This will not append the Suffix "_DevelopmentSnapshot" to the file names of the generated packages. (This is done, when building (default) "Debug" builds, so that Development versions can be clearly recognized.</li>
+<li>When building binaries (RPM, DEB, binary tar.gz, ...) do a RELEASE build: configure <a class="el" href="classwxMaxima.html">wxMaxima</a> with <code>cmake -DCMAKE_BUILD_TYPE=Release ..</code> This will not append the Suffix "-dev" to the file names of the generated packages. (This is done, when building (default) "Debug" builds, so that Development versions can be clearly recognized.</li>
 <li>Go to the releases page GitHub and convert the tag into a release. If possible add an Windows installer too. Be sure, to remove the 'draft' status. Log out from GitHub and check, if you see the release as an anonymous user too.</li>
 <li>Update the release info in the files download.html and in version.txt in the gh_pages branch.</li>
 <li>Download the tarball (.tar.gz and .zip version) and run the following command on them: gpg &ndash;armor &ndash;detach-sign &lt;filename&gt;</li>
