@@ -318,7 +318,7 @@ void ConfigDialogue::SetCheckboxValues() {
                                         "Maxima assigns each command/equation an automatic label (which looks "
                                         "like %i1 or %o1). If a command begins with a descriptive name followed "
                                         "by a : wxMaxima will call the descriptive name a \"user-defined label\" "
-                                        "instead. This selection now allows to tell wxMaxima if to show only "
+                                        "instead. This selection now allows telling wxMaxima whether to show only "
                                         "automatic labels, automatic labels if there aren't user-defined ones or "
                                         "no label at all until a user-defined label can be found by wxMaxima's "
                                         "heuristics. If automatic labels are suppressed extra vertical space is "

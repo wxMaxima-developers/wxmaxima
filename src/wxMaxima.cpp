@@ -7304,15 +7304,15 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_block_noLocal){
     CommandWiz(
                _("Program (no local variables)"),
-               _("If a program doesn't need local variables maxima allows "
-                 "to put the commands between parenthesis. The result of the last "
+               _("If a program doesn't need local variables, Maxima allows "
+                 "putting the commands between parentheses. The result of the last "
                  "operation is the return value of the program."),
                wxEmptyString, wxS("(#1#);"), wxS("What to do:"), wxS("i:i+1,disp(i)"),
                _("Comma-separated commands"));
   }
   else if(event.GetId() == EventIDs::menu_local){
     CommandWiz(_("Declare a function local to a Program"),
-               _("The command local() allows to tell maxima which functions to "
+               _("The command local() allows telling Maxima which functions to "
                  "make local to the current program when defined."),
                wxEmptyString, wxS("local(#1#);"), wxS("Function name:"), expr,
                _("Comma-separated function names"));
@@ -8880,11 +8880,11 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
   if(event.GetId() == EventIDs::menu_nouns){
     CommandWiz(
                _("Evaluate Nouns"),
-               _("Maxima allows to make functions \"nouns\", which means that they "
-                 "aren't automatically evaluated as soon as maxima encounters them.\n"
-                 "Ways make a function a noun include declaring it a noun, preceding "
-                 "it with a  \' or putting it between the parenthesis of \'().\n\n"
-                 "This command tells maxima that the nouns in this expression "
+               _("Maxima allows making functions \"nouns\", which means that they "
+                 "aren't automatically evaluated as soon as Maxima encounters them.\n"
+                 "Ways to make a function a noun include declaring it a noun, preceding "
+                 "it with a single quote or putting it between the parentheses of \'().\n\n"
+                 "This command tells Maxima that the nouns in this expression "
                  "shall now be evaluated, too."),
                wxEmptyString, wxS("#1#,nouns;"), _("Expression"), expr, wxEmptyString);
   }
@@ -9293,7 +9293,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
     }
   else if(event.GetId() == EventIDs::menu_lbfgs){
     CommandWiz(_("Find minimum"),
-               _("Allows to vary the parameters of a function until it fits "
+               _("Allows varying the parameters of a function until it fits "
                  "experimental data."),
                wxEmptyString, wxS("lbfgs(#1#,#2#,#3#,#4#,[1,1]);"),
                _("Expression:"), expr, wxEmptyString, _("Variables:"), wxS("x"),

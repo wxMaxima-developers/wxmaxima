@@ -312,6 +312,23 @@ if(APPLE)
 else()
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 endif()
+
+if(NOT WIN32)
+    # Create symlink wxmxdiff -> wxmaxima in bin/
+    install(CODE "
+        macro(create_install_symlink TARGET_PATH LINK_PATH)
+            get_filename_component(link_dir \"\${LINK_PATH}\" DIRECTORY)
+            set(dest_dir \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/\${link_dir}\")
+            set(dest_link \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/\${LINK_PATH}\")
+            execute_process(COMMAND \${CMAKE_COMMAND} -E make_directory \${dest_dir})
+            execute_process(COMMAND chmod 755 \${dest_dir})
+            message(STATUS \"Creating symlink: \${dest_link} -> \${TARGET_PATH}\")
+            execute_process(COMMAND \${CMAKE_COMMAND} -E create_symlink \${TARGET_PATH} \${dest_link})
+        endmacro()
+        
+        create_install_symlink(wxmaxima bin/wxmxdiff)
+    ")
+endif()
 # Windows: Install the manifest file as wxmaxima.exe.manifest, see
 # https://learn.microsoft.com/en-us/windows/win32/sbscs/application-manifests
 # We do (currently) not try to include it in the wxmaxima binary,
@@ -344,13 +361,19 @@ else()
 endif()
 
 set(CPACK_PACKAGE_VENDOR "The wxMaxima Team")
-set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Document-based interface for the computer algebra system Maxima")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/data/description.txt")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
 set(CPACK_PACKAGE_CONTACT "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.net>")
 set(CPACK_DEBIAN_PACKAGE_SECTION "math")
 
 set(CPACK_RPM_PACKAGE_LICENSE "GPLv2+")
 set(CPACK_RPM_PACKAGE_GROUP "Productivity/Scientific/Math")
+list(APPEND CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION
+  "/usr/share/icons"
+  "/usr/share/man"
+  "/usr/share/man/man1"
+)
 if(WIN32)
     set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data\\\\wxmaxima.bmp")
 else()
@@ -491,5 +514,51 @@ add_custom_target(gpg DEPENDS dist
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.xz
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
 
+if(NOT WIN32)
+    # 1. Generate and compress Debian changelog to changelog.gz
+    configure_file(
+        "${CMAKE_SOURCE_DIR}/data/changelog.Debian.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/changelog.Debian"
+        @ONLY
+    )
+    add_custom_command(
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/changelog.gz"
+        COMMAND gzip -cn9 "${CMAKE_CURRENT_BINARY_DIR}/changelog.Debian" > "${CMAKE_CURRENT_BINARY_DIR}/changelog.gz"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/changelog.Debian"
+        COMMENT "Compressing Debian changelog"
+    )
+    # Compress upstream ChangeLog to changelog.upstream.gz
+    add_custom_command(
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/changelog.upstream.gz"
+        COMMAND gzip -cn9 "${CMAKE_SOURCE_DIR}/ChangeLog" > "${CMAKE_CURRENT_BINARY_DIR}/changelog.upstream.gz"
+        DEPENDS "${CMAKE_SOURCE_DIR}/ChangeLog"
+        COMMENT "Compressing upstream changelog"
+    )
+    add_custom_target(generate_changelogs ALL DEPENDS
+        "${CMAKE_CURRENT_BINARY_DIR}/changelog.gz"
+        "${CMAKE_CURRENT_BINARY_DIR}/changelog.upstream.gz"
+    )
+    install(FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/changelog.gz"
+        "${CMAKE_CURRENT_BINARY_DIR}/changelog.upstream.gz"
+        DESTINATION share/doc/wxmaxima
+    )
+
+    # 2. Install copyright file
+    install(FILES "${CMAKE_SOURCE_DIR}/data/copyright" DESTINATION share/doc/wxmaxima)
+
+    # 3. Strip binaries
+    set(CPACK_STRIP_FILES ON)
+
+    # 4. Standard directory permissions to prevent 0775 permissions warnings
+    set(CPACK_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS
+        OWNER_READ OWNER_WRITE OWNER_EXECUTE
+        GROUP_READ GROUP_EXECUTE
+        WORLD_READ WORLD_EXECUTE
+    )
+
+    # 5. Install lintian overrides
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.lintian-overrides" DESTINATION share/lintian/overrides RENAME wxmaxima)
+endif()
 
 include(CPack)

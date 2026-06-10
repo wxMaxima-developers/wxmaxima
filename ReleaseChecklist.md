@@ -23,7 +23,7 @@
 - Push the tag to GitHub, using: git push origin --tags
 - When building binaries (RPM, DEB, binary tar.gz, ...) do a RELEASE build:
   configure wxMaxima with `cmake -DCMAKE_BUILD_TYPE=Release ..`
-  This will not append the Suffix "_DevelopmentSnapshot" to the file names of
+  This will not append the Suffix "-dev" to the file names of
   the generated packages. (This is done, when building (default) "Debug" builds,
   so that Development versions can be clearly recognized.
 - Go to the releases page GitHub and convert the tag into a release.

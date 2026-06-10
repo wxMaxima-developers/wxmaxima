@@ -130,8 +130,27 @@ else()
 endif()
 
 file(GLOB HTMLHELP_ADDITIONAL_FILES *.png *.svg)
+if(NOT WIN32)
+    list(REMOVE_ITEM HTMLHELP_ADDITIONAL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.svg")
+endif()
 install(FILES ${HTMLHELP_ADDITIONAL_FILES} DESTINATION share/doc/wxmaxima)
 file(COPY ${HTMLHELP_ADDITIONAL_FILES} DESTINATION .)
+
+if(NOT WIN32)
+    install(CODE "
+        macro(create_install_symlink TARGET_PATH LINK_PATH)
+            get_filename_component(link_dir \"\${LINK_PATH}\" DIRECTORY)
+            set(dest_dir \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/\${link_dir}\")
+            set(dest_link \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/\${LINK_PATH}\")
+            execute_process(COMMAND \${CMAKE_COMMAND} -E make_directory \${dest_dir})
+            execute_process(COMMAND chmod 755 \${dest_dir})
+            message(STATUS \"Creating symlink: \${dest_link} -> \${TARGET_PATH}\")
+            execute_process(COMMAND \${CMAKE_COMMAND} -E create_symlink \${TARGET_PATH} \${dest_link})
+        endmacro()
+        
+        create_install_symlink(../../icons/hicolor/scalable/apps/io.github.wxmaxima_developers.wxMaxima.svg share/doc/wxmaxima/wxmaxima.svg)
+    ")
+endif()
 
 
 find_package(ImageMagick COMPONENTS identify)

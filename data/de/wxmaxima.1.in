@@ -1,6 +1,6 @@
 .TH "WXMAXIMA" "1" "@MANPAGEDATE@" "wxMaxima @VERSION@"
 .SH "NAME" 
-wxmaxima \- wxWidgets Interface f\(:ur Maxima
+wxmaxima, wxmxdiff \- wxWidgets Interface und Diff-Betrachter f\(:ur Maxima
 
 .SH "SYNTAX" 
 .PP 
@@ -26,6 +26,9 @@ Es basiert auf dem Computeralgebrasystem Macsyma, welches am MIT entwickelt wurd
 Eine umfangreiche Dokumentation ist inkludiert (und online verf\(:ugbar).
 .PP
 wxMaxima verwendet das Toolkit wxWidgets welches von vielen Betriebssystemen unterst\(:utzt wird.
+.PP
+Wird das Programm als \fBwxmxdiff\fR aufgerufen (z.B. \(:uber eine symbolische Verkn\(:upfung), verh\(:alt es sich, als w\(:are die Option \fB\-d\fR / \fB\-\-diff\fR angegeben worden, und startet direkt den Diff-Betrachter, um die angegebenen Dateien nebeneinander zu vergleichen.
+
 
 .SH "OPTIONEN"
 .TP

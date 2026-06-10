@@ -147,7 +147,7 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
   {wxCMD_LINE_SWITCH, "", "exit-on-error",
    "Close the program on any Maxima error.", wxCMD_LINE_VAL_NONE, 0},
   {wxCMD_LINE_OPTION, "f", "ini",
-   "Allows to specify a file to store the configuration in.",
+   "Allows specifying a file to store the configuration in.",
    wxCMD_LINE_VAL_STRING, 0},
   {wxCMD_LINE_OPTION, "u", "use-version", "Use Maxima version <str>.",
    wxCMD_LINE_VAL_STRING, 0},
@@ -155,9 +155,9 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
    "Use a Maxima compiled with lisp compiler <str>.", wxCMD_LINE_VAL_STRING,
    0},
   {wxCMD_LINE_OPTION, "X", "extra-args",
-   "Allows to specify extra Maxima arguments.", wxCMD_LINE_VAL_STRING, 0},
+   "Allows specifying extra Maxima arguments.", wxCMD_LINE_VAL_STRING, 0},
   {wxCMD_LINE_OPTION, "m", "maxima",
-   "Allows to specify the location of the Maxima binary.",
+   "Allows specifying the location of the Maxima binary.",
    wxCMD_LINE_VAL_STRING, 0},
   {wxCMD_LINE_SWITCH, "", "enableipc",
    "Lets Maxima control wxMaxima via interprocess communications. Use this "
@@ -359,6 +359,33 @@ bool MyApp::OnInit() {
 
   bool exitAfterEval = false;
   bool evalOnStartup = false;
+
+  wxString programName = wxFileName(argv[0]).GetName();
+  if (programName.IsSameAs(wxS("wxmxdiff"), false)) {
+    bool hasDiff = false;
+    for (int i = 1; i < argc; ++i) {
+      if (argv[i] == wxS("-d") || argv[i] == wxS("--diff")) {
+        hasDiff = true;
+        break;
+      }
+    }
+    if (!hasDiff) {
+      wxString cmdLine;
+      for (int i = 0; i < argc; ++i) {
+        wxString arg = argv[i];
+        if (arg.Contains(wxS(" ")) || arg.Contains(wxS("\t"))) {
+          cmdLine += wxS("\"") + arg + wxS("\" ");
+        } else {
+          cmdLine += arg + wxS(" ");
+        }
+        if (i == 0) {
+          cmdLine += wxS("-d ");
+        }
+      }
+      cmdLineParser.SetCmdLine(cmdLine);
+    }
+  }
+
 
   int cmdLineError = cmdLineParser.Parse();
 

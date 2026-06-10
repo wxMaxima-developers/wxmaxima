@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# Check if lintian is available
+if ! command -v lintian >/dev/null 2>&1; then
+    echo "Warning: lintian not found. Skipping Lintian package validation."
+    exit 0
+fi
+
+# Check if dpkg-deb is available
+if ! command -v dpkg-deb >/dev/null 2>&1; then
+    echo "Warning: dpkg-deb not found. Skipping Lintian package validation."
+    exit 0
+fi
+
+# Go to the build directory
+BUILD_DIR="@CMAKE_BINARY_DIR@"
+cd "$BUILD_DIR" || exit 1
+
+# Clean old build/packages to ensure clean permissions
+rm -rf _CPack_Packages
+rm -f wxMaxima-*.deb wxmaxima_*.deb
+
+# Run CPack to generate the DEB package
+echo "Generating Debian package using CPack..."
+if ! "@CMAKE_CPACK_COMMAND@" -G DEB; then
+    echo "Failure: CPack failed to generate the DEB package."
+    exit 1
+fi
+
+# Find the generated DEB package
+DEB_PACKAGE=$(find . -maxdepth 1 -iname "*wxmaxima*.deb" | head -n 1)
+
+if [ -z "$DEB_PACKAGE" ]; then
+    echo "Failure: No generated DEB package found."
+    exit 1
+fi
+
+echo "Running Lintian on $DEB_PACKAGE..."
+# Run lintian, checking for errors only (warnings are acceptable, but errors fail the test)
+if lintian -E --fail-on error "$DEB_PACKAGE"; then
+    echo "Success: Lintian detected no errors in the DEB package."
+    exit 0
+else
+    echo "Failure: Lintian detected errors in the DEB package."
+    exit 1
+fi

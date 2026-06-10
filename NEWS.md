@@ -1,3 +1,12 @@
+# Current development version
+
+- Add a new command `wxmxdiff` (symlinked to `wxmaxima` on installation) which automatically opens in side-by-side diff comparison mode, and document it in the man pages.
+- Add automatic package verification to the test suite using Lintian (for DEB) and rpmlint (for RPM) when their respective packaging prerequisites are met.
+- Fix Lintian packaging errors and warnings: introduced proper Debian changelog formatting, configured from the `data/changelog.Debian.in` template, added a compliant debian copyright file, enforced standard directory permissions (0755), compressed man pages, and stripped binaries.
+- Fix Lintian spelling-in-binary warnings: corrected several English grammar occurrences of "allow to/allows to" in user-facing dialog tooltips and command line help strings, and added lintian overrides for the false-positive logical `or` operator `mor`.
+- Fix several RPMLINT packaging errors and warnings: introduced a dedicated, clean description file to resolve spelling and line length errors, optimized summary capitalization and punctuation, excluded standard system directories from package ownership, and replaced duplicate icon files with relative symbolic links to resolve duplication waste.
+- Add descriptive CMake status messages when packaging test prerequisites (Lintian, dpkg-deb, rpmlint, rpmbuild) are missing, informing the user compiling the program why those tests are skipped.
+
 # 26.06.1
 
 - Fix the Ctrl+F keyboard focus on MS Windows to correctly focus the find dialogue instead of leaving it on the worksheet.

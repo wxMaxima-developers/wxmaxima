@@ -1093,3 +1093,31 @@ else()
     message(STATUS "appstreamcli not found. Do not check of the appstream file.")
 endif()
 
+find_program(LINTIAN lintian)
+find_program(DPKG_DEB dpkg-deb)
+if(LINTIAN AND DPKG_DEB)
+    message(STATUS "lintian and dpkg-deb found. Enabling lintian check of the Debian package.")
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-lintian.sh.in" check-lintian.sh @ONLY)
+    add_test(
+        NAME check-lintian
+        COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-lintian.sh"
+    )
+else()
+    message(STATUS "lintian or dpkg-deb not found. Skipping lintian check of the Debian package.")
+endif()
+
+find_program(RPMLINT rpmlint)
+find_program(RPMBUILD rpmbuild)
+if(RPMLINT AND RPMBUILD)
+    message(STATUS "rpmlint and rpmbuild found. Enabling rpmlint check of the RPM package.")
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-rpmlint.sh.in" check-rpmlint.sh @ONLY)
+    add_test(
+        NAME check-rpmlint
+        COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-rpmlint.sh"
+    )
+else()
+    message(STATUS "rpmlint or rpmbuild not found. Skipping rpmlint check of the RPM package.")
+endif()
+
+
+

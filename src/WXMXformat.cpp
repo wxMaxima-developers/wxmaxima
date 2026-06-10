@@ -254,7 +254,7 @@ namespace Format {
                 wxTheClipboard->SetData(data);
                 LoggingMessageDialog dialog(NULL, _("Produced invalid XML. The erroneous XML data has "
                                                     "therefore not been saved but has been put on the "
-                                                    "clipboard in order to allow to debug it.\n"
+                                                    "clipboard in order to allow debugging it.\n"
                                                     "Try saving the document in wxm format. Or maybe it helps to remove all output before saving the file, if the conversion of the output causes the problem."),
                                             _("Error"), wxCENTER | wxOK);
                 dialog.ShowModal();

@@ -735,7 +735,7 @@ ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config,
 
   vbox->Add(new wxStaticText(
                              this, -1,
-                             _("Allows to provide separate expressions for calculating")),
+                             _("Allows providing separate expressions for calculating")),
             wxSizerFlags().Expand());
   if (dimensions < 3)
     vbox->Add(new wxStaticText(this, -1, _("the x and the y coordinate.")),

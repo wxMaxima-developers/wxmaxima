@@ -198,15 +198,15 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
                "functions. They can easily be introduced one into another. "
                "Also they are always printed out as 2D maths."));
   m_tips.Add(
-             _("Maxima's \"at\" function allows to access to arbitrary variables in a "
+             _("Maxima's \"at\" function allows accessing arbitrary variables in a "
                "list of results:\n\n    g1:a*x+y=0;\n    g2:b*y+x*x=1;\n    "
                "solve([g1,g2],[a,b]);\n    %[1];\n    result_b:b=at(b,%);"));
   m_tips.Add(
-             _("The \"at\" function allows to introduce one equation into "
+             _("The \"at\" function allows introducing one equation into "
                "another:\n\n    ohm:U=R*I;\n    r_parallel:R=R_1*R_2/(R_1+R_2);\n    "
                "result:at(ohm,r_parallel);"));
   m_tips.Add(
-             _("The rhs() (\"right hand side\") command allows to retrieve the result "
+             _("The rhs() (\"right hand side\") command allows retrieving the result "
                "of an equation in exactly the format a function would have:\n\n    "
                "Values:[\n        /* m=1.2 tons */\n        m=1.2*10^3,\n        /* "
                "100 km/h*/\n        v=100*10^3/(60*60)\n    ];\n    "

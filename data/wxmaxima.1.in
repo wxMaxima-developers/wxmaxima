@@ -1,6 +1,6 @@
 .TH "WXMAXIMA" "1" "@MANPAGEDATE@" "wxMaxima @VERSION@"
 .SH "NAME"
-wxmaxima \- wxWidgets interface for Maxima
+wxmaxima, wxmxdiff \- wxWidgets interface and diff viewer for Maxima
 
 .SH "SYNOPSIS"
 .PP
@@ -27,6 +27,9 @@ has full documentation (HTML and info) included.
 .PP
 wxMaxima uses the cross-platform GUI toolkit wxWidgets and
 runs natively on many operative systems.
+.PP
+If invoked as \fBwxmxdiff\fR (e.g., via a symbolic link), it acts as if the \fB\-d\fR / \fB\-\-diff\fR option was specified, launching directly into the side-by-side Diff viewer comparing the files specified as parameters.
+
 
 .SH "OPTIONS"
 .TP

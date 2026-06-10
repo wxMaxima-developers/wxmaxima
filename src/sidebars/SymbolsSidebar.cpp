@@ -166,7 +166,7 @@ void SymbolsSidebar::OnMenu(wxCommandEvent &event) {
                     this, -1, m_configuration, _("Non-builtin symbols"),
                                            _("Unicode symbols:"),
                     m_configuration->SymbolPaneAdditionalChars(),
-                    _("Allows to specify which not-builtin unicode symbols should be "
+                    _("Allows specifying which non-builtin unicode symbols should be "
                       "displayed in the symbols sidebar along with the built-in symbols.")));
       // wiz->Centre(wxBOTH);
       wiz->SetLabel1ToolTip(_("Drag-and-drop unicode symbols here"));

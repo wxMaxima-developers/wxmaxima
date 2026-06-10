@@ -374,7 +374,7 @@ void ToolBar::AddTools() {
                               wxSize(sliderWidth, -1), wxSL_HORIZONTAL);
   m_plotSlider->SetToolTip(
                            _("After clicking on animations created with with_slider_draw() or "
-                             "similar this slider allows to change the current frame."));
+                             "similar, this slider allows changing the current frame."));
   m_plotSlider->Enable(false);
   m_animationMaxIndex = 0;
   AddControl(m_plotSlider);
@@ -628,7 +628,7 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state) {
       m_plotSlider->Enable(false);
       m_plotSlider->SetToolTip(
                                _("After clicking on animations created with with_slider_draw() or "
-                                 "similar this slider allows to change the current frame."));
+                                 "similar, this slider allows changing the current frame."));
       m_animationMaxIndex = 0;
       m_animationDisplayedIndex = 0;
 

@@ -1,0 +1,60 @@
+#!/bin/sh
+
+# Check if rpmlint is available
+if ! command -v rpmlint >/dev/null 2>&1; then
+    echo "Warning: rpmlint not found. Skipping rpmlint package validation."
+    exit 0
+fi
+
+# Check if rpmbuild is available
+if ! command -v rpmbuild >/dev/null 2>&1; then
+    echo "Warning: rpmbuild not found. Skipping rpmlint package validation."
+    exit 0
+fi
+
+# Go to the build directory
+BUILD_DIR="@CMAKE_BINARY_DIR@"
+cd "$BUILD_DIR" || exit 1
+
+# Clean old build/packages to ensure clean permissions
+rm -rf _CPack_Packages
+rm -f wxMaxima-*.rpm wxmaxima-*.rpm
+
+# Run CPack to generate the RPM package
+echo "Generating RPM package using CPack..."
+if ! "@CMAKE_CPACK_COMMAND@" -G RPM; then
+    echo "Failure: CPack failed to generate the RPM package."
+    exit 1
+fi
+
+# Find the generated RPM package
+RPM_PACKAGE=$(find . -maxdepth 1 -iname "*wxmaxima*.rpm" | head -n 1)
+
+if [ -z "$RPM_PACKAGE" ]; then
+    echo "Failure: No generated RPM package found."
+    exit 1
+fi
+
+echo "Running rpmlint on $RPM_PACKAGE..."
+# Run rpmlint and capture output
+RPMLINT_OUT=$(rpmlint "$RPM_PACKAGE" 2>&1)
+RPMLINT_STATUS=$?
+
+echo "$RPMLINT_OUT"
+
+# Filter out errors (lines matching ": E:") but ignore standard CPack/local packaging errors:
+# - unstripped-binary-or-object (as we allow non-stripped binary to fail)
+# - no-signature (local test packages are not signed)
+# - no-packager-tag (no packager info for test package)
+# - incorrect-fsf-address (refers to COPYING which we don't modify)
+# - invalid-license (GPLv2+ syntax variance)
+ERRORS=$(echo "$RPMLINT_OUT" | grep -E ": E:" | grep -v -E "unstripped-binary-or-object|no-signature|no-packager-tag|incorrect-fsf-address|invalid-license")
+
+if [ -n "$ERRORS" ]; then
+    echo "Failure: rpmlint detected errors in the RPM package:"
+    echo "$ERRORS"
+    exit 1
+fi
+
+echo "Success: rpmlint detected no errors in the RPM package (ignoring unstripped-binary-or-object)."
+exit 0

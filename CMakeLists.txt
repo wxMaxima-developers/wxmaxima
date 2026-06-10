@@ -15,6 +15,14 @@ project(wxMaxima
         LANGUAGES CXX
        )
 
+# Set default directory permissions to 0755 instead of inheriting a loose umask like 0775
+set(CMAKE_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS
+    OWNER_READ OWNER_WRITE OWNER_EXECUTE
+    GROUP_READ GROUP_EXECUTE
+    WORLD_READ WORLD_EXECUTE
+)
+
+
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
@@ -29,11 +37,11 @@ if(WIN32)
     enable_language(RC)
 endif()
 
-# if we build a "Release", do not add "-DevelopmentSnapshot", otherwise do that.
+# if we build a "Release", do not add "-dev", otherwise do that.
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
         set(WXMAXIMA_VERSION ${PROJECT_VERSION})
 else()
-        set(WXMAXIMA_VERSION "${PROJECT_VERSION}-DevelopmentSnapshot")
+        set(WXMAXIMA_VERSION "${PROJECT_VERSION}-dev")
 endif()
 
 # Set a CACHE variable - make it overrideable via command line.

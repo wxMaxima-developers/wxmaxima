@@ -331,7 +331,7 @@ void TextCell::UpdateToolTip() {
                    "problem."));
     else if (m_text.Contains(S_("Control stack exhausted")))
       SetToolTip(_("Often caused by recursive function calls. Some lisps "
-                   "allow to increase "
+                   "allow increasing "
                    "the control stack size using command-line arguments."));
     else if (m_text.Contains(S_(": invalid index")))
       SetToolTip(_("The [] or the part() command tried to access a list or matrix "

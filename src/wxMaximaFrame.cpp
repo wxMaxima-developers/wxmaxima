@@ -1661,7 +1661,7 @@ void wxMaximaFrame::SetupSimplifyMenu() {
                       _("Substitute only in the elements n_1, n_2,..."),
                       wxITEM_NORMAL);
   m_subst_Sub->AppendCheckItem(EventIDs::menu_opsubst,
-                               _("Allow to substitute operators"));
+                               _("Allow substituting operators"));
   m_SimplifyMenu->Append(wxWindow::NewControlId(), _("Substitute"), m_subst_Sub);
   m_SimplifyMenu->Append(EventIDs::menu_nouns, _("Evaluate &Noun Forms..."),
                          _("Evaluate all noun forms in expression"),
