@@ -17,18 +17,17 @@ BUILD_DIR="@CMAKE_BINARY_DIR@"
 cd "$BUILD_DIR" || exit 1
 
 # Clean old build/packages to ensure clean permissions
-rm -rf _CPack_Packages
-rm -f wxMaxima-*.rpm wxmaxima-*.rpm
+rm -rf "${BUILD_DIR}/_CPack_RPM"
 
 # Run CPack to generate the RPM package
 echo "Generating RPM package using CPack..."
-if ! "@CMAKE_CPACK_COMMAND@" -G RPM; then
+if ! "@CMAKE_CPACK_COMMAND@" -G RPM -B "${BUILD_DIR}/_CPack_RPM"; then
     echo "Failure: CPack failed to generate the RPM package."
     exit 1
 fi
 
 # Find the generated RPM package
-RPM_PACKAGE=$(find . -maxdepth 1 -iname "*wxmaxima*.rpm" | head -n 1)
+RPM_PACKAGE=$(find "${BUILD_DIR}/_CPack_RPM" -maxdepth 1 -iname "*wxmaxima*.rpm" | head -n 1)
 
 if [ -z "$RPM_PACKAGE" ]; then
     echo "Failure: No generated RPM package found."

@@ -17,18 +17,17 @@ BUILD_DIR="@CMAKE_BINARY_DIR@"
 cd "$BUILD_DIR" || exit 1
 
 # Clean old build/packages to ensure clean permissions
-rm -rf _CPack_Packages
-rm -f wxMaxima-*.deb wxmaxima_*.deb
+rm -rf "${BUILD_DIR}/_CPack_DEB"
 
 # Run CPack to generate the DEB package
 echo "Generating Debian package using CPack..."
-if ! "@CMAKE_CPACK_COMMAND@" -G DEB; then
+if ! "@CMAKE_CPACK_COMMAND@" -G DEB -B "${BUILD_DIR}/_CPack_DEB"; then
     echo "Failure: CPack failed to generate the DEB package."
     exit 1
 fi
 
 # Find the generated DEB package
-DEB_PACKAGE=$(find . -maxdepth 1 -iname "*wxmaxima*.deb" | head -n 1)
+DEB_PACKAGE=$(find "${BUILD_DIR}/_CPack_DEB" -maxdepth 1 -iname "*wxmaxima*.deb" | head -n 1)
 
 if [ -z "$DEB_PACKAGE" ]; then
     echo "Failure: No generated DEB package found."
