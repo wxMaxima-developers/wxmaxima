@@ -38,9 +38,9 @@ jobs:
           path: wxMaxima
 
       - name: Install NSIS
-        uses: repolevedavaj/install-nsis@v1.2.0
+        uses: negrutiu/nsis-install@v2
         with:
-          nsis-version: '3.12'
+          version: '3.12'
 
       - name: Cache wxWidgets
         uses: actions/cache@v5
