@@ -1,8 +1,8 @@
 var searchData=
 [
   ['b_0',['B',['../memgrp_8cpp.html#a7ddc550b157ed6f8db58e462b504ab0f',1,'B():&#160;memgrp.cpp'],['../classB.html',1,'B']]],
-  ['base_1',['base',['../structTruck.html#ad0ac321609dda1a6c552488b05ec7ac8',1,'Truck::base()'],['../structCar.html#ab8ff28306286da5a8b14fa9bdccaafaa',1,'Car::base()'],['../structVehicle.html#ad7970f528d429f6fc1725173e93a77c2',1,'Vehicle::base()']]],
-  ['base_2',['Base',['../classSumCell.html#adb00dc81c1e3163c58985cfc6b46a36a',1,'SumCell']]],
+  ['base_1',['Base',['../classSumCell.html#adb00dc81c1e3163c58985cfc6b46a36a',1,'SumCell']]],
+  ['base_2',['base',['../structTruck.html#ad0ac321609dda1a6c552488b05ec7ac8',1,'Truck::base()'],['../structCar.html#ab8ff28306286da5a8b14fa9bdccaafaa',1,'Car::base()'],['../structVehicle.html#ad7970f528d429f6fc1725173e93a77c2',1,'Vehicle::base()']]],
   ['base_5fappend_3',['base_Append',['../classCellListBuilderBase.html#ac23b76a013edafdfede50943b554bc1e',1,'CellListBuilderBase']]],
   ['base_5fdynamicappend_4',['base_DynamicAppend',['../classCellListBuilderBase.html#a912afbac8cd712b3bc7fd3b1de3ebd6d',1,'CellListBuilderBase']]],
   ['base_5freset_5',['base_reset',['../classCellPtrBase.html#a8caf3e9b626fc9e72681c67a127246d1',1,'CellPtrBase']]],
