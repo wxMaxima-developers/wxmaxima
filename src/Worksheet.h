@@ -255,8 +255,10 @@ private:
   class TreeUndoAction
   {
   public:
-    TreeUndoAction(GroupCell *start, const wxString &oldText) :
-      m_start(start), m_oldText(oldText)
+    TreeUndoAction(GroupCell *start, const wxString &oldText,
+                   long long oldSelStart = -1, long long oldSelEnd = -1) :
+      m_start(start), m_oldText(oldText),
+      m_oldSelStart(oldSelStart), m_oldSelEnd(oldSelEnd)
       {
         wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
       }
@@ -290,6 +292,15 @@ private:
     */
     const wxString m_oldText;
 
+    /*! The old cursor/selection range in the EditorCell pointed to by m_start.
+
+      -1 means "not recorded". Both fields store the selection endpoints; when
+      they are equal the value represents a plain cursor position (no selection).
+      The convention matches EditorCell::SelectionStart()/SelectionEnd().
+    */
+    const long long m_oldSelStart = -1;
+    const long long m_oldSelEnd   = -1;
+
     /*! This action inserted all cells from start to newCellsEnd.
 
       To undo it these cells have to be deleted again.
@@ -319,6 +330,9 @@ private:
 
   //! The text the TreeUndo_ActiveCell contained when we entered it
   wxString m_treeUndo_ActiveCellOldText;
+  //! The selection range in TreeUndo_ActiveCell when we entered it (-1 = not recorded)
+  long long m_treeUndo_ActiveCellOldSelStart = -1;
+  long long m_treeUndo_ActiveCellOldSelEnd   = -1;
 
   //! Clear the list of actions for which an undo can be undone
   void TreeUndo_ClearRedoActionList();

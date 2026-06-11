@@ -489,7 +489,7 @@ public:
 
   wxString TextInFrontOfSelection() const
     {
-      return GetValue().Mid(1, SelectionLeft());
+      return GetValue().Left(SelectionLeft());
     }
 
   //! Return to the selection after the cell has been left upwards

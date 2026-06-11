@@ -224,7 +224,6 @@ private:
   wxString ToXML() const override;
 
   wxCoord GetMaxWidth() const override;
-  wxCoord GetHeightList() const override;
   void SetMaxWidth(wxCoord width) override;
   void SetMaxHeight(wxCoord height) override;
 

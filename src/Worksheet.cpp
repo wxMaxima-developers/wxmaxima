@@ -3047,7 +3047,9 @@ void Worksheet::TreeUndo_CellLeft() {
       (m_treeUndo_ActiveCellOldText != activeCell->GetEditable()->GetValue()) &&
       (m_treeUndo_ActiveCellOldText + wxS(";") !=
        activeCell->GetEditable()->GetValue())) {
-    treeUndoActions.emplace_front(activeCell, m_treeUndo_ActiveCellOldText);
+    treeUndoActions.emplace_front(activeCell, m_treeUndo_ActiveCellOldText,
+                                  m_treeUndo_ActiveCellOldSelStart,
+                                  m_treeUndo_ActiveCellOldSelEnd);
     TreeUndo_LimitUndoBuffer();
     TreeUndo_ClearRedoActionList();
   }
@@ -3059,6 +3061,8 @@ void Worksheet::TreeUndo_CellEntered() {
 
   TreeUndo_ActiveCell = GetActiveCell()->GetGroup();
   m_treeUndo_ActiveCellOldText = GetActiveCell()->GetValue();
+  m_treeUndo_ActiveCellOldSelStart = static_cast<long long>(GetActiveCell()->SelectionStart());
+  m_treeUndo_ActiveCellOldSelEnd   = static_cast<long long>(GetActiveCell()->SelectionEnd());
 }
 
 void Worksheet::SetCellStyle(GroupCell *group, GroupType style) {
@@ -6496,12 +6500,26 @@ bool Worksheet::TreeUndoTextChange(UndoActions *sourcelist,
       return TreeUndo(sourcelist, undoForThisOperation);
     }
 
-    // Document the old state of this cell so the next action can be undone.
-    undoForThisOperation->emplace_front(
-                                        action.m_start, action.m_start->GetEditable()->GetValue());
+    // Document the current state of this cell (including cursor/selection)
+    // so the next action can be undone (i.e. this undo can itself be redone).
+    {
+      EditorCell *ed = action.m_start->GetEditable();
+      undoForThisOperation->emplace_front(
+        action.m_start, ed->GetValue(),
+        static_cast<long long>(ed->SelectionStart()),
+        static_cast<long long>(ed->SelectionEnd()));
+    }
 
     // Revert the old cell state
     action.m_start->GetEditable()->SetValue(action.m_oldText);
+
+    // Restore the cursor/selection that was recorded when this undo entry was saved.
+    if (action.m_oldSelStart >= 0) {
+      EditorCell *ed = action.m_start->GetEditable();
+      long long selEnd = (action.m_oldSelEnd >= 0) ? action.m_oldSelEnd : action.m_oldSelStart;
+      ed->SetSelection(static_cast<size_t>(action.m_oldSelStart),
+                       static_cast<size_t>(selEnd));
+    }
 
     // Make sure that the cell we have to work on is in the visible part of the
     // tree.

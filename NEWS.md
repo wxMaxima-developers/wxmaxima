@@ -6,6 +6,8 @@
 - Fix Lintian spelling-in-binary warnings: corrected several English grammar occurrences of "allow to/allows to" in user-facing dialog tooltips and command line help strings, and added lintian overrides for the false-positive logical `or` operator `mor`.
 - Fix several RPMLINT packaging errors and warnings: introduced a dedicated, clean description file to resolve spelling and line length errors, optimized summary capitalization and punctuation, excluded standard system directories from package ownership, and replaced duplicate icon files with relative symbolic links to resolve duplication waste.
 - Add descriptive CMake status messages when packaging test prerequisites (Lintian, dpkg-deb, rpmlint, rpmbuild) are missing, informing the user compiling the program why those tests are skipped.
+- Better undo handling
+- Resolved a few potential crashes
 
 # 26.06.1
 
