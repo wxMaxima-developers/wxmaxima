@@ -8,6 +8,14 @@
 - Add descriptive CMake status messages when packaging test prerequisites (Lintian, dpkg-deb, rpmlint, rpmbuild) are missing, informing the user compiling the program why those tests are skipped.
 - Better undo handling
 - Resolved a few potential crashes
+- Accessibility improvements: implement `GetName()` (the primary text screen readers
+  announce) for all cell types and the worksheet; implement `GetState()` so screen
+  readers can report focusable/focused/read-only state; improve `GroupCell` descriptions
+  to reflect the actual cell type; fix `Cell::GetParent()` which was comparing an
+  uninitialized pointer; fix focus-change notifications to target the correct window.
+  Note: on Linux, wxWidgets must be compiled with `--enable-accessibility` (ATK/AT-SPI2
+  support) for any of this to take effect — the system wxWidgets package typically has
+  `wxUSE_ACCESSIBILITY=0`.
 
 # 26.06.1
 

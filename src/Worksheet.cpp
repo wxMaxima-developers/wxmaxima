@@ -6615,7 +6615,8 @@ void Worksheet::SetActiveCell(EditorCell *cell) {
 #if wxUSE_ACCESSIBILITY
   if (m_accessibilityInfo != NULL) {
     int childId = GetAccessibilityId(cell);
-    wxAccessible::NotifyEvent(wxACC_EVENT_OBJECT_FOCUS, this, wxOBJID_CLIENT, childId);
+    // Notify on GetTargetWindow() because that's where the AccessibilityInfo is attached
+    wxAccessible::NotifyEvent(wxACC_EVENT_OBJECT_FOCUS, GetTargetWindow(), wxOBJID_CLIENT, childId);
   }
 #endif
 
@@ -8493,6 +8494,12 @@ Worksheet::AccessibilityInfo::AccessibilityInfo(wxWindow *parent,
   m_parent = parent;
 }
 
+wxAccStatus Worksheet::AccessibilityInfo::CaretAccessibilityInfo::GetName(int WXUNUSED(childId), wxString *name) {
+  if (name)
+    return (*name = _("Cursor")), wxACC_OK;
+  return wxACC_FAIL;
+}
+
 wxAccStatus Worksheet::AccessibilityInfo::CaretAccessibilityInfo::GetDescription(int WXUNUSED(childId), wxString *description) {
   if (description)
     return (*description = _("Insertion point between cells")), wxACC_OK;
@@ -8520,6 +8527,40 @@ wxAccStatus Worksheet::AccessibilityInfo::CaretAccessibilityInfo::GetChild(int c
 wxAccStatus Worksheet::AccessibilityInfo::CaretAccessibilityInfo::GetRole(int childId, wxAccRole *role) {
   if (childId == 0 && role)
     return (*role = wxROLE_SYSTEM_CARET), wxACC_OK;
+  return wxACC_FAIL;
+}
+
+wxAccStatus Worksheet::AccessibilityInfo::GetName(int childId, wxString *name) {
+  if (!name)
+    return wxACC_FAIL;
+
+  if (childId == 0) {
+    *name = _("wxMaxima worksheet");
+    return wxACC_OK;
+  }
+
+  wxAccessible *child = nullptr;
+  if (GetChild(childId, &child) == wxACC_OK && child)
+    return child->GetName(0, name);
+
+  return wxACC_FAIL;
+}
+
+wxAccStatus Worksheet::AccessibilityInfo::GetState(int childId, long *state) {
+  if (!state)
+    return wxACC_FAIL;
+
+  if (childId == 0) {
+    *state = wxACC_STATE_SYSTEM_FOCUSABLE;
+    if (m_worksheet->HasFocus())
+      *state |= wxACC_STATE_SYSTEM_FOCUSED;
+    return wxACC_OK;
+  }
+
+  wxAccessible *child = nullptr;
+  if (GetChild(childId, &child) == wxACC_OK && child)
+    return child->GetState(0, state);
+
   return wxACC_FAIL;
 }
 

@@ -191,6 +191,8 @@ public:
   //! Accessibility: Is pt inside this cell or a child cell?
   wxAccStatus HitTest (const wxPoint &pt, int *childId, Cell **child);
 
+  //! Accessibility: The name/label of this cell (primary text announced by screen readers)
+  virtual wxAccStatus GetName (int childId, wxString *name) const;
   //! Accessibility: Describe the current cell to a Screen Reader
   virtual wxAccStatus GetDescription(int childId, wxString *description) const;
   //! Accessibility: Does this or a child cell currently own the focus?
@@ -202,6 +204,8 @@ public:
   //! Accessibility: What is the contents of this cell?
   virtual wxAccStatus GetValue (int childId, wxString *strValue) const;
   virtual wxAccStatus GetRole (int childId, wxAccRole *role) const;
+  //! Accessibility: Returns focus/read-only state flags for this cell
+  virtual wxAccStatus GetState (int childId, long *state) const;
 #endif
 
 
@@ -1174,6 +1178,8 @@ class CellAccessible final : public wxAccessible
 public:
   explicit CellAccessible(Cell *const forCell) : m_cell(forCell) {}
 
+  //! Accessibility: The name/label announced by screen readers
+  wxAccStatus GetName (int childId, wxString *name) override;
   //! Accessibility: Inform the Screen Reader which cell is the parent of this one
   wxAccStatus GetParent (wxAccessible **parent) override;
   //! Accessibility: How many childs of this cell GetChild() can retrieve?
@@ -1194,6 +1200,8 @@ public:
   //! Accessibility: What is the contents of this cell?
   wxAccStatus GetValue (int childId, wxString *strValue) override;
   wxAccStatus GetRole (int childId, wxAccRole *role) override;
+  //! Accessibility: Returns focus/read-only state flags
+  wxAccStatus GetState (int childId, long *state) override;
 private:
   Cell *const m_cell;
 };

@@ -3836,6 +3836,22 @@ void EditorCell::CaretToPosition(size_t pos) {
 }
 
 #if wxUSE_ACCESSIBILITY
+wxAccStatus EditorCell::GetName(int childId, wxString *name) const {
+  if (childId != 0 || !name)
+    return wxACC_FAIL;
+  *name = ToString();
+  return wxACC_OK;
+}
+
+wxAccStatus EditorCell::GetState(int childId, long *state) const {
+  if (childId != 0 || !state)
+    return wxACC_FAIL;
+  *state = wxACC_STATE_SYSTEM_FOCUSABLE;
+  if (IsActive())
+    *state |= wxACC_STATE_SYSTEM_FOCUSED;
+  return wxACC_OK;
+}
+
 wxAccStatus EditorCell::GetDescription(int childId,
                                        wxString *description) const {
   if (childId != 0)

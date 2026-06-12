@@ -1843,19 +1843,65 @@ bool GroupCell::Contains(GroupCell *cell) const {
 }
 
 #if wxUSE_ACCESSIBILITY
+wxAccStatus GroupCell::GetName(int childId, wxString *name) const {
+  if (!name)
+    return wxACC_FAIL;
+
+  if (childId != 0) {
+    Cell *childCell = nullptr;
+    if (GetChild(childId, &childCell) == wxACC_OK && childCell)
+      return childCell->GetName(0, name);
+    return wxACC_FAIL;
+  }
+
+  // ToString() produces "label input\noutput" which is the most useful
+  // text to read aloud for this group
+  *name = ToString();
+  return name->empty() ? wxACC_NOT_IMPLEMENTED : wxACC_OK;
+}
+
 wxAccStatus GroupCell::GetDescription(int childId,
                                       wxString *description) const {
   if (description == NULL)
     return wxACC_FAIL;
 
   if (childId == 0) {
-    if (m_groupType == GC_TYPE_PAGEBREAK) {
+    switch (m_groupType) {
+    case GC_TYPE_PAGEBREAK:
       *description = _("A page break");
-      return wxACC_OK;
-    } else {
-      *description = _("A GroupCell that bundles input with its output");
-      return wxACC_OK;
+      break;
+    case GC_TYPE_CODE:
+      *description = _("A Maxima input cell with its output");
+      break;
+    case GC_TYPE_TEXT:
+      *description = _("A text cell");
+      break;
+    case GC_TYPE_SECTION:
+      *description = _("A section heading");
+      break;
+    case GC_TYPE_SUBSECTION:
+      *description = _("A subsection heading");
+      break;
+    case GC_TYPE_SUBSUBSECTION:
+      *description = _("A sub-subsection heading");
+      break;
+    case GC_TYPE_HEADING5:
+      *description = _("A heading");
+      break;
+    case GC_TYPE_HEADING6:
+      *description = _("A heading");
+      break;
+    case GC_TYPE_TITLE:
+      *description = _("A title");
+      break;
+    case GC_TYPE_IMAGE:
+      *description = _("An image cell");
+      break;
+    default:
+      *description = _("A worksheet cell");
+      break;
     }
+    return wxACC_OK;
   } else {
     Cell *childCell = nullptr;
     if (GetChild(childId, &childCell) == wxACC_OK) {

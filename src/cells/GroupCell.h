@@ -411,6 +411,7 @@ public:
   std::vector<std::pair<wxString, wxString>> m_knownAnswers;
 
 #if wxUSE_ACCESSIBILITY
+  wxAccStatus GetName (int childId, wxString *name) const override;
   wxAccStatus GetDescription(int childId, wxString *description) const override;
   wxAccStatus GetLocation (wxRect &rect, int elementId) override;
   wxAccStatus GetRole (int childId, wxAccRole *role) const override;

@@ -1417,17 +1417,58 @@ wxAccStatus CellAccessible::GetParent(wxAccessible **parent) {
   return rc;
 }
 
+wxAccStatus Cell::GetName(int childId, wxString *name) const {
+  if (!name)
+    return wxACC_FAIL;
+
+  if (childId != 0) {
+    Cell *childCell = nullptr;
+    if (GetChild(childId, &childCell) == wxACC_OK && childCell)
+      return childCell->GetName(0, name);
+    return wxACC_FAIL;
+  }
+
+  // Use the text representation as the accessible name
+  *name = ToString();
+  return name->empty() ? wxACC_NOT_IMPLEMENTED : wxACC_OK;
+}
+
+wxAccStatus CellAccessible::GetName(int childId, wxString *name) {
+  return m_cell->GetName(childId, name);
+}
+
+wxAccStatus Cell::GetState(int childId, long *state) const {
+  if (!state)
+    return wxACC_FAIL;
+
+  if (childId != 0) {
+    Cell *childCell = nullptr;
+    if (GetChild(childId, &childCell) == wxACC_OK && childCell)
+      return childCell->GetState(0, state);
+    return wxACC_FAIL;
+  }
+
+  *state = wxACC_STATE_SYSTEM_READONLY;
+  return wxACC_OK;
+}
+
+wxAccStatus CellAccessible::GetState(int childId, long *state) {
+  return m_cell->GetState(childId, state);
+}
+
 wxAccStatus Cell::GetParent(Cell **parent) const {
   if (!parent)
     return wxACC_FAIL;
 
-  if (*parent != this)
-    {
-      *parent = GetGroup();
-      return wxACC_OK;
-    }
+  // GroupCells have m_group pointing to themselves; other cells point to
+  // their containing GroupCell. If we are the GroupCell, the parent is the
+  // worksheet (represented as nullptr here).
+  if (this == GetGroup()) {
+    *parent = nullptr;
+    return wxACC_OK;
+  }
 
-  *parent = nullptr; // This means the worksheet
+  *parent = GetGroup();
   return wxACC_OK;
 }
 

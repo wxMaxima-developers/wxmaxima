@@ -1614,6 +1614,7 @@ public:
   {
   public:
     AccessibilityInfo(wxWindow *parent, Worksheet *worksheet);
+    wxAccStatus GetName (int childId, wxString *name);
     wxAccStatus GetChildCount (int *childCount);
     wxAccStatus GetChild (int childId, wxAccessible **child);
     wxAccStatus GetDefaultAction(int childId, wxString *actionName);
@@ -1624,15 +1625,17 @@ public:
                                  int *childId, wxAccessible **childObject);
     wxAccStatus GetDescription(int childId, wxString *description);
     wxAccStatus GetRole(int childId, wxAccRole *role);
+    wxAccStatus GetState(int childId, long *state);
   private:
     wxWindow *m_parent = NULL;
     Worksheet *m_worksheet = NULL;
 
     class CaretAccessibilityInfo : public wxAccessible {
     public:
-      CaretAccessibilityInfo(AccessibilityInfo* parent, Worksheet* worksheet) 
+      CaretAccessibilityInfo(AccessibilityInfo* parent, Worksheet* worksheet)
         : wxAccessible(worksheet->GetTargetWindow()), m_parent(parent), m_worksheet(worksheet) {}
 
+      wxAccStatus GetName(int childId, wxString *name) override;
       wxAccStatus GetDescription(int WXUNUSED(childId), wxString *description) override;
       wxAccStatus GetParent(wxAccessible **parent) override;
       wxAccStatus GetChildCount(int *childCount) override;
