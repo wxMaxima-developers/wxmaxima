@@ -250,14 +250,15 @@ $(function() {
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  wxString ToXML() <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  wxCoord GetMaxWidth() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <span class="keywordtype">void</span> SetMaxWidth(wxCoord width) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  <span class="keywordtype">void</span> SetMaxHeight(wxCoord height) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  <span class="keywordtype">void</span> DrawBoundingBox(wxDC &amp;WXUNUSED(dc), <span class="keywordtype">bool</span> WXUNUSED(all) = <span class="keyword">false</span>)<span class="keyword">  override</span></div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="keyword">    </span>{ m_drawBoundingBox = <span class="keyword">true</span>; }</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>};</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="preprocessor">#endif </span><span class="comment">// ANIMATIONCELL_H</span></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  wxCoord GetHeightList()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classCell.html#a989770dc9a23a87a2a4e503e89118677">m_height</a>; }</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  <span class="keywordtype">void</span> SetMaxWidth(wxCoord width) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  <span class="keywordtype">void</span> SetMaxHeight(wxCoord height) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  <span class="keywordtype">void</span> DrawBoundingBox(wxDC &amp;WXUNUSED(dc), <span class="keywordtype">bool</span> WXUNUSED(all) = <span class="keyword">false</span>)<span class="keyword">  override</span></div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="keyword">    </span>{ m_drawBoundingBox = <span class="keyword">true</span>; }</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>};</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="preprocessor">#endif </span><span class="comment">// ANIMATIONCELL_H</span></div>
 <div class="ttc" id="aCell_8h_html"><div class="ttname"><a href="Cell_8h.html">Cell.h</a></div><div class="ttdoc">The definition of the base class of all cells the worksheet consists of.</div></div>
 <div class="ttc" id="aImage_8h_html"><div class="ttname"><a href="Image_8h.html">Image.h</a></div><div class="ttdoc">This file declares the class Image.</div></div>
 <div class="ttc" id="aclassAFontSize_html"><div class="ttname"><a href="classAFontSize.html">AFontSize</a></div><div class="ttdoc">A Type-Safe Fixed-Point Font Size.</div><div class="ttdef"><b>Definition:</b> FontAttribs.h:97</div></div>
@@ -286,7 +287,8 @@ $(function() {
 <div class="ttc" id="aclassCachedInteger_html"><div class="ttname"><a href="classCachedInteger.html">CachedInteger</a></div><div class="ttdoc">A cached integer value.</div><div class="ttdef"><b>Definition:</b> CachedValue.h:45</div></div>
 <div class="ttc" id="aclassCellPointers_html"><div class="ttname"><a href="classCellPointers.html">CellPointers</a></div><div class="ttdoc">The storage for pointers to cells.</div><div class="ttdef"><b>Definition:</b> CellPointers.h:45</div></div>
 <div class="ttc" id="aclassCellTypeInfo_html"><div class="ttname"><a href="classCellTypeInfo.html">CellTypeInfo</a></div><div class="ttdoc">A class that carries information about the type of a cell.</div><div class="ttdef"><b>Definition:</b> Cell.h:93</div></div>
-<div class="ttc" id="aclassCell_html_aae0a47c1802d5161976694882cd2f4a9"><div class="ttname"><a href="classCell.html#aae0a47c1802d5161976694882cd2f4a9">Cell::SetCurrentPoint</a></div><div class="ttdeci">virtual void SetCurrentPoint(wxPoint point)</div><div class="ttdoc">Pass 2: Arrangement.</div><div class="ttdef"><b>Definition:</b> Cell.cpp:483</div></div>
+<div class="ttc" id="aclassCell_html_a989770dc9a23a87a2a4e503e89118677"><div class="ttname"><a href="classCell.html#a989770dc9a23a87a2a4e503e89118677">Cell::m_height</a></div><div class="ttdeci">CachedInteger&lt; wxCoord &gt; m_height</div><div class="ttdoc">The height of this cell.</div><div class="ttdef"><b>Definition:</b> Cell.h:1079</div></div>
+<div class="ttc" id="aclassCell_html_aae0a47c1802d5161976694882cd2f4a9"><div class="ttname"><a href="classCell.html#aae0a47c1802d5161976694882cd2f4a9">Cell::SetCurrentPoint</a></div><div class="ttdeci">virtual void SetCurrentPoint(wxPoint point)</div><div class="ttdoc">Pass 2: Arrangement.</div><div class="ttdef"><b>Definition:</b> Cell.cpp:487</div></div>
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:86</div></div>
 <div class="ttc" id="aclassGroupCell_html"><div class="ttname"><a href="classGroupCell.html">GroupCell</a></div><div class="ttdoc">A cell grouping input (and, if there is one, also the output) cell to a foldable item.</div><div class="ttdef"><b>Definition:</b> GroupCell.h:87</div></div>
 <div class="ttc" id="aclassImgCellBase_html"><div class="ttname"><a href="classImgCellBase.html">ImgCellBase</a></div><div class="ttdef"><b>Definition:</b> ImgCellBase.h:42</div></div>
