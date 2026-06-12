@@ -593,7 +593,7 @@ $(function() {
 <div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> OnInit();</div>
 <div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>  <span class="keyword">virtual</span> <span class="keywordtype">int</span> OnRun();</div>
 <div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>  <span class="keyword">virtual</span> <span class="keywordtype">int</span> OnExit();</div>
-<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span><span class="preprocessor">#if wxUSE_ON_FATAL_EXCEPTION &amp;&amp; wxUSE_CRASHREPORT</span></div>
+<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span><span class="preprocessor">#if wxUSE_ON_FATAL_EXCEPTION &amp;&amp; wxUSE_DEBUGREPORT</span></div>
 <div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>  <span class="keywordtype">void</span>  OnFatalException () <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> NewWindow(<span class="keyword">const</span> wxString &amp;file = {}, <span class="keywordtype">bool</span> evalOnStartup = <span class="keyword">false</span>, <span class="keywordtype">bool</span> exitAfterEval = <span class="keyword">false</span>, <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *wxmData = NULL, std::size_t wxmLen = 0);</div>
@@ -611,7 +611,7 @@ $(function() {
 <div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>  std::unique_ptr&lt;wxLogChain&gt; m_logChain;</div>
 <div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span>  <span class="keyword">static</span> std::vector&lt;wxProcess *&gt; m_wxMaximaProcesses;</div>
 <div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span><span class="preprocessor">#ifdef USE_QA</span></div>
-<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span><span class="preprocessor">#if wxUSE_ON_FATAL_EXCEPTION &amp;&amp; wxUSE_CRASHREPORT</span></div>
+<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span><span class="preprocessor">#if wxUSE_ON_FATAL_EXCEPTION &amp;&amp; wxUSE_DEBUGREPORT</span></div>
 <div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>  <span class="keywordtype">void</span> GenerateDebugReport(wxDebugReport::Context ctx);</div>
 <div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span><span class="preprocessor">#endif</span></div>
