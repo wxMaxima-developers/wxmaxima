@@ -287,6 +287,7 @@ Configuration::Configuration(const Configuration &o) :
   m_copyMathML(o.m_copyMathML),
   m_copyMathMLHTML(o.m_copyMathMLHTML),
   m_showLength(o.m_showLength),
+  m_layoutStrategy(o.m_layoutStrategy),
   m_inLispMode(o.m_inLispMode),
   m_usepngCairo(o.m_usepngCairo),
   m_enterEvaluates(o.m_enterEvaluates),
@@ -489,6 +490,7 @@ void Configuration::ResetAllToDefaults() {
   m_copySVG = true;
   m_copyEMF = false;
   m_showLength = 2;
+  m_layoutStrategy = LayoutStrategy::layout2DIfFits;
   m_useUnicodeMaths = true;
   m_offerKnownAnswers = true;
   m_parenthesisDrawMode = ascii;
@@ -978,6 +980,12 @@ void Configuration::ReadConfig() {
   config->Read("defaultPort", &m_defaultPort);
   config->Read(wxS("fixReorderedIndices"), &m_fixReorderedIndices);
   config->Read(wxS("showLength"), &m_showLength);
+  {
+    int ls = static_cast<int>(m_layoutStrategy);
+    config->Read(wxS("layoutStrategy"), &ls);
+    if (ls < 0 || ls > 2) ls = 1;
+    m_layoutStrategy = static_cast<LayoutStrategy>(ls);
+  }
   if(m_showLength < 0)
     m_showLength = 0;
   if(m_showLength > 3)
@@ -1784,6 +1792,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write(wxS("copyEMF"), m_copyEMF);
   config->Write(wxS("useSVG"), m_useSVG);
   config->Write(wxS("showLength"), m_showLength);
+  config->Write(wxS("layoutStrategy"), static_cast<int>(m_layoutStrategy));
   config->Write(wxS("TOCshowsSectionNumbers"), m_TOCshowsSectionNumbers);
   config->Write(wxS("useUnicodeMaths"), m_useUnicodeMaths);
   config->Write("defaultPort", m_defaultPort);

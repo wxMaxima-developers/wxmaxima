@@ -12,6 +12,18 @@
 - In non-interactive/batch mode (`--exit-on-error`), the crash dialog is
   suppressed so that ctest can kill the process normally after a timeout: the
   report is saved to disk and its path is printed to stderr instead.
+- Improve the randomness of the authentication token passed to Maxima via
+  `MAXIMA_AUTH_CODE`: OS entropy (`std::random_device`) is now XOR-mixed with
+  C++ PRNG output, so the token is strong whenever either source is good.
+- The layout timeout (configurable, default 5 s) now interrupts layout even
+  inside a single large object such as a huge matrix or list: cancellation
+  checks were added to the inner loops of `RecalculateList`, `BreakUpCells`,
+  `BreakLines_List`, and `MatrCell::Recalculate`, so the timeout fires promptly
+  rather than only after the slow call returns.
+- Add a "Math layout strategy" radio box to the Worksheet tab of the
+  configuration dialogue, letting users choose between "2D, whenever possible"
+  (never linearize), "2D if it fits on the page width" (default — linearize wide
+  objects), and "Prefer 1D" (always use linear notation).
 - Better undo handling
 - Resolved a few potential crashes
 - Accessibility improvements: implement `GetName()` (the primary text screen readers

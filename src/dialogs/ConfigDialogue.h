@@ -304,6 +304,7 @@ protected:
   wxCheckBox *m_showMatchingParens;
   wxChoice *m_showLength;
   wxChoice *m_autosubscript;
+  wxRadioBox *m_layoutStrategy;
   wxRadioButton *m_enterEvaluates;
   wxRadioButton *m_ctrlEnterEvaluates;
   wxCheckBox *m_numpadEnterEvaluates;

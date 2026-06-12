@@ -582,12 +582,14 @@ void GroupCell::RecalculateOutput() const {
   }
 
   if (!m_layoutSuppressed) {
-    wxStopWatch sw;
-    // Breakup cells and break lines
+    if (m_configuration->MaxLayoutTime() > 0)
+      m_configuration->SetLayoutDeadline(m_configuration->MaxLayoutTime());
+
+    // Breakup cells and break lines (may exit early if deadline fires)
     BreakLines();
 
     if (m_configuration->MaxLayoutTime() > 0 &&
-        sw.Time() > m_configuration->MaxLayoutTime() * 1000) {
+        m_configuration->IsLayoutCancelled()) {
       m_layoutSuppressed = true;
       const_cast<GroupCell *>(this)->m_output =
           std::make_unique<TextCell>(const_cast<GroupCell *>(this), m_configuration);
@@ -596,6 +598,7 @@ void GroupCell::RecalculateOutput() const {
       tc->SetType(MC_TYPE_WARNING);
       tc->Recalculate(m_configuration->GetDefaultFontSize());
     }
+    m_configuration->ClearLayoutCancelled();
   }
 
   // Recalculate size of cells again: Their size might have changed during

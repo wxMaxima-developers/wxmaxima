@@ -509,6 +509,7 @@ void ConfigDialogue::SetCheckboxValues() {
   m_matchParens->SetValue(configuration->GetMatchParens());
   m_showMatchingParens->SetValue(configuration->ShowMatchingParens());
   m_showLength->SetSelection(configuration->ShowLength());
+  m_layoutStrategy->SetSelection(static_cast<int>(configuration->GetLayoutStrategy()));
   m_autosubscript->SetSelection(configuration->GetAutosubscript_Num());
   m_changeAsterisk->SetValue(configuration->GetChangeAsterisk());
   m_hidemultiplicationSign->SetValue(configuration->HidemultiplicationSign());
@@ -713,6 +714,25 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
 
   displaySizer->Add(grid_sizer,
                     wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+
+  wxArrayString layoutStrategies;
+  layoutStrategies.Add(_("2D, whenever possible"));
+  layoutStrategies.Add(_("2D if it fits on the page width"));
+  layoutStrategies.Add(_("Prefer 1D"));
+  m_layoutStrategy = new wxRadioBox(displaySizer->GetStaticBox(), wxID_ANY,
+                                    _("Math layout strategy"),
+                                    wxDefaultPosition, wxDefaultSize,
+                                    layoutStrategies, 0, wxRA_SPECIFY_ROWS);
+  m_layoutStrategy->SetToolTip(
+    _("Choose how mathematical output is formatted:\n"
+      "\"2D, whenever possible\" keeps all expressions in two-dimensional form "
+      "(fractions stacked, matrices drawn as boxes), even if they overflow the "
+      "page width.\n"
+      "\"2D if it fits on the page width\" (default) switches wide objects to "
+      "linear notation.\n"
+      "\"Prefer 1D\" always uses linear notation."));
+  displaySizer->Add(m_layoutStrategy,
+                    wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
   wxStaticBoxSizer *numDigitsSizer = new wxStaticBoxSizer(
                                                           wxVERTICAL, displaySizer->GetStaticBox(), _("Display of long numbers"));
@@ -2159,6 +2179,8 @@ void ConfigDialogue::WriteSettings() {
   configuration->SetMatchParens(m_matchParens->GetValue());
   configuration->ShowMatchingParens(m_showMatchingParens->GetValue());
   configuration->ShowLength(m_showLength->GetSelection());
+  configuration->SetLayoutStrategy(
+    static_cast<Configuration::LayoutStrategy>(m_layoutStrategy->GetSelection()));
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
   configuration->FixedFontInTextControls(m_fixedFontInTC->GetValue());
   configuration->OfferKnownAnswers(m_offerKnownAnswers->GetValue());

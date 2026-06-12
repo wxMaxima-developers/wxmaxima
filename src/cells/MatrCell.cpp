@@ -63,8 +63,11 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
   if (NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
     AFontSize const fontsize_entry{MC_MIN_SIZE, fontsize - 2};
-    for (size_t i = 0; i < m_cells.size(); i++)
+    for (size_t i = 0; i < m_cells.size(); i++) {
+      if (m_configuration->IsLayoutCancelled())
+        return;
       m_cells.at(i)->RecalculateList(fontsize_entry);
+    }
 
     m_width = 0;
     m_widths.clear();

@@ -39,6 +39,7 @@
 #include <vector>
 #include <algorithm>
 #include <atomic>
+#include <chrono>
 #include <wx/wupdlock.h>
 #include <list>
 
@@ -408,6 +409,35 @@ public:
 
   int MaxLayoutTime() const { return m_maxLayoutTime; }
   void MaxLayoutTime(int time) { m_maxLayoutTime = time; }
+
+  enum class LayoutStrategy {
+    layout2DWheneverPossible = 0,
+    layout2DIfFits = 1,
+    layoutPrefer1D = 2
+  };
+  LayoutStrategy GetLayoutStrategy() const { return m_layoutStrategy; }
+  void SetLayoutStrategy(LayoutStrategy s) { m_layoutStrategy = s; }
+
+  void SetLayoutDeadline(int seconds) {
+    m_layoutDeadline = std::chrono::steady_clock::now() +
+                       std::chrono::seconds(seconds);
+    m_layoutCancelled.store(false, std::memory_order_relaxed);
+    m_layoutDeadlineActive = true;
+  }
+  void ClearLayoutCancelled() {
+    m_layoutDeadlineActive = false;
+    m_layoutCancelled.store(false, std::memory_order_relaxed);
+  }
+  bool IsLayoutCancelled() const {
+    if (m_layoutCancelled.load(std::memory_order_relaxed))
+      return true;
+    if (m_layoutDeadlineActive &&
+        std::chrono::steady_clock::now() >= m_layoutDeadline) {
+      m_layoutCancelled.store(true, std::memory_order_relaxed);
+      return true;
+    }
+    return false;
+  }
 
   struct CharsExist {
     wxString chars;
@@ -1304,6 +1334,10 @@ private:
   int m_maxClipbrd_BitmapMegabytes;
   int m_autoSaveMinutes;
   int m_maxLayoutTime;
+  LayoutStrategy m_layoutStrategy = LayoutStrategy::layout2DIfFits;
+  std::chrono::steady_clock::time_point m_layoutDeadline;
+  bool m_layoutDeadlineActive = false;
+  mutable std::atomic<bool> m_layoutCancelled{false};
   wxString m_wxMathML_Filename;
   maximaHelpFormat m_maximaHelpFormat;
   wxTextCtrl *m_lastActiveTextCtrl = NULL;

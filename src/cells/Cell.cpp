@@ -509,8 +509,11 @@ void Cell::DrawList(wxDC *dc, wxDC *adc) {
 }
 
 void Cell::RecalculateList(AFontSize fontsize) const {
-  for (const Cell &tmp : OnList(this))
+  for (const Cell &tmp : OnList(this)) {
+    if (m_configuration->IsLayoutCancelled())
+      return;
     tmp.Recalculate(fontsize);
+  }
 }
 
 void Cell::ResetSizeList() const {
@@ -596,8 +599,11 @@ void Cell::BreakLines_List() const
 
   // 2nd step: Convert all objects that are wider than a line to 1D objects that
   // (hopefully) can be broken into lines
-  if(BreakUpCells())
-    RecalculateList(m_configuration->GetMathFontSize());
+  if (m_configuration->GetLayoutStrategy() !=
+      Configuration::LayoutStrategy::layout2DWheneverPossible) {
+    if (BreakUpCells())
+      RecalculateList(m_configuration->GetMathFontSize());
+  }
 
   // 3rd step: Determine a sane maximum line width
   int fullWidth = m_configuration->GetCanvasSize().x - m_configuration->GetIndent();
@@ -616,6 +622,8 @@ void Cell::BreakLines_List() const
   if (!IsHidden()) {
     bool prevBroken = false;
     for (const Cell &tmp : OnDrawList(this)) {
+      if (m_configuration->IsLayoutCancelled())
+        return;
       if (prevBroken) {
         currentWidth += tmp.GetLineIndent();
         prevBroken = false;
@@ -633,10 +641,16 @@ void Cell::BreakLines_List() const
 }
 
 bool Cell::BreakUpCells() const {
-  int clientWidth =
-    .8 * m_configuration->GetCanvasSize().x - m_configuration->GetIndent();
-  if (clientWidth < Scale_Px(50))
-    clientWidth = Scale_Px(50);
+  int clientWidth;
+  if (m_configuration->GetLayoutStrategy() ==
+      Configuration::LayoutStrategy::layoutPrefer1D) {
+    clientWidth = -1; // linearize everything regardless of width
+  } else {
+    clientWidth =
+      .8 * m_configuration->GetCanvasSize().x - m_configuration->GetIndent();
+    if (clientWidth < Scale_Px(50))
+      clientWidth = Scale_Px(50);
+  }
 
   bool anyChanged = false;
   bool changedInThisPass = true;
@@ -645,11 +659,15 @@ bool Cell::BreakUpCells() const {
   // This is necessary because converting a parent to linear mode might increase
   // the font size of its sub-cells, making them too wide for the line.
   while (changedInThisPass) {
+    if (m_configuration->IsLayoutCancelled())
+      return anyChanged;
     changedInThisPass = false;
     std::vector<const Cell *> wideCells;
 
     if (!IsHidden()) {
       for (const Cell &tmp : OnDrawList(this)) {
+        if (m_configuration->IsLayoutCancelled())
+          break;
         if (!tmp.IsBrokenIntoLines()) {
           if (tmp.GetWidth() < 0)
             tmp.Recalculate(m_configuration->GetMathFontSize());
