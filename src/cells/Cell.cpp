@@ -306,18 +306,22 @@ wxCoord Cell::GetCenter() const {
 bool Cell::NeedsRecalculation(AFontSize fontSize) const {
   if (!m_fontSize.IsValid()) {
     Configuration::g_stats.recalculationNeeded_FontInvalid++;
+    std::cerr<<"m_FontSize invalid:"<<ToString()<<"\n";
     return true;
   }
   if (!HasValidSize()) {
     Configuration::g_stats.recalculationNeeded_SizeInvalid++;
+    std::cerr<<"CellSize invalid:"<<ToString()<<"\n";
     return true;
   }
   if (fontSize.IsValid() &&
       !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.2f)) {
+    std::cerr<<"FontSize wrong:"<<ToString()<<"\n";
     Configuration::g_stats.recalculationNeeded_FontMismatch++;
     return true;
   }
   if (ConfigChanged()) {
+    std::cerr<<"Config changed:"<<ToString()<<"\n";
     Configuration::g_stats.recalculationNeeded_ConfigChanged++;
     return true;
   }
@@ -524,7 +528,6 @@ void Cell::Recalculate(const AFontSize fontsize) const {
     ? fontsize
     : (m_fontSize.IsValid() ? m_fontSize : m_configuration->GetMathFontSize());
   if (NeedsRecalculation(actualFontSize)) {
-    m_cellCfgCnt_last = m_configuration->CellCfgCnt();
     m_fontSize = actualFontSize;
     m_fontSize_Scaled = Scale_Px(actualFontSize);
 
@@ -534,6 +537,7 @@ void Cell::Recalculate(const AFontSize fontsize) const {
       m_center = 0;
     }
   }
+  m_cellCfgCnt_last = m_configuration->CellCfgCnt();
 }
 
 bool Cell::DrawThisCell() {

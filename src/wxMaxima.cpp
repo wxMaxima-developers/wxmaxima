@@ -2719,11 +2719,22 @@ bool wxMaxima::StartMaxima(bool force) {
 #endif
       m_maximaAuthenticated = false;
       m_discardAllData = false;
-      std::uniform_real_distribution<double> urd(0.0, 256.0);
+      // XOR OS entropy (m_rd) with PRNG output so the token is strong when
+      // either source is good — entropy of the XOR is >= max(both sources).
+      static constexpr size_t TOKEN_BYTES = 512;
+      static_assert(TOKEN_BYTES % sizeof(uint32_t) == 0, "TOKEN_BYTES must be a multiple of 4");
       std::unique_ptr<wxExecuteEnv> env = std::unique_ptr<wxExecuteEnv>(new wxExecuteEnv);
-      wxMemoryBuffer membuf(512);
-      for(auto i = 0 ; i < 512; i++)
-        membuf.AppendByte(static_cast<char>(urd(m_configuration.m_eng)));
+      wxMemoryBuffer membuf(TOKEN_BYTES);
+      std::uniform_int_distribution<unsigned int> byteUD(0, 255);
+      for (size_t i = 0; i < TOKEN_BYTES / sizeof(uint32_t); i++) {
+        auto rdVal = static_cast<uint32_t>(m_configuration.m_rd());
+        for (size_t j = 0; j < sizeof(uint32_t); j++) {
+          membuf.AppendByte(static_cast<char>(
+            static_cast<unsigned char>(rdVal & 0xFFu) ^
+            static_cast<unsigned char>(byteUD(m_configuration.m_eng))));
+          rdVal >>= 8;
+        }
+      }
       m_maximaAuthString = wxBase64Encode(membuf);
       environment["MAXIMA_AUTH_CODE"] = m_maximaAuthString;
 
