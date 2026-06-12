@@ -146,6 +146,11 @@ Public Types</h2></td></tr>
 , <b>display_1dASCII</b>
  }</td></tr>
 <tr class="separator:a82900900d94b32f307c183f08d4515b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bb69c733d19083e4fbc552bfa26f297"><td class="memItemLeft" align="right" valign="top"><a id="a2bb69c733d19083e4fbc552bfa26f297" name="a2bb69c733d19083e4fbc552bfa26f297"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><b>LayoutStrategy</b> { <b>layout2DWheneverPossible</b> = 0
+, <b>layout2DIfFits</b> = 1
+, <b>layoutPrefer1D</b> = 2
+ }</td></tr>
+<tr class="separator:a2bb69c733d19083e4fbc552bfa26f297"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03fec16ce6139610142240ce478b8315"><td class="memItemLeft" align="right" valign="top"><a id="a03fec16ce6139610142240ce478b8315" name="a03fec16ce6139610142240ce478b8315"></a>
 typedef std::unordered_map&lt; wxString, bool, wxStringHash &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>StringBoolHash</b></td></tr>
 <tr class="separator:a03fec16ce6139610142240ce478b8315"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -365,6 +370,21 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxLayoutTime</b> () c
 <tr class="memitem:aa8e248ed27caaee3cf1e1146a3d061fe"><td class="memItemLeft" align="right" valign="top"><a id="aa8e248ed27caaee3cf1e1146a3d061fe" name="aa8e248ed27caaee3cf1e1146a3d061fe"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MaxLayoutTime</b> (int time)</td></tr>
 <tr class="separator:aa8e248ed27caaee3cf1e1146a3d061fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab08aaec45831b8d2a0f86379188bc341"><td class="memItemLeft" align="right" valign="top"><a id="ab08aaec45831b8d2a0f86379188bc341" name="ab08aaec45831b8d2a0f86379188bc341"></a>
+LayoutStrategy&#160;</td><td class="memItemRight" valign="bottom"><b>GetLayoutStrategy</b> () const</td></tr>
+<tr class="separator:ab08aaec45831b8d2a0f86379188bc341"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a883ae3bac0e86756c1b7001b9888ba76"><td class="memItemLeft" align="right" valign="top"><a id="a883ae3bac0e86756c1b7001b9888ba76" name="a883ae3bac0e86756c1b7001b9888ba76"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetLayoutStrategy</b> (LayoutStrategy s)</td></tr>
+<tr class="separator:a883ae3bac0e86756c1b7001b9888ba76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f59bf8e65be3aca486eae707b0a3b64"><td class="memItemLeft" align="right" valign="top"><a id="a6f59bf8e65be3aca486eae707b0a3b64" name="a6f59bf8e65be3aca486eae707b0a3b64"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetLayoutDeadline</b> (int seconds)</td></tr>
+<tr class="separator:a6f59bf8e65be3aca486eae707b0a3b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a984a75ab82560c6392363ae49ec5e384"><td class="memItemLeft" align="right" valign="top"><a id="a984a75ab82560c6392363ae49ec5e384" name="a984a75ab82560c6392363ae49ec5e384"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearLayoutCancelled</b> ()</td></tr>
+<tr class="separator:a984a75ab82560c6392363ae49ec5e384"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa442015cf8b4e802321de73aa8633f9b"><td class="memItemLeft" align="right" valign="top"><a id="aa442015cf8b4e802321de73aa8633f9b" name="aa442015cf8b4e802321de73aa8633f9b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLayoutCancelled</b> () const</td></tr>
+<tr class="separator:aa442015cf8b4e802321de73aa8633f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c1e5f6af5c57992c025514ba8046c0e"><td class="memItemLeft" align="right" valign="top"><a id="a2c1e5f6af5c57992c025514ba8046c0e" name="a2c1e5f6af5c57992c025514ba8046c0e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FontChanged</b> ()</td></tr>
 <tr class="memdesc:a2c1e5f6af5c57992c025514ba8046c0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be called if a font has changed. <br /></td></tr>
