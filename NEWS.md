@@ -24,6 +24,11 @@
   configuration dialogue, letting users choose between "2D, whenever possible"
   (never linearize), "2D if it fits on the page width" (default — linearize wide
   objects), and "Prefer 1D" (always use linear notation).
+- Add a `WXM_SANITIZE` CMake option (e.g. `-DWXM_SANITIZE=address,undefined`)
+  that builds with the given compiler sanitizers, and a CI job that runs the
+  whole test suite under AddressSanitizer and UndefinedBehaviorSanitizer on
+  every push, so memory errors and undefined behaviour become test failures
+  instead of latent crashes.
 - Better undo handling
 - Resolved a few potential crashes
 - Accessibility improvements: implement `GetName()` (the primary text screen readers

@@ -59,6 +59,56 @@ jobs:
              GDK_BACKEND=x11 xvfb-run -a ctest -j 2 -E "tutorial_fittingEquations|multithreadtest|tutorial_toleranceCalculations|tutorial_displaying3DCurves|tutorial_solvingEquations|testbench_simple.wxmx"
              cd ..
 
+  compile_and_test_sanitized:
+    # Builds with AddressSanitizer + UndefinedBehaviorSanitizer and runs the
+    # test suite. Memory errors (use-after-free, buffer overflows) abort the
+    # affected test and turn the job red; undefined-behavior findings are
+    # printed to the log and reported as a warning annotation, but do not
+    # fail the job (yet).
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout_git
+        uses: actions/checkout@v6
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 15
+      - name: install_packages
+        run: |
+             sudo apt-get update
+             sudo apt-get install appstream cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share netcat-openbsd ninja-build pandoc po4a xvfb at-spi2-core
+      - name: configure
+        run: |
+             export LANG=en_US.UTF-8
+             mkdir build
+             cd build
+             cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DWXM_UNIT_TESTS=YES -DWXM_SANITIZE=address,undefined ..
+      - name: compile
+        run: cmake --build build
+      - name: run_tests
+        run: |
+             cd build
+             export HOME=`pwd`
+             export CTEST_OUTPUT_ON_FAILURE=1
+             # detect_leaks=0: GTK/Pango/Fontconfig leak reports would drown
+             # out wxMaxima's own. Enabling leak detection with a suppression
+             # file is a later step of the stability initiative.
+             export ASAN_OPTIONS=detect_leaks=0:check_initialization_order=1:strict_string_checks=1
+             export UBSAN_OPTIONS=print_stacktrace=1
+             # Same exclusions as the regular test job (draw-based tests fail
+             # on ubuntu-latest for unrelated reasons).
+             GDK_BACKEND=x11 xvfb-run -a ctest -j 2 -E "tutorial_fittingEquations|multithreadtest|tutorial_toleranceCalculations|tutorial_displaying3DCurves|tutorial_solvingEquations|testbench_simple.wxmx"
+      - name: report_ubsan_findings
+        if: always()
+        run: |
+             if grep -n "runtime error:" build/Testing/Temporary/LastTest.log; then
+               echo "::warning::UndefinedBehaviorSanitizer reported issues (grep the run_tests log for 'runtime error:'). These do not fail CI yet."
+             else
+               echo "No UndefinedBehaviorSanitizer findings."
+             fi
+
   compile_without_webview:
     runs-on: ubuntu-latest
     timeout-minutes: 30

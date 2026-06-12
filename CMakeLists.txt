@@ -73,6 +73,8 @@ option(WXM_PO4A_UPDATE_MANUAL_PO_POT_FILES
     "Update the po/pot locale files in the source tree." OFF)
 option(WXM_MAXIMA_DEMO_TESTS
     "Run Maxima demo files as test." OFF)
+set(WXM_SANITIZE "" CACHE STRING
+    "Comma-separated list of sanitizers to compile with, e.g. \"address,undefined\" (GCC/Clang only).")
 
 if(DEFINED MACOSX_VERSION_MIN)
     set(CMAKE_OSX_DEPLOYMENT_TARGET ${MACOSX_VERSION_MIN} CACHE STRING FORCE)
@@ -114,6 +116,18 @@ endif()
 
 if(MSYS OR MINGW)
     add_compile_options(-Wa,-mbig-obj)
+endif()
+
+if(WXM_SANITIZE)
+    if(MSVC)
+        message(FATAL_ERROR "WXM_SANITIZE requires GCC or Clang.")
+    endif()
+    # Allow both "address,undefined" and the CMake list form "address;undefined"
+    string(REPLACE ";" "," WXM_SANITIZE_FLAGS "${WXM_SANITIZE}")
+    message(STATUS "Building with -fsanitize=${WXM_SANITIZE_FLAGS}")
+    # -fno-omit-frame-pointer makes the sanitizer stack traces reliable
+    add_compile_options(-fsanitize=${WXM_SANITIZE_FLAGS} -fno-omit-frame-pointer)
+    add_link_options(-fsanitize=${WXM_SANITIZE_FLAGS})
 endif()
 
 ##
