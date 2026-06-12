@@ -855,7 +855,7 @@ public:
   virtual bool OnInit();
   virtual int OnRun();
   virtual int OnExit();
-#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
+#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT
   void	OnFatalException () override;
 #endif
   /*! Create a new window
@@ -886,7 +886,7 @@ public:
   std::unique_ptr<wxLogChain> m_logChain;
   static std::vector<wxProcess *> m_wxMaximaProcesses;
 #ifdef USE_QA
-#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
+#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT
   void GenerateDebugReport(wxDebugReport::Context ctx);
 #endif
 #endif

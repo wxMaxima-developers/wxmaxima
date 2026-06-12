@@ -6,6 +6,12 @@
 - Fix Lintian spelling-in-binary warnings: corrected several English grammar occurrences of "allow to/allows to" in user-facing dialog tooltips and command line help strings, and added lintian overrides for the false-positive logical `or` operator `mor`.
 - Fix several RPMLINT packaging errors and warnings: introduced a dedicated, clean description file to resolve spelling and line length errors, optimized summary capitalization and punctuation, excluded standard system directories from package ownership, and replaced duplicate icon files with relative symbolic links to resolve duplication waste.
 - Add descriptive CMake status messages when packaging test prerequisites (Lintian, dpkg-deb, rpmlint, rpmbuild) are missing, informing the user compiling the program why those tests are skipped.
+- Enable the wxWidgets crash dialog with stack backtrace on Linux: the previous
+  `wxUSE_CRASHREPORT` guard was Windows-only (minidumps); switched to
+  `wxUSE_DEBUGREPORT` which is available on all platforms.
+- In non-interactive/batch mode (`--exit-on-error`), the crash dialog is
+  suppressed so that ctest can kill the process normally after a timeout: the
+  report is saved to disk and its path is printed to stderr instead.
 - Better undo handling
 - Resolved a few potential crashes
 - Accessibility improvements: implement `GetName()` (the primary text screen readers

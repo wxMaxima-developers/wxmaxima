@@ -40,6 +40,10 @@
 #include <wx/translation.h>
 #ifdef USE_QA
 #include <wx/debugrpt.h>
+#include "dialogs/LoggingMessageDialog.h"
+#ifndef __WXMSW__
+#include <unistd.h>   // write(), STDERR_FILENO (async-signal-safe output in crash handler)
+#endif
 #endif
 #if wxCHECK_VERSION(3, 1, 6)
 #include <wx/uilocale.h>
@@ -242,7 +246,7 @@ bool MyApp::OnInit() {
   wxTranslations::Set(m_translations.get());
   {
     // If supported: Generate symbolic backtraces on crashes.
-#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
+#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT
     wxHandleFatalExceptions(true);
 #endif
     int major;
@@ -799,7 +803,7 @@ void MyApp::MacNewFile() {
 void MyApp::MacOpenFile(const wxString &file) { NewWindow(file); }
 
 #ifdef USE_QA
-#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
+#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT
 void MyApp::OnFatalException()
 {
     GenerateDebugReport(wxDebugReport::Context_Exception);
@@ -864,17 +868,38 @@ void MyApp::GenerateDebugReport(wxDebugReport::Context ctx)
       if ( fn.FileExists() )
         report->AddFile(fn.GetFullPath(), "Local hosts file");
 
-      // calling Show() is not mandatory, but is more polite
-      if ( wxDebugReportPreviewStd().Show(*report) )
-        {
-          if ( report->Process() )
-            {
-              wxLogMessage("Report generated in \"%s\".",
-                           report->GetCompressedFileName());
-              report->Reset();
-            }
+      // In non-interactive (batch/test) mode, skip the modal dialog so that
+      // ctest can kill the process normally after a timeout. Just compress and
+      // save the report so developers still get the backtrace on stderr.
+      if (LoggingMessageDialog::IsNonInteractive()) {
+        if (report->Process()) {
+#ifndef __WXMSW__
+          // write() is async-signal-safe; the whole crash handler isn't, but
+          // this is at least safer than printf for stderr output from a handler.
+          const std::string msg =
+            std::string("wxMaxima crash report saved to: ") +
+            report->GetCompressedFileName().ToStdString() + "\n";
+          write(STDERR_FILENO, msg.c_str(), msg.size());
+#else
+          fputs(("wxMaxima crash report saved to: " +
+                 report->GetCompressedFileName().ToStdString() + "\n").c_str(),
+                stderr);
+#endif
+          report->Reset();
         }
-      //else: user cancelled the report
+      } else {
+        // calling Show() is not mandatory, but is more polite
+        if ( wxDebugReportPreviewStd().Show(*report) )
+          {
+            if ( report->Process() )
+              {
+                wxLogMessage("Report generated in \"%s\".",
+                             report->GetCompressedFileName());
+                report->Reset();
+              }
+          }
+        //else: user cancelled the report
+      }
 
       delete report;
     }
