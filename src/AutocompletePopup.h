@@ -69,7 +69,11 @@ private:
   const DonePtr m_doneptr;
   std::vector<wxString> m_completions;
   AutoComplete *m_autocomplete = {};
-  EditorCell *m_editor = {};
+  //! The cell being completed. A CellPtr (not a raw pointer) so it auto-nulls if
+  //! the editor is destroyed while this popup is still open - the popup's key
+  //! handlers check for that and dismiss themselves instead of dereferencing a
+  //! freed cell (see "Long-lived cell references" in CellPtr.h).
+  CellPtr<EditorCell> m_editor;
   AutoComplete::autoCompletionType m_type;
 
   //! The position of our pop-up

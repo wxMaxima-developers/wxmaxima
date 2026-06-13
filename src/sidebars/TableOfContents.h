@@ -102,7 +102,11 @@ private:
   wxTimer m_scrollUpTimer;
   wxTimer m_scrollDownTimer;
   wxDragImage *m_dragImage = NULL;
-  std::vector<GroupCell *> m_displayedGroupCells;
+  // CellPtrs, not raw pointers: these caches can lag the worksheet tree, so an
+  // entry may refer to a cell that has since been deleted. Auto-nulling turns a
+  // stale entry into nullptr rather than a dangling pointer (see "Long-lived
+  // cell references" in CellPtr.h). Callers must therefore null-check entries.
+  std::vector<CellPtr<GroupCell>> m_displayedGroupCells;
   //! How many toc items did the user drag at the same time?
   std::size_t m_numberOfCaptionsDragged = 0;
   CellPtr<GroupCell> m_cellRightClickedOn;
@@ -124,7 +128,8 @@ private:
   wxArrayString m_items_old;
   Configuration *m_configuration;
 
-  std::vector<GroupCell *> m_structure;
+  // CellPtrs for the same reason as m_displayedGroupCells above.
+  std::vector<CellPtr<GroupCell>> m_structure;
 };
 
 #endif // TABLEOFCONTENTS_H

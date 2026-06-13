@@ -1,5 +1,9 @@
 # Current development version
 
+- Harden the autocomplete popup against use-after-free: it now holds the editor
+  cell it completes as an auto-nulling `CellPtr`, and its key/mouse handlers
+  dismiss the popup if that editor was destroyed while the popup was open,
+  instead of dereferencing a freed cell.
 - Harden the table-of-contents sidebar against use-after-free: the cells it
   remembers across events (the drag-and-drop source/target and the
   right-clicked cell) are now auto-nulling `CellPtr`s instead of raw pointers,
@@ -8,7 +12,9 @@
   missing null check in `SectioningMoveOut()` (the "move section out" command)
   that could dereference such a stale pointer, and hardened the TOC drag-start
   handler against an out-of-range index and against walking a TOC entry whose
-  cell had already been deleted.
+  cell had already been deleted. The TOC's internal caches of section cells are
+  likewise `CellPtr`s now, so the sidebar no longer holds raw pointers to cells
+  at all.
 - Harden animation-cell timer bookkeeping against use-after-free: the cell
   reference stored per timer id is now an auto-nulling `CellPtr` rather than a
   raw pointer, so a timer that fires after its animation cell was destroyed

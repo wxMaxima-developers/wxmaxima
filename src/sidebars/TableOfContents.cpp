@@ -171,7 +171,7 @@ void TableOfContents::OnDragStart(wxListEvent &evt) {
     GroupCell *const tocRoot = m_tree ? m_tree->get() : nullptr;
     const GroupCell *const dragged =
       (static_cast<std::size_t>(evt.GetIndex()) < m_displayedGroupCells.size())
-        ? m_displayedGroupCells[evt.GetIndex()]
+        ? m_displayedGroupCells[evt.GetIndex()].get()
         : nullptr;
     if (dragged && tocRoot && tocRoot->Contains(const_cast<GroupCell *>(dragged))) {
       // dragged is part of the live tree, so walking its GetNext() chain only
@@ -242,7 +242,7 @@ void TableOfContents::UpdateStruct() {
         (groupType == GC_TYPE_SUBSECTION) ||
         (groupType == GC_TYPE_SUBSUBSECTION) ||
         (groupType == GC_TYPE_HEADING5) || (groupType == GC_TYPE_HEADING6))
-      m_structure.push_back(&cell);
+      m_structure.emplace_back(&cell);
   }
 }
 
@@ -253,7 +253,7 @@ void TableOfContents::UpdateTableOfContents(GroupCell *pos) {
                                               wxLIST_STATE_SELECTED);
     UpdateStruct();
 
-    std::vector<GroupCell *>::const_iterator it = m_displayedGroupCells.begin();
+    auto it = m_displayedGroupCells.begin();
 
     // Select the cell with the cursor
     if(!m_displayedGroupCells.empty())
@@ -294,6 +294,11 @@ void TableOfContents::UpdateDisplay() {
   // Create a wxArrayString containing all section/chapter/... titles we want
   // to display
   for (const auto &i: m_structure) {
+    // Skip entries whose cell was deleted since m_structure was built: the
+    // CellPtr has auto-nulled, and everything below (and TocEntryString) would
+    // dereference it. This keeps m_displayedGroupCells free of dead cells.
+    if (!i)
+      continue;
     // Indentation further reduces the screen real-estate. So it is to be used
     // sparingly. But we should perhaps add at least a little bit of it to make
     // the list more readable.
@@ -336,9 +341,9 @@ void TableOfContents::UpdateDisplay() {
 
   if ((m_dragStart >= 0) && (m_dragCurrentPos >= 0) &&
       (m_dragStart != m_dragCurrentPos)) {
-    // Validate against the live tree before the CellPtr adopts it (see the note
-    // in OnMouseRightDown): m_displayedGroupCells can hold an already-deleted
-    // cell, and CellPtr registration would dereference it.
+    // The dragged entry reads as nullptr if its cell was deleted (CellPtr), but
+    // it may also be alive yet no longer in the worksheet tree; validate against
+    // the live tree (address-only) before recording it (see OnMouseRightDown).
     GroupCell *const dragStart = m_displayedGroupCells.at(m_dragStart);
     GroupCell *const tocRoot = m_tree ? m_tree->get() : nullptr;
     m_dndStartCell = (tocRoot && tocRoot->Contains(dragStart)) ? dragStart : nullptr;
@@ -385,8 +390,14 @@ void TableOfContents::UpdateDisplay() {
       displayedCells_dndOrder.push_back(m_otherCells.front());
       m_otherCells.pop_front();
     }
-  } else
-    displayedCells_dndOrder = m_displayedGroupCells;
+  } else {
+    // Copy element-wise: m_displayedGroupCells holds CellPtrs, this local holds
+    // raw pointers (its entries are only used within this synchronous call, so
+    // they cannot dangle). The rebuild loop above already dropped dead cells.
+    displayedCells_dndOrder.reserve(m_displayedGroupCells.size());
+    for (const auto &c : m_displayedGroupCells)
+      displayedCells_dndOrder.push_back(c);
+  }
 
   wxArrayString items;
   for (const auto &i : displayedCells_dndOrder)
@@ -474,12 +485,11 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event) {
   if (event.GetIndex() < 0)
     return;
   std::unique_ptr<wxMenu> popupMenu(new wxMenu());
-  // m_structure can lag the worksheet tree (the TOC is only refreshed "when
-  // there is time"), so the clicked entry may already have been deleted.
-  // Validate it against the live tree - an address-only comparison that never
-  // dereferences the entry - before letting the CellPtr adopt it: CellPtr
-  // registration *does* dereference the cell and would be a use-after-free on a
-  // stale pointer.
+  // m_structure entries are CellPtrs, so a deleted cell already reads as nullptr
+  // here. A cell may also still be alive but no longer part of the worksheet tree
+  // (the TOC is only refreshed "when there is time"), so validate it against the
+  // live tree - an address-only comparison - before recording it as the
+  // right-clicked cell.
   GroupCell *const clicked = m_structure[event.GetIndex()];
   GroupCell *const tocRoot = m_tree ? m_tree->get() : nullptr;
   m_cellRightClickedOn = (tocRoot && tocRoot->Contains(clicked)) ? clicked : nullptr;

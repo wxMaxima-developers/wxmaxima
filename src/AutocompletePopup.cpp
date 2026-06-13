@@ -39,6 +39,11 @@
 #include <algorithm>
 
 void AutocompletePopup::UpdateResults() {
+  // The editor we are completing into may have been destroyed while this popup
+  // was open (m_editor is a CellPtr and auto-nulls). If so there is nothing to
+  // complete; our callers dismiss the popup.
+  if (!m_editor)
+    return;
   m_completions = m_autocomplete->CompleteSymbol(m_partial, m_type);
   std::sort(m_completions.begin(), m_completions.end());
 
@@ -84,6 +89,10 @@ void AutocompletePopup::UpdateResults() {
 }
 
 void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
+  // If the editor was destroyed while the popup was open, dismiss the popup
+  // rather than dereference a freed cell.
+  if (!m_editor)
+    return void(Destroy());
   switch (event.GetKeyCode()) {
   case WXK_TAB:
     if (m_completions.size() > 0) {
@@ -255,6 +264,10 @@ bool AutocompletePopup::Create(wxWindow *parent) {
 }
 
 void AutocompletePopup::OnClick(wxMouseEvent &WXUNUSED(event)) {
+  // If the editor was destroyed while the popup was open, dismiss the popup
+  // rather than dereference a freed cell.
+  if (!m_editor)
+    return void(Destroy());
   if (GetItemCount() <= 0)
     return;
 
@@ -295,6 +308,10 @@ AutocompletePopup::AutocompletePopup(wxWindow *parent, EditorCell *editor,
 }
 
 void AutocompletePopup::OnChar(wxKeyEvent &event) {
+  // If the editor was destroyed while the popup was open, dismiss the popup
+  // rather than dereference a freed cell.
+  if (!m_editor)
+    return void(Destroy());
   wxUniChar key = event.GetUnicodeKey();
   if (((m_type == AutoComplete::esccommand) && wxIsprint(key)) ||
       ((wxIsalnum(key)) || (key == wxS('_')) || (key == wxS('\"')) ||
