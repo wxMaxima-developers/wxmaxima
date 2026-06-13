@@ -249,6 +249,9 @@ bool MyApp::OnInit() {
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT
     wxHandleFatalExceptions(true);
 #endif
+    // Make sure child Maxima processes are killed if we are terminated by a
+    // signal instead of shutting down cleanly (no-op on Windows).
+    wxMaxima::SetupTerminationHandlers();
     int major;
     int minor;
     wxGetOsVersion(&major, &minor);
@@ -806,6 +809,9 @@ void MyApp::MacOpenFile(const wxString &file) { NewWindow(file); }
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT
 void MyApp::OnFatalException()
 {
+    // Kill child Maxima processes first (async-signal-safe), so a crash can't
+    // leave a busy Maxima orphaned while we generate the debug report.
+    wxMaxima::KillAllChildMaximas();
     GenerateDebugReport(wxDebugReport::Context_Exception);
 }
 

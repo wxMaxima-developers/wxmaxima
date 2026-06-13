@@ -78,6 +78,21 @@ public:
   static void ExitOnError(){m_exitOnError = true;}
   //! Do we exit if we encounter an error?
   static bool GetExitOnError(){return m_exitOnError;}
+
+  /*! Install termination-signal handlers (SIGTERM/SIGINT/SIGHUP) on Unix.
+
+    They SIGKILL every still-running child Maxima before wxMaxima dies, so a
+    Maxima that is busy computing (and therefore not noticing its closed control
+    socket) is not orphaned and left eating CPU/RAM. No-op on Windows, where
+    Maxima runs under maxima.bat and the existing taskkill cleanup applies.
+  */
+  static void SetupTerminationHandlers();
+  /*! Async-signal-safe: SIGKILL every registered child Maxima process group.
+
+    Safe to call from a signal handler or from OnFatalException(); it only uses
+    kill() and reads of an array of sig_atomic_t.
+  */
+  static void KillAllChildMaximas();
   /*! Allow maxima to click buttons in wxMaxima
 
     Disabled by default for security reasons

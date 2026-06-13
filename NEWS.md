@@ -1,5 +1,13 @@
 # Current development version
 
+- Don't leave orphaned Maxima processes behind when wxMaxima is killed by a
+  signal or crashes (Unix/Linux): a `SIGTERM`/`SIGINT`/`SIGHUP` handler — and the
+  crash handler — now SIGKILL the child Maxima process group before wxMaxima
+  exits. Previously, because the cleanup only ran from wxMaxima's destructor, a
+  signal-terminated wxMaxima would leave a Maxima that was busy computing running
+  in the background, eating CPU and RAM (it only notices its closed control
+  socket when it next reads from it). On Windows, where Maxima runs under
+  maxima.bat, the existing cleanup is unchanged.
 - Fix the incremental layout pass occasionally leaving a cell with stale size or
   position: `RecalculateIfNeeded` stopped walking the worksheet at the first
   up-to-date cell, but cells can be marked for recalculation non-contiguously
