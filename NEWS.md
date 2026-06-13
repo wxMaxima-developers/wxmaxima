@@ -1,5 +1,12 @@
 # Current development version
 
+- Harden the table-of-contents sidebar against use-after-free: the cells it
+  remembers across events (the drag-and-drop source/target and the
+  right-clicked cell) are now auto-nulling `CellPtr`s instead of raw pointers,
+  so a follow-up menu or drop command that runs after the cell was deleted sees
+  an empty reference rather than dereferencing freed memory. Also fixed a
+  missing null check in `SectioningMoveOut()` (the "move section out" command)
+  that could dereference such a stale pointer.
 - Harden animation-cell timer bookkeeping against use-after-free: the cell
   reference stored per timer id is now an auto-nulling `CellPtr` rather than a
   raw pointer, so a timer that fires after its animation cell was destroyed

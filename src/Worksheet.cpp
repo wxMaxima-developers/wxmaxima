@@ -8240,6 +8240,10 @@ bool Worksheet::SectioningMoveIn(GroupCell *parent) {
 }
 
 bool Worksheet::SectioningMoveOut(GroupCell *parent) {
+  // parent may be null: it comes from the TOC's "right-clicked" cell, which can
+  // be destroyed before this menu command runs (matches SectioningMoveIn).
+  if (!parent)
+    return false;
   if (!parent->SectioningCanMoveOut())
     return false;
 

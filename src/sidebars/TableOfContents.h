@@ -92,15 +92,20 @@ protected:
 private:
   void UpdateStruct();
   std::unique_ptr<GroupCell> *m_tree;
-  GroupCell *m_dndStartCell = NULL;
-  GroupCell *m_dndEndCell = NULL;
+  // CellPtrs, not raw pointers: the TOC is rebuilt asynchronously, so a cell
+  // recorded during a drag/right-click can be destroyed before the resulting
+  // menu/drop command reads it back via the getters below. Auto-nulling means a
+  // stale reference reads as nullptr (see "Long-lived cell references" in
+  // CellPtr.h); the consumers in wxMaxima.cpp null-check / GetTree()->Contains().
+  CellPtr<GroupCell> m_dndStartCell;
+  CellPtr<GroupCell> m_dndEndCell;
   wxTimer m_scrollUpTimer;
   wxTimer m_scrollDownTimer;
   wxDragImage *m_dragImage = NULL;
   std::vector<GroupCell *> m_displayedGroupCells;
   //! How many toc items did the user drag at the same time?
   std::size_t m_numberOfCaptionsDragged = 0;
-  GroupCell *m_cellRightClickedOn = NULL;
+  CellPtr<GroupCell> m_cellRightClickedOn;
   //! The item that was dragged away at the start of the current drag-and-drop
   long m_dragStart = -1;
   long m_dragStop = -1;
