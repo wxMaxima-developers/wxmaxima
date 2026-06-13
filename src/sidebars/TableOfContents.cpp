@@ -164,18 +164,30 @@ void TableOfContents::OnDragStart(wxListEvent &evt) {
 
     // For the visual feedback: How many toc items does the user drag?
     m_numberOfCaptionsDragged = 1;
-    const GroupCell *tmp = m_displayedGroupCells[evt.GetIndex()];
-    auto index = evt.GetIndex() + 1;
-    tmp = tmp->GetNext();
-    while ((tmp != NULL) && (index <= m_displayedItems->GetItemCount())) {
-      if (!tmp->IsLesserGCType(
-                               m_displayedGroupCells[evt.GetIndex()]->GetGroupType()))
-        break;
-      if (m_displayedGroupCells.at(index) == tmp) {
-        index++;
-        m_numberOfCaptionsDragged++;
+    // m_displayedGroupCells can lag the worksheet tree, so the dragged entry may
+    // be out of range or already deleted. Bounds-check the index and validate the
+    // cell against the live tree (Contains() compares addresses, never derefs)
+    // before walking from it.
+    GroupCell *const tocRoot = m_tree ? m_tree->get() : nullptr;
+    const GroupCell *const dragged =
+      (static_cast<std::size_t>(evt.GetIndex()) < m_displayedGroupCells.size())
+        ? m_displayedGroupCells[evt.GetIndex()]
+        : nullptr;
+    if (dragged && tocRoot && tocRoot->Contains(const_cast<GroupCell *>(dragged))) {
+      // dragged is part of the live tree, so walking its GetNext() chain only
+      // ever visits live cells.
+      const GroupCell *tmp = dragged->GetNext();
+      auto index = evt.GetIndex() + 1;
+      while ((tmp != NULL) && (index <= m_displayedItems->GetItemCount())) {
+        if (!tmp->IsLesserGCType(dragged->GetGroupType()))
+          break;
+        if ((static_cast<std::size_t>(index) < m_displayedGroupCells.size()) &&
+            (m_displayedGroupCells.at(index) == tmp)) {
+          index++;
+          m_numberOfCaptionsDragged++;
+        }
+        tmp = tmp->GetNext();
       }
-      tmp = tmp->GetNext();
     }
   }
 }

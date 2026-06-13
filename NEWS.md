@@ -6,7 +6,9 @@
   so a follow-up menu or drop command that runs after the cell was deleted sees
   an empty reference rather than dereferencing freed memory. Also fixed a
   missing null check in `SectioningMoveOut()` (the "move section out" command)
-  that could dereference such a stale pointer.
+  that could dereference such a stale pointer, and hardened the TOC drag-start
+  handler against an out-of-range index and against walking a TOC entry whose
+  cell had already been deleted.
 - Harden animation-cell timer bookkeeping against use-after-free: the cell
   reference stored per timer id is now an auto-nulling `CellPtr` rather than a
   raw pointer, so a timer that fires after its animation cell was destroyed
