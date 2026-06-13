@@ -104,7 +104,14 @@ void FracCell::Recalculate(AFontSize fontsize) const {
     } else {
       if (m_inExponent) {
         m_protrusion = m_horizontalGapLeft = m_horizontalGapRight = 0;
-        m_width = m_displayedNum->GetWidth() + m_displayedDenom->GetWidth() + m_divide->GetWidth();
+        // Numerator/denominator can be multi-cell lists (e.g. (a+b)/c), and the
+        // linear a/b layout below positions the pieces with SumOfWidths(). Use
+        // the same list-wide widths here - GetWidth() would only count the first
+        // cell and make the fraction report a width narrower than it draws,
+        // overlapping whatever follows. (Matches the GetHeightList()/
+        // GetCenterList() list-wide calls just below.)
+        m_width = m_displayedNum->SumOfWidths() + m_displayedDenom->SumOfWidths() +
+          m_divide->SumOfWidths();
         m_height = std::max(m_displayedNum->GetHeightList(), m_displayedDenom->GetHeightList()) +
           Scale_Px(6.5);
         m_center =

@@ -1,5 +1,10 @@
 # Current development version
 
+- Fix a fraction shown inside an exponent (e.g. `x^((a+b)/c)`) reporting too
+  small a width when its numerator or denominator consisted of more than one
+  cell: the width was computed from only the first cell of each, so the fraction
+  could overlap whatever followed it. It now measures the full numerator and
+  denominator, matching how the pieces are positioned.
 - Don't leave orphaned Maxima processes behind when wxMaxima is killed by a
   signal or crashes (Unix/Linux): a `SIGTERM`/`SIGINT`/`SIGHUP` handler — and the
   crash handler — now SIGKILL the child Maxima process group before wxMaxima
