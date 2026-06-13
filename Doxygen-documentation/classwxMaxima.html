@@ -272,6 +272,12 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ExitOnError</b
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetExitOnError</b> ()</td></tr>
 <tr class="memdesc:a945626c771ca7f928f36e1289c4669c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we exit if we encounter an error? <br /></td></tr>
 <tr class="separator:a945626c771ca7f928f36e1289c4669c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae103420e541cf9e7ff5d54e3bd20c5cb"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ae103420e541cf9e7ff5d54e3bd20c5cb">SetupTerminationHandlers</a> ()</td></tr>
+<tr class="memdesc:ae103420e541cf9e7ff5d54e3bd20c5cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Install termination-signal handlers (SIGTERM/SIGINT/SIGHUP) on Unix.  <br /></td></tr>
+<tr class="separator:ae103420e541cf9e7ff5d54e3bd20c5cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e5c1ed65fc99a2aeffc59acf0d1d456"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a1e5c1ed65fc99a2aeffc59acf0d1d456">KillAllChildMaximas</a> ()</td></tr>
+<tr class="memdesc:a1e5c1ed65fc99a2aeffc59acf0d1d456"><td class="mdescLeft">&#160;</td><td class="mdescRight">Async-signal-safe: SIGKILL every registered child <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process group.  <br /></td></tr>
+<tr class="separator:a1e5c1ed65fc99a2aeffc59acf0d1d456"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e02774a2efcee9afe6933a7aa36cc48"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a6e02774a2efcee9afe6933a7aa36cc48">EnableIPC</a> ()</td></tr>
 <tr class="memdesc:a6e02774a2efcee9afe6933a7aa36cc48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow maxima to click buttons in <a class="el" href="classwxMaxima.html">wxMaxima</a>.  <br /></td></tr>
 <tr class="separator:a6e02774a2efcee9afe6933a7aa36cc48"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1628,7 +1634,7 @@ Appending stuff to output</h2>
 </div><div class="memdoc">
 
 <p>Spawn the "configure" menu. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
 
 </div>
 </div>
@@ -1806,6 +1812,34 @@ Getting configuration</h2>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a1e5c1ed65fc99a2aeffc59acf0d1d456" name="a1e5c1ed65fc99a2aeffc59acf0d1d456"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e5c1ed65fc99a2aeffc59acf0d1d456">&#9670;&#160;</a></span>KillAllChildMaximas()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void wxMaxima::KillAllChildMaximas </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Async-signal-safe: SIGKILL every registered child <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process group. </p>
+<p>Safe to call from a signal handler or from OnFatalException(); it only uses kill() and reads of an array of sig_atomic_t. </p>
 
 </div>
 </div>
@@ -2299,6 +2333,34 @@ Dealing with stuff read from the socket</h2>
 
 </div>
 </div>
+<a id="ae103420e541cf9e7ff5d54e3bd20c5cb" name="ae103420e541cf9e7ff5d54e3bd20c5cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae103420e541cf9e7ff5d54e3bd20c5cb">&#9670;&#160;</a></span>SetupTerminationHandlers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void wxMaxima::SetupTerminationHandlers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Install termination-signal handlers (SIGTERM/SIGINT/SIGHUP) on Unix. </p>
+<p>They SIGKILL every still-running child <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> before <a class="el" href="classwxMaxima.html">wxMaxima</a> dies, so a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> that is busy computing (and therefore not noticing its closed control socket) is not orphaned and left eating CPU/RAM. No-op on Windows, where <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> runs under maxima.bat and the existing taskkill cleanup applies. </p>
+
+</div>
+</div>
 <a id="aebaa2667f99a9e366e8b9976ce5c8d63" name="aebaa2667f99a9e366e8b9976ce5c8d63"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aebaa2667f99a9e366e8b9976ce5c8d63">&#9670;&#160;</a></span>SetupVariables()</h2>
 
@@ -2324,7 +2386,7 @@ Dealing with stuff read from the socket</h2>
 
 <p>Setup maxima's variables. </p>
 <p>This method is called once when maxima starts. It loads wxmathml.lisp and sets some option variables.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000022">Todo:</a></b></dt><dd>Set pngcairo to be the default terminal as soon as the mac platform supports it. </dd></dl>
 
 </div>
 </div>

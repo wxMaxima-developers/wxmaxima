@@ -296,23 +296,23 @@ wxMaxima" class="inline"/></p>
 <p>Таким образом комбинация <code>ESC</code><code>6</code><code>1</code><code>ESC</code> позволяет ввести символ «a».</p>
 <p>Обратите внимание, что большая часть этих символов (заметным исключением являются логические символы) не имеют специального значения в <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> и поэтому будут интерпретироваться как обычные символы. Если <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> собрана в компиляторе Lisp, не имеющем поддержки символов Юникода, то при их использовании может быть выведено сообщение об ошибке.</p>
 <p>Также бывает, что греческие или математические символы отсутствуют в выбранном шрифте, из-за чего их отображение невозможно. Для решения этой проблемы необходимо выбрать другие шрифты (с помощью меню «Правка -&gt; Настройка -&gt; Стиль»).</p>
-<h3><a class="anchor" id="autotoc_md552"></a>
+<h3><a class="anchor" id="autotoc_md553"></a>
 Замена символов Юникода</h3>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> заменяет некоторые символы Юникода на соответствующие выражения <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, например, <code>²</code> на <code>^2</code>, <code>³</code> на <code>^3</code>, знак квадратного корня на функцию <code>sqrt()</code>, (математический) знак Сигма (отличающийся от символа Юникода для соответствующей греческой буквы) на <code>sum()</code> и так далее.</p>
 <p>В Юникоде есть несколько «правильных» дробей, представленных в виде одной кодовой точки Юникода: <code>¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞</code></p>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> заменит их соответствующими представлениями <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (например, <code>(1/4)</code>) перед отправкой ввода в <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. Кроме того, <code>⅟</code> заменяется на <code>1/</code>, а <code>↉</code> (используется в бейсболе) — на <code>(0/3)</code>.</p>
 <p>В полях ввода рекомендуется использовать <b>код <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></b> (а не эти кодовые точки Юникода) (обоснование: (a) их может не быть в используемом для ввода математических данных шрифте; (b) если сохранить документ как файл <code>wxm</code>, он будет доступен для чтения (командной строкой) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, но эти изменения не будут работать в командной строке <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>); но они могут появиться при вырезании и вставке формулы из другого документа.</p>
-<h3><a class="anchor" id="autotoc_md553"></a>
+<h3><a class="anchor" id="autotoc_md554"></a>
 Боковые панели</h3>
 <p>Наиболее важные команды <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, а также содержание, окна с отладочными сообщениями и журнал последних отданных команд доступны на соответствующих боковых панелях. Их можно активировать с помощью меню «Вид» и переместить в любое место внутри или за пределами окна <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>. Также можно открыть панель, позволяющую вводить греческие буквы с помощью мыши.</p>
 <p><img src="./SidePanes.png" alt="Пример различных боковых панелей" class="inline"/></p>
 <p>Боковая панель «Содержание» позволяет повышать или понижать уровень заголовка путём щелчка по нему правой клавишей мыши с последующим выбором ближайшего более высокого или низкого уровня.</p>
 <p><img src="./Sidepane-TOC-convert-headings.png" alt="Повышение или понижение уровня заголовков на боковой панели
 «Содержание»" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md554"></a>
+<h3><a class="anchor" id="autotoc_md555"></a>
 Вывод MathML</h3>
 <p>Несколько текстовых процессоров и подобных им программ либо способны распознать ввод <a href="https://www.w3.org/Math/">MathML</a> и автоматически вставить его в виде редактируемого двухмерного уравнения, либо (как LibreOffice) имеют редактор уравнений, позволяющий «импортировать MathML из буфера обмена». Другие поддерживают RTF maths. Поэтому в контекстном меню <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> доступно несколько пунктов.</p>
-<h3><a class="anchor" id="autotoc_md555"></a>
+<h3><a class="anchor" id="autotoc_md556"></a>
 Поддержка Markdown</h3>
 <p><em>WxMaxima</em> поддерживает стандартные элементы форматирования <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a>, которые не конфликтуют с математической записью. Одним из таких элементов являются маркированные списки.</p>
 <div class="fragment"><div class="line">Обычный текст</div>
@@ -420,10 +420,10 @@ wxMaxima" class="inline"/></p>
 <div class="fragment"><div class="line">/* [wxMaxima: fold    start ] */</div>
 <div class="line">...</div>
 <div class="line">/* [wxMaxima: fold    end   ] */</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md556"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md557"></a>
 .wxmx</h3>
 <p>Этот файл на основе формата XML сохраняет рабочий лист целиком, включая такие параметры, как масштаб отображения и список отслеживания. Это рекомендуемый формат.</p>
-<h4><a class="anchor" id="autotoc_md557"></a>
+<h4><a class="anchor" id="autotoc_md558"></a>
 Формат файлов wxmx</h4>
 <p>Файл <code>wxmx</code> похож на двоичный формат, но работать с ним можно с помощью базовых инструментов ОС. Это файл zip, который можно разархивировать с помощью программы <code>unzip</code> (рекомендуется переименовать файл, чтобы программа <code>unzip</code> могла распознать его в ОС). При создании файла используется не функция сжатия, а возможность объединять несколько файлов в один — изображения уже сжаты, а всё остальное представлено простым текстом (занимает куда меньший объём, чем громадные включаемые изображения).</p>
 <p>Содержит следующие файлы:</p>
@@ -434,7 +434,7 @@ wxMaxima" class="inline"/></p>
 <li><code>content.xml</code>: документ XML, содержащий различные поля документа в формате XML.</li>
 </ul>
 <p>Таким образом, в случае появления ошибок можно разархивировать документ <a class="el" href="classwxMaxima.html">wxMaxima</a> (рекомендуется сначала переименовать его в файл <code>zip</code>), внести изменения в файл <code>content.xml</code> в текстовом редакторе или заменить повреждённое изображение, снова добавить файлы в архив и заменить расширение <code>zip</code> на <code>wxmx</code> — и получаем отредактированный файл <code>wxmx</code>.</p>
-<h2><a class="anchor" id="autotoc_md558"></a>
+<h2><a class="anchor" id="autotoc_md559"></a>
 Параметры конфигурации</h2>
 <p>Для некоторых общих переменных конфигурации <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> обеспечивает два вида настройки:</p>
 <ul>
@@ -442,10 +442,10 @@ wxMaxima" class="inline"/></p>
 <li>Кроме того, для текущего сеанса возможно изменение значений большинства переменных конфигурации путём перезаписи их значений из рабочего листа, как показано ниже.</li>
 </ul>
 <p><img src="./wxMaxima_configuration_001.png" alt="Конфигурация wxMaxima 1" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md559"></a>
+<h3><a class="anchor" id="autotoc_md560"></a>
 Частота кадров анимации по умолчанию</h3>
 <p>Значение частоты кадров анимации, использующееся при создании новых анимаций, хранится в переменной <code>wxanimate_framerate</code>. Начальное значение этой переменной, которое будет содержаться в новом рабочем листе, можно изменить в диалоговом окне настройки параметров конфигурации.</p>
-<h3><a class="anchor" id="autotoc_md560"></a>
+<h3><a class="anchor" id="autotoc_md561"></a>
 Размер графика по умолчанию для новых сеансов &lt;em&gt;Maxima&lt;/em&gt;</h3>
 <p>Начиная со следующего запуска, указанный размер будет использоваться для создания графиков, встраиваемых в рабочий лист, если значение параметра <code>wxplot_size</code> не изменялось <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
 <p>Чтобы задать размер одного графика, используйте следующую запись при установке значения переменной для одной команды:</p>
@@ -455,14 +455,14 @@ wxMaxima" class="inline"/></p>
 <div class="line">       x,-5,5</div>
 <div class="line">   )</div>
 <div class="line">), wxplot_size=[480,480]$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md561"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md562"></a>
 Проверять расстановку скобок в текстовом вводе</h3>
 <p>Этот параметр активирует сразу две функции:</p>
 <ul>
 <li>При вводе открывающей круглой скобки, квадратной скобки или двойной кавычки <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> вставляет закрывающую после неё.</li>
 <li>При выделении текста, если нажать любую из этих клавиш, выделенный текст помещается между парой этих знаков.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md562"></a>
+<h3><a class="anchor" id="autotoc_md563"></a>
 Не сохранять рабочий лист автоматически</h3>
 <p>При включении этого параметра файл с рабочим листом перезаписывается только по требованию пользователя. В случае сбоя/отключении питания/... свежая резервная копия остаётся доступной во временном каталоге.</p>
 <p>Если этот параметр не включён, работа <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> больше напоминает современное приложение сотового телефона:</p>
