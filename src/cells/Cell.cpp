@@ -86,7 +86,17 @@ Cell::Cell(GroupCell *group, Configuration *config)
   : m_group(group), m_configuration(config), m_toolTip(&wxm::emptyString) {
   wxASSERT((!group) || ((group->GetType() == MC_TYPE_GROUP || group == this)));
   InitBitFields_Cell();
-  ResetSize();
+  // Invalidate the size fields directly instead of calling ResetSize(): a
+  // GroupCell passes itself as m_group while it is still inside this base-class
+  // (Cell) constructor, so ResetSize()'s m_group->MarkNeedsRecalculate() would
+  // invoke a GroupCell method on an object whose GroupCell part isn't
+  // constructed yet - undefined behaviour, flagged by UBSan. A freshly built,
+  // unlinked cell has nothing to notify anyway: it reports NeedsRecalculation()
+  // until it is laid out once it has been inserted into the tree.
+  m_cellCfgCnt_last--;
+  m_width.Invalidate();
+  m_height.Invalidate();
+  m_center.Invalidate();
 }
 
 Cell::~Cell() {
@@ -306,22 +316,18 @@ wxCoord Cell::GetCenter() const {
 bool Cell::NeedsRecalculation(AFontSize fontSize) const {
   if (!m_fontSize.IsValid()) {
     Configuration::g_stats.recalculationNeeded_FontInvalid++;
-    std::cerr<<"m_FontSize invalid:"<<ToString()<<"\n";
     return true;
   }
   if (!HasValidSize()) {
     Configuration::g_stats.recalculationNeeded_SizeInvalid++;
-    std::cerr<<"CellSize invalid:"<<ToString()<<"\n";
     return true;
   }
   if (fontSize.IsValid() &&
       !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.2f)) {
-    std::cerr<<"FontSize wrong:"<<ToString()<<"\n";
     Configuration::g_stats.recalculationNeeded_FontMismatch++;
     return true;
   }
   if (ConfigChanged()) {
-    std::cerr<<"Config changed:"<<ToString()<<"\n";
     Configuration::g_stats.recalculationNeeded_ConfigChanged++;
     return true;
   }

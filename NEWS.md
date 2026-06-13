@@ -1,5 +1,13 @@
 # Current development version
 
+- Fix undefined behaviour during cell construction: the `Cell` base-class
+  constructor called `ResetSize()`, which notified `m_group` - but a `GroupCell`
+  passes itself as its own group, so this invoked a `GroupCell` method on an
+  object whose derived part was not constructed yet (a downcast to a not-yet-live
+  type). Found by the new AddressSanitizer/UndefinedBehaviorSanitizer CI job. The
+  constructor now invalidates its size fields directly without notifying.
+- Remove leftover `std::cerr` debug output from `Cell::NeedsRecalculation()` that
+  flooded stderr (the recalculation-statistics counters it sat next to are kept).
 - Add a new command `wxmxdiff` (symlinked to `wxmaxima` on installation) which automatically opens in side-by-side diff comparison mode, and document it in the man pages.
 - Add automatic package verification to the test suite using Lintian (for DEB) and rpmlint (for RPM) when their respective packaging prerequisites are met.
 - Fix Lintian packaging errors and warnings: introduced proper Debian changelog formatting, configured from the `data/changelog.Debian.in` template, added a compliant debian copyright file, enforced standard directory permissions (0755), compressed man pages, and stripped binaries.
