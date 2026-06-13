@@ -324,7 +324,12 @@ void TableOfContents::UpdateDisplay() {
 
   if ((m_dragStart >= 0) && (m_dragCurrentPos >= 0) &&
       (m_dragStart != m_dragCurrentPos)) {
-    m_dndStartCell = m_displayedGroupCells.at(m_dragStart);
+    // Validate against the live tree before the CellPtr adopts it (see the note
+    // in OnMouseRightDown): m_displayedGroupCells can hold an already-deleted
+    // cell, and CellPtr registration would dereference it.
+    GroupCell *const dragStart = m_displayedGroupCells.at(m_dragStart);
+    GroupCell *const tocRoot = m_tree ? m_tree->get() : nullptr;
+    m_dndStartCell = (tocRoot && tocRoot->Contains(dragStart)) ? dragStart : nullptr;
 
     std::list<GroupCell *> m_draggedCells;
     std::list<GroupCell *> m_otherCells;
@@ -457,7 +462,15 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event) {
   if (event.GetIndex() < 0)
     return;
   std::unique_ptr<wxMenu> popupMenu(new wxMenu());
-  m_cellRightClickedOn = m_structure[event.GetIndex()];
+  // m_structure can lag the worksheet tree (the TOC is only refreshed "when
+  // there is time"), so the clicked entry may already have been deleted.
+  // Validate it against the live tree - an address-only comparison that never
+  // dereferences the entry - before letting the CellPtr adopt it: CellPtr
+  // registration *does* dereference the cell and would be a use-after-free on a
+  // stale pointer.
+  GroupCell *const clicked = m_structure[event.GetIndex()];
+  GroupCell *const tocRoot = m_tree ? m_tree->get() : nullptr;
+  m_cellRightClickedOn = (tocRoot && tocRoot->Contains(clicked)) ? clicked : nullptr;
 
   if (m_cellRightClickedOn != NULL) {
     if (m_cellRightClickedOn->GetHiddenTree())
