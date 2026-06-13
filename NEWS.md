@@ -1,5 +1,9 @@
 # Current development version
 
+- Harden animation-cell timer bookkeeping against use-after-free: the cell
+  reference stored per timer id is now an auto-nulling `CellPtr` rather than a
+  raw pointer, so a timer that fires after its animation cell was destroyed
+  resolves to nothing instead of dereferencing freed memory.
 - Harden the undo/redo system against use-after-free: `TreeUndoAction` now holds
   its references to worksheet cells (`m_start`, `m_newCellsEnd`) as auto-nulling
   `CellPtr`s instead of raw pointers. Previously, deleting a cell that an undo

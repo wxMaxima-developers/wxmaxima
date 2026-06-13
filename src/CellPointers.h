@@ -176,7 +176,12 @@ public:
 
 private:
   struct CellTimerId {
-    Cell *cell = NULL;
+    // A CellPtr, not a raw pointer: animation timers fire asynchronously, so a
+    // timer entry can outlive its cell. Auto-nulling means GetCellForTimerId()
+    // returns nullptr for a destroyed cell instead of a dangling pointer, even
+    // if RemoveTimerIdForCell() was somehow not reached (see the "Long-lived
+    // cell references" rule in CellPtr.h).
+    CellPtr<Cell> cell;
     int timerId = -1;
     CellTimerId() = default;
     CellTimerId(Cell *cell, int timerId) : cell(cell), timerId(timerId) {}
