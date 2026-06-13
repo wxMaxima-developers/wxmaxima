@@ -1,5 +1,10 @@
 # Current development version
 
+- Fix the incremental layout pass occasionally leaving a cell with stale size or
+  position: `RecalculateIfNeeded` stopped walking the worksheet at the first
+  up-to-date cell, but cells can be marked for recalculation non-contiguously
+  (e.g. by folding/hiding sections or by asynchronous Maxima output), so a cell
+  further down could be skipped. The pass now scans on to recalculate those, too.
 - Harden the autocomplete popup against use-after-free: it now holds the editor
   cell it completes as an auto-nulling `CellPtr`, and its key/mouse handlers
   dismiss the popup if that editor was destroyed while the popup was open,

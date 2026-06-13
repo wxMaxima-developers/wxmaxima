@@ -966,8 +966,12 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
         } else if (propagationNeeded) {
           movedThisTime = group->Reposition();
         } else {
-          m_recalculateStart = {};
-          break;
+          // Don't stop here: a cell further down the worksheet may still be
+          // dirty. Cells can be marked for recalculation non-contiguously (e.g.
+          // by folding/hiding or by asynchronous Maxima output landing in
+          // specific cells), so a clean, non-propagating cell does not imply
+          // everything below it is clean. Keep scanning; the m_recalculateStart
+          // bookkeeping below advances the resume point past this clean cell.
         }
         propagationNeeded = movedThisTime || sizeChanged;
 
@@ -1020,7 +1024,11 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
         } else if (propagationNeeded) {
           movedThisTime = group->Reposition();
         } else {
-          break;
+          // Don't stop here: a cell further down the worksheet may still be
+          // dirty. Cells can be marked for recalculation non-contiguously (e.g.
+          // by folding/hiding or by asynchronous Maxima output landing in
+          // specific cells), so a clean, non-propagating cell does not imply
+          // everything below it is clean. Keep scanning to the end.
         }
         propagationNeeded = movedThisTime || sizeChanged;
 
