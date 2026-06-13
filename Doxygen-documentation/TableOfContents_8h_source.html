@@ -162,34 +162,39 @@ $(function() {
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  wxTimer m_scrollUpTimer;</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  wxTimer m_scrollDownTimer;</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  wxDragImage *m_dragImage = NULL;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  std::vector&lt;GroupCell *&gt; m_displayedGroupCells;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  std::size_t m_numberOfCaptionsDragged = 0;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <a class="code hl_class" href="classCellPtr.html">CellPtr&lt;GroupCell&gt;</a> m_cellRightClickedOn;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keywordtype">long</span> m_dragStart = -1;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordtype">long</span> m_dragStop = -1;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keywordtype">signed</span> <span class="keywordtype">long</span> m_dragCurrentPos = -1;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keywordtype">int</span> m_dragFeedback_Last = -1;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keywordtype">long</span> m_lastSelection;</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordtype">void</span> UpdateDisplay();</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  wxListCtrl *m_displayedItems;</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <a class="code hl_class" href="classRegexCtrl.html">RegexCtrl</a> *m_regex;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  wxArrayString m_items_old;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <a class="code hl_class" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  std::vector&lt;GroupCell *&gt; m_structure;</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>};</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">#endif </span><span class="comment">// TABLEOFCONTENTS_H</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="comment">// CellPtrs, not raw pointers: these caches can lag the worksheet tree, so an</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="comment">// entry may refer to a cell that has since been deleted. Auto-nulling turns a</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="comment">// stale entry into nullptr rather than a dangling pointer (see &quot;Long-lived</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="comment">// cell references&quot; in CellPtr.h). Callers must therefore null-check entries.</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  std::vector&lt;CellPtr&lt;GroupCell&gt;&gt; m_displayedGroupCells;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  std::size_t m_numberOfCaptionsDragged = 0;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <a class="code hl_class" href="classCellPtr.html">CellPtr&lt;GroupCell&gt;</a> m_cellRightClickedOn;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keywordtype">long</span> m_dragStart = -1;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keywordtype">long</span> m_dragStop = -1;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keywordtype">signed</span> <span class="keywordtype">long</span> m_dragCurrentPos = -1;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="keywordtype">int</span> m_dragFeedback_Last = -1;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordtype">long</span> m_lastSelection;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keywordtype">void</span> UpdateDisplay();</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  wxListCtrl *m_displayedItems;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <a class="code hl_class" href="classRegexCtrl.html">RegexCtrl</a> *m_regex;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  wxArrayString m_items_old;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <a class="code hl_class" href="classConfiguration.html">Configuration</a> *m_configuration;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="comment">// CellPtrs for the same reason as m_displayedGroupCells above.</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  std::vector&lt;CellPtr&lt;GroupCell&gt;&gt; m_structure;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>};</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor">#endif </span><span class="comment">// TABLEOFCONTENTS_H</span></div>
 <div class="ttc" id="aGroupCell_8h_html"><div class="ttname"><a href="GroupCell_8h.html">GroupCell.h</a></div><div class="ttdoc">This file defines the class GroupCell that bundles input and output in the worksheet.</div></div>
 <div class="ttc" id="aclassCellPtr_html"><div class="ttname"><a href="classCellPtr.html">CellPtr</a></div><div class="ttdoc">A weak non-owning pointer that becomes null whenever the observed object is destroyed.</div><div class="ttdef"><b>Definition:</b> CellPtr.h:489</div></div>
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:87</div></div>
 <div class="ttc" id="aclassGroupCell_html"><div class="ttname"><a href="classGroupCell.html">GroupCell</a></div><div class="ttdoc">A cell grouping input (and, if there is one, also the output) cell to a foldable item.</div><div class="ttdef"><b>Definition:</b> GroupCell.h:87</div></div>
 <div class="ttc" id="aclassRegexCtrl_html"><div class="ttname"><a href="classRegexCtrl.html">RegexCtrl</a></div><div class="ttdoc">A BTextCtrl that allows to input a regex.</div><div class="ttdef"><b>Definition:</b> RegexCtrl.h:36</div></div>
 <div class="ttc" id="aclassTableOfContents_html"><div class="ttname"><a href="classTableOfContents.html">TableOfContents</a></div><div class="ttdoc">This class generates a pane containing the table of contents.</div><div class="ttdef"><b>Definition:</b> TableOfContents.h:52</div></div>
-<div class="ttc" id="aclassTableOfContents_html_a00fe5743c565ace87932e966aa9729f8"><div class="ttname"><a href="classTableOfContents.html#a00fe5743c565ace87932e966aa9729f8">TableOfContents::GetCell</a></div><div class="ttdeci">GroupCell * GetCell(std::size_t index)</div><div class="ttdoc">Get the nth Cell in the table of contents.</div><div class="ttdef"><b>Definition:</b> TableOfContents.cpp:425</div></div>
-<div class="ttc" id="aclassTableOfContents_html_a30c1fca1e34b370fdaf099d0f5509ec3"><div class="ttname"><a href="classTableOfContents.html#a30c1fca1e34b370fdaf099d0f5509ec3">TableOfContents::OnRegExEvent</a></div><div class="ttdeci">void OnRegExEvent(wxCommandEvent &amp;ev)</div><div class="ttdoc">What happens if someone changes the search box contents.</div><div class="ttdef"><b>Definition:</b> TableOfContents.cpp:469</div></div>
+<div class="ttc" id="aclassTableOfContents_html_a00fe5743c565ace87932e966aa9729f8"><div class="ttname"><a href="classTableOfContents.html#a00fe5743c565ace87932e966aa9729f8">TableOfContents::GetCell</a></div><div class="ttdeci">GroupCell * GetCell(std::size_t index)</div><div class="ttdoc">Get the nth Cell in the table of contents.</div><div class="ttdef"><b>Definition:</b> TableOfContents.cpp:436</div></div>
+<div class="ttc" id="aclassTableOfContents_html_a30c1fca1e34b370fdaf099d0f5509ec3"><div class="ttname"><a href="classTableOfContents.html#a30c1fca1e34b370fdaf099d0f5509ec3">TableOfContents::OnRegExEvent</a></div><div class="ttdeci">void OnRegExEvent(wxCommandEvent &amp;ev)</div><div class="ttdoc">What happens if someone changes the search box contents.</div><div class="ttdef"><b>Definition:</b> TableOfContents.cpp:480</div></div>
 <div class="ttc" id="aclassTableOfContents_html_a4f47fdcaa0d02480a61e94c455d8d641"><div class="ttname"><a href="classTableOfContents.html#a4f47fdcaa0d02480a61e94c455d8d641">TableOfContents::RightClickedOn</a></div><div class="ttdeci">GroupCell * RightClickedOn()</div><div class="ttdoc">Returns the cell that was last right-clicked on.</div><div class="ttdef"><b>Definition:</b> TableOfContents.h:78</div></div>
 <div class="ttc" id="aclassTableOfContents_html_a63819f993f35d4b2a813911406c24202"><div class="ttname"><a href="classTableOfContents.html#a63819f993f35d4b2a813911406c24202">TableOfContents::UpdateTableOfContents</a></div><div class="ttdeci">void UpdateTableOfContents(GroupCell *pos)</div><div class="ttdoc">Update the structure information from the tree.</div><div class="ttdef"><b>Definition:</b> TableOfContents.cpp:249</div></div>
 </div><!-- fragment --></div><!-- contents -->
