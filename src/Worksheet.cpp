@@ -6480,13 +6480,14 @@ bool Worksheet::TreeUndoTextChange(UndoActions *sourcelist,
                                    UndoActions *undoForThisOperation) {
   const TreeUndoAction &action = sourcelist->front();
 
-  wxASSERT_MSG(action.m_start,
-               _("Bug: Got a request to change the contents of the cell above "
-                 "the beginning of the worksheet."));
-
-  if (!GetTree()->Contains(action.m_start)) {
-    wxASSERT_MSG(GetTree()->Contains(action.m_start),
-                 _("Bug: Undo request for cell outside worksheet."));
+  // m_start is a CellPtr, so it auto-nulls if the cell whose text this action
+  // changed was destroyed after the action was recorded. A destroyed (or
+  // otherwise no-longer-present) cell cannot have its text change undone, so we
+  // drop the action rather than dereference a stale pointer.
+  if (!action.m_start || !GetTree()->Contains(action.m_start)) {
+    wxLogMessage(
+      wxS("Skipping the undo of a text change: the cell it refers to is no "
+          "longer part of the worksheet."));
     return false;
   }
 

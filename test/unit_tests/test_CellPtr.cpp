@@ -475,6 +475,38 @@ SCENARIO("A CellPtr drops the reference to Observed's control block as soon as i
   }
 }
 
+// Regression guard for the undo/redo lifetime hardening: TreeUndoAction stores
+// its cell references (m_start, m_newCellsEnd) as CellPtr<GroupCell> rather than
+// raw pointers, so an action waiting in the undo list can never dereference a
+// GroupCell that was destroyed in the meantime. This pins the exact behaviour
+// the undo code relies on - if someone "optimises" those fields back to raw
+// GroupCell* this test fails.
+SCENARIO("A CellPtr<GroupCell> undo reference auto-nulls when its cell is destroyed") {
+  Configuration configuration;
+  GIVEN("a GroupCell observed by a CellPtr, the way the undo list holds it") {
+    auto group = std::make_unique<GroupCell>(&configuration, GC_TYPE_CODE);
+    CellPtr<GroupCell> undoRef{group.get()};
+
+    THEN("the reference sees the live cell") {
+      REQUIRE(undoRef.get() == group.get());
+      REQUIRE(static_cast<bool>(undoRef));
+    }
+
+    WHEN("the cell is destroyed while the reference still exists") {
+      group.reset();
+      THEN("the reference reads null instead of dangling") {
+        REQUIRE(undoRef.get() == nullptr);
+        REQUIRE(undoRef == nullptr);
+        REQUIRE_FALSE(static_cast<bool>(undoRef));
+      }
+      AND_THEN("it still converts safely to a null GroupCell* for the consumers") {
+        GroupCell *raw = undoRef;
+        REQUIRE(raw == nullptr);
+      }
+    }
+  }
+}
+
 struct WithGroup {
   Configuration configuration;
   GroupCell group{&configuration, GC_TYPE_IMAGE};

@@ -282,8 +282,14 @@ private:
     /*! The position this action started at.
 
       NULL = At the begin of the document.
+
+      A CellPtr (not a raw pointer) so that it auto-nulls if the GroupCell it
+      refers to is destroyed while this action still sits in the undo/redo list -
+      otherwise invoking the action would dereference freed memory. The consumer
+      code already null-checks this field, so auto-nulling makes those checks
+      correct instead of relying on the freed pointer's stale value.
     */
-    GroupCell *const m_start = nullptr;
+    CellPtr<GroupCell> m_start;
 
     /*! The old contents of the cell start
 
@@ -306,8 +312,11 @@ private:
       To undo it these cells have to be deleted again.
 
       If this field's value is NULL no cells have to be deleted to undo this action.
+
+      A CellPtr for the same reason as m_start: it auto-nulls if the referenced
+      GroupCell is destroyed before this action is undone.
     */
-    GroupCell *const m_newCellsEnd = nullptr;
+    CellPtr<GroupCell> m_newCellsEnd;
 
     /*! Cells that were deleted in this action.
 

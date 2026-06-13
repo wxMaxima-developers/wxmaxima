@@ -28,6 +28,15 @@
  * not use shared ownership. All cells are have a single owner - either a cell list rooted
  * in a unique_ptr, or are owned by internal cell pointers.
  *
+ * \par When to use a CellPtr
+ * Use a CellPtr (never a raw `Cell*`/`GroupCell*`) for any reference to a cell that
+ * outlives the current function or event - undo/redo actions, the evaluation queue,
+ * the current selection, sidebar bookkeeping, "last clicked" caches, and the like.
+ * Because a CellPtr observes the cell and auto-nulls when that cell is destroyed, a
+ * stale reference reads as `nullptr` instead of dangling; always null-check on use.
+ * A raw pointer is acceptable only for the lifetime of a single call/event, where the
+ * cell provably cannot be destroyed in between.
+ *
  * Author's Note: I'm not particularly happy with this code, since it could be factored much
  * better. Observe that all three classes that implement this system are the same: they are
  * a pointer. An `Observed` is a pointer, a `CellPtrBase` is a pointer, an an

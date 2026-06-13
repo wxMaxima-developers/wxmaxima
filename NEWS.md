@@ -1,5 +1,12 @@
 # Current development version
 
+- Harden the undo/redo system against use-after-free: `TreeUndoAction` now holds
+  its references to worksheet cells (`m_start`, `m_newCellsEnd`) as auto-nulling
+  `CellPtr`s instead of raw pointers. Previously, deleting a cell that an undo
+  action still referenced left a dangling pointer that undo would dereference;
+  now such a reference reads as empty and the action degrades gracefully. Added
+  a unit-test regression guard and documented the underlying rule (long-lived
+  cell references must use `CellPtr`).
 - Fix undefined behaviour during cell construction: the `Cell` base-class
   constructor called `ResetSize()`, which notified `m_group` - but a `GroupCell`
   passes itself as its own group, so this invoked a `GroupCell` method on an
