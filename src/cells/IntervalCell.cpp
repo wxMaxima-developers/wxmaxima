@@ -109,7 +109,7 @@ void IntervalCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void IntervalCell::SetCurrentPoint(wxPoint point) {
+void IntervalCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   if (IsBrokenIntoLines())
     return;

@@ -45,7 +45,7 @@ SetCell::SetCell(GroupCell *group, const SetCell &cell)
 
 DEFINE_CELL(SetCell)
 
-void SetCell::SetCurrentPoint(wxPoint point) {
+void SetCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
 }
 

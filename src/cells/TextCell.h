@@ -53,7 +53,7 @@ public:
   virtual void Recalculate(const AFontSize fontsize) const override;
 
   using Cell::SetCurrentPoint;
-  void SetCurrentPoint(wxPoint point) override;
+  void SetCurrentPoint(wxPoint point) const override;
   void Draw(wxDC *dc, wxDC *antialiassingDC) override;
   const wxFont &GetFont(AFontSize fontsize) const {
     return m_configuration->GetStyle(GetTextStyle())->GetFont(fontsize);

@@ -437,7 +437,7 @@ bool GroupCell::Recalculate() const {
     m_cellsAppended = false;
 
     // Force child repositioning since size or content changed
-    const_cast<GroupCell *>(this)->SetCurrentPoint(m_currentPoint);
+    SetCurrentPoint(m_currentPoint);
   }
   // Move all cells that follow the current one down by the amount this cell
   // has grown.
@@ -683,7 +683,7 @@ bool GroupCell::Reposition() const {
       point.y += previous->GetCurrentPoint().y + previous->GetMaxDrop();
   }
   if (m_currentPoint != point) {
-    const_cast<GroupCell *>(this)->SetCurrentPoint(point);
+    SetCurrentPoint(point);
     return true;
   }
   return false;
@@ -764,7 +764,7 @@ void GroupCell::UpdateOutputPositions() const {
 /**
  * @brief Pass 2 (Arrange): Sets the GroupCell position and triggers child layout.
  */
-void GroupCell::SetCurrentPoint(wxPoint point) {
+void GroupCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   
   // 1. Position Input Label (%i1)

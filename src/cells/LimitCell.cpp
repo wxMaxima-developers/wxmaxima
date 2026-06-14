@@ -48,7 +48,7 @@ LimitCell::LimitCell(GroupCell *group, const LimitCell &cell)
 
 DEFINE_CELL(LimitCell)
 
-void LimitCell::SetCurrentPoint(wxPoint point) {
+void LimitCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
 }
 

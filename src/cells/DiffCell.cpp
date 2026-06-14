@@ -91,7 +91,7 @@ void DiffCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void DiffCell::SetCurrentPoint(wxPoint point) {
+void DiffCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   if (IsBrokenIntoLines())
     return;

@@ -935,12 +935,12 @@ public:
    * 
    * @param point The absolute worksheet coordinates for the cell's baseline/origin.
    */
-  virtual void SetCurrentPoint(wxPoint point);
+  virtual void SetCurrentPoint(wxPoint point) const;
 
   /**
    * @brief Sets the position for the cell and convenience overload.
    */
-  void SetCurrentPoint(int x, int y) { SetCurrentPoint({x, y}); }
+  void SetCurrentPoint(int x, int y) const { SetCurrentPoint({x, y}); }
 
   /**
    * @brief Helper to position a horizontal list of cells.

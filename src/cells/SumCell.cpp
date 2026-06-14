@@ -189,7 +189,7 @@ void SumCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void SumCell::SetCurrentPoint(wxPoint point) {
+void SumCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   if (IsBrokenIntoLines())
     return;

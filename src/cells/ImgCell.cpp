@@ -153,7 +153,7 @@ void ImgCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void ImgCell::SetCurrentPoint(wxPoint point) {
+void ImgCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
 }
 

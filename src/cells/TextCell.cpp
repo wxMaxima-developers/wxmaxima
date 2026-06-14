@@ -130,7 +130,7 @@ TextCell::TextCell(GroupCell *group, const TextCell &cell)
 
 DEFINE_CELL(TextCell)
 
-void TextCell::SetCurrentPoint(wxPoint point) {
+void TextCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
 }
 

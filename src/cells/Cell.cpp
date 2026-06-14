@@ -490,7 +490,7 @@ void Cell::SetIsExponent() {
   }
 }
 
-void Cell::SetCurrentPoint(wxPoint point) {
+void Cell::SetCurrentPoint(wxPoint point) const {
   m_currentPoint = point;
 }
 

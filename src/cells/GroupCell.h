@@ -264,7 +264,7 @@ public:
   using Cell::NeedsRecalculation;
   bool NeedsRecalculation(AFontSize fontSize) const override;
   using Cell::SetCurrentPoint;
-  void SetCurrentPoint(wxPoint point) override;
+  void SetCurrentPoint(wxPoint point) const override;
   wxPoint CalculateInputPosition() const;
 
   //! Recalculate the height of the input part of the cell

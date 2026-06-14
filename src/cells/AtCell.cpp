@@ -65,7 +65,7 @@ void AtCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void AtCell::SetCurrentPoint(wxPoint point) {
+void AtCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
 
   wxPoint bs, in;

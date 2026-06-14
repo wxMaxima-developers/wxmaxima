@@ -47,7 +47,7 @@ LabelCell::LabelCell(GroupCell *group, const LabelCell &cell)
 
 DEFINE_CELL(LabelCell)
 
-void LabelCell::SetCurrentPoint(wxPoint point) {
+void LabelCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
 }
 

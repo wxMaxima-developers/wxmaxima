@@ -157,7 +157,7 @@ void SubSupCell::Recalculate(AFontSize const fontsize) const {
 /**
  * @brief Pass 2 (Arrange): Positions base and all four possible scripts.
  */
-void SubSupCell::SetCurrentPoint(wxPoint point) {
+void SubSupCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
 
   wxCoord preWidth = 0;

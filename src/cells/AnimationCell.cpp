@@ -243,7 +243,7 @@ void AnimationCell::SetMaxHeight(wxCoord height) {
     (*i).SetMaxHeight(height);
 }
 
-void AnimationCell::SetCurrentPoint(wxPoint point) {
+void AnimationCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
 }
 

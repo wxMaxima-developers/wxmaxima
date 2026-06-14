@@ -82,7 +82,7 @@ void ConjugateCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void ConjugateCell::SetCurrentPoint(wxPoint point) {
+void ConjugateCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   if (IsBrokenIntoLines())
     return;

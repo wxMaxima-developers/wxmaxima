@@ -71,7 +71,7 @@ void SubCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void SubCell::SetCurrentPoint(wxPoint point) {
+void SubCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   
   wxPoint bs, in;

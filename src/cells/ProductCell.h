@@ -45,7 +45,7 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   using Cell::SetCurrentPoint;
-  void SetCurrentPoint(wxPoint point) override;
+  void SetCurrentPoint(wxPoint point) const override;
   void Draw(wxDC *dc, wxDC *antialiassingDC) override;
 
 protected:

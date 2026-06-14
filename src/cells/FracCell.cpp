@@ -146,7 +146,7 @@ void FracCell::Recalculate(AFontSize fontsize) const {
 /**
  * @brief Pass 2 (Arrange): Positions numerator, denominator, and division sign.
  */
-void FracCell::SetCurrentPoint(wxPoint point) {
+void FracCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   
   // Linearized cells (broken into lines) behave as zero-size containers.

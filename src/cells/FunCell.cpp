@@ -71,7 +71,7 @@ void FunCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void FunCell::SetCurrentPoint(wxPoint point) {
+void FunCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   if (IsBrokenIntoLines())
     return;

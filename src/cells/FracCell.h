@@ -80,7 +80,7 @@ public:
   void Draw(wxDC *dc, wxDC *antialiassingDC) override;
 
   using Cell::SetCurrentPoint;
-  void SetCurrentPoint(wxPoint point) override;
+  void SetCurrentPoint(wxPoint point) const override;
 
   void SetFracStyle(FracType style);
 

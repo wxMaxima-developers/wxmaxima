@@ -137,7 +137,7 @@ void IntCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void IntCell::SetCurrentPoint(wxPoint point) {
+void IntCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   if (IsBrokenIntoLines())
     return;

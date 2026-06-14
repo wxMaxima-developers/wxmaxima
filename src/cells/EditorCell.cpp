@@ -754,7 +754,7 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
    StyleText() converts m_text into. This way the decisions needed for styling
    text are cached for later use.
 */
-void EditorCell::SetCurrentPoint(wxPoint point) {
+void EditorCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
 }
 

@@ -58,7 +58,7 @@ Cell::Range GroupCell::GetInnerCellsInRect(const wxRect &) const { return {}; }
 const wxString GroupCell::GetToolTip(wxPoint) const { return {}; }
 bool GroupCell::AddEnding() { return {}; }
 bool GroupCell::FirstLineOnlyEditor() const { return false; }
-void GroupCell::SetCurrentPoint(wxPoint) {}
+void GroupCell::SetCurrentPoint(wxPoint) const {}
 void GroupCell::MarkNeedsRecalculate() {}
 wxCoord GroupCell::GetMaxDrop() const { return {}; }
 wxCoord GroupCell::GetCenterList() const { return {}; }

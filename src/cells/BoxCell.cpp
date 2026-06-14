@@ -81,7 +81,7 @@ void BoxCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void BoxCell::SetCurrentPoint(wxPoint point) {
+void BoxCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   if (IsBrokenIntoLines())
     return;

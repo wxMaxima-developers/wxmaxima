@@ -101,7 +101,7 @@ void MatrCell::Recalculate(AFontSize const fontsize) const {
   }
 }
 
-void MatrCell::SetCurrentPoint(wxPoint point) {
+void MatrCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   wxPoint mp;
   mp.x = point.x + Scale_Px(5);

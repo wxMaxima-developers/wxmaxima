@@ -147,7 +147,7 @@ void ParenCell::Recalculate(AFontSize fontsize) const {
 /**
  * @brief Pass 2 (Arrange): Positions opening bracket, inner content, and closing bracket.
  */
-void ParenCell::SetCurrentPoint(wxPoint point) {
+void ParenCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   
   // Linearized cells (broken into lines) behave as zero-size containers.

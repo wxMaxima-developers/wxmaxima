@@ -55,7 +55,7 @@ void DigitCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void DigitCell::SetCurrentPoint(wxPoint point) {
+void DigitCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
 }
 

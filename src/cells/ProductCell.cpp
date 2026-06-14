@@ -97,7 +97,7 @@ const wxSize ProductCell::GetSymbolSize() const
   return signSize;
 }
 
-void ProductCell::SetCurrentPoint(wxPoint point) {
+void ProductCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
 }
 

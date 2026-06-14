@@ -105,7 +105,7 @@ void LongNumberCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void LongNumberCell::SetCurrentPoint(wxPoint point) {
+void LongNumberCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   if (IsBrokenIntoLines() && m_innerCell)
     m_innerCell->SetCurrentPointList(point);

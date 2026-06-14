@@ -77,7 +77,7 @@ void SqrtCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void SqrtCell::SetCurrentPoint(wxPoint point) {
+void SqrtCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   if (IsBrokenIntoLines())
     return;

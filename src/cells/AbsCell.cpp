@@ -84,7 +84,7 @@ void AbsCell::Recalculate(AFontSize fontsize) const {
 /**
  * @brief Pass 2 (Arrange): Positions the inner content within absolute value bars.
  */
-void AbsCell::SetCurrentPoint(wxPoint point) {
+void AbsCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   
   // Linearized cells (broken into lines) behave as zero-size containers.

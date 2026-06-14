@@ -74,7 +74,7 @@ void ExptCell::MakeBreakupCells() {
 /**
  * @brief Pass 2 (Arrange): Positions the base and the raised exponent.
  */
-void ExptCell::SetCurrentPoint(wxPoint point) {
+void ExptCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   
   // Linearized cells (broken into lines) behave as zero-size containers.

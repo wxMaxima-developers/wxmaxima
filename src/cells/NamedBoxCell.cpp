@@ -94,7 +94,7 @@ void NamedBoxCell::Recalculate(AFontSize fontsize) const {
   }
 }
 
-void NamedBoxCell::SetCurrentPoint(wxPoint point) {
+void NamedBoxCell::SetCurrentPoint(wxPoint point) const {
   Cell::SetCurrentPoint(point);
   if (IsBrokenIntoLines())
     return;
