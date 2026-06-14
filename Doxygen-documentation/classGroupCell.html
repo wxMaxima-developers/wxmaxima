@@ -296,6 +296,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>RecalculateInput</b> 
 <tr class="memitem:adf77e3135bd286af8aa373921c5f882c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#adf77e3135bd286af8aa373921c5f882c">RecalculateOutput</a> () const</td></tr>
 <tr class="memdesc:adf77e3135bd286af8aa373921c5f882c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate the height of the output part of the cell.  <br /></td></tr>
 <tr class="separator:adf77e3135bd286af8aa373921c5f882c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a119bca2036bae36d0d52367d587d5d29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a119bca2036bae36d0d52367d587d5d29">DisplayedOutput</a> () const</td></tr>
+<tr class="memdesc:a119bca2036bae36d0d52367d587d5d29"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cell list to lay out and draw as this group's output.  <br /></td></tr>
+<tr class="separator:a119bca2036bae36d0d52367d587d5d29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f8ecc21122d84d2ed62b801c19f85b5"><td class="memItemLeft" align="right" valign="top"><a id="a0f8ecc21122d84d2ed62b801c19f85b5" name="a0f8ecc21122d84d2ed62b801c19f85b5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>BreakLines</b> () const</td></tr>
 <tr class="memdesc:a0f8ecc21122d84d2ed62b801c19f85b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break this cell into lines. <br /></td></tr>
@@ -1003,6 +1006,9 @@ std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td>
 std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_output</b></td></tr>
 <tr class="memdesc:aee37553861fe93a152acd35af7e5f0d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maxima output this cell contains. <br /></td></tr>
 <tr class="separator:aee37553861fe93a152acd35af7e5f0d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0a3599e0fc4d4bf498d45e717aada34"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#ac0a3599e0fc4d4bf498d45e717aada34">m_layoutSuppressedNotice</a></td></tr>
+<tr class="memdesc:ac0a3599e0fc4d4bf498d45e717aada34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cached placeholder shown instead of the output while layout is suppressed.  <br /></td></tr>
+<tr class="separator:ac0a3599e0fc4d4bf498d45e717aada34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa82dc57df094c5109a0d689071ccd4d7"><td class="memItemLeft" align="right" valign="top"><a id="aa82dc57df094c5109a0d689071ccd4d7" name="aa82dc57df094c5109a0d689071ccd4d7"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>m_labelWidth_cached</b> = 0</td></tr>
 <tr class="separator:aa82dc57df094c5109a0d689071ccd4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1730,6 +1736,26 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lookalik
 <p>Only interesting for EditorCells </p>
 
 <p>Reimplemented in <a class="el" href="classEditorCell.html#abe5e2eb147aca9cf6ae58f60ead0ad7b">EditorCell</a>.</p>
+
+</div>
+</div>
+<a id="a119bca2036bae36d0d52367d587d5d29" name="a119bca2036bae36d0d52367d587d5d29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a119bca2036bae36d0d52367d587d5d29">&#9670;&#160;</a></span>DisplayedOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCell.html">Cell</a> * GroupCell::DisplayedOutput </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The cell list to lay out and draw as this group's output. </p>
+<p>Normally the real output (m_output). While layout is suppressed it returns a lightweight placeholder notice instead (lazily built and cached in m_layoutSuppressedNotice), so we neither line-break nor draw the prohibitively large real output - which is kept intact for export and a possible later relayout. </p>
 
 </div>
 </div>
@@ -4530,6 +4556,31 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 <object type="image/svg+xml" data="CellGeometry.svg" style="pointer-events: none;"></object>
 </div>
  
+</div>
+</div>
+<a id="ac0a3599e0fc4d4bf498d45e717aada34" name="ac0a3599e0fc4d4bf498d45e717aada34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0a3599e0fc4d4bf498d45e717aada34">&#9670;&#160;</a></span>m_layoutSuppressedNotice</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt;<a class="el" href="classCell.html">Cell</a>&gt; GroupCell::m_layoutSuppressedNotice</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Cached placeholder shown instead of the output while layout is suppressed. </p>
+<p>When laying out the real output exceeds the configured deadline we keep m_output untouched (so it can still be exported, copied or re-laid-out later) and display this lightweight notice instead. It is a pure, regenerable cache value - delete it and <a class="el" href="classGroupCell.html#a119bca2036bae36d0d52367d587d5d29" title="The cell list to lay out and draw as this group&#39;s output.">DisplayedOutput()</a> rebuilds an identical one - which is why it may be (re)created from const layout code. It is deliberately NOT part of the contiguous inner-cell block above: it is not a structural child of the group, only a drawn stand-in. </p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
