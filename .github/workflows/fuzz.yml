@@ -1,0 +1,71 @@
+name: fuzz
+
+# Coverage-guided libFuzzer parser fuzzing (see test/fuzz/). The Clang + ASan
+# build of the whole app is slow (~30 min), so this does NOT run on every push:
+# it runs on a weekly schedule, on manual dispatch, and when the fuzz targets
+# themselves change (to catch the harness/CMake rotting).
+on:
+  schedule:
+    - cron: "0 3 * * 0"   # Sundays, 03:00 UTC
+  workflow_dispatch:
+  push:
+    paths:
+      - 'test/fuzz/**'
+      - '.github/workflows/fuzz.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  fuzz:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout_git
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 15
+      - name: install_packages
+        run: |
+             sudo apt-get update
+             sudo apt-get install appstream clang cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libwxgtk-webview3.2-dev ninja-build pandoc po4a xvfb at-spi2-core
+      - name: configure
+        run: |
+             export LANG=en_US.UTF-8
+             cmake -S . -B build-fuzz -G Ninja \
+               -DCMAKE_BUILD_TYPE=Debug \
+               -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang \
+               -DWXM_FUZZ=ON
+      - name: build_fuzzers
+        run: ninja -C build-fuzz fuzz_wxm fuzz_mathparser
+      - name: fuzz
+        run: |
+             export ASAN_OPTIONS=detect_leaks=0:abort_on_error=1:handle_abort=1
+             export UBSAN_OPTIONS=print_stacktrace=1
+             # Fuzz each target for a bounded time. The committed seeds are copied
+             # to a scratch dir first (libFuzzer grows the corpus in place, and we
+             # must not modify the checked-out tree). Replaying those seeds at the
+             # start is the deterministic regression part; a crash on a seed or
+             # during fuzzing makes the step (and the job) fail.
+             status=0
+             mkdir -p "$PWD/fuzz-artifacts"
+             for t in fuzz_wxm:corpus_wxm fuzz_mathparser:corpus_mathparser; do
+               bin="${t%%:*}"; seeds="${t##*:}"
+               mkdir -p "/tmp/$seeds"
+               cp -f test/fuzz/"$seeds"/* "/tmp/$seeds"/ 2>/dev/null || true
+               echo "::group::$bin"
+               GDK_BACKEND=x11 xvfb-run -a build-fuzz/src/"$bin" \
+                 -max_total_time=300 -timeout=25 -rss_limit_mb=4096 -max_len=400000 \
+                 -artifact_prefix="$PWD/fuzz-artifacts/" -print_final_stats=1 \
+                 "/tmp/$seeds" || status=1
+               echo "::endgroup::"
+             done
+             exit $status
+      - name: upload_crashes
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-crashes
+          path: fuzz-artifacts/
+          if-no-files-found: ignore

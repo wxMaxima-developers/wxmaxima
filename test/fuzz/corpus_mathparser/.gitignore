@@ -1,0 +1,5 @@
+# Ignore libFuzzer-generated corpus entries (40-hex-char SHA1 names).
+# Commit only named seeds.
+*
+!.gitignore
+!*.xml

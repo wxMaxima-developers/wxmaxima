@@ -311,21 +311,32 @@ if(WXM_FUZZ)
     if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         message(FATAL_ERROR "WXM_FUZZ requires Clang (libFuzzer). Re-run cmake with -DCMAKE_CXX_COMPILER=clang++.")
     endif()
+    # Two build modes:
+    #  - OSS-Fuzz drives the build via the environment: the coverage
+    #    instrumentation and the sanitizer are already in $CXXFLAGS (picked up by
+    #    CMAKE_CXX_FLAGS), and the fuzzing engine to link is in $LIB_FUZZING_ENGINE.
+    #  - Standalone (developer / our own CI): we add the instrumentation
+    #    (-fsanitize=fuzzer-no-link,address) and link libFuzzer ourselves.
+    if(DEFINED ENV{LIB_FUZZING_ENGINE})
+        set(WXM_FUZZ_INSTRUMENT "")
+        separate_arguments(WXM_FUZZ_ENGINE NATIVE_COMMAND "$ENV{LIB_FUZZING_ENGINE}")
+    else()
+        set(WXM_FUZZ_INSTRUMENT -fsanitize=fuzzer-no-link,address -fno-omit-frame-pointer)
+        set(WXM_FUZZ_ENGINE -fsanitize=fuzzer,address)
+    endif()
     set(FUZZ_APP_SOURCES ${SOURCE_FILES})
     list(REMOVE_ITEM FUZZ_APP_SOURCES main.cpp)
-    # Instrument the app for coverage (fuzzer-no-link = coverage without a main())
-    # plus AddressSanitizer.
     add_library(wxmFuzzApp OBJECT ${FUZZ_APP_SOURCES})
     target_compile_features(wxmFuzzApp PUBLIC cxx_std_20)
-    target_compile_options(wxmFuzzApp PRIVATE -fsanitize=fuzzer-no-link,address -fno-omit-frame-pointer)
+    target_compile_options(wxmFuzzApp PRIVATE ${WXM_FUZZ_INSTRUMENT})
     set(FUZZ_DIR ${CMAKE_SOURCE_DIR}/test/fuzz)
     foreach(FT wxm mathparser)
         add_executable(fuzz_${FT}
             ${FUZZ_DIR}/fuzz_${FT}.cpp ${FUZZ_DIR}/fuzz_stubs.cpp
             $<TARGET_OBJECTS:wxmFuzzApp>)
         target_compile_features(fuzz_${FT} PUBLIC cxx_std_20)
-        target_compile_options(fuzz_${FT} PRIVATE -fsanitize=fuzzer-no-link,address -fno-omit-frame-pointer)
-        target_link_options(fuzz_${FT} PRIVATE -fsanitize=fuzzer,address)
+        target_compile_options(fuzz_${FT} PRIVATE ${WXM_FUZZ_INSTRUMENT})
+        target_link_options(fuzz_${FT} PRIVATE ${WXM_FUZZ_ENGINE})
         target_link_libraries(fuzz_${FT} ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     endforeach()
 endif()

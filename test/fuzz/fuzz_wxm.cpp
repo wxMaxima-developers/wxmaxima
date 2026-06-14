@@ -1,6 +1,7 @@
 // Coverage-guided libFuzzer harness for wxMaxima's .wxm parser
 // (Format::TreeFromWXM). Parse-only: builds the cell tree and destroys it, so a
 // minimal headless wxWidgets init + memory DC is enough (no layout/real fonts).
+#include "fuzz_init.h"
 #include "WXMformat.h"
 #include "Configuration.h"
 #include "Worksheet.h"
@@ -26,6 +27,7 @@ Configuration *g_cfg = nullptr;
 }
 
 extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
+  EnsureDisplay();
   wxApp::SetInstance(new FuzzApp());
   wxEntryStart(*argc, *argv);     // GUI init (connects to $DISPLAY)
   wxTheApp->CallOnInit();

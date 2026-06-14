@@ -2,6 +2,7 @@
 // the MathML-like XML inside .wxmx files, i.e. Maxima's rich 2D output
 // (fractions, matrices, integrals, sub/superscripts, ...). This exercises the
 // 2D math cell construction that the .wxm parser never touches.
+#include "fuzz_init.h"
 #include "MathParser.h"
 #include "Configuration.h"
 #include "Worksheet.h"
@@ -27,6 +28,7 @@ GroupCell  *g_group = nullptr;
 }
 
 extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
+  EnsureDisplay();
   wxApp::SetInstance(new FuzzApp());
   wxEntryStart(*argc, *argv);
   wxTheApp->CallOnInit();

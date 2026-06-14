@@ -1,0 +1,14 @@
+homepage: "https://wxmaxima-developers.github.io/wxmaxima/"
+language: c++
+primary_contact: "gunter.koenigsmann@gmail.com"
+main_repo: "https://github.com/wxMaxima-developers/wxmaxima"
+fuzzing_engines:
+  - libfuzzer
+sanitizers:
+  - address
+  - undefined
+architectures:
+  - x86_64
+# Note: the harnesses depend on wxGTK, which needs an X display at run time. They
+# start their own Xvfb (test/fuzz/fuzz_init.h), so Xvfb must be present in the
+# run image. See test/fuzz/oss-fuzz/README.md before submitting.
