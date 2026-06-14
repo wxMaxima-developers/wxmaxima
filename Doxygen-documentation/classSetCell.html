@@ -108,9 +108,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afd8b4e866e0fe384d446e75cde099407"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classCellTypeInfo.html">CellTypeInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSetCell.html#afd8b4e866e0fe384d446e75cde099407">GetInfo</a> () override</td></tr>
 <tr class="memdesc:afd8b4e866e0fe384d446e75cde099407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the information about this cell's type.  <br /></td></tr>
 <tr class="separator:afd8b4e866e0fe384d446e75cde099407"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cda7f60ff8aa3f4e6b0bd145b61e4f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSetCell.html#a3cda7f60ff8aa3f4e6b0bd145b61e4f9">SetCurrentPoint</a> (wxPoint point) override</td></tr>
-<tr class="memdesc:a3cda7f60ff8aa3f4e6b0bd145b61e4f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
-<tr class="separator:a3cda7f60ff8aa3f4e6b0bd145b61e4f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d44027a736f60401d92a94659fc2249"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSetCell.html#a4d44027a736f60401d92a94659fc2249">SetCurrentPoint</a> (wxPoint point) const override</td></tr>
+<tr class="memdesc:a4d44027a736f60401d92a94659fc2249"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
+<tr class="separator:a4d44027a736f60401d92a94659fc2249"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af18d4650d691780678e2fa0bf91af9ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSetCell.html#af18d4650d691780678e2fa0bf91af9ca">Draw</a> (wxDC *dc, wxDC *antialiassingDC) override</td></tr>
 <tr class="memdesc:af18d4650d691780678e2fa0bf91af9ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 3 (Paint): Renders the cell using pre-calculated coordinates.  <br /></td></tr>
 <tr class="separator:af18d4650d691780678e2fa0bf91af9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,13 +126,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aeeec9354f09e917eee2fe26852abdea0"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSetCell.html#aeeec9354f09e917eee2fe26852abdea0">ToXML</a> () const override</td></tr>
 <tr class="memdesc:aeeec9354f09e917eee2fe26852abdea0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to a representation fit for saving in a .wxmx file.  <br /></td></tr>
 <tr class="separator:aeeec9354f09e917eee2fe26852abdea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae0a47c1802d5161976694882cd2f4a9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSetCell.html#aae0a47c1802d5161976694882cd2f4a9">SetCurrentPoint</a> (wxPoint point)</td></tr>
-<tr class="memdesc:aae0a47c1802d5161976694882cd2f4a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
-<tr class="separator:aae0a47c1802d5161976694882cd2f4a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b5a9609ca52761c2f1141d5a324b176"><td class="memItemLeft" align="right" valign="top"><a id="a8b5a9609ca52761c2f1141d5a324b176" name="a8b5a9609ca52761c2f1141d5a324b176"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentPoint</b> (int x, int y)</td></tr>
-<tr class="memdesc:a8b5a9609ca52761c2f1141d5a324b176"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position for the cell and convenience overload. <br /></td></tr>
-<tr class="separator:a8b5a9609ca52761c2f1141d5a324b176"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3a292ab7d72829835b49ceb185e2a46"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSetCell.html#ac3a292ab7d72829835b49ceb185e2a46">SetCurrentPoint</a> (wxPoint point) const</td></tr>
+<tr class="memdesc:ac3a292ab7d72829835b49ceb185e2a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
+<tr class="separator:ac3a292ab7d72829835b49ceb185e2a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fe7fb3d919065acb6827a1f971703b2"><td class="memItemLeft" align="right" valign="top"><a id="a7fe7fb3d919065acb6827a1f971703b2" name="a7fe7fb3d919065acb6827a1f971703b2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentPoint</b> (int x, int y) const</td></tr>
+<tr class="memdesc:a7fe7fb3d919065acb6827a1f971703b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position for the cell and convenience overload. <br /></td></tr>
+<tr class="separator:a7fe7fb3d919065acb6827a1f971703b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafdaa3d73f4bc60db56b5b0df2b48ffe"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classListCell.html#aafdaa3d73f4bc60db56b5b0df2b48ffe">GetInnerCellCount</a> () const override</td></tr>
 <tr class="memdesc:aafdaa3d73f4bc60db56b5b0df2b48ffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of inner cells - for use by the iterators.  <br /></td></tr>
 <tr class="separator:aafdaa3d73f4bc60db56b5b0df2b48ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3002,8 +3002,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 </div>
 </div>
-<a id="aae0a47c1802d5161976694882cd2f4a9" name="aae0a47c1802d5161976694882cd2f4a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae0a47c1802d5161976694882cd2f4a9">&#9670;&#160;</a></span>SetCurrentPoint() <span class="overload">[1/2]</span></h2>
+<a id="ac3a292ab7d72829835b49ceb185e2a46" name="ac3a292ab7d72829835b49ceb185e2a46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3a292ab7d72829835b49ceb185e2a46">&#9670;&#160;</a></span>SetCurrentPoint() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3016,7 +3016,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
           <td>(</td>
           <td class="paramtype">wxPoint&#160;</td>
           <td class="paramname"><em>point</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -3036,12 +3036,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="classListCell.html#a3d0cb79b356c537e3ddf02bd1b47e028">ListCell</a>.</p>
+<p>Reimplemented from <a class="el" href="classListCell.html#a75fa15e1b9b5e720d47cef1ef263fb80">ListCell</a>.</p>
 
 </div>
 </div>
-<a id="a3cda7f60ff8aa3f4e6b0bd145b61e4f9" name="a3cda7f60ff8aa3f4e6b0bd145b61e4f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3cda7f60ff8aa3f4e6b0bd145b61e4f9">&#9670;&#160;</a></span>SetCurrentPoint() <span class="overload">[2/2]</span></h2>
+<a id="a4d44027a736f60401d92a94659fc2249" name="a4d44027a736f60401d92a94659fc2249"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d44027a736f60401d92a94659fc2249">&#9670;&#160;</a></span>SetCurrentPoint() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3054,7 +3054,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
           <td>(</td>
           <td class="paramtype">wxPoint&#160;</td>
           <td class="paramname"><em>point</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -3074,7 +3074,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="classListCell.html#a3d0cb79b356c537e3ddf02bd1b47e028">ListCell</a>.</p>
+<p>Reimplemented from <a class="el" href="classListCell.html#a75fa15e1b9b5e720d47cef1ef263fb80">ListCell</a>.</p>
 
 </div>
 </div>
@@ -3343,7 +3343,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
