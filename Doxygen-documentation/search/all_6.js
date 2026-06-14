@@ -7,7 +7,7 @@ var searchData=
   ['findcellbyuuid_4',['FindCellByUUID',['../classWorksheet.html#a7b35b08a4719616d120be5add09db8bd',1,'Worksheet']]],
   ['findincremental_5',['FindIncremental',['../classWorksheet.html#a88fcff5261e945f1297bce4c7b0de6f0',1,'Worksheet']]],
   ['findmatchingquotes_6',['FindMatchingQuotes',['../classEditorCell.html#a81fa08f7b106052e321219c094e937bd',1,'EditorCell']]],
-  ['findnext_7',['FindNext',['../classWorksheet.html#acd8aa786bd6649191d9e715413b2c1f5',1,'Worksheet::FindNext()'],['../classEditorCell.html#aca3068e7b6ecd6db4cbfb168cf070b09',1,'EditorCell::FindNext()']]],
+  ['findnext_7',['FindNext',['../classEditorCell.html#aca3068e7b6ecd6db4cbfb168cf070b09',1,'EditorCell::FindNext()'],['../classWorksheet.html#acd8aa786bd6649191d9e715413b2c1f5',1,'Worksheet::FindNext()']]],
   ['findprogram_8',['FindProgram',['../classConfiguration.html#a2a970cab8c8c88114f5bb0a5062f4e7f',1,'Configuration']]],
   ['findreplacedata_9',['FindReplaceData',['../classFindReplacePane_1_1FindReplaceData.html',1,'FindReplacePane']]],
   ['findreplacedialog_10',['FindReplaceDialog',['../classFindReplaceDialog.html',1,'']]],
@@ -18,7 +18,7 @@ var searchData=
   ['findreplacepane_2eh_15',['FindReplacePane.h',['../FindReplacePane_8h.html',1,'']]],
   ['first_16',['first',['../classCell.html#af6fdc7ea7b3f746d7b1f56c827cf5cad',1,'Cell']]],
   ['firsterror_17',['FirstError',['../classCellPointers_1_1ErrorList.html#a56d5a4858048355465698f93476c20c8',1,'CellPointers::ErrorList']]],
-  ['firstlineonlyeditor_18',['FirstLineOnlyEditor',['../classCell.html#a5f799e3b2067908868779c6a8f54683c',1,'Cell::FirstLineOnlyEditor()'],['../classGroupCell.html#a12f2ce396c76b3363117ba17af5b6d4e',1,'GroupCell::FirstLineOnlyEditor()']]],
+  ['firstlineonlyeditor_18',['FirstLineOnlyEditor',['../classGroupCell.html#a12f2ce396c76b3363117ba17af5b6d4e',1,'GroupCell::FirstLineOnlyEditor()'],['../classCell.html#a5f799e3b2067908868779c6a8f54683c',1,'Cell::FirstLineOnlyEditor()']]],
   ['firstvisiblegc_19',['FirstVisibleGC',['../classWorksheet.html#a270e32d80f47588a429985ed1d8f5c05',1,'Worksheet']]],
   ['fixedfontintextcontrols_20',['FixedFontInTextControls',['../classConfiguration.html#aabee12fa4b8d59e99bd6164d27572acc',1,'Configuration::FixedFontInTextControls(bool fixed)'],['../classConfiguration.html#a74266b77ad48f7043b4cf3d56ccdf598',1,'Configuration::FixedFontInTextControls() const']]],
   ['fixedvaluesgenerator_21',['FixedValuesGenerator',['../classCatch_1_1Generators_1_1FixedValuesGenerator.html',1,'Catch::Generators']]],
@@ -28,7 +28,7 @@ var searchData=
   ['fold_25',['Fold',['../classGroupCell.html#a9a0bfd0bc4dbb4081891d162fcdf3834',1,'GroupCell']]],
   ['foldall_26',['FoldAll',['../classWorksheet.html#a16eca996fef1aa7e00cfd9886923671d',1,'Worksheet::FoldAll()'],['../classGroupCell.html#afe3c67676318a1b1ba043fb48dd56a4e',1,'GroupCell::FoldAll()']]],
   ['foldoccurred_27',['FoldOccurred',['../classWorksheet.html#a78ceeae9f7262c599b824e0f9a93ad9b',1,'Worksheet']]],
-  ['followevaluation_28',['FollowEvaluation',['../classWorksheet.html#af02bfd71d23fe6804fc27525f41e84bb',1,'Worksheet::FollowEvaluation() const'],['../classWorksheet.html#a6b947343c72f5e4da75470bd381907d8',1,'Worksheet::FollowEvaluation(bool followEvaluation)']]],
+  ['followevaluation_28',['FollowEvaluation',['../classWorksheet.html#a6b947343c72f5e4da75470bd381907d8',1,'Worksheet::FollowEvaluation(bool followEvaluation)'],['../classWorksheet.html#af02bfd71d23fe6804fc27525f41e84bb',1,'Worksheet::FollowEvaluation() const']]],
   ['fontchanged_29',['FontChanged',['../classConfiguration.html#a2c1e5f6af5c57992c025514ba8046c0e',1,'Configuration']]],
   ['fontrenderschar_30',['FontRendersChar',['../classConfiguration.html#a183cf4ad6d4c8a38f3f1c0b958d8b37e',1,'Configuration']]],
   ['fontschanged_31',['FontsChanged',['../classCell.html#a3674fadbc6fb3ac58bd603b386015b8c',1,'Cell::FontsChanged()'],['../classTextCell.html#ad9f5566f915963fd9c1814d6467d2659',1,'TextCell::FontsChanged()']]],
@@ -53,7 +53,8 @@ var searchData=
   ['func2_50',['func2',['../group__group1.html#ga053929c0809a5f56f7548fd7d9968f31',1,'group.cpp']]],
   ['func2ingroup2_51',['func2InGroup2',['../classMemgrp__Test.html#a9ce862049bb543596343e81ad3ddddff',1,'Memgrp_Test']]],
   ['func3_52',['func3',['../group__group1.html#gadbf675591ff057ec48ce35b0d5cdf755',1,'group.cpp']]],
-  ['funcell_53',['FunCell',['../classFunCell.html',1,'FunCell'],['../classFunCell.html#a158556bd904e1d137faa0e27425c732d',1,'FunCell::FunCell()']]],
+  ['funcell_53',['FunCell',['../classFunCell.html#a158556bd904e1d137faa0e27425c732d',1,'FunCell::FunCell()'],['../classFunCell.html',1,'FunCell']]],
   ['funcell_2ecpp_54',['FunCell.cpp',['../FunCell_8cpp.html',1,'']]],
-  ['funcell_2eh_55',['FunCell.h',['../FunCell_8h.html',1,'']]]
+  ['funcell_2eh_55',['FunCell.h',['../FunCell_8h.html',1,'']]],
+  ['fuzzapp_56',['FuzzApp',['../classFuzzApp.html',1,'']]]
 ];

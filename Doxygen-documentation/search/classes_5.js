@@ -11,5 +11,6 @@ var searchData=
   ['formatsidebar_8',['FormatSidebar',['../classFormatSidebar.html',1,'']]],
   ['fraccell_9',['FracCell',['../classFracCell.html',1,'']]],
   ['fulltestcell_10',['FullTestCell',['../classFullTestCell.html',1,'']]],
-  ['funcell_11',['FunCell',['../classFunCell.html',1,'']]]
+  ['funcell_11',['FunCell',['../classFunCell.html',1,'']]],
+  ['fuzzapp_12',['FuzzApp',['../classFuzzApp.html',1,'']]]
 ];
