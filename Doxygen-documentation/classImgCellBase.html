@@ -766,17 +766,20 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <tr class="memitem:ae8042a8ef0fa19a190e67eac4b82c372"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#ae8042a8ef0fa19a190e67eac4b82c372">m_center</a></td></tr>
 <tr class="memdesc:ae8042a8ef0fa19a190e67eac4b82c372"><td class="mdescLeft">&#160;</td><td class="mdescRight">The distance between the top and the insertion point of this cell.  <br /></td></tr>
 <tr class="separator:ae8042a8ef0fa19a190e67eac4b82c372"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ea5deadc88360e0e34a998cfc334569"><td class="memItemLeft" align="right" valign="top"><a id="a7ea5deadc88360e0e34a998cfc334569" name="a7ea5deadc88360e0e34a998cfc334569"></a>
-<a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_cachedMaxDrop</b></td></tr>
+<tr class="memitem:a7ea5deadc88360e0e34a998cfc334569"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a7ea5deadc88360e0e34a998cfc334569">m_cachedMaxDrop</a></td></tr>
+<tr class="memdesc:a7ea5deadc88360e0e34a998cfc334569"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache for <a class="el" href="classCell.html#ab1be3819e507454d4313f6ccbdac16c5" title="Returns the maximum distance between center and bottom of this line.">GetMaxDrop()</a>: the largest drop (height below the center) of the cells on the first display line of the list starting at this cell.  <br /></td></tr>
 <tr class="separator:a7ea5deadc88360e0e34a998cfc334569"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5ee2d5c4a3eb9f01e4122f619bbd7c8"><td class="memItemLeft" align="right" valign="top"><a id="ad5ee2d5c4a3eb9f01e4122f619bbd7c8" name="ad5ee2d5c4a3eb9f01e4122f619bbd7c8"></a>
 <a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_cachedCenterList</b></td></tr>
+<tr class="memdesc:ad5ee2d5c4a3eb9f01e4122f619bbd7c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache for <a class="el" href="classCell.html#a3b385281e2cb77ffa5dfd902802ac692" title="Returns the maximum distance between top and center of this line.">GetCenterList()</a>: the largest center (height above the center) of the cells on the first display line of the list starting at this cell. <br /></td></tr>
 <tr class="separator:ad5ee2d5c4a3eb9f01e4122f619bbd7c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eda07b71b0eed1e02795f6fd26a6aa5"><td class="memItemLeft" align="right" valign="top"><a id="a8eda07b71b0eed1e02795f6fd26a6aa5" name="a8eda07b71b0eed1e02795f6fd26a6aa5"></a>
 <a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_cachedSumOfWidths</b></td></tr>
+<tr class="memdesc:a8eda07b71b0eed1e02795f6fd26a6aa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache for <a class="el" href="classCell.html#a9c188747e83c42019f7d8c6e87e9829f" title="How many pixels is this list of cells wide, if we don&#39;t break it into lines?">SumOfWidths()</a>: the summed width of all cells of the draw list starting at this cell (the whole list, across line breaks). <br /></td></tr>
 <tr class="separator:a8eda07b71b0eed1e02795f6fd26a6aa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47af3705082d12b7645342c651c0de33"><td class="memItemLeft" align="right" valign="top"><a id="a47af3705082d12b7645342c651c0de33" name="a47af3705082d12b7645342c651c0de33"></a>
 <a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_cachedLineWidth</b></td></tr>
+<tr class="memdesc:a47af3705082d12b7645342c651c0de33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache for <a class="el" href="classCell.html#aa4c30056412188aac10dd2dc97df4020" title="How many pixels is the current line of this list of cells wide?">GetLineWidth()</a>: the width of only the first display line of the list starting at this cell (the widths summed up to the first line break). <br /></td></tr>
 <tr class="separator:a47af3705082d12b7645342c651c0de33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acffb390e78cd8ca25cf3bc2c051618b0"><td class="memItemLeft" align="right" valign="top"><a id="acffb390e78cd8ca25cf3bc2c051618b0" name="acffb390e78cd8ca25cf3bc2c051618b0"></a>
 <a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_fontSize_Scaled</b> = {}</td></tr>
@@ -3372,7 +3375,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
@@ -3740,6 +3743,31 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div>
 </div>
 <h2 class="groupheader">Field Documentation</h2>
+<a id="a7ea5deadc88360e0e34a998cfc334569" name="a7ea5deadc88360e0e34a998cfc334569"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ea5deadc88360e0e34a998cfc334569">&#9670;&#160;</a></span>m_cachedMaxDrop</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCachedInteger.html">CachedInteger</a>&lt;wxCoord&gt; Cell::m_cachedMaxDrop</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Cache for <a class="el" href="classCell.html#ab1be3819e507454d4313f6ccbdac16c5" title="Returns the maximum distance between center and bottom of this line.">GetMaxDrop()</a>: the largest drop (height below the center) of the cells on the first display line of the list starting at this cell. </p>
+<p>Lazily filled (together with the three caches below) by UpdateListCaches() and invalidated by InvalidateListCache(). </p>
+
+</div>
+</div>
 <a id="ae8042a8ef0fa19a190e67eac4b82c372" name="ae8042a8ef0fa19a190e67eac4b82c372"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae8042a8ef0fa19a190e67eac4b82c372">&#9670;&#160;</a></span>m_center</h2>
 
