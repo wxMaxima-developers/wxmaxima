@@ -1087,9 +1087,20 @@ protected:
   */
 
   mutable CachedInteger<wxCoord> m_center;
+  /*! Cache for GetMaxDrop(): the largest drop (height below the center) of the
+    cells on the first display line of the list starting at this cell.
+
+    Lazily filled (together with the three caches below) by UpdateListCaches()
+    and invalidated by InvalidateListCache(). */
   mutable CachedInteger<wxCoord> m_cachedMaxDrop;
+  /*! Cache for GetCenterList(): the largest center (height above the center) of
+    the cells on the first display line of the list starting at this cell. */
   mutable CachedInteger<wxCoord> m_cachedCenterList;
+  /*! Cache for SumOfWidths(): the summed width of all cells of the draw list
+    starting at this cell (the whole list, across line breaks). */
   mutable CachedInteger<wxCoord> m_cachedSumOfWidths;
+  /*! Cache for GetLineWidth(): the width of only the first display line of the
+    list starting at this cell (the widths summed up to the first line break). */
   mutable CachedInteger<wxCoord> m_cachedLineWidth;
 protected:
 //** 2-byte objects (2 bytes)
@@ -1123,6 +1134,12 @@ private:
       m_highlight = false;
     }
 
+  /*! (Re)compute the cached list geometry if any of it is invalid.
+
+    Walks the draw list once starting at this cell and fills m_cachedCenterList,
+    m_cachedMaxDrop, m_cachedSumOfWidths and m_cachedLineWidth in one pass, so
+    the GetCenterList()/GetMaxDrop()/SumOfWidths()/GetLineWidth() accessors are
+    O(1) after the first call. A no-op while all four caches are still valid. */
   void UpdateListCaches() const;
 
   // In the boolean bit fields below, InitBitFields_Cell is an indication that

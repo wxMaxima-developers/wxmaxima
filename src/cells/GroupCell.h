@@ -442,6 +442,12 @@ protected:
 
 //** 16-byte objects (16 bytes)
 //**
+  /*! Bounding rectangle of this group's output (results) area, in worksheet
+    coordinates.
+
+    Its size is computed by RecalculateOutput() and its position by
+    UpdateOutputPositions(); Draw() uses it to skip drawing output that lies
+    outside the update region, and it is handed out by GetOutputRect(). */
   mutable wxRect m_outputRect{-1, -1, 0, 0};
 
 //** 8/4 byte objects (40 bytes)
@@ -473,7 +479,11 @@ protected:
 
 //** 4-byte objects (16 bytes)
 //**
+  //! Cache of the last width computed by GetInputIndent(); reused as the input
+  //! indent while the input label's own width is not yet available.
   mutable int m_labelWidth_cached = 0;
+  //! Width and height of this group's input area (input label plus editor),
+  //! computed by RecalculateInput(); the output is stacked below m_inputHeight.
   mutable int m_inputWidth, m_inputHeight;
 protected:
 //** 2-byte objects (6 bytes)
@@ -510,7 +520,15 @@ protected:
   bool m_updateConfusableCharWarnings : 1 /* InitBitFields_GroupCell */;
   //! Suppress the yellow ToolTip marker?
   bool m_suppressTooltipMarker : 1 /* InitBitFields_GroupCell */;
+  //! Output cells were appended since the last layout, so a recalculation is
+  //! needed (see NeedsRecalculation()); cleared once the group is recalculated.
   mutable bool m_cellsAppended : 1 /* InitBitFields_GroupCell */;
+  /*! Laying out this group's output exceeded the configured deadline.
+
+    While set, DisplayedOutput() shows a lightweight placeholder instead of the
+    (kept-intact) real output and RecalculateOutput() no longer tries to break
+    it into lines. Cleared whenever the output changes (AppendOutput() /
+    RemoveOutput()), so layout is re-attempted for the new output. */
   mutable bool m_layoutSuppressed : 1 /* InitBitFields_GroupCell */;
 
   static wxString m_lookalikeChars;
