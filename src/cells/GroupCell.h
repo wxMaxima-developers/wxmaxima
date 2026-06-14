@@ -277,6 +277,15 @@ public:
   */
   void RecalculateOutput() const;
 
+  /*! The cell list to lay out and draw as this group's output.
+
+    Normally the real output (m_output). While layout is suppressed it returns a
+    lightweight placeholder notice instead (lazily built and cached in
+    m_layoutSuppressedNotice), so we neither line-break nor draw the
+    prohibitively large real output - which is kept intact for export and a
+    possible later relayout. */
+  Cell *DisplayedOutput() const;
+
   //! Break this cell into lines
   void BreakLines() const;
 
@@ -450,6 +459,17 @@ protected:
   //! The maxima output this cell contains
   std::unique_ptr<Cell> m_output;
   // The pointers above point to inner cells and must be kept contiguous.
+
+  /*! Cached placeholder shown instead of the output while layout is suppressed.
+
+    When laying out the real output exceeds the configured deadline we keep
+    m_output untouched (so it can still be exported, copied or re-laid-out
+    later) and display this lightweight notice instead. It is a pure,
+    regenerable cache value - delete it and DisplayedOutput() rebuilds an
+    identical one - which is why it may be (re)created from const layout code.
+    It is deliberately NOT part of the contiguous inner-cell block above: it is
+    not a structural child of the group, only a drawn stand-in. */
+  mutable std::unique_ptr<Cell> m_layoutSuppressedNotice;
 
 //** 4-byte objects (16 bytes)
 //**

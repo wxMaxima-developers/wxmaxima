@@ -1,5 +1,13 @@
 # Current development version
 
+- When a cell's output takes too long to lay out (the configurable layout
+  deadline fires), wxMaxima no longer *replaces* that output with the
+  "(Layout took too long and was suppressed)" placeholder. The real output is
+  now kept intact — only a placeholder is shown in its place — so it can still
+  be copied/exported and is re-laid-out automatically once the output changes.
+  This also removes a long-standing const-correctness violation: the layout
+  pass (`GroupCell::Recalculate`, a `const` method) used to destroy and rebuild
+  document content via `const_cast`; it now only writes regenerable layout cache.
 - Fix the side-by-side diff viewer (the `wxmxdiff` command / `--diff` option):
   it parsed each compared file's cells using the application-wide configuration,
   which in diff mode has no associated worksheet, so the cells' `GetWorksheet()`

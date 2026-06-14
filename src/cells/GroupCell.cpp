@@ -316,6 +316,10 @@ void GroupCell::RemoveOutput() {
   if (GetGroupType() != GC_TYPE_IMAGE)
     m_output.reset();
 
+  // No output left to suppress: drop any stale placeholder.
+  m_layoutSuppressed = false;
+  m_layoutSuppressedNotice.reset();
+
   m_cellPointers->m_errorList.Remove(this);
   // Calculate the new cell height.
 
@@ -347,6 +351,11 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell) {
       input->ContainsChanges(false);
   } else
     CellList::AppendCell(m_output, std::move(cell));
+
+  // The output changed: re-attempt its layout and drop any stale "layout
+  // suppressed" placeholder.
+  m_layoutSuppressed = false;
+  m_layoutSuppressedNotice.reset();
 
   UpdateCellsInGroup();
   m_updateConfusableCharWarnings = true;
@@ -567,21 +576,21 @@ void GroupCell::RecalculateOutput() const {
   if (m_output == NULL)
     return;
 
-  // The following line is a hack, kind of: Without it the first
-  // (and only) line of an image that was included using the gui, not maxima
-  // (and that therefore doesn't start in a label that per definition breaks
-  // a line) later will not trigger the
-  //  if (tmp.BreakLineHere())
-  // that causes its height to be calculated.
-  m_output->ForceBreakLine();
-
-  // Recalculate size of all output cells
-  for (Cell &tmp : OnList(m_output.get())) {
-    tmp.Recalculate(tmp.IsMath() ? m_mathFontSize
-                    : m_configuration->GetDefaultFontSize());
-  }
-
   if (!m_layoutSuppressed) {
+    // The following line is a hack, kind of: Without it the first
+    // (and only) line of an image that was included using the gui, not maxima
+    // (and that therefore doesn't start in a label that per definition breaks
+    // a line) later will not trigger the
+    //  if (tmp.BreakLineHere())
+    // that causes its height to be calculated.
+    m_output->ForceBreakLine();
+
+    // Recalculate size of all output cells
+    for (Cell &tmp : OnList(m_output.get())) {
+      tmp.Recalculate(tmp.IsMath() ? m_mathFontSize
+                      : m_configuration->GetDefaultFontSize());
+    }
+
     if (m_configuration->MaxLayoutTime() > 0)
       m_configuration->SetLayoutDeadline(m_configuration->MaxLayoutTime());
 
@@ -590,26 +599,29 @@ void GroupCell::RecalculateOutput() const {
 
     if (m_configuration->MaxLayoutTime() > 0 &&
         m_configuration->IsLayoutCancelled()) {
+      // Laying out the real output is too expensive. Don't destroy it (it can
+      // still be exported/copied and re-laid-out later) - just flag the group
+      // so DisplayedOutput() shows a lightweight placeholder from here on.
       m_layoutSuppressed = true;
-      const_cast<GroupCell *>(this)->m_output =
-          std::make_unique<TextCell>(const_cast<GroupCell *>(this), m_configuration);
-      TextCell *tc = static_cast<TextCell *>(m_output.get());
-      tc->SetValue(_("(Layout took too long and was suppressed)"));
-      tc->SetType(MC_TYPE_WARNING);
-      tc->Recalculate(m_configuration->GetDefaultFontSize());
     }
     m_configuration->ClearLayoutCancelled();
   }
 
+  // From here on operate on whatever we actually display: the real output, or
+  // the placeholder notice if layout was suppressed.
+  Cell *const displayed = DisplayedOutput();
+  if (displayed == NULL)
+    return;
+
   // Recalculate size of cells again: Their size might have changed during
   // breaking lines
-  for (Cell &tmp : OnList(m_output.get())) {
+  for (Cell &tmp : OnList(displayed)) {
     tmp.Recalculate(tmp.IsMath() ? m_mathFontSize
                     : m_configuration->GetDefaultFontSize());
   }
 
   // Calculate the height of the output
-  for (const Cell &tmp : OnDrawList(m_output.get())) {
+  for (const Cell &tmp : OnDrawList(displayed)) {
     if (tmp.BreakLineHere()) {
       int height_Delta = tmp.GetHeightList();
       m_width = std::max(m_width.GetOrElse(0), tmp.GetLineWidth());
@@ -623,6 +635,25 @@ void GroupCell::RecalculateOutput() const {
         m_outputRect.height += MC_LINE_SKIP;
     }
   }
+}
+
+Cell *GroupCell::DisplayedOutput() const {
+  if (!m_layoutSuppressed)
+    return m_output.get();
+
+  // Lazily build (and cache) the "layout suppressed" placeholder. This is a
+  // deterministic, regenerable cache value, so it is legitimate to create it
+  // from a const layout pass - unlike the real output, which we never touch
+  // here. The const_cast only supplies the child's owning-group back pointer.
+  if (!m_layoutSuppressedNotice) {
+    auto tc =
+        std::make_unique<TextCell>(const_cast<GroupCell *>(this), m_configuration);
+    tc->SetValue(_("(Layout took too long and was suppressed)"));
+    tc->SetType(MC_TYPE_WARNING);
+    tc->Recalculate(m_configuration->GetDefaultFontSize());
+    m_layoutSuppressedNotice = std::move(tc);
+  }
+  return m_layoutSuppressedNotice.get();
 }
 
 bool GroupCell::NeedsRecalculation(AFontSize fontSize) const {
@@ -691,18 +722,20 @@ wxCoord GroupCell::GetInputIndent() const {
  * - Coordinate accumulation (drop and center list).
  */
 void GroupCell::UpdateOutputPositions() const {
-  if (m_output && !IsHidden()) {
+  Cell *const displayed = DisplayedOutput();
+  if (displayed && !IsHidden()) {
     wxPoint in = m_currentPoint;
     // Offset results below the input area
     if (m_configuration->ShowCodeCells() || (m_groupType != GC_TYPE_CODE))
       in.y += (m_inputHeight - m_center);
 
     // The outputRect defines the bounding box for all results
-    const_cast<GroupCell *>(this)->m_outputRect.SetPosition(in);
+    // (m_outputRect is mutable - no const_cast needed).
+    m_outputRect.SetPosition(in);
 
     bool isFirst = true;
     int drop = 0;
-    for (Cell &tmp : OnDrawList(m_output.get())) {
+    for (Cell &tmp : OnDrawList(displayed)) {
       if (isFirst || tmp.BreakLineHere()) {
         if (!isFirst) {
           // Add inter-equation vertical spacing
@@ -780,10 +813,11 @@ void GroupCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
     //
     SetPen(antialiassingDC);
 
-    if (m_output && !IsHidden()) {
+    Cell *const displayedOutput = DisplayedOutput();
+    if (displayedOutput && !IsHidden()) {
       if ((!m_configuration->ClipToDrawRegion()) ||
           (m_configuration->GetUpdateRegion().Intersects(m_outputRect))) {
-        for (Cell &tmp : OnDrawList(m_output.get())) {
+        for (Cell &tmp : OnDrawList(displayedOutput)) {
           tmp.Draw(dc, antialiassingDC);
         }
       }
@@ -1483,7 +1517,8 @@ const wxString GroupCell::GetToolTip(const wxPoint point) const {
   }
 
   // TODO: Handle the case that m_cellUnderPointer should be a cell inside a cell
-  for (auto &tmp : OnList(m_output.get())) {
+  // Hit-test what is actually on screen (the placeholder if layout is suppressed).
+  for (auto &tmp : OnList(DisplayedOutput())) {
     if (tmp.ContainsPoint(point))
       m_cellPointers->m_cellUnderPointer = &tmp;
 
