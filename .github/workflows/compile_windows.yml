@@ -94,8 +94,7 @@ jobs:
         run: |
             cd wxMaxima
             cd build
-            cpack
-            type D:/a/wxmaxima/wxmaxima/wxMaxima/build/_CPack_Packages/win64/NSIS/NSISOutput.log
+            cpack || type D:/a/wxmaxima/wxmaxima/wxMaxima/build/_CPack_Packages/win64/NSIS/NSISOutput.log
             cd ..
             cd ..
 
