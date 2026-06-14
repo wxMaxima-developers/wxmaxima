@@ -142,9 +142,9 @@ virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetOriginal
 <tr class="memitem:a41e9fa1d15f4861b4ae6ee3e2d6ae750"><td class="memItemLeft" align="right" valign="top"><a id="a41e9fa1d15f4861b4ae6ee3e2d6ae750" name="a41e9fa1d15f4861b4ae6ee3e2d6ae750"></a>
 virtual wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>GetMaxWidth</b> () const =0</td></tr>
 <tr class="separator:a41e9fa1d15f4861b4ae6ee3e2d6ae750"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a870bc260ba6d7cb41eb88a849d41c155"><td class="memItemLeft" align="right" valign="top">virtual wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCellBase.html#a870bc260ba6d7cb41eb88a849d41c155">GetHeightList</a> () const =0</td></tr>
-<tr class="memdesc:a870bc260ba6d7cb41eb88a849d41c155"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the total height of this line.  <br /></td></tr>
-<tr class="separator:a870bc260ba6d7cb41eb88a849d41c155"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdfc20584d96ff15809c439616525770"><td class="memItemLeft" align="right" valign="top">virtual wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCellBase.html#abdfc20584d96ff15809c439616525770">GetHeightList</a> () const override=0</td></tr>
+<tr class="memdesc:abdfc20584d96ff15809c439616525770"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the total height of this line.  <br /></td></tr>
+<tr class="separator:abdfc20584d96ff15809c439616525770"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae18976249d7321162d1134e20cd5ec16"><td class="memItemLeft" align="right" valign="top"><a id="ae18976249d7321162d1134e20cd5ec16" name="ae18976249d7321162d1134e20cd5ec16"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaxWidth</b> (wxCoord width)=0</td></tr>
 <tr class="separator:ae18976249d7321162d1134e20cd5ec16"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1902,8 +1902,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
  
 </div>
 </div>
-<a id="a870bc260ba6d7cb41eb88a849d41c155" name="a870bc260ba6d7cb41eb88a849d41c155"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a870bc260ba6d7cb41eb88a849d41c155">&#9670;&#160;</a></span>GetHeightList()</h2>
+<a id="abdfc20584d96ff15809c439616525770" name="abdfc20584d96ff15809c439616525770"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdfc20584d96ff15809c439616525770">&#9670;&#160;</a></span>GetHeightList()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1920,7 +1920,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCell</b></t
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -3372,7 +3372,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

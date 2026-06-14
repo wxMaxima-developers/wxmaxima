@@ -593,9 +593,9 @@ $(function() {
 <div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span><span class="keyword">class </span><a class="code hl_class" href="classMyApp.html">MyApp</a> : <span class="keyword">public</span> wxApp</div>
 <div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>{</div>
 <div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> OnInit();</div>
-<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>  <span class="keyword">virtual</span> <span class="keywordtype">int</span> OnRun();</div>
-<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>  <span class="keyword">virtual</span> <span class="keywordtype">int</span> OnExit();</div>
+<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> OnInit() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>  <span class="keyword">virtual</span> <span class="keywordtype">int</span> OnRun() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>  <span class="keyword">virtual</span> <span class="keywordtype">int</span> OnExit() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span><span class="preprocessor">#if wxUSE_ON_FATAL_EXCEPTION &amp;&amp; wxUSE_DEBUGREPORT</span></div>
 <div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>  <span class="keywordtype">void</span>  OnFatalException () <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span><span class="preprocessor">#endif</span></div>

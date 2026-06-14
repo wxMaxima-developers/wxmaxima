@@ -78,7 +78,7 @@ var searchData=
   ['getgroupskip_75',['GetGroupSkip',['../classConfiguration.html#a8648bf145ef9280e734a08eb2271664b',1,'Configuration']]],
   ['gethcaret_76',['GetHCaret',['../classWorksheet.html#a8bd4576ddfb8cf12b36d6fead3a4cc00',1,'Worksheet']]],
   ['getheight_77',['GetHeight',['../classCell.html#a42e273c4824ddce9e7e1845abb0d886f',1,'Cell']]],
-  ['getheightlist_78',['GetHeightList',['../classCell.html#a351fb091b88d97bf44c95505b0198bfd',1,'Cell::GetHeightList()'],['../classImgCell.html#a7a3f4a7f99c960f5f4b9cf6306828338',1,'ImgCell::GetHeightList()'],['../classImgCellBase.html#a870bc260ba6d7cb41eb88a849d41c155',1,'ImgCellBase::GetHeightList()'],['../classImage.html#a06b318f34fa66599d7c93287df4a58ee',1,'Image::GetHeightList()']]],
+  ['getheightlist_78',['GetHeightList',['../classCell.html#a351fb091b88d97bf44c95505b0198bfd',1,'Cell::GetHeightList()'],['../classImgCell.html#a7a3f4a7f99c960f5f4b9cf6306828338',1,'ImgCell::GetHeightList()'],['../classImgCellBase.html#abdfc20584d96ff15809c439616525770',1,'ImgCellBase::GetHeightList()'],['../classImage.html#a06b318f34fa66599d7c93287df4a58ee',1,'Image::GetHeightList()']]],
   ['gethelpkeyword_79',['GetHelpKeyword',['../classGenWiz.html#adf2e2fd93c8fdc04ed8a61c54386eaf0',1,'GenWiz']]],
   ['gethidablemultsign_80',['GetHidableMultSign',['../classCell.html#a5952793d43582d778f0e22ce632c4cdd',1,'Cell']]],
   ['gethiddentree_81',['GetHiddenTree',['../classGroupCell.html#a32e8178831fdeb8fa22e77fd5f2ed279',1,'GroupCell']]],
