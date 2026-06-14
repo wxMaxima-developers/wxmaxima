@@ -1,0 +1,38 @@
+# ThreadSanitizer suppressions for wxMaxima.
+#
+# These silence data races that live entirely inside third-party libraries we
+# only call into (the GTK / GLib image + font stack). They are NOT wxMaxima
+# bugs and cannot be fixed here; without suppressing them a TSan run drowns in
+# hundreds of reports (mostly from the glycin image loader decoding the toolbar
+# and status-bar SVG icons in its own sandboxed threads) and crawls.
+#
+# Usage:
+#   TSAN_OPTIONS="suppressions=$PWD/test/tsan_suppressions.supp" \
+#     xvfb-run -a ctest --test-dir build-tsan -R multithreadtest
+#
+# If TSan ever reports a race whose frames are in wxMaxima's own src/, that is a
+# real finding and must NOT be added here.
+
+# glycin: GNOME image loader; decodes images in sandboxed worker threads.
+called_from_lib:libglycin-2.so.0
+race:libglycin
+
+# GLib / GObject / GIO: type system, GMainContext, async I/O internals.
+race:libglib-2.0
+race:libgobject-2.0
+race:libgio-2.0
+
+# GDK / GTK widget toolkit internals.
+race:libgdk-3
+race:libgtk-3
+
+# Font / text stack caches.
+race:libfontconfig
+race:libpango
+race:libpangoft2
+race:libpangocairo
+race:libcairo
+
+# harfbuzz / freetype shaping + glyph caches.
+race:libharfbuzz
+race:libfreetype
