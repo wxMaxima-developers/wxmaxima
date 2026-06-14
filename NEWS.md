@@ -1,5 +1,11 @@
 # Current development version
 
+- Fix the side-by-side diff viewer (the `wxmxdiff` command / `--diff` option):
+  it parsed each compared file's cells using the application-wide configuration,
+  which in diff mode has no associated worksheet, so the cells' `GetWorksheet()`
+  returned null — an assertion failure in debug builds and a potential
+  null-pointer dereference in release builds. Each file's cells (and the
+  alignment spacer cells) now use their own worksheet's configuration.
 - Fix a fraction shown inside an exponent (e.g. `x^((a+b)/c)`) reporting too
   small a width when its numerator or denominator consisted of more than one
   cell: the width was computed from only the first cell of each, so the fraction

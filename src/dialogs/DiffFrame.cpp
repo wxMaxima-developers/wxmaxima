@@ -553,7 +553,12 @@ void DiffFrame::AlignCells() {
 
   // Extract cell structure and metadata from each file
   for (size_t i = 0; i < numFiles; ++i) {
-      sourceTrees.push_back(LoadTree(m_worksheets[i]->m_currentFile, m_configuration));
+      // Parse with the per-worksheet Configuration (whose worksheet pointer the
+      // Worksheet ctor set), not the app-wide m_configuration (which has no
+      // worksheet in --diff mode). Otherwise the cells' GetWorksheet() returns
+      // null -> assert in debug, null-deref of GetCellPointers() in release.
+      sourceTrees.push_back(LoadTree(m_worksheets[i]->m_currentFile,
+                                     m_worksheetConfigurations[i].get()));
       std::vector<GroupCell*> cells;
       std::vector<Diff::CellMatchData> matchData;
       if (sourceTrees.back()) {
@@ -651,8 +656,11 @@ void DiffFrame::AlignCells() {
               if (modified) copy->SetHighlight(true);
               entry.cells[i] = builders[i].Append(std::move(copy));
           } else {
-              // Gap in this file: Insert a SpacerGroupCell to maintain alignment
-              entry.cells[i] = builders[i].Append(std::make_unique<SpacerGroupCell>(m_configuration, maxHeight));
+              // Gap in this file: Insert a SpacerGroupCell to maintain alignment.
+              // Use this worksheet's Configuration (see the note in AlignCells)
+              // so the spacer's GetWorksheet() is valid.
+              entry.cells[i] = builders[i].Append(
+                  std::make_unique<SpacerGroupCell>(m_worksheetConfigurations[i].get(), maxHeight));
           }
       }
       m_diffEntries.push_back(entry);

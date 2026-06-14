@@ -167,6 +167,14 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --batch --exit-on-error boxes.wxm unicode.wxm)
 
+# Smoke test for the side-by-side diff viewer (wxmxdiff / --diff): it has no
+# other test and has broken silently when surrounding code changed. Loads two
+# .wxmx files in diff mode and fails on a crash or assertion.
+add_test(
+    NAME diff_viewer_smoke
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/diff_smoke_test.sh $<TARGET_FILE:wxmaxima> all-celltypes.wxmx intervals.wxmx)
+
 add_test(
     NAME multiple_batch_files2
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
