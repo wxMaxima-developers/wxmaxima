@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--   Created using wxMaxima 20.07.0   -->
+<!--https://wxMaxima-developers.github.io/wxmaxima/-->
+
+<wxMaximaDocument version="1.5" zoom="100" activecell="20">
+
+<cell type="text">
+<editor type="text">
+<line>A simple manual testbench</line>
+</editor>
+
+</cell>
+
+<cell type="text">
+<editor type="text">
+<line></line>
+<line>Text 1</line>
+<line>Text 2</line>
+</editor>
+
+</cell>
+
+<cell type="text">
+<editor type="text">
+<line>Completely manual tests</line>
+</editor>
+
+</cell>
+
+<cell type="text">
+<editor type="text">
+<line>Text</line>
+<line>   Text</line>
+</editor>
+
+</cell>
+
+<cell type="text">
+<editor type="text">
+<line>Text</line>
+</editor>
+
+</cell>
+
+<cell type="text">
+<editor type="text">
+<line>Text</line>
+<line></line>
+</editor>
+
+</cell>
+
+<cell type="text">
+<editor type="text">
+<line></line>
+<line>Text</line>
+<line>   </line>
+</editor>
+
+</cell>
+
+<cell type="text">
+<editor type="text">
+<line>Text</line>
+</editor>
+
+</cell>
+
+<cell type="text">
+<editor type="text">
+<line>Text</line>
+</editor>
+
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>a*b;</line>
+</editor>
+</input>
+<output>
+<mth><lbl></lbl><v>a</v><h>·</h><v>b</v>
+</mth></output>
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>aa*b;</line>
+</editor>
+</input>
+<output>
+<mth><lbl></lbl><v>aa</v><h>·</h><v>b</v>
+</mth></output>
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>a*bb;</line>
+</editor>
+</input>
+<output>
+<mth><lbl></lbl><v>a</v><h>·</h><v>bb</v>
+</mth></output>
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>a_1*b;</line>
+</editor>
+</input>
+<output>
+<mth><lbl></lbl><i altCopy="a_1"><r><v>a</v></r><r><n>1</n></r></i><h>·</h><v>b</v>
+</mth></output>
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>a_1*bb;</line>
+</editor>
+</input>
+<output>
+<mth><lbl></lbl><i altCopy="a_1"><r><v>a</v></r><r><n>1</n></r></i><h>·</h><v>bb</v>
+</mth></output>
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>a*b_1;</line>
+</editor>
+</input>
+<output>
+<mth><lbl></lbl><v>a</v><h>·</h><i altCopy="b_1"><r><v>b</v></r><r><n>1</n></r></i>
+</mth></output>
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>aa*b_1;</line>
+</editor>
+</input>
+<output>
+<mth><lbl></lbl><v>aa</v><h>·</h><i altCopy="b_1"><r><v>b</v></r><r><n>1</n></r></i>
+</mth></output>
+</cell>
+
+<cell type="text">
+<editor type="text">
+<line>Test</line>
+</editor>
+
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>abs(x(1));</line>
+</editor>
+</input>
+<output>
+<mth><lbl></lbl><a><fn><r><fnm>x</fnm></r><r><p><n>1</n></p></r></fn></a>
+</mth></output>
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>abs(x(10));</line>
+</editor>
+</input>
+<output>
+<mth><lbl></lbl><a><fn><r><fnm>x</fnm></r><r><p><n>10</n></p></r></fn></a>
+</mth></output>
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>abs(x(100));</line>
+</editor>
+</input>
+<output>
+<mth><lbl></lbl><a><fn><r><fnm>x</fnm></r><r><p><n>100</n></p></r></fn></a>
+</mth></output>
+</cell>
+
+</wxMaximaDocument>

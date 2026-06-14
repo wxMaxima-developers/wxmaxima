@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--   Created using wxMaxima 24.05.0_DevelopmentSnapshot   -->
+<!--https://wxMaxima-developers.github.io/wxmaxima/-->
+
+<wxMaximaDocument version="1.5" zoom="100" activecell="12">
+
+<cell type="title" sectioning_level="1">
+<editor type="title" sectioning_level="1">
+<line>A sample worksheet</line>
+</editor>
+
+</cell>
+
+<cell type="section" sectioning_level="2">
+<editor type="section" sectioning_level="2">
+<line>A section</line>
+</editor>
+
+</cell>
+
+<cell type="text">
+<editor type="text">
+<line>Text</line>
+</editor>
+
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>function(variable,v_2):=%e^variable+v_2*15.333*10^7; /* Just an example function */</line>
+</editor>
+</input>
+<output>
+<mth><lbl altCopy="(%o1)&#009;">(%o1) </lbl><fn><r><fnm>function</fnm></r><r><p><v>variable</v><fnm>,</fnm><i altCopy="v_2"><r><v>v</v></r><r><v>2</v></r></i></p></r></fn><fnm>:=</fnm><e><r><s>%e</s></r><r><v>variable</v></r></e><fnm>+</fnm><i altCopy="v_2"><r><v>v</v></r><r><v>2</v></r></i><h>·</h><n>15.333</n><h>·</h><e><r><n>10</n></r><r><n>7</n></r></e>
+</mth></output>
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>function(&quot;test&quot;,α);</line>
+</editor>
+</input>
+<output>
+<mth><lbl altCopy="(%o2)&#009;">(%o2) </lbl><n>1.5333</n><h>·</h><e><r><n>10</n></r><r><n>8</n></r></e><h>·</h><v>α</v><fnm>+</fnm><e><r><s>%e</s></r><r><st>test</st></r></e>
+</mth></output>
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>box(function(&quot;test&quot;,α),highlight);</line>
+</editor>
+</input>
+<output>
+<mth><lbl altCopy="(%o3)&#009;">(%o3) </lbl><hl boxname="highlight">
+<n>1.5333</n><h>·</h></hl>
+<e><r><hl boxname="highlight">
+<n>10</n></hl>
+</r><r><hl boxname="highlight">
+<n>8</n></hl>
+</r></e><hl boxname="highlight">
+<h>·</h><v>α</v><fnm>+</fnm></hl>
+<e><r><hl boxname="highlight">
+<s>%e</s></hl>
+</r><r><hl boxname="highlight">
+<st>test</st></hl>
+</r></e>
+</mth></output>
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>:lisp (+ 1 1)</line>
+</editor>
+</input>
+<output>
+<mth><t breakline="true" type="ASCII-Art">2</t>
+</mth></output>
+</cell>
+
+<cell type="subsection" sectioning_level="3">
+<editor type="subsection" sectioning_level="3">
+<line>A subsection</line>
+</editor>
+
+</cell>
+
+<cell type="subsection" sectioning_level="4">
+<editor type="subsection" sectioning_level="4">
+<line>A sub-subsection</line>
+</editor>
+
+</cell>
+
+<cell type="subsection" sectioning_level="5">
+<editor type="subsection" sectioning_level="5">
+<line>Heading 5</line>
+</editor>
+
+</cell>
+
+<cell type="subsection" sectioning_level="6">
+<editor type="subsection" sectioning_level="6">
+<line>Heading 6</line>
+</editor>
+
+</cell>
+
+<cell type="text">
+<editor type="text">
+<line>If maxima is instructed not to display 2d maths it won&apos;t be able tell wxMaxima what type an element it&#013;outputs is of:</line>
+</editor>
+
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>sin(x)/cos(1/exp(x/3));&#010;set_display(&apos;none)$&#010;sin(x)/cos(1/exp(x/3));</line>
+</editor>
+</input>
+<output>
+<mth><lbl altCopy="(%o4)&#009;">(%o4) </lbl><f><r><fn><r><fnm>sin</fnm></r><r><p><v>x</v></p></r></fn></r><r><fn><r><fnm>cos</fnm></r><r><p><e><r><s>%e</s></r><r><t type="Operator">−</t><r><p><f><r><v>x</v></r><r><n>3</n></r></f></p></r></r></e></p></r></fn></r></f><t breakline="true">(%o6) sin(x)/cos(%e^-(x/3))</t>
+</mth></output>
+</cell>
+
+</wxMaximaDocument>

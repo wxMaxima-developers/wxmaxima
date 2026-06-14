@@ -301,6 +301,35 @@ if(WIN32)
     target_link_libraries(wxmaxima ws2_32)
 endif()
 
+# ---------------------------------------------------------------------------
+# Coverage-guided libFuzzer fuzz targets for the parsers (see test/fuzz/).
+# Built only with -DWXM_FUZZ=ON and a Clang compiler. They reuse the whole app
+# (minus main.cpp, which holds libFuzzer's rival main()) so the parser runs with
+# its real cell/Configuration/Worksheet dependencies.
+# ---------------------------------------------------------------------------
+if(WXM_FUZZ)
+    if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        message(FATAL_ERROR "WXM_FUZZ requires Clang (libFuzzer). Re-run cmake with -DCMAKE_CXX_COMPILER=clang++.")
+    endif()
+    set(FUZZ_APP_SOURCES ${SOURCE_FILES})
+    list(REMOVE_ITEM FUZZ_APP_SOURCES main.cpp)
+    # Instrument the app for coverage (fuzzer-no-link = coverage without a main())
+    # plus AddressSanitizer.
+    add_library(wxmFuzzApp OBJECT ${FUZZ_APP_SOURCES})
+    target_compile_features(wxmFuzzApp PUBLIC cxx_std_20)
+    target_compile_options(wxmFuzzApp PRIVATE -fsanitize=fuzzer-no-link,address -fno-omit-frame-pointer)
+    set(FUZZ_DIR ${CMAKE_SOURCE_DIR}/test/fuzz)
+    foreach(FT wxm mathparser)
+        add_executable(fuzz_${FT}
+            ${FUZZ_DIR}/fuzz_${FT}.cpp ${FUZZ_DIR}/fuzz_stubs.cpp
+            $<TARGET_OBJECTS:wxmFuzzApp>)
+        target_compile_features(fuzz_${FT} PUBLIC cxx_std_20)
+        target_compile_options(fuzz_${FT} PRIVATE -fsanitize=fuzzer-no-link,address -fno-omit-frame-pointer)
+        target_link_options(fuzz_${FT} PRIVATE -fsanitize=fuzzer,address)
+        target_link_libraries(fuzz_${FT} ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    endforeach()
+endif()
+
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_BINARY_DIR}/Version.h)
 
 if(APPLE)

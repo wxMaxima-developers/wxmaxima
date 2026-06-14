@@ -75,6 +75,8 @@ option(WXM_MAXIMA_DEMO_TESTS
     "Run Maxima demo files as test." OFF)
 set(WXM_SANITIZE "" CACHE STRING
     "Comma-separated list of sanitizers to compile with, e.g. \"address,undefined\" (GCC/Clang only).")
+option(WXM_FUZZ
+    "Build the coverage-guided libFuzzer parser fuzz targets (requires a Clang compiler). See test/fuzz/." OFF)
 
 if(DEFINED MACOSX_VERSION_MIN)
     set(CMAKE_OSX_DEPLOYMENT_TARGET ${MACOSX_VERSION_MIN} CACHE STRING FORCE)
@@ -292,4 +294,16 @@ if(WIN32 AND APPVEYOR_BUILD)
     install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
         DESTINATION programs
         COMPONENT applications)
+endif()
+
+# The fuzz object library (test/fuzz, built with -DWXM_FUZZ=ON) compiles the same
+# sources as wxmaxima, so it needs the same bin2h-generated headers (icons,
+# embedded examples, builtin_commands.h, ...). Those dependencies are added to
+# wxmaxima across many CMakeLists; copy the full set here, after every
+# subdirectory has been processed.
+if(WXM_FUZZ AND TARGET wxmFuzzApp)
+    get_target_property(_wxm_gen_deps wxmaxima MANUALLY_ADDED_DEPENDENCIES)
+    if(_wxm_gen_deps)
+        add_dependencies(wxmFuzzApp ${_wxm_gen_deps})
+    endif()
 endif()

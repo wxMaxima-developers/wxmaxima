@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--   Created using wxMaxima 24.02.1   -->
+<!--https://wxMaxima-developers.github.io/wxmaxima/-->
+
+<wxMaximaDocument version="1.5" zoom="100" activecell="11">
+
+<cell type="title" sectioning_level="1">
+<editor type="title" sectioning_level="1">
+<line>This is a title cell</line>
+</editor>
+
+</cell>
+
+<cell type="section" sectioning_level="2">
+<editor type="section" sectioning_level="2">
+<line>This is a section cell</line>
+</editor>
+
+</cell>
+
+<cell type="subsection" sectioning_level="3">
+<editor type="subsection" sectioning_level="3">
+<line>This is a subsection cell</line>
+</editor>
+
+</cell>
+
+<cell type="subsection" sectioning_level="4">
+<editor type="subsection" sectioning_level="4">
+<line>This is a subsubsection cell</line>
+</editor>
+
+</cell>
+
+<cell type="subsection" sectioning_level="5">
+<editor type="subsection" sectioning_level="5">
+<line>This is a heading of level 5</line>
+</editor>
+
+</cell>
+
+<cell type="subsection" sectioning_level="6">
+<editor type="subsection" sectioning_level="6">
+<line>This is a heading of level 6</line>
+</editor>
+
+</cell>
+
+<cell type="text">
+<editor type="text">
+<line>Now a Maxima input cell (and the computed output):</line>
+</editor>
+
+</cell>
+
+<cell type="code">
+<input>
+<editor type="input">
+<line>&apos;integrate(x^2,x)=integrate(x^2,x);</line>
+</editor>
+</input>
+<output>
+<mth><lbl altCopy="(%o1)&#009;">(%o1) </lbl><in><r><fnm></fnm></r><r><fnm></fnm></r><r><fnm></fnm></r><r><fnm></fnm><e><r><v>x</v></r><r><n>2</n></r></e><s>d</s><v>x</v></r></in><t type="Operator">=</t><f><r><e><r><v>x</v></r><r><n>3</n></r></e></r><r><n>3</n></r></f>
+</mth></output>
+</cell>
+
+<cell type="text">
+<editor type="text">
+<line>This is a text only cell. Now comes a pagebreak cell and then a image cell:</line>
+</editor>
+
+</cell>
+
+<cell type="pagebreak"/>
+<cell type="image">
+<editor type="input">
+<line>/home/dauti/Software/wxmaxima/info/wxMaximaLogo.png</line>
+</editor>
+<img breakline="true" ppi="96">image1.png</img>
+</cell>
+
+</wxMaximaDocument>
