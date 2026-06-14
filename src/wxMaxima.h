@@ -867,9 +867,9 @@ private:
 class MyApp : public wxApp
 {
 public:
-  virtual bool OnInit();
-  virtual int OnRun();
-  virtual int OnExit();
+  virtual bool OnInit() override;
+  virtual int OnRun() override;
+  virtual int OnExit() override;
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT
   void	OnFatalException () override;
 #endif

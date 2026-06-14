@@ -90,7 +90,7 @@ public:
   virtual wxString GetExtension() const = 0;
 
   virtual wxCoord GetMaxWidth() const = 0;
-  virtual wxCoord GetHeightList() const = 0;
+  virtual wxCoord GetHeightList() const override = 0;
   virtual void SetMaxWidth(wxCoord width) = 0;
   virtual void SetMaxHeight(wxCoord height) = 0;
 
