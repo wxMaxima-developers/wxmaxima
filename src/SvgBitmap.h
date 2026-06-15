@@ -64,7 +64,7 @@ private:
   //! The renderable svg image after we have read it in
   std::unique_ptr<wxm_NSVGimage, decltype(std::free)*> m_svgImage{nullptr, std::free};
   //! The window this bitmap will be drawn o
-  wxWindow *m_window = NULL;
+  [[maybe_unused]] wxWindow *m_window = NULL;
 };
 
 #endif // SVGBITMAP_H

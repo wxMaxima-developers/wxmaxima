@@ -11547,7 +11547,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate) {
   }
 
   // Bind state event
-  Bind(wxEVT_WEBREQUEST_STATE, [this, reportUpToDate](wxWebRequestEvent& evt) {
+  Bind(wxEVT_WEBREQUEST_STATE, [reportUpToDate](wxWebRequestEvent& evt) {
     switch (evt.GetState()) {
       // Request completed
       case wxWebRequest::State_Completed:

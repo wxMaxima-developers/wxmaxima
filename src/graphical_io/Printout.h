@@ -71,7 +71,7 @@ private:
   Configuration m_configuration;
   //! A pointer to m_configuration we can point to
   Configuration *const m_configPointer;
-  const double m_scaleFactor;
+  [[maybe_unused]] const double m_scaleFactor;
   // Sets Configuration::Printing() to true while we print
   Printing m_printing;
 };

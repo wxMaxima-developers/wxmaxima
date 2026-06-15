@@ -109,7 +109,7 @@ SCENARIO("LongNumberCell behaviour") {
         REQUIRE(inner != nullptr);
         // Verify we can iterate and find all DigitCells
         int count = 0;
-        for (const Cell &c : OnList(inner)) {
+        for ([[maybe_unused]] const Cell &c : OnList(inner)) {
           count++;
         }
         // with groupSize 3, 43 digits should bundle into 15 groups

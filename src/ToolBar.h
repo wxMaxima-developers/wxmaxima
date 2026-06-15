@@ -221,7 +221,6 @@ public:
   //! Update the bitmaps on ppi changes.
   void UpdateBitmaps();
 
-;
   wxBitmap GetEvalAllBitmap(wxSize siz);
   wxBitmap GetEvalBitmap(wxSize siz);
   wxBitmap GetPreferencesBitmap(wxSize siz);
