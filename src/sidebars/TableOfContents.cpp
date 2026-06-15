@@ -443,7 +443,11 @@ GroupCell *TableOfContents::GetCell(std::size_t index) {
 wxString TableOfContents::TocEntryString(GroupCell *cell) {
   wxString curr;
   if (cell->GetEditable())
-    curr = cell->GetEditable()->ToString();
+    // Always show the whole caption: ToString() without the argument would
+    // shrink to the editor's active selection (that variant is meant for menu
+    // items that build a Maxima command from the current selection), which is
+    // wrong for the table of contents.
+    curr = cell->GetEditable()->ToString(true);
 
   if (m_configuration->TocShowsSectionNumbers()) {
     if (cell->GetPrompt() != NULL)

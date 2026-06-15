@@ -1,5 +1,11 @@
 # Current development version
 
+- Fix the table of contents showing only the selected part of a sectioning
+  cell's caption when that caption's editor had an active text selection. The
+  TOC used the selection-limited variant of the cell-to-string conversion (the
+  one meant for building Maxima commands from a selection); it now always shows
+  the full caption.
+
 - Loading images (e.g. the many frames of a gnuplot animation) no longer
   freezes the GUI when there are more pending load/compress jobs than CPU cores,
   and now runs through a priority work-queue thread pool: image loading (whose
