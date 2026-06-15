@@ -245,6 +245,14 @@ public:
   //! Determine which rectangle is occupied by this GroupCell
   wxRect GetOutputRect() const { return m_outputRect; }
 
+  /*! The on-screen rectangle occupied by this cell's bracket.
+
+    The bracket is drawn in the indentation to the *left* of the cell's content,
+    so this rectangle does not overlap GetRect(). It lets the worksheet redraw
+    (or test for a redraw of) just the bracket without touching the cell's
+    contents. Must stay in sync with the area DrawBracket() paints. */
+  wxRect GetBracketRect() const;
+
   /*! Recalculates the size of this GroupCell and all cells inside it if needed.
 
     This command will also assign the GroupCell a y coordinate it is plotted at.

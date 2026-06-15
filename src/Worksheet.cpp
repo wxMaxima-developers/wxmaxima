@@ -268,32 +268,40 @@ bool Worksheet::RedrawIfRequested() {
       const GroupCell *oldGroupCellUnderPointer =
         m_cellPointers.m_groupCellUnderPointer;
 
-      // find out which group cell lies under the pointer
+      // Find out which group cell lies under the pointer. If the pointer is in
+      // the gap *between* two cells (below one cell's bottom and above the next
+      // cell's top) it lies in neither, so the result stays null and no bracket
+      // is shown. (Previously the search snapped to the nearest cell in the
+      // walk direction, which made the result flip between the cell above and
+      // the cell below on every mouse event while hovering in such a gap.)
       GroupCell *startSearch = m_cellPointers.m_groupCellUnderPointer;
       if (!startSearch) startSearch = GetTree();
-      
+
+      GroupCell *found = nullptr;
       if (startSearch && m_pointer_y > startSearch->GetRect().GetBottom()) {
-          for (auto &tmp : OnList(startSearch->GetNext())) {
+          // Walk downwards.
+          for (auto &tmp : OnList(startSearch)) {
+              if (m_pointer_y < tmp.GetRect().GetTop())
+                  break; // reached a cell that starts below the pointer: it's in a gap
               if (m_pointer_y <= tmp.GetRect().GetBottom()) {
-                  GetTree()->CellUnderPointer(&tmp);
+                  found = &tmp;
                   break;
               }
           }
       } else if (startSearch && m_pointer_y < startSearch->GetRect().GetTop()) {
-          for (Cell *tmp = startSearch->GetPrevious(); tmp; tmp = tmp->GetPrevious()) {
+          // Walk upwards.
+          for (Cell *tmp = startSearch; tmp; tmp = tmp->GetPrevious()) {
+              if (m_pointer_y > tmp->GetRect().GetBottom())
+                  break; // reached a cell that ends above the pointer: it's in a gap
               if (m_pointer_y >= tmp->GetRect().GetTop()) {
-                  GetTree()->CellUnderPointer(dynamic_cast<GroupCell *>(tmp));
+                  found = dynamic_cast<GroupCell *>(tmp);
                   break;
               }
           }
       } else if (!m_cellPointers.m_groupCellUnderPointer) {
-          for (auto &tmp : OnList(GetTree())) {
-              if (m_pointer_y <= tmp.GetRect().GetBottom()) {
-                  GetTree()->CellUnderPointer(&tmp);
-                  break;
-              }
-          }
+          found = startSearch; // pointer is within startSearch's vertical extent
       }
+      GetTree()->CellUnderPointer(found);
 
       // Make the right brackets autohide
       if ((m_configuration->HideBrackets()) &&
@@ -302,13 +310,13 @@ bool Worksheet::RedrawIfRequested() {
         if (oldGroupCellUnderPointer) {
           RequestRedraw(
                         wxRect(0, oldGroupCellUnderPointer->GetRect().GetTop(),
-                               m_configuration->GetIndent() + m_configuration->GetCellBracketWidth() - 1,
+                               m_configuration->GetIndent(),
                                oldGroupCellUnderPointer->GetRect().GetHeight()));
         }
         if (m_cellPointers.m_groupCellUnderPointer) {
           RequestRedraw(wxRect(
                                0, m_cellPointers.m_groupCellUnderPointer->GetRect().GetTop(),
-                               m_configuration->GetIndent() + m_configuration->GetCellBracketWidth() - 1,
+                               m_configuration->GetIndent(),
                                m_cellPointers.m_groupCellUnderPointer->GetRect().GetHeight()));
         }
       }
@@ -671,10 +679,26 @@ void Worksheet::DrawGroupCell_UsingBitmap(wxDC *dc, GroupCell *cell)
 
 void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
 {
-  if (cell.DrawThisCell()) {
-    cell.InEvaluationQueue(m_evaluationQueue.IsInQueue(&cell));
-    cell.LastInEvaluationQueue(m_evaluationQueue.GetCell() == &cell);
+  const bool drawContents = cell.DrawThisCell();
+  // The bracket lives in the indentation to the left of the cell's contents, so
+  // it has to be (re)drawn even when only that strip - and not the contents -
+  // lies in the update region. This is what lets a bracket appearing/vanishing
+  // under the mouse repaint just the narrow bracket column instead of the whole
+  // cell. (cell.Draw() draws the bracket and then gates its contents on
+  // DrawThisCell() itself, so passing through here with only the bracket in the
+  // update region paints the bracket and skips the contents.)
+  const bool drawBracket =
+      m_configuration->ShowBrackets() &&
+      m_configuration->InUpdateRegion(cell.GetBracketRect());
 
+  if (!drawContents && !drawBracket)
+    return;
+
+  // DrawBracket() reflects these flags, so set them whenever we draw the cell.
+  cell.InEvaluationQueue(m_evaluationQueue.IsInQueue(&cell));
+  cell.LastInEvaluationQueue(m_evaluationQueue.GetCell() == &cell);
+
+  if (drawContents) {
     //
     // Draw the selection marks for an eventual selection inside this cell
     //
@@ -698,8 +722,8 @@ void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
           break;
       }
     }
-    cell.Draw(&dc, &adc);
   }
+  cell.Draw(&dc, &adc);
 }
 
 GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,

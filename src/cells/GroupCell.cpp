@@ -867,6 +867,15 @@ wxCoord GroupCell::GetCenterList() const {
   return m_center;
 }
 
+wxRect GroupCell::GetBracketRect() const {
+  // Keep this in sync with the rectangle DrawBracket() clears and paints.
+  const wxRect rect = GetRect();
+  return wxRect(m_configuration->GetIndent() -
+                    m_configuration->GetCellBracketWidth(),
+                rect.GetTop() - 2, m_configuration->GetCellBracketWidth(),
+                rect.GetHeight() + 5);
+}
+
 void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
   // If the current cell doesn't know where it is on the screen we don't
   // attempt to draw it's bracket.

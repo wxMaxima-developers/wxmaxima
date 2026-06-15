@@ -1,5 +1,12 @@
 # Current development version
 
+- When the mouse hovers in the gap *between* two GroupCells, neither cell's
+  bracket is shown now. Previously the highlighted cell flipped between the cell
+  above and the cell below the mouse on every mouse-move event, making the two
+  brackets flicker.
+- When a cell's bracket appears or disappears as the mouse moves, only the
+  narrow bracket column is repainted now instead of the whole cell, so hovering
+  over the brackets no longer forces the cell contents to be redrawn.
 - When a cell's output takes too long to lay out (the configurable layout
   deadline fires), wxMaxima no longer *replaces* that output with the
   "(Layout took too long and was suppressed)" placeholder. The real output is
