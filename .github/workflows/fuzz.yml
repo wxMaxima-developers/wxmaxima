@@ -64,7 +64,7 @@ jobs:
              exit $status
       - name: upload_crashes
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fuzz-crashes
           path: fuzz-artifacts/
