@@ -24,7 +24,7 @@
 #include "FontAttribs.cpp"
 #include "nanoSVG.cpp"
 #include "Image.cpp"
-#include "ThreadNumberLimiter.cpp"
+#include "BackgroundQueue.cpp"
 #include "ImgCell.cpp"
 #include "ImgCellBase.cpp"
 #include "StringUtils.cpp"

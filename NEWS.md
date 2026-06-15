@@ -1,5 +1,12 @@
 # Current development version
 
+- Loading images (e.g. the many frames of a gnuplot animation) no longer
+  freezes the GUI when there are more pending load/compress jobs than CPU cores,
+  and now runs through a priority work-queue thread pool: image loading (whose
+  size the worksheet layout needs) is done first, filling all worker threads,
+  before the lower-priority compression of the gnuplot source/data behind the
+  images. Previously every background job blocked the GUI thread while it waited
+  for a free core, and image loading was not prioritised over the gnuplot work.
 - When the mouse hovers in the gap *between* two GroupCells, neither cell's
   bracket is shown now. Previously the highlighted cell flipped between the cell
   above and the cell below the mouse on every mouse-move event, making the two

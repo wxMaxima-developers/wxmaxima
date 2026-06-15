@@ -137,12 +137,17 @@ Image::Image(Configuration *config, const Image &image) {
 }
 
 Image::~Image() {
-  m_loadImageTask.request_stop();
-  m_loadGnuplotSourceTask.request_stop();
-  if(m_loadImageTask.joinable())
-    m_loadImageTask.join();
-  if(m_loadGnuplotSourceTask.joinable())
-    m_loadImageTask.join();
+  // Make sure no worker thread is still touching this object before we tear it
+  // down: request a stop (which drops the task if it has not started yet) and
+  // then wait for it to actually finish.
+  if(m_loadImageTask) {
+    m_loadImageTask->RequestStop();
+    m_loadImageTask->Wait();
+  }
+  if(m_loadGnuplotSourceTask) {
+    m_loadGnuplotSourceTask->RequestStop();
+    m_loadGnuplotSourceTask->Wait();
+  }
   if (!m_gnuplotSource.IsEmpty() && IsSafePath(m_gnuplotSource)) {
     if (wxFileExists(m_gnuplotSource))
     {
@@ -184,8 +189,8 @@ wxMemoryBuffer Image::ReadCompressedImage(stop_token stopToken, wxInputStream *d
 }
 
 wxBitmap Image::GetUnscaledBitmap() {
-  if(m_loadImageTask.joinable())
-    m_loadImageTask.join();
+  if(m_loadImageTask)
+    m_loadImageTask->Wait();
 
   if (m_isInvalid)
     GenerateInvalidBitmap();
@@ -208,55 +213,54 @@ wxBitmap Image::GetUnscaledBitmap() {
 }
 
 const wxMemoryBuffer Image::GetCompressedImage() const {
-  if(m_loadImageTask.joinable())
-    m_loadImageTask.join();
+  if(m_loadImageTask)
+    m_loadImageTask->Wait();
   return m_compressedImage;
 }
 
 std::size_t Image::GetOriginalWidth() const {
-  if(m_loadImageTask.joinable())
-    m_loadImageTask.join();
+  if(m_loadImageTask)
+    m_loadImageTask->Wait();
 
   return m_originalWidth;
 }
 
 std::size_t Image::GetOriginalHeight() const {
-  if(m_loadImageTask.joinable())
-    m_loadImageTask.join();
+  if(m_loadImageTask)
+    m_loadImageTask->Wait();
 
   return m_originalHeight;
 }
 
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename,
                           const wxString &wxmxFile) {
-  if(m_loadGnuplotSourceTask.joinable())
+  if(m_loadGnuplotSourceTask)
   {
-    m_loadGnuplotSourceTask.request_stop();
-    m_loadGnuplotSourceTask.join();
+    m_loadGnuplotSourceTask->RequestStop();
+    m_loadGnuplotSourceTask->Wait();
   }
-  m_gnuplotSource = std::move(gnuplotFilename);
-  m_gnuplotData = std::move(dataFilename);
-  std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter());
+  m_gnuplotSource = gnuplotFilename;
+  m_gnuplotData = dataFilename;
+  // Loading/compressing the gnuplot source and data is low priority: it is the
+  // image bitmap (loaded at high priority) that the worksheet layout needs.
   if(m_configuration->UseThreads())
-    m_loadGnuplotSourceTask = jthread(
-      [this, limiter = std::move(limiter), gnuplotFilename, dataFilename,
+    m_loadGnuplotSourceTask = BackgroundQueue::Add(
+      BackgroundTask::Priority::Low,
+      [this, gnuplotFilename, dataFilename,
        wxmxFile](stop_token stopToken) mutable {
-        LoadGnuplotSource_Backgroundtask(stopToken, std::move(limiter),
+        LoadGnuplotSource_Backgroundtask(stopToken,
                                          gnuplotFilename, dataFilename,
                                          wxmxFile);
       });
   else
     LoadGnuplotSource_Backgroundtask({},
-      std::move(limiter),
       m_gnuplotSource, m_gnuplotData, wxmxFile);
 }
 
 void Image::LoadGnuplotSource_Backgroundtask(
   stop_token stopToken,
-  std::unique_ptr<ThreadNumberLimiter> limiter,
   wxString gnuplotFile, wxString dataFile, wxString wxmxFile)
 {
-  std::unique_ptr<ThreadNumberLimiter> threadNumLimit = std::move(limiter);
   if (stopToken.stop_requested()) return;
   if(wxmxFile.IsEmpty())
   {
@@ -288,24 +292,23 @@ void Image::LoadGnuplotSource_Backgroundtask(
 
 void Image::CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename,
                                      const wxString &wxmxFile) {
-  if(m_loadGnuplotSourceTask.joinable())
+  if(m_loadGnuplotSourceTask)
   {
-    m_loadGnuplotSourceTask.request_stop();
-    m_loadGnuplotSourceTask.join();
+    m_loadGnuplotSourceTask->RequestStop();
+    m_loadGnuplotSourceTask->Wait();
   }
-  std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter());
   m_gnuplotSource = std::move(gnuplotFilename);
   m_gnuplotData = std::move(dataFilename);
   if(m_configuration->UseThreads())
-    m_loadGnuplotSourceTask = jthread(
-      [this, limiter = std::move(limiter), gnuplotSource = m_gnuplotSource,
+    m_loadGnuplotSourceTask = BackgroundQueue::Add(
+      BackgroundTask::Priority::Low,
+      [this, gnuplotSource = m_gnuplotSource,
        data = m_gnuplotData, wxmxFile](stop_token stopToken) mutable {
         LoadCompressedGnuplotSource_Backgroundtask(
-          stopToken, std::move(limiter), gnuplotSource, data, wxmxFile);
+          stopToken, gnuplotSource, data, wxmxFile);
       });
   else
     LoadCompressedGnuplotSource_Backgroundtask({},
-      std::move(limiter),
       m_gnuplotSource,
       m_gnuplotData,
       wxmxFile);
@@ -394,12 +397,10 @@ void Image::LoadGnuplotData(
 
 void Image::LoadCompressedGnuplotSource_Backgroundtask(
   stop_token stopToken,
-  std::unique_ptr<ThreadNumberLimiter> limiter,
   wxString sourcefile,
   wxString datafile,
   wxString wxmxFile
   ) {
-  std::unique_ptr<ThreadNumberLimiter> threadNumLimit = std::move(limiter);
   if (stopToken.stop_requested()) return;
   {
     // Read the gnuplot source
@@ -447,8 +448,8 @@ Image::WxmxStream::WxmxStream(wxInputStream &wxmxFile, const wxString &fileInWxm
 }
 
 const wxMemoryBuffer Image::GetGnuplotSource() {
-  if(m_loadGnuplotSourceTask.joinable())
-    m_loadGnuplotSourceTask.join();
+  if(m_loadGnuplotSourceTask)
+    m_loadGnuplotSourceTask->Wait();
 
   wxMemoryBuffer retval;
   if ((m_gnuplotSource_Compressed.GetDataLen() < 2) ||
@@ -479,21 +480,21 @@ const wxMemoryBuffer Image::GetGnuplotSource() {
 
 const wxMemoryBuffer Image::GetCompressedGnuplotSource()
 {
-  if(m_loadGnuplotSourceTask.joinable())
-    m_loadGnuplotSourceTask.join();
+  if(m_loadGnuplotSourceTask)
+    m_loadGnuplotSourceTask->Wait();
   return m_gnuplotSource_Compressed;
 }
 
 const wxMemoryBuffer Image::GetCompressedGnuplotData()
 {
-  if(m_loadGnuplotSourceTask.joinable())
-    m_loadGnuplotSourceTask.join();
+  if(m_loadGnuplotSourceTask)
+    m_loadGnuplotSourceTask->Wait();
   return m_gnuplotData_Compressed;
 }
 
 const wxMemoryBuffer Image::GetGnuplotData() {
-  if(m_loadGnuplotSourceTask.joinable())
-    m_loadGnuplotSourceTask.join();
+  if(m_loadGnuplotSourceTask)
+    m_loadGnuplotSourceTask->Wait();
   wxMemoryBuffer retval;
   if ((m_gnuplotSource_Compressed.GetDataLen() < 2) ||
       (m_gnuplotData_Compressed.GetDataLen() < 2)) {
@@ -522,8 +523,8 @@ const wxMemoryBuffer Image::GetGnuplotData() {
 }
 
 wxString Image::GnuplotData() {
-  if(m_loadGnuplotSourceTask.joinable())
-    m_loadGnuplotSourceTask.join();
+  if(m_loadGnuplotSourceTask)
+    m_loadGnuplotSourceTask->Wait();
   if ((!m_gnuplotData.IsEmpty()) && (!wxFileExists(m_gnuplotData))) {
     // Move the gnuplot data and data file into our temp directory
     wxFileName gnuplotSourceFile(m_gnuplotSource);
@@ -557,8 +558,8 @@ wxString Image::GnuplotData() {
 }
 
 wxString Image::GnuplotSource() {
-  if(m_loadGnuplotSourceTask.joinable())
-    m_loadGnuplotSourceTask.join();
+  if(m_loadGnuplotSourceTask)
+    m_loadGnuplotSourceTask->Wait();
   if ((!m_gnuplotSource.IsEmpty()) && (!wxFileExists(m_gnuplotSource))) {
     // Move the gnuplot source and data file into our temp directory
     wxFileName gnuplotSourceFile(m_gnuplotSource);
@@ -598,8 +599,8 @@ wxString Image::GnuplotSource() {
 }
 
 wxSize Image::ToImageFile(wxString filename) {
-  if(m_loadImageTask.joinable())
-    m_loadImageTask.join();
+  if(m_loadImageTask)
+    m_loadImageTask->Wait();
   wxFileName fn(filename);
   wxString ext = fn.GetExt();
   if (filename.Lower().EndsWith(GetExtension().Lower())) {
@@ -668,8 +669,8 @@ wxSize Image::ToImageFile(wxString filename) {
 }
 
 wxBitmap Image::GetBitmap(double scale) {
-  if(m_loadImageTask.joinable())
-    m_loadImageTask.join();
+  if(m_loadImageTask)
+    m_loadImageTask->Wait();
   // Recalculate contains its own WaitForLoad object.
   Recalculate(scale);
 
@@ -791,8 +792,8 @@ void Image::GenerateInvalidBitmap() {
 }
 
 void Image::LoadImage(const wxBitmap &bitmap) {
-  if(m_loadImageTask.joinable())
-    m_loadImageTask.join();
+  if(m_loadImageTask)
+    m_loadImageTask->Wait();
   // Convert the bitmap to a png image we can use as m_compressedImage
   wxImage image = bitmap.ConvertToImage();
   wxMemoryOutputStream stream;
@@ -810,45 +811,45 @@ void Image::LoadImage(const wxBitmap &bitmap) {
 }
 
 wxString Image::GetExtension() const {
-  if(m_loadImageTask.joinable())
-    m_loadImageTask.join();
+  if(m_loadImageTask)
+    m_loadImageTask->Wait();
   return m_extension;
 }
 
 void Image::LoadImage(wxString image, const wxString &wxmxFile,
                       bool remove) {
-  if(m_loadImageTask.joinable())
+  if(m_loadImageTask)
   {
-    m_loadImageTask.request_stop();
-    m_loadImageTask.join();
+    m_loadImageTask->RequestStop();
+    m_loadImageTask->Wait();
   }
   m_fromWxFS = !wxmxFile.IsEmpty();
   m_extension = wxFileName(image).GetExt();
   m_extension = m_extension.Lower();
   m_imageName = image;
-  std::unique_ptr<ThreadNumberLimiter> limiter(new ThreadNumberLimiter());
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
+  // Loading the image is high priority: the worksheet layout needs its size and
+  // normally wants to draw it right away. We want as many images as we have
+  // worker threads to load before any lower-priority work (gnuplot sources) runs.
   if(m_configuration->UseThreads())
-    m_loadImageTask = jthread(
-      [this, limiter = std::move(limiter), image = std::move(image),
+    m_loadImageTask = BackgroundQueue::Add(
+      BackgroundTask::Priority::High,
+      [this, image = std::move(image),
        wxmxFile, remove](stop_token stopToken) mutable {
-        LoadImage_Backgroundtask(stopToken, std::move(limiter), std::move(image),
+        LoadImage_Backgroundtask(stopToken, std::move(image),
                                  wxmxFile, remove);
       });
   else
     LoadImage_Backgroundtask({},
-      std::move(limiter),
       std::move(image), wxmxFile,
       remove
       );
 }
 
 void Image::LoadImage_Backgroundtask(stop_token stopToken,
-                                     std::unique_ptr<ThreadNumberLimiter> limiter,
                                      wxString image, wxString wxmxFile,
                                      bool remove) {
-  std::unique_ptr<ThreadNumberLimiter> threadNumLimit = std::move(limiter);
   wxLogBuffer errorAggregator;
 
   if (stopToken.stop_requested()) return;
@@ -976,13 +977,10 @@ void Image::LoadImage_Backgroundtask(stop_token stopToken,
 }
 
 void Image::Recalculate(double scale) {
-  if(m_loadImageTask.joinable())
-    m_loadImageTask.join();
-  // We use jthread for automatic joining on destruction.
-  if(m_loadGnuplotSourceTask.joinable())
-    m_loadGnuplotSourceTask.join();
-  if(m_loadImageTask.joinable())
-    m_loadImageTask.join();
+  if(m_loadImageTask)
+    m_loadImageTask->Wait();
+  if(m_loadGnuplotSourceTask)
+    m_loadGnuplotSourceTask->Wait();
   wxCoord width = m_originalWidth;
   wxCoord height = m_originalHeight;
 

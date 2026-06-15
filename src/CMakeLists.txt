@@ -130,6 +130,7 @@ set(SOURCE_FILES
     Configuration.cpp
     DiffAlgorithm.cpp
     Dirstructure.cpp
+    BackgroundQueue.cpp
     EvaluationQueue.cpp
     EventIDs.cpp
     Image.cpp
@@ -148,7 +149,6 @@ set(SOURCE_FILES
     StringUtils.cpp
     SvgBitmap.cpp
     SvgPanel.cpp
-    ThreadNumberLimiter.cpp
     ToolBar.cpp
     Worksheet.cpp
     WrappingStaticText.cpp

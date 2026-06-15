@@ -36,3 +36,24 @@ race:libcairo
 # harfbuzz / freetype shaping + glyph caches.
 race:libharfbuzz
 race:libfreetype
+
+# --- Lock-order-inversion ("potential deadlock") false positives ---
+#
+# These are not data races but cross-thread lock-ordering reports. Every one of
+# them runs through GLib's one-time type-system / reader-writer locks
+# (g_rw_lock_*, g_type_class_get) that the main thread holds while it builds the
+# toolbar / status-bar icons at start-up (StatusBar::UpdateBitmaps). That GLib
+# leg crosses with wxWidgets' own mutexes (wxMutex), which are taken later and
+# from other threads - the image-loading workers and the Maxima reader thread -
+# so TSan synthesises a lock cycle. The GLib leg is only ever held once, during
+# init, so the cycle can never actually close at run time.
+#
+# wxMaxima's own std::mutex locking (BackgroundQueue / BackgroundTask, the
+# Maxima queues) does NOT appear in any of these cycles; only the third-party
+# GLib lock primitives do. If TSan ever reports a deadlock cycle made up solely
+# of wxMaxima's own mutexes, that is a real finding and must NOT be added here.
+deadlock:g_rw_lock_reader_lock
+deadlock:g_rw_lock_writer_lock
+deadlock:g_type_class_get
+# The matching "read lock of a write locked mutex" report on the same GLib lock.
+mutex:g_rw_lock_reader_lock

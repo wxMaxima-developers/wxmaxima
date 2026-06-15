@@ -14,9 +14,17 @@
 #ifdef __cpp_lib_jthread
     using jthread = std::jthread;
     using stop_token = std::stop_token;
+    using stop_source = std::stop_source;
 #else
     struct stop_token {
         bool stop_requested() const { return false; }
+    };
+    // A minimal stop_source shim for compilers without std::jthread: on those
+    // compilers cancellation is a no-op (as it always was here).
+    struct stop_source {
+        stop_token get_token() const { return {}; }
+        bool request_stop() noexcept { return false; }
+        bool stop_requested() const noexcept { return false; }
     };
     // A minimal jthread shim for compilers without std::jthread
     class jthread : public std::thread {

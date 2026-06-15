@@ -32,7 +32,7 @@
 #include <memory>
 #include <thread>
 #include <atomic>
-#include "ThreadNumberLimiter.h"
+#include "BackgroundQueue.h"
 #include "precomp.h"
 #include "Version.h"
 #include "Configuration.h"
@@ -105,18 +105,18 @@ public:
                                 const int &width, const int &height);
 
   void SetConfiguration(Configuration *config){
-    if(m_loadImageTask.joinable())
-      m_loadImageTask.join();
+    if(m_loadImageTask)
+      m_loadImageTask->Wait();
     m_configuration = config; }
   //! Return the image's resolution
   int GetPPI() const {
-    if(m_loadImageTask.joinable())
-      m_loadImageTask.join();
+    if(m_loadImageTask)
+      m_loadImageTask->Wait();
     return m_ppi;}
   //! Set the image's resolution
   void SetPPI(int ppi) {
-    if(m_loadImageTask.joinable())
-      m_loadImageTask.join();
+    if(m_loadImageTask)
+      m_loadImageTask->Wait();
     m_ppi = ppi;}
 
   //! Creates a bitmap showing an error message
@@ -175,8 +175,8 @@ public:
   */
   void ClearCache()
     {
-      if(m_loadImageTask.joinable())
-        m_loadImageTask.join();
+      if(m_loadImageTask)
+        m_loadImageTask->Wait();
       if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))
         m_scaledBitmap.Create(1, 1);
     }
@@ -185,24 +185,24 @@ public:
   wxString GetExtension() const;
   //! The maximum width this image shall be displayed with
   double GetMaxWidth() const {
-    if(m_loadImageTask.joinable())
-      m_loadImageTask.join();
+    if(m_loadImageTask)
+      m_loadImageTask->Wait();
     return m_maxWidth;}
   //! The maximum height this image shall be displayed with
   double GetHeightList() const {
-    if(m_loadImageTask.joinable())
-      m_loadImageTask.join();
+    if(m_loadImageTask)
+      m_loadImageTask->Wait();
     return m_maxHeight;}
   //! Set the maximum width this image shall be displayed with
   void   SetMaxWidth(double width){
-    if(m_loadImageTask.joinable())
-      m_loadImageTask.join();
+    if(m_loadImageTask)
+      m_loadImageTask->Wait();
     m_maxWidth = width;
   }
   //! Set the maximum height this image shall be displayed with
   void   SetMaxHeight(double height){
-    if(m_loadImageTask.joinable())
-      m_loadImageTask.join();
+    if(m_loadImageTask)
+      m_loadImageTask->Wait();
     m_maxHeight = height;
   }
 
@@ -242,8 +242,8 @@ public:
 
   //! Can this image be exported in SVG format?
   bool CanExportSVG() const {
-    if(m_loadImageTask.joinable())
-      m_loadImageTask.join();
+    if(m_loadImageTask)
+      m_loadImageTask->Wait();
     return m_svgRast != nullptr;}
 
   //! The tooltip to use wherever an image that's not Ok is shown.
@@ -277,15 +277,16 @@ private:
   wxString m_gnuplotSource;
   //! The gnuplot data file for this image, if any.
   wxString m_gnuplotData;
-  mutable jthread m_loadImageTask;
+  //! The high-priority background task that loads this image, if any.
+  mutable std::shared_ptr<BackgroundTask> m_loadImageTask;
   void LoadImage_Backgroundtask(stop_token stopToken,
-                                std::unique_ptr<ThreadNumberLimiter> limiter,
                                 wxString image, wxString wxmxFile,
                                 bool remove);
-  jthread m_loadGnuplotSourceTask;
+  //! The low-priority background task that loads/compresses the gnuplot
+  //! source and data behind this image, if any.
+  std::shared_ptr<BackgroundTask> m_loadGnuplotSourceTask;
   void LoadGnuplotSource_Backgroundtask(
     stop_token stopToken,
-    std::unique_ptr<ThreadNumberLimiter> limiter,
     wxString gnuplotFile, wxString dataFile, wxString wxmxFile);
   void LoadGnuplotSource(wxInputStream *source);
   void LoadGnuplotData(wxInputStream *data);
@@ -295,7 +296,6 @@ private:
 
 
   void LoadCompressedGnuplotSource_Backgroundtask(stop_token stopToken,
-                                                  std::unique_ptr<ThreadNumberLimiter> limiter,
                                                   wxString sourcefile,
                                                   wxString datafile,
                                                   wxString wxmxFile
