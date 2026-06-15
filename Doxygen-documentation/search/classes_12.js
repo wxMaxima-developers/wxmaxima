@@ -13,13 +13,12 @@ var searchData=
   ['testinvokerasmethod_10',['TestInvokerAsMethod',['../classCatch_1_1TestInvokerAsMethod.html',1,'Catch']]],
   ['textcell_11',['TextCell',['../classTextCell.html',1,'']]],
   ['textsnippettodraw_12',['TextsnippetToDraw',['../classConfiguration_1_1TextsnippetToDraw.html',1,'Configuration']]],
-  ['threadnumberlimiter_13',['ThreadNumberLimiter',['../classThreadNumberLimiter.html',1,'']]],
-  ['timer_14',['Timer',['../classCatch_1_1Timer.html',1,'Catch']]],
-  ['tipoftheday_15',['TipOfTheDay',['../classTipOfTheDay.html',1,'']]],
-  ['token_16',['Token',['../classMaximaTokenizer_1_1Token.html',1,'MaximaTokenizer']]],
-  ['toolbar_17',['ToolBar',['../classToolBar.html',1,'']]],
-  ['tornout_18',['TornOut',['../structCellList_1_1TornOut.html',1,'CellList']]],
-  ['totals_19',['Totals',['../structCatch_1_1Totals.html',1,'Catch']]],
-  ['truck_20',['Truck',['../structTruck.html',1,'']]],
-  ['true_5fgiven_21',['true_given',['../structCatch_1_1true__given.html',1,'Catch']]]
+  ['timer_13',['Timer',['../classCatch_1_1Timer.html',1,'Catch']]],
+  ['tipoftheday_14',['TipOfTheDay',['../classTipOfTheDay.html',1,'']]],
+  ['token_15',['Token',['../classMaximaTokenizer_1_1Token.html',1,'MaximaTokenizer']]],
+  ['toolbar_16',['ToolBar',['../classToolBar.html',1,'']]],
+  ['tornout_17',['TornOut',['../structCellList_1_1TornOut.html',1,'CellList']]],
+  ['totals_18',['Totals',['../structCatch_1_1Totals.html',1,'Catch']]],
+  ['truck_19',['Truck',['../structTruck.html',1,'']]],
+  ['true_5fgiven_20',['true_given',['../structCatch_1_1true__given.html',1,'Catch']]]
 ];

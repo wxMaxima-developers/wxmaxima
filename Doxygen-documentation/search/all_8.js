@@ -19,13 +19,14 @@ var searchData=
   ['helpdir_16',['HelpDir',['../classDirstructure.html#ad67a848e54d1e40f97453a8e4279f59c',1,'Dirstructure::HelpDir() const'],['../classDirstructure.html#a566f3960bf573e37465b6a09b34eaddf',1,'Dirstructure::HelpDir(const wxString &amp;helpDir)']]],
   ['helpmenu_17',['HelpMenu',['../classwxMaxima.html#acf36a7f8cc1a859f1ff47974722b513c',1,'wxMaxima']]],
   ['hide_18',['Hide',['../classCell.html#a87f7f4583027ae2e5e5baf664d488dc2',1,'Cell::Hide()'],['../classGroupCell.html#a02dab13af6158beb628cd2bb0be34a20',1,'GroupCell::Hide()']]],
-  ['hidebrackets_19',['HideBrackets',['../classConfiguration.html#ac05473e9ab3c972d4587415e9d5611a9',1,'Configuration::HideBrackets(bool hide)'],['../classConfiguration.html#a352252421e1d5163ce20aff4cefc5a9e',1,'Configuration::HideBrackets() const']]],
+  ['hidebrackets_19',['HideBrackets',['../classConfiguration.html#a352252421e1d5163ce20aff4cefc5a9e',1,'Configuration::HideBrackets() const'],['../classConfiguration.html#ac05473e9ab3c972d4587415e9d5611a9',1,'Configuration::HideBrackets(bool hide)']]],
   ['hidetree_20',['HideTree',['../classGroupCell.html#aa79c40d6d88603e83be78a30e5ba190d',1,'GroupCell']]],
-  ['history_21',['History',['../classEditorCell_1_1History.html',1,'EditorCell::History'],['../classHistory.html',1,'History']]],
-  ['history_2ecpp_22',['History.cpp',['../History_8cpp.html',1,'']]],
-  ['history_2eh_23',['History.h',['../History_8h.html',1,'']]],
-  ['historydclick_24',['HistoryDClick',['../classwxMaxima.html#a779cec517fcd3071172c32d05e7b17af',1,'wxMaxima']]],
-  ['historyentry_25',['HistoryEntry',['../classEditorCell_1_1History_1_1HistoryEntry.html',1,'EditorCell::History']]],
-  ['htmlexportformat_26',['htmlExportFormat',['../classConfiguration.html#ae285be0c26dbdd7a86eac37c9cebdd7d',1,'Configuration']]],
-  ['htmlexportformats_27',['htmlExportFormats',['../classConfigDialogue.html#ad25b60509b8711db5f1fb118b88b2d95',1,'ConfigDialogue']]]
+  ['high_21',['High',['../classBackgroundTask.html#a217da7631d4231f559cbad8f0e7e1566a655d20c1ca69519ca647684edbb2db35',1,'BackgroundTask']]],
+  ['history_22',['History',['../classEditorCell_1_1History.html',1,'EditorCell::History'],['../classHistory.html',1,'History']]],
+  ['history_2ecpp_23',['History.cpp',['../History_8cpp.html',1,'']]],
+  ['history_2eh_24',['History.h',['../History_8h.html',1,'']]],
+  ['historydclick_25',['HistoryDClick',['../classwxMaxima.html#a779cec517fcd3071172c32d05e7b17af',1,'wxMaxima']]],
+  ['historyentry_26',['HistoryEntry',['../classEditorCell_1_1History_1_1HistoryEntry.html',1,'EditorCell::History']]],
+  ['htmlexportformat_27',['htmlExportFormat',['../classConfiguration.html#ae285be0c26dbdd7a86eac37c9cebdd7d',1,'Configuration']]],
+  ['htmlexportformats_28',['htmlExportFormats',['../classConfigDialogue.html#ad25b60509b8711db5f1fb118b88b2d95',1,'ConfigDialogue']]]
 ];

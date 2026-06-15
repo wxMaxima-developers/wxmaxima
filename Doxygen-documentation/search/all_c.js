@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['labelcell_0',['LabelCell',['../classLabelCell.html',1,'LabelCell'],['../classLabelCell.html#a00cf44447f4482f9d66e0354ca53a314',1,'LabelCell::LabelCell()']]],
+  ['labelcell_0',['LabelCell',['../classLabelCell.html#a00cf44447f4482f9d66e0354ca53a314',1,'LabelCell::LabelCell()'],['../classLabelCell.html',1,'LabelCell']]],
   ['labelcell_2ecpp_1',['LabelCell.cpp',['../LabelCell_8cpp.html',1,'']]],
   ['labelwidth_2',['LabelWidth',['../classConfiguration.html#af3b0f8fb4028e08a740f513ba164c260',1,'Configuration::LabelWidth(long labelWidth)'],['../classConfiguration.html#a77a60713054dd9d878976dd81c00f81e',1,'Configuration::LabelWidth() const']]],
   ['last_3',['last',['../classCell.html#a67b0906e71228e806a3ff42a571fe91c',1,'Cell']]],
@@ -16,7 +16,7 @@ var searchData=
   ['limitcell_2ecpp_13',['LimitCell.cpp',['../LimitCell_8cpp.html',1,'']]],
   ['limitcell_2eh_14',['LimitCell.h',['../LimitCell_8h.html',1,'']]],
   ['limitwiz_15',['LimitWiz',['../classLimitWiz.html',1,'']]],
-  ['linewidth_5fem_16',['LineWidth_em',['../classConfiguration.html#a64e1b09ee6df37c98da088eb2dee9ef1',1,'Configuration::LineWidth_em() const'],['../classConfiguration.html#abc086b1e445ed702409186f11bab5a7d',1,'Configuration::LineWidth_em(long width)']]],
+  ['linewidth_5fem_16',['LineWidth_em',['../classConfiguration.html#abc086b1e445ed702409186f11bab5a7d',1,'Configuration::LineWidth_em(long width)'],['../classConfiguration.html#a64e1b09ee6df37c98da088eb2dee9ef1',1,'Configuration::LineWidth_em() const']]],
   ['listcell_17',['ListCell',['../classListCell.html',1,'ListCell'],['../classListCell.html#a52704bfe83fedf99ec670e18f2157a9a',1,'ListCell::ListCell()']]],
   ['listcell_2ecpp_18',['ListCell.cpp',['../ListCell_8cpp.html',1,'']]],
   ['listcell_2eh_19',['ListCell.h',['../ListCell_8h.html',1,'']]],
@@ -38,10 +38,11 @@ var searchData=
   ['loadmanualanchorsfromcache_35',['LoadManualAnchorsFromCache',['../classMaximaManual.html#a8f70e3615c5761666ac92b7902cc96bc',1,'MaximaManual']]],
   ['loadmanualanchorsfromxml_36',['LoadManualAnchorsFromXML',['../classMaximaManual.html#acddcb69633df12600c39ebea000ef9c2',1,'MaximaManual']]],
   ['loadsave_37',['LoadSave',['../classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805',1,'ConfigDialogue']]],
-  ['loadsymbols_38',['LoadSymbols',['../classWorksheet.html#aaa5b37aee0c005bb6f303c7dd84c64d1',1,'Worksheet::LoadSymbols()'],['../classAutoComplete.html#a6022d262109966147cbda01d6166d2ca',1,'AutoComplete::LoadSymbols()']]],
+  ['loadsymbols_38',['LoadSymbols',['../classAutoComplete.html#a6022d262109966147cbda01d6166d2ca',1,'AutoComplete::LoadSymbols()'],['../classWorksheet.html#aaa5b37aee0c005bb6f303c7dd84c64d1',1,'Worksheet::LoadSymbols()']]],
   ['localedir_39',['LocaleDir',['../classDirstructure.html#a07774426dee2c4edafa95ce9f7465661',1,'Dirstructure']]],
   ['loggingmessagedialog_40',['LoggingMessageDialog',['../classLoggingMessageDialog.html',1,'']]],
   ['loggingmessagedialog_2eh_41',['LoggingMessageDialog.h',['../LoggingMessageDialog_8h.html',1,'']]],
-  ['longnumbercell_42',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell::LongNumberCell()'],['../classLongNumberCell.html',1,'LongNumberCell']]],
-  ['longnumbercell_2ecpp_43',['LongNumberCell.cpp',['../LongNumberCell_8cpp.html',1,'']]]
+  ['longnumbercell_42',['LongNumberCell',['../classLongNumberCell.html',1,'LongNumberCell'],['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell::LongNumberCell()']]],
+  ['longnumbercell_2ecpp_43',['LongNumberCell.cpp',['../LongNumberCell_8cpp.html',1,'']]],
+  ['low_44',['Low',['../classBackgroundTask.html#a217da7631d4231f559cbad8f0e7e1566a28d0edd045e05cf5af64e35ae0c4c6ef',1,'BackgroundTask']]]
 ];

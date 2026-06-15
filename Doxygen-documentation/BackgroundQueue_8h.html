@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>wxMaxima: src/ThreadNumberLimiter.h File Reference</title>
+<title>wxMaxima: src/BackgroundQueue.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -75,39 +75,46 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a>  </div>
-  <div class="headertitle"><div class="title">ThreadNumberLimiter.h File Reference</div></div>
+  <div class="headertitle"><div class="title">BackgroundQueue.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="classA.html">A</a> mutex that locks if we have too many background threads.  
+<p><a class="el" href="classA.html">A</a> priority work-queue thread pool for offloading work to background threads.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;mutex&gt;</code><br />
-<code>#include &lt;atomic&gt;</code><br />
+<div class="textblock"><code>#include &quot;Version.h&quot;</code><br />
 <code>#include &lt;condition_variable&gt;</code><br />
+<code>#include &lt;deque&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;mutex&gt;</code><br />
+<code>#include &lt;thread&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for ThreadNumberLimiter.h:</div>
+Include dependency graph for BackgroundQueue.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ThreadNumberLimiter_8h__incl.svg" width="334" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="BackgroundQueue_8h__incl.svg" width="100%" height="382"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="ThreadNumberLimiter_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="BackgroundQueue_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div>
-<p><a href="ThreadNumberLimiter_8h_source.html">Go to the source code of this file.</a></p>
+<p><a href="BackgroundQueue_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classThreadNumberLimiter.html">ThreadNumberLimiter</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits until more cores are available than threads are running.  <a href="classThreadNumberLimiter.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBackgroundTask.html">BackgroundTask</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> unit of work that has been handed to the <a class="el" href="classBackgroundQueue.html" title="A process-wide thread pool that runs BackgroundTasks, highest priority first.">BackgroundQueue</a>.  <a href="classBackgroundTask.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBackgroundQueue.html">BackgroundQueue</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> process-wide thread pool that runs BackgroundTasks, highest priority first.  <a href="classBackgroundQueue.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classA.html">A</a> mutex that locks if we have too many background threads. </p>
-<p>Creates a mutex that locks as long as we have more background threads than processors </p>
+<div class="textblock"><p><a class="el" href="classA.html">A</a> priority work-queue thread pool for offloading work to background threads. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
