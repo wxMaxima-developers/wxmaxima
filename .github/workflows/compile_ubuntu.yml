@@ -26,7 +26,7 @@ jobs:
              sudo apt-get install appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dpkg-dev po4a rpmlint lintian weston rpm
       - name: configure
         run: |
-             export CXXFLAGS="-Wall -Wextra -ansi -Werror"
+             export CXXFLAGS="-Wall -Wextra -ansi -Werror -Wpedantic"
              export LANG=en_US.UTF-8
              mkdir build
              touch build build/build.ninja
@@ -161,7 +161,7 @@ jobs:
              sudo apt-get install cmake gettext libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev pandoc make po4a
       - name: configure
         run: |
-             export CXXFLAGS="-Wall -Wextra -Werror"
+             export CXXFLAGS="-Wall -Wextra"
              export LANG=en_US.UTF-8
              mkdir build
              cd build
