@@ -268,6 +268,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AppendInput</b> (std:
 wxRect&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputRect</b> () const</td></tr>
 <tr class="memdesc:a824ff61ee94c2e70e0742214b62021a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine which rectangle is occupied by this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>. <br /></td></tr>
 <tr class="separator:a824ff61ee94c2e70e0742214b62021a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fdda0c9deb4de211792b1ce80e605dc"><td class="memItemLeft" align="right" valign="top">wxRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a2fdda0c9deb4de211792b1ce80e605dc">GetBracketRect</a> () const</td></tr>
+<tr class="memdesc:a2fdda0c9deb4de211792b1ce80e605dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The on-screen rectangle occupied by this cell's bracket.  <br /></td></tr>
+<tr class="separator:a2fdda0c9deb4de211792b1ce80e605dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf6ea0b67fbf108661e5232e51ee3265"><td class="memItemLeft" align="right" valign="top"><a id="aaf6ea0b67fbf108661e5232e51ee3265" name="aaf6ea0b67fbf108661e5232e51ee3265"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>Recalculate</b> () const</td></tr>
 <tr class="separator:aaf6ea0b67fbf108661e5232e51ee3265"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2054,6 +2057,34 @@ The y position used here must be in sync with the one calculated by <a class="el
 <p>Get the text set using SetAltCopyText - may be empty. </p>
 
 <p>Reimplemented in <a class="el" href="classExptCell.html#aeb4132c151e39129e060f00e010abe36">ExptCell</a>, <a class="el" href="classFunCell.html#af77eeb97d4530c40ec1972c63492086c">FunCell</a>, <a class="el" href="classLabelCell.html#aca8a0faf529a69af8daab3b2eb4c3ca8">LabelCell</a>, <a class="el" href="classSubCell.html#a23d5fd07a161460b0cec942003ab5eb4">SubCell</a>, <a class="el" href="classSubSupCell.html#a5ed98d3b6feff585931b2400c9dd8952">SubSupCell</a>, <a class="el" href="classSumCell.html#a704b100ebbfa0d778f73ddfba84519fd">SumCell</a>, and <a class="el" href="classTextCell.html#a5498f4e354479eb3ba59fd79406fecaa">TextCell</a>.</p>
+
+</div>
+</div>
+<a id="a2fdda0c9deb4de211792b1ce80e605dc" name="a2fdda0c9deb4de211792b1ce80e605dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fdda0c9deb4de211792b1ce80e605dc">&#9670;&#160;</a></span>GetBracketRect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxRect GroupCell::GetBracketRect </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The on-screen rectangle occupied by this cell's bracket. </p>
+<p>The bracket is drawn in the indentation to the <em>left</em> of the cell's content, so this rectangle does not overlap <a class="el" href="classGroupCell.html#a5ce94d5adb8176267439335240927526" title="Get the smallest rectangle this cell fits in.">GetRect()</a>. It lets the worksheet redraw (or test for a redraw of) just the bracket without touching the cell's contents. Must stay in sync with the area <a class="el" href="classGroupCell.html#a463d2e8fa2e01dcc3b225be0a8b850b5" title="Draw the bracket of this cell.">DrawBracket()</a> paints. </p>
 
 </div>
 </div>
@@ -4078,7 +4109,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
