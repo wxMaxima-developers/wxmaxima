@@ -301,7 +301,10 @@ bool Worksheet::RedrawIfRequested() {
       } else if (!m_cellPointers.m_groupCellUnderPointer) {
           found = startSearch; // pointer is within startSearch's vertical extent
       }
-      GetTree()->CellUnderPointer(found);
+      // GetTree() is null on an empty worksheet (e.g. right after startup);
+      // only then is there no cell to point at and nothing to update.
+      if (GetTree())
+          GetTree()->CellUnderPointer(found);
 
       // Make the right brackets autohide
       if ((m_configuration->HideBrackets()) &&
