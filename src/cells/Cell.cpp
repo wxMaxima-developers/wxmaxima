@@ -1055,13 +1055,17 @@ wxString Cell::RTFescape(wxString input, bool MarkDown) {
       if ((ch < 128) && (ch > 0)) {
         output += ch;
       } else {
-        if (ch < 32768) {
-          output += wxString::Format("\\u%li?", static_cast<long>(ch));
-        } else if (ch < 65536) {
-          output += wxString::Format("\\u%li?", static_cast<long>(ch) - 65536);
+        // Compare a wide enough type: where wchar_t is only 16 bits (Windows)
+        // "codepoint < 65536" would otherwise be flagged as always-true and the
+        // surrogate-pair branch as unreachable.
+        const long codepoint = static_cast<long>(ch);
+        if (codepoint < 32768) {
+          output += wxString::Format("\\u%li?", codepoint);
+        } else if (codepoint < 65536) {
+          output += wxString::Format("\\u%li?", codepoint - 65536);
         } else {
           // Surrogate pair for characters > 0xFFFF
-          unsigned int cp = static_cast<unsigned int>(ch);
+          unsigned int cp = static_cast<unsigned int>(codepoint);
           unsigned short high =
               static_cast<unsigned short>(((cp - 0x10000) >> 10) + 0xD800);
           unsigned short low =
