@@ -126,7 +126,7 @@ $(function() {
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keyword">static</span> <span class="keyword">struct </span>wxm_NSVGrasterizer* m_svgRast;</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  std::unique_ptr&lt;wxm_NSVGimage, <span class="keyword">decltype</span>(std::free)*&gt; m_svgImage{<span class="keyword">nullptr</span>, std::free};</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  wxWindow *m_window = NULL;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  [[maybe_unused]] wxWindow *m_window = NULL;</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>};</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#endif </span><span class="comment">// SVGBITMAP_H</span></div>
