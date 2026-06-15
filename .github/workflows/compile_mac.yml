@@ -68,6 +68,7 @@ jobs:
              sudo xcode-select --reset
       - name: Configure wxMaxima
         run: |
+             export CXXFLAGS="-Wall -Wextra"
              mkdir build-wxm
              cmake -S . -B build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DWXM_UNIT_TESTS=YES -DCPACK_PACKAGE_CHECKSUM=SHA512
       - name: Check Info.plist
@@ -123,6 +124,7 @@ jobs:
              set +e
       - name: configure
         run: |
+             export CXXFLAGS="-Wall -Wextra"
              mkdir ../build-wxm
              cmake -S . -B ../build-wxm -DCMAKE_INSTALL_PREFIX=.
       - name: compile
@@ -172,7 +174,7 @@ jobs:
       - name: Configure wxMaxima
         run: |
              mkdir ../build-wxm
-             export CXXFLAGS=-I/opt/local/include
+             export CXXFLAGS="-Wall -Wextra -I/opt/local/include"
              export LDFLAGS=-I/opt/local/lib
              cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DWXM_UNIT_TESTS=YES -DWXM_DISABLE_WEBVIEW=YES
       - name: Compile wxMaxima
@@ -218,4 +220,4 @@ jobs:
         run: |
              mkdir build-wxm
              cd build-wxm
-             cmake -G Xcode ..
+             cmake -G Xcode -DCMAKE_CXX_FLAGS="-Wall -Wextra" ..
