@@ -37,6 +37,8 @@
 #include <wx/radiobut.h>
 #include <wx/checkbox.h>
 #include <wx/textctrl.h>
+#include <wx/combobox.h>
+#include <wx/config.h>
 
 /*! The find+replace pane
  */
@@ -57,8 +59,17 @@ public:
 private:
   //! The storage the search strings and settings are kept in
   FindReplaceData *m_findReplaceData;
-  wxTextCtrl *m_searchText;
-  wxTextCtrl *m_replaceText;
+  //! How many past search/replace terms the dropdowns remember.
+  static constexpr int m_historyLength = 15;
+  //! Editable combo boxes: a text field plus a drop-down of recent terms.
+  wxComboBox *m_searchText;
+  wxComboBox *m_replaceText;
+  //! Fill a combo box's drop-down from the persisted history under
+  //! wxConfig key "Find/<key>".
+  void LoadHistory(wxComboBox *combo, const wxString &key);
+  //! Add a term to the front of a combo box's history (de-duplicated, capped at
+  //! m_historyLength) and persist it under wxConfig key "Find/<key>".
+  void AddToHistory(wxComboBox *combo, const wxString &key, const wxString &value);
   wxButton *m_searchButton;
   wxButton *m_replaceButton;
   wxButton *m_replaceAllButton;

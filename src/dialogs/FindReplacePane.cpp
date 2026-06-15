@@ -46,7 +46,10 @@ FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
   grid_sizer->Add(new wxStaticText(this, -1, _("Find:")),
                   wxSizerFlags().Right().Center().Border(wxALL, 5));
 
-  m_searchText = new wxTextCtrl(this, -1, data->GetFindString());
+  m_searchText = new wxComboBox(this, -1, data->GetFindString(), wxDefaultPosition,
+                                wxDefaultSize, 0, NULL, wxTE_PROCESS_ENTER);
+  LoadHistory(m_searchText, wxS("SearchHistory"));
+  m_searchText->SetValue(data->GetFindString());
   m_searchText->Connect(
                         wxEVT_TEXT, wxCommandEventHandler(FindReplacePane::OnFindStringChange),
                         NULL, this);
@@ -63,7 +66,10 @@ FindReplacePane::FindReplacePane(wxWindow *parent, FindReplaceData *data)
   grid_sizer->Add(new wxStaticText(this, -1, _("Replacement:")),
                   wxSizerFlags().Right().Center().Border(wxALL, 5));
 
-  m_replaceText = new wxTextCtrl(this, -1, data->GetReplaceString());
+  m_replaceText = new wxComboBox(this, -1, data->GetReplaceString(), wxDefaultPosition,
+                                 wxDefaultSize, 0, NULL, wxTE_PROCESS_ENTER);
+  LoadHistory(m_replaceText, wxS("ReplaceHistory"));
+  m_replaceText->SetValue(data->GetReplaceString());
   m_replaceText->Connect(
                          wxEVT_TEXT, wxCommandEventHandler(FindReplacePane::OnReplaceStringChange),
                          NULL, this);
@@ -164,6 +170,44 @@ FindReplacePane::FindReplaceData::FindReplaceData() :
 {
 }
 
+void FindReplacePane::LoadHistory(wxComboBox *combo, const wxString &key) {
+  wxConfigBase *config = wxConfig::Get();
+  long count = 0;
+  config->Read(wxS("Find/") + key + wxS("/count"), &count, 0);
+  if (count > m_historyLength)
+    count = m_historyLength;
+  for (long i = 0; i < count; i++) {
+    wxString item;
+    if (config->Read(wxString::Format(wxS("Find/%s/%ld"), key, i), &item) &&
+        !item.IsEmpty())
+      combo->Append(item);
+  }
+}
+
+void FindReplacePane::AddToHistory(wxComboBox *combo, const wxString &key,
+                                   const wxString &value) {
+  if (value.IsEmpty())
+    return;
+
+  // Move the term to the front, without duplicates, capped at m_historyLength.
+  int existing = combo->FindString(value);
+  if (existing != wxNOT_FOUND)
+    combo->Delete(existing);
+  combo->Insert(value, 0);
+  while (static_cast<int>(combo->GetCount()) > m_historyLength)
+    combo->Delete(combo->GetCount() - 1);
+  // Inserting may have cleared the text field; keep showing the current term.
+  combo->SetValue(value);
+
+  // Persist the whole list so it survives across sessions.
+  wxConfigBase *config = wxConfig::Get();
+  const long count = combo->GetCount();
+  config->Write(wxS("Find/") + key + wxS("/count"), count);
+  for (long i = 0; i < count; i++)
+    config->Write(wxString::Format(wxS("Find/%s/%ld"), key, i),
+                  combo->GetString(i));
+}
+
 void FindReplacePane::SetFocus() {
   m_searchText->SetFocus();
 }
@@ -176,6 +220,8 @@ void FindReplacePane::SetFindString(wxString strng) {
 
 void FindReplacePane::OnSearch(wxCommandEvent &event) {
   event.Skip();
+  AddToHistory(m_searchText, wxS("SearchHistory"),
+               m_findReplaceData->GetFindString());
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_NEXT);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetFlags(m_findReplaceData->GetFlags());
@@ -187,6 +233,10 @@ void FindReplacePane::OnSearch(wxCommandEvent &event) {
 
 void FindReplacePane::OnReplace(wxCommandEvent &event) {
   event.Skip();
+  AddToHistory(m_searchText, wxS("SearchHistory"),
+               m_findReplaceData->GetFindString());
+  AddToHistory(m_replaceText, wxS("ReplaceHistory"),
+               m_findReplaceData->GetReplaceString());
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_REPLACE);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetReplaceString(m_findReplaceData->GetReplaceString());
@@ -199,6 +249,10 @@ void FindReplacePane::OnReplace(wxCommandEvent &event) {
 
 void FindReplacePane::OnReplaceAll(wxCommandEvent &event) {
   event.Skip();
+  AddToHistory(m_searchText, wxS("SearchHistory"),
+               m_findReplaceData->GetFindString());
+  AddToHistory(m_replaceText, wxS("ReplaceHistory"),
+               m_findReplaceData->GetReplaceString());
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_REPLACE_ALL);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
   findEvent->SetReplaceString(m_findReplaceData->GetReplaceString());

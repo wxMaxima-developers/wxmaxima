@@ -51,6 +51,11 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
     SetPosition(m_windowPos);
   if (m_windowSize.x > 0)
     SetSize(wxSize(m_windowSize.x, GetSize().y));
+  // The dialog's height is fully determined by its contents, so vertical
+  // resizing only adds useless empty space. Pin the height (min == max) while
+  // leaving the width free, so the resize border still allows widening.
+  SetSizeHints(wxSize(GetSizer()->GetMinSize().GetWidth(), GetSize().GetHeight()),
+               wxSize(wxDefaultCoord, GetSize().GetHeight()));
   SetName("FindDialog");
   wxPersistenceManager::Get().RegisterAndRestore(this);
 
