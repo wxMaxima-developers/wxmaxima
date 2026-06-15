@@ -202,18 +202,18 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
 #else
   int imgSize = GetImageSize();
 #if wxCHECK_VERSION(3, 1, 6)
-  wxVector<wxBitmapBundle> m_imageList;
-  m_imageList.clear();
-  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_EDITING, wxART_OTHER, wxSize(imgSize, imgSize)));
-  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_MAXIMA, wxART_OTHER, wxSize(imgSize, imgSize)));
-  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_STYLES, wxART_OTHER, wxSize(imgSize, imgSize)));
-  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_DOCUMENT_EXPORT, wxART_OTHER, wxSize(imgSize, imgSize)));
-  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_OPTIONS, wxART_OTHER, wxSize(imgSize, imgSize)));
-  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxART_COPY, wxART_OTHER, wxSize(imgSize, imgSize)));
-  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_MEDIA_PLAYBACK_START, wxART_OTHER, wxSize(imgSize, imgSize)));
-  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxART_PRINT, wxART_OTHER, wxSize(imgSize, imgSize)));
-  m_imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_VIEW_REFRESH, wxART_OTHER, wxSize(imgSize, imgSize)));
-  m_notebook->SetImages(m_imageList);
+  wxVector<wxBitmapBundle> imageList;
+  imageList.clear();
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_EDITING, wxART_OTHER, wxSize(imgSize, imgSize)));
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_MAXIMA, wxART_OTHER, wxSize(imgSize, imgSize)));
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_STYLES, wxART_OTHER, wxSize(imgSize, imgSize)));
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_DOCUMENT_EXPORT, wxART_OTHER, wxSize(imgSize, imgSize)));
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_OPTIONS, wxART_OTHER, wxSize(imgSize, imgSize)));
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxART_COPY, wxART_OTHER, wxSize(imgSize, imgSize)));
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_MEDIA_PLAYBACK_START, wxART_OTHER, wxSize(imgSize, imgSize)));
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxART_PRINT, wxART_OTHER, wxSize(imgSize, imgSize)));
+  imageList.push_back(wxArtProvider::GetBitmapBundle(wxmaximaART_CONFIG_VIEW_REFRESH, wxART_OTHER, wxSize(imgSize, imgSize)));
+  m_notebook->SetImages(imageList);
 #else
   m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize, false, 0));
   m_imageList->Add(ArtProvider::GetImage(this, wxS("editing"), imgSize, EDITING_SVG_GZ,

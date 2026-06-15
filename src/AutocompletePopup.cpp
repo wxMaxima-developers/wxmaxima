@@ -96,7 +96,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
   switch (event.GetKeyCode()) {
   case WXK_TAB:
     if (m_completions.size() > 0) {
-      wxChar ch;
+      wxChar ch = 0;
       bool addChar = true;
       wxString word = m_editor->GetSelectionString();
       std::size_t index = word.Length();

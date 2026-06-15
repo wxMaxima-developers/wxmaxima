@@ -1524,7 +1524,7 @@ wxAccStatus CellAccessible::GetChildCount(int *childCount) {
     return wxACC_FAIL;
 
   int count = 0;
-  for (const Cell &cell : OnInner(m_cell))
+  for ([[maybe_unused]] const Cell &cell : OnInner(m_cell))
     ++count;
 
   *childCount = count;

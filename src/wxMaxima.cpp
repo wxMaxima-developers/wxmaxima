@@ -1701,8 +1701,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
           wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
   Connect(EventIDs::menu_insert_image, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  for(const auto &[id, name]: GetSidebarNames())
-    Connect(id, wxEVT_MENU,
+  for(const auto &[paneId, name]: GetSidebarNames())
+    Connect(paneId, wxEVT_MENU,
             wxCommandEventHandler(wxMaxima::ShowPane));
   Connect(EventIDs::menu_pane_toolbar, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
@@ -1919,11 +1919,11 @@ void wxMaxima::OnNewDemoFiles(wxCommandEvent &WXUNUSED(event))
           if(subMenuContents.size() > 11)
             {
               wxMenu *subMenu = new wxMenu();
-              for(const auto &i : subMenuContents)
+              for(const auto &demoFile : subMenuContents)
                 {
                   wxWindowID id = wxWindow::NewControlId();
-                  m_demoFilesIDs[id] = i;
-                  subMenu->Append(id, i);
+                  m_demoFilesIDs[id] = demoFile;
+                  subMenu->Append(id, demoFile);
                 }
               m_demo_sub->Append(wxWindow::NewControlId(),
                                  subMenuContents.front() + wxS("-") + subMenuContents.back(),
@@ -8513,7 +8513,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
           wxString cmd;
           if (wiz->GetValue0() != wxEmptyString)
             cmd = wiz->GetValue0() + wxS(": ");
-          long w, h;
+          long w = 0, h = 0;
           int type = wiz->GetMatrixType();
           if (!(wiz->GetValue1()).ToLong(&h) || !(wiz->GetValue2()).ToLong(&w) ||
               w <= 0 || h <= 0) {

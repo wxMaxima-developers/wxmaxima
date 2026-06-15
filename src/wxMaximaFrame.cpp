@@ -349,16 +349,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
     }
 #endif
 
-  for(const auto &[id, name]: m_sidebarNames)
+  for(const auto &[paneId, name]: m_sidebarNames)
     if(m_manager.GetPane(name).IsOk())
       m_manager.GetPane(name).
         Show(
-             (id == EventIDs::menu_pane_toolbar) ||
-             (id == EventIDs::menu_pane_console) ||
-             (id == EventIDs::menu_pane_symbols) ||
-             (id == EventIDs::menu_pane_draw) ||
-             (id == EventIDs::menu_pane_greek) ||
-             (id == EventIDs::menu_pane_structure));
+             (paneId == EventIDs::menu_pane_toolbar) ||
+             (paneId == EventIDs::menu_pane_console) ||
+             (paneId == EventIDs::menu_pane_symbols) ||
+             (paneId == EventIDs::menu_pane_draw) ||
+             (paneId == EventIDs::menu_pane_greek) ||
+             (paneId == EventIDs::menu_pane_structure));
 
   // Read the perspektive (the sidebar state and positions).
   wxConfigBase *config = wxConfig::Get();
@@ -381,7 +381,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   // LoadPerspective() loads the translations of the captions that were correct
   // when SavePerspective() was called.
   // The system's language might have changed since then.
-  for(const auto &[id, name]: m_sidebarNames)
+  for(const auto &[paneId, name]: m_sidebarNames)
     {
       wxSize minSiz;
       if(m_manager.GetPane(name).IsOk())
@@ -397,11 +397,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
           if(minSiz.y < 100 * GetContentScaleFactor())
             minSiz.y = 100 * GetContentScaleFactor();
           if(
-             (id != EventIDs::menu_pane_console) &&
-             (id != EventIDs::menu_pane_toolbar)
+             (paneId != EventIDs::menu_pane_console) &&
+             (paneId != EventIDs::menu_pane_toolbar)
              )
             m_manager.GetPane(name)
-              .Caption(m_sidebarCaption[id])
+              .Caption(m_sidebarCaption[paneId])
               .CloseButton(true)
               .Layer(0)
               .Row(1)
@@ -2181,7 +2181,7 @@ void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
     }
 }
 void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
-  for(const auto &[id, name]: m_sidebarNames)
+  for(const auto &[paneId, name]: m_sidebarNames)
     m_manager.GetPane(name).Dock();
   AuiManagerUpdate();
 }

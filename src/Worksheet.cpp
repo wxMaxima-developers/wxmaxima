@@ -1872,7 +1872,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
             }
           MaximaManual::HelpFileAnchors helpFileAnchors =
             m_maximaManual.GetHelpfileAnchors();
-          for (const auto &[cmdName, anchor] : helpFileAnchors) {
+          for (const auto &[cmdName, anchorName] : helpFileAnchors) {
             if (cmdName.Contains(" "))
               continue;
             if (cmdName.EndsWith("_"))
@@ -8606,7 +8606,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChildCount(int *childCount) {
     return wxACC_FAIL;
 
   *childCount = 0;
-  for (const auto &cell : OnList(m_worksheet->GetTree()))
+  for ([[maybe_unused]] const auto &cell : OnList(m_worksheet->GetTree()))
     (*childCount)++;
 
   (*childCount)++; // The caret is the last child
@@ -8637,7 +8637,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChild(int childId,
   } else {
     // If it's the caret
     int totalCount = 0;
-    for (const auto &c : OnList(m_worksheet->GetTree())) totalCount++;
+    for ([[maybe_unused]] const auto &c : OnList(m_worksheet->GetTree())) totalCount++;
     if (childId == totalCount + 1) {
       if (!m_caretAccessible) {
          m_caretAccessible = new CaretAccessibilityInfo(this, m_worksheet);
@@ -8688,7 +8688,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetFocus(int *childId,
 
   if (m_worksheet->HCaretActive()) {
     int totalCount = 0;
-    for (const auto &c : OnList(m_worksheet->GetTree())) totalCount++;
+    for ([[maybe_unused]] const auto &c : OnList(m_worksheet->GetTree())) totalCount++;
     if (childId)
       *childId = totalCount + 1;
     if (child) {
