@@ -1218,7 +1218,7 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
     str += wxString::Format(
                             "\n\n\\noindent\n%%%%%%%%%%%%%%%%\n%%%% "
                             "INPUT:\n\\begin{minipage}[t]{%fem}\\color{red}\\bfseries\n",
-                            static_cast<double>(m_configuration->GetLabelWidth() / 14)) +
+                            static_cast<double>(m_configuration->GetLabelWidth()) / 14.0) +
       m_inputLabel->ToTeX() + wxString("\n\\end{minipage}");
     std::setlocale(LC_NUMERIC, saved_lc_numeric.c_str());
 

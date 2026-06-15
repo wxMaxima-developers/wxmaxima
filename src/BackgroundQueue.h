@@ -109,11 +109,12 @@ public:
   //! The number of worker threads the pool runs.
   static int Workers();
 
+  BackgroundQueue(const BackgroundQueue &) = delete;
+  BackgroundQueue &operator=(const BackgroundQueue &) = delete;
+
 private:
   BackgroundQueue();
   ~BackgroundQueue();
-  BackgroundQueue(const BackgroundQueue &) = delete;
-  BackgroundQueue &operator=(const BackgroundQueue &) = delete;
 
   static BackgroundQueue &Get();
 

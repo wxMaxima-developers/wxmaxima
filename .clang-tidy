@@ -1,0 +1,44 @@
+# clang-tidy configuration for wxMaxima.
+#
+# Philosophy: keep the checks that find real bugs and real inefficiencies, and
+# leave out the ones that only enforce a particular *style* - wxMaxima follows
+# its own conventions (see CLAUDE.md), and it targets wxWidgets, whose API is
+# built on int/long and C arrays, so the "modernise everything" and
+# "narrowing conversion" checks would be almost all noise here.
+#
+# Run e.g.:
+#   cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+#   clang-tidy -p build src/BackgroundQueue.cpp
+#
+Checks: >
+  -*,
+  bugprone-*,
+  performance-*,
+  portability-*,
+  misc-*,
+  modernize-use-override,
+  modernize-use-nullptr,
+  modernize-use-emplace,
+  modernize-make-unique,
+  modernize-make-shared,
+  modernize-use-equals-default,
+  modernize-use-equals-delete,
+  modernize-use-bool-literals,
+  modernize-redundant-void-arg,
+  modernize-loop-convert,
+  modernize-deprecated-headers,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-narrowing-conversions,
+  -bugprone-implicit-widening-of-multiplication-result,
+  -misc-include-cleaner,
+  -misc-non-private-member-variables-in-classes,
+  -misc-no-recursion,
+  -misc-use-anonymous-namespace,
+  -misc-const-correctness,
+  -performance-enum-size,
+
+# Only report problems in wxMaxima's own headers, never in wx/system headers.
+HeaderFilterRegex: 'wxmaxima-antigravity/src/.*'
+# clang-tidy must not reformat: wxMaxima has its own formatting conventions.
+FormatStyle: none
+WarningsAsErrors: ''
