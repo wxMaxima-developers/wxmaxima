@@ -1877,7 +1877,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   if(GetWorksheet())
     CallAfter([this]{GetWorksheet()->SetFocus();});
   StartAutoSaveTimer();
-  MyApp::m_windowcount++;
   AuiManagerUpdate();
 }
 
@@ -2050,15 +2049,15 @@ wxMaxima::~wxMaxima() {
   if (m_fileSaved)
     RemoveTempAutosavefile();
 
-  // save the current state of the log window (shown/hidden) in the configuration.
-  if (MyApp::m_windowcount == 1) {
+  // This window is still counted among the top-level windows while its close
+  // event is being handled, so CountWindows() == 1 means it is the last
+  // wxMaxima window.
+  wxLogMessage("Window count (before closing the current window): %zu",
+               wxMaximaFrame::CountWindows());
+  if (wxMaximaFrame::CountWindows() == 1) {
+    // Save the current state of the log window (shown/hidden) and, since the
+    // last wxMaxima window is going away, dispose of the log window itself.
     wxConfig::Get()->Write("LogWindow", MyApp::m_logWindow->GetFrame()->IsShown());
-  }
-
-  wxLogMessage("Window count (before closing the current window): %d", MyApp::m_windowcount);
-  MyApp::m_windowcount--;
-  // If we deleted the last Window, delete the log Window
-  if (MyApp::m_windowcount == 0) {
     wxDELETE(MyApp::m_logWindow);
     /* On the mac wxMaxima might still run if the last window has closed.
        This means we have no log window and therefore cannot log anything without
@@ -7405,7 +7404,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_while){
     CommandWiz(_("While loop"), wxEmptyString, wxEmptyString,
-               wxS("while #1# do #2#;for #1#:#2# thru #3# step #4# do"),
+               wxS("while #1# do #2#;"),
                wxS("Condition:"), wxS("%"), wxEmptyString, wxS("What to do:"),
                wxS("disp(i)"), wxEmptyString);
   }
@@ -7703,12 +7702,12 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_stringproc_sequal){
     CommandWiz(_("Are these strings equal?"), wxEmptyString, wxEmptyString,
-               wxS("sequal(#1#);"), _("String #1:"), expr, wxEmptyString,
+               wxS("sequal(#1#, #2#);"), _("String #1:"), expr, wxEmptyString,
                _("String #2:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stringproc_sequalignore){
     CommandWiz(_("Are these strings equal if case is ignored?"), wxEmptyString,
-               wxEmptyString, wxS("sequalignore(#1#);"), _("String #1:"), expr,
+               wxEmptyString, wxS("sequalignore(#1#, #2#);"), _("String #1:"), expr,
                wxEmptyString, _("String #2:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stringproc_ascii){
@@ -7747,8 +7746,8 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
                wxS("simplode(#1#);"), _("List of chars:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stringproc_sinsert){
-    CommandWiz(_("List of char to String"), wxEmptyString, wxEmptyString,
-               wxS("simplode(#1#);"), _("New part:"), expr, wxEmptyString,
+    CommandWiz(_("Insert a string into another"), wxEmptyString, wxEmptyString,
+               wxS("sinsert(#1#, #2#, #3#);"), _("New part:"), expr, wxEmptyString,
                _("String:"), wxEmptyString, wxEmptyString, _("Position:"),
                wxS("0"), wxEmptyString);
   }
@@ -7958,7 +7957,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_opsyst_directory){
     CommandWiz(
                _("Read Directory"), wxEmptyString, wxEmptyString,
-               wxS("dierectory(#1#);"), wxS("Directory name:"), expr,
+               wxS("directory(#1#);"), wxS("Directory name:"), expr,
                _("\".\" = \"The current directory\"\n\"..\" = \"One directory up\""));
   }
 
@@ -8502,8 +8501,8 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
     wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
       if (retcode == wxID_OK) {
         wxString cmd;
-        if (wiz->GetValue1().IsEmpty())
-          cmd = wiz->GetValue1() + wxS(":");
+        if (!wiz->GetValue1().IsEmpty())
+          cmd = wiz->GetValue1() + wxS(": ");
         cmd += wxS("matrixmap(") + wiz->GetValue2() + wxS(", ") +
           wiz->GetValue3() + wxS(");");
         MenuCommand(cmd);
@@ -8549,7 +8548,9 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
     CommandWiz(
                _("Extract matrix from 2D array"),
                _("Extracts a rectangle from a 2D array and converts it to a matrix"),
-               wxEmptyString, wxS("genmatrix(#1#,#2#,#3#,#4#,#5#);"), _("Array"), expr,
+               // genmatrix(array, rowMax, colMax, rowMin, colMin): the bottom/top
+               // fields are the row range, the right/left fields the column range.
+               wxEmptyString, wxS("genmatrix(#1#,#3#,#2#,#5#,#4#);"), _("Array"), expr,
                wxEmptyString, _("Right end"), wxS("10"), wxEmptyString,
                _("Bottom end"), wxS("10"), wxEmptyString, _("Left end"), wxS("0"),
                wxEmptyString, _("Top end"), wxS("0"), wxEmptyString);
@@ -9102,7 +9103,9 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
     CommandWiz(_("Smart substitution"),
                _("ratsubst works like subst, but it knows some basic maths, if "
                  "needed."),
-               wxEmptyString, wxS("ratsubst(#2#,#1#);"), wxS("Expression"),
+               // ratsubst() takes (new, old, expr) and rejects an equation, so
+               // use lratsubst(), which accepts a (list of) equation(s).
+               wxEmptyString, wxS("lratsubst([#2#],#1#);"), wxS("Expression"),
                wxS("%"), wxEmptyString, wxS("Substituents"), wxS("x^2=u"),
                _("Comma-separated expressions"));
   }
@@ -9110,7 +9113,8 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
     CommandWiz(_("Parallel substitution"),
                _("Substitutes, but makes sure that nothing is substituted into "
                  "the other substituents."),
-               wxEmptyString, wxS("ratsubst(#2#,#1#);"), wxS("Expression"),
+               // Parallel substitution is psubst(), not ratsubst().
+               wxEmptyString, wxS("psubst([#2#],#1#);"), wxS("Expression"),
                wxS("%"), wxEmptyString, wxS("Substituents"), wxS("x^2=u,u=x^2"),
                _("Comma-separated expressions"));
   }
@@ -11773,4 +11777,3 @@ wxMaxima::VarReadFunctionHash wxMaxima::m_variableReadActions;
 wxMaxima::VarUndefinedFunctionHash wxMaxima::m_variableUndefinedActions;
 wxString wxMaxima::maxima_command_line_filename;
 wxLogWindow *MyApp::m_logWindow;
-int MyApp::m_windowcount = 0;

@@ -896,7 +896,6 @@ public:
 
 public:
   static wxLogWindow *m_logWindow; // The wxWidgets log window, we use.
-  static int m_windowcount;
 
   std::unique_ptr<wxLogChain> m_logChain;
   static std::vector<wxProcess *> m_wxMaximaProcesses;

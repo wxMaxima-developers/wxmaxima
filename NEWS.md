@@ -1,3 +1,28 @@
+# Current development version
+
+- Wizard/menu correctness review - fixed several wizards that generated faulty
+  Maxima code or didn't match what their dialog advertised:
+  - Matrix → "Map a function to a matrix": the optional result name was handled
+    with an inverted condition (name ignored when given; stray ":" when empty).
+  - "While loop": the generated command had a bogus, body-less `for` loop
+    appended to it.
+  - String → "Are these strings equal?" (`sequal`/`sequalignore`): the second
+    string was dropped, leaving a one-argument call.
+  - String → "Insert a string" (`sinsert`): generated `simplode(...)` with two
+    of its three fields dropped instead of `sinsert(new, string, position)`.
+  - "Read directory": typo `dierectory(...)` → `directory(...)`.
+  - "Extract matrix from 2D array" (`genmatrix`): the row and column ranges were
+    swapped, transposing the extracted region for non-square ranges.
+  - "Smart substitution" (`ratsubst`): emitted a two-argument `ratsubst(eq,expr)`
+    which Maxima rejects; now uses `lratsubst([eq],expr)`.
+  - "Parallel substitution": used `ratsubst` instead of `psubst`.
+
+- Fixed the Matrix → "Map a function to a matrix" wizard: its optional result
+  variable name was handled with an inverted condition, so a name that was given
+  was ignored, and leaving it empty produced a stray leading ":" (a syntax
+  error). It now stores the result under the given name when one is supplied.
+
+
 # 26.06.2
 
 - A whole AI-driven safety review 

@@ -634,7 +634,9 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
   if (realFile.Length() > 0)
     title = realFile;
 
-  size_t numberOfWindows = wxMaximaFrame::CountWindows();
+  // CountWindows() counts the wxMaxima windows that already exist; +1 for the
+  // one we are about to create, which is the number we put into its title.
+  size_t numberOfWindows = wxMaximaFrame::CountWindows() + 1;
 
   if (numberOfWindows > 1)
     title = wxString::Format(_("wxMaxima %ld"), static_cast<long>(numberOfWindows));

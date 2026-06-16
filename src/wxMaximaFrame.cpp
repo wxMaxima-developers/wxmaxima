@@ -455,7 +455,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 }
 
 std::size_t wxMaximaFrame::CountWindows() {
-  size_t numberOfWindows = 1;
+  size_t numberOfWindows = 0;
 
   wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
   while (node) {
