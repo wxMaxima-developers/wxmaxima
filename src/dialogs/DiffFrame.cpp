@@ -173,18 +173,35 @@ wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
 
 // Add a simple toolbar for synchronization controls
 wxToolBar *toolBar = CreateToolBar();
+const int idSyncHorizontal = wxWindow::NewControlId();
+const int idSyncVertical = wxWindow::NewControlId();
 #if wxCHECK_VERSION(3, 1, 6)
   wxBitmapBundle syncBmp = wxArtProvider::GetBitmapBundle(wxmaximaART_SYNC_HORIZONTAL, wxART_TOOLBAR);
-  toolBar->AddCheckTool(wxID_ANY, _("Sync Horizontal"), syncBmp, wxNullBitmap, _("Toggle horizontal scroll synchronization"));
+  toolBar->AddCheckTool(idSyncHorizontal, _("Sync Horizontal"), syncBmp, wxNullBitmap, _("Toggle horizontal scroll synchronization"));
+  // There is no dedicated "sync vertical" icon, so reuse the horizontal one
+  // rotated by 90°: a horizontal double-arrow becomes a vertical one.
+  wxBitmapBundle syncVBmp = syncBmp;
+  {
+    wxBitmap hBmp = syncBmp.GetBitmap(syncBmp.GetDefaultSize());
+    if (hBmp.IsOk()) {
+      wxImage vImg = hBmp.ConvertToImage().Rotate90();
+      if (vImg.IsOk())
+        syncVBmp = wxBitmapBundle::FromBitmap(wxBitmap(vImg));
+    }
+  }
+  toolBar->AddCheckTool(idSyncVertical, _("Sync Vertical"), syncVBmp, wxNullBitmap, _("Toggle vertical scroll synchronization"));
 #else
   // old wxWidgets version. Don't use the graphic from wxMaximaArtprovider, but a standard one (wxART_MINUS)
   // not a such nice graphics, but compiles (and we are going to require wxWidgets >= 3.2 maybe soon...
   wxBitmap syncBmp = wxArtProvider::GetBitmap(wxART_MINUS, wxART_TOOLBAR);
-  toolBar->AddCheckTool(wxID_ANY, _("Sync Horizontal"), syncBmp, wxNullBitmap, _("Toggle horizontal scroll synchronization"));
+  toolBar->AddCheckTool(idSyncHorizontal, _("Sync Horizontal"), syncBmp, wxNullBitmap, _("Toggle horizontal scroll synchronization"));
+  toolBar->AddCheckTool(idSyncVertical, _("Sync Vertical"), syncBmp, wxNullBitmap, _("Toggle vertical scroll synchronization"));
 #endif
 
-toolBar->ToggleTool(toolBar->GetToolByPos(0)->GetId(), m_syncHorizontal);
-toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnToggleHorizontalSync, this);
+toolBar->ToggleTool(idSyncHorizontal, m_syncHorizontal);
+toolBar->ToggleTool(idSyncVertical, m_syncVertical);
+toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnToggleHorizontalSync, this, idSyncHorizontal);
+toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnToggleVerticalSync, this, idSyncVertical);
 
 toolBar->AddSeparator();
 #if wxCHECK_VERSION(3, 1, 6)
@@ -279,6 +296,10 @@ void DiffFrame::OnToggleHorizontalSync(wxCommandEvent &event) {
   m_syncHorizontal = event.IsChecked();
 }
 
+void DiffFrame::OnToggleVerticalSync(wxCommandEvent &event) {
+  m_syncVertical = event.IsChecked();
+}
+
 void DiffFrame::OnSearch(wxCommandEvent &WXUNUSED(event)) {
   wxString query = m_searchCtrl->GetValue();
   if (query.IsEmpty()) {
@@ -363,6 +384,11 @@ void DiffFrame::OnScroll(wxScrollWinEvent &event) {
   }
 
   if (orientation != wxVERTICAL) { event.Skip(); return; }
+
+  // Vertical scroll synchronization can be turned off independently of the
+  // horizontal one: then let this worksheet scroll on its own and don't move
+  // the others.
+  if (!m_syncVertical) { event.Skip(); return; }
 
   // Get scroll units (pixels per scroll step)
   int ux, uy;

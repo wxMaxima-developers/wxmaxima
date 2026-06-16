@@ -36,6 +36,7 @@ public:
 private:
   void OnScroll(wxScrollWinEvent &event);
   void OnToggleHorizontalSync(wxCommandEvent &event);
+  void OnToggleVerticalSync(wxCommandEvent &event);
   void OnSearch(wxCommandEvent &event);
   void OnSearchCancel(wxCommandEvent &event);
   void OnDiffNext(wxCommandEvent &event);
@@ -50,6 +51,7 @@ private:
   int m_currentDiffIdx = -1;
   bool m_syncing = false;
   bool m_syncHorizontal = true;
+  bool m_syncVertical = true;
   bool m_searchDown = true;
 
   void LoadFiles(const wxArrayString &files);

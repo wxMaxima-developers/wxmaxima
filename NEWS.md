@@ -1,5 +1,9 @@
 # Current development version
 
+- The side-by-side diff viewer now has a second toolbar toggle that disables
+  *vertical* scroll synchronization (next to the existing one for horizontal
+  sync), so the worksheets can be scrolled up and down independently.
+
 - Fixed a worksheet being loaded twice (its contents shown duplicated) when a
   `.wxmx` file was opened by double-clicking it, seen on Windows. The initial
   file is opened from an idle handler that only cleared the pending filename
