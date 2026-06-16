@@ -9325,7 +9325,10 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_powerseries){
     CommandWiz(_("Power series"), _("Approximates a expression as a polynom"),
-               wxEmptyString, wxS("niceindices(powerseries(#1#,#2#,#3#);"),
+               // The niceindices( ... ) parenthesis has to be closed, too:
+               // the old template emitted "niceindices(powerseries(e,x,0);"
+               // which Maxima rejects with "incorrect syntax: Missing )".
+               wxEmptyString, wxS("niceindices(powerseries(#1#,#2#,#3#));"),
                _("Expression:"), expr, wxEmptyString, _("Variable:"), wxS("x"),
                wxEmptyString, _("point:"), wxS("0"), wxEmptyString);
   }

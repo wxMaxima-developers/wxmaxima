@@ -1,5 +1,9 @@
 # Current development version
 
+- Calculus → "Power series": the generated command was missing a closing
+  parenthesis ("niceindices(powerseries(e,x,0);"), which Maxima rejected with
+  "incorrect syntax: Missing )". It now emits the balanced form.
+
 - Fixed a layout regression: adding a line to an already-evaluated input cell
   (by pressing Enter or by typing enough that the line wrapped) grew the
   EditorCell past the bottom of its GroupCell's bracket, but the GroupCell
