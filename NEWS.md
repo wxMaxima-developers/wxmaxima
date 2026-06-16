@@ -1,157 +1,24 @@
-# Current development version
+# 26.06.2
 
-- Starting wxMaxima with the wrong number of files to compare (`--diff` / the
-  `wxmxdiff` command needs 2 or 3) no longer leaves the process running in the
-  background after the error dialog is closed: a startup that opens no window
-  now exits properly. The error message also mentions the `wxmxdiff` command.
-
-- Fixed the side-by-side diff viewer leaving the newly uncovered area blank
-  (until the next scroll) when its window was enlarged, seen on Windows. The
-  worksheets are now re-laid-out and repainted after the resize has been
-  applied, instead of while they were still at their old size.
-
-- The side-by-side diff viewer now falls back to matching GroupCells by their
-  content when the two files share no cell UUIDs at all. This happens when a
-  file's UUIDs were stripped by an old wxMaxima and later regenerated as
-  unrelated ones: previously the viewer matched purely by UUID and so reported
-  every cell as changed.
-
-- The side-by-side diff viewer now has a second toolbar toggle that disables
-  *vertical* scroll synchronization (next to the existing one for horizontal
-  sync), so the worksheets can be scrolled up and down independently.
-
-- Fixed a worksheet being loaded twice (its contents shown duplicated) when a
-  `.wxmx` file was opened by double-clicking it, seen on Windows. The initial
-  file is opened from an idle handler that only cleared the pending filename
-  after the open finished; because opening pumps the event loop (Maxima
-  start-up, recalculation), a re-entrant idle event could start a second open of
-  the same file. The filename is now cleared before the open begins.
-
-- Fix the table of contents showing only the selected part of a sectioning
-  cell's caption when that caption's editor had an active text selection. The
-  TOC used the selection-limited variant of the cell-to-string conversion (the
-  one meant for building Maxima commands from a selection); it now always shows
-  the full caption.
-
-- Loading images (e.g. the many frames of a gnuplot animation) no longer
-  freezes the GUI when there are more pending load/compress jobs than CPU cores,
-  and now runs through a priority work-queue thread pool: image loading (whose
-  size the worksheet layout needs) is done first, filling all worker threads,
-  before the lower-priority compression of the gnuplot source/data behind the
-  images. Previously every background job blocked the GUI thread while it waited
-  for a free core, and image loading was not prioritised over the gnuplot work.
-- When the mouse hovers in the gap *between* two GroupCells, neither cell's
-  bracket is shown now. Previously the highlighted cell flipped between the cell
-  above and the cell below the mouse on every mouse-move event, making the two
-  brackets flicker.
-- When a cell's bracket appears or disappears as the mouse moves, only the
-  narrow bracket column is repainted now instead of the whole cell, so hovering
-  over the brackets no longer forces the cell contents to be redrawn.
-- When a cell's output takes too long to lay out (the configurable layout
-  deadline fires), wxMaxima no longer *replaces* that output with the
-  "(Layout took too long and was suppressed)" placeholder. The real output is
-  now kept intact — only a placeholder is shown in its place — so it can still
-  be copied/exported and is re-laid-out automatically once the output changes.
-  This also removes a long-standing const-correctness violation: the layout
-  pass (`GroupCell::Recalculate`, a `const` method) used to destroy and rebuild
-  document content via `const_cast`; it now only writes regenerable layout cache.
-- Fix the side-by-side diff viewer (the `wxmxdiff` command / `--diff` option):
-  it parsed each compared file's cells using the application-wide configuration,
-  which in diff mode has no associated worksheet, so the cells' `GetWorksheet()`
-  returned null — an assertion failure in debug builds and a potential
-  null-pointer dereference in release builds. Each file's cells (and the
-  alignment spacer cells) now use their own worksheet's configuration.
-- Fix a fraction shown inside an exponent (e.g. `x^((a+b)/c)`) reporting too
-  small a width when its numerator or denominator consisted of more than one
-  cell: the width was computed from only the first cell of each, so the fraction
-  could overlap whatever followed it. It now measures the full numerator and
-  denominator, matching how the pieces are positioned.
+- A whole AI-driven safety review 
+- MSW only: .wxmx file contents were sometimes loaded twice
+- Many diff viewer improvements
+- Many find dialogue improvoements
+- Correced the table of contents showing only part of sections, sometimes.
+- More responsivity when loading many images.
+- Removed some visible glitches.
+- Better implementation of the layout timeout.
+- Fix layout of fractions inside exponents (e.g. `x^((a+b)/c)`).
 - Don't leave orphaned Maxima processes behind when wxMaxima is killed by a
-  signal or crashes (Unix/Linux): a `SIGTERM`/`SIGINT`/`SIGHUP` handler — and the
-  crash handler — now SIGKILL the child Maxima process group before wxMaxima
-  exits. Previously, because the cleanup only ran from wxMaxima's destructor, a
-  signal-terminated wxMaxima would leave a Maxima that was busy computing running
-  in the background, eating CPU and RAM (it only notices its closed control
-  socket when it next reads from it). On Windows, where Maxima runs under
-  maxima.bat, the existing cleanup is unchanged.
-- Fix the incremental layout pass occasionally leaving a cell with stale size or
-  position: `RecalculateIfNeeded` stopped walking the worksheet at the first
-  up-to-date cell, but cells can be marked for recalculation non-contiguously
-  (e.g. by folding/hiding sections or by asynchronous Maxima output), so a cell
-  further down could be skipped. The pass now scans on to recalculate those, too.
-- Harden the autocomplete popup against use-after-free: it now holds the editor
-  cell it completes as an auto-nulling `CellPtr`, and its key/mouse handlers
-  dismiss the popup if that editor was destroyed while the popup was open,
-  instead of dereferencing a freed cell.
-- Harden the table-of-contents sidebar against use-after-free: the cells it
-  remembers across events (the drag-and-drop source/target and the
-  right-clicked cell) are now auto-nulling `CellPtr`s instead of raw pointers,
-  so a follow-up menu or drop command that runs after the cell was deleted sees
-  an empty reference rather than dereferencing freed memory. Also fixed a
-  missing null check in `SectioningMoveOut()` (the "move section out" command)
-  that could dereference such a stale pointer, and hardened the TOC drag-start
-  handler against an out-of-range index and against walking a TOC entry whose
-  cell had already been deleted. The TOC's internal caches of section cells are
-  likewise `CellPtr`s now, so the sidebar no longer holds raw pointers to cells
-  at all.
-- Harden animation-cell timer bookkeeping against use-after-free: the cell
-  reference stored per timer id is now an auto-nulling `CellPtr` rather than a
-  raw pointer, so a timer that fires after its animation cell was destroyed
-  resolves to nothing instead of dereferencing freed memory.
-- Harden the undo/redo system against use-after-free: `TreeUndoAction` now holds
-  its references to worksheet cells (`m_start`, `m_newCellsEnd`) as auto-nulling
-  `CellPtr`s instead of raw pointers. Previously, deleting a cell that an undo
-  action still referenced left a dangling pointer that undo would dereference;
-  now such a reference reads as empty and the action degrades gracefully. Added
-  a unit-test regression guard and documented the underlying rule (long-lived
-  cell references must use `CellPtr`).
-- Fix undefined behaviour during cell construction: the `Cell` base-class
-  constructor called `ResetSize()`, which notified `m_group` - but a `GroupCell`
-  passes itself as its own group, so this invoked a `GroupCell` method on an
-  object whose derived part was not constructed yet (a downcast to a not-yet-live
-  type). Found by the new AddressSanitizer/UndefinedBehaviorSanitizer CI job. The
-  constructor now invalidates its size fields directly without notifying.
-- Remove leftover `std::cerr` debug output from `Cell::NeedsRecalculation()` that
-  flooded stderr (the recalculation-statistics counters it sat next to are kept).
-- Add a new command `wxmxdiff` (symlinked to `wxmaxima` on installation) which automatically opens in side-by-side diff comparison mode, and document it in the man pages.
-- Add automatic package verification to the test suite using Lintian (for DEB) and rpmlint (for RPM) when their respective packaging prerequisites are met.
-- Fix Lintian packaging errors and warnings: introduced proper Debian changelog formatting, configured from the `data/changelog.Debian.in` template, added a compliant debian copyright file, enforced standard directory permissions (0755), compressed man pages, and stripped binaries.
-- Fix Lintian spelling-in-binary warnings: corrected several English grammar occurrences of "allow to/allows to" in user-facing dialog tooltips and command line help strings, and added lintian overrides for the false-positive logical `or` operator `mor`.
-- Fix several RPMLINT packaging errors and warnings: introduced a dedicated, clean description file to resolve spelling and line length errors, optimized summary capitalization and punctuation, excluded standard system directories from package ownership, and replaced duplicate icon files with relative symbolic links to resolve duplication waste.
-- Add descriptive CMake status messages when packaging test prerequisites (Lintian, dpkg-deb, rpmlint, rpmbuild) are missing, informing the user compiling the program why those tests are skipped.
-- Enable the wxWidgets crash dialog with stack backtrace on Linux: the previous
-  `wxUSE_CRASHREPORT` guard was Windows-only (minidumps); switched to
-  `wxUSE_DEBUGREPORT` which is available on all platforms.
-- In non-interactive/batch mode (`--exit-on-error`), the crash dialog is
-  suppressed so that ctest can kill the process normally after a timeout: the
-  report is saved to disk and its path is printed to stderr instead.
-- Improve the randomness of the authentication token passed to Maxima via
-  `MAXIMA_AUTH_CODE`: OS entropy (`std::random_device`) is now XOR-mixed with
-  C++ PRNG output, so the token is strong whenever either source is good.
-- The layout timeout (configurable, default 5 s) now interrupts layout even
-  inside a single large object such as a huge matrix or list: cancellation
-  checks were added to the inner loops of `RecalculateList`, `BreakUpCells`,
-  `BreakLines_List`, and `MatrCell::Recalculate`, so the timeout fires promptly
-  rather than only after the slow call returns.
-- Add a "Math layout strategy" radio box to the Worksheet tab of the
-  configuration dialogue, letting users choose between "2D, whenever possible"
-  (never linearize), "2D if it fits on the page width" (default — linearize wide
-  objects), and "Prefer 1D" (always use linear notation).
-- Add a `WXM_SANITIZE` CMake option (e.g. `-DWXM_SANITIZE=address,undefined`)
-  that builds with the given compiler sanitizers, and a CI job that runs the
-  whole test suite under AddressSanitizer and UndefinedBehaviorSanitizer on
-  every push, so memory errors and undefined behaviour become test failures
-  instead of latent crashes.
-- Better undo handling
-- Resolved a few potential crashes
-- Accessibility improvements: implement `GetName()` (the primary text screen readers
-  announce) for all cell types and the worksheet; implement `GetState()` so screen
-  readers can report focusable/focused/read-only state; improve `GroupCell` descriptions
-  to reflect the actual cell type; fix `Cell::GetParent()` which was comparing an
-  uninitialized pointer; fix focus-change notifications to target the correct window.
-  Note: on Linux, wxWidgets must be compiled with `--enable-accessibility` (ATK/AT-SPI2
-  support) for any of this to take effect — the system wxWidgets package typically has
-  `wxUSE_ACCESSIBILITY=0`.
+  signal or crashes.
+- The crash dialogue now works on more systems.
+- Another layout fix.
+- Add a new command `wxmxdiff` (symlinked to `wxmaxima` on installation) which automatically opens in side-by-side diff comparison mode.
+- More preparation for packaging
+- Improve the randomness of the authentication token passed to Maxima.
+- Add a "Math layout strategy" radio box to the config.
+- Better undo handling.
+- Another try to make accessibility work.
 
 # 26.06.1
 
