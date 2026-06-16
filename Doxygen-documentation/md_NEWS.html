@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Fixed the side-by-side diff viewer leaving the newly uncovered area blank (until the next scroll) when its window was enlarged, seen on Windows. The worksheets are now re-laid-out and repainted after the resize has been applied, instead of while they were still at their old size.</li>
 <li>The side-by-side diff viewer now falls back to matching GroupCells by their content when the two files share no cell UUIDs at all. This happens when a file's UUIDs were stripped by an old <a class="el" href="classwxMaxima.html">wxMaxima</a> and later regenerated as unrelated ones: previously the viewer matched purely by UUID and so reported every cell as changed.</li>
 <li>The side-by-side diff viewer now has a second toolbar toggle that disables <em>vertical</em> scroll synchronization (next to the existing one for horizontal sync), so the worksheets can be scrolled up and down independently.</li>
 <li>Fixed a worksheet being loaded twice (its contents shown duplicated) when a <code>.wxmx</code> file was opened by double-clicking it, seen on Windows. The initial file is opened from an idle handler that only cleared the pending filename after the open finished; because opening pumps the event loop (<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> start-up, recalculation), a re-entrant idle event could start a second open of the same file. The filename is now cleared before the open begins.</li>
