@@ -278,15 +278,23 @@ toolBar->AddSeparator();
 
   Bind(wxEVT_SIZE, [this](wxSizeEvent &event) {
     event.Skip();
-    for (auto ws : m_worksheets) {
-        ws->UpdateConfigurationClientSize();
-        if (ws->GetTree()) {
-            ws->GetTree()->ResetSize_RecursivelyList();
-            ws->Recalculate();
-        }
-        ws->AdjustSize();
-        ws->Refresh();
-    }
+    // Re-layout and repaint *after* the sizer has resized the worksheets to the
+    // new size: doing it synchronously here would run while the worksheets are
+    // still at their old size (event.Skip() defers the default sizer layout),
+    // so the newly exposed area would stay blank until the next scroll (seen on
+    // Windows). The worksheets' own RequestRedraw() does not help here because
+    // the diff viewer has no idle loop servicing it.
+    CallAfter([this] {
+      for (auto ws : m_worksheets) {
+          ws->UpdateConfigurationClientSize();
+          if (ws->GetTree()) {
+              ws->GetTree()->ResetSize_RecursivelyList();
+              ws->Recalculate();
+          }
+          ws->AdjustSize();
+          ws->Refresh();
+      }
+    });
   });
 }
 
