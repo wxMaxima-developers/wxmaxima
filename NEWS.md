@@ -1,5 +1,14 @@
 # Current development version
 
+- Fixed a layout regression: adding a line to an already-evaluated input cell
+  (by pressing Enter or by typing enough that the line wrapped) grew the
+  EditorCell past the bottom of its GroupCell's bracket, but the GroupCell
+  itself did not grow until the cell was re-evaluated. Two causes: the editor's
+  cached list geometry was not invalidated when it resized (so the group kept
+  reading the old input height), and the input-height computation only counted
+  the first cell on each line, ignoring the taller editor that follows the
+  "(%i1)" prompt label.
+
 - Wizard/menu correctness review - fixed several wizards that generated faulty
   Maxima code or didn't match what their dialog advertised:
   - Matrix → "Map a function to a matrix": the optional result name was handled

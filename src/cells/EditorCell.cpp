@@ -638,6 +638,15 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
       m_center = m_charHeight / 2;
       m_height = std::max(m_height.GetOrElse(0), m_charHeight + 2 * Scale_Px(2));
 
+      // Our height/center just changed. The cached list geometry (GetHeightList(),
+      // GetCenterList(), GetMaxDrop()) of this cell and of every preceding cell on
+      // the same draw list -- e.g. the "(%i1)" prompt label that the containing
+      // GroupCell sums up to find its input height -- now has to be recomputed.
+      // Recalculate() does not go through ResetSize(), so we invalidate it here;
+      // otherwise the GroupCell keeps the old input height and does not grow when
+      // the user adds a line to an (already evaluated) input cell.
+      InvalidateListCache();
+
       m_containsChanges = false;
     }
 }

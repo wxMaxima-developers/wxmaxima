@@ -550,6 +550,14 @@ void GroupCell::RecalculateInput() const {
             max_line_height = tmp.GetHeightList();
             max_line_center = tmp.GetCenterList();
             line_height_calculated = true;
+          } else {
+            // More than one cell shares this line (e.g. the "(%i1)" prompt label
+            // followed by the input EditorCell). The line is as tall as its
+            // tallest member, so take the maximum -- otherwise a multi-line
+            // EditorCell that follows a single-line label would be ignored and
+            // the GroupCell would not grow with its input.
+            max_line_height = std::max<int>(max_line_height, tmp.GetHeightList());
+            max_line_center = std::max<int>(max_line_center, tmp.GetCenterList());
           }
           first = false;
         }
