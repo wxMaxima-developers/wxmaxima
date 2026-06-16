@@ -1,5 +1,12 @@
 # Current development version
 
+- Fixed a worksheet being loaded twice (its contents shown duplicated) when a
+  `.wxmx` file was opened by double-clicking it, seen on Windows. The initial
+  file is opened from an idle handler that only cleared the pending filename
+  after the open finished; because opening pumps the event loop (Maxima
+  start-up, recalculation), a re-entrant idle event could start a second open of
+  the same file. The filename is now cleared before the open begins.
+
 - Fix the table of contents showing only the selected part of a sectioning
   cell's caption when that caption's editor had an active text selection. The
   TOC used the selection-limited variant of the cell-to-string conversion (the

@@ -5268,8 +5268,14 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       StatusText(statusLine, false);
     } else {
       if (!m_fileToOpen.IsEmpty()) {
-        m_openInitialFileError = !OpenFile(m_fileToOpen);
+        // Clear the pending filename *before* opening it. OpenFile() can pump
+        // the event loop (Maxima startup, recalculation, …); if m_fileToOpen
+        // were still set then, a re-entrant OnIdle would open the same file a
+        // second time and the worksheet would show its contents twice. This was
+        // visible on Windows when opening a .wxmx by double-clicking it.
+        const wxString fileToOpen = m_fileToOpen;
         m_fileToOpen = wxEmptyString;
+        m_openInitialFileError = !OpenFile(fileToOpen);
         event.RequestMore();
         return;
       }
