@@ -33,15 +33,15 @@ PerformanceSidebar::PerformanceSidebar(wxWindow *parent, int ID)
   AddStat(gridSizer, _("Manual anchors (built-in):"), wxS("builtin"));
   AddStat(gridSizer, _("Manual anchors (cache):"), wxS("cache"));
   AddStat(gridSizer, _("Manual anchors (compiled):"), wxS("compiled"));
-  AddStat(gridSizer, _("Maxima processes:"), wxS("maxima"));
+  AddStat(gridSizer, _("Maxima starts:"), wxS("maxima"));
   AddStat(gridSizer, _("Font cache hits:"), wxS("font_hits"));
   AddStat(gridSizer, _("Font cache misses:"), wxS("font_misses"));
-  AddStat(gridSizer, _("Recalc: Font invalid:"), wxS("recalc_font"));
-  AddStat(gridSizer, _("Recalc: Size invalid:"), wxS("recalc_size"));
-  AddStat(gridSizer, _("Recalc: Font mismatch:"), wxS("recalc_mismatch"));
-  AddStat(gridSizer, _("Recalc: Config changed:"), wxS("recalc_config"));
-  AddStat(gridSizer, _("Recalc: Cells appended:"), wxS("recalc_appended"));
-  AddStat(gridSizer, _("Recalc: Editor dirty:"), wxS("recalc_dirty"));
+  AddStat(gridSizer, _("Recalc (Font invalid):"), wxS("recalc_font"));
+  AddStat(gridSizer, _("Recalc (Size invalid):"), wxS("recalc_size"));
+  AddStat(gridSizer, _("Recalc (Font mismatch):"), wxS("recalc_mismatch"));
+  AddStat(gridSizer, _("Recalc (Config changed):"), wxS("recalc_config"));
+  AddStat(gridSizer, _("Recalc (Cells appended):"), wxS("recalc_appended"));
+  AddStat(gridSizer, _("Recalc (Editor dirty):"), wxS("recalc_dirty"));
   AddStat(gridSizer, _("Converted to linear:"), wxS("to_linear"));
   AddStat(gridSizer, _("Converted to 2D:"), wxS("to_2d"));
 
