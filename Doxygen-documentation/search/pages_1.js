@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['a_20documentation_20page_0',['A documentation page',['../page1.html',1,'']]],
-  ['another_20page_1',['Another page',['../page2.html',1,'']]]
+  ['bug_20list_0',['Bug List',['../bug.html',1,'']]],
+  ['building_20wxmaxima_20from_20source_1',['Building wxMaxima from source',['../md_Compiling.html',1,'']]]
 ];
