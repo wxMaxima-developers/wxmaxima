@@ -127,16 +127,41 @@ SCENARIO("Diff alignment correctly identifies matches and gaps") {
     }
   }
 
-  GIVEN("UUID mismatch prevents accidental matching") {
-    std::vector<CellMatchData> s1 = {{"u1", "content", GC_TYPE_CODE}};
-    std::vector<CellMatchData> s2 = {{"u2", "content", GC_TYPE_CODE}};
+  GIVEN("UUID mismatch prevents accidental matching when UUIDs are in use") {
+    // The anchor cell shares a UUID, so the two files are recognised as using
+    // a common UUID scheme. A second cell pair then has identical content but
+    // different UUIDs and must therefore NOT be matched.
+    std::vector<CellMatchData> s1 = {{"anchor", "anchor", GC_TYPE_CODE},
+                                     {"u1", "content", GC_TYPE_CODE}};
+    std::vector<CellMatchData> s2 = {{"anchor", "anchor", GC_TYPE_CODE},
+                                     {"u2", "content", GC_TYPE_CODE}};
 
     WHEN("aligned") {
       auto alignment = Align2(s1, s2, 100); // 100% threshold
-      THEN("they are NOT matched due to different UUIDs") {
+      THEN("the anchor matches but the differing-UUID cells do not") {
+        REQUIRE(alignment.size() == 3);
+        REQUIRE(alignment[0] == std::make_pair(0, 0));
+        REQUIRE(alignment[1] == std::make_pair(1, -1));
+        REQUIRE(alignment[2] == std::make_pair(-1, 1));
+      }
+    }
+  }
+
+  GIVEN("No shared UUIDs falls back to content matching") {
+    // Both files have UUIDs, but none in common - e.g. the UUIDs were stripped
+    // by an old wxMaxima and later regenerated as unrelated ones. Matching must
+    // then fall back to the cell contents.
+    std::vector<CellMatchData> s1 = {{"old-1", "content A", GC_TYPE_CODE},
+                                     {"old-2", "content B", GC_TYPE_CODE}};
+    std::vector<CellMatchData> s2 = {{"new-1", "content A", GC_TYPE_CODE},
+                                     {"new-2", "content B", GC_TYPE_CODE}};
+
+    WHEN("aligned") {
+      auto alignment = Align2(s1, s2, 0); // exact content match
+      THEN("the cells are matched by their identical content") {
         REQUIRE(alignment.size() == 2);
-        REQUIRE(alignment[0] == std::make_pair(0, -1));
-        REQUIRE(alignment[1] == std::make_pair(-1, 0));
+        REQUIRE(alignment[0] == std::make_pair(0, 0));
+        REQUIRE(alignment[1] == std::make_pair(1, 1));
       }
     }
   }

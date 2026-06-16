@@ -1,5 +1,11 @@
 # Current development version
 
+- The side-by-side diff viewer now falls back to matching GroupCells by their
+  content when the two files share no cell UUIDs at all. This happens when a
+  file's UUIDs were stripped by an old wxMaxima and later regenerated as
+  unrelated ones: previously the viewer matched purely by UUID and so reported
+  every cell as changed.
+
 - The side-by-side diff viewer now has a second toolbar toggle that disables
   *vertical* scroll synchronization (next to the existing one for horizontal
   sync), so the worksheets can be scrolled up and down independently.

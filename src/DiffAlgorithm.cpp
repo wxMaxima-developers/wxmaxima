@@ -21,6 +21,7 @@
 #include "DiffAlgorithm.h"
 #include "levenshtein/levenshtein.h"
 #include <algorithm>
+#include <set>
 
 namespace Diff {
 
@@ -57,18 +58,38 @@ std::vector<std::pair<int, int>> Align2(const std::vector<CellMatchData>& s1,
                                         int threshold) {
     int n = s1.size();
     int m = s2.size();
-    
+
+    // We normally match cells by UUID when both sides have them. But a file can
+    // lose its UUIDs and get fresh, unrelated ones (e.g. it was edited by an old
+    // wxMaxima that dropped unknown XML attributes, then re-saved by a current
+    // one). The two files then share no UUIDs at all even though they describe
+    // the same worksheet, and UUID matching would mark everything as different.
+    // Detect that case (no UUID in common) and fall back to content matching.
+    bool useUuids = false;
+    {
+        std::set<wxString> uuids1;
+        for (const auto &c : s1)
+            if (!c.uuid.IsEmpty())
+                uuids1.insert(c.uuid);
+        for (const auto &c : s2)
+            if (!c.uuid.IsEmpty() && uuids1.count(c.uuid)) {
+                useUuids = true;
+                break;
+            }
+    }
+
     auto is_match = [&](int i, int j) {
         const auto& c1 = s1[i];
         const auto& c2 = s2[j];
-        
-        // If both have UUIDs, they MUST match for the cells to match
-        if (!c1.uuid.IsEmpty() && !c2.uuid.IsEmpty()) {
+
+        // If both have UUIDs (and the two files share some), they MUST match for
+        // the cells to match.
+        if (useUuids && !c1.uuid.IsEmpty() && !c2.uuid.IsEmpty()) {
             if (c1.uuid == c2.uuid) return true;
             // Both have UUIDs but they differ - they are different cells.
             return false;
         }
-        
+
         // Content-based fuzzy match (used if at least one cell lacks a UUID)
         if (c1.type != c2.type) return false;
         if (c1.content == c2.content) return true;
