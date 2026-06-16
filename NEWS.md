@@ -1,5 +1,10 @@
 # Current development version
 
+- Starting wxMaxima with the wrong number of files to compare (`--diff` / the
+  `wxmxdiff` command needs 2 or 3) no longer leaves the process running in the
+  background after the error dialog is closed: a startup that opens no window
+  now exits properly. The error message also mentions the `wxmxdiff` command.
+
 - Fixed the side-by-side diff viewer leaving the newly uncovered area blank
   (until the next scroll) when its window was enlarged, seen on Windows. The
   worksheets are now re-laid-out and repainted after the resize has been

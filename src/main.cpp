@@ -101,8 +101,12 @@ IMPLEMENT_WX_THEME_SUPPORT;
 wxDECLARE_APP(MyApp);
 
 int CommonMain() {
-  wxTheApp->CallOnInit();
-  wxTheApp->OnRun();
+  // Only enter the main event loop if OnInit() actually succeeded. Otherwise a
+  // startup that bails out (e.g. "wxmaxima --diff" with the wrong number of
+  // files) would open no window yet keep running forever, because we disable
+  // wxWidgets' exit-on-last-frame and rely on our own window bookkeeping.
+  if (wxTheApp->CallOnInit())
+    wxTheApp->OnRun();
   // wxConfigBase *config = wxConfig::Get();
   // config->Flush();
   // delete config;
@@ -552,7 +556,11 @@ bool MyApp::OnInit() {
       diffFrame->Show();
       windowOpened = true;
     } else {
-      wxLogError(_("The --diff option requires 2 or 3 input files."));
+      // A modal box (rather than wxLogError) so it is shown reliably even
+      // though we are about to return false and never start the event loop.
+      wxMessageBox(_("Comparing worksheets (the --diff option or the wxmxdiff "
+                     "command) needs 2 or 3 files to compare."),
+                   _("Error"), wxOK | wxICON_ERROR);
       return false;
     }
   }
