@@ -60,6 +60,8 @@ jobs:
         run: |
              export PATH=$PATH:/usr/local/opt/gettext/bin
              export HOMEBREW_NO_AUTO_UPDATE=1
+             export HOMEBREW_NO_INSTALL_CLEANUP=1
+             export HOMEBREW_NO_ANALYTICS=1
              set -e
              brew install gettext ninja pandoc wxwidgets
              set +e
@@ -78,7 +80,7 @@ jobs:
              plutil build-wxm/src/Info.plist
       - name: Compile wxMaxima
         run: |
-             cmake --build build-wxm
+             cmake --build build-wxm --parallel "$(sysctl -n hw.ncpu)"
       - name: Install wxMaxima
         run: |
              cmake --install build-wxm
@@ -89,11 +91,6 @@ jobs:
              cd ..
              cp build-wxm/*.dmg wxMaxima.dmg
              cp build-wxm/*.sha512 wxMaxima.dmg.sha512
-      - name: install
-        run: |
-             cmake --install build-wxm
-             ls -lh build-wxm/src
-             ls -lh build-wxm
       - name: Upload the dmg
         uses: actions/upload-artifact@v7
         with:
@@ -119,6 +116,8 @@ jobs:
         run: |
              export PATH=$PATH:/usr/local/opt/gettext/bin
              export HOMEBREW_NO_AUTO_UPDATE=1
+             export HOMEBREW_NO_INSTALL_CLEANUP=1
+             export HOMEBREW_NO_ANALYTICS=1
              set -e
              brew install gettext pandoc wxwidgets
              set +e
@@ -129,7 +128,7 @@ jobs:
              cmake -S . -B ../build-wxm -DCMAKE_INSTALL_PREFIX=.
       - name: compile
         run: |
-             cmake --build ../build-wxm
+             cmake --build ../build-wxm --parallel "$(sysctl -n hw.ncpu)"
       - name: Install wxMaxima
         run: |
              cmake --install ../build-wxm
@@ -163,11 +162,16 @@ jobs:
         run: |
           if test -e "/opt/local/bin"; then echo Macports already installed; else aria2c https://github.com/macports/macports-base/releases/download/v2.12.5/MacPorts-2.12.5-15-Sequoia.pkg && sudo installer -pkg MacPorts-2.12.5-15-Sequoia.pkg -target /; fi
           echo "/opt/local/bin" >> $GITHUB_PATH
+      # selfupdate re-syncs the whole ports tree and the dependencies are slow to
+      # build from source, so skip both when the cache already restored
+      # /opt/local. Bump the cache key above to force a refresh.
       - name: Update macports
+        if: steps.cache-macports.outputs.cache-hit != 'true'
         run: |
           set
           sudo port selfupdate
       - name: Install dependencies
+        if: steps.cache-macports.outputs.cache-hit != 'true'
         run: |
           sudo port install gettext ninja pandoc maxima gnuplot pkgconfig wxWidgets-3.2
           sudo port select wxWidgets wxWidgets-3.2
@@ -179,7 +183,7 @@ jobs:
              cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DWXM_UNIT_TESTS=YES -DWXM_DISABLE_WEBVIEW=YES
       - name: Compile wxMaxima
         run: |
-             cmake --build ../build-wxm
+             cmake --build ../build-wxm --parallel "$(sysctl -n hw.ncpu)"
       - name: Install wxMaxima
         run: |
              cmake --install ../build-wxm
@@ -208,6 +212,8 @@ jobs:
         run: |
              export PATH=$PATH:/usr/local/opt/gettext/bin
              export HOMEBREW_NO_AUTO_UPDATE=1
+             export HOMEBREW_NO_INSTALL_CLEANUP=1
+             export HOMEBREW_NO_ANALYTICS=1
              set -e
              brew install gettext ninja pandoc wxwidgets
              set +e

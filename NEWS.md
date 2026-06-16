@@ -1,5 +1,10 @@
 # Current development version
 
+- Fixed the side-by-side diff viewer leaving the newly uncovered area blank
+  (until the next scroll) when its window was enlarged, seen on Windows. The
+  worksheets are now re-laid-out and repainted after the resize has been
+  applied, instead of while they were still at their old size.
+
 - The side-by-side diff viewer now falls back to matching GroupCells by their
   content when the two files share no cell UUIDs at all. This happens when a
   file's UUIDs were stripped by an old wxMaxima and later regenerated as
