@@ -8810,12 +8810,16 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
                wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_list2matrix){
-    CommandWiz(_("Matrix to nested list"), wxEmptyString, wxEmptyString,
+    // apply('matrix, list-of-rows) builds a matrix from a nested list; the
+    // title used to claim the opposite direction.
+    CommandWiz(_("Nested list to matrix"), wxEmptyString, wxEmptyString,
                wxS("apply('matrix, #1#);"), _("List:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_matrix2list){
-    CommandWiz(_("Nested list to matrix"), wxEmptyString, wxEmptyString,
-               wxS("args(#1#);"), _("List:"), expr, wxEmptyString);
+    // args(matrix) returns the matrix rows as a nested list; the title used to
+    // claim the opposite direction.
+    CommandWiz(_("Matrix to nested list"), wxEmptyString, wxEmptyString,
+               wxS("args(#1#);"), _("Matrix:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_create_from_elements){
     CommandWiz(_("Create list from comma-separated elements"), wxEmptyString,
@@ -8906,9 +8910,11 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
                wxEmptyString, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_lastn){
-    CommandWiz(_("Drop the last n list elements"),
+    // rest(list, n) drops the FIRST n elements, so extracting the last n needs
+    // rest(list, length(list) - n). The old template returned the wrong slice.
+    CommandWiz(_("Extract the last n list elements"),
                _("Extract the last n elements from a list"), wxEmptyString,
-               wxS("rest(#1#,#2#);"), _("List"), expr, wxEmptyString,
+               wxS("rest(#1#,length(#1#)-#2#);"), _("List"), expr, wxEmptyString,
                _("Number of elements"), wxEmptyString, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_nth){
@@ -8927,14 +8933,19 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_list_use_actual_values){
     CommandWiz(_("Introduce a list of actual values into an equation"),
-               wxEmptyString, wxEmptyString, wxS("subst(#1#,#2#);"),
+               // The values have to be wrapped in a list; otherwise several
+               // comma-separated equations become the subst(new,old,expr) form
+               // and are not substituted.
+               wxEmptyString, wxEmptyString, wxS("subst([#1#],#2#);"),
                _("List with values"), wxEmptyString,
                _("Comma-separated list entry in the format val1=1,val2=2"),
                _("Equation"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_list_extract_value){
     CommandWiz(_("Extract a variable's value from a list of variable values"),
-               wxEmptyString, wxEmptyString, wxS("subst(#1#,#2#);"), _("List"),
+               // The list of values has to be bracketed so all of them are used
+               // (a bare comma-separated list is misread as subst(new,old,expr)).
+               wxEmptyString, wxEmptyString, wxS("subst([#1#],#2#);"), _("List"),
                expr,
                _("Comma-separated list entry in the format val1=1,val2=2"),
                _("Variable name"), wxEmptyString, wxEmptyString);

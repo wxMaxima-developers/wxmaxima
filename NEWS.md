@@ -1,5 +1,16 @@
 # Current development version
 
+- List menu correctness fixes:
+  - "Nested list to matrix" / "Matrix to nested list": the two dialog titles
+    were swapped relative to what the commands (and menu entries) actually do.
+  - "Extract the last n elements": used `rest(list,n)`, which drops the *first*
+    n elements; now uses `rest(list,length(list)-n)`. Its title also wrongly
+    read "Drop the last n list elements".
+  - "Introduce a list of actual values into an equation" and "Extract a
+    variable's value from a list": the comma-separated value list was passed to
+    `subst()` unbracketed, so with more than one value Maxima read it as the
+    `subst(new,old,expr)` form and substituted nothing. Now bracketed.
+
 - Calculus → "Power series": the generated command was missing a closing
   parenthesis ("niceindices(powerseries(e,x,0);"), which Maxima rejected with
   "incorrect syntax: Missing )". It now emits the balanced form.
