@@ -16,6 +16,17 @@
   - "Smart substitution" (`ratsubst`): emitted a two-argument `ratsubst(eq,expr)`
     which Maxima rejects; now uses `lratsubst([eq],expr)`.
   - "Parallel substitution": used `ratsubst` instead of `psubst`.
+  - "Substitute" (`subst`), "Recursive substitution" (`fullratsubst`) and
+    "Value at a given point" (`at`): with several comma-separated equations the
+    generated call lost all but the first substitution (and `at` errored out),
+    because the equations were not wrapped in a list. They are now bracketed.
+  - "Substitute only in specific parts" (`substinpart`): the dialog defaulted
+    both the replacement and the part numbers to equations and claimed the
+    indices selected independent terms. The indices actually form a `part()`
+    path; the defaults and description were corrected.
+  - Statistics → "Linear Regression": the wizard was titled "Multivariate linear
+    regression" but calls `simple_linear_regression`, a single-predictor fit.
+  - Statistics → "Boxplot": the dialog was mistitled "Plot as error bars".
 
 - Fixed the Matrix → "Map a function to a matrix" wizard: its optional result
   variable name was handled with an inverted condition, so a name that was given

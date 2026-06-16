@@ -9095,7 +9095,10 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
     CommandWiz(
                _("Substitute"),
                _("Subst is a better string-search-and-replace for expressions."),
-               wxEmptyString, wxS("subst(#2#,#1#);"), wxS("Expression"), wxS("%"),
+               // subst() accepts a (list of) equation(s). Without the list
+               // brackets several comma-separated equations would be misread as
+               // the subst(new,old,expr) form instead of being substituted.
+               wxEmptyString, wxS("subst([#2#],#1#);"), wxS("Expression"), wxS("%"),
                wxEmptyString, wxS("Substituents"), wxS("x^2=u"),
                _("Comma-separated expressions"));
   }
@@ -9122,7 +9125,10 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
     CommandWiz(_("Recursive substitution"),
                _("Substitutes up to lrats_max_iter times, or until the "
                  "expression stops changing when substituting."),
-               wxEmptyString, wxS("fullratsubst(#2#,#1#);"), wxS("Expression"),
+               // fullratsubst() needs the equation(s) wrapped in a list;
+               // otherwise comma-separated equations become the (new,old,expr)
+               // form and all but the first are silently ignored.
+               wxEmptyString, wxS("fullratsubst([#2#],#1#);"), wxS("Expression"),
                wxS("%"), wxEmptyString, wxS("Substituents"), wxS("x^2=u"),
                _("Comma-separated expressions"));
   }
@@ -9131,19 +9137,25 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
                _("Value at a given point"),
                _("Substitutes, but makes sure that if substituting t=0 in diff(x,t) "
                  "the result isn't 0 (as t no more changes), but %at(diff(x,t),t=0)."),
-               wxEmptyString, wxS("at(#1#,#2#);"), wxS("Expression"), wxS("%"),
-               wxEmptyString, wxS("Substituents"), wxS("x^2=u"),
+               // at() expects exactly two arguments: the expression and a
+               // (list of) equation(s). Several comma-separated equations have
+               // to be wrapped in a list or at() errors out.
+               wxEmptyString, wxS("at(#1#,[#2#]);"), wxS("Expression"), wxS("%"),
+               wxEmptyString, wxS("Substituents"), wxS("x=0"),
                _("Comma-separated expressions"));
   }
   else if(event.GetId() == EventIDs::menu_substinpart){
-    CommandWiz(_("Substitute only in specific parts"),
-               _("Substitutes, but only in the n_1th, n_2th and so on term of "
-                 "the equation."),
+    CommandWiz(_("Substitute only in a specific part"),
+               _("Replaces the subexpression that part(expr, n_1, n_2, ...) "
+                 "would select by a new value. The part numbers form a path: "
+                 "n_1 selects a part of the expression, n_2 a part of that, and "
+                 "so on."),
                wxEmptyString, wxS("substinpart(#2#,#1#,#3#);"),
-               wxS("Expression"), wxS("%"), wxEmptyString, wxS("Substituents"),
-               wxS("x^2=u,u=x^2"), _("Comma-separated expressions"),
-               wxS("Term numbers"), wxS("x^2=u,u=x^2"),
-               _("Comma-separated numbers of the terms to substitute in"));
+               wxS("Expression"), wxS("%"), wxEmptyString, wxS("New value"),
+               wxS("z"), _("The expression to substitute in"),
+               wxS("Part path"), wxS("1"),
+               _("Comma-separated part numbers selecting the subexpression to "
+                 "replace (as in part())"));
   }
   else if(event.GetId() == EventIDs::menu_opsubst){
       wxString cmd;
@@ -9962,7 +9974,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &event) {
                wxS("wxbarsplot(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stats_boxplot){
-    CommandWiz(_("Plot as error bars"), wxEmptyString, wxEmptyString,
+    CommandWiz(_("Boxplot"), wxEmptyString, wxEmptyString,
                wxS("wxboxplot(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stats_piechart){
@@ -10001,7 +10013,9 @@ void wxMaxima::StatsMenu(wxCommandEvent &event) {
                wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stats_linreg){
-    CommandWiz(_("Multivariate linear regression"), wxEmptyString,
+    CommandWiz(_("Simple linear regression"), wxEmptyString,
+               // simple_linear_regression() fits a single predictor (a list of
+               // x/y pairs), not a multivariate model.
                wxEmptyString, wxS("simple_linear_regression(#1#);"), _("Data:"),
                expr, wxEmptyString);
   }
