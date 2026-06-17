@@ -891,8 +891,8 @@ public:
   void OnFileMenu(wxCommandEvent &ev);
 
 #ifdef __WXMAC__
-  void MacNewFile();
-  void MacOpenFile(const wxString &file);
+  void MacNewFile() override;
+  void MacOpenFile(const wxString &file) override;
 #endif // __WXMAC__
 
 public:
