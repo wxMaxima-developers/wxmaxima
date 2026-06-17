@@ -604,8 +604,8 @@ $(function() {
 <div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>  <span class="keywordtype">void</span> OnFileMenu(wxCommandEvent &amp;ev);</div>
 <div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span> </div>
 <div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span><span class="preprocessor">#ifdef __WXMAC__</span></div>
-<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>  <span class="keywordtype">void</span> MacNewFile();</div>
-<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>  <span class="keywordtype">void</span> MacOpenFile(<span class="keyword">const</span> wxString &amp;file);</div>
+<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>  <span class="keywordtype">void</span> MacNewFile() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>  <span class="keywordtype">void</span> MacOpenFile(<span class="keyword">const</span> wxString &amp;file) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span><span class="preprocessor">#endif </span><span class="comment">// __WXMAC__</span></div>
 <div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span> </div>
 <div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span><span class="keyword">public</span>:</div>
