@@ -341,6 +341,21 @@ if(WXM_FUZZ)
     endforeach()
 endif()
 
+# ---------------------------------------------------------------------------
+# Object library that lets unit tests (test/unit_tests, built with
+# -DWXM_UNIT_TESTS=ON) link the *real* application code -- GroupCell,
+# EditorCell, Worksheet, Configuration, ... -- instead of the lightweight stubs
+# in TestStubs.cpp. Needed for tests that exercise the layout/recalculation
+# pipeline. main.cpp is excluded (it holds the app's real main(); the test
+# provides its own). Mirrors the wxmFuzzApp object library above.
+# ---------------------------------------------------------------------------
+if(WXM_UNIT_TESTS)
+    set(TEST_APP_SOURCES ${SOURCE_FILES})
+    list(REMOVE_ITEM TEST_APP_SOURCES main.cpp)
+    add_library(wxmTestApp OBJECT ${TEST_APP_SOURCES})
+    target_compile_features(wxmTestApp PUBLIC cxx_std_20)
+endif()
+
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_BINARY_DIR}/Version.h)
 
 if(APPLE)

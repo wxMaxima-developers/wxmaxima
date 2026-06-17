@@ -307,3 +307,13 @@ if(WXM_FUZZ AND TARGET wxmFuzzApp)
         add_dependencies(wxmFuzzApp ${_wxm_gen_deps})
     endif()
 endif()
+
+# The unit-test object library (test/unit_tests, built with -DWXM_UNIT_TESTS=ON)
+# likewise compiles the same sources as wxmaxima and needs the same bin2h-
+# generated headers.
+if(WXM_UNIT_TESTS AND TARGET wxmTestApp)
+    get_target_property(_wxm_gen_deps wxmaxima MANUALLY_ADDED_DEPENDENCIES)
+    if(_wxm_gen_deps)
+        add_dependencies(wxmTestApp ${_wxm_gen_deps})
+    endif()
+endif()

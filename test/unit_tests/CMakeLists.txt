@@ -32,3 +32,17 @@ add_test(AFontSize test_AFontSize)
 add_executable(test_DiffAlgorithm test_DiffAlgorithm.cpp)
 target_link_libraries(test_DiffAlgorithm PRIVATE ${wxWidgets_LIBRARIES})
 add_test(DiffAlgorithm test_DiffAlgorithm)
+
+# Layout/recalculation regression test. Unlike the tests above (which stub out
+# GroupCell via TestStubs.cpp), this links the real application code through the
+# wxmTestApp object library so it can exercise the genuine GroupCell/EditorCell
+# recalculation pipeline.
+if(TARGET wxmTestApp)
+    add_executable(test_GroupCellLayout
+        test_GroupCellLayout.cpp groupcell_test_stubs.cpp
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_GroupCellLayout PUBLIC cxx_std_20)
+    target_link_libraries(test_GroupCellLayout PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(GroupCellLayout test_GroupCellLayout)
+endif()
