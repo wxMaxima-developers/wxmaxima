@@ -70,6 +70,8 @@ Image::Image(Configuration *config, const wxMemoryBuffer &image, const wxString 
   // That works, if the image is a usual image format (png, jpeg, ...). For "svgz" (and "svg") we must first convert them
   // image with wxBitmapBundle::FromSVG (if wxWidgets is new enough) and then load the image.
   // (Implemented now, but it does not work - why? Was my assumption false? If so, the commit can be reverted...)
+
+  wxLogMessage(_("Image of type %s found."), type); // should output the type for every loaded image. However, I can't see any log message. Why?
   if (m_compressedImage.GetDataLen() > 0) {
 #if wxCHECK_VERSION(3, 1, 6)
     if (type == wxS("svgz")) {
@@ -94,7 +96,7 @@ Image::Image(Configuration *config, const wxMemoryBuffer &image, const wxString 
                                   m_compressedImage.GetDataLen());
       Image.LoadFile(istream);
 #endif
-    // Image.IsOk() is no true for svgz files too (wxWidgets >= 3.1.6). Before it was not. However, the SVG is still not displayed in WXM files... Strange!
+    // Image.IsOk() is now true for svgz files too (wxWidgets >= 3.1.6). Before it was not. However, the SVG is still not displayed in WXM files... Strange!
     if(Image.IsOk())
     {
       m_originalWidth = Image.GetWidth();
