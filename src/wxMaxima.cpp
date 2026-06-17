@@ -8327,7 +8327,7 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_matrix_col_list){
     CommandWiz(_("Extract a matrix column as a list"), wxEmptyString,
                wxEmptyString, wxS("transpose(#1#)[#2#];"), _("Matrix:"), expr,
-               wxEmptyString, _("Row number:"), wxEmptyString, wxEmptyString);
+               wxEmptyString, _("Column number:"), wxEmptyString, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_submatrix_columns){
     CommandWiz(_("Remove matrix columns"), wxEmptyString, wxEmptyString,
@@ -8404,9 +8404,11 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
                wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_matrix_dgesv){
+    // dgesv(A, b) solves A*x=b. The old template emitted "dgesv(A,true,true)",
+    // dropping the b matrix the dialog asks for and passing two bogus args.
     CommandWiz(_("Solve A*x=b numerically"), wxEmptyString, wxEmptyString,
-               wxS("dgesv(#1#,true,true)"), _("m×n Matrix A:"), expr,
-               wxEmptyString, _("1×n Matrix b:"), wxEmptyString, wxEmptyString);
+               wxS("dgesv(#1#,#2#)"), _("m×n Matrix A:"), expr,
+               wxEmptyString, _("n×1 Matrix b:"), wxEmptyString, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_matrix_dgesvd){
     CommandWiz(_("Calculate Singular Value Decomposition, left and right "
@@ -8442,24 +8444,26 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event) {
                _("Matrix"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_matrix_zlange_max){
+    // The z* LAPACK routines are the complex-matrix versions; these used to
+    // emit dlange() (the real version), duplicating the dlange_* menu items.
     CommandWiz(_("Find the maximum absolute value of a matrix entry"),
-               wxEmptyString, wxEmptyString, wxS("dlange('max,#1#)"),
+               wxEmptyString, wxEmptyString, wxS("zlange('max,#1#)"),
                _("Matrix"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_matrix_zlange_one){
     CommandWiz(
                _("Find the maximum sum of the absolute values of a matrix column"),
-               wxEmptyString, wxEmptyString, wxS("dlange('one_norm,#1#)"), _("Matrix"),
+               wxEmptyString, wxEmptyString, wxS("zlange('one_norm,#1#)"), _("Matrix"),
                expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_matrix_zlange_inf){
     CommandWiz(_("Find the maximum sum of the absolute values of a matrix row"),
-               wxEmptyString, wxEmptyString, wxS("dlange('inf_norm,#1#)"),
+               wxEmptyString, wxEmptyString, wxS("zlange('inf_norm,#1#)"),
                _("Matrix"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_matrix_zlange_frobenius){
     CommandWiz(_("Calculate the root of the sum of squares of matrix entries"),
-               wxEmptyString, wxEmptyString, wxS("dlange('frobenius,#1#)"),
+               wxEmptyString, wxEmptyString, wxS("zlange('frobenius,#1#)"),
                _("Matrix"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_matrix_zheev){

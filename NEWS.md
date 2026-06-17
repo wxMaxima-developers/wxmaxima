@@ -1,5 +1,14 @@
 # Current development version
 
+- Matrix → LAPACK menu correctness fixes:
+  - The complex-matrix norm items ("zlange") emitted `dlange()` (the real
+    version), making them silent duplicates of the real-matrix items; they now
+    emit `zlange()`.
+  - "Solve A*x=b numerically" (`dgesv`) emitted `dgesv(A,true,true)`, dropping
+    the b matrix the dialog collects and passing two bogus arguments; it now
+    emits `dgesv(A,b)`.
+  - "Extract a matrix column as a list" labelled its index field "Row number".
+
 - List menu correctness fixes:
   - "Nested list to matrix" / "Matrix to nested list": the two dialog titles
     were swapped relative to what the commands (and menu entries) actually do.
