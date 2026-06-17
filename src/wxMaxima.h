@@ -890,9 +890,10 @@ public:
 
   void OnFileMenu(wxCommandEvent &ev);
 
-  virtual void MacNewFile();
-
-  virtual void MacOpenFile(const wxString &file);
+#ifdef __WXMAC__
+  void MacNewFile();
+  void MacOpenFile(const wxString &file);
+#endif // __WXMAC__
 
 public:
   static wxLogWindow *m_logWindow; // The wxWidgets log window, we use.

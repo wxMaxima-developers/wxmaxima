@@ -806,7 +806,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev) {
   }
 }
 
-
+#ifdef __WXMAC__
 void MyApp::MacNewFile() {
   const wxWindow *frame = GetTopWindow();
   if (frame == NULL)
@@ -814,6 +814,7 @@ void MyApp::MacNewFile() {
 }
 
 void MyApp::MacOpenFile(const wxString &file) { NewWindow(file); }
+#endif // __WXMAC__
 
 #ifdef USE_QA
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT
