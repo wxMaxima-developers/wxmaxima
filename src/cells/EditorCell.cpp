@@ -3516,25 +3516,16 @@ bool EditorCell::FindNext(wxString str, const bool &down,
             return false;
         }
     } else {
-      // We are at the start of a match, but the search expression has changed
-      if (SelectionStart() > 0) {
-        if (down)
-          start = SelectionLeft() + 1;
-        else
-          {
-            if(SelectionRight() > 0)
-              start = SelectionRight() - 1;
-            else
-              start = 0;
-          }
-        if((start >= m_text.Length()))
-          return false;
-      } else {
-        if (down)
-          start = SelectionLeft();
-        else
-          start = SelectionRight();
-      }
+      // The search expression itself changed -- e.g. the user typed another
+      // character into the find box. Re-test the search *at* the current match
+      // (not one position past it) so that, when the now longer (or shorter)
+      // expression still matches where the current match is, the selection is
+      // simply extended/contracted in place instead of jumping to the next
+      // match further down the worksheet.
+      if (down)
+        start = SelectionLeft();
+      else
+        start = SelectionRight();
     }
   } else { // Inactive cell => try to make sure we start at a sane position
     if (down) {

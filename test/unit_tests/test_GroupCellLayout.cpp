@@ -65,6 +65,7 @@ namespace {
 wxBitmap *g_bmp = nullptr;
 wxMemoryDC *g_dc = nullptr;
 Configuration *g_cfg = nullptr;
+Worksheet *g_ws = nullptr;
 } // namespace
 
 // wxGTK routes font/DC work through GTK, which needs an X display. When run via
@@ -127,6 +128,42 @@ SCENARIO("Adding a line to an already-laid-out input cell grows its GroupCell") 
   }
 }
 
+SCENARIO("Incremental search extends the current match in place") {
+  // When a forward search already highlights a match and the user types another
+  // character that the SAME match still satisfies, the highlight must just grow
+  // by that character -- it must not skip ahead to the next match. The text has
+  // two "foob" occurrences so a regression (advancing past the current match)
+  // is observable as a jump to the second one.
+  GIVEN("an active editor whose text contains two 'foob' matches") {
+    // The first match starts at index 3 (not 0) so the regression -- advancing
+    // one char past the current match -- is observable: the buggy code skipped
+    // to the second "foob" at index 10.
+    GroupCell group(g_cfg, GC_TYPE_CODE, wxS("ab foobar foobat"));
+    EditorCell *editor = group.GetEditable();
+    REQUIRE(editor != nullptr);
+    g_ws->SetActiveCell(editor);
+    // Anchor the search at the top of the cell, as Worksheet::FindIncremental
+    // does (it moves the caret back to where the search started before each
+    // incremental lookup).
+    editor->SetSelection(0, 0);
+
+    WHEN("'foo' is searched and then extended to 'foob'") {
+      REQUIRE(editor->FindNext(wxS("foo"), /*down=*/true, /*ignoreCase=*/false));
+      REQUIRE(editor->SelectionLeft() == 3);
+      REQUIRE(editor->GetSelectionString() == wxS("foo"));
+
+      const bool found =
+        editor->FindNext(wxS("foob"), /*down=*/true, /*ignoreCase=*/false);
+
+      THEN("the first match is extended, not skipped to the second one") {
+        REQUIRE(found);
+        REQUIRE(editor->SelectionLeft() == 3);
+        REQUIRE(editor->GetSelectionString() == wxS("foob"));
+      }
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
@@ -145,9 +182,9 @@ int main(int argc, char **argv) {
   g_cfg = new Configuration(g_dc);
   g_cfg->SetZoomFactor(1.0);
   auto *frame = new wxFrame(nullptr, wxID_ANY, wxS("test"));
-  auto *ws = new Worksheet(frame, wxID_ANY, g_cfg, wxDefaultPosition,
-                           wxDefaultSize, /*reactToEvents=*/false);
-  g_cfg->SetWorkSheet(ws);
+  g_ws = new Worksheet(frame, wxID_ANY, g_cfg, wxDefaultPosition,
+                       wxDefaultSize, /*reactToEvents=*/false);
+  g_cfg->SetWorkSheet(g_ws);
 
   const int result = Catch::Session().run(argc, argv);
 

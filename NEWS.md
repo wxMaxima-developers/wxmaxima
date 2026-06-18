@@ -1,5 +1,9 @@
 # Current development version
 
+- Incremental find: typing another character into the search box now extends the
+  highlight on the current match when that match still satisfies the longer
+  search string, instead of immediately jumping to the next match.
+
 - Matrix → LAPACK menu correctness fixes:
   - The complex-matrix norm items ("zlange") emitted `dlange()` (the real
     version), making them silent duplicates of the real-matrix items; they now
