@@ -17,6 +17,7 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/xmlpatterngen.sh.in" xmlpatterngen.s
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxMathML.sh.in" check-wxMathML.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-xml-validity.sh.in" check-xml-validity.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxmx-validity.sh.in" check-wxmx-validity.sh)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wizard-commands.sh.in" check-wizard-commands.sh)
 
 # Create a headless wrapper script
 set(WXM_TEST_WRAPPER "${CMAKE_CURRENT_BINARY_DIR}/run_headless.sh")
@@ -155,6 +156,15 @@ add_test(
 add_test(
     NAME check-wxMathML.lisp_1
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "1+1;" "<math><lbl altCopy=\"%o1\">(%o1) </lbl><mn>2</mn></math>"
+)
+
+# Syntax-check every wizard/menu command template (the "#n#" CommandWiz rules in
+# src/wxMaxima.cpp) through Maxima's parser, so a malformed generated command --
+# e.g. an unbalanced parenthesis -- fails the build instead of only being found
+# by a user.
+add_test(
+    NAME check-wizard-commands
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wizard-commands.sh"
 )
 
 add_test(

@@ -1,0 +1,51 @@
+#!/bin/sh
+# Syntax-checks every wizard/menu command template that wxMaxima builds from a
+# "#n#" placeholder string (the CommandWiz "commandRule" arguments in
+# src/wxMaxima.cpp). Each template is filled with dummy operands (#1# -> g1, ...)
+# and handed to Maxima's parser via parse_string(): unlike evaluation, parsing
+# does not choke on the placeholder default values, but it still rejects
+# malformed syntax such as an unbalanced parenthesis -- exactly the class of bug
+# that shipped as "niceindices(powerseries(e,x,0);" (missing ")").
+#
+# Limitation: only templates contained in a single wxS("...") literal are
+# checked (the vast majority). Templates assembled from several concatenated
+# string literals are skipped.
+
+set -eu
+
+SRC="@CMAKE_SOURCE_DIR@/src/wxMaxima.cpp"
+MAXIMA="@MAXIMA@"
+
+WORK="$(mktemp -d)"
+trap 'rm -rf "$WORK"' EXIT
+
+# Extract the unique command templates that contain a #n# placeholder.
+grep -oE 'wxS\("[^"]*#[0-9]#[^"]*"\)' "$SRC" \
+  | sed 's/^wxS("//; s/")$//' | sort -u > "$WORK/templates.txt"
+
+if [ ! -s "$WORK/templates.txt" ]; then
+  echo "Failure: no wizard command templates found in $SRC" >&2
+  exit 1
+fi
+
+{
+  echo 'load("stringproc")$'
+  echo 'fails:[]$'
+  echo 'ck(s):=if length(errcatch(parse_string(s)))=0 then fails:cons(s,fails)$'
+  # Substitute #10#..#1# (two-digit first) with dummy symbols g10..g1, drop a
+  # trailing ;/$ statement terminator, and emit one check per template.
+  awk '{c=$0; for(i=10;i>=1;i--){gsub("#"i"#","g"i,c)} sub(/[;$]+$/,"",c);
+        printf "ck(\"%s\")$\n", c}' "$WORK/templates.txt"
+  echo 'print("WIZARDCHECK_FAILS", fails)$'
+} > "$WORK/check.mac"
+
+RESULT="$("$MAXIMA" --very-quiet < "$WORK/check.mac" 2>&1 | grep "WIZARDCHECK_FAILS" || true)"
+
+if echo "$RESULT" | grep -q 'WIZARDCHECK_FAILS \[\]'; then
+  echo "Success: all $(wc -l < "$WORK/templates.txt") wizard command templates parse."
+  exit 0
+fi
+
+echo "Failure: a wizard command template does not parse (Maxima rejected it):" >&2
+echo "$RESULT" >&2
+exit 1
