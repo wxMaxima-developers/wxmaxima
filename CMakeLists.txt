@@ -44,7 +44,7 @@ else()
         set(WXMAXIMA_VERSION "${PROJECT_VERSION}-dev")
 endif()
 
-# Set a CACHE variable - make it overrideable via command line.
+# Set a CACHE variable - make it overridable via command line.
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The target C++ standard. wxMaxima requires C++20 or higher.")
 if(CMAKE_CXX_STANDARD LESS 20)
     message(FATAL_ERROR "At least C++20 is required to build wxMaxima.")

@@ -182,7 +182,7 @@ without wxWebView. In that case
 cmake -S . -B ../build-wxm -DWXM_DISABLE_WEBVIEW=on
 ```
 
-might allow cmake to find wxWidgets at the cost of loosing the integrated
+might allow cmake to find wxWidgets at the cost of losing the integrated
 dockable help browser.
 
 

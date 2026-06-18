@@ -90,7 +90,7 @@
 - MSW only: .wxmx file contents were sometimes loaded twice
 - Many diff viewer improvements
 - Many find dialogue improvoements
-- Correced the table of contents showing only part of sections, sometimes.
+- Corrected the table of contents showing only part of sections, sometimes.
 - More responsivity when loading many images.
 - Removed some visible glitches.
 - Better implementation of the layout timeout.
@@ -234,7 +234,7 @@
 - Fix subscripts of greek letters (#2045).
 - Fix the "Numerical solutions of polynomial" (with and without bigfloats) wizards.
   The allroots() and bfallroots() functions use only one argument, not two.
-- Save the chosen invertion status in the configuration. Fixes issue #2049.
+- Save the chosen inversion status in the configuration. Fixes issue #2049.
 - Try to highlight input text that coincides with selected output text.
 - diff() now doesn't add a ",1" if only the 1st derivate is meant.
 - A more consistent worksheet zoom feature.
