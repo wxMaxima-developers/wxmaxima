@@ -72,10 +72,22 @@ private:
   wxCoord m_forcedHeight;
 };
 
+int DiffFrame::CurrentScrollY(size_t idx) const {
+  if (idx >= m_worksheets.size())
+    return 0;
+  int x, y, ux, uy;
+  m_worksheets[idx]->GetViewStart(&x, &y);
+  m_worksheets[idx]->GetScrollPixelsPerUnit(&ux, &uy);
+  return y * uy;
+}
+
 void DiffFrame::OnDiffNext(wxCommandEvent &WXUNUSED(event)) {
   int startIdx = m_currentDiffIdx + 1;
   if (!m_worksheets.empty()) {
-      int y_top = m_lastScrollY[0];
+      // Read the live scroll position: the mouse wheel/touchpad does not update
+      // m_lastScrollY, so relying on the cache made "next difference" jump from
+      // a stale viewport after a wheel scroll.
+      int y_top = CurrentScrollY(0);
       int y_bottom = y_top + m_worksheets[0]->GetClientSize().y;
       
       bool currentVisible = false;
@@ -122,7 +134,9 @@ void DiffFrame::OnDiffNext(wxCommandEvent &WXUNUSED(event)) {
 void DiffFrame::OnDiffPrev(wxCommandEvent &WXUNUSED(event)) {
   int startIdx = m_currentDiffIdx - 1;
   if (!m_worksheets.empty()) {
-      int y_top = m_lastScrollY[0];
+      // Read the live scroll position (see OnDiffNext) -- the wheel/touchpad
+      // does not refresh m_lastScrollY.
+      int y_top = CurrentScrollY(0);
       int y_bottom = y_top + m_worksheets[0]->GetClientSize().y;
       
       bool currentVisible = false;
@@ -263,6 +277,20 @@ toolBar->AddSeparator();
     // Bind horizontal scroll events
     ws->Bind(wxEVT_SCROLLWIN_THUMBTRACK, &DiffFrame::OnScroll, this);
     ws->Bind(wxEVT_SCROLLWIN_THUMBRELEASE, &DiffFrame::OnScroll, this);
+
+    // The mouse wheel / touchpad does not emit wxEVT_SCROLLWIN_* on all
+    // platforms (notably Windows), so the scrollbar-only bindings above miss
+    // it and the panes stop following each other. Catch the wheel directly:
+    // let the worksheet scroll, then sync the others to its new position once
+    // the scroll has actually been applied.
+    ws->Bind(wxEVT_MOUSEWHEEL, [this, i](wxMouseEvent &ev) {
+      ev.Skip();
+      const int idx = static_cast<int>(i);
+      CallAfter([this, idx] {
+        if (idx < static_cast<int>(m_worksheets.size()))
+          SyncScrollFrom(idx, CurrentScrollY(static_cast<size_t>(idx)));
+      });
+    });
   }
 
   topSizer->Add(mainSizer, 1, wxEXPAND);
@@ -276,29 +304,34 @@ toolBar->AddSeparator();
     ws->Recalculate();
   }
 
+  m_resizeTimer.SetOwner(this);
+  Bind(wxEVT_TIMER, [this](wxTimerEvent &) { RelayoutWorksheets(); });
   Bind(wxEVT_SIZE, [this](wxSizeEvent &event) {
     event.Skip();
-    // Re-layout and repaint *after* the sizer has resized the worksheets to the
-    // new size: doing it synchronously here would run while the worksheets are
-    // still at their old size (event.Skip() defers the default sizer layout),
-    // so the newly exposed area would stay blank until the next scroll (seen on
-    // Windows). The worksheets' own RequestRedraw() does not help here because
-    // the diff viewer has no idle loop servicing it.
-    CallAfter([this] {
-      for (auto ws : m_worksheets) {
-          ws->UpdateConfigurationClientSize();
-          if (ws->GetTree()) {
-              ws->GetTree()->ResetSize_RecursivelyList();
-              ws->Recalculate();
-          }
-          ws->AdjustSize();
-          ws->Refresh();
-      }
-    });
+    // A drag-resize fires a burst of size events; re-laying out every cell of
+    // every worksheet on each one is O(cells) and made big worksheets feel
+    // quadratic. Debounce: restart a short timer and relayout once, after the
+    // resize settles. Using a timer (rather than CallAfter per event) both
+    // coalesces the burst and still fires without an idle loop, and runs after
+    // the sizer has resized the worksheets, so the newly exposed area is not
+    // left blank (seen on Windows).
+    m_resizeTimer.StartOnce(40);
   });
 }
 
 DiffFrame::~DiffFrame() {}
+
+void DiffFrame::RelayoutWorksheets() {
+  for (auto ws : m_worksheets) {
+    ws->UpdateConfigurationClientSize();
+    if (ws->GetTree()) {
+      ws->GetTree()->ResetSize_RecursivelyList();
+      ws->Recalculate();
+    }
+    ws->AdjustSize();
+    ws->Refresh();
+  }
+}
 
 void DiffFrame::OnToggleHorizontalSync(wxCommandEvent &event) {
   m_syncHorizontal = event.IsChecked();
@@ -434,10 +467,19 @@ void DiffFrame::OnScroll(wxScrollWinEvent &event) {
   y_new_src_units = std::max(0, std::min(y_new_src_units, max_y_units_src));
 
   int y_new_src = y_new_src_units * uy;
+  SyncScrollFrom(src_idx, y_new_src);
+  event.Skip();
+}
+
+void DiffFrame::SyncScrollFrom(int src_idx, int y_new_src) {
+  if (m_syncing) return;
+  if (!m_syncVertical) return;
+  if (src_idx < 0 || src_idx >= static_cast<int>(m_worksheets.size())) return;
+  Worksheet *ws_src = m_worksheets[src_idx];
   int y_old_src = m_lastScrollY[src_idx];
   
   // If position hasn't changed, nothing to do
-  if (y_new_src == y_old_src) { event.Skip(); return; }
+  if (y_new_src == y_old_src) return;
 
   // Scrolling direction:
   // moving_down_doc = true if we are moving the viewport DOWN (seeing things further in the doc)
@@ -534,7 +576,6 @@ void DiffFrame::OnScroll(wxScrollWinEvent &event) {
   }
 
   m_syncing = false;
-  event.Skip(); // Allow the original worksheet to complete its scroll
 }
 
 static std::unique_ptr<GroupCell> LoadTree(const wxString &file, Configuration *config) {

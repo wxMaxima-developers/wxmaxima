@@ -1,5 +1,13 @@
 # Current development version
 
+- Diff viewer: resizing the window is no longer sluggish on large worksheets --
+  the full re-layout that ran on every intermediate size during a drag is now
+  debounced and runs once, after the resize settles.
+- Diff viewer: the mouse wheel / touchpad now keeps the panes synchronized (it
+  previously only synced when the scrollbar was dragged), and "Next/Previous
+  difference" use the live scroll position so they no longer mis-jump after a
+  wheel scroll.
+
 - Incremental find: typing another character into the search box now extends the
   highlight on the current match when that match still satisfies the longer
   search string, instead of immediately jumping to the next match.

@@ -42,6 +42,15 @@ private:
   void OnDiffNext(wxCommandEvent &event);
   void OnDiffPrev(wxCommandEvent &event);
 
+  //! The current vertical scroll offset (in pixels) of worksheet @p idx, read
+  //! live from the worksheet rather than from the m_lastScrollY cache (which is
+  //! only refreshed by scrollbar events, not by the mouse wheel/touchpad).
+  int CurrentScrollY(size_t idx) const;
+  //! Synchronizes the other worksheets to worksheet @p src_idx, whose viewport
+  //! top is now at @p y_new_src pixels. Shared by the scrollbar handler
+  //! (OnScroll) and the mouse-wheel handler.
+  void SyncScrollFrom(int src_idx, int y_new_src);
+
   std::vector<Worksheet *> m_worksheets;
   std::vector<std::unique_ptr<Configuration>> m_worksheetConfigurations;
   Configuration *m_configuration;
@@ -62,6 +71,14 @@ private:
   };
   std::vector<DiffEntry> m_diffEntries;
   std::vector<int> m_lastScrollY;
+
+  //! Debounces the expensive relayout done on window resize: a drag produces a
+  //! burst of size events and re-laying out every cell of every worksheet on
+  //! each one made resizing a big worksheet feel quadratic. The timer is
+  //! restarted on every size event and relays out once, after the resize
+  //! settles. (See the wxEVT_SIZE handler.)
+  wxTimer m_resizeTimer;
+  void RelayoutWorksheets();
 };
 
 #endif // DIFFFRAME_H
