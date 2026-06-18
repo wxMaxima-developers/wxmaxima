@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Incremental find: typing another character into the search box now extends the highlight on the current match when that match still satisfies the longer search string, instead of immediately jumping to the next match.</li>
 <li>Matrix → LAPACK menu correctness fixes:<ul>
 <li>The complex-matrix norm items ("zlange") emitted <code>dlange()</code> (the real version), making them silent duplicates of the real-matrix items; they now emit <code>zlange()</code>.</li>
 <li>"Solve A*x=b numerically" (<code>dgesv</code>) emitted <code>dgesv(A,true,true)</code>, dropping the b matrix the dialog collects and passing two bogus arguments; it now emits <code>dgesv(A,b)</code>.</li>
