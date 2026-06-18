@@ -6992,7 +6992,14 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
     GetWorksheet()->OutputChanged();
   }
   GetWorksheet()->RequestRedraw();
-  CallAfter([this]{GetWorksheet()->SetFocus();});
+  // Most edit-menu commands should return the keyboard focus to the worksheet.
+  // The Find/Replace command (Ctrl+F) is the exception: it just showed the
+  // non-modal find dialog and gave *it* the focus, so re-focusing the worksheet
+  // here -- via a CallAfter that runs after the dialog has already been focused
+  // -- would immediately steal the focus back before the user can type into the
+  // dialog (seen on Windows).
+  if (event.GetId() != wxID_FIND)
+    CallAfter([this]{GetWorksheet()->SetFocus();});
 }
 
 void wxMaxima::OnFind(wxFindDialogEvent &event) {

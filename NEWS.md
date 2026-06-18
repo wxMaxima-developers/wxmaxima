@@ -1,5 +1,10 @@
 # Current development version
 
+- Windows: pressing Ctrl+F now keeps the keyboard focus in the find dialog. The
+  edit menu re-focused the worksheet via a deferred call that ran after the
+  dialog had been focused, stealing the focus back before anything could be
+  typed.
+
 - Diff viewer: resizing the window is no longer sluggish on large worksheets --
   the full re-layout that ran on every intermediate size during a drag is now
   debounced and runs once, after the resize settles.
