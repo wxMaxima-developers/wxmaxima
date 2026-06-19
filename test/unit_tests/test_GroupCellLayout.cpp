@@ -49,6 +49,7 @@
 
 #include "Configuration.h"
 #include "Worksheet.h"
+#include "cells/CellList.h"
 #include "cells/GroupCell.h"
 #include "cells/EditorCell.h"
 
@@ -159,6 +160,44 @@ SCENARIO("Incremental search extends the current match in place") {
         REQUIRE(found);
         REQUIRE(editor->SelectionLeft() == 3);
         REQUIRE(editor->GetSelectionString() == wxS("foob"));
+      }
+    }
+  }
+}
+
+SCENARIO("Growing a cell pushes the cell below it further down") {
+  // The visible symptom of the GroupCell-grow bug was that, when a cell gained a
+  // line, the cells below it did not move down and ended up overlapping. Build
+  // two stacked code cells and check that growing the first one repositions the
+  // second.
+  auto cell1 = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("a:1$"));
+  GroupCell *c1 = cell1.get();
+  GroupCell *c2 = nullptr;
+  {
+    auto cell2 = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("b:2$"));
+    c2 = cell2.get();
+    CellList::AppendCell(c1, std::move(cell2)); // link c1 -> c2 (c1 owns c2)
+  }
+
+  GIVEN("two stacked, laid-out code cells") {
+    c1->RecalculateList(g_cfg->GetDefaultFontSize());
+    c1->UpdateYPositionList();
+    const int c2yBefore = c2->GetCurrentPoint().y;
+    REQUIRE(c2yBefore > c1->GetCurrentPoint().y); // c2 sits below c1
+
+    WHEN("the first cell's input gains a line") {
+      EditorCell *editor = c1->GetEditable();
+      REQUIRE(editor != nullptr);
+      editor->SetSelection(0, 0);
+      wxKeyEvent ev(wxEVT_CHAR);
+      ev.m_keyCode = WXK_RETURN;
+      ev.m_uniChar = WXK_RETURN;
+      editor->ProcessEvent(ev);
+      editor->Recalculate(g_cfg->GetDefaultFontSize());
+      c1->InputHeightChanged();
+
+      THEN("the second cell has moved further down (no overlap)") {
+        REQUIRE(c2->GetCurrentPoint().y > c2yBefore);
       }
     }
   }
