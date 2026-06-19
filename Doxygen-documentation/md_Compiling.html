@@ -145,7 +145,7 @@ Documentation of the source</h2>
 wxWidgets isn't found</h2>
 <p>CMake has currently (Feb 2022) problems finding a wxWidgets that was compiled using CMake. If that is the reason maybe wxWidgets was compiled without wxWebView. In that case</p>
 <div class="fragment"><div class="line">cmake -S . -B ../build-wxm -DWXM_DISABLE_WEBVIEW=on</div>
-</div><!-- fragment --><p>might allow cmake to find wxWidgets at the cost of loosing the integrated dockable help browser.</p>
+</div><!-- fragment --><p>might allow cmake to find wxWidgets at the cost of losing the integrated dockable help browser.</p>
 <h2><a class="anchor" id="autotoc_md27"></a>
 wxWidgets without QA component</h2>
 <p>One can use the option <code>-DWXM_DISABLE_QA=on</code> to disable that library, if necessary. Reported in <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/2064">issue #2064</a>.</p>
