@@ -79,6 +79,11 @@ private:
   //! settles. (See the wxEVT_SIZE handler.)
   wxTimer m_resizeTimer;
   void RelayoutWorksheets();
+  //! The client width the worksheets were last laid out for. Cell line-wrapping
+  //! only depends on the width, so RelayoutWorksheets() can skip the expensive
+  //! full re-layout when the width has not changed -- which collapses the burst
+  //! of same-width size events a window emits while it is being shown.
+  int m_lastLayoutWidth = -1;
 };
 
 #endif // DIFFFRAME_H

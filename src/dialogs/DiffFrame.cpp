@@ -299,11 +299,6 @@ toolBar->AddSeparator();
   // Align cells between files and populate the worksheets
   AlignCells();
   
-  for (auto ws : m_worksheets) {
-    ws->UpdateConfigurationClientSize();
-    ws->Recalculate();
-  }
-
   m_resizeTimer.SetOwner(this);
   Bind(wxEVT_TIMER, [this](wxTimerEvent &) { RelayoutWorksheets(); });
   Bind(wxEVT_SIZE, [this](wxSizeEvent &event) {
@@ -317,11 +312,34 @@ toolBar->AddSeparator();
     // left blank (seen on Windows).
     m_resizeTimer.StartOnce(40);
   });
+
+  // Lay the worksheets out exactly once, after the frame has been shown and
+  // sized. AlignCells() already recalculated the individual cells (to measure
+  // their heights), and showing the frame fires a wxEVT_SIZE that runs
+  // RelayoutWorksheets() at the real client size. Doing an extra full
+  // Recalculate() here, at the default pre-show size, is wasted work that the
+  // first resize immediately throws away -- it was making the diff viewer
+  // recalculate the whole worksheet several times during startup. This timer is
+  // a belt-and-braces trigger in case no size event arrives.
+  m_resizeTimer.StartOnce(40);
 }
 
 DiffFrame::~DiffFrame() {}
 
 void DiffFrame::RelayoutWorksheets() {
+  if (m_worksheets.empty())
+    return;
+  // Cell line-wrapping (and hence the whole layout) only changes when the
+  // available width changes. A shown/resized window emits several size events
+  // that often share the same width (height-only changes, scrollbar appearing,
+  // ...); re-running ResetSize_RecursivelyList()+Recalculate() for each of them
+  // is wasted work that re-touched every cell (and re-queried every font). Skip
+  // it unless the width actually changed.
+  const int width = m_worksheets[0]->GetClientSize().x;
+  if (width == m_lastLayoutWidth)
+    return;
+  m_lastLayoutWidth = width;
+
   for (auto ws : m_worksheets) {
     ws->UpdateConfigurationClientSize();
     if (ws->GetTree()) {
