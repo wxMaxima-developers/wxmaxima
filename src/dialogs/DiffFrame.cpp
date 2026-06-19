@@ -493,7 +493,6 @@ void DiffFrame::SyncScrollFrom(int src_idx, int y_new_src) {
   if (m_syncing) return;
   if (!m_syncVertical) return;
   if (src_idx < 0 || src_idx >= static_cast<int>(m_worksheets.size())) return;
-  Worksheet *ws_src = m_worksheets[src_idx];
   int y_old_src = m_lastScrollY[src_idx];
   
   // If position hasn't changed, nothing to do
@@ -509,8 +508,6 @@ void DiffFrame::SyncScrollFrom(int src_idx, int y_new_src) {
   
   // Ensure all worksheets have updated their cell positions
   for (auto ws : m_worksheets) ws->RecalculateIfNeeded();
-
-  int view_h = ws_src->GetClientSize().y;
 
   if (moving_down_doc) {
       /* 
@@ -548,33 +545,34 @@ void DiffFrame::SyncScrollFrom(int src_idx, int y_new_src) {
           }
       }
   } else if (moving_up_doc) {
-      /* 
+      /*
        * When scrolling UP the document (cells move DOWN on screen):
-       * We align based on the BOTTOM of the last completely visible cell.
-       * If the cell bottom in the scrolled worksheet is LOWER on the screen 
-       * than in others, we scroll the others UP to match.
+       * Mirror of the moving_down case. The previous implementation anchored on
+       * the BOTTOM of the last visible cell, which did not keep the panes in
+       * sync when scrolling up. Anchor on the TOP of the first diff cell at/below
+       * the viewport top (the same, working, anchor the down case uses) and pull
+       * the other worksheets UP to line their matching cell up with it.
        */
-      int last_idx = -1;
-      for (int i = (int)m_diffEntries.size() - 1; i >= 0; --i) {
+      int first_idx = -1;
+      for (size_t i = 0; i < m_diffEntries.size(); ++i) {
           GroupCell* cell = m_diffEntries[i].cells[src_idx];
-          // Check if cell bottom is within viewport
-          if (cell && cell->GetRect().y + cell->GetHeight() <= y_new_src + view_h) {
-              last_idx = i;
+          if (cell && cell->GetRect().y >= y_new_src) {
+              first_idx = (int)i;
               break;
           }
       }
-      
-      if (last_idx != -1) {
-          // v_bottom = distance from viewport top to cell bottom
-          int v_bottom = (m_diffEntries[last_idx].cells[src_idx]->GetRect().y + m_diffEntries[last_idx].cells[src_idx]->GetHeight()) - y_new_src;
+
+      if (first_idx != -1) {
+          int v_top = m_diffEntries[first_idx].cells[src_idx]->GetRect().y - y_new_src;
           for (size_t j = 0; j < m_worksheets.size(); ++j) {
               if (j == (size_t)src_idx) continue;
-              GroupCell* cell_other = m_diffEntries[last_idx].cells[j];
+              GroupCell* cell_other = m_diffEntries[first_idx].cells[j];
               if (cell_other) {
-                  int v_other = (cell_other->GetRect().y + cell_other->GetHeight()) - m_lastScrollY[j];
-                  // If src cell bottom is further from top (v_bottom > v_other), push other up
-                  if (v_bottom > v_other) {
-                      int y_new_other = std::max(0, (cell_other->GetRect().y + cell_other->GetHeight()) - v_bottom);
+                  int v_other = cell_other->GetRect().y - m_lastScrollY[j];
+                  // If the src cell sits lower on screen than the other's match,
+                  // pull the other worksheet up to align them.
+                  if (v_top > v_other) {
+                      int y_new_other = std::max(0, cell_other->GetRect().y - v_top);
                       int _, uy_other;
                       m_worksheets[j]->GetScrollPixelsPerUnit(&_, &uy_other);
                       m_worksheets[j]->Scroll(-1, y_new_other / uy_other);
