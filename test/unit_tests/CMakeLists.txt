@@ -33,6 +33,12 @@ add_executable(test_DiffAlgorithm test_DiffAlgorithm.cpp)
 target_link_libraries(test_DiffAlgorithm PRIVATE ${wxWidgets_LIBRARIES})
 add_test(DiffAlgorithm test_DiffAlgorithm)
 
+# The diff viewer's scroll-sync geometry is GUI-free (see dialogs/DiffScrollSync),
+# so it is tested directly, without the heavy wxmTestApp object library.
+add_executable(test_DiffScrollSync test_DiffScrollSync.cpp)
+target_link_libraries(test_DiffScrollSync PRIVATE ${wxWidgets_LIBRARIES})
+add_test(DiffScrollSync test_DiffScrollSync)
+
 # Layout/recalculation regression test. Unlike the tests above (which stub out
 # GroupCell via TestStubs.cpp), this links the real application code through the
 # wxmTestApp object library so it can exercise the genuine GroupCell/EditorCell

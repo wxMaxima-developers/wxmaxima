@@ -12,6 +12,9 @@
   previously only synced when the scrollbar was dragged), and "Next/Previous
   difference" use the live scroll position so they no longer mis-jump after a
   wheel scroll.
+- Diff viewer: scrolling *up* now keeps the panes synchronized. The upward-scroll
+  case anchored on the bottom of the last visible cell instead of mirroring the
+  (working) downward case, so the other pane did not follow.
 
 - Incremental find: typing another character into the search box now extends the
   highlight on the current match when that match still satisfies the longer

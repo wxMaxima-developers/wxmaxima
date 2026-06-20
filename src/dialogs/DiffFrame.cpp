@@ -20,6 +20,7 @@
 
 #include "DiffFrame.h"
 #include "DiffAlgorithm.h"
+#include "DiffScrollSync.h"
 #include "WXMformat.h"
 #include "MathParser.h"
 #include "cells/CellList.h"
@@ -498,88 +499,35 @@ void DiffFrame::SyncScrollFrom(int src_idx, int y_new_src) {
   // If position hasn't changed, nothing to do
   if (y_new_src == y_old_src) return;
 
-  // Scrolling direction:
-  // moving_down_doc = true if we are moving the viewport DOWN (seeing things further in the doc)
-  // This makes the cells move UP on the screen.
-  bool moving_down_doc = y_new_src > y_old_src;
-  bool moving_up_doc = y_new_src < y_old_src;
-
   m_syncing = true;
-  
+
   // Ensure all worksheets have updated their cell positions
   for (auto ws : m_worksheets) ws->RecalculateIfNeeded();
 
-  if (moving_down_doc) {
-      /* 
-       * When scrolling DOWN the document (cells move UP on screen):
-       * We align based on the TOP of the first completely visible cell.
-       * If the cell in the scrolled worksheet is HIGHER on the screen than 
-       * its matching cell in others, we scroll the others DOWN to match.
-       */
-      int first_idx = -1;
-      for (size_t i = 0; i < m_diffEntries.size(); ++i) {
-          GroupCell* cell = m_diffEntries[i].cells[src_idx];
-          // Check if cell top is within viewport
-          if (cell && cell->GetRect().y >= y_new_src) {
-              first_idx = (int)i;
-              break;
-          }
-      }
-      
-      if (first_idx != -1) {
-          // v_top = distance from viewport top to cell top
-          int v_top = m_diffEntries[first_idx].cells[src_idx]->GetRect().y - y_new_src;
-          for (size_t j = 0; j < m_worksheets.size(); ++j) {
-              if (j == (size_t)src_idx) continue;
-              GroupCell* cell_other = m_diffEntries[first_idx].cells[j];
-              if (cell_other) {
-                  int v_other = cell_other->GetRect().y - m_lastScrollY[j];
-                  // If src cell is closer to the top (v_top < v_other), push other down
-                  if (v_top < v_other) {
-                      int y_new_other = std::max(0, cell_other->GetRect().y - v_top);
-                      int _, uy_other;
-                      m_worksheets[j]->GetScrollPixelsPerUnit(&_, &uy_other);
-                      m_worksheets[j]->Scroll(-1, y_new_other / uy_other);
-                  }
-              }
-          }
-      }
-  } else if (moving_up_doc) {
-      /*
-       * When scrolling UP the document (cells move DOWN on screen):
-       * Mirror of the moving_down case. The previous implementation anchored on
-       * the BOTTOM of the last visible cell, which did not keep the panes in
-       * sync when scrolling up. Anchor on the TOP of the first diff cell at/below
-       * the viewport top (the same, working, anchor the down case uses) and pull
-       * the other worksheets UP to line their matching cell up with it.
-       */
-      int first_idx = -1;
-      for (size_t i = 0; i < m_diffEntries.size(); ++i) {
-          GroupCell* cell = m_diffEntries[i].cells[src_idx];
-          if (cell && cell->GetRect().y >= y_new_src) {
-              first_idx = (int)i;
-              break;
-          }
-      }
+  // Collect the per-diff-entry top coordinates of the source worksheet's cells.
+  std::vector<int> srcTops(m_diffEntries.size());
+  for (size_t k = 0; k < m_diffEntries.size(); ++k) {
+    GroupCell *cell = m_diffEntries[k].cells[src_idx];
+    srcTops[k] = cell ? cell->GetRect().y : DIFFSYNC_NO_CELL;
+  }
 
-      if (first_idx != -1) {
-          int v_top = m_diffEntries[first_idx].cells[src_idx]->GetRect().y - y_new_src;
-          for (size_t j = 0; j < m_worksheets.size(); ++j) {
-              if (j == (size_t)src_idx) continue;
-              GroupCell* cell_other = m_diffEntries[first_idx].cells[j];
-              if (cell_other) {
-                  int v_other = cell_other->GetRect().y - m_lastScrollY[j];
-                  // If the src cell sits lower on screen than the other's match,
-                  // pull the other worksheet up to align them.
-                  if (v_top > v_other) {
-                      int y_new_other = std::max(0, cell_other->GetRect().y - v_top);
-                      int _, uy_other;
-                      m_worksheets[j]->GetScrollPixelsPerUnit(&_, &uy_other);
-                      m_worksheets[j]->Scroll(-1, y_new_other / uy_other);
-                  }
-              }
-          }
-      }
+  // Scroll every other worksheet to keep it aligned with the source. A single
+  // top-anchored rule handles both scroll directions; the geometry lives in the
+  // GUI-free, unit-tested ComputeSyncedScrollY() (see DiffScrollSync.h).
+  for (size_t j = 0; j < m_worksheets.size(); ++j) {
+    if (j == static_cast<size_t>(src_idx)) continue;
+    std::vector<int> otherTops(m_diffEntries.size());
+    for (size_t k = 0; k < m_diffEntries.size(); ++k) {
+      GroupCell *cell = m_diffEntries[k].cells[j];
+      otherTops[k] = cell ? cell->GetRect().y : DIFFSYNC_NO_CELL;
+    }
+    const int target = ComputeSyncedScrollY(srcTops, otherTops, y_new_src);
+    if (target != DIFFSYNC_NO_CELL) {
+      int ux_other, uy_other;
+      m_worksheets[j]->GetScrollPixelsPerUnit(&ux_other, &uy_other);
+      if (uy_other > 0)
+        m_worksheets[j]->Scroll(-1, target / uy_other);
+    }
   }
 
   // Finalize: Record the actual scroll positions of all worksheets

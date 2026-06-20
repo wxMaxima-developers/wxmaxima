@@ -117,6 +117,7 @@ set(DIALOG_SOURCE_FILES
     MaximaNotStartingDialog.cpp
     BinaryNameCtrl.cpp
     DiffFrame.cpp
+    DiffScrollSync.cpp
 )
 list(TRANSFORM DIALOG_SOURCE_FILES PREPEND dialogs/)
 
