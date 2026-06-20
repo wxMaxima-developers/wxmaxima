@@ -243,9 +243,20 @@ SCENARIO("Redo with nothing to redo does not crash") {
 static void ApplyRandomOp(EditorCell *e, std::mt19937 &rng) {
   static const wxString chars =
     wxS("ab cd()[]{}\"\\_+-*/^=:;,.123\n\t");
-  std::uniform_int_distribution<int> opDist(0, 12);
+  std::uniform_int_distribution<int> opDist(0, 17);
   std::uniform_int_distribution<int> boolDist(0, 1);
   auto flip = [&] { return boolDist(rng) != 0; };
+  // A short random string (possibly with newlines/brackets) for the bulk-edit
+  // operations.
+  auto randomSnippet = [&] {
+    std::uniform_int_distribution<size_t> cDist(0, chars.Length() - 1);
+    std::uniform_int_distribution<int> lenDist(0, 6);
+    wxString s;
+    int n = lenDist(rng);
+    for (int i = 0; i < n; ++i)
+      s += chars[cDist(rng)];
+    return s;
+  };
 
   switch (opDist(rng)) {
   case 0:
@@ -290,6 +301,31 @@ static void ApplyRandomOp(EditorCell *e, std::mt19937 &rng) {
   case 12:
     SendKey(e, WXK_TAB, flip());
     break;
+  case 13:
+    // Paste-like bulk insertion at the caret (PasteFromClipboard funnels through
+    // InsertText, minus the clipboard which is unreliable headless).
+    e->InsertText(randomSnippet());
+    break;
+  case 14: {
+    // Replace every occurrence of a short fragment. oldString comes from the
+    // alphabet so it sometimes actually matches.
+    std::uniform_int_distribution<size_t> cDist(0, chars.Length() - 1);
+    e->ReplaceAll(chars[cDist(rng)], randomSnippet(), flip());
+    break;
+  }
+  case 15:
+    // Replace the current selection (only acts if oldStr matches the selection).
+    e->ReplaceSelection(e->GetSelectionString(), randomSnippet());
+    break;
+  case 16:
+    // Splits the text at the caret and returns the tail; we discard it (the cell
+    // keeps the head). Exercises the caret/substring math.
+    (void)e->DivideAtCaret();
+    break;
+  case 17:
+    // Comment / uncomment the selection (code path inserts/removes /* */).
+    e->CommentSelection();
+    break;
   }
 }
 
@@ -311,6 +347,10 @@ SCENARIO("A long random edit sequence never corrupts the cursor or overruns the 
                          << " text-len=" << e->GetValue().Length());
         REQUIRE_NOTHROW(ApplyRandomOp(e, rng));
         RequireConsistent(e);
+        // Periodically run the real recalculation, exercising the styling /
+        // soft-line-break / layout geometry on the mutated text.
+        if (step % 64 == 0)
+          REQUIRE_NOTHROW(e->GetGroup()->Recalculate());
       }
     }
   }
