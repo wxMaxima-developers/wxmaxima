@@ -11,11 +11,12 @@ var searchData=
   ['changelogdialog_2eh_8',['ChangeLogDialog.h',['../ChangeLogDialog_8h.html',1,'']]],
   ['charbutton_2ecpp_9',['CharButton.cpp',['../CharButton_8cpp.html',1,'']]],
   ['charbutton_2eh_10',['CharButton.h',['../CharButton_8h.html',1,'']]],
-  ['compositedataobject_2eh_11',['CompositeDataObject.h',['../CompositeDataObject_8h.html',1,'']]],
-  ['configdialogue_2eh_12',['ConfigDialogue.h',['../ConfigDialogue_8h.html',1,'']]],
-  ['configuration_2ecpp_13',['Configuration.cpp',['../Configuration_8cpp.html',1,'']]],
-  ['conjugatecell_2ecpp_14',['ConjugateCell.cpp',['../ConjugateCell_8cpp.html',1,'']]],
-  ['conjugatecell_2eh_15',['ConjugateCell.h',['../ConjugateCell_8h.html',1,'']]],
-  ['csvwiz_2ecpp_16',['CsvWiz.cpp',['../CsvWiz_8cpp.html',1,'']]],
-  ['csvwiz_2eh_17',['CsvWiz.h',['../CsvWiz_8h.html',1,'']]]
+  ['compat_2eh_11',['Compat.h',['../Compat_8h.html',1,'']]],
+  ['compositedataobject_2eh_12',['CompositeDataObject.h',['../CompositeDataObject_8h.html',1,'']]],
+  ['configdialogue_2eh_13',['ConfigDialogue.h',['../ConfigDialogue_8h.html',1,'']]],
+  ['configuration_2ecpp_14',['Configuration.cpp',['../Configuration_8cpp.html',1,'']]],
+  ['conjugatecell_2ecpp_15',['ConjugateCell.cpp',['../ConjugateCell_8cpp.html',1,'']]],
+  ['conjugatecell_2eh_16',['ConjugateCell.h',['../ConjugateCell_8h.html',1,'']]],
+  ['csvwiz_2ecpp_17',['CsvWiz.cpp',['../CsvWiz_8cpp.html',1,'']]],
+  ['csvwiz_2eh_18',['CsvWiz.h',['../CsvWiz_8h.html',1,'']]]
 ];

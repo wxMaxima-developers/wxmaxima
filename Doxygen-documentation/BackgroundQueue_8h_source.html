@@ -100,7 +100,7 @@ $(function() {
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#ifndef BACKGROUNDQUEUE_H</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#define BACKGROUNDQUEUE_H</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;Version.h&quot;</span> <span class="comment">// stop_token / stop_source (real ones or shims)</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;<a class="code" href="Compat_8h.html">Compat.h</a>&quot;</span> <span class="comment">// stop_token / stop_source (real ones or shims)</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#include &lt;condition_variable&gt;</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#include &lt;deque&gt;</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
@@ -129,15 +129,15 @@ $(function() {
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_class" href="classBackgroundQueue.html">BackgroundQueue</a>;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classBackgroundTask.html">BackgroundTask</a>(std::function&lt;<span class="keywordtype">void</span>(stop_token)&gt; fn)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classBackgroundTask.html">BackgroundTask</a>(std::function&lt;<span class="keywordtype">void</span>(<a class="code hl_struct" href="structstop__token.html">stop_token</a>)&gt; fn)</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    : m_fn(std::move(fn)) {}</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordtype">void</span> Run();</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keyword">enum class</span> State { Queued, Running, Done };</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  std::function&lt;void(stop_token)&gt; m_fn;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  stop_source m_stopSource;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  std::function&lt;void(<a class="code hl_struct" href="structstop__token.html">stop_token</a>)&gt; m_fn;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <a class="code hl_struct" href="structstop__source.html">stop_source</a> m_stopSource;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keyword">mutable</span> std::mutex m_mutex;</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  std::condition_variable m_doneCond;</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  State m_state = State::Queued;</div>
@@ -147,7 +147,7 @@ $(function() {
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>{</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keyword">static</span> std::shared_ptr&lt;BackgroundTask&gt;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <a class="code hl_function" href="classBackgroundQueue.html#a6a91f516b72224d18a2e92fc6ca8338a">Add</a>(<a class="code hl_enumeration" href="classBackgroundTask.html#a217da7631d4231f559cbad8f0e7e1566">BackgroundTask::Priority</a> priority, std::function&lt;<span class="keywordtype">void</span>(stop_token)&gt; task);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <a class="code hl_function" href="classBackgroundQueue.html#a6a91f516b72224d18a2e92fc6ca8338a">Add</a>(<a class="code hl_enumeration" href="classBackgroundTask.html#a217da7631d4231f559cbad8f0e7e1566">BackgroundTask::Priority</a> priority, std::function&lt;<span class="keywordtype">void</span>(<a class="code hl_struct" href="structstop__token.html">stop_token</a>)&gt; task);</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classBackgroundQueue.html#a31458e8c027f4f5ff1452ecb89804401">Workers</a>();</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
@@ -176,6 +176,7 @@ $(function() {
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>};</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="preprocessor">#endif </span><span class="comment">// BACKGROUNDQUEUE_H</span></div>
+<div class="ttc" id="aCompat_8h_html"><div class="ttname"><a href="Compat_8h.html">Compat.h</a></div><div class="ttdoc">Small C++ standard-library compatibility shims.</div></div>
 <div class="ttc" id="aclassBackgroundQueue_html"><div class="ttname"><a href="classBackgroundQueue.html">BackgroundQueue</a></div><div class="ttdoc">A process-wide thread pool that runs BackgroundTasks, highest priority first.</div><div class="ttdef"><b>Definition:</b> BackgroundQueue.h:98</div></div>
 <div class="ttc" id="aclassBackgroundQueue_html_a31458e8c027f4f5ff1452ecb89804401"><div class="ttname"><a href="classBackgroundQueue.html#a31458e8c027f4f5ff1452ecb89804401">BackgroundQueue::Workers</a></div><div class="ttdeci">static int Workers()</div><div class="ttdoc">The number of worker threads the pool runs.</div><div class="ttdef"><b>Definition:</b> BackgroundQueue.cpp:75</div></div>
 <div class="ttc" id="aclassBackgroundQueue_html_a6a91f516b72224d18a2e92fc6ca8338a"><div class="ttname"><a href="classBackgroundQueue.html#a6a91f516b72224d18a2e92fc6ca8338a">BackgroundQueue::Add</a></div><div class="ttdeci">static std::shared_ptr&lt; BackgroundTask &gt; Add(BackgroundTask::Priority priority, std::function&lt; void(stop_token)&gt; task)</div><div class="ttdoc">Enqueue a task at the given priority and return a handle to it.</div><div class="ttdef"><b>Definition:</b> BackgroundQueue.cpp:125</div></div>
@@ -186,6 +187,8 @@ $(function() {
 <div class="ttc" id="aclassBackgroundTask_html_a6006291785cf0fba160a5b2781ccc5b9"><div class="ttname"><a href="classBackgroundTask.html#a6006291785cf0fba160a5b2781ccc5b9">BackgroundTask::RequestStop</a></div><div class="ttdeci">void RequestStop()</div><div class="ttdoc">Ask the task to stop at its next cancellation point. If it has not been started yet it is dropped fro...</div><div class="ttdef"><b>Definition:</b> BackgroundQueue.cpp:50</div></div>
 <div class="ttc" id="aclassBackgroundTask_html_a765116e73eb0842433323203c7aeb3fe"><div class="ttname"><a href="classBackgroundTask.html#a765116e73eb0842433323203c7aeb3fe">BackgroundTask::Pending</a></div><div class="ttdeci">bool Pending() const</div><div class="ttdoc">Whether the task is still waiting in the queue or currently running.</div><div class="ttdef"><b>Definition:</b> BackgroundQueue.cpp:63</div></div>
 <div class="ttc" id="aclassBackgroundTask_html_a9a3abbef089d6ab6eb5f546240554cbb"><div class="ttname"><a href="classBackgroundTask.html#a9a3abbef089d6ab6eb5f546240554cbb">BackgroundTask::Wait</a></div><div class="ttdeci">void Wait()</div><div class="ttdoc">Block until the task has finished (or was dropped before it started). Returns immediately if that alr...</div><div class="ttdef"><b>Definition:</b> BackgroundQueue.cpp:57</div></div>
+<div class="ttc" id="astructstop__source_html"><div class="ttname"><a href="structstop__source.html">stop_source</a></div><div class="ttdef"><b>Definition:</b> Compat.h:48</div></div>
+<div class="ttc" id="astructstop__token_html"><div class="ttname"><a href="structstop__token.html">stop_token</a></div><div class="ttdef"><b>Definition:</b> Compat.h:43</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
