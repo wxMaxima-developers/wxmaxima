@@ -94,7 +94,7 @@ Inheritance diagram for Worksheet:</div>
 <div class="dynheader">
 Collaboration diagram for Worksheet:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="555"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -125,6 +125,10 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a4473708dd4d8a1197c96a2df9947a93c"><td class="memItemLeft" align="right" valign="top"><a id="a4473708dd4d8a1197c96a2df9947a93c" name="a4473708dd4d8a1197c96a2df9947a93c"></a>
+<a class="el" href="classRecentDocuments.html">RecentDocuments</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>UnsavedDocuments</b> ()</td></tr>
+<tr class="memdesc:a4473708dd4d8a1197c96a2df9947a93c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of unsaved (autosaved) documents offered for recovery. <br /></td></tr>
+<tr class="separator:a4473708dd4d8a1197c96a2df9947a93c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a865dd71fd32bff5fd0380ac406e1396c"><td class="memItemLeft" align="right" valign="top"><a id="a865dd71fd32bff5fd0380ac406e1396c" name="a865dd71fd32bff5fd0380ac406e1396c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateControlsNeeded</b> ()</td></tr>
 <tr class="memdesc:a865dd71fd32bff5fd0380ac406e1396c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is an update of the worksheet controls needed? <br /></td></tr>
@@ -464,9 +468,6 @@ static <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td cl
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a07ea367f43d3fb4ffb4f09a1f1b09339"><td class="memItemLeft" align="right" valign="top"><a id="a07ea367f43d3fb4ffb4f09a1f1b09339" name="a07ea367f43d3fb4ffb4f09a1f1b09339"></a>
-<a class="el" href="classRecentDocuments.html">RecentDocuments</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_unsavedDocuments</b></td></tr>
-<tr class="separator:a07ea367f43d3fb4ffb4f09a1f1b09339"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1cd67d770fe0b554373dce0a7e14880"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#af1cd67d770fe0b554373dce0a7e14880">m_hCaretPositionStart</a></td></tr>
 <tr class="memdesc:af1cd67d770fe0b554373dce0a7e14880"><td class="mdescLeft">&#160;</td><td class="mdescRight">The start for the selection when selecting group with the horizontally drawn cursor.  <br /></td></tr>
 <tr class="separator:af1cd67d770fe0b554373dce0a7e14880"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -547,10 +548,6 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_currentFile</b>
 <a class="el" href="classFindReplaceDialog.html">FindReplaceDialog</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_findDialog</b> = NULL</td></tr>
 <tr class="memdesc:addddaa53ec91efeaf93ed6ebebae4c7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The find-and-replace-dialog. <br /></td></tr>
 <tr class="separator:addddaa53ec91efeaf93ed6ebebae4c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4acf248dcae644a601d97f7ccf2bb7b6"><td class="memItemLeft" align="right" valign="top"><a id="a4acf248dcae644a601d97f7ccf2bb7b6" name="a4acf248dcae644a601d97f7ccf2bb7b6"></a>
-wxTimer&#160;</td><td class="memItemRight" valign="bottom"><b>m_keyboardInactiveTimer</b></td></tr>
-<tr class="memdesc:a4acf248dcae644a601d97f7ccf2bb7b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The timer that tells us when the keyboard is inactive so an autosave isn't disrupting. <br /></td></tr>
-<tr class="separator:a4acf248dcae644a601d97f7ccf2bb7b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae600e16f83ccc1d13447ad5dfd80a796"><td class="memItemLeft" align="right" valign="top"><a id="ae600e16f83ccc1d13447ad5dfd80a796" name="ae600e16f83ccc1d13447ad5dfd80a796"></a>
 <a class="el" href="classEvaluationQueue.html">EvaluationQueue</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_evaluationQueue</b></td></tr>
 <tr class="memdesc:ae600e16f83ccc1d13447ad5dfd80a796"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of cells that have to be evaluated. <br /></td></tr>
@@ -559,10 +556,6 @@ wxTimer&#160;</td><td class="memItemRight" valign="bottom"><b>m_keyboardInactive
 <a class="el" href="classToolBar.html">ToolBar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_mainToolBar</b> = NULL</td></tr>
 <tr class="memdesc:a7e8f804aed06ee62de5e09ad7be3d6b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The toolbar of the main window: We need to access it and therefore have it defined here. <br /></td></tr>
 <tr class="separator:a7e8f804aed06ee62de5e09ad7be3d6b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8512089d7ec41796ef78ce68edc26a74"><td class="memItemLeft" align="right" valign="top"><a id="a8512089d7ec41796ef78ce68edc26a74" name="a8512089d7ec41796ef78ce68edc26a74"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_questionPrompt</b> = false</td></tr>
-<tr class="memdesc:a8512089d7ec41796ef78ce68edc26a74"><td class="mdescLeft">&#160;</td><td class="mdescRight">true = the last reply from maxima was a question <br /></td></tr>
-<tr class="separator:a8512089d7ec41796ef78ce68edc26a74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abba5bae26979028e72ebd8e81a16e113"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#abba5bae26979028e72ebd8e81a16e113">MarkRefreshAsDone</a> ()</td></tr>
 <tr class="memdesc:abba5bae26979028e72ebd8e81a16e113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle redrawing the worksheet or of parts of it.  <br /></td></tr>
 <tr class="separator:abba5bae26979028e72ebd8e81a16e113"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -627,6 +620,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_ClearBuffers
 virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~Worksheet</b> ()</td></tr>
 <tr class="memdesc:a17069f8e054407fb170285892fc99349"><td class="mdescLeft">&#160;</td><td class="mdescRight">The destructor. <br /></td></tr>
 <tr class="separator:a17069f8e054407fb170285892fc99349"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79d3f9c91582dac67a19780cd5c4006c"><td class="memItemLeft" align="right" valign="top"><a id="a79d3f9c91582dac67a19780cd5c4006c" name="a79d3f9c91582dac67a19780cd5c4006c"></a>
+wxTimer &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>KeyboardInactiveTimer</b> ()</td></tr>
+<tr class="memdesc:a79d3f9c91582dac67a19780cd5c4006c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The timer that tells us when the keyboard is inactive so an autosave isn't disrupting. <br /></td></tr>
+<tr class="separator:a79d3f9c91582dac67a19780cd5c4006c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af21f9a0b000b43f620e3daa0ceaabeb6"><td class="memItemLeft" align="right" valign="top"><a id="af21f9a0b000b43f620e3daa0ceaabeb6" name="af21f9a0b000b43f620e3daa0ceaabeb6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DestroyTree</b> ()</td></tr>
 <tr class="memdesc:af21f9a0b000b43f620e3daa0ceaabeb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the whole worksheet. <br /></td></tr>
@@ -1326,7 +1323,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Can we merge the selected cells into one? </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
 
 </div>
 </div>
@@ -1667,7 +1664,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Export the file to an html document. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
 
 </div>
 </div>
@@ -1716,7 +1713,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Export a region of the file to a .wxm or .mac file maxima's load command can read. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
 
 </div>
 </div>
@@ -2353,7 +2350,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Actually recalculate the worksheet. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>We check here if the recalc start is within the worksheet. Would it make more sense to store the recalculation start in a CellPointer that automagically zeroes itself if that isn't the case? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>We check here if the recalc start is within the worksheet. Would it make more sense to store the recalculation start in a CellPointer that automagically zeroes itself if that isn't the case? </dd></dl>
 
 </div>
 </div>
