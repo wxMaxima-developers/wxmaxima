@@ -50,7 +50,7 @@
 #include "sidebars/SymbolsSidebar.h"
 #include "sidebars/HelpBrowser.h"
 #include "RecentDocuments.h"
-#include "Version.h"
+#include "BuildConfig.h"
 #include "MainMenuBar.h"
 #include "sidebars/History.h"
 #include "sidebars/XmlInspector.h"

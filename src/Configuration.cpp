@@ -26,6 +26,7 @@
   storage.
 */
 
+#include "BuildConfig.h"
 #include "Configuration.h"
 
 #include "cells/Cell.h"

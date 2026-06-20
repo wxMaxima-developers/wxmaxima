@@ -42,7 +42,7 @@
 #include <atomic>
 #include <mutex>
 #include "Configuration.h"
-#include "Version.h"
+#include "Compat.h"
 
 /*! Interface to the Maxima process
  *

@@ -26,6 +26,7 @@
 */
 
 #include "AboutDialog.h"
+#include "Version.h"
 #include "../wxMaximaIcon.h"
 #include "../wxMaximaOSDescription.h"
 #include <wx/wx.h>
@@ -40,10 +41,8 @@ AboutDialog::AboutDialog(wxWindow *WXUNUSED(parent), Configuration *config) {
       description = _("wxMaxima is a cross-platform graphical user interface for the "
                       "computer algebra system Maxima based on wxWidgets.\n");
 
-#if defined(WXMAXIMA_GIT_SHORT_HASH)
-      //cppcheck-suppress syntaxError
-      description += wxString::Format(_("Build from Git version: %s\n"), WXMAXIMA_GIT_SHORT_HASH);
-#endif
+      if (WxMaximaGitShortHash())
+        description += wxString::Format(_("Build from Git version: %s\n"), WxMaximaGitShortHash());
       description += wxString::Format(_("Using: %s\n\n"), wxVERSION_STRING);
 
       if (config->GetMaximaVersion() != wxEmptyString)

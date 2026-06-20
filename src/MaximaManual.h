@@ -43,7 +43,7 @@
 #include <wx/filename.h>
 #include "precomp.h"
 #include "Configuration.h"
-#include "Version.h"
+#include "Compat.h"
 #include <unordered_map>
 
 /* The autocompletion logic

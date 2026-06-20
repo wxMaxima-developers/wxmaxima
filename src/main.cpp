@@ -26,6 +26,7 @@
 */
 
 #include "main.h"
+#include "BuildConfig.h"
 #include "Maxima.h"
 #include "Dirstructure.h"
 #include "dialogs/DiffFrame.h"
@@ -525,11 +526,10 @@ bool MyApp::OnInit() {
 #endif
 
   if (cmdLineParser.Found(wxS("v"))) {
-#if defined(WXMAXIMA_GIT_SHORT_HASH)
-    wxMessageOutput::Get()->Printf("wxMaxima %s (Git version: %s)\n", WXMAXIMA_VERSION, WXMAXIMA_GIT_SHORT_HASH);
-#else
-    wxMessageOutput::Get()->Printf("wxMaxima %s\n", WXMAXIMA_VERSION);
-#endif
+    if (WxMaximaGitShortHash())
+      wxMessageOutput::Get()->Printf("wxMaxima %s (Git version: %s)\n", WXMAXIMA_VERSION, WxMaximaGitShortHash());
+    else
+      wxMessageOutput::Get()->Printf("wxMaxima %s\n", WXMAXIMA_VERSION);
     exit(0);
   }
 

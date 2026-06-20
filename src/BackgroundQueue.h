@@ -26,7 +26,7 @@
 #ifndef BACKGROUNDQUEUE_H
 #define BACKGROUNDQUEUE_H
 
-#include "Version.h" // stop_token / stop_source (real ones or shims)
+#include "Compat.h" // stop_token / stop_source (real ones or shims)
 #include <condition_variable>
 #include <deque>
 #include <functional>

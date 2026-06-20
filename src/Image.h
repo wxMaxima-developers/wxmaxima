@@ -34,7 +34,7 @@
 #include <atomic>
 #include "BackgroundQueue.h"
 #include "precomp.h"
-#include "Version.h"
+#include "Compat.h"
 #include "Configuration.h"
 #include <wx/image.h>
 #include <wx/buffer.h>

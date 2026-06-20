@@ -33,6 +33,7 @@
 #include "Dirstructure.h"
 #include "dialogs/LoggingMessageDialog.h"
 #include "Version.h"
+#include "BuildConfig.h"
 #include <wx/dir.h>
 #include <wx/filefn.h>
 #include <wx/filename.h>

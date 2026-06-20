@@ -29,6 +29,7 @@
   actual worksheet - which is displayed by Worksheet and whose logic partially
   is defined in wxMaxima.
 */
+#include "Version.h"
 #include "wxMaximaFrame.h"
 #include "ArtProvider.h"
 #include "Dirstructure.h"

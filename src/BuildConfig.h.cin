@@ -1,0 +1,22 @@
+//  SPDX-License-Identifier: GPL-2.0+
+
+/*! \file
+  Compile-time build configuration, generated from BuildConfig.h.cin by CMake.
+
+  Holds the feature/option defines selected at configure time plus the install
+  prefix. These are stable across commits (they only change when the build options
+  change), so this header can safely sit in the precompiled header. The
+  per-commit git hash deliberately does NOT live here (see GitHash.cpp /
+  WxMaximaGitShortHash() in Version.h).
+*/
+
+#ifndef WXM_BUILDCONFIG_H
+#define WXM_BUILDCONFIG_H
+
+#define CMAKE_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@"
+#cmakedefine USE_PRECOMP_HEADER
+#cmakedefine USE_WEBVIEW
+#cmakedefine USE_QA
+#cmakedefine NANOSVG_CAUSES_NO_LINK_ERROR
+
+#endif // WXM_BUILDCONFIG_H

@@ -46,7 +46,7 @@
 #include <wx/hashmap.h>
 #include "Configuration.h"
 #include "precomp.h"
-#include "Version.h"
+#include "Compat.h"
 #include <unordered_map>
 /* The autocompletion logic
 

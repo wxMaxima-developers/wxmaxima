@@ -27,6 +27,7 @@
   HelpBrowser creates the list of maxima's manual anchors.
 */
 
+#include "BuildConfig.h"
 #include "HelpBrowser.h"
 #include "WrappingStaticText.h"
 #include <wx/button.h>

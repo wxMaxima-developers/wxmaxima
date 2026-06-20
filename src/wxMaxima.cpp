@@ -84,6 +84,7 @@
 #include "dialogs/DiffFrame.h"
 #include "wxMaximaOSDescription.h"
 #include "Version.h"
+#include "BuildConfig.h"
 #include "WXMformat.h"
 #include "WXMXformat.h"
 #include "wxMathml.h"

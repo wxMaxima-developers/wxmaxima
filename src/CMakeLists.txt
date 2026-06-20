@@ -177,6 +177,12 @@ list(APPEND SOURCE_FILES
   ${DIALOG_SOURCE_FILES}
 )
 
+# The git hash lives in its own tiny generated TU (see GitHash.h): keeping the
+# per-commit-volatile value out of Version.h (which is in the precompiled header)
+# means a new commit only recompiles this one file instead of the whole tree.
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/GitHash.cpp.cin ${CMAKE_BINARY_DIR}/GitHash.cpp)
+list(APPEND SOURCE_FILES ${CMAKE_BINARY_DIR}/GitHash.cpp)
+
 include_directories(
   "${CMAKE_SOURCE_DIR}/src"
   "${CMAKE_BINARY_DIR}"
@@ -358,6 +364,7 @@ if(WXM_UNIT_TESTS)
 endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_BINARY_DIR}/Version.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildConfig.h.cin ${CMAKE_BINARY_DIR}/BuildConfig.h)
 
 if(APPLE)
     install(TARGETS wxmaxima

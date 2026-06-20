@@ -25,6 +25,7 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
+#include "Version.h"
 #include <utility>
 #include <algorithm>
 #include <memory>

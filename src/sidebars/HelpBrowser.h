@@ -30,6 +30,7 @@
 #ifndef HELPBROWSER_H
 #define HELPBROWSER_H
 
+#include "BuildConfig.h"
 #include <wx/dir.h>
 #include "precomp.h"
 #include <wx/wx.h>

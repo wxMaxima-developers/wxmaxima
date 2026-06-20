@@ -31,6 +31,7 @@
 #ifndef WXMAXIMA_H
 #define WXMAXIMA_H
 
+#include "BuildConfig.h"
 #include <vector>
 #include "wxMaximaFrame.h"
 #include "WXMXformat.h"

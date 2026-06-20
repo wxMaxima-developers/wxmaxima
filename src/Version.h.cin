@@ -1,67 +1,30 @@
 //  SPDX-License-Identifier: GPL-2.0+
+
+/*! \file
+  wxMaxima's build identity, generated from Version.h.cin by CMake.
+
+  Holds the release version string and the accessor for the git revision. The
+  version string is stable across commits (it only changes per release). The git
+  hash itself is NOT a macro here: it changes on every commit, so embedding its
+  value in this (widely-included) header would force a near-full rebuild each
+  time. Instead the value lives in its own tiny generated translation unit
+  (GitHash.cpp) behind the WxMaximaGitShortHash() declaration below, so a new
+  commit only recompiles that one file.
+
+  Build-option defines moved to BuildConfig.h; the C++ compatibility shims moved
+  to Compat.h.
+*/
+
 #ifndef WXM_VERSION_H
 #define WXM_VERSION_H
+
 #define WXMAXIMA_VERSION "@WXMAXIMA_VERSION@"
-#define CMAKE_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@"
-#cmakedefine USE_PRECOMP_HEADER
-#cmakedefine USE_WEBVIEW
-#cmakedefine USE_QA
-#cmakedefine NANOSVG_CAUSES_NO_LINK_ERROR
-#cmakedefine WXMAXIMA_GIT_SHORT_HASH "@WXMAXIMA_GIT_SHORT_HASH@"
 
-#include <thread>
-#include <version>
-#ifdef __cpp_lib_jthread
-    using jthread = std::jthread;
-    using stop_token = std::stop_token;
-    using stop_source = std::stop_source;
-#else
-    struct stop_token {
-        bool stop_requested() const { return false; }
-    };
-    // A minimal stop_source shim for compilers without std::jthread: on those
-    // compilers cancellation is a no-op (as it always was here).
-    struct stop_source {
-        stop_token get_token() const { return {}; }
-        bool request_stop() noexcept { return false; }
-        bool stop_requested() const noexcept { return false; }
-    };
-    // A minimal jthread shim for compilers without std::jthread
-    class jthread : public std::thread {
-    public:
-        jthread() noexcept = default;
-        template<typename F, typename... Args>
-        explicit jthread(F&& f, Args&&... args)
-            : std::thread([](std::decay_t<F> f, std::decay_t<Args>... args) {
-                if constexpr (std::is_invocable_v<std::decay_t<F>, stop_token, std::decay_t<Args>...>) {
-                    f(stop_token{}, std::move(args)...);
-                } else {
-                    f(std::move(args)...);
-                }
-            }, std::forward<F>(f), std::forward<Args>(args)...) {}
-        
-        jthread& operator=(jthread&& other) noexcept {
-            if (joinable()) join();
-            std::thread::operator=(std::move(other));
-            return *this;
-        }
-        ~jthread() {
-            if (joinable()) join();
-        }
-        void request_stop() noexcept {}
-    };
-#endif
+/*! The short git hash wxMaxima was built from.
 
-#include <algorithm>
-#include <ranges>
-namespace ranges {
-#if defined(__cpp_lib_ranges_contains) && __cpp_lib_ranges_contains >= 202207L
-    using std::ranges::contains;
-#else
-    template<typename R, typename T>
-    constexpr bool contains(R&& r, const T& value) {
-        return std::ranges::find(r, value) != std::ranges::end(r);
-    }
-#endif
-}
-#endif
+  \return The abbreviated commit hash, or nullptr when wxMaxima was built outside
+          a git working tree (e.g. from a release tarball).
+*/
+const char *WxMaximaGitShortHash();
+
+#endif // WXM_VERSION_H

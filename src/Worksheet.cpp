@@ -42,6 +42,7 @@
 #include "dialogs/ResolutionChooser.h"
 #include "graphical_io/SVGout.h"
 #include "Version.h"
+#include "Compat.h"
 #include "WXMformat.h"
 #include "levenshtein/levenshtein.h"
 #include "wxMaxima.h"

@@ -27,7 +27,7 @@
 */
 #include "precomp.h"
 #include "cells/Cell.h"
-#include "Version.h"
+#include "Compat.h"
 #include <wx/image.h>
 #include <wx/rawbmp.h>
 

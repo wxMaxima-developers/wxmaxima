@@ -607,6 +607,7 @@ public:
   */
   void EraseBackground(wxEraseEvent &event);
 
+private:
   //! The position the left mouse key was pressed at.
   wxPoint m_leftDownPosition;
   wxPoint m_down;
@@ -623,6 +624,7 @@ public:
     vertical line.
   */
   CellPtr<GroupCell> m_hCaretPosition;
+public:
   /*! The start for the selection when selecting group with the horizontally drawn cursor
 
     This cell does define were the selection was actually started and therefore does not need
@@ -635,14 +637,17 @@ public:
     to be below m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionEnd.
   */
   CellPtr<GroupCell> m_hCaretPositionEnd;
+private:
   bool m_leftDown = false;
   //! Do we want to automatically scroll to a cell as soon as it is being evaluated?
   bool m_followEvaluation = true;
   bool m_mouseDrag = false;
   bool m_mouseOutside = false;
 
+public:
   //! Returns a pointer to the last cell of this worksheet
   GroupCell *GetLastCellInWorksheet() const;
+private:
   int m_clickType = CLICK_TYPE_NONE;
   CellPtr<GroupCell> m_clickInGC;
   //! true = blink the cursor
@@ -655,7 +660,9 @@ public:
   wxTimer m_caretTimer;
   //! True if no changes have to be saved.
   bool m_saved = true;
+public:
   std::vector<wxString> m_completions;
+private:
   bool m_autocompleteTemplates = true;
   AutocompletePopup *m_autocompletePopup;
 

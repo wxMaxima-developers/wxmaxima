@@ -1,5 +1,6 @@
-#include "Version.h"
+#include "BuildConfig.h"
 #ifdef USE_PRECOMP_HEADER
+#include "Compat.h"
 #include <wx/wx.h>
 #include <wx/window.h>
 #include <wx/button.h>
