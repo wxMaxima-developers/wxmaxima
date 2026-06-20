@@ -407,7 +407,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   wxConfig::Get()->Read(wxS("Find/RegexSearch"), &findRegex);
   m_findData.SetRegexSearch(findRegex);
   if(GetWorksheet())
-    GetWorksheet()->m_keyboardInactiveTimer.SetOwner(this,
+    GetWorksheet()->KeyboardInactiveTimer().SetOwner(this,
                                                      KEYBOARD_INACTIVITY_TIMER_ID);
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
 
@@ -4182,7 +4182,7 @@ void wxMaxima::ReadPrompt(const wxString &data) {
   GetWorksheet()->SetCurrentTextCell(nullptr);
 
   // Assume we don't have a question prompt
-  GetWorksheet()->m_questionPrompt = false;
+  GetWorksheet()->QuestionPending(false);
   m_ready = true;
 
   wxLogMessage(_("Got a new input prompt!"));
@@ -6284,7 +6284,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
     break;
   case KEYBOARD_INACTIVITY_TIMER_ID:
   case AUTO_SAVE_TIMER_ID:
-    if ((!GetWorksheet()->m_keyboardInactiveTimer.IsRunning()) &&
+    if ((!GetWorksheet()->KeyboardInactiveTimer().IsRunning()) &&
         (!m_autoSaveTimer.IsRunning())) {
       AutoSave();
       StartAutoSaveTimer();
@@ -10722,7 +10722,7 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event) {
   GetWorksheet()->CloseAutoCompletePopup();
 
   wxString file =
-    GetWorksheet()->m_unsavedDocuments.Get(event.GetId() - EventIDs::menu_unsaved_document_0);
+    GetWorksheet()->UnsavedDocuments().Get(event.GetId() - EventIDs::menu_unsaved_document_0);
 
   if (file.IsEmpty())
     return;

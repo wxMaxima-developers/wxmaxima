@@ -108,7 +108,11 @@
 class Worksheet : public wxScrolled<wxWindow>
 {
 public:
+  //! The list of unsaved (autosaved) documents offered for recovery.
+  RecentDocuments &UnsavedDocuments() { return m_unsavedDocuments; }
+private:
   RecentDocuments m_unsavedDocuments;
+public:
   //! Is an update of the worksheet controls needed?
   bool UpdateControlsNeeded(){bool result = m_updateControls; m_updateControls = false; return result;}
   void UpdateControlsNeeded(bool updateControlsNeeded){m_updateControls = updateControlsNeeded;}
@@ -898,7 +902,10 @@ public:
   virtual ~Worksheet();
 
   //! The timer that tells us when the keyboard is inactive so an autosave isn't disrupting
+  wxTimer &KeyboardInactiveTimer() { return m_keyboardInactiveTimer; }
+private:
   wxTimer m_keyboardInactiveTimer;
+public:
 
   //! Clear the whole worksheet
   void DestroyTree();
@@ -1556,8 +1563,10 @@ public:
   //! Mark the current question from maxima as "answered"..
   void QuestionAnswered();
 
+private:
   //! true = the last reply from maxima was a question
   bool m_questionPrompt = false;
+public:
 
   /*! Does maxima wait for the answer of a question?
 

@@ -2098,7 +2098,7 @@ void wxMaximaFrame::UpdateRecentDocuments() {
 
   if(GetWorksheet())
     PopulateRecentDocumentsMenu(m_unsavedDocumentsMenu, EventIDs::menu_unsaved_document_0,
-                                GetWorksheet()->m_unsavedDocuments.Get());
+                                GetWorksheet()->UnsavedDocuments().Get());
 
   PopulateRecentPackagesMenu(m_recentPackagesMenu, EventIDs::menu_recent_package_0,
                              m_recentPackages.Get());
@@ -2145,7 +2145,7 @@ void wxMaximaFrame::RegisterAutoSaveFile() {
   wxConfigBase *config = wxConfig::Get();
   config->Read("AutoSaveFiles", &autoSaveFiles);
   if(GetWorksheet())
-    GetWorksheet()->m_unsavedDocuments.AddDocument(m_tempfileName);
+    GetWorksheet()->UnsavedDocuments().AddDocument(m_tempfileName);
   ReReadConfig();
 }
 
