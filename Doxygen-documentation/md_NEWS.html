@@ -77,6 +77,7 @@ $(function() {
 <li>Diff viewer: resizing the window is no longer sluggish on large worksheets &ndash; the full re-layout that ran on every intermediate size during a drag is now debounced and runs once, after the resize settles.</li>
 <li>Diff viewer: the mouse wheel / touchpad now keeps the panes synchronized (it previously only synced when the scrollbar was dragged), and "Next/Previous
   difference" use the live scroll position so they no longer mis-jump after a wheel scroll.</li>
+<li>Diff viewer: scrolling <em>up</em> now keeps the panes synchronized. The upward-scroll case anchored on the bottom of the last visible cell instead of mirroring the (working) downward case, so the other pane did not follow.</li>
 <li>Incremental find: typing another character into the search box now extends the highlight on the current match when that match still satisfies the longer search string, instead of immediately jumping to the next match.</li>
 <li>Matrix → LAPACK menu correctness fixes:<ul>
 <li>The complex-matrix norm items ("zlange") emitted <code>dlange()</code> (the real version), making them silent duplicates of the real-matrix items; they now emit <code>zlange()</code>.</li>
