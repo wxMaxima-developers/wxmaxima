@@ -207,6 +207,7 @@ class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
 };
+wxDECLARE_APP(TestApp);
 
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
