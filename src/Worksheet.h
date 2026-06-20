@@ -331,6 +331,7 @@ private:
   //! The type of the list of tree actions that can be undone
   using UndoActions = std::list<TreeUndoAction>;
 
+private:
   //! The list of tree actions that can be undone
   UndoActions treeUndoActions;
 
@@ -343,6 +344,7 @@ private:
   long long m_treeUndo_ActiveCellOldSelStart = -1;
   long long m_treeUndo_ActiveCellOldSelEnd   = -1;
 
+public:
   //! Clear the list of actions for which an undo can be undone
   void TreeUndo_ClearRedoActionList();
 
@@ -366,7 +368,9 @@ private:
 
     This pointer is needed for keeping track of cell contents changes.
   */
+private:
   CellPtr<GroupCell> TreeUndo_ActiveCell;
+public:
 
   //! Drop actions from the back of the undo list until itis within the undo limit.
   void TreeUndo_LimitUndoBuffer();
@@ -432,7 +436,9 @@ private:
   void TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart, GroupCell *end);
   //! @}
 
+private:
   bool m_scrolledAwayFromEvaluation = false;
+public:
 
   /*! Escape all chars that aren't allowed in html.
 
