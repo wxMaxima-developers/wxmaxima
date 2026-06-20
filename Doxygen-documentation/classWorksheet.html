@@ -71,6 +71,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Data Fields</a> &#124;
@@ -102,6 +103,26 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet_1_1SimpleMathConfigurationIterator.html">SimpleMathConfigurationIterator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a79d7b31dbd32dd7e8fc4395fe7810fd5"><td class="memItemLeft" align="right" valign="top"><a id="a79d7b31dbd32dd7e8fc4395fe7810fd5" name="a79d7b31dbd32dd7e8fc4395fe7810fd5"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a79d7b31dbd32dd7e8fc4395fe7810fd5">ClickType</a> { <br />
+&#160;&#160;<b>CLICK_TYPE_NONE</b>
+, <b>CLICK_TYPE_GROUP_SELECTION</b>
+, <b>CLICK_TYPE_INPUT_SELECTION</b>
+, <b>CLICK_TYPE_INPUT_LABEL_SELECTION</b>
+, <br />
+&#160;&#160;<b>CLICK_TYPE_OUTPUT_SELECTION</b>
+<br />
+ }</td></tr>
+<tr class="memdesc:a79d7b31dbd32dd7e8fc4395fe7810fd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum for all classes of items one can click on. <br /></td></tr>
+<tr class="separator:a79d7b31dbd32dd7e8fc4395fe7810fd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab23463675bcf9e4b601204eb665a2377"><td class="memItemLeft" align="right" valign="top"><a id="ab23463675bcf9e4b601204eb665a2377" name="ab23463675bcf9e4b601204eb665a2377"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ab23463675bcf9e4b601204eb665a2377">TimerIDs</a> { <b>TIMER_ID</b>
+, <b>CARET_TIMER_ID</b>
+, <b>DISPLAY_TIMEOUT_ID</b>
+ }</td></tr>
+<tr class="memdesc:ab23463675bcf9e4b601204eb665a2377"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum of individual IDs for all timers this class handles. <br /></td></tr>
+<tr class="separator:ab23463675bcf9e4b601204eb665a2377"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a865dd71fd32bff5fd0380ac406e1396c"><td class="memItemLeft" align="right" valign="top"><a id="a865dd71fd32bff5fd0380ac406e1396c" name="a865dd71fd32bff5fd0380ac406e1396c"></a>
@@ -111,6 +132,161 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateControlsNeeded<
 <tr class="memitem:a7fa3389f9d19984185ad8df1e74535b4"><td class="memItemLeft" align="right" valign="top"><a id="a7fa3389f9d19984185ad8df1e74535b4" name="a7fa3389f9d19984185ad8df1e74535b4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateControlsNeeded</b> (bool updateControlsNeeded)</td></tr>
 <tr class="separator:a7fa3389f9d19984185ad8df1e74535b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4c5be29253ed63d045f4d7f169c5637b"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_ClearRedoActionList</b> ()</td></tr>
+<tr class="memdesc:ga4c5be29253ed63d045f4d7f169c5637b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the list of actions for which an undo can be undone. <br /></td></tr>
+<tr class="separator:ga4c5be29253ed63d045f4d7f169c5637b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga96aefed098d643df24e9f5e51487280e"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_ClearUndoActionList</b> ()</td></tr>
+<tr class="memdesc:ga96aefed098d643df24e9f5e51487280e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the list of actions for which undo can undo. <br /></td></tr>
+<tr class="separator:ga96aefed098d643df24e9f5e51487280e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga38f2c09271000e2e269fe1a3a501055d"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_AppendAction</b> ()</td></tr>
+<tr class="memdesc:ga38f2c09271000e2e269fe1a3a501055d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add another action to this undo action. <br /></td></tr>
+<tr class="separator:ga38f2c09271000e2e269fe1a3a501055d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga01d9bac25f92583620585e81edc7eecc"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_LimitUndoBuffer</b> ()</td></tr>
+<tr class="memdesc:ga01d9bac25f92583620585e81edc7eecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drop actions from the back of the undo list until itis within the undo limit. <br /></td></tr>
+<tr class="separator:ga01d9bac25f92583620585e81edc7eecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf5e54e7c3397cf9d5473584fa3a5f784"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gaf5e54e7c3397cf9d5473584fa3a5f784">TreeUndo</a> (UndoActions *sourcelist, UndoActions *undoForThisOperation)</td></tr>
+<tr class="memdesc:gaf5e54e7c3397cf9d5473584fa3a5f784"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo an item from a list of undo actions.  <br /></td></tr>
+<tr class="separator:gaf5e54e7c3397cf9d5473584fa3a5f784"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga407d02d9a242ff4d83b0aeb467bfd04f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#ga407d02d9a242ff4d83b0aeb467bfd04f">TreeUndoTextChange</a> (UndoActions *sourcelist, UndoActions *undoForThisOperation)</td></tr>
+<tr class="memdesc:ga407d02d9a242ff4d83b0aeb467bfd04f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo a text change.  <br /></td></tr>
+<tr class="separator:ga407d02d9a242ff4d83b0aeb467bfd04f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac5bbd739676e3b7ffc14ac6d76c5eebb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gac5bbd739676e3b7ffc14ac6d76c5eebb">TreeUndoCellDeletion</a> (UndoActions *sourcelist, UndoActions *undoForThisOperation)</td></tr>
+<tr class="memdesc:gac5bbd739676e3b7ffc14ac6d76c5eebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo a call deletion.  <br /></td></tr>
+<tr class="separator:gac5bbd739676e3b7ffc14ac6d76c5eebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa2cb2222c648177ea95b6718abbfb35a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gaa2cb2222c648177ea95b6718abbfb35a">TreeUndoCellAddition</a> (UndoActions *sourcelist, UndoActions *undoForThisOperation)</td></tr>
+<tr class="memdesc:gaa2cb2222c648177ea95b6718abbfb35a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo adding cells.  <br /></td></tr>
+<tr class="separator:gaa2cb2222c648177ea95b6718abbfb35a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga40ec7f7067b8bbf2f800607e61f658cd"><td class="memItemLeft" align="right" valign="top">
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo</b> ()</td></tr>
+<tr class="memdesc:ga40ec7f7067b8bbf2f800607e61f658cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo a tree operation. <br /></td></tr>
+<tr class="separator:ga40ec7f7067b8bbf2f800607e61f658cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaede3460b4591d8ea296419f17cf60372"><td class="memItemLeft" align="right" valign="top">
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>TreeRedo</b> ()</td></tr>
+<tr class="memdesc:gaede3460b4591d8ea296419f17cf60372"><td class="mdescLeft">&#160;</td><td class="mdescRight">Redo an undone tree operation. <br /></td></tr>
+<tr class="separator:gaede3460b4591d8ea296419f17cf60372"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga79125ca1b712a8f6081ce9b808b5250c"><td class="memItemLeft" align="right" valign="top">
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanTreeUndo</b> () const</td></tr>
+<tr class="memdesc:ga79125ca1b712a8f6081ce9b808b5250c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can we undo a tree operation? <br /></td></tr>
+<tr class="separator:ga79125ca1b712a8f6081ce9b808b5250c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga13e260fec22af547ab8a61ac196fb2cc"><td class="memItemLeft" align="right" valign="top">
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanTreeRedo</b> () const</td></tr>
+<tr class="memdesc:ga13e260fec22af547ab8a61ac196fb2cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can we redo a tree operation? <br /></td></tr>
+<tr class="separator:ga13e260fec22af547ab8a61ac196fb2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1a0b59ecd796d0652eea3d8d1fc980cf"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_CellEntered</b> ()</td></tr>
+<tr class="memdesc:ga1a0b59ecd796d0652eea3d8d1fc980cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cursor has entered one cell =&gt; save the value to see if it has changed. <br /></td></tr>
+<tr class="separator:ga1a0b59ecd796d0652eea3d8d1fc980cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8a67b016fceb16f77f9c4c94ad87a78c"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_CellLeft</b> ()</td></tr>
+<tr class="memdesc:ga8a67b016fceb16f77f9c4c94ad87a78c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cursor is about to leave the current cell =&gt; Store the change if the value has changed. <br /></td></tr>
+<tr class="separator:ga8a67b016fceb16f77f9c4c94ad87a78c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafa1404f59c04e1da90b1296d2e7bdffe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gafa1404f59c04e1da90b1296d2e7bdffe">TreeUndo_MarkCellsAsAdded</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *start, <a class="el" href="classGroupCell.html">GroupCell</a> *end, UndoActions *undoBuffer)</td></tr>
+<tr class="memdesc:gafa1404f59c04e1da90b1296d2e7bdffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remember that these cells were just added so this addition can be undone.  <br /></td></tr>
+<tr class="separator:gafa1404f59c04e1da90b1296d2e7bdffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf87a1cbf5d891c48fc0d26622cd2fac7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gaf87a1cbf5d891c48fc0d26622cd2fac7">TreeUndo_MarkCellsAsAdded</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *parentOfStart, <a class="el" href="classGroupCell.html">GroupCell</a> *end)</td></tr>
+<tr class="memdesc:gaf87a1cbf5d891c48fc0d26622cd2fac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remember that these cells were just added so this addition can be undone.  <br /></td></tr>
+<tr class="separator:gaf87a1cbf5d891c48fc0d26622cd2fac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2934169eb20acaabaaea75b6837c518e"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a2934169eb20acaabaaea75b6837c518e">EscapeHTMLChars</a> (wxString input)</td></tr>
+<tr class="memdesc:a2934169eb20acaabaaea75b6837c518e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Escape all chars that aren't allowed in html.  <br /></td></tr>
+<tr class="separator:a2934169eb20acaabaaea75b6837c518e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a47095ee5343abea21bc25c01538632"><td class="memItemLeft" align="right" valign="top"><a id="a1a47095ee5343abea21bc25c01538632" name="a1a47095ee5343abea21bc25c01538632"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>PrependNBSP</b> (wxString input)</td></tr>
+<tr class="memdesc:a1a47095ee5343abea21bc25c01538632"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow indentation by spaces for html by replacing them by non-breakable spaces. <br /></td></tr>
+<tr class="separator:a1a47095ee5343abea21bc25c01538632"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6171080f34084cc1694b75089f360ac"><td class="memItemLeft" align="right" valign="top"><a id="ac6171080f34084cc1694b75089f360ac" name="ac6171080f34084cc1694b75089f360ac"></a>
+std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CopySelection</b> (bool asData=false) const</td></tr>
+<tr class="memdesc:ac6171080f34084cc1694b75089f360ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the currently selected cells. <br /></td></tr>
+<tr class="separator:ac6171080f34084cc1694b75089f360ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac59dea6967c097fd0d6633eb4ccd5bab"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ac59dea6967c097fd0d6633eb4ccd5bab">CopySelection</a> (<a class="el" href="classCell.html">Cell</a> *start, <a class="el" href="classCell.html">Cell</a> *end, bool asData=false) const</td></tr>
+<tr class="memdesc:ac59dea6967c097fd0d6633eb4ccd5bab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the currently given list of cells.  <br /></td></tr>
+<tr class="separator:ac59dea6967c097fd0d6633eb4ccd5bab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec89f7640236f4abd56b7c8a7604d7ca"><td class="memItemLeft" align="right" valign="top"><a id="aec89f7640236f4abd56b7c8a7604d7ca" name="aec89f7640236f4abd56b7c8a7604d7ca"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>GetMaxPoint</b> (int *width, int *height)</td></tr>
+<tr class="memdesc:aec89f7640236f4abd56b7c8a7604d7ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the coordinates of the bottom right point of the worksheet. <br /></td></tr>
+<tr class="separator:aec89f7640236f4abd56b7c8a7604d7ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06c701cade9073a9f6393224a65e2174"><td class="memItemLeft" align="right" valign="top"><a id="a06c701cade9073a9f6393224a65e2174" name="a06c701cade9073a9f6393224a65e2174"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnTimer</b> (wxTimerEvent &amp;event)</td></tr>
+<tr class="memdesc:a06c701cade9073a9f6393224a65e2174"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is executed if a timer associated with <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> has expired. <br /></td></tr>
+<tr class="separator:a06c701cade9073a9f6393224a65e2174"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4b50002cb2d4bfe0573866a6e4dbc93"><td class="memItemLeft" align="right" valign="top"><a id="aa4b50002cb2d4bfe0573866a6e4dbc93" name="aa4b50002cb2d4bfe0573866a6e4dbc93"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseExit</b> (wxMouseEvent &amp;event)</td></tr>
+<tr class="separator:aa4b50002cb2d4bfe0573866a6e4dbc93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81045d4f92b1f336c4afe07c82c8f061"><td class="memItemLeft" align="right" valign="top"><a id="a81045d4f92b1f336c4afe07c82c8f061" name="a81045d4f92b1f336c4afe07c82c8f061"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseEnter</b> (wxMouseEvent &amp;event)</td></tr>
+<tr class="separator:a81045d4f92b1f336c4afe07c82c8f061"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73394e056b0f357649503dab879f97ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a73394e056b0f357649503dab879f97ee">OnPaint</a> (wxPaintEvent &amp;event)</td></tr>
+<tr class="memdesc:a73394e056b0f357649503dab879f97ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is called by wxWidgets when it wants to redraw the worksheet or a part of it.  <br /></td></tr>
+<tr class="separator:a73394e056b0f357649503dab879f97ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae01a8b7f8566e71adaa5a67ae29053bb"><td class="memItemLeft" align="right" valign="top"><a id="ae01a8b7f8566e71adaa5a67ae29053bb" name="ae01a8b7f8566e71adaa5a67ae29053bb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawGroupCell</b> (wxDC &amp;dc, wxDC &amp;adc, <a class="el" href="classGroupCell.html">GroupCell</a> &amp;cell)</td></tr>
+<tr class="memdesc:ae01a8b7f8566e71adaa5a67ae29053bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a groupcell on the DC. <br /></td></tr>
+<tr class="separator:ae01a8b7f8566e71adaa5a67ae29053bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea247ddf3dfae63206999e3960f80059"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#aea247ddf3dfae63206999e3960f80059">DrawGroupCell_UsingBitmap</a> (wxDC *dc, <a class="el" href="classGroupCell.html">GroupCell</a> *cell)</td></tr>
+<tr class="memdesc:aea247ddf3dfae63206999e3960f80059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a groupcell in a bitmap and then blits it onto the DC.  <br /></td></tr>
+<tr class="separator:aea247ddf3dfae63206999e3960f80059"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75333a6acb26e8efec6ca7ba0dd26545"><td class="memItemLeft" align="right" valign="top"><a id="a75333a6acb26e8efec6ca7ba0dd26545" name="a75333a6acb26e8efec6ca7ba0dd26545"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>PrepareDrawGC</b> (wxDC &amp;dc) const</td></tr>
+<tr class="memdesc:a75333a6acb26e8efec6ca7ba0dd26545"><td class="mdescLeft">&#160;</td><td class="mdescRight">All that has need to be done before drawing a <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> in a DC. <br /></td></tr>
+<tr class="separator:a75333a6acb26e8efec6ca7ba0dd26545"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeac494f5543cd5a6f9352ac494e9cdb4"><td class="memItemLeft" align="right" valign="top"><a id="aeac494f5543cd5a6f9352ac494e9cdb4" name="aeac494f5543cd5a6f9352ac494e9cdb4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSize</b> (wxSizeEvent &amp;event)</td></tr>
+<tr class="separator:aeac494f5543cd5a6f9352ac494e9cdb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07a7a218bfb1d57fabcd1af37c4f7e88"><td class="memItemLeft" align="right" valign="top"><a id="a07a7a218bfb1d57fabcd1af37c4f7e88" name="a07a7a218bfb1d57fabcd1af37c4f7e88"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseRightDown</b> (wxMouseEvent &amp;event)</td></tr>
+<tr class="separator:a07a7a218bfb1d57fabcd1af37c4f7e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50ef88c7df352e24d2743507d465eaff"><td class="memItemLeft" align="right" valign="top"><a id="a50ef88c7df352e24d2743507d465eaff" name="a50ef88c7df352e24d2743507d465eaff"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSidebarKey</b> (wxCommandEvent &amp;event)</td></tr>
+<tr class="separator:a50ef88c7df352e24d2743507d465eaff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab98e64377261508238484654b87b3b15"><td class="memItemLeft" align="right" valign="top"><a id="ab98e64377261508238484654b87b3b15" name="ab98e64377261508238484654b87b3b15"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseLeftUp</b> (wxMouseEvent &amp;event)</td></tr>
+<tr class="separator:ab98e64377261508238484654b87b3b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a794f54ce8cecc2b76759ff00740ac82f"><td class="memItemLeft" align="right" valign="top"><a id="a794f54ce8cecc2b76759ff00740ac82f" name="a794f54ce8cecc2b76759ff00740ac82f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseCaptureLost</b> (wxMouseCaptureLostEvent &amp;event)</td></tr>
+<tr class="memdesc:a794f54ce8cecc2b76759ff00740ac82f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is called if we loose the mouse connection whilst selecting text/cells. <br /></td></tr>
+<tr class="separator:a794f54ce8cecc2b76759ff00740ac82f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7dac16a605dfd8a3af6db641e7853cc"><td class="memItemLeft" align="right" valign="top"><a id="ad7dac16a605dfd8a3af6db641e7853cc" name="ad7dac16a605dfd8a3af6db641e7853cc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseLeftDown</b> (wxMouseEvent &amp;event)</td></tr>
+<tr class="separator:ad7dac16a605dfd8a3af6db641e7853cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade7cfe2b8acd0c45a2a52ce9b8a7f66e"><td class="memItemLeft" align="right" valign="top"><a id="ade7cfe2b8acd0c45a2a52ce9b8a7f66e" name="ade7cfe2b8acd0c45a2a52ce9b8a7f66e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseLeftInGcCell</b> (wxMouseEvent &amp;event, <a class="el" href="classGroupCell.html">GroupCell</a> *clickedInGC)</td></tr>
+<tr class="separator:ade7cfe2b8acd0c45a2a52ce9b8a7f66e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb2a48576c48078859eba3d651f00754"><td class="memItemLeft" align="right" valign="top"><a id="adb2a48576c48078859eba3d651f00754" name="adb2a48576c48078859eba3d651f00754"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseLeftInGcLeft</b> (wxMouseEvent &amp;event, <a class="el" href="classGroupCell.html">GroupCell</a> *clickedInGC)</td></tr>
+<tr class="separator:adb2a48576c48078859eba3d651f00754"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05d0dd3814f6583eee7e707ca4f1f316"><td class="memItemLeft" align="right" valign="top"><a id="a05d0dd3814f6583eee7e707ca4f1f316" name="a05d0dd3814f6583eee7e707ca4f1f316"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseLeftInGc</b> (wxMouseEvent &amp;event, <a class="el" href="classGroupCell.html">GroupCell</a> *clickedInGC)</td></tr>
+<tr class="separator:a05d0dd3814f6583eee7e707ca4f1f316"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b1c50d0d90d0f2a9b9f843487d0f689"><td class="memItemLeft" align="right" valign="top"><a id="a6b1c50d0d90d0f2a9b9f843487d0f689" name="a6b1c50d0d90d0f2a9b9f843487d0f689"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMouseMotion</b> (wxMouseEvent &amp;event)</td></tr>
+<tr class="separator:a6b1c50d0d90d0f2a9b9f843487d0f689"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc02263b1e218b1c7d09b7f6ce486833"><td class="memItemLeft" align="right" valign="top"><a id="afc02263b1e218b1c7d09b7f6ce486833" name="afc02263b1e218b1c7d09b7f6ce486833"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnDoubleClick</b> (wxMouseEvent &amp;event)</td></tr>
+<tr class="memdesc:afc02263b1e218b1c7d09b7f6ce486833"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is called on double click on a cell. <br /></td></tr>
+<tr class="separator:afc02263b1e218b1c7d09b7f6ce486833"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75438158a4e03dc3e6dde313f9fd1b8b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a75438158a4e03dc3e6dde313f9fd1b8b">OnCharInActive</a> (wxKeyEvent &amp;event)</td></tr>
+<tr class="memdesc:a75438158a4e03dc3e6dde313f9fd1b8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key pressed inside a cell.  <br /></td></tr>
+<tr class="separator:a75438158a4e03dc3e6dde313f9fd1b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a207397e17f5f67929f29aab49dc451f7"><td class="memItemLeft" align="right" valign="top"><a id="a207397e17f5f67929f29aab49dc451f7" name="a207397e17f5f67929f29aab49dc451f7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCharNoActive</b> (wxKeyEvent &amp;event)</td></tr>
+<tr class="memdesc:a207397e17f5f67929f29aab49dc451f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key pressed and no cell was active. <br /></td></tr>
+<tr class="separator:a207397e17f5f67929f29aab49dc451f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a576c151ad31ad8074df978fe12cb9f22"><td class="memItemLeft" align="right" valign="top"><a id="a576c151ad31ad8074df978fe12cb9f22" name="a576c151ad31ad8074df978fe12cb9f22"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectEditable</b> (<a class="el" href="classEditorCell.html">EditorCell</a> *editor, bool up)</td></tr>
+<tr class="memdesc:a576c151ad31ad8074df978fe12cb9f22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is called when a hCursor is active and we have a WXK_UP/WXK_DOWN event. <br /></td></tr>
+<tr class="separator:a576c151ad31ad8074df978fe12cb9f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cf3825d7d3e6d07ad10e23c0ff2d575"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a5cf3825d7d3e6d07ad10e23c0ff2d575">SelectWithChar</a> (int ccode)</td></tr>
+<tr class="memdesc:a5cf3825d7d3e6d07ad10e23c0ff2d575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle selecting text using the keyboard Is called when the all of the following is true:  <br /></td></tr>
+<tr class="separator:a5cf3825d7d3e6d07ad10e23c0ff2d575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dcbb54240b30f35bfb7c9e0118d61da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a3dcbb54240b30f35bfb7c9e0118d61da">ClickNDrag</a> (wxPoint down, wxPoint up)</td></tr>
+<tr class="memdesc:a3dcbb54240b30f35bfb7c9e0118d61da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select the rectangle surrounded by down and up.  <br /></td></tr>
+<tr class="separator:a3dcbb54240b30f35bfb7c9e0118d61da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf7c839a859941b9ff8c08e00b8831df"><td class="memItemLeft" align="right" valign="top"><a id="adf7c839a859941b9ff8c08e00b8831df" name="adf7c839a859941b9ff8c08e00b8831df"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SelectGroupCells</b> (wxPoint down, wxPoint up)</td></tr>
+<tr class="separator:adf7c839a859941b9ff8c08e00b8831df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf4ec45a1b780ac72ba159358806d376"><td class="memItemLeft" align="right" valign="top"><a id="aaf4ec45a1b780ac72ba159358806d376" name="aaf4ec45a1b780ac72ba159358806d376"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AdjustSize</b> ()</td></tr>
 <tr class="separator:aaf4ec45a1b780ac72ba159358806d376"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -266,6 +442,18 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetCellIndex</b> (<a c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ga3d8f4e3b278cc24036459d581649c9d9"><td class="memItemLeft" align="right" valign="top">
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_DiscardAction</b> (UndoActions *actionList)</td></tr>
+<tr class="memdesc:ga3d8f4e3b278cc24036459d581649c9d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove one action ftom the action list. <br /></td></tr>
+<tr class="separator:ga3d8f4e3b278cc24036459d581649c9d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad27a8f674ff188f23a91de4624dfb0da"><td class="memItemLeft" align="right" valign="top">
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_AppendAction</b> (UndoActions *actionList)</td></tr>
+<tr class="memdesc:gad27a8f674ff188f23a91de4624dfb0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add another action to this undo action. <br /></td></tr>
+<tr class="separator:gad27a8f674ff188f23a91de4624dfb0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d2f74fb004c1fe6f7e7e93fc7b30d21"><td class="memItemLeft" align="right" valign="top"><a id="a2d2f74fb004c1fe6f7e7e93fc7b30d21" name="a2d2f74fb004c1fe6f7e7e93fc7b30d21"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>AddLineToFile</b> (wxTextFile &amp;output, const wxString &amp;s)</td></tr>
+<tr class="memdesc:a2d2f74fb004c1fe6f7e7e93fc7b30d21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a line to a file. <br /></td></tr>
+<tr class="separator:a2d2f74fb004c1fe6f7e7e93fc7b30d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9172378ffd18695685cdd506c73934a"><td class="memItemLeft" align="right" valign="top"><a id="ac9172378ffd18695685cdd506c73934a" name="ac9172378ffd18695685cdd506c73934a"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLesserGCType</b> (int type, int comparedTo)</td></tr>
 <tr class="separator:ac9172378ffd18695685cdd506c73934a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -967,7 +1155,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 <div class="textblock"><p>The canvas that contains the spreadsheet the whole program is about. </p>
 <p>This canvas contains all the math-, title-, image- input- ("editor-")- etc.- cells of the current session.</p>
 <p>Most of the logic that handles that this canvas might be larger than the screen (and could even be larger than the computer's RAM would it have been handled as a big bitmap) is provided by wxWidgets:</p><ul>
-<li>If part of the screen needs to be drawn it calls the OnPaint() method.</li>
+<li>If part of the screen needs to be drawn it calls the <a class="el" href="classWorksheet.html#a73394e056b0f357649503dab879f97ee" title="Is called by wxWidgets when it wants to redraw the worksheet or a part of it.">OnPaint()</a> method.</li>
 <li>If the canvas is scrolled wxWidgets the parts that are already decides how much of the off-screen part of the canvas is cached in a backing store</li>
 <li>Also if the canvas is scrolled wxWidgets is intelligent enough to only request the parts of the new view that aren't available on the screen or in the backing store</li>
 <li>If we call the Refresh() method wxWidgets requests us to draw the entire visible part of the worksheet anew and invalidates all cached areas it might have.</li>
@@ -1138,7 +1326,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Can we merge the selected cells into one? </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
 
 </div>
 </div>
@@ -1202,6 +1390,38 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="a3dcbb54240b30f35bfb7c9e0118d61da" name="a3dcbb54240b30f35bfb7c9e0118d61da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dcbb54240b30f35bfb7c9e0118d61da">&#9670;&#160;</a></span>ClickNDrag()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::ClickNDrag </td>
+          <td>(</td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>down</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxPoint&#160;</td>
+          <td class="paramname"><em>up</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Select the rectangle surrounded by down and up. </p>
+<p>Called from OnMouseMotion.</p>
+<p>The method decides what to do, based on the value of m_clickType which was set previously in OnMouseLeftDown. This enables different selection behaviours depending on where we first clicked. If m_clickType equals CLICK_TYPE_NONE - click-dragging does not result in a selection (we clicked in hideRect for instance) CLICK_TYPE_GROUP_SELECTION - we are selecting full groupcells only. Only y-coordinate matters. CLICK_TYPE_INPUT_SELECTION - we clicked in an editor (GroupCell::GetEditable()) and dragging results in selecting text in <a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> CLICK_TYPE_OUTPUT_SELECTION - we clicked in an output, we want selection to be confined to that <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>'s output. GC we first clicked in was stored in OnMouseMotion method into m_clickInGC pointer. </p>
+
+</div>
+</div>
 <a id="a5442160d0574859589addb87d1f19b4d" name="a5442160d0574859589addb87d1f19b4d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5442160d0574859589addb87d1f19b4d">&#9670;&#160;</a></span>Copy()</h2>
 
@@ -1224,6 +1444,54 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
     <tr><td class="paramname">astext</td><td><ul>
 <li>true: Copy the current selection as text</li>
 <li>false: Copy the current selection as they would appear in a .wxm file </li>
+</ul>
+</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac59dea6967c097fd0d6633eb4ccd5bab" name="ac59dea6967c097fd0d6633eb4ccd5bab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac59dea6967c097fd0d6633eb4ccd5bab">&#9670;&#160;</a></span>CopySelection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; Worksheet::CopySelection </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>asData</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copy the currently given list of cells. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">start</td><td>The cell to start copying at </td></tr>
+    <tr><td class="paramname">end</td><td>The cell the copy has to end with </td></tr>
+    <tr><td class="paramname">asData</td><td><ul>
+<li>true: The cells are copied in the cell list order.</li>
+<li>false: The cells are copied in the draw list order </li>
 </ul>
 </td></tr>
   </table>
@@ -1287,6 +1555,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="aea247ddf3dfae63206999e3960f80059" name="aea247ddf3dfae63206999e3960f80059"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea247ddf3dfae63206999e3960f80059">&#9670;&#160;</a></span>DrawGroupCell_UsingBitmap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::DrawGroupCell_UsingBitmap </td>
+          <td>(</td>
+          <td class="paramtype">wxDC *&#160;</td>
+          <td class="paramname"><em>dc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>cell</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Draws a groupcell in a bitmap and then blits it onto the DC. </p>
+<p>Drawing to a DC is only allowed to one thread at once. But doing the lengthy stuff with bitmaps is possible to do in multiple threads at the same time so as long as there is a mutex watching that we do the blit when no-one else accesses the DC should be fine. </p>
+
+</div>
+</div>
 <a id="a7b3e88ac91c894dd9944defa95f5c290" name="a7b3e88ac91c894dd9944defa95f5c290"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b3e88ac91c894dd9944defa95f5c290">&#9670;&#160;</a></span>EraseBackground()</h2>
 
@@ -1305,6 +1604,29 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Is called if wxWidgets wants to erase the worksheet's background. </p>
 <p>We don't want to erase the worksheet's background. </p>
+
+</div>
+</div>
+<a id="a2934169eb20acaabaaea75b6837c518e" name="a2934169eb20acaabaaea75b6837c518e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2934169eb20acaabaaea75b6837c518e">&#9670;&#160;</a></span>EscapeHTMLChars()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString Worksheet::EscapeHTMLChars </td>
+          <td>(</td>
+          <td class="paramtype">wxString&#160;</td>
+          <td class="paramname"><em>input</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Escape all chars that aren't allowed in html. </p>
+<p>Also converts <br  />
+ to <br  />
+ </p>
 
 </div>
 </div>
@@ -1345,7 +1667,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Export the file to an html document. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
 
 </div>
 </div>
@@ -1394,7 +1716,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Export a region of the file to a .wxm or .mac file maxima's load command can read. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
 
 </div>
 </div>
@@ -1845,6 +2167,29 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="a75438158a4e03dc3e6dde313f9fd1b8b" name="a75438158a4e03dc3e6dde313f9fd1b8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75438158a4e03dc3e6dde313f9fd1b8b">&#9670;&#160;</a></span>OnCharInActive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::OnCharInActive </td>
+          <td>(</td>
+          <td class="paramtype">wxKeyEvent &amp;&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Key pressed inside a cell. </p>
+<p>send event to active cell</p>
+<p>If we need to recalculate then refresh the window</p>
+<p>Otherwise refresh only the active cell</p>
+
+</div>
+</div>
 <a id="a9e3fd586f9ce0444292f60c94ab69c44" name="a9e3fd586f9ce0444292f60c94ab69c44"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9e3fd586f9ce0444292f60c94ab69c44">&#9670;&#160;</a></span>OnKeyDown()</h2>
 
@@ -1884,6 +2229,28 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Called if the mouse wheel sents events. </p>
 <p>The virtual mouse wheel touchpads provide are handled by OnThumbtrack instead. </p>
+
+</div>
+</div>
+<a id="a73394e056b0f357649503dab879f97ee" name="a73394e056b0f357649503dab879f97ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73394e056b0f357649503dab879f97ee">&#9670;&#160;</a></span>OnPaint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::OnPaint </td>
+          <td>(</td>
+          <td class="paramtype">wxPaintEvent &amp;&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Is called by wxWidgets when it wants to redraw the worksheet or a part of it. </p>
+<p>The canonical way to schedule triggering this function is calling the Refresh() or <a class="el" href="classWorksheet.html#ad1d57afe66434741be1ee0e5861d3738" title="Request the worksheet to be redrawn.">RequestRedraw()</a> function of this class.</p>
+<p>Using multiple threads in order to speed up this process is kind of hard: Using more than one wxPaintDC at the same time isn't supported by most (if not all) operating systems. Drawing in a wxMemoryDC and then blitting the result in the central wxPaintDC works, but each wxMemoryDC needs to draw into a separate bitmap for that to work. </p>
 
 </div>
 </div>
@@ -1986,7 +2353,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Actually recalculate the worksheet. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>We check here if the recalc start is within the worksheet. Would it make more sense to store the recalculation start in a CellPointer that automagically zeroes itself if that isn't the case? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>We check here if the recalc start is within the worksheet. Would it make more sense to store the recalculation start in a CellPointer that automagically zeroes itself if that isn't the case? </dd></dl>
 
 </div>
 </div>
@@ -2169,6 +2536,31 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Set or get the "Scrolled away from evaluation" status. </p>
 <p>Sets <a class="el" href="classWorksheet.html#af02bfd71d23fe6804fc27525f41e84bb" title="Query if we want to automatically scroll to the cell that is currently evaluated.">FollowEvaluation()</a> to false and enables the toolbar button to follow the evaluation process again. </p>
+
+</div>
+</div>
+<a id="a5cf3825d7d3e6d07ad10e23c0ff2d575" name="a5cf3825d7d3e6d07ad10e23c0ff2d575"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cf3825d7d3e6d07ad10e23c0ff2d575">&#9670;&#160;</a></span>SelectWithChar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::SelectWithChar </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ccode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle selecting text using the keyboard Is called when the all of the following is true: </p>
+<ul>
+<li>We have a wxKeyEvent with no active editor,</li>
+<li>shift is down and</li>
+<li>keycode (ccode) is WXK_UP/WXK_DOWN </li>
+</ul>
 
 </div>
 </div>

@@ -11,7 +11,7 @@ var searchData=
   ['endofsectioningunit_8',['EndOfSectioningUnit',['../classWorksheet.html#ae49982c186a6d147703232f4c42eadde',1,'Worksheet']]],
   ['equationsmenu_9',['EquationsMenu',['../classwxMaxima.html#a2428d7720e004d0c3df47c72ae6ce466',1,'wxMaxima']]],
   ['erasebackground_10',['EraseBackground',['../classWorksheet.html#a7b3e88ac91c894dd9944defa95f5c290',1,'Worksheet']]],
-  ['escapehtmlchars_11',['EscapeHTMLChars',['../classEditorCell.html#af7a4a8ae88746563be0420bb0c242838',1,'EditorCell']]],
+  ['escapehtmlchars_11',['EscapeHTMLChars',['../classEditorCell.html#af7a4a8ae88746563be0420bb0c242838',1,'EditorCell::EscapeHTMLChars()'],['../classWorksheet.html#a2934169eb20acaabaaea75b6837c518e',1,'Worksheet::EscapeHTMLChars()']]],
   ['escapevarnameformaxima_12',['EscapeVarnameForMaxima',['../classMaxima.html#ae61a721a9a8f85d80dcdde2fe6228d4e',1,'Maxima']]],
   ['esccodesbegin_13',['EscCodesBegin',['../classConfiguration.html#a3a91c07eed224ef2eee334a54f6a4828',1,'Configuration']]],
   ['esccodesend_14',['EscCodesEnd',['../classConfiguration.html#aac61256445671388d23ffeb6fcba1376',1,'Configuration']]],
