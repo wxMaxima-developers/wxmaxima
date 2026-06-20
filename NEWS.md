@@ -1,5 +1,12 @@
 # Current development version
 
+- Editing: issuing "Redo" inside a cell when there was nothing to redo (for
+  example right after typing, or in a freshly created cell) could crash. The
+  undo-history lookup read one entry past the end of the history; it is now a
+  safe no-op. A new stress test drives long random edit/undo/redo sequences
+  through a real input cell to guard the editing core against such out-of-bounds
+  accesses.
+
 - Windows: pressing Ctrl+F now keeps the keyboard focus in the find dialog. The
   edit menu re-focused the worksheet via a deferred call that ran after the
   dialog had been focused, stealing the focus back before anything could be

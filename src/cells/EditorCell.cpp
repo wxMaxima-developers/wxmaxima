@@ -2870,7 +2870,16 @@ bool EditorCell::History::Redo()
 bool EditorCell::History::CanUndo() const {return m_historyPosition > 0;}
 bool EditorCell::History::CanRedo() const {return m_historyPosition + 1 < m_history.size();}
 EditorCell::History::HistoryEntry EditorCell::History::GetState() const {
-  return m_history.at(m_historyPosition);}
+  // After AddState() m_historyPosition == m_history.size() (one past the last
+  // entry), and on a fresh cell the history is empty. Never index past the end:
+  // a caller that asks for the state with nothing to restore gets the most
+  // recent entry (or a default-constructed one) instead of an out-of-range throw.
+  if(m_history.empty())
+    return HistoryEntry();
+  size_t idx = m_historyPosition;
+  if(idx >= m_history.size())
+    idx = m_history.size() - 1;
+  return m_history.at(idx);}
 void EditorCell::History::ClearUndoBuffer() {
   m_history.clear();
   m_historyPosition = 0;}
@@ -2906,6 +2915,11 @@ void EditorCell::Undo() {
 }
 
 void EditorCell::Redo() {
+  // Nothing to redo (e.g. right after typing, or on a fresh cell): don't touch
+  // the state. Without this guard the old code still called GetState(), which
+  // indexed one past the end of the history vector.
+  if(!m_history.CanRedo())
+    return;
   m_history.Redo();
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
   SetState(m_history.GetState());

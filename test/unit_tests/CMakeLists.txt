@@ -51,4 +51,14 @@ if(TARGET wxmTestApp)
     target_link_libraries(test_GroupCellLayout PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(GroupCellLayout test_GroupCellLayout)
+
+    # Hardening/fuzz test for EditorCell's text-editing core: drives the real
+    # key-event paths and checks the cursor/selection invariants after every op.
+    add_executable(test_EditorCellInvariants
+        test_EditorCellInvariants.cpp groupcell_test_stubs.cpp
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellInvariants PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellInvariants PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(EditorCellInvariants test_EditorCellInvariants)
 endif()
