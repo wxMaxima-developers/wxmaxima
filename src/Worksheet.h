@@ -634,7 +634,6 @@ private:
     vertical line.
   */
   CellPtr<GroupCell> m_hCaretPosition;
-public:
   /*! The start for the selection when selecting group with the horizontally drawn cursor
 
     This cell does define were the selection was actually started and therefore does not need
@@ -647,7 +646,6 @@ public:
     to be below m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionEnd.
   */
   CellPtr<GroupCell> m_hCaretPositionEnd;
-private:
   bool m_leftDown = false;
   //! Do we want to automatically scroll to a cell as soon as it is being evaluated?
   bool m_followEvaluation = true;
@@ -707,8 +705,12 @@ public:
   bool SectioningMoveIn(GroupCell *parent);
   //! Make this section/subsection/... a chapter/section/... changing its subheadings, too.
   bool SectioningMoveOut(GroupCell *parent);
+  //! The error notification message, if any.
+  std::optional<Notification> &GetNotification() { return m_notificationMessage; }
+private:
 //! A error notification message
   std::optional<Notification> m_notificationMessage;
+public:
   //! Is this window active?
   void WindowActive(bool active){m_windowActive = active;}
   //! Clears the notification message from SetNotification

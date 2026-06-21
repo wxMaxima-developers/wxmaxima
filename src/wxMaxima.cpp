@@ -6108,12 +6108,12 @@ bool wxMaxima::AbortOnError() {
   ExitAfterEval(false);
   EvalOnStartup(false);
 
-  if (GetWorksheet()->m_notificationMessage) {
+  if (GetWorksheet()->GetNotification()) {
     if (GetWorksheet()->GetWorkingGroup(true) !=
-        GetWorksheet()->m_notificationMessage->m_errorNotificationCell)
+        GetWorksheet()->GetNotification()->m_errorNotificationCell)
       GetWorksheet()->SetNotification(_("Maxima has issued an error!"),
                                    wxICON_ERROR);
-    GetWorksheet()->m_notificationMessage->m_errorNotificationCell =
+    GetWorksheet()->GetNotification()->m_errorNotificationCell =
       GetWorksheet()->GetWorkingGroup(true);
   }
 
