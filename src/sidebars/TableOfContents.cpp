@@ -51,26 +51,14 @@ TableOfContents::TableOfContents(wxWindow *parent, int id,
   box->Add(m_displayedItems, wxSizerFlags(1).Expand());
   box->Add(m_regex, wxSizerFlags().Expand());
   m_lastSelection = -1;
-  m_regex->Connect(REGEX_EVENT,
-                   wxCommandEventHandler(TableOfContents::OnRegExEvent), NULL,
-                   this);
-  Connect(wxEVT_SIZE, wxSizeEventHandler(TableOfContents::OnSize));
-  Connect(wxEVT_LIST_ITEM_RIGHT_CLICK,
-          wxListEventHandler(TableOfContents::OnMouseRightDown));
-  m_displayedItems->Connect(wxEVT_LIST_BEGIN_DRAG,
-                            wxListEventHandler(TableOfContents::OnDragStart),
-                            NULL, this);
-  m_displayedItems->Connect(wxEVT_LEFT_UP,
-                            wxMouseEventHandler(TableOfContents::OnMouseUp),
-                            NULL, this);
-  m_displayedItems->Connect(wxEVT_MOTION,
-                            wxMouseEventHandler(TableOfContents::OnMouseMotion),
-                            NULL, this);
-  m_displayedItems->Connect(
-                            wxEVT_MOUSE_CAPTURE_LOST,
-                            wxMouseCaptureLostEventHandler(TableOfContents::OnMouseCaptureLost), NULL,
-                            this);
-  Connect(wxEVT_TIMER, wxTimerEventHandler(TableOfContents::OnTimer));
+  m_regex->Bind(REGEX_EVENT, &TableOfContents::OnRegExEvent, this);
+  Bind(wxEVT_SIZE, &TableOfContents::OnSize, this);
+  Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &TableOfContents::OnMouseRightDown, this);
+  m_displayedItems->Bind(wxEVT_LIST_BEGIN_DRAG, &TableOfContents::OnDragStart, this);
+  m_displayedItems->Bind(wxEVT_LEFT_UP, &TableOfContents::OnMouseUp, this);
+  m_displayedItems->Bind(wxEVT_MOTION, &TableOfContents::OnMouseMotion, this);
+  m_displayedItems->Bind(wxEVT_MOUSE_CAPTURE_LOST, &TableOfContents::OnMouseCaptureLost, this);
+  Bind(wxEVT_TIMER, &TableOfContents::OnTimer, this);
   SetSizer(box);
   FitInside();
 }

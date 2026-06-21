@@ -55,19 +55,12 @@ GreekSidebar::GreekSidebar(wxWindow *parent,
   m_lowerCasePanel->SetSizer(m_lowercaseSizer);
   m_upperCasePanel->SetSizer(m_uppercaseSizer);
 
-  Connect(wxEVT_SIZE, wxSizeEventHandler(GreekSidebar::OnSize),
-          NULL, this);
-  Connect(wxEVT_MENU,
-          wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
-  m_lowerCasePanel->Connect(wxEVT_MENU,
-                          wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
-  m_upperCasePanel->Connect(wxEVT_MENU,
-                          wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
-  Connect(wxEVT_RIGHT_DOWN,
-          wxMouseEventHandler(GreekSidebar::OnMouseRightDown), NULL, this);
-  GetTargetWindow()->Connect(wxEVT_MENU,
-                             wxCommandEventHandler(GreekSidebar::OnMenu), NULL,
-                             this);
+  Bind(wxEVT_SIZE, &GreekSidebar::OnSize, this);
+  Bind(wxEVT_MENU, &GreekSidebar::OnMenu, this);
+  m_lowerCasePanel->Bind(wxEVT_MENU, &GreekSidebar::OnMenu, this);
+  m_upperCasePanel->Bind(wxEVT_MENU, &GreekSidebar::OnMenu, this);
+  Bind(wxEVT_RIGHT_DOWN, &GreekSidebar::OnMouseRightDown, this);
+  GetTargetWindow()->Bind(wxEVT_MENU, &GreekSidebar::OnMenu, this);
   vbox->Add(m_lowerCasePanel, wxSizerFlags().Expand());
   vbox->Add(m_upperCasePanel, wxSizerFlags().Expand());
   SetSizer(vbox);
@@ -187,15 +180,10 @@ void GreekSidebar::UpdateSymbols() {
       {
         CharButton *button = new CharButton(m_lowerCasePanel, m_worksheet, m_configuration, def);
         m_lowercaseSizer->Add(button, wxSizerFlags().Expand());
-        button->Connect(wxEVT_RIGHT_DOWN,
-                        wxMouseEventHandler(GreekSidebar::OnMouseRightDown), NULL, this);
-        button->Connect(wxEVT_MENU,
-                        wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
-        button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
-                                         wxMouseEventHandler(GreekSidebar::OnMouseRightDown),
-                                         NULL, this);
-        button->GetTextObject()->Connect(wxEVT_MENU,
-                                         wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
+        button->Bind(wxEVT_RIGHT_DOWN, &GreekSidebar::OnMouseRightDown, this);
+        button->Bind(wxEVT_MENU, &GreekSidebar::OnMenu, this);
+        button->GetTextObject()->Bind(wxEVT_RIGHT_DOWN, &GreekSidebar::OnMouseRightDown, this);
+        button->GetTextObject()->Bind(wxEVT_MENU, &GreekSidebar::OnMenu, this);
       }
 
   if(!m_uppercaseSizer->GetChildren().IsEmpty())
@@ -207,15 +195,10 @@ void GreekSidebar::UpdateSymbols() {
       {
         CharButton *button = new CharButton(m_upperCasePanel, m_worksheet, m_configuration, def);
         m_uppercaseSizer->Add(button, wxSizerFlags().Expand());
-        button->Connect(wxEVT_RIGHT_DOWN,
-                        wxMouseEventHandler(GreekSidebar::OnMouseRightDown), NULL, this);
-        button->Connect(wxEVT_MENU,
-                        wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
-        button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
-                                         wxMouseEventHandler(GreekSidebar::OnMouseRightDown),
-                                         NULL, this);
-        button->GetTextObject()->Connect(wxEVT_MENU,
-                                         wxCommandEventHandler(GreekSidebar::OnMenu), NULL, this);
+        button->Bind(wxEVT_RIGHT_DOWN, &GreekSidebar::OnMouseRightDown, this);
+        button->Bind(wxEVT_MENU, &GreekSidebar::OnMenu, this);
+        button->GetTextObject()->Bind(wxEVT_RIGHT_DOWN, &GreekSidebar::OnMouseRightDown, this);
+        button->GetTextObject()->Bind(wxEVT_MENU, &GreekSidebar::OnMenu, this);
       }
 }
 

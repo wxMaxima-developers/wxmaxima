@@ -50,24 +50,17 @@ UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet,
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
   m_initialized = false;
   m_regex = new RegexCtrl(this, wxID_ANY, cfg, "UnicodeSidebar");
-  m_regex->Connect(REGEX_EVENT,
-                   wxCommandEventHandler(UnicodeSidebar::OnRegExEvent), NULL,
-                   this);
+  m_regex->Bind(REGEX_EVENT, &UnicodeSidebar::OnRegExEvent, this);
   m_grid = new wxGrid(this, wxID_ANY);
   m_grid->CreateGrid(0, 3);
   m_grid->BeginBatch();
   box->Add(m_regex, wxSizerFlags().Expand().Proportion(10));
   box->Add(m_grid, wxSizerFlags().Expand().Proportion(100));
-  Connect(wxEVT_PAINT, wxPaintEventHandler(UnicodeSidebar::OnPaint), NULL,
-          this);
-  Connect(wxEVT_SIZE, wxSizeEventHandler(UnicodeSidebar::OnSize), NULL, this);
-  m_grid->Connect(wxEVT_GRID_CELL_LEFT_DCLICK,
-                  wxGridEventHandler(UnicodeSidebar::OnDClick), NULL, this);
-  m_grid->Connect(wxEVT_GRID_CELL_RIGHT_CLICK,
-                  wxGridEventHandler(UnicodeSidebar::OnRightClick), NULL, this);
-  m_grid->Connect(wxEVT_GRID_CELL_CHANGING,
-                  wxGridEventHandler(UnicodeSidebar::OnChangeAttempt), NULL,
-                  this);
+  Bind(wxEVT_PAINT, &UnicodeSidebar::OnPaint, this);
+  Bind(wxEVT_SIZE, &UnicodeSidebar::OnSize, this);
+  m_grid->Bind(wxEVT_GRID_CELL_LEFT_DCLICK, &UnicodeSidebar::OnDClick, this);
+  m_grid->Bind(wxEVT_GRID_CELL_RIGHT_CLICK, &UnicodeSidebar::OnRightClick, this);
+  m_grid->Bind(wxEVT_GRID_CELL_CHANGING, &UnicodeSidebar::OnChangeAttempt, this);
   m_grid->EndBatch();
   SetSizer(box);
   FitInside();
@@ -92,8 +85,7 @@ void UnicodeSidebar::OnRightClick(wxGridEvent &event) {
   if (number.ToLong(&m_charRightClickedOn, 16)) {
     std::unique_ptr<wxMenu> popupMenu(new wxMenu());
     popupMenu->Append(EventIDs::popid_addToSymbols, _("Add to symbols Sidebar"));
-    Connect(EventIDs::popid_addToSymbols, wxEVT_MENU,
-            wxCommandEventHandler(UnicodeSidebar::OnMenu), NULL, this);
+    Bind(wxEVT_MENU, &UnicodeSidebar::OnMenu, this, EventIDs::popid_addToSymbols);
     if(wxWindow::FindFocus())
       wxWindow::FindFocus()->PopupMenu(&*popupMenu);
   }

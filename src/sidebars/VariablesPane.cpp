@@ -57,17 +57,11 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id)
   m_grid->SetColAttr(1, attr1);
   m_grid->SetColLabelValue(1, _("Contents"));
   m_rightClickRow = -1;
-  m_grid->Connect(wxEVT_GRID_CELL_CHANGED,
-                  wxGridEventHandler(Variablespane::OnTextChange), NULL, this);
-  m_grid->Connect(wxEVT_GRID_CELL_CHANGING,
-                  wxGridEventHandler(Variablespane::OnTextChanging), NULL,
-                  this);
-  m_grid->Connect(wxEVT_GRID_CELL_RIGHT_CLICK,
-                  wxGridEventHandler(Variablespane::OnRightClick), NULL, this);
-  m_grid->Connect(wxEVT_MENU, wxCommandEventHandler(Variablespane::InsertMenu),
-                  NULL, this);
-  m_grid->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(Variablespane::OnKey), NULL,
-                  this);
+  m_grid->Bind(wxEVT_GRID_CELL_CHANGED, &Variablespane::OnTextChange, this);
+  m_grid->Bind(wxEVT_GRID_CELL_CHANGING, &Variablespane::OnTextChanging, this);
+  m_grid->Bind(wxEVT_GRID_CELL_RIGHT_CLICK, &Variablespane::OnRightClick, this);
+  m_grid->Bind(wxEVT_MENU, &Variablespane::InsertMenu, this);
+  m_grid->Bind(wxEVT_KEY_DOWN, &Variablespane::OnKey, this);
   //  Connect(wxEVT_CHAR,
   //          wxKeyEventHandler(Variablespane::OnChar),
   //          NULL, this);

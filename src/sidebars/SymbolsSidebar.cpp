@@ -112,15 +112,10 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
     {
       CharButton *button = new CharButton(builtInSymbols, m_worksheet, m_configuration, def);
       builtInSymbolsSizer->Add(button, wxSizerFlags().Expand());
-      button->Connect(wxEVT_RIGHT_DOWN,
-                      wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown), NULL, this);
-      button->Connect(wxEVT_MENU,
-                      wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL, this);
-      button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
-                                       wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown),
-                                       NULL, this);
-      button->GetTextObject()->Connect(wxEVT_MENU,
-                                       wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL, this);
+      button->Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
+      button->Bind(wxEVT_MENU, &SymbolsSidebar::OnMenu, this);
+      button->GetTextObject()->Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
+      button->GetTextObject()->Bind(wxEVT_MENU, &SymbolsSidebar::OnMenu, this);
     }
   
   builtInSymbols->SetSizer(builtInSymbolsSizer);
@@ -131,20 +126,12 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
   AddUserSymbols();
   m_userSymbols->SetSizer(m_userSymbolsSizer);
   vbox->Add(m_userSymbols, wxSizerFlags().Expand());
-  Connect(wxEVT_SIZE, wxSizeEventHandler(SymbolsSidebar::OnSize),
-          NULL, this);
-  Connect(wxEVT_MENU,
-          wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL,
-          this);
-  GetTargetWindow()->Connect(wxEVT_MENU,
-                             wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL,
-                             this);
-  Connect(wxEVT_RIGHT_DOWN,
-          wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
-  builtInSymbols->Connect(wxEVT_RIGHT_DOWN,
-                          wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
-  m_userSymbols->Connect(wxEVT_RIGHT_DOWN,
-                         wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown));
+  Bind(wxEVT_SIZE, &SymbolsSidebar::OnSize, this);
+  Bind(wxEVT_MENU, &SymbolsSidebar::OnMenu, this);
+  GetTargetWindow()->Bind(wxEVT_MENU, &SymbolsSidebar::OnMenu, this);
+  Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
+  builtInSymbols->Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
+  m_userSymbols->Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
   SetSizer(vbox);
   FitInside();
   SetMinSize(wxSize(GetContentScaleFactor() * 50, GetMinSize().y));
@@ -225,15 +212,10 @@ void SymbolsSidebar::AddUserSymbols() {
                                       m_userSymbols, m_worksheet, m_configuration,
                                       {ch, _("A symbol from the configuration dialogue")}, true);
     m_userSymbolButtons.push_back(button);
-    button->Connect(wxEVT_RIGHT_DOWN,
-                    wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown), NULL, this);
-    button->Connect(wxEVT_MENU,
-                    wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL, this);
-    button->GetTextObject()->Connect(wxEVT_RIGHT_DOWN,
-                                     wxMouseEventHandler(SymbolsSidebar::OnMouseRightDown),
-                                     NULL, this);
-    button->GetTextObject()->Connect(wxEVT_MENU,
-                                     wxCommandEventHandler(SymbolsSidebar::OnMenu), NULL, this);
+    button->Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
+    button->Bind(wxEVT_MENU, &SymbolsSidebar::OnMenu, this);
+    button->GetTextObject()->Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
+    button->GetTextObject()->Bind(wxEVT_MENU, &SymbolsSidebar::OnMenu, this);
     m_userSymbolsSizer->Add(button, wxSizerFlags().Expand());
   }
   m_userSymbols_Last = m_configuration->SymbolPaneAdditionalChars();
