@@ -670,9 +670,7 @@ private:
   wxTimer m_caretTimer;
   //! True if no changes have to be saved.
   bool m_saved = true;
-public:
   std::vector<wxString> m_completions;
-private:
   bool m_autocompleteTemplates = true;
   AutocompletePopup *m_autocompletePopup;
 
@@ -740,7 +738,10 @@ public:
         m_findDialog->SetFocus();
     }
   //! The storage for the autocompletion feature
+  AutoComplete &GetAutocomplete() { return m_autocomplete; }
+private:
   AutoComplete m_autocomplete;
+public:
 
   Configuration *GetConfig() const { return m_configuration; }
 

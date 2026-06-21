@@ -713,7 +713,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Connect(EventIDs::menu_export_html, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
   if(GetWorksheet())
-    GetWorksheet()->m_autocomplete.Connect(NEW_DEMO_FILES_EVENT,
+    GetWorksheet()->GetAutocomplete().Connect(NEW_DEMO_FILES_EVENT,
                                            wxCommandEventHandler(wxMaxima::OnNewDemoFiles),
                                            NULL, this);
   Connect(TOC_UPDATE_NEEDED_EVENT,
@@ -1905,7 +1905,7 @@ void wxMaxima::OnNewDemoFiles(wxCommandEvent &WXUNUSED(event))
   while(m_demo_sub->GetMenuItemCount() > 0)
       m_demo_sub->Delete(m_demo_sub->FindItemByPosition(0));
 
-  auto filesList = GetWorksheet()->m_autocomplete.GetDemoFilesList();
+  auto filesList = GetWorksheet()->GetAutocomplete().GetDemoFilesList();
   if(filesList.size() < 1)
     return;
 
@@ -1990,7 +1990,7 @@ wxMaxima::~wxMaxima() {
   if(m_configuration.GetDebugmode() && (!Dirstructure::Get()->UserConfDir().IsEmpty()))
     {
       std::unordered_map<wxString, std::int_fast8_t, wxStringHash> knownWords;
-      for(const auto &i : GetWorksheet()->m_autocomplete.GetSymbolList())
+      for(const auto &i : GetWorksheet()->GetAutocomplete().GetSymbolList())
           knownWords[i] |= 1;
       for(const auto &i : GetWorksheet()->m_maximaManual.GetHelpfileAnchors())
         knownWords[i.first] |= 2;
