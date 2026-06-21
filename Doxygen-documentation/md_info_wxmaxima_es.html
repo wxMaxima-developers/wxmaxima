@@ -811,7 +811,7 @@ Output rendering.</h2>
 sidebar") and outputs the resulting formulas nicely rendered, e.g. pretty Matrices, Square root signs, fractions, etc.</p>
 <p><code>set_display('ascii)</code> causes <a class="el" href="classwxMaxima.html">wxMaxima</a> to output formulas as in command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> - as ASCII-Art.</p>
 <p><code>set_display('none)</code> causes 'one-line' ASCII results - the same as the command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command <code>display2d:false;</code> does.</p>
-<h1><a class="anchor" id="autotoc_md184"></a>
+<h1><a class="anchor" id="autotoc_md185"></a>
 Menú de ayuda</h1>
 <p>El menú de ayuda de <a class="el" href="classwxMaxima.html">wxMaxima</a> proporciona acceso para el manual de <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> y <a class="el" href="classwxMaxima.html">wxMaxima</a>, consejos, algunos ejemplos de hojas de trabajo y en la línea de instrucción de <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> incluyó demos (la instrucción <code>demo()</code>).</p>
 <p>Infórmese, que las demos escriben:</p>
@@ -820,19 +820,19 @@ Menú de ayuda</h1>
 <p>(Eso puede ser configurado en el menú Configurar→Hoja de trabajo→"Teclas
 directas para enviar instrucciones a Maxima".)</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md185"></a>
+<h1><a class="anchor" id="autotoc_md186"></a>
 Solución de problemas</h1>
-<h2><a class="anchor" id="autotoc_md186"></a>
+<h2><a class="anchor" id="autotoc_md187"></a>
 No se puede conectar a &lt;em&gt;Maxima&lt;/em&gt;</h2>
 <p>Desde <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (el programa que hace las matemáticas actuales) y <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (proporcionando el interfaz de usuario de uso-fácil) con programas separados que se comunican por los medios de una conexión de red local. Por lo tanto la causa más probable es que esta conexión es algo que no funciona. Por ejemplo un cortafuegos pudo configurarse de una manera que no tan solo impida conexiones no autorizadas desde Internet (y quizá intercepta algunas conexiones de Internet, también), pero además bloquea la comunicación de inter-procesos dentro del mismo equipo. Nótese que desde <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> se está ejecutando por un proceso Lisp la comunicación del proceso que está bloqueado desde unos no necesariamente tiene que ser nombrado como "maxima". Los nombres comunes del programa que abre la conexión de red sería sbcl, gcl, ccl, lisp.exe o nombres similares.</p>
 <p>En las máquinas Un*x otra razón posible sería que la red del bucle invertido que proporciona conexiones de red entre dos programas dentro del mismo equipo no está configurado apropiadamente.</p>
-<h2><a class="anchor" id="autotoc_md187"></a>
+<h2><a class="anchor" id="autotoc_md188"></a>
 Cómo guardar datos desde un archivo .wxmx defectuoso</h2>
 <p>Internamente muchos formatos modernos basados en XML están normalmente en archivos zip. <em>WxMaxima</em> no activa la compresión, por lo que el contenido de los archivos <code>.wxmx</code> pueden verse en cualquier editor de texto.</p>
 <p>Si la firma zip en el final del archivo aún está intacta tras renombrar un archivo <code>.wxmx</code> estropeado a <code>.zip</code> muchos sistemas operativos proporcionarán una manera de extraer cualquier porción de información que esté almacenada dentro de ésta. Esto puede ser hecho cuando hay la necesitad de recuperar los archivos de imagen original desde un documento de procesamiento de texto. Si la firma zip no está intacta que no necesita estar el final del mundo: si <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> al guardar ha detectado que algo es erróneo habrá un archivo <code>.wxmx~</code> cuyo contenido quizá ayude.</p>
 <p><a class="el" href="classE.html">E</a> incluso si no hay un archivo: el archivo <code>.wxmx</code> es un formato de contenedor y la porción XML es almacenada sin comprimir. Es posible renombrar el archivo <code>.wxmx</code> a un archivo <code>.txt</code> y utilizar un editor de texto para recuperar la porción XML del contenido del archivo (se inicia con <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> y termina con <code>&lt;/wxMaximaDocument&gt;</code>. Antes y después de ese texto verá algún contenido binario no legible dentro del editor del texto).</p>
 <p>Si un archivo de texto conteniendo solamente estos contenidos (p.ej. copiar y pegar este texto a un archivo nuevo) es guardado como un archivo terminando en <code>.xml</code>, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> conocerá como recuperar el texto desde el documento.</p>
-<h2><a class="anchor" id="autotoc_md188"></a>
+<h2><a class="anchor" id="autotoc_md189"></a>
 Deseo algo del informe de depuración para ser desplegada sobre la</h2>
 <p>pantalla antes de que mi instrucción haya finalizado</p>
 <p>Normalmente <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> espera a la fórmula 2<a class="el" href="classD.html">D</a> completa para ser transferida antes que comenzar a configurar el conjunto del tipo. Esto guarda tiempo para crear muchos intentos para tipos de teclas para solo ecuación parcialmente completada. Hay una instrucción <code>disp</code>, por lo que, eso proporcionará salida de depuración inmediatamente y sin esperar a que la instrucción de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> finalice:</p>
@@ -844,7 +844,7 @@ Deseo algo del informe de depuración para ser desplegada sobre la</h2>
 <div class="line">   ?sleep(3)</div>
 <div class="line">)$</div>
 </div><!-- fragment --><p>Alternativamente uno puede buscar la instrucción <code>wxstatusbar()</code> arriba.</p>
-<h2><a class="anchor" id="autotoc_md189"></a>
+<h2><a class="anchor" id="autotoc_md190"></a>
 El tramado solamente muestra una cobertura de sobre vacío cerrado con un</h2>
 <p>mensaje de error</p>
 <p>Esto significa que <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> no pudo leer el archivo <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> que fue proporcionado a la instrucción <em>Gnuplot</em> para crear.</p>
