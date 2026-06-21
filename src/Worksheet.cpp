@@ -164,50 +164,39 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   //  Connect(wxEVT_GESTURE_ZOOM, wxZoomGestureEventHandler(Worksheet::OnZoom),
   //        NULL, this);
 #endif
-  Connect(SIDEBARKEYEVENT, wxCommandEventHandler(Worksheet::OnSidebarKey), NULL,
-          this);
-  Connect(wxEVT_ERASE_BACKGROUND,
-          wxEraseEventHandler(Worksheet::EraseBackground));
-  Connect(EventIDs::popid_autocomplete_keyword1, EventIDs::popid_autocomplete_keyword1 + EventIDs::NumberOfAutocompleteKeywords - 1,
-          wxEVT_MENU,
-          wxCommandEventHandler(Worksheet::OnComplete));
-  Connect(wxEVT_SIZE, wxSizeEventHandler(Worksheet::OnSize));
-  Connect(wxEVT_PAINT, wxPaintEventHandler(Worksheet::OnPaint));
-  Connect(wxEVT_MOUSE_CAPTURE_LOST,
-          wxMouseCaptureLostEventHandler(Worksheet::OnMouseCaptureLost));
+  Bind(SIDEBARKEYEVENT, &Worksheet::OnSidebarKey, this);
+  Bind(wxEVT_ERASE_BACKGROUND, &Worksheet::EraseBackground, this);
+  Bind(wxEVT_MENU, &Worksheet::OnComplete, this,
+       EventIDs::popid_autocomplete_keyword1,
+       EventIDs::popid_autocomplete_keyword1 + EventIDs::NumberOfAutocompleteKeywords - 1);
+  Bind(wxEVT_SIZE, &Worksheet::OnSize, this);
+  Bind(wxEVT_PAINT, &Worksheet::OnPaint, this);
+  Bind(wxEVT_MOUSE_CAPTURE_LOST, &Worksheet::OnMouseCaptureLost, this);
   if(reactToEvents)
     {
-      Connect(wxEVT_LEFT_UP, wxMouseEventHandler(Worksheet::OnMouseLeftUp));
-      Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(Worksheet::OnMouseLeftDown));
-      Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(Worksheet::OnMouseRightDown));
-      Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(Worksheet::OnDoubleClick));
-      Connect(wxEVT_MIDDLE_UP, wxMouseEventHandler(Worksheet::OnMouseMiddleUp));
-      Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(Worksheet::OnKeyDown));
-      Connect(wxEVT_CHAR, wxKeyEventHandler(Worksheet::OnChar));
+      Bind(wxEVT_LEFT_UP, &Worksheet::OnMouseLeftUp, this);
+      Bind(wxEVT_LEFT_DOWN, &Worksheet::OnMouseLeftDown, this);
+      Bind(wxEVT_RIGHT_DOWN, &Worksheet::OnMouseRightDown, this);
+      Bind(wxEVT_LEFT_DCLICK, &Worksheet::OnDoubleClick, this);
+      Bind(wxEVT_MIDDLE_UP, &Worksheet::OnMouseMiddleUp, this);
+      Bind(wxEVT_KEY_DOWN, &Worksheet::OnKeyDown, this);
+      Bind(wxEVT_CHAR, &Worksheet::OnChar, this);
     }
-  Connect(wxEVT_MOTION, wxMouseEventHandler(Worksheet::OnMouseMotion));
-  Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(Worksheet::OnMouseEnter));
-  Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(Worksheet::OnMouseExit));
-  Connect(wxEVT_MOUSEWHEEL, wxMouseEventHandler(Worksheet::OnMouseWheel));
-  Connect(wxEVT_TIMER, wxTimerEventHandler(Worksheet::OnTimer));
-  Connect(wxEVT_ERASE_BACKGROUND,
-          wxEraseEventHandler(Worksheet::OnEraseBackground));
-  Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(Worksheet::OnKillFocus));
-  Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(Worksheet::OnSetFocus));
-  Connect(wxEVT_SCROLL_CHANGED,
-          wxScrollEventHandler(Worksheet::OnScrollChanged));
-  Connect(wxEVT_SCROLL_LINEUP,
-          wxScrollWinEventHandler(Worksheet::OnScrollEvent));
-  Connect(wxEVT_SCROLL_LINEDOWN,
-          wxScrollWinEventHandler(Worksheet::OnScrollEvent));
-  Connect(wxEVT_SCROLL_PAGEUP,
-          wxScrollWinEventHandler(Worksheet::OnScrollEvent));
-  Connect(wxEVT_SCROLL_PAGEDOWN,
-          wxScrollWinEventHandler(Worksheet::OnScrollEvent));
-  Connect(wxEVT_SCROLL_THUMBRELEASE,
-          wxScrollWinEventHandler(Worksheet::OnScrollEvent));
-  Connect(wxEVT_SCROLL_THUMBTRACK,
-          wxScrollWinEventHandler(Worksheet::OnScrollEvent));
+  Bind(wxEVT_MOTION, &Worksheet::OnMouseMotion, this);
+  Bind(wxEVT_ENTER_WINDOW, &Worksheet::OnMouseEnter, this);
+  Bind(wxEVT_LEAVE_WINDOW, &Worksheet::OnMouseExit, this);
+  Bind(wxEVT_MOUSEWHEEL, &Worksheet::OnMouseWheel, this);
+  Bind(wxEVT_TIMER, &Worksheet::OnTimer, this);
+  Bind(wxEVT_ERASE_BACKGROUND, &Worksheet::OnEraseBackground, this);
+  Bind(wxEVT_KILL_FOCUS, &Worksheet::OnKillFocus, this);
+  Bind(wxEVT_SET_FOCUS, &Worksheet::OnSetFocus, this);
+  Bind(wxEVT_SCROLL_CHANGED, &Worksheet::OnScrollChanged, this);
+  Bind(wxEVT_SCROLLWIN_LINEUP, &Worksheet::OnScrollEvent, this);
+  Bind(wxEVT_SCROLLWIN_LINEDOWN, &Worksheet::OnScrollEvent, this);
+  Bind(wxEVT_SCROLLWIN_PAGEUP, &Worksheet::OnScrollEvent, this);
+  Bind(wxEVT_SCROLLWIN_PAGEDOWN, &Worksheet::OnScrollEvent, this);
+  Bind(wxEVT_SCROLLWIN_THUMBRELEASE, &Worksheet::OnScrollEvent, this);
+  Bind(wxEVT_SCROLLWIN_THUMBTRACK, &Worksheet::OnScrollEvent, this);
   CallAfter([this] {m_configuration->SetCanvasSize(GetClientSize());});
 }
 
