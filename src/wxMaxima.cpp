@@ -412,32 +412,21 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
 
   m_autoSaveTimer.SetOwner(this, AUTO_SAVE_TIMER_ID);
-  Connect(wxEVT_SIZE, wxSizeEventHandler(wxMaxima::OnSize),
-          NULL, this);
-  Connect(wxEVT_MOVE, wxMoveEventHandler(wxMaxima::OnMove),
-          NULL, this);
-  Connect(wxEVT_MAXIMIZE, wxCommandEventHandler(wxMaxima::OnMaximize),
-          NULL, this);
+  Bind(wxEVT_SIZE, &wxMaxima::OnSize, this);
+  Bind(wxEVT_MOVE, &wxMaxima::OnMove, this);
+  Bind(wxEVT_MAXIMIZE, &wxMaxima::OnMaximize, this);
 
-  Connect(wxEVT_TIMER, wxTimerEventHandler(wxMaxima::OnTimerEvent), NULL, this);
+  Bind(wxEVT_TIMER, &wxMaxima::OnTimerEvent, this);
 
   if(m_wizard)
     {
-      m_wizard->GetOKButton()->Connect(wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardOK),
-                                       NULL, this);
-      m_wizard->GetAbortButton()->Connect(wxEVT_BUTTON,
-                                          wxCommandEventHandler(wxMaxima::OnWizardAbort),
-                                          NULL, this);
-      m_wizard->GetInsertButton()->Connect(wxEVT_BUTTON,
-                                           wxCommandEventHandler(wxMaxima::OnWizardInsert), NULL,
-                                           this);
-      m_wizard->Connect(wxEVT_BUTTON,
-                        wxCommandEventHandler(wxMaxima::OnWizardHelpButton), NULL,
-                        this);
+      m_wizard->GetOKButton()->Bind(wxEVT_BUTTON, &wxMaxima::OnWizardOK, this);
+      m_wizard->GetAbortButton()->Bind(wxEVT_BUTTON, &wxMaxima::OnWizardAbort, this);
+      m_wizard->GetInsertButton()->Bind(wxEVT_BUTTON, &wxMaxima::OnWizardInsert, this);
+      m_wizard->Bind(wxEVT_BUTTON, &wxMaxima::OnWizardHelpButton, this);
     }
 #ifdef wxHAS_POWER_EVENTS
-  Connect(wxEVT_POWER_SUSPENDED, wxPowerEventHandler(wxMaxima::OnPowerEvent),
-          NULL, this);
+  Bind(wxEVT_POWER_SUSPENDED, &wxMaxima::OnPowerEvent, this);
 #endif
 
 #if wxUSE_DRAG_AND_DROP
@@ -447,22 +436,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 
   StatusMaximaBusy(StatusBar::MaximaStatus::disconnected);
 
-  m_statusBar->GetNetworkStatusElement()->Connect(
-                                                  wxEVT_LEFT_DCLICK,
-                                                  wxCommandEventHandler(wxMaxima::NetworkDClick),
-                                                  NULL,
-                                                  this);
-  m_statusBar->GetMaximaStatusElement()->Connect(
-                                                 wxEVT_LEFT_DCLICK,
-                                                 wxCommandEventHandler(wxMaxima::MaximaDClick),
-                                                 NULL,
-                                                 this);
+  m_statusBar->GetNetworkStatusElement()->Bind(wxEVT_LEFT_DCLICK, &wxMaxima::NetworkDClick, this);
+  m_statusBar->GetMaximaStatusElement()->Bind(wxEVT_LEFT_DCLICK, &wxMaxima::MaximaDClick, this);
 
-  m_statusBar->GetStatusTextElement()->Connect(
-                                               wxEVT_LEFT_DCLICK,
-                                               wxCommandEventHandler(wxMaxima::StatusMsgDClick),
-                                               NULL,
-                                               this);
+  m_statusBar->GetStatusTextElement()->Bind(wxEVT_LEFT_DCLICK, &wxMaxima::StatusMsgDClick, this);
 
   m_fileToOpen = filename;
   if (!initialWorksheetContents.IsEmpty()) {
@@ -486,1381 +463,697 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
       GetWorksheet()->SetFocus();
   });
 
-  Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(wxMaxima::SliderEvent),
-          NULL, this);
-  Connect(wxID_CLOSE, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
-          NULL, this);
-  Connect(EventIDs::menu_check_updates, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(EventIDs::popid_copy_image, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_copy_animation, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_copy_svg, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_copy_emf, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_copy_rtf, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_insert_text, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::popid_insert_title, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::popid_insert_section, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::popid_insert_subsection, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::popid_insert_subsubsection, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::popid_insert_heading5, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::popid_insert_heading6, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::popid_popup_gnuplot, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_show_cellbrackets, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_print_cellbrackets, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_delete, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_simplify, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_expand, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_solve, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::enable_unicodePane, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_subst, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_plot2d, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_plot3d, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_diff, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_integrate, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_float, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_copy_matlab, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_copy_tex, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::EventIDs::popid_copy_text, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_image, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_animation_save, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_animation_start, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
-  Connect(EventIDs::button_integrate, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::button_diff, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::button_solve, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::button_solve_ode, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::button_sum, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::button_expand, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::button_factor, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::button_taylor, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::button_limit, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::button_ratsimp, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::button_trigexpand, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::button_trigreduce, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::button_trigsimp, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::button_product, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::button_radcan, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::button_subst, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::button_plot2, wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::PlotMenu),
-          NULL, this);
-  Connect(EventIDs::button_plot3, wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::PlotMenu),
-          NULL, this);
-  Connect(EventIDs::button_map, wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::MatrixMenu),
-          NULL, this);
-  Connect(EventIDs::menu_map, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MatrixMenu),
-          NULL, this);
-  Connect(EventIDs::menu_map_lambda, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_row, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_col, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_row_list, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_col_list, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_csv2mat, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MatrixMenu),
-          NULL, this);
-  Connect(EventIDs::menu_mat2csv, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MatrixMenu),
-          NULL, this);
-  Connect(EventIDs::menu_submatrix_rows, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_submatrix_columns, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_multiply, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_exponent, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_hadamard_product, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_hadamard_exponent, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_copymatrix, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_loadLapack, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_dgeev_eigenvaluesOnly, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_dgeev, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_zgeev_eigenvaluesOnly, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_zgeev, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_dgeqrf, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_dgesv, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_dgesvd, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::EventIDs::menu_matrix_dgesvd_valuesOnly, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_dlange_max, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_dlange_one, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_dlange_inf, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_dlange_frobenius, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_zlange_max, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_zlange_one, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_zlange_inf, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_zlange_frobenius, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_matrix_zheev, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::button_rectform, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::button_trigrat, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_polarform, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(ToolBar::menu_restart_id, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(wxID_EXIT, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
-          NULL, this);
-  Connect(wxID_ABOUT, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
-          NULL, this);
-  Connect(EventIDs::menu_license, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
-          NULL, this);
-  Connect(EventIDs::menu_changelog, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
-          NULL, this);
-  Connect(wxID_SAVE, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
-          NULL, this);
-  Connect(wxID_SAVEAS, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
-          NULL, this);
-  Connect(EventIDs::menu_load_id, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
-          NULL, this);
-  Connect(EventIDs::menu_functions, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_variables, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_arrays, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_macros, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_labels, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_myoptions, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_rules, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_aliases, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_structs, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_dependencies, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_gradefs, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_let_rule_packages, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(wxID_PREFERENCES, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_sconsole_id, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
-  Connect(EventIDs::menu_export_html, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
+  Bind(wxEVT_SCROLL_CHANGED, &wxMaxima::SliderEvent, this);
+  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_CLOSE);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_check_updates);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_image);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_animation);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_svg);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_emf);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_rtf);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_text);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_title);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_section);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_subsection);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_subsubsection);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_heading5);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_heading6);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_popup_gnuplot);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_show_cellbrackets);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_print_cellbrackets);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_delete);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_simplify);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_expand);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_solve);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::enable_unicodePane);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_subst);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_plot2d);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_plot3d);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_diff);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_integrate);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_float);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_matlab);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_tex);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::EventIDs::popid_copy_text);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_image);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_animation_save);
+  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::popid_animation_start);
+  Bind(wxEVT_BUTTON, &wxMaxima::CalculusMenu, this, EventIDs::button_integrate);
+  Bind(wxEVT_BUTTON, &wxMaxima::CalculusMenu, this, EventIDs::button_diff);
+  Bind(wxEVT_BUTTON, &wxMaxima::EquationsMenu, this, EventIDs::button_solve);
+  Bind(wxEVT_BUTTON, &wxMaxima::EquationsMenu, this, EventIDs::button_solve_ode);
+  Bind(wxEVT_BUTTON, &wxMaxima::CalculusMenu, this, EventIDs::button_sum);
+  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_expand);
+  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_factor);
+  Bind(wxEVT_BUTTON, &wxMaxima::CalculusMenu, this, EventIDs::button_taylor);
+  Bind(wxEVT_BUTTON, &wxMaxima::CalculusMenu, this, EventIDs::button_limit);
+  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_ratsimp);
+  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_trigexpand);
+  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_trigreduce);
+  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_trigsimp);
+  Bind(wxEVT_BUTTON, &wxMaxima::CalculusMenu, this, EventIDs::button_product);
+  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_radcan);
+  Bind(wxEVT_BUTTON, &wxMaxima::MaximaMenu, this, EventIDs::button_subst);
+  Bind(wxEVT_BUTTON, &wxMaxima::PlotMenu, this, EventIDs::button_plot2);
+  Bind(wxEVT_BUTTON, &wxMaxima::PlotMenu, this, EventIDs::button_plot3);
+  Bind(wxEVT_BUTTON, &wxMaxima::MatrixMenu, this, EventIDs::button_map);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_map);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_map_lambda);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_row);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_col);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_row_list);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_col_list);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_csv2mat);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_mat2csv);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_submatrix_rows);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_submatrix_columns);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_multiply);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_exponent);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_hadamard_product);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_hadamard_exponent);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_copymatrix);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_loadLapack);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dgeev_eigenvaluesOnly);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dgeev);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zgeev_eigenvaluesOnly);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zgeev);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dgeqrf);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dgesv);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dgesvd);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::EventIDs::menu_matrix_dgesvd_valuesOnly);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dlange_max);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dlange_one);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dlange_inf);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dlange_frobenius);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zlange_max);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zlange_one);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zlange_inf);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zlange_frobenius);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zheev);
+  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_rectform);
+  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_trigrat);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_polarform);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, ToolBar::menu_restart_id);
+  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_EXIT);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, wxID_ABOUT);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_license);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_changelog);
+  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_SAVE);
+  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_SAVEAS);
+  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_load_id);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_functions);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_variables);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_arrays);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_macros);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_labels);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_myoptions);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_rules);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_aliases);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_structs);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_dependencies);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_gradefs);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_let_rule_packages);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_PREFERENCES);
+  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_sconsole_id);
+  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_export_html);
   if(GetWorksheet())
-    GetWorksheet()->GetAutocomplete().Connect(NEW_DEMO_FILES_EVENT,
-                                           wxCommandEventHandler(wxMaxima::OnNewDemoFiles),
-                                           NULL, this);
-  Connect(TOC_UPDATE_NEEDED_EVENT,
-          wxCommandEventHandler(wxMaxima::OnUpdateTOCEvent),
-          NULL, this);
-  Connect(wxID_HELP, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
-          NULL, this);
-  Connect(EventIDs::menu_help_demo_for_command, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::HelpMenu),
-          NULL, this);
-  Connect(EventIDs::menu_help_maxima_homepage, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::HelpMenu),
-          NULL, this);
-  Connect(EventIDs::menu_help_tutorials, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(EventIDs::menu_goto_url, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
-          NULL, this);
-  Connect(EventIDs::menu_bug_report, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(EventIDs::menu_build_info, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(EventIDs::menu_interrupt_id, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::Interrupt), NULL, this);
-  Connect(wxID_OPEN, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
-          NULL, this);
-  Connect(EventIDs::menu_batch_id, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
-          NULL, this);
-  Connect(EventIDs::menu_compare_files, wxEVT_MENU, wxCommandEventHandler(wxMaxima::FileMenu),
-          NULL, this);
-  Connect(EventIDs::menu_ratsimp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_radsimp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_expand, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_expandwrt, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::EventIDs::menu_expandwrt_denom, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_scsimp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_xthru, wxEVT_MENU, wxCommandEventHandler(wxMaxima::SimplifyMenu),
-          NULL, this);
-  Connect(EventIDs::menu_factor, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_horner, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_collapse, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_optimize, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_mainvar, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_scanmapfactor, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_gfactor, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_trigsimp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_trigexpand, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_trigreduce, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_rectform, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_demoivre, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_num_out, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_stringdisp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_num_domain, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_to_float, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_rat, wxEVT_MENU, wxCommandEventHandler(wxMaxima::NumericalMenu),
-          NULL, this);
-  Connect(EventIDs::menu_rationalize, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_guess_exact_value, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_to_bfloat, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_to_numer, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::popid_special_constant_percent, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::popid_changeasterisk, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::popid_hideasterisk, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_exponentialize, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_invert_mat, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_determinant, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_rank, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MatrixMenu),
-          NULL, this);
-  Connect(EventIDs::menu_eigen, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MatrixMenu),
-          NULL, this);
-  Connect(EventIDs::menu_eigvect, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MatrixMenu),
-          NULL, this);
-  Connect(EventIDs::menu_adjoint_mat, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_transpose, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_set_precision, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_set_displayprecision, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_engineeringFormat, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_engineeringFormatSetup, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_quad_qag, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_quad_qags, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_quad_qagi, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_quad_qawc, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_quad_qawf_sin, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_quad_qawf_cos, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_quad_qawo_sin, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_quad_qawo_cos, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_quad_qaws1, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_quad_qaws2, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_quad_qaws3, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_quad_qaws4, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
-  Connect(EventIDs::menu_quad_qagp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
+    GetWorksheet()->GetAutocomplete().Bind(NEW_DEMO_FILES_EVENT, &wxMaxima::OnNewDemoFiles, this);
+  Bind(TOC_UPDATE_NEEDED_EVENT, &wxMaxima::OnUpdateTOCEvent, this);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, wxID_HELP);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_help_demo_for_command);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_help_maxima_homepage);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_help_tutorials);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_goto_url);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_bug_report);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_build_info);
+  Bind(wxEVT_MENU, &wxMaxima::Interrupt, this, EventIDs::menu_interrupt_id);
+  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_OPEN);
+  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_batch_id);
+  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_compare_files);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_ratsimp);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_radsimp);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_expand);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_expandwrt);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::EventIDs::menu_expandwrt_denom);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_scsimp);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_xthru);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_factor);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_horner);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_collapse);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_optimize);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_mainvar);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_scanmapfactor);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_gfactor);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_trigsimp);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_trigexpand);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_trigreduce);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_rectform);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_demoivre);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_num_out);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_stringdisp);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_num_domain);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_to_float);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_rat);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_rationalize);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_guess_exact_value);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_to_bfloat);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_to_numer);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::popid_special_constant_percent);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::popid_changeasterisk);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::popid_hideasterisk);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_exponentialize);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_invert_mat);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_determinant);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_rank);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_eigen);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_eigvect);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_adjoint_mat);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_transpose);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_set_precision);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_set_displayprecision);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_engineeringFormat);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_engineeringFormatSetup);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_quad_qag);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_quad_qags);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_quad_qagi);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_quad_qawc);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_quad_qawf_sin);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_quad_qawf_cos);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_quad_qawo_sin);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_quad_qawo_cos);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_quad_qaws1);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_quad_qaws2);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_quad_qaws3);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_quad_qaws4);
+  Bind(wxEVT_MENU, &wxMaxima::NumericalMenu, this, EventIDs::menu_quad_qagp);
 
-  Connect(EventIDs::menu_talg, wxEVT_MENU, wxCommandEventHandler(wxMaxima::SimplifyMenu),
-          NULL, this);
-  Connect(EventIDs::menu_tellrat, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_modulus, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_allroots, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_bfallroots, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_realroots, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_solve, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_solve_to_poly, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_solve_num, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_solve_ode, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_map_mat, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MatrixMenu),
-          NULL, this);
-  Connect(EventIDs::menu_enter_mat, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_cpoly, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MatrixMenu),
-          NULL, this);
-  Connect(EventIDs::menu_genmatrix, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_solve_lin, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_solve_algsys, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_eliminate, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_clear_var, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_kill, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_clear_fun, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_ivp_1, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_ivp_2, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_bvp, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EquationsMenu),
-          NULL, this);
-  Connect(EventIDs::menu_bvp, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EquationsMenu),
-          NULL, this);
-  Connect(EventIDs::menu_rk, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EquationsMenu),
-          NULL, this);
-  Connect(EventIDs::menu_fun_def, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_gensym, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_divide, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::menu_gcd, wxEVT_MENU, wxCommandEventHandler(wxMaxima::CalculusMenu),
-          NULL, this);
-  Connect(EventIDs::menu_lcm, wxEVT_MENU, wxCommandEventHandler(wxMaxima::CalculusMenu),
-          NULL, this);
-  Connect(EventIDs::menu_continued_fraction, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::menu_partfrac, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::menu_risch, wxEVT_MENU, wxCommandEventHandler(wxMaxima::CalculusMenu),
-          NULL, this);
-  Connect(EventIDs::menu_integrate, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::menu_laplace, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::menu_ilt, wxEVT_MENU, wxCommandEventHandler(wxMaxima::CalculusMenu),
-          NULL, this);
-  Connect(EventIDs::menu_diff, wxEVT_MENU, wxCommandEventHandler(wxMaxima::CalculusMenu),
-          NULL, this);
-  Connect(EventIDs::menu_taylor, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::menu_powerseries, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::menu_fourier, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::menu_limit, wxEVT_MENU, wxCommandEventHandler(wxMaxima::CalculusMenu),
-          NULL, this);
-  Connect(EventIDs::menu_lbfgs, wxEVT_MENU, wxCommandEventHandler(wxMaxima::CalculusMenu),
-          NULL, this);
-  Connect(EventIDs::menu_gen_mat, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MatrixMenu),
-          NULL, this);
-  Connect(EventIDs::menu_gen_mat_lambda, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_sum, wxEVT_MENU, wxCommandEventHandler(wxMaxima::CalculusMenu),
-          NULL, this);
-  Connect(EventIDs::menu_maximahelp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(EventIDs::menu_wxmaximahelp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(EventIDs::menu_example, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
-          NULL, this);
-  Connect(EventIDs::menu_apropos, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
-          NULL, this);
-  Connect(EventIDs::menu_wxmaxima_uses_help_sidebar, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(EventIDs::menu_wxmaxima_uses_help_browser, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(EventIDs::menu_maxima_uses_html_help, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(EventIDs::menu_maxima_uses_internal_help, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(EventIDs::menu_maxima_uses_wxmaxima_help, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(EventIDs::menu_show_tip, wxEVT_MENU, wxCommandEventHandler(wxMaxima::HelpMenu),
-          NULL, this);
-  Connect(EventIDs::menu_trigrat, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_solve_de, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_atvalue, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_lhs, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EquationsMenu),
-          NULL, this);
-  Connect(EventIDs::menu_rhs, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EquationsMenu),
-          NULL, this);
-  Connect(EventIDs::menu_construct_fraction, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::menu_sum, wxEVT_MENU, wxCommandEventHandler(wxMaxima::CalculusMenu),
-          NULL, this);
-  Connect(EventIDs::menu_product, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::menu_change_var, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
-  Connect(EventIDs::menu_time, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_factsimp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_factcomb, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_realpart, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_imagpart, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_nouns, wxEVT_MENU, wxCommandEventHandler(wxMaxima::SimplifyMenu),
-          NULL, this);
-  Connect(EventIDs::menu_simpsum, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_subst, wxEVT_MENU, wxCommandEventHandler(wxMaxima::SimplifyMenu),
-          NULL, this);
-  Connect(EventIDs::menu_psubst, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_ratsubst, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_fullratsubst, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_at, wxEVT_MENU, wxCommandEventHandler(wxMaxima::SimplifyMenu),
-          NULL, this);
-  Connect(EventIDs::menu_substinpart, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_opsubst, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_logcontract, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_logexpand, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_logexpand, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_logexpand_false, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_logexpand_true, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_logexpand_all, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_logexpand_super, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::gp_plot2, wxEVT_MENU, wxCommandEventHandler(wxMaxima::PlotMenu), NULL,
-          this);
-  Connect(EventIDs::gp_plot3, wxEVT_MENU, wxCommandEventHandler(wxMaxima::PlotMenu), NULL,
-          this);
-  Connect(EventIDs::menu_animationautostart, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PlotMenu), NULL, this);
-  Connect(EventIDs::menu_animationframerate, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PlotMenu), NULL, this);
-  Connect(EventIDs::menu_plot_format, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PlotMenu), NULL, this);
-  Connect(EventIDs::menu_soft_restart, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs:: menu_kill_dependencies, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_kill_values, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_kill_functions, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_kill_arrays, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_kill_myoptions, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_kill_rules, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_kill_aliases, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_kill_structures, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_kill_labels, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_kill_gradefs, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_kill_props, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_kill_macros, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_kill_let_rule_packages, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_garbage_collect, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_room, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_jumptoerror, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_display, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_pade, wxEVT_MENU, wxCommandEventHandler(wxMaxima::CalculusMenu),
-          NULL, this);
-  Connect(EventIDs::menu_add_path, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_copy_uuid, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_jump_to_uuid, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
-  Connect(wxID_COPY, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(EventIDs::menu_copy_text_from_worksheet, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_copy_tex_from_worksheet, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_copy_matlab_from_worksheet, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_copy_mathml, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(wxID_UNDO, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(wxID_UNDO, wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(wxID_REDO, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(wxID_REDO, wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(EventIDs::menu_texform, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_grind, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_debugmode_lisp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_debugmode_all, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_debugmode_off, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_for, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_while, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_block, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_block_noLocal, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_local, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_return, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_trace, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_lambda, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_quotequote, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_quote, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_quoteblock, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_def_fun, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_def_macro, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_def_variable, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_compile, wxEVT_MENU, wxCommandEventHandler(wxMaxima::MaximaMenu),
-          NULL, this);
-  Connect(EventIDs::menu_paramType, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_structdef, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_structnew, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_structuse, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_saveLisp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_loadLisp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_maximatostring, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringtomaxima, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_talg);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_tellrat);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_modulus);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_allroots);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_bfallroots);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_realroots);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve_to_poly);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve_num);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve_ode);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_map_mat);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_enter_mat);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_cpoly);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_genmatrix);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve_lin);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve_algsys);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_eliminate);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_clear_var);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_clear_fun);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_ivp_1);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_ivp_2);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_bvp);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_bvp);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_rk);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_fun_def);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_gensym);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_divide);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_gcd);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_lcm);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_continued_fraction);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_partfrac);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_risch);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_integrate);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_laplace);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_ilt);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_diff);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_taylor);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_powerseries);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_fourier);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_limit);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_lbfgs);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_gen_mat);
+  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_gen_mat_lambda);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_sum);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_maximahelp);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_wxmaximahelp);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_example);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_apropos);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_wxmaxima_uses_help_sidebar);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_wxmaxima_uses_help_browser);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_maxima_uses_html_help);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_maxima_uses_internal_help);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_maxima_uses_wxmaxima_help);
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_show_tip);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_trigrat);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve_de);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_atvalue);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_lhs);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_rhs);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_construct_fraction);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_sum);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_product);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_change_var);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_time);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_factsimp);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_factcomb);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_realpart);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_imagpart);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_nouns);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_simpsum);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_subst);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_psubst);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_ratsubst);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_fullratsubst);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_at);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_substinpart);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_opsubst);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logcontract);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand_false);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand_true);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand_all);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand_super);
+  Bind(wxEVT_MENU, &wxMaxima::PlotMenu, this, EventIDs::gp_plot2);
+  Bind(wxEVT_MENU, &wxMaxima::PlotMenu, this, EventIDs::gp_plot3);
+  Bind(wxEVT_MENU, &wxMaxima::PlotMenu, this, EventIDs::menu_animationautostart);
+  Bind(wxEVT_MENU, &wxMaxima::PlotMenu, this, EventIDs::menu_animationframerate);
+  Bind(wxEVT_MENU, &wxMaxima::PlotMenu, this, EventIDs::menu_plot_format);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_soft_restart);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_dependencies);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_values);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_functions);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_arrays);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_myoptions);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_rules);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_aliases);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_structures);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_labels);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_gradefs);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_props);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_macros);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_let_rule_packages);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_garbage_collect);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_room);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_jumptoerror);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_display);
+  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_pade);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_add_path);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_uuid);
+  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_jump_to_uuid);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_COPY);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_text_from_worksheet);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_tex_from_worksheet);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_matlab_from_worksheet);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_copy_mathml);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_UNDO);
+  Bind(wxEVT_BUTTON, &wxMaxima::EditMenu, this, wxID_UNDO);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_REDO);
+  Bind(wxEVT_BUTTON, &wxMaxima::EditMenu, this, wxID_REDO);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_texform);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_grind);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_debugmode_lisp);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_debugmode_all);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_debugmode_off);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_for);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_while);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_block);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_block_noLocal);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_local);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_return);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_trace);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_lambda);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_quotequote);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_quote);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_quoteblock);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_def_fun);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_def_macro);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_def_variable);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_compile);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_paramType);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_structdef);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_structnew);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_structuse);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_saveLisp);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_loadLisp);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_maximatostring);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringtomaxima);
 
-  Connect(EventIDs::menu_stringproc_setposition, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_getposition, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_flush_output, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_flength, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_close, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_opena, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_openr, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_openw, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_printf, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_readline, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_readchar, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_readbyte, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_writebyte, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_charp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_alphacharp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_alphanumericp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_digitcharp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_constituent, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_uppercasep, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_lowercasep, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_create_ascii, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_cequal, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_cequalignore, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_clessp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_clesspignore, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_cgreaterp, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_cgreaterpignore, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_sequal, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_sequalignore, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_ascii, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_cint, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_unicode, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_unicode_to_utf8, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_utf8_to_unicode, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_charat, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_charlist, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_simplode, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_sinsert, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_eval_string, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_parse_string, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_scopy, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_sdowncase, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_slength, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_smake, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_smismatch, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_split, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_sposition, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_sremove, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_sremovefirst, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_tokens, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_ssearch, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_ssort, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_ssubstfirst, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_strim, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_striml, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_strimr, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_number_to_octets, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_octets_to_number, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_octets_to_string, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_stringproc_string_to_octets, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_sregex_load, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_sregex_regex_compile, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_sregex_regex_match_pos, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_sregex_regex_match, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_sregex_regex_split, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_sregex_subst_first, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_sregex_regex_subst, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_sregex_string_to_regex, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_setposition);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_getposition);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_flush_output);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_flength);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_close);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_opena);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_openr);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_openw);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_printf);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_readline);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_readchar);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_readbyte);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_writebyte);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_charp);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_alphacharp);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_alphanumericp);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_digitcharp);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_constituent);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_uppercasep);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_lowercasep);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_create_ascii);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_cequal);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_cequalignore);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_clessp);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_clesspignore);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_cgreaterp);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_cgreaterpignore);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sequal);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sequalignore);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_ascii);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_cint);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_unicode);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_unicode_to_utf8);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_utf8_to_unicode);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_charat);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_charlist);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_simplode);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sinsert);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_eval_string);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_parse_string);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_scopy);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sdowncase);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_slength);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_smake);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_smismatch);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_split);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sposition);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sremove);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sremovefirst);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_tokens);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_ssearch);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_ssort);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_ssubstfirst);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_strim);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_striml);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_strimr);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_number_to_octets);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_octets_to_number);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_octets_to_string);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_string_to_octets);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_load);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_regex_compile);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_regex_match_pos);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_regex_match);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_regex_split);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_subst_first);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_regex_subst);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_string_to_regex);
 
-  Connect(EventIDs::menu_opsyst_load, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_opsyst_chdir, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_opsyst_mkdir, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_opsyst_rmdir, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_opsyst_getcurrentdirectory, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_opsyst_copy_file, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_opsyst_rename_file, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_opsyst_delete_file, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_opsyst_getenv, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_opsyst_directory, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_opsyst_pathname_directory, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_opsyst_pathname_name, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::menu_opsyst_pathname_type, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_load);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_chdir);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_mkdir);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_rmdir);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_getcurrentdirectory);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_copy_file);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_rename_file);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_delete_file);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_getenv);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_directory);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_pathname_directory);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_pathname_name);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_pathname_type);
 
-  Connect(EventIDs::gentran_load, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::gentran_lang_c, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::gentran_lang_fortran, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::gentran_lang_ratfor, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::gentran_to_stdout, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
-  Connect(EventIDs::gentran_to_file, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu));
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_load);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_lang_c);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_lang_fortran);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_lang_ratfor);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_to_stdout);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_to_file);
 
-  Connect(EventIDs::menu_to_fact, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(EventIDs::menu_to_gamma, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
-  Connect(wxID_PRINT, wxEVT_MENU, wxCommandEventHandler(wxMaxima::PrintMenu),
-          NULL, this);
-  Connect(wxID_ZOOM_IN, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(wxID_ZOOM_OUT, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(EventIDs::menu_zoom_80, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(wxID_ZOOM_100, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(EventIDs::menu_zoom_120, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(EventIDs::menu_zoom_150, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(EventIDs::menu_zoom_200, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(EventIDs::menu_zoom_300, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(EventIDs::popid_labelwidth1, EventIDs::popid_labelwidth1 + LABELWIDTH_MAX - LABELWIDTH_MIN,
-          wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_digits_all, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_digits_all_linebreak, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_digits_20, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_digits_50, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_digits_100, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_labels_autogenerated, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_inputlabels_hide, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_labels_user, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_labels_useronly, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_labels_disable, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_math_as_1D_ASCII, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_math_as_2D_ASCII, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_math_as_2D_UNICODE, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_math_as_graphics, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::internalRepresentation, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::wxMathML, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_noAutosubscript, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_defaultAutosubscript, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_alwaysAutosubscript, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_declareAutosubscript, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_autosubscriptIndividual, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_noAutosubscriptIndividual, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_roundedMatrixParens, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_straightMatrixParens, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_angledMatrixParens, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_squareMatrixParens, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_noMatrixParens, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_fullscreen, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_invertWorksheetBackground, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_show_logwindow, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(ToolBar::tb_hideCode, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_copy_as_bitmap, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_copy_as_svg, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_copy_as_emf, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_copy_as_rtf, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_copy_to_file, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(ToolBar::tb_interrupt, wxEVT_TOOL,
-          wxCommandEventHandler(wxMaxima::Interrupt), NULL, this);
-  Connect(ToolBar::tb_animation_startStop, wxEVT_TOOL,
-          wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
-  Connect(ToolBar::tb_animation_start, wxEVT_TOOL,
-          wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
-  Connect(ToolBar::tb_animation_stop, wxEVT_TOOL,
-          wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
-  Connect(ToolBar::tb_follow, wxEVT_TOOL,
-          wxCommandEventHandler(wxMaxima::OnFollow), NULL, this);
-  Connect(wxEVT_SOCKET, wxSocketEventHandler(wxMaxima::ServerEvent), NULL,
-          this);
-  Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(wxMaxima::OnClose), NULL,
-          this);
-  Connect(wxEVT_QUERY_END_SESSION, wxCloseEventHandler(wxMaxima::OnClose), NULL,
-          this);
-  Connect(wxEVT_END_SESSION, wxCloseEventHandler(wxMaxima::OnClose), NULL,
-          this);
-  Connect(m_maxima_process_id, wxEVT_END_PROCESS,
-          wxProcessEventHandler(wxMaxima::OnMaximaClose), NULL, this);
-  Connect(EventIDs::gnuplot_query_terminals_id, wxEVT_END_PROCESS,
-          wxProcessEventHandler(wxMaxima::OnGnuplotQueryTerminals), NULL, this);
-  Connect(m_gnuplot_process_id, wxEVT_END_PROCESS,
-          wxProcessEventHandler(wxMaxima::OnGnuplotClose), NULL, this);
-  Connect(EventIDs::popid_edit, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditInputMenu), NULL, this);
-  Connect(EventIDs::menu_evaluate, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EvaluateEvent), NULL, this);
-  Connect(EventIDs::popid_var_newVar, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::VarReadEvent), NULL, this);
-  Connect(EventIDs::popid_var_addAll, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::VarAddAllEvent), NULL, this);
-  Connect(EventIDs::menu_add_comment, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_add_section, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_add_subsection, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_add_subsubsection, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_add_heading5, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_add_heading6, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_add_title, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_add_pagebreak, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_fold_all_cells, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_unfold_all_cells, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::popid_add_comment, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::popid_add_watch, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::popid_add_watch_label, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_insert_previous_input, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_insert_previous_output, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_autocomplete, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_autocomplete_templates, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_insert_input, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::popid_insert_input, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_history_previous, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_history_next, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(wxID_PASTE, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(EventIDs::menu_paste_input, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(wxID_CUT, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu), NULL,
-          this);
-  Connect(wxID_SELECTALL, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(EventIDs::popid_comment_selection, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_divide_cell, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_evaluate, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_evaluate_section, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(ToolBar::tb_eval, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(ToolBar::tb_eval_all, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(ToolBar::tb_evaluate_rest, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(ToolBar::tb_evaltillhere, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_merge_cells, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_maxsizechooser, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_resolutionchooser, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_reloadimage, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_change_image, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_Fold, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_Unfold, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_SelectTocChapter, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_EvalTocChapter, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_evaluate_section, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_ToggleTOCshowsSectionNumbers, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_TOCindentation, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_tocLevel1, EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_tocMoveIn, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_tocMoveOut, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_tocdnd, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_fold, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::popid_unfold, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(EventIDs::menu_evaluate_all_visible, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_evaluate_all, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(ToolBar::tb_evaltillhere, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(EventIDs::menu_list_create_from_elements, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_create_from_rule, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_create_from_list, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_actual_values_storage, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_sort, wxEVT_MENU, wxCommandEventHandler(wxMaxima::ListMenu),
-          NULL, this);
-  Connect(EventIDs::menu_list_length, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_push, wxEVT_MENU, wxCommandEventHandler(wxMaxima::ListMenu),
-          NULL, this);
-  Connect(EventIDs::menu_list_pop, wxEVT_MENU, wxCommandEventHandler(wxMaxima::ListMenu),
-          NULL, this);
-  Connect(EventIDs::menu_list_reverse, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_first, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_last, wxEVT_MENU, wxCommandEventHandler(wxMaxima::ListMenu),
-          NULL, this);
-  Connect(EventIDs::menu_list_rest, wxEVT_MENU, wxCommandEventHandler(wxMaxima::ListMenu),
-          NULL, this);
-  Connect(EventIDs::menu_list_restN, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_lastn, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_nth, wxEVT_MENU, wxCommandEventHandler(wxMaxima::ListMenu),
-          NULL, this);
-  Connect(EventIDs::menu_list_map, wxEVT_MENU, wxCommandEventHandler(wxMaxima::ListMenu),
-          NULL, this);
-  Connect(EventIDs::menu_list_use_actual_values, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_as_function_arguments, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_extract_value, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_do_for_each_element, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_remove_duplicates, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_remove_element, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_append_item_start, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_append_item_end, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_append_list, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_interleave, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_list2matrix, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_matrix2list, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_list_create_from_args, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(EventIDs::menu_csv2list, wxEVT_MENU, wxCommandEventHandler(wxMaxima::ListMenu),
-          NULL, this);
-  Connect(EventIDs::menu_list2csv, wxEVT_MENU, wxCommandEventHandler(wxMaxima::ListMenu),
-          NULL, this);
-  Connect(EventIDs::menu_draw_2d, wxEVT_MENU, wxCommandEventHandler(wxMaxima::DrawMenu),
-          NULL, this);
-  Connect(EventIDs::menu_draw_2d, wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::DrawMenu),
-          NULL, this);
-  Connect(EventIDs::menu_draw_3d, wxEVT_MENU, wxCommandEventHandler(wxMaxima::DrawMenu),
-          NULL, this);
-  Connect(EventIDs::menu_draw_3d, wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::DrawMenu),
-          NULL, this);
-  Connect(EventIDs::menu_draw_fgcolor, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_fgcolor, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_fillcolor, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_fillcolor, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_title, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_title, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_key, wxEVT_MENU, wxCommandEventHandler(wxMaxima::DrawMenu),
-          NULL, this);
-  Connect(EventIDs::menu_draw_key, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_explicit, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_explicit, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_implicit, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_implicit, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_parametric, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_parametric, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_points, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_points, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_axis, wxEVT_MENU, wxCommandEventHandler(wxMaxima::DrawMenu),
-          NULL, this);
-  Connect(EventIDs::menu_draw_axis, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_contour, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_contour, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_accuracy, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_accuracy, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(EventIDs::menu_draw_grid, wxEVT_MENU, wxCommandEventHandler(wxMaxima::DrawMenu),
-          NULL, this);
-  Connect(EventIDs::menu_draw_grid, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::DrawMenu), NULL, this);
-  Connect(wxEVT_IDLE, wxIdleEventHandler(wxMaxima::OnIdle), NULL, this);
-  Connect(EventIDs::menu_remove_output, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_hide_tooltipMarker, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_hide_tooltipMarkerForThisMessage, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::menu_recent_document_0, EventIDs::menu_recent_document_0 + EventIDs::NumberOfRecentFiles - 1,
-          wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
-  Connect(EventIDs::menu_recent_package_0, EventIDs::menu_recent_package_0 + EventIDs::NumberOfRecentFiles - 1, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnRecentPackage));
-  Connect(EventIDs::menu_unsaved_document_0, EventIDs::menu_unsaved_document_0 + EventIDs::NumberOfRecentFiles - 1, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::OnUnsavedDocument));
-  Connect(EventIDs::menu_insert_image, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_to_fact);
+  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_to_gamma);
+  Bind(wxEVT_MENU, &wxMaxima::PrintMenu, this, wxID_PRINT);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_ZOOM_IN);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_ZOOM_OUT);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_zoom_80);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_ZOOM_100);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_zoom_120);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_zoom_150);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_zoom_200);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_zoom_300);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_labelwidth1, EventIDs::popid_labelwidth1 + LABELWIDTH_MAX - LABELWIDTH_MIN);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_digits_all);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_digits_all_linebreak);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_digits_20);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_digits_50);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_digits_100);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_labels_autogenerated);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_inputlabels_hide);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_labels_user);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_labels_useronly);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_labels_disable);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_math_as_1D_ASCII);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_math_as_2D_ASCII);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_math_as_2D_UNICODE);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_math_as_graphics);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::internalRepresentation);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::wxMathML);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_noAutosubscript);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_defaultAutosubscript);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_alwaysAutosubscript);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_declareAutosubscript);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_autosubscriptIndividual);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_noAutosubscriptIndividual);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_roundedMatrixParens);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_straightMatrixParens);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_angledMatrixParens);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_squareMatrixParens);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_noMatrixParens);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_fullscreen);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_invertWorksheetBackground);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_show_logwindow);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, ToolBar::tb_hideCode);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_as_bitmap);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_as_svg);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_as_emf);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_as_rtf);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_to_file);
+  Bind(wxEVT_TOOL, &wxMaxima::Interrupt, this, ToolBar::tb_interrupt);
+  Bind(wxEVT_TOOL, &wxMaxima::FileMenu, this, ToolBar::tb_animation_startStop);
+  Bind(wxEVT_TOOL, &wxMaxima::FileMenu, this, ToolBar::tb_animation_start);
+  Bind(wxEVT_TOOL, &wxMaxima::FileMenu, this, ToolBar::tb_animation_stop);
+  Bind(wxEVT_TOOL, &wxMaxima::OnFollow, this, ToolBar::tb_follow);
+  Bind(wxEVT_SOCKET, &wxMaxima::ServerEvent, this);
+  Bind(wxEVT_CLOSE_WINDOW, &wxMaxima::OnClose, this);
+  Bind(wxEVT_QUERY_END_SESSION, &wxMaxima::OnClose, this);
+  Bind(wxEVT_END_SESSION, &wxMaxima::OnClose, this);
+  Bind(wxEVT_END_PROCESS, &wxMaxima::OnMaximaClose, this, m_maxima_process_id);
+  Bind(wxEVT_END_PROCESS, &wxMaxima::OnGnuplotQueryTerminals, this, EventIDs::gnuplot_query_terminals_id);
+  Bind(wxEVT_END_PROCESS, &wxMaxima::OnGnuplotClose, this, m_gnuplot_process_id);
+  Bind(wxEVT_MENU, &wxMaxima::EditInputMenu, this, EventIDs::popid_edit);
+  Bind(wxEVT_MENU, &wxMaxima::EvaluateEvent, this, EventIDs::menu_evaluate);
+  Bind(wxEVT_MENU, &wxMaxima::VarReadEvent, this, EventIDs::popid_var_newVar);
+  Bind(wxEVT_MENU, &wxMaxima::VarAddAllEvent, this, EventIDs::popid_var_addAll);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_comment);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_section);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_subsection);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_subsubsection);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_heading5);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_heading6);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_title);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_pagebreak);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_fold_all_cells);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_unfold_all_cells);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_add_comment);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_add_watch);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_add_watch_label);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_insert_previous_input);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_insert_previous_output);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_autocomplete);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_autocomplete_templates);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_insert_input);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_input);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_history_previous);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_history_next);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_PASTE);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_paste_input);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_CUT);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_SELECTALL);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_comment_selection);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_divide_cell);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_evaluate);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_evaluate_section);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, ToolBar::tb_eval);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, ToolBar::tb_eval_all);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, ToolBar::tb_evaluate_rest);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, ToolBar::tb_evaltillhere);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_merge_cells);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_maxsizechooser);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_resolutionchooser);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_reloadimage);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_change_image);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_Fold);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_Unfold);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_SelectTocChapter);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_EvalTocChapter);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_evaluate_section);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_ToggleTOCshowsSectionNumbers);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_TOCindentation);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_tocLevel1, EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_tocMoveIn);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_tocMoveOut);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_tocdnd);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_fold);
+  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_unfold);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_evaluate_all_visible);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_evaluate_all);
+  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, ToolBar::tb_evaltillhere);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_create_from_elements);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_create_from_rule);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_create_from_list);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_actual_values_storage);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_sort);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_length);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_push);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_pop);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_reverse);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_first);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_last);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_rest);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_restN);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_lastn);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_nth);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_map);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_use_actual_values);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_as_function_arguments);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_extract_value);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_do_for_each_element);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_remove_duplicates);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_remove_element);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_append_item_start);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_append_item_end);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_append_list);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_interleave);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_list2matrix);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_matrix2list);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list_create_from_args);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_csv2list);
+  Bind(wxEVT_MENU, &wxMaxima::ListMenu, this, EventIDs::menu_list2csv);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_2d);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_2d);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_3d);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_3d);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_fgcolor);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_fgcolor);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_fillcolor);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_fillcolor);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_title);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_title);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_key);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_key);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_explicit);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_explicit);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_implicit);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_implicit);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_parametric);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_parametric);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_points);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_points);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_axis);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_axis);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_contour);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_contour);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_accuracy);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_accuracy);
+  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_grid);
+  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_grid);
+  Bind(wxEVT_IDLE, &wxMaxima::OnIdle, this);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_remove_output);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_hide_tooltipMarker);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_hide_tooltipMarkerForThisMessage);
+  Bind(wxEVT_MENU, &wxMaxima::OnRecentDocument, this, EventIDs::menu_recent_document_0, EventIDs::menu_recent_document_0 + EventIDs::NumberOfRecentFiles - 1);
+  Bind(wxEVT_MENU, &wxMaxima::OnRecentPackage, this, EventIDs::menu_recent_package_0, EventIDs::menu_recent_package_0 + EventIDs::NumberOfRecentFiles - 1);
+  Bind(wxEVT_MENU, &wxMaxima::OnUnsavedDocument, this, EventIDs::menu_unsaved_document_0, EventIDs::menu_unsaved_document_0 + EventIDs::NumberOfRecentFiles - 1);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_insert_image);
   for(const auto &[paneId, name]: GetSidebarNames())
-    Connect(paneId, wxEVT_MENU,
-            wxCommandEventHandler(wxMaxima::ShowPane));
-  Connect(EventIDs::menu_pane_toolbar, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(EventIDs::popid_auto_answer, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::popid_never_autoanswer, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(history_ctrl_id, wxEVT_LISTBOX_DCLICK,
-          wxCommandEventHandler(wxMaxima::HistoryDClick), NULL, this);
-  Connect(structure_ctrl_id, wxEVT_LIST_ITEM_ACTIVATED,
-          wxListEventHandler(wxMaxima::TableOfContentsSelection), NULL, this);
-  Connect(EventIDs::menu_stats_histogram, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_piechart, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_scatterplot, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_barsplot, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_boxplot, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_mean, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_median, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_var, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_dev, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_tt1, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_tt2, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_tnorm, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_linreg, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_lsquares, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_readm, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_stats_enterm, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
-  Connect(EventIDs::menu_stats_subsample, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::StatsMenu), NULL, this);
-  Connect(EventIDs::menu_format_title, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_format_text, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_format_heading6, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_format_heading5, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_format_subsubsection, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_format_subsection, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_format_section, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_format_pagebreak, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(EventIDs::menu_format_image, wxEVT_BUTTON,
-          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
-  Connect(wxEVT_CHAR, wxCharEventHandler(wxMaxima::OnChar), NULL, this);
-  Connect(wxEVT_KEY_DOWN, wxCharEventHandler(wxMaxima::OnKeyDown), NULL, this);
-  Connect(ToolBar::tb_changeStyle, wxEVT_CHOICE,
-          wxCommandEventHandler(wxMaxima::ChangeCellStyle), NULL, this);
-  Connect(wxID_FIND, wxEVT_MENU, wxCommandEventHandler(wxMaxima::EditMenu),
-          NULL, this);
-  Connect(wxEVT_FIND, wxFindDialogEventHandler(wxMaxima::OnFind), NULL, this);
-  Connect(wxEVT_FIND_NEXT, wxFindDialogEventHandler(wxMaxima::OnFind), NULL,
-          this);
-  Connect(wxEVT_FIND_REPLACE, wxFindDialogEventHandler(wxMaxima::OnReplace),
-          NULL, this);
-  Connect(wxEVT_FIND_REPLACE_ALL,
-          wxFindDialogEventHandler(wxMaxima::OnReplaceAll), NULL, this);
-  Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(wxMaxima::OnFocus), NULL, this);
-  Connect(wxEVT_ICONIZE, wxIconizeEventHandler(wxMaxima::OnMinimize), NULL,
-          this);
-  Connect(SYMBOLADDEVENT, wxCommandEventHandler(wxMaxima::OnSymbolAdd), NULL,
-          this);
-  Connect(EventIDs::popid_suggestion1, EventIDs::popid_suggestion1 + EventIDs::NumberOfSuggestions - 1, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
-  Connect(EventIDs::popid_property_real, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_imaginary, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_complex, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_additive, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_alphabetic, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_bindtest, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_antisymmetric, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_commutative, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_symmetric, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_constant, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_even, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_odd, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_evenfun, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_atvalue, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
-  Connect(EventIDs::popid_property_oddfun, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_increasing, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_decreasing, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_integer, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_noninteger, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_integervalued, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_lassociative, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_rassociative, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_linear, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_mainvar, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_multiplicative, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_nary, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_nonarray, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_nonscalar, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_scalar, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_noun, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_outative, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_posfun, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_rational, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_irrational, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_greaterThan, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_evfun, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
-  Connect(EventIDs::popid_property_evflag, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+    Bind(wxEVT_MENU, &wxMaxima::ShowPane, this, paneId);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_pane_toolbar);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_auto_answer);
+  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_never_autoanswer);
+  Bind(wxEVT_LISTBOX_DCLICK, &wxMaxima::HistoryDClick, this, history_ctrl_id);
+  Bind(wxEVT_LIST_ITEM_ACTIVATED, &wxMaxima::TableOfContentsSelection, this, structure_ctrl_id);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_histogram);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_piechart);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_scatterplot);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_barsplot);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_boxplot);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_mean);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_median);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_var);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_dev);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_tt1);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_tt2);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_tnorm);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_linreg);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_lsquares);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_readm);
+  Bind(wxEVT_BUTTON, &wxMaxima::MatrixMenu, this, EventIDs::menu_stats_enterm);
+  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_subsample);
+  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_title);
+  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_text);
+  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_heading6);
+  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_heading5);
+  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_subsubsection);
+  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_subsection);
+  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_section);
+  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_pagebreak);
+  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_image);
+  Bind(wxEVT_CHAR, &wxMaxima::OnChar, this);
+  Bind(wxEVT_KEY_DOWN, &wxMaxima::OnKeyDown, this);
+  Bind(wxEVT_CHOICE, &wxMaxima::ChangeCellStyle, this, ToolBar::tb_changeStyle);
+  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_FIND);
+  Bind(wxEVT_FIND, &wxMaxima::OnFind, this);
+  Bind(wxEVT_FIND_NEXT, &wxMaxima::OnFind, this);
+  Bind(wxEVT_FIND_REPLACE, &wxMaxima::OnReplace, this);
+  Bind(wxEVT_FIND_REPLACE_ALL, &wxMaxima::OnReplaceAll, this);
+  Bind(wxEVT_SET_FOCUS, &wxMaxima::OnFocus, this);
+  Bind(wxEVT_ICONIZE, &wxMaxima::OnMinimize, this);
+  Bind(SYMBOLADDEVENT, &wxMaxima::OnSymbolAdd, this);
+  Bind(wxEVT_MENU, &wxMaxima::ReplaceSuggestion, this, EventIDs::popid_suggestion1, EventIDs::popid_suggestion1 + EventIDs::NumberOfSuggestions - 1);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_real);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_imaginary);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_complex);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_additive);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_alphabetic);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_bindtest);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_antisymmetric);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_commutative);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_symmetric);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_constant);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_even);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_odd);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_evenfun);
+  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::popid_property_atvalue);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_oddfun);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_increasing);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_decreasing);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_integer);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_noninteger);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_integervalued);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_lassociative);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_rassociative);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_linear);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_mainvar);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_multiplicative);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_nary);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_nonarray);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_nonscalar);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_scalar);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_noun);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_outative);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_posfun);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_rational);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_irrational);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_greaterThan);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_evfun);
+  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_evflag);
   // Make wxWidgets remember the size and position of the wxMaxima window
   SetName(wxS("wxMaxima"));
   if (!wxPersistenceManager::Get().RegisterAndRestore(this)) {
@@ -1928,8 +1221,7 @@ void wxMaxima::OnNewDemoFiles(wxCommandEvent &WXUNUSED(event))
               m_demo_sub->Append(wxWindow::NewControlId(),
                                  subMenuContents.front() + wxS("-") + subMenuContents.back(),
                                  subMenu);
-              subMenu->Connect(wxEVT_MENU,
-                                   wxCommandEventHandler(wxMaxima::OnDemoFileMenu), NULL, this);
+              subMenu->Bind(wxEVT_MENU, &wxMaxima::OnDemoFileMenu, this);
               subMenuContents.clear();
             }
         }
@@ -1963,7 +1255,7 @@ void wxMaxima::OnMove(wxMoveEvent &event){
   wxConfig::Get()->Write("MainWindowPos/maximized", maximized);
   event.Skip();
 }
-void wxMaxima::OnMaximize(wxCommandEvent &event){
+void wxMaxima::OnMaximize(wxMaximizeEvent &event){
   bool maximized = true;
   wxConfig::Get()->Write("MainWindowPos/maximized", maximized);
   event.Skip();
@@ -11507,15 +10799,15 @@ void wxMaxima::OnKeyDown(wxKeyEvent &event) {
   event.Skip();
 }
 
-void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(event)) {
+void wxMaxima::NetworkDClick(wxMouseEvent &WXUNUSED(event)) {
   ToggleXMLInspector();
 }
 
-void wxMaxima::MaximaDClick(wxCommandEvent &WXUNUSED(event)) {
+void wxMaxima::MaximaDClick(wxMouseEvent &WXUNUSED(event)) {
   GetWorksheet()->ScrollToCaret();
 }
 
-void wxMaxima::StatusMsgDClick(wxCommandEvent &WXUNUSED(event)) {
+void wxMaxima::StatusMsgDClick(wxMouseEvent &WXUNUSED(event)) {
   ToggleLogPane();
 }
 

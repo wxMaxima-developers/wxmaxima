@@ -445,11 +445,11 @@ protected:
   void SliderEvent(wxScrollEvent &event);
 
   //! Issued on double click on the network status
-  void NetworkDClick(wxCommandEvent &ev);
+  void NetworkDClick(wxMouseEvent &ev);
   //! Issued on double click on the Maxima status icon
-  void MaximaDClick(wxCommandEvent &ev);
+  void MaximaDClick(wxMouseEvent &ev);
   //! Issued on double click on the status message in the status bar
-  void StatusMsgDClick(wxCommandEvent &ev);
+  void StatusMsgDClick(wxMouseEvent &ev);
 
   //! Issued on double click on a history item
   void HistoryDClick(wxCommandEvent &event);
@@ -775,7 +775,7 @@ protected:
 
   void OnSize(wxSizeEvent &event);
   void OnMove(wxMoveEvent &event);
-  void OnMaximize(wxCommandEvent &event);
+  void OnMaximize(wxMaximizeEvent &event);
 
   //! Sets gnuplot's command name and tries to determine gnuplot's path
   void GnuplotCommandName(wxString gnuplot);
