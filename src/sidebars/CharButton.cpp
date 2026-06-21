@@ -38,7 +38,7 @@ void CharButton::MouseOverTextIs(bool mouseOver) {
   if (m_mouseOverText != mouseOver) {
     m_mouseOverText = mouseOver;
     m_backgroundColorChangeNeeded = true;
-    Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdleEvent), NULL, this);
+    Bind(wxEVT_IDLE, &CharButton::OnIdleEvent, this);
   }
 }
 
@@ -46,7 +46,7 @@ void CharButton::MouseOverPanelIs(bool mouseOver) {
   if (m_mouseOverPanel != mouseOver) {
     m_mouseOverPanel = mouseOver;
     m_backgroundColorChangeNeeded = true;
-    Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdleEvent), NULL, this);
+    Bind(wxEVT_IDLE, &CharButton::OnIdleEvent, this);
   }
 }
 
@@ -68,7 +68,7 @@ void CharButton::MouseLeftText(wxMouseEvent &event) {
 }
 
 void CharButton::OnIdleEvent(wxIdleEvent &event) {
-  Disconnect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdleEvent), NULL, this);
+  Unbind(wxEVT_IDLE, &CharButton::OnIdleEvent, this);
   if (!m_backgroundColorChangeNeeded)
     return;
   m_backgroundColorChangeNeeded = false;
@@ -80,7 +80,7 @@ void CharButton::OnIdleEvent(wxIdleEvent &event) {
   event.Skip();
 }
 
-void CharButton::CharButtonPressed(wxCommandEvent &WXUNUSED(event)) {
+void CharButton::CharButtonPressed(wxMouseEvent &WXUNUSED(event)) {
   wxCommandEvent *ev = new wxCommandEvent(SIDEBARKEYEVENT, static_cast<wxWindowID>(m_char));
   m_worksheet->GetEventHandler()->QueueEvent(ev);
 }
@@ -111,7 +111,7 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
                        bool forceShow)
   : wxPanel(parent, wxID_ANY), m_char(def.symbol), m_configuration(config),
     m_description(def.description), m_worksheet(worksheet) {
-  Connect(wxEVT_SIZE, wxSizeEventHandler(CharButton::OnSize));
+  Bind(wxEVT_SIZE, &CharButton::OnSize, this);
   wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
   m_buttonText = new wxStaticText(this, -1, wxString(m_char));
   sizer->AddStretchSpacer(1);
@@ -120,22 +120,13 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
   SetSizer(sizer);
   FitInside();
   SetToolTip(def.description);
-  Connect(wxEVT_LEFT_UP, wxCommandEventHandler(CharButton::CharButtonPressed),
-          NULL, this);
-  Connect(wxEVT_IDLE, wxIdleEventHandler(CharButton::OnIdleEvent), NULL, this);
-  Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(CharButton::MouseOverPanel),
-          NULL, this);
-  Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(CharButton::MouseLeftPanel),
-          NULL, this);
-  m_buttonText->Connect(wxEVT_ENTER_WINDOW,
-                        wxMouseEventHandler(CharButton::MouseOverText), NULL,
-                        this);
-  m_buttonText->Connect(wxEVT_LEAVE_WINDOW,
-                        wxMouseEventHandler(CharButton::MouseLeftText), NULL,
-                        this);
-  m_buttonText->Connect(wxEVT_LEFT_UP,
-                        wxCommandEventHandler(CharButton::CharButtonPressed),
-                        NULL, this);
+  Bind(wxEVT_LEFT_UP, &CharButton::CharButtonPressed, this);
+  Bind(wxEVT_IDLE, &CharButton::OnIdleEvent, this);
+  Bind(wxEVT_ENTER_WINDOW, &CharButton::MouseOverPanel, this);
+  Bind(wxEVT_LEAVE_WINDOW, &CharButton::MouseLeftPanel, this);
+  m_buttonText->Bind(wxEVT_ENTER_WINDOW, &CharButton::MouseOverText, this);
+  m_buttonText->Bind(wxEVT_LEAVE_WINDOW, &CharButton::MouseLeftText, this);
+  m_buttonText->Bind(wxEVT_LEFT_UP, &CharButton::CharButtonPressed, this);
   if (!(forceShow || m_configuration->FontRendersChar(m_char))) {
     Hide();
   }

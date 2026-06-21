@@ -61,7 +61,7 @@ public:
 protected:
   wchar_t m_char;
   Configuration *m_configuration;
-  void CharButtonPressed(wxCommandEvent &event);
+  void CharButtonPressed(wxMouseEvent &event);
   void OnSize(wxSizeEvent &event);
   void OnIdleEvent(wxIdleEvent &event);
   void MouseOverPanel(wxMouseEvent &event);
