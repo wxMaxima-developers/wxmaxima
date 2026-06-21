@@ -94,7 +94,7 @@ Inheritance diagram for Worksheet:</div>
 <div class="dynheader">
 Collaboration diagram for Worksheet:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="555"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="519"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -548,10 +548,6 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_currentFile</b>
 <a class="el" href="classFindReplaceDialog.html">FindReplaceDialog</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_findDialog</b> = NULL</td></tr>
 <tr class="memdesc:addddaa53ec91efeaf93ed6ebebae4c7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The find-and-replace-dialog. <br /></td></tr>
 <tr class="separator:addddaa53ec91efeaf93ed6ebebae4c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae600e16f83ccc1d13447ad5dfd80a796"><td class="memItemLeft" align="right" valign="top"><a id="ae600e16f83ccc1d13447ad5dfd80a796" name="ae600e16f83ccc1d13447ad5dfd80a796"></a>
-<a class="el" href="classEvaluationQueue.html">EvaluationQueue</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_evaluationQueue</b></td></tr>
-<tr class="memdesc:ae600e16f83ccc1d13447ad5dfd80a796"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of cells that have to be evaluated. <br /></td></tr>
-<tr class="separator:ae600e16f83ccc1d13447ad5dfd80a796"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e8f804aed06ee62de5e09ad7be3d6b1"><td class="memItemLeft" align="right" valign="top"><a id="a7e8f804aed06ee62de5e09ad7be3d6b1" name="a7e8f804aed06ee62de5e09ad7be3d6b1"></a>
 <a class="el" href="classToolBar.html">ToolBar</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_mainToolBar</b> = NULL</td></tr>
 <tr class="memdesc:a7e8f804aed06ee62de5e09ad7be3d6b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The toolbar of the main window: We need to access it and therefore have it defined here. <br /></td></tr>
@@ -1036,6 +1032,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddSelectionToEvaluat
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddCellToEvaluationQueue</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *gc)</td></tr>
 <tr class="memdesc:aa51a61c8b5499b6e5556e4289146b5ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule this cell for evaluation. <br /></td></tr>
 <tr class="separator:aa51a61c8b5499b6e5556e4289146b5ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49e4fbeb6a1e7e7d90d91f03abeb0d03"><td class="memItemLeft" align="right" valign="top"><a id="a49e4fbeb6a1e7e7d90d91f03abeb0d03" name="a49e4fbeb6a1e7e7d90d91f03abeb0d03"></a>
+<a class="el" href="classEvaluationQueue.html">EvaluationQueue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetEvaluationQueue</b> ()</td></tr>
+<tr class="memdesc:a49e4fbeb6a1e7e7d90d91f03abeb0d03"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of cells that have to be evaluated. <br /></td></tr>
+<tr class="separator:a49e4fbeb6a1e7e7d90d91f03abeb0d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78ceeae9f7262c599b824e0f9a93ad9b"><td class="memItemLeft" align="right" valign="top"><a id="a78ceeae9f7262c599b824e0f9a93ad9b" name="a78ceeae9f7262c599b824e0f9a93ad9b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FoldOccurred</b> ()</td></tr>
 <tr class="memdesc:a78ceeae9f7262c599b824e0f9a93ad9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call when a fold action was detected, to update the state in response to a fold occurring. <br /></td></tr>
@@ -1323,7 +1323,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Can we merge the selected cells into one? </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>Does it make sense to make to allow the text of sections and image cells with math cells? </dd></dl>
 
 </div>
 </div>
@@ -1664,7 +1664,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Export the file to an html document. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
 
 </div>
 </div>
@@ -1713,7 +1713,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Export a region of the file to a .wxm or .mac file maxima's load command can read. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
 
 </div>
 </div>
@@ -1783,7 +1783,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Do an incremental search from the cursor or the point the last search started at. </p>
-<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000021">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
+<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
 
 </div>
 </div>
@@ -2350,7 +2350,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Actually recalculate the worksheet. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>We check here if the recalc start is within the worksheet. Would it make more sense to store the recalculation start in a CellPointer that automagically zeroes itself if that isn't the case? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>We check here if the recalc start is within the worksheet. Would it make more sense to store the recalculation start in a CellPointer that automagically zeroes itself if that isn't the case? </dd></dl>
 
 </div>
 </div>
@@ -2676,7 +2676,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Scrolls to a point on the worksheet. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
 <p><a class="el" href="classTest.html" title="A template class.">Test</a> case:</p><ul>
 <li>Create a code cell</li>
 <li>Press the "hide all code cells" button.</li>
