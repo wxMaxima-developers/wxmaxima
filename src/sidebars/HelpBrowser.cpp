@@ -115,9 +115,10 @@ void HelpBrowser::CreateIfNeeded() {
     wxWebViewIE::MSWSetEmulationLevel();
 #endif
     m_webView = wxWebView::New(m_browserPanel, wxID_ANY, m_startUrl);
-    m_webView->Connect(wxEVT_KEY_DOWN,
-                       wxCharEventHandler(HelpBrowser::OnWebviewKeyDown), NULL,
-                       m_browserPanel);
+    // The handler is a HelpBrowser method (it touches m_searchText), so the event
+    // sink must be this HelpBrowser -- the old Connect() passed m_browserPanel (a
+    // plain wxPanel) as the sink, which reinterpreted it as a HelpBrowser*.
+    m_webView->Bind(wxEVT_KEY_DOWN, &HelpBrowser::OnWebviewKeyDown, this);
 
     m_webView->SetMinSize(
                           wxSize(GetContentScaleFactor() * 100, GetContentScaleFactor() * 100));

@@ -78,6 +78,13 @@ Maxima::~Maxima() {
   if(m_workerThread.joinable())
     m_workerThread.join();
 
+  // Defensively drop any handlers that might still target this object before it
+  // is torn down. These stay as 1-arg Disconnect() rather than Unbind(): they
+  // disconnect *every* handler for the event type (Unbind would need the exact
+  // handler+sink, which we don't have here), and ~wxEvtHandler would clear them
+  // anyway. wxEVT_TIMER/wxEVT_SOCKET are effectively no-ops (the socket runs with
+  // Notify(false) and is read by the worker thread); EVT_MAXIMA is the one wired
+  // up from wxMaxima (m_client->Bind(EVT_MAXIMA, &wxMaxima::MaximaEvent, ...)).
   Disconnect(wxEVT_TIMER);
   Disconnect(wxEVT_SOCKET);
   Disconnect(EVT_MAXIMA);
