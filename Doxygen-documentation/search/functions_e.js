@@ -2,7 +2,7 @@ var searchData=
 [
   ['namedboxcell_0',['NamedBoxCell',['../classNamedBoxCell.html#a8a21868ef0a9301271bdaad09eef6705',1,'NamedBoxCell']]],
   ['needsrecalculation_1',['NeedsRecalculation',['../classCell.html#aa0cc4910d52a26419062952d95d294bf',1,'Cell::NeedsRecalculation(AFontSize fontSize) const'],['../classCell.html#af02e5376702194e709fb2d2b493364fc',1,'Cell::NeedsRecalculation() const'],['../classEditorCell.html#a27361d11dfbf4383dcdfa11cb227e5ed',1,'EditorCell::NeedsRecalculation()'],['../classGroupCell.html#a2b1a8fb21cbb4f11e3a4c17726645a44',1,'GroupCell::NeedsRecalculation(AFontSize fontSize) const override'],['../classGroupCell.html#aa0cc4910d52a26419062952d95d294bf',1,'GroupCell::NeedsRecalculation(AFontSize fontSize) const'],['../classGroupCell.html#af02e5376702194e709fb2d2b493364fc',1,'GroupCell::NeedsRecalculation() const']]],
-  ['networkdclick_2',['NetworkDClick',['../classwxMaxima.html#a557dc63c643231d0705b64676c00ce35',1,'wxMaxima']]],
+  ['networkdclick_2',['NetworkDClick',['../classwxMaxima.html#a2fd4dac2b28c1c2aff8609f451dedabd',1,'wxMaxima']]],
   ['networkstatus_3',['NetworkStatus',['../classStatusBar.html#addf51766d62198da4dd162f7f2a05c6f',1,'StatusBar']]],
   ['newwizard_4',['NewWizard',['../classGenWizPanel.html#abe9a1ef102fb3f9de0cf84a20562eda1',1,'GenWizPanel']]],
   ['notification_5',['Notification',['../classNotification.html#a1d2014b23265060cebccfb542a60e75a',1,'Notification::Notification()'],['../classNotification.html#a318b399339a243424905d071abc553c8',1,'Notification::Notification(const wxString &amp;title, const wxString &amp;message={}, wxWindow *parent=NULL, int flags=wxICON_INFORMATION)']]],

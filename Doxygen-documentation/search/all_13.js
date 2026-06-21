@@ -176,7 +176,7 @@ var searchData=
   ['statusexportfinished_173',['StatusExportFinished',['../classwxMaximaFrame.html#ad540ed3d6360f7198840393638eeffe7',1,'wxMaximaFrame']]],
   ['statusexportstart_174',['StatusExportStart',['../classwxMaximaFrame.html#a48512631501a42bae40edf393a813784',1,'wxMaximaFrame']]],
   ['statusmaximabusy_175',['StatusMaximaBusy',['../classwxMaximaFrame.html#ac9011a5c9856563224d92b3b119b03d9',1,'wxMaximaFrame']]],
-  ['statusmsgdclick_176',['StatusMsgDClick',['../classwxMaxima.html#acf2ce55e202d5b2792d39dc7c1a1adc8',1,'wxMaxima']]],
+  ['statusmsgdclick_176',['StatusMsgDClick',['../classwxMaxima.html#a07ea6572a2f3ba118b4f0ce19c2533fb',1,'wxMaxima']]],
   ['statussavefailed_177',['StatusSaveFailed',['../classwxMaximaFrame.html#a10cbced3322ea9219c039837fc47d22e',1,'wxMaximaFrame']]],
   ['statussavefinished_178',['StatusSaveFinished',['../classwxMaximaFrame.html#a2e54b704c9d1b433716fc9e1e16e0df4',1,'wxMaximaFrame']]],
   ['statussavestart_179',['StatusSaveStart',['../classwxMaximaFrame.html#a9dd2e7f7c2cb5162d8f201e0db657c33',1,'wxMaximaFrame']]],
