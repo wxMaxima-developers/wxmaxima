@@ -844,7 +844,12 @@ public:
   }
 
   //! The name of the currently-opened file
+  const wxString &GetCurrentFile() const { return m_currentFile; }
+  //! Set the name of the currently-opened file
+  void SetCurrentFile(const wxString &file) { m_currentFile = file; }
+private:
   wxString m_currentFile;
+public:
 
   /*! Make a few unicode characters interpretable by maxima.
 

@@ -2154,7 +2154,7 @@ void wxMaximaFrame::RemoveTempAutosavefile() {
     // Don't delete the file if we have opened it and haven't saved it under a
     // different name yet.
     if ((!!GetWorksheet()) && wxFileExists(m_tempfileName) &&
-        (m_tempfileName != GetWorksheet()->m_currentFile)) {
+        (m_tempfileName != GetWorksheet()->GetCurrentFile())) {
       wxRemoveFile(m_tempfileName);
     }
   }

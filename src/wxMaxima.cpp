@@ -279,8 +279,8 @@ void wxMaxima::ConfigChanged() {
                                        m_configuration.DefaultPlotWidth(),
                                        m_configuration.DefaultPlotHeight());
 
-  if (GetWorksheet() && (GetWorksheet()->m_currentFile != wxEmptyString)) {
-    wxString filename(GetWorksheet()->m_currentFile);
+  if (GetWorksheet() && (GetWorksheet()->GetCurrentFile() != wxEmptyString)) {
+    wxString filename(GetWorksheet()->GetCurrentFile());
 
     SetCWD(filename);
   }
@@ -2736,7 +2736,7 @@ bool wxMaxima::StartMaxima(bool force) {
   {
     wxString filename;
     if(GetWorksheet())
-      filename = GetWorksheet()->m_currentFile;
+      filename = GetWorksheet()->GetCurrentFile();
     if (!filename.IsEmpty()) {
       wxFileName dir(filename);
       dir.MakeAbsolute();
@@ -4382,7 +4382,7 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document,
 
   if (clearDocument) {
     if(GetWorksheet())
-      GetWorksheet()->m_currentFile = file;
+      GetWorksheet()->SetCurrentFile(file);
     StartMaxima();
     ResetTitle(true, true);
     document->SetSaved(true);
@@ -4446,7 +4446,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
   if (clearDocument) {
     document->ClearDocument();
     if(GetWorksheet())
-      GetWorksheet()->m_currentFile = file;
+      GetWorksheet()->SetCurrentFile(file);
     StartMaxima();
   }
 
@@ -4455,7 +4455,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
 
   if (clearDocument) {
     if(GetWorksheet())
-      GetWorksheet()->m_currentFile = file;
+      GetWorksheet()->SetCurrentFile(file);
     ResetTitle(true, true);
     document->SetSaved(true);
   } else
@@ -4539,7 +4539,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   if (wxFile(file, wxFile::read).Eof()) {
     document->ClearDocument();
     if(GetWorksheet())
-      GetWorksheet()->m_currentFile = file;
+      GetWorksheet()->SetCurrentFile(file);
     StartMaxima();
 
     ResetTitle(true, true);
@@ -4757,7 +4757,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   if (clearDocument) {
     document->ClearDocument();
     if(GetWorksheet())
-      GetWorksheet()->m_currentFile = file;
+      GetWorksheet()->SetCurrentFile(file);
     StartMaxima();
     long int zoom = 100;
     if (!(doczoom.ToLong(&zoom)))
@@ -4769,7 +4769,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
                              std::move(tree)); // this also requests a recalculate
   if (clearDocument) {
     if(GetWorksheet())
-      GetWorksheet()->m_currentFile = file;
+      GetWorksheet()->SetCurrentFile(file);
     ResetTitle(true, true);
     document->SetSaved(true);
   } else
@@ -4869,7 +4869,7 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document) {
 
   document->ClearDocument();
   if(GetWorksheet())
-    GetWorksheet()->m_currentFile = file;
+    GetWorksheet()->SetCurrentFile(file);
   StartMaxima();
   document->InsertGroupCells(
                              std::move(tree)); // this also requests a recalculate
@@ -5542,9 +5542,9 @@ void wxMaxima::PrintMenu(wxCommandEvent &event) {
     wxPrinter printer(&printDialogData);
     wxString title(_("wxMaxima document"));
 
-    if (GetWorksheet()->m_currentFile.Length()) {
+    if (GetWorksheet()->GetCurrentFile().Length()) {
       wxString suffix;
-      wxFileName::SplitPath(GetWorksheet()->m_currentFile, NULL, NULL, &title,
+      wxFileName::SplitPath(GetWorksheet()->GetCurrentFile(), NULL, NULL, &title,
                             &suffix);
       title << wxS(".") << suffix;
     }
@@ -5879,8 +5879,8 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
   StartAutoSaveTimer();
 
   GetWorksheet()->TreeUndo_ClearBuffers();
-  if (GetWorksheet()->m_currentFile != wxEmptyString) {
-    wxString filename(GetWorksheet()->m_currentFile);
+  if (GetWorksheet()->GetCurrentFile() != wxEmptyString) {
+    wxString filename(GetWorksheet()->GetCurrentFile());
     SetCWD(std::move(filename));
   }
   if (m_tableOfContents != NULL) {
@@ -5925,7 +5925,7 @@ bool wxMaxima::SaveFile(bool forceSave) {
   // Show a busy cursor as long as we export a file.
   wxBusyCursor crs;
 
-  wxString file = GetWorksheet()->m_currentFile;
+  wxString file = GetWorksheet()->GetCurrentFile();
   wxString fileExt = wxS("wxmx");
   int ext = 0;
 
@@ -5995,7 +5995,7 @@ bool wxMaxima::SaveFile(bool forceSave) {
       } else {
         RemoveTempAutosavefile();
         if (file != m_tempfileName)
-          GetWorksheet()->m_currentFile = file;
+          GetWorksheet()->SetCurrentFile(file);
       }
     } else {
       if (!Format::ExportToWXMX(GetWorksheet()->GetTree(), file, &m_configuration,
@@ -6014,7 +6014,7 @@ bool wxMaxima::SaveFile(bool forceSave) {
         GetWorksheet()->SetSaved(true);
         RemoveTempAutosavefile();
         if (file != m_tempfileName)
-          GetWorksheet()->m_currentFile = file;
+          GetWorksheet()->SetCurrentFile(file);
       }
     }
 
@@ -6299,13 +6299,13 @@ bool wxMaxima::AutoSave() {
 
   bool savedWas = GetWorksheet()->IsSaved();
   wxString oldTempFile = m_tempfileName;
-  wxString oldFilename = GetWorksheet()->m_currentFile;
+  wxString oldFilename = GetWorksheet()->GetCurrentFile();
   m_tempfileName = wxFileName::CreateTempFileName("untitled_");
   wxRenameFile(m_tempfileName,  m_tempfileName + ".wxmx");
   m_tempfileName = m_tempfileName + ".wxmx";
 
   /* if the current filename is empty - the file was not saved under a given name - save it using a temporary file name */
-  if (m_configuration.AutoSaveAsTempFile() || GetWorksheet()->m_currentFile.IsEmpty()) {
+  if (m_configuration.AutoSaveAsTempFile() || GetWorksheet()->GetCurrentFile().IsEmpty()) {
     bool saved = Format::ExportToWXMX(GetWorksheet()->GetTree(), m_tempfileName,
                                       &m_configuration,
                                       &GetWorksheet()->GetCellPointers(),
@@ -6326,7 +6326,7 @@ bool wxMaxima::AutoSave() {
     }
     RegisterAutoSaveFile();
   } else {
-    wxLogMessage(_("Autosaving the .wxmx file as %s"), GetWorksheet()->m_currentFile);
+    wxLogMessage(_("Autosaving the .wxmx file as %s"), GetWorksheet()->GetCurrentFile());
     savedWas = SaveFile(false);
   }
 
@@ -6334,7 +6334,7 @@ bool wxMaxima::AutoSave() {
   ResetTitle(savedWas, true);
 
   oldTempFile = m_tempfileName;
-  GetWorksheet()->m_currentFile = oldFilename;
+  GetWorksheet()->SetCurrentFile(oldFilename);
   return savedWas;
 }
 
@@ -6433,7 +6433,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_export_html) {
     // Determine a sane default file name;
-    wxString file = GetWorksheet()->m_currentFile;
+    wxString file = GetWorksheet()->GetCurrentFile();
     if (file.Length() == 0)
       file = _("untitled");
     else
@@ -10743,7 +10743,7 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event) {
   if (wxFileExists(file)) {
     OpenWXMXFile(file, GetWorksheet(), true);
     m_tempfileName = file;
-    GetWorksheet()->m_currentFile.Clear();
+    GetWorksheet()->SetCurrentFile(wxEmptyString);
     GetWorksheet()->SetSaved(false);
   } else
     LoggingMessageBox(_("File you tried to open does not exist."),
@@ -10759,7 +10759,7 @@ bool wxMaxima::SaveNecessary() {
   if (GetWorksheet()->GetTree()->Empty())
     return false;
 
-  if (GetWorksheet()->m_currentFile.IsEmpty())
+  if (GetWorksheet()->GetCurrentFile().IsEmpty())
     return true;
 
   return !m_fileSaved;
@@ -11404,12 +11404,12 @@ void wxMaxima::ResetTitle(bool saved, bool force) {
                     _("wxMaxima %s (%s) "), WXMAXIMA_VERSION,
                     wxMaximaOperatingSystemDescription());
 #endif
-  SetRepresentedFilename(GetWorksheet()->m_currentFile);
+  SetRepresentedFilename(GetWorksheet()->GetCurrentFile());
   OSXSetModified((saved != m_fileSaved) || (force));
 
   if ((saved != m_fileSaved) || (force)) {
     m_fileSaved = saved;
-    if (GetWorksheet()->m_currentFile.Length() == 0) {
+    if (GetWorksheet()->GetCurrentFile().Length() == 0) {
 #ifndef __WXOSX__
       if (saved)
         SetTitle(TitlePreambleSep + _("[ unsaved ]"));
@@ -11418,7 +11418,7 @@ void wxMaxima::ResetTitle(bool saved, bool force) {
 #endif
     } else {
       wxString name, ext;
-      wxFileName::SplitPath(GetWorksheet()->m_currentFile, NULL, NULL, &name,
+      wxFileName::SplitPath(GetWorksheet()->GetCurrentFile(), NULL, NULL, &name,
                             &ext);
 #ifndef __WXOSX__
       if (m_fileSaved)
@@ -11434,14 +11434,14 @@ void wxMaxima::ResetTitle(bool saved, bool force) {
 #if defined __WXOSX__
 #if defined __WXOSX_COCOA__
     OSXSetModified(!saved);
-    if (GetWorksheet()->m_currentFile != wxEmptyString)
-      SetRepresentedFilename(GetWorksheet()->m_currentFile);
+    if (GetWorksheet()->GetCurrentFile() != wxEmptyString)
+      SetRepresentedFilename(GetWorksheet()->GetCurrentFile());
 #else
     WindowRef win = (WindowRef)MacGetTopLevelWindowRef();
     SetWindowModified(win, !saved);
-    if (GetWorksheet()->m_currentFile != wxEmptyString) {
+    if (GetWorksheet()->GetCurrentFile() != wxEmptyString) {
       FSRef fsref;
-      wxMacPathToFSRef(GetWorksheet()->m_currentFile, &fsref);
+      wxMacPathToFSRef(GetWorksheet()->GetCurrentFile(), &fsref);
       HIWindowSetProxyFSRef(win, &fsref);
     }
 #endif
@@ -11688,7 +11688,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate) {
 
 int wxMaxima::SaveDocumentP() {
   wxString file, ext;
-  if (GetWorksheet()->m_currentFile.IsEmpty()) {
+  if (GetWorksheet()->GetCurrentFile().IsEmpty()) {
     // Check if we want to save modified untitled documents on exit
     if (!m_configuration.SaveUntitled())
       return wxID_NO;
@@ -11706,7 +11706,7 @@ int wxMaxima::SaveDocumentP() {
 #else
   file = _("unsaved");
 #endif
-  wxFileName::SplitPath(GetWorksheet()->m_currentFile, NULL, NULL, &file, &ext);
+  wxFileName::SplitPath(GetWorksheet()->GetCurrentFile(), NULL, NULL, &file, &ext);
   file += wxS(".") + ext;
   LoggingMessageDialog dialog(
                               this,

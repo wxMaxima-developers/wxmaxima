@@ -262,7 +262,7 @@ toolBar->AddSeparator();
     m_worksheetConfigurations.push_back(std::make_unique<Configuration>(*m_configuration));
     Worksheet *ws = new Worksheet(this, wxID_ANY, m_worksheetConfigurations.back().get());
     m_worksheets.push_back(ws);
-    ws->m_currentFile = files[i];
+    ws->SetCurrentFile(files[i]);
     mainSizer->Add(ws, 1, wxEXPAND);
     
     // Bind all vertical scroll event types to our synchronization handler
@@ -596,7 +596,7 @@ void DiffFrame::AlignCells() {
       // Worksheet ctor set), not the app-wide m_configuration (which has no
       // worksheet in --diff mode). Otherwise the cells' GetWorksheet() returns
       // null -> assert in debug, null-deref of GetCellPointers() in release.
-      sourceTrees.push_back(LoadTree(m_worksheets[i]->m_currentFile,
+      sourceTrees.push_back(LoadTree(m_worksheets[i]->GetCurrentFile(),
                                      m_worksheetConfigurations[i].get()));
       std::vector<GroupCell*> cells;
       std::vector<Diff::CellMatchData> matchData;
