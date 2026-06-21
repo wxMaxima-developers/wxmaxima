@@ -540,10 +540,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_mouseMotionWas</b> 
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_inPopupMenu</b> = false</td></tr>
 <tr class="memdesc:a484337330b21f0736d93fa935f9e0369"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is there an active popup menu? <br /></td></tr>
 <tr class="separator:a484337330b21f0736d93fa935f9e0369"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa811ec99d46968159e0881673879f58"><td class="memItemLeft" align="right" valign="top"><a id="afa811ec99d46968159e0881673879f58" name="afa811ec99d46968159e0881673879f58"></a>
-wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_currentFile</b></td></tr>
-<tr class="memdesc:afa811ec99d46968159e0881673879f58"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the currently-opened file. <br /></td></tr>
-<tr class="separator:afa811ec99d46968159e0881673879f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addddaa53ec91efeaf93ed6ebebae4c7b"><td class="memItemLeft" align="right" valign="top"><a id="addddaa53ec91efeaf93ed6ebebae4c7b" name="addddaa53ec91efeaf93ed6ebebae4c7b"></a>
 <a class="el" href="classFindReplaceDialog.html">FindReplaceDialog</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_findDialog</b> = NULL</td></tr>
 <tr class="memdesc:addddaa53ec91efeaf93ed6ebebae4c7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The find-and-replace-dialog. <br /></td></tr>
@@ -576,6 +572,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CodeCellVisibilityCha
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateConfig</b> ()</td></tr>
 <tr class="memdesc:a5241f3c8ca8043a6b70dad9c9e7ec5d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-read the configuration. <br /></td></tr>
 <tr class="separator:a5241f3c8ca8043a6b70dad9c9e7ec5d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43a3fe820a3811abd5bcc4bbad6ceeab"><td class="memItemLeft" align="right" valign="top"><a id="a43a3fe820a3811abd5bcc4bbad6ceeab" name="a43a3fe820a3811abd5bcc4bbad6ceeab"></a>
+const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentFile</b> () const</td></tr>
+<tr class="memdesc:a43a3fe820a3811abd5bcc4bbad6ceeab"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the currently-opened file. <br /></td></tr>
+<tr class="separator:a43a3fe820a3811abd5bcc4bbad6ceeab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43fe8e1ecbeac021f087ca2e015ebb0a"><td class="memItemLeft" align="right" valign="top"><a id="a43fe8e1ecbeac021f087ca2e015ebb0a" name="a43fe8e1ecbeac021f087ca2e015ebb0a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentFile</b> (const wxString &amp;file)</td></tr>
+<tr class="memdesc:a43fe8e1ecbeac021f087ca2e015ebb0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the name of the currently-opened file. <br /></td></tr>
+<tr class="separator:a43fe8e1ecbeac021f087ca2e015ebb0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0aeae79d8c7dadb1b4f622bc3c646d39"><td class="memItemLeft" align="right" valign="top">const wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a0aeae79d8c7dadb1b4f622bc3c646d39">UnicodeToMaxima</a> (wxString s)</td></tr>
 <tr class="memdesc:a0aeae79d8c7dadb1b4f622bc3c646d39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a few unicode characters interpretable by maxima.  <br /></td></tr>
 <tr class="separator:a0aeae79d8c7dadb1b4f622bc3c646d39"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1783,7 +1787,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Do an incremental search from the cursor or the point the last search started at. </p>
-<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
+<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
 
 </div>
 </div>
