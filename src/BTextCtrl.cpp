@@ -47,11 +47,11 @@ BTextCtrl::BTextCtrl(wxWindow *parent, wxWindowID id, Configuration *cfg,
       SetFont(font);
   }
 #if defined __WXGTK__
-  Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(BTextCtrl::OnChar), NULL, this);
+  Bind(wxEVT_KEY_DOWN, &BTextCtrl::OnChar, this);
 #else
-  Connect(wxEVT_CHAR, wxKeyEventHandler(BTextCtrl::OnChar), NULL, this);
+  Bind(wxEVT_CHAR, &BTextCtrl::OnChar, this);
 #endif
-  Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(BTextCtrl::OnFocus), NULL, this);
+  Bind(wxEVT_SET_FOCUS, &BTextCtrl::OnFocus, this);
 
 #ifdef __WXOSX__
 #if wxCHECK_VERSION(3, 1, 1)

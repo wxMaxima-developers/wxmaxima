@@ -70,7 +70,7 @@ FormatSidebar::FormatSidebar(wxWindow *parent, int ID)
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
 
-  Connect(wxEVT_SIZE, wxSizeEventHandler(FormatSidebar::OnSize), NULL, this);
+  Bind(wxEVT_SIZE, &FormatSidebar::OnSize, this);
   SetSizer(grid);
   FitInside();
 }

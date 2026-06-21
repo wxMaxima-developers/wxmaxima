@@ -37,8 +37,7 @@ WrappingStaticText::WrappingStaticText(wxWindow *parent, int id, wxString text)
   //  m_textCtrl->SetMinSize(wxSize(50,10));
   wxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
   sizer->Add(m_textCtrl, wxSizerFlags().Expand());
-  Connect(wxEVT_SIZE, wxSizeEventHandler(WrappingStaticText::OnSize), NULL,
-          this);
+  Bind(wxEVT_SIZE, &WrappingStaticText::OnSize, this);
   SetSizer(sizer);
   FitInside();
 }

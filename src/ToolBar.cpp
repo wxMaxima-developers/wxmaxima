@@ -385,9 +385,8 @@ void ToolBar::AddTools() {
 #else
     AddTool(wxID_HELP, _("Help"), wxArtProvider::GetBitmap(wxART_HELP, wxART_TOOLBAR), _("Show wxMaxima help"));
 #endif
-  Connect(wxEVT_SIZE, wxSizeEventHandler(ToolBar::OnSize), NULL, this);
-  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(ToolBar::OnMouseRightDown),
-          NULL, this);
+  Bind(wxEVT_SIZE, &ToolBar::OnSize, this);
+  Bind(wxEVT_RIGHT_DOWN, &ToolBar::OnMouseRightDown, this);
   Realize();
 }
 
@@ -678,14 +677,13 @@ void ToolBar::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
   popupMenu->Check(help, ShowHelp());
 
   if (popupMenu->GetMenuItemCount() > 0) {
-    popupMenu->Connect(wxEVT_MENU, wxMenuEventHandler(ToolBar::OnMenu), NULL,
-                       this);
+    popupMenu->Bind(wxEVT_MENU, &ToolBar::OnMenu, this);
     PopupMenu(popupMenu);
   }
   wxDELETE(popupMenu);
 }
 
-void ToolBar::OnMenu(wxMenuEvent &event) {
+void ToolBar::OnMenu(wxCommandEvent &event) {
   switch (event.GetId()) {
   case copy_paste:
     ShowCopyPaste(!ShowCopyPaste());

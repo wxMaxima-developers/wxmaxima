@@ -53,9 +53,7 @@ ActualValuesStorageWiz::ActualValuesStorageWiz(Configuration *WXUNUSED(cfg),
   gridSize.y = 500;
   m_grid->SetMinSize(gridSize);
   vsizer->Add(m_grid, wxSizerFlags().Expand().Border(wxALL, 10));
-  m_grid->Connect(wxEVT_GRID_CELL_CHANGED,
-                  wxGridEventHandler(ActualValuesStorageWiz::OnValueChange),
-                  NULL, this);
+  m_grid->Bind(wxEVT_GRID_CELL_CHANGED, &ActualValuesStorageWiz::OnValueChange, this);
 
   wxPanel *buttonPanel = new wxPanel(this, -1);
 #if defined __WXMSW__

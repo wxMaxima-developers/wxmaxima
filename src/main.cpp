@@ -500,7 +500,7 @@ bool MyApp::OnInit() {
 #endif
 #endif
 
-  Connect(wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+  Bind(wxEVT_MENU, &MyApp::OnFileMenu, this);
 
 #if defined __WXOSX__
   wxString path;
@@ -518,10 +518,8 @@ bool MyApp::OnInit() {
   // add open, new, etc options to your menubar.
   wxMenuBar::MacSetCommonMenuBar(menubar);
 
-  menubar->Connect(wxEVT_COMMAND_MENU_SELECTED,
-                   wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
-  Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu),
-          NULL, this);
+  menubar->Bind(wxEVT_COMMAND_MENU_SELECTED, &MyApp::OnFileMenu, this);
+  Bind(wxEVT_COMMAND_MENU_SELECTED, &MyApp::OnFileMenu, this);
   wxApp::SetExitOnFrameDelete(false);
 #endif
 

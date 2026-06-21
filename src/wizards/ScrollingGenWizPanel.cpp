@@ -49,8 +49,7 @@ ScrollingGenWizPanel::ScrollingGenWizPanel(
   vbox->Add(m_panel, wxSizerFlags(1).Expand());
   EnableScrolling(false, true);
   SetScrollRate(5, 5);
-  Connect(wxEVT_SIZE, wxSizeEventHandler(ScrollingGenWizPanel::OnSize), NULL,
-          this);
+  Bind(wxEVT_SIZE, &ScrollingGenWizPanel::OnSize, this);
   SetSizerAndFit(vbox);
 }
 

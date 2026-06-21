@@ -66,15 +66,13 @@ MaximaNotStartingDialog::MaximaNotStartingDialog(wxWindow *parent, int id, Confi
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
-  button_1->Connect(wxEVT_BUTTON, wxCommandEventHandler(MaximaNotStartingDialog::OnOkPress),
-                    NULL, this);
+  button_1->Bind(wxEVT_BUTTON, &MaximaNotStartingDialog::OnOkPress, this);
   button_1->SetDefault();
   button_2 = new wxButton(this, wxID_CANCEL, _("Cancel"));
 #else
   button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_2 = new wxButton(this, wxID_OK, _("OK"));
-  button_2->Connect(wxEVT_BUTTON, wxCommandEventHandler(MaximaNotStartingDialog::OnOkPress),
-                    NULL, this);
+  button_2->Bind(wxEVT_BUTTON, &MaximaNotStartingDialog::OnOkPress, this);
   button_2->SetDefault();
 #endif
   buttonSizer->Add(button_1, 0, wxALL, 5);

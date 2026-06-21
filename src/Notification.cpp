@@ -35,10 +35,8 @@ Notification::Notification() : wxNotificationMessage() {
   m_errorNotificationCell = NULL;
 #if wxCHECK_VERSION(3, 1, 0)
   //  AddAction(wxID_ANY,_("Focus window"));
-  Connect(wxEVT_NOTIFICATION_MESSAGE_CLICK,
-          wxCommandEventHandler(Notification::OnClick), NULL, this);
-  Connect(wxEVT_NOTIFICATION_MESSAGE_ACTION,
-          wxCommandEventHandler(Notification::OnClick), NULL, this);
+  Bind(wxEVT_NOTIFICATION_MESSAGE_CLICK, &Notification::OnClick, this);
+  Bind(wxEVT_NOTIFICATION_MESSAGE_ACTION, &Notification::OnClick, this);
 #endif
 }
 
@@ -49,10 +47,8 @@ Notification::Notification(const wxString &title, const wxString &message,
   m_parent = parent;
 #if wxCHECK_VERSION(3, 1, 0)
   //  AddAction(wxID_ANY,_("Focus window"));
-  Connect(wxEVT_NOTIFICATION_MESSAGE_CLICK,
-          wxCommandEventHandler(Notification::OnClick), NULL, this);
-  Connect(wxEVT_NOTIFICATION_MESSAGE_ACTION,
-          wxCommandEventHandler(Notification::OnClick), NULL, this);
+  Bind(wxEVT_NOTIFICATION_MESSAGE_CLICK, &Notification::OnClick, this);
+  Bind(wxEVT_NOTIFICATION_MESSAGE_ACTION, &Notification::OnClick, this);
 #endif
 }
 

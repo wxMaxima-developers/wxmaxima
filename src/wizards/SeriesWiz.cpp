@@ -37,13 +37,13 @@ SeriesWiz::SeriesWiz(wxWindow *parent, int id, Configuration *cfg,
   text_ctrl_3 = new BTextCtrl(this, wxID_ANY, cfg, wxS("0"), wxDefaultPosition,
                               wxSize(110, -1));
   button_3 = new wxButton(this, wxID_ANY, _("Special"));
-  button_3->Connect(wxEVT_BUTTON, wxCommandEventHandler(SeriesWiz::OnButton), NULL, this);
+  button_3->Bind(wxEVT_BUTTON, &SeriesWiz::OnButton, this);
 
   label_5 = new wxStaticText(this, wxID_ANY, _("Depth:"));
   spin_ctrl_1 = new wxSpinCtrl(this, wxID_ANY, wxS("8"), wxDefaultPosition,
                                wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 8);
   checkbox_1 = new wxCheckBox(this, wxID_ANY, _("&Power series"));
-  checkbox_1->Connect(wxEVT_CHECKBOX, wxCommandEventHandler(SeriesWiz::OnCheckbox), NULL, this);
+  checkbox_1->Bind(wxEVT_CHECKBOX, &SeriesWiz::OnCheckbox, this);
   static_line_1 = new wxStaticLine(this, wxID_ANY);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));

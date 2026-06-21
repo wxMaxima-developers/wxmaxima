@@ -488,24 +488,18 @@ DrawWiz::DrawWiz(wxWindow *parent, Configuration *config, int dimensions)
   animPanelVbox->Add(new wxStaticText(animPanel, -1, _("Frame counter")),
                      wxSizerFlags());
   m_frameVar = new BTextCtrl(animPanel, -1, config, "t");
-  m_frameVar->Connect(wxEVT_SET_FOCUS,
-                      wxFocusEventHandler(DrawWiz::OnParametricFocus), NULL,
-                      this);
+  m_frameVar->Bind(wxEVT_SET_FOCUS, &DrawWiz::OnParametricFocus, this);
 
   animPanelVbox->Add(m_frameVar, wxSizerFlags().Expand().Border(wxALL, 5));
   animPanelVbox->Add(new wxStaticText(animPanel, -1, _("Frame counter start")),
                      wxSizerFlags());
   m_varStart = new BTextCtrl(animPanel, -1, config, "1");
-  m_varStart->Connect(wxEVT_SET_FOCUS,
-                      wxFocusEventHandler(DrawWiz::OnParametricFocus), NULL,
-                      this);
+  m_varStart->Bind(wxEVT_SET_FOCUS, &DrawWiz::OnParametricFocus, this);
   animPanelVbox->Add(m_varStart, wxSizerFlags().Expand().Border(wxALL, 5));
   animPanelVbox->Add(new wxStaticText(animPanel, -1, _("Frame counter end")),
                      wxSizerFlags());
   m_varEnd = new BTextCtrl(animPanel, -1, config, "10");
-  m_varEnd->Connect(wxEVT_SET_FOCUS,
-                    wxFocusEventHandler(DrawWiz::OnParametricFocus), NULL,
-                    this);
+  m_varEnd->Bind(wxEVT_SET_FOCUS, &DrawWiz::OnParametricFocus, this);
   animPanelVbox->Add(m_varEnd, wxSizerFlags().Expand().Border(wxALL, 5));
   animPanel->SetSizerAndFit(animPanelVbox);
   vbox->Add(animPanel, wxSizerFlags().Expand().Border(wxALL, 5));
@@ -641,31 +635,21 @@ WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config))
   m_contourNone =
     new wxRadioButton(this, -1, _("No contour lines"), wxDefaultPosition,
                       wxDefaultSize, wxRB_GROUP);
-  m_contourNone->Connect(wxEVT_RADIOBUTTON,
-                         wxCommandEventHandler(WizContour::OnRadioButton), NULL,
-                         this);
+  m_contourNone->Bind(wxEVT_RADIOBUTTON, &WizContour::OnRadioButton, this);
   vbox->Add(m_contourNone, wxSizerFlags().Expand());
   m_contourSurface =
     new wxRadioButton(this, -1, _("Contour lines on the Surface"));
-  m_contourSurface->Connect(wxEVT_RADIOBUTTON,
-                            wxCommandEventHandler(WizContour::OnRadioButton),
-                            NULL, this);
+  m_contourSurface->Bind(wxEVT_RADIOBUTTON, &WizContour::OnRadioButton, this);
   vbox->Add(m_contourSurface, wxSizerFlags().Expand());
   m_contourBase = new wxRadioButton(this, -1, _("Contour lines on the Bottom"));
-  m_contourBase->Connect(wxEVT_RADIOBUTTON,
-                         wxCommandEventHandler(WizContour::OnRadioButton), NULL,
-                         this);
+  m_contourBase->Bind(wxEVT_RADIOBUTTON, &WizContour::OnRadioButton, this);
   vbox->Add(m_contourBase, wxSizerFlags().Expand());
   m_contourBoth =
     new wxRadioButton(this, -1, _("Contour lines on surface and Bottom"));
-  m_contourBoth->Connect(wxEVT_RADIOBUTTON,
-                         wxCommandEventHandler(WizContour::OnRadioButton), NULL,
-                         this);
+  m_contourBoth->Bind(wxEVT_RADIOBUTTON, &WizContour::OnRadioButton, this);
   vbox->Add(m_contourBoth, wxSizerFlags().Expand());
   m_contourOnly = new wxRadioButton(this, -1, _("No plot, only contour lines"));
-  m_contourOnly->Connect(wxEVT_RADIOBUTTON,
-                         wxCommandEventHandler(WizContour::OnRadioButton), NULL,
-                         this);
+  m_contourOnly->Bind(wxEVT_RADIOBUTTON, &WizContour::OnRadioButton, this);
   vbox->Add(m_contourOnly, wxSizerFlags().Expand());
 
   m_contourBoth->SetValue(true);

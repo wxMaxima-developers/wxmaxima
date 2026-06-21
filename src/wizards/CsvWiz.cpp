@@ -55,8 +55,7 @@ CsvImportWiz::CsvImportWiz(wxWindow *parent, Configuration *config)
   m_filename = new BTextCtrl(this, -1, config, wxEmptyString);
   hbox->Add(m_filename, wxSizerFlags(20));
   m_browseButton = new wxButton(this, -1, _("Browse"));
-  m_browseButton->Connect(
-                          wxEVT_BUTTON, wxCommandEventHandler(CsvImportWiz::OnBrowse), NULL, this);
+  m_browseButton->Bind(wxEVT_BUTTON, &CsvImportWiz::OnBrowse, this);
   hbox->Add(m_browseButton, wxSizerFlags());
   vbox->Add(hbox, wxSizerFlags(20).Expand());
 
@@ -130,8 +129,7 @@ CsvExportWiz::CsvExportWiz(wxWindow *parent, Configuration *config,
   m_filename = new BTextCtrl(this, -1, config, wxEmptyString);
   hbox->Add(m_filename, wxSizerFlags(20));
   m_browseButton = new wxButton(this, -1, _("Browse"));
-  m_browseButton->Connect(
-                          wxEVT_BUTTON, wxCommandEventHandler(CsvExportWiz::OnBrowse), NULL, this);
+  m_browseButton->Bind(wxEVT_BUTTON, &CsvExportWiz::OnBrowse, this);
   hbox->Add(m_browseButton, wxSizerFlags());
   vbox->Add(hbox, wxSizerFlags(20).Expand());
 

@@ -91,9 +91,7 @@ StatusBar::StatusBar(wxWindow *parent, int id)
   UpdateBitmaps();
   m_statusTextPanel = new wxPanel(this, wxID_ANY);
   m_statusText = new wxStaticText(m_statusTextPanel, wxID_ANY, wxEmptyString);
-  m_statusText->Connect(
-                        wxEVT_LEFT_DCLICK, wxCommandEventHandler(StatusBar::StatusMsgDClick), NULL,
-                        this);
+  m_statusText->Bind(wxEVT_LEFT_DCLICK, &StatusBar::StatusMsgDClick, this);
 
   m_maximaStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
   m_networkStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
@@ -101,13 +99,13 @@ StatusBar::StatusBar(wxWindow *parent, int id)
   ReceiveTimer.SetOwner(this, wxID_ANY);
   SendTimer.SetOwner(this, wxID_ANY);
   // Mark the network state as "to be changed"
-  Connect(wxEVT_SIZE, wxSizeEventHandler(StatusBar::OnSize));
-  Connect(wxEVT_TIMER, wxTimerEventHandler(StatusBar::OnTimerEvent));
+  Bind(wxEVT_SIZE, &StatusBar::OnSize, this);
+  Bind(wxEVT_TIMER, &StatusBar::OnTimerEvent, this);
 }
 
 StatusBar::~StatusBar() {}
 
-void StatusBar::StatusMsgDClick(wxCommandEvent &ev)
+void StatusBar::StatusMsgDClick(wxMouseEvent &ev)
 {
   wxCommandEvent *evt = new wxCommandEvent(wxEVT_LEFT_DCLICK);
   m_statusTextPanel->GetEventHandler()->QueueEvent(evt);

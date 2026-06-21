@@ -300,11 +300,9 @@ AutocompletePopup::AutocompletePopup(wxWindow *parent, EditorCell *editor,
   if (m_type != AutoComplete::esccommand)
     m_partial = m_editor->GetSelectionString();
 
-  Connect(wxEVT_CHAR, wxKeyEventHandler(AutocompletePopup::OnChar), NULL, this);
-  Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(AutocompletePopup::OnKeyDown), NULL,
-          this);
-  Connect(wxEVT_LEFT_UP, wxMouseEventHandler(AutocompletePopup::OnClick), NULL,
-          this);
+  Bind(wxEVT_CHAR, &AutocompletePopup::OnChar, this);
+  Bind(wxEVT_KEY_DOWN, &AutocompletePopup::OnKeyDown, this);
+  Bind(wxEVT_LEFT_UP, &AutocompletePopup::OnClick, this);
 }
 
 void AutocompletePopup::OnChar(wxKeyEvent &event) {

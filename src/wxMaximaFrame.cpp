@@ -446,12 +446,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
 
   AuiManagerUpdate();
 
-  Connect(wxEVT_MENU_HIGHLIGHT,
-          wxMenuEventHandler(wxMaximaFrame::OnMenuStatusText), NULL, this);
-  Connect(EventIDs::menu_pane_dockAll, wxEVT_MENU,
-          wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
-  Connect(EventIDs::menu_pane_hideall, wxEVT_MENU,
-          wxCommandEventHandler(wxMaximaFrame::HideAllSidebars), NULL, this);
+  Bind(wxEVT_MENU_HIGHLIGHT, &wxMaximaFrame::OnMenuStatusText, this);
+  Bind(wxEVT_MENU, &wxMaximaFrame::DockAllSidebars, this, EventIDs::menu_pane_dockAll);
+  Bind(wxEVT_MENU, &wxMaximaFrame::HideAllSidebars, this, EventIDs::menu_pane_hideall);
   m_worksheet->SetFocus();
 }
 

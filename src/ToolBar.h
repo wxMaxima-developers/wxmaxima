@@ -274,7 +274,7 @@ public:
 protected:
   void OnSize(wxSizeEvent &event);
   void OnMouseRightDown(wxMouseEvent &event);
-  void OnMenu(wxMenuEvent &event);
+  void OnMenu(wxCommandEvent &event);
 private:
   //! The ppi rate.
   wxSize m_ppi;

@@ -92,7 +92,7 @@ MathSidebar::MathSidebar(wxWindow *parent, int ID)
   grid->Add(new wxButton(this, EventIDs::button_plot3, _("Plot 3D..."),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  Connect(wxEVT_SIZE, wxSizeEventHandler(MathSidebar::OnSize), NULL, this);
+  Bind(wxEVT_SIZE, &MathSidebar::OnSize, this);
   SetSizer(grid);
   FitInside();
 }

@@ -65,9 +65,7 @@ ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg), wxWindow *parent, int id,
   m_CriterionFunc =
     new wxTextCtrl(choicePanel, -1, wxEmptyString, wxDefaultPosition,
                    wxSize(300, wxDefaultSize.y));
-  m_CriterionFunc->Connect(wxEVT_TEXT,
-                           wxGridEventHandler(ListSortWiz::OnFunctionChange),
-                           NULL, this);
+  m_CriterionFunc->Bind(wxEVT_TEXT, &ListSortWiz::OnFunctionChange, this);
   grid->Add(m_CriterionFunc, wxSizerFlags().Border(wxTOP | wxLEFT, 10));
 
   choicePanel->SetSizerAndFit(grid);

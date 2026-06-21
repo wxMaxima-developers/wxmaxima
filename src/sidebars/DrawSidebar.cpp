@@ -104,8 +104,7 @@ DrawSidebar::DrawSidebar(wxWindow *parent, int id)
                            wxDefaultPosition, wxDefaultSize),
               0, style, border);
   m_draw_accuracy->SetToolTip(_("The accuracy versus speed tradeoff"));
-  Connect(wxEVT_SIZE, wxSizeEventHandler(DrawSidebar::OnSize), NULL,
-          this);
+  Bind(wxEVT_SIZE, &DrawSidebar::OnSize, this);
   vbox->Add(m_grid, wxSizerFlags(2).Expand());
 
   SetSizer(vbox);

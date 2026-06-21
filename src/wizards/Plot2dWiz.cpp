@@ -33,16 +33,14 @@ Plot2DWiz::Plot2DWiz(wxWindow *parent, int id, Configuration *cfg,
   : wxDialog(parent, id, title, pos, size, style) {
   m_configuration = cfg;
 
-  Connect(wxEVT_MENU, EventIDs::wizard_parametric_plot,
-          wxCommandEventHandler(Plot2DWiz::OnPopupMenu), NULL, this);
-  Connect(wxEVT_MENU, EventIDs::wizard_discrete_plot,
-          wxCommandEventHandler(Plot2DWiz::OnPopupMenu), NULL, this);
+  Bind(wxEVT_MENU, &Plot2DWiz::OnPopupMenu, this, EventIDs::wizard_parametric_plot);
+  Bind(wxEVT_MENU, &Plot2DWiz::OnPopupMenu, this, EventIDs::wizard_discrete_plot);
 
   label_2 = new wxStaticText(this, -1, _("Expression(s):"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(300, -1));
   button_3 = new wxButton(this, wxID_ANY, _("&Special"));
-  button_3->Connect(wxEVT_BUTTON, wxCommandEventHandler(Plot2DWiz::OnButton), NULL, this);
+  button_3->Bind(wxEVT_BUTTON, &Plot2DWiz::OnButton, this);
 
   label_3 = new wxStaticText(this, -1, _("Variable:"));
   text_ctrl_2 =
@@ -81,7 +79,7 @@ Plot2DWiz::Plot2DWiz(wxWindow *parent, int id, Configuration *cfg,
   combo_box_2 =
     new wxComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
                    wxSize(280, -1), 4, combo_box_2_choices, wxCB_DROPDOWN);
-  combo_box_2->Connect(wxEVT_COMBOBOX, wxCommandEventHandler(Plot2DWiz::OnCombobox), NULL, this);
+  combo_box_2->Bind(wxEVT_COMBOBOX, &Plot2DWiz::OnCombobox, this);
 
   label_12 = new wxStaticText(this, -1, _("Plot to file:"));
   text_ctrl_9 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
@@ -89,7 +87,7 @@ Plot2DWiz::Plot2DWiz(wxWindow *parent, int id, Configuration *cfg,
   button_4 = new wxBitmapButton(
                                 this, wxID_ANY,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN, wxART_HELP_BROWSER));
-  button_4->Connect(wxEVT_BUTTON, wxCommandEventHandler(Plot2DWiz::OnFileBrowse), NULL, this);
+  button_4->Bind(wxEVT_BUTTON, &Plot2DWiz::OnFileBrowse, this);
 
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__

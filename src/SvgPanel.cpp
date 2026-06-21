@@ -45,8 +45,8 @@ SvgPanel::SvgPanel(wxWindow *parent, unsigned char *data, std::size_t len)
 
   SetMinSize(wxSize(ppi * 4, ppi * 4));
 
-  Connect(wxEVT_PAINT, wxPaintEventHandler(SvgPanel::paintEvent), NULL, this);
-  Connect(wxEVT_SIZE, wxSizeEventHandler(SvgPanel::OnSize), NULL, this);
+  Bind(wxEVT_PAINT, &SvgPanel::paintEvent, this);
+  Bind(wxEVT_SIZE, &SvgPanel::OnSize, this);
 }
 
 void SvgPanel::Load(unsigned char *data, std::size_t len) {

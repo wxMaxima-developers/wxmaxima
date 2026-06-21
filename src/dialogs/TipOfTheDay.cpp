@@ -268,21 +268,16 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
   wxButton *backButton = new wxButton(this, wxID_BACKWARD);
-  backButton->Connect(wxEVT_BUTTON,
-                      wxCommandEventHandler(TipOfTheDay::OnPreviousButton),
-                      NULL, this);
+  backButton->Bind(wxEVT_BUTTON, &TipOfTheDay::OnPreviousButton, this);
   hbox->Add(backButton, wxSizerFlags().Expand());
   hbox->Add(new wxStaticText(this, -1, _(" Did you know? "), wxDefaultPosition,
                              wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL),
             wxSizerFlags().Proportion(10).Center());
   wxButton *forwardButton = new wxButton(this, wxID_FORWARD);
-  forwardButton->Connect(wxEVT_BUTTON,
-                         wxCommandEventHandler(TipOfTheDay::OnNextButton), NULL,
-                         this);
+  forwardButton->Bind(wxEVT_BUTTON, &TipOfTheDay::OnNextButton, this);
   hbox->Add(forwardButton, wxSizerFlags().Expand());
   vbox->Add(hbox, wxSizerFlags().Expand());
-  Connect(wxEVT_TEXT_URL, wxTextUrlEventHandler(TipOfTheDay::OnTextURLEvent),
-          NULL, this);
+  Bind(wxEVT_TEXT_URL, &TipOfTheDay::OnTextURLEvent, this);
 
   m_tip = new wxTextCtrl(this, -1, m_tips.Item(m_num), wxDefaultPosition,
                          wxDefaultSize, wxTE_READONLY | wxTE_MULTILINE | wxTE_AUTO_URL);
@@ -298,8 +293,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   buttonSizer->AddStretchSpacer(5);
 
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
-  okButton->Connect(wxEVT_BUTTON,
-                    wxCommandEventHandler(TipOfTheDay::OnOkButton), NULL, this);
+  okButton->Bind(wxEVT_BUTTON, &TipOfTheDay::OnOkButton, this);
 
   buttonSizer->Add(okButton);
   okButton->SetDefault();

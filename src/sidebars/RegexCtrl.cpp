@@ -31,11 +31,9 @@ RegexCtrl::RegexCtrl(wxWindow *parent, wxWindowID id, Configuration *cfg,
   : BTextCtrl(parent, id, cfg),
     m_configName(configName)
 {
-  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(RegexCtrl::OnMouseRightDown),
-          NULL, this);
-  Connect(wxEVT_MENU, wxCommandEventHandler(RegexCtrl::OnMenu), NULL, this);
-  Connect(wxEVT_TEXT, wxCommandEventHandler(RegexCtrl::OnTextChange), NULL,
-          this);
+  Bind(wxEVT_RIGHT_DOWN, &RegexCtrl::OnMouseRightDown, this);
+  Bind(wxEVT_MENU, &RegexCtrl::OnMenu, this);
+  Bind(wxEVT_TEXT, &RegexCtrl::OnTextChange, this);
   if (RegexTooltip_norm.IsEmpty())
     RegexTooltip_norm = _("Input a RegEx here to filter the results.\nRight-click for options!");
   if (RegexTooltip_error.IsEmpty())

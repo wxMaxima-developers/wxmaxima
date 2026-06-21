@@ -59,10 +59,8 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent,
   SetName("FindDialog");
   wxPersistenceManager::Get().RegisterAndRestore(this);
 
-  Connect(wxEVT_ACTIVATE, wxActivateEventHandler(FindReplaceDialog::OnActivateEvent),
-          NULL, this);
-  Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplaceDialog::OnKeyDown),
-          NULL, this);
+  Bind(wxEVT_ACTIVATE, &FindReplaceDialog::OnActivateEvent, this);
+  Bind(wxEVT_CHAR_HOOK, &FindReplaceDialog::OnKeyDown, this);
 }
 
 FindReplaceDialog::~FindReplaceDialog()

@@ -99,7 +99,7 @@ public:
   void UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFromMaxima);
   void SetStatusText(wxString statusText){m_statusText->SetLabel(statusText);}
 protected:
-  void StatusMsgDClick(wxCommandEvent &ev);
+  void StatusMsgDClick(wxMouseEvent &ev);
   void OnSize(wxSizeEvent &event);
   void OnTimerEvent(wxTimerEvent &event);
 

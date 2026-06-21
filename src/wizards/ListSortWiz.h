@@ -58,7 +58,7 @@ protected:
   wxTextCtrl *m_CriterionFunc;
   wxButton *button_1;
   wxButton *button_2;
-  void OnFunctionChange(wxGridEvent &WXUNUSED(unused)){m_sortFunction->SetValue(true);}
+  void OnFunctionChange(wxCommandEvent &WXUNUSED(unused)){m_sortFunction->SetValue(true);}
 };
 
 #endif // LISTSORTWIZ_H

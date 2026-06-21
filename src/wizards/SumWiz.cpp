@@ -26,8 +26,7 @@ SumWiz::SumWiz(wxWindow *parent, int id, Configuration *cfg,
                const wxString &title, const wxPoint &pos, const wxSize &size,
                long style)
   : wxDialog(parent, id, title, pos, size, style) {
-  Connect(use_nusum_id, wxEVT_CHECKBOX,
-          wxCommandEventHandler(SumWiz::OnCheckbox), NULL, this);
+  Bind(wxEVT_CHECKBOX, &SumWiz::OnCheckbox, this, use_nusum_id);
 
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,

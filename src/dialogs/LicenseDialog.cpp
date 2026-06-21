@@ -40,8 +40,7 @@ LicenseDialog::LicenseDialog(wxWindow *parent)
   wxMemoryInputStream istream(WXM_LICENSE, WXM_LICENSE_SIZE);
   wxTextInputStream textIn(istream);
   m_movedToStart = false;
-  Connect(wxEVT_TEXT_URL, wxTextUrlEventHandler(LicenseDialog::OnTextURLEvent),
-          NULL, this);
+  Bind(wxEVT_TEXT_URL, &LicenseDialog::OnTextURLEvent, this);
   wxString line;
   wxString licenseText;
 
@@ -76,7 +75,7 @@ LicenseDialog::LicenseDialog(wxWindow *parent)
 
   SetName("License");
   wxPersistenceManager::Get().RegisterAndRestore(this);
-  Connect(wxEVT_SIZE, wxSizeEventHandler(LicenseDialog::OnSize));
+  Bind(wxEVT_SIZE, &LicenseDialog::OnSize, this);
   SetSizerAndFit(vbox);
 }
 

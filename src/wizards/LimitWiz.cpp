@@ -36,7 +36,7 @@ LimitWiz::LimitWiz(wxWindow *parent, int id, Configuration *cfg,
   text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxS("0"), wxDefaultPosition,
                               wxSize(110, -1));
   button_1 = new wxButton(this, wxID_ANY, _("Special"));
-  button_1->Connect(wxEVT_BUTTON, wxCommandEventHandler(LimitWiz::OnButton), NULL, this);
+  button_1->Bind(wxEVT_BUTTON, &LimitWiz::OnButton, this);
 
   label_5 = new wxStaticText(this, -1, _("Direction:"));
   const wxString choice_1_choices[] = {_("both sides"), _("left"), _("right")};
@@ -54,7 +54,7 @@ LimitWiz::LimitWiz(wxWindow *parent, int id, Configuration *cfg,
 #endif
 
   button_2->SetDefault();
-  Connect(wxEVT_IDLE, wxIdleEventHandler(LimitWiz::OnIdle), NULL, this);
+  Bind(wxEVT_IDLE, &LimitWiz::OnIdle, this);
 
   set_properties();
   do_layout();

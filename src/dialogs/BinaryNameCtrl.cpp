@@ -35,15 +35,12 @@ BinaryNameCtrl::BinaryNameCtrl(wxWindow *parent, int id)
     new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
                    wxSize(250 * GetContentScaleFactor(), -1), wxTE_RICH);
   m_binaryName->AutoCompleteFileNames();
-  m_binaryName->Connect(wxEVT_COMMAND_TEXT_UPDATED,
-                        wxCommandEventHandler(BinaryNameCtrl::TextChangedEvent), NULL, this);
+  m_binaryName->Bind(wxEVT_COMMAND_TEXT_UPDATED, &BinaryNameCtrl::TextChangedEvent, this);
   hbox->Add(m_binaryName,
             wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   m_browseButton =
     new wxButton(this, wxID_OPEN, _("Browse"));
-  m_browseButton->Connect(wxEVT_BUTTON,
-                wxCommandEventHandler(BinaryNameCtrl::OnBrowse), NULL,
-                this);
+  m_browseButton->Bind(wxEVT_BUTTON, &BinaryNameCtrl::OnBrowse, this);
   hbox->Add(m_browseButton, wxSizerFlags());
   SetSizerAndFit(hbox);
 }

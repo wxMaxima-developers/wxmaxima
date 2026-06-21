@@ -267,29 +267,17 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
 
   SetCheckboxValues();
 
-  Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(ConfigDialogue::OnClose),
-          NULL, this);
-  Connect(listbox_styleFor, wxEVT_LISTBOX,
-          wxCommandEventHandler(ConfigDialogue::OnChangeStyle), NULL, this);
-  Connect(language_id, wxEVT_COMBOBOX,
-          wxCommandEventHandler(ConfigDialogue::OnChangeWarning), NULL, this);
-  Connect(checkbox_bold, wxEVT_CHECKBOX,
-          wxCommandEventHandler(ConfigDialogue::OnCheckbox), NULL, this);
-  Connect(checkbox_italic, wxEVT_CHECKBOX,
-          wxCommandEventHandler(ConfigDialogue::OnCheckbox), NULL, this);
-  Connect(checkbox_slanted, wxEVT_CHECKBOX,
-          wxCommandEventHandler(ConfigDialogue::OnCheckbox), NULL, this);
-  Connect(checkbox_strikethrough, wxEVT_CHECKBOX,
-          wxCommandEventHandler(ConfigDialogue::OnCheckbox), NULL, this);
-  Connect(checkbox_underlined, wxEVT_CHECKBOX,
-          wxCommandEventHandler(ConfigDialogue::OnCheckbox), NULL, this);
-  Connect(save_id, wxEVT_BUTTON,
-          wxCommandEventHandler(ConfigDialogue::LoadSave), NULL, this);
-  Connect(load_id, wxEVT_BUTTON,
-          wxCommandEventHandler(ConfigDialogue::LoadSave), NULL, this);
-  Connect(style_font_family, wxEVT_BUTTON,
-          wxCommandEventHandler(ConfigDialogue::OnChangeFontFamily), NULL,
-          this);
+  Bind(wxEVT_CLOSE_WINDOW, &ConfigDialogue::OnClose, this);
+  Bind(wxEVT_LISTBOX, &ConfigDialogue::OnChangeStyle, this, listbox_styleFor);
+  Bind(wxEVT_COMBOBOX, &ConfigDialogue::OnChangeWarning, this, language_id);
+  Bind(wxEVT_CHECKBOX, &ConfigDialogue::OnCheckbox, this, checkbox_bold);
+  Bind(wxEVT_CHECKBOX, &ConfigDialogue::OnCheckbox, this, checkbox_italic);
+  Bind(wxEVT_CHECKBOX, &ConfigDialogue::OnCheckbox, this, checkbox_slanted);
+  Bind(wxEVT_CHECKBOX, &ConfigDialogue::OnCheckbox, this, checkbox_strikethrough);
+  Bind(wxEVT_CHECKBOX, &ConfigDialogue::OnCheckbox, this, checkbox_underlined);
+  Bind(wxEVT_BUTTON, &ConfigDialogue::LoadSave, this, save_id);
+  Bind(wxEVT_BUTTON, &ConfigDialogue::LoadSave, this, load_id);
+  Bind(wxEVT_BUTTON, &ConfigDialogue::OnChangeFontFamily, this, style_font_family);
 }
 
 ConfigDialogue::~ConfigDialogue() {}
@@ -909,36 +897,28 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel() {
 
   wxButton *resetAllButton = new wxButton(revertSizer->GetStaticBox(), wxID_ANY,
                                           _("Reset all GUI settings"));
-  resetAllButton->Connect(
-                          wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnResetAllToDefaults),
-                          NULL, this);
+  resetAllButton->Bind(wxEVT_BUTTON, &ConfigDialogue::OnResetAllToDefaults, this);
   revertSizer->Add(
                    resetAllButton,
                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()).Expand());
 
   wxButton *resetStylesButton = new wxButton(revertSizer->GetStaticBox(), wxID_ANY,
                                              _("Reset the Style settings"));
-  resetStylesButton->Connect(
-                             wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnResetStyles), NULL,
-                             this);
+  resetStylesButton->Bind(wxEVT_BUTTON, &ConfigDialogue::OnResetStyles, this);
   revertSizer->Add(
                    resetStylesButton,
                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()).Expand());
   wxButton *reloadAllButton =
     new wxButton(
                  revertSizer->GetStaticBox(), wxID_ANY, _("Reload all GUI settings from disc"));
-  reloadAllButton->Connect(wxEVT_BUTTON,
-                           wxCommandEventHandler(ConfigDialogue::OnReloadAll),
-                           NULL, this);
+  reloadAllButton->Bind(wxEVT_BUTTON, &ConfigDialogue::OnReloadAll, this);
   revertSizer->Add(
                    reloadAllButton,
                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()).Expand());
   wxButton *reloadStylesButton =
     new wxButton(revertSizer->GetStaticBox(), wxID_ANY,
                  _("Reload the style settings from disc"));
-  reloadStylesButton->Connect(
-                              wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnReloadStyles), NULL,
-                              this);
+  reloadStylesButton->Bind(wxEVT_BUTTON, &ConfigDialogue::OnReloadStyles, this);
   revertSizer->Add(
                    reloadStylesButton,
                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()).Expand());
@@ -950,25 +930,19 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel() {
 
   wxButton *exportAllButton =
     new wxButton(exportSizer->GetStaticBox(), wxID_ANY, _("Export all settings"));
-  exportAllButton->Connect(wxEVT_BUTTON,
-                           wxCommandEventHandler(ConfigDialogue::OnExportAll),
-                           NULL, this);
+  exportAllButton->Bind(wxEVT_BUTTON, &ConfigDialogue::OnExportAll, this);
   exportSizer->Add(
                    exportAllButton,
                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()).Expand());
   wxButton *exportStylesButton = new wxButton(
                                               exportSizer->GetStaticBox(), save_id, _("Export the style settings"));
-  exportStylesButton->Connect(wxEVT_BUTTON,
-                              wxCommandEventHandler(ConfigDialogue::LoadSave),
-                              NULL, this);
+  exportStylesButton->Bind(wxEVT_BUTTON, &ConfigDialogue::LoadSave, this);
   exportSizer->Add(
                    exportStylesButton,
                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()).Expand());
   wxButton *importSettingsButton =
     new wxButton(exportSizer->GetStaticBox(), wxID_ANY, _("Import settings"));
-  importSettingsButton->Connect(wxEVT_BUTTON,
-                                wxCommandEventHandler(ConfigDialogue::OnImport),
-                                NULL, this);
+  importSettingsButton->Bind(wxEVT_BUTTON, &ConfigDialogue::OnImport, this);
   exportSizer->Add(
                    importSettingsButton,
                    wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()).Expand());
@@ -1336,9 +1310,7 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
 
   m_usesvg = new wxCheckBox(stdOpts_sizer->GetStaticBox(), wxID_ANY,
                             _("Create scalable plots."));
-  m_usesvg->Connect(wxEVT_CHECKBOX,
-                    wxCommandEventHandler(ConfigDialogue::UsesvgChanged), NULL,
-                    this);
+  m_usesvg->Bind(wxEVT_CHECKBOX, &ConfigDialogue::UsesvgChanged, this);
   m_usesvg->Show(false);
   stdOpts_sizer->Add(m_usesvg,
                      wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
@@ -1547,18 +1519,10 @@ wxWindow *ConfigDialogue::CreateMaximaPanel() {
   configSizer->Add(10 * GetContentScaleFactor(), 10 * GetContentScaleFactor());
   m_maximaEnvVariables = new wxGrid(configSizer->GetStaticBox(), wxID_ANY);
   m_maximaEnvVariables->CreateGrid(0, 2);
-  m_maximaEnvVariables->Connect(
-                                wxEVT_GRID_CELL_LEFT_CLICK,
-                                wxGridEventHandler(ConfigDialogue::OnChangeMaximaCellClick), NULL, this);
-  m_maximaEnvVariables->Connect(
-                                wxEVT_GRID_CELL_CHANGED,
-                                wxGridEventHandler(ConfigDialogue::OnChangeMaximaEnvVar), NULL, this);
-  m_maximaEnvVariables->Connect(
-                                wxEVT_GRID_CELL_RIGHT_CLICK,
-                                wxGridEventHandler(ConfigDialogue::OnMaximaEnvRightClick), NULL, this);
-  m_maximaEnvVariables->GetGridWindow()->Connect(
-                                                 wxEVT_MOTION,
-                                                 wxMouseEventHandler(ConfigDialogue::OnMouseMotion_MaximaEnv), NULL, this);
+  m_maximaEnvVariables->Bind(wxEVT_GRID_CELL_LEFT_CLICK, &ConfigDialogue::OnChangeMaximaCellClick, this);
+  m_maximaEnvVariables->Bind(wxEVT_GRID_CELL_CHANGED, &ConfigDialogue::OnChangeMaximaEnvVar, this);
+  m_maximaEnvVariables->Bind(wxEVT_GRID_CELL_RIGHT_CLICK, &ConfigDialogue::OnMaximaEnvRightClick, this);
+  m_maximaEnvVariables->GetGridWindow()->Bind(wxEVT_MOTION, &ConfigDialogue::OnMouseMotion_MaximaEnv, this);
 
   configSizer->Add(new wxStaticText(configSizer->GetStaticBox(), wxID_ANY,
                                     _("Environment variables for maxima")),
@@ -1640,8 +1604,7 @@ void ConfigDialogue::OnMaximaEnvRightClick(wxGridEvent &event) {
     popupMenu->Append(GCL_MULTIPROCESS_MEMORY_POOL,
                       wxS("GCL_MULTIPROCESS_MEMORY_POOL"));
     popupMenu->Append(LANG, wxS("LANG"));
-    Connect(wxEVT_MENU, wxCommandEventHandler(ConfigDialogue::OnNewEnvMenu),
-            NULL, this);
+    Bind(wxEVT_MENU, &ConfigDialogue::OnNewEnvMenu, this);
     PopupMenu(&*popupMenu);
   }
 }
@@ -2004,9 +1967,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
                              wxDefaultPosition,
                              wxSize(250 * GetContentScaleFactor(), -1),
                              m_styleFor_choices, wxLB_SINGLE);
-  m_styleFor->Connect(
-                      wxEVT_LISTBOX,
-                      wxCommandEventHandler(ConfigDialogue::OnStyleToEditChanged), NULL, this);
+  m_styleFor->Bind(wxEVT_LISTBOX, &ConfigDialogue::OnStyleToEditChanged, this);
 
   m_getStyleFont = new wxButton(stylesSizer->GetStaticBox(), style_font_family,
                                 _("Choose font"), wxDefaultPosition,
@@ -2015,8 +1976,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
                                         wxDefaultPosition,
                                         wxSize(350 * GetContentScaleFactor(), -1 /*30 * GetContentScaleFactor()*/),
                                         wxCLRP_USE_TEXTCTRL | wxCLRP_SHOW_LABEL);
-  m_styleColor-> Connect(wxEVT_COLOURPICKER_CHANGED,
-                         wxColourPickerEventHandler(ConfigDialogue::OnChangeColor), NULL, this);
+  m_styleColor-> Bind(wxEVT_COLOURPICKER_CHANGED, &ConfigDialogue::OnChangeColor, this);
 
   m_boldCB =
     new wxCheckBox(stylesSizer->GetStaticBox(), checkbox_bold, _("Bold"));

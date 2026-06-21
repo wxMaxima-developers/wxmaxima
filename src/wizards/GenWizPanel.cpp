@@ -84,12 +84,8 @@ GenWizPanel::GenWizPanel(
   grid_sizer->AddGrowableCol(1);
   for (int i = 0; i < 10; i++) {
     grid_sizer->Add(m_label.at(i), 0, wxALIGN_CENTER_VERTICAL, 0);
-    m_textctrl.at(i)->Connect(wxEVT_TEXT,
-                           wxCommandEventHandler(GenWizPanel::OnParamChange),
-                           NULL, this);
-    m_textctrl.at(i)->Connect(wxEVT_TEXT_ENTER,
-                           wxCommandEventHandler(GenWizPanel::OnTextEnter),
-                           NULL, this);
+    m_textctrl.at(i)->Bind(wxEVT_TEXT, &GenWizPanel::OnParamChange, this);
+    m_textctrl.at(i)->Bind(wxEVT_TEXT_ENTER, &GenWizPanel::OnTextEnter, this);
     grid_sizer->Add(m_textctrl.at(i), wxSizerFlags(0).Expand());
   }
 
@@ -138,10 +134,8 @@ GenWizPanel::GenWizPanel(
             tooltip5, label6, defaultval6, tooltip6, label7, defaultval7,
             tooltip7, label8, defaultval8, tooltip8, label9, defaultval9,
             tooltip9, label10, defaultval10, tooltip10);
-  Connect(wxEVT_SIZE, wxSizeEventHandler(GenWizPanel::OnSize), NULL, this);
-  m_notebook->Connect(wxEVT_NOTEBOOK_PAGE_CHANGED,
-                      wxBookCtrlEventHandler(GenWizPanel::OnNotebookPageChange),
-                      NULL, this);
+  Bind(wxEVT_SIZE, &GenWizPanel::OnSize, this);
+  m_notebook->Bind(wxEVT_NOTEBOOK_PAGE_CHANGED, &GenWizPanel::OnNotebookPageChange, this);
   SetSizer(vbox);
   FitInside();
 }

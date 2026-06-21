@@ -79,8 +79,7 @@ HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration,
   m_topicPanel->SetSizer(m_topicSizer);
   vbox->Add(m_topicPanel, wxSizerFlags(1).Expand());
 
-  Connect(wxEVT_ACTIVATE, wxActivateEventHandler(HelpBrowser::OnActivate), NULL,
-          this);
+  Bind(wxEVT_ACTIVATE, &HelpBrowser::OnActivate, this);
   SetSizer(vbox);
   FitInside();
   SetMinSize(wxSize(300 * GetContentScaleFactor(), 400 * GetContentScaleFactor()));
@@ -133,30 +132,18 @@ void HelpBrowser::CreateIfNeeded() {
       new wxTextCtrl(m_browserPanel, wxID_ANY, wxEmptyString,
                      wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
     searchbox->Add(m_searchText, wxSizerFlags(1).Expand());
-    m_webView->Connect(wxEVT_KEY_DOWN,
-                       wxCharEventHandler(HelpBrowser::OnSearchboxKeyDown),
-                       NULL, this);
+    m_webView->Bind(wxEVT_KEY_DOWN, &HelpBrowser::OnSearchboxKeyDown, this);
 
-    m_searchText->Connect(wxEVT_TEXT_ENTER,
-                          wxCommandEventHandler(HelpBrowser::OnTextEnter), NULL,
-                          this);
-    Connect(wxID_FIND, wxEVT_MENU,
-            wxCommandEventHandler(HelpBrowser::OnTextEnter), NULL, this);
-    Connect(wxEVT_BUTTON, wxCommandEventHandler(HelpBrowser::OnTopicButton),
-            NULL, this);
-    m_webView->Connect(wxID_FIND, wxEVT_MENU,
-                       wxCommandEventHandler(HelpBrowser::OnTextEnter), NULL,
-                       this);
+    m_searchText->Bind(wxEVT_TEXT_ENTER, &HelpBrowser::OnTextEnter, this);
+    Bind(wxEVT_MENU, &HelpBrowser::OnTextEnter, this, wxID_FIND);
+    Bind(wxEVT_BUTTON, &HelpBrowser::OnTopicButton, this);
+    m_webView->Bind(wxEVT_MENU, &HelpBrowser::OnTextEnter, this, wxID_FIND);
 
     wxButton *upbutton = new wxButton(m_browserPanel, wxID_UP);
-    upbutton->Connect(wxEVT_BUTTON,
-                      wxCommandEventHandler(HelpBrowser::OnSearchUp), NULL,
-                      this);
+    upbutton->Bind(wxEVT_BUTTON, &HelpBrowser::OnSearchUp, this);
     searchbox->Add(upbutton, wxSizerFlags());
     wxButton *downbutton = new wxButton(m_browserPanel, wxID_DOWN);
-    downbutton->Connect(wxEVT_BUTTON,
-                        wxCommandEventHandler(HelpBrowser::OnSearchDown), NULL,
-                        this);
+    downbutton->Bind(wxEVT_BUTTON, &HelpBrowser::OnSearchDown, this);
     searchbox->Add(downbutton, wxSizerFlags());
     m_vbox->Add(searchbox, wxSizerFlags().Expand());
   }

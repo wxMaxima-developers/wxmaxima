@@ -42,8 +42,7 @@ ChangeLogDialog::ChangeLogDialog(wxWindow *parent)
   wxMemoryInputStream istream(NEWS_MD, NEWS_MD_SIZE);
   wxTextInputStream textIn(istream);
   wxString line;
-  Connect(wxEVT_TEXT_URL, wxTextUrlEventHandler(ChangeLogDialog::OnTextURLEvent),
-          NULL, this);
+  Bind(wxEVT_TEXT_URL, &ChangeLogDialog::OnTextURLEvent, this);
 
   m_changelog = new wxRichTextCtrl(
                              this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,

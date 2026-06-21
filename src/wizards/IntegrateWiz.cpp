@@ -37,20 +37,20 @@ IntegrateWiz::IntegrateWiz(wxWindow *parent, int id, Configuration *cfg,
   text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxS("x"), wxDefaultPosition,
                               wxSize(110, -1));
   checkbox_1 = new wxCheckBox(this, EventIDs::wizard_definite_id, _("&Definite integration"));
-  checkbox_1->Connect(wxEVT_CHECKBOX, wxCommandEventHandler(IntegrateWiz::OnCheckbox), NULL, this);
+  checkbox_1->Bind(wxEVT_CHECKBOX, &IntegrateWiz::OnCheckbox, this);
   label_4 = new wxStaticText(this, -1, _("From:"));
   text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxS("0"), wxDefaultPosition,
                               wxSize(110, -1));
   button_3 = new wxButton(this, EventIDs::wizard_special_from, _("Special"));
-  button_3->Connect(wxEVT_BUTTON, wxCommandEventHandler(IntegrateWiz::OnButton), NULL, this);
+  button_3->Bind(wxEVT_BUTTON, &IntegrateWiz::OnButton, this);
 
   label_5 = new wxStaticText(this, -1, _("To:"));
   text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxS("1"), wxDefaultPosition,
                               wxSize(110, -1));
   button_4 = new wxButton(this, EventIDs::wizard_special_to, _("Special"));
-  button_4->Connect(wxEVT_BUTTON, wxCommandEventHandler(IntegrateWiz::OnButton), NULL, this);
+  button_4->Bind(wxEVT_BUTTON, &IntegrateWiz::OnButton, this);
   checkbox_2 = new wxCheckBox(this, EventIDs::wizard_numeric_id, _("&Numerical integration"));
-  checkbox_2->Connect(wxEVT_CHECKBOX, wxCommandEventHandler(IntegrateWiz::OnCheckbox), NULL, this);
+  checkbox_2->Bind(wxEVT_CHECKBOX, &IntegrateWiz::OnCheckbox, this);
 
   label_6 = new wxStaticText(this, -1, _("Method:"));
   wxString numeric_methods[] = {wxS("quadpack"), wxS("romberg")};

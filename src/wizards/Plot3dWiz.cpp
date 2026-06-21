@@ -74,7 +74,7 @@ Plot3DWiz::Plot3DWiz(wxWindow *parent, int id, Configuration *cfg,
   combo_box_2 =
     new wxComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
                    wxSize(250, -1), 6, combo_box_2_choices, wxCB_DROPDOWN);
-  combo_box_2->Connect(wxEVT_COMBOBOX, wxCommandEventHandler(Plot3DWiz::OnCombobox), NULL, this);
+  combo_box_2->Bind(wxEVT_COMBOBOX, &Plot3DWiz::OnCombobox, this);
 
   check_box_1 = new wxCheckBox(this, -1, _("&pm3d"));
   label_13 = new wxStaticText(this, -1, _("Plot to file:"));
@@ -83,7 +83,7 @@ Plot3DWiz::Plot3DWiz(wxWindow *parent, int id, Configuration *cfg,
   button_3 = new wxBitmapButton(
                                 this, wxID_ANY,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN, wxART_HELP_BROWSER));
-  button_3->Connect(wxEVT_BUTTON, wxCommandEventHandler(Plot3DWiz::OnFileBrowse), NULL, this);
+  button_3->Bind(wxEVT_BUTTON, &Plot3DWiz::OnFileBrowse, this);
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
   button_1 = new wxButton(this, wxID_OK, _("OK"));
