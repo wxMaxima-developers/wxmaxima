@@ -578,37 +578,14 @@ add_custom_target(gpg DEPENDS dist
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
 
 if(NOT WIN32)
-    # 1. Generate and compress Debian changelog to changelog.gz
-    configure_file(
-        "${CMAKE_SOURCE_DIR}/data/changelog.Debian.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/changelog.Debian"
-        @ONLY
-    )
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/changelog.gz"
-        COMMAND gzip -cn9 "${CMAKE_CURRENT_BINARY_DIR}/changelog.Debian" > "${CMAKE_CURRENT_BINARY_DIR}/changelog.gz"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/changelog.Debian"
-        COMMENT "Compressing Debian changelog"
-    )
-    # Compress upstream ChangeLog to changelog.upstream.gz
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/changelog.upstream.gz"
-        COMMAND gzip -cn9 "${CMAKE_SOURCE_DIR}/ChangeLog" > "${CMAKE_CURRENT_BINARY_DIR}/changelog.upstream.gz"
-        DEPENDS "${CMAKE_SOURCE_DIR}/ChangeLog"
-        COMMENT "Compressing upstream changelog"
-    )
-    add_custom_target(generate_changelogs ALL DEPENDS
-        "${CMAKE_CURRENT_BINARY_DIR}/changelog.gz"
-        "${CMAKE_CURRENT_BINARY_DIR}/changelog.upstream.gz"
-    )
-    install(FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/changelog.gz"
-        "${CMAKE_CURRENT_BINARY_DIR}/changelog.upstream.gz"
-        DESTINATION share/doc/wxmaxima
-    )
+    # NOTE: we deliberately do NOT generate/install a Debian changelog here.
+    # dh_installchangelogs creates the package changelog from the maintainer's
+    # debian/ tree; an upstream-installed changelog.gz collides with that and
+    # breaks downstream packaging.
 
-    # 2. Install copyright file
-    install(FILES "${CMAKE_SOURCE_DIR}/data/copyright" DESTINATION share/doc/wxmaxima)
+    # NOTE: we deliberately do NOT install a copyright file to share/doc/wxmaxima.
+    # /usr/share/doc/<pkg>/copyright is Debian's reserved path, written by
+    # dh_installdocs from the maintainer's debian/copyright; ours would collide.
 
     # 3. Strip binaries
     set(CPACK_STRIP_FILES ON)
@@ -620,8 +597,9 @@ if(NOT WIN32)
         WORLD_READ WORLD_EXECUTE
     )
 
-    # 5. Install lintian overrides
-    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.lintian-overrides" DESTINATION share/lintian/overrides RENAME wxmaxima)
+    # NOTE: we deliberately do NOT install a lintian-overrides file. It belongs to
+    # the package the Debian maintainer builds, not to a generic upstream install;
+    # shipping ours leaks into the maintainer's package.
 endif()
 
 include(CPack)

@@ -37,27 +37,13 @@ if(NOT WIN32)
     file(TIMESTAMP ${CMAKE_CURRENT_SOURCE_DIR}/de/wxmaxima.1.in MANPAGEDATE "%Y-%m-%d" UTC)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/de/wxmaxima.1.in de/wxmaxima.1)
 
-    # Compress man pages
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1.gz"
-        COMMAND gzip -cn9 "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1" > "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1.gz"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1"
-        COMMENT "Compressing man page"
-    )
-    add_custom_target(generate_man ALL DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1.gz")
-
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/de/wxmaxima.1.gz"
-        COMMAND gzip -cn9 "${CMAKE_CURRENT_BINARY_DIR}/de/wxmaxima.1" > "${CMAKE_CURRENT_BINARY_DIR}/de/wxmaxima.1.gz"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/de/wxmaxima.1"
-        COMMENT "Compressing German man page"
-    )
-    add_custom_target(generate_man_de ALL DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/de/wxmaxima.1.gz")
-
+    # Install man pages UNCOMPRESSED. Distributions compress manpages with their
+    # own tooling (e.g. Debian's dh_compress); shipping pre-gzipped .1.gz files
+    # collides with that and breaks the downstream maintainer's packaging.
     install(FILES ${PIXMAPS}                                                                     DESTINATION share/pixmaps)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima                                           DESTINATION share/bash-completion/completions)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1.gz                                      DESTINATION share/man/man1)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/de/wxmaxima.1.gz                                   DESTINATION share/man/de/man1)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1                                         DESTINATION share/man/man1)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/de/wxmaxima.1                                      DESTINATION share/man/de/man1)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.appdata.xml DESTINATION share/metainfo)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.desktop     DESTINATION share/applications)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/x-wxmathml.xml                                     DESTINATION share/mime/packages)
@@ -79,8 +65,8 @@ if(NOT WIN32)
         create_install_symlink(../icons/hicolor/1024x1024/apps/io.github.wxmaxima_developers.wxMaxima.png share/pixmaps/io.github.wxmaxima_developers.wxMaxima.png)
         create_install_symlink(../icons/hicolor/scalable/apps/io.github.wxmaxima_developers.wxMaxima.svg share/wxMaxima/io.github.wxmaxima_developers.wxMaxima.svg)
         create_install_symlink(../icons/hicolor/1024x1024/apps/io.github.wxmaxima_developers.wxMaxima.png share/wxMaxima/io.github.wxmaxima_developers.wxMaxima.png)
-        create_install_symlink(wxmaxima.1.gz share/man/man1/wxmxdiff.1.gz)
-        create_install_symlink(wxmaxima.1.gz share/man/de/man1/wxmxdiff.1.gz)
+        create_install_symlink(wxmaxima.1 share/man/man1/wxmxdiff.1)
+        create_install_symlink(wxmaxima.1 share/man/de/man1/wxmxdiff.1)
     ")
 endif()
 
