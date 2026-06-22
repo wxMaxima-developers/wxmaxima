@@ -90,89 +90,81 @@ bool DiffFrame::IsDiffEntry(const DiffEntry &e) const {
   return false;
 }
 
-void DiffFrame::OnDiffNext(wxCommandEvent &WXUNUSED(event)) {
-  int startIdx = m_currentDiffIdx + 1;
+// Finds the index of the next (@p direction = +1) or previous (-1) difference to
+// jump to, or -1 if there is none in that direction. If the current difference is
+// off-screen (e.g. after a wheel scroll) the search starts from the viewport
+// rather than from m_currentDiffIdx, so navigation resumes from what the user is
+// actually looking at. Shared by the Prev/Next handlers and by UpdateDiffNavUI(),
+// which greys the buttons out exactly when this returns -1.
+int DiffFrame::FindAdjacentDiff(int direction) const {
+  const int n = (int)m_diffEntries.size();
+  int startIdx = m_currentDiffIdx + direction;
   if (!m_worksheets.empty()) {
-      // Read the live scroll position: the mouse wheel/touchpad does not update
-      // m_lastScrollY, so relying on the cache made "next difference" jump from
-      // a stale viewport after a wheel scroll.
-      int y_top = CurrentScrollY(0);
-      int y_bottom = y_top + m_worksheets[0]->GetClientSize().y;
-      
-      bool currentVisible = false;
-      if (m_currentDiffIdx >= 0 && m_currentDiffIdx < (int)m_diffEntries.size()) {
-          GroupCell* cell = m_diffEntries[m_currentDiffIdx].cells[0];
-          if (cell && cell->GetRect().y >= y_top && cell->GetRect().y <= y_bottom) {
-              currentVisible = true;
-          }
-      }
-      
-      if (!currentVisible) {
-          startIdx = 0;
-          for (size_t i = 0; i < m_diffEntries.size(); ++i) {
-              if (m_diffEntries[i].cells[0] && m_diffEntries[i].cells[0]->GetRect().y >= y_top) {
-                  startIdx = (int)i;
-                  break;
-              }
-          }
-      }
-  }
-
-  for (int i = startIdx; i < (int)m_diffEntries.size(); ++i) {
-    if (IsDiffEntry(m_diffEntries[i])) {
-      m_currentDiffIdx = i;
-      for (size_t j = 0; j < m_worksheets.size(); ++j) {
-        if (m_diffEntries[i].cells[j]) {
-          m_worksheets[j]->ScheduleScrollToCell(m_diffEntries[i].cells[j]);
-          m_worksheets[j]->ScrollToCellIfNeeded();
-          m_worksheets[j]->Refresh();
-        }
-      }
-      return;
+    const int y_top = CurrentScrollY(0);
+    const int y_bottom = y_top + m_worksheets[0]->GetClientSize().y;
+    bool currentVisible = false;
+    if (m_currentDiffIdx >= 0 && m_currentDiffIdx < n) {
+      GroupCell *cell = m_diffEntries[m_currentDiffIdx].cells[0];
+      if (cell && cell->GetRect().y >= y_top && cell->GetRect().y <= y_bottom)
+        currentVisible = true;
     }
+    if (!currentVisible) {
+      if (direction > 0) {
+        startIdx = 0;
+        for (int i = 0; i < n; ++i)
+          if (m_diffEntries[i].cells[0] &&
+              m_diffEntries[i].cells[0]->GetRect().y >= y_top) {
+            startIdx = i;
+            break;
+          }
+      } else {
+        startIdx = n - 1;
+        for (int i = n - 1; i >= 0; --i)
+          if (m_diffEntries[i].cells[0] &&
+              m_diffEntries[i].cells[0]->GetRect().y < y_top) {
+            startIdx = i;
+            break;
+          }
+      }
+    }
+  }
+  for (int i = startIdx; i >= 0 && i < n; i += direction)
+    if (IsDiffEntry(m_diffEntries[i]))
+      return i;
+  return -1;
+}
+
+// Makes difference @p idx the current one: selects its cell in every pane (so the
+// cell's bracket is drawn in the selection colour and visibly "jumps" from one
+// difference to the next even when the target is already on screen and nothing
+// scrolls), and scrolls it into view. Panes whose entry has no cell for this
+// difference get their selection cleared.
+void DiffFrame::SetCurrentDiff(int idx) {
+  m_currentDiffIdx = idx;
+  const bool valid = idx >= 0 && idx < (int)m_diffEntries.size();
+  for (size_t j = 0; j < m_worksheets.size(); ++j) {
+    GroupCell *cell = valid ? m_diffEntries[idx].cells[j] : nullptr;
+    if (cell) {
+      m_worksheets[j]->SetSelection(cell);
+      m_worksheets[j]->ScheduleScrollToCell(cell);
+      m_worksheets[j]->ScrollToCellIfNeeded();
+    } else {
+      m_worksheets[j]->ClearSelection();
+    }
+    m_worksheets[j]->Refresh();
   }
 }
 
-void DiffFrame::OnDiffPrev(wxCommandEvent &WXUNUSED(event)) {
-  int startIdx = m_currentDiffIdx - 1;
-  if (!m_worksheets.empty()) {
-      // Read the live scroll position (see OnDiffNext) -- the wheel/touchpad
-      // does not refresh m_lastScrollY.
-      int y_top = CurrentScrollY(0);
-      int y_bottom = y_top + m_worksheets[0]->GetClientSize().y;
-      
-      bool currentVisible = false;
-      if (m_currentDiffIdx >= 0 && m_currentDiffIdx < (int)m_diffEntries.size()) {
-          GroupCell* cell = m_diffEntries[m_currentDiffIdx].cells[0];
-          if (cell && cell->GetRect().y >= y_top && cell->GetRect().y <= y_bottom) {
-              currentVisible = true;
-          }
-      }
-      
-      if (!currentVisible) {
-          startIdx = (int)m_diffEntries.size() - 1;
-          for (int i = (int)m_diffEntries.size() - 1; i >= 0; --i) {
-              if (m_diffEntries[i].cells[0] && m_diffEntries[i].cells[0]->GetRect().y < y_top) {
-                  startIdx = i;
-                  break;
-              }
-          }
-      }
-  }
+void DiffFrame::OnDiffNext(wxCommandEvent &WXUNUSED(event)) {
+  int i = FindAdjacentDiff(+1);
+  if (i >= 0)
+    SetCurrentDiff(i);
+}
 
-  for (int i = startIdx; i >= 0; --i) {
-    if (IsDiffEntry(m_diffEntries[i])) {
-      m_currentDiffIdx = i;
-      for (size_t j = 0; j < m_worksheets.size(); ++j) {
-        if (m_diffEntries[i].cells[j]) {
-          m_worksheets[j]->ScheduleScrollToCell(m_diffEntries[i].cells[j]);
-          m_worksheets[j]->ScrollToCellIfNeeded();
-          m_worksheets[j]->Refresh();
-        }
-      }
-      return;
-    }
-  }
+void DiffFrame::OnDiffPrev(wxCommandEvent &WXUNUSED(event)) {
+  int i = FindAdjacentDiff(-1);
+  if (i >= 0)
+    SetCurrentDiff(i);
 }
 
 void DiffFrame::OnIdle(wxIdleEvent &event) {
@@ -184,31 +176,17 @@ void DiffFrame::UpdateDiffNavUI() {
   if (!m_toolBar)
     return;
 
-  // A few pixels of slack so a difference sitting essentially at the viewport top
-  // counts as the "current" one rather than as a difference further up or down.
-  const int tol = 4;
-  const int viewportTop = m_worksheets.empty() ? 0 : CurrentScrollY(0);
-
+  // The indicator and the highlighted bracket both track the *current* difference
+  // (m_currentDiffIdx, set by the Prev/Next buttons), so the number and the
+  // bracket always agree.
   int total = 0;
-  int current = 0; // 1-based ordinal of the nearest difference at or above the top
-  bool hasPrev = false, hasNext = false;
-  for (const auto &e : m_diffEntries) {
-    if (!IsDiffEntry(e))
+  int current = 0; // 1-based ordinal of m_currentDiffIdx among the differences
+  for (int i = 0; i < (int)m_diffEntries.size(); ++i) {
+    if (!IsDiffEntry(m_diffEntries[i]))
       continue;
     ++total;
-    GroupCell *cell = nullptr;
-    for (auto c : e.cells) {
-      if (c) { cell = c; break; }
-    }
-    const int y = cell ? cell->GetRect().y : 0;
-    if (y < viewportTop - tol) {
-      hasPrev = true;
+    if (i == m_currentDiffIdx)
       current = total;
-    } else if (y > viewportTop + tol) {
-      hasNext = true;
-    } else {
-      current = total;
-    }
   }
 
   wxString status;
@@ -221,6 +199,9 @@ void DiffFrame::UpdateDiffNavUI() {
   if (m_diffStatus && m_diffStatus->GetLabel() != status)
     m_diffStatus->SetLabel(status);
 
+  // Grey a button out exactly when its handler would do nothing.
+  const bool hasPrev = FindAdjacentDiff(-1) >= 0;
+  const bool hasNext = FindAdjacentDiff(+1) >= 0;
   if (static_cast<int>(hasPrev) != m_shownPrevEnabled) {
     m_toolBar->EnableTool(EventIDs::button_diff_prev, hasPrev);
     m_shownPrevEnabled = static_cast<int>(hasPrev);

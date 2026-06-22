@@ -22,10 +22,12 @@
 - Diff viewer: scrolling *up* now keeps the panes synchronized. The upward-scroll
   case anchored on the bottom of the last visible cell instead of mirroring the
   (working) downward case, so the other pane did not follow.
-- Diff viewer: the toolbar now shows a "Difference N / M" indicator so it is clear
-  which difference is currently in view, and the "Previous/Next difference"
-  buttons are greyed out when there is no further difference to jump to in that
-  direction.
+- Diff viewer: the toolbar now shows a "Difference N / M" indicator and the
+  current difference's cell is highlighted, so "Previous/Next difference" gives
+  visible feedback (the highlighted bracket jumps from one difference to the next)
+  even when the target is already on screen and nothing needs to scroll. The
+  Prev/Next buttons are also greyed out when there is no further difference to jump
+  to in that direction.
 
 - Incremental find: typing another character into the search box now extends the
   highlight on the current match when that match still satisfies the longer

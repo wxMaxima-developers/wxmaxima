@@ -81,6 +81,13 @@ private:
   //! scrolling.
   void UpdateDiffNavUI();
   void OnIdle(wxIdleEvent &event);
+  //! Index of the next (@p direction == +1) / previous (-1) difference to jump
+  //! to, or -1 if there is none; falls back to the live viewport when the current
+  //! difference is off-screen. Shared by the buttons and the button-greying.
+  int FindAdjacentDiff(int direction) const;
+  //! Makes difference @p idx the current one: selects its cell in each pane (so
+  //! the bracket is drawn highlighted and visibly jumps) and scrolls it into view.
+  void SetCurrentDiff(int idx);
 
   wxToolBar *m_toolBar = nullptr;
   //! The "Difference N / M" indicator shown in the toolbar.
