@@ -54,9 +54,7 @@ jobs:
              cd build
              export HOME=`pwd`
              export CTEST_OUTPUT_ON_FAILURE=1
-             # All the tests that use draw failed, because maxima could not load that package
-             # on ubuntu-latest when these tests were disabled
-             GDK_BACKEND=x11 xvfb-run -a ctest -j 2 -E "tutorial_fittingEquations|multithreadtest|tutorial_toleranceCalculations|tutorial_displaying3DCurves|tutorial_solvingEquations|testbench_simple.wxmx"
+             GDK_BACKEND=x11 xvfb-run -a ctest -j 2
              cd ..
 
   compile_and_test_sanitized:
