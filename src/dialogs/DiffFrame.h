@@ -72,6 +72,24 @@ private:
   std::vector<DiffEntry> m_diffEntries;
   std::vector<int> m_lastScrollY;
 
+  //! True if diff entry @p e represents an actual difference (a missing cell, or
+  //! a cell highlighted as changed) rather than an aligned/identical region.
+  bool IsDiffEntry(const DiffEntry &e) const;
+  //! Updates the "Difference N / M" indicator and grays out the Prev/Next
+  //! difference buttons when there is nothing to jump to. Called from the idle
+  //! handler so it tracks both button navigation and free wheel/touchpad
+  //! scrolling.
+  void UpdateDiffNavUI();
+  void OnIdle(wxIdleEvent &event);
+
+  wxToolBar *m_toolBar = nullptr;
+  //! The "Difference N / M" indicator shown in the toolbar.
+  wxStaticText *m_diffStatus = nullptr;
+  //! Cached enabled-state of the Prev/Next tools so the idle handler only touches
+  //! the toolbar when it actually changes (-1 = not yet applied).
+  int m_shownPrevEnabled = -1;
+  int m_shownNextEnabled = -1;
+
   //! Debounces the expensive relayout done on window resize: a drag produces a
   //! burst of size events and re-laying out every cell of every worksheet on
   //! each one made resizing a big worksheet feel quadratic. The timer is

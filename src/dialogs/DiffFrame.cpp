@@ -82,6 +82,14 @@ int DiffFrame::CurrentScrollY(size_t idx) const {
   return y * uy;
 }
 
+bool DiffFrame::IsDiffEntry(const DiffEntry &e) const {
+  for (auto cell : e.cells) {
+    if (cell && (cell->GetGroupType() == GC_TYPE_INVALID || cell->GetHighlight()))
+      return true;
+  }
+  return false;
+}
+
 void DiffFrame::OnDiffNext(wxCommandEvent &WXUNUSED(event)) {
   int startIdx = m_currentDiffIdx + 1;
   if (!m_worksheets.empty()) {
@@ -111,14 +119,7 @@ void DiffFrame::OnDiffNext(wxCommandEvent &WXUNUSED(event)) {
   }
 
   for (int i = startIdx; i < (int)m_diffEntries.size(); ++i) {
-    bool isDiff = false;
-    for (auto cell : m_diffEntries[i].cells) {
-      if (cell && (cell->GetGroupType() == GC_TYPE_INVALID || cell->GetHighlight())) {
-        isDiff = true;
-        break;
-      }
-    }
-    if (isDiff) {
+    if (IsDiffEntry(m_diffEntries[i])) {
       m_currentDiffIdx = i;
       for (size_t j = 0; j < m_worksheets.size(); ++j) {
         if (m_diffEntries[i].cells[j]) {
@@ -160,14 +161,7 @@ void DiffFrame::OnDiffPrev(wxCommandEvent &WXUNUSED(event)) {
   }
 
   for (int i = startIdx; i >= 0; --i) {
-    bool isDiff = false;
-    for (auto cell : m_diffEntries[i].cells) {
-      if (cell && (cell->GetGroupType() == GC_TYPE_INVALID || cell->GetHighlight())) {
-        isDiff = true;
-        break;
-      }
-    }
-    if (isDiff) {
+    if (IsDiffEntry(m_diffEntries[i])) {
       m_currentDiffIdx = i;
       for (size_t j = 0; j < m_worksheets.size(); ++j) {
         if (m_diffEntries[i].cells[j]) {
@@ -181,6 +175,62 @@ void DiffFrame::OnDiffPrev(wxCommandEvent &WXUNUSED(event)) {
   }
 }
 
+void DiffFrame::OnIdle(wxIdleEvent &event) {
+  event.Skip();
+  UpdateDiffNavUI();
+}
+
+void DiffFrame::UpdateDiffNavUI() {
+  if (!m_toolBar)
+    return;
+
+  // A few pixels of slack so a difference sitting essentially at the viewport top
+  // counts as the "current" one rather than as a difference further up or down.
+  const int tol = 4;
+  const int viewportTop = m_worksheets.empty() ? 0 : CurrentScrollY(0);
+
+  int total = 0;
+  int current = 0; // 1-based ordinal of the nearest difference at or above the top
+  bool hasPrev = false, hasNext = false;
+  for (const auto &e : m_diffEntries) {
+    if (!IsDiffEntry(e))
+      continue;
+    ++total;
+    GroupCell *cell = nullptr;
+    for (auto c : e.cells) {
+      if (c) { cell = c; break; }
+    }
+    const int y = cell ? cell->GetRect().y : 0;
+    if (y < viewportTop - tol) {
+      hasPrev = true;
+      current = total;
+    } else if (y > viewportTop + tol) {
+      hasNext = true;
+    } else {
+      current = total;
+    }
+  }
+
+  wxString status;
+  if (total == 0)
+    status = _("No differences");
+  else if (current == 0)
+    status = wxString::Format(_("%d differences"), total);
+  else
+    status = wxString::Format(_("Difference %d / %d"), current, total);
+  if (m_diffStatus && m_diffStatus->GetLabel() != status)
+    m_diffStatus->SetLabel(status);
+
+  if (static_cast<int>(hasPrev) != m_shownPrevEnabled) {
+    m_toolBar->EnableTool(EventIDs::button_diff_prev, hasPrev);
+    m_shownPrevEnabled = static_cast<int>(hasPrev);
+  }
+  if (static_cast<int>(hasNext) != m_shownNextEnabled) {
+    m_toolBar->EnableTool(EventIDs::button_diff_next, hasNext);
+    m_shownNextEnabled = static_cast<int>(hasNext);
+  }
+}
+
 DiffFrame::DiffFrame(wxWindow *parent, const wxArrayString &files, Configuration *config)
   : wxFrame(parent, wxID_ANY, _("wxMaxima Diff Viewer"), wxDefaultPosition, wxSize(1000, 800)),
     m_configuration(config) {
@@ -188,6 +238,7 @@ wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
 
 // Add a simple toolbar for synchronization controls
 wxToolBar *toolBar = CreateToolBar();
+m_toolBar = toolBar;
 const int idSyncHorizontal = wxWindow::NewControlId();
 const int idSyncVertical = wxWindow::NewControlId();
 #if wxCHECK_VERSION(3, 1, 6)
@@ -231,6 +282,14 @@ toolBar->AddTool(EventIDs::button_diff_next, _("Next Difference"), nextBmp, _("J
 toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnDiffPrev, this, EventIDs::button_diff_prev);
 toolBar->Bind(wxEVT_TOOL, &DiffFrame::OnDiffNext, this, EventIDs::button_diff_next);
 
+// Indicator showing which difference is currently in view ("Difference N / M").
+// A fixed width + wxST_NO_AUTORESIZE keeps the toolbar layout stable as the
+// number changes, so the idle handler can just SetLabel() without Realize().
+m_diffStatus = new wxStaticText(toolBar, wxID_ANY, wxEmptyString,
+                                wxDefaultPosition, wxSize(150, -1),
+                                wxALIGN_CENTRE_HORIZONTAL | wxST_NO_AUTORESIZE);
+toolBar->AddControl(m_diffStatus);
+
 toolBar->AddSeparator();
 
   m_searchCtrl = new wxSearchCtrl(toolBar, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(200, -1), wxTE_PROCESS_ENTER);
@@ -252,6 +311,10 @@ toolBar->AddSeparator();
   m_searchUpRadio->Bind(wxEVT_RADIOBUTTON, &DiffFrame::OnSearch, this);
 
   toolBar->Realize();
+
+  // Keep the "Difference N / M" indicator and the Prev/Next button enabled-state
+  // current as the user scrolls (by wheel as well as by the buttons).
+  Bind(wxEVT_IDLE, &DiffFrame::OnIdle, this);
 
   wxBoxSizer *mainSizer = new wxBoxSizer(wxHORIZONTAL);
 
