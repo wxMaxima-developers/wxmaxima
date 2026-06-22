@@ -150,7 +150,7 @@ private:
   public:
     //! The constructor
     ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size)
-      { Connect(wxEVT_PAINT, wxPaintEventHandler(ConfigDialogue::ExamplePanel::OnPaint)); };
+      { Bind(wxEVT_PAINT, &ConfigDialogue::ExamplePanel::OnPaint, this); };
 
     //! Sets the text style of the example
     void SetStyle(const Style &style)
