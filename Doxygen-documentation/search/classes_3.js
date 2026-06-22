@@ -6,8 +6,9 @@ var searchData=
   ['definition_3',['Definition',['../structCharButton_1_1Definition.html',1,'CharButton']]],
   ['diffcell_4',['DiffCell',['../classDiffCell.html',1,'']]],
   ['diffframe_5',['DiffFrame',['../classDiffFrame.html',1,'']]],
-  ['digitcell_6',['DigitCell',['../classDigitCell.html',1,'']]],
-  ['dirstructure_7',['Dirstructure',['../classDirstructure.html',1,'']]],
-  ['drawsidebar_8',['DrawSidebar',['../classDrawSidebar.html',1,'']]],
-  ['drawwiz_9',['DrawWiz',['../classDrawWiz.html',1,'']]]
+  ['diffmarkerbar_6',['DiffMarkerBar',['../classDiffMarkerBar.html',1,'']]],
+  ['digitcell_7',['DigitCell',['../classDigitCell.html',1,'']]],
+  ['dirstructure_8',['Dirstructure',['../classDirstructure.html',1,'']]],
+  ['drawsidebar_9',['DrawSidebar',['../classDrawSidebar.html',1,'']]],
+  ['drawwiz_10',['DrawWiz',['../classDrawWiz.html',1,'']]]
 ];
