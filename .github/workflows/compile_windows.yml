@@ -30,7 +30,7 @@ jobs:
           draft: false
           prerelease: false
       - name: Checkout wxMaxima
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           # We must fetch at least the immediate parents so that if this is
           # a pull request then we can checkout the head.
@@ -108,7 +108,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Cache wxWidgets
         uses: actions/cache@v5
         env:

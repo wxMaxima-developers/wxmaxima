@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout_git
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 15
       - name: install_packages
