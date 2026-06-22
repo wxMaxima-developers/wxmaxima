@@ -35,11 +35,21 @@ if [ -z "$DEB_PACKAGE" ]; then
 fi
 
 echo "Running Lintian on $DEB_PACKAGE..."
+# EXPECTED lint findings: we deliberately do NOT ship a copyright file, a
+# changelog, or pre-compressed manpages in the install tree, because those
+# collide with the Debian maintainer's own dh_* tooling (dh_installdocs /
+# dh_installchangelogs / dh_compress) -- see data/CMakeLists.txt and
+# src/CMakeLists.txt. Those produce no-copyright-file / no-changelog /
+# uncompressed-manual-page on OUR CPack .deb, which is fine. We suppress ONLY
+# those known tags so that ANY OTHER lintian error still fails the test and
+# alerts us to a real regression.
+EXPECTED_TAGS="no-copyright-file,no-changelog,uncompressed-manual-page"
+echo "(Suppressing expected tags: $EXPECTED_TAGS)"
 # Run lintian, checking for errors only (warnings are acceptable, but errors fail the test)
-if lintian -E --fail-on error "$DEB_PACKAGE"; then
-    echo "Success: Lintian detected no errors in the DEB package."
+if lintian -E --fail-on error --suppress-tags "$EXPECTED_TAGS" "$DEB_PACKAGE"; then
+    echo "Success: Lintian detected no unexpected errors in the DEB package."
     exit 0
 else
-    echo "Failure: Lintian detected errors in the DEB package."
+    echo "Failure: Lintian detected unexpected errors in the DEB package."
     exit 1
 fi

@@ -437,6 +437,14 @@ list(APPEND CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION
   "/usr/share/man"
   "/usr/share/man/man1"
 )
+# We now install man pages UNCOMPRESSED (so the Debian maintainer's dh_compress
+# can handle them; see data/CMakeLists.txt). rpmbuild's brp-compress would then
+# re-compress them to .1.gz, but CPack's generated %files still lists the
+# uncompressed names (and the install-time wxmxdiff.1 symlinks), so the build
+# fails with "File not found: wxmxdiff.1". Disable brp-compress for our package so
+# the file names match %files. Uncompressed manpages in the RPM are at most an
+# rpmlint warning (check-rpmlint only fails on errors).
+set(CPACK_RPM_SPEC_MORE_DEFINE "%define __brp_compress %{nil}")
 if(WIN32)
     set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data\\\\wxmaxima.bmp")
 else()

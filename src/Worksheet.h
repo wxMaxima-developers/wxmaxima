@@ -1597,6 +1597,7 @@ public:
     {
       m_maximaDocDir = dir;
     }
+  const wxString &GetMaximaDocDir() const { return m_maximaDocDir; }
 
   //! Does the GroupCell cell points to contain the question currently asked by maxima?
   bool GCContainsCurrentQuestion(const GroupCell *cell);

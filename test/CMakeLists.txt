@@ -1137,5 +1137,13 @@ else()
     message(STATUS "rpmlint or rpmbuild not found. Skipping rpmlint check of the RPM package.")
 endif()
 
+# NOTE: per-instance MAXIMA_USERDIR (to fix the parallel load()-compile-cache
+# race) is NOT used: pointing MAXIMA_USERDIR at a fresh dir makes wxMaxima
+# hard-ASSERT, because it has several UNGUARDED writes into its config dir (the
+# wxFile assert in DeletePendingObjects at shutdown -- not just the manual-anchor
+# cache, which the batch anchor-skip already avoids). Until those config writes
+# degrade gracefully, the load-race is better handled by RESOURCE_LOCK on the
+# load()-ing tests. See [[project-maxima-process-leak]].
+
 
 

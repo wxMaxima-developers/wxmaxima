@@ -2983,8 +2983,14 @@ void wxMaxima::VariableActionMaximaHtmldir(const wxString &value) {
   if(GetWorksheet())
     {
       GetWorksheet()->SetMaximaDocDir(dir_canonical);
-      GetWorksheet()->LoadHelpFileAnchors(dir_canonical,
-                                          m_configuration.GetMaximaVersion());
+      // In batch mode there is no interactive help/autocomplete, so don't spend a
+      // background thread parsing the whole HTML manual just to cache its anchors
+      // (that work -- and its cache write into the config dir -- is pointless
+      // here). It is deferred to ExitAfterEval() if/when the session turns
+      // interactive.
+      if (!m_exitAfterEval)
+        GetWorksheet()->LoadHelpFileAnchors(dir_canonical,
+                                            m_configuration.GetMaximaVersion());
     }
 }
 void wxMaxima::GnuplotCommandName(wxString gnuplot) {
@@ -4201,6 +4207,11 @@ void wxMaxima::ExitAfterEval(bool exitaftereval) {
                wxS("(wxPrint_autocompletesymbols) ")
                wxS("(wx-print-variables) ")
                wxS("(wx-print-gui-variables)\n"));
+    // We are becoming interactive, so now the manual anchors (for help /
+    // autocomplete) are worth compiling -- we skipped this in batch mode.
+    if (GetWorksheet() && !GetWorksheet()->GetMaximaDocDir().IsEmpty())
+      GetWorksheet()->LoadHelpFileAnchors(GetWorksheet()->GetMaximaDocDir(),
+                                          m_configuration.GetMaximaVersion());
   }
   m_exitAfterEval = exitaftereval;
 }
