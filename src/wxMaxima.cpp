@@ -1309,28 +1309,37 @@ wxMaxima::~wxMaxima() {
         knownwords_sorted.push_back(i.first);
       std::sort(knownwords_sorted.begin(), knownwords_sorted.end());
 
-      wxFile fil(Dirstructure::Get()->UserConfDir() + "/knownSymbols.txt",
-                 wxFile::write);
-      wxFileOutputStream fstrm(fil);
-      wxTextOutputStream txtstrm(fstrm);
-      txtstrm.WriteString("Autodetection\tdescribe()\tbuiltins-list.txt\tsymbol\n");
-      for(const auto &i : knownwords_sorted)
-        {
-          wxString line;
-          std::int_fast8_t flags = knownWords[i];
-          if(flags & 1)
-            line = wxS("\u2717");
-          line += wxS("\t");
-          if(flags & 2)
-            line += wxS("\u2717");
-          line += wxS("\t");
-          if(flags & 4)
-            line += wxS("\u2717");
-          line += wxS("\t");
-          line += i + wxS("\n");
-          txtstrm.WriteString(line);
-        }
-      fil.Close();
+      wxString knownSymbolsFile =
+        Dirstructure::Get()->UserConfDir() + "/knownSymbols.txt";
+      wxFile fil(knownSymbolsFile, wxFile::write);
+      // The known-symbols list is only an autocomplete convenience. If the config
+      // dir isn't writable (e.g. a custom MAXIMA_USERDIR that doesn't exist) just
+      // skip caching it -- writing to an unopened file would assert.
+      if (!fil.IsOpened())
+        wxLogMessage(_("Cannot cache the list of known symbols to %s"),
+                     knownSymbolsFile);
+      else {
+        wxFileOutputStream fstrm(fil);
+        wxTextOutputStream txtstrm(fstrm);
+        txtstrm.WriteString("Autodetection\tdescribe()\tbuiltins-list.txt\tsymbol\n");
+        for(const auto &i : knownwords_sorted)
+          {
+            wxString line;
+            std::int_fast8_t flags = knownWords[i];
+            if(flags & 1)
+              line = wxS("\u2717");
+            line += wxS("\t");
+            if(flags & 2)
+              line += wxS("\u2717");
+            line += wxS("\t");
+            if(flags & 4)
+              line += wxS("\u2717");
+            line += wxS("\t");
+            line += i + wxS("\n");
+            txtstrm.WriteString(line);
+          }
+        fil.Close();
+      }
     }
 
   // Allow the operating system to keep the clipboard's contents even after we

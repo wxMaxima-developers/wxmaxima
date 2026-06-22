@@ -1137,13 +1137,21 @@ else()
     message(STATUS "rpmlint or rpmbuild not found. Skipping rpmlint check of the RPM package.")
 endif()
 
-# NOTE: per-instance MAXIMA_USERDIR (to fix the parallel load()-compile-cache
-# race) is NOT used: pointing MAXIMA_USERDIR at a fresh dir makes wxMaxima
-# hard-ASSERT, because it has several UNGUARDED writes into its config dir (the
-# wxFile assert in DeletePendingObjects at shutdown -- not just the manual-anchor
-# cache, which the batch anchor-skip already avoids). Until those config writes
-# degrade gracefully, the load-race is better handled by RESOURCE_LOCK on the
-# load()-ing tests. See [[project-maxima-process-leak]].
+# Give every test its own MAXIMA_USERDIR so tests running in parallel never share
+# Maxima's compiled-package cache: Maxima's load() of a compiled package (draw,
+# lsquares, ...) writes the compiled result into that cache, and two instances
+# loading the same package concurrently into one shared cache can race (the second
+# reads a half-written file and load() fails). Isolating per test removes the race
+# without serializing the suite. (wxMaxima's config writes now degrade gracefully
+# when the dir isn't writable, so a fresh per-test MAXIMA_USERDIR no longer
+# asserts.)
+get_property(_wxm_all_tests DIRECTORY PROPERTY TESTS)
+foreach(_wxm_t IN LISTS _wxm_all_tests)
+  set(_wxm_userdir "${CMAKE_CURRENT_BINARY_DIR}/test_userdirs/${_wxm_t}")
+  file(MAKE_DIRECTORY "${_wxm_userdir}")
+  set_property(TEST "${_wxm_t}" APPEND PROPERTY ENVIRONMENT
+    "MAXIMA_USERDIR=${_wxm_userdir}")
+endforeach()
 
 
 

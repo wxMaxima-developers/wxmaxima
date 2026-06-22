@@ -249,9 +249,15 @@ History::~History() {
       history_xml += "</history>";
 
       wxFile fil(m_saveplace, wxFile::write);
-      wxFileOutputStream fstrm(fil);
-      wxTextOutputStream txtstrm(fstrm);
-      txtstrm.WriteString(history_xml);
+      // Saving the history is best-effort; if the file can't be opened (e.g. its
+      // dir doesn't exist) skip it -- writing to an unopened file would assert.
+      if (fil.IsOpened()) {
+        wxFileOutputStream fstrm(fil);
+        wxTextOutputStream txtstrm(fstrm);
+        txtstrm.WriteString(history_xml);
+      } else {
+        wxLogMessage(_("Cannot save the command history to %s"), m_saveplace);
+      }
     }
 }
 
