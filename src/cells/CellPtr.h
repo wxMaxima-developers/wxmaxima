@@ -380,6 +380,28 @@ protected:
     {
       LogAssignment(o);
       using namespace std;
+      // In sole-pointer mode the Observed holds a raw back-pointer to the *one*
+      // CellPtr that observes it (see the class invariant). Swapping m_ptr alone
+      // would leave those back-pointers aimed at the wrong CellPtr, so a later
+      // Deref() trips "backPtr == this". Move them along with the swap, exactly as
+      // the move constructor does. (In control-block / null mode GetObserved() is
+      // null and this is a no-op, leaving the plain swap.)
+      auto *thisObserved = m_ptr.GetObserved();
+      auto *otherObserved = o.m_ptr.GetObserved();
+      if (thisObserved)
+      {
+        wxASSERT(thisObserved->m_ptr.GetCellPtrBase() == this);
+        thisObserved->LogDeref(this);
+        thisObserved->LogRef(&o);
+        thisObserved->m_ptr = &o;
+      }
+      if (otherObserved)
+      {
+        wxASSERT(otherObserved->m_ptr.GetCellPtrBase() == &o);
+        otherObserved->LogDeref(&o);
+        otherObserved->LogRef(this);
+        otherObserved->m_ptr = this;
+      }
       swap(m_ptr, o.m_ptr);
       return *this;
     }

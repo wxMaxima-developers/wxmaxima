@@ -475,6 +475,64 @@ SCENARIO("A CellPtr drops the reference to Observed's control block as soon as i
   }
 }
 
+// Regression for the CellPtr move-assignment bug: move-assigning a CellPtr that
+// is the *sole* pointer to its Observed (sole-pointer mode, no control block)
+// used to swap only the CellPtr's internal pointer WITHOUT moving the Observed's
+// back-pointer. The Observed then kept pointing at the moved-from CellPtr, so
+// when the cell died the wrong CellPtr was auto-nulled, leaving the destination
+// dangling -- and Deref() tripped a "backPtr == this" assert in debug builds.
+// See CellPtr.h CellPtrBase::operator=(CellPtrBase&&).
+SCENARIO("Move-assigning a sole CellPtr keeps the Observed back-reference consistent") {
+  GIVEN("a cell observed by a single CellPtr (sole-pointer mode)") {
+    std::optional<TestCell> cell;
+    cell.emplace();
+    CellPtr<TestCell> src{&cell.value()};
+    REQUIRE(cell->HasOneCellPtr());
+    REQUIRE(src.HasOneObserved());
+
+    WHEN("it is move-assigned into a null CellPtr") {
+      CellPtr<TestCell> dst;
+      dst = std::move(src);
+      THEN("the destination observes the cell and the source is empty") {
+        REQUIRE(dst.get() == &cell.value());
+        REQUIRE(!src);
+      }
+      AND_THEN("the cell stays in sole-pointer mode (no control block)") {
+        REQUIRE(cell->HasOneCellPtr());
+        REQUIRE(!cell->HasControlBlock());
+        REQUIRE(dst.HasOneObserved());
+      }
+      AND_WHEN("the cell is then destroyed") {
+        cell.reset();
+        THEN("the destination auto-nulls instead of dangling") {
+          REQUIRE(dst.get() == nullptr);
+          REQUIRE(!dst);
+        }
+      }
+    }
+
+    WHEN("it is move-assigned over another sole pointer (a swap of two cells)") {
+      std::optional<TestCell> cell2;
+      cell2.emplace();
+      CellPtr<TestCell> other{&cell2.value()};
+      other = std::move(src);
+      THEN("the targets are swapped and both stay in sole-pointer mode") {
+        REQUIRE(other.get() == &cell.value());
+        REQUIRE(src.get() == &cell2.value());
+        REQUIRE(cell->HasOneCellPtr());
+        REQUIRE(cell2->HasOneCellPtr());
+      }
+      AND_WHEN("the cell now observed by 'other' is destroyed") {
+        cell.reset();
+        THEN("only 'other' auto-nulls; 'src' still observes its own cell") {
+          REQUIRE(other.get() == nullptr);
+          REQUIRE(src.get() == &cell2.value());
+        }
+      }
+    }
+  }
+}
+
 // Regression guard for the undo/redo lifetime hardening: TreeUndoAction stores
 // its cell references (m_start, m_newCellsEnd) as CellPtr<GroupCell> rather than
 // raw pointers, so an action waiting in the undo list can never dereference a
