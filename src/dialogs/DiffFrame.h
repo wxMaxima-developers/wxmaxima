@@ -27,6 +27,8 @@
 #include <vector>
 #include <memory>
 
+class DiffMarkerBar;
+
 class DiffFrame : public wxFrame
 {
 public:
@@ -88,6 +90,22 @@ private:
   //! Makes difference @p idx the current one: selects its cell in each pane (so
   //! the bracket is drawn highlighted and visibly jumps) and scrolls it into view.
   void SetCurrentDiff(int idx);
+
+  friend class DiffMarkerBar;
+  //! One marker for the strip beside a pane: the document-Y (pixels) of a
+  //! difference's cell in that pane, and whether it is the current difference.
+  struct DiffMark { int docY; bool current; };
+  //! The marks to paint on the strip beside pane @p paneIdx.
+  std::vector<DiffMark> DiffMarksForPane(size_t paneIdx) const;
+  //! Selects the difference whose cell (in pane @p paneIdx) is closest to the
+  //! document-Y @p docY -- used when the user clicks the marker strip.
+  void JumpToNearestDiff(size_t paneIdx, int docY);
+  //! The diff-position marker strips, one beside each worksheet.
+  std::vector<DiffMarkerBar *> m_markerBars;
+  //! Last visible-range top / current-difference the marker strips were painted
+  //! for, so the idle handler only repaints them when something moved.
+  int m_lastBarViewTop = -1;
+  int m_lastBarCurrent = -2;
 
   wxToolBar *m_toolBar = nullptr;
   //! The "Difference N / M" indicator shown in the toolbar.

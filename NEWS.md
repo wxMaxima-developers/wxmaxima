@@ -28,6 +28,12 @@
   even when the target is already on screen and nothing needs to scroll. The
   Prev/Next buttons are also greyed out when there is no further difference to jump
   to in that direction.
+- Diff viewer: a marker strip ("minimap") beside each pane shows where all the
+  differences are along the whole document, with the current one highlighted and a
+  box for the part currently on screen. Clicking the strip jumps to the nearest
+  difference.
+- Diff viewer (Windows): the synchronized pane no longer briefly flashes back to
+  the top during a synced scroll.
 
 - Incremental find: typing another character into the search box now extends the
   highlight on the current match when that match still satisfies the longer

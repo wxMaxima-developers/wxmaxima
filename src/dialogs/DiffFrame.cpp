@@ -32,8 +32,84 @@
 #include <wx/wfstream.h>
 #include <wx/zipstrm.h>
 #include <wx/txtstrm.h>
+#include <wx/dcbuffer.h>
 #include <map>
 #include <algorithm>
+
+// A thin vertical strip painted next to a worksheet that shows, minimap-style,
+// where the differences are along the whole document, plus an outline box for the
+// range currently on screen. Clicking it jumps to the nearest difference.
+class DiffMarkerBar : public wxWindow {
+public:
+  DiffMarkerBar(wxWindow *parent, Worksheet *ws, DiffFrame *frame, size_t paneIdx,
+                Configuration *config)
+    : wxWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+               wxFULL_REPAINT_ON_RESIZE),
+      m_ws(ws), m_frame(frame), m_config(config), m_paneIdx(paneIdx) {
+    SetMinSize(wxSize(12, -1));
+    SetBackgroundStyle(wxBG_STYLE_PAINT);
+    SetToolTip(_("Positions of the differences. Click to jump to one."));
+    Bind(wxEVT_PAINT, &DiffMarkerBar::OnPaint, this);
+    Bind(wxEVT_LEFT_DOWN, &DiffMarkerBar::OnClick, this);
+  }
+
+private:
+  int DocHeight() const { return std::max(1, m_ws->GetVirtualSize().y); }
+  int ViewTopPx() const {
+    int x = 0, y = 0, xu = 0, yu = 0;
+    m_ws->GetViewStart(&x, &y);
+    m_ws->GetScrollPixelsPerUnit(&xu, &yu);
+    return y * yu;
+  }
+
+  void OnPaint(wxPaintEvent &WXUNUSED(event)) {
+    wxAutoBufferedPaintDC dc(this);
+    const wxSize sz = GetClientSize();
+    dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour()));
+    dc.Clear();
+    if (sz.y <= 0)
+      return;
+
+    const long long docH = DocHeight();
+    const int barH = sz.y;
+
+    // The range currently on screen, as an outline box (text colour so it shows
+    // in any theme).
+    const long long viewTop = ViewTopPx();
+    const long long viewH = m_ws->GetClientSize().y;
+    const int vy0 = static_cast<int>(viewTop * barH / docH);
+    const int vy1 = static_cast<int>((viewTop + viewH) * barH / docH);
+    dc.SetBrush(*wxTRANSPARENT_BRUSH);
+    dc.SetPen(*wxThePenList->FindOrCreatePen(m_config->GetColor(TS_TEXT), 1,
+                                             wxPENSTYLE_SOLID));
+    dc.DrawRectangle(0, vy0, sz.x - 1, std::max(3, vy1 - vy0));
+
+    // The difference markers (current one bigger and in the selection colour).
+    for (const auto &m : m_frame->DiffMarksForPane(m_paneIdx)) {
+      const int yy = static_cast<int>(static_cast<long long>(m.docY) * barH / docH);
+      const wxColour col = m.current ? m_config->GetColor(TS_SELECTION)
+                                     : m_config->GetColor(TS_HIGHLIGHT);
+      dc.SetPen(*wxThePenList->FindOrCreatePen(col, 1, wxPENSTYLE_SOLID));
+      dc.SetBrush(*wxTheBrushList->FindOrCreateBrush(col));
+      const int h = m.current ? 5 : 3;
+      dc.DrawRectangle(1, yy - h / 2, sz.x - 2, h);
+    }
+  }
+
+  void OnClick(wxMouseEvent &ev) {
+    const int barH = GetClientSize().y;
+    if (barH <= 0)
+      return;
+    const int docY =
+      static_cast<int>(static_cast<long long>(ev.GetY()) * DocHeight() / barH);
+    m_frame->JumpToNearestDiff(m_paneIdx, docY);
+  }
+
+  Worksheet *m_ws;
+  DiffFrame *m_frame;
+  Configuration *m_config;
+  size_t m_paneIdx;
+};
 
 /**
  * @class SpacerGroupCell
@@ -167,6 +243,40 @@ void DiffFrame::OnDiffPrev(wxCommandEvent &WXUNUSED(event)) {
     SetCurrentDiff(i);
 }
 
+std::vector<DiffFrame::DiffMark> DiffFrame::DiffMarksForPane(size_t paneIdx) const {
+  std::vector<DiffMark> marks;
+  if (paneIdx >= m_worksheets.size())
+    return marks;
+  for (int i = 0; i < (int)m_diffEntries.size(); ++i) {
+    if (!IsDiffEntry(m_diffEntries[i]))
+      continue;
+    GroupCell *cell = m_diffEntries[i].cells[paneIdx];
+    if (cell)
+      marks.push_back({cell->GetRect().y, i == m_currentDiffIdx});
+  }
+  return marks;
+}
+
+void DiffFrame::JumpToNearestDiff(size_t paneIdx, int docY) {
+  if (paneIdx >= m_worksheets.size())
+    return;
+  int best = -1, bestDist = 0;
+  for (int i = 0; i < (int)m_diffEntries.size(); ++i) {
+    if (!IsDiffEntry(m_diffEntries[i]))
+      continue;
+    GroupCell *cell = m_diffEntries[i].cells[paneIdx];
+    if (!cell)
+      continue;
+    const int dist = std::abs(cell->GetRect().y - docY);
+    if (best < 0 || dist < bestDist) {
+      best = i;
+      bestDist = dist;
+    }
+  }
+  if (best >= 0)
+    SetCurrentDiff(best);
+}
+
 void DiffFrame::OnIdle(wxIdleEvent &event) {
   event.Skip();
   UpdateDiffNavUI();
@@ -209,6 +319,17 @@ void DiffFrame::UpdateDiffNavUI() {
   if (static_cast<int>(hasNext) != m_shownNextEnabled) {
     m_toolBar->EnableTool(EventIDs::button_diff_next, hasNext);
     m_shownNextEnabled = static_cast<int>(hasNext);
+  }
+
+  // Repaint the minimap strips when the visible range or the current difference
+  // changed. (The marker positions themselves only change on relayout, which
+  // repaints the bars via wxFULL_REPAINT_ON_RESIZE.)
+  const int viewTop = m_worksheets.empty() ? 0 : CurrentScrollY(0);
+  if (viewTop != m_lastBarViewTop || current != m_lastBarCurrent) {
+    m_lastBarViewTop = viewTop;
+    m_lastBarCurrent = current;
+    for (auto *bar : m_markerBars)
+      bar->Refresh();
   }
 }
 
@@ -308,6 +429,12 @@ toolBar->AddSeparator();
     m_worksheets.push_back(ws);
     ws->SetCurrentFile(files[i]);
     mainSizer->Add(ws, 1, wxEXPAND);
+
+    // A minimap strip beside each pane marking where the differences are.
+    DiffMarkerBar *bar = new DiffMarkerBar(this, ws, this, i,
+                                           m_worksheetConfigurations.back().get());
+    m_markerBars.push_back(bar);
+    mainSizer->Add(bar, 0, wxEXPAND);
     
     // Bind all vertical scroll event types to our synchronization handler
     ws->Bind(wxEVT_SCROLLWIN_THUMBTRACK, &DiffFrame::OnScroll, this);
@@ -394,6 +521,13 @@ void DiffFrame::RelayoutWorksheets() {
     ws->AdjustSize();
     ws->Refresh();
   }
+
+  // The cells (and thus the document height) just moved, so the minimap marks are
+  // stale. Repaint the strips and reset the idle-refresh cache so the next idle
+  // pass doesn't suppress a needed repaint.
+  m_lastBarViewTop = -1;
+  for (auto *bar : m_markerBars)
+    bar->Refresh();
 }
 
 void DiffFrame::OnToggleHorizontalSync(wxCommandEvent &event) {
@@ -569,8 +703,15 @@ void DiffFrame::SyncScrollFrom(int src_idx, int y_new_src) {
     if (target != DIFFSYNC_NO_CELL) {
       int ux_other, uy_other;
       m_worksheets[j]->GetScrollPixelsPerUnit(&ux_other, &uy_other);
-      if (uy_other > 0)
+      if (uy_other > 0) {
+        // Freeze/Thaw around the programmatic scroll so Windows does not paint an
+        // intermediate frame scrolled to the top before it settles at the target
+        // (the synced pane otherwise visibly flashes back to the start). Harmless
+        // on platforms that don't have the issue.
+        m_worksheets[j]->Freeze();
         m_worksheets[j]->Scroll(-1, target / uy_other);
+        m_worksheets[j]->Thaw();
+      }
     }
   }
 
