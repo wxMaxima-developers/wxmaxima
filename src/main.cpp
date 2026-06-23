@@ -813,6 +813,35 @@ void MyApp::MacNewFile() {
 void MyApp::MacOpenFile(const wxString &file) { NewWindow(file); }
 #endif // __WXMAC__
 
+void MyApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func,
+                            const wxChar *cond, const wxChar *msg) {
+  if (!LoggingMessageDialog::IsNonInteractive()) {
+    // Interactive use: keep wxWidgets' default behaviour (the assert dialog).
+    wxApp::OnAssertFailure(file, line, func, cond, msg);
+    return;
+  }
+
+  // Non-interactive (batch/test) mode: the default modal assert dialog would
+  // pop up on a headless CI runner with nobody to dismiss it and wedge the
+  // process until the job's wall-clock limit. Print the assertion so the CI
+  // log shows exactly which one fired, then abort - turning an undiagnosable
+  // hang into a fast test failure with a usable backtrace/core.
+  wxString report =
+    wxString::Format(wxS("wxMaxima assertion failed: %s:%d"),
+                     (file && *file) ? file : wxS("?"), line);
+  if (func && *func)
+    report += wxString::Format(wxS(" in %s"), func);
+  if (cond && *cond)
+    report += wxString::Format(wxS(": \"%s\""), cond);
+  if (msg && *msg)
+    report += wxString::Format(wxS(": %s"), msg);
+  report += wxS("\n");
+
+  fputs(report.utf8_str().data(), stderr);
+  fflush(stderr);
+  abort();
+}
+
 #ifdef USE_QA
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT
 void MyApp::OnFatalException()

@@ -1,5 +1,16 @@
 # Current development version
 
+- Testing/CI: every ctest test now has a real per-test timeout (the previous
+  `CTEST_TEST_TIMEOUT` variable was a no-op outside ctest's script mode, so a
+  single wedged test could block the whole suite until the CI job hit its
+  two-hour wall-clock limit). A hung test now fails fast instead.
+
+- Batch mode: a failing `wxASSERT` no longer pops up a modal dialog that wedges
+  a headless/batch run forever. In non-interactive mode (`--batch` /
+  `--exit-on-error`) the assertion's location and message are now printed to
+  stderr and the process aborts, so automated runs show exactly which assert
+  fired instead of hanging.
+
 - Editing: issuing "Redo" inside a cell when there was nothing to redo (for
   example right after typing, or in a freshly created cell) could crash. The
   undo-history lookup read one entry past the end of the history; it is now a

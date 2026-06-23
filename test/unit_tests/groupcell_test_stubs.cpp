@@ -15,4 +15,10 @@ void MyApp::NewWindow(const wxString &, bool, bool, unsigned char *, std::size_t
 // succeeds, but macOS ld64 keeps it and the undefined wxGetApp() breaks the arm64
 // link. Provide the same definition wxIMPLEMENT_GET_APP would generate so the test
 // links on every platform.
-MyApp &wxGetApp() { return *static_cast<MyApp *>(wxApp::GetInstance()); }
+//
+// reinterpret_cast (not static_cast) on purpose: under -fsanitize=undefined the
+// downcast to MyApp* emits a vptr type-check whose descriptor references
+// "typeinfo for MyApp", which lives only in main.cpp (excluded here) and so
+// breaks the sanitizer link. reinterpret_cast is not instrumented, and since
+// this function is never actually called by the tests the cast is harmless.
+MyApp &wxGetApp() { return *reinterpret_cast<MyApp *>(wxApp::GetInstance()); }

@@ -62,3 +62,15 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(EditorCellInvariants test_EditorCellInvariants)
 endif()
+
+# Same watchdog timeout the parent directory applies to its tests: keep a hung
+# unit test (e.g. one that trips an assert and would otherwise wait forever on a
+# modal assert dialog) from blocking the whole suite. WXM_TEST_TIMEOUT is set in
+# the parent test/CMakeLists.txt before this subdirectory is added.
+get_property(_wxm_unit_tests DIRECTORY PROPERTY TESTS)
+foreach(_wxm_t IN LISTS _wxm_unit_tests)
+  get_test_property("${_wxm_t}" TIMEOUT _wxm_existing_timeout)
+  if(NOT _wxm_existing_timeout)
+    set_property(TEST "${_wxm_t}" PROPERTY TIMEOUT ${WXM_TEST_TIMEOUT})
+  endif()
+endforeach()

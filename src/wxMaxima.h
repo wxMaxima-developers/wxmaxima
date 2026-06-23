@@ -871,6 +871,18 @@ public:
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT
   void	OnFatalException () override;
 #endif
+  /*! Handle a failed wxASSERT.
+
+    In interactive use this defers to wxWidgets' default behaviour (a modal
+    "assertion failed" dialog). In non-interactive mode (--batch /
+    --exit-on-error, i.e. the test suite) that dialog would pop up on a
+    headless CI runner with nobody to dismiss it, wedging the process until
+    the CI job's wall-clock limit. Instead we print the assertion's location
+    and message to stderr - so the CI log shows exactly which assert fired -
+    and abort, turning the hang into a fast, diagnosable test failure.
+  */
+  void OnAssertFailure(const wxChar *file, int line, const wxChar *func,
+                       const wxChar *cond, const wxChar *msg) override;
   /*! Create a new window
 
     The mac platform insists in making all windows of an application

@@ -134,7 +134,23 @@ file(
 # performance bugs that cause such behavior.
 
 
-set(CTEST_TEST_TIMEOUT 120)
+# Per-test watchdog timeout (seconds). This is applied as the ctest TIMEOUT
+# property of every test below (see the loop at the end of this file). Its job
+# is NOT to act as a performance budget but to stop a single hung test from
+# eating the whole CI run: without it a wedged test (e.g. one waiting forever on
+# a gnuplot/draw window that never appears on a headless runner) keeps ctest
+# blocked until GitHub kills the job after two hours.
+#
+# Note: the old `set(CTEST_TEST_TIMEOUT 120)` here was a no-op - CTEST_TEST_TIMEOUT
+# is only honoured by ctest in -S script mode, and this project drives ctest
+# directly against the build tree, so no per-test timeout was ever in effect.
+#
+# The value is generous on purpose: the slowest legitimate test (testbench_simple)
+# takes ~110 s on the CI runners, so 300 s catches genuine hangs while leaving
+# enough head-room not to flake under load. A real performance regression that
+# pushes a trivial test anywhere near this limit is still a bug to be fixed, not
+# a reason to raise the timeout.
+set(WXM_TEST_TIMEOUT 300 CACHE STRING "Per-test ctest timeout in seconds (watchdog against hung tests)")
 
 if(WXM_UNIT_TESTS)
     add_subdirectory(unit_tests)
@@ -1151,6 +1167,13 @@ foreach(_wxm_t IN LISTS _wxm_all_tests)
   file(MAKE_DIRECTORY "${_wxm_userdir}")
   set_property(TEST "${_wxm_t}" APPEND PROPERTY ENVIRONMENT
     "MAXIMA_USERDIR=${_wxm_userdir}")
+  # Watchdog timeout so a single hung test fails fast instead of blocking the
+  # whole suite until the CI job hits its two-hour wall (see WXM_TEST_TIMEOUT).
+  # Only set it where a test hasn't requested a longer one of its own.
+  get_test_property("${_wxm_t}" TIMEOUT _wxm_existing_timeout)
+  if(NOT _wxm_existing_timeout)
+    set_property(TEST "${_wxm_t}" PROPERTY TIMEOUT ${WXM_TEST_TIMEOUT})
+  endif()
 endforeach()
 
 
