@@ -224,6 +224,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AuiManagerUpdate</b> 
 <tr class="memitem:ac9011a5c9856563224d92b3b119b03d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaximaFrame.html#ac9011a5c9856563224d92b3b119b03d9">StatusMaximaBusy</a> (StatusBar::MaximaStatus status)</td></tr>
 <tr class="memdesc:ac9011a5c9856563224d92b3b119b03d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the status according to if maxima is calculating.  <br /></td></tr>
 <tr class="separator:ac9011a5c9856563224d92b3b119b03d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43f3a137d85a91671db5a20ecad4f8cb"><td class="memItemLeft" align="right" valign="top"><a id="a43f3a137d85a91671db5a20ecad4f8cb" name="a43f3a137d85a91671db5a20ecad4f8cb"></a>
+StatusBar::MaximaStatus&#160;</td><td class="memItemRight" valign="bottom"><b>StatusMaximaBusy</b> () const</td></tr>
+<tr class="memdesc:a43f3a137d85a91671db5a20ecad4f8cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The status <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is currently displayed as being in. <br /></td></tr>
+<tr class="separator:a43f3a137d85a91671db5a20ecad4f8cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3c4b0254957c4efc475f249af41213c"><td class="memItemLeft" align="right" valign="top"><a id="ae3c4b0254957c4efc475f249af41213c" name="ae3c4b0254957c4efc475f249af41213c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateStatusMaximaBusy</b> ()</td></tr>
 <tr class="separator:ae3c4b0254957c4efc475f249af41213c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -314,12 +318,6 @@ Data Fields</h2></td></tr>
 wxTimer&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaStdoutPollTimer</b></td></tr>
 <tr class="memdesc:a53cec59ccdca65b3f4e629df76db0e01"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> timer that polls for output from the maxima process. <br /></td></tr>
 <tr class="separator:a53cec59ccdca65b3f4e629df76db0e01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57ca46afa9fc58fee77518ce8cda75e8"><td class="memItemLeft" align="right" valign="top"><a id="a57ca46afa9fc58fee77518ce8cda75e8" name="a57ca46afa9fc58fee77518ce8cda75e8"></a>
-StatusBar::MaximaStatus&#160;</td><td class="memItemRight" valign="bottom"><b>m_StatusMaximaBusy</b> = StatusBar::wait_for_start</td></tr>
-<tr class="separator:a57ca46afa9fc58fee77518ce8cda75e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23c394b707e0fa66d31d4a03bc535ae6"><td class="memItemLeft" align="right" valign="top"><a id="a23c394b707e0fa66d31d4a03bc535ae6" name="a23c394b707e0fa66d31d4a03bc535ae6"></a>
-StatusBar::MaximaStatus&#160;</td><td class="memItemRight" valign="bottom"><b>m_StatusMaximaBusy_next</b> = StatusBar::wait_for_start</td></tr>
-<tr class="separator:a23c394b707e0fa66d31d4a03bc535ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -2003,7 +2001,7 @@ Menu and button events</h2>
   </dd>
 </dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md846"></a>
+ <h2><a class="anchor" id="autotoc_md842"></a>
 Dealing with stuff read from the socket</h2>
 
 </div>
@@ -2564,7 +2562,7 @@ Tips and help</h2>
 <hr  />
  </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md840"></a>
+<h2><a class="anchor" id="autotoc_md836"></a>
 Maxima process stuff</h2>
 
 </div>
