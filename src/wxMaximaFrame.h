@@ -159,10 +159,9 @@ public:
     - false: Maxima is waiting for input
   */
   void StatusMaximaBusy(StatusBar::MaximaStatus status){m_StatusMaximaBusy_next = status;}
+  //! The status Maxima is currently displayed as being in.
+  StatusBar::MaximaStatus StatusMaximaBusy() const {return m_StatusMaximaBusy;}
   void UpdateStatusMaximaBusy();
-
-  StatusBar::MaximaStatus m_StatusMaximaBusy = StatusBar::wait_for_start;
-  StatusBar::MaximaStatus m_StatusMaximaBusy_next = StatusBar::wait_for_start;
 
   //! Set the status to "Maxima is saving"
   void StatusSaveStart();
@@ -284,6 +283,10 @@ private:
   wxTimer m_bytesReadDisplayTimer;
   //! True=We are currently saving.
   bool m_StatusSaving = false;
+  //! The status Maxima is currently displayed as being in, and the one it will be
+  //! shown as next (UpdateStatusMaximaBusy() applies _next when it differs).
+  StatusBar::MaximaStatus m_StatusMaximaBusy = StatusBar::wait_for_start;
+  StatusBar::MaximaStatus m_StatusMaximaBusy_next = StatusBar::wait_for_start;
 
   void SetupToolBar();
 

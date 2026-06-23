@@ -4974,7 +4974,7 @@ void wxMaxima::UpdateToolBar() {
     GetWorksheet()->m_mainToolBar->AnimationButtonState(ToolBar::Inactive);
 
   bool follow = GetWorksheet()->ScrolledAwayFromEvaluation();
-  switch (m_StatusMaximaBusy) {
+  switch (StatusMaximaBusy()) {
   case StatusBar::MaximaStatus::userinput:
     GetWorksheet()->m_mainToolBar->ShowUserInputBitmap();
     GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
