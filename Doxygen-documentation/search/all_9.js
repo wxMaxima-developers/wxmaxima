@@ -78,7 +78,7 @@ var searchData=
   ['islessergctype_75',['IsLesserGCType',['../classGroupCell.html#aeffb98409072154212d9481319d6914a',1,'GroupCell']]],
   ['ismath_76',['IsMath',['../classCell.html#adc34d37cd08670497ee5d0a5bb2a4925',1,'Cell']]],
   ['isok_77',['IsOk',['../classBitmapOut.html#af46705bab0e3319705367c1ae275a072',1,'BitmapOut']]],
-  ['isoperator_78',['IsOperator',['../classConfiguration.html#ae4d6699f5f7ce4330b1e6806b05d286b',1,'Configuration::IsOperator()'],['../classTextCell.html#a4cf54ff09e85bfa8eba366072df3e883',1,'TextCell::IsOperator()'],['../classFracCell.html#a1ae2e54a7fe858f0f21c2fc031e0ed80',1,'FracCell::IsOperator()'],['../classCell.html#ad9ead4b4296d8f1f1fe50f8e8c83868c',1,'Cell::IsOperator()']]],
+  ['isoperator_78',['IsOperator',['../classConfiguration.html#af0c8b1318e5e74da5d687f05beec6958',1,'Configuration::IsOperator()'],['../classTextCell.html#a4cf54ff09e85bfa8eba366072df3e883',1,'TextCell::IsOperator()'],['../classFracCell.html#a1ae2e54a7fe858f0f21c2fc031e0ed80',1,'FracCell::IsOperator()'],['../classCell.html#ad9ead4b4296d8f1f1fe50f8e8c83868c',1,'Cell::IsOperator()']]],
   ['ispanedisplayed_79',['IsPaneDisplayed',['../classwxMaximaFrame.html#aca9ae11de0e947738270669867ec3b0e',1,'wxMaximaFrame']]],
   ['isperformancemonitorshown_80',['IsPerformanceMonitorShown',['../classwxMaximaFrame.html#a86bf1c3518243543065669acc4e4dbb9',1,'wxMaximaFrame']]],
   ['ispointinselection_81',['IsPointInSelection',['../classEditorCell.html#aacd184cb9e7f5ef35176df9f5735b4cc',1,'EditorCell']]],

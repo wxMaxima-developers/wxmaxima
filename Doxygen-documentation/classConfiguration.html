@@ -169,13 +169,24 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>EscCodeIterator</b> 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae4d6699f5f7ce4330b1e6806b05d286b"><td class="memItemLeft" align="right" valign="top"><a id="ae4d6699f5f7ce4330b1e6806b05d286b" name="ae4d6699f5f7ce4330b1e6806b05d286b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsOperator</b> (wxString name)</td></tr>
-<tr class="memdesc:ae4d6699f5f7ce4330b1e6806b05d286b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coincides name with a operator known to maxima? <br /></td></tr>
-<tr class="separator:ae4d6699f5f7ce4330b1e6806b05d286b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0c8b1318e5e74da5d687f05beec6958"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#af0c8b1318e5e74da5d687f05beec6958">IsOperator</a> (wxString name) const</td></tr>
+<tr class="memdesc:af0c8b1318e5e74da5d687f05beec6958"><td class="mdescLeft">&#160;</td><td class="mdescRight">All maxima operator names we know.  <br /></td></tr>
+<tr class="separator:af0c8b1318e5e74da5d687f05beec6958"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6f16b08d936194321dfe5e27b8f5f32"><td class="memItemLeft" align="right" valign="top"><a id="aa6f16b08d936194321dfe5e27b8f5f32" name="aa6f16b08d936194321dfe5e27b8f5f32"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddMaximaOperator</b> (const wxString &amp;name)</td></tr>
+<tr class="memdesc:aa6f16b08d936194321dfe5e27b8f5f32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register name as an operator known to maxima. <br /></td></tr>
+<tr class="separator:aa6f16b08d936194321dfe5e27b8f5f32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cbef299ff61c320d74f25fd59df2510"><td class="memItemLeft" align="right" valign="top"><a id="a2cbef299ff61c320d74f25fd59df2510" name="a2cbef299ff61c320d74f25fd59df2510"></a>
 const wxEnvVariableHashMap &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaEnvVars</b> () const</td></tr>
 <tr class="separator:a2cbef299ff61c320d74f25fd59df2510"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f34f58710dc56742667c9ef39326bb2"><td class="memItemLeft" align="right" valign="top"><a id="a4f34f58710dc56742667c9ef39326bb2" name="a4f34f58710dc56742667c9ef39326bb2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearMaximaEnvVars</b> ()</td></tr>
+<tr class="memdesc:a4f34f58710dc56742667c9ef39326bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forget all custom environment variables for the maxima process. <br /></td></tr>
+<tr class="separator:a4f34f58710dc56742667c9ef39326bb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addef313b5b2ae2c2fe275aa1f6ee6248"><td class="memItemLeft" align="right" valign="top"><a id="addef313b5b2ae2c2fe275aa1f6ee6248" name="addef313b5b2ae2c2fe275aa1f6ee6248"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaximaEnvVar</b> (const wxString &amp;name, const wxString &amp;value)</td></tr>
+<tr class="memdesc:addef313b5b2ae2c2fe275aa1f6ee6248"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a custom environment variable for the maxima process. <br /></td></tr>
+<tr class="separator:addef313b5b2ae2c2fe275aa1f6ee6248"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54b9807f7e5401045540dbcee7fc95f6"><td class="memItemLeft" align="right" valign="top"><a id="a54b9807f7e5401045540dbcee7fc95f6" name="a54b9807f7e5401045540dbcee7fc95f6"></a>
 mathDisplayMode&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayMode</b> () const</td></tr>
 <tr class="memdesc:a54b9807f7e5401045540dbcee7fc95f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does maxima output 1<a class="el" href="classD.html">D</a>, 2<a class="el" href="classD.html">D</a> or 2<a class="el" href="classD.html">D</a> ASCII equations? <br /></td></tr>
@@ -1183,6 +1194,14 @@ maximaHelpFormat&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaHel
 <tr class="memitem:a112547a8de4f9bf7d7d7d9842c4a381d"><td class="memItemLeft" align="right" valign="top"><a id="a112547a8de4f9bf7d7d7d9842c4a381d" name="a112547a8de4f9bf7d7d7d9842c4a381d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaHelpFormat</b> (maximaHelpFormat format)</td></tr>
 <tr class="separator:a112547a8de4f9bf7d7d7d9842c4a381d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a923edf9cb3b793c049d2a6577e7aa6d6"><td class="memItemLeft" align="right" valign="top"><a id="a923edf9cb3b793c049d2a6577e7aa6d6" name="a923edf9cb3b793c049d2a6577e7aa6d6"></a>
+std::random_device::result_type&#160;</td><td class="memItemRight" valign="bottom"><b>RandomEntropy</b> ()</td></tr>
+<tr class="memdesc:a923edf9cb3b793c049d2a6577e7aa6d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">One sample of OS entropy (std::random_device). <br /></td></tr>
+<tr class="separator:a923edf9cb3b793c049d2a6577e7aa6d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd93deb669b7d063dd856ee425803232"><td class="memItemLeft" align="right" valign="top"><a id="abd93deb669b7d063dd856ee425803232" name="abd93deb669b7d063dd856ee425803232"></a>
+std::default_random_engine &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>RandomEngine</b> ()</td></tr>
+<tr class="memdesc:abd93deb669b7d063dd856ee425803232"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pseudo-random engine, e.g. to feed a distribution. <br /></td></tr>
+<tr class="separator:abd93deb669b7d063dd856ee425803232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56f215c6fb33a7d594a2212377204370"><td class="memItemLeft" align="right" valign="top">std::int_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a56f215c6fb33a7d594a2212377204370">CellCfgCnt</a> () const</td></tr>
 <tr class="memdesc:a56f215c6fb33a7d594a2212377204370"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> counter that increases every time we need to recalculate all worksheet cells.  <br /></td></tr>
 <tr class="separator:a56f215c6fb33a7d594a2212377204370"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1260,30 +1279,12 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetMaximaL
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a4cc5854a61550156bec48716d3590ca6"><td class="memItemLeft" align="right" valign="top"><a id="a4cc5854a61550156bec48716d3590ca6" name="a4cc5854a61550156bec48716d3590ca6"></a>
-StringHash&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaOperators</b></td></tr>
-<tr class="memdesc:a4cc5854a61550156bec48716d3590ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">All maxima operator names we know. <br /></td></tr>
-<tr class="separator:a4cc5854a61550156bec48716d3590ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7cc5d016e720a60c689580425a59df9"><td class="memItemLeft" align="right" valign="top"><a id="ac7cc5d016e720a60c689580425a59df9" name="ac7cc5d016e720a60c689580425a59df9"></a>
-wxEnvVariableHashMap&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaEnvVars</b></td></tr>
-<tr class="separator:ac7cc5d016e720a60c689580425a59df9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe20fbb21d8625c5d6cbe6617b8477c7"><td class="memItemLeft" align="right" valign="top"><a id="afe20fbb21d8625c5d6cbe6617b8477c7" name="afe20fbb21d8625c5d6cbe6617b8477c7"></a>
-std::vector&lt; <a class="el" href="structConfiguration_1_1CharsExist.html">CharsExist</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_charsInFont</b></td></tr>
-<tr class="separator:afe20fbb21d8625c5d6cbe6617b8477c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c42ffe13fbafe492fe759f36c65ae3e"><td class="memItemLeft" align="right" valign="top"><a id="a0c42ffe13fbafe492fe759f36c65ae3e" name="a0c42ffe13fbafe492fe759f36c65ae3e"></a>
 StringBoolHash&#160;</td><td class="memItemRight" valign="bottom"><b>m_hideMarkerForThisMessage</b></td></tr>
 <tr class="separator:a0c42ffe13fbafe492fe759f36c65ae3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81653dc3bf2b4b4b049dd78a0f1967cb"><td class="memItemLeft" align="right" valign="top"><a id="a81653dc3bf2b4b4b049dd78a0f1967cb" name="a81653dc3bf2b4b4b049dd78a0f1967cb"></a>
 <a class="el" href="classStyle.html">Style</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_styles</b> [<a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a4ff5d935a79c3cd0c1e5d3a188645046">NUMBEROFSTYLES</a>]</td></tr>
 <tr class="separator:a81653dc3bf2b4b4b049dd78a0f1967cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5897be9039afeb0aa6e0edb510eafa11"><td class="memItemLeft" align="right" valign="top"><a id="a5897be9039afeb0aa6e0edb510eafa11" name="a5897be9039afeb0aa6e0edb510eafa11"></a>
-std::random_device&#160;</td><td class="memItemRight" valign="bottom"><b>m_rd</b></td></tr>
-<tr class="memdesc:a5897be9039afeb0aa6e0edb510eafa11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Our random device. <br /></td></tr>
-<tr class="separator:a5897be9039afeb0aa6e0edb510eafa11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a919b6aa91aefacfbe6aafc806806035e"><td class="memItemLeft" align="right" valign="top"><a id="a919b6aa91aefacfbe6aafc806806035e" name="a919b6aa91aefacfbe6aafc806806035e"></a>
-std::default_random_engine&#160;</td><td class="memItemRight" valign="bottom"><b>m_eng</b></td></tr>
-<tr class="memdesc:a919b6aa91aefacfbe6aafc806806035e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Our random engine. <br /></td></tr>
-<tr class="separator:a919b6aa91aefacfbe6aafc806806035e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -1293,10 +1294,6 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 <tr class="memitem:ab8f221b042a343fa625bf28c347468e4"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#ab8f221b042a343fa625bf28c347468e4">m_configfileLocation_override</a></td></tr>
 <tr class="memdesc:ab8f221b042a343fa625bf28c347468e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where to store the configuration.  <br /></td></tr>
 <tr class="separator:ab8f221b042a343fa625bf28c347468e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57fae948718b8b3a1ef02a21449e3ede"><td class="memItemLeft" align="right" valign="top"><a id="a57fae948718b8b3a1ef02a21449e3ede" name="a57fae948718b8b3a1ef02a21449e3ede"></a>
-static std::unordered_map&lt; <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a>, wxString &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_styleNames</b></td></tr>
-<tr class="memdesc:a57fae948718b8b3a1ef02a21449e3ede"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of names for the worksheet's text styles. <br /></td></tr>
-<tr class="separator:a57fae948718b8b3a1ef02a21449e3ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The configuration storage for the current worksheet. </p>
@@ -1646,6 +1643,35 @@ static std::unordered_map&lt; <a class="el" href="TextStyle_8h.html#a68ac52da612
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="af0c8b1318e5e74da5d687f05beec6958" name="af0c8b1318e5e74da5d687f05beec6958"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0c8b1318e5e74da5d687f05beec6958">&#9670;&#160;</a></span>IsOperator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Configuration::IsOperator </td>
+          <td>(</td>
+          <td class="paramtype">wxString&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All maxima operator names we know. </p>
+<p>Coincides name with a operator known to maxima? </p>
 
 </div>
 </div>
