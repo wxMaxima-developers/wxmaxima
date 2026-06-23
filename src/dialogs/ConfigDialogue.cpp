@@ -2094,15 +2094,15 @@ void ConfigDialogue::WriteSettings() {
   wxConfigBase *config = wxConfig::Get();
   Configuration *configuration = m_configuration.get();
 
-  configuration->m_maximaEnvVars.clear();
+  configuration->ClearMaximaEnvVars();
   for (int row = m_maximaEnvVariables->GetNumberRows() - 1; row >= 0; row--) {
     if (!m_maximaEnvVariables->GetCellValue(row, 0)
         .Trim(true)
         .Trim(false)
         .IsEmpty())
-      configuration
-        ->m_maximaEnvVars[m_maximaEnvVariables->GetCellValue(row, 0)] =
-        m_maximaEnvVariables->GetCellValue(row, 1);
+      configuration->SetMaximaEnvVar(
+        m_maximaEnvVariables->GetCellValue(row, 0),
+        m_maximaEnvVariables->GetCellValue(row, 1));
   }
 
   configuration->SetAbortOnError(m_abortOnError->GetValue());

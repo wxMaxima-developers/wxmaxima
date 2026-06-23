@@ -154,11 +154,15 @@ public:
   typedef std::unordered_map <wxString, int, wxStringHash> StringHash;
   /*! All maxima operator names we know
    */
-  StringHash m_maximaOperators;
   //! Coincides name with a operator known to maxima?
-  bool IsOperator(wxString name){return !(m_maximaOperators.find(name) == m_maximaOperators.end());}
+  bool IsOperator(wxString name) const {return !(m_maximaOperators.find(name) == m_maximaOperators.end());}
+  //! Register name as an operator known to maxima.
+  void AddMaximaOperator(const wxString &name){m_maximaOperators[name] = 1;}
   const wxEnvVariableHashMap& MaximaEnvVars() const {return m_maximaEnvVars;}
-  wxEnvVariableHashMap m_maximaEnvVars;
+  //! Forget all custom environment variables for the maxima process.
+  void ClearMaximaEnvVars(){m_maximaEnvVars.clear();}
+  //! Set a custom environment variable for the maxima process.
+  void SetMaximaEnvVar(const wxString &name, const wxString &value){m_maximaEnvVars[name] = value;}
 
   //! Does maxima output 1D, 2D or 2D ASCII equations?
   mathDisplayMode DisplayMode() const {return m_displayMode;}
@@ -212,8 +216,6 @@ public:
   */
   static wxString m_configfileLocation_override;
 
-  //! The list of names for the worksheet's text styles
-  static std::unordered_map<TextStyle, wxString> m_styleNames;
   using EscCodeContainer = std::unordered_map<wxString, wxString, wxStringHash>;
   using EscCodeIterator = EscCodeContainer::const_iterator;
 
@@ -444,7 +446,6 @@ public:
     bool exist;
     CharsExist(const wxString &chars, bool exist) : chars(chars), exist(exist) {}
   };
-  std::vector<CharsExist> m_charsInFont;
 
   //! To be called if a font has changed
   void FontChanged()
@@ -1121,11 +1122,20 @@ private:
     has changed the configuration.
   */
   long m_configId;
-public:
   //! Our random device
   std::random_device m_rd;
   //! Our random engine
   std::default_random_engine m_eng;
+  //! The list of names for the worksheet's text styles
+  static std::unordered_map<TextStyle, wxString> m_styleNames;
+  std::vector<CharsExist> m_charsInFont;
+  StringHash m_maximaOperators;
+  wxEnvVariableHashMap m_maximaEnvVars;
+public:
+  //! One sample of OS entropy (std::random_device).
+  std::random_device::result_type RandomEntropy(){return m_rd();}
+  //! The pseudo-random engine, e.g. to feed a distribution.
+  std::default_random_engine &RandomEngine(){return m_eng;}
   /*! A counter that increases every time we need to recalculate all worksheet cells
 
     If that counter eventually wraps that should be fine: The cells will have been

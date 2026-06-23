@@ -316,8 +316,7 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
       } else {
         if (m_hardcodedFunctions.find(token) != m_hardcodedFunctions.end())
           m_tokens.emplace_back(token, TS_CODE_FUNCTION);
-        else if (m_configuration->m_maximaOperators.find(token) !=
-                 m_configuration->m_maximaOperators.end())
+        else if (m_configuration->IsOperator(token))
           m_tokens.emplace_back(token, TS_CODE_OPERATOR);
         else {
           // Let's look what the next char looks like

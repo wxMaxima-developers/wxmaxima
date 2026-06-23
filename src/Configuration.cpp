@@ -197,8 +197,6 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
 }
 
 Configuration::Configuration(const Configuration &o) :
-  m_maximaOperators(o.m_maximaOperators),
-  m_maximaEnvVars(o.m_maximaEnvVars),
   m_maximaArch(o.m_maximaArch),
   m_lispVersion(o.m_lispVersion),
   m_lispType(o.m_lispType),
@@ -207,6 +205,8 @@ Configuration::Configuration(const Configuration &o) :
   m_configId(o.m_configId),
   m_rd(),
   m_eng(m_rd()),
+  m_maximaOperators(o.m_maximaOperators),
+  m_maximaEnvVars(o.m_maximaEnvVars),
   m_codeStyles(o.m_codeStyles),
   m_2dMathStyles(o.m_2dMathStyles),
   m_colorOnlyStyles(o.m_colorOnlyStyles),
