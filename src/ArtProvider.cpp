@@ -29,6 +29,9 @@
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/artprov.h>
+#include <wx/mstream.h>
+#include <wx/zstream.h>
+#include <wx/sstream.h>
 #include "SvgBitmap.h"
 #include "nanosvg_private.h"
 #include "nanosvgrast_private.h"
@@ -36,6 +39,24 @@
 #include "art/menu/cell-divide.h"
 #include "art/menu/watchlist.h"
 #include "art/menu/cell-merge.h"
+
+namespace {
+//! Our embedded SVG blobs are either raw text (which starts with '<') or
+//! gzip-compressed. Returns the SVG as text, decompressing if needed -- so the
+//! same data can feed either the bundled nanoSVG (SvgBitmap) or wxWidgets'
+//! wxBitmapBundle::FromSVG.
+wxString DecompressSvg(const unsigned char *data, std::size_t len) {
+  if (!data || len == 0)
+    return wxEmptyString;
+  if (data[0] == '<')
+    return wxString::FromUTF8(reinterpret_cast<const char *>(data), len);
+  wxMemoryInputStream mem(data, len);
+  wxZlibInputStream zstream(mem);
+  wxStringOutputStream out;
+  out.Write(zstream);
+  return out.GetString();
+}
+} // namespace
 
 wxBitmap ArtProvider::GetImage(wxWindow *win, const wxString &name, int width,
                                unsigned const char *data, std::size_t dataLen) {
@@ -51,6 +72,21 @@ wxBitmap ArtProvider::GetImage(wxWindow *win, const wxString &name, int width,
       img.Rescale(width, width, wxIMAGE_QUALITY_BICUBIC);
       bmp = wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
     }
+#if wxCHECK_VERSION(3, 1, 6)
+  // Prefer letting wxWidgets rasterize the SVG (it uses nanoSVG internally) over
+  // our bundled private nanoSVG copy, so the latter can eventually be dropped on
+  // modern wxWidgets. SvgBitmap below stays as the fallback for older wx.
+  if (!bmp.IsOk()) {
+    const wxString svg = DecompressSvg(data, dataLen);
+    if (!svg.IsEmpty()) {
+      wxBitmapBundle bundle =
+        wxBitmapBundle::FromSVG(svg.utf8_str().data(), wxSize(width, width));
+      if (bundle.IsOk())
+        bmp = bundle.GetBitmap(wxSize(width, width));
+    }
+  }
+#endif
+
   if(!bmp.IsOk())
     bmp = SvgBitmap(win, data, dataLen, width, width);
 
