@@ -171,6 +171,38 @@ SCENARIO("Backspace at the very start of the text is a harmless no-op") {
   }
 }
 
+// Guards the clamp-in-the-setter invariant (EditorCell.h ClampToText): the
+// selection/cursor setters clamp to [0, text length]. The distinguishing case is
+// CursorMove() past the start: it must land at 0, not wrap a size_t to a huge
+// value that the getter would then clamp to the *end* (cursor jumping to the wrong
+// end of the text).
+SCENARIO("Cursor and selection positions are clamped to the text") {
+  std::unique_ptr<GroupCell> owner;
+  EditorCell *e = ActiveEditor(owner, GC_TYPE_CODE, wxS("abcdef")); // length 6
+
+  GIVEN("the cursor near the start") {
+    e->CursorPosition(2);
+    WHEN("it is moved far past the start") {
+      e->CursorMove(-100);
+      THEN("it lands at the start, not the end") {
+        REQUIRE(e->CursorPosition() == 0u);
+      }
+    }
+  }
+  GIVEN("a cursor position past the end") {
+    e->CursorPosition(1000);
+    THEN("it is clamped to the text length")
+      REQUIRE(e->CursorPosition() == 6u);
+  }
+  GIVEN("a selection past the end") {
+    e->SetSelection(1000, 2000);
+    THEN("both ends clamp to the text length") {
+      REQUIRE(e->SelectionStart() == 6u);
+      REQUIRE(e->SelectionEnd() == 6u);
+    }
+  }
+}
+
 SCENARIO("Typing over a selection replaces it") {
   std::unique_ptr<GroupCell> owner;
   EditorCell *e = ActiveEditor(owner, GC_TYPE_CODE, wxS("abcdef"));

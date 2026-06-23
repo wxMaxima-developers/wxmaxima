@@ -73,22 +73,28 @@ public:
   EditorCell(GroupCell *group, Configuration *config, wxString text = {});
   EditorCell(GroupCell *group, const EditorCell &cell);
   void UpdateSelectionString();
-  void SetSelection(size_t start, size_t end){m_selectionStart = start; m_selectionEnd = end; UpdateSelectionString();}
+  // The selection/cursor setters clamp their argument to a valid index into the
+  // current text via ClampToText(), so m_selectionStart / m_selectionEnd are
+  // always in [0, m_text.Length()] (e.g. CursorMove(-n) past the start clamps to
+  // 0 instead of wrapping a size_t to a huge value). The getters below keep a
+  // defensive std::min as well, because the text can still shrink *after* a
+  // selection was set without the selection being updated.
+  void SetSelection(size_t start, size_t end){m_selectionStart = ClampToText(start); m_selectionEnd = ClampToText(end); UpdateSelectionString();}
   bool SelectionActive() const {return m_selectionStart != m_selectionEnd;}
   void ClearSelection() {SelectionEnd(SelectionEnd());}
-  void SelectionStart(size_t start) {m_selectionStart = start; UpdateSelectionString();}
-  void SelectionEnd(size_t end) {m_selectionEnd = end; UpdateSelectionString();}
+  void SelectionStart(size_t start) {m_selectionStart = ClampToText(start); UpdateSelectionString();}
+  void SelectionEnd(size_t end) {m_selectionEnd = ClampToText(end); UpdateSelectionString();}
   size_t SelectionStart() const {return std::min(m_selectionStart, m_text.Length());}
   size_t SelectionEnd() const {return std::min(m_selectionEnd, m_text.Length());}
   size_t SelectionLeft() const {return std::min(SelectionStart(), SelectionEnd());}
   size_t SelectionRight() const {return std::max(SelectionStart(), SelectionEnd());}
   size_t SelectionLength() const {return(SelectionEnd()-SelectionStart());}
   void  SelectionLength(size_t length) {SelectionEnd(SelectionStart() + length);  UpdateSelectionString();}
-  void CursorMove(long long increment) {m_selectionEnd += increment;
+  void CursorMove(long long increment) {m_selectionEnd = ClampToText(static_cast<long long>(m_selectionEnd) + increment);
     m_selectionStart = m_selectionEnd; UpdateSelectionString();}
   size_t CursorPosition() const {return std::min(m_selectionEnd, m_text.Length());}
-  void CursorPosition(size_t pos) {m_selectionStart = pos;
-    m_selectionEnd = pos; UpdateSelectionString();}
+  void CursorPosition(size_t pos) {m_selectionStart = ClampToText(pos);
+    m_selectionEnd = m_selectionStart; UpdateSelectionString();}
   const CellTypeInfo &GetInfo() override;
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 
@@ -517,6 +523,14 @@ public:
   const MaximaTokenizer::TokenList &GetAllTokens() const;
 
 private:
+  //! Clamps a (possibly negative or past-the-end) position to a valid index into
+  //! the current text, i.e. to [0, m_text.Length()]. Used by the selection and
+  //! cursor setters so the stored positions are always valid.
+  size_t ClampToText(long long pos) const {
+    if (pos < 0)
+      return 0;
+    return std::min(static_cast<size_t>(pos), m_text.Length());
+  }
   size_t m_selectionStart = 0;
   size_t m_selectionEnd = 0;
   size_t m_lastSelectionStart = 0;
