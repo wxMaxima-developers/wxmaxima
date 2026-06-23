@@ -4700,13 +4700,13 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       m_statusBar->SetStatusText(GetWorksheet()->GetStatusText());
     }
     else
-      m_statusBar->SetStatusText(m_leftStatusText);
+      m_statusBar->SetStatusText(GetLeftStatusText());
   }
 
-  if ((m_newStatusText) && (!GetWorksheet()->StatusTextHas())) {
-    m_statusBar->SetStatusText(m_leftStatusText);
+  if (HasPendingStatusText() && (!GetWorksheet()->StatusTextHas())) {
+    m_statusBar->SetStatusText(GetLeftStatusText());
 
-    m_newStatusText = false;
+    ClearPendingStatusText();
 
     wxString toolTip;
     for( auto const &i: m_statusTextHistory)

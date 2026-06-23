@@ -163,6 +163,13 @@ public:
   StatusBar::MaximaStatus StatusMaximaBusy() const {return m_StatusMaximaBusy;}
   void UpdateStatusMaximaBusy();
 
+  //! True if StatusText() recorded a left-half status text not yet shown.
+  bool HasPendingStatusText() const {return m_newStatusText;}
+  //! Mark the pending left-half status text as having been displayed.
+  void ClearPendingStatusText() {m_newStatusText = false;}
+  //! The pending text for the left half of the status bar.
+  const wxString &GetLeftStatusText() const {return m_leftStatusText;}
+
   //! Set the status to "Maxima is saving"
   void StatusSaveStart();
 
@@ -287,6 +294,13 @@ private:
   //! shown as next (UpdateStatusMaximaBusy() applies _next when it differs).
   StatusBar::MaximaStatus m_StatusMaximaBusy = StatusBar::wait_for_start;
   StatusBar::MaximaStatus m_StatusMaximaBusy_next = StatusBar::wait_for_start;
+  //! Set by StatusText() when a new left-half status text needs to be shown,
+  //! cleared by ClearPendingStatusText() once UpdateStatusMaximaBusy() has shown it.
+  bool m_newStatusText = false;
+  //! The text for the left half of the Status Bar.
+  wxString m_leftStatusText;
+  //! true=force an update of the status bar at the next call of StatusMaximaBusy()
+  bool m_forceStatusbarUpdate = false;
 
   void SetupToolBar();
 
@@ -314,12 +328,6 @@ protected:
   ScrollingGenWizPanel *m_wizard = NULL;
   //! Are we inside a 2d or 3d draw command?
   long m_drawDimensions_last = -1;
-  //! Do we have new text to output in the Status Bar?
-  bool m_newStatusText;
-  //! The text for the Right half of the Status Bar
-  wxString m_rightStatusText;
-  //! The text for the Left half of the Status Bar
-  wxString m_leftStatusText;
   //! The default size for the window.
   virtual wxSize DoGetBestClientSize() const;
   //! The sidebar with the draw commands
@@ -358,8 +366,6 @@ protected:
   XmlInspector *m_xmlInspector = NULL;
   //! The panel showing performance statistics
   PerformanceSidebar *m_performanceSidebar = NULL;
-  //! true=force an update of the status bar at the next call of StatusMaximaBusy()
-  bool m_forceStatusbarUpdate = false;
   //! The panel the log and debug messages will appear on
   RecentDocuments m_recentDocuments;
   RecentDocuments m_recentPackages;
