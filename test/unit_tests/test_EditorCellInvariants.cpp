@@ -61,7 +61,9 @@
 #include <memory>
 #include <random>
 #include <stdexcept>
-#include <unistd.h>
+#ifndef _WIN32
+#include <unistd.h> // sleep(), used only by the POSIX EnsureDisplay() path
+#endif
 
 #define CATCH_CONFIG_RUNNER
 #include <catch2/catch.hpp>
@@ -80,12 +82,16 @@ Worksheet *g_ws = nullptr;
 // wxGTK routes font/DC work through GTK, which needs an X display. When run via
 // ctest the headless wrapper provides one; when run directly we start our own.
 static void EnsureDisplay() {
+#ifndef _WIN32
+  // Windows runners have a real desktop session, so this is a no-op there
+  // (and Xvfb/setenv/sleep are POSIX-only anyway).
   if (getenv("DISPLAY") || getenv("WAYLAND_DISPLAY"))
     return;
   if (system("Xvfb :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &") == 0) {
     setenv("DISPLAY", ":99", 1);
     sleep(1);
   }
+#endif
 }
 
 // A fresh, active code/text GroupCell whose editor we drive. The GroupCell is
