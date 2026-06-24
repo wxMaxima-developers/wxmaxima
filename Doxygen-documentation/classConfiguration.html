@@ -1242,6 +1242,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetAutoWrapCod
 <tr class="memitem:acb3b736ae43efbed965482e4bbb50fd0"><td class="memItemLeft" align="right" valign="top"><a id="acb3b736ae43efbed965482e4bbb50fd0" name="acb3b736ae43efbed965482e4bbb50fd0"></a>
 static const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetStyleName</b> (<a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> textStyle)</td></tr>
 <tr class="separator:acb3b736ae43efbed965482e4bbb50fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72e96b60fcbb9d6499ab07a391845717"><td class="memItemLeft" align="right" valign="top">static const std::vector&lt; std::pair&lt; <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a>, wxString &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a72e96b60fcbb9d6499ab07a391845717">StyleConfigKeys</a> ()</td></tr>
+<tr class="memdesc:a72e96b60fcbb9d6499ab07a391845717"><td class="mdescLeft">&#160;</td><td class="mdescRight">The single source of truth mapping each persisted text style to its config-key prefix.  <br /></td></tr>
+<tr class="separator:a72e96b60fcbb9d6499ab07a391845717"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c02a3cf06a1d52dd15bbba628b0899c"><td class="memItemLeft" align="right" valign="top"><a id="a2c02a3cf06a1d52dd15bbba628b0899c" name="a2c02a3cf06a1d52dd15bbba628b0899c"></a>
 static wxColour&#160;</td><td class="memItemRight" valign="bottom"><b>InvertColour</b> (wxColour col)</td></tr>
 <tr class="memdesc:a2c02a3cf06a1d52dd15bbba628b0899c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverts a color: In 2020 wxColor still lacks this functionality. <br /></td></tr>
@@ -1865,6 +1868,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 <p>Sets the zoom factor the worksheet is displayed at. </p>
 <p><a class="el" href="classA.html">A</a> comparison operator for wxImage. </p>
+
+</div>
+</div>
+<a id="a72e96b60fcbb9d6499ab07a391845717" name="a72e96b60fcbb9d6499ab07a391845717"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72e96b60fcbb9d6499ab07a391845717">&#9670;&#160;</a></span>StyleConfigKeys()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; std::pair&lt; <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a>, wxString &gt; &gt; &amp; Configuration::StyleConfigKeys </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The single source of truth mapping each persisted text style to its config-key prefix. </p>
+<p><a class="el" href="classConfiguration.html#ae213e1200fd1ed659c4890d33d282b32" title="Reads the style settings.">ReadStyles()</a> and <a class="el" href="classConfiguration.html#a4f7f692a8178c2062765ddafd0fd4782" title="Saves the style settings.">WriteStyles()</a> both iterate this list, so a style can never be read and written under mismatched keys (which used to cause settings to silently fail to round-trip). Adding a persisted style is a one-line edit here. </p>
 
 </div>
 </div>
