@@ -2464,10 +2464,10 @@ void ConfigDialogue::UpdateExample() {
 
   if (st == TS_TEXT_BACKGROUND || st == TS_TEXT) {
     m_examplePanel->SetBackgroundColour(
-                                        m_configuration->m_styles[TS_TEXT_BACKGROUND].GetColor());
+                                        m_configuration->GetStyle(TS_TEXT_BACKGROUND)->GetColor());
   } else {
     m_examplePanel->SetBackgroundColour(
-                                        m_configuration->m_styles[TS_DOCUMENT_BACKGROUND].GetColor());
+                                        m_configuration->GetStyle(TS_DOCUMENT_BACKGROUND)->GetColor());
   }
   m_sampleWorksheet->Refresh();
 }
