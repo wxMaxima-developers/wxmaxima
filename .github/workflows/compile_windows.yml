@@ -66,6 +66,26 @@ jobs:
                cd ..
             }
 
+      - name: Install Maxima
+        # Maxima must be installed *before* the configure step so cmake's
+        # find_program(MAXIMA maxima) picks it up and registers the Maxima-driven
+        # integration tests. continue-on-error keeps a hiccup in the (external)
+        # Chocolatey package from ever blocking the release/packaging path below.
+        continue-on-error: true
+        run: |
+            choco install maxima -y --no-progress
+            # find_program() on Windows does not append .bat, and the Chocolatey
+            # package ships Maxima as maxima.bat, so locate it and hand cmake the
+            # explicit path (and add its directory to PATH for good measure).
+            $bat = Get-ChildItem -Path 'C:\' -Filter 'maxima.bat' -Recurse -Depth 3 -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($bat) {
+              echo "Found Maxima: $($bat.FullName)"
+              "WXM_MAXIMA=$($bat.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append
+              $bat.DirectoryName | Out-File -FilePath $env:GITHUB_PATH -Append
+            } else {
+              echo "::warning::maxima.bat not found after install; integration tests will be skipped."
+            }
+
       - name: Configure wxMaxima
         run: |
             cd wxMaxima
@@ -73,7 +93,12 @@ jobs:
             new-item build\Release -itemtype directory
             cd build
             $env:CXXFLAGS="-Wall -Wextra"
-            cmake -DwxWidgets_ROOT_DIR="../../wxWidgets-${{env.WXVERSION}}" -DwxWidgets_LIB_DIR="../../wxWidgets-${{env.WXVERSION}}/lib/gcc_lib" -DwxWidgets_CONFIGURATION=mswu -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DwxWidgets_USE_DEBUG=false -DwxWidgets_USE_UNICODE=true -DwxWidgets_USE_STATIC=true -DWXM_UNIT_TESTS=YES -G Ninja ..
+            # Pass an explicit -DMAXIMA only when the Install Maxima step found one,
+            # so a missing Maxima simply leaves the integration tests unregistered
+            # instead of breaking the configure.
+            $extra = @()
+            if ($env:WXM_MAXIMA) { $extra += "-DMAXIMA=$($env:WXM_MAXIMA)" }
+            cmake -DwxWidgets_ROOT_DIR="../../wxWidgets-${{env.WXVERSION}}" -DwxWidgets_LIB_DIR="../../wxWidgets-${{env.WXVERSION}}/lib/gcc_lib" -DwxWidgets_CONFIGURATION=mswu -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DwxWidgets_USE_DEBUG=false -DwxWidgets_USE_UNICODE=true -DwxWidgets_USE_STATIC=true -DWXM_UNIT_TESTS=YES @extra -G Ninja ..
             cd ..
             cd ..
       - name: Compile wxMaxima
@@ -84,10 +109,10 @@ jobs:
             cd ..
             cd ..
       - name: Run unit tests
-        # The "unittest" label selects the self-contained C++ unit tests
-        # (test/unit_tests/*), which need neither Maxima nor a display. The
-        # Maxima-driven integration tests are not run here (yet - that is the
-        # planned next step for the Windows CI).
+        # Required signal: the "unittest" label selects the self-contained C++
+        # unit tests (test/unit_tests/*), which need neither Maxima nor a display.
+        # The Maxima-driven integration tests run later as a separate, non-blocking
+        # step (see "Run integration tests").
         run: |
             cd wxMaxima
             cd build
@@ -107,6 +132,22 @@ jobs:
             cd wxMaxima
             cd build
             cpack || type D:/a/wxmaxima/wxmaxima/wxMaxima/build/_CPack_Packages/win64/NSIS/NSISOutput.log
+            cd ..
+            cd ..
+      - name: Run integration tests (experimental)
+        # Exploratory first run of the Maxima-driven integration tests on Windows.
+        # Marked continue-on-error because we do not yet know which of them are
+        # portable: several shell out to POSIX tools (sh, nc, xmllint, unzip) that
+        # do not exist on the runner, and Maxima discovery on Windows is untested.
+        # The point of this run is to learn from the CI logs which tests pass, so
+        # the portable subset can later be promoted to a required check. Placed
+        # after packaging so the release artifacts are produced first. The
+        # "unittest" label is excluded as those already ran as a required step.
+        continue-on-error: true
+        run: |
+            cd wxMaxima
+            cd build
+            ctest -LE unittest --output-on-failure
             cd ..
             cd ..
 

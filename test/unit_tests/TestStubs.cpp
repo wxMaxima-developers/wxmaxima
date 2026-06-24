@@ -63,7 +63,9 @@ void GroupCell::MarkNeedsRecalculate() {}
 wxCoord GroupCell::GetMaxDrop() const { return {}; }
 wxCoord GroupCell::GetCenterList() const { return {}; }
 #if wxUSE_ACCESSIBILITY
+wxAccStatus GroupCell::GetName(int, wxString *) const { return {}; }
 wxAccStatus GroupCell::GetDescription(int, wxString *) const { return {}; }
 wxAccStatus GroupCell::GetLocation(wxRect &, int) { return {}; }
+wxAccStatus GroupCell::GetRole(int, wxAccRole *) const { return {}; }
 #endif
 DEFINE_CELL(GroupCell)
