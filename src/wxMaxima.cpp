@@ -1310,7 +1310,7 @@ wxMaxima::~wxMaxima() {
       std::sort(knownwords_sorted.begin(), knownwords_sorted.end());
 
       wxString knownSymbolsFile =
-        Dirstructure::Get()->UserConfDir() + "/knownSymbols.txt";
+        Dirstructure::Get()->UserConfDir() + "knownSymbols.txt";
       wxFile fil(knownSymbolsFile, wxFile::write);
       // The known-symbols list is only an autocomplete convenience. If the config
       // dir isn't writable (e.g. a custom MAXIMA_USERDIR that doesn't exist) just

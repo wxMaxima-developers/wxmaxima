@@ -99,7 +99,9 @@ public:
 
   static wxString AnchorsCacheFile()
     {
-      return UserConfDir() + "/manual_anchors.xml";
+      // UserConfDir() already ends in a path separator; don't add another or the
+      // cache path gets a stray "//" (a "strange directory" in the logs).
+      return UserConfDir() + "manual_anchors.xml";
     }
 
   static Dirstructure *Get()
