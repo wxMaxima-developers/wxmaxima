@@ -102,7 +102,7 @@ void BitmapOut::Draw() {
   auto config = m_cmn.GetConfiguration();
   config->ClipToDrawRegion(false);
 
-  auto bgColor = config->m_styles[TS_TEXT_BACKGROUND].GetColor();
+  auto bgColor = config->GetStyle(TS_TEXT_BACKGROUND)->GetColor();
   m_dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(bgColor,
                                                          wxBRUSHSTYLE_SOLID)));
   m_dc.Clear();

@@ -129,6 +129,7 @@ set(SOURCE_FILES
     CellPointers.cpp
     CompositeDataObject.cpp
     Configuration.cpp
+    Styles.cpp
     DiffAlgorithm.cpp
     Dirstructure.cpp
     BackgroundQueue.cpp

@@ -30,6 +30,7 @@
 #include <wx/hashmap.h>
 #include "dialogs/LoggingMessageDialog.h"
 #include "cells/TextStyle.h"
+#include "Styles.h"
 #include <cstdint>
 #include <memory>
 #include <mutex>
@@ -245,7 +246,7 @@ public:
       if (ShowAutomaticLabels())
         return 0;
       else
-        return GetZoomFactor() * m_styles[TS_MATH].GetFontSize() / 2;
+        return GetZoomFactor() * m_styleStore[TS_MATH].GetFontSize() / 2;
     }
 
   //! The width we allocate for our cell brackets
@@ -321,7 +322,7 @@ public:
 
   wxFontStyle IsItalic(long st) const;
 
-  bool IsUnderlined(long st) const {return m_styles[st].IsUnderlined();}
+  bool IsUnderlined(long st) const {return m_styleStore[st].IsUnderlined();}
 
   /*! Get the width of worksheet labels [in unscaled pixels]
 
@@ -525,7 +526,7 @@ public:
     if(m_indentMaths != indent)
       RecalculateForce();
     m_indentMaths = indent;}
-  AFontSize GetFontSize(TextStyle st) const { return m_styles[st].GetFontSize(); }
+  AFontSize GetFontSize(TextStyle st) const { return m_styleStore[st].GetFontSize(); }
 
   static const wxString &GetStyleName(TextStyle textStyle);
 
@@ -940,7 +941,7 @@ public:
 
     \param textStyle The text style to resolve the style for.
   */
-  const Style *GetStyle(TextStyle textStyle) const { return &m_styles[textStyle]; }
+  const Style *GetStyle(TextStyle textStyle) const { return &m_styleStore[textStyle]; }
   /*! Get the text Style for a given text style identifier.
 
     Theoretically GetStyle and GetWritableStyle wouldn't collide if they had the
@@ -948,7 +949,7 @@ public:
     that performance degrades if a const is missing while the rest works fine.
     \param textStyle The text style to resolve the style for.
   */
-  Style *GetWritableStyle(TextStyle textStyle) { return &m_styles[textStyle]; }
+  Style *GetWritableStyle(TextStyle textStyle) { return &m_styleStore[textStyle]; }
 
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
@@ -982,8 +983,8 @@ public:
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {m_htmlEquationFormat = HTMLequationFormat;}
 
-  AFontSize GetDefaultFontSize() const        { return m_styles[TS_CODE_DEFAULT].GetFontSize(); }
-  AFontSize GetMathFontSize() const           { return m_styles[TS_MATH].GetFontSize(); }
+  AFontSize GetDefaultFontSize() const        { return m_styleStore[TS_CODE_DEFAULT].GetFontSize(); }
+  AFontSize GetMathFontSize() const           { return m_styleStore[TS_MATH].GetFontSize(); }
 
   //! Get the worksheet this configuration storage is valid for
   long GetAutosubscript_Num() const {return m_autoSubscript;}
@@ -1091,7 +1092,7 @@ public:
   void SetLispType(const wxString &type){m_lispType = type;}
   wxString GetLispType() const {return m_lispType;}
 
-  Style m_styles[NUMBEROFSTYLES];
+  Styles m_styleStore;
   //! Initialize the text styles on construction.
   void InitStyles();
   //! True if we are confident that the font renders this char
