@@ -61,6 +61,17 @@ if(TARGET wxmTestApp)
     target_link_libraries(test_EditorCellInvariants PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(EditorCellInvariants test_EditorCellInvariants)
+
+    # Round-trip test for the worksheet styles: guards that ReadStyles() and
+    # WriteStyles() share one TextStyle -> config-key mapping so styles can never
+    # be written and read under mismatched keys.
+    add_executable(test_StyleConfigRoundtrip
+        test_StyleConfigRoundtrip.cpp groupcell_test_stubs.cpp
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_StyleConfigRoundtrip PUBLIC cxx_std_20)
+    target_link_libraries(test_StyleConfigRoundtrip PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(StyleConfigRoundtrip test_StyleConfigRoundtrip)
 endif()
 
 # Same watchdog timeout the parent directory applies to its tests: keep a hung

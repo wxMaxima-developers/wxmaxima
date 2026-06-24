@@ -543,6 +543,14 @@ public:
   void WriteStyles(const wxString &file = {});
   void WriteStyles(wxConfigBase *config);
   void WriteSettings(const wxString &file = {});
+  /*! The single source of truth mapping each persisted text style to its config-key
+    prefix.
+
+    ReadStyles() and WriteStyles() both iterate this list, so a style can never be
+    read and written under mismatched keys (which used to cause settings to silently
+    fail to round-trip). Adding a persisted style is a one-line edit here.
+  */
+  static const std::vector<std::pair<TextStyle, wxString>> &StyleConfigKeys();
   void MakeStylesConsistent();
   void Outdated(bool outdated)
     { m_outdated = outdated; }
