@@ -78,10 +78,16 @@ endif()
 # unit test (e.g. one that trips an assert and would otherwise wait forever on a
 # modal assert dialog) from blocking the whole suite. WXM_TEST_TIMEOUT is set in
 # the parent test/CMakeLists.txt before this subdirectory is added.
+#
+# Also tag every test in this directory with the "unittest" label. These tests
+# are self-contained C++ executables that need neither Maxima nor a headless
+# display, so platforms that cannot run the full integration suite (e.g. the
+# Windows CI build) can still run them via `ctest -L unittest`.
 get_property(_wxm_unit_tests DIRECTORY PROPERTY TESTS)
 foreach(_wxm_t IN LISTS _wxm_unit_tests)
   get_test_property("${_wxm_t}" TIMEOUT _wxm_existing_timeout)
   if(NOT _wxm_existing_timeout)
     set_property(TEST "${_wxm_t}" PROPERTY TIMEOUT ${WXM_TEST_TIMEOUT})
   endif()
+  set_property(TEST "${_wxm_t}" APPEND PROPERTY LABELS unittest)
 endforeach()
