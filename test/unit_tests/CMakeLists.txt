@@ -72,6 +72,16 @@ if(TARGET wxmTestApp)
     target_link_libraries(test_StyleConfigRoundtrip PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(StyleConfigRoundtrip test_StyleConfigRoundtrip)
+
+    # Direct parser test for MaximaManual's help anchors: batch mode no longer
+    # compiles anchors (interactive-only), so they need their own regression net.
+    add_executable(test_ManualAnchors
+        test_ManualAnchors.cpp groupcell_test_stubs.cpp
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ManualAnchors PUBLIC cxx_std_20)
+    target_link_libraries(test_ManualAnchors PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(ManualAnchors test_ManualAnchors)
 endif()
 
 # Same watchdog timeout the parent directory applies to its tests: keep a hung

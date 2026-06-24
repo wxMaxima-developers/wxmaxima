@@ -4208,7 +4208,14 @@ wxString wxMaxima::EscapeForLisp(wxString str) {
 }
 
 void wxMaxima::ExitAfterEval(bool exitaftereval) {
-  if (m_exitAfterEval && !exitaftereval) {
+  // Leaving batch mode normally means an error dropped us into interactive use,
+  // so it's worth fetching the autocompletion symbols / variable list and
+  // compiling the manual anchors (all interactive-only conveniences we skip while
+  // batching). But with --exit-on-error we don't actually become interactive --
+  // we exit right after this -- so doing that interactive-only work is pure waste
+  // (and, for the manual anchors, kicks off a background parse that shutdown then
+  // has to join). Skip it in that case.
+  if (m_exitAfterEval && !exitaftereval && !GetExitOnError()) {
     // If we leave batch mode we want to have the autocompletion symbols
     // and the variable list.
     SendMaxima(wxS(":lisp-quiet (setf *wx-defer-queries* nil) ")
