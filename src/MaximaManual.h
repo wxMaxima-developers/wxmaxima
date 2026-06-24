@@ -123,6 +123,11 @@ private:
 
   //! The thread the help file anchors are compiled in
   jthread m_helpfileanchorsThread;
+  //! True while a CompileHelpFileAnchors() task is in flight. Lets
+  //! LoadHelpFileAnchors() leave a running compile alone instead of killing and
+  //! restarting it on every Maxima event (repeated restarts can keep the slow
+  //! manual parse from ever finishing and wedge the shutdown join()).
+  std::atomic<bool> m_anchorsCompileInFlight{false};
     std::mutex m_helpFileAnchorsLock;
   //! The configuration storage
   Configuration *m_configuration = NULL;

@@ -148,6 +148,13 @@ void MaximaManual::CompileHelpFileAnchors(stop_token stopToken,
                                           const wxString &maximaHtmlDir,
                                           const wxString &maximaVersion,
                                           const wxString &saveName) {
+  // Clear the in-flight flag on every exit path (including the early returns
+  // below) so LoadHelpFileAnchors() may schedule a fresh compile afterwards.
+  struct InFlightGuard {
+    std::atomic<bool> &flag;
+    ~InFlightGuard() { flag = false; }
+  } inFlightGuard{m_anchorsCompileInFlight};
+
   Configuration::g_stats.manualAnchorsCompiled++;
 
   std::size_t foundAnchorsTotal = 0;
@@ -540,12 +547,18 @@ void MaximaManual::LoadHelpFileAnchors(const wxString &docdir,
   }
   if (!LoadManualAnchorsFromCache()) {
     if (!m_maximaHtmlDir.IsEmpty()) {
-      if (m_helpfileanchorsThread.joinable()) {
-        m_helpfileanchorsThread.request_stop();
-        wxLogMessage(_("Waiting for the Manual anchors background task."));
+      // Don't kill and restart an already-running compile. LoadHelpFileAnchors()
+      // is called on every relevant Maxima event; if the parse can't be cached
+      // (e.g. a read-only MAXIMA_USERDIR) each call used to stop+restart the slow
+      // manual parse, so it never finished and the shutdown join() hung. Let an
+      // in-flight compile run to completion instead.
+      if (m_anchorsCompileInFlight)
+        return;
+      // Reap the handle of a previous, already-finished compile before reusing it.
+      if (m_helpfileanchorsThread.joinable())
         m_helpfileanchorsThread.join();
-      }
       wxLogMessage(_("Background task that compiles the Manual anchors scheduled."));
+      m_anchorsCompileInFlight = true;
       if(m_configuration->UseThreads())
         m_helpfileanchorsThread = jthread([this](stop_token stopToken) {
           CompileHelpFileAnchors(stopToken,
