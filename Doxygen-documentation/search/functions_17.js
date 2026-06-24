@@ -5,7 +5,7 @@ var searchData=
   ['wizdrawaccuracy_2',['WizDrawAccuracy',['../classWizDrawAccuracy.html#a14a027a1623d28baa6d64e74f4d67e61',1,'WizDrawAccuracy']]],
   ['workers_3',['Workers',['../classBackgroundQueue.html#a31458e8c027f4f5ff1452ecb89804401',1,'BackgroundQueue']]],
   ['worksheet_4',['Worksheet',['../classWorksheet.html#a7ba34e68818f5c6b3374773683e5710c',1,'Worksheet']]],
-  ['write_5',['Write',['../classStyle.html#a259bf27abcb1f6d66dbb02bc9bc9f6cb',1,'Style::Write()'],['../classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be',1,'Maxima::Write()']]],
+  ['write_5',['Write',['../classStyle.html#a259bf27abcb1f6d66dbb02bc9bc9f6cb',1,'Style::Write()'],['../classMaxima.html#aeb45e2fda6a941f99aa9181b644c75be',1,'Maxima::Write()'],['../classStyles.html#aaea29fa13c11dede7a91739e1da4f4ce',1,'Styles::Write()']]],
   ['write_6',['write',['../structcmd_8h.html#af2a3ea719b83f672637febdd87c36c36',1,'structcmd.h']]],
   ['writesettings_7',['WriteSettings',['../classConfiguration.html#a53af46fba084e7e9f45fabbfb8eb4030',1,'Configuration::WriteSettings()'],['../classConfigDialogue.html#a6a3d11ed034adf263350d8aa54a7e28d',1,'ConfigDialogue::WriteSettings()']]],
   ['writestyles_8',['WriteStyles',['../classConfiguration.html#a4f7f692a8178c2062765ddafd0fd4782',1,'Configuration']]],

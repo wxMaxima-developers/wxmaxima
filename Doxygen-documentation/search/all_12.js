@@ -7,7 +7,7 @@ var searchData=
   ['range_4',['Range',['../structCell_1_1Range.html',1,'Cell']]],
   ['rangegenerator_5',['RangeGenerator',['../classCatch_1_1Generators_1_1RangeGenerator.html',1,'Catch::Generators']]],
   ['read_6',['read',['../structcmd_8h.html#a9c7b76d5266903891c803132d51ccb90',1,'structcmd.h']]],
-  ['read_7',['Read',['../classStyle.html#af999d8bd639fdbd1fbb5c65023d8d286',1,'Style']]],
+  ['read_7',['Read',['../classStyles.html#a0ac30569a42bbdae9cabd36ed6475b83',1,'Styles::Read()'],['../classStyle.html#af999d8bd639fdbd1fbb5c65023d8d286',1,'Style::Read()']]],
   ['read_5fmisc_5ftext_8',['READ_MISC_TEXT',['../classMaxima.html#a01e208858ffeeb60e8a1787a580103c8abd3bebab2a70ef164bd89bf6d1320732',1,'Maxima']]],
   ['read_5fpending_9',['READ_PENDING',['../classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a46c15ee0530754feaced0ef045889f20',1,'Maxima']]],
   ['readaddvariables_10',['ReadAddVariables',['../classwxMaxima.html#a93ed06b72012fe967760e0796cb7d934',1,'wxMaxima']]],
