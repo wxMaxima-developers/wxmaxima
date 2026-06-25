@@ -615,7 +615,11 @@ void Worksheet::PrepareDrawGC(wxDC &dc) const
   dc.SetBackgroundMode(wxTRANSPARENT);
   dc.SetBackground(m_configuration->GetBackgroundBrush());
   dc.SetBrush(m_configuration->GetBackgroundBrush());
-  dc.SetPen(*wxWHITE_PEN);
+  // Match the pen to the background so the area-clearing DrawRectangle()s don't
+  // stroke a 1px border in a contrasting color (a white ring in dark mode -- the
+  // old hardcoded *wxWHITE_PEN was invisible only on a white background).
+  dc.SetPen(*wxThePenList->FindOrCreatePen(
+    m_configuration->GetBackgroundBrush().GetColour(), 1, wxPENSTYLE_SOLID));
   dc.SetLogicalFunction(wxCOPY);
 }
 
@@ -709,7 +713,9 @@ void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
             dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
             c.DrawBoundingBox(dc, false);
             dc.SetBrush(m_configuration->GetBackgroundBrush());
-            dc.SetPen(*wxWHITE_PEN);
+            dc.SetPen(*wxThePenList->FindOrCreatePen(
+              m_configuration->GetBackgroundBrush().GetColour(), 1,
+              wxPENSTYLE_SOLID));
           }
         if (&c == m_cellPointers.m_selectionEnd)
           break;
