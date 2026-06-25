@@ -56,6 +56,10 @@
 #include <vector>
 #ifdef __WXMSW__
 #include <windows.h>
+#include <io.h>      // _open_osfhandle()
+#include <fcntl.h>   // _O_TEXT
+#include <cstdio>    // freopen(), _fdopen(), stdout/stderr/stdin
+#include <cstdint>   // intptr_t
 #endif
 
 #include "dialogs/ConfigDialogue.h"
@@ -232,7 +236,63 @@ int WINAPI WinMain(_In_ HINSTANCE hI, _In_opt_ HINSTANCE hPrevI, _In_ LPSTR lpCm
 #endif
 
 
+#ifdef __WXMSW__
+// wxMaxima is built as a GUI-subsystem binary (add_executable(wxmaxima WIN32 ...)),
+// so Windows does not wire up stdin/stdout/stderr for it. Anything that would
+// normally go to a console -- the --version / --help text, and the
+// wxMessageOutput fallback used for early diagnostics -- therefore ends up in a
+// *modal* wxMessageBox. That hangs any non-interactive run: e.g. `wxmaxima
+// --version` launched from a pipe (as ctest does) waits forever for a click that
+// never comes.
+//
+// Bind the CRT standard streams to whatever the parent actually gave us: the
+// inherited handle when stdout/stderr were redirected to a pipe or file, or the
+// launching terminal's console (via AttachConsole) when we were started from
+// one. When wxMaxima is started from the GUI (double-click) there is neither, so
+// every binding below is a no-op and behaviour is unchanged.
+//
+// This is Windows-only by construction; macOS and Linux never compile it.
+static void BindStdStreamToParent(DWORD stdHandleId, FILE *stream,
+                                  const char *mode, bool &consoleAttached) {
+  HANDLE handle = GetStdHandle(stdHandleId);
+  if ((handle == nullptr) || (handle == INVALID_HANDLE_VALUE)) {
+    // No inherited handle -- hook up to the launching console, at most once.
+    if (!consoleAttached)
+      consoleAttached = (AttachConsole(ATTACH_PARENT_PROCESS) != 0);
+    handle = GetStdHandle(stdHandleId);
+  }
+  if ((handle == nullptr) || (handle == INVALID_HANDLE_VALUE))
+    return;
+  int fd = _open_osfhandle(reinterpret_cast<intptr_t>(handle), _O_TEXT);
+  if (fd == -1)
+    return;
+  FILE *opened = _fdopen(fd, mode);
+  if (opened == nullptr)
+    return;
+  *stream = *opened;  // rebind the standard stream onto the parent's handle
+  setvbuf(stream, nullptr, _IONBF, 0);
+}
+
+static void RedirectStdioToParent() {
+  bool consoleAttached = false;
+  BindStdStreamToParent(STD_OUTPUT_HANDLE, stdout, "w", consoleAttached);
+  BindStdStreamToParent(STD_ERROR_HANDLE, stderr, "w", consoleAttached);
+  BindStdStreamToParent(STD_INPUT_HANDLE, stdin, "r", consoleAttached);
+}
+
+// True once we have a usable stderr handle (inherited pipe/file or an attached
+// console), i.e. once RedirectStdioToParent() found something to bind to.
+static bool HaveStdErrHandle() {
+  HANDLE handle = GetStdHandle(STD_ERROR_HANDLE);
+  return (handle != nullptr) && (handle != INVALID_HANDLE_VALUE);
+}
+#endif
+
 bool MyApp::OnInit() {
+#ifdef __WXMSW__
+  // Must run before any console output or wxMessageOutput use (see above).
+  RedirectStdioToParent();
+#endif
   // if DEBUG=1 show the logwindow at start, else hide it.
   // in wxMaxima.cpp we later read a configuration variable (LogWindow) and show/hide it, according to the previous state (issue #2033).
 #if (DEBUG==1)
@@ -426,18 +486,22 @@ bool MyApp::OnInit() {
   if (cmdLineParser.Found(wxS("logtostderr"))) {
 #ifdef __WXMSW__
     // Windows *GUI applications* do not have stderr (and stdout/stdin) assigned.
-    // Assign them, as we want to output something there. (log messages on STDERR
-    // when using the option --logtostderr).
-    // A separate "text window" will be opened, where the messages will be shown.
-    FreeConsole(); // it does not seem to work without the FreeConsole() / AllocConsole() calls.
-    // create a separate new console window
-    AllocConsole();
-    // attach the new console to this application's process
-    AttachConsole(GetCurrentProcessId());
-    // reopen the std I/O streams to redirect I/O to the new console
-    if (!freopen("CON", "w", stdout)) wxLogMessage(_("Re-opening STDOUT failed."));
-    if (!freopen("CON", "w", stderr)) wxLogMessage(_("Re-opening STDERR failed."));
-    if (!freopen("CON", "r", stdin)) wxLogMessage(_("Re-opening STDIN failed."));
+    // If RedirectStdioToParent() already bound them to the parent's console or to
+    // a redirected pipe/file (e.g. when run from a terminal or under ctest), keep
+    // those -- creating a separate console here would detach us from the pipe the
+    // caller is capturing. Only when we have no usable stderr (interactive
+    // double-click launch) do we open a separate text window for the log.
+    if (!HaveStdErrHandle()) {
+      FreeConsole(); // it does not seem to work without the FreeConsole() / AllocConsole() calls.
+      // create a separate new console window
+      AllocConsole();
+      // attach the new console to this application's process
+      AttachConsole(GetCurrentProcessId());
+      // reopen the std I/O streams to redirect I/O to the new console
+      if (!freopen("CON", "w", stdout)) wxLogMessage(_("Re-opening STDOUT failed."));
+      if (!freopen("CON", "w", stderr)) wxLogMessage(_("Re-opening STDERR failed."));
+      if (!freopen("CON", "r", stdin)) wxLogMessage(_("Re-opening STDIN failed."));
+    }
 #endif
     m_logChain = std::unique_ptr<wxLogChain>(new wxLogChain(new wxLogStderr));
   }
