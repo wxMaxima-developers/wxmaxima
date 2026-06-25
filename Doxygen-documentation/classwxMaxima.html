@@ -137,6 +137,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>EvalOnStartup</b> (bo
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ExitAfterEval</b> (bool exitaftereval)</td></tr>
 <tr class="memdesc:ae1282d42b62a5d4620e95aa7c9c054c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we want to exit the program after evaluation? <br /></td></tr>
 <tr class="separator:ae1282d42b62a5d4620e95aa7c9c054c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25c28e00cf4015060f0f36f274bb2238"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a25c28e00cf4015060f0f36f274bb2238">IsInteractive</a> () const</td></tr>
+<tr class="memdesc:a25c28e00cf4015060f0f36f274bb2238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this an interactive session (as opposed to a batch run that will exit)?  <br /></td></tr>
+<tr class="separator:a25c28e00cf4015060f0f36f274bb2238"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac72153620b0ab64ebcf8b73974723bdf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ac72153620b0ab64ebcf8b73974723bdf">StripLispComments</a> (wxString &amp;s)</td></tr>
 <tr class="memdesc:ac72153620b0ab64ebcf8b73974723bdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove empty statements.  <br /></td></tr>
 <tr class="separator:ac72153620b0ab64ebcf8b73974723bdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1520,7 +1523,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaIPC</b></td></
 
 <p>append maxima output to console </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md843"></a>
+ <h2><a class="anchor" id="autotoc_md834"></a>
 Appending stuff to output</h2>
 
 </div>
@@ -1771,6 +1774,34 @@ Getting configuration</h2>
 
 </div>
 </div>
+<a id="a25c28e00cf4015060f0f36f274bb2238" name="a25c28e00cf4015060f0f36f274bb2238"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25c28e00cf4015060f0f36f274bb2238">&#9670;&#160;</a></span>IsInteractive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wxMaxima::IsInteractive </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is this an interactive session (as opposed to a batch run that will exit)? </p>
+<p>Returns false while we are batch-processing a file and will exit afterwards, true once we are (or have become) interactive. Use this to gate interactive- only work &ndash; help-anchor compilation, autocomplete symbol loading, the recent- documents list &ndash; so it is skipped in batch runs. AbortOnError() keeps m_exitAfterEval accurate: a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> error only turns a batch session interactive when we are not going to &ndash;exit-on-error. </p>
+
+</div>
+</div>
 <a id="aca9ae11de0e947738270669867ec3b0e" name="aca9ae11de0e947738270669867ec3b0e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aca9ae11de0e947738270669867ec3b0e">&#9670;&#160;</a></span>IsPaneDisplayed()</h2>
 
@@ -1859,7 +1890,7 @@ Getting configuration</h2>
 
 <p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends or receives data, or disconnects. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md844"></a>
+ <h2><a class="anchor" id="autotoc_md835"></a>
 Socket stuff</h2>
 
 </div>
@@ -1997,7 +2028,7 @@ Menu and button events</h2>
   </dd>
 </dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md846"></a>
+ <h2><a class="anchor" id="autotoc_md837"></a>
 Dealing with stuff read from the socket</h2>
 
 </div>
@@ -2558,7 +2589,7 @@ Tips and help</h2>
 <hr  />
  </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md845"></a>
+<h2><a class="anchor" id="autotoc_md836"></a>
 Maxima process stuff</h2>
 
 </div>
