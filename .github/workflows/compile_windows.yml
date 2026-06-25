@@ -201,6 +201,9 @@ jobs:
             cd wxMaxima
             cd build
             $exe = "src\wxmaxima.exe"
+            # Turn on the env-gated startup trace so we see how far OnInit gets
+            # before it stalls (markers go to the now-bound stderr).
+            $env:WXM_STARTUP_TRACE = "1"
             echo "=== objdump imported DLLs ==="
             objdump -p $exe | Select-String "DLL Name"
             function Probe($label, $argline) {

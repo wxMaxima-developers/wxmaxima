@@ -288,11 +288,24 @@ static bool HaveStdErrHandle() {
 }
 #endif
 
+// Temporary startup tracing to locate where a head-less (CI) start stalls.
+// Opt-in via the WXM_STARTUP_TRACE environment variable, so it is completely
+// silent in normal use on every platform. fflush after every line so that the
+// last marker printed before a hang is actually captured.
+static void StartupTrace(const char *where) {
+  static const bool on = wxGetEnv(wxS("WXM_STARTUP_TRACE"), nullptr);
+  if (on) {
+    fprintf(stderr, "STARTUP-TRACE: %s\n", where);
+    fflush(stderr);
+  }
+}
+
 bool MyApp::OnInit() {
 #ifdef __WXMSW__
   // Must run before any console output or wxMessageOutput use (see above).
   RedirectStdioToParent();
 #endif
+  StartupTrace("OnInit entry");
   // if DEBUG=1 show the logwindow at start, else hide it.
   // in wxMaxima.cpp we later read a configuration variable (LogWindow) and show/hide it, according to the previous state (issue #2033).
 #if (DEBUG==1)
@@ -300,9 +313,11 @@ bool MyApp::OnInit() {
 #else
   m_logWindow = new wxLogWindow(NULL, wxS("wxMaxima log window"), false, false);
 #endif
+  StartupTrace("after wxLogWindow");
   // Needed for making wxSocket work for multiple threads. We currently don't
   // use this feature. But it doesn't harm to be prepared
   wxSocketBase::Initialize();
+  StartupTrace("after wxSocketBase::Initialize");
 
 #if wxCHECK_VERSION(3, 2, 0)
   wxArtProvider::Push(new wxMaximaArtProvider);
@@ -314,9 +329,11 @@ bool MyApp::OnInit() {
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT
     wxHandleFatalExceptions(true);
 #endif
+    StartupTrace("after translations/fatal-exception setup");
     // Make sure child Maxima processes are killed if we are terminated by a
     // signal instead of shutting down cleanly (no-op on Windows).
     wxMaxima::SetupTerminationHandlers();
+    StartupTrace("after SetupTerminationHandlers");
     int major;
     int minor;
     wxGetOsVersion(&major, &minor);
@@ -354,6 +371,7 @@ bool MyApp::OnInit() {
 #endif
 #endif
 
+    StartupTrace("before locale setup");
     wxLanguage lang;
     {
       long lng = wxLocale::GetSystemLanguage();
@@ -363,6 +381,7 @@ bool MyApp::OnInit() {
         lng = wxLANGUAGE_DEFAULT;
       lang = static_cast<wxLanguage>(lng);
     }
+    StartupTrace("after locale language read");
 
     {
 #if wxCHECK_VERSION(3, 1, 6)
@@ -428,6 +447,7 @@ bool MyApp::OnInit() {
       wxLogMessage("Translations: no standard wxWidgets catalogs were found");
     }
   }
+  StartupTrace("after catalogs / locale block");
 
   bool exitAfterEval = false;
   bool evalOnStartup = false;
@@ -459,7 +479,9 @@ bool MyApp::OnInit() {
   }
 
 
+  StartupTrace("before cmdLineParser.Parse");
   int cmdLineError = cmdLineParser.Parse();
+  StartupTrace("after cmdLineParser.Parse");
 
   if (cmdLineParser.Found(wxS("single_process")))
     m_allWindowsInOneProcess = true;
@@ -482,6 +504,7 @@ bool MyApp::OnInit() {
                                    Configuration::m_configfileLocation_override));
   } else
     wxConfig::Set(new wxConfig(wxS("wxMaxima")));
+  StartupTrace("after wxConfig::Set");
 
   if (cmdLineParser.Found(wxS("logtostderr"))) {
 #ifdef __WXMSW__
@@ -587,11 +610,13 @@ bool MyApp::OnInit() {
   wxApp::SetExitOnFrameDelete(false);
 #endif
 
+  StartupTrace("reached --version check");
   if (cmdLineParser.Found(wxS("v"))) {
     if (WxMaximaGitShortHash())
       wxMessageOutput::Get()->Printf("wxMaxima %s (Git version: %s)\n", WXMAXIMA_VERSION, WxMaximaGitShortHash());
     else
       wxMessageOutput::Get()->Printf("wxMaxima %s\n", WXMAXIMA_VERSION);
+    StartupTrace("after version Printf, before exit");
     exit(0);
   }
 
