@@ -628,15 +628,19 @@ wxString Configuration::FindProgram(const wxString &location) {
     if (!path.empty())
       return path;
     #if defined __WXMSW__
-    pathlist.FindAbsoluteValidPath(location + wxS(".exe"));
+    // NB: the result must be assigned back to `path` -- otherwise these
+    // extension-qualified PATH lookups are no-ops and e.g. maxima.bat on PATH is
+    // never found (which left wxMaxima unable to locate Maxima on Windows when it
+    // was not installed next to wxmaxima.exe).
+    path = pathlist.FindAbsoluteValidPath(location + wxS(".exe"));
     if (!path.empty())
       return path;
-    pathlist.FindAbsoluteValidPath(location + wxS(".bat"));
+    path = pathlist.FindAbsoluteValidPath(location + wxS(".bat"));
     if (!path.empty())
       return path;
     #endif
     #if defined __WXOSX__
-    pathlist.FindAbsoluteValidPath(location + wxS(".app"));
+    path = pathlist.FindAbsoluteValidPath(location + wxS(".app"));
     if (!path.empty())
       return path;
     #endif
