@@ -615,11 +615,12 @@ void Worksheet::PrepareDrawGC(wxDC &dc) const
   dc.SetBackgroundMode(wxTRANSPARENT);
   dc.SetBackground(m_configuration->GetBackgroundBrush());
   dc.SetBrush(m_configuration->GetBackgroundBrush());
-  // Match the pen to the background so the area-clearing DrawRectangle()s don't
-  // stroke a 1px border in a contrasting color (a white ring in dark mode -- the
-  // old hardcoded *wxWHITE_PEN was invisible only on a white background).
-  dc.SetPen(*wxThePenList->FindOrCreatePen(
-    m_configuration->GetBackgroundBrush().GetColour(), 1, wxPENSTYLE_SOLID));
+  // Transparent pen so the area-clearing DrawRectangle()s fill only (no perimeter
+  // stroke). The old default was *wxWHITE_PEN, whose 1px border was invisible only
+  // on a white background -- on a dark background it showed as a 1px ring, and on
+  // DCs where the pen over-strokes by a pixel it would even clear one pixel too
+  // many. Filling without a border avoids both.
+  dc.SetPen(*wxTRANSPARENT_PEN);
   dc.SetLogicalFunction(wxCOPY);
 }
 
@@ -713,9 +714,7 @@ void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
             dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
             c.DrawBoundingBox(dc, false);
             dc.SetBrush(m_configuration->GetBackgroundBrush());
-            dc.SetPen(*wxThePenList->FindOrCreatePen(
-              m_configuration->GetBackgroundBrush().GetColour(), 1,
-              wxPENSTYLE_SOLID));
+            dc.SetPen(*wxTRANSPARENT_PEN);
           }
         if (&c == m_cellPointers.m_selectionEnd)
           break;
