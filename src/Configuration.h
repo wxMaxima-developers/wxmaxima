@@ -784,8 +784,22 @@ public:
     m_showInputLabels = show;
   }
 
-  bool InvertBackground() const {return m_invertBackground;}
-  void InvertBackground(bool invert){ m_invertBackground = invert; }
+  //! How wxMaxima chooses between the light and the dark style set.
+  enum class Appearance { light, dark, followSystem };
+  Appearance GetAppearance() const { return m_appearance; }
+  //! Choose the appearance and update which style set is active.
+  void SetAppearance(Appearance a) {
+    m_appearance = a;
+    m_styleStore.SetUseDark(UseDarkMode());
+  }
+  //! Whether the dark style set is currently active.
+  bool UseDarkMode() const {
+    if (m_appearance == Appearance::dark) return true;
+    if (m_appearance == Appearance::light) return false;
+    return SystemIsDark();
+  }
+  //! Whether the OS reports a dark appearance (false where wx cannot tell).
+  static bool SystemIsDark();
 
   long UndoLimit(){return std::max(m_undoLimit, static_cast<long>(0));}
   void UndoLimit(long limit){ m_undoLimit = limit; }
@@ -1336,7 +1350,7 @@ private:
   #endif
   bool m_greekSidebar_Show_mu;
   wxString m_symbolPaneAdditionalChars;
-  bool m_invertBackground;
+  Appearance m_appearance = Appearance::followSystem;
   long m_undoLimit;
   long m_recentItems;
   int m_bitmapScale;

@@ -70,35 +70,53 @@ wxColour ColorForPrefix(const wxString &prefix) {
 }
 } // namespace
 
-SCENARIO("Every persisted style round-trips through WriteStyles/ReadStyles") {
-  GIVEN("a configuration whose every style carries a distinct, key-derived color") {
+namespace {
+// The light and dark sets get distinct colors so a key/namespace mix-up between
+// them is caught. "salt" picks the set's color family; selecting the appearance
+// makes GetWritableStyle()/GetStyle() target that set.
+void SeedSet(Configuration &cfg, Configuration::Appearance which, const wxString &salt) {
+  cfg.SetAppearance(which);
+  for (const auto &keyEntry : Configuration::StyleConfigKeys())
+    cfg.GetWritableStyle(keyEntry.first)
+      ->SetColor(ColorForPrefix(keyEntry.second + salt));
+}
+} // namespace
+
+SCENARIO("Both the light and dark style sets round-trip through Write/ReadStyles") {
+  GIVEN("a configuration with distinct, key-derived colors in each style set") {
     const wxString file = wxFileName::CreateTempFileName(wxS("wxm_styletest"));
     REQUIRE(!file.IsEmpty());
 
     Configuration cfgWrite;
-    for (const auto &keyEntry : Configuration::StyleConfigKeys())
-      cfgWrite.GetWritableStyle(keyEntry.first)
-        ->SetColor(ColorForPrefix(keyEntry.second));
+    SeedSet(cfgWrite, Configuration::Appearance::light, wxEmptyString);
+    SeedSet(cfgWrite, Configuration::Appearance::dark, wxS("#dark"));
 
     WHEN("the styles are written to a file and read into a fresh configuration") {
       cfgWrite.WriteStyles(file);
       Configuration cfgRead;
-      // Pre-seed every style with a *different* color than what was written, so
-      // the only way a style can end up with its written color is for ReadStyles()
-      // to actually read it back under the matching key. Without this the shared
-      // global wxConfig (one Configuration writing it for the next) could mask a
-      // key mismatch and make the test vacuous.
-      for (const auto &keyEntry : Configuration::StyleConfigKeys())
-        cfgRead.GetWritableStyle(keyEntry.first)
-          ->SetColor(ColorForPrefix(keyEntry.second + wxS("#sentinel")));
+      // Pre-seed BOTH sets with different colors than were written, so the only
+      // way a style can end up with its written color is for ReadStyles() to read
+      // it back under the matching key. Otherwise the shared global wxConfig (one
+      // Configuration writing it for the next) could mask a key mismatch.
+      SeedSet(cfgRead, Configuration::Appearance::light, wxS("#sentinelL"));
+      SeedSet(cfgRead, Configuration::Appearance::dark, wxS("#sentinelD"));
       cfgRead.ReadStyles(file);
 
-      THEN("each style reads back the color stored under its own key") {
+      THEN("the light set reads back its colors, and switching to dark shows the "
+           "dark set's colors") {
+        cfgRead.SetAppearance(Configuration::Appearance::light);
         for (const auto &keyEntry : Configuration::StyleConfigKeys()) {
-          INFO("style index " << static_cast<int>(keyEntry.first) << ", key "
+          INFO("LIGHT style " << static_cast<int>(keyEntry.first) << ", key "
                               << keyEntry.second.ToStdString());
           CHECK(cfgRead.GetStyle(keyEntry.first)->GetColor().GetRGB() ==
                 ColorForPrefix(keyEntry.second).GetRGB());
+        }
+        cfgRead.SetAppearance(Configuration::Appearance::dark);
+        for (const auto &keyEntry : Configuration::StyleConfigKeys()) {
+          INFO("DARK style " << static_cast<int>(keyEntry.first) << ", key "
+                             << keyEntry.second.ToStdString());
+          CHECK(cfgRead.GetStyle(keyEntry.first)->GetColor().GetRGB() ==
+                ColorForPrefix(keyEntry.second + wxS("#dark")).GetRGB());
         }
       }
     }

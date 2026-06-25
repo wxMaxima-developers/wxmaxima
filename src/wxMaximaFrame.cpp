@@ -836,10 +836,6 @@ void wxMaximaFrame::SetupViewMenu() {
                      _("Toggle full screen editing"), wxITEM_NORMAL);
 #endif
   m_viewMenu->AppendSeparator();
-  m_viewMenu->AppendCheckItem(EventIDs::menu_invertWorksheetBackground,
-                              _("Invert worksheet brightness"));
-  m_viewMenu->Check(EventIDs::menu_invertWorksheetBackground,
-                    GetConfiguration().InvertBackground());
   m_viewMenu->Append(EventIDs::menu_show_logwindow, wxS("Toggle log window"), _("Show or hide the wxMaxima logging window"), wxITEM_NORMAL);
   m_viewMenu->AppendCheckItem(EventIDs::menu_pane_toolbar, _("Main Toolbar\tShift+Alt+B"));
   m_MenuBar->Append(m_viewMenu, _("View"));

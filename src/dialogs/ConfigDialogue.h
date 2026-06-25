@@ -257,6 +257,8 @@ protected:
 
   //! Called if the user changes the style that is to be edited.
   void OnStyleToEditChanged(wxCommandEvent &event);
+  //! Light / Dark / Follow-system appearance changed: re-point the style editor.
+  void OnAppearanceChanged(wxCommandEvent &event);
 
   // begin wxGlade: ConfigDialogue::attributes
   //! A textbox containing maxima's startup commands
@@ -327,6 +329,8 @@ protected:
   wxCheckBox *m_notifyIfIdle;
   wxChoice *m_showUserDefinedLabels;
   wxButton *m_getStyleFont;
+  //! Light / Dark / Follow-system selector (also picks which set the editor edits).
+  wxChoice *m_appearanceChoice;
   wxListBox *m_styleFor;
   //! An example rectangle with the font color
   wxColourPickerCtrl *m_styleColor;

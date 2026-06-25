@@ -1,5 +1,13 @@
 # Current development version
 
+- Dark mode: wxMaxima now keeps a separate light and dark style set instead of
+  faking dark mode by inverting colors. Configure → Style → Appearance lets you
+  pick Light, Dark, or Follow system (which tracks the OS appearance where the
+  platform supports it). Each set has its own colors you can customize, and the
+  choice is remembered. The old "Invert worksheet brightness" menu item is gone;
+  if you had it enabled your worksheet keeps the same look (it is migrated to the
+  matching appearance).
+
 - Testing/CI: every ctest test now has a real per-test timeout (the previous
   `CTEST_TEST_TIMEOUT` variable was a no-op outside ctest's script mode, so a
   single wedged test could block the whole suite until the CI job hit its

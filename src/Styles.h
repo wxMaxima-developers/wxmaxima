@@ -44,14 +44,27 @@ public:
   //! The style used for a given TextStyle. Indexed like the old raw array, so
   //! both TextStyle enumerators and the plain integer indices some callers use
   //! work unchanged.
-  Style &operator[](int textStyle) { return m_styles[textStyle]; }
-  const Style &operator[](int textStyle) const { return m_styles[textStyle]; }
+  //! Indexing and iteration return the *active* set (light or dark), so all the
+  //! display code reads the right palette without knowing which is in use.
+  Style &operator[](int textStyle) { return active()[textStyle]; }
+  const Style &operator[](int textStyle) const { return active()[textStyle]; }
+  Style *begin() { return active(); }
+  Style *end() { return active() + NUMBEROFSTYLES; }
+  const Style *begin() const { return active(); }
+  const Style *end() const { return active() + NUMBEROFSTYLES; }
 
-  //! Iteration over all styles (so range-for and std::fill/std::begin work).
-  Style *begin() { return m_styles; }
-  Style *end() { return m_styles + NUMBEROFSTYLES; }
-  const Style *begin() const { return m_styles; }
-  const Style *end() const { return m_styles + NUMBEROFSTYLES; }
+  //! Select which set indexing/iteration return.
+  void SetUseDark(bool dark) { m_useDark = dark; }
+  bool UsingDark() const { return m_useDark; }
+  //! Invalidate the font caches of every style in BOTH sets.
+  void ClearCaches();
+
+  //! Reset every style to wxMaxima's built-in (light) defaults.
+  void SetDefaults();
+
+  //! Reset every style to wxMaxima's built-in *dark-mode* defaults (a curated
+  //! palette for a dark background; same fonts/structure as SetDefaults()).
+  void SetDarkDefaults();
 
   //! Read every persisted style from config.
   void Read(wxConfigBase *config);
@@ -99,7 +112,18 @@ public:
   void MakeConsistent();
 
 private:
+  Style *active() { return m_useDark ? m_stylesDark : m_styles; }
+  const Style *active() const { return m_useDark ? m_stylesDark : m_styles; }
+  //! Fill the given array with the built-in light defaults (shared by
+  //! SetDefaults() and, as a base, SetDarkDefaults()).
+  void SetLightDefaultsInto(Style *styles);
+
+  //! The light style set (also the persisted set / config-dialog target for now).
   Style m_styles[NUMBEROFSTYLES];
+  //! The dark style set.
+  Style m_stylesDark[NUMBEROFSTYLES];
+  //! Which set operator[]/begin()/end() return.
+  bool m_useDark = false;
   //! Styles that follow the code-default font/attributes.
   std::vector<TextStyle> m_codeStyles;
   //! Styles that follow the 2d-math font.

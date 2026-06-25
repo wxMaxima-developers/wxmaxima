@@ -36,6 +36,7 @@
 #include <wx/config.h>
 #include <wx/fileconf.h>
 #include <wx/font.h>
+#include <wx/settings.h>
 #include <wx/mimetype.h>
 #include <wx/mstream.h>
 #include <wx/string.h>
@@ -235,7 +236,7 @@ Configuration::Configuration(const Configuration &o) :
   m_greekSidebar_ShowLatinLookalikes(o.m_greekSidebar_ShowLatinLookalikes),
   m_greekSidebar_Show_mu(o.m_greekSidebar_Show_mu),
   m_symbolPaneAdditionalChars(o.m_symbolPaneAdditionalChars),
-  m_invertBackground(o.m_invertBackground),
+  m_appearance(o.m_appearance),
   m_undoLimit(o.m_undoLimit),
   m_recentItems(o.m_recentItems),
   m_bitmapScale(o.m_bitmapScale),
@@ -253,8 +254,7 @@ Configuration::Configuration(const Configuration &o) :
 #ifdef __WXMSW__
   m_useWgnuplot = o.m_useWgnuplot;
 #endif
-  for (int i = 0; i < NUMBEROFSTYLES; ++i)
-    m_styleStore[i] = o.m_styleStore[i];
+  m_styleStore = o.m_styleStore;
 }
 
 
@@ -365,7 +365,7 @@ void Configuration::ResetAllToDefaults() {
   m_autodetectMaxima = true;
   m_mathJaxURL_UseUser = false;
   m_TOCshowsSectionNumbers = false;
-  m_invertBackground = false;
+  m_appearance = Appearance::followSystem;
   m_undoLimit = 0;
   m_recentItems = 10;
   m_parenthesisDrawMode = ascii;
@@ -545,59 +545,17 @@ static const Configuration::EscCodeContainer &EscCodes() {
 
 void Configuration::InitStyles() {
   m_showInputLabels = true;
-  std::fill(m_styleStore.begin(), m_styleStore.end(), Style{});
+  m_styleStore.SetDefaults();
+  m_styleStore.SetDarkDefaults();
+  m_styleStore.SetUseDark(UseDarkMode());
+}
 
-  Style defaultStyle;
-
-  // TODO It's a fat chance that this font actually will be monospace.
-  wxFont monospace(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL,
-                   wxFONTWEIGHT_NORMAL);
-  m_styleStore[TS_ASCIIMATHS].SetFontName(monospace.GetFaceName());
-  m_styleStore[TS_ASCIIMATHS].FontSize(12.0);
-  m_styleStore[TS_TEXT].SetFontName(monospace.GetFaceName());
-  m_styleStore[TS_TEXT].FontSize(12.0);
-  m_styleStore[TS_MATH].FontSize(12.0);
-
-  m_styleStore[TS_TEXT].FontSize(12);
-  m_styleStore[TS_CODE_VARIABLE].Color(0, 128, 0).Slant();
-  m_styleStore[TS_CODE_FUNCTION].Color(128, 0, 0).Slant();
-  m_styleStore[TS_CODE_COMMENT].Color(64, 64, 64).Slant();
-  m_styleStore[TS_CODE_NUMBER].Color(128, 64, 0).Slant();
-  m_styleStore[TS_CODE_STRING].Color(0, 0, 128).Slant();
-  m_styleStore[TS_CODE_OPERATOR].Slant();
-  m_styleStore[TS_CODE_LISP].Color(255, 0, 128).Slant();
-  m_styleStore[TS_CODE_ENDOFLINE].Color(128, 128, 128).Slant();
-  m_styleStore[TS_GREEK_CONSTANT].Slant();
-  m_styleStore[TS_HEADING6].Bold().FontSize(14);
-  m_styleStore[TS_HEADING5].Bold().FontSize(15);
-  m_styleStore[TS_SUBSUBSECTION].Bold().FontSize(16);
-  m_styleStore[TS_SUBSECTION].Bold().FontSize(16);
-  m_styleStore[TS_SECTION].Bold().Slant().FontSize(18);
-  m_styleStore[TS_TITLE].Bold().Underlined().FontSize(24);
-  m_styleStore[TS_WARNING].Color(wxS("orange")).Bold().FontSize(12);
-  m_styleStore[TS_ERROR].Color(*wxRED).FontSize(12);
-  m_styleStore[TS_MAIN_PROMPT].Color(255, 128, 128);
-  m_styleStore[TS_OTHER_PROMPT].Color(*wxRED).Slant();
-  m_styleStore[TS_LABEL].Color(255, 192, 128);
-  m_styleStore[TS_USERLABEL].Color(255, 64, 0);
-  // m_styleStore[TS_SPECIAL_CONSTANT];
-  m_styleStore[TS_CODE_DEFAULT].Bold().Slant().FontSize(12);
-  // m_styleStore[TS_NUMBER];
-  m_styleStore[TS_STRING].Slant();
-  // m_styleStore[TS_GREEK_CONSTANT];
-  m_styleStore[TS_VARIABLE].Slant();
-  // m_styleStore[TS_FUNCTION];
-  m_styleStore[TS_HIGHLIGHT].Color(*wxRED);
-  m_styleStore[TS_TEXT_BACKGROUND].Color(*wxWHITE);
-  m_styleStore[TS_DOCUMENT_BACKGROUND].Color(*wxWHITE);
-  // m_styleStore[TS_CELL_BRACKET];
-  m_styleStore[TS_ACTIVE_CELL_BRACKET].Color(*wxRED);
-  // m_styleStore[TS_CURSOR];
-  m_styleStore[TS_SELECTION].Color(wxSYS_COLOUR_HIGHLIGHT);
-  m_styleStore[TS_EQUALSSELECTION]
-    .Color(wxSYS_COLOUR_HIGHLIGHT)
-    .ChangeLightness(150);
-  m_styleStore[TS_OUTDATED].Color(153, 153, 153);
+bool Configuration::SystemIsDark() {
+#if wxCHECK_VERSION(3, 1, 3)
+  return wxSystemSettings::GetAppearance().IsDark();
+#else
+  return false; // no reliable way to ask the OS on this wx version
+#endif
 }
 
 const wxString &Configuration::GetEscCode(const wxString &key) {
@@ -849,7 +807,21 @@ void Configuration::ReadConfig() {
     if(config->Read("maximaHelpFormat", &format))
       MaximaHelpFormat(static_cast<maximaHelpFormat>(format));
   }
-  config->Read("invertBackground", &m_invertBackground);
+  // Appearance: read the explicit setting if present; otherwise this is a config
+  // from before the dark/light style sets existed -> migrate the old "invert
+  // brightness" toggle once the styles are loaded (see after ReadStyles()).
+  const bool haveAppearanceSetting = config->HasEntry(wxS("appearance"));
+  bool legacyInvertBackground = false;
+  if (haveAppearanceSetting) {
+    long appearance = static_cast<long>(Appearance::followSystem);
+    config->Read(wxS("appearance"), &appearance);
+    if (appearance < 0 || appearance > static_cast<long>(Appearance::followSystem))
+      appearance = static_cast<long>(Appearance::followSystem);
+    m_appearance = static_cast<Appearance>(appearance);
+  } else {
+    config->Read(wxS("invertBackground"), &legacyInvertBackground);
+    m_appearance = Appearance::followSystem;
+  }
   config->Read("undoLimit", &m_undoLimit);
   config->Read("recentItems", &m_recentItems);
   config->Read("maxGnuplotMegabytes", &m_maxGnuplotMegabytes);
@@ -960,6 +932,24 @@ void Configuration::ReadConfig() {
   config->Read(wxS("cursorJump"), &m_cursorJump);
 
   ReadStyles();
+  if (!haveAppearanceSetting) {
+    // Migrate a pre-dark-mode config. The appearance the user actually saw is the
+    // XOR of whether their own style set is dark (document background darker than
+    // its text) and whether the old "invert brightness" toggle was on -- inverting
+    // a dark set yields a bright look and vice versa. Preserve that look.
+    m_styleStore.SetUseDark(false); // inspect the user's (light-slot) loaded set
+    const auto brightness = [](const wxColour &c) {
+      return static_cast<int>(c.Red()) + c.Green() + c.Blue();
+    };
+    const bool styleSetIsDark =
+      brightness(GetStyle(TS_DOCUMENT_BACKGROUND)->GetColor()) <
+      brightness(GetStyle(TS_TEXT)->GetColor());
+    m_appearance = (styleSetIsDark != legacyInvertBackground) ? Appearance::dark
+                                                              : Appearance::light;
+  }
+  // Both the appearance setting and the style sets are loaded now; point the
+  // active set at the one the appearance selects.
+  m_styleStore.SetUseDark(UseDarkMode());
 }
 
 Configuration::maximaHelpFormat Configuration::MaximaHelpFormat() const
@@ -1001,17 +991,11 @@ bool Configuration::StyleAffectsColorOnly(TextStyle style) const {
 }
 
 wxColor Configuration::DefaultBackgroundColor() {
-  if (InvertBackground())
-    return InvertColour(m_styleStore[TS_DOCUMENT_BACKGROUND].GetColor());
-  else
-    return m_styleStore[TS_DOCUMENT_BACKGROUND].GetColor();
+  return m_styleStore[TS_DOCUMENT_BACKGROUND].GetColor();
 }
 
 wxColor Configuration::EditorBackgroundColor() {
-  if (InvertBackground())
-    return InvertColour(m_styleStore[TS_TEXT_BACKGROUND].GetColor());
-  else
-    return m_styleStore[TS_TEXT_BACKGROUND].GetColor();
+  return m_styleStore[TS_TEXT_BACKGROUND].GetColor();
 }
 
 void Configuration::NotifyOfCellRedraw(const Cell *cell) {
@@ -1061,10 +1045,9 @@ void Configuration::ReportMultipleRedraws() {
 
 void Configuration::SetPrinting(bool printing) {
   m_printing = printing;
-  if (printing)
-    m_invertBackground = false;
-  else
-    wxConfig::Get()->Read("invertBackground", m_invertBackground);
+  // Always print against the light style set (white paper), regardless of the
+  // on-screen appearance.
+  m_styleStore.SetUseDark(printing ? false : UseDarkMode());
   if (printing)
     ClipToDrawRegion(!printing);
 }
@@ -1107,8 +1090,7 @@ void Configuration::SetZoomFactor(double newzoom) {
 
   RecalculateForce();
 
-  for (const auto &i: m_styleStore)
-    i.ClearCache();
+  m_styleStore.ClearCaches();
   if (newzoom > GetMaxZoomFactor())
     newzoom = GetMaxZoomFactor();
   if (newzoom < GetMinZoomFactor())
@@ -1356,10 +1338,6 @@ wxColour Configuration::GetColor(TextStyle style) {
   wxColour col = m_styleStore[style].GetColor();
   if (m_outdated)
     col = m_styleStore[TS_OUTDATED].GetColor();
-
-  if (InvertBackground() && (style != TS_TEXT_BACKGROUND) &&
-      (style != TS_DOCUMENT_BACKGROUND))
-    col = MakeColorDifferFromBackground(col);
   return col;
 }
 
@@ -1582,7 +1560,7 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write(wxS("insertAns"), m_insertAns);
   config->Write(wxS("openHCaret"), m_openHCaret);
   config->Write(wxS("restartOnReEvaluation"), m_restartOnReEvaluation);
-  config->Write(wxS("invertBackground"), m_invertBackground);
+  config->Write(wxS("appearance"), static_cast<long>(m_appearance));
   config->Write("recentItems", m_recentItems);
   config->Write(wxS("undoLimit"), m_undoLimit);
   config->Write(wxS("showLabelChoice"), static_cast<int>(m_showLabelChoice));

@@ -26,6 +26,9 @@
 #include "Styles.h"
 #include "StringUtils.h"
 #include <wx/config.h>
+#include <wx/font.h>
+#include <wx/settings.h>
+#include <algorithm>
 #include <unordered_map>
 
 bool Styles::AffectsCode(TextStyle style) const {
@@ -138,14 +141,116 @@ const wxString &Styles::Name(TextStyle textStyle) {
   return it != names.end() ? it->second : wxm::emptyString;
 }
 
+void Styles::SetDefaults() {
+  std::fill(std::begin(m_styles), std::end(m_styles), Style{});
+
+  // TODO It's a fat chance that this font actually will be monospace.
+  wxFont monospace(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL,
+                   wxFONTWEIGHT_NORMAL);
+  m_styles[TS_ASCIIMATHS].SetFontName(monospace.GetFaceName());
+  m_styles[TS_ASCIIMATHS].FontSize(12.0);
+  m_styles[TS_TEXT].SetFontName(monospace.GetFaceName());
+  m_styles[TS_TEXT].FontSize(12.0);
+  m_styles[TS_MATH].FontSize(12.0);
+
+  m_styles[TS_TEXT].FontSize(12);
+  m_styles[TS_CODE_VARIABLE].Color(0, 128, 0).Slant();
+  m_styles[TS_CODE_FUNCTION].Color(128, 0, 0).Slant();
+  m_styles[TS_CODE_COMMENT].Color(64, 64, 64).Slant();
+  m_styles[TS_CODE_NUMBER].Color(128, 64, 0).Slant();
+  m_styles[TS_CODE_STRING].Color(0, 0, 128).Slant();
+  m_styles[TS_CODE_OPERATOR].Slant();
+  m_styles[TS_CODE_LISP].Color(255, 0, 128).Slant();
+  m_styles[TS_CODE_ENDOFLINE].Color(128, 128, 128).Slant();
+  m_styles[TS_GREEK_CONSTANT].Slant();
+  m_styles[TS_HEADING6].Bold().FontSize(14);
+  m_styles[TS_HEADING5].Bold().FontSize(15);
+  m_styles[TS_SUBSUBSECTION].Bold().FontSize(16);
+  m_styles[TS_SUBSECTION].Bold().FontSize(16);
+  m_styles[TS_SECTION].Bold().Slant().FontSize(18);
+  m_styles[TS_TITLE].Bold().Underlined().FontSize(24);
+  m_styles[TS_WARNING].Color(wxS("orange")).Bold().FontSize(12);
+  m_styles[TS_ERROR].Color(*wxRED).FontSize(12);
+  m_styles[TS_MAIN_PROMPT].Color(255, 128, 128);
+  m_styles[TS_OTHER_PROMPT].Color(*wxRED).Slant();
+  m_styles[TS_LABEL].Color(255, 192, 128);
+  m_styles[TS_USERLABEL].Color(255, 64, 0);
+  m_styles[TS_CODE_DEFAULT].Bold().Slant().FontSize(12);
+  m_styles[TS_STRING].Slant();
+  m_styles[TS_VARIABLE].Slant();
+  m_styles[TS_HIGHLIGHT].Color(*wxRED);
+  m_styles[TS_TEXT_BACKGROUND].Color(*wxWHITE);
+  m_styles[TS_DOCUMENT_BACKGROUND].Color(*wxWHITE);
+  m_styles[TS_ACTIVE_CELL_BRACKET].Color(*wxRED);
+  m_styles[TS_SELECTION].Color(wxSYS_COLOUR_HIGHLIGHT);
+  m_styles[TS_EQUALSSELECTION]
+    .Color(wxSYS_COLOUR_HIGHLIGHT)
+    .ChangeLightness(150);
+  m_styles[TS_OUTDATED].Color(153, 153, 153);
+}
+
+void Styles::SetDarkDefaults() {
+  // The dark set reuses the light set's fonts, sizes and bold/slant structure,
+  // then overrides the colors with a curated dark palette. Foreground styles
+  // that inherit the system text color in light mode would be invisible on a
+  // dark background, so they get an explicit light color here. Assumes the light
+  // set has already been built (SetDefaults()).
+  std::copy(std::begin(m_styles), std::end(m_styles), std::begin(m_stylesDark));
+
+  const wxColour fg(220, 220, 220);   // default light-on-dark foreground
+  const wxColour bg(30, 30, 30);      // dark background
+
+  m_stylesDark[TS_DOCUMENT_BACKGROUND].Color(bg);
+  m_stylesDark[TS_TEXT_BACKGROUND].Color(bg);
+
+  // Foreground text / math / structure styles -> light.
+  for (auto s : {TS_TEXT, TS_MATH, TS_ASCIIMATHS, TS_CODE_DEFAULT, TS_NUMBER,
+                 TS_FUNCTION, TS_SPECIAL_CONSTANT, TS_GREEK_CONSTANT, TS_STRING,
+                 TS_VARIABLE, TS_OPERATOR, TS_HEADING6, TS_HEADING5,
+                 TS_SUBSUBSECTION, TS_SUBSECTION, TS_SECTION, TS_TITLE})
+    m_stylesDark[s].Color(fg);
+
+  // Code highlighting -> brighter variants that read on a dark background.
+  m_stylesDark[TS_CODE_VARIABLE].Color(120, 200, 120);
+  m_stylesDark[TS_CODE_FUNCTION].Color(230, 130, 130);
+  m_stylesDark[TS_CODE_COMMENT].Color(150, 150, 150).Slant();
+  m_stylesDark[TS_CODE_NUMBER].Color(220, 160, 100);
+  m_stylesDark[TS_CODE_STRING].Color(130, 170, 230);
+  m_stylesDark[TS_CODE_OPERATOR].Color(fg);
+  m_stylesDark[TS_CODE_LISP].Color(255, 130, 190);
+  m_stylesDark[TS_CODE_ENDOFLINE].Color(170, 170, 170);
+
+  // Outdated cells dim against the dark background.
+  m_stylesDark[TS_OUTDATED].Color(120, 120, 120);
+}
+
+void Styles::ClearCaches() {
+  for (auto &s : m_styles)
+    s.ClearCache();
+  for (auto &s : m_stylesDark)
+    s.ClearCache();
+}
+
+// The dark set is stored under a parallel "StyleDark/..." key namespace, so the
+// light set keeps the historical "Style/..." keys (existing configs migrate into
+// the light set untouched, and a fresh config simply has no dark keys yet -> the
+// curated dark defaults stay in place).
+static wxString DarkKey(const wxString &lightPrefix) {
+  return wxS("StyleDark") + lightPrefix.Mid(5); // "Style/X/" -> "StyleDark/X/"
+}
+
 void Styles::Read(wxConfigBase *config) {
-  for (const auto &[style, prefix] : ConfigKeys())
+  for (const auto &[style, prefix] : ConfigKeys()) {
     m_styles[style].Read(config, prefix);
+    m_stylesDark[style].Read(config, DarkKey(prefix));
+  }
 }
 
 void Styles::Write(wxConfigBase *config) const {
-  for (const auto &[style, prefix] : ConfigKeys())
+  for (const auto &[style, prefix] : ConfigKeys()) {
     m_styles[style].Write(config, prefix);
+    m_stylesDark[style].Write(config, DarkKey(prefix));
+  }
 }
 
 const std::vector<std::pair<TextStyle, wxString>> &Styles::ConfigKeys() {

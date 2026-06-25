@@ -6218,14 +6218,6 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_fullscreen) {
     ShowFullScreen(!IsFullScreen());
   }
-  else if(event.GetId() == EventIDs::menu_invertWorksheetBackground) {
-    m_configuration.InvertBackground(!m_configuration.InvertBackground());
-    // Save the changed invert-status in the configuration.
-    m_configuration.WriteStyles();
-    m_viewMenu->Check(EventIDs::menu_invertWorksheetBackground,
-                      m_configuration.InvertBackground());
-    GetWorksheet()->RequestRedraw();
-  }
   else if(event.GetId() == EventIDs::menu_show_logwindow) {
     // FIXME: if the log window was closed as the parent 'disable' the toggle function, otherwise we risk a crash.
     if (MyApp::m_logWindow->GetFrame() != NULL) {

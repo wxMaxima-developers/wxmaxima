@@ -1951,6 +1951,27 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   fontsSizer->Add(grid_sizer_1, wxSizerFlags(1).Expand());
   vsizer->Add(fontsSizer, wxSizerFlags().Expand().Border(wxALL, 5 * GetContentScaleFactor()));
 
+  // Appearance selector. It both stores the preference and points the style
+  // editor below at the matching set (Light or Dark), so editing "Dark" edits the
+  // dark palette.
+  wxBoxSizer *appearanceSizer = new wxBoxSizer(wxHORIZONTAL);
+  appearanceSizer->Add(new wxStaticText(panel, wxID_ANY, _("Appearance:")), 0,
+                       wxALIGN_CENTER_VERTICAL | wxRIGHT,
+                       5 * GetContentScaleFactor());
+  wxArrayString appearanceChoices;
+  appearanceChoices.Add(_("Light"));          // Configuration::Appearance::light
+  appearanceChoices.Add(_("Dark"));           // Configuration::Appearance::dark
+  appearanceChoices.Add(_("Follow system"));  // Configuration::Appearance::followSystem
+  m_appearanceChoice = new wxChoice(panel, wxID_ANY, wxDefaultPosition,
+                                    wxDefaultSize, appearanceChoices);
+  m_appearanceChoice->SetSelection(
+    static_cast<int>(m_configuration->GetAppearance()));
+  m_appearanceChoice->Bind(wxEVT_CHOICE, &ConfigDialogue::OnAppearanceChanged,
+                           this);
+  appearanceSizer->Add(m_appearanceChoice, 0, wxALIGN_CENTER_VERTICAL);
+  vsizer->Add(appearanceSizer,
+              wxSizerFlags().Border(wxALL, 5 * GetContentScaleFactor()));
+
   // The styles box
   wxStaticBox *styles = new wxStaticBox(panel, wxID_ANY, _("Styles"));
   wxStaticBoxSizer *stylesSizer = new wxStaticBoxSizer(styles, wxVERTICAL);
@@ -2075,6 +2096,17 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
 void ConfigDialogue::OnStyleToEditChanged(wxCommandEvent &event) {
   wxConfigBase *config = wxConfig::Get();
   config->Write(wxS("StyleToEdit"), static_cast<int>(GetSelectedStyle()));
+  OnChangeStyle(event);
+}
+
+void ConfigDialogue::OnAppearanceChanged(wxCommandEvent &event) {
+  // The choice items are in Appearance enum order (light, dark, followSystem).
+  m_configuration->SetAppearance(
+    static_cast<Configuration::Appearance>(m_appearanceChoice->GetSelection()));
+  // The style editor and the sample worksheet read the active set, so reloading
+  // the current style and redrawing makes them reflect the chosen set.
+  if (m_sampleWorksheet)
+    m_sampleWorksheet->Refresh();
   OnChangeStyle(event);
 }
 
