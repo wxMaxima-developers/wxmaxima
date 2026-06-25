@@ -113,6 +113,26 @@ jobs:
             cmake --build .
             cd ..
             cd ..
+      - name: Diagnose a test executable
+        # Bring-up diagnostic: dump one test exe's imported DLLs and try to launch
+        # it with a hard 15s cap. If it hangs at startup with libstdc++-6.dll etc.
+        # in its imports, the hang is a missing-runtime-DLL loader dialog (which is
+        # why static linking is applied). Non-blocking; remove once Windows tests
+        # are stable.
+        continue-on-error: true
+        run: |
+            cd wxMaxima
+            cd build
+            $exe = "test\unit_tests\test_DiffAlgorithm.exe"
+            echo "=== imported DLLs ==="
+            objdump -p $exe | Select-String "DLL Name"
+            echo "=== launch with --list-tests (15s cap) ==="
+            $p = Start-Process -FilePath $exe -ArgumentList "--list-tests" -NoNewWindow -PassThru -RedirectStandardOutput diag_out.txt -RedirectStandardError diag_err.txt
+            if (-not $p.WaitForExit(15000)) { $p.Kill(); echo "RESULT: HUNG at startup" } else { echo "RESULT: exited with code $($p.ExitCode)" }
+            echo "--- stdout ---"; if (Test-Path diag_out.txt) { Get-Content diag_out.txt }
+            echo "--- stderr ---"; if (Test-Path diag_err.txt) { Get-Content diag_err.txt }
+            cd ..
+            cd ..
       - name: Run unit tests
         # Required signal: the "unittest" label selects the self-contained C++
         # unit tests (test/unit_tests/*), which need neither Maxima nor a display.

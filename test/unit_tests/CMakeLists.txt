@@ -17,6 +17,19 @@ include_directories(
 # test until ctest's watchdog kills it. Compiles to nothing off Windows.
 set(WXM_TEST_SETUP "${CMAKE_CURRENT_SOURCE_DIR}/wxm_test_setup.cpp")
 
+if(MINGW)
+    # Statically link the GCC/C++/winpthread runtimes into the test executables.
+    # Otherwise each exe depends on libstdc++-6.dll, libgcc_s_seh-1.dll and
+    # libwinpthread-1.dll being found at launch; if the loader cannot find one it
+    # pops a modal "the code execution cannot proceed" dialog *before main()*,
+    # which under ctest just hangs the test until the watchdog kills it -- the
+    # "every unit test times out with no output" symptom seen on the Windows CI.
+    # An in-process SetErrorMode() cannot help: the loader runs before our code.
+    # Static linking makes the test exes self-contained and removes the failure
+    # mode. add_link_options() applies to every target defined below it here.
+    add_link_options(-static)
+endif()
+
 add_executable(test_CellPtr test_CellPtr.cpp ${WXM_TEST_SETUP})
 target_link_libraries(test_CellPtr PRIVATE ${wxWidgets_LIBRARIES})
 add_test(CellPtr test_CellPtr)
