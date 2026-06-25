@@ -651,7 +651,6 @@ public:
   static const wxWindowIDRef enable_unicodePane;
   static const wxWindowIDRef menu_showLatinGreekLookalikes;
   static const wxWindowIDRef menu_showGreekMu;
-  static const wxWindowIDRef menu_invertWorksheetBackground;
   static const wxWindowIDRef popid_comment_selection;
   static const wxWindowIDRef popid_divide_cell;
   static const wxWindowIDRef popid_copy_image;

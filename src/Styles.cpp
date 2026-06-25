@@ -220,6 +220,11 @@ void Styles::SetDarkDefaults() {
   m_stylesDark[TS_CODE_LISP].Color(255, 130, 190);
   m_stylesDark[TS_CODE_ENDOFLINE].Color(170, 170, 170);
 
+  // Cursor / cell bracket inherit the (dark) system text color in light mode, so
+  // they would be invisible on a dark background -- give them light colors.
+  m_stylesDark[TS_CURSOR].Color(fg);
+  m_stylesDark[TS_CELL_BRACKET].Color(150, 150, 150);
+
   // Outdated cells dim against the dark background.
   m_stylesDark[TS_OUTDATED].Color(120, 120, 120);
 }

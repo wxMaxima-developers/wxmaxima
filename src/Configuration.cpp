@@ -590,6 +590,11 @@ void Configuration::ShowCodeCells(bool show) {
   m_showCodeCells = show;
 }
 
+void Configuration::UpdateBackgroundBrush() {
+  m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(
+    m_styleStore[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
+}
+
 void Configuration::SetBackgroundBrush(const wxBrush &brush) {
   m_BackgroundBrush = brush;
   m_tooltipBrush = brush;
@@ -948,8 +953,10 @@ void Configuration::ReadConfig() {
                                                               : Appearance::light;
   }
   // Both the appearance setting and the style sets are loaded now; point the
-  // active set at the one the appearance selects.
+  // active set at the one the appearance selects and refresh the cached
+  // background brush (ReadStyles() set it from whatever set was active before).
   m_styleStore.SetUseDark(UseDarkMode());
+  UpdateBackgroundBrush();
 }
 
 Configuration::maximaHelpFormat Configuration::MaximaHelpFormat() const
@@ -1050,11 +1057,6 @@ void Configuration::SetPrinting(bool printing) {
   m_styleStore.SetUseDark(printing ? false : UseDarkMode());
   if (printing)
     ClipToDrawRegion(!printing);
-}
-
-wxColour Configuration::InvertColour(wxColour col) {
-  return wxColour(255 - col.Red(), 255 - col.Green(), 255 - col.Blue(),
-                  col.Alpha());
 }
 
 long Configuration::GetLineWidth() const {
@@ -1353,20 +1355,6 @@ AFontSize Configuration::Scale_Px(AFontSize size) const {
   return AFontSize(retval);
 }
 
-wxColor Configuration::MakeColorDifferFromBackground(wxColor color) {
-  int newBrightness = 255 - (color.Red() + color.Green() + color.Blue()) / 3;
-  if (color == DefaultBackgroundColor()) {
-    return InvertColour(color);
-  } else {
-    int maxOldCol = std::max(std::max(color.Red(), color.Green()), color.Blue());
-    if (maxOldCol < 1)
-      return *wxWHITE;
-    else
-      return wxColour(newBrightness * color.Red() / maxOldCol,
-                      newBrightness * color.Green() / maxOldCol,
-                      newBrightness * color.Blue() / maxOldCol);
-  }
-}
 
 Configuration::FileToSave Configuration::PopFileToSave()
 {

@@ -927,7 +927,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_squareMatrixParens);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_noMatrixParens);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_fullscreen);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_invertWorksheetBackground);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_show_logwindow);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, ToolBar::tb_hideCode);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_as_bitmap);

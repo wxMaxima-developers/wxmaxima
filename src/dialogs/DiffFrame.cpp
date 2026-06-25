@@ -428,14 +428,39 @@ toolBar->AddSeparator();
     Worksheet *ws = new Worksheet(this, wxID_ANY, m_worksheetConfigurations.back().get());
     m_worksheets.push_back(ws);
     ws->SetCurrentFile(files[i]);
-    mainSizer->Add(ws, 1, wxEXPAND);
 
     // A minimap strip beside each pane marking where the differences are.
     DiffMarkerBar *bar = new DiffMarkerBar(this, ws, this, i,
                                            m_worksheetConfigurations.back().get());
     m_markerBars.push_back(bar);
-    mainSizer->Add(bar, 0, wxEXPAND);
-    
+
+    // Each pane gets a header showing the file it displays. The (read-only) field
+    // is middle-ellipsized when the name is wider than the column, so the start
+    // and the file's basename stay visible; the full path is in the tooltip.
+    wxTextCtrl *fileLabel =
+      new wxTextCtrl(this, wxID_ANY, files[i], wxDefaultPosition, wxDefaultSize,
+                     wxTE_READONLY | wxBORDER_SIMPLE);
+    fileLabel->SetToolTip(files[i]);
+    const wxString fullName = files[i];
+    auto ellipsize = [fileLabel, fullName]() {
+      wxClientDC dc(fileLabel);
+      dc.SetFont(fileLabel->GetFont());
+      fileLabel->ChangeValue(wxControl::Ellipsize(
+        fullName, dc, wxELLIPSIZE_MIDDLE, fileLabel->GetClientSize().x));
+    };
+    fileLabel->Bind(wxEVT_SIZE, [ellipsize](wxSizeEvent &e) {
+      e.Skip();
+      ellipsize();
+    });
+
+    wxBoxSizer *paneSizer = new wxBoxSizer(wxVERTICAL);
+    paneSizer->Add(fileLabel, 0, wxEXPAND | wxALL, 2);
+    wxBoxSizer *wsRow = new wxBoxSizer(wxHORIZONTAL);
+    wsRow->Add(ws, 1, wxEXPAND);
+    wsRow->Add(bar, 0, wxEXPAND);
+    paneSizer->Add(wsRow, 1, wxEXPAND);
+    mainSizer->Add(paneSizer, 1, wxEXPAND);
+
     // Bind all vertical scroll event types to our synchronization handler
     ws->Bind(wxEVT_SCROLLWIN_THUMBTRACK, &DiffFrame::OnScroll, this);
     ws->Bind(wxEVT_SCROLLWIN_THUMBRELEASE, &DiffFrame::OnScroll, this);

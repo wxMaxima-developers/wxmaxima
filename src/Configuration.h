@@ -608,14 +608,6 @@ public:
   //! Gets the color for a text style
   wxColour GetColor(TextStyle style);
 
-  //! Inverts a color: In 2020 wxColor still lacks this functionality
-  static wxColour InvertColour(wxColour col);
-
-  /*! Make this color differ from the background by a noticeable amount
-
-    Useful for black/white background theme changes
-  */
-  wxColor MakeColorDifferFromBackground(wxColor color);
 
   bool UsePngCairo() const { return m_usepngCairo;}
   void UsePngCairo(bool usepngCairo) { m_usepngCairo = usepngCairo;}
@@ -791,7 +783,10 @@ public:
   void SetAppearance(Appearance a) {
     m_appearance = a;
     m_styleStore.SetUseDark(UseDarkMode());
+    UpdateBackgroundBrush();
   }
+  //! Refresh the cached document-background brush from the active style set.
+  void UpdateBackgroundBrush();
   //! Whether the dark style set is currently active.
   bool UseDarkMode() const {
     if (m_appearance == Appearance::dark) return true;
