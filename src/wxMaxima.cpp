@@ -227,7 +227,35 @@ void wxMaxima::SetupTerminationHandlers() {
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
 #endif
 
+// Make the native chrome (menus, toolbars, sidebars, dialogs) follow the
+// worksheet's light/dark appearance. Only wxWidgets 3.3+ can drive the OS
+// appearance from inside the app; on older wx this is a no-op (the worksheet is
+// themed via its style set, the chrome stays whatever the OS gives us).
+static void ApplyAppearanceToApp(Configuration::Appearance appearance) {
+#if wxCHECK_VERSION(3, 3, 0)
+  if (!wxTheApp)
+    return;
+  wxApp::Appearance a = wxApp::Appearance::System;
+  switch (appearance) {
+  case Configuration::Appearance::light:
+    a = wxApp::Appearance::Light;
+    break;
+  case Configuration::Appearance::dark:
+    a = wxApp::Appearance::Dark;
+    break;
+  case Configuration::Appearance::followSystem:
+    a = wxApp::Appearance::System;
+    break;
+  }
+  wxTheApp->SetAppearance(a);
+#else
+  (void)appearance;
+#endif
+}
+
 void wxMaxima::ConfigChanged() {
+
+  ApplyAppearanceToApp(GetConfiguration().GetAppearance());
 
   if (GetWorksheet() && (GetWorksheet()->GetTree()))
     GetWorksheet()->GetTree()->FontsChangedList();
