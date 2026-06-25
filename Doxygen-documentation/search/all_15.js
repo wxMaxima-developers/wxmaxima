@@ -45,8 +45,9 @@ var searchData=
   ['updateusersymbols_42',['UpdateUserSymbols',['../classSymbolsSidebar.html#a096e679c86ed06e25caabe6e8ec3f90d',1,'SymbolsSidebar']]],
   ['updateyposition_43',['UpdateYPosition',['../classGroupCell.html#aa3ebfa4ae13199d32925e7dc4ec828ed',1,'GroupCell']]],
   ['usecolour_44',['UseColour',['../structCatch_1_1UseColour.html',1,'Catch']]],
-  ['userautocompletefile_45',['UserAutocompleteFile',['../classDirstructure.html#a9983e2d05056f5e55105a9d5c6cb63b9',1,'Dirstructure']]],
-  ['userconfdir_46',['UserConfDir',['../classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791',1,'Dirstructure::UserConfDir()'],['../classDirstructure.html#a098445ee58c9399ff512e3ed20137f5e',1,'Dirstructure::UserConfDir(const wxString &amp;userConfDir)']]],
-  ['usesvgchanged_47',['UsesvgChanged',['../classConfigDialogue.html#ac87a1da42c1b7996d250f5959bbef56f',1,'ConfigDialogue']]],
-  ['useuserlabels_48',['UseUserLabels',['../classConfiguration.html#ae7cc009bfac177678abcc37e3ccc566e',1,'Configuration']]]
+  ['usedarkmode_45',['UseDarkMode',['../classConfiguration.html#a5159a693ed3f4400443a33ffc482f59d',1,'Configuration']]],
+  ['userautocompletefile_46',['UserAutocompleteFile',['../classDirstructure.html#a9983e2d05056f5e55105a9d5c6cb63b9',1,'Dirstructure']]],
+  ['userconfdir_47',['UserConfDir',['../classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791',1,'Dirstructure::UserConfDir()'],['../classDirstructure.html#a098445ee58c9399ff512e3ed20137f5e',1,'Dirstructure::UserConfDir(const wxString &amp;userConfDir)']]],
+  ['usesvgchanged_48',['UsesvgChanged',['../classConfigDialogue.html#ac87a1da42c1b7996d250f5959bbef56f',1,'ConfigDialogue']]],
+  ['useuserlabels_49',['UseUserLabels',['../classConfiguration.html#ae7cc009bfac177678abcc37e3ccc566e',1,'Configuration']]]
 ];

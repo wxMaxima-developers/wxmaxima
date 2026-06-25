@@ -31,14 +31,15 @@ var searchData=
   ['updateoutputpositions_28',['UpdateOutputPositions',['../classGroupCell.html#a230e7e140746221a4a27e3f7fce90c7e',1,'GroupCell']]],
   ['updaterecentdocuments_29',['UpdateRecentDocuments',['../classwxMaximaFrame.html#a07184252b5e406dea552d64d265088fd',1,'wxMaximaFrame']]],
   ['updatescrollpos_30',['UpdateScrollPos',['../classWorksheet.html#ad9583dd8badd4f21d1abdea8fe065011',1,'Worksheet']]],
-  ['updateslider_31',['UpdateSlider',['../classwxMaxima.html#aef0fdffd82ee849d531fb86270e524d9',1,'wxMaxima::UpdateSlider()'],['../classToolBar.html#a2069a79d6de58c7385b71e69612f0a36',1,'ToolBar::UpdateSlider()']]],
+  ['updateslider_31',['UpdateSlider',['../classToolBar.html#a2069a79d6de58c7385b71e69612f0a36',1,'ToolBar::UpdateSlider()'],['../classwxMaxima.html#aef0fdffd82ee849d531fb86270e524d9',1,'wxMaxima::UpdateSlider()']]],
   ['updatetableofcontents_32',['UpdateTableOfContents',['../classTableOfContents.html#a63819f993f35d4b2a813911406c24202',1,'TableOfContents::UpdateTableOfContents()'],['../classWorksheet.html#a3c10925a2c01a2cd65946c2c3f638eb7',1,'Worksheet::UpdateTableOfContents()']]],
   ['updatetoolbar_33',['UpdateToolBar',['../classwxMaxima.html#a767f40bdd57d4bdbce4eed73889e1303',1,'wxMaxima']]],
   ['updatetooltip_34',['UpdateToolTip',['../classTextCell.html#a3bdc757f15710e049a6ad0045e0b1a87',1,'TextCell']]],
   ['updateusersymbols_35',['UpdateUserSymbols',['../classSymbolsSidebar.html#a096e679c86ed06e25caabe6e8ec3f90d',1,'SymbolsSidebar']]],
   ['updateyposition_36',['UpdateYPosition',['../classGroupCell.html#aa3ebfa4ae13199d32925e7dc4ec828ed',1,'GroupCell']]],
-  ['userautocompletefile_37',['UserAutocompleteFile',['../classDirstructure.html#a9983e2d05056f5e55105a9d5c6cb63b9',1,'Dirstructure']]],
-  ['userconfdir_38',['UserConfDir',['../classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791',1,'Dirstructure::UserConfDir()'],['../classDirstructure.html#a098445ee58c9399ff512e3ed20137f5e',1,'Dirstructure::UserConfDir(const wxString &amp;userConfDir)']]],
-  ['usesvgchanged_39',['UsesvgChanged',['../classConfigDialogue.html#ac87a1da42c1b7996d250f5959bbef56f',1,'ConfigDialogue']]],
-  ['useuserlabels_40',['UseUserLabels',['../classConfiguration.html#ae7cc009bfac177678abcc37e3ccc566e',1,'Configuration']]]
+  ['usedarkmode_37',['UseDarkMode',['../classConfiguration.html#a5159a693ed3f4400443a33ffc482f59d',1,'Configuration']]],
+  ['userautocompletefile_38',['UserAutocompleteFile',['../classDirstructure.html#a9983e2d05056f5e55105a9d5c6cb63b9',1,'Dirstructure']]],
+  ['userconfdir_39',['UserConfDir',['../classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791',1,'Dirstructure::UserConfDir()'],['../classDirstructure.html#a098445ee58c9399ff512e3ed20137f5e',1,'Dirstructure::UserConfDir(const wxString &amp;userConfDir)']]],
+  ['usesvgchanged_40',['UsesvgChanged',['../classConfigDialogue.html#ac87a1da42c1b7996d250f5959bbef56f',1,'ConfigDialogue']]],
+  ['useuserlabels_41',['UseUserLabels',['../classConfiguration.html#ae7cc009bfac177678abcc37e3ccc566e',1,'Configuration']]]
 ];

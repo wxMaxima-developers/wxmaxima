@@ -85,14 +85,13 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aeb9436864e625e581422db630bf7a0b2"><td class="memItemLeft" align="right" valign="top"><a id="aeb9436864e625e581422db630bf7a0b2" name="aeb9436864e625e581422db630bf7a0b2"></a>
 <a class="el" href="classStyle.html">Style</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (int textStyle)</td></tr>
-<tr class="memdesc:aeb9436864e625e581422db630bf7a0b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The style used for a given TextStyle. Indexed like the old raw array, so both TextStyle enumerators and the plain integer indices some callers use work unchanged. <br /></td></tr>
+<tr class="memdesc:aeb9436864e625e581422db630bf7a0b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The style used for a given TextStyle. Indexed like the old raw array, so both TextStyle enumerators and the plain integer indices some callers use work unchanged. Indexing and iteration return the <em>active</em> set (light or dark), so all the display code reads the right palette without knowing which is in use. <br /></td></tr>
 <tr class="separator:aeb9436864e625e581422db630bf7a0b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1bf6ed2a1a9e99b9a9e044cf69d09e5"><td class="memItemLeft" align="right" valign="top"><a id="af1bf6ed2a1a9e99b9a9e044cf69d09e5" name="af1bf6ed2a1a9e99b9a9e044cf69d09e5"></a>
 const <a class="el" href="classStyle.html">Style</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (int textStyle) const</td></tr>
 <tr class="separator:af1bf6ed2a1a9e99b9a9e044cf69d09e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fc20d3ddd70cd3a9dc309d9d8f237b0"><td class="memItemLeft" align="right" valign="top"><a id="a7fc20d3ddd70cd3a9dc309d9d8f237b0" name="a7fc20d3ddd70cd3a9dc309d9d8f237b0"></a>
 <a class="el" href="classStyle.html">Style</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> ()</td></tr>
-<tr class="memdesc:a7fc20d3ddd70cd3a9dc309d9d8f237b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iteration over all styles (so range-for and std::fill/std<a class="el" href="classStyles.html#a7fc20d3ddd70cd3a9dc309d9d8f237b0" title="Iteration over all styles (so range-for and std::fill/stdbegin work).">begin</a> work). <br /></td></tr>
 <tr class="separator:a7fc20d3ddd70cd3a9dc309d9d8f237b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a241d9b98ecfdb30aeabfae2fc7919b26"><td class="memItemLeft" align="right" valign="top"><a id="a241d9b98ecfdb30aeabfae2fc7919b26" name="a241d9b98ecfdb30aeabfae2fc7919b26"></a>
 <a class="el" href="classStyle.html">Style</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> ()</td></tr>
@@ -103,6 +102,25 @@ const <a class="el" href="classStyle.html">Style</a> *&#160;</td><td class="memI
 <tr class="memitem:a04b6d39d0b5b1c4a6ad84b6761c117c0"><td class="memItemLeft" align="right" valign="top"><a id="a04b6d39d0b5b1c4a6ad84b6761c117c0" name="a04b6d39d0b5b1c4a6ad84b6761c117c0"></a>
 const <a class="el" href="classStyle.html">Style</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () const</td></tr>
 <tr class="separator:a04b6d39d0b5b1c4a6ad84b6761c117c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcf4a3c8050e5df5edb6e844ea430138"><td class="memItemLeft" align="right" valign="top"><a id="afcf4a3c8050e5df5edb6e844ea430138" name="afcf4a3c8050e5df5edb6e844ea430138"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUseDark</b> (bool dark)</td></tr>
+<tr class="memdesc:afcf4a3c8050e5df5edb6e844ea430138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select which set indexing/iteration return. <br /></td></tr>
+<tr class="separator:afcf4a3c8050e5df5edb6e844ea430138"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4f6bf7ecd6806bbc7d72a8664b264f3"><td class="memItemLeft" align="right" valign="top"><a id="ac4f6bf7ecd6806bbc7d72a8664b264f3" name="ac4f6bf7ecd6806bbc7d72a8664b264f3"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>UsingDark</b> () const</td></tr>
+<tr class="separator:ac4f6bf7ecd6806bbc7d72a8664b264f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb8f8c089ce4d74a7522a8c047f21769"><td class="memItemLeft" align="right" valign="top"><a id="abb8f8c089ce4d74a7522a8c047f21769" name="abb8f8c089ce4d74a7522a8c047f21769"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearCaches</b> ()</td></tr>
+<tr class="memdesc:abb8f8c089ce4d74a7522a8c047f21769"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalidate the font caches of every style in BOTH sets. <br /></td></tr>
+<tr class="separator:abb8f8c089ce4d74a7522a8c047f21769"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e78a45506b36a6e26cd9ffecfa0d7cd"><td class="memItemLeft" align="right" valign="top"><a id="a6e78a45506b36a6e26cd9ffecfa0d7cd" name="a6e78a45506b36a6e26cd9ffecfa0d7cd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults</b> ()</td></tr>
+<tr class="memdesc:a6e78a45506b36a6e26cd9ffecfa0d7cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset every style to <a class="el" href="classwxMaxima.html">wxMaxima</a>'s built-in (light) defaults. <br /></td></tr>
+<tr class="separator:a6e78a45506b36a6e26cd9ffecfa0d7cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af24710ba063ddd9f43bf66a0b0673b77"><td class="memItemLeft" align="right" valign="top"><a id="af24710ba063ddd9f43bf66a0b0673b77" name="af24710ba063ddd9f43bf66a0b0673b77"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDarkDefaults</b> ()</td></tr>
+<tr class="memdesc:af24710ba063ddd9f43bf66a0b0673b77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset every style to <a class="el" href="classwxMaxima.html">wxMaxima</a>'s built-in <em>dark-mode</em> defaults (a curated palette for a dark background; same fonts/structure as <a class="el" href="classStyles.html#a6e78a45506b36a6e26cd9ffecfa0d7cd" title="Reset every style to wxMaxima&#39;s built-in (light) defaults.">SetDefaults()</a>). <br /></td></tr>
+<tr class="separator:af24710ba063ddd9f43bf66a0b0673b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ac30569a42bbdae9cabd36ed6475b83"><td class="memItemLeft" align="right" valign="top"><a id="a0ac30569a42bbdae9cabd36ed6475b83" name="a0ac30569a42bbdae9cabd36ed6475b83"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Read</b> (wxConfigBase *config)</td></tr>
 <tr class="memdesc:a0ac30569a42bbdae9cabd36ed6475b83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read every persisted style from config. <br /></td></tr>

@@ -151,6 +151,12 @@ Public Types</h2></td></tr>
 , <b>layoutPrefer1D</b> = 2
  }</td></tr>
 <tr class="separator:a2bb69c733d19083e4fbc552bfa26f297"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c3c003a32828fe343fb6e3b616a4657"><td class="memItemLeft" align="right" valign="top"><a id="a0c3c003a32828fe343fb6e3b616a4657" name="a0c3c003a32828fe343fb6e3b616a4657"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a0c3c003a32828fe343fb6e3b616a4657">Appearance</a> { <b>light</b>
+, <b>dark</b>
+, <b>followSystem</b>
+ }</td></tr>
+<tr class="memdesc:a0c3c003a32828fe343fb6e3b616a4657"><td class="mdescLeft">&#160;</td><td class="mdescRight">How <a class="el" href="classwxMaxima.html">wxMaxima</a> chooses between the light and the dark style set. <br /></td></tr>
+<tr class="separator:a0c3c003a32828fe343fb6e3b616a4657"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03fec16ce6139610142240ce478b8315"><td class="memItemLeft" align="right" valign="top"><a id="a03fec16ce6139610142240ce478b8315" name="a03fec16ce6139610142240ce478b8315"></a>
 typedef std::unordered_map&lt; wxString, bool, wxStringHash &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>StringBoolHash</b></td></tr>
 <tr class="separator:a03fec16ce6139610142240ce478b8315"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -668,12 +674,17 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShowInputLabels</b> (
 <tr class="memitem:af8ea92f0a00f389644e5f72fb4e92923"><td class="memItemLeft" align="right" valign="top"><a id="af8ea92f0a00f389644e5f72fb4e92923" name="af8ea92f0a00f389644e5f72fb4e92923"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowInputLabels</b> (bool show)</td></tr>
 <tr class="separator:af8ea92f0a00f389644e5f72fb4e92923"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdbad3df886e380b26e24fd41e611b53"><td class="memItemLeft" align="right" valign="top"><a id="abdbad3df886e380b26e24fd41e611b53" name="abdbad3df886e380b26e24fd41e611b53"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>InvertBackground</b> () const</td></tr>
-<tr class="separator:abdbad3df886e380b26e24fd41e611b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92202f3f9414849e3ba6cc0b9d676149"><td class="memItemLeft" align="right" valign="top"><a id="a92202f3f9414849e3ba6cc0b9d676149" name="a92202f3f9414849e3ba6cc0b9d676149"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InvertBackground</b> (bool invert)</td></tr>
-<tr class="separator:a92202f3f9414849e3ba6cc0b9d676149"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa64d2034bc5a37e2db7355bffd00975d"><td class="memItemLeft" align="right" valign="top"><a id="aa64d2034bc5a37e2db7355bffd00975d" name="aa64d2034bc5a37e2db7355bffd00975d"></a>
+<a class="el" href="classConfiguration.html#a0c3c003a32828fe343fb6e3b616a4657">Appearance</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetAppearance</b> () const</td></tr>
+<tr class="separator:aa64d2034bc5a37e2db7355bffd00975d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a4d75690bfbfdf88e970adc7ef29d0b"><td class="memItemLeft" align="right" valign="top"><a id="a8a4d75690bfbfdf88e970adc7ef29d0b" name="a8a4d75690bfbfdf88e970adc7ef29d0b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAppearance</b> (<a class="el" href="classConfiguration.html#a0c3c003a32828fe343fb6e3b616a4657">Appearance</a> a)</td></tr>
+<tr class="memdesc:a8a4d75690bfbfdf88e970adc7ef29d0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Choose the appearance and update which style set is active. <br /></td></tr>
+<tr class="separator:a8a4d75690bfbfdf88e970adc7ef29d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5159a693ed3f4400443a33ffc482f59d"><td class="memItemLeft" align="right" valign="top"><a id="a5159a693ed3f4400443a33ffc482f59d" name="a5159a693ed3f4400443a33ffc482f59d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>UseDarkMode</b> () const</td></tr>
+<tr class="memdesc:a5159a693ed3f4400443a33ffc482f59d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the dark style set is currently active. <br /></td></tr>
+<tr class="separator:a5159a693ed3f4400443a33ffc482f59d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab03022772cc6495cd0bc8e4d310c8419"><td class="memItemLeft" align="right" valign="top"><a id="ab03022772cc6495cd0bc8e4d310c8419" name="ab03022772cc6495cd0bc8e4d310c8419"></a>
 long&#160;</td><td class="memItemRight" valign="bottom"><b>UndoLimit</b> ()</td></tr>
 <tr class="separator:ab03022772cc6495cd0bc8e4d310c8419"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1249,6 +1260,10 @@ static const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><
 static wxColour&#160;</td><td class="memItemRight" valign="bottom"><b>InvertColour</b> (wxColour col)</td></tr>
 <tr class="memdesc:a2c02a3cf06a1d52dd15bbba628b0899c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverts a color: In 2020 wxColor still lacks this functionality. <br /></td></tr>
 <tr class="separator:a2c02a3cf06a1d52dd15bbba628b0899c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2514c55628afd01670a63f6205a5db1c"><td class="memItemLeft" align="right" valign="top"><a id="a2514c55628afd01670a63f6205a5db1c" name="a2514c55628afd01670a63f6205a5db1c"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SystemIsDark</b> ()</td></tr>
+<tr class="memdesc:a2514c55628afd01670a63f6205a5db1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the OS reports a dark appearance (false where wx cannot tell). <br /></td></tr>
+<tr class="separator:a2514c55628afd01670a63f6205a5db1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a408780614dd19920537cfdc7310115f2"><td class="memItemLeft" align="right" valign="top"><a id="a408780614dd19920537cfdc7310115f2" name="a408780614dd19920537cfdc7310115f2"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaDefaultLocation</b> ()</td></tr>
 <tr class="memdesc:a408780614dd19920537cfdc7310115f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The auto-detected maxima location. <br /></td></tr>

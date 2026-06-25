@@ -275,168 +275,172 @@ $(function() {
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#af3795489c61090c8da5365af9a071a01">OnTabChange</a>(wxBookCtrlEvent &amp;event);</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#a2a091d60545ae1407dbde8781ac7306f">OnStyleToEditChanged</a>(wxCommandEvent &amp;event);</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <span class="comment">// begin wxGlade: ConfigDialogue::attributes</span></div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#ac20ddcb097b7d32845942ccc133547d6">  263</a></span><span class="comment"></span>  wxTextCtrl *<a class="code hl_variable" href="classConfigDialogue.html#ac20ddcb097b7d32845942ccc133547d6">m_startupCommands</a>;</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#ad0d84cec77624f0f7181309b89d15787">  265</a></span>  wxTextCtrl *<a class="code hl_variable" href="classConfigDialogue.html#ad0d84cec77624f0f7181309b89d15787">m_wxStartupCommands</a>;</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  <a class="code hl_class" href="classBinaryNameCtrl.html">BinaryNameCtrl</a> *m_maximaUserLocation;</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  <a class="code hl_class" href="classBinaryNameCtrl.html">BinaryNameCtrl</a> *m_helpBrowserUserLocation;</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  wxTextCtrl *m_documentclass;</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  wxTextCtrl *m_documentclassOptions;</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  wxTextCtrl *m_texPreamble;</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  wxCheckBox *m_autoSave;</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  wxButton *m_wxMathMLBrowse;</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  wxTextCtrl *m_additionalParameters;</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  wxTextCtrl *m_mathJaxURL;</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  wxChoice *m_language;</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  wxTextCtrl *m_symbolPaneAdditionalChars;</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  wxCheckBox *m_abortOnError;</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  wxCheckBox *m_offerKnownAnswers;</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  wxCheckBox *m_restartOnReEvaluation;</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  wxCheckBox *m_wrapLatexMath;</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  wxCheckBox *m_usesvg;</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  wxCheckBox *m_antialiasLines;</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  wxSpinCtrl *m_defaultFramerate;</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  wxSpinCtrl *m_defaultPlotWidth;</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  wxSpinCtrl *m_defaultPlotHeight;</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  wxSpinCtrl *m_displayedDigits;</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  wxSpinCtrl *m_printMargin_Top;</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  wxSpinCtrl *m_printMargin_Bot;</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  wxSpinCtrl *m_printMargin_Left;</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  wxSpinCtrl *m_printMargin_Right;</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  wxRadioButton *m_displayNDigits;</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  wxRadioButton *m_displayAllDigits;</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  wxRadioButton *m_linebreaksInLongNums;</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  wxSpinCtrl *m_maxClipbrdBitmapMegabytes;</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#aeee34ee5cedb6bd154ddb8234398770d">  296</a></span>  wxCheckBox *<a class="code hl_variable" href="classConfigDialogue.html#aeee34ee5cedb6bd154ddb8234398770d">m_TeXExponentsAfterSubscript</a>;</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#a67f2a4925c363adc173b1c36677a1026">  298</a></span>  wxCheckBox *<a class="code hl_variable" href="classConfigDialogue.html#a67f2a4925c363adc173b1c36677a1026">m_usePartialForDiff</a>;</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#a1839f7952022968ff6936aeae17fd357">  300</a></span>  wxCheckBox *<a class="code hl_variable" href="classConfigDialogue.html#a1839f7952022968ff6936aeae17fd357">m_exportContainsWXMX</a>;</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>  wxCheckBox *m_printBrackets;</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>  wxChoice *m_exportWithMathJAX;</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  wxCheckBox *m_matchParens;</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  wxCheckBox *m_showMatchingParens;</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  wxChoice *m_showLength;</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  wxChoice *m_autosubscript;</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  wxRadioBox *m_layoutStrategy;</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  wxRadioButton *m_enterEvaluates;</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  wxRadioButton *m_ctrlEnterEvaluates;</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  wxCheckBox *m_numpadEnterEvaluates;</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  wxCheckBox *m_saveImgFileName;</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  wxCheckBox *m_saveUntitled;</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  wxCheckBox *m_openHCaret;</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  wxCheckBox *m_insertAns;</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  wxCheckBox *m_autoIndent;</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>  wxCheckBox *m_cursorJump;</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  wxCheckBox *m_hideBrackets;</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  wxCheckBox *m_indentMaths;</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  wxChoice *m_autoWrap;</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  wxSpinCtrl *m_labelWidth;</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  wxSpinCtrl *m_undoLimit;</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  wxSpinCtrl *m_recentItems;</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  wxSpinCtrl *m_bitmapScale;</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  wxSpinCtrlDouble *m_printScale;</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  wxCheckBox *m_fixReorderedIndices;</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  wxCheckBox *m_incrementalSearch;</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  wxCheckBox *m_notifyIfIdle;</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  wxChoice *m_showUserDefinedLabels;</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  wxButton *m_getStyleFont;</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  wxListBox *m_styleFor;</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#a6e613d1161f3ae09a28b89b72dc0fbf6">  332</a></span>  wxColourPickerCtrl *<a class="code hl_variable" href="classConfigDialogue.html#a6e613d1161f3ae09a28b89b72dc0fbf6">m_styleColor</a>;</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  wxCheckBox *m_boldCB;</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  wxCheckBox *m_italicCB;</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>  wxCheckBox *m_slantedCB;</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  wxCheckBox *m_strikethroughCB;</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>  wxCheckBox *m_underlinedCB;</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  wxCheckBox *m_fixedFontInTC;</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  wxCheckBox *m_unixCopy;</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>  wxCheckBox *m_changeAsterisk;</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  wxCheckBox *m_hidemultiplicationSign;</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>  wxCheckBox *m_latin2Greek;</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>  wxCheckBox *m_useUnicodeMaths;</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  wxCheckBox *m_keepPercentWithSpecials;</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  wxBookCtrlBase *m_notebook;</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>  wxButton *m_saveStyle, *m_loadStyle;</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>  wxSpinCtrl *m_defaultPort;</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>  ExamplePanel *m_examplePanel;</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>  wxSpinCtrl *m_maxGnuplotMegabytes;</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>  wxSpinCtrl *m_autosaveMinutes;</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>  wxSpinCtrl *m_maxLayoutTime;</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>  wxTextCtrl *m_autoMathJaxURL;</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>  <span class="keywordtype">int</span> m_maximaEmvRightClickRow = 0;</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#ac87a1da42c1b7996d250f5959bbef56f">UsesvgChanged</a>(wxCommandEvent &amp;event);</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span> </div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#a7e07e1ffb227a5fb351a04ae7f78c326">OnClose</a>(wxCloseEvent &amp;event);</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  <span class="keywordtype">void</span> OnwxMathMLBrowse(wxCommandEvent &amp;event);</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>  <span class="keywordtype">void</span> OnIdle(wxIdleEvent &amp;event);</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#aef870b86b28e98a7b901e3ab2292bbc2">OnAppearanceChanged</a>(wxCommandEvent &amp;event);</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <span class="comment">// begin wxGlade: ConfigDialogue::attributes</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#ac20ddcb097b7d32845942ccc133547d6">  265</a></span><span class="comment"></span>  wxTextCtrl *<a class="code hl_variable" href="classConfigDialogue.html#ac20ddcb097b7d32845942ccc133547d6">m_startupCommands</a>;</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#ad0d84cec77624f0f7181309b89d15787">  267</a></span>  wxTextCtrl *<a class="code hl_variable" href="classConfigDialogue.html#ad0d84cec77624f0f7181309b89d15787">m_wxStartupCommands</a>;</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  <a class="code hl_class" href="classBinaryNameCtrl.html">BinaryNameCtrl</a> *m_maximaUserLocation;</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  <a class="code hl_class" href="classBinaryNameCtrl.html">BinaryNameCtrl</a> *m_helpBrowserUserLocation;</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  wxTextCtrl *m_documentclass;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  wxTextCtrl *m_documentclassOptions;</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  wxTextCtrl *m_texPreamble;</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  wxCheckBox *m_autoSave;</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  wxButton *m_wxMathMLBrowse;</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  wxTextCtrl *m_additionalParameters;</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  wxTextCtrl *m_mathJaxURL;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  wxChoice *m_language;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  wxTextCtrl *m_symbolPaneAdditionalChars;</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  wxCheckBox *m_abortOnError;</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  wxCheckBox *m_offerKnownAnswers;</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  wxCheckBox *m_restartOnReEvaluation;</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  wxCheckBox *m_wrapLatexMath;</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  wxCheckBox *m_usesvg;</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  wxCheckBox *m_antialiasLines;</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  wxSpinCtrl *m_defaultFramerate;</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  wxSpinCtrl *m_defaultPlotWidth;</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  wxSpinCtrl *m_defaultPlotHeight;</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  wxSpinCtrl *m_displayedDigits;</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  wxSpinCtrl *m_printMargin_Top;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  wxSpinCtrl *m_printMargin_Bot;</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  wxSpinCtrl *m_printMargin_Left;</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  wxSpinCtrl *m_printMargin_Right;</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  wxRadioButton *m_displayNDigits;</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  wxRadioButton *m_displayAllDigits;</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  wxRadioButton *m_linebreaksInLongNums;</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  wxSpinCtrl *m_maxClipbrdBitmapMegabytes;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#aeee34ee5cedb6bd154ddb8234398770d">  298</a></span>  wxCheckBox *<a class="code hl_variable" href="classConfigDialogue.html#aeee34ee5cedb6bd154ddb8234398770d">m_TeXExponentsAfterSubscript</a>;</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#a67f2a4925c363adc173b1c36677a1026">  300</a></span>  wxCheckBox *<a class="code hl_variable" href="classConfigDialogue.html#a67f2a4925c363adc173b1c36677a1026">m_usePartialForDiff</a>;</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#a1839f7952022968ff6936aeae17fd357">  302</a></span>  wxCheckBox *<a class="code hl_variable" href="classConfigDialogue.html#a1839f7952022968ff6936aeae17fd357">m_exportContainsWXMX</a>;</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  wxCheckBox *m_printBrackets;</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  wxChoice *m_exportWithMathJAX;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  wxCheckBox *m_matchParens;</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  wxCheckBox *m_showMatchingParens;</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  wxChoice *m_showLength;</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  wxChoice *m_autosubscript;</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  wxRadioBox *m_layoutStrategy;</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  wxRadioButton *m_enterEvaluates;</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  wxRadioButton *m_ctrlEnterEvaluates;</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  wxCheckBox *m_numpadEnterEvaluates;</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  wxCheckBox *m_saveImgFileName;</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  wxCheckBox *m_saveUntitled;</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  wxCheckBox *m_openHCaret;</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>  wxCheckBox *m_insertAns;</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  wxCheckBox *m_autoIndent;</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  wxCheckBox *m_cursorJump;</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  wxCheckBox *m_hideBrackets;</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  wxCheckBox *m_indentMaths;</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  wxChoice *m_autoWrap;</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  wxSpinCtrl *m_labelWidth;</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  wxSpinCtrl *m_undoLimit;</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  wxSpinCtrl *m_recentItems;</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  wxSpinCtrl *m_bitmapScale;</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  wxSpinCtrlDouble *m_printScale;</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  wxCheckBox *m_fixReorderedIndices;</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  wxCheckBox *m_incrementalSearch;</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  wxCheckBox *m_notifyIfIdle;</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  wxChoice *m_showUserDefinedLabels;</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>  wxButton *m_getStyleFont;</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#a7c51b8f2baf3a5fcf581fdd122a1dda0">  333</a></span>  wxChoice *<a class="code hl_variable" href="classConfigDialogue.html#a7c51b8f2baf3a5fcf581fdd122a1dda0">m_appearanceChoice</a>;</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  wxListBox *m_styleFor;</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#a6e613d1161f3ae09a28b89b72dc0fbf6">  336</a></span>  wxColourPickerCtrl *<a class="code hl_variable" href="classConfigDialogue.html#a6e613d1161f3ae09a28b89b72dc0fbf6">m_styleColor</a>;</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>  wxCheckBox *m_boldCB;</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  wxCheckBox *m_italicCB;</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  wxCheckBox *m_slantedCB;</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>  wxCheckBox *m_strikethroughCB;</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  wxCheckBox *m_underlinedCB;</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>  wxCheckBox *m_fixedFontInTC;</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>  wxCheckBox *m_unixCopy;</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  wxCheckBox *m_changeAsterisk;</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  wxCheckBox *m_hidemultiplicationSign;</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>  wxCheckBox *m_latin2Greek;</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>  wxCheckBox *m_useUnicodeMaths;</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>  wxCheckBox *m_keepPercentWithSpecials;</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>  wxBookCtrlBase *m_notebook;</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>  wxButton *m_saveStyle, *m_loadStyle;</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>  wxSpinCtrl *m_defaultPort;</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>  ExamplePanel *m_examplePanel;</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>  wxSpinCtrl *m_maxGnuplotMegabytes;</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>  wxSpinCtrl *m_autosaveMinutes;</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>  wxSpinCtrl *m_maxLayoutTime;</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>  wxTextCtrl *m_autoMathJaxURL;</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>  <span class="keywordtype">int</span> m_maximaEmvRightClickRow = 0;</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span> </div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#ac87a1da42c1b7996d250f5959bbef56f">UsesvgChanged</a>(wxCommandEvent &amp;event);</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span> </div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#a7e07e1ffb227a5fb351a04ae7f78c326">OnClose</a>(wxCloseEvent &amp;event);</div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span> </div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#ac2e444e2b92829f1ee982fc153b0d744">OnChangeStyle</a>(wxCommandEvent &amp;event);</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#a3ac7a38e0032817e76f1a061f815a710">OnChangeWarning</a>(wxCommandEvent &amp;event);</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#a0776208b2cfa68579e8ed265bf65e4e6">OnCheckbox</a>(wxCommandEvent &amp;event);</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span> </div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#a3c3259424f542d800d5fe05397e1f917">UpdateExample</a>();</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span> </div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#ae69ca29f8fce37546136bbd41d354e69">OnChangeFontFamily</a>(wxCommandEvent &amp;event);</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span> </div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805">LoadSave</a>(wxCommandEvent &amp;event);</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span> </div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  <a class="code hl_enumeration" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> <a class="code hl_function" href="classConfigDialogue.html#ac7008fa02afb4834fc7efce94151ad67">GetSelectedStyle</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span> </div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#a5a48cca32905adcdd5c4a1ff891b9130">  387</a></span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="classConfigDialogue.html#a5a48cca32905adcdd5c4a1ff891b9130">m_fontSize</a>;</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#a02f8ed84057b4ff0387da6a2f0fd9dc2">  389</a></span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="classConfigDialogue.html#a02f8ed84057b4ff0387da6a2f0fd9dc2">m_mathFontSize</a>;</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span> </div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span><span class="preprocessor">#if wxCHECK_VERSION(3, 1, 6)</span></div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>  wxVector&lt;wxBitmapBundle&gt; <a class="code hl_variable" href="classConfigDialogue.html#a270f8e743a41bf08808a3fe018732336">m_imageList</a>;</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#a270f8e743a41bf08808a3fe018732336">  395</a></span>  std::unique_ptr&lt;wxImageList&gt; <a class="code hl_variable" href="classConfigDialogue.html#a270f8e743a41bf08808a3fe018732336">m_imageList</a>;</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>};</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span><span class="preprocessor">#ifndef __WXMSW__</span></div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span><span class="preprocessor">#endif </span><span class="comment">// __WXMSW__</span></div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>  <span class="keywordtype">void</span> OnwxMathMLBrowse(wxCommandEvent &amp;event);</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span> </div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>  <span class="keywordtype">void</span> OnIdle(wxIdleEvent &amp;event);</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span> </div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#ac2e444e2b92829f1ee982fc153b0d744">OnChangeStyle</a>(wxCommandEvent &amp;event);</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span> </div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#a3ac7a38e0032817e76f1a061f815a710">OnChangeWarning</a>(wxCommandEvent &amp;event);</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span> </div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#a0776208b2cfa68579e8ed265bf65e4e6">OnCheckbox</a>(wxCommandEvent &amp;event);</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#a3c3259424f542d800d5fe05397e1f917">UpdateExample</a>();</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span> </div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#ae69ca29f8fce37546136bbd41d354e69">OnChangeFontFamily</a>(wxCommandEvent &amp;event);</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805">LoadSave</a>(wxCommandEvent &amp;event);</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  <a class="code hl_enumeration" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> <a class="code hl_function" href="classConfigDialogue.html#ac7008fa02afb4834fc7efce94151ad67">GetSelectedStyle</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span> </div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#a5a48cca32905adcdd5c4a1ff891b9130">  391</a></span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="classConfigDialogue.html#a5a48cca32905adcdd5c4a1ff891b9130">m_fontSize</a>;</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#a02f8ed84057b4ff0387da6a2f0fd9dc2">  393</a></span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="classConfigDialogue.html#a02f8ed84057b4ff0387da6a2f0fd9dc2">m_mathFontSize</a>;</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span> </div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span><span class="preprocessor">#if wxCHECK_VERSION(3, 1, 6)</span></div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  wxVector&lt;wxBitmapBundle&gt; <a class="code hl_variable" href="classConfigDialogue.html#a270f8e743a41bf08808a3fe018732336">m_imageList</a>;</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno"><a class="line" href="classConfigDialogue.html#a270f8e743a41bf08808a3fe018732336">  399</a></span>  std::unique_ptr&lt;wxImageList&gt; <a class="code hl_variable" href="classConfigDialogue.html#a270f8e743a41bf08808a3fe018732336">m_imageList</a>;</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>};</div>
 <div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span> </div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span><span class="preprocessor">#endif </span><span class="comment">// CONFIG_H</span></div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span><span class="preprocessor">#ifndef __WXMSW__</span></div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span> </div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span><span class="preprocessor">#endif </span><span class="comment">// __WXMSW__</span></div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span> </div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span><span class="preprocessor">#endif </span><span class="comment">// CONFIG_H</span></div>
 <div class="ttc" id="aBinaryNameCtrl_8h_html"><div class="ttname"><a href="BinaryNameCtrl_8h.html">BinaryNameCtrl.h</a></div><div class="ttdoc">This file declares all the wizards the draw sidepane needs.</div></div>
 <div class="ttc" id="aTextStyle_8h_html"><div class="ttname"><a href="TextStyle_8h.html">TextStyle.h</a></div><div class="ttdoc">This file declares everything needed for the text style system used to style all the elements on the ...</div></div>
 <div class="ttc" id="aTextStyle_8h_html_a68ac52da6129614b3fa14e7c828c1993"><div class="ttname"><a href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a></div><div class="ttdeci">TextStyle</div><div class="ttdoc">All text styles known to wxMaxima.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:231</div></div>
 <div class="ttc" id="aclassBinaryNameCtrl_html"><div class="ttname"><a href="classBinaryNameCtrl.html">BinaryNameCtrl</a></div><div class="ttdoc">A dialog that shows the program's license.</div><div class="ttdef"><b>Definition:</b> BinaryNameCtrl.h:40</div></div>
 <div class="ttc" id="aclassConfigDialogue_html"><div class="ttname"><a href="classConfigDialogue.html">ConfigDialogue</a></div><div class="ttdoc">The configuration dialog.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:85</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_a02f8ed84057b4ff0387da6a2f0fd9dc2"><div class="ttname"><a href="classConfigDialogue.html#a02f8ed84057b4ff0387da6a2f0fd9dc2">ConfigDialogue::m_mathFontSize</a></div><div class="ttdeci">int m_mathFontSize</div><div class="ttdoc">The size of the maths font.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:389</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_a0776208b2cfa68579e8ed265bf65e4e6"><div class="ttname"><a href="classConfigDialogue.html#a0776208b2cfa68579e8ed265bf65e4e6">ConfigDialogue::OnCheckbox</a></div><div class="ttdeci">void OnCheckbox(wxCommandEvent &amp;event)</div><div class="ttdoc">Called if one of the checkboxes for bold, italic or underlined is toggled.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2432</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_a02f8ed84057b4ff0387da6a2f0fd9dc2"><div class="ttname"><a href="classConfigDialogue.html#a02f8ed84057b4ff0387da6a2f0fd9dc2">ConfigDialogue::m_mathFontSize</a></div><div class="ttdeci">int m_mathFontSize</div><div class="ttdoc">The size of the maths font.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:393</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_a0776208b2cfa68579e8ed265bf65e4e6"><div class="ttname"><a href="classConfigDialogue.html#a0776208b2cfa68579e8ed265bf65e4e6">ConfigDialogue::OnCheckbox</a></div><div class="ttdeci">void OnCheckbox(wxCommandEvent &amp;event)</div><div class="ttdoc">Called if one of the checkboxes for bold, italic or underlined is toggled.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2464</div></div>
 <div class="ttc" id="aclassConfigDialogue_html_a1356a742af5a1c95366e4b85393a61c2"><div class="ttname"><a href="classConfigDialogue.html#a1356a742af5a1c95366e4b85393a61c2">ConfigDialogue::m_noAutodetectMathJaX</a></div><div class="ttdeci">wxRadioButton * m_noAutodetectMathJaX</div><div class="ttdoc">The radio button that is set if m_autodetectMathJaX is unset.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:252</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_a1839f7952022968ff6936aeae17fd357"><div class="ttname"><a href="classConfigDialogue.html#a1839f7952022968ff6936aeae17fd357">ConfigDialogue::m_exportContainsWXMX</a></div><div class="ttdeci">wxCheckBox * m_exportContainsWXMX</div><div class="ttdoc">A checkbox that asks if all newlines in text cells have to be passed to HTML.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:300</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_a270f8e743a41bf08808a3fe018732336"><div class="ttname"><a href="classConfigDialogue.html#a270f8e743a41bf08808a3fe018732336">ConfigDialogue::m_imageList</a></div><div class="ttdeci">std::unique_ptr&lt; wxImageList &gt; m_imageList</div><div class="ttdoc">A list containing the pictograms for the tabs.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:395</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_a2a091d60545ae1407dbde8781ac7306f"><div class="ttname"><a href="classConfigDialogue.html#a2a091d60545ae1407dbde8781ac7306f">ConfigDialogue::OnStyleToEditChanged</a></div><div class="ttdeci">void OnStyleToEditChanged(wxCommandEvent &amp;event)</div><div class="ttdoc">Called if the user changes the style that is to be edited.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2075</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_a1839f7952022968ff6936aeae17fd357"><div class="ttname"><a href="classConfigDialogue.html#a1839f7952022968ff6936aeae17fd357">ConfigDialogue::m_exportContainsWXMX</a></div><div class="ttdeci">wxCheckBox * m_exportContainsWXMX</div><div class="ttdoc">A checkbox that asks if all newlines in text cells have to be passed to HTML.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:302</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_a270f8e743a41bf08808a3fe018732336"><div class="ttname"><a href="classConfigDialogue.html#a270f8e743a41bf08808a3fe018732336">ConfigDialogue::m_imageList</a></div><div class="ttdeci">std::unique_ptr&lt; wxImageList &gt; m_imageList</div><div class="ttdoc">A list containing the pictograms for the tabs.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:399</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_a2a091d60545ae1407dbde8781ac7306f"><div class="ttname"><a href="classConfigDialogue.html#a2a091d60545ae1407dbde8781ac7306f">ConfigDialogue::OnStyleToEditChanged</a></div><div class="ttdeci">void OnStyleToEditChanged(wxCommandEvent &amp;event)</div><div class="ttdoc">Called if the user changes the style that is to be edited.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2096</div></div>
 <div class="ttc" id="aclassConfigDialogue_html_a370ee9d5121d579b62c97902151917c4"><div class="ttname"><a href="classConfigDialogue.html#a370ee9d5121d579b62c97902151917c4">ConfigDialogue::m_autodetectMathJaX</a></div><div class="ttdeci">wxRadioButton * m_autodetectMathJaX</div><div class="ttdoc">Autodetect the mathJaX location?</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:250</div></div>
 <div class="ttc" id="aclassConfigDialogue_html_a3a224221dc6260f2c741872d5545b123"><div class="ttname"><a href="classConfigDialogue.html#a3a224221dc6260f2c741872d5545b123">ConfigDialogue::m_autodetectMaxima</a></div><div class="ttdeci">wxRadioButton * m_autodetectMaxima</div><div class="ttdoc">Autodetect the maxima location?</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:239</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_a3ac7a38e0032817e76f1a061f815a710"><div class="ttname"><a href="classConfigDialogue.html#a3ac7a38e0032817e76f1a061f815a710">ConfigDialogue::OnChangeWarning</a></div><div class="ttdeci">void OnChangeWarning(wxCommandEvent &amp;event)</div><div class="ttdoc">A message dialog that appears if a change cannot be applied now.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2449</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_a3c3259424f542d800d5fe05397e1f917"><div class="ttname"><a href="classConfigDialogue.html#a3c3259424f542d800d5fe05397e1f917">ConfigDialogue::UpdateExample</a></div><div class="ttdeci">void UpdateExample()</div><div class="ttdoc">Sets the style example's style on style changes.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2455</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_a5a48cca32905adcdd5c4a1ff891b9130"><div class="ttname"><a href="classConfigDialogue.html#a5a48cca32905adcdd5c4a1ff891b9130">ConfigDialogue::m_fontSize</a></div><div class="ttdeci">int m_fontSize</div><div class="ttdoc">The size of the text font.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:387</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_a67f2a4925c363adc173b1c36677a1026"><div class="ttname"><a href="classConfigDialogue.html#a67f2a4925c363adc173b1c36677a1026">ConfigDialogue::m_usePartialForDiff</a></div><div class="ttdeci">wxCheckBox * m_usePartialForDiff</div><div class="ttdoc">A checkbox that asks if TeX should use the \partial symbol for representing diff()</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:298</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_a6a3d11ed034adf263350d8aa54a7e28d"><div class="ttname"><a href="classConfigDialogue.html#a6a3d11ed034adf263350d8aa54a7e28d">ConfigDialogue::WriteSettings</a></div><div class="ttdeci">void WriteSettings()</div><div class="ttdoc">Stores the settings from the configuration dialog.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2092</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_a3ac7a38e0032817e76f1a061f815a710"><div class="ttname"><a href="classConfigDialogue.html#a3ac7a38e0032817e76f1a061f815a710">ConfigDialogue::OnChangeWarning</a></div><div class="ttdeci">void OnChangeWarning(wxCommandEvent &amp;event)</div><div class="ttdoc">A message dialog that appears if a change cannot be applied now.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2481</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_a3c3259424f542d800d5fe05397e1f917"><div class="ttname"><a href="classConfigDialogue.html#a3c3259424f542d800d5fe05397e1f917">ConfigDialogue::UpdateExample</a></div><div class="ttdeci">void UpdateExample()</div><div class="ttdoc">Sets the style example's style on style changes.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2487</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_a5a48cca32905adcdd5c4a1ff891b9130"><div class="ttname"><a href="classConfigDialogue.html#a5a48cca32905adcdd5c4a1ff891b9130">ConfigDialogue::m_fontSize</a></div><div class="ttdeci">int m_fontSize</div><div class="ttdoc">The size of the text font.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:391</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_a67f2a4925c363adc173b1c36677a1026"><div class="ttname"><a href="classConfigDialogue.html#a67f2a4925c363adc173b1c36677a1026">ConfigDialogue::m_usePartialForDiff</a></div><div class="ttdeci">wxCheckBox * m_usePartialForDiff</div><div class="ttdoc">A checkbox that asks if TeX should use the \partial symbol for representing diff()</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:300</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_a6a3d11ed034adf263350d8aa54a7e28d"><div class="ttname"><a href="classConfigDialogue.html#a6a3d11ed034adf263350d8aa54a7e28d">ConfigDialogue::WriteSettings</a></div><div class="ttdeci">void WriteSettings()</div><div class="ttdoc">Stores the settings from the configuration dialog.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2124</div></div>
 <div class="ttc" id="aclassConfigDialogue_html_a6e098e7e113a9de9c7f26ffdb5bb7e6b"><div class="ttname"><a href="classConfigDialogue.html#a6e098e7e113a9de9c7f26ffdb5bb7e6b">ConfigDialogue::m_mp</a></div><div class="ttdeci">wxStaticText * m_mp</div><div class="ttdoc">The text &quot;Maxima Program&quot; that can change color.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:236</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_a6e613d1161f3ae09a28b89b72dc0fbf6"><div class="ttname"><a href="classConfigDialogue.html#a6e613d1161f3ae09a28b89b72dc0fbf6">ConfigDialogue::m_styleColor</a></div><div class="ttdeci">wxColourPickerCtrl * m_styleColor</div><div class="ttdoc">An example rectangle with the font color.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:332</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_a7e07e1ffb227a5fb351a04ae7f78c326"><div class="ttname"><a href="classConfigDialogue.html#a7e07e1ffb227a5fb351a04ae7f78c326">ConfigDialogue::OnClose</a></div><div class="ttdeci">void OnClose(wxCloseEvent &amp;event)</div><div class="ttdoc">Is called when the configuration dialog is closed.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2081</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_a6e613d1161f3ae09a28b89b72dc0fbf6"><div class="ttname"><a href="classConfigDialogue.html#a6e613d1161f3ae09a28b89b72dc0fbf6">ConfigDialogue::m_styleColor</a></div><div class="ttdeci">wxColourPickerCtrl * m_styleColor</div><div class="ttdoc">An example rectangle with the font color.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:336</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_a7c51b8f2baf3a5fcf581fdd122a1dda0"><div class="ttname"><a href="classConfigDialogue.html#a7c51b8f2baf3a5fcf581fdd122a1dda0">ConfigDialogue::m_appearanceChoice</a></div><div class="ttdeci">wxChoice * m_appearanceChoice</div><div class="ttdoc">Light / Dark / Follow-system selector (also picks which set the editor edits).</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:333</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_a7e07e1ffb227a5fb351a04ae7f78c326"><div class="ttname"><a href="classConfigDialogue.html#a7e07e1ffb227a5fb351a04ae7f78c326">ConfigDialogue::OnClose</a></div><div class="ttdeci">void OnClose(wxCloseEvent &amp;event)</div><div class="ttdoc">Is called when the configuration dialog is closed.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2113</div></div>
 <div class="ttc" id="aclassConfigDialogue_html_a8b805ead8f0ea0ada0317c488bcba657"><div class="ttname"><a href="classConfigDialogue.html#a8b805ead8f0ea0ada0317c488bcba657">ConfigDialogue::m_wxStartupFileName</a></div><div class="ttdeci">wxString m_wxStartupFileName</div><div class="ttdoc">The name of wxMaxima's startup file.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:234</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_ac20ddcb097b7d32845942ccc133547d6"><div class="ttname"><a href="classConfigDialogue.html#ac20ddcb097b7d32845942ccc133547d6">ConfigDialogue::m_startupCommands</a></div><div class="ttdeci">wxTextCtrl * m_startupCommands</div><div class="ttdoc">A textbox containing maxima's startup commands.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:263</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_ac2e444e2b92829f1ee982fc153b0d744"><div class="ttname"><a href="classConfigDialogue.html#ac2e444e2b92829f1ee982fc153b0d744">ConfigDialogue::OnChangeStyle</a></div><div class="ttdeci">void OnChangeStyle(wxCommandEvent &amp;event)</div><div class="ttdoc">Called if a new item type that is to be styled is selected.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2296</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_ac20ddcb097b7d32845942ccc133547d6"><div class="ttname"><a href="classConfigDialogue.html#ac20ddcb097b7d32845942ccc133547d6">ConfigDialogue::m_startupCommands</a></div><div class="ttdeci">wxTextCtrl * m_startupCommands</div><div class="ttdoc">A textbox containing maxima's startup commands.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:265</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_ac2e444e2b92829f1ee982fc153b0d744"><div class="ttname"><a href="classConfigDialogue.html#ac2e444e2b92829f1ee982fc153b0d744">ConfigDialogue::OnChangeStyle</a></div><div class="ttdeci">void OnChangeStyle(wxCommandEvent &amp;event)</div><div class="ttdoc">Called if a new item type that is to be styled is selected.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2328</div></div>
 <div class="ttc" id="aclassConfigDialogue_html_ac7008fa02afb4834fc7efce94151ad67"><div class="ttname"><a href="classConfigDialogue.html#ac7008fa02afb4834fc7efce94151ad67">ConfigDialogue::GetSelectedStyle</a></div><div class="ttdeci">TextStyle GetSelectedStyle() const</div><div class="ttdoc">Get the style currently selected in the m_styleFor control.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:1925</div></div>
 <div class="ttc" id="aclassConfigDialogue_html_ac87a1da42c1b7996d250f5959bbef56f"><div class="ttname"><a href="classConfigDialogue.html#ac87a1da42c1b7996d250f5959bbef56f">ConfigDialogue::UsesvgChanged</a></div><div class="ttdeci">void UsesvgChanged(wxCommandEvent &amp;event)</div><div class="ttdoc">Is called when the path to the maxima binary was changed.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:285</div></div>
 <div class="ttc" id="aclassConfigDialogue_html_ace6707c345efe2f4737aab01c1b1f37a"><div class="ttname"><a href="classConfigDialogue.html#ace6707c345efe2f4737aab01c1b1f37a">ConfigDialogue::m_startupFileName</a></div><div class="ttdeci">wxString m_startupFileName</div><div class="ttdoc">The name of maxima's startup file.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:232</div></div>
 <div class="ttc" id="aclassConfigDialogue_html_acf7cc3c884073c6c6b45c065061b835a"><div class="ttname"><a href="classConfigDialogue.html#acf7cc3c884073c6c6b45c065061b835a">ConfigDialogue::m_noAutodetectMaxima</a></div><div class="ttdeci">wxRadioButton * m_noAutodetectMaxima</div><div class="ttdoc">The radio button that is set if m_autodetectMaxima is unset.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:241</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_ad0d84cec77624f0f7181309b89d15787"><div class="ttname"><a href="classConfigDialogue.html#ad0d84cec77624f0f7181309b89d15787">ConfigDialogue::m_wxStartupCommands</a></div><div class="ttdeci">wxTextCtrl * m_wxStartupCommands</div><div class="ttdoc">A textbox containing wxMaxima's startup commands.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:265</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_ad0d84cec77624f0f7181309b89d15787"><div class="ttname"><a href="classConfigDialogue.html#ad0d84cec77624f0f7181309b89d15787">ConfigDialogue::m_wxStartupCommands</a></div><div class="ttdeci">wxTextCtrl * m_wxStartupCommands</div><div class="ttdoc">A textbox containing wxMaxima's startup commands.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:267</div></div>
 <div class="ttc" id="aclassConfigDialogue_html_ad25b60509b8711db5f1fb118b88b2d95"><div class="ttname"><a href="classConfigDialogue.html#ad25b60509b8711db5f1fb118b88b2d95">ConfigDialogue::htmlExportFormats</a></div><div class="ttdeci">htmlExportFormats</div><div class="ttdoc">The export formats we support for HTML equations.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:95</div></div>
 <div class="ttc" id="aclassConfigDialogue_html_ae03f1eccf899b2b04adb423f0a104a09"><div class="ttname"><a href="classConfigDialogue.html#ae03f1eccf899b2b04adb423f0a104a09">ConfigDialogue::~ConfigDialogue</a></div><div class="ttdeci">~ConfigDialogue()</div><div class="ttdoc">The destructor.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:283</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_ae69ca29f8fce37546136bbd41d354e69"><div class="ttname"><a href="classConfigDialogue.html#ae69ca29f8fce37546136bbd41d354e69">ConfigDialogue::OnChangeFontFamily</a></div><div class="ttdeci">void OnChangeFontFamily(wxCommandEvent &amp;event)</div><div class="ttdoc">Called if the font family is changed.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2270</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_aeee34ee5cedb6bd154ddb8234398770d"><div class="ttname"><a href="classConfigDialogue.html#aeee34ee5cedb6bd154ddb8234398770d">ConfigDialogue::m_TeXExponentsAfterSubscript</a></div><div class="ttdeci">wxCheckBox * m_TeXExponentsAfterSubscript</div><div class="ttdoc">A checkbox that asks if TeX should put the exponents above or after the subscripts.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:296</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_af3795489c61090c8da5365af9a071a01"><div class="ttname"><a href="classConfigDialogue.html#af3795489c61090c8da5365af9a071a01">ConfigDialogue::OnTabChange</a></div><div class="ttdeci">void OnTabChange(wxBookCtrlEvent &amp;event)</div><div class="ttdoc">Called if the currently active dialogue sheet is changed.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2475</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_afc6b8a15b845d43b4552539b7ec30fad"><div class="ttname"><a href="classConfigDialogue.html#afc6b8a15b845d43b4552539b7ec30fad">ConfigDialogue::OnChangeColor</a></div><div class="ttdeci">void OnChangeColor(wxColourPickerEvent &amp;event)</div><div class="ttdoc">Called if the color of an item has been changed.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2288</div></div>
-<div class="ttc" id="aclassConfigDialogue_html_afeac2a9acf99d95414b0f0e823550805"><div class="ttname"><a href="classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805">ConfigDialogue::LoadSave</a></div><div class="ttdeci">void LoadSave(wxCommandEvent &amp;event)</div><div class="ttdoc">A &quot;export the configuration&quot; dialog.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2481</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_ae69ca29f8fce37546136bbd41d354e69"><div class="ttname"><a href="classConfigDialogue.html#ae69ca29f8fce37546136bbd41d354e69">ConfigDialogue::OnChangeFontFamily</a></div><div class="ttdeci">void OnChangeFontFamily(wxCommandEvent &amp;event)</div><div class="ttdoc">Called if the font family is changed.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2302</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_aeee34ee5cedb6bd154ddb8234398770d"><div class="ttname"><a href="classConfigDialogue.html#aeee34ee5cedb6bd154ddb8234398770d">ConfigDialogue::m_TeXExponentsAfterSubscript</a></div><div class="ttdeci">wxCheckBox * m_TeXExponentsAfterSubscript</div><div class="ttdoc">A checkbox that asks if TeX should put the exponents above or after the subscripts.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.h:298</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_aef870b86b28e98a7b901e3ab2292bbc2"><div class="ttname"><a href="classConfigDialogue.html#aef870b86b28e98a7b901e3ab2292bbc2">ConfigDialogue::OnAppearanceChanged</a></div><div class="ttdeci">void OnAppearanceChanged(wxCommandEvent &amp;event)</div><div class="ttdoc">Light / Dark / Follow-system appearance changed: re-point the style editor.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2102</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_af3795489c61090c8da5365af9a071a01"><div class="ttname"><a href="classConfigDialogue.html#af3795489c61090c8da5365af9a071a01">ConfigDialogue::OnTabChange</a></div><div class="ttdeci">void OnTabChange(wxBookCtrlEvent &amp;event)</div><div class="ttdoc">Called if the currently active dialogue sheet is changed.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2507</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_afc6b8a15b845d43b4552539b7ec30fad"><div class="ttname"><a href="classConfigDialogue.html#afc6b8a15b845d43b4552539b7ec30fad">ConfigDialogue::OnChangeColor</a></div><div class="ttdeci">void OnChangeColor(wxColourPickerEvent &amp;event)</div><div class="ttdoc">Called if the color of an item has been changed.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2320</div></div>
+<div class="ttc" id="aclassConfigDialogue_html_afeac2a9acf99d95414b0f0e823550805"><div class="ttname"><a href="classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805">ConfigDialogue::LoadSave</a></div><div class="ttdeci">void LoadSave(wxCommandEvent &amp;event)</div><div class="ttdoc">A &quot;export the configuration&quot; dialog.</div><div class="ttdef"><b>Definition:</b> ConfigDialogue.cpp:2513</div></div>
 <div class="ttc" id="aclassStyle_html"><div class="ttname"><a href="classStyle.html">Style</a></div><div class="ttdoc">Text Style Definition.</div><div class="ttdef"><b>Definition:</b> TextStyle.h:63</div></div>
 <div class="ttc" id="aclassWorksheet_html"><div class="ttname"><a href="classWorksheet.html">Worksheet</a></div><div class="ttdoc">The canvas that contains the spreadsheet the whole program is about.</div><div class="ttdef"><b>Definition:</b> Worksheet.h:109</div></div>
 </div><!-- fragment --></div><!-- contents -->
