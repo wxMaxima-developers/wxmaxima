@@ -100,6 +100,16 @@ if(TARGET wxmTestApp)
     target_link_libraries(test_ManualAnchors PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(ManualAnchors test_ManualAnchors)
+
+    # Regression test for the cell-tree undo/redo (TreeUndo_*); the safety net for
+    # extracting that subsystem out of the Worksheet god class.
+    add_executable(test_TreeUndo
+        test_TreeUndo.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_TreeUndo PUBLIC cxx_std_20)
+    target_link_libraries(test_TreeUndo PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(TreeUndo test_TreeUndo)
 endif()
 
 # Same watchdog timeout the parent directory applies to its tests: keep a hung
