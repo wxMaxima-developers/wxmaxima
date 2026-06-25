@@ -111,12 +111,41 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Read</b> (wxConfigBas
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (wxConfigBase *config) const</td></tr>
 <tr class="memdesc:aaea29fa13c11dede7a91739e1da4f4ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write every persisted style to config. <br /></td></tr>
 <tr class="separator:aaea29fa13c11dede7a91739e1da4f4ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69d4bb4639d7e221db08363c4f1b3bc3"><td class="memItemLeft" align="right" valign="top"><a id="a69d4bb4639d7e221db08363c4f1b3bc3" name="a69d4bb4639d7e221db08363c4f1b3bc3"></a>
+const std::vector&lt; <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>CodeStylesList</b> () const</td></tr>
+<tr class="memdesc:a69d4bb4639d7e221db08363c4f1b3bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The styles that share the code-default font/attributes. <br /></td></tr>
+<tr class="separator:a69d4bb4639d7e221db08363c4f1b3bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5add79dc5b7ae37501c0d72956cd0391"><td class="memItemLeft" align="right" valign="top"><a id="a5add79dc5b7ae37501c0d72956cd0391" name="a5add79dc5b7ae37501c0d72956cd0391"></a>
+const std::vector&lt; <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MathStylesList</b> () const</td></tr>
+<tr class="memdesc:a5add79dc5b7ae37501c0d72956cd0391"><td class="mdescLeft">&#160;</td><td class="mdescRight">The styles that share the 2d-math font. <br /></td></tr>
+<tr class="separator:a5add79dc5b7ae37501c0d72956cd0391"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49b5484862197fc8b85fab5fb8d47835"><td class="memItemLeft" align="right" valign="top"><a id="a49b5484862197fc8b85fab5fb8d47835" name="a49b5484862197fc8b85fab5fb8d47835"></a>
+const std::vector&lt; <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>ColorOnlyStylesList</b> () const</td></tr>
+<tr class="memdesc:a49b5484862197fc8b85fab5fb8d47835"><td class="mdescLeft">&#160;</td><td class="mdescRight">The styles where only the color is configurable. <br /></td></tr>
+<tr class="separator:a49b5484862197fc8b85fab5fb8d47835"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab22b34cb31579c0776abbebd7264e6d5"><td class="memItemLeft" align="right" valign="top"><a id="ab22b34cb31579c0776abbebd7264e6d5" name="ab22b34cb31579c0776abbebd7264e6d5"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>AffectsCode</b> (<a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> style) const</td></tr>
+<tr class="separator:ab22b34cb31579c0776abbebd7264e6d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b0e43ccb948bcef125597178caa6fcb"><td class="memItemLeft" align="right" valign="top"><a id="a4b0e43ccb948bcef125597178caa6fcb" name="a4b0e43ccb948bcef125597178caa6fcb"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>AffectsMathOut</b> (<a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> style) const</td></tr>
+<tr class="separator:a4b0e43ccb948bcef125597178caa6fcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a986516764e0a2958e07a6a470e3387c9"><td class="memItemLeft" align="right" valign="top"><a id="a986516764e0a2958e07a6a470e3387c9" name="a986516764e0a2958e07a6a470e3387c9"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>AffectsColorOnly</b> (<a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> style) const</td></tr>
+<tr class="separator:a986516764e0a2958e07a6a470e3387c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b853fb73d334aef58001835da435bf6"><td class="memItemLeft" align="right" valign="top"><a id="a6b853fb73d334aef58001835da435bf6" name="a6b853fb73d334aef58001835da435bf6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>MakeConsistent</b> ()</td></tr>
+<tr class="memdesc:a6b853fb73d334aef58001835da435bf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Propagate the code-default / math fonts to the styles that must share them. <br /></td></tr>
+<tr class="separator:a6b853fb73d334aef58001835da435bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a0a7e361eb4d21f2b7a6cd8f4b6daf8c1"><td class="memItemLeft" align="right" valign="top">static const std::vector&lt; std::pair&lt; <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a>, wxString &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStyles.html#a0a7e361eb4d21f2b7a6cd8f4b6daf8c1">ConfigKeys</a> ()</td></tr>
 <tr class="memdesc:a0a7e361eb4d21f2b7a6cd8f4b6daf8c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The single source of truth mapping each persisted text style to its config-key prefix.  <br /></td></tr>
 <tr class="separator:a0a7e361eb4d21f2b7a6cd8f4b6daf8c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21bf4943137ee7b3ce6971d9eecc51ea"><td class="memItemLeft" align="right" valign="top"><a id="a21bf4943137ee7b3ce6971d9eecc51ea" name="a21bf4943137ee7b3ce6971d9eecc51ea"></a>
+static const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b> (<a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> textStyle)</td></tr>
+<tr class="memdesc:a21bf4943137ee7b3ce6971d9eecc51ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">The human-readable, translated name of a style (used by the config dialog). Returns an empty string for out-of-range / unnamed styles. <br /></td></tr>
+<tr class="separator:a21bf4943137ee7b3ce6971d9eecc51ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Storage for the worksheet's per-TextStyle text styles. </p>
