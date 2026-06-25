@@ -67,8 +67,32 @@ public:
   */
   static const std::vector<std::pair<TextStyle, wxString>> &ConfigKeys();
 
+  //! The human-readable, translated name of a style (used by the config dialog).
+  //! Returns an empty string for out-of-range / unnamed styles.
+  static const wxString &Name(TextStyle textStyle);
+
+  Styles();
+
+  //! The styles that share the code-default font/attributes.
+  const std::vector<TextStyle> &CodeStylesList() const { return m_codeStyles; }
+  //! The styles that share the 2d-math font.
+  const std::vector<TextStyle> &MathStylesList() const { return m_2dMathStyles; }
+  //! The styles where only the color is configurable.
+  const std::vector<TextStyle> &ColorOnlyStylesList() const { return m_colorOnlyStyles; }
+  bool AffectsCode(TextStyle style) const;
+  bool AffectsMathOut(TextStyle style) const;
+  bool AffectsColorOnly(TextStyle style) const;
+  //! Propagate the code-default / math fonts to the styles that must share them.
+  void MakeConsistent();
+
 private:
   Style m_styles[NUMBEROFSTYLES];
+  //! Styles that follow the code-default font/attributes.
+  std::vector<TextStyle> m_codeStyles;
+  //! Styles that follow the 2d-math font.
+  std::vector<TextStyle> m_2dMathStyles;
+  //! Styles where only the color is user-configurable.
+  std::vector<TextStyle> m_colorOnlyStyles;
 };
 
 #endif // WXMAXIMA_STYLES_H

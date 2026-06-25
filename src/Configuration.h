@@ -1101,11 +1101,11 @@ public:
   void LastActiveTextCtrl(wxTextCtrl *last);
 
   //! Which styles affect how code is displayed?
-  const std::vector<TextStyle> &GetCodeStylesList() const {return m_codeStyles;}
+  const std::vector<TextStyle> &GetCodeStylesList() const {return m_styleStore.CodeStylesList();}
   //! Which styles affect how math output is displayed?
-  const std::vector<TextStyle> &GetMathStylesList() const {return m_2dMathStyles;}
+  const std::vector<TextStyle> &GetMathStylesList() const {return m_styleStore.MathStylesList();}
   //! Which styles affect only colors?
-  const std::vector<TextStyle> &GetColorOnlyStylesList() const {return m_colorOnlyStyles;}
+  const std::vector<TextStyle> &GetColorOnlyStylesList() const {return m_styleStore.ColorOnlyStylesList();}
   bool StyleAffectsCode(TextStyle style) const;
   bool StyleAffectsMathOut(TextStyle style) const;
   bool StyleAffectsColorOnly(TextStyle style) const;
@@ -1135,8 +1135,6 @@ private:
   std::random_device m_rd;
   //! Our random engine
   std::default_random_engine m_eng;
-  //! The list of names for the worksheet's text styles
-  static std::unordered_map<TextStyle, wxString> m_styleNames;
   std::vector<CharsExist> m_charsInFont;
   StringHash m_maximaOperators;
   wxEnvVariableHashMap m_maximaEnvVars;
@@ -1161,12 +1159,6 @@ public:
 private:
   //! Which LANG environment variable to communicate to maxima?
   static wxString m_maxima_LANG;
-  //! Which styles affect how code is displayed?
-  std::vector<TextStyle> m_codeStyles;
-  //! Which styles affect how math output is displayed?
-  std::vector<TextStyle> m_2dMathStyles;
-  //! Which styles affect only colors?
-  std::vector<TextStyle> m_colorOnlyStyles;
   std::list<FileToSave> m_filesToSave;
   RenderablecharsHash m_renderableChars;
   RenderablecharsHash m_nonRenderableChars;
