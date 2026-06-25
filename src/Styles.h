@@ -71,7 +71,20 @@ public:
   //! Returns an empty string for out-of-range / unnamed styles.
   static const wxString &Name(TextStyle textStyle);
 
-  Styles();
+  // Defined inline so the lightweight unit tests (which include this header but do
+  // not link Styles.cpp) can still construct a Styles / Configuration.
+  Styles()
+    : m_codeStyles{TS_CODE_VARIABLE, TS_CODE_FUNCTION, TS_CODE_COMMENT,
+                   TS_CODE_NUMBER,   TS_CODE_STRING,   TS_CODE_OPERATOR,
+                   TS_CODE_LISP,     TS_CODE_ENDOFLINE, TS_EQUALSSELECTION},
+      m_2dMathStyles{TS_VARIABLE,    TS_OPERATOR,  TS_NUMBER,
+                     TS_FUNCTION,    TS_SPECIAL_CONSTANT, TS_GREEK_CONSTANT,
+                     TS_STRING,      TS_MAIN_PROMPT, TS_OTHER_PROMPT,
+                     TS_LABEL,       TS_USERLABEL, TS_HIGHLIGHT,
+                     TS_WARNING,     TS_ERROR, TS_ASCIIMATHS, TS_TEXT},
+      m_colorOnlyStyles{TS_TEXT_BACKGROUND, TS_DOCUMENT_BACKGROUND, TS_CELL_BRACKET,
+                        TS_ACTIVE_CELL_BRACKET, TS_CURSOR, TS_SELECTION,
+                        TS_EQUALSSELECTION, TS_OUTDATED} {}
 
   //! The styles that share the code-default font/attributes.
   const std::vector<TextStyle> &CodeStylesList() const { return m_codeStyles; }

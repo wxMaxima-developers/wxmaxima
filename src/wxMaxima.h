@@ -136,6 +136,16 @@ public:
 
   //! Do we want to exit the program after evaluation?
   void ExitAfterEval(bool exitaftereval);
+  /*! Is this an interactive session (as opposed to a batch run that will exit)?
+
+    Returns false while we are batch-processing a file and will exit afterwards,
+    true once we are (or have become) interactive. Use this to gate interactive-
+    only work -- help-anchor compilation, autocomplete symbol loading, the recent-
+    documents list -- so it is skipped in batch runs. AbortOnError() keeps
+    m_exitAfterEval accurate: a Maxima error only turns a batch session
+    interactive when we are not going to --exit-on-error.
+  */
+  bool IsInteractive() const { return !m_exitAfterEval; }
 
   void StripLispComments(wxString &s);
 

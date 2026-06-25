@@ -2992,12 +2992,11 @@ void wxMaxima::VariableActionMaximaHtmldir(const wxString &value) {
   if(GetWorksheet())
     {
       GetWorksheet()->SetMaximaDocDir(dir_canonical);
-      // In batch mode there is no interactive help/autocomplete, so don't spend a
-      // background thread parsing the whole HTML manual just to cache its anchors
-      // (that work -- and its cache write into the config dir -- is pointless
-      // here). It is deferred to ExitAfterEval() if/when the session turns
-      // interactive.
-      if (!m_exitAfterEval)
+      // Interactive-only: don't spend a background thread parsing the whole HTML
+      // manual to cache its anchors during a batch run (pointless, and its
+      // shutdown join wedged the multithreadtest CI run). Deferred to
+      // ExitAfterEval() if/when the session turns interactive.
+      if (IsInteractive())
         GetWorksheet()->LoadHelpFileAnchors(dir_canonical,
                                             m_configuration.GetMaximaVersion());
     }
@@ -3174,7 +3173,7 @@ void wxMaxima::VariableActionMaximaSharedir(const wxString &value) {
   wxLogMessage(_("Maxima's share files are located in directory %s"),
                dir);
   /// READ FUNCTIONS FOR AUTOCOMPLETION
-  if(GetWorksheet() && !m_exitAfterEval)
+  if(GetWorksheet() && IsInteractive())
     GetWorksheet()->LoadSymbols();
 }
 
@@ -4208,14 +4207,12 @@ wxString wxMaxima::EscapeForLisp(wxString str) {
 }
 
 void wxMaxima::ExitAfterEval(bool exitaftereval) {
-  // Leaving batch mode normally means an error dropped us into interactive use,
-  // so it's worth fetching the autocompletion symbols / variable list and
-  // compiling the manual anchors (all interactive-only conveniences we skip while
-  // batching). But with --exit-on-error we don't actually become interactive --
-  // we exit right after this -- so doing that interactive-only work is pure waste
-  // (and, for the manual anchors, kicks off a background parse that shutdown then
-  // has to join). Skip it in that case.
-  if (m_exitAfterEval && !exitaftereval && !GetExitOnError()) {
+  // We just left batch mode (an error dropped us into interactive use), so now
+  // it's worth fetching the autocompletion symbols / variable list and compiling
+  // the manual anchors -- interactive-only conveniences we skipped while batching.
+  // (AbortOnError() only calls this when we are NOT going to --exit-on-error, so
+  // we really are becoming interactive here.)
+  if (m_exitAfterEval && !exitaftereval) {
     // If we leave batch mode we want to have the autocompletion symbols
     // and the variable list.
     SendMaxima(wxS(":lisp-quiet (setf *wx-defer-queries* nil) ")
@@ -5125,7 +5122,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
     retval = OpenWXMFile(realFile, GetWorksheet());
     if (retval) {
       ReReadConfig();
-      if (!m_exitAfterEval)
+      if (IsInteractive())
         m_recentDocuments.AddDocument(realFile);
       ReReadConfig();
     }
@@ -5135,7 +5132,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
     retval = OpenMACFile(realFile, GetWorksheet());
     if (retval) {
       ReReadConfig();
-      if (!m_exitAfterEval)
+      if (IsInteractive())
         m_recentDocuments.AddDocument(realFile);
       ReReadConfig();
     }
@@ -5143,7 +5140,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
     retval = OpenMACFile(realFile, GetWorksheet());
     if (retval) {
       ReReadConfig();
-      if (!m_exitAfterEval)
+      if (IsInteractive())
         m_recentDocuments.AddDocument(realFile);
       ReReadConfig();
     }
@@ -5153,7 +5150,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
     retval = OpenWXMXFile(realFile, GetWorksheet());
     if (retval) {
       ReReadConfig();
-      if (!m_exitAfterEval)
+      if (IsInteractive())
         m_recentDocuments.AddDocument(realFile);
       ReReadConfig();
     }
@@ -5163,7 +5160,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
     retval = OpenWXMXFile(realFile, GetWorksheet());
     if (retval) {
       ReReadConfig();
-      if (!m_exitAfterEval)
+      if (IsInteractive())
         m_recentDocuments.AddDocument(realFile);
       ReReadConfig();
     }
@@ -5332,7 +5329,7 @@ bool wxMaxima::SaveFile(bool forceSave) {
       }
     }
 
-    if (!m_exitAfterEval)
+    if (IsInteractive())
       m_recentDocuments.AddDocument(file);
     SetCWD(file);
     StatusSaveFinished();
@@ -5419,7 +5416,14 @@ bool wxMaxima::AbortOnError() {
   // The question is now if we want to try to send it something new to evaluate.
   m_maximaError = true;
 
-  ExitAfterEval(false);
+  // An error normally drops a batch session into interactive use, so we leave
+  // batch mode (ExitAfterEval(false)) to re-enable the interactive-only work
+  // (help anchors, autocomplete, ...). But with --exit-on-error we close instead
+  // of becoming interactive (see below), so leaving batch mode would only flip
+  // m_exitAfterEval to false and wrongly re-enable all that work -- whose
+  // background tasks then wedge the shutdown join (the multithreadtest CI hang).
+  if (!GetExitOnError())
+    ExitAfterEval(false);
   EvalOnStartup(false);
 
   if (GetWorksheet()->GetNotification()) {
