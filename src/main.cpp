@@ -38,6 +38,7 @@
 #include <wx/fs_zip.h>
 #include <wx/image.h>
 #include <wx/intl.h>
+#include <wx/msgout.h>
 #include <wx/translation.h>
 #ifdef USE_QA
 #include <wx/debugrpt.h>
@@ -304,6 +305,14 @@ bool MyApp::OnInit() {
 #ifdef __WXMSW__
   // Must run before any console output or wxMessageOutput use (see above).
   RedirectStdioToParent();
+  // For a GUI-subsystem binary the default wxMessageOutput is a *modal* message
+  // box. That is what hangs every head-less wxmaxima launch (--version, --help /
+  // wxCmdLineParser::Usage(), and early diagnostics all go through it). Now that
+  // stdio is bound to the parent (pipe/console), route those to stdout instead,
+  // so they are printed and the process can exit. Windows-only by construction:
+  // macOS/Linux never compile this, so the macOS message-output behaviour that
+  // is sensitive around menu setup is left exactly as it was.
+  wxMessageOutput::Set(new wxMessageOutputStderr(stdout));
 #endif
   StartupTrace("OnInit entry");
   // if DEBUG=1 show the logwindow at start, else hide it.
