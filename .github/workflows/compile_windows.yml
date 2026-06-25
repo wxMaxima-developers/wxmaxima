@@ -159,20 +159,44 @@ jobs:
             cpack || type D:/a/wxmaxima/wxmaxima/wxMaxima/build/_CPack_Packages/win64/NSIS/NSISOutput.log
             cd ..
             cd ..
-      - name: Run integration tests (experimental)
-        # Exploratory first run of the Maxima-driven integration tests on Windows.
-        # Marked continue-on-error because we do not yet know which of them are
-        # portable: several shell out to POSIX tools (sh, nc, xmllint, unzip) that
-        # do not exist on the runner, and Maxima discovery on Windows is untested.
-        # The point of this run is to learn from the CI logs which tests pass, so
-        # the portable subset can later be promoted to a required check. Placed
-        # after packaging so the release artifacts are produced first. The
-        # "unittest" label is excluded as those already ran as a required step.
+      - name: Stage runtime DLLs next to wxmaxima.exe
+        # The release wxmaxima.exe is built non-static, so it depends on the MinGW
+        # runtime DLLs (libstdc++-6 / libgcc_s_seh-1 / libwinpthread-1) being found
+        # at launch. When the integration tests start it under ctest the loader
+        # otherwise pops a modal "cannot proceed" dialog and the test hangs to the
+        # watchdog (the same failure the unit-test exes had before -static). We do
+        # NOT change the shipped binary; we just drop the DLLs into wxmaxima.exe's
+        # own directory (searched first by the loader, so this also avoids any PATH
+        # version mismatch). Test-only; no effect on the NSIS installer.
         continue-on-error: true
         run: |
             cd wxMaxima
             cd build
-            ctest -LE unittest --output-on-failure
+            foreach ($dll in @("libstdc++-6.dll","libgcc_s_seh-1.dll","libwinpthread-1.dll")) {
+              $src = (where.exe $dll 2>$null | Select-Object -First 1)
+              if ($src) { Copy-Item $src -Destination "src" -Force; echo "staged $src" }
+              else { echo "::warning::$dll not found on PATH; wxmaxima-driven tests may hang" }
+            }
+            cd ..
+            cd ..
+      - name: Run integration tests (experimental)
+        # Exploratory first run of the Maxima-driven integration tests on Windows.
+        # Marked continue-on-error because we do not yet know which of them are
+        # portable: several shell out to POSIX tools (sh, nc, xmllint, unzip) that
+        # do not exist on the runner. The point of this run is to learn from the CI
+        # logs which tests pass, so the portable subset can later be promoted to a
+        # required check. Placed after packaging so the release artifacts are
+        # produced first. The "unittest" label is excluded as those already ran as
+        # a required step.
+        #
+        # -j 4 overlaps the many slow/hanging tests, and timeout-minutes is a hard
+        # ceiling so this exploratory step can never run away for hours (it has).
+        continue-on-error: true
+        timeout-minutes: 20
+        run: |
+            cd wxMaxima
+            cd build
+            ctest -LE unittest -j 4 --output-on-failure
             cd ..
             cd ..
 
