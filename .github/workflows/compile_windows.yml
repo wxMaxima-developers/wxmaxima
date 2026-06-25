@@ -172,10 +172,19 @@ jobs:
         run: |
             cd wxMaxima
             cd build
+            # Source the DLLs from the SAME MinGW that built wxmaxima.exe (gcc's own
+            # bin dir), NOT from PATH. Maxima ships its own older copies in
+            # C:\maxima-*\bin, which the Install Maxima step put on PATH ahead of
+            # the toolchain's; copying those next to a gcc-15-built wxmaxima.exe
+            # gives an "entry point not found" loader dialog -- the 120s hang. The
+            # exe's own directory is searched first, so the matching DLLs we drop
+            # here win; the maxima subprocess still loads its own bin as before.
+            $gccbin = Split-Path (Get-Command gcc).Source
+            echo "gcc bin: $gccbin"
             foreach ($dll in @("libstdc++-6.dll","libgcc_s_seh-1.dll","libwinpthread-1.dll")) {
-              $src = (where.exe $dll 2>$null | Select-Object -First 1)
-              if ($src) { Copy-Item $src -Destination "src" -Force; echo "staged $src" }
-              else { echo "::warning::$dll not found on PATH; wxmaxima-driven tests may hang" }
+              $src = Join-Path $gccbin $dll
+              if (Test-Path $src) { Copy-Item $src -Destination "src" -Force; echo "staged $src" }
+              else { echo "::warning::$dll not found in $gccbin; wxmaxima-driven tests may hang" }
             }
             cd ..
             cd ..
