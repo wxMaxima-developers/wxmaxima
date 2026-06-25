@@ -261,7 +261,9 @@ void Styles::Write(wxConfigBase *config) const {
 const std::vector<std::pair<TextStyle, wxString>> &Styles::ConfigKeys() {
   // The single source of truth for the config-key prefix of every persisted text
   // style. Read() and Write() both iterate this, so read and write can never
-  // disagree on a key. (TS_CURSOR intentionally shares the cell-bracket key.)
+  // disagree on a key. Every style needs its OWN key: TS_CURSOR used to share the
+  // active-cell-bracket key, which broke dark mode (the cursor must be light while
+  // the active bracket stays red -- one slot can't hold both).
   static const std::vector<std::pair<TextStyle, wxString>> keys = {
     {TS_MATH, wxS("Style/Math/")},
     {TS_TEXT, wxS("Style/Text/")},
@@ -299,7 +301,7 @@ const std::vector<std::pair<TextStyle, wxString>> &Styles::ConfigKeys() {
     {TS_ERROR, wxS("Style/Error/")},
     {TS_CELL_BRACKET, wxS("Style/CellBracket/")},
     {TS_ACTIVE_CELL_BRACKET, wxS("Style/ActiveCellBracket/")},
-    {TS_CURSOR, wxS("Style/ActiveCellBracket/")},
+    {TS_CURSOR, wxS("Style/Cursor/")},
     {TS_SELECTION, wxS("Style/Selection/")},
     {TS_EQUALSSELECTION, wxS("Style/EqualsSelection/")},
     {TS_OUTDATED, wxS("Style/Outdated/")},
