@@ -534,9 +534,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowCodeCells</b> (bo
 wxColour&#160;</td><td class="memItemRight" valign="bottom"><b>GetColor</b> (<a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> style)</td></tr>
 <tr class="memdesc:ab49ae1da5169571137816ff38f0b7edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the color for a text style. <br /></td></tr>
 <tr class="separator:ab49ae1da5169571137816ff38f0b7edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a059f2a73e613927c2367559c2d0f3d93"><td class="memItemLeft" align="right" valign="top">wxColor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a059f2a73e613927c2367559c2d0f3d93">MakeColorDifferFromBackground</a> (wxColor color)</td></tr>
-<tr class="memdesc:a059f2a73e613927c2367559c2d0f3d93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make this color differ from the background by a noticeable amount.  <br /></td></tr>
-<tr class="separator:a059f2a73e613927c2367559c2d0f3d93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58ca472b71126f55ff0dfc3450ac877e"><td class="memItemLeft" align="right" valign="top"><a id="a58ca472b71126f55ff0dfc3450ac877e" name="a58ca472b71126f55ff0dfc3450ac877e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>UsePngCairo</b> () const</td></tr>
 <tr class="separator:a58ca472b71126f55ff0dfc3450ac877e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -681,6 +678,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowInputLabels</b> (
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAppearance</b> (<a class="el" href="classConfiguration.html#a0c3c003a32828fe343fb6e3b616a4657">Appearance</a> a)</td></tr>
 <tr class="memdesc:a8a4d75690bfbfdf88e970adc7ef29d0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Choose the appearance and update which style set is active. <br /></td></tr>
 <tr class="separator:a8a4d75690bfbfdf88e970adc7ef29d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fb3aef43603efa80ad90461cf77e445"><td class="memItemLeft" align="right" valign="top"><a id="a8fb3aef43603efa80ad90461cf77e445" name="a8fb3aef43603efa80ad90461cf77e445"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateBackgroundBrush</b> ()</td></tr>
+<tr class="memdesc:a8fb3aef43603efa80ad90461cf77e445"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refresh the cached document-background brush from the active style set. <br /></td></tr>
+<tr class="separator:a8fb3aef43603efa80ad90461cf77e445"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5159a693ed3f4400443a33ffc482f59d"><td class="memItemLeft" align="right" valign="top"><a id="a5159a693ed3f4400443a33ffc482f59d" name="a5159a693ed3f4400443a33ffc482f59d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>UseDarkMode</b> () const</td></tr>
 <tr class="memdesc:a5159a693ed3f4400443a33ffc482f59d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the dark style set is currently active. <br /></td></tr>
@@ -1256,10 +1257,6 @@ static const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="memitem:a72e96b60fcbb9d6499ab07a391845717"><td class="memItemLeft" align="right" valign="top">static const std::vector&lt; std::pair&lt; <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a>, wxString &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a72e96b60fcbb9d6499ab07a391845717">StyleConfigKeys</a> ()</td></tr>
 <tr class="memdesc:a72e96b60fcbb9d6499ab07a391845717"><td class="mdescLeft">&#160;</td><td class="mdescRight">The single source of truth mapping each persisted text style to its config-key prefix.  <br /></td></tr>
 <tr class="separator:a72e96b60fcbb9d6499ab07a391845717"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c02a3cf06a1d52dd15bbba628b0899c"><td class="memItemLeft" align="right" valign="top"><a id="a2c02a3cf06a1d52dd15bbba628b0899c" name="a2c02a3cf06a1d52dd15bbba628b0899c"></a>
-static wxColour&#160;</td><td class="memItemRight" valign="bottom"><b>InvertColour</b> (wxColour col)</td></tr>
-<tr class="memdesc:a2c02a3cf06a1d52dd15bbba628b0899c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverts a color: In 2020 wxColor still lacks this functionality. <br /></td></tr>
-<tr class="separator:a2c02a3cf06a1d52dd15bbba628b0899c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2514c55628afd01670a63f6205a5db1c"><td class="memItemLeft" align="right" valign="top"><a id="a2514c55628afd01670a63f6205a5db1c" name="a2514c55628afd01670a63f6205a5db1c"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SystemIsDark</b> ()</td></tr>
 <tr class="memdesc:a2514c55628afd01670a63f6205a5db1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the OS reports a dark appearance (false where wx cannot tell). <br /></td></tr>
@@ -1690,27 +1687,6 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 <p>All maxima operator names we know. </p>
 <p>Coincides name with a operator known to maxima? </p>
-
-</div>
-</div>
-<a id="a059f2a73e613927c2367559c2d0f3d93" name="a059f2a73e613927c2367559c2d0f3d93"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a059f2a73e613927c2367559c2d0f3d93">&#9670;&#160;</a></span>MakeColorDifferFromBackground()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">wxColor Configuration::MakeColorDifferFromBackground </td>
-          <td>(</td>
-          <td class="paramtype">wxColor&#160;</td>
-          <td class="paramname"><em>color</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Make this color differ from the background by a noticeable amount. </p>
-<p>Useful for black/white background theme changes </p>
 
 </div>
 </div>
