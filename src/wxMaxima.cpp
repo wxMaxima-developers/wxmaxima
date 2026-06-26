@@ -3552,7 +3552,12 @@ void wxMaxima::ReadPrompt(const wxString &data) {
     // will be the first from the next command.
     m_outputCellsFromCurrentCommand = 0;
     if (GetWorksheet()->GetEvaluationQueue().Empty()) { // queue empty.
-      m_exitOnError = false;
+      // This worksheet has drained its evaluation queue, so a clean batch run
+      // is done and may exit normally. Disarm exit-on-error for THIS worksheet
+      // only -- m_exitOnError is process-wide and shared, so clearing it here
+      // would disable exit-on-error in every other window of a --single_process
+      // run (the multithreadtest hang).
+      m_exitOnErrorArmed = false;
       if (m_maximaError)
         StatusMaximaBusy(StatusBar::MaximaStatus::maximaerror);
       else
@@ -5325,7 +5330,7 @@ bool wxMaxima::SaveFile(bool forceSave) {
         StatusSaveFailed();
         LoggingMessageBox(_("Saving failed!"), _("Error!"), wxOK);
         StartAutoSaveTimer();
-        if (GetExitOnError()) {
+        if (ExitOnErrorArmed()) {
           wxMaxima::m_exitCode = 1;
           Close();
         }
@@ -5343,7 +5348,7 @@ bool wxMaxima::SaveFile(bool forceSave) {
         StatusSaveFailed();
         LoggingMessageBox(_("Saving failed!"), _("Error!"), wxOK);
         StartAutoSaveTimer();
-        if (GetExitOnError()) {
+        if (ExitOnErrorArmed()) {
           wxMaxima::m_exitCode = 1;
           Close();
         }
@@ -5449,7 +5454,7 @@ bool wxMaxima::AbortOnError() {
   // of becoming interactive (see below), so leaving batch mode would only flip
   // m_exitAfterEval to false and wrongly re-enable all that work -- whose
   // background tasks then wedge the shutdown join (the multithreadtest CI hang).
-  if (!GetExitOnError())
+  if (!ExitOnErrorArmed())
     ExitAfterEval(false);
   EvalOnStartup(false);
 
@@ -5462,7 +5467,7 @@ bool wxMaxima::AbortOnError() {
       GetWorksheet()->GetWorkingGroup(true);
   }
 
-  if (GetExitOnError()) {
+  if (ExitOnErrorArmed()) {
     wxMaxima::m_exitCode = 1;
     Close();
   }

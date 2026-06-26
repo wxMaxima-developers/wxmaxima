@@ -98,7 +98,12 @@ jobs:
             # instead of breaking the configure.
             $extra = @()
             if ($env:WXM_MAXIMA) { $extra += "-DMAXIMA=$($env:WXM_MAXIMA)" }
-            cmake -DwxWidgets_ROOT_DIR="../../wxWidgets-${{env.WXVERSION}}" -DwxWidgets_LIB_DIR="../../wxWidgets-${{env.WXVERSION}}/lib/gcc_lib" -DwxWidgets_CONFIGURATION=mswu -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DwxWidgets_USE_DEBUG=false -DwxWidgets_USE_UNICODE=true -DwxWidgets_USE_STATIC=true -DWXM_UNIT_TESTS=YES @extra -G Ninja ..
+            # Cap the per-test watchdog at 120s: a few wxmaxima --batch tests still
+            # hang under parallel execution (a concurrent-Maxima-startup issue, see
+            # the integration step), and at the 300s default they would keep the
+            # bounded experimental step from finishing. 120s is ample for the
+            # legitimate tests (slowest ~17s here) while keeping a hang cheap.
+            cmake -DwxWidgets_ROOT_DIR="../../wxWidgets-${{env.WXVERSION}}" -DwxWidgets_LIB_DIR="../../wxWidgets-${{env.WXVERSION}}/lib/gcc_lib" -DwxWidgets_CONFIGURATION=mswu -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DwxWidgets_USE_DEBUG=false -DwxWidgets_USE_UNICODE=true -DwxWidgets_USE_STATIC=true -DWXM_UNIT_TESTS=YES -DWXM_TEST_TIMEOUT=120 @extra -G Ninja ..
             cd ..
             cd ..
       - name: Compile wxMaxima

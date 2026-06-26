@@ -79,6 +79,17 @@ public:
   static void ExitOnError(){m_exitOnError = true;}
   //! Do we exit if we encounter an error?
   static bool GetExitOnError(){return m_exitOnError;}
+  /*! Is THIS worksheet still set to exit on a Maxima error?
+
+    m_exitOnError records the process-wide --exit-on-error command line switch
+    and must never be cleared, or one window clearing it would disable
+    exit-on-error for every other window of a --single_process run (the
+    multithreadtest CI hang: the first worksheet to finish its evaluation queue
+    reset the shared flag, so a later error in a second worksheet dropped it
+    into an interactive session that never exits). Whether exit-on-error is
+    still armed once a worksheet has drained its own queue is therefore tracked
+    per worksheet, here. */
+  bool ExitOnErrorArmed() const { return m_exitOnError && m_exitOnErrorArmed; }
 
   /*! Install termination-signal handlers (SIGTERM/SIGINT/SIGHUP) on Unix.
 
@@ -202,8 +213,13 @@ private:
   wxString m_maximaAuthString;
   //! The object that allows maxima to send us GUI events for testing purposes
   MaximaIPC m_ipc{this};
-  //! True if we want to exit if we encounter an error
+  //! True if we want to exit if we encounter an error (process-wide command
+  //! line switch; never cleared once set -- see ExitOnErrorArmed()).
   static bool m_exitOnError;
+  //! Per-worksheet: still honour --exit-on-error? Cleared once this worksheet
+  //! has drained its own evaluation queue, so a clean batch run can exit
+  //! normally without a later stray error turning into an exit-on-error.
+  bool m_exitOnErrorArmed = true;
   //! Extra arguments wxMaxima's command line told us to pass to maxima
   static wxString m_extraMaximaArgs;
   //! The variable names to query for the variables pane and for internal reasons
