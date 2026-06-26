@@ -58,13 +58,14 @@ var searchData=
   ['exceptiontranslatorregistrar_55',['ExceptionTranslatorRegistrar',['../classCatch_1_1ExceptionTranslatorRegistrar.html',1,'Catch']]],
   ['exitaftereval_56',['ExitAfterEval',['../classwxMaxima.html#ae1282d42b62a5d4620e95aa7c9c054c3',1,'wxMaxima']]],
   ['exitonerror_57',['ExitOnError',['../classwxMaxima.html#a4252227241877b64d96fa93249a6089c',1,'wxMaxima']]],
-  ['explicitwiz_58',['ExplicitWiz',['../classExplicitWiz.html',1,'']]],
-  ['exporttohtml_59',['ExportToHTML',['../classWorksheet.html#a2ee514a4bc8e4164cfd661d7c32fe965',1,'Worksheet']]],
-  ['exporttomac_60',['ExportToMAC',['../classWorksheet.html#aa44ae5fc8f4202daf145e297d74f4a32',1,'Worksheet::ExportToMAC(wxTextFile &amp;output, GroupCell *tree, bool wxm, const std::vector&lt; int &gt; &amp;cellMap, bool fixReorderedIndices)'],['../classWorksheet.html#ad66ccef72e32b507379559594f0c9190',1,'Worksheet::ExportToMAC(const wxString &amp;file)']]],
-  ['exporttotex_61',['ExportToTeX',['../classWorksheet.html#aaea30ddc4ca6de8eb92b5ed45ce527fe',1,'Worksheet']]],
-  ['exprlhs_62',['ExprLhs',['../classCatch_1_1ExprLhs.html',1,'Catch']]],
-  ['exptcell_63',['ExptCell',['../classExptCell.html',1,'ExptCell'],['../classExptCell.html#ab3a01ce869823525a95272e9258a0843',1,'ExptCell::ExptCell()']]],
-  ['exptcell_2ecpp_64',['ExptCell.cpp',['../ExptCell_8cpp.html',1,'']]],
-  ['exptcell_2eh_65',['ExptCell.h',['../ExptCell_8h.html',1,'']]],
-  ['extramaximaargs_66',['ExtraMaximaArgs',['../classwxMaxima.html#a3e8b0edd0117a7f64a69c0e17c82ec52',1,'wxMaxima::ExtraMaximaArgs(const wxString &amp;args)'],['../classwxMaxima.html#a2f0f0d79dfcb0df2455c1de2fd3169b7',1,'wxMaxima::ExtraMaximaArgs()']]]
+  ['exitonerrorarmed_58',['ExitOnErrorArmed',['../classwxMaxima.html#a8bbff1144191cdff9306acb101a57307',1,'wxMaxima']]],
+  ['explicitwiz_59',['ExplicitWiz',['../classExplicitWiz.html',1,'']]],
+  ['exporttohtml_60',['ExportToHTML',['../classWorksheet.html#a2ee514a4bc8e4164cfd661d7c32fe965',1,'Worksheet']]],
+  ['exporttomac_61',['ExportToMAC',['../classWorksheet.html#aa44ae5fc8f4202daf145e297d74f4a32',1,'Worksheet::ExportToMAC(wxTextFile &amp;output, GroupCell *tree, bool wxm, const std::vector&lt; int &gt; &amp;cellMap, bool fixReorderedIndices)'],['../classWorksheet.html#ad66ccef72e32b507379559594f0c9190',1,'Worksheet::ExportToMAC(const wxString &amp;file)']]],
+  ['exporttotex_62',['ExportToTeX',['../classWorksheet.html#aaea30ddc4ca6de8eb92b5ed45ce527fe',1,'Worksheet']]],
+  ['exprlhs_63',['ExprLhs',['../classCatch_1_1ExprLhs.html',1,'Catch']]],
+  ['exptcell_64',['ExptCell',['../classExptCell.html',1,'ExptCell'],['../classExptCell.html#ab3a01ce869823525a95272e9258a0843',1,'ExptCell::ExptCell()']]],
+  ['exptcell_2ecpp_65',['ExptCell.cpp',['../ExptCell_8cpp.html',1,'']]],
+  ['exptcell_2eh_66',['ExptCell.h',['../ExptCell_8h.html',1,'']]],
+  ['extramaximaargs_67',['ExtraMaximaArgs',['../classwxMaxima.html#a3e8b0edd0117a7f64a69c0e17c82ec52',1,'wxMaxima::ExtraMaximaArgs(const wxString &amp;args)'],['../classwxMaxima.html#a2f0f0d79dfcb0df2455c1de2fd3169b7',1,'wxMaxima::ExtraMaximaArgs()']]]
 ];

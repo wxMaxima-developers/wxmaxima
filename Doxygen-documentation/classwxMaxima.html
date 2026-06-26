@@ -123,6 +123,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a788c1d2de5271c02229a3a402faf2aa2"><td class="memItemLeft" align="right" valign="top"><a id="a788c1d2de5271c02229a3a402faf2aa2" name="a788c1d2de5271c02229a3a402faf2aa2"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>EscapeFilenameForShell</b> (wxString name)</td></tr>
 <tr class="separator:a788c1d2de5271c02229a3a402faf2aa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bbff1144191cdff9306acb101a57307"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a8bbff1144191cdff9306acb101a57307">ExitOnErrorArmed</a> () const</td></tr>
+<tr class="memdesc:a8bbff1144191cdff9306acb101a57307"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is THIS worksheet still set to exit on a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> error?  <br /></td></tr>
+<tr class="separator:a8bbff1144191cdff9306acb101a57307"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b95a0c3d855f1a45bd2cff7e6edf7fe"><td class="memItemLeft" align="right" valign="top"><a id="a9b95a0c3d855f1a45bd2cff7e6edf7fe" name="a9b95a0c3d855f1a45bd2cff7e6edf7fe"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnTimerEvent</b> (wxTimerEvent &amp;event)</td></tr>
 <tr class="memdesc:a9b95a0c3d855f1a45bd2cff7e6edf7fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is triggered when a timer this class is responsible for requires. <br /></td></tr>
@@ -1523,7 +1526,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaIPC</b></td></
 
 <p>append maxima output to console </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md834"></a>
+ <h2><a class="anchor" id="autotoc_md843"></a>
 Appending stuff to output</h2>
 
 </div>
@@ -1656,6 +1659,34 @@ Appending stuff to output</h2>
 
 <p>Allow maxima to click buttons in <a class="el" href="classwxMaxima.html">wxMaxima</a>. </p>
 <p>Disabled by default for security reasons </p>
+
+</div>
+</div>
+<a id="a8bbff1144191cdff9306acb101a57307" name="a8bbff1144191cdff9306acb101a57307"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bbff1144191cdff9306acb101a57307">&#9670;&#160;</a></span>ExitOnErrorArmed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool wxMaxima::ExitOnErrorArmed </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is THIS worksheet still set to exit on a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> error? </p>
+<p>m_exitOnError records the process-wide &ndash;exit-on-error command line switch and must never be cleared, or one window clearing it would disable exit-on-error for every other window of a &ndash;single_process run (the multithreadtest CI hang: the first worksheet to finish its evaluation queue reset the shared flag, so a later error in a second worksheet dropped it into an interactive session that never exits). Whether exit-on-error is still armed once a worksheet has drained its own queue is therefore tracked per worksheet, here. </p>
 
 </div>
 </div>
@@ -1890,7 +1921,7 @@ Getting configuration</h2>
 
 <p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends or receives data, or disconnects. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md836"></a>
+ <h2><a class="anchor" id="autotoc_md844"></a>
 Socket stuff</h2>
 
 </div>
@@ -2589,7 +2620,7 @@ Tips and help</h2>
 <hr  />
  </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md840"></a>
+<h2><a class="anchor" id="autotoc_md845"></a>
 Maxima process stuff</h2>
 
 </div>
