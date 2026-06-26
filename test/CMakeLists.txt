@@ -1161,6 +1161,27 @@ endif()
 # without serializing the suite. (wxMaxima's config writes now degrade gracefully
 # when the dir isn't writable, so a fresh per-test MAXIMA_USERDIR no longer
 # asserts.)
+# Tests that drive the configured check-*.sh helper scripts (wxMathML / XML /
+# wxmx validity, wizard commands). They need a POSIX shell plus xmllint/unzip and
+# are invoked as a .sh directly, so they cannot run on the Windows CI (they show
+# up there as "Not Run"). Tag them "needs_posix" so that platform can skip them
+# with `ctest -LE needs_posix`; they keep running normally on Linux. Labelling is
+# done by name in the loop below so conditionally-defined tests (e.g. load_symbol,
+# only added for new-enough Maxima) are handled automatically.
+set(WXM_POSIX_TESTS
+  check-wxMathML.lisp_1 check-wizard-commands
+  check-xml-validity_matrix_default check-xml-validity_matrix_lines
+  check-xml-validity_matrix_complex check-xml-validity_mfrac
+  check-wxmx-validity_all-celltypes check-wxmx-validity_intervals
+  wxstatusbar wxbuildinfo wxbug_report show_image
+  wxxml-array-no-display-properties wxxml-array-display-properties
+  wxxmltag wxxmltag2 wxxml-mlable wxxml-mlable2 wxxml-orthopoly
+  wxxml-pochhammer wxxml-pderivop mminus mfactorial mprod block mlist
+  true false mfrac load_symbol
+  subscriptp_1 subscriptp_2 subscriptp_3 subscriptp_4 subscriptp_5
+  subscriptp_6 subscriptp_7 subscriptp_8 subscriptp_9 subscriptp_10
+  subscriptp_11)
+
 get_property(_wxm_all_tests DIRECTORY PROPERTY TESTS)
 foreach(_wxm_t IN LISTS _wxm_all_tests)
   set(_wxm_userdir "${CMAKE_CURRENT_BINARY_DIR}/test_userdirs/${_wxm_t}")
@@ -1173,6 +1194,9 @@ foreach(_wxm_t IN LISTS _wxm_all_tests)
   get_test_property("${_wxm_t}" TIMEOUT _wxm_existing_timeout)
   if(NOT _wxm_existing_timeout)
     set_property(TEST "${_wxm_t}" PROPERTY TIMEOUT ${WXM_TEST_TIMEOUT})
+  endif()
+  if(_wxm_t IN_LIST WXM_POSIX_TESTS)
+    set_property(TEST "${_wxm_t}" APPEND PROPERTY LABELS needs_posix)
   endif()
 endforeach()
 
