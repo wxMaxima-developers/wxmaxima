@@ -997,21 +997,21 @@ Logging</h2>
 <p>Such messages may be helpful, when you create bug reports (or trying to find a bug by yourself).</p>
 <p>Log messages can (additionally) be printed to STDERR, when using the command line option "--logtostderr". On Windows a separate text console will be opened, as a Windows GUI application does not have the standard IO connected.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md357"></a>
+<h1><a class="anchor" id="autotoc_md356"></a>
 FAQ</h1>
-<h2><a class="anchor" id="autotoc_md358"></a>
+<h2><a class="anchor" id="autotoc_md357"></a>
 Is there a way to make more text fit on a LaTeX page?</h2>
 <p>Yes. Use the <a href="https://ctan.org/pkg/geometry">LaTeX package "geometry"</a> to specify the size of the borders.</p>
 <p>You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"-&gt;"Additional lines for
 the TeX preamble"), to set borders of 1cm):</p>
 <p><code>latex \usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</code></p>
-<h2><a class="anchor" id="autotoc_md359"></a>
+<h2><a class="anchor" id="autotoc_md358"></a>
 Is there a dark mode?</h2>
 <p>If wxWidgets is new enough, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively, there is a <code>View/Invert worksheet brightness</code> menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.</p>
-<h2><a class="anchor" id="autotoc_md360"></a>
+<h2><a class="anchor" id="autotoc_md359"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; sometimes hangs for several seconds once in the first minute</h2>
 <p><em>WxMaxima</em> delegates some big tasks like parsing <em>Maxima_’s &gt;1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima</em> needs to wait a couple of seconds before it can continue its work.</p>
-<h2><a class="anchor" id="autotoc_md361"></a>
+<h2><a class="anchor" id="autotoc_md360"></a>
 Especially when testing new locale settings, a message box "locale</h2>
 <p>’xx_YY’ can not be set" occurs
 
@@ -1024,13 +1024,13 @@ translations but the translations of the wxWidgets framework too.
 These locales maybe not present in the system. On Ubuntu/Debian systems they
 can be generated using: &lt;tt&gt;dpkg-reconfigure locales&lt;/tt&gt;
 
-@subsection autotoc_md362 How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?
+@subsection autotoc_md361 How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?
 
 You can find these symbols in the Unicode sidebar (search for ’double-struck
 capital’). But the selected font must also support these symbols. If they do
 not display properly, select another font.
 
-@subsection autotoc_md363 How can a Maxima script determine, if it is running under wxMaxima or
+@subsection autotoc_md362 How can a Maxima script determine, if it is running under wxMaxima or
 command line Maxima?
 
 If wxMaxima is used, the Maxima variable &lt;tt&gt;maxima_frontend&lt;/tt&gt; is set to
@@ -1040,7 +1040,7 @@ wxMaxima version in this case.
 If no frontend is used (you are using command line Maxima), these variables
 are &lt;tt&gt;false&lt;/tt&gt;.
 
-@subsection autotoc_md364 Help! I can not save my document!
+@subsection autotoc_md363 Help! I can not save my document!
 
 If saving as wxmx file does not work, try saving the document as wxm file
 (and vice versa). And you can also try to remove all output (Menu
@@ -1049,7 +1049,7 @@ causes issues during the save process.
 
 &lt;hr&gt;
 
-@section autotoc_md365 Argomenti della riga di comando
+@section autotoc_md364 Argomenti della riga di comando
 
 Usually you can start programs with a graphical user interface just by
 clicking on a desktop icon or desktop menu entry. WxMaxima - if started from
@@ -1083,7 +1083,7 @@ command-line switches.
 
 &lt;hr&gt;
 
-@section autotoc_md366 About the program, contributing to wxMaxima
+@section autotoc_md365 About the program, contributing to wxMaxima
 
 wxMaxima is mainly developed using the programming language C++ using the
 &lt;a href="<a href="https://www.wxwidgets.org">https://www.wxwidgets.org</a>" &gt;wxWidgets framework&lt;/a&gt;, as build system we use
