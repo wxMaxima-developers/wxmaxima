@@ -165,18 +165,22 @@ jobs:
             cd ..
       - name: Run integration tests (experimental)
         # Maxima-driven integration tests on Windows. Still continue-on-error: the
-        # suite runs end-to-end (no hangs), but ~18 wxmaxima --batch tests crash on
-        # an intermittent Maxima-IPC bug on Windows (ReadStdErr assertion /
-        # "Error writing to Maxima") that is still to be fixed. The "unittest" label
-        # (already run as a required step) and "needs_posix" label (the sh /
-        # xmllint / unzip based tests, which do not run on Windows) are excluded.
-        # -j 4 overlaps the slow tests and timeout-minutes is a hard safety ceiling.
+        # suite runs end-to-end (no hangs). A handful of wxmaxima --batch tests can
+        # still abort with an assertion (e.g. ReadStdErr's m_maximaStdout != NULL) on
+        # a transient Maxima start/stop hiccup: this build has asserts enabled, so a
+        # condition a release build handles gracefully aborts here. It is aggravated
+        # by running several Maxima instances at once, so parallelism is kept
+        # deliberately modest (-j 2, like the Linux job) -- low enough to avoid most
+        # contention while still exercising the concurrency we *do* want to shake out
+        # (e.g. the per-test MAXIMA_USERDIR isolation). The "unittest" label (already
+        # a required step) and "needs_posix" label (the sh/xmllint/unzip tests, which
+        # cannot run on Windows) are excluded; timeout-minutes is a hard ceiling.
         continue-on-error: true
         timeout-minutes: 20
         run: |
             cd wxMaxima
             cd build
-            ctest -LE "unittest|needs_posix" -j 4 --output-on-failure
+            ctest -LE "unittest|needs_posix" -j 2 --output-on-failure
             cd ..
             cd ..
 
