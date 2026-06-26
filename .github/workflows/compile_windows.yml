@@ -98,12 +98,7 @@ jobs:
             # instead of breaking the configure.
             $extra = @()
             if ($env:WXM_MAXIMA) { $extra += "-DMAXIMA=$($env:WXM_MAXIMA)" }
-            # WXM_TEST_TIMEOUT is lowered from the 300s default while the Windows
-            # test run is still being brought up: if a test hangs (e.g. on a modal
-            # dialog) the watchdog then caps the damage at ~2 min/test instead of
-            # 5, keeping CI iterations cheap. Raise back toward the default once
-            # the suite is stable on Windows.
-            cmake -DwxWidgets_ROOT_DIR="../../wxWidgets-${{env.WXVERSION}}" -DwxWidgets_LIB_DIR="../../wxWidgets-${{env.WXVERSION}}/lib/gcc_lib" -DwxWidgets_CONFIGURATION=mswu -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DwxWidgets_USE_DEBUG=false -DwxWidgets_USE_UNICODE=true -DwxWidgets_USE_STATIC=true -DWXM_UNIT_TESTS=YES -DWXM_TEST_TIMEOUT=120 @extra -G Ninja ..
+            cmake -DwxWidgets_ROOT_DIR="../../wxWidgets-${{env.WXVERSION}}" -DwxWidgets_LIB_DIR="../../wxWidgets-${{env.WXVERSION}}/lib/gcc_lib" -DwxWidgets_CONFIGURATION=mswu -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DwxWidgets_USE_DEBUG=false -DwxWidgets_USE_UNICODE=true -DwxWidgets_USE_STATIC=true -DWXM_UNIT_TESTS=YES @extra -G Ninja ..
             cd ..
             cd ..
       - name: Compile wxMaxima
@@ -111,26 +106,6 @@ jobs:
             cd wxMaxima
             cd build
             cmake --build .
-            cd ..
-            cd ..
-      - name: Diagnose a test executable
-        # Bring-up diagnostic: dump one test exe's imported DLLs and try to launch
-        # it with a hard 15s cap. If it hangs at startup with libstdc++-6.dll etc.
-        # in its imports, the hang is a missing-runtime-DLL loader dialog (which is
-        # why static linking is applied). Non-blocking; remove once Windows tests
-        # are stable.
-        continue-on-error: true
-        run: |
-            cd wxMaxima
-            cd build
-            $exe = "test\unit_tests\test_DiffAlgorithm.exe"
-            echo "=== imported DLLs ==="
-            objdump -p $exe | Select-String "DLL Name"
-            echo "=== launch with --list-tests (15s cap) ==="
-            $p = Start-Process -FilePath $exe -ArgumentList "--list-tests" -NoNewWindow -PassThru -RedirectStandardOutput diag_out.txt -RedirectStandardError diag_err.txt
-            if (-not $p.WaitForExit(15000)) { $p.Kill(); echo "RESULT: HUNG at startup" } else { echo "RESULT: exited with code $($p.ExitCode)" }
-            echo "--- stdout ---"; if (Test-Path diag_out.txt) { Get-Content diag_out.txt }
-            echo "--- stderr ---"; if (Test-Path diag_err.txt) { Get-Content diag_err.txt }
             cd ..
             cd ..
       - name: Run unit tests
@@ -188,55 +163,20 @@ jobs:
             }
             cd ..
             cd ..
-      - name: Diagnose wxmaxima.exe startup
-        # Every wxmaxima.exe-launched integration test times out at 120s with no
-        # output, even `wxmaxima --version` (which should just print and exit(0)).
-        # wxmaxima is a GUI-subsystem app (add_executable(wxmaxima WIN32 ...)), so
-        # the suspicion is it stalls in OnInit on a modal dialog / the --logtostderr
-        # console attach before it can print or exit. This probe runs it directly
-        # with a 20s cap and captures stdout/stderr + imported DLLs, to pinpoint the
-        # stall without burning a 120s ctest slot. Non-blocking; remove once solved.
-        continue-on-error: true
-        run: |
-            cd wxMaxima
-            cd build
-            $exe = "src\wxmaxima.exe"
-            # Turn on the env-gated startup trace so we see how far OnInit gets
-            # before it stalls (markers go to the now-bound stderr).
-            $env:WXM_STARTUP_TRACE = "1"
-            echo "=== objdump imported DLLs ==="
-            objdump -p $exe | Select-String "DLL Name"
-            function Probe($label, $argline) {
-              echo "=== $label : wxmaxima.exe $argline ==="
-              $p = Start-Process -FilePath $exe -ArgumentList $argline -NoNewWindow -PassThru -RedirectStandardOutput o.txt -RedirectStandardError e.txt
-              if (-not $p.WaitForExit(20000)) { $p.Kill(); echo "RESULT: HUNG (killed after 20s)" }
-              else { echo "RESULT: exited with code $($p.ExitCode)" }
-              echo "--- stdout ---"; if (Test-Path o.txt) { Get-Content o.txt }
-              echo "--- stderr ---"; if (Test-Path e.txt) { Get-Content e.txt }
-              Remove-Item o.txt,e.txt -ErrorAction SilentlyContinue
-            }
-            Probe "plain" "--version"
-            Probe "test-style" "--debug --logtostderr --pipe --version"
-            cd ..
-            cd ..
       - name: Run integration tests (experimental)
-        # Exploratory first run of the Maxima-driven integration tests on Windows.
-        # Marked continue-on-error because we do not yet know which of them are
-        # portable: several shell out to POSIX tools (sh, nc, xmllint, unzip) that
-        # do not exist on the runner. The point of this run is to learn from the CI
-        # logs which tests pass, so the portable subset can later be promoted to a
-        # required check. Placed after packaging so the release artifacts are
-        # produced first. The "unittest" label is excluded as those already ran as
-        # a required step.
-        #
-        # -j 4 overlaps the many slow/hanging tests, and timeout-minutes is a hard
-        # ceiling so this exploratory step can never run away for hours (it has).
+        # Maxima-driven integration tests on Windows. Still continue-on-error: the
+        # suite runs end-to-end (no hangs), but ~18 wxmaxima --batch tests crash on
+        # an intermittent Maxima-IPC bug on Windows (ReadStdErr assertion /
+        # "Error writing to Maxima") that is still to be fixed. The "unittest" label
+        # (already run as a required step) and "needs_posix" label (the sh /
+        # xmllint / unzip based tests, which do not run on Windows) are excluded.
+        # -j 4 overlaps the slow tests and timeout-minutes is a hard safety ceiling.
         continue-on-error: true
         timeout-minutes: 20
         run: |
             cd wxMaxima
             cd build
-            ctest -LE unittest -j 4 --output-on-failure
+            ctest -LE "unittest|needs_posix" -j 4 --output-on-failure
             cd ..
             cd ..
 
