@@ -66,14 +66,17 @@ jobs:
                cd ..
             }
 
-      - name: Install Maxima
+      - name: Install Maxima and gnuplot
         # Maxima must be installed *before* the configure step so cmake's
         # find_program(MAXIMA maxima) picks it up and registers the Maxima-driven
-        # integration tests. continue-on-error keeps a hiccup in the (external)
-        # Chocolatey package from ever blocking the release/packaging path below.
+        # integration tests. gnuplot is installed too (the Linux job installs it
+        # as well): wxMaxima invokes plain "gnuplot" from PATH (and probes it at
+        # startup), and the plotting tutorials need it -- without it those tests
+        # stall. continue-on-error keeps a hiccup in the (external) Chocolatey
+        # packages from ever blocking the release/packaging path below.
         continue-on-error: true
         run: |
-            choco install maxima -y --no-progress
+            choco install maxima gnuplot -y --no-progress
             # find_program() on Windows does not append .bat, and the Chocolatey
             # package ships Maxima as maxima.bat, so locate it and hand cmake the
             # explicit path (and add its directory to PATH for good measure).
@@ -84,6 +87,16 @@ jobs:
               $bat.DirectoryName | Out-File -FilePath $env:GITHUB_PATH -Append
             } else {
               echo "::warning::maxima.bat not found after install; integration tests will be skipped."
+            }
+            # Make sure wxMaxima's "gnuplot" resolves: the Chocolatey shim dir is
+            # already on PATH, but locate gnuplot.exe and add its dir too in case
+            # the package installs without a shim.
+            $gp = Get-ChildItem -Path 'C:\Program Files\gnuplot','C:\ProgramData\chocolatey','C:\tools' -Filter 'gnuplot.exe' -Recurse -Depth 4 -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($gp) {
+              echo "Found gnuplot: $($gp.FullName)"
+              $gp.DirectoryName | Out-File -FilePath $env:GITHUB_PATH -Append
+            } else {
+              echo "::warning::gnuplot.exe not found after install; plotting tests may stall."
             }
 
       - name: Configure wxMaxima
@@ -98,12 +111,7 @@ jobs:
             # instead of breaking the configure.
             $extra = @()
             if ($env:WXM_MAXIMA) { $extra += "-DMAXIMA=$($env:WXM_MAXIMA)" }
-            # Cap the per-test watchdog at 120s: a few wxmaxima --batch tests still
-            # hang under parallel execution (a concurrent-Maxima-startup issue, see
-            # the integration step), and at the 300s default they would keep the
-            # bounded experimental step from finishing. 120s is ample for the
-            # legitimate tests (slowest ~17s here) while keeping a hang cheap.
-            cmake -DwxWidgets_ROOT_DIR="../../wxWidgets-${{env.WXVERSION}}" -DwxWidgets_LIB_DIR="../../wxWidgets-${{env.WXVERSION}}/lib/gcc_lib" -DwxWidgets_CONFIGURATION=mswu -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DwxWidgets_USE_DEBUG=false -DwxWidgets_USE_UNICODE=true -DwxWidgets_USE_STATIC=true -DWXM_UNIT_TESTS=YES -DWXM_TEST_TIMEOUT=120 @extra -G Ninja ..
+            cmake -DwxWidgets_ROOT_DIR="../../wxWidgets-${{env.WXVERSION}}" -DwxWidgets_LIB_DIR="../../wxWidgets-${{env.WXVERSION}}/lib/gcc_lib" -DwxWidgets_CONFIGURATION=mswu -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DwxWidgets_USE_DEBUG=false -DwxWidgets_USE_UNICODE=true -DwxWidgets_USE_STATIC=true -DWXM_UNIT_TESTS=YES @extra -G Ninja ..
             cd ..
             cd ..
       - name: Compile wxMaxima
@@ -185,6 +193,10 @@ jobs:
         run: |
             cd wxMaxima
             cd build
+            # Temporary: emit raw-stderr SHUTDOWN-TRACE markers (see Maxima.cpp /
+            # wxMaxima.cpp) so the timed-out tests reveal where teardown wedges,
+            # past the point where wxLog logging is disabled.
+            $env:WXM_SHUTDOWN_TRACE = "1"
             ctest -LE "unittest|needs_posix" -j 2 --output-on-failure
             cd ..
             cd ..

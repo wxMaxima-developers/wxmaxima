@@ -1302,7 +1302,9 @@ wxMaxima::~wxMaxima() {
     m_gnuplotProcess ->Detach();
 
   // Kill maxima
+  WxmShutdownTrace("OnClose: calling KillMaxima");
   KillMaxima(false);
+  WxmShutdownTrace("OnClose: KillMaxima returned");
 
 
   // In debug mode: Create a file describing what we know about maxima commands
@@ -1384,6 +1386,7 @@ wxMaxima::~wxMaxima() {
   wxLogMessage("Window count (before closing the current window): %zu",
                wxMaximaFrame::CountWindows());
   if (wxMaximaFrame::CountWindows() == 1) {
+    WxmShutdownTrace("OnClose: last window - deleting log window, disabling logging");
     // Save the current state of the log window (shown/hidden) and, since the
     // last wxMaxima window is going away, dispose of the log window itself.
     wxConfig::Get()->Write("LogWindow", MyApp::m_logWindow->GetFrame()->IsShown());
@@ -1393,6 +1396,7 @@ wxMaxima::~wxMaxima() {
        creating pop-ups. */
     wxLog::EnableLogging(false);
   }
+  WxmShutdownTrace("OnClose: handler returning (window will now be destroyed)");
 }
 
 #if wxUSE_DRAG_AND_DROP
@@ -2371,7 +2375,9 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
   // This closes Maxima's network connection.
+  WxmShutdownTrace("KillMaxima: resetting m_client (destroys Maxima, joins worker)");
   m_client.reset();
+  WxmShutdownTrace("KillMaxima: m_client reset done");
 
   // Finally found a long outstanding problem with leftover Lisp processes
   // (using debugging with command line Maxima and netcat):
@@ -2401,7 +2407,9 @@ void wxMaxima::KillMaxima(bool logMessage) {
   // Since it will take some time until wxWidgets distributions with this fix are released and in use,
   // use the "taskkill" solution now.
   wxArrayString taskkill_out, taskkill_err;
+  WxmShutdownTrace("KillMaxima: running taskkill (wxEXEC_SYNC)");
   wxExecute(wxString::Format("taskkill /PID %d /F /T", m_pid), taskkill_out, taskkill_err, wxEXEC_SYNC);
+  WxmShutdownTrace("KillMaxima: taskkill returned");
   for (size_t i=0; i<taskkill_out.GetCount(); ++i)
     wxLogMessage("taskkill_out: %s", taskkill_out.Item(i));
   for (size_t i=0; i<taskkill_err.GetCount(); ++i)
@@ -2413,6 +2421,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
     wxMilliSleep(50);
     count--;
   }
+  WxmShutdownTrace("KillMaxima: post-kill wait loop done");
 
   // As we might have killed maxima before it was able to clean up its
   // temp files we try to do so manually now:
