@@ -154,6 +154,7 @@ set(WXM_TEST_TIMEOUT 300 CACHE STRING "Per-test ctest timeout in seconds (watchd
 
 if(WXM_UNIT_TESTS)
     add_subdirectory(unit_tests)
+    add_subdirectory(image-test)
 endif()
 
 # Test if maxima is working
@@ -680,6 +681,11 @@ add_test(
     NAME intCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error intCells.wxm)
+
+add_test(
+    NAME imageFormat
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/image-test
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error image-test.wxmx)
 
 add_test(
     NAME intervals_cmdline
