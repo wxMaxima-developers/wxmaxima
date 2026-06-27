@@ -154,8 +154,8 @@ set(WXM_TEST_TIMEOUT 300 CACHE STRING "Per-test ctest timeout in seconds (watchd
 
 if(WXM_UNIT_TESTS)
     add_subdirectory(unit_tests)
-    add_subdirectory(image-test)
 endif()
+add_subdirectory(image-test)
 
 # Test if maxima is working
 add_test(
