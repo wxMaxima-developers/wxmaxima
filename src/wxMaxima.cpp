@@ -2407,8 +2407,16 @@ void wxMaxima::KillMaxima(bool logMessage) {
   // Since it will take some time until wxWidgets distributions with this fix are released and in use,
   // use the "taskkill" solution now.
   wxArrayString taskkill_out, taskkill_err;
-  WxmShutdownTrace("KillMaxima: running taskkill (wxEXEC_SYNC)");
-  wxExecute(wxString::Format("taskkill /PID %d /F /T", m_pid), taskkill_out, taskkill_err, wxEXEC_SYNC);
+  WxmShutdownTrace("KillMaxima: running taskkill (wxEXEC_SYNC|wxEXEC_NOEVENTS)");
+  // wxEXEC_NOEVENTS: wait for taskkill *without* dispatching events. The plain
+  // wxEXEC_SYNC default spins a nested event loop here, which re-enters
+  // ProcessPendingEvents() on the Maxima wxEvtHandler we are in the middle of
+  // tearing down (m_client was just reset above) -- tripping
+  // "should have pending events if called" (event.cpp) and, with asserts
+  // enabled, aborting; in release it could wedge. We do not need the event loop
+  // while killing Maxima (the wxMilliSleep wait loop just below is already a
+  // blocking, event-free wait), so suppress event dispatch for the kill.
+  wxExecute(wxString::Format("taskkill /PID %d /F /T", m_pid), taskkill_out, taskkill_err, wxEXEC_SYNC | wxEXEC_NOEVENTS);
   WxmShutdownTrace("KillMaxima: taskkill returned");
   for (size_t i=0; i<taskkill_out.GetCount(); ++i)
     wxLogMessage("taskkill_out: %s", taskkill_out.Item(i));
