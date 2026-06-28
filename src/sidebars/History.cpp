@@ -96,7 +96,6 @@ History::History(wxWindow *parent, int id, Configuration *cfg)
 void History::OnMouseRightDown(wxMouseEvent &WXUNUSED(event)) {
   wxArrayInt selections;
   bool const hasSelections = (m_history->GetSelections(selections) > 0);
-  wxString number;
 
   wxMenu popupMenu;
   if (m_commands.size() > 0) {

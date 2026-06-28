@@ -3185,7 +3185,6 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   m_gnuplotTerminalQueryProcess->Redirect();
   std::unique_ptr<wxExecuteEnv> env(new wxExecuteEnv);
   env->env = std::move(environment);
-  wxString gnuplotcommand = m_gnuplotcommand;
 #if defined __WXMSW__
   // We want this gnuplot process to exit after it has finished its work,
   // not to stay around until someone closes its terminal
@@ -3465,16 +3464,13 @@ void wxMaxima::ReadAddVariables(const wxXmlDocument &xmldoc) {
       if (node != NULL) {
         wxXmlNode *var = node->GetChildren();
         while (var != NULL) {
-          wxString name;
-          {
-            if (var->GetName() == wxS("variable")) {
-              wxXmlNode *valnode = var->GetChildren();
-              if (valnode)
-                {
-                  if(GetWorksheet() && (m_variablesPane))
-                    m_variablesPane->AddWatch(valnode->GetContent());
-                }
-            }
+          if (var->GetName() == wxS("variable")) {
+            wxXmlNode *valnode = var->GetChildren();
+            if (valnode)
+              {
+                if(GetWorksheet() && (m_variablesPane))
+                  m_variablesPane->AddWatch(valnode->GetContent());
+              }
           }
           var = var->GetNext();
         }
@@ -4362,11 +4358,6 @@ void wxMaxima::SetupVariables() {
                  "\")) (ignore-errors (setf (symbol-value "
                  "'*lisp-quiet-suppressed-prompt*) \"" +
                  m_promptPrefix + "(%i1)" + m_promptSuffix + "\"))\n"));
-  wxString useHtml = wxS("'$text");
-  if (m_configuration.MaximaUsesHtmlBrowser())
-    useHtml = wxS("'$html");
-  if (m_configuration.MaximaUsesWxmaximaBrowser())
-    useHtml = wxS("'$frontend");
   wxLogMessage(_("Setting prompt and help format"));
   SendMaxima(wxS(":lisp-quiet (setf *prompt-suffix* \"") +
              m_promptSuffix + wxS("\") (setf *prompt-prefix* \"") +
@@ -4478,7 +4469,6 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
 #endif
           }
       } else {
-        wxString command;
         std::vector<char *>argv;
         wxCharBuffer commandnamebuffer = Configuration::FindProgram(m_configuration.HelpBrowserUserLocation()).mb_str();
         wxCharBuffer urlbuffer = uri.mb_str();
@@ -5573,7 +5563,6 @@ long long wxMaxima::GetMaximaCpuTime() {
             wxStringTokenizer tokens(rest, wxS(" "));
             
             if (tokens.CountTokens() >= 13) {
-              wxString state = tokens.GetNextToken();
               long ppid = 0, pgrp = 0;
               tokens.GetNextToken().ToLong(&ppid);
               tokens.GetNextToken().ToLong(&pgrp);
@@ -5710,7 +5699,6 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
     return;
   GetWorksheet()->CloseAutoCompletePopup();
 
-  wxString expr = GetDefaultEntry();
   bool forceSave = false;
 #if defined __WXMSW__
   wxString b = wxS("\\");
@@ -6586,8 +6574,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
-  wxString b = wxS("\\");
-  wxString f = wxS("/");
   if(event.GetId() == EventIDs::menu_jumptoerror){
     GroupCell *lastError = GetWorksheet()->GetErrorList().LastError();
     if (lastError) {
