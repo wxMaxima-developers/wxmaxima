@@ -926,10 +926,11 @@ void Image::LoadImage_Backgroundtask(stop_token stopToken,
         wxZlibInputStream zstream(istream);
         wxTextInputStream textIn(zstream);
         wxString line;
-        while (!zstream.Eof()) {
-          line = textIn.ReadLine();
-          svgContents_string += line + wxS("\n");
-        }
+        if(zstream.IsOk())
+          while (!zstream.Eof()) {
+            line = textIn.ReadLine();
+            svgContents_string += line + wxS("\n");
+          }
       }
       // Convert the data we have read to a modifiable char * containing the svg
       // file's contents.

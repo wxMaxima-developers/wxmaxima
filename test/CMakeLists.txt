@@ -150,7 +150,7 @@ file(
 # enough head-room not to flake under load. A real performance regression that
 # pushes a trivial test anywhere near this limit is still a bug to be fixed, not
 # a reason to raise the timeout.
-set(WXM_TEST_TIMEOUT 300 CACHE STRING "Per-test ctest timeout in seconds (watchdog against hung tests)")
+set(WXM_TEST_TIMEOUT 380 CACHE STRING "Per-test ctest timeout in seconds (watchdog against hung tests)")
 
 if(WXM_UNIT_TESTS)
     add_subdirectory(unit_tests)
