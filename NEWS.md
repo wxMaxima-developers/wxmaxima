@@ -1,129 +1,14 @@
 # Current development version
 
-- Dark mode: wxMaxima now keeps a separate light and dark style set instead of
-  faking dark mode by inverting colors. Configure → Style → Appearance lets you
-  pick Light, Dark, or Follow system (which tracks the OS appearance where the
-  platform supports it). Each set has its own colors you can customize, and the
-  choice is remembered. The old "Invert worksheet brightness" menu item is gone;
-  if you had it enabled your worksheet keeps the same look (it is migrated to the
-  matching appearance).
-
-- Testing/CI: every ctest test now has a real per-test timeout (the previous
-  `CTEST_TEST_TIMEOUT` variable was a no-op outside ctest's script mode, so a
-  single wedged test could block the whole suite until the CI job hit its
-  two-hour wall-clock limit). A hung test now fails fast instead.
-
-- Batch mode: a failing `wxASSERT` no longer pops up a modal dialog that wedges
-  a headless/batch run forever. In non-interactive mode (`--batch` /
-  `--exit-on-error`) the assertion's location and message are now printed to
-  stderr and the process aborts, so automated runs show exactly which assert
-  fired instead of hanging.
-
-- Editing: issuing "Redo" inside a cell when there was nothing to redo (for
-  example right after typing, or in a freshly created cell) could crash. The
-  undo-history lookup read one entry past the end of the history; it is now a
-  safe no-op. A new stress test drives long random edit/undo/redo sequences
-  through a real input cell to guard the editing core against such out-of-bounds
-  accesses.
-
-- Windows: pressing Ctrl+F now keeps the keyboard focus in the find dialog. The
-  edit menu re-focused the worksheet via a deferred call that ran after the
-  dialog had been focused, stealing the focus back before anything could be
-  typed.
-
-- Diff viewer: resizing the window is no longer sluggish on large worksheets --
-  the full re-layout that ran on every intermediate size during a drag is now
-  debounced and runs once, after the resize settles.
-- Diff viewer: the mouse wheel / touchpad now keeps the panes synchronized (it
-  previously only synced when the scrollbar was dragged), and "Next/Previous
-  difference" use the live scroll position so they no longer mis-jump after a
-  wheel scroll.
-- Diff viewer: scrolling *up* now keeps the panes synchronized. The upward-scroll
-  case anchored on the bottom of the last visible cell instead of mirroring the
-  (working) downward case, so the other pane did not follow.
-- Diff viewer: the toolbar now shows a "Difference N / M" indicator and the
-  current difference's cell is highlighted, so "Previous/Next difference" gives
-  visible feedback (the highlighted bracket jumps from one difference to the next)
-  even when the target is already on screen and nothing needs to scroll. The
-  Prev/Next buttons are also greyed out when there is no further difference to jump
-  to in that direction.
-- Diff viewer: a marker strip ("minimap") beside each pane shows where all the
-  differences are along the whole document, with the current one highlighted and a
-  box for the part currently on screen. Clicking the strip jumps to the nearest
-  difference.
-- Diff viewer (Windows): the synchronized pane no longer briefly flashes back to
-  the top during a synced scroll.
-
-- Incremental find: typing another character into the search box now extends the
-  highlight on the current match when that match still satisfies the longer
-  search string, instead of immediately jumping to the next match.
-
-- Matrix → LAPACK menu correctness fixes:
-  - The complex-matrix norm items ("zlange") emitted `dlange()` (the real
-    version), making them silent duplicates of the real-matrix items; they now
-    emit `zlange()`.
-  - "Solve A*x=b numerically" (`dgesv`) emitted `dgesv(A,true,true)`, dropping
-    the b matrix the dialog collects and passing two bogus arguments; it now
-    emits `dgesv(A,b)`.
-  - "Extract a matrix column as a list" labelled its index field "Row number".
-
-- List menu correctness fixes:
-  - "Nested list to matrix" / "Matrix to nested list": the two dialog titles
-    were swapped relative to what the commands (and menu entries) actually do.
-  - "Extract the last n elements": used `rest(list,n)`, which drops the *first*
-    n elements; now uses `rest(list,length(list)-n)`. Its title also wrongly
-    read "Drop the last n list elements".
-  - "Introduce a list of actual values into an equation" and "Extract a
-    variable's value from a list": the comma-separated value list was passed to
-    `subst()` unbracketed, so with more than one value Maxima read it as the
-    `subst(new,old,expr)` form and substituted nothing. Now bracketed.
-
-- Calculus → "Power series": the generated command was missing a closing
-  parenthesis ("niceindices(powerseries(e,x,0);"), which Maxima rejected with
-  "incorrect syntax: Missing )". It now emits the balanced form.
-
-- Fixed a layout regression: adding a line to an already-evaluated input cell
-  (by pressing Enter or by typing enough that the line wrapped) grew the
-  EditorCell past the bottom of its GroupCell's bracket, but the GroupCell
-  itself did not grow until the cell was re-evaluated. Two causes: the editor's
-  cached list geometry was not invalidated when it resized (so the group kept
-  reading the old input height), and the input-height computation only counted
-  the first cell on each line, ignoring the taller editor that follows the
-  "(%i1)" prompt label.
-
-- Wizard/menu correctness review - fixed several wizards that generated faulty
-  Maxima code or didn't match what their dialog advertised:
-  - Matrix → "Map a function to a matrix": the optional result name was handled
-    with an inverted condition (name ignored when given; stray ":" when empty).
-  - "While loop": the generated command had a bogus, body-less `for` loop
-    appended to it.
-  - String → "Are these strings equal?" (`sequal`/`sequalignore`): the second
-    string was dropped, leaving a one-argument call.
-  - String → "Insert a string" (`sinsert`): generated `simplode(...)` with two
-    of its three fields dropped instead of `sinsert(new, string, position)`.
-  - "Read directory": typo `dierectory(...)` → `directory(...)`.
-  - "Extract matrix from 2D array" (`genmatrix`): the row and column ranges were
-    swapped, transposing the extracted region for non-square ranges.
-  - "Smart substitution" (`ratsubst`): emitted a two-argument `ratsubst(eq,expr)`
-    which Maxima rejects; now uses `lratsubst([eq],expr)`.
-  - "Parallel substitution": used `ratsubst` instead of `psubst`.
-  - "Substitute" (`subst`), "Recursive substitution" (`fullratsubst`) and
-    "Value at a given point" (`at`): with several comma-separated equations the
-    generated call lost all but the first substitution (and `at` errored out),
-    because the equations were not wrapped in a list. They are now bracketed.
-  - "Substitute only in specific parts" (`substinpart`): the dialog defaulted
-    both the replacement and the part numbers to equations and claimed the
-    indices selected independent terms. The indices actually form a `part()`
-    path; the defaults and description were corrected.
-  - Statistics → "Linear Regression": the wizard was titled "Multivariate linear
-    regression" but calls `simple_linear_regression`, a single-predictor fit.
-  - Statistics → "Boxplot": the dialog was mistitled "Plot as error bars".
-
-- Fixed the Matrix → "Map a function to a matrix" wizard: its optional result
-  variable name was handled with an inverted condition, so a name that was given
-  was ignored, and leaving it empty produced a stray leading ":" (a syntax
-  error). It now stores the result under the given name when one is supplied.
-
+- A proper Dark mode (dark sidebars, toolbars and menus require wxWidgets 3.3 and up)
+- Many improvoements to the automatic tests
+- Many batch mode improvements
+- Many stability improvements
+- Windows: pressing Ctrl+F now keeps the keyboard focus in the find dialog.
+- Many diff viewer enhancements
+- Corrected the find algorithm
+- A correctness review for all wizards.
+- EditorCells again grow and shrink when the user adds and removes lines
 
 # 26.06.2
 

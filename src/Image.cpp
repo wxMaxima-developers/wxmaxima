@@ -926,7 +926,7 @@ void Image::LoadImage_Backgroundtask(stop_token stopToken,
         wxZlibInputStream zstream(istream);
         wxTextInputStream textIn(zstream);
         wxString line;
-        while (!zstream.Eof()) {
+        while (zstream.IsOk() && (!zstream.Eof())) {
           line = textIn.ReadLine();
           svgContents_string += line + wxS("\n");
         }

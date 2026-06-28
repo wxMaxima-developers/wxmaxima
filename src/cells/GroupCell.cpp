@@ -259,7 +259,6 @@ GroupCell *GroupCell::GetLastWorkingGroup() const {
 }
 
 wxString GroupCell::TexEscapeOutputCell(wxString Input) {
-  wxString retval(Input);
   Input.Replace(wxS("#"), wxS("\\#"));
   return (Input);
 }

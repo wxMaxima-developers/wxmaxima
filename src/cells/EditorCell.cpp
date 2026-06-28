@@ -2349,7 +2349,6 @@ wxPoint EditorCell::PositionToPoint(size_t pos) {
 }
 
 void EditorCell::SelectPointText(const wxPoint point) {
-  wxString s;
   SetFont(m_configuration->GetRecalcDC());
   wxPoint posInCell(point);
 
@@ -2468,7 +2467,6 @@ bool EditorCell::IsPointInSelection(wxPoint point) {
   if (!rect.Contains(point))
     return false;
 
-  wxString s;
   wxString text = m_text;
   SetFont(m_configuration->GetRecalcDC());
   // Determine the line the point would be in
@@ -2996,7 +2994,6 @@ void EditorCell::StyleTextCode() const {
   m_tokens = MaximaTokenizer(textToStyle, m_configuration).PopTokens();
 
   // Now handle the text pieces one by one
-  wxString lastTokenWithText;
   size_t pos = 0;
   wxCoord lineWidth = 0;
 

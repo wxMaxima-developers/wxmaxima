@@ -2122,7 +2122,6 @@ void ConfigDialogue::OnClose(wxCloseEvent &event) {
 }
 
 void ConfigDialogue::WriteSettings() {
-  wxArrayString out;
   wxConfigBase *config = wxConfig::Get();
   Configuration *configuration = m_configuration.get();
 

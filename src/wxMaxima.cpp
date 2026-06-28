@@ -1302,7 +1302,9 @@ wxMaxima::~wxMaxima() {
     m_gnuplotProcess ->Detach();
 
   // Kill maxima
+  WxmShutdownTrace("OnClose: calling KillMaxima");
   KillMaxima(false);
+  WxmShutdownTrace("OnClose: KillMaxima returned");
 
 
   // In debug mode: Create a file describing what we know about maxima commands
@@ -1384,6 +1386,7 @@ wxMaxima::~wxMaxima() {
   wxLogMessage("Window count (before closing the current window): %zu",
                wxMaximaFrame::CountWindows());
   if (wxMaximaFrame::CountWindows() == 1) {
+    WxmShutdownTrace("OnClose: last window - deleting log window, disabling logging");
     // Save the current state of the log window (shown/hidden) and, since the
     // last wxMaxima window is going away, dispose of the log window itself.
     wxConfig::Get()->Write("LogWindow", MyApp::m_logWindow->GetFrame()->IsShown());
@@ -1393,6 +1396,7 @@ wxMaxima::~wxMaxima() {
        creating pop-ups. */
     wxLog::EnableLogging(false);
   }
+  WxmShutdownTrace("OnClose: handler returning (window will now be destroyed)");
 }
 
 #if wxUSE_DRAG_AND_DROP
@@ -2371,7 +2375,9 @@ void wxMaxima::KillMaxima(bool logMessage) {
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
   // This closes Maxima's network connection.
+  WxmShutdownTrace("KillMaxima: resetting m_client (destroys Maxima, joins worker)");
   m_client.reset();
+  WxmShutdownTrace("KillMaxima: m_client reset done");
 
   // Finally found a long outstanding problem with leftover Lisp processes
   // (using debugging with command line Maxima and netcat):
@@ -2401,7 +2407,17 @@ void wxMaxima::KillMaxima(bool logMessage) {
   // Since it will take some time until wxWidgets distributions with this fix are released and in use,
   // use the "taskkill" solution now.
   wxArrayString taskkill_out, taskkill_err;
-  wxExecute(wxString::Format("taskkill /PID %d /F /T", m_pid), taskkill_out, taskkill_err, wxEXEC_SYNC);
+  WxmShutdownTrace("KillMaxima: running taskkill (wxEXEC_SYNC|wxEXEC_NOEVENTS)");
+  // wxEXEC_NOEVENTS: wait for taskkill *without* dispatching events. The plain
+  // wxEXEC_SYNC default spins a nested event loop here, which re-enters
+  // ProcessPendingEvents() on the Maxima wxEvtHandler we are in the middle of
+  // tearing down (m_client was just reset above) -- tripping
+  // "should have pending events if called" (event.cpp) and, with asserts
+  // enabled, aborting; in release it could wedge. We do not need the event loop
+  // while killing Maxima (the wxMilliSleep wait loop just below is already a
+  // blocking, event-free wait), so suppress event dispatch for the kill.
+  wxExecute(wxString::Format("taskkill /PID %d /F /T", m_pid), taskkill_out, taskkill_err, wxEXEC_SYNC | wxEXEC_NOEVENTS);
+  WxmShutdownTrace("KillMaxima: taskkill returned");
   for (size_t i=0; i<taskkill_out.GetCount(); ++i)
     wxLogMessage("taskkill_out: %s", taskkill_out.Item(i));
   for (size_t i=0; i<taskkill_err.GetCount(); ++i)
@@ -2413,6 +2429,7 @@ void wxMaxima::KillMaxima(bool logMessage) {
     wxMilliSleep(50);
     count--;
   }
+  WxmShutdownTrace("KillMaxima: post-kill wait loop done");
 
   // As we might have killed maxima before it was able to clean up its
   // temp files we try to do so manually now:
@@ -3168,7 +3185,6 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   m_gnuplotTerminalQueryProcess->Redirect();
   std::unique_ptr<wxExecuteEnv> env(new wxExecuteEnv);
   env->env = std::move(environment);
-  wxString gnuplotcommand = m_gnuplotcommand;
 #if defined __WXMSW__
   // We want this gnuplot process to exit after it has finished its work,
   // not to stay around until someone closes its terminal
@@ -3448,16 +3464,13 @@ void wxMaxima::ReadAddVariables(const wxXmlDocument &xmldoc) {
       if (node != NULL) {
         wxXmlNode *var = node->GetChildren();
         while (var != NULL) {
-          wxString name;
-          {
-            if (var->GetName() == wxS("variable")) {
-              wxXmlNode *valnode = var->GetChildren();
-              if (valnode)
-                {
-                  if(GetWorksheet() && (m_variablesPane))
-                    m_variablesPane->AddWatch(valnode->GetContent());
-                }
-            }
+          if (var->GetName() == wxS("variable")) {
+            wxXmlNode *valnode = var->GetChildren();
+            if (valnode)
+              {
+                if(GetWorksheet() && (m_variablesPane))
+                  m_variablesPane->AddWatch(valnode->GetContent());
+              }
           }
           var = var->GetNext();
         }
@@ -3552,7 +3565,12 @@ void wxMaxima::ReadPrompt(const wxString &data) {
     // will be the first from the next command.
     m_outputCellsFromCurrentCommand = 0;
     if (GetWorksheet()->GetEvaluationQueue().Empty()) { // queue empty.
-      m_exitOnError = false;
+      // This worksheet has drained its evaluation queue, so a clean batch run
+      // is done and may exit normally. Disarm exit-on-error for THIS worksheet
+      // only -- m_exitOnError is process-wide and shared, so clearing it here
+      // would disable exit-on-error in every other window of a --single_process
+      // run (the multithreadtest hang).
+      m_exitOnErrorArmed = false;
       if (m_maximaError)
         StatusMaximaBusy(StatusBar::MaximaStatus::maximaerror);
       else
@@ -4340,11 +4358,6 @@ void wxMaxima::SetupVariables() {
                  "\")) (ignore-errors (setf (symbol-value "
                  "'*lisp-quiet-suppressed-prompt*) \"" +
                  m_promptPrefix + "(%i1)" + m_promptSuffix + "\"))\n"));
-  wxString useHtml = wxS("'$text");
-  if (m_configuration.MaximaUsesHtmlBrowser())
-    useHtml = wxS("'$html");
-  if (m_configuration.MaximaUsesWxmaximaBrowser())
-    useHtml = wxS("'$frontend");
   wxLogMessage(_("Setting prompt and help format"));
   SendMaxima(wxS(":lisp-quiet (setf *prompt-suffix* \"") +
              m_promptSuffix + wxS("\") (setf *prompt-prefix* \"") +
@@ -4456,7 +4469,6 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
 #endif
           }
       } else {
-        wxString command;
         std::vector<char *>argv;
         wxCharBuffer commandnamebuffer = Configuration::FindProgram(m_configuration.HelpBrowserUserLocation()).mb_str();
         wxCharBuffer urlbuffer = uri.mb_str();
@@ -5325,7 +5337,7 @@ bool wxMaxima::SaveFile(bool forceSave) {
         StatusSaveFailed();
         LoggingMessageBox(_("Saving failed!"), _("Error!"), wxOK);
         StartAutoSaveTimer();
-        if (GetExitOnError()) {
+        if (ExitOnErrorArmed()) {
           wxMaxima::m_exitCode = 1;
           Close();
         }
@@ -5343,7 +5355,7 @@ bool wxMaxima::SaveFile(bool forceSave) {
         StatusSaveFailed();
         LoggingMessageBox(_("Saving failed!"), _("Error!"), wxOK);
         StartAutoSaveTimer();
-        if (GetExitOnError()) {
+        if (ExitOnErrorArmed()) {
           wxMaxima::m_exitCode = 1;
           Close();
         }
@@ -5449,7 +5461,7 @@ bool wxMaxima::AbortOnError() {
   // of becoming interactive (see below), so leaving batch mode would only flip
   // m_exitAfterEval to false and wrongly re-enable all that work -- whose
   // background tasks then wedge the shutdown join (the multithreadtest CI hang).
-  if (!GetExitOnError())
+  if (!ExitOnErrorArmed())
     ExitAfterEval(false);
   EvalOnStartup(false);
 
@@ -5462,7 +5474,7 @@ bool wxMaxima::AbortOnError() {
       GetWorksheet()->GetWorkingGroup(true);
   }
 
-  if (GetExitOnError()) {
+  if (ExitOnErrorArmed()) {
     wxMaxima::m_exitCode = 1;
     Close();
   }
@@ -5551,7 +5563,6 @@ long long wxMaxima::GetMaximaCpuTime() {
             wxStringTokenizer tokens(rest, wxS(" "));
             
             if (tokens.CountTokens() >= 13) {
-              wxString state = tokens.GetNextToken();
               long ppid = 0, pgrp = 0;
               tokens.GetNextToken().ToLong(&ppid);
               tokens.GetNextToken().ToLong(&pgrp);
@@ -5688,7 +5699,6 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
     return;
   GetWorksheet()->CloseAutoCompletePopup();
 
-  wxString expr = GetDefaultEntry();
   bool forceSave = false;
 #if defined __WXMSW__
   wxString b = wxS("\\");
@@ -6595,8 +6605,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   GetWorksheet()->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
-  wxString b = wxS("\\");
-  wxString f = wxS("/");
   if(event.GetId() == EventIDs::menu_jumptoerror){
     GroupCell *lastError = GetWorksheet()->GetErrorList().LastError();
     if (lastError) {

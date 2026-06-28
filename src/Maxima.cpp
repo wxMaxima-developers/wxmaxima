@@ -33,8 +33,20 @@
 #include <wx/stopwatch.h>
 #include <iostream>
 #include <vector>
+#include <cstdio>
+#include <wx/utils.h>
 
 wxDEFINE_EVENT(EVT_MAXIMA, wxThreadEvent);
+
+// TEMPORARY (see Maxima.h): raw-stderr shutdown tracer, opt-in via
+// WXM_SHUTDOWN_TRACE, used to locate the Windows teardown hang.
+void WxmShutdownTrace(const char *where) {
+  static const bool on = wxGetEnv(wxS("WXM_SHUTDOWN_TRACE"), nullptr);
+  if (on) {
+    fprintf(stderr, "SHUTDOWN-TRACE: %s\n", where);
+    fflush(stderr);
+  }
+}
 
 #define INPUT_RESTART_PERIOD 100
 
@@ -74,9 +86,13 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
 }
 
 Maxima::~Maxima() {
+  WxmShutdownTrace("~Maxima: request_stop on worker thread");
   m_workerThread.request_stop();
-  if(m_workerThread.joinable())
+  if(m_workerThread.joinable()) {
+    WxmShutdownTrace("~Maxima: joining worker thread");
     m_workerThread.join();
+    WxmShutdownTrace("~Maxima: worker thread joined");
+  }
 
   // Defensively drop any handlers that might still target this object before it
   // is torn down. These stay as 1-arg Disconnect() rather than Unbind(): they
@@ -90,15 +106,18 @@ Maxima::~Maxima() {
   Disconnect(EVT_MAXIMA);
 
   if (m_socket) {
+      WxmShutdownTrace("~Maxima: closing socket");
       m_socket->Close();
+      WxmShutdownTrace("~Maxima: socket closed");
   }
-  
+
   {
       std::lock_guard<std::mutex> lock(m_interpretedQueueMutex);
       m_interpretedQueue.clear();
   }
-  
+
   wxEvtHandler::DeletePendingEvents();
+  WxmShutdownTrace("~Maxima: destructor complete");
 }
 
 bool Maxima::Write(const void *buffer, std::size_t length) {
@@ -217,6 +236,7 @@ void Maxima::WorkerThread(stop_token stopToken) {
         wxMilliSleep(20);
     }
   }
+  WxmShutdownTrace("WorkerThread: loop exited, thread returning");
 }
 
 void Maxima::ProcessData(stop_token stopToken)

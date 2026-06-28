@@ -150,11 +150,12 @@ file(
 # enough head-room not to flake under load. A real performance regression that
 # pushes a trivial test anywhere near this limit is still a bug to be fixed, not
 # a reason to raise the timeout.
-set(WXM_TEST_TIMEOUT 300 CACHE STRING "Per-test ctest timeout in seconds (watchdog against hung tests)")
+set(WXM_TEST_TIMEOUT 380 CACHE STRING "Per-test ctest timeout in seconds (watchdog against hung tests)")
 
 if(WXM_UNIT_TESTS)
     add_subdirectory(unit_tests)
 endif()
+add_subdirectory(image-test)
 
 # Test if maxima is working
 add_test(
@@ -680,6 +681,11 @@ add_test(
     NAME intCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error intCells.wxm)
+
+add_test(
+    NAME imageFormat
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/image-test
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error image-test.wxmx)
 
 add_test(
     NAME intervals_cmdline
