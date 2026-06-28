@@ -211,7 +211,6 @@ void MaximaManual::CompileHelpFileAnchors(stop_token stopToken,
           wxStringTokenizer tokens(line, wxS(">"));
           while (tokens.HasMoreTokens()) {
             wxString token = tokens.GetNextToken();
-            wxString oldToken(token);
             wxString id;
             if (idExtractor.Replace(&token, "\\1") > 0)
               id = token;

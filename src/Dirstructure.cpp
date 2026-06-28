@@ -137,7 +137,6 @@ wxString Dirstructure::DataDir() {
 }
 
 wxString Dirstructure::MaximaDefaultLocation() {
-  wxString maximaLocation;
   wxFileName exe = wxStandardPaths::Get().GetExecutablePath();
   exe.MakeAbsolute();
   wxFileName maxima;

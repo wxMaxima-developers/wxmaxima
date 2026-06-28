@@ -689,10 +689,8 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
                       std::size_t wxmLen) {
 
   wxString realFile = file;
-  wxString uuid;
   if (file.Contains(wxS("#"))) {
     realFile = file.BeforeFirst(wxS('#'));
-    uuid = file.AfterFirst(wxS('#'));
   }
 
   wxString title = _("wxMaxima");

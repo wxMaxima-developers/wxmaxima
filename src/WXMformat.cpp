@@ -461,7 +461,6 @@ namespace Format {
     };
 
     wxString line;
-    wxString wxmBlock;
     for (State s{' ', macContents.begin()}; s.ch != macContents.end();) {
       wxChar c = *s.ch;
       // Handle comments

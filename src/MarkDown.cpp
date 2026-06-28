@@ -48,7 +48,6 @@ wxString MarkDownParser::MarkDown(wxString str) {
   wxStringTokenizer lines(str, wxS("\n"), wxTOKEN_RET_EMPTY_ALL);
   while (lines.HasMoreTokens()) {
     wxString line = lines.GetNextToken();
-    wxString quotingStart;
     wxString lineTrimmed = line;
     lineTrimmed.Trim(false);
 

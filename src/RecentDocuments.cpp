@@ -30,7 +30,6 @@ RecentDocuments::RecentDocuments(const wxString &documentType)
 
 void RecentDocuments::Load() {
   wxConfigBase *config = wxConfig::Get();
-  wxString fileName;
 
   for (int i = 0; i < 30; i++) {
     wxString name = wxString::Format(wxS("RecentDocuments/%s_%d"),

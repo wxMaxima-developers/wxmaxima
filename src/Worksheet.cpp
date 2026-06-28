@@ -3825,7 +3825,6 @@ void Worksheet::SelectEditable(EditorCell *editor, bool up) {
 
 void Worksheet::OnCharNoActive(wxKeyEvent &event) {
   int ccode = event.GetKeyCode();
-  wxString txt; // Usually we open an Editor Cell with initial content txt
 
   // If Shift is down we are selecting with WXK_UP and WXK_DOWN
   if (event.ShiftDown() && (ccode == WXK_UP || ccode == WXK_DOWN)) {
