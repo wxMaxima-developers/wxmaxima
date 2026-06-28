@@ -698,7 +698,10 @@ public:
   static const wxWindowIDRef popid_change_image;
   static const wxWindowIDRef popid_svg;
   static const wxWindowIDRef popid_emf;
+#ifdef wxUSE_GIF
+  // can only save to animated gif if gif is supported
   static const wxWindowIDRef popid_animation_save;
+#endif
   static const wxWindowIDRef popid_animation_start;
   static const wxWindowIDRef popid_evaluate;
   static const wxWindowIDRef popid_evaluate_section;

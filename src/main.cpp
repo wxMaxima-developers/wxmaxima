@@ -550,13 +550,7 @@ bool MyApp::OnInit() {
     wxMaxima::Set_Maxima_Commandline_Filename(arg);
   }
 
-  wxImage::AddHandler(new wxPNGHandler);
-  wxImage::AddHandler(new wxXPMHandler);
-  wxImage::AddHandler(new wxJPEGHandler);
-  wxImage::AddHandler(new wxGIFHandler);
-#ifdef wxUSE_LIBWEBP
-  wxImage::AddHandler(new wxWEBPHandler);
-#endif
+  wxInitAllImageHandlers();
 
   wxFileSystem::AddHandler(new wxZipFSHandler);
 

@@ -1367,8 +1367,11 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
       popupMenu.Append(EventIDs::popid_image, _("Save Image..."), wxEmptyString,
                        wxITEM_NORMAL);
       if (IsSelected(MC_TYPE_SLIDE)) {
+#ifdef wxUSE_GIF
+  // can only save to animated gif if gif is supported
         popupMenu.Append(EventIDs::popid_animation_save, _("Save Animation..."),
                          wxEmptyString, wxITEM_NORMAL);
+#endif
         popupMenu.Append(EventIDs::popid_copy_animation, _("Copy Animation"),
                          wxEmptyString, wxITEM_NORMAL);
         popupMenu.Append(EventIDs::popid_animation_start, _("Start Animation"),

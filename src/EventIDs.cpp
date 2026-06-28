@@ -630,7 +630,10 @@ const wxWindowIDRef EventIDs::popid_image(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_change_image(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_svg(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_emf(wxWindow::NewControlId());
+#ifdef wxUSE_GIF
+  // can only save to animated gif if gif is supported
 const wxWindowIDRef EventIDs::popid_animation_save(wxWindow::NewControlId());
+#endif
 const wxWindowIDRef EventIDs::popid_animation_start(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_evaluate(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::popid_evaluate_section(wxWindow::NewControlId());

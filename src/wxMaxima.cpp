@@ -6122,19 +6122,50 @@ void wxMaxima::EditMenu(wxCommandEvent &event) {
   }
   else if(event.GetId() == EventIDs::menu_copy_to_file) {
     wxString file = wxFileSelector(_("Save Selection to Image"), m_lastPath,
+    // by default use PNG, if not available BMP (always supported by wxWidgets) as default name/type.
+#ifdef wxUSE_LIBPNG
                                    wxS("image.png"), wxS("png"),
-                                   _("PNG image (*.png)|*.png|"
-                                     "JPEG image (*.jpg)|*.jpg|"
-                                     "GIF image (*.gif)|*.gif|"
-                                     "Scaleable vector graphics (*.svg)|*.svg|"
-                                     "Windows bitmap (*.bmp)|*.bmp|") +
-#ifdef wxUSE_LIBWEBP
-                                     _("WebP (*.webp)|*.webp|") +
+#else
+                                   wxS("image.bmp"), wxS("bmp"),
 #endif
-                                     _("Portable anymap (*.pnm)|*.pnm|"
-                                     "Tagged image file format (*.tif)|*.tif|"
-                                     "X pixmap (*.xpm)|*.xpm"),
-                                   wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+                                       _("Image files (") +
+#ifdef wxUSE_LIBPNG
+                                       "*.png, "
+#endif
+#ifdef wxUSE_LIBJPEG
+                                       "*.jpg, "
+#endif
+#ifdef wxUSE_LIBWEBP
+                                         "*.webp, "
+#endif
+#ifdef wxUSE_XPM
+                                         "*.xpm, "
+#endif
+#ifdef wxUSE_GIF
+                                         "*.gif, "
+#endif
+
+                                         ".svg, *.svgz, "
+                                         ".bmp)|"
+#ifdef wxUSE_LIBPNG
+                                         "*.png;"
+#endif
+#ifdef wxUSE_LIBJPEG
+                                         "*.jpg;"
+#endif
+#ifdef wxUSE_LIBWEBP
+                                         "*.webp;"
+#endif
+#ifdef wxUSE_XPM
+                                         "*.xpm;"
+#endif
+#ifdef wxUSE_GIF
+                                         "*.gif;"
+#endif
+                                         "*.svg;*.svgz,"
+                                         "*.bmp",
+                                       wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
     if (file.Length()) {
       GetWorksheet()->CopyToFile(file);
       m_lastPath = wxPathOnly(file);
@@ -9953,17 +9984,42 @@ void wxMaxima::PopupMenu(wxCommandEvent &event) {
 
       wxString newImg = wxFileSelector(
                                        _("Change Image"), m_lastPath, wxEmptyString, wxEmptyString,
-                                       _("Image files") + " (*.png, *.jpg, "
+                                       _("Image files (") +
+#ifdef wxUSE_LIBPNG
+                                       "*.png, "
+#endif
+#ifdef wxUSE_LIBJPEG
+                                       "*.jpg, "
+#endif
 #ifdef wxUSE_LIBWEBP
                                          "*.webp, "
 #endif
+#ifdef wxUSE_XPM
+                                         "*.xpm, "
+#endif
+#ifdef wxUSE_GIF
+                                         "*.gif, "
+#endif
 
-                                         "*.bmp, *.xpm, *.gif, *.svg, "
-                                         "*.svgz)|*.png;*.jpg;"
+                                         ".svg, *.svgz, "
+                                         ".bmp)|"
+#ifdef wxUSE_LIBPNG
+                                         "*.png;"
+#endif
+#ifdef wxUSE_LIBJPEG
+                                         "*.jpg;"
+#endif
 #ifdef wxUSE_LIBWEBP
                                          "*.webp;"
 #endif
-                                         "*.bmp;*.xpm;*.gif;*.svg;*.svgz",
+#ifdef wxUSE_XPM
+                                         "*.xpm;"
+#endif
+#ifdef wxUSE_GIF
+                                         "*.gif;"
+#endif
+                                         "*.svg;*.svgz,"
+                                         "*.bmp",
                                        wxFD_OPEN);
 
       if (!newImg.Length()) {
@@ -10676,19 +10732,44 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
   else if((event.GetId() == EventIDs::menu_insert_image) ||
           (event.GetId() == EventIDs::menu_format_image)){
       wxString file = wxFileSelector(
-                                     _("Insert Image"), m_lastPath, wxEmptyString, wxEmptyString,
-                                     _("Image files") + " (*.png, *.jpg," +
+                                       _("Insert Image"), m_lastPath, wxEmptyString, wxEmptyString,
+                                       _("Image files (") +
+#ifdef wxUSE_LIBPNG
+                                       "*.png, "
+#endif
+#ifdef wxUSE_LIBJPEG
+                                       "*.jpg, "
+#endif
 #ifdef wxUSE_LIBWEBP
-                                         "*.webp," +
+                                         "*.webp, "
+#endif
+#ifdef wxUSE_XPM
+                                         "*.xpm, "
+#endif
+#ifdef wxUSE_GIF
+                                         "*.gif, "
 #endif
 
-                                       "*.bmp, *.xpm, *.gif, *.svg, "
-                                       "*.svgz)|*.png;*.jpg;" +
-#ifdef wxUSE_LIBWEBP
-                                         "*.webp;" +
+                                         "*.svg, *.svgz, "
+                                         "*.bmp)|"
+#ifdef wxUSE_LIBJPEG
+                                         "*.png;"
 #endif
-                                       "*.bmp;*.xpm;*.gif;*.svg;*.svgz",
-                                     wxFD_OPEN);
+#ifdef wxUSE_LIBJPEG
+                                         "*.jpg;"
+#endif
+#ifdef wxUSE_LIBWEBP
+                                         "*.webp;"
+#endif
+#ifdef wxUSE_XPM
+                                         "*.xpm;"
+#endif
+#ifdef wxUSE_GIF
+                                         "*.gif;"
+#endif
+                                         "*.svg;*.svgz,"
+                                         "*.bmp",
+                                       wxFD_OPEN);
       if (file != wxEmptyString)
         GetWorksheet()->OpenHCaret(file, GC_TYPE_IMAGE);
       return;
