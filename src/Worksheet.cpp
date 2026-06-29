@@ -3500,6 +3500,10 @@ void Worksheet::UpdateConfigurationClientSize() {
  */
 void Worksheet::OnCharInActive(wxKeyEvent &event) {
   bool needRecalculate = false;
+  // Set once the IsDirty() path below has issued a full redraw of the active
+  // group, so the per-cell refresh further down can skip a redundant second
+  // repaint (see the note there).
+  bool fullyRedrawn = false;
 
   if ((event.GetKeyCode() == WXK_UP || event.GetKeyCode() == WXK_PAGEUP) &&
       GetActiveCell()->CaretAtStart()) {
@@ -3657,6 +3661,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
 
     RequestRedraw(GetActiveCell()->GetGroup());
     RedrawIfRequested();
+    fullyRedrawn = true;
 
     if (GetActiveCell()->GetWidth() + GetActiveCell()->GetCurrentPoint().x >=
         GetClientSize().GetWidth() - m_configuration->GetCellBracketWidth() -
@@ -3682,11 +3687,14 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
     /// Otherwise refresh only the active cell
     else {
       wxRect rect;
+      bool labelReset = false;
       if (GetActiveCell()->CheckChanges()) {
         GroupCell *group = GetActiveCell()->GetGroup();
         if ((group->GetGroupType() == GC_TYPE_CODE) &&
-            (GetActiveCell() == group->GetEditable()))
+            (GetActiveCell() == group->GetEditable())) {
           group->ResetInputLabel();
+          labelReset = true;
+        }
         rect = group->GetRect();
         rect.width = GetVirtualSize().x;
       } else {
@@ -3694,7 +3702,19 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
         rect.width = GetVirtualSize().x;
       }
       rect.x -= m_configuration->GetCursorWidth() / 2;
-      RequestRedraw(rect);
+      // A content keypress already triggered a full redraw of the group in the
+      // IsDirty() path above. Repeating this partial row repaint then produced a
+      // second, separate paint frame -- and when it was deferred (no immediate
+      // RedrawIfRequested) it fired on a later event such as the caret-blink
+      // timer, clearing and re-drawing the row out of step with the keypress.
+      // That detached frame is what made short Text/Title cells' text blink in
+      // sync with the cursor. So skip this repaint when the group was already
+      // fully redrawn, unless a code cell's input label was just reset here
+      // (which changed after that redraw and must be repainted).
+      if (!fullyRedrawn || labelReset) {
+        RequestRedraw(rect);
+        RedrawIfRequested();
+      }
     }
   }
 

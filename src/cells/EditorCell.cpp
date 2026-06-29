@@ -779,13 +779,6 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
     if((m_height < 1) || (m_width < 1) || (y < 0))
       return;
 
-    // TEMPORARY flicker diagnostics (set WXM_DRAWLOG=1). Logs each Draw of a
-    // text-ish cell: caret state, the update region vs the cell rect, and how
-    // many text snippets actually get painted. Remove once the flicker is fixed.
-    const bool wxmDrawLog = (getenv("WXM_DRAWLOG") != nullptr) &&
-      ((GetTextStyle() == TS_TEXT) || (GetTextStyle() == TS_TITLE));
-    int wxmSnippetsDrawn = 0, wxmSnippetsSkipped = 0;
-
     // Set the background to the cell's background color
     if (GetTextStyle() == TS_TEXT) {
       if (m_configuration->InUpdateRegion(rect) &&
@@ -922,11 +915,9 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
 
         // Draw the text only if it overlaps the update region
         if (((!m_configuration->ClipToDrawRegion())) ||
-            (updateRegion.Intersects(textRect))) {
+            (updateRegion.Intersects(textRect)))
           dc->DrawText(textSnippet.GetText(), TextCurrentPoint.x,
                        TextCurrentPoint.y - m_center);
-          if (wxmDrawLog) wxmSnippetsDrawn++;
-        } else if (wxmDrawLog) wxmSnippetsSkipped++;
         TextCurrentPoint.x += width;
       }
     }
@@ -948,19 +939,6 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
                         point.x + lineWidth - m_configuration->GetCursorWidth(),
                         point.y + Scale_Px(1) - m_center + caretInLine * m_charHeight,
                         m_configuration->GetCursorWidth(), m_charHeight - Scale_Px(5));
-    }
-
-    if (wxmDrawLog) {
-      wxRect ur = m_configuration->GetUpdateRegion();
-      std::fprintf(stderr,
-                   "WXMDRAW style=%d len=%d cellRect=(%d,%d,%d,%d) updRegion=(%d,%d,%d,%d) "
-                   "caret=%d active=%d focus=%d snippetsDrawn=%d snippetsSkipped=%d\n",
-                   (int)GetTextStyle(), (int)m_text.Length(),
-                   GetRect().x, GetRect().y, GetRect().width, GetRect().height,
-                   ur.x, ur.y, ur.width, ur.height,
-                   (int)m_displayCaret, (int)IsActive(), (int)m_hasFocus,
-                   wxmSnippetsDrawn, wxmSnippetsSkipped);
-      std::fflush(stderr);
     }
   }
 }
