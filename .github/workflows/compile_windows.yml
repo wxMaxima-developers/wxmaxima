@@ -144,28 +144,41 @@ jobs:
             cd ..
             cd ..
       - name: Diagnose hanging unit tests (SqrtCell/ImgCell)
-        # The two MinGW-only hangs (see "Run unit tests"). ctest kills a timed-out
-        # test and drops its captured output, so the WXMARK stderr trace never
-        # reaches the log. Here we run each exe DIRECTLY with stderr redirected to a
-        # file and a hard timeout-kill: because WXMARK fflush()es after every marker,
-        # the file holds the full trace up to the kill, and we print it afterwards.
-        # The last WXMARK line names the stage that wedges (or its absence proves the
-        # hang is before OnRun/OnInit, i.e. in static initialization). Non-blocking.
+        # The two MinGW-only hangs (see "Run unit tests"). The WXMARK trace already
+        # localized the wedge to AFTER the wxApp object is constructed ("app:ctor"
+        # prints) but BEFORE OnInit -- i.e. inside wxApp::Initialize() /
+        # wxModule::InitializeModules(), the MSW GUI/module startup wxEntry runs
+        # between construction and OnInit. To name the exact frame, we now attach
+        # MinGW's gdb to the still-hung process and dump every thread's backtrace,
+        # then kill it. Output (markers + stacks) inherits this step's console, the
+        # proven capture path. Non-blocking.
         continue-on-error: true
         run: |
             cd wxMaxima
             cd build
+            # gdb ships next to the gcc that built the exes; attach by PID.
+            $gccbin = Split-Path (Get-Command gcc).Source
+            $gdb = Join-Path $gccbin "gdb.exe"
+            Write-Host "gdb: $gdb (exists: $(Test-Path $gdb))"
             function Run-WithTimeout($exe, $seconds) {
               Write-Host "=== Running $exe (timeout ${seconds}s) ==="
               if (-not (Test-Path $exe)) { Write-Host "::warning::$exe not found"; return }
               # No -RedirectStandard*: let the child inherit this step's console so
               # its WXMARK stderr is captured the same proven way the integration
-              # tests' SHUTDOWN-TRACE lines reach the log. (The earlier file-redirect
-              # variant produced empty files -- an unproven capture path, not proof
-              # the markers never ran.)
+              # tests' SHUTDOWN-TRACE lines reach the log.
               $p = Start-Process -FilePath $exe -NoNewWindow -PassThru
               if (-not $p.WaitForExit($seconds * 1000)) {
-                Write-Host "=== TIMEOUT after ${seconds}s: killing $exe ==="
+                Write-Host "=== still running after ${seconds}s (hung): backtrace via gdb ==="
+                if (Test-Path $gdb) {
+                  & $gdb -p $p.Id -batch -nx `
+                      -ex "set pagination off" `
+                      -ex "info threads" `
+                      -ex "thread apply all bt" `
+                      -ex "detach" -ex "quit" 2>&1 | Write-Host
+                } else {
+                  Write-Host "::warning::gdb not found at $gdb; cannot capture stack"
+                }
+                Write-Host "=== killing $exe ==="
                 try { $p.Kill() } catch {}
                 $p.WaitForExit(5000) | Out-Null
               } else {
@@ -173,8 +186,9 @@ jobs:
               }
               Write-Host "=== end $exe ==="
             }
-            Run-WithTimeout "test/unit_tests/test_SqrtCell.exe" 30
-            Run-WithTimeout "test/unit_tests/test_ImgCell.exe" 30
+            # 15 s is plenty: the wedge is at startup and permanent.
+            Run-WithTimeout "test/unit_tests/test_SqrtCell.exe" 15
+            Run-WithTimeout "test/unit_tests/test_ImgCell.exe" 15
             cd ..
             cd ..
       - name: Check Manifest file
