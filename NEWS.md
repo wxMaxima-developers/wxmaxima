@@ -1,5 +1,6 @@
 # Current development version
 
+- Fixed data loss when embedding a gzip-compressed SVG whose name did not end in `.svgz` (e.g. a `.svg.gz` file): it was saved into the `.wxmx` as an empty file.
 - A proper Dark mode (dark sidebars, toolbars and menus require wxWidgets 3.3 and up)
 - Many improvoements to the automatic tests
 - Many batch mode improvements

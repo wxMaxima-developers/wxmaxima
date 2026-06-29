@@ -896,6 +896,28 @@ void Image::LoadImage_Backgroundtask(stop_token stopToken,
 
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0) {
+    // A gzip-compressed SVG whose file name did not end in ".svgz" (e.g. a
+    // ".svg.gz" file, whose extension is "gz") would otherwise be treated as a
+    // raster image, fail to decode and -- because InvalidBitmap() discards the
+    // compressed data -- be written to the .wxmx as a zero-length file, silently
+    // losing the image. Detect a gzipped SVG by its content and handle it as a
+    // .svgz so the data survives a save/load round-trip.
+    if ((m_extension != wxS("svg")) && (m_extension != wxS("svgz")) &&
+        (m_compressedImage.GetDataLen() > 2)) {
+      const unsigned char *bytes =
+        static_cast<const unsigned char *>(m_compressedImage.GetData());
+      if ((bytes[0] == 0x1f) && (bytes[1] == 0x8b)) { // gzip magic number
+        wxMemoryInputStream istream(m_compressedImage.GetData(),
+                                    m_compressedImage.GetDataLen());
+        wxZlibInputStream zstream(istream);
+        if (zstream.IsOk()) {
+          char head[512] = {};
+          zstream.Read(head, sizeof(head) - 1);
+          if (wxString::FromUTF8(head, zstream.LastRead()).Contains(wxS("<svg")))
+            m_extension = wxS("svgz");
+        }
+      }
+    }
     if ((m_extension == "svg") || (m_extension == "svgz")) {
       wxString svgContents_string;
 
