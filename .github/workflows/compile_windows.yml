@@ -132,15 +132,15 @@ jobs:
         # The Maxima-driven integration tests run later as a separate, non-blocking
         # step (see "Run integration tests").
         #
-        # SqrtCell and ImgCell are temporarily excluded here: on MinGW (only) they
-        # hang to the 380 s ctest timeout (they pass on Linux/Mac). ctest discards a
-        # timed-out test's stderr, so the diagnostic step below runs those two exes
-        # directly to capture where they wedge. Once fixed, drop the -E filter so
-        # they gate again.
+        # SqrtCell and ImgCell previously hung here on MinGW: wxWidgets 3.3's
+        # wxApp::Initialize() popped a modal no-manifest warning that blocks on the
+        # headless runner (root-caused via gdb; fixed in wxm_test_setup.cpp by
+        # setting wx_msw_no_manifest_check). They gate again now; the diagnostic
+        # step below is kept for one run to confirm they no longer wedge.
         run: |
             cd wxMaxima
             cd build
-            ctest -L unittest -E "SqrtCell|ImgCell" --output-on-failure
+            ctest -L unittest --output-on-failure
             cd ..
             cd ..
       - name: Diagnose hanging unit tests (SqrtCell/ImgCell)
