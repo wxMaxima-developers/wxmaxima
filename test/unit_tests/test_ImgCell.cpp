@@ -33,6 +33,12 @@
 #include "VisiblyInvalidCell.cpp"
 #include <catch2/catch.hpp>
 
+// TEMPORARY: flushed stderr stage markers to bisect the MSW-only CI hang of this
+// test (times out at 380 s on MinGW). The last WXMARK before the timeout is the
+// stage that wedges. Remove once localized.
+#include <cstdio>
+#define WXMARK(msg) do { std::fprintf(stderr, "WXMARK " msg "\n"); std::fflush(stderr); } while (0)
+
 template <typename C>
 wxString HexEncoding(C &&bits)
 {
@@ -44,14 +50,19 @@ wxString HexEncoding(C &&bits)
 
 // ... (license header omitted for brevity but preserved in replace)
 SCENARIO("RTF Output represents the image") {
+  WXMARK("img:scenario-enter");
   wxMemoryBuffer image;
   image.AppendData(wxmaxima_art_wxmac_doc_png, wxmaxima_art_wxmac_doc_png_size);
   Configuration config;
+  WXMARK("img:config-built");
   GroupCell group(&config, GC_TYPE_IMAGE, wxString());
   GIVEN("An image with test data") {
     ImgCell cell(&group, &config, image, "png");
+    WXMARK("img:cell-built");
     WHEN("we convert it to RTF") {
+      WXMARK("img:before-ToRTF");
       auto rtf = cell.ToRTF();
+      WXMARK("img:after-ToRTF");
       THEN("the RTF output ends in \"}\\n\"")
       REQUIRE(rtf.EndsWith("}\n"));
       THEN("the RTF output contains the hex encoding of the image")
@@ -69,8 +80,10 @@ class MyApp : public wxApp
 {
 public:
   bool OnInit() override {
+    WXMARK("app:OnInit-before-catch");
     wxImage::AddHandler(new wxPNGHandler);
     int rc = Catch::Session().run();
+    WXMARK("app:OnInit-after-catch");
     std::exit(rc);
     return false;
   }

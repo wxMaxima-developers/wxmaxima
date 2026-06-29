@@ -36,6 +36,12 @@ wxLogNull dontLog;
 
 #include <catch2/catch.hpp>
 
+// TEMPORARY: flushed stderr stage markers to bisect the MSW-only CI hang of this
+// test (SqrtCell/ImgCell time out at 380 s on MinGW). The last WXMARK printed
+// before the timeout is the stage that wedges. Remove once localized.
+#include <cstdio>
+#define WXMARK(msg) do { std::fprintf(stderr, "WXMARK " msg "\n"); std::fflush(stderr); } while (0)
+
 void Configuration::SetZoomFactor(double newzoom)
 {
   if (newzoom > GetMaxZoomFactor())
@@ -47,32 +53,41 @@ void Configuration::SetZoomFactor(double newzoom)
 }
 
 SCENARIO("SqrtCell recalculates") {
+  WXMARK("sqrt:scenario-enter");
   wxBitmap bitmap(128, 128);
   wxMemoryDC dc(bitmap);
   Configuration configuration(&dc);
+  WXMARK("sqrt:config-built");
   configuration.SetZoomFactor(1.0);
 
   GroupCell group(&configuration, GC_TYPE_TEXT);
+  WXMARK("sqrt:group-built");
 
   GIVEN("a SqrtCell") {
     SqrtCell cell(&group, &configuration, std::make_unique<VisiblyInvalidCell>(&group, &configuration));
+    WXMARK("sqrt:cell-built");
 
     WHEN("the cell is copied") THEN("the copy succeeds")
       REQUIRE(cell.Copy(&group));
+    WXMARK("sqrt:after-copy");
 
     WHEN("the cell is broken up") {
       cell.BreakUp();
+      WXMARK("sqrt:after-breakup");
       THEN("when it is copied, the copy succeeds")
         REQUIRE(cell.Copy(&group));
       THEN("when it is copied, the copy can recalculate") {
         auto copy = cell.Copy(&group);
         copy->Recalculate(AFontSize(10));
+        WXMARK("sqrt:after-recalc");
       }
     }
   }
+  WXMARK("sqrt:scenario-exit");
 }
 
 SCENARIO("LongNumberCell behaviour") {
+  WXMARK("longnum:scenario-enter");
   wxBitmap bitmap(128, 128);
   wxMemoryDC dc(bitmap);
   Configuration configuration(&dc);
@@ -129,7 +144,10 @@ class MyApp : public wxApp
 public:
   Catch::Session catchSession;
   int OnRun() override {
-    return catchSession.run();
+    WXMARK("app:OnRun-before-catch");
+    int rc = catchSession.run();
+    WXMARK("app:OnRun-after-catch");
+    return rc;
   }
 };
 

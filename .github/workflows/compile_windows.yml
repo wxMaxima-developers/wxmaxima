@@ -48,7 +48,12 @@ jobs:
           cache-name: cache-wxWidgets
         with:
           path: wxWidgets-${{env.WXVERSION}}
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-3
+          # The key MUST include WXVERSION: the cached path is version-specific, so
+          # after a version bump the old cache no longer matches and -- because
+          # cache keys are immutable and this one already exists -- a new build can
+          # never be saved under it, giving a permanent cache miss (a ~30 min
+          # wxWidgets rebuild every run). The MSVC job below versions its key too.
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.WXVERSION }}-3
 
       # multi-job compilation is broken in wxWidgets, see https://trac.wxwidgets.org/ticket/19029
       # compiling wxWidgets via cmake works, but the result isn't detected by cmake any more.
