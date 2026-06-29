@@ -18,8 +18,10 @@ var searchData=
   ['wxmaximaframe_15',['wxMaximaFrame',['../classwxMaximaFrame.html',1,'']]],
   ['wxmheader_16',['WXMHeader',['../structFormat_1_1WXMHeader.html',1,'Format']]],
   ['wxmheadercollection_17',['WXMHeaderCollection',['../classFormat_1_1WXMHeaderCollection.html',1,'Format']]],
-  ['wxmxstream_18',['WxmxStream',['../classImage_1_1WxmxStream.html',1,'Image']]],
-  ['wxscrolled_19',['wxScrolled',['../classwxScrolled.html',1,'']]],
-  ['wxscrolled_3c_20wxpanel_20_3e_20',['wxScrolled&lt; wxPanel &gt;',['../classwxScrolled.html',1,'']]],
-  ['wxscrolled_3c_20wxwindow_20_3e_21',['wxScrolled&lt; wxWindow &gt;',['../classwxScrolled.html',1,'']]]
+  ['wxmstaticinitbegin_18',['WxmStaticInitBegin',['../structWxmStaticInitBegin.html',1,'']]],
+  ['wxmstaticinitend_19',['WxmStaticInitEnd',['../structWxmStaticInitEnd.html',1,'']]],
+  ['wxmxstream_20',['WxmxStream',['../classImage_1_1WxmxStream.html',1,'Image']]],
+  ['wxscrolled_21',['wxScrolled',['../classwxScrolled.html',1,'']]],
+  ['wxscrolled_3c_20wxpanel_20_3e_22',['wxScrolled&lt; wxPanel &gt;',['../classwxScrolled.html',1,'']]],
+  ['wxscrolled_3c_20wxwindow_20_3e_23',['wxScrolled&lt; wxWindow &gt;',['../classwxScrolled.html',1,'']]]
 ];
