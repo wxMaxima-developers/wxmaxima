@@ -142,6 +142,10 @@ wxString Dirstructure::MaximaDefaultLocation() {
   wxFileName maxima;
 #if defined __WXMSW__ || defined __WXOSX__
   wxString notFound = _("Maxima not found as %s");
+  // Declared only on the platforms whose branches below use it; on other
+  // platforms (e.g. Linux) that code is #if'd out, so an unconditional
+  // declaration would be an unused variable and -Werror would reject it.
+  wxString maximaLocation;
 #endif
 
   // -------------------------- MS Windows only ------------------------

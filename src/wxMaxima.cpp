@@ -3185,19 +3185,11 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
   m_gnuplotTerminalQueryProcess->Redirect();
   std::unique_ptr<wxExecuteEnv> env(new wxExecuteEnv);
   env->env = std::move(environment);
-#if defined __WXMSW__
-  // We want this gnuplot process to exit after it has finished its work,
-  // not to stay around until someone closes its terminal
-  if(m_configuration.UseWGnuplot())
-    {
-      long pos = gnuplotcommand.rfind(wxS("gnuplot"));
-      // if pos is not wxNOT_FOUND it is 6 or higher.
-      if(pos != wxNOT_FOUND)
-        gnuplotcommand = gnuplotcommand.Left(pos) +
-          gnuplotcommand.Right(gnuplotcommand.Length() - pos - 1);
-    }
-#endif
 #ifdef __WINDOWS__
+  // On Windows the terminal-query uses the command-line gnuplot.exe
+  // (m_gnuplotcommand_commandline, populated by GnuplotCommandName) rather than
+  // the possibly-GUI "wgnuplot" so the query process exits on its own instead of
+  // staying around until someone closes its terminal window.
   wxString gnuplot_query =
       m_gnuplotcommand_commandline + " -e \"print GPVAL_TERMINALS\"";
 #else
