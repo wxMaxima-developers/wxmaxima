@@ -1,5 +1,6 @@
 # Current development version
 
+- Fixed matrices keeping stale (too narrow or too wide) column widths when a layout-time deadline interrupted their recalculation.
 - Fixed short Text and Title cells flickering.
 - Fixed data loss when trying to embedd .svg.gz files into .wxmx files.
 - wxWidgets 3.3 compatibility.
