@@ -158,9 +158,12 @@ jobs:
             function Run-WithTimeout($exe, $seconds) {
               Write-Host "=== Running $exe (timeout ${seconds}s) ==="
               if (-not (Test-Path $exe)) { Write-Host "::warning::$exe not found"; return }
-              $err = "$exe.err.log"; $out = "$exe.out.log"
-              $p = Start-Process -FilePath $exe -NoNewWindow -PassThru `
-                     -RedirectStandardError $err -RedirectStandardOutput $out
+              # No -RedirectStandard*: let the child inherit this step's console so
+              # its WXMARK stderr is captured the same proven way the integration
+              # tests' SHUTDOWN-TRACE lines reach the log. (The earlier file-redirect
+              # variant produced empty files -- an unproven capture path, not proof
+              # the markers never ran.)
+              $p = Start-Process -FilePath $exe -NoNewWindow -PassThru
               if (-not $p.WaitForExit($seconds * 1000)) {
                 Write-Host "=== TIMEOUT after ${seconds}s: killing $exe ==="
                 try { $p.Kill() } catch {}
@@ -168,8 +171,6 @@ jobs:
               } else {
                 Write-Host "=== $exe exited with code $($p.ExitCode) ==="
               }
-              Write-Host "--- stdout ($exe) ---"; if (Test-Path $out) { Get-Content $out }
-              Write-Host "--- stderr ($exe) ---"; if (Test-Path $err) { Get-Content $err }
               Write-Host "=== end $exe ==="
             }
             Run-WithTimeout "test/unit_tests/test_SqrtCell.exe" 30

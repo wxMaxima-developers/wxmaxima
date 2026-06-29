@@ -20,6 +20,22 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #define CATCH_CONFIG_RUNNER
+
+// TEMPORARY: flushed stderr stage markers to bisect the MSW-only CI hang of this
+// test (times out at 380 s on MinGW). The last WXMARK before the timeout is the
+// stage that wedges. Remove once localized.
+#include <cstdio>
+#define WXMARK(msg) do { std::fprintf(stderr, "WXMARK " msg "\n"); std::fflush(stderr); } while (0)
+
+// The whole test is one translation unit (the cell .cpp files are #included
+// below), so global ctors run top-to-bottom from here. These two markers bracket
+// that static-init phase: if "static-init-begin" prints but "static-init-end"
+// does not, a global constructor among the #included files (e.g. the file-scope
+// wxString in VisiblyInvalidCell.cpp) is what wedges; if both print but
+// "app:OnInit-before-catch" never does, the hang is in wxEntry/wxApp startup.
+struct WxmStaticInitBegin { WxmStaticInitBegin() { WXMARK("static-init-begin"); } };
+static WxmStaticInitBegin wxmStaticInitBegin;
+
 #include "test_ImgCell.h"
 #include "FontAttribs.cpp"
 #include "nanoSVG.cpp"
@@ -33,11 +49,8 @@
 #include "VisiblyInvalidCell.cpp"
 #include <catch2/catch.hpp>
 
-// TEMPORARY: flushed stderr stage markers to bisect the MSW-only CI hang of this
-// test (times out at 380 s on MinGW). The last WXMARK before the timeout is the
-// stage that wedges. Remove once localized.
-#include <cstdio>
-#define WXMARK(msg) do { std::fprintf(stderr, "WXMARK " msg "\n"); std::fflush(stderr); } while (0)
+struct WxmStaticInitEnd { WxmStaticInitEnd() { WXMARK("static-init-end"); } };
+static WxmStaticInitEnd wxmStaticInitEnd;
 
 template <typename C>
 wxString HexEncoding(C &&bits)
