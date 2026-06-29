@@ -170,11 +170,13 @@ jobs:
               if (-not $p.WaitForExit($seconds * 1000)) {
                 Write-Host "=== still running after ${seconds}s (hung): backtrace via gdb ==="
                 if (Test-Path $gdb) {
-                  & $gdb -p $p.Id -batch -nx `
-                      -ex "set pagination off" `
-                      -ex "info threads" `
-                      -ex "thread apply all bt" `
-                      -ex "detach" -ex "quit" 2>&1 | Write-Host
+                  # Feed gdb its commands from a file: passing multi-word -ex
+                  # strings on the PowerShell command line splits them on spaces
+                  # (gdb then sees "info","threads",... as separate tokens and just
+                  # prints help). A -x command file avoids all quoting issues.
+                  $cmds = "info threads`nthread apply all bt`ndetach`nquit`n"
+                  Set-Content -Path "gdbcmds.txt" -Value $cmds -Encoding ascii
+                  & $gdb -batch -nx -x "gdbcmds.txt" -p $p.Id 2>&1 | Write-Host
                 } else {
                   Write-Host "::warning::gdb not found at $gdb; cannot capture stack"
                 }
