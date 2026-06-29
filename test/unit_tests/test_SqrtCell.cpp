@@ -154,7 +154,14 @@ SCENARIO("LongNumberCell behaviour") {
 class MyApp : public wxApp
 {
 public:
+  MyApp() { WXMARK("app:ctor"); }
   Catch::Session catchSession;
+  bool OnInit() override {
+    WXMARK("app:OnInit-enter");
+    bool ok = wxApp::OnInit();
+    WXMARK("app:OnInit-after-base");
+    return ok;
+  }
   int OnRun() override {
     WXMARK("app:OnRun-before-catch");
     int rc = catchSession.run();

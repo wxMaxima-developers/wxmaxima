@@ -92,8 +92,9 @@ SCENARIO("RTF Output represents the image") {
 class MyApp : public wxApp
 {
 public:
+  MyApp() { WXMARK("app:ctor"); }
   bool OnInit() override {
-    WXMARK("app:OnInit-before-catch");
+    WXMARK("app:OnInit-enter");
     wxImage::AddHandler(new wxPNGHandler);
     int rc = Catch::Session().run();
     WXMARK("app:OnInit-after-catch");
