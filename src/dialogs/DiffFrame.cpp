@@ -321,11 +321,26 @@ void DiffFrame::UpdateDiffNavUI() {
     m_shownNextEnabled = static_cast<int>(hasNext);
   }
 
-  // Repaint the minimap strips when the visible range or the current difference
-  // changed. (The marker positions themselves only change on relayout, which
-  // repaints the bars via wxFULL_REPAINT_ON_RESIZE.)
+  // Repaint the minimap strips when the visible range, the current difference,
+  // or any worksheet's document height changed. The strips scale every marker
+  // (and the viewport box) against GetVirtualSize().y, and a worksheet can change
+  // height without a frame resize or a scroll -- a lazy recalculation after the
+  // frame settled, or a font/zoom change -- so tracking only viewTop/current here
+  // left the markers painted at stale positions until the next scroll.
   const int viewTop = m_worksheets.empty() ? 0 : CurrentScrollY(0);
-  if (viewTop != m_lastBarViewTop || current != m_lastBarCurrent) {
+  bool heightsChanged = false;
+  if (m_lastBarDocHeights.size() != m_worksheets.size()) {
+    m_lastBarDocHeights.assign(m_worksheets.size(), -1);
+    heightsChanged = true;
+  }
+  for (size_t i = 0; i < m_worksheets.size(); ++i) {
+    const int h = m_worksheets[i]->GetVirtualSize().y;
+    if (h != m_lastBarDocHeights[i]) {
+      m_lastBarDocHeights[i] = h;
+      heightsChanged = true;
+    }
+  }
+  if (viewTop != m_lastBarViewTop || current != m_lastBarCurrent || heightsChanged) {
     m_lastBarViewTop = viewTop;
     m_lastBarCurrent = current;
     for (auto *bar : m_markerBars)

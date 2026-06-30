@@ -106,6 +106,12 @@ private:
   //! for, so the idle handler only repaints them when something moved.
   int m_lastBarViewTop = -1;
   int m_lastBarCurrent = -2;
+  //! Per-pane document height (GetVirtualSize().y) the marker strips were last
+  //! painted for. A worksheet can change height without a frame resize or a
+  //! scroll (e.g. a lazy recalculation after the frame settled, or a font/zoom
+  //! change), and the strips scale every marker against that height -- so the
+  //! idle handler must repaint them when it changes, not only on scroll.
+  std::vector<int> m_lastBarDocHeights;
 
   wxToolBar *m_toolBar = nullptr;
   //! The "Difference N / M" indicator shown in the toolbar.
