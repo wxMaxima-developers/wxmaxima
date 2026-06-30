@@ -2740,7 +2740,15 @@ void EditorCell::PasteFromClipboard(const bool primary) {
       wxTheClipboard->IsSupported(wxDF_UNICODETEXT)) {
     wxTextDataObject obj;
     wxTheClipboard->GetData(obj);
-    InsertText(obj.GetText());
+    wxString text = obj.GetText();
+    // Normalize external line endings to the hard break '\n': Windows uses
+    // "\r\n" and classic macOS a lone '\r'. Internally '\r' is wxMaxima's *soft*
+    // word-wrap break, so pasted text must not smuggle one in (it would freeze a
+    // line break into the content). Done here, on the incoming clipboard string
+    // only, so existing soft breaks already in m_text are untouched.
+    text.Replace(wxS("\r\n"), wxS("\n"));
+    text.Replace(wxS("\r"), wxS("\n"));
+    InsertText(text);
     m_containsChanges = true;
     StyleText();
   }

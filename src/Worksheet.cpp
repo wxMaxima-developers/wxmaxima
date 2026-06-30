@@ -6854,6 +6854,13 @@ void Worksheet::PasteFromClipboard() {
       }
     }
 
+    // Normalize external line endings (Windows "\r\n" / classic-macOS lone '\r')
+    // to '\n' before parsing: the line tokenizer below splits on '\n' only, and
+    // '\r' is wxMaxima's internal soft word-wrap break, so it must not leak into
+    // the pasted cell text.
+    inputs.Replace(wxS("\r\n"), wxS("\n"));
+    inputs.Replace(wxS("\r"), wxS("\n"));
+
     if (inputs.StartsWith(wxS("/* [wxMaxima: "))) {
       // Convert the text from the clipboard into an array of lines
       wxStringTokenizer lines(inputs, wxS("\n"), wxTOKEN_RET_EMPTY);
