@@ -131,69 +131,10 @@ jobs:
         # unit tests (test/unit_tests/*), which need neither Maxima nor a display.
         # The Maxima-driven integration tests run later as a separate, non-blocking
         # step (see "Run integration tests").
-        #
-        # SqrtCell and ImgCell hang here on MinGW: wxWidgets 3.3's
-        # wxApp::Initialize() pops a modal no-manifest warning that blocks on the
-        # headless runner (root-caused via gdb). Fix attempt 2 sets the
-        # msw.no-manifest-check system option directly in their MyApp ctors. Keep
-        # them excluded from the gate until confirmed, so a still-hang does not
-        # abort this (required) step before the Diagnose step below runs its
-        # gdb backtrace. Drop the -E filter once the Diagnose step shows them
-        # exiting cleanly.
         run: |
             cd wxMaxima
             cd build
-            ctest -L unittest -E "SqrtCell|ImgCell" --output-on-failure
-            cd ..
-            cd ..
-      - name: Diagnose hanging unit tests (SqrtCell/ImgCell)
-        # The two MinGW-only hangs (see "Run unit tests"). The WXMARK trace already
-        # localized the wedge to AFTER the wxApp object is constructed ("app:ctor"
-        # prints) but BEFORE OnInit -- i.e. inside wxApp::Initialize() /
-        # wxModule::InitializeModules(), the MSW GUI/module startup wxEntry runs
-        # between construction and OnInit. To name the exact frame, we now attach
-        # MinGW's gdb to the still-hung process and dump every thread's backtrace,
-        # then kill it. Output (markers + stacks) inherits this step's console, the
-        # proven capture path. Non-blocking.
-        continue-on-error: true
-        run: |
-            cd wxMaxima
-            cd build
-            # gdb ships next to the gcc that built the exes; attach by PID.
-            $gccbin = Split-Path (Get-Command gcc).Source
-            $gdb = Join-Path $gccbin "gdb.exe"
-            Write-Host "gdb: $gdb (exists: $(Test-Path $gdb))"
-            function Run-WithTimeout($exe, $seconds) {
-              Write-Host "=== Running $exe (timeout ${seconds}s) ==="
-              if (-not (Test-Path $exe)) { Write-Host "::warning::$exe not found"; return }
-              # No -RedirectStandard*: let the child inherit this step's console so
-              # its WXMARK stderr is captured the same proven way the integration
-              # tests' SHUTDOWN-TRACE lines reach the log.
-              $p = Start-Process -FilePath $exe -NoNewWindow -PassThru
-              if (-not $p.WaitForExit($seconds * 1000)) {
-                Write-Host "=== still running after ${seconds}s (hung): backtrace via gdb ==="
-                if (Test-Path $gdb) {
-                  # Feed gdb its commands from a file: passing multi-word -ex
-                  # strings on the PowerShell command line splits them on spaces
-                  # (gdb then sees "info","threads",... as separate tokens and just
-                  # prints help). A -x command file avoids all quoting issues.
-                  $cmds = "info threads`nthread apply all bt`ndetach`nquit`n"
-                  Set-Content -Path "gdbcmds.txt" -Value $cmds -Encoding ascii
-                  & $gdb -batch -nx -x "gdbcmds.txt" -p $p.Id 2>&1 | Write-Host
-                } else {
-                  Write-Host "::warning::gdb not found at $gdb; cannot capture stack"
-                }
-                Write-Host "=== killing $exe ==="
-                try { $p.Kill() } catch {}
-                $p.WaitForExit(5000) | Out-Null
-              } else {
-                Write-Host "=== $exe exited with code $($p.ExitCode) ==="
-              }
-              Write-Host "=== end $exe ==="
-            }
-            # 15 s is plenty: the wedge is at startup and permanent.
-            Run-WithTimeout "test/unit_tests/test_SqrtCell.exe" 15
-            Run-WithTimeout "test/unit_tests/test_ImgCell.exe" 15
+            ctest -L unittest --output-on-failure
             cd ..
             cd ..
       - name: Check Manifest file

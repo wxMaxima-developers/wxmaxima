@@ -26,20 +26,6 @@
 namespace {
 struct DisableModalErrorDialogs {
   DisableModalErrorDialogs() {
-    // wxWidgets 3.3's wxApp::Initialize() pops a *modal* "wxWidgets Warning"
-    // message box when the running .exe has no Common-Controls-v6 manifest
-    // (GetComCtl32Version() < 610). The unit-test executables ship no manifest,
-    // so on the headless runner that box blocks forever -- before OnInit() even
-    // runs -- and ctest only kills the test at its 380 s timeout (this is the
-    // SqrtCell/ImgCell hang, confirmed by a gdb backtrace of the wedged
-    // process: wxMessageBox <- wxApp::Initialize <- wxEntryStart). wxSystemOptions
-    // looks the "msw.no-manifest-check" option up in the environment,
-    // transforming '.'/'-' to '_' and prefixing "wx_", so setting
-    // wx_msw_no_manifest_check=1 here -- in a static initializer, before wxEntry
-    // runs wxApp::Initialize -- suppresses the check. (The shipped wxmaxima.exe
-    // has a proper manifest and never hit this.)
-    SetEnvironmentVariableW(L"wx_msw_no_manifest_check", L"1");
-
     // No "application error" / "stopped working" pop-up on a crash; the process
     // just dies and ctest reports the failure.
     SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX |

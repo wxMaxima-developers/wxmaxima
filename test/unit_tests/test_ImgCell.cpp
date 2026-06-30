@@ -21,21 +21,7 @@
 
 #define CATCH_CONFIG_RUNNER
 
-// TEMPORARY: flushed stderr stage markers to bisect the MSW-only CI hang of this
-// test (times out at 380 s on MinGW). The last WXMARK before the timeout is the
-// stage that wedges. Remove once localized.
-#include <cstdio>
 #include <wx/sysopt.h>
-#define WXMARK(msg) do { std::fprintf(stderr, "WXMARK " msg "\n"); std::fflush(stderr); } while (0)
-
-// The whole test is one translation unit (the cell .cpp files are #included
-// below), so global ctors run top-to-bottom from here. These two markers bracket
-// that static-init phase: if "static-init-begin" prints but "static-init-end"
-// does not, a global constructor among the #included files (e.g. the file-scope
-// wxString in VisiblyInvalidCell.cpp) is what wedges; if both print but
-// "app:OnInit-before-catch" never does, the hang is in wxEntry/wxApp startup.
-struct WxmStaticInitBegin { WxmStaticInitBegin() { WXMARK("static-init-begin"); } };
-static WxmStaticInitBegin wxmStaticInitBegin;
 
 #include "test_ImgCell.h"
 #include "FontAttribs.cpp"
@@ -50,9 +36,6 @@ static WxmStaticInitBegin wxmStaticInitBegin;
 #include "VisiblyInvalidCell.cpp"
 #include <catch2/catch.hpp>
 
-struct WxmStaticInitEnd { WxmStaticInitEnd() { WXMARK("static-init-end"); } };
-static WxmStaticInitEnd wxmStaticInitEnd;
-
 template <typename C>
 wxString HexEncoding(C &&bits)
 {
@@ -62,21 +45,15 @@ wxString HexEncoding(C &&bits)
   return output;
 }
 
-// ... (license header omitted for brevity but preserved in replace)
 SCENARIO("RTF Output represents the image") {
-  WXMARK("img:scenario-enter");
   wxMemoryBuffer image;
   image.AppendData(wxmaxima_art_wxmac_doc_png, wxmaxima_art_wxmac_doc_png_size);
   Configuration config;
-  WXMARK("img:config-built");
   GroupCell group(&config, GC_TYPE_IMAGE, wxString());
   GIVEN("An image with test data") {
     ImgCell cell(&group, &config, image, "png");
-    WXMARK("img:cell-built");
     WHEN("we convert it to RTF") {
-      WXMARK("img:before-ToRTF");
       auto rtf = cell.ToRTF();
-      WXMARK("img:after-ToRTF");
       THEN("the RTF output ends in \"}\\n\"")
       REQUIRE(rtf.EndsWith("}\n"));
       THEN("the RTF output contains the hex encoding of the image")
@@ -94,19 +71,19 @@ class MyApp : public wxApp
 {
 public:
   MyApp() {
-    WXMARK("app:ctor");
-    // Suppress wx 3.3's modal "no correct manifest" warning box that
-    // wxApp::Initialize() pops on the headless runner (gdb-confirmed hang). Set
-    // it directly here -- the app object is constructed before Initialize() reads
-    // the option -- because the environment-variable route in wxm_test_setup.cpp
-    // did not take effect (CRT-vs-Win32 env, or the static object was stripped).
+    // wxWidgets 3.3's wxApp::Initialize() pops up a *modal* "no correct
+    // manifest" warning box when the running .exe lacks a Common-Controls-v6
+    // manifest (GetComCtl32Version() < 610). The unit-test executables ship no
+    // manifest, so on a headless CI runner that box blocks forever -- before
+    // OnInit() ever runs -- and the test only dies at ctest's timeout. The app
+    // object is constructed before wxApp::Initialize() reads this option, so
+    // setting it here suppresses the check. (The shipped wxmaxima.exe has a
+    // proper manifest and was never affected.)
     wxSystemOptions::SetOption(wxS("msw.no-manifest-check"), 1);
   }
   bool OnInit() override {
-    WXMARK("app:OnInit-enter");
     wxImage::AddHandler(new wxPNGHandler);
     int rc = Catch::Session().run();
-    WXMARK("app:OnInit-after-catch");
     std::exit(rc);
     return false;
   }

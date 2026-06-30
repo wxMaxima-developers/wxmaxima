@@ -22,21 +22,6 @@
 #include <wx/log.h>
 #include <wx/sysopt.h>
 
-// TEMPORARY: flushed stderr stage markers to bisect the MSW-only CI hang of this
-// test (SqrtCell/ImgCell time out at 380 s on MinGW). The last WXMARK printed
-// before the timeout is the stage that wedges. Remove once localized.
-#include <cstdio>
-#define WXMARK(msg) do { std::fprintf(stderr, "WXMARK " msg "\n"); std::fflush(stderr); } while (0)
-
-// The whole test is one translation unit (the cell .cpp files are #included
-// below), so global ctors run top-to-bottom from here. These two markers bracket
-// that static-init phase: if "static-init-begin" prints but "static-init-end"
-// does not, a global constructor among the #included files (e.g. the file-scope
-// wxString in VisiblyInvalidCell.cpp) is what wedges; if both print but
-// "app:OnRun-before-catch" never does, the hang is in wxEntry/wxApp startup.
-struct WxmStaticInitBegin { WxmStaticInitBegin() { WXMARK("static-init-begin"); } };
-static WxmStaticInitBegin wxmStaticInitBegin;
-
 wxLogNull dontLog;
 
 #define CATCH_CONFIG_RUNNER
@@ -52,9 +37,6 @@ wxLogNull dontLog;
 
 #include <catch2/catch.hpp>
 
-struct WxmStaticInitEnd { WxmStaticInitEnd() { WXMARK("static-init-end"); } };
-static WxmStaticInitEnd wxmStaticInitEnd;
-
 void Configuration::SetZoomFactor(double newzoom)
 {
   if (newzoom > GetMaxZoomFactor())
@@ -66,41 +48,32 @@ void Configuration::SetZoomFactor(double newzoom)
 }
 
 SCENARIO("SqrtCell recalculates") {
-  WXMARK("sqrt:scenario-enter");
   wxBitmap bitmap(128, 128);
   wxMemoryDC dc(bitmap);
   Configuration configuration(&dc);
-  WXMARK("sqrt:config-built");
   configuration.SetZoomFactor(1.0);
 
   GroupCell group(&configuration, GC_TYPE_TEXT);
-  WXMARK("sqrt:group-built");
 
   GIVEN("a SqrtCell") {
     SqrtCell cell(&group, &configuration, std::make_unique<VisiblyInvalidCell>(&group, &configuration));
-    WXMARK("sqrt:cell-built");
 
     WHEN("the cell is copied") THEN("the copy succeeds")
       REQUIRE(cell.Copy(&group));
-    WXMARK("sqrt:after-copy");
 
     WHEN("the cell is broken up") {
       cell.BreakUp();
-      WXMARK("sqrt:after-breakup");
       THEN("when it is copied, the copy succeeds")
         REQUIRE(cell.Copy(&group));
       THEN("when it is copied, the copy can recalculate") {
         auto copy = cell.Copy(&group);
         copy->Recalculate(AFontSize(10));
-        WXMARK("sqrt:after-recalc");
       }
     }
   }
-  WXMARK("sqrt:scenario-exit");
 }
 
 SCENARIO("LongNumberCell behaviour") {
-  WXMARK("longnum:scenario-enter");
   wxBitmap bitmap(128, 128);
   wxMemoryDC dc(bitmap);
   Configuration configuration(&dc);
@@ -156,26 +129,19 @@ class MyApp : public wxApp
 {
 public:
   MyApp() {
-    WXMARK("app:ctor");
-    // Suppress wx 3.3's modal "no correct manifest" warning box that
-    // wxApp::Initialize() pops on the headless runner (gdb-confirmed hang). Set
-    // it directly here -- the app object is constructed before Initialize() reads
-    // the option -- because the environment-variable route in wxm_test_setup.cpp
-    // did not take effect (CRT-vs-Win32 env, or the static object was stripped).
+    // wxWidgets 3.3's wxApp::Initialize() pops up a *modal* "no correct
+    // manifest" warning box when the running .exe lacks a Common-Controls-v6
+    // manifest (GetComCtl32Version() < 610). The unit-test executables ship no
+    // manifest, so on a headless CI runner that box blocks forever -- before
+    // OnInit() ever runs -- and the test only dies at ctest's timeout. The app
+    // object is constructed before wxApp::Initialize() reads this option, so
+    // setting it here suppresses the check. (The shipped wxmaxima.exe has a
+    // proper manifest and was never affected.)
     wxSystemOptions::SetOption(wxS("msw.no-manifest-check"), 1);
   }
   Catch::Session catchSession;
-  bool OnInit() override {
-    WXMARK("app:OnInit-enter");
-    bool ok = wxApp::OnInit();
-    WXMARK("app:OnInit-after-base");
-    return ok;
-  }
   int OnRun() override {
-    WXMARK("app:OnRun-before-catch");
-    int rc = catchSession.run();
-    WXMARK("app:OnRun-after-catch");
-    return rc;
+    return catchSession.run();
   }
 };
 
