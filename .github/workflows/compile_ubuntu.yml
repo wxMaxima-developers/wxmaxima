@@ -75,7 +75,12 @@ jobs:
              cd build
              export HOME=`pwd`
              export CTEST_OUTPUT_ON_FAILURE=1
-             GDK_BACKEND=x11 xvfb-run -a ctest -j 2
+             # multithreadtest is excluded: on ubuntu-latest Maxima's draw package
+             # fails to build its native helper ("loadfile: failed to load
+             # draw.lisp" / "Your C compiler failed to compile the intermediate
+             # file") when several Maxima instances start at once -- an environment
+             # problem we cannot fix here. The sanitizer job already excludes it.
+             GDK_BACKEND=x11 xvfb-run -a ctest -j 2 -E "multithreadtest"
              cd ..
 
   compile_and_test_sanitized:
@@ -114,7 +119,10 @@ jobs:
              # detect_leaks=0: GTK/Pango/Fontconfig leak reports would drown
              # out wxMaxima's own. Enabling leak detection with a suppression
              # file is a later step of the stability initiative.
-             export ASAN_OPTIONS=detect_leaks=0:check_initialization_order=1:strict_string_checks=1
+             # suppressions: silences findings inside third-party libraries we
+             # cannot fix (currently wxWidgets' XPM decoder doing an overlapping
+             # strncpy); scoped per-library so our own code is still checked.
+             export ASAN_OPTIONS=detect_leaks=0:check_initialization_order=1:strict_string_checks=1:suppressions=$GITHUB_WORKSPACE/test/asan_suppressions.txt
              export UBSAN_OPTIONS=print_stacktrace=1
              # Same exclusions as the regular test job (draw-based tests fail
              # on ubuntu-latest for unrelated reasons).

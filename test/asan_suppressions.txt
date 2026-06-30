@@ -1,0 +1,16 @@
+# AddressSanitizer runtime suppressions for the sanitizer CI job (and local
+# sanitizer runs, see CLAUDE.md). Point ASan at this file with
+#   ASAN_OPTIONS=...:suppressions=<abs-path>/test/asan_suppressions.txt
+#
+# Each entry silences a finding that originates in third-party code we cannot
+# fix, scoped as narrowly as possible so the same check keeps guarding
+# wxMaxima's own code. Keep this list short and documented.
+
+# wxWidgets' XPM image decoder (wxXPMDecoder::ReadFile) copies image data with a
+# strncpy whose source and destination ranges overlap. With strict_string_checks
+# ASan reports this as "strncpy-param-overlap". wxMaxima only reaches it by
+# handing an XPM to wxImage::LoadFile (Image::LoadImage_Backgroundtask); the
+# overlapping copy is entirely inside libwx_gtk3u_core, not wxMaxima. Scope the
+# suppression to the wx core library so strncpy overlaps in our own code are
+# still caught.
+interceptor_via_lib:libwx_gtk3u_core
