@@ -159,18 +159,19 @@ $(function() {
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  std::vector&lt;DiffMarkerBar *&gt; m_markerBars;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keywordtype">int</span> m_lastBarViewTop = -1;</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keywordtype">int</span> m_lastBarCurrent = -2;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  wxToolBar *m_toolBar = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  wxStaticText *m_diffStatus = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keywordtype">int</span> m_shownPrevEnabled = -1;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keywordtype">int</span> m_shownNextEnabled = -1;</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  wxTimer m_resizeTimer;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keywordtype">void</span> RelayoutWorksheets();</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keywordtype">int</span> m_lastLayoutWidth = -1;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>};</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#endif </span><span class="comment">// DIFFFRAME_H</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  std::vector&lt;int&gt; m_lastBarDocHeights;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  wxToolBar *m_toolBar = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  wxStaticText *m_diffStatus = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="keywordtype">int</span> m_shownPrevEnabled = -1;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keywordtype">int</span> m_shownNextEnabled = -1;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  wxTimer m_resizeTimer;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keywordtype">void</span> RelayoutWorksheets();</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="keywordtype">int</span> m_lastLayoutWidth = -1;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>};</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="preprocessor">#endif </span><span class="comment">// DIFFFRAME_H</span></div>
 <div class="ttc" id="aWorksheet_8h_html"><div class="ttname"><a href="Worksheet_8h.html">Worksheet.h</a></div><div class="ttdoc">This file defines the class Worksheet.</div></div>
 <div class="ttc" id="aclassConfiguration_html"><div class="ttname"><a href="classConfiguration.html">Configuration</a></div><div class="ttdoc">The configuration storage for the current worksheet.</div><div class="ttdef"><b>Definition:</b> Configuration.h:88</div></div>
 <div class="ttc" id="aclassDiffFrame_html"><div class="ttname"><a href="classDiffFrame.html">DiffFrame</a></div><div class="ttdef"><b>Definition:</b> DiffFrame.h:33</div></div>
