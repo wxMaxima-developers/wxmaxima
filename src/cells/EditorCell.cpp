@@ -46,7 +46,13 @@ EditorCell::EditorCell(GroupCell *group, Configuration *config,
                        wxString text)
   : Cell(group, config), m_text(text) {
   InitBitFields_EditorCell();
-  text.Replace(wxS("\r"), "\n");
+  // Do NOT translate '\r' to '\n' here: '\r' is wxMaxima's *soft* (word-wrap)
+  // line break and '\n' is a *hard* one. Converting them freezes a transient
+  // layout decision into permanent content -- e.g. when a cell is copied (the
+  // copy ctor delegates here) after having been word-wrapped at a tiny/zero
+  // width, every soft break became a hard one and the text stayed broken after
+  // every word regardless of the real width. The Unicode line/paragraph
+  // separators below are genuine hard breaks, so those do map to '\n'.
   text.Replace(wxS("\u2028"), "\n");
   text.Replace(wxS("\u2029"), "\n");
   if(m_configuration->GetMatchParens())
