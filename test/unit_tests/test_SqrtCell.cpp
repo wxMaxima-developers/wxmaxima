@@ -20,6 +20,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include <wx/log.h>
+#include <wx/sysopt.h>
 
 // TEMPORARY: flushed stderr stage markers to bisect the MSW-only CI hang of this
 // test (SqrtCell/ImgCell time out at 380 s on MinGW). The last WXMARK printed
@@ -154,7 +155,15 @@ SCENARIO("LongNumberCell behaviour") {
 class MyApp : public wxApp
 {
 public:
-  MyApp() { WXMARK("app:ctor"); }
+  MyApp() {
+    WXMARK("app:ctor");
+    // Suppress wx 3.3's modal "no correct manifest" warning box that
+    // wxApp::Initialize() pops on the headless runner (gdb-confirmed hang). Set
+    // it directly here -- the app object is constructed before Initialize() reads
+    // the option -- because the environment-variable route in wxm_test_setup.cpp
+    // did not take effect (CRT-vs-Win32 env, or the static object was stripped).
+    wxSystemOptions::SetOption(wxS("msw.no-manifest-check"), 1);
+  }
   Catch::Session catchSession;
   bool OnInit() override {
     WXMARK("app:OnInit-enter");

@@ -132,15 +132,18 @@ jobs:
         # The Maxima-driven integration tests run later as a separate, non-blocking
         # step (see "Run integration tests").
         #
-        # SqrtCell and ImgCell previously hung here on MinGW: wxWidgets 3.3's
-        # wxApp::Initialize() popped a modal no-manifest warning that blocks on the
-        # headless runner (root-caused via gdb; fixed in wxm_test_setup.cpp by
-        # setting wx_msw_no_manifest_check). They gate again now; the diagnostic
-        # step below is kept for one run to confirm they no longer wedge.
+        # SqrtCell and ImgCell hang here on MinGW: wxWidgets 3.3's
+        # wxApp::Initialize() pops a modal no-manifest warning that blocks on the
+        # headless runner (root-caused via gdb). Fix attempt 2 sets the
+        # msw.no-manifest-check system option directly in their MyApp ctors. Keep
+        # them excluded from the gate until confirmed, so a still-hang does not
+        # abort this (required) step before the Diagnose step below runs its
+        # gdb backtrace. Drop the -E filter once the Diagnose step shows them
+        # exiting cleanly.
         run: |
             cd wxMaxima
             cd build
-            ctest -L unittest --output-on-failure
+            ctest -L unittest -E "SqrtCell|ImgCell" --output-on-failure
             cd ..
             cd ..
       - name: Diagnose hanging unit tests (SqrtCell/ImgCell)

@@ -25,6 +25,7 @@
 // test (times out at 380 s on MinGW). The last WXMARK before the timeout is the
 // stage that wedges. Remove once localized.
 #include <cstdio>
+#include <wx/sysopt.h>
 #define WXMARK(msg) do { std::fprintf(stderr, "WXMARK " msg "\n"); std::fflush(stderr); } while (0)
 
 // The whole test is one translation unit (the cell .cpp files are #included
@@ -92,7 +93,15 @@ SCENARIO("RTF Output represents the image") {
 class MyApp : public wxApp
 {
 public:
-  MyApp() { WXMARK("app:ctor"); }
+  MyApp() {
+    WXMARK("app:ctor");
+    // Suppress wx 3.3's modal "no correct manifest" warning box that
+    // wxApp::Initialize() pops on the headless runner (gdb-confirmed hang). Set
+    // it directly here -- the app object is constructed before Initialize() reads
+    // the option -- because the environment-variable route in wxm_test_setup.cpp
+    // did not take effect (CRT-vs-Win32 env, or the static object was stripped).
+    wxSystemOptions::SetOption(wxS("msw.no-manifest-check"), 1);
+  }
   bool OnInit() override {
     WXMARK("app:OnInit-enter");
     wxImage::AddHandler(new wxPNGHandler);
