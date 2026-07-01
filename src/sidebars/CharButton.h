@@ -58,6 +58,16 @@ public:
              const Definition &def,
              bool forceShow = false);
   wxWindow *GetTextObject() const { return m_buttonText; }
+  //! Emit this button's symbol to the worksheet -- the button's action, shared
+  //! by the mouse handler and the accessibility "Press" default action.
+  void ActivateButton();
+#if wxUSE_ACCESSIBILITY
+  //! The screen-reader label for this button: its description, or, if it has
+  //! none, the symbol glyph itself.
+  wxString GetAccessibleLabel() const {
+    return m_description.IsEmpty() ? wxString(m_char) : m_description;
+  }
+#endif
 protected:
   wchar_t m_char;
   Configuration *m_configuration;

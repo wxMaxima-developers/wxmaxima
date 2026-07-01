@@ -29,6 +29,9 @@
 */
 
 #include "CharButton.h"
+#if wxUSE_ACCESSIBILITY
+#include <wx/access.h>
+#endif
 #include "UnicodeSidebar.h"
 #include <wx/sizer.h>
 #include <wx/dcbuffer.h>
@@ -81,9 +84,71 @@ void CharButton::OnIdleEvent(wxIdleEvent &event) {
 }
 
 void CharButton::CharButtonPressed(wxMouseEvent &WXUNUSED(event)) {
+  ActivateButton();
+}
+
+void CharButton::ActivateButton() {
   wxCommandEvent *ev = new wxCommandEvent(SIDEBARKEYEVENT, static_cast<wxWindowID>(m_char));
   m_worksheet->GetEventHandler()->QueueEvent(ev);
 }
+
+#if wxUSE_ACCESSIBILITY
+// A CharButton is a wxPanel wrapping a wxStaticText, so screen readers would
+// otherwise see it as an unnamed "pane" containing a piece of text rather than a
+// button. This accessible presents it as a single push button whose name is the
+// symbol's description ("Greek small letter alpha", ...) and which can be
+// activated -- exactly what the mouse does.
+class CharButtonAccessible : public wxAccessible {
+public:
+  explicit CharButtonAccessible(CharButton *button)
+    : wxAccessible(button), m_button(button) {}
+
+  wxAccStatus GetChildCount(int *childCount) override {
+    if (!childCount)
+      return wxACC_FAIL;
+    *childCount = 0; // a leaf button, not a pane containing a static text
+    return wxACC_OK;
+  }
+
+  wxAccStatus GetName(int childId, wxString *name) override {
+    if (!name || (childId != 0))
+      return wxACC_FAIL;
+    *name = m_button->GetAccessibleLabel();
+    return name->IsEmpty() ? wxACC_NOT_IMPLEMENTED : wxACC_OK;
+  }
+
+  wxAccStatus GetRole(int childId, wxAccRole *role) override {
+    if (!role || (childId != 0))
+      return wxACC_FAIL;
+    *role = wxROLE_SYSTEM_PUSHBUTTON;
+    return wxACC_OK;
+  }
+
+  wxAccStatus GetState(int childId, long *state) override {
+    if (!state || (childId != 0))
+      return wxACC_FAIL;
+    *state = wxACC_STATE_SYSTEM_FOCUSABLE;
+    return wxACC_OK;
+  }
+
+  wxAccStatus GetDefaultAction(int childId, wxString *actionName) override {
+    if (!actionName || (childId != 0))
+      return wxACC_FAIL;
+    *actionName = _("Press");
+    return wxACC_OK;
+  }
+
+  wxAccStatus DoDefaultAction(int childId) override {
+    if (childId != 0)
+      return wxACC_FAIL;
+    m_button->ActivateButton();
+    return wxACC_OK;
+  }
+
+private:
+  CharButton *m_button;
+};
+#endif // wxUSE_ACCESSIBILITY
 
 void CharButton::OnSize(wxSizeEvent &event) {
   wxFont fnt = GetFont();
@@ -146,4 +211,9 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet,
                _("(Might not be displayed correctly in at least one of the "
                  "worksheet fonts)"));
   }
+#if wxUSE_ACCESSIBILITY
+  // Present this panel-with-a-static-text as a single named push button to
+  // screen readers (the window takes ownership of the accessible).
+  SetAccessible(new CharButtonAccessible(this));
+#endif
 }
