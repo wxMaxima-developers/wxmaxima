@@ -6,6 +6,7 @@
 - The license dialog now has a second tab listing third-party component notices (e.g. the Microsoft Edge WebView2 loader shipped with the Windows builds).
 - Added a regression test guarding matrix column widths against being frozen by a layout-time deadline.
 - Fixed a wxWidgets 3.3 assertion that could fire while highlighting menu items.
+- The "follow evaluation" toolbar button now lights up immediately when you scroll the running evaluation out of view with the mouse wheel, instead of only later.
 - Fixed text cells (e.g. in the diff viewer) wrapping after every word: copying a cell no longer turns its soft word-wrap line breaks into hard ones.
 - Fixed matrices keeping stale (too narrow or too wide) column widths when a layout-time deadline interrupted their recalculation.
 - Fixed short Text and Title cells flickering.

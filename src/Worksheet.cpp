@@ -2461,7 +2461,16 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event) {
       RequestRedraw(rect);
     }
   else
-    event.Skip();
+    {
+      event.Skip();
+      // The wheel scrolls the document, but (unlike the scrollbar) does not emit
+      // a wxEVT_SCROLLWIN_*/wxEVT_SCROLL_CHANGED event, so without this the
+      // "follow evaluation" button would only light up minutes later, when some
+      // unrelated scroll event finally fired. Run the same check the scrollbar
+      // handlers do so scrolling the running evaluation out of view enables the
+      // button right away.
+      CallAfter(&Worksheet::CheckIfActiveCellScrolledOut);
+    }
 }
 
 void Worksheet::OnMouseMotion(wxMouseEvent &event) {
