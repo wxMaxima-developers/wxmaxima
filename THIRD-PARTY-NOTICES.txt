@@ -1,0 +1,37 @@
+THIRD-PARTY NOTICES
+===================
+
+wxMaxima itself is distributed under the GNU General Public License (see the
+"License" tab / the COPYING file). In addition, some builds of wxMaxima are
+distributed together with, or statically linked against, third-party
+components that carry their own license terms. Those components and the
+notices they require are reproduced below.
+
+
+-------------------------------------------------------------------------------
+Microsoft Edge WebView2 (WebView2Loader)
+-------------------------------------------------------------------------------
+
+The Windows builds of wxMaxima can use the wxWidgets whose "Edge" backend of
+wxWebView is enabled for the built-in help browser. That backend relies on the
+Microsoft Edge WebView2 SDK, whose loader code (WebView2Loader.dll, or
+WebView2Loader.lib when linked statically) is shipped as part of these builds.
+
+Microsoft's WebView2 SDK license requires that redistributions in binary form
+reproduce the SDK's copyright notice, its list of conditions and its
+disclaimer. The verbatim notice, taken from the LICENSE.txt of the
+Microsoft.Web.WebView2 SDK package that this build was compiled against, is:
+
+    <<< TODO: paste here, verbatim, the copyright notice, list of conditions
+        and disclaimer from the LICENSE.txt shipped inside the
+        Microsoft.Web.WebView2 NuGet package used for this build. Do not
+        paraphrase it — Microsoft's license requires the exact text to be
+        reproduced. >>>
+
+The Microsoft Edge WebView2 Runtime that actually renders the help pages is a
+separate component provided by Microsoft under its own license terms; see
+https://developer.microsoft.com/microsoft-edge/webview2/ for details.
+
+This notice does not apply to builds configured without the WebView2/Edge
+backend (for example Linux and macOS builds, or Windows builds configured
+with -DwxUSE_WEBVIEW_EDGE=false).

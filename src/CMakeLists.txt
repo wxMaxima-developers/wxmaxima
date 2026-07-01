@@ -561,6 +561,20 @@ add_custom_target(build_license.h DEPENDS ${CMAKE_BINARY_DIR}/wxm_license.h)
 add_dependencies(wxmaxima build_license.h)
 
 add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/wxm_thirdparty_notices.h
+        COMMAND ${CMAKE_COMMAND} ARGS
+        -DBIN2H_SOURCE_FILE="${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES.txt"
+        -DBIN2H_VARIABLE_NAME=wxm_thirdparty_notices
+        -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/wxm_thirdparty_notices.h"
+        -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake"
+        COMMENT "Embedding the third-party notices"
+        DEPENDS ${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES.txt ${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake
+)
+add_custom_target(build_thirdparty_notices.h DEPENDS ${CMAKE_BINARY_DIR}/wxm_thirdparty_notices.h)
+add_dependencies(wxmaxima build_thirdparty_notices.h)
+
+add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/wxm_manual_anchors_xml.h
         COMMAND ${CMAKE_COMMAND} ARGS
         -DBIN2H_SOURCE_FILE="${CMAKE_SOURCE_DIR}/data/manual_anchors.xml"

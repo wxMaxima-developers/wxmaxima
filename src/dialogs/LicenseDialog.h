@@ -42,8 +42,13 @@ public:
 protected:
   void OnSize(wxSizeEvent &event);
 private:
+  //! Fills a read-only text control from an embedded (bin2h) text buffer and,
+  //! optionally, tracks the widest line for the auto-scaling font logic.
+  void FillTextCtrl(wxTextCtrl *ctrl, const unsigned char *data, size_t size,
+                    bool trackLongestLine);
   wxString m_longestLine;
   wxTextCtrl *m_license;
+  wxTextCtrl *m_notices;
   bool m_movedToStart;
   void OnTextURLEvent(wxTextUrlEvent& event);
 };

@@ -27,45 +27,64 @@
 
 #include "LicenseDialog.h"
 #include "wxm_license.h"
+#include "wxm_thirdparty_notices.h"
 #include <wx/mstream.h>
+#include <wx/notebook.h>
 #include <wx/string.h>
 #include <wx/textctrl.h>
 #include <wx/txtstrm.h>
+
+void LicenseDialog::FillTextCtrl(wxTextCtrl *ctrl, const unsigned char *data,
+                                 size_t size, bool trackLongestLine) {
+  wxMemoryInputStream istream(data, size);
+  wxTextInputStream textIn(istream);
+  wxClientDC dc(this);
+  dc.SetFont(ctrl->GetFont());
+  wxCoord textWidth = 0;
+  wxString text;
+  while (!istream.Eof()) {
+    wxString line = textIn.ReadLine();
+    text += line + wxS("\n");
+    if (trackLongestLine) {
+      wxSize linesize = dc.GetTextExtent(line);
+      if (linesize.x > textWidth) {
+        textWidth = linesize.x;
+        m_longestLine = line;
+      }
+    }
+  }
+  if (trackLongestLine)
+    ctrl->SetMinSize(wxSize(textWidth + 20 * GetContentScaleFactor(),
+                            550 * GetContentScaleFactor()));
+  ctrl->SetValue(text);
+}
 
 LicenseDialog::LicenseDialog(wxWindow *parent)
   : wxDialog(parent, -1, _("License"), wxDefaultPosition, wxDefaultSize,
              wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxCLOSE_BOX | wxMAXIMIZE_BOX |
              wxMINIMIZE_BOX) {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  wxMemoryInputStream istream(WXM_LICENSE, WXM_LICENSE_SIZE);
-  wxTextInputStream textIn(istream);
   m_movedToStart = false;
   Bind(wxEVT_TEXT_URL, &LicenseDialog::OnTextURLEvent, this);
-  wxString line;
-  wxString licenseText;
 
+  wxNotebook *notebook = new wxNotebook(this, wxID_ANY);
+
+  // The wxMaxima license (GPL) itself.
   m_license = new wxTextCtrl(
-                             this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+                             notebook, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
                              wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY | wxTE_AUTO_URL);
+  FillTextCtrl(m_license, WXM_LICENSE, WXM_LICENSE_SIZE, true);
+  notebook->AddPage(m_license, _("License"));
 
-  wxFont fnt = m_license->GetFont();
-  wxClientDC dc(this);
-  dc.SetFont(fnt);
-  wxCoord textWidth = 0;
-  while (!istream.Eof()) {
-    line = textIn.ReadLine();
-    licenseText += line + wxS("\n");
-    wxSize linesize = dc.GetTextExtent(line);
-    if (linesize.x > textWidth) {
-      textWidth = linesize.x;
-      m_longestLine = line;
-    }
-  }
+  // Notices for third-party components we redistribute (e.g. the Microsoft Edge
+  // WebView2 loader on Windows), whose licenses require reproducing them.
+  m_notices = new wxTextCtrl(
+                             notebook, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+                             wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY | wxTE_AUTO_URL);
+  FillTextCtrl(m_notices, WXM_THIRDPARTY_NOTICES, WXM_THIRDPARTY_NOTICES_SIZE, false);
+  notebook->AddPage(m_notices, _("Third-party notices"));
 
-  m_license->SetMinSize(wxSize(textWidth + 20 * GetContentScaleFactor(),
-                               550 * GetContentScaleFactor()));
-  m_license->SetValue(licenseText);
-  vbox->Add(m_license, wxSizerFlags(10).Expand().Border(wxALL, 5));
+  vbox->Add(notebook, wxSizerFlags(10).Expand().Border(wxALL, 5));
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
@@ -103,6 +122,7 @@ void LicenseDialog::OnSize(wxSizeEvent &event) {
   fnt.SetPointSize(pointSize);
 #endif
   m_license->SetFont(fnt);
+  m_notices->SetFont(fnt);
   event.Skip();
   if (!m_movedToStart) {
     m_license->SetInsertionPoint(0);
