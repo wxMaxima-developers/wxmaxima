@@ -178,7 +178,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetOrigImageFile</b> 
 <tr class="separator:a0048540cbb959fea49be83359beed7fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a497dbf3abbda6f12cf5d0d5336bc3e98"><td class="memItemLeft" align="right" valign="top"><a id="a497dbf3abbda6f12cf5d0d5336bc3e98" name="a497dbf3abbda6f12cf5d0d5336bc3e98"></a>
 wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>GetCompressedImage</b> () const</td></tr>
-<tr class="memdesc:a497dbf3abbda6f12cf5d0d5336bc3e98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the original compressed version of the image. <br /></td></tr>
+<tr class="memdesc:a497dbf3abbda6f12cf5d0d5336bc3e98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the original compressed version of the image. Goes through <a class="el" href="classImage.html#a87a485daca6a2b4e9ab1566bce8ce9d1" title="Returns the original image in its compressed form.">Image::GetCompressedImage()</a> (rather than reading m_compressedImage directly) so it waits for a still-running background image load first: reading the raw member could return empty bytes for a freshly drag-dropped image whose load has not finished, which turned e.g. a copy-to-clipboard (.wxm) of it into a zero-length "cannot render" image. <br /></td></tr>
 <tr class="separator:a497dbf3abbda6f12cf5d0d5336bc3e98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6678ee63f77880d3dad90eacc30bc53b"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImgCell.html#a6678ee63f77880d3dad90eacc30bc53b">GetMaxWidth</a> () const override</td></tr>
 <tr class="separator:a6678ee63f77880d3dad90eacc30bc53b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3561,7 +3561,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
