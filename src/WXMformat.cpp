@@ -196,7 +196,11 @@ namespace Format {
                  << EscapeWXMTextContent(answer) << '\n'
                  << Headers.GetEnd(WXM_ANSWER) << '\n';
         if (cell->AutoAnswer())
-          retval << Headers.GetStart(WXM_AUTOANSWER);
+          // The trailing newline matters here too (see the image case below):
+          // the clipboard copy concatenates cells' WXM without a separator, so
+          // without it the next cell fuses onto the auto-answer marker and is
+          // lost on paste.
+          retval << Headers.GetStart(WXM_AUTOANSWER) << '\n';
       }
       break;
     case GC_TYPE_TEXT:
@@ -229,11 +233,20 @@ namespace Format {
         retval << Headers.GetStart(WXM_IMAGE) << '\n'
                << image->GetExtension() << '\n'
                << wxBase64Encode(image->GetCompressedImage()) << '\n'
-               << Headers.GetEnd(WXM_IMAGE);
+               // The trailing newline matters: every other cell type ends its
+               // WXM with one, and the clipboard copy path (Worksheet::CopyCells)
+               // concatenates cells' WXM without any separator. Without it the
+               // next cell's start marker fuses onto the "end image" line, so on
+               // paste getLinesUntil() never finds the end marker and swallows
+               // every following cell into this image.
+               << Headers.GetEnd(WXM_IMAGE) << '\n';
       }
       break;
     case GC_TYPE_PAGEBREAK:
-      retval << Headers.GetStart(WXM_PAGEBREAK);
+      // Trailing newline as for the other cell types: the clipboard copy joins
+      // cells' WXM without a separator, so a following cell would otherwise fuse
+      // onto the page-break marker and be lost on paste.
+      retval << Headers.GetStart(WXM_PAGEBREAK) << '\n';
       break;
     default:
       break;

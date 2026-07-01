@@ -94,6 +94,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(Accessibility test_Accessibility)
 
+    # Guards everything a .wxm file (= the copy-to-clipboard path) can hold --
+    # images in several formats, every text cell type, code cell answers and the
+    # send-known-answers flag -- surviving the TreeToWXM/TreeFromWXM round-trip.
+    add_executable(test_WXMRoundtrip
+        test_WXMRoundtrip.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_WXMRoundtrip PUBLIC cxx_std_20)
+    target_link_libraries(test_WXMRoundtrip PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(WXMRoundtrip test_WXMRoundtrip)
+
     # Hardening/fuzz test for EditorCell's text-editing core: drives the real
     # key-event paths and checks the cursor/selection invariants after every op.
     add_executable(test_EditorCellInvariants
