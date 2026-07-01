@@ -10,9 +10,10 @@ var searchData=
   ['test_5fmenuhelpstring_2ecpp_7',['test_MenuHelpString.cpp',['../test__MenuHelpString_8cpp.html',1,'']]],
   ['test_5fstyleconfigroundtrip_2ecpp_8',['test_StyleConfigRoundtrip.cpp',['../test__StyleConfigRoundtrip_8cpp.html',1,'']]],
   ['test_5ftreeundo_2ecpp_9',['test_TreeUndo.cpp',['../test__TreeUndo_8cpp.html',1,'']]],
-  ['textcell_2ecpp_10',['TextCell.cpp',['../TextCell_8cpp.html',1,'']]],
-  ['textstyle_2ecpp_11',['TextStyle.cpp',['../TextStyle_8cpp.html',1,'']]],
-  ['textstyle_2eh_12',['TextStyle.h',['../TextStyle_8h.html',1,'']]],
-  ['toolbar_2ecpp_13',['ToolBar.cpp',['../ToolBar_8cpp.html',1,'']]],
-  ['toolbar_2eh_14',['ToolBar.h',['../ToolBar_8h.html',1,'']]]
+  ['test_5fwxmroundtrip_2ecpp_10',['test_WXMRoundtrip.cpp',['../test__WXMRoundtrip_8cpp.html',1,'']]],
+  ['textcell_2ecpp_11',['TextCell.cpp',['../TextCell_8cpp.html',1,'']]],
+  ['textstyle_2ecpp_12',['TextStyle.cpp',['../TextStyle_8cpp.html',1,'']]],
+  ['textstyle_2eh_13',['TextStyle.h',['../TextStyle_8h.html',1,'']]],
+  ['toolbar_2ecpp_14',['ToolBar.cpp',['../ToolBar_8cpp.html',1,'']]],
+  ['toolbar_2eh_15',['ToolBar.h',['../ToolBar_8h.html',1,'']]]
 ];
