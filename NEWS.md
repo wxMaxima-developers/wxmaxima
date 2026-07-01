@@ -1,3 +1,5 @@
+# Current development version
+
 # 26.07.0
 
 - Fixed a crash on loading a worksheet containing an empty `<img/>` or `<slideshow/>` tag (found by the parser fuzzer).
