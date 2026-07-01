@@ -9397,7 +9397,7 @@ void wxMaxima::RegisterWxmxDiffTool() {
   if (!failed.IsEmpty())
     message += wxString::Format(
       _("%sCould not write the setting for:%s\n(Is the client installed?)"),
-      done.IsEmpty() ? wxString() : wxS("\n\n"), failed);
+      done.IsEmpty() ? wxString() : wxString(wxS("\n\n")), failed);
 
   LoggingMessageBox(message, _("Tortoise diff tool"),
                     wxOK | (failed.IsEmpty() ? wxICON_INFORMATION : wxICON_WARNING));
