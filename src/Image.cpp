@@ -736,7 +736,13 @@ void Image::InvalidBitmap(const wxString &message) {
   m_originalHeight = m_height = 900 * m_ppi / 96;
   m_isInvalid = true;
   m_invalidBitmapMessage = message;
-  m_compressedImage.Clear();
+  // Do NOT discard m_compressedImage here. Those bytes are the only copy of the
+  // original image; if the current wxWidgets build simply cannot decode this
+  // format we still want ToXML()/GetCompressedImage() to write the untouched
+  // bytes back out, so that opening and re-saving a worksheet on such a machine
+  // does not silently turn the image into a zero-length file. Rendering is
+  // unaffected: while m_isInvalid is set GetBitmap() returns the placeholder
+  // produced by GenerateInvalidBitmap() and never re-attempts a decode.
 }
 
 void Image::GenerateInvalidBitmap() {
@@ -898,10 +904,9 @@ void Image::LoadImage_Backgroundtask(stop_token stopToken,
   if (m_compressedImage.GetDataLen() > 0) {
     // A gzip-compressed SVG whose file name did not end in ".svgz" (e.g. a
     // ".svg.gz" file, whose extension is "gz") would otherwise be treated as a
-    // raster image, fail to decode and -- because InvalidBitmap() discards the
-    // compressed data -- be written to the .wxmx as a zero-length file, silently
-    // losing the image. Detect a gzipped SVG by its content and handle it as a
-    // .svgz so the data survives a save/load round-trip.
+    // raster image and fail to decode. Detect a gzipped SVG by its content and
+    // handle it as a .svgz so it renders correctly (rather than only surviving
+    // as opaque bytes) after a save/load round-trip.
     if ((m_extension != wxS("svg")) && (m_extension != wxS("svgz")) &&
         (m_compressedImage.GetDataLen() > 2)) {
       const unsigned char *bytes =

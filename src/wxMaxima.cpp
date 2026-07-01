@@ -3919,7 +3919,10 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
       // Read the file into a string
       wxTextInputStream istream1(wxmxContents, wxS('\t'),
                                  wxConvAuto(wxFONTENCODING_UTF8));
-      while (!wxmxContents.Eof())
+      // wxWidgets 3.3 no longer flips Eof() to true on an empty zip entry
+      // (IsOk() goes false instead), so guard with IsOk() as well to avoid an
+      // infinite ReadLine() loop on an empty content.xml.
+      while (wxmxContents.IsOk() && !wxmxContents.Eof())
         contents += istream1.ReadLine() + wxS("\n");
     } else {
       wxLogMessage(_("Trying to recover a broken .wxmx file."));
