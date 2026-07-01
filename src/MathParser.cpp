@@ -339,7 +339,10 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int WXUNUSE
   bool del = node->GetAttribute(wxS("del"), wxS("false")) == wxS("true");
   auto animation =
     std::make_unique<AnimationCell>(m_group, m_configuration, m_wxmxFile);
-  auto const &str = node->GetChildren()->GetContent();
+  // A self-closing <slideshow/> with no child node has no content: guard against
+  // dereferencing a null GetChildren().
+  wxXmlNode *contentNode = node->GetChildren();
+  wxString str = contentNode ? contentNode->GetContent() : wxString();
   wxArrayString images;
   wxString framerate;
   if (node->GetAttribute(wxS("fr"), &framerate)) {
@@ -403,7 +406,10 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int WXUNUSE
 
 std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node, int WXUNUSED(depth)) {
   std::unique_ptr<ImgCell> imageCell;
-  wxString filename(node->GetChildren()->GetContent());
+  // A self-closing <img/> with no child node has no content: guard against
+  // dereferencing a null GetChildren().
+  wxXmlNode *contentNode = node->GetChildren();
+  wxString filename(contentNode ? contentNode->GetContent() : wxString());
 
   if (!m_wxmxFile.IsEmpty()) // loading from zip
     {

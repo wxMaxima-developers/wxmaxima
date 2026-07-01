@@ -1,5 +1,6 @@
 # Current development version
 
+- Fixed a crash on loading a worksheet containing an empty `<img/>` or `<slideshow/>` tag (found by the parser fuzzer).
 - Fixed text cells (e.g. in the diff viewer) wrapping after every word: copying a cell no longer turns its soft word-wrap line breaks into hard ones.
 - Fixed matrices keeping stale (too narrow or too wide) column widths when a layout-time deadline interrupted their recalculation.
 - Fixed short Text and Title cells flickering.
