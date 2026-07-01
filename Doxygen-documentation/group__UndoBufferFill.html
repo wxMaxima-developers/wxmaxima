@@ -70,7 +70,6 @@ $(function() {
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Undo methods for cell additions/deletions:</div></div>
 </div><!--header-->
@@ -90,11 +89,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_C
 <tr class="memdesc:ga96aefed098d643df24e9f5e51487280e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the list of actions for which undo can undo. <br /></td></tr>
 <tr class="separator:ga96aefed098d643df24e9f5e51487280e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3d8f4e3b278cc24036459d581649c9d9"><td class="memItemLeft" align="right" valign="top"><a id="ga3d8f4e3b278cc24036459d581649c9d9" name="ga3d8f4e3b278cc24036459d581649c9d9"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_DiscardAction</b> (UndoActions *actionList)</td></tr>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_DiscardAction</b> (<a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *actionList)</td></tr>
 <tr class="memdesc:ga3d8f4e3b278cc24036459d581649c9d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove one action ftom the action list. <br /></td></tr>
 <tr class="separator:ga3d8f4e3b278cc24036459d581649c9d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad27a8f674ff188f23a91de4624dfb0da"><td class="memItemLeft" align="right" valign="top"><a id="gad27a8f674ff188f23a91de4624dfb0da" name="gad27a8f674ff188f23a91de4624dfb0da"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_AppendAction</b> (UndoActions *actionList)</td></tr>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_AppendAction</b> (<a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *actionList)</td></tr>
 <tr class="memdesc:gad27a8f674ff188f23a91de4624dfb0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add another action to this undo action. <br /></td></tr>
 <tr class="separator:gad27a8f674ff188f23a91de4624dfb0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga38f2c09271000e2e269fe1a3a501055d"><td class="memItemLeft" align="right" valign="top"><a id="ga38f2c09271000e2e269fe1a3a501055d" name="ga38f2c09271000e2e269fe1a3a501055d"></a>
@@ -105,16 +104,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_A
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_LimitUndoBuffer</b> ()</td></tr>
 <tr class="memdesc:ga01d9bac25f92583620585e81edc7eecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drop actions from the back of the undo list until itis within the undo limit. <br /></td></tr>
 <tr class="separator:ga01d9bac25f92583620585e81edc7eecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf5e54e7c3397cf9d5473584fa3a5f784"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gaf5e54e7c3397cf9d5473584fa3a5f784">Worksheet::TreeUndo</a> (UndoActions *sourcelist, UndoActions *undoForThisOperation)</td></tr>
+<tr class="memitem:gaf5e54e7c3397cf9d5473584fa3a5f784"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gaf5e54e7c3397cf9d5473584fa3a5f784">Worksheet::TreeUndo</a> (<a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *sourcelist, <a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *undoForThisOperation)</td></tr>
 <tr class="memdesc:gaf5e54e7c3397cf9d5473584fa3a5f784"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo an item from a list of undo actions.  <br /></td></tr>
 <tr class="separator:gaf5e54e7c3397cf9d5473584fa3a5f784"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga407d02d9a242ff4d83b0aeb467bfd04f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#ga407d02d9a242ff4d83b0aeb467bfd04f">Worksheet::TreeUndoTextChange</a> (UndoActions *sourcelist, UndoActions *undoForThisOperation)</td></tr>
+<tr class="memitem:ga407d02d9a242ff4d83b0aeb467bfd04f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#ga407d02d9a242ff4d83b0aeb467bfd04f">Worksheet::TreeUndoTextChange</a> (<a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *sourcelist, <a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *undoForThisOperation)</td></tr>
 <tr class="memdesc:ga407d02d9a242ff4d83b0aeb467bfd04f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo a text change.  <br /></td></tr>
 <tr class="separator:ga407d02d9a242ff4d83b0aeb467bfd04f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac5bbd739676e3b7ffc14ac6d76c5eebb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gac5bbd739676e3b7ffc14ac6d76c5eebb">Worksheet::TreeUndoCellDeletion</a> (UndoActions *sourcelist, UndoActions *undoForThisOperation)</td></tr>
+<tr class="memitem:gac5bbd739676e3b7ffc14ac6d76c5eebb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gac5bbd739676e3b7ffc14ac6d76c5eebb">Worksheet::TreeUndoCellDeletion</a> (<a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *sourcelist, <a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *undoForThisOperation)</td></tr>
 <tr class="memdesc:gac5bbd739676e3b7ffc14ac6d76c5eebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo a call deletion.  <br /></td></tr>
 <tr class="separator:gac5bbd739676e3b7ffc14ac6d76c5eebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa2cb2222c648177ea95b6718abbfb35a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gaa2cb2222c648177ea95b6718abbfb35a">Worksheet::TreeUndoCellAddition</a> (UndoActions *sourcelist, UndoActions *undoForThisOperation)</td></tr>
+<tr class="memitem:gaa2cb2222c648177ea95b6718abbfb35a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gaa2cb2222c648177ea95b6718abbfb35a">Worksheet::TreeUndoCellAddition</a> (<a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *sourcelist, <a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *undoForThisOperation)</td></tr>
 <tr class="memdesc:gaa2cb2222c648177ea95b6718abbfb35a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo adding cells.  <br /></td></tr>
 <tr class="separator:gaa2cb2222c648177ea95b6718abbfb35a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga40ec7f7067b8bbf2f800607e61f658cd"><td class="memItemLeft" align="right" valign="top"><a id="ga40ec7f7067b8bbf2f800607e61f658cd" name="ga40ec7f7067b8bbf2f800607e61f658cd"></a>
@@ -141,7 +140,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_C
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_CellLeft</b> ()</td></tr>
 <tr class="memdesc:ga8a67b016fceb16f77f9c4c94ad87a78c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cursor is about to leave the current cell =&gt; Store the change if the value has changed. <br /></td></tr>
 <tr class="separator:ga8a67b016fceb16f77f9c4c94ad87a78c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafa1404f59c04e1da90b1296d2e7bdffe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gafa1404f59c04e1da90b1296d2e7bdffe">Worksheet::TreeUndo_MarkCellsAsAdded</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *start, <a class="el" href="classGroupCell.html">GroupCell</a> *end, UndoActions *undoBuffer)</td></tr>
+<tr class="memitem:gafa1404f59c04e1da90b1296d2e7bdffe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gafa1404f59c04e1da90b1296d2e7bdffe">Worksheet::TreeUndo_MarkCellsAsAdded</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *start, <a class="el" href="classGroupCell.html">GroupCell</a> *end, <a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *undoBuffer)</td></tr>
 <tr class="memdesc:gafa1404f59c04e1da90b1296d2e7bdffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remember that these cells were just added so this addition can be undone.  <br /></td></tr>
 <tr class="separator:gafa1404f59c04e1da90b1296d2e7bdffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf87a1cbf5d891c48fc0d26622cd2fac7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gaf87a1cbf5d891c48fc0d26622cd2fac7">Worksheet::TreeUndo_MarkCellsAsAdded</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *parentOfStart, <a class="el" href="classGroupCell.html">GroupCell</a> *end)</td></tr>
@@ -197,13 +196,13 @@ This approach allows the undo functionality to use the regular add and delete op
         <tr>
           <td class="memname">bool Worksheet::TreeUndo </td>
           <td>(</td>
-          <td class="paramtype">UndoActions *&#160;</td>
+          <td class="paramtype"><a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *&#160;</td>
           <td class="paramname"><em>sourcelist</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">UndoActions *&#160;</td>
+          <td class="paramtype"><a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *&#160;</td>
           <td class="paramname"><em>undoForThisOperation</em>&#160;</td>
         </tr>
         <tr>
@@ -283,7 +282,7 @@ This approach allows the undo functionality to use the regular add and delete op
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">UndoActions *&#160;</td>
+          <td class="paramtype"><a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *&#160;</td>
           <td class="paramname"><em>undoBuffer</em>&#160;</td>
         </tr>
         <tr>
@@ -319,13 +318,13 @@ This approach allows the undo functionality to use the regular add and delete op
         <tr>
           <td class="memname">bool Worksheet::TreeUndoCellAddition </td>
           <td>(</td>
-          <td class="paramtype">UndoActions *&#160;</td>
+          <td class="paramtype"><a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *&#160;</td>
           <td class="paramname"><em>sourcelist</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">UndoActions *&#160;</td>
+          <td class="paramtype"><a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *&#160;</td>
           <td class="paramname"><em>undoForThisOperation</em>&#160;</td>
         </tr>
         <tr>
@@ -350,13 +349,13 @@ This approach allows the undo functionality to use the regular add and delete op
         <tr>
           <td class="memname">bool Worksheet::TreeUndoCellDeletion </td>
           <td>(</td>
-          <td class="paramtype">UndoActions *&#160;</td>
+          <td class="paramtype"><a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *&#160;</td>
           <td class="paramname"><em>sourcelist</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">UndoActions *&#160;</td>
+          <td class="paramtype"><a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *&#160;</td>
           <td class="paramname"><em>undoForThisOperation</em>&#160;</td>
         </tr>
         <tr>
@@ -381,13 +380,13 @@ This approach allows the undo functionality to use the regular add and delete op
         <tr>
           <td class="memname">bool Worksheet::TreeUndoTextChange </td>
           <td>(</td>
-          <td class="paramtype">UndoActions *&#160;</td>
+          <td class="paramtype"><a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *&#160;</td>
           <td class="paramname"><em>sourcelist</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">UndoActions *&#160;</td>
+          <td class="paramtype"><a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *&#160;</td>
           <td class="paramname"><em>undoForThisOperation</em>&#160;</td>
         </tr>
         <tr>
