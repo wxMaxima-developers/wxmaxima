@@ -61,6 +61,9 @@ UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet,
   m_grid->Bind(wxEVT_GRID_CELL_LEFT_DCLICK, &UnicodeSidebar::OnDClick, this);
   m_grid->Bind(wxEVT_GRID_CELL_RIGHT_CLICK, &UnicodeSidebar::OnRightClick, this);
   m_grid->Bind(wxEVT_GRID_CELL_CHANGING, &UnicodeSidebar::OnChangeAttempt, this);
+  // Key events go to the grid's inner window; catch Enter there so it inserts
+  // the focused character (keyboard/screen-reader operability).
+  m_grid->GetGridWindow()->Bind(wxEVT_KEY_DOWN, &UnicodeSidebar::OnGridKey, this);
   m_grid->EndBatch();
   SetSizer(box);
   FitInside();
@@ -68,15 +71,30 @@ UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet,
 
 UnicodeSidebar::~UnicodeSidebar() {}
 
-void UnicodeSidebar::OnDClick(wxGridEvent &event) {
-  wxString number;
-  number = m_grid->GetCellValue(event.GetRow(), 0);
+void UnicodeSidebar::InsertCharFromRow(int row) {
+  if (row < 0)
+    return;
   long numVal;
-  if (number.ToLong(&numVal, 16)) {
+  if (m_grid->GetCellValue(row, 0).ToLong(&numVal, 16)) {
     wxCommandEvent *ev = new wxCommandEvent(SIDEBARKEYEVENT, numVal);
     m_worksheet->GetEventHandler()->QueueEvent(ev);
   }
   m_worksheet->SetFocus();
+}
+
+void UnicodeSidebar::OnDClick(wxGridEvent &event) {
+  InsertCharFromRow(event.GetRow());
+}
+
+void UnicodeSidebar::OnGridKey(wxKeyEvent &event) {
+  const int key = event.GetKeyCode();
+  if ((key == WXK_RETURN) || (key == WXK_NUMPAD_ENTER)) {
+    // Activate the focused character instead of moving the grid cursor, so a
+    // keyboard-only / screen-reader user can insert a symbol.
+    InsertCharFromRow(m_grid->GetGridCursorRow());
+    return;
+  }
+  event.Skip(); // leave arrow-key navigation etc. to wxGrid
 }
 
 void UnicodeSidebar::OnRightClick(wxGridEvent &event) {

@@ -78,9 +78,12 @@ once-a-day nightly build — a multi-day feedback loop. Therefore:
   small letter alpha", …), with a "Press" default action — instead of an unnamed
   pane containing a static text. **[ASK TESTER]** confirm they read as buttons
   and can be activated.
-- ❌ **UnicodeSidebar** is custom-drawn (like the toolbar was) → its character
-  cells are probably invisible. Needs a `wxAccessible` or a rework to real
-  focusable items.
+- ✅/⚠️ **UnicodeSidebar** is a `wxGrid` (not custom-drawn, as first assumed):
+  `wxGrid` has built-in accessibility, so its cells — including the character's
+  name column ("GREEK SMALL LETTER ALPHA") — are readable, and the grid is
+  arrow-key navigable. The gap was **activation was mouse-only** (double-click);
+  Enter now inserts the focused character too. **[ASK TESTER]** confirm reading
+  and Enter-to-insert.
 - ⚠️ Table-of-Contents, Variables (grid), History (list) use standard wx
   controls → accessible by default, but unverified. **[ASK TESTER]** spot-check.
 

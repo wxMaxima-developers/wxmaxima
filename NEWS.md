@@ -2,6 +2,8 @@
 
 - Accessibility: screen readers now actually see the worksheet's contents. The worksheet reports itself as a document (with its cells as children) instead of a bare panel full of scrollbars, each sidebar now has a proper name instead of being an anonymous "panel", and the tools on the toolbar are now announced (with their names, states and a "press" action) instead of being invisible.
 - Accessibility: the symbol/Greek-letter/math sidebar buttons are now announced as named push buttons (by their description, e.g. "Greek small letter alpha") instead of anonymous panels.
+- The Unicode characters sidebar can now be used from the keyboard: pressing Enter on a character inserts it (previously this needed a mouse double-click).
+- Fixed copying/cutting a freshly drag-and-dropped image turning it into an "Image data had zero length" error: the copy no longer reads the image before its background load has finished.
 - Windows: wxMaxima now repairs its own .wxmx/.wxm/.mac file association on startup, so updating to a new install location no longer makes Windows "forget" which program opens .wxmx files.
 - Windows: a new Help menu item registers wxMaxima as the tool TortoiseSVN and TortoiseGit use to compare .wxmx files.
 - Added a regression test guarding the worksheet's line-wrapping (line-breaking) layout pass.

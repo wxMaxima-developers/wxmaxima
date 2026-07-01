@@ -59,6 +59,12 @@ protected:
   void OnPaint(wxPaintEvent &event);
   //! Is called if the control is resized
   void OnSize(wxSizeEvent &event);
+  //! Insert the character of the given grid row into the worksheet (shared by
+  //! the mouse double-click and the keyboard Enter activation).
+  void InsertCharFromRow(int row);
+  //! Keyboard handler that lets Enter insert the selected character, so the
+  //! sidebar is usable without a mouse.
+  void OnGridKey(wxKeyEvent &event);
   //! Is called if the control is double-clicked at
   void OnDClick(wxGridEvent &event);
   //! Is called if the control is right-clicked at

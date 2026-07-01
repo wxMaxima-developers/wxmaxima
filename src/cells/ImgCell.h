@@ -116,8 +116,13 @@ public:
   void SetOrigImageFile(const wxString &file)
     { m_origImageFile = file; }
 
-  //! Returns the original compressed version of the image
-  wxMemoryBuffer GetCompressedImage() const { return m_image->m_compressedImage; }
+  //! Returns the original compressed version of the image.
+  //! Goes through Image::GetCompressedImage() (rather than reading
+  //! m_compressedImage directly) so it waits for a still-running background
+  //! image load first: reading the raw member could return empty bytes for a
+  //! freshly drag-dropped image whose load has not finished, which turned e.g.
+  //! a copy-to-clipboard (.wxm) of it into a zero-length "cannot render" image.
+  wxMemoryBuffer GetCompressedImage() const { return m_image->GetCompressedImage(); }
 
   wxCoord GetMaxWidth() const override { return m_image ? m_image->GetMaxWidth() : -1; }
   wxCoord GetHeightList() const override { return m_height; }
