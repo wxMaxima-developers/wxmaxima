@@ -10,7 +10,7 @@ var searchData=
   ['maxgnuplotmegabytes_7',['MaxGnuplotMegabytes',['../classConfiguration.html#a851d5425e6fbad1780479b4bb29ed535',1,'Configuration']]],
   ['maxima_8',['Maxima',['../classMaxima.html#a276c070c35c3cc8d31593de9aab92edc',1,'Maxima']]],
   ['maximadclick_9',['MaximaDClick',['../classwxMaxima.html#aa626d2e1156300530e9bba2128079289',1,'wxMaxima']]],
-  ['maximadefaultlocation_10',['MaximaDefaultLocation',['../classDirstructure.html#a280d3ee7cd41633a0c3a79d4a19d04ee',1,'Dirstructure::MaximaDefaultLocation()'],['../classConfiguration.html#a408780614dd19920537cfdc7310115f2',1,'Configuration::MaximaDefaultLocation()']]],
+  ['maximadefaultlocation_10',['MaximaDefaultLocation',['../classConfiguration.html#a408780614dd19920537cfdc7310115f2',1,'Configuration::MaximaDefaultLocation()'],['../classDirstructure.html#a280d3ee7cd41633a0c3a79d4a19d04ee',1,'Dirstructure::MaximaDefaultLocation()']]],
   ['maximaevent_11',['MaximaEvent',['../classwxMaxima.html#a331a2a90d1806f91122656ff2649ad02',1,'wxMaxima']]],
   ['maximalocation_12',['MaximaLocation',['../classConfiguration.html#a6d90ad4232c786592219a4afc370d675',1,'Configuration']]],
   ['maximamenu_13',['MaximaMenu',['../classwxMaxima.html#a3b622137da8cd2c091437a395f81567c',1,'wxMaxima']]],
@@ -21,5 +21,6 @@ var searchData=
   ['maximavarnametolisp_18',['MaximaVarnameToLisp',['../classMaxima.html#aa463e9595a0b289f322d56d68db9f636',1,'Maxima']]],
   ['member_19',['member',['../classAfterdoc__Test.html#a57ba94e9039ee90a1b191ae0009a05dd',1,'Afterdoc_Test::member()'],['../classAutolink__Test.html#a393ea281f235a2f603d98daf72b0d411',1,'Autolink_Test::member(int)'],['../classAutolink__Test.html#acf783a43c2b4b6cc9dd2361784eca2e1',1,'Autolink_Test::member(int, int)'],['../classFn__Test.html#a823b5c9726bb8f6ece50e57ac8e3092c',1,'Fn_Test::member()']]],
   ['menucommand_20',['MenuCommand',['../classwxMaxima.html#ac92da2d00f70ebb78bf96233eda45f82',1,'wxMaxima']]],
-  ['mouseselectionstartedhere_21',['MouseSelectionStartedHere',['../classEditorCell.html#aeb91a26e7fbfb314b31bfd8625139abe',1,'EditorCell']]]
+  ['menuhelpstring_21',['MenuHelpString',['../MenuHelpString_8cpp.html#ac67bf830ab57783420c34a9b71898137',1,'MenuHelpString(wxMenu *menu, int id):&#160;MenuHelpString.cpp'],['../MenuHelpString_8h.html#ac67bf830ab57783420c34a9b71898137',1,'MenuHelpString(wxMenu *menu, int id):&#160;MenuHelpString.cpp']]],
+  ['mouseselectionstartedhere_22',['MouseSelectionStartedHere',['../classEditorCell.html#aeb91a26e7fbfb314b31bfd8625139abe',1,'EditorCell']]]
 ];
