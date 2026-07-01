@@ -57,6 +57,17 @@ add_executable(test_DiffScrollSync test_DiffScrollSync.cpp ${WXM_TEST_SETUP})
 target_link_libraries(test_DiffScrollSync PRIVATE ${wxWidgets_LIBRARIES})
 add_test(DiffScrollSync test_DiffScrollSync)
 
+# Guards the wxWidgets 3.3 "item" assert that wxMenu::GetHelpString() trips when
+# a highlighted menu id is not an item of that menu (seen mainly via the Windows
+# native menu code). MenuHelpString() is a tiny GUI-object helper, so it is
+# tested directly -- and, crucially, the Windows CI's `ctest -L unittest` step
+# runs this even though it drives no GUI, giving Gunter (who has no Windows box)
+# a check for a Windows-surfacing bug.
+add_executable(test_MenuHelpString
+    test_MenuHelpString.cpp ${CMAKE_SOURCE_DIR}/src/MenuHelpString.cpp ${WXM_TEST_SETUP})
+target_link_libraries(test_MenuHelpString PRIVATE ${wxWidgets_LIBRARIES})
+add_test(MenuHelpString test_MenuHelpString)
+
 # Layout/recalculation regression test. Unlike the tests above (which stub out
 # GroupCell via TestStubs.cpp), this links the real application code through the
 # wxmTestApp object library so it can exercise the genuine GroupCell/EditorCell

@@ -158,6 +158,7 @@ set(SOURCE_FILES
     WXMXformat.cpp
     levenshtein/levenshtein.cpp
     main.cpp
+    MenuHelpString.cpp
     wxMathml.cpp
     wxMaxima.cpp
     wxMaximaFrame.cpp

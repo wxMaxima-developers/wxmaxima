@@ -33,6 +33,7 @@
 #include "wxMaximaFrame.h"
 #include "ArtProvider.h"
 #include "Dirstructure.h"
+#include "MenuHelpString.h"
 #include <string>
 #include <memory>
 #include <algorithm>
@@ -2165,14 +2166,11 @@ bool wxMaximaFrame::IsPaneDisplayed(int id) {
 
 void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
 {
-  if(event.GetId() <= 0)
-    StatusText(wxEmptyString, false);
-  else
-    {
-      wxMenu *menu = event.GetMenu();
-      if(menu != NULL)
-        StatusText(menu->GetHelpString(event.GetId()), false);
-    }
+  // MenuHelpString() avoids the wxWidgets 3.3 "item" assert that
+  // wxMenu::GetHelpString() trips when a highlighted id is not an item of the
+  // menu; see MenuHelpString.h. It is a free function so it can be unit-tested
+  // (test/unit_tests/test_MenuHelpString.cpp) without a whole frame.
+  StatusText(MenuHelpString(event.GetMenu(), event.GetId()), false);
 }
 void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   for(const auto &[paneId, name]: m_sidebarNames)
