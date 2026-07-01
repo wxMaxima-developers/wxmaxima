@@ -54,6 +54,7 @@
 #include "cells/ImgCellBase.h"
 #include "cells/AnimationCell.h"
 #include "cells/GroupCell.h"
+#include "TreeUndoAction.h"
 #include "cells/TextCell.h"
 #include "EvaluationQueue.h"
 #include "dialogs/FindReplaceDialog.h"
@@ -253,87 +254,9 @@ private:
     @{
   */
 
-  /*! The description of one action for the undo (or redo) command.
-    This object is immutable - the undo/redo buffer cannot be modified.
-  */
-  class TreeUndoAction
-  {
-  public:
-    TreeUndoAction(GroupCell *start, const wxString &oldText,
-                   long long oldSelStart = -1, long long oldSelEnd = -1) :
-      m_start(start), m_oldText(oldText),
-      m_oldSelStart(oldSelStart), m_oldSelEnd(oldSelEnd)
-      {
-        wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
-      }
-    TreeUndoAction(GroupCell *start, GroupCell *end) :
-      m_start(start), m_newCellsEnd(end)
-      {
-        wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
-      }
-    TreeUndoAction(GroupCell *start, GroupCell *end, GroupCell *oldCells) :
-      m_start(start), m_newCellsEnd(end), m_oldCells(oldCells)
-      {
-      }
-
-    /*! True = This undo action is only part of an atomic undo action.
-
-      This is the only mutable part of this action: is is used to indicate its relation to
-      other actions in the undo list.
-    */
-    bool m_partOfAtomicAction = false;
-
-    /*! The position this action started at.
-
-      NULL = At the begin of the document.
-
-      A CellPtr (not a raw pointer) so that it auto-nulls if the GroupCell it
-      refers to is destroyed while this action still sits in the undo/redo list -
-      otherwise invoking the action would dereference freed memory. The consumer
-      code already null-checks this field, so auto-nulling makes those checks
-      correct instead of relying on the freed pointer's stale value.
-    */
-    CellPtr<GroupCell> m_start;
-
-    /*! The old contents of the cell start
-
-      if this field != wxEmptyString this field contains the old contents of the text
-      cell pointed to by the field start.
-    */
-    const wxString m_oldText;
-
-    /*! The old cursor/selection range in the EditorCell pointed to by m_start.
-
-      -1 means "not recorded". Both fields store the selection endpoints; when
-      they are equal the value represents a plain cursor position (no selection).
-      The convention matches EditorCell::SelectionStart()/SelectionEnd().
-    */
-    const long long m_oldSelStart = -1;
-    const long long m_oldSelEnd   = -1;
-
-    /*! This action inserted all cells from start to newCellsEnd.
-
-      To undo it these cells have to be deleted again.
-
-      If this field's value is NULL no cells have to be deleted to undo this action.
-
-      A CellPtr for the same reason as m_start: it auto-nulls if the referenced
-      GroupCell is destroyed before this action is undone.
-    */
-    CellPtr<GroupCell> m_newCellsEnd;
-
-    /*! Cells that were deleted in this action.
-
-      This field will have to contain the cells themselves, not a copy of them because
-      the latter might break consecutive undos.
-
-      If this field's value is NULL no cells have to be added to undo this action.
-    */
-    std::unique_ptr<GroupCell> m_oldCells;
-  };
-
-  //! The type of the list of tree actions that can be undone
-  using UndoActions = std::list<TreeUndoAction>;
+  // TreeUndoAction and UndoActions now live in TreeUndoAction.h
+  // (included above), as the first step of extracting the cell-tree undo/redo
+  // subsystem out of Worksheet.
 
 private:
   //! The list of tree actions that can be undone
