@@ -157,6 +157,11 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   ClearDocument();
 #if wxUSE_ACCESSIBILITY
   m_accessibilityInfo = new AccessibilityInfo(GetTargetWindow(), this);
+  // Actually hand this accessible to the window, so screen readers use it
+  // instead of the default wxWindowAccessible (which only exposes a generic
+  // "panel" with the raw scrollbars and a null thumb). The window takes
+  // ownership and deletes it on destruction.
+  GetTargetWindow()->SetAccessible(m_accessibilityInfo);
 #endif
 #if wxCHECK_VERSION(3, 1, 1)
   //  Disabled, as it resets the zoom to 1:1 on right-click (GTK) or closes the
@@ -8828,7 +8833,9 @@ wxAccStatus Worksheet::AccessibilityInfo::GetRole(int childId,
     return wxACC_FAIL;
 
   if (childId == 0) {
-    *role = wxROLE_SYSTEM_PANE;
+    // A worksheet is a document (a sequence of cells), not a bare panel: a
+    // document role lets screen readers treat it as readable content.
+    *role = wxROLE_SYSTEM_DOCUMENT;
     return wxACC_OK;
   }
 

@@ -31,6 +31,9 @@
 #include "Image.h"
 #include "SvgBitmap.h"
 #include "ArtProvider.h"
+#if wxUSE_ACCESSIBILITY
+#include <wx/access.h>
+#endif
 #if !wxCHECK_VERSION(3, 1, 6)
 #include "art/toolbar/arrow-up-square.h"
 #include "art/toolbar/dialog-information.h"
@@ -133,6 +136,159 @@ void ToolBar::UpdateSlider(AnimationCell *cell) {
   }
 }
 
+#if wxUSE_ACCESSIBILITY
+// wxAuiToolBar is owner-drawn, so its tool buttons are not real windows and are
+// invisible to screen readers (inspect.exe sees only the toolbar's real child
+// controls -- the animation slider and the text field). This accessible exposes
+// every tool as an MSAA "simple element" with a name, role, state and screen
+// location, while delegating the real control items to their own accessibles so
+// those are not lost when we take over the child enumeration.
+class ToolBarAccessible : public wxAccessible {
+public:
+  explicit ToolBarAccessible(ToolBar *toolBar)
+    : wxAccessible(toolBar), m_toolBar(toolBar) {}
+
+  wxAccStatus GetChildCount(int *childCount) override {
+    if (!childCount)
+      return wxACC_FAIL;
+    *childCount = static_cast<int>(m_toolBar->GetToolCount());
+    return wxACC_OK;
+  }
+
+  wxAccStatus GetChild(int childId, wxAccessible **child) override {
+    if (!child)
+      return wxACC_FAIL;
+    *child = nullptr; // NULL + wxACC_OK => a "simple element" answered by us
+    if (childId == 0)
+      return wxACC_OK;
+    wxAuiToolBarItem *item = ItemFor(childId);
+    // A control item (slider / text field) is a real window: hand screen readers
+    // its own accessible so its value and role survive.
+    if (item && item->GetWindow())
+      *child = item->GetWindow()->GetOrCreateAccessible();
+    return wxACC_OK;
+  }
+
+  wxAccStatus GetName(int childId, wxString *name) override {
+    if (!name)
+      return wxACC_FAIL;
+    if (childId == 0) {
+      *name = _("Toolbar");
+      return wxACC_OK;
+    }
+    wxAuiToolBarItem *item = ItemFor(childId);
+    if (!item)
+      return wxACC_FAIL;
+    // The short help (tooltip) is the most speech-friendly label; fall back to
+    // the tool's own label text.
+    *name = item->GetShortHelp().IsEmpty() ? item->GetLabel()
+                                           : item->GetShortHelp();
+    return wxACC_OK;
+  }
+
+  wxAccStatus GetRole(int childId, wxAccRole *role) override {
+    if (!role)
+      return wxACC_FAIL;
+    if (childId == 0) {
+      *role = wxROLE_SYSTEM_TOOLBAR;
+      return wxACC_OK;
+    }
+    wxAuiToolBarItem *item = ItemFor(childId);
+    if (!item)
+      return wxACC_FAIL;
+    if (item->GetWindow()) {
+      *role = wxROLE_SYSTEM_PANE; // the real control reports its own detailed role
+      return wxACC_OK;
+    }
+    switch (item->GetKind()) {
+    case wxITEM_SEPARATOR:
+      *role = wxROLE_SYSTEM_SEPARATOR;
+      break;
+    case wxITEM_CHECK:
+      *role = wxROLE_SYSTEM_CHECKBUTTON;
+      break;
+    case wxITEM_RADIO:
+      *role = wxROLE_SYSTEM_RADIOBUTTON;
+      break;
+    case wxITEM_NORMAL:
+    case wxITEM_DROPDOWN:
+      *role = wxROLE_SYSTEM_PUSHBUTTON;
+      break;
+    default:
+      // A spacer (no label) or a text label (has one): wxAuiToolBar's own kinds
+      // for these are private, so tell them apart by whether they carry a label.
+      *role = item->GetLabel().IsEmpty() ? wxROLE_SYSTEM_WHITESPACE
+                                         : wxROLE_SYSTEM_STATICTEXT;
+      break;
+    }
+    return wxACC_OK;
+  }
+
+  wxAccStatus GetState(int childId, long *state) override {
+    if (!state)
+      return wxACC_FAIL;
+    if (childId == 0) {
+      *state = 0;
+      return wxACC_OK;
+    }
+    wxAuiToolBarItem *item = ItemFor(childId);
+    if (!item)
+      return wxACC_FAIL;
+    long s = wxACC_STATE_SYSTEM_FOCUSABLE;
+    if (!m_toolBar->GetToolEnabled(item->GetId()))
+      s |= wxACC_STATE_SYSTEM_UNAVAILABLE;
+    if ((item->GetKind() == wxITEM_CHECK || item->GetKind() == wxITEM_RADIO) &&
+        m_toolBar->GetToolToggled(item->GetId()))
+      s |= wxACC_STATE_SYSTEM_CHECKED;
+    *state = s;
+    return wxACC_OK;
+  }
+
+  wxAccStatus GetLocation(wxRect &rect, int elementId) override {
+    if (elementId == 0) {
+      rect = m_toolBar->GetScreenRect();
+      return wxACC_OK;
+    }
+    wxAuiToolBarItem *item = ItemFor(elementId);
+    if (!item)
+      return wxACC_FAIL;
+    wxRect r = m_toolBar->GetToolRect(item->GetId()); // client coordinates
+    rect = wxRect(m_toolBar->ClientToScreen(r.GetPosition()), r.GetSize());
+    return wxACC_OK;
+  }
+
+  wxAccStatus GetDefaultAction(int childId, wxString *actionName) override {
+    if (!actionName)
+      return wxACC_FAIL;
+    wxAuiToolBarItem *item = ItemFor(childId);
+    if (!item || item->GetWindow() || (item->GetKind() == wxITEM_SEPARATOR))
+      return wxACC_NOT_IMPLEMENTED;
+    *actionName = _("Press");
+    return wxACC_OK;
+  }
+
+  wxAccStatus DoDefaultAction(int childId) override {
+    wxAuiToolBarItem *item = ItemFor(childId);
+    if (!item || !m_toolBar->GetToolEnabled(item->GetId()))
+      return wxACC_FAIL;
+    // wxAuiToolBar fires wxEVT_MENU (== wxEVT_TOOL) with the tool id on a click.
+    wxCommandEvent evt(wxEVT_MENU, item->GetId());
+    evt.SetEventObject(m_toolBar);
+    m_toolBar->GetEventHandler()->ProcessEvent(evt);
+    return wxACC_OK;
+  }
+
+private:
+  // childId is 1-based; tool indices are 0-based.
+  wxAuiToolBarItem *ItemFor(int childId) const {
+    if (childId < 1)
+      return nullptr;
+    return m_toolBar->FindToolByIndex(childId - 1);
+  }
+  ToolBar *m_toolBar;
+};
+#endif
+
 ToolBar::ToolBar(wxWindow *parent)
   : wxAuiToolBar(parent, -1, wxDefaultPosition, wxDefaultSize,
                  wxAUI_TB_OVERFLOW | wxAUI_TB_PLAIN_BACKGROUND |
@@ -151,6 +307,10 @@ ToolBar::ToolBar(wxWindow *parent)
   SetToolBitmapSize(GetOptimalBitmapSize());
   AddTools();
   Realize();
+#if wxUSE_ACCESSIBILITY
+  // Expose the owner-drawn tools to screen readers (the window takes ownership).
+  SetAccessible(new ToolBarAccessible(this));
+#endif
 }
 
 void ToolBar::AddTools() {

@@ -419,6 +419,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
               .LeftDockable(true)
               .RightDockable(true)
               .PaneBorder(true);
+          // Give the pane's window an accessible name: without it a screen
+          // reader announces every sidebar as an unnamed "panel". The default
+          // wxWindowAccessible reports the window's label as its name.
+          if(m_manager.GetPane(name).window != NULL)
+            m_manager.GetPane(name).window->SetLabel(m_sidebarCaption[paneId]);
         }
     }
 
@@ -1966,6 +1971,16 @@ void wxMaximaFrame::SetupHelpMenu() {
   m_HelpMenu->Append(EventIDs::menu_check_updates, _("Check for Updates"),
                      _("Check if a newer version of wxMaxima is available."),
                      wxITEM_NORMAL);
+#ifdef __WXMSW__
+  // TortoiseSVN and TortoiseGit can hand .wxmx files to an external diff tool,
+  // but only if they know where wxMaxima was installed. Let wxMaxima register
+  // itself (it always knows its own path) as that tool.
+  m_HelpMenu->Append(EventIDs::menu_register_wxmx_difftool,
+                     _("Use as TortoiseSVN/Git diff tool"),
+                     _("Register wxMaxima as the tool that compares .wxmx files "
+                       "in TortoiseSVN and TortoiseGit"),
+                     wxITEM_NORMAL);
+#endif
 #ifndef __WXOSX__
   // Is the separator and slightly other text on OSX necessary?
   m_HelpMenu->AppendSeparator();

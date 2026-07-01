@@ -326,6 +326,11 @@ bool MyApp::OnInit() {
     // Make sure child Maxima processes are killed if we are terminated by a
     // signal instead of shutting down cleanly (no-op on Windows).
     wxMaxima::SetupTerminationHandlers();
+#ifdef __WXMSW__
+    // After an update the .wxmx/.wxm/.mac association often still points at the
+    // previous install path; re-point it at the wxMaxima that is running now.
+    wxMaxima::RepairFileAssociations();
+#endif
     int major;
     int minor;
     wxGetOsVersion(&major, &minor);

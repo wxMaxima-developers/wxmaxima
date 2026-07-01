@@ -91,6 +91,10 @@
 #include "wxMaxima.h"
 #include <wx/app.h>
 #include <wx/apptrait.h>
+#include <wx/stdpaths.h>
+#ifdef __WXMSW__
+#include <wx/msw/registry.h> // wxRegKey, for RegisterWxmxDiffTool()
+#endif
 #include <wx/base64.h>
 #include <wx/buffer.h>
 #include <wx/artprov.h>
@@ -614,6 +618,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_goto_url);
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_bug_report);
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_build_info);
+#ifdef __WXMSW__
+  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_register_wxmx_difftool);
+#endif
   Bind(wxEVT_MENU, &wxMaxima::Interrupt, this, EventIDs::menu_interrupt_id);
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_OPEN);
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_batch_id);
@@ -9347,7 +9354,105 @@ void wxMaxima::HelpMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_check_updates){
     CheckForUpdates(true);
   }
+#ifdef __WXMSW__
+  else if(event.GetId() == EventIDs::menu_register_wxmx_difftool){
+    RegisterWxmxDiffTool();
+  }
+#endif
 }
+
+#ifdef __WXMSW__
+void wxMaxima::RegisterWxmxDiffTool() {
+  // The one program that reliably knows where wxMaxima.exe is -- no matter where
+  // the user installed it, and Windows has no package manager to ask -- is
+  // wxMaxima itself. So register our own path with the Tortoise clients rather
+  // than making them discover it.
+  const wxString exe = wxStandardPaths::Get().GetExecutablePath();
+  // TortoiseSVN/TortoiseGit substitute %base and %mine with the two revisions of
+  // the file (and %bname/%yname with the tab captions); --diff is wxMaxima's
+  // side-by-side comparison mode.
+  const wxString command =
+    wxS("\"") + exe + wxS("\" --diff \"%base\" \"%mine\"");
+
+  // Both clients keep their per-extension external diff tools as string VALUES
+  // (named by the extension) under a "DiffTools" key in HKEY_CURRENT_USER, so no
+  // administrator rights are needed.
+  const wxString products[] = {wxS("TortoiseSVN"), wxS("TortoiseGit")};
+  wxString done, failed;
+  for (const wxString &product : products) {
+    wxRegKey key(wxRegKey::HKCU,
+                 wxS("Software\\") + product + wxS("\\DiffTools"));
+    if (key.Create(/*bOkIfExists=*/true) && key.SetValue(wxS(".wxmx"), command))
+      done += wxS("\n    • ") + product;
+    else
+      failed += wxS("\n    • ") + product;
+  }
+
+  wxString message;
+  if (!done.IsEmpty())
+    message += wxString::Format(
+      _("wxMaxima is now the .wxmx diff tool for:%s\n\nOpen a .wxmx file's "
+        "\"Diff\" in TortoiseSVN/TortoiseGit to compare it side by side."),
+      done);
+  if (!failed.IsEmpty())
+    message += wxString::Format(
+      _("%sCould not write the setting for:%s\n(Is the client installed?)"),
+      done.IsEmpty() ? wxString() : wxS("\n\n"), failed);
+
+  LoggingMessageBox(message, _("Tortoise diff tool"),
+                    wxOK | (failed.IsEmpty() ? wxICON_INFORMATION : wxICON_WARNING));
+}
+
+void wxMaxima::RepairFileAssociations() {
+  // After a wxMaxima update the file association frequently still points at the
+  // *old* install: ".wxmx"/".wxm"/".mac" map to a stable ProgID ("wxmaxima.exe")
+  // whose shell\open\command holds an absolute path the update did not refresh,
+  // so Windows "forgets" the program. The running wxMaxima is the authority on
+  // its own location, so it re-points that command at itself -- per-user
+  // (HKCU\Software\Classes, no admin), which shadows the stale machine entry.
+  const wxString exe = wxStandardPaths::Get().GetExecutablePath();
+  if (exe.IsEmpty())
+    return;
+  const wxString progId = wxS("wxmaxima.exe"); // the long-standing wxMaxima ProgID
+  const wxString wantCommand = wxS("\"") + exe + wxS("\" \"%1\"");
+
+  // 1. Re-point our ProgID's open command at the running executable -- but only
+  //    write when it is actually stale, to avoid needless registry churn.
+  {
+    wxRegKey cmd(wxRegKey::HKCU,
+                 wxS("Software\\Classes\\") + progId + wxS("\\shell\\open\\command"));
+    wxString current;
+    const bool haveCurrent =
+      cmd.Exists() && cmd.QueryValue(wxEmptyString, current);
+    if ((!haveCurrent || (current != wantCommand)) && cmd.Create(true)) {
+      cmd.SetValue(wxEmptyString, wantCommand);
+      wxLogMessage(_("Re-pointed the .wxmx file association at %s"), exe);
+    }
+  }
+
+  // 2. Make each extension resolve to our ProgID -- but never hijack one the
+  //    user deliberately gave to another program: only claim it when it is unset
+  //    or already ours. (A per-user "UserChoice" default, which we must not
+  //    touch, still wins over this, so this is a safe fallback.)
+  const wxString exts[] = {wxS(".wxmx"), wxS(".wxm"), wxS(".mac")};
+  for (const wxString &ext : exts) {
+    wxRegKey extKey(wxRegKey::HKCU, wxS("Software\\Classes\\") + ext);
+    wxString current;
+    const bool claimedByOther =
+      extKey.Exists() && extKey.QueryValue(wxEmptyString, current) &&
+      !current.IsEmpty() && (current != progId);
+    if (!claimedByOther && extKey.Create(true))
+      extKey.SetValue(wxEmptyString, progId);
+
+    // Always offer wxMaxima in the "Open with" list, even when we did not claim
+    // the default (value name = ProgID, empty data, as Windows expects here).
+    wxRegKey openWith(wxRegKey::HKCU,
+                      wxS("Software\\Classes\\") + ext + wxS("\\OpenWithProgids"));
+    if (openWith.Create(true))
+      openWith.SetValue(progId, wxEmptyString);
+  }
+}
+#endif
 
 
 void wxMaxima::StatsMenu(wxCommandEvent &event) {

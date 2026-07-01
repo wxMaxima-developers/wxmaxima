@@ -462,6 +462,8 @@ public:
   static const wxWindowIDRef menu_room;
   static const wxWindowIDRef menu_plot_format;
   static const wxWindowIDRef menu_build_info;
+  //! Register wxMaxima as the .wxmx diff tool for TortoiseSVN/TortoiseGit (MSW).
+  static const wxWindowIDRef menu_register_wxmx_difftool;
   static const wxWindowIDRef menu_bug_report;
   static const wxWindowIDRef menu_add_path;
   static const wxWindowIDRef menu_evaluate_all_visible;

@@ -99,6 +99,17 @@ public:
     Maxima runs under maxima.bat and the existing taskkill cleanup applies.
   */
   static void SetupTerminationHandlers();
+#ifdef __WXMSW__
+  /*! Re-point the .wxmx/.wxm/.mac file association at the running wxMaxima.
+
+    After an update the association often still references the previous install
+    path (the ProgID's shell\open\command is stale), so Windows "forgets" which
+    program opens .wxmx files. Called once at startup; writes per-user
+    (HKCU\Software\Classes, no admin) and only when actually stale, and never
+    hijacks an extension the user deliberately gave to another program.
+  */
+  static void RepairFileAssociations();
+#endif
   /*! Async-signal-safe: SIGKILL every registered child Maxima process group.
 
     Safe to call from a signal handler or from OnFatalException(); it only uses
@@ -386,6 +397,10 @@ protected:
   void DrawMenu(wxCommandEvent &event);            //!< Processes "draw menu" clicks
   void NumericalMenu(wxCommandEvent &event);       //!< Processes "Numerical menu" clicks
   void HelpMenu(wxCommandEvent &event);            //!< Processes "Help menu" clicks
+#ifdef __WXMSW__
+  //! Register wxMaxima's own path as the .wxmx diff tool for TortoiseSVN/Git.
+  void RegisterWxmxDiffTool();
+#endif
   void EditMenu(wxCommandEvent &event);            //!< Processes "Edit menu" clicks
   void ReplaceSuggestion(wxCommandEvent &event);   //!< Processes clicks on suggestions
   void Interrupt(wxCommandEvent &event);           //!< Interrupt button and hotkey presses
