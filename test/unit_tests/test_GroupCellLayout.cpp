@@ -273,6 +273,58 @@ SCENARIO("A matrix whose layout the deadline cancels is recomputed afterwards") 
   g_cfg->ClearLayoutCancelled(); // don't leak the cancelled state to other tests
 }
 
+// Builds a code GroupCell whose OUTPUT is one long horizontal line of many small
+// cells -- wide enough to exceed the ~150 px minimum line width that
+// Cell::BreakLines_List() never goes below, so narrowing the canvas must wrap it
+// onto more display lines.
+static std::unique_ptr<GroupCell> MakeGroupWithWideOutput() {
+  auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE);
+  for (int i = 0; i < 40; i++)
+    group->AppendOutput(
+      std::make_unique<TextCell>(group.get(), g_cfg, wxS("wwww"), TS_VARIABLE));
+  return group;
+}
+
+// Counts output cells that begin a new display line (a forced or a soft break).
+static int CountOutputLineBreaks(GroupCell *group) {
+  int breaks = 0;
+  for (Cell *c = group->GetLabel(); c != nullptr; c = c->GetNext())
+    if (c->BreakLineHere())
+      breaks++;
+  return breaks;
+}
+
+SCENARIO("A wide output line wraps onto more display lines when the canvas is narrow") {
+  // Regression guard for the line-wrapping pass (Cell::BreakLines_List, driven by
+  // GroupCell::RecalculateOutput). Line wrapping keys off m_configuration's canvas
+  // width, floored at ~150 px. The head output cell is always force-broken (it
+  // starts line 0), so a line that fits shows exactly one break and wrapping adds
+  // more. Two fresh, identical groups are laid out at a wide and a narrow canvas
+  // so no cached geometry has to be invalidated between them.
+  const wxSize savedCanvas = g_cfg->GetCanvasSize();
+
+  GIVEN("the same wide output laid out at a wide and at a narrow canvas") {
+    g_cfg->SetCanvasSize(wxSize(6000, 3000));
+    auto wide = MakeGroupWithWideOutput();
+    wide->Recalculate();
+    const int breaksWide = CountOutputLineBreaks(wide.get());
+    const int heightWide = wide->GetHeight();
+
+    g_cfg->SetCanvasSize(wxSize(1, 3000)); // floored to ~150 px in BreakLines_List
+    auto narrow = MakeGroupWithWideOutput();
+    narrow->Recalculate();
+    const int breaksNarrow = CountOutputLineBreaks(narrow.get());
+    const int heightNarrow = narrow->GetHeight();
+
+    THEN("the narrow canvas produces more line breaks and a taller cell") {
+      REQUIRE(breaksWide == 1);            // just the forced first-line start
+      REQUIRE(breaksNarrow > breaksWide);  // additional soft wraps
+      REQUIRE(heightNarrow > heightWide);
+    }
+  }
+  g_cfg->SetCanvasSize(savedCanvas);
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

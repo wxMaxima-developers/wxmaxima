@@ -1,5 +1,7 @@
 # Current development version
 
+- Added a regression test guarding the worksheet's line-wrapping (line-breaking) layout pass.
+
 # 26.07.0
 
 - Fixed a crash on loading a worksheet containing an empty `<img/>` or `<slideshow/>` tag (found by the parser fuzzer).
