@@ -52,6 +52,8 @@
 #include "cells/CellList.h"
 #include "cells/GroupCell.h"
 #include "cells/EditorCell.h"
+#include "cells/MatrCell.h"
+#include "cells/TextCell.h"
 
 #include <cstdlib>
 #ifndef _WIN32
@@ -207,6 +209,68 @@ SCENARIO("Growing a cell pushes the cell below it further down") {
       }
     }
   }
+}
+
+// Builds a 2x3 matrix whose columns have deliberately different content widths,
+// owned by "group", ready to be laid out. The row/column asymmetry means a
+// row/column transposition in the width computation would change the result.
+static std::unique_ptr<MatrCell> MakeMatrix(GroupCell *group) {
+  auto m = std::make_unique<MatrCell>(group, g_cfg);
+  const wxString texts[2][3] = {
+    { wxS("1"), wxS("wwwwwwwwwwww"), wxS("xx") },
+    { wxS("2"), wxS("y"),           wxS("zz") },
+  };
+  for (int row = 0; row < 2; row++) {
+    m->NewRow();
+    for (int col = 0; col < 3; col++) {
+      m->NewColumn();
+      m->AddNewCell(
+        std::make_unique<TextCell>(group, g_cfg, texts[row][col], TS_VARIABLE));
+    }
+  }
+  m->SetDimension();
+  return m;
+}
+
+SCENARIO("A matrix whose layout the deadline cancels is recomputed afterwards") {
+  // Regression test for the matrix-column-width bug: when the per-group layout
+  // deadline fired in the middle of MatrCell::Recalculate(), the base
+  // Cell::Recalculate() had already marked the cell's size valid, so
+  // NeedsRecalculation() returned false and the matrix stayed frozen with stale
+  // (too-narrow or too-wide) column widths on every later pass. The fix
+  // invalidates the width on the cancel early-return so the next, deadline-free
+  // pass recomputes it.
+  GroupCell owner(g_cfg, GC_TYPE_CODE);
+  const AFontSize fs = g_cfg->GetDefaultFontSize();
+
+  // Reference: the correct width from an uninterrupted layout.
+  g_cfg->ClearLayoutCancelled();
+  auto reference = MakeMatrix(&owner);
+  reference->Recalculate(fs);
+  const int fullWidth = reference->GetWidth();
+  REQUIRE(fullWidth > 0);
+
+  GIVEN("a fresh matrix laid out while the layout deadline has already expired") {
+    auto matrix = MakeMatrix(&owner);
+    g_cfg->SetLayoutDeadline(0); // deadline == now, so the layout is cancelled
+    REQUIRE(g_cfg->IsLayoutCancelled());
+    matrix->Recalculate(fs); // enters the body, hits the cancel early-return
+
+    THEN("it is left flagged as still needing a recalculation") {
+      REQUIRE(matrix->NeedsRecalculation(fs));
+    }
+
+    WHEN("a later, deadline-free pass lays it out again") {
+      g_cfg->ClearLayoutCancelled();
+      matrix->Recalculate(fs);
+
+      THEN("the column widths are restored to the correct full width") {
+        REQUIRE_FALSE(matrix->NeedsRecalculation(fs));
+        REQUIRE(matrix->GetWidth() == fullWidth);
+      }
+    }
+  }
+  g_cfg->ClearLayoutCancelled(); // don't leak the cancelled state to other tests
 }
 
 class TestApp : public wxApp {
