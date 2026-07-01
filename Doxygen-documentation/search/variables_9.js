@@ -175,5 +175,6 @@ var searchData=
   ['menu_5fpane_5fvariables_172',['menu_pane_variables',['../classEventIDs.html#ad28785d1086caf4b8f4e86c704d38ee0',1,'EventIDs']]],
   ['menu_5fpane_5fwizard_173',['menu_pane_wizard',['../classEventIDs.html#a1ca29b3be1c0a6ad5553d59932f77b38',1,'EventIDs']]],
   ['menu_5fpane_5fxmlinspector_174',['menu_pane_xmlInspector',['../classEventIDs.html#a6a7c0f2fd3d79548e0838db7a081293c',1,'EventIDs']]],
-  ['mux_5fout_175',['mux_out',['../classmux__using__with.html#a6258515f40573285292fdb0b9663c422',1,'mux_using_with']]]
+  ['menu_5fregister_5fwxmx_5fdifftool_175',['menu_register_wxmx_difftool',['../classEventIDs.html#a97e33ce1978bb91ab9a9e76cb1b0a854',1,'EventIDs']]],
+  ['mux_5fout_176',['mux_out',['../classmux__using__with.html#a6258515f40573285292fdb0b9663c422',1,'mux_using_with']]]
 ];
