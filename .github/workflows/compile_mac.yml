@@ -146,12 +146,18 @@ jobs:
              sudo mkdir /opt/local
              sudo chown -R 1001:1001 /opt/local
              sudo chmod a+rwx /opt/local
+      - name: Detect macOS version
+        id: macos
+        run: echo "major=$(sw_vers -productVersion | cut -d. -f1)" >> "$GITHUB_OUTPUT"
       - name: Cache MacPorts
         id: cache-macports
         uses: actions/cache@v6
         with:
           path: /opt/local/
-          key: ${{ runner.os }}-macports-2-12-15-${{ hashFiles('macos_build.txt') }}
+          # The macOS major version is part of the key: MacPorts binaries are
+          # built per macOS release, so a cache from one macOS must not be
+          # restored on another (which happens when GitHub bumps macos-latest).
+          key: ${{ runner.os }}-${{ steps.macos.outputs.major }}-macports-2.12.5-${{ hashFiles('macos_build.txt') }}
       - name: Checkout wxMaxima from git
         uses: actions/checkout@v7
         with:
@@ -159,9 +165,34 @@ jobs:
           # a pull request then we can checkout the head.
           fetch-depth: 15
       - name: Install macports
+        env:
+          MACPORTS_VERSION: "2.12.5"
+          GH_TOKEN: ${{ github.token }}
         run: |
-          if test -e "/opt/local/bin"; then echo Macports already installed; else aria2c https://github.com/macports/macports-base/releases/download/v2.12.5/MacPorts-2.12.5-15-Sequoia.pkg && sudo installer -pkg MacPorts-2.12.5-15-Sequoia.pkg -target /; fi
-          echo "/opt/local/bin" >> $GITHUB_PATH
+          if test -e "/opt/local/bin"; then
+            echo "MacPorts already installed (restored from cache)"
+          else
+            os_major="${{ steps.macos.outputs.major }}"
+            # MacPorts ships one installer package per macOS release, named e.g.
+            # MacPorts-2.12.5-15-Sequoia.pkg or MacPorts-2.12.5-26-Tahoe.pkg.
+            # Resolve the package matching this runner's macOS major version from
+            # the release assets, so a future macos-latest bump needs no workflow
+            # change. The previously hard-coded Sequoia .pkg started failing with
+            # "installer: Error - This package is meant to be installed on
+            # macOS 15." once GitHub moved macos-latest past Sequoia.
+            pkg=$(curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" \
+                  "https://api.github.com/repos/macports/macports-base/releases/tags/v${MACPORTS_VERSION}" \
+                  | grep -o "MacPorts-${MACPORTS_VERSION}-${os_major}-[A-Za-z]*\.pkg" \
+                  | head -1)
+            if test -z "$pkg"; then
+              echo "::error::No MacPorts ${MACPORTS_VERSION} package for macOS major version ${os_major}"
+              exit 1
+            fi
+            echo "Installing ${pkg} for macOS ${os_major}"
+            aria2c "https://github.com/macports/macports-base/releases/download/v${MACPORTS_VERSION}/${pkg}"
+            sudo installer -pkg "${pkg}" -target /
+          fi
+          echo "/opt/local/bin" >> "$GITHUB_PATH"
       # selfupdate re-syncs the whole ports tree and the dependencies are slow to
       # build from source, so skip both when the cache already restored
       # /opt/local. Bump the cache key above to force a refresh.
