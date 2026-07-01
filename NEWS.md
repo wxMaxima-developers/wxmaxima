@@ -1,13 +1,10 @@
 # Current development version
 
 - Fixed a crash on loading a worksheet containing an empty `<img/>` or `<slideshow/>` tag (found by the parser fuzzer).
-- No longer lose an embedded image on save if the current build cannot decode it: the original bytes are now preserved and written back unchanged.
-- Fixed a possible hang when opening a .wxmx file whose content.xml is empty (wxWidgets 3.3).
+- No longer lose an embedded image on save if the current build cannot decode it.
 - The license dialog now has a second tab listing third-party component notices (e.g. the Microsoft Edge WebView2 loader shipped with the Windows builds).
 - Added a regression test guarding matrix column widths against being frozen by a layout-time deadline.
-- Fixed a wxWidgets 3.3 assertion that could fire while highlighting menu items.
-- The "follow evaluation" toolbar button now lights up immediately when you scroll the running evaluation out of view with the mouse wheel, instead of only later.
-- Fixed text cells (e.g. in the diff viewer) wrapping after every word: copying a cell no longer turns its soft word-wrap line breaks into hard ones.
+- The "follow evaluation" toolbar button now lights up immediately when needed.
 - Fixed matrices keeping stale (too narrow or too wide) column widths when a layout-time deadline interrupted their recalculation.
 - Fixed short Text and Title cells flickering.
 - Fixed data loss when trying to embedd .svg.gz files into .wxmx files.

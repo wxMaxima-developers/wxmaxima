@@ -9386,7 +9386,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &event) {
                wxS("median(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stats_var){
-    CommandWiz(_("Calculate variation"), wxEmptyString, wxEmptyString,
+    CommandWiz(_("Calculate variance"), wxEmptyString, wxEmptyString,
                wxS("var(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stats_dev){
@@ -9401,7 +9401,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_stats_tt2){
     CommandWiz(_("Two sample t-test"), wxEmptyString, wxEmptyString,
                wxS("test_means_difference(#1#,#2#);"), _("Sample 1:"), expr,
-               wxEmptyString, _("Sample 2:"), wxS("0"), wxEmptyString);
+               wxEmptyString, _("Sample 2:"), expr, wxEmptyString);
   }
   else if(event.GetId() == EventIDs::menu_stats_tnorm){
     CommandWiz(_("Shapiro-Wilk test for normality"), wxEmptyString,
