@@ -11,10 +11,11 @@ var searchData=
   ['test_5fstyleconfigroundtrip_2ecpp_8',['test_StyleConfigRoundtrip.cpp',['../test__StyleConfigRoundtrip_8cpp.html',1,'']]],
   ['test_5ftreeundo_2ecpp_9',['test_TreeUndo.cpp',['../test__TreeUndo_8cpp.html',1,'']]],
   ['test_5fwxmroundtrip_2ecpp_10',['test_WXMRoundtrip.cpp',['../test__WXMRoundtrip_8cpp.html',1,'']]],
-  ['textcell_2ecpp_11',['TextCell.cpp',['../TextCell_8cpp.html',1,'']]],
-  ['textstyle_2ecpp_12',['TextStyle.cpp',['../TextStyle_8cpp.html',1,'']]],
-  ['textstyle_2eh_13',['TextStyle.h',['../TextStyle_8h.html',1,'']]],
-  ['toolbar_2ecpp_14',['ToolBar.cpp',['../ToolBar_8cpp.html',1,'']]],
-  ['toolbar_2eh_15',['ToolBar.h',['../ToolBar_8h.html',1,'']]],
-  ['treeundoaction_2eh_16',['TreeUndoAction.h',['../TreeUndoAction_8h.html',1,'']]]
+  ['test_5fwxmxroundtrip_2ecpp_11',['test_WXMXRoundtrip.cpp',['../test__WXMXRoundtrip_8cpp.html',1,'']]],
+  ['textcell_2ecpp_12',['TextCell.cpp',['../TextCell_8cpp.html',1,'']]],
+  ['textstyle_2ecpp_13',['TextStyle.cpp',['../TextStyle_8cpp.html',1,'']]],
+  ['textstyle_2eh_14',['TextStyle.h',['../TextStyle_8h.html',1,'']]],
+  ['toolbar_2ecpp_15',['ToolBar.cpp',['../ToolBar_8cpp.html',1,'']]],
+  ['toolbar_2eh_16',['ToolBar.h',['../ToolBar_8h.html',1,'']]],
+  ['treeundoaction_2eh_17',['TreeUndoAction.h',['../TreeUndoAction_8h.html',1,'']]]
 ];
