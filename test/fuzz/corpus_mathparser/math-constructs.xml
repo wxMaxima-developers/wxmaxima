@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- A hand-built content.xml seed exercising every math ToXML/MathParser cell
+     class, plus the combinations where bugs actually hide: cells nested inside
+     cells, and context flags (a fraction inside an exponent sets m_inExponent).
+     Kept idempotent under parse->serialize (test_WXMXRoundtrip) so it is a valid
+     rich seed for the coverage-guided MathParser fuzzer. -->
+
+<wxMaximaDocument version="1.5" zoom="100" activecell="0">
+
+<cell type="code">
+<input><editor type="input"><line>allconstructs;</line></editor></input>
+<output>
+<mth><lbl>(%o1) </lbl><q><r><v>x</v><fnm>+</fnm><n>1</n></r></q><in><r><v>x</v></r><r><n>1</n></r><r><v>x</v></r><r><v>x</v></r></in><sm type="sum"><r><v>i</v><fnm>=</fnm><n>1</n></r><r><n>10</n></r><r><v>i</v></r></sm><a><r><v>x</v></r></a><cj><r><v>z</v></r></cj><e><r><v>x</v></r><r><n>2</n></r></e><i><r><v>x</v></r><r><n>0</n></r></i><ie><r><v>x</v></r><r><n>1</n></r><r><n>2</n></r></ie><f><r><v>a</v></r><r><v>b</v></r></f><p><r><v>x</v></r></p><d><r><v>f</v></r><r><v>x</v></r></d><tb><mtr><mtd><n>1</n></mtd><mtd><n>2</n></mtd></mtr><mtr><mtd><n>3</n></mtd><mtd><n>4</n></mtd></mtr></tb></mth>
+</output>
+</cell>
+
+<cell type="code">
+<input><editor type="input"><line>nested_and_flagged;</line></editor></input>
+<output>
+<mth><lbl>(%o2) </lbl><e><r><v>x</v></r><r><f><r><v>a</v><fnm>+</fnm><v>b</v></r><r><v>c</v></r></f></r></e><h>·</h><tb><mtr><mtd><f><r><v>a</v></r><r><v>b</v></r></f></mtd><mtd><q><r><v>y</v></r></q></mtd></mtr></tb><h>·</h><in><r><f><r><n>1</n></r><r><v>x</v></r></f></r><r><n>0</n></r><r><n>1</n></r><r><v>x</v></r></in></mth>
+</output>
+</cell>
+
+</wxMaximaDocument>

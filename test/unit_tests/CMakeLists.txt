@@ -105,6 +105,19 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(WXMRoundtrip test_WXMRoundtrip)
 
+    # Round-trip guard for the .wxmx content.xml (the MathML-like math format):
+    # parsing a content.xml into a cell tree and serialising it back must be a
+    # fixed point, over the real corpus plus a crafted all-math-classes fragment.
+    add_executable(test_WXMXRoundtrip
+        test_WXMXRoundtrip.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_WXMXRoundtrip PUBLIC cxx_std_20)
+    target_compile_definitions(test_WXMXRoundtrip PRIVATE
+        WXM_CORPUS_DIR="${CMAKE_SOURCE_DIR}/test/fuzz/corpus_mathparser")
+    target_link_libraries(test_WXMXRoundtrip PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(WXMXRoundtrip test_WXMXRoundtrip)
+
     # Hardening/fuzz test for EditorCell's text-editing core: drives the real
     # key-event paths and checks the cursor/selection invariants after every op.
     add_executable(test_EditorCellInvariants

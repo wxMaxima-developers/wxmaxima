@@ -115,6 +115,18 @@ SCENARIO("The worksheet is exposed to screen readers as a document") {
     REQUIRE(acc->GetName(0, &name) == wxACC_OK);
     REQUIRE_FALSE(name.IsEmpty());
   }
+
+  THEN("its parent is not itself (a self-parent hangs screen readers)") {
+    // Regression guard: GetParent() once returned the worksheet's own accessible
+    // -- i.e. this same object -- so a screen reader walking up the parent chain
+    // looped forever and froze. The parent must be something else (or unset).
+    wxAccessible *parent = acc; // deliberately non-null start
+    const wxAccStatus status = acc->GetParent(&parent);
+    if (status == wxACC_OK)
+      REQUIRE(parent != acc);
+    else
+      REQUIRE(parent == nullptr); // not-implemented -> framework derives it
+  }
 }
 
 SCENARIO("The toolbar exposes its owner-drawn tools to screen readers") {

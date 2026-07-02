@@ -8713,8 +8713,13 @@ wxAccStatus Worksheet::AccessibilityInfo::GetParent(wxAccessible **parent) {
   if (!parent)
     return wxACC_FAIL;
 
-  *parent = m_worksheet->GetAccessible();
-  return *parent ? wxACC_OK : wxACC_FAIL;
+  // This object IS the worksheet window's accessible (it is attached via
+  // SetAccessible), so its parent is the parent *window's* accessible -- NOT
+  // itself. Returning m_worksheet->GetAccessible() here returned `this`, so a
+  // screen reader walking up the parent chain looped self->self forever and
+  // hung. Let wxWidgets derive the real parent from the window hierarchy.
+  *parent = nullptr;
+  return wxACC_NOT_IMPLEMENTED;
 }
 
 wxAccStatus Worksheet::AccessibilityInfo::GetFocus(int *childId,
