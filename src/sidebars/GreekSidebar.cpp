@@ -68,10 +68,37 @@ GreekSidebar::GreekSidebar(wxWindow *parent,
   SetMinSize(wxSize(GetContentScaleFactor() * 50, GetMinSize().y));
 }
 
+void GreekSidebar::UpdateVirtualSize() {
+  const int width = GetClientSize().x;
+  if (width <= 0)
+    return;
+
+  // Measure how tall each panel's buttons really are when wrapped at the client
+  // width. This has to be done with the height unconstrained: the vbox otherwise
+  // splits the client height between the two panels, and each wrap sizer then
+  // squishes all its buttons into that single-row height instead of wrapping into
+  // the rows it needs -- which is exactly why the sidebars "stopped breaking into
+  // lines" (one row of letters, the rest clipped) on wxWidgets 3.3.
+  const int tall = 100000;
+  m_lowerCasePanel->SetSize(width, tall);
+  m_upperCasePanel->SetSize(width, tall);
+  m_lowerCasePanel->Layout();
+  m_upperCasePanel->Layout();
+  const int lowerHeight = m_lowercaseSizer->ContentHeight();
+  const int upperHeight = m_uppercaseSizer->ContentHeight();
+
+  // Pin the panels to those wrapped heights so the vbox stacks every row (rather
+  // than squishing them), and give the wxScrolled a virtual height tall enough
+  // for all of them -- so the vertical scrollbar can reach the rows below the fold
+  // while the width stays at the client width (never a horizontal scrollbar).
+  m_lowerCasePanel->SetMinSize(wxSize(-1, lowerHeight));
+  m_upperCasePanel->SetMinSize(wxSize(-1, upperHeight));
+  Layout();
+  SetVirtualSize(width, lowerHeight + upperHeight);
+}
+
 void GreekSidebar::OnSize(wxSizeEvent &event) {
-  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is
-  // shrinking
-  SetVirtualSize(GetClientSize());
+  UpdateVirtualSize();
   event.Skip();
 }
 

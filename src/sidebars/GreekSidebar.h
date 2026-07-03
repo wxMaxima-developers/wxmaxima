@@ -45,6 +45,12 @@ class GreekSidebar : public wxScrolled<wxPanel>
  public:
   GreekSidebar(wxWindow *parent, Configuration *configuration, wxWindow *worksheet,
                int ID = wxID_ANY);
+  /*! Re-wrap the buttons and grow the virtual height to fit the wrapped rows.
+
+    Called on every resize; exposed so it can be driven directly (e.g. from a
+    test) without pumping the event loop.
+  */
+  void UpdateVirtualSize();
  protected:
   void UpdateSymbols();
   void OnMouseRightDown(wxMouseEvent &event);
@@ -54,8 +60,8 @@ class GreekSidebar : public wxScrolled<wxPanel>
   wxPanel *m_upperCasePanel;
   wxPanel *m_lowerCasePanel;
   Configuration *m_configuration;
-  wxSizer *m_lowercaseSizer;
-  wxSizer *m_uppercaseSizer;
+  Buttonwrapsizer *m_lowercaseSizer;
+  Buttonwrapsizer *m_uppercaseSizer;
   wxWindow *m_worksheet;
 };
 

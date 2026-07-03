@@ -68,6 +68,15 @@ add_executable(test_MenuHelpString
 target_link_libraries(test_MenuHelpString PRIVATE ${wxWidgets_LIBRARIES})
 add_test(MenuHelpString test_MenuHelpString)
 
+# Guards the Greek/symbol sidebars' Buttonwrapsizer (a wxWrapSizer subclass that
+# uses the protected m_availSize -- fragile across wx versions, broke wrapping on
+# wx 3.0 and again on wx 3.3). Small, standalone: compiles the class directly.
+add_executable(test_ButtonWrapSizer
+    test_ButtonWrapSizer.cpp ${CMAKE_SOURCE_DIR}/src/sidebars/ButtonWrapSizer.cpp
+    ${WXM_TEST_SETUP})
+target_link_libraries(test_ButtonWrapSizer PRIVATE ${wxWidgets_LIBRARIES})
+add_test(ButtonWrapSizer test_ButtonWrapSizer)
+
 # Layout/recalculation regression test. Unlike the tests above (which stub out
 # GroupCell via TestStubs.cpp), this links the real application code through the
 # wxmTestApp object library so it can exercise the genuine GroupCell/EditorCell
@@ -158,6 +167,17 @@ if(TARGET wxmTestApp)
     target_link_libraries(test_TreeUndo PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(TreeUndo test_TreeUndo)
+
+    # Drives a real GreekSidebar to guard its line wrapping: when too small to show
+    # every letter it must grow its virtual height so the wrapped rows stay
+    # reachable by the vertical scrollbar (broke on wx 3.3 -- OnSize clamped it).
+    add_executable(test_GreekSidebar
+        test_GreekSidebar.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_GreekSidebar PUBLIC cxx_std_20)
+    target_link_libraries(test_GreekSidebar PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(GreekSidebar test_GreekSidebar)
 endif()
 
 # Same watchdog timeout the parent directory applies to its tests: keep a hung
