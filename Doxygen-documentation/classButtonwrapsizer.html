@@ -98,9 +98,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af8784b9971f0fc8f13d02c76e911500c"><td class="memItemLeft" align="right" valign="top"><a id="af8784b9971f0fc8f13d02c76e911500c" name="af8784b9971f0fc8f13d02c76e911500c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Buttonwrapsizer</b> (int orient=wxHORIZONTAL)</td></tr>
 <tr class="separator:af8784b9971f0fc8f13d02c76e911500c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac06699d75cf5c3cdf1200166610654a7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classButtonwrapsizer.html#ac06699d75cf5c3cdf1200166610654a7">ContentHeight</a> () const</td></tr>
-<tr class="memdesc:ac06699d75cf5c3cdf1200166610654a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The height actually occupied by the wrapped rows after the last layout.  <br /></td></tr>
-<tr class="separator:ac06699d75cf5c3cdf1200166610654a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1100bfcefde065150206de25e6a8ecee"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classButtonwrapsizer.html#a1100bfcefde065150206de25e6a8ecee">HeightForWidth</a> (int width) const</td></tr>
+<tr class="memdesc:a1100bfcefde065150206de25e6a8ecee"><td class="mdescLeft">&#160;</td><td class="mdescRight">The height the buttons need when wrapped into rows at the given width.  <br /></td></tr>
+<tr class="separator:a1100bfcefde065150206de25e6a8ecee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -111,23 +111,24 @@ virtual wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>CalcMin</b>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class generates a pane containing the last commands that were issued. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac06699d75cf5c3cdf1200166610654a7" name="ac06699d75cf5c3cdf1200166610654a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac06699d75cf5c3cdf1200166610654a7">&#9670;&#160;</a></span>ContentHeight()</h2>
+<a id="a1100bfcefde065150206de25e6a8ecee" name="a1100bfcefde065150206de25e6a8ecee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1100bfcefde065150206de25e6a8ecee">&#9670;&#160;</a></span>HeightForWidth()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Buttonwrapsizer::ContentHeight </td>
+          <td class="memname">int Buttonwrapsizer::HeightForWidth </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>width</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The height actually occupied by the wrapped rows after the last layout. </p>
-<p>wxWrapSizer reports a deliberately small "min" size (so lines can be rearranged), which does not tell a <a class="el" href="classwxScrolled.html">wxScrolled</a> parent how tall the wrapped content really is. This reads the laid-out button positions instead, so the parent can give its vertical scrollbar the range to reach every wrapped row. </p>
+<p>The height the buttons need when wrapped into rows at the given width. </p>
+<p>wxWrapSizer reports a deliberately small "min" size (so lines can be rearranged), which does not tell a <a class="el" href="classwxScrolled.html">wxScrolled</a> parent how tall the wrapped content really is at a particular width. This computes it directly (rows = ceil(shown buttons / buttons that fit per row) * button height), so the parent can give its vertical scrollbar the range to reach every wrapped row rather than clamping the height and clipping the rows below the first. </p>
 
 </div>
 </div>
