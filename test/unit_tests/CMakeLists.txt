@@ -137,6 +137,18 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(EditorCellInvariants test_EditorCellInvariants)
 
+    # Layout idempotency invariants: after zoom / canvas-size changes, the
+    # converged layout must equal a fresh layout of the same content - catches
+    # any cell that stays marked "recalculated" while holding stale geometry
+    # (the MatrCell-after-deadline / ParenCell-spacing bug family).
+    add_executable(test_LayoutInvariants
+        test_LayoutInvariants.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_LayoutInvariants PUBLIC cxx_std_20)
+    target_link_libraries(test_LayoutInvariants PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(LayoutInvariants test_LayoutInvariants)
+
     # Round-trip test for the worksheet styles: guards that ReadStyles() and
     # WriteStyles() share one TextStyle -> config-key mapping so styles can never
     # be written and read under mismatched keys.

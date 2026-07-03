@@ -336,7 +336,8 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const {
 
 void Cell::UpdateListCaches() const {
   if (m_cachedCenterList.IsValid() && m_cachedMaxDrop.IsValid() &&
-      m_cachedSumOfWidths.IsValid() && m_cachedLineWidth.IsValid())
+      m_cachedSumOfWidths.IsValid() && m_cachedLineWidth.IsValid() &&
+      m_listCacheCfgCnt == m_configuration->CellCfgCnt())
     return;
 
   int maxCenter = 0;
@@ -375,6 +376,7 @@ void Cell::UpdateListCaches() const {
   m_cachedMaxDrop = maxDrop;
   m_cachedSumOfWidths = fullWidth;
   m_cachedLineWidth = lineWidth;
+  m_listCacheCfgCnt = m_configuration->CellCfgCnt();
 }
 
 int Cell::GetCenterList() const {

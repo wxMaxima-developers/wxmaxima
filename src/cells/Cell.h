@@ -1043,6 +1043,16 @@ protected:
 private:
   //! the "timestamp" of the configuration the last time we recalculated the cell's size
   mutable std::atomic<std::int_fast32_t> m_cellCfgCnt_last = { -1 };
+  /*! The configuration "timestamp" at the time UpdateListCaches() filled the
+    list caches below.
+
+    Without it a configuration change (zoom, canvas size, fonts) that is only
+    detected through the config counter would leave the list caches valid, so
+    composite cells (SubCell, ParenCell, ListCell, ...) would recompute their
+    geometry from pre-change SumOfWidths()/GetHeightList() values while
+    marking themselves recalculated - the "stale spacing until a forced
+    recalculation" bug family. */
+  mutable std::atomic<std::int_fast32_t> m_listCacheCfgCnt = { -1 };
   //! The next cell in the list of cells, or null if it's the last cell.
   std::unique_ptr<Cell> m_next;
 

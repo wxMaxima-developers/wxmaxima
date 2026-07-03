@@ -426,10 +426,13 @@ void TextCell::UpdateDisplayedText() const {
 
 void TextCell::Recalculate(AFontSize fontsize) const {
   if (NeedsRecalculation(fontsize)) {
+    // Capture this before Cell::Recalculate() syncs the config counter,
+    // which makes ConfigChanged() false for the rest of this pass.
+    const bool configChanged = ConfigChanged();
     Cell::Recalculate(fontsize);
     if (GetTextStyle() == TS_ASCIIMATHS)
       ForceBreakLine(true);
-    if (ConfigChanged())
+    if (configChanged)
         UpdateDisplayedText();
     SetFont(m_configuration->GetRecalcDC(), m_fontSize_Scaled);
 

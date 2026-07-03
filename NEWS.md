@@ -1,5 +1,9 @@
 # Current development version
 
+- Fixed math cells with subscripts, parenthesis or lists keeping stale spacing (way too much or even negative horizontal space) after a zoom change or a configuration change that arrived while the worksheet was being laid out - until something forced the affected cell to be recalculated. The cached per-list geometry now automatically expires whenever the configuration changes.
+- Added a layout-idempotency regression test: after zoom and canvas-size changes the converged layout must be identical to laying the same content out from scratch.
+- Configuration changes that alter how text is displayed (e.g. drawing a multiplication dot instead of an asterisk) take effect on the next redraw again instead of requiring the cells to be rebuilt.
+
 - Accessibility: screen readers now actually see the worksheet's contents. The worksheet reports itself as a document (with its cells as children) instead of a bare panel full of scrollbars, each sidebar now has a proper name instead of being an anonymous "panel", and the tools on the toolbar are now announced (with their names, states and a "press" action) instead of being invisible.
 - Accessibility: the symbol/Greek-letter/math sidebar buttons are now announced as named push buttons (by their description, e.g. "Greek small letter alpha") instead of anonymous panels.
 - The Unicode characters sidebar can now be used from the keyboard: pressing Enter on a character inserts it (previously this needed a mouse double-click).
