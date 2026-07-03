@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 576;
+var viewWidth = 668;
 var viewHeight = 203;
 var sectionId = 'dynsection-1';
 </script>
@@ -58,8 +58,8 @@ var sectionId = 'dynsection-1';
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="The header file for the xml cell parser.">
-<polygon fill="#999999" stroke="#666666" points="377.5,-195 280.5,-195 280.5,-176 377.5,-176 377.5,-195"/>
-<text text-anchor="middle" x="329" y="-183" font-family="Helvetica,sans-Serif" font-size="10.00">src/MathParser.h</text>
+<polygon fill="#999999" stroke="#666666" points="416.5,-195 319.5,-195 319.5,-176 416.5,-176 416.5,-195"/>
+<text text-anchor="middle" x="368" y="-183" font-family="Helvetica,sans-Serif" font-size="10.00">src/MathParser.h</text>
 </a>
 </g>
 </g>
@@ -75,8 +75,8 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="#63b8ff" d="M296.45,-172.52C265.71,-161.21 220.36,-144.53 193.15,-134.52"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="295.29,-175.83 305.88,-175.99 297.7,-169.26 295.29,-175.83"/>
+<path fill="none" stroke="#63b8ff" d="M329.44,-173.11C291.15,-161.79 233.3,-144.7 198.83,-134.52"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="328.63,-176.52 339.21,-175.99 330.61,-169.8 328.63,-176.52"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
@@ -90,8 +90,8 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node1&#45;&gt;Node3</title>
-<path fill="none" stroke="#63b8ff" d="M337.24,-166.47C340.9,-158.4 345.22,-148.75 349,-140 359.24,-116.34 370.77,-88.21 376.45,-74.25"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="334.01,-165.12 333.06,-175.67 340.38,-168.01 334.01,-165.12"/>
+<path fill="none" stroke="#63b8ff" d="M369.88,-165.86C372.51,-139.81 377.17,-93.56 379.11,-74.3"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="366.38,-165.64 368.86,-175.94 373.35,-166.34 366.38,-165.64"/>
 </g>
 <!-- Node7 -->
 <g id="node7" class="node">
@@ -105,24 +105,40 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node7 -->
 <g id="edge6" class="edge">
 <title>Node1&#45;&gt;Node7</title>
-<path fill="none" stroke="#63b8ff" d="M317.83,-167.3C310.86,-156.58 302.2,-143.23 296.63,-134.67"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="315.01,-169.39 323.39,-175.87 320.88,-165.58 315.01,-169.39"/>
+<path fill="none" stroke="#63b8ff" d="M348.31,-169.54C333.77,-158.49 314.48,-143.84 302.41,-134.67"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="346.56,-172.61 356.64,-175.87 350.79,-167.03 346.56,-172.61"/>
 </g>
 <!-- Node10 -->
 <g id="node10" class="node">
 <title>Node10</title>
-<g id="a_node10"><a xlink:href="test__WXMXRoundtrip_8cpp.html" target="_top" xlink:title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format).">
-<polygon fill="white" stroke="#666666" points="518,-140 396,-140 396,-110 518,-110 518,-140"/>
+<g id="a_node10"><a xlink:href="test__LayoutInvariants_8cpp.html" target="_top" xlink:title="Layout idempotency invariants.">
+<polygon fill="white" stroke="#666666" points="520,-140 396,-140 396,-110 520,-110 520,-140"/>
 <text text-anchor="start" x="404" y="-128" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
-<text text-anchor="middle" x="457" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00">_WXMXRoundtrip.cpp</text>
+<text text-anchor="middle" x="458" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00">_LayoutInvariants.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node10 -->
 <g id="edge12" class="edge">
 <title>Node1&#45;&gt;Node10</title>
-<path fill="none" stroke="#63b8ff" d="M356.97,-171.72C377.34,-162.41 404.93,-149.8 425.98,-140.18"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="355.25,-168.65 347.61,-175.99 358.16,-175.02 355.25,-168.65"/>
+<path fill="none" stroke="#63b8ff" d="M389.86,-170.29C403.95,-161.13 422.22,-149.26 436.29,-140.11"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="387.76,-167.48 381.28,-175.87 391.57,-173.35 387.76,-167.48"/>
+</g>
+<!-- Node11 -->
+<g id="node11" class="node">
+<title>Node11</title>
+<g id="a_node11"><a xlink:href="test__WXMXRoundtrip_8cpp.html" target="_top" xlink:title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format).">
+<polygon fill="white" stroke="#666666" points="660,-140 538,-140 538,-110 660,-110 660,-140"/>
+<text text-anchor="start" x="546" y="-128" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
+<text text-anchor="middle" x="599" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00">_WXMXRoundtrip.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node11 -->
+<g id="edge13" class="edge">
+<title>Node1&#45;&gt;Node11</title>
+<path fill="none" stroke="#63b8ff" d="M411.66,-173.44C449.03,-163.98 503.03,-150.3 543.46,-140.06"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="410.42,-170.15 401.59,-175.99 412.14,-176.93 410.42,-170.15"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
