@@ -47,6 +47,8 @@ protected:
   void OnSize(wxSizeEvent &event);
 public:
   explicit MathSidebar(wxWindow *parent, int ID = wxID_ANY);
+private:
+  Buttonwrapsizer *m_grid;
 };
 
 #endif // MATHSIDEBAR_H

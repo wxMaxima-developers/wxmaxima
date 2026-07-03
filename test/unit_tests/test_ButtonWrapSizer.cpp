@@ -160,6 +160,28 @@ SCENARIO("Buttonwrapsizer wraps when nested like the Greek sidebar") {
   frame->Destroy();
 }
 
+SCENARIO("Buttonwrapsizer::HeightForWidth needs more height at a narrower width") {
+  // This is the primitive the sidebars use to give their wxScrolled a virtual
+  // height tall enough to scroll to every wrapped row.
+  wxFrame *frame = new wxFrame(nullptr, wxID_ANY, wxS("test"));
+  wxPanel *panel = new wxPanel(frame);
+  auto *sizer = new Buttonwrapsizer(wxHORIZONTAL);
+  for (int i = 0; i < 12; ++i)
+    sizer->Add(new wxButton(panel, wxID_ANY, wxString::Format(wxS("%d"), i),
+                            wxDefaultPosition, wxSize(40, 20)),
+               wxSizerFlags().Expand());
+  panel->SetSizer(sizer);
+  panel->Layout();
+
+  THEN("one wide row is shorter than several narrow ones, and both are positive") {
+    const int wide = sizer->HeightForWidth(4000); // everything on one row
+    const int narrow = sizer->HeightForWidth(90); // only a couple of columns
+    REQUIRE(wide > 0);
+    REQUIRE(narrow > wide);
+  }
+  frame->Destroy();
+}
+
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
   EnsureDisplay();

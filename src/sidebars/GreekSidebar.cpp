@@ -73,19 +73,13 @@ void GreekSidebar::UpdateVirtualSize() {
   if (width <= 0)
     return;
 
-  // Measure how tall each panel's buttons really are when wrapped at the client
-  // width. This has to be done with the height unconstrained: the vbox otherwise
-  // splits the client height between the two panels, and each wrap sizer then
-  // squishes all its buttons into that single-row height instead of wrapping into
-  // the rows it needs -- which is exactly why the sidebars "stopped breaking into
-  // lines" (one row of letters, the rest clipped) on wxWidgets 3.3.
-  const int tall = 100000;
-  m_lowerCasePanel->SetSize(width, tall);
-  m_upperCasePanel->SetSize(width, tall);
-  m_lowerCasePanel->Layout();
-  m_upperCasePanel->Layout();
-  const int lowerHeight = m_lowercaseSizer->ContentHeight();
-  const int upperHeight = m_uppercaseSizer->ContentHeight();
+  // How tall each panel's letters are once wrapped at the client width. The vbox
+  // otherwise splits the client height between the two panels and each wrap sizer
+  // squishes its letters into that single-row height instead of wrapping into the
+  // rows it needs -- exactly why the sidebars "stopped breaking into lines" (one
+  // row of letters, the rest clipped) on wxWidgets 3.3.
+  const int lowerHeight = m_lowercaseSizer->HeightForWidth(width);
+  const int upperHeight = m_uppercaseSizer->HeightForWidth(width);
 
   // Pin the panels to those wrapped heights so the vbox stacks every row (rather
   // than squishing them), and give the wxScrolled a virtual height tall enough

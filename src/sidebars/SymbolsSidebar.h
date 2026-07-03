@@ -53,6 +53,9 @@ public:
     If these symbols already are populated UpdateUserSymbols() is the right place to go. 
   */
   void AddUserSymbols();
+  /*! Re-wrap the symbol buttons and grow the virtual height to fit the wrapped
+    rows. Called on resize; public so a test can drive it without an event loop. */
+  void UpdateVirtualSize();
 protected:
   void OnMouseRightDown(wxMouseEvent &event);
   void OnMenu(wxCommandEvent &event);
@@ -62,7 +65,10 @@ private:
   wxPanel *m_userSymbols;
   //! A button per user defined symbol
   std::list<wxWindow *> m_userSymbolButtons;
-  wxSizer *m_userSymbolsSizer;
+  Buttonwrapsizer *m_userSymbolsSizer;
+  //! The panel holding the built-in symbol buttons.
+  wxPanel *m_builtInSymbols;
+  Buttonwrapsizer *m_builtInSymbolsSizer;
   Configuration *m_configuration;
   wxWindow *m_worksheet;
   //! The user symbols that are currently displayed

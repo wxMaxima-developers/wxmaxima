@@ -34,19 +34,29 @@
 
 Buttonwrapsizer::Buttonwrapsizer(int orient) : wxWrapSizer(orient) {}
 
-int Buttonwrapsizer::ContentHeight() const {
-  int bottom = 0;
+int Buttonwrapsizer::HeightForWidth(int width) const {
+  if (width <= 0)
+    return 0;
+  // Match CalcMin()'s model: every shown button is laid out at the same (largest)
+  // size, so as many as fit in the width share a row.
+  int maxWidth = 1, maxHeight = 1, shown = 0;
   for (auto node = GetChildren().GetFirst(); node; node = node->GetNext()) {
     const wxSizerItem *item = node->GetData();
     if (!item->IsShown())
       continue;
-    // The wrap sizer places every button at its row offset even when the rows
-    // extend past the (clipped) parent, so the lowest button's bottom edge is the
-    // true height of the wrapped content.
-    const int itemBottom = item->GetPosition().y + item->GetSize().y;
-    bottom = std::max(bottom, itemBottom);
+    const wxWindow *win = item->GetWindow();
+    if (win)
+      win->CacheBestSize(wxDefaultSize); // drop any uniform width cached by CalcMin
+    const wxSize best = win ? win->GetBestSize() : item->GetMinSize();
+    maxWidth = std::max(maxWidth, best.x);
+    maxHeight = std::max(maxHeight, best.y);
+    ++shown;
   }
-  return bottom;
+  if (shown == 0)
+    return 0;
+  const int perRow = std::max(1, width / maxWidth);
+  const int rows = (shown + perRow - 1) / perRow;
+  return rows * maxHeight;
 }
 
 wxSize Buttonwrapsizer::CalcMin() {

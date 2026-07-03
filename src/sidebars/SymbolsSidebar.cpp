@@ -32,10 +32,25 @@
 #include <wx/windowptr.h>
 #include "wizards/Gen1Wiz.h"
 
+void SymbolsSidebar::UpdateVirtualSize() {
+  const int width = GetClientSize().x;
+  if (width <= 0)
+    return;
+  // Grow the virtual HEIGHT to the height the wrapped rows really occupy (pinning
+  // each panel to it so the vbox stacks all rows rather than squishing them into
+  // half the client height) while the width stays at the client width. Clamping
+  // the whole virtual size to the client size clipped every wrapped row past the
+  // first on wxWidgets 3.3.
+  const int builtinHeight = m_builtInSymbolsSizer->HeightForWidth(width);
+  const int userHeight = m_userSymbolsSizer->HeightForWidth(width);
+  m_builtInSymbols->SetMinSize(wxSize(-1, builtinHeight));
+  m_userSymbols->SetMinSize(wxSize(-1, userHeight));
+  Layout();
+  SetVirtualSize(width, builtinHeight + userHeight);
+}
+
 void SymbolsSidebar::OnSize(wxSizeEvent &event) {
-  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is
-  // shrinking
-  SetVirtualSize(GetClientSize());
+  UpdateVirtualSize();
   event.Skip();
 }
 
@@ -106,20 +121,20 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
   m_userSymbols = NULL;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
-  wxSizer *builtInSymbolsSizer = new Buttonwrapsizer(wxHORIZONTAL);
-  wxPanel *builtInSymbols = new wxPanel(this);
+  m_builtInSymbolsSizer = new Buttonwrapsizer(wxHORIZONTAL);
+  m_builtInSymbols = new wxPanel(this);
   for (auto &def : symbolButtonDefinitions)
     {
-      CharButton *button = new CharButton(builtInSymbols, m_worksheet, m_configuration, def);
-      builtInSymbolsSizer->Add(button, wxSizerFlags().Expand());
+      CharButton *button = new CharButton(m_builtInSymbols, m_worksheet, m_configuration, def);
+      m_builtInSymbolsSizer->Add(button, wxSizerFlags().Expand());
       button->Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
       button->Bind(wxEVT_MENU, &SymbolsSidebar::OnMenu, this);
       button->GetTextObject()->Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
       button->GetTextObject()->Bind(wxEVT_MENU, &SymbolsSidebar::OnMenu, this);
     }
   
-  builtInSymbols->SetSizer(builtInSymbolsSizer);
-  vbox->Add(builtInSymbols, wxSizerFlags().Expand());
+  m_builtInSymbols->SetSizer(m_builtInSymbolsSizer);
+  vbox->Add(m_builtInSymbols, wxSizerFlags().Expand());
 
   m_userSymbols = new wxPanel(this);
   m_userSymbolsSizer = new Buttonwrapsizer(wxHORIZONTAL);
@@ -130,7 +145,7 @@ SymbolsSidebar::SymbolsSidebar(wxWindow *parent,
   Bind(wxEVT_MENU, &SymbolsSidebar::OnMenu, this);
   GetTargetWindow()->Bind(wxEVT_MENU, &SymbolsSidebar::OnMenu, this);
   Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
-  builtInSymbols->Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
+  m_builtInSymbols->Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
   m_userSymbols->Bind(wxEVT_RIGHT_DOWN, &SymbolsSidebar::OnMouseRightDown, this);
   SetSizer(vbox);
   FitInside();

@@ -41,14 +41,16 @@ class Buttonwrapsizer : public wxWrapSizer
 public:
   explicit Buttonwrapsizer(int orient = wxHORIZONTAL);
   ~Buttonwrapsizer(){}
-  /*! The height actually occupied by the wrapped rows after the last layout.
+  /*! The height the buttons need when wrapped into rows at the given width.
 
     wxWrapSizer reports a deliberately small "min" size (so lines can be
     rearranged), which does not tell a wxScrolled parent how tall the wrapped
-    content really is. This reads the laid-out button positions instead, so the
-    parent can give its vertical scrollbar the range to reach every wrapped row.
+    content really is at a particular width. This computes it directly (rows =
+    ceil(shown buttons / buttons that fit per row) * button height), so the parent
+    can give its vertical scrollbar the range to reach every wrapped row rather
+    than clamping the height and clipping the rows below the first.
   */
-  int ContentHeight() const;
+  int HeightForWidth(int width) const;
 protected:
   virtual wxSize CalcMin() override;
 };

@@ -155,8 +155,11 @@ void DrawSidebar::SetDimensions(int dimensions) {
 }
 
 void DrawSidebar::OnSize(wxSizeEvent &event) {
-  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is
-  // shrinking
-  SetVirtualSize(GetClientSize());
+  // Keep the virtual width at the client width (buttons wrap at the visible width,
+  // no horizontal scrollbar) but grow the virtual height to the wrapped rows so
+  // the vertical scrollbar can reach the rows below the fold. Clamping the whole
+  // virtual size to the client size clipped every row past the first on wx 3.3.
+  const int width = GetClientSize().x;
+  SetVirtualSize(width, m_grid->HeightForWidth(width));
   event.Skip();
 }

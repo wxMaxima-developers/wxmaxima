@@ -35,71 +35,74 @@
 MathSidebar::MathSidebar(wxWindow *parent, int ID)
   : wxScrolled<wxPanel>(parent, ID)
 {
-  wxSizer *grid = new Buttonwrapsizer();
+  m_grid = new Buttonwrapsizer();
   SetScrollRate(5, 5);
 
   int style = wxALL | wxEXPAND;
   int border = 0;
 
-  grid->Add(new wxButton(this, EventIDs::button_ratsimp, _("Simplify"),
+  m_grid->Add(new wxButton(this, EventIDs::button_ratsimp, _("Simplify"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_radcan, _("Simplify (r)"),
+  m_grid->Add(new wxButton(this, EventIDs::button_radcan, _("Simplify (r)"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_factor, _("Factor"), wxDefaultPosition,
+  m_grid->Add(new wxButton(this, EventIDs::button_factor, _("Factor"), wxDefaultPosition,
                          wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_expand, _("Expand"), wxDefaultPosition,
+  m_grid->Add(new wxButton(this, EventIDs::button_expand, _("Expand"), wxDefaultPosition,
                          wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_rectform, _("Rectform"),
+  m_grid->Add(new wxButton(this, EventIDs::button_rectform, _("Rectform"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_subst, _("Subst..."), wxDefaultPosition,
+  m_grid->Add(new wxButton(this, EventIDs::button_subst, _("Subst..."), wxDefaultPosition,
                          wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_trigrat, _("Canonical (tr)"),
+  m_grid->Add(new wxButton(this, EventIDs::button_trigrat, _("Canonical (tr)"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_trigsimp, _("Simplify (tr)"),
+  m_grid->Add(new wxButton(this, EventIDs::button_trigsimp, _("Simplify (tr)"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_trigexpand, _("Expand (tr)"),
+  m_grid->Add(new wxButton(this, EventIDs::button_trigexpand, _("Expand (tr)"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_trigreduce, _("Reduce (tr)"),
+  m_grid->Add(new wxButton(this, EventIDs::button_trigreduce, _("Reduce (tr)"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_solve, _("Solve..."), wxDefaultPosition,
+  m_grid->Add(new wxButton(this, EventIDs::button_solve, _("Solve..."), wxDefaultPosition,
                          wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_solve_ode, _("Solve ODE..."),
+  m_grid->Add(new wxButton(this, EventIDs::button_solve_ode, _("Solve ODE..."),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_diff, _("Diff..."), wxDefaultPosition,
+  m_grid->Add(new wxButton(this, EventIDs::button_diff, _("Diff..."), wxDefaultPosition,
                          wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_integrate, _("Integrate..."),
+  m_grid->Add(new wxButton(this, EventIDs::button_integrate, _("Integrate..."),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_limit, _("Limit..."), wxDefaultPosition,
+  m_grid->Add(new wxButton(this, EventIDs::button_limit, _("Limit..."), wxDefaultPosition,
                          wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_plot2, _("Plot 2D..."),
+  m_grid->Add(new wxButton(this, EventIDs::button_plot2, _("Plot 2D..."),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::button_plot3, _("Plot 3D..."),
+  m_grid->Add(new wxButton(this, EventIDs::button_plot3, _("Plot 3D..."),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
   Bind(wxEVT_SIZE, &MathSidebar::OnSize, this);
-  SetSizer(grid);
+  SetSizer(m_grid);
   FitInside();
 }
 
 void MathSidebar::OnSize(wxSizeEvent &event) {
-  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is
-  // shrinking
-  SetVirtualSize(GetClientSize());
+  // Keep the virtual width at the client width (buttons wrap at the visible width,
+  // no horizontal scrollbar) but grow the virtual height to the wrapped rows so
+  // the vertical scrollbar can reach the rows below the fold. Clamping the whole
+  // virtual size to the client size clipped every row past the first on wx 3.3.
+  const int width = GetClientSize().x;
+  SetVirtualSize(width, m_grid->HeightForWidth(width));
   event.Skip();
 }

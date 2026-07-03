@@ -33,6 +33,7 @@
 #include "EventIDs.h"
 #include <wx/sizer.h>
 #include <wx/panel.h>
+#include "ButtonWrapSizer.h"
 
 class FormatSidebar : public wxScrolled<wxPanel>
 {
@@ -41,6 +42,8 @@ protected:
 
 public:
   explicit FormatSidebar(wxWindow *parent, int ID = wxID_ANY);
+private:
+  Buttonwrapsizer *m_grid;
 };
 
 #endif // FORMATSIDEBAR_H

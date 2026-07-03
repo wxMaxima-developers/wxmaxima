@@ -36,48 +36,51 @@
 FormatSidebar::FormatSidebar(wxWindow *parent, int ID)
   : wxScrolled<wxPanel>(parent, ID)
 {
-  wxSizer *grid = new Buttonwrapsizer();
+  m_grid = new Buttonwrapsizer();
   SetScrollRate(5, 5);
 
   int style = wxALL | wxEXPAND;
   int border = 0;
 
-  grid->Add(new wxButton(this, EventIDs::menu_format_text, _("Text"), wxDefaultPosition,
+  m_grid->Add(new wxButton(this, EventIDs::menu_format_text, _("Text"), wxDefaultPosition,
                          wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::menu_format_title, _("Title"),
+  m_grid->Add(new wxButton(this, EventIDs::menu_format_title, _("Title"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::menu_format_section, _("Section"),
+  m_grid->Add(new wxButton(this, EventIDs::menu_format_section, _("Section"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::menu_format_subsection, _("Subsection"),
+  m_grid->Add(new wxButton(this, EventIDs::menu_format_subsection, _("Subsection"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::menu_format_subsubsection, _("Subsubsection"),
+  m_grid->Add(new wxButton(this, EventIDs::menu_format_subsubsection, _("Subsubsection"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::menu_format_heading5, _("Heading 5"),
+  m_grid->Add(new wxButton(this, EventIDs::menu_format_heading5, _("Heading 5"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::menu_format_heading6, _("Heading 6"),
+  m_grid->Add(new wxButton(this, EventIDs::menu_format_heading6, _("Heading 6"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::menu_format_image, _("Image"),
+  m_grid->Add(new wxButton(this, EventIDs::menu_format_image, _("Image"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
-  grid->Add(new wxButton(this, EventIDs::menu_format_pagebreak, _("Pagebreak"),
+  m_grid->Add(new wxButton(this, EventIDs::menu_format_pagebreak, _("Pagebreak"),
                          wxDefaultPosition, wxDefaultSize),
             0, style, border);
 
   Bind(wxEVT_SIZE, &FormatSidebar::OnSize, this);
-  SetSizer(grid);
+  SetSizer(m_grid);
   FitInside();
 }
 
 void FormatSidebar::OnSize(wxSizeEvent &event) {
-  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is
-  // shrinking
-  SetVirtualSize(GetClientSize());
+  // Keep the virtual width at the client width (buttons wrap at the visible width,
+  // no horizontal scrollbar) but grow the virtual height to the wrapped rows so
+  // the vertical scrollbar can reach the rows below the fold. Clamping the whole
+  // virtual size to the client size clipped every row past the first on wx 3.3.
+  const int width = GetClientSize().x;
+  SetVirtualSize(width, m_grid->HeightForWidth(width));
   event.Skip();
 }
