@@ -93,6 +93,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8e365b7523cfbbc1db5c2584b3a1b4ee"><td class="memItemLeft" align="right" valign="top"><a id="a8e365b7523cfbbc1db5c2584b3a1b4ee" name="a8e365b7523cfbbc1db5c2584b3a1b4ee"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>GreekSidebar</b> (wxWindow *parent, <a class="el" href="classConfiguration.html">Configuration</a> *configuration, wxWindow *worksheet, int ID=wxID_ANY)</td></tr>
 <tr class="separator:a8e365b7523cfbbc1db5c2584b3a1b4ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78837c209ec8b27f9aa3a54270f4645e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGreekSidebar.html#a78837c209ec8b27f9aa3a54270f4645e">UpdateVirtualSize</a> ()</td></tr>
+<tr class="memdesc:a78837c209ec8b27f9aa3a54270f4645e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-wrap the buttons and grow the virtual height to fit the wrapped rows.  <br /></td></tr>
+<tr class="separator:a78837c209ec8b27f9aa3a54270f4645e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -109,6 +112,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMenu</b> (wxCommand
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSize</b> (wxSizeEvent &amp;event)</td></tr>
 <tr class="separator:af3df8432d56b18db6d0c4398848cab60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a78837c209ec8b27f9aa3a54270f4645e" name="a78837c209ec8b27f9aa3a54270f4645e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78837c209ec8b27f9aa3a54270f4645e">&#9670;&#160;</a></span>UpdateVirtualSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GreekSidebar::UpdateVirtualSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Re-wrap the buttons and grow the virtual height to fit the wrapped rows. </p>
+<p>Called on every resize; exposed so it can be driven directly (e.g. from a test) without pumping the event loop. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/sidebars/<a class="el" href="GreekSidebar_8h_source.html">GreekSidebar.h</a></li>
 <li>src/sidebars/<a class="el" href="GreekSidebar_8cpp.html">GreekSidebar.cpp</a></li>

@@ -45,11 +45,12 @@ var searchData=
   ['updatetoolbar_42',['UpdateToolBar',['../classwxMaxima.html#a767f40bdd57d4bdbce4eed73889e1303',1,'wxMaxima']]],
   ['updatetooltip_43',['UpdateToolTip',['../classTextCell.html#a3bdc757f15710e049a6ad0045e0b1a87',1,'TextCell']]],
   ['updateusersymbols_44',['UpdateUserSymbols',['../classSymbolsSidebar.html#a096e679c86ed06e25caabe6e8ec3f90d',1,'SymbolsSidebar']]],
-  ['updateyposition_45',['UpdateYPosition',['../classGroupCell.html#aa3ebfa4ae13199d32925e7dc4ec828ed',1,'GroupCell']]],
-  ['usecolour_46',['UseColour',['../structCatch_1_1UseColour.html',1,'Catch']]],
-  ['usedarkmode_47',['UseDarkMode',['../classConfiguration.html#a5159a693ed3f4400443a33ffc482f59d',1,'Configuration']]],
-  ['userautocompletefile_48',['UserAutocompleteFile',['../classDirstructure.html#a9983e2d05056f5e55105a9d5c6cb63b9',1,'Dirstructure']]],
-  ['userconfdir_49',['UserConfDir',['../classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791',1,'Dirstructure::UserConfDir()'],['../classDirstructure.html#a098445ee58c9399ff512e3ed20137f5e',1,'Dirstructure::UserConfDir(const wxString &amp;userConfDir)']]],
-  ['usesvgchanged_50',['UsesvgChanged',['../classConfigDialogue.html#ac87a1da42c1b7996d250f5959bbef56f',1,'ConfigDialogue']]],
-  ['useuserlabels_51',['UseUserLabels',['../classConfiguration.html#ae7cc009bfac177678abcc37e3ccc566e',1,'Configuration']]]
+  ['updatevirtualsize_45',['UpdateVirtualSize',['../classGreekSidebar.html#a78837c209ec8b27f9aa3a54270f4645e',1,'GreekSidebar']]],
+  ['updateyposition_46',['UpdateYPosition',['../classGroupCell.html#aa3ebfa4ae13199d32925e7dc4ec828ed',1,'GroupCell']]],
+  ['usecolour_47',['UseColour',['../structCatch_1_1UseColour.html',1,'Catch']]],
+  ['usedarkmode_48',['UseDarkMode',['../classConfiguration.html#a5159a693ed3f4400443a33ffc482f59d',1,'Configuration']]],
+  ['userautocompletefile_49',['UserAutocompleteFile',['../classDirstructure.html#a9983e2d05056f5e55105a9d5c6cb63b9',1,'Dirstructure']]],
+  ['userconfdir_50',['UserConfDir',['../classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791',1,'Dirstructure::UserConfDir()'],['../classDirstructure.html#a098445ee58c9399ff512e3ed20137f5e',1,'Dirstructure::UserConfDir(const wxString &amp;userConfDir)']]],
+  ['usesvgchanged_51',['UsesvgChanged',['../classConfigDialogue.html#ac87a1da42c1b7996d250f5959bbef56f',1,'ConfigDialogue']]],
+  ['useuserlabels_52',['UseUserLabels',['../classConfiguration.html#ae7cc009bfac177678abcc37e3ccc566e',1,'Configuration']]]
 ];
