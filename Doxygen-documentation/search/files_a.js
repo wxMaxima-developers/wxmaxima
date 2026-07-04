@@ -17,8 +17,10 @@ var searchData=
   ['maximamanual_2eh_14',['MaximaManual.h',['../MaximaManual_8h.html',1,'']]],
   ['maximatokenizer_2ecpp_15',['MaximaTokenizer.cpp',['../MaximaTokenizer_8cpp.html',1,'']]],
   ['maximatokenizer_2eh_16',['MaximaTokenizer.h',['../MaximaTokenizer_8h.html',1,'']]],
-  ['memgrp_2ecpp_17',['memgrp.cpp',['../memgrp_8cpp.html',1,'']]],
-  ['menuhelpstring_2ecpp_18',['MenuHelpString.cpp',['../MenuHelpString_8cpp.html',1,'']]],
-  ['menuhelpstring_2eh_19',['MenuHelpString.h',['../MenuHelpString_8h.html',1,'']]],
-  ['mux_2evhdl_20',['mux.vhdl',['../mux_8vhdl.html',1,'']]]
+  ['maximavariableupdates_2ecpp_17',['MaximaVariableUpdates.cpp',['../MaximaVariableUpdates_8cpp.html',1,'']]],
+  ['maximavariableupdates_2eh_18',['MaximaVariableUpdates.h',['../MaximaVariableUpdates_8h.html',1,'']]],
+  ['memgrp_2ecpp_19',['memgrp.cpp',['../memgrp_8cpp.html',1,'']]],
+  ['menuhelpstring_2ecpp_20',['MenuHelpString.cpp',['../MenuHelpString_8cpp.html',1,'']]],
+  ['menuhelpstring_2eh_21',['MenuHelpString.h',['../MenuHelpString_8h.html',1,'']]],
+  ['mux_2evhdl_22',['mux.vhdl',['../mux_8vhdl.html',1,'']]]
 ];

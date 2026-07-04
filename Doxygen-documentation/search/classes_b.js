@@ -36,11 +36,12 @@ var searchData=
   ['maximamanual_33',['MaximaManual',['../classMaximaManual.html',1,'']]],
   ['maximanotstartingdialog_34',['MaximaNotStartingDialog',['../classMaximaNotStartingDialog.html',1,'']]],
   ['maximatokenizer_35',['MaximaTokenizer',['../classMaximaTokenizer.html',1,'']]],
-  ['maxsizechooser_36',['MaxSizeChooser',['../classMaxSizeChooser.html',1,'']]],
-  ['memgrp_5ftest_37',['Memgrp_Test',['../classMemgrp__Test.html',1,'']]],
-  ['messagebuilder_38',['MessageBuilder',['../structCatch_1_1MessageBuilder.html',1,'Catch']]],
-  ['messageinfo_39',['MessageInfo',['../structCatch_1_1MessageInfo.html',1,'Catch']]],
-  ['messagestream_40',['MessageStream',['../structCatch_1_1MessageStream.html',1,'Catch']]],
-  ['mux_5fusing_5fwith_41',['mux_using_with',['../classmux__using__with.html',1,'']]],
-  ['myapp_42',['MyApp',['../classMyApp.html',1,'']]]
+  ['maximavariableupdate_36',['MaximaVariableUpdate',['../structMaximaVariableUpdate.html',1,'']]],
+  ['maxsizechooser_37',['MaxSizeChooser',['../classMaxSizeChooser.html',1,'']]],
+  ['memgrp_5ftest_38',['Memgrp_Test',['../classMemgrp__Test.html',1,'']]],
+  ['messagebuilder_39',['MessageBuilder',['../structCatch_1_1MessageBuilder.html',1,'Catch']]],
+  ['messageinfo_40',['MessageInfo',['../structCatch_1_1MessageInfo.html',1,'Catch']]],
+  ['messagestream_41',['MessageStream',['../structCatch_1_1MessageStream.html',1,'Catch']]],
+  ['mux_5fusing_5fwith_42',['mux_using_with',['../classmux__using__with.html',1,'']]],
+  ['myapp_43',['MyApp',['../classMyApp.html',1,'']]]
 ];
