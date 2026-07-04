@@ -42,13 +42,14 @@ var searchData=
   ['appendaction_39',['AppendAction',['../classTreeUndoManager.html#ab49d510704fe9320ec7781fc30d8d61b',1,'TreeUndoManager::AppendAction()'],['../classTreeUndoManager.html#ae4e16a67aa9dcd6e1831251cecea259a',1,'TreeUndoManager::AppendAction(UndoActions *actionList)']]],
   ['appendcell_40',['AppendCell',['../classCellList.html#a5ec4a3a497bd03cba055bf8531757c37',1,'CellList']]],
   ['atcell_41',['AtCell',['../classAtCell.html#aba6500df75bac08bd66875bab0d0891f',1,'AtCell']]],
-  ['auimanagerupdate_42',['AuiManagerUpdate',['../classwxMaximaFrame.html#a91211d6dffcde03034f085f1d64abbef',1,'wxMaximaFrame']]],
-  ['autoanswer_43',['AutoAnswer',['../classEditorCell.html#a8613705dab1db8a50d086641afd06262',1,'EditorCell::AutoAnswer()'],['../classGroupCell.html#ab931481284b2319dfda3704e4ba7a51e',1,'GroupCell::AutoAnswer()']]],
-  ['autocomplete_44',['Autocomplete',['../classWorksheet.html#aa5c64de0c9f0d73f698ebc73915e7fbd',1,'Worksheet']]],
-  ['autocompletefile_45',['AutocompleteFile',['../classDirstructure.html#a3195403c7d8480698bb33138fe38ff90',1,'Dirstructure']]],
-  ['autocompletepopup_46',['AutocompletePopup',['../classAutocompletePopup.html#a1a7033ddc45ef7622b8748c829265fda',1,'AutocompletePopup']]],
-  ['autodetecthelpbrowser_47',['AutodetectHelpBrowser',['../classConfiguration.html#aeef043c2f0e8bf9386c3d43fe7df5e29',1,'Configuration::AutodetectHelpBrowser() const'],['../classConfiguration.html#a175bdb5cf609cd908ef25a93a926adc9',1,'Configuration::AutodetectHelpBrowser(bool autodetect)']]],
-  ['autodetectmaxima_48',['AutodetectMaxima',['../classConfiguration.html#a9e0cf486019c3fcaea4618839d02a0b9',1,'Configuration::AutodetectMaxima() const'],['../classConfiguration.html#a8fe525f2332e1cab5fbef7b59725a537',1,'Configuration::AutodetectMaxima(bool autodetectmaxima)']]],
-  ['autolink_5ftest_49',['Autolink_Test',['../classAutolink__Test.html#a278d631f9943428c05b17d78f14488e2',1,'Autolink_Test']]],
-  ['autosave_50',['AutoSave',['../classwxMaxima.html#a0d1105b41fc3c64234e4821f675f74e2',1,'wxMaxima']]]
+  ['attachworksheetdc_42',['AttachWorksheetDC',['../classRenderContext.html#a9928e0a2657889ecc3e1df6e6d10cfd8',1,'RenderContext']]],
+  ['auimanagerupdate_43',['AuiManagerUpdate',['../classwxMaximaFrame.html#a91211d6dffcde03034f085f1d64abbef',1,'wxMaximaFrame']]],
+  ['autoanswer_44',['AutoAnswer',['../classEditorCell.html#a8613705dab1db8a50d086641afd06262',1,'EditorCell::AutoAnswer()'],['../classGroupCell.html#ab931481284b2319dfda3704e4ba7a51e',1,'GroupCell::AutoAnswer()']]],
+  ['autocomplete_45',['Autocomplete',['../classWorksheet.html#aa5c64de0c9f0d73f698ebc73915e7fbd',1,'Worksheet']]],
+  ['autocompletefile_46',['AutocompleteFile',['../classDirstructure.html#a3195403c7d8480698bb33138fe38ff90',1,'Dirstructure']]],
+  ['autocompletepopup_47',['AutocompletePopup',['../classAutocompletePopup.html#a1a7033ddc45ef7622b8748c829265fda',1,'AutocompletePopup']]],
+  ['autodetecthelpbrowser_48',['AutodetectHelpBrowser',['../classConfiguration.html#aeef043c2f0e8bf9386c3d43fe7df5e29',1,'Configuration::AutodetectHelpBrowser() const'],['../classConfiguration.html#a175bdb5cf609cd908ef25a93a926adc9',1,'Configuration::AutodetectHelpBrowser(bool autodetect)']]],
+  ['autodetectmaxima_49',['AutodetectMaxima',['../classConfiguration.html#a9e0cf486019c3fcaea4618839d02a0b9',1,'Configuration::AutodetectMaxima() const'],['../classConfiguration.html#a8fe525f2332e1cab5fbef7b59725a537',1,'Configuration::AutodetectMaxima(bool autodetectmaxima)']]],
+  ['autolink_5ftest_50',['Autolink_Test',['../classAutolink__Test.html#a278d631f9943428c05b17d78f14488e2',1,'Autolink_Test']]],
+  ['autosave_51',['AutoSave',['../classwxMaxima.html#a0d1105b41fc3c64234e4821f675f74e2',1,'wxMaxima']]]
 ];

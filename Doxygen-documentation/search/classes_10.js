@@ -10,10 +10,11 @@ var searchData=
   ['regexreplacer_7',['RegexReplacer',['../classMarkDownParser_1_1RegexReplacer.html',1,'MarkDownParser']]],
   ['regexsearch_8',['RegexSearch',['../classRegexSearch.html',1,'']]],
   ['registrarfortagaliases_9',['RegistrarForTagAliases',['../structCatch_1_1RegistrarForTagAliases.html',1,'Catch']]],
-  ['repeatgenerator_10',['RepeatGenerator',['../classCatch_1_1Generators_1_1RepeatGenerator.html',1,'Catch::Generators']]],
-  ['resolutionchooser_11',['ResolutionChooser',['../classResolutionChooser.html',1,'']]],
-  ['resultdisposition_12',['ResultDisposition',['../structCatch_1_1ResultDisposition.html',1,'Catch']]],
-  ['resultwas_13',['ResultWas',['../structCatch_1_1ResultWas.html',1,'Catch']]],
-  ['reusablestringstream_14',['ReusableStringStream',['../classCatch_1_1ReusableStringStream.html',1,'Catch']]],
-  ['runtests_15',['RunTests',['../structCatch_1_1RunTests.html',1,'Catch']]]
+  ['rendercontext_10',['RenderContext',['../classRenderContext.html',1,'']]],
+  ['repeatgenerator_11',['RepeatGenerator',['../classCatch_1_1Generators_1_1RepeatGenerator.html',1,'Catch::Generators']]],
+  ['resolutionchooser_12',['ResolutionChooser',['../classResolutionChooser.html',1,'']]],
+  ['resultdisposition_13',['ResultDisposition',['../structCatch_1_1ResultDisposition.html',1,'Catch']]],
+  ['resultwas_14',['ResultWas',['../structCatch_1_1ResultWas.html',1,'Catch']]],
+  ['reusablestringstream_15',['ReusableStringStream',['../classCatch_1_1ReusableStringStream.html',1,'Catch']]],
+  ['runtests_16',['RunTests',['../structCatch_1_1RunTests.html',1,'Catch']]]
 ];
