@@ -100,6 +100,9 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structConfiguration_1_1PerformanceStats.html">PerformanceStats</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structConfiguration_1_1ScalarSetting.html">ScalarSetting</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One mechanically persisted scalar setting: its config key and the member variable it is stored in.  <a href="structConfiguration_1_1ScalarSetting.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration_1_1TextsnippetToDraw.html">TextsnippetToDraw</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the information about a file we need to write during the save process.  <a href="classConfiguration_1_1TextsnippetToDraw.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1257,6 +1260,9 @@ static const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="memitem:a72e96b60fcbb9d6499ab07a391845717"><td class="memItemLeft" align="right" valign="top">static const std::vector&lt; std::pair&lt; <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a>, wxString &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a72e96b60fcbb9d6499ab07a391845717">StyleConfigKeys</a> ()</td></tr>
 <tr class="memdesc:a72e96b60fcbb9d6499ab07a391845717"><td class="mdescLeft">&#160;</td><td class="mdescRight">The single source of truth mapping each persisted text style to its config-key prefix.  <br /></td></tr>
 <tr class="separator:a72e96b60fcbb9d6499ab07a391845717"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b6d1a9446076037957651c1c7e7a39e"><td class="memItemLeft" align="right" valign="top">static const std::vector&lt; <a class="el" href="structConfiguration_1_1ScalarSetting.html">ScalarSetting</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a2b6d1a9446076037957651c1c7e7a39e">ScalarConfigSettings</a> ()</td></tr>
+<tr class="memdesc:a2b6d1a9446076037957651c1c7e7a39e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The single source of truth pairing each mechanical scalar setting's config key with the member caching it.  <br /></td></tr>
+<tr class="separator:a2b6d1a9446076037957651c1c7e7a39e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2514c55628afd01670a63f6205a5db1c"><td class="memItemLeft" align="right" valign="top"><a id="a2514c55628afd01670a63f6205a5db1c" name="a2514c55628afd01670a63f6205a5db1c"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SystemIsDark</b> ()</td></tr>
 <tr class="memdesc:a2514c55628afd01670a63f6205a5db1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the OS reports a dark appearance (false where wx cannot tell). <br /></td></tr>
@@ -1728,6 +1734,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 <p>Report if a cell has been redrawn 2 or more times during a simple Draw() command. </p>
 <p>Only used in debug mode; If a cell is drawn and then re-drawn in the same draw command this most likely means that a 2D-displayed cell draws its sub-cells, but didn't remove them from the Cell::NextToDraw()-list of cells to draw after this cell has been drawn. </p>
+
+</div>
+</div>
+<a id="a2b6d1a9446076037957651c1c7e7a39e" name="a2b6d1a9446076037957651c1c7e7a39e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b6d1a9446076037957651c1c7e7a39e">&#9670;&#160;</a></span>ScalarConfigSettings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; <a class="el" href="structConfiguration_1_1ScalarSetting.html">Configuration::ScalarSetting</a> &gt; &amp; Configuration::ScalarConfigSettings </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The single source of truth pairing each mechanical scalar setting's config key with the member caching it. </p>
+<p><a class="el" href="classConfiguration.html#ac45a218b4f09c6a4c649e0f875dbbe44" title="Read the config from the wxConfig object.">ReadConfig()</a> and <a class="el" href="classConfiguration.html#a4f7f692a8178c2062765ddafd0fd4782" title="Saves the style settings.">WriteStyles()</a> both iterate this table, so a setting can never be read and written under mismatched keys (which used to cause settings to silently fail to round-trip). Settings whose read or write needs additional logic (value clamping, format migration, the randomized configID) are handled individually instead of being listed here. Persisting a new plain scalar setting is a one-line edit here. </p>
 
 </div>
 </div>
