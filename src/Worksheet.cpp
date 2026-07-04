@@ -130,7 +130,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_mathmlFormat2 = wxDataFormat(wxS("application/mathml-presentation+xml"));
   m_rtfFormat = wxDataFormat(wxS("application/rtf"));
   m_rtfFormat2 = wxDataFormat(wxS("text/rtf"));
-  TreeUndo_ActiveCell = NULL;
+  m_treeUndo.ForgetActiveCell();
   m_clickInGC = NULL;
   m_last = nullptr;
   m_timer.SetOwner(this, TIMER_ID);
@@ -731,7 +731,7 @@ void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
 
 GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
                                        GroupCell *where) {
-  return InsertGroupCells(std::move(cells), where, &treeUndoActions);
+  return InsertGroupCells(std::move(cells), where, &m_treeUndo.UndoStack());
 }
 
 // InsertGroupCells
@@ -3035,7 +3035,7 @@ bool Worksheet::CanDeleteRegion(GroupCell *start, const GroupCell *end) const {
 
 void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart,
                                           GroupCell *end) {
-  TreeUndo_MarkCellsAsAdded(parentOfStart, end, &treeUndoActions);
+  TreeUndo_MarkCellsAsAdded(parentOfStart, end, &m_treeUndo.UndoStack());
 }
 
 void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end,
@@ -3044,33 +3044,8 @@ void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end,
   TreeUndo_LimitUndoBuffer();
 }
 
-void Worksheet::TreeUndo_ClearRedoActionList() {
-  while (!treeRedoActions.empty()) {
-    TreeUndo_DiscardAction(&treeRedoActions);
-  }
-}
-
-void Worksheet::TreeUndo_ClearUndoActionList() {
-  while (!treeUndoActions.empty()) {
-    TreeUndo_DiscardAction(&treeUndoActions);
-  }
-}
-
 void Worksheet::TreeUndo_ClearBuffers() {
-  TreeUndo_ClearRedoActionList();
-  while (!treeUndoActions.empty()) {
-    TreeUndo_DiscardAction(&treeUndoActions);
-  }
-  TreeUndo_ActiveCell = NULL;
-}
-
-void Worksheet::TreeUndo_DiscardAction(UndoActions *actionList) {
-  if (actionList->empty())
-    return;
-
-  do {
-    actionList->pop_back();
-  } while (!actionList->empty() && actionList->back().m_partOfAtomicAction);
+  m_treeUndo.ClearBuffers();
 }
 
 void Worksheet::TreeUndo_CellLeft() {
@@ -3082,34 +3057,20 @@ void Worksheet::TreeUndo_CellLeft() {
   if (!activeCell)
     return;
 
-  if (TreeUndo_ActiveCell) //-V1051
-    wxASSERT_MSG(TreeUndo_ActiveCell == activeCell,
-                 _("Bug: Cell left but not entered."));
-
   if (!activeCell->GetEditable())
     return;
 
-  // We only can undo a text change if the text has actually changed.
-  if ((m_treeUndo_ActiveCellOldText.Length() > 1) &&
-      (m_treeUndo_ActiveCellOldText != activeCell->GetEditable()->GetValue()) &&
-      (m_treeUndo_ActiveCellOldText + wxS(";") !=
-       activeCell->GetEditable()->GetValue())) {
-    treeUndoActions.emplace_front(activeCell, m_treeUndo_ActiveCellOldText,
-                                  m_treeUndo_ActiveCellOldSelStart,
-                                  m_treeUndo_ActiveCellOldSelEnd);
-    TreeUndo_LimitUndoBuffer();
-    TreeUndo_ClearRedoActionList();
-  }
+  m_treeUndo.CellLeft(activeCell, activeCell->GetEditable()->GetValue(),
+                      m_configuration->UndoLimit());
 }
 
 void Worksheet::TreeUndo_CellEntered() {
   if (!GetActiveCell() || !GetActiveCell()->GetGroup())
     return;
 
-  TreeUndo_ActiveCell = GetActiveCell()->GetGroup();
-  m_treeUndo_ActiveCellOldText = GetActiveCell()->GetValue();
-  m_treeUndo_ActiveCellOldSelStart = static_cast<long long>(GetActiveCell()->SelectionStart());
-  m_treeUndo_ActiveCellOldSelEnd   = static_cast<long long>(GetActiveCell()->SelectionEnd());
+  m_treeUndo.CellEntered(GetActiveCell()->GetGroup(), GetActiveCell()->GetValue(),
+                         static_cast<long long>(GetActiveCell()->SelectionStart()),
+                         static_cast<long long>(GetActiveCell()->SelectionEnd()));
 }
 
 void Worksheet::SetCellStyle(GroupCell *group, GroupType style) {
@@ -3133,7 +3094,7 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style) {
 }
 
 void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end) {
-  DeleteRegion(start, end, &treeUndoActions);
+  DeleteRegion(start, end, &m_treeUndo.UndoStack());
 }
 
 void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
@@ -3217,7 +3178,7 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
   TreeUndo_CellLeft();
 
   // We don't need an undo action for the thing we will do now.
-  TreeUndo_ActiveCell = NULL;
+  m_treeUndo.ForgetActiveCell();
 
   // Make sure that the cell containing the question is visible
   if (group->RevealHidden()) {
@@ -6438,38 +6399,34 @@ void Worksheet::Undo() {
 }
 
 void Worksheet::TreeUndo_LimitUndoBuffer() {
-  long undoLimit = m_configuration->UndoLimit();
-
-  if (undoLimit == 0)
-    return;
-
-  while ((long)treeUndoActions.size() > undoLimit)
-    TreeUndo_DiscardAction(&treeUndoActions);
+  m_treeUndo.LimitUndoBuffer(m_configuration->UndoLimit());
 }
 
 bool Worksheet::CanTreeUndo() const {
-  if (treeUndoActions.empty())
+  const UndoActions &undoActions = m_treeUndo.UndoStack();
+  if (undoActions.empty())
     return false;
   else {
     // If the next undo action will delete cells we have to look if we are
     // allowed to do this.
-    if (treeUndoActions.front().m_newCellsEnd)
-      return CanDeleteRegion(treeUndoActions.front().m_start,
-                             treeUndoActions.front().m_newCellsEnd);
+    if (undoActions.front().m_newCellsEnd)
+      return CanDeleteRegion(undoActions.front().m_start,
+                             undoActions.front().m_newCellsEnd);
     else
       return true;
   }
 }
 
 bool Worksheet::CanTreeRedo() const {
-  if (treeRedoActions.empty()) {
+  const UndoActions &redoActions = m_treeUndo.RedoStack();
+  if (redoActions.empty()) {
     return false;
   } else {
     // If the next redo action will delete cells we have to look if we are
     // allowed to do this.
-    if (treeRedoActions.front().m_newCellsEnd)
-      return CanDeleteRegion(treeRedoActions.front().m_start,
-                             treeRedoActions.front().m_newCellsEnd);
+    if (redoActions.front().m_newCellsEnd)
+      return CanDeleteRegion(redoActions.front().m_start,
+                             redoActions.front().m_newCellsEnd);
     else
       return true;
   }
@@ -6640,7 +6597,7 @@ bool Worksheet::TreeUndo(UndoActions *sourcelist,
       else
         TreeUndoTextChange(sourcelist, undoForThisOperation);
     }
-    TreeUndo_AppendAction(undoForThisOperation);
+    TreeUndoManager::AppendAction(undoForThisOperation);
     sourcelist->pop_front();
     actionContinues =
       !sourcelist->empty() && sourcelist->front().m_partOfAtomicAction;

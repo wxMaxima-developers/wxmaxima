@@ -54,7 +54,7 @@
 #include "cells/ImgCellBase.h"
 #include "cells/AnimationCell.h"
 #include "cells/GroupCell.h"
-#include "TreeUndoAction.h"
+#include "TreeUndoManager.h"
 #include "cells/TextCell.h"
 #include "EvaluationQueue.h"
 #include "dialogs/FindReplaceDialog.h"
@@ -254,52 +254,26 @@ private:
     @{
   */
 
-  // TreeUndoAction and UndoActions now live in TreeUndoAction.h
-  // (included above), as the first step of extracting the cell-tree undo/redo
-  // subsystem out of Worksheet.
+  // TreeUndoAction/UndoActions live in TreeUndoAction.h and the undo/redo
+  // state (the two stacks + the active-cell snapshot) is owned by the
+  // TreeUndoManager below; only the tree surgery of applying an action
+  // remains a Worksheet responsibility.
 
 private:
-  //! The list of tree actions that can be undone
-  UndoActions treeUndoActions;
-
-  //! The list of tree actions that can be redone
-  UndoActions treeRedoActions;
-
-  //! The text the TreeUndo_ActiveCell contained when we entered it
-  wxString m_treeUndo_ActiveCellOldText;
-  //! The selection range in TreeUndo_ActiveCell when we entered it (-1 = not recorded)
-  long long m_treeUndo_ActiveCellOldSelStart = -1;
-  long long m_treeUndo_ActiveCellOldSelEnd   = -1;
+  //! Owns the undo/redo stacks and the active-cell snapshot
+  TreeUndoManager m_treeUndo;
 
 public:
   //! Clear the list of actions for which an undo can be undone
-  void TreeUndo_ClearRedoActionList();
+  void TreeUndo_ClearRedoActionList() { m_treeUndo.ClearRedoActionList(); }
 
   //! Clear the list of actions for which undo can undo
-  void TreeUndo_ClearUndoActionList();
-
-  //! Remove one action ftom the action list
-  static void TreeUndo_DiscardAction(UndoActions *actionList);
+  void TreeUndo_ClearUndoActionList() { m_treeUndo.ClearUndoActionList(); }
 
   //! Add another action to this undo action
-  static void TreeUndo_AppendAction(UndoActions *actionList)
-    {
-      if(!actionList->empty())
-        actionList->front().m_partOfAtomicAction = true;
-    }
+  void TreeUndo_AppendAction() { m_treeUndo.AppendAction(); }
 
-  //! Add another action to this undo action
-  void TreeUndo_AppendAction(){TreeUndo_AppendAction(&treeUndoActions);}
-
-  /*! The last cell we have entered.
-
-    This pointer is needed for keeping track of cell contents changes.
-  */
-private:
-  CellPtr<GroupCell> TreeUndo_ActiveCell;
-public:
-
-  //! Drop actions from the back of the undo list until itis within the undo limit.
+  //! Drop actions from the back of the undo list until it is within the undo limit.
   void TreeUndo_LimitUndoBuffer();
 
   /*! Undo an item from a list of undo actions.
@@ -324,11 +298,11 @@ public:
 
   //! Undo a tree operation.
   bool TreeUndo()
-    { return TreeUndo(&treeUndoActions, &treeRedoActions); }
+    { return TreeUndo(&m_treeUndo.UndoStack(), &m_treeUndo.RedoStack()); }
 
   //! Redo an undone tree operation.
   bool TreeRedo()
-    { return TreeUndo(&treeRedoActions, &treeUndoActions); }
+    { return TreeUndo(&m_treeUndo.RedoStack(), &m_treeUndo.UndoStack()); }
 
   //! Can we undo a tree operation?
   bool CanTreeUndo() const;
@@ -349,8 +323,8 @@ public:
     \param start      The first cell that has been added
     \param end        The last cell that has been added
     \param undoBuffer Where to store the undo information. This normally is
-    - treeUedoActions for the normal undo buffer or
-    - treeRedoActions for the buffer that allows reverting undos
+    - m_treeUndo.UndoStack() for the normal undo buffer or
+    - m_treeUndo.RedoStack() for the buffer that allows reverting undos
   */
   void TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, UndoActions *undoBuffer);
 
@@ -851,8 +825,8 @@ public:
     Insert the cells at the beginning of the worksheet.
     \param undoBuffer The buffer the undo information for this action has
     to be kept in. Might be
-    - treeUndoActions for normal deletes,
-    - treeRedoActions for deletions while executing an undo or
+    - m_treeUndo.UndoStack() for normal deletes,
+    - m_treeUndo.RedoStack() for deletions while executing an undo or
     - NULL for: Don't keep any copy of the cells.
   */
   GroupCell *InsertGroupCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where,
@@ -923,8 +897,8 @@ public:
     \param start The first cell to delete
     \param end The last cell to delete
     \param undoBuffer The buffer the undo information has to be kept in. Might be
-    - treeUndoActions for normal deletes,
-    - treeRedoActions for deletions while executing an undo or
+    - m_treeUndo.UndoStack() for normal deletes,
+    - m_treeUndo.RedoStack() for deletions while executing an undo or
     - NULL for: Don't keep any copy of the cells.
     \addtogroup UndoBufferFill
   */

@@ -4,6 +4,7 @@
 - Added a layout-idempotency regression test: after zoom and canvas-size changes the converged layout must be identical to laying the same content out from scratch.
 - Configuration changes that alter how text is displayed (e.g. drawing a multiplication dot instead of an asterisk) take effect on the next redraw again instead of requiring the cells to be rebuilt.
 - The build now autodetects whether the wxWidgets webview and qa components are actually usable instead of failing to configure on installations whose wx-config advertises components that were never built. WXM_DISABLE_WEBVIEW/WXM_DISABLE_QA are still honored to force-disable them.
+- Internal: the cell-tree undo/redo state (the undo/redo stacks and the active-cell snapshot) now lives in its own TreeUndoManager class instead of being spread through the Worksheet class (no behavior change; guarded by the TreeUndo regression test).
 
 - Accessibility: screen readers now actually see the worksheet's contents. The worksheet reports itself as a document (with its cells as children) instead of a bare panel full of scrollbars, each sidebar now has a proper name instead of being an anonymous "panel", and the tools on the toolbar are now announced (with their names, states and a "press" action) instead of being invisible.
 - Accessibility: the symbol/Greek-letter/math sidebar buttons are now announced as named push buttons (by their description, e.g. "Greek small letter alpha") instead of anonymous panels.
