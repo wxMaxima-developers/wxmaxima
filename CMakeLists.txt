@@ -172,6 +172,31 @@ message(STATUS "wxWidgets config:                   ${wxWidgets_CONFIGURATION}")
 message(STATUS "Looking for wxWidgets in:           ${wxWidgets_ROOT_DIR}")
 message(STATUS "Looking for wxWidgets libraries in: ${wxWidgets_LIB_DIR}")
 
+# Autodetect optional wxWidgets components: some installations advertise
+# webview or qa through wx-config although the library itself was never built
+# (e.g. wxWidgets was compiled while webkit2gtk was missing), which would make
+# the REQUIRED find_package below fail. Probe for each component quietly and
+# fall back to building without it. An explicit -DWXM_DISABLE_WEBVIEW=ON /
+# -DWXM_DISABLE_QA=ON skips the respective probe as before.
+if(NOT WXM_DISABLE_WEBVIEW)
+  find_package(wxWidgets 3 QUIET COMPONENTS webview)
+  if(NOT wxWidgets_FOUND)
+    message(STATUS "wxWidgets webview component is unusable on this system - "
+        "building without it (as if WXM_DISABLE_WEBVIEW=ON)")
+    set(WXM_DISABLE_WEBVIEW ON)
+  endif()
+  unset(wxWidgets_FOUND)
+endif()
+if(NOT WXM_DISABLE_QA)
+  find_package(wxWidgets 3 QUIET COMPONENTS qa)
+  if(NOT wxWidgets_FOUND)
+    message(STATUS "wxWidgets qa component is unusable on this system - "
+        "building without it (as if WXM_DISABLE_QA=ON)")
+    set(WXM_DISABLE_QA ON)
+  endif()
+  unset(wxWidgets_FOUND)
+endif()
+
 # The package order below matters.
 ###
 ###  Incorrect order WILL BREAK Unix and MinGW STATIC BUILDS.
