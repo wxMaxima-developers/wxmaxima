@@ -64,4 +64,16 @@ struct MaximaVariableUpdate
 std::vector<MaximaVariableUpdate>
 ParseMaximaVariableUpdates(const wxXmlDocument &xmldoc);
 
+/*! Parses the <watch_variables_add> XML document Maxima sends into the list
+  of variable names to add to the watch list.
+
+  Unlike the <variables> document above, each <variable> element here holds
+  the variable's name directly as its text content.
+
+  The document's validity (wxXmlDocument::IsOk()) is the caller's
+  responsibility; an invalid or empty document yields an empty list.
+*/
+std::vector<wxString>
+ParseWatchVariableAdditions(const wxXmlDocument &xmldoc);
+
 #endif // MAXIMAVARIABLEUPDATES_H

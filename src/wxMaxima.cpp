@@ -2782,8 +2782,8 @@ void wxMaxima::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
       if (node == NULL) {
         wxLogMessage(_("No topics found in topic tag"));
       } else {
-        wxXmlNode *entry = node->GetChildren();
-        while(entry != NULL)
+        for (wxXmlNode *entry = node->GetChildren(); entry != NULL;
+             entry = entry->GetNext())
           {
             if (entry->GetName() == wxS("keyword")) {
               wxXmlNode *topic = entry->GetChildren();
@@ -2792,19 +2792,18 @@ void wxMaxima::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
                              topic->GetContent().ToUTF8().data());
                 topics.push_back(topic->GetContent());
               }
-              if (topics.size() == 0)
-                wxLogMessage(_("No topics found in topic flag"));
-#ifdef USE_WEBVIEW
-              else
-                {
-                  m_helpPane->SelectKeywords(topics);
-                  wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
-                }
-#else
-              ShowMaximaHelp(topics.at(1));
-#endif
             }
-            entry = entry->GetNext();
+          }
+        if (topics.empty())
+          wxLogMessage(_("No topics found in topic flag"));
+        else
+          {
+#ifdef USE_WEBVIEW
+            m_helpPane->SelectKeywords(topics);
+            wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
+#else
+            ShowMaximaHelp(topics.front());
+#endif
           }
       }
     }
@@ -3434,20 +3433,9 @@ void wxMaxima::ReadAddVariables(const wxXmlDocument &xmldoc) {
     }
   else
     {
-      wxXmlNode *node = xmldoc.GetRoot();
-      if (node != NULL) {
-        wxXmlNode *var = node->GetChildren();
-        while (var != NULL) {
-          if (var->GetName() == wxS("variable")) {
-            wxXmlNode *valnode = var->GetChildren();
-            if (valnode)
-              {
-                if(GetWorksheet() && (m_variablesPane))
-                  m_variablesPane->AddWatch(valnode->GetContent());
-              }
-          }
-          var = var->GetNext();
-        }
+      for (const wxString &name : ParseWatchVariableAdditions(xmldoc)) {
+        if(GetWorksheet() && (m_variablesPane))
+          m_variablesPane->AddWatch(name);
       }
   }
 }

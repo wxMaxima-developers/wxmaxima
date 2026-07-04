@@ -6,6 +6,8 @@
 - The build now autodetects whether the wxWidgets webview and qa components are actually usable instead of failing to configure on installations whose wx-config advertises components that were never built. WXM_DISABLE_WEBVIEW/WXM_DISABLE_QA are still honored to force-disable them.
 - Internal: the cell-tree undo/redo state (the undo/redo stacks and the active-cell snapshot) now lives in its own TreeUndoManager class instead of being spread through the Worksheet class (no behavior change; guarded by the TreeUndo regression test).
 - Internal: parsing the variable-value XML Maxima sends now lives in its own GUI-free, unit-tested module (MaximaVariableUpdates) instead of inside the wxMaxima class. As a side effect a bound variable no longer briefly fires its "variable is undefined" handling while being parsed.
+- Fixed a crash in builds without webview support: requesting help on a topic (e.g. Maxima's ?? command) with exactly one matching topic name accessed the topic list out of bounds - and showed the wrong topic when there were several.
+- The help pane is now opened once per help request instead of once per matching topic name.
 
 - Accessibility: screen readers now actually see the worksheet's contents. The worksheet reports itself as a document (with its cells as children) instead of a bare panel full of scrollbars, each sidebar now has a proper name instead of being an anonymous "panel", and the tools on the toolbar are now announced (with their names, states and a "press" action) instead of being invisible.
 - Accessibility: the symbol/Greek-letter/math sidebar buttons are now announced as named push buttons (by their description, e.g. "Greek small letter alpha") instead of anonymous panels.

@@ -133,6 +133,40 @@ SCENARIO("Degenerate documents yield no updates instead of garbage") {
   }
 }
 
+SCENARIO("Watch-list additions are parsed from their own document format") {
+  GIVEN("a <watch_variables_add> document with two variables") {
+    // In this format the <variable> element holds the name directly.
+    wxXmlDocument xmldoc;
+    wxStringInputStream xmlStream(
+      wxS("<watch_variables_add><variable>alpha</variable>"
+          "<variable>beta</variable><ignored/></watch_variables_add>"));
+    xmldoc.Load(xmlStream);
+    auto names = ParseWatchVariableAdditions(xmldoc);
+    THEN("both names arrive, in order; other elements are ignored") {
+      REQUIRE(names.size() == 2);
+      REQUIRE(names[0] == wxS("alpha"));
+      REQUIRE(names[1] == wxS("beta"));
+    }
+  }
+
+  GIVEN("an empty document") {
+    wxXmlDocument xmldoc; // never loaded -> no root
+    THEN("no names result") {
+      REQUIRE(ParseWatchVariableAdditions(xmldoc).empty());
+    }
+  }
+
+  GIVEN("an empty <variable/> element") {
+    wxXmlDocument xmldoc;
+    wxStringInputStream xmlStream(
+      wxS("<watch_variables_add><variable/></watch_variables_add>"));
+    xmldoc.Load(xmlStream);
+    THEN("it is skipped - there is no name to watch") {
+      REQUIRE(ParseWatchVariableAdditions(xmldoc).empty());
+    }
+  }
+}
+
 int main(int argc, char **argv) {
   wxInitializer initializer;
   if (!initializer.IsOk())

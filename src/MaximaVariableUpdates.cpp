@@ -61,3 +61,22 @@ ParseMaximaVariableUpdates(const wxXmlDocument &xmldoc) {
   }
   return updates;
 }
+
+std::vector<wxString>
+ParseWatchVariableAdditions(const wxXmlDocument &xmldoc) {
+  std::vector<wxString> names;
+
+  wxXmlNode *node = xmldoc.GetRoot();
+  if (node == NULL)
+    return names;
+
+  for (wxXmlNode *var = node->GetChildren(); var != NULL;
+       var = var->GetNext()) {
+    if (var->GetName() == wxS("variable")) {
+      wxXmlNode *valnode = var->GetChildren();
+      if (valnode)
+        names.push_back(valnode->GetContent());
+    }
+  }
+  return names;
+}
