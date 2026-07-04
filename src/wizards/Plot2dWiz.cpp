@@ -119,11 +119,9 @@ void Plot2DWiz::set_properties() {
 #endif
 
   int selection = 1;
-  bool sendRanges = false;
   bool logx = false, logy = false;
 
   wxConfig::Get()->Read(wxS("Wiz/Plot2D/format"), &selection);
-  wxConfig::Get()->Read(wxS("Wiz/Plot2D/sendRanges"), &sendRanges);
   wxConfig::Get()->Read(wxS("Wiz/Plot2D/logx"), &logx);
   wxConfig::Get()->Read(wxS("Wiz/Plot2D/logy"), &logy);
 

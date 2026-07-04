@@ -811,10 +811,6 @@ protected:
   //! Is called when something requests an update of the table of contents
   void OnUpdateTOCEvent(wxCommandEvent &event);
 
-  void OnSize(wxSizeEvent &event);
-  void OnMove(wxMoveEvent &event);
-  void OnMaximize(wxMaximizeEvent &event);
-
   //! Sets gnuplot's command name and tries to determine gnuplot's path
   void GnuplotCommandName(wxString gnuplot);
   //! The first prompt maxima will output

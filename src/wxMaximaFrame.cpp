@@ -2149,10 +2149,7 @@ void wxMaximaFrame::ReReadConfig() {
 }
 
 void wxMaximaFrame::RegisterAutoSaveFile() {
-  wxString autoSaveFiles;
   ReReadConfig();
-  wxConfigBase *config = wxConfig::Get();
-  config->Read("AutoSaveFiles", &autoSaveFiles);
   if(GetWorksheet())
     GetWorksheet()->UnsavedDocuments().AddDocument(m_tempfileName);
   ReReadConfig();

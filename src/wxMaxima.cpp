@@ -445,9 +445,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
 
   m_autoSaveTimer.SetOwner(this, AUTO_SAVE_TIMER_ID);
-  Bind(wxEVT_SIZE, &wxMaxima::OnSize, this);
-  Bind(wxEVT_MOVE, &wxMaxima::OnMove, this);
-  Bind(wxEVT_MAXIMIZE, &wxMaxima::OnMaximize, this);
+  // Window size/position persistence is handled by wxPersistenceManager
+  // (RegisterAndRestore in the constructor); the old EVT_SIZE/EVT_MOVE/
+  // EVT_MAXIMIZE handlers only wrote "MainWindowPos/*" config keys nothing
+  // ever read - on every resize/move event.
 
   Bind(wxEVT_TIMER, &wxMaxima::OnTimerEvent, this);
 
@@ -1216,14 +1217,6 @@ void wxMaxima::OnPowerEvent(wxPowerEvent &event) {
 }
 #endif
 
-void wxMaxima::OnSize(wxSizeEvent &event){
-  wxConfig::Get()->Write("MainWindowPos/width", event.GetSize().GetWidth());
-  wxConfig::Get()->Write("MainWindowPos/height", event.GetSize().GetHeight());
-  bool maximized = false;
-  wxConfig::Get()->Write("MainWindowPos/maximized", maximized);
-  event.Skip();
-}
-
 void wxMaxima::OnNewDemoFiles(wxCommandEvent &WXUNUSED(event))
 {
   if(!GetWorksheet())
@@ -1281,19 +1274,6 @@ void wxMaxima::OnDemoFileMenu(wxCommandEvent &ev)
   wxString demoName = GetDemoFile(ev.GetId());
   if(!demoName.IsEmpty())
     MenuCommand(wxS("demo(") + demoName + wxS(");"));
-}
-
-void wxMaxima::OnMove(wxMoveEvent &event){
-  wxConfig::Get()->Write("MainWindowPos/x", event.GetPosition().x);
-  wxConfig::Get()->Write("MainWindowPos/y", event.GetPosition().y);
-  bool maximized = false;
-  wxConfig::Get()->Write("MainWindowPos/maximized", maximized);
-  event.Skip();
-}
-void wxMaxima::OnMaximize(wxMaximizeEvent &event){
-  bool maximized = true;
-  wxConfig::Get()->Write("MainWindowPos/maximized", maximized);
-  event.Skip();
 }
 
 void wxMaxima::StartAutoSaveTimer() {
