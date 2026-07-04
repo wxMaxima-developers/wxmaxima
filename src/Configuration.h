@@ -37,6 +37,7 @@
 #include <unordered_map>
 #include <random>
 #include <list>
+#include <variant>
 #include <vector>
 #include <algorithm>
 #include <atomic>
@@ -552,6 +553,32 @@ public:
     fail to round-trip). Adding a persisted style is a one-line edit here.
   */
   static const std::vector<std::pair<TextStyle, wxString>> &StyleConfigKeys();
+
+  /*! One mechanically persisted scalar setting: its config key and the member
+    variable it is stored in.
+
+    See ScalarConfigSettings().
+  */
+  struct ScalarSetting {
+    //! The key the setting is stored under in the configuration store
+    const wxChar *key;
+    //! Which member of Configuration holds the setting's cached value
+    std::variant<bool Configuration::*, int Configuration::*,
+                 long Configuration::*, double Configuration::*,
+                 wxString Configuration::*>
+        member;
+  };
+  /*! The single source of truth pairing each mechanical scalar setting's
+    config key with the member caching it.
+
+    ReadConfig() and WriteStyles() both iterate this table, so a setting can
+    never be read and written under mismatched keys (which used to cause
+    settings to silently fail to round-trip). Settings whose read or write
+    needs additional logic (value clamping, format migration, the randomized
+    configID) are handled individually instead of being listed here.
+    Persisting a new plain scalar setting is a one-line edit here.
+  */
+  static const std::vector<ScalarSetting> &ScalarConfigSettings();
   void MakeStylesConsistent();
   void Outdated(bool outdated)
     { m_outdated = outdated; }

@@ -156,6 +156,18 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(LayoutInvariants test_LayoutInvariants)
 
+    # Round-trip test for the mechanical scalar settings: guards that
+    # ReadConfig() and the settings-write side share one key<->member table
+    # (Configuration::ScalarConfigSettings) so a setting can never be written
+    # and read under mismatched keys or types.
+    add_executable(test_ConfigRoundtrip
+        test_ConfigRoundtrip.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_ConfigRoundtrip PUBLIC cxx_std_20)
+    target_link_libraries(test_ConfigRoundtrip PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(ConfigRoundtrip test_ConfigRoundtrip)
+
     # Round-trip test for the worksheet styles: guards that ReadStyles() and
     # WriteStyles() share one TextStyle -> config-key mapping so styles can never
     # be written and read under mismatched keys.

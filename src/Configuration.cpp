@@ -652,6 +652,14 @@ void Configuration::ReadConfig() {
   RecalculateForce();
   wxConfigBase *config = wxConfig::Get();
 
+  // All mechanical scalar settings share one key<->member table with
+  // WriteStyles(), so the read and the write side cannot disagree on a key.
+  // Keys that need extra logic (migrations, clamping, randomization) are
+  // handled individually below.
+  for (const auto &setting : ScalarConfigSettings())
+    std::visit([&](auto member) { config->Read(setting.key, &(this->*member)); },
+               setting.member);
+
   config->Read(wxS("configID"), &m_configId);
 
   wxString str;
@@ -688,13 +696,8 @@ void Configuration::ReadConfig() {
     config->Read(wxS("MaxLayoutTime"), &m_maxLayoutTime);
     if (m_maxLayoutTime <= 0)
       m_maxLayoutTime = 5;
-    config->Read(wxS("wrapLatexMath"), &m_wrapLatexMath);
-    config->Read(wxS("allowNetworkHelp"), &m_allowNetworkHelp);
-    config->Read(wxS("exportContainsWXMX"), &m_exportContainsWXMX);
-    config->Read(wxS("maximaUsesHhtmlBrowser"), &m_maximaUsesHhtmlBrowser);
     config->Read(wxS("maximaUsesWxmaximaBrowser"),
                  &m_maximaUsesWxmaximaBrowser);
-    config->Read(wxS("texPreamble"), &m_texPreamble);
     {
       config->Read(wxS("suppressYellowMarkerMessages"),
                    &hideMessagesConfigString);
@@ -788,19 +791,11 @@ void Configuration::ReadConfig() {
                &m_maxClipbrd_BitmapMegabytes);
   if (m_maxClipbrd_BitmapMegabytes < 0)
     m_maxClipbrd_BitmapMegabytes = 1;
-  config->Read(wxS("wizardTab"), &m_wizardTab);
   #ifdef __WXMSW__
   config->Read("usewgnuplot", &m_useWgnuplot);
   #endif
-  config->Read(wxS("numpadEnterEvaluates"), &m_numpadEnterEvaluates);
-  config->Read(wxS("saveImgFileName"), &m_saveImgFileName);
-  config->Read(wxS("usePartialForDiff"), &m_usePartialForDiff);
   config->Read(wxS("TeXExponentsAfterSubscript"),
                &m_TeXExponentsAfterSubscript);
-  config->Read(wxS("defaultPlotWidth"), &m_defaultPlotWidth);
-  config->Read(wxS("defaultPlotHeight"), &m_defaultPlotHeight);
-  config->Read(wxS("fixedFontTC"), &m_fixedFontTC);
-  config->Read(wxS("usepngCairo"), &m_usepngCairo);
 
   if (!config->Read(wxS("AutoSaveAsTempFile"), &m_autoSaveAsTempFile)) {
     long autoSaveMinutes = 3;
@@ -837,17 +832,12 @@ void Configuration::ReadConfig() {
   config->Read("offerKnownAnswers", &m_offerKnownAnswers);
   config->Read(wxS("documentclass"), &m_documentclass);
   config->Read(wxS("documentclassoptions"), &m_documentclassOptions);
-  config->Read(wxS("latin2greek"), &m_latin2greek);
-  config->Read(wxS("enterEvaluates"), &m_enterEvaluates);
-  config->Read(wxS("hidemultiplicationsign"), &m_hidemultiplicationsign);
   config->Read("greekSidebar_ShowLatinLookalikes",
                &m_greekSidebar_ShowLatinLookalikes);
   config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
   config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
   config->Read("parameters", &m_maximaParameters);
   config->Read("autodetectHelpBrowser", &m_autodetectHelpBrowser);
-  config->Read(wxS("useInternalHelpBrowser"), &m_useInternalHelpBrowser);
-  config->Read(wxS("singlePageManual"), &m_singlePageManual);
   config->Read("helpBrowser", &m_helpBrowserUserLocation);
   {
     int tmp = static_cast<int>(m_htmlEquationFormat);
@@ -859,21 +849,13 @@ void Configuration::ReadConfig() {
     m_htmlEquationFormat = static_cast<Configuration::htmlExportFormat>(tmp);
   }
 
-  config->Read(wxS("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
-  config->Read(wxS("autoWrapMode"), &m_autoWrap);
-  config->Read(wxS("mathJaxURL_UseUser"), &m_mathJaxURL_UseUser);
-  config->Read(wxS("useUnicodeMaths"), &m_useUnicodeMaths);
-  config->Read(wxS("mathJaxURL"), &m_mathJaxURL);
   config->Read(wxS("autosubscript"), &m_autoSubscript);
   if(m_autoSubscript < 0)
     m_autoSubscript = 0;
   if(m_autoSubscript > 2)
     m_autoSubscript = 2;
-  config->Read(wxS("indentMaths"), &m_indentMaths);
   config->Read(wxS("abortOnError"), &m_abortOnError);
   config->Read("defaultPort", &m_defaultPort);
-  config->Read(wxS("fixReorderedIndices"), &m_fixReorderedIndices);
-  config->Read(wxS("showLength"), &m_showLength);
   {
     int ls = static_cast<int>(m_layoutStrategy);
     config->Read(wxS("layoutStrategy"), &ls);
@@ -884,27 +866,12 @@ void Configuration::ReadConfig() {
     m_showLength = 0;
   if(m_showLength > 3)
     m_showLength = 3;
-  config->Read(wxS("printScale"), &m_printScale);
-  config->Read(wxS("useSVG"), &m_useSVG);
-  config->Read(wxS("copyBitmap"), &m_copyBitmap);
-  config->Read(wxS("bitmapScale"), &m_bitmapScale);
-  config->Read(wxS("DefaultFramerate"), &m_defaultFramerate);
-  config->Read(wxS("tocDepth"), &m_tocDepth);
   if (m_tocDepth < 1)
     m_tocDepth = 1;
-  config->Read(wxS("copyBitmap"), &m_copyBitmap);
-  config->Read(wxS("copyMathML"), &m_copyMathML);
-  config->Read(wxS("copyMathMLHTML"), &m_copyMathMLHTML);
-  config->Read(wxS("copyRTF"), &m_copyRTF);
-  config->Read(wxS("copySVG"), &m_copySVG);
-  config->Read(wxS("copyEMF"), &m_copyEMF);
-  config->Read(wxS("autodetectMaxima"), &m_autodetectMaxima);
-  config->Read(wxS("maxima"), &m_maximaUserLocation);
   // Fix wrong" maxima=1" parameter in ~/.wxMaxima if upgrading from 0.7.0a
   if (m_maximaUserLocation.IsSameAs(wxS("1")))
     m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
 
-  config->Read(wxS("autoIndent"), &m_autoIndent);
 
   long showLabelChoice = static_cast<long>(m_showLabelChoice);
   if(static_cast<long>(m_showLabelChoice) < 0)
@@ -914,28 +881,18 @@ void Configuration::ReadConfig() {
   config->Read(wxS("showLabelChoice"), &showLabelChoice);
   m_showLabelChoice = (showLabels)showLabelChoice;
 
-  config->Read(wxS("changeAsterisk"), &m_changeAsterisk);
 
-  config->Read(wxS("notifyIfIdle"), &m_notifyIfIdle);
 
-  config->Read(wxS("hideBrackets"), &m_hideBrackets);
 
-  config->Read(wxS("displayedDigits"), &m_displayedDigits);
   if (m_displayedDigits <= 20)
     m_displayedDigits = 20;
 
-  config->Read(wxS("restartOnReEvaluation"), &m_restartOnReEvaluation);
 
-  config->Read(wxS("matchParens"), &m_matchParens);
-  config->Read(wxS("showMatchingParens"), &m_showMatchingParens);
 
-  config->Read(wxS("insertAns"), &m_insertAns);
 
-  config->Read(wxS("openHCaret"), &m_openHCaret);
 
   config->Read(wxS("labelWidth"), &m_labelWidth);
 
-  config->Read(wxS("printBrackets"), &m_printBrackets);
   config->Read(wxS("keepPercent"), &m_keepPercent);
   config->Read(wxS("saveUntitled"), &m_saveUntitled);
   config->Read(wxS("cursorJump"), &m_cursorJump);
@@ -1506,80 +1463,36 @@ bool Configuration::UpdateNeeded() const
 }
 
 void Configuration::WriteStyles(wxConfigBase *config) {
+  // The mechanical scalar settings come from the same key<->member table
+  // ReadConfig() reads them from, so both sides always agree on the keys.
+  for (const auto &setting : ScalarConfigSettings())
+    std::visit([&](auto member) { config->Write(setting.key, this->*member); },
+               setting.member);
+
   std::uniform_int_distribution<long> urd(std::numeric_limits<long>::min(), std::numeric_limits<long>::max());
   m_configId = urd(m_eng);
   config->Write(wxS("configID"), m_configId);
   config->Write(wxS("showInputLabels"), m_showInputLabels);
-  config->Write(wxS("wrapLatexMath"), m_wrapLatexMath);
-  config->Write(wxS("allowNetworkHelp"), m_allowNetworkHelp);
-  config->Write(wxS("exportContainsWXMX"), m_exportContainsWXMX);
-  config->Write(wxS("maximaUsesHhtmlBrowser"), m_maximaUsesHhtmlBrowser);
   if (OfferInternalHelpBrowser())
     config->Write(wxS("maximaUsesWxmaximaBrowser"),
                   m_maximaUsesWxmaximaBrowser);
-  config->Write(wxS("texPreamble"), m_texPreamble);
-  config->Write(wxS("wizardTab"), m_wizardTab);
-  config->Write(wxS("numpadEnterEvaluates"), m_numpadEnterEvaluates);
-  config->Write(wxS("saveImgFileName"), m_saveImgFileName);
-  config->Write(wxS("usePartialForDiff"), m_usePartialForDiff);
   config->Write(wxS("TeXExponentsAfterSubscript"),
                 m_TeXExponentsAfterSubscript);
-  config->Write(wxS("defaultPlotWidth"), m_defaultPlotWidth);
-  config->Write(wxS("defaultPlotHeight"), m_defaultPlotHeight);
-  config->Write(wxS("fixedFontTC"), m_fixedFontTC);
-  config->Write(wxS("bitmapScale"), m_bitmapScale);
-  config->Write(wxS("DefaultFramerate"), m_defaultFramerate);
-  config->Write(wxS("tocDepth"), m_tocDepth);
-  config->Write(wxS("usepngCairo"), m_usepngCairo);
   config->Write("incrementalSearch", m_incrementalSearch);
-  config->Write(wxS("hideBrackets"), m_hideBrackets);
-  config->Write(wxS("printScale"), m_printScale);
   config->Write(wxS("AutoSaveAsTempFile"), m_autoSaveAsTempFile);
-  config->Write(wxS("autoWrapMode"), m_autoWrap);
-  config->Write(wxS("autoIndent"), m_autoIndent);
-  config->Write(wxS("indentMaths"), m_indentMaths);
-  config->Write(wxS("matchParens"), m_matchParens);
-  config->Write(wxS("showMatchingParens"), m_showMatchingParens);
-  config->Write(wxS("changeAsterisk"), m_changeAsterisk);
-  config->Write(wxS("hidemultiplicationsign"), m_hidemultiplicationsign);
-  config->Write(wxS("latin2greek"), m_latin2greek);
   config->Write(wxS("greekSidebar_ShowLatinLookalikes"),
                 m_greekSidebar_ShowLatinLookalikes);
   config->Write(wxS("greekSidebar_Show_mu"), m_greekSidebar_Show_mu);
   config->Write(wxS("symbolPaneAdditionalChars"), m_symbolPaneAdditionalChars);
-  config->Write(wxS("notifyIfIdle"), m_notifyIfIdle);
-  config->Write(wxS("displayedDigits"), m_displayedDigits);
-  config->Write(wxS("insertAns"), m_insertAns);
-  config->Write(wxS("openHCaret"), m_openHCaret);
-  config->Write(wxS("restartOnReEvaluation"), m_restartOnReEvaluation);
   config->Write(wxS("appearance"), static_cast<long>(m_appearance));
   config->Write("recentItems", m_recentItems);
   config->Write(wxS("undoLimit"), m_undoLimit);
   config->Write(wxS("showLabelChoice"), static_cast<int>(m_showLabelChoice));
-  config->Write(wxS("printBrackets"), m_printBrackets);
-  config->Write(wxS("autodetectMaxima"), m_autodetectMaxima);
   config->Write(wxS("parameters"), m_maximaParameters);
-  config->Write(wxS("maxima"), m_maximaUserLocation);
   config->Write(wxS("autodetectHelpBrowser"), m_autodetectHelpBrowser);
   if (OfferInternalHelpBrowser())
-    config->Write(wxS("useInternalHelpBrowser"), m_useInternalHelpBrowser);
-  config->Write(wxS("singlePageManual"), m_singlePageManual);
   config->Write(wxS("helpBrowser"), m_helpBrowserUserLocation);
-  config->Write(wxS("fixReorderedIndices"), m_fixReorderedIndices);
-  config->Write(wxS("mathJaxURL_UseUser"), m_mathJaxURL_UseUser);
-  config->Write(wxS("enterEvaluates"), m_enterEvaluates);
-  config->Write(wxS("mathJaxURL"), m_mathJaxURL);
-  config->Write(wxS("copyBitmap"), m_copyBitmap);
-  config->Write(wxS("copyMathML"), m_copyMathML);
-  config->Write(wxS("copyMathMLHTML"), m_copyMathMLHTML);
-  config->Write(wxS("copyRTF"), m_copyRTF);
-  config->Write(wxS("copySVG"), m_copySVG);
-  config->Write(wxS("copyEMF"), m_copyEMF);
-  config->Write(wxS("useSVG"), m_useSVG);
-  config->Write(wxS("showLength"), m_showLength);
   config->Write(wxS("layoutStrategy"), static_cast<int>(m_layoutStrategy));
-  config->Write(wxS("TOCshowsSectionNumbers"), m_TOCshowsSectionNumbers);
-  config->Write(wxS("useUnicodeMaths"), m_useUnicodeMaths);
   config->Write("defaultPort", m_defaultPort);
   config->Write("abortOnError", m_abortOnError);
   config->Write("language", m_language);
@@ -1592,6 +1505,63 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write(wxS("ZoomFactor"), m_zoomFactor);
   // Fonts
   m_styleStore.Write(config);
+}
+
+const std::vector<Configuration::ScalarSetting> &
+Configuration::ScalarConfigSettings() {
+  static const std::vector<ScalarSetting> settings = {
+    {wxS("allowNetworkHelp"), &Configuration::m_allowNetworkHelp},
+    {wxS("autodetectMaxima"), &Configuration::m_autodetectMaxima},
+    {wxS("autoIndent"), &Configuration::m_autoIndent},
+    {wxS("autoWrapMode"), &Configuration::m_autoWrap},
+    {wxS("bitmapScale"), &Configuration::m_bitmapScale},
+    {wxS("changeAsterisk"), &Configuration::m_changeAsterisk},
+    {wxS("copyBitmap"), &Configuration::m_copyBitmap},
+    {wxS("copyEMF"), &Configuration::m_copyEMF},
+    {wxS("copyMathMLHTML"), &Configuration::m_copyMathMLHTML},
+    {wxS("copyMathML"), &Configuration::m_copyMathML},
+    {wxS("copyRTF"), &Configuration::m_copyRTF},
+    {wxS("copySVG"), &Configuration::m_copySVG},
+    {wxS("DefaultFramerate"), &Configuration::m_defaultFramerate},
+    {wxS("defaultPlotHeight"), &Configuration::m_defaultPlotHeight},
+    {wxS("defaultPlotWidth"), &Configuration::m_defaultPlotWidth},
+    {wxS("displayedDigits"), &Configuration::m_displayedDigits},
+    {wxS("enterEvaluates"), &Configuration::m_enterEvaluates},
+    {wxS("exportContainsWXMX"), &Configuration::m_exportContainsWXMX},
+    {wxS("fixedFontTC"), &Configuration::m_fixedFontTC},
+    {wxS("fixReorderedIndices"), &Configuration::m_fixReorderedIndices},
+    {wxS("hideBrackets"), &Configuration::m_hideBrackets},
+    {wxS("hidemultiplicationsign"), &Configuration::m_hidemultiplicationsign},
+    {wxS("indentMaths"), &Configuration::m_indentMaths},
+    {wxS("insertAns"), &Configuration::m_insertAns},
+    {wxS("latin2greek"), &Configuration::m_latin2greek},
+    {wxS("matchParens"), &Configuration::m_matchParens},
+    {wxS("mathJaxURL"), &Configuration::m_mathJaxURL},
+    {wxS("mathJaxURL_UseUser"), &Configuration::m_mathJaxURL_UseUser},
+    {wxS("maxima"), &Configuration::m_maximaUserLocation},
+    {wxS("maximaUsesHhtmlBrowser"), &Configuration::m_maximaUsesHhtmlBrowser},
+    {wxS("notifyIfIdle"), &Configuration::m_notifyIfIdle},
+    {wxS("numpadEnterEvaluates"), &Configuration::m_numpadEnterEvaluates},
+    {wxS("openHCaret"), &Configuration::m_openHCaret},
+    {wxS("printBrackets"), &Configuration::m_printBrackets},
+    {wxS("printScale"), &Configuration::m_printScale},
+    {wxS("restartOnReEvaluation"), &Configuration::m_restartOnReEvaluation},
+    {wxS("saveImgFileName"), &Configuration::m_saveImgFileName},
+    {wxS("showLength"), &Configuration::m_showLength},
+    {wxS("showMatchingParens"), &Configuration::m_showMatchingParens},
+    {wxS("singlePageManual"), &Configuration::m_singlePageManual},
+    {wxS("texPreamble"), &Configuration::m_texPreamble},
+    {wxS("tocDepth"), &Configuration::m_tocDepth},
+    {wxS("TOCshowsSectionNumbers"), &Configuration::m_TOCshowsSectionNumbers},
+    {wxS("useInternalHelpBrowser"), &Configuration::m_useInternalHelpBrowser},
+    {wxS("usePartialForDiff"), &Configuration::m_usePartialForDiff},
+    {wxS("usepngCairo"), &Configuration::m_usepngCairo},
+    {wxS("useSVG"), &Configuration::m_useSVG},
+    {wxS("useUnicodeMaths"), &Configuration::m_useUnicodeMaths},
+    {wxS("wizardTab"), &Configuration::m_wizardTab},
+    {wxS("wrapLatexMath"), &Configuration::m_wrapLatexMath},
+  };
+  return settings;
 }
 
 const std::vector<std::pair<TextStyle, wxString>> &
