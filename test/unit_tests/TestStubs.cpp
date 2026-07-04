@@ -23,7 +23,7 @@ bool Configuration::m_use_threads = false;
 Configuration::PerformanceStats Configuration::g_stats;
 wxColor Configuration::DefaultBackgroundColor() { return *wxWHITE; }
 
-Configuration::Configuration(wxDC *dc, InitOpt) : m_dc(dc) {}
+Configuration::Configuration(wxDC *dc, InitOpt) { m_renderContext.SetRecalcDC(dc); }
 Configuration::~Configuration() {}
 bool Configuration::InUpdateRegion(wxRect) const { return true; }
 wxCoord Configuration::Scale_Px(double) const { return 1; }

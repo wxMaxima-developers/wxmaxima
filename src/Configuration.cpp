@@ -50,9 +50,9 @@
 
 Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_initOpts(options),
-  m_eng{m_rd()},
-  m_dc(dc)
+  m_eng{m_rd()}
 {
+  m_renderContext.SetRecalcDC(dc);
   wxConfigBase *config = wxConfig::Get();
   std::uniform_int_distribution<long> urd(std::numeric_limits<long>::min(), std::numeric_limits<long>::max());
   m_configId = urd(m_eng);
@@ -96,9 +96,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_maximaOperators[wxS("do")] = 1;
   m_maximaHelpFormat = frontend;
   m_printing = false;
-  m_clipToDrawRegion = true;
   m_inLispMode = false;
-  m_forceUpdate = false;
   m_outdated = false;
   m_lineWidth_em = 88;
   m_workSheet = NULL;
@@ -139,11 +137,10 @@ Configuration::Configuration(const Configuration &o) :
   m_autodetectHelpBrowser(o.m_autodetectHelpBrowser),
   m_useInternalHelpBrowser(o.m_useInternalHelpBrowser),
   m_singlePageManual(o.m_singlePageManual),
-  m_updateRegion(o.m_updateRegion),
   m_incrementalSearch(o.m_incrementalSearch),
   m_autoSubscript(o.m_autoSubscript),
   m_workSheet(nullptr),
-  m_worksheetDC(nullptr),
+  m_renderContext(o.m_renderContext),
   m_wrapLatexMath(o.m_wrapLatexMath),
   m_allowNetworkHelp(o.m_allowNetworkHelp),
   m_exportContainsWXMX(o.m_exportContainsWXMX),
@@ -159,7 +156,6 @@ Configuration::Configuration(const Configuration &o) :
   m_printMargin_Bot(o.m_printMargin_Bot),
   m_printMargin_Left(o.m_printMargin_Left),
   m_printMargin_Right(o.m_printMargin_Right),
-  m_canvasSize(o.m_canvasSize),
   m_showBrackets(o.m_showBrackets),
   m_printBrackets(o.m_printBrackets),
   m_changeAsterisk(o.m_changeAsterisk),
@@ -176,11 +172,8 @@ Configuration::Configuration(const Configuration &o) :
   m_indent(o.m_indent),
   m_latin2greek(o.m_latin2greek),
   m_zoomFactor(o.m_zoomFactor),
-  m_dc(o.m_dc),
   m_maximaShareDir(o.m_maximaShareDir),
   m_maximaDemoDir(o.m_maximaDemoDir),
-  m_forceUpdate(o.m_forceUpdate),
-  m_clipToDrawRegion(o.m_clipToDrawRegion),
   m_outdated(o.m_outdated),
   m_maximaParameters(o.m_maximaParameters),
   m_keepPercent(o.m_keepPercent),
@@ -229,9 +222,7 @@ Configuration::Configuration(const Configuration &o) :
   m_documentclassOptions(o.m_documentclassOptions),
   m_htmlEquationFormat(o.m_htmlEquationFormat),
   m_visibleRegion(o.m_visibleRegion),
-  m_worksheetPosition(o.m_worksheetPosition),
   m_defaultBackgroundColor(o.m_defaultBackgroundColor),
-  m_BackgroundBrush(o.m_BackgroundBrush),
   m_tooltipBrush(o.m_tooltipBrush),
   m_greekSidebar_ShowLatinLookalikes(o.m_greekSidebar_ShowLatinLookalikes),
   m_greekSidebar_Show_mu(o.m_greekSidebar_Show_mu),
@@ -262,16 +253,9 @@ void Configuration::SetWorkSheet(wxWindow *workSheet)
 {
   m_workSheet = workSheet;
   if(workSheet)
-    {
-      m_worksheetDC = std::unique_ptr<wxClientDC>(new wxClientDC(workSheet));
-      m_dc = m_worksheetDC.get();
-    }
+    m_renderContext.AttachWorksheetDC(workSheet);
   else
-    {
-      if(m_dc == m_worksheetDC.get())
-        m_dc = NULL;
-      m_worksheetDC.reset();
-    }
+    m_renderContext.DetachWorksheetDC();
 }
 
 wxSize Configuration::GetPPI() const {
@@ -591,12 +575,12 @@ void Configuration::ShowCodeCells(bool show) {
 }
 
 void Configuration::UpdateBackgroundBrush() {
-  m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(
-    m_styleStore[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
+  m_renderContext.SetBackgroundBrush(*wxTheBrushList->FindOrCreateBrush(
+    m_styleStore[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID));
 }
 
 void Configuration::SetBackgroundBrush(const wxBrush &brush) {
-  m_BackgroundBrush = brush;
+  m_renderContext.SetBackgroundBrush(brush);
   m_tooltipBrush = brush;
   m_tooltipBrush.SetColour(wxColour(255, 255, 192, 128));
 }
@@ -1176,8 +1160,8 @@ void Configuration::ReadStyles(const wxString &file) {
     m_styleStore[TS_MATH].SetFontName(tmpString);
 
   m_styleStore.Read(config);
-  m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(
-                                                         m_styleStore[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
+  m_renderContext.SetBackgroundBrush(*wxTheBrushList->FindOrCreateBrush(
+                                                         m_styleStore[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID));
   MakeStylesConsistent();
 }
 

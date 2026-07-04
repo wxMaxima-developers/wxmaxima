@@ -30,6 +30,7 @@
 #include <wx/hashmap.h>
 #include "dialogs/LoggingMessageDialog.h"
 #include "cells/TextStyle.h"
+#include "RenderContext.h"
 #include "Styles.h"
 #include <cstdint>
 #include <memory>
@@ -195,9 +196,9 @@ public:
   //! Set the drawing context that is currently active
   void SetRecalcContext(wxDC &dc)
     {
-      m_dc = &dc;
+      m_renderContext.SetRecalcDC(&dc);
     }
-  void UnsetContext() {m_dc = NULL;}
+  void UnsetContext() {m_renderContext.SetRecalcDC(NULL);}
 
   //! Set the brush to be used for the worksheet background
   void SetBackgroundBrush(const wxBrush &brush);
@@ -206,7 +207,7 @@ public:
   //! Use a typewriter font in wizard entry fields that can contain maxima commands?
   void FixedFontInTextControls(bool fixed) {m_fixedFontTC = fixed;}
   //! Get the brush to be used for the worksheet background
-  wxBrush GetBackgroundBrush() const {return m_BackgroundBrush;}
+  wxBrush GetBackgroundBrush() const {return m_renderContext.GetBackgroundBrush();}
   //! Get the brush to be used for worksheet objects that provide a mouse-over tooltip
   wxBrush GetTooltipBrush() const {return m_tooltipBrush;}
 
@@ -302,10 +303,10 @@ public:
 
   //! Get a drawing context suitable for size calculations
   wxDC *GetRecalcDC() const
-    { return m_dc; }
+    { return m_renderContext.GetRecalcDC(); }
 
   void SetRecalcDC(wxDC *dc)
-    { m_dc = dc; }
+    { m_renderContext.SetRecalcDC(dc); }
 
   wxString GetFontName(TextStyle ts = TS_CODE_DEFAULT) const;
 
@@ -423,24 +424,13 @@ public:
   void SetLayoutStrategy(LayoutStrategy s) { m_layoutStrategy = s; }
 
   void SetLayoutDeadline(int seconds) {
-    m_layoutDeadline = std::chrono::steady_clock::now() +
-                       std::chrono::seconds(seconds);
-    m_layoutCancelled.store(false, std::memory_order_relaxed);
-    m_layoutDeadlineActive = true;
+    m_renderContext.SetLayoutDeadline(seconds);
   }
   void ClearLayoutCancelled() {
-    m_layoutDeadlineActive = false;
-    m_layoutCancelled.store(false, std::memory_order_relaxed);
+    m_renderContext.ClearLayoutCancelled();
   }
   bool IsLayoutCancelled() const {
-    if (m_layoutCancelled.load(std::memory_order_relaxed))
-      return true;
-    if (m_layoutDeadlineActive &&
-        std::chrono::steady_clock::now() >= m_layoutDeadline) {
-      m_layoutCancelled.store(true, std::memory_order_relaxed);
-      return true;
-    }
-    return false;
+    return m_renderContext.IsLayoutCancelled();
   }
 
   struct CharsExist {
@@ -741,10 +731,10 @@ public:
   void PushFileToSave(const wxString &filename, const wxMemoryBuffer &data)
     { m_filesToSave.emplace_front(FileToSave(filename, data)); }
 
-  wxRect GetUpdateRegion() const {return m_updateRegion;}
+  wxRect GetUpdateRegion() const {return m_renderContext.GetUpdateRegion();}
   const std::list<FileToSave> &GetFilesToSave() const {return m_filesToSave;}
   void ClearFilesToSave () { m_filesToSave.clear();}
-  void SetUpdateRegion(wxRect rect){m_updateRegion = rect;}
+  void SetUpdateRegion(wxRect rect){m_renderContext.SetUpdateRegion(rect);}
 
   //! Whether any part of the given rectangle is within the current update region,
   //! or true if drawing is not clipped to update region.
@@ -767,15 +757,15 @@ public:
 
   //! Reads the size of the current worksheet's visible window. See SetCanvasSize
   wxSize GetCanvasSize() const
-    { return m_canvasSize; }
+    { return m_renderContext.GetCanvasSize(); }
 
   //! Sets the size of the current worksheet's visible window.
   void SetCanvasSize(wxSize siz)
     {
-      if(m_canvasSize.GetWidth() != siz.GetWidth() ||
-         m_canvasSize.GetHeight() != siz.GetHeight())
+      if(GetCanvasSize().GetWidth() != siz.GetWidth() ||
+         GetCanvasSize().GetHeight() != siz.GetHeight())
         RecalculateForce();
-      m_canvasSize = siz;
+      m_renderContext.SetCanvasSize(siz);
     }
 
   //! Show the cell brackets [displayed left to each group cell showing its extend]?
@@ -1031,17 +1021,17 @@ public:
   //! Determine the default background color of editorcells
   wxColor EditorBackgroundColor();
   //! Do we want to save time by only redrawing the area currently shown on the screen?
-  bool ClipToDrawRegion() const {return m_clipToDrawRegion;}
+  bool ClipToDrawRegion() const {return m_renderContext.ClipToDrawRegion();}
   //! Do we want to save time by only redrawing the area currently shown on the screen?
-  void ClipToDrawRegion(bool clipToDrawRegion){m_clipToDrawRegion = clipToDrawRegion; m_forceUpdate = true;}
+  void ClipToDrawRegion(bool clipToDrawRegion){m_renderContext.ClipToDrawRegion(clipToDrawRegion);}
   void SetVisibleRegion(wxRect visibleRegion){
     if(m_visibleRegion.GetWidth() != visibleRegion.GetWidth())
       RecalculateForce();
     m_visibleRegion = visibleRegion;
   }
   wxRect GetVisibleRegion() const {return m_visibleRegion;}
-  void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
-  wxPoint GetWorksheetPosition() const {return m_worksheetPosition;}
+  void SetWorksheetPosition(wxPoint worksheetPosition){m_renderContext.SetWorksheetPosition(worksheetPosition);}
+  wxPoint GetWorksheetPosition() const {return m_renderContext.GetWorksheetPosition();}
   wxString MaximaShareDir() const {return m_maximaShareDir;}
   void MaximaShareDir(wxString dir){m_maximaShareDir = std::move(dir);}
   wxString MaximaDemoDir() const {return m_maximaDemoDir;}
@@ -1223,16 +1213,14 @@ private:
   bool m_useInternalHelpBrowser;
   //! Prefer the single-page manual?
   bool m_singlePageManual;
-  //! The worksheet all cells are drawn on
-  wxRect m_updateRegion;
   //! Do we want to use incremental search?
   bool m_incrementalSearch;
   //! Which objects do we want to convert into subscripts if they occur after an underscore?
   long m_autoSubscript;
   //! The worksheet this configuration storage is valid for
   wxWindow *m_workSheet = NULL;
-  //! A drawing context that knows the text sizes for the worksheet
-  std::unique_ptr<wxClientDC> m_worksheetDC;
+  //! The state of the current render pass (DCs, canvas, clipping, deadline)
+  RenderContext m_renderContext;
   /*! Do these chars exist in the given font?
 
     wxWidgets currently doesn't define such a function. But we can do the following:
@@ -1265,8 +1253,6 @@ private:
   double m_printMargin_Bot;
   double m_printMargin_Left;
   double m_printMargin_Right;
-  //! The size of the canvas our cells have to be drawn on
-  wxSize m_canvasSize;
   //! Show the cell brackets [displayed left to each group cell showing its extend]?
   bool m_showBrackets;
   //! Prlong the cell brackets [displayed left to each group cell showing its extend]?
@@ -1300,11 +1286,8 @@ private:
   long m_indent;
   bool m_latin2greek;
   double m_zoomFactor;
-  wxDC *m_dc;
   wxString m_maximaShareDir;
   wxString m_maximaDemoDir;
-  bool m_forceUpdate;
-  bool m_clipToDrawRegion = true;
   bool m_outdated;
   wxString m_maximaParameters;
   bool m_keepPercent;
@@ -1359,12 +1342,8 @@ private:
   htmlExportFormat m_htmlEquationFormat;
   //! The rectangle of the worksheet that is currently visible.
   wxRect m_visibleRegion;
-  //! The position of the worksheet in the wxMaxima window
-  wxPoint m_worksheetPosition;
 
   wxColour m_defaultBackgroundColor;
-  //! The brush the normal cell background is painted with
-  wxBrush m_BackgroundBrush;
   wxBrush m_tooltipBrush;
   bool m_greekSidebar_ShowLatinLookalikes;
   #ifdef __WXMSW__
@@ -1382,9 +1361,6 @@ private:
   int m_autoSaveMinutes;
   int m_maxLayoutTime;
   LayoutStrategy m_layoutStrategy = LayoutStrategy::layout2DIfFits;
-  std::chrono::steady_clock::time_point m_layoutDeadline;
-  bool m_layoutDeadlineActive = false;
-  mutable std::atomic<bool> m_layoutCancelled{false};
   wxString m_wxMathML_Filename;
   maximaHelpFormat m_maximaHelpFormat;
   wxTextCtrl *m_lastActiveTextCtrl = NULL;
