@@ -57,6 +57,13 @@ add_executable(test_DiffScrollSync test_DiffScrollSync.cpp ${WXM_TEST_SETUP})
 target_link_libraries(test_DiffScrollSync PRIVATE ${wxWidgets_LIBRARIES})
 add_test(DiffScrollSync test_DiffScrollSync)
 
+# The parser for the <variables> XML Maxima sends (extracted from
+# wxMaxima::ReadVariables) is GUI-free, so it is tested directly too.
+add_executable(test_MaximaVariableUpdates
+    test_MaximaVariableUpdates.cpp ${WXM_TEST_SETUP})
+target_link_libraries(test_MaximaVariableUpdates PRIVATE ${wxWidgets_LIBRARIES})
+add_test(MaximaVariableUpdates test_MaximaVariableUpdates)
+
 # Guards the wxWidgets 3.3 "item" assert that wxMenu::GetHelpString() trips when
 # a highlighted menu id is not an item of that menu (seen mainly via the Windows
 # native menu code). MenuHelpString() is a tiny GUI-object helper, so it is

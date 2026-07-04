@@ -143,6 +143,7 @@ set(SOURCE_FILES
     MaximaIPC.cpp
     MaximaTokenizer.cpp
     MaximaManual.cpp
+    MaximaVariableUpdates.cpp
     nanoSVG.cpp
     Notification.cpp
     RecentDocuments.cpp

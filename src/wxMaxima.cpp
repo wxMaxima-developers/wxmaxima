@@ -70,6 +70,7 @@
 #include "wizards/MatWiz.h"
 #include "dialogs/MaxSizeChooser.h"
 #include "Maxima.h"
+#include "MaximaVariableUpdates.h"
 #include "wizards/Plot2dWiz.h"
 #include "wizards/Plot3dWiz.h"
 #include "wizards/PlotFormatWiz.h"
@@ -2879,58 +2880,32 @@ void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {
     }
   else
     {
-      int num = 0;
-      wxXmlNode *node = xmldoc.GetRoot();
-      if (node != NULL) {
-        wxXmlNode *vars = node->GetChildren();
-        while (vars != NULL) {
-          wxXmlNode *var = vars->GetChildren();
+      const std::vector<MaximaVariableUpdate> updates =
+        ParseMaximaVariableUpdates(xmldoc);
 
-          wxString name;
-          wxString value;
-          bool bound = false;
-          while (var != NULL) {
-            if (var->GetName() == wxS("name")) {
-              num++;
-              wxXmlNode *namenode = var->GetChildren();
-              if (namenode)
-                name = namenode->GetContent();
-            }
-            if (var->GetName() == wxS("value")) {
-              wxXmlNode *valnode = var->GetChildren();
-              if (valnode) {
-                bound = true;
-                value = valnode->GetContent();
-              }
-            }
+      for (const MaximaVariableUpdate &update : updates) {
+        if (update.m_bound) {
+          if(GetWorksheet() && (m_variablesPane))
+            m_variablesPane->VariableValue(update.m_name, update.m_value);
 
-            if (bound) {
-              if(GetWorksheet() && (m_variablesPane))
-                m_variablesPane->VariableValue(name, value);
+          // Undo an eventual stringdisp:true adding quoting marks to strings
+          wxString value = update.m_value;
+          if (value.StartsWith("\"") && value.EndsWith("\""))
+            value = value.SubString(1, value.Length() - 2);
 
-              // Undo an eventual stringdisp:true adding quoting marks to strings
-              if (value.StartsWith("\"") && value.EndsWith("\""))
-                value = value.SubString(1, value.Length() - 2);
-
-              auto varFunc = m_variableReadActions.find(name);
-              if (varFunc != m_variableReadActions.end())
-                std::invoke(varFunc->second, this, value);
-            } else {
-              if(GetWorksheet() && (m_variablesPane))
-                m_variablesPane->VariableUndefined(name);
-              auto varFunc = m_variableUndefinedActions.find(name);
-              if (varFunc != m_variableUndefinedActions.end())
-                std::invoke(varFunc->second, this);
-            }
-
-            var = var->GetNext();
-          }
-
-          vars = vars->GetNext();
+          auto varFunc = m_variableReadActions.find(update.m_name);
+          if (varFunc != m_variableReadActions.end())
+            std::invoke(varFunc->second, this, value);
+        } else {
+          if(GetWorksheet() && (m_variablesPane))
+            m_variablesPane->VariableUndefined(update.m_name);
+          auto varFunc = m_variableUndefinedActions.find(update.m_name);
+          if (varFunc != m_variableUndefinedActions.end())
+            std::invoke(varFunc->second, this);
         }
       }
 
-      if (num > 1)
+      if (updates.size() > 1)
         wxLogMessage(_("Maxima sends a new set of auto-completable symbols."));
       else
         wxLogMessage(_("Maxima has sent a new variable value."));
