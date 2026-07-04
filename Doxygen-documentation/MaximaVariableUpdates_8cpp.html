@@ -100,6 +100,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a343f2c542934ec2447b4299676d9e7a6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structMaximaVariableUpdate.html">MaximaVariableUpdate</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="MaximaVariableUpdates_8cpp.html#a343f2c542934ec2447b4299676d9e7a6">ParseMaximaVariableUpdates</a> (const wxXmlDocument &amp;xmldoc)</td></tr>
 <tr class="memdesc:a343f2c542934ec2447b4299676d9e7a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a &lt;variables&gt; XML document <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sent into a list of updates.  <br /></td></tr>
 <tr class="separator:a343f2c542934ec2447b4299676d9e7a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d90a8904acd82794ec9c65194d8fac9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; wxString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="MaximaVariableUpdates_8cpp.html#a6d90a8904acd82794ec9c65194d8fac9">ParseWatchVariableAdditions</a> (const wxXmlDocument &amp;xmldoc)</td></tr>
+<tr class="memdesc:a6d90a8904acd82794ec9c65194d8fac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the &lt;watch_variables_add&gt; XML document <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends into the list of variable names to add to the watch list.  <br /></td></tr>
+<tr class="separator:a6d90a8904acd82794ec9c65194d8fac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implements the parser for the &lt;variables&gt; XML documents <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends. </p>
@@ -123,6 +126,28 @@ Functions</h2></td></tr>
 <p>Parses a &lt;variables&gt; XML document <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sent into a list of updates. </p>
 <p>Returns one entry per &lt;variable&gt; element that contains a &lt;name&gt;. An entry is bound if the element also contains a non-empty </p>
 <p>node.</p>
+<p>The document's validity (wxXmlDocument::IsOk()) is the caller's responsibility; an invalid or empty document yields an empty list. </p>
+
+</div>
+</div>
+<a id="a6d90a8904acd82794ec9c65194d8fac9" name="a6d90a8904acd82794ec9c65194d8fac9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d90a8904acd82794ec9c65194d8fac9">&#9670;&#160;</a></span>ParseWatchVariableAdditions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; wxString &gt; ParseWatchVariableAdditions </td>
+          <td>(</td>
+          <td class="paramtype">const wxXmlDocument &amp;&#160;</td>
+          <td class="paramname"><em>xmldoc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parses the &lt;watch_variables_add&gt; XML document <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sends into the list of variable names to add to the watch list. </p>
+<p>Unlike the &lt;variables&gt; document above, each &lt;variable&gt; element here holds the variable's name directly as its text content.</p>
 <p>The document's validity (wxXmlDocument::IsOk()) is the caller's responsibility; an invalid or empty document yields an empty list. </p>
 
 </div>
