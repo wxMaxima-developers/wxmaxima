@@ -95,7 +95,6 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_maximaOperators[wxS("$BFLOAT")] = 1;
   m_maximaOperators[wxS("do")] = 1;
   m_maximaHelpFormat = frontend;
-  m_printing = false;
   m_inLispMode = false;
   m_outdated = false;
   m_lineWidth_em = 88;
@@ -183,7 +182,6 @@ Configuration::Configuration(const Configuration &o) :
   m_fontCMEX(o.m_fontCMEX),
   m_fontCMMI(o.m_fontCMMI),
   m_fontCMTI(o.m_fontCMTI),
-  m_printing(o.m_printing),
   m_lineWidth_em(o.m_lineWidth_em),
   m_showLabelChoice(o.m_showLabelChoice),
   m_fixReorderedIndices(o.m_fixReorderedIndices),
@@ -217,11 +215,9 @@ Configuration::Configuration(const Configuration &o) :
   m_cursorJump(o.m_cursorJump),
   m_numpadEnterEvaluates(o.m_numpadEnterEvaluates),
   m_saveImgFileName(o.m_saveImgFileName),
-  m_cellRedrawTrace(nullptr),
   m_documentclass(o.m_documentclass),
   m_documentclassOptions(o.m_documentclassOptions),
   m_htmlEquationFormat(o.m_htmlEquationFormat),
-  m_visibleRegion(o.m_visibleRegion),
   m_defaultBackgroundColor(o.m_defaultBackgroundColor),
   m_tooltipBrush(o.m_tooltipBrush),
   m_greekSidebar_ShowLatinLookalikes(o.m_greekSidebar_ShowLatinLookalikes),
@@ -953,50 +949,29 @@ wxColor Configuration::EditorBackgroundColor() {
 void Configuration::NotifyOfCellRedraw(const Cell *cell) {
   if(!GetDebugmode())
     return;
-  if (!m_cellRedrawTrace || !cell)
-    return;
-  // This operation is fast and doesn't allocate after the configuration
-  // was used for a few screen redraws.
-  m_cellRedrawTrace->push_back(cell);
+  m_renderContext.NotifyOfCellRedraw(cell);
 }
 
 void Configuration::ClearAndEnableRedrawTracing() {
   if(!GetDebugmode())
     return;
-  if (!m_cellRedrawTrace)
-    m_cellRedrawTrace.reset(new CellRedrawTrace);
-  else
-    m_cellRedrawTrace->clear();
+  m_renderContext.ClearAndEnableRedrawTracing();
 }
 
 void Configuration::ReportMultipleRedraws() {
   if(!GetDebugmode())
     return;
 
-  if (!m_cellRedrawTrace)
-    return;
-
-  // This sort is over two orders of magnitude faster,
-  // per-cell, than having counters in a map or hash.
-  std::sort(m_cellRedrawTrace->begin(), m_cellRedrawTrace->end());
-  size_t counter = 0;
-  const Cell *prev = {};
-  for (auto *cell : *m_cellRedrawTrace) {
-    if (prev != cell) {
-      wxASSERT(counter <= 1);
-      if (counter > 1)
-        wxLogMessage(
-                     "Bug: %li redraws in one screen refresh for a cell reading \"%s\"",
-                     static_cast<long>(counter), prev->ToString().mb_str());
-      prev = cell;
-      counter = 1;
-    } else
-      ++counter;
-  }
+  m_renderContext.ReportMultipleRedraws([](size_t counter, const Cell *cell) {
+    wxASSERT(counter <= 1);
+    wxLogMessage(
+                 "Bug: %li redraws in one screen refresh for a cell reading \"%s\"",
+                 static_cast<long>(counter), cell->ToString().mb_str());
+  });
 }
 
 void Configuration::SetPrinting(bool printing) {
-  m_printing = printing;
+  m_renderContext.SetPrinting(printing);
   // Always print against the light style set (white paper), regardless of the
   // on-screen appearance.
   m_styleStore.SetUseDark(printing ? false : UseDarkMode());
@@ -1014,7 +989,7 @@ long Configuration::GetLineWidth() const {
 
   // If that was suspiciously wide we reduce the default line width again.
   if ((lineWidth >= Scale_Px(GetDefaultFontSize().Get()) * LineWidth_em()) &&
-      (!m_printing))
+      (!GetPrinting()))
     lineWidth = Scale_Px(GetDefaultFontSize().Get()) * LineWidth_em();
   return lineWidth;
 }

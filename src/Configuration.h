@@ -367,7 +367,7 @@ public:
     {
       long ppi;
 
-      if(!m_printing)
+      if(!GetPrinting())
         ppi = GetPPI().x;
       else
         ppi = 96;
@@ -458,7 +458,7 @@ public:
   //! The minimum sensible line width in widths of a letter.
   long LineWidth_em() const
     {
-      if(!m_printing)
+      if(!GetPrinting())
         return m_lineWidth_em;
       else
         return 10000;
@@ -620,7 +620,7 @@ public:
     redrawn.
   */
   bool GetPrinting() const
-    { return m_printing; }
+    { return m_renderContext.Printing(); }
 
   //! Gets the color for a text style
   wxColour GetColor(TextStyle style);
@@ -1025,11 +1025,11 @@ public:
   //! Do we want to save time by only redrawing the area currently shown on the screen?
   void ClipToDrawRegion(bool clipToDrawRegion){m_renderContext.ClipToDrawRegion(clipToDrawRegion);}
   void SetVisibleRegion(wxRect visibleRegion){
-    if(m_visibleRegion.GetWidth() != visibleRegion.GetWidth())
+    if(m_renderContext.GetVisibleRegion().GetWidth() != visibleRegion.GetWidth())
       RecalculateForce();
-    m_visibleRegion = visibleRegion;
+    m_renderContext.SetVisibleRegion(visibleRegion);
   }
-  wxRect GetVisibleRegion() const {return m_visibleRegion;}
+  wxRect GetVisibleRegion() const {return m_renderContext.GetVisibleRegion();}
   void SetWorksheetPosition(wxPoint worksheetPosition){m_renderContext.SetWorksheetPosition(worksheetPosition);}
   wxPoint GetWorksheetPosition() const {return m_renderContext.GetWorksheetPosition();}
   wxString MaximaShareDir() const {return m_maximaShareDir;}
@@ -1054,8 +1054,10 @@ public:
   bool UsePartialForDiff() const {return m_usePartialForDiff;}
   void UsePartialForDiff(bool usePartialForDiff)
     {m_usePartialForDiff = usePartialForDiff;}
-  bool GetAdjustWorksheetSizeNeeded() const { return m_adjustWorksheetSizeNeeded; }
-  void SetAdjustWorksheetSizeNeeded(bool val) { m_adjustWorksheetSizeNeeded = val; }
+  bool GetAdjustWorksheetSizeNeeded() const
+    { return m_renderContext.GetAdjustWorksheetSizeNeeded(); }
+  void SetAdjustWorksheetSizeNeeded(bool val)
+    { m_renderContext.SetAdjustWorksheetSizeNeeded(val); }
   //! Record that this cell has been drawn to ReportMultipleRedraws()
   void NotifyOfCellRedraw(const Cell *cell);
   //! Clear the memory of ReportMultipleRedraws()
@@ -1193,7 +1195,6 @@ private:
   //! True if drawing the char this button displays differs visibly from otherChar
   static bool CharVisiblyDifferent(wxChar ch, wxChar otherChar, const wxFont &font = *wxNORMAL_FONT);
   mathDisplayMode m_displayMode = display_2d;
-  using CellRedrawTrace = std::vector<const Cell*>;
   static bool m_debugMode;
   bool m_showInputLabels;
   long m_wizardTab;
@@ -1293,7 +1294,6 @@ private:
   bool m_keepPercent;
   bool m_restartOnReEvaluation;
   wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
-  bool m_printing;
   long m_lineWidth_em;
   showLabels m_showLabelChoice;
   bool m_fixReorderedIndices;
@@ -1306,7 +1306,6 @@ private:
   long m_showLength;
   //!< don't add ; in lisp mode
   bool m_inLispMode;
-  bool m_adjustWorksheetSizeNeeded = false;
   bool m_usepngCairo;
   bool m_enterEvaluates;
   bool m_useSVG;
@@ -1329,19 +1328,9 @@ private:
   bool m_cursorJump;
   bool m_numpadEnterEvaluates;
   bool m_saveImgFileName;
-  /*! A vector containing pointers to all cells the current draw command hit
-
-    Only used in debug mode. There it is used in order to determine if any
-    cell is drawn twice - which most likely means that a 2D-displayed cell
-    draws its sub-cells, but didn't remove them from the list of cells to draw
-    after this cell has been drawn.
-  */
-  std::unique_ptr<CellRedrawTrace> m_cellRedrawTrace;
   wxString m_documentclass;
   wxString m_documentclassOptions;
   htmlExportFormat m_htmlEquationFormat;
-  //! The rectangle of the worksheet that is currently visible.
-  wxRect m_visibleRegion;
 
   wxColour m_defaultBackgroundColor;
   wxBrush m_tooltipBrush;
