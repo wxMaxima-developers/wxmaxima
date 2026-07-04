@@ -20,5 +20,6 @@ var searchData=
   ['textstyle_2eh_17',['TextStyle.h',['../TextStyle_8h.html',1,'']]],
   ['toolbar_2ecpp_18',['ToolBar.cpp',['../ToolBar_8cpp.html',1,'']]],
   ['toolbar_2eh_19',['ToolBar.h',['../ToolBar_8h.html',1,'']]],
-  ['treeundoaction_2eh_20',['TreeUndoAction.h',['../TreeUndoAction_8h.html',1,'']]]
+  ['treeundoaction_2eh_20',['TreeUndoAction.h',['../TreeUndoAction_8h.html',1,'']]],
+  ['treeundomanager_2eh_21',['TreeUndoManager.h',['../TreeUndoManager_8h.html',1,'']]]
 ];

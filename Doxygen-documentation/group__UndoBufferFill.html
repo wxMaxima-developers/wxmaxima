@@ -88,21 +88,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_C
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_ClearUndoActionList</b> ()</td></tr>
 <tr class="memdesc:ga96aefed098d643df24e9f5e51487280e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the list of actions for which undo can undo. <br /></td></tr>
 <tr class="separator:ga96aefed098d643df24e9f5e51487280e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3d8f4e3b278cc24036459d581649c9d9"><td class="memItemLeft" align="right" valign="top"><a id="ga3d8f4e3b278cc24036459d581649c9d9" name="ga3d8f4e3b278cc24036459d581649c9d9"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_DiscardAction</b> (<a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *actionList)</td></tr>
-<tr class="memdesc:ga3d8f4e3b278cc24036459d581649c9d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove one action ftom the action list. <br /></td></tr>
-<tr class="separator:ga3d8f4e3b278cc24036459d581649c9d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad27a8f674ff188f23a91de4624dfb0da"><td class="memItemLeft" align="right" valign="top"><a id="gad27a8f674ff188f23a91de4624dfb0da" name="gad27a8f674ff188f23a91de4624dfb0da"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_AppendAction</b> (<a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *actionList)</td></tr>
-<tr class="memdesc:gad27a8f674ff188f23a91de4624dfb0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add another action to this undo action. <br /></td></tr>
-<tr class="separator:gad27a8f674ff188f23a91de4624dfb0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga38f2c09271000e2e269fe1a3a501055d"><td class="memItemLeft" align="right" valign="top"><a id="ga38f2c09271000e2e269fe1a3a501055d" name="ga38f2c09271000e2e269fe1a3a501055d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_AppendAction</b> ()</td></tr>
 <tr class="memdesc:ga38f2c09271000e2e269fe1a3a501055d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add another action to this undo action. <br /></td></tr>
 <tr class="separator:ga38f2c09271000e2e269fe1a3a501055d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga01d9bac25f92583620585e81edc7eecc"><td class="memItemLeft" align="right" valign="top"><a id="ga01d9bac25f92583620585e81edc7eecc" name="ga01d9bac25f92583620585e81edc7eecc"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Worksheet::TreeUndo_LimitUndoBuffer</b> ()</td></tr>
-<tr class="memdesc:ga01d9bac25f92583620585e81edc7eecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drop actions from the back of the undo list until itis within the undo limit. <br /></td></tr>
+<tr class="memdesc:ga01d9bac25f92583620585e81edc7eecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drop actions from the back of the undo list until it is within the undo limit. <br /></td></tr>
 <tr class="separator:ga01d9bac25f92583620585e81edc7eecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf5e54e7c3397cf9d5473584fa3a5f784"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gaf5e54e7c3397cf9d5473584fa3a5f784">Worksheet::TreeUndo</a> (<a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *sourcelist, <a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *undoForThisOperation)</td></tr>
 <tr class="memdesc:gaf5e54e7c3397cf9d5473584fa3a5f784"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo an item from a list of undo actions.  <br /></td></tr>
@@ -170,8 +162,8 @@ This approach allows the undo functionality to use the regular add and delete op
     <tr><td class="paramname">start</td><td>The first cell to delete </td></tr>
     <tr><td class="paramname">end</td><td>The last cell to delete </td></tr>
     <tr><td class="paramname">undoBuffer</td><td>The buffer the undo information has to be kept in. Might be<ul>
-<li>treeUndoActions for normal deletes,</li>
-<li>treeRedoActions for deletions while executing an undo or</li>
+<li>m_treeUndo.UndoStack() for normal deletes,</li>
+<li>m_treeUndo.RedoStack() for deletions while executing an undo or</li>
 <li>NULL for: Don't keep any copy of the cells.</li>
 </ul>
 </td></tr>
@@ -299,8 +291,8 @@ This approach allows the undo functionality to use the regular add and delete op
     <tr><td class="paramname">start</td><td>The first cell that has been added </td></tr>
     <tr><td class="paramname">end</td><td>The last cell that has been added </td></tr>
     <tr><td class="paramname">undoBuffer</td><td>Where to store the undo information. This normally is<ul>
-<li>treeUedoActions for the normal undo buffer or</li>
-<li>treeRedoActions for the buffer that allows reverting undos </li>
+<li>m_treeUndo.UndoStack() for the normal undo buffer or</li>
+<li>m_treeUndo.RedoStack() for the buffer that allows reverting undos </li>
 </ul>
 </td></tr>
   </table>

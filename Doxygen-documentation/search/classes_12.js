@@ -21,6 +21,7 @@ var searchData=
   ['tornout_18',['TornOut',['../structCellList_1_1TornOut.html',1,'CellList']]],
   ['totals_19',['Totals',['../structCatch_1_1Totals.html',1,'Catch']]],
   ['treeundoaction_20',['TreeUndoAction',['../classTreeUndoAction.html',1,'']]],
-  ['truck_21',['Truck',['../structTruck.html',1,'']]],
-  ['true_5fgiven_22',['true_given',['../structCatch_1_1true__given.html',1,'Catch']]]
+  ['treeundomanager_21',['TreeUndoManager',['../classTreeUndoManager.html',1,'']]],
+  ['truck_22',['Truck',['../structTruck.html',1,'']]],
+  ['true_5fgiven_23',['true_given',['../structCatch_1_1true__given.html',1,'Catch']]]
 ];
