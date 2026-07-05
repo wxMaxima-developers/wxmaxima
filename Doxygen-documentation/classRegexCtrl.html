@@ -72,6 +72,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a>  </div>
   <div class="headertitle"><div class="title">RegexCtrl Class Reference</div></div>
 </div><!--header-->
@@ -106,6 +107,16 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Matches</b> (wxString
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSkipTab</b> (bool skip)</td></tr>
 <tr class="separator:a288374aee04e09786e0f4e1e1124f24a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a1fc69047ab758c8950aeb7d362db11e7"><td class="memItemLeft" align="right" valign="top">static wxTextCtrl *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBTextCtrl.html#a1fc69047ab758c8950aeb7d362db11e7">LastActive</a> ()</td></tr>
+<tr class="memdesc:a1fc69047ab758c8950aeb7d362db11e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last <a class="el" href="classBTextCtrl.html" title="A wxTextCtrl with parenthesis matching.">BTextCtrl</a> that got the keyboard focus, if it still exists.  <br /></td></tr>
+<tr class="separator:a1fc69047ab758c8950aeb7d362db11e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fce5d321fa5ca1922077f416be546a9"><td class="memItemLeft" align="right" valign="top"><a id="a5fce5d321fa5ca1922077f416be546a9" name="a5fce5d321fa5ca1922077f416be546a9"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ForgetLastActive</b> ()</td></tr>
+<tr class="memdesc:a5fce5d321fa5ca1922077f416be546a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Route sidebar button presses back to the worksheet again. <br /></td></tr>
+<tr class="separator:a5fce5d321fa5ca1922077f416be546a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:abc08f4f45a489fee2a1f4593cca23f74"><td class="memItemLeft" align="right" valign="top"><a id="abc08f4f45a489fee2a1f4593cca23f74" name="abc08f4f45a489fee2a1f4593cca23f74"></a>
@@ -127,7 +138,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnChange</b> ()</td><
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classA.html">A</a> <a class="el" href="classBTextCtrl.html" title="A wxTextCtrl with parenthesis matching.">BTextCtrl</a> that allows to input a regex. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1fc69047ab758c8950aeb7d362db11e7" name="a1fc69047ab758c8950aeb7d362db11e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fc69047ab758c8950aeb7d362db11e7">&#9670;&#160;</a></span>LastActive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static wxTextCtrl * BTextCtrl::LastActive </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The last <a class="el" href="classBTextCtrl.html" title="A wxTextCtrl with parenthesis matching.">BTextCtrl</a> that got the keyboard focus, if it still exists. </p>
+<p>The symbols sidebars use this to route their button presses: if a text control (e.g. a wizard field) had the focus last, the symbol is inserted there instead of into the worksheet.</p>
+<p>Held as a wxWeakRef, which nulls itself when the control is destroyed: a closed wizard can therefore never leave a dangling pointer here, and no destructor needs to unregister the control anywhere (unregistering via the <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> object crashed on shutdown when the <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> died first, see issue #2027). </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/sidebars/<a class="el" href="RegexCtrl_8h_source.html">RegexCtrl.h</a></li>
 <li>src/sidebars/RegexCtrl.cpp</li>
 </ul>

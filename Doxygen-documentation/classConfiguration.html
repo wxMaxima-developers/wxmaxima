@@ -161,9 +161,6 @@ Public Types</h2></td></tr>
 <tr class="memitem:a03fec16ce6139610142240ce478b8315"><td class="memItemLeft" align="right" valign="top"><a id="a03fec16ce6139610142240ce478b8315" name="a03fec16ce6139610142240ce478b8315"></a>
 typedef std::unordered_map&lt; wxString, bool, wxStringHash &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>StringBoolHash</b></td></tr>
 <tr class="separator:a03fec16ce6139610142240ce478b8315"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a730b24755a7c5eb24da283c8e1f1865e"><td class="memItemLeft" align="right" valign="top"><a id="a730b24755a7c5eb24da283c8e1f1865e" name="a730b24755a7c5eb24da283c8e1f1865e"></a>
-typedef std::unordered_map&lt; wxString, int, wxStringHash &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>StringHash</b></td></tr>
-<tr class="separator:a730b24755a7c5eb24da283c8e1f1865e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b4ceb3aa001a545b5c9efbbabf2f9ac"><td class="memItemLeft" align="right" valign="top"><a id="a4b4ceb3aa001a545b5c9efbbabf2f9ac" name="a4b4ceb3aa001a545b5c9efbbabf2f9ac"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>EscCodeContainer</b> = std::unordered_map&lt; wxString, wxString, wxStringHash &gt;</td></tr>
 <tr class="separator:a4b4ceb3aa001a545b5c9efbbabf2f9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -602,9 +599,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>NotifyIfIdle</b> (boo
 <tr class="memitem:aaeddd19b16775efe58f1f5ce22009d43"><td class="memItemLeft" align="right" valign="top"><a id="aaeddd19b16775efe58f1f5ce22009d43" name="aaeddd19b16775efe58f1f5ce22009d43"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDisplayedDigits</b> (long displayedDigits)</td></tr>
 <tr class="separator:aaeddd19b16775efe58f1f5ce22009d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe114e0ed18b66433e2a69b7e57c2035"><td class="memItemLeft" align="right" valign="top"><a id="afe114e0ed18b66433e2a69b7e57c2035" name="afe114e0ed18b66433e2a69b7e57c2035"></a>
-<a class="el" href="classConfiguration_1_1FileToSave.html">FileToSave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PopFileToSave</b> ()</td></tr>
-<tr class="separator:afe114e0ed18b66433e2a69b7e57c2035"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02d94957ff5eaa7b82b3de0347aef9e3"><td class="memItemLeft" align="right" valign="top"><a id="a02d94957ff5eaa7b82b3de0347aef9e3" name="a02d94957ff5eaa7b82b3de0347aef9e3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>PushFileToSave</b> (const wxString &amp;filename, const wxMemoryBuffer &amp;data)</td></tr>
 <tr class="separator:a02d94957ff5eaa7b82b3de0347aef9e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1168,12 +1162,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>InitStyles</b> ()</td
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>FontRendersChar</b> (wxUniChar ch, const wxFont &amp;font= *wxNORMAL_FONT)</td></tr>
 <tr class="memdesc:a183cf4ad6d4c8a38f3f1c0b958d8b37e"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if we are confident that the font renders this char. <br /></td></tr>
 <tr class="separator:a183cf4ad6d4c8a38f3f1c0b958d8b37e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83f1309d98cfa9e61f04e2df54f57b0a"><td class="memItemLeft" align="right" valign="top"><a id="a83f1309d98cfa9e61f04e2df54f57b0a" name="a83f1309d98cfa9e61f04e2df54f57b0a"></a>
-wxTextCtrl *&#160;</td><td class="memItemRight" valign="bottom"><b>LastActiveTextCtrl</b> () const</td></tr>
-<tr class="separator:a83f1309d98cfa9e61f04e2df54f57b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17bc9b2edb0ef53eee20c5f0617b9b1f"><td class="memItemLeft" align="right" valign="top"><a id="a17bc9b2edb0ef53eee20c5f0617b9b1f" name="a17bc9b2edb0ef53eee20c5f0617b9b1f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>LastActiveTextCtrl</b> (wxTextCtrl *last)</td></tr>
-<tr class="separator:a17bc9b2edb0ef53eee20c5f0617b9b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a2e8c01c17181f9cc52e1930f299b60"><td class="memItemLeft" align="right" valign="top"><a id="a8a2e8c01c17181f9cc52e1930f299b60" name="a8a2e8c01c17181f9cc52e1930f299b60"></a>
 const std::vector&lt; <a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetCodeStylesList</b> () const</td></tr>
 <tr class="memdesc:a8a2e8c01c17181f9cc52e1930f299b60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which styles affect how code is displayed? <br /></td></tr>
