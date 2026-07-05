@@ -222,6 +222,18 @@ if(TARGET wxmTestApp)
     target_link_libraries(test_LastActiveTextCtrl PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(LastActiveTextCtrl test_LastActiveTextCtrl)
+
+    # Guards the declarative variable-to-menu-items table (MaximaMenuSync) that
+    # keeps menu check marks in sync with the option variables Maxima reports -
+    # it replaced a dozen hand-written VariableAction* handlers in wxMaxima.
+    # Builds real menus from the table's own ids and asserts on the check marks.
+    add_executable(test_MaximaMenuSync
+        test_MaximaMenuSync.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_MaximaMenuSync PUBLIC cxx_std_20)
+    target_link_libraries(test_MaximaMenuSync PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(MaximaMenuSync test_MaximaMenuSync)
 endif()
 
 # Same watchdog timeout the parent directory applies to its tests: keep a hung

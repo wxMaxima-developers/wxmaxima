@@ -33,6 +33,7 @@
 */
 
 #include "MaximaTokenizer.h"
+#include "MaximaMenuSync.h"
 #include "BTextCtrl.h"
 #include <wx/notifmsg.h>
 #if defined __WXMSW__
@@ -338,24 +339,17 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 
 
 
+  // Variables whose value only toggles menu check marks are not listed here:
+  // they are handled by the declarative table in MaximaMenuSync.cpp.
   if (m_variableReadActions.empty()) {
-    m_variableReadActions[wxS("gentranlang")] =
-      &wxMaxima::VariableActionGentranlang;
-    m_variableReadActions[wxS("numer")] =
-      &wxMaxima::VariableActionNumer;
     m_variableReadActions[wxS("display2d_unicode")] =
       &wxMaxima::VariableActionDisplay2d_Unicode;
     m_variableReadActions[wxS("maxima_userdir")] =
       &wxMaxima::VariableActionUserDir;
     m_variableReadActions[wxS("sinnpiflag")] =
       &wxMaxima::VariableActionSinnpiflag;
-    m_variableReadActions[wxS("logexpand")] =
-      &wxMaxima::VariableActionLogexpand;
-    m_variableReadActions[wxS("opsubst")] = &wxMaxima::VariableActionOpSubst;
     m_variableReadActions[wxS("maxima_tempdir")] =
       &wxMaxima::VariableActionTempDir;
-    m_variableReadActions[wxS("debugmode")] =
-      &wxMaxima::VariableActionDebugmode;
     m_variableReadActions[wxS("*autoconf-version*")] =
       &wxMaxima::VariableActionAutoconfVersion;
     m_variableReadActions[wxS("*autoconf-host*")] =
@@ -376,19 +370,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
       &wxMaxima::VariableActionLispVersion;
     m_variableReadActions[wxS("*wx-load-file-name*")] =
       &wxMaxima::VariableActionWxLoadFileName;
-    m_variableReadActions[wxS("wxsubscripts")] =
-      &wxMaxima::VariableActionWxSubscripts;
-    m_variableReadActions[wxS("lmxchar")] = &wxMaxima::VariableActionLmxChar;
-    m_variableReadActions[wxS("stringdisp")] =
-      &wxMaxima::VariableActionStringdisp;
-    m_variableReadActions[wxS("algebraic")] =
-      &wxMaxima::VariableActionAlgebraic;
-    m_variableReadActions[wxS("domain")] = &wxMaxima::VariableActionDomain;
-    m_variableReadActions[wxS("wxanimate_autoplay")] =
-      &wxMaxima::VariableActionAutoplay;
     m_variableReadActions[wxS("output_format_for_help")] =
       &wxMaxima::VariableActionHtmlHelp;
-    m_variableReadActions[wxS("showtime")] = &wxMaxima::VariableActionShowtime;
     m_variableReadActions[wxS("engineering_format_floats")] =
       &wxMaxima::VariableActionEngineeringFormat;
     m_variableReadActions[wxS("display2d")] =
@@ -2873,6 +2856,7 @@ void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {
           if (value.StartsWith("\"") && value.EndsWith("\""))
             value = value.SubString(1, value.Length() - 2);
 
+          SyncMenusToMaximaVariable(GetMenuBar(), update.m_name, value);
           auto varFunc = m_variableReadActions.find(update.m_name);
           if (varFunc != m_variableReadActions.end())
             std::invoke(varFunc->second, this, value);
@@ -2913,40 +2897,6 @@ void wxMaxima::VariableActionDisplay2d_Unicode(const wxString &value) {
    m_configuration.Display2d_Unicode(false);
  }
 
-void wxMaxima::VariableActionGentranlang(const wxString &value) {
-  if (value == wxS("c"))
-    m_gentranMenu->Check(EventIDs::gentran_lang_c, true);
-  if (value == wxS("fortran"))
-    m_gentranMenu->Check(EventIDs::gentran_lang_fortran, true);
-  if (value == wxS("ratfor"))
-    m_gentranMenu->Check(EventIDs::gentran_lang_ratfor, true);
-}
-
-void wxMaxima::VariableActionOpSubst(const wxString &value) {
-  if (value == wxS("false"))
-    m_subst_Sub->Check(EventIDs::menu_opsubst, false);
-  else if (value == wxS("true"))
-    m_subst_Sub->Check(EventIDs::menu_opsubst, true);
-}
-
-void wxMaxima::VariableActionLogexpand(const wxString &value) {
-  m_logexpand = value;
-  if (value == wxS("false"))
-    m_logexpand_Sub->Check(EventIDs::menu_logexpand_false, true);
-  else if (value == wxS("true"))
-    m_logexpand_Sub->Check(EventIDs::menu_logexpand_true, true);
-  else if (value == wxS("all"))
-    m_logexpand_Sub->Check(EventIDs::menu_logexpand_all, true);
-  else if (value == wxS("super"))
-    m_logexpand_Sub->Check(EventIDs::menu_logexpand_super, true);
-  else {
-    m_logexpand_Sub->Check(EventIDs::menu_logexpand_false, false);
-    m_logexpand_Sub->Check(EventIDs::menu_logexpand_true, false);
-    m_logexpand_Sub->Check(EventIDs::menu_logexpand_all, false);
-    m_logexpand_Sub->Check(EventIDs::menu_logexpand_super, false);
-  }
-}
-
 void wxMaxima::VariableActionTempDir(const wxString &value) {
   m_maximaTempDir = value;
   wxLogMessage(_("Maxima uses temp directory %s"), value);
@@ -2954,21 +2904,6 @@ void wxMaxima::VariableActionTempDir(const wxString &value) {
     // Sometimes people delete their temp dir
     // and gnuplot won't create a new one for them.
     wxMkdir(value, wxS_DIR_DEFAULT);
-  }
-}
-
-void wxMaxima::VariableActionDebugmode(const wxString &value) {
-  if (value == wxS("true")) {
-    m_MaximaMenu->Enable(EventIDs::menu_debugmode, true);
-    m_debugTypeMenu->Check(EventIDs::menu_debugmode_all, true);
-  }
-  if (value == wxS("false")) {
-    m_MaximaMenu->Enable(EventIDs::menu_debugmode, true);
-    m_debugTypeMenu->Check(EventIDs::menu_debugmode_off, true);
-  }
-  if (value == wxS("lisp")) {
-    m_MaximaMenu->Enable(EventIDs::menu_debugmode, true);
-    m_debugTypeMenu->Check(EventIDs::menu_debugmode_lisp, true);
   }
 }
 
@@ -3197,80 +3132,10 @@ void wxMaxima::VariableActionWxLoadFileName(const wxString &value) {
   m_updateAutocompletion = true;
 }
 
-void wxMaxima::VariableActionWxSubscripts(const wxString &value) {
-  if (m_maximaVariable_wxSubscripts != value) {
-    m_maximaVariable_wxSubscripts = value;
-    if (value == wxS("false"))
-      m_autoSubscriptMenu->Check(EventIDs::menu_noAutosubscript, true);
-    else if (value == wxS("true"))
-      m_autoSubscriptMenu->Check(EventIDs::menu_defaultAutosubscript, true);
-    else if (value == wxS("all"))
-      m_autoSubscriptMenu->Check(EventIDs::menu_alwaysAutosubscript, true);
-  }
-}
-void wxMaxima::VariableActionLmxChar(const wxString &value) {
-  if (m_maximaVariable_lmxchar != value) {
-    m_maximaVariable_lmxchar = value;
-    if (m_maximaVariable_lmxchar.EndsWith("("))
-      m_roundedMatrixParensMenu->Check(EventIDs::menu_roundedMatrixParens, true);
-    if (m_maximaVariable_lmxchar.EndsWith("<"))
-      m_roundedMatrixParensMenu->Check(EventIDs::menu_angledMatrixParens, true);
-    if (m_maximaVariable_lmxchar.EndsWith("|"))
-      m_roundedMatrixParensMenu->Check(EventIDs::menu_straightMatrixParens, true);
-    if (m_maximaVariable_lmxchar.EndsWith("["))
-      m_roundedMatrixParensMenu->Check(EventIDs::menu_squareMatrixParens, true);
-    if (m_maximaVariable_lmxchar.EndsWith(" "))
-      m_roundedMatrixParensMenu->Check(EventIDs::menu_noMatrixParens, true);
-  }
-}
-
-void wxMaxima::VariableActionStringdisp(const wxString &value) {
-  if (value == wxS("true")) {
-    if (!m_viewMenu->IsChecked(EventIDs::menu_stringdisp))
-      m_viewMenu->Check(EventIDs::menu_stringdisp, true);
-  } else {
-    if (m_viewMenu->IsChecked(EventIDs::menu_stringdisp))
-      m_viewMenu->Check(EventIDs::menu_stringdisp, false);
-  }
-}
-
-void wxMaxima::VariableActionNumer(const wxString &value) {
-  if (value == wxS("true")) {
-    if (!m_NumericMenu->IsChecked(EventIDs::menu_num_out))
-      m_NumericMenu->Check(EventIDs::menu_num_out, true);
-  } else {
-    if (m_NumericMenu->IsChecked(EventIDs::menu_num_out))
-      m_NumericMenu->Check(EventIDs::menu_num_out, false);
-  }
-}
-
-void wxMaxima::VariableActionAlgebraic(const wxString &value) {
-  if (value == wxS("true")) {
-    if (!m_SimplifyMenu->IsChecked(EventIDs::menu_talg))
-      m_SimplifyMenu->Check(EventIDs::menu_talg, true);
-  } else {
-    if (m_SimplifyMenu->IsChecked(EventIDs::menu_talg))
-      m_SimplifyMenu->Check(EventIDs::menu_talg, false);
-  }
-}
-void wxMaxima::VariableActionShowtime(const wxString &value) {
-  if (value == wxS("false")) {
-    if (m_MaximaMenu->IsChecked(EventIDs::menu_time))
-      m_MaximaMenu->Check(EventIDs::menu_time, false);
-  } else {
-    if (!m_MaximaMenu->IsChecked(EventIDs::menu_time))
-      m_MaximaMenu->Check(EventIDs::menu_time, true);
-  }
-}
 void wxMaxima::VariableActionEngineeringFormat(const wxString &value) {
+  // The menu check mark is table-synced (MaximaMenuSync); the value is
+  // additionally mirrored here so the menu handler can toggle it correctly.
   m_maximaVariable_engineeringFormat = value;
-  if (value == wxS("true")) {
-    if (!m_NumericMenu->IsChecked(EventIDs::menu_engineeringFormat))
-      m_NumericMenu->Check(EventIDs::menu_engineeringFormat, true);
-  } else {
-    if (m_NumericMenu->IsChecked(EventIDs::menu_engineeringFormat))
-      m_NumericMenu->Check(EventIDs::menu_engineeringFormat, false);
-  }
 }
 void wxMaxima::VariableActionHtmlHelp(const wxString &value) {
   if (value == wxS("text")) {
@@ -3293,66 +3158,36 @@ void wxMaxima::VariableActionHtmlHelp(const wxString &value) {
     }
 }
 
-void wxMaxima::VariableActionAutoplay(const wxString &value) {
-  if (value == wxS("true")) {
-    if (!m_PlotMenu->IsChecked(EventIDs::menu_animationautostart))
-      m_PlotMenu->Check(EventIDs::menu_animationautostart, true);
-  } else {
-    if (m_PlotMenu->IsChecked(EventIDs::menu_animationautostart))
-      m_PlotMenu->Check(EventIDs::menu_animationautostart, false);
-  }
-}
-void wxMaxima::VariableActionDomain(const wxString &value) {
-  if (value == wxS("complex")) {
-    if (!m_NumericMenu->IsChecked(EventIDs::menu_num_domain))
-      m_NumericMenu->Check(EventIDs::menu_num_domain, true);
-  } else {
-    if (m_NumericMenu->IsChecked(EventIDs::menu_num_domain))
-      m_NumericMenu->Check(EventIDs::menu_num_domain, false);
-  }
-}
 void wxMaxima::VariableActionDisplay2D(const wxString &value) {
   if (m_maximaVariable_display2d != value) {
     m_maximaVariable_display2d = value;
-    if (m_maximaVariable_display2d == wxS("false")) {
-      m_configuration.DisplayMode(Configuration::display_1dASCII);
-      m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_1D_ASCII, true);
-    } else {
-      if (m_maximaVariable_altdisplay2d == wxS("false")) {
-        if(m_configuration.Display2d_Unicode())
-          {
-            m_configuration.DisplayMode(Configuration::display_2dUNICODE);
-            m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_2D_UNICODE, true);
-          } else {
-            m_configuration.DisplayMode(Configuration::display_2dASCII);
-            m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_2D_ASCII, true);
-          }
-      } else {
-        m_configuration.DisplayMode(Configuration::display_2d);
-        m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_graphics, true);
-      }
-    }
+    UpdateDisplayMode();
   }
 }
 void wxMaxima::VariableActionAltDisplay2D(const wxString &value) {
   if (m_maximaVariable_altdisplay2d != value) {
     m_maximaVariable_altdisplay2d = value;
-    if (m_maximaVariable_display2d == wxS("false")) {
-      m_configuration.DisplayMode(Configuration::display_1dASCII);
-      m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_1D_ASCII, true);
-    } else {
-      if (m_maximaVariable_altdisplay2d == wxS("false")) {
-        if(m_configuration.Display2d_Unicode()) {
+    UpdateDisplayMode();
+  }
+}
+
+void wxMaxima::UpdateDisplayMode() {
+  if (m_maximaVariable_display2d == wxS("false")) {
+    m_configuration.DisplayMode(Configuration::display_1dASCII);
+    m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_1D_ASCII, true);
+  } else {
+    if (m_maximaVariable_altdisplay2d == wxS("false")) {
+      if(m_configuration.Display2d_Unicode())
+        {
           m_configuration.DisplayMode(Configuration::display_2dUNICODE);
           m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_2D_UNICODE, true);
         } else {
-          m_configuration.DisplayMode(Configuration::display_2dASCII);
-          m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_2D_ASCII, true);
-        }
-      } else {
-        m_configuration.DisplayMode(Configuration::display_2d);
-        m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_graphics, true);
+        m_configuration.DisplayMode(Configuration::display_2dASCII);
+        m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_2D_ASCII, true);
       }
+    } else {
+      m_configuration.DisplayMode(Configuration::display_2d);
+      m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_graphics, true);
     }
   }
 }
