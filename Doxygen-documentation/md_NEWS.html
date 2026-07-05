@@ -84,6 +84,9 @@ $(function() {
 <li><a class="el" href="classwxMaxima.html">wxMaxima</a> no longer writes obsolete "MainWindowPos" configuration values on every window resize and move (window geometry is remembered via wxWidgets' persistence framework; nothing ever read these values back).</li>
 <li>Internal: 50 scalar configuration settings are now read and written through a single key-to-member table (<a class="el" href="classConfiguration.html#a2b6d1a9446076037957651c1c7e7a39e" title="The single source of truth pairing each mechanical scalar setting&#39;s config key with the member cachin...">Configuration::ScalarConfigSettings</a>) instead of hand-synced Read/Write call pairs, so a setting can no longer be stored and loaded under mismatched keys - the bug class behind several "my settings don't stick" reports. <a class="el" href="classA.html">A</a> new round-trip regression test guards every table entry.</li>
 <li>Internal: the state of the current render pass (measuring/drawing contexts, canvas size, update region and clipping, worksheet position, background brush and the layout deadline) now lives in its own <a class="el" href="classRenderContext.html" title="The state of the current worksheet render pass.">RenderContext</a> class instead of being mixed into the <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> settings store (no behavior change; first step of splitting the two).</li>
+<li>Internal: the rest of the transient render-pass state (the printing flag, the visible region, the worksheet-size-adjust request and the debug-mode duplicate-redraw trace) followed into <a class="el" href="classRenderContext.html" title="The state of the current worksheet render pass.">RenderContext</a>; <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> keeps only the policy around it (style switching on print, forced recalculation on width changes). The duplicate-redraw check now also reports the trace's last cell, which it used to skip.</li>
+<li>Internal: what <a class="el" href="classwxMaxima.html">wxMaxima</a> knows about the running <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> instance (its version, architecture and lisp, its directories, the lisp-mode flag and the operator-name table) now lives in its own <a class="el" href="classMaximaSessionInfo.html" title="What we know about the Maxima instance we are talking to.">MaximaSessionInfo</a> class instead of being mixed into the <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> settings store - this is session state that is never persisted, not a setting (no behavior change).</li>
+<li>Internal: the "can this font render this character?" probe (rasterize and compare bitmaps) and its persisted per-font verdict cache now live in their own <a class="el" href="classFontRenderabilityCache.html" title="Caches which characters each font can actually render.">FontRenderabilityCache</a> class instead of inside <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> (no behavior change). Also removed a long-dead commented-out predecessor of that probe together with the member variable only it used.</li>
 <li>Accessibility: screen readers now actually see the worksheet's contents. The worksheet reports itself as a document (with its cells as children) instead of a bare panel full of scrollbars, each sidebar now has a proper name instead of being an anonymous "panel", and the tools on the toolbar are now announced (with their names, states and a "press" action) instead of being invisible.</li>
 <li>Accessibility: the symbol/Greek-letter/math sidebar buttons are now announced as named push buttons (by their description, e.g. "Greek small letter alpha") instead of anonymous panels.</li>
 <li>The Unicode characters sidebar can now be used from the keyboard: pressing Enter on a character inserts it (previously this needed a mouse double-click).</li>
@@ -93,7 +96,7 @@ $(function() {
 <li>Windows: a new Help menu item registers <a class="el" href="classwxMaxima.html">wxMaxima</a> as the tool TortoiseSVN and TortoiseGit use to compare .wxmx files.</li>
 <li>Added a regression test guarding the worksheet's line-wrapping (line-breaking) layout pass.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md800"></a>
+<h1><a class="anchor" id="autotoc_md803"></a>
 26.07.0</h1>
 <ul>
 <li>Fixed a crash on loading a worksheet containing an empty <code>&lt;img/&gt;</code> or <code>&lt;slideshow/&gt;</code> tag (found by the parser fuzzer).</li>
@@ -115,7 +118,7 @@ $(function() {
 <li><a class="el" href="classA.html">A</a> correctness review for all wizards.</li>
 <li>EditorCells again grow and shrink when the user adds and removes lines</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md801"></a>
+<h1><a class="anchor" id="autotoc_md804"></a>
 26.06.2</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> whole AI-driven safety review</li>
@@ -137,7 +140,7 @@ $(function() {
 <li>Better undo handling.</li>
 <li>Another try to make accessibility work.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md802"></a>
+<h1><a class="anchor" id="autotoc_md805"></a>
 26.06.1</h1>
 <ul>
 <li>Fix the Ctrl+F keyboard focus on MS Windows to correctly focus the find dialogue instead of leaving it on the worksheet.</li>
@@ -150,7 +153,7 @@ $(function() {
 <li>Fix scroll position tracking: call ScrolledAwayFromEvaluation(true) when the user manually scrolls so that the active cell is completely outside the visible portion of the worksheet.</li>
 <li>Fix inserting a new cell (via hCaret) on large worksheets causing the scroll range to shrink to the first screen and the view to jump to the top.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md804"></a>
+<h1><a class="anchor" id="autotoc_md806"></a>
 26.06.0</h1>
 <ul>
 <li>Optimize drawing during mouse moves (bracket autohide): redraw only the actual height of the cell, rather than drawing all the way to the absolute bottom coordinate.</li>

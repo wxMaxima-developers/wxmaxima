@@ -17,11 +17,12 @@ var searchData=
   ['preparelayout_14',['PrepareLayout',['../classOutCommon.html#a4b5e3adb4dad182d5bd4e43b0a9171a7',1,'OutCommon']]],
   ['prependnbsp_15',['PrependNBSP',['../classWorksheet.html#a1a47095ee5343abea21bc25c01538632',1,'Worksheet::PrependNBSP()'],['../classEditorCell.html#af3be8dfe7234ba3db4cfc0e7d43946fd',1,'EditorCell::PrependNBSP()']]],
   ['printbrackets_16',['PrintBrackets',['../classConfiguration.html#afe27c0e96ea92b68097674846bad5044',1,'Configuration']]],
-  ['printmenu_17',['PrintMenu',['../classwxMaxima.html#a43f6993fd24c59346b0602a51bcc9b8b',1,'wxMaxima']]],
-  ['printscale_18',['PrintScale',['../classConfiguration.html#a7aa083f8a96209a61f7816980ed36e25',1,'Configuration::PrintScale() const'],['../classConfiguration.html#a979f0fc08df8155b787bd1f01c56c318',1,'Configuration::PrintScale(double scale)']]],
-  ['processevent_19',['ProcessEvent',['../classCell.html#ac2c7b0f78b2d1e9e0d2865305fdbe07e',1,'Cell::ProcessEvent()'],['../classEditorCell.html#a4861b52977f38bd665e1ccc7be68c075',1,'EditorCell::ProcessEvent(wxKeyEvent &amp;event) override']]],
-  ['processnewline_20',['ProcessNewline',['../classEditorCell.html#aeee97c9a24f0dd8c752a5f7224ba19a6',1,'EditorCell']]],
-  ['productcell_21',['ProductCell',['../classProductCell.html#a4248f58cdc737fbf445dbafb2b7bd595',1,'ProductCell']]],
-  ['propertiesmenu_22',['PropertiesMenu',['../classwxMaxima.html#a95404b3c3175c24b7b557ab060a50e80',1,'wxMaxima']]],
-  ['pymethod_23',['PyMethod',['../classdocstring_1_1PyClass.html#af092e1eacc10334e0e8630531a3473b4',1,'docstring.PyClass.PyMethod()'],['../classpyexample_1_1PyClass.html#a654596774eb28a0c6d26eea565de3a9d',1,'pyexample.PyClass.PyMethod()']]]
+  ['printing_17',['Printing',['../classRenderContext.html#a902dc66e5e6045601cbc8173d8723394',1,'RenderContext']]],
+  ['printmenu_18',['PrintMenu',['../classwxMaxima.html#a43f6993fd24c59346b0602a51bcc9b8b',1,'wxMaxima']]],
+  ['printscale_19',['PrintScale',['../classConfiguration.html#a979f0fc08df8155b787bd1f01c56c318',1,'Configuration::PrintScale(double scale)'],['../classConfiguration.html#a7aa083f8a96209a61f7816980ed36e25',1,'Configuration::PrintScale() const']]],
+  ['processevent_20',['ProcessEvent',['../classCell.html#ac2c7b0f78b2d1e9e0d2865305fdbe07e',1,'Cell::ProcessEvent()'],['../classEditorCell.html#a4861b52977f38bd665e1ccc7be68c075',1,'EditorCell::ProcessEvent(wxKeyEvent &amp;event) override']]],
+  ['processnewline_21',['ProcessNewline',['../classEditorCell.html#aeee97c9a24f0dd8c752a5f7224ba19a6',1,'EditorCell']]],
+  ['productcell_22',['ProductCell',['../classProductCell.html#a4248f58cdc737fbf445dbafb2b7bd595',1,'ProductCell']]],
+  ['propertiesmenu_23',['PropertiesMenu',['../classwxMaxima.html#a95404b3c3175c24b7b557ab060a50e80',1,'wxMaxima']]],
+  ['pymethod_24',['PyMethod',['../classdocstring_1_1PyClass.html#af092e1eacc10334e0e8630531a3473b4',1,'docstring.PyClass.PyMethod()'],['../classpyexample_1_1PyClass.html#a654596774eb28a0c6d26eea565de3a9d',1,'pyexample.PyClass.PyMethod()']]]
 ];

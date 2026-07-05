@@ -9,6 +9,7 @@ var searchData=
   ['write_6',['write',['../structcmd_8h.html#af2a3ea719b83f672637febdd87c36c36',1,'structcmd.h']]],
   ['writesettings_7',['WriteSettings',['../classConfiguration.html#a53af46fba084e7e9f45fabbfb8eb4030',1,'Configuration::WriteSettings()'],['../classConfigDialogue.html#a6a3d11ed034adf263350d8aa54a7e28d',1,'ConfigDialogue::WriteSettings()']]],
   ['writestyles_8',['WriteStyles',['../classConfiguration.html#a4f7f692a8178c2062765ddafd0fd4782',1,'Configuration']]],
-  ['wxmaximaicon_9',['wxMaximaIcon',['../wxMaximaIcon_8cpp.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp'],['../wxMaximaIcon_8h.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp']]],
-  ['wxmaximaoperatingsystemdescription_10',['wxMaximaOperatingSystemDescription',['../wxMaximaOSDescription_8cpp.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp'],['../wxMaximaOSDescription_8h.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp']]]
+  ['writeto_9',['WriteTo',['../classFontRenderabilityCache.html#abd83076fd77f72751a213f6c4ae84077',1,'FontRenderabilityCache']]],
+  ['wxmaximaicon_10',['wxMaximaIcon',['../wxMaximaIcon_8cpp.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp'],['../wxMaximaIcon_8h.html#aab835d20b3d7db04a8c1198dcbef93c9',1,'wxMaximaIcon():&#160;wxMaximaIcon.cpp']]],
+  ['wxmaximaoperatingsystemdescription_11',['wxMaximaOperatingSystemDescription',['../wxMaximaOSDescription_8cpp.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp'],['../wxMaximaOSDescription_8h.html#a9456b72b11c75f952bb7d4a99d5a9232',1,'wxMaximaOperatingSystemDescription():&#160;wxMaximaOSDescription.cpp']]]
 ];

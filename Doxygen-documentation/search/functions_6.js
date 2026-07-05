@@ -18,7 +18,7 @@ var searchData=
   ['foldoccurred_15',['FoldOccurred',['../classWorksheet.html#a78ceeae9f7262c599b824e0f9a93ad9b',1,'Worksheet']]],
   ['followevaluation_16',['FollowEvaluation',['../classWorksheet.html#af02bfd71d23fe6804fc27525f41e84bb',1,'Worksheet::FollowEvaluation() const'],['../classWorksheet.html#a6b947343c72f5e4da75470bd381907d8',1,'Worksheet::FollowEvaluation(bool followEvaluation)']]],
   ['fontchanged_17',['FontChanged',['../classConfiguration.html#a2c1e5f6af5c57992c025514ba8046c0e',1,'Configuration']]],
-  ['fontrenderschar_18',['FontRendersChar',['../classConfiguration.html#a183cf4ad6d4c8a38f3f1c0b958d8b37e',1,'Configuration']]],
+  ['fontrenderschar_18',['FontRendersChar',['../classConfiguration.html#a183cf4ad6d4c8a38f3f1c0b958d8b37e',1,'Configuration::FontRendersChar()'],['../classFontRenderabilityCache.html#a126c0a0cc241e3c4229a2f2758e0db52',1,'FontRenderabilityCache::FontRendersChar()']]],
   ['fontschanged_19',['FontsChanged',['../classCell.html#a3674fadbc6fb3ac58bd603b386015b8c',1,'Cell::FontsChanged()'],['../classTextCell.html#ad9f5566f915963fd9c1814d6467d2659',1,'TextCell::FontsChanged()']]],
   ['fontschangedlist_20',['FontsChangedList',['../classCell.html#aeefb0377b33712b91fe52218b434d101',1,'Cell']]],
   ['fontvariantcache_21',['FontVariantCache',['../classFontVariantCache.html#a9d8ff3cf30b7b7b6afa0260343047cf4',1,'FontVariantCache']]],

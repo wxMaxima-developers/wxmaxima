@@ -119,6 +119,42 @@ wxRect&#160;</td><td class="memItemRight" valign="bottom"><b>GetUpdateRegion</b>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUpdateRegion</b> (wxRect rect)</td></tr>
 <tr class="memdesc:af1fd4d862f8ca623d78885edfc44006a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the rectangle of the worksheet that is currently being redrawn. <br /></td></tr>
 <tr class="separator:af1fd4d862f8ca623d78885edfc44006a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2dc6673b6014ce033fe75e905b38f48"><td class="memItemLeft" align="right" valign="top"><a id="ae2dc6673b6014ce033fe75e905b38f48" name="ae2dc6673b6014ce033fe75e905b38f48"></a>
+wxRect&#160;</td><td class="memItemRight" valign="bottom"><b>GetVisibleRegion</b> () const</td></tr>
+<tr class="memdesc:ae2dc6673b6014ce033fe75e905b38f48"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rectangle of the worksheet that is currently visible. <br /></td></tr>
+<tr class="separator:ae2dc6673b6014ce033fe75e905b38f48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a315c21246e965213f4a4fe76d38a487c"><td class="memItemLeft" align="right" valign="top"><a id="a315c21246e965213f4a4fe76d38a487c" name="a315c21246e965213f4a4fe76d38a487c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetVisibleRegion</b> (wxRect visibleRegion)</td></tr>
+<tr class="memdesc:a315c21246e965213f4a4fe76d38a487c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the rectangle of the worksheet that is currently visible. <br /></td></tr>
+<tr class="separator:a315c21246e965213f4a4fe76d38a487c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a902dc66e5e6045601cbc8173d8723394"><td class="memItemLeft" align="right" valign="top"><a id="a902dc66e5e6045601cbc8173d8723394" name="a902dc66e5e6045601cbc8173d8723394"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>Printing</b> () const</td></tr>
+<tr class="memdesc:a902dc66e5e6045601cbc8173d8723394"><td class="mdescLeft">&#160;</td><td class="mdescRight">Are we currently rendering for the printer rather than the screen? <br /></td></tr>
+<tr class="separator:a902dc66e5e6045601cbc8173d8723394"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61ecff07d51a26597ca6a184c3a79c06"><td class="memItemLeft" align="right" valign="top"><a id="a61ecff07d51a26597ca6a184c3a79c06" name="a61ecff07d51a26597ca6a184c3a79c06"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPrinting</b> (bool printing)</td></tr>
+<tr class="memdesc:a61ecff07d51a26597ca6a184c3a79c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether we are currently rendering for the printer. <br /></td></tr>
+<tr class="separator:a61ecff07d51a26597ca6a184c3a79c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af39f9f3f298b8e2d1e9b4163a91eb290"><td class="memItemLeft" align="right" valign="top"><a id="af39f9f3f298b8e2d1e9b4163a91eb290" name="af39f9f3f298b8e2d1e9b4163a91eb290"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetAdjustWorksheetSizeNeeded</b> () const</td></tr>
+<tr class="memdesc:af39f9f3f298b8e2d1e9b4163a91eb290"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the worksheet size need to be adjusted after this render pass? <br /></td></tr>
+<tr class="separator:af39f9f3f298b8e2d1e9b4163a91eb290"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af38ee2b18ede4b53a69e17ba1b159d43"><td class="memItemLeft" align="right" valign="top"><a id="af38ee2b18ede4b53a69e17ba1b159d43" name="af38ee2b18ede4b53a69e17ba1b159d43"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAdjustWorksheetSizeNeeded</b> (bool val)</td></tr>
+<tr class="memdesc:af38ee2b18ede4b53a69e17ba1b159d43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Requests (or clears the request) that the worksheet size be adjusted. <br /></td></tr>
+<tr class="separator:af38ee2b18ede4b53a69e17ba1b159d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d18bc7eb71fde5a09825eb6c0f7d5bc"><td class="memItemLeft" align="right" valign="top"><a id="a8d18bc7eb71fde5a09825eb6c0f7d5bc" name="a8d18bc7eb71fde5a09825eb6c0f7d5bc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearAndEnableRedrawTracing</b> ()</td></tr>
+<tr class="memdesc:a8d18bc7eb71fde5a09825eb6c0f7d5bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts (or restarts) recording which cells this render pass has drawn. <br /></td></tr>
+<tr class="separator:a8d18bc7eb71fde5a09825eb6c0f7d5bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ca66e1814df2a6ebde73d8de8803213"><td class="memItemLeft" align="right" valign="top"><a id="a0ca66e1814df2a6ebde73d8de8803213" name="a0ca66e1814df2a6ebde73d8de8803213"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>NotifyOfCellRedraw</b> (const <a class="el" href="classCell.html">Cell</a> *cell)</td></tr>
+<tr class="memdesc:a0ca66e1814df2a6ebde73d8de8803213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Records that this cell has been drawn, if tracing is enabled. <br /></td></tr>
+<tr class="separator:a0ca66e1814df2a6ebde73d8de8803213"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6054823a2a7227ac0c1d3d9cd1cf47d0"><td class="memTemplParams" colspan="2">template&lt;typename Report &gt; </td></tr>
+<tr class="memitem:a6054823a2a7227ac0c1d3d9cd1cf47d0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRenderContext.html#a6054823a2a7227ac0c1d3d9cd1cf47d0">ReportMultipleRedraws</a> (Report report)</td></tr>
+<tr class="memdesc:a6054823a2a7227ac0c1d3d9cd1cf47d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls report(count, cell) for each cell that was drawn more than once.  <br /></td></tr>
+<tr class="separator:a6054823a2a7227ac0c1d3d9cd1cf47d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67a7a0315163363510dd5e87dac6ae32"><td class="memItemLeft" align="right" valign="top"><a id="a67a7a0315163363510dd5e87dac6ae32" name="a67a7a0315163363510dd5e87dac6ae32"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ClipToDrawRegion</b> () const</td></tr>
 <tr class="memdesc:a67a7a0315163363510dd5e87dac6ae32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we want to omit drawing outside the current update region? <br /></td></tr>
@@ -158,7 +194,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLayoutCancelled</b>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The state of the current worksheet render pass. </p>
-<p>Pure state: this class knows nothing about the configuration store, the worksheet or the cells. Copying a <a class="el" href="classRenderContext.html" title="The state of the current worksheet render pass.">RenderContext</a> (for printing, the diff viewer etc.) copies the geometry and the recalc-DC pointer but neither the owned worksheet client DC (the copy doesn't own the window) nor a running layout deadline. </p>
+<p>Pure state: this class knows nothing about the configuration store, the worksheet or the cells (the redraw trace holds <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> pointers, but only as opaque keys). Copying a <a class="el" href="classRenderContext.html" title="The state of the current worksheet render pass.">RenderContext</a> (for printing, the diff viewer etc.) copies the geometry, the printing flag and the recalc-DC pointer but neither the owned worksheet client DC (the copy doesn't own the window), a running layout deadline, a redraw trace nor the worksheet-size-adjust request (all of which belong to the original's render pass). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a9928e0a2657889ecc3e1df6e6d10cfd8" name="a9928e0a2657889ecc3e1df6e6d10cfd8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9928e0a2657889ecc3e1df6e6d10cfd8">&#9670;&#160;</a></span>AttachWorksheetDC()</h2>
@@ -186,6 +222,37 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLayoutCancelled</b>
 
 <p>Creates a client DC for the given window and measures text on it. </p>
 <p>Used when a worksheet is attached: measuring on the worksheet's own DC makes the measurements match what drawing on it will produce. </p>
+
+</div>
+</div>
+<a id="a6054823a2a7227ac0c1d3d9cd1cf47d0" name="a6054823a2a7227ac0c1d3d9cd1cf47d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6054823a2a7227ac0c1d3d9cd1cf47d0">&#9670;&#160;</a></span>ReportMultipleRedraws()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Report &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RenderContext::ReportMultipleRedraws </td>
+          <td>(</td>
+          <td class="paramtype">Report&#160;</td>
+          <td class="paramname"><em>report</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls report(count, cell) for each cell that was drawn more than once. </p>
+<p>The cells are opaque keys to this class; formatting the report is the caller's business. Sorting the trace is over two orders of magnitude faster, per cell, than having counters in a map or hash. </p>
 
 </div>
 </div>

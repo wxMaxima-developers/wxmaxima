@@ -93,8 +93,6 @@ Collaboration diagram for Configuration:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structConfiguration_1_1CharsExist.html">CharsExist</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration_1_1FileToSave.html">FileToSave</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the information about a file we need to write during the save process.  <a href="classConfiguration_1_1FileToSave.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,9 +161,6 @@ Public Types</h2></td></tr>
 <tr class="memitem:a03fec16ce6139610142240ce478b8315"><td class="memItemLeft" align="right" valign="top"><a id="a03fec16ce6139610142240ce478b8315" name="a03fec16ce6139610142240ce478b8315"></a>
 typedef std::unordered_map&lt; wxString, bool, wxStringHash &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>StringBoolHash</b></td></tr>
 <tr class="separator:a03fec16ce6139610142240ce478b8315"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a73cee7f139a5f8cf2fee0afc1fb9bd"><td class="memItemLeft" align="right" valign="top"><a id="a3a73cee7f139a5f8cf2fee0afc1fb9bd" name="a3a73cee7f139a5f8cf2fee0afc1fb9bd"></a>
-typedef std::unordered_map&lt; wxString, wxString, wxStringHash &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>RenderablecharsHash</b></td></tr>
-<tr class="separator:a3a73cee7f139a5f8cf2fee0afc1fb9bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a730b24755a7c5eb24da283c8e1f1865e"><td class="memItemLeft" align="right" valign="top"><a id="a730b24755a7c5eb24da283c8e1f1865e" name="a730b24755a7c5eb24da283c8e1f1865e"></a>
 typedef std::unordered_map&lt; wxString, int, wxStringHash &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>StringHash</b></td></tr>
 <tr class="separator:a730b24755a7c5eb24da283c8e1f1865e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -178,8 +173,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>EscCodeIterator</b> 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af0c8b1318e5e74da5d687f05beec6958"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#af0c8b1318e5e74da5d687f05beec6958">IsOperator</a> (wxString name) const</td></tr>
-<tr class="memdesc:af0c8b1318e5e74da5d687f05beec6958"><td class="mdescLeft">&#160;</td><td class="mdescRight">All maxima operator names we know.  <br /></td></tr>
+<tr class="memitem:af0c8b1318e5e74da5d687f05beec6958"><td class="memItemLeft" align="right" valign="top"><a id="af0c8b1318e5e74da5d687f05beec6958" name="af0c8b1318e5e74da5d687f05beec6958"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsOperator</b> (wxString name) const</td></tr>
+<tr class="memdesc:af0c8b1318e5e74da5d687f05beec6958"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coincides name with a operator known to maxima? <br /></td></tr>
 <tr class="separator:af0c8b1318e5e74da5d687f05beec6958"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6f16b08d936194321dfe5e27b8f5f32"><td class="memItemLeft" align="right" valign="top"><a id="aa6f16b08d936194321dfe5e27b8f5f32" name="aa6f16b08d936194321dfe5e27b8f5f32"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddMaximaOperator</b> (const wxString &amp;name)</td></tr>
@@ -1664,35 +1660,6 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="af0c8b1318e5e74da5d687f05beec6958" name="af0c8b1318e5e74da5d687f05beec6958"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0c8b1318e5e74da5d687f05beec6958">&#9670;&#160;</a></span>IsOperator()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Configuration::IsOperator </td>
-          <td>(</td>
-          <td class="paramtype">wxString&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>All maxima operator names we know. </p>
-<p>Coincides name with a operator known to maxima? </p>
 
 </div>
 </div>

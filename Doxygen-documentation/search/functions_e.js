@@ -8,7 +8,7 @@ var searchData=
   ['newwizard_5',['NewWizard',['../classGenWizPanel.html#abe9a1ef102fb3f9de0cf84a20562eda1',1,'GenWizPanel']]],
   ['notification_6',['Notification',['../classNotification.html#a1d2014b23265060cebccfb542a60e75a',1,'Notification::Notification()'],['../classNotification.html#a318b399339a243424905d071abc553c8',1,'Notification::Notification(const wxString &amp;title, const wxString &amp;message={}, wxWindow *parent=NULL, int flags=wxICON_INFORMATION)']]],
   ['notifyifidle_7',['NotifyIfIdle',['../classConfiguration.html#a35914468c50b5421c93c802f72b5ce9e',1,'Configuration']]],
-  ['notifyofcellredraw_8',['NotifyOfCellRedraw',['../classConfiguration.html#ad47f83d888f67fc6e303b5c0f6faa7ca',1,'Configuration']]],
+  ['notifyofcellredraw_8',['NotifyOfCellRedraw',['../classConfiguration.html#ad47f83d888f67fc6e303b5c0f6faa7ca',1,'Configuration::NotifyOfCellRedraw()'],['../classRenderContext.html#a0ca66e1814df2a6ebde73d8de8803213',1,'RenderContext::NotifyOfCellRedraw()']]],
   ['number_9',['Number',['../classGroupCell.html#a1bc7ca9e1bf5923dbdd5e2e8735da8cd',1,'GroupCell']]],
   ['numbersections_10',['NumberSections',['../classWorksheet.html#a9770595891b32c0ea91ea4d4466c9310',1,'Worksheet']]],
   ['numericalmenu_11',['NumericalMenu',['../classwxMaxima.html#a9c1ad69ebd56bb77c7f403d967f2ced2',1,'wxMaxima']]]
