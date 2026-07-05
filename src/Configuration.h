@@ -30,6 +30,7 @@
 #include <wx/hashmap.h>
 #include "dialogs/LoggingMessageDialog.h"
 #include "cells/TextStyle.h"
+#include "MaximaSessionInfo.h"
 #include "RenderContext.h"
 #include "Styles.h"
 #include <cstdint>
@@ -155,12 +156,10 @@ public:
   typedef std::unordered_map <wxString, bool, wxStringHash> StringBoolHash;
   typedef std::unordered_map <wxString, wxString, wxStringHash> RenderablecharsHash;
   typedef std::unordered_map <wxString, int, wxStringHash> StringHash;
-  /*! All maxima operator names we know
-   */
   //! Coincides name with a operator known to maxima?
-  bool IsOperator(wxString name) const {return !(m_maximaOperators.find(name) == m_maximaOperators.end());}
+  bool IsOperator(wxString name) const {return m_maximaSession.IsOperator(name);}
   //! Register name as an operator known to maxima.
-  void AddMaximaOperator(const wxString &name){m_maximaOperators[name] = 1;}
+  void AddMaximaOperator(const wxString &name){m_maximaSession.AddOperator(name);}
   const wxEnvVariableHashMap& MaximaEnvVars() const {return m_maximaEnvVars;}
   //! Forget all custom environment variables for the maxima process.
   void ClearMaximaEnvVars(){m_maximaEnvVars.clear();}
@@ -174,11 +173,11 @@ public:
 
   //! Set maxima's working directory
   void SetWorkingDirectory(wxString dir)
-    { m_workingdir = std::move(dir); }
+    { m_maximaSession.SetWorkingDirectory(std::move(dir)); }
 
   //! Get maxima's working directory
   wxString GetWorkingDirectory() const
-    { return m_workingdir; }
+    { return m_maximaSession.GetWorkingDirectory(); }
 
   //! Read the config from the wxConfig object
   void ReadConfig();
@@ -1032,12 +1031,12 @@ public:
   wxRect GetVisibleRegion() const {return m_renderContext.GetVisibleRegion();}
   void SetWorksheetPosition(wxPoint worksheetPosition){m_renderContext.SetWorksheetPosition(worksheetPosition);}
   wxPoint GetWorksheetPosition() const {return m_renderContext.GetWorksheetPosition();}
-  wxString MaximaShareDir() const {return m_maximaShareDir;}
-  void MaximaShareDir(wxString dir){m_maximaShareDir = std::move(dir);}
-  wxString MaximaDemoDir() const {return m_maximaDemoDir;}
-  void MaximaDemoDir(wxString dir){m_maximaDemoDir = std::move(dir);}
-  void InLispMode(bool lisp){m_inLispMode = lisp;}
-  bool InLispMode() const {return m_inLispMode;}
+  wxString MaximaShareDir() const {return m_maximaSession.ShareDir();}
+  void MaximaShareDir(wxString dir){m_maximaSession.ShareDir(std::move(dir));}
+  wxString MaximaDemoDir() const {return m_maximaSession.DemoDir();}
+  void MaximaDemoDir(wxString dir){m_maximaSession.DemoDir(std::move(dir));}
+  void InLispMode(bool lisp){m_maximaSession.InLispMode(lisp);}
+  bool InLispMode() const {return m_maximaSession.InLispMode();}
   void BitmapScale(int factor){m_bitmapScale = factor;}
   int BitmapScale() const {return m_bitmapScale;}
   void DefaultPlotHeight(int px){m_defaultPlotHeight = px;}
@@ -1111,14 +1110,14 @@ public:
   wxString TexPreamble() const {return m_texPreamble;}
   void TexPreamble(wxString texPreamble) {m_texPreamble = std::move(texPreamble);}
 
-  void SetMaximaVersion(const wxString &version){m_maximaVersion = version;}
-  wxString GetMaximaVersion() const {return m_maximaVersion;}
-  void SetMaximaArch(const wxString &arch){m_maximaArch = arch;}
-  wxString GetMaximaArch() const {return m_maximaArch;}
-  void SetLispVersion(const wxString &version){m_lispVersion = version;}
-  wxString GetLispVersion() const {return m_lispVersion;}
-  void SetLispType(const wxString &type){m_lispType = type;}
-  wxString GetLispType() const {return m_lispType;}
+  void SetMaximaVersion(const wxString &version){m_maximaSession.SetMaximaVersion(version);}
+  wxString GetMaximaVersion() const {return m_maximaSession.GetMaximaVersion();}
+  void SetMaximaArch(const wxString &arch){m_maximaSession.SetMaximaArch(arch);}
+  wxString GetMaximaArch() const {return m_maximaSession.GetMaximaArch();}
+  void SetLispVersion(const wxString &version){m_maximaSession.SetLispVersion(version);}
+  wxString GetLispVersion() const {return m_maximaSession.GetLispVersion();}
+  void SetLispType(const wxString &type){m_maximaSession.SetLispType(type);}
+  wxString GetLispType() const {return m_maximaSession.GetLispType();}
 
   Styles m_styleStore;
   //! Initialize the text styles on construction.
@@ -1147,10 +1146,8 @@ public:
   void MaximaHelpFormat(maximaHelpFormat format) {m_maximaHelpFormat = format;}
 
 private:
-  wxString m_maximaArch;
-  wxString m_lispVersion;
-  wxString m_lispType;
-  wxString m_maximaVersion;
+  //! What we know about the connected Maxima instance
+  MaximaSessionInfo m_maximaSession;
   //! The options this class got at initialization time
   InitOpt m_initOpts;
   /*! The id of the current configuration
@@ -1164,7 +1161,6 @@ private:
   //! Our random engine
   std::default_random_engine m_eng;
   std::vector<CharsExist> m_charsInFont;
-  StringHash m_maximaOperators;
   wxEnvVariableHashMap m_maximaEnvVars;
 public:
   //! One sample of OS entropy (std::random_device).
@@ -1242,7 +1238,6 @@ private:
   wxString m_texPreamble;
 
   drawMode m_parenthesisDrawMode;
-  wxString m_workingdir;
   bool m_TeXExponentsAfterSubscript;
   wxString m_helpBrowserUserLocation;
   wxString m_maximaUserLocation;
@@ -1287,8 +1282,6 @@ private:
   long m_indent;
   bool m_latin2greek;
   double m_zoomFactor;
-  wxString m_maximaShareDir;
-  wxString m_maximaDemoDir;
   bool m_outdated;
   wxString m_maximaParameters;
   bool m_keepPercent;
@@ -1304,8 +1297,6 @@ private:
   bool m_copyMathML;
   bool m_copyMathMLHTML;
   long m_showLength;
-  //!< don't add ; in lisp mode
-  bool m_inLispMode;
   bool m_usepngCairo;
   bool m_enterEvaluates;
   bool m_useSVG;

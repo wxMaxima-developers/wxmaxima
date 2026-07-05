@@ -62,63 +62,21 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   // We want to read the zoom factor, but don't want it to be updated on each ReadConfig()
   config->Read(wxS("ZoomFactor"), &m_zoomFactor);
 
-  m_maximaOperators[wxS("(")] = 1;
-  m_maximaOperators[wxS("/")] = 1;
-  m_maximaOperators[wxS("{")] = 1;
-  m_maximaOperators[wxS("-")] = 1;
-  m_maximaOperators[wxS("^")] = 1;
-  m_maximaOperators[wxS("#")] = 1;
-  m_maximaOperators[wxS("=")] = 1;
-  m_maximaOperators[wxS(":")] = 1;
-  m_maximaOperators[wxS("[")] = 1;
-  m_maximaOperators[wxS("'")] = 1;
-  m_maximaOperators[wxS("!")] = 1;
-  m_maximaOperators[wxS("+")] = 1;
-  m_maximaOperators[wxS("*")] = 1;
-  m_maximaOperators[wxS("or")] = 1;
-  m_maximaOperators[wxS("and")] = 1;
-  m_maximaOperators[wxS("do_in")] = 1;
-  m_maximaOperators[wxS(">")] = 1;
-  m_maximaOperators[wxS("$SUBVAR")] = 1;
-  m_maximaOperators[wxS("<")] = 1;
-  m_maximaOperators[wxS("if")] = 1;
-  m_maximaOperators[wxS("::=")] = 1;
-  m_maximaOperators[wxS("::")] = 1;
-  m_maximaOperators[wxS("@")] = 1;
-  m_maximaOperators[wxS(".")] = 1;
-  m_maximaOperators[wxS("-->")] = 1;
-  m_maximaOperators[wxS("^^")] = 1;
-  m_maximaOperators[wxS("not")] = 1;
-  m_maximaOperators[wxS("<=")] = 1;
-  m_maximaOperators[wxS(":=")] = 1;
-  m_maximaOperators[wxS(">=")] = 1;
-  m_maximaOperators[wxS("$BFLOAT")] = 1;
-  m_maximaOperators[wxS("do")] = 1;
   m_maximaHelpFormat = frontend;
-  m_inLispMode = false;
   m_outdated = false;
   m_lineWidth_em = 88;
   m_workSheet = NULL;
   SetBackgroundBrush(*wxWHITE_BRUSH);
   ResetAllToDefaults();
   ReadConfig();
-  wxString operators(wxS("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b"
-                         "\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}"));
-  for (wxString::const_iterator it = operators.begin(); it != operators.end();
-       ++it)
-    m_maximaOperators[wxString(*it)] = 1;
 }
 
 Configuration::Configuration(const Configuration &o) :
-  m_maximaArch(o.m_maximaArch),
-  m_lispVersion(o.m_lispVersion),
-  m_lispType(o.m_lispType),
-  m_maximaVersion(o.m_maximaVersion),
+  m_maximaSession(o.m_maximaSession),
   m_initOpts(o.m_initOpts),
   m_configId(o.m_configId),
   m_rd(),
   m_eng(m_rd()),
-  m_maximaOperators(o.m_maximaOperators),
   m_maximaEnvVars(o.m_maximaEnvVars),
   m_filesToSave(o.m_filesToSave),
   m_renderableChars(o.m_renderableChars),
@@ -145,7 +103,6 @@ Configuration::Configuration(const Configuration &o) :
   m_exportContainsWXMX(o.m_exportContainsWXMX),
   m_texPreamble(o.m_texPreamble),
   m_parenthesisDrawMode(o.m_parenthesisDrawMode),
-  m_workingdir(o.m_workingdir),
   m_TeXExponentsAfterSubscript(o.m_TeXExponentsAfterSubscript),
   m_helpBrowserUserLocation(o.m_helpBrowserUserLocation),
   m_maximaUserLocation(o.m_maximaUserLocation),
@@ -171,8 +128,6 @@ Configuration::Configuration(const Configuration &o) :
   m_indent(o.m_indent),
   m_latin2greek(o.m_latin2greek),
   m_zoomFactor(o.m_zoomFactor),
-  m_maximaShareDir(o.m_maximaShareDir),
-  m_maximaDemoDir(o.m_maximaDemoDir),
   m_outdated(o.m_outdated),
   m_maximaParameters(o.m_maximaParameters),
   m_keepPercent(o.m_keepPercent),
@@ -192,7 +147,6 @@ Configuration::Configuration(const Configuration &o) :
   m_copyMathML(o.m_copyMathML),
   m_copyMathMLHTML(o.m_copyMathMLHTML),
   m_showLength(o.m_showLength),
-  m_inLispMode(o.m_inLispMode),
   m_usepngCairo(o.m_usepngCairo),
   m_enterEvaluates(o.m_enterEvaluates),
   m_useSVG(o.m_useSVG),
