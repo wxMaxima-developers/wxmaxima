@@ -951,8 +951,6 @@ public:
     { m_useUnicodeMaths = useunicodemaths; }
   bool UseUnicodeMaths() const {return m_useUnicodeMaths;}
 
-  StringBoolHash m_hideMarkerForThisMessage;
-
   /*! Get the text Style for a given text style identifier.
 
     \param textStyle The text style to resolve the style for.
@@ -1110,7 +1108,6 @@ public:
   void SetLispType(const wxString &type){m_maximaSession.SetLispType(type);}
   wxString GetLispType() const {return m_maximaSession.GetLispType();}
 
-  Styles m_styleStore;
   //! Initialize the text styles on construction.
   void InitStyles();
   //! True if we are confident that the font renders this char
@@ -1173,6 +1170,10 @@ private:
   //! Which LANG environment variable to communicate to maxima?
   static wxString m_maxima_LANG;
   std::list<FileToSave> m_filesToSave;
+  //! The text styles (light + dark palettes)
+  Styles m_styleStore;
+  //! Messages the user has told us not to show a marker for anymore
+  StringBoolHash m_hideMarkerForThisMessage;
   //! Which characters can each font render? (persisted probe cache)
   FontRenderabilityCache m_fontRenderability;
   mathDisplayMode m_displayMode = display_2d;
