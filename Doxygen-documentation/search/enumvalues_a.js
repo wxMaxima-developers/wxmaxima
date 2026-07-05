@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['read_5fmisc_5ftext_0',['READ_MISC_TEXT',['../classMaxima.html#a01e208858ffeeb60e8a1787a580103c8abd3bebab2a70ef164bd89bf6d1320732',1,'Maxima']]],
-  ['read_5fpending_1',['READ_PENDING',['../classMaxima.html#a01e208858ffeeb60e8a1787a580103c8a46c15ee0530754feaced0ef045889f20',1,'Maxima']]],
-  ['running_2',['Running',['../classToolBar.html#a327b655c366e7932f751d2815cc629fca9c9bfa8603406d94a8f00a975a9c1f3c',1,'ToolBar']]]
+  ['numberofstyles_0',['NUMBEROFSTYLES',['../TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a4ff5d935a79c3cd0c1e5d3a188645046',1,'TextStyle.h']]],
+  ['numberoftypes_1',['numberOfTypes',['../classAutoComplete.html#a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231',1,'AutoComplete']]]
 ];

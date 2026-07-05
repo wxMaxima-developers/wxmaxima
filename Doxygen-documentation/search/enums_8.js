@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['networkstate_0',['networkState',['../classStatusBar.html#a3de8a6b955f99bb7a534c6ddfb47f9d8',1,'StatusBar']]]
+  ['kind_0',['Kind',['../structMaximaMenuSyncRow.html#aab1861fb80f5b88b3b3c6f6abba42efa',1,'MaximaMenuSyncRow']]]
 ];
