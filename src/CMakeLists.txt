@@ -135,6 +135,7 @@ set(SOURCE_FILES
     BackgroundQueue.cpp
     EvaluationQueue.cpp
     EventIDs.cpp
+    FontRenderabilityCache.cpp
     Image.cpp
     MainMenuBar.cpp
     MarkDown.cpp

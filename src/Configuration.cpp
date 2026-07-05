@@ -79,8 +79,7 @@ Configuration::Configuration(const Configuration &o) :
   m_eng(m_rd()),
   m_maximaEnvVars(o.m_maximaEnvVars),
   m_filesToSave(o.m_filesToSave),
-  m_renderableChars(o.m_renderableChars),
-  m_nonRenderableChars(o.m_nonRenderableChars),
+  m_fontRenderability(o.m_fontRenderability),
   m_displayMode(o.m_displayMode),
   m_showInputLabels(o.m_showInputLabels),
   m_wizardTab(o.m_wizardTab),
@@ -239,10 +238,7 @@ void Configuration::ResetAllToDefaults() {
   m_printMargin_Right = 10;
 
   m_wizardTab = 0;
-  for (const auto &i : m_renderableChars)
-    m_renderableChars[i.first].Clear();
-  for (const auto &i : m_nonRenderableChars)
-    m_nonRenderableChars[i.first].Clear();
+  m_fontRenderability.ClearValues();
   m_showAllDigits = false;
   m_lineBreaksInLongNums = false;
   m_autoSaveMinutes = 3;
@@ -596,25 +592,7 @@ void Configuration::ReadConfig() {
 
   config->Read(wxS("configID"), &m_configId);
 
-  wxString str;
-  long dummy;
-  config->SetPath("/renderability/good");
-  bool bCont = config->GetFirstEntry(str, dummy);
-  while (bCont) {
-    wxString chars;
-    config->Read(str, &chars);
-    m_renderableChars[str] = chars;
-    bCont = config->GetNextEntry(str, dummy);
-  }
-  config->SetPath("/renderability/bad");
-  bCont = config->GetFirstEntry(str, dummy);
-  while (bCont) {
-    wxString chars;
-    config->Read(str, &chars);
-    m_nonRenderableChars[str] = chars;
-    bCont = config->GetNextEntry(str, dummy);
-  }
-  config->SetPath("/");
+  m_fontRenderability.ReadFrom(config);
 
   {
     wxString hideMessagesConfigString;
@@ -983,73 +961,6 @@ Configuration::~Configuration() {
     }
 }
 
-// bool Configuration::CharsExistInFont(const wxFont &font,
-//                                      const wxString &chars) {
-//   wxASSERT(!chars.empty());
-//   for (auto const &ex : m_charsInFont)
-//     // cppcheck-suppress useStlAlgorithm
-//     if (ex.chars == chars)
-//       return ex.exist;
-
-//   auto const cache = [this, &chars](bool result) {
-//     m_charsInFont.emplace_back(chars, result);
-//     return result;
-//   };
-
-//   if (!font.IsOk())
-//     return cache(false);
-
-//   // Seems like Apple didn't hold to their high standards as the maths part of
-//   // this font don't form nice big mathematical symbols => Blacklisting this
-//   // font.
-//   if (font.GetFaceName() == wxS("Monaco"))
-//     return cache(false);
-
-//   if (!m_useUnicodeMaths)
-//     return cache(false);
-
-//   struct Params {
-//     wxUniChar ch;
-//     wxSize size;
-//     wxImage image;
-//     explicit Params(wxUniChar ch) : ch(ch) {}
-//   };
-//   std::vector<Params> P(chars.begin(), chars.end());
-
-//   // Letters with width or height = 0 don't exist in the current font
-//   GetRecalcDC()->SetFont(font);
-//   for (auto &p : P) {
-//     wxCoord descent;
-//     GetRecalcDC()->GetTextExtent(p.ch, &p.size.x, &p.size.y, &descent);
-//     if ((p.size.x < 1) || ((p.size.y - descent) < 1))
-//       return cache(false);
-//   }
-
-//   bool allDifferentSizes = true;
-//   for (auto i = P.begin(); allDifferentSizes && i != P.end(); ++i)
-//     for (auto j = i + 1; allDifferentSizes && j != P.end(); ++j)
-//       allDifferentSizes &= i->size != j->size;
-
-//   if (allDifferentSizes)
-//     return cache(true);
-
-//   for (auto &p : P) {
-//     wxBitmap bmp(p.size);
-//     wxMemoryDC dc(bmp);
-//     dc.SetFont(font);
-//     dc.Clear();
-//     dc.DrawText(p.ch, wxPoint(0, 0));
-//     p.image = bmp.ConvertToImage();
-//   }
-
-//   for (auto i = P.begin(); i != P.end(); ++i)
-//     for (auto j = i + 1; j != P.end(); ++j)
-//       if (i->image == j->image)
-//         return cache(false);
-
-//   return cache(true);
-// }
-
 wxString Configuration::GetFontName(TextStyle const ts) const {
   wxString retval;
   retval = m_styleStore[ts].GetFontName();
@@ -1184,10 +1095,7 @@ void Configuration::WriteSettings(const wxString &file) {
                 m_maxClipbrd_BitmapMegabytes);
 
   WriteStyles(config);
-  for (const auto &[fontName, chars] : m_renderableChars)
-    config->Write(wxS("renderability/good/") + fontName, chars);
-  for (const auto &[fontName, chars] : m_nonRenderableChars)
-    config->Write(wxS("renderability/bad/") + fontName, chars);
+  m_fontRenderability.WriteTo(config);
   if (file != wxEmptyString) {
     config->Flush();
     delete config;
@@ -1244,111 +1152,6 @@ bool Configuration::InUpdateRegion(wxRect const rect) const {
   wxRect const updateRegion = GetUpdateRegion();
 
   return updateRegion.Intersects(rect);
-}
-
-bool Configuration::FontRendersChar(wxUniChar ch, const wxFont &font) {
-  wxString fontName = font.GetNativeFontInfoDesc();
-  fontName.Replace("/", "_");
-  if (m_renderableChars[fontName].Contains(ch))
-    return true;
-  if (m_nonRenderableChars[fontName].Contains(ch))
-    return false;
-
-  bool retval = FontDisplaysChar(ch, font) &&
-    CharVisiblyDifferent(ch, wxS('\1'), font) &&
-    CharVisiblyDifferent(ch, L'\uF299', font) &&
-    CharVisiblyDifferent(ch, L'\uF000', font);
-
-  if (retval)
-    m_renderableChars[fontName] += ch;
-  else
-    m_nonRenderableChars[fontName] += ch;
-
-  return retval;
-}
-
-bool Configuration::FontDisplaysChar(wxUniChar ch, const wxFont &font) {
-  int width = 200;
-  int height = 200;
-
-  // Prepare two identical device contexts that create identical bitmaps
-  wxBitmap characterBitmap =
-    wxBitmap(wxSize(width, height), wxBITMAP_SCREEN_DEPTH);
-  wxBitmap referenceBitmap =
-    wxBitmap(wxSize(width, height), wxBITMAP_SCREEN_DEPTH);
-  wxMemoryDC characterDC;
-  wxMemoryDC referenceDC;
-  characterDC.SetFont(font);
-  referenceDC.SetFont(font);
-  characterDC.SelectObject(characterBitmap);
-  referenceDC.SelectObject(referenceBitmap);
-  characterDC.SetBrush(*wxWHITE_BRUSH);
-  referenceDC.SetBrush(*wxWHITE_BRUSH);
-  characterDC.DrawRectangle(0, 0, 200, 200);
-  referenceDC.DrawRectangle(0, 0, 200, 200);
-  characterDC.SetPen(*wxBLACK_PEN);
-  referenceDC.SetPen(*wxBLACK_PEN);
-
-  // Now draw the character our button shows into one of these bitmaps and see
-  // if that changed any aspect of the bitmap
-  characterDC.DrawText(ch, 100, 100);
-  wxImage characterImage = characterBitmap.ConvertToImage();
-  wxImage referenceImage = referenceBitmap.ConvertToImage();
-  for (int x = 0; x < width; x++)
-    for (int y = 0; y < height; y++) {
-      if (characterImage.GetRed(x, y) != referenceImage.GetRed(x, y))
-        return true;
-      if (characterImage.GetGreen(x, y) != referenceImage.GetGreen(x, y))
-        return true;
-      if (characterImage.GetBlue(x, y) != referenceImage.GetBlue(x, y))
-        return true;
-    }
-  wxLogMessage(wxS("Char '%s' seems not to be displayed."), wxString(ch).mb_str());
-
-  // characterImage.SaveFile(wxString(m_char)+".png");
-
-  return false;
-}
-
-bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar,
-                                         const wxFont &font) {
-  int width = 200;
-  int height = 200;
-
-  // Prepare two identical device contexts that create identical bitmaps
-  wxBitmap characterBitmap =
-    wxBitmap(wxSize(width, height), wxBITMAP_SCREEN_DEPTH);
-  wxBitmap referenceBitmap =
-    wxBitmap(wxSize(width, height), wxBITMAP_SCREEN_DEPTH);
-  wxMemoryDC characterDC;
-  wxMemoryDC referenceDC;
-  characterDC.SetFont(font);
-  referenceDC.SetFont(font);
-  characterDC.SelectObject(characterBitmap);
-  referenceDC.SelectObject(referenceBitmap);
-  characterDC.SetBrush(*wxWHITE_BRUSH);
-  referenceDC.SetBrush(*wxWHITE_BRUSH);
-  characterDC.DrawRectangle(0, 0, 200, 200);
-  referenceDC.DrawRectangle(0, 0, 200, 200);
-  characterDC.SetPen(*wxBLACK_PEN);
-  referenceDC.SetPen(*wxBLACK_PEN);
-  characterDC.DrawText(wxString(ch), 100, 100);
-  referenceDC.DrawText(wxString(otherChar), 100, 100);
-  wxImage characterImage = characterBitmap.ConvertToImage();
-  wxImage referenceImage = referenceBitmap.ConvertToImage();
-  for (int x = 0; x < width; x++)
-    for (int y = 0; y < height; y++) {
-      if (characterImage.GetRed(x, y) != referenceImage.GetRed(x, y))
-        return true;
-      if (characterImage.GetGreen(x, y) != referenceImage.GetGreen(x, y))
-        return true;
-      if (characterImage.GetBlue(x, y) != referenceImage.GetBlue(x, y))
-        return true;
-    }
-  wxLogMessage(wxS("Char '%s' looks identical to '%s'."),
-               wxString(ch).mb_str(),
-               wxString(otherChar).mb_str());
-  return false;
 }
 
 bool Configuration::OfferInternalHelpBrowser() const {

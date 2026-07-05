@@ -30,6 +30,7 @@
 #include <wx/hashmap.h>
 #include "dialogs/LoggingMessageDialog.h"
 #include "cells/TextStyle.h"
+#include "FontRenderabilityCache.h"
 #include "MaximaSessionInfo.h"
 #include "RenderContext.h"
 #include "Styles.h"
@@ -154,7 +155,6 @@ public:
   };
 
   typedef std::unordered_map <wxString, bool, wxStringHash> StringBoolHash;
-  typedef std::unordered_map <wxString, wxString, wxStringHash> RenderablecharsHash;
   typedef std::unordered_map <wxString, int, wxStringHash> StringHash;
   //! Coincides name with a operator known to maxima?
   bool IsOperator(wxString name) const {return m_maximaSession.IsOperator(name);}
@@ -432,16 +432,9 @@ public:
     return m_renderContext.IsLayoutCancelled();
   }
 
-  struct CharsExist {
-    wxString chars;
-    bool exist;
-    CharsExist(const wxString &chars, bool exist) : chars(chars), exist(exist) {}
-  };
-
   //! To be called if a font has changed
   void FontChanged()
     {
-      m_charsInFont.clear();
       RecalculateForce();
     }
 
@@ -1123,7 +1116,8 @@ public:
   //! Initialize the text styles on construction.
   void InitStyles();
   //! True if we are confident that the font renders this char
-  bool FontRendersChar(wxUniChar ch, const wxFont &font = *wxNORMAL_FONT);
+  bool FontRendersChar(wxUniChar ch, const wxFont &font = *wxNORMAL_FONT)
+    { return m_fontRenderability.FontRendersChar(ch, font); }
   wxTextCtrl *LastActiveTextCtrl() const { return m_lastActiveTextCtrl; }
   void LastActiveTextCtrl(wxTextCtrl *last);
 
@@ -1160,7 +1154,6 @@ private:
   std::random_device m_rd;
   //! Our random engine
   std::default_random_engine m_eng;
-  std::vector<CharsExist> m_charsInFont;
   wxEnvVariableHashMap m_maximaEnvVars;
 public:
   //! One sample of OS entropy (std::random_device).
@@ -1184,12 +1177,8 @@ private:
   //! Which LANG environment variable to communicate to maxima?
   static wxString m_maxima_LANG;
   std::list<FileToSave> m_filesToSave;
-  RenderablecharsHash m_renderableChars;
-  RenderablecharsHash m_nonRenderableChars;
-  //! True if drawing the char this button displays alters at least one pixel
-  static bool FontDisplaysChar(wxUniChar ch, const wxFont &font = *wxNORMAL_FONT);
-  //! True if drawing the char this button displays differs visibly from otherChar
-  static bool CharVisiblyDifferent(wxChar ch, wxChar otherChar, const wxFont &font = *wxNORMAL_FONT);
+  //! Which characters can each font render? (persisted probe cache)
+  FontRenderabilityCache m_fontRenderability;
   mathDisplayMode m_displayMode = display_2d;
   static bool m_debugMode;
   bool m_showInputLabels;
@@ -1218,20 +1207,6 @@ private:
   wxWindow *m_workSheet = NULL;
   //! The state of the current render pass (DCs, canvas, clipping, deadline)
   RenderContext m_renderContext;
-  /*! Do these chars exist in the given font?
-
-    wxWidgets currently doesn't define such a function. But we can do the following:
-    - Test if any of these characters has the width or height 0 (or even less)
-    which clearly indicates that this char doesn't exist.
-    - Test if any two of the characters are equal when rendered as bitmaps:
-    If they are we most probably didn't get render real characters but rather
-    render placeholders for characters.
-
-    As these might be costly operations it is important to cache the result
-    of this function.
-  */
-//  bool CharsExistInFont(const wxFont &font, const wxString& chars);
-  //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
   bool m_wrapLatexMath;
   bool m_allowNetworkHelp;
   bool m_exportContainsWXMX;
