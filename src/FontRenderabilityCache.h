@@ -36,6 +36,7 @@
 
 #include <wx/confbase.h>
 #include <wx/font.h>
+#include <wx/hashmap.h>
 #include <wx/string.h>
 #include <unordered_map>
 
