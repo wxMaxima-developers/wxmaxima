@@ -33,6 +33,7 @@
 */
 
 #include "MaximaTokenizer.h"
+#include "BTextCtrl.h"
 #include <wx/notifmsg.h>
 #if defined __WXMSW__
 //#include <wchar.h>
@@ -9181,13 +9182,13 @@ void wxMaxima::CommandWiz(
 
 void wxMaxima::OnWizardAbort(wxCommandEvent &WXUNUSED(event)) {
   HideWizardPane();
-  m_configuration.LastActiveTextCtrl(NULL);
+  BTextCtrl::ForgetLastActive();
 }
 
 void wxMaxima::OnWizardOK(wxCommandEvent &event) {
   OnWizardInsert(event);
   OnWizardAbort(event);
-  m_configuration.LastActiveTextCtrl(NULL);
+  BTextCtrl::ForgetLastActive();
 }
 
 void wxMaxima::OnWizardHelpButton(wxCommandEvent &event) {
@@ -9196,7 +9197,7 @@ void wxMaxima::OnWizardHelpButton(wxCommandEvent &event) {
 
 void wxMaxima::OnWizardInsert(wxCommandEvent &WXUNUSED(event)) {
   MenuCommand(m_wizard->GetOutput());
-  m_configuration.LastActiveTextCtrl(NULL);
+  BTextCtrl::ForgetLastActive();
 }
 
 void wxMaxima::HelpMenu(wxCommandEvent &event) {
@@ -11198,9 +11199,9 @@ void wxMaxima::OnFocus(wxFocusEvent &event) {
 }
 void wxMaxima::PassKeyboardFocus() {
   if (GetWorksheet()) {
-    if (m_configuration.LastActiveTextCtrl()) {
+    if (BTextCtrl::LastActive()) {
       wxLogMessage(_("Forwarding the keyboard focus to a text control"));
-      m_configuration.LastActiveTextCtrl()->SetFocus();
+      BTextCtrl::LastActive()->SetFocus();
     } else {
       wxLogMessage(_("Forwarding the keyboard focus to the worksheet"));
       CallAfter([this]{GetWorksheet()->SetFocus();});

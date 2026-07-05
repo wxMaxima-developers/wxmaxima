@@ -188,7 +188,6 @@ Configuration::Configuration(const Configuration &o) :
   m_layoutStrategy(o.m_layoutStrategy),
   m_wxMathML_Filename(o.m_wxMathML_Filename),
   m_maximaHelpFormat(o.m_maximaHelpFormat),
-  m_lastActiveTextCtrl(o.m_lastActiveTextCtrl),
   m_cellCfgCnt(o.m_cellCfgCnt.load())
 {
 #ifdef __WXMSW__
@@ -843,10 +842,6 @@ Configuration::maximaHelpFormat Configuration::MaximaHelpFormat() const
     return frontend;
 }
 
-void Configuration::LastActiveTextCtrl(wxTextCtrl *last) {
-  m_lastActiveTextCtrl = last;
-}
-
 bool Configuration::HideMarkerForThisMessage(wxString message) {
   auto it = m_hideMarkerForThisMessage.find(message);
   if (it == m_hideMarkerForThisMessage.end())
@@ -1135,14 +1130,6 @@ wxCoord Configuration::Scale_Px(double px) const {
 AFontSize Configuration::Scale_Px(AFontSize size) const {
   auto retval = size.Get() * GetZoomFactor();
   return AFontSize(retval);
-}
-
-
-Configuration::FileToSave Configuration::PopFileToSave()
-{
-  FileToSave retval(m_filesToSave.back());
-  m_filesToSave.pop_back();
-  return retval;
 }
 
 bool Configuration::InUpdateRegion(wxRect const rect) const {

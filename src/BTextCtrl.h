@@ -24,6 +24,7 @@
 
 #include "precomp.h"
 #include <wx/wx.h>
+#include <wx/weakref.h>
 #include "Configuration.h"
 
 /*! A wxTextCtrl with parenthesis matching
@@ -47,7 +48,27 @@ public:
       m_skipTab = skip;
     }
 
+  /*! The last BTextCtrl that got the keyboard focus, if it still exists.
+
+    The symbols sidebars use this to route their button presses: if a text
+    control (e.g. a wizard field) had the focus last, the symbol is inserted
+    there instead of into the worksheet.
+
+    Held as a wxWeakRef, which nulls itself when the control is destroyed:
+    a closed wizard can therefore never leave a dangling pointer here, and no
+    destructor needs to unregister the control anywhere (unregistering via the
+    Configuration object crashed on shutdown when the Configuration died
+    first, see issue #2027).
+  */
+  static wxTextCtrl *LastActive() { return m_lastActive; }
+
+  //! Route sidebar button presses back to the worksheet again.
+  static void ForgetLastActive() { m_lastActive = nullptr; }
+
 private:
+  //! See LastActive()
+  static wxWeakRef<wxTextCtrl> m_lastActive;
+
   bool m_skipTab = true;
 
   bool MatchParenthesis(int code);

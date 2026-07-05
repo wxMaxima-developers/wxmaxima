@@ -60,17 +60,15 @@ BTextCtrl::BTextCtrl(wxWindow *parent, wxWindowID id, Configuration *cfg,
 #endif
 }
 
+wxWeakRef<wxTextCtrl> BTextCtrl::m_lastActive;
+
 void BTextCtrl::OnFocus(wxFocusEvent &event) {
   wxLogMessage(_("A text control got the mouse focus"));
-  m_config->LastActiveTextCtrl(this);
+  m_lastActive = this;
   event.Skip();
 }
 
-BTextCtrl::~BTextCtrl() {
-// The configuration object might not exist. This caused an issue on OpenBSD (issue #2027)
-//  if (m_config->LastActiveTextCtrl() == this)
-//    m_config->LastActiveTextCtrl(NULL);
-}
+BTextCtrl::~BTextCtrl() {}
 
 void BTextCtrl::OnChar(wxKeyEvent &event) {
   if (!m_config->GetMatchParens() || MatchParenthesis(event.GetUnicodeKey()))

@@ -209,6 +209,19 @@ if(TARGET wxmTestApp)
     target_link_libraries(test_GreekSidebar PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(GreekSidebar test_GreekSidebar)
+
+    # Drives a real BTextCtrl to guard the last-active-text-control tracking
+    # (which text control the sidebars' symbol buttons type into). It was a raw
+    # pointer in Configuration that a destroyed control could not unregister
+    # (issue #2027) -- a use-after-free once its wizard was closed; now a
+    # wxWeakRef-backed static on BTextCtrl that must null itself on destruction.
+    add_executable(test_LastActiveTextCtrl
+        test_LastActiveTextCtrl.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_LastActiveTextCtrl PUBLIC cxx_std_20)
+    target_link_libraries(test_LastActiveTextCtrl PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(LastActiveTextCtrl test_LastActiveTextCtrl)
 endif()
 
 # Same watchdog timeout the parent directory applies to its tests: keep a hung

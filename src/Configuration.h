@@ -155,7 +155,6 @@ public:
   };
 
   typedef std::unordered_map <wxString, bool, wxStringHash> StringBoolHash;
-  typedef std::unordered_map <wxString, int, wxStringHash> StringHash;
   //! Coincides name with a operator known to maxima?
   bool IsOperator(wxString name) const {return m_maximaSession.IsOperator(name);}
   //! Register name as an operator known to maxima.
@@ -719,7 +718,6 @@ public:
     const wxColor  m_color;
   };
 
-  FileToSave PopFileToSave();
   void PushFileToSave(const wxString &filename, const wxMemoryBuffer &data)
     { m_filesToSave.emplace_front(FileToSave(filename, data)); }
 
@@ -1118,8 +1116,6 @@ public:
   //! True if we are confident that the font renders this char
   bool FontRendersChar(wxUniChar ch, const wxFont &font = *wxNORMAL_FONT)
     { return m_fontRenderability.FontRendersChar(ch, font); }
-  wxTextCtrl *LastActiveTextCtrl() const { return m_lastActiveTextCtrl; }
-  void LastActiveTextCtrl(wxTextCtrl *last);
 
   //! Which styles affect how code is displayed?
   const std::vector<TextStyle> &GetCodeStylesList() const {return m_styleStore.CodeStylesList();}
@@ -1318,7 +1314,6 @@ private:
   LayoutStrategy m_layoutStrategy = LayoutStrategy::layout2DIfFits;
   wxString m_wxMathML_Filename;
   maximaHelpFormat m_maximaHelpFormat;
-  wxTextCtrl *m_lastActiveTextCtrl = NULL;
   std::atomic<std::int_fast32_t> m_cellCfgCnt{0};
   static bool m_use_threads;
 };

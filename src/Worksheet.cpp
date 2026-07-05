@@ -31,6 +31,7 @@
 */
 
 #include "Worksheet.h"
+#include "BTextCtrl.h"
 #include "cells/AnimationCell.h"
 #include "graphical_io/BitmapOut.h"
 #include "cells/CellList.h"
@@ -206,7 +207,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
 }
 
 void Worksheet::OnSidebarKey(wxCommandEvent &event) {
-  if (m_configuration->LastActiveTextCtrl() == NULL) {
+  if (BTextCtrl::LastActive() == NULL) {
     SetFocus();
     // Send the char button to the active cell or a new cell on the worksheet
     if (GetActiveCell()) {
@@ -218,7 +219,7 @@ void Worksheet::OnSidebarKey(wxCommandEvent &event) {
       OpenHCaret(wxString(wxChar(event.GetId())));
   } else {
     // Send the char to the last active text control
-    wxTextCtrl *textCtrl = m_configuration->LastActiveTextCtrl();
+    wxTextCtrl *textCtrl = BTextCtrl::LastActive();
     long pos = textCtrl->GetInsertionPoint();
     textCtrl->WriteText(wxString(wxChar(event.GetId())));
     textCtrl->SetInsertionPoint(pos + 1);
@@ -227,7 +228,7 @@ void Worksheet::OnSidebarKey(wxCommandEvent &event) {
 }
 
 void Worksheet::FocusTextControl() {
-  wxTextCtrl *textCtrl = m_configuration->LastActiveTextCtrl();
+  wxTextCtrl *textCtrl = BTextCtrl::LastActive();
   if (textCtrl) {
     wxLogMessage(_("Forwarding the keyboard focus to a text control"));
     long pos = textCtrl->GetInsertionPoint();
@@ -1308,7 +1309,7 @@ void Worksheet::UnfoldAll() {
  */
 void Worksheet::OnMouseRightDown(wxMouseEvent &event) {
   event.Skip();
-  m_configuration->LastActiveTextCtrl(NULL);
+  BTextCtrl::ForgetLastActive();
   m_updateControls = true;
   RecalculateIfNeeded();
   RedrawIfRequested();
@@ -2284,7 +2285,7 @@ void Worksheet::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGC) {
  */
 void Worksheet::OnMouseLeftDown(wxMouseEvent &event) {
   event.Skip();
-  m_configuration->LastActiveTextCtrl(NULL);
+  BTextCtrl::ForgetLastActive();
   m_updateControls = true;
   RecalculateIfNeeded();
   RedrawIfRequested();
@@ -3293,7 +3294,7 @@ void Worksheet::Evaluate() {
  * Support for copying and deleting with keyboard
  */
 void Worksheet::OnKeyDown(wxKeyEvent &event) {
-  m_configuration->LastActiveTextCtrl(NULL);
+  BTextCtrl::ForgetLastActive();
   m_updateControls = true;
   m_configuration->SetAdjustWorksheetSizeNeeded(true);
   ClearNotification();
@@ -4157,7 +4158,7 @@ void Worksheet::OnChar(wxKeyEvent &event) {
   /* Doing an unconditional event.Skip() here means that on any key that
      looks like navigation (up, down,...) the worksheet looses focus */
   UpdateControlsNeeded(true);
-  m_configuration->LastActiveTextCtrl(NULL);
+  BTextCtrl::ForgetLastActive();
   m_configuration->SetAdjustWorksheetSizeNeeded(true);
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to
   // realize them they need to be passed to it using the event's Skip()
@@ -6084,7 +6085,7 @@ bool Worksheet::CanEdit() {
 
 void Worksheet::OnDoubleClick(wxMouseEvent &event) {
   event.Skip();
-  m_configuration->LastActiveTextCtrl(NULL);
+  BTextCtrl::ForgetLastActive();
   m_updateControls = true;
   // No more track the mouse when it is outside the worksheet
   if (HasCapture())
