@@ -55,6 +55,7 @@
 #include "cells/AnimationCell.h"
 #include "cells/GroupCell.h"
 #include "TreeUndoManager.h"
+#include "WorksheetCursor.h"
 #include "cells/TextCell.h"
 #include "EvaluationQueue.h"
 #include "dialogs/FindReplaceDialog.h"
@@ -508,29 +509,14 @@ private:
   wxPoint m_down;
   wxPoint m_up;
   wxPoint m_mousePoint;
-  /*! Is the active cursor the one represented by a horizontal line?
+  /*! The cursor that sits between two group cells (the horizontal caret).
 
-    See m_hCaretPosition and EditorCell::GetActiveCell() for the position of the two
-    types of cursors.
+    Holds its active flag, its position (the group above it; null = document
+    start) and the anchors of a select-with-the-caret gesture. The text cursor
+    inside a cell is EditorCell::GetActiveCell(); at most one of the two is
+    active at a time, which Worksheet's SetHCaret/SetActiveCell enforce.
   */
-  bool m_hCaretActive = true;
-  /*! The group above the hcaret, NULL for the top of the document
-    See EditorCell::GetActiveCell() for the position if the cursor that is drawn as a
-    vertical line.
-  */
-  CellPtr<GroupCell> m_hCaretPosition;
-  /*! The start for the selection when selecting group with the horizontally drawn cursor
-
-    This cell does define were the selection was actually started and therefore does not need
-    to be above m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionStart.
-  */
-  CellPtr<GroupCell> m_hCaretPositionStart;
-  /*! The end of the selection when selecting group with the horizontally drawn cursor
-
-    This cell does define where the selection was actually ended and therefore does not need
-    to be below m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionEnd.
-  */
-  CellPtr<GroupCell> m_hCaretPositionEnd;
+  WorksheetCursor m_hCaret;
   bool m_leftDown = false;
   //! Do we want to automatically scroll to a cell as soon as it is being evaluated?
   bool m_followEvaluation = true;
@@ -755,7 +741,7 @@ public:
   FindReplaceDialog *m_findDialog = NULL;
 
   //! Is the vertically-drawn cursor active?
-  bool HCaretActive() const { return m_hCaretActive; }
+  bool HCaretActive() const { return m_hCaret.IsActive(); }
 
   /*! Can we merge the selected cells into one?
 
@@ -866,7 +852,7 @@ public:
     }
 
   bool CanPaste() const
-    { return m_cellPointers.m_activeCell || m_hCaretActive; }
+    { return m_cellPointers.m_activeCell || m_hCaret.IsActive(); }
 
   bool CanCut() const
     {

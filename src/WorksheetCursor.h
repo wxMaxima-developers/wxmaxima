@@ -40,7 +40,7 @@
 #ifndef WORKSHEETCURSOR_H
 #define WORKSHEETCURSOR_H
 
-#include "CellPtr.h"
+#include "cells/CellPtr.h"
 
 class GroupCell;
 

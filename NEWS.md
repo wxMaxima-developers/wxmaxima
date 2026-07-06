@@ -1,5 +1,16 @@
 # Current development version
 
+- Internal: the cursor that sits between two worksheet cells (the horizontal
+  caret) now lives in its own WorksheetCursor class - its active flag, its
+  position and the anchors of a select-with-the-caret gesture were three
+  loose Worksheet fields whose consistency every mutation site maintained by
+  hand. A new regression test pins the cursor model: the between-cells caret
+  and the in-cell text cursor exclude each other, neither is active while
+  cells are selected, and "where would inserted cells go" (GetHCaret) is a
+  derived anchor that falls back from the caret to the active cell to the
+  selection. First step towards a cursor abstraction the find/replace engine
+  can work through.
+
 - Fixed broken equation-image links in HTML exports using the "bitmap" equation
   format: the image files are written as .png, but the links to them were built
   from the .html file's own extension (a document exported as doc.html linked
