@@ -134,6 +134,22 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(WXMXRoundtrip test_WXMXRoundtrip)
 
+    # Safety net for extracting the export/serialization cluster out of
+    # Worksheet: loads the real math corpus plus sentinel cells into a live
+    # Worksheet, runs ExportToHTML/TeX/MAC and the selection-to-string
+    # converters twice each, and requires byte-identical, content-complete
+    # output. WXM_EXPORT_DUMP_DIR=<dir> keeps the files for a before/after
+    # `diff -r` around the refactor.
+    add_executable(test_WorksheetExport
+        test_WorksheetExport.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_WorksheetExport PUBLIC cxx_std_20)
+    target_compile_definitions(test_WorksheetExport PRIVATE
+        WXM_CORPUS_DIR="${CMAKE_SOURCE_DIR}/test/fuzz/corpus_mathparser")
+    target_link_libraries(test_WorksheetExport PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(WorksheetExport test_WorksheetExport)
+
     # Hardening/fuzz test for EditorCell's text-editing core: drives the real
     # key-event paths and checks the cursor/selection invariants after every op.
     add_executable(test_EditorCellInvariants

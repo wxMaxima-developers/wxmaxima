@@ -341,15 +341,6 @@ private:
   bool m_scrolledAwayFromEvaluation = false;
 public:
 
-  /*! Escape all chars that aren't allowed in html.
-
-    Also converts \n to <br/>
-  */
-  wxString EscapeHTMLChars(wxString input);
-
-  //! Allow indentation by spaces for html by replacing them by non-breakable spaces
-  wxString PrependNBSP(wxString input);
-
   //! An enum for all classes of items one can click on
   enum ClickType
   {
@@ -367,9 +358,6 @@ public:
     CARET_TIMER_ID,
     DISPLAY_TIMEOUT_ID
   };
-
-  //! Add a line to a file.
-  static void AddLineToFile(wxTextFile &output, const wxString &s);
 
   //! Copy the currently selected cells
   std::unique_ptr<Cell> CopySelection(bool asData = false) const;
@@ -1049,20 +1037,11 @@ public:
 
   wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData = false, double scale = 1) const;
 
-  void CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex, std::vector<int> &cellMap);
-
   /*! Export the file to an html document
 
     \todo Worksheet and text cell background work fine, but their names might be interchanged.
   */
   bool ExportToHTML(const wxString &file);
-
-  /*! Export a region of the file to a .wxm or .mac file maxima's load command can read
-
-    \todo Slow: Iterates through a string using [] instead of using an iterator.
-  */
-  void
-  ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const std::vector<int> &cellMap, bool fixReorderedIndices);
 
   //! Export the file to a text file maxima's load command can read
   bool ExportToMAC(const wxString &file);
@@ -1517,37 +1496,12 @@ public:
     {return m_maximaManual.GetHelpfileAnchorName(keyword);}
   wxString GetHelpfileURL(const wxString &keyword)
     {return m_maximaManual.GetHelpfileURL(keyword);}
-  //! Returns the index in (%i...) or (%o...)
-  int GetCellIndex(Cell *cell) const;
 
   //! Suggestions for how the word that was right-clicked on could continue
   std::vector<wxString> m_replacementsForCurrentWord;
 #if wxUSE_ACCESSIBILITY
   int GetAccessibilityId(Cell *cell) const;
 #endif
-  //Simple iterator over a Maxima input string, skipping comments and strings
-  class SimpleMathConfigurationIterator
-  {
-  public:
-    explicit SimpleMathConfigurationIterator(const wxString &ainput);
-
-    void operator++();
-
-    bool isValid() const
-      { return pos < input.length(); }
-
-
-    inline wxChar operator*() const
-      { return input.at(pos); }
-
-    std::size_t pos;
-
-    /*! reference to input string (must be a reference, so it can be modified)
-
-      \todo: It is const, so it cannot be modified!?!
-    */
-    const wxString &input;
-  };
 
 #if wxUSE_ACCESSIBILITY
   class AccessibilityInfo: public wxAccessible

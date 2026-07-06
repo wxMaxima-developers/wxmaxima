@@ -156,6 +156,7 @@ set(SOURCE_FILES
     SvgPanel.cpp
     ToolBar.cpp
     Worksheet.cpp
+    WorksheetExport.cpp
     WrappingStaticText.cpp
     WXMformat.cpp
     WXMXformat.cpp

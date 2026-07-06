@@ -1,5 +1,25 @@
 # Current development version
 
+- Fixed broken equation-image links in HTML exports using the "bitmap" equation
+  format: the image files are written as .png, but the links to them were built
+  from the .html file's own extension (a document exported as doc.html linked
+  every equation as "doc_0html" instead of "doc_0.png"). Embedded image cells
+  and animations were not affected. A new export regression test checks that
+  every image link in an exported HTML file points at a file that exists.
+- Internal: the document serializers (export to HTML including its equation
+  images and embedded .wxmx copy, LaTeX, .mac/.wxm batch files, the RTF
+  document frame and the render-selection-to-image-file helper, ~1200 lines)
+  now live in their own WorksheetExport module instead of inside the Worksheet
+  class. They only ever read the cell tree and the configuration - they are
+  document functionality that sat in the view class by accident; this is the
+  first slice of the document/view split. The Worksheet keeps thin wrappers,
+  so no caller changes; the export regression test pins the output
+  byte-for-byte across the move.
+- Added an export safety-net regression test (test_WorksheetExport): a rich
+  worksheet (the real math corpus plus sentinel cells) is exported to HTML (all
+  four equation formats), LaTeX, .mac and .wxm twice each; the runs must be
+  byte-identical (modulo zip timestamps and SVG image ids, which wxWidgets
+  numbers with a process-global counter) and contain the document's content.
 - Fixed math cells with subscripts, parenthesis or lists keeping stale spacing (way too much or even negative horizontal space) after a zoom change or a configuration change that arrived while the worksheet was being laid out - until something forced the affected cell to be recalculated. The cached per-list geometry now automatically expires whenever the configuration changes.
 - Added a layout-idempotency regression test: after zoom and canvas-size changes the converged layout must be identical to laying the same content out from scratch.
 - Configuration changes that alter how text is displayed (e.g. drawing a multiplication dot instead of an asterisk) take effect on the next redraw again instead of requiring the cells to be rebuilt.
