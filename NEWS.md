@@ -6,6 +6,17 @@
   every equation as "doc_0html" instead of "doc_0.png"). Embedded image cells
   and animations were not affected. A new export regression test checks that
   every image link in an exported HTML file points at a file that exists.
+- Internal: a wxWidgets assertion tripped inside a unit test now prints to
+  stderr and lets the test report its genuine outcome on every platform; the
+  previous guard against the modal assert dialog (which hangs unattended test
+  runs until the watchdog timeout) only covered Windows. A regression test for
+  the right-click menu checks the four main right-click states.
+- Internal: building the worksheet's right-click menu (~800 lines covering the
+  image/animation, selection, cursor-between-cells and inside-a-cell cases) now
+  lives in its own WorksheetContextMenu module instead of making up a tenth of
+  the Worksheet class in one method. Building the menu is a function of the
+  worksheet's state and never shows anything, so it is now unit-testable; the
+  mouse handling around it stays in Worksheet::OnMouseRightDown.
 - Internal: the document serializers (export to HTML including its equation
   images and embedded .wxmx copy, LaTeX, .mac/.wxm batch files, the RTF
   document frame and the render-selection-to-image-file helper, ~1200 lines)

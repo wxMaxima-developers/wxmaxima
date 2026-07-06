@@ -150,6 +150,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(WorksheetExport test_WorksheetExport)
 
+    # Pins the right-click context menu (WorksheetContextMenu, extracted from
+    # Worksheet::OnMouseRightDown): drives the main right-click states on a
+    # real Worksheet and checks the expected menu entries appear.
+    add_executable(test_WorksheetContextMenu
+        test_WorksheetContextMenu.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_WorksheetContextMenu PUBLIC cxx_std_20)
+    target_link_libraries(test_WorksheetContextMenu PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(WorksheetContextMenu test_WorksheetContextMenu)
+
     # Hardening/fuzz test for EditorCell's text-editing core: drives the real
     # key-event paths and checks the cursor/selection invariants after every op.
     add_executable(test_EditorCellInvariants
