@@ -831,7 +831,7 @@ void Worksheet::ScrollToError() {
   // Set the cursor as close to the error as possible.
   if (errorCell->GetEditable()->ErrorIndexSet()) {
     ClearSelection();
-    m_hCaret.SelectionStart() = m_hCaret.SelectionEnd() = NULL;
+    m_hCaret.SetSelectionAnchors(NULL, NULL);
     SetActiveCell(errorCell->GetEditable());
     errorCell->GetEditable()->GotoError();
     ScrollToCaret();
@@ -1154,7 +1154,7 @@ void Worksheet::ClearDocument() {
   m_clickInGC = NULL;
   m_hCaret.Deactivate();
   SetHCaret(NULL); // horizontal caret at the top of document
-  m_hCaret.SelectionStart() = m_hCaret.SelectionEnd() = NULL;
+  m_hCaret.SetSelectionAnchors(NULL, NULL);
   m_recalculateStart = NULL;
   m_evaluationQueue.Clear();
   TreeUndo_ClearBuffers();
@@ -1569,8 +1569,8 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event) {
   // default when clicking
   m_clickType = CLICK_TYPE_NONE;
   ClearSelection();
-  m_hCaret.SelectionStart() = m_hCaret.SelectionEnd() = NULL;
-  m_hCaret.Position() = NULL;
+  m_hCaret.SetSelectionAnchors(NULL, NULL);
+  m_hCaret.SetPosition(NULL);
   m_hCaret.Deactivate();
   SetActiveCell(NULL);
 
@@ -1744,20 +1744,19 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
       SetHCaret(m_cellPointers.m_selectionEnd.CastAs<GroupCell *>());
     } else {
       m_hCaret.Deactivate();
-      m_hCaret.Position() = NULL;
+      m_hCaret.SetPosition(NULL);
     }
   } else {
     m_hCaret.Activate();
-    m_hCaret.Position() = GetLastCellInWorksheet();
+    m_hCaret.SetPosition(GetLastCellInWorksheet());
   }
 
   if (down.y > up.y) {
-    m_hCaret.SelectionStart() =
-      m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
-    m_hCaret.SelectionEnd() = m_cellPointers.m_selectionEnd.CastAs<GroupCell *>();
+    m_hCaret.SetSelectionStart(m_cellPointers.m_selectionStart.CastAs<GroupCell *>());
+    m_hCaret.SetSelectionEnd(m_cellPointers.m_selectionEnd.CastAs<GroupCell *>());
   } else {
-    m_hCaret.SelectionStart() = m_cellPointers.m_selectionEnd.CastAs<GroupCell *>();
-    m_hCaret.SelectionEnd() = m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
+    m_hCaret.SetSelectionStart(m_cellPointers.m_selectionEnd.CastAs<GroupCell *>());
+    m_hCaret.SetSelectionEnd(m_cellPointers.m_selectionStart.CastAs<GroupCell *>());
   }
   SetSelection(m_cellPointers.m_selectionStart, m_cellPointers.m_selectionEnd);
 }
@@ -2319,7 +2318,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
   if (!CanDeleteRegion(start, end))
     return;
 
-  m_hCaret.SelectionStart() = m_hCaret.SelectionEnd() = NULL;
+  m_hCaret.SetSelectionAnchors(NULL, NULL);
 
   //! Set the cursor to a sane place
   SetActiveCell(NULL);
@@ -2700,11 +2699,9 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
 
     if (event.ShiftDown()) {
       SetSelection(previous, GetActiveCell()->GetGroup());
-      m_hCaret.Position() = m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
-      m_hCaret.SelectionEnd() =
-        m_cellPointers.m_selectionStart.CastAs<GroupCell *>();
-      m_hCaret.SelectionStart() =
-        m_cellPointers.m_selectionEnd.CastAs<GroupCell *>();
+      m_hCaret.SetPosition(m_cellPointers.m_selectionStart.CastAs<GroupCell *>());
+      m_hCaret.SetSelectionEnd(m_cellPointers.m_selectionStart.CastAs<GroupCell *>());
+      m_hCaret.SetSelectionStart(m_cellPointers.m_selectionEnd.CastAs<GroupCell *>());
 
       GetActiveCell()->KeyboardSelectionStartedHere();
       GetActiveCell()->SelectNone();
@@ -2744,9 +2741,9 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
         end = end->GetNext();
 
       SetSelection(start, end);
-      m_hCaret.Position() = start;
-      m_hCaret.SelectionStart() = start;
-      m_hCaret.SelectionEnd() = end;
+      m_hCaret.SetPosition(start);
+      m_hCaret.SetSelectionStart(start);
+      m_hCaret.SetSelectionEnd(end);
 
       GetActiveCell()->KeyboardSelectionStartedHere();
       GetActiveCell()->SelectNone();
@@ -2919,22 +2916,20 @@ void Worksheet::SelectWithChar(int ccode) {
   // we always move m_hCaret.Position()
   if (!m_hCaret.SelectionStart() || !m_hCaret.SelectionEnd()) {
     if (m_hCaret.Position())
-      m_hCaret.SelectionStart() = m_hCaret.SelectionEnd() = m_hCaret.Position();
+      m_hCaret.SetSelectionAnchors(m_hCaret.Position(), m_hCaret.Position());
     else
-      m_hCaret.SelectionStart() = m_hCaret.SelectionEnd() = GetTree();
+      m_hCaret.SetSelectionAnchors(GetTree(), GetTree());
 
     if (!m_hCaret.SelectionStart())
       return;
 
     if (ccode == WXK_DOWN && m_hCaret.Position() &&
         m_hCaret.SelectionStart()->GetNext()) {
-      m_hCaret.SelectionStart() = m_hCaret.SelectionEnd() =
-        m_hCaret.SelectionStart()->GetNext();
+      m_hCaret.SetSelectionAnchors(m_hCaret.SelectionStart()->GetNext(), m_hCaret.SelectionStart()->GetNext());
       while (m_hCaret.SelectionStart() &&
              m_hCaret.SelectionStart()->GetMaxDrop() == 0 &&
              m_hCaret.SelectionStart()->GetNext())
-        m_hCaret.SelectionStart() = m_hCaret.SelectionEnd() =
-          m_hCaret.SelectionStart()->GetNext();
+        m_hCaret.SetSelectionAnchors(m_hCaret.SelectionStart()->GetNext(), m_hCaret.SelectionStart()->GetNext());
     }
   } else if (ccode == WXK_UP) {
     if (KeyboardSelectionStart() &&
@@ -2944,7 +2939,7 @@ void Worksheet::SelectWithChar(int ccode) {
       SetActiveCell(KeyboardSelectionStart());
       ClearSelection();
       KeyboardSelectionStart()->ReturnToSelectionFromBot();
-      m_hCaret.SelectionStart() = m_hCaret.SelectionEnd() = NULL;
+      m_hCaret.SetSelectionAnchors(NULL, NULL);
     } else {
       // extend / shorten up selection
       GroupCell *prev = m_hCaret.SelectionEnd()->GetPrevious();
@@ -2953,12 +2948,12 @@ void Worksheet::SelectWithChar(int ccode) {
 
       if (prev) {
         if ((m_hCaret.Position()) &&
-            m_hCaret.Position()->GetNext() == m_hCaret.SelectionEnd().get())
-          m_hCaret.SelectionStart() = prev;
-        m_hCaret.SelectionEnd() = prev;
+            m_hCaret.Position()->GetNext() == m_hCaret.SelectionEnd())
+          m_hCaret.SetSelectionStart(prev);
+        m_hCaret.SetSelectionEnd(prev);
       }
       if (m_hCaret.SelectionEnd())
-        ScheduleScrollToCell(m_hCaret.SelectionEnd().get(), false);
+        ScheduleScrollToCell(m_hCaret.SelectionEnd(), false);
     }
   } else {
     // We arrive here on WXK_DOWN.
@@ -2968,7 +2963,7 @@ void Worksheet::SelectWithChar(int ccode) {
       // We are in the cell the selection started in
       SetActiveCell(KeyboardSelectionStart());
       ClearSelection();
-      m_hCaret.SelectionStart() = m_hCaret.SelectionEnd() = NULL;
+      m_hCaret.SetSelectionAnchors(NULL, NULL);
       KeyboardSelectionStart()->ReturnToSelectionFromTop();
     } else {
       // extend/shorten down selection
@@ -2978,8 +2973,8 @@ void Worksheet::SelectWithChar(int ccode) {
 
       if (nxt) {
         if (m_hCaret.Position() == m_hCaret.SelectionEnd())
-          m_hCaret.SelectionStart() = nxt;
-        m_hCaret.SelectionEnd() = nxt;
+          m_hCaret.SetSelectionStart(nxt);
+        m_hCaret.SetSelectionEnd(nxt);
       }
       if (m_hCaret.SelectionEnd())
         ScheduleScrollToCell(m_hCaret.SelectionEnd(), false);
@@ -3050,7 +3045,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
   }
 
   // Remove selection with shift+WXK_UP/WXK_DOWN
-  m_hCaret.SelectionStart() = m_hCaret.SelectionEnd() = NULL;
+  m_hCaret.SetSelectionAnchors(NULL, NULL);
 
   switch (ccode) {
   case WXK_PAGEUP:
@@ -3127,8 +3122,8 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
         ScheduleScrollToCell(GetTree(), true);
       if (event.ShiftDown()) {
         SetSelection(GetTree(), oldCell);
-        m_hCaret.SelectionStart() = oldCell;
-        m_hCaret.SelectionEnd() = GetTree();
+        m_hCaret.SetSelectionStart(oldCell);
+        m_hCaret.SetSelectionEnd(GetTree());
       }
       ScrolledAwayFromEvaluation();
     }
@@ -3147,8 +3142,8 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
         if (oldCell)
           oldCell = oldCell->GetNext();
         SetSelection(oldCell, GetLastCellInWorksheet());
-        m_hCaret.SelectionStart() = oldCell;
-        m_hCaret.SelectionEnd() = GetLastCellInWorksheet();
+        m_hCaret.SetSelectionStart(oldCell);
+        m_hCaret.SetSelectionEnd(GetLastCellInWorksheet());
       }
       ScrolledAwayFromEvaluation();
     }
@@ -4256,7 +4251,7 @@ void Worksheet::AddSelectionToEvaluationQueue(GroupCell *start,
 
 void Worksheet::AddDocumentTillHereToEvaluationQueue() {
   FollowEvaluation(true);
-  const GroupCell *stop = m_hCaret.Position().get();
+  const GroupCell *stop = m_hCaret.Position();
   if(!m_hCaret.IsActive()) stop = nullptr;
   if (!stop) {
     if (!GetActiveCell())
@@ -4676,7 +4671,7 @@ void Worksheet::SetActiveCell(EditorCell *cell) {
       blinktime = 200;
     m_caretTimer.StartOnce(blinktime);
     m_hCaret.Deactivate(); // we have activated a cell .. disable caret
-    m_hCaret.Position() = NULL;
+    m_hCaret.SetPosition(NULL);
   }
 
   RequestRedraw();
@@ -4698,8 +4693,8 @@ void Worksheet::SetSelection(Cell *start, Cell *end) {
   m_cellPointers.m_selectionEnd = end;
 
   if (!m_cellPointers.m_selectionStart) {
-    m_hCaret.SelectionStart() = NULL;
-    m_hCaret.SelectionEnd() = NULL;
+    m_hCaret.SetSelectionStart(NULL);
+    m_hCaret.SetSelectionEnd(NULL);
   }
 
   if (m_mainToolBar) {
@@ -5111,7 +5106,7 @@ void Worksheet::SetHCaret(GroupCell *where) {
     m_mainToolBar->UnsetCellStyle();
   }
 
-  m_hCaret.SelectionStart() = m_hCaret.SelectionEnd() = NULL;
+  m_hCaret.SetSelectionAnchors(NULL, NULL);
   SetActiveCell(NULL);
   if (where)
     wxASSERT_MSG(where->GetType() == MC_TYPE_GROUP,
@@ -5120,7 +5115,7 @@ void Worksheet::SetHCaret(GroupCell *where) {
 
   m_hCaret.Activate();
   if (m_hCaret.Position() != where) {
-    m_hCaret.Position() = where;
+    m_hCaret.SetPosition(where);
 
     RequestRedraw();
     if (where)
@@ -6391,8 +6386,8 @@ void Worksheet::SelectGroupCell(GroupCell *cell) {
       FollowEvaluation(true);
       OpenQuestionCaret();
     }
-    m_hCaret.SelectionEnd() = cell;
-    m_hCaret.SelectionStart() = cell;
+    m_hCaret.SetSelectionEnd(cell);
+    m_hCaret.SetSelectionStart(cell);
   }
 }
 

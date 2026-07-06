@@ -57,20 +57,27 @@ public:
 
   /*! The group cell the cursor sits below; null = above the first cell.
 
-    Returned as a reference so call sites can also assign and compare;
-    auto-nulls when the cell dies (CellPtr).
+    Auto-nulls when the cell dies (the storage is a CellPtr).
   */
-  CellPtr<GroupCell> &Position() { return m_position; }
-  const CellPtr<GroupCell> &Position() const { return m_position; }
+  GroupCell *Position() const { return m_position; }
+  //! Move the cursor below the given group cell (null = document start).
+  void SetPosition(GroupCell *where) { m_position = where; }
 
   /*! Where a select-with-the-caret gesture started.
 
     This is where the selection was begun, so it need not be above
     SelectionEnd() in the worksheet.
   */
-  CellPtr<GroupCell> &SelectionStart() { return m_selectionStart; }
+  GroupCell *SelectionStart() const { return m_selectionStart; }
   //! Where a select-with-the-caret gesture currently ends.
-  CellPtr<GroupCell> &SelectionEnd() { return m_selectionEnd; }
+  GroupCell *SelectionEnd() const { return m_selectionEnd; }
+  void SetSelectionStart(GroupCell *start) { m_selectionStart = start; }
+  void SetSelectionEnd(GroupCell *end) { m_selectionEnd = end; }
+  //! Set both ends of the select-with-the-caret gesture at once.
+  void SetSelectionAnchors(GroupCell *start, GroupCell *end)
+    { m_selectionStart = start; m_selectionEnd = end; }
+  //! Forget the select-with-the-caret gesture.
+  void ClearSelectionAnchors() { SetSelectionAnchors(nullptr, nullptr); }
 
 private:
   bool m_active = true;
