@@ -161,6 +161,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(WorksheetContextMenu test_WorksheetContextMenu)
 
+    # Pins the worksheet's two-cursor model (h-caret between cells XOR editor
+    # cursor inside a cell; neither while cells are selected) ahead of the
+    # WorksheetCursor extraction.
+    add_executable(test_WorksheetCursor
+        test_WorksheetCursor.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_WorksheetCursor PUBLIC cxx_std_20)
+    target_link_libraries(test_WorksheetCursor PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(WorksheetCursor test_WorksheetCursor)
+
     # Hardening/fuzz test for EditorCell's text-editing core: drives the real
     # key-event paths and checks the cursor/selection invariants after every op.
     add_executable(test_EditorCellInvariants
