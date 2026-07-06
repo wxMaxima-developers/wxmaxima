@@ -61,7 +61,7 @@ var searchData=
   ['is_5frange_58',['is_range',['../structCatch_1_1is__range.html',1,'Catch']]],
   ['is_5frange_5fimpl_59',['is_range_impl',['../structCatch_1_1detail_1_1is__range__impl.html',1,'Catch::detail']]],
   ['is_5frange_5fimpl_3c_20t_2c_20typename_20void_5ftype_3c_20decltype_28begin_28std_3a_3adeclval_3c_20t_20_3e_28_29_29_29_3e_3a_3atype_20_3e_60',['is_range_impl&lt; T, typename void_type&lt; decltype(begin(std::declval&lt; T &gt;()))&gt;::type &gt;',['../structCatch_1_1detail_1_1is__range__impl_3_01T_00_01typename_01void__type_3_01decltype_07begin_0efe009a05f00a00c1e4e06989d122a22.html',1,'Catch::detail']]],
-  ['isactive_61',['IsActive',['../classEditorCell.html#a1cd32f9f2a818fb8e37459da063e7fe2',1,'EditorCell::IsActive()'],['../classCell.html#a2b727bd0956468c57342bd88484d9316',1,'Cell::IsActive()']]],
+  ['isactive_61',['IsActive',['../classWorksheetCursor.html#ad85b788422fa6079b9d78f4a704c4571',1,'WorksheetCursor::IsActive()'],['../classEditorCell.html#a1cd32f9f2a818fb8e37459da063e7fe2',1,'EditorCell::IsActive()'],['../classCell.html#a2b727bd0956468c57342bd88484d9316',1,'Cell::IsActive()']]],
   ['isactiveinlast_62',['IsActiveInLast',['../classWorksheet.html#a05859cfef68a4cdc040b9e9a336606b1',1,'Worksheet']]],
   ['isbrokenintolines_63',['IsBrokenIntoLines',['../classCell.html#a0d729564b9738d49cf62ed37720534f3',1,'Cell']]],
   ['iscomment_64',['IsComment',['../classCell.html#acd452bb5f74e9b11692b91c3c7a18dc7',1,'Cell']]],

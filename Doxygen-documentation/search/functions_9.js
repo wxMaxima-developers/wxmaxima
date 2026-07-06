@@ -18,7 +18,7 @@ var searchData=
   ['inupdateregion_15',['InUpdateRegion',['../classCell.html#a0835d4dd3d72ed0013aa5a091d64d9ab',1,'Cell::InUpdateRegion()'],['../classConfiguration.html#a4d8ad50245bbb73bc5d4bcd91bcc001c',1,'Configuration::InUpdateRegion()']]],
   ['invalidbitmap_16',['InvalidBitmap',['../classImage.html#a6ccd0e3975f525d9e2ba8270bc0f1e0c',1,'Image']]],
   ['invertcase_17',['InvertCase',['../classMaxima.html#ac168f806cb6ba5108cd61f6ee70cba9b',1,'Maxima']]],
-  ['isactive_18',['IsActive',['../classCell.html#a2b727bd0956468c57342bd88484d9316',1,'Cell::IsActive()'],['../classEditorCell.html#a1cd32f9f2a818fb8e37459da063e7fe2',1,'EditorCell::IsActive()']]],
+  ['isactive_18',['IsActive',['../classCell.html#a2b727bd0956468c57342bd88484d9316',1,'Cell::IsActive()'],['../classEditorCell.html#a1cd32f9f2a818fb8e37459da063e7fe2',1,'EditorCell::IsActive()'],['../classWorksheetCursor.html#ad85b788422fa6079b9d78f4a704c4571',1,'WorksheetCursor::IsActive()']]],
   ['isactiveinlast_19',['IsActiveInLast',['../classWorksheet.html#a05859cfef68a4cdc040b9e9a336606b1',1,'Worksheet']]],
   ['isbrokenintolines_20',['IsBrokenIntoLines',['../classCell.html#a0d729564b9738d49cf62ed37720534f3',1,'Cell']]],
   ['iscomment_21',['IsComment',['../classCell.html#acd452bb5f74e9b11692b91c3c7a18dc7',1,'Cell']]],
