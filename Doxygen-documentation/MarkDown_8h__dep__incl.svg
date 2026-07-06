@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 532;
+var viewWidth = 687;
 var viewHeight = 82;
 var sectionId = 'dynsection-1';
 </script>
@@ -58,8 +58,8 @@ var sectionId = 'dynsection-1';
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="This file contains the code for MarkDownParser.">
-<polygon fill="#999999" stroke="#666666" points="293,-74 198,-74 198,-55 293,-55 293,-74"/>
-<text text-anchor="middle" x="245.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/MarkDown.h</text>
+<polygon fill="#999999" stroke="#666666" points="366,-74 271,-74 271,-55 366,-55 366,-74"/>
+<text text-anchor="middle" x="318.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/MarkDown.h</text>
 </a>
 </g>
 </g>
@@ -75,8 +75,8 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="#63b8ff" d="M204.97,-52.31C169.04,-42.39 117.34,-28.12 84.59,-19.08"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="204.08,-55.7 214.65,-54.98 205.94,-48.95 204.08,-55.7"/>
+<path fill="none" stroke="#63b8ff" d="M266.01,-53C216.34,-43.07 142.67,-28.33 96.41,-19.08"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="265.43,-56.46 275.92,-54.98 266.8,-49.59 265.43,-56.46"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
@@ -90,38 +90,53 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node1&#45;&gt;Node3</title>
-<path fill="none" stroke="#63b8ff" d="M226.67,-48.6C214.66,-39.11 199.53,-27.13 189.46,-19.17"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="224.72,-51.53 234.74,-54.98 229.06,-46.04 224.72,-51.53"/>
+<path fill="none" stroke="#63b8ff" d="M286.59,-51.42C260.62,-41.59 224.58,-27.95 201.4,-19.17"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="285.42,-54.72 296.01,-54.98 287.89,-48.17 285.42,-54.72"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="EditorCell_8cpp.html" target="_top" xlink:title="This file defines the class EditorCell.">
-<polygon fill="white" stroke="#666666" points="377,-19 250,-19 250,0 377,0 377,-19"/>
-<text text-anchor="middle" x="313.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/EditorCell.cpp</text>
+<g id="a_node4"><a xlink:href="WorksheetExport_8cpp.html" target="_top" xlink:title="The document serializers declared in WorksheetExport.h.">
+<polygon fill="white" stroke="#666666" points="387,-19 250,-19 250,0 387,0 387,-19"/>
+<text text-anchor="middle" x="318.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/WorksheetExport.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node1&#45;&gt;Node4</title>
-<path fill="none" stroke="#63b8ff" d="M264.62,-48.6C276.8,-39.11 292.16,-27.13 302.38,-19.17"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="262.16,-46.08 256.43,-54.98 266.46,-51.6 262.16,-46.08"/>
+<path fill="none" stroke="#63b8ff" d="M318.5,-44.66C318.5,-35.93 318.5,-25.99 318.5,-19.09"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="315,-44.75 318.5,-54.75 322,-44.75 315,-44.75"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="GroupCell_8cpp.html" target="_top" xlink:title="This file defines the class GroupCell.">
-<polygon fill="white" stroke="#666666" points="523.5,-19 395.5,-19 395.5,0 523.5,0 523.5,-19"/>
-<text text-anchor="middle" x="459.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/GroupCell.cpp</text>
+<g id="a_node5"><a xlink:href="EditorCell_8cpp.html" target="_top" xlink:title="This file defines the class EditorCell.">
+<polygon fill="white" stroke="#666666" points="532,-19 405,-19 405,0 532,0 532,-19"/>
+<text text-anchor="middle" x="468.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/EditorCell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node5 -->
 <g id="edge4" class="edge">
 <title>Node1&#45;&gt;Node5</title>
-<path fill="none" stroke="#63b8ff" d="M289.66,-52.56C329.74,-42.64 388.04,-28.2 424.85,-19.08"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="288.75,-49.18 279.88,-54.98 290.43,-55.98 288.75,-49.18"/>
+<path fill="none" stroke="#63b8ff" d="M352.32,-51.55C380.18,-41.71 419.01,-27.98 443.96,-19.17"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="350.86,-48.35 342.6,-54.98 353.19,-54.95 350.86,-48.35"/>
+</g>
+<!-- Node6 -->
+<g id="node6" class="node">
+<title>Node6</title>
+<g id="a_node6"><a xlink:href="GroupCell_8cpp.html" target="_top" xlink:title="This file defines the class GroupCell.">
+<polygon fill="white" stroke="#666666" points="678.5,-19 550.5,-19 550.5,0 678.5,0 678.5,-19"/>
+<text text-anchor="middle" x="614.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/GroupCell.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node1&#45;&gt;Node6</title>
+<path fill="none" stroke="#63b8ff" d="M376.09,-53.19C431.58,-43.25 514.57,-28.39 566.57,-19.08"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="375.28,-49.78 366.06,-54.98 376.52,-56.67 375.28,-49.78"/>
 </g>
 </g>
 </svg>

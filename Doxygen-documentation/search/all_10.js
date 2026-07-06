@@ -30,7 +30,7 @@ var searchData=
   ['predicatematcher_27',['PredicateMatcher',['../classCatch_1_1Matchers_1_1Generic_1_1PredicateMatcher.html',1,'Catch::Matchers::Generic']]],
   ['preparedrawgc_28',['PrepareDrawGC',['../classWorksheet.html#a75333a6acb26e8efec6ca7ba0dd26545',1,'Worksheet']]],
   ['preparelayout_29',['PrepareLayout',['../classOutCommon.html#a4b5e3adb4dad182d5bd4e43b0a9171a7',1,'OutCommon']]],
-  ['prependnbsp_30',['PrependNBSP',['../classEditorCell.html#af3be8dfe7234ba3db4cfc0e7d43946fd',1,'EditorCell::PrependNBSP()'],['../classWorksheet.html#a1a47095ee5343abea21bc25c01538632',1,'Worksheet::PrependNBSP()']]],
+  ['prependnbsp_30',['PrependNBSP',['../classEditorCell.html#af3be8dfe7234ba3db4cfc0e7d43946fd',1,'EditorCell']]],
   ['printbrackets_31',['PrintBrackets',['../classConfiguration.html#afe27c0e96ea92b68097674846bad5044',1,'Configuration']]],
   ['printing_32',['Printing',['../classPrinting.html',1,'Printing'],['../classRenderContext.html#a902dc66e5e6045601cbc8173d8723394',1,'RenderContext::Printing()']]],
   ['printmenu_33',['PrintMenu',['../classwxMaxima.html#a43f6993fd24c59346b0602a51bcc9b8b',1,'wxMaxima']]],

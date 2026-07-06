@@ -98,11 +98,6 @@ Collaboration diagram for Worksheet:</div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet_1_1SimpleMathConfigurationIterator.html">SimpleMathConfigurationIterator</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a79d7b31dbd32dd7e8fc4395fe7810fd5"><td class="memItemLeft" align="right" valign="top"><a id="a79d7b31dbd32dd7e8fc4395fe7810fd5" name="a79d7b31dbd32dd7e8fc4395fe7810fd5"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a79d7b31dbd32dd7e8fc4395fe7810fd5">ClickType</a> { <br />
@@ -194,13 +189,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_CellLeft</b>
 <tr class="memitem:gaf87a1cbf5d891c48fc0d26622cd2fac7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gaf87a1cbf5d891c48fc0d26622cd2fac7">TreeUndo_MarkCellsAsAdded</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *parentOfStart, <a class="el" href="classGroupCell.html">GroupCell</a> *end)</td></tr>
 <tr class="memdesc:gaf87a1cbf5d891c48fc0d26622cd2fac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remember that these cells were just added so this addition can be undone.  <br /></td></tr>
 <tr class="separator:gaf87a1cbf5d891c48fc0d26622cd2fac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2934169eb20acaabaaea75b6837c518e"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a2934169eb20acaabaaea75b6837c518e">EscapeHTMLChars</a> (wxString input)</td></tr>
-<tr class="memdesc:a2934169eb20acaabaaea75b6837c518e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Escape all chars that aren't allowed in html.  <br /></td></tr>
-<tr class="separator:a2934169eb20acaabaaea75b6837c518e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a47095ee5343abea21bc25c01538632"><td class="memItemLeft" align="right" valign="top"><a id="a1a47095ee5343abea21bc25c01538632" name="a1a47095ee5343abea21bc25c01538632"></a>
-wxString&#160;</td><td class="memItemRight" valign="bottom"><b>PrependNBSP</b> (wxString input)</td></tr>
-<tr class="memdesc:a1a47095ee5343abea21bc25c01538632"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow indentation by spaces for html by replacing them by non-breakable spaces. <br /></td></tr>
-<tr class="separator:a1a47095ee5343abea21bc25c01538632"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6171080f34084cc1694b75089f360ac"><td class="memItemLeft" align="right" valign="top"><a id="ac6171080f34084cc1694b75089f360ac" name="ac6171080f34084cc1694b75089f360ac"></a>
 std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CopySelection</b> (bool asData=false) const</td></tr>
 <tr class="memdesc:ac6171080f34084cc1694b75089f360ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the currently selected cells. <br /></td></tr>
@@ -447,20 +435,12 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetHelpfileAnchor
 <tr class="memitem:a98d3095d15a7e7a1b97a566b976bc3bd"><td class="memItemLeft" align="right" valign="top"><a id="a98d3095d15a7e7a1b97a566b976bc3bd" name="a98d3095d15a7e7a1b97a566b976bc3bd"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetHelpfileURL</b> (const wxString &amp;keyword)</td></tr>
 <tr class="separator:a98d3095d15a7e7a1b97a566b976bc3bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad276ac7366afcc147d437480d8f70b2b"><td class="memItemLeft" align="right" valign="top"><a id="ad276ac7366afcc147d437480d8f70b2b" name="ad276ac7366afcc147d437480d8f70b2b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetCellIndex</b> (<a class="el" href="classCell.html">Cell</a> *cell) const</td></tr>
-<tr class="memdesc:ad276ac7366afcc147d437480d8f70b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index in (i...) or (o...) <br /></td></tr>
-<tr class="separator:ad276ac7366afcc147d437480d8f70b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cd056218eb65c8929db7a0b8814a4f0"><td class="memItemLeft" align="right" valign="top"><a id="a3cd056218eb65c8929db7a0b8814a4f0" name="a3cd056218eb65c8929db7a0b8814a4f0"></a>
 <a class="el" href="classMaximaManual.html">MaximaManual</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetMaximaManual</b> ()</td></tr>
 <tr class="separator:a3cd056218eb65c8929db7a0b8814a4f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a2d2f74fb004c1fe6f7e7e93fc7b30d21"><td class="memItemLeft" align="right" valign="top"><a id="a2d2f74fb004c1fe6f7e7e93fc7b30d21" name="a2d2f74fb004c1fe6f7e7e93fc7b30d21"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>AddLineToFile</b> (wxTextFile &amp;output, const wxString &amp;s)</td></tr>
-<tr class="memdesc:a2d2f74fb004c1fe6f7e7e93fc7b30d21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a line to a file. <br /></td></tr>
-<tr class="separator:a2d2f74fb004c1fe6f7e7e93fc7b30d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9172378ffd18695685cdd506c73934a"><td class="memItemLeft" align="right" valign="top"><a id="ac9172378ffd18695685cdd506c73934a" name="ac9172378ffd18695685cdd506c73934a"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLesserGCType</b> (int type, int comparedTo)</td></tr>
 <tr class="separator:ac9172378ffd18695685cdd506c73934a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -781,15 +761,9 @@ wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>CopyToFile</b> (con
 <tr class="memitem:a27c3c5c0e486d25ea72febafe1c14547"><td class="memItemLeft" align="right" valign="top"><a id="a27c3c5c0e486d25ea72febafe1c14547" name="a27c3c5c0e486d25ea72febafe1c14547"></a>
 wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>CopyToFile</b> (const wxString &amp;file, <a class="el" href="classCell.html">Cell</a> *start, <a class="el" href="classCell.html">Cell</a> *end, bool asData=false, double scale=1) const</td></tr>
 <tr class="separator:a27c3c5c0e486d25ea72febafe1c14547"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41d0860a356c2cfad8d91ef93960b685"><td class="memItemLeft" align="right" valign="top"><a id="a41d0860a356c2cfad8d91ef93960b685" name="a41d0860a356c2cfad8d91ef93960b685"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CalculateReorderedCellIndices</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *tree, int &amp;cellIndex, std::vector&lt; int &gt; &amp;cellMap)</td></tr>
-<tr class="separator:a41d0860a356c2cfad8d91ef93960b685"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ee514a4bc8e4164cfd661d7c32fe965"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a2ee514a4bc8e4164cfd661d7c32fe965">ExportToHTML</a> (const wxString &amp;file)</td></tr>
 <tr class="memdesc:a2ee514a4bc8e4164cfd661d7c32fe965"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export the file to an html document.  <br /></td></tr>
 <tr class="separator:a2ee514a4bc8e4164cfd661d7c32fe965"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa44ae5fc8f4202daf145e297d74f4a32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#aa44ae5fc8f4202daf145e297d74f4a32">ExportToMAC</a> (wxTextFile &amp;output, <a class="el" href="classGroupCell.html">GroupCell</a> *tree, bool wxm, const std::vector&lt; int &gt; &amp;cellMap, bool fixReorderedIndices)</td></tr>
-<tr class="memdesc:aa44ae5fc8f4202daf145e297d74f4a32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export a region of the file to a .wxm or .mac file maxima's load command can read.  <br /></td></tr>
-<tr class="separator:aa44ae5fc8f4202daf145e297d74f4a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad66ccef72e32b507379559594f0c9190"><td class="memItemLeft" align="right" valign="top"><a id="ad66ccef72e32b507379559594f0c9190" name="ad66ccef72e32b507379559594f0c9190"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ExportToMAC</b> (const wxString &amp;file)</td></tr>
 <tr class="memdesc:ad66ccef72e32b507379559594f0c9190"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export the file to a text file maxima's load command can read. <br /></td></tr>
@@ -1594,29 +1568,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
-<a id="a2934169eb20acaabaaea75b6837c518e" name="a2934169eb20acaabaaea75b6837c518e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2934169eb20acaabaaea75b6837c518e">&#9670;&#160;</a></span>EscapeHTMLChars()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">wxString Worksheet::EscapeHTMLChars </td>
-          <td>(</td>
-          <td class="paramtype">wxString&#160;</td>
-          <td class="paramname"><em>input</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Escape all chars that aren't allowed in html. </p>
-<p>Also converts <br  />
- to <br  />
- </p>
-
-</div>
-</div>
 <a id="afb78a2fd309c125f700a9ccf2780af3c" name="afb78a2fd309c125f700a9ccf2780af3c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afb78a2fd309c125f700a9ccf2780af3c">&#9670;&#160;</a></span>Evaluate()</h2>
 
@@ -1655,55 +1606,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Export the file to an html document. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
-
-</div>
-</div>
-<a id="aa44ae5fc8f4202daf145e297d74f4a32" name="aa44ae5fc8f4202daf145e297d74f4a32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa44ae5fc8f4202daf145e297d74f4a32">&#9670;&#160;</a></span>ExportToMAC()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Worksheet::ExportToMAC </td>
-          <td>(</td>
-          <td class="paramtype">wxTextFile &amp;&#160;</td>
-          <td class="paramname"><em>output</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
-          <td class="paramname"><em>tree</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>wxm</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>cellMap</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>fixReorderedIndices</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Export a region of the file to a .wxm or .mac file maxima's load command can read. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Slow: Iterates through a string using [] instead of using an iterator. </dd></dl>
 
 </div>
 </div>
@@ -1773,7 +1675,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Do an incremental search from the cursor or the point the last search started at. </p>
-<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
+<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
 
 </div>
 </div>
@@ -2666,7 +2568,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Scrolls to a point on the worksheet. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
 <p><a class="el" href="classTest.html" title="A template class.">Test</a> case:</p><ul>
 <li>Create a code cell</li>
 <li>Press the "hide all code cells" button.</li>

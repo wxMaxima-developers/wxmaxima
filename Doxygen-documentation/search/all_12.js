@@ -61,7 +61,7 @@ var searchData=
   ['rendercontext_2eh_58',['RenderContext.h',['../RenderContext_8h.html',1,'']]],
   ['repeatgenerator_59',['RepeatGenerator',['../classCatch_1_1Generators_1_1RepeatGenerator.html',1,'Catch::Generators']]],
   ['replace_60',['Replace',['../classWorksheet.html#a45dd852f44f53430ea492c65414e5440',1,'Worksheet']]],
-  ['replaceall_61',['ReplaceAll',['../classWorksheet.html#a2bdd3c976e8ad8c1ceab1c632f93117c',1,'Worksheet::ReplaceAll()'],['../classEditorCell.html#a0de5dbe8dcd93b86a51afea42ee251c4',1,'EditorCell::ReplaceAll(wxString oldString, const wxString &amp;newString, bool ignoreCase)']]],
+  ['replaceall_61',['ReplaceAll',['../classEditorCell.html#a0de5dbe8dcd93b86a51afea42ee251c4',1,'EditorCell::ReplaceAll()'],['../classWorksheet.html#a2bdd3c976e8ad8c1ceab1c632f93117c',1,'Worksheet::ReplaceAll()']]],
   ['replaceselection_62',['ReplaceSelection',['../classEditorCell.html#a67ea61d6cfa90cd8da86e236e4061460',1,'EditorCell']]],
   ['replacesuggestion_63',['ReplaceSuggestion',['../classwxMaxima.html#a631676fba885bf2e4ca0e85406532133',1,'wxMaxima']]],
   ['reportmultipleredraws_64',['ReportMultipleRedraws',['../classConfiguration.html#a295a632df3661ad823bd4f8b604e6224',1,'Configuration::ReportMultipleRedraws()'],['../classRenderContext.html#a6054823a2a7227ac0c1d3d9cd1cf47d0',1,'RenderContext::ReportMultipleRedraws()']]],
@@ -90,9 +90,9 @@ var searchData=
   ['revealhidden_87',['RevealHidden',['../classGroupCell.html#a14813b23871489b3f575ee0cb0046ee1',1,'GroupCell']]],
   ['rgba2wxbitmap_88',['RGBA2wxBitmap',['../classImage.html#a705e57f7d6439e9b2917795f3946c685',1,'Image']]],
   ['rightclickedon_89',['RightClickedOn',['../classTableOfContents.html#a4f47fdcaa0d02480a61e94c455d8d641',1,'TableOfContents']]],
-  ['rtfend_90',['RTFEnd',['../classWorksheet.html#a377e690362492a35b801df92ce527a40',1,'Worksheet']]],
+  ['rtfend_90',['RTFEnd',['../classWorksheet.html#a377e690362492a35b801df92ce527a40',1,'Worksheet::RTFEnd()'],['../WorksheetExport_8h.html#a73ebb9aeb31a0dc5ad6faa76eeb67c64',1,'WorksheetExport::RTFEnd()']]],
   ['rtfescape_91',['RTFescape',['../classCell.html#a6ea50434cf209c0179201dfaae87cb5c',1,'Cell']]],
-  ['rtfstart_92',['RTFStart',['../classWorksheet.html#a13a5d3be1d3d582e866d8705572cc20d',1,'Worksheet']]],
+  ['rtfstart_92',['RTFStart',['../classWorksheet.html#a13a5d3be1d3d582e866d8705572cc20d',1,'Worksheet::RTFStart()'],['../WorksheetExport_8h.html#a1ec393575f9b3d9bd877d76b1b0ae50a',1,'WorksheetExport::RTFStart()']]],
   ['running_93',['Running',['../classToolBar.html#a327b655c366e7932f751d2815cc629fca9c9bfa8603406d94a8f00a975a9c1f3c',1,'ToolBar']]],
   ['runtests_94',['RunTests',['../structCatch_1_1RunTests.html',1,'Catch']]]
 ];
