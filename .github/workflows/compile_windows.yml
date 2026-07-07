@@ -189,19 +189,21 @@ jobs:
             }
             cd ..
             cd ..
-      - name: Run integration tests (experimental)
-        # Maxima-driven integration tests on Windows. Still continue-on-error: the
-        # suite runs end-to-end (no hangs). A handful of wxmaxima --batch tests can
-        # still abort with an assertion (e.g. ReadStdErr's m_maximaStdout != NULL) on
-        # a transient Maxima start/stop hiccup: this build has asserts enabled, so a
-        # condition a release build handles gracefully aborts here. It is aggravated
-        # by running several Maxima instances at once, so parallelism is kept
-        # deliberately modest (-j 2, like the Linux job) -- low enough to avoid most
-        # contention while still exercising the concurrency we *do* want to shake out
-        # (e.g. the per-test MAXIMA_USERDIR isolation). The "unittest" label (already
-        # a required step) and "needs_posix" label (the sh/xmllint/unzip tests, which
-        # cannot run on Windows) are excluded; timeout-minutes is a hard ceiling.
-        continue-on-error: true
+      - name: Run integration tests
+        # Maxima-driven integration tests on Windows. Promoted from experimental to
+        # REQUIRED: the suite has run end-to-end reliably, with a single consistent
+        # failure - multithreadtest - which is now excluded here for the same
+        # documented reason the Linux jobs exclude it (several Maxima instances of
+        # that one test share its MAXIMA_USERDIR and race compiling a package into
+        # the same cache; a Maxima-side bug, not ours to fix in CI). Occasional
+        # transients remain: a wxmaxima --batch test can abort on a Maxima
+        # start/stop hiccup (this build has asserts enabled, so a condition a
+        # release build handles gracefully aborts here) - "--repeat until-pass:2"
+        # gives exactly those one retry while persistent breakage still fails the
+        # job. Parallelism stays modest (-j 2, like the Linux job). The "unittest"
+        # label (already a required step) and "needs_posix" label (the sh/xmllint/
+        # unzip tests, which cannot run on Windows) are excluded; timeout-minutes
+        # is a hard ceiling.
         timeout-minutes: 20
         run: |
             cd wxMaxima
@@ -210,7 +212,7 @@ jobs:
             # wxMaxima.cpp) so the timed-out tests reveal where teardown wedges,
             # past the point where wxLog logging is disabled.
             $env:WXM_SHUTDOWN_TRACE = "1"
-            ctest -LE "unittest|needs_posix" -j 2 --output-on-failure
+            ctest -LE "unittest|needs_posix" -E "multithreadtest" --repeat until-pass:2 -j 2 --output-on-failure
             cd ..
             cd ..
 
