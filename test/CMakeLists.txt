@@ -1198,25 +1198,25 @@ set(WXM_POSIX_TESTS
 # can genuinely overlap.
 set(WXM_SHARED_USERDIR_TESTS absCells atCells)
 
-get_property(_wxm_all_tests DIRECTORY PROPERTY TESTS)
-foreach(_wxm_t IN LISTS _wxm_all_tests)
-  if("${_wxm_t}" IN_LIST WXM_SHARED_USERDIR_TESTS)
-    set(_wxm_userdir "${CMAKE_CURRENT_BINARY_DIR}/test_userdirs/shared_typical_use")
+get_property(wxm_all_tests DIRECTORY PROPERTY TESTS)
+foreach(wxm_t IN LISTS wxm_all_tests)
+  if("${wxm_t}" IN_LIST WXM_SHARED_USERDIR_TESTS)
+    set(wxm_userdir "${CMAKE_CURRENT_BINARY_DIR}/test_userdirs/shared_typical_use")
   else()
-    set(_wxm_userdir "${CMAKE_CURRENT_BINARY_DIR}/test_userdirs/${_wxm_t}")
+    set(wxm_userdir "${CMAKE_CURRENT_BINARY_DIR}/test_userdirs/${wxm_t}")
   endif()
-  file(MAKE_DIRECTORY "${_wxm_userdir}")
-  set_property(TEST "${_wxm_t}" APPEND PROPERTY ENVIRONMENT
-    "MAXIMA_USERDIR=${_wxm_userdir}")
+  file(MAKE_DIRECTORY "${wxm_userdir}")
+  set_property(TEST "${wxm_t}" APPEND PROPERTY ENVIRONMENT
+    "MAXIMA_USERDIR=${wxm_userdir}")
   # Watchdog timeout so a single hung test fails fast instead of blocking the
   # whole suite until the CI job hits its two-hour wall (see WXM_TEST_TIMEOUT).
   # Only set it where a test hasn't requested a longer one of its own.
-  get_test_property("${_wxm_t}" TIMEOUT _wxm_existing_timeout)
-  if(NOT _wxm_existing_timeout)
-    set_property(TEST "${_wxm_t}" PROPERTY TIMEOUT ${WXM_TEST_TIMEOUT})
+  get_test_property("${wxm_t}" TIMEOUT wxm_existing_timeout)
+  if(NOT wxm_existing_timeout)
+    set_property(TEST "${wxm_t}" PROPERTY TIMEOUT ${WXM_TEST_TIMEOUT})
   endif()
-  if(_wxm_t IN_LIST WXM_POSIX_TESTS)
-    set_property(TEST "${_wxm_t}" APPEND PROPERTY LABELS needs_posix)
+  if(wxm_t IN_LIST WXM_POSIX_TESTS)
+    set_property(TEST "${wxm_t}" APPEND PROPERTY LABELS needs_posix)
   endif()
 endforeach()
 

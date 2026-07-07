@@ -294,11 +294,11 @@ endif()
 # are self-contained C++ executables that need neither Maxima nor a headless
 # display, so platforms that cannot run the full integration suite (e.g. the
 # Windows CI build) can still run them via `ctest -L unittest`.
-get_property(_wxm_unit_tests DIRECTORY PROPERTY TESTS)
-foreach(_wxm_t IN LISTS _wxm_unit_tests)
-  get_test_property("${_wxm_t}" TIMEOUT _wxm_existing_timeout)
-  if(NOT _wxm_existing_timeout)
-    set_property(TEST "${_wxm_t}" PROPERTY TIMEOUT ${WXM_TEST_TIMEOUT})
+get_property(wxm_unit_tests DIRECTORY PROPERTY TESTS)
+foreach(wxm_t IN LISTS wxm_unit_tests)
+  get_test_property("${wxm_t}" TIMEOUT wxm_existing_timeout)
+  if(NOT wxm_existing_timeout)
+    set_property(TEST "${wxm_t}" PROPERTY TIMEOUT ${WXM_TEST_TIMEOUT})
   endif()
-  set_property(TEST "${_wxm_t}" APPEND PROPERTY LABELS unittest)
+  set_property(TEST "${wxm_t}" APPEND PROPERTY LABELS unittest)
 endforeach()
