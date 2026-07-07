@@ -1,5 +1,6 @@
 # Current development version
 
+- Corrected the line wrapping position
 - Internal: the cell layer no longer knows the Worksheet class at all -
   the first of the document/view state-split blockers is gone. Cells used
   to reach back into the view through Cell::GetWorksheet() (a
