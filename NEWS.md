@@ -1,5 +1,16 @@
 # Current development version
 
+- Fixed a mangled maxima user directory when maxima is compiled with GCL
+  (as Debian's and Ubuntu's maxima packages are): GCL reports
+  maxima_userdir with a trailing newline, and wxMaxima created and used
+  that directory verbatim - a second user directory whose name ends in a
+  newline, created with permission bits 0001 (an accidental flag-as-mode
+  in Dirstructure::UserConfDir), i.e. unreadable and unwritable even for
+  its owner. Every cache wxMaxima keeps there (manual anchors, known
+  symbols, history) silently failed on such systems. Maxima-reported
+  variable values are now whitespace-trimmed centrally, and the directory
+  is created with proper permissions. Thanks to jgmb for the report.
+
 - Internal: fixed the broken CI builds: a range-for over string literals in
   MaximaSessionInfo.h warned under gcc's -Werror (all three -Werror Linux
   jobs), test_WorksheetExport.cpp lacked the wx/fileconf.h include that

@@ -2851,8 +2851,14 @@ void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {
           if(GetWorksheet() && (m_variablesPane))
             m_variablesPane->VariableValue(update.m_name, update.m_value);
 
-          // Undo an eventual stringdisp:true adding quoting marks to strings
+          // A gcl-compiled maxima reports values with a trailing newline,
+          // which ended up verbatim in anything treating the value as a
+          // path (most prominently: a maxima_userdir named "...\n").
+          // Trim before the quote-strip so a newline after the closing
+          // quote cannot defeat it, either.
           wxString value = update.m_value;
+          value.Trim(true).Trim(false);
+          // Undo an eventual stringdisp:true adding quoting marks to strings
           if (value.StartsWith("\"") && value.EndsWith("\""))
             value = value.SubString(1, value.Length() - 2);
 

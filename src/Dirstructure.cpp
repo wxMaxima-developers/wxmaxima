@@ -80,11 +80,20 @@ Dirstructure::Dirstructure():
 }
 
 void Dirstructure::UserConfDir(const wxString &userConfDir) {
-  wxFileName dir(userConfDir + wxS("/"));
+  // The path typically arrives as maxima's maxima_userdir variable; a
+  // gcl-compiled maxima reports it with a trailing newline, which used to
+  // end up in a directory named "...\n".
+  wxString trimmed = userConfDir;
+  trimmed.Trim(true).Trim(false);
+  wxFileName dir(trimmed + wxS("/"));
   dir.MakeAbsolute();
   m_userConfDir = dir.GetFullPath();
   if (!wxDirExists(m_userConfDir))
-    wxMkdir(m_userConfDir, wxPATH_MKDIR_FULL);
+    // wxMkdir's 2nd parameter is the permission bits: passing the
+    // wxPATH_MKDIR_FULL flag (=1) here used to create the directory with
+    // mode 0001, unwritable for everyone - which then broke every cache
+    // maxima or wxMaxima keeps in the user directory.
+    wxFileName::Mkdir(m_userConfDir, wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 }
 
 wxString Dirstructure::ResourcesDir() {

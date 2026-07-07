@@ -2215,10 +2215,14 @@ Submit bug reports by following the 'New issue' link on that page."))
 ;;;
 
 ;;; Communicate the contents of variables to wxMaxima
+;;; linel is bound high because mtell wraps its output at linel columns:
+;;; a value longer than a terminal line (a maxima_userdir path, say) got a
+;;; newline plus continuation indentation inserted - and wxMaxima then
+;;; created a user directory whose name ended in that newline.
 (defun wx-print-variable (var)
   (format t "<variable>~%<name>~a</name>" (symbol-to-xml var))
   (ignore-errors
-    (let (($display2d nil))
+    (let (($display2d nil) (linel 1000000) ($linel 1000000))
       (mtell "<value>~M</value>" (wxxml-fix-string ($sconcat (eval var))))))
   (format t "</variable>"))
 
@@ -2232,7 +2236,7 @@ Submit bug reports by following the 'New issue' link on that page."))
 (defun wx-query-variable (var)
   (format t "<variables><variable><name>~a</name>" (wxxml-fix-string (maybe-invert-string-case var)))
   (ignore-errors
-    (let (($display2d nil))
+    (let (($display2d nil) (linel 1000000) ($linel 1000000))
       (mtell "<value>~M</value>" (wxxml-fix-string ($sconcat (meval (intern var)))))))
   (format t "</variable></variables>~%"))
 
