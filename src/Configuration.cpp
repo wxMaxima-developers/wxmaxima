@@ -908,12 +908,20 @@ void Configuration::SetPrinting(bool printing) {
 }
 
 long Configuration::GetLineWidth() const {
-  // The default line width is the width of the viewport minus the indentation
-  // minus roughly one char
+  // The default line width is the width of the viewport minus everything that
+  // sits to the left of an input/text cell's text (the cell bracket plus its
+  // indentation, GetIndent(), and the label column, GetLabelWidth()) and minus
+  // a small right-hand margin so the text doesn't run right up to the border.
+  //
+  // This mirrors where GroupCell actually places the editor
+  // (m_currentPoint.x = GetIndent(); text starts GetInputIndent() further
+  // right, which is ~Scale_Px(GetLabelWidth())) and the margin the math
+  // line-breaker uses in Cell::BreakLines_List(). The historic formula instead
+  // *added* a bracket width and one char here, so text wrapped roughly 2.5
+  // bracket-widths + one char past the right window border.
   wxCoord lineWidth =
-    GetCanvasSize().x -
-    Scale_Px(GetLabelWidth()) + Scale_Px(GetCellBracketWidth()) +
-    Scale_Px(GetDefaultFontSize().Get());
+    GetCanvasSize().x - GetIndent() -
+    Scale_Px(GetLabelWidth()) - Scale_Px(5);
 
   // If that was suspiciously wide we reduce the default line width again.
   if ((lineWidth >= Scale_Px(GetDefaultFontSize().Get()) * LineWidth_em()) &&
