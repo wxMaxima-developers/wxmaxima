@@ -1274,9 +1274,9 @@ wxMaxima::~wxMaxima() {
     m_gnuplotProcess ->Detach();
 
   // Kill maxima
-  WxmShutdownTrace("OnClose: calling KillMaxima");
+  WxmShutdownTrace("~wxMaxima: calling KillMaxima");
   KillMaxima(false);
-  WxmShutdownTrace("OnClose: KillMaxima returned");
+  WxmShutdownTrace("~wxMaxima: KillMaxima returned");
 
 
   // In debug mode: Create a file describing what we know about maxima commands
@@ -1358,7 +1358,7 @@ wxMaxima::~wxMaxima() {
   wxLogMessage("Window count (before closing the current window): %zu",
                wxMaximaFrame::CountWindows());
   if (wxMaximaFrame::CountWindows() == 1) {
-    WxmShutdownTrace("OnClose: last window - deleting log window, disabling logging");
+    WxmShutdownTrace("~wxMaxima: last window - deleting log window, disabling logging");
     // Save the current state of the log window (shown/hidden) and, since the
     // last wxMaxima window is going away, dispose of the log window itself.
     wxConfig::Get()->Write("LogWindow", MyApp::m_logWindow->GetFrame()->IsShown());
@@ -1368,7 +1368,7 @@ wxMaxima::~wxMaxima() {
        creating pop-ups. */
     wxLog::EnableLogging(false);
   }
-  WxmShutdownTrace("OnClose: handler returning (window will now be destroyed)");
+  WxmShutdownTrace("~wxMaxima: destructor complete");
 }
 
 #if wxUSE_DRAG_AND_DROP
