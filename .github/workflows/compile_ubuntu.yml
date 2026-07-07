@@ -23,7 +23,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt-get update
-             sudo apt-get install appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dpkg-dev po4a rpmlint lintian weston rpm
+             sudo apt-get install appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dbus dpkg-dev po4a rpmlint lintian weston rpm
       - name: diagnose_userdir_writability
         # Diagnostic (non-failing): on this runner the per-test MAXIMA_USERDIR is
         # writable at wxMaxima startup but EACCES for the later cache writes -- so
@@ -80,7 +80,12 @@ jobs:
              # draw.lisp" / "Your C compiler failed to compile the intermediate
              # file") when several Maxima instances start at once -- an environment
              # problem we cannot fix here. The sanitizer job already excludes it.
-             GDK_BACKEND=x11 xvfb-run -a ctest -j 2 -E "multithreadtest"
+             # dbus-run-session: without a session bus every GTK process waits
+             # out the AT-SPI accessibility bridge's 25 s D-Bus timeout at
+             # startup - ~90 GUI tests each stalled ~25 s (two thirds of the
+             # total test time). A real bus makes registration instant (and
+             # actually enables the at-spi2-core installed above).
+             GDK_BACKEND=x11 dbus-run-session -- xvfb-run -a ctest -j 2 -E "multithreadtest"
              cd ..
 
   compile_and_test_sanitized:
@@ -102,7 +107,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt-get update
-             sudo apt-get install appstream cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc po4a xvfb at-spi2-core
+             sudo apt-get install appstream cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc po4a xvfb at-spi2-core dbus
       - name: configure
         run: |
              export LANG=en_US.UTF-8
@@ -126,7 +131,9 @@ jobs:
              export UBSAN_OPTIONS=print_stacktrace=1
              # Same exclusions as the regular test job (draw-based tests fail
              # on ubuntu-latest for unrelated reasons).
-             GDK_BACKEND=x11 xvfb-run -a ctest -j 2 -E "tutorial_fittingEquations|multithreadtest|tutorial_toleranceCalculations|tutorial_displaying3DCurves|tutorial_solvingEquations|testbench_simple.wxmx"
+             # dbus-run-session: see the regular test job - avoids the 25 s
+             # AT-SPI D-Bus timeout every GUI process otherwise pays at startup.
+             GDK_BACKEND=x11 dbus-run-session -- xvfb-run -a ctest -j 2 -E "tutorial_fittingEquations|multithreadtest|tutorial_toleranceCalculations|tutorial_displaying3DCurves|tutorial_solvingEquations|testbench_simple.wxmx"
       - name: report_ubsan_findings
         if: always()
         run: |
