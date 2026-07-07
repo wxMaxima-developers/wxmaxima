@@ -50,7 +50,10 @@ public:
   //! Constructs the session info with the built-in operator names seeded.
   MaximaSessionInfo()
     {
-      for (const wxString &op : {
+      // The list elements are plain string literals: a `const wxString &`
+      // loop variable would bind to a temporary constructed per element,
+      // which gcc's -Wrange-loop-construct rejects under -Werror.
+      for (const wxChar *op : {
              wxS("("), wxS("/"), wxS("{"), wxS("-"), wxS("^"), wxS("#"),
              wxS("="), wxS(":"), wxS("["), wxS("'"), wxS("!"), wxS("+"),
              wxS("*"), wxS("or"), wxS("and"), wxS("do_in"), wxS(">"),

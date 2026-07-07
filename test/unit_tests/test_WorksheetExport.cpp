@@ -45,6 +45,9 @@
 #include <wx/dcmemory.h>
 #include <wx/dir.h>
 #include <wx/ffile.h>
+// Not pulled in transitively on wxMSW (whose default wxConfig is the registry
+// one), so include it explicitly for the hermetic wxFileConfig below.
+#include <wx/fileconf.h>
 #include <wx/filename.h>
 #include <wx/frame.h>
 #include <wx/image.h>

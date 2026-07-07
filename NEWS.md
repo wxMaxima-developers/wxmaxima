@@ -1,5 +1,12 @@
 # Current development version
 
+- Internal: fixed the broken CI builds: a range-for over string literals in
+  MaximaSessionInfo.h warned under gcc's -Werror (all three -Werror Linux
+  jobs), test_WorksheetExport.cpp lacked the wx/fileconf.h include that
+  wxMSW does not provide transitively (MinGW compile), and the new
+  ButtonWrapSizer test joins MenuHelpString in the MinGW test exclusion
+  until the wxMSW standalone-harness hang both share is diagnosed.
+
 - Internal: the worksheet's search engine - the wrap-around walk over the
   cell groups that find-next uses to locate a match - now lives in its own
   view-independent module (WorksheetSearch). The plain-text and regex
