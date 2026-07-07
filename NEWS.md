@@ -1,5 +1,11 @@
 # Current development version
 
+- Fixed find-next getting stuck when a match was found in an input prompt:
+  searching forward again re-found the same prompt forever instead of moving
+  on to the next match. A new regression test pins the worksheet search
+  behavior (match order within a cell group, search direction, wrap-around,
+  continuing from the cursor, case sensitivity and the regex variants).
+
 - Internal: the cursor that sits between two worksheet cells (the horizontal
   caret) now lives in its own WorksheetCursor class - its active flag, its
   position and the anchors of a select-with-the-caret gesture were three

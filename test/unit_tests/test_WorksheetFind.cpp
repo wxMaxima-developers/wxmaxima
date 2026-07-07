@@ -137,6 +137,19 @@ SCENARIO("Searching finds a match in a prompt") {
   }
 }
 
+SCENARIO("A repeated search advances past a prompt match") {
+  GroupCell *first = BuildDocument();
+  GroupCell *second = first->GetNext();
+  REQUIRE(g_ws->FindNext(wxS("-->"), true, true, true, true, false));
+  REQUIRE(g_ws->GetSelectionStart() == first->GetPrompt());
+
+  REQUIRE(g_ws->FindNext(wxS("-->"), true, true, true, true, false));
+
+  THEN("the second search moves on to the second group's prompt") {
+    REQUIRE(g_ws->GetSelectionStart() == second->GetPrompt());
+  }
+}
+
 SCENARIO("A search continues in the current group after the active cursor") {
   GroupCell *first = BuildDocument();
   GroupCell *second = first->GetNext();

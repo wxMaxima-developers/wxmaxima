@@ -5404,7 +5404,9 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase,
       // 1. Prompt
       bool skipPrompt = !searchInInput;
       if (startInInitial) {
-        if (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() != pos->GetPrompt()))
+        // Any cursor or previous match in the start group lies at or after
+        // its prompt, so going down the prompt is already behind us.
+        if (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos))
           skipPrompt = true;
       }
       if (!skipPrompt && pos->GetPrompt()) {
@@ -5652,7 +5654,9 @@ bool Worksheet::FindNext_Regex(const wxString &str, const bool &down,
       // 1. Prompt
       bool skipPrompt = !searchInInput;
       if (startInInitial) {
-        if (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos && GetSelectionStart() != pos->GetPrompt()))
+        // Any cursor or previous match in the start group lies at or after
+        // its prompt, so going down the prompt is already behind us.
+        if (GetActiveCell() || (GetSelectionStart() && GetSelectionStart()->GetGroup() == pos))
           skipPrompt = true;
       }
       if (!skipPrompt && pos->GetPrompt()) {
