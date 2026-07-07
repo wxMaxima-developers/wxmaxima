@@ -35,6 +35,7 @@
 #include "RenderContext.h"
 #include "Styles.h"
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <mutex>
 #include <unordered_map>
@@ -73,6 +74,10 @@ static constexpr AFontSize MC_MAX_SIZE{ 48.0f };
 #define LABELWIDTH_MIN 3
 #define LABELWIDTH_MAX 10
 class Cell;
+class CellPointers;
+class GroupCell;
+template<class T> class wxScrolled;
+typedef wxScrolled<wxWindow> wxScrolledCanvas;
 
 /*! The configuration storage for the current worksheet.
 
@@ -965,10 +970,37 @@ public:
   */
   Style *GetWritableStyle(TextStyle textStyle) { return &m_styleStore[textStyle]; }
 
-  //! Get the worksheet this configuration storage is valid for
-  wxWindow *GetWorkSheet() const {return m_workSheet;}
-  //! Set the worksheet this configuration storage is valid for
-  void SetWorkSheet(wxWindow *workSheet);
+  /*! Get the worksheet canvas this configuration storage is valid for
+
+    Deliberately typed as the generic scrolled-canvas base class: the cells
+    only need window services (DPI, scroll offsets, accessibility parent),
+    never the Worksheet class itself.
+  */
+  wxScrolledCanvas *GetWorkSheet() const {return m_workSheet;}
+  //! Set the worksheet canvas this configuration storage is valid for
+  void SetWorkSheet(wxScrolledCanvas *workSheet);
+
+  /*! The registry of special cells (selection, active cell, errors, ...) of this document
+
+    Cells constructed with this configuration register themselves here. Set by the
+    Worksheet that owns the CellPointers object; null for configurations that never
+    construct cells (e.g. the temporary print configuration).
+  */
+  CellPointers *GetCellPointers() const {return m_cellPointers;}
+  //! Set the CellPointers registry cells constructed with this configuration use
+  void SetCellPointers(CellPointers *cellPointers) {m_cellPointers = cellPointers;}
+
+  /*! Ask the view (if any) to recalculate the layout starting at the given group cell
+
+    How GroupCell::MarkNeedsRecalculate() reaches the view without the cells
+    depending on the Worksheet class. A no-op for configurations without a
+    view (printing, tests).
+  */
+  void RequestRecalculate(GroupCell *group) const
+    {if (m_recalculateRequest) m_recalculateRequest(group);}
+  //! Set the callback RequestRecalculate() notifies the view through
+  void SetRecalculateRequestCallback(std::function<void(GroupCell *)> callback)
+    {m_recalculateRequest = std::move(callback);}
 
   long DefaultPort() const {return m_defaultPort;}
   void DefaultPort(long port){m_defaultPort = port;}
@@ -1200,8 +1232,12 @@ private:
   bool m_incrementalSearch;
   //! Which objects do we want to convert into subscripts if they occur after an underscore?
   long m_autoSubscript;
-  //! The worksheet this configuration storage is valid for
-  wxWindow *m_workSheet = NULL;
+  //! The worksheet canvas this configuration storage is valid for
+  wxScrolledCanvas *m_workSheet = NULL;
+  //! The cell registry of the document this configuration is valid for. Not copied.
+  CellPointers *m_cellPointers = NULL;
+  //! The view's recalculation-request callback (see RequestRecalculate()). Not copied.
+  std::function<void(GroupCell *)> m_recalculateRequest;
   //! The state of the current render pass (DCs, canvas, clipping, deadline)
   RenderContext m_renderContext;
   bool m_wrapLatexMath;

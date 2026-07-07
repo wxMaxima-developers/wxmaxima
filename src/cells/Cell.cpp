@@ -55,10 +55,10 @@
 #include "GroupCell.h"
 #include "TextCell.h"
 #include "VisiblyInvalidCell.h"
-#include "../Worksheet.h"
 #include <algorithm>
 #include <utility>
 #include <wx/regex.h>
+#include <wx/scrolwin.h>
 #include <wx/sstream.h>
 #include <wx/xml/xml.h>
 #include "SvgBitmap.h"
@@ -67,6 +67,10 @@
 #endif
 
 const wxString &Cell::GetLocalToolTip() const { return *m_toolTip; }
+
+CellPointers *Cell::GetCellPointers() const {
+  return m_configuration->GetCellPointers();
+}
 
 const wxString Cell::GetToolTip(const wxPoint point) const {
   if (!ContainsPoint(point))
@@ -1674,7 +1678,7 @@ wxAccStatus CellAccessible::GetLocation(wxRect &rect, int elementId) {
 
 wxAccStatus Cell::GetLocation(wxRect &rect, int elementId) {
   if (elementId == 0) {
-    Worksheet *ws = GetWorksheet();
+    wxScrolledCanvas *ws = m_configuration->GetWorkSheet();
     if (!ws)
       return wxACC_FAIL;
 

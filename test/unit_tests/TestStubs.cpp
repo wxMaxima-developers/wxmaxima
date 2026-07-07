@@ -11,11 +11,6 @@
 #include "CellPointers.cpp"
 
 CellPointers pointers(nullptr);
-CellPointers *Cell::GetCellPointers() const { return &pointers; }
-#endif
-
-#if DISABLE_CELLPOINTER_STUBS
-CellPointers *Cell::GetCellPointers() const { return {}; }
 #endif
 
 bool Configuration::m_debugMode = false;
@@ -23,7 +18,12 @@ bool Configuration::m_use_threads = false;
 Configuration::PerformanceStats Configuration::g_stats;
 wxColor Configuration::DefaultBackgroundColor() { return *wxWHITE; }
 
-Configuration::Configuration(wxDC *dc, InitOpt) { m_renderContext.SetRecalcDC(dc); }
+Configuration::Configuration(wxDC *dc, InitOpt) {
+  m_renderContext.SetRecalcDC(dc);
+#if !DISABLE_CELLPOINTER_STUBS
+  SetCellPointers(&pointers);
+#endif
+}
 Configuration::~Configuration() {}
 bool Configuration::InUpdateRegion(wxRect) const { return true; }
 wxCoord Configuration::Scale_Px(double) const { return 1; }

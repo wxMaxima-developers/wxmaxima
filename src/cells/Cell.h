@@ -49,7 +49,6 @@ class CellPointers;
 class EditorCell;
 class GroupCell;
 class TextCell;
-class Worksheet;
 class wxXmlNode;
 
 // Forward declarations
@@ -1182,8 +1181,6 @@ protected:
   //! Retrieve an inner cell with given index which must be
   //! less than GetInnerCellCount.
   virtual Cell *GetInnerCell(size_t index) const;
-
-  inline Worksheet *GetWorksheet() const;
 
   //! To be called if the font has changed.
   virtual void FontsChanged() const

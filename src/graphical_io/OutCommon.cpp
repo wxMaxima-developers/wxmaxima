@@ -43,6 +43,7 @@ OutCommon::OutCommon(const Configuration * const *configuration, const wxString 
       m_configuration(configuration), m_scale(scale), m_fullWidth(fullWidth) {
     m_thisconfig.ShowCodeCells(m_oldconfig->ShowCodeCells());
     m_thisconfig.SetWorkSheet((*configuration)->GetWorkSheet());
+    m_thisconfig.SetCellPointers((*configuration)->GetCellPointers());
 
     //    *m_configuration = &m_thisconfig;
     m_thisconfig.SetZoomFactor_temporarily(1);

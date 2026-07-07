@@ -69,10 +69,10 @@
 #include <catch2/catch.hpp>
 
 namespace {
-// As in test_GroupCellLayout: the recalculation/styling pipeline reaches
-// Cell::GetWorksheet(), which asserts a worksheet is registered, so a single
-// off-screen, event-less one is shared by every scenario for the process
-// lifetime.
+// As in test_GroupCellLayout: the recalculation/styling pipeline needs the
+// view services a Worksheet registers on its Configuration (CellPointers
+// registry, recalculation requests), so a single off-screen, event-less one
+// is shared by every scenario for the process lifetime.
 wxBitmap *g_bmp = nullptr;
 wxMemoryDC *g_dc = nullptr;
 Configuration *g_cfg = nullptr;

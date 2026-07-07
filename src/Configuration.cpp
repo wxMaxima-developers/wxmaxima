@@ -35,6 +35,7 @@
 #include "StringUtils.h"
 #include <wx/config.h>
 #include <wx/fileconf.h>
+#include <wx/scrolwin.h>
 #include <wx/font.h>
 #include <wx/settings.h>
 #include <wx/mimetype.h>
@@ -197,7 +198,7 @@ Configuration::Configuration(const Configuration &o) :
 }
 
 
-void Configuration::SetWorkSheet(wxWindow *workSheet)
+void Configuration::SetWorkSheet(wxScrolledCanvas *workSheet)
 {
   m_workSheet = workSheet;
   if(workSheet)

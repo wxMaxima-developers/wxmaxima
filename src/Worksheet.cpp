@@ -122,6 +122,9 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   EnableTouchEvents(wxTOUCH_ZOOM_GESTURE);
 #endif
   m_configuration->SetWorkSheet(this);
+  m_configuration->SetCellPointers(&m_cellPointers);
+  m_configuration->SetRecalculateRequestCallback(
+    [this](GroupCell *group){ Recalculate(group); });
   m_configuration->ReadConfig();
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
 
@@ -437,6 +440,8 @@ void Worksheet::RequestRedraw(GroupCell *start) {
 }
 
 Worksheet::~Worksheet() {
+  // The view is dying: cells may no longer schedule recalculations on it.
+  m_configuration->SetRecalculateRequestCallback({});
   TreeUndo_ClearRedoActionList();
   TreeUndo_ClearUndoActionList();
 
@@ -448,6 +453,8 @@ Worksheet::~Worksheet() {
   m_mainToolBar = NULL;
 
   ClearDocument();
+  if (m_configuration->GetCellPointers() == &m_cellPointers)
+    m_configuration->SetCellPointers(NULL);
   m_configuration = NULL;
 }
 
@@ -6422,10 +6429,6 @@ wxDataFormat Worksheet::m_rtfFormat;
 wxDataFormat Worksheet::m_rtfFormat2;
 wxDataFormat Worksheet::m_wxmFormat;
 std::mutex Worksheet::m_drawDCLock;
-
-CellPointers *Cell::GetCellPointers() const {
-  return &GetWorksheet()->GetCellPointers();
-}
 
 void Worksheet::UpdateTableOfContents()
 {

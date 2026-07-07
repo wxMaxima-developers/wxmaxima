@@ -43,8 +43,8 @@
 #include "LabelCell.h"
 #include "MarkDown.h"
 #include "TextCell.h"
-#include "../Worksheet.h"
 #include <wx/clipbrd.h>
+#include <wx/scrolwin.h>
 #include <wx/log.h>
 #include <wx/string.h>
 #include <wx/config.h>
@@ -235,10 +235,7 @@ void GroupCell::SetAutoAnswer(bool autoAnswer) {
 void GroupCell::MarkNeedsRecalculate() {
   if (!m_cellsAppended) {
     m_cellsAppended = true;
-    Worksheet *ws = dynamic_cast<Worksheet *>(m_configuration->GetWorkSheet());
-    if (ws) {
-      ws->Recalculate(this);
-    }
+    m_configuration->RequestRecalculate(this);
   }
 }
 
@@ -1969,7 +1966,7 @@ wxAccStatus GroupCell::GetDescription(int childId,
 
 wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId) {
   if (elementId == 0) {
-    Worksheet *ws = GetWorksheet();
+    wxScrolledCanvas *ws = m_configuration->GetWorkSheet();
     if (!ws)
       return wxACC_FAIL;
 

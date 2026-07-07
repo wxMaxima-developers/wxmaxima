@@ -1569,13 +1569,6 @@ protected:
   bool m_inPopupMenu = false;
 };
 
-inline Worksheet *Cell::GetWorksheet() const
-{
-  wxWindow *worksheet = m_configuration->GetWorkSheet();
-  wxASSERT(worksheet != NULL);
-  return static_cast<Worksheet*>(worksheet);
-}
-
 wxDECLARE_EVENT(TOC_UPDATE_NEEDED_EVENT, wxCommandEvent);
 
 #endif // WORKSHEET_H

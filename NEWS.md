@@ -1,5 +1,17 @@
 # Current development version
 
+- Internal: the cell layer no longer knows the Worksheet class at all -
+  the first of the document/view state-split blockers is gone. Cells used
+  to reach back into the view through Cell::GetWorksheet() (a
+  Configuration back-pointer cast to Worksheet) for three services; each
+  now has a narrow channel of its own: the CellPointers registry is
+  carried by Configuration directly, GroupCell::MarkNeedsRecalculate()
+  notifies the view through a callback the Worksheet registers on its
+  Configuration (and deregisters on destruction, so cells can no longer
+  call into a half-destroyed view), and the accessibility code asks the
+  generic wxScrolledCanvas for scroll geometry. Cell::GetWorksheet() is
+  deleted; src/cells/ no longer includes Worksheet.h.
+
 - Windows: a batch-mode run (wxmaxima --batch, typically started from a
   script) could appear to hang for seconds to minutes before its window
   opened - at zero CPU - whenever the user had clicked into the console

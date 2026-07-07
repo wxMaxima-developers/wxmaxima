@@ -64,9 +64,10 @@
 #include <catch2/catch.hpp>
 
 namespace {
-// The real recalculation pipeline reaches Cell::GetWorksheet(), which asserts a
-// worksheet is registered, so we set up a genuine (off-screen, event-less) one
-// once and let every scenario share it. Owned for the process lifetime.
+// The real recalculation pipeline needs the view services a Worksheet registers
+// on its Configuration (CellPointers registry, recalculation requests), so we
+// set up a genuine (off-screen, event-less) one once and let every scenario
+// share it. Owned for the process lifetime.
 wxBitmap *g_bmp = nullptr;
 wxMemoryDC *g_dc = nullptr;
 Configuration *g_cfg = nullptr;
