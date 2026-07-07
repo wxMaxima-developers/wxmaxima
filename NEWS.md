@@ -1,5 +1,12 @@
 # Current development version
 
+- Internal: two integration tests (absCells, atCells) now share one
+  MAXIMA_USERDIR to exercise the typical real-world setup - several
+  wxMaxima sessions reusing one ~/.maxima and its caches - which the
+  per-test isolation never covered (suggested by Benoit). The pair loads
+  no compiled package, keeping clear of Maxima's compiled-package cache
+  race that the isolation exists to avoid.
+
 - Fixed a mangled maxima user directory when maxima is compiled with GCL
   (as Debian's and Ubuntu's maxima packages are): GCL reports
   maxima_userdir with a trailing newline, and wxMaxima created and used

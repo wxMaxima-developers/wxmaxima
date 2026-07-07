@@ -1188,9 +1188,23 @@ set(WXM_POSIX_TESTS
   subscriptp_6 subscriptp_7 subscriptp_8 subscriptp_9 subscriptp_10
   subscriptp_11)
 
+# ...with one deliberate exception: the typical real-world case is multiple
+# wxMaxima sessions (over time or at once) SHARING one ~/.maxima, reusing and
+# rewriting each other's caches (knownSymbols.txt, manual anchors, history).
+# The per-test isolation above never exercises that, so this pair of tests -
+# chosen because their worksheets load no compiled package, keeping clear of
+# Maxima's compiled-package cache race described above - shares one userdir:
+# run sequentially they reuse each other's caches, and under `ctest -j` they
+# can genuinely overlap.
+set(WXM_SHARED_USERDIR_TESTS absCells atCells)
+
 get_property(_wxm_all_tests DIRECTORY PROPERTY TESTS)
 foreach(_wxm_t IN LISTS _wxm_all_tests)
-  set(_wxm_userdir "${CMAKE_CURRENT_BINARY_DIR}/test_userdirs/${_wxm_t}")
+  if("${_wxm_t}" IN_LIST WXM_SHARED_USERDIR_TESTS)
+    set(_wxm_userdir "${CMAKE_CURRENT_BINARY_DIR}/test_userdirs/shared_typical_use")
+  else()
+    set(_wxm_userdir "${CMAKE_CURRENT_BINARY_DIR}/test_userdirs/${_wxm_t}")
+  endif()
   file(MAKE_DIRECTORY "${_wxm_userdir}")
   set_property(TEST "${_wxm_t}" APPEND PROPERTY ENVIRONMENT
     "MAXIMA_USERDIR=${_wxm_userdir}")
