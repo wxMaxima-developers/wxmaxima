@@ -56,6 +56,7 @@
 #include "cells/GroupCell.h"
 #include "TreeUndoManager.h"
 #include "WorksheetCursor.h"
+#include "WorksheetSearch.h"
 #include "cells/TextCell.h"
 #include "EvaluationQueue.h"
 #include "dialogs/FindReplaceDialog.h"
@@ -1372,9 +1373,23 @@ public:
   bool FindIncremental(const wxString &str, bool down, bool ignoreCase, bool searchInInput = true, bool searchInOutput = true);
   bool FindIncremental_RegEx(const wxString &str, bool down, bool searchInInput = true, bool searchInOutput = true);
 
+private:
+  /*! Where a search starts: the first fully or partially visible group,
+    overridden by the active cursor, the selection or the h-caret.
+  */
+  WorksheetSearch::SearchStart FindStart(bool down);
+  /*! Show a search match in the worksheet: activate the matched editor or
+    select the matched cell, scroll to it and warn about a wrapped search.
+
+    \returns true if the target holds a match.
+  */
+  bool ApplyFindResult(const WorksheetSearch::SearchTarget &target, bool warn);
+public:
   /*! Find the next occurrence of a string
 
-    Used by the find dialog.
+    Used by the find dialog. The group-cell iteration lives in
+    WorksheetSearch::FindNextTarget; this method derives the start position,
+    handles searching for a cell by its UUID and shows the match.
   */
   bool FindNext(const wxString &str, bool down, bool ignoreCase, bool searchInInput = true, bool searchInOutput = true, bool warn = true);
   bool FindNext_Regex(const wxString &str, const bool &down, bool searchInInput = true, bool searchInOutput = true, bool warn = true);

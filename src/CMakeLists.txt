@@ -158,6 +158,7 @@ set(SOURCE_FILES
     Worksheet.cpp
     WorksheetContextMenu.cpp
     WorksheetExport.cpp
+    WorksheetSearch.cpp
     WrappingStaticText.cpp
     WXMformat.cpp
     WXMXformat.cpp

@@ -1,5 +1,13 @@
 # Current development version
 
+- Internal: the worksheet's search engine - the wrap-around walk over the
+  cell groups that find-next uses to locate a match - now lives in its own
+  view-independent module (WorksheetSearch). The plain-text and regex
+  searches used to be two nearly identical ~250-line copies of that walk;
+  they now share one engine that differs only in the match test.
+  Worksheet::FindNext keeps deriving the start position from the screen and
+  cursor, the by-UUID cell jump, and showing the match.
+
 - Fixed find-next getting stuck when a match was found in an input prompt:
   searching forward again re-found the same prompt forever instead of moving
   on to the next match. A new regression test pins the worksheet search
