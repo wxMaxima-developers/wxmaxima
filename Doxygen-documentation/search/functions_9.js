@@ -45,6 +45,7 @@ var searchData=
   ['isselected_42',['IsSelected',['../classWorksheet.html#a8dfd3c377a9520702e5c6cba30edd5e5',1,'Worksheet']]],
   ['isselectioninworkinggroup_43',['IsSelectionInWorkingGroup',['../classWorksheet.html#aaf379a135e0cf51b54fb7e1aef2208dd',1,'Worksheet']]],
   ['isshortnum_44',['IsShortNum',['../classCell.html#a4c9f48de399a16a801e0e3c53f805b4e',1,'Cell::IsShortNum()'],['../classTextCell.html#a8915bfe798fc73eeeeda6bcd7025d6f8',1,'TextCell::IsShortNum()']]],
-  ['isvalidvariable_45',['IsValidVariable',['../classVariablespane.html#a7ad9c02ee28a4e8dedab236c44ef1994',1,'Variablespane']]],
-  ['isxmlinspectorshown_46',['IsXMLInspectorShown',['../classwxMaximaFrame.html#a417d6b9fde48cc771065d3d8b2c06ab5',1,'wxMaximaFrame']]]
+  ['isvalid_45',['IsValid',['../classWorksheetSearch_1_1RegexMatcher.html#ade8021e8a378b3f38154989285065a9f',1,'WorksheetSearch::RegexMatcher']]],
+  ['isvalidvariable_46',['IsValidVariable',['../classVariablespane.html#a7ad9c02ee28a4e8dedab236c44ef1994',1,'Variablespane']]],
+  ['isxmlinspectorshown_47',['IsXMLInspectorShown',['../classwxMaximaFrame.html#a417d6b9fde48cc771065d3d8b2c06ab5',1,'wxMaximaFrame']]]
 ];

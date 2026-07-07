@@ -6,7 +6,7 @@ var searchData=
   ['rangegenerator_3',['RangeGenerator',['../classCatch_1_1Generators_1_1RangeGenerator.html',1,'Catch::Generators']]],
   ['recentdocuments_4',['RecentDocuments',['../classRecentDocuments.html',1,'']]],
   ['regexctrl_5',['RegexCtrl',['../classRegexCtrl.html',1,'']]],
-  ['regexmatcher_6',['RegexMatcher',['../structCatch_1_1Matchers_1_1StdString_1_1RegexMatcher.html',1,'Catch::Matchers::StdString']]],
+  ['regexmatcher_6',['RegexMatcher',['../structCatch_1_1Matchers_1_1StdString_1_1RegexMatcher.html',1,'Catch::Matchers::StdString::RegexMatcher'],['../classWorksheetSearch_1_1RegexMatcher.html',1,'WorksheetSearch::RegexMatcher']]],
   ['regexreplacer_7',['RegexReplacer',['../classMarkDownParser_1_1RegexReplacer.html',1,'MarkDownParser']]],
   ['regexsearch_8',['RegexSearch',['../classRegexSearch.html',1,'']]],
   ['registrarfortagaliases_9',['RegistrarForTagAliases',['../structCatch_1_1RegistrarForTagAliases.html',1,'Catch']]],
