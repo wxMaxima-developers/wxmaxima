@@ -1,52 +1,52 @@
 <map id="src/cells/Cell.h" name="src/cells/Cell.h">
-<area shape="rect" id="node1" title="The definition of the base class of all cells the worksheet consists of." alt="" coords="2472,5,2588,31"/>
-<area shape="rect" id="node2" href="$CellPointers_8h_source.html" title=" " alt="" coords="240,152,375,177"/>
-<area shape="rect" id="node3" href="$Worksheet_8h.html" title="This file defines the class Worksheet." alt="" coords="925,225,1052,251"/>
-<area shape="rect" id="node4" href="$Cell_8cpp.html" title="Core layout and rendering logic for worksheet cells." alt="" coords="923,306,1054,331"/>
-<area shape="rect" id="node6" href="$test__LayoutInvariants_8cpp.html" title="Layout idempotency invariants." alt="" coords="1175,299,1341,339"/>
-<area shape="rect" id="node13" href="$Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage." alt="" coords="4387,79,4545,104"/>
-<area shape="rect" id="node14" href="$Image_8cpp.html" title="This file declares the class Image." alt="" coords="925,152,1039,177"/>
-<area shape="rect" id="node15" href="$MathParser_8h.html" title="The header file for the xml cell parser." alt="" coords="1845,225,1975,251"/>
-<area shape="rect" id="node19" href="$SvgBitmap_8h.html" title="This file declares the class Image." alt="" coords="873,79,1001,104"/>
-<area shape="rect" id="node20" href="$WorksheetSearch_8cpp.html" title="Implementation of the worksheet&#39;s search engine, extracted from Worksheet::FindNext / FindNext_Regex." alt="" coords="1584,225,1769,251"/>
-<area shape="rect" id="node21" href="$AbsCell_8h.html" title="This file declares the class AbsCell." alt="" coords="2111,225,2251,251"/>
-<area shape="rect" id="node22" href="$AnimationCell_8h.html" title="This file declares the class AnimationCell." alt="" coords="565,152,748,177"/>
-<area shape="rect" id="node23" href="$AtCell_8h_source.html" title=" " alt="" coords="2285,225,2415,251"/>
-<area shape="rect" id="node24" href="$BoxCell_8h.html" title="This file defines the class for the cell type that represents a box(x) block." alt="" coords="2002,152,2143,177"/>
-<area shape="rect" id="node25" href="$ConjugateCell_8h.html" title="This file defines the class for the cell type that represents a conjugate(x) block." alt="" coords="2168,152,2351,177"/>
-<area shape="rect" id="node26" href="$DiffCell_8h_source.html" title=" " alt="" coords="2443,225,2582,251"/>
-<area shape="rect" id="node27" href="$EditorCell_8h.html" title="This file contains the definition of the class EditorCell." alt="" coords="1570,79,1725,104"/>
-<area shape="rect" id="node28" href="$GroupCell_8h.html" title="This file defines the class GroupCell that bundles input and output in the worksheet." alt="" coords="1367,152,1522,177"/>
-<area shape="rect" id="node29" href="$ExptCell_8h.html" title="This file declares the class ExptCell which represents a exp() or e^x&#45;construct." alt="" coords="2541,152,2687,177"/>
-<area shape="rect" id="node30" href="$FracCell_8h.html" title="This file declares the class FracCell." alt="" coords="2375,152,2517,177"/>
-<area shape="rect" id="node31" href="$FunCell_8h.html" title="This file declares the class FunCell() that represents a maxima function." alt="" coords="3381,225,3519,251"/>
-<area shape="rect" id="node32" href="$ImgCell_8h_source.html" title=" " alt="" coords="399,152,541,177"/>
-<area shape="rect" id="node33" href="$ImgCellBase_8h_source.html" title=" " alt="" coords="570,79,743,104"/>
-<area shape="rect" id="node34" href="$IntCell_8h.html" title="This file declares the class IntCell." alt="" coords="3543,225,3677,251"/>
-<area shape="rect" id="node35" href="$IntervalCell_8h.html" title="This file declares the class IntervalCell." alt="" coords="2711,152,2877,177"/>
-<area shape="rect" id="node36" href="$LimitCell_8h.html" title="This file declares the class LimitCell." alt="" coords="2953,152,3102,177"/>
-<area shape="rect" id="node37" href="$ListCell_8h.html" title="This file declares the class ListCell." alt="" coords="3177,152,3315,177"/>
-<area shape="rect" id="node38" href="$SetCell_8h.html" title="This file declares the class SetCell." alt="" coords="3065,225,3203,251"/>
-<area shape="rect" id="node39" href="$MatrCell_8h_source.html" title=" " alt="" coords="3701,225,3847,251"/>
-<area shape="rect" id="node40" href="$NamedBoxCell_8h.html" title="This file defines the class for the cell type that represents a box(x) block with two arguments." alt="" coords="3340,152,3528,177"/>
-<area shape="rect" id="node41" href="$ParenCell_8h.html" title="This file declares the class ParenCell." alt="" coords="3807,79,3959,104"/>
-<area shape="rect" id="node42" href="$SumCell_8h.html" title="This file declares the class SumCell." alt="" coords="3923,152,4068,177"/>
-<area shape="rect" id="node43" href="$SqrtCell_8h.html" title="This file defines the class for the cell type that represents a square root." alt="" coords="3552,152,3695,177"/>
-<area shape="rect" id="node44" href="$SubCell_8h_source.html" title=" " alt="" coords="4035,79,4175,104"/>
-<area shape="rect" id="node45" href="$SubSupCell_8h_source.html" title=" " alt="" coords="4199,79,4363,104"/>
-<area shape="rect" id="node46" href="$TextCell_8h_source.html" title=" " alt="" coords="2459,79,2601,104"/>
-<area shape="rect" id="node47" href="$BitmapOut_8cpp.html" title="This file defines the class BitMap that renders math as bitmap." alt="" coords="4569,79,4795,104"/>
-<area shape="rect" id="node48" href="$EMFout_8cpp.html" title="This file defines the class Emfout that renders math as scalable emf graphics." alt="" coords="4819,79,5022,104"/>
-<area shape="rect" id="node49" href="$History_8cpp.html" title="This file defines the class History." alt="" coords="5046,79,5222,104"/>
-<area shape="rect" id="node50" href="$wxMaximaIcon_8h.html" title="This file declares the function that returns the wxMaxima icon." alt="" coords="5247,79,5403,104"/>
-<area shape="rect" id="node5" href="$GroupCell_8cpp.html" title="This file defines the class GroupCell." alt="" coords="715,306,886,331"/>
-<area shape="rect" id="node9" href="$AnimationCell_8cpp.html" title="This file defines the class AnimationCell." alt="" coords="551,225,749,251"/>
-<area shape="rect" id="node10" href="$EditorCell_8cpp.html" title="This file defines the class EditorCell." alt="" coords="1723,387,1892,412"/>
-<area shape="rect" id="node11" href="$ImgCell_8cpp.html" title="This file defines the class ImgCell." alt="" coords="320,225,476,251"/>
-<area shape="rect" id="node12" href="$ImgCellBase_8cpp.html" title="This file defines the class ImgCellBase." alt="" coords="5,225,193,251"/>
-<area shape="rect" id="node7" href="$test__WXMXRoundtrip_8cpp.html" title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format)." alt="" coords="1573,299,1735,339"/>
-<area shape="rect" id="node8" href="$test__WorksheetExport_8cpp.html" title="Safety net for the export/serialization cluster of Worksheet." alt="" coords="1381,299,1548,339"/>
-<area shape="rect" id="node16" href="$MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima." alt="" coords="3009,306,3153,331"/>
-<area shape="rect" id="node17" href="$main_8h.html" title="This file declares the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="1942,387,2033,412"/>
-<area shape="rect" id="node18" href="$wxMaxima_8h.html" title="This file declares the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="1845,306,1975,331"/>
+<area shape="rect" id="node1" title="The definition of the base class of all cells the worksheet consists of." alt="" coords="2462,5,2578,31"/>
+<area shape="rect" id="node2" href="$CellPointers_8h_source.html" title=" " alt="" coords="294,152,429,177"/>
+<area shape="rect" id="node3" href="$Worksheet_8h.html" title="This file defines the class Worksheet." alt="" coords="901,225,1028,251"/>
+<area shape="rect" id="node4" href="$test__LayoutInvariants_8cpp.html" title="Layout idempotency invariants." alt="" coords="863,299,1028,339"/>
+<area shape="rect" id="node12" href="$Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage." alt="" coords="312,79,470,104"/>
+<area shape="rect" id="node13" href="$Image_8cpp.html" title="This file declares the class Image." alt="" coords="74,152,188,177"/>
+<area shape="rect" id="node14" href="$MathParser_8h.html" title="The header file for the xml cell parser." alt="" coords="1722,225,1852,251"/>
+<area shape="rect" id="node18" href="$SvgBitmap_8h.html" title="This file declares the class Image." alt="" coords="159,79,287,104"/>
+<area shape="rect" id="node19" href="$Cell_8cpp.html" title="Core layout and rendering logic for worksheet cells." alt="" coords="746,225,876,251"/>
+<area shape="rect" id="node20" href="$WorksheetSearch_8cpp.html" title="Implementation of the worksheet&#39;s search engine, extracted from Worksheet::FindNext / FindNext_Regex." alt="" coords="1513,225,1698,251"/>
+<area shape="rect" id="node21" href="$AbsCell_8h.html" title="This file declares the class AbsCell." alt="" coords="3857,225,3997,251"/>
+<area shape="rect" id="node22" href="$AnimationCell_8h.html" title="This file declares the class AnimationCell." alt="" coords="873,152,1056,177"/>
+<area shape="rect" id="node23" href="$AtCell_8h_source.html" title=" " alt="" coords="4022,225,4152,251"/>
+<area shape="rect" id="node24" href="$BoxCell_8h.html" title="This file defines the class for the cell type that represents a box(x) block." alt="" coords="2263,152,2404,177"/>
+<area shape="rect" id="node25" href="$ConjugateCell_8h.html" title="This file defines the class for the cell type that represents a conjugate(x) block." alt="" coords="2429,152,2612,177"/>
+<area shape="rect" id="node26" href="$DiffCell_8h_source.html" title=" " alt="" coords="4176,225,4315,251"/>
+<area shape="rect" id="node27" href="$EditorCell_8h.html" title="This file contains the definition of the class EditorCell." alt="" coords="1347,79,1502,104"/>
+<area shape="rect" id="node28" href="$GroupCell_8h.html" title="This file defines the class GroupCell that bundles input and output in the worksheet." alt="" coords="1232,152,1387,177"/>
+<area shape="rect" id="node29" href="$ExptCell_8h.html" title="This file declares the class ExptCell which represents a exp() or e^x&#45;construct." alt="" coords="2840,152,2985,177"/>
+<area shape="rect" id="node30" href="$FracCell_8h.html" title="This file declares the class FracCell." alt="" coords="2096,152,2238,177"/>
+<area shape="rect" id="node31" href="$FunCell_8h.html" title="This file declares the class FunCell() that represents a maxima function." alt="" coords="2558,225,2696,251"/>
+<area shape="rect" id="node32" href="$ImgCell_8h_source.html" title=" " alt="" coords="555,152,696,177"/>
+<area shape="rect" id="node33" href="$ImgCellBase_8h_source.html" title=" " alt="" coords="647,79,820,104"/>
+<area shape="rect" id="node34" href="$IntCell_8h.html" title="This file declares the class IntCell." alt="" coords="2720,225,2854,251"/>
+<area shape="rect" id="node35" href="$IntervalCell_8h.html" title="This file declares the class IntervalCell." alt="" coords="3230,152,3397,177"/>
+<area shape="rect" id="node36" href="$LimitCell_8h.html" title="This file declares the class LimitCell." alt="" coords="3422,152,3571,177"/>
+<area shape="rect" id="node37" href="$ListCell_8h.html" title="This file declares the class ListCell." alt="" coords="3595,152,3734,177"/>
+<area shape="rect" id="node38" href="$SetCell_8h.html" title="This file declares the class SetCell." alt="" coords="3592,225,3729,251"/>
+<area shape="rect" id="node39" href="$MatrCell_8h_source.html" title=" " alt="" coords="2728,79,2875,104"/>
+<area shape="rect" id="node40" href="$NamedBoxCell_8h.html" title="This file defines the class for the cell type that represents a box(x) block with two arguments." alt="" coords="1665,152,1853,177"/>
+<area shape="rect" id="node41" href="$ParenCell_8h.html" title="This file declares the class ParenCell." alt="" coords="2950,79,3102,104"/>
+<area shape="rect" id="node42" href="$SumCell_8h.html" title="This file declares the class SumCell." alt="" coords="3061,152,3206,177"/>
+<area shape="rect" id="node43" href="$SqrtCell_8h.html" title="This file defines the class for the cell type that represents a square root." alt="" coords="1929,152,2072,177"/>
+<area shape="rect" id="node44" href="$SubCell_8h_source.html" title=" " alt="" coords="3557,79,3697,104"/>
+<area shape="rect" id="node45" href="$SubSupCell_8h_source.html" title=" " alt="" coords="3721,79,3885,104"/>
+<area shape="rect" id="node46" href="$TextCell_8h_source.html" title=" " alt="" coords="2262,79,2405,104"/>
+<area shape="rect" id="node47" href="$BitmapOut_8cpp.html" title="This file defines the class BitMap that renders math as bitmap." alt="" coords="4061,79,4286,104"/>
+<area shape="rect" id="node48" href="$EMFout_8cpp.html" title="This file defines the class Emfout that renders math as scalable emf graphics." alt="" coords="4311,79,4514,104"/>
+<area shape="rect" id="node49" href="$History_8cpp.html" title="This file defines the class History." alt="" coords="4538,79,4714,104"/>
+<area shape="rect" id="node50" href="$wxMaximaIcon_8h.html" title="This file declares the function that returns the wxMaxima icon." alt="" coords="4738,79,4894,104"/>
+<area shape="rect" id="node7" href="$AnimationCell_8cpp.html" title="This file defines the class AnimationCell." alt="" coords="473,225,672,251"/>
+<area shape="rect" id="node8" href="$EditorCell_8cpp.html" title="This file defines the class EditorCell." alt="" coords="1360,387,1529,412"/>
+<area shape="rect" id="node9" href="$GroupCell_8cpp.html" title="This file defines the class GroupCell." alt="" coords="1052,225,1223,251"/>
+<area shape="rect" id="node10" href="$ImgCell_8cpp.html" title="This file defines the class ImgCell." alt="" coords="293,225,449,251"/>
+<area shape="rect" id="node11" href="$ImgCellBase_8cpp.html" title="This file defines the class ImgCellBase." alt="" coords="29,225,217,251"/>
+<area shape="rect" id="node5" href="$test__WXMXRoundtrip_8cpp.html" title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format)." alt="" coords="1244,299,1407,339"/>
+<area shape="rect" id="node6" href="$test__WorksheetExport_8cpp.html" title="Safety net for the export/serialization cluster of Worksheet." alt="" coords="1053,299,1220,339"/>
+<area shape="rect" id="node15" href="$MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima." alt="" coords="2924,306,3068,331"/>
+<area shape="rect" id="node16" href="$main_8h.html" title="This file declares the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="1690,387,1780,412"/>
+<area shape="rect" id="node17" href="$wxMaxima_8h.html" title="This file declares the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="1620,306,1749,331"/>
 </map>
