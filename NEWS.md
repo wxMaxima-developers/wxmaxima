@@ -1,5 +1,15 @@
 # Current development version
 
+- Windows: a batch-mode run (wxmaxima --batch, typically started from a
+  script) could appear to hang for seconds to minutes before its window
+  opened - at zero CPU - whenever the user had clicked into the console
+  window: a click puts a QuickEdit console (the Windows default) into
+  selection mode, and every write to it then suspends the writer until the
+  selection is dismissed. wxMaxima now clears the console's QuickEdit mode
+  for the duration of a --batch run (and restores it on exit); interactive
+  launches are unaffected. If you script wxMaxima, redirecting its output
+  to a file remains good practice.
+
 - Internal: two integration tests (absCells, atCells) now share one
   MAXIMA_USERDIR to exercise the typical real-world setup - several
   wxMaxima sessions reusing one ~/.maxima and its caches - which the

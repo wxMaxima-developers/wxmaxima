@@ -287,6 +287,50 @@ static bool HaveStdErrHandle() {
   HANDLE handle = GetStdHandle(STD_ERROR_HANDLE);
   return (handle != nullptr) && (handle != INVALID_HANDLE_VALUE);
 }
+
+// Old SDKs may lack these; the flag values are fixed by the Console API.
+#ifndef ENABLE_QUICK_EDIT_MODE
+#define ENABLE_QUICK_EDIT_MODE 0x0040
+#endif
+#ifndef ENABLE_EXTENDED_FLAGS
+#define ENABLE_EXTENDED_FLAGS 0x0080
+#endif
+
+void MyApp::DisableConsoleQuickEdit() {
+  // CONIN$ addresses the console we are attached to even if our own stdin was
+  // redirected to a pipe; if there is no console at all, opening it fails and
+  // there is nothing whose QuickEdit mode could block us.
+  HANDLE conIn = CreateFileW(L"CONIN$", GENERIC_READ | GENERIC_WRITE,
+                             FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr,
+                             OPEN_EXISTING, 0, nullptr);
+  if (conIn == INVALID_HANDLE_VALUE)
+    return;
+  DWORD mode = 0;
+  if (GetConsoleMode(conIn, &mode) && (mode & ENABLE_QUICK_EDIT_MODE)) {
+    // ENABLE_EXTENDED_FLAGS must be set for the QuickEdit bit to be honored.
+    if (SetConsoleMode(conIn,
+                       (mode | ENABLE_EXTENDED_FLAGS) & ~ENABLE_QUICK_EDIT_MODE)) {
+      m_consoleModeToRestore = mode;
+      m_consoleModeChanged = true;
+      wxLogMessage(_("Disabled the console's QuickEdit mode for this batch run "
+                     "so a click into the console cannot suspend wxMaxima."));
+    }
+  }
+  CloseHandle(conIn);
+}
+
+void MyApp::RestoreConsoleMode() {
+  if (!m_consoleModeChanged)
+    return;
+  m_consoleModeChanged = false;
+  HANDLE conIn = CreateFileW(L"CONIN$", GENERIC_READ | GENERIC_WRITE,
+                             FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr,
+                             OPEN_EXISTING, 0, nullptr);
+  if (conIn == INVALID_HANDLE_VALUE)
+    return;
+  SetConsoleMode(conIn, m_consoleModeToRestore);
+  CloseHandle(conIn);
+}
 #endif
 
 bool MyApp::OnInit() {
@@ -607,6 +651,9 @@ bool MyApp::OnInit() {
     evalOnStartup = true;
     exitAfterEval = true;
     LoggingMessageDialog::SetNonInteractive();
+#ifdef __WXMSW__
+    DisableConsoleQuickEdit();
+#endif
   }
 
   m_configuration = std::make_unique<Configuration>();
@@ -681,6 +728,9 @@ int MyApp::OnExit() {
   Configuration::g_stats.Report();
   for(auto i:m_wxMaximaProcesses)
     i->Detach();
+#ifdef __WXMSW__
+  RestoreConsoleMode();
+#endif
   return wxMaxima::GetExitCode();
 }
 

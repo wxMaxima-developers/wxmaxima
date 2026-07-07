@@ -914,6 +914,24 @@ public:
 
   void OnFileMenu(wxCommandEvent &ev);
 
+#ifdef __WXMSW__
+  /*! Clear the attached console's QuickEdit mode for an unattended batch run.
+
+    A click into a QuickEdit console (the Windows default) puts it into
+    selection mode, and every write to that console then blocks the writer -
+    at zero CPU, before the main window even exists - until the selection is
+    dismissed. Users watching a batch run click into its console all the
+    time, so \--batch runs appeared to hang for seconds to minutes on
+    startup. Launches without an attached console are unaffected (the
+    console handle cannot be opened, and this method does nothing).
+
+    The previous mode is restored in OnExit().
+  */
+  void DisableConsoleQuickEdit();
+  //! Undo DisableConsoleQuickEdit(), if it changed anything.
+  void RestoreConsoleMode();
+#endif // __WXMSW__
+
 #ifdef __WXMAC__
   void MacNewFile() override;
   void MacOpenFile(const wxString &file) override;
@@ -931,6 +949,12 @@ public:
 #endif
   std::unique_ptr<wxLocale> m_locale;
   std::unique_ptr<wxTranslations> m_translations;
+#ifdef __WXMSW__
+  //! The console input mode DisableConsoleQuickEdit() found, for RestoreConsoleMode().
+  unsigned long m_consoleModeToRestore = 0;
+  //! True if DisableConsoleQuickEdit() actually changed the console mode.
+  bool m_consoleModeChanged = false;
+#endif
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
   Dirstructure m_dirstruct;
