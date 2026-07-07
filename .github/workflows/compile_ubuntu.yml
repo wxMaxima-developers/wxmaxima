@@ -24,27 +24,6 @@ jobs:
         run: |
              sudo apt-get update
              sudo apt-get install appstream cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dbus dpkg-dev po4a rpmlint lintian weston rpm
-      - name: diagnose_userdir_writability
-        # Diagnostic (non-failing): on this runner the per-test MAXIMA_USERDIR is
-        # writable at wxMaxima startup but EACCES for the later cache writes -- so
-        # something drops the write bit mid-run. Prime suspect: maxima itself.
-        # This probes whether running maxima against a writable MAXIMA_USERDIR
-        # leaves it writable afterwards. Remove once the cause is understood.
-        run: |
-             set -x
-             probe="$PWD/userdir_probe"
-             rm -rf "$probe"; mkdir -p "$probe"
-             umask
-             id
-             stat -c 'before: %A %a %U:%G %n' "$probe"
-             ( touch "$probe/before.txt" && echo "write-before: OK" ) || echo "write-before: FAIL"
-             MAXIMA_USERDIR="$probe" maxima --very-quiet \
-               --batch-string='build_info(); load(draw)$ plot2d(sin(x),[x,1,10])$ quit();' \
-               >/dev/null 2>&1 || true
-             stat -c 'after:  %A %a %U:%G %n' "$probe"
-             ( touch "$probe/after.txt" && echo "write-after: OK" ) || echo "write-after: FAIL"
-             find "$probe" -maxdepth 3 -exec stat -c '  %A %a %n' {} \; || true
-             rm -rf "$probe"
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra -ansi -Werror -Wpedantic"
