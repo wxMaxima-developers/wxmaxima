@@ -725,17 +725,20 @@ bool MyApp::OnInit() {
 }
 
 int MyApp::OnExit() {
+  WxmShutdownTrace("MyApp::OnExit reached");
   Configuration::g_stats.Report();
   for(auto i:m_wxMaximaProcesses)
     i->Detach();
 #ifdef __WXMSW__
   RestoreConsoleMode();
 #endif
+  WxmShutdownTrace("MyApp::OnExit returning");
   return wxMaxima::GetExitCode();
 }
 
 int MyApp::OnRun() {
   wxApp::OnRun();
+  WxmShutdownTrace("MyApp::OnRun: main loop ended");
   return 0;
 }
 
