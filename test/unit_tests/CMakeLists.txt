@@ -172,6 +172,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(WorksheetCursor test_WorksheetCursor)
 
+    # Pins the worksheet's find/replace behavior (wrap-around group loop,
+    # prompt/editor/output order, start-from-cursor skip rules) ahead of the
+    # WorksheetSearch extraction.
+    add_executable(test_WorksheetFind
+        test_WorksheetFind.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_WorksheetFind PUBLIC cxx_std_20)
+    target_link_libraries(test_WorksheetFind PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(WorksheetFind test_WorksheetFind)
+
     # Hardening/fuzz test for EditorCell's text-editing core: drives the real
     # key-event paths and checks the cursor/selection invariants after every op.
     add_executable(test_EditorCellInvariants
