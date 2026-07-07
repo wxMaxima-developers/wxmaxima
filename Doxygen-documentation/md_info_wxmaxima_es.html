@@ -664,46 +664,46 @@ El panel lateral «Tramado utilizando dibujo»</h3>
 2D</h4>
 <p>Genera el esqueleto de una instrucción <code>draw()</code> que dibuja una escena 2<a class="el" href="classD.html">D</a>. Esta escena posterior tiene que ser completada con instrucciones que generan los contenidos de la escena, por ejemplo utilizando los botones dentro de las filas debajo del botón "2D".</p>
 <p>La característica de ayuda del botón 2<a class="el" href="classD.html">D</a> es que permite configurar la escena como una animación en la cual una variable (por defecto es <em>t</em>) tiene un valor diferente dentro de cada marco: a menudo un movimiento de trama 2<a class="el" href="classD.html">D</a> permite una interpretación más fácil que el de datos dentro de uno sin movimiento 3<a class="el" href="classD.html">D</a>.</p>
-<h4><a class="anchor" id="autotoc_md181"></a>
+<h4><a class="anchor" id="autotoc_md180"></a>
 3D</h4>
 <p>Genera el esqueleto de una instrucción <code>draw()</code> que dibuja una escena 3<a class="el" href="classD.html">D</a>. Si no está configurada ninguna escena 2<a class="el" href="classD.html">D</a> o 3<a class="el" href="classD.html">D</a>, todo de los otros botones configuran una escena 2<a class="el" href="classD.html">D</a> que contenga la instrucción que el botón genera.</p>
-<h4><a class="anchor" id="autotoc_md182"></a>
+<h4><a class="anchor" id="autotoc_md181"></a>
 Expresión</h4>
 <p>Adjunta una trama común de una expresión como <code>sin(x)</code>, <code>x*sin(x)</code> o <code>x^2+2*x-4</code> para la instrucción <code>draw()</code> el cursor actualmente está dentro. Si no hay ninguna instrucción de dibujo en una escena 2<a class="el" href="classD.html">D</a> con la trama es generada. Cada escena puede ser completada con cualquier número de tramas.</p>
-<h4><a class="anchor" id="autotoc_md183"></a>
+<h4><a class="anchor" id="autotoc_md182"></a>
 Tramado implícito</h4>
 <p>Intenta encontrar todos los puntos como una expresión <code>y=sin(x)</code>, <code>y*sin(x)=3</code> o <code>x^2+y^2=4</code> es verdadero y trama de la curva resultante dentro de la instrucción <code>draw()</code> el cursor actualmente está dentro. Si no hay instrucción de dibujo en escena de 2<a class="el" href="classD.html">D</a> con el trama es generado.</p>
-<h4><a class="anchor" id="autotoc_md184"></a>
+<h4><a class="anchor" id="autotoc_md183"></a>
 Trama paramétrica</h4>
 <p>Para un paso de una variable desde un límite inferior a un límite superior y utiliza dos expresiones como <code>t*sin(t)</code> y <code>t*cos(t)</code> para generar coordenadas x, y (y en tramas 3<a class="el" href="classD.html">D</a> también z) de una curva que es puesta dentro de la instrucción de actual del dibujo.</p>
-<h4><a class="anchor" id="autotoc_md185"></a>
+<h4><a class="anchor" id="autotoc_md184"></a>
 Puntos</h4>
 <p>Dibuja muchos puntos que pueden ser unidos opcionalmente. Las coordenadas de los puntos son tomados desde un listado de listas, una unimatriz 2<a class="el" href="classD.html">D</a> o un listado o unimatriz por cada eje.</p>
-<h4><a class="anchor" id="autotoc_md186"></a>
+<h4><a class="anchor" id="autotoc_md185"></a>
 Título del diagrama</h4>
 <p>Dibuja un título sobre el final superior del diagrama,</p>
-<h4><a class="anchor" id="autotoc_md187"></a>
+<h4><a class="anchor" id="autotoc_md186"></a>
 Axis</h4>
 <p>Establece los ejes.</p>
-<h4><a class="anchor" id="autotoc_md188"></a>
+<h4><a class="anchor" id="autotoc_md187"></a>
 Contorno</h4>
 <p>(Solo para tramas 3<a class="el" href="classD.html">D</a>): agrega líneas de contorno similares a los que puedan ser encontrados dentro de una asociación de una montaña a la trama de instrucciones que continúe dentro de la instrucción ‘draw()’ actual y/o al plano de tierra del diagrama. Alternativamente, este asistente permite descartar el dibujo de las curvas completamente.</p>
-<h4><a class="anchor" id="autotoc_md189"></a>
+<h4><a class="anchor" id="autotoc_md188"></a>
 Nombre de trama</h4>
 <p>Agrega un apunte para leyenda mostrando el nombre del siguiente tramado de la leyenda del diagrama. Un nombre vacío deshabilita generando apuntes de leyenda para las tramas siguientes.</p>
-<h4><a class="anchor" id="autotoc_md190"></a>
+<h4><a class="anchor" id="autotoc_md189"></a>
 Color de línea</h4>
 <p>Establece el color de línea para las tramas seguidas que contiene la instrucción de dibujo actual.</p>
-<h4><a class="anchor" id="autotoc_md191"></a>
+<h4><a class="anchor" id="autotoc_md190"></a>
 Color de relleno</h4>
 <p>Establece un color de relleno para tramas seguidas que contiene la instrucción de dibujo actual.</p>
-<h4><a class="anchor" id="autotoc_md192"></a>
+<h4><a class="anchor" id="autotoc_md191"></a>
 Grid</h4>
 <p>Aparece un asistente que permite establecer las líneas de rejilla.</p>
-<h4><a class="anchor" id="autotoc_md193"></a>
+<h4><a class="anchor" id="autotoc_md192"></a>
 Precisión</h4>
 <p>Permite seleccionar un punto adecuado dentro de la velocidad versus exactitud compensada que es parte de cualquier programa de trama.</p>
-<h3><a class="anchor" id="autotoc_md194"></a>
+<h3><a class="anchor" id="autotoc_md193"></a>
 Modify font and font size for plots</h3>
 <p>Especially when you use a high resolution display, the default font size might be very small. For the <code>draw</code>-based commands, you can set the font / font size using options like <code>font=...</code>, <code>font_size=...</code>, e.g.:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
@@ -715,7 +715,7 @@ Modify font and font size for plots</h3>
 <div class="line">         [gnuplot_preamble, &quot;set tics font \&quot;Arial, 30\&quot;; set xlabel font \&quot;,20\&quot;; set ylabel font \&quot;,20\&quot;;&quot;]);</div>
 </div><!-- fragment --><p>This sets the font for the numbers to Arial with size 30, the size for the xlabel and ylabel font to 20 (with the default font).</p>
 <p>Read the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> and Gnuplot documentation for further information. Note: Gnuplot seems to have issues with larger font sizes, see <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1966">wxMaxima issue 1966</a>.</p>
-<h2><a class="anchor" id="autotoc_md195"></a>
+<h2><a class="anchor" id="autotoc_md194"></a>
 Gráficos empotrados</h2>
 <p>Si el formato de archivo <code>.wxmx</code> está siendo utilizado empotrando archivos dentro de un proyecto <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> puede ser hecho como fácilmente como por arrastrar-y-soltar. Pero algunas veces (por ejemplo si el contenido de la imagen es modificado posteriormente sobre una sesión) es mejor decirle al archivo que cargue la imagen al evaluar:</p>
 <div class="fragment"><div class="line">## Archivos de inicio</div>
@@ -794,24 +794,24 @@ Gráficos empotrados</h2>
 </ul>
 <p>Example: </p><div class="fragment"><div class="line">wx_matrix(matrix([&quot;Name&quot;, &quot;Value&quot;], [&quot;X&quot;, 10], [&quot;Y&quot;, 20]), </div>
 <div class="line">          lines=true, rownames=true, colnames=true, parenstyle=square);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md196"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md195"></a>
 Comunicar fallo</h2>
 <p><em>WxMaxima</em> proporciona unas pocas funciones que obtenga información de comunicados de fallos acerca del sistema actual:</p>
 <ul>
 <li><code>wxbuild_info()</code> gathers information about the currently running version of <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em></li>
 <li><code>wxbug_report()</code> informa cómo y donde archivar los gazapos</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md197"></a>
+<h2><a class="anchor" id="autotoc_md196"></a>
 Marcar que la salida sea dibujada en rojo</h2>
 <p>La instrucción <code>box()</code> de <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> causa que <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> escriba su argumento con un fondo rojo, si el segundo argumento para la instrucción es el texto <code>resaltado</code>.</p>
-<h2><a class="anchor" id="autotoc_md198"></a>
+<h2><a class="anchor" id="autotoc_md197"></a>
 Output rendering.</h2>
 <p>With <code>set_display()</code> one can set, how <a class="el" href="classwxMaxima.html">wxMaxima</a> will render the output.</p>
 <p><code>set_display('xml)</code> is the default value. Here <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> speaks to <a class="el" href="classwxMaxima.html">wxMaxima</a> using an (machine readable) XML-dialect (can be seen in the "Raw XML
 sidebar") and outputs the resulting formulas nicely rendered, e.g. pretty Matrices, Square root signs, fractions, etc.</p>
 <p><code>set_display('ascii)</code> causes <a class="el" href="classwxMaxima.html">wxMaxima</a> to output formulas as in command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> - as ASCII-Art.</p>
 <p><code>set_display('none)</code> causes 'one-line' ASCII results - the same as the command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command <code>display2d:false;</code> does.</p>
-<h1><a class="anchor" id="autotoc_md199"></a>
+<h1><a class="anchor" id="autotoc_md198"></a>
 Menú de ayuda</h1>
 <p>El menú de ayuda de <a class="el" href="classwxMaxima.html">wxMaxima</a> proporciona acceso para el manual de <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> y <a class="el" href="classwxMaxima.html">wxMaxima</a>, consejos, algunos ejemplos de hojas de trabajo y en la línea de instrucción de <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> incluyó demos (la instrucción <code>demo()</code>).</p>
 <p>Infórmese, que las demos escriben:</p>
@@ -820,13 +820,13 @@ Menú de ayuda</h1>
 <p>(Eso puede ser configurado en el menú Configurar→Hoja de trabajo→"Teclas
 directas para enviar instrucciones a Maxima".)</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md200"></a>
+<h1><a class="anchor" id="autotoc_md199"></a>
 Solución de problemas</h1>
-<h2><a class="anchor" id="autotoc_md201"></a>
+<h2><a class="anchor" id="autotoc_md200"></a>
 No se puede conectar a &lt;em&gt;Maxima&lt;/em&gt;</h2>
 <p>Desde <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (el programa que hace las matemáticas actuales) y <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (proporcionando el interfaz de usuario de uso-fácil) con programas separados que se comunican por los medios de una conexión de red local. Por lo tanto la causa más probable es que esta conexión es algo que no funciona. Por ejemplo un cortafuegos pudo configurarse de una manera que no tan solo impida conexiones no autorizadas desde Internet (y quizá intercepta algunas conexiones de Internet, también), pero además bloquea la comunicación de inter-procesos dentro del mismo equipo. Nótese que desde <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> se está ejecutando por un proceso Lisp la comunicación del proceso que está bloqueado desde unos no necesariamente tiene que ser nombrado como "maxima". Los nombres comunes del programa que abre la conexión de red sería sbcl, gcl, ccl, lisp.exe o nombres similares.</p>
 <p>En las máquinas Un*x otra razón posible sería que la red del bucle invertido que proporciona conexiones de red entre dos programas dentro del mismo equipo no está configurado apropiadamente.</p>
-<h2><a class="anchor" id="autotoc_md202"></a>
+<h2><a class="anchor" id="autotoc_md201"></a>
 Cómo guardar datos desde un archivo .wxmx defectuoso</h2>
 <p>Internamente muchos formatos modernos basados en XML están normalmente en archivos zip. <em>WxMaxima</em> no activa la compresión, por lo que el contenido de los archivos <code>.wxmx</code> pueden verse en cualquier editor de texto.</p>
 <p>Si la firma zip en el final del archivo aún está intacta tras renombrar un archivo <code>.wxmx</code> estropeado a <code>.zip</code> muchos sistemas operativos proporcionarán una manera de extraer cualquier porción de información que esté almacenada dentro de ésta. Esto puede ser hecho cuando hay la necesitad de recuperar los archivos de imagen original desde un documento de procesamiento de texto. Si la firma zip no está intacta que no necesita estar el final del mundo: si <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> al guardar ha detectado que algo es erróneo habrá un archivo <code>.wxmx~</code> cuyo contenido quizá ayude.</p>
