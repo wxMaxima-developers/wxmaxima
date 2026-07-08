@@ -3,6 +3,12 @@
 - Corrected the line wrapping position
 - The diff viewer's panes can be scrolled as soon as they open, instead of only
   after the window is resized.
+- The "return to the cell that is being evaluated" toolbar button now lights up
+  when the evaluated cell is scrolled out of view, even when the text cursor is
+  not inside it (previously it only reacted to the cell that held the cursor).
+- Internal: Worksheet::Recalculate() was renamed to RequestRecalculation(): it
+  only schedules the next layout pass (the actual sizing/positioning happens in
+  RecalculateIfNeeded()), and the old name wrongly implied it did the work.
 - Internal: the cell layer no longer knows the Worksheet class at all -
   the first of the document/view state-split blockers is gone. Cells used
   to reach back into the view through Cell::GetWorksheet() (a

@@ -714,7 +714,7 @@ public:
   //! Re-read the configuration
   void UpdateConfig() {
     m_configuration->ReadConfig();
-    Recalculate();
+    RequestRecalculation();
     Refresh();
   }
 
@@ -832,10 +832,20 @@ public:
    */
   bool RecalculateIfNeeded(bool timeout = false);
 
-  //! Schedule a recalculation of the worksheet starting with the cell start.
-  void Recalculate(Cell *start);
+  /*! Schedule a recalculation of the worksheet starting with the cell start.
 
-  void Recalculate() { Recalculate(GetTree()); }
+    This only *records* where the next layout pass has to start (it marks the
+    group dirty and moves m_recalculateStart); it does not size or position any
+    cell. The actual work - and, crucially, AdjustSize() once the cell positions
+    are correct - happens in RecalculateIfNeeded(). Calling AdjustSize() (or
+    otherwise reading cell geometry) right after this, without a
+    RecalculateIfNeeded() in between, reads stale positions. Was named
+    Recalculate(), which wrongly implied it does the layout itself.
+   */
+  void RequestRecalculation(Cell *start);
+
+  //! Schedule a recalculation of the whole worksheet. See RequestRecalculation(Cell*).
+  void RequestRecalculation() { RequestRecalculation(GetTree()); }
 
   /*! Empties the current document
 

@@ -567,7 +567,7 @@ void DiffFrame::RelayoutWorksheets() {
       // RecalculateIfNeeded() does the actual work - size, reposition, and then
       // AdjustSize() once the positions are correct (see the comment in
       // Worksheet::InsertGroupCells and the identical call in SyncScrollFrom).
-      ws->Recalculate();
+      ws->RequestRecalculation();
       ws->RecalculateIfNeeded();
     }
     ws->AdjustSize();

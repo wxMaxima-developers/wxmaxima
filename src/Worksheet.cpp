@@ -124,7 +124,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_configuration->SetWorkSheet(this);
   m_configuration->SetCellPointers(&m_cellPointers);
   m_configuration->SetRecalculateRequestCallback(
-    [this](GroupCell *group){ Recalculate(group); });
+    [this](GroupCell *group){ RequestRecalculation(group); });
   m_configuration->ReadConfig();
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
 
@@ -218,7 +218,7 @@ void Worksheet::OnSidebarKey(wxCommandEvent &event) {
     if (GetActiveCell()) {
       GetActiveCell()->InsertText(wxString(wxChar(event.GetId())));
       GroupCell *parent = GetActiveCell()->GetGroup();
-      Recalculate(parent);
+      RequestRecalculation(parent);
       RequestRedraw(parent);
     } else
       OpenHCaret(wxString(wxChar(event.GetId())));
@@ -802,7 +802,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
     recalcStart = GetTree();
 
   if (recalcStart)
-    Recalculate(recalcStart);
+    RequestRecalculation(recalcStart);
   SetSaved(false); // document has been modified
 
   if (undoBuffer)
@@ -829,7 +829,7 @@ void Worksheet::ScrollToError() {
 
   if (errorCell->RevealHidden()) {
     FoldOccurred();
-    Recalculate();
+    RequestRecalculation();
   }
 
   // Try to scroll to a place from which the full error message is visible
@@ -946,7 +946,7 @@ void Worksheet::SetZoomFactor(double newzoom) {
       GetTree()->FontsChangedList();
       GetTree()->ResetSizeList();
       GetTree()->ClearCacheList();
-      Recalculate();
+      RequestRecalculation();
       RequestRedraw();
       ScheduleScrollToCell(cellToScrollTo);
     }
@@ -1082,7 +1082,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
   return true;
 }
 
-void Worksheet::Recalculate(Cell *start) {
+void Worksheet::RequestRecalculation(Cell *start) {
   if (!GetTree())
     return;
   wxASSERT(start);
@@ -1139,7 +1139,7 @@ void Worksheet::OnSize(wxSizeEvent &event) {
         break;
     }
   }
-  Recalculate();
+  RequestRecalculation();
 
   m_configuration->SetAdjustWorksheetSizeNeeded(true);
   RequestRedraw();
@@ -1402,11 +1402,11 @@ void Worksheet::OnMouseLeftInGcLeft(wxMouseEvent &event,
           ToggleFoldAll(clickedInGC);
         else
           ToggleFold(clickedInGC);
-        Recalculate(clickedInGC);
+        RequestRecalculation(clickedInGC);
       } else {
         clickedInGC->SwitchHide();
         clickedInGC->ResetSize();
-        Recalculate(clickedInGC);
+        RequestRecalculation(clickedInGC);
         m_clickType = CLICK_TYPE_NONE; // ignore drag-select
       }
     } else {
@@ -1450,7 +1450,7 @@ void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event),
       m_blinkDisplayCaret = true;
       m_clickType = CLICK_TYPE_INPUT_SELECTION;
       if (editor->GetWidth() == -1)
-        Recalculate(clickedInGC);
+        RequestRecalculation(clickedInGC);
       ScrollToCaret();
       // Here we tend to get unacceptably long delays before the display is
       // refreshed by the idle loop => Trigger the refresh manually.
@@ -2306,7 +2306,7 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style) {
   InsertGroupCells(std::move(newGroupCell), prev);
   SetActiveCell(editable);
   SetSaved(false);
-  Recalculate();
+  RequestRecalculation();
   RequestRedraw();
 }
 
@@ -2370,7 +2370,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
   if (renumber)
     NumberSections();
   UpdateTableOfContents();
-  Recalculate();
+  RequestRecalculation();
   if(GetTree())
     GetTree()->UpdateYPositionList();
   RequestRedraw();
@@ -2400,7 +2400,7 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
   // Make sure that the cell containing the question is visible
   if (group->RevealHidden()) {
     FoldOccurred();
-    Recalculate(group);
+    RequestRecalculation(group);
   }
 
   bool autoEvaluate = false;
@@ -2422,7 +2422,7 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
 
     group->AppendOutput(std::move(answerCell));
     m_configuration->SetAdjustWorksheetSizeNeeded(true);
-    Recalculate(group);
+    RequestRecalculation(group);
   }
 
   // If we filled in an answer and "AutoAnswer" is true we issue an evaluation
@@ -2489,7 +2489,7 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type) {
   InsertGroupCells(std::move(group), m_hCaret.Position());
   // activate the editor
   SetActiveCell(editable);
-  Recalculate(editable->GetGroup());
+  RequestRecalculation(editable->GetGroup());
   RequestRedraw();
   // If we just have started typing inside a new cell we don't want the screen
   // to scroll away.
@@ -2867,7 +2867,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
         (group->GetGroupType() == GC_TYPE_CODE) &&
         (GetActiveCell() == group->GetEditable()))
       group->ResetInputLabel();
-    //    Recalculate(group, false);
+    //    RequestRecalculation(group, false);
     RequestRedraw(group);
     RedrawIfRequested();
   } else {
@@ -3012,7 +3012,7 @@ void Worksheet::SelectEditable(EditorCell *editor, bool up) {
       editor->CaretToEnd();
 
     if (editor->GetWidth() == -1)
-      Recalculate(editor->GetGroup());
+      RequestRecalculation(editor->GetGroup());
 
     ScrollToCaret();
   } else { // can't get editor... jump over to the next cell..
@@ -3320,7 +3320,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
     // ESCAPE is handled by the new cell
   case WXK_ESCAPE:
     OpenHCaret(wxEmptyString);
-    Recalculate();
+    RequestRecalculation();
     RecalculateIfNeeded();
     RedrawIfRequested();
     if (GetActiveCell())
@@ -3844,7 +3844,7 @@ void Worksheet::TOCdnd(GroupCell *dndStart, GroupCell *dndEnd) {
   std::unique_ptr<GroupCell> copiedGroupCells =
     unique_cast<Cell, GroupCell>(std::move(copiedCells));
   InsertGroupCells(std::move(copiedGroupCells), dndEnd);
-  Recalculate();
+  RequestRecalculation();
   RequestRedraw();
   UpdateTableOfContents();
   NumberSections();
@@ -3864,7 +3864,7 @@ bool Worksheet::ExportToHTML(const wxString &file) {
   bool ok = WorksheetExport::ExportToHTML(GetTree(), m_configuration, file,
                                           &GetCellPointers(), GetHCaret());
   // The exporter toggles the clip region; re-layout now that it is restored.
-  Recalculate();
+  RequestRecalculation();
   return ok;
 }
 
@@ -3874,7 +3874,7 @@ void Worksheet::CodeCellVisibilityChanged() {
   if (GetActiveCell() && GetActiveCell()->GetType() == MC_TYPE_INPUT &&
       !m_configuration->ShowCodeCells())
     SetHCaret(GetActiveCell()->GetGroup());
-  Recalculate();
+  RequestRecalculation();
   ScrollToCaret();
 }
 
@@ -4289,7 +4289,11 @@ void Worksheet::ScrolledAwayFromEvaluation(bool ScrolledAway) {
     m_scrolledAwayFromEvaluation = ScrolledAway;
     if (FollowEvaluation() && ScrolledAway) {
       FollowEvaluation(false);
-      if (m_mainToolBar && GetActiveCell())
+      // Enable the button whenever there is a cell to return to. OnFollow()
+      // scrolls to the working group, so gate on that (not on the active cell,
+      // which is often null while an evaluation the user did not click into is
+      // running - the case that left the button dead).
+      if (m_mainToolBar && GetWorkingGroup())
         m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
     } else {
       if (m_mainToolBar)
@@ -4350,7 +4354,7 @@ void Worksheet::ScrollToCellIfNeeded() {
   int cellY = cell->GetCurrentY();
 
   if (cellY < 0) {
-    Recalculate();
+    RequestRecalculation();
     cellY = cell->GetCurrentY();
   }
 
@@ -4412,7 +4416,7 @@ void Worksheet::Undo() {
   if (CanUndoInsideCell()) {
     wxLogMessage(_("Issuing the active cell's undo function"));
     UndoInsideCell();
-    Recalculate();
+    RequestRecalculation();
   } else {
     if (CanTreeUndo()) {
       wxLogMessage(_("Issuing the worksheet's undo function"));
@@ -4576,7 +4580,7 @@ bool Worksheet::TreeUndoTextChange(UndoActions *sourcelist,
 
     SetHCaret(action.m_start);
 
-    Recalculate();
+    RequestRecalculation();
     RequestRedraw();
 
     wxASSERT_MSG(!action.m_newCellsEnd,
@@ -4628,7 +4632,7 @@ bool Worksheet::TreeUndo(UndoActions *sourcelist,
   } while (actionContinues);
   if (!undoForThisOperation->empty())
     undoForThisOperation->front().m_partOfAtomicAction = false;
-  Recalculate();
+  RequestRecalculation();
   RequestRedraw();
   return true;
 }
@@ -4656,7 +4660,7 @@ void Worksheet::SetActiveCell(EditorCell *cell) {
     m_cellPointers.m_selectionStart = nullptr;
     m_cellPointers.m_selectionEnd = nullptr;
     if(cell->ActivateCursor())
-      Recalculate(cell->GetGroup());
+      RequestRecalculation(cell->GetGroup());
   } else if (GetActiveCell())
     GetActiveCell()->DeactivateCursor();
 
@@ -4789,7 +4793,7 @@ bool Worksheet::CutToClipboard() {
   if (GetActiveCell()) {
     GetActiveCell()->CutToClipboard();
     GroupCell *group = GetActiveCell()->GetGroup();
-    Recalculate(group);
+    RequestRecalculation(group);
     RequestRedraw();
     return true;
   } else if (m_cellPointers.m_selectionStart &&
@@ -4801,9 +4805,9 @@ bool Worksheet::CutToClipboard() {
       if (group && (group->GetPrevious()))
         group = group->GetPrevious();
       if (group)
-        Recalculate(group);
+        RequestRecalculation(group);
       else
-        Recalculate();
+        RequestRecalculation();
       DeleteSelection();
       return true;
     } else
@@ -4894,7 +4898,7 @@ void Worksheet::PasteFromClipboard() {
           InsertGroupCells(std::move(contents), target);
         }
         NumberSections();
-        Recalculate();
+        RequestRecalculation();
         RequestRedraw();
         RedrawIfRequested();
         SetHCaret(end);
@@ -4913,7 +4917,7 @@ void Worksheet::PasteFromClipboard() {
         std::make_unique<ImgCell>(group, m_configuration, bitmap.GetBitmap());
       group->AppendOutput(std::move(ic));
       m_configuration->SetAdjustWorksheetSizeNeeded(true);
-      Recalculate(group);
+      RequestRecalculation(group);
     }
   }
 
@@ -4923,7 +4927,7 @@ void Worksheet::PasteFromClipboard() {
       GetActiveCell()->PasteFromClipboard();
       GetActiveCell()->ResetSize();
       GetActiveCell()->GetGroup()->ResetSize();
-      Recalculate(GetActiveCell()->GetGroup());
+      RequestRecalculation(GetActiveCell()->GetGroup());
       RequestRedraw();
     } else {
       if (m_hCaret.IsActive() && (wxTheClipboard->IsSupported(wxDF_TEXT) ||
@@ -4988,7 +4992,7 @@ void Worksheet::DivideCell() {
   if (GetActiveCell())
     GetActiveCell()->CaretToStart();
   ScrolledAwayFromEvaluation();
-  Recalculate(parent);
+  RequestRecalculation(parent);
 }
 
 void Worksheet::MergeCells() {
@@ -5017,7 +5021,7 @@ void Worksheet::MergeCells() {
   editor->GetGroup()->RemoveOutput();
   editor->ResetSize();
   editor->GetGroup()->ResetSize();
-  Recalculate(editor->GetGroup());
+  RequestRecalculation(editor->GetGroup());
   SetActiveCell(editor);
   ScrolledAwayFromEvaluation();
 }
@@ -5155,7 +5159,7 @@ void Worksheet::UndoInsideCell() {
     GetActiveCell()->Undo();
     GetActiveCell()->GetGroup()->ResetSize();
     GetActiveCell()->ResetSize();
-    Recalculate();
+    RequestRecalculation();
     RequestRedraw();
   }
 }
@@ -5168,7 +5172,7 @@ void Worksheet::RedoInsideCell() {
   if (GetActiveCell()) {
     GetActiveCell()->Redo();
     GetActiveCell()->GetGroup()->ResetSize();
-    Recalculate();
+    RequestRecalculation();
     RequestRedraw();
   }
 }
@@ -5188,7 +5192,7 @@ void Worksheet::RemoveAllOutput() {
   RemoveAllOutput(GetTree());
   OutputChanged();
 
-  Recalculate();
+  RequestRecalculation();
   RequestRedraw();
 }
 
@@ -5208,7 +5212,7 @@ void Worksheet::RemoveAllOutput(GroupCell *cell) {
   }
   m_configuration->SetAdjustWorksheetSizeNeeded(true);
   OutputChanged();
-  Recalculate();
+  RequestRecalculation();
 }
 
 void Worksheet::OnMouseMiddleUp(wxMouseEvent &event) {
@@ -5239,7 +5243,7 @@ void Worksheet::CommentSelection() {
     active->CommentSelection();
     active->ResetSize();
     active->GetGroup()->ResetSize();
-    Recalculate(active->GetGroup());
+    RequestRecalculation(active->GetGroup());
   }
 }
 
@@ -5265,20 +5269,31 @@ void Worksheet::OnScrollEvent(wxScrollWinEvent &ev) {
 }
 
 void Worksheet::CheckIfActiveCellScrolledOut() {
-  if (GetActiveCell()) {
-    int width;
-    int height;
-    GetClientSize(&width, &height);
+  // The "return to the cell that is being evaluated" button follows the
+  // *working group* (the cell maxima is currently evaluating) - see OnFollow(),
+  // which scrolls there and does nothing when there is no working group. That
+  // cell is not necessarily the one the cursor sits in: keying off the active
+  // cell alone missed the common case of scrolling the evaluated cell out of
+  // view while its input carries no text cursor. So test the working group
+  // first, and fall back to the active editor.
+  Cell *cell = GetWorkingGroup();
+  if (!cell)
+    cell = GetActiveCell();
+  if (!cell)
+    return;
 
-    wxPoint upperLeftScreenCorner;
-    CalcUnscrolledPosition(0, 0, &upperLeftScreenCorner.x,
-                           &upperLeftScreenCorner.y);
-    wxRect visibleRegion = wxRect(upperLeftScreenCorner,
-                                  upperLeftScreenCorner + wxPoint(width, height));
+  int width;
+  int height;
+  GetClientSize(&width, &height);
 
-    if (!visibleRegion.Intersects(GetActiveCell()->GetRect())) {
-      ScrolledAwayFromEvaluation(true);
-    }
+  wxPoint upperLeftScreenCorner;
+  CalcUnscrolledPosition(0, 0, &upperLeftScreenCorner.x,
+                         &upperLeftScreenCorner.y);
+  wxRect visibleRegion = wxRect(upperLeftScreenCorner,
+                                upperLeftScreenCorner + wxPoint(width, height));
+
+  if (!visibleRegion.Intersects(cell->GetRect())) {
+    ScrolledAwayFromEvaluation(true);
   }
 }
 
@@ -5477,7 +5492,7 @@ bool Worksheet::CaretVisibleIs() {
     if (GetActiveCell()) {
       wxPoint point = GetActiveCell()->PositionToPoint();
       if (point.y < 1) {
-        Recalculate();
+        RequestRecalculation();
         point = GetActiveCell()->PositionToPoint();
       }
       return PointVisibleIs(point);
@@ -5528,7 +5543,7 @@ void Worksheet::Replace(const wxString &oldString, const wxString &newString,
     group->ResetInputLabel();
     group->ResetSize();
     GetActiveCell()->ResetSize();
-    Recalculate();
+    RequestRecalculation();
     RequestRedraw();
   }
   GetActiveCell()->SearchStartedHere();
@@ -5544,7 +5559,7 @@ void Worksheet::Replace_RegEx(const wxString &oldString, const wxString &newStri
     group->ResetInputLabel();
     group->ResetSize();
     GetActiveCell()->ResetSize();
-    Recalculate();
+    RequestRecalculation();
     RequestRedraw();
   }
   GetActiveCell()->SearchStartedHere();
@@ -5573,7 +5588,7 @@ int Worksheet::ReplaceAll(const wxString &oldString, const wxString &newString,
 
   if (count > 0) {
     SetSaved(false);
-    Recalculate();
+    RequestRecalculation();
     RequestRedraw();
   }
 
@@ -5603,7 +5618,7 @@ int Worksheet::ReplaceAll_RegEx(const wxString &oldString, const wxString &newSt
 
   if (count > 0) {
     SetSaved(false);
-    Recalculate();
+    RequestRecalculation();
     RequestRedraw();
   }
 
@@ -5802,7 +5817,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
 
     editor->ResetSize();
     editor->GetGroup()->ResetSize();
-    Recalculate(editor->GetGroup());
+    RequestRecalculation(editor->GetGroup());
 
     RequestRedraw();
   }
@@ -5883,7 +5898,7 @@ void Worksheet::OnComplete(wxCommandEvent &event) {
 
   editor->ResetSize();
   editor->GetGroup()->ResetSize();
-  Recalculate(editor->GetGroup());
+  RequestRecalculation(editor->GetGroup());
 
   RequestRedraw();
 }
@@ -5989,7 +6004,7 @@ void Worksheet::SetActiveCellText(const wxString &text) {
       parent->ResetSize();
       parent->ResetSize_Recursively();
       parent->ResetInputLabel();
-      Recalculate(parent);
+      RequestRecalculation(parent);
       RequestRedraw(parent);
     }
   } else
@@ -6005,7 +6020,7 @@ bool Worksheet::InsertText(const wxString &text) {
       OpenQuestionCaret(text);
     } else {
       GetActiveCell()->InsertText(text);
-      Recalculate(GetActiveCell()->GetGroup());
+      RequestRecalculation(GetActiveCell()->GetGroup());
       RequestRedraw(GetActiveCell()->GetGroup());
     }
   } else
@@ -6046,7 +6061,7 @@ void Worksheet::OnFollow() {
   } else {
     if (GetWorkingGroup()->RevealHidden()) {
       FoldOccurred();
-      Recalculate();
+      RequestRecalculation();
     }
     SetSelection(GetWorkingGroup());
     SetHCaret(GetWorkingGroup());
