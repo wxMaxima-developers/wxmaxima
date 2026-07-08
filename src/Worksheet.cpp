@@ -3434,10 +3434,13 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
   if (m_maxWidth_Cached >= 0) {
     *width = std::max(*width, m_maxWidth_Cached);
   } else {
-    for (Cell const &tmp : OnList(GetTree())) {
-      int currentWidth = GroupCellWidthWithMargins(tmp.GetWidth());
-      *width = std::max(currentWidth, *width);
-    }
+    // Collect each cell's width (including margins) and let the GUI-free width
+    // math take the max - see ComputeWorksheetContentWidth() / test_WorksheetSizeMath.
+    std::vector<int> cellWidths;
+    for (Cell const &tmp : OnList(GetTree()))
+      cellWidths.push_back(GroupCellWidthWithMargins(tmp.GetWidth()));
+    *width = ComputeWorksheetContentWidth(cellWidths,
+                                          m_configuration->GetBaseIndent());
     m_maxWidth_Cached = *width;
   }
   GroupCell *lastCell = GetLastCellInWorksheet();

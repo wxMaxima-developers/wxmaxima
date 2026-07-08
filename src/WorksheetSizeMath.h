@@ -36,6 +36,26 @@
 #include <algorithm>
 #include <vector>
 
+/*! Compute the worksheet's content width.
+
+  That is the document's base indent, widened to fit the widest group cell. Each
+  entry in \p cellWidthsWithMargins is a cell's width including its left and right
+  margins (Worksheet::GroupCellWidthWithMargins).
+
+  \param cellWidthsWithMargins Per-cell widths (already including margins).
+  \param baseIndent            The minimum width (Configuration::GetBaseIndent).
+
+  Kept GUI-free (no Cell/Configuration dependency) so it can be unit-tested in
+  isolation - see test_WorksheetSizeMath.
+*/
+inline int ComputeWorksheetContentWidth(
+    const std::vector<int> &cellWidthsWithMargins, int baseIndent) {
+  int width = baseIndent;
+  for (int cellWidth : cellWidthsWithMargins)
+    width = std::max(width, cellWidth);
+  return width;
+}
+
 //! One trailing group cell's geometry, as GetMaxPoint's height walk needs it.
 struct TrailingGroupGeometry {
   //! Whether the cell's size still needs recomputing (GroupCell::HasStaleSize).

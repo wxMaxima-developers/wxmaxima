@@ -1,5 +1,8 @@
 # Current development version
 
+- Internal: GetMaxPoint()'s width computation was moved into a GUI-free
+  ComputeWorksheetContentWidth() next to the height math, so both extents the
+  worksheet's scroll range is built from are now covered by headless unit tests.
 - Internal: the two near-identical copies of the recalculation walk (one for the
   time-sliced idle path, one for the lay-out-everything-at-once path) were merged
   into a single loop, so fixes to the cell-processing logic no longer have to be

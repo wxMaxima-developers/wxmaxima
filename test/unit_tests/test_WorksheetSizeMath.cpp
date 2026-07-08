@@ -145,6 +145,24 @@ SCENARIO("Without an anchor the height falls back to the base indent") {
   }
 }
 
+SCENARIO("The content width is the widest cell, floored at the base indent") {
+  GIVEN("cells wider than the base indent") {
+    THEN("the widest cell wins") {
+      REQUIRE(ComputeWorksheetContentWidth({120, 300, 80}, 50) == 300);
+    }
+  }
+  GIVEN("cells all narrower than the base indent") {
+    THEN("the base indent is the floor") {
+      REQUIRE(ComputeWorksheetContentWidth({10, 30, 20}, 50) == 50);
+    }
+  }
+  GIVEN("no cells at all") {
+    THEN("the width is just the base indent") {
+      REQUIRE(ComputeWorksheetContentWidth({}, 50) == 50);
+    }
+  }
+}
+
 // ApplyWorksheetVirtualSize() is the view-facing half of Worksheet::AdjustSize().
 // A mock WorksheetView lets us drive it headlessly - injecting a client size and
 // scroll position and capturing what it pushes back to the scrollbars - which is
