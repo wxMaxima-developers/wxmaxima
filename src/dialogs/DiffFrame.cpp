@@ -556,7 +556,19 @@ void DiffFrame::RelayoutWorksheets() {
     ws->UpdateConfigurationClientSize();
     if (ws->GetTree()) {
       ws->GetTree()->ResetSize_RecursivelyList();
+      // Worksheet::Recalculate() only *schedules* the layout (it marks cells
+      // dirty and remembers where to resume); it does not size or position any
+      // cell. Calling AdjustSize() right after it therefore ran with stale cell
+      // positions, so GetMaxPoint() underestimated the document height and the
+      // virtual size came out roughly one screenful tall - i.e. no vertical
+      // scroll range. Because the width guard above then skips every further
+      // relayout at the same width, the pane stayed unscrollable until the user
+      // resized the window (which changes the width and forces a real layout).
+      // RecalculateIfNeeded() does the actual work - size, reposition, and then
+      // AdjustSize() once the positions are correct (see the comment in
+      // Worksheet::InsertGroupCells and the identical call in SyncScrollFrom).
       ws->Recalculate();
+      ws->RecalculateIfNeeded();
     }
     ws->AdjustSize();
     ws->Refresh();
