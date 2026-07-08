@@ -54,7 +54,6 @@
 #include <wx/tipdlg.h>
 #include <wx/utils.h>
 #include <wx/wx.h>
-#include <atomic>
 #include <chrono>
 #include <thread>
 #include <vector>
@@ -354,8 +353,6 @@ void MyApp::RestoreConsoleMode() {
 //
 // Entirely opt-in via WXM_SHUTDOWN_TRACE and Windows-only; a no-op stub is
 // compiled everywhere else.
-static std::atomic<bool> s_onExitReached{false};
-
 static void DumpOneThreadStack(HANDLE proc, DWORD tid) {
   HANDLE th = OpenThread(THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION |
                              THREAD_SUSPEND_RESUME,
@@ -453,17 +450,18 @@ static void DumpAllThreadStacks() {
 }
 
 static void ShutdownWatchdogThread() {
-  // Give a normal teardown ample time to reach OnExit (it usually does within
-  // milliseconds); only a genuine wedge should ever reach the dump below.
+  // A normal shutdown returns from main (and thus kills this detached thread)
+  // within a second or so of the main loop ending, so simply staying alive for
+  // this long after that point *is* the wedge -- no matter whether it sits
+  // before OnExit, inside OnExit's tail, or in the wx/CRT cleanup that runs
+  // after OnExit returns. (An earlier version disarmed on entry to OnExit; but
+  // the CI log showed OnExit's body running -- g_stats.Report() printed -- and
+  // the wedge happening *after* that, so that disarm only hid the hang. Hence
+  // no disarm: fire purely on elapsed time.)
   constexpr int budgetMs = 120000;
-  constexpr int stepMs = 250;
-  for (int waited = 0; waited < budgetMs; waited += stepMs) {
-    if (s_onExitReached.load(std::memory_order_acquire))
-      return;
-    std::this_thread::sleep_for(std::chrono::milliseconds(stepMs));
-  }
+  std::this_thread::sleep_for(std::chrono::milliseconds(budgetMs));
   fprintf(stderr,
-          "SHUTDOWN-TRACE: OnExit not reached %d s after the main loop ended - "
+          "SHUTDOWN-TRACE: process still alive %d s after the main loop ended - "
           "the teardown is wedged. Dumping every thread's stack:\n",
           budgetMs / 1000);
   fflush(stderr);
@@ -480,10 +478,6 @@ static void ArmShutdownWatchdog() {
   if (!on)
     return;
   std::thread(ShutdownWatchdogThread).detach();
-}
-
-static void MarkOnExitReached() {
-  s_onExitReached.store(true, std::memory_order_release);
 }
 #endif
 
@@ -879,17 +873,15 @@ bool MyApp::OnInit() {
 }
 
 int MyApp::OnExit() {
-#ifdef __WXMSW__
-  // Disarm the teardown watchdog: we reached OnExit, so the wedge did not
-  // happen this run (see [[project-msw-teardown-wedge]]).
-  MarkOnExitReached();
-#endif
   WxmShutdownTrace("MyApp::OnExit reached");
   Configuration::g_stats.Report();
+  WxmShutdownTrace("MyApp::OnExit: stats reported, detaching maxima processes");
   for(auto i:m_wxMaximaProcesses)
     i->Detach();
+  WxmShutdownTrace("MyApp::OnExit: maxima processes detached");
 #ifdef __WXMSW__
   RestoreConsoleMode();
+  WxmShutdownTrace("MyApp::OnExit: console mode restored");
 #endif
   WxmShutdownTrace("MyApp::OnExit returning");
   return wxMaxima::GetExitCode();
