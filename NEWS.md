@@ -1,10 +1,43 @@
 # Current development version
 
+- Internal: the two near-identical copies of the recalculation walk (one for the
+  time-sliced idle path, one for the lay-out-everything-at-once path) were merged
+  into a single loop, so fixes to the cell-processing logic no longer have to be
+  made twice. No behavior change.
+- Bugfix: the "how long did layout take" log message printed a meaningless
+  near-zero duration, and the time-sliced layout of the off-screen part of a huge
+  worksheet was not actually time-limited. Both were caused by a stopwatch that
+  was restarted on every cell past the visible region (a flag that guarded the
+  restart was never set). The stopwatch now simply times the whole pass.
+- Bugfix: on a worksheet too large to lay out within one time slice, the
+  incremental (time-sliced) recalculation stopped after the first slice and never
+  resumed, leaving every cell below that point with a stale size and position
+  (visible as overlapping cells or a wrong scroll range) until an edit or resize
+  forced a full recalculation. The layout pass now correctly resumes where it left
+  off on the next idle tick.
+
+- Internal: the formula for the horizontal space a group cell occupies (its width
+  plus the left and right margins) was triplicated across GetMaxPoint() and both
+  branches of the recalculation walk; it now lives in one
+  GroupCellWidthWithMargins() helper.
+
 - Internal: the worksheet's virtual-size arithmetic (how the document extent and
   window size become the scroll range and scroll step) was split out of
   Worksheet::AdjustSize() into a GUI-free ComputeWorksheetVirtualSize(), so the
   scroll-range contract - which "the pane won't scroll" bugs violate - is now
   covered by a headless unit test instead of only being reachable through the GUI.
+- Internal: the view-facing half of Worksheet::AdjustSize() (reading the window's
+  client size and scroll position, writing the virtual size and scroll rate) now
+  goes through a small abstract WorksheetView interface that the Worksheet
+  implements with its scroll methods. A headless test drives the size-application
+  logic - including the "don't re-apply an unchanged size" deduplication and the
+  "never shrink below the current scroll position" rule - through a mock view,
+  instead of that logic only ever running inside a live GUI window.
+- Internal: the fiddly backward walk in Worksheet::GetMaxPoint() that derives the
+  document height from the trailing cells (skipping past cells whose size or
+  position is not yet trustworthy to an "anchor" cell) was likewise split into a
+  GUI-free ComputeWorksheetContentHeight() and pinned by headless unit tests, so
+  this stale-cell accounting can no longer drift unnoticed.
 - Scrolling to a cell whose position had not been computed yet now forces that
   computation instead of silently giving up, so "scroll to this cell" works even
   in the rare case where the target had no valid position.

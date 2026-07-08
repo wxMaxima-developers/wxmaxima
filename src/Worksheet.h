@@ -57,6 +57,7 @@
 #include "TreeUndoManager.h"
 #include "WorksheetCursor.h"
 #include "WorksheetSearch.h"
+#include "WorksheetSizeMath.h"
 #include "cells/TextCell.h"
 #include "EvaluationQueue.h"
 #include "dialogs/FindReplaceDialog.h"
@@ -108,9 +109,19 @@
 
   \image html WorksheetLayout.svg
 */
-class Worksheet : public wxScrolled<wxWindow>
+class Worksheet : public wxScrolled<wxWindow>, public WorksheetView
 {
 public:
+  // WorksheetView: the narrow window surface the size pipeline
+  // (ApplyWorksheetVirtualSize) drives; each forwards to the wxScrolled base.
+  void GetViewClientSize(int *width, int *height) const override
+    { GetClientSize(width, height); }
+  int GetViewScrollUnitY() const override
+    { int x, y; GetViewStart(&x, &y); return y; }
+  void SetViewVirtualSize(int width, int height) override
+    { SetVirtualSize(width, height); }
+  void SetViewScrollRate(int rate) override { SetScrollRate(rate, rate); }
+
   //! The list of unsaved (autosaved) documents offered for recovery.
   RecentDocuments &UnsavedDocuments() { return m_unsavedDocuments; }
 private:
@@ -376,6 +387,14 @@ public:
 
   //! Get the coordinates of the bottom right point of the worksheet.
   void GetMaxPoint(int *width, int *height);
+
+  /*! The horizontal space a group cell of the given width occupies.
+
+    That is the cell's own width plus the equal left and right margins the
+    worksheet reserves around every group cell. Used both when measuring the
+    document width (GetMaxPoint) and while walking the recalculation.
+   */
+  int GroupCellWidthWithMargins(int cellWidth) const;
 
   //! Is executed if a timer associated with Worksheet has expired.
   void OnTimer(wxTimerEvent &event);
@@ -826,11 +845,22 @@ public:
 
   /*! Actually recalculate the worksheet.
 
+    \param timeout     If true the walk is time-sliced: after \p timeSliceMs it
+                       yields (returning true so the idle handler asks for
+                       another tick) and resumes from where it left off next
+                       time. If false the whole scheduled range is laid out in
+                       one call.
+    \param timeSliceMs How long (ms) a time-sliced pass may run before yielding.
+                       Only used when \p timeout is true; exposed mainly so tests
+                       can force a yield after every cell (a value < 0 does that).
+
+    \return Whether there may be more work to do (the caller should call again).
+
     \todo We check here if the recalc start is within the worksheet. Would it make
     more sense to store the recalculation start in a CellPointer that automagically
     zeroes itself if that isn't the case?
    */
-  bool RecalculateIfNeeded(bool timeout = false);
+  bool RecalculateIfNeeded(bool timeout = false, long timeSliceMs = 50);
 
   /*! Schedule a recalculation of the worksheet starting with the cell start.
 
@@ -1558,8 +1588,8 @@ public:
 protected:
   void FocusTextControl();
   wxString m_lastQuestion;
-  int m_virtualWidth_Last = -1;
-  int m_virtualHeight_Last = -1;
+  //! Dedupe cache for AdjustSize(): the last virtual size handed to the view.
+  WorksheetVirtualSizeCache m_virtualSizeCache;
   int m_maxWidth_Cached = -1;
   //! A memory we can manually buffer the contents of the area that is to be redrawn in
   wxBitmap m_memory;

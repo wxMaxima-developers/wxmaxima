@@ -326,6 +326,57 @@ SCENARIO("A wide output line wraps onto more display lines when the canvas is na
   g_cfg->SetCanvasSize(savedCanvas);
 }
 
+SCENARIO("A time-sliced recalculation resumes instead of stalling after a slice") {
+  // The idle handler drains the layout in <=50 ms slices, yielding between them.
+  // When a slice ran out of time the walk used to break out to a shared tail
+  // that cleared the resume marker "because the whole range was walked" - which
+  // was false after an early break, so every cell past the first slice was left
+  // permanently un-recalculated. Force a yield after *every* cell (a negative
+  // time budget) and check the whole worksheet is still recalculated across the
+  // resuming calls.
+  GIVEN("three code cells all marked as needing recalculation") {
+    g_ws->ClearDocument();
+    const wxSize savedCanvas = g_cfg->GetCanvasSize();
+    g_cfg->SetCanvasSize(wxSize(1000, 800));
+
+    GroupCell *A = g_ws->InsertGroupCells(
+      std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("a:1$")), nullptr);
+    GroupCell *B = g_ws->InsertGroupCells(
+      std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("b:2$")), A);
+    GroupCell *C = g_ws->InsertGroupCells(
+      std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("c:3$")), B);
+    REQUIRE(A);
+    REQUIRE(B);
+    REQUIRE(C);
+
+    A->MarkNeedsRecalculate();
+    B->MarkNeedsRecalculate();
+    C->MarkNeedsRecalculate();
+    g_ws->RequestRecalculation(A);
+
+    WHEN("the time-sliced pass is driven one cell per slice") {
+      int ticks = 0;
+      while (g_ws->RecalculateIfNeeded(/*timeout=*/true, /*timeSliceMs=*/-1) &&
+             ++ticks < 100)
+        ;
+
+      THEN("every cell was reached, not just the one in the first slice") {
+        // With the resume-point bug only A would have been recalculated; B and C
+        // would still be dirty.
+        REQUIRE_FALSE(A->NeedsRecalculation());
+        REQUIRE_FALSE(B->NeedsRecalculation());
+        REQUIRE_FALSE(C->NeedsRecalculation());
+        // And it genuinely took several resuming slices to get there (the bug
+        // stalled after the first).
+        REQUIRE(ticks >= 3);
+      }
+    }
+
+    g_cfg->SetCanvasSize(savedCanvas);
+    g_ws->ClearDocument();
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
