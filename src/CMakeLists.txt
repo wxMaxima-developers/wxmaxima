@@ -568,7 +568,11 @@ add_custom_target(build_license.h DEPENDS ${CMAKE_BINARY_DIR}/wxm_license.h)
 add_dependencies(wxmaxima build_license.h)
 
 file(COPY "${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES.txt" DESTINATION "${CMAKE_BINARY_DIR}")
-if(WIN32)
+# The MS Edge WebView2 loader (and thus its license) is only pulled in on
+# Windows AND only when wxWidgets is built with webview support, so only append
+# its notice in that case - not on Linux/Mac, nor on a Windows build with
+# webview disabled.
+if(WIN32 AND USE_WEBVIEW)
     file(READ "${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES-Webview.txt" webview_license)
     file(APPEND "${CMAKE_BINARY_DIR}/THIRD-PARTY-NOTICES.txt" "${webview_license}")
 endif()

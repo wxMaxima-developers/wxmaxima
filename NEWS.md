@@ -1,5 +1,8 @@
 # Current development version
 
+- The Microsoft Edge WebView2 loader license is now included in the third-party
+  notices only on Windows builds that actually use it, i.e. built with webview
+  support - not on Linux/Mac, nor on a Windows build with webview disabled.
 - Internal: GetMaxPoint()'s width computation was moved into a GUI-free
   ComputeWorksheetContentWidth() next to the height math, so both extents the
   worksheet's scroll range is built from are now covered by headless unit tests.
