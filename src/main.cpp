@@ -54,6 +54,9 @@
 #include <wx/tipdlg.h>
 #include <wx/utils.h>
 #include <wx/wx.h>
+#include <atomic>
+#include <chrono>
+#include <thread>
 #include <vector>
 #ifdef __WXMSW__
 #include <windows.h>
@@ -61,6 +64,9 @@
 #include <fcntl.h>   // _O_TEXT
 #include <cstdio>    // freopen(), _fdopen(), stdout/stderr/stdin
 #include <cstdint>   // intptr_t
+#include <cstring>      // memset() in the teardown watchdog
+#include <dbghelp.h>    // SymInitialize()/StackWalk64() for the teardown watchdog
+#include <tlhelp32.h>   // CreateToolhelp32Snapshot() to enumerate our threads
 #endif
 
 #include "dialogs/ConfigDialogue.h"
@@ -330,6 +336,154 @@ void MyApp::RestoreConsoleMode() {
     return;
   SetConsoleMode(conIn, m_consoleModeToRestore);
   CloseHandle(conIn);
+}
+
+// ---------------------------------------------------------------------------
+// TEMPORARY teardown watchdog (see [[project-msw-teardown-wedge]]).
+//
+// On MinGW/wxMSW CI the batch run `wxmaxima_batch_emptyFile` intermittently
+// wedges *after* the main loop has ended but *before* MyApp::OnExit is entered
+// -- i.e. inside wx's own post-main-loop cleanup, where we have almost no code
+// of our own. WXM_SHUTDOWN_TRACE markers pin the boundary but cannot say which
+// thread the main thread is waiting on. This watchdog fills that gap: armed
+// once the main loop returns, it waits a bounded time for OnExit to be reached
+// and, if it is not, suspends and unwinds every thread in the process to
+// stderr so the CI log shows exactly where the wedge sits, then terminates so
+// the test reports promptly instead of being killed (with its output kept)
+// only at ctest's 380 s timeout.
+//
+// Entirely opt-in via WXM_SHUTDOWN_TRACE and Windows-only; a no-op stub is
+// compiled everywhere else.
+static std::atomic<bool> s_onExitReached{false};
+
+static void DumpOneThreadStack(HANDLE proc, DWORD tid) {
+  HANDLE th = OpenThread(THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION |
+                             THREAD_SUSPEND_RESUME,
+                         FALSE, tid);
+  if (th == nullptr) {
+    fprintf(stderr, "SHUTDOWN-TRACE:   (could not open thread %lu)\n",
+            static_cast<unsigned long>(tid));
+    fflush(stderr);
+    return;
+  }
+  SuspendThread(th);
+  CONTEXT ctx;
+  memset(&ctx, 0, sizeof(ctx));
+  ctx.ContextFlags = CONTEXT_FULL;
+  if (GetThreadContext(th, &ctx)) {
+    STACKFRAME64 frame;
+    memset(&frame, 0, sizeof(frame));
+    DWORD machine = 0;
+#if defined(_M_X64) || defined(__x86_64__)
+    machine = IMAGE_FILE_MACHINE_AMD64;
+    frame.AddrPC.Offset = ctx.Rip;
+    frame.AddrFrame.Offset = ctx.Rbp;
+    frame.AddrStack.Offset = ctx.Rsp;
+#elif defined(_M_IX86) || defined(__i386__)
+    machine = IMAGE_FILE_MACHINE_I386;
+    frame.AddrPC.Offset = ctx.Eip;
+    frame.AddrFrame.Offset = ctx.Ebp;
+    frame.AddrStack.Offset = ctx.Esp;
+#endif
+    frame.AddrPC.Mode = AddrModeFlat;
+    frame.AddrFrame.Mode = AddrModeFlat;
+    frame.AddrStack.Mode = AddrModeFlat;
+
+    fprintf(stderr, "SHUTDOWN-TRACE: --- thread %lu ---\n",
+            static_cast<unsigned long>(tid));
+    for (int depth = 0; machine != 0 && depth < 64; ++depth) {
+      if (!StackWalk64(machine, proc, th, &frame, &ctx, nullptr,
+                       SymFunctionTableAccess64, SymGetModuleBase64, nullptr))
+        break;
+      DWORD64 addr = frame.AddrPC.Offset;
+      if (addr == 0)
+        break;
+      char symbuf[sizeof(SYMBOL_INFO) + 256];
+      memset(symbuf, 0, sizeof(symbuf));
+      SYMBOL_INFO *sym = reinterpret_cast<SYMBOL_INFO *>(symbuf);
+      sym->SizeOfStruct = sizeof(SYMBOL_INFO);
+      sym->MaxNameLen = 255;
+      DWORD64 disp = 0;
+      if (SymFromAddr(proc, addr, &disp, sym))
+        fprintf(stderr, "SHUTDOWN-TRACE:   #%d 0x%llx %s +0x%llx\n", depth,
+                static_cast<unsigned long long>(addr), sym->Name,
+                static_cast<unsigned long long>(disp));
+      else
+        fprintf(stderr, "SHUTDOWN-TRACE:   #%d 0x%llx (no symbol)\n", depth,
+                static_cast<unsigned long long>(addr));
+    }
+  } else {
+    fprintf(stderr, "SHUTDOWN-TRACE:   thread %lu: GetThreadContext failed\n",
+            static_cast<unsigned long>(tid));
+  }
+  ResumeThread(th);
+  CloseHandle(th);
+  fflush(stderr);
+}
+
+static void DumpAllThreadStacks() {
+  HANDLE proc = GetCurrentProcess();
+  SymSetOptions(SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS | SYMOPT_LOAD_LINES);
+  SymInitialize(proc, nullptr, TRUE);
+  const DWORD myPid = GetCurrentProcessId();
+  const DWORD watchdogTid = GetCurrentThreadId();
+  HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+  if (snap == INVALID_HANDLE_VALUE) {
+    fprintf(stderr, "SHUTDOWN-TRACE: CreateToolhelp32Snapshot failed (%lu)\n",
+            static_cast<unsigned long>(GetLastError()));
+    fflush(stderr);
+    SymCleanup(proc);
+    return;
+  }
+  THREADENTRY32 te;
+  te.dwSize = sizeof(te);
+  if (Thread32First(snap, &te)) {
+    do {
+      // th32OwnerProcessID is only valid if the entry is at least this big.
+      if (te.dwSize >= FIELD_OFFSET(THREADENTRY32, th32OwnerProcessID) +
+                           sizeof(te.th32OwnerProcessID)) {
+        if (te.th32OwnerProcessID == myPid && te.th32ThreadID != watchdogTid)
+          DumpOneThreadStack(proc, te.th32ThreadID);
+      }
+      te.dwSize = sizeof(te);
+    } while (Thread32Next(snap, &te));
+  }
+  CloseHandle(snap);
+  SymCleanup(proc);
+}
+
+static void ShutdownWatchdogThread() {
+  // Give a normal teardown ample time to reach OnExit (it usually does within
+  // milliseconds); only a genuine wedge should ever reach the dump below.
+  constexpr int budgetMs = 120000;
+  constexpr int stepMs = 250;
+  for (int waited = 0; waited < budgetMs; waited += stepMs) {
+    if (s_onExitReached.load(std::memory_order_acquire))
+      return;
+    std::this_thread::sleep_for(std::chrono::milliseconds(stepMs));
+  }
+  fprintf(stderr,
+          "SHUTDOWN-TRACE: OnExit not reached %d s after the main loop ended - "
+          "the teardown is wedged. Dumping every thread's stack:\n",
+          budgetMs / 1000);
+  fflush(stderr);
+  DumpAllThreadStacks();
+  fprintf(stderr,
+          "SHUTDOWN-TRACE: stack dump complete; terminating the process so the "
+          "test reports instead of hanging to the ctest timeout.\n");
+  fflush(stderr);
+  TerminateProcess(GetCurrentProcess(), 42);
+}
+
+static void ArmShutdownWatchdog() {
+  static const bool on = wxGetEnv(wxS("WXM_SHUTDOWN_TRACE"), nullptr);
+  if (!on)
+    return;
+  std::thread(ShutdownWatchdogThread).detach();
+}
+
+static void MarkOnExitReached() {
+  s_onExitReached.store(true, std::memory_order_release);
 }
 #endif
 
@@ -725,6 +879,11 @@ bool MyApp::OnInit() {
 }
 
 int MyApp::OnExit() {
+#ifdef __WXMSW__
+  // Disarm the teardown watchdog: we reached OnExit, so the wedge did not
+  // happen this run (see [[project-msw-teardown-wedge]]).
+  MarkOnExitReached();
+#endif
   WxmShutdownTrace("MyApp::OnExit reached");
   Configuration::g_stats.Report();
   for(auto i:m_wxMaximaProcesses)
@@ -739,6 +898,12 @@ int MyApp::OnExit() {
 int MyApp::OnRun() {
   wxApp::OnRun();
   WxmShutdownTrace("MyApp::OnRun: main loop ended");
+#ifdef __WXMSW__
+  // The main loop has returned; everything from here to OnExit is wx's own
+  // post-loop teardown. Arm the watchdog that dumps all thread stacks if that
+  // teardown wedges (see [[project-msw-teardown-wedge]]).
+  ArmShutdownWatchdog();
+#endif
   return 0;
 }
 
