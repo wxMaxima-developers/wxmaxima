@@ -74,6 +74,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><ul>
 <li>Corrected the line wrapping position</li>
+<li>The diff viewer's panes can be scrolled as soon as they open, instead of only after the window is resized.</li>
 <li>Internal: the cell layer no longer knows the <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> class at all - the first of the document/view state-split blockers is gone. Cells used to reach back into the view through Cell::GetWorksheet() (a <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> back-pointer cast to <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>) for three services; each now has a narrow channel of its own: the <a class="el" href="classCellPointers.html" title="The storage for pointers to cells.">CellPointers</a> registry is carried by <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> directly, GroupCell::MarkNeedsRecalculate() notifies the view through a callback the <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> registers on its <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> (and deregisters on destruction, so cells can no longer call into a half-destroyed view), and the accessibility code asks the generic wxScrolledCanvas for scroll geometry. Cell::GetWorksheet() is deleted; src/cells/ no longer includes <a class="el" href="Worksheet_8h.html" title="This file defines the class Worksheet.">Worksheet.h</a>.</li>
 <li>Windows: a batch-mode run (wxmaxima &ndash;batch, typically started from a script) could appear to hang for seconds to minutes before its window opened - at zero CPU - whenever the user had clicked into the console window: a click puts a QuickEdit console (the Windows default) into selection mode, and every write to it then suspends the writer until the selection is dismissed. <a class="el" href="classwxMaxima.html">wxMaxima</a> now clears the console's QuickEdit mode for the duration of a &ndash;batch run (and restores it on exit); interactive launches are unaffected. If you script <a class="el" href="classwxMaxima.html">wxMaxima</a>, redirecting its output to a file remains good practice.</li>
 <li>Internal: two integration tests (absCells, atCells) now share one MAXIMA_USERDIR to exercise the typical real-world setup - several <a class="el" href="classwxMaxima.html">wxMaxima</a> sessions reusing one ~/.maxima and its caches - which the per-test isolation never covered (suggested by Benoit). The pair loads no compiled package, keeping clear of <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s compiled-package cache race that the isolation exists to avoid.</li>
@@ -112,7 +113,7 @@ $(function() {
 <li>Windows: a new Help menu item registers <a class="el" href="classwxMaxima.html">wxMaxima</a> as the tool TortoiseSVN and TortoiseGit use to compare .wxmx files.</li>
 <li>Added a regression test guarding the worksheet's line-wrapping (line-breaking) layout pass.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md798"></a>
+<h1><a class="anchor" id="autotoc_md803"></a>
 26.07.0</h1>
 <ul>
 <li>Fixed a crash on loading a worksheet containing an empty <code>&lt;img/&gt;</code> or <code>&lt;slideshow/&gt;</code> tag (found by the parser fuzzer).</li>
@@ -134,7 +135,7 @@ $(function() {
 <li><a class="el" href="classA.html">A</a> correctness review for all wizards.</li>
 <li>EditorCells again grow and shrink when the user adds and removes lines</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md801"></a>
+<h1><a class="anchor" id="autotoc_md804"></a>
 26.06.2</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> whole AI-driven safety review</li>
@@ -156,7 +157,7 @@ $(function() {
 <li>Better undo handling.</li>
 <li>Another try to make accessibility work.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md802"></a>
+<h1><a class="anchor" id="autotoc_md805"></a>
 26.06.1</h1>
 <ul>
 <li>Fix the Ctrl+F keyboard focus on MS Windows to correctly focus the find dialogue instead of leaving it on the worksheet.</li>
@@ -169,7 +170,7 @@ $(function() {
 <li>Fix scroll position tracking: call ScrolledAwayFromEvaluation(true) when the user manually scrolls so that the active cell is completely outside the visible portion of the worksheet.</li>
 <li>Fix inserting a new cell (via hCaret) on large worksheets causing the scroll range to shrink to the first screen and the view to jump to the top.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md803"></a>
+<h1><a class="anchor" id="autotoc_md806"></a>
 26.06.0</h1>
 <ul>
 <li>Optimize drawing during mouse moves (bracket autohide): redraw only the actual height of the cell, rather than drawing all the way to the absolute bottom coordinate.</li>
@@ -215,7 +216,7 @@ $(function() {
 <li>Files opened by double-clicking now have a consistent layout</li>
 <li>Added automatic tests and repaired others.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md804"></a>
+<h1><a class="anchor" id="autotoc_md807"></a>
 26.05.0</h1>
 <ul>
 <li>Fix search and replace. Before in a longer string - e.g. "aaaaaaaaa" only every second occurrence was replaced, when (e.g.) one wanted to replace "a" by "b".</li>
@@ -246,7 +247,7 @@ $(function() {
 <li>Fix inconsistent behavior in the list menu (mentioned in the discussion forum)</li>
 <li>Make toolbar icons HDPI (#2074).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md805"></a>
+<h1><a class="anchor" id="autotoc_md808"></a>
 26.01.0</h1>
 <ul>
 <li>Keep the wxm/mac difference when saving wxm/exporting mac. This omits unneeded comments (/* [<a class="el" href="classwxMaxima.html">wxMaxima</a>: input start ] */ (and input end) in a mac file (structural comments (section, ...) are still saved) and especially omits question/answer comments - they are unreadable by <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (see #2014, not only wxm files but also mac files were problematic). At least the issue with mac files is solved.</li>
@@ -269,7 +270,7 @@ $(function() {
 <li><a class="el" href="classA.html">A</a> more consistent worksheet zoom feature.</li>
 <li><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s state should now be displayed in the windows task bar.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md806"></a>
+<h1><a class="anchor" id="autotoc_md809"></a>
 25.04.0</h1>
 <ul>
 <li>Use the (standard) wxWidgets log window instead of our own log pane. Less code to maintain, more features (e.g. clear log, save log). In "Release" builds the log window will be hidden (and can be enabled using View-&gt;Toggle log window, otherwise it is shown.</li>
@@ -284,7 +285,7 @@ $(function() {
 - Fix compiling with wxWidgets without webview.
 - HTML export/Mathjax: Don't remove 1st/last label char (#2003)
 
-@section autotoc_md807 25.01.0
+@section autotoc_md810 25.01.0
 
 - Remove the change label width popup menu (#1964).
   It was not working at all and caused crashes. And I think the
@@ -299,7 +300,7 @@ $(function() {
 - Fix the (Windows) crash in the suggestions menu (#1980).
 - HTML export: print the output labels on the left side.
 
-@section autotoc_md808 24.11.0
+@section autotoc_md811 24.11.0
 
 - A Spanish translation update by cyphra.
 - Resolved a crash when inverting the worksheet (#1951)
@@ -314,7 +315,7 @@ $(function() {
 - Allow Maxima strings with newlines. (#76)
 - Support Maxima which uses ABCL.
 
-@section autotoc_md809 24.08.0
+@section autotoc_md812 24.08.0
 
 - An advanced plotting tutorial
 - Try harder to kill maxima on closing it
@@ -341,7 +342,7 @@ $(function() {
 - On MS Windows one can now choose between Gnuplot and wGnuplot (#1934)
 - Fixed the error message about dual manifest files on MSVC
 
-@section autotoc_md811 24.05.0
+@section autotoc_md813 24.05.0
 
 - Faster discarding of maths that is too long to read
 - Resolved a crash on closing the last window (#1898)
