@@ -332,7 +332,7 @@ void GroupCell::RemoveOutput() {
   m_updateConfusableCharWarnings = true;
   ResetSize_Recursively();
   if (m_configuration)
-    m_configuration->SetAdjustWorksheetSizeNeeded(true);
+    m_configuration->RequestAdjustWorksheetSize();
 }
 
 void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell) {
@@ -357,7 +357,7 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell) {
   m_updateConfusableCharWarnings = true;
   m_cellsAppended = true;
   if (m_configuration)
-    m_configuration->SetAdjustWorksheetSizeNeeded(true);
+    m_configuration->RequestAdjustWorksheetSize();
 }
 
 void GroupCell::UpdateConfusableCharWarnings() {
@@ -460,7 +460,7 @@ void GroupCell::InputHeightChanged() {
     UpdateYPositionList();
   }
   if (m_configuration)
-    m_configuration->SetAdjustWorksheetSizeNeeded(true);
+    m_configuration->RequestAdjustWorksheetSize();
 }
 
 void GroupCell::OutputHeightChanged() {
@@ -472,7 +472,7 @@ void GroupCell::OutputHeightChanged() {
     UpdateYPositionList();
   }
   if (m_configuration)
-    m_configuration->SetAdjustWorksheetSizeNeeded(true);
+    m_configuration->RequestAdjustWorksheetSize();
 }
 
 // Called on resize events

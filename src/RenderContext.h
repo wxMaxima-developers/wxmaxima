@@ -116,11 +116,6 @@ public:
   //! Sets whether we are currently rendering for the printer.
   void SetPrinting(bool printing) { m_printing = printing; }
 
-  //! Does the worksheet size need to be adjusted after this render pass?
-  bool GetAdjustWorksheetSizeNeeded() const { return m_adjustWorksheetSizeNeeded; }
-  //! Requests (or clears the request) that the worksheet size be adjusted.
-  void SetAdjustWorksheetSizeNeeded(bool val) { m_adjustWorksheetSizeNeeded = val; }
-
   //! Starts (or restarts) recording which cells this render pass has drawn.
   void ClearAndEnableRedrawTracing()
     {
@@ -226,8 +221,6 @@ private:
   bool m_clipToDrawRegion = true;
   //! Are we currently rendering for the printer rather than the screen?
   bool m_printing = false;
-  //! Does the worksheet size need to be adjusted after this render pass?
-  bool m_adjustWorksheetSizeNeeded = false;
   /*! The cells drawn so far in this render pass, if tracing is enabled
 
     Used (in debug mode) to detect cells that are drawn twice per refresh,

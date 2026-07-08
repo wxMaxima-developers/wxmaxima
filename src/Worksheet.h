@@ -1569,6 +1569,14 @@ protected:
 #endif
   //! Where to start recalculation. NULL = No recalculation needed.
   CellPtr<GroupCell> m_recalculateStart;
+  /*! Does the worksheet's virtual (scroll) size need re-adjusting?
+
+    Set when a cell changed height (via the callback the ctor registers on our
+    Configuration, so cells can flag it without depending on Worksheet) or when
+    layout is scheduled; consumed by RecalculateIfNeeded(), which calls
+    AdjustSize() once the cell positions are valid. Layout-scheduling state that
+    belongs next to m_recalculateStart, not on the shared Configuration. */
+  bool m_adjustWorksheetSizeNeeded = false;
   //! The x position of the mouse pointer
   int m_pointer_x = -1;
   //! The y position of the mouse pointer

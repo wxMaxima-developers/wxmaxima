@@ -125,6 +125,8 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_configuration->SetCellPointers(&m_cellPointers);
   m_configuration->SetRecalculateRequestCallback(
     [this](GroupCell *group){ RequestRecalculation(group); });
+  m_configuration->SetAdjustWorksheetSizeRequestCallback(
+    [this]{ m_adjustWorksheetSizeNeeded = true; });
   m_configuration->ReadConfig();
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
 
@@ -754,7 +756,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
   if (!cells)
     return NULL; // nothing to insert
 
-  m_configuration->SetAdjustWorksheetSizeNeeded(true);
+  m_adjustWorksheetSizeNeeded = true;
   bool renumbersections = false; // only renumber when true
 
   // TODO What we have here is an iteration through all the cells to see if they
@@ -812,9 +814,9 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
   // stale at this point (recalculation has only been scheduled, not
   // executed). Calling AdjustSize() with stale positions would compute a
   // virtualHeight that is too small, causing wxWidgets to clamp the scroll
-  // position and jump the view to the top. The flag
-  // SetAdjustWorksheetSizeNeeded(true) (set above) ensures that
-  // RecalculateIfNeeded() will call AdjustSize() after positions are correct.
+  // position and jump the view to the top. Setting m_adjustWorksheetSizeNeeded
+  // (above) ensures that RecalculateIfNeeded() will call AdjustSize() after
+  // positions are correct.
   return lastOfCellsToInsert;
 }
 
@@ -887,7 +889,7 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
 
   newCell->ForceBreakLine(forceNewLine);
   cell->AppendOutput(std::move(newCell));
-  m_configuration->SetAdjustWorksheetSizeNeeded(true);
+  m_adjustWorksheetSizeNeeded = true;
 
   cell->OutputHeightChanged();
   AdjustSize();
@@ -1049,7 +1051,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
             sizeChanged = true;
           movedThisTime = true;
           if (sizeChanged)
-            m_configuration->SetAdjustWorksheetSizeNeeded(true);
+            m_adjustWorksheetSizeNeeded = true;
 
           int currentWidth =
             m_configuration->Scale_Px(m_configuration->GetIndent() +
@@ -1079,7 +1081,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
   // scheduled range has been walked, so cell positions are valid now and
   // AdjustSize()'s stale-position guard must let this legitimate call through.
   m_recalculateStart = {};
-  if (m_configuration->GetAdjustWorksheetSizeNeeded())
+  if (m_adjustWorksheetSizeNeeded)
     AdjustSize();
 
   return true;
@@ -1144,7 +1146,7 @@ void Worksheet::OnSize(wxSizeEvent &event) {
   }
   RequestRecalculation();
 
-  m_configuration->SetAdjustWorksheetSizeNeeded(true);
+  m_adjustWorksheetSizeNeeded = true;
   RequestRedraw();
   if (CellToScrollTo)
     ScheduleScrollToCell(CellToScrollTo, false);
@@ -2424,7 +2426,7 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
     answerCell->CaretToEnd();
 
     group->AppendOutput(std::move(answerCell));
-    m_configuration->SetAdjustWorksheetSizeNeeded(true);
+    m_adjustWorksheetSizeNeeded = true;
     RequestRecalculation(group);
   }
 
@@ -2515,7 +2517,7 @@ void Worksheet::Evaluate() {
 void Worksheet::OnKeyDown(wxKeyEvent &event) {
   BTextCtrl::ForgetLastActive();
   m_updateControls = true;
-  m_configuration->SetAdjustWorksheetSizeNeeded(true);
+  m_adjustWorksheetSizeNeeded = true;
   ClearNotification();
   // Track the activity of the keyboard. Setting the keyboard
   // to inactive again is done in wxMaxima.cpp
@@ -3374,7 +3376,7 @@ void Worksheet::OnChar(wxKeyEvent &event) {
      looks like navigation (up, down,...) the worksheet looses focus */
   UpdateControlsNeeded(true);
   BTextCtrl::ForgetLastActive();
-  m_configuration->SetAdjustWorksheetSizeNeeded(true);
+  m_adjustWorksheetSizeNeeded = true;
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to
   // realize them they need to be passed to it using the event's Skip()
   // function.
@@ -3514,7 +3516,7 @@ void Worksheet::AdjustSize() {
   // makes "AdjustSize() with stale positions" harmless no matter who triggers
   // it, rather than relying on every caller to recalculate first.
   if (m_recalculateStart) {
-    m_configuration->SetAdjustWorksheetSizeNeeded(true);
+    m_adjustWorksheetSizeNeeded = true;
     return;
   }
 
@@ -3563,7 +3565,7 @@ void Worksheet::AdjustSize() {
 
     SetScrollRate(m_scrollUnit, m_scrollUnit);
   }
-  m_configuration->SetAdjustWorksheetSizeNeeded(false);
+  m_adjustWorksheetSizeNeeded = false;
 }
 
 /***
@@ -4950,7 +4952,7 @@ void Worksheet::PasteFromClipboard() {
       auto ic =
         std::make_unique<ImgCell>(group, m_configuration, bitmap.GetBitmap());
       group->AppendOutput(std::move(ic));
-      m_configuration->SetAdjustWorksheetSizeNeeded(true);
+      m_adjustWorksheetSizeNeeded = true;
       RequestRecalculation(group);
     }
   }
@@ -5244,7 +5246,7 @@ void Worksheet::RemoveAllOutput(GroupCell *cell) {
     if (sub)
       RemoveAllOutput(sub);
   }
-  m_configuration->SetAdjustWorksheetSizeNeeded(true);
+  m_adjustWorksheetSizeNeeded = true;
   OutputChanged();
   RequestRecalculation();
 }

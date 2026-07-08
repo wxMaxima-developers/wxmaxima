@@ -1074,10 +1074,17 @@ public:
   bool UsePartialForDiff() const {return m_usePartialForDiff;}
   void UsePartialForDiff(bool usePartialForDiff)
     {m_usePartialForDiff = usePartialForDiff;}
-  bool GetAdjustWorksheetSizeNeeded() const
-    { return m_renderContext.GetAdjustWorksheetSizeNeeded(); }
-  void SetAdjustWorksheetSizeNeeded(bool val)
-    { m_renderContext.SetAdjustWorksheetSizeNeeded(val); }
+  /*! Ask the view (if any) to re-adjust its worksheet (scroll) size
+
+    A cell that changed height calls this so the view recomputes its virtual
+    size, without the cell layer depending on the Worksheet class. Mirrors
+    RequestRecalculate(); a no-op for configurations without a view (printing,
+    tests). The "needs adjustment" flag itself lives on the Worksheet. */
+  void RequestAdjustWorksheetSize() const
+    {if (m_adjustWorksheetSizeRequest) m_adjustWorksheetSizeRequest();}
+  //! Set the callback RequestAdjustWorksheetSize() notifies the view through
+  void SetAdjustWorksheetSizeRequestCallback(std::function<void()> callback)
+    {m_adjustWorksheetSizeRequest = std::move(callback);}
   //! Record that this cell has been drawn to ReportMultipleRedraws()
   void NotifyOfCellRedraw(const Cell *cell);
   //! Clear the memory of ReportMultipleRedraws()
@@ -1238,6 +1245,8 @@ private:
   CellPointers *m_cellPointers = NULL;
   //! The view's recalculation-request callback (see RequestRecalculate()). Not copied.
   std::function<void(GroupCell *)> m_recalculateRequest;
+  //! The view's adjust-size-request callback (see RequestAdjustWorksheetSize()). Not copied.
+  std::function<void()> m_adjustWorksheetSizeRequest;
   //! The state of the current render pass (DCs, canvas, clipping, deadline)
   RenderContext m_renderContext;
   bool m_wrapLatexMath;

@@ -12,6 +12,11 @@
 - Internal: Worksheet::Recalculate() was renamed to RequestRecalculation(): it
   only schedules the next layout pass (the actual sizing/positioning happens in
   RecalculateIfNeeded()), and the old name wrongly implied it did the work.
+- Internal: the "worksheet size needs adjusting" flag moved from the shared
+  Configuration/RenderContext onto the Worksheet, next to the rest of its
+  layout-scheduling state. Cells that change height signal it through a callback
+  (like the existing recalculation-request one) instead of reaching into a
+  render-context field that was really per-worksheet view state.
 - Internal: Worksheet::AdjustSize() now defers instead of computing the scroll
   range from stale cell positions while a recalculation is still pending (it
   re-runs itself once the positions are correct). This turns a whole class of
