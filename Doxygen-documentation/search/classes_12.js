@@ -20,8 +20,9 @@ var searchData=
   ['toolbar_17',['ToolBar',['../classToolBar.html',1,'']]],
   ['tornout_18',['TornOut',['../structCellList_1_1TornOut.html',1,'CellList']]],
   ['totals_19',['Totals',['../structCatch_1_1Totals.html',1,'Catch']]],
-  ['treeundoaction_20',['TreeUndoAction',['../classTreeUndoAction.html',1,'']]],
-  ['treeundomanager_21',['TreeUndoManager',['../classTreeUndoManager.html',1,'']]],
-  ['truck_22',['Truck',['../structTruck.html',1,'']]],
-  ['true_5fgiven_23',['true_given',['../structCatch_1_1true__given.html',1,'Catch']]]
+  ['trailinggroupgeometry_20',['TrailingGroupGeometry',['../structTrailingGroupGeometry.html',1,'']]],
+  ['treeundoaction_21',['TreeUndoAction',['../classTreeUndoAction.html',1,'']]],
+  ['treeundomanager_22',['TreeUndoManager',['../classTreeUndoManager.html',1,'']]],
+  ['truck_23',['Truck',['../structTruck.html',1,'']]],
+  ['true_5fgiven_24',['true_given',['../structCatch_1_1true__given.html',1,'Catch']]]
 ];

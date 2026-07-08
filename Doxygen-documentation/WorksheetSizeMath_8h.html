@@ -83,6 +83,7 @@ $(function() {
 <p>The pure arithmetic that turns a laid-out worksheet's extent into the scrollable (virtual) size and scroll granularity.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for WorksheetSizeMath.h:</div>
 <div class="dyncontent">
@@ -92,7 +93,7 @@ Include dependency graph for WorksheetSizeMath.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="WorksheetSizeMath_8h__dep__incl.svg" width="363" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="WorksheetSizeMath_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div>
@@ -100,20 +101,163 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTrailingGroupGeometry.html">TrailingGroupGeometry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One trailing group cell's geometry, as GetMaxPoint's height walk needs it.  <a href="structTrailingGroupGeometry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWorksheetVirtualSize.html">WorksheetVirtualSize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scrollable size + scroll granularity computed for a worksheet.  <a href="structWorksheetVirtualSize.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetView.html">WorksheetView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The narrow view surface the worksheet's size pipeline needs.  <a href="classWorksheetView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWorksheetVirtualSizeCache.html">WorksheetVirtualSizeCache</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remembers the last virtual size applied, so an unchanged size is a no-op.  <a href="structWorksheetVirtualSizeCache.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a8c32bd37d3328a6acf12282d024ec76a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a8c32bd37d3328a6acf12282d024ec76a">ComputeWorksheetContentHeight</a> (const std::vector&lt; <a class="el" href="structTrailingGroupGeometry.html">TrailingGroupGeometry</a> &gt; &amp;trailing, int groupSkip, int baseIndent)</td></tr>
+<tr class="memdesc:a8c32bd37d3328a6acf12282d024ec76a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the worksheet's content height from its trailing cells' geometry.  <br /></td></tr>
+<tr class="separator:a8c32bd37d3328a6acf12282d024ec76a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f9e2985516cffa080d3f9ea86664a7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structWorksheetVirtualSize.html">WorksheetVirtualSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a5f9e2985516cffa080d3f9ea86664a7d">ComputeWorksheetVirtualSize</a> (bool hasTree, int maxPointWidth, int maxPointHeight, int clientHeight, int currentScrollPixelY)</td></tr>
 <tr class="memdesc:a5f9e2985516cffa080d3f9ea86664a7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a worksheet's virtual size and scroll unit.  <br /></td></tr>
 <tr class="separator:a5f9e2985516cffa080d3f9ea86664a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a456bca249b5a259a7f757eb662038732"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a456bca249b5a259a7f757eb662038732">ApplyWorksheetVirtualSize</a> (<a class="el" href="classWorksheetView.html">WorksheetView</a> &amp;view, bool hasTree, int maxWidth, int maxHeight, <a class="el" href="structWorksheetVirtualSizeCache.html">WorksheetVirtualSizeCache</a> &amp;cache, int &amp;scrollUnit)</td></tr>
+<tr class="memdesc:a456bca249b5a259a7f757eb662038732"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure the view, compute the virtual size and apply it, skipping no-ops.  <br /></td></tr>
+<tr class="separator:a456bca249b5a259a7f757eb662038732"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The pure arithmetic that turns a laid-out worksheet's extent into the scrollable (virtual) size and scroll granularity. </p>
 <p>Kept deliberately free of any GUI/wxWidgets dependency so the scroll-range math - historically a source of "the pane won't scroll" bugs - can be unit-tested in isolation. Worksheet::AdjustSize() measures the document (GetMaxPoint) and the window (GetClientSize) and feeds the numbers here, then applies the result with SetVirtualSize()/SetScrollRate(). </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a456bca249b5a259a7f757eb662038732" name="a456bca249b5a259a7f757eb662038732"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a456bca249b5a259a7f757eb662038732">&#9670;&#160;</a></span>ApplyWorksheetVirtualSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ApplyWorksheetVirtualSize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classWorksheetView.html">WorksheetView</a> &amp;&#160;</td>
+          <td class="paramname"><em>view</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>hasTree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>maxWidth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>maxHeight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structWorksheetVirtualSizeCache.html">WorksheetVirtualSizeCache</a> &amp;&#160;</td>
+          <td class="paramname"><em>cache</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>scrollUnit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Measure the view, compute the virtual size and apply it, skipping no-ops. </p>
+<p>This is the view-facing half of Worksheet::AdjustSize(): it reads the client size and scroll position from <code>view</code>, feeds them (with the already-measured document extent <code>maxWidth</code> / <code>maxHeight</code>) to <a class="el" href="WorksheetSizeMath_8h.html#a5f9e2985516cffa080d3f9ea86664a7d" title="Compute a worksheet&#39;s virtual size and scroll unit.">ComputeWorksheetVirtualSize()</a>, and - only if the result actually changed and is positive - pushes it back to the view and updates the scroll rate.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">view</td><td>The window abstraction (real worksheet or a test mock). </td></tr>
+    <tr><td class="paramname">hasTree</td><td>Whether the worksheet has content (ignores the extent if not). </td></tr>
+    <tr><td class="paramname">maxWidth</td><td>The document's right extent (<a class="el" href="classWorksheet.html#aec89f7640236f4abd56b7c8a7604d7ca" title="Get the coordinates of the bottom right point of the worksheet.">Worksheet::GetMaxPoint</a> x). </td></tr>
+    <tr><td class="paramname">maxHeight</td><td>The document's bottom extent (<a class="el" href="classWorksheet.html#aec89f7640236f4abd56b7c8a7604d7ca" title="Get the coordinates of the bottom right point of the worksheet.">Worksheet::GetMaxPoint</a> y). </td></tr>
+    <tr><td class="paramname">cache</td><td>The last-applied size, updated in place to dedupe. </td></tr>
+    <tr><td class="paramname">scrollUnit</td><td>Read to turn the scroll position into pixels, and updated to the new granularity. <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> keeps it as a member because its scroll handlers read it too. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8c32bd37d3328a6acf12282d024ec76a" name="a8c32bd37d3328a6acf12282d024ec76a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c32bd37d3328a6acf12282d024ec76a">&#9670;&#160;</a></span>ComputeWorksheetContentHeight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ComputeWorksheetContentHeight </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structTrailingGroupGeometry.html">TrailingGroupGeometry</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>trailing</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>groupSkip</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>baseIndent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the worksheet's content height from its trailing cells' geometry. </p>
+<p>This is the backward walk <a class="el" href="classWorksheet.html#aec89f7640236f4abd56b7c8a7604d7ca" title="Get the coordinates of the bottom right point of the worksheet.">Worksheet::GetMaxPoint()</a> runs from the last cell: it accumulates the heights of the cells at the bottom whose position is not yet trustworthy (stale-and-unpositioned, or still-being-laid-out) until it reaches an "anchor" - a cell whose size is stale but whose top position (y) is already valid - and pins the total to that anchor's top plus everything accumulated below it. If the walk runs off the top of the document (no such anchor), the height falls back to the document's base indent plus the accumulated heights.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">trailing</td><td>The cells starting at the LAST cell and running backward. The walk stops at (and includes) the first entry that is the anchor, i.e. sizeIsStale &amp;&amp; currentY &gt;= 0. </td></tr>
+    <tr><td class="paramname">groupSkip</td><td>The vertical gap between group cells (<a class="el" href="classConfiguration.html#a8648bf145ef9280e734a08eb2271664b" title="The vertical space between GroupCells.">Configuration::GetGroupSkip</a>). </td></tr>
+    <tr><td class="paramname">baseIndent</td><td>The document's top margin (<a class="el" href="classConfiguration.html#a8004ace11a8c74983670984d521cecbb" title="The y position the worksheet starts at.">Configuration::GetBaseIndent</a>), used only when there is no anchor.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Kept GUI-free (no Cell/Configuration dependency) so this fiddly stale-cell accounting can be unit-tested in isolation - see test_WorksheetSizeMath. </p>
+
+</div>
+</div>
 <a id="a5f9e2985516cffa080d3f9ea86664a7d" name="a5f9e2985516cffa080d3f9ea86664a7d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f9e2985516cffa080d3f9ea86664a7d">&#9670;&#160;</a></span>ComputeWorksheetVirtualSize()</h2>
 

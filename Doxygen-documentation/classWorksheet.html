@@ -88,13 +88,13 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for Worksheet:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classWorksheet__inherit__graph.svg" width="206" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classWorksheet__inherit__graph.svg" width="352" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for Worksheet:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="515"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="549"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -120,6 +120,18 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:abdd51fde8c2a788243592637f7a602d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#abdd51fde8c2a788243592637f7a602d5">GetViewClientSize</a> (int *width, int *height) const override</td></tr>
+<tr class="memdesc:abdd51fde8c2a788243592637f7a602d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visible client area, in device pixels.  <br /></td></tr>
+<tr class="separator:abdd51fde8c2a788243592637f7a602d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68c08ce129cc91867d07fb5dff97c64e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a68c08ce129cc91867d07fb5dff97c64e">GetViewScrollUnitY</a> () const override</td></tr>
+<tr class="memdesc:a68c08ce129cc91867d07fb5dff97c64e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current vertical scroll position, in scroll units (not pixels).  <br /></td></tr>
+<tr class="separator:a68c08ce129cc91867d07fb5dff97c64e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cd07477920183260a428b229204cae0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a9cd07477920183260a428b229204cae0">SetViewVirtualSize</a> (int width, int height) override</td></tr>
+<tr class="memdesc:a9cd07477920183260a428b229204cae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the scrollable (virtual) area, in device pixels.  <br /></td></tr>
+<tr class="separator:a9cd07477920183260a428b229204cae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a121f99cdde12645efd3b35d8e5b35157"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a121f99cdde12645efd3b35d8e5b35157">SetViewScrollRate</a> (int rate) override</td></tr>
+<tr class="memdesc:a121f99cdde12645efd3b35d8e5b35157"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the scroll granularity (device pixels per scroll unit) on both axes.  <br /></td></tr>
+<tr class="separator:a121f99cdde12645efd3b35d8e5b35157"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4473708dd4d8a1197c96a2df9947a93c"><td class="memItemLeft" align="right" valign="top"><a id="a4473708dd4d8a1197c96a2df9947a93c" name="a4473708dd4d8a1197c96a2df9947a93c"></a>
 <a class="el" href="classRecentDocuments.html">RecentDocuments</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>UnsavedDocuments</b> ()</td></tr>
 <tr class="memdesc:a4473708dd4d8a1197c96a2df9947a93c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of unsaved (autosaved) documents offered for recovery. <br /></td></tr>
@@ -200,6 +212,9 @@ std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetMaxPoint</b> (int *width, int *height)</td></tr>
 <tr class="memdesc:aec89f7640236f4abd56b7c8a7604d7ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the coordinates of the bottom right point of the worksheet. <br /></td></tr>
 <tr class="separator:aec89f7640236f4abd56b7c8a7604d7ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa85a7673663234b7bcae38bc5e2af1e8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#aa85a7673663234b7bcae38bc5e2af1e8">GroupCellWidthWithMargins</a> (int cellWidth) const</td></tr>
+<tr class="memdesc:aa85a7673663234b7bcae38bc5e2af1e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The horizontal space a group cell of the given width occupies.  <br /></td></tr>
+<tr class="separator:aa85a7673663234b7bcae38bc5e2af1e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06c701cade9073a9f6393224a65e2174"><td class="memItemLeft" align="right" valign="top"><a id="a06c701cade9073a9f6393224a65e2174" name="a06c701cade9073a9f6393224a65e2174"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnTimer</b> (wxTimerEvent &amp;event)</td></tr>
 <tr class="memdesc:a06c701cade9073a9f6393224a65e2174"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is executed if a timer associated with <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> has expired. <br /></td></tr>
@@ -473,12 +488,10 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:af1e8a6756cd4693f8adf409ea9f74aea"><td class="memItemLeft" align="right" valign="top"><a id="af1e8a6756cd4693f8adf409ea9f74aea" name="af1e8a6756cd4693f8adf409ea9f74aea"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lastQuestion</b></td></tr>
 <tr class="separator:af1e8a6756cd4693f8adf409ea9f74aea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c681d30342bb81e53350bb9594afb07"><td class="memItemLeft" align="right" valign="top"><a id="a4c681d30342bb81e53350bb9594afb07" name="a4c681d30342bb81e53350bb9594afb07"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>m_virtualWidth_Last</b> = -1</td></tr>
-<tr class="separator:a4c681d30342bb81e53350bb9594afb07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a484543b1304eaef8a51a22f3f30a7169"><td class="memItemLeft" align="right" valign="top"><a id="a484543b1304eaef8a51a22f3f30a7169" name="a484543b1304eaef8a51a22f3f30a7169"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>m_virtualHeight_Last</b> = -1</td></tr>
-<tr class="separator:a484543b1304eaef8a51a22f3f30a7169"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae780c914a504b031bb4ea68d319ec739"><td class="memItemLeft" align="right" valign="top"><a id="ae780c914a504b031bb4ea68d319ec739" name="ae780c914a504b031bb4ea68d319ec739"></a>
+<a class="el" href="structWorksheetVirtualSizeCache.html">WorksheetVirtualSizeCache</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_virtualSizeCache</b></td></tr>
+<tr class="memdesc:ae780c914a504b031bb4ea68d319ec739"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dedupe cache for AdjustSize(): the last virtual size handed to the view. <br /></td></tr>
+<tr class="separator:ae780c914a504b031bb4ea68d319ec739"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebed5935ea28a0db9292708358e01a81"><td class="memItemLeft" align="right" valign="top"><a id="aebed5935ea28a0db9292708358e01a81" name="aebed5935ea28a0db9292708358e01a81"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>m_maxWidth_Cached</b> = -1</td></tr>
 <tr class="separator:aebed5935ea28a0db9292708358e01a81"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -614,9 +627,9 @@ std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetInsertGroup</b> () const</td></tr>
 <tr class="memdesc:a1f88d0ae3d7219b394d964c79a894a3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The group that the line's cells will belong to - used by InsertLine. <br /></td></tr>
 <tr class="separator:a1f88d0ae3d7219b394d964c79a894a3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90d7710a76268c86245352edba021ee5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a90d7710a76268c86245352edba021ee5">RecalculateIfNeeded</a> (bool timeout=false)</td></tr>
-<tr class="memdesc:a90d7710a76268c86245352edba021ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actually recalculate the worksheet.  <br /></td></tr>
-<tr class="separator:a90d7710a76268c86245352edba021ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cff5a13f672902c30e77e413ea8407a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a6cff5a13f672902c30e77e413ea8407a">RecalculateIfNeeded</a> (bool timeout=false, long timeSliceMs=50)</td></tr>
+<tr class="memdesc:a6cff5a13f672902c30e77e413ea8407a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actually recalculate the worksheet.  <br /></td></tr>
+<tr class="separator:a6cff5a13f672902c30e77e413ea8407a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe461aa6d0926a930da39ab21e075ebe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#afe461aa6d0926a930da39ab21e075ebe">RequestRecalculation</a> (<a class="el" href="classCell.html">Cell</a> *start)</td></tr>
 <tr class="memdesc:afe461aa6d0926a930da39ab21e075ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a recalculation of the worksheet starting with the cell start.  <br /></td></tr>
 <tr class="separator:afe461aa6d0926a930da39ab21e075ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1844,6 +1857,75 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="abdd51fde8c2a788243592637f7a602d5" name="abdd51fde8c2a788243592637f7a602d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdd51fde8c2a788243592637f7a602d5">&#9670;&#160;</a></span>GetViewClientSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::GetViewClientSize </td>
+          <td>(</td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The visible client area, in device pixels. </p>
+
+<p>Implements <a class="el" href="classWorksheetView.html#aada1c290be90e0e2bcb84bee041959f1">WorksheetView</a>.</p>
+
+</div>
+</div>
+<a id="a68c08ce129cc91867d07fb5dff97c64e" name="a68c08ce129cc91867d07fb5dff97c64e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68c08ce129cc91867d07fb5dff97c64e">&#9670;&#160;</a></span>GetViewScrollUnitY()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Worksheet::GetViewScrollUnitY </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The current vertical scroll position, in scroll units (not pixels). </p>
+
+<p>Implements <a class="el" href="classWorksheetView.html#a50f6bddd942f8292b3803939f61c1265">WorksheetView</a>.</p>
+
+</div>
+</div>
 <a id="af57ef1cf7e60d3e9160bcd22a4563bf5" name="af57ef1cf7e60d3e9160bcd22a4563bf5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af57ef1cf7e60d3e9160bcd22a4563bf5">&#9670;&#160;</a></span>GetWorkingGroup()</h2>
 
@@ -1868,6 +1950,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aa85a7673663234b7bcae38bc5e2af1e8" name="aa85a7673663234b7bcae38bc5e2af1e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa85a7673663234b7bcae38bc5e2af1e8">&#9670;&#160;</a></span>GroupCellWidthWithMargins()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Worksheet::GroupCellWidthWithMargins </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cellWidth</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The horizontal space a group cell of the given width occupies. </p>
+<p>That is the cell's own width plus the equal left and right margins the worksheet reserves around every group cell. Used both when measuring the document width (GetMaxPoint) and while walking the recalculation. </p>
 
 </div>
 </div>
@@ -2228,8 +2331,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
-<a id="a90d7710a76268c86245352edba021ee5" name="a90d7710a76268c86245352edba021ee5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90d7710a76268c86245352edba021ee5">&#9670;&#160;</a></span>RecalculateIfNeeded()</h2>
+<a id="a6cff5a13f672902c30e77e413ea8407a" name="a6cff5a13f672902c30e77e413ea8407a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cff5a13f672902c30e77e413ea8407a">&#9670;&#160;</a></span>RecalculateIfNeeded()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2238,13 +2341,31 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
           <td class="memname">bool Worksheet::RecalculateIfNeeded </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code>false</code></td><td>)</td>
+          <td class="paramname"><em>timeout</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>timeSliceMs</em> = <code>50</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Actually recalculate the worksheet. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeout</td><td>If true the walk is time-sliced: after <code>timeSliceMs</code> it yields (returning true so the idle handler asks for another tick) and resumes from where it left off next time. If false the whole scheduled range is laid out in one call. </td></tr>
+    <tr><td class="paramname">timeSliceMs</td><td>How long (ms) a time-sliced pass may run before yielding. Only used when <code>timeout</code> is true; exposed mainly so tests can force a yield after every cell (a value &lt; 0 does that).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether there may be more work to do (the caller should call again).</dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>We check here if the recalc start is within the worksheet. Would it make more sense to store the recalculation start in a CellPointer that automagically zeroes itself if that isn't the case? </dd></dl>
 
 </div>
@@ -2372,7 +2493,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Schedule a recalculation of the worksheet starting with the cell start. </p>
-<p>This only <em>records</em> where the next layout pass has to start (it marks the group dirty and moves m_recalculateStart); it does not size or position any cell. The actual work - and, crucially, AdjustSize() once the cell positions are correct - happens in <a class="el" href="classWorksheet.html#a90d7710a76268c86245352edba021ee5" title="Actually recalculate the worksheet.">RecalculateIfNeeded()</a>. Calling AdjustSize() (or otherwise reading cell geometry) right after this, without a <a class="el" href="classWorksheet.html#a90d7710a76268c86245352edba021ee5" title="Actually recalculate the worksheet.">RecalculateIfNeeded()</a> in between, reads stale positions. Was named Recalculate(), which wrongly implied it does the layout itself. </p>
+<p>This only <em>records</em> where the next layout pass has to start (it marks the group dirty and moves m_recalculateStart); it does not size or position any cell. The actual work - and, crucially, AdjustSize() once the cell positions are correct - happens in <a class="el" href="classWorksheet.html#a6cff5a13f672902c30e77e413ea8407a" title="Actually recalculate the worksheet.">RecalculateIfNeeded()</a>. Calling AdjustSize() (or otherwise reading cell geometry) right after this, without a <a class="el" href="classWorksheet.html#a6cff5a13f672902c30e77e413ea8407a" title="Actually recalculate the worksheet.">RecalculateIfNeeded()</a> in between, reads stale positions. Was named Recalculate(), which wrongly implied it does the layout itself. </p>
 
 </div>
 </div>
@@ -2575,6 +2696,76 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="a121f99cdde12645efd3b35d8e5b35157" name="a121f99cdde12645efd3b35d8e5b35157"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a121f99cdde12645efd3b35d8e5b35157">&#9670;&#160;</a></span>SetViewScrollRate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::SetViewScrollRate </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>rate</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the scroll granularity (device pixels per scroll unit) on both axes. </p>
+
+<p>Implements <a class="el" href="classWorksheetView.html#a26786257cd06754cecc88bd679c2e1bf">WorksheetView</a>.</p>
+
+</div>
+</div>
+<a id="a9cd07477920183260a428b229204cae0" name="a9cd07477920183260a428b229204cae0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cd07477920183260a428b229204cae0">&#9670;&#160;</a></span>SetViewVirtualSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::SetViewVirtualSize </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the scrollable (virtual) area, in device pixels. </p>
+
+<p>Implements <a class="el" href="classWorksheetView.html#afa5e7aa059e1858d025a991ecad44565">WorksheetView</a>.</p>
+
+</div>
+</div>
 <a id="aae2332fff52eeb2c385309c07c885255" name="aae2332fff52eeb2c385309c07c885255"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aae2332fff52eeb2c385309c07c885255">&#9670;&#160;</a></span>ShowPoint()</h2>
 
@@ -2752,7 +2943,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Does the worksheet's virtual (scroll) size need re-adjusting? </p>
-<p>Set when a cell changed height (via the callback the ctor registers on our <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>, so cells can flag it without depending on <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>) or when layout is scheduled; consumed by <a class="el" href="classWorksheet.html#a90d7710a76268c86245352edba021ee5" title="Actually recalculate the worksheet.">RecalculateIfNeeded()</a>, which calls AdjustSize() once the cell positions are valid. Layout-scheduling state that belongs next to m_recalculateStart, not on the shared <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>. </p>
+<p>Set when a cell changed height (via the callback the ctor registers on our <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>, so cells can flag it without depending on <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>) or when layout is scheduled; consumed by <a class="el" href="classWorksheet.html#a6cff5a13f672902c30e77e413ea8407a" title="Actually recalculate the worksheet.">RecalculateIfNeeded()</a>, which calls AdjustSize() once the cell positions are valid. Layout-scheduling state that belongs next to m_recalculateStart, not on the shared <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>. </p>
 
 </div>
 </div>
