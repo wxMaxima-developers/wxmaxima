@@ -57,6 +57,7 @@
 #include "TreeUndoManager.h"
 #include "WorksheetCursor.h"
 #include "WorksheetSearch.h"
+#include "WorksheetSizeMath.h"
 #include "cells/TextCell.h"
 #include "EvaluationQueue.h"
 #include "dialogs/FindReplaceDialog.h"
@@ -108,9 +109,19 @@
 
   \image html WorksheetLayout.svg
 */
-class Worksheet : public wxScrolled<wxWindow>
+class Worksheet : public wxScrolled<wxWindow>, public WorksheetView
 {
 public:
+  // WorksheetView: the narrow window surface the size pipeline
+  // (ApplyWorksheetVirtualSize) drives; each forwards to the wxScrolled base.
+  void GetViewClientSize(int *width, int *height) const override
+    { GetClientSize(width, height); }
+  int GetViewScrollUnitY() const override
+    { int x, y; GetViewStart(&x, &y); return y; }
+  void SetViewVirtualSize(int width, int height) override
+    { SetVirtualSize(width, height); }
+  void SetViewScrollRate(int rate) override { SetScrollRate(rate, rate); }
+
   //! The list of unsaved (autosaved) documents offered for recovery.
   RecentDocuments &UnsavedDocuments() { return m_unsavedDocuments; }
 private:
@@ -1558,8 +1569,8 @@ public:
 protected:
   void FocusTextControl();
   wxString m_lastQuestion;
-  int m_virtualWidth_Last = -1;
-  int m_virtualHeight_Last = -1;
+  //! Dedupe cache for AdjustSize(): the last virtual size handed to the view.
+  WorksheetVirtualSizeCache m_virtualSizeCache;
   int m_maxWidth_Cached = -1;
   //! A memory we can manually buffer the contents of the area that is to be redrawn in
   wxBitmap m_memory;

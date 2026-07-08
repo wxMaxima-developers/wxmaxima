@@ -5,6 +5,13 @@
   Worksheet::AdjustSize() into a GUI-free ComputeWorksheetVirtualSize(), so the
   scroll-range contract - which "the pane won't scroll" bugs violate - is now
   covered by a headless unit test instead of only being reachable through the GUI.
+- Internal: the view-facing half of Worksheet::AdjustSize() (reading the window's
+  client size and scroll position, writing the virtual size and scroll rate) now
+  goes through a small abstract WorksheetView interface that the Worksheet
+  implements with its scroll methods. A headless test drives the size-application
+  logic - including the "don't re-apply an unchanged size" deduplication and the
+  "never shrink below the current scroll position" rule - through a mock view,
+  instead of that logic only ever running inside a live GUI window.
 - Internal: the fiddly backward walk in Worksheet::GetMaxPoint() that derives the
   document height from the trailing cells (skipping past cells whose size or
   position is not yet trustworthy to an "anchor" cell) was likewise split into a

@@ -3520,34 +3520,18 @@ void Worksheet::AdjustSize() {
     return;
   }
 
-  // Measure the document and the window here (GUI + cell tree), then hand the
-  // numbers to the GUI-free ComputeWorksheetVirtualSize() for the actual
-  // arithmetic (see WorksheetSizeMath.h - it is unit-tested there).
-  int clientWidth, clientHeight;
-  GetClientSize(&clientWidth, &clientHeight);
-
+  // Measure the document here (cell tree), then let the GUI-free
+  // ApplyWorksheetVirtualSize() read the window through the WorksheetView
+  // interface, run the arithmetic (ComputeWorksheetVirtualSize) and push the
+  // result back to the scrollbars - see WorksheetSizeMath.h, unit-tested there.
   const bool hasTree = (GetTree() != NULL);
   int maxWidth = m_configuration->GetBaseIndent();
   int maxHeight = maxWidth;
-  int currentScrollPixelY = 0;
-  if (hasTree) {
+  if (hasTree)
     GetMaxPoint(&maxWidth, &maxHeight);
-    int scrollX, scrollY;
-    GetViewStart(&scrollX, &scrollY);
-    currentScrollPixelY = scrollY * m_scrollUnit;
-  }
 
-  const WorksheetVirtualSize vs = ComputeWorksheetVirtualSize(
-    hasTree, maxWidth, maxHeight, clientHeight, currentScrollPixelY);
-
-  if ((m_virtualWidth_Last != vs.width || m_virtualHeight_Last != vs.height) &&
-      vs.height > 0) {
-    m_virtualWidth_Last = vs.width;
-    m_virtualHeight_Last = vs.height;
-    SetVirtualSize(vs.width, vs.height);
-    m_scrollUnit = vs.scrollUnit;
-    SetScrollRate(m_scrollUnit, m_scrollUnit);
-  }
+  ApplyWorksheetVirtualSize(*this, hasTree, maxWidth, maxHeight,
+                            m_virtualSizeCache, m_scrollUnit);
   m_adjustWorksheetSizeNeeded = false;
 }
 
