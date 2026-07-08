@@ -80,7 +80,7 @@ static GroupCell *BuildDocument() {
     std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("2+2;")), second);
   g_ws->SetActiveCell(nullptr);
   g_ws->ClearSelection();
-  g_ws->Recalculate();
+  g_ws->RequestRecalculation();
   g_ws->RecalculateIfNeeded();
   return first;
 }

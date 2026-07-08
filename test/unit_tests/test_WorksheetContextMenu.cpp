@@ -96,7 +96,7 @@ static void BuildDocument() {
     std::make_unique<GroupCell>(g_cfg, GC_TYPE_TEXT, wxS("some text")), first);
   g_ws->SetActiveCell(nullptr);
   g_ws->ClearSelection();
-  g_ws->Recalculate();
+  g_ws->RequestRecalculation();
   g_ws->RecalculateIfNeeded();
 }
 
@@ -155,7 +155,7 @@ SCENARIO("The selected-image menu offers saving and image manipulation") {
     std::make_unique<ImgCell>(imgGroup.get(), g_cfg, buf, wxS("png")));
   GroupCell *group =
     g_ws->InsertGroupCells(std::move(imgGroup), g_ws->GetLastCellInWorksheet());
-  g_ws->Recalculate();
+  g_ws->RequestRecalculation();
   g_ws->RecalculateIfNeeded();
   Cell *imgCell = group->GetLabel();
   REQUIRE(imgCell != nullptr);

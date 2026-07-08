@@ -95,7 +95,7 @@ static GroupCell *BuildDocument() {
   AppendCodeGroup(wxS("gamma_variable : 3;"), wxS("output_gamma"), second);
   g_ws->SetActiveCell(nullptr);
   g_ws->ClearSelection();
-  g_ws->Recalculate();
+  g_ws->RequestRecalculation();
   g_ws->RecalculateIfNeeded();
   return first;
 }
