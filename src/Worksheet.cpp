@@ -4382,7 +4382,13 @@ void Worksheet::ScrollToCellIfNeeded() {
   int cellY = cell->GetCurrentY();
 
   if (cellY < 0) {
+    // The cell has no valid position yet. RequestRecalculation() only schedules
+    // a layout pass, so it has to be followed by RecalculateIfNeeded() to
+    // actually run it - otherwise the re-read below sees the same stale value.
+    // (This was a no-op even before Recalculate() was renamed: scheduling alone
+    // never updated the position.)
     RequestRecalculation();
+    RecalculateIfNeeded();
     cellY = cell->GetCurrentY();
   }
 

@@ -1,5 +1,8 @@
 # Current development version
 
+- Scrolling to a cell whose position had not been computed yet now forces that
+  computation instead of silently giving up, so "scroll to this cell" works even
+  in the rare case where the target had no valid position.
 - Corrected the line wrapping position
 - The diff viewer's panes can be scrolled as soon as they open, instead of only
   after the window is resized.
