@@ -262,7 +262,6 @@ static void BuildDocumentOnce() {
   appendCell(GC_TYPE_TEXT, kTextSentinel);
   appendCell(GC_TYPE_CODE, kCodeSentinel);
 
-  g_ws->RequestRecalculation();
   g_ws->RecalculateIfNeeded();
 }
 
