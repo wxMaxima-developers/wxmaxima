@@ -1,5 +1,10 @@
 # Current development version
 
+- Bugfix: the "how long did layout take" log message printed a meaningless
+  near-zero duration, and the time-sliced layout of the off-screen part of a huge
+  worksheet was not actually time-limited. Both were caused by a stopwatch that
+  was restarted on every cell past the visible region (a flag that guarded the
+  restart was never set). The stopwatch now simply times the whole pass.
 - Bugfix: on a worksheet too large to lay out within one time slice, the
   incremental (time-sliced) recalculation stopped after the first slice and never
   resumed, leaving every cell below that point with a stale size and position

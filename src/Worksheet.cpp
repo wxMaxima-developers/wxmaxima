@@ -976,9 +976,10 @@ bool Worksheet::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
 
   if(timeout)
     {
+      // Runs from here; used both to time-slice the walk (yield every
+      // timeSliceMs so the UI stays responsive on a huge worksheet) and to
+      // report how long the pass took in the end-of-worksheet log below.
       wxStopWatch stopwatch;
-      bool recalculated = false;
-      bool stopwatchStarted = false;
       bool propagationNeeded = true;
       int cellsVisited = 0;
       for (auto &cell : OnList(m_recalculateStart.get())) {
@@ -994,7 +995,6 @@ bool Worksheet::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
           if (group->GetHeight() != oldHeight)
             sizeChanged = true;
           movedThisTime = true;
-          recalculated |= sizeChanged;
 
           int currentWidth = GroupCellWidthWithMargins(cell.GetWidth());
           m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
@@ -1010,12 +1010,6 @@ bool Worksheet::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
         }
         propagationNeeded = movedThisTime || sizeChanged;
 
-        if((cell.GetRect().GetTop() > m_configuration->GetVisibleRegion().GetBottom()) &&
-           recalculated)
-          {
-            if(!stopwatchStarted)
-              stopwatch.Start();
-          }
         if(cell.GetNext() != NULL)
           m_recalculateStart = cell.GetNext();
         else
