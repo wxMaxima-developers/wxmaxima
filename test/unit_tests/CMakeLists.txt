@@ -57,6 +57,12 @@ add_executable(test_DiffScrollSync test_DiffScrollSync.cpp ${WXM_TEST_SETUP})
 target_link_libraries(test_DiffScrollSync PRIVATE ${wxWidgets_LIBRARIES})
 add_test(DiffScrollSync test_DiffScrollSync)
 
+# The worksheet's virtual-size arithmetic (extracted from Worksheet::AdjustSize)
+# is GUI-free (see WorksheetSizeMath.h), so it is tested directly.
+add_executable(test_WorksheetSizeMath test_WorksheetSizeMath.cpp ${WXM_TEST_SETUP})
+target_link_libraries(test_WorksheetSizeMath PRIVATE ${wxWidgets_LIBRARIES})
+add_test(WorksheetSizeMath test_WorksheetSizeMath)
+
 # The parser for the <variables> XML Maxima sends (extracted from
 # wxMaxima::ReadVariables) is GUI-free, so it is tested directly too.
 add_executable(test_MaximaVariableUpdates

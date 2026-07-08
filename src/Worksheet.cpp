@@ -32,6 +32,7 @@
 
 #include "Worksheet.h"
 #include "BTextCtrl.h"
+#include "WorksheetSizeMath.h"
 #include "cells/AnimationCell.h"
 #include "graphical_io/BitmapOut.h"
 #include "cells/CellList.h"
@@ -3520,49 +3521,32 @@ void Worksheet::AdjustSize() {
     return;
   }
 
-  int width = 40, height = 40;
-  int virtualHeight = 40;
+  // Measure the document and the window here (GUI + cell tree), then hand the
+  // numbers to the GUI-free ComputeWorksheetVirtualSize() for the actual
+  // arithmetic (see WorksheetSizeMath.h - it is unit-tested there).
   int clientWidth, clientHeight;
   GetClientSize(&clientWidth, &clientHeight);
-  if (GetTree()) {
-    width = m_configuration->GetBaseIndent();
-    height = width;
 
-    GetMaxPoint(&width, &height);
-    // when window is scrolled all the way down, document occupies top 1/8 of
-    // clientHeight
-    height += clientHeight - clientHeight / 8;
-    virtualHeight = std::max(clientHeight + 10,
-                          height); // ensure we always have VSCROLL active
-
-    // Safety net: never shrink the virtual height below what the current
-    // scroll position requires. If GetMaxPoint() is called with stale cell
-    // positions (e.g. during partial recalculation), it may underestimate
-    // the worksheet height. Shrinking the virtual size would cause
-    // wxWidgets to clamp the scroll position, making the view jump.
+  const bool hasTree = (GetTree() != NULL);
+  int maxWidth = m_configuration->GetBaseIndent();
+  int maxHeight = maxWidth;
+  int currentScrollPixelY = 0;
+  if (hasTree) {
+    GetMaxPoint(&maxWidth, &maxHeight);
     int scrollX, scrollY;
     GetViewStart(&scrollX, &scrollY);
-    int currentScrollPixelY = scrollY * m_scrollUnit;
-    virtualHeight = std::max(virtualHeight,
-                             currentScrollPixelY + clientHeight + 10);
-
-    // Don't set m_scrollUnit too high for big windows on hi-res screens:
-    // Allow scrolling by a tenth of a line doesn't make too much sense,
-    // but will make scrolling feel sluggish.
-    height = GetClientSize().y;
+    currentScrollPixelY = scrollY * m_scrollUnit;
   }
-  if ((m_virtualWidth_Last != width || m_virtualHeight_Last != virtualHeight) &&
-      virtualHeight > 0)
-    {
-    m_virtualWidth_Last = width;
-    m_virtualHeight_Last = virtualHeight;
-    SetVirtualSize(width, virtualHeight);
-    m_scrollUnit = height / 30;
-    // Ensure a sane scroll unit even for the fringe case of a very small
-    // screen.
-    if (m_scrollUnit < 10)
-      m_scrollUnit = 10;
 
+  const WorksheetVirtualSize vs = ComputeWorksheetVirtualSize(
+    hasTree, maxWidth, maxHeight, clientHeight, currentScrollPixelY);
+
+  if ((m_virtualWidth_Last != vs.width || m_virtualHeight_Last != vs.height) &&
+      vs.height > 0) {
+    m_virtualWidth_Last = vs.width;
+    m_virtualHeight_Last = vs.height;
+    SetVirtualSize(vs.width, vs.height);
+    m_scrollUnit = vs.scrollUnit;
     SetScrollRate(m_scrollUnit, m_scrollUnit);
   }
   m_adjustWorksheetSizeNeeded = false;
