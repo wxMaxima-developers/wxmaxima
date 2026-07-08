@@ -1,5 +1,10 @@
 # Current development version
 
+- Internal: the formula for the horizontal space a group cell occupies (its width
+  plus the left and right margins) was triplicated across GetMaxPoint() and both
+  branches of the recalculation walk; it now lives in one
+  GroupCellWidthWithMargins() helper.
+
 - Internal: the worksheet's virtual-size arithmetic (how the document extent and
   window size become the scroll range and scroll step) was split out of
   Worksheet::AdjustSize() into a GUI-free ComputeWorksheetVirtualSize(), so the

@@ -996,12 +996,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
           movedThisTime = true;
           recalculated |= sizeChanged;
 
-          int currentWidth =
-            m_configuration->Scale_Px(m_configuration->GetIndent() +
-                                      m_configuration->GetDefaultFontSize()) +
-            cell.GetWidth() +
-            m_configuration->Scale_Px(m_configuration->GetIndent() +
-                                      m_configuration->GetDefaultFontSize());
+          int currentWidth = GroupCellWidthWithMargins(cell.GetWidth());
           m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
         } else if (propagationNeeded) {
           movedThisTime = group->Reposition();
@@ -1054,12 +1049,7 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
           if (sizeChanged)
             m_adjustWorksheetSizeNeeded = true;
 
-          int currentWidth =
-            m_configuration->Scale_Px(m_configuration->GetIndent() +
-                                      m_configuration->GetDefaultFontSize()) +
-            cell.GetWidth() +
-            m_configuration->Scale_Px(m_configuration->GetIndent() +
-                                      m_configuration->GetDefaultFontSize());
+          int currentWidth = GroupCellWidthWithMargins(cell.GetWidth());
           m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
         } else if (propagationNeeded) {
           movedThisTime = group->Reposition();
@@ -3452,6 +3442,13 @@ void Worksheet::OnChar(wxKeyEvent &event) {
 /***
  * Get maximum x and y in the tree.
  */
+int Worksheet::GroupCellWidthWithMargins(int cellWidth) const {
+  const int margin =
+    m_configuration->Scale_Px(m_configuration->GetIndent() +
+                              m_configuration->GetDefaultFontSize());
+  return margin + cellWidth + margin;
+}
+
 void Worksheet::GetMaxPoint(int *width, int *height) {
   // The height we return is read off the cells' positions, which are only
   // meaningful once a scheduled recalculation has finished. Reading them while
@@ -3469,12 +3466,7 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
     *width = std::max(*width, m_maxWidth_Cached);
   } else {
     for (Cell const &tmp : OnList(GetTree())) {
-      int currentWidth =
-          m_configuration->Scale_Px(m_configuration->GetIndent() +
-                                    m_configuration->GetDefaultFontSize()) +
-          tmp.GetWidth() +
-          m_configuration->Scale_Px(m_configuration->GetIndent() +
-                                    m_configuration->GetDefaultFontSize());
+      int currentWidth = GroupCellWidthWithMargins(tmp.GetWidth());
       *width = std::max(currentWidth, *width);
     }
     m_maxWidth_Cached = *width;

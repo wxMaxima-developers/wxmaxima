@@ -388,6 +388,14 @@ public:
   //! Get the coordinates of the bottom right point of the worksheet.
   void GetMaxPoint(int *width, int *height);
 
+  /*! The horizontal space a group cell of the given width occupies.
+
+    That is the cell's own width plus the equal left and right margins the
+    worksheet reserves around every group cell. Used both when measuring the
+    document width (GetMaxPoint) and while walking the recalculation.
+   */
+  int GroupCellWidthWithMargins(int cellWidth) const;
+
   //! Is executed if a timer associated with Worksheet has expired.
   void OnTimer(wxTimerEvent &event);
 
