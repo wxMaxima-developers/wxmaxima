@@ -116,6 +116,9 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a823ea8c7afdb1b75360e6a31c14a7d71"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a823ea8c7afdb1b75360e6a31c14a7d71">ComputeWorksheetContentWidth</a> (const std::vector&lt; int &gt; &amp;cellWidthsWithMargins, int baseIndent)</td></tr>
+<tr class="memdesc:a823ea8c7afdb1b75360e6a31c14a7d71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the worksheet's content width.  <br /></td></tr>
+<tr class="separator:a823ea8c7afdb1b75360e6a31c14a7d71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c32bd37d3328a6acf12282d024ec76a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WorksheetSizeMath_8h.html#a8c32bd37d3328a6acf12282d024ec76a">ComputeWorksheetContentHeight</a> (const std::vector&lt; <a class="el" href="structTrailingGroupGeometry.html">TrailingGroupGeometry</a> &gt; &amp;trailing, int groupSkip, int baseIndent)</td></tr>
 <tr class="memdesc:a8c32bd37d3328a6acf12282d024ec76a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the worksheet's content height from its trailing cells' geometry.  <br /></td></tr>
 <tr class="separator:a8c32bd37d3328a6acf12282d024ec76a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -255,6 +258,53 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <p>Kept GUI-free (no Cell/Configuration dependency) so this fiddly stale-cell accounting can be unit-tested in isolation - see test_WorksheetSizeMath. </p>
+
+</div>
+</div>
+<a id="a823ea8c7afdb1b75360e6a31c14a7d71" name="a823ea8c7afdb1b75360e6a31c14a7d71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a823ea8c7afdb1b75360e6a31c14a7d71">&#9670;&#160;</a></span>ComputeWorksheetContentWidth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ComputeWorksheetContentWidth </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cellWidthsWithMargins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>baseIndent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the worksheet's content width. </p>
+<p>That is the document's base indent, widened to fit the widest group cell. Each entry in <code>cellWidthsWithMargins</code> is a cell's width including its left and right margins (<a class="el" href="classWorksheet.html#aa85a7673663234b7bcae38bc5e2af1e8" title="The horizontal space a group cell of the given width occupies.">Worksheet::GroupCellWidthWithMargins</a>).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cellWidthsWithMargins</td><td>Per-cell widths (already including margins). </td></tr>
+    <tr><td class="paramname">baseIndent</td><td>The minimum width (<a class="el" href="classConfiguration.html#a8004ace11a8c74983670984d521cecbb" title="The y position the worksheet starts at.">Configuration::GetBaseIndent</a>).</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Kept GUI-free (no Cell/Configuration dependency) so it can be unit-tested in isolation - see test_WorksheetSizeMath. </p>
 
 </div>
 </div>
