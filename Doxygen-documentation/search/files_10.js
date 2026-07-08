@@ -21,13 +21,14 @@ var searchData=
   ['test_5fworksheetcursor_2ecpp_18',['test_WorksheetCursor.cpp',['../test__WorksheetCursor_8cpp.html',1,'']]],
   ['test_5fworksheetexport_2ecpp_19',['test_WorksheetExport.cpp',['../test__WorksheetExport_8cpp.html',1,'']]],
   ['test_5fworksheetfind_2ecpp_20',['test_WorksheetFind.cpp',['../test__WorksheetFind_8cpp.html',1,'']]],
-  ['test_5fwxmroundtrip_2ecpp_21',['test_WXMRoundtrip.cpp',['../test__WXMRoundtrip_8cpp.html',1,'']]],
-  ['test_5fwxmxroundtrip_2ecpp_22',['test_WXMXRoundtrip.cpp',['../test__WXMXRoundtrip_8cpp.html',1,'']]],
-  ['textcell_2ecpp_23',['TextCell.cpp',['../TextCell_8cpp.html',1,'']]],
-  ['textstyle_2ecpp_24',['TextStyle.cpp',['../TextStyle_8cpp.html',1,'']]],
-  ['textstyle_2eh_25',['TextStyle.h',['../TextStyle_8h.html',1,'']]],
-  ['toolbar_2ecpp_26',['ToolBar.cpp',['../ToolBar_8cpp.html',1,'']]],
-  ['toolbar_2eh_27',['ToolBar.h',['../ToolBar_8h.html',1,'']]],
-  ['treeundoaction_2eh_28',['TreeUndoAction.h',['../TreeUndoAction_8h.html',1,'']]],
-  ['treeundomanager_2eh_29',['TreeUndoManager.h',['../TreeUndoManager_8h.html',1,'']]]
+  ['test_5fworksheetsizemath_2ecpp_21',['test_WorksheetSizeMath.cpp',['../test__WorksheetSizeMath_8cpp.html',1,'']]],
+  ['test_5fwxmroundtrip_2ecpp_22',['test_WXMRoundtrip.cpp',['../test__WXMRoundtrip_8cpp.html',1,'']]],
+  ['test_5fwxmxroundtrip_2ecpp_23',['test_WXMXRoundtrip.cpp',['../test__WXMXRoundtrip_8cpp.html',1,'']]],
+  ['textcell_2ecpp_24',['TextCell.cpp',['../TextCell_8cpp.html',1,'']]],
+  ['textstyle_2ecpp_25',['TextStyle.cpp',['../TextStyle_8cpp.html',1,'']]],
+  ['textstyle_2eh_26',['TextStyle.h',['../TextStyle_8h.html',1,'']]],
+  ['toolbar_2ecpp_27',['ToolBar.cpp',['../ToolBar_8cpp.html',1,'']]],
+  ['toolbar_2eh_28',['ToolBar.h',['../ToolBar_8h.html',1,'']]],
+  ['treeundoaction_2eh_29',['TreeUndoAction.h',['../TreeUndoAction_8h.html',1,'']]],
+  ['treeundomanager_2eh_30',['TreeUndoManager.h',['../TreeUndoManager_8h.html',1,'']]]
 ];
