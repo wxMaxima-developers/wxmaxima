@@ -845,11 +845,22 @@ public:
 
   /*! Actually recalculate the worksheet.
 
+    \param timeout     If true the walk is time-sliced: after \p timeSliceMs it
+                       yields (returning true so the idle handler asks for
+                       another tick) and resumes from where it left off next
+                       time. If false the whole scheduled range is laid out in
+                       one call.
+    \param timeSliceMs How long (ms) a time-sliced pass may run before yielding.
+                       Only used when \p timeout is true; exposed mainly so tests
+                       can force a yield after every cell (a value < 0 does that).
+
+    \return Whether there may be more work to do (the caller should call again).
+
     \todo We check here if the recalc start is within the worksheet. Would it make
     more sense to store the recalculation start in a CellPointer that automagically
     zeroes itself if that isn't the case?
    */
-  bool RecalculateIfNeeded(bool timeout = false);
+  bool RecalculateIfNeeded(bool timeout = false, long timeSliceMs = 50);
 
   /*! Schedule a recalculation of the worksheet starting with the cell start.
 

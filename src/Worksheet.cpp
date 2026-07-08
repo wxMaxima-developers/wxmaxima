@@ -955,7 +955,7 @@ void Worksheet::SetZoomFactor(double newzoom) {
     }
 }
 
-bool Worksheet::RecalculateIfNeeded(bool timeout) {
+bool Worksheet::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
   if (m_configuration->GetCanvasSize().x < 1)
     return (false);
   if (m_configuration->GetCanvasSize().y < 1)
@@ -1024,8 +1024,14 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
             m_recalculateStart = {};
             AdjustSize();
           }
-        if(stopwatch.Time() > 50)
-          break;
+        if(stopwatch.Time() > timeSliceMs)
+          // Yield to the event loop, but keep m_recalculateStart pointing at the
+          // cell we stopped before so the next call resumes there. Returning here
+          // (instead of breaking out to the shared tail below) is essential: that
+          // tail clears m_recalculateStart on the assumption the whole range was
+          // walked, which would drop the resume point and leave every cell past
+          // this slice permanently un-recalculated.
+          return true;
       }
     }
   else

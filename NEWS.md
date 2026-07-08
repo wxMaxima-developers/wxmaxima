@@ -1,5 +1,12 @@
 # Current development version
 
+- Bugfix: on a worksheet too large to lay out within one time slice, the
+  incremental (time-sliced) recalculation stopped after the first slice and never
+  resumed, leaving every cell below that point with a stale size and position
+  (visible as overlapping cells or a wrong scroll range) until an edit or resize
+  forced a full recalculation. The layout pass now correctly resumes where it left
+  off on the next idle tick.
+
 - Internal: the formula for the horizontal space a group cell occupies (its width
   plus the left and right margins) was triplicated across GetMaxPoint() and both
   branches of the recalculation walk; it now lives in one
