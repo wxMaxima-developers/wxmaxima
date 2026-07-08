@@ -974,51 +974,57 @@ bool Worksheet::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
   if (m_recalculateStart == GetTree())
     m_maxWidth_Cached = -1;
 
-  if(timeout)
-    {
-      // Runs from here; used both to time-slice the walk (yield every
-      // timeSliceMs so the UI stays responsive on a huge worksheet) and to
-      // report how long the pass took in the end-of-worksheet log below.
-      wxStopWatch stopwatch;
-      bool propagationNeeded = true;
-      int cellsVisited = 0;
-      for (auto &cell : OnList(m_recalculateStart.get())) {
-        cellsVisited++;
-        GroupCell *group = static_cast<GroupCell *>(&cell);
-        bool neededRecalc = group->NeedsRecalculation();
-        bool movedThisTime = false;
-        bool sizeChanged = false;
+  // One walk drives both modes. When timeout is set the pass is time-sliced:
+  // it advances the resume point (m_recalculateStart) cell by cell and yields
+  // (returns) once timeSliceMs is up, resuming here next time. Otherwise it lays
+  // out the whole scheduled range in one go and the shared tail below does the
+  // final AdjustSize(). The stopwatch also feeds the end-of-worksheet log.
+  {
+    wxStopWatch stopwatch;
+    bool propagationNeeded = true;
+    int cellsVisited = 0;
+    for (auto &cell : OnList(m_recalculateStart.get())) {
+      cellsVisited++;
+      GroupCell *group = static_cast<GroupCell *>(&cell);
+      bool neededRecalc = group->NeedsRecalculation();
+      bool movedThisTime = false;
+      bool sizeChanged = false;
 
-        if (neededRecalc) {
-          int oldHeight = group->GetHeight();
-          sizeChanged = group->Recalculate();
-          if (group->GetHeight() != oldHeight)
-            sizeChanged = true;
-          movedThisTime = true;
+      if (neededRecalc) {
+        int oldHeight = group->GetHeight();
+        sizeChanged = group->Recalculate();
+        if (group->GetHeight() != oldHeight)
+          sizeChanged = true;
+        movedThisTime = true;
+        // The time-sliced path calls AdjustSize() itself when it reaches the end
+        // of the worksheet; the one-shot path defers it to the shared tail and so
+        // has to record here that a size change makes it necessary.
+        if (sizeChanged && !timeout)
+          m_adjustWorksheetSizeNeeded = true;
 
-          int currentWidth = GroupCellWidthWithMargins(cell.GetWidth());
-          m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
-        } else if (propagationNeeded) {
-          movedThisTime = group->Reposition();
-        } else {
-          // Don't stop here: a cell further down the worksheet may still be
-          // dirty. Cells can be marked for recalculation non-contiguously (e.g.
-          // by folding/hiding or by asynchronous Maxima output landing in
-          // specific cells), so a clean, non-propagating cell does not imply
-          // everything below it is clean. Keep scanning; the m_recalculateStart
-          // bookkeeping below advances the resume point past this clean cell.
-        }
-        propagationNeeded = movedThisTime || sizeChanged;
+        int currentWidth = GroupCellWidthWithMargins(cell.GetWidth());
+        m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
+      } else if (propagationNeeded) {
+        movedThisTime = group->Reposition();
+      } else {
+        // Don't stop here: a cell further down the worksheet may still be dirty.
+        // Cells can be marked for recalculation non-contiguously (e.g. by
+        // folding/hiding or by asynchronous Maxima output landing in specific
+        // cells), so a clean, non-propagating cell does not imply everything
+        // below it is clean. Keep scanning.
+      }
+      propagationNeeded = movedThisTime || sizeChanged;
 
-        if(cell.GetNext() != NULL)
+      const bool atEnd = (cell.GetNext() == NULL);
+      if (timeout) {
+        if (!atEnd)
           m_recalculateStart = cell.GetNext();
-        else
-          {
-            wxLogMessage(_("Recalculation hit the end of the worksheet => Updating its size (Visited %d cells in %ld ms)"), cellsVisited, stopwatch.Time());
-            m_recalculateStart = {};
-            AdjustSize();
-          }
-        if(stopwatch.Time() > timeSliceMs)
+        else {
+          wxLogMessage(_("Recalculation hit the end of the worksheet => Updating its size (Visited %d cells in %ld ms)"), cellsVisited, stopwatch.Time());
+          m_recalculateStart = {};
+          AdjustSize();
+        }
+        if (stopwatch.Time() > timeSliceMs)
           // Yield to the event loop, but keep m_recalculateStart pointing at the
           // cell we stopped before so the next call resumes there. Returning here
           // (instead of breaking out to the shared tail below) is essential: that
@@ -1026,48 +1032,11 @@ bool Worksheet::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
           // walked, which would drop the resume point and leave every cell past
           // this slice permanently un-recalculated.
           return true;
+      } else if (atEnd) {
+        wxLogMessage(_("Recalculated the whole worksheet at once => Updating its size (Visited %d cells in %ld ms)"), cellsVisited, stopwatch.Time());
       }
     }
-  else
-    {
-      wxStopWatch stopwatch;
-      bool propagationNeeded = true;
-      int cellsVisited = 0;
-      for (auto &cell : OnList(m_recalculateStart.get())) {
-        cellsVisited++;
-        GroupCell *group = static_cast<GroupCell *>(&cell);
-        bool neededRecalc = group->NeedsRecalculation();
-        bool movedThisTime = false;
-        bool sizeChanged = false;
-
-        if (neededRecalc) {
-          int oldHeight = group->GetHeight();
-          sizeChanged = group->Recalculate();
-          if (group->GetHeight() != oldHeight)
-            sizeChanged = true;
-          movedThisTime = true;
-          if (sizeChanged)
-            m_adjustWorksheetSizeNeeded = true;
-
-          int currentWidth = GroupCellWidthWithMargins(cell.GetWidth());
-          m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
-        } else if (propagationNeeded) {
-          movedThisTime = group->Reposition();
-        } else {
-          // Don't stop here: a cell further down the worksheet may still be
-          // dirty. Cells can be marked for recalculation non-contiguously (e.g.
-          // by folding/hiding or by asynchronous Maxima output landing in
-          // specific cells), so a clean, non-propagating cell does not imply
-          // everything below it is clean. Keep scanning to the end.
-        }
-        propagationNeeded = movedThisTime || sizeChanged;
-
-        if(cell.GetNext() == NULL)
-          {
-            wxLogMessage(_("Recalculated the whole worksheet at once => Updating its size (Visited %d cells in %ld ms)"), cellsVisited, stopwatch.Time());
-          }
-      }
-    }
+  }
   // Clear the pending-recalculation marker before AdjustSize(): the whole
   // scheduled range has been walked, so cell positions are valid now and
   // AdjustSize()'s stale-position guard must let this legitimate call through.

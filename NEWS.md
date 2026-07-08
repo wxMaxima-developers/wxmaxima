@@ -1,5 +1,9 @@
 # Current development version
 
+- Internal: the two near-identical copies of the recalculation walk (one for the
+  time-sliced idle path, one for the lay-out-everything-at-once path) were merged
+  into a single loop, so fixes to the cell-processing logic no longer have to be
+  made twice. No behavior change.
 - Bugfix: the "how long did layout take" log message printed a meaningless
   near-zero duration, and the time-sliced layout of the off-screen part of a huge
   worksheet was not actually time-limited. Both were caused by a stopwatch that
