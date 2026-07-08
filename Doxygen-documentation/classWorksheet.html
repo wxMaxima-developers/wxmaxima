@@ -614,13 +614,13 @@ std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&
 <tr class="memitem:a90d7710a76268c86245352edba021ee5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a90d7710a76268c86245352edba021ee5">RecalculateIfNeeded</a> (bool timeout=false)</td></tr>
 <tr class="memdesc:a90d7710a76268c86245352edba021ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actually recalculate the worksheet.  <br /></td></tr>
 <tr class="separator:a90d7710a76268c86245352edba021ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb44db2f3be97c82b6099d8914d2a3e1"><td class="memItemLeft" align="right" valign="top"><a id="acb44db2f3be97c82b6099d8914d2a3e1" name="acb44db2f3be97c82b6099d8914d2a3e1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Recalculate</b> (<a class="el" href="classCell.html">Cell</a> *start)</td></tr>
-<tr class="memdesc:acb44db2f3be97c82b6099d8914d2a3e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a recalculation of the worksheet starting with the cell start. <br /></td></tr>
-<tr class="separator:acb44db2f3be97c82b6099d8914d2a3e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45ae7ea14bdae739c880d6011af30f14"><td class="memItemLeft" align="right" valign="top"><a id="a45ae7ea14bdae739c880d6011af30f14" name="a45ae7ea14bdae739c880d6011af30f14"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Recalculate</b> ()</td></tr>
-<tr class="separator:a45ae7ea14bdae739c880d6011af30f14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe461aa6d0926a930da39ab21e075ebe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#afe461aa6d0926a930da39ab21e075ebe">RequestRecalculation</a> (<a class="el" href="classCell.html">Cell</a> *start)</td></tr>
+<tr class="memdesc:afe461aa6d0926a930da39ab21e075ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a recalculation of the worksheet starting with the cell start.  <br /></td></tr>
+<tr class="separator:afe461aa6d0926a930da39ab21e075ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed8cb6f6c8f39ba930dac38a3e9e35e9"><td class="memItemLeft" align="right" valign="top"><a id="aed8cb6f6c8f39ba930dac38a3e9e35e9" name="aed8cb6f6c8f39ba930dac38a3e9e35e9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>RequestRecalculation</b> ()</td></tr>
+<tr class="memdesc:aed8cb6f6c8f39ba930dac38a3e9e35e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a recalculation of the whole worksheet. See <a class="el" href="classWorksheet.html#afe461aa6d0926a930da39ab21e075ebe" title="Schedule a recalculation of the worksheet starting with the cell start.">RequestRecalculation(Cell*)</a>. <br /></td></tr>
+<tr class="separator:aed8cb6f6c8f39ba930dac38a3e9e35e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34d249bc04233e189ca317b7310e0df3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a34d249bc04233e189ca317b7310e0df3">ClearDocument</a> ()</td></tr>
 <tr class="memdesc:a34d249bc04233e189ca317b7310e0df3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empties the current document.  <br /></td></tr>
 <tr class="separator:a34d249bc04233e189ca317b7310e0df3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2349,6 +2349,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Replace all occurrences of a string. </p>
 <p>Used by the find dialog. </p>
+
+</div>
+</div>
+<a id="afe461aa6d0926a930da39ab21e075ebe" name="afe461aa6d0926a930da39ab21e075ebe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe461aa6d0926a930da39ab21e075ebe">&#9670;&#160;</a></span>RequestRecalculation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::RequestRecalculation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>start</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Schedule a recalculation of the worksheet starting with the cell start. </p>
+<p>This only <em>records</em> where the next layout pass has to start (it marks the group dirty and moves m_recalculateStart); it does not size or position any cell. The actual work - and, crucially, AdjustSize() once the cell positions are correct - happens in <a class="el" href="classWorksheet.html#a90d7710a76268c86245352edba021ee5" title="Actually recalculate the worksheet.">RecalculateIfNeeded()</a>. Calling AdjustSize() (or otherwise reading cell geometry) right after this, without a <a class="el" href="classWorksheet.html#a90d7710a76268c86245352edba021ee5" title="Actually recalculate the worksheet.">RecalculateIfNeeded()</a> in between, reads stale positions. Was named Recalculate(), which wrongly implied it does the layout itself. </p>
 
 </div>
 </div>
