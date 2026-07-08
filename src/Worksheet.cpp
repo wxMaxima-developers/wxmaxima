@@ -1075,10 +1075,13 @@ bool Worksheet::RecalculateIfNeeded(bool timeout) {
           }
       }
     }
+  // Clear the pending-recalculation marker before AdjustSize(): the whole
+  // scheduled range has been walked, so cell positions are valid now and
+  // AdjustSize()'s stale-position guard must let this legitimate call through.
+  m_recalculateStart = {};
   if (m_configuration->GetAdjustWorksheetSizeNeeded())
     AdjustSize();
 
-  m_recalculateStart = {};
   return true;
 }
 
@@ -3447,6 +3450,15 @@ void Worksheet::OnChar(wxKeyEvent &event) {
  * Get maximum x and y in the tree.
  */
 void Worksheet::GetMaxPoint(int *width, int *height) {
+  // The height we return is read off the cells' positions, which are only
+  // meaningful once a scheduled recalculation has finished. Reading them while
+  // one is pending yields a silently-wrong (too small) height. AdjustSize() -
+  // our only caller - guards against that; this assertion surfaces any future
+  // caller that forgets to, instead of shipping a subtly wrong scroll range.
+  wxASSERT_MSG(!m_recalculateStart,
+               wxS("GetMaxPoint() called with a recalculation still pending: "
+                   "cell positions are stale. Run RecalculateIfNeeded() first."));
+
   int currentHeight = m_configuration->GetIndent();
   *width = m_configuration->GetBaseIndent();
 
@@ -3490,6 +3502,22 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
  * Adjust the virtual size and scrollbars.
  */
 void Worksheet::AdjustSize() {
+  // The virtual size is derived from the cell positions (GetMaxPoint reads the
+  // last cell's y). Those positions are only valid once the scheduled layout
+  // pass has actually run. While a recalculation is still pending -
+  // RequestRecalculation() recorded a start point but RecalculateIfNeeded() has
+  // not finished walking the list yet - reading them here would underestimate
+  // the height and, at scroll position 0, leave the worksheet with no scroll
+  // range at all (the bug that made a freshly opened diff-viewer pane
+  // unscrollable). Defer instead: flag the size as needing adjustment and let
+  // RecalculateIfNeeded() call us back once the positions are correct. This
+  // makes "AdjustSize() with stale positions" harmless no matter who triggers
+  // it, rather than relying on every caller to recalculate first.
+  if (m_recalculateStart) {
+    m_configuration->SetAdjustWorksheetSizeNeeded(true);
+    return;
+  }
+
   int width = 40, height = 40;
   int virtualHeight = 40;
   int clientWidth, clientHeight;

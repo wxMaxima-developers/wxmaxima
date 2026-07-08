@@ -9,6 +9,12 @@
 - Internal: Worksheet::Recalculate() was renamed to RequestRecalculation(): it
   only schedules the next layout pass (the actual sizing/positioning happens in
   RecalculateIfNeeded()), and the old name wrongly implied it did the work.
+- Internal: Worksheet::AdjustSize() now defers instead of computing the scroll
+  range from stale cell positions while a recalculation is still pending (it
+  re-runs itself once the positions are correct). This turns a whole class of
+  "adjusted the size before laying out" bugs - the freshly-opened diff pane that
+  would not scroll was one - into a harmless no-op, and a debug assertion flags
+  any code that reads the worksheet height with a recalculation outstanding.
 - Internal: the cell layer no longer knows the Worksheet class at all -
   the first of the document/view state-split blockers is gone. Cells used
   to reach back into the view through Cell::GetWorksheet() (a
