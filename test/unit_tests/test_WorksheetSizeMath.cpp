@@ -91,6 +91,60 @@ SCENARIO("The scroll unit scales with the window but never drops below 10") {
   }
 }
 
+// ComputeWorksheetContentHeight() replays GetMaxPoint's backward walk over the
+// trailing cells. `trailing` runs from the last cell backward; the anchor is the
+// first entry with sizeIsStale && currentY >= 0.
+
+SCENARIO("The content height is pinned to the anchor cell's top") {
+  GIVEN("a single anchor cell (stale size but a valid position)") {
+    const std::vector<TrailingGroupGeometry> trailing = {{true, 1000, 30}};
+    THEN("the height is its top plus its drop, no extra") {
+      REQUIRE(ComputeWorksheetContentHeight(trailing, 10, 5) == 1030);
+    }
+  }
+  GIVEN("cells below the anchor that are stale-and-unpositioned") {
+    // last cell (top), ..., anchor (bottom of the vector).
+    const std::vector<TrailingGroupGeometry> trailing = {
+      {true, -1, 40}, // stale, y<0: adds maxDrop + groupSkip = 50
+      {true, -1, 20}, // stale, y<0: adds maxDrop + groupSkip = 30
+      {true, 500, 15} // anchor: 500 + 15
+    };
+    THEN("their extents accumulate onto the anchor's top+drop") {
+      REQUIRE(ComputeWorksheetContentHeight(trailing, 10, 5) ==
+              500 + 15 + 50 + 30);
+    }
+  }
+}
+
+SCENARIO("Non-stale but unpositioned trailing cells reserve a nominal height") {
+  GIVEN("a not-yet-positioned non-stale cell above the anchor") {
+    const std::vector<TrailingGroupGeometry> trailing = {
+      {false, -1, 999}, // not stale: adds groupSkip + 20 = 30 (maxDrop ignored)
+      {true, 200, 10}   // anchor
+    };
+    THEN("it reserves groupSkip + 20 regardless of its drop") {
+      REQUIRE(ComputeWorksheetContentHeight(trailing, 10, 5) == 200 + 10 + 30);
+    }
+  }
+}
+
+SCENARIO("Without an anchor the height falls back to the base indent") {
+  GIVEN("a walk that ran off the top with no anchor found") {
+    const std::vector<TrailingGroupGeometry> trailing = {
+      {true, -1, 40}, // adds 40 + groupSkip(10) = 50
+      {false, -1, 0}  // adds groupSkip(10) + 20 = 30
+    };
+    THEN("the height is baseIndent plus the accumulated extents") {
+      REQUIRE(ComputeWorksheetContentHeight(trailing, 10, 7) == 7 + 50 + 30);
+    }
+  }
+  GIVEN("no trailing cells at all") {
+    THEN("the height is just the base indent") {
+      REQUIRE(ComputeWorksheetContentHeight({}, 10, 42) == 42);
+    }
+  }
+}
+
 int main(int argc, char *argv[]) {
   return Catch::Session().run(argc, argv);
 }

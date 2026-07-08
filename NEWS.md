@@ -5,6 +5,11 @@
   Worksheet::AdjustSize() into a GUI-free ComputeWorksheetVirtualSize(), so the
   scroll-range contract - which "the pane won't scroll" bugs violate - is now
   covered by a headless unit test instead of only being reachable through the GUI.
+- Internal: the fiddly backward walk in Worksheet::GetMaxPoint() that derives the
+  document height from the trailing cells (skipping past cells whose size or
+  position is not yet trustworthy to an "anchor" cell) was likewise split into a
+  GUI-free ComputeWorksheetContentHeight() and pinned by headless unit tests, so
+  this stale-cell accounting can no longer drift unnoticed.
 - Scrolling to a cell whose position had not been computed yet now forces that
   computation instead of silently giving up, so "scroll to this cell" works even
   in the rare case where the target had no valid position.

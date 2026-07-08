@@ -34,6 +34,57 @@
 #define WORKSHEETSIZEMATH_H
 
 #include <algorithm>
+#include <vector>
+
+//! One trailing group cell's geometry, as GetMaxPoint's height walk needs it.
+struct TrailingGroupGeometry {
+  //! Whether the cell's size still needs recomputing (GroupCell::HasStaleSize).
+  bool sizeIsStale = false;
+  //! The cell's laid-out top position (GetCurrentPoint().y); < 0 = not yet set.
+  int currentY = 0;
+  //! The cell's extent below its baseline (GetMaxDrop()).
+  int maxDrop = 0;
+};
+
+/*! Compute the worksheet's content height from its trailing cells' geometry.
+
+  This is the backward walk Worksheet::GetMaxPoint() runs from the last cell:
+  it accumulates the heights of the cells at the bottom whose position is not yet
+  trustworthy (stale-and-unpositioned, or still-being-laid-out) until it reaches
+  an "anchor" - a cell whose size is stale but whose top position (y) is already
+  valid - and pins the total to that anchor's top plus everything accumulated
+  below it. If the walk runs off the top of the document (no such anchor), the
+  height falls back to the document's base indent plus the accumulated heights.
+
+  \param trailing   The cells starting at the LAST cell and running backward. The
+                    walk stops at (and includes) the first entry that is the
+                    anchor, i.e. sizeIsStale && currentY >= 0.
+  \param groupSkip  The vertical gap between group cells (Configuration::GetGroupSkip).
+  \param baseIndent The document's top margin (Configuration::GetBaseIndent), used
+                    only when there is no anchor.
+
+  Kept GUI-free (no Cell/Configuration dependency) so this fiddly stale-cell
+  accounting can be unit-tested in isolation - see test_WorksheetSizeMath.
+*/
+inline int ComputeWorksheetContentHeight(
+    const std::vector<TrailingGroupGeometry> &trailing, int groupSkip,
+    int baseIndent) {
+  int extraHeight = 0;
+  for (const TrailingGroupGeometry &cell : trailing) {
+    if (cell.sizeIsStale && cell.currentY >= 0)
+      // The anchor: its top position is trusted; add its drop and everything
+      // accumulated below it.
+      return cell.currentY + cell.maxDrop + extraHeight;
+    if (cell.sizeIsStale)
+      // Stale and not yet positioned (currentY < 0): count its own extent.
+      extraHeight += cell.maxDrop + groupSkip;
+    else
+      // Not stale but still unpositioned mid-layout: reserve a nominal height.
+      extraHeight += groupSkip + 20;
+  }
+  return baseIndent + extraHeight;
+}
+
 
 //! The scrollable size + scroll granularity computed for a worksheet.
 struct WorksheetVirtualSize {

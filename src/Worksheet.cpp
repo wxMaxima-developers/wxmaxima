@@ -3481,21 +3481,20 @@ void Worksheet::GetMaxPoint(int *width, int *height) {
   }
   GroupCell *lastCell = GetLastCellInWorksheet();
   if (lastCell) {
-    Cell *walk = lastCell;
-    int extraHeight = 0;
-    while (walk && (!walk->HasStaleSize() || walk->GetCurrentPoint().y < 0)) {
-      if (walk->HasStaleSize()) {
-        extraHeight += walk->GetMaxDrop() + m_configuration->GetGroupSkip();
-      } else {
-        extraHeight += m_configuration->GetGroupSkip() + 20;
-      }
-      walk = walk->GetPrevious();
+    // Collect the trailing cells' geometry (last cell backward, up to and
+    // including the anchor) and let the GUI-free height math replay the walk -
+    // see ComputeWorksheetContentHeight() / test_WorksheetSizeMath.
+    std::vector<TrailingGroupGeometry> trailing;
+    for (Cell *walk = lastCell; walk; walk = walk->GetPrevious()) {
+      const bool stale = walk->HasStaleSize();
+      const int y = walk->GetCurrentPoint().y;
+      trailing.push_back({stale, y, walk->GetMaxDrop()});
+      if (stale && y >= 0)
+        break; // reached the anchor
     }
-    if (walk) {
-      *height = walk->GetCurrentPoint().y + walk->GetMaxDrop() + extraHeight;
-    } else {
-      *height = m_configuration->GetBaseIndent() + extraHeight;
-    }
+    *height = ComputeWorksheetContentHeight(
+        trailing, m_configuration->GetGroupSkip(),
+        m_configuration->GetBaseIndent());
   } else {
     *height = currentHeight;
   }
