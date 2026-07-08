@@ -490,6 +490,9 @@ wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><b>m_memory</b></td>
 <a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_recalculateStart</b></td></tr>
 <tr class="memdesc:a99054f96fd2492ffa0793700f322f52f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where to start recalculation. NULL = No recalculation needed. <br /></td></tr>
 <tr class="separator:a99054f96fd2492ffa0793700f322f52f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa2a7264365c0266f0814ba4de8ca46d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#aaa2a7264365c0266f0814ba4de8ca46d">m_adjustWorksheetSizeNeeded</a> = false</td></tr>
+<tr class="memdesc:aaa2a7264365c0266f0814ba4de8ca46d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the worksheet's virtual (scroll) size need re-adjusting?  <br /></td></tr>
+<tr class="separator:aaa2a7264365c0266f0814ba4de8ca46d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13e6b9424a6488e1e884e1c032f8e234"><td class="memItemLeft" align="right" valign="top"><a id="a13e6b9424a6488e1e884e1c032f8e234" name="a13e6b9424a6488e1e884e1c032f8e234"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>m_pointer_x</b> = -1</td></tr>
 <tr class="memdesc:a13e6b9424a6488e1e884e1c032f8e234"><td class="mdescLeft">&#160;</td><td class="mdescRight">The x position of the mouse pointer. <br /></td></tr>
@@ -2724,6 +2727,32 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Update the table of contents. </p>
 <p>This function actually only schedules the update of the table-of-contents-tab. The actual update is done when <a class="el" href="classwxMaxima.html">wxMaxima</a> is idle. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="aaa2a7264365c0266f0814ba4de8ca46d" name="aaa2a7264365c0266f0814ba4de8ca46d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa2a7264365c0266f0814ba4de8ca46d">&#9670;&#160;</a></span>m_adjustWorksheetSizeNeeded</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::m_adjustWorksheetSizeNeeded = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does the worksheet's virtual (scroll) size need re-adjusting? </p>
+<p>Set when a cell changed height (via the callback the ctor registers on our <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>, so cells can flag it without depending on <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>) or when layout is scheduled; consumed by <a class="el" href="classWorksheet.html#a90d7710a76268c86245352edba021ee5" title="Actually recalculate the worksheet.">RecalculateIfNeeded()</a>, which calls AdjustSize() once the cell positions are valid. Layout-scheduling state that belongs next to m_recalculateStart, not on the shared <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>. </p>
 
 </div>
 </div>
