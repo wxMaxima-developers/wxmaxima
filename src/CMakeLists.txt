@@ -567,10 +567,15 @@ add_custom_command(
 add_custom_target(build_license.h DEPENDS ${CMAKE_BINARY_DIR}/wxm_license.h)
 add_dependencies(wxmaxima build_license.h)
 
+file(COPY "${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES.txt" DESTINATION "${CMAKE_BINARY_DIR}")
+if(WIN32)
+    file(READ "${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES-Webview.txt" webview_license)
+    file(APPEND "${CMAKE_BINARY_DIR}/THIRD-PARTY-NOTICES.txt" "${webview_license}")
+endif()
 add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/wxm_thirdparty_notices.h
         COMMAND ${CMAKE_COMMAND} ARGS
-        -DBIN2H_SOURCE_FILE="${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES.txt"
+        -DBIN2H_SOURCE_FILE="${CMAKE_BINARY_DIR}/THIRD-PARTY-NOTICES.txt"
         -DBIN2H_VARIABLE_NAME=wxm_thirdparty_notices
         -DBIN2H_HEADER_FILE="${CMAKE_BINARY_DIR}/wxm_thirdparty_notices.h"
         -DBIN2H="${CMAKE_SOURCE_DIR}/cmake-bin2h/bin2h.cmake"
@@ -580,6 +585,9 @@ add_custom_command(
 )
 add_custom_target(build_thirdparty_notices.h DEPENDS ${CMAKE_BINARY_DIR}/wxm_thirdparty_notices.h)
 add_dependencies(wxmaxima build_thirdparty_notices.h)
+
+
+
 
 add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/wxm_manual_anchors_xml.h
