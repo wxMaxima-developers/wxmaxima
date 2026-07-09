@@ -485,6 +485,20 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error empty_file.wxm)
 
+# Verify wxMaxima leaves behind no stray Maxima/gnuplot child process after a
+# batch run (it must kill them on shutdown; a survivor is a leak and also keeps
+# the inherited ctest pipe open -> hang). The check is a cmake -P driver so it
+# runs on both Linux and Windows CI. RUN_SERIAL so no sibling test's Maxima is
+# alive concurrently (which would otherwise look like a stray of this run).
+add_test(
+    NAME wxmaxima_no_stray_children
+    COMMAND ${CMAKE_COMMAND}
+            -DWXMAXIMA=$<TARGET_FILE:wxmaxima>
+            -DTESTFILE=stray_process_check.wxm
+            -DWORKDIR=${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+            -P ${CMAKE_CURRENT_SOURCE_DIR}/check_no_stray_procs.cmake)
+set_tests_properties(wxmaxima_no_stray_children PROPERTIES RUN_SERIAL TRUE)
+
 add_test(
     NAME wxmaxima_makelist
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files

@@ -1,5 +1,9 @@
 # Current development version
 
+- Internal: a new test (wxmaxima_no_stray_children) checks that a wxMaxima batch
+  run leaves behind no stray Maxima or gnuplot process - wxMaxima must terminate
+  the child processes it launches before it exits. It is a portable cmake -P
+  driver that runs on both the Linux and Windows CI.
 - The Microsoft Edge WebView2 loader license is now included in the third-party
   notices only on Windows builds that actually use it, i.e. built with webview
   support - not on Linux/Mac, nor on a Windows build with webview disabled.

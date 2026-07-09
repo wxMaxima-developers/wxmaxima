@@ -1,0 +1,17 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 24.02.0 ] */
+/* [wxMaxima: comment start ]
+Input for the no_stray_children test: it draws a plot so that Maxima
+launches a gnuplot process, then the test verifies that neither that
+gnuplot nor Maxima itself outlive the wxMaxima batch run. Rendering to a
+png file (rather than a window) keeps this working on a headless runner.
+   [wxMaxima: comment end   ] */
+/* [wxMaxima: input   start ] */
+draw2d(terminal=png, file_name="stray_process_check_plot",
+       explicit(sin(x),x,-5,5))$
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima"$
