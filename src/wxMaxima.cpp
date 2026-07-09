@@ -1279,6 +1279,15 @@ static void KillAndDetachProcess(wxProcess *&process) {
   if (!process)
     return;
   long pid = process->GetPid();
+  // Detach FIRST, then kill by pid. Detach() severs the wxProcess<->wxMaxima
+  // bond and hands the wxProcess its own lifetime (it self-deletes when the OS
+  // process ends). Killing first and detaching afterwards races that
+  // termination handling: the wxProcess may already have self-destructed by the
+  // time we call Detach() on it -> use-after-free (this crashed batch/multiwindow
+  // teardown). After Detach() we must not touch `process` again, so drop our
+  // reference before issuing the kill.
+  process->Detach();
+  process = NULL;
   if ((pid > 0) && wxProcess::Exists(pid)) {
 #ifdef __WINDOWS__
     // As in KillMaxima: taskkill /T for the whole tree, and wxEXEC_NOEVENTS so
@@ -1292,8 +1301,6 @@ static void KillAndDetachProcess(wxProcess *&process) {
       wxProcess::Kill(pid, wxSIGKILL, wxKILL_CHILDREN);
 #endif
   }
-  process->Detach();
-  process = NULL;
 }
 
 wxMaxima::~wxMaxima() {
