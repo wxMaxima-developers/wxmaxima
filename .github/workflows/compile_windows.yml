@@ -213,9 +213,28 @@ jobs:
             # wxMaxima.cpp) so the timed-out tests reveal where teardown wedges,
             # past the point where wxLog logging is disabled.
             $env:WXM_SHUTDOWN_TRACE = "1"
+            # Temporary: the teardown wedge blocks writes to the bound
+            # console/pipe, so the watchdog (main.cpp) dumps all thread stacks to
+            # a private file here instead of stderr. Point it at the build dir and
+            # print any that appear once ctest is done (see the next step).
+            $env:WXM_WATCHDOG_DIR = (Get-Location).Path
             ctest -LE "unittest|needs_posix" -E "multithreadtest" --repeat after-timeout:2 -j 2 --output-on-failure
             cd ..
             cd ..
+      - name: Show teardown watchdog stack dumps
+        if: always()
+        shell: pwsh
+        run: |
+            $logs = Get-ChildItem -Path wxMaxima/build -Filter "wxmaxima_watchdog_*.log" -Recurse -ErrorAction SilentlyContinue
+            if (-not $logs) {
+              Write-Host "No watchdog log files found (no teardown wedge caught this run)."
+            } else {
+              foreach ($f in $logs) {
+                Write-Host "===== $($f.FullName) ====="
+                Get-Content $f.FullName
+                Write-Host ""
+              }
+            }
 
   MSVC:
     permissions:
