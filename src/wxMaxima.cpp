@@ -1264,14 +1264,44 @@ void wxMaxima::StartAutoSaveTimer() {
   m_autoSaveTimer.StartOnce(60000 * m_configuration.AutosaveMinutes());
 }
 
+// Kill a child process wxMaxima launched (a gnuplot process) if it is still
+// running, then sever the wxProcess<->wxMaxima bond so a late termination event
+// is not delivered to the destroyed wxMaxima.
+//
+// Plain Detach() (what this used to do) leaves the OS process running. That is a
+// leak in its own right, and it bites hard in --batch/--pipe runs: the gnuplot
+// terminal-capability query is launched asynchronously at startup, so on a fast
+// batch shutdown it is often still alive - and, having inherited wxMaxima's
+// stdout/stderr, a surviving gnuplot keeps that pipe open, so the parent reading
+// it (e.g. the CI's ctest) never sees EOF and hangs until its timeout. So kill
+// it first, the same way KillMaxima kills Maxima.
+static void KillAndDetachProcess(wxProcess *&process) {
+  if (!process)
+    return;
+  long pid = process->GetPid();
+  if ((pid > 0) && wxProcess::Exists(pid)) {
+#ifdef __WINDOWS__
+    // As in KillMaxima: taskkill /T for the whole tree, and wxEXEC_NOEVENTS so
+    // the synchronous wait does not re-enter the event loop during teardown.
+    wxArrayString out, err;
+    wxExecute(wxString::Format("taskkill /PID %ld /F /T", pid), out, err,
+              wxEXEC_SYNC | wxEXEC_NOEVENTS);
+#else
+    wxProcess::Kill(pid, wxSIGTERM, wxKILL_CHILDREN);
+    if (wxProcess::Exists(pid))
+      wxProcess::Kill(pid, wxSIGKILL, wxKILL_CHILDREN);
+#endif
+  }
+  process->Detach();
+  process = NULL;
+}
+
 wxMaxima::~wxMaxima() {
-  // If the gnuplot processes still exist we sever bonds with them
-  // so they don't inform us about anything if wxMaxima no more
-  // exists
-  if(m_gnuplotTerminalQueryProcess)
-    m_gnuplotTerminalQueryProcess ->Detach();
-  if(m_gnuplotProcess)
-    m_gnuplotProcess ->Detach();
+  // The gnuplot processes wxMaxima started must not outlive it: kill any that
+  // are still running (and sever the bond so a late event is not delivered to
+  // the destroyed wxMaxima). See KillAndDetachProcess above.
+  KillAndDetachProcess(m_gnuplotTerminalQueryProcess);
+  KillAndDetachProcess(m_gnuplotProcess);
 
   // Kill maxima
   WxmShutdownTrace("~wxMaxima: calling KillMaxima");

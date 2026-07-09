@@ -1,5 +1,12 @@
 # Current development version
 
+- Bugfix: wxMaxima no longer leaves an orphaned gnuplot process running after it
+  exits. The gnuplot terminal-capability query started at launch is
+  asynchronous, so a quick session (e.g. a `--batch` run) could exit while it
+  was still running; wxMaxima merely detached from it instead of ending it, so
+  it kept running - and, having inherited wxMaxima's output pipe, could keep a
+  `--pipe` parent's reader waiting. wxMaxima now kills the gnuplot processes it
+  launched on shutdown, as it already did for Maxima.
 - Internal: a new test (wxmaxima_no_stray_children) checks that a wxMaxima batch
   run leaves behind no stray Maxima or gnuplot process - wxMaxima must terminate
   the child processes it launches before it exits. It is a portable cmake -P
