@@ -572,6 +572,13 @@ file(COPY "${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES.txt" DESTINATION "${CMAKE_BIN
 # Windows AND only when wxWidgets is built with webview support, so only append
 # its notice in that case - not on Linux/Mac, nor on a Windows build with
 # webview disabled.
+#
+# Remark: (wxWidgets) wxWebView supports two rendering engines on Windows:
+# - the old Internet Explorer (IE) backend
+# - the modern Edge backend
+# The MS Edge WebView2 loader is only needed for the Edge backend, so it
+# might be possible to use Webview, but not the Edge backend.
+
 if(WIN32 AND USE_WEBVIEW)
     file(READ "${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES-Webview.txt" webview_license)
     file(APPEND "${CMAKE_BINARY_DIR}/THIRD-PARTY-NOTICES.txt" "${webview_license}")
