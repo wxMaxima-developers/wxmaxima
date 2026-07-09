@@ -1,5 +1,11 @@
 # Current development version
 
+- Internal: first step of splitting EditorCell along the only axis that really
+  diverges - code vs. prose. Two subclasses (code input incl. the Maxima-answer
+  editor; text and all sectioning levels) are now constructed through a new
+  EditorCell::Create() factory at every construction site. They add no behavior
+  yet - this slice only establishes the hierarchy so later slices can move the
+  code-only styling/tokenizer/paren state off the text cells. No behavior change.
 - Bugfix: wxMaxima no longer leaves an orphaned gnuplot process running after it
   exits. The gnuplot terminal-capability query started at launch is
   asynchronous, so a quick session (e.g. a `--batch` run) could exit while it

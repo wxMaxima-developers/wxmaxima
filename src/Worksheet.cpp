@@ -2371,7 +2371,8 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
   bool autoEvaluate = false;
   // If we still haven't a cell to put the answer in we now create one.
   if (!m_cellPointers.m_answerCell) {
-    auto answerCell = std::make_unique<EditorCell>(group, m_configuration);
+    auto answerCell =
+      EditorCell::Create(group, m_configuration, MC_TYPE_INPUT);
     m_cellPointers.m_answerCell = answerCell;
     answerCell->SetType(MC_TYPE_INPUT);
 

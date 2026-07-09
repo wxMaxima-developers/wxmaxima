@@ -55,7 +55,7 @@
 
   \todo Draw only tokens that are in the redraw region.
 */
-class EditorCell final : public Cell
+class EditorCell : public Cell
 {
 private:
 #if wxUSE_ACCESSIBILITY
@@ -72,6 +72,18 @@ public:
   //! The constructor
   EditorCell(GroupCell *group, Configuration *config, wxString text = {});
   EditorCell(GroupCell *group, const EditorCell &cell);
+
+  /*! Construct the EditorCell subtype (code vs. text/sectioning) matching type.
+
+    All EditorCells should be created through this factory rather than
+    constructed directly, so the concrete subclass always matches the cell's
+    role. Code cells (MC_TYPE_INPUT, and the editor Maxima's questions are
+    answered in) become one subclass; text and all sectioning levels become the
+    other. See the EditorCell-split plan.
+   */
+  static std::unique_ptr<EditorCell> Create(GroupCell *group,
+                                            Configuration *config, CellType type,
+                                            wxString text = {});
   void UpdateSelectionString();
   // The selection/cursor setters clamp their argument to a valid index into the
   // current text via ClampToText(), so m_selectionStart / m_selectionEnd are

@@ -93,6 +93,48 @@ wxString EditorCell::EscapeHTMLChars(wxString input) {
 
 DEFINE_CELL(EditorCell)
 
+// --- EditorCell split, slice 1 -------------------------------------------
+// Two subclasses along the only axis that actually diverges: code vs. prose.
+// CodeEditorCell is Maxima input (and the editor Maxima's questions are
+// answered in - those expect Maxima input too); TextEditorCell is text and all
+// sectioning levels (which differ only in font size). For now they add NO
+// behavior: all logic still lives in EditorCell keyed on m_type. Construction
+// is funnelled through EditorCell::Create so every EditorCell is born as the
+// right subtype. Because nothing is overridden yet, an in-place "Convert to
+// code/comment/..." (which flips m_type without rebuilding) leaving an instance
+// of the "wrong" subclass is harmless until behavior moves into overrides - a
+// later slice, which will also make that conversion replace the editable.
+// They live here rather than in the header because nothing outside this file
+// needs to name them yet; they only reach the world through Create()/Copy().
+class CodeEditorCell final : public EditorCell {
+public:
+  CodeEditorCell(GroupCell *group, Configuration *config, wxString text = {})
+    : EditorCell(group, config, std::move(text)) {}
+  CodeEditorCell(GroupCell *group, const CodeEditorCell &cell)
+    : EditorCell(group, cell) {}
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+};
+
+class TextEditorCell final : public EditorCell {
+public:
+  TextEditorCell(GroupCell *group, Configuration *config, wxString text = {})
+    : EditorCell(group, config, std::move(text)) {}
+  TextEditorCell(GroupCell *group, const TextEditorCell &cell)
+    : EditorCell(group, cell) {}
+  std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+};
+
+DEFINE_CELL_COPY(CodeEditorCell)
+DEFINE_CELL_COPY(TextEditorCell)
+
+std::unique_ptr<EditorCell> EditorCell::Create(GroupCell *group,
+                                               Configuration *config,
+                                               CellType type, wxString text) {
+  if ((type == MC_TYPE_INPUT) || (type == MC_TYPE_PROMPT))
+    return std::make_unique<CodeEditorCell>(group, config, std::move(text));
+  return std::make_unique<TextEditorCell>(group, config, std::move(text));
+}
+
 void EditorCell::AddDrawParameter(wxString param) {
   SaveValue();
 

@@ -569,8 +569,8 @@ std::unique_ptr<Cell> MathParser::ParseCellTag(wxXmlNode *node, int depth) {
     } else if (children->GetName() == wxS("input")) {
       auto editor = ParseTag(children->GetChildren(), true, depth);
       if (!editor)
-        editor = std::make_unique<EditorCell>(group.get(), m_configuration,
-                                              _("Bug: Missing contents"));
+        editor = EditorCell::Create(group.get(), m_configuration, MC_TYPE_INPUT,
+                                    _("Bug: Missing contents"));
       if (editor)
         group->SetEditableContent(editor->GetValue());
     } else {
@@ -687,8 +687,10 @@ MathParser::HandleNullPointer(std::unique_ptr<Cell> &&cell) {
 }
 
 std::unique_ptr<Cell> MathParser::ParseEditorTag(wxXmlNode *node, int WXUNUSED(depth)) {
-  auto editor = std::make_unique<EditorCell>(m_group, m_configuration);
   wxString type = node->GetAttribute(wxS("type"), wxS("input"));
+  auto editor = EditorCell::Create(
+    m_group, m_configuration,
+    (type == wxS("input")) ? MC_TYPE_INPUT : MC_TYPE_TEXT);
   if (type == wxS("input"))
     editor->SetType(MC_TYPE_INPUT);
   else if (type == wxS("text"))

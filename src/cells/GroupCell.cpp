@@ -71,8 +71,9 @@ GroupCell::GroupCell(Configuration *config, GroupType groupType,
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
 
-  std::unique_ptr<EditorCell> editor =
-    std::make_unique<EditorCell>(this, m_configuration, initString);
+  std::unique_ptr<EditorCell> editor = EditorCell::Create(
+    this, m_configuration,
+    (groupType == GC_TYPE_CODE) ? MC_TYPE_INPUT : MC_TYPE_TEXT, initString);
   AppendInput(std::move(editor));
 
   SetGroupType(groupType);
