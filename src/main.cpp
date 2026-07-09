@@ -474,14 +474,40 @@ static void DumpAllThreadStacks() {
 }
 
 static void ShutdownWatchdogThread() {
-  // A normal shutdown returns from main (and thus kills this detached thread)
-  // within a second or so of the main loop ending, so simply staying alive for
-  // this long after that point *is* the wedge -- no matter whether it sits
-  // before OnExit, inside OnExit's tail, or in the wx/CRT cleanup that runs
-  // after OnExit returns.
+  // DIAGNOSTIC HEARTBEAT (see [[project-msw-teardown-wedge]]). The file-based
+  // dump from run 28989397116 showed EVERY watchdog log holding only the
+  // "armed" line and the failing test still reported ***Timeout 380s (ctest's
+  // kill), NOT our TerminateProcess -- i.e. the watchdog never fired even on a
+  // "wedged" run. That is the signature of the wxmaxima process EXITING
+  // normally (~1 s after main loop ended), which kills this detached thread
+  // before its 120 s elapses; the 380 s hang would then be a surviving
+  // descendant (maxima/gnuplot) holding the inherited stdout/stderr pipe open
+  // so ctest never sees EOF -- NOT a teardown wedge at all.
+  //
+  // To tell "process genuinely hung" from "process exited, pipe held open",
+  // emit a heartbeat every 2 s (each flushed so it survives an abrupt exit)
+  // instead of one long sleep. How far the heartbeats get = how long this
+  // process actually lives:
+  //   only "armed"                 -> the detached thread never ran
+  //   "thread started", no beats   -> process exited within ~2 s
+  //   beats stop at ~N s (<120)    -> process exited at N s (clean exit; the
+  //                                   ctest timeout is then a pipe/child leak)
+  //   beats reach 120 s + a dump   -> genuinely hung (real teardown wedge)
+  WdWrite("watchdog thread body entered; heartbeating every 2 s.\r\n");
+  if (g_watchdogLog != INVALID_HANDLE_VALUE)
+    FlushFileBuffers(g_watchdogLog);
   constexpr int budgetMs = 120000;
-  std::this_thread::sleep_for(std::chrono::milliseconds(budgetMs));
+  constexpr int stepMs = 2000;
   char line[160];
+  for (int waited = stepMs; waited <= budgetMs; waited += stepMs) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(stepMs));
+    snprintf(line, sizeof(line),
+             "heartbeat: process alive %d s after the main loop ended\r\n",
+             waited / 1000);
+    WdWrite(line);
+    if (g_watchdogLog != INVALID_HANDLE_VALUE)
+      FlushFileBuffers(g_watchdogLog);
+  }
   snprintf(line, sizeof(line),
            "process still alive %d s after the main loop ended - the teardown "
            "is wedged. Dumping every thread's stack:\r\n",
