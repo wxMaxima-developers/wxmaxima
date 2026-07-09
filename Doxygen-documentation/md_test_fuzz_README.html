@@ -81,14 +81,14 @@ $(function() {
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>fuzz_mathparser</code>   </td><td class="markdownTableBodyNone">the MathML-like <code>content.xml</code> of <code>.wxmx</code> via <code>MathParser::ParseTag</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s rich 2<a class="el" href="classD.html">D</a> output: fractions, matrices, integrals, sub/superscripts, …   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md858"></a>
+<h1><a class="anchor" id="autotoc_md854"></a>
 Building (requires Clang)</h1>
 <p>libFuzzer is a Clang feature, so configure a separate build directory with a Clang compiler and <code>-DWXM_FUZZ=ON</code>:</p>
 <div class="fragment"><div class="line">cmake -S . -B build-fuzz -G Ninja \</div>
 <div class="line">      -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=clang++ -DWXM_FUZZ=ON</div>
 <div class="line">ninja -C build-fuzz fuzz_wxm fuzz_mathparser</div>
 </div><!-- fragment --><p>The whole application (minus <code><a class="el" href="main_8cpp.html" title="The file that defines the starting point of the program.">main.cpp</a></code>, which holds libFuzzer's own <code>main()</code>) is compiled with <code>-fsanitize=fuzzer-no-link,address</code>; the targets link with <code>-fsanitize=fuzzer,address</code>.</p>
-<h1><a class="anchor" id="autotoc_md859"></a>
+<h1><a class="anchor" id="autotoc_md855"></a>
 Running</h1>
 <p>The harness backs the parser with a real (hidden) <code><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></code>, and wxGTK routes font/DC work through GTK, so a display is needed — run under <code>Xvfb</code>:</p>
 <div class="fragment"><div class="line">xvfb-run -a ./build-fuzz/src/fuzz_wxm        test/fuzz/corpus_wxm</div>
@@ -96,10 +96,10 @@ Running</h1>
 </div><!-- fragment --><p>Useful flags: <code>-max_total_time=600</code> (stop after N s), <code>-timeout=20</code> (per-input), <code>-rss_limit_mb=4096</code>, <code>-artifact_prefix=…/</code> (where crashing inputs are saved).</p>
 <p>To reproduce a saved crash:</p>
 <div class="fragment"><div class="line">xvfb-run -a ./build-fuzz/src/fuzz_wxm path/to/crash-&lt;hash&gt;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md860"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md856"></a>
 Corpus</h1>
 <p><code>corpus_wxm/</code> and <code>corpus_mathparser/</code> hold a small set of representative seeds (<code>.wxm</code> files and extracted <code>content.xml</code>). libFuzzer grows the corpus in place as it discovers new code paths; commit genuinely new, minimised inputs to turn them into permanent regression seeds.</p>
-<h1><a class="anchor" id="autotoc_md861"></a>
+<h1><a class="anchor" id="autotoc_md857"></a>
 Notes</h1>
 <ul>
 <li>Each cell construction triggers layout, so throughput is modest (~15–30 exec/s) — this is intentional (it fuzzes parse <b>and</b> layout).</li>
