@@ -5168,12 +5168,13 @@ bool wxMaxima::SaveFile(bool forceSave) {
 }
 
 void wxMaxima::ReadStdErr() {
-  // Maxima will never send us any data via stderr after it has finished
-  // starting up and will send data via stdout only in rare cases:
-  // It rather sends us the data over the network.
-  //
-  // If something is severely broken this might not be true, though, and we want
-  // to inform the user about it.
+  // Maxima sends us its actual results over the network socket, not via its
+  // stdout/stderr. But those streams are not silent after startup: in
+  // particular Maxima forwards the stdout and stderr of the gnuplot process it
+  // launches, so plotting errors and warnings (and the "End of animation
+  // sequence" / Fontconfig / QSocketNotifier chatter filtered below) arrive
+  // here. We also want to surface anything that turns up if something is
+  // severely broken. Hence we keep reading and reporting both streams.
 
   if (m_maximaProcess == NULL)
     return;
