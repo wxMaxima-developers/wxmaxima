@@ -313,9 +313,7 @@ if(COMPILE_SUCCEEDED)
 endif()
 
 if(WIN32)
-    # dbghelp: StackWalk64()/SymFromAddr() for the WXM_SHUTDOWN_TRACE teardown
-    # watchdog in main.cpp.
-    target_link_libraries(wxmaxima ws2_32 dbghelp)
+    target_link_libraries(wxmaxima ws2_32)
 endif()
 
 # ---------------------------------------------------------------------------

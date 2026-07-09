@@ -44,13 +44,6 @@
 #include "Configuration.h"
 #include "Compat.h"
 
-// TEMPORARY shutdown tracing to find where wxMaxima wedges during teardown on
-// the Windows CI (the hang happens after wxLog::EnableLogging(false), so it uses
-// raw fprintf(stderr) rather than wxLogMessage). Silent unless the
-// WXM_SHUTDOWN_TRACE environment variable is set, so it is a no-op in normal use
-// on every platform. Remove once the teardown hang is fixed.
-void WxmShutdownTrace(const char *where);
-
 /*! Interface to the Maxima process
  *
  * Eventually this class will be the entire stand-alone Maxima

@@ -54,8 +54,6 @@
 #include <wx/tipdlg.h>
 #include <wx/utils.h>
 #include <wx/wx.h>
-#include <chrono>
-#include <thread>
 #include <vector>
 #ifdef __WXMSW__
 #include <windows.h>
@@ -63,10 +61,6 @@
 #include <fcntl.h>   // _O_TEXT
 #include <cstdio>    // freopen(), _fdopen(), stdout/stderr/stdin
 #include <cstdint>   // intptr_t
-#include <cstring>      // memset() in the teardown watchdog
-#include <cwchar>       // _snwprintf()/wcscpy() for the watchdog log path
-#include <dbghelp.h>    // SymInitialize()/StackWalk64() for the teardown watchdog
-#include <tlhelp32.h>   // CreateToolhelp32Snapshot() to enumerate our threads
 #endif
 
 #include "dialogs/ConfigDialogue.h"
@@ -338,221 +332,6 @@ void MyApp::RestoreConsoleMode() {
   CloseHandle(conIn);
 }
 
-// ---------------------------------------------------------------------------
-// TEMPORARY teardown watchdog (see [[project-msw-teardown-wedge]]).
-//
-// On MinGW/wxMSW CI the batch run `wxmaxima_batch_emptyFile` intermittently
-// wedges *after* the main loop has ended but *before* MyApp::OnExit is entered
-// -- i.e. inside wx's own post-main-loop cleanup, where we have almost no code
-// of our own. WXM_SHUTDOWN_TRACE markers pin the boundary but cannot say which
-// thread the main thread is waiting on. This watchdog fills that gap: armed
-// once the main loop returns, it waits a bounded time for OnExit to be reached
-// and, if it is not, suspends and unwinds every thread in the process to
-// stderr so the CI log shows exactly where the wedge sits, then terminates so
-// the test reports promptly instead of being killed (with its output kept)
-// only at ctest's 380 s timeout.
-//
-// Entirely opt-in via WXM_SHUTDOWN_TRACE and Windows-only; a no-op stub is
-// compiled everywhere else.
-//
-// CRITICAL: the dump goes to a private file via raw WriteFile, NOT to
-// stdout/stderr. The 2026-07-09 CI run proved the wedge blocks writes to the
-// bound console/pipe: after g_stats.Report() prints, the very next fprintf(
-// stderr) marker never appears, and neither did an earlier stderr-based dump --
-// the hung main thread holds the CRT stdio lock, so anything the watchdog
-// fprintf'd blocked on it too. A dedicated file handle shares no lock with the
-// jammed stdio, so it always gets through; CI prints the file after the test.
-static HANDLE g_watchdogLog = INVALID_HANDLE_VALUE;
-
-// Append a NUL-terminated string to the watchdog log file (raw WriteFile, no
-// CRT stdio -> cannot block on the lock the wedged main thread holds).
-static void WdWrite(const char *s) {
-  if (g_watchdogLog == INVALID_HANDLE_VALUE || s == nullptr)
-    return;
-  DWORD written = 0;
-  WriteFile(g_watchdogLog, s, static_cast<DWORD>(strlen(s)), &written, nullptr);
-}
-
-static void DumpOneThreadStack(HANDLE proc, DWORD tid) {
-  char line[512];
-  HANDLE th = OpenThread(THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION |
-                             THREAD_SUSPEND_RESUME,
-                         FALSE, tid);
-  if (th == nullptr) {
-    snprintf(line, sizeof(line), "  (could not open thread %lu)\r\n",
-             static_cast<unsigned long>(tid));
-    WdWrite(line);
-    return;
-  }
-  SuspendThread(th);
-  CONTEXT ctx;
-  memset(&ctx, 0, sizeof(ctx));
-  ctx.ContextFlags = CONTEXT_FULL;
-  if (GetThreadContext(th, &ctx)) {
-    STACKFRAME64 frame;
-    memset(&frame, 0, sizeof(frame));
-    DWORD machine = 0;
-#if defined(_M_X64) || defined(__x86_64__)
-    machine = IMAGE_FILE_MACHINE_AMD64;
-    frame.AddrPC.Offset = ctx.Rip;
-    frame.AddrFrame.Offset = ctx.Rbp;
-    frame.AddrStack.Offset = ctx.Rsp;
-#elif defined(_M_IX86) || defined(__i386__)
-    machine = IMAGE_FILE_MACHINE_I386;
-    frame.AddrPC.Offset = ctx.Eip;
-    frame.AddrFrame.Offset = ctx.Ebp;
-    frame.AddrStack.Offset = ctx.Esp;
-#endif
-    frame.AddrPC.Mode = AddrModeFlat;
-    frame.AddrFrame.Mode = AddrModeFlat;
-    frame.AddrStack.Mode = AddrModeFlat;
-
-    snprintf(line, sizeof(line), "--- thread %lu ---\r\n",
-             static_cast<unsigned long>(tid));
-    WdWrite(line);
-    for (int depth = 0; machine != 0 && depth < 64; ++depth) {
-      if (!StackWalk64(machine, proc, th, &frame, &ctx, nullptr,
-                       SymFunctionTableAccess64, SymGetModuleBase64, nullptr))
-        break;
-      DWORD64 addr = frame.AddrPC.Offset;
-      if (addr == 0)
-        break;
-      char symbuf[sizeof(SYMBOL_INFO) + 256];
-      memset(symbuf, 0, sizeof(symbuf));
-      SYMBOL_INFO *sym = reinterpret_cast<SYMBOL_INFO *>(symbuf);
-      sym->SizeOfStruct = sizeof(SYMBOL_INFO);
-      sym->MaxNameLen = 255;
-      DWORD64 disp = 0;
-      if (SymFromAddr(proc, addr, &disp, sym))
-        snprintf(line, sizeof(line), "  #%d 0x%llx %s +0x%llx\r\n", depth,
-                 static_cast<unsigned long long>(addr), sym->Name,
-                 static_cast<unsigned long long>(disp));
-      else
-        snprintf(line, sizeof(line), "  #%d 0x%llx (no symbol)\r\n", depth,
-                 static_cast<unsigned long long>(addr));
-      WdWrite(line);
-    }
-  } else {
-    snprintf(line, sizeof(line), "  thread %lu: GetThreadContext failed\r\n",
-             static_cast<unsigned long>(tid));
-    WdWrite(line);
-  }
-  ResumeThread(th);
-  CloseHandle(th);
-}
-
-static void DumpAllThreadStacks() {
-  char line[128];
-  HANDLE proc = GetCurrentProcess();
-  SymSetOptions(SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS | SYMOPT_LOAD_LINES);
-  SymInitialize(proc, nullptr, TRUE);
-  const DWORD myPid = GetCurrentProcessId();
-  const DWORD watchdogTid = GetCurrentThreadId();
-  HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
-  if (snap == INVALID_HANDLE_VALUE) {
-    snprintf(line, sizeof(line), "CreateToolhelp32Snapshot failed (%lu)\r\n",
-             static_cast<unsigned long>(GetLastError()));
-    WdWrite(line);
-    SymCleanup(proc);
-    return;
-  }
-  THREADENTRY32 te;
-  te.dwSize = sizeof(te);
-  if (Thread32First(snap, &te)) {
-    do {
-      // th32OwnerProcessID is only valid if the entry is at least this big.
-      if (te.dwSize >= FIELD_OFFSET(THREADENTRY32, th32OwnerProcessID) +
-                           sizeof(te.th32OwnerProcessID)) {
-        if (te.th32OwnerProcessID == myPid && te.th32ThreadID != watchdogTid)
-          DumpOneThreadStack(proc, te.th32ThreadID);
-      }
-      te.dwSize = sizeof(te);
-    } while (Thread32Next(snap, &te));
-  }
-  CloseHandle(snap);
-  SymCleanup(proc);
-}
-
-static void ShutdownWatchdogThread() {
-  // DIAGNOSTIC HEARTBEAT (see [[project-msw-teardown-wedge]]). The file-based
-  // dump from run 28989397116 showed EVERY watchdog log holding only the
-  // "armed" line and the failing test still reported ***Timeout 380s (ctest's
-  // kill), NOT our TerminateProcess -- i.e. the watchdog never fired even on a
-  // "wedged" run. That is the signature of the wxmaxima process EXITING
-  // normally (~1 s after main loop ended), which kills this detached thread
-  // before its 120 s elapses; the 380 s hang would then be a surviving
-  // descendant (maxima/gnuplot) holding the inherited stdout/stderr pipe open
-  // so ctest never sees EOF -- NOT a teardown wedge at all.
-  //
-  // To tell "process genuinely hung" from "process exited, pipe held open",
-  // emit a heartbeat every 2 s (each flushed so it survives an abrupt exit)
-  // instead of one long sleep. How far the heartbeats get = how long this
-  // process actually lives:
-  //   only "armed"                 -> the detached thread never ran
-  //   "thread started", no beats   -> process exited within ~2 s
-  //   beats stop at ~N s (<120)    -> process exited at N s (clean exit; the
-  //                                   ctest timeout is then a pipe/child leak)
-  //   beats reach 120 s + a dump   -> genuinely hung (real teardown wedge)
-  WdWrite("watchdog thread body entered; heartbeating every 2 s.\r\n");
-  if (g_watchdogLog != INVALID_HANDLE_VALUE)
-    FlushFileBuffers(g_watchdogLog);
-  constexpr int budgetMs = 120000;
-  constexpr int stepMs = 2000;
-  char line[160];
-  for (int waited = stepMs; waited <= budgetMs; waited += stepMs) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(stepMs));
-    snprintf(line, sizeof(line),
-             "heartbeat: process alive %d s after the main loop ended\r\n",
-             waited / 1000);
-    WdWrite(line);
-    if (g_watchdogLog != INVALID_HANDLE_VALUE)
-      FlushFileBuffers(g_watchdogLog);
-  }
-  snprintf(line, sizeof(line),
-           "process still alive %d s after the main loop ended - the teardown "
-           "is wedged. Dumping every thread's stack:\r\n",
-           budgetMs / 1000);
-  WdWrite(line);
-  DumpAllThreadStacks();
-  WdWrite("stack dump complete; terminating the process so the test reports "
-          "instead of hanging to the ctest timeout.\r\n");
-  if (g_watchdogLog != INVALID_HANDLE_VALUE)
-    FlushFileBuffers(g_watchdogLog);
-  TerminateProcess(GetCurrentProcess(), 42);
-}
-
-// Build "<dir>\wxmaxima_watchdog_<pid>.log" and open it for writing. <dir> is
-// $WXM_WATCHDOG_DIR if set (the CI workflow points it at a known folder it then
-// prints), else the current directory. Per-PID so concurrent test processes do
-// not clobber each other's dumps.
-static void OpenWatchdogLog() {
-  wchar_t dir[MAX_PATH];
-  DWORD n = GetEnvironmentVariableW(L"WXM_WATCHDOG_DIR", dir, MAX_PATH);
-  if (n == 0 || n >= MAX_PATH) {
-    if (GetCurrentDirectoryW(MAX_PATH, dir) == 0)
-      wcscpy(dir, L".");
-  }
-  wchar_t path[MAX_PATH + 64];
-  _snwprintf(path, MAX_PATH + 64, L"%s\\wxmaxima_watchdog_%lu.log", dir,
-             static_cast<unsigned long>(GetCurrentProcessId()));
-  g_watchdogLog =
-      CreateFileW(path, GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS,
-                  FILE_ATTRIBUTE_NORMAL, nullptr);
-}
-
-static void ArmShutdownWatchdog() {
-  static const bool on = wxGetEnv(wxS("WXM_SHUTDOWN_TRACE"), nullptr);
-  if (!on)
-    return;
-  // Open the log now, on the main thread, before the wedge: the file's mere
-  // existence proves arming happened (vs. the watchdog thread never starting).
-  OpenWatchdogLog();
-  WdWrite("watchdog armed at end of MyApp::OnRun (main loop ended); will dump "
-          "all thread stacks if the process is still alive 120 s from now.\r\n");
-  if (g_watchdogLog != INVALID_HANDLE_VALUE)
-    FlushFileBuffers(g_watchdogLog);
-  std::thread(ShutdownWatchdogThread).detach();
-}
 #endif
 
 bool MyApp::OnInit() {
@@ -947,29 +726,17 @@ bool MyApp::OnInit() {
 }
 
 int MyApp::OnExit() {
-  WxmShutdownTrace("MyApp::OnExit reached");
   Configuration::g_stats.Report();
-  WxmShutdownTrace("MyApp::OnExit: stats reported, detaching maxima processes");
   for(auto i:m_wxMaximaProcesses)
     i->Detach();
-  WxmShutdownTrace("MyApp::OnExit: maxima processes detached");
 #ifdef __WXMSW__
   RestoreConsoleMode();
-  WxmShutdownTrace("MyApp::OnExit: console mode restored");
 #endif
-  WxmShutdownTrace("MyApp::OnExit returning");
   return wxMaxima::GetExitCode();
 }
 
 int MyApp::OnRun() {
   wxApp::OnRun();
-  WxmShutdownTrace("MyApp::OnRun: main loop ended");
-#ifdef __WXMSW__
-  // The main loop has returned; everything from here to OnExit is wx's own
-  // post-loop teardown. Arm the watchdog that dumps all thread stacks if that
-  // teardown wedges (see [[project-msw-teardown-wedge]]).
-  ArmShutdownWatchdog();
-#endif
   return 0;
 }
 

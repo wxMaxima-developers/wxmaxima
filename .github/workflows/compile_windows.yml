@@ -195,12 +195,11 @@ jobs:
         # failure - multithreadtest - which is now excluded here for the same
         # documented reason the Linux jobs exclude it (several Maxima instances of
         # that one test share its MAXIMA_USERDIR and race compiling a package into
-        # the same cache; a Maxima-side bug, not ours to fix in CI). Occasional
-        # transients remain, and the observed flake mode is a TIMEOUT (a teardown
-        # wedge after the last window closes - see the SHUTDOWN-TRACE markers):
-        # "--repeat after-timeout:2" retries exactly timeouts once, while real
-        # failures (e.g. a tripped assert) still fail the job immediately.
-        # (until-pass, tried first, does NOT re-run timed-out tests.)
+        # the same cache; a Maxima-side bug, not ours to fix in CI).
+        # "--repeat after-timeout:2" retries a timed-out test once (guarding
+        # against the odd Maxima-side transient) while real failures (e.g. a
+        # tripped assert) still fail the job immediately. (until-pass, tried
+        # first, does NOT re-run timed-out tests.)
         # Parallelism stays modest (-j 2, like the Linux job). The "unittest"
         # label (already a required step) and "needs_posix" label (the sh/xmllint/
         # unzip tests, which cannot run on Windows) are excluded; timeout-minutes
@@ -209,32 +208,9 @@ jobs:
         run: |
             cd wxMaxima
             cd build
-            # Temporary: emit raw-stderr SHUTDOWN-TRACE markers (see Maxima.cpp /
-            # wxMaxima.cpp) so the timed-out tests reveal where teardown wedges,
-            # past the point where wxLog logging is disabled.
-            $env:WXM_SHUTDOWN_TRACE = "1"
-            # Temporary: the teardown wedge blocks writes to the bound
-            # console/pipe, so the watchdog (main.cpp) dumps all thread stacks to
-            # a private file here instead of stderr. Point it at the build dir and
-            # print any that appear once ctest is done (see the next step).
-            $env:WXM_WATCHDOG_DIR = (Get-Location).Path
             ctest -LE "unittest|needs_posix" -E "multithreadtest" --repeat after-timeout:2 -j 2 --output-on-failure
             cd ..
             cd ..
-      - name: Show teardown watchdog stack dumps
-        if: always()
-        shell: pwsh
-        run: |
-            $logs = Get-ChildItem -Path wxMaxima/build -Filter "wxmaxima_watchdog_*.log" -Recurse -ErrorAction SilentlyContinue
-            if (-not $logs) {
-              Write-Host "No watchdog log files found (no teardown wedge caught this run)."
-            } else {
-              foreach ($f in $logs) {
-                Write-Host "===== $($f.FullName) ====="
-                Get-Content $f.FullName
-                Write-Host ""
-              }
-            }
 
   MSVC:
     permissions:
