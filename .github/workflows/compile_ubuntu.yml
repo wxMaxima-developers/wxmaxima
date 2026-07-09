@@ -65,6 +65,7 @@ jobs:
              # total test time). A real bus makes registration instant (and
              # actually enables the at-spi2-core installed above).
              GDK_BACKEND=x11 dbus-run-session -- xvfb-run -a ctest -j 2 -E "multithreadtest"
+             ls -la test/test_userdirs  # check for issue #2110.
              cd ..
 
   compile_and_test_sanitized:
