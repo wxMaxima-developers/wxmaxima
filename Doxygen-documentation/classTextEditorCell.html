@@ -1039,6 +1039,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a1391d0cb6cb48d28df30d04b47b5ff8e"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a1391d0cb6cb48d28df30d04b47b5ff8e">PreprocessNewValue</a> (const wxString &amp;text, std::size_t &amp;cursorPos) const</td></tr>
 <tr class="memdesc:a1391d0cb6cb48d28df30d04b47b5ff8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform text on its way into <a class="el" href="classEditorCell.html#a06fb7e24c57d9cdfd8146539228b50e7" title="Sets the text that is to be displayed.">SetValue()</a>; returns what to store and sets cursorPos.  <br /></td></tr>
 <tr class="separator:a1391d0cb6cb48d28df30d04b47b5ff8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a3539f1eb47f3bc03b1951351de6ba2"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a0a3539f1eb47f3bc03b1951351de6ba2">XMLTypeAttribute</a> () const</td></tr>
+<tr class="memdesc:a0a3539f1eb47f3bc03b1951351de6ba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code>type="..."</code> attribute <a class="el" href="classEditorCell.html#a24abc47fc2fb20832d7c30f850936357" title="Convert the current cell to XML code for inclusion in a .wxmx file.">ToXML()</a> writes for this cell.  <br /></td></tr>
+<tr class="separator:a0a3539f1eb47f3bc03b1951351de6ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e96373d1087101e9c1bb115e0320805"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2e96373d1087101e9c1bb115e0320805">BreakUpAndMark</a> () const</td></tr>
 <tr class="memdesc:a2e96373d1087101e9c1bb115e0320805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break up the internal cells of this cell, and mark it as broken up.  <br /></td></tr>
 <tr class="separator:a2e96373d1087101e9c1bb115e0320805"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4467,6 +4470,36 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 
 <p>Returns all variable and function names used inside this list of cells. </p>
 <p>Used for detecting lookalike chars in function and variable names. </p>
+
+</div>
+</div>
+<a id="a0a3539f1eb47f3bc03b1951351de6ba2" name="a0a3539f1eb47f3bc03b1951351de6ba2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a3539f1eb47f3bc03b1951351de6ba2">&#9670;&#160;</a></span>XMLTypeAttribute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString EditorCell::XMLTypeAttribute </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The <code>type="..."</code> attribute <a class="el" href="classEditorCell.html#a24abc47fc2fb20832d7c30f850936357" title="Convert the current cell to XML code for inclusion in a .wxmx file.">ToXML()</a> writes for this cell. </p>
+<p>The base maps the prose/sectioning m_type values (text/title/section/...); <a class="el" href="classCodeEditorCell.html">CodeEditorCell</a> overrides it to always be code (<code>input</code>). Replaced the m_type switch inside <a class="el" href="classEditorCell.html#a24abc47fc2fb20832d7c30f850936357" title="Convert the current cell to XML code for inclusion in a .wxmx file.">ToXML()</a>. </p>
+
+<p>Reimplemented in <a class="el" href="classCodeEditorCell.html#ad02361b7e9c08a3bc88a7b750367178a">CodeEditorCell</a>.</p>
 
 </div>
 </div>

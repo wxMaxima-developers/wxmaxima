@@ -110,6 +110,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a53e62eb39bed85590f50ad2009d353cc"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCodeEditorCell.html#a53e62eb39bed85590f50ad2009d353cc">PreprocessNewValue</a> (const wxString &amp;text, std::size_t &amp;cursorPos) const override</td></tr>
 <tr class="memdesc:a53e62eb39bed85590f50ad2009d353cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code input auto-closes a just-typed bracket/quote and %-prefixes a leading operator; prose does neither.  <br /></td></tr>
 <tr class="separator:a53e62eb39bed85590f50ad2009d353cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad02361b7e9c08a3bc88a7b750367178a"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCodeEditorCell.html#ad02361b7e9c08a3bc88a7b750367178a">XMLTypeAttribute</a> () const override</td></tr>
+<tr class="memdesc:ad02361b7e9c08a3bc88a7b750367178a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code cells always serialize as type="input".  <br /></td></tr>
+<tr class="separator:ad02361b7e9c08a3bc88a7b750367178a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86be10ed007378c49b1008b6cb6d0792"><td class="memItemLeft" align="right" valign="top"><a id="a86be10ed007378c49b1008b6cb6d0792" name="a86be10ed007378c49b1008b6cb6d0792"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateSelectionString</b> ()</td></tr>
 <tr class="separator:a86be10ed007378c49b1008b6cb6d0792"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4465,6 +4468,35 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 
 <p>Returns all variable and function names used inside this list of cells. </p>
 <p>Used for detecting lookalike chars in function and variable names. </p>
+
+</div>
+</div>
+<a id="ad02361b7e9c08a3bc88a7b750367178a" name="ad02361b7e9c08a3bc88a7b750367178a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad02361b7e9c08a3bc88a7b750367178a">&#9670;&#160;</a></span>XMLTypeAttribute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString CodeEditorCell::XMLTypeAttribute </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Code cells always serialize as type="input". </p>
+
+<p>Reimplemented from <a class="el" href="classEditorCell.html#a0a3539f1eb47f3bc03b1951351de6ba2">EditorCell</a>.</p>
 
 </div>
 </div>
