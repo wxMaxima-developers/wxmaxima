@@ -662,7 +662,7 @@ private:
     The current behavior is O(n^2) (scanning the text needs linear time and for each word
     the indentation algorithm scans the text again) which is unfortunate.
   */
-  void HandleSoftLineBreaks_Code(StyledText *&lastSpace, wxCoord &lineWidth, const wxString &token, size_t charInCell,
+  void HandleSoftLineBreaks_Code(StyledText *&lastSpace, wxCoord &lineWidth, const wxString &token,
                                  wxString &text, const size_t &lastSpacePos, wxCoord &indentationPixels) const;
 
   /*! How many chars do we need to indent text at the position the caret is currently at?

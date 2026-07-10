@@ -2751,6 +2751,9 @@ bool EditorCell::CopyToClipboard() const {
   if (end > m_text.Length())
     end = m_text.Length();
   wxString s = m_text.SubString(start, end);
+  // Soft line breaks (\r) are transient layout state; if one reached the
+  // clipboard it would be pasted back as a hard line break.
+  s.Replace(wxS("\r"), wxS(" "));
   // Copying non-breakable spaces in code to external applications is likely to
   // cause problems
   if (GetType() == MC_TYPE_INPUT)
@@ -3033,17 +3036,16 @@ void EditorCell::SaveValue(History::Action action) {
 
 void EditorCell::HandleSoftLineBreaks_Code(
                                            StyledText *&lastSpace, wxCoord &lineWidth, const wxString &token,
-                                           size_t charInCell, wxString &text, size_t const &lastSpacePos,
+                                           wxString &text, size_t const &lastSpacePos,
                                            wxCoord &indentationPixels) const {
   // If we don't want to autowrap code we don't do nothing here.
   // cppcheck-suppress knownConditionTrueFalse
   if (!m_configuration->GetAutoWrapCode())
     return;
 
-  // If this token contains spaces and is followed by a space we will do the
-  // line break in the next token.
-  if ((charInCell + 1 < text.Length()) && (token.StartsWith(wxS(" "))) &&
-      (*(text.begin() + charInCell + 1) == ' '))
+  // A folded cell shows only a one-line preview; wrapping it would write a
+  // soft break into text the user cannot currently see.
+  if (FirstLineOnlyEditor())
     return;
 
   SetFont(m_configuration->GetRecalcDC());
@@ -3055,11 +3057,20 @@ void EditorCell::HandleSoftLineBreaks_Code(
   lineWidth += width;
 
   if ((lineWidth + indentationPixels >= m_configuration->GetLineWidth()) &&
-      (lastSpace != NULL) && (lastSpace->GetText() != "\r")) {
+      (lastSpace != NULL) && (lastSpace->GetText() != "\r") &&
+      // Only a plain space may become a soft break: the tokenizer renders
+      // exotic spaces (non-breakable etc.) as ' ' too, and overwriting one of
+      // those would alter the cell's content once the break is scrubbed back
+      // to a plain space.
+      (lastSpacePos < text.Length()) &&
+      (*(text.begin() + lastSpacePos) == ' ')) {
     wxCoord charWidth;
     charWidth = GetTextSize(" ").GetWidth();
     indentationPixels = charWidth * GetIndentDepth(m_text, lastSpacePos);
-    lineWidth = width + indentationPixels;
+    // The wrap condition above adds indentationPixels to lineWidth; adding it
+    // here as well would count the indentation twice and wrap every
+    // subsequent line one indentation-width too early.
+    lineWidth = width;
     lastSpace->SetText("\r");
     lastSpace->SetIndentation(indentationPixels);
     *(text.begin() + lastSpacePos) = '\r';
@@ -3117,10 +3128,13 @@ void EditorCell::StyleTextCode() const {
 
       // Now we push the last space to the list of tokens and remember this
       // space as the space that potentially serves as the next point to
-      // introduce a soft line break.
+      // introduce a soft line break. pos was already advanced past this
+      // token, so its last character sits at pos - 1.
       m_styledText.push_back(StyledText(wxS(" "), GetTextStyle()));
       lastSpace = &m_styledText.back();
-      lastSpacePos = pos + tokenString.Length() - 1;
+      lastSpacePos = pos - 1;
+      // The spaces belong to the current display line, too.
+      lineWidth += GetTextSize(tokenString).GetWidth();
       continue;
     }
 
@@ -3128,20 +3142,36 @@ void EditorCell::StyleTextCode() const {
     // separate tokens
     wxString txt = tokenString;
     wxString line;
+    bool containedNewline = false;
     for (wxString::const_iterator it2 = txt.begin(); it2 < txt.end(); ++it2) {
       if (*it2 != '\n')
         line += wxString(*it2);
       else {
+        containedNewline = true;
         if (line != wxEmptyString)
           m_styledText.push_back(StyledText(token.GetTextStyle(), line));
         m_styledText.push_back(StyledText(token.GetTextStyle(), "\n"));
+        // A hard newline starts a fresh display line: the width accumulated
+        // for the previous line and its wrap bookkeeping no longer apply -
+        // in particular a space on the previous line must never receive
+        // this line's soft break.
+        lineWidth = 0;
+        indentationPixels = 0;
+        lastSpace = NULL;
         line.Clear();
       }
     }
     if (line != wxEmptyString)
       m_styledText.push_back(StyledText(token.GetTextStyle(), line));
-    HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text,
-                              lastSpacePos, indentationPixels);
+    if (containedNewline) {
+      // Only the remnant after the last hard newline counts towards the
+      // current display line; there is no soft-break candidate in it yet.
+      if (line != wxEmptyString)
+        lineWidth += GetTextSize(line).GetWidth();
+    } else {
+      HandleSoftLineBreaks_Code(lastSpace, lineWidth, tokenString, m_text,
+                                lastSpacePos, indentationPixels);
+    }
     if ((token.GetTextStyle() == TS_CODE_VARIABLE) ||
         (token.GetTextStyle() == TS_CODE_FUNCTION)) {
       m_wordList.push_back(token);
@@ -3819,7 +3849,10 @@ bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
 }
 
 wxString EditorCell::GetSelectionString() const {
-  return m_text.SubString(SelectionLeft(), SelectionRight() - 1);
+  wxString retval = m_text.SubString(SelectionLeft(), SelectionRight() - 1);
+  // Soft line breaks are transient layout state, not cell content.
+  retval.Replace(wxS("\r"), wxS(" "));
+  return retval;
 }
 
 TextStyle EditorCell::GetSelectionStyle() const {

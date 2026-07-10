@@ -115,6 +115,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(WorksheetLayout test_WorksheetLayout)
 
+    # Line-wrapping inside EditorCells: soft breaks must be derived layout
+    # state that never alters or leaks out of the cell's content, for the
+    # prose path and (once enabled) the code path.
+    add_executable(test_EditorCellWrapping
+        test_EditorCellWrapping.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellWrapping PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellWrapping PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(EditorCellWrapping test_EditorCellWrapping)
+
     # Logic-level regression tests for the custom wxAccessible classes (worksheet
     # and toolbar). They only assert where wxUSE_ACCESSIBILITY is set (the Windows
     # CI); elsewhere they compile out to a harness sanity check. This catches the
