@@ -57,7 +57,7 @@
 #include "TreeUndoManager.h"
 #include "WorksheetCursor.h"
 #include "WorksheetSearch.h"
-#include "WorksheetSizeMath.h"
+#include "WorksheetLayout.h"
 #include "cells/TextCell.h"
 #include "EvaluationQueue.h"
 #include "dialogs/FindReplaceDialog.h"
@@ -112,8 +112,8 @@
 class Worksheet : public wxScrolled<wxWindow>, public WorksheetView
 {
 public:
-  // WorksheetView: the narrow window surface the size pipeline
-  // (ApplyWorksheetVirtualSize) drives; each forwards to the wxScrolled base.
+  // WorksheetView: the narrow window surface the layout pipeline
+  // (WorksheetLayout) drives; each forwards to the wxScrolled base.
   void GetViewClientSize(int *width, int *height) const override
     { GetClientSize(width, height); }
   int GetViewScrollUnitY() const override
@@ -121,6 +121,8 @@ public:
   void SetViewVirtualSize(int width, int height) override
     { SetVirtualSize(width, height); }
   void SetViewScrollRate(int rate) override { SetScrollRate(rate, rate); }
+  void GetViewPosition(int *x, int *y) const override
+    { const wxPoint p = GetPosition(); *x = p.x; *y = p.y; }
 
   //! The list of unsaved (autosaved) documents offered for recovery.
   RecentDocuments &UnsavedDocuments() { return m_unsavedDocuments; }
@@ -151,13 +153,6 @@ private:
   bool m_windowActive = true;
   //! The rectangle we need to refresh.
   wxRegion m_regionToRefresh;
-  /*! The size of a scroll step
-
-    Defines the size of a
-    scroll step, but besides that also the accuracy wxScrolledCanvas
-    calculates some widths in.
-  */
-  int m_scrollUnit = 10;
   /*! The drawing context used for calculating sizes.
 
     Drawing is done from a wxPaintDC in OnPaint() instead.
@@ -386,15 +381,7 @@ public:
   std::unique_ptr<Cell> CopySelection(Cell *start, Cell *end, bool asData = false) const;
 
   //! Get the coordinates of the bottom right point of the worksheet.
-  void GetMaxPoint(int *width, int *height);
-
-  /*! The horizontal space a group cell of the given width occupies.
-
-    That is the cell's own width plus the equal left and right margins the
-    worksheet reserves around every group cell. Used both when measuring the
-    document width (GetMaxPoint) and while walking the recalculation.
-   */
-  int GroupCellWidthWithMargins(int cellWidth) const;
+  void GetMaxPoint(int *width, int *height) { m_layout.GetMaxPoint(width, height); }
 
   //! Is executed if a timer associated with Worksheet has expired.
   void OnTimer(wxTimerEvent &event);
@@ -496,7 +483,8 @@ public:
   void SelectGroupCells(wxPoint down, wxPoint up);
 
 public:
-  void AdjustSize();
+  //! Adjust the virtual size and scrollbars; see WorksheetLayout::AdjustSize().
+  void AdjustSize() { m_layout.AdjustSize(); }
 
   //! Cannot be static as it is called using a function pointer to an object
   void OnEraseBackground(wxEraseEvent& WXUNUSED(event))
@@ -624,6 +612,13 @@ private:
   /*! The pointer to thesettings storage
    */
   Configuration *m_configuration = NULL;
+  /*! The layout/recalculation engine.
+
+    Owns the layout scheduling state (resume point, cached widths, virtual-size
+    dedupe, scroll unit) and performs the recalculation walk; talks back to
+    this window only through the WorksheetView interface. See WorksheetLayout.
+  */
+  WorksheetLayout m_layout;
 public:
   void FocusFindDialogue()
     {
@@ -856,23 +851,22 @@ public:
 
     \return Whether there may be more work to do (the caller should call again).
 
-    \todo We check here if the recalc start is within the worksheet. Would it make
-    more sense to store the recalculation start in a CellPointer that automagically
-    zeroes itself if that isn't the case?
+    See WorksheetLayout::RecalculateIfNeeded(), which does the actual work.
    */
-  bool RecalculateIfNeeded(bool timeout = false, long timeSliceMs = 50);
+  bool RecalculateIfNeeded(bool timeout = false, long timeSliceMs = 50)
+    { return m_layout.RecalculateIfNeeded(timeout, timeSliceMs); }
 
   /*! Schedule a recalculation of the worksheet starting with the cell start.
 
     This only *records* where the next layout pass has to start (it marks the
-    group dirty and moves m_recalculateStart); it does not size or position any
-    cell. The actual work - and, crucially, AdjustSize() once the cell positions
-    are correct - happens in RecalculateIfNeeded(). Calling AdjustSize() (or
-    otherwise reading cell geometry) right after this, without a
-    RecalculateIfNeeded() in between, reads stale positions. Was named
+    group dirty and moves the engine's resume point); it does not size or
+    position any cell. The actual work - and, crucially, AdjustSize() once the
+    cell positions are correct - happens in RecalculateIfNeeded(). Calling
+    AdjustSize() (or otherwise reading cell geometry) right after this, without
+    a RecalculateIfNeeded() in between, reads stale positions. Was named
     Recalculate(), which wrongly implied it does the layout itself.
    */
-  void RequestRecalculation(Cell *start);
+  void RequestRecalculation(Cell *start) { m_layout.RequestRecalculation(start); }
 
   //! Schedule a recalculation of the whole worksheet. See RequestRecalculation(Cell*).
   void RequestRecalculation() { RequestRecalculation(GetTree()); }
@@ -1119,7 +1113,7 @@ public:
   Cell *FindCellByUUID(const wxString &uuid);
 
   //! Inform the configuration about the current client size.
-  void UpdateConfigurationClientSize();
+  void UpdateConfigurationClientSize() { m_layout.UpdateConfigurationClientSize(); }
 
   /*! We can edit the input if the we have the whole input in selection!
    */
@@ -1588,25 +1582,12 @@ public:
 protected:
   void FocusTextControl();
   wxString m_lastQuestion;
-  //! Dedupe cache for AdjustSize(): the last virtual size handed to the view.
-  WorksheetVirtualSizeCache m_virtualSizeCache;
-  int m_maxWidth_Cached = -1;
   //! A memory we can manually buffer the contents of the area that is to be redrawn in
   wxBitmap m_memory;
   virtual wxSize DoGetBestClientSize() const override;
 #if wxUSE_ACCESSIBILITY
   AccessibilityInfo *m_accessibilityInfo = NULL;
 #endif
-  //! Where to start recalculation. NULL = No recalculation needed.
-  CellPtr<GroupCell> m_recalculateStart;
-  /*! Does the worksheet's virtual (scroll) size need re-adjusting?
-
-    Set when a cell changed height (via the callback the ctor registers on our
-    Configuration, so cells can flag it without depending on Worksheet) or when
-    layout is scheduled; consumed by RecalculateIfNeeded(), which calls
-    AdjustSize() once the cell positions are valid. Layout-scheduling state that
-    belongs next to m_recalculateStart, not on the shared Configuration. */
-  bool m_adjustWorksheetSizeNeeded = false;
   //! The x position of the mouse pointer
   int m_pointer_x = -1;
   //! The y position of the mouse pointer

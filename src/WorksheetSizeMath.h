@@ -25,7 +25,7 @@
 
   Kept deliberately free of any GUI/wxWidgets dependency so the scroll-range
   math - historically a source of "the pane won't scroll" bugs - can be
-  unit-tested in isolation. Worksheet::AdjustSize() measures the document
+  unit-tested in isolation. WorksheetLayout::AdjustSize() measures the document
   (GetMaxPoint) and the window (GetClientSize) and feeds the numbers here, then
   applies the result with SetVirtualSize()/SetScrollRate().
 */
@@ -40,7 +40,7 @@
 
   That is the document's base indent, widened to fit the widest group cell. Each
   entry in \p cellWidthsWithMargins is a cell's width including its left and right
-  margins (Worksheet::GroupCellWidthWithMargins).
+  margins (WorksheetLayout::GroupCellWidthWithMargins).
 
   \param cellWidthsWithMargins Per-cell widths (already including margins).
   \param baseIndent            The minimum width (Configuration::GetBaseIndent).
@@ -68,7 +68,7 @@ struct TrailingGroupGeometry {
 
 /*! Compute the worksheet's content height from its trailing cells' geometry.
 
-  This is the backward walk Worksheet::GetMaxPoint() runs from the last cell:
+  This is the backward walk WorksheetLayout::GetMaxPoint() runs from the last cell:
   it accumulates the heights of the cells at the bottom whose position is not yet
   trustworthy (stale-and-unpositioned, or still-being-laid-out) until it reaches
   an "anchor" - a cell whose size is stale but whose top position (y) is already
@@ -120,8 +120,8 @@ struct WorksheetVirtualSize {
 
   \param hasTree            Whether the worksheet has any content. Without it the
                             result is a small fixed size with a sane scroll unit.
-  \param maxPointWidth      The document's right extent (Worksheet::GetMaxPoint x).
-  \param maxPointHeight     The document's bottom extent (Worksheet::GetMaxPoint y).
+  \param maxPointWidth      The document's right extent (WorksheetLayout::GetMaxPoint x).
+  \param maxPointHeight     The document's bottom extent (WorksheetLayout::GetMaxPoint y).
   \param clientHeight       The visible height of the worksheet window.
   \param currentScrollPixelY The current vertical scroll offset in pixels.
 
@@ -157,9 +157,9 @@ inline WorksheetVirtualSize ComputeWorksheetVirtualSize(bool hasTree,
   return result;
 }
 
-/*! The narrow view surface the worksheet's size pipeline needs.
+/*! The narrow view surface the worksheet's layout pipeline needs.
 
-  Worksheet::AdjustSize() historically read the window (client size, scroll
+  Worksheet's AdjustSize() historically read the window (client size, scroll
   position) and wrote the scrollbars (virtual size, scroll rate) inline, which
   meant the deduplication and scroll-position-preserving logic could only ever
   run inside a live GUI. This abstract interface pulls those four operations out
@@ -180,6 +180,8 @@ public:
   virtual void SetViewVirtualSize(int width, int height) = 0;
   //! Set the scroll granularity (device pixels per scroll unit) on both axes.
   virtual void SetViewScrollRate(int rate) = 0;
+  //! The view's position within its parent, in device pixels (wxWindow::GetPosition).
+  virtual void GetViewPosition(int *x, int *y) const = 0;
 };
 
 //! Remembers the last virtual size applied, so an unchanged size is a no-op.
@@ -190,7 +192,7 @@ struct WorksheetVirtualSizeCache {
 
 /*! Measure the view, compute the virtual size and apply it, skipping no-ops.
 
-  This is the view-facing half of Worksheet::AdjustSize(): it reads the client
+  This is the view-facing half of WorksheetLayout::AdjustSize(): it reads the client
   size and scroll position from \p view, feeds them (with the already-measured
   document extent \p maxWidth / \p maxHeight) to ComputeWorksheetVirtualSize(),
   and - only if the result actually changed and is positive - pushes it back to
@@ -198,12 +200,12 @@ struct WorksheetVirtualSizeCache {
 
   \param view       The window abstraction (real worksheet or a test mock).
   \param hasTree     Whether the worksheet has content (ignores the extent if not).
-  \param maxWidth    The document's right extent (Worksheet::GetMaxPoint x).
-  \param maxHeight   The document's bottom extent (Worksheet::GetMaxPoint y).
+  \param maxWidth    The document's right extent (WorksheetLayout::GetMaxPoint x).
+  \param maxHeight   The document's bottom extent (WorksheetLayout::GetMaxPoint y).
   \param cache       The last-applied size, updated in place to dedupe.
   \param scrollUnit  Read to turn the scroll position into pixels, and updated to
-                     the new granularity. Worksheet keeps it as a member because
-                     its scroll handlers read it too.
+                     the new granularity. WorksheetLayout keeps it as a member
+                     because Worksheet's scroll handlers read it too.
 */
 inline void ApplyWorksheetVirtualSize(WorksheetView &view, bool hasTree,
                                       int maxWidth, int maxHeight,

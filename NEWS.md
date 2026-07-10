@@ -1,5 +1,12 @@
 # Current development version
 
+- Internal: the worksheet's layout/recalculation engine (RequestRecalculation,
+  RecalculateIfNeeded, AdjustSize, GetMaxPoint and their state) now lives in a
+  Worksheet-independent WorksheetLayout class that talks to the window only
+  through the WorksheetView interface. The full request -> recalculate ->
+  resize pipeline is thereby covered by a headless unit test
+  (test_WorksheetLayout) that needs no Worksheet window at all. No behavior
+  change.
 - Internal: the ` type="..."` attribute EditorCell::ToXML() writes is now chosen
   by the subclass (CodeEditorCell always writes "input"; the base maps the
   prose/sectioning types) instead of an m_type switch. No behavior change.

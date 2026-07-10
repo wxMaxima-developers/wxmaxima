@@ -98,6 +98,8 @@ Worksheet::Worksheet(wxWindow *parent, int id,
                        ),
   m_unsavedDocuments(wxS("unsaved")),
   m_cellPointers(this), m_dc(this), m_configuration(config),
+  m_layout(config, *this, [this]{ return GetTree(); },
+           [this]{ return GetLastCellInWorksheet(); }),
   m_autocomplete(config),
   m_maximaManual(m_configuration) {
   m_autocompletePopup = NULL;
@@ -127,7 +129,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_configuration->SetRecalculateRequestCallback(
     [this](GroupCell *group){ RequestRecalculation(group); });
   m_configuration->SetAdjustWorksheetSizeRequestCallback(
-    [this]{ m_adjustWorksheetSizeNeeded = true; });
+    [this]{ m_layout.RequestAdjustSize(); });
   m_configuration->ReadConfig();
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
 
@@ -757,7 +759,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
   if (!cells)
     return NULL; // nothing to insert
 
-  m_adjustWorksheetSizeNeeded = true;
+  m_layout.RequestAdjustSize();
   bool renumbersections = false; // only renumber when true
 
   // TODO What we have here is an iteration through all the cells to see if they
@@ -815,7 +817,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
   // stale at this point (recalculation has only been scheduled, not
   // executed). Calling AdjustSize() with stale positions would compute a
   // virtualHeight that is too small, causing wxWidgets to clamp the scroll
-  // position and jump the view to the top. Setting m_adjustWorksheetSizeNeeded
+  // position and jump the view to the top. The RequestAdjustSize() call
   // (above) ensures that RecalculateIfNeeded() will call AdjustSize() after
   // positions are correct.
   return lastOfCellsToInsert;
@@ -890,7 +892,7 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine) {
 
   newCell->ForceBreakLine(forceNewLine);
   cell->AppendOutput(std::move(newCell));
-  m_adjustWorksheetSizeNeeded = true;
+  m_layout.RequestAdjustSize();
 
   cell->OutputHeightChanged();
   AdjustSize();
@@ -955,126 +957,8 @@ void Worksheet::SetZoomFactor(double newzoom) {
     }
 }
 
-bool Worksheet::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
-  if (m_configuration->GetCanvasSize().x < 1)
-    return (false);
-  if (m_configuration->GetCanvasSize().y < 1)
-    return (false);
-
-  if (!m_recalculateStart || !GetTree()) {
-    m_recalculateStart = {};
-    return false;
-  }
-
-  if (!GetTree()->Contains(m_recalculateStart))
-    m_recalculateStart = GetTree();
-
-  m_configuration->SetWorksheetPosition(GetPosition());
-
-  if (m_recalculateStart == GetTree())
-    m_maxWidth_Cached = -1;
-
-  // One walk drives both modes. When timeout is set the pass is time-sliced:
-  // it advances the resume point (m_recalculateStart) cell by cell and yields
-  // (returns) once timeSliceMs is up, resuming here next time. Otherwise it lays
-  // out the whole scheduled range in one go and the shared tail below does the
-  // final AdjustSize(). The stopwatch also feeds the end-of-worksheet log.
-  {
-    wxStopWatch stopwatch;
-    bool propagationNeeded = true;
-    int cellsVisited = 0;
-    for (auto &cell : OnList(m_recalculateStart.get())) {
-      cellsVisited++;
-      GroupCell *group = static_cast<GroupCell *>(&cell);
-      bool neededRecalc = group->NeedsRecalculation();
-      bool movedThisTime = false;
-      bool sizeChanged = false;
-
-      if (neededRecalc) {
-        int oldHeight = group->GetHeight();
-        sizeChanged = group->Recalculate();
-        if (group->GetHeight() != oldHeight)
-          sizeChanged = true;
-        movedThisTime = true;
-        // The time-sliced path calls AdjustSize() itself when it reaches the end
-        // of the worksheet; the one-shot path defers it to the shared tail and so
-        // has to record here that a size change makes it necessary.
-        if (sizeChanged && !timeout)
-          m_adjustWorksheetSizeNeeded = true;
-
-        int currentWidth = GroupCellWidthWithMargins(cell.GetWidth());
-        m_maxWidth_Cached = std::max(m_maxWidth_Cached, currentWidth);
-      } else if (propagationNeeded) {
-        movedThisTime = group->Reposition();
-      } else {
-        // Don't stop here: a cell further down the worksheet may still be dirty.
-        // Cells can be marked for recalculation non-contiguously (e.g. by
-        // folding/hiding or by asynchronous Maxima output landing in specific
-        // cells), so a clean, non-propagating cell does not imply everything
-        // below it is clean. Keep scanning.
-      }
-      propagationNeeded = movedThisTime || sizeChanged;
-
-      const bool atEnd = (cell.GetNext() == NULL);
-      if (timeout) {
-        if (!atEnd)
-          m_recalculateStart = cell.GetNext();
-        else {
-          wxLogMessage(_("Recalculation hit the end of the worksheet => Updating its size (Visited %d cells in %ld ms)"), cellsVisited, stopwatch.Time());
-          m_recalculateStart = {};
-          AdjustSize();
-        }
-        if (stopwatch.Time() > timeSliceMs)
-          // Yield to the event loop, but keep m_recalculateStart pointing at the
-          // cell we stopped before so the next call resumes there. Returning here
-          // (instead of breaking out to the shared tail below) is essential: that
-          // tail clears m_recalculateStart on the assumption the whole range was
-          // walked, which would drop the resume point and leave every cell past
-          // this slice permanently un-recalculated.
-          return true;
-      } else if (atEnd) {
-        wxLogMessage(_("Recalculated the whole worksheet at once => Updating its size (Visited %d cells in %ld ms)"), cellsVisited, stopwatch.Time());
-      }
-    }
-  }
-  // Clear the pending-recalculation marker before AdjustSize(): the whole
-  // scheduled range has been walked, so cell positions are valid now and
-  // AdjustSize()'s stale-position guard must let this legitimate call through.
-  m_recalculateStart = {};
-  if (m_adjustWorksheetSizeNeeded)
-    AdjustSize();
-
-  return true;
-}
-
-void Worksheet::RequestRecalculation(Cell *start) {
-  if (!GetTree())
-    return;
-  wxASSERT(start);
-  if (!start)
-    return;
-
-  GroupCell *group = start->GetGroup();
-  if (!group)
-    return;
-
-  if (m_recalculateStart == group)
-    return;
-
-  group->MarkNeedsRecalculate();
-
-  if (!m_recalculateStart)
-    m_recalculateStart = group;
-  else {
-    // Move m_recalculateStart backwards to start, if start comes before
-    // m_recalculateStart.
-    for (Cell *walk = group; walk; walk = walk->GetPrevious()) {
-      if (walk == m_recalculateStart)
-        return;
-    }
-    m_recalculateStart = group;
-  }
-}
+// RecalculateIfNeeded() and RequestRecalculation() moved to WorksheetLayout
+// (WorksheetLayout.cpp); Worksheet.h keeps inline forwarders.
 
 /***
  * Resize the control
@@ -1106,7 +990,7 @@ void Worksheet::OnSize(wxSizeEvent &event) {
   }
   RequestRecalculation();
 
-  m_adjustWorksheetSizeNeeded = true;
+  m_layout.RequestAdjustSize();
   RequestRedraw();
   if (CellToScrollTo)
     ScheduleScrollToCell(CellToScrollTo, false);
@@ -1127,7 +1011,7 @@ void Worksheet::ClearDocument() {
   m_hCaret.Deactivate();
   SetHCaret(NULL); // horizontal caret at the top of document
   m_hCaret.SetSelectionAnchors(NULL, NULL);
-  m_recalculateStart = NULL;
+  m_layout.CancelPendingRecalculation();
   m_evaluationQueue.Clear();
   TreeUndo_ClearBuffers();
 
@@ -2393,7 +2277,7 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
     answerCell->CaretToEnd();
 
     group->AppendOutput(std::move(answerCell));
-    m_adjustWorksheetSizeNeeded = true;
+    m_layout.RequestAdjustSize();
     RequestRecalculation(group);
   }
 
@@ -2484,7 +2368,7 @@ void Worksheet::Evaluate() {
 void Worksheet::OnKeyDown(wxKeyEvent &event) {
   BTextCtrl::ForgetLastActive();
   m_updateControls = true;
-  m_adjustWorksheetSizeNeeded = true;
+  m_layout.RequestAdjustSize();
   ClearNotification();
   // Track the activity of the keyboard. Setting the keyboard
   // to inactive again is done in wxMaxima.cpp
@@ -2649,10 +2533,6 @@ GroupCell *Worksheet::EndOfSectioningUnit(GroupCell *start) {
         end = end->GetNext();
     }
   return end;
-}
-
-void Worksheet::UpdateConfigurationClientSize() {
-  m_configuration->SetCanvasSize(GetClientSize());
 }
 
 /****
@@ -3343,7 +3223,7 @@ void Worksheet::OnChar(wxKeyEvent &event) {
      looks like navigation (up, down,...) the worksheet looses focus */
   UpdateControlsNeeded(true);
   BTextCtrl::ForgetLastActive();
-  m_adjustWorksheetSizeNeeded = true;
+  m_layout.RequestAdjustSize();
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to
   // realize them they need to be passed to it using the event's Skip()
   // function.
@@ -3415,96 +3295,8 @@ void Worksheet::OnChar(wxKeyEvent &event) {
     OnCharNoActive(event);
 }
 
-/***
- * Get maximum x and y in the tree.
- */
-int Worksheet::GroupCellWidthWithMargins(int cellWidth) const {
-  const int margin =
-    m_configuration->Scale_Px(m_configuration->GetIndent() +
-                              m_configuration->GetDefaultFontSize());
-  return margin + cellWidth + margin;
-}
-
-void Worksheet::GetMaxPoint(int *width, int *height) {
-  // The height we return is read off the cells' positions, which are only
-  // meaningful once a scheduled recalculation has finished. Reading them while
-  // one is pending yields a silently-wrong (too small) height. AdjustSize() -
-  // our only caller - guards against that; this assertion surfaces any future
-  // caller that forgets to, instead of shipping a subtly wrong scroll range.
-  wxASSERT_MSG(!m_recalculateStart,
-               wxS("GetMaxPoint() called with a recalculation still pending: "
-                   "cell positions are stale. Run RecalculateIfNeeded() first."));
-
-  int currentHeight = m_configuration->GetIndent();
-  *width = m_configuration->GetBaseIndent();
-
-  if (m_maxWidth_Cached >= 0) {
-    *width = std::max(*width, m_maxWidth_Cached);
-  } else {
-    // Collect each cell's width (including margins) and let the GUI-free width
-    // math take the max - see ComputeWorksheetContentWidth() / test_WorksheetSizeMath.
-    std::vector<int> cellWidths;
-    for (Cell const &tmp : OnList(GetTree()))
-      cellWidths.push_back(GroupCellWidthWithMargins(tmp.GetWidth()));
-    *width = ComputeWorksheetContentWidth(cellWidths,
-                                          m_configuration->GetBaseIndent());
-    m_maxWidth_Cached = *width;
-  }
-  GroupCell *lastCell = GetLastCellInWorksheet();
-  if (lastCell) {
-    // Collect the trailing cells' geometry (last cell backward, up to and
-    // including the anchor) and let the GUI-free height math replay the walk -
-    // see ComputeWorksheetContentHeight() / test_WorksheetSizeMath.
-    std::vector<TrailingGroupGeometry> trailing;
-    for (Cell *walk = lastCell; walk; walk = walk->GetPrevious()) {
-      const bool stale = walk->HasStaleSize();
-      const int y = walk->GetCurrentPoint().y;
-      trailing.push_back({stale, y, walk->GetMaxDrop()});
-      if (stale && y >= 0)
-        break; // reached the anchor
-    }
-    *height = ComputeWorksheetContentHeight(
-        trailing, m_configuration->GetGroupSkip(),
-        m_configuration->GetBaseIndent());
-  } else {
-    *height = currentHeight;
-  }
-}
-
-/***
- * Adjust the virtual size and scrollbars.
- */
-void Worksheet::AdjustSize() {
-  // The virtual size is derived from the cell positions (GetMaxPoint reads the
-  // last cell's y). Those positions are only valid once the scheduled layout
-  // pass has actually run. While a recalculation is still pending -
-  // RequestRecalculation() recorded a start point but RecalculateIfNeeded() has
-  // not finished walking the list yet - reading them here would underestimate
-  // the height and, at scroll position 0, leave the worksheet with no scroll
-  // range at all (the bug that made a freshly opened diff-viewer pane
-  // unscrollable). Defer instead: flag the size as needing adjustment and let
-  // RecalculateIfNeeded() call us back once the positions are correct. This
-  // makes "AdjustSize() with stale positions" harmless no matter who triggers
-  // it, rather than relying on every caller to recalculate first.
-  if (m_recalculateStart) {
-    m_adjustWorksheetSizeNeeded = true;
-    return;
-  }
-
-  // Measure the document here (cell tree), then let the GUI-free
-  // ApplyWorksheetVirtualSize() read the window through the WorksheetView
-  // interface, run the arithmetic (ComputeWorksheetVirtualSize) and push the
-  // result back to the scrollbars - see WorksheetSizeMath.h, unit-tested there.
-  const bool hasTree = (GetTree() != NULL);
-  int maxWidth = m_configuration->GetBaseIndent();
-  int maxHeight = maxWidth;
-  if (hasTree)
-    GetMaxPoint(&maxWidth, &maxHeight);
-
-  ApplyWorksheetVirtualSize(*this, hasTree, maxWidth, maxHeight,
-                            m_virtualSizeCache, m_scrollUnit);
-  m_adjustWorksheetSizeNeeded = false;
-}
+// GroupCellWidthWithMargins(), GetMaxPoint() and AdjustSize() moved to
+// WorksheetLayout (WorksheetLayout.cpp); Worksheet.h keeps inline forwarders.
 
 /***
  * Support for selecting cells outside display
@@ -3583,15 +3375,16 @@ void Worksheet::OnTimer(wxTimerEvent &event) {
     wxSize size = GetClientSize();
     CalcUnscrolledPosition(0, 0, &currX, &currY);
 
+    const int scrollUnit = m_layout.GetScrollUnit();
     if (m_mousePoint.x <= 0)
-      dx = -m_scrollUnit;
+      dx = -scrollUnit;
     else if (m_mousePoint.x >= size.GetWidth())
-      dx = m_scrollUnit;
+      dx = scrollUnit;
     if (m_mousePoint.y <= 0)
-      dy = -m_scrollUnit;
+      dy = -scrollUnit;
     else if (m_mousePoint.y >= size.GetHeight())
-      dy = m_scrollUnit;
-    Scroll((currX + dx * 2) / m_scrollUnit, (currY + dy * 2) / m_scrollUnit);
+      dy = scrollUnit;
+    Scroll((currX + dx * 2) / scrollUnit, (currY + dy * 2) / scrollUnit);
     m_timer.Start(50, true);
   } break;
   case CARET_TIMER_ID: {
@@ -4349,7 +4142,8 @@ void Worksheet::ScrollToCellIfNeeded() {
   GetViewStart(&view_x, &view_y);
   GetSize(&width, &height);
 
-  view_y *= m_scrollUnit;
+  const int scrollUnit = m_layout.GetScrollUnit();
+  view_y *= scrollUnit;
 
   int cellTop = cellY - cellCenter;
   int cellBottom = cellY + cellDrop;
@@ -4357,23 +4151,23 @@ void Worksheet::ScrollToCellIfNeeded() {
   if (m_scrollToTopOfCell) {
     // Scroll upwards if the top of the thing we want to scroll to is less than
     // 1/2 scroll unit away from the top of the page
-    if (cellTop - m_scrollUnit < view_y)
-      Scroll(-1, std::max(cellTop / m_scrollUnit - 1, 0));
+    if (cellTop - scrollUnit < view_y)
+      Scroll(-1, std::max(cellTop / scrollUnit - 1, 0));
 
     // Scroll downwards if the top of the thing we want to scroll to is less
     // than 1/2 scroll unit away from the bottom of the page
-    if (cellTop + m_scrollUnit > view_y + height)
-      Scroll(-1, std::max(cellTop / m_scrollUnit - 1, 0));
+    if (cellTop + scrollUnit > view_y + height)
+      Scroll(-1, std::max(cellTop / scrollUnit - 1, 0));
   } else {
     // Scroll downwards if the bottom of the thing we want to scroll to is less
     // than 1/2 scroll unit away from the bottom of the page
-    if (cellBottom + m_scrollUnit > view_y + height)
-      Scroll(-1, std::max(cellBottom / m_scrollUnit - 1, 0));
+    if (cellBottom + scrollUnit > view_y + height)
+      Scroll(-1, std::max(cellBottom / scrollUnit - 1, 0));
 
     // Scroll upwards if the bottom of the thing we want to scroll to is less
     // than 1/2 scroll unit away from the top of the page
-    if (cellBottom - m_scrollUnit < view_y)
-      Scroll(-1, std::max(cellBottom / m_scrollUnit - 1, 0));
+    if (cellBottom - scrollUnit < view_y)
+      Scroll(-1, std::max(cellBottom / scrollUnit - 1, 0));
   }
   RequestRedraw();
 }
@@ -4732,8 +4526,9 @@ void Worksheet::ShowPoint(wxPoint point) {
 
   // Get the position [in pixels] the visible portion of the worksheet starts at
   GetViewStart(&view_x, &view_y);
-  view_x *= m_scrollUnit;
-  view_y *= m_scrollUnit;
+  const int scrollUnit = m_layout.GetScrollUnit();
+  view_x *= scrollUnit;
+  view_y *= scrollUnit;
 
   // Get the size of the worksheet window
   GetSize(&width, &height);
@@ -4759,7 +4554,7 @@ void Worksheet::ShowPoint(wxPoint point) {
     scrollToX = view_x;
 
   if (sc) {
-    Scroll(scrollToX / m_scrollUnit, scrollToY / m_scrollUnit);
+    Scroll(scrollToX / scrollUnit, scrollToY / scrollUnit);
   }
 }
 
@@ -4890,7 +4685,7 @@ void Worksheet::PasteFromClipboard() {
       auto ic =
         std::make_unique<ImgCell>(group, m_configuration, bitmap.GetBitmap());
       group->AppendOutput(std::move(ic));
-      m_adjustWorksheetSizeNeeded = true;
+      m_layout.RequestAdjustSize();
       RequestRecalculation(group);
     }
   }
@@ -5184,7 +4979,7 @@ void Worksheet::RemoveAllOutput(GroupCell *cell) {
     if (sub)
       RemoveAllOutput(sub);
   }
-  m_adjustWorksheetSizeNeeded = true;
+  m_layout.RequestAdjustSize();
   OutputChanged();
   RequestRecalculation();
 }
@@ -5460,7 +5255,7 @@ bool Worksheet::CaretVisibleIs() {
     GetViewStart(&view_x, &view_y);
     GetSize(&width, &height);
 
-    view_y *= m_scrollUnit;
+    view_y *= m_layout.GetScrollUnit();
     return ((y >= view_y) && (y <= view_y + height));
   } else {
     if (GetActiveCell()) {

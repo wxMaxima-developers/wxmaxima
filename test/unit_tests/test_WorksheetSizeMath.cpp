@@ -197,6 +197,10 @@ public:
     ++setScrollRateCalls;
     lastScrollRate = rate;
   }
+  void GetViewPosition(int *x, int *y) const override {
+    *x = 0;
+    *y = 0;
+  }
 };
 } // namespace
 
