@@ -1,5 +1,19 @@
 # Current development version
 
+- Automatic line wrapping for code cells works now and can be enabled under
+  Preferences -> Worksheet -> "Autowrap long lines" -> "Text & Code" (off by
+  default; existing configurations keep wrapping text only). The
+  continuation-line indentation is capped at half the worksheet width, so
+  wrapping a deeply nested line always makes it narrower - the failure that
+  originally got the feature disabled.
+- Fixed the disabled code-wrapping prototype's defects before re-enabling it:
+  soft line breaks were written into the middle of code tokens (which could
+  also crash on runs of consecutive spaces), the width accounting never reset
+  at hard newlines, and the continuation indentation was counted twice. The
+  new test_EditorCellWrapping pins the whole wrapping contract headlessly.
+- Copying or selecting text that spans a soft line break no longer leaks the
+  invisible break character, which would have turned into a hard line break
+  when pasted.
 - Internal: the worksheet's layout/recalculation engine (RequestRecalculation,
   RecalculateIfNeeded, AdjustSize, GetMaxPoint and their state) now lives in a
   Worksheet-independent WorksheetLayout class that talks to the window only

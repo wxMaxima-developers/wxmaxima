@@ -96,6 +96,11 @@ struct WrapSetupGuard {
 
 //! A canvas narrow enough that a sentence must wrap several times.
 void Narrow() { g_cfg->SetCanvasSize(wxSize(300, 800)); }
+/*! A canvas for the code scenarios: narrow enough that long code lines must
+  wrap, but wide enough that a single identifier plus the (clamped)
+  continuation indentation always fits - so the assertions test the wrap
+  logic, not the font metrics. */
+void CodeNarrow() { g_cfg->SetCanvasSize(wxSize(500, 800)); }
 //! A canvas wide enough that ordinary lines never wrap.
 void Wide() { g_cfg->SetCanvasSize(wxSize(4000, 800)); }
 
@@ -332,6 +337,214 @@ SCENARIO("Re-styling at a different width re-derives the wrapping") {
         THEN("the same break set as before is derived") {
           REQUIRE(Breaks(editor) == narrowBreaks);
         }
+      }
+    }
+  }
+}
+
+SCENARIO("Code cells wrap when 'Text & Code' is selected, preserving content") {
+  WrapSetupGuard guard;
+  GIVEN("a long one-line code cell on a narrow canvas, auto-wrap text+code") {
+    g_cfg->SetAutoWrap(2);
+    CodeNarrow();
+    const wxString original = LongCodeLine();
+    GroupCell group(g_cfg, GC_TYPE_CODE, original);
+    EditorCell *editor = group.GetEditable();
+    REQUIRE(editor != nullptr);
+    group.Recalculate();
+
+    THEN("soft breaks appear, each replacing a space in place") {
+      const std::vector<size_t> breaks = Breaks(editor);
+      REQUIRE(breaks.size() > 0);
+      wxString value = editor->GetValue();
+      REQUIRE(value.Length() == original.Length());
+      for (size_t breakPos : breaks)
+        REQUIRE(original[breakPos] == wxS(' '));
+      value.Replace(wxS("\r"), wxS(" "));
+      REQUIRE(value == original);
+    }
+    THEN("the cell's width stays within the line width (plus overshoot slack)") {
+      // A wrap triggers after the token that crossed the limit, so a display
+      // line may overshoot by roughly one token; anything beyond that means
+      // the wrapping failed to make the cell narrower.
+      REQUIRE(editor->GetWidth() <=
+              static_cast<wxCoord>(g_cfg->GetLineWidth()) * 3 / 2);
+    }
+    THEN("styling again at the same width derives the same breaks") {
+      const std::vector<size_t> first = Breaks(editor);
+      for (int i = 0; i < 3; i++) {
+        Restyle(editor);
+        REQUIRE(Breaks(editor) == first);
+      }
+    }
+  }
+}
+
+SCENARIO("Deeply nested code wraps with clamped indentation instead of degenerating") {
+  // The failure that got code wrapping disabled: the continuation-line
+  // indentation (4 chars per open bracket) could reach or exceed the line
+  // width, so wrapping made lines longer instead of shorter.
+  WrapSetupGuard guard;
+  GIVEN("a code line inside 15 nested function calls") {
+    g_cfg->SetAutoWrap(2);
+    CodeNarrow();
+    wxString original;
+    for (int i = 0; i < 15; i++)
+      original += wxS("f(");
+    for (int i = 0; i < 30; i++)
+      original += wxString::Format(wxS("arg_%d, "), i);
+    original += wxS("0");
+    for (int i = 0; i < 15; i++)
+      original += wxS(")");
+    GroupCell group(g_cfg, GC_TYPE_CODE, original);
+    EditorCell *editor = group.GetEditable();
+    group.Recalculate();
+
+    THEN("the line wraps, but not at every space") {
+      const size_t spaceCount = original.Freq(wxS(' '));
+      const std::vector<size_t> breaks = Breaks(editor);
+      REQUIRE(breaks.size() >= 2);
+      REQUIRE(breaks.size() < spaceCount);
+    }
+    THEN("the wrapped cell is genuinely narrower than the unwrapped line") {
+      REQUIRE(editor->GetWidth() <=
+              static_cast<wxCoord>(g_cfg->GetLineWidth()) * 3 / 2);
+    }
+    THEN("the content survives") {
+      wxString value = editor->GetValue();
+      value.Replace(wxS("\r"), wxS(" "));
+      REQUIRE(value == original);
+    }
+  }
+}
+
+SCENARIO("Hard newlines reset the wrap accounting") {
+  WrapSetupGuard guard;
+  g_cfg->SetAutoWrap(2);
+  CodeNarrow();
+
+  GIVEN("many hard lines that are each far below the limit") {
+    wxString original;
+    for (int i = 0; i < 20; i++)
+      original += wxString::Format(wxS("x%d: %d$\n"), i, i);
+    original.RemoveLast(); // no trailing newline
+    GroupCell group(g_cfg, GC_TYPE_CODE, original);
+    group.Recalculate();
+
+    THEN("their summed width does not trigger any soft break") {
+      // Fails if the per-line width accumulates across hard newlines.
+      REQUIRE(Breaks(group.GetEditable()).empty());
+    }
+  }
+
+  GIVEN("two long hard lines") {
+    const wxString line = LongCodeLine();
+    const wxString original = line + wxS("\n") + line;
+    GroupCell group(g_cfg, GC_TYPE_CODE, original);
+    group.Recalculate();
+
+    THEN("each hard line wraps on its own; no break crosses the newline") {
+      const std::vector<size_t> breaks = Breaks(group.GetEditable());
+      const size_t newlinePos = line.Length();
+      size_t before = 0, after = 0;
+      for (size_t breakPos : breaks) {
+        REQUIRE(breakPos != newlinePos);
+        if (breakPos < newlinePos)
+          before++;
+        else
+          after++;
+      }
+      REQUIRE(before > 0);
+      REQUIRE(after > 0);
+    }
+  }
+}
+
+SCENARIO("Undo is unaffected by wrapping") {
+  WrapSetupGuard guard;
+  GIVEN("a code cell that wraps after being edited") {
+    g_cfg->SetAutoWrap(2);
+    CodeNarrow();
+    const wxString original = wxS("short: 1$");
+    GroupCell group(g_cfg, GC_TYPE_CODE, original);
+    EditorCell *editor = group.GetEditable();
+    group.Recalculate();
+
+    WHEN("a long value replaces the short one and gets wrapped") {
+      editor->SaveValue();
+      editor->SetValue(LongCodeLine());
+      REQUIRE_NOTHROW(group.Recalculate());
+
+      AND_WHEN("the edit is undone") {
+        REQUIRE(editor->CanUndo());
+        editor->Undo();
+
+        THEN("the original text is restored, without any soft break") {
+          wxString value = editor->GetValue();
+          value.Replace(wxS("\r"), wxS(" "));
+          REQUIRE(value == original);
+        }
+      }
+    }
+  }
+}
+
+SCENARIO("The auto-wrap mode is clamped so code wrapping stays opt-in") {
+  WrapSetupGuard guard;
+  THEN("the legacy stored value 3 (and anything out of range) means text-only") {
+    // Old installations persist autoWrapMode=3 (the pre-tri-state default);
+    // ReadConfig() funnels the stored value through SetAutoWrap's clamp.
+    g_cfg->SetAutoWrap(3);
+    REQUIRE(g_cfg->GetAutoWrap());
+    REQUIRE_FALSE(g_cfg->GetAutoWrapCode());
+    g_cfg->SetAutoWrap(7);
+    REQUIRE(g_cfg->GetAutoWrap());
+    REQUIRE_FALSE(g_cfg->GetAutoWrapCode());
+    g_cfg->SetAutoWrap(-1);
+    REQUIRE_FALSE(g_cfg->GetAutoWrap());
+    REQUIRE_FALSE(g_cfg->GetAutoWrapCode());
+  }
+  THEN("mode 2 enables both, mode 1 only text") {
+    g_cfg->SetAutoWrap(2);
+    REQUIRE(g_cfg->GetAutoWrap());
+    REQUIRE(g_cfg->GetAutoWrapCode());
+    g_cfg->SetAutoWrap(1);
+    REQUIRE(g_cfg->GetAutoWrap());
+    REQUIRE_FALSE(g_cfg->GetAutoWrapCode());
+  }
+}
+
+SCENARIO("Wrapped code leaks no soft break into serialization") {
+  WrapSetupGuard guard;
+  GIVEN("a wrapped code cell") {
+    g_cfg->SetAutoWrap(2);
+    CodeNarrow();
+    const wxString original = LongCodeLine();
+    GroupCell group(g_cfg, GC_TYPE_CODE, original);
+    EditorCell *editor = group.GetEditable();
+    group.Recalculate();
+    REQUIRE(Breaks(editor).size() > 0);
+
+    THEN("ToString restores the original text") {
+      wxString str = editor->ToString();
+      REQUIRE(str.Find(wxS('\r')) == wxNOT_FOUND);
+      REQUIRE(str == original);
+    }
+    THEN("ToXML contains no soft break") {
+      REQUIRE(editor->ToXML().Find(wxS('\r')) == wxNOT_FOUND);
+    }
+    THEN("the selection string sees spaces, not soft breaks") {
+      editor->SetSelection(0, editor->GetValue().Length());
+      wxString sel = editor->GetSelectionString();
+      REQUIRE(sel.Find(wxS('\r')) == wxNOT_FOUND);
+      REQUIRE(sel == original);
+    }
+    THEN("caret positions round-trip across the soft breaks") {
+      const size_t len = editor->GetValue().Length();
+      for (size_t p = 0; p <= len; p++) {
+        size_t x = 0, y = 0;
+        editor->PositionToXY(p, &x, &y);
+        REQUIRE(editor->XYToPosition(x, y) == p);
       }
     }
   }

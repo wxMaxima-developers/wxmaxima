@@ -337,7 +337,7 @@ void Configuration::ResetAllToDefaults() {
   m_useUnicodeMaths = true;
   m_offerKnownAnswers = true;
   m_parenthesisDrawMode = ascii;
-  m_autoWrap = 3;
+  m_autoWrap = 1;
   m_displayedDigits = 100;
   m_autoIndent = true;
   m_restartOnReEvaluation = true;
@@ -589,6 +589,12 @@ void Configuration::ReadConfig() {
   for (const auto &setting : ScalarConfigSettings())
     std::visit([&](auto member) { config->Read(setting.key, &(this->*member)); },
                setting.member);
+
+  // autoWrapMode migration: before code wrapping became selectable the
+  // compiled-in default 3 was persisted by every installation. Clamp it (and
+  // any other out-of-range value) to "text only", so code wrapping stays
+  // opt-in for existing users.
+  SetAutoWrap(m_autoWrap);
 
   config->Read(wxS("configID"), &m_configId);
 

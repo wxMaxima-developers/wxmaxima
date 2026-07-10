@@ -518,7 +518,8 @@ void ConfigDialogue::SetCheckboxValues() {
   int val = 0;
   if (configuration->GetAutoWrap())
     val = 1;
-  //  if(configuration->GetAutoWrapCode()) val = 2;
+  if (configuration->GetAutoWrapCode())
+    val = 2;
   m_recentItems->SetValue(configuration->RecentItems());
   m_autoWrap->SetSelection(val);
   m_labelWidth->SetValue(configuration->LabelWidth());
@@ -658,7 +659,7 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
   wxArrayString autoWrap;
   autoWrap.Add(_("No"));
   autoWrap.Add(_("Text Only"));
-  //  autoWrap.Add(_("Text & Code"));
+  autoWrap.Add(_("Text & Code"));
   m_autoWrap = new wxChoice(displaySizer->GetStaticBox(), wxID_ANY, wxDefaultPosition,
                             wxDefaultSize, autoWrap);
   grid_sizer->Add(m_autoWrap, 0, wxUP | wxDOWN, 5 * GetContentScaleFactor());

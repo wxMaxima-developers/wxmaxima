@@ -3039,7 +3039,6 @@ void EditorCell::HandleSoftLineBreaks_Code(
                                            wxString &text, size_t const &lastSpacePos,
                                            wxCoord &indentationPixels) const {
   // If we don't want to autowrap code we don't do nothing here.
-  // cppcheck-suppress knownConditionTrueFalse
   if (!m_configuration->GetAutoWrapCode())
     return;
 
@@ -3066,7 +3065,16 @@ void EditorCell::HandleSoftLineBreaks_Code(
       (*(text.begin() + lastSpacePos) == ' ')) {
     wxCoord charWidth;
     charWidth = GetTextSize(" ").GetWidth();
-    indentationPixels = charWidth * GetIndentDepth(m_text, lastSpacePos);
+    wxCoord newIndent =
+      charWidth * static_cast<wxCoord>(GetIndentDepth(m_text, lastSpacePos));
+    // Progress guarantee: every continuation line keeps at least half the
+    // worksheet width for content. Unclamped, a deeply nested line's
+    // continuation indentation could reach or exceed the line width, making
+    // the wrapped line as wide as the unwrapped one - the "wrapping made the
+    // line longer" failure that got this feature disabled.
+    indentationPixels =
+      wxMin(newIndent,
+            static_cast<wxCoord>(m_configuration->GetLineWidth()) / 2);
     // The wrap condition above adds indentationPixels to lineWidth; adding it
     // here as well would count the indentation twice and wrap every
     // subsequent line one indentation-width too early.

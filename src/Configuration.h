@@ -488,18 +488,28 @@ public:
   bool GetAutoWrap() const
     { return m_autoWrap > 0; }
 
-  // cppcheck-suppress functionStatic
   //! Do we want to have automatic line breaks for code cells?
-  static bool GetAutoWrapCode()
-    { return false; }
+  bool GetAutoWrapCode() const
+    { return m_autoWrap > 1; }
 
   /*! Sets the auto wrap mode
+
+    Out-of-range values (including the pre-tri-state legacy value 3 that old
+    configurations persist) are clamped to "text only", so code wrapping is
+    strictly opt-in.
+
     \param autoWrap
     - 0: No automatic line breaks
     - 1: Automatic line breaks only for text cells
     - 2: Automatic line breaks for text and code cells.
   */
-  void SetAutoWrap(long autoWrap){m_autoWrap = autoWrap;}
+  void SetAutoWrap(long autoWrap){
+    m_autoWrap = autoWrap;
+    if (m_autoWrap < 0)
+      m_autoWrap = 0;
+    if (m_autoWrap > 2)
+      m_autoWrap = 1;
+  }
 
   //! Do we want automatic indentation?
   bool GetAutoIndent() const
