@@ -233,6 +233,16 @@ public:
   void StyleTextCode() const;
   void StyleTextTexts() const;
 
+protected:
+  /*! The code-vs-prose-specific half of StyleText(), chosen by the subclass.
+
+    The base styles prose (StyleTextTexts()); CodeEditorCell overrides it to
+    style Maxima code (StyleTextCode()). This is the virtual dispatch that
+    replaced the old `if (m_type == MC_TYPE_INPUT)` switch inside StyleText().
+  */
+  virtual void StyleTypedText() const;
+
+public:
   void Reset();
 
   //! Decide what to do if the user pressed a key when this cell was selected

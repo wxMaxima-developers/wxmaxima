@@ -98,8 +98,9 @@ DEFINE_CELL(EditorCell)
 // CodeEditorCell is Maxima input (and the editor Maxima's questions are
 // answered in - those expect Maxima input too); TextEditorCell is text and all
 // sectioning levels (which differ only in font size). For now they add almost
-// no behavior (only the IsCodeEditor() discriminator): the logic still lives in
-// EditorCell keyed on m_type. Construction is funnelled through
+// little behavior yet (the IsCodeEditor() discriminator and the StyleTypedText()
+// code-vs-prose styling seam): most logic still lives in EditorCell keyed on
+// m_type. Construction is funnelled through
 // EditorCell::Create so every EditorCell is born as the right subtype. A cell's
 // type never flips in place across the code/text boundary: the "Convert to ..."
 // commands go through Worksheet::SetCellStyle, which builds a fresh GroupCell of
@@ -115,6 +116,8 @@ public:
     : EditorCell(group, cell) {}
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   bool IsCodeEditor() const override { return true; }
+  //! Code cells get Maxima syntax styling instead of the prose default.
+  void StyleTypedText() const override { StyleTextCode(); }
 };
 
 class TextEditorCell final : public EditorCell {
@@ -3399,14 +3402,15 @@ void EditorCell::StyleText() const {
     // Remove all soft line breaks. They will be re-added in the right places
     // in the next step
     m_text.Replace(wxS("\r"), wxS(" "));
-    // Do we need to style code or text?
-    if (m_type == MC_TYPE_INPUT)
-      StyleTextCode();
-    else
-      StyleTextTexts();
+    // Style as code or prose, dispatched by the concrete subclass.
+    StyleTypedText();
   }
   m_tokens_valid = true;
 }
+
+// Base = prose; CodeEditorCell overrides this to style Maxima code. This is the
+// virtual seam that replaced StyleText()'s old `if (m_type == MC_TYPE_INPUT)`.
+void EditorCell::StyleTypedText() const { StyleTextTexts(); }
 
 void EditorCell::SetValue(const wxString &text) {
   if (m_type == MC_TYPE_INPUT) {

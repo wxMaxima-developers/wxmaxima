@@ -1,5 +1,10 @@
 # Current development version
 
+- Internal: EditorCell's code-vs-prose styling is now chosen by the concrete
+  subclass (a virtual StyleTypedText()) instead of an `if (m_type ==
+  MC_TYPE_INPUT)` switch inside StyleText() - the next step of the EditorCell
+  split. No behavior change (every code editor is a CodeEditorCell and vice
+  versa).
 - Changing a cell's type (Cell -> Convert to code/text/section/...) can now be
   undone: it goes through the same rebuild path the toolbar's cell-type dropdown
   already used, instead of an in-place change the undo history did not record.
