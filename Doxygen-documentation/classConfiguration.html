@@ -451,6 +451,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SaveImgFileName</b> (
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetAutoWrap</b> () const</td></tr>
 <tr class="memdesc:a2944390c8108ebbc64f8d878a8ccbbe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we want to have automatic line breaks for text cells? <br /></td></tr>
 <tr class="separator:a2944390c8108ebbc64f8d878a8ccbbe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9c3b5401863816379c1b9e51b949ddb"><td class="memItemLeft" align="right" valign="top"><a id="aa9c3b5401863816379c1b9e51b949ddb" name="aa9c3b5401863816379c1b9e51b949ddb"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetAutoWrapCode</b> () const</td></tr>
+<tr class="memdesc:aa9c3b5401863816379c1b9e51b949ddb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we want to have automatic line breaks for code cells? <br /></td></tr>
+<tr class="separator:aa9c3b5401863816379c1b9e51b949ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25f8652d4b5b8b36d07230cac80ab2ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a25f8652d4b5b8b36d07230cac80ab2ab">SetAutoWrap</a> (long autoWrap)</td></tr>
 <tr class="memdesc:a25f8652d4b5b8b36d07230cac80ab2ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the auto wrap mode.  <br /></td></tr>
 <tr class="separator:a25f8652d4b5b8b36d07230cac80ab2ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1247,10 +1251,6 @@ static double&#160;</td><td class="memItemRight" valign="bottom"><b>GetMaxZoomFa
 static const wxString&#160;</td><td class="memItemRight" valign="bottom"><b>CharsNeedingQuotes</b> ()</td></tr>
 <tr class="memdesc:a8a316674c3d2149c2e0c9aa55f19ca99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a list of chars we need to escape in maxima. <br /></td></tr>
 <tr class="separator:a8a316674c3d2149c2e0c9aa55f19ca99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84ae99402a1ca9528502213714d4f5f2"><td class="memItemLeft" align="right" valign="top"><a id="a84ae99402a1ca9528502213714d4f5f2" name="a84ae99402a1ca9528502213714d4f5f2"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetAutoWrapCode</b> ()</td></tr>
-<tr class="memdesc:a84ae99402a1ca9528502213714d4f5f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do we want to have automatic line breaks for code cells? <br /></td></tr>
-<tr class="separator:a84ae99402a1ca9528502213714d4f5f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb3b736ae43efbed965482e4bbb50fd0"><td class="memItemLeft" align="right" valign="top"><a id="acb3b736ae43efbed965482e4bbb50fd0" name="acb3b736ae43efbed965482e4bbb50fd0"></a>
 static const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetStyleName</b> (<a class="el" href="TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993">TextStyle</a> textStyle)</td></tr>
 <tr class="separator:acb3b736ae43efbed965482e4bbb50fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1883,6 +1883,7 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 </div><div class="memdoc">
 
 <p>Sets the auto wrap mode. </p>
+<p>Out-of-range values (including the pre-tri-state legacy value 3 that old configurations persist) are clamped to "text only", so code wrapping is strictly opt-in.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">autoWrap</td><td><ul>

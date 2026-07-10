@@ -25,7 +25,7 @@ var searchData=
   ['getautoindent_22',['GetAutoIndent',['../classConfiguration.html#a77590e3aee286df316dbdad4b7a763fc',1,'Configuration']]],
   ['getautosubscript_5fnum_23',['GetAutosubscript_Num',['../classConfiguration.html#a1167eec0b2508357bc8df084d26ba6cb',1,'Configuration']]],
   ['getautowrap_24',['GetAutoWrap',['../classConfiguration.html#a2944390c8108ebbc64f8d878a8ccbbe4',1,'Configuration']]],
-  ['getautowrapcode_25',['GetAutoWrapCode',['../classConfiguration.html#a84ae99402a1ca9528502213714d4f5f2',1,'Configuration']]],
+  ['getautowrapcode_25',['GetAutoWrapCode',['../classConfiguration.html#aa9c3b5401863816379c1b9e51b949ddb',1,'Configuration']]],
   ['getbackgroundbrush_26',['GetBackgroundBrush',['../classConfiguration.html#aa8a524a68b4296705f3b01bd6a8be3c5',1,'Configuration::GetBackgroundBrush()'],['../classRenderContext.html#a9deaff8afe09d0948241e64331d73361',1,'RenderContext::GetBackgroundBrush()']]],
   ['getbadimagetooltip_27',['GetBadImageToolTip',['../classImage.html#a4d9a399068ca20e7111578e274d3296d',1,'Image']]],
   ['getbaseindent_28',['GetBaseIndent',['../classConfiguration.html#a8004ace11a8c74983670984d521cecbb',1,'Configuration']]],
