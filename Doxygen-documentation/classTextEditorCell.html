@@ -1033,6 +1033,9 @@ static size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetLiveContr
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a61ec2c424c9ce820d368423b8f38985a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a61ec2c424c9ce820d368423b8f38985a">StyleTypedText</a> () const</td></tr>
+<tr class="memdesc:a61ec2c424c9ce820d368423b8f38985a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The code-vs-prose-specific half of <a class="el" href="classEditorCell.html#a882a1f44fe7b82bb0db6dc312d23bd15" title="Converts m_text to a list of styled text snippets that will later be displayed by draw().">StyleText()</a>, chosen by the subclass.  <br /></td></tr>
+<tr class="separator:a61ec2c424c9ce820d368423b8f38985a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e96373d1087101e9c1bb115e0320805"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2e96373d1087101e9c1bb115e0320805">BreakUpAndMark</a> () const</td></tr>
 <tr class="memdesc:a2e96373d1087101e9c1bb115e0320805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break up the internal cells of this cell, and mark it as broken up.  <br /></td></tr>
 <tr class="separator:a2e96373d1087101e9c1bb115e0320805"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3984,6 +3987,36 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 <p>Converts m_text to a list of styled text snippets that will later be displayed by draw(). </p>
 <p>This function also generates a wordlist for this <a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> so Autocompletion can learn about variable names contained in lists or cells that still haven't been evaluated.</p>
 <p>For cells containing text instead of code this function adds a <code>\r</code> as a marker that this line is to be broken here until the window's width changes. </p>
+
+</div>
+</div>
+<a id="a61ec2c424c9ce820d368423b8f38985a" name="a61ec2c424c9ce820d368423b8f38985a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61ec2c424c9ce820d368423b8f38985a">&#9670;&#160;</a></span>StyleTypedText()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EditorCell::StyleTypedText </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The code-vs-prose-specific half of <a class="el" href="classEditorCell.html#a882a1f44fe7b82bb0db6dc312d23bd15" title="Converts m_text to a list of styled text snippets that will later be displayed by draw().">StyleText()</a>, chosen by the subclass. </p>
+<p>The base styles prose (StyleTextTexts()); <a class="el" href="classCodeEditorCell.html">CodeEditorCell</a> overrides it to style <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> code (<a class="el" href="classEditorCell.html#a25d8ef969409fdb2cb73f47ea1c9d812" title="Is Called by StyleText() if this is a code cell.">StyleTextCode()</a>). This is the virtual dispatch that replaced the old <code>if (m_type == MC_TYPE_INPUT)</code> switch inside <a class="el" href="classEditorCell.html#a882a1f44fe7b82bb0db6dc312d23bd15" title="Converts m_text to a list of styled text snippets that will later be displayed by draw().">StyleText()</a>. </p>
+
+<p>Reimplemented in <a class="el" href="classCodeEditorCell.html#a26a633ec21dd1ba6c90ccaf89a7f9d76">CodeEditorCell</a>.</p>
 
 </div>
 </div>

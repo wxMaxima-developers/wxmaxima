@@ -104,6 +104,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a959b6cddeed2a5e4c48af7b71690cbcd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCodeEditorCell.html#a959b6cddeed2a5e4c48af7b71690cbcd">IsCodeEditor</a> () const override</td></tr>
 <tr class="memdesc:a959b6cddeed2a5e4c48af7b71690cbcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this concrete cell edit code (<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> input) rather than prose?  <br /></td></tr>
 <tr class="separator:a959b6cddeed2a5e4c48af7b71690cbcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26a633ec21dd1ba6c90ccaf89a7f9d76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCodeEditorCell.html#a26a633ec21dd1ba6c90ccaf89a7f9d76">StyleTypedText</a> () const override</td></tr>
+<tr class="memdesc:a26a633ec21dd1ba6c90ccaf89a7f9d76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code cells get <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> syntax styling instead of the prose default.  <br /></td></tr>
+<tr class="separator:a26a633ec21dd1ba6c90ccaf89a7f9d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86be10ed007378c49b1008b6cb6d0792"><td class="memItemLeft" align="right" valign="top"><a id="a86be10ed007378c49b1008b6cb6d0792" name="a86be10ed007378c49b1008b6cb6d0792"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateSelectionString</b> ()</td></tr>
 <tr class="separator:a86be10ed007378c49b1008b6cb6d0792"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3984,6 +3987,35 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 <p>Converts m_text to a list of styled text snippets that will later be displayed by draw(). </p>
 <p>This function also generates a wordlist for this <a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> so Autocompletion can learn about variable names contained in lists or cells that still haven't been evaluated.</p>
 <p>For cells containing text instead of code this function adds a <code>\r</code> as a marker that this line is to be broken here until the window's width changes. </p>
+
+</div>
+</div>
+<a id="a26a633ec21dd1ba6c90ccaf89a7f9d76" name="a26a633ec21dd1ba6c90ccaf89a7f9d76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26a633ec21dd1ba6c90ccaf89a7f9d76">&#9670;&#160;</a></span>StyleTypedText()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CodeEditorCell::StyleTypedText </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Code cells get <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> syntax styling instead of the prose default. </p>
+
+<p>Reimplemented from <a class="el" href="classEditorCell.html#a61ec2c424c9ce820d368423b8f38985a">EditorCell</a>.</p>
 
 </div>
 </div>
