@@ -242,6 +242,15 @@ protected:
   */
   virtual void StyleTypedText() const;
 
+  /*! Transform text on its way into SetValue(); returns what to store and sets
+    cursorPos. The base stores it verbatim (cursor at the end); CodeEditorCell
+    overrides it to add Maxima-input conveniences (auto-close a just-typed
+    bracket/quote, prefix a leading operator with "%"). Replaced the old
+    `if (m_type == MC_TYPE_INPUT)` branch in SetValue().
+  */
+  virtual wxString PreprocessNewValue(const wxString &text,
+                                      std::size_t &cursorPos) const;
+
 public:
   void Reset();
 

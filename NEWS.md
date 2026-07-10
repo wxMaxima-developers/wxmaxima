@@ -1,5 +1,9 @@
 # Current development version
 
+- Internal: EditorCell's code-only input conveniences (auto-closing a just-typed
+  bracket/quote, %-prefixing a leading operator) now live in a CodeEditorCell
+  override of SetValue's preprocessing rather than an `if (m_type ==
+  MC_TYPE_INPUT)` branch. No behavior change.
 - Internal: EditorCell's code-vs-prose styling is now chosen by the concrete
   subclass (a virtual StyleTypedText()) instead of an `if (m_type ==
   MC_TYPE_INPUT)` switch inside StyleText() - the next step of the EditorCell

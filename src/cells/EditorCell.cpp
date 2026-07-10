@@ -118,6 +118,10 @@ public:
   bool IsCodeEditor() const override { return true; }
   //! Code cells get Maxima syntax styling instead of the prose default.
   void StyleTypedText() const override { StyleTextCode(); }
+  //! Code input auto-closes a just-typed bracket/quote and %-prefixes a leading
+  //! operator; prose does neither.
+  wxString PreprocessNewValue(const wxString &text,
+                              std::size_t &cursorPos) const override;
 };
 
 class TextEditorCell final : public EditorCell {
@@ -131,6 +135,43 @@ public:
 
 DEFINE_CELL_COPY(CodeEditorCell)
 DEFINE_CELL_COPY(TextEditorCell)
+
+wxString CodeEditorCell::PreprocessNewValue(const wxString &text,
+                                            std::size_t &cursorPos) const {
+  wxString result = text;
+  if (m_configuration->GetMatchParens()) {
+    // A just-typed opening bracket/quote is auto-closed, with the caret placed
+    // inside it.
+    if (text == wxS("(")) {
+      result = wxS("()");
+      cursorPos = 0;
+    } else if (text == wxS("[")) {
+      result = wxS("[]");
+      cursorPos = 1;
+    } else if (text == wxS("{")) {
+      result = wxS("{}");
+      cursorPos = 1;
+    } else if (text == wxS("\"")) {
+      result = wxS("\"\"");
+      cursorPos = 1;
+    } else {
+      cursorPos = result.Length();
+    }
+  } else {
+    cursorPos = result.Length();
+  }
+
+  // A cell that starts with a binary operator is a continuation of the previous
+  // result: prefix "%" so e.g. "*2" becomes "%*2".
+  if (m_configuration->GetInsertAns()) {
+    if (result == wxS("+") || result == wxS("*") || result == wxS("/") ||
+        result == wxS("^") || result == wxS("=") || result == wxS(",")) {
+      result = wxS("%") + result;
+      cursorPos = result.Length();
+    }
+  }
+  return result;
+}
 
 bool EditorCell::IsCodeType(CellType type) {
   return (type == MC_TYPE_INPUT) || (type == MC_TYPE_PROMPT);
@@ -3412,41 +3453,16 @@ void EditorCell::StyleText() const {
 // virtual seam that replaced StyleText()'s old `if (m_type == MC_TYPE_INPUT)`.
 void EditorCell::StyleTypedText() const { StyleTextTexts(); }
 
-void EditorCell::SetValue(const wxString &text) {
-  if (m_type == MC_TYPE_INPUT) {
-    if (m_configuration->GetMatchParens()) {
-      if (text == wxS("(")) {
-        m_text = wxS("()");
-        CursorPosition(0);
-      } else if (text == wxS("[")) {
-        m_text = wxS("[]");
-        CursorPosition(1);
-      } else if (text == wxS("{")) {
-        m_text = wxS("{}");
-        CursorPosition(1);
-      } else if (text == wxS("\"")) {
-        m_text = wxS("\"\"");
-        CursorPosition(1);
-      } else {
-        m_text = text;
-        CursorPosition(m_text.Length());
-      }
-    } else {
-      m_text = text;
-      CursorPosition(m_text.Length());
-    }
+wxString EditorCell::PreprocessNewValue(const wxString &text,
+                                        std::size_t &cursorPos) const {
+  cursorPos = text.Length();
+  return text;
+}
 
-    if (m_configuration->GetInsertAns()) {
-      if (m_text == wxS("+") || m_text == wxS("*") || m_text == wxS("/") ||
-          m_text == wxS("^") || m_text == wxS("=") || m_text == wxS(",")) {
-        m_text = wxS("%") + m_text;
-        CursorPosition(m_text.Length());
-      }
-    }
-  } else {
-    m_text = text;
-    CursorPosition(m_text.Length());
-  }
+void EditorCell::SetValue(const wxString &text) {
+  std::size_t cursorPos = 0;
+  m_text = PreprocessNewValue(text, cursorPos);
+  CursorPosition(cursorPos);
 
   FindMatchingParens();
   m_containsChanges = true;

@@ -158,6 +158,42 @@ SCENARIO("A GroupCell's editable is the EditorCell subclass matching its type") 
   }
 }
 
+SCENARIO("Code cells auto-close brackets and %-prefix operators; prose does not") {
+  // The input conveniences live in CodeEditorCell::PreprocessNewValue; prose
+  // cells store the text verbatim.
+  const bool savedMatch = g_cfg->GetMatchParens();
+  const bool savedAns = g_cfg->GetInsertAns();
+  g_cfg->SetMatchParens(true);
+  g_cfg->SetInsertAns(true);
+
+  GroupCell codeGroup(g_cfg, GC_TYPE_CODE, wxS(""));
+  GroupCell textGroup(g_cfg, GC_TYPE_TEXT, wxS(""));
+  EditorCell *code = codeGroup.GetEditable();
+  EditorCell *text = textGroup.GetEditable();
+  REQUIRE(code);
+  REQUIRE(text);
+
+  WHEN("a lone '(' is entered") {
+    code->SetValue(wxS("("));
+    text->SetValue(wxS("("));
+    THEN("the code cell auto-closes it; the text cell keeps it literal") {
+      CHECK(code->GetValue() == wxS("()"));
+      CHECK(text->GetValue() == wxS("("));
+    }
+  }
+  WHEN("a lone continuation operator '*' is entered") {
+    code->SetValue(wxS("*"));
+    text->SetValue(wxS("*"));
+    THEN("the code cell %-prefixes it; the text cell keeps it literal") {
+      CHECK(code->GetValue() == wxS("%*"));
+      CHECK(text->GetValue() == wxS("*"));
+    }
+  }
+
+  g_cfg->SetMatchParens(savedMatch);
+  g_cfg->SetInsertAns(savedAns);
+}
+
 SCENARIO("Incremental search extends the current match in place") {
   // When a forward search already highlights a match and the user types another
   // character that the SAME match still satisfies, the highlight must just grow
