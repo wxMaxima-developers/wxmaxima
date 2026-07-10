@@ -101,6 +101,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a045177f4d08ba1cf624f3020adf4ee77"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextEditorCell.html#a045177f4d08ba1cf624f3020adf4ee77">Copy</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *group) const override</td></tr>
 <tr class="memdesc:a045177f4d08ba1cf624f3020adf4ee77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this cell.  <br /></td></tr>
 <tr class="separator:a045177f4d08ba1cf624f3020adf4ee77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a538f99f180a49fc01c3e628db793cf1d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a538f99f180a49fc01c3e628db793cf1d">IsCodeEditor</a> () const</td></tr>
+<tr class="memdesc:a538f99f180a49fc01c3e628db793cf1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this concrete cell edit code (<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> input) rather than prose?  <br /></td></tr>
+<tr class="separator:a538f99f180a49fc01c3e628db793cf1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86be10ed007378c49b1008b6cb6d0792"><td class="memItemLeft" align="right" valign="top"><a id="a86be10ed007378c49b1008b6cb6d0792" name="a86be10ed007378c49b1008b6cb6d0792"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateSelectionString</b> ()</td></tr>
 <tr class="separator:a86be10ed007378c49b1008b6cb6d0792"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -980,6 +983,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aee5f444c769f6a549d733f3d13ab4999"><td class="memItemLeft" align="right" valign="top">static std::unique_ptr&lt; <a class="el" href="classEditorCell.html">EditorCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#aee5f444c769f6a549d733f3d13ab4999">Create</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *group, <a class="el" href="classConfiguration.html">Configuration</a> *config, <a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type, wxString text={})</td></tr>
 <tr class="memdesc:aee5f444c769f6a549d733f3d13ab4999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct the <a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> subtype (code vs.  <br /></td></tr>
 <tr class="separator:aee5f444c769f6a549d733f3d13ab4999"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0e56e5dc5c0dee87121952965fced43"><td class="memItemLeft" align="right" valign="top"><a id="ac0e56e5dc5c0dee87121952965fced43" name="ac0e56e5dc5c0dee87121952965fced43"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCodeType</b> (<a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type)</td></tr>
+<tr class="memdesc:ac0e56e5dc5c0dee87121952965fced43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is <code>type</code> a code (Maxima-input) cell type, as opposed to text/sectioning? <br /></td></tr>
+<tr class="separator:ac0e56e5dc5c0dee87121952965fced43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56acb43218c6996f85bb3acfb9a610ca"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a56acb43218c6996f85bb3acfb9a610ca">TabExpand</a> (const wxString &amp;input_, size_t posInLine)</td></tr>
 <tr class="memdesc:a56acb43218c6996f85bb3acfb9a610ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expand all tabulators.  <br /></td></tr>
 <tr class="separator:a56acb43218c6996f85bb3acfb9a610ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2855,6 +2862,36 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 <p>Whether this cell is broken into two or more lines. </p>
 <p>Long abs(), conjugate(), fraction and similar cells can be displayed as 2<a class="el" href="classD.html">D</a> objects, but will be displayed in their linear form (and therefore broken into lines) if they end up to be wider than the screen. In this case m_isBrokenIntoLines is true. </p>
+
+</div>
+</div>
+<a id="a538f99f180a49fc01c3e628db793cf1d" name="a538f99f180a49fc01c3e628db793cf1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a538f99f180a49fc01c3e628db793cf1d">&#9670;&#160;</a></span>IsCodeEditor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool EditorCell::IsCodeEditor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does this concrete cell edit code (<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> input) rather than prose? </p>
+<p>Fixed by the subclass, so it stays correct even if m_type is momentarily out of sync. Used when a cell's type is changed to decide whether the editable must be rebuilt as the other subclass. The base is prose by default; <a class="el" href="classCodeEditorCell.html">CodeEditorCell</a> overrides it. </p>
+
+<p>Reimplemented in <a class="el" href="classCodeEditorCell.html#a959b6cddeed2a5e4c48af7b71690cbcd">CodeEditorCell</a>.</p>
 
 </div>
 </div>
