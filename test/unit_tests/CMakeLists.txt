@@ -103,6 +103,18 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(GroupCellLayout test_GroupCellLayout)
 
+    # Drives the full layout pipeline (RequestRecalculation ->
+    # RecalculateIfNeeded -> virtual size pushed to a mock view) with real
+    # GroupCells and a memory-DC Configuration but NO Worksheet window - the
+    # payoff of the WorksheetLayout split.
+    add_executable(test_WorksheetLayout
+        test_WorksheetLayout.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_WorksheetLayout PUBLIC cxx_std_20)
+    target_link_libraries(test_WorksheetLayout PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(WorksheetLayout test_WorksheetLayout)
+
     # Logic-level regression tests for the custom wxAccessible classes (worksheet
     # and toolbar). They only assert where wxUSE_ACCESSIBILITY is set (the Windows
     # CI); elsewhere they compile out to a harness sanity check. This catches the
