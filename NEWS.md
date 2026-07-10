@@ -1,5 +1,8 @@
 # Current development version
 
+- Internal: the ` type="..."` attribute EditorCell::ToXML() writes is now chosen
+  by the subclass (CodeEditorCell always writes "input"; the base maps the
+  prose/sectioning types) instead of an m_type switch. No behavior change.
 - Internal: EditorCell's code-only input conveniences (auto-closing a just-typed
   bracket/quote, %-prefixing a leading operator) now live in a CodeEditorCell
   override of SetValue's preprocessing rather than an `if (m_type ==

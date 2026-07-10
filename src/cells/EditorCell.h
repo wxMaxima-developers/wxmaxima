@@ -251,6 +251,14 @@ protected:
   virtual wxString PreprocessNewValue(const wxString &text,
                                       std::size_t &cursorPos) const;
 
+  /*! The ` type="..."` attribute ToXML() writes for this cell.
+
+    The base maps the prose/sectioning m_type values (text/title/section/...);
+    CodeEditorCell overrides it to always be code (`input`). Replaced the m_type
+    switch inside ToXML().
+  */
+  virtual wxString XMLTypeAttribute() const;
+
 public:
   void Reset();
 

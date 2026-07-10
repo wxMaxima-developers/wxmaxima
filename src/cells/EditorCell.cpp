@@ -122,6 +122,8 @@ public:
   //! operator; prose does neither.
   wxString PreprocessNewValue(const wxString &text,
                               std::size_t &cursorPos) const override;
+  //! Code cells always serialize as type="input".
+  wxString XMLTypeAttribute() const override { return wxS(" type=\"input\""); }
 };
 
 class TextEditorCell final : public EditorCell {
@@ -595,39 +597,35 @@ wxString EditorCell::ToXML() const {
   xmlstring = wxS("<line>") + xmlstring + wxS("</line>\n");
   wxString head = wxS("<editor");
   head += GetXMLFlags();
+  head += XMLTypeAttribute();
+  head += wxS(">\n");
+
+  return head + xmlstring + wxS("</editor>\n");
+}
+
+wxString EditorCell::XMLTypeAttribute() const {
   switch (m_type) {
   case MC_TYPE_TEXT:
-    head += wxS(" type=\"text\"");
-    break;
+    return wxS(" type=\"text\"");
   case MC_TYPE_TITLE:
-    head += wxS(" type=\"title\" sectioning_level=\"1\"");
-    break;
+    return wxS(" type=\"title\" sectioning_level=\"1\"");
   case MC_TYPE_SECTION:
-    head += wxS(" type=\"section\" sectioning_level=\"2\"");
-    break;
+    return wxS(" type=\"section\" sectioning_level=\"2\"");
   case MC_TYPE_SUBSECTION:
-    head += wxS(" type=\"subsection\" sectioning_level=\"3\"");
-    break;
+    return wxS(" type=\"subsection\" sectioning_level=\"3\"");
   case MC_TYPE_SUBSUBSECTION:
     // We save subsubsections as subsections with a higher sectioning level:
     // This makes them backwards-compatible in the way that they are displayed
     // as subsections on old wxMaxima installations.
-    head += wxS(" type=\"subsection\" sectioning_level=\"4\"");
-    break;
+    return wxS(" type=\"subsection\" sectioning_level=\"4\"");
   case MC_TYPE_HEADING5:
-    head += wxS(" type=\"subsection\" sectioning_level=\"5\"");
-    break;
+    return wxS(" type=\"subsection\" sectioning_level=\"5\"");
   case MC_TYPE_HEADING6:
-    head += wxS(" type=\"subsection\" sectioning_level=\"6\"");
-    break;
+    return wxS(" type=\"subsection\" sectioning_level=\"6\"");
   case MC_TYPE_INPUT:
   default:
-    head += wxS(" type=\"input\"");
-    break;
+    return wxS(" type=\"input\"");
   }
-  head += wxS(">\n");
-
-  return head + xmlstring + wxS("</editor>\n");
 }
 
 void EditorCell::ConvertNumToUNicodeChar() {
