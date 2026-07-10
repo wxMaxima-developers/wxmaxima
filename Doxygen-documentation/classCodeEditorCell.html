@@ -107,6 +107,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a26a633ec21dd1ba6c90ccaf89a7f9d76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCodeEditorCell.html#a26a633ec21dd1ba6c90ccaf89a7f9d76">StyleTypedText</a> () const override</td></tr>
 <tr class="memdesc:a26a633ec21dd1ba6c90ccaf89a7f9d76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code cells get <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> syntax styling instead of the prose default.  <br /></td></tr>
 <tr class="separator:a26a633ec21dd1ba6c90ccaf89a7f9d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53e62eb39bed85590f50ad2009d353cc"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCodeEditorCell.html#a53e62eb39bed85590f50ad2009d353cc">PreprocessNewValue</a> (const wxString &amp;text, std::size_t &amp;cursorPos) const override</td></tr>
+<tr class="memdesc:a53e62eb39bed85590f50ad2009d353cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code input auto-closes a just-typed bracket/quote and %-prefixes a leading operator; prose does neither.  <br /></td></tr>
+<tr class="separator:a53e62eb39bed85590f50ad2009d353cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86be10ed007378c49b1008b6cb6d0792"><td class="memItemLeft" align="right" valign="top"><a id="a86be10ed007378c49b1008b6cb6d0792" name="a86be10ed007378c49b1008b6cb6d0792"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateSelectionString</b> ()</td></tr>
 <tr class="separator:a86be10ed007378c49b1008b6cb6d0792"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3170,6 +3173,46 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 </div>
 </div>
+<a id="a53e62eb39bed85590f50ad2009d353cc" name="a53e62eb39bed85590f50ad2009d353cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53e62eb39bed85590f50ad2009d353cc">&#9670;&#160;</a></span>PreprocessNewValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString CodeEditorCell::PreprocessNewValue </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t &amp;&#160;</td>
+          <td class="paramname"><em>cursorPos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Code input auto-closes a just-typed bracket/quote and %-prefixes a leading operator; prose does neither. </p>
+
+<p>Reimplemented from <a class="el" href="classEditorCell.html#a1391d0cb6cb48d28df30d04b47b5ff8e">EditorCell</a>.</p>
+
+</div>
+</div>
 <a id="ae68686dc7de3f4c35c6eeac935ee190d" name="ae68686dc7de3f4c35c6eeac935ee190d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae68686dc7de3f4c35c6eeac935ee190d">&#9670;&#160;</a></span>Recalculate()</h2>
 
@@ -3957,7 +4000,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

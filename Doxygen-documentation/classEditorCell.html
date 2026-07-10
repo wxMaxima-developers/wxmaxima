@@ -1049,6 +1049,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a61ec2c424c9ce820d368423b8f38985a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a61ec2c424c9ce820d368423b8f38985a">StyleTypedText</a> () const</td></tr>
 <tr class="memdesc:a61ec2c424c9ce820d368423b8f38985a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The code-vs-prose-specific half of <a class="el" href="classEditorCell.html#a882a1f44fe7b82bb0db6dc312d23bd15" title="Converts m_text to a list of styled text snippets that will later be displayed by draw().">StyleText()</a>, chosen by the subclass.  <br /></td></tr>
 <tr class="separator:a61ec2c424c9ce820d368423b8f38985a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1391d0cb6cb48d28df30d04b47b5ff8e"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a1391d0cb6cb48d28df30d04b47b5ff8e">PreprocessNewValue</a> (const wxString &amp;text, std::size_t &amp;cursorPos) const</td></tr>
+<tr class="memdesc:a1391d0cb6cb48d28df30d04b47b5ff8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform text on its way into <a class="el" href="classEditorCell.html#a06fb7e24c57d9cdfd8146539228b50e7" title="Sets the text that is to be displayed.">SetValue()</a>; returns what to store and sets cursorPos.  <br /></td></tr>
+<tr class="separator:a1391d0cb6cb48d28df30d04b47b5ff8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e96373d1087101e9c1bb115e0320805"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2e96373d1087101e9c1bb115e0320805">BreakUpAndMark</a> () const</td></tr>
 <tr class="memdesc:a2e96373d1087101e9c1bb115e0320805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break up the internal cells of this cell, and mark it as broken up.  <br /></td></tr>
 <tr class="separator:a2e96373d1087101e9c1bb115e0320805"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3160,6 +3163,47 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 </div>
 </div>
+<a id="a1391d0cb6cb48d28df30d04b47b5ff8e" name="a1391d0cb6cb48d28df30d04b47b5ff8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1391d0cb6cb48d28df30d04b47b5ff8e">&#9670;&#160;</a></span>PreprocessNewValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString EditorCell::PreprocessNewValue </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t &amp;&#160;</td>
+          <td class="paramname"><em>cursorPos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Transform text on its way into <a class="el" href="classEditorCell.html#a06fb7e24c57d9cdfd8146539228b50e7" title="Sets the text that is to be displayed.">SetValue()</a>; returns what to store and sets cursorPos. </p>
+<p>The base stores it verbatim (cursor at the end); <a class="el" href="classCodeEditorCell.html">CodeEditorCell</a> overrides it to add Maxima-input conveniences (auto-close a just-typed bracket/quote, prefix a leading operator with "%"). Replaced the old <code>if (m_type == MC_TYPE_INPUT)</code> branch in <a class="el" href="classEditorCell.html#a06fb7e24c57d9cdfd8146539228b50e7" title="Sets the text that is to be displayed.">SetValue()</a>. </p>
+
+<p>Reimplemented in <a class="el" href="classCodeEditorCell.html#a53e62eb39bed85590f50ad2009d353cc">CodeEditorCell</a>.</p>
+
+</div>
+</div>
 <a id="ae68686dc7de3f4c35c6eeac935ee190d" name="ae68686dc7de3f4c35c6eeac935ee190d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae68686dc7de3f4c35c6eeac935ee190d">&#9670;&#160;</a></span>Recalculate()</h2>
 
@@ -3931,7 +3975,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
