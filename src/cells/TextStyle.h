@@ -269,6 +269,7 @@ enum TextStyle : int8_t
   TS_CURSOR             ,
   TS_SELECTION          ,
   TS_EQUALSSELECTION    ,
+  TS_DIFF_CHANGED       , //!< Background of text the diff viewer's counterpart cell lacks
   NUMBEROFSTYLES, //!< This is not a style, but its value tells us how many styles are defined
   TS_INVALID //!< If a text style cannot be determined this value is used
 };

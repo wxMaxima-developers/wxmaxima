@@ -220,6 +220,25 @@ public:
   */
   const wxString &GetValue() const override { return m_text; }
 
+  /*! Sets the character ranges of this cell's text the diff viewer wants
+    painted with the TS_DIFF_CHANGED background (the parts the matching cell
+    of the other file doesn't contain).
+
+    Each range is half-open ([start, end)) and indexes into GetValue(). The
+    ranges survive re-layout: soft word-wrapping swaps ' ' and '\r' in place
+    and therefore never moves a character. They do NOT survive edits, so
+    Draw() ignores them as soon as the text's length changes and SetValue()
+    drops them entirely.
+  */
+  void SetDiffHighlights(std::vector<std::pair<std::size_t, std::size_t>> ranges) {
+    m_diffHighlights = std::move(ranges);
+    m_diffHighlightsTextLength = m_text.Length();
+  }
+  //! The ranges set by SetDiffHighlights() (empty outside the diff viewer).
+  const std::vector<std::pair<std::size_t, std::size_t>> &GetDiffHighlights() const {
+    return m_diffHighlights;
+  }
+
   /*! Converts m_text to a list of styled text snippets that will later be displayed by draw().
 
     This function also generates a wordlist for this EditorCell so Autocompletion can learn
@@ -711,6 +730,13 @@ private:
    */
   mutable wxString m_text;
   mutable std::vector<StyledText> m_styledText;
+
+  //! See SetDiffHighlights(). Empty for every cell outside the diff viewer.
+  std::vector<std::pair<std::size_t, std::size_t>> m_diffHighlights;
+  //! m_text's length when m_diffHighlights was set: the ranges only stay valid
+  //! while no edit happened, and every insertion/deletion changes the length
+  //! (soft-wrapping doesn't - it swaps ' ' and '\r' in place).
+  std::size_t m_diffHighlightsTextLength = 0;
 
 //** 8/4 bytes
 //**

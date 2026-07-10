@@ -180,6 +180,118 @@ SCENARIO("Diff alignment correctly identifies matches and gaps") {
   }
 }
 
+//! The text of @p s the given ranges cover, ranges separated by '|'. Makes the
+//! assertions below readable and independent of exact token tie-breaking.
+static wxString CoveredText(const wxString &s, const std::vector<CharRange> &ranges) {
+  wxString result;
+  for (const auto &r : ranges) {
+    if (!result.IsEmpty())
+      result += wxS("|");
+    result += s.SubString(r.first, r.second - 1);
+  }
+  return result;
+}
+
+SCENARIO("MergeRanges sorts, merges and drops empty ranges") {
+  GIVEN("Overlapping, touching, empty and out-of-order ranges") {
+    std::vector<CharRange> ranges = {{10, 12}, {3, 5}, {5, 7}, {8, 8}, {11, 15}};
+    WHEN("merged") {
+      auto merged = MergeRanges(ranges);
+      THEN("touching/overlapping ranges are united and empty ones dropped") {
+        REQUIRE(merged == std::vector<CharRange>{{3, 7}, {10, 15}});
+      }
+    }
+  }
+}
+
+SCENARIO("InlineDiff finds the intra-cell ranges the other side lacks") {
+  std::vector<CharRange> aOnly, bOnly;
+
+  GIVEN("Identical texts") {
+    InlineDiff(wxS("x : 1;\ny : 2;"), wxS("x : 1;\ny : 2;"), aOnly, bOnly);
+    THEN("nothing is marked") {
+      REQUIRE(aOnly.empty());
+      REQUIRE(bOnly.empty());
+    }
+  }
+
+  GIVEN("A single changed word") {
+    wxString a = wxS("plot2d(sin(x), [x, 0, 10]);");
+    wxString b = wxS("plot2d(cos(x), [x, 0, 10]);");
+    InlineDiff(a, b, aOnly, bOnly);
+    THEN("exactly that word is marked on both sides") {
+      REQUIRE(CoveredText(a, aOnly) == wxS("sin"));
+      REQUIRE(CoveredText(b, bOnly) == wxS("cos"));
+    }
+  }
+
+  GIVEN("A word inserted on one side") {
+    wxString a = wxS("a + c");
+    wxString b = wxS("a + b + c");
+    InlineDiff(a, b, aOnly, bOnly);
+    THEN("only the inserted side gets a mark, one contiguous range") {
+      REQUIRE(aOnly.empty());
+      REQUIRE(bOnly.size() == 1);
+      // Exactly which of the equal " + " runs the LCS keeps is a tie;
+      // either way the marked text is the inserted word plus one " + ".
+      wxString covered = CoveredText(b, bOnly);
+      REQUIRE(covered.Length() == 4);
+      REQUIRE(covered.Contains(wxS("b")));
+      REQUIRE(covered.Contains(wxS("+")));
+    }
+  }
+
+  GIVEN("A line deleted from a multi-line cell") {
+    wxString a = wxS("a: 1;\nb: 2;\nc: 3;");
+    wxString b = wxS("a: 1;\nc: 3;");
+    InlineDiff(a, b, aOnly, bOnly);
+    THEN("the whole deleted line is marked, without its line break") {
+      REQUIRE(CoveredText(a, aOnly) == wxS("b: 2;"));
+      REQUIRE(bOnly.empty());
+    }
+  }
+
+  GIVEN("One token changed inside one line of a multi-line cell") {
+    wxString a = wxS("x: 1;\ny: 2;\nz: 3;");
+    wxString b = wxS("x: 1;\ny: 42;\nz: 3;");
+    InlineDiff(a, b, aOnly, bOnly);
+    THEN("only the changed number is marked") {
+      REQUIRE(CoveredText(a, aOnly) == wxS("2"));
+      REQUIRE(CoveredText(b, bOnly) == wxS("42"));
+    }
+  }
+
+  GIVEN("Completely different texts") {
+    wxString a = wxS("integrate(f(x), x);");
+    wxString b = wxS("The quick brown fox");
+    InlineDiff(a, b, aOnly, bOnly);
+    THEN("everything is marked on both sides") {
+      REQUIRE(CoveredText(a, aOnly) == a);
+      REQUIRE(CoveredText(b, bOnly) == b);
+    }
+  }
+
+  GIVEN("A change in whitespace only") {
+    wxString a = wxS("x:1;");
+    wxString b = wxS("x : 1;");
+    InlineDiff(a, b, aOnly, bOnly);
+    THEN("only the added spaces are marked") {
+      REQUIRE(aOnly.empty());
+      REQUIRE(CoveredText(b, bOnly) == wxS(" | "));
+    }
+  }
+
+  GIVEN("Empty vs non-empty text") {
+    wxString a = wxS("");
+    wxString b = wxS("f(x) := x^2;");
+    InlineDiff(a, b, aOnly, bOnly);
+    THEN("the non-empty side is fully marked") {
+      REQUIRE(aOnly.empty());
+      REQUIRE(CoveredText(b, bOnly) == b);
+    }
+  }
+}
+
 int main(int argc, char* argv[]) {
   return Catch::Session().run(argc, argv);
 }

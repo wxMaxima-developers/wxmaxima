@@ -909,8 +909,11 @@ void DiffFrame::AlignCells() {
               // Cell exists in this file: Insert a copy
               auto copy = std::unique_ptr<GroupCell>(dynamic_cast<GroupCell*>(cellLists[i][row[i]]->Copy(nullptr).release()));
               
-              // Check if the cell content differs from any of the matching cells in other files
+              // Check if the cell content differs from any of the matching cells
+              // in other files, and collect the intra-cell ranges that differ
+              // (the parts of this cell's text the other file's cell lacks).
               bool modified = false;
+              std::vector<Diff::CharRange> inlineRanges;
               for (size_t j = 0; j < numFiles; ++j) {
                   if (i != j) {
                       if (row[j] == -1) {
@@ -921,8 +924,21 @@ void DiffFrame::AlignCells() {
                           auto ed1 = cellLists[i][row[i]]->GetEditable();
                           auto ed2 = cellLists[j][row[j]]->GetEditable();
                           if (ed1 && ed2) {
-                              if (ed1->GetValue() != ed2->GetValue())
+                              // '\r' is a soft-wrap marker occupying a space's
+                              // position: normalizing keeps the compare honest
+                              // and the diff ranges valid however either cell
+                              // is later wrapped (the swap is in-place).
+                              wxString v1 = ed1->GetValue();
+                              wxString v2 = ed2->GetValue();
+                              v1.Replace(wxS('\r'), wxS(' '));
+                              v2.Replace(wxS('\r'), wxS(' '));
+                              if (v1 != v2) {
                                   modified = true;
+                                  std::vector<Diff::CharRange> mine, theirs;
+                                  Diff::InlineDiff(v1, v2, mine, theirs);
+                                  inlineRanges.insert(inlineRanges.end(),
+                                                      mine.begin(), mine.end());
+                              }
                           } else if (ed1 != ed2) {
                               modified = true;
                           }
@@ -930,6 +946,9 @@ void DiffFrame::AlignCells() {
                   }
               }
               if (modified) copy->SetHighlight(true);
+              if (!inlineRanges.empty() && copy->GetEditable())
+                  copy->GetEditable()->SetDiffHighlights(
+                      Diff::MergeRanges(std::move(inlineRanges)));
               entry.cells[i] = builders[i].Append(std::move(copy));
           } else {
               // Gap in this file: Insert a SpacerGroupCell to maintain alignment.

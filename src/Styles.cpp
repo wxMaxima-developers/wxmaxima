@@ -126,6 +126,7 @@ const wxString &Styles::Name(TextStyle textStyle) {
     {TS_CURSOR, _("Cursor color")},
     {TS_SELECTION, _("Selection color")},
     {TS_EQUALSSELECTION, _("Color of text equal to selection")},
+    {TS_DIFF_CHANGED, _("Diff viewer: changed text")},
     {TS_OUTDATED, _("Color of Outdated cells")},
     {TS_CODE_VARIABLE, _("Code highlighting: Variables")},
     {TS_CODE_FUNCTION, _("Code highlighting: Functions")},
@@ -186,6 +187,8 @@ void Styles::SetDefaults() {
   m_styles[TS_EQUALSSELECTION]
     .Color(wxSYS_COLOUR_HIGHLIGHT)
     .ChangeLightness(150);
+  // A soft amber, distinct from the (usually blue-ish) selection colors.
+  m_styles[TS_DIFF_CHANGED].Color(255, 232, 150);
   m_styles[TS_OUTDATED].Color(153, 153, 153);
 }
 
@@ -227,6 +230,9 @@ void Styles::SetDarkDefaults() {
 
   // Outdated cells dim against the dark background.
   m_stylesDark[TS_OUTDATED].Color(120, 120, 120);
+
+  // The diff-changed background must stay dark enough for light text on it.
+  m_stylesDark[TS_DIFF_CHANGED].Color(110, 90, 20);
 }
 
 void Styles::ClearCaches() {
@@ -304,6 +310,7 @@ const std::vector<std::pair<TextStyle, wxString>> &Styles::ConfigKeys() {
     {TS_CURSOR, wxS("Style/Cursor/")},
     {TS_SELECTION, wxS("Style/Selection/")},
     {TS_EQUALSSELECTION, wxS("Style/EqualsSelection/")},
+    {TS_DIFF_CHANGED, wxS("Style/DiffChanged/")},
     {TS_OUTDATED, wxS("Style/Outdated/")},
   };
   return keys;

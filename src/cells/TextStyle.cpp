@@ -429,6 +429,7 @@ std::ostream& operator<<(std::ostream& out, const TextStyle textstyle){
   case TS_CURSOR: result = "TS_CURSOR"; break;
   case TS_SELECTION: result = "TS_SELECTION"; break;
   case TS_EQUALSSELECTION: result = "TS_EQUALSSELECTION"; break;
+  case TS_DIFF_CHANGED: result = "TS_DIFF_CHANGED"; break;
   default: result = "!!!Bug: Unknown text style!!!";
   }
   return out << result;

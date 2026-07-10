@@ -1,5 +1,10 @@
 # Current development version
 
+- The diff viewer now highlights, inside each changed cell, the exact words
+  the matching cell of the other file doesn't contain (word-level inline
+  diff), instead of only marking the whole cell as changed. The highlight
+  color is configurable as "Diff viewer: changed text" in the style settings,
+  with separate light- and dark-mode defaults.
 - Automatic line wrapping for code cells works now and can be enabled under
   Preferences -> Worksheet -> "Autowrap long lines" -> "Text & Code" (off by
   default; existing configurations keep wrapping text only). The

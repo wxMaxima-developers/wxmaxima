@@ -850,10 +850,11 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
 
    The order this cell is drawn is:
    1. Mark text that coincides with the selection
-   2. draw selection (wxCOPY), TS_SELECTION color
-   3. mark matching parenthesis (wxCOPY), TS_SELECTION color
-   4. draw all text (wxCOPY)
-   5. draw the caret (wxCOPY), TS_CURSOR color
+   2. mark the diff viewer's changed-text ranges (wxCOPY), TS_DIFF_CHANGED color
+   3. draw selection (wxCOPY), TS_SELECTION color
+   4. mark matching parenthesis (wxCOPY), TS_SELECTION color
+   5. draw all text (wxCOPY)
+   6. draw the caret (wxCOPY), TS_CURSOR color
 
    The text is not taken from m_text but from the list of styled text snippets
    StyleText() converts m_text into. This way the decisions needed for styling
@@ -914,6 +915,18 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
           end++;
         start = end;
       }
+    }
+
+    //
+    // Mark the ranges the diff viewer flagged as differing. The stored ranges
+    // are only valid for the text they were computed from; every edit changes
+    // the text's length (soft-wrapping doesn't - it swaps ' ' and '\r' in
+    // place), so a length mismatch means "stale, don't draw".
+    //
+    if (!m_diffHighlights.empty() &&
+        m_text.Length() == m_diffHighlightsTextLength) {
+      for (const auto &range : m_diffHighlights)
+        MarkSelection(dc, range.first, range.second, TS_DIFF_CHANGED);
     }
 
     if (IsActive()) // draw selection or matching parens
@@ -3499,6 +3512,10 @@ void EditorCell::SetValue(const wxString &text) {
   std::size_t cursorPos = 0;
   m_text = PreprocessNewValue(text, cursorPos);
   CursorPosition(cursorPos);
+
+  // The old text's diff-highlight ranges mean nothing in the new text.
+  m_diffHighlights.clear();
+  m_diffHighlightsTextLength = 0;
 
   FindMatchingParens();
   m_containsChanges = true;
