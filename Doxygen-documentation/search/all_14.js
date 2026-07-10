@@ -114,8 +114,9 @@ var searchData=
   ['triggerevaluation_111',['TriggerEvaluation',['../classwxMaxima.html#a99eaee34e2e2ff529600a75e9bba7bbd',1,'wxMaxima']]],
   ['truck_112',['Truck',['../manual_8c.html#a5220977c04e056b0efcc59a2f05d89a2',1,'Truck():&#160;manual.c'],['../structTruck.html',1,'Truck']]],
   ['true_5fgiven_113',['true_given',['../structCatch_1_1true__given.html',1,'Catch']]],
-  ['ts_5finvalid_114',['TS_INVALID',['../TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a0cb8e35e6ba7c1291832043f36e1541c',1,'TextStyle.h']]],
-  ['tval1_115',['TVal1',['../classQTstyle__Test.html#a0525f798cda415a94fedeceb806d2c49a7929af91f99c319ffe2e49c9632bc3fa',1,'QTstyle_Test::TVal1()'],['../classJavadoc__Test.html#ae37fd1cbf1af522674cbd33873b786a6a90f0d8d4f07a79342261fb1c191af72b',1,'Javadoc_Test::TVal1()']]],
-  ['tval2_116',['TVal2',['../classJavadoc__Test.html#ae37fd1cbf1af522674cbd33873b786a6a5954e696a652f442d7255af4e0d35d61',1,'Javadoc_Test::TVal2()'],['../classQTstyle__Test.html#a0525f798cda415a94fedeceb806d2c49afff89db6859123549579806212d9fd80',1,'QTstyle_Test::TVal2()']]],
-  ['tval3_117',['TVal3',['../classJavadoc__Test.html#ae37fd1cbf1af522674cbd33873b786a6ab4a4dc16e1050c9604cf5c46a51e5a8e',1,'Javadoc_Test::TVal3()'],['../classQTstyle__Test.html#a0525f798cda415a94fedeceb806d2c49a8227cd0f0c1285d59ff14376fcd00f85',1,'QTstyle_Test::TVal3()']]]
+  ['ts_5fdiff_5fchanged_114',['TS_DIFF_CHANGED',['../TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993aa3e4bbfa070e0b1232dfc971fbd41560',1,'TextStyle.h']]],
+  ['ts_5finvalid_115',['TS_INVALID',['../TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993a0cb8e35e6ba7c1291832043f36e1541c',1,'TextStyle.h']]],
+  ['tval1_116',['TVal1',['../classQTstyle__Test.html#a0525f798cda415a94fedeceb806d2c49a7929af91f99c319ffe2e49c9632bc3fa',1,'QTstyle_Test::TVal1()'],['../classJavadoc__Test.html#ae37fd1cbf1af522674cbd33873b786a6a90f0d8d4f07a79342261fb1c191af72b',1,'Javadoc_Test::TVal1()']]],
+  ['tval2_117',['TVal2',['../classQTstyle__Test.html#a0525f798cda415a94fedeceb806d2c49afff89db6859123549579806212d9fd80',1,'QTstyle_Test::TVal2()'],['../classJavadoc__Test.html#ae37fd1cbf1af522674cbd33873b786a6a5954e696a652f442d7255af4e0d35d61',1,'Javadoc_Test::TVal2()']]],
+  ['tval3_118',['TVal3',['../classQTstyle__Test.html#a0525f798cda415a94fedeceb806d2c49a8227cd0f0c1285d59ff14376fcd00f85',1,'QTstyle_Test::TVal3()'],['../classJavadoc__Test.html#ae37fd1cbf1af522674cbd33873b786a6ab4a4dc16e1050c9604cf5c46a51e5a8e',1,'Javadoc_Test::TVal3()']]]
 ];

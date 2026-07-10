@@ -114,13 +114,21 @@ $(function() {
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keywordtype">int</span> FindOptimalThreshold(<span class="keyword">const</span> std::vector&lt;CellMatchData&gt;&amp; s1, </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                         <span class="keyword">const</span> std::vector&lt;CellMatchData&gt;&amp; s2);</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>std::vector&lt;std::pair&lt;int, int&gt;&gt; Align2(<span class="keyword">const</span> std::vector&lt;CellMatchData&gt;&amp; s1, </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>std::vector&lt;std::pair&lt;int, int&gt;&gt; Align2(<span class="keyword">const</span> std::vector&lt;CellMatchData&gt;&amp; s1,</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                                        <span class="keyword">const</span> std::vector&lt;CellMatchData&gt;&amp; s2,</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                                        <span class="keywordtype">int</span> threshold = 20);</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>} <span class="comment">// namespace Diff</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#endif </span><span class="comment">// DIFFALGORITHM_H</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keyword">using </span>CharRange = std::pair&lt;std::size_t, std::size_t&gt;;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>std::vector&lt;CharRange&gt; MergeRanges(std::vector&lt;CharRange&gt; ranges);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="keywordtype">void</span> InlineDiff(<span class="keyword">const</span> wxString &amp;a, <span class="keyword">const</span> wxString &amp;b,</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                std::vector&lt;CharRange&gt; &amp;aOnly,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                std::vector&lt;CharRange&gt; &amp;bOnly);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>} <span class="comment">// namespace Diff</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">#endif </span><span class="comment">// DIFFALGORITHM_H</span></div>
 <div class="ttc" id="aGroupCell_8h_html_ac96e474603b83b95ba1717acefc3e831"><div class="ttname"><a href="GroupCell_8h.html#ac96e474603b83b95ba1717acefc3e831">GroupType</a></div><div class="ttdeci">GroupType</div><div class="ttdoc">All types a GroupCell can be of.</div><div class="ttdef"><b>Definition:</b> GroupCell.h:42</div></div>
 <div class="ttc" id="astructDiff_1_1CellMatchData_html"><div class="ttname"><a href="structDiff_1_1CellMatchData.html">Diff::CellMatchData</a></div><div class="ttdoc">Represents matching metadata for a cell.</div><div class="ttdef"><b>Definition:</b> DiffAlgorithm.h:33</div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -257,6 +257,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetForeground</b> (wx
 <tr class="memitem:a7567a287678df7003b301c1a93901b03"><td class="memItemLeft" align="right" valign="top">const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a7567a287678df7003b301c1a93901b03">GetValue</a> () const override</td></tr>
 <tr class="memdesc:a7567a287678df7003b301c1a93901b03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the text contained in this cell.  <br /></td></tr>
 <tr class="separator:a7567a287678df7003b301c1a93901b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2618523b3432e1d877422cc02e621210"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a2618523b3432e1d877422cc02e621210">SetDiffHighlights</a> (std::vector&lt; std::pair&lt; std::size_t, std::size_t &gt; &gt; ranges)</td></tr>
+<tr class="memdesc:a2618523b3432e1d877422cc02e621210"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the character ranges of this cell's text the diff viewer wants painted with the TS_DIFF_CHANGED background (the parts the matching cell of the other file doesn't contain).  <br /></td></tr>
+<tr class="separator:a2618523b3432e1d877422cc02e621210"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79b7b9b2e0391a2574f2d4e1aa15cf83"><td class="memItemLeft" align="right" valign="top"><a id="a79b7b9b2e0391a2574f2d4e1aa15cf83" name="a79b7b9b2e0391a2574f2d4e1aa15cf83"></a>
+const std::vector&lt; std::pair&lt; std::size_t, std::size_t &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetDiffHighlights</b> () const</td></tr>
+<tr class="memdesc:a79b7b9b2e0391a2574f2d4e1aa15cf83"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ranges set by <a class="el" href="classEditorCell.html#a2618523b3432e1d877422cc02e621210" title="Sets the character ranges of this cell&#39;s text the diff viewer wants painted with the TS_DIFF_CHANGED ...">SetDiffHighlights()</a> (empty outside the diff viewer). <br /></td></tr>
+<tr class="separator:a79b7b9b2e0391a2574f2d4e1aa15cf83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a882a1f44fe7b82bb0db6dc312d23bd15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a882a1f44fe7b82bb0db6dc312d23bd15">StyleText</a> () const</td></tr>
 <tr class="memdesc:a882a1f44fe7b82bb0db6dc312d23bd15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts m_text to a list of styled text snippets that will later be displayed by draw().  <br /></td></tr>
 <tr class="separator:a882a1f44fe7b82bb0db6dc312d23bd15"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3768,6 +3775,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 </div>
 </div>
+<a id="a2618523b3432e1d877422cc02e621210" name="a2618523b3432e1d877422cc02e621210"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2618523b3432e1d877422cc02e621210">&#9670;&#160;</a></span>SetDiffHighlights()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EditorCell::SetDiffHighlights </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; std::pair&lt; std::size_t, std::size_t &gt; &gt;&#160;</td>
+          <td class="paramname"><em>ranges</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the character ranges of this cell's text the diff viewer wants painted with the TS_DIFF_CHANGED background (the parts the matching cell of the other file doesn't contain). </p>
+<p>Each range is half-open ([start, end)) and indexes into <a class="el" href="classEditorCell.html#a7567a287678df7003b301c1a93901b03" title="Returns the text contained in this cell.">GetValue()</a>. The ranges survive re-layout: soft word-wrapping swaps ' ' and '\r' in place and therefore never moves a character. They do NOT survive edits, so <a class="el" href="classEditorCell.html#ae1ea47fbaf84aa982f91f717101d743f" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a> ignores them as soon as the text's length changes and <a class="el" href="classEditorCell.html#a06fb7e24c57d9cdfd8146539228b50e7" title="Sets the text that is to be displayed.">SetValue()</a> drops them entirely. </p>
+
+</div>
+</div>
 <a id="a6cb012023c40ba183294299e8d20b531" name="a6cb012023c40ba183294299e8d20b531"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6cb012023c40ba183294299e8d20b531">&#9670;&#160;</a></span>SetIsExponent()</h2>
 
@@ -4004,7 +4040,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
