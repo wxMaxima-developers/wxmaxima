@@ -1,5 +1,11 @@
 # Current development version
 
+- Changing a cell's type (Cell -> Convert to code/text/section/...) can now be
+  undone: it goes through the same rebuild path the toolbar's cell-type dropdown
+  already used, instead of an in-place change the undo history did not record.
+  As before, converting a code cell to text/section/... drops its output (prose
+  cells have none), and an image cell can no longer be converted at all (that
+  would have discarded the image).
 - Internal: first step of splitting EditorCell along the only axis that really
   diverges - code vs. prose. Two subclasses (code input incl. the Maxima-answer
   editor; text and all sectioning levels) are now constructed through a new

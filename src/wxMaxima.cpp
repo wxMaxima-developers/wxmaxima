@@ -10549,19 +10549,20 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::menu_autocomplete_templates){
     GetWorksheet()->Autocomplete(AutoComplete::tmplte);
     return;}
+  // Converting a cell's type goes through Worksheet::SetCellStyle, which rebuilds
+  // the group with the target type (so it is born the right kind) and records the
+  // change on the undo stack - unlike the old in-place GroupCell::SetGroupType,
+  // which was not undoable. SetCellStyle also refuses to convert image cells
+  // (that would discard the drag-and-dropped image) and does the recalc/redraw.
   else if(event.GetId() == EventIDs::menu_convert_to_code){
-    if (GetWorksheet()->GetActiveCell()) {
-      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_CODE);
-      GetWorksheet()->RequestRecalculation();
-      GetWorksheet()->RequestRedraw();
-    }
+    if (GetWorksheet()->GetActiveCell())
+      GetWorksheet()->SetCellStyle(
+        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_CODE);
   }
   else if(event.GetId() == EventIDs::menu_convert_to_comment){
-    if (GetWorksheet()->GetActiveCell()) {
-      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TEXT);
-      GetWorksheet()->RequestRecalculation();
-      GetWorksheet()->RequestRedraw();
-    }
+    if (GetWorksheet()->GetActiveCell())
+      GetWorksheet()->SetCellStyle(
+        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_TEXT);
   }
   else if((event.GetId() == EventIDs::menu_add_comment) ||
           (event.GetId() == EventIDs::popid_add_comment) ||
@@ -10571,11 +10572,9 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
       type = GC_TYPE_TEXT;
     }
   else if(event.GetId() == EventIDs::menu_convert_to_title){
-    if (GetWorksheet()->GetActiveCell()) {
-      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TITLE);
-      GetWorksheet()->RequestRecalculation();
-      GetWorksheet()->RequestRedraw();
-    }
+    if (GetWorksheet()->GetActiveCell())
+      GetWorksheet()->SetCellStyle(
+        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_TITLE);
   }
   else if((event.GetId() == EventIDs::menu_add_title) ||
           (event.GetId() == EventIDs::menu_format_title) ||
@@ -10583,11 +10582,9 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
     type = GC_TYPE_TITLE;
   }
   else if(event.GetId() == EventIDs::menu_convert_to_section){
-    if (GetWorksheet()->GetActiveCell()) {
-      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_SECTION);
-      GetWorksheet()->RequestRecalculation();
-      GetWorksheet()->RequestRedraw();
-    }
+    if (GetWorksheet()->GetActiveCell())
+      GetWorksheet()->SetCellStyle(
+        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_SECTION);
   }
   else if((event.GetId() == EventIDs::menu_add_section) ||
           (event.GetId() == EventIDs::menu_format_section) ||
@@ -10595,12 +10592,9 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
     type = GC_TYPE_SECTION;
   }
   else if(event.GetId() == EventIDs::menu_convert_to_subsection){
-    if (GetWorksheet()->GetActiveCell()) {
-      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(
-                                                             GC_TYPE_SUBSECTION);
-      GetWorksheet()->RequestRecalculation();
-      GetWorksheet()->RequestRedraw();
-    }
+    if (GetWorksheet()->GetActiveCell())
+      GetWorksheet()->SetCellStyle(
+        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_SUBSECTION);
   }
   else if((event.GetId() == EventIDs::menu_add_subsection) ||
           (event.GetId() == EventIDs::menu_format_subsection) ||
@@ -10608,26 +10602,19 @@ void wxMaxima::InsertMenu(wxCommandEvent &event) {
     type = GC_TYPE_SUBSECTION;
   }
   else if(event.GetId() == EventIDs::menu_convert_to_subsubsection){
-    if (GetWorksheet()->GetActiveCell()) {
-      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(
-                                                             GC_TYPE_SUBSUBSECTION);
-      GetWorksheet()->RequestRecalculation();
-      GetWorksheet()->RequestRedraw();
-    }
+    if (GetWorksheet()->GetActiveCell())
+      GetWorksheet()->SetCellStyle(
+        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_SUBSUBSECTION);
   }
   else if(event.GetId() == EventIDs::menu_convert_to_heading5){
-    if (GetWorksheet()->GetActiveCell()) {
-      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING5);
-      GetWorksheet()->RequestRecalculation();
-      GetWorksheet()->RequestRedraw();
-    }
+    if (GetWorksheet()->GetActiveCell())
+      GetWorksheet()->SetCellStyle(
+        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_HEADING5);
   }
   else if(event.GetId() == EventIDs::menu_convert_to_heading6){
-    if (GetWorksheet()->GetActiveCell()) {
-      GetWorksheet()->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING6);
-      GetWorksheet()->RequestRecalculation();
-      GetWorksheet()->RequestRedraw();
-    }
+    if (GetWorksheet()->GetActiveCell())
+      GetWorksheet()->SetCellStyle(
+        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_HEADING6);
   }
   else if((event.GetId() == EventIDs::menu_add_subsubsection) ||
           (event.GetId() == EventIDs::menu_format_subsubsection) ||

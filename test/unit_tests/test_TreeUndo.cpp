@@ -159,6 +159,59 @@ SCENARIO("Changing a cell's text is undoable") {
   }
 }
 
+SCENARIO("Converting a cell's type via SetCellStyle rebuilds it and is undoable") {
+  GIVEN("a one-cell worksheet holding a code cell") {
+    BuildTree({wxS("f(x):=x^2$")});
+    GroupCell *cell = NthCell(CellCount() - 1);
+    REQUIRE(cell);
+    REQUIRE(cell->GetGroupType() == GC_TYPE_CODE);
+    REQUIRE(cell->GetEditable());
+    REQUIRE(cell->GetEditable()->IsCodeEditor());
+    const int countBefore = CellCount();
+
+    WHEN("it is converted to a text cell") {
+      g_ws->SetCellStyle(cell, GC_TYPE_TEXT);
+      GroupCell *converted = NthCell(CellCount() - 1);
+
+      THEN("it becomes a prose cell of the right subclass, keeps its text, and "
+           "undo restores the code cell") {
+        REQUIRE(CellCount() == countBefore); // rebuilt in place, not appended
+        REQUIRE(converted->GetGroupType() == GC_TYPE_TEXT);
+        REQUIRE(converted->GetEditable() != nullptr);
+        REQUIRE_FALSE(converted->GetEditable()->IsCodeEditor()); // TextEditorCell
+        REQUIRE(converted->GetEditable()->GetValue() == wxS("f(x):=x^2$"));
+
+        REQUIRE(g_ws->CanUndo());
+        REQUIRE(g_ws->TreeUndo());
+        GroupCell *restored = NthCell(CellCount() - 1);
+        CHECK(restored->GetGroupType() == GC_TYPE_CODE);
+        CHECK(restored->GetEditable()->IsCodeEditor()); // code editor again
+        CHECK(restored->GetEditable()->GetValue() == wxS("f(x):=x^2$"));
+      }
+    }
+  }
+}
+
+SCENARIO("SetCellStyle refuses to convert an image cell") {
+  GIVEN("a worksheet whose last cell is an image cell") {
+    BuildTree({wxS("a:1$")});
+    g_ws->InsertGroupCells(std::make_unique<GroupCell>(g_cfg, GC_TYPE_IMAGE),
+                           NthCell(CellCount() - 1));
+    GroupCell *img = NthCell(CellCount() - 1);
+    REQUIRE(img->GetGroupType() == GC_TYPE_IMAGE);
+    const int countBefore = CellCount();
+
+    WHEN("we try to convert it to text (which would discard the image)") {
+      g_ws->SetCellStyle(img, GC_TYPE_TEXT);
+
+      THEN("the cell is left untouched as an image cell") {
+        REQUIRE(CellCount() == countBefore);
+        REQUIRE(NthCell(CellCount() - 1)->GetGroupType() == GC_TYPE_IMAGE);
+      }
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

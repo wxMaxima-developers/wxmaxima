@@ -138,6 +138,26 @@ SCENARIO("Adding a line to an already-laid-out input cell grows its GroupCell") 
   }
 }
 
+SCENARIO("A GroupCell's editable is the EditorCell subclass matching its type") {
+  // EditorCell::Create picks CodeEditorCell for code and TextEditorCell for
+  // text/sectioning; the GroupCell ctor routes through it. (Type conversion
+  // rebuilds the whole GroupCell via Worksheet::SetCellStyle, so it too gets the
+  // right subclass; that path is exercised in test_TreeUndo.)
+  THEN("code cells edit code and text/section cells edit prose") {
+    GroupCell code(g_cfg, GC_TYPE_CODE, wxS("a:1$"));
+    REQUIRE(code.GetEditable() != nullptr);
+    REQUIRE(code.GetEditable()->IsCodeEditor());
+
+    GroupCell text(g_cfg, GC_TYPE_TEXT, wxS("hi"));
+    REQUIRE(text.GetEditable() != nullptr);
+    REQUIRE_FALSE(text.GetEditable()->IsCodeEditor());
+
+    GroupCell section(g_cfg, GC_TYPE_SECTION, wxS("hi"));
+    REQUIRE(section.GetEditable() != nullptr);
+    REQUIRE_FALSE(section.GetEditable()->IsCodeEditor());
+  }
+}
+
 SCENARIO("Incremental search extends the current match in place") {
   // When a forward search already highlights a match and the user types another
   // character that the SAME match still satisfies, the highlight must just grow

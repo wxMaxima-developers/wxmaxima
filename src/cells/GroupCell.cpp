@@ -154,6 +154,12 @@ void GroupCell::SetGroupType(GroupType groupType) {
   default:
     break;
   }
+  // Note: a live conversion across the code<->prose boundary would leave the
+  // editable as the "wrong" EditorCell subclass here. That never happens,
+  // though: cell-type conversion goes through Worksheet::SetCellStyle, which
+  // builds a fresh GroupCell of the target type (so its editable is the right
+  // subclass from EditorCell::Create) and records undo. SetGroupType only runs
+  // at construction, where the editable was just made to match.
   if (GetEditable())
     GetEditable()->SetType(type);
   if (GetPrompt()) {

@@ -2259,6 +2259,12 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style) {
   if (!group)
     return;
 
+  // An image/animation cell's content is a drag-and-dropped image, held as the
+  // group's output. Rebuilding it as another cell type copies only the editable
+  // text, so it would silently discard the image - refuse to convert it.
+  if (group->GetGroupType() == GC_TYPE_IMAGE)
+    return;
+
   wxString cellContents;
   if (group->GetEditable())
     cellContents = group->GetEditable()->GetValue();

@@ -93,19 +93,20 @@ wxString EditorCell::EscapeHTMLChars(wxString input) {
 
 DEFINE_CELL(EditorCell)
 
-// --- EditorCell split, slice 1 -------------------------------------------
+// --- EditorCell split ----------------------------------------------------
 // Two subclasses along the only axis that actually diverges: code vs. prose.
 // CodeEditorCell is Maxima input (and the editor Maxima's questions are
 // answered in - those expect Maxima input too); TextEditorCell is text and all
-// sectioning levels (which differ only in font size). For now they add NO
-// behavior: all logic still lives in EditorCell keyed on m_type. Construction
-// is funnelled through EditorCell::Create so every EditorCell is born as the
-// right subtype. Because nothing is overridden yet, an in-place "Convert to
-// code/comment/..." (which flips m_type without rebuilding) leaving an instance
-// of the "wrong" subclass is harmless until behavior moves into overrides - a
-// later slice, which will also make that conversion replace the editable.
-// They live here rather than in the header because nothing outside this file
-// needs to name them yet; they only reach the world through Create()/Copy().
+// sectioning levels (which differ only in font size). For now they add almost
+// no behavior (only the IsCodeEditor() discriminator): the logic still lives in
+// EditorCell keyed on m_type. Construction is funnelled through
+// EditorCell::Create so every EditorCell is born as the right subtype. A cell's
+// type never flips in place across the code/text boundary: the "Convert to ..."
+// commands go through Worksheet::SetCellStyle, which builds a fresh GroupCell of
+// the target type (hence the right subclass here) and records undo. So the
+// instance's subclass always matches its role, ready for behavior to move into
+// overrides. They live here rather than in the header because nothing outside
+// this file needs to name them yet; they only reach the world via Create()/Copy().
 class CodeEditorCell final : public EditorCell {
 public:
   CodeEditorCell(GroupCell *group, Configuration *config, wxString text = {})
@@ -113,6 +114,7 @@ public:
   CodeEditorCell(GroupCell *group, const CodeEditorCell &cell)
     : EditorCell(group, cell) {}
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
+  bool IsCodeEditor() const override { return true; }
 };
 
 class TextEditorCell final : public EditorCell {
@@ -127,10 +129,14 @@ public:
 DEFINE_CELL_COPY(CodeEditorCell)
 DEFINE_CELL_COPY(TextEditorCell)
 
+bool EditorCell::IsCodeType(CellType type) {
+  return (type == MC_TYPE_INPUT) || (type == MC_TYPE_PROMPT);
+}
+
 std::unique_ptr<EditorCell> EditorCell::Create(GroupCell *group,
                                                Configuration *config,
                                                CellType type, wxString text) {
-  if ((type == MC_TYPE_INPUT) || (type == MC_TYPE_PROMPT))
+  if (IsCodeType(type))
     return std::make_unique<CodeEditorCell>(group, config, std::move(text));
   return std::make_unique<TextEditorCell>(group, config, std::move(text));
 }

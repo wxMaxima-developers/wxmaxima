@@ -84,6 +84,18 @@ public:
   static std::unique_ptr<EditorCell> Create(GroupCell *group,
                                             Configuration *config, CellType type,
                                             wxString text = {});
+
+  //! Is `type` a code (Maxima-input) cell type, as opposed to text/sectioning?
+  static bool IsCodeType(CellType type);
+
+  /*! Does this concrete cell edit code (Maxima input) rather than prose?
+
+    Fixed by the subclass, so it stays correct even if m_type is momentarily out
+    of sync. Used when a cell's type is changed to decide whether the editable
+    must be rebuilt as the other subclass. The base is prose by default;
+    CodeEditorCell overrides it.
+   */
+  virtual bool IsCodeEditor() const { return false; }
   void UpdateSelectionString();
   // The selection/cursor setters clamp their argument to a valid index into the
   // current text via ClampToText(), so m_selectionStart / m_selectionEnd are
