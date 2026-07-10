@@ -75,7 +75,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>The narrow view surface the worksheet's size pipeline needs.  
+<p>The narrow view surface the worksheet's layout pipeline needs.  
  <a href="classWorksheetView.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="WorksheetSizeMath_8h_source.html">WorksheetSizeMath.h</a>&gt;</code></p>
@@ -100,10 +100,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a26786257cd06754cecc88bd679c2e1bf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetView.html#a26786257cd06754cecc88bd679c2e1bf">SetViewScrollRate</a> (int rate)=0</td></tr>
 <tr class="memdesc:a26786257cd06754cecc88bd679c2e1bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the scroll granularity (device pixels per scroll unit) on both axes.  <br /></td></tr>
 <tr class="separator:a26786257cd06754cecc88bd679c2e1bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab8c512b7671881d9d308923ee9da413"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetView.html#aab8c512b7671881d9d308923ee9da413">GetViewPosition</a> (int *x, int *y) const =0</td></tr>
+<tr class="memdesc:aab8c512b7671881d9d308923ee9da413"><td class="mdescLeft">&#160;</td><td class="mdescRight">The view's position within its parent, in device pixels (wxWindow::GetPosition).  <br /></td></tr>
+<tr class="separator:aab8c512b7671881d9d308923ee9da413"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The narrow view surface the worksheet's size pipeline needs. </p>
-<p>Worksheet::AdjustSize() historically read the window (client size, scroll position) and wrote the scrollbars (virtual size, scroll rate) inline, which meant the deduplication and scroll-position-preserving logic could only ever run inside a live GUI. This abstract interface pulls those four operations out so the apply step can be driven headlessly by a mock view.</p>
+<div class="textblock"><p>The narrow view surface the worksheet's layout pipeline needs. </p>
+<p><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>'s AdjustSize() historically read the window (client size, scroll position) and wrote the scrollbars (virtual size, scroll rate) inline, which meant the deduplication and scroll-position-preserving logic could only ever run inside a live GUI. This abstract interface pulls those four operations out so the apply step can be driven headlessly by a mock view.</p>
 <p>The method names deliberately differ from the <a class="el" href="classwxScrolled.html">wxScrolled</a> ones they forward to, so a class can inherit both <a class="el" href="classwxScrolled.html">wxScrolled</a> and this without name-collision. Kept GUI-free (plain ints, no wx types) so a mock has nothing to pull in. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aada1c290be90e0e2bcb84bee041959f1" name="aada1c290be90e0e2bcb84bee041959f1"></a>
@@ -143,6 +146,46 @@ Public Member Functions</h2></td></tr>
 <p>The visible client area, in device pixels. </p>
 
 <p>Implemented in <a class="el" href="classWorksheet.html#abdd51fde8c2a788243592637f7a602d5">Worksheet</a>.</p>
+
+</div>
+</div>
+<a id="aab8c512b7671881d9d308923ee9da413" name="aab8c512b7671881d9d308923ee9da413"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab8c512b7671881d9d308923ee9da413">&#9670;&#160;</a></span>GetViewPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void WorksheetView::GetViewPosition </td>
+          <td>(</td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The view's position within its parent, in device pixels (wxWindow::GetPosition). </p>
+
+<p>Implemented in <a class="el" href="classWorksheet.html#a1db988b3949369c5bb556a1c61ea6ecc">Worksheet</a>.</p>
 
 </div>
 </div>

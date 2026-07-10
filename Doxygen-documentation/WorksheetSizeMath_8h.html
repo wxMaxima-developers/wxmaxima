@@ -108,7 +108,7 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scrollable size + scroll granularity computed for a worksheet.  <a href="structWorksheetVirtualSize.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetView.html">WorksheetView</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The narrow view surface the worksheet's size pipeline needs.  <a href="classWorksheetView.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The narrow view surface the worksheet's layout pipeline needs.  <a href="classWorksheetView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWorksheetVirtualSizeCache.html">WorksheetVirtualSizeCache</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remembers the last virtual size applied, so an unchanged size is a no-op.  <a href="structWorksheetVirtualSizeCache.html#details">More...</a><br /></td></tr>
@@ -131,7 +131,7 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The pure arithmetic that turns a laid-out worksheet's extent into the scrollable (virtual) size and scroll granularity. </p>
-<p>Kept deliberately free of any GUI/wxWidgets dependency so the scroll-range math - historically a source of "the pane won't scroll" bugs - can be unit-tested in isolation. Worksheet::AdjustSize() measures the document (GetMaxPoint) and the window (GetClientSize) and feeds the numbers here, then applies the result with SetVirtualSize()/SetScrollRate(). </p>
+<p>Kept deliberately free of any GUI/wxWidgets dependency so the scroll-range math - historically a source of "the pane won't scroll" bugs - can be unit-tested in isolation. <a class="el" href="classWorksheetLayout.html#a94a4b95c9a596798afe30e907badce31" title="Adjust the virtual size and scrollbars to the document&#39;s extent.">WorksheetLayout::AdjustSize()</a> measures the document (GetMaxPoint) and the window (GetClientSize) and feeds the numbers here, then applies the result with SetVirtualSize()/SetScrollRate(). </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a456bca249b5a259a7f757eb662038732" name="a456bca249b5a259a7f757eb662038732"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a456bca249b5a259a7f757eb662038732">&#9670;&#160;</a></span>ApplyWorksheetVirtualSize()</h2>
@@ -192,15 +192,15 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Measure the view, compute the virtual size and apply it, skipping no-ops. </p>
-<p>This is the view-facing half of Worksheet::AdjustSize(): it reads the client size and scroll position from <code>view</code>, feeds them (with the already-measured document extent <code>maxWidth</code> / <code>maxHeight</code>) to <a class="el" href="WorksheetSizeMath_8h.html#a5f9e2985516cffa080d3f9ea86664a7d" title="Compute a worksheet&#39;s virtual size and scroll unit.">ComputeWorksheetVirtualSize()</a>, and - only if the result actually changed and is positive - pushes it back to the view and updates the scroll rate.</p>
+<p>This is the view-facing half of <a class="el" href="classWorksheetLayout.html#a94a4b95c9a596798afe30e907badce31" title="Adjust the virtual size and scrollbars to the document&#39;s extent.">WorksheetLayout::AdjustSize()</a>: it reads the client size and scroll position from <code>view</code>, feeds them (with the already-measured document extent <code>maxWidth</code> / <code>maxHeight</code>) to <a class="el" href="WorksheetSizeMath_8h.html#a5f9e2985516cffa080d3f9ea86664a7d" title="Compute a worksheet&#39;s virtual size and scroll unit.">ComputeWorksheetVirtualSize()</a>, and - only if the result actually changed and is positive - pushes it back to the view and updates the scroll rate.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">view</td><td>The window abstraction (real worksheet or a test mock). </td></tr>
     <tr><td class="paramname">hasTree</td><td>Whether the worksheet has content (ignores the extent if not). </td></tr>
-    <tr><td class="paramname">maxWidth</td><td>The document's right extent (<a class="el" href="classWorksheet.html#aec89f7640236f4abd56b7c8a7604d7ca" title="Get the coordinates of the bottom right point of the worksheet.">Worksheet::GetMaxPoint</a> x). </td></tr>
-    <tr><td class="paramname">maxHeight</td><td>The document's bottom extent (<a class="el" href="classWorksheet.html#aec89f7640236f4abd56b7c8a7604d7ca" title="Get the coordinates of the bottom right point of the worksheet.">Worksheet::GetMaxPoint</a> y). </td></tr>
+    <tr><td class="paramname">maxWidth</td><td>The document's right extent (<a class="el" href="classWorksheetLayout.html#a4306ed59a2e317b8183608de4494f4bd" title="Get the coordinates of the bottom right point of the worksheet.">WorksheetLayout::GetMaxPoint</a> x). </td></tr>
+    <tr><td class="paramname">maxHeight</td><td>The document's bottom extent (<a class="el" href="classWorksheetLayout.html#a4306ed59a2e317b8183608de4494f4bd" title="Get the coordinates of the bottom right point of the worksheet.">WorksheetLayout::GetMaxPoint</a> y). </td></tr>
     <tr><td class="paramname">cache</td><td>The last-applied size, updated in place to dedupe. </td></tr>
-    <tr><td class="paramname">scrollUnit</td><td>Read to turn the scroll position into pixels, and updated to the new granularity. <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> keeps it as a member because its scroll handlers read it too. </td></tr>
+    <tr><td class="paramname">scrollUnit</td><td>Read to turn the scroll position into pixels, and updated to the new granularity. <a class="el" href="classWorksheetLayout.html" title="The layout/recalculation engine of a worksheet.">WorksheetLayout</a> keeps it as a member because <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>'s scroll handlers read it too. </td></tr>
   </table>
   </dd>
 </dl>
@@ -248,7 +248,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Compute the worksheet's content height from its trailing cells' geometry. </p>
-<p>This is the backward walk <a class="el" href="classWorksheet.html#aec89f7640236f4abd56b7c8a7604d7ca" title="Get the coordinates of the bottom right point of the worksheet.">Worksheet::GetMaxPoint()</a> runs from the last cell: it accumulates the heights of the cells at the bottom whose position is not yet trustworthy (stale-and-unpositioned, or still-being-laid-out) until it reaches an "anchor" - a cell whose size is stale but whose top position (y) is already valid - and pins the total to that anchor's top plus everything accumulated below it. If the walk runs off the top of the document (no such anchor), the height falls back to the document's base indent plus the accumulated heights.</p>
+<p>This is the backward walk <a class="el" href="classWorksheetLayout.html#a4306ed59a2e317b8183608de4494f4bd" title="Get the coordinates of the bottom right point of the worksheet.">WorksheetLayout::GetMaxPoint()</a> runs from the last cell: it accumulates the heights of the cells at the bottom whose position is not yet trustworthy (stale-and-unpositioned, or still-being-laid-out) until it reaches an "anchor" - a cell whose size is stale but whose top position (y) is already valid - and pins the total to that anchor's top plus everything accumulated below it. If the walk runs off the top of the document (no such anchor), the height falls back to the document's base indent plus the accumulated heights.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">trailing</td><td>The cells starting at the LAST cell and running backward. The walk stops at (and includes) the first entry that is the anchor, i.e. sizeIsStale &amp;&amp; currentY &gt;= 0. </td></tr>
@@ -296,7 +296,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Compute the worksheet's content width. </p>
-<p>That is the document's base indent, widened to fit the widest group cell. Each entry in <code>cellWidthsWithMargins</code> is a cell's width including its left and right margins (<a class="el" href="classWorksheet.html#aa85a7673663234b7bcae38bc5e2af1e8" title="The horizontal space a group cell of the given width occupies.">Worksheet::GroupCellWidthWithMargins</a>).</p>
+<p>That is the document's base indent, widened to fit the widest group cell. Each entry in <code>cellWidthsWithMargins</code> is a cell's width including its left and right margins (<a class="el" href="classWorksheetLayout.html#aafe1774fb45608ea7d345727d81fe5b1" title="The horizontal space a group cell of the given width occupies.">WorksheetLayout::GroupCellWidthWithMargins</a>).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cellWidthsWithMargins</td><td>Per-cell widths (already including margins). </td></tr>
@@ -364,8 +364,8 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">hasTree</td><td>Whether the worksheet has any content. Without it the result is a small fixed size with a sane scroll unit. </td></tr>
-    <tr><td class="paramname">maxPointWidth</td><td>The document's right extent (<a class="el" href="classWorksheet.html#aec89f7640236f4abd56b7c8a7604d7ca" title="Get the coordinates of the bottom right point of the worksheet.">Worksheet::GetMaxPoint</a> x). </td></tr>
-    <tr><td class="paramname">maxPointHeight</td><td>The document's bottom extent (<a class="el" href="classWorksheet.html#aec89f7640236f4abd56b7c8a7604d7ca" title="Get the coordinates of the bottom right point of the worksheet.">Worksheet::GetMaxPoint</a> y). </td></tr>
+    <tr><td class="paramname">maxPointWidth</td><td>The document's right extent (<a class="el" href="classWorksheetLayout.html#a4306ed59a2e317b8183608de4494f4bd" title="Get the coordinates of the bottom right point of the worksheet.">WorksheetLayout::GetMaxPoint</a> x). </td></tr>
+    <tr><td class="paramname">maxPointHeight</td><td>The document's bottom extent (<a class="el" href="classWorksheetLayout.html#a4306ed59a2e317b8183608de4494f4bd" title="Get the coordinates of the bottom right point of the worksheet.">WorksheetLayout::GetMaxPoint</a> y). </td></tr>
     <tr><td class="paramname">clientHeight</td><td>The visible height of the worksheet window. </td></tr>
     <tr><td class="paramname">currentScrollPixelY</td><td>The current vertical scroll offset in pixels.</td></tr>
   </table>
