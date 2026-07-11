@@ -352,9 +352,9 @@ EditorCell::EditorCell(GroupCell *group, const EditorCell &cell)
 wxString EditorCell::ToString() const { return ToString(false); }
 
 wxString EditorCell::ToString(bool dontLimitToSelection) const {
+  // Soft breaks live in a side table, never in m_text, so the content needs no
+  // scrubbing before it is handed out.
   wxString text = m_text;
-  // Remove all soft line breaks
-  text.Replace(wxS('\r'), wxS(' '));
   // Convert non-breakable spaces to breakable ones
   text.Replace(wxS("\u00a0"), wxS(" "));
 
@@ -379,8 +379,6 @@ wxString EditorCell::ToMatlab() const { return ToMatlab(false); }
 
 wxString EditorCell::ToMatlab(bool dontLimitToSelection) const {
   wxString text = m_text;
-  // Remove all soft line breaks
-  text.Replace(wxS('\r'), wxS(' '));
   // Convert non-breakable spaces to breakable ones
   text.Replace(wxS("\u00a0"), wxS(" "));
 
@@ -463,7 +461,6 @@ wxString EditorCell::ToTeX() const {
   if (!text.StartsWith(wxS("TeX:"))) {
     text.Replace(wxS("\u00a0"), wxS("~"));
     text.Replace(wxS("\\"), wxS("\\ensuremath{\\backslash}"));
-    text.Replace(wxS("\r"), wxS(" "));
     text.Replace(wxS("^"), wxS("\\^ "));
     text.Replace(wxS("\u00B0"), wxS("\\ensuremath{^\\circ}"));
     text.Replace(wxS("\u2212"), wxS("-")); // unicode minus sign
@@ -802,8 +799,8 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
   if (start >= end)
     return;
 
-  wxPoint point, point1;
-  size_t pos_right = start, pos_left = start;
+  wxPoint point;
+  size_t pos_left = start;
 
 #if defined(__WXOSX__)
   dc->SetPen(wxNullPen); // no border on rectangles
@@ -814,36 +811,41 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
 #endif
   dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
                                                    m_configuration->GetColor(style)))); // highlight c.
-  wxString::const_iterator it = m_text.begin() + pos_right;
-  wxString::const_iterator it_end = m_text.begin() + end;
-  while (it < it_end) // go through selection, draw a rect for each line of selection
-    {
-      while (it < it_end && *it != '\n' && *it != '\r')
-        {
-          pos_right++;
-          ++it;
-        }
+  // Walk the selection one display line at a time, drawing a rect per line.
+  // Display lines are bounded by hard newlines (a '\n' in m_text) and by soft
+  // breaks (the zero-width entries in m_softBreaks); the latter no longer sit
+  // in the content, so we consult the side table for them.
+  size_t pos = pos_left;
+  while (pos < end) {
+    size_t lineStart = pos;
+    while ((pos < end) && (m_text[pos] != '\n') &&
+           !((pos != lineStart) && IsSoftBreakBefore(pos)))
+      pos++;
 
-      point = PositionToPoint(pos_left);  // left  point
-      point1 = PositionToPoint(pos_right); // right point
-      wxCoord selectionWidth = point1.x - point.x;
-      wxRect rect;
+    point = PositionToPoint(lineStart); // left edge (includes any indentation)
+    wxCoord selectionWidth =
+      GetTextSize(m_text.SubString(lineStart, pos > lineStart ? pos - 1 : lineStart))
+        .GetWidth();
+    if (pos == lineStart) // empty line
+      selectionWidth = 0;
+    wxRect rect;
 #if defined(__WXOSX__)
-      rect = GetRect(); // rectangle representing the cell
-      if (it != it_end) // we have a \n, draw selection to the right border (mac behaviour)
-        selectionWidth = rect.GetRight() - point.x;
+    rect = GetRect(); // rectangle representing the cell
+    if ((pos < end) && (m_text[pos] == '\n')) // draw to the right border (mac)
+      selectionWidth = rect.GetRight() - point.x;
 #endif
 
-      rect = wxRect(point.x, point.y + Scale_Px(1) - m_center, selectionWidth,
-                    m_charHeight);
-      // draw the rectangle if it is in the region that is to be updated.
-      if (m_configuration->InUpdateRegion(rect))
-        dc->DrawRectangle(CropToUpdateRegion(rect));
-      pos_right++;
-      if (it < it_end)
-        ++it;
-      pos_left = pos_right;
-    }
+    rect = wxRect(point.x, point.y + Scale_Px(1) - m_center, selectionWidth,
+                  m_charHeight);
+    // draw the rectangle if it is in the region that is to be updated.
+    if (m_configuration->InUpdateRegion(rect))
+      dc->DrawRectangle(CropToUpdateRegion(rect));
+
+    // A hard newline is a real character and is consumed; a soft break is
+    // zero-width, so the next line simply starts at the break offset.
+    if ((pos < end) && (m_text[pos] == '\n'))
+      pos++;
+  }
 }
 
 /* Draws the editor cell including selection and cursor
@@ -900,8 +902,7 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
     //
     if (!m_cellPointers->GetSelectionString().IsEmpty()) {
       long long start = 0;
-      wxString text(m_text);
-      text.Replace(wxS('\r'), wxS(' '));
+      const wxString &text = m_text;
       while ((start = text.find(m_cellPointers->GetSelectionString(), start)) !=
              wxNOT_FOUND) {
         size_t end = static_cast<size_t>(start) + m_cellPointers->GetSelectionString().Length();
@@ -1191,26 +1192,35 @@ size_t EditorCell::BeginningOfLine(size_t pos) const {
     return 0;
   if (pos > m_text.size())
     pos = m_text.size();
-  wxString::const_iterator it = m_text.begin() + pos;
-  while (it != m_text.begin()) {
-    --it;
-    if ((*it == wxS('\n')) || (*it == wxS('\r')))
-      return (it - m_text.begin()) + 1;
+  // The display line starts at the nearest boundary before pos: the character
+  // after the previous hard newline, or the nearest soft break at/below pos
+  // (soft breaks are display-line starts, kept in the side table), whichever
+  // is closer.
+  size_t lineStart = 0;
+  for (size_t i = pos; i > 0; --i) {
+    if (m_text[i - 1] == wxS('\n')) {
+      lineStart = i;
+      break;
+    }
   }
-  if ((*it == wxS('\n')) || (*it == wxS('\r')))
-    return 1;
-  return 0;
+  auto sb = std::upper_bound(m_softBreaks.begin(), m_softBreaks.end(), pos);
+  if (sb != m_softBreaks.begin())
+    lineStart = wxMax(lineStart, *(sb - 1));
+  return lineStart;
 }
 
 size_t EditorCell::EndOfLine(size_t pos) {
   if (pos >= m_text.size())
     return m_text.size();
 
-  wxString::const_iterator it = m_text.begin() + pos;
-  while (it != m_text.end() && *it != wxS('\n') && *it != wxS('\r'))
-    ++it;
+  // Advance to the next display-line boundary: a hard newline or a soft break.
+  // The soft break at pos itself (this line's own start) must not end it.
+  const size_t startPos = pos;
+  while ((pos < m_text.size()) && (m_text[pos] != wxS('\n')) &&
+         !((pos != startPos) && IsSoftBreakBefore(pos)))
+    ++pos;
 
-  return it - m_text.begin();
+  return pos;
 }
 
 #if defined __WXOSX__
@@ -1627,10 +1637,9 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
       if (event.ControlDown()) {
         pos = m_text.Length();
       } else {
-        while (pos < m_text.Length() &&
-               m_text.at(pos) != '\n' &&
-               m_text.at(pos) != '\r')
-          pos++;
+        // Stop at the end of the current display line (hard newline or soft
+        // break); soft breaks live in the side table, not the content.
+        pos = EndOfLine(pos);
       }
 
       if (event.ShiftDown())
@@ -2393,13 +2402,22 @@ bool EditorCell::AddEnding() {
 // position of caret is pos if caret is just before the character
 //   at position pos in m_text.
 //
+// Maps a content offset to a display (column, line) pair. Display lines are
+// bounded by hard newlines (a '\n' char in m_text) AND by soft breaks (kept in
+// the m_softBreaks side table, never in m_text). A soft break is zero-width -
+// it sits *between* two characters - so it advances the line without consuming
+// a character, unlike the '\n' it stands in for.
 void EditorCell::PositionToXY(size_t position, size_t *x, size_t *y) {
   size_t col = 0, lin = 0;
   size_t pos = 0;
 
   wxString::const_iterator it = m_text.begin();
   while ((pos < position) && (it < m_text.end())) {
-    if ((*it == '\n') || (*it == '\r')) {
+    if (IsSoftBreakBefore(pos)) {
+      col = 0;
+      lin++;
+    }
+    if (*it == '\n') {
       col = 0;
       lin++;
     } else
@@ -2408,29 +2426,50 @@ void EditorCell::PositionToXY(size_t position, size_t *x, size_t *y) {
     ++it;
     ++pos;
   }
+  // A caret sitting exactly on a soft break belongs to the following line.
+  if (IsSoftBreakBefore(position)) {
+    col = 0;
+    lin++;
+  }
 
   *x = col;
   *y = lin;
 }
 
 size_t EditorCell::XYToPosition(size_t x, size_t y) {
-  size_t col = 0, lin = 0, pos = 0;
+  size_t lin = 0, pos = 0;
+  const size_t len = m_text.Length();
 
-  wxString::const_iterator it = m_text.begin();
-  while ((it < m_text.end()) && (lin < y)) {
-    if ((*it == '\n') || (*it == '\r'))
-      lin++;
-
-    ++it;
+  // Phase 1: walk to the first content offset of display line y.
+  while (lin < y) {
+    if (IsSoftBreakBefore(pos)) {
+      // Zero-width soft break: line y begins right here, no char consumed.
+      if (++lin == y)
+        break;
+    }
+    if (pos >= len)
+      break;
+    if (m_text[pos] == '\n') {
+      // Hard newline: consume it; the next line starts just past it.
+      ++pos;
+      if (++lin == y)
+        break;
+      continue;
+    }
     ++pos;
   }
 
-  while ((it < m_text.end()) && (pos < m_text.Length()) && (col < x)) {
-    if ((*it == '\n') || (*it == '\r'))
+  // Phase 2: advance x columns within line y, stopping at the line's end.
+  const size_t lineStart = pos;
+  size_t col = 0;
+  while ((pos < len) && (col < x)) {
+    // The break that starts this very line (at lineStart) must not end it.
+    if ((pos != lineStart) && IsSoftBreakBefore(pos))
+      break;
+    if (m_text[pos] == '\n')
       break;
     ++pos;
     ++col;
-    ++it;
   }
 
   return pos;
@@ -2540,7 +2579,10 @@ void EditorCell::SelectPointText(const wxPoint point) {
     posInCell.x -= indentPixels;
 
     wxString::const_iterator it = text.begin() + pos;
-    while (it != text.end() && *it != '\n' && *it != '\r') {
+    // Stop at the hard newline OR the soft break that ends this display line
+    // (the soft break at lineStart started it and must not end it at once).
+    while (it != text.end() && *it != '\n' &&
+           !((pos != lineStart) && IsSoftBreakBefore(pos))) {
       wxCoord width;
       width =
         GetTextSize(text.SubString(lineStart, pos)).GetWidth();
@@ -2604,7 +2646,10 @@ bool EditorCell::IsPointInSelection(wxPoint point) {
   posInCell.x -= indentPixels;
 
   wxString::const_iterator it = m_text.begin() + positionOfCaret;
-  while (it != m_text.end() && *it != '\n' && *it != '\r') {
+  // Stop at the hard newline OR the soft break that ends this display line;
+  // the soft break that STARTED it (at lineStart) must not end it immediately.
+  while (it != m_text.end() && *it != '\n' &&
+         !((positionOfCaret != lineStart) && IsSoftBreakBefore(positionOfCaret))) {
     wxCoord width;
     wxString strng = m_text.SubString(lineStart, positionOfCaret);
     width = GetTextSize(strng).GetWidth();
@@ -2663,7 +2708,6 @@ void EditorCell::UpdateSelectionString() {
   wxString selectionString =
     m_text.Mid(SelectionLeft(),
                SelectionRight() - SelectionLeft());
-  selectionString.Replace(wxS('\r'), wxS(' '));
   m_cellPointers->SetSelectionString(selectionString);
   if(selectionString != oldSelectionString)
     m_selectionChanged = true;
@@ -2765,9 +2809,6 @@ bool EditorCell::CopyToClipboard() const {
   if (end > m_text.Length())
     end = m_text.Length();
   wxString s = m_text.SubString(start, end);
-  // Soft line breaks (\r) are transient layout state; if one reached the
-  // clipboard it would be pasted back as a hard line break.
-  s.Replace(wxS("\r"), wxS(" "));
   // Copying non-breakable spaces in code to external applications is likely to
   // cause problems
   if (GetType() == MC_TYPE_INPUT)
@@ -3048,62 +3089,90 @@ void EditorCell::SaveValue(History::Action action) {
   m_history.AddState(GetValue(), SelectionStart(), SelectionEnd(), action);
 }
 
-void EditorCell::HandleSoftLineBreaks_Code(
-                                           StyledText *&lastSpace, wxCoord &lineWidth, const wxString &token,
-                                           wxString &text, size_t const &lastSpacePos,
+bool EditorCell::BreakAfterOperator(const wxString &token,
+                                    const wxString &prevToken,
+                                    const wxString &nextToken) {
+  // '*' is shown as U+00B7 and '-' as U+2212 when "change asterisk" is on, so
+  // match both the raw and the display forms.
+  auto isStar = [](const wxString &t) {
+    return (t == wxS("*")) || (t == wxS("·"));
+  };
+  if (isStar(token)) {
+    // Never split the "**" power operator (two adjacent '*' tokens): not
+    // between the stars, and not right after the second one.
+    if (isStar(prevToken) || isStar(nextToken))
+      return false;
+    return true;
+  }
+  return (token == wxS("+")) || (token == wxS("-")) || (token == wxS("−")) ||
+         (token == wxS("/")) || (token == wxS("(")) || (token == wxS(")")) ||
+         (token == wxS(";")) || (token == wxS("$"));
+}
+
+void EditorCell::HandleSoftLineBreaks_Code(SoftBreakCandidate &candidate,
+                                           wxCoord &lineWidth,
+                                           const wxString &token,
                                            wxCoord &indentationPixels) const {
   // If we don't want to autowrap code we don't do nothing here.
   if (!m_configuration->GetAutoWrapCode())
     return;
 
-  // A folded cell shows only a one-line preview; wrapping it would write a
-  // soft break into text the user cannot currently see.
+  // A folded cell shows only a one-line preview; wrapping it would place a
+  // soft break in text the user cannot currently see.
   if (FirstLineOnlyEditor())
     return;
 
   SetFont(m_configuration->GetRecalcDC());
 
-  wxCoord width;
   //  Does the line extend too much to the right to fit on the screen /
-  //   // to be easy to read?
-  width = GetTextSize(token).GetWidth();
+  //  to be easy to read?
+  wxCoord width = GetTextSize(token).GetWidth();
   lineWidth += width;
 
-  if ((lineWidth + indentationPixels >= m_configuration->GetLineWidth()) &&
-      (lastSpace != NULL) && (lastSpace->GetText() != "\r") &&
-      // Only a plain space may become a soft break: the tokenizer renders
-      // exotic spaces (non-breakable etc.) as ' ' too, and overwriting one of
-      // those would alter the cell's content once the break is scrubbed back
-      // to a plain space.
-      (lastSpacePos < text.Length()) &&
-      (*(text.begin() + lastSpacePos) == ' ')) {
-    wxCoord charWidth;
-    charWidth = GetTextSize(" ").GetWidth();
-    wxCoord newIndent =
-      charWidth * static_cast<wxCoord>(GetIndentDepth(m_text, lastSpacePos));
-    // Progress guarantee: every continuation line keeps at least half the
-    // worksheet width for content. Unclamped, a deeply nested line's
-    // continuation indentation could reach or exceed the line width, making
-    // the wrapped line as wide as the unwrapped one - the "wrapping made the
-    // line longer" failure that got this feature disabled.
-    indentationPixels =
-      wxMin(newIndent,
-            static_cast<wxCoord>(m_configuration->GetLineWidth()) / 2);
-    // The wrap condition above adds indentationPixels to lineWidth; adding it
-    // here as well would count the indentation twice and wrap every
-    // subsequent line one indentation-width too early.
-    lineWidth = width;
-    lastSpace->SetText("\r");
-    lastSpace->SetIndentation(indentationPixels);
-    *(text.begin() + lastSpacePos) = '\r';
-    lastSpace = NULL;
+  if ((lineWidth + indentationPixels < m_configuration->GetLineWidth()) ||
+      !candidate.valid)
+    return;
+
+  wxCoord charWidth = GetTextSize(" ").GetWidth();
+  wxCoord newIndent =
+    charWidth * static_cast<wxCoord>(GetIndentDepth(m_text, candidate.textPos));
+  // Progress guarantee: every continuation line keeps at least half the
+  // worksheet width for content. Unclamped, a deeply nested line's
+  // continuation indentation could reach or exceed the line width, making the
+  // wrapped line as wide as the unwrapped one - the "wrapping made the line
+  // longer" failure that got this feature disabled.
+  indentationPixels =
+    wxMin(newIndent, static_cast<wxCoord>(m_configuration->GetLineWidth()) / 2);
+  // The wrap condition above counted this token in lineWidth; the token now
+  // starts the continuation line, so reset lineWidth to just its width (adding
+  // indentationPixels here as well would double-count and wrap too early).
+  lineWidth = width;
+
+  // Record the break OUTSIDE the content. The side-table offset is the start of
+  // the continuation line; StyleText appends breaks left to right, keeping
+  // m_softBreaks ascending for IsSoftBreakBefore()'s binary search.
+  m_softBreaks.push_back(candidate.textPos);
+  if (candidate.insert) {
+    // Operator break: a zero-width "\r" marker goes right after the operator.
+    if (candidate.snippetIdx <= m_styledText.size())
+      m_styledText.insert(m_styledText.begin() + candidate.snippetIdx,
+                          StyledText(wxS("\r"), GetTextStyle(), indentationPixels));
+  } else {
+    // Space break: the space's render snippet becomes the "\r" marker in place,
+    // standing in for the consumed space one-for-one so m_text and m_styledText
+    // stay in per-line lockstep.
+    if ((candidate.snippetIdx < m_styledText.size()) &&
+        (m_styledText[candidate.snippetIdx].GetText() == wxS(" "))) {
+      m_styledText[candidate.snippetIdx].SetText(wxS("\r"));
+      m_styledText[candidate.snippetIdx].SetIndentation(indentationPixels);
+    }
   }
+  candidate.valid = false;
 }
 
 void EditorCell::StyleTextCode() const {
   // We have to style code
-  StyledText *lastSpace = NULL;
-  size_t lastSpacePos = 0;
+  SoftBreakCandidate candidate;
   // If a space is part of the initial spaces that do the indentation of a cell
   // it is not eligible for soft line breaks: It would add a soft line break
   // that causes the same indentation to be introduced in the new line again and
@@ -3134,7 +3203,8 @@ void EditorCell::StyleTextCode() const {
   size_t pos = 0;
   wxCoord lineWidth = 0;
 
-  for (auto const &token : m_tokens) {
+  for (size_t ti = 0; ti < m_tokens.size(); ++ti) {
+    auto const &token = m_tokens[ti];
     pos += token.GetText().Length();
     auto &tokenString = token.GetText();
     if (tokenString.IsEmpty())
@@ -3153,8 +3223,14 @@ void EditorCell::StyleTextCode() const {
       // introduce a soft line break. pos was already advanced past this
       // token, so its last character sits at pos - 1.
       m_styledText.push_back(StyledText(wxS(" "), GetTextStyle()));
-      lastSpace = &m_styledText.back();
-      lastSpacePos = pos - 1;
+      // This space is the next candidate spot for a soft break. Only a plain
+      // space qualifies: the tokenizer renders non-breakable spaces as ' ' too,
+      // and breaking there would misrepresent where the content wraps. pos was
+      // already advanced past the token, so the space sits at pos - 1 and the
+      // continuation line would begin at pos.
+      candidate = SoftBreakCandidate{
+        m_styledText.size() - 1, pos, false,
+        (pos >= 1) && (pos - 1 < m_text.Length()) && (m_text[pos - 1] == wxS(' '))};
       // The spaces belong to the current display line, too.
       lineWidth += GetTextSize(tokenString).GetWidth();
       continue;
@@ -3179,7 +3255,7 @@ void EditorCell::StyleTextCode() const {
         // this line's soft break.
         lineWidth = 0;
         indentationPixels = 0;
-        lastSpace = NULL;
+        candidate.valid = false;
         line.Clear();
       }
     }
@@ -3191,8 +3267,19 @@ void EditorCell::StyleTextCode() const {
       if (line != wxEmptyString)
         lineWidth += GetTextSize(line).GetWidth();
     } else {
-      HandleSoftLineBreaks_Code(lastSpace, lineWidth, tokenString, m_text,
-                                lastSpacePos, indentationPixels);
+      HandleSoftLineBreaks_Code(candidate, lineWidth, tokenString,
+                                indentationPixels);
+      // Having weighed this token (and possibly broken before it), a breakable
+      // operator now becomes the candidate spot for the following tokens: a
+      // zero-width break inserted just after the operator's render snippet.
+      if (token.GetTextStyle() == TS_CODE_OPERATOR) {
+        const wxString prevText =
+          (ti > 0) ? m_tokens[ti - 1].GetText() : wxString();
+        const wxString nextText =
+          (ti + 1 < m_tokens.size()) ? m_tokens[ti + 1].GetText() : wxString();
+        if (BreakAfterOperator(tokenString, prevText, nextText))
+          candidate = SoftBreakCandidate{m_styledText.size(), pos, true, true};
+      }
     }
     if ((token.GetTextStyle() == TS_CODE_VARIABLE) ||
         (token.GetTextStyle() == TS_CODE_FUNCTION)) {
@@ -3435,6 +3522,24 @@ lineProcessed:
         ++it;
       }
     } // The loop that loops over all lines
+
+    // The prose wrapper above writes its soft breaks as '\r' markers into
+    // m_text while it works (it reads them back to detect continuation lines).
+    // Move them out to the side table now and restore m_text to pristine
+    // content: nothing outside StyleText() ever sees the transient markers.
+    // Each entry is the zero-width offset just AFTER the broken space (the
+    // start of the continuation line); the left-to-right scan keeps
+    // m_softBreaks ascending, as IsSoftBreakBefore()'s binary search requires.
+    // A folded cell renders only its first line, so - like the code path - it
+    // records no breaks; the scrub still runs so no marker survives in m_text.
+    const bool recordBreaks = !FirstLineOnlyEditor();
+    for (size_t p = 0; p < m_text.Length(); ++p) {
+      if (m_text[p] == wxS('\r')) {
+        if (recordBreaks)
+          m_softBreaks.push_back(p + 1);
+        m_text[p] = wxS(' ');
+      }
+    }
   }   // Do we want to autowrap lines?
   else {
     m_text.Replace(wxS("\r"), wxS("\n"));
@@ -3488,10 +3593,14 @@ void EditorCell::StyleText() const {
 
   m_wordList.clear();
   m_styledText.clear();
+  // Soft breaks are derived layout data; re-derive them from scratch on every
+  // restyle. They live in a side table (m_softBreaks), never inside m_text.
+  m_softBreaks.clear();
 
   if (m_text != wxEmptyString) {
-    // Remove all soft line breaks. They will be re-added in the right places
-    // in the next step
+    // Defensive normalization: a bare '\r' can only reach us as raw input
+    // (legacy files, paste). Real soft breaks are never stored in the content
+    // any more, so this touches nothing in normal operation.
     m_text.Replace(wxS("\r"), wxS(" "));
     // Style as code or prose, dispatched by the concrete subclass.
     StyleTypedText();
@@ -3547,11 +3656,9 @@ size_t EditorCell::ReplaceAll(wxString oldString, const wxString &newString,
   size_t count = 0;
   if (!ignoreCase) {
     newText = m_text;
-    newText.Replace(wxS("\r"), wxS(" "));
     count = newText.Replace(oldString, newString);
   } else {
     wxString src = m_text;
-    src.Replace(wxS("\r"), wxS(" "));
     wxString src_LowerCase = src;
     src_LowerCase.MakeLower();
     oldString.MakeLower();
@@ -3593,7 +3700,6 @@ size_t EditorCell::ReplaceAll_RegEx(const wxString &oldString, const wxString &n
   size_t count = 0;
   RegexSearch regexsearch(oldString);
   newText = m_text;
-  newText.Replace(wxS("\r"), wxS(" "));
   count = regexsearch.ReplaceAll(&newText, newString);
   if(count > 0) {
     m_text = newText;
@@ -3635,9 +3741,8 @@ bool EditorCell::FindNext(wxString str, const bool &down,
     start = m_text.Length();
 
   wxString originalStr = str;
-  // Handle soft line breaks and ignore-case
+  // Handle ignore-case
   wxString text(m_text);
-  text.Replace(wxS('\r'), wxS(' '));
   if (ignoreCase) {
     str.MakeLower();
     text.MakeLower();
@@ -3710,7 +3815,6 @@ bool EditorCell::FindNext(wxString str, const bool &down,
 
 bool EditorCell::FindNext_RegEx(wxString str, const bool &down) {
   wxString text(m_text);
-  text.Replace(wxS('\r'), wxS(' '));
 
   wxLogNull suppressor;
   RegexSearch regexSearch(str);
@@ -3784,7 +3888,6 @@ bool EditorCell::ReplaceSelection(const wxString &oldStr,
                                   const wxString &newString, bool keepSelected,
                                   bool ignoreCase, bool replaceMaximaString) {
   wxString text(m_text);
-  text.Replace(wxS("\r"), wxS(" "));
 
   auto start = SelectionLeft();
   auto end = SelectionRight();
@@ -3848,7 +3951,6 @@ bool EditorCell::ReplaceSelection(const wxString &oldStr,
 bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
                                         const wxString &newString) {
   wxString text(m_text);
-  text.Replace(wxS("\r"), wxS(" "));
   wxLogNull suppressor;
 
   auto start = SelectionLeft();
@@ -3876,8 +3978,6 @@ bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
 
 wxString EditorCell::GetSelectionString() const {
   wxString retval = m_text.SubString(SelectionLeft(), SelectionRight() - 1);
-  // Soft line breaks are transient layout state, not cell content.
-  retval.Replace(wxS("\r"), wxS(" "));
   return retval;
 }
 

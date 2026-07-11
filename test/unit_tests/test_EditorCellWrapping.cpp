@@ -22,13 +22,15 @@
 /*! \file
   Tests for automatic line-wrapping inside EditorCells.
 
-  A soft line break is the character '\r' written in place over a space in the
-  cell's text (a hard break is '\n'); StyleText() scrubs and re-derives the
-  soft breaks on every restyle, so wrapping is transient layout state that
-  must never change the cell's content or leak into serialization, the
-  clipboard or the selection string. These tests pin exactly that, for the
-  prose path (which always worked) and the code path (formerly disabled
-  prototype code).
+  A soft (word-wrap) line break is derived layout data kept OUTSIDE the content
+  string, in the EditorCell::GetSoftBreaks() side table (a hard break is a '\n'
+  character in the content). StyleText() re-derives the whole table on every
+  restyle, so wrapping is a pure function of (content, width) that must never
+  change the cell's content or leak into serialization, the clipboard or the
+  selection string. Each break offset is the start of a continuation display
+  line. These tests pin that for the prose path, the code path, and the
+  operator-aware code breaks (wrap after + - * / ( ) ; $, but never inside a
+  '**').
 
   Windowless: real GroupCell/EditorCell against a memory-DC Configuration,
   no Worksheet, no wxFrame - the test_WorksheetLayout pattern.
@@ -104,14 +106,20 @@ void CodeNarrow() { g_cfg->SetCanvasSize(wxSize(500, 800)); }
 //! A canvas wide enough that ordinary lines never wrap.
 void Wide() { g_cfg->SetCanvasSize(wxSize(4000, 800)); }
 
-//! The indices of the soft line breaks ('\r') in the editor's text.
+//! The soft (word-wrap) break offsets of the editor. Each is the content
+//! offset at which a display line begins because of wrapping - the breaks live
+//! in a side table now, never as '\r' markers inside the content string.
 std::vector<size_t> Breaks(const EditorCell *editor) {
-  std::vector<size_t> breaks;
-  const wxString &value = editor->GetValue();
-  for (size_t i = 0; i < value.Length(); i++)
-    if (value[i] == wxS('\r'))
-      breaks.push_back(i);
-  return breaks;
+  const std::vector<std::size_t> &sb = editor->GetSoftBreaks();
+  return std::vector<size_t>(sb.begin(), sb.end());
+}
+
+//! May a soft break begin right after this content character? Prose wraps at
+//! spaces; code additionally wraps after these operators (see BreakAfterOperator).
+bool IsBreakBoundary(wxChar c) {
+  return (c == wxS(' ')) || (c == wxS('+')) || (c == wxS('-')) ||
+         (c == wxS('/')) || (c == wxS('*')) || (c == wxS('(')) ||
+         (c == wxS(')')) || (c == wxS(';')) || (c == wxS('$'));
 }
 
 //! Force a full restyle at the current canvas width.
@@ -152,15 +160,17 @@ SCENARIO("Prose cells wrap when auto-wrap is on and stay intact") {
       REQUIRE(editor != nullptr);
       group.Recalculate();
 
-      THEN("soft breaks appear, each replacing a space in place") {
+      THEN("soft breaks appear at spaces and the content stays pristine") {
         const std::vector<size_t> breaks = Breaks(editor);
         REQUIRE(breaks.size() > 0);
-        wxString value = editor->GetValue();
-        REQUIRE(value.Length() == original.Length());
-        for (size_t breakPos : breaks)
-          REQUIRE(original[breakPos] == wxS(' '));
-        value.Replace(wxS("\r"), wxS(" "));
-        REQUIRE(value == original);
+        // The content is untouched: no '\r' marker, same length, byte-identical.
+        REQUIRE(editor->GetValue() == original);
+        // Each break offset is the start of a continuation line; the character
+        // just before it is the space the prose wrapper broke at.
+        for (size_t breakPos : breaks) {
+          REQUIRE(breakPos > 0);
+          REQUIRE(original[breakPos - 1] == wxS(' '));
+        }
       }
     }
 
@@ -219,11 +229,8 @@ SCENARIO("Runs of consecutive spaces survive styling at any width") {
       GroupCell group(g_cfg, GC_TYPE_TEXT, spaceRuns);
       REQUIRE_NOTHROW(group.Recalculate());
 
-      THEN("the content is preserved modulo soft breaks") {
-        wxString value = group.GetEditable()->GetValue();
-        REQUIRE(value.Length() == spaceRuns.Length());
-        value.Replace(wxS("\r"), wxS(" "));
-        REQUIRE(value == spaceRuns);
+      THEN("the content is preserved exactly") {
+        REQUIRE(group.GetEditable()->GetValue() == spaceRuns);
       }
     }
 
@@ -232,11 +239,8 @@ SCENARIO("Runs of consecutive spaces survive styling at any width") {
       GroupCell group(g_cfg, GC_TYPE_CODE, spaceRuns);
       REQUIRE_NOTHROW(group.Recalculate());
 
-      THEN("the content is preserved modulo soft breaks") {
-        wxString value = group.GetEditable()->GetValue();
-        REQUIRE(value.Length() == spaceRuns.Length());
-        value.Replace(wxS("\r"), wxS(" "));
-        REQUIRE(value == spaceRuns);
+      THEN("the content is preserved exactly") {
+        REQUIRE(group.GetEditable()->GetValue() == spaceRuns);
       }
     }
   }
@@ -291,9 +295,12 @@ SCENARIO("Caret positions round-trip across soft breaks") {
     }
     THEN("the line index increases across each soft break") {
       for (size_t breakPos : breaks) {
+        // breakPos is the continuation-line start: the offset just before it
+        // is on the previous display line, breakPos itself on the next.
+        REQUIRE(breakPos > 0);
         size_t xBefore = 0, yBefore = 0, xAfter = 0, yAfter = 0;
-        editor->PositionToXY(breakPos, &xBefore, &yBefore);
-        editor->PositionToXY(breakPos + 1, &xAfter, &yAfter);
+        editor->PositionToXY(breakPos - 1, &xBefore, &yBefore);
+        editor->PositionToXY(breakPos, &xAfter, &yAfter);
         REQUIRE(yAfter == yBefore + 1);
       }
     }
@@ -325,9 +332,7 @@ SCENARIO("Re-styling at a different width re-derives the wrapping") {
         fresh.Recalculate();
         REQUIRE(Breaks(editor) == Breaks(fresh.GetEditable()));
         REQUIRE(Breaks(editor).size() < narrowBreaks.size());
-        wxString value = editor->GetValue();
-        value.Replace(wxS("\r"), wxS(" "));
-        REQUIRE(value == original);
+        REQUIRE(editor->GetValue() == original);
       }
 
       AND_WHEN("the canvas becomes narrow again") {
@@ -353,15 +358,16 @@ SCENARIO("Code cells wrap when 'Text & Code' is selected, preserving content") {
     REQUIRE(editor != nullptr);
     group.Recalculate();
 
-    THEN("soft breaks appear, each replacing a space in place") {
+    THEN("soft breaks appear at space/operator boundaries; content is pristine") {
       const std::vector<size_t> breaks = Breaks(editor);
       REQUIRE(breaks.size() > 0);
-      wxString value = editor->GetValue();
-      REQUIRE(value.Length() == original.Length());
-      for (size_t breakPos : breaks)
-        REQUIRE(original[breakPos] == wxS(' '));
-      value.Replace(wxS("\r"), wxS(" "));
-      REQUIRE(value == original);
+      REQUIRE(editor->GetValue() == original);
+      // Code may break at a space or right after a breakable operator, so the
+      // character just before each continuation start is one of those.
+      for (size_t breakPos : breaks) {
+        REQUIRE(breakPos > 0);
+        REQUIRE(IsBreakBoundary(original[breakPos - 1]));
+      }
     }
     THEN("the cell's width stays within the line width (plus overshoot slack)") {
       // A wrap triggers after the token that crossed the limit, so a display
@@ -410,10 +416,8 @@ SCENARIO("Deeply nested code wraps with clamped indentation instead of degenerat
       REQUIRE(editor->GetWidth() <=
               static_cast<wxCoord>(g_cfg->GetLineWidth()) * 3 / 2);
     }
-    THEN("the content survives") {
-      wxString value = editor->GetValue();
-      value.Replace(wxS("\r"), wxS(" "));
-      REQUIRE(value == original);
+    THEN("the content survives untouched") {
+      REQUIRE(editor->GetValue() == original);
     }
   }
 }
@@ -480,9 +484,7 @@ SCENARIO("Undo is unaffected by wrapping") {
         editor->Undo();
 
         THEN("the original text is restored, without any soft break") {
-          wxString value = editor->GetValue();
-          value.Replace(wxS("\r"), wxS(" "));
-          REQUIRE(value == original);
+          REQUIRE(editor->GetValue() == original);
         }
       }
     }
@@ -545,6 +547,66 @@ SCENARIO("Wrapped code leaks no soft break into serialization") {
         size_t x = 0, y = 0;
         editor->PositionToXY(p, &x, &y);
         REQUIRE(editor->XYToPosition(x, y) == p);
+      }
+    }
+  }
+}
+
+SCENARIO("Spaceless code still wraps at operators") {
+  WrapSetupGuard guard;
+  g_cfg->SetAutoWrap(2);
+  CodeNarrow();
+  GIVEN("a long sum with no spaces to break at") {
+    wxString original = wxS("v0");
+    for (int i = 1; i < 40; i++)
+      original += wxString::Format(wxS("+v%d"), i);
+    original += wxS("$");
+    REQUIRE(original.Find(wxS(' ')) == wxNOT_FOUND);
+    GroupCell group(g_cfg, GC_TYPE_CODE, original);
+    EditorCell *editor = group.GetEditable();
+    group.Recalculate();
+
+    THEN("it wraps after '+' operators, leaving the content pristine") {
+      const std::vector<size_t> breaks = Breaks(editor);
+      REQUIRE(breaks.size() > 0);
+      REQUIRE(editor->GetValue() == original);
+      for (size_t b : breaks) {
+        REQUIRE(b > 0);
+        REQUIRE(original[b - 1] == wxS('+')); // the only breakable spot here
+      }
+    }
+    THEN("the wrapped cell is genuinely narrower than the unwrapped line") {
+      REQUIRE(editor->GetWidth() <=
+              static_cast<wxCoord>(g_cfg->GetLineWidth()) * 3 / 2);
+    }
+  }
+}
+
+SCENARIO("The ** power operator is never split by a soft break") {
+  WrapSetupGuard guard;
+  g_cfg->SetAutoWrap(2);
+  CodeNarrow();
+  GIVEN("a long product of powers written with **") {
+    wxString original = wxS("r:v0");
+    for (int i = 1; i < 40; i++)
+      original += wxString::Format(wxS("*w%d**2"), i);
+    original += wxS("$");
+    GroupCell group(g_cfg, GC_TYPE_CODE, original);
+    EditorCell *editor = group.GetEditable();
+    group.Recalculate();
+
+    THEN("it wraps, but no break falls inside or right after a '**'") {
+      REQUIRE(editor->GetValue() == original);
+      const std::vector<size_t> breaks = Breaks(editor);
+      REQUIRE(breaks.size() > 0);
+      for (size_t b : breaks) {
+        REQUIRE(b > 0);
+        const bool prevIsStar = original[b - 1] == wxS('*');
+        const bool prevPrevIsStar = (b >= 2) && (original[b - 2] == wxS('*'));
+        const bool atIsStar =
+          (b < original.Length()) && (original[b] == wxS('*'));
+        REQUIRE_FALSE((prevIsStar && prevPrevIsStar)); // not right after '**'
+        REQUIRE_FALSE((prevIsStar && atIsStar));       // not between the two '*'
       }
     }
   }

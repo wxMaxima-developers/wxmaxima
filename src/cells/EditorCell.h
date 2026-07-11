@@ -28,6 +28,7 @@
 #include "FontAttribs.h"
 #include "MaximaTokenizer.h"
 #include <vector>
+#include <algorithm>
 #include <list>
 #include <unordered_map>
 
@@ -219,6 +220,15 @@ public:
     Naturally all soft line breaks are converted back to spaces beforehand.
   */
   const wxString &GetValue() const override { return m_text; }
+
+  /*! The soft (word-wrap) line-break offsets of the last styling pass.
+
+    Each entry is the content offset at which a display line begins because the
+    text was word-wrapped (see \ref m_softBreaks). Exposed for tests and
+    inspection; the breaks are derived layout data and never appear in
+    \ref GetValue().
+  */
+  const std::vector<std::size_t> &GetSoftBreaks() const { return m_softBreaks; }
 
   /*! Sets the character ranges of this cell's text the diff viewer wants
     painted with the TS_DIFF_CHANGED background (the parts the matching cell
@@ -681,8 +691,44 @@ private:
     The current behavior is O(n^2) (scanning the text needs linear time and for each word
     the indentation algorithm scans the text again) which is unfortunate.
   */
-  void HandleSoftLineBreaks_Code(StyledText *&lastSpace, wxCoord &lineWidth, const wxString &token,
-                                 wxString &text, const size_t &lastSpacePos, wxCoord &indentationPixels) const;
+  /*! Where StyleTextCode() may place the next soft break.
+
+    A break can happen at a plain space (the space's render snippet is turned
+    into a "\r" marker in place) or right after certain operators (a zero-width
+    "\r" marker is inserted). \c snippetIdx indexes \ref m_styledText: the space
+    snippet to replace, or the position to insert the operator marker at.
+    \c textPos is the content offset where the continuation line begins (the
+    value pushed to \ref m_softBreaks).
+  */
+  struct SoftBreakCandidate {
+    std::size_t snippetIdx = 0;
+    std::size_t textPos = 0;
+    bool insert = false; //!< false: replace a space snippet; true: insert after an operator
+    bool valid = false;
+  };
+
+  void HandleSoftLineBreaks_Code(SoftBreakCandidate &candidate, wxCoord &lineWidth,
+                                 const wxString &token, wxCoord &indentationPixels) const;
+
+  /*! May a soft break be placed right after this operator token?
+
+    Breaks are offered after the arithmetic operators + - * / and after ( ) ; $,
+    but never in the middle of a "**" power operator (the tokenizer emits each
+    '*' as its own token). \p prevToken / \p nextToken are the neighbouring
+    token texts (empty if none) so the "**" case can be excluded.
+  */
+  static bool BreakAfterOperator(const wxString &token, const wxString &prevToken,
+                                 const wxString &nextToken);
+
+  /*! Is there a soft (word-wrap) line break immediately before this offset?
+
+    Consults the \ref m_softBreaks side table. Used by the offset→display-line
+    walkers so a soft break behaves like a zero-width newline without a marker
+    character having to sit inside \ref m_text.
+  */
+  bool IsSoftBreakBefore(std::size_t pos) const {
+    return std::binary_search(m_softBreaks.begin(), m_softBreaks.end(), pos);
+  }
 
   /*! How many chars do we need to indent text at the position the caret is currently at?
 
@@ -730,6 +776,23 @@ private:
    */
   mutable wxString m_text;
   mutable std::vector<StyledText> m_styledText;
+
+  /*! Soft (word-wrap) line-break positions, kept OUTSIDE the content string.
+
+    A soft break is derived layout data, not user content, so it must never
+    live inside \ref m_text (writing a '\r' marker into the content string was
+    the historical root of a whole bug family: the marker leaked into
+    copy/paste, XML, ToString and the string sent to Maxima, and had to be
+    scrubbed back to a space in dozens of places).
+
+    Each entry is a *zero-width insertion offset* into \ref m_text: "a display
+    line ends just before this offset". Offsets are strictly increasing.
+    \ref StyleText() clears and re-derives the whole vector on every restyle,
+    so wrapping stays a pure function of (content, width). The matching render
+    markers still live in \ref m_styledText as "\r" snippets (that list is a
+    throw-away rendering representation, so it may carry layout markers).
+  */
+  mutable std::vector<std::size_t> m_softBreaks;
 
   //! See SetDiffHighlights(). Empty for every cell outside the diff viewer.
   std::vector<std::pair<std::size_t, std::size_t>> m_diffHighlights;

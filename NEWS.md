@@ -23,6 +23,15 @@
 - Copying or selecting text that spans a soft line break no longer leaks the
   invisible break character, which would have turned into a hard line break
   when pasted.
+- Soft (word-wrap) line breaks are now stored as derived layout data outside
+  the cell's text instead of as marker characters written into it. The content
+  a cell hands to the clipboard, to Maxima, to the file and to the selection is
+  therefore always exactly what you typed, which removes a whole family of
+  "the soft break leaked" bugs at the source rather than scrubbing the break
+  character back out in each place that reads the text.
+- Auto-wrapped code can now also break after the operators `+ - * / ( ) ; $`
+  (but never in the middle of a `**`), so a long expression with few spaces -
+  or none at all - still wraps to a readable width.
 - Internal: CellPointers (the per-worksheet registry of pointers into the cell
   tree that auto-null when a cell dies) is being untangled into its document-side
   half (selection, active/answer cell, working group, error list) and its
