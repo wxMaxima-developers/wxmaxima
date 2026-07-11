@@ -180,7 +180,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_languages[_("Hungarian")] = wxLANGUAGE_HUNGARIAN;
   m_languages[_("Italian")] = wxLANGUAGE_ITALIAN;
   m_languages[_("Japanese")] = wxLANGUAGE_JAPANESE;
-#if wxCHECK_VERSION(3, 0, 1)
+#if wxCHECK_VERSION(3, 0, 2)
   m_languages[_("Kabyle")] = wxLANGUAGE_KABYLE;
 #endif
   m_languages[_("Norwegian")] = wxLANGUAGE_NORWEGIAN_BOKMAL;
