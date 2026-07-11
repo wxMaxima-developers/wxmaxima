@@ -1,5 +1,13 @@
 # Current development version
 
+- Windows: on shutdown wxMaxima suppresses the OS hard-error message boxes ("this
+  application could not be started", the critical-error and crash boxes) for
+  itself and for the Maxima and gnuplot processes it launches, and it no longer
+  lets those child processes inherit its stdout/stderr. A fast batch run (for
+  example an empty worksheet) that killed a still-starting Maxima or gnuplot on
+  exit could otherwise pop a modal dialog which, with nobody to dismiss it on a
+  head-less or CI machine, kept the killed child - and the inherited output pipe
+  - alive and hung the run.
 - Fixed: several configuration-dialog settings were silently not saved when you
   pressed OK. The OK handler persisted only the styles and the settings kept in
   the shared key table, so the print margins, the autosave interval, the maximum

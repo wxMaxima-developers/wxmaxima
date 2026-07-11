@@ -336,8 +336,36 @@ void MyApp::RestoreConsoleMode() {
 
 bool MyApp::OnInit() {
 #ifdef __WXMSW__
+  // Suppress the OS hard-error / "this application could not be started" message
+  // boxes for us AND for the child processes we spawn (Maxima, gnuplot). Child
+  // processes inherit this error mode because wxExecute() does not pass
+  // CREATE_DEFAULT_ERROR_MODE. This matters on a head-less --batch run: when we
+  // exit we kill Maxima/gnuplot (see KillMaxima / KillAndDetachProcess), and a
+  // fast exit (e.g. an empty worksheet) can land that kill while the child is
+  // still starting up. Windows then pops a modal "cannot start" box for it; on a
+  // CI runner nobody dismisses it, so the killed child blocks on the box instead
+  // of terminating and keeps our inherited stdout/stderr pipe open, hanging the
+  // ctest that is waiting for EOF. Suppressing the box lets the kill terminate
+  // the child cleanly.
+  SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX |
+               SEM_NOOPENFILEERRORBOX);
   // Must run before any console output or wxMessageOutput use (see above).
   RedirectStdioToParent();
+  // Belt and suspenders for the same head-less-hang: mark our own stdout/stderr
+  // (the ctest/parent pipe RedirectStdioToParent() just bound to) NON-inheritable
+  // so no child - and no WerFault.exe spawned for a dying child - can ever hold
+  // that pipe open past our exit. We still write to the streams ourselves; the
+  // flag only controls what children inherit. Neither Maxima (talks over a TCP
+  // socket) nor the gnuplot terminal probe (uses its own Redirect() pipes) needs
+  // these handles.
+  {
+    HANDLE outHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    HANDLE errHandle = GetStdHandle(STD_ERROR_HANDLE);
+    if ((outHandle != nullptr) && (outHandle != INVALID_HANDLE_VALUE))
+      SetHandleInformation(outHandle, HANDLE_FLAG_INHERIT, 0);
+    if ((errHandle != nullptr) && (errHandle != INVALID_HANDLE_VALUE))
+      SetHandleInformation(errHandle, HANDLE_FLAG_INHERIT, 0);
+  }
   // For a GUI-subsystem binary the default wxMessageOutput is a *modal* message
   // box. That is what hangs every head-less wxmaxima launch (--version, --help /
   // wxCmdLineParser::Usage(), and early diagnostics all go through it). Now that
