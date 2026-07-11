@@ -84,7 +84,7 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for CellPointers:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classCellPointers__coll__graph.svg" width="662" height="350"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classCellPointers__coll__graph.svg" width="662" height="334"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -114,6 +114,22 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetWorkingGroup</b> (
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasCellsSelected</b> () const</td></tr>
 <tr class="memdesc:ae472295eccdc1fc42eb7bc66d4ffa385"><td class="mdescLeft">&#160;</td><td class="mdescRight">Are any whole cells (as opposed to text inside an editor) selected? <br /></td></tr>
 <tr class="separator:ae472295eccdc1fc42eb7bc66d4ffa385"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78f74d43a90719037ecf8c023b4fa344"><td class="memItemLeft" align="right" valign="top"><a id="a78f74d43a90719037ecf8c023b4fa344" name="a78f74d43a90719037ecf8c023b4fa344"></a>
+<a class="el" href="classEditorCell.html">EditorCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetAnswerCell</b> () const</td></tr>
+<tr class="memdesc:a78f74d43a90719037ecf8c023b4fa344"><td class="mdescLeft">&#160;</td><td class="mdescRight">The editor cell maxima's current question is being answered in, or null. <br /></td></tr>
+<tr class="separator:a78f74d43a90719037ecf8c023b4fa344"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc6143fc35ade4e4f83b2355bd22d49b"><td class="memItemLeft" align="right" valign="top"><a id="acc6143fc35ade4e4f83b2355bd22d49b" name="acc6143fc35ade4e4f83b2355bd22d49b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAnswerCell</b> (<a class="el" href="classEditorCell.html">EditorCell</a> *cell)</td></tr>
+<tr class="memdesc:acc6143fc35ade4e4f83b2355bd22d49b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the editor cell maxima's current question is answered in. <br /></td></tr>
+<tr class="separator:acc6143fc35ade4e4f83b2355bd22d49b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2957f4971c5ee3f57efa53b3e088173"><td class="memItemLeft" align="right" valign="top"><a id="af2957f4971c5ee3f57efa53b3e088173" name="af2957f4971c5ee3f57efa53b3e088173"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearAnswerCell</b> ()</td></tr>
+<tr class="memdesc:af2957f4971c5ee3f57efa53b3e088173"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forget the editor cell that held maxima's current question. <br /></td></tr>
+<tr class="separator:af2957f4971c5ee3f57efa53b3e088173"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bc085263c9431d69ef3a83784bd7ac9"><td class="memItemLeft" align="right" valign="top"><a id="a7bc085263c9431d69ef3a83784bd7ac9" name="a7bc085263c9431d69ef3a83784bd7ac9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearAnswerCellIfInGroup</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group)</td></tr>
+<tr class="memdesc:a7bc085263c9431d69ef3a83784bd7ac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forget the question editor if it belongs to group, e.g. because that group's output is being reset or the group is going away. <br /></td></tr>
+<tr class="separator:a7bc085263c9431d69ef3a83784bd7ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab483ced0f05ae90459ee89c1394aec25"><td class="memItemLeft" align="right" valign="top"><a id="ab483ced0f05ae90459ee89c1394aec25" name="ab483ced0f05ae90459ee89c1394aec25"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ScrollToCell</b> (<a class="el" href="classCell.html">Cell</a> *cell)</td></tr>
 <tr class="separator:ab483ced0f05ae90459ee89c1394aec25"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,10 +183,6 @@ Data Fields</h2></td></tr>
 <a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classEditorCell.html">EditorCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_activeCell</b></td></tr>
 <tr class="memdesc:a55463a2056dee7b10ccaa0259572581c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which EditCell the blinking cursor is in? <br /></td></tr>
 <tr class="separator:a55463a2056dee7b10ccaa0259572581c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4b575e166224de38e784d81b750b4fa"><td class="memItemLeft" align="right" valign="top"><a id="ac4b575e166224de38e784d81b750b4fa" name="ac4b575e166224de38e784d81b750b4fa"></a>
-<a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classEditorCell.html">EditorCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_answerCell</b></td></tr>
-<tr class="memdesc:ac4b575e166224de38e784d81b750b4fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> that contains the currently active question from maxima. <br /></td></tr>
-<tr class="separator:ac4b575e166224de38e784d81b750b4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af32970737f19cb708164d0a7373c5f8c"><td class="memItemLeft" align="right" valign="top"><a id="af32970737f19cb708164d0a7373c5f8c" name="af32970737f19cb708164d0a7373c5f8c"></a>
 <a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classTextCell.html">TextCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_currentTextCell</b></td></tr>
 <tr class="memdesc:af32970737f19cb708164d0a7373c5f8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The textcell the text maxima is sending us was ending in. <br /></td></tr>
