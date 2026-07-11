@@ -88,13 +88,13 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for Worksheet:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classWorksheet__inherit__graph.svg" width="352" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classWorksheet__inherit__graph.svg" width="568" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for Worksheet:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="512"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="549"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -135,6 +135,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1db988b3949369c5bb556a1c61ea6ecc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a1db988b3949369c5bb556a1c61ea6ecc">GetViewPosition</a> (int *x, int *y) const override</td></tr>
 <tr class="memdesc:a1db988b3949369c5bb556a1c61ea6ecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The view's position within its parent, in device pixels (wxWindow::GetPosition).  <br /></td></tr>
 <tr class="separator:a1db988b3949369c5bb556a1c61ea6ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb762cdfd74fa911756a0a8308df8660"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#acb762cdfd74fa911756a0a8308df8660">NotifyRecalculation</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *start) override</td></tr>
+<tr class="memdesc:acb762cdfd74fa911756a0a8308df8660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a re-layout of the document starting at <code>start</code> (null = all).  <br /></td></tr>
+<tr class="separator:acb762cdfd74fa911756a0a8308df8660"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3301c333b0fbd9bf049dbf3374ee0b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ae3301c333b0fbd9bf049dbf3374ee0b4">NotifyRedraw</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *start) override</td></tr>
+<tr class="memdesc:ae3301c333b0fbd9bf049dbf3374ee0b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a redraw of the document starting at <code>start</code> (null = all).  <br /></td></tr>
+<tr class="separator:ae3301c333b0fbd9bf049dbf3374ee0b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31d2db36741caafe33a2070c30c8a698"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a31d2db36741caafe33a2070c30c8a698">NotifyAdjustSizeNeeded</a> () override</td></tr>
+<tr class="memdesc:a31d2db36741caafe33a2070c30c8a698"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scrollable size will need re-adjusting once cell positions settle.  <br /></td></tr>
+<tr class="separator:a31d2db36741caafe33a2070c30c8a698"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79940c60d3eab97826a9ff8208db0d6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a79940c60d3eab97826a9ff8208db0d6f">NotifyDocumentModified</a> () override</td></tr>
+<tr class="memdesc:a79940c60d3eab97826a9ff8208db0d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The document's content changed: it is no longer in its saved state.  <br /></td></tr>
+<tr class="separator:a79940c60d3eab97826a9ff8208db0d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4473708dd4d8a1197c96a2df9947a93c"><td class="memItemLeft" align="right" valign="top"><a id="a4473708dd4d8a1197c96a2df9947a93c" name="a4473708dd4d8a1197c96a2df9947a93c"></a>
 <a class="el" href="classRecentDocuments.html">RecentDocuments</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>UnsavedDocuments</b> ()</td></tr>
 <tr class="memdesc:a4473708dd4d8a1197c96a2df9947a93c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of unsaved (autosaved) documents offered for recovery. <br /></td></tr>
@@ -158,10 +170,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_ClearUndoAct
 void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_AppendAction</b> ()</td></tr>
 <tr class="memdesc:ga38f2c09271000e2e269fe1a3a501055d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add another action to this undo action. <br /></td></tr>
 <tr class="separator:ga38f2c09271000e2e269fe1a3a501055d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga01d9bac25f92583620585e81edc7eecc"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_LimitUndoBuffer</b> ()</td></tr>
-<tr class="memdesc:ga01d9bac25f92583620585e81edc7eecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drop actions from the back of the undo list until it is within the undo limit. <br /></td></tr>
-<tr class="separator:ga01d9bac25f92583620585e81edc7eecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf5e54e7c3397cf9d5473584fa3a5f784"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gaf5e54e7c3397cf9d5473584fa3a5f784">TreeUndo</a> (<a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *sourcelist, <a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *undoForThisOperation)</td></tr>
 <tr class="memdesc:gaf5e54e7c3397cf9d5473584fa3a5f784"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo an item from a list of undo actions.  <br /></td></tr>
 <tr class="separator:gaf5e54e7c3397cf9d5473584fa3a5f784"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2145,6 +2153,124 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 <p>Handle redrawing the worksheet or of parts of it. </p>
 <p>This functionality is important for scrolling, if we have changed anything that needs updating or if part of the screen memory containing a window was overwritten by a window that was in front of it and now needs to be redrawn for this reason.</p>
 <p>We don't redraw the window immediately if this seems necessary but wait for the idle loop instead - which is called when all selected gui events have been processed. This allows us to handle events as fast as the user can type and (if the user types faster than we can display the text) enables us to update the display as often as the typing speed allows, but not more often. Request the worksheet to be redrawn </p>
+
+</div>
+</div>
+<a id="a31d2db36741caafe33a2070c30c8a698" name="a31d2db36741caafe33a2070c30c8a698"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31d2db36741caafe33a2070c30c8a698">&#9670;&#160;</a></span>NotifyAdjustSizeNeeded()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::NotifyAdjustSizeNeeded </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The scrollable size will need re-adjusting once cell positions settle. </p>
+
+<p>Implements <a class="el" href="classWorksheetDocumentView.html#a1566f7a77ef0da1d38e8d679b4142183">WorksheetDocumentView</a>.</p>
+
+</div>
+</div>
+<a id="a79940c60d3eab97826a9ff8208db0d6f" name="a79940c60d3eab97826a9ff8208db0d6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79940c60d3eab97826a9ff8208db0d6f">&#9670;&#160;</a></span>NotifyDocumentModified()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::NotifyDocumentModified </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The document's content changed: it is no longer in its saved state. </p>
+
+<p>Implements <a class="el" href="classWorksheetDocumentView.html#a853472f21d75ee10e8bd8f4a25fd6688">WorksheetDocumentView</a>.</p>
+
+</div>
+</div>
+<a id="acb762cdfd74fa911756a0a8308df8660" name="acb762cdfd74fa911756a0a8308df8660"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb762cdfd74fa911756a0a8308df8660">&#9670;&#160;</a></span>NotifyRecalculation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::NotifyRecalculation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>start</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Schedule a re-layout of the document starting at <code>start</code> (null = all). </p>
+
+<p>Implements <a class="el" href="classWorksheetDocumentView.html#aa6c3a09d50f1c20e78ae4a50c958e4ba">WorksheetDocumentView</a>.</p>
+
+</div>
+</div>
+<a id="ae3301c333b0fbd9bf049dbf3374ee0b4" name="ae3301c333b0fbd9bf049dbf3374ee0b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3301c333b0fbd9bf049dbf3374ee0b4">&#9670;&#160;</a></span>NotifyRedraw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::NotifyRedraw </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>start</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Schedule a redraw of the document starting at <code>start</code> (null = all). </p>
+
+<p>Implements <a class="el" href="classWorksheetDocumentView.html#a4e3b91b470c6be29f57289b389453b0c">WorksheetDocumentView</a>.</p>
 
 </div>
 </div>

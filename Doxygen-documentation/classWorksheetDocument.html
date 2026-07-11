@@ -116,6 +116,21 @@ const <a class="el" href="classWorksheetCursor.html">WorksheetCursor</a> &amp;&#
 <tr class="memitem:a13c617f8ecf9c94bf606a3e815f2a3cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#a13c617f8ecf9c94bf606a3e815f2a3cf">LastCache</a> () const</td></tr>
 <tr class="memdesc:a13c617f8ecf9c94bf606a3e815f2a3cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cached pointer to the document's last <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> (&lt;0 = unknown).  <br /></td></tr>
 <tr class="separator:a13c617f8ecf9c94bf606a3e815f2a3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8018540fc5c0916b30a2ad55d4b539ec"><td class="memItemLeft" align="right" valign="top"><a id="a8018540fc5c0916b30a2ad55d4b539ec" name="a8018540fc5c0916b30a2ad55d4b539ec"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDocumentView</b> (<a class="el" href="classWorksheetDocumentView.html">WorksheetDocumentView</a> *view)</td></tr>
+<tr class="memdesc:a8018540fc5c0916b30a2ad55d4b539ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register the view the document notifies when it edits its own structure. <br /></td></tr>
+<tr class="separator:a8018540fc5c0916b30a2ad55d4b539ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ec83ad2a0a4dd651eb3dcbf6708c9a3"><td class="memItemLeft" align="right" valign="top"><a id="a3ec83ad2a0a4dd651eb3dcbf6708c9a3" name="a3ec83ad2a0a4dd651eb3dcbf6708c9a3"></a>
+<a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCell</b> () const</td></tr>
+<tr class="memdesc:a3ec83ad2a0a4dd651eb3dcbf6708c9a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The document's last <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>, memoised in m_last (null if empty). <br /></td></tr>
+<tr class="separator:a3ec83ad2a0a4dd651eb3dcbf6708c9a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65606595a687d98ae9448f0b45eb8df1"><td class="memItemLeft" align="right" valign="top"><a id="a65606595a687d98ae9448f0b45eb8df1" name="a65606595a687d98ae9448f0b45eb8df1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>NumberSections</b> () const</td></tr>
+<tr class="memdesc:a65606595a687d98ae9448f0b45eb8df1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renumber all sectioning cells (titles, sections, ...) from the top. <br /></td></tr>
+<tr class="separator:a65606595a687d98ae9448f0b45eb8df1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a7df2e2a0c3062f8b87a200df0ed3ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#a5a7df2e2a0c3062f8b87a200df0ed3ae">InsertCells</a> (std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt; &amp;&amp;cells, <a class="el" href="classGroupCell.html">GroupCell</a> *where)</td></tr>
+<tr class="memdesc:a5a7df2e2a0c3062f8b87a200df0ed3ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a list of group cells into the document after <code>where</code>.  <br /></td></tr>
+<tr class="separator:a5a7df2e2a0c3062f8b87a200df0ed3ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e2180cfeeb6314874cc28750efe7e38"><td class="memItemLeft" align="right" valign="top"><a id="a7e2180cfeeb6314874cc28750efe7e38" name="a7e2180cfeeb6314874cc28750efe7e38"></a>
 const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentFile</b> () const</td></tr>
 <tr class="memdesc:a7e2180cfeeb6314874cc28750efe7e38"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file this document was last loaded from / saved to (empty if none). <br /></td></tr>
@@ -145,6 +160,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetQuestionPending</b
 <div class="textblock"><p>The view-independent state and commands of an edited worksheet document. </p>
 <p>Currently a small aggregate that <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> delegates to; it grows as further document state is migrated off <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>. Held by value by <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5a7df2e2a0c3062f8b87a200df0ed3ae" name="a5a7df2e2a0c3062f8b87a200df0ed3ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a7df2e2a0c3062f8b87a200df0ed3ae">&#9670;&#160;</a></span>InsertCells()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGroupCell.html">GroupCell</a> * WorksheetDocument::InsertCells </td>
+          <td>(</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>cells</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>where</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Insert a list of group cells into the document after <code>where</code>. </p>
+<p><code>where</code> == null inserts at the very top. Splices the cells into the tree, renumbers sections if needed and notifies the view (recalc/redraw/adjust size/modified) through the registered <a class="el" href="classWorksheetDocumentView.html" title="The view notifications a WorksheetDocument emits when it edits itself.">WorksheetDocumentView</a>. Returns the last inserted cell. The caller (<a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>) records the undo action, which needs a <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> and so stays on the view side. </p>
+
+</div>
+</div>
 <a id="a13c617f8ecf9c94bf606a3e815f2a3cf" name="a13c617f8ecf9c94bf606a3e815f2a3cf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a13c617f8ecf9c94bf606a3e815f2a3cf">&#9670;&#160;</a></span>LastCache()</h2>
 
@@ -201,8 +247,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetQuestionPending</b
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="WorksheetDocument_8h_source.html">WorksheetDocument.h</a></li>
+<li>src/<a class="el" href="WorksheetDocument_8cpp.html">WorksheetDocument.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

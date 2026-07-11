@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 1818;
+var viewWidth = 1992;
 var viewHeight = 93;
 var sectionId = 'dynsection-1';
 </script>
@@ -58,8 +58,8 @@ var sectionId = 'dynsection-1';
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="Declares the cell list management functionality.">
-<polygon fill="#999999" stroke="#666666" points="941,-85 837,-85 837,-66 941,-66 941,-85"/>
-<text text-anchor="middle" x="889" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/CellList.h</text>
+<polygon fill="#999999" stroke="#666666" points="1033,-85 929,-85 929,-66 1033,-66 1033,-85"/>
+<text text-anchor="middle" x="981" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/CellList.h</text>
 </a>
 </g>
 </g>
@@ -75,8 +75,8 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="#63b8ff" d="M826.46,-74.3C694.64,-73.13 378.84,-66.4 117,-30 107.46,-28.67 97.21,-26.66 87.82,-24.57"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="826.73,-77.8 836.76,-74.38 826.79,-70.8 826.73,-77.8"/>
+<path fill="none" stroke="#63b8ff" d="M918.3,-74.85C775.43,-74.87 415.02,-70.5 117,-30 107.34,-28.69 96.97,-26.65 87.49,-24.53"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="918.62,-78.35 928.61,-74.84 918.61,-71.35 918.62,-78.35"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
@@ -90,177 +90,192 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node1&#45;&gt;Node3</title>
-<path fill="none" stroke="#63b8ff" d="M826.52,-73.39C710.55,-70.63 454.37,-61.23 241,-30 231.61,-28.63 221.53,-26.59 212.29,-24.5"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="826.56,-76.89 836.63,-73.62 826.72,-69.9 826.56,-76.89"/>
+<path fill="none" stroke="#63b8ff" d="M918.29,-74.15C790.32,-72.67 490.12,-65.38 241,-30 231.6,-28.67 221.52,-26.65 212.28,-24.56"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="918.64,-77.65 928.67,-74.26 918.71,-70.65 918.64,-77.65"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="WorksheetExport_8cpp.html" target="_top" xlink:title="The document serializers declared in WorksheetExport.h.">
-<polygon fill="white" stroke="#666666" points="387.5,-24.5 250.5,-24.5 250.5,-5.5 387.5,-5.5 387.5,-24.5"/>
-<text text-anchor="middle" x="319" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/WorksheetExport.cpp</text>
+<g id="a_node4"><a xlink:href="WorksheetDocument_8cpp.html" target="_top" xlink:title="Implementation of WorksheetDocument&#39;s structural edits &#45; see WorksheetDocument.h.">
+<polygon fill="white" stroke="#666666" points="406,-24.5 250,-24.5 250,-5.5 406,-5.5 406,-24.5"/>
+<text text-anchor="middle" x="328" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/WorksheetDocument.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node1&#45;&gt;Node4</title>
-<path fill="none" stroke="#63b8ff" d="M826.62,-70.61C733.02,-64.38 550.82,-50.72 397,-30 385.82,-28.49 373.8,-26.52 362.62,-24.52"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="826.56,-74.12 836.76,-71.28 827.02,-67.13 826.56,-74.12"/>
+<path fill="none" stroke="#63b8ff" d="M918.92,-71.27C814.59,-65.47 597.57,-51.83 415,-30 402.54,-28.51 389.14,-26.54 376.68,-24.55"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="918.79,-74.77 928.97,-71.82 919.17,-67.78 918.79,-74.77"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="Cell_8cpp.html" target="_top" xlink:title="Core layout and rendering logic for worksheet cells.">
-<polygon fill="white" stroke="#666666" points="504,-24.5 406,-24.5 406,-5.5 504,-5.5 504,-24.5"/>
-<text text-anchor="middle" x="455" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/Cell.cpp</text>
+<g id="a_node5"><a xlink:href="WorksheetExport_8cpp.html" target="_top" xlink:title="The document serializers declared in WorksheetExport.h.">
+<polygon fill="white" stroke="#666666" points="561.5,-24.5 424.5,-24.5 424.5,-5.5 561.5,-5.5 561.5,-24.5"/>
+<text text-anchor="middle" x="493" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/WorksheetExport.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node5 -->
 <g id="edge4" class="edge">
 <title>Node1&#45;&gt;Node5</title>
-<path fill="none" stroke="#63b8ff" d="M826.51,-69.4C751.62,-62.76 622.53,-49.63 513,-30 504.64,-28.5 495.68,-26.53 487.37,-24.53"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="826.44,-72.91 836.71,-70.29 827.05,-65.93 826.44,-72.91"/>
+<path fill="none" stroke="#63b8ff" d="M918.78,-69.1C838.3,-61.81 693.84,-47.67 571,-30 560.11,-28.43 548.4,-26.48 537.46,-24.53"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="918.48,-72.59 928.75,-70 919.11,-65.62 918.48,-72.59"/>
 </g>
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="DigitCell_8cpp.html" target="_top" xlink:title="This file defines the class DigitCell.">
-<polygon fill="white" stroke="#666666" points="644,-24.5 522,-24.5 522,-5.5 644,-5.5 644,-24.5"/>
-<text text-anchor="middle" x="583" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/DigitCell.cpp</text>
+<g id="a_node6"><a xlink:href="Cell_8cpp.html" target="_top" xlink:title="Core layout and rendering logic for worksheet cells.">
+<polygon fill="white" stroke="#666666" points="678,-24.5 580,-24.5 580,-5.5 678,-5.5 678,-24.5"/>
+<text text-anchor="middle" x="629" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/Cell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node6 -->
 <g id="edge5" class="edge">
 <title>Node1&#45;&gt;Node6</title>
-<path fill="none" stroke="#63b8ff" d="M832.99,-64.12C785.16,-55.21 714.52,-41.95 653,-30 644,-28.25 634.35,-26.34 625.18,-24.51"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="832.37,-67.56 842.85,-65.95 833.65,-60.68 832.37,-67.56"/>
+<path fill="none" stroke="#63b8ff" d="M918.97,-66.7C859.28,-58.82 766.62,-45.6 687,-30 678.97,-28.43 670.37,-26.49 662.32,-24.57"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="918.62,-70.18 928.99,-68.01 919.52,-63.24 918.62,-70.18"/>
 </g>
 <!-- Node7 -->
 <g id="node7" class="node">
 <title>Node7</title>
-<g id="a_node7"><a xlink:href="GroupCell_8cpp.html" target="_top" xlink:title="This file defines the class GroupCell.">
-<polygon fill="white" stroke="#666666" points="790,-24.5 662,-24.5 662,-5.5 790,-5.5 790,-24.5"/>
-<text text-anchor="middle" x="726" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/GroupCell.cpp</text>
+<g id="a_node7"><a xlink:href="DigitCell_8cpp.html" target="_top" xlink:title="This file defines the class DigitCell.">
+<polygon fill="white" stroke="#666666" points="818,-24.5 696,-24.5 696,-5.5 818,-5.5 818,-24.5"/>
+<text text-anchor="middle" x="757" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/DigitCell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node7 -->
 <g id="edge6" class="edge">
 <title>Node1&#45;&gt;Node7</title>
-<path fill="none" stroke="#63b8ff" d="M855.63,-62.52C824.12,-51.21 777.63,-34.53 749.73,-24.52"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="854.7,-65.91 865.3,-65.99 857.07,-59.32 854.7,-65.91"/>
+<path fill="none" stroke="#63b8ff" d="M938.48,-63.4C895.17,-52.08 828.95,-34.79 789.61,-24.52"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="937.87,-66.85 948.43,-65.99 939.64,-60.08 937.87,-66.85"/>
 </g>
 <!-- Node8 -->
 <g id="node8" class="node">
 <title>Node8</title>
-<g id="a_node8"><a xlink:href="LongNumberCell_8cpp.html" target="_top" xlink:title="This file defines the class LongNumberCell.">
-<polygon fill="white" stroke="#666666" points="969.5,-24.5 808.5,-24.5 808.5,-5.5 969.5,-5.5 969.5,-24.5"/>
-<text text-anchor="middle" x="889" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/LongNumberCell.cpp</text>
+<g id="a_node8"><a xlink:href="GroupCell_8cpp.html" target="_top" xlink:title="This file defines the class GroupCell.">
+<polygon fill="white" stroke="#666666" points="964,-24.5 836,-24.5 836,-5.5 964,-5.5 964,-24.5"/>
+<text text-anchor="middle" x="900" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/GroupCell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node8 -->
 <g id="edge7" class="edge">
 <title>Node1&#45;&gt;Node8</title>
-<path fill="none" stroke="#63b8ff" d="M889,-55.66C889,-45.24 889,-32.8 889,-24.67"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="885.5,-55.87 889,-65.87 892.5,-55.87 885.5,-55.87"/>
+<path fill="none" stroke="#63b8ff" d="M960.71,-59.85C945.37,-48.77 924.82,-33.93 912,-24.67"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="958.89,-62.85 969.05,-65.87 962.99,-57.18 958.89,-62.85"/>
 </g>
 <!-- Node9 -->
 <g id="node9" class="node">
 <title>Node9</title>
-<g id="a_node9"><a xlink:href="SumCell_8cpp.html" target="_top" xlink:title="This file defines the class SumCell.">
-<polygon fill="white" stroke="#666666" points="1108,-24.5 988,-24.5 988,-5.5 1108,-5.5 1108,-24.5"/>
-<text text-anchor="middle" x="1048" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/SumCell.cpp</text>
+<g id="a_node9"><a xlink:href="LongNumberCell_8cpp.html" target="_top" xlink:title="This file defines the class LongNumberCell.">
+<polygon fill="white" stroke="#666666" points="1143.5,-24.5 982.5,-24.5 982.5,-5.5 1143.5,-5.5 1143.5,-24.5"/>
+<text text-anchor="middle" x="1063" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/LongNumberCell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node9 -->
 <g id="edge8" class="edge">
 <title>Node1&#45;&gt;Node9</title>
-<path fill="none" stroke="#63b8ff" d="M921.55,-62.52C952.29,-51.21 997.64,-34.53 1024.85,-24.52"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="920.3,-59.26 912.12,-65.99 922.71,-65.83 920.3,-59.26"/>
+<path fill="none" stroke="#63b8ff" d="M1001.54,-59.85C1017.07,-48.77 1037.87,-33.93 1050.85,-24.67"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="999.21,-57.21 993.1,-65.87 1003.27,-62.91 999.21,-57.21"/>
 </g>
 <!-- Node10 -->
 <g id="node10" class="node">
 <title>Node10</title>
-<g id="a_node10"><a xlink:href="wxMaxima_8cpp.html" target="_top" xlink:title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">
-<polygon fill="white" stroke="#666666" points="1234,-24.5 1126,-24.5 1126,-5.5 1234,-5.5 1234,-24.5"/>
-<text text-anchor="middle" x="1180" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMaxima.cpp</text>
+<g id="a_node10"><a xlink:href="SumCell_8cpp.html" target="_top" xlink:title="This file defines the class SumCell.">
+<polygon fill="white" stroke="#666666" points="1282,-24.5 1162,-24.5 1162,-5.5 1282,-5.5 1282,-24.5"/>
+<text text-anchor="middle" x="1222" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/SumCell.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node10 -->
 <g id="edge9" class="edge">
 <title>Node1&#45;&gt;Node10</title>
-<path fill="none" stroke="#63b8ff" d="M944.6,-64.07C990.82,-55.29 1058.27,-42.25 1117,-30 1125.23,-28.28 1134.04,-26.37 1142.39,-24.53"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="943.67,-60.68 934.49,-65.98 944.97,-67.56 943.67,-60.68"/>
+<path fill="none" stroke="#63b8ff" d="M1025.87,-63.61C1072.44,-52.3 1144.33,-34.85 1186.91,-24.52"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="1024.94,-60.23 1016.04,-65.99 1026.59,-67.04 1024.94,-60.23"/>
 </g>
 <!-- Node11 -->
 <g id="node11" class="node">
 <title>Node11</title>
-<g id="a_node11"><a xlink:href="test__EditorCellInvariants_8cpp.html" target="_top" xlink:title="Hardening tests for EditorCell&#39;s text&#45;editing core.">
-<polygon fill="white" stroke="#666666" points="1390,-30 1252,-30 1252,0 1390,0 1390,-30"/>
-<text text-anchor="start" x="1260" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
-<text text-anchor="middle" x="1321" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_EditorCellInvariants.cpp</text>
+<g id="a_node11"><a xlink:href="wxMaxima_8cpp.html" target="_top" xlink:title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">
+<polygon fill="white" stroke="#666666" points="1408,-24.5 1300,-24.5 1300,-5.5 1408,-5.5 1408,-24.5"/>
+<text text-anchor="middle" x="1354" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMaxima.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node11 -->
 <g id="edge10" class="edge">
 <title>Node1&#45;&gt;Node11</title>
-<path fill="none" stroke="#63b8ff" d="M951.09,-67.7C1021.88,-59.7 1141.01,-45.55 1243,-30 1245.86,-29.56 1248.77,-29.11 1251.71,-28.63"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="950.55,-64.23 941.01,-68.83 951.33,-71.19 950.55,-64.23"/>
+<path fill="none" stroke="#63b8ff" d="M1043.16,-66.99C1105.91,-59.08 1205.5,-45.61 1291,-30 1299.71,-28.41 1309.04,-26.47 1317.78,-24.54"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="1042.52,-63.54 1033.03,-68.26 1043.39,-70.49 1042.52,-63.54"/>
 </g>
 <!-- Node12 -->
 <g id="node12" class="node">
 <title>Node12</title>
-<g id="a_node12"><a xlink:href="test__GroupCellLayout_8cpp.html" target="_top" xlink:title="Regression tests for the GroupCell &lt;&#45;&gt; EditorCell layout coupling.">
-<polygon fill="white" stroke="#666666" points="1531.5,-30 1408.5,-30 1408.5,0 1531.5,0 1531.5,-30"/>
-<text text-anchor="start" x="1416.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
-<text text-anchor="middle" x="1470" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_GroupCellLayout.cpp</text>
+<g id="a_node12"><a xlink:href="test__EditorCellInvariants_8cpp.html" target="_top" xlink:title="Hardening tests for EditorCell&#39;s text&#45;editing core.">
+<polygon fill="white" stroke="#666666" points="1564,-30 1426,-30 1426,0 1564,0 1564,-30"/>
+<text text-anchor="start" x="1434" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
+<text text-anchor="middle" x="1495" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_EditorCellInvariants.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node12 -->
 <g id="edge11" class="edge">
 <title>Node1&#45;&gt;Node12</title>
-<path fill="none" stroke="#63b8ff" d="M951.49,-71.22C1047.9,-65.67 1238.53,-52.75 1399,-30 1402.11,-29.56 1405.29,-29.07 1408.5,-28.55"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="951.12,-67.74 941.34,-71.8 951.52,-74.72 951.12,-67.74"/>
+<path fill="none" stroke="#63b8ff" d="M1043.14,-69.65C1127.88,-62.7 1284.32,-48.65 1417,-30 1419.86,-29.6 1422.78,-29.17 1425.72,-28.72"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="1042.85,-66.16 1033.17,-70.46 1043.42,-73.14 1042.85,-66.16"/>
 </g>
 <!-- Node13 -->
 <g id="node13" class="node">
 <title>Node13</title>
-<g id="a_node13"><a xlink:href="test__WXMRoundtrip_8cpp.html" target="_top" xlink:title="Regression tests for images surviving the .wxm serialization round&#45;trip.">
-<polygon fill="white" stroke="#666666" points="1664.5,-30 1549.5,-30 1549.5,0 1664.5,0 1664.5,-30"/>
-<text text-anchor="start" x="1557.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
-<text text-anchor="middle" x="1607" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_WXMRoundtrip.cpp</text>
+<g id="a_node13"><a xlink:href="test__GroupCellLayout_8cpp.html" target="_top" xlink:title="Regression tests for the GroupCell &lt;&#45;&gt; EditorCell layout coupling.">
+<polygon fill="white" stroke="#666666" points="1705.5,-30 1582.5,-30 1582.5,0 1705.5,0 1705.5,-30"/>
+<text text-anchor="start" x="1590.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
+<text text-anchor="middle" x="1644" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_GroupCellLayout.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node13 -->
 <g id="edge12" class="edge">
 <title>Node1&#45;&gt;Node13</title>
-<path fill="none" stroke="#63b8ff" d="M951.38,-73.16C1067.8,-70.02 1325.84,-60.01 1541,-30 1543.78,-29.61 1546.63,-29.17 1549.49,-28.7"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="951.14,-69.67 941.23,-73.43 951.32,-76.67 951.14,-69.67"/>
+<path fill="none" stroke="#63b8ff" d="M1043.17,-72.28C1151.29,-67.86 1380.81,-56.08 1573,-30 1575.99,-29.59 1579.04,-29.14 1582.12,-28.66"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="1042.94,-68.78 1033.09,-72.68 1043.22,-75.78 1042.94,-68.78"/>
 </g>
 <!-- Node14 -->
 <g id="node14" class="node">
 <title>Node14</title>
-<g id="a_node14"><a xlink:href="test__WorksheetLayout_8cpp.html" target="_top" xlink:title="Headless tests for the full WorksheetLayout pipeline.">
-<polygon fill="white" stroke="#666666" points="1809.5,-30 1682.5,-30 1682.5,0 1809.5,0 1809.5,-30"/>
-<text text-anchor="start" x="1690.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
-<text text-anchor="middle" x="1746" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_WorksheetLayout.cpp</text>
+<g id="a_node14"><a xlink:href="test__WXMRoundtrip_8cpp.html" target="_top" xlink:title="Regression tests for images surviving the .wxm serialization round&#45;trip.">
+<polygon fill="white" stroke="#666666" points="1838.5,-30 1723.5,-30 1723.5,0 1838.5,0 1838.5,-30"/>
+<text text-anchor="start" x="1731.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
+<text text-anchor="middle" x="1781" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_WXMRoundtrip.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node14 -->
 <g id="edge13" class="edge">
 <title>Node1&#45;&gt;Node14</title>
-<path fill="none" stroke="#63b8ff" d="M951.13,-73.83C1084.18,-71.78 1406.35,-63.45 1674,-30 1676.78,-29.65 1679.61,-29.26 1682.47,-28.84"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="951.06,-70.33 941.12,-73.98 951.17,-77.33 951.06,-70.33"/>
+<path fill="none" stroke="#63b8ff" d="M1043.63,-73.83C1170.77,-71.78 1467.98,-63.5 1715,-30 1717.79,-29.62 1720.63,-29.19 1723.5,-28.72"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="1043.27,-70.34 1033.32,-73.99 1043.37,-77.34 1043.27,-70.34"/>
+</g>
+<!-- Node15 -->
+<g id="node15" class="node">
+<title>Node15</title>
+<g id="a_node15"><a xlink:href="test__WorksheetLayout_8cpp.html" target="_top" xlink:title="Headless tests for the full WorksheetLayout pipeline.">
+<polygon fill="white" stroke="#666666" points="1983.5,-30 1856.5,-30 1856.5,0 1983.5,0 1983.5,-30"/>
+<text text-anchor="start" x="1864.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">test/unit_tests/test</text>
+<text text-anchor="middle" x="1920" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_WorksheetLayout.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node15 -->
+<g id="edge14" class="edge">
+<title>Node1&#45;&gt;Node15</title>
+<path fill="none" stroke="#63b8ff" d="M1043.32,-74.3C1186.18,-73.2 1548.07,-66.67 1848,-30 1850.78,-29.66 1853.62,-29.28 1856.47,-28.86"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="1042.99,-70.81 1033.01,-74.38 1043.04,-77.81 1042.99,-70.81"/>
 </g>
 </g>
 </svg>

@@ -25,7 +25,7 @@ var searchData=
   ['caretvisibleis_22',['CaretVisibleIs',['../classWorksheet.html#a85e0e572501a859a450a6fdc5def3de5',1,'Worksheet']]],
   ['cellcfgcnt_23',['CellCfgCnt',['../classConfiguration.html#a56f215c6fb33a7d594a2212377204370',1,'Configuration']]],
   ['cellentered_24',['CellEntered',['../classTreeUndoManager.html#a2319202c9405e3be392526edbbb089bc',1,'TreeUndoManager']]],
-  ['cellleft_25',['CellLeft',['../classTreeUndoManager.html#a22d1f4dcf38bcabbf6a7bb2f979cbfb3',1,'TreeUndoManager']]],
+  ['cellleft_25',['CellLeft',['../classTreeUndoManager.html#a1c24753d26a54d8aacf6c074e341fe57',1,'TreeUndoManager']]],
   ['cellsinlistrecursive_26',['CellsInListRecursive',['../classCell.html#a5cf56227ab908a76e812c0bd29df39ad',1,'Cell']]],
   ['cellunderpointer_27',['CellUnderPointer',['../classGroupCell.html#a1782eed25a1f0c2bd91f11f1c3f67311',1,'GroupCell']]],
   ['changecellstyle_28',['ChangeCellStyle',['../classwxMaxima.html#a2ee4deb008b0f0798f1800a61c0ef3cf',1,'wxMaxima']]],

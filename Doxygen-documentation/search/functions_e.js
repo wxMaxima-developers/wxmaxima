@@ -7,9 +7,13 @@ var searchData=
   ['networkstatus_4',['NetworkStatus',['../classStatusBar.html#addf51766d62198da4dd162f7f2a05c6f',1,'StatusBar']]],
   ['newwizard_5',['NewWizard',['../classGenWizPanel.html#abe9a1ef102fb3f9de0cf84a20562eda1',1,'GenWizPanel']]],
   ['notification_6',['Notification',['../classNotification.html#a1d2014b23265060cebccfb542a60e75a',1,'Notification::Notification()'],['../classNotification.html#a318b399339a243424905d071abc553c8',1,'Notification::Notification(const wxString &amp;title, const wxString &amp;message={}, wxWindow *parent=NULL, int flags=wxICON_INFORMATION)']]],
-  ['notifyifidle_7',['NotifyIfIdle',['../classConfiguration.html#a35914468c50b5421c93c802f72b5ce9e',1,'Configuration']]],
-  ['notifyofcellredraw_8',['NotifyOfCellRedraw',['../classConfiguration.html#ad47f83d888f67fc6e303b5c0f6faa7ca',1,'Configuration::NotifyOfCellRedraw()'],['../classRenderContext.html#a0ca66e1814df2a6ebde73d8de8803213',1,'RenderContext::NotifyOfCellRedraw()']]],
-  ['number_9',['Number',['../classGroupCell.html#a1bc7ca9e1bf5923dbdd5e2e8735da8cd',1,'GroupCell']]],
-  ['numbersections_10',['NumberSections',['../classWorksheet.html#a9770595891b32c0ea91ea4d4466c9310',1,'Worksheet']]],
-  ['numericalmenu_11',['NumericalMenu',['../classwxMaxima.html#a9c1ad69ebd56bb77c7f403d967f2ced2',1,'wxMaxima']]]
+  ['notifyadjustsizeneeded_7',['NotifyAdjustSizeNeeded',['../classWorksheetDocumentView.html#a1566f7a77ef0da1d38e8d679b4142183',1,'WorksheetDocumentView::NotifyAdjustSizeNeeded()'],['../classWorksheet.html#a31d2db36741caafe33a2070c30c8a698',1,'Worksheet::NotifyAdjustSizeNeeded() override']]],
+  ['notifydocumentmodified_8',['NotifyDocumentModified',['../classWorksheet.html#a79940c60d3eab97826a9ff8208db0d6f',1,'Worksheet::NotifyDocumentModified()'],['../classWorksheetDocumentView.html#a853472f21d75ee10e8bd8f4a25fd6688',1,'WorksheetDocumentView::NotifyDocumentModified()']]],
+  ['notifyifidle_9',['NotifyIfIdle',['../classConfiguration.html#a35914468c50b5421c93c802f72b5ce9e',1,'Configuration']]],
+  ['notifyofcellredraw_10',['NotifyOfCellRedraw',['../classConfiguration.html#ad47f83d888f67fc6e303b5c0f6faa7ca',1,'Configuration::NotifyOfCellRedraw()'],['../classRenderContext.html#a0ca66e1814df2a6ebde73d8de8803213',1,'RenderContext::NotifyOfCellRedraw()']]],
+  ['notifyrecalculation_11',['NotifyRecalculation',['../classWorksheet.html#acb762cdfd74fa911756a0a8308df8660',1,'Worksheet::NotifyRecalculation()'],['../classWorksheetDocumentView.html#aa6c3a09d50f1c20e78ae4a50c958e4ba',1,'WorksheetDocumentView::NotifyRecalculation()']]],
+  ['notifyredraw_12',['NotifyRedraw',['../classWorksheet.html#ae3301c333b0fbd9bf049dbf3374ee0b4',1,'Worksheet::NotifyRedraw()'],['../classWorksheetDocumentView.html#a4e3b91b470c6be29f57289b389453b0c',1,'WorksheetDocumentView::NotifyRedraw()']]],
+  ['number_13',['Number',['../classGroupCell.html#a1bc7ca9e1bf5923dbdd5e2e8735da8cd',1,'GroupCell']]],
+  ['numbersections_14',['NumberSections',['../classWorksheet.html#a9770595891b32c0ea91ea4d4466c9310',1,'Worksheet::NumberSections()'],['../classWorksheetDocument.html#a65606595a687d98ae9448f0b45eb8df1',1,'WorksheetDocument::NumberSections()']]],
+  ['numericalmenu_15',['NumericalMenu',['../classwxMaxima.html#a9c1ad69ebd56bb77c7f403d967f2ced2',1,'wxMaxima']]]
 ];
