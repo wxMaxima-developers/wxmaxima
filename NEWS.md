@@ -23,6 +23,12 @@
 - Copying or selecting text that spans a soft line break no longer leaks the
   invisible break character, which would have turned into a hard line break
   when pasted.
+- Internal: CellPointers (the per-worksheet registry of pointers into the cell
+  tree that auto-null when a cell dies) is being untangled into its document-side
+  half (selection, active/answer cell, working group, error list) and its
+  view/interaction half (hover, drag/keyboard-selection anchors, scroll and
+  animation-timer targets). As a first step the members are grouped and
+  documented under those two headings.
 - Internal: the worksheet's view-independent document state is being gathered
   into a new WorksheetDocument object that Worksheet delegates to (the document
   half of the ongoing document/view split). The first fields moved are the

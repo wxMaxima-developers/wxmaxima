@@ -43,27 +43,19 @@ class TextCell;
 */
 class CellPointers
 {
+  // The members below are being untangled into two conceptual groups as part of
+  // the WorksheetDocument / view split (see the "Document-side" and "View /
+  // interaction-side" banners further down). Document-side pointers describe the
+  // document model (what is selected, which cell is active/answering, what maxima
+  // is working on, which cells hold errors). View/interaction-side pointers
+  // describe transient window state (hover, drag/keyboard-selection anchors,
+  // scroll targets, animation timers). Both halves must remain reachable through
+  // the Configuration -> CellPointers registry because cells read and write them
+  // via Cell::GetCellPointers(); the split is therefore an *internal* reorg, not
+  // a relocation of these members onto another owner. Members are moved behind
+  // accessors one self-contained concern at a time; until then most stay public.
 public:
-  void ScrollToCell(Cell *cell) { m_cellToScrollTo = cell; }
-  Cell *CellToScrollTo() { return m_cellToScrollTo; }
   explicit CellPointers(wxScrolledCanvas *worksheet);
-  /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
-
-    \param resortToLast true = if we already have set the cell maxima works on to NULL
-    use the last cell maxima was known to work on.
-  */
-  GroupCell *GetWorkingGroup(bool resortToLast = false) const;
-
-  //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
-  void SetWorkingGroup(GroupCell *group);
-
-  void WXMXResetCounter() { m_wxmxImgCounter = 0; }
-
-  wxString WXMXGetNewFileName();
-
-  std::size_t WXMXImageCount() const { return m_wxmxImgCounter; }
-
-  bool HasCellsSelected() const { return m_selectionStart && m_selectionEnd; }
 
   //! A list of editor cells containing error messages.
   class ErrorList
@@ -89,24 +81,29 @@ public:
     std::vector<CellPtr<GroupCell>> m_errors;
   };
 
+  // ======================================================================
+  //  Document-side pointers (the document model)
+  // ======================================================================
+
+  //! Returns the cell maxima currently works on. NULL if there isn't such a cell.
+  /*!
+    \param resortToLast true = if we already have set the cell maxima works on to NULL
+    use the last cell maxima was known to work on.
+  */
+  GroupCell *GetWorkingGroup(bool resortToLast = false) const;
+
+  //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
+  void SetWorkingGroup(GroupCell *group);
+
+  //! Are any whole cells (as opposed to text inside an editor) selected?
+  bool HasCellsSelected() const { return m_selectionStart && m_selectionEnd; }
+
   //! The list of cells maxima has complained about errors in
   ErrorList m_errorList;
-  //! The EditorCell the mouse selection has started in
-  CellPtr<EditorCell> m_cellMouseSelectionStartedIn;
-  //! The EditorCell the keyboard selection has started in
-  CellPtr<EditorCell> m_cellKeyboardSelectionStartedIn;
-  //! The EditorCell the search was started in
-  CellPtr<EditorCell> m_cellSearchStartedIn;
-  //! Which cursor position incremental search has started at?
-  int m_indexSearchStartedAt = -1;
   //! Which EditCell the blinking cursor is in?
   CellPtr<EditorCell> m_activeCell;
-  //! The GroupCell that is under the mouse pointer
-  CellPtr<GroupCell> m_groupCellUnderPointer;
   //! The EditorCell that contains the currently active question from maxima
   CellPtr<EditorCell> m_answerCell;
-  //! The last group cell maxima was working on.
-  CellPtr<GroupCell> m_lastWorkingGroup;
   //! The textcell the text maxima is sending us was ending in.
   CellPtr<TextCell> m_currentTextCell;
   /*! The group cell maxima is currently working on.
@@ -114,12 +111,39 @@ public:
     NULL means that maxima isn't currently evaluating a cell.
   */
   CellPtr<GroupCell> m_workingGroup;
+  //! The last group cell maxima was working on.
+  CellPtr<GroupCell> m_lastWorkingGroup;
+  /*! The first cell of the currently selected range of Cells.
+
+    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
+    is selected and therefore the selection is handled by EditorCell; This cell is
+    always above m_selectionEnd.
+
+    See also m_hCaretPositionStart and m_selectionEnd
+  */
+  CellPtr<Cell> m_selectionStart;
+  /*! The last cell of the currently selected range of Cells.
+
+    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
+    is selected and therefore the selection is handled by EditorCell; This cell is
+    always above m_selectionStart.
+
+    See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
+  */
+  CellPtr<Cell> m_selectionEnd;
   /*! The currently selected string.
 
     Since this string is defined here it is available in every editor cell
     for highlighting other instances of the selected string.
   */
   wxString m_selectionString;
+
+  // ======================================================================
+  //  View / interaction-side pointers (transient window state)
+  // ======================================================================
+
+  void ScrollToCell(Cell *cell) { m_cellToScrollTo = cell; }
+  Cell *CellToScrollTo() { return m_cellToScrollTo; }
 
   //! Forget where the search was started
   void ResetSearchStart()
@@ -136,41 +160,33 @@ public:
   void ResetKeyboardSelectionStart()
     { m_cellKeyboardSelectionStartedIn = {}; }
 
-  /*! The first cell of the currently selected range of Cells.
-
-    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
-    is selected and therefore the selection is handled by EditorCell; This cell is
-    always above m_selectionEnd.
-
-    See also m_hCaretPositionStart and m_selectionEnd
-  */
-  CellPtr<Cell> m_selectionStart;
-  /*! The last cell of the currently selected range of groupCells.
-
-    NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
-    is selected and therefore the selection is handled by EditorCell; This cell is
-    always below m_selectionStart.
-
-    See also m_hCaretPositionEnd
-  */
-
-  //! The cell currently under the mouse pointer
-  CellPtr<Cell> m_cellUnderPointer;
-
-  /*! The last cell of the currently selected range of Cells.
-
-    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
-    is selected and therefore the selection is handled by EditorCell; This cell is
-    always above m_selectionEnd.
-
-    See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
-  */
-  CellPtr<Cell> m_selectionEnd;
-
   void SetTimerIdForCell(Cell *cell, int timerId);
   int GetTimerIdForCell(Cell *cell) const;
   Cell *GetCellForTimerId(int timerId) const;
   void RemoveTimerIdForCell(const Cell *const cell);
+
+  //! The EditorCell the mouse selection has started in
+  CellPtr<EditorCell> m_cellMouseSelectionStartedIn;
+  //! The EditorCell the keyboard selection has started in
+  CellPtr<EditorCell> m_cellKeyboardSelectionStartedIn;
+  //! The EditorCell the search was started in
+  CellPtr<EditorCell> m_cellSearchStartedIn;
+  //! Which cursor position incremental search has started at?
+  int m_indexSearchStartedAt = -1;
+  //! The GroupCell that is under the mouse pointer
+  CellPtr<GroupCell> m_groupCellUnderPointer;
+  //! The cell currently under the mouse pointer
+  CellPtr<Cell> m_cellUnderPointer;
+  //! Is scrolling to a cell scheduled?
+  bool m_scrollToCell = false;
+
+  // ======================================================================
+  //  Serialization helpers (.wxmx image numbering)
+  // ======================================================================
+
+  void WXMXResetCounter() { m_wxmxImgCounter = 0; }
+  wxString WXMXGetNewFileName();
+  std::size_t WXMXImageCount() const { return m_wxmxImgCounter; }
 
   wxScrolledCanvas *GetWorksheet() { return m_worksheet; }
 
@@ -194,9 +210,6 @@ private:
   wxScrolledCanvas *const m_worksheet;
   //! The image counter for saving .wxmx files
   std::size_t m_wxmxImgCounter = 0;
-public:
-  //! Is scrolling to a cell scheduled?
-  bool m_scrollToCell = false;
 };
 
 #endif
