@@ -212,6 +212,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(WorksheetFind test_WorksheetFind)
 
+    # Pins the "add cells to the evaluation queue" behavior (which visible code
+    # cells each Add*ToEvaluationQueue enqueues, and where the h-caret lands)
+    # ahead of the WorksheetEvalQueue extraction.
+    add_executable(test_WorksheetEvalQueue
+        test_WorksheetEvalQueue.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_WorksheetEvalQueue PUBLIC cxx_std_20)
+    target_link_libraries(test_WorksheetEvalQueue PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(WorksheetEvalQueue test_WorksheetEvalQueue)
+
     # Hardening/fuzz test for EditorCell's text-editing core: drives the real
     # key-event paths and checks the cursor/selection invariants after every op.
     add_executable(test_EditorCellInvariants

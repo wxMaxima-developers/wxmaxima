@@ -157,6 +157,7 @@ set(SOURCE_FILES
     ToolBar.cpp
     Worksheet.cpp
     WorksheetContextMenu.cpp
+    WorksheetEvalQueue.cpp
     WorksheetExport.cpp
     WorksheetLayout.cpp
     WorksheetSearch.cpp

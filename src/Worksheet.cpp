@@ -46,6 +46,7 @@
 #include "Version.h"
 #include "Compat.h"
 #include "WorksheetContextMenu.h"
+#include "WorksheetEvalQueue.h"
 #include "WorksheetExport.h"
 #include "WXMformat.h"
 #include "levenshtein/levenshtein.h"
@@ -3939,21 +3940,12 @@ bool Worksheet::ActivateInput(int direction) {
 //
 void Worksheet::AddDocumentToEvaluationQueue() {
   FollowEvaluation(true);
-  for (auto &tmp : OnList(GetTree()))
-    AddToEvaluationQueue(&tmp);
-
+  WorksheetEvalQueue::EnqueueRange(GetTree(), nullptr, m_evaluationQueue);
   SetHCaret(GetLastCellInWorksheet());
 }
 
 void Worksheet::AddToEvaluationQueue(GroupCell *cell) {
-  if ((cell->GetGroupType() == GC_TYPE_CODE) && (!cell->IsHidden())) {
-    // Gray out the output of the cell in order to mark it as "not current".
-    if (cell->GetEditable()) {
-      cell->GetEditable()->ContainsChanges(true);
-      // ...and add it to the evaluation queue
-      m_evaluationQueue.AddToQueue(cell);
-    }
-  }
+  WorksheetEvalQueue::Enqueue(*cell, m_evaluationQueue);
 }
 
 /**
@@ -3962,7 +3954,7 @@ void Worksheet::AddToEvaluationQueue(GroupCell *cell) {
 void Worksheet::AddEntireDocumentToEvaluationQueue() {
   FollowEvaluation(true);
   for (auto &tmp : OnList(GetTree())) {
-    AddToEvaluationQueue(&tmp);
+    WorksheetEvalQueue::Enqueue(tmp, m_evaluationQueue);
     m_evaluationQueue.AddHiddenTreeToQueue(&tmp);
   }
   SetHCaret(GetLastCellInWorksheet());
@@ -4009,11 +4001,7 @@ void Worksheet::AddSelectionToEvaluationQueue(GroupCell *start,
   if (!start || !end)
     return;
   wxASSERT(start->GetType() == MC_TYPE_GROUP);
-  for (auto &tmp : OnList(start)) {
-    AddToEvaluationQueue(&tmp);
-    if (&tmp == end)
-      break;
-  }
+  WorksheetEvalQueue::EnqueueRange(start, end, m_evaluationQueue);
   SetHCaret(end);
 }
 
@@ -4032,11 +4020,7 @@ void Worksheet::AddDocumentTillHereToEvaluationQueue() {
   if (!stop)
     return;
 
-  for (auto &tmp : OnList(GetTree())) {
-    AddToEvaluationQueue(&tmp);
-    if (&tmp == stop)
-      break;
-  }
+  WorksheetEvalQueue::EnqueueRange(GetTree(), stop, m_evaluationQueue);
 }
 
 void Worksheet::AddCellToEvaluationQueue(GroupCell *gc) {

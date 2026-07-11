@@ -19,6 +19,11 @@
 - Copying or selecting text that spans a soft line break no longer leaks the
   invisible break character, which would have turned into a hard line break
   when pasted.
+- Internal: the "schedule cells for evaluation" logic
+  (Add*ToEvaluationQueue) now keeps its document-pure core - which group cells
+  are eligible and the queue walk over a cell range - in a Worksheet-independent
+  WorksheetEvalQueue helper, while the viewport-follow and h-caret side effects
+  stay in Worksheet. Pinned headlessly by the new test_WorksheetEvalQueue.
 - Internal: the worksheet's layout/recalculation engine (RequestRecalculation,
   RecalculateIfNeeded, AdjustSize, GetMaxPoint and their state) now lives in a
   Worksheet-independent WorksheetLayout class that talks to the window only
