@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Status of screen-reader / assistive-technology support, and the plan to improve it. Written 2026-07-01.</p>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md4"></a>
 How to read this document</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a>'s accessibility is exposed through <code>wxAccessible</code> (MSAA/UI Automation on Windows, ATK/AT-SPI on Linux when wxWidgets is built with <code>--enable-accessibility</code>). <b>The primary target is Windows</b> — standard wxWidgets distributions enable accessibility there, whereas the common Linux packages ship <code>wxUSE_ACCESSIBILITY=0</code>, which compiles all of this out.</p>
 <p><b>Testing loop.</b> Behavioural validation needs an actual screen reader (NVDA / JAWS) on Windows, done by our blind tester, who reaches the code only through the once-a-day nightly build — a multi-day feedback loop. Therefore:</p>
@@ -82,14 +82,14 @@ How to read this document</h1>
 <li>Reserve the tester's slow feedback for the <em>subjective</em> questions marked <b>[ASK TESTER]</b> below.</li>
 <li>Batch fixes so each nightly he receives covers as much as possible.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md6"></a>
 Legend</h1>
 <ul>
 <li>✅ Done / believed good. ⚠️ Partial or unverified. ❌ Known gap.</li>
 <li><b>[ASK TESTER]</b> = needs a real screen reader to judge; can't be unit-tested.</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md8"></a>
 1. Worksheet (the document) — ✅ (logic), &lt;strong&gt;[ASK TESTER]&lt;/strong&gt; (quality)</h1>
 <ul>
 <li>✅ The custom <code>Worksheet::AccessibilityInfo</code> is now attached via <code>SetAccessible()</code> (it previously was created but never attached, so screen readers saw only a generic panel + scrollbars). Root role is <code>wxROLE_SYSTEM_DOCUMENT</code>; cells are exposed as children; the caret is a child.</li>
@@ -99,7 +99,7 @@ Legend</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md10"></a>
 2. New output announcement — ⚠️ &lt;strong&gt;[ASK TESTER]&lt;/strong&gt;</h1>
 <ul>
 <li><code>wxAccessible::NotifyEvent</code> is fired in exactly one place (<code><a class="el" href="Worksheet_8cpp.html" title="This file defines the class Worksheet.">Worksheet.cpp</a></code>, <code>wxACC_EVENT_OBJECT_FOCUS</code> when the caret moves to a cell). There is <b>no notification when <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> produces new output</b>, so a screen reader likely will not announce a result automatically — the user must navigate to it.<ul>
@@ -108,7 +108,7 @@ Legend</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md12"></a>
 3. Toolbar — ✅ (logic), &lt;strong&gt;[ASK TESTER]&lt;/strong&gt; (quality)</h1>
 <ul>
 <li>✅ The main toolbar is a <code>wxAuiToolBar</code> (owner-drawn) and had <b>no</b> accessibility — its tools were invisible. <code>ToolBarAccessible</code> now exposes each tool with a name (tooltip/label), role (push/check/radio button, separator, static text), state (focusable / disabled / checked), screen location, and a "Press" default action. Real control items (the animation slider, the text field) are delegated to their own accessibles.<ul>
@@ -116,7 +116,7 @@ Legend</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 4. Sidebars — ✅ container names; ⚠️ contents</h1>
 <ul>
 <li>✅ Each docked sidebar pane now carries an accessible <b>name</b> (its caption: "Table of Contents", "Statistics", "Greek Letters", …). Previously every one was an anonymous "panel".</li>

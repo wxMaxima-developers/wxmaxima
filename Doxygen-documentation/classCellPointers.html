@@ -84,7 +84,7 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for CellPointers:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classCellPointers__coll__graph.svg" width="662" height="334"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classCellPointers__coll__graph.svg" width="631" height="258"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -130,6 +130,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearAnswerCell</b> (
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearAnswerCellIfInGroup</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *group)</td></tr>
 <tr class="memdesc:a7bc085263c9431d69ef3a83784bd7ac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forget the question editor if it belongs to group, e.g. because that group's output is being reset or the group is going away. <br /></td></tr>
 <tr class="separator:a7bc085263c9431d69ef3a83784bd7ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64fc946bb970fa95833ec9a1438cc9ee"><td class="memItemLeft" align="right" valign="top"><a id="a64fc946bb970fa95833ec9a1438cc9ee" name="a64fc946bb970fa95833ec9a1438cc9ee"></a>
+<a class="el" href="classTextCell.html">TextCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentTextCell</b> () const</td></tr>
+<tr class="memdesc:a64fc946bb970fa95833ec9a1438cc9ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">The text cell the text maxima is currently sending us is being appended to. <br /></td></tr>
+<tr class="separator:a64fc946bb970fa95833ec9a1438cc9ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08081655164c70bc6f2323f1490c35fe"><td class="memItemLeft" align="right" valign="top"><a id="a08081655164c70bc6f2323f1490c35fe" name="a08081655164c70bc6f2323f1490c35fe"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentTextCell</b> (<a class="el" href="classTextCell.html">TextCell</a> *cell)</td></tr>
+<tr class="memdesc:a08081655164c70bc6f2323f1490c35fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the text cell maxima's incoming text is being appended to (may be null). <br /></td></tr>
+<tr class="separator:a08081655164c70bc6f2323f1490c35fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e810c172301be511d4a619f7f5ad3c1"><td class="memItemLeft" align="right" valign="top"><a id="a8e810c172301be511d4a619f7f5ad3c1" name="a8e810c172301be511d4a619f7f5ad3c1"></a>
+<a class="el" href="classEditorCell.html">EditorCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetActiveCell</b> () const</td></tr>
+<tr class="memdesc:a8e810c172301be511d4a619f7f5ad3c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The editor cell the blinking text cursor is in, or null. <br /></td></tr>
+<tr class="separator:a8e810c172301be511d4a619f7f5ad3c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa67baca717a571d0030334714fdff5eb"><td class="memItemLeft" align="right" valign="top"><a id="aa67baca717a571d0030334714fdff5eb" name="aa67baca717a571d0030334714fdff5eb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetActiveCell</b> (<a class="el" href="classEditorCell.html">EditorCell</a> *cell)</td></tr>
+<tr class="memdesc:aa67baca717a571d0030334714fdff5eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the editor cell the blinking text cursor is in (may be null). <br /></td></tr>
+<tr class="separator:aa67baca717a571d0030334714fdff5eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71028971bd40da2efb82da02727dbc99"><td class="memItemLeft" align="right" valign="top"><a id="a71028971bd40da2efb82da02727dbc99" name="a71028971bd40da2efb82da02727dbc99"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearActiveCell</b> ()</td></tr>
+<tr class="memdesc:a71028971bd40da2efb82da02727dbc99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forget the editor cell the text cursor was in. <br /></td></tr>
+<tr class="separator:a71028971bd40da2efb82da02727dbc99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab483ced0f05ae90459ee89c1394aec25"><td class="memItemLeft" align="right" valign="top"><a id="ab483ced0f05ae90459ee89c1394aec25" name="ab483ced0f05ae90459ee89c1394aec25"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ScrollToCell</b> (<a class="el" href="classCell.html">Cell</a> *cell)</td></tr>
 <tr class="separator:ab483ced0f05ae90459ee89c1394aec25"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,6 +180,26 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetTimerIdForCell</b> 
 <tr class="memitem:aa36dee7fe30a5ca988d079319b72c913"><td class="memItemLeft" align="right" valign="top"><a id="aa36dee7fe30a5ca988d079319b72c913" name="aa36dee7fe30a5ca988d079319b72c913"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveTimerIdForCell</b> (const <a class="el" href="classCell.html">Cell</a> *const cell)</td></tr>
 <tr class="separator:aa36dee7fe30a5ca988d079319b72c913"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a926c439bd2d4b8b3f0f6ab2cb69bacd9"><td class="memItemLeft" align="right" valign="top"><a id="a926c439bd2d4b8b3f0f6ab2cb69bacd9" name="a926c439bd2d4b8b3f0f6ab2cb69bacd9"></a>
+<a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetGroupCellUnderPointer</b> () const</td></tr>
+<tr class="memdesc:a926c439bd2d4b8b3f0f6ab2cb69bacd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> currently under the mouse pointer, or null. <br /></td></tr>
+<tr class="separator:a926c439bd2d4b8b3f0f6ab2cb69bacd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10103bb666dc0951e354962de9286b7f"><td class="memItemLeft" align="right" valign="top"><a id="a10103bb666dc0951e354962de9286b7f" name="a10103bb666dc0951e354962de9286b7f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetGroupCellUnderPointer</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *cell)</td></tr>
+<tr class="memdesc:a10103bb666dc0951e354962de9286b7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> under the mouse pointer (may be null). <br /></td></tr>
+<tr class="separator:a10103bb666dc0951e354962de9286b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac347aa2915377ee47a619bd127ff0b47"><td class="memItemLeft" align="right" valign="top"><a id="ac347aa2915377ee47a619bd127ff0b47" name="ac347aa2915377ee47a619bd127ff0b47"></a>
+<a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetCellUnderPointer</b> () const</td></tr>
+<tr class="memdesc:ac347aa2915377ee47a619bd127ff0b47"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cell currently under the mouse pointer, or null. <br /></td></tr>
+<tr class="separator:ac347aa2915377ee47a619bd127ff0b47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae288935eb4c9dba5e26c5648080cffaa"><td class="memItemLeft" align="right" valign="top"><a id="ae288935eb4c9dba5e26c5648080cffaa" name="ae288935eb4c9dba5e26c5648080cffaa"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCellUnderPointer</b> (<a class="el" href="classCell.html">Cell</a> *cell)</td></tr>
+<tr class="memdesc:ae288935eb4c9dba5e26c5648080cffaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the cell under the mouse pointer (may be null). <br /></td></tr>
+<tr class="separator:ae288935eb4c9dba5e26c5648080cffaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8614c1ee2ecf99c3f90bb8e4c3dc8ee7"><td class="memItemLeft" align="right" valign="top"><a id="a8614c1ee2ecf99c3f90bb8e4c3dc8ee7" name="a8614c1ee2ecf99c3f90bb8e4c3dc8ee7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearCellUnderPointer</b> ()</td></tr>
+<tr class="memdesc:a8614c1ee2ecf99c3f90bb8e4c3dc8ee7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forget which cell was under the mouse pointer. <br /></td></tr>
+<tr class="separator:a8614c1ee2ecf99c3f90bb8e4c3dc8ee7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc3f99237fde567120fafcf63d2859bd"><td class="memItemLeft" align="right" valign="top"><a id="abc3f99237fde567120fafcf63d2859bd" name="abc3f99237fde567120fafcf63d2859bd"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>WXMXResetCounter</b> ()</td></tr>
 <tr class="separator:abc3f99237fde567120fafcf63d2859bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,14 +219,6 @@ Data Fields</h2></td></tr>
 <a class="el" href="classCellPointers_1_1ErrorList.html">ErrorList</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_errorList</b></td></tr>
 <tr class="memdesc:a505fd56da01573c078ac6d59463cee41"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of cells maxima has complained about errors in. <br /></td></tr>
 <tr class="separator:a505fd56da01573c078ac6d59463cee41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55463a2056dee7b10ccaa0259572581c"><td class="memItemLeft" align="right" valign="top"><a id="a55463a2056dee7b10ccaa0259572581c" name="a55463a2056dee7b10ccaa0259572581c"></a>
-<a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classEditorCell.html">EditorCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_activeCell</b></td></tr>
-<tr class="memdesc:a55463a2056dee7b10ccaa0259572581c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which EditCell the blinking cursor is in? <br /></td></tr>
-<tr class="separator:a55463a2056dee7b10ccaa0259572581c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af32970737f19cb708164d0a7373c5f8c"><td class="memItemLeft" align="right" valign="top"><a id="af32970737f19cb708164d0a7373c5f8c" name="af32970737f19cb708164d0a7373c5f8c"></a>
-<a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classTextCell.html">TextCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_currentTextCell</b></td></tr>
-<tr class="memdesc:af32970737f19cb708164d0a7373c5f8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The textcell the text maxima is sending us was ending in. <br /></td></tr>
-<tr class="separator:af32970737f19cb708164d0a7373c5f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85e03496073e5b8cdeb47a3d7835cb00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCellPointers.html#a85e03496073e5b8cdeb47a3d7835cb00">m_selectionStart</a></td></tr>
 <tr class="memdesc:a85e03496073e5b8cdeb47a3d7835cb00"><td class="mdescLeft">&#160;</td><td class="mdescRight">The first cell of the currently selected range of Cells.  <br /></td></tr>
 <tr class="separator:a85e03496073e5b8cdeb47a3d7835cb00"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -212,14 +244,6 @@ Data Fields</h2></td></tr>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>m_indexSearchStartedAt</b> = -1</td></tr>
 <tr class="memdesc:aa22fa06012f79f272f1eadfba1b313f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which cursor position incremental search has started at? <br /></td></tr>
 <tr class="separator:aa22fa06012f79f272f1eadfba1b313f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fb1a1ca7531f4b61d093e836f85bd06"><td class="memItemLeft" align="right" valign="top"><a id="a7fb1a1ca7531f4b61d093e836f85bd06" name="a7fb1a1ca7531f4b61d093e836f85bd06"></a>
-<a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_groupCellUnderPointer</b></td></tr>
-<tr class="memdesc:a7fb1a1ca7531f4b61d093e836f85bd06"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> that is under the mouse pointer. <br /></td></tr>
-<tr class="separator:a7fb1a1ca7531f4b61d093e836f85bd06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf52a2270e73be5f8cde303c6dab0fd6"><td class="memItemLeft" align="right" valign="top"><a id="abf52a2270e73be5f8cde303c6dab0fd6" name="abf52a2270e73be5f8cde303c6dab0fd6"></a>
-<a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_cellUnderPointer</b></td></tr>
-<tr class="memdesc:abf52a2270e73be5f8cde303c6dab0fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cell currently under the mouse pointer. <br /></td></tr>
-<tr class="separator:abf52a2270e73be5f8cde303c6dab0fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50a3c67c32cd71365208723ba606c25f"><td class="memItemLeft" align="right" valign="top"><a id="a50a3c67c32cd71365208723ba606c25f" name="a50a3c67c32cd71365208723ba606c25f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_scrollToCell</b> = false</td></tr>
 <tr class="memdesc:a50a3c67c32cd71365208723ba606c25f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is scrolling to a cell scheduled? <br /></td></tr>
