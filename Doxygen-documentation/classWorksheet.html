@@ -2019,8 +2019,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
     <tr><td class="paramname">cells</td><td>The list of cells that has to be inserted </td></tr>
     <tr><td class="paramname">where</td><td>The cell the cells have to be inserted after. NULL means: Insert the cells at the beginning of the worksheet. </td></tr>
     <tr><td class="paramname">undoBuffer</td><td>The buffer the undo information for this action has to be kept in. Might be<ul>
-<li>m_treeUndo.UndoStack() for normal deletes,</li>
-<li>m_treeUndo.RedoStack() for deletions while executing an undo or</li>
+<li>GetTreeUndo().UndoStack() for normal deletes,</li>
+<li>GetTreeUndo().RedoStack() for deletions while executing an undo or</li>
 <li>NULL for: Don't keep any copy of the cells. </li>
 </ul>
 </td></tr>

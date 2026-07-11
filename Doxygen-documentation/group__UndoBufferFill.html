@@ -162,8 +162,8 @@ This approach allows the undo functionality to use the regular add and delete op
     <tr><td class="paramname">start</td><td>The first cell to delete </td></tr>
     <tr><td class="paramname">end</td><td>The last cell to delete </td></tr>
     <tr><td class="paramname">undoBuffer</td><td>The buffer the undo information has to be kept in. Might be<ul>
-<li>m_treeUndo.UndoStack() for normal deletes,</li>
-<li>m_treeUndo.RedoStack() for deletions while executing an undo or</li>
+<li>GetTreeUndo().UndoStack() for normal deletes,</li>
+<li>GetTreeUndo().RedoStack() for deletions while executing an undo or</li>
 <li>NULL for: Don't keep any copy of the cells.</li>
 </ul>
 </td></tr>
@@ -291,8 +291,8 @@ This approach allows the undo functionality to use the regular add and delete op
     <tr><td class="paramname">start</td><td>The first cell that has been added </td></tr>
     <tr><td class="paramname">end</td><td>The last cell that has been added </td></tr>
     <tr><td class="paramname">undoBuffer</td><td>Where to store the undo information. This normally is<ul>
-<li>m_treeUndo.UndoStack() for the normal undo buffer or</li>
-<li>m_treeUndo.RedoStack() for the buffer that allows reverting undos </li>
+<li>GetTreeUndo().UndoStack() for the normal undo buffer or</li>
+<li>GetTreeUndo().RedoStack() for the buffer that allows reverting undos </li>
 </ul>
 </td></tr>
   </table>
