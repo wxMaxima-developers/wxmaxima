@@ -114,12 +114,26 @@ public:
   //! group's output is being reset or the group is going away.
   void ClearAnswerCellIfInGroup(GroupCell *group);
 
+  // GetCurrentTextCell/SetCurrentTextCell are defined out-of-line for the same
+  // reason as the answer-cell accessors: the CellPtr<->TextCell* conversion
+  // needs the complete TextCell type, which this header only forward-declares.
+  //! The text cell the text maxima is currently sending us is being appended to.
+  TextCell *GetCurrentTextCell() const;
+  //! Set the text cell maxima's incoming text is being appended to (may be null).
+  void SetCurrentTextCell(TextCell *cell);
+
+  // GetActiveCell/SetActiveCell are defined out-of-line for the same reason as
+  // the answer-cell accessors: the CellPtr<->EditorCell* conversion needs the
+  // complete EditorCell type, which this header only forward-declares.
+  //! The editor cell the blinking text cursor is in, or null.
+  EditorCell *GetActiveCell() const;
+  //! Set the editor cell the blinking text cursor is in (may be null).
+  void SetActiveCell(EditorCell *cell);
+  //! Forget the editor cell the text cursor was in.
+  void ClearActiveCell() { m_activeCell = {}; }
+
   //! The list of cells maxima has complained about errors in
   ErrorList m_errorList;
-  //! Which EditCell the blinking cursor is in?
-  CellPtr<EditorCell> m_activeCell;
-  //! The textcell the text maxima is sending us was ending in.
-  CellPtr<TextCell> m_currentTextCell;
   /*! The first cell of the currently selected range of Cells.
 
     NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
@@ -172,6 +186,20 @@ public:
   Cell *GetCellForTimerId(int timerId) const;
   void RemoveTimerIdForCell(const Cell *const cell);
 
+  // GetGroupCellUnderPointer/SetGroupCellUnderPointer are defined out-of-line:
+  // the CellPtr<->GroupCell* conversion needs the complete GroupCell type,
+  // which this header only forward-declares.
+  //! The GroupCell currently under the mouse pointer, or null.
+  GroupCell *GetGroupCellUnderPointer() const;
+  //! Set the GroupCell under the mouse pointer (may be null).
+  void SetGroupCellUnderPointer(GroupCell *cell);
+  //! The cell currently under the mouse pointer, or null.
+  Cell *GetCellUnderPointer() const { return m_cellUnderPointer; }
+  //! Set the cell under the mouse pointer (may be null).
+  void SetCellUnderPointer(Cell *cell) { m_cellUnderPointer = cell; }
+  //! Forget which cell was under the mouse pointer.
+  void ClearCellUnderPointer() { m_cellUnderPointer = {}; }
+
   //! The EditorCell the mouse selection has started in
   CellPtr<EditorCell> m_cellMouseSelectionStartedIn;
   //! The EditorCell the keyboard selection has started in
@@ -180,10 +208,6 @@ public:
   CellPtr<EditorCell> m_cellSearchStartedIn;
   //! Which cursor position incremental search has started at?
   int m_indexSearchStartedAt = -1;
-  //! The GroupCell that is under the mouse pointer
-  CellPtr<GroupCell> m_groupCellUnderPointer;
-  //! The cell currently under the mouse pointer
-  CellPtr<Cell> m_cellUnderPointer;
   //! Is scrolling to a cell scheduled?
   bool m_scrollToCell = false;
 
@@ -208,8 +232,16 @@ private:
   CellPtr<GroupCell> m_lastWorkingGroup;
   //! The EditorCell that contains the currently active question from maxima
   CellPtr<EditorCell> m_answerCell;
+  //! The textcell the text maxima is sending us was ending in.
+  CellPtr<TextCell> m_currentTextCell;
+  //! Which EditCell the blinking cursor is in?
+  CellPtr<EditorCell> m_activeCell;
 
   // ---- View-side (encapsulated) ----
+  //! The GroupCell that is under the mouse pointer
+  CellPtr<GroupCell> m_groupCellUnderPointer;
+  //! The cell currently under the mouse pointer
+  CellPtr<Cell> m_cellUnderPointer;
   struct CellTimerId {
     // A CellPtr, not a raw pointer: animation timers fire asynchronously, so a
     // timer entry can outlive its cell. Auto-nulling means GetCellForTimerId()

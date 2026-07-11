@@ -129,7 +129,7 @@ const wxString ImgCell::GetToolTip(const wxPoint point) const {
   if (!ContainsPoint(point))
     return wxm::emptyString;
 
-  m_cellPointers->m_cellUnderPointer = const_cast<ImgCell *>(this);
+  m_cellPointers->SetCellUnderPointer(const_cast<ImgCell *>(this));
 
   return GetLocalToolTip();
 }

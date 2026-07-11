@@ -268,13 +268,13 @@ bool Worksheet::RedrawIfRequested() {
 
   if (m_mouseMotionWas) {
     UnsetStatusText();
-    if (!m_cellPointers.m_groupCellUnderPointer ||
+    if (!m_cellPointers.GetGroupCellUnderPointer() ||
         (m_pointer_y <
-         m_cellPointers.m_groupCellUnderPointer->GetRect().GetTop()) ||
+         m_cellPointers.GetGroupCellUnderPointer()->GetRect().GetTop()) ||
         (m_pointer_y >
-         m_cellPointers.m_groupCellUnderPointer->GetRect().GetBottom())) {
+         m_cellPointers.GetGroupCellUnderPointer()->GetRect().GetBottom())) {
       const GroupCell *oldGroupCellUnderPointer =
-        m_cellPointers.m_groupCellUnderPointer;
+        m_cellPointers.GetGroupCellUnderPointer();
 
       // Find out which group cell lies under the pointer. If the pointer is in
       // the gap *between* two cells (below one cell's bottom and above the next
@@ -282,7 +282,7 @@ bool Worksheet::RedrawIfRequested() {
       // is shown. (Previously the search snapped to the nearest cell in the
       // walk direction, which made the result flip between the cell above and
       // the cell below on every mouse event while hovering in such a gap.)
-      GroupCell *startSearch = m_cellPointers.m_groupCellUnderPointer;
+      GroupCell *startSearch = m_cellPointers.GetGroupCellUnderPointer();
       if (!startSearch) startSearch = GetTree();
 
       GroupCell *found = nullptr;
@@ -306,7 +306,7 @@ bool Worksheet::RedrawIfRequested() {
                   break;
               }
           }
-      } else if (!m_cellPointers.m_groupCellUnderPointer) {
+      } else if (!m_cellPointers.GetGroupCellUnderPointer()) {
           found = startSearch; // pointer is within startSearch's vertical extent
       }
       // GetTree() is null on an empty worksheet (e.g. right after startup);
@@ -317,31 +317,31 @@ bool Worksheet::RedrawIfRequested() {
       // Make the right brackets autohide
       if ((m_configuration->HideBrackets()) &&
           (oldGroupCellUnderPointer !=
-           m_cellPointers.m_groupCellUnderPointer)) {
+           m_cellPointers.GetGroupCellUnderPointer())) {
         if (oldGroupCellUnderPointer) {
           RequestRedraw(
                         wxRect(0, oldGroupCellUnderPointer->GetRect().GetTop(),
                                m_configuration->GetIndent(),
                                oldGroupCellUnderPointer->GetRect().GetHeight()));
         }
-        if (m_cellPointers.m_groupCellUnderPointer) {
+        if (m_cellPointers.GetGroupCellUnderPointer()) {
           RequestRedraw(wxRect(
-                               0, m_cellPointers.m_groupCellUnderPointer->GetRect().GetTop(),
+                               0, m_cellPointers.GetGroupCellUnderPointer()->GetRect().GetTop(),
                                m_configuration->GetIndent(),
-                               m_cellPointers.m_groupCellUnderPointer->GetRect().GetHeight()));
+                               m_cellPointers.GetGroupCellUnderPointer()->GetRect().GetHeight()));
         }
       }
     }
 
-    if (m_cellPointers.m_groupCellUnderPointer) {
+    if (m_cellPointers.GetGroupCellUnderPointer()) {
       // Update the worksheet's ToolTip: wxWidgets doesn't allow us to specify a
       // separate tooltip for every worksheet element, but it does allow us to
       // set the worksheet's tooltip to the appropriate one for the worksheet
       // element the pointer points to.
-      if (m_cellPointers.m_groupCellUnderPointer->GetOutputRect().Contains(
+      if (m_cellPointers.GetGroupCellUnderPointer()->GetOutputRect().Contains(
                                                                            wxPoint(m_pointer_x, m_pointer_y))) {
-        m_cellPointers.m_cellUnderPointer = nullptr;
-        wxString toolTip = m_cellPointers.m_groupCellUnderPointer->GetToolTip(
+        m_cellPointers.ClearCellUnderPointer();
+        wxString toolTip = m_cellPointers.GetGroupCellUnderPointer()->GetToolTip(
                                                                               wxPoint(m_pointer_x, m_pointer_y));
 
         if (!toolTip.empty()) {
@@ -360,7 +360,7 @@ bool Worksheet::RedrawIfRequested() {
         } else
           UnsetToolTip();
 
-        if (m_cellPointers.m_cellUnderPointer) {
+        if (m_cellPointers.GetCellUnderPointer()) {
           const ImgCellBase * const image = GetSelectedImgCellBase();
           if (image != NULL) {
             StatusText(wxString::Format(
@@ -375,7 +375,7 @@ bool Worksheet::RedrawIfRequested() {
         UnsetToolTip();
     } else {
       UnsetToolTip();
-      m_cellPointers.m_cellUnderPointer = nullptr;
+      m_cellPointers.ClearCellUnderPointer();
     }
     m_mouseMotionWas = false;
     redrawIssued = true;

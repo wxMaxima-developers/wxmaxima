@@ -28,9 +28,11 @@
   half (selection, active/answer cell, working group, error list) and its
   view/interaction half (hover, drag/keyboard-selection anchors, scroll and
   animation-timer targets). As a first step the members are grouped and
-  documented under those two headings and the "which cell is maxima working on"
-  and "which editor holds maxima's current question" pointers are now reached
-  only through accessors.
+  documented under those two headings and the "which cell is maxima working on",
+  "which editor holds maxima's current question", "which text cell maxima's
+  incoming text is appended to", "which editor the text cursor is in" and "which
+  cell/group cell is under the mouse pointer" pointers are now reached only
+  through accessors.
 - Internal: the worksheet's view-independent document state is being gathered
   into a new WorksheetDocument object that Worksheet delegates to (the document
   half of the ongoing document/view split). The first fields moved are the

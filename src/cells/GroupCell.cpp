@@ -863,7 +863,7 @@ void GroupCell::UpdateCellsInGroup() {
 }
 
 void GroupCell::CellUnderPointer(GroupCell *cell) {
-  m_cellPointers->m_groupCellUnderPointer = cell;
+  m_cellPointers->SetGroupCellUnderPointer(cell);
 }
 
 wxCoord GroupCell::GetMaxDrop() const {
@@ -891,7 +891,7 @@ void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
 
   bool drawBracket = !m_configuration->HideBrackets();
 
-  if (this == m_cellPointers->m_groupCellUnderPointer)
+  if (this == m_cellPointers->GetGroupCellUnderPointer())
     drawBracket = true;
 
   int selectionStart_px = -1;
@@ -1520,7 +1520,7 @@ const wxString GroupCell::GetToolTip(const wxPoint point) const {
 
   // Default assumption: will be overwritten by the next command,
   // if there is a more accurate solution.
-  m_cellPointers->m_cellUnderPointer = const_cast<GroupCell *>(this);
+  m_cellPointers->SetCellUnderPointer(const_cast<GroupCell *>(this));
 
   wxString retval = GetLocalToolTip();
 
@@ -1529,14 +1529,14 @@ const wxString GroupCell::GetToolTip(const wxPoint point) const {
 
   for (auto &tmp : OnList(m_inputLabel.get())) {
     if (tmp.ContainsPoint(point))
-      m_cellPointers->m_cellUnderPointer = &tmp;
+      m_cellPointers->SetCellUnderPointer(&tmp);
   }
 
   // TODO: Handle the case that m_cellUnderPointer should be a cell inside a cell
   // Hit-test what is actually on screen (the placeholder if layout is suppressed).
   for (auto &tmp : OnList(DisplayedOutput())) {
     if (tmp.ContainsPoint(point))
-      m_cellPointers->m_cellUnderPointer = &tmp;
+      m_cellPointers->SetCellUnderPointer(&tmp);
 
     // If a cell contains a cell containing a tooltip, the tooltip of the
     // containing cell will be overridden.

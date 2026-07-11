@@ -24,6 +24,7 @@
 
 #include "CellPointers.h"
 #include "cells/GroupCell.h"
+#include "cells/TextCell.h"
 #include <algorithm>
 #include <iterator>
 
@@ -94,6 +95,22 @@ void CellPointers::SetAnswerCell(EditorCell *cell) { m_answerCell = cell; }
 void CellPointers::ClearAnswerCellIfInGroup(GroupCell *group) {
   if (m_answerCell && m_answerCell->GetGroup() == group)
     m_answerCell = {};
+}
+
+TextCell *CellPointers::GetCurrentTextCell() const { return m_currentTextCell; }
+
+void CellPointers::SetCurrentTextCell(TextCell *cell) { m_currentTextCell = cell; }
+
+EditorCell *CellPointers::GetActiveCell() const { return m_activeCell; }
+
+void CellPointers::SetActiveCell(EditorCell *cell) { m_activeCell = cell; }
+
+GroupCell *CellPointers::GetGroupCellUnderPointer() const {
+  return m_groupCellUnderPointer;
+}
+
+void CellPointers::SetGroupCellUnderPointer(GroupCell *cell) {
+  m_groupCellUnderPointer = cell;
 }
 
 void CellPointers::SetWorkingGroup(GroupCell *group) {

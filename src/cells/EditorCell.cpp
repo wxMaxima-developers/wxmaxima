@@ -2303,13 +2303,13 @@ void EditorCell::DeactivateCursor() {
 //    editor->ClearSelection();
 //    editor->m_paren1 = editor->m_paren2 = -1;
 //  }
-  m_cellPointers->m_activeCell = nullptr;
+  m_cellPointers->ClearActiveCell();
   m_cellPointers->m_selectionString.Clear();
 }
 
 bool EditorCell::ActivateCursor() {
   bool retval = false;
-  if (!m_cellPointers->m_activeCell)
+  if (!m_cellPointers->GetActiveCell())
     DeactivateCursor();
 
   // Sanity check: Ensure cursor is within bounds
@@ -2321,7 +2321,7 @@ bool EditorCell::ActivateCursor() {
   SaveValue();
   m_displayCaret = true;
   m_hasFocus = true;
-  m_cellPointers->m_activeCell = this;
+  m_cellPointers->SetActiveCell(this);
 
   ClearSelection();
   m_paren1 = m_paren2 = -1;
@@ -3014,7 +3014,7 @@ void EditorCell::SetState(const EditorCell::History::HistoryEntry &state) {
 }
 
 bool EditorCell::IsActive() const {
-  return this == m_cellPointers->m_activeCell;
+  return this == m_cellPointers->GetActiveCell();
 }
 
 void EditorCell::Undo() {

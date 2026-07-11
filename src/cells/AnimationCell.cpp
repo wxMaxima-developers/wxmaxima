@@ -473,7 +473,7 @@ const wxString AnimationCell::GetToolTip(const wxPoint point) const {
   if (!ContainsPoint(point))
     return wxm::emptyString;
 
-  m_cellPointers->m_cellUnderPointer = const_cast<AnimationCell *>(this);
+  m_cellPointers->SetCellUnderPointer(const_cast<AnimationCell *>(this));
   if (!IsOk())
     return Image::GetBadImageToolTip();
 

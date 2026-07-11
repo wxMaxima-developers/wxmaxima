@@ -645,7 +645,7 @@ public:
   Configuration *GetConfig() const { return m_configuration; }
 
   //! Get the currently active EditorCell
-  EditorCell *GetActiveCell() const { return m_cellPointers.m_activeCell; }
+  EditorCell *GetActiveCell() const { return m_cellPointers.GetActiveCell(); }
 
   //! Tells us which cell the keyboard selection has started in
   EditorCell *KeyboardSelectionStart() const
@@ -663,8 +663,8 @@ public:
   CellPointers &GetCellPointers() { return m_cellPointers; }
 
   CellPointers::ErrorList &GetErrorList() { return m_cellPointers.m_errorList; }
-  TextCell *GetCurrentTextCell() const { return m_cellPointers.m_currentTextCell; }
-  void SetCurrentTextCell(TextCell *cell) { m_cellPointers.m_currentTextCell = cell; }
+  TextCell *GetCurrentTextCell() const { return m_cellPointers.GetCurrentTextCell(); }
+  void SetCurrentTextCell(TextCell *cell) { m_cellPointers.SetCurrentTextCell(cell); }
   void SetWorkingGroup(GroupCell *group) { m_cellPointers.SetWorkingGroup(group); }
 
   /*! Update the table of contents
@@ -890,16 +890,16 @@ public:
   bool CanCopy() const
     {
       return m_cellPointers.m_selectionStart ||
-        (m_cellPointers.m_activeCell &&
-         m_cellPointers.m_activeCell->CanCopy());
+        (m_cellPointers.GetActiveCell() &&
+         m_cellPointers.GetActiveCell()->CanCopy());
     }
 
   bool CanPaste() const
-    { return m_cellPointers.m_activeCell || GetHCaretCursor().IsActive(); }
+    { return m_cellPointers.GetActiveCell() || GetHCaretCursor().IsActive(); }
 
   bool CanCut() const
     {
-      return (m_cellPointers.m_activeCell && m_cellPointers.m_activeCell->CanCopy()) ||
+      return (m_cellPointers.GetActiveCell() && m_cellPointers.GetActiveCell()->CanCopy()) ||
         (m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP);
     }
 
@@ -1237,7 +1237,7 @@ public:
 
   //! Is the editor active in the last cell of the worksheet?
   bool IsActiveInLast() const
-    { return m_cellPointers.m_activeCell && m_cellPointers.m_activeCell->GetGroup() == GetLastCellInWorksheet(); }
+    { return m_cellPointers.GetActiveCell() && m_cellPointers.GetActiveCell()->GetGroup() == GetLastCellInWorksheet(); }
 
   //! Returns the last cell of the worksheet
   GroupCell *GetLastCell()
