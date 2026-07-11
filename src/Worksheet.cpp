@@ -2049,7 +2049,6 @@ void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart,
 void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end,
                                           UndoActions *undoBuffer) {
   undoBuffer->emplace_front(start, end);
-  TreeUndo_LimitUndoBuffer();
 }
 
 void Worksheet::TreeUndo_ClearBuffers() {
@@ -2068,8 +2067,7 @@ void Worksheet::TreeUndo_CellLeft() {
   if (!activeCell->GetEditable())
     return;
 
-  GetTreeUndo().CellLeft(activeCell, activeCell->GetEditable()->GetValue(),
-                      m_configuration->UndoLimit());
+  GetTreeUndo().CellLeft(activeCell, activeCell->GetEditable()->GetValue());
 }
 
 void Worksheet::TreeUndo_CellEntered() {
@@ -2161,7 +2159,6 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
     auto cells =
       static_unique_ptr_cast<GroupCell>(std::move(tornOut.cellOwner));
     undoBuffer->emplace_front(cellBeforeStart, nullptr, cells.release());
-    TreeUndo_LimitUndoBuffer();
   }
 
   if (renumber)
@@ -4117,10 +4114,6 @@ void Worksheet::Undo() {
       UpdateTableOfContents();
     }
   }
-}
-
-void Worksheet::TreeUndo_LimitUndoBuffer() {
-  GetTreeUndo().LimitUndoBuffer(m_configuration->UndoLimit());
 }
 
 bool Worksheet::CanTreeUndo() const {

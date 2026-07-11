@@ -178,7 +178,6 @@ Configuration::Configuration(const Configuration &o) :
   m_greekSidebar_Show_mu(o.m_greekSidebar_Show_mu),
   m_symbolPaneAdditionalChars(o.m_symbolPaneAdditionalChars),
   m_appearance(o.m_appearance),
-  m_undoLimit(o.m_undoLimit),
   m_recentItems(o.m_recentItems),
   m_bitmapScale(o.m_bitmapScale),
   m_defaultFramerate(o.m_defaultFramerate),
@@ -296,7 +295,6 @@ void Configuration::ResetAllToDefaults() {
   m_mathJaxURL_UseUser = false;
   m_TOCshowsSectionNumbers = false;
   m_appearance = Appearance::followSystem;
-  m_undoLimit = 0;
   m_recentItems = 10;
   m_parenthesisDrawMode = ascii;
   m_zoomFactor = 1.0; // affects returned fontsizes
@@ -744,7 +742,6 @@ void Configuration::ReadConfig() {
     config->Read(wxS("invertBackground"), &legacyInvertBackground);
     m_appearance = Appearance::followSystem;
   }
-  config->Read("undoLimit", &m_undoLimit);
   config->Read("recentItems", &m_recentItems);
   config->Read("maxGnuplotMegabytes", &m_maxGnuplotMegabytes);
   config->Read("offerKnownAnswers", &m_offerKnownAnswers);
@@ -1204,7 +1201,6 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   config->Write(wxS("symbolPaneAdditionalChars"), m_symbolPaneAdditionalChars);
   config->Write(wxS("appearance"), static_cast<long>(m_appearance));
   config->Write("recentItems", m_recentItems);
-  config->Write(wxS("undoLimit"), m_undoLimit);
   config->Write(wxS("showLabelChoice"), static_cast<int>(m_showLabelChoice));
   config->Write(wxS("parameters"), m_maximaParameters);
   config->Write(wxS("autodetectHelpBrowser"), m_autodetectHelpBrowser);

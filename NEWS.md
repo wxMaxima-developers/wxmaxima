@@ -1,5 +1,9 @@
 # Current development version
 
+- The "Undo limit" setting is gone: the undo history is now always unlimited
+  (which was already the default). This removes an option from the crowded
+  configuration dialog; an undo limit stored by an older version is ignored.
+
 - The diff viewer now highlights, inside each changed cell, the exact words
   the matching cell of the other file doesn't contain (word-level inline
   diff), instead of only marking the whole cell as changed. The highlight

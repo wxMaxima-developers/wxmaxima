@@ -105,18 +105,6 @@ public:
       m_activeCell = nullptr;
     }
 
-  /*! Drop actions from the back of the undo list until it is within the limit.
-
-    \param undoLimit The maximum number of undo actions to keep; 0 = unlimited.
-  */
-  void LimitUndoBuffer(long undoLimit)
-    {
-      if (undoLimit == 0)
-        return;
-      while (static_cast<long>(m_undoActions.size()) > undoLimit)
-        DiscardAction(&m_undoActions);
-    }
-
   /*! The cursor has entered a cell: snapshot its contents.
 
     \param group    The group cell that was entered
@@ -137,16 +125,13 @@ public:
 
     Compares the entry snapshot with the cell's current text; if the text has
     genuinely changed (more than just appending a ";"), an undo action with
-    the old text and selection is pushed, the undo buffer is limited and the
-    redo list is cleared.
+    the old text and selection is pushed and the redo list is cleared.
 
     \param activeCell  The group cell being left
     \param currentText The text its editor contains now
-    \param undoLimit   The undo-buffer limit to enforce (0 = unlimited)
     \returns true if a text-change action was recorded
   */
-  bool CellLeft(GroupCell *activeCell, const wxString &currentText,
-                long undoLimit)
+  bool CellLeft(GroupCell *activeCell, const wxString &currentText)
     {
       if (m_activeCell) //-V1051
         wxASSERT_MSG(m_activeCell == activeCell,
@@ -159,7 +144,6 @@ public:
         m_undoActions.emplace_front(activeCell, m_activeCellOldText,
                                     m_activeCellOldSelStart,
                                     m_activeCellOldSelEnd);
-        LimitUndoBuffer(undoLimit);
         ClearRedoActionList();
         return true;
       }

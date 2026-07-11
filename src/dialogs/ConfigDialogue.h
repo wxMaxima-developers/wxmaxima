@@ -320,7 +320,6 @@ protected:
   wxCheckBox *m_indentMaths;
   wxChoice *m_autoWrap;
   wxSpinCtrl *m_labelWidth;
-  wxSpinCtrl *m_undoLimit;
   wxSpinCtrl *m_recentItems;
   wxSpinCtrl *m_bitmapScale;
   wxSpinCtrlDouble *m_printScale;

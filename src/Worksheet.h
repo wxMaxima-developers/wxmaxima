@@ -293,9 +293,6 @@ public:
   //! Add another action to this undo action
   void TreeUndo_AppendAction() { GetTreeUndo().AppendAction(); }
 
-  //! Drop actions from the back of the undo list until it is within the undo limit.
-  void TreeUndo_LimitUndoBuffer();
-
   /*! Undo an item from a list of undo actions.
 
     \param sourcelist The list to take the undo information from

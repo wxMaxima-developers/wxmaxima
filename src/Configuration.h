@@ -818,9 +818,6 @@ public:
   //! Whether the OS reports a dark appearance (false where wx cannot tell).
   static bool SystemIsDark();
 
-  long UndoLimit(){return std::max(m_undoLimit, static_cast<long>(0));}
-  void UndoLimit(long limit){ m_undoLimit = limit; }
-
   long RecentItems(){return std::max(m_recentItems, static_cast<long>(0));}
   void RecentItems(long items){ m_recentItems = items; }
 
@@ -1359,7 +1356,6 @@ private:
   bool m_greekSidebar_Show_mu;
   wxString m_symbolPaneAdditionalChars;
   Appearance m_appearance = Appearance::followSystem;
-  long m_undoLimit;
   long m_recentItems;
   int m_bitmapScale;
   int m_defaultFramerate;

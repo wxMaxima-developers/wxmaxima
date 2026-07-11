@@ -432,9 +432,6 @@ void ConfigDialogue::SetCheckboxValues() {
                               "corresponding greek letter?"));
   m_defaultPort->SetToolTip(_(
                               "The default port used for communication between Maxima and wxMaxima."));
-  m_undoLimit->SetToolTip(
-                          _("Save only this number of actions in the undo buffer. 0 means: save an "
-                            "infinite number of actions."));
   m_recentItems->SetToolTip(
                             _("The number of recently opened files that is to be remembered."));
   m_incrementalSearch->SetToolTip(_(
@@ -523,7 +520,6 @@ void ConfigDialogue::SetCheckboxValues() {
   m_recentItems->SetValue(configuration->RecentItems());
   m_autoWrap->SetSelection(val);
   m_labelWidth->SetValue(configuration->LabelWidth());
-  m_undoLimit->SetValue(configuration->UndoLimit());
   m_bitmapScale->SetValue(configuration->BitmapScale());
   m_printScale->SetValue(configuration->PrintScale());
   m_fixReorderedIndices->SetValue(configuration->FixReorderedIndices());
@@ -1238,15 +1234,6 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
   grid_sizer->Add(m_symbolPaneAdditionalChars, 0,
                   wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
                   5 * GetContentScaleFactor());
-
-  wxStaticText *ul = new wxStaticText(stdOpts_sizer->GetStaticBox(), wxID_ANY,
-                                      _("Undo limit (0 for none):"));
-  m_undoLimit = new wxSpinCtrl(
-                               stdOpts_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
-                               wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0, 10000);
-  grid_sizer->Add(ul, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
-                  5 * GetContentScaleFactor());
-  grid_sizer->Add(m_undoLimit, wxSizerFlags());
 
   grid_sizer->Add(new wxStaticText(stdOpts_sizer->GetStaticBox(), wxID_ANY,
                                    _("Recent files list length:")),
@@ -2191,7 +2178,6 @@ void ConfigDialogue::WriteSettings() {
   configuration->IndentMaths(m_indentMaths->GetValue());
   configuration->SetAutoWrap(m_autoWrap->GetSelection());
   configuration->LabelWidth(m_labelWidth->GetValue());
-  configuration->UndoLimit(m_undoLimit->GetValue());
   configuration->RecentItems(m_recentItems->GetValue());
   configuration->BitmapScale(m_bitmapScale->GetValue());
   configuration->PrintScale(m_printScale->GetValue());
