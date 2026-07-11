@@ -144,7 +144,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_rtfFormat2 = wxDataFormat(wxS("text/rtf"));
   GetTreeUndo().ForgetActiveCell();
   m_clickInGC = NULL;
-  m_last = nullptr;
+  LastCache() = nullptr;
   m_timer.SetOwner(this, TIMER_ID);
   m_caretTimer.SetOwner(this, CARET_TIMER_ID);
   m_displayTimeoutTimer.SetOwner(this, DISPLAY_TIMEOUT_ID);
@@ -781,21 +781,21 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
     lastOfCellsToInsert = lastOfCellsToInsert->GetNext();
   }
 
-  if (!m_tree) {
-    m_tree = std::move(cells);
-    m_last = lastOfCellsToInsert;
+  if (!GetTree()) {
+    TreeOwner() = std::move(cells);
+    LastCache() = lastOfCellsToInsert;
   } else if (!where) {
-    CellList::SpliceInAfter(lastOfCellsToInsert, std::move(m_tree));
+    CellList::SpliceInAfter(lastOfCellsToInsert, std::move(TreeOwner()));
     RequestRedraw(cells.get());
-    m_tree = std::move(cells);
-    m_last = nullptr; // finding new last is easier via GetLastCellInWorksheet
+    TreeOwner() = std::move(cells);
+    LastCache() = nullptr; // finding new last is easier via GetLastCellInWorksheet
   } else {
-    if (where == m_last)
-        m_last = lastOfCellsToInsert;
+    if (where == LastCache())
+        LastCache() = lastOfCellsToInsert;
     else
-        m_last = nullptr;
+        LastCache() = nullptr;
     CellList::SpliceInAfter(where, std::move(cells), lastOfCellsToInsert);
-    // make sure m_last still points to the last cell of the worksheet!!
+    // make sure LastCache() still points to the last cell of the worksheet!!
   }
 
   if (renumbersections)
@@ -1620,12 +1620,12 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
 
 GroupCell *Worksheet::GetLastCellInWorksheet() const
 {
-  if (m_last) return m_last;
+  if (LastCache()) return LastCache();
   GroupCell *last = GetTree();
   if (last)
     last = last->last();
-  m_last = last;
-  return m_last;
+  LastCache() = last;
+  return LastCache();
 }
 
 void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
@@ -2207,11 +2207,11 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
   GroupCell *cellBeforeStart = start->GetPrevious();
 
   auto tornOut = CellList::TearOut(start, end);
-  m_last = nullptr;
+  LastCache() = nullptr;
   if (!tornOut.cellOwner) {
-    wxASSERT(m_tree.get() == tornOut.cell);
-    tornOut.cellOwner = std::move(m_tree);
-    m_tree = dynamic_unique_ptr_cast<GroupCell>(std::move(tornOut.tailOwner));
+    wxASSERT(GetTree() == tornOut.cell);
+    tornOut.cellOwner = std::move(TreeOwner());
+    TreeOwner() = dynamic_unique_ptr_cast<GroupCell>(std::move(tornOut.tailOwner));
   }
 
   // Do we have an undo buffer for this action?
@@ -3470,8 +3470,8 @@ void Worksheet::DestroyTree() {
   SetHCaret(NULL);
   TreeUndo_ClearUndoActionList();
   TreeUndo_ClearRedoActionList();
-  m_tree.reset();
-  m_last = NULL;
+  TreeOwner().reset();
+  LastCache() = NULL;
 }
 
 std::unique_ptr<GroupCell> Worksheet::CopyTree() const {
@@ -3570,9 +3570,9 @@ void Worksheet::TOCdnd(GroupCell *dndStart, GroupCell *dndEnd) {
 
   // We only update the table of contents when there is time => no guarantee
   // that the cell that was clicked at actually still is part of the tree.
-  if (!m_tree || !m_tree->Contains(dndStart))
+  if (!GetTree() || !GetTree()->Contains(dndStart))
     return;
-  if (dndEnd && !m_tree->Contains(dndEnd))
+  if (dndEnd && !GetTree()->Contains(dndEnd))
     return;
 
   // Select the region that is to be moved
@@ -4635,7 +4635,7 @@ void Worksheet::PasteFromClipboard() {
         // Now paste the cells
         if (!GetTree()) {
           // Empty work sheet => We paste cells as the new cells
-          m_tree = std::move(contents);
+          TreeOwner() = std::move(contents);
         } else {
           bool hasHSelection =
             m_cellPointers.m_selectionStart &&

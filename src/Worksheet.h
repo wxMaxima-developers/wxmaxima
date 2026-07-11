@@ -558,7 +558,7 @@ private:
 public:
   //! Is this worksheet empty?
   bool IsEmpty() const
-    { return !m_tree || (!m_tree->GetNext() && m_tree->GetEditable()->GetValue().Length() <= 1); }
+    { return !GetTree() || (!GetTree()->GetNext() && GetTree()->GetEditable()->GetValue().Length() <= 1); }
   //! Close the autocompletion pop-up if it is currently open.
   void CloseAutoCompletePopup()
     {
@@ -607,10 +607,10 @@ public:
   //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent &event);
 private:
-  //! The list of tree that contains the document itself
-  std::unique_ptr<GroupCell> m_tree;
-  //! A pointer to the last cell of this worksheet
-  mutable CellPtr<GroupCell> m_last;
+  //! The cell tree and its last-cell cache live in m_document; these forward
+  //! to it. TreeOwner() gives the surgery code the owning pointer it reseats.
+  std::unique_ptr<GroupCell> &TreeOwner() { return m_document.TreeOwner(); }
+  CellPtr<GroupCell> &LastCache() const { return m_document.LastCache(); }
 //  std::vector<std::jthread> m_drawThreads;
   static std::mutex m_drawDCLock;
   /*! The pointer to thesettings storage
@@ -832,7 +832,7 @@ public:
   /*! Add a new line to the output cell of the working group.
 
     If maxima isn't currently evaluating and therefore there is no working group
-    the line is appended to m_last, instead.
+    the line is appended to the last cell of the worksheet, instead.
   */
   void InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine = false);
 
@@ -1084,8 +1084,8 @@ public:
   */
   wxString GetString(bool lb = false) const;
 
-  GroupCell *GetTree() const { return m_tree.get(); }
-  std::unique_ptr<GroupCell> *GetTreeAddress() { return &m_tree; }
+  GroupCell *GetTree() const { return m_document.GetTree(); }
+  std::unique_ptr<GroupCell> *GetTreeAddress() { return &m_document.TreeOwner(); }
 
   /*! Return the first of the currently selected cells.
 

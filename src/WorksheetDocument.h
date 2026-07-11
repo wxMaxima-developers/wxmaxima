@@ -42,6 +42,9 @@
 #include "EvaluationQueue.h"
 #include "TreeUndoManager.h"
 #include "WorksheetCursor.h"
+#include "cells/CellPtr.h"
+#include "cells/GroupCell.h"
+#include <memory>
 #include <wx/string.h>
 
 /*! The view-independent state and commands of an edited worksheet document.
@@ -65,6 +68,23 @@ public:
   WorksheetCursor &GetCursor() { return m_hCaret; }
   //! The between-cells cursor (read-only view).
   const WorksheetCursor &GetCursor() const { return m_hCaret; }
+
+  //! The first GroupCell of the document (null when the document is empty).
+  GroupCell *GetTree() const { return m_tree.get(); }
+  /*! Mutable access to the owning pointer of the cell tree.
+
+    Transitional: while the tree-editing surgery still lives in Worksheet, it
+    reseats the head of the list (moves a new tree in, resets it, splices), so
+    it needs the unique_ptr itself, not just GetTree(). Moves onto
+    WorksheetDocument with the tree-surgery methods in a later increment.
+  */
+  std::unique_ptr<GroupCell> &TreeOwner() { return m_tree; }
+  /*! The cached pointer to the document's last GroupCell (<0 = unknown).
+
+    Mutable so the const "find the last cell" lookup can memoise its result;
+    the surgery code also updates it directly when it reseats the tail.
+  */
+  CellPtr<GroupCell> &LastCache() const { return m_last; }
 
   //! The file this document was last loaded from / saved to (empty if none).
   const wxString &GetCurrentFile() const { return m_currentFile; }
@@ -90,6 +110,11 @@ private:
   TreeUndoManager m_treeUndo;
   //! The between-cells cursor (h-caret): its position and group selection.
   WorksheetCursor m_hCaret;
+  //! Owns the document's cell tree: the first GroupCell and, via its list, all
+  //! the rest. Null when the document is empty.
+  std::unique_ptr<GroupCell> m_tree;
+  //! Cached pointer to the last GroupCell of the tree (a lookup memo).
+  mutable CellPtr<GroupCell> m_last;
   //! The file the document was loaded from / saved to.
   wxString m_currentFile;
   //! The text of the question Maxima is currently asking, if any.
