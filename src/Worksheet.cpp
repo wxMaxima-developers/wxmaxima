@@ -714,8 +714,8 @@ void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
     return;
 
   // DrawBracket() reflects these flags, so set them whenever we draw the cell.
-  cell.InEvaluationQueue(m_evaluationQueue.IsInQueue(&cell));
-  cell.LastInEvaluationQueue(m_evaluationQueue.GetCell() == &cell);
+  cell.InEvaluationQueue(GetEvaluationQueue().IsInQueue(&cell));
+  cell.LastInEvaluationQueue(GetEvaluationQueue().GetCell() == &cell);
 
   if (drawContents) {
     //
@@ -1013,7 +1013,7 @@ void Worksheet::ClearDocument() {
   SetHCaret(NULL); // horizontal caret at the top of document
   m_hCaret.SetSelectionAnchors(NULL, NULL);
   m_layout.CancelPendingRecalculation();
-  m_evaluationQueue.Clear();
+  GetEvaluationQueue().Clear();
   TreeUndo_ClearBuffers();
 
   m_blinkDisplayCaret = true;
@@ -2191,7 +2191,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
   // check if chapters or sections need to be renumbered
   bool renumber = false;
   for (auto &tmp : OnList(start)) {
-    m_evaluationQueue.Remove(&tmp);
+    GetEvaluationQueue().Remove(&tmp);
 
     if (tmp.IsFoldable() || (tmp.GetGroupType() == GC_TYPE_IMAGE))
       renumber = true;
@@ -3940,12 +3940,12 @@ bool Worksheet::ActivateInput(int direction) {
 //
 void Worksheet::AddDocumentToEvaluationQueue() {
   FollowEvaluation(true);
-  WorksheetEvalQueue::EnqueueRange(GetTree(), nullptr, m_evaluationQueue);
+  WorksheetEvalQueue::EnqueueRange(GetTree(), nullptr, GetEvaluationQueue());
   SetHCaret(GetLastCellInWorksheet());
 }
 
 void Worksheet::AddToEvaluationQueue(GroupCell *cell) {
-  WorksheetEvalQueue::Enqueue(*cell, m_evaluationQueue);
+  WorksheetEvalQueue::Enqueue(*cell, GetEvaluationQueue());
 }
 
 /**
@@ -3954,8 +3954,8 @@ void Worksheet::AddToEvaluationQueue(GroupCell *cell) {
 void Worksheet::AddEntireDocumentToEvaluationQueue() {
   FollowEvaluation(true);
   for (auto &tmp : OnList(GetTree())) {
-    WorksheetEvalQueue::Enqueue(tmp, m_evaluationQueue);
-    m_evaluationQueue.AddHiddenTreeToQueue(&tmp);
+    WorksheetEvalQueue::Enqueue(tmp, GetEvaluationQueue());
+    GetEvaluationQueue().AddHiddenTreeToQueue(&tmp);
   }
   SetHCaret(GetLastCellInWorksheet());
 }
@@ -4001,7 +4001,7 @@ void Worksheet::AddSelectionToEvaluationQueue(GroupCell *start,
   if (!start || !end)
     return;
   wxASSERT(start->GetType() == MC_TYPE_GROUP);
-  WorksheetEvalQueue::EnqueueRange(start, end, m_evaluationQueue);
+  WorksheetEvalQueue::EnqueueRange(start, end, GetEvaluationQueue());
   SetHCaret(end);
 }
 
@@ -4020,7 +4020,7 @@ void Worksheet::AddDocumentTillHereToEvaluationQueue() {
   if (!stop)
     return;
 
-  WorksheetEvalQueue::EnqueueRange(GetTree(), stop, m_evaluationQueue);
+  WorksheetEvalQueue::EnqueueRange(GetTree(), stop, GetEvaluationQueue());
 }
 
 void Worksheet::AddCellToEvaluationQueue(GroupCell *gc) {

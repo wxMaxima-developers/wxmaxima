@@ -1362,10 +1362,7 @@ public:
   void AddCellToEvaluationQueue(GroupCell *gc);
 
   //! The list of cells that have to be evaluated
-  EvaluationQueue &GetEvaluationQueue() { return m_evaluationQueue; }
-private:
-  EvaluationQueue m_evaluationQueue;
-public:
+  EvaluationQueue &GetEvaluationQueue() { return m_document.GetEvaluationQueue(); }
 
   void FoldOccurred();
 

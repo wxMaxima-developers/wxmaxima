@@ -39,6 +39,7 @@
 #ifndef WORKSHEETDOCUMENT_H
 #define WORKSHEETDOCUMENT_H
 
+#include "EvaluationQueue.h"
 #include <wx/string.h>
 
 /*! The view-independent state and commands of an edited worksheet document.
@@ -48,6 +49,11 @@
 */
 class WorksheetDocument {
 public:
+  //! The list of cells scheduled to be sent to Maxima for evaluation.
+  EvaluationQueue &GetEvaluationQueue() { return m_evaluationQueue; }
+  //! The list of cells scheduled for evaluation (read-only view).
+  const EvaluationQueue &GetEvaluationQueue() const { return m_evaluationQueue; }
+
   //! The file this document was last loaded from / saved to (empty if none).
   const wxString &GetCurrentFile() const { return m_currentFile; }
   //! Record the file this document is associated with.
@@ -66,6 +72,8 @@ public:
   void SetQuestionPending(bool pending) { m_questionPrompt = pending; }
 
 private:
+  //! The cells scheduled to be sent to Maxima, in evaluation order.
+  EvaluationQueue m_evaluationQueue;
   //! The file the document was loaded from / saved to.
   wxString m_currentFile;
   //! The text of the question Maxima is currently asking, if any.
