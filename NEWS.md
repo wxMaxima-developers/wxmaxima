@@ -32,6 +32,13 @@
 - Auto-wrapped code can now also break after the operators `+ - * / ( ) ; $`
   (but never in the middle of a `**`), so a long expression with few spaces -
   or none at all - still wraps to a readable width.
+- Internal: fourteen more scalar settings (among them the Maxima command-line
+  parameters, the document class and its options and the default network port)
+  now read and write through the single
+  `Configuration::ScalarConfigSettings()` key<->member table instead of a
+  hand-synced pair of `config->Read`/`config->Write` calls, so their read and
+  write sides can no longer drift apart on a key. test_ConfigRoundtrip, which
+  iterates that table, now covers them automatically.
 - Internal: CellPointers (the per-worksheet registry of pointers into the cell
   tree that auto-null when a cell dies) is being untangled into its document-side
   half (selection, active/answer cell, working group, error list) and its

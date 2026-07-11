@@ -710,16 +710,15 @@ void Configuration::ReadConfig() {
   #ifdef __WXMSW__
   config->Read("usewgnuplot", &m_useWgnuplot);
   #endif
-  config->Read(wxS("TeXExponentsAfterSubscript"),
-               &m_TeXExponentsAfterSubscript);
-
   if (!config->Read(wxS("AutoSaveAsTempFile"), &m_autoSaveAsTempFile)) {
     long autoSaveMinutes = 3;
     config->Read(wxS("autoSaveMinutes"), &autoSaveMinutes);
     m_autoSaveAsTempFile = (autoSaveMinutes == 0);
   }
+  // language stays hand-written (out of ScalarConfigSettings()): a stored
+  // "unknown" language is normalized to the system default, so the value does
+  // not survive a blind round-trip and it needs this fix-up after the read.
   config->Read("language", &m_language);
-  config->Read("incrementalSearch", &m_incrementalSearch);
   if (m_language == wxLANGUAGE_UNKNOWN)
     m_language = wxLANGUAGE_DEFAULT;
   {
@@ -742,17 +741,6 @@ void Configuration::ReadConfig() {
     config->Read(wxS("invertBackground"), &legacyInvertBackground);
     m_appearance = Appearance::followSystem;
   }
-  config->Read("recentItems", &m_recentItems);
-  config->Read("maxGnuplotMegabytes", &m_maxGnuplotMegabytes);
-  config->Read("offerKnownAnswers", &m_offerKnownAnswers);
-  config->Read(wxS("documentclass"), &m_documentclass);
-  config->Read(wxS("documentclassoptions"), &m_documentclassOptions);
-  config->Read("greekSidebar_ShowLatinLookalikes",
-               &m_greekSidebar_ShowLatinLookalikes);
-  config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
-  config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
-  config->Read("parameters", &m_maximaParameters);
-  config->Read("autodetectHelpBrowser", &m_autodetectHelpBrowser);
   config->Read("helpBrowser", &m_helpBrowserUserLocation);
   {
     int tmp = static_cast<int>(m_htmlEquationFormat);
@@ -769,8 +757,6 @@ void Configuration::ReadConfig() {
     m_autoSubscript = 0;
   if(m_autoSubscript > 2)
     m_autoSubscript = 2;
-  config->Read(wxS("abortOnError"), &m_abortOnError);
-  config->Read("defaultPort", &m_defaultPort);
   {
     int ls = static_cast<int>(m_layoutStrategy);
     config->Read(wxS("layoutStrategy"), &ls);
@@ -1191,31 +1177,15 @@ void Configuration::WriteStyles(wxConfigBase *config) {
   if (OfferInternalHelpBrowser())
     config->Write(wxS("maximaUsesWxmaximaBrowser"),
                   m_maximaUsesWxmaximaBrowser);
-  config->Write(wxS("TeXExponentsAfterSubscript"),
-                m_TeXExponentsAfterSubscript);
-  config->Write("incrementalSearch", m_incrementalSearch);
   config->Write(wxS("AutoSaveAsTempFile"), m_autoSaveAsTempFile);
-  config->Write(wxS("greekSidebar_ShowLatinLookalikes"),
-                m_greekSidebar_ShowLatinLookalikes);
-  config->Write(wxS("greekSidebar_Show_mu"), m_greekSidebar_Show_mu);
-  config->Write(wxS("symbolPaneAdditionalChars"), m_symbolPaneAdditionalChars);
   config->Write(wxS("appearance"), static_cast<long>(m_appearance));
-  config->Write("recentItems", m_recentItems);
   config->Write(wxS("showLabelChoice"), static_cast<int>(m_showLabelChoice));
-  config->Write(wxS("parameters"), m_maximaParameters);
-  config->Write(wxS("autodetectHelpBrowser"), m_autodetectHelpBrowser);
   if (OfferInternalHelpBrowser())
   config->Write(wxS("helpBrowser"), m_helpBrowserUserLocation);
   config->Write(wxS("layoutStrategy"), static_cast<int>(m_layoutStrategy));
-  config->Write("defaultPort", m_defaultPort);
-  config->Write("abortOnError", m_abortOnError);
-  config->Write("language", m_language);
-  config->Write("maxGnuplotMegabytes", m_maxGnuplotMegabytes);
-  config->Write("offerKnownAnswers", m_offerKnownAnswers);
-  config->Write("documentclass", m_documentclass);
-  config->Write("documentclassoptions", m_documentclassOptions);
   config->Write("HTMLequationFormat", static_cast<int>(m_htmlEquationFormat));
   config->Write("autosubscript", m_autoSubscript);
+  config->Write("language", m_language);
   config->Write(wxS("ZoomFactor"), m_zoomFactor);
   // Fonts
   m_styleStore.Write(config);
@@ -1224,7 +1194,9 @@ void Configuration::WriteStyles(wxConfigBase *config) {
 const std::vector<Configuration::ScalarSetting> &
 Configuration::ScalarConfigSettings() {
   static const std::vector<ScalarSetting> settings = {
+    {wxS("abortOnError"), &Configuration::m_abortOnError},
     {wxS("allowNetworkHelp"), &Configuration::m_allowNetworkHelp},
+    {wxS("autodetectHelpBrowser"), &Configuration::m_autodetectHelpBrowser},
     {wxS("autodetectMaxima"), &Configuration::m_autodetectMaxima},
     {wxS("autoIndent"), &Configuration::m_autoIndent},
     {wxS("autoWrapMode"), &Configuration::m_autoWrap},
@@ -1239,31 +1211,46 @@ Configuration::ScalarConfigSettings() {
     {wxS("DefaultFramerate"), &Configuration::m_defaultFramerate},
     {wxS("defaultPlotHeight"), &Configuration::m_defaultPlotHeight},
     {wxS("defaultPlotWidth"), &Configuration::m_defaultPlotWidth},
+    {wxS("defaultPort"), &Configuration::m_defaultPort},
     {wxS("displayedDigits"), &Configuration::m_displayedDigits},
+    {wxS("documentclass"), &Configuration::m_documentclass},
+    {wxS("documentclassoptions"), &Configuration::m_documentclassOptions},
     {wxS("enterEvaluates"), &Configuration::m_enterEvaluates},
     {wxS("exportContainsWXMX"), &Configuration::m_exportContainsWXMX},
     {wxS("fixedFontTC"), &Configuration::m_fixedFontTC},
     {wxS("fixReorderedIndices"), &Configuration::m_fixReorderedIndices},
+    {wxS("greekSidebar_ShowLatinLookalikes"),
+     &Configuration::m_greekSidebar_ShowLatinLookalikes},
+    {wxS("greekSidebar_Show_mu"), &Configuration::m_greekSidebar_Show_mu},
     {wxS("hideBrackets"), &Configuration::m_hideBrackets},
     {wxS("hidemultiplicationsign"), &Configuration::m_hidemultiplicationsign},
+    {wxS("incrementalSearch"), &Configuration::m_incrementalSearch},
     {wxS("indentMaths"), &Configuration::m_indentMaths},
     {wxS("insertAns"), &Configuration::m_insertAns},
     {wxS("latin2greek"), &Configuration::m_latin2greek},
     {wxS("matchParens"), &Configuration::m_matchParens},
     {wxS("mathJaxURL"), &Configuration::m_mathJaxURL},
     {wxS("mathJaxURL_UseUser"), &Configuration::m_mathJaxURL_UseUser},
+    {wxS("maxGnuplotMegabytes"), &Configuration::m_maxGnuplotMegabytes},
     {wxS("maxima"), &Configuration::m_maximaUserLocation},
     {wxS("maximaUsesHhtmlBrowser"), &Configuration::m_maximaUsesHhtmlBrowser},
     {wxS("notifyIfIdle"), &Configuration::m_notifyIfIdle},
     {wxS("numpadEnterEvaluates"), &Configuration::m_numpadEnterEvaluates},
+    {wxS("offerKnownAnswers"), &Configuration::m_offerKnownAnswers},
     {wxS("openHCaret"), &Configuration::m_openHCaret},
+    {wxS("parameters"), &Configuration::m_maximaParameters},
     {wxS("printBrackets"), &Configuration::m_printBrackets},
     {wxS("printScale"), &Configuration::m_printScale},
+    {wxS("recentItems"), &Configuration::m_recentItems},
     {wxS("restartOnReEvaluation"), &Configuration::m_restartOnReEvaluation},
     {wxS("saveImgFileName"), &Configuration::m_saveImgFileName},
     {wxS("showLength"), &Configuration::m_showLength},
     {wxS("showMatchingParens"), &Configuration::m_showMatchingParens},
     {wxS("singlePageManual"), &Configuration::m_singlePageManual},
+    {wxS("symbolPaneAdditionalChars"),
+     &Configuration::m_symbolPaneAdditionalChars},
+    {wxS("TeXExponentsAfterSubscript"),
+     &Configuration::m_TeXExponentsAfterSubscript},
     {wxS("texPreamble"), &Configuration::m_texPreamble},
     {wxS("tocDepth"), &Configuration::m_tocDepth},
     {wxS("TOCshowsSectionNumbers"), &Configuration::m_TOCshowsSectionNumbers},
