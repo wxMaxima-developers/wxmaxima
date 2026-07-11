@@ -142,7 +142,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_mathmlFormat2 = wxDataFormat(wxS("application/mathml-presentation+xml"));
   m_rtfFormat = wxDataFormat(wxS("application/rtf"));
   m_rtfFormat2 = wxDataFormat(wxS("text/rtf"));
-  m_treeUndo.ForgetActiveCell();
+  GetTreeUndo().ForgetActiveCell();
   m_clickInGC = NULL;
   m_last = nullptr;
   m_timer.SetOwner(this, TIMER_ID);
@@ -747,7 +747,7 @@ void Worksheet::DrawGroupCell(wxDC &dc, wxDC &adc, GroupCell &cell)
 
 GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
                                        GroupCell *where) {
-  return InsertGroupCells(std::move(cells), where, &m_treeUndo.UndoStack());
+  return InsertGroupCells(std::move(cells), where, &GetTreeUndo().UndoStack());
 }
 
 // InsertGroupCells
@@ -2102,7 +2102,7 @@ bool Worksheet::CanDeleteRegion(GroupCell *start, const GroupCell *end) const {
 
 void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart,
                                           GroupCell *end) {
-  TreeUndo_MarkCellsAsAdded(parentOfStart, end, &m_treeUndo.UndoStack());
+  TreeUndo_MarkCellsAsAdded(parentOfStart, end, &GetTreeUndo().UndoStack());
 }
 
 void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end,
@@ -2112,7 +2112,7 @@ void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end,
 }
 
 void Worksheet::TreeUndo_ClearBuffers() {
-  m_treeUndo.ClearBuffers();
+  GetTreeUndo().ClearBuffers();
 }
 
 void Worksheet::TreeUndo_CellLeft() {
@@ -2127,7 +2127,7 @@ void Worksheet::TreeUndo_CellLeft() {
   if (!activeCell->GetEditable())
     return;
 
-  m_treeUndo.CellLeft(activeCell, activeCell->GetEditable()->GetValue(),
+  GetTreeUndo().CellLeft(activeCell, activeCell->GetEditable()->GetValue(),
                       m_configuration->UndoLimit());
 }
 
@@ -2135,7 +2135,7 @@ void Worksheet::TreeUndo_CellEntered() {
   if (!GetActiveCell() || !GetActiveCell()->GetGroup())
     return;
 
-  m_treeUndo.CellEntered(GetActiveCell()->GetGroup(), GetActiveCell()->GetValue(),
+  GetTreeUndo().CellEntered(GetActiveCell()->GetGroup(), GetActiveCell()->GetValue(),
                          static_cast<long long>(GetActiveCell()->SelectionStart()),
                          static_cast<long long>(GetActiveCell()->SelectionEnd()));
 }
@@ -2167,7 +2167,7 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style) {
 }
 
 void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end) {
-  DeleteRegion(start, end, &m_treeUndo.UndoStack());
+  DeleteRegion(start, end, &GetTreeUndo().UndoStack());
 }
 
 void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
@@ -2251,7 +2251,7 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
   TreeUndo_CellLeft();
 
   // We don't need an undo action for the thing we will do now.
-  m_treeUndo.ForgetActiveCell();
+  GetTreeUndo().ForgetActiveCell();
 
   // Make sure that the cell containing the question is visible
   if (group->RevealHidden()) {
@@ -4179,11 +4179,11 @@ void Worksheet::Undo() {
 }
 
 void Worksheet::TreeUndo_LimitUndoBuffer() {
-  m_treeUndo.LimitUndoBuffer(m_configuration->UndoLimit());
+  GetTreeUndo().LimitUndoBuffer(m_configuration->UndoLimit());
 }
 
 bool Worksheet::CanTreeUndo() const {
-  const UndoActions &undoActions = m_treeUndo.UndoStack();
+  const UndoActions &undoActions = GetTreeUndo().UndoStack();
   if (undoActions.empty())
     return false;
   else {
@@ -4198,7 +4198,7 @@ bool Worksheet::CanTreeUndo() const {
 }
 
 bool Worksheet::CanTreeRedo() const {
-  const UndoActions &redoActions = m_treeUndo.RedoStack();
+  const UndoActions &redoActions = GetTreeUndo().RedoStack();
   if (redoActions.empty()) {
     return false;
   } else {

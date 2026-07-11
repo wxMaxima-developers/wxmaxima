@@ -40,6 +40,7 @@
 #define WORKSHEETDOCUMENT_H
 
 #include "EvaluationQueue.h"
+#include "TreeUndoManager.h"
 #include <wx/string.h>
 
 /*! The view-independent state and commands of an edited worksheet document.
@@ -53,6 +54,11 @@ public:
   EvaluationQueue &GetEvaluationQueue() { return m_evaluationQueue; }
   //! The list of cells scheduled for evaluation (read-only view).
   const EvaluationQueue &GetEvaluationQueue() const { return m_evaluationQueue; }
+
+  //! The document's undo/redo history of tree-structure edits.
+  TreeUndoManager &GetTreeUndo() { return m_treeUndo; }
+  //! The document's tree-edit undo/redo history (read-only view).
+  const TreeUndoManager &GetTreeUndo() const { return m_treeUndo; }
 
   //! The file this document was last loaded from / saved to (empty if none).
   const wxString &GetCurrentFile() const { return m_currentFile; }
@@ -74,6 +80,8 @@ public:
 private:
   //! The cells scheduled to be sent to Maxima, in evaluation order.
   EvaluationQueue m_evaluationQueue;
+  //! Undo/redo history of edits to the cell-tree structure.
+  TreeUndoManager m_treeUndo;
   //! The file the document was loaded from / saved to.
   wxString m_currentFile;
   //! The text of the question Maxima is currently asking, if any.

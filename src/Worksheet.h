@@ -269,18 +269,19 @@ private:
   // remains a Worksheet responsibility.
 
 private:
-  //! Owns the undo/redo stacks and the active-cell snapshot
-  TreeUndoManager m_treeUndo;
+  //! Owns the undo/redo stacks and the active-cell snapshot (in m_document).
+  TreeUndoManager &GetTreeUndo() { return m_document.GetTreeUndo(); }
+  const TreeUndoManager &GetTreeUndo() const { return m_document.GetTreeUndo(); }
 
 public:
   //! Clear the list of actions for which an undo can be undone
-  void TreeUndo_ClearRedoActionList() { m_treeUndo.ClearRedoActionList(); }
+  void TreeUndo_ClearRedoActionList() { GetTreeUndo().ClearRedoActionList(); }
 
   //! Clear the list of actions for which undo can undo
-  void TreeUndo_ClearUndoActionList() { m_treeUndo.ClearUndoActionList(); }
+  void TreeUndo_ClearUndoActionList() { GetTreeUndo().ClearUndoActionList(); }
 
   //! Add another action to this undo action
-  void TreeUndo_AppendAction() { m_treeUndo.AppendAction(); }
+  void TreeUndo_AppendAction() { GetTreeUndo().AppendAction(); }
 
   //! Drop actions from the back of the undo list until it is within the undo limit.
   void TreeUndo_LimitUndoBuffer();
@@ -307,11 +308,11 @@ public:
 
   //! Undo a tree operation.
   bool TreeUndo()
-    { return TreeUndo(&m_treeUndo.UndoStack(), &m_treeUndo.RedoStack()); }
+    { return TreeUndo(&GetTreeUndo().UndoStack(), &GetTreeUndo().RedoStack()); }
 
   //! Redo an undone tree operation.
   bool TreeRedo()
-    { return TreeUndo(&m_treeUndo.RedoStack(), &m_treeUndo.UndoStack()); }
+    { return TreeUndo(&GetTreeUndo().RedoStack(), &GetTreeUndo().UndoStack()); }
 
   //! Can we undo a tree operation?
   bool CanTreeUndo() const;
@@ -332,8 +333,8 @@ public:
     \param start      The first cell that has been added
     \param end        The last cell that has been added
     \param undoBuffer Where to store the undo information. This normally is
-    - m_treeUndo.UndoStack() for the normal undo buffer or
-    - m_treeUndo.RedoStack() for the buffer that allows reverting undos
+    - GetTreeUndo().UndoStack() for the normal undo buffer or
+    - GetTreeUndo().RedoStack() for the buffer that allows reverting undos
   */
   void TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, UndoActions *undoBuffer);
 
@@ -812,8 +813,8 @@ public:
     Insert the cells at the beginning of the worksheet.
     \param undoBuffer The buffer the undo information for this action has
     to be kept in. Might be
-    - m_treeUndo.UndoStack() for normal deletes,
-    - m_treeUndo.RedoStack() for deletions while executing an undo or
+    - GetTreeUndo().UndoStack() for normal deletes,
+    - GetTreeUndo().RedoStack() for deletions while executing an undo or
     - NULL for: Don't keep any copy of the cells.
   */
   GroupCell *InsertGroupCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where,
@@ -904,8 +905,8 @@ public:
     \param start The first cell to delete
     \param end The last cell to delete
     \param undoBuffer The buffer the undo information has to be kept in. Might be
-    - m_treeUndo.UndoStack() for normal deletes,
-    - m_treeUndo.RedoStack() for deletions while executing an undo or
+    - GetTreeUndo().UndoStack() for normal deletes,
+    - GetTreeUndo().RedoStack() for deletions while executing an undo or
     - NULL for: Don't keep any copy of the cells.
     \addtogroup UndoBufferFill
   */
