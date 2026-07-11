@@ -1,5 +1,14 @@
 # Current development version
 
+- Fixed: several configuration-dialog settings were silently not saved when you
+  pressed OK. The OK handler persisted only the styles and the settings kept in
+  the shared key table, so the print margins, the autosave interval, the maximum
+  layout time, the maximum clipboard-bitmap size, the "keep %"/label-width/
+  save-untitled/cursor-jump options, "display all digits"/"insert line breaks
+  into long numbers" and the Maxima environment variables were all thrown away
+  the moment the dialog closed (the following refresh even reset the live value
+  back to the stored one). The dialog now saves through the complete write path.
+
 - The "Undo limit" setting is gone: the undo history is now always unlimited
   (which was already the default). This removes an option from the crowded
   configuration dialog; an undo limit stored by an older version is ignored.

@@ -2252,7 +2252,17 @@ void ConfigDialogue::WriteSettings() {
   configuration->CopyEMF(m_copyEMF->GetValue());
 #endif
 
-  m_configuration->WriteStyles();
+  // Persist through WriteSettings(), NOT WriteStyles(): the code above copied
+  // every dialog field into the Configuration, but WriteStyles() only writes
+  // the styles plus the ScalarConfigSettings() table. The settings kept outside
+  // that table - the print margins, the autosave interval, the maximum layout
+  // time, the maximum clipboard-bitmap size, "keep %"/label width/save-untitled/
+  // cursor-jump, show-all-digits and the Maxima environment variables - are
+  // written only by WriteSettings(). Calling WriteStyles() here left every one
+  // of those unsaved on OK (and the caller's following ReadConfig() then reset
+  // the live value to the old stored one). WriteSettings() is the superset: it
+  // writes those keys and calls WriteStyles(config) itself.
+  m_configuration->WriteSettings();
   config->Flush();
 
   {

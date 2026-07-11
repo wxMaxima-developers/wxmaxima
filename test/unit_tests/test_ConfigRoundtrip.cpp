@@ -116,6 +116,53 @@ SCENARIO("Every scalar setting in the table round-trips through write and read")
   }
 }
 
+SCENARIO("Settings written only by WriteSettings() survive an OK-path round-trip") {
+  // These settings are deliberately kept out of ScalarConfigSettings() and are
+  // written only by Configuration::WriteSettings() -- NOT by WriteStyles(),
+  // which persists just the styles plus the scalar table. The preferences
+  // dialog must therefore save through WriteSettings(): persisting through
+  // WriteStyles() (as ConfigDialogue::WriteSettings() once did) silently
+  // dropped every one of these on OK, and the OK path's following ReadConfig()
+  // then reset the live value to the old stored one.
+  GIVEN("a configuration whose WriteSettings()-only members differ from the "
+        "defaults") {
+    const wxString file = wxFileName::CreateTempFileName(wxS("wxm_configtest"));
+    REQUIRE(!file.IsEmpty());
+
+    Configuration cfgWrite(nullptr, Configuration::temporary);
+    const int autosave = cfgWrite.AutosaveMinutes() + 1;
+    const double printMargin = cfgWrite.PrintMargin_Top() + 1;
+    const bool keepPercent = !cfgWrite.CheckKeepPercent();
+    const long labelWidth = cfgWrite.LabelWidth() + 1;
+    cfgWrite.AutosaveMinutes(autosave);
+    cfgWrite.PrintMargin_Top(printMargin);
+    cfgWrite.SetKeepPercent(keepPercent);
+    cfgWrite.LabelWidth(labelWidth);
+
+    WHEN("they are written with WriteSettings() and read into a fresh "
+         "configuration") {
+      cfgWrite.WriteSettings(file);
+
+      wxConfigBase *oldConfig = wxConfig::Get(false);
+      wxConfigBase *fileConfig =
+        new wxFileConfig(wxS("wxMaxima"), wxEmptyString, file);
+      wxConfig::Set(fileConfig);
+      Configuration cfgRead(nullptr, Configuration::temporary);
+      cfgRead.ReadConfig();
+      wxConfig::Set(oldConfig);
+      delete fileConfig;
+
+      THEN("every one of them arrives unchanged") {
+        CHECK(cfgRead.AutosaveMinutes() == autosave);
+        CHECK(cfgRead.PrintMargin_Top() == printMargin);
+        CHECK(cfgRead.CheckKeepPercent() == keepPercent);
+        CHECK(cfgRead.LabelWidth() == labelWidth);
+      }
+    }
+    wxRemoveFile(file);
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
