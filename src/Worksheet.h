@@ -57,6 +57,7 @@
 #include "TreeUndoManager.h"
 #include "WorksheetCursor.h"
 #include "WorksheetDocument.h"
+#include "WorksheetDocumentView.h"
 #include "WorksheetSearch.h"
 #include "WorksheetLayout.h"
 #include "cells/TextCell.h"
@@ -110,7 +111,8 @@
 
   \image html WorksheetLayout.svg
 */
-class Worksheet : public wxScrolled<wxWindow>, public WorksheetView
+class Worksheet : public wxScrolled<wxWindow>, public WorksheetView,
+                  public WorksheetDocumentView
 {
 public:
   // WorksheetView: the narrow window surface the layout pipeline
@@ -124,6 +126,14 @@ public:
   void SetViewScrollRate(int rate) override { SetScrollRate(rate, rate); }
   void GetViewPosition(int *x, int *y) const override
     { const wxPoint p = GetPosition(); *x = p.x; *y = p.y; }
+
+  // WorksheetDocumentView: how m_document tells this window that a structural
+  // edit happened; each forwards to the real layout/redraw/save machinery.
+  void NotifyRecalculation(GroupCell *start) override
+    { RequestRecalculation(start); }
+  void NotifyRedraw(GroupCell *start) override { RequestRedraw(start); }
+  void NotifyAdjustSizeNeeded() override { m_layout.RequestAdjustSize(); }
+  void NotifyDocumentModified() override { SetSaved(false); }
 
   //! The list of unsaved (autosaved) documents offered for recovery.
   RecentDocuments &UnsavedDocuments() { return m_unsavedDocuments; }

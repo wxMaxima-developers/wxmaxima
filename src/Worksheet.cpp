@@ -142,6 +142,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_mathmlFormat2 = wxDataFormat(wxS("application/mathml-presentation+xml"));
   m_rtfFormat = wxDataFormat(wxS("application/rtf"));
   m_rtfFormat2 = wxDataFormat(wxS("text/rtf"));
+  m_document.SetDocumentView(this);
   GetTreeUndo().ForgetActiveCell();
   m_clickInGC = NULL;
   LastCache() = nullptr;
@@ -760,67 +761,17 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
   if (!cells)
     return NULL; // nothing to insert
 
-  m_layout.RequestAdjustSize();
-  bool renumbersections = false; // only renumber when true
-
-  // TODO What we have here is an iteration through all the cells to see if they
-  // fulfill some criterion, and additionally we find the last() cell.
-  // When cell list management is refactored, the foldable status should be kept
-  // always up-to-date.
-
+  // The document owns the cell tree, so it does the actual splice and notifies
+  // this window (recalc/redraw/adjust size/modified) through the
+  // WorksheetDocumentView interface.
   GroupCell *firstOfCellsToInsert = cells.get();
-  // Find the last cell in the tree that is to be inserted
-  GroupCell *lastOfCellsToInsert = cells.get();
-  if (lastOfCellsToInsert->IsFoldable() ||
-      (lastOfCellsToInsert->GetGroupType() == GC_TYPE_IMAGE))
-    renumbersections = true;
-  while (lastOfCellsToInsert->GetNext()) {
-    if (lastOfCellsToInsert->IsFoldable() ||
-        (lastOfCellsToInsert->GetGroupType() == GC_TYPE_IMAGE))
-      renumbersections = true;
-    lastOfCellsToInsert = lastOfCellsToInsert->GetNext();
-  }
+  GroupCell *lastOfCellsToInsert = m_document.InsertCells(std::move(cells), where);
 
-  if (!GetTree()) {
-    TreeOwner() = std::move(cells);
-    LastCache() = lastOfCellsToInsert;
-  } else if (!where) {
-    CellList::SpliceInAfter(lastOfCellsToInsert, std::move(TreeOwner()));
-    RequestRedraw(cells.get());
-    TreeOwner() = std::move(cells);
-    LastCache() = nullptr; // finding new last is easier via GetLastCellInWorksheet
-  } else {
-    if (where == LastCache())
-        LastCache() = lastOfCellsToInsert;
-    else
-        LastCache() = nullptr;
-    CellList::SpliceInAfter(where, std::move(cells), lastOfCellsToInsert);
-    // make sure LastCache() still points to the last cell of the worksheet!!
-  }
-
-  if (renumbersections)
-    NumberSections();
-
-  GroupCell *recalcStart = NULL;
-  if (where)
-    recalcStart = where->GetNext();
-  if (!recalcStart)
-    recalcStart = GetTree();
-
-  if (recalcStart)
-    RequestRecalculation(recalcStart);
-  SetSaved(false); // document has been modified
-
+  // Recording the undo action needs the undo-buffer size limit from the
+  // Configuration, which is a view concern, so it stays here.
   if (undoBuffer)
     TreeUndo_MarkCellsAsAdded(firstOfCellsToInsert, lastOfCellsToInsert,
                               undoBuffer);
-  // AdjustSize() is intentionally NOT called here. Cell positions are
-  // stale at this point (recalculation has only been scheduled, not
-  // executed). Calling AdjustSize() with stale positions would compute a
-  // virtualHeight that is too small, causing wxWidgets to clamp the scroll
-  // position and jump the view to the top. The RequestAdjustSize() call
-  // (above) ensures that RecalculateIfNeeded() will call AdjustSize() after
-  // positions are correct.
   return lastOfCellsToInsert;
 }
 
@@ -1036,12 +987,7 @@ void Worksheet::ResetInputPrompts() {
 //
 // support for numbered sections with hiding
 //
-void Worksheet::NumberSections() const {
-  int s, sub, subsub, h5, h6, i;
-  s = sub = subsub = i = h5 = h6 = 0;
-  if (GetTree())
-    GetTree()->Number(s, sub, subsub, h5, h6, i);
-}
+void Worksheet::NumberSections() const { m_document.NumberSections(); }
 
 bool Worksheet::IsLesserGCType(int type, int comparedTo) {
   switch (type) {
@@ -1620,12 +1566,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up) {
 
 GroupCell *Worksheet::GetLastCellInWorksheet() const
 {
-  if (LastCache()) return LastCache();
-  GroupCell *last = GetTree();
-  if (last)
-    last = last->last();
-  LastCache() = last;
-  return LastCache();
+  return m_document.GetLastCell();
 }
 
 void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {

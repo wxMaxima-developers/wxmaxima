@@ -47,6 +47,8 @@
 #include <memory>
 #include <wx/string.h>
 
+class WorksheetDocumentView;
+
 /*! The view-independent state and commands of an edited worksheet document.
 
   Currently a small aggregate that Worksheet delegates to; it grows as further
@@ -86,6 +88,25 @@ public:
   */
   CellPtr<GroupCell> &LastCache() const { return m_last; }
 
+  //! Register the view the document notifies when it edits its own structure.
+  void SetDocumentView(WorksheetDocumentView *view) { m_view = view; }
+
+  //! The document's last GroupCell, memoised in m_last (null if empty).
+  GroupCell *GetLastCell() const;
+
+  //! Renumber all sectioning cells (titles, sections, ...) from the top.
+  void NumberSections() const;
+
+  /*! Insert a list of group cells into the document after \p where.
+
+    \p where == null inserts at the very top. Splices the cells into the tree,
+    renumbers sections if needed and notifies the view (recalc/redraw/adjust
+    size/modified) through the registered WorksheetDocumentView. Returns the
+    last inserted cell. The caller (Worksheet) records the undo action, which
+    needs a Configuration and so stays on the view side.
+  */
+  GroupCell *InsertCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where);
+
   //! The file this document was last loaded from / saved to (empty if none).
   const wxString &GetCurrentFile() const { return m_currentFile; }
   //! Record the file this document is associated with.
@@ -115,6 +136,8 @@ private:
   std::unique_ptr<GroupCell> m_tree;
   //! Cached pointer to the last GroupCell of the tree (a lookup memo).
   mutable CellPtr<GroupCell> m_last;
+  //! The view notified when the document edits its own structure (not owned).
+  WorksheetDocumentView *m_view = nullptr;
   //! The file the document was loaded from / saved to.
   wxString m_currentFile;
   //! The text of the question Maxima is currently asking, if any.
