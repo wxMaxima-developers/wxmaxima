@@ -259,7 +259,7 @@ void GroupCell::SetAnswer(const wxString &question, const wxString &answer) {
 }
 
 GroupCell *GroupCell::GetLastWorkingGroup() const {
-  return m_cellPointers->m_lastWorkingGroup;
+  return m_cellPointers->GetLastWorkingGroup();
 }
 
 wxString GroupCell::TexEscapeOutputCell(wxString Input) {

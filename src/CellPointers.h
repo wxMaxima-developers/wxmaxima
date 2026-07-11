@@ -95,6 +95,9 @@ public:
   //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
   void SetWorkingGroup(GroupCell *group);
 
+  //! The last group cell maxima was working on (regardless of the current one).
+  GroupCell *GetLastWorkingGroup() const { return m_lastWorkingGroup; }
+
   //! Are any whole cells (as opposed to text inside an editor) selected?
   bool HasCellsSelected() const { return m_selectionStart && m_selectionEnd; }
 
@@ -106,13 +109,6 @@ public:
   CellPtr<EditorCell> m_answerCell;
   //! The textcell the text maxima is sending us was ending in.
   CellPtr<TextCell> m_currentTextCell;
-  /*! The group cell maxima is currently working on.
-
-    NULL means that maxima isn't currently evaluating a cell.
-  */
-  CellPtr<GroupCell> m_workingGroup;
-  //! The last group cell maxima was working on.
-  CellPtr<GroupCell> m_lastWorkingGroup;
   /*! The first cell of the currently selected range of Cells.
 
     NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
@@ -191,6 +187,16 @@ public:
   wxScrolledCanvas *GetWorksheet() { return m_worksheet; }
 
 private:
+  // ---- Document-side (encapsulated) ----
+  /*! The group cell maxima is currently working on.
+
+    NULL means that maxima isn't currently evaluating a cell.
+  */
+  CellPtr<GroupCell> m_workingGroup;
+  //! The last group cell maxima was working on.
+  CellPtr<GroupCell> m_lastWorkingGroup;
+
+  // ---- View-side (encapsulated) ----
   struct CellTimerId {
     // A CellPtr, not a raw pointer: animation timers fire asynchronously, so a
     // timer entry can outlive its cell. Auto-nulling means GetCellForTimerId()
