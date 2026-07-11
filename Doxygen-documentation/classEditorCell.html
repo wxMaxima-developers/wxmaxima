@@ -260,6 +260,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetForeground</b> (wx
 <tr class="memitem:a7567a287678df7003b301c1a93901b03"><td class="memItemLeft" align="right" valign="top">const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a7567a287678df7003b301c1a93901b03">GetValue</a> () const override</td></tr>
 <tr class="memdesc:a7567a287678df7003b301c1a93901b03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the text contained in this cell.  <br /></td></tr>
 <tr class="separator:a7567a287678df7003b301c1a93901b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2d47190ae16d02f709fe760e5dd6e90"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::size_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#ae2d47190ae16d02f709fe760e5dd6e90">GetSoftBreaks</a> () const</td></tr>
+<tr class="memdesc:ae2d47190ae16d02f709fe760e5dd6e90"><td class="mdescLeft">&#160;</td><td class="mdescRight">The soft (word-wrap) line-break offsets of the last styling pass.  <br /></td></tr>
+<tr class="separator:ae2d47190ae16d02f709fe760e5dd6e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2618523b3432e1d877422cc02e621210"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a2618523b3432e1d877422cc02e621210">SetDiffHighlights</a> (std::vector&lt; std::pair&lt; std::size_t, std::size_t &gt; &gt; ranges)</td></tr>
 <tr class="memdesc:a2618523b3432e1d877422cc02e621210"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the character ranges of this cell's text the diff viewer wants painted with the TS_DIFF_CHANGED background (the parts the matching cell of the other file doesn't contain).  <br /></td></tr>
 <tr class="separator:a2618523b3432e1d877422cc02e621210"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2601,6 +2604,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 </div>
 </div>
+<a id="ae2d47190ae16d02f709fe760e5dd6e90" name="ae2d47190ae16d02f709fe760e5dd6e90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2d47190ae16d02f709fe760e5dd6e90">&#9670;&#160;</a></span>GetSoftBreaks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; std::size_t &gt; &amp; EditorCell::GetSoftBreaks </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The soft (word-wrap) line-break offsets of the last styling pass. </p>
+<p>Each entry is the content offset at which a display line begins because the text was word-wrapped (see m_softBreaks). Exposed for tests and inspection; the breaks are derived layout data and never appear in <a class="el" href="classEditorCell.html#a7567a287678df7003b301c1a93901b03">GetValue()</a>. </p>
+
+</div>
+</div>
 <a id="a68a73ede51edb64aa17b37e79ea21b91" name="a68a73ede51edb64aa17b37e79ea21b91"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a68a73ede51edb64aa17b37e79ea21b91">&#9670;&#160;</a></span>GetSuppressMultiplicationDot()</h2>
 
@@ -4014,7 +4045,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

@@ -147,6 +147,12 @@ Functions</h2></td></tr>
 <tr class="memitem:af1dbacd42da36c35b98163c4190ff65f"><td class="memItemLeft" align="right" valign="top"><a id="af1dbacd42da36c35b98163c4190ff65f" name="af1dbacd42da36c35b98163c4190ff65f"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Wrapped code leaks no soft break into serialization&quot;)</td></tr>
 <tr class="separator:af1dbacd42da36c35b98163c4190ff65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d00bca71fe4697563852451edd31a93"><td class="memItemLeft" align="right" valign="top"><a id="a2d00bca71fe4697563852451edd31a93" name="a2d00bca71fe4697563852451edd31a93"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Spaceless code still wraps at operators&quot;)</td></tr>
+<tr class="separator:a2d00bca71fe4697563852451edd31a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a876fcb92d06ff51956ec44c8ce8fe8a3"><td class="memItemLeft" align="right" valign="top"><a id="a876fcb92d06ff51956ec44c8ce8fe8a3" name="a876fcb92d06ff51956ec44c8ce8fe8a3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;The ** power operator is never split by a soft break&quot;)</td></tr>
+<tr class="separator:a876fcb92d06ff51956ec44c8ce8fe8a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06df7029011fe181f338255fa9645905"><td class="memItemLeft" align="right" valign="top"><a id="a06df7029011fe181f338255fa9645905" name="a06df7029011fe181f338255fa9645905"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxDECLARE_APP</b> (<a class="el" href="classTestApp.html">TestApp</a>)</td></tr>
 <tr class="separator:a06df7029011fe181f338255fa9645905"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,8 +162,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Tests for automatic line-wrapping inside EditorCells. </p>
-<p><a class="el" href="classA.html">A</a> soft line break is the character '\r' written in place over a space in the cell's text (a hard break is '<br  />
-'); StyleText() scrubs and re-derives the soft breaks on every restyle, so wrapping is transient layout state that must never change the cell's content or leak into serialization, the clipboard or the selection string. These tests pin exactly that, for the prose path (which always worked) and the code path (formerly disabled prototype code).</p>
+<p><a class="el" href="classA.html">A</a> soft (word-wrap) line break is derived layout data kept OUTSIDE the content string, in the <a class="el" href="classEditorCell.html#ae2d47190ae16d02f709fe760e5dd6e90" title="The soft (word-wrap) line-break offsets of the last styling pass.">EditorCell::GetSoftBreaks()</a> side table (a hard break is a '<br  />
+' character in the content). StyleText() re-derives the whole table on every restyle, so wrapping is a pure function of (content, width) that must never change the cell's content or leak into serialization, the clipboard or the selection string. Each break offset is the start of a continuation display line. These tests pin that for the prose path, the code path, and the operator-aware code breaks (wrap after + - * / ( ) ; $, but never inside a '**').</p>
 <p>Windowless: real GroupCell/EditorCell against a memory-DC <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>, no <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>, no wxFrame - the test_WorksheetLayout pattern. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
