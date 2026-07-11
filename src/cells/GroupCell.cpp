@@ -895,16 +895,16 @@ void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
     drawBracket = true;
 
   int selectionStart_px = -1;
-  if (m_cellPointers->m_selectionStart &&
-      (m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP))
-    selectionStart_px = m_cellPointers->m_selectionStart.CastAs<GroupCell *>()
+  if (m_cellPointers->GetSelectionStart() &&
+      (m_cellPointers->GetSelectionStart()->GetType() == MC_TYPE_GROUP))
+    selectionStart_px = m_cellPointers->GetSelectionStart().CastAs<GroupCell *>()
       ->m_currentPoint.y;
 
   int selectionEnd_px = -1;
-  if (m_cellPointers->m_selectionEnd &&
-      (m_cellPointers->m_selectionEnd->GetType() == MC_TYPE_GROUP))
+  if (m_cellPointers->GetSelectionEnd() &&
+      (m_cellPointers->GetSelectionEnd()->GetType() == MC_TYPE_GROUP))
     selectionEnd_px =
-      m_cellPointers->m_selectionEnd.CastAs<GroupCell *>()->m_currentPoint.y;
+      m_cellPointers->GetSelectionEnd().CastAs<GroupCell *>()->m_currentPoint.y;
 
   // Mark this GroupCell as selected if it is selected. Else clear the space we
   // will add brackets in

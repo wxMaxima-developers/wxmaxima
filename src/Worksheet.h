@@ -889,7 +889,7 @@ public:
 
   bool CanCopy() const
     {
-      return m_cellPointers.m_selectionStart ||
+      return m_cellPointers.GetSelectionStart() ||
         (m_cellPointers.GetActiveCell() &&
          m_cellPointers.GetActiveCell()->CanCopy());
     }
@@ -900,7 +900,7 @@ public:
   bool CanCut() const
     {
       return (m_cellPointers.GetActiveCell() && m_cellPointers.GetActiveCell()->CanCopy()) ||
-        (m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP);
+        (m_cellPointers.GetSelectionStart() && m_cellPointers.GetSelectionStart()->GetType() == MC_TYPE_GROUP);
     }
 
   //! Select the whole document
@@ -960,7 +960,7 @@ public:
   //! Returns the selected cell - or NULL, if the selection isn't an animation 
   AnimationCell *GetSelectedAnimation() const
     {
-      if(m_cellPointers.m_selectionStart != m_cellPointers.m_selectionEnd)
+      if(m_cellPointers.GetSelectionStart() != m_cellPointers.GetSelectionEnd())
         return NULL;
       return dynamic_cast<AnimationCell *>(GetSelectionStart());
     }
@@ -968,7 +968,7 @@ public:
   //! Returns the selected cell - or NULL, if the selection isn't an image 
   ImgCell *GetSelectedImgCell() const
     {
-      if(m_cellPointers.m_selectionStart != m_cellPointers.m_selectionEnd)
+      if(m_cellPointers.GetSelectionStart() != m_cellPointers.GetSelectionEnd())
         return NULL;
       return dynamic_cast<ImgCell *>(GetSelectionStart());
     }
@@ -976,7 +976,7 @@ public:
   //! Returns the selected cell - or NULL, if the selection isn't image nor animation
   ImgCellBase *GetSelectedImgCellBase() const
     {
-      if(m_cellPointers.m_selectionStart != m_cellPointers.m_selectionEnd)
+      if(m_cellPointers.GetSelectionStart() != m_cellPointers.GetSelectionEnd())
         return NULL;
       return dynamic_cast<ImgCellBase *>(GetSelectionStart());
     }
@@ -984,7 +984,7 @@ public:
   //! Returns the selected cell - or NULL, if the selection isn't a text cell
   TextCell *GetSelectedTextCell() const
     {
-      if(m_cellPointers.m_selectionStart != m_cellPointers.m_selectionEnd)
+      if(m_cellPointers.GetSelectionStart() != m_cellPointers.GetSelectionEnd())
         return NULL;
       return dynamic_cast<TextCell *>(GetSelectionStart());
     }
@@ -992,7 +992,7 @@ public:
   //! Does it make sense to enable the "Play" button and the slider now?
   bool CanAnimate() const
     {
-      return m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd &&
+      return m_cellPointers.GetSelectionStart() && m_cellPointers.GetSelectionStart() == m_cellPointers.GetSelectionEnd() &&
         (dynamic_cast<AnimationCell *>(GetSelectionStart()) != NULL);
     }
 
@@ -1099,14 +1099,14 @@ public:
     NULL means: No cell is selected.
   */
   Cell *GetSelectionStart() const
-    { return m_cellPointers.m_selectionStart; }
+    { return m_cellPointers.GetSelectionStart(); }
 
   /*! Return the last of the currently selected cells.
 
     NULL means: No cell is selected.
   */
   Cell *GetSelectionEnd() const
-    { return m_cellPointers.m_selectionEnd; }
+    { return m_cellPointers.GetSelectionEnd(); }
 
   //! Clear the selection - make it empty, i.e. no selection
   void ClearSelection() { SetSelection(nullptr, nullptr); }

@@ -101,6 +101,18 @@ public:
   //! Are any whole cells (as opposed to text inside an editor) selected?
   bool HasCellsSelected() const { return m_selectionStart && m_selectionEnd; }
 
+  //! The first cell of the currently selected range of cells (see
+  //! m_selectionStart), or null. Returned by reference so callers keep the
+  //! CellPtr conveniences (CastAs<>, auto-nulling) without a raw-pointer copy.
+  const CellPtr<Cell> &GetSelectionStart() const { return m_selectionStart; }
+  //! The last cell of the currently selected range of cells (see
+  //! m_selectionEnd), or null.
+  const CellPtr<Cell> &GetSelectionEnd() const { return m_selectionEnd; }
+  //! Set the first cell of the selected range (may be null).
+  void SetSelectionStart(Cell *cell) { m_selectionStart = cell; }
+  //! Set the last cell of the selected range (may be null).
+  void SetSelectionEnd(Cell *cell) { m_selectionEnd = cell; }
+
   // GetAnswerCell/SetAnswerCell are defined out-of-line: converting the CellPtr
   // to (or assigning a raw pointer from) EditorCell* needs the complete
   // EditorCell type, which this header only forward-declares.
@@ -132,32 +144,15 @@ public:
   //! Forget the editor cell the text cursor was in.
   void ClearActiveCell() { m_activeCell = {}; }
 
+  //! The currently selected string (see m_selectionString), or empty.
+  const wxString &GetSelectionString() const { return m_selectionString; }
+  //! Set the currently selected string.
+  void SetSelectionString(const wxString &str) { m_selectionString = str; }
+  //! Forget the currently selected string.
+  void ClearSelectionString() { m_selectionString.Clear(); }
+
   //! The list of cells maxima has complained about errors in
   ErrorList m_errorList;
-  /*! The first cell of the currently selected range of Cells.
-
-    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
-    is selected and therefore the selection is handled by EditorCell; This cell is
-    always above m_selectionEnd.
-
-    See also m_hCaretPositionStart and m_selectionEnd
-  */
-  CellPtr<Cell> m_selectionStart;
-  /*! The last cell of the currently selected range of Cells.
-
-    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
-    is selected and therefore the selection is handled by EditorCell; This cell is
-    always above m_selectionStart.
-
-    See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
-  */
-  CellPtr<Cell> m_selectionEnd;
-  /*! The currently selected string.
-
-    Since this string is defined here it is available in every editor cell
-    for highlighting other instances of the selected string.
-  */
-  wxString m_selectionString;
 
   // ======================================================================
   //  View / interaction-side pointers (transient window state)
@@ -236,6 +231,30 @@ private:
   CellPtr<TextCell> m_currentTextCell;
   //! Which EditCell the blinking cursor is in?
   CellPtr<EditorCell> m_activeCell;
+  /*! The first cell of the currently selected range of Cells.
+
+    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
+    is selected and therefore the selection is handled by EditorCell; This cell is
+    always above m_selectionEnd.
+
+    See also m_hCaretPositionStart and m_selectionEnd
+  */
+  CellPtr<Cell> m_selectionStart;
+  /*! The last cell of the currently selected range of Cells.
+
+    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
+    is selected and therefore the selection is handled by EditorCell; This cell is
+    always above m_selectionStart.
+
+    See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
+  */
+  CellPtr<Cell> m_selectionEnd;
+  /*! The currently selected string.
+
+    Since this string is reachable from every editor cell (via the accessors
+    above) it is available for highlighting other instances of the selection.
+  */
+  wxString m_selectionString;
 
   // ---- View-side (encapsulated) ----
   //! The GroupCell that is under the mouse pointer

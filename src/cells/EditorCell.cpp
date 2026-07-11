@@ -898,20 +898,20 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
     //
     // Mark text that coincides with the selection
     //
-    if (!m_cellPointers->m_selectionString.IsEmpty()) {
+    if (!m_cellPointers->GetSelectionString().IsEmpty()) {
       long long start = 0;
       wxString text(m_text);
       text.Replace(wxS('\r'), wxS(' '));
-      while ((start = text.find(m_cellPointers->m_selectionString, start)) !=
+      while ((start = text.find(m_cellPointers->GetSelectionString(), start)) !=
              wxNOT_FOUND) {
-        size_t end = static_cast<size_t>(start) + m_cellPointers->m_selectionString.Length();
+        size_t end = static_cast<size_t>(start) + m_cellPointers->GetSelectionString().Length();
 
         // Mark only text that won't be marked in the next step:
         // This would not only be unnecessary but also could cause
         // selections to flicker in very long texts
         if ((!IsActive()) || (static_cast<size_t>(start) != SelectionLeft()))
           MarkSelection(dc, static_cast<size_t>(start), end, TS_EQUALSSELECTION);
-        if (m_cellPointers->m_selectionString.Length() == 0)
+        if (m_cellPointers->GetSelectionString().Length() == 0)
           end++;
         start = end;
       }
@@ -2304,7 +2304,7 @@ void EditorCell::DeactivateCursor() {
 //    editor->m_paren1 = editor->m_paren2 = -1;
 //  }
   m_cellPointers->ClearActiveCell();
-  m_cellPointers->m_selectionString.Clear();
+  m_cellPointers->ClearSelectionString();
 }
 
 bool EditorCell::ActivateCursor() {
@@ -2659,12 +2659,13 @@ wxString EditorCell::DivideAtCaret() {
 }
 
 void EditorCell::UpdateSelectionString() {
-  wxString selectionString = m_cellPointers->m_selectionString;
-  m_cellPointers->m_selectionString =
+  wxString oldSelectionString = m_cellPointers->GetSelectionString();
+  wxString selectionString =
     m_text.Mid(SelectionLeft(),
                SelectionRight() - SelectionLeft());
-  m_cellPointers->m_selectionString.Replace(wxS('\r'), wxS(' '));
-  if(m_cellPointers->m_selectionString != selectionString)
+  selectionString.Replace(wxS('\r'), wxS(' '));
+  m_cellPointers->SetSelectionString(selectionString);
+  if(selectionString != oldSelectionString)
     m_selectionChanged = true;
 }
 
@@ -2747,7 +2748,7 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens),
     SetSelection(start, pos);
 
   if (pos > 0 && start != pos)
-    return m_cellPointers->m_selectionString;
+    return m_cellPointers->GetSelectionString();
   else
     return wxS("%");
 }

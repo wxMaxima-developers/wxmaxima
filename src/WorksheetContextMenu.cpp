@@ -87,13 +87,13 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                            wxEmptyString, wxITEM_NORMAL);
         }
       }
-      if (worksheet.GetCellPointers().m_selectionStart &&
-          worksheet.GetCellPointers().m_selectionStart->CanPopOut()) {
+      if (worksheet.GetCellPointers().GetSelectionStart() &&
+          worksheet.GetCellPointers().GetSelectionStart()->CanPopOut()) {
         popupMenu.AppendSeparator();
         popupMenu.Append(EventIDs::popid_popup_gnuplot, _("Popout interactively"),
                          wxEmptyString, wxITEM_NORMAL);
       }
-    } else if (worksheet.GetCellPointers().m_selectionStart) {
+    } else if (worksheet.GetCellPointers().GetSelectionStart()) {
       if (worksheet.IsSelected(MC_TYPE_DEFAULT)) {
         wxString wordUnderCursor = worksheet.GetSelectionStart()->ToString();
         wxString anchor = worksheet.GetMaximaManual()->GetHelpfileAnchorName(wordUnderCursor);
@@ -117,7 +117,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
           popupMenu.AppendSeparator();
         }
       }
-      if (worksheet.GetCellPointers().m_selectionStart->GetType() == MC_TYPE_GROUP) {
+      if (worksheet.GetCellPointers().GetSelectionStart()->GetType() == MC_TYPE_GROUP) {
         if (worksheet.CanCopy()) {
           popupMenu.Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(EventIDs::menu_copy_uuid, _("Copy position (UUID)"));
@@ -127,7 +127,7 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                            wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_copy_text, _("Copy as plain text"),
                            wxEmptyString, wxITEM_NORMAL);
-          if (worksheet.GetCellPointers().m_selectionStart == worksheet.GetCellPointers().m_selectionEnd)
+          if (worksheet.GetCellPointers().GetSelectionStart() == worksheet.GetCellPointers().GetSelectionEnd())
             popupMenu.Append(EventIDs::popid_copy_mathml,
                              _("Copy as MathML (e.g. to word processor)"),
                              wxEmptyString, wxITEM_NORMAL);
@@ -151,18 +151,18 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                              wxITEM_NORMAL);
         }
         popupMenu.AppendSeparator();
-        if (worksheet.GetCellPointers().m_selectionStart == worksheet.GetCellPointers().m_selectionEnd)
+        if (worksheet.GetCellPointers().GetSelectionStart() == worksheet.GetCellPointers().GetSelectionEnd())
           popupMenu.Append(ToolBar::tb_evaltillhere, _("Evaluate Cells Above"),
                            wxEmptyString, wxITEM_NORMAL);
 
-        if (worksheet.GetCellPointers().m_selectionStart == worksheet.GetCellPointers().m_selectionEnd)
+        if (worksheet.GetCellPointers().GetSelectionStart() == worksheet.GetCellPointers().GetSelectionEnd())
           popupMenu.Append(EventIDs::popid_evaluate, _("Evaluate Cell"), wxEmptyString,
                            wxITEM_NORMAL);
         else
           popupMenu.Append(EventIDs::popid_evaluate, _("Evaluate Cell(s)"), wxEmptyString,
                            wxITEM_NORMAL);
 
-        if (worksheet.GetCellPointers().m_selectionStart == worksheet.GetCellPointers().m_selectionEnd)
+        if (worksheet.GetCellPointers().GetSelectionStart() == worksheet.GetCellPointers().GetSelectionEnd())
           popupMenu.Append(ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"),
                            wxEmptyString, wxITEM_NORMAL);
 
@@ -179,10 +179,10 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
 
         // Add a "evaluate this <sectioning unit>" context menu entry.
         GroupCell *group;
-        if (worksheet.GetCellPointers().m_selectionEnd)
-          group = worksheet.GetCellPointers().m_selectionEnd.CastAs<GroupCell *>();
+        if (worksheet.GetCellPointers().GetSelectionEnd())
+          group = worksheet.GetCellPointers().GetSelectionEnd().CastAs<GroupCell *>();
         else
-          group = worksheet.GetCellPointers().m_selectionStart.CastAs<GroupCell *>();
+          group = worksheet.GetCellPointers().GetSelectionStart().CastAs<GroupCell *>();
         if (Worksheet::StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_TITLE) {
           popupMenu.AppendSeparator();
           popupMenu.Append(EventIDs::popid_evaluate_section,
@@ -243,8 +243,8 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
           popupMenu.Append(EventIDs::popid_resolutionchooser, _("Set image resolution"),
                            wxEmptyString, wxITEM_NORMAL);
         }
-        if (worksheet.GetCellPointers().m_selectionStart &&
-            worksheet.GetCellPointers().m_selectionStart->CanPopOut()) {
+        if (worksheet.GetCellPointers().GetSelectionStart() &&
+            worksheet.GetCellPointers().GetSelectionStart()->CanPopOut()) {
           popupMenu.AppendSeparator();
           popupMenu.Append(EventIDs::popid_popup_gnuplot, _("Popout interactively"),
                            wxEmptyString, wxITEM_NORMAL);
@@ -488,9 +488,9 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
       wxASSERT(worksheet.GetActiveCell()->GetGroup());
       group = worksheet.GetActiveCell()->GetGroup();
     }
-    if (worksheet.GetCellPointers().m_selectionStart) {
-      if (worksheet.GetCellPointers().m_selectionStart->GetType() == MC_TYPE_GROUP) {
-        group = worksheet.GetCellPointers().m_selectionStart.CastAs<GroupCell *>();
+    if (worksheet.GetCellPointers().GetSelectionStart()) {
+      if (worksheet.GetCellPointers().GetSelectionStart()->GetType() == MC_TYPE_GROUP) {
+        group = worksheet.GetCellPointers().GetSelectionStart().CastAs<GroupCell *>();
       }
     }
     if (group) {
@@ -813,9 +813,9 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
     }
   }
 
-  if ((worksheet.GetCellPointers().m_selectionStart)) {
-    wxString toolTip = worksheet.GetCellPointers().m_selectionStart->GetLocalToolTip();
-    const GroupCell *group = worksheet.GetCellPointers().m_selectionStart->GetGroup();
+  if ((worksheet.GetCellPointers().GetSelectionStart())) {
+    wxString toolTip = worksheet.GetCellPointers().GetSelectionStart()->GetLocalToolTip();
+    const GroupCell *group = worksheet.GetCellPointers().GetSelectionStart()->GetGroup();
     if (toolTip.IsEmpty())
       toolTip = group->GetLocalToolTip();
 
