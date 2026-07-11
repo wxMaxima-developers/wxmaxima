@@ -2235,10 +2235,10 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
 
 void Worksheet::SetAnswer(const wxString &answer) {
   GroupCell *answerCell = GetWorkingGroup();
-  if (!answerCell || answer.empty() || m_lastQuestion.empty())
+  if (!answerCell || answer.empty() || GetLastQuestion().empty())
     return;
 
-  answerCell->SetAnswer(m_lastQuestion, answer);
+  answerCell->SetAnswer(GetLastQuestion(), answer);
 }
 
 bool Worksheet::OpenQuestionCaret(const wxString &txt) {
@@ -2270,7 +2270,7 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
     if (!txt.empty())
       answerCell->SetValue(txt);
     else {
-      auto const &text = group->GetAnswer(m_lastQuestion);
+      auto const &text = group->GetAnswer(GetLastQuestion());
       if (!text.empty())
         autoEvaluate = group->AutoAnswer();
       answerCell->SetValue(text);
@@ -2305,7 +2305,7 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type) {
   // if we are inside cell maxima is currently evaluating
   // bypass normal behaviour and insert an EditorCell into
   // the output of the working group.
-  if (GetWorkingGroup() && m_questionPrompt) {
+  if (GetWorkingGroup() && QuestionPending()) {
     if ((GetActiveCell() && GetActiveCell()->GetGroup() == GetWorkingGroup()) ||
         (m_hCaret.Position() &&
          m_hCaret.Position() == GetWorkingGroup()->GetNext())) {
@@ -2472,11 +2472,11 @@ void Worksheet::OnKeyDown(wxKeyEvent &event) {
 }
 
 bool Worksheet::GCContainsCurrentQuestion(const GroupCell *cell) {
-  return GetWorkingGroup() && cell == GetWorkingGroup() && m_questionPrompt;
+  return GetWorkingGroup() && cell == GetWorkingGroup() && QuestionPending();
 }
 
 void Worksheet::QuestionAnswered() {
-  if (m_cellPointers.m_answerCell || m_questionPrompt) {
+  if (m_cellPointers.m_answerCell || QuestionPending()) {
     SetActiveCell(NULL);
     GroupCell *wg = GetWorkingGroup(true);
     if (wg) {
@@ -2485,7 +2485,7 @@ void Worksheet::QuestionAnswered() {
     }
   }
   m_cellPointers.m_answerCell = nullptr;
-  m_questionPrompt = false;
+  QuestionPending(false);
 }
 
 void Worksheet::UpdateScrollPos() {
@@ -5499,15 +5499,15 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
 
       if (type == AutoComplete::demofile)
         m_autocomplete.UpdateDemoFiles(
-                                       partial, wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
+                                       partial, wxFileName(GetCurrentFile()).GetPath(wxPATH_GET_VOLUME));
 
       if (type == AutoComplete::loadfile)
         m_autocomplete.UpdateLoadFiles(
-                                       partial, wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
+                                       partial, wxFileName(GetCurrentFile()).GetPath(wxPATH_GET_VOLUME));
 
       if (type == AutoComplete::generalfile)
         m_autocomplete.UpdateGeneralFiles(
-                                          partial, wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
+                                          partial, wxFileName(GetCurrentFile()).GetPath(wxPATH_GET_VOLUME));
     }
   }
 

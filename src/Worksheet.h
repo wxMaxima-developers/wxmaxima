@@ -56,6 +56,7 @@
 #include "cells/GroupCell.h"
 #include "TreeUndoManager.h"
 #include "WorksheetCursor.h"
+#include "WorksheetDocument.h"
 #include "WorksheetSearch.h"
 #include "WorksheetLayout.h"
 #include "cells/TextCell.h"
@@ -733,12 +734,9 @@ public:
   }
 
   //! The name of the currently-opened file
-  const wxString &GetCurrentFile() const { return m_currentFile; }
+  const wxString &GetCurrentFile() const { return m_document.GetCurrentFile(); }
   //! Set the name of the currently-opened file
-  void SetCurrentFile(const wxString &file) { m_currentFile = file; }
-private:
-  wxString m_currentFile;
-public:
+  void SetCurrentFile(const wxString &file) { m_document.SetCurrentFile(file); }
 
   /*! Make a few unicode characters interpretable by maxima.
 
@@ -1000,8 +998,8 @@ public:
 
   void MergeCells();
 
-  void SetLastQuestion(const wxString &lastQuestion){m_lastQuestion = lastQuestion;}
-  wxString GetLastQuestion() const {return m_lastQuestion;}
+  void SetLastQuestion(const wxString &lastQuestion){m_document.SetLastQuestion(lastQuestion);}
+  wxString GetLastQuestion() const {return m_document.GetLastQuestion();}
 
   //! Add the currently selected cells to the clipboard and delete them.
   bool CutToClipboard();
@@ -1321,7 +1319,7 @@ public:
 
   void OutputChanged()
     {
-      if(m_currentFile.EndsWith(".wxmx"))
+      if(GetCurrentFile().EndsWith(".wxmx"))
         m_saved = false;
     }
 
@@ -1485,24 +1483,19 @@ public:
   //! Mark the current question from maxima as "answered"..
   void QuestionAnswered();
 
-private:
-  //! true = the last reply from maxima was a question
-  bool m_questionPrompt = false;
-public:
-
   /*! Does maxima wait for the answer of a question?
 
     \retval true = maxima waits for the answer of a question.
   */
   bool QuestionPending() const
-    { return m_questionPrompt; }
+    { return m_document.QuestionPending(); }
   //!@}
 
   /*! Does maxima currently wait for the answer of a question?
 
    */
   void QuestionPending(bool pending)
-    { m_questionPrompt = pending; }
+    { m_document.SetQuestionPending(pending); }
 
   void SetMaximaDocDir(const wxString &dir)
     {
@@ -1581,7 +1574,10 @@ public:
   MaximaManual *GetMaximaManual() {return &m_maximaManual;}
 protected:
   void FocusTextControl();
-  wxString m_lastQuestion;
+  //! The view-independent document state (file, current question, ...) that
+  //! Worksheet's document accessors delegate to. Grows as the document/view
+  //! split migrates more state off Worksheet.
+  WorksheetDocument m_document;
   //! A memory we can manually buffer the contents of the area that is to be redrawn in
   wxBitmap m_memory;
   virtual wxSize DoGetBestClientSize() const override;

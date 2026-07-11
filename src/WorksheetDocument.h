@@ -1,0 +1,77 @@
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+//
+//  Copyright (C) 2026 Gunter Königsmann <wxMaxima@physikbuch.de>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+//
+//  SPDX-License-Identifier: GPL-2.0+
+
+/*! \file
+  The document half of the worksheet: the state and commands that describe the
+  edited document itself, independent of how it is displayed.
+
+  WorksheetDocument is the growing home for the state the document/view split
+  peels off Worksheet (see the split map): the cell tree, the undo history, the
+  evaluation queue, the between-cells cursor and the small bits of bookkeeping
+  gathered here first - the file the document was loaded from and the "current
+  Maxima question" state. Worksheet holds one instance and forwards its
+  document accessors to it; view-only state (scrolling, timers, the drawing
+  context) stays on Worksheet.
+
+  Only genuinely view-independent state belongs here. Notably m_saved is *not*
+  here yet: its setter also flips Worksheet's m_updateControls (a view flag), so
+  moving it needs a view callback and waits for a later increment.
+*/
+
+#ifndef WORKSHEETDOCUMENT_H
+#define WORKSHEETDOCUMENT_H
+
+#include <wx/string.h>
+
+/*! The view-independent state and commands of an edited worksheet document.
+
+  Currently a small aggregate that Worksheet delegates to; it grows as further
+  document state is migrated off Worksheet. Held by value by Worksheet.
+*/
+class WorksheetDocument {
+public:
+  //! The file this document was last loaded from / saved to (empty if none).
+  const wxString &GetCurrentFile() const { return m_currentFile; }
+  //! Record the file this document is associated with.
+  void SetCurrentFile(const wxString &file) { m_currentFile = file; }
+
+  //! The text of the Maxima question the user is currently being asked.
+  const wxString &GetLastQuestion() const { return m_lastQuestion; }
+  //! Remember the text of the question Maxima is currently asking.
+  void SetLastQuestion(const wxString &lastQuestion) {
+    m_lastQuestion = lastQuestion;
+  }
+
+  //! Is Maxima currently waiting for an answer to a question?
+  bool QuestionPending() const { return m_questionPrompt; }
+  //! Record whether Maxima is waiting for an answer to a question.
+  void SetQuestionPending(bool pending) { m_questionPrompt = pending; }
+
+private:
+  //! The file the document was loaded from / saved to.
+  wxString m_currentFile;
+  //! The text of the question Maxima is currently asking, if any.
+  wxString m_lastQuestion;
+  //! True while Maxima is waiting for the answer to a question.
+  bool m_questionPrompt = false;
+};
+
+#endif // WORKSHEETDOCUMENT_H

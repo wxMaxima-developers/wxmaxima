@@ -19,6 +19,10 @@
 - Copying or selecting text that spans a soft line break no longer leaks the
   invisible break character, which would have turned into a hard line break
   when pasted.
+- Internal: the worksheet's view-independent document state is being gathered
+  into a new WorksheetDocument object that Worksheet delegates to (the document
+  half of the ongoing document/view split). The first fields moved are the
+  current file name and the "Maxima is asking a question" state.
 - Internal: the "schedule cells for evaluation" logic
   (Add*ToEvaluationQueue) now keeps its document-pure core - which group cells
   are eligible and the queue walk over a cell range - in a Worksheet-independent
