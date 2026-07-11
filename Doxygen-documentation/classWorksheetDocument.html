@@ -106,6 +106,16 @@ const <a class="el" href="classTreeUndoManager.html">TreeUndoManager</a> &amp;&#
 const <a class="el" href="classWorksheetCursor.html">WorksheetCursor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetCursor</b> () const</td></tr>
 <tr class="memdesc:a1b77a8a956e74f69267c428957e041c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The between-cells cursor (read-only view). <br /></td></tr>
 <tr class="separator:a1b77a8a956e74f69267c428957e041c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2234fe1e5369878511fd26ca443e4b4"><td class="memItemLeft" align="right" valign="top"><a id="ad2234fe1e5369878511fd26ca443e4b4" name="ad2234fe1e5369878511fd26ca443e4b4"></a>
+<a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetTree</b> () const</td></tr>
+<tr class="memdesc:ad2234fe1e5369878511fd26ca443e4b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The first <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> of the document (null when the document is empty). <br /></td></tr>
+<tr class="separator:ad2234fe1e5369878511fd26ca443e4b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9594ab7b704e1da3e24ad634e82d6d04"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#a9594ab7b704e1da3e24ad634e82d6d04">TreeOwner</a> ()</td></tr>
+<tr class="memdesc:a9594ab7b704e1da3e24ad634e82d6d04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable access to the owning pointer of the cell tree.  <br /></td></tr>
+<tr class="separator:a9594ab7b704e1da3e24ad634e82d6d04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13c617f8ecf9c94bf606a3e815f2a3cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#a13c617f8ecf9c94bf606a3e815f2a3cf">LastCache</a> () const</td></tr>
+<tr class="memdesc:a13c617f8ecf9c94bf606a3e815f2a3cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cached pointer to the document's last <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> (&lt;0 = unknown).  <br /></td></tr>
+<tr class="separator:a13c617f8ecf9c94bf606a3e815f2a3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e2180cfeeb6314874cc28750efe7e38"><td class="memItemLeft" align="right" valign="top"><a id="a7e2180cfeeb6314874cc28750efe7e38" name="a7e2180cfeeb6314874cc28750efe7e38"></a>
 const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentFile</b> () const</td></tr>
 <tr class="memdesc:a7e2180cfeeb6314874cc28750efe7e38"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file this document was last loaded from / saved to (empty if none). <br /></td></tr>
@@ -134,7 +144,64 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetQuestionPending</b
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The view-independent state and commands of an edited worksheet document. </p>
 <p>Currently a small aggregate that <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> delegates to; it grows as further document state is migrated off <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>. Held by value by <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a13c617f8ecf9c94bf606a3e815f2a3cf" name="a13c617f8ecf9c94bf606a3e815f2a3cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13c617f8ecf9c94bf606a3e815f2a3cf">&#9670;&#160;</a></span>LastCache()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt; &amp; WorksheetDocument::LastCache </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The cached pointer to the document's last <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> (&lt;0 = unknown). </p>
+<p>Mutable so the const "find the last cell" lookup can memoise its result; the surgery code also updates it directly when it reseats the tail. </p>
+
+</div>
+</div>
+<a id="a9594ab7b704e1da3e24ad634e82d6d04" name="a9594ab7b704e1da3e24ad634e82d6d04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9594ab7b704e1da3e24ad634e82d6d04">&#9670;&#160;</a></span>TreeOwner()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt; &amp; WorksheetDocument::TreeOwner </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mutable access to the owning pointer of the cell tree. </p>
+<p>Transitional: while the tree-editing surgery still lives in <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>, it reseats the head of the list (moves a new tree in, resets it, splices), so it needs the unique_ptr itself, not just <a class="el" href="classWorksheetDocument.html#ad2234fe1e5369878511fd26ca443e4b4" title="The first GroupCell of the document (null when the document is empty).">GetTree()</a>. Moves onto <a class="el" href="classWorksheetDocument.html" title="The view-independent state and commands of an edited worksheet document.">WorksheetDocument</a> with the tree-surgery methods in a later increment. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/<a class="el" href="WorksheetDocument_8h_source.html">WorksheetDocument.h</a></li>
 </ul>
 </div><!-- contents -->
