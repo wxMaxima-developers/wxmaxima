@@ -73,14 +73,14 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the <a class="el" href="classwxMaxima.html">wxMaxima</a> codebase. <b>Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.</b></p>
-<h1><a class="anchor" id="autotoc_md2"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 Build System</h1>
 <ul>
 <li><b>Build Tool:</b> <code>ninja</code></li>
 <li><b>Build Directory:</b> <code>build</code></li>
 <li><b>Compilation Command:</b> <code>ninja -<a class="el" href="classC.html">C</a> build</code></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md3"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 Architecture &amp; GUI</h1>
 <ul>
 <li><b>wxAuiManager:</b> The application uses <code>wxAuiManager</code> for its complex layout (sidebars, toolbars, worksheet).<ul>
@@ -101,7 +101,7 @@ Architecture &amp; GUI</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md17"></a>
 Conventions &amp; Standards</h1>
 <ul>
 <li><b>Git Environment:</b> Note that running <code>git diff</code> might launch the visual diff tool <code>meld</code> instead of outputting to the terminal. Always use <code>git diff --no-ext-diff</code> if you need terminal output.</li>
@@ -119,7 +119,7 @@ Conventions &amp; Standards</h1>
 <li><b>C++ Standard:</b> The project uses <b>C++20</b>. To support users on older operating systems (like Debian-oldstable or RHEL), <a class="el" href="classwxMaxima.html">wxMaxima</a> aims to stay approximately 10 years behind the current C++ standard.</li>
 <li><b>wxWidgets Version:</b> Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use <code>MakeAbsolute()</code> + <code>GetFullPath()</code> instead of <code>GetAbsolutePath()</code>).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 Layout &amp; Compatibility</h1>
 <ul>
 <li><b>Mathematical <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> Padding:</b> Use <code>MC_TEXT_PADDING</code> (in <code><a class="el" href="Configuration_8h_source.html">Configuration.h</a></code>) for text-based cells. <b>Exception:</b> <code><a class="el" href="classDigitCell.html" title="A Text cell that display a digit of a more-than-one-line-wide number.">DigitCell</a></code> does not include padding to ensure visual consistency in broken-up numbers.</li>
@@ -136,7 +136,7 @@ Layout &amp; Compatibility</h1>
 <li><b>Windows Focus Management:</b> Use <code>CallAfter</code> for focus transitions (e.g., <code>m_searchText-&gt;SetFocus()</code>) to prevent the worksheet from "stealing" focus back.</li>
 <li><b>Constructor Initialization:</b> Order initialization lists to match header declaration order to prevent <code>-Wreorder</code> warnings.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 Performance &amp; Documentation Mandates</h1>
 <ul>
 <li><b>NEWS.md Updates:</b> Every non-trivial change MUST be documented in <code>NEWS.md</code> under the "# Current development version" section.</li>

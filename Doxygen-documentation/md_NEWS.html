@@ -73,6 +73,11 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Windows: on shutdown <a class="el" href="classwxMaxima.html">wxMaxima</a> suppresses the OS hard-error message boxes ("this
+  application could not be started", the critical-error and crash boxes) for itself and for the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> and gnuplot processes it launches, and it no longer lets those child processes inherit its stdout/stderr. <a class="el" href="classA.html">A</a> fast batch run (for example an empty worksheet) that killed a still-starting <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> or gnuplot on exit could otherwise pop a modal dialog which, with nobody to dismiss it on a head-less or CI machine, kept the killed child - and the inherited output pipe<ul>
+<li>alive and hung the run.</li>
+</ul>
+</li>
 <li>Fixed: several configuration-dialog settings were silently not saved when you pressed OK. The OK handler persisted only the styles and the settings kept in the shared key table, so the print margins, the autosave interval, the maximum layout time, the maximum clipboard-bitmap size, the "keep %"/label-width/ save-untitled/cursor-jump options, "display all digits"/"insert line breaks
   into long numbers" and the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> environment variables were all thrown away the moment the dialog closed (the following refresh even reset the live value back to the stored one). The dialog now saves through the complete write path.</li>
 <li>The "Undo limit" setting is gone: the undo history is now always unlimited (which was already the default). This removes an option from the crowded configuration dialog; an undo limit stored by an older version is ignored.</li>
