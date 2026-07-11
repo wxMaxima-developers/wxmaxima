@@ -2199,10 +2199,10 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
 
   bool autoEvaluate = false;
   // If we still haven't a cell to put the answer in we now create one.
-  if (!m_cellPointers.m_answerCell) {
+  if (!m_cellPointers.GetAnswerCell()) {
     auto answerCell =
       EditorCell::Create(group, m_configuration, MC_TYPE_INPUT);
-    m_cellPointers.m_answerCell = answerCell;
+    m_cellPointers.SetAnswerCell(answerCell.get());
     answerCell->SetType(MC_TYPE_INPUT);
 
     if (!txt.empty())
@@ -2231,7 +2231,7 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
   // If the user wants to be automatically scrolled to the cell evaluation takes
   // place we scroll to this cell.
   if (FollowEvaluation() || autoEvaluate)
-    SetActiveCell(m_cellPointers.m_answerCell);
+    SetActiveCell(m_cellPointers.GetAnswerCell());
 
   RequestRedraw();
   return autoEvaluate;
@@ -2414,7 +2414,7 @@ bool Worksheet::GCContainsCurrentQuestion(const GroupCell *cell) {
 }
 
 void Worksheet::QuestionAnswered() {
-  if (m_cellPointers.m_answerCell || QuestionPending()) {
+  if (m_cellPointers.GetAnswerCell() || QuestionPending()) {
     SetActiveCell(NULL);
     GroupCell *wg = GetWorkingGroup(true);
     if (wg) {
@@ -2422,7 +2422,7 @@ void Worksheet::QuestionAnswered() {
       ScrollToCaret();
     }
   }
-  m_cellPointers.m_answerCell = nullptr;
+  m_cellPointers.ClearAnswerCell();
   QuestionPending(false);
 }
 

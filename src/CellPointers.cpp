@@ -87,6 +87,15 @@ void CellPointers::ErrorList::Add(GroupCell *cell) {
   m_errors.emplace_back(cell);
 }
 
+EditorCell *CellPointers::GetAnswerCell() const { return m_answerCell; }
+
+void CellPointers::SetAnswerCell(EditorCell *cell) { m_answerCell = cell; }
+
+void CellPointers::ClearAnswerCellIfInGroup(GroupCell *group) {
+  if (m_answerCell && m_answerCell->GetGroup() == group)
+    m_answerCell = {};
+}
+
 void CellPointers::SetWorkingGroup(GroupCell *group) {
   if (group)
     m_lastWorkingGroup = group;

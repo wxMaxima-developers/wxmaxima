@@ -298,9 +298,7 @@ void GroupCell::AppendInput(std::unique_ptr<Cell> &&cell) {
 }
 
 void GroupCell::SetOutput(std::unique_ptr<Cell> &&output) {
-  if ((m_cellPointers->m_answerCell) &&
-      (m_cellPointers->m_answerCell->GetGroup() == this))
-    m_cellPointers->m_answerCell = nullptr;
+  m_cellPointers->ClearAnswerCellIfInGroup(this);
 
   m_output.reset();
   AppendOutput(std::move(output));
@@ -312,9 +310,7 @@ void GroupCell::RemoveOutput() {
   m_numberedAnswersCount = 0;
   // If there is nothing to do we can skip the rest of this action.
 
-  if ((m_cellPointers->m_answerCell) &&
-      (m_cellPointers->m_answerCell->GetGroup() == this))
-    m_cellPointers->m_answerCell = nullptr;
+  m_cellPointers->ClearAnswerCellIfInGroup(this);
 
   if (GetGroupType() != GC_TYPE_IMAGE)
     m_output.reset();
@@ -926,8 +922,8 @@ void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
     dc->SetBrush(*wxRED_BRUSH);
     drawBracket = true;
   } else {
-    if ((m_cellPointers->m_answerCell) &&
-        (m_cellPointers->m_answerCell->GetGroup() == this)) {
+    if ((m_cellPointers->GetAnswerCell()) &&
+        (m_cellPointers->GetAnswerCell()->GetGroup() == this)) {
       dc->SetPen(*wxYELLOW_PEN);
       dc->SetBrush(*wxYELLOW_BRUSH);
       drawBracket = true;

@@ -101,12 +101,23 @@ public:
   //! Are any whole cells (as opposed to text inside an editor) selected?
   bool HasCellsSelected() const { return m_selectionStart && m_selectionEnd; }
 
+  // GetAnswerCell/SetAnswerCell are defined out-of-line: converting the CellPtr
+  // to (or assigning a raw pointer from) EditorCell* needs the complete
+  // EditorCell type, which this header only forward-declares.
+  //! The editor cell maxima's current question is being answered in, or null.
+  EditorCell *GetAnswerCell() const;
+  //! Set the editor cell maxima's current question is answered in.
+  void SetAnswerCell(EditorCell *cell);
+  //! Forget the editor cell that held maxima's current question.
+  void ClearAnswerCell() { m_answerCell = {}; }
+  //! Forget the question editor if it belongs to group, e.g. because that
+  //! group's output is being reset or the group is going away.
+  void ClearAnswerCellIfInGroup(GroupCell *group);
+
   //! The list of cells maxima has complained about errors in
   ErrorList m_errorList;
   //! Which EditCell the blinking cursor is in?
   CellPtr<EditorCell> m_activeCell;
-  //! The EditorCell that contains the currently active question from maxima
-  CellPtr<EditorCell> m_answerCell;
   //! The textcell the text maxima is sending us was ending in.
   CellPtr<TextCell> m_currentTextCell;
   /*! The first cell of the currently selected range of Cells.
@@ -195,6 +206,8 @@ private:
   CellPtr<GroupCell> m_workingGroup;
   //! The last group cell maxima was working on.
   CellPtr<GroupCell> m_lastWorkingGroup;
+  //! The EditorCell that contains the currently active question from maxima
+  CellPtr<EditorCell> m_answerCell;
 
   // ---- View-side (encapsulated) ----
   struct CellTimerId {
