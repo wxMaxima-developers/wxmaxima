@@ -5516,10 +5516,6 @@ void wxMaxima::FileMenu(wxCommandEvent &event) {
   GetWorksheet()->CloseAutoCompletePopup();
 
   bool forceSave = false;
-#if defined __WXMSW__
-  wxString b = wxS("\\");
-  wxString f = wxS("/");
-#endif
 
   if((event.GetId() == wxID_EXIT) || (event.GetId() == wxID_CLOSE)) {
     CallAfter([this]{Close();});
