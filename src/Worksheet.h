@@ -526,7 +526,9 @@ private:
     inside a cell is EditorCell::GetActiveCell(); at most one of the two is
     active at a time, which Worksheet's SetHCaret/SetActiveCell enforce.
   */
-  WorksheetCursor m_hCaret;
+  //! The between-cells cursor lives in m_document; these forward to it.
+  WorksheetCursor &GetHCaretCursor() { return m_document.GetCursor(); }
+  const WorksheetCursor &GetHCaretCursor() const { return m_document.GetCursor(); }
   bool m_leftDown = false;
   //! Do we want to automatically scroll to a cell as soon as it is being evaluated?
   bool m_followEvaluation = true;
@@ -755,7 +757,7 @@ public:
   FindReplaceDialog *m_findDialog = NULL;
 
   //! Is the vertically-drawn cursor active?
-  bool HCaretActive() const { return m_hCaret.IsActive(); }
+  bool HCaretActive() const { return GetHCaretCursor().IsActive(); }
 
   /*! Can we merge the selected cells into one?
 
@@ -886,7 +888,7 @@ public:
     }
 
   bool CanPaste() const
-    { return m_cellPointers.m_activeCell || m_hCaret.IsActive(); }
+    { return m_cellPointers.m_activeCell || GetHCaretCursor().IsActive(); }
 
   bool CanCut() const
     {

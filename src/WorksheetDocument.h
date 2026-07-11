@@ -41,6 +41,7 @@
 
 #include "EvaluationQueue.h"
 #include "TreeUndoManager.h"
+#include "WorksheetCursor.h"
 #include <wx/string.h>
 
 /*! The view-independent state and commands of an edited worksheet document.
@@ -59,6 +60,11 @@ public:
   TreeUndoManager &GetTreeUndo() { return m_treeUndo; }
   //! The document's tree-edit undo/redo history (read-only view).
   const TreeUndoManager &GetTreeUndo() const { return m_treeUndo; }
+
+  //! The between-cells cursor (the h-caret) and its group-level selection.
+  WorksheetCursor &GetCursor() { return m_hCaret; }
+  //! The between-cells cursor (read-only view).
+  const WorksheetCursor &GetCursor() const { return m_hCaret; }
 
   //! The file this document was last loaded from / saved to (empty if none).
   const wxString &GetCurrentFile() const { return m_currentFile; }
@@ -82,6 +88,8 @@ private:
   EvaluationQueue m_evaluationQueue;
   //! Undo/redo history of edits to the cell-tree structure.
   TreeUndoManager m_treeUndo;
+  //! The between-cells cursor (h-caret): its position and group selection.
+  WorksheetCursor m_hCaret;
   //! The file the document was loaded from / saved to.
   wxString m_currentFile;
   //! The text of the question Maxima is currently asking, if any.
