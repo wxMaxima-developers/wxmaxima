@@ -48,6 +48,7 @@
 #include "Worksheet.h"
 #include "cells/Cell.h"
 #include "cells/GroupCell.h"
+#include "cells/MatrCell.h"
 
 #include <cstdlib>
 #include <vector>
@@ -224,6 +225,37 @@ SCENARIO("A narrow-wide canvas round trip restores the original layout") {
       }
     }
     g_cfg->SetZoomFactor(1.0);
+  }
+}
+
+SCENARIO("A special matrix with row/column names but no entries does not crash on draw") {
+  // MathParser sets a matrix's special / rownames / colnames flags purely from
+  // the .wxmx XML attributes, independent of whether the matrix actually has
+  // any rows or columns. A corrupt (or hand-crafted) document can thus yield a
+  // "special" matrix carrying rownames/colnames but zero columns/rows, whose
+  // per-column width / per-row drop-center vectors stay empty. MatrCell::Draw
+  // used to index those empty vectors with .at(0) when drawing the row/column
+  // separator lines - an out-of-range throw that, uncaught in the paint path,
+  // terminated wxMaxima. Reproduce that exact state and require Draw to survive.
+  GIVEN("a special 0x0 matrix that claims to have row and column names") {
+    auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("m;"));
+    auto matrOwned = std::make_unique<MatrCell>(group.get(), g_cfg);
+    MatrCell *matr = matrOwned.get();
+    matr->SetStyle(TS_VARIABLE);
+    matr->SetSpecialFlag(true);
+    matr->RowNames(true);
+    matr->ColNames(true);
+    matr->SetDimension(); // m_matHeight == 0 -> m_matWidth stays 0, vectors empty
+    group->AppendOutput(std::move(matrOwned));
+    group->Recalculate();
+    matr->SetCurrentPoint(wxPoint(50, 50)); // give it a valid on-screen position
+
+    WHEN("it is drawn") {
+      NoClipToDrawRegion noClip(g_cfg); // force DrawThisCell() to actually draw
+      THEN("drawing does not throw") {
+        REQUIRE_NOTHROW(matr->Draw(g_dc, g_dc));
+      }
+    }
   }
 }
 

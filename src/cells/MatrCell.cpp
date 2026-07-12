@@ -149,12 +149,18 @@ void MatrCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
         antialiassingDC->DrawLine(point.x + Scale_Px(1), point.y - m_center + Scale_Px(2),
                                   point.x + Scale_Px(1), point.y + m_center - Scale_Px(2));
       else {
-        if (m_rowNames)
+        // m_rowNames/m_colNames come straight from the .wxmx XML attributes and
+        // are set independently of whether the matrix actually has any
+        // columns/rows (MathParser sets them unconditionally). A special matrix
+        // with rownames/colnames but zero columns/rows leaves m_widths /
+        // m_dropCenters empty, so guard the at(0) accesses - .at() would throw
+        // and, uncaught, terminate wxMaxima on such a (corrupt) document.
+        if (m_rowNames && !m_widths.empty())
           antialiassingDC->DrawLine(point.x + m_widths.at(0) + 2 * Scale_Px(5),
                                     point.y - m_center + Scale_Px(2),
                                     point.x + m_widths.at(0) + 2 * Scale_Px(5),
                                     point.y + m_center - Scale_Px(2));
-        if (m_colNames)
+        if (m_colNames && !m_dropCenters.empty())
           antialiassingDC->DrawLine(
                                     point.x + Scale_Px(1),
                                     point.y - m_center + m_dropCenters.at(0).Sum() + 2 * Scale_Px(5),
