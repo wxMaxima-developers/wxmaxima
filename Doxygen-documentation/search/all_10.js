@@ -48,7 +48,7 @@ var searchData=
   ['productcell_2ecpp_45',['ProductCell.cpp',['../ProductCell_8cpp.html',1,'']]],
   ['productcell_2eh_46',['ProductCell.h',['../ProductCell_8h.html',1,'']]],
   ['project_20instructions_47',['Project Instructions',['../md_AGENTS.html',1,'']]],
-  ['propertiesmenu_48',['PropertiesMenu',['../classwxMaxima.html#a95404b3c3175c24b7b557ab060a50e80',1,'wxMaxima']]],
+  ['propertiesmenu_48',['PropertiesMenu',['../classMaximaCommandMenus.html#ac0eaf6e0cf0b25ab632ebf1f4ba1bc56',1,'MaximaCommandMenus']]],
   ['publicvar_49',['publicVar',['../classJavadoc__Test.html#a44a516fbc3a4865e2dcae34649c9df6a',1,'Javadoc_Test::publicVar()'],['../classQTstyle__Test.html#aabf7b2e9ed83ea44aca4d213baae06d3',1,'QTstyle_Test::publicVar()']]],
   ['pyclass_50',['PyClass',['../classdocstring_1_1PyClass.html',1,'docstring.PyClass'],['../classpyexample_1_1PyClass.html',1,'pyexample.PyClass']]],
   ['pyexample_51',['pyexample',['../namespacepyexample.html',1,'']]],

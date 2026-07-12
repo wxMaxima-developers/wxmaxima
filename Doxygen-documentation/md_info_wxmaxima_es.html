@@ -117,7 +117,7 @@ Celdas</h3>
 <p>El comportamiento predeterminado de <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> cuando el texto es teclado para creación automática de una celda matemática. Las celdas de otros tipos puede ser creadas utilizando el menú Celda, utilizando las teclas resaltadas mostradas dentro del menú o utilizando el listado de arrastrar-bajar dentro de la barra de herramientas. Una vez que la celda no matemática es creada, lo que se teclee dentro del archivo es interpretado como texto.</p>
 <p>Un [comentario de texto] (C-style)(<a href="https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Comments">https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Comments</a>) puede ser parte de una celda matemática como sigue: <code>/* Este comentario será ignorado por <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> */</code></p>
 <p>"`/*`" marca el inicio del comentario, "`*/`" el final.</p>
-<h3><a class="anchor" id="autotoc_md150"></a>
+<h3><a class="anchor" id="autotoc_md151"></a>
 Cursores horizontales y verticales</h3>
 <p>Si el usuario intenta seccionar una oración completa, un procesador de palabras intentará extender la selección para iniciar y finalizar automáticamente con una palabra acotada. Así mismo, si está seleccionada más de una celda, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> extenderá la selección a todas las celdas.</p>
 <p>Que no es estándar es que <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> proporciona flexibilidad para arrastrar-y-soltar definiendo dos tipos de cursores. <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> conmutará entre ellos automáticamente cuando lo necesite:</p>
@@ -132,15 +132,15 @@ wxMaxima" class="inline"/></p>
 <p>Si navegas entre las celdas diferentes, además verá el (parpadeo) cursor horizontal, donde puede insertar una celda a su hoja de trabajo (bien una celda matemática, por tan solo inicie tecleando su fórmula - o un tipo de celda diferente utilizando el menú).</p>
 <p><img src="./horizontal-cursor-between-cells.png" alt="(parpadeo) del cursor horizontal entre
 celdas" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md151"></a>
+<h3><a class="anchor" id="autotoc_md152"></a>
 Enviar celdas a “Maxima”</h3>
 <p>La instrucción dentro de una celda de código es ejecutada una vez pulsando <code>CTRL</code>+<code>ENTRAR</code>, <code>MAYÚS</code>+<code>ENTRAR</code> o la tecla <code>ENTRAR</code> en el teclado numérico. Lo predeterminado de <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> es introducir instrucciones cuando se introduzca <code>CTRL</code>+<code>ENTRAR</code> o <code>MAYÚS</code>+<code>ENTRAR</code>, pero <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> puede ser configurado para ejecutar instrucciones como respuesta al <code>ENTRAR</code>.</p>
-<h3><a class="anchor" id="autotoc_md152"></a>
+<h3><a class="anchor" id="autotoc_md153"></a>
 Instrucción con auto-completado</h3>
 <p><em>WxMaxima</em> contiene una característica de auto-completado que es disparada a través del menú (Celda/Palabra Completa) o alternativamente pulsando la combinación de teclas <code>CTRL</code>+<code>ESPACIO</code>. El auto-completado distingue MAYÚS/minús. Por ejemplo si está activado dentro de una especificación unitaria para ezUnits ofrecerá un listado de unidades aplicables.</p>
 <p><img src="./ezUnits.png" alt="ezUnits" class="inline"/></p>
 <p>Al lado de completar un nombre de archivo, un nombre de unidad o la instrucción actual o el nombre de variable, el auto-completado es capas de mostrar una plantilla para muchas de las instrucciones iniciando el tipo (y significado) de los parámetros que este programa espera. Para activar esta característica presione <code>MAYÚS</code>+<code>CTRL</code>+<code>ESPACIO</code> o seleccione el ítem del menú respectivo (Celda/Mostrar plantilla).</p>
-<h4><a class="anchor" id="autotoc_md153"></a>
+<h4><a class="anchor" id="autotoc_md154"></a>
 Caracteres griegos</h4>
 <p>Equipos tradicionalmente almacenados en valores 8-bit. Esto permite para un máximo de 256 caracteres diferentes. Todas las letras, números t y símbolos de control (final de transmisión, final de cadena, líneas y bordes para dibujar rectángulos para menús :etc_.) de cerca cualquier idioma puede caber dentro de ese límite.</p>
 <p>Para muchos países, la página de código de 256 caracteres que han sido elegidos no incluyen cosas como letras griegas, por lo que, eso es utilizado frecuentemente en matemáticas. Para solucionar este tipo de limitación [Unicode] (<a href="https://home.unicode.org/">https://home.unicode.org/</a>) ha sido inventado: una codificación que hace que el texto inglés funcione como normal, pero para utilizar más que los 256 caracteres.</p>
@@ -186,7 +186,7 @@ Caracteres griegos</h4>
 <td class="markdownTableBodyCenter">T   </td><td class="markdownTableBodyCenter">Teta   </td><td class="markdownTableBodyCenter">P   </td><td class="markdownTableBodyCenter">Pi   </td><td class="markdownTableBodyCenter">O   </td><td class="markdownTableBodyCenter">Omega   </td></tr>
 </table>
 <p>Además puede utilizar la barra lateral de «Teclas griegas» para introducir las letras griegas.</p>
-<p><a class="anchor" id="autotoc_md154"></a> </p><h5>Attention: Lookalike characters</h5>
+<p><a class="anchor" id="autotoc_md155"></a> </p><h5>Attention: Lookalike characters</h5>
 <p>Several Latin letters look like the Greek letters, e.g. the Latin letter "A" and the Greek letter "Alpha". Although they look identical, they are two different Unicode characters, represented by different Unicode code points (numbers).</p>
 <p>This might be problematic, if you assign a value to the variable <a class="el" href="classA.html">A</a> and later use the Greek letter Alpha to do something with this variable, especially on printouts. For the Greek letter my (which is also used as prefix for micro) there are also two different Unicode code points.</p>
 <p>The "Greek letters"-sidebar therefore has the option, that lookalike characters are not available (which can be changed using a right-click menu).</p>

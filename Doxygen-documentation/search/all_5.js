@@ -30,7 +30,7 @@ var searchData=
   ['equals_27',['Equals',['../structAFontSize_1_1Equals.html',1,'AFontSize']]],
   ['equalsmatcher_28',['EqualsMatcher',['../structCatch_1_1Matchers_1_1StdString_1_1EqualsMatcher.html',1,'Catch::Matchers::StdString::EqualsMatcher'],['../structCatch_1_1Matchers_1_1Vector_1_1EqualsMatcher.html',1,'Catch::Matchers::Vector::EqualsMatcher&lt; T, AllocComp, AllocMatch &gt;']]],
   ['equaltowithin_29',['EqualToWithin',['../classAFontSize.html#aa4d7d94eb0b2e1d1a4815081e6292f1d',1,'AFontSize']]],
-  ['equationsmenu_30',['EquationsMenu',['../classwxMaxima.html#a2428d7720e004d0c3df47c72ae6ce466',1,'wxMaxima']]],
+  ['equationsmenu_30',['EquationsMenu',['../classMaximaCommandMenus.html#a95b1346931897777b38d0a093bc15041',1,'MaximaCommandMenus']]],
   ['erasebackground_31',['EraseBackground',['../classWorksheet.html#a7b3e88ac91c894dd9944defa95f5c290',1,'Worksheet']]],
   ['errno_32',['errno',['../structcmd_8h.html#ad65a8842cc674e3ddf69355898c0ecbf',1,'structcmd.h']]],
   ['errorlist_33',['ErrorList',['../classDocumentCellPointers_1_1ErrorList.html',1,'DocumentCellPointers']]],

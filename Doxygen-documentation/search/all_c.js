@@ -22,7 +22,7 @@ var searchData=
   ['listcell_19',['ListCell',['../classListCell.html',1,'ListCell'],['../classListCell.html#a52704bfe83fedf99ec670e18f2157a9a',1,'ListCell::ListCell()']]],
   ['listcell_2ecpp_20',['ListCell.cpp',['../ListCell_8cpp.html',1,'']]],
   ['listcell_2eh_21',['ListCell.h',['../ListCell_8h.html',1,'']]],
-  ['listmenu_22',['ListMenu',['../classwxMaxima.html#a915c34aeca9d2ac2fbb3482b5decc018',1,'wxMaxima']]],
+  ['listmenu_22',['ListMenu',['../classMaximaCommandMenus.html#a55edbd2ed4eba55e9fb7939143f7311a',1,'MaximaCommandMenus']]],
   ['listsortwiz_23',['ListSortWiz',['../classListSortWiz.html',1,'']]],
   ['listtomathml_24',['ListToMathML',['../classCell.html#a5363e5a9e588450be0d236fc6411306d',1,'Cell']]],
   ['listtomatlab_25',['ListToMatlab',['../classCell.html#a27378319b42099034a597a4ac135bbd7',1,'Cell']]],

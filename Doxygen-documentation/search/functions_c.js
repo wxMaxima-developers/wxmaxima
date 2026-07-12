@@ -11,7 +11,7 @@ var searchData=
   ['limitcell_8',['LimitCell',['../classLimitCell.html#acae780e0f7c7c7932f9be36b02ab952f',1,'LimitCell']]],
   ['linewidth_5fem_9',['LineWidth_em',['../classConfiguration.html#a64e1b09ee6df37c98da088eb2dee9ef1',1,'Configuration::LineWidth_em() const'],['../classConfiguration.html#abc086b1e445ed702409186f11bab5a7d',1,'Configuration::LineWidth_em(long width)']]],
   ['listcell_10',['ListCell',['../classListCell.html#a52704bfe83fedf99ec670e18f2157a9a',1,'ListCell']]],
-  ['listmenu_11',['ListMenu',['../classwxMaxima.html#a915c34aeca9d2ac2fbb3482b5decc018',1,'wxMaxima']]],
+  ['listmenu_11',['ListMenu',['../classMaximaCommandMenus.html#a55edbd2ed4eba55e9fb7939143f7311a',1,'MaximaCommandMenus']]],
   ['listtomathml_12',['ListToMathML',['../classCell.html#a5363e5a9e588450be0d236fc6411306d',1,'Cell']]],
   ['listtomatlab_13',['ListToMatlab',['../classCell.html#a27378319b42099034a597a4ac135bbd7',1,'Cell']]],
   ['listtoomml_14',['ListToOMML',['../classCell.html#a27ac3402f1c9d97e108968bd308d976f',1,'Cell']]],

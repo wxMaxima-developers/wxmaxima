@@ -7,7 +7,7 @@ var searchData=
   ['mathjaxurl_4',['MathJaXURL',['../classConfiguration.html#a8a85c4bc6c7333011de3856d452aa4a4',1,'Configuration::MathJaXURL() const'],['../classConfiguration.html#a19fa14b5da6db871966920d852f755f3',1,'Configuration::MathJaXURL(wxString url)']]],
   ['mathparser_5',['MathParser',['../classMathParser.html#ad10265ea446b1b75a90c7222fd1fe2a7',1,'MathParser::MathParser(Configuration *cfg, const wxString &amp;zipfile={})'],['../classMathParser.html#a88bcb342d41f0ffcd126cbea77d1dccd',1,'MathParser::MathParser(const MathParser &amp;)=delete']]],
   ['mathstyleslist_6',['MathStylesList',['../classStyles.html#a5add79dc5b7ae37501c0d72956cd0391',1,'Styles']]],
-  ['matrixmenu_7',['MatrixMenu',['../classwxMaxima.html#ae8eb0c8fdd7f2fb7f6664a3aa5d9af5a',1,'wxMaxima']]],
+  ['matrixmenu_7',['MatrixMenu',['../classMaximaCommandMenus.html#af9fccf6bb1b07ebb637b9b9e0416d0c0',1,'MaximaCommandMenus']]],
   ['maxgnuplotmegabytes_8',['MaxGnuplotMegabytes',['../classConfiguration.html#a851d5425e6fbad1780479b4bb29ed535',1,'Configuration']]],
   ['maxima_9',['Maxima',['../classMaxima.html#a276c070c35c3cc8d31593de9aab92edc',1,'Maxima']]],
   ['maximadclick_10',['MaximaDClick',['../classwxMaxima.html#aa626d2e1156300530e9bba2128079289',1,'wxMaxima']]],

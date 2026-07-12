@@ -211,7 +211,7 @@ var searchData=
   ['mathstyleslist_208',['MathStylesList',['../classStyles.html#a5add79dc5b7ae37501c0d72956cd0391',1,'Styles']]],
   ['matrcell_209',['MatrCell',['../classMatrCell.html',1,'']]],
   ['matrcell_2ecpp_210',['MatrCell.cpp',['../MatrCell_8cpp.html',1,'']]],
-  ['matrixmenu_211',['MatrixMenu',['../classwxMaxima.html#ae8eb0c8fdd7f2fb7f6664a3aa5d9af5a',1,'wxMaxima']]],
+  ['matrixmenu_211',['MatrixMenu',['../classMaximaCommandMenus.html#af9fccf6bb1b07ebb637b9b9e0416d0c0',1,'MaximaCommandMenus']]],
   ['matwiz_212',['MatWiz',['../classMatWiz.html',1,'']]],
   ['max_213',['MAX',['../structcmd_8h.html#afa99ec4acc4ecb2dc3c2d05da15d0e3f',1,'MAX():&#160;structcmd.h'],['../define_8h.html#aacc3ee1a7f283f8ef65cea31f4436a95',1,'MAX():&#160;define.h']]],
   ['maxdrop_214',['maxDrop',['../structTrailingGroupGeometry.html#ad8465ae20d6e4a8c8880851f29218248',1,'TrailingGroupGeometry']]],
