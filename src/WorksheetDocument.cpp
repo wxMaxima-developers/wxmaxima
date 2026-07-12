@@ -30,6 +30,14 @@
 #include "cells/CellList.h"
 #include "cells/GroupCell.h"
 
+void WorksheetDocument::SetSaved(bool saved) {
+  if (m_saved == saved)
+    return;
+  m_saved = saved;
+  if (m_view)
+    m_view->NotifySavedStateChanged();
+}
+
 GroupCell *WorksheetDocument::GetLastCell() const {
   if (m_last)
     return m_last;
@@ -98,8 +106,7 @@ GroupCell *WorksheetDocument::InsertCells(std::unique_ptr<GroupCell> &&cells,
 
   if (recalcStart && m_view)
     m_view->NotifyRecalculation(recalcStart);
-  if (m_view)
-    m_view->NotifyDocumentModified(); // document has been modified
+  SetSaved(false); // document has been modified
 
   // AdjustSize() is intentionally NOT triggered directly here. Cell positions
   // are stale at this point (recalculation has only been scheduled, not

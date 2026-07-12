@@ -133,7 +133,7 @@ public:
     { RequestRecalculation(start); }
   void NotifyRedraw(GroupCell *start) override { RequestRedraw(start); }
   void NotifyAdjustSizeNeeded() override { m_layout.RequestAdjustSize(); }
-  void NotifyDocumentModified() override { SetSaved(false); }
+  void NotifySavedStateChanged() override { m_updateControls = true; }
 
   //! The list of unsaved (autosaved) documents offered for recovery.
   RecentDocuments &UnsavedDocuments() { return m_unsavedDocuments; }
@@ -556,8 +556,6 @@ private:
   wxTimer m_timer;
   //! The cursor blink rate. Also the timeout for redrawing the worksheet
   wxTimer m_caretTimer;
-  //! True if no changes have to be saved.
-  bool m_saved = true;
   std::vector<wxString> m_completions;
   bool m_autocompleteTemplates = true;
   AutocompletePopup *m_autocompletePopup;
@@ -1322,16 +1320,13 @@ public:
   void SaveValue();
 
   bool IsSaved() const
-    { return m_saved; }
+    { return m_document.IsSaved(); }
 
   void SetSaved(bool saved)
-    { if(m_saved != saved) m_updateControls = true; m_saved = saved;}
+    { m_document.SetSaved(saved); }
 
   void OutputChanged()
-    {
-      if(GetCurrentFile().EndsWith(".wxmx"))
-        m_saved = false;
-    }
+    { m_document.OutputChanged(); }
 
   void RemoveAllOutput();
 

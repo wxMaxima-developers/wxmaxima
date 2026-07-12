@@ -31,9 +31,11 @@
   document accessors to it; view-only state (scrolling, timers, the drawing
   context) stays on Worksheet.
 
-  Only genuinely view-independent state belongs here. Notably m_saved is *not*
-  here yet: its setter also flips Worksheet's m_updateControls (a view flag), so
-  moving it needs a view callback and waits for a later increment.
+  Only genuinely view-independent state belongs here. The "is the document
+  saved?" flag lives here too: SetSaved() owns the bool and, when it flips,
+  notifies the view through WorksheetDocumentView::NotifySavedStateChanged() so
+  the window can refresh the controls that depend on it (the title-bar
+  "modified" marker) - the view no longer owns any part of the saved-state.
 */
 
 #ifndef WORKSHEETDOCUMENT_H
@@ -124,6 +126,27 @@ public:
   //! Record whether Maxima is waiting for an answer to a question.
   void SetQuestionPending(bool pending) { m_questionPrompt = pending; }
 
+  //! True while the document has no unsaved changes.
+  bool IsSaved() const { return m_saved; }
+  /*! Record whether the document is in its saved state.
+
+    On an actual change of the flag the view is told via
+    WorksheetDocumentView::NotifySavedStateChanged() so it can refresh the
+    controls that depend on the saved-state. Defined in the .cpp because it
+    needs the complete WorksheetDocumentView type.
+  */
+  void SetSaved(bool saved);
+  /*! Note that a cell's output changed.
+
+    For a .wxmx (which caches output on disk) changed output means the file is
+    no longer saved. Sets the flag directly, without a control refresh, to match
+    the historical behaviour: this is called often during evaluation and must
+    stay cheap. */
+  void OutputChanged() {
+    if (m_currentFile.EndsWith(wxS(".wxmx")))
+      m_saved = false;
+  }
+
 private:
   //! The cells scheduled to be sent to Maxima, in evaluation order.
   EvaluationQueue m_evaluationQueue;
@@ -144,6 +167,8 @@ private:
   wxString m_lastQuestion;
   //! True while Maxima is waiting for the answer to a question.
   bool m_questionPrompt = false;
+  //! True while the document has no changes that still need saving.
+  bool m_saved = true;
 };
 
 #endif // WORKSHEETDOCUMENT_H

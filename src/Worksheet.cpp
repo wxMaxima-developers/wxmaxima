@@ -3717,7 +3717,7 @@ const wxString Worksheet::UnicodeToMaxima(wxString s) {
 }
 
 bool Worksheet::ExportToMAC(const wxString &file) {
-  bool wasSaved = m_saved;
+  bool wasSaved = IsSaved();
 
   // Show a busy cursor as long as we export or save.
   wxBusyCursor crs;

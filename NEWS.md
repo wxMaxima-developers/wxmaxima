@@ -67,6 +67,12 @@
   cell/group cell is under the mouse pointer", the selected cell range and the
   selected string are now reached only through accessors, so all of these
   pointers are private to CellPointers.
+- Internal: the "is the document saved?" flag moved from Worksheet into
+  WorksheetDocument. The document now owns the flag; when it flips, the document
+  tells the window through a new WorksheetDocumentView::NotifySavedStateChanged()
+  callback so the title-bar "modified" marker still refreshes. This retires the
+  old NotifyDocumentModified() callback (structural edits now just mark the
+  document unsaved directly). No behavior change.
 - Internal: the worksheet's view-independent document state is being gathered
   into a new WorksheetDocument object that Worksheet delegates to (the document
   half of the ongoing document/view split). The first fields moved are the
