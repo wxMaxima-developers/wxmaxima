@@ -266,23 +266,20 @@ void EditorCell::AddDrawParameter(wxString param) {
 }
 
 void EditorCell::SearchStartedHere(size_t index) const {
-  m_cellPointers->m_cellSearchStartedIn = const_cast<EditorCell *>(this);
-  m_cellPointers->m_indexSearchStartedAt = index;
+  m_cellPointers->SetSearchStart(const_cast<EditorCell *>(this), index);
 }
 
 void EditorCell::SearchStartedHere() const {
-  m_cellPointers->m_cellSearchStartedIn = const_cast<EditorCell *>(this);
-  m_cellPointers->m_indexSearchStartedAt = CursorPosition();
+  m_cellPointers->SetSearchStart(const_cast<EditorCell *>(this),
+                                 CursorPosition());
 }
 
 void EditorCell::MouseSelectionStartedHere() const {
-  m_cellPointers->m_cellMouseSelectionStartedIn =
-    const_cast<EditorCell *>(this);
+  m_cellPointers->SetMouseSelectionStart(const_cast<EditorCell *>(this));
 }
 
 void EditorCell::KeyboardSelectionStartedHere() const {
-  m_cellPointers->m_cellKeyboardSelectionStartedIn =
-    const_cast<EditorCell *>(this);
+  m_cellPointers->SetKeyboardSelectionStart(const_cast<EditorCell *>(this));
 }
 
 wxString EditorCell::GetFullCommandUnderCursor() {

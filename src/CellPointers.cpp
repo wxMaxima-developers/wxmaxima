@@ -105,6 +105,19 @@ EditorCell *CellPointers::GetActiveCell() const { return m_activeCell; }
 
 void CellPointers::SetActiveCell(EditorCell *cell) { m_activeCell = cell; }
 
+void CellPointers::SetSearchStart(EditorCell *cell, int index) {
+  m_cellSearchStartedIn = cell;
+  m_indexSearchStartedAt = index;
+}
+
+void CellPointers::SetMouseSelectionStart(EditorCell *cell) {
+  m_cellMouseSelectionStartedIn = cell;
+}
+
+void CellPointers::SetKeyboardSelectionStart(EditorCell *cell) {
+  m_cellKeyboardSelectionStartedIn = cell;
+}
+
 GroupCell *CellPointers::GetGroupCellUnderPointer() const {
   return m_groupCellUnderPointer;
 }

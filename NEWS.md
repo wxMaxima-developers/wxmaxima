@@ -66,7 +66,11 @@
   incoming text is appended to", "which editor the text cursor is in", "which
   cell/group cell is under the mouse pointer", the selected cell range and the
   selected string are now reached only through accessors, so all of these
-  pointers are private to CellPointers.
+  pointers are private to CellPointers. The last members still touched directly
+  from outside - the error-cell list, the mouse/keyboard/incremental-search
+  selection anchors and the "scroll-to-cell scheduled" flag - are now behind
+  accessors too, so every CellPointers member is private and the class is ready
+  to be split into its document-side and view-side halves.
 - Internal: the "is the document saved?" flag moved from Worksheet into
   WorksheetDocument. The document now owns the flag; when it flips, the document
   tells the window through a new WorksheetDocumentView::NotifySavedStateChanged()

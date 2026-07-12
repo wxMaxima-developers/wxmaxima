@@ -158,7 +158,7 @@ private:
   int m_newyPosition = -1;
   //! Which zoom level were we at when we started the zoom gesture?
   double m_zoomAtGestureStart = 1.0;
-  //! If m_cellPointers.m_scrollToCell = true: Do we want to scroll to the top of this cell?
+  //! When a scroll-to-cell is scheduled: scroll to the top of that cell?
   bool m_scrollToTopOfCell = false;
   //! Is our window currently active?
   bool m_windowActive = true;
@@ -647,20 +647,20 @@ public:
 
   //! Tells us which cell the keyboard selection has started in
   EditorCell *KeyboardSelectionStart() const
-    { return m_cellPointers.m_cellKeyboardSelectionStartedIn; }
+    { return m_cellPointers.KeyboardSelectionStart(); }
 
   EditorCell *MouseSelectionStart() const
-    { return m_cellPointers.m_cellMouseSelectionStartedIn; }
+    { return m_cellPointers.MouseSelectionStart(); }
 
   EditorCell *SearchStart() const
-    { return m_cellPointers.m_cellSearchStartedIn; }
+    { return m_cellPointers.SearchStart(); }
 
   int IndexSearchStartedAt() const
-    { return m_cellPointers.m_indexSearchStartedAt; }
+    { return m_cellPointers.IndexSearchStartedAt(); }
 
   CellPointers &GetCellPointers() { return m_cellPointers; }
 
-  CellPointers::ErrorList &GetErrorList() { return m_cellPointers.m_errorList; }
+  CellPointers::ErrorList &GetErrorList() { return m_cellPointers.GetErrorList(); }
   TextCell *GetCurrentTextCell() const { return m_cellPointers.GetCurrentTextCell(); }
   void SetCurrentTextCell(TextCell *cell) { m_cellPointers.SetCurrentTextCell(cell); }
   void SetWorkingGroup(GroupCell *group) { m_cellPointers.SetWorkingGroup(group); }
@@ -1172,7 +1172,7 @@ public:
   //! Request to scroll to the cursor as soon as wxMaxima is idle
   void ScrollToCaret()
     {
-      m_cellPointers.m_scrollToCell = false;
+      m_cellPointers.SetScrollToCellScheduled(false);
       m_scrollToCaret = true;
     }
 
@@ -1189,7 +1189,7 @@ public:
       m_scrollToTopOfCell = scrollToTop;
       m_scrollToCaret = false;
 
-      m_cellPointers.m_scrollToCell = true;
+      m_cellPointers.SetScrollToCellScheduled(true);
     }
 
   //! Is the point currently visible on the worksheet?

@@ -319,7 +319,7 @@ void GroupCell::RemoveOutput() {
   m_layoutSuppressed = false;
   m_layoutSuppressedNotice.reset();
 
-  m_cellPointers->m_errorList.Remove(this);
+  m_cellPointers->GetErrorList().Remove(this);
   // Calculate the new cell height.
 
   m_height = m_inputHeight;
@@ -917,7 +917,7 @@ void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
     dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
                                                      m_configuration->GetColor(TS_SELECTION))));
     drawBracket = true;
-  } else if (m_cellPointers->m_errorList.Contains(this)) {
+  } else if (m_cellPointers->GetErrorList().Contains(this)) {
     dc->SetPen(*wxRED_PEN);
     dc->SetBrush(*wxRED_BRUSH);
     drawBracket = true;

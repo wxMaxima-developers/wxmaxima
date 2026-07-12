@@ -151,8 +151,10 @@ public:
   //! Forget the currently selected string.
   void ClearSelectionString() { m_selectionString.Clear(); }
 
-  //! The list of cells maxima has complained about errors in
-  ErrorList m_errorList;
+  //! The list of cells maxima has complained about errors in.
+  ErrorList &GetErrorList() { return m_errorList; }
+  //! The list of cells maxima has complained about errors in (read-only view).
+  const ErrorList &GetErrorList() const { return m_errorList; }
 
   // ======================================================================
   //  View / interaction-side pointers (transient window state)
@@ -160,6 +162,31 @@ public:
 
   void ScrollToCell(Cell *cell) { m_cellToScrollTo = cell; }
   Cell *CellToScrollTo() { return m_cellToScrollTo; }
+
+  //! Is a scroll to CellToScrollTo() currently scheduled?
+  bool ScrollToCellScheduled() const { return m_scrollToCell; }
+  //! Schedule (or cancel) scrolling to CellToScrollTo().
+  void SetScrollToCellScheduled(bool scheduled) { m_scrollToCell = scheduled; }
+
+  //! The EditorCell an incremental search was started in, or null.
+  const CellPtr<EditorCell> &SearchStart() const { return m_cellSearchStartedIn; }
+  //! The cursor position an incremental search was started at (-1 = none).
+  int IndexSearchStartedAt() const { return m_indexSearchStartedAt; }
+  //! Record where an incremental search started (its cell and cursor index).
+  //! Out-of-line: assigning the raw EditorCell* needs the complete type.
+  void SetSearchStart(EditorCell *cell, int index);
+
+  //! The EditorCell a mouse selection was started in, or null.
+  const CellPtr<EditorCell> &MouseSelectionStart() const
+    { return m_cellMouseSelectionStartedIn; }
+  //! Record the EditorCell a mouse selection started in (out-of-line: see above).
+  void SetMouseSelectionStart(EditorCell *cell);
+
+  //! The EditorCell a keyboard selection was started in, or null.
+  const CellPtr<EditorCell> &KeyboardSelectionStart() const
+    { return m_cellKeyboardSelectionStartedIn; }
+  //! Record the EditorCell a keyboard selection started in (out-of-line: see above).
+  void SetKeyboardSelectionStart(EditorCell *cell);
 
   //! Forget where the search was started
   void ResetSearchStart()
@@ -194,17 +221,6 @@ public:
   void SetCellUnderPointer(Cell *cell) { m_cellUnderPointer = cell; }
   //! Forget which cell was under the mouse pointer.
   void ClearCellUnderPointer() { m_cellUnderPointer = {}; }
-
-  //! The EditorCell the mouse selection has started in
-  CellPtr<EditorCell> m_cellMouseSelectionStartedIn;
-  //! The EditorCell the keyboard selection has started in
-  CellPtr<EditorCell> m_cellKeyboardSelectionStartedIn;
-  //! The EditorCell the search was started in
-  CellPtr<EditorCell> m_cellSearchStartedIn;
-  //! Which cursor position incremental search has started at?
-  int m_indexSearchStartedAt = -1;
-  //! Is scrolling to a cell scheduled?
-  bool m_scrollToCell = false;
 
   // ======================================================================
   //  Serialization helpers (.wxmx image numbering)
@@ -255,12 +271,24 @@ private:
     above) it is available for highlighting other instances of the selection.
   */
   wxString m_selectionString;
+  //! The list of cells maxima has complained about errors in.
+  ErrorList m_errorList;
 
   // ---- View-side (encapsulated) ----
   //! The GroupCell that is under the mouse pointer
   CellPtr<GroupCell> m_groupCellUnderPointer;
   //! The cell currently under the mouse pointer
   CellPtr<Cell> m_cellUnderPointer;
+  //! The EditorCell the mouse selection has started in
+  CellPtr<EditorCell> m_cellMouseSelectionStartedIn;
+  //! The EditorCell the keyboard selection has started in
+  CellPtr<EditorCell> m_cellKeyboardSelectionStartedIn;
+  //! The EditorCell the search was started in
+  CellPtr<EditorCell> m_cellSearchStartedIn;
+  //! Which cursor position incremental search has started at?
+  int m_indexSearchStartedAt = -1;
+  //! Is scrolling to a cell scheduled?
+  bool m_scrollToCell = false;
   struct CellTimerId {
     // A CellPtr, not a raw pointer: animation timers fire asynchronously, so a
     // timer entry can outlive its cell. Auto-nulling means GetCellForTimerId()

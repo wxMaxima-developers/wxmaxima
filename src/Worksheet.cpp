@@ -776,7 +776,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells,
 }
 
 void Worksheet::ScrollToError() {
-  GroupCell *errorCell = m_cellPointers.m_errorList.LastError();
+  GroupCell *errorCell = m_cellPointers.GetErrorList().LastError();
 
   if (!errorCell)
     errorCell = GetWorkingGroup(true);
@@ -1580,11 +1580,11 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
     return;
 
   case CLICK_TYPE_INPUT_SELECTION:
-    if (!m_cellPointers.m_cellMouseSelectionStartedIn)
+    if (!m_cellPointers.MouseSelectionStart())
       return;
 
     {
-      rect = m_cellPointers.m_cellMouseSelectionStartedIn->GetRect();
+      rect = m_cellPointers.MouseSelectionStart()->GetRect();
 
       // Let's see if we are still inside the cell we started selecting in.
       if (!rect.Inflate(m_configuration->GetGroupSkip(),
@@ -1604,7 +1604,7 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up) {
         // selecting in.
         GetHCaretCursor().Deactivate();
         ClearSelection();
-        SetActiveCell(m_cellPointers.m_cellMouseSelectionStartedIn);
+        SetActiveCell(m_cellPointers.MouseSelectionStart());
         // We are still inside the cell => select inside the current cell.
         GetActiveCell()->SelectRectText(down, up);
         m_blinkDisplayCaret = true;
@@ -4018,9 +4018,9 @@ Cell *Worksheet::FindCellByUUID(const wxString &uuid) {
 }
 
 void Worksheet::ScrollToCellIfNeeded() {
-  if (!m_cellPointers.m_scrollToCell)
+  if (!m_cellPointers.ScrollToCellScheduled())
     return;
-  m_cellPointers.m_scrollToCell = false;
+  m_cellPointers.SetScrollToCellScheduled(false);
 
   RecalculateIfNeeded();
 
