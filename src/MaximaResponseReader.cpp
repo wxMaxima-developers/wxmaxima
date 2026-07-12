@@ -82,7 +82,11 @@ void MaximaResponseReader::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
           {
 #ifdef USE_WEBVIEW
             m_wxMaxima.m_helpPane->SelectKeywords(topics);
-            m_wxMaxima.ShowPane(EventIDs::menu_pane_help);
+            // wxMaxima hides the base wxMaximaFrame::ShowPane(int, bool) overload
+            // with its own ShowPane(wxCommandEvent&); qualify to reach the base
+            // one (as the menu handlers do) - a bare call fails to compile in the
+            // USE_WEBVIEW build.
+            m_wxMaxima.wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
 #else
             m_wxMaxima.ShowMaximaHelp(topics.front());
 #endif
