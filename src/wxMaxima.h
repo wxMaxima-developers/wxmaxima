@@ -466,7 +466,6 @@ protected:
   //! Trigger adding all variables to the variables sidebar
   void VarAddAllEvent(wxCommandEvent &event);
   void EvaluateEvent(wxCommandEvent &event);       //
-  void InsertMenu(wxCommandEvent &event);          //
   void PrintMenu(wxCommandEvent &event);
 
   void SliderEvent(wxScrollEvent &event);

@@ -489,13 +489,13 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_svg);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_emf);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_rtf);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_text);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_title);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_section);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_subsection);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_subsubsection);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_heading5);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_heading6);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_text);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_title);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_section);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_subsection);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_subsubsection);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_heading5);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_heading6);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_popup_gnuplot);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_show_cellbrackets);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_print_cellbrackets);
@@ -971,25 +971,25 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::EvaluateEvent, this, EventIDs::menu_evaluate);
   Bind(wxEVT_MENU, &wxMaxima::VarReadEvent, this, EventIDs::popid_var_newVar);
   Bind(wxEVT_MENU, &wxMaxima::VarAddAllEvent, this, EventIDs::popid_var_addAll);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_comment);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_section);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_subsection);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_subsubsection);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_heading5);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_heading6);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_title);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_add_pagebreak);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_fold_all_cells);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_unfold_all_cells);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_add_comment);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_add_watch);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_add_watch_label);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_insert_previous_input);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_insert_previous_output);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_autocomplete);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_autocomplete_templates);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_insert_input);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_insert_input);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_add_comment);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_add_section);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_add_subsection);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_add_subsubsection);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_add_heading5);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_add_heading6);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_add_title);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_add_pagebreak);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_fold_all_cells);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_unfold_all_cells);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_add_comment);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_add_watch);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_add_watch_label);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_insert_previous_input);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_insert_previous_output);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_autocomplete);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_autocomplete_templates);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_insert_input);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_input);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_history_previous);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_history_next);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_PASTE);
@@ -1091,12 +1091,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::OnRecentDocument, this, EventIDs::menu_recent_document_0, EventIDs::menu_recent_document_0 + EventIDs::NumberOfRecentFiles - 1);
   Bind(wxEVT_MENU, &wxMaxima::OnRecentPackage, this, EventIDs::menu_recent_package_0, EventIDs::menu_recent_package_0 + EventIDs::NumberOfRecentFiles - 1);
   Bind(wxEVT_MENU, &wxMaxima::OnUnsavedDocument, this, EventIDs::menu_unsaved_document_0, EventIDs::menu_unsaved_document_0 + EventIDs::NumberOfRecentFiles - 1);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::menu_insert_image);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_insert_image);
   for(const auto &[paneId, name]: GetSidebarNames())
     Bind(wxEVT_MENU, &wxMaxima::ShowPane, this, paneId);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_pane_toolbar);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_auto_answer);
-  Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_never_autoanswer);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_auto_answer);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_never_autoanswer);
   Bind(wxEVT_LISTBOX_DCLICK, &wxMaxima::HistoryDClick, this, history_ctrl_id);
   Bind(wxEVT_LIST_ITEM_ACTIVATED, &wxMaxima::TableOfContentsSelection, this, structure_ctrl_id);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_histogram);
@@ -1116,15 +1116,15 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_readm);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_stats_enterm);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_subsample);
-  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_title);
-  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_text);
-  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_heading6);
-  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_heading5);
-  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_subsubsection);
-  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_subsection);
-  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_section);
-  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_pagebreak);
-  Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_image);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_format_title);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_format_text);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_format_heading6);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_format_heading5);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_format_subsubsection);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_format_subsection);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_format_section);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_format_pagebreak);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_format_image);
   Bind(wxEVT_CHAR, &wxMaxima::OnChar, this);
   Bind(wxEVT_KEY_DOWN, &wxMaxima::OnKeyDown, this);
   Bind(wxEVT_CHOICE, &wxMaxima::ChangeCellStyle, this, ToolBar::tb_changeStyle);
@@ -8160,260 +8160,6 @@ void wxMaxima::ReplaceSuggestion(wxCommandEvent &event) {
                            GetWorksheet()->m_replacementsForCurrentWord.at(index));
 }
 
-void wxMaxima::InsertMenu(wxCommandEvent &event) {
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  GroupType type = GC_TYPE_CODE;
-  bool output = false;
-  if(event.GetId() == EventIDs::popid_never_autoanswer){
-    m_configuration.OfferKnownAnswers(!m_configuration.OfferKnownAnswers());
-  }
-  else if(event.GetId() == EventIDs::popid_auto_answer){
-    if (GetWorksheet()->GetActiveCell() &&
-        GetWorksheet()->GetActiveCell()->GetGroup()->GetGroupType() ==
-        GC_TYPE_CODE)
-      GetWorksheet()->GetActiveCell()->GetGroup()->SetAutoAnswer(
-                                                              event.IsChecked());
-    else if ((GetWorksheet()->GetSelectionStart() != NULL) &&
-             (GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_GROUP)) {
-      GroupCell *gc =
-        dynamic_cast<GroupCell *>(GetWorksheet()->GetSelectionStart());
-      while (gc != NULL) {
-        if (gc->GetGroupType() == GC_TYPE_CODE)
-          gc->SetAutoAnswer(event.IsChecked());
-
-        if (gc == GetWorksheet()->GetSelectionEnd())
-          break;
-        gc = gc->GetNext();
-      }
-    }
-    m_fileSaved = false;
-    GetWorksheet()->RequestRedraw();
-    return;
-  }
-  else if(event.GetId() == EventIDs::popid_add_watch){
-    wxString selectionString;
-    if (GetWorksheet()->GetActiveCell()) {
-      selectionString = GetWorksheet()->GetActiveCell()->GetSelectionString();
-      if (selectionString.IsEmpty())
-        selectionString = GetWorksheet()->GetActiveCell()->GetWordUnderCaret();
-      if(m_variablesPane)
-        m_variablesPane->AddWatchCode(selectionString);
-      wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
-    }
-    if (selectionString.IsEmpty() && (GetWorksheet()->GetSelectionStart() != NULL))
-      selectionString = GetWorksheet()->GetSelectionStart()->ToString();
-    if (!selectionString.IsEmpty()) {
-      if(m_variablesPane)
-        m_variablesPane->AddWatchCode(selectionString);
-      wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
-    }
-    return;
-  }
-  else if(event.GetId() == EventIDs::popid_add_watch_label){
-    if (GetWorksheet()->IsSelected(MC_TYPE_LABEL)) {
-      wxString selectionString = GetWorksheet()->GetSelectionStart()->ToString();
-      selectionString.Trim(true);
-      selectionString.Trim(false);
-      if (selectionString.StartsWith("("))
-        selectionString = selectionString.Right(selectionString.Length() - 1);
-      if (selectionString.EndsWith(")"))
-        selectionString = selectionString.Left(selectionString.Length() - 1);
-      if(m_variablesPane)
-        m_variablesPane->AddWatchCode(selectionString);
-      wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
-    }
-    return;
-  }
-  else if(event.GetId() == EventIDs::menu_insert_previous_output){
-    output = true;
-    type = GC_TYPE_CODE;
-  }
-  else if((event.GetId() == EventIDs::popid_insert_input) ||
-          (event.GetId() == EventIDs::menu_insert_input) ||
-          (event.GetId() == EventIDs::menu_insert_previous_input)){
-    type = GC_TYPE_CODE;
-  }
-  else if(event.GetId() == EventIDs::menu_autocomplete){
-    GetWorksheet()->Autocomplete();
-    return;}
-  else if(event.GetId() == EventIDs::menu_autocomplete_templates){
-    GetWorksheet()->Autocomplete(AutoComplete::tmplte);
-    return;}
-  // Converting a cell's type goes through Worksheet::SetCellStyle, which rebuilds
-  // the group with the target type (so it is born the right kind) and records the
-  // change on the undo stack - unlike the old in-place GroupCell::SetGroupType,
-  // which was not undoable. SetCellStyle also refuses to convert image cells
-  // (that would discard the drag-and-dropped image) and does the recalc/redraw.
-  else if(event.GetId() == EventIDs::menu_convert_to_code){
-    if (GetWorksheet()->GetActiveCell())
-      GetWorksheet()->SetCellStyle(
-        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_CODE);
-  }
-  else if(event.GetId() == EventIDs::menu_convert_to_comment){
-    if (GetWorksheet()->GetActiveCell())
-      GetWorksheet()->SetCellStyle(
-        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_TEXT);
-  }
-  else if((event.GetId() == EventIDs::menu_add_comment) ||
-          (event.GetId() == EventIDs::popid_add_comment) ||
-          (event.GetId() == EventIDs::menu_format_text) ||
-          (event.GetId() == EventIDs::popid_insert_text))
-    {
-      type = GC_TYPE_TEXT;
-    }
-  else if(event.GetId() == EventIDs::menu_convert_to_title){
-    if (GetWorksheet()->GetActiveCell())
-      GetWorksheet()->SetCellStyle(
-        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_TITLE);
-  }
-  else if((event.GetId() == EventIDs::menu_add_title) ||
-          (event.GetId() == EventIDs::menu_format_title) ||
-          (event.GetId() == EventIDs::popid_insert_title)){
-    type = GC_TYPE_TITLE;
-  }
-  else if(event.GetId() == EventIDs::menu_convert_to_section){
-    if (GetWorksheet()->GetActiveCell())
-      GetWorksheet()->SetCellStyle(
-        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_SECTION);
-  }
-  else if((event.GetId() == EventIDs::menu_add_section) ||
-          (event.GetId() == EventIDs::menu_format_section) ||
-          (event.GetId() == EventIDs::popid_insert_section)){
-    type = GC_TYPE_SECTION;
-  }
-  else if(event.GetId() == EventIDs::menu_convert_to_subsection){
-    if (GetWorksheet()->GetActiveCell())
-      GetWorksheet()->SetCellStyle(
-        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_SUBSECTION);
-  }
-  else if((event.GetId() == EventIDs::menu_add_subsection) ||
-          (event.GetId() == EventIDs::menu_format_subsection) ||
-          (event.GetId() == EventIDs::popid_insert_subsection)){
-    type = GC_TYPE_SUBSECTION;
-  }
-  else if(event.GetId() == EventIDs::menu_convert_to_subsubsection){
-    if (GetWorksheet()->GetActiveCell())
-      GetWorksheet()->SetCellStyle(
-        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_SUBSUBSECTION);
-  }
-  else if(event.GetId() == EventIDs::menu_convert_to_heading5){
-    if (GetWorksheet()->GetActiveCell())
-      GetWorksheet()->SetCellStyle(
-        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_HEADING5);
-  }
-  else if(event.GetId() == EventIDs::menu_convert_to_heading6){
-    if (GetWorksheet()->GetActiveCell())
-      GetWorksheet()->SetCellStyle(
-        GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_HEADING6);
-  }
-  else if((event.GetId() == EventIDs::menu_add_subsubsection) ||
-          (event.GetId() == EventIDs::menu_format_subsubsection) ||
-          (event.GetId() == EventIDs::popid_insert_subsubsection)){
-    type = GC_TYPE_SUBSUBSECTION;
-  }
-  else if((event.GetId() == EventIDs::menu_add_heading5) ||
-          (event.GetId() == EventIDs::menu_format_heading5) ||
-          (event.GetId() == EventIDs::popid_insert_heading5)){
-    type = GC_TYPE_HEADING5;
-  }
-  else if((event.GetId() == EventIDs::menu_add_heading6) ||
-          (event.GetId() == EventIDs::menu_format_heading6) ||
-          (event.GetId() == EventIDs::popid_insert_heading6)){
-    type = GC_TYPE_HEADING6;
-  }
-  else if((event.GetId() == EventIDs::menu_add_pagebreak) ||
-          (event.GetId() == EventIDs::menu_format_pagebreak)) {
-    GetWorksheet()->InsertGroupCells(
-                                  std::make_unique<GroupCell>(&m_configuration, GC_TYPE_PAGEBREAK),
-                                  GetWorksheet()->GetHCaret());
-    GetWorksheet()->RequestRecalculation();
-    return;}
-  else if((event.GetId() == EventIDs::menu_insert_image) ||
-          (event.GetId() == EventIDs::menu_format_image)){
-      wxString file = wxFileSelector(
-                                       _("Insert Image"), m_lastPath, wxEmptyString, wxEmptyString,
-                                       _("Image files (") +
-#ifdef wxUSE_LIBPNG
-                                       "*.png, "
-#endif
-#ifdef wxUSE_LIBJPEG
-                                       "*.jpg, "
-#endif
-#ifdef wxUSE_LIBWEBP
-                                         "*.webp, "
-#endif
-#ifdef wxUSE_XPM
-                                         "*.xpm, "
-#endif
-#ifdef wxUSE_GIF
-                                         "*.gif, "
-#endif
-
-                                         "*.svg, *.svgz, "
-                                         "*.bmp)|"
-#ifdef wxUSE_LIBJPEG
-                                         "*.png;"
-#endif
-#ifdef wxUSE_LIBJPEG
-                                         "*.jpg;"
-#endif
-#ifdef wxUSE_LIBWEBP
-                                         "*.webp;"
-#endif
-#ifdef wxUSE_XPM
-                                         "*.xpm;"
-#endif
-#ifdef wxUSE_GIF
-                                         "*.gif;"
-#endif
-                                         "*.svg;*.svgz,"
-                                         "*.bmp",
-                                       wxFD_OPEN);
-      if (file != wxEmptyString)
-        GetWorksheet()->OpenHCaret(file, GC_TYPE_IMAGE);
-      return;
-    }
-  else if(event.GetId() == EventIDs::menu_fold_all_cells){
-    GetWorksheet()->FoldAll();
-    GetWorksheet()->RequestRecalculation();
-    // send cursor to the top
-    GetWorksheet()->SetHCaret(NULL);
-  }
-  else if(event.GetId() == EventIDs::menu_unfold_all_cells){
-    GetWorksheet()->UnfoldAll();
-    GetWorksheet()->RequestRecalculation();
-    // refresh without moving cursor
-    GetWorksheet()->SetHCaret(GetWorksheet()->GetHCaret());
-  }
-
-  CallAfter([this]{GetWorksheet()->SetFocus();});
-
-  if (event.GetId() == EventIDs::menu_insert_previous_input ||
-      event.GetId() == EventIDs::menu_insert_previous_output) {
-    wxString input;
-
-    if (output == true)
-      input = GetWorksheet()->GetOutputAboveCaret();
-    else
-      input = GetWorksheet()->GetInputAboveCaret();
-    if (input != wxEmptyString)
-      GetWorksheet()->OpenHCaret(input, type);
-  } else if ((event.GetId() == EventIDs::menu_unfold_all_cells) ||
-             (event.GetId() == EventIDs::menu_fold_all_cells) ||
-             (event.GetId() == EventIDs::menu_convert_to_heading6) ||
-             (event.GetId() == EventIDs::menu_convert_to_heading5) ||
-             (event.GetId() == EventIDs::menu_convert_to_subsubsection) ||
-             (event.GetId() == EventIDs::menu_convert_to_subsection) ||
-             (event.GetId() == EventIDs::menu_convert_to_section) ||
-             (event.GetId() == EventIDs::menu_convert_to_comment) ||
-             (event.GetId() == EventIDs::menu_convert_to_title) ||
-             (event.GetId() == EventIDs::menu_convert_to_code)) {
-    // don't do anything else
-  } else
-    GetWorksheet()->OpenHCaret(wxEmptyString, type);
-  CallAfter([this]{GetWorksheet()->SetFocus();});
-}
 
 void wxMaxima::ResetTitle(bool saved, bool force) {
 #ifndef __WXOSX__

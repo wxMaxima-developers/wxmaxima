@@ -38,6 +38,7 @@
 #include "wizards/Gen1Wiz.h"
 #include "wizards/GenWiz.h"
 #include "cells/AnimationCell.h"
+#include "sidebars/VariablesPane.h"
 #include "dialogs/AboutDialog.h"
 #include "dialogs/DiffFrame.h"
 #include "dialogs/ChangeLogDialog.h"
@@ -2358,4 +2359,259 @@ void MaximaCommandMenus::FileMenu(wxCommandEvent &event) {
     }
   }
   m_wxMaxima.GetWorksheet()->RequestRedraw();
+}
+
+void MaximaCommandMenus::InsertMenu(wxCommandEvent &event) {
+  m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
+
+  GroupType type = GC_TYPE_CODE;
+  bool output = false;
+  if(event.GetId() == EventIDs::popid_never_autoanswer){
+    m_wxMaxima.m_configuration.OfferKnownAnswers(!m_wxMaxima.m_configuration.OfferKnownAnswers());
+  }
+  else if(event.GetId() == EventIDs::popid_auto_answer){
+    if (m_wxMaxima.GetWorksheet()->GetActiveCell() &&
+        m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup()->GetGroupType() ==
+        GC_TYPE_CODE)
+      m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup()->SetAutoAnswer(
+                                                              event.IsChecked());
+    else if ((m_wxMaxima.GetWorksheet()->GetSelectionStart() != NULL) &&
+             (m_wxMaxima.GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_GROUP)) {
+      GroupCell *gc =
+        dynamic_cast<GroupCell *>(m_wxMaxima.GetWorksheet()->GetSelectionStart());
+      while (gc != NULL) {
+        if (gc->GetGroupType() == GC_TYPE_CODE)
+          gc->SetAutoAnswer(event.IsChecked());
+
+        if (gc == m_wxMaxima.GetWorksheet()->GetSelectionEnd())
+          break;
+        gc = gc->GetNext();
+      }
+    }
+    m_wxMaxima.m_fileSaved = false;
+    m_wxMaxima.GetWorksheet()->RequestRedraw();
+    return;
+  }
+  else if(event.GetId() == EventIDs::popid_add_watch){
+    wxString selectionString;
+    if (m_wxMaxima.GetWorksheet()->GetActiveCell()) {
+      selectionString = m_wxMaxima.GetWorksheet()->GetActiveCell()->GetSelectionString();
+      if (selectionString.IsEmpty())
+        selectionString = m_wxMaxima.GetWorksheet()->GetActiveCell()->GetWordUnderCaret();
+      if(m_wxMaxima.m_variablesPane)
+        m_wxMaxima.m_variablesPane->AddWatchCode(selectionString);
+      m_wxMaxima.wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
+    }
+    if (selectionString.IsEmpty() && (m_wxMaxima.GetWorksheet()->GetSelectionStart() != NULL))
+      selectionString = m_wxMaxima.GetWorksheet()->GetSelectionStart()->ToString();
+    if (!selectionString.IsEmpty()) {
+      if(m_wxMaxima.m_variablesPane)
+        m_wxMaxima.m_variablesPane->AddWatchCode(selectionString);
+      m_wxMaxima.wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
+    }
+    return;
+  }
+  else if(event.GetId() == EventIDs::popid_add_watch_label){
+    if (m_wxMaxima.GetWorksheet()->IsSelected(MC_TYPE_LABEL)) {
+      wxString selectionString = m_wxMaxima.GetWorksheet()->GetSelectionStart()->ToString();
+      selectionString.Trim(true);
+      selectionString.Trim(false);
+      if (selectionString.StartsWith("("))
+        selectionString = selectionString.Right(selectionString.Length() - 1);
+      if (selectionString.EndsWith(")"))
+        selectionString = selectionString.Left(selectionString.Length() - 1);
+      if(m_wxMaxima.m_variablesPane)
+        m_wxMaxima.m_variablesPane->AddWatchCode(selectionString);
+      m_wxMaxima.wxMaximaFrame::ShowPane(EventIDs::menu_pane_variables, true);
+    }
+    return;
+  }
+  else if(event.GetId() == EventIDs::menu_insert_previous_output){
+    output = true;
+    type = GC_TYPE_CODE;
+  }
+  else if((event.GetId() == EventIDs::popid_insert_input) ||
+          (event.GetId() == EventIDs::menu_insert_input) ||
+          (event.GetId() == EventIDs::menu_insert_previous_input)){
+    type = GC_TYPE_CODE;
+  }
+  else if(event.GetId() == EventIDs::menu_autocomplete){
+    m_wxMaxima.GetWorksheet()->Autocomplete();
+    return;}
+  else if(event.GetId() == EventIDs::menu_autocomplete_templates){
+    m_wxMaxima.GetWorksheet()->Autocomplete(AutoComplete::tmplte);
+    return;}
+  // Converting a cell's type goes through Worksheet::SetCellStyle, which rebuilds
+  // the group with the target type (so it is born the right kind) and records the
+  // change on the undo stack - unlike the old in-place GroupCell::SetGroupType,
+  // which was not undoable. SetCellStyle also refuses to convert image cells
+  // (that would discard the drag-and-dropped image) and does the recalc/redraw.
+  else if(event.GetId() == EventIDs::menu_convert_to_code){
+    if (m_wxMaxima.GetWorksheet()->GetActiveCell())
+      m_wxMaxima.GetWorksheet()->SetCellStyle(
+        m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_CODE);
+  }
+  else if(event.GetId() == EventIDs::menu_convert_to_comment){
+    if (m_wxMaxima.GetWorksheet()->GetActiveCell())
+      m_wxMaxima.GetWorksheet()->SetCellStyle(
+        m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_TEXT);
+  }
+  else if((event.GetId() == EventIDs::menu_add_comment) ||
+          (event.GetId() == EventIDs::popid_add_comment) ||
+          (event.GetId() == EventIDs::menu_format_text) ||
+          (event.GetId() == EventIDs::popid_insert_text))
+    {
+      type = GC_TYPE_TEXT;
+    }
+  else if(event.GetId() == EventIDs::menu_convert_to_title){
+    if (m_wxMaxima.GetWorksheet()->GetActiveCell())
+      m_wxMaxima.GetWorksheet()->SetCellStyle(
+        m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_TITLE);
+  }
+  else if((event.GetId() == EventIDs::menu_add_title) ||
+          (event.GetId() == EventIDs::menu_format_title) ||
+          (event.GetId() == EventIDs::popid_insert_title)){
+    type = GC_TYPE_TITLE;
+  }
+  else if(event.GetId() == EventIDs::menu_convert_to_section){
+    if (m_wxMaxima.GetWorksheet()->GetActiveCell())
+      m_wxMaxima.GetWorksheet()->SetCellStyle(
+        m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_SECTION);
+  }
+  else if((event.GetId() == EventIDs::menu_add_section) ||
+          (event.GetId() == EventIDs::menu_format_section) ||
+          (event.GetId() == EventIDs::popid_insert_section)){
+    type = GC_TYPE_SECTION;
+  }
+  else if(event.GetId() == EventIDs::menu_convert_to_subsection){
+    if (m_wxMaxima.GetWorksheet()->GetActiveCell())
+      m_wxMaxima.GetWorksheet()->SetCellStyle(
+        m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_SUBSECTION);
+  }
+  else if((event.GetId() == EventIDs::menu_add_subsection) ||
+          (event.GetId() == EventIDs::menu_format_subsection) ||
+          (event.GetId() == EventIDs::popid_insert_subsection)){
+    type = GC_TYPE_SUBSECTION;
+  }
+  else if(event.GetId() == EventIDs::menu_convert_to_subsubsection){
+    if (m_wxMaxima.GetWorksheet()->GetActiveCell())
+      m_wxMaxima.GetWorksheet()->SetCellStyle(
+        m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_SUBSUBSECTION);
+  }
+  else if(event.GetId() == EventIDs::menu_convert_to_heading5){
+    if (m_wxMaxima.GetWorksheet()->GetActiveCell())
+      m_wxMaxima.GetWorksheet()->SetCellStyle(
+        m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_HEADING5);
+  }
+  else if(event.GetId() == EventIDs::menu_convert_to_heading6){
+    if (m_wxMaxima.GetWorksheet()->GetActiveCell())
+      m_wxMaxima.GetWorksheet()->SetCellStyle(
+        m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup(), GC_TYPE_HEADING6);
+  }
+  else if((event.GetId() == EventIDs::menu_add_subsubsection) ||
+          (event.GetId() == EventIDs::menu_format_subsubsection) ||
+          (event.GetId() == EventIDs::popid_insert_subsubsection)){
+    type = GC_TYPE_SUBSUBSECTION;
+  }
+  else if((event.GetId() == EventIDs::menu_add_heading5) ||
+          (event.GetId() == EventIDs::menu_format_heading5) ||
+          (event.GetId() == EventIDs::popid_insert_heading5)){
+    type = GC_TYPE_HEADING5;
+  }
+  else if((event.GetId() == EventIDs::menu_add_heading6) ||
+          (event.GetId() == EventIDs::menu_format_heading6) ||
+          (event.GetId() == EventIDs::popid_insert_heading6)){
+    type = GC_TYPE_HEADING6;
+  }
+  else if((event.GetId() == EventIDs::menu_add_pagebreak) ||
+          (event.GetId() == EventIDs::menu_format_pagebreak)) {
+    m_wxMaxima.GetWorksheet()->InsertGroupCells(
+                                  std::make_unique<GroupCell>(&m_wxMaxima.m_configuration, GC_TYPE_PAGEBREAK),
+                                  m_wxMaxima.GetWorksheet()->GetHCaret());
+    m_wxMaxima.GetWorksheet()->RequestRecalculation();
+    return;}
+  else if((event.GetId() == EventIDs::menu_insert_image) ||
+          (event.GetId() == EventIDs::menu_format_image)){
+      wxString file = wxFileSelector(
+                                       _("Insert Image"), m_wxMaxima.m_lastPath, wxEmptyString, wxEmptyString,
+                                       _("Image files (") +
+#ifdef wxUSE_LIBPNG
+                                       "*.png, "
+#endif
+#ifdef wxUSE_LIBJPEG
+                                       "*.jpg, "
+#endif
+#ifdef wxUSE_LIBWEBP
+                                         "*.webp, "
+#endif
+#ifdef wxUSE_XPM
+                                         "*.xpm, "
+#endif
+#ifdef wxUSE_GIF
+                                         "*.gif, "
+#endif
+
+                                         "*.svg, *.svgz, "
+                                         "*.bmp)|"
+#ifdef wxUSE_LIBJPEG
+                                         "*.png;"
+#endif
+#ifdef wxUSE_LIBJPEG
+                                         "*.jpg;"
+#endif
+#ifdef wxUSE_LIBWEBP
+                                         "*.webp;"
+#endif
+#ifdef wxUSE_XPM
+                                         "*.xpm;"
+#endif
+#ifdef wxUSE_GIF
+                                         "*.gif;"
+#endif
+                                         "*.svg;*.svgz,"
+                                         "*.bmp",
+                                       wxFD_OPEN);
+      if (file != wxEmptyString)
+        m_wxMaxima.GetWorksheet()->OpenHCaret(file, GC_TYPE_IMAGE);
+      return;
+    }
+  else if(event.GetId() == EventIDs::menu_fold_all_cells){
+    m_wxMaxima.GetWorksheet()->FoldAll();
+    m_wxMaxima.GetWorksheet()->RequestRecalculation();
+    // send cursor to the top
+    m_wxMaxima.GetWorksheet()->SetHCaret(NULL);
+  }
+  else if(event.GetId() == EventIDs::menu_unfold_all_cells){
+    m_wxMaxima.GetWorksheet()->UnfoldAll();
+    m_wxMaxima.GetWorksheet()->RequestRecalculation();
+    // refresh without moving cursor
+    m_wxMaxima.GetWorksheet()->SetHCaret(m_wxMaxima.GetWorksheet()->GetHCaret());
+  }
+
+  m_wxMaxima.CallAfter([this]{m_wxMaxima.GetWorksheet()->SetFocus();});
+
+  if (event.GetId() == EventIDs::menu_insert_previous_input ||
+      event.GetId() == EventIDs::menu_insert_previous_output) {
+    wxString input;
+
+    if (output == true)
+      input = m_wxMaxima.GetWorksheet()->GetOutputAboveCaret();
+    else
+      input = m_wxMaxima.GetWorksheet()->GetInputAboveCaret();
+    if (input != wxEmptyString)
+      m_wxMaxima.GetWorksheet()->OpenHCaret(input, type);
+  } else if ((event.GetId() == EventIDs::menu_unfold_all_cells) ||
+             (event.GetId() == EventIDs::menu_fold_all_cells) ||
+             (event.GetId() == EventIDs::menu_convert_to_heading6) ||
+             (event.GetId() == EventIDs::menu_convert_to_heading5) ||
+             (event.GetId() == EventIDs::menu_convert_to_subsubsection) ||
+             (event.GetId() == EventIDs::menu_convert_to_subsection) ||
+             (event.GetId() == EventIDs::menu_convert_to_section) ||
+             (event.GetId() == EventIDs::menu_convert_to_comment) ||
+             (event.GetId() == EventIDs::menu_convert_to_title) ||
+             (event.GetId() == EventIDs::menu_convert_to_code)) {
+    // don't do anything else
+  } else
+    m_wxMaxima.GetWorksheet()->OpenHCaret(wxEmptyString, type);
+  m_wxMaxima.CallAfter([this]{m_wxMaxima.GetWorksheet()->SetFocus();});
 }

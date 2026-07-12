@@ -98,6 +98,10 @@ public:
   //! compare-files diff frame, jump-to-UUID, animation start/stop).
   void FileMenu(wxCommandEvent &event);
 
+  //! Handles the "Cell"/insert menu (cell insertion and type conversion,
+  //! insert image, fold/unfold, auto-answer toggles, add-watch).
+  void InsertMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.
