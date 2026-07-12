@@ -3281,7 +3281,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
           (m_wxMaxima.GetWorksheet()->GetTree()->Contains(SelectionStart))) {
         m_wxMaxima.GetWorksheet()->AddSectionToEvaluationQueue(
                                                  m_wxMaxima.m_tableOfContents->RightClickedOn());
-        m_wxMaxima.TriggerEvaluation();
+        m_wxMaxima.m_evaluator.TriggerEvaluation();
       }
   }
   else if(event.GetId() == EventIDs::popid_ToggleTOCshowsSectionNumbers){
@@ -3334,19 +3334,19 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
       }
       if (group) {
         m_wxMaxima.GetWorksheet()->AddSectionToEvaluationQueue(group);
-        m_wxMaxima.TriggerEvaluation();
+        m_wxMaxima.m_evaluator.TriggerEvaluation();
       }
     }
   else if((event.GetId() == EventIDs::popid_evaluate) ||
           (event.GetId() == ToolBar::tb_eval)){
     wxCommandEvent *dummy = new wxCommandEvent;
-    m_wxMaxima.EvaluateEvent(*dummy);
+    m_wxMaxima.m_evaluator.EvaluateEvent(*dummy);
   }
   else if(event.GetId() == ToolBar::tb_evaluate_rest){
     m_wxMaxima.GetWorksheet()->AddRestToEvaluationQueue();
     m_wxMaxima.EvaluationQueueLength(m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Size(),
                           m_wxMaxima.GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-    m_wxMaxima.TriggerEvaluation();
+    m_wxMaxima.m_evaluator.TriggerEvaluation();
   }
   else if(event.GetId() == ToolBar::tb_evaltillhere){
     m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Clear();
@@ -3358,7 +3358,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
     // Inform the user about the length of the evaluation queue.
     m_wxMaxima.EvaluationQueueLength(m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Size(),
                           m_wxMaxima.GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-    m_wxMaxima.TriggerEvaluation();
+    m_wxMaxima.m_evaluator.TriggerEvaluation();
   }
   else if(event.GetId() == EventIDs::popid_copy_matlab){
     if (m_wxMaxima.GetWorksheet()->CanCopy())
@@ -4424,7 +4424,7 @@ void MaximaCommandMenus::MaximaMenu(wxCommandEvent &event) {
     // Inform the user about the length of the evaluation queue.
     m_wxMaxima.EvaluationQueueLength(m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Size(),
                           m_wxMaxima.GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-    m_wxMaxima.TriggerEvaluation();
+    m_wxMaxima.m_evaluator.TriggerEvaluation();
   }
   else if(event.GetId() == EventIDs::menu_evaluate_all) {
     m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Clear();
@@ -4436,7 +4436,7 @@ void MaximaCommandMenus::MaximaMenu(wxCommandEvent &event) {
     // Inform the user about the length of the evaluation queue.
     m_wxMaxima.EvaluationQueueLength(m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Size(),
                           m_wxMaxima.GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-    m_wxMaxima.TriggerEvaluation();
+    m_wxMaxima.m_evaluator.TriggerEvaluation();
   }
   else if(event.GetId() == ToolBar::tb_evaltillhere) {
     m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Clear();
@@ -4448,7 +4448,7 @@ void MaximaCommandMenus::MaximaMenu(wxCommandEvent &event) {
     // Inform the user about the length of the evaluation queue.
     m_wxMaxima.EvaluationQueueLength(m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Size(),
                           m_wxMaxima.GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-    m_wxMaxima.TriggerEvaluation();
+    m_wxMaxima.m_evaluator.TriggerEvaluation();
   }
   else if(event.GetId() == EventIDs::menu_clear_var){
     m_wxMaxima.CommandWiz(_("Delete variable(s)"), wxEmptyString, wxEmptyString,

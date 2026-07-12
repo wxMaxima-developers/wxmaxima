@@ -41,6 +41,7 @@
 #include "MaximaCommandMenus.h"
 #include "MaximaResponseReader.h"
 #include "MaximaProcessManager.h"
+#include "MaximaEvaluator.h"
 #include "Dirstructure.h"
 #include <wx/socket.h>
 #include <wx/config.h>
@@ -163,8 +164,6 @@ public:
   //! Launches the help browser on the uri passed as an argument.
   void LaunchHelpBrowser(wxString uri);
 
-  void SendMaxima(wxString s, bool addToHistory = false, bool background = false);
-
   //! Open a file
   bool OpenFile(const wxString &file, const wxString &command ={});
 
@@ -175,9 +174,6 @@ public:
   //! Load an image from a file into the worksheet.
   void LoadImage(const wxString &file)
     { GetWorksheet()->OpenHCaret(file, GC_TYPE_IMAGE); }
-
-  //! Query the value of a new maxima variable
-  bool QueryVariableValue();
 
   //! A version number that can be compared using "<" and ">"
   class VersionNumber
@@ -238,8 +234,6 @@ private:
   wxString m_configCommands;
   //! A RegEx that matches gnuplot errors.
   static wxRegEx m_gnuplotErrorRegex;
-  //! Clear the evaluation queue and return true if "Abort on Error" is set.
-  bool AbortOnError();
   //! This string allows us to detect when the string we search for has changed.
   wxString m_oldFindString;
   //! This string allows us to detect when the string we search for has changed.
@@ -435,7 +429,6 @@ protected:
   void VarReadEvent(wxCommandEvent &event);
   //! Trigger adding all variables to the variables sidebar
   void VarAddAllEvent(wxCommandEvent &event);
-  void EvaluateEvent(wxCommandEvent &event);       //
 
   void SliderEvent(wxScrollEvent &event);
 
@@ -456,8 +449,6 @@ protected:
 
   void DumpProcessOutput();
 
-  //! Try to evaluate the next command for maxima that is in the evaluation queue
-  void TriggerEvaluation();
 
   void TryUpdateInspector();
 
@@ -518,8 +509,6 @@ protected:
     \param force Force update if the "saved" status hasn't changed.
   */
   void ResetTitle(bool saved, bool force = false);
-
-  void FirstOutput();
 
   /*! Opens a content.xml file that has been extracted from a broken .wxmx file
    */
@@ -679,6 +668,10 @@ private:
   //! (the status bar, worksheet, configuration, process/socket members)
   //! through this friendship.
   friend class MaximaProcessManager;
+  //! The extracted evaluation-queue driver reaches wxMaxima's services (the
+  //! worksheet, the socket, the status bar, the configuration) through this
+  //! friendship.
+  friend class MaximaEvaluator;
 
   /*! A timer that determines when to do the next autosave;
 
@@ -714,6 +707,10 @@ private:
   //! reference back to this frame (initialised in the constructor, where *this
   //! is unambiguously complete).
   MaximaProcessManager m_processManager;
+  //! The evaluation-queue driver peeled off this god class. Holds a reference
+  //! back to this frame (initialised in the constructor, where *this is
+  //! unambiguously complete).
+  MaximaEvaluator m_evaluator;
 };
 
 #if wxUSE_DRAG_AND_DROP

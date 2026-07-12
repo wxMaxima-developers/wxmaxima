@@ -40,7 +40,7 @@ void MaximaResponseReader::ReadStatusBar(const wxXmlDocument &xmldoc) {
       m_wxMaxima.DoRawConsoleAppend(_("There was an error in the XML that should describe the status bar message.\n"
                            "Please report this as a bug to the wxMaxima project."),
                          MC_TYPE_ERROR);
-      m_wxMaxima.AbortOnError();
+      m_wxMaxima.m_evaluator.AbortOnError();
     }
   else
     {
@@ -94,7 +94,7 @@ void MaximaResponseReader::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
       m_wxMaxima.DoRawConsoleAppend(_("There was an error in the XML that should describe the manual topics.\n"
                            "Please report this as a bug to the wxMaxima project."),
                          MC_TYPE_ERROR);
-      m_wxMaxima.AbortOnError();
+      m_wxMaxima.m_evaluator.AbortOnError();
     }
 }
 
@@ -134,7 +134,7 @@ void MaximaResponseReader::ReadFirstPrompt(const wxString &data) {
   start = m_wxMaxima.m_firstPromptBuffer.Find(wxS("Maxima "));
   if (start == wxNOT_FOUND)
     start = 0;
-  m_wxMaxima.FirstOutput();
+  m_wxMaxima.m_evaluator.FirstOutput();
 
   m_wxMaxima.m_maximaBusy = false;
 
@@ -180,7 +180,7 @@ void MaximaResponseReader::ReadFirstPrompt(const wxString &data) {
         (m_wxMaxima.GetWorksheet()->GetActiveCell() == NULL))
       m_wxMaxima.GetWorksheet()->OpenNextOrCreateCell();
   } else
-    m_wxMaxima.TriggerEvaluation();
+    m_wxMaxima.m_evaluator.TriggerEvaluation();
 }
 
 void MaximaResponseReader::ReadMiscText(const wxString &data) {
@@ -252,7 +252,7 @@ void MaximaResponseReader::ReadMiscText(const wxString &data) {
   if (m_wxMaxima.GetWorksheet() && (!data.empty())) {
     m_wxMaxima.GetWorksheet()->SetCurrentTextCell(m_wxMaxima.ConsoleAppend(data, style));
     if (style == MC_TYPE_ERROR)
-      m_wxMaxima.AbortOnError();
+      m_wxMaxima.m_evaluator.AbortOnError();
   }
   if (m_wxMaxima.GetWorksheet() && (data.EndsWith("\n")))
     m_wxMaxima.GetWorksheet()->SetCurrentTextCell(nullptr);
@@ -359,13 +359,13 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
       m_wxMaxima.GetWorksheet()->GetEvaluationQueue().RemoveFirst();
       m_wxMaxima.GetWorksheet()->RequestRedraw();
       // Now that maxima is idle we can ask for the contents of its variables
-      m_wxMaxima.QueryVariableValue();
+      m_wxMaxima.m_evaluator.QueryVariableValue();
     } else { // we don't have an empty queue
       m_wxMaxima.m_ready = false;
       m_wxMaxima.GetWorksheet()->RequestRedraw();
       m_wxMaxima.GetWorksheet()->SetWorkingGroup(nullptr);
       m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::sending);
-      m_wxMaxima.TriggerEvaluation();
+      m_wxMaxima.m_evaluator.TriggerEvaluation();
     }
 
     if (m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Empty()) {
@@ -484,8 +484,8 @@ void MaximaResponseReader::ReadStdErr() {
         !o.Contains("frames in animation sequence") &&
         (o_trimmed != wxEmptyString) && (o.Length() > 1)) {
       m_wxMaxima.DoRawConsoleAppend(o, MC_TYPE_ERROR);
-      m_wxMaxima.AbortOnError();
-      m_wxMaxima.TriggerEvaluation();
+      m_wxMaxima.m_evaluator.AbortOnError();
+      m_wxMaxima.m_evaluator.TriggerEvaluation();
       m_wxMaxima.GetWorksheet()->GetErrorList().Add(m_wxMaxima.GetWorksheet()->GetWorkingGroup(true));
 
       if (Maxima::GetPipeToStdErr())
@@ -502,7 +502,7 @@ void MaximaResponseReader::ReadVariables(const wxXmlDocument &xmldoc) {
       m_wxMaxima.DoRawConsoleAppend(_("There was an error in the XML that should describe the contents of some variables.\n"
                            "Please report this as a bug to the wxMaxima project."),
                          MC_TYPE_ERROR);
-      m_wxMaxima.AbortOnError();
+      m_wxMaxima.m_evaluator.AbortOnError();
     }
   else
     {
@@ -543,8 +543,8 @@ void MaximaResponseReader::ReadVariables(const wxXmlDocument &xmldoc) {
       else
         wxLogMessage(_("Maxima has sent a new variable value."));
     }
-  m_wxMaxima.TriggerEvaluation();
-  m_wxMaxima.QueryVariableValue();
+  m_wxMaxima.m_evaluator.TriggerEvaluation();
+  m_wxMaxima.m_evaluator.QueryVariableValue();
 }
 
 void MaximaResponseReader::VariableActionSinnpiflag(const wxString &WXUNUSED(value)) {
@@ -752,7 +752,7 @@ void MaximaResponseReader::VariableActionOperators(const wxString &value) {
       m_wxMaxima.DoRawConsoleAppend(_("There was an error in the XML that should contain the list of operators.\n"
                            "Please report this as a bug to the wxMaxima project."),
                          MC_TYPE_ERROR);
-      m_wxMaxima.AbortOnError();
+      m_wxMaxima.m_evaluator.AbortOnError();
     }
   else
     {
@@ -793,7 +793,7 @@ void MaximaResponseReader::ReadAddVariables(const wxXmlDocument &xmldoc) {
       m_wxMaxima.DoRawConsoleAppend(_("There was an error in the XML that should contain a list of watch variables.\n"
                            "Please report this as a bug to the wxMaxima project."),
                          MC_TYPE_ERROR);
-      m_wxMaxima.AbortOnError();
+      m_wxMaxima.m_evaluator.AbortOnError();
     }
   else
     {

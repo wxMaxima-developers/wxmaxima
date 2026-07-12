@@ -245,7 +245,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
     m_gnuplotcommand(wxS("gnuplot")),
     m_parser(&m_configuration),
     m_maximaError(false), m_menuCommands(*this), m_responseReader(*this),
-    m_processManager(*this) {
+    m_processManager(*this), m_evaluator(*this) {
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
   wxHandleFatalExceptions();
   wxLogMessage(_("Will try to generate a stack backtrace, if the program ever crashes"));
@@ -836,7 +836,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_END_PROCESS, &MaximaProcessManager::OnGnuplotQueryTerminals, &m_processManager, EventIDs::gnuplot_query_terminals_id);
   Bind(wxEVT_END_PROCESS, &MaximaProcessManager::OnGnuplotClose, &m_processManager, m_gnuplot_process_id);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditInputMenu, &m_menuCommands, EventIDs::popid_edit);
-  Bind(wxEVT_MENU, &wxMaxima::EvaluateEvent, this, EventIDs::menu_evaluate);
+  Bind(wxEVT_MENU, &MaximaEvaluator::EvaluateEvent, &m_evaluator, EventIDs::menu_evaluate);
   Bind(wxEVT_MENU, &wxMaxima::VarReadEvent, this, EventIDs::popid_var_newVar);
   Bind(wxEVT_MENU, &wxMaxima::VarAddAllEvent, this, EventIDs::popid_var_addAll);
   Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_add_comment);
@@ -1313,11 +1313,6 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y),
 
 #endif
 
-void wxMaxima::FirstOutput() {
-  m_lastPrompt = wxS("(%i1) ");
-  if(GetWorksheet())
-    CallAfter([this]{GetWorksheet()->SetFocus();});
-}
 
 ///--------------------------------------------------------------------------------
 ///  Appending stuff to output
@@ -1467,7 +1462,7 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, AppendOpt opts,
       DoRawConsoleAppend(_("There was an error in the XML maxima has generated.\n"
                            "Please report this as a bug to the wxMaxima project."),
                          MC_TYPE_ERROR);
-      AbortOnError();
+      m_evaluator.AbortOnError();
       return;
     }
 
@@ -1617,98 +1612,6 @@ void wxMaxima::StripLispComments(wxString &s) {
     m_blankStatementRegEx.Replace(&s, wxS(";"));
 }
 
-void wxMaxima::SendMaxima(wxString s, bool addToHistory, bool background) {
-  // Normally we catch parenthesis errors before adding cells to the
-  // evaluation queue. But if the error is introduced only after the
-  // cell is placed in the evaluation queue we need to catch it here.
-  std::size_t index;
-  wxString parenthesisError = GetUnmatchedParenthesisState(s, index);
-  if (parenthesisError.IsEmpty()) {
-    if(GetWorksheet())
-      s = GetWorksheet()->UnicodeToMaxima(s);
-
-    if ((m_xmlInspector) && (IsPaneDisplayed(EventIDs::menu_pane_xmlInspector)))
-      m_xmlInspector->Add_ToMaxima(s);
-
-    m_dispReadOut = false;
-
-    if (addToHistory)
-      AddToHistory(s);
-
-    if (s.StartsWith(wxS(":lisp ")) || s.StartsWith(wxS(":lisp\n")))
-      s.Replace(wxS("\n"), wxS(" "));
-
-    s.Trim(true);
-    s.Append(wxS("\n"));
-    /// Check for function/variable definitions
-    wxStringTokenizer commands(s, wxS(";$"));
-    while (commands.HasMoreTokens()) {
-      wxString line = commands.GetNextToken();
-      if(GetWorksheet())
-        {
-          if (m_varRegEx.Matches(line))
-            GetWorksheet()->AddSymbol(m_varRegEx.GetMatch(line, 1));
-
-          if (m_funRegEx.Matches(line)) {
-            wxString funName = m_funRegEx.GetMatch(line, 1);
-            GetWorksheet()->AddSymbol(funName);
-        /// Create a template from the input
-        wxString args = m_funRegEx.GetMatch(line, 2);
-        wxStringTokenizer argTokens(args, wxS(","));
-        funName << wxS("(");
-        int count = 0;
-        while (argTokens.HasMoreTokens()) {
-          if (count > 0)
-            funName << wxS(",");
-          wxString a = argTokens.GetNextToken().Trim().Trim(false);
-          if (a != wxEmptyString) {
-            if (a.at(0) == '[')
-              funName << wxS("[<") << a.SubString(1, a.Length() - 2)
-                      << wxS(">]");
-            else
-              funName << wxS("<") << a << wxS(">");
-            count++;
-          }
-        }
-        funName << wxS(")");
-          GetWorksheet()->AddSymbol(funName, AutoComplete::tmplte);
-}
-      }
-    }
-
-    if ((m_client) && (m_client->IsConnected()) && (s.Length() >= 1)) {
-      // If there is no working group and we still are trying to send something
-      // we are trying to change maxima's settings from the background and might
-      // never get an answer that changes the status again.
-      if (GetWorksheet() && (GetWorksheet()->GetWorkingGroup())) {
-        if (!background)
-          m_maximaError = false;
-        StatusMaximaBusy(StatusBar::MaximaStatus::calculating);
-      } else {
-        if (m_maximaError && background)
-          StatusMaximaBusy(StatusBar::MaximaStatus::maximaerror);
-        else
-          StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
-      }
-
-      wxScopedCharBuffer const data_raw = s.utf8_str();
-      m_client->Write(data_raw.data(), data_raw.length());
-      m_statusBar->NetworkStatus(StatusBar::transmit);
-    }
-  } else {
-    DoRawConsoleAppend(_("Refusing to send cell to maxima: ") +
-                       parenthesisError + wxS("\n"),
-                       MC_TYPE_ERROR);
-    if(GetWorksheet())
-      {
-        GetWorksheet()->SetWorkingGroup(nullptr);
-        GetWorksheet()->GetEvaluationQueue().Clear();
-      }
-  }
-  if (!m_maximaStdoutPollTimer.IsRunning())
-    m_statusBar->SetMaximaCPUPercentage(-1);
-  m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
-}
 
 ///--------------------------------------------------------------------------------
 ///  Socket stuff
@@ -1740,41 +1643,6 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory, bool background) {
 
 
 
-bool wxMaxima::QueryVariableValue() {
-  if (GetWorksheet() && (!GetWorksheet()->GetEvaluationQueue().Empty()))
-    return false;
-
-  if (m_maximaBusy)
-    return false;
-
-  if (m_configuration.InLispMode())
-    return false;
-
-  if (GetWorksheet() && (GetWorksheet()->QuestionPending()))
-    return false;
-
-  if (m_varNamesToQuery.size() > 0) {
-    SendMaxima(wxS(":lisp-quiet (wx-query-variable \"") +
-               m_varNamesToQuery.back() + wxS("\")\n"), false, true);
-    m_varNamesToQuery.pop_back();
-    return true;
-  } else {
-    if (m_readMaximaVariables) {
-      SendMaxima(wxS(":lisp-quiet (wx-print-gui-variables)\n"), false, true);
-      m_readMaximaVariables = false;
-    } else
-      {
-        if(m_updateAutocompletion)
-          SendMaxima(wxS(":lisp-quiet (wxPrint_autocompletesymbols)\n"), false, true);
-        m_updateAutocompletion = false;
-      }
-    if (GetWorksheet() && (m_variablesPane) &&
-        (m_variablesPane->GetEscapedVarnames().size() != 0))
-      m_variablesPane->UpdateSize();
-
-    return false;
-  }
-}
 
 /***
  * Checks if maxima displayed a new prompt.
@@ -2384,12 +2252,12 @@ void wxMaxima::ExitAfterEval(bool exitaftereval) {
   // We just left batch mode (an error dropped us into interactive use), so now
   // it's worth fetching the autocompletion symbols / variable list and compiling
   // the manual anchors -- interactive-only conveniences we skipped while batching.
-  // (AbortOnError() only calls this when we are NOT going to --exit-on-error, so
+  // (m_evaluator.AbortOnError() only calls this when we are NOT going to --exit-on-error, so
   // we really are becoming interactive here.)
   if (m_exitAfterEval && !exitaftereval) {
     // If we leave batch mode we want to have the autocompletion symbols
     // and the variable list.
-    SendMaxima(wxS(":lisp-quiet (setf *wx-defer-queries* nil) ")
+    m_evaluator.SendMaxima(wxS(":lisp-quiet (setf *wx-defer-queries* nil) ")
                wxS("(wxPrint_autocompletesymbols) ")
                wxS("(wx-print-variables) ")
                wxS("(wx-print-gui-variables)\n"));
@@ -2405,10 +2273,10 @@ void wxMaxima::ExitAfterEval(bool exitaftereval) {
 void wxMaxima::SetupVariables() {
   wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
   if (m_exitAfterEval) {
-    SendMaxima(":lisp-quiet (defvar *wx-defer-queries* t)\n");
+    m_evaluator.SendMaxima(":lisp-quiet (defvar *wx-defer-queries* t)\n");
   }
   wxMathML wxmathml(&m_configuration);
-  SendMaxima(wxmathml.GetCmd());
+  m_evaluator.SendMaxima(wxmathml.GetCmd());
   wxString cmd;
 
 #if defined(__WXOSX__)
@@ -2423,24 +2291,24 @@ void wxMaxima::SetupVariables() {
                m_gnuplotcommand);
 #endif
   cmd.Replace(wxS("\\"), wxS("/"));
-  SendMaxima(cmd);
+  m_evaluator.SendMaxima(cmd);
 
   switch(m_configuration.MaximaHelpFormat())
     {
     case Configuration::frontend:
-      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$frontend)");
+      m_evaluator.SendMaxima(":lisp-quiet (msetq $output_format_for_help '$frontend)");
       break;
 
     case Configuration::maxima:
-      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$text)");
+      m_evaluator.SendMaxima(":lisp-quiet (msetq $output_format_for_help '$text)");
       break;
 
     case Configuration::browser:
-      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$html)");
+      m_evaluator.SendMaxima(":lisp-quiet (msetq $output_format_for_help '$html)");
       break;
 
     default:
-      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$frontend)");
+      m_evaluator.SendMaxima(":lisp-quiet (msetq $output_format_for_help '$frontend)");
     }
   wxString wxmaximaversion_lisp(WXMAXIMA_VERSION);
 
@@ -2475,7 +2343,7 @@ void wxMaxima::SetupVariables() {
   wxmaximaversion_lisp.Replace("\\", "\\\\");
   wxmaximaversion_lisp.Replace("\"", "\\\"");
   wxLogMessage(_("Updating maxima's configuration"));
-  SendMaxima(wxString(wxS(":lisp-quiet (setq $wxmaximaversion \"")) +
+  m_evaluator.SendMaxima(wxString(wxS(":lisp-quiet (setq $wxmaximaversion \"")) +
              wxString(wxmaximaversion_lisp) +
              wxS("\") ($put \'$wxmaxima (read-wxmaxima-version \"" +
                  wxString(wxmaximaversion_lisp) +
@@ -2488,7 +2356,7 @@ void wxMaxima::SetupVariables() {
                  "'*lisp-quiet-suppressed-prompt*) \"" +
                  m_promptPrefix + "(%i1)" + m_promptSuffix + "\"))\n"));
   wxLogMessage(_("Setting prompt and help format"));
-  SendMaxima(wxS(":lisp-quiet (setf *prompt-suffix* \"") +
+  m_evaluator.SendMaxima(wxS(":lisp-quiet (setf *prompt-suffix* \"") +
              m_promptSuffix + wxS("\") (setf *prompt-prefix* \"") +
              m_promptPrefix +
              wxS("\") (setf $in_netmath nil) (setf $show_openplot t) ") +
@@ -2766,7 +2634,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
           EvaluationQueueLength(
                                 GetWorksheet()->GetEvaluationQueue().Size(),
                                 GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-          TriggerEvaluation();
+          m_evaluator.TriggerEvaluation();
           event.RequestMore();
           return;
         } else {
@@ -2791,7 +2659,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       EvaluationQueueLength(
                             GetWorksheet()->GetEvaluationQueue().Size(),
                             GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-      TriggerEvaluation();
+      m_evaluator.TriggerEvaluation();
       event.RequestMore();
       return;    
     }
@@ -3000,7 +2868,7 @@ void wxMaxima::MenuCommand(const wxString &cmd) {
   GetWorksheet()->OpenHCaret(cmd);
   GetWorksheet()->AddCellToEvaluationQueue(
                                         GetWorksheet()->GetActiveCell()->GetGroup());
-  TriggerEvaluation();
+  m_evaluator.TriggerEvaluation();
   GetWorksheet()->RequestRedraw();
 }
 
@@ -3472,43 +3340,6 @@ bool wxMaxima::SaveFile(bool forceSave) {
 }
 
 
-bool wxMaxima::AbortOnError() {
-  // Maxima encountered an error.
-  // The question is now if we want to try to send it something new to evaluate.
-  m_maximaError = true;
-
-  // An error normally drops a batch session into interactive use, so we leave
-  // batch mode (ExitAfterEval(false)) to re-enable the interactive-only work
-  // (help anchors, autocomplete, ...). But with --exit-on-error we close instead
-  // of becoming interactive (see below), so leaving batch mode would only flip
-  // m_exitAfterEval to false and wrongly re-enable all that work -- whose
-  // background tasks then wedge the shutdown join (the multithreadtest CI hang).
-  if (!ExitOnErrorArmed())
-    ExitAfterEval(false);
-  EvalOnStartup(false);
-
-  if (GetWorksheet()->GetNotification()) {
-    if (GetWorksheet()->GetWorkingGroup(true) !=
-        GetWorksheet()->GetNotification()->m_errorNotificationCell)
-      GetWorksheet()->SetNotification(_("Maxima has issued an error!"),
-                                   wxICON_ERROR);
-    GetWorksheet()->GetNotification()->m_errorNotificationCell =
-      GetWorksheet()->GetWorkingGroup(true);
-  }
-
-  if (ExitOnErrorArmed()) {
-    wxMaxima::m_exitCode = 1;
-    Close();
-  }
-  if (m_configuration.GetAbortOnError()) {
-    GetWorksheet()->GetEvaluationQueue().Clear();
-    // Inform the user that the evaluation queue is empty.
-    EvaluationQueueLength(0);
-    GetWorksheet()->ScrollToError();
-    return true;
-  } else
-    return false;
-}
 
 long long wxMaxima::GetTotalCpuTime() {
 #ifdef __WXMSW__
@@ -4142,13 +3973,13 @@ void wxMaxima::VarAddAllEvent(wxCommandEvent &WXUNUSED(event)) {
       (GetWorksheet()->QuestionPending()))
     m_configCommands += command;
   else
-    SendMaxima(command);
+    m_evaluator.SendMaxima(command);
 }
 
 void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event)) {
   if(m_variablesPane)
     m_varNamesToQuery = m_variablesPane->GetEscapedVarnames();
-  QueryVariableValue();
+  m_evaluator.QueryVariableValue();
 }
 
 //! Handle the evaluation event
@@ -4157,78 +3988,6 @@ void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event)) {
 // Normally just add the respective groupcells to evaluationqueue
 // If there is a special case - eg sending from output section
 // of the working group, handle it carefully.
-void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
-  if (GetWorksheet() == NULL)
-    return;
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  bool evaluating = !GetWorksheet()->GetEvaluationQueue().Empty();
-  if (!evaluating)
-    GetWorksheet()->FollowEvaluation(true);
-
-  EditorCell *editor = GetWorksheet()->GetActiveCell();
-  if (GetWorksheet()->QuestionPending() && GetWorksheet()->GetDocumentCellPointers().GetAnswerCell())
-    editor = GetWorksheet()->GetDocumentCellPointers().GetAnswerCell();
-
-  if (editor == NULL) {
-    GroupCell *group = NULL;
-    if (GetWorksheet()->HasCellsSelected()) {
-      // More than one cell is selected
-      GetWorksheet()->AddSelectionToEvaluationQueue();
-    }
-    else
-      {
-        if (GetWorksheet()->HCaretActive()) {
-          group = GetWorksheet()->GetHCaret();
-          if (group == NULL)
-            // If the cursor is before the 1st cell of the worksheet hcaret reads NULL.
-            group = GetWorksheet()->GetTree();
-          else
-            // The HCaret points to the cell before the horizontal cursor.
-            group = group->GetNext();
-
-          // Now we search for the first cell below the cursor that actually contains code.
-          while ((group != NULL) &&
-                 (!((group->GetEditable() != NULL) &&
-                    (group->GetEditable()->GetType() == MC_TYPE_INPUT)) &&
-                  (!GetWorksheet()->GetEvaluationQueue().IsLastInQueue(group))))
-            group = group->GetNext();
-        }
-        if ((group != NULL) && (group->GetEditable() != NULL) &&
-            (group->GetEditable()->GetType() == MC_TYPE_INPUT))
-          editor = group->GetEditable();
-      }
-  }
-
-  if (editor != NULL) // The cursor is in an active cell
-    {
-      if (editor->GetType() == MC_TYPE_INPUT && (!m_configuration.InLispMode()))
-        editor->AddEnding();
-      // if active cell is part of a working group, we have a special
-      // case - answering a question. Manually send answer to Maxima.
-      GroupCell *cell = editor->GetGroup();
-      if (GetWorksheet()->GCContainsCurrentQuestion(cell)) {
-        wxString answer = editor->ToString(true);
-        // Add the answer to the current working cell or update the answer
-        // that is stored within it.
-        cell->SetAnswer(GetWorksheet()->GetLastQuestion(), answer);
-        SendMaxima(answer, true);
-        StatusMaximaBusy(StatusBar::MaximaStatus::calculating);
-        GetWorksheet()->SetHCaret(cell);
-        GetWorksheet()->ScrollToCaret();
-      } else { // normally just add to queue (and mark the cell as no more
-        // containing an error message)
-        GetWorksheet()->GetErrorList().Remove(cell);
-        GetWorksheet()->AddCellToEvaluationQueue(cell);
-      }
-    } else { // no evaluate has been called on no active cell?
-    GetWorksheet()->AddSelectionToEvaluationQueue();
-  }
-  // Inform the user about the length of the evaluation queue.
-  EvaluationQueueLength(GetWorksheet()->GetEvaluationQueue().Size(),
-                        GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-  TriggerEvaluation();
-}
 
 wxString wxMaxima::GetUnmatchedParenthesisState(wxString text, std::size_t &index) {
   text.Trim(false);
@@ -4328,178 +4087,6 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text, std::size_t &inde
 //! Tries to evaluate next group cell in queue
 //
 // Calling this function should not do anything dangerous
-void wxMaxima::TriggerEvaluation() {
-  if(!GetWorksheet())
-    return;
-  // If evaluation is already running we don't have anything to do
-  if (m_maximaBusy)
-    {
-      wxLogMessage(_("Not triggering evaluation as maxima is still busy!"));
-      return;
-    }
-
-  // While we wait for an answer we cannot send new commands.
-  if (GetWorksheet()->QuestionPending())
-    {
-      wxLogMessage(_("Not triggering evaluation as maxima still asks a question!"));
-      return;
-    }
-
-  // If we aren't connected yet this function will be triggered as soon as
-  // maxima connects to wxMaxima
-  if (!m_client || (!m_client->IsConnected()))
-    {
-      wxLogMessage(_("Not triggering evaluation as there is no working maxima process"));
-      return;
-    }
-
-  // Maxima is connected. Let's test if the evaluation queue is empty.
-  GroupCell *const tmp = GetWorksheet()->GetEvaluationQueue().GetCell();
-  if (!tmp) {
-    wxLogMessage(_("Evaluation ended, since evaluation queue is empty."));
-    // Maxima is no more busy.
-    if (m_maximaError)
-      StatusMaximaBusy(StatusBar::MaximaStatus::maximaerror);
-    else
-      StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
-    // Inform the user that the evaluation queue length now is 0.
-    EvaluationQueueLength(0);
-    // Now we want to start to display things immediately again
-    m_fastResponseTimer.Stop();
-    // The cell from the last evaluation might still be shown in it's
-    // "evaluating" state so let's refresh the console to update the display of
-    // this.
-    GetWorksheet()->RequestRedraw();
-
-    // If the window isn't active we can inform the user that maxima in the
-    // meantime has finished working.
-    if ((m_configuration.NotifyIfIdle()) && (GetWorksheet()->GetTree() != NULL))
-      GetWorksheet()->SetNotification(_("Maxima has finished calculating."));
-
-    if (m_configCommands != wxEmptyString)
-      SendMaxima(m_configCommands, false, true);
-    m_configCommands.Clear();
-    QueryVariableValue();
-    return; // empty queue
-  }
-
-  // Add a semicolon at the end of the cell, if needed.
-  if (tmp->AddEnding())
-    GetWorksheet()->GetEvaluationQueue().AddEnding();
-
-  // Display the evaluation queue's status.
-  EvaluationQueueLength(GetWorksheet()->GetEvaluationQueue().Size(),
-                        GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-
-
-  // Maxima is connected, not asking a question and the queue contains an item.
-
-  // From now on we look every second if we got some output from a crashing
-  // maxima: Is maxima is working correctly the stdout and stderr descriptors we
-  // poll don't offer any data.
-  m_responseReader.ReadStdErr();
-  m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
-
-  if (GetWorksheet()->GetEvaluationQueue().m_workingGroupChanged) {
-    // Clear the monitor that shows the xml representation of the output of the
-    // current maxima command.
-    if ((m_xmlInspector) && (IsPaneDisplayed(EventIDs::menu_pane_xmlInspector)))
-      m_xmlInspector->Clear();
-
-    // If the cell's output that we are about to remove contains the currently
-    // selected cells we undo the selection.
-    if (GetWorksheet()->GetSelectionStart()) {
-      if (GetWorksheet()->GetSelectionStart()->GetGroup() == tmp)
-        GetWorksheet()->ClearSelection();
-    }
-    if (GetWorksheet()->GetSelectionEnd()) {
-      if (GetWorksheet()->GetSelectionEnd()->GetGroup() == tmp)
-        GetWorksheet()->ClearSelection();
-    }
-    tmp->RemoveOutput();
-    GetWorksheet()->RequestRecalculation(tmp);
-    GetWorksheet()->RequestRedraw();
-  }
-  wxString text = GetWorksheet()->GetEvaluationQueue().GetCommand();
-  m_commandIndex = GetWorksheet()->GetEvaluationQueue().GetIndex();
-  if ((text != wxEmptyString) && (text != wxS(";")) && (text != wxS("$"))) {
-    std::size_t index;
-    wxString parenthesisError =
-      GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true), index);
-    if (parenthesisError.IsEmpty()) {
-      if (GetWorksheet()->FollowEvaluation()) {
-        GetWorksheet()->SetSelection(tmp);
-        if (!GetWorksheet()->GetWorkingGroup()) {
-          GetWorksheet()->SetHCaret(tmp);
-          GetWorksheet()->ScrollToCaret();
-        }
-      }
-
-      GetWorksheet()->SetWorkingGroup(tmp);
-      tmp->GetPrompt()->SetValue(m_lastPrompt);
-      tmp->ResetSize();
-
-      wxLogMessage(_("Sending a new command to Maxima."));
-      SendMaxima(m_configCommands);
-      SendMaxima(text, true);
-      m_maximaBusy = true;
-      // Now that we have sent a command we need to query all variable values
-      // anew
-      if(m_variablesPane)
-        m_varNamesToQuery = m_variablesPane->GetEscapedVarnames();
-      // And the gui is interested in a few variable names
-      m_readMaximaVariables = true;
-      m_configCommands.Clear();
-
-      EvaluationQueueLength(
-                            GetWorksheet()->GetEvaluationQueue().Size(),
-                            GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-
-      text.Trim(false);
-      if (!m_hasEvaluatedCells) {
-        if (text.StartsWith(wxS(":lisp")))
-          StatusText(_("A \":lisp\" as the first command might fail to "
-                       "send a \"finished\" signal."));
-      }
-
-      // Mark the current maxima process as "no more in its initial condition".
-      m_hasEvaluatedCells = true;
-    } else {
-      // Manually mark the current cell as the one that has caused an error.
-      GetWorksheet()->GetErrorList().Add(tmp);
-      // Inform the status bar about the error
-      StatusMaximaBusy(StatusBar::MaximaStatus::maximaerror);
-      // Inform the user about the error (which automatically causes the
-      // worksheet to the cell we marked as erroneous a few seconds ago.
-      auto cell =
-        std::make_unique<TextCell>(tmp, &m_configuration,
-                                   _("Refusing to send cell to maxima: ") +
-                                   parenthesisError + wxS("\n"));
-      cell->SetType(MC_TYPE_ERROR);
-      tmp->SetOutput(std::move(cell));
-      GetWorksheet()->GetEvaluationQueue().Clear();
-      GetWorksheet()->SetWorkingGroup(nullptr);
-      tmp->GetEditable()->SetCaretPosition(index);
-      tmp->GetEditable()->SetErrorIndex((m_commandIndex = index) - 1);
-
-      if (GetWorksheet()->FollowEvaluation())
-        GetWorksheet()->SetSelection(NULL);
-
-      GetWorksheet()->SetWorkingGroup(nullptr);
-      GetWorksheet()->RequestRedraw();
-      if (!AbortOnError()) {
-        m_outputCellsFromCurrentCommand = 0;
-        TriggerEvaluation();
-      }
-      GetWorksheet()->SetActiveCell(tmp->GetEditable());
-    }
-  } else {
-    wxLogMessage(_("Empty command => re-triggering evaluation"));
-    m_outputCellsFromCurrentCommand = 0;
-    GetWorksheet()->GetEvaluationQueue().RemoveFirst();
-    TriggerEvaluation();
-  }
-}
 
 void wxMaxima::ReplaceSuggestion(wxCommandEvent &event) {
   int index = event.GetId() - EventIDs::popid_suggestion1;
