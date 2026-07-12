@@ -40,6 +40,7 @@
 #include "MaximaIPC.h"
 #include "MaximaCommandMenus.h"
 #include "MaximaResponseReader.h"
+#include "MaximaProcessManager.h"
 #include "Dirstructure.h"
 #include <wx/socket.h>
 #include <wx/config.h>
@@ -93,14 +94,6 @@ public:
     per worksheet, here. */
   bool ExitOnErrorArmed() const { return m_exitOnError && m_exitOnErrorArmed; }
 
-  /*! Install termination-signal handlers (SIGTERM/SIGINT/SIGHUP) on Unix.
-
-    They SIGKILL every still-running child Maxima before wxMaxima dies, so a
-    Maxima that is busy computing (and therefore not noticing its closed control
-    socket) is not orphaned and left eating CPU/RAM. No-op on Windows, where
-    Maxima runs under maxima.bat and the existing taskkill cleanup applies.
-  */
-  static void SetupTerminationHandlers();
 #ifdef __WXMSW__
   /*! Re-point the .wxmx/.wxm/.mac file association at the running wxMaxima.
 
@@ -112,12 +105,6 @@ public:
   */
   static void RepairFileAssociations();
 #endif
-  /*! Async-signal-safe: SIGKILL every registered child Maxima process group.
-
-    Safe to call from a signal handler or from OnFatalException(); it only uses
-    kill() and reads of an array of sig_atomic_t.
-  */
-  static void KillAllChildMaximas();
   /*! Allow maxima to click buttons in wxMaxima
 
     Disabled by default for security reasons
@@ -717,6 +704,10 @@ private:
   //! (the worksheet, the sidebars, the status bar, the configuration) through
   //! this friendship.
   friend class MaximaResponseReader;
+  //! The extracted Maxima process/socket lifecycle reaches wxMaxima's services
+  //! (the status bar, worksheet, configuration, process/socket members)
+  //! through this friendship.
+  friend class MaximaProcessManager;
 
   /*! A timer that determines when to do the next autosave;
 
@@ -748,6 +739,10 @@ private:
   //! reference back to this frame (initialised in the constructor, where *this
   //! is unambiguously complete).
   MaximaResponseReader m_responseReader;
+  //! The Maxima process/socket lifecycle peeled off this god class. Holds a
+  //! reference back to this frame (initialised in the constructor, where *this
+  //! is unambiguously complete).
+  MaximaProcessManager m_processManager;
 };
 
 #if wxUSE_DRAG_AND_DROP

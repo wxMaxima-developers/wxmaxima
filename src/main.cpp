@@ -398,7 +398,7 @@ bool MyApp::OnInit() {
 #endif
     // Make sure child Maxima processes are killed if we are terminated by a
     // signal instead of shutting down cleanly (no-op on Windows).
-    wxMaxima::SetupTerminationHandlers();
+    MaximaProcessManager::SetupTerminationHandlers();
 #ifdef __WXMSW__
     // After an update the .wxmx/.wxm/.mac association often still points at the
     // previous install path; re-point it at the wxMaxima that is running now.
@@ -997,7 +997,7 @@ void MyApp::OnFatalException()
 {
     // Kill child Maxima processes first (async-signal-safe), so a crash can't
     // leave a busy Maxima orphaned while we generate the debug report.
-    wxMaxima::KillAllChildMaximas();
+    MaximaProcessManager::KillAllChildMaximas();
     GenerateDebugReport(wxDebugReport::Context_Exception);
 }
 
