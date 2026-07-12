@@ -330,7 +330,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
                   wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION),
     m_gnuplotcommand(wxS("gnuplot")),
     m_parser(&m_configuration),
-    m_maximaError(false), m_menuCommands(*this) {
+    m_maximaError(false), m_menuCommands(*this), m_responseReader(*this) {
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
   wxHandleFatalExceptions();
   wxLogMessage(_("Will try to generate a stack backtrace, if the program ever crashes"));
@@ -1885,7 +1885,7 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
       wxStringInputStream xmlStream(event.GetString());
       xmldoc.Load(xmlStream);
       m_statusBar->NetworkStatus(StatusBar::receive);
-      ReadLoadSymbols(xmldoc);
+      m_responseReader.ReadLoadSymbols(xmldoc);
     }
     break;
   case Maxima::XML_VARIABLES:
@@ -1912,7 +1912,7 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
       wxStringInputStream xmlStream(event.GetString());
       xmldoc.Load(xmlStream);
       m_statusBar->NetworkStatus(StatusBar::receive);
-      ReadStatusBar(xmldoc);
+      m_responseReader.ReadStatusBar(xmldoc);
     }
     break;
   case Maxima::XML_HTML_MANUAL_KEYWORDS:
@@ -1921,7 +1921,7 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
       wxStringInputStream xmlStream(event.GetString());
       xmldoc.Load(xmlStream);
       m_statusBar->NetworkStatus(StatusBar::receive);
-      ReadManualTopicNames(xmldoc);
+      m_responseReader.ReadManualTopicNames(xmldoc);
     }
     break;
   case Maxima::XML_MATHS:
@@ -1930,7 +1930,7 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
       wxStringInputStream xmlStream(event.GetString());
       xmldoc.Load(xmlStream);
       m_statusBar->NetworkStatus(StatusBar::receive);
-      ReadMath(xmldoc);
+      m_responseReader.ReadMath(xmldoc);
     }
     break;
   case Maxima::XML_TOOLONGMATHS:
@@ -2736,92 +2736,6 @@ void wxMaxima::ReadMiscText(const wxString &data) {
     GetWorksheet()->SetCurrentTextCell(nullptr);
 }
 
-void wxMaxima::ReadStatusBar(const wxXmlDocument &xmldoc) {
-  if(GetWorksheet())
-    GetWorksheet()->SetCurrentTextCell(nullptr);
-  if(!xmldoc.IsOk())
-    {
-      DoRawConsoleAppend(_("There was an error in the XML that should describe the status bar message.\n"
-                           "Please report this as a bug to the wxMaxima project."),
-                         MC_TYPE_ERROR);
-      AbortOnError();
-    }
-  else
-    {
-      wxXmlNode *node = xmldoc.GetRoot();
-      if (node != NULL) {
-        wxXmlNode *contents = node->GetChildren();
-        if (contents)
-          StatusText(contents->GetContent(), false);
-      }
-    }
-}
-
-void wxMaxima::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
-  if(xmldoc.IsOk())
-    {
-      std::vector<wxString> topics;
-      wxXmlNode *node = xmldoc.GetRoot();
-      while ((node) && (node->GetName() != wxS("html-manual-keywords")))
-        node = node->GetNext();
-
-      if (node == NULL) {
-        wxLogMessage(_("No topics found in topic tag"));
-      } else {
-        for (wxXmlNode *entry = node->GetChildren(); entry != NULL;
-             entry = entry->GetNext())
-          {
-            if (entry->GetName() == wxS("keyword")) {
-              wxXmlNode *topic = entry->GetChildren();
-              if (topic) {
-                wxLogMessage(_("Received manual topic request: %s"),
-                             topic->GetContent().ToUTF8().data());
-                topics.push_back(topic->GetContent());
-              }
-            }
-          }
-        if (topics.empty())
-          wxLogMessage(_("No topics found in topic flag"));
-        else
-          {
-#ifdef USE_WEBVIEW
-            m_helpPane->SelectKeywords(topics);
-            wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
-#else
-            ShowMaximaHelp(topics.front());
-#endif
-          }
-      }
-    }
-  else
-    {
-      DoRawConsoleAppend(_("There was an error in the XML that should describe the manual topics.\n"
-                           "Please report this as a bug to the wxMaxima project."),
-                         MC_TYPE_ERROR);
-      AbortOnError();
-    }
-}
-
-
-/***
- * Checks if maxima displayed a new chunk of math
- */
-void wxMaxima::ReadMath(const wxXmlDocument &xml) {
-  if(!GetWorksheet())
-    return;
-
-  GetWorksheet()->SetCurrentTextCell(nullptr);
-
-  // Append everything from the "beginning of math" to the "end of math" marker
-  // to the console
-  if (m_configuration.UseUserLabels()) {
-    ConsoleAppend(xml, MC_TYPE_DEFAULT,
-                  GetWorksheet()->GetEvaluationQueue().GetUserLabel());
-  } else {
-    ConsoleAppend(xml, MC_TYPE_DEFAULT);
-  }
-}
-
 void wxMaxima::ReadSuppressedOutput(const wxString &data) {
   if(!m_maximaAuthenticated)
     {
@@ -2849,10 +2763,6 @@ void wxMaxima::ReadSuppressedOutput(const wxString &data) {
                         _("Warning"), wxOK | wxICON_EXCLAMATION);
       m_discardAllData = true;
     }
-}
-
-void wxMaxima::ReadLoadSymbols(const wxXmlDocument &data) {
-  GetWorksheet()->AddSymbols(data);
 }
 
 void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {

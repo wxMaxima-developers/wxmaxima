@@ -39,6 +39,7 @@
 #include "MathParser.h"
 #include "MaximaIPC.h"
 #include "MaximaCommandMenus.h"
+#include "MaximaResponseReader.h"
 #include "Dirstructure.h"
 #include <wx/socket.h>
 #include <wx/config.h>
@@ -539,32 +540,7 @@ protected:
   */
   void ReadPrompt(const wxString &data);
 
-  /*! Reads the output of wxstatusbar() commands
-
-    wxstatusbar allows the user to give and update visual feedback from long-running
-    commands and makes sure this feedback is deleted once the command is finished.
-  */
-  void ReadStatusBar(const wxXmlDocument &xmldoc);
-  //! Read a manual topic name so we can jump to the right documentation page
-  void ReadManualTopicNames(const wxXmlDocument &xmldoc);
-
-  /*! Reads the math cell's contents from Maxima.
-
-    Math cells are enclosed between the tags \<mth\> and \</mth\>.
-    This function removes the from data after appending them
-    to the console.
-
-    After processing the status bar marker is removed from data.
-  */
-  void ReadMath(const wxXmlDocument &xml);
-
-  /*! Reads autocompletion templates we get on definition of a function or variable
-
-    After processing the templates they are removed from data.
-  */
-
   void ReadMaximaIPC(const wxString &data){m_ipc.ReadInputData(data);}
-  void ReadLoadSymbols(const wxXmlDocument &data);
 
   //! Read (and discard) suppressed output
   void ReadSuppressedOutput(const wxString &data);
@@ -832,6 +808,10 @@ private:
   //! The extracted menu-command handlers reach wxMaxima's services (MenuCommand,
   //! the wizards, m_configuration) through this friendship.
   friend class MaximaCommandMenus;
+  //! The extracted Maxima-response (Read*) handlers reach wxMaxima's services
+  //! (the worksheet, the sidebars, the status bar, the configuration) through
+  //! this friendship.
+  friend class MaximaResponseReader;
 
   /*! A timer that determines when to do the next autosave;
 
@@ -858,6 +838,11 @@ private:
   //! relevant menu/button events. Holds a reference back to this frame
   //! (initialised in the constructor, where *this is unambiguously complete).
   MaximaCommandMenus m_menuCommands;
+  //! The Maxima-response (Read*) handlers peeled off this god class;
+  //! wxMaxima::MaximaEvent dispatches each incoming chunk to them. Holds a
+  //! reference back to this frame (initialised in the constructor, where *this
+  //! is unambiguously complete).
+  MaximaResponseReader m_responseReader;
 };
 
 #if wxUSE_DRAG_AND_DROP
