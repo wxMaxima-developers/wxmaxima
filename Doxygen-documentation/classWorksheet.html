@@ -94,7 +94,7 @@ Inheritance diagram for Worksheet:</div>
 <div class="dynheader">
 Collaboration diagram for Worksheet:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="549"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classWorksheet__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -411,7 +411,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>IndexSearchStartedAt</
 <a class="el" href="classCellPointers.html">CellPointers</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetCellPointers</b> ()</td></tr>
 <tr class="separator:adc64116b23eb4b62641dd4953f3966c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f08fa67d4334c12981b9838f94137eb"><td class="memItemLeft" align="right" valign="top"><a id="a8f08fa67d4334c12981b9838f94137eb" name="a8f08fa67d4334c12981b9838f94137eb"></a>
-<a class="el" href="classCellPointers_1_1ErrorList.html">CellPointers::ErrorList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetErrorList</b> ()</td></tr>
+<a class="el" href="classCellPointers.html#ac27f1e0d6f03a76851f045d2ba8eaa94">CellPointers::ErrorList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetErrorList</b> ()</td></tr>
 <tr class="separator:a8f08fa67d4334c12981b9838f94137eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98f9130edbebea75d30c2dbeaa42353f"><td class="memItemLeft" align="right" valign="top"><a id="a98f9130edbebea75d30c2dbeaa42353f" name="a98f9130edbebea75d30c2dbeaa42353f"></a>
 <a class="el" href="classTextCell.html">TextCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentTextCell</b> () const</td></tr>
@@ -498,6 +498,14 @@ Protected Attributes</h2></td></tr>
 <a class="el" href="classWorksheetDocument.html">WorksheetDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_document</b></td></tr>
 <tr class="memdesc:a1de57fa9fa14c8cde138560a42e81d65"><td class="mdescLeft">&#160;</td><td class="mdescRight">The view-independent document state (file, current question, ...) that <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>'s document accessors delegate to. Grows as the document/view split migrates more state off <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>. <br /></td></tr>
 <tr class="separator:a1de57fa9fa14c8cde138560a42e81d65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bb160d14c6aa760b9bdfb92aeba016a"><td class="memItemLeft" align="right" valign="top"><a id="a3bb160d14c6aa760b9bdfb92aeba016a" name="a3bb160d14c6aa760b9bdfb92aeba016a"></a>
+<a class="el" href="classViewCellPointers.html">ViewCellPointers</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_viewCellPointers</b> {this}</td></tr>
+<tr class="memdesc:a3bb160d14c6aa760b9bdfb92aeba016a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The transient view-state half of the cell-pointer registry (hover, selection anchors, scroll target, animation timers). Owned here; the document-model half is owned by m_document. Declared after m_document so the m_cellPointers facade below can bind references to both. <br /></td></tr>
+<tr class="separator:a3bb160d14c6aa760b9bdfb92aeba016a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e43ada47fe7255f4d8ff34d1797533e"><td class="memItemLeft" align="right" valign="top"><a id="a4e43ada47fe7255f4d8ff34d1797533e" name="a4e43ada47fe7255f4d8ff34d1797533e"></a>
+<a class="el" href="classCellPointers.html">CellPointers</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_cellPointers</b> {m_document.GetCellPointers(), <a class="el" href="classWorksheet.html#a3bb160d14c6aa760b9bdfb92aeba016a">m_viewCellPointers</a>}</td></tr>
+<tr class="memdesc:a4e43ada47fe7255f4d8ff34d1797533e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compatibility facade referencing the two owned halves, for the callers not yet routed to the halves directly. Must be initialised after both halves. <br /></td></tr>
+<tr class="separator:a4e43ada47fe7255f4d8ff34d1797533e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa147a04a694ed784875d86a01c1e3f6"><td class="memItemLeft" align="right" valign="top"><a id="aaa147a04a694ed784875d86a01c1e3f6" name="aaa147a04a694ed784875d86a01c1e3f6"></a>
 wxBitmap&#160;</td><td class="memItemRight" valign="bottom"><b>m_memory</b></td></tr>
 <tr class="memdesc:aaa147a04a694ed784875d86a01c1e3f6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> memory we can manually buffer the contents of the area that is to be redrawn in. <br /></td></tr>

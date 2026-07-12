@@ -28,5 +28,6 @@ var searchData=
   ['varreadevent_25',['VarReadEvent',['../classwxMaxima.html#a4dfc9339e684b4d9a6fe4b5a9e810871',1,'wxMaxima']]],
   ['vehiclestart_26',['vehicleStart',['../structVehicle.html#a6891d3d28853bc3fdd075596dc6de9f8',1,'Vehicle']]],
   ['vehiclestop_27',['vehicleStop',['../structVehicle.html#a4dcbcba43792dcd673a552b14479ab77',1,'Vehicle']]],
-  ['visiblyinvalidcell_28',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)']]]
+  ['view_28',['View',['../classCellPointers.html#ac639397a201f188caed219ca24e8b024',1,'CellPointers']]],
+  ['visiblyinvalidcell_29',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)']]]
 ];

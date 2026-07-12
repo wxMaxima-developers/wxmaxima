@@ -3,7 +3,7 @@ var searchData=
   ['handdrawn_0',['handdrawn',['../classConfiguration.html#acc2f54f4547aea31768bc9db04a9f24bad34e19b6a63922bb2edd0f1472d998c6',1,'Configuration']]],
   ['handler_1',['handler',['../classQTstyle__Test.html#a79dd4e5498f09057775a819d911349e2',1,'QTstyle_Test::handler()'],['../classJavadoc__Test.html#ace81a523a4eef44501a841a6d338832b',1,'Javadoc_Test::handler()']]],
   ['hasbigskip_2',['HasBigSkip',['../classCell.html#a20bb74d60a63360107eb69f92e5e4f06',1,'Cell']]],
-  ['hascellsselected_3',['HasCellsSelected',['../classWorksheet.html#a6018024486004b1f2bc8a6e37628edfc',1,'Worksheet::HasCellsSelected()'],['../classCellPointers.html#ae472295eccdc1fc42eb7bc66d4ffa385',1,'CellPointers::HasCellsSelected()']]],
+  ['hascellsselected_3',['HasCellsSelected',['../classWorksheet.html#a6018024486004b1f2bc8a6e37628edfc',1,'Worksheet::HasCellsSelected()'],['../classDocumentCellPointers.html#a961ac74cdc8c25612234eb968d009679',1,'DocumentCellPointers::HasCellsSelected()']]],
   ['hasdemofile_4',['HasDemofile',['../classAutoComplete.html#ae1de0de91bf3e6b748e68daa93aade9c',1,'AutoComplete']]],
   ['hash_3c_20enumwrapper_3c_20enum_2c_20storage_2c_20defaultvalue_20_3e_20_3e_5',['hash&lt; EnumWrapper&lt; Enum, Storage, defaultValue &gt; &gt;',['../structstd_1_1hash_3_01EnumWrapper_3_01Enum_00_01Storage_00_01defaultValue_01_4_01_4.html',1,'std']]],
   ['hashardlinebreak_6',['HasHardLineBreak',['../classCell.html#a5a5d819c65594c03a045838db113a1eb',1,'Cell']]],

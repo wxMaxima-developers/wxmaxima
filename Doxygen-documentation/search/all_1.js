@@ -14,7 +14,7 @@ var searchData=
   ['activatecursor_11',['ActivateCursor',['../classEditorCell.html#ac3aaa6e05945f0185ff534a310d94e99',1,'EditorCell']]],
   ['activecell_12',['ActiveCell',['../classTreeUndoManager.html#a05e0500cfd82dca8c91ab83a813b033a',1,'TreeUndoManager']]],
   ['actualvaluesstoragewiz_13',['ActualValuesStorageWiz',['../classActualValuesStorageWiz.html',1,'']]],
-  ['add_14',['Add',['../classBackgroundQueue.html#a6a91f516b72224d18a2e92fc6ca8338a',1,'BackgroundQueue::Add()'],['../classCellPointers_1_1ErrorList.html#a6e567d54d7002b58bcafc74bce27e70a',1,'CellPointers::ErrorList::Add()']]],
+  ['add_14',['Add',['../classBackgroundQueue.html#a6a91f516b72224d18a2e92fc6ca8338a',1,'BackgroundQueue::Add()'],['../classDocumentCellPointers_1_1ErrorList.html#a91c53276626053032189439182037e6d',1,'DocumentCellPointers::ErrorList::Add()']]],
   ['add_15',['add',['../restypedef_8cpp.html#a102acaaa258e937adf910898c6133545',1,'restypedef.cpp']]],
   ['add_5ffrommaxima_16',['Add_FromMaxima',['../classXmlInspector.html#af1d1f42687fbdf57b2f03eadc83dbdba',1,'XmlInspector']]],
   ['add_5ftomaxima_17',['Add_ToMaxima',['../classXmlInspector.html#a1c9c7ce67fcb1d912b8dfcc07df5d36d',1,'XmlInspector']]],

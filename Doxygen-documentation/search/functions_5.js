@@ -4,7 +4,7 @@ var searchData=
   ['editmenu_1',['EditMenu',['../classwxMaxima.html#a583d63bd73914f60c6baa6fe737efb3d',1,'wxMaxima']]],
   ['editorbackgroundcolor_2',['EditorBackgroundColor',['../classConfiguration.html#a0ef02b1b5d03f40b585eed65c4c8e570',1,'Configuration']]],
   ['editorcell_3',['EditorCell',['../classEditorCell.html#a16732e2b40149ba3baefd2f9bbf614a7',1,'EditorCell']]],
-  ['empty_4',['Empty',['../classCellPointers_1_1ErrorList.html#a753b6464f99227556b7fc8e382da6901',1,'CellPointers::ErrorList::Empty()'],['../classGroupCell.html#a7d134e4f14869920ea47fc94d504c10e',1,'GroupCell::Empty()'],['../classEvaluationQueue.html#a51e73fac4a469890cfe2a57add221e9b',1,'EvaluationQueue::Empty()']]],
+  ['empty_4',['Empty',['../classDocumentCellPointers_1_1ErrorList.html#a7ed6103adcb981368d71d6ca21ba6f8b',1,'DocumentCellPointers::ErrorList::Empty()'],['../classGroupCell.html#a7d134e4f14869920ea47fc94d504c10e',1,'GroupCell::Empty()'],['../classEvaluationQueue.html#a51e73fac4a469890cfe2a57add221e9b',1,'EvaluationQueue::Empty()']]],
   ['enableipc_5',['EnableIPC',['../classwxMaxima.html#a6e02774a2efcee9afe6933a7aa36cc48',1,'wxMaxima']]],
   ['enableitem_6',['EnableItem',['../classMainMenuBar.html#ab476667a74b99d30831c7ad5994c3ece',1,'MainMenuBar']]],
   ['endofline_7',['EndOfLine',['../classEditorCell.html#a58dd02fde1f65448e486de18d4054fed',1,'EditorCell']]],

@@ -9,7 +9,7 @@ var searchData=
   ['findnexttarget_6',['FindNextTarget',['../WorksheetSearch_8cpp.html#a1724fe85b5b256bc70506bff435c9cfa',1,'WorksheetSearch']]],
   ['findprogram_7',['FindProgram',['../classConfiguration.html#a2a970cab8c8c88114f5bb0a5062f4e7f',1,'Configuration']]],
   ['first_8',['first',['../classCell.html#af6fdc7ea7b3f746d7b1f56c827cf5cad',1,'Cell']]],
-  ['firsterror_9',['FirstError',['../classCellPointers_1_1ErrorList.html#a56d5a4858048355465698f93476c20c8',1,'CellPointers::ErrorList']]],
+  ['firsterror_9',['FirstError',['../classDocumentCellPointers_1_1ErrorList.html#abac7f4818490792d9c39908b614a6205',1,'DocumentCellPointers::ErrorList']]],
   ['firstlineonlyeditor_10',['FirstLineOnlyEditor',['../classGroupCell.html#a12f2ce396c76b3363117ba17af5b6d4e',1,'GroupCell::FirstLineOnlyEditor()'],['../classCell.html#a5f799e3b2067908868779c6a8f54683c',1,'Cell::FirstLineOnlyEditor()']]],
   ['firstvisiblegc_11',['FirstVisibleGC',['../classWorksheet.html#a270e32d80f47588a429985ed1d8f5c05',1,'Worksheet']]],
   ['fixedfontintextcontrols_12',['FixedFontInTextControls',['../classConfiguration.html#a74266b77ad48f7043b4cf3d56ccdf598',1,'Configuration::FixedFontInTextControls() const'],['../classConfiguration.html#aabee12fa4b8d59e99bd6164d27572acc',1,'Configuration::FixedFontInTextControls(bool fixed)']]],

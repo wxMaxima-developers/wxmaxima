@@ -978,6 +978,14 @@ std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td>
 <tr class="memitem:a6ff267c7f20bd27efee6854d5b795294"><td class="memItemLeft" align="right" valign="top"><a id="a6ff267c7f20bd27efee6854d5b795294" name="a6ff267c7f20bd27efee6854d5b795294"></a>
 <a class="el" href="classCellPointers.html">CellPointers</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetCellPointers</b> () const</td></tr>
 <tr class="separator:a6ff267c7f20bd27efee6854d5b795294"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfd4eba944bfbeb0c57eaf35c61160ab"><td class="memItemLeft" align="right" valign="top"><a id="abfd4eba944bfbeb0c57eaf35c61160ab" name="abfd4eba944bfbeb0c57eaf35c61160ab"></a>
+<a class="el" href="classDocumentCellPointers.html">DocumentCellPointers</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetDocumentCellPointers</b> () const</td></tr>
+<tr class="memdesc:abfd4eba944bfbeb0c57eaf35c61160ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">The document-model half of the cell-pointer registry this cell uses. <br /></td></tr>
+<tr class="separator:abfd4eba944bfbeb0c57eaf35c61160ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad32be8e11d74ae2a8218c2572b3ca84f"><td class="memItemLeft" align="right" valign="top"><a id="ad32be8e11d74ae2a8218c2572b3ca84f" name="ad32be8e11d74ae2a8218c2572b3ca84f"></a>
+<a class="el" href="classViewCellPointers.html">ViewCellPointers</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetViewCellPointers</b> () const</td></tr>
+<tr class="memdesc:ad32be8e11d74ae2a8218c2572b3ca84f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The transient view-state half of the cell-pointer registry this cell uses. <br /></td></tr>
+<tr class="separator:ad32be8e11d74ae2a8218c2572b3ca84f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f8ba5f1d1dcbdba6eadb60b10d24577"><td class="memItemLeft" align="right" valign="top"><a id="a5f8ba5f1d1dcbdba6eadb60b10d24577" name="a5f8ba5f1d1dcbdba6eadb60b10d24577"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>InvalidateListCache</b> () const</td></tr>
 <tr class="separator:a5f8ba5f1d1dcbdba6eadb60b10d24577"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -987,9 +995,12 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a30e978a6e78e0d90bd4c93bf42075b6d"><td class="memItemLeft" align="right" valign="top">wxRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a30e978a6e78e0d90bd4c93bf42075b6d">m_outputRect</a> {-1, -1, 0, 0}</td></tr>
 <tr class="memdesc:a30e978a6e78e0d90bd4c93bf42075b6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounding rectangle of this group's output (results) area, in worksheet coordinates.  <br /></td></tr>
 <tr class="separator:a30e978a6e78e0d90bd4c93bf42075b6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c7ee5a116c772cc31c390b285e54b2a"><td class="memItemLeft" align="right" valign="top"><a id="a3c7ee5a116c772cc31c390b285e54b2a" name="a3c7ee5a116c772cc31c390b285e54b2a"></a>
-<a class="el" href="classCellPointers.html">CellPointers</a> *const&#160;</td><td class="memItemRight" valign="bottom"><b>m_cellPointers</b> = GetCellPointers()</td></tr>
-<tr class="separator:a3c7ee5a116c772cc31c390b285e54b2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac22eeaad7639bb0896458cb1dc52583f"><td class="memItemLeft" align="right" valign="top"><a id="ac22eeaad7639bb0896458cb1dc52583f" name="ac22eeaad7639bb0896458cb1dc52583f"></a>
+<a class="el" href="classDocumentCellPointers.html">DocumentCellPointers</a> *const&#160;</td><td class="memItemRight" valign="bottom"><b>m_documentCellPointers</b> = <a class="el" href="classCell.html#abfd4eba944bfbeb0c57eaf35c61160ab">GetDocumentCellPointers</a>()</td></tr>
+<tr class="separator:ac22eeaad7639bb0896458cb1dc52583f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5576aaa9c5ffcb123d148b8f247171e"><td class="memItemLeft" align="right" valign="top"><a id="ac5576aaa9c5ffcb123d148b8f247171e" name="ac5576aaa9c5ffcb123d148b8f247171e"></a>
+<a class="el" href="classViewCellPointers.html">ViewCellPointers</a> *const&#160;</td><td class="memItemRight" valign="bottom"><b>m_viewCellPointers</b> = <a class="el" href="classCell.html#ad32be8e11d74ae2a8218c2572b3ca84f">GetViewCellPointers</a>()</td></tr>
+<tr class="separator:ac5576aaa9c5ffcb123d148b8f247171e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa90d3470615a1057cd9810c5f4541a83"><td class="memItemLeft" align="right" valign="top"><a id="aa90d3470615a1057cd9810c5f4541a83" name="aa90d3470615a1057cd9810c5f4541a83"></a>
 std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_hiddenTree</b></td></tr>
 <tr class="memdesc:aa90d3470615a1057cd9810c5f4541a83"><td class="mdescLeft">&#160;</td><td class="mdescRight">here hidden (folded) tree of GCs is stored <br /></td></tr>

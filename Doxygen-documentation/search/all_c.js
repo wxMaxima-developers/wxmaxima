@@ -6,7 +6,7 @@ var searchData=
   ['last_3',['last',['../classCell.html#a67b0906e71228e806a3ff42a571fe91c',1,'Cell']]],
   ['lastactive_4',['LastActive',['../classBTextCtrl.html#a1fc69047ab758c8950aeb7d362db11e7',1,'BTextCtrl']]],
   ['lastcache_5',['LastCache',['../classWorksheetDocument.html#a13c617f8ecf9c94bf606a3e815f2a3cf',1,'WorksheetDocument']]],
-  ['lasterror_6',['LastError',['../classCellPointers_1_1ErrorList.html#a23dd22751cea1491cb8b5960b1629304',1,'CellPointers::ErrorList']]],
+  ['lasterror_6',['LastError',['../classDocumentCellPointers_1_1ErrorList.html#ad34b01db71b5e4d4e632d8280fbbf5df',1,'DocumentCellPointers::ErrorList']]],
   ['lastinevaluationqueue_7',['LastInEvaluationQueue',['../classGroupCell.html#aab4904e9f44700e09f7aeb2192ec4db2',1,'GroupCell']]],
   ['lastspliced_8',['lastSpliced',['../structCellList_1_1SplicedIn.html#a745fd3fdc7f583c5251fe079c4eb99c1',1,'CellList::SplicedIn']]],
   ['launchhelpbrowser_9',['LaunchHelpBrowser',['../classwxMaxima.html#a4a8f5301a1199dabcc023a24516ad127',1,'wxMaxima']]],

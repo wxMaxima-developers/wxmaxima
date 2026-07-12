@@ -12,7 +12,7 @@ var searchData=
   ['enumwrapper_3c_20wxfontweight_2c_20int16_5ft_2c_20wxfontweight_5fnormal_20_3e_9',['EnumWrapper&lt; wxFontWeight, int16_t, wxFONTWEIGHT_NORMAL &gt;',['../classEnumWrapper.html',1,'']]],
   ['equals_10',['Equals',['../structAFontSize_1_1Equals.html',1,'AFontSize']]],
   ['equalsmatcher_11',['EqualsMatcher',['../structCatch_1_1Matchers_1_1StdString_1_1EqualsMatcher.html',1,'Catch::Matchers::StdString::EqualsMatcher'],['../structCatch_1_1Matchers_1_1Vector_1_1EqualsMatcher.html',1,'Catch::Matchers::Vector::EqualsMatcher&lt; T, AllocComp, AllocMatch &gt;']]],
-  ['errorlist_12',['ErrorList',['../classCellPointers_1_1ErrorList.html',1,'CellPointers']]],
+  ['errorlist_12',['ErrorList',['../classDocumentCellPointers_1_1ErrorList.html',1,'DocumentCellPointers']]],
   ['evaluationqueue_13',['EvaluationQueue',['../classEvaluationQueue.html',1,'']]],
   ['eventids_14',['EventIDs',['../classEventIDs.html',1,'']]],
   ['example_5ftest_15',['Example_Test',['../classExample__Test.html',1,'']]],

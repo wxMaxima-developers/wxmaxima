@@ -1,7 +1,7 @@
 var searchData=
 [
   ['hasbigskip_0',['HasBigSkip',['../classCell.html#a20bb74d60a63360107eb69f92e5e4f06',1,'Cell']]],
-  ['hascellsselected_1',['HasCellsSelected',['../classCellPointers.html#ae472295eccdc1fc42eb7bc66d4ffa385',1,'CellPointers::HasCellsSelected()'],['../classWorksheet.html#a6018024486004b1f2bc8a6e37628edfc',1,'Worksheet::HasCellsSelected()']]],
+  ['hascellsselected_1',['HasCellsSelected',['../classDocumentCellPointers.html#a961ac74cdc8c25612234eb968d009679',1,'DocumentCellPointers::HasCellsSelected()'],['../classWorksheet.html#a6018024486004b1f2bc8a6e37628edfc',1,'Worksheet::HasCellsSelected()']]],
   ['hasdemofile_2',['HasDemofile',['../classAutoComplete.html#ae1de0de91bf3e6b748e68daa93aade9c',1,'AutoComplete']]],
   ['hashardlinebreak_3',['HasHardLineBreak',['../classCell.html#a5a5d819c65594c03a045838db113a1eb',1,'Cell']]],
   ['haslimits_4',['HasLimits',['../classIntCell.html#a81b62da30cb1695615455ba2ba7642f1',1,'IntCell']]],
