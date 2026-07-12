@@ -75,6 +75,16 @@ public:
   wxString ReadPotentiallyUnclosedTag(wxStringTokenizer &lines,
                                       wxString firstLine);
 
+  //! Opens a file: picks the loader by extension (or hands the file to Maxima
+  //! via load()/batch()/demo() for non-worksheet files) and updates the UI.
+  bool OpenFile(const wxString &file, const wxString &command = {});
+
+  //! Saves the worksheet, prompting for a name (Save As) if needed or forced.
+  bool SaveFile(bool forceSave = false);
+
+  //! Saves the project to a temp file (autosave), or to its real file.
+  bool AutoSave();
+
 private:
   //! The wxMaxima frame whose services the loaders/savers use. Not owned; the
   //! frame owns this object.

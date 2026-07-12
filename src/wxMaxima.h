@@ -165,8 +165,6 @@ public:
   //! Launches the help browser on the uri passed as an argument.
   void LaunchHelpBrowser(wxString uri);
 
-  //! Open a file
-  bool OpenFile(const wxString &file, const wxString &command ={});
 
   //! Does this document need saving?
   bool DocumentSaved()
@@ -502,20 +500,8 @@ protected:
   //! Loads a wxmx description
   std::unique_ptr<GroupCell> CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &wxmxfilename = {});
 
-  /*! Saves the current file
-
-    \param forceSave true means: Always ask for a file name before saving.
-    \return true, if the file was saved - or didn't need to
-  */
-  bool SaveFile(bool forceSave = false);
-
   //! Try to save the file before closing it - or return false
   bool SaveOnClose();
-  /*! Save the project in a temp file.
-
-    Returns false if a save was necessary, but not possible.
-  */
-  bool AutoSave();
 
   /*! Tries or offers to save the document
 

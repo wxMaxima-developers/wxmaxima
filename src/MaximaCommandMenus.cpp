@@ -2183,7 +2183,7 @@ void MaximaCommandMenus::FileMenu(wxCommandEvent &event) {
         return;
 
       if (close == wxID_YES) {
-        if (!m_wxMaxima.SaveFile())
+        if (!m_wxMaxima.m_fileIO.SaveFile())
           return;
       }
     }
@@ -2203,24 +2203,24 @@ void MaximaCommandMenus::FileMenu(wxCommandEvent &event) {
       // reusing the old one.
 #ifdef __WXOSX__
       if (m_wxMaxima.GetWorksheet()->IsEmpty())
-        m_wxMaxima.OpenFile(file, wxEmptyString);
+        m_wxMaxima.m_fileIO.OpenFile(file, wxEmptyString);
       else
         wxGetApp().NewWindow(file);
 #else
-      m_wxMaxima.OpenFile(file, wxEmptyString);
+      m_wxMaxima.m_fileIO.OpenFile(file, wxEmptyString);
 #endif
     }
   }
   else if(event.GetId() == wxID_SAVEAS) {
     forceSave = true;
     m_wxMaxima.m_fileSaved = false;
-    m_wxMaxima.SaveFile(forceSave);
+    m_wxMaxima.m_fileIO.SaveFile(forceSave);
     // Seems like resetting the title on "file/save as" is a little bit
     // sluggish, otherwise.
     m_wxMaxima.ResetTitle(m_wxMaxima.GetWorksheet()->IsSaved(), true);
   }
   else if(event.GetId() == wxID_SAVE) {
-    m_wxMaxima.SaveFile(forceSave);
+    m_wxMaxima.m_fileIO.SaveFile(forceSave);
     // Seems like resetting the title on "file/save as" is a little bit
     // sluggish, otherwise.
     m_wxMaxima.ResetTitle(m_wxMaxima.GetWorksheet()->IsSaved(), true);
@@ -2349,14 +2349,14 @@ void MaximaCommandMenus::FileMenu(wxCommandEvent &event) {
                                      "Lisp package (*.lisp)|*.lisp|All|*"),
                                    wxFD_OPEN);
     if (!file.empty())
-      m_wxMaxima.OpenFile(file, wxS("load"));
+      m_wxMaxima.m_fileIO.OpenFile(file, wxS("load"));
   }
   else if(event.GetId() == EventIDs::menu_batch_id) {
     wxString file = wxFileSelector(
                                    _("Batch File"), m_wxMaxima.m_lastPath, wxEmptyString, wxEmptyString,
                                    _("Maxima package (*.mac)|*.mac"), wxFD_OPEN);
     if (file != wxEmptyString)
-      m_wxMaxima.OpenFile(file, wxS("batch"));
+      m_wxMaxima.m_fileIO.OpenFile(file, wxS("batch"));
   }
   else if(event.GetId() == ToolBar::tb_animation_startStop) {
     if (m_wxMaxima.GetWorksheet()->CanAnimate()) {

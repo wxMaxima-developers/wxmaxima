@@ -39,6 +39,10 @@
 #include <wx/sstream.h>
 #include <wx/txtstrm.h>
 #include <wx/xml/xml.h>
+#include <wx/filedlg.h>
+#include <wx/config.h>
+#include <wx/filename.h>
+#include "cells/Cell.h"
 #include <memory>
 
 bool MaximaFileIO::OpenMACFile(const wxString &file, Worksheet *document,
@@ -571,5 +575,304 @@ bool MaximaFileIO::OpenXML(const wxString &file, Worksheet *document) {
 
   m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
   return true;
+}
+
+
+bool MaximaFileIO::OpenFile(const wxString &file, const wxString &command) {
+  wxBusyCursor crs;
+  bool retval = true;
+  if (file.IsEmpty()) {
+    wxLogError(_("Trying to open a file with an empty name!"));
+    return false;
+  }
+
+  wxString realFile = file;
+  wxString uuid;
+  if (file.Contains(wxS("#"))) {
+    realFile = file.BeforeFirst(wxS('#'));
+    uuid = file.AfterFirst(wxS('#'));
+  }
+
+  if (!(wxFileExists(realFile))) {
+    wxLogError(_("Trying to open the non-existing file %s"), realFile);
+    return false;
+  }
+
+  m_wxMaxima.m_lastPath = wxPathOnly(realFile);
+  wxString unixFilename(realFile);
+#if defined __WXMSW__
+  unixFilename.Replace(wxS("\\"), wxS("/"));
+#endif
+
+  //  wxWindowUpdateLocker dontUpdateTheWorksheet(m_wxMaxima.GetWorksheet());
+
+  if (command.Length() > 0) {
+    m_wxMaxima.MenuCommand(command + wxS("(\"") + unixFilename + wxS("\")$"));
+    if (command == wxS("load")) {
+      m_wxMaxima.ReReadConfig();
+      m_wxMaxima.m_recentPackages.AddDocument(unixFilename);
+      m_wxMaxima.UpdateRecentDocuments();
+      m_wxMaxima.ReReadConfig();
+    }
+  } else if (realFile.Lower().EndsWith(wxS(".wxm"))) {
+    retval = OpenWXMFile(realFile, m_wxMaxima.GetWorksheet());
+    if (retval) {
+      m_wxMaxima.ReReadConfig();
+      if (m_wxMaxima.IsInteractive())
+        m_wxMaxima.m_recentDocuments.AddDocument(realFile);
+      m_wxMaxima.ReReadConfig();
+    }
+  }
+
+  else if (realFile.Lower().EndsWith(wxS(".mac"))) {
+    retval = OpenMACFile(realFile, m_wxMaxima.GetWorksheet());
+    if (retval) {
+      m_wxMaxima.ReReadConfig();
+      if (m_wxMaxima.IsInteractive())
+        m_wxMaxima.m_recentDocuments.AddDocument(realFile);
+      m_wxMaxima.ReReadConfig();
+    }
+  } else if (realFile.Lower().EndsWith(wxS(".out"))) {
+    retval = OpenMACFile(realFile, m_wxMaxima.GetWorksheet());
+    if (retval) {
+      m_wxMaxima.ReReadConfig();
+      if (m_wxMaxima.IsInteractive())
+        m_wxMaxima.m_recentDocuments.AddDocument(realFile);
+      m_wxMaxima.ReReadConfig();
+    }
+  }
+
+  else if (realFile.EndsWith(wxS(".wxmx")) || realFile.EndsWith(wxS(".wxmx~")) ) {
+    retval = OpenWXMXFile(realFile, m_wxMaxima.GetWorksheet());
+    if (retval) {
+      m_wxMaxima.ReReadConfig();
+      if (m_wxMaxima.IsInteractive())
+        m_wxMaxima.m_recentDocuments.AddDocument(realFile);
+      m_wxMaxima.ReReadConfig();
+    }
+  }
+
+  else if (realFile.Right(4).Lower() == wxS(".zip")) {
+    retval = OpenWXMXFile(realFile, m_wxMaxima.GetWorksheet());
+    if (retval) {
+      m_wxMaxima.ReReadConfig();
+      if (m_wxMaxima.IsInteractive())
+        m_wxMaxima.m_recentDocuments.AddDocument(realFile);
+      m_wxMaxima.ReReadConfig();
+    }
+  }
+
+  else if (realFile.Right(4).Lower() == wxS(".dem")) {
+    m_wxMaxima.MenuCommand(wxS("demo(\"") + unixFilename + wxS("\")$"));
+    m_wxMaxima.ReReadConfig();
+    m_wxMaxima.m_recentPackages.AddDocument(realFile);
+    m_wxMaxima.UpdateRecentDocuments();
+    m_wxMaxima.ReReadConfig();
+  }
+
+  else if (realFile.Right(4).Lower() == wxS(".xml"))
+    retval = OpenXML(realFile, m_wxMaxima.GetWorksheet()); // clearDocument = true
+
+  else {
+    m_wxMaxima.MenuCommand(wxS("load(\"") + unixFilename + wxS("\")$"));
+    m_wxMaxima.ReReadConfig();
+    m_wxMaxima.m_recentPackages.AddDocument(realFile);
+    m_wxMaxima.UpdateRecentDocuments();
+    m_wxMaxima.ReReadConfig();
+  }
+
+  m_wxMaxima.UpdateRecentDocuments();
+  m_wxMaxima.RemoveTempAutosavefile();
+  m_wxMaxima.StartAutoSaveTimer();
+
+  m_wxMaxima.GetWorksheet()->TreeUndo_ClearBuffers();
+  if (m_wxMaxima.GetWorksheet()->GetCurrentFile() != wxEmptyString) {
+    wxString filename(m_wxMaxima.GetWorksheet()->GetCurrentFile());
+    m_wxMaxima.SetCWD(std::move(filename));
+  }
+  if (m_wxMaxima.m_tableOfContents != NULL) {
+    m_wxMaxima.m_scheduleUpdateToc = false;
+    m_wxMaxima.m_tableOfContents->UpdateTableOfContents(
+                                             m_wxMaxima.GetWorksheet()->GetHCaret());
+  }
+
+  if (!retval)
+    m_wxMaxima.StatusText(wxString::Format("Errors trying to open the file %s.",
+                                file));
+
+  if (retval) {
+    m_wxMaxima.GetWorksheet()->RequestRedraw();
+    m_wxMaxima.StatusText(_("File opened"));
+  } else
+    m_wxMaxima.StatusText(_("File could not be opened"));
+
+  m_wxMaxima.m_configuration.RecalculateForce();
+  m_wxMaxima.GetWorksheet()->UpdateConfigurationClientSize();
+  m_wxMaxima.GetWorksheet()->RequestRecalculation();
+  m_wxMaxima.UpdateMenus();
+
+  if (retval && !uuid.IsEmpty()) {
+    Cell *cell = m_wxMaxima.GetWorksheet()->FindCellByUUID(uuid);
+    if (cell) {
+      m_wxMaxima.GetWorksheet()->ScrolledAwayFromEvaluation(true);
+      m_wxMaxima.GetWorksheet()->ScheduleScrollToCell(cell);
+    }
+  }
+
+  return retval;
+}
+
+bool MaximaFileIO::SaveFile(bool forceSave) {
+  // Show a busy cursor as long as we export a file.
+  wxBusyCursor crs;
+
+  wxString file = m_wxMaxima.GetWorksheet()->GetCurrentFile();
+  wxString fileExt = wxS("wxmx");
+  int ext = 0;
+
+  wxConfigBase *config = wxConfig::Get();
+
+  if (file.Length() == 0 || forceSave) {
+    if (file.Length() == 0) {
+      config->Read(wxS("defaultExt"), &fileExt);
+      file = _("untitled") + wxS(".") + fileExt;
+    } else
+      wxFileName::SplitPath(file, NULL, NULL, &file, &fileExt);
+
+    wxFileDialog fileDialog(
+                            &m_wxMaxima, _("Save As"), m_wxMaxima.m_lastPath, file,
+                            _("Whole document (*.wxmx)|*.wxmx|"
+                              "The input, readable by load() (maxima > 5.38) (*.wxm)|*.wxm|"
+                              "All Files (*.*)|*"),
+                            wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+    if (fileExt == wxS("wxmx"))
+      fileDialog.SetFilterIndex(0);
+    else if (fileExt == wxS("wxm"))
+      fileDialog.SetFilterIndex(1);
+    else {
+      fileDialog.SetFilterIndex(0);
+      fileExt = wxS("wxmx");
+    }
+    if (fileDialog.ShowModal() == wxID_OK) {
+      file = fileDialog.GetPath();
+      ext = fileDialog.GetFilterIndex();
+    } else {
+      m_wxMaxima.StartAutoSaveTimer();
+      return false;
+    }
+  }
+
+  if (file.Length()) {
+    if (!file.Lower().EndsWith(wxS(".wxm")) &&
+        (!file.Lower().EndsWith(wxS(".wxmx")))) {
+      switch (ext) {
+      case 0:
+        file += wxS(".wxmx");
+        break;
+      case 1:
+        file += wxS(".wxm");
+        break;
+      default:
+        file += wxS(".wxmx");
+      }
+    }
+
+    m_wxMaxima.StatusSaveStart();
+    config->Write(wxS("defaultExt"), wxS("wxmx"));
+
+    m_wxMaxima.m_lastPath = wxPathOnly(file);
+    if (file.Lower().EndsWith(wxS(".wxm"))) {
+      config->Write(wxS("defaultExt"), wxS("wxm"));
+      if (!m_wxMaxima.GetWorksheet()->ExportToMAC(file)) {
+        m_wxMaxima.StatusSaveFailed();
+        LoggingMessageBox(_("Saving failed!"), _("Error!"), wxOK);
+        m_wxMaxima.StartAutoSaveTimer();
+        if (m_wxMaxima.ExitOnErrorArmed()) {
+          wxMaxima::m_exitCode = 1;
+          m_wxMaxima.Close();
+        }
+        return false;
+      } else {
+        m_wxMaxima.RemoveTempAutosavefile();
+        if (file != m_wxMaxima.m_tempfileName)
+          m_wxMaxima.GetWorksheet()->SetCurrentFile(file);
+      }
+    } else {
+      if (!Format::ExportToWXMX(m_wxMaxima.GetWorksheet()->GetTree(), file, &m_wxMaxima.m_configuration,
+                                &m_wxMaxima.GetWorksheet()->GetViewCellPointers(),
+                                m_wxMaxima.m_variablesPane->GetVarnames(),
+                                m_wxMaxima.GetWorksheet()->GetHCaret())) {
+        m_wxMaxima.StatusSaveFailed();
+        LoggingMessageBox(_("Saving failed!"), _("Error!"), wxOK);
+        m_wxMaxima.StartAutoSaveTimer();
+        if (m_wxMaxima.ExitOnErrorArmed()) {
+          wxMaxima::m_exitCode = 1;
+          m_wxMaxima.Close();
+        }
+        return false;
+      } else {
+        m_wxMaxima.GetWorksheet()->SetSaved(true);
+        m_wxMaxima.RemoveTempAutosavefile();
+        if (file != m_wxMaxima.m_tempfileName)
+          m_wxMaxima.GetWorksheet()->SetCurrentFile(file);
+      }
+    }
+
+    if (m_wxMaxima.IsInteractive())
+      m_wxMaxima.m_recentDocuments.AddDocument(file);
+    m_wxMaxima.SetCWD(file);
+    m_wxMaxima.StatusSaveFinished();
+    m_wxMaxima.UpdateRecentDocuments();
+  }
+
+  m_wxMaxima.StartAutoSaveTimer();
+
+  return true;
+}
+
+bool MaximaFileIO::AutoSave() {
+  if (!m_wxMaxima.SaveNecessary())
+    return true;
+
+  bool savedWas = m_wxMaxima.GetWorksheet()->IsSaved();
+  wxString oldTempFile = m_wxMaxima.m_tempfileName;
+  wxString oldFilename = m_wxMaxima.GetWorksheet()->GetCurrentFile();
+  m_wxMaxima.m_tempfileName = wxFileName::CreateTempFileName("untitled_");
+  wxRenameFile(m_wxMaxima.m_tempfileName,  m_wxMaxima.m_tempfileName + ".wxmx");
+  m_wxMaxima.m_tempfileName = m_wxMaxima.m_tempfileName + ".wxmx";
+
+  /* if the current filename is empty - the file was not saved under a given name - save it using a temporary file name */
+  if (m_wxMaxima.m_configuration.AutoSaveAsTempFile() || m_wxMaxima.GetWorksheet()->GetCurrentFile().IsEmpty()) {
+    bool saved = Format::ExportToWXMX(m_wxMaxima.GetWorksheet()->GetTree(), m_wxMaxima.m_tempfileName,
+                                      &m_wxMaxima.m_configuration,
+                                      &m_wxMaxima.GetWorksheet()->GetViewCellPointers(),
+                                      m_wxMaxima.m_variablesPane->GetVarnames(),
+                                      m_wxMaxima.GetWorksheet()->GetHCaret());
+    wxFileName m_tempfileName_permissions(m_wxMaxima.m_tempfileName);
+    m_tempfileName_permissions.SetPermissions(wxPOSIX_USER_READ | wxPOSIX_USER_WRITE);
+
+    wxLogMessage(_("Autosaving as temp file %s"), m_wxMaxima.m_tempfileName);
+    if ((m_wxMaxima.m_tempfileName != oldTempFile) && saved) {
+      m_wxMaxima.GetWorksheet()->SetSaved(true);
+      if (!oldTempFile.IsEmpty()) {
+        if (wxFileExists(oldTempFile)) {
+          wxLogMessage(_("Trying to remove the old temp file %s"), oldTempFile);
+          wxRemoveFile(oldTempFile);
+        }
+      }
+    }
+    m_wxMaxima.RegisterAutoSaveFile();
+  } else {
+    wxLogMessage(_("Autosaving the .wxmx file as %s"), m_wxMaxima.GetWorksheet()->GetCurrentFile());
+    savedWas = SaveFile(false);
+  }
+
+  m_wxMaxima.GetWorksheet()->SetSaved(savedWas);
+  m_wxMaxima.ResetTitle(savedWas, true);
+
+  oldTempFile = m_wxMaxima.m_tempfileName;
+  m_wxMaxima.GetWorksheet()->SetCurrentFile(oldFilename);
+  return savedWas;
 }
 
