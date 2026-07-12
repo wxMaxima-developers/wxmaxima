@@ -483,7 +483,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 
   Bind(wxEVT_SCROLL_CHANGED, &wxMaxima::SliderEvent, this);
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_CLOSE);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_check_updates);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_check_updates);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_image);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_animation);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_svg);
@@ -573,9 +573,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_polarform);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, ToolBar::menu_restart_id);
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_EXIT);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, wxID_ABOUT);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_license);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_changelog);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, wxID_ABOUT);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_license);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_changelog);
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_SAVE);
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_SAVEAS);
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_load_id);
@@ -597,15 +597,15 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   if(GetWorksheet())
     GetWorksheet()->GetAutocomplete().Bind(NEW_DEMO_FILES_EVENT, &wxMaxima::OnNewDemoFiles, this);
   Bind(TOC_UPDATE_NEEDED_EVENT, &wxMaxima::OnUpdateTOCEvent, this);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, wxID_HELP);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_help_demo_for_command);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_help_maxima_homepage);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_help_tutorials);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_goto_url);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_bug_report);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_build_info);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, wxID_HELP);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_help_demo_for_command);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_help_maxima_homepage);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_help_tutorials);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_goto_url);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_bug_report);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_build_info);
 #ifdef __WXMSW__
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_register_wxmx_difftool);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_register_wxmx_difftool);
 #endif
   Bind(wxEVT_MENU, &wxMaxima::Interrupt, this, EventIDs::menu_interrupt_id);
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_OPEN);
@@ -713,16 +713,16 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_gen_mat);
   Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_gen_mat_lambda);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_sum);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_maximahelp);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_wxmaximahelp);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_example);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_apropos);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_wxmaxima_uses_help_sidebar);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_wxmaxima_uses_help_browser);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_maxima_uses_html_help);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_maxima_uses_internal_help);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_maxima_uses_wxmaxima_help);
-  Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_show_tip);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_maximahelp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_wxmaximahelp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_example);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_apropos);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_wxmaxima_uses_help_sidebar);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_wxmaxima_uses_help_browser);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_maxima_uses_html_help);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_maxima_uses_internal_help);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_maxima_uses_wxmaxima_help);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_show_tip);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_trigrat);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_de);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_atvalue);
@@ -7216,110 +7216,6 @@ void wxMaxima::OnWizardInsert(wxCommandEvent &WXUNUSED(event)) {
   BTextCtrl::ForgetLastActive();
 }
 
-void wxMaxima::HelpMenu(wxCommandEvent &event) {
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  wxString expr = GetDefaultEntry();
-
-  if(event.GetId() == EventIDs::menu_goto_url){
-      wxWindowPtr<GenWiz> wiz(new GenWiz(this, &m_configuration, GetWorksheet()->GetMaximaManual(),
-                                         _("Go to URL"), wxEmptyString, wxEmptyString, wxEmptyString,
-                                         _("URL"), wxEmptyString, wxEmptyString));
-      // wiz->Centre(wxBOTH);
-#ifdef USE_WEBVIEW
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          m_helpPane->SetURL((*wiz)[0]);
-          wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
-        }
-      });
-#endif
-    }
-  else if(event.GetId() == wxID_ABOUT){
-    AboutDialog aboutdlg(this, &m_configuration);
-    }
-  else if(event.GetId() == EventIDs::menu_license){
-      LicenseDialog *dlg = new LicenseDialog(this);
-      dlg->Show();
-    }
-
-  else if(event.GetId() == EventIDs::menu_changelog){
-      ChangeLogDialog *dlg = new ChangeLogDialog(this);
-      dlg->Show();
-    }
-  else if(event.GetId() == EventIDs::menu_help_demo_for_command){
-    MenuCommand(wxS("demo(\"") + expr + wxS("\");"));
-    }
-  else if(event.GetId() == wxID_HELP){
-    ShowHelp(expr);
-  }
-
-  else if(event.GetId() == EventIDs::menu_wxmaximahelp){
-    ShowWxMaximaHelp();
-  }
-
-  else if(event.GetId() == EventIDs::menu_maximahelp){
-    ShowMaximaHelpWithoutAnchor();
-  }
-
-  else if(event.GetId() == EventIDs::menu_example){
-    CommandWiz(_("Show an example for the command:"), wxEmptyString,
-               wxEmptyString, wxS("example(#1#);"), _("Command:"), wxS("%"),
-               wxEmptyString);
-  }
-
-  else if(event.GetId() == EventIDs::menu_apropos){
-    CommandWiz(_("Apropos"), wxEmptyString, wxEmptyString, wxS("apropos(#1#);"),
-               _("Show all commands similar to:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_wxmaxima_uses_help_browser){
-    m_configuration.InternalHelpBrowser(false);
-  }
-  else if(event.GetId() == EventIDs::menu_wxmaxima_uses_help_sidebar){
-    m_configuration.InternalHelpBrowser(true);
-  }
-  else if(event.GetId() == EventIDs::menu_maxima_uses_internal_help){
-    m_configuration.MaximaUsesHtmlBrowser(false);
-    m_configuration.MaximaUsesWxmaximaBrowser(false);
-    MenuCommand(wxS("output_format_for_help:'text$"));
-  }
-  else if(event.GetId() == EventIDs::menu_maxima_uses_html_help){
-    m_configuration.MaximaUsesHtmlBrowser(true);
-    m_configuration.MaximaUsesWxmaximaBrowser(false);
-    MenuCommand(wxS("output_format_for_help:'html$"));
-  }
-  else if(event.GetId() == EventIDs::menu_maxima_uses_wxmaxima_help){
-    m_configuration.MaximaUsesWxmaximaBrowser(true);
-    MenuCommand(wxS("output_format_for_help:'frontend$"));
-  }
-
-  else if(event.GetId() == EventIDs::menu_show_tip){
-    ShowTip(true);
-  }
-
-  else if(event.GetId() == EventIDs::menu_build_info){
-    MenuCommand(wxS("wxbuild_info()$"));
-  }
-
-  else if(event.GetId() == EventIDs::menu_bug_report){
-    MenuCommand(wxS("wxbug_report()$"));
-  }
-
-  else if(event.GetId() == EventIDs::menu_help_tutorials){
-    wxLaunchDefaultBrowser(wxS("https://wxMaxima-developers.github.io/wxmaxima/help.html"));
-  }
-  else if(event.GetId() == EventIDs::menu_help_maxima_homepage){
-    wxLaunchDefaultBrowser(wxS("https://maxima.sourceforge.io/documentation.html"));
-  }
-  else if(event.GetId() == EventIDs::menu_check_updates){
-    CheckForUpdates(true);
-  }
-#ifdef __WXMSW__
-  else if(event.GetId() == EventIDs::menu_register_wxmx_difftool){
-    RegisterWxmxDiffTool();
-  }
-#endif
-}
 
 #ifdef __WXMSW__
 void wxMaxima::RegisterWxmxDiffTool() {

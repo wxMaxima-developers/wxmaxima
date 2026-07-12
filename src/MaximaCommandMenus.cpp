@@ -36,6 +36,10 @@
 #include "wizards/Gen2Wiz.h"
 #include "wizards/ListSortWiz.h"
 #include "wizards/Gen1Wiz.h"
+#include "wizards/GenWiz.h"
+#include "dialogs/AboutDialog.h"
+#include "dialogs/ChangeLogDialog.h"
+#include "dialogs/LicenseDialog.h"
 #include "wizards/Gen3Wiz.h"
 #include "wizards/Gen4Wiz.h"
 #include "wizards/IntegrateWiz.h"
@@ -2034,4 +2038,109 @@ void MaximaCommandMenus::DrawMenu(wxCommandEvent &event) {
       });
   }
   m_wxMaxima.CallAfter([this]{m_wxMaxima.GetWorksheet()->SetFocus();});
+}
+
+void MaximaCommandMenus::HelpMenu(wxCommandEvent &event) {
+  m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
+
+  wxString expr = m_wxMaxima.GetDefaultEntry();
+
+  if(event.GetId() == EventIDs::menu_goto_url){
+      wxWindowPtr<GenWiz> wiz(new GenWiz(&m_wxMaxima, &m_wxMaxima.m_configuration, m_wxMaxima.GetWorksheet()->GetMaximaManual(),
+                                         _("Go to URL"), wxEmptyString, wxEmptyString, wxEmptyString,
+                                         _("URL"), wxEmptyString, wxEmptyString));
+      // wiz->Centre(wxBOTH);
+#ifdef USE_WEBVIEW
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK) {
+          m_wxMaxima.m_helpPane->SetURL((*wiz)[0]);
+          m_wxMaxima.wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
+        }
+      });
+#endif
+    }
+  else if(event.GetId() == wxID_ABOUT){
+    AboutDialog aboutdlg(&m_wxMaxima, &m_wxMaxima.m_configuration);
+    }
+  else if(event.GetId() == EventIDs::menu_license){
+      LicenseDialog *dlg = new LicenseDialog(&m_wxMaxima);
+      dlg->Show();
+    }
+
+  else if(event.GetId() == EventIDs::menu_changelog){
+      ChangeLogDialog *dlg = new ChangeLogDialog(&m_wxMaxima);
+      dlg->Show();
+    }
+  else if(event.GetId() == EventIDs::menu_help_demo_for_command){
+    m_wxMaxima.MenuCommand(wxS("demo(\"") + expr + wxS("\");"));
+    }
+  else if(event.GetId() == wxID_HELP){
+    m_wxMaxima.ShowHelp(expr);
+  }
+
+  else if(event.GetId() == EventIDs::menu_wxmaximahelp){
+    m_wxMaxima.ShowWxMaximaHelp();
+  }
+
+  else if(event.GetId() == EventIDs::menu_maximahelp){
+    m_wxMaxima.ShowMaximaHelpWithoutAnchor();
+  }
+
+  else if(event.GetId() == EventIDs::menu_example){
+    m_wxMaxima.CommandWiz(_("Show an example for the command:"), wxEmptyString,
+               wxEmptyString, wxS("example(#1#);"), _("Command:"), wxS("%"),
+               wxEmptyString);
+  }
+
+  else if(event.GetId() == EventIDs::menu_apropos){
+    m_wxMaxima.CommandWiz(_("Apropos"), wxEmptyString, wxEmptyString, wxS("apropos(#1#);"),
+               _("Show all commands similar to:"), wxS("%"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_wxmaxima_uses_help_browser){
+    m_wxMaxima.m_configuration.InternalHelpBrowser(false);
+  }
+  else if(event.GetId() == EventIDs::menu_wxmaxima_uses_help_sidebar){
+    m_wxMaxima.m_configuration.InternalHelpBrowser(true);
+  }
+  else if(event.GetId() == EventIDs::menu_maxima_uses_internal_help){
+    m_wxMaxima.m_configuration.MaximaUsesHtmlBrowser(false);
+    m_wxMaxima.m_configuration.MaximaUsesWxmaximaBrowser(false);
+    m_wxMaxima.MenuCommand(wxS("output_format_for_help:'text$"));
+  }
+  else if(event.GetId() == EventIDs::menu_maxima_uses_html_help){
+    m_wxMaxima.m_configuration.MaximaUsesHtmlBrowser(true);
+    m_wxMaxima.m_configuration.MaximaUsesWxmaximaBrowser(false);
+    m_wxMaxima.MenuCommand(wxS("output_format_for_help:'html$"));
+  }
+  else if(event.GetId() == EventIDs::menu_maxima_uses_wxmaxima_help){
+    m_wxMaxima.m_configuration.MaximaUsesWxmaximaBrowser(true);
+    m_wxMaxima.MenuCommand(wxS("output_format_for_help:'frontend$"));
+  }
+
+  else if(event.GetId() == EventIDs::menu_show_tip){
+    m_wxMaxima.ShowTip(true);
+  }
+
+  else if(event.GetId() == EventIDs::menu_build_info){
+    m_wxMaxima.MenuCommand(wxS("wxbuild_info()$"));
+  }
+
+  else if(event.GetId() == EventIDs::menu_bug_report){
+    m_wxMaxima.MenuCommand(wxS("wxbug_report()$"));
+  }
+
+  else if(event.GetId() == EventIDs::menu_help_tutorials){
+    wxLaunchDefaultBrowser(wxS("https://wxMaxima-developers.github.io/wxmaxima/help.html"));
+  }
+  else if(event.GetId() == EventIDs::menu_help_maxima_homepage){
+    wxLaunchDefaultBrowser(wxS("https://maxima.sourceforge.io/documentation.html"));
+  }
+  else if(event.GetId() == EventIDs::menu_check_updates){
+    m_wxMaxima.CheckForUpdates(true);
+  }
+#ifdef __WXMSW__
+  else if(event.GetId() == EventIDs::menu_register_wxmx_difftool){
+    m_wxMaxima.RegisterWxmxDiffTool();
+  }
+#endif
 }

@@ -90,6 +90,10 @@ public:
   //! parametric/points/contour/... draw-parameter wizards).
   void DrawMenu(wxCommandEvent &event);
 
+  //! Handles the "Help" menu (help browser/sidebar toggles, About/License/
+  //! ChangeLog dialogs, tip-of-the-day, update check, apropos/example wizards).
+  void HelpMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.
