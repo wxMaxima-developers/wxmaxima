@@ -34,7 +34,7 @@ var searchData=
   ['check_31',['Check',['../classCellList.html#aca392d48b67064b6b1ed81701e0ad9c9',1,'CellList']]],
   ['checkitem_32',['CheckItem',['../classMainMenuBar.html#a1eb81b446b44c938c6963d636951ac5b',1,'MainMenuBar']]],
   ['checkkeeppercent_33',['CheckKeepPercent',['../classConfiguration.html#a8998775dd0c5a4aecf646bab66989105',1,'Configuration']]],
-  ['checkwxmxversion_34',['CheckWXMXVersion',['../classwxMaxima.html#abd568e305bff3e4bdedc1228b022bdc7',1,'wxMaxima']]],
+  ['checkwxmxversion_34',['CheckWXMXVersion',['../classMaximaFileIO.html#a80cf9d2b488d2beb597495eba57036e1',1,'MaximaFileIO']]],
   ['clear_35',['Clear',['../classDocumentCellPointers_1_1ErrorList.html#a09acab99f0ee2df8ea57a7276de1b199',1,'DocumentCellPointers::ErrorList::Clear()'],['../classXmlInspector.html#a306b80efe16aab68d9a3834eeeed53f5',1,'XmlInspector::Clear()'],['../classVariablespane.html#a94b89ad105eac5a2d12d8bbabe60390b',1,'Variablespane::Clear()'],['../classEvaluationQueue.html#a4fc6694964b15979bc3f944667ec8cc9',1,'EvaluationQueue::Clear()']]],
   ['clearactivecell_36',['ClearActiveCell',['../classDocumentCellPointers.html#a3ab94e1aa0d4b1d5a8aff7f307cfbf87',1,'DocumentCellPointers']]],
   ['clearandenableredrawtracing_37',['ClearAndEnableRedrawTracing',['../classConfiguration.html#a2950b05485909a73ed76ae7f8d1aed63',1,'Configuration::ClearAndEnableRedrawTracing()'],['../classRenderContext.html#a8d18bc7eb71fde5a09825eb6c0f7d5bc',1,'RenderContext::ClearAndEnableRedrawTracing()']]],

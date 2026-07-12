@@ -1,7 +1,7 @@
 var searchData=
 [
   ['e_0',['E',['../classE.html',1,'']]],
-  ['editinputmenu_1',['EditInputMenu',['../classwxMaxima.html#a6be8b3148868fd873cac52f83dd7e82d',1,'wxMaxima']]],
+  ['editinputmenu_1',['EditInputMenu',['../classMaximaCommandMenus.html#a0c1fa00c0f434bb974f8bf833a18efe0',1,'MaximaCommandMenus']]],
   ['editmenu_2',['EditMenu',['../classMaximaCommandMenus.html#ac6ba86eb7c03c0e9dda3281c905cb161',1,'MaximaCommandMenus']]],
   ['editorbackgroundcolor_3',['EditorBackgroundColor',['../classConfiguration.html#a0ef02b1b5d03f40b585eed65c4c8e570',1,'Configuration']]],
   ['editorcell_4',['EditorCell',['../classEditorCell.html',1,'EditorCell'],['../classEditorCell.html#a16732e2b40149ba3baefd2f9bbf614a7',1,'EditorCell::EditorCell()']]],
@@ -44,7 +44,7 @@ var searchData=
   ['eval2_41',['EVal2',['../classAfterdoc__Test.html#adab0cd7ad3b4875e245ca8f6238a388aac849f37624d8d2d68ca72c4a8df9cf99',1,'Afterdoc_Test']]],
   ['evalonstartup_42',['EvalOnStartup',['../classwxMaxima.html#a424f91348d992b5d78cef4150c4eb341',1,'wxMaxima']]],
   ['evaluate_43',['Evaluate',['../classWorksheet.html#afb78a2fd309c125f700a9ccf2780af3c',1,'Worksheet']]],
-  ['evaluateevent_44',['EvaluateEvent',['../classwxMaxima.html#af5460f2cd34a780caee1bff4a60f555e',1,'wxMaxima']]],
+  ['evaluateevent_44',['EvaluateEvent',['../classMaximaEvaluator.html#adcac52da280ae9c028e10cdc765a7a6b',1,'MaximaEvaluator']]],
   ['evaluationqueue_45',['EvaluationQueue',['../classEvaluationQueue.html',1,'']]],
   ['evaluationqueue_2ecpp_46',['EvaluationQueue.cpp',['../EvaluationQueue_8cpp.html',1,'']]],
   ['evaluationqueue_2eh_47',['EvaluationQueue.h',['../EvaluationQueue_8h.html',1,'']]],

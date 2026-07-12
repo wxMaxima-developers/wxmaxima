@@ -22,7 +22,7 @@ var searchData=
   ['preprocessnewvalue_19',['PreprocessNewValue',['../classCodeEditorCell.html#a53e62eb39bed85590f50ad2009d353cc',1,'CodeEditorCell::PreprocessNewValue()'],['../classEditorCell.html#a1391d0cb6cb48d28df30d04b47b5ff8e',1,'EditorCell::PreprocessNewValue()']]],
   ['printbrackets_20',['PrintBrackets',['../classConfiguration.html#afe27c0e96ea92b68097674846bad5044',1,'Configuration']]],
   ['printing_21',['Printing',['../classRenderContext.html#a902dc66e5e6045601cbc8173d8723394',1,'RenderContext']]],
-  ['printmenu_22',['PrintMenu',['../classwxMaxima.html#a43f6993fd24c59346b0602a51bcc9b8b',1,'wxMaxima']]],
+  ['printmenu_22',['PrintMenu',['../classMaximaCommandMenus.html#a98a39c753f13e7572c14a09889412c84',1,'MaximaCommandMenus']]],
   ['printscale_23',['PrintScale',['../classConfiguration.html#a979f0fc08df8155b787bd1f01c56c318',1,'Configuration::PrintScale(double scale)'],['../classConfiguration.html#a7aa083f8a96209a61f7816980ed36e25',1,'Configuration::PrintScale() const']]],
   ['processevent_24',['ProcessEvent',['../classEditorCell.html#a4861b52977f38bd665e1ccc7be68c075',1,'EditorCell::ProcessEvent()'],['../classCell.html#ac2c7b0f78b2d1e9e0d2865305fdbe07e',1,'Cell::ProcessEvent()']]],
   ['processnewline_25',['ProcessNewline',['../classEditorCell.html#aeee97c9a24f0dd8c752a5f7224ba19a6',1,'EditorCell']]],

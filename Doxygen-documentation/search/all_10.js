@@ -37,7 +37,7 @@ var searchData=
   ['preprocessnewvalue_34',['PreprocessNewValue',['../classCodeEditorCell.html#a53e62eb39bed85590f50ad2009d353cc',1,'CodeEditorCell::PreprocessNewValue()'],['../classEditorCell.html#a1391d0cb6cb48d28df30d04b47b5ff8e',1,'EditorCell::PreprocessNewValue()']]],
   ['printbrackets_35',['PrintBrackets',['../classConfiguration.html#afe27c0e96ea92b68097674846bad5044',1,'Configuration']]],
   ['printing_36',['Printing',['../classPrinting.html',1,'Printing'],['../classRenderContext.html#a902dc66e5e6045601cbc8173d8723394',1,'RenderContext::Printing()']]],
-  ['printmenu_37',['PrintMenu',['../classwxMaxima.html#a43f6993fd24c59346b0602a51bcc9b8b',1,'wxMaxima']]],
+  ['printmenu_37',['PrintMenu',['../classMaximaCommandMenus.html#a98a39c753f13e7572c14a09889412c84',1,'MaximaCommandMenus']]],
   ['printout_38',['Printout',['../classPrintout.html',1,'']]],
   ['printout_2ecpp_39',['Printout.cpp',['../Printout_8cpp.html',1,'']]],
   ['printout_2eh_40',['Printout.h',['../Printout_8h.html',1,'']]],

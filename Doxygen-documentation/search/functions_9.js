@@ -15,7 +15,7 @@ var searchData=
   ['insertmenu_12',['InsertMenu',['../classMaximaCommandMenus.html#a8ab7f86fb29496c1ba84d1c22c6e4fb4',1,'MaximaCommandMenus::InsertMenu()'],['../classVariablespane.html#a866fd3c0764feb178ade7369ae486e74',1,'Variablespane::InsertMenu()']]],
   ['intcell_13',['IntCell',['../classIntCell.html#a31f3b0ffece4415ddd084e21890b25a8',1,'IntCell']]],
   ['internalhelpbrowser_14',['InternalHelpBrowser',['../classConfiguration.html#ac86046404f403903a5ae145117bfb2e4',1,'Configuration::InternalHelpBrowser() const'],['../classConfiguration.html#a61bcdd32b26cb7618e2c43b1e6ffaa21',1,'Configuration::InternalHelpBrowser(bool useInternalHelpBrowser)']]],
-  ['interrupt_15',['Interrupt',['../classwxMaxima.html#ab15fdc4e2b74903b68813ad96d4a9b1f',1,'wxMaxima']]],
+  ['interrupt_15',['Interrupt',['../classMaximaProcessManager.html#a8136c36c72481c495ca5eaa38291ac06',1,'MaximaProcessManager']]],
   ['intervalcell_16',['IntervalCell',['../classIntervalCell.html#ac04d996c77edeef04dbcdd83a1bf5a42',1,'IntervalCell']]],
   ['inupdateregion_17',['InUpdateRegion',['../classCell.html#a0835d4dd3d72ed0013aa5a091d64d9ab',1,'Cell::InUpdateRegion()'],['../classConfiguration.html#a4d8ad50245bbb73bc5d4bcd91bcc001c',1,'Configuration::InUpdateRegion()']]],
   ['invalidbitmap_18',['InvalidBitmap',['../classImage.html#a6ccd0e3975f525d9e2ba8270bc0f1e0c',1,'Image']]],

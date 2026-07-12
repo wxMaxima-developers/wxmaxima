@@ -36,5 +36,5 @@ var searchData=
   ['treeundocelladdition_33',['TreeUndoCellAddition',['../group__UndoBufferFill.html#gaa2cb2222c648177ea95b6718abbfb35a',1,'Worksheet']]],
   ['treeundocelldeletion_34',['TreeUndoCellDeletion',['../group__UndoBufferFill.html#gac5bbd739676e3b7ffc14ac6d76c5eebb',1,'Worksheet']]],
   ['treeundotextchange_35',['TreeUndoTextChange',['../group__UndoBufferFill.html#ga407d02d9a242ff4d83b0aeb467bfd04f',1,'Worksheet']]],
-  ['triggerevaluation_36',['TriggerEvaluation',['../classwxMaxima.html#a99eaee34e2e2ff529600a75e9bba7bbd',1,'wxMaxima']]]
+  ['triggerevaluation_36',['TriggerEvaluation',['../classMaximaEvaluator.html#a5611fae48d6f6b13d6baec93e72fe39f',1,'MaximaEvaluator']]]
 ];

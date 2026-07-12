@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['editinputmenu_0',['EditInputMenu',['../classwxMaxima.html#a6be8b3148868fd873cac52f83dd7e82d',1,'wxMaxima']]],
+  ['editinputmenu_0',['EditInputMenu',['../classMaximaCommandMenus.html#a0c1fa00c0f434bb974f8bf833a18efe0',1,'MaximaCommandMenus']]],
   ['editmenu_1',['EditMenu',['../classMaximaCommandMenus.html#ac6ba86eb7c03c0e9dda3281c905cb161',1,'MaximaCommandMenus']]],
   ['editorbackgroundcolor_2',['EditorBackgroundColor',['../classConfiguration.html#a0ef02b1b5d03f40b585eed65c4c8e570',1,'Configuration']]],
   ['editorcell_3',['EditorCell',['../classEditorCell.html#a16732e2b40149ba3baefd2f9bbf614a7',1,'EditorCell']]],
@@ -19,7 +19,7 @@ var searchData=
   ['esccodesend_16',['EscCodesEnd',['../classConfiguration.html#aac61256445671388d23ffeb6fcba1376',1,'Configuration']]],
   ['evalonstartup_17',['EvalOnStartup',['../classwxMaxima.html#a424f91348d992b5d78cef4150c4eb341',1,'wxMaxima']]],
   ['evaluate_18',['Evaluate',['../classWorksheet.html#afb78a2fd309c125f700a9ccf2780af3c',1,'Worksheet']]],
-  ['evaluateevent_19',['EvaluateEvent',['../classwxMaxima.html#af5460f2cd34a780caee1bff4a60f555e',1,'wxMaxima']]],
+  ['evaluateevent_19',['EvaluateEvent',['../classMaximaEvaluator.html#adcac52da280ae9c028e10cdc765a7a6b',1,'MaximaEvaluator']]],
   ['evaluationqueuelength_20',['EvaluationQueueLength',['../classwxMaximaFrame.html#a6efbec2e174855c25bbdfba2c8fd18b8',1,'wxMaximaFrame']]],
   ['example_21',['example',['../classInclude__Test.html#aa286655e8f7f6a8ad203ef5fd8548b81',1,'Include_Test::example()'],['../classTag.html#acc641ffae34e2c4c03a6edf0a513be28',1,'Tag::example()'],['../classExample__Test.html#a22a62b12c65fd5e43b6eadaabb21ebb0',1,'Example_Test::example()']]],
   ['exitaftereval_22',['ExitAfterEval',['../classwxMaxima.html#ae1282d42b62a5d4620e95aa7c9c054c3',1,'wxMaxima']]],

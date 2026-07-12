@@ -204,7 +204,7 @@ var searchData=
   ['globalvalue_201',['globalValue',['../file_8h.html#a4a86bef4b6181cb3f53bd0461a9a511b',1,'file.h']]],
   ['globenum_202',['GlobEnum',['../autolink_8cpp.html#a656d63cf384d2a6f23c2c18523a7bc5e',1,'autolink.cpp']]],
   ['globvar_203',['globVar',['../autolink_8cpp.html#a88d0bae800d600a11d7bd60f0bc4b858',1,'autolink.cpp']]],
-  ['gnuplotcommandname_204',['GnuplotCommandName',['../classwxMaxima.html#a4e35aa61f372d333cd4769bfd91fccce',1,'wxMaxima']]],
+  ['gnuplotcommandname_204',['GnuplotCommandName',['../classMaximaProcessManager.html#ae37361d5647c0c5fb5dc537e8c0127b2',1,'MaximaProcessManager']]],
   ['gnuplotdata_205',['GnuplotData',['../classImage.html#ae215879f7fdb14b9277fd9ca69227b98',1,'Image']]],
   ['gnuplotsource_206',['GnuplotSource',['../classImgCellBase.html#a423fe98bef2b0459e2716e7c596bca26',1,'ImgCellBase::GnuplotSource()'],['../classImage.html#a0dbad9d2fc36a7c035e7a067f352d8a4',1,'Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, const wxString &amp;wxmxFile=wxEmptyString)'],['../classImage.html#a299156259e50c7a78733a252e1ed36bc',1,'Image::GnuplotSource()'],['../classAnimationCell.html#a69674af20401792e65d0f48438894491',1,'AnimationCell::GnuplotSource()'],['../classCell.html#ab174dde90689c2e00feba8ee568048a8',1,'Cell::GnuplotSource()'],['../classImgCell.html#a0dc435574a836b9e2d11ddff9df153fe',1,'ImgCell::GnuplotSource(wxString sourcefile, wxString datafile, const wxString &amp;wxmFile)'],['../classImgCell.html#aefb8bdaacf6d2957ca76e963a929a83e',1,'ImgCell::GnuplotSource() const override']]],
   ['greeksidebar_207',['GreekSidebar',['../classGreekSidebar.html',1,'']]],

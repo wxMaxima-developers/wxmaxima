@@ -47,7 +47,7 @@ var searchData=
   ['integraltype_44',['IntegralType',['../classIntCell.html#a2a3fc8ef2b5940f378935190c99634e6',1,'IntCell']]],
   ['integratewiz_45',['IntegrateWiz',['../classIntegrateWiz.html',1,'']]],
   ['internalhelpbrowser_46',['InternalHelpBrowser',['../classConfiguration.html#a61bcdd32b26cb7618e2c43b1e6ffaa21',1,'Configuration::InternalHelpBrowser(bool useInternalHelpBrowser)'],['../classConfiguration.html#ac86046404f403903a5ae145117bfb2e4',1,'Configuration::InternalHelpBrowser() const']]],
-  ['interrupt_47',['Interrupt',['../classwxMaxima.html#ab15fdc4e2b74903b68813ad96d4a9b1f',1,'wxMaxima']]],
+  ['interrupt_47',['Interrupt',['../classMaximaProcessManager.html#a8136c36c72481c495ca5eaa38291ac06',1,'MaximaProcessManager']]],
   ['intervalcell_48',['IntervalCell',['../classIntervalCell.html',1,'IntervalCell'],['../classIntervalCell.html#ac04d996c77edeef04dbcdd83a1bf5a42',1,'IntervalCell::IntervalCell()']]],
   ['intervalcell_2ecpp_49',['IntervalCell.cpp',['../IntervalCell_8cpp.html',1,'']]],
   ['intervalcell_2eh_50',['IntervalCell.h',['../IntervalCell_8h.html',1,'']]],

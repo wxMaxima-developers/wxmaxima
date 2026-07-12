@@ -86,7 +86,7 @@ var searchData=
   ['checkedifequal_83',['CheckedIfEqual',['../structMaximaMenuSyncRow.html#aab1861fb80f5b88b3b3c6f6abba42efaa2e292948025a018a6f5fd7d7fc7f497d',1,'MaximaMenuSyncRow']]],
   ['checkitem_84',['CheckItem',['../classMainMenuBar.html#a1eb81b446b44c938c6963d636951ac5b',1,'MainMenuBar']]],
   ['checkkeeppercent_85',['CheckKeepPercent',['../classConfiguration.html#a8998775dd0c5a4aecf646bab66989105',1,'Configuration']]],
-  ['checkwxmxversion_86',['CheckWXMXVersion',['../classwxMaxima.html#abd568e305bff3e4bdedc1228b022bdc7',1,'wxMaxima']]],
+  ['checkwxmxversion_86',['CheckWXMXVersion',['../classMaximaFileIO.html#a80cf9d2b488d2beb597495eba57036e1',1,'MaximaFileIO']]],
   ['chunkgenerator_87',['ChunkGenerator',['../classCatch_1_1Generators_1_1ChunkGenerator.html',1,'Catch::Generators']]],
   ['classvar_88',['classVar',['../classpyexample_1_1PyClass.html#abd17aff54e5b0ca194020c796c733546',1,'pyexample::PyClass']]],
   ['clear_89',['Clear',['../classXmlInspector.html#a306b80efe16aab68d9a3834eeeed53f5',1,'XmlInspector::Clear()'],['../classVariablespane.html#a94b89ad105eac5a2d12d8bbabe60390b',1,'Variablespane::Clear()'],['../classEvaluationQueue.html#a4fc6694964b15979bc3f944667ec8cc9',1,'EvaluationQueue::Clear()'],['../classDocumentCellPointers_1_1ErrorList.html#a09acab99f0ee2df8ea57a7276de1b199',1,'DocumentCellPointers::ErrorList::Clear()']]],

@@ -112,7 +112,7 @@ var searchData=
   ['treeundomanager_109',['TreeUndoManager',['../classTreeUndoManager.html',1,'']]],
   ['treeundomanager_2eh_110',['TreeUndoManager.h',['../TreeUndoManager_8h.html',1,'']]],
   ['treeundotextchange_111',['TreeUndoTextChange',['../group__UndoBufferFill.html#ga407d02d9a242ff4d83b0aeb467bfd04f',1,'Worksheet']]],
-  ['triggerevaluation_112',['TriggerEvaluation',['../classwxMaxima.html#a99eaee34e2e2ff529600a75e9bba7bbd',1,'wxMaxima']]],
+  ['triggerevaluation_112',['TriggerEvaluation',['../classMaximaEvaluator.html#a5611fae48d6f6b13d6baec93e72fe39f',1,'MaximaEvaluator']]],
   ['truck_113',['Truck',['../manual_8c.html#a5220977c04e056b0efcc59a2f05d89a2',1,'Truck():&#160;manual.c'],['../structTruck.html',1,'Truck']]],
   ['true_5fgiven_114',['true_given',['../structCatch_1_1true__given.html',1,'Catch']]],
   ['ts_5fdiff_5fchanged_115',['TS_DIFF_CHANGED',['../TextStyle_8h.html#a68ac52da6129614b3fa14e7c828c1993aa3e4bbfa070e0b1232dfc971fbd41560',1,'TextStyle.h']]],
