@@ -1,0 +1,63 @@
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+//
+//  Copyright (C) 2026 Gunter Königsmann <wxMaxima@physikbuch.de>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+//
+//  SPDX-License-Identifier: GPL-2.0+
+
+/*! \file
+  The menu/toolbar command handlers wxMaxima binds to the "insert a Maxima
+  command" menu and button events.
+
+  These handlers translate a menu/button click into a Maxima command (often via
+  a wizard dialog) and hand it to wxMaxima::MenuCommand(). They used to be
+  members of the wxMaxima god class; they are being peeled off into this class,
+  one menu at a time, to shrink wxMaxima.cpp. Each handler still drives wxMaxima
+  (MenuCommand, the wizards, the worksheet) through the m_wxMaxima reference, so
+  MaximaCommandMenus is a friend of wxMaxima; the handlers are bound directly to
+  the MaximaCommandMenus instance the wxMaxima frame owns.
+*/
+
+#ifndef MAXIMACOMMANDMENUS_H
+#define MAXIMACOMMANDMENUS_H
+
+#include <wx/event.h>
+
+class wxMaxima;
+
+/*! The menu-command handlers extracted from the wxMaxima god class.
+
+  Owned by value by the wxMaxima frame, which binds the relevant menu/button
+  events straight to these handlers. Holds a reference back to that frame for the
+  services the handlers need (MenuCommand, the command wizards, the worksheet).
+*/
+class MaximaCommandMenus
+{
+public:
+  explicit MaximaCommandMenus(wxMaxima &wxm) : m_wxMaxima(wxm) {}
+
+  //! Handles the "Plot" menu and its toolbar buttons (2D/3D plot wizards,
+  //! plot-format wizard, animation autoplay/framerate).
+  void PlotMenu(wxCommandEvent &event);
+
+private:
+  //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
+  //! handlers drive. Not owned; the frame owns this object.
+  wxMaxima &m_wxMaxima;
+};
+
+#endif // MAXIMACOMMANDMENUS_H

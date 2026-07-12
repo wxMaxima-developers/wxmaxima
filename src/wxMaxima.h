@@ -38,6 +38,7 @@
 #include "Configuration.h"
 #include "MathParser.h"
 #include "MaximaIPC.h"
+#include "MaximaCommandMenus.h"
 #include "Dirstructure.h"
 #include <wx/socket.h>
 #include <wx/config.h>
@@ -392,7 +393,6 @@ protected:
   void EquationsMenu(wxCommandEvent &event);       //!< Processes "equations menu" clicks
   void CalculusMenu(wxCommandEvent &event);        //!< event handling for menus
   void SimplifyMenu(wxCommandEvent &event);        //!< Processes "Simplify menu" clicks
-  void PlotMenu(wxCommandEvent &event);            //!< Processes "Plot menu" cloicks
   void ListMenu(wxCommandEvent &event);            //!< Processes "list menu" clicks
   void DrawMenu(wxCommandEvent &event);            //!< Processes "draw menu" clicks
   void NumericalMenu(wxCommandEvent &event);       //!< Processes "Numerical menu" clicks
@@ -849,6 +849,9 @@ private:
 
 #endif
   friend class MaximaIPC;
+  //! The extracted menu-command handlers reach wxMaxima's services (MenuCommand,
+  //! the wizards, m_configuration) through this friendship.
+  friend class MaximaCommandMenus;
 
   /*! A timer that determines when to do the next autosave;
 
@@ -871,6 +874,10 @@ private:
 
   //! Starts a single-shot of m_autoSaveTimer.
   void StartAutoSaveTimer();
+  //! The menu-command handlers peeled off this god class; bound directly to the
+  //! relevant menu/button events. Holds a reference back to this frame
+  //! (initialised in the constructor, where *this is unambiguously complete).
+  MaximaCommandMenus m_menuCommands;
 };
 
 #if wxUSE_DRAG_AND_DROP

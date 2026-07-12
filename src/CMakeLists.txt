@@ -142,6 +142,7 @@ set(SOURCE_FILES
     MathParser.cpp
     Maxima.cpp
     MaximaIPC.cpp
+    MaximaCommandMenus.cpp
     MaximaMenuSync.cpp
     MaximaTokenizer.cpp
     MaximaManual.cpp

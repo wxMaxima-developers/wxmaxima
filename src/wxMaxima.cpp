@@ -330,7 +330,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
                   wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION),
     m_gnuplotcommand(wxS("gnuplot")),
     m_parser(&m_configuration),
-    m_maximaError(false) {
+    m_maximaError(false), m_menuCommands(*this) {
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_CRASHREPORT
   wxHandleFatalExceptions();
   wxLogMessage(_("Will try to generate a stack backtrace, if the program ever crashes"));
@@ -532,8 +532,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_BUTTON, &wxMaxima::CalculusMenu, this, EventIDs::button_product);
   Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_radcan);
   Bind(wxEVT_BUTTON, &wxMaxima::MaximaMenu, this, EventIDs::button_subst);
-  Bind(wxEVT_BUTTON, &wxMaxima::PlotMenu, this, EventIDs::button_plot2);
-  Bind(wxEVT_BUTTON, &wxMaxima::PlotMenu, this, EventIDs::button_plot3);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::button_plot2);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::button_plot3);
   Bind(wxEVT_BUTTON, &wxMaxima::MatrixMenu, this, EventIDs::button_map);
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_map);
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_map_lambda);
@@ -753,11 +753,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand_true);
   Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand_all);
   Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand_super);
-  Bind(wxEVT_MENU, &wxMaxima::PlotMenu, this, EventIDs::gp_plot2);
-  Bind(wxEVT_MENU, &wxMaxima::PlotMenu, this, EventIDs::gp_plot3);
-  Bind(wxEVT_MENU, &wxMaxima::PlotMenu, this, EventIDs::menu_animationautostart);
-  Bind(wxEVT_MENU, &wxMaxima::PlotMenu, this, EventIDs::menu_animationframerate);
-  Bind(wxEVT_MENU, &wxMaxima::PlotMenu, this, EventIDs::menu_plot_format);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::gp_plot2);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::gp_plot3);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::menu_animationautostart);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::menu_animationframerate);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::menu_plot_format);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_soft_restart);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_dependencies);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_values);
@@ -8664,68 +8664,6 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event) {
                wxEmptyString, _("Variable:"), wxS("k"), wxEmptyString,
                _("From:"), wxS("1"), wxEmptyString, _("To:"), wxS("n"),
                wxEmptyString);
-  }
-}
-
-
-void wxMaxima::PlotMenu(wxCommandEvent &event) {
-  if(!GetWorksheet())
-    return;
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  wxString expr = GetDefaultEntry();
-  if((event.GetId() == EventIDs::button_plot3) ||
-     (event.GetId() == EventIDs::gp_plot3)){
-    wxWindowPtr<Plot3DWiz> wiz(new Plot3DWiz(this, -1, &m_configuration, _("Plot 3D")));
-    wiz->SetValue(expr);
-    // wiz->Centre(wxBOTH);
-    wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-      if (retcode == wxID_OK) {
-        wxString val = wiz->GetValue();
-        MenuCommand(val);
-      }
-    });
-  }
-  else if(event.GetId() == EventIDs::menu_animationautostart){
-    if (event.IsChecked())
-      MenuCommand(wxS("wxanimate_autoplay:true$"));
-    else
-      MenuCommand(wxS("wxanimate_autoplay:false$"));
-  }
-  else if(event.GetId() == EventIDs::menu_animationframerate){
-    CommandWiz(_("Enter new animation frame rate [Hz, integer]:"),
-               wxEmptyString, wxEmptyString, wxS("wxanimate_framerate : #1#$"),
-               _("Frame rate"), wxS("%"), wxEmptyString);
-  }
-  else if((event.GetId() == EventIDs::button_plot2) ||
-          (event.GetId() == EventIDs::gp_plot2)){
-    wxWindowPtr<Plot2DWiz> wiz(new Plot2DWiz(this, -1, &m_configuration, _("Plot 2D")));
-    wiz->SetValue(expr);
-    // wiz->Centre(wxBOTH);
-    wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-      if (retcode == wxID_OK) {
-        wxString val = wiz->GetValue();
-        MenuCommand(val);
-      }
-    });
-  }
-  else if(event.GetId() == EventIDs::menu_plot_format){
-    wxWindowPtr<PlotFormatWiz> wiz(new PlotFormatWiz(this, -1, &m_configuration, _("Plot format")));
-    wiz->Center(wxBOTH);
-    wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-      if (retcode == wxID_OK) {
-        MenuCommand(wiz->GetValue());
-      }
-    });
-    /*wxString format = GetTextFromUser(_("Enter new plot format:"),
-      _("Plot format"),
-      m_configuration,
-      wxS("gnuplot"), this);
-      if (format.Length())
-      {
-      MenuCommand(wxS("set_plot_option(['plot_format, '") + format +
-      wxS("])$"));
-      }*/
   }
 }
 
