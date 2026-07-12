@@ -534,40 +534,40 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_BUTTON, &wxMaxima::MaximaMenu, this, EventIDs::button_subst);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::button_plot2);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::button_plot3);
-  Bind(wxEVT_BUTTON, &wxMaxima::MatrixMenu, this, EventIDs::button_map);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_map);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_map_lambda);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_row);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_col);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_row_list);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_col_list);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_csv2mat);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_mat2csv);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_submatrix_rows);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_submatrix_columns);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_multiply);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_exponent);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_hadamard_product);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_hadamard_exponent);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_copymatrix);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_loadLapack);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dgeev_eigenvaluesOnly);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dgeev);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zgeev_eigenvaluesOnly);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zgeev);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dgeqrf);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dgesv);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dgesvd);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::EventIDs::menu_matrix_dgesvd_valuesOnly);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dlange_max);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dlange_one);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dlange_inf);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_dlange_frobenius);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zlange_max);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zlange_one);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zlange_inf);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zlange_frobenius);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zheev);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::button_map);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_map);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_map_lambda);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_row);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_col);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_row_list);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_col_list);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_csv2mat);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_mat2csv);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_submatrix_rows);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_submatrix_columns);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_multiply);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_exponent);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_hadamard_product);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_hadamard_exponent);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_copymatrix);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_loadLapack);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_dgeev_eigenvaluesOnly);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_dgeev);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_zgeev_eigenvaluesOnly);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_zgeev);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_dgeqrf);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_dgesv);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_dgesvd);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::EventIDs::menu_matrix_dgesvd_valuesOnly);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_dlange_max);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_dlange_one);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_dlange_inf);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_dlange_frobenius);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_zlange_max);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_zlange_one);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_zlange_inf);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_zlange_frobenius);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_matrix_zheev);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_rectform);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_trigrat);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_polarform);
@@ -643,13 +643,13 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::popid_changeasterisk);
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::popid_hideasterisk);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_exponentialize);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_invert_mat);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_determinant);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_rank);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_eigen);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_eigvect);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_adjoint_mat);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_transpose);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_invert_mat);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_determinant);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_rank);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_eigen);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_eigvect);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_adjoint_mat);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_transpose);
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_set_precision);
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_set_displayprecision);
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_engineeringFormat);
@@ -678,10 +678,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_to_poly);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_num);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_ode);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_map_mat);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_enter_mat);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_cpoly);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_genmatrix);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_map_mat);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_enter_mat);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_cpoly);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_genmatrix);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_lin);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_algsys);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_eliminate);
@@ -710,8 +710,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_fourier);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_limit);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_lbfgs);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_gen_mat);
-  Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_gen_mat_lambda);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_gen_mat);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_gen_mat_lambda);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_sum);
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_maximahelp);
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_wxmaximahelp);
@@ -1114,7 +1114,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_linreg);
   Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_lsquares);
   Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_readm);
-  Bind(wxEVT_BUTTON, &wxMaxima::MatrixMenu, this, EventIDs::menu_stats_enterm);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_stats_enterm);
   Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_subsample);
   Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_title);
   Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_text);
@@ -7254,312 +7254,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
 
 
 
-void wxMaxima::MatrixMenu(wxCommandEvent &event) {
-  if(!GetWorksheet())
-    return;
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  wxString expr = GetDefaultEntry();
-  if(event.GetId() == EventIDs::menu_csv2mat){
-    wxWindowPtr<CsvImportWiz> wiz(new CsvImportWiz(this, &m_configuration));
-    wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-      if (retcode == wxID_OK) {
-        wxString cmd = wxS("read_matrix(\"") + wiz->GetFilename() + wxS("\", ") +
-          wiz->GetSeparator() + wxS(");");
-        MenuCommand(cmd);
-      }
-    });
-  }
-  else if(event.GetId() == EventIDs::menu_mat2csv){
-    wxWindowPtr<CsvExportWiz> wiz(new CsvExportWiz(this, &m_configuration, _("Matrix")));
-    wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-      if (retcode == wxID_OK) {
-        wxString cmd = wxS("write_data(") + wiz->GetMatrix() + wxS(", \"") +
-          wiz->GetFilename() + wxS("\", ") + wiz->GetSeparator() + wxS(");");
-        MenuCommand(cmd);
-      }
-    });
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_row) {
-    CommandWiz(_("Extract a matrix row"), wxEmptyString, wxEmptyString,
-               wxS("row(#1#,#2#);"), _("Matrix:"), expr, wxEmptyString,
-               _("Row number:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_col){
-    CommandWiz(_("Extract a matrix column"), wxEmptyString, wxEmptyString,
-               wxS("col(#1#,#2#);"), _("Matrix:"), expr, wxEmptyString,
-               _("Column number:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_row_list){
-    CommandWiz(_("Extract a matrix row as a list"), wxEmptyString,
-               wxEmptyString, wxS("#1#[#2#];"), _("Matrix:"), expr,
-               wxEmptyString, _("Row number:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_col_list){
-    CommandWiz(_("Extract a matrix column as a list"), wxEmptyString,
-               wxEmptyString, wxS("transpose(#1#)[#2#];"), _("Matrix:"), expr,
-               wxEmptyString, _("Column number:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_submatrix_columns){
-    CommandWiz(_("Remove matrix columns"), wxEmptyString, wxEmptyString,
-               wxS("submatrix(#1#,#2#);"), _("Matrix:"), expr,
-               wxEmptyString, _("Column numbers:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_submatrix_rows){
-    CommandWiz(_("Remove matrix rows"), wxEmptyString, wxEmptyString,
-               wxS("submatrix(#2#,#1#);"), _("Matrix:"), expr,
-               wxEmptyString, _("Row numbers:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_multiply){
-    CommandWiz(_("Multiply two matrices"), wxEmptyString, wxEmptyString,
-               wxS("#1#.#2#;"), _("Left Matrix:"), expr, wxEmptyString,
-               _("Right Matrix:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_exponent){
-    CommandWiz(_("Matrix Exponent"), wxEmptyString, wxEmptyString,
-               wxS("#1#^^#2#;"), _("Left Matrix:"), expr, wxEmptyString,
-               _("Right Matrix:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_copymatrix){
-    CommandWiz(
-               _("Copy a matrix"),
-               _("In order to save memory the \":\" operator does clone the matrix, "
-                 "not copy it:\n"
-                 "If you change an element of one matrix the same element will change "
-                 "in all of its clones. copymatrix() instead generates a copy of a "
-                 "matrix: "
-                 "A new matrix that, if changed in any way, won't change the "
-                 "original."),
-               wxEmptyString, wxS("copymatrix(#1#);"), _("Matrix:"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_hadamard_product){
-    CommandWiz(_("Hadamard Product"),
-               _("Element-by-element Product of matrices of the same size "
-                 "(Hadamard product)"),
-               wxEmptyString, wxS("#1#*#2#;"), _("Left Matrix:"), expr,
-               wxEmptyString, _("Right Matrix:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_hadamard_exponent){
-    CommandWiz(_("Hadamard exponent"),
-               _("Element-by-element exponentiation of two matrices"),
-               wxEmptyString, wxS("#1#^#2#;"), _("Left Matrix:"), expr,
-               wxEmptyString, _("Right Matrix:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_loadLapack){
-    MenuCommand(wxS("load(\"lapack\");"));
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_dgeev_eigenvaluesOnly){
-    CommandWiz(_("Calculate the eigenvalues of a matrix numerically"),
-               wxEmptyString, wxEmptyString, wxS("dgeev(#1#,false,false)[1]"),
-               _("Matrix"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_dgeev){
-    CommandWiz(_("Calculate the eigenvalues and eigenvectors numerically"),
-               wxEmptyString, wxEmptyString, wxS("dgeev(#1#,true,true)"),
-               _("Matrix"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_zgeev_eigenvaluesOnly){
-    CommandWiz(_("Calculate the eigenvalues of a matrix numerically"),
-               wxEmptyString, wxEmptyString, wxS("zgeev(#1#,false,false)[1]"),
-               _("Matrix"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_zgeev){
-    CommandWiz(_("Calculate the eigenvalues and eigenvectors numerically"),
-               wxEmptyString, wxEmptyString, wxS("zgeev(#1#,true,true)"),
-               _("Matrix"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_dgeqrf){
-    CommandWiz(_("Numerical QR decomposition of a matrix"), wxEmptyString,
-               wxEmptyString, wxS("dgeqrf(#1#)"), _("Matrix"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_dgesv){
-    // dgesv(A, b) solves A*x=b. The old template emitted "dgesv(A,true,true)",
-    // dropping the b matrix the dialog asks for and passing two bogus args.
-    CommandWiz(_("Solve A*x=b numerically"), wxEmptyString, wxEmptyString,
-               wxS("dgesv(#1#,#2#)"), _("m×n Matrix A:"), expr,
-               wxEmptyString, _("n×1 Matrix b:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_dgesvd){
-    CommandWiz(_("Calculate Singular Value Decomposition, left and right "
-                 "singular vectors numerically"),
-               wxEmptyString, wxEmptyString, wxS("dgesvd(#1#,true,true)"),
-               _("Matrix"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_dgesvd_valuesOnly){
-    CommandWiz(
-               _("Calculate Singular Value Decomposition of a matrix numerically"),
-               wxEmptyString, wxEmptyString, wxS("dgesvd(#1#,false,false)[1]"),
-               _("Matrix"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_dlange_max){
-    CommandWiz(_("Find the maximum absolute value of a matrix entry"),
-               wxEmptyString, wxEmptyString, wxS("dlange('max,#1#)"),
-               _("Matrix"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_dlange_one){
-    CommandWiz(
-               _("Find the maximum sum of the absolute values of a matrix column"),
-               wxEmptyString, wxEmptyString, wxS("dlange('one_norm,#1#)"), _("Matrix"),
-               expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_dlange_inf){
-    CommandWiz(_("Find the maximum sum of the absolute values of a matrix row"),
-               wxEmptyString, wxEmptyString, wxS("dlange('inf_norm,#1#)"),
-               _("Matrix"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_dlange_frobenius){
-    CommandWiz(_("Calculate the root of the sum of squares of matrix entries"),
-               wxEmptyString, wxEmptyString, wxS("dlange('frobenius,#1#)"),
-               _("Matrix"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_zlange_max){
-    // The z* LAPACK routines are the complex-matrix versions; these used to
-    // emit dlange() (the real version), duplicating the dlange_* menu items.
-    CommandWiz(_("Find the maximum absolute value of a matrix entry"),
-               wxEmptyString, wxEmptyString, wxS("zlange('max,#1#)"),
-               _("Matrix"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_zlange_one){
-    CommandWiz(
-               _("Find the maximum sum of the absolute values of a matrix column"),
-               wxEmptyString, wxEmptyString, wxS("zlange('one_norm,#1#)"), _("Matrix"),
-               expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_zlange_inf){
-    CommandWiz(_("Find the maximum sum of the absolute values of a matrix row"),
-               wxEmptyString, wxEmptyString, wxS("zlange('inf_norm,#1#)"),
-               _("Matrix"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_zlange_frobenius){
-    CommandWiz(_("Calculate the root of the sum of squares of matrix entries"),
-               wxEmptyString, wxEmptyString, wxS("zlange('frobenius,#1#)"),
-               _("Matrix"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_matrix_zheev){
-  }
-
-  else if(event.GetId() == EventIDs::menu_invert_mat){
-      wxString cmd = wxS("invert(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_determinant){
-      wxString cmd = wxS("determinant(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_rank){
-      wxString cmd = wxS("rank(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_eigen){
-      wxString cmd = wxS("eigenvalues(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_eigvect){
-      wxString cmd = wxS("eigenvectors(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_adjoint_mat){
-      wxString cmd = wxS("adjoint(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_transpose){
-    wxString cmd = wxS("transpose(") + expr + wxS(");");
-    MenuCommand(cmd);
-  }
-  else if(event.GetId() == EventIDs::menu_map_mat){
-    wxWindowPtr<Gen3Wiz> wiz(new Gen3Wiz(_("Resulting Matrix name (may be empty):"), _("Function:"),
-                                         _("Matrix:"), wxEmptyString, wxEmptyString, expr,
-                                         &m_configuration, this, -1, _("Matrix map")));
-    // wiz->Centre(wxBOTH);
-    wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-      if (retcode == wxID_OK) {
-        wxString cmd;
-        if (!wiz->GetValue1().IsEmpty())
-          cmd = wiz->GetValue1() + wxS(": ");
-        cmd += wxS("matrixmap(") + wiz->GetValue2() + wxS(", ") +
-          wiz->GetValue3() + wxS(");");
-        MenuCommand(cmd);
-      }
-    });
-  }
-  else if((event.GetId() == EventIDs::menu_enter_mat) ||
-          (event.GetId() == EventIDs::menu_stats_enterm)){
-      wxWindowPtr<MatDim> wiz(new MatDim(this, -1, &m_configuration, _("Matrix")));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          wxString cmd;
-          if (wiz->GetValue0() != wxEmptyString)
-            cmd = wiz->GetValue0() + wxS(": ");
-          long w = 0, h = 0;
-          int type = wiz->GetMatrixType();
-          if (!(wiz->GetValue1()).ToLong(&h) || !(wiz->GetValue2()).ToLong(&w) ||
-              w <= 0 || h <= 0) {
-            LoggingMessageBox(_("Not a valid matrix dimension!"), _("Error!"),
-                              wxOK | wxICON_ERROR);
-            return; //-V773
-          }
-          if (w != h)
-            type = MatWiz::MATRIX_GENERAL;
-          wxWindowPtr<MatWiz> mwiz(new MatWiz(this, -1, &m_configuration, _("Enter matrix"),
-                                              type, h, w));
-          // wiz->Centre(wxBOTH);
-          mwiz->ShowWindowModalThenDo([this, mwiz, cmd](int retcode) {
-            if (retcode == wxID_OK) {
-              MenuCommand(cmd + mwiz->GetValue());
-            }
-          });
-        }
-      });
-  }
-  else if(event.GetId() == EventIDs::menu_cpoly){
-    CommandWiz(_("Characteristic polynom"), wxEmptyString, wxEmptyString,
-               wxS("expand(charpoly(#1#,#2#));"), _("Matrix"), expr,
-               wxEmptyString, _("Variable"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_genmatrix){
-    CommandWiz(
-               _("Extract matrix from 2D array"),
-               _("Extracts a rectangle from a 2D array and converts it to a matrix"),
-               // genmatrix(array, rowMax, colMax, rowMin, colMin): the bottom/top
-               // fields are the row range, the right/left fields the column range.
-               wxEmptyString, wxS("genmatrix(#1#,#3#,#2#,#5#,#4#);"), _("Array"), expr,
-               wxEmptyString, _("Right end"), wxS("10"), wxEmptyString,
-               _("Bottom end"), wxS("10"), wxEmptyString, _("Left end"), wxS("0"),
-               wxEmptyString, _("Top end"), wxS("0"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_gen_mat_lambda){
-    CommandWiz(
-               _("Generate matrix from a rule"),
-               _("Generates a matrix and fills each element with the "
-                 "result of the expression \"Rule\"."),
-               wxEmptyString,
-               wxS("apply('matrix,makelist(makelist(#1#,#3#,1,#4#),#2#,1,#5#));"),
-               _("Rule"), expr, wxEmptyString, _("Var #1"), wxS("i"), wxEmptyString,
-               _("Var #2"), wxS("j"), wxEmptyString, _("Columns"), wxS("5"),
-               wxEmptyString, _("Rows"), wxS("6"), wxEmptyString);
-  }
-  else if((event.GetId() == EventIDs::button_map) ||
-          (event.GetId() == EventIDs::menu_map)){
-    CommandWiz(_("Map"),
-               _("Runs each element of an object (list, matrix, equation,...) "
-                 "through a function individually"),
-               wxEmptyString, wxS("map(#1#,#2#);"), _("function"), wxS("sin"),
-               wxEmptyString, _("Object composed of elements"), wxS("expr"));
-  }
-  else if(event.GetId() == EventIDs::menu_map_lambda){
-    CommandWiz(
-               _("Map an expression"),
-               _("Runs each element of an object (list, matrix, equation,...) "
-                 "through an expression individually"),
-               wxEmptyString, wxS("map(lambda([#2#],#1#),#3#);"), _("Expression"),
-               wxS("sin(i)"), wxEmptyString, _("Loop variable"), wxS("i"),
-               _("The name of the variable that shall contain the current element"),
-               _("Object composed of elements"), wxS("expr"));
-  }
-}
 
 void wxMaxima::AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand) {
   if (!m_drawPane)

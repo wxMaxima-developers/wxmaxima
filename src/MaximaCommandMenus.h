@@ -70,6 +70,10 @@ public:
   //! the algebraic/linear system wizards, ODEs, roots and the eliminate/... wizards).
   void EquationsMenu(wxCommandEvent &event);
 
+  //! Handles the "Algebra"/matrix menu and its toolbar buttons (enter/generate
+  //! matrix wizards, .csv import/export, and the matrix-operation command wizards).
+  void MatrixMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.
