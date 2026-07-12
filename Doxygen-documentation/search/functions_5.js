@@ -1,7 +1,7 @@
 var searchData=
 [
   ['editinputmenu_0',['EditInputMenu',['../classwxMaxima.html#a6be8b3148868fd873cac52f83dd7e82d',1,'wxMaxima']]],
-  ['editmenu_1',['EditMenu',['../classwxMaxima.html#a583d63bd73914f60c6baa6fe737efb3d',1,'wxMaxima']]],
+  ['editmenu_1',['EditMenu',['../classMaximaCommandMenus.html#ac6ba86eb7c03c0e9dda3281c905cb161',1,'MaximaCommandMenus']]],
   ['editorbackgroundcolor_2',['EditorBackgroundColor',['../classConfiguration.html#a0ef02b1b5d03f40b585eed65c4c8e570',1,'Configuration']]],
   ['editorcell_3',['EditorCell',['../classEditorCell.html#a16732e2b40149ba3baefd2f9bbf614a7',1,'EditorCell']]],
   ['empty_4',['Empty',['../classDocumentCellPointers_1_1ErrorList.html#a7ed6103adcb981368d71d6ca21ba6f8b',1,'DocumentCellPointers::ErrorList::Empty()'],['../classGroupCell.html#a7d134e4f14869920ea47fc94d504c10e',1,'GroupCell::Empty()'],['../classEvaluationQueue.html#a51e73fac4a469890cfe2a57add221e9b',1,'EvaluationQueue::Empty()']]],

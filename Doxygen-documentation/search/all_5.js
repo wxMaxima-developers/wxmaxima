@@ -2,7 +2,7 @@ var searchData=
 [
   ['e_0',['E',['../classE.html',1,'']]],
   ['editinputmenu_1',['EditInputMenu',['../classwxMaxima.html#a6be8b3148868fd873cac52f83dd7e82d',1,'wxMaxima']]],
-  ['editmenu_2',['EditMenu',['../classwxMaxima.html#a583d63bd73914f60c6baa6fe737efb3d',1,'wxMaxima']]],
+  ['editmenu_2',['EditMenu',['../classMaximaCommandMenus.html#ac6ba86eb7c03c0e9dda3281c905cb161',1,'MaximaCommandMenus']]],
   ['editorbackgroundcolor_3',['EditorBackgroundColor',['../classConfiguration.html#a0ef02b1b5d03f40b585eed65c4c8e570',1,'Configuration']]],
   ['editorcell_4',['EditorCell',['../classEditorCell.html',1,'EditorCell'],['../classEditorCell.html#a16732e2b40149ba3baefd2f9bbf614a7',1,'EditorCell::EditorCell()']]],
   ['editorcell_2ecpp_5',['EditorCell.cpp',['../EditorCell_8cpp.html',1,'']]],
