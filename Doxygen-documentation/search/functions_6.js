@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['filemenu_0',['FileMenu',['../classwxMaxima.html#a0e54be930d07bc5125647727bd938c8e',1,'wxMaxima']]],
+  ['filemenu_0',['FileMenu',['../classMaximaCommandMenus.html#a6824cc78424d13f548fe4439f4725874',1,'MaximaCommandMenus']]],
   ['findcellbyuuid_1',['FindCellByUUID',['../classWorksheet.html#a7b35b08a4719616d120be5add09db8bd',1,'Worksheet']]],
   ['findincremental_2',['FindIncremental',['../classWorksheet.html#a88fcff5261e945f1297bce4c7b0de6f0',1,'Worksheet']]],
   ['findineditor_3',['FindInEditor',['../classWorksheetSearch_1_1Matcher.html#a7316b96250734ffd80b47fb6e7b05c4f',1,'WorksheetSearch::Matcher::FindInEditor()'],['../classWorksheetSearch_1_1StringMatcher.html#a8306ffb013803bfc36a71d2dcba3c51d',1,'WorksheetSearch::StringMatcher::FindInEditor()'],['../classWorksheetSearch_1_1RegexMatcher.html#a736c5f19388c2e7b27d370754ba3fb31',1,'WorksheetSearch::RegexMatcher::FindInEditor()']]],

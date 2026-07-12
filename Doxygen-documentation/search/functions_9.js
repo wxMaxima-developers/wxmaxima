@@ -12,7 +12,7 @@ var searchData=
   ['insertesccommand_9',['InsertEscCommand',['../classEditorCell.html#ac9984be73e5333aa331a2d556a63dfc5',1,'EditorCell']]],
   ['insertgroupcells_10',['InsertGroupCells',['../classWorksheet.html#a6ad45fa9b11048ff373bca4d85a0efc9',1,'Worksheet::InsertGroupCells(std::unique_ptr&lt; GroupCell &gt; &amp;&amp;cells, GroupCell *where, UndoActions *undoBuffer)'],['../classWorksheet.html#abc17f15d6bc5321d54764ea7e288446a',1,'Worksheet::InsertGroupCells(std::unique_ptr&lt; GroupCell &gt; &amp;&amp;cells, GroupCell *where=NULL)']]],
   ['insertline_11',['InsertLine',['../classWorksheet.html#a723960d4c1221d561d35dbcb88f90383',1,'Worksheet']]],
-  ['insertmenu_12',['InsertMenu',['../classVariablespane.html#a866fd3c0764feb178ade7369ae486e74',1,'Variablespane']]],
+  ['insertmenu_12',['InsertMenu',['../classMaximaCommandMenus.html#a8ab7f86fb29496c1ba84d1c22c6e4fb4',1,'MaximaCommandMenus::InsertMenu()'],['../classVariablespane.html#a866fd3c0764feb178ade7369ae486e74',1,'Variablespane::InsertMenu()']]],
   ['intcell_13',['IntCell',['../classIntCell.html#a31f3b0ffece4415ddd084e21890b25a8',1,'IntCell']]],
   ['internalhelpbrowser_14',['InternalHelpBrowser',['../classConfiguration.html#ac86046404f403903a5ae145117bfb2e4',1,'Configuration::InternalHelpBrowser() const'],['../classConfiguration.html#a61bcdd32b26cb7618e2c43b1e6ffaa21',1,'Configuration::InternalHelpBrowser(bool useInternalHelpBrowser)']]],
   ['interrupt_15',['Interrupt',['../classwxMaxima.html#ab15fdc4e2b74903b68813ad96d4a9b1f',1,'wxMaxima']]],

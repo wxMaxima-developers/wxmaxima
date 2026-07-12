@@ -20,7 +20,7 @@ var searchData=
   ['helpbrowser_2eh_17',['HelpBrowser.h',['../HelpBrowser_8h.html',1,'']]],
   ['helpbrowseruserlocation_18',['HelpBrowserUserLocation',['../classConfiguration.html#a0c5f8dc5f190f8c061097f230e6070be',1,'Configuration::HelpBrowserUserLocation() const'],['../classConfiguration.html#a8704e8f0514e29f02578230d39e30e27',1,'Configuration::HelpBrowserUserLocation(wxString helpBrowser)']]],
   ['helpdir_19',['HelpDir',['../classDirstructure.html#ad67a848e54d1e40f97453a8e4279f59c',1,'Dirstructure::HelpDir() const'],['../classDirstructure.html#a566f3960bf573e37465b6a09b34eaddf',1,'Dirstructure::HelpDir(const wxString &amp;helpDir)']]],
-  ['helpmenu_20',['HelpMenu',['../classwxMaxima.html#acf36a7f8cc1a859f1ff47974722b513c',1,'wxMaxima']]],
+  ['helpmenu_20',['HelpMenu',['../classMaximaCommandMenus.html#a3eade0ddf1a3f6ec04f6ecabd55dc1c3',1,'MaximaCommandMenus']]],
   ['hide_21',['Hide',['../classCell.html#a87f7f4583027ae2e5e5baf664d488dc2',1,'Cell::Hide()'],['../classGroupCell.html#a02dab13af6158beb628cd2bb0be34a20',1,'GroupCell::Hide()']]],
   ['hidebrackets_22',['HideBrackets',['../classConfiguration.html#a352252421e1d5163ce20aff4cefc5a9e',1,'Configuration::HideBrackets() const'],['../classConfiguration.html#ac05473e9ab3c972d4587415e9d5611a9',1,'Configuration::HideBrackets(bool hide)']]],
   ['hidetree_23',['HideTree',['../classGroupCell.html#aa79c40d6d88603e83be78a30e5ba190d',1,'GroupCell']]],

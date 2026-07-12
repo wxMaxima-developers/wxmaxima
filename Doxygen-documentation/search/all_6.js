@@ -1,7 +1,7 @@
 var searchData=
 [
   ['file_2eh_0',['file.h',['../file_8h.html',1,'']]],
-  ['filemenu_1',['FileMenu',['../classwxMaxima.html#a0e54be930d07bc5125647727bd938c8e',1,'wxMaxima']]],
+  ['filemenu_1',['FileMenu',['../classMaximaCommandMenus.html#a6824cc78424d13f548fe4439f4725874',1,'MaximaCommandMenus']]],
   ['filetosave_2',['FileToSave',['../classConfiguration_1_1FileToSave.html',1,'Configuration']]],
   ['filtergenerator_3',['FilterGenerator',['../classCatch_1_1Generators_1_1FilterGenerator.html',1,'Catch::Generators']]],
   ['findcellbyuuid_4',['FindCellByUUID',['../classWorksheet.html#a7b35b08a4719616d120be5add09db8bd',1,'Worksheet']]],
