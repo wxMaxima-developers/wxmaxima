@@ -52,7 +52,7 @@ var searchData=
   ['drawgroupcell_49',['DrawGroupCell',['../classWorksheet.html#ae01a8b7f8566e71adaa5a67ae29053bb',1,'Worksheet']]],
   ['drawgroupcell_5fusingbitmap_50',['DrawGroupCell_UsingBitmap',['../classWorksheet.html#aea247ddf3dfae63206999e3960f80059',1,'Worksheet']]],
   ['drawlist_51',['DrawList',['../classCell.html#a8c35dea62297500d1f9a339220fb57f9',1,'Cell']]],
-  ['drawmenu_52',['DrawMenu',['../classwxMaxima.html#aa836f1dfcb1b2f56ee9e674acb797c1a',1,'wxMaxima']]],
+  ['drawmenu_52',['DrawMenu',['../classMaximaCommandMenus.html#a0c52ba2b4d454483ea359481c95772fb',1,'MaximaCommandMenus']]],
   ['drawmode_53',['drawMode',['../classConfiguration.html#acc2f54f4547aea31768bc9db04a9f24b',1,'Configuration']]],
   ['drawrect_54',['drawRect',['../classOverload__Test.html#a840305784a1944b4de9826a1f4204365',1,'Overload_Test::drawRect(int, int, int, int)'],['../classOverload__Test.html#a7a613f50092cbc0ef830a818d9f3409c',1,'Overload_Test::drawRect(const Rect &amp;r)']]],
   ['drawsidebar_55',['DrawSidebar',['../classDrawSidebar.html',1,'']]],

@@ -28,7 +28,7 @@ var searchData=
   ['drawgroupcell_25',['DrawGroupCell',['../classWorksheet.html#ae01a8b7f8566e71adaa5a67ae29053bb',1,'Worksheet']]],
   ['drawgroupcell_5fusingbitmap_26',['DrawGroupCell_UsingBitmap',['../classWorksheet.html#aea247ddf3dfae63206999e3960f80059',1,'Worksheet']]],
   ['drawlist_27',['DrawList',['../classCell.html#a8c35dea62297500d1f9a339220fb57f9',1,'Cell']]],
-  ['drawmenu_28',['DrawMenu',['../classwxMaxima.html#aa836f1dfcb1b2f56ee9e674acb797c1a',1,'wxMaxima']]],
+  ['drawmenu_28',['DrawMenu',['../classMaximaCommandMenus.html#a0c52ba2b4d454483ea359481c95772fb',1,'MaximaCommandMenus']]],
   ['drawrect_29',['drawRect',['../classOverload__Test.html#a840305784a1944b4de9826a1f4204365',1,'Overload_Test::drawRect(int, int, int, int)'],['../classOverload__Test.html#a7a613f50092cbc0ef830a818d9f3409c',1,'Overload_Test::drawRect(const Rect &amp;r)']]],
   ['drawthiscell_30',['DrawThisCell',['../classCell.html#a843593aae2abe1a871907b895f697123',1,'Cell']]],
   ['dynamic_5funique_5fptr_5fcast_31',['dynamic_unique_ptr_cast',['../CellPtr_8h.html#a1ffe8176d4a398d39ce60e2c2e036f21',1,'CellPtr.h']]],
