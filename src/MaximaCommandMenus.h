@@ -58,6 +58,10 @@ public:
   //! sum/series wizards and the change-of-variable/Taylor/Laplace/... commands).
   void CalculusMenu(wxCommandEvent &event);
 
+  //! Handles the "Numeric" menu (float/bfloat/engineering-format toggles and the
+  //! numeric-integration / to-poly / continued-fraction command wizards).
+  void NumericalMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.

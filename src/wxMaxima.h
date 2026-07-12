@@ -394,7 +394,6 @@ protected:
   void SimplifyMenu(wxCommandEvent &event);        //!< Processes "Simplify menu" clicks
   void ListMenu(wxCommandEvent &event);            //!< Processes "list menu" clicks
   void DrawMenu(wxCommandEvent &event);            //!< Processes "draw menu" clicks
-  void NumericalMenu(wxCommandEvent &event);       //!< Processes "Numerical menu" clicks
   void HelpMenu(wxCommandEvent &event);            //!< Processes "Help menu" clicks
 #ifdef __WXMSW__
   //! Register wxMaxima's own path as the .wxmx diff tool for TortoiseSVN/Git.
