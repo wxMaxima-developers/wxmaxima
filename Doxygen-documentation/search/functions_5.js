@@ -25,7 +25,7 @@ var searchData=
   ['exitaftereval_22',['ExitAfterEval',['../classwxMaxima.html#ae1282d42b62a5d4620e95aa7c9c054c3',1,'wxMaxima']]],
   ['exitonerror_23',['ExitOnError',['../classwxMaxima.html#a4252227241877b64d96fa93249a6089c',1,'wxMaxima']]],
   ['exitonerrorarmed_24',['ExitOnErrorArmed',['../classwxMaxima.html#a8bbff1144191cdff9306acb101a57307',1,'wxMaxima']]],
-  ['exporttohtml_25',['ExportToHTML',['../classWorksheet.html#a2ee514a4bc8e4164cfd661d7c32fe965',1,'Worksheet::ExportToHTML()'],['../WorksheetExport_8h.html#a2aa9f2d64a973164424e91d77b1224c7',1,'WorksheetExport::ExportToHTML()']]],
+  ['exporttohtml_25',['ExportToHTML',['../classWorksheet.html#a2ee514a4bc8e4164cfd661d7c32fe965',1,'Worksheet::ExportToHTML()'],['../WorksheetExport_8h.html#af176cb310c6fd3c83973df2f0ccfb5aa',1,'WorksheetExport::ExportToHTML()']]],
   ['exporttomac_26',['ExportToMAC',['../classWorksheet.html#ad66ccef72e32b507379559594f0c9190',1,'Worksheet::ExportToMAC()'],['../WorksheetExport_8h.html#a778ac9307ea55debf08d0c658b5cf8fd',1,'WorksheetExport::ExportToMAC()']]],
   ['exporttotex_27',['ExportToTeX',['../classWorksheet.html#aaea30ddc4ca6de8eb92b5ed45ce527fe',1,'Worksheet::ExportToTeX()'],['../WorksheetExport_8h.html#ad086ada2f54ab7392da2fdaf5158ff32',1,'WorksheetExport::ExportToTeX()']]],
   ['exptcell_28',['ExptCell',['../classExptCell.html#ab3a01ce869823525a95272e9258a0843',1,'ExptCell']]],

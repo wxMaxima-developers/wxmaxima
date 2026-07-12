@@ -886,16 +886,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>UseUnicodeMaths</b> (
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetWorkSheet</b> (<a class="el" href="classwxScrolled.html">wxScrolledCanvas</a> *workSheet)</td></tr>
 <tr class="memdesc:af04e6c20ad07553adda1992e490aa749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the worksheet canvas this configuration storage is valid for. <br /></td></tr>
 <tr class="separator:af04e6c20ad07553adda1992e490aa749"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d64b59154773ab4e095ac793abb1bee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCellPointers.html">CellPointers</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a3d64b59154773ab4e095ac793abb1bee">GetCellPointers</a> () const</td></tr>
-<tr class="memdesc:a3d64b59154773ab4e095ac793abb1bee"><td class="mdescLeft">&#160;</td><td class="mdescRight">The registry of special cells (selection, active cell, errors, ...) of this document.  <br /></td></tr>
-<tr class="separator:a3d64b59154773ab4e095ac793abb1bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7254e8d55b0b3860131a8a80b67fe496"><td class="memItemLeft" align="right" valign="top"><a id="a7254e8d55b0b3860131a8a80b67fe496" name="a7254e8d55b0b3860131a8a80b67fe496"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCellPointers</b> (<a class="el" href="classCellPointers.html">CellPointers</a> *cellPointers)</td></tr>
-<tr class="memdesc:a7254e8d55b0b3860131a8a80b67fe496"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <a class="el" href="classCellPointers.html" title="The storage for pointers to cells.">CellPointers</a> registry cells constructed with this configuration use. <br /></td></tr>
-<tr class="separator:a7254e8d55b0b3860131a8a80b67fe496"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5073fe626faad977cb95887f34da8bbd"><td class="memItemLeft" align="right" valign="top"><a id="a5073fe626faad977cb95887f34da8bbd" name="a5073fe626faad977cb95887f34da8bbd"></a>
-<a class="el" href="classDocumentCellPointers.html">DocumentCellPointers</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetDocumentCellPointers</b> () const</td></tr>
-<tr class="memdesc:a5073fe626faad977cb95887f34da8bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The document-model half of the cell-pointer registry (null if none). <br /></td></tr>
+<tr class="memitem:a5073fe626faad977cb95887f34da8bbd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDocumentCellPointers.html">DocumentCellPointers</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a5073fe626faad977cb95887f34da8bbd">GetDocumentCellPointers</a> () const</td></tr>
+<tr class="memdesc:a5073fe626faad977cb95887f34da8bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The registry of special cells (selection, active cell, errors, ...) of this document.  <br /></td></tr>
 <tr class="separator:a5073fe626faad977cb95887f34da8bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae71c9e652ee0d4b788900b0159737267"><td class="memItemLeft" align="right" valign="top"><a id="ae71c9e652ee0d4b788900b0159737267" name="ae71c9e652ee0d4b788900b0159737267"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDocumentCellPointers</b> (<a class="el" href="classDocumentCellPointers.html">DocumentCellPointers</a> *p)</td></tr>
@@ -1465,34 +1457,6 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 </div>
 </div>
-<a id="a3d64b59154773ab4e095ac793abb1bee" name="a3d64b59154773ab4e095ac793abb1bee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d64b59154773ab4e095ac793abb1bee">&#9670;&#160;</a></span>GetCellPointers()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classCellPointers.html">CellPointers</a> * Configuration::GetCellPointers </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The registry of special cells (selection, active cell, errors, ...) of this document. </p>
-<p>Cells constructed with this configuration register themselves here. Set by the <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> that owns the <a class="el" href="classCellPointers.html" title="The storage for pointers to cells.">CellPointers</a> object; null for configurations that never construct cells (e.g. the temporary print configuration). </p>
-
-</div>
-</div>
 <a id="aed909c1cc93e4ed6d7fa074c558d295f" name="aed909c1cc93e4ed6d7fa074c558d295f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aed909c1cc93e4ed6d7fa074c558d295f">&#9670;&#160;</a></span>GetDisplayedDigits()</h2>
 
@@ -1518,6 +1482,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 <p>Returns the maximum number of displayed digits. </p>
 <p>m_displayedDigits is always &gt;= 20, so we can guarantee the number we return to be unsigned. </p>
+
+</div>
+</div>
+<a id="a5073fe626faad977cb95887f34da8bbd" name="a5073fe626faad977cb95887f34da8bbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5073fe626faad977cb95887f34da8bbd">&#9670;&#160;</a></span>GetDocumentCellPointers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDocumentCellPointers.html">DocumentCellPointers</a> * Configuration::GetDocumentCellPointers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The registry of special cells (selection, active cell, errors, ...) of this document. </p>
+<p>Cells constructed with this configuration register themselves here. Set by the <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> that owns the CellPointers object; null for configurations that never construct cells (e.g. the temporary print configuration). The document-model half of the cell-pointer registry (null if none). </p>
 
 </div>
 </div>

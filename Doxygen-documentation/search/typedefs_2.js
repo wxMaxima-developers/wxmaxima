@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['object_0',['Object',['../manual_8c.html#ab1287b6141419421dc5c14b9f7756b0a',1,'manual.c']]]
+  ['truck_0',['Truck',['../manual_8c.html#a5220977c04e056b0efcc59a2f05d89a2',1,'manual.c']]]
 ];

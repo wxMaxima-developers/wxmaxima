@@ -37,9 +37,8 @@ var searchData=
   ['vehiclestart_34',['vehicleStart',['../structVehicle.html#a6891d3d28853bc3fdd075596dc6de9f8',1,'Vehicle']]],
   ['vehiclestop_35',['vehicleStop',['../structVehicle.html#a4dcbcba43792dcd673a552b14479ab77',1,'Vehicle']]],
   ['versionnumber_36',['VersionNumber',['../classwxMaxima_1_1VersionNumber.html',1,'wxMaxima']]],
-  ['view_37',['View',['../classCellPointers.html#ac639397a201f188caed219ca24e8b024',1,'CellPointers']]],
-  ['viewcellpointers_38',['ViewCellPointers',['../classViewCellPointers.html',1,'']]],
-  ['visiblyinvalidcell_39',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html',1,'VisiblyInvalidCell'],['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)']]],
-  ['visiblyinvalidcell_2ecpp_40',['VisiblyInvalidCell.cpp',['../VisiblyInvalidCell_8cpp.html',1,'']]],
-  ['void_5ftype_41',['void_type',['../structCatch_1_1detail_1_1void__type.html',1,'Catch::detail']]]
+  ['viewcellpointers_37',['ViewCellPointers',['../classViewCellPointers.html',1,'']]],
+  ['visiblyinvalidcell_38',['VisiblyInvalidCell',['../classVisiblyInvalidCell.html',1,'VisiblyInvalidCell'],['../classVisiblyInvalidCell.html#ac5a17667589fa2a237647f3d0b2ae941',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)'],['../classVisiblyInvalidCell.html#ab87f908b177ea4b2b4a148445c750cf1',1,'VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config, wxString &amp;&amp;toolTip)']]],
+  ['visiblyinvalidcell_2ecpp_39',['VisiblyInvalidCell.cpp',['../VisiblyInvalidCell_8cpp.html',1,'']]],
+  ['void_5ftype_40',['void_type',['../structCatch_1_1detail_1_1void__type.html',1,'Catch::detail']]]
 ];
