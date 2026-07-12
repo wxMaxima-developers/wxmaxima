@@ -379,7 +379,6 @@ protected:
   void RegisterWxmxDiffTool();
 #endif
   void ReplaceSuggestion(wxCommandEvent &event);   //!< Processes clicks on suggestions
-  void Interrupt(wxCommandEvent &event);           //!< Interrupt button and hotkey presses
   //! Make the menu item, toolbars and panes visible that should be visible right now.
   void UpdateMenus();        //!< Enables and disables the Right menu buttons
   void UpdateToolBar();      //!< Enables and disables the Right toolbar buttons
@@ -402,9 +401,6 @@ protected:
 
   //! Is triggered when the "Replace All" button in the search dialog is pressed
   void OnReplaceAll(wxFindDialogEvent &event);
-
-  //! Maxima sends or receives data, or disconnects
-  void MaximaEvent(wxThreadEvent &event);
 
   /*! Add a parameter to a draw command
 

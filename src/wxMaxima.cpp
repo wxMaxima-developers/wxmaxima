@@ -475,7 +475,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 #ifdef __WXMSW__
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_register_wxmx_difftool);
 #endif
-  Bind(wxEVT_MENU, &wxMaxima::Interrupt, this, EventIDs::menu_interrupt_id);
+  Bind(wxEVT_MENU, &MaximaProcessManager::Interrupt, &m_processManager, EventIDs::menu_interrupt_id);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, wxID_OPEN);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_batch_id);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_compare_files);
@@ -823,7 +823,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_as_emf);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_as_rtf);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_to_file);
-  Bind(wxEVT_TOOL, &wxMaxima::Interrupt, this, ToolBar::tb_interrupt);
+  Bind(wxEVT_TOOL, &MaximaProcessManager::Interrupt, &m_processManager, ToolBar::tb_interrupt);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_startStop);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_start);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_stop);
@@ -1714,117 +1714,6 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory, bool background) {
 ///  Socket stuff
 ///--------------------------------------------------------------------------------
 
-void wxMaxima::MaximaEvent(wxThreadEvent &event) {
-  using std::swap;
-  switch (event.GetInt()) {
-  case Maxima::READ_MISC_TEXT:
-    // Read out stderr: We will do that in the background on a regular basis,
-    // anyway. But if we do it manually now, too, the probability that things
-    // are presented to the user in chronological order increases a bit.
-    m_responseReader.ReadStdErr();
-    m_statusBar->NetworkStatus(StatusBar::receive);
-    if(m_first)
-      m_responseReader.ReadFirstPrompt(event.GetString());
-    else
-      m_responseReader.ReadMiscText(event.GetString());
-    break;
-  case Maxima::STRING_FOR_XMLINSPECTOR:
-    if(m_xmlInspector)
-      m_xmlInspector->Add_FromMaxima(event.GetString());
-    if (Maxima::GetPipeToStdErr())
-      {
-        std::cerr << event.GetString();
-        std::cerr.flush();
-      }
-    break;
-  case Maxima::XML_PROMPT:
-    m_responseReader.ReadStdErr();
-    m_statusBar->NetworkStatus(StatusBar::receive);
-    m_responseReader.ReadPrompt(event.GetString());
-    break;
-  case Maxima::XML_SUPPRESSOUTPUT:
-    m_responseReader.ReadStdErr();
-    m_statusBar->NetworkStatus(StatusBar::receive);
-    m_responseReader.ReadSuppressedOutput(event.GetString());
-    break;
-  case Maxima::XML_WXXMLSYMBOLS:
-    {
-      wxXmlDocument xmldoc;
-      wxStringInputStream xmlStream(event.GetString());
-      xmldoc.Load(xmlStream);
-      m_statusBar->NetworkStatus(StatusBar::receive);
-      m_responseReader.ReadLoadSymbols(xmldoc);
-    }
-    break;
-  case Maxima::XML_VARIABLES:
-    {
-      wxXmlDocument xmldoc;
-      wxStringInputStream xmlStream(event.GetString());
-      xmldoc.Load(xmlStream);
-      m_statusBar->NetworkStatus(StatusBar::receive);
-      m_responseReader.ReadVariables(xmldoc);
-    }
-    break;
-  case Maxima::XML_WATCH_VARIABLES_ADD:
-    {
-      wxXmlDocument xmldoc;
-      wxStringInputStream xmlStream(event.GetString());
-      xmldoc.Load(xmlStream);
-      m_statusBar->NetworkStatus(StatusBar::receive);
-      m_responseReader.ReadAddVariables(xmldoc);
-    }
-    break;
-  case Maxima::XML_STATUSBAR:
-    {
-      wxXmlDocument xmldoc;
-      wxStringInputStream xmlStream(event.GetString());
-      xmldoc.Load(xmlStream);
-      m_statusBar->NetworkStatus(StatusBar::receive);
-      m_responseReader.ReadStatusBar(xmldoc);
-    }
-    break;
-  case Maxima::XML_HTML_MANUAL_KEYWORDS:
-    {
-      wxXmlDocument xmldoc;
-      wxStringInputStream xmlStream(event.GetString());
-      xmldoc.Load(xmlStream);
-      m_statusBar->NetworkStatus(StatusBar::receive);
-      m_responseReader.ReadManualTopicNames(xmldoc);
-    }
-    break;
-  case Maxima::XML_MATHS:
-    {
-      wxXmlDocument xmldoc;
-      wxStringInputStream xmlStream(event.GetString());
-      xmldoc.Load(xmlStream);
-      m_statusBar->NetworkStatus(StatusBar::receive);
-      m_responseReader.ReadMath(xmldoc);
-    }
-    break;
-  case Maxima::XML_TOOLONGMATHS:
-    m_statusBar->NetworkStatus(StatusBar::receive);
-    DoRawConsoleAppend(_("(Config tells to suppress the output of long cells)"),
-                       MC_TYPE_WARNING);
-    break;
-  case Maxima::XML_WXXML_KEY: // TODO: Should the key be outside the SuppressOutput?
-    break;
-  case Maxima::READ_PENDING:
-    m_responseReader.ReadStdErr();
-    m_statusBar->NetworkStatus(StatusBar::receive);
-    break;
-  case Maxima::WRITE_PENDING:
-    m_statusBar->NetworkStatus(StatusBar::transmit);
-    break;
-  case Maxima::WRITE_ERROR:
-    DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
-    break;
-  case Maxima::DISCONNECTED: {
-    wxLogMessage(_("Connection to Maxima lost."));
-    //  KillMaxima();
-    break;
-  }
-  }
-}
 
 /*!
  * ServerEvent is triggered when maxima connects to the socket server.
@@ -1837,135 +1726,6 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
 ///--------------------------------------------------------------------------------
 
 
-void wxMaxima::Interrupt(wxCommandEvent &WXUNUSED(event)) {
-  if(GetWorksheet())
-    GetWorksheet()->CloseAutoCompletePopup();
-
-  if (m_pid < 0) {
-    m_MenuBar->EnableItem(EventIDs::menu_interrupt_id, false);
-    return;
-  }
-
-#if defined(__WXMSW__)
-  if (m_pid > 0) {
-    // The following lines are adapted from maxima's winkill which William
-    // Schelter has written and which has been improved by David Billinghurst
-    // and Andrej Vodopivec.
-    //
-    // Winkill tries to find a shared memory region maxima provides we can set
-    // signals in that maxima can listen to.
-    //
-    // For Maxima's end of this means of communication see
-    // interfaces/xmaxima/win32/win_signals.lisp
-    // and interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
-    HANDLE sharedMemoryHandle = 0;
-    LPVOID sharedMemoryAddress = NULL;
-
-    // wxMaxima doesn't want to get interrupt signals.
-    // SetConsoleCtrlHandler(NULL, true);
-
-    /* First try to send the signal to gcl. */
-    long signalPid = (m_maximaPid > 0) ? m_maximaPid : m_pid;
-    wxWCharBuffer sharedMemoryName(wxString::Format("gcl-%d", signalPid).wc_str());
-    sharedMemoryHandle =
-      OpenFileMapping(FILE_MAP_WRITE,    /*  Read/write permission.   */
-                      FALSE,             /*  Do not inherit the name  */
-                      sharedMemoryName.data()); /*  of the mapping object.   */
-
-    /* If gcl is not running, send to maxima. */
-    wxWCharBuffer sharedMemoryName2(wxString::Format("maxima-%d", signalPid).wc_str());
-    if (sharedMemoryHandle == NULL) {
-      sharedMemoryHandle =
-        OpenFileMapping(FILE_MAP_WRITE,    /*  Read/write permission.   */
-                        FALSE,             /*  Do not inherit the name  */
-                        sharedMemoryName2.data()); /*  of the mapping object.   */
-    }
-
-    if (sharedMemoryHandle == NULL) {
-      wxLogMessage(_("The Maxima process doesn't offer a shared memory segment "
-                     "we can send an interrupt signal to."));
-
-      // No shared memory location we can send break signals to => send a
-      // console interrupt.
-      // Before we do that we stop our program from closing on receiving a
-      // Ctrl+C from the console.
-      SetConsoleCtrlHandler(NULL, TRUE);
-
-      // We could send a CTRL_BREAK_EVENT instead of a CTRL_C_EVENT that
-      // isn't handled in the 2010 clisp release (see:
-      // https://sourceforge.net/p/clisp/bugs/735/)
-      // ...but CTRL_BREAK_EVENT seems to crash clisp, see
-      // https://sourceforge.net/p/clisp/bugs/736/
-      //
-      // And we need to send the CTRL_BREAK_EVENT to our own console, which
-      // has the group ID 0, see
-      // https://docs.microsoft.com/en-us/windows/console/generateconsolectrlevent
-      if (GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0) == 0) {
-        LPTSTR errorText = NULL;
-
-        FormatMessage(
-                      FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                      FORMAT_MESSAGE_IGNORE_INSERTS,
-                      NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                      errorText, 0, NULL);
-
-        wxString errorMessage;
-        if (!errorText)
-          errorMessage = _("Could not send an interrupt signal to maxima.");
-        else {
-          errorMessage =
-            wxString::Format(_("Interrupting maxima: %s"), errorText);
-          LocalFree(errorText);
-        }
-
-        StatusText(errorMessage);
-        wxLogMessage("%s", errorMessage);
-        return;
-      }
-    } else {
-      sharedMemoryAddress =
-        MapViewOfFile(sharedMemoryHandle, /* Handle to mapping object.  */
-                      FILE_MAP_WRITE,     /* Read/write permission.  */
-                      0,                  /* Max.  object size.  */
-                      0,                  /* Size of hFile.  */
-                      0);                 /* Map entire file.  */
-
-      if (sharedMemoryAddress == NULL) {
-        wxLogMessage(_("Could not map view of the file needed in order to "
-                       "send an interrupt signal to maxima."));
-        return;
-      }
-
-      // Set the bit for the SIGINT handler
-      int value = (1 << (wxSIGINT));
-      volatile int *sharedMemoryContents = reinterpret_cast<int *>(sharedMemoryAddress);
-      *sharedMemoryContents = *sharedMemoryContents | value;
-      wxLogMessage(_("Sending an interrupt signal to Maxima."));
-      UnmapViewOfFile(sharedMemoryAddress);
-      CloseHandle(sharedMemoryHandle);
-      sharedMemoryAddress = NULL;
-      sharedMemoryHandle = NULL;
-      return;
-    }
-  }
-
-  if (m_maximaProcess) {
-    // We need to send the CTRL_BREAK_EVENT to the process group, not
-    // to the lisp.
-    auto pid = m_maximaProcess->GetPid();
-    if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, pid)) {
-      wxLogMessage(_("Could not send an interrupt signal to maxima."));
-      return;
-    }
-  }
-#else
-  wxLogMessage(_("Sending Maxima a SIGINT signal."));
-  wxProcess::Kill(m_pid, wxSIGINT);
-#endif
-  if (m_maximaProcess) {
-    wxProcess::Kill(m_maximaProcess->GetPid(), wxSIGINT);
-  }
-}
 
 
 void wxMaxima::OnGnuplotQueryTerminals(wxProcessEvent &event) {

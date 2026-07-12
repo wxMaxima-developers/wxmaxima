@@ -41,6 +41,8 @@
 class wxMaxima;
 class wxSocketEvent;
 class wxProcessEvent;
+class wxThreadEvent;
+class wxCommandEvent;
 
 /*! The Maxima process/socket lifecycle extracted from the wxMaxima god class.
 
@@ -101,6 +103,13 @@ public:
   //! wxEVT_END_PROCESS handler for the Maxima process; forwards to
   //! OnMaximaClose() if the PID matches.
   void OnMaximaClose(wxProcessEvent &event);
+
+  //! The EVT_MAXIMA handler: classifies each chunk Maxima sent over the socket
+  //! and hands it to the matching reader / updates the status bar.
+  void MaximaEvent(wxThreadEvent &event);
+
+  //! Sends the running Maxima an interrupt (Ctrl+G / the interrupt button).
+  void Interrupt(wxCommandEvent &event);
 
 private:
   //! The wxMaxima frame whose services the lifecycle handlers drive. Not owned;
