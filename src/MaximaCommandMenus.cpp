@@ -2205,7 +2205,12 @@ void MaximaCommandMenus::FileMenu(wxCommandEvent &event) {
       if (m_wxMaxima.GetWorksheet()->IsEmpty())
         m_wxMaxima.m_fileIO.OpenFile(file, wxEmptyString);
       else
-        wxGetApp().NewWindow(file);
+        // NewWindow is static; call it as MyApp::NewWindow (as wxMaxima.cpp
+        // does). wxGetApp() is only declared by the wxDECLARE_APP(MyApp) in
+        // wxMaxima.cpp, so it is not visible here - and this __WXOSX__-only
+        // branch is not compiled by the non-mac CI, so the break surfaced only
+        // on macOS.
+        MyApp::NewWindow(file);
 #else
       m_wxMaxima.m_fileIO.OpenFile(file, wxEmptyString);
 #endif
