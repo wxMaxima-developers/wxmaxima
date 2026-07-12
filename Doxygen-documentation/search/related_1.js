@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['oninner_0',['OnInner',['../classCell.html#ad8f07de64449ae6a96eecbadebe576a9',1,'Cell']]]
+  ['maximacommandmenus_0',['MaximaCommandMenus',['../classwxMaxima.html#a788eabdecc7239db3db46385b1b275f5',1,'wxMaxima']]]
 ];

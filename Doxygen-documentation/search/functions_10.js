@@ -6,7 +6,7 @@ var searchData=
   ['passkeyboardfocus_3',['PassKeyboardFocus',['../classwxMaxima.html#a9bf3e29204819659a1bca6219668a72b',1,'wxMaxima']]],
   ['pastefromclipboard_4',['PasteFromClipboard',['../classCell.html#a129bee825fb999bebed7cc86b2c4863e',1,'Cell::PasteFromClipboard()'],['../classEditorCell.html#aae3f133b4f77aa5839e9c55ae71119dc',1,'EditorCell::PasteFromClipboard()']]],
   ['pending_5',['Pending',['../classBackgroundTask.html#a765116e73eb0842433323203c7aeb3fe',1,'BackgroundTask']]],
-  ['plotmenu_6',['PlotMenu',['../classwxMaxima.html#a01de2546f834e97015113f1da0fba402',1,'wxMaxima']]],
+  ['plotmenu_6',['PlotMenu',['../classMaximaCommandMenus.html#a04e2be7b173020cd618e607a38bc0a0b',1,'MaximaCommandMenus']]],
   ['pointvisibleis_7',['PointVisibleIs',['../classWorksheet.html#ac071af0406ed85b9e8669a9630999bc9',1,'Worksheet']]],
   ['populaterecentdocumentsmenu_8',['PopulateRecentDocumentsMenu',['../classwxMaximaFrame.html#a82c022a0e467e75e697b7a065305d8dc',1,'wxMaximaFrame']]],
   ['populaterecentpackagesmenu_9',['PopulateRecentPackagesMenu',['../classwxMaximaFrame.html#a6218bcb8c108890e9d8ea7312a339a8f',1,'wxMaximaFrame']]],

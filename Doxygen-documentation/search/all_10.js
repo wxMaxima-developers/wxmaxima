@@ -19,7 +19,7 @@ var searchData=
   ['plot2dwiz_16',['Plot2DWiz',['../classPlot2DWiz.html',1,'']]],
   ['plot3dwiz_17',['Plot3DWiz',['../classPlot3DWiz.html',1,'']]],
   ['plotformatwiz_18',['PlotFormatWiz',['../classPlotFormatWiz.html',1,'']]],
-  ['plotmenu_19',['PlotMenu',['../classwxMaxima.html#a01de2546f834e97015113f1da0fba402',1,'wxMaxima']]],
+  ['plotmenu_19',['PlotMenu',['../classMaximaCommandMenus.html#a04e2be7b173020cd618e607a38bc0a0b',1,'MaximaCommandMenus']]],
   ['pluralise_20',['pluralise',['../structCatch_1_1pluralise.html',1,'Catch']]],
   ['pointvisibleis_21',['PointVisibleIs',['../classWorksheet.html#ac071af0406ed85b9e8669a9630999bc9',1,'Worksheet']]],
   ['populaterecentdocumentsmenu_22',['PopulateRecentDocumentsMenu',['../classwxMaximaFrame.html#a82c022a0e467e75e697b7a065305d8dc',1,'wxMaximaFrame']]],
