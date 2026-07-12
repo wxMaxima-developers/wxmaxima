@@ -5164,7 +5164,7 @@ bool wxMaxima::SaveFile(bool forceSave) {
       }
     } else {
       if (!Format::ExportToWXMX(GetWorksheet()->GetTree(), file, &m_configuration,
-                                &GetWorksheet()->GetCellPointers(),
+                                &GetWorksheet()->GetViewCellPointers(),
                                 m_variablesPane->GetVarnames(),
                                 GetWorksheet()->GetHCaret())) {
         StatusSaveFailed();
@@ -5480,7 +5480,7 @@ bool wxMaxima::AutoSave() {
   if (m_configuration.AutoSaveAsTempFile() || GetWorksheet()->GetCurrentFile().IsEmpty()) {
     bool saved = Format::ExportToWXMX(GetWorksheet()->GetTree(), m_tempfileName,
                                       &m_configuration,
-                                      &GetWorksheet()->GetCellPointers(),
+                                      &GetWorksheet()->GetViewCellPointers(),
                                       m_variablesPane->GetVarnames(),
                                       GetWorksheet()->GetHCaret());
     wxFileName m_tempfileName_permissions(m_tempfileName);
@@ -10120,8 +10120,8 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
     GetWorksheet()->FollowEvaluation(true);
 
   EditorCell *editor = GetWorksheet()->GetActiveCell();
-  if (GetWorksheet()->QuestionPending() && GetWorksheet()->GetCellPointers().GetAnswerCell())
-    editor = GetWorksheet()->GetCellPointers().GetAnswerCell();
+  if (GetWorksheet()->QuestionPending() && GetWorksheet()->GetDocumentCellPointers().GetAnswerCell())
+    editor = GetWorksheet()->GetDocumentCellPointers().GetAnswerCell();
 
   if (editor == NULL) {
     GroupCell *group = NULL;

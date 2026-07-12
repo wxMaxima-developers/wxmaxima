@@ -87,6 +87,13 @@
   the Worksheet. The combined CellPointers is now a thin facade that references
   the two owned halves, kept only for the callers not yet routed to the halves
   directly. No behavior change.
+- Internal: the CellPointers facade is gone. The Worksheet's own accessors and
+  its ~200 internal uses, the context menu, the exporters and the print-config
+  plumbing now go to the document-model or the view-state half directly (the
+  exporters, which only bump the .wxmx image counter, now take a
+  ViewCellPointers). CellPointers.h defines just the two halves; Cell and
+  Configuration expose only the two. This completes the split of the
+  cell-pointer registry into its document and view halves. No behavior change.
 - Internal: the "is the document saved?" flag moved from Worksheet into
   WorksheetDocument. The document now owns the flag; when it flips, the document
   tells the window through a new WorksheetDocumentView::NotifySavedStateChanged()

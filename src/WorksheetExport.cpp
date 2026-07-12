@@ -427,7 +427,7 @@ wxSize WorksheetExport::CopyToFile(const wxString &file, Cell *start, Cell *end,
 
 bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration,
                                    const wxString &file,
-                                   CellPointers *cellPointers, GroupCell *hCaret) {
+                                   ViewCellPointers *cellPointers, GroupCell *hCaret) {
   // Don't update the worksheet whilst exporting
   //  wxWindowUpdateLocker noUpdates(this);
 

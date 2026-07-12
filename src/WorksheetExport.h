@@ -45,7 +45,7 @@
 #include <vector>
 
 class Cell;
-class CellPointers;
+class ViewCellPointers;
 class GroupCell;
 class Configuration;
 
@@ -61,7 +61,7 @@ namespace WorksheetExport {
 */
 bool ExportToHTML(GroupCell *tree, Configuration *configuration,
                   const wxString &file,
-                  CellPointers *cellPointers, GroupCell *hCaret);
+                  ViewCellPointers *cellPointers, GroupCell *hCaret);
 
 /*! Copy the cell range into a fresh list of cells.
 

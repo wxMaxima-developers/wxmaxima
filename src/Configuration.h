@@ -74,7 +74,6 @@ static constexpr AFontSize MC_MAX_SIZE{ 48.0f };
 #define LABELWIDTH_MIN 3
 #define LABELWIDTH_MAX 10
 class Cell;
-class CellPointers;
 class DocumentCellPointers;
 class ViewCellPointers;
 class GroupCell;
@@ -995,9 +994,6 @@ public:
     Worksheet that owns the CellPointers object; null for configurations that never
     construct cells (e.g. the temporary print configuration).
   */
-  CellPointers *GetCellPointers() const {return m_cellPointers;}
-  //! Set the CellPointers registry cells constructed with this configuration use
-  void SetCellPointers(CellPointers *cellPointers) {m_cellPointers = cellPointers;}
   //! The document-model half of the cell-pointer registry (null if none).
   DocumentCellPointers *GetDocumentCellPointers() const {return m_documentCellPointers;}
   //! Register the document-model half of the cell-pointer registry.
@@ -1258,8 +1254,6 @@ private:
   long m_autoSubscript;
   //! The worksheet canvas this configuration storage is valid for
   wxScrolledCanvas *m_workSheet = NULL;
-  //! The cell registry of the document this configuration is valid for. Not copied.
-  CellPointers *m_cellPointers = NULL;
   //! The document-model half of the cell registry. Not copied.
   DocumentCellPointers *m_documentCellPointers = NULL;
   //! The transient view-state half of the cell registry. Not copied.

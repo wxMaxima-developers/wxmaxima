@@ -10,11 +10,10 @@
 #if !DISABLE_CELLPOINTER_STUBS
 #include "CellPointers.cpp"
 
-// The two owned halves of the split registry plus the compatibility facade that
-// references them - mirrors how the Worksheet owns them in the real app.
+// The two halves of the split cell-pointer registry - mirrors how the
+// WorksheetDocument and the Worksheet own them in the real app.
 DocumentCellPointers documentPointers;
 ViewCellPointers viewPointers(nullptr);
-CellPointers pointers(documentPointers, viewPointers);
 #endif
 
 bool Configuration::m_debugMode = false;
@@ -25,7 +24,6 @@ wxColor Configuration::DefaultBackgroundColor() { return *wxWHITE; }
 Configuration::Configuration(wxDC *dc, InitOpt) {
   m_renderContext.SetRecalcDC(dc);
 #if !DISABLE_CELLPOINTER_STUBS
-  SetCellPointers(&pointers);
   SetDocumentCellPointers(&documentPointers);
   SetViewCellPointers(&viewPointers);
 #endif

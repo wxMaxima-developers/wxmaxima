@@ -68,10 +68,6 @@
 
 const wxString &Cell::GetLocalToolTip() const { return *m_toolTip; }
 
-CellPointers *Cell::GetCellPointers() const {
-  return m_configuration->GetCellPointers();
-}
-
 DocumentCellPointers *Cell::GetDocumentCellPointers() const {
   return m_configuration->GetDocumentCellPointers();
 }

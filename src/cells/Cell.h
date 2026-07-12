@@ -45,7 +45,6 @@
 #include <memory>
 #include <vector>
 #include <type_traits>
-class CellPointers;
 class DocumentCellPointers;
 class ViewCellPointers;
 class EditorCell;
@@ -1188,7 +1187,6 @@ protected:
   virtual void FontsChanged() const
     { ResetSize_Recursively(); }
 
-  CellPointers *GetCellPointers() const;
   //! The document-model half of the cell-pointer registry this cell uses.
   DocumentCellPointers *GetDocumentCellPointers() const;
   //! The transient view-state half of the cell-pointer registry this cell uses.

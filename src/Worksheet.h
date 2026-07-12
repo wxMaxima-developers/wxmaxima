@@ -641,27 +641,32 @@ public:
   Configuration *GetConfig() const { return m_configuration; }
 
   //! Get the currently active EditorCell
-  EditorCell *GetActiveCell() const { return m_cellPointers.GetActiveCell(); }
+  EditorCell *GetActiveCell() const { return GetDocumentCellPointers().GetActiveCell(); }
 
   //! Tells us which cell the keyboard selection has started in
   EditorCell *KeyboardSelectionStart() const
-    { return m_cellPointers.KeyboardSelectionStart(); }
+    { return GetViewCellPointers().KeyboardSelectionStart(); }
 
   EditorCell *MouseSelectionStart() const
-    { return m_cellPointers.MouseSelectionStart(); }
+    { return GetViewCellPointers().MouseSelectionStart(); }
 
   EditorCell *SearchStart() const
-    { return m_cellPointers.SearchStart(); }
+    { return GetViewCellPointers().SearchStart(); }
 
   int IndexSearchStartedAt() const
-    { return m_cellPointers.IndexSearchStartedAt(); }
+    { return GetViewCellPointers().IndexSearchStartedAt(); }
 
-  CellPointers &GetCellPointers() { return m_cellPointers; }
+  //! The document-model half of the cell-pointer registry (owned by m_document).
+  DocumentCellPointers &GetDocumentCellPointers() { return m_document.GetCellPointers(); }
+  const DocumentCellPointers &GetDocumentCellPointers() const { return m_document.GetCellPointers(); }
+  //! The transient view-state half of the cell-pointer registry (owned here).
+  ViewCellPointers &GetViewCellPointers() { return m_viewCellPointers; }
+  const ViewCellPointers &GetViewCellPointers() const { return m_viewCellPointers; }
 
-  CellPointers::ErrorList &GetErrorList() { return m_cellPointers.GetErrorList(); }
-  TextCell *GetCurrentTextCell() const { return m_cellPointers.GetCurrentTextCell(); }
-  void SetCurrentTextCell(TextCell *cell) { m_cellPointers.SetCurrentTextCell(cell); }
-  void SetWorkingGroup(GroupCell *group) { m_cellPointers.SetWorkingGroup(group); }
+  DocumentCellPointers::ErrorList &GetErrorList() { return GetDocumentCellPointers().GetErrorList(); }
+  TextCell *GetCurrentTextCell() const { return GetDocumentCellPointers().GetCurrentTextCell(); }
+  void SetCurrentTextCell(TextCell *cell) { GetDocumentCellPointers().SetCurrentTextCell(cell); }
+  void SetWorkingGroup(GroupCell *group) { GetDocumentCellPointers().SetWorkingGroup(group); }
 
   /*! Update the table of contents
 
@@ -885,25 +890,25 @@ public:
 
   bool CanCopy() const
     {
-      return m_cellPointers.GetSelectionStart() ||
-        (m_cellPointers.GetActiveCell() &&
-         m_cellPointers.GetActiveCell()->CanCopy());
+      return GetDocumentCellPointers().GetSelectionStart() ||
+        (GetDocumentCellPointers().GetActiveCell() &&
+         GetDocumentCellPointers().GetActiveCell()->CanCopy());
     }
 
   bool CanPaste() const
-    { return m_cellPointers.GetActiveCell() || GetHCaretCursor().IsActive(); }
+    { return GetDocumentCellPointers().GetActiveCell() || GetHCaretCursor().IsActive(); }
 
   bool CanCut() const
     {
-      return (m_cellPointers.GetActiveCell() && m_cellPointers.GetActiveCell()->CanCopy()) ||
-        (m_cellPointers.GetSelectionStart() && m_cellPointers.GetSelectionStart()->GetType() == MC_TYPE_GROUP);
+      return (GetDocumentCellPointers().GetActiveCell() && GetDocumentCellPointers().GetActiveCell()->CanCopy()) ||
+        (GetDocumentCellPointers().GetSelectionStart() && GetDocumentCellPointers().GetSelectionStart()->GetType() == MC_TYPE_GROUP);
     }
 
   //! Select the whole document
   void SelectAll();
 
   //! Is at least one entire cell selected?
-  bool HasCellsSelected() const { return m_cellPointers.HasCellsSelected(); }
+  bool HasCellsSelected() const { return GetDocumentCellPointers().HasCellsSelected(); }
 
   /*! Delete a range of cells
 
@@ -956,7 +961,7 @@ public:
   //! Returns the selected cell - or NULL, if the selection isn't an animation 
   AnimationCell *GetSelectedAnimation() const
     {
-      if(m_cellPointers.GetSelectionStart() != m_cellPointers.GetSelectionEnd())
+      if(GetDocumentCellPointers().GetSelectionStart() != GetDocumentCellPointers().GetSelectionEnd())
         return NULL;
       return dynamic_cast<AnimationCell *>(GetSelectionStart());
     }
@@ -964,7 +969,7 @@ public:
   //! Returns the selected cell - or NULL, if the selection isn't an image 
   ImgCell *GetSelectedImgCell() const
     {
-      if(m_cellPointers.GetSelectionStart() != m_cellPointers.GetSelectionEnd())
+      if(GetDocumentCellPointers().GetSelectionStart() != GetDocumentCellPointers().GetSelectionEnd())
         return NULL;
       return dynamic_cast<ImgCell *>(GetSelectionStart());
     }
@@ -972,7 +977,7 @@ public:
   //! Returns the selected cell - or NULL, if the selection isn't image nor animation
   ImgCellBase *GetSelectedImgCellBase() const
     {
-      if(m_cellPointers.GetSelectionStart() != m_cellPointers.GetSelectionEnd())
+      if(GetDocumentCellPointers().GetSelectionStart() != GetDocumentCellPointers().GetSelectionEnd())
         return NULL;
       return dynamic_cast<ImgCellBase *>(GetSelectionStart());
     }
@@ -980,7 +985,7 @@ public:
   //! Returns the selected cell - or NULL, if the selection isn't a text cell
   TextCell *GetSelectedTextCell() const
     {
-      if(m_cellPointers.GetSelectionStart() != m_cellPointers.GetSelectionEnd())
+      if(GetDocumentCellPointers().GetSelectionStart() != GetDocumentCellPointers().GetSelectionEnd())
         return NULL;
       return dynamic_cast<TextCell *>(GetSelectionStart());
     }
@@ -988,7 +993,7 @@ public:
   //! Does it make sense to enable the "Play" button and the slider now?
   bool CanAnimate() const
     {
-      return m_cellPointers.GetSelectionStart() && m_cellPointers.GetSelectionStart() == m_cellPointers.GetSelectionEnd() &&
+      return GetDocumentCellPointers().GetSelectionStart() && GetDocumentCellPointers().GetSelectionStart() == GetDocumentCellPointers().GetSelectionEnd() &&
         (dynamic_cast<AnimationCell *>(GetSelectionStart()) != NULL);
     }
 
@@ -1095,14 +1100,14 @@ public:
     NULL means: No cell is selected.
   */
   Cell *GetSelectionStart() const
-    { return m_cellPointers.GetSelectionStart(); }
+    { return GetDocumentCellPointers().GetSelectionStart(); }
 
   /*! Return the last of the currently selected cells.
 
     NULL means: No cell is selected.
   */
   Cell *GetSelectionEnd() const
-    { return m_cellPointers.GetSelectionEnd(); }
+    { return GetDocumentCellPointers().GetSelectionEnd(); }
 
   //! Clear the selection - make it empty, i.e. no selection
   void ClearSelection() { SetSelection(nullptr, nullptr); }
@@ -1170,7 +1175,7 @@ public:
   //! Request to scroll to the cursor as soon as wxMaxima is idle
   void ScrollToCaret()
     {
-      m_cellPointers.SetScrollToCellScheduled(false);
+      GetViewCellPointers().SetScrollToCellScheduled(false);
       m_scrollToCaret = true;
     }
 
@@ -1183,11 +1188,11 @@ public:
   //! Schedules scrolling to a given cell
   void ScheduleScrollToCell(Cell *cell, bool scrollToTop = true)
     {
-      m_cellPointers.ScrollToCell(cell);
+      GetViewCellPointers().ScrollToCell(cell);
       m_scrollToTopOfCell = scrollToTop;
       m_scrollToCaret = false;
 
-      m_cellPointers.SetScrollToCellScheduled(true);
+      GetViewCellPointers().SetScrollToCellScheduled(true);
     }
 
   //! Is the point currently visible on the worksheet?
@@ -1233,7 +1238,7 @@ public:
 
   //! Is the editor active in the last cell of the worksheet?
   bool IsActiveInLast() const
-    { return m_cellPointers.GetActiveCell() && m_cellPointers.GetActiveCell()->GetGroup() == GetLastCellInWorksheet(); }
+    { return GetDocumentCellPointers().GetActiveCell() && GetDocumentCellPointers().GetActiveCell()->GetGroup() == GetLastCellInWorksheet(); }
 
   //! Returns the last cell of the worksheet
   GroupCell *GetLastCell()
@@ -1580,12 +1585,8 @@ protected:
   WorksheetDocument m_document;
   //! The transient view-state half of the cell-pointer registry (hover,
   //! selection anchors, scroll target, animation timers). Owned here; the
-  //! document-model half is owned by m_document. Declared after m_document so
-  //! the m_cellPointers facade below can bind references to both.
+  //! document-model half is owned by m_document.
   ViewCellPointers m_viewCellPointers{this};
-  //! Compatibility facade referencing the two owned halves, for the callers not
-  //! yet routed to the halves directly. Must be initialised after both halves.
-  CellPointers m_cellPointers{m_document.GetCellPointers(), m_viewCellPointers};
   //! A memory we can manually buffer the contents of the area that is to be redrawn in
   wxBitmap m_memory;
   virtual wxSize DoGetBestClientSize() const override;

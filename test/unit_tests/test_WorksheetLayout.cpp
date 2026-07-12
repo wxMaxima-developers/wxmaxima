@@ -326,8 +326,6 @@ int main(int argc, char **argv) {
   // deliberately do NOT create here: a Worksheet or any other window.
   static DocumentCellPointers documentPointers;
   static ViewCellPointers viewPointers(nullptr);
-  static CellPointers cellPointers(documentPointers, viewPointers);
-  g_cfg->SetCellPointers(&cellPointers);
   g_cfg->SetDocumentCellPointers(&documentPointers);
   g_cfg->SetViewCellPointers(&viewPointers);
 
