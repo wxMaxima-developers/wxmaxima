@@ -803,7 +803,8 @@ private:
 
 //** 8/4 bytes
 //**
-  CellPointers *const m_cellPointers = GetCellPointers();
+  DocumentCellPointers *const m_documentCellPointers = GetDocumentCellPointers();
+  ViewCellPointers *const m_viewCellPointers = GetViewCellPointers();
 
 //** 4 bytes
 //**

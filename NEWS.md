@@ -77,6 +77,11 @@
   mouse/keyboard/search anchors, scroll target, animation timers, .wxmx image
   counter). CellPointers holds one of each and forwards its historical accessors
   to the appropriate half, so no call site changed yet. No behavior change.
+- Internal: the individual cells now reach the cell-pointer registry through the
+  two halves directly (Configuration/Cell gained GetDocumentCellPointers() and
+  GetViewCellPointers()), and the Worksheet registers both halves. GroupCell and
+  EditorCell cache and use whichever half they need; the image and animation
+  cells use only the view half. No behavior change.
 - Internal: the "is the document saved?" flag moved from Worksheet into
   WorksheetDocument. The document now owns the flag; when it flips, the document
   tells the window through a new WorksheetDocumentView::NotifySavedStateChanged()

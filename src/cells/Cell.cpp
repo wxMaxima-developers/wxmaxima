@@ -72,6 +72,14 @@ CellPointers *Cell::GetCellPointers() const {
   return m_configuration->GetCellPointers();
 }
 
+DocumentCellPointers *Cell::GetDocumentCellPointers() const {
+  return m_configuration->GetDocumentCellPointers();
+}
+
+ViewCellPointers *Cell::GetViewCellPointers() const {
+  return m_configuration->GetViewCellPointers();
+}
+
 const wxString Cell::GetToolTip(const wxPoint point) const {
   if (!ContainsPoint(point))
     return wxm::emptyString;

@@ -46,6 +46,8 @@
 #include <vector>
 #include <type_traits>
 class CellPointers;
+class DocumentCellPointers;
+class ViewCellPointers;
 class EditorCell;
 class GroupCell;
 class TextCell;
@@ -1187,6 +1189,10 @@ protected:
     { ResetSize_Recursively(); }
 
   CellPointers *GetCellPointers() const;
+  //! The document-model half of the cell-pointer registry this cell uses.
+  DocumentCellPointers *GetDocumentCellPointers() const;
+  //! The transient view-state half of the cell-pointer registry this cell uses.
+  ViewCellPointers *GetViewCellPointers() const;
 
   void InvalidateListCache() const;
 };

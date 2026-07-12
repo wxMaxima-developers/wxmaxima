@@ -151,7 +151,7 @@ private:
 
   std::shared_ptr<Image> m_image;
 
-  CellPointers *const m_cellPointers = GetCellPointers();
+  ViewCellPointers *const m_viewCellPointers = GetViewCellPointers();
 
   mutable int m_imageBorderWidth = 0;
 

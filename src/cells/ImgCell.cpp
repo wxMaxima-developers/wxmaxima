@@ -129,7 +129,7 @@ const wxString ImgCell::GetToolTip(const wxPoint point) const {
   if (!ContainsPoint(point))
     return wxm::emptyString;
 
-  m_cellPointers->SetCellUnderPointer(const_cast<ImgCell *>(this));
+  m_viewCellPointers->SetCellUnderPointer(const_cast<ImgCell *>(this));
 
   return GetLocalToolTip();
 }
@@ -286,7 +286,7 @@ wxString ImgCell::ToMathML() const {
 }
 
 wxString ImgCell::ToXML() const {
-  wxString basename = m_cellPointers->WXMXGetNewFileName();
+  wxString basename = m_viewCellPointers->WXMXGetNewFileName();
 
   // add the file to memory
   if (m_image) {

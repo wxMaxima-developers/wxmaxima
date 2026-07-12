@@ -259,7 +259,7 @@ void GroupCell::SetAnswer(const wxString &question, const wxString &answer) {
 }
 
 GroupCell *GroupCell::GetLastWorkingGroup() const {
-  return m_cellPointers->GetLastWorkingGroup();
+  return m_documentCellPointers->GetLastWorkingGroup();
 }
 
 wxString GroupCell::TexEscapeOutputCell(wxString Input) {
@@ -298,7 +298,7 @@ void GroupCell::AppendInput(std::unique_ptr<Cell> &&cell) {
 }
 
 void GroupCell::SetOutput(std::unique_ptr<Cell> &&output) {
-  m_cellPointers->ClearAnswerCellIfInGroup(this);
+  m_documentCellPointers->ClearAnswerCellIfInGroup(this);
 
   m_output.reset();
   AppendOutput(std::move(output));
@@ -310,7 +310,7 @@ void GroupCell::RemoveOutput() {
   m_numberedAnswersCount = 0;
   // If there is nothing to do we can skip the rest of this action.
 
-  m_cellPointers->ClearAnswerCellIfInGroup(this);
+  m_documentCellPointers->ClearAnswerCellIfInGroup(this);
 
   if (GetGroupType() != GC_TYPE_IMAGE)
     m_output.reset();
@@ -319,7 +319,7 @@ void GroupCell::RemoveOutput() {
   m_layoutSuppressed = false;
   m_layoutSuppressedNotice.reset();
 
-  m_cellPointers->GetErrorList().Remove(this);
+  m_documentCellPointers->GetErrorList().Remove(this);
   // Calculate the new cell height.
 
   m_height = m_inputHeight;
@@ -863,7 +863,7 @@ void GroupCell::UpdateCellsInGroup() {
 }
 
 void GroupCell::CellUnderPointer(GroupCell *cell) {
-  m_cellPointers->SetGroupCellUnderPointer(cell);
+  m_viewCellPointers->SetGroupCellUnderPointer(cell);
 }
 
 wxCoord GroupCell::GetMaxDrop() const {
@@ -891,20 +891,20 @@ void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
 
   bool drawBracket = !m_configuration->HideBrackets();
 
-  if (this == m_cellPointers->GetGroupCellUnderPointer())
+  if (this == m_viewCellPointers->GetGroupCellUnderPointer())
     drawBracket = true;
 
   int selectionStart_px = -1;
-  if (m_cellPointers->GetSelectionStart() &&
-      (m_cellPointers->GetSelectionStart()->GetType() == MC_TYPE_GROUP))
-    selectionStart_px = m_cellPointers->GetSelectionStart().CastAs<GroupCell *>()
+  if (m_documentCellPointers->GetSelectionStart() &&
+      (m_documentCellPointers->GetSelectionStart()->GetType() == MC_TYPE_GROUP))
+    selectionStart_px = m_documentCellPointers->GetSelectionStart().CastAs<GroupCell *>()
       ->m_currentPoint.y;
 
   int selectionEnd_px = -1;
-  if (m_cellPointers->GetSelectionEnd() &&
-      (m_cellPointers->GetSelectionEnd()->GetType() == MC_TYPE_GROUP))
+  if (m_documentCellPointers->GetSelectionEnd() &&
+      (m_documentCellPointers->GetSelectionEnd()->GetType() == MC_TYPE_GROUP))
     selectionEnd_px =
-      m_cellPointers->GetSelectionEnd().CastAs<GroupCell *>()->m_currentPoint.y;
+      m_documentCellPointers->GetSelectionEnd().CastAs<GroupCell *>()->m_currentPoint.y;
 
   // Mark this GroupCell as selected if it is selected. Else clear the space we
   // will add brackets in
@@ -917,13 +917,13 @@ void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
     dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(
                                                      m_configuration->GetColor(TS_SELECTION))));
     drawBracket = true;
-  } else if (m_cellPointers->GetErrorList().Contains(this)) {
+  } else if (m_documentCellPointers->GetErrorList().Contains(this)) {
     dc->SetPen(*wxRED_PEN);
     dc->SetBrush(*wxRED_BRUSH);
     drawBracket = true;
   } else {
-    if ((m_cellPointers->GetAnswerCell()) &&
-        (m_cellPointers->GetAnswerCell()->GetGroup() == this)) {
+    if ((m_documentCellPointers->GetAnswerCell()) &&
+        (m_documentCellPointers->GetAnswerCell()->GetGroup() == this)) {
       dc->SetPen(*wxYELLOW_PEN);
       dc->SetBrush(*wxYELLOW_BRUSH);
       drawBracket = true;
@@ -1520,7 +1520,7 @@ const wxString GroupCell::GetToolTip(const wxPoint point) const {
 
   // Default assumption: will be overwritten by the next command,
   // if there is a more accurate solution.
-  m_cellPointers->SetCellUnderPointer(const_cast<GroupCell *>(this));
+  m_viewCellPointers->SetCellUnderPointer(const_cast<GroupCell *>(this));
 
   wxString retval = GetLocalToolTip();
 
@@ -1529,14 +1529,14 @@ const wxString GroupCell::GetToolTip(const wxPoint point) const {
 
   for (auto &tmp : OnList(m_inputLabel.get())) {
     if (tmp.ContainsPoint(point))
-      m_cellPointers->SetCellUnderPointer(&tmp);
+      m_viewCellPointers->SetCellUnderPointer(&tmp);
   }
 
   // TODO: Handle the case that m_cellUnderPointer should be a cell inside a cell
   // Hit-test what is actually on screen (the placeholder if layout is suppressed).
   for (auto &tmp : OnList(DisplayedOutput())) {
     if (tmp.ContainsPoint(point))
-      m_cellPointers->SetCellUnderPointer(&tmp);
+      m_viewCellPointers->SetCellUnderPointer(&tmp);
 
     // If a cell contains a cell containing a tooltip, the tooltip of the
     // containing cell will be overridden.

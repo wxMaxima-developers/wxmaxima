@@ -75,6 +75,8 @@ static constexpr AFontSize MC_MAX_SIZE{ 48.0f };
 #define LABELWIDTH_MAX 10
 class Cell;
 class CellPointers;
+class DocumentCellPointers;
+class ViewCellPointers;
 class GroupCell;
 template<class T> class wxScrolled;
 typedef wxScrolled<wxWindow> wxScrolledCanvas;
@@ -996,6 +998,14 @@ public:
   CellPointers *GetCellPointers() const {return m_cellPointers;}
   //! Set the CellPointers registry cells constructed with this configuration use
   void SetCellPointers(CellPointers *cellPointers) {m_cellPointers = cellPointers;}
+  //! The document-model half of the cell-pointer registry (null if none).
+  DocumentCellPointers *GetDocumentCellPointers() const {return m_documentCellPointers;}
+  //! Register the document-model half of the cell-pointer registry.
+  void SetDocumentCellPointers(DocumentCellPointers *p) {m_documentCellPointers = p;}
+  //! The transient view-state half of the cell-pointer registry (null if none).
+  ViewCellPointers *GetViewCellPointers() const {return m_viewCellPointers;}
+  //! Register the transient view-state half of the cell-pointer registry.
+  void SetViewCellPointers(ViewCellPointers *p) {m_viewCellPointers = p;}
 
   /*! Ask the view (if any) to recalculate the layout starting at the given group cell
 
@@ -1250,6 +1260,10 @@ private:
   wxScrolledCanvas *m_workSheet = NULL;
   //! The cell registry of the document this configuration is valid for. Not copied.
   CellPointers *m_cellPointers = NULL;
+  //! The document-model half of the cell registry. Not copied.
+  DocumentCellPointers *m_documentCellPointers = NULL;
+  //! The transient view-state half of the cell registry. Not copied.
+  ViewCellPointers *m_viewCellPointers = NULL;
   //! The view's recalculation-request callback (see RequestRecalculate()). Not copied.
   std::function<void(GroupCell *)> m_recalculateRequest;
   //! The view's adjust-size-request callback (see RequestAdjustWorksheetSize()). Not copied.

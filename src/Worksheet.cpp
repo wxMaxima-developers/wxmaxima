@@ -127,6 +127,8 @@ Worksheet::Worksheet(wxWindow *parent, int id,
 #endif
   m_configuration->SetWorkSheet(this);
   m_configuration->SetCellPointers(&m_cellPointers);
+  m_configuration->SetDocumentCellPointers(&m_cellPointers.Document());
+  m_configuration->SetViewCellPointers(&m_cellPointers.View());
   m_configuration->SetRecalculateRequestCallback(
     [this](GroupCell *group){ RequestRecalculation(group); });
   m_configuration->SetAdjustWorksheetSizeRequestCallback(
@@ -460,8 +462,11 @@ Worksheet::~Worksheet() {
   m_mainToolBar = NULL;
 
   ClearDocument();
-  if (m_configuration->GetCellPointers() == &m_cellPointers)
+  if (m_configuration->GetCellPointers() == &m_cellPointers) {
     m_configuration->SetCellPointers(NULL);
+    m_configuration->SetDocumentCellPointers(NULL);
+    m_configuration->SetViewCellPointers(NULL);
+  }
   m_configuration = NULL;
 }
 

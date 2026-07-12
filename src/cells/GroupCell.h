@@ -460,7 +460,8 @@ protected:
 
 //** 8/4 byte objects (40 bytes)
 //**
-  CellPointers *const m_cellPointers = GetCellPointers();
+  DocumentCellPointers *const m_documentCellPointers = GetDocumentCellPointers();
+  ViewCellPointers *const m_viewCellPointers = GetViewCellPointers();
 
   std::unique_ptr<GroupCell> m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent = {}; //!< store linkage to the parent of the fold

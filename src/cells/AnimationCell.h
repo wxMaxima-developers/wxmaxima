@@ -183,7 +183,7 @@ public:
     }
 
 private:
-  CellPointers *const m_cellPointers = GetCellPointers(); // must come before m_timer (!)
+  ViewCellPointers *const m_viewCellPointers = GetViewCellPointers(); // must come before m_timer (!)
   std::unique_ptr<wxTimer> m_timer;
   std::vector<std::shared_ptr<Image>> m_images;
 

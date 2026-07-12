@@ -266,20 +266,20 @@ void EditorCell::AddDrawParameter(wxString param) {
 }
 
 void EditorCell::SearchStartedHere(size_t index) const {
-  m_cellPointers->SetSearchStart(const_cast<EditorCell *>(this), index);
+  m_viewCellPointers->SetSearchStart(const_cast<EditorCell *>(this), index);
 }
 
 void EditorCell::SearchStartedHere() const {
-  m_cellPointers->SetSearchStart(const_cast<EditorCell *>(this),
+  m_viewCellPointers->SetSearchStart(const_cast<EditorCell *>(this),
                                  CursorPosition());
 }
 
 void EditorCell::MouseSelectionStartedHere() const {
-  m_cellPointers->SetMouseSelectionStart(const_cast<EditorCell *>(this));
+  m_viewCellPointers->SetMouseSelectionStart(const_cast<EditorCell *>(this));
 }
 
 void EditorCell::KeyboardSelectionStartedHere() const {
-  m_cellPointers->SetKeyboardSelectionStart(const_cast<EditorCell *>(this));
+  m_viewCellPointers->SetKeyboardSelectionStart(const_cast<EditorCell *>(this));
 }
 
 wxString EditorCell::GetFullCommandUnderCursor() {
@@ -897,19 +897,19 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
     //
     // Mark text that coincides with the selection
     //
-    if (!m_cellPointers->GetSelectionString().IsEmpty()) {
+    if (!m_documentCellPointers->GetSelectionString().IsEmpty()) {
       long long start = 0;
       const wxString &text = m_text;
-      while ((start = text.find(m_cellPointers->GetSelectionString(), start)) !=
+      while ((start = text.find(m_documentCellPointers->GetSelectionString(), start)) !=
              wxNOT_FOUND) {
-        size_t end = static_cast<size_t>(start) + m_cellPointers->GetSelectionString().Length();
+        size_t end = static_cast<size_t>(start) + m_documentCellPointers->GetSelectionString().Length();
 
         // Mark only text that won't be marked in the next step:
         // This would not only be unnecessary but also could cause
         // selections to flicker in very long texts
         if ((!IsActive()) || (static_cast<size_t>(start) != SelectionLeft()))
           MarkSelection(dc, static_cast<size_t>(start), end, TS_EQUALSSELECTION);
-        if (m_cellPointers->GetSelectionString().Length() == 0)
+        if (m_documentCellPointers->GetSelectionString().Length() == 0)
           end++;
         start = end;
       }
@@ -2304,18 +2304,18 @@ wxString EditorCell::InterpretEscapeString(const wxString &txt) {
 }
 
 void EditorCell::DeactivateCursor() {
-//  EditorCell *editor = m_cellPointers->m_activeCell;
+//  EditorCell *editor = m_documentCellPointers->GetActiveCell();
 //  if (editor) {
 //    editor->ClearSelection();
 //    editor->m_paren1 = editor->m_paren2 = -1;
 //  }
-  m_cellPointers->ClearActiveCell();
-  m_cellPointers->ClearSelectionString();
+  m_documentCellPointers->ClearActiveCell();
+  m_documentCellPointers->ClearSelectionString();
 }
 
 bool EditorCell::ActivateCursor() {
   bool retval = false;
-  if (!m_cellPointers->GetActiveCell())
+  if (!m_documentCellPointers->GetActiveCell())
     DeactivateCursor();
 
   // Sanity check: Ensure cursor is within bounds
@@ -2327,7 +2327,7 @@ bool EditorCell::ActivateCursor() {
   SaveValue();
   m_displayCaret = true;
   m_hasFocus = true;
-  m_cellPointers->SetActiveCell(this);
+  m_documentCellPointers->SetActiveCell(this);
 
   ClearSelection();
   m_paren1 = m_paren2 = -1;
@@ -2701,11 +2701,11 @@ wxString EditorCell::DivideAtCaret() {
 }
 
 void EditorCell::UpdateSelectionString() {
-  wxString oldSelectionString = m_cellPointers->GetSelectionString();
+  wxString oldSelectionString = m_documentCellPointers->GetSelectionString();
   wxString selectionString =
     m_text.Mid(SelectionLeft(),
                SelectionRight() - SelectionLeft());
-  m_cellPointers->SetSelectionString(selectionString);
+  m_documentCellPointers->SetSelectionString(selectionString);
   if(selectionString != oldSelectionString)
     m_selectionChanged = true;
 }
@@ -2789,7 +2789,7 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens),
     SetSelection(start, pos);
 
   if (pos > 0 && start != pos)
-    return m_cellPointers->GetSelectionString();
+    return m_documentCellPointers->GetSelectionString();
   else
     return wxS("%");
 }
@@ -3053,7 +3053,7 @@ void EditorCell::SetState(const EditorCell::History::HistoryEntry &state) {
 }
 
 bool EditorCell::IsActive() const {
-  return this == m_cellPointers->GetActiveCell();
+  return this == m_documentCellPointers->GetActiveCell();
 }
 
 void EditorCell::Undo() {

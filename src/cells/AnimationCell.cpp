@@ -127,11 +127,11 @@ int AnimationCell::GetFrameRate() const {
 
 void AnimationCell::ReloadTimer() {
   if (!m_timer)
-    m_timer = std::make_unique<wxTimer>(m_cellPointers->GetWorksheet(), wxWindow::NewControlId());
+    m_timer = std::make_unique<wxTimer>(m_viewCellPointers->GetWorksheet(), wxWindow::NewControlId());
 
   if (!m_timer->IsRunning()) {
     // Tell MathCtrl about our timer.
-    m_cellPointers->SetTimerIdForCell(this, m_timer->GetId());
+    m_viewCellPointers->SetTimerIdForCell(this, m_timer->GetId());
     m_timer->StartOnce(1000 / GetFrameRate());
   }
 }
@@ -139,7 +139,7 @@ void AnimationCell::ReloadTimer() {
 void AnimationCell::StopTimer() {
   if (m_timer) {
     m_timer->Stop();
-    m_cellPointers->RemoveTimerIdForCell(this);
+    m_viewCellPointers->RemoveTimerIdForCell(this);
   }
 }
 
@@ -347,7 +347,7 @@ wxString AnimationCell::ToXML() const {
   wxString gnuplotDataFiles;
 
   for (const auto &i: m_images) {
-    wxString basename = m_cellPointers->WXMXGetNewFileName();
+    wxString basename = m_viewCellPointers->WXMXGetNewFileName();
     // add the file to memory
     if (i != NULL) {
       // Anonymize the name of our temp directory for saving
@@ -473,7 +473,7 @@ const wxString AnimationCell::GetToolTip(const wxPoint point) const {
   if (!ContainsPoint(point))
     return wxm::emptyString;
 
-  m_cellPointers->SetCellUnderPointer(const_cast<AnimationCell *>(this));
+  m_viewCellPointers->SetCellUnderPointer(const_cast<AnimationCell *>(this));
   if (!IsOk())
     return Image::GetBadImageToolTip();
 
