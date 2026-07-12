@@ -144,9 +144,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a31d2db36741caafe33a2070c30c8a698"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a31d2db36741caafe33a2070c30c8a698">NotifyAdjustSizeNeeded</a> () override</td></tr>
 <tr class="memdesc:a31d2db36741caafe33a2070c30c8a698"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scrollable size will need re-adjusting once cell positions settle.  <br /></td></tr>
 <tr class="separator:a31d2db36741caafe33a2070c30c8a698"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79940c60d3eab97826a9ff8208db0d6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a79940c60d3eab97826a9ff8208db0d6f">NotifyDocumentModified</a> () override</td></tr>
-<tr class="memdesc:a79940c60d3eab97826a9ff8208db0d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The document's content changed: it is no longer in its saved state.  <br /></td></tr>
-<tr class="separator:a79940c60d3eab97826a9ff8208db0d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af48854fc80b7f499567a0fa72bff9361"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#af48854fc80b7f499567a0fa72bff9361">NotifySavedStateChanged</a> () override</td></tr>
+<tr class="memdesc:af48854fc80b7f499567a0fa72bff9361"><td class="mdescLeft">&#160;</td><td class="mdescRight">The document's saved-state flipped; refresh the controls that show it.  <br /></td></tr>
+<tr class="separator:af48854fc80b7f499567a0fa72bff9361"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4473708dd4d8a1197c96a2df9947a93c"><td class="memItemLeft" align="right" valign="top"><a id="a4473708dd4d8a1197c96a2df9947a93c" name="a4473708dd4d8a1197c96a2df9947a93c"></a>
 <a class="el" href="classRecentDocuments.html">RecentDocuments</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>UnsavedDocuments</b> ()</td></tr>
 <tr class="memdesc:a4473708dd4d8a1197c96a2df9947a93c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of unsaved (autosaved) documents offered for recovery. <br /></td></tr>
@@ -2185,35 +2185,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
-<a id="a79940c60d3eab97826a9ff8208db0d6f" name="a79940c60d3eab97826a9ff8208db0d6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79940c60d3eab97826a9ff8208db0d6f">&#9670;&#160;</a></span>NotifyDocumentModified()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Worksheet::NotifyDocumentModified </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The document's content changed: it is no longer in its saved state. </p>
-
-<p>Implements <a class="el" href="classWorksheetDocumentView.html#a853472f21d75ee10e8bd8f4a25fd6688">WorksheetDocumentView</a>.</p>
-
-</div>
-</div>
 <a id="acb762cdfd74fa911756a0a8308df8660" name="acb762cdfd74fa911756a0a8308df8660"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acb762cdfd74fa911756a0a8308df8660">&#9670;&#160;</a></span>NotifyRecalculation()</h2>
 
@@ -2271,6 +2242,35 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 <p>Schedule a redraw of the document starting at <code>start</code> (null = all). </p>
 
 <p>Implements <a class="el" href="classWorksheetDocumentView.html#a4e3b91b470c6be29f57289b389453b0c">WorksheetDocumentView</a>.</p>
+
+</div>
+</div>
+<a id="af48854fc80b7f499567a0fa72bff9361" name="af48854fc80b7f499567a0fa72bff9361"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af48854fc80b7f499567a0fa72bff9361">&#9670;&#160;</a></span>NotifySavedStateChanged()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::NotifySavedStateChanged </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The document's saved-state flipped; refresh the controls that show it. </p>
+
+<p>Implements <a class="el" href="classWorksheetDocumentView.html#a40722c389000b1f7551b7ab1159c2fac">WorksheetDocumentView</a>.</p>
 
 </div>
 </div>

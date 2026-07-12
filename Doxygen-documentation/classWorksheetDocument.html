@@ -155,6 +155,16 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionPending</b> (
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetQuestionPending</b> (bool pending)</td></tr>
 <tr class="memdesc:ab4a283ecfeb0dbee6f59b61577680d6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Record whether <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is waiting for an answer to a question. <br /></td></tr>
 <tr class="separator:ab4a283ecfeb0dbee6f59b61577680d6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a409052fae85e40dca803f42ef63b2ae3"><td class="memItemLeft" align="right" valign="top"><a id="a409052fae85e40dca803f42ef63b2ae3" name="a409052fae85e40dca803f42ef63b2ae3"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSaved</b> () const</td></tr>
+<tr class="memdesc:a409052fae85e40dca803f42ef63b2ae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">True while the document has no unsaved changes. <br /></td></tr>
+<tr class="separator:a409052fae85e40dca803f42ef63b2ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ba7f4fe0df647d7037f84b0501debd9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#a1ba7f4fe0df647d7037f84b0501debd9">SetSaved</a> (bool saved)</td></tr>
+<tr class="memdesc:a1ba7f4fe0df647d7037f84b0501debd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Record whether the document is in its saved state.  <br /></td></tr>
+<tr class="separator:a1ba7f4fe0df647d7037f84b0501debd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4e03a1c27d7836edd31b5055c4581d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#ae4e03a1c27d7836edd31b5055c4581d3">OutputChanged</a> ()</td></tr>
+<tr class="memdesc:ae4e03a1c27d7836edd31b5055c4581d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Note that a cell's output changed.  <br /></td></tr>
+<tr class="separator:ae4e03a1c27d7836edd31b5055c4581d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The view-independent state and commands of an edited worksheet document. </p>
@@ -216,6 +226,55 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetQuestionPending</b
 
 <p>The cached pointer to the document's last <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> (&lt;0 = unknown). </p>
 <p>Mutable so the const "find the last cell" lookup can memoise its result; the surgery code also updates it directly when it reseats the tail. </p>
+
+</div>
+</div>
+<a id="ae4e03a1c27d7836edd31b5055c4581d3" name="ae4e03a1c27d7836edd31b5055c4581d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4e03a1c27d7836edd31b5055c4581d3">&#9670;&#160;</a></span>OutputChanged()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WorksheetDocument::OutputChanged </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Note that a cell's output changed. </p>
+<p>For a .wxmx (which caches output on disk) changed output means the file is no longer saved. Sets the flag directly, without a control refresh, to match the historical behaviour: this is called often during evaluation and must stay cheap. </p>
+
+</div>
+</div>
+<a id="a1ba7f4fe0df647d7037f84b0501debd9" name="a1ba7f4fe0df647d7037f84b0501debd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ba7f4fe0df647d7037f84b0501debd9">&#9670;&#160;</a></span>SetSaved()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WorksheetDocument::SetSaved </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>saved</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Record whether the document is in its saved state. </p>
+<p>On an actual change of the flag the view is told via <a class="el" href="classWorksheetDocumentView.html#a40722c389000b1f7551b7ab1159c2fac" title="The document&#39;s saved-state flipped; refresh the controls that show it.">WorksheetDocumentView::NotifySavedStateChanged()</a> so it can refresh the controls that depend on the saved-state. Defined in the .cpp because it needs the complete <a class="el" href="classWorksheetDocumentView.html" title="The view notifications a WorksheetDocument emits when it edits itself.">WorksheetDocumentView</a> type. </p>
 
 </div>
 </div>
