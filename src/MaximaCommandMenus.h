@@ -102,6 +102,11 @@ public:
   //! insert image, fold/unfold, auto-answer toggles, add-watch).
   void InsertMenu(wxCommandEvent &event);
 
+  //! Handles the "Edit" menu (copy/cut/paste/undo/redo, the copy-as-image/
+  //! MathML/RTF variants, zoom, display-digits/label toggles, preferences,
+  //! find/replace, history navigation and the gnuplot pop-out).
+  void EditMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.

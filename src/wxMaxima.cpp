@@ -496,10 +496,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_subsubsection);
   Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_heading5);
   Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_heading6);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_popup_gnuplot);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_show_cellbrackets);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_print_cellbrackets);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_delete);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_popup_gnuplot);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_show_cellbrackets);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_print_cellbrackets);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_delete);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_simplify);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_expand);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_solve);
@@ -591,7 +591,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_dependencies);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_gradefs);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_let_rule_packages);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_PREFERENCES);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_PREFERENCES);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_sconsole_id);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_export_html);
   if(GetWorksheet())
@@ -778,17 +778,17 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_display);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_pade);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_add_path);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_uuid);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_uuid);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_jump_to_uuid);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_COPY);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_text_from_worksheet);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_tex_from_worksheet);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_matlab_from_worksheet);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_copy_mathml);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_UNDO);
-  Bind(wxEVT_BUTTON, &wxMaxima::EditMenu, this, wxID_UNDO);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_REDO);
-  Bind(wxEVT_BUTTON, &wxMaxima::EditMenu, this, wxID_REDO);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_COPY);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_text_from_worksheet);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_tex_from_worksheet);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_matlab_from_worksheet);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_copy_mathml);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_UNDO);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_UNDO);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_REDO);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_REDO);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_texform);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_grind);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_debugmode_lisp);
@@ -911,50 +911,50 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_to_fact);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_to_gamma);
   Bind(wxEVT_MENU, &wxMaxima::PrintMenu, this, wxID_PRINT);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_ZOOM_IN);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_ZOOM_OUT);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_zoom_80);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_ZOOM_100);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_zoom_120);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_zoom_150);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_zoom_200);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_zoom_300);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_labelwidth1, EventIDs::popid_labelwidth1 + LABELWIDTH_MAX - LABELWIDTH_MIN);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_digits_all);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_digits_all_linebreak);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_digits_20);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_digits_50);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_digits_100);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_labels_autogenerated);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_inputlabels_hide);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_labels_user);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_labels_useronly);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_labels_disable);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_math_as_1D_ASCII);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_math_as_2D_ASCII);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_math_as_2D_UNICODE);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_math_as_graphics);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::internalRepresentation);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::wxMathML);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_noAutosubscript);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_defaultAutosubscript);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_alwaysAutosubscript);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_declareAutosubscript);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_autosubscriptIndividual);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_noAutosubscriptIndividual);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_roundedMatrixParens);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_straightMatrixParens);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_angledMatrixParens);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_squareMatrixParens);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_noMatrixParens);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_fullscreen);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_show_logwindow);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, ToolBar::tb_hideCode);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_as_bitmap);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_as_svg);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_as_emf);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_as_rtf);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_to_file);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_ZOOM_IN);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_ZOOM_OUT);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_zoom_80);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_ZOOM_100);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_zoom_120);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_zoom_150);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_zoom_200);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_zoom_300);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_labelwidth1, EventIDs::popid_labelwidth1 + LABELWIDTH_MAX - LABELWIDTH_MIN);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_digits_all);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_digits_all_linebreak);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_digits_20);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_digits_50);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_digits_100);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_labels_autogenerated);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_inputlabels_hide);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_labels_user);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_labels_useronly);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_labels_disable);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_math_as_1D_ASCII);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_math_as_2D_ASCII);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_math_as_2D_UNICODE);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_math_as_graphics);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::internalRepresentation);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::wxMathML);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_noAutosubscript);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_defaultAutosubscript);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_alwaysAutosubscript);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_declareAutosubscript);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_autosubscriptIndividual);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_noAutosubscriptIndividual);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_roundedMatrixParens);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_straightMatrixParens);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_angledMatrixParens);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_squareMatrixParens);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_noMatrixParens);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_fullscreen);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_show_logwindow);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, ToolBar::tb_hideCode);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_as_bitmap);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_as_svg);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_as_emf);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_as_rtf);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_to_file);
   Bind(wxEVT_TOOL, &wxMaxima::Interrupt, this, ToolBar::tb_interrupt);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_startStop);
   Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_start);
@@ -990,12 +990,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_autocomplete_templates);
   Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_insert_input);
   Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_input);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_history_previous);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_history_next);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_PASTE);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_paste_input);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_CUT);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_SELECTALL);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_history_previous);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_history_next);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_PASTE);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_paste_input);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_CUT);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_SELECTALL);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_comment_selection);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_divide_cell);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_evaluate);
@@ -1085,16 +1085,16 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_grid);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_grid);
   Bind(wxEVT_IDLE, &wxMaxima::OnIdle, this);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_remove_output);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_hide_tooltipMarker);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_hide_tooltipMarkerForThisMessage);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_remove_output);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_hide_tooltipMarker);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_hide_tooltipMarkerForThisMessage);
   Bind(wxEVT_MENU, &wxMaxima::OnRecentDocument, this, EventIDs::menu_recent_document_0, EventIDs::menu_recent_document_0 + EventIDs::NumberOfRecentFiles - 1);
   Bind(wxEVT_MENU, &wxMaxima::OnRecentPackage, this, EventIDs::menu_recent_package_0, EventIDs::menu_recent_package_0 + EventIDs::NumberOfRecentFiles - 1);
   Bind(wxEVT_MENU, &wxMaxima::OnUnsavedDocument, this, EventIDs::menu_unsaved_document_0, EventIDs::menu_unsaved_document_0 + EventIDs::NumberOfRecentFiles - 1);
   Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::menu_insert_image);
   for(const auto &[paneId, name]: GetSidebarNames())
     Bind(wxEVT_MENU, &wxMaxima::ShowPane, this, paneId);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_pane_toolbar);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_pane_toolbar);
   Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_auto_answer);
   Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_never_autoanswer);
   Bind(wxEVT_LISTBOX_DCLICK, &wxMaxima::HistoryDClick, this, history_ctrl_id);
@@ -1128,7 +1128,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_CHAR, &wxMaxima::OnChar, this);
   Bind(wxEVT_KEY_DOWN, &wxMaxima::OnKeyDown, this);
   Bind(wxEVT_CHOICE, &wxMaxima::ChangeCellStyle, this, ToolBar::tb_changeStyle);
-  Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_FIND);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_FIND);
   Bind(wxEVT_FIND, &wxMaxima::OnFind, this);
   Bind(wxEVT_FIND_NEXT, &wxMaxima::OnFind, this);
   Bind(wxEVT_FIND_REPLACE, &wxMaxima::OnReplace, this);
@@ -5511,474 +5511,6 @@ bool wxMaxima::AutoSave() {
 }
 
 
-void wxMaxima::EditMenu(wxCommandEvent &event) {
-  if(!GetWorksheet())
-    return;
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  // if (GetWorksheet()->m_findDialog != NULL) {
-  //   event.Skip();
-  //   return;
-  // }
-
-  wxString expr = GetDefaultEntry();
-  if(((event.GetId()) >= EventIDs::popid_labelwidth1) &&
-     ((event.GetId()) < EventIDs::popid_labelwidth1 + LABELWIDTH_MAX - LABELWIDTH_MIN)) {
-    m_configuration.LabelWidth(EventIDs::popid_labelwidth1 + 1 - event.GetId());
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-  }
-  else if((event.GetId()) == EventIDs::popid_digits_20) {
-    m_configuration.SetDisplayedDigits(20);
-    m_configuration.ShowAllDigits(false);
-    m_configuration.LineBreaksInLongNums(false);
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-  }
-  else if((event.GetId()) == EventIDs::popid_digits_50) {
-    m_configuration.SetDisplayedDigits(50);
-    m_configuration.ShowAllDigits(false);
-    m_configuration.LineBreaksInLongNums(false);
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-  }
-  else if((event.GetId()) == EventIDs::popid_digits_100) {
-    m_configuration.SetDisplayedDigits(100);
-    m_configuration.ShowAllDigits(false);
-    m_configuration.LineBreaksInLongNums(false);
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-  }
-  else if((event.GetId()) == EventIDs::popid_digits_all) {
-    m_configuration.ShowAllDigits(true);
-    m_configuration.LineBreaksInLongNums(false);
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-  }
-  else if((event.GetId()) == EventIDs::popid_digits_all_linebreak) {
-    m_configuration.ShowAllDigits(true);
-    m_configuration.LineBreaksInLongNums(true);
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-  }
-  else if(event.GetId() == EventIDs::popid_inputlabels_hide) {
-    m_configuration.ShowInputLabels(!m_configuration.ShowInputLabels());
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-  }
-  else if (event.GetId() == EventIDs::menu_copy_uuid) {
-    if (GetWorksheet()->GetSelectionStart()) {
-      wxString uuid = GetWorksheet()->GetSelectionStart()->GetUUID();
-      if (uuid.IsEmpty()) {
-        GetWorksheet()->GetSelectionStart()->GenerateUUID();
-        uuid = GetWorksheet()->GetSelectionStart()->GetUUID();
-        GetWorksheet()->SetSaved(false);
-      }
-      if (wxTheClipboard->Open()) {
-        wxTheClipboard->SetData(new wxTextDataObject(uuid));
-        wxTheClipboard->Close();
-      }
-    }
-  }
-  else if(event.GetId() == EventIDs::popid_labels_autogenerated) {
-    m_configuration.SetLabelChoice(Configuration::labels_automatic);
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-  }
-  else if(event.GetId() == EventIDs::popid_labels_user) {
-    m_configuration.SetLabelChoice(Configuration::labels_prefer_user);
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-  }
-  else if(event.GetId() == EventIDs::popid_labels_useronly) {
-    m_configuration.SetLabelChoice(Configuration::labels_useronly);
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-  }
-  else if(event.GetId() == EventIDs::popid_labels_disable) {
-    m_configuration.SetLabelChoice(Configuration::labels_none);
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-  }
-  else if(event.GetId() == EventIDs::popid_popup_gnuplot) {
-    if (!GetWorksheet()->GetSelectionStart())
-      return;
-
-    wxString gnuplotSource = GetWorksheet()->GetSelectionStart()->GnuplotSource();
-    if (gnuplotSource.IsEmpty())
-      return;
-
-    if (!wxFileExists(gnuplotSource))
-      return;
-
-    // Create a gnuplot file that doesn't select a terminal and output file
-    wxFileInputStream input(gnuplotSource);
-    if (!input.IsOk())
-      return;
-    wxTextInputStream textIn(input, wxS('\t'),
-                             wxConvAuto(wxFONTENCODING_UTF8));
-    wxString gnuplot_popout_tempfilename = wxFileName::CreateTempFileName("wxmaxima_gnuplot_popout_");
-    wxFileOutputStream output(gnuplot_popout_tempfilename);
-    if (!output.IsOk())
-      return;
-    wxTextOutputStream textOut(output);
-#ifdef __WXMSW__
-    textOut << "set term windows\n";
-#endif
-    textIn.ReadLine();
-    textIn.ReadLine();
-
-    wxString line;
-    while (!input.Eof()) {
-      line = textIn.ReadLine();
-      textOut << line + wxS("\n");
-    }
-    textOut.Flush();
-
-    // Execute gnuplot
-    std::vector<char *> argv;
-    wxCharBuffer commandnamebuffer = m_gnuplotcommand.mb_str();
-    argv.push_back(commandnamebuffer.data());
-    wxCharBuffer urlbuffer = wxString(gnuplot_popout_tempfilename).mb_str();
-    argv.push_back(urlbuffer.data());
-    wxCharBuffer persist_opt = wxString(wxS("--persist")).mb_str();
-    argv.push_back(persist_opt.data());
-    argv.push_back(NULL);
-
-    wxLogMessage(_("Running %s on the file %s: "), commandnamebuffer, urlbuffer);
-    m_gnuplotProcess = new wxProcess(this, m_gnuplot_process_id);
-    if (wxExecute(argv.data(),
-                  wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
-                  m_gnuplotProcess) < 0)
-      wxLogMessage(_("Cannot start gnuplot"));
-  }
-  else if(event.GetId() == wxID_PREFERENCES) {
-    // wxGTK uses wxFileConf. ...and wxFileConf loads the config file only once
-    // on initialisation => Let's reload the config file before entering the
-    // config dialogue.
-    ReReadConfig();
-    wxConfigBase *config = wxConfig::Get();
-    // Write the changes in the configuration to the disk.
-    config->Flush(true);
-    ConfigDialogue *configW = new ConfigDialogue(this);
-    configW->Centre(wxBOTH);
-    auto result = configW->ShowModal();
-    if (result == wxID_OK) {
-      configW->WriteSettings();
-      // Refresh the display as the settings that affect it might have changed.
-      m_configuration.ReadConfig();
-      m_configuration.FontChanged();
-      if (GetWorksheet()->GetTree())
-        GetWorksheet()->GetTree()->FontsChangedList();
-      ConfigChanged();
-      GetWorksheet()->RequestRecalculation();
-      GetWorksheet()->RequestRedraw();
-    }
-    configW->Destroy();
-  }
-  else if(event.GetId() == wxID_COPY) {
-    GetWorksheet()->Copy();
-  }
-  else if(event.GetId() == EventIDs::menu_copy_text_from_worksheet) {
-    GetWorksheet()->Copy(true);
-  }
-  else if(event.GetId() == wxID_CUT) {
-    if (GetWorksheet()->CanCut())
-      GetWorksheet()->CutToClipboard();
-  }
-  else if(event.GetId() == wxID_SELECTALL) {
-    GetWorksheet()->SelectAll();
-  }
-  else if(event.GetId() == wxID_PASTE) {
-    GetWorksheet()->PasteFromClipboard();
-  }
-  else if(event.GetId() == wxID_UNDO) {
-    if (GetWorksheet()->CanUndo())
-      GetWorksheet()->Undo();
-  }
-  else if(event.GetId() == wxID_REDO) {
-    if (GetWorksheet()->CanRedo())
-      GetWorksheet()->Redo();
-  }
-  else if(event.GetId() == EventIDs::menu_copy_matlab_from_worksheet) {
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopyMatlab();
-  }
-  else if(event.GetId() == EventIDs::menu_copy_tex_from_worksheet) {
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopyTeX();
-  }
-  else if(event.GetId() == EventIDs::popid_copy_mathml) {
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopyMathML();
-  }
-  else if(event.GetId() == EventIDs::menu_copy_as_bitmap) {
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopyBitmap();
-  }
-  else if(event.GetId() == EventIDs::menu_copy_as_svg) {
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopySVG();
-  }
-#if wxUSE_ENH_METAFILE
-  else if(event.GetId() == EventIDs::menu_copy_as_emf) {
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopyEMF();
-  }
-#endif
-  else if(event.GetId() == EventIDs::menu_copy_as_rtf) {
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopyRTF();
-  }
-  else if(event.GetId() == EventIDs::menu_copy_to_file) {
-    wxString file = wxFileSelector(_("Save Selection to Image"), m_lastPath,
-    // by default use PNG, if not available BMP (always supported by wxWidgets) as default name/type.
-#ifdef wxUSE_LIBPNG
-                                   wxS("image.png"), wxS("png"),
-#else
-                                   wxS("image.bmp"), wxS("bmp"),
-#endif
-                                       _("Image files (") +
-#ifdef wxUSE_LIBPNG
-                                       "*.png, "
-#endif
-#ifdef wxUSE_LIBJPEG
-                                       "*.jpg, "
-#endif
-#ifdef wxUSE_LIBWEBP
-                                         "*.webp, "
-#endif
-#ifdef wxUSE_XPM
-                                         "*.xpm, "
-#endif
-#ifdef wxUSE_GIF
-                                         "*.gif, "
-#endif
-
-                                         ".svg, *.svgz, "
-                                         ".bmp)|"
-#ifdef wxUSE_LIBPNG
-                                         "*.png;"
-#endif
-#ifdef wxUSE_LIBJPEG
-                                         "*.jpg;"
-#endif
-#ifdef wxUSE_LIBWEBP
-                                         "*.webp;"
-#endif
-#ifdef wxUSE_XPM
-                                         "*.xpm;"
-#endif
-#ifdef wxUSE_GIF
-                                         "*.gif;"
-#endif
-                                         "*.svg;*.svgz,"
-                                         "*.bmp",
-                                       wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-
-    if (file.Length()) {
-      GetWorksheet()->CopyToFile(file);
-      m_lastPath = wxPathOnly(file);
-    }
-  }
-  else if(event.GetId() == EventIDs::menu_print_cellbrackets) {
-    m_configuration.PrintBrackets(!m_configuration.PrintBrackets());
-  }
-  else if(event.GetId() == EventIDs::menu_show_cellbrackets) {
-    m_configuration.ShowBrackets(!m_configuration.ShowBrackets());
-    GetWorksheet()->RequestRedraw();
-  }
-  else if(event.GetId() == EventIDs::popid_delete) {
-    if (GetWorksheet()->CanDeleteSelection()) {
-      GetWorksheet()->DeleteSelection();
-      GetWorksheet()->RequestRecalculation();
-      GetWorksheet()->RequestRedraw();
-      return;
-    }
-  }
-  else if(event.GetId() == wxID_ZOOM_IN) {
-    GetWorksheet()->SetZoomFactor(m_configuration.GetZoomFactor() + 0.1);
-  }
-  else if(event.GetId() == wxID_ZOOM_OUT) {
-    GetWorksheet()->SetZoomFactor(m_configuration.GetZoomFactor() - 0.1);
-  }
-  else if(event.GetId() == EventIDs::menu_zoom_80) {
-    GetWorksheet()->SetZoomFactor(0.8);
-  }
-  else if(event.GetId() == wxID_ZOOM_100) {
-    GetWorksheet()->SetZoomFactor(1.0);
-  }
-  else if(event.GetId() == EventIDs::menu_zoom_120) {
-    GetWorksheet()->SetZoomFactor(1.2);
-  }
-  else if(event.GetId() == EventIDs::menu_zoom_150) {
-    GetWorksheet()->SetZoomFactor(1.5);
-  }
-  else if(event.GetId() == EventIDs::menu_zoom_200) {
-    GetWorksheet()->SetZoomFactor(2.0);
-  }
-  else if(event.GetId() == EventIDs::menu_zoom_300) {
-    GetWorksheet()->SetZoomFactor(3.0);
-  }
-  else if(event.GetId() == EventIDs::menu_math_as_1D_ASCII) {
-    MenuCommand(wxS("set_display('none)$"));
-  }
-  else if(event.GetId() == EventIDs::menu_math_as_2D_ASCII) {
-    MenuCommand(wxS("set_display('ascii)$display2d_unicode:false$"));
-  }
-  else if(event.GetId() == EventIDs::menu_math_as_2D_UNICODE) {
-    MenuCommand(wxS("set_display('ascii)$display2d_unicode:true$"));
-  }
-  else if(event.GetId() == EventIDs::menu_math_as_graphics) {
-    MenuCommand(wxS("set_display('xml)$"));
-  }
-  else if(event.GetId() == EventIDs::internalRepresentation) {
-    CommandWiz(_("Display expression in maxima's internal representation"),
-               wxEmptyString, wxEmptyString,
-               wxS("?print(#1#)$"), _("Expression"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::wxMathML) {
-    CommandWiz(_("Display expression in wxMaxima's internal representation"),
-               wxEmptyString, wxEmptyString,
-               wxS("printf(false,\"~m\", #1#);"), _("Expression"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_noAutosubscript) {
-    MenuCommand(wxS("wxsubscripts: false$"));
-  }
-  else if(event.GetId() == EventIDs::menu_defaultAutosubscript) {
-    MenuCommand(wxS("wxsubscripts: true$"));
-  }
-  else if(event.GetId() == EventIDs::menu_alwaysAutosubscript) {
-    MenuCommand(wxS("wxsubscripts: 'all$"));
-  }
-  else if(event.GetId() == EventIDs::menu_autosubscriptIndividual) {
-    CommandWiz(_("Autosubscript this variable"), wxEmptyString, wxEmptyString,
-               wxS("wxdeclare_subscripted(#1#)$"), _("Variable name"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_noAutosubscriptIndividual) {
-    CommandWiz(_("Never autosubscript this variable"), wxEmptyString,
-               wxEmptyString, wxS("wxdeclare_subscripted(#1#,false)$"),
-               _("Variable name"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_declareAutosubscript) {
-    CommandWiz(_("Declare a text snippet to always be displayed as subscript"),
-               wxEmptyString, wxEmptyString, wxS("wxdeclare_subscript(#1#)$"),
-               _("Text snippet"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_roundedMatrixParens) {
-    MenuCommand(wxS("lmxchar:\"(\"$rmxchar:\")\"$"));
-  }
-  else if(event.GetId() == EventIDs::menu_straightMatrixParens) {
-    MenuCommand(wxS("lmxchar:\"|\"$rmxchar:\"|\"$"));
-  }
-  else if(event.GetId() == EventIDs::menu_angledMatrixParens) {
-    MenuCommand(wxS("lmxchar:\"<\"$rmxchar:\">\"$"));
-  }
-  else if(event.GetId() == EventIDs::menu_squareMatrixParens) {
-    MenuCommand(wxS("lmxchar:\"[\"$rmxchar:\"]\"$"));
-  }
-  else if(event.GetId() == EventIDs::menu_noMatrixParens) {
-    MenuCommand(wxS("lmxchar:\" \"$rmxchar:\" \"$"));
-  }
-  else if(event.GetId() == EventIDs::menu_fullscreen) {
-    ShowFullScreen(!IsFullScreen());
-  }
-  else if(event.GetId() == EventIDs::menu_show_logwindow) {
-    // FIXME: if the log window was closed as the parent 'disable' the toggle function, otherwise we risk a crash.
-    if (MyApp::m_logWindow->GetFrame() != NULL) {
-      MyApp::m_logWindow->Show(!MyApp::m_logWindow->GetFrame()->IsShown());
-    };
-  }
-
-  else if(event.GetId() == ToolBar::tb_hideCode) {
-    m_configuration.ShowCodeCells(!m_configuration.ShowCodeCells());
-    GetWorksheet()->CodeCellVisibilityChanged();
-  }
-  else if(event.GetId() == EventIDs::menu_remove_output) {
-    GetWorksheet()->RemoveAllOutput();
-  }
-  else if(event.GetId() == EventIDs::menu_pane_toolbar) {
-    ShowToolBar(!ToolbarIsShown());
-  }
-  else if(event.GetId() == wxID_FIND) {
-    wxLogMessage(_("A Ctrl-F event"));
-    bool findDialogActiveWas = ((GetWorksheet()->m_findDialog != NULL) &&
-                                (GetWorksheet()->m_findDialog->IsShown()));
-    if (GetWorksheet()->m_findDialog == NULL)
-      new FindReplaceDialog(this, &m_findData, _("Find and Replace"), &GetWorksheet()->m_findDialog);
-    if (GetWorksheet()->GetActiveCell() != NULL) {
-      wxString selected = GetWorksheet()->GetActiveCell()->GetSelectionString();
-
-      // Start incremental search and highlighting of search results again.
-      if(findDialogActiveWas)
-        m_oldFindString.Clear();
-      else
-        m_oldFindString = selected;
-
-      if (selected.Length() > 0)
-        GetWorksheet()->m_findDialog->SetFindString(selected);
-    }
-    GetWorksheet()->m_findDialog->Show();
-    GetWorksheet()->m_findDialog->Raise();
-    GetWorksheet()->FocusFindDialogue();
-#ifdef __WXMSW__
-    CallAfter([this]{GetWorksheet()->FocusFindDialogue();});
-#endif
- }
-  else if(event.GetId() == EventIDs::menu_history_next) {
-    m_history->UpdateDeferred();
-    wxString command = m_history->GetCommand(true);
-    if (command != wxEmptyString)
-      GetWorksheet()->SetActiveCellText(command);
-  }
-  else if(event.GetId() == EventIDs::menu_history_previous) {
-    m_history->UpdateDeferred();
-    wxString command = m_history->GetCommand(false);
-    if (command != wxEmptyString)
-      GetWorksheet()->SetActiveCellText(command);
-  }
-  else if(event.GetId() == EventIDs::popid_hide_tooltipMarkerForThisMessage) {
-    const Cell *cell = GetWorksheet()->GetSelectionStart();
-    if (cell == NULL)
-      return;
-    wxString toolTip = cell->GetLocalToolTip();
-    if (toolTip.IsEmpty())
-      toolTip = cell->GetGroup()->GetLocalToolTip();
-    if (toolTip.IsEmpty())
-      return;
-    bool suppress = m_configuration.HideMarkerForThisMessage(toolTip);
-    m_configuration.HideMarkerForThisMessage(toolTip, !suppress);
-    GetWorksheet()->OutputChanged();
-  }
-  else if(event.GetId() == EventIDs::popid_hide_tooltipMarker) {
-    if (GetWorksheet()->GetSelectionStart() == NULL)
-      return;
-    GroupCell *cell = GetWorksheet()->GetSelectionStart()->GetGroup();
-    const GroupCell *end = NULL;
-    if (GetWorksheet()->GetSelectionEnd() != NULL)
-      end = GetWorksheet()->GetSelectionEnd()->GetGroup();
-    bool marked = !cell->GetSuppressTooltipMarker();
-
-    for (auto &tmp : OnList(cell)) {
-      tmp.SetSuppressTooltipMarker(marked);
-      if (&tmp == end)
-        break;
-    }
-    GetWorksheet()->OutputChanged();
-  }
-  GetWorksheet()->RequestRedraw();
-  // Most edit-menu commands should return the keyboard focus to the worksheet.
-  // The Find/Replace command (Ctrl+F) is the exception: it just showed the
-  // non-modal find dialog and gave *it* the focus, so re-focusing the worksheet
-  // here -- via a CallAfter that runs after the dialog has already been focused
-  // -- would immediately steal the focus back before the user can type into the
-  // dialog (seen on Windows).
-  if (event.GetId() != wxID_FIND)
-    CallAfter([this]{GetWorksheet()->SetFocus();});
-}
 
 void wxMaxima::OnFind(wxFindDialogEvent &event) {
   if(!GetWorksheet())

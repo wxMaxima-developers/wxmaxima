@@ -391,7 +391,6 @@ protected:
   //! Register wxMaxima's own path as the .wxmx diff tool for TortoiseSVN/Git.
   void RegisterWxmxDiffTool();
 #endif
-  void EditMenu(wxCommandEvent &event);            //!< Processes "Edit menu" clicks
   void ReplaceSuggestion(wxCommandEvent &event);   //!< Processes clicks on suggestions
   void Interrupt(wxCommandEvent &event);           //!< Interrupt button and hotkey presses
   //! Make the menu item, toolbars and panes visible that should be visible right now.
