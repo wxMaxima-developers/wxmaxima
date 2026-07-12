@@ -42,6 +42,7 @@
 #include "MaximaResponseReader.h"
 #include "MaximaProcessManager.h"
 #include "MaximaEvaluator.h"
+#include "MaximaFileIO.h"
 #include "Dirstructure.h"
 #include <wx/socket.h>
 #include <wx/config.h>
@@ -284,9 +285,6 @@ protected:
                   wxString label9 = {}, wxString defaultval9 = {}, wxString tooltip9 = {},
                   wxString label10 = {}, wxString defaultval10 = {}, wxString tooltip10 = {}
     );
-  //! Reads a potentially unclosed XML tag and closes it
-  wxString ReadPotentiallyUnclosedTag(wxStringTokenizer &lines, wxString firstLine);
-
   //! Finds the name of an opening tag
   static wxRegEx m_xmlOpeningTagName;
   //! Looks if this opening tag is actually complete.
@@ -501,22 +499,6 @@ protected:
   */
   void ResetTitle(bool saved, bool force = false);
 
-  /*! Opens a content.xml file that has been extracted from a broken .wxmx file
-   */
-  bool OpenXML(const wxString &file, Worksheet *document);
-
-  //! Complains if the version string from the XML file indicates too low a maxima version
-  bool CheckWXMXVersion(const wxString &docversion);
-
-  //! Opens a .mac file or a .out file from Xmaxima
-  bool OpenMACFile(const wxString &file, Worksheet *document, bool clearDocument = true);
-
-  //! Opens a wxm file
-  bool OpenWXMFile(const wxString &file, Worksheet *document, bool clearDocument = true);
-
-  //! Opens a wxmx file
-  bool OpenWXMXFile(const wxString &file, Worksheet *document, bool clearDocument = true);
-
   //! Loads a wxmx description
   std::unique_ptr<GroupCell> CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &wxmxfilename = {});
 
@@ -663,6 +645,10 @@ private:
   //! worksheet, the socket, the status bar, the configuration) through this
   //! friendship.
   friend class MaximaEvaluator;
+  //! The extracted worksheet file loaders/savers reach wxMaxima's services (the
+  //! worksheet, the status bar, the title, the Maxima process) through this
+  //! friendship.
+  friend class MaximaFileIO;
 
   /*! A timer that determines when to do the next autosave;
 
@@ -702,6 +688,10 @@ private:
   //! back to this frame (initialised in the constructor, where *this is
   //! unambiguously complete).
   MaximaEvaluator m_evaluator;
+  //! The worksheet file loaders/savers peeled off this god class. Holds a
+  //! reference back to this frame (initialised in the constructor, where *this
+  //! is unambiguously complete).
+  MaximaFileIO m_fileIO;
 };
 
 #if wxUSE_DRAG_AND_DROP
