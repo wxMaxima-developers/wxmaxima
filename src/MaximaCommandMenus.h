@@ -62,6 +62,10 @@ public:
   //! numeric-integration / to-poly / continued-fraction command wizards).
   void NumericalMenu(wxCommandEvent &event);
 
+  //! Handles the "Simplify" menu and its toolbar buttons (ratsimp/factor/expand/
+  //! trig/rectform/... and the substitute/nouns/... command wizards).
+  void SimplifyMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.

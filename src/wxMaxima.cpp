@@ -521,16 +521,16 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_BUTTON, &wxMaxima::EquationsMenu, this, EventIDs::button_solve);
   Bind(wxEVT_BUTTON, &wxMaxima::EquationsMenu, this, EventIDs::button_solve_ode);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_sum);
-  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_expand);
-  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_factor);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_expand);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_factor);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_taylor);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_limit);
-  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_ratsimp);
-  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_trigexpand);
-  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_trigreduce);
-  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_trigsimp);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_ratsimp);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_trigexpand);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_trigreduce);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_trigsimp);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_product);
-  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_radcan);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_radcan);
   Bind(wxEVT_BUTTON, &wxMaxima::MaximaMenu, this, EventIDs::button_subst);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::button_plot2);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::button_plot3);
@@ -568,9 +568,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zlange_inf);
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zlange_frobenius);
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_matrix_zheev);
-  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_rectform);
-  Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_trigrat);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_polarform);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_rectform);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_trigrat);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_polarform);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, ToolBar::menu_restart_id);
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_EXIT);
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, wxID_ABOUT);
@@ -611,25 +611,25 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_OPEN);
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_batch_id);
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_compare_files);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_ratsimp);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_radsimp);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_expand);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_expandwrt);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::EventIDs::menu_expandwrt_denom);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_scsimp);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_xthru);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_factor);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_horner);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_collapse);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_optimize);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_mainvar);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_scanmapfactor);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_gfactor);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_trigsimp);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_trigexpand);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_trigreduce);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_rectform);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_demoivre);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_ratsimp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_radsimp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_expand);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_expandwrt);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::EventIDs::menu_expandwrt_denom);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_scsimp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_xthru);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_factor);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_horner);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_collapse);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_optimize);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_mainvar);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_scanmapfactor);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_gfactor);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_trigsimp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_trigexpand);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_trigreduce);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_rectform);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_demoivre);
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_num_out);
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_stringdisp);
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_num_domain);
@@ -642,7 +642,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::popid_special_constant_percent);
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::popid_changeasterisk);
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::popid_hideasterisk);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_exponentialize);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_exponentialize);
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_invert_mat);
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_determinant);
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_rank);
@@ -668,9 +668,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qaws4);
   Bind(wxEVT_MENU, &MaximaCommandMenus::NumericalMenu, &m_menuCommands, EventIDs::menu_quad_qagp);
 
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_talg);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_tellrat);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_modulus);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_talg);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_tellrat);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_modulus);
   Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_allroots);
   Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_bfallroots);
   Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_realroots);
@@ -723,7 +723,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_maxima_uses_internal_help);
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_maxima_uses_wxmaxima_help);
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_show_tip);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_trigrat);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_trigrat);
   Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve_de);
   Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_atvalue);
   Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_lhs);
@@ -733,26 +733,26 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_product);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_change_var);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_time);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_factsimp);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_factcomb);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_realpart);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_imagpart);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_nouns);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_simpsum);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_subst);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_psubst);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_ratsubst);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_fullratsubst);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_at);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_substinpart);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_opsubst);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logcontract);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand_false);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand_true);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand_all);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_logexpand_super);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_factsimp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_factcomb);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_realpart);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_imagpart);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_nouns);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_simpsum);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_subst);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_psubst);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_ratsubst);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_fullratsubst);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_at);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_substinpart);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_opsubst);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_logcontract);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_logexpand);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_logexpand);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_logexpand_false);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_logexpand_true);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_logexpand_all);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_logexpand_super);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::gp_plot2);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::gp_plot3);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::menu_animationautostart);
@@ -908,8 +908,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_to_stdout);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_to_file);
 
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_to_fact);
-  Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_to_gamma);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_to_fact);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_to_gamma);
   Bind(wxEVT_MENU, &wxMaxima::PrintMenu, this, wxID_PRINT);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_ZOOM_IN);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_ZOOM_OUT);
@@ -8198,278 +8198,6 @@ void wxMaxima::ListMenu(wxCommandEvent &event) {
   }
 }
 
-void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
-  if(!GetWorksheet())
-    return;
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  wxString expr = GetDefaultEntry();
-  if(event.GetId() == EventIDs::menu_nouns){
-    CommandWiz(
-               _("Evaluate Nouns"),
-               _("Maxima allows making functions \"nouns\", which means that they "
-                 "aren't automatically evaluated as soon as Maxima encounters them.\n"
-                 "Ways to make a function a noun include declaring it a noun, preceding "
-                 "it with a single quote or putting it between the parentheses of \'().\n\n"
-                 "This command tells Maxima that the nouns in this expression "
-                 "shall now be evaluated, too."),
-               wxEmptyString, wxS("#1#,nouns;"), _("Expression"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_simpsum){
-    CommandWiz(_("Simplify sums"),
-               _("Try to simplify sums that result from sum() commands."),
-               wxEmptyString, wxS("simpsum(#1#);"), _("Expression"), expr,
-               wxEmptyString);
-  }
-  else if((event.GetId() == EventIDs::button_ratsimp) ||
-          (event.GetId() == EventIDs::menu_ratsimp)){
-      wxString cmd = wxS("ratsimp(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if((event.GetId() == EventIDs::button_radcan) ||
-          (event.GetId() == EventIDs::menu_radsimp)) {
-    CommandWiz(
-               _("Simplify radicals"),
-               _("radcan() is a powerful tools for simplification trigonometric "
-                 "functions "
-                 "but needs to be taken with care: If a function has more than one "
-                 "branch "
-                 "radcan uses the one that looks like it would fit best, not "
-                 "necessarily "
-                 "the one that makes sense for the problem that resulted in the "
-                 "Expression that is to be simplified."),
-               wxEmptyString, wxS("radcan(#1#);"), _("Expression"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_to_fact){
-      wxString cmd = wxS("makefact(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_to_gamma){
-      wxString cmd = wxS("makegamma(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_factcomb){
-      wxString cmd = wxS("factcomb(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_factsimp){
-      wxString cmd = wxS("minfactorial(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_logcontract){
-      wxString cmd = wxS("logcontract(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_logexpand){
-      wxString cmd = expr + wxS(", logexpand=super;");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_logexpand_false){
-    MenuCommand(wxS("logexpand:false$"));
-  }
-  else if(event.GetId() == EventIDs::menu_logexpand_true){
-    MenuCommand(wxS("logexpand:true$"));
-  }
-  else if(event.GetId() == EventIDs::menu_logexpand_all){
-    MenuCommand(wxS("logexpand:all$"));
-  }
-  else if(event.GetId() == EventIDs::menu_logexpand_super){
-    MenuCommand(wxS("logexpand:super$"));
-  }
-  else if((event.GetId() == EventIDs::button_expand) ||
-          (event.GetId() == EventIDs::menu_expand)){
-      wxString cmd = wxS("expand(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_scsimp){
-      wxString cmd = wxS("scsimp(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_xthru){
-      wxString cmd = wxS("xthru(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if((event.GetId() == EventIDs::button_factor) ||
-          (event.GetId() == EventIDs::menu_factor)){
-      wxString cmd = wxS("factor(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_expandwrt){
-    CommandWiz(_("Expand for variable(s):"), wxEmptyString, wxEmptyString,
-               wxS("expandwrt(#1#,#2#);"), wxS("Expression"), wxS("%"),
-               wxEmptyString, wxS("Variable(s)"), wxS("x"),
-               _("Comma-separated variables"));
-  }
-  else if(event.GetId() == EventIDs::menu_subst){
-    CommandWiz(
-               _("Substitute"),
-               _("Subst is a better string-search-and-replace for expressions."),
-               // subst() accepts a (list of) equation(s). Without the list
-               // brackets several comma-separated equations would be misread as
-               // the subst(new,old,expr) form instead of being substituted.
-               wxEmptyString, wxS("subst([#2#],#1#);"), wxS("Expression"), wxS("%"),
-               wxEmptyString, wxS("Substituents"), wxS("x^2=u"),
-               _("Comma-separated expressions"));
-  }
-  else if(event.GetId() == EventIDs::menu_ratsubst){
-    CommandWiz(_("Smart substitution"),
-               _("ratsubst works like subst, but it knows some basic maths, if "
-                 "needed."),
-               // ratsubst() takes (new, old, expr) and rejects an equation, so
-               // use lratsubst(), which accepts a (list of) equation(s).
-               wxEmptyString, wxS("lratsubst([#2#],#1#);"), wxS("Expression"),
-               wxS("%"), wxEmptyString, wxS("Substituents"), wxS("x^2=u"),
-               _("Comma-separated expressions"));
-  }
-  else if(event.GetId() == EventIDs::menu_psubst){
-    CommandWiz(_("Parallel substitution"),
-               _("Substitutes, but makes sure that nothing is substituted into "
-                 "the other substituents."),
-               // Parallel substitution is psubst(), not ratsubst().
-               wxEmptyString, wxS("psubst([#2#],#1#);"), wxS("Expression"),
-               wxS("%"), wxEmptyString, wxS("Substituents"), wxS("x^2=u,u=x^2"),
-               _("Comma-separated expressions"));
-  }
-  else if(event.GetId() == EventIDs::menu_fullratsubst){
-    CommandWiz(_("Recursive substitution"),
-               _("Substitutes up to lrats_max_iter times, or until the "
-                 "expression stops changing when substituting."),
-               // fullratsubst() needs the equation(s) wrapped in a list;
-               // otherwise comma-separated equations become the (new,old,expr)
-               // form and all but the first are silently ignored.
-               wxEmptyString, wxS("fullratsubst([#2#],#1#);"), wxS("Expression"),
-               wxS("%"), wxEmptyString, wxS("Substituents"), wxS("x^2=u"),
-               _("Comma-separated expressions"));
-  }
-  else if(event.GetId() == EventIDs::menu_at){
-    CommandWiz(
-               _("Value at a given point"),
-               _("Substitutes, but makes sure that if substituting t=0 in diff(x,t) "
-                 "the result isn't 0 (as t no more changes), but %at(diff(x,t),t=0)."),
-               // at() expects exactly two arguments: the expression and a
-               // (list of) equation(s). Several comma-separated equations have
-               // to be wrapped in a list or at() errors out.
-               wxEmptyString, wxS("at(#1#,[#2#]);"), wxS("Expression"), wxS("%"),
-               wxEmptyString, wxS("Substituents"), wxS("x=0"),
-               _("Comma-separated expressions"));
-  }
-  else if(event.GetId() == EventIDs::menu_substinpart){
-    CommandWiz(_("Substitute only in a specific part"),
-               _("Replaces the subexpression that part(expr, n_1, n_2, ...) "
-                 "would select by a new value. The part numbers form a path: "
-                 "n_1 selects a part of the expression, n_2 a part of that, and "
-                 "so on."),
-               wxEmptyString, wxS("substinpart(#2#,#1#,#3#);"),
-               wxS("Expression"), wxS("%"), wxEmptyString, wxS("New value"),
-               wxS("z"), _("The expression to substitute in"),
-               wxS("Part path"), wxS("1"),
-               _("Comma-separated part numbers selecting the subexpression to "
-                 "replace (as in part())"));
-  }
-  else if(event.GetId() == EventIDs::menu_opsubst){
-      wxString cmd;
-      if (event.IsChecked())
-        cmd = wxS("opsubst:true$");
-      else
-        cmd = wxS("opsubst:false$");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_expandwrt_denom){
-    CommandWiz(_("Expand for variable(s) including denominator:"),
-               wxEmptyString, wxEmptyString,
-               wxS("expandwrt(#1#,#2#),expandwrt_denom=true;"),
-               wxS("Expression"), wxS("%"), wxEmptyString, wxS("Variable(s)"),
-               wxS("x"), _("Comma-separated variables"));
-  }
-  else if(event.GetId() == EventIDs::menu_horner){
-      wxString cmd = wxS("horner(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_collapse){
-      wxString cmd = wxS("collapse(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_optimize){
-      wxString cmd = wxS("optimize(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_mainvar){
-    CommandWiz(_("Declare main variable:"), wxEmptyString, wxEmptyString,
-               wxS("declare(#1#,mainvar);"), wxS("Variable"), wxS("%"),
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_scanmapfactor){
-      wxString cmd = wxS("scanmap('factor,") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_gfactor){
-      wxString cmd = wxS("gfactor(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if((event.GetId() == EventIDs::button_trigreduce) ||
-          (event.GetId() == EventIDs::menu_trigreduce)){
-      wxString cmd = wxS("trigreduce(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if((event.GetId() == EventIDs::button_trigsimp) ||
-          (event.GetId() == EventIDs::menu_trigsimp)){
-      wxString cmd = wxS("trigsimp(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if((event.GetId() == EventIDs::button_trigexpand) ||
-          (event.GetId() == EventIDs::menu_trigexpand)){
-      wxString cmd = wxS("trigexpand(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if((event.GetId() == EventIDs::menu_trigrat) ||
-          (event.GetId() == EventIDs::button_trigrat)){
-      wxString cmd = wxS("trigrat(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if((event.GetId() == EventIDs::button_rectform) ||
-          (event.GetId() == EventIDs::menu_rectform)){
-      wxString cmd = wxS("rectform(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_polarform){
-      wxString cmd = wxS("polarform(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_demoivre){
-      wxString cmd = wxS("demoivre(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_exponentialize){
-      wxString cmd = wxS("exponentialize(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_realpart){
-      wxString cmd = wxS("realpart(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_imagpart){
-      wxString cmd = wxS("imagpart(") + expr + wxS(");");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_talg){
-      wxString cmd;
-      if (event.IsChecked())
-        cmd = wxS("algebraic:true$");
-      else
-        cmd = wxS("algebraic:false$");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_tellrat){
-    CommandWiz(_("Enter an equation for rational simplification:"),
-               wxEmptyString, wxEmptyString, wxS("tellrat(#1#);"),
-               wxS("Equation"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_modulus){
-    CommandWiz(_("Calculate modulus:"), wxEmptyString, wxEmptyString,
-               wxS("modulus : #1#$"), wxS("Modulus"), wxS("%"), wxEmptyString);
-  }
-}
 
 
 

@@ -570,3 +570,276 @@ void MaximaCommandMenus::NumericalMenu(wxCommandEvent &event) {
                wxS("limit"), wxS("200"), _("Size of internal work array. limit is the maximum number of subintervals to use."));
   }
 }
+
+void MaximaCommandMenus::SimplifyMenu(wxCommandEvent &event) {
+  if(!m_wxMaxima.GetWorksheet())
+    return;
+  m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
+
+  wxString expr = m_wxMaxima.GetDefaultEntry();
+  if(event.GetId() == EventIDs::menu_nouns){
+    m_wxMaxima.CommandWiz(
+               _("Evaluate Nouns"),
+               _("Maxima allows making functions \"nouns\", which means that they "
+                 "aren't automatically evaluated as soon as Maxima encounters them.\n"
+                 "Ways to make a function a noun include declaring it a noun, preceding "
+                 "it with a single quote or putting it between the parentheses of \'().\n\n"
+                 "This command tells Maxima that the nouns in this expression "
+                 "shall now be evaluated, too."),
+               wxEmptyString, wxS("#1#,nouns;"), _("Expression"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_simpsum){
+    m_wxMaxima.CommandWiz(_("Simplify sums"),
+               _("Try to simplify sums that result from sum() commands."),
+               wxEmptyString, wxS("simpsum(#1#);"), _("Expression"), expr,
+               wxEmptyString);
+  }
+  else if((event.GetId() == EventIDs::button_ratsimp) ||
+          (event.GetId() == EventIDs::menu_ratsimp)){
+      wxString cmd = wxS("ratsimp(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if((event.GetId() == EventIDs::button_radcan) ||
+          (event.GetId() == EventIDs::menu_radsimp)) {
+    m_wxMaxima.CommandWiz(
+               _("Simplify radicals"),
+               _("radcan() is a powerful tools for simplification trigonometric "
+                 "functions "
+                 "but needs to be taken with care: If a function has more than one "
+                 "branch "
+                 "radcan uses the one that looks like it would fit best, not "
+                 "necessarily "
+                 "the one that makes sense for the problem that resulted in the "
+                 "Expression that is to be simplified."),
+               wxEmptyString, wxS("radcan(#1#);"), _("Expression"), expr,
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_to_fact){
+      wxString cmd = wxS("makefact(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_to_gamma){
+      wxString cmd = wxS("makegamma(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_factcomb){
+      wxString cmd = wxS("factcomb(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_factsimp){
+      wxString cmd = wxS("minfactorial(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_logcontract){
+      wxString cmd = wxS("logcontract(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_logexpand){
+      wxString cmd = expr + wxS(", logexpand=super;");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_logexpand_false){
+    m_wxMaxima.MenuCommand(wxS("logexpand:false$"));
+  }
+  else if(event.GetId() == EventIDs::menu_logexpand_true){
+    m_wxMaxima.MenuCommand(wxS("logexpand:true$"));
+  }
+  else if(event.GetId() == EventIDs::menu_logexpand_all){
+    m_wxMaxima.MenuCommand(wxS("logexpand:all$"));
+  }
+  else if(event.GetId() == EventIDs::menu_logexpand_super){
+    m_wxMaxima.MenuCommand(wxS("logexpand:super$"));
+  }
+  else if((event.GetId() == EventIDs::button_expand) ||
+          (event.GetId() == EventIDs::menu_expand)){
+      wxString cmd = wxS("expand(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_scsimp){
+      wxString cmd = wxS("scsimp(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_xthru){
+      wxString cmd = wxS("xthru(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if((event.GetId() == EventIDs::button_factor) ||
+          (event.GetId() == EventIDs::menu_factor)){
+      wxString cmd = wxS("factor(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_expandwrt){
+    m_wxMaxima.CommandWiz(_("Expand for variable(s):"), wxEmptyString, wxEmptyString,
+               wxS("expandwrt(#1#,#2#);"), wxS("Expression"), wxS("%"),
+               wxEmptyString, wxS("Variable(s)"), wxS("x"),
+               _("Comma-separated variables"));
+  }
+  else if(event.GetId() == EventIDs::menu_subst){
+    m_wxMaxima.CommandWiz(
+               _("Substitute"),
+               _("Subst is a better string-search-and-replace for expressions."),
+               // subst() accepts a (list of) equation(s). Without the list
+               // brackets several comma-separated equations would be misread as
+               // the subst(new,old,expr) form instead of being substituted.
+               wxEmptyString, wxS("subst([#2#],#1#);"), wxS("Expression"), wxS("%"),
+               wxEmptyString, wxS("Substituents"), wxS("x^2=u"),
+               _("Comma-separated expressions"));
+  }
+  else if(event.GetId() == EventIDs::menu_ratsubst){
+    m_wxMaxima.CommandWiz(_("Smart substitution"),
+               _("ratsubst works like subst, but it knows some basic maths, if "
+                 "needed."),
+               // ratsubst() takes (new, old, expr) and rejects an equation, so
+               // use lratsubst(), which accepts a (list of) equation(s).
+               wxEmptyString, wxS("lratsubst([#2#],#1#);"), wxS("Expression"),
+               wxS("%"), wxEmptyString, wxS("Substituents"), wxS("x^2=u"),
+               _("Comma-separated expressions"));
+  }
+  else if(event.GetId() == EventIDs::menu_psubst){
+    m_wxMaxima.CommandWiz(_("Parallel substitution"),
+               _("Substitutes, but makes sure that nothing is substituted into "
+                 "the other substituents."),
+               // Parallel substitution is psubst(), not ratsubst().
+               wxEmptyString, wxS("psubst([#2#],#1#);"), wxS("Expression"),
+               wxS("%"), wxEmptyString, wxS("Substituents"), wxS("x^2=u,u=x^2"),
+               _("Comma-separated expressions"));
+  }
+  else if(event.GetId() == EventIDs::menu_fullratsubst){
+    m_wxMaxima.CommandWiz(_("Recursive substitution"),
+               _("Substitutes up to lrats_max_iter times, or until the "
+                 "expression stops changing when substituting."),
+               // fullratsubst() needs the equation(s) wrapped in a list;
+               // otherwise comma-separated equations become the (new,old,expr)
+               // form and all but the first are silently ignored.
+               wxEmptyString, wxS("fullratsubst([#2#],#1#);"), wxS("Expression"),
+               wxS("%"), wxEmptyString, wxS("Substituents"), wxS("x^2=u"),
+               _("Comma-separated expressions"));
+  }
+  else if(event.GetId() == EventIDs::menu_at){
+    m_wxMaxima.CommandWiz(
+               _("Value at a given point"),
+               _("Substitutes, but makes sure that if substituting t=0 in diff(x,t) "
+                 "the result isn't 0 (as t no more changes), but %at(diff(x,t),t=0)."),
+               // at() expects exactly two arguments: the expression and a
+               // (list of) equation(s). Several comma-separated equations have
+               // to be wrapped in a list or at() errors out.
+               wxEmptyString, wxS("at(#1#,[#2#]);"), wxS("Expression"), wxS("%"),
+               wxEmptyString, wxS("Substituents"), wxS("x=0"),
+               _("Comma-separated expressions"));
+  }
+  else if(event.GetId() == EventIDs::menu_substinpart){
+    m_wxMaxima.CommandWiz(_("Substitute only in a specific part"),
+               _("Replaces the subexpression that part(expr, n_1, n_2, ...) "
+                 "would select by a new value. The part numbers form a path: "
+                 "n_1 selects a part of the expression, n_2 a part of that, and "
+                 "so on."),
+               wxEmptyString, wxS("substinpart(#2#,#1#,#3#);"),
+               wxS("Expression"), wxS("%"), wxEmptyString, wxS("New value"),
+               wxS("z"), _("The expression to substitute in"),
+               wxS("Part path"), wxS("1"),
+               _("Comma-separated part numbers selecting the subexpression to "
+                 "replace (as in part())"));
+  }
+  else if(event.GetId() == EventIDs::menu_opsubst){
+      wxString cmd;
+      if (event.IsChecked())
+        cmd = wxS("opsubst:true$");
+      else
+        cmd = wxS("opsubst:false$");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_expandwrt_denom){
+    m_wxMaxima.CommandWiz(_("Expand for variable(s) including denominator:"),
+               wxEmptyString, wxEmptyString,
+               wxS("expandwrt(#1#,#2#),expandwrt_denom=true;"),
+               wxS("Expression"), wxS("%"), wxEmptyString, wxS("Variable(s)"),
+               wxS("x"), _("Comma-separated variables"));
+  }
+  else if(event.GetId() == EventIDs::menu_horner){
+      wxString cmd = wxS("horner(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_collapse){
+      wxString cmd = wxS("collapse(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_optimize){
+      wxString cmd = wxS("optimize(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_mainvar){
+    m_wxMaxima.CommandWiz(_("Declare main variable:"), wxEmptyString, wxEmptyString,
+               wxS("declare(#1#,mainvar);"), wxS("Variable"), wxS("%"),
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_scanmapfactor){
+      wxString cmd = wxS("scanmap('factor,") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_gfactor){
+      wxString cmd = wxS("gfactor(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if((event.GetId() == EventIDs::button_trigreduce) ||
+          (event.GetId() == EventIDs::menu_trigreduce)){
+      wxString cmd = wxS("trigreduce(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if((event.GetId() == EventIDs::button_trigsimp) ||
+          (event.GetId() == EventIDs::menu_trigsimp)){
+      wxString cmd = wxS("trigsimp(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if((event.GetId() == EventIDs::button_trigexpand) ||
+          (event.GetId() == EventIDs::menu_trigexpand)){
+      wxString cmd = wxS("trigexpand(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if((event.GetId() == EventIDs::menu_trigrat) ||
+          (event.GetId() == EventIDs::button_trigrat)){
+      wxString cmd = wxS("trigrat(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if((event.GetId() == EventIDs::button_rectform) ||
+          (event.GetId() == EventIDs::menu_rectform)){
+      wxString cmd = wxS("rectform(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_polarform){
+      wxString cmd = wxS("polarform(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_demoivre){
+      wxString cmd = wxS("demoivre(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_exponentialize){
+      wxString cmd = wxS("exponentialize(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_realpart){
+      wxString cmd = wxS("realpart(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_imagpart){
+      wxString cmd = wxS("imagpart(") + expr + wxS(");");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_talg){
+      wxString cmd;
+      if (event.IsChecked())
+        cmd = wxS("algebraic:true$");
+      else
+        cmd = wxS("algebraic:false$");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  else if(event.GetId() == EventIDs::menu_tellrat){
+    m_wxMaxima.CommandWiz(_("Enter an equation for rational simplification:"),
+               wxEmptyString, wxEmptyString, wxS("tellrat(#1#);"),
+               wxS("Equation"), wxS("%"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_modulus){
+    m_wxMaxima.CommandWiz(_("Calculate modulus:"), wxEmptyString, wxEmptyString,
+               wxS("modulus : #1#$"), wxS("Modulus"), wxS("%"), wxEmptyString);
+  }
+}
