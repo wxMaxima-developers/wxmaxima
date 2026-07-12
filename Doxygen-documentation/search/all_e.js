@@ -38,5 +38,5 @@ var searchData=
   ['numberoftoclevels_35',['NumberOfTocLevels',['../classEventIDs.html#ab11b839ded3d75ab5c087f95c769bb8c',1,'EventIDs']]],
   ['numberoftypes_36',['numberOfTypes',['../classAutoComplete.html#a6225a91b46c0459755a62de137620b29a83b932a902206b352f3795faf6f2d231',1,'AutoComplete']]],
   ['numbersections_37',['NumberSections',['../classWorksheet.html#a9770595891b32c0ea91ea4d4466c9310',1,'Worksheet::NumberSections()'],['../classWorksheetDocument.html#a65606595a687d98ae9448f0b45eb8df1',1,'WorksheetDocument::NumberSections()']]],
-  ['numericalmenu_38',['NumericalMenu',['../classwxMaxima.html#a9c1ad69ebd56bb77c7f403d967f2ced2',1,'wxMaxima']]]
+  ['numericalmenu_38',['NumericalMenu',['../classMaximaCommandMenus.html#af11ecf6ddd5cb0b79e3637e72a2c32f1',1,'MaximaCommandMenus']]]
 ];

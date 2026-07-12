@@ -11,7 +11,7 @@ var searchData=
   ['cachedinteger_3c_20wxcoord_20_3e_8',['CachedInteger&lt; wxCoord &gt;',['../classCachedInteger.html',1,'']]],
   ['cachedvalue_2eh_9',['CachedValue.h',['../CachedValue_8h.html',1,'']]],
   ['calculatereorderedcellindices_10',['CalculateReorderedCellIndices',['../WorksheetExport_8h.html#a0d6a8a550a6cae83afeeb5111f8bf379',1,'WorksheetExport']]],
-  ['calculusmenu_11',['CalculusMenu',['../classwxMaxima.html#afc9e0062e3e22a0740c73300632adfee',1,'wxMaxima']]],
+  ['calculusmenu_11',['CalculusMenu',['../classMaximaCommandMenus.html#ade09b3272c8dd87bd45686c688a45b5e',1,'MaximaCommandMenus']]],
   ['cananimate_12',['CanAnimate',['../classWorksheet.html#a6cf2965a1983631e048b9a51e548991f',1,'Worksheet']]],
   ['cancelpendingrecalculation_13',['CancelPendingRecalculation',['../classWorksheetLayout.html#ae245bc5f15a5a6311038dfcb8e2b0748',1,'WorksheetLayout']]],
   ['cancopy_14',['CanCopy',['../classCell.html#a51f7b95ef07194888d917bf9c3104258',1,'Cell::CanCopy()'],['../classEditorCell.html#a7f1fc6546632f26bbe8dfe909af056a9',1,'EditorCell::CanCopy()']]],

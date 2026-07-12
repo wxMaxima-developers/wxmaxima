@@ -191,7 +191,7 @@ var searchData=
   ['showwxmaximahelp_188',['ShowWxMaximaHelp',['../classwxMaxima.html#a2dcef5ae1e2c9457b9e27282067da7b2',1,'wxMaxima']]],
   ['sidebarkeyevent_189',['SidebarKeyEvent',['../classSidebarKeyEvent.html',1,'']]],
   ['simplepcg32_190',['SimplePcg32',['../classCatch_1_1SimplePcg32.html',1,'Catch']]],
-  ['simplifymenu_191',['SimplifyMenu',['../classwxMaxima.html#aac2766cad011bf11cf37bfeb9f786a62',1,'wxMaxima']]],
+  ['simplifymenu_191',['SimplifyMenu',['../classMaximaCommandMenus.html#afb96fdd44972cd33e20c22a2f6edec27',1,'MaximaCommandMenus']]],
   ['singlepagemanual_192',['SinglePageManual',['../classConfiguration.html#a68eabd1c6d16a01528426bd14ffc2e2c',1,'Configuration::SinglePageManual(bool singlePageManual)'],['../classConfiguration.html#a4e3c873b3c8fb75f907b754ec02e8a87',1,'Configuration::SinglePageManual() const']]],
   ['singlevaluegenerator_193',['SingleValueGenerator',['../classCatch_1_1Generators_1_1SingleValueGenerator.html',1,'Catch::Generators']]],
   ['size_194',['Size',['../classEvaluationQueue.html#ad6011adcd6242cb3c35030d86a0b6a98',1,'EvaluationQueue']]],

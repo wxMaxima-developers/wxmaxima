@@ -174,7 +174,7 @@ var searchData=
   ['showuserinputbitmap_171',['ShowUserInputBitmap',['../classToolBar.html#a0d5ce6075969191ba8ee8cf6a3ea6264',1,'ToolBar']]],
   ['showwizardpane_172',['ShowWizardPane',['../classwxMaximaFrame.html#aacb1598bfb464a0a87062054c42ec7df',1,'wxMaximaFrame']]],
   ['showwxmaximahelp_173',['ShowWxMaximaHelp',['../classwxMaxima.html#a2dcef5ae1e2c9457b9e27282067da7b2',1,'wxMaxima']]],
-  ['simplifymenu_174',['SimplifyMenu',['../classwxMaxima.html#aac2766cad011bf11cf37bfeb9f786a62',1,'wxMaxima']]],
+  ['simplifymenu_174',['SimplifyMenu',['../classMaximaCommandMenus.html#afb96fdd44972cd33e20c22a2f6edec27',1,'MaximaCommandMenus']]],
   ['singlepagemanual_175',['SinglePageManual',['../classConfiguration.html#a68eabd1c6d16a01528426bd14ffc2e2c',1,'Configuration::SinglePageManual(bool singlePageManual)'],['../classConfiguration.html#a4e3c873b3c8fb75f907b754ec02e8a87',1,'Configuration::SinglePageManual() const']]],
   ['size_176',['Size',['../classEvaluationQueue.html#ad6011adcd6242cb3c35030d86a0b6a98',1,'EvaluationQueue']]],
   ['softlinebreak_177',['SoftLineBreak',['../classCell.html#a2463f044f3e56f7d5791eda6e16a4ebd',1,'Cell']]],

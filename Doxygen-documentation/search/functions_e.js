@@ -15,5 +15,5 @@ var searchData=
   ['notifysavedstatechanged_12',['NotifySavedStateChanged',['../classWorksheet.html#af48854fc80b7f499567a0fa72bff9361',1,'Worksheet::NotifySavedStateChanged()'],['../classWorksheetDocumentView.html#a40722c389000b1f7551b7ab1159c2fac',1,'WorksheetDocumentView::NotifySavedStateChanged()']]],
   ['number_13',['Number',['../classGroupCell.html#a1bc7ca9e1bf5923dbdd5e2e8735da8cd',1,'GroupCell']]],
   ['numbersections_14',['NumberSections',['../classWorksheet.html#a9770595891b32c0ea91ea4d4466c9310',1,'Worksheet::NumberSections()'],['../classWorksheetDocument.html#a65606595a687d98ae9448f0b45eb8df1',1,'WorksheetDocument::NumberSections()']]],
-  ['numericalmenu_15',['NumericalMenu',['../classwxMaxima.html#a9c1ad69ebd56bb77c7f403d967f2ced2',1,'wxMaxima']]]
+  ['numericalmenu_15',['NumericalMenu',['../classMaximaCommandMenus.html#af11ecf6ddd5cb0b79e3637e72a2c32f1',1,'MaximaCommandMenus']]]
 ];

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['calculatereorderedcellindices_0',['CalculateReorderedCellIndices',['../WorksheetExport_8h.html#a0d6a8a550a6cae83afeeb5111f8bf379',1,'WorksheetExport']]],
-  ['calculusmenu_1',['CalculusMenu',['../classwxMaxima.html#afc9e0062e3e22a0740c73300632adfee',1,'wxMaxima']]],
+  ['calculusmenu_1',['CalculusMenu',['../classMaximaCommandMenus.html#ade09b3272c8dd87bd45686c688a45b5e',1,'MaximaCommandMenus']]],
   ['cananimate_2',['CanAnimate',['../classWorksheet.html#a6cf2965a1983631e048b9a51e548991f',1,'Worksheet']]],
   ['cancelpendingrecalculation_3',['CancelPendingRecalculation',['../classWorksheetLayout.html#ae245bc5f15a5a6311038dfcb8e2b0748',1,'WorksheetLayout']]],
   ['cancopy_4',['CanCopy',['../classEditorCell.html#a7f1fc6546632f26bbe8dfe909af056a9',1,'EditorCell::CanCopy()'],['../classCell.html#a51f7b95ef07194888d917bf9c3104258',1,'Cell::CanCopy()']]],
