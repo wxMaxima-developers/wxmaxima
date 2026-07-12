@@ -37,7 +37,9 @@
 #include "wizards/ListSortWiz.h"
 #include "wizards/Gen1Wiz.h"
 #include "wizards/GenWiz.h"
+#include "cells/AnimationCell.h"
 #include "dialogs/AboutDialog.h"
+#include "dialogs/DiffFrame.h"
 #include "dialogs/ChangeLogDialog.h"
 #include "dialogs/LicenseDialog.h"
 #include "wizards/Gen3Wiz.h"
@@ -2143,4 +2145,217 @@ void MaximaCommandMenus::HelpMenu(wxCommandEvent &event) {
     m_wxMaxima.RegisterWxmxDiffTool();
   }
 #endif
+}
+
+void MaximaCommandMenus::FileMenu(wxCommandEvent &event) {
+  if(!m_wxMaxima.GetWorksheet())
+    return;
+  m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
+
+  bool forceSave = false;
+
+  if((event.GetId() == wxID_EXIT) || (event.GetId() == wxID_CLOSE)) {
+    m_wxMaxima.CallAfter([this]{m_wxMaxima.Close();});
+  }
+  else if(event.GetId() == wxID_OPEN) {
+    if (m_wxMaxima.SaveNecessary()) {
+      int close = m_wxMaxima.SaveDocumentP();
+
+      if (close == wxID_CANCEL)
+        return;
+
+      if (close == wxID_YES) {
+        if (!m_wxMaxima.SaveFile())
+          return;
+      }
+    }
+
+    wxString file =
+      wxFileSelector(_("Open"), m_wxMaxima.m_lastPath, wxEmptyString, wxEmptyString,
+                     _("All openable types (*.wxm, *.wxmx, *.mac, *.out, "
+                       "*.xml)|*.wxm;*.wxmx;*.mac;*.out;*.xml|"
+                       "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|"
+                       "Maxima session (*.mac)|*.mac|"
+                       "Xmaxima session (*.out)|*.out|"
+                       "xml from broken .wxmx (*.xml)|*.xml"),
+                     wxFD_OPEN);
+
+    if (!file.empty()) {
+      // On the mac the "File/New" menu item by default opens a new window instead of
+      // reusing the old one.
+#ifdef __WXOSX__
+      if (m_wxMaxima.GetWorksheet()->IsEmpty())
+        m_wxMaxima.OpenFile(file, wxEmptyString);
+      else
+        wxGetApp().NewWindow(file);
+#else
+      m_wxMaxima.OpenFile(file, wxEmptyString);
+#endif
+    }
+  }
+  else if(event.GetId() == wxID_SAVEAS) {
+    forceSave = true;
+    m_wxMaxima.m_fileSaved = false;
+    m_wxMaxima.SaveFile(forceSave);
+    // Seems like resetting the title on "file/save as" is a little bit
+    // sluggish, otherwise.
+    m_wxMaxima.ResetTitle(m_wxMaxima.GetWorksheet()->IsSaved(), true);
+  }
+  else if(event.GetId() == wxID_SAVE) {
+    m_wxMaxima.SaveFile(forceSave);
+    // Seems like resetting the title on "file/save as" is a little bit
+    // sluggish, otherwise.
+    m_wxMaxima.ResetTitle(m_wxMaxima.GetWorksheet()->IsSaved(), true);
+  }
+  else if (event.GetId() == EventIDs::menu_compare_files) {
+    wxFileDialog fileDialog(&m_wxMaxima, _("Select 2 or 3 files to compare"), m_wxMaxima.m_lastPath,
+                            wxEmptyString,
+                            _("wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"),
+                            wxFD_OPEN | wxFD_MULTIPLE);
+    if (fileDialog.ShowModal() == wxID_OK) {
+      wxArrayString paths;
+      fileDialog.GetPaths(paths);
+      if (paths.size() == 2 || paths.size() == 3) {
+        DiffFrame *diffFrame = new DiffFrame(&m_wxMaxima, paths, &m_wxMaxima.m_configuration);
+        diffFrame->Show();
+      } else {
+        wxLogError(_("Please select exactly 2 or 3 files."));
+      }
+    }
+  }
+  else if (event.GetId() == EventIDs::menu_jump_to_uuid) {
+    wxString uuid = wxGetTextFromUser(_("Enter UUID to jump to:"), _("Jump to UUID"));
+    if (!uuid.IsEmpty()) {
+      Cell *cell = m_wxMaxima.GetWorksheet()->FindCellByUUID(uuid);
+      if (cell) {
+        m_wxMaxima.GetWorksheet()->ScrolledAwayFromEvaluation(true);
+        m_wxMaxima.GetWorksheet()->ScheduleScrollToCell(cell);
+      } else {
+        wxLogError(_("Cell with UUID %s not found!"), uuid);
+      }
+    }
+  }
+  else if(event.GetId() == EventIDs::menu_export_html) {
+    // Determine a sane default file name;
+    wxString file = m_wxMaxima.GetWorksheet()->GetCurrentFile();
+    if (file.Length() == 0)
+      file = _("untitled");
+    else
+      wxFileName::SplitPath(file, NULL, NULL, &file, NULL);
+
+    wxString fileExt = "html";
+    wxConfig::Get()->Read(wxS("defaultExportExt"), &fileExt);
+
+    wxFileDialog fileDialog(&m_wxMaxima, _("Export"), m_wxMaxima.m_lastPath,
+                            file + wxS(".") + fileExt,
+                            _("HTML file (*.html)|*.html|"
+                              "maxima batch file (*.mac)|*.mac|"
+                              "LaTeX file (*.tex)|*.tex"),
+                            wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+    if (fileExt == wxS("html"))
+      fileDialog.SetFilterIndex(0);
+    else if (fileExt == wxS("mac"))
+      fileDialog.SetFilterIndex(1);
+    else
+      fileDialog.SetFilterIndex(2);
+
+    if (fileDialog.ShowModal() == wxID_OK) {
+      file = fileDialog.GetPath();
+      if (file.Length()) {
+        int ext = fileDialog.GetFilterIndex();
+        if ((!file.Lower().EndsWith(wxS(".html"))) &&
+            (!file.Lower().EndsWith(wxS(".mac"))) &&
+            (!file.Lower().EndsWith(wxS(".tex")))) {
+          switch (ext) {
+          case 0:
+            file += wxS(".html");
+            break;
+          case 1:
+            file += wxS(".mac");
+            break;
+          case 2:
+            file += wxS(".tex");
+            break;
+          default:
+            file += wxS(".html");
+          }
+        }
+
+        if (file.Lower().EndsWith(wxS(".tex"))) {
+          m_wxMaxima.StatusExportStart();
+
+          fileExt = wxS("tex");
+          // Show a busy cursor as long as we export a file.
+          wxBusyCursor crs;
+          if (!m_wxMaxima.GetWorksheet()->ExportToTeX(file)) {
+            LoggingMessageBox(_("Exporting to TeX failed!"), _("Error!"), wxOK);
+            m_wxMaxima.StatusExportFailed();
+          } else
+            m_wxMaxima.StatusExportFinished();
+        } else if (file.Lower().EndsWith(wxS(".mac"))) {
+          m_wxMaxima.StatusExportStart();
+
+          // Show a busy cursor as long as we export a file.
+          wxBusyCursor crs;
+          fileExt = wxS("mac");
+          if (!m_wxMaxima.GetWorksheet()->ExportToMAC(file)) {
+            LoggingMessageBox(_("Exporting to maxima batch file failed!"),
+                              _("Error!"), wxOK);
+            m_wxMaxima.StatusExportFailed();
+          } else
+            m_wxMaxima.StatusExportFinished();
+        } else {
+          m_wxMaxima.StatusExportStart();
+
+          // Show a busy cursor as long as we export a file.
+          wxBusyCursor crs;
+          fileExt = wxS("html");
+          if (!m_wxMaxima.GetWorksheet()->ExportToHTML(file)) {
+            LoggingMessageBox(_("Exporting to HTML failed!"), _("Error!"),
+                              wxOK);
+            m_wxMaxima.StatusExportFailed();
+          } else
+            m_wxMaxima.StatusExportFinished();
+        }
+        m_wxMaxima.StartAutoSaveTimer();
+
+        wxConfig::Get()->Write(wxS("defaultExportExt"), fileExt);
+      }
+    }
+  }
+  else if(event.GetId() == EventIDs::menu_load_id) {
+    wxString file = wxFileSelector(_("Load Package"), m_wxMaxima.m_lastPath, wxEmptyString,
+                                   wxEmptyString,
+                                   _("Maxima package (*.mac)|*.mac|"
+                                     "Lisp package (*.lisp)|*.lisp|All|*"),
+                                   wxFD_OPEN);
+    if (!file.empty())
+      m_wxMaxima.OpenFile(file, wxS("load"));
+  }
+  else if(event.GetId() == EventIDs::menu_batch_id) {
+    wxString file = wxFileSelector(
+                                   _("Batch File"), m_wxMaxima.m_lastPath, wxEmptyString, wxEmptyString,
+                                   _("Maxima package (*.mac)|*.mac"), wxFD_OPEN);
+    if (file != wxEmptyString)
+      m_wxMaxima.OpenFile(file, wxS("batch"));
+  }
+  else if(event.GetId() == ToolBar::tb_animation_startStop) {
+    if (m_wxMaxima.GetWorksheet()->CanAnimate()) {
+      const AnimationCell *animation =
+        dynamic_cast<AnimationCell *>(m_wxMaxima.GetWorksheet()->GetSelectionStart());
+      if (animation->AnimationRunning())
+        m_wxMaxima.GetWorksheet()->Animate(false);
+      else
+        m_wxMaxima.GetWorksheet()->Animate(true);
+    }
+  }
+  else if(event.GetId() == EventIDs::popid_animation_start) {
+    if (m_wxMaxima.GetWorksheet()->CanAnimate()) {
+      AnimationCell *animation =
+        dynamic_cast<AnimationCell *>(m_wxMaxima.GetWorksheet()->GetSelectionStart());
+      animation->AnimationRunning(true);
+    }
+  }
+  m_wxMaxima.GetWorksheet()->RequestRedraw();
 }

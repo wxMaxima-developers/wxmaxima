@@ -482,7 +482,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   });
 
   Bind(wxEVT_SCROLL_CHANGED, &wxMaxima::SliderEvent, this);
-  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_CLOSE);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, wxID_CLOSE);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_check_updates);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_image);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_animation);
@@ -515,7 +515,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::EventIDs::popid_copy_text);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_image);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_animation_save);
-  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::popid_animation_start);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::popid_animation_start);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_integrate);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_diff);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::button_solve);
@@ -572,13 +572,13 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_trigrat);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_polarform);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, ToolBar::menu_restart_id);
-  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_EXIT);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, wxID_EXIT);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, wxID_ABOUT);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_license);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_changelog);
-  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_SAVE);
-  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_SAVEAS);
-  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_load_id);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, wxID_SAVE);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, wxID_SAVEAS);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_load_id);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_functions);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_variables);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_arrays);
@@ -592,8 +592,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_gradefs);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_let_rule_packages);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_PREFERENCES);
-  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_sconsole_id);
-  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_export_html);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_sconsole_id);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_export_html);
   if(GetWorksheet())
     GetWorksheet()->GetAutocomplete().Bind(NEW_DEMO_FILES_EVENT, &wxMaxima::OnNewDemoFiles, this);
   Bind(TOC_UPDATE_NEEDED_EVENT, &wxMaxima::OnUpdateTOCEvent, this);
@@ -608,9 +608,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_register_wxmx_difftool);
 #endif
   Bind(wxEVT_MENU, &wxMaxima::Interrupt, this, EventIDs::menu_interrupt_id);
-  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, wxID_OPEN);
-  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_batch_id);
-  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_compare_files);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, wxID_OPEN);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_batch_id);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_compare_files);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_ratsimp);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_radsimp);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_expand);
@@ -779,7 +779,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_pade);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_add_path);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_uuid);
-  Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_jump_to_uuid);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_jump_to_uuid);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, wxID_COPY);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_text_from_worksheet);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_tex_from_worksheet);
@@ -956,9 +956,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_as_rtf);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_to_file);
   Bind(wxEVT_TOOL, &wxMaxima::Interrupt, this, ToolBar::tb_interrupt);
-  Bind(wxEVT_TOOL, &wxMaxima::FileMenu, this, ToolBar::tb_animation_startStop);
-  Bind(wxEVT_TOOL, &wxMaxima::FileMenu, this, ToolBar::tb_animation_start);
-  Bind(wxEVT_TOOL, &wxMaxima::FileMenu, this, ToolBar::tb_animation_stop);
+  Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_startStop);
+  Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_start);
+  Bind(wxEVT_TOOL, &MaximaCommandMenus::FileMenu, &m_menuCommands, ToolBar::tb_animation_stop);
   Bind(wxEVT_TOOL, &wxMaxima::OnFollow, this, ToolBar::tb_follow);
   Bind(wxEVT_SOCKET, &wxMaxima::ServerEvent, this);
   Bind(wxEVT_CLOSE_WINDOW, &wxMaxima::OnClose, this);
@@ -5510,218 +5510,6 @@ bool wxMaxima::AutoSave() {
   return savedWas;
 }
 
-void wxMaxima::FileMenu(wxCommandEvent &event) {
-  if(!GetWorksheet())
-    return;
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  bool forceSave = false;
-
-  if((event.GetId() == wxID_EXIT) || (event.GetId() == wxID_CLOSE)) {
-    CallAfter([this]{Close();});
-  }
-  else if(event.GetId() == wxID_OPEN) {
-    if (SaveNecessary()) {
-      int close = SaveDocumentP();
-
-      if (close == wxID_CANCEL)
-        return;
-
-      if (close == wxID_YES) {
-        if (!SaveFile())
-          return;
-      }
-    }
-
-    wxString file =
-      wxFileSelector(_("Open"), m_lastPath, wxEmptyString, wxEmptyString,
-                     _("All openable types (*.wxm, *.wxmx, *.mac, *.out, "
-                       "*.xml)|*.wxm;*.wxmx;*.mac;*.out;*.xml|"
-                       "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|"
-                       "Maxima session (*.mac)|*.mac|"
-                       "Xmaxima session (*.out)|*.out|"
-                       "xml from broken .wxmx (*.xml)|*.xml"),
-                     wxFD_OPEN);
-
-    if (!file.empty()) {
-      // On the mac the "File/New" menu item by default opens a new window instead of
-      // reusing the old one.
-#ifdef __WXOSX__
-      if (GetWorksheet()->IsEmpty())
-        OpenFile(file, wxEmptyString);
-      else
-        wxGetApp().NewWindow(file);
-#else
-      OpenFile(file, wxEmptyString);
-#endif
-    }
-  }
-  else if(event.GetId() == wxID_SAVEAS) {
-    forceSave = true;
-    m_fileSaved = false;
-    SaveFile(forceSave);
-    // Seems like resetting the title on "file/save as" is a little bit
-    // sluggish, otherwise.
-    ResetTitle(GetWorksheet()->IsSaved(), true);
-  }
-  else if(event.GetId() == wxID_SAVE) {
-    SaveFile(forceSave);
-    // Seems like resetting the title on "file/save as" is a little bit
-    // sluggish, otherwise.
-    ResetTitle(GetWorksheet()->IsSaved(), true);
-  }
-  else if (event.GetId() == EventIDs::menu_compare_files) {
-    wxFileDialog fileDialog(this, _("Select 2 or 3 files to compare"), m_lastPath,
-                            wxEmptyString,
-                            _("wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"),
-                            wxFD_OPEN | wxFD_MULTIPLE);
-    if (fileDialog.ShowModal() == wxID_OK) {
-      wxArrayString paths;
-      fileDialog.GetPaths(paths);
-      if (paths.size() == 2 || paths.size() == 3) {
-        DiffFrame *diffFrame = new DiffFrame(this, paths, &m_configuration);
-        diffFrame->Show();
-      } else {
-        wxLogError(_("Please select exactly 2 or 3 files."));
-      }
-    }
-  }
-  else if (event.GetId() == EventIDs::menu_jump_to_uuid) {
-    wxString uuid = wxGetTextFromUser(_("Enter UUID to jump to:"), _("Jump to UUID"));
-    if (!uuid.IsEmpty()) {
-      Cell *cell = GetWorksheet()->FindCellByUUID(uuid);
-      if (cell) {
-        GetWorksheet()->ScrolledAwayFromEvaluation(true);
-        GetWorksheet()->ScheduleScrollToCell(cell);
-      } else {
-        wxLogError(_("Cell with UUID %s not found!"), uuid);
-      }
-    }
-  }
-  else if(event.GetId() == EventIDs::menu_export_html) {
-    // Determine a sane default file name;
-    wxString file = GetWorksheet()->GetCurrentFile();
-    if (file.Length() == 0)
-      file = _("untitled");
-    else
-      wxFileName::SplitPath(file, NULL, NULL, &file, NULL);
-
-    wxString fileExt = "html";
-    wxConfig::Get()->Read(wxS("defaultExportExt"), &fileExt);
-
-    wxFileDialog fileDialog(this, _("Export"), m_lastPath,
-                            file + wxS(".") + fileExt,
-                            _("HTML file (*.html)|*.html|"
-                              "maxima batch file (*.mac)|*.mac|"
-                              "LaTeX file (*.tex)|*.tex"),
-                            wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-
-    if (fileExt == wxS("html"))
-      fileDialog.SetFilterIndex(0);
-    else if (fileExt == wxS("mac"))
-      fileDialog.SetFilterIndex(1);
-    else
-      fileDialog.SetFilterIndex(2);
-
-    if (fileDialog.ShowModal() == wxID_OK) {
-      file = fileDialog.GetPath();
-      if (file.Length()) {
-        int ext = fileDialog.GetFilterIndex();
-        if ((!file.Lower().EndsWith(wxS(".html"))) &&
-            (!file.Lower().EndsWith(wxS(".mac"))) &&
-            (!file.Lower().EndsWith(wxS(".tex")))) {
-          switch (ext) {
-          case 0:
-            file += wxS(".html");
-            break;
-          case 1:
-            file += wxS(".mac");
-            break;
-          case 2:
-            file += wxS(".tex");
-            break;
-          default:
-            file += wxS(".html");
-          }
-        }
-
-        if (file.Lower().EndsWith(wxS(".tex"))) {
-          StatusExportStart();
-
-          fileExt = wxS("tex");
-          // Show a busy cursor as long as we export a file.
-          wxBusyCursor crs;
-          if (!GetWorksheet()->ExportToTeX(file)) {
-            LoggingMessageBox(_("Exporting to TeX failed!"), _("Error!"), wxOK);
-            StatusExportFailed();
-          } else
-            StatusExportFinished();
-        } else if (file.Lower().EndsWith(wxS(".mac"))) {
-          StatusExportStart();
-
-          // Show a busy cursor as long as we export a file.
-          wxBusyCursor crs;
-          fileExt = wxS("mac");
-          if (!GetWorksheet()->ExportToMAC(file)) {
-            LoggingMessageBox(_("Exporting to maxima batch file failed!"),
-                              _("Error!"), wxOK);
-            StatusExportFailed();
-          } else
-            StatusExportFinished();
-        } else {
-          StatusExportStart();
-
-          // Show a busy cursor as long as we export a file.
-          wxBusyCursor crs;
-          fileExt = wxS("html");
-          if (!GetWorksheet()->ExportToHTML(file)) {
-            LoggingMessageBox(_("Exporting to HTML failed!"), _("Error!"),
-                              wxOK);
-            StatusExportFailed();
-          } else
-            StatusExportFinished();
-        }
-        StartAutoSaveTimer();
-
-        wxConfig::Get()->Write(wxS("defaultExportExt"), fileExt);
-      }
-    }
-  }
-  else if(event.GetId() == EventIDs::menu_load_id) {
-    wxString file = wxFileSelector(_("Load Package"), m_lastPath, wxEmptyString,
-                                   wxEmptyString,
-                                   _("Maxima package (*.mac)|*.mac|"
-                                     "Lisp package (*.lisp)|*.lisp|All|*"),
-                                   wxFD_OPEN);
-    if (!file.empty())
-      OpenFile(file, wxS("load"));
-  }
-  else if(event.GetId() == EventIDs::menu_batch_id) {
-    wxString file = wxFileSelector(
-                                   _("Batch File"), m_lastPath, wxEmptyString, wxEmptyString,
-                                   _("Maxima package (*.mac)|*.mac"), wxFD_OPEN);
-    if (file != wxEmptyString)
-      OpenFile(file, wxS("batch"));
-  }
-  else if(event.GetId() == ToolBar::tb_animation_startStop) {
-    if (GetWorksheet()->CanAnimate()) {
-      const AnimationCell *animation =
-        dynamic_cast<AnimationCell *>(GetWorksheet()->GetSelectionStart());
-      if (animation->AnimationRunning())
-        GetWorksheet()->Animate(false);
-      else
-        GetWorksheet()->Animate(true);
-    }
-  }
-  else if(event.GetId() == EventIDs::popid_animation_start) {
-    if (GetWorksheet()->CanAnimate()) {
-      AnimationCell *animation =
-        dynamic_cast<AnimationCell *>(GetWorksheet()->GetSelectionStart());
-      animation->AnimationRunning(true);
-    }
-  }
-  GetWorksheet()->RequestRedraw();
-}
 
 void wxMaxima::EditMenu(wxCommandEvent &event) {
   if(!GetWorksheet())

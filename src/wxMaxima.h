@@ -386,7 +386,6 @@ protected:
   bool m_dataFromMaximaIs = false;
 
   void MenuCommand(const wxString &cmd);           //!< Inserts command cmd into the worksheet
-  void FileMenu(wxCommandEvent &event);            //!< Processes "file menu" clicks
   void MaximaMenu(wxCommandEvent &event);          //!< Processes "maxima menu" clicks
 #ifdef __WXMSW__
   //! Register wxMaxima's own path as the .wxmx diff tool for TortoiseSVN/Git.

@@ -94,6 +94,10 @@ public:
   //! ChangeLog dialogs, tip-of-the-day, update check, apropos/example wizards).
   void HelpMenu(wxCommandEvent &event);
 
+  //! Handles the "File" menu (open/save/save-as, export, load/batch package,
+  //! compare-files diff frame, jump-to-UUID, animation start/stop).
+  void FileMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.
