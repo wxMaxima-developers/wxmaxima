@@ -910,7 +910,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_to_fact);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_to_gamma);
-  Bind(wxEVT_MENU, &wxMaxima::PrintMenu, this, wxID_PRINT);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PrintMenu, &m_menuCommands, wxID_PRINT);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_ZOOM_IN);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_ZOOM_OUT);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_zoom_80);
@@ -967,7 +967,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_END_PROCESS, &wxMaxima::OnMaximaClose, this, m_maxima_process_id);
   Bind(wxEVT_END_PROCESS, &wxMaxima::OnGnuplotQueryTerminals, this, EventIDs::gnuplot_query_terminals_id);
   Bind(wxEVT_END_PROCESS, &wxMaxima::OnGnuplotClose, this, m_gnuplot_process_id);
-  Bind(wxEVT_MENU, &wxMaxima::EditInputMenu, this, EventIDs::popid_edit);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EditInputMenu, &m_menuCommands, EventIDs::popid_edit);
   Bind(wxEVT_MENU, &wxMaxima::EvaluateEvent, this, EventIDs::menu_evaluate);
   Bind(wxEVT_MENU, &wxMaxima::VarReadEvent, this, EventIDs::popid_var_newVar);
   Bind(wxEVT_MENU, &wxMaxima::VarAddAllEvent, this, EventIDs::popid_var_addAll);
@@ -1233,7 +1233,7 @@ void wxMaxima::OnNewDemoFiles(wxCommandEvent &WXUNUSED(event))
               m_demo_sub->Append(wxWindow::NewControlId(),
                                  subMenuContents.front() + wxS("-") + subMenuContents.back(),
                                  subMenu);
-              subMenu->Bind(wxEVT_MENU, &wxMaxima::OnDemoFileMenu, this);
+              subMenu->Bind(wxEVT_MENU, &MaximaCommandMenus::OnDemoFileMenu, &m_menuCommands);
               subMenuContents.clear();
             }
         }
@@ -1253,12 +1253,6 @@ void wxMaxima::OnNewDemoFiles(wxCommandEvent &WXUNUSED(event))
     }
 }
 
-void wxMaxima::OnDemoFileMenu(wxCommandEvent &ev)
-{
-  wxString demoName = GetDemoFile(ev.GetId());
-  if(!demoName.IsEmpty())
-    MenuCommand(wxS("demo(") + demoName + wxS(");"));
-}
 
 void wxMaxima::StartAutoSaveTimer() {
   m_autoSaveTimer.StartOnce(60000 * m_configuration.AutosaveMinutes());
@@ -4694,44 +4688,6 @@ void wxMaxima::MenuCommand(const wxString &cmd) {
 ///  Menu and button events
 ///--------------------------------------------------------------------------------
 
-void wxMaxima::PrintMenu(wxCommandEvent &event) {
-  if(!GetWorksheet())
-    return;
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  switch (event.GetId()) {
-  case wxID_PRINT: {
-    wxPrintDialogData printDialogData;
-    if (m_printData)
-      printDialogData.SetPrintData(*m_printData);
-    wxPrinter printer(&printDialogData);
-    wxString title(_("wxMaxima document"));
-
-    if (GetWorksheet()->GetCurrentFile().Length()) {
-      wxString suffix;
-      wxFileName::SplitPath(GetWorksheet()->GetCurrentFile(), NULL, NULL, &title,
-                            &suffix);
-      title << wxS(".") << suffix;
-    }
-
-    {
-      // Redraws during printing might end up on paper => temporarily block all
-      // redraw events for the console
-      //      wxWindowUpdateLocker noUpdates(GetWorksheet());
-      wxEventBlocker blocker(GetWorksheet());
-      Printout printout(title, GetWorksheet()->GetTree(), GetContentScaleFactor());
-      wxBusyCursor crs;
-      if (printer.Print(this, &printout, true)) {
-        m_printData = std::unique_ptr<wxPrintData>(
-                                                   new wxPrintData(printer.GetPrintDialogData().GetPrintData()));
-      }
-    }
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-    break;
-  }
-  }
-}
 
 void wxMaxima::UpdateMenus() {
   if (!GetWorksheet())
@@ -5929,19 +5885,6 @@ bool wxMaxima::SaveNecessary() {
   return !m_fileSaved;
 }
 
-void wxMaxima::EditInputMenu(wxCommandEvent &WXUNUSED(event)) {
-  GetWorksheet()->CloseAutoCompletePopup();
-  if (!GetWorksheet()->CanEdit())
-    return;
-
-  EditorCell *tmp =
-    dynamic_cast<EditorCell *>(GetWorksheet()->GetSelectionStart());
-
-  if (tmp == NULL)
-    return;
-
-  GetWorksheet()->SetActiveCell(tmp);
-}
 
 void wxMaxima::VarAddAllEvent(wxCommandEvent &WXUNUSED(event)) {
   wxString command = "\n:lisp-quiet (wx-add-all-variables)\n";

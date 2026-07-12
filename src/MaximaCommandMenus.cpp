@@ -43,10 +43,12 @@
 #include "wizards/Gen1Wiz.h"
 #include "wizards/GenWiz.h"
 #include "cells/AnimationCell.h"
+#include "cells/EditorCell.h"
 #include "cells/ImgCell.h"
 #include "cells/ImgCellBase.h"
 #include "sidebars/TableOfContents.h"
 #include "sidebars/VariablesPane.h"
+#include "graphical_io/Printout.h"
 #include "dialogs/AboutDialog.h"
 #include "dialogs/ConfigDialogue.h"
 #include "dialogs/DiffFrame.h"
@@ -4472,5 +4474,65 @@ void MaximaCommandMenus::MaximaMenu(wxCommandEvent &event) {
         m_wxMaxima.MenuCommand(val);
       }
     });
+  }
+}
+
+void MaximaCommandMenus::OnDemoFileMenu(wxCommandEvent &ev)
+{
+  wxString demoName = m_wxMaxima.GetDemoFile(ev.GetId());
+  if(!demoName.IsEmpty())
+    m_wxMaxima.MenuCommand(wxS("demo(") + demoName + wxS(");"));
+}
+
+void MaximaCommandMenus::EditInputMenu(wxCommandEvent &WXUNUSED(event)) {
+  m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
+  if (!m_wxMaxima.GetWorksheet()->CanEdit())
+    return;
+
+  EditorCell *tmp =
+    dynamic_cast<EditorCell *>(m_wxMaxima.GetWorksheet()->GetSelectionStart());
+
+  if (tmp == NULL)
+    return;
+
+  m_wxMaxima.GetWorksheet()->SetActiveCell(tmp);
+}
+
+void MaximaCommandMenus::PrintMenu(wxCommandEvent &event) {
+  if(!m_wxMaxima.GetWorksheet())
+    return;
+  m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
+
+  switch (event.GetId()) {
+  case wxID_PRINT: {
+    wxPrintDialogData printDialogData;
+    if (m_wxMaxima.m_printData)
+      printDialogData.SetPrintData(*m_wxMaxima.m_printData);
+    wxPrinter printer(&printDialogData);
+    wxString title(_("wxMaxima document"));
+
+    if (m_wxMaxima.GetWorksheet()->GetCurrentFile().Length()) {
+      wxString suffix;
+      wxFileName::SplitPath(m_wxMaxima.GetWorksheet()->GetCurrentFile(), NULL, NULL, &title,
+                            &suffix);
+      title << wxS(".") << suffix;
+    }
+
+    {
+      // Redraws during printing might end up on paper => temporarily block all
+      // redraw events for the console
+      //      wxWindowUpdateLocker noUpdates(m_wxMaxima.GetWorksheet());
+      wxEventBlocker blocker(m_wxMaxima.GetWorksheet());
+      Printout printout(title, m_wxMaxima.GetWorksheet()->GetTree(), m_wxMaxima.GetContentScaleFactor());
+      wxBusyCursor crs;
+      if (printer.Print(&m_wxMaxima, &printout, true)) {
+        m_wxMaxima.m_printData = std::unique_ptr<wxPrintData>(
+                                                   new wxPrintData(printer.GetPrintDialogData().GetPrintData()));
+      }
+    }
+    m_wxMaxima.GetWorksheet()->RequestRecalculation();
+    m_wxMaxima.GetWorksheet()->RequestRedraw();
+    break;
+  }
   }
 }

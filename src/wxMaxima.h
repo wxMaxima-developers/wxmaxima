@@ -457,13 +457,11 @@ protected:
 
     \todo Inform maxima about the new default plot window size.
   */
-  void EditInputMenu(wxCommandEvent &event);
   //! Trigger reading all variables from Maxima that are shown in the Variables sidebar
   void VarReadEvent(wxCommandEvent &event);
   //! Trigger adding all variables to the variables sidebar
   void VarAddAllEvent(wxCommandEvent &event);
   void EvaluateEvent(wxCommandEvent &event);       //
-  void PrintMenu(wxCommandEvent &event);
 
   void SliderEvent(wxScrollEvent &event);
 
@@ -769,9 +767,6 @@ protected:
     //! Is called when we get a new list of demo files
   //! Is called when we get a new list of demo files
   void OnNewDemoFiles(wxCommandEvent &event);
-  //! Is called when a demo file menu is clicked
-  void OnDemoFileMenu(wxCommandEvent &ev);
-
   //! Is called when something requests an update of the table of contents
   void OnUpdateTOCEvent(wxCommandEvent &event);
 

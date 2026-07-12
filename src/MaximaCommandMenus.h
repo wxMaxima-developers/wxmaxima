@@ -117,6 +117,15 @@ public:
   //! programming-, string-processing- and OS-command wizards).
   void MaximaMenu(wxCommandEvent &event);
 
+  //! Handles a click on one of the dynamically-built demo-file menu items.
+  void OnDemoFileMenu(wxCommandEvent &ev);
+
+  //! Activates the selected input cell's editor for editing (popup "edit").
+  void EditInputMenu(wxCommandEvent &event);
+
+  //! Handles the "Print" menu item (prints the worksheet).
+  void PrintMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.
