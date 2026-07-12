@@ -390,7 +390,6 @@ protected:
   void MaximaMenu(wxCommandEvent &event);          //!< Processes "maxima menu" clicks
   void MatrixMenu(wxCommandEvent &event);         //!< Processes "algebra menu" clicks
   void PropertiesMenu(wxCommandEvent &event);         //!< Processes "Variable/Function props menu" clicks
-  void EquationsMenu(wxCommandEvent &event);       //!< Processes "equations menu" clicks
   void ListMenu(wxCommandEvent &event);            //!< Processes "list menu" clicks
   void DrawMenu(wxCommandEvent &event);            //!< Processes "draw menu" clicks
   void HelpMenu(wxCommandEvent &event);            //!< Processes "Help menu" clicks

@@ -518,8 +518,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::popid_animation_start);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_integrate);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_diff);
-  Bind(wxEVT_BUTTON, &wxMaxima::EquationsMenu, this, EventIDs::button_solve);
-  Bind(wxEVT_BUTTON, &wxMaxima::EquationsMenu, this, EventIDs::button_solve_ode);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::button_solve);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::button_solve_ode);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_sum);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_expand);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_factor);
@@ -671,28 +671,28 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_talg);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_tellrat);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_modulus);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_allroots);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_bfallroots);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_realroots);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve_to_poly);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve_num);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve_ode);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_allroots);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_bfallroots);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_realroots);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_to_poly);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_num);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_ode);
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_map_mat);
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_enter_mat);
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_cpoly);
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_genmatrix);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve_lin);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve_algsys);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_eliminate);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_lin);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_algsys);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_eliminate);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_clear_var);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_clear_fun);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_ivp_1);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_ivp_2);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_bvp);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_bvp);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_rk);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_ivp_1);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_ivp_2);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_bvp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_bvp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_rk);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_fun_def);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_gensym);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_divide);
@@ -724,11 +724,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_maxima_uses_wxmaxima_help);
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_show_tip);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_trigrat);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_solve_de);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_atvalue);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_lhs);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_rhs);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_construct_fraction);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_de);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_atvalue);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_lhs);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_rhs);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_construct_fraction);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_sum);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_product);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_change_var);
@@ -1150,7 +1150,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_even);
   Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_odd);
   Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_evenfun);
-  Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::popid_property_atvalue);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::popid_property_atvalue);
   Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_oddfun);
   Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_increasing);
   Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_decreasing);
@@ -7252,230 +7252,6 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   }
 }
 
-void wxMaxima::EquationsMenu(wxCommandEvent &event) {
-  if(!GetWorksheet())
-    return;
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  wxString expr = GetDefaultEntry();
-  if(event.GetId() == EventIDs::menu_allroots){
-    CommandWiz(
-               _("Solve polynomials numerically"),
-               _("Tries to find all solutions of a polynomial numerically.\n"
-                 "Might be able to detect solutions in non-polynomials, as well, if "
-                 "the expression is approximated by an polynomial, beforehand:\n\n"
-                 "    allroots(ratdisrep(taylor(expression,0,30)));"),
-               wxEmptyString, wxS("allroots(#1#);"), _("Polynomial:"), expr);
-  }
-  else if(event.GetId() == EventIDs::menu_bfallroots){
-    CommandWiz(
-               _("Solve polynomials numerically (bfloats)"),
-               _("Tries to find all solutions of a polynomial numerically using "
-                 "bfloats.\n"
-                 "Might be able to detect solutions in non-polynomials, as well, if "
-                 "the expression is approximated by an polynomial, beforehand:\n\n"
-                 "    bfallroots(ratdisrep(taylor(expression,0,30)));"),
-               wxEmptyString, wxS("bfallroots(#1#);"), _("Polynomial:"), expr);
-  }
-  else if(event.GetId() == EventIDs::menu_realroots){
-    CommandWiz(
-               _("Solve polynomials numerically (real roots)"),
-               _("Tries to find exact fractions that match the numerical solutions of "
-                 "a polynomial.\n"
-                 "Is not able to deal with solutions with a imaginary part. "
-                 "Numerical constants like %pi% need to be eliminated using float() "
-                 "or similar\n"
-                 "Might be able to detect solutions in non-polynomials, as well, if "
-                 "the expression is approximated by an polynomial, beforehand:\n\n"
-                 "    realroots(ratdisrep(taylor(expression,0,30)));\n\n"
-                 "See also guess_exact_value()"),
-               wxEmptyString, wxS("realroots(#1#,#2#);"), _("Polynomial:"), expr,
-               wxEmptyString, _("precision:"), wxS("1e-12"), wxEmptyString);
-  }
-  else if((event.GetId() == EventIDs::button_solve) ||
-          (event.GetId() == EventIDs::menu_solve)){
-    CommandWiz(_("Solve equation(s)"),
-               _("solve() will solve a list of equations only if for n "
-                 "independent equations there are n variables to solve to.\n"
-                 "If only one result variable is of interest the other result "
-                 "variables solve needs to do its work can be used to tell "
-                 "solve() which variables to eliminate in the solution "
-                 "for the interesting variable."),
-               wxEmptyString, wxS("solve([#1#],[#2#]);"), _("Equation(s)"),
-               expr, _("Comma-separated equations"), _("Variable(s)"), wxS("x"),
-               _("Comma-separated variables"));
-  }
-  else if(event.GetId() == EventIDs::menu_solve_to_poly){
-    CommandWiz(
-               _("Solve equations to polynom"),
-               _(wxS("The function to_poly_solve tries to solve the equations "
-                     "e for the variables l. The equation(s) e can either be a "
-                     "single expression or a set or list of expressions; "
-                     "similarly, l can either be a single symbol or a list of "
-                     "set of symbols. When a member of e isn’t explicitly an "
-                     "equation, for example x^2 -1, the solver assumes that the "
-                     "expression vanishes.")),
-               wxEmptyString, wxS("to_poly_solve([#1#],[#2#]);"), _("Equation(s)"),
-               expr, _("Comma-separated equations"), _("Variable(s)"), wxS("x"),
-               _("Comma-separated variables"));
-  }
-  else if(event.GetId() == EventIDs::menu_solve_num) {
-    if (expr.StartsWith(wxS("%")))
-      expr = wxS("''(") + expr + wxS(")");
-    CommandWiz(
-      _("Solve equations numerically"),
-      _("Tries to find a value of the variable that solves the equation between the two bonds"), wxEmptyString,
-      wxT("find_root(#1#,#2#,#3#,#4#);"),
-      _("Equation:"), expr, wxEmptyString,
-      _("Variable:"), wxT("x"), wxEmptyString,
-      _("Lower bound:"), wxT("-1"), wxEmptyString,
-      _("Upper bound:"), wxT("1"), wxEmptyString);
-  }
-  else if((event.GetId() == EventIDs::button_solve_ode) ||
-          (event.GetId() == EventIDs::menu_solve_ode)) {
-    CommandWiz(_("Solve ODE"),
-               _("solves an equation of the form\n    'diff(y,t) = -y;"),
-               _("The solution of an ODE describes the general shape of the "
-                 "resulting curve. The actual height of that curve is defined "
-                 "by the initial condition or boundary values, later on."),
-               wxS("ode2(#1#,#2#,#3#);"), _("Equation:"), expr, wxEmptyString,
-               _("y:"), wxS("y"), wxEmptyString, _("t:"), wxS("t"),
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_ivp_1){
-    CommandWiz(_("Initial Condition"),
-               _("The solution of an ODE tells the shape, but not the height "
-                 "of the solution.\n"
-                 "If the ODE\'s state is known at a point this "
-                 "function fills in the correct values for the constants"),
-               wxEmptyString, wxS("ic1(#1#,#2#,#3#);"),
-               _("Solution of the ODE:"), expr, wxEmptyString,
-               _("Point the value is known at:"), wxS("t=0"), wxEmptyString,
-               _("Value at that point:"), wxS("y=1"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_ivp_2){
-    CommandWiz(_("Initial Condition"),
-               _("The solution of an ODE tells the shape, but not the height "
-                 "of the solution.\n"
-                 "If the ODE\'s state is known at a point this "
-                 "function fills in the correct values for the constants"),
-               wxEmptyString, wxS("ic2(#1#,#2#,#3#,#4#);"),
-               _("Solution of the ODE:"), expr, wxEmptyString,
-               _("Point the value is known at:"), wxS("t=0"), wxEmptyString,
-               _("Value y at that point:"), wxS("y=1"), wxEmptyString,
-               _("Derivate of y at that point:"), wxS("\'diff(y,t)=-1"),
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_bvp){
-    CommandWiz(_("Boundary value problem"),
-               _("The solution of an ODE tells the shape, but not the height "
-                 "of the solution.\n"
-                 "If the ODE\'s result is known at two points this "
-                 "function fills in the correct values for the  constants"),
-               wxEmptyString, wxS("bc2(#1#,#2#,#3#,#4#,#5#);"),
-               _("Solution of the ODE:"), expr, wxEmptyString,
-               _("Point #1 with known value:"), wxS("t=0"), wxEmptyString,
-               _("Value y at that point:"), wxS("y=0"), wxEmptyString,
-               _("Point #2 with known value:"), wxS("t=1"), wxEmptyString,
-               _("Value y at that point:"), wxS("y=1"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_rk){
-    CommandWiz(
-               _("Numerical solution for 1st degree ODE"),
-               _("Tries to find a numerical solution for a 1st order ODE (or in other "
-                 "words: a equation of the format depends(x,t);diff(x,t)=(something "
-                 "containing x and t)"),
-               wxEmptyString, wxS("rk(#1#,#2#,#3#,[#4#,#5#,#6#,#7#]);"),
-               _("diff(x,t)="), expr,
-               _("Accepts one expression or a list in the format [ode1,ode2,...]"),
-               _("Name of x:"), wxS("x"),
-               _("Accepts one variable or a list in the format [var1,var2,...]"),
-               _("Initial x:"), wxS("1"),
-               _("Accepts one variable or a list in the format [1,4,...]"),
-               _("Name of t:"), wxS("t"), wxEmptyString, _("Start of t:"), wxS("0"),
-               wxEmptyString, _("End of t:"), wxS("10"), wxEmptyString,
-               _("Step width:"), wxS(".1"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_eliminate){
-    CommandWiz(_("Eliminate a variable"), wxEmptyString, wxEmptyString,
-               wxS("eliminate([#1#],[#2#]);"), _("Equation(s):"), expr,
-               wxEmptyString, _("Variable(s):"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_solve_algsys){
-    GetTextFromUser(_("Number of equations:"), _("Solve algebraic system"),
-                    &m_configuration, wxS("3"), this, [this](wxString sz) {
-                      if (sz.Length() == 0)
-                        return;
-                      long isz;
-                      if (!sz.ToLong(&isz) || isz <= 0) {
-                        LoggingMessageBox(_("Not a valid number of equations!"), _("Error!"),
-                                          wxOK | wxICON_ERROR);
-                        return;
-                      }
-                      wxWindowPtr<SysWiz> wiz(new SysWiz(this, -1, &m_configuration,
-                                                         _("Solve algebraic system"), isz));
-                      // wiz->Centre(wxBOTH);
-                      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-                        if (retcode == wxID_OK) {
-                          wxString cmd = wxS("algsys") + wiz->GetValue();
-                          MenuCommand(cmd);
-                        }
-                      });
-                    });
-  }
-  else if(event.GetId() == EventIDs::menu_solve_lin){
-    GetTextFromUser(_("Number of equations:"), _("Solve linear system"),
-                    &m_configuration, wxS("3"), this, [this](wxString sz) {
-                      if (sz.Length() == 0)
-                        return;
-                      long isz;
-                      if (!sz.ToLong(&isz) || isz <= 0) {
-                        LoggingMessageBox(_("Not a valid number of equations!"), _("Error!"),
-                                          wxOK | wxICON_ERROR);
-                        return;
-                      }
-                      wxWindowPtr<SysWiz> wiz(new SysWiz(this, -1, &m_configuration, _("Solve linear system"), isz));
-                      // wiz->Centre(wxBOTH);
-                      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-                        if (retcode == wxID_OK) {
-                          wxString cmd = wxS("linsolve") + wiz->GetValue();
-                          MenuCommand(cmd);
-                        }
-                      });
-                    });
-  }
-  else if(event.GetId() == EventIDs::menu_solve_de){
-    CommandWiz(_("Solve differential equations using laplace()"),
-               _("The solution variable needs to be in the form\n"
-                 "   U(t)=1/2*U(t)+3*diff(U(t),t)\n"
-                 "for this to work; Initial conditions can be specified using "
-                 "atvalue()."),
-               wxEmptyString, wxS("desolve([#1#],[#2#]);"), _("Equation(s):"),
-               expr, wxEmptyString, _("Variable(s):"), wxEmptyString,
-               wxEmptyString);
-  }
-  else if((event.GetId() == EventIDs::menu_atvalue) ||
-          (event.GetId() == EventIDs::popid_property_atvalue)) {
-    CommandWiz(_("Make a function value at a specific point known"),
-               _("Tells maxima for an f(x), that f(x=t)=a"), wxEmptyString,
-               wxS("atvalue(#1#,#2#,#3#);"), _("Function f(x):"), expr,
-               wxEmptyString, _("Point:"), wxS("x=0"), wxEmptyString,
-               _("Value:"), wxS("0"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_lhs) {
-    wxString cmd = wxS("lhs(") + expr + wxS(");");
-    MenuCommand(cmd);
-  }
-  else if(event.GetId() == EventIDs::menu_rhs) {
-    wxString cmd = wxS("rhs(") + expr + wxS(");");
-    MenuCommand(cmd);
-  }
-  else if(event.GetId() == EventIDs::menu_construct_fraction){
-    CommandWiz(_("Construct a fraction"), wxEmptyString, wxEmptyString,
-               wxS("((#1#)/(#2#))"), _("Enumerator:"), expr, wxEmptyString,
-               _("Denominator:"), wxS("1"), wxEmptyString);
-  }
-}
 
 
 void wxMaxima::MatrixMenu(wxCommandEvent &event) {

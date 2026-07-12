@@ -66,6 +66,10 @@ public:
   //! trig/rectform/... and the substitute/nouns/... command wizards).
   void SimplifyMenu(wxCommandEvent &event);
 
+  //! Handles the "Equations" menu and its toolbar buttons (solve/solve-numerically,
+  //! the algebraic/linear system wizards, ODEs, roots and the eliminate/... wizards).
+  void EquationsMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.
