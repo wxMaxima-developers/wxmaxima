@@ -387,8 +387,6 @@ protected:
     \param event The event that triggered calling this function.
   */
   void ShowPane(wxCommandEvent &event);            //<! Makes a sidebar visible
-  void OnGnuplotClose(wxProcessEvent &event);      //
-  void OnGnuplotQueryTerminals(wxProcessEvent &event);      //
 
   //! Is triggered when the textstyle drop-down box's value is changed.
   void ChangeCellStyle(wxCommandEvent &event);
@@ -623,8 +621,6 @@ protected:
   //! Is called when something requests an update of the table of contents
   void OnUpdateTOCEvent(wxCommandEvent &event);
 
-  //! Sets gnuplot's command name and tries to determine gnuplot's path
-  void GnuplotCommandName(wxString gnuplot);
   //! The first prompt maxima will output
   static wxString m_firstPrompt;
   bool m_dispReadOut = false;               //!< what is displayed in statusbar

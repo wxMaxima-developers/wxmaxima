@@ -613,7 +613,7 @@ void MaximaResponseReader::VariableActionMaximaHtmldir(const wxString &value) {
 }
 
 void MaximaResponseReader::VariableActionGnuplotCommand(const wxString &value) {
-  m_wxMaxima.GnuplotCommandName(value);
+  m_wxMaxima.m_processManager.GnuplotCommandName(value);
 
   wxLogMessage(_("Querying gnuplot which graphics drivers it supports."));
   wxEnvVariableHashMap environment;

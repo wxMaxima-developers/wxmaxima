@@ -827,3 +827,168 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
   }
 }
 
+
+void MaximaProcessManager::OnGnuplotQueryTerminals(wxProcessEvent &event) {
+  if (!m_wxMaxima.m_gnuplotTerminalQueryProcess)
+    return;
+  wxString gnuplotMessage;
+  {
+    wxInputStream *istream = m_wxMaxima.m_gnuplotTerminalQueryProcess->GetInputStream();
+    wxTextInputStream textin(*istream);
+    while (!istream->Eof())
+      gnuplotMessage += textin.ReadLine() + "\n";
+  }
+  {
+    wxInputStream *istream = m_wxMaxima.m_gnuplotTerminalQueryProcess->GetErrorStream();
+    wxTextInputStream textin(*istream);
+    while (!istream->Eof())
+      gnuplotMessage += textin.ReadLine() + "\n";
+  }
+  gnuplotMessage.Trim(true);
+  gnuplotMessage.Trim(false);
+  wxLogMessage("Terminals supported by gnuplot: %s", gnuplotMessage);
+  if (gnuplotMessage.Contains(wxS("pngcairo"))) {
+    wxLogMessage(_("Using gnuplot's pngcairo driver for embedded plots"));
+    if (!m_wxMaxima.m_configuration.UsePngCairo())
+      m_wxMaxima.m_configCommands += wxS(":lisp-quiet (setq $wxplot_pngcairo t)\n");
+    m_wxMaxima.m_configuration.UsePngCairo(true);
+  } else {
+    wxLogMessage(_("Using gnuplot's antialiassing-less png driver for embedded "
+                   "plots as pngcairo could not be found"));
+    if (m_wxMaxima.m_configuration.UsePngCairo())
+      m_wxMaxima.m_configCommands += wxS(":lisp-quiet (setq $wxplot_pngcairo nil)\n");
+    m_wxMaxima.m_configuration.UsePngCairo(false);
+  }
+  m_wxMaxima.m_gnuplotTerminalQueryProcess->CloseOutput();
+  m_wxMaxima.m_gnuplotTerminalQueryProcess = NULL;
+  event.Skip();
+}
+
+void MaximaProcessManager::OnGnuplotClose(wxProcessEvent &event) {
+  m_wxMaxima.m_gnuplotProcess = NULL;
+  wxLogMessage(_("Gnuplot has closed."));
+  event.Skip();
+}
+
+void MaximaProcessManager::GnuplotCommandName(wxString gnuplot) {
+  m_wxMaxima.m_gnuplotcommand = gnuplot;
+  if (!wxFileName(m_wxMaxima.m_gnuplotcommand).IsAbsolute()) {
+    wxPathList pathlist;
+
+    // Add paths relative to the path of the wxMaxima executable
+    pathlist.Add(
+                 wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath());
+    pathlist.Add(
+                 wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath() +
+                 "/../");
+    pathlist.Add(
+                 wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath() +
+                 "/../gnuplot");
+    pathlist.Add(
+                 wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath() +
+                 "/../gnuplot/bin");
+#ifdef __WXMSW__
+    // Windows: Gnuplot is stored in the directory ../gnuplot/bin relative to *maxima.bat*
+    // If wxMaxima is packaged separate (we provide Windows installers with wxMaxima only now),
+    // add that path too:
+    // One must specify the path to Maxima in that case, so use the m_wxMaxima.m_maximaUserLocation.
+    wxString maximapath = wxFileName(m_wxMaxima.m_configuration.MaximaUserLocation()).GetPath();
+    if (!maximapath.IsEmpty()) {
+      pathlist.Add(maximapath + "/../gnuplot/bin");
+    }
+#endif
+    // Add paths from the PATH environment variable
+    pathlist.AddEnvList(wxS("PATH"));
+
+    // Add OSX specific paths
+#ifdef __WXOSX__
+    // MacPorts:
+    // The MacPorts default binary path /opt/local/bin/ is not in the PATH for
+    // applications. It is added to .profile, but this is only used by shells.
+    // => Add the default MacPorts binary path /opt/local/bin/ to our search
+    // path list.
+    //
+    // Homebrew:
+    // Homebrew installs binaries in /usr/local/bin, which is in the PATH by
+    // default.
+    //
+    // Application packages including gnuplot:
+    // The above wxMaxima executable relative logic should work
+    //
+    // If gnuplot is somewhere else (e.g. non default MacPort or Homebrew path),
+    // the command
+    //   gnuplot_command:"/opt/local/bin/gnuplot"$
+    // must be added manually to ~/.maxima/wxmaxima-init.mac
+    // This should be documented for the installer packages, e.g. as MacPorts
+    // "notes" field.
+    pathlist.Add(OSX_MACPORTS_PREFIX "/bin");
+#endif
+
+#ifdef __WXMSW__
+    wxString wgnuplot = gnuplot;
+    if(m_wxMaxima.m_configuration.UseWGnuplot())
+      {
+        wxLogMessage(_("Instructed to prefer wgnuplot over gnuplot"));
+        long pos = gnuplot.rfind(wxS("gnuplot"));
+        // if pos is not wxNOT_FOUND it is 6 or higher.
+        if(pos != wxNOT_FOUND)
+          {
+            wgnuplot = gnuplot.Left(pos) + wxS("w") + gnuplot.Right(gnuplot.Length() - pos);
+            if (!m_wxMaxima.m_gnuplotcommand.IsEmpty())
+              m_wxMaxima.m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wgnuplot);
+          }
+      }
+    else
+      {
+        wxLogMessage(_("Instructed to prefer gnuplot over wgnuplot"));
+      }
+    if (m_wxMaxima.m_gnuplotcommand.IsEmpty())
+      m_wxMaxima.m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot);
+    m_wxMaxima.m_gnuplotcommand_commandline = pathlist.FindAbsoluteValidPath(wxS("gnuplot.exe"));
+
+    if(m_wxMaxima.m_configuration.UseWGnuplot())
+      {
+        // If not successful, Find executable "wgnuplot.exe" in our list of paths
+        if (m_wxMaxima.m_gnuplotcommand.IsEmpty()) {
+          m_wxMaxima.m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("wgnuplot.exe"));
+          m_wxMaxima.m_gnuplotcommand_commandline = pathlist.FindAbsoluteValidPath(wxS("gnuplot.exe"));
+        }
+      }
+    // If not successful, Find executable "gnuplot.exe" in our list of paths
+    if (m_wxMaxima.m_gnuplotcommand.IsEmpty())
+      m_wxMaxima.m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("gnuplot.exe"));
+    // If not successful, Find executable "gnuplot.bat" in our list of paths
+    if (m_wxMaxima.m_gnuplotcommand.IsEmpty())
+      m_wxMaxima.m_gnuplotcommand = pathlist.FindAbsoluteValidPath(wxS("gnuplot.bat"));
+#endif
+#ifdef __WXOSX__
+    if (m_wxMaxima.m_gnuplotcommand.IsEmpty())
+      m_wxMaxima.m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot + wxS(".app"));
+#endif
+    // If not successful, use the original command (better than empty for error
+    // messages)
+    if (m_wxMaxima.m_gnuplotcommand.IsEmpty()) {
+#ifdef __WXMSW__
+      if(m_wxMaxima.m_configuration.UseWGnuplot())
+        {
+          m_wxMaxima.m_gnuplotcommand = wgnuplot;
+          wxLogMessage(_("Gnuplot not found, using the default: %s"), wgnuplot);
+        }
+      else
+        {
+          m_wxMaxima.m_gnuplotcommand = gnuplot;
+          wxLogMessage(_("Gnuplot not found, using the default: %s"), gnuplot);
+        }
+#endif
+    } else {
+      wxLogMessage(_("Gnuplot found at: %s"), m_wxMaxima.m_gnuplotcommand);
+#ifdef __WINDOWS__
+      wxLogMessage(_("Gnuplot (command line) found at: %s"), m_wxMaxima.m_gnuplotcommand_commandline);
+#endif
+    }
+  }
+  if (m_wxMaxima.m_gnuplotcommand.Contains(" ") && (!m_wxMaxima.m_gnuplotcommand.StartsWith("\"")) &&
+      (!m_wxMaxima.m_gnuplotcommand.StartsWith("\'")))
+    m_wxMaxima.m_gnuplotcommand = "\"" + m_wxMaxima.m_gnuplotcommand + "\"";
+}
+

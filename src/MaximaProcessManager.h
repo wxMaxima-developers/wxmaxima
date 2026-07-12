@@ -38,6 +38,8 @@
 #ifndef MAXIMAPROCESSMANAGER_H
 #define MAXIMAPROCESSMANAGER_H
 
+#include <wx/string.h>
+
 class wxMaxima;
 class wxSocketEvent;
 class wxProcessEvent;
@@ -110,6 +112,17 @@ public:
 
   //! Sends the running Maxima an interrupt (Ctrl+G / the interrupt button).
   void Interrupt(wxCommandEvent &event);
+
+  //! Resolves the gnuplot executable path and (re)starts a background query of
+  //! the graphics terminals it supports.
+  void GnuplotCommandName(wxString gnuplot);
+
+  //! wxEVT_END_PROCESS handler for the gnuplot terminal-query subprocess:
+  //! reads which terminals gnuplot supports and picks the plot driver.
+  void OnGnuplotQueryTerminals(wxProcessEvent &event);
+
+  //! wxEVT_END_PROCESS handler for the gnuplot subprocess: notes it has closed.
+  void OnGnuplotClose(wxProcessEvent &event);
 
 private:
   //! The wxMaxima frame whose services the lifecycle handlers drive. Not owned;
