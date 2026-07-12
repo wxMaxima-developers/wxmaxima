@@ -405,7 +405,6 @@ protected:
   void OnMaximaClose();      //
   void OnGnuplotClose(wxProcessEvent &event);      //
   void OnGnuplotQueryTerminals(wxProcessEvent &event);      //
-  void PopupMenu(wxCommandEvent &event);           //
 
   //! Is triggered when the textstyle drop-down box's value is changed.
   void ChangeCellStyle(wxCommandEvent &event);

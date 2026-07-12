@@ -107,6 +107,11 @@ public:
   //! find/replace, history navigation and the gnuplot pop-out).
   void EditMenu(wxCommandEvent &event);
 
+  //! Handles the worksheet/table-of-contents right-click context menu (fold/
+  //! unfold, image max-size/resolution/reload, section evaluation, copy-as,
+  //! and the solve/plot/integrate/... quick wizards).
+  void PopupMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.

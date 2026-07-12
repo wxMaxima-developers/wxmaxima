@@ -484,11 +484,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_SCROLL_CHANGED, &wxMaxima::SliderEvent, this);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, wxID_CLOSE);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_check_updates);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_image);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_animation);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_svg);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_emf);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_rtf);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_image);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_animation);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_svg);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_emf);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_rtf);
   Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_text);
   Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_title);
   Bind(wxEVT_MENU, &MaximaCommandMenus::InsertMenu, &m_menuCommands, EventIDs::popid_insert_section);
@@ -500,21 +500,21 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_show_cellbrackets);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_print_cellbrackets);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::popid_delete);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_simplify);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_expand);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_solve);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::enable_unicodePane);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_subst);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_plot2d);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_plot3d);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_diff);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_integrate);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_float);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_matlab);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_copy_tex);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::EventIDs::popid_copy_text);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_image);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_animation_save);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_simplify);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_expand);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_solve);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::enable_unicodePane);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_subst);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_plot2d);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_plot3d);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_diff);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_integrate);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_float);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_matlab);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_copy_tex);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::EventIDs::popid_copy_text);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_image);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_animation_save);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::popid_animation_start);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_integrate);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_diff);
@@ -996,32 +996,32 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_paste_input);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_CUT);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_SELECTALL);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_comment_selection);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_divide_cell);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_evaluate);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_evaluate_section);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, ToolBar::tb_eval);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_comment_selection);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_divide_cell);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_evaluate);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_evaluate_section);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, ToolBar::tb_eval);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, ToolBar::tb_eval_all);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, ToolBar::tb_evaluate_rest);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, ToolBar::tb_evaltillhere);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_merge_cells);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_maxsizechooser);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_resolutionchooser);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_reloadimage);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_change_image);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_Fold);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_Unfold);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_SelectTocChapter);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_EvalTocChapter);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_evaluate_section);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_ToggleTOCshowsSectionNumbers);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_TOCindentation);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_tocLevel1, EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_tocMoveIn);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_tocMoveOut);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_tocdnd);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_fold);
-  Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_unfold);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, ToolBar::tb_evaluate_rest);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, ToolBar::tb_evaltillhere);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_merge_cells);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_maxsizechooser);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_resolutionchooser);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_reloadimage);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_change_image);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_Fold);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_Unfold);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_SelectTocChapter);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_EvalTocChapter);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_evaluate_section);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_ToggleTOCshowsSectionNumbers);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_TOCindentation);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_tocLevel1, EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_tocMoveIn);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_tocMoveOut);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_tocdnd);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_fold);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_unfold);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_evaluate_all_visible);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_evaluate_all);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, ToolBar::tb_evaltillhere);
@@ -6684,539 +6684,6 @@ void wxMaxima::OnClose(wxCloseEvent &event) {
   Destroy();
 }
 
-void wxMaxima::PopupMenu(wxCommandEvent &event) {
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  wxString selection = GetWorksheet()->GetString();
-  if(event.GetId() == EventIDs::enable_unicodePane){
-    wxMaximaFrame::ShowPane(EventIDs::menu_pane_unicode, true);
-  }
-  else if(event.GetId() == EventIDs::popid_fold){
-      if (GetWorksheet()->GetActiveCell()) {
-        // This "if" is pure paranoia. But - since the costs of an "if" are low...
-        GroupCell *group = GetWorksheet()->GetActiveCell()->GetGroup();
-        if (group->IsFoldable())
-          group->Fold();
-        else
-          group->Hide(true);
-        GetWorksheet()->UpdateTableOfContents();
-      }
-  }
-  else if(event.GetId() == EventIDs::popid_maxsizechooser){
-    if (GetWorksheet()->GetSelectionStart()) {
-      Cell *output = GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
-      if (output == NULL)
-        return;
-      if ((output->GetType() != MC_TYPE_IMAGE) &&
-          (output->GetType() != MC_TYPE_SLIDE))
-        return;
-
-      MaxSizeChooser *chooser = new MaxSizeChooser(
-                                                   this, -1, dynamic_cast<ImgCellBase *>(output)->GetMaxWidth(),
-                                                   dynamic_cast<ImgCellBase *>(output)->GetHeightList());
-      chooser->Centre(wxBOTH);
-      if (chooser->ShowModal() == wxID_OK) {
-        if (dynamic_cast<ImgCellBase *>(output)->GetMaxWidth() !=
-            chooser->GetMaxImageWidth())
-          GetWorksheet()->SetSaved(false);
-        if (dynamic_cast<ImgCellBase *>(output)->GetHeightList() !=
-            chooser->GetHeightList())
-          GetWorksheet()->SetSaved(false);
-
-        dynamic_cast<ImgCellBase *>(output)->SetMaxWidth(
-                                                         chooser->GetMaxWidth());
-        dynamic_cast<ImgCellBase *>(output)->SetMaxHeight(
-                                                          chooser->GetHeightList());
-      }
-    }
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-  }
-  else if(event.GetId() == EventIDs::popid_resolutionchooser){
-    if (GetWorksheet()->GetSelectionStart()) {
-      Cell *output = GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
-      if (output == NULL)
-        return;
-      if ((output->GetType() != MC_TYPE_IMAGE) &&
-          (output->GetType() != MC_TYPE_SLIDE))
-        return;
-
-      ResolutionChooser *chooser = new ResolutionChooser(
-                                                         this, -1, dynamic_cast<ImgCellBase *>(output)->GetPPI());
-      chooser->Centre(wxBOTH);
-      if (chooser->ShowModal() == wxID_OK) {
-        if (dynamic_cast<ImgCellBase *>(output)->GetPPI() !=
-            chooser->GetResolution())
-          GetWorksheet()->SetSaved(false);
-
-        dynamic_cast<ImgCellBase *>(output)->SetPPI(chooser->GetResolution());
-      }
-    }
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-  }
-  else if(event.GetId() == EventIDs::popid_reloadimage){
-    if (!GetWorksheet()->GetSelectionStart())
-      return;
-
-    {
-      Cell *output = GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
-      if (output == NULL)
-        return;
-      if (output->GetType() != MC_TYPE_IMAGE)
-        return;
-
-      wxString imgFile = dynamic_cast<ImgCell *>(output)->GetOrigImageFile();
-
-      if (!wxFileExists(imgFile)) {
-        LoggingMessageDialog dialog(
-                                    this,
-                                    wxString::Format(_("The image file \"%s\" cannot be found."),
-                                                     imgFile),
-                                    "wxMaxima", wxCENTER | wxOK);
-        dialog.SetOKLabel(_("OK"));
-
-        dialog.ShowModal();
-
-        return;
-      }
-
-      wxLogMessage(_("Reloading image file %s."), imgFile);
-      dynamic_cast<ImgCell *>(output)->ReloadImage(imgFile,
-                                                   wxEmptyString);
-
-      GetWorksheet()->RequestRecalculation();
-      GetWorksheet()->RequestRedraw();
-      GetWorksheet()->SetSaved(false);
-
-      UpdateMenus();
-      UpdateToolBar();
-      // ResetTitle(GetWorksheet()->IsSaved());
-    }
-  }
-  else if(event.GetId() == EventIDs::popid_unfold){
-      GroupCell *group = GetWorksheet()->GetActiveCell()->GetGroup();
-      if (group->IsFoldable())
-        group->Unfold();
-      else
-        group->Hide(false);
-      GetWorksheet()->UpdateTableOfContents();
-  }
-  else if(event.GetId() == EventIDs::popid_Fold){
-    if (m_tableOfContents != NULL) {
-      // We only update the table of contents when there is time => no guarantee
-      // that the cell that was clicked at actually still is part of the tree.
-      if ((GetWorksheet()->GetTree()) &&
-          (GetWorksheet()->GetTree()->Contains(
-                                            m_tableOfContents->RightClickedOn()))) {
-        m_tableOfContents->RightClickedOn()->Fold();
-        GetWorksheet()->RequestRecalculation();
-        GetWorksheet()->RequestRedraw();
-        GetWorksheet()->UpdateTableOfContents();
-      }
-    }
-  }
-  else if(event.GetId() == EventIDs::popid_Unfold){
-    if (m_tableOfContents != NULL) {
-      // We only update the table of contents when there is time => no guarantee
-      // that the cell that was clicked at actually still is part of the tree.
-      if ((GetWorksheet()->GetTree()) &&
-          (GetWorksheet()->GetTree()->Contains(
-                                            m_tableOfContents->RightClickedOn()))) {
-        m_tableOfContents->RightClickedOn()->Unfold();
-        GetWorksheet()->RequestRecalculation();
-        GetWorksheet()->RequestRedraw();
-        GetWorksheet()->UpdateTableOfContents();
-      }
-    }
-  }
-  else if(event.GetId() == EventIDs::popid_SelectTocChapter){
-    if (m_tableOfContents != NULL) {
-      if (m_tableOfContents->RightClickedOn()) {
-        GroupCell *SelectionStart =
-          m_tableOfContents->RightClickedOn();
-        // We only update the table of contents when there is time => no
-        // guarantee that the cell that was clicked at actually still is part of
-        // the tree.
-        if ((GetWorksheet()->GetTree()) &&
-            (GetWorksheet()->GetTree()->Contains(SelectionStart))) {
-          GroupCell *SelectionEnd = SelectionStart;
-          while ((SelectionEnd->GetNext() != NULL) &&
-                 (SelectionEnd->GetNext()->IsLesserGCType(
-                                                          SelectionStart->GetGroupType())))
-            SelectionEnd = SelectionEnd->GetNext();
-          GetWorksheet()->SetActiveCell(NULL);
-          GetWorksheet()->ScrolledAwayFromEvaluation(true);
-          GetWorksheet()->SetHCaret(SelectionEnd);
-          GetWorksheet()->SetSelection(SelectionStart, SelectionEnd);
-          GetWorksheet()->RequestRedraw();
-        }
-      }
-    }
-  }
-  else if(event.GetId() == EventIDs::popid_EvalTocChapter){
-      GroupCell *SelectionStart =
-        m_tableOfContents->RightClickedOn();
-      // We only update the table of contents when there is time => no guarantee
-      // that the cell that was clicked at actually still is part of the tree.
-      if ((GetWorksheet()->GetTree()) &&
-          (GetWorksheet()->GetTree()->Contains(SelectionStart))) {
-        GetWorksheet()->AddSectionToEvaluationQueue(
-                                                 m_tableOfContents->RightClickedOn());
-        TriggerEvaluation();
-      }
-  }
-  else if(event.GetId() == EventIDs::popid_ToggleTOCshowsSectionNumbers){
-      m_configuration.TocShowsSectionNumbers(true);
-      GetWorksheet()->UpdateTableOfContents();
-  }
-  else if(event.GetId() == EventIDs::popid_TOCindentation){
-      m_configuration.TocShowsSectionNumbers(false);
-      GetWorksheet()->UpdateTableOfContents();
-  }
-  else if((event.GetId() >= EventIDs::popid_tocLevel1) && (event.GetId() < EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels - 2)) {
-    m_configuration.TocDepth(event.GetId() - EventIDs::popid_tocLevel1 + 1 );
-    GetWorksheet()->UpdateTableOfContents();
-  }
-  else if(event.GetId() == EventIDs::popid_tocLevel1 + EventIDs::NumberOfTocLevels -1){
-      m_configuration.TocDepth(255);
-      GetWorksheet()->UpdateTableOfContents();
-  }
-  else if(event.GetId() == EventIDs::popid_tocdnd){
-    GetWorksheet()->TOCdnd(m_tableOfContents->DNDStart(), m_tableOfContents->DNDEnd());
-  }
-  else if(event.GetId() == EventIDs::popid_tocMoveIn){
-    GetWorksheet()->SectioningMoveIn(m_tableOfContents->RightClickedOn());
-    GetWorksheet()->NumberSections();
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-    GetWorksheet()->UpdateTableOfContents();
-  }
-  else if(event.GetId() == EventIDs::popid_tocMoveOut){
-    GetWorksheet()->SectioningMoveOut(m_tableOfContents->RightClickedOn());
-    GetWorksheet()->NumberSections();
-    GetWorksheet()->RequestRecalculation();
-    GetWorksheet()->RequestRedraw();
-    GetWorksheet()->UpdateTableOfContents();
-  }
-  else if(event.GetId() == EventIDs::popid_evaluate_section){
-      GroupCell *group = NULL;
-      if (GetWorksheet()->GetActiveCell()) {
-        // This "if" is pure paranoia. But - since the costs of an "if" are low...
-        if (GetWorksheet()->GetActiveCell()->GetGroup())
-          group = GetWorksheet()->GetActiveCell()->GetGroup();
-      } else if (GetWorksheet()->HCaretActive()) {
-        if (GetWorksheet()->GetHCaret()) {
-          group = GetWorksheet()->GetHCaret();
-          if ((false))
-            if (group->GetNext())
-              group = group->GetNext();
-        } else
-          group = GetWorksheet()->GetTree();
-      }
-      if (group) {
-        GetWorksheet()->AddSectionToEvaluationQueue(group);
-        TriggerEvaluation();
-      }
-    }
-  else if((event.GetId() == EventIDs::popid_evaluate) ||
-          (event.GetId() == ToolBar::tb_eval)){
-    wxCommandEvent *dummy = new wxCommandEvent;
-    EvaluateEvent(*dummy);
-  }
-  else if(event.GetId() == ToolBar::tb_evaluate_rest){
-    GetWorksheet()->AddRestToEvaluationQueue();
-    EvaluationQueueLength(GetWorksheet()->GetEvaluationQueue().Size(),
-                          GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-    TriggerEvaluation();
-  }
-  else if(event.GetId() == ToolBar::tb_evaltillhere){
-    GetWorksheet()->GetEvaluationQueue().Clear();
-    GetWorksheet()->ResetInputPrompts();
-    EvaluationQueueLength(0);
-    if (m_configuration.RestartOnReEvaluation())
-      StartMaxima();
-    GetWorksheet()->AddDocumentTillHereToEvaluationQueue();
-    // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(GetWorksheet()->GetEvaluationQueue().Size(),
-                          GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-    TriggerEvaluation();
-  }
-  else if(event.GetId() == EventIDs::popid_copy_matlab){
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopyMatlab();
-  }
-  else if(event.GetId() == EventIDs::popid_copy_tex){
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopyTeX();
-  }
-  else if(event.GetId() == EventIDs::popid_copy_text){
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopyText();
-  }
-  else if(event.GetId() == EventIDs::popid_comment_selection){
-    GetWorksheet()->CommentSelection();
-  }
-  else if(event.GetId() == EventIDs::popid_divide_cell){
-    GetWorksheet()->DivideCell();
-  }
-  else if(event.GetId() == EventIDs::popid_copy_image){
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopyBitmap();
-  }
-  else if(event.GetId() == EventIDs::popid_copy_animation){
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopyAnimation();
-  }
-  else if(event.GetId() == EventIDs::popid_copy_svg){
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopySVG();
-  }
-#if wxUSE_ENH_METAFILE
-  else if(event.GetId() == EventIDs::popid_copy_emf){
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopyEMF();
-  }
-#endif
-  else if(event.GetId() == EventIDs::popid_copy_rtf){
-    if (GetWorksheet()->CanCopy())
-      GetWorksheet()->CopyRTF();
-  }
-  else if(event.GetId() == EventIDs::popid_simplify){
-    MenuCommand(wxS("ratsimp(") + selection + wxS(");"));
-  }
-  else if(event.GetId() == EventIDs::popid_expand){
-    MenuCommand(wxS("expand(") + selection + wxS(");"));
-  }
-  else if(event.GetId() == EventIDs::popid_factor){
-    MenuCommand(wxS("factor(") + selection + wxS(");"));
-  }
-  else if(event.GetId() == EventIDs::popid_solve){
-    CommandWiz(
-               _("Solve"),
-               _("solve() will solve a list of equations only if for n "
-                 "independent equations there are n variables to solve to.\n"
-                 "If only one result variable is of interest the other result "
-                 "variables can be used to to tell solve() which variables to "
-                 "eliminate from the solution\n"
-                 "solve() searches for a global solution. If a problem has different "
-                 "solutions depending on the range its variables are in one way "
-                 "to successfully use solve() is to use solve() to eliminate "
-                 "variables "
-                 "one by one and to manually choose which of the solutions solve() "
-                 "found "
-                 "matches the current problem."),
-               wxEmptyString, wxS("solve([#1#],[#2#]);"), _("Data:"), selection,
-               _("Comma-separated equations"), _("Result variables:"), wxS("x"),
-               _("Comma-separated variables"));
-  }
-  else if(event.GetId() == EventIDs::popid_solve_num){
-    CommandWiz(_("Find root (solve numerically)"),
-               _("Tries to find a solution of the equation that lies between "
-                 "the two bounds."),
-               wxEmptyString, wxS("find_root(#1#,#2#,#3#,#4#);"),
-               _("Equation:"), selection, wxEmptyString, _("Variable:"),
-               wxS("x"), wxEmptyString, _("Lower bound:"), wxS("-1"),
-               wxEmptyString, _("Upper bound:"), wxS("1"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::popid_integrate){
-      wxWindowPtr<IntegrateWiz> wiz(new IntegrateWiz(this, -1, &m_configuration, _("Integrate")));
-      wiz->SetValue(selection);
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          wxString val = wiz->GetValue();
-          MenuCommand(val);
-        }
-      });
-    }
-  else if(event.GetId() == EventIDs::popid_diff){
-    CommandWiz(_("Differentiate"), _("Differentiates the expression n times"),
-               wxEmptyString, wxS("diff(#1#,#2#,#3#);"), _("Expression:"),
-               selection, wxEmptyString, _("Variable(s):"), wxS("x"),
-               wxEmptyString, _("Times:"), wxS("1"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::popid_subst){
-    CommandWiz(_("Substitute"),
-               _("Introduces one or more assignments into an expression"),
-               wxEmptyString, wxS("subst(#1#,#2#);"), _("Assignment(s):"),
-               wxS("x=sqrt(u)"), _("Assignments of the format a=10,b=20"),
-               _("Expression"), selection, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::popid_plot2d){
-      wxWindowPtr<Plot2DWiz> wiz(new Plot2DWiz(this, -1, &m_configuration, _("Plot 2D")));
-      wiz->SetValue(selection);
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          wxString val = wiz->GetValue();
-          MenuCommand(val);
-        }
-      });
-    }
-  else if(event.GetId() == EventIDs::popid_plot3d){
-      wxWindowPtr<Plot3DWiz> wiz(new Plot3DWiz(this, -1, &m_configuration, _("Plot 3D")));
-      wiz->SetValue(selection);
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          wxString val = wiz->GetValue();
-          MenuCommand(val);
-        }
-      });
-    }
-  else if(event.GetId() == EventIDs::popid_float){
-    MenuCommand(wxS("float(") + selection + wxS("), numer;"));
-  }
-  else if(event.GetId() == EventIDs::popid_image){
-      if ((GetWorksheet()->GetSelectionStart() == GetWorksheet()->GetSelectionEnd()) &&
-          (GetWorksheet()->GetSelectionStart() != NULL))
-        {
-          bool canExportSVG = false;
-
-          if ((GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_IMAGE) ||
-              (GetWorksheet()->GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
-            if (dynamic_cast<ImgCellBase *>(GetWorksheet()->GetSelectionStart())
-                ->CanExportSVG())
-              canExportSVG = true;
-
-          wxString selectorString;
-
-          if (canExportSVG)
-            selectorString = _("Scalable Vector image (*.svg)|*.svg|"
-                               "Compressed Scalable Vector Image (*.svgz)|*.svgz|"
-                               "PNG image (*.png)|*.png|"
-                               "JPEG image (*.jpg)|*.jpg|"
-                               "GIF image (*.gif)|*.gif|"
-                               "Windows bitmap (*.bmp)|*.bmp|") +
-#ifdef wxUSE_LIBWEBP
-                               _("WebP (*.webp)|*.webp|") +
-#endif
-                               _("Portable anymap (*.pnm)|*.pnm|"
-                               "Tagged image file format (*.tif)|*.tif|"
-                               "X pixmap (*.xpm)|*.xpm");
-          else
-            selectorString = _("PNG image (*.png)|*.png|"
-                               "JPEG image (*.jpg)|*.jpg|"
-                               "Windows bitmap (*.bmp)|*.bmp|") +
-#ifdef wxUSE_LIBWEBP
-                               _("WebP (*.webp)|*.webp|") +
-#endif
-                               _("GIF image (*.gif)|*.gif|"
-                               "Portable anymap (*.pnm)|*.pnm|"
-                               "Tagged image file format (*.tif)|*.tif|"
-                               "X pixmap (*.xpm)|*.xpm");
-
-          wxString file = wxFileSelector(_("Save selection to file"), m_lastPath,
-                                         wxS("image.png"), wxS("png"), selectorString,
-                                         wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-          if (file.Length()) {
-            GetWorksheet()->CopyToFile(file);
-            m_lastPath = wxPathOnly(file);
-          }
-        }
-  }
-  else if(event.GetId() == EventIDs::popid_change_image){
-      if (!GetWorksheet()->GetSelectionStart())
-        return;
-
-      Cell *cell = GetWorksheet()->GetSelectionStart()->GetGroup()->GetLabel();
-      if (cell == NULL)
-        return;
-
-      if (cell->GetType() != MC_TYPE_IMAGE)
-        return;
-
-      wxString newImg = wxFileSelector(
-                                       _("Change Image"), m_lastPath, wxEmptyString, wxEmptyString,
-                                       _("Image files (") +
-#ifdef wxUSE_LIBPNG
-                                       "*.png, "
-#endif
-#ifdef wxUSE_LIBJPEG
-                                       "*.jpg, "
-#endif
-#ifdef wxUSE_LIBWEBP
-                                         "*.webp, "
-#endif
-#ifdef wxUSE_XPM
-                                         "*.xpm, "
-#endif
-#ifdef wxUSE_GIF
-                                         "*.gif, "
-#endif
-
-                                         ".svg, *.svgz, "
-                                         ".bmp)|"
-#ifdef wxUSE_LIBPNG
-                                         "*.png;"
-#endif
-#ifdef wxUSE_LIBJPEG
-                                         "*.jpg;"
-#endif
-#ifdef wxUSE_LIBWEBP
-                                         "*.webp;"
-#endif
-#ifdef wxUSE_XPM
-                                         "*.xpm;"
-#endif
-#ifdef wxUSE_GIF
-                                         "*.gif;"
-#endif
-                                         "*.svg;*.svgz,"
-                                         "*.bmp",
-                                       wxFD_OPEN);
-
-      if (!newImg.Length()) {
-        return;
-      }
-
-      if (!wxFileExists(newImg)) {
-        LoggingMessageDialog dialog(
-                                    this,
-                                    wxString::Format(_("The image file \"%s\" cannot be found."),
-                                                     newImg),
-                                    "wxMaxima", wxCENTER | wxOK);
-        dialog.SetOKLabel(_("OK"));
-
-        dialog.ShowModal();
-
-        return;
-      }
-
-      ImgCell *ic = dynamic_cast<ImgCell *>(cell);
-
-      wxLogMessage(_("Changing image originally loaded from file %s to %s."),
-                   ic->GetOrigImageFile(), newImg);
-      ic->ReloadImage(newImg, wxEmptyString);
-      ic->SetOrigImageFile(newImg);
-
-      GetWorksheet()->RequestRecalculation();
-      GetWorksheet()->RequestRedraw();
-      GetWorksheet()->SetSaved(false);
-      m_lastPath = wxPathOnly(newImg);
-
-      UpdateMenus();
-      UpdateToolBar();
-    }
-  else if(event.GetId() == EventIDs::popid_animation_save){
-      wxString file = wxFileSelector(_("Save animation to file"), m_lastPath,
-                                     wxS("animation.gif"), wxS("gif"),
-                                     _("GIF image (*.gif)|*.gif"),
-                                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-      if (file.Length()) {
-        Cell *selectedCell = GetWorksheet()->GetSelectionStart();
-        if (selectedCell != NULL && selectedCell->GetType() == MC_TYPE_SLIDE)
-          {
-            wxBusyCursor crs;
-            dynamic_cast<AnimationCell *>(selectedCell)->ToGif(file);
-          }
-      }
-    }
-  else if(event.GetId() == EventIDs::popid_merge_cells){
-    GetWorksheet()->MergeCells();
-  }
-}
 
 
 void wxMaxima::OnRecentDocument(wxCommandEvent &event) {
