@@ -1,5 +1,11 @@
 # Current development version
 
+- Fixed: opening a corrupt or hand-crafted document could crash wxMaxima instead
+  of displaying it. A matrix marked as having row/column names but containing no
+  rows or columns crashed while drawing its separator lines, and exporting a
+  frame-less animation, or exporting a single-frame animation to an animated GIF,
+  crashed as well. Such degenerate cells are now handled without terminating.
+
 - Internal: started peeling the ~3900-line block of "insert a Maxima command"
   menu/button handlers out of the wxMaxima god class into a new
   MaximaCommandMenus class (one menu per commit). The handlers stay bound

@@ -407,6 +407,10 @@ void AnimationCell::SetPPI(int ppi) {
 }
 
 wxSize AnimationCell::ToImageFile(wxString file) {
+  // A corrupt document can produce a frame-less animation (see IsOk); don't let
+  // exporting it index an empty m_images with .at() and throw.
+  if (!IsOk())
+    return wxSize(1, 1);
   return m_images.at(m_displayed)->ToImageFile(file);
 }
 
@@ -507,8 +511,12 @@ wxSize AnimationCell::ToGif(wxString file) {
       wxGIFHandler gif;
 
       if (gif.SaveAnimation(gifFrames, &outStream, true, 1000 / GetFrameRate()))
-        return wxSize(m_images.at(1)->GetOriginalWidth(),
-                      m_images.at(1)->GetOriginalHeight());
+        // Report the currently shown frame's size. The old m_images.at(1)
+        // assumed at least two frames and threw (out_of_range) on a one-frame
+        // animation; m_displayed is guaranteed in range by the IsOk() check
+        // above.
+        return wxSize(m_images.at(m_displayed)->GetOriginalWidth(),
+                      m_images.at(m_displayed)->GetOriginalHeight());
     }
   }
   return wxDefaultSize;
