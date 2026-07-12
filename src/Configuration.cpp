@@ -1208,7 +1208,11 @@ Configuration::ScalarConfigSettings() {
     {wxS("copyMathML"), &Configuration::m_copyMathML},
     {wxS("copyRTF"), &Configuration::m_copyRTF},
     {wxS("copySVG"), &Configuration::m_copySVG},
-    {wxS("DefaultFramerate"), &Configuration::m_defaultFramerate},
+    // Key renamed (was "DefaultFramerate") when the value changed from int to
+    // double: reading an existing integer-typed registry/plist value back as a
+    // double asserts in wxRegConfig (Windows) / the macOS backend. A fresh key
+    // avoids the type clash; the old key is simply left orphaned.
+    {wxS("defaultFramerateFPS"), &Configuration::m_defaultFramerate},
     {wxS("defaultPlotHeight"), &Configuration::m_defaultPlotHeight},
     {wxS("defaultPlotWidth"), &Configuration::m_defaultPlotWidth},
     {wxS("defaultPort"), &Configuration::m_defaultPort},

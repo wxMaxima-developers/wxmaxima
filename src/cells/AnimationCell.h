@@ -57,8 +57,8 @@ public:
     \param group     The parent GroupCell this cell belongs to.
   */
   AnimationCell(GroupCell *group, Configuration *config,
-                const wxString &wxmxFile, int framerate = -1);
-  AnimationCell(GroupCell *group, Configuration *config, int framerate = -1);
+                const wxString &wxmxFile, double framerate = -1);
+  AnimationCell(GroupCell *group, Configuration *config, double framerate = -1);
   AnimationCell(GroupCell *group, const AnimationCell &cell);
   //! A constructor that loads the compressed file from a wxMemoryBuffer
   AnimationCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &image, const wxString &type);
@@ -137,7 +137,7 @@ public:
     Returns either the frame rate set for this slide show cell individually or
     the default frame rate chosen in the config.
   */
-  int GetFrameRate() const;
+  double GetFrameRate() const;
 
   /*! Reload the animation timer starting and instantiating and registering it if necessary.
 
@@ -156,7 +156,7 @@ public:
     \param Freq The requested frequency [in Hz] or -1 for: Use the default value.
     \return The frame rate that was actually set.
   */
-  int SetFrameRate(int Freq);
+  double SetFrameRate(double Freq);
 
   bool AnimationRunning() const { return m_animationRunning; }
   void AnimationRunning(bool run);
@@ -187,11 +187,13 @@ private:
   std::unique_ptr<wxTimer> m_timer;
   std::vector<std::shared_ptr<Image>> m_images;
 
-  /*! The framerate of this cell.
+  /*! The framerate of this cell, in frames per second.
 
-    Can contain a frame rate [in Hz] or an invalid value, which means: Use the default frame rate.
+    A positive value is this cell's own frame rate; a value <= 0 means: use the
+    default frame rate from the configuration. Floating-point so animations can
+    run at fractional or below-one-per-second rates.
   */
-  mutable CachedInteger<int> m_framerate;
+  double m_framerate = -1;
   int m_displayed = 0;
   int m_imageBorderWidth = 0;
 

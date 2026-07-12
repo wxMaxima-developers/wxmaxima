@@ -1077,8 +1077,8 @@ public:
   int DefaultPlotHeight() const {return m_defaultPlotHeight;}
   void DefaultPlotWidth(int px){m_defaultPlotWidth = px;}
   int DefaultPlotWidth() const {return m_defaultPlotWidth;}
-  void DefaultFramerate(int fps){m_defaultFramerate = fps;}
-  int DefaultFramerate() const {return m_defaultFramerate;}
+  void DefaultFramerate(double fps){m_defaultFramerate = fps;}
+  double DefaultFramerate() const {return m_defaultFramerate;}
   void TocDepth(int depth){m_tocDepth = depth;}
   int TocDepth() const {return m_tocDepth;}
   bool TeXExponentsAfterSubscript() const {return m_TeXExponentsAfterSubscript;}
@@ -1366,7 +1366,7 @@ private:
   Appearance m_appearance = Appearance::followSystem;
   long m_recentItems;
   int m_bitmapScale;
-  int m_defaultFramerate;
+  double m_defaultFramerate;
   int m_tocDepth;
   int m_maxClipbrd_BitmapMegabytes;
   int m_autoSaveMinutes;

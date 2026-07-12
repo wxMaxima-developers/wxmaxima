@@ -51,10 +51,10 @@
 #include <wx/window.h>
 
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
-                             int framerate)
+                             double framerate)
   : ImgCellBase(group, config),
     m_displayed(0), m_imageBorderWidth(Scale_Px(1)) {
-  if (framerate != -1)
+  if (framerate > 0)
     m_framerate = framerate;
   InitBitFields_AnimationCell();
   m_type = MC_TYPE_SLIDE;
@@ -62,7 +62,7 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
 
 AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
                              const wxString &wxmxFile,
-                             int framerate)
+                             double framerate)
 : AnimationCell(group, config, framerate) {
   m_wxmxFile = wxmxFile;
 }
@@ -110,18 +110,21 @@ AnimationCell::~AnimationCell() {
 
 DEFINE_CELL(AnimationCell)
 
-int AnimationCell::GetFrameRate() const {
-  int framerate = 2;
+double AnimationCell::GetFrameRate() const {
+  double framerate = 2;
 
-  if (m_framerate.IsValid())
+  if (m_framerate > 0)
     framerate = m_framerate;
   else {
     framerate = m_configuration->DefaultFramerate();
   }
+  // Clamp to a sane range: fast enough to be an animation, slow enough that the
+  // per-frame timer interval (1000/framerate ms) stays reasonable. The lower
+  // bound is well below 1 so fractional / slow animations are possible.
   if (framerate > 30)
     framerate = 30;
-  if (framerate < 1)
-    framerate = 1;
+  if (framerate < 0.05)
+    framerate = 0.05;
   return (framerate);
 }
 
@@ -132,7 +135,7 @@ void AnimationCell::ReloadTimer() {
   if (!m_timer->IsRunning()) {
     // Tell MathCtrl about our timer.
     m_viewCellPointers->SetTimerIdForCell(this, m_timer->GetId());
-    m_timer->StartOnce(1000 / GetFrameRate());
+    m_timer->StartOnce(static_cast<int>(1000.0 / GetFrameRate()));
   }
 }
 
@@ -151,18 +154,18 @@ void AnimationCell::AnimationRunning(bool run) {
   m_animationRunning = run;
 }
 
-int AnimationCell::SetFrameRate(int Freq) {
+double AnimationCell::SetFrameRate(double Freq) {
   if (Freq < 0)
-    m_framerate.Invalidate();
+    m_framerate = -1; // invalid -> fall back to the configured default
   else {
     m_framerate = Freq;
-    if (Freq < 1)
-      m_framerate = 1;
-    if (Freq > 200)
+    if (m_framerate < 0.05)
+      m_framerate = 0.05;
+    if (m_framerate > 200)
       m_framerate = 200;
   }
 
-  return m_framerate.GetOrElse(m_configuration->DefaultFramerate());
+  return (m_framerate > 0) ? m_framerate : m_configuration->DefaultFramerate();
 }
 
 void AnimationCell::LoadImages(wxMemoryBuffer imageData) {
@@ -395,8 +398,8 @@ wxString AnimationCell::ToXML() const {
     flags += wxS(" running=\"false\"");
   flags += wxString::Format(wxS(" frame=\"%li\""), static_cast<long>(m_displayed));
 
-  if (m_framerate.GetOrElse(0) > 0)
-    flags += wxString::Format(wxS(" fr=\"%li\""), static_cast<long>(GetFrameRate()));
+  if (m_framerate > 0)
+    flags += wxString::Format(wxS(" fr=\"%g\""), GetFrameRate());
   return wxS("\n<slide") + flags + wxS(">") + images + wxS("</slide>");
 }
 
@@ -510,7 +513,7 @@ wxSize AnimationCell::ToGif(wxString file) {
     if (outStream.IsOk()) {
       wxGIFHandler gif;
 
-      if (gif.SaveAnimation(gifFrames, &outStream, true, 1000 / GetFrameRate()))
+      if (gif.SaveAnimation(gifFrames, &outStream, true, static_cast<int>(1000.0 / GetFrameRate())))
         // Report the currently shown frame's size. The old m_images.at(1)
         // assumed at least two frames and threw (out_of_range) on a one-frame
         // animation; m_displayed is guaranteed in range by the IsOk() check
@@ -583,7 +586,7 @@ bool AnimationCell::CopyAnimationToClipboard() {
 
     wxMemoryOutputStream stream;
     wxGIFHandler gif;
-    if (!gif.SaveAnimation(gifFrames, &stream, true, 1000 / GetFrameRate()))
+    if (!gif.SaveAnimation(gifFrames, &stream, true, static_cast<int>(1000.0 / GetFrameRate())))
       return false;
 
     GifDataObject *clpbrdObj = new GifDataObject(stream);

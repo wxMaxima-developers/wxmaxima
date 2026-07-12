@@ -1,5 +1,10 @@
 # Current development version
 
+- Animation frame rates are now floating-point: an animation (and the default
+  framerate in the configuration dialog) may run at fractional or below-one-per-
+  second speeds, e.g. 2.5 or 0.5 frames per second. Older documents that stored
+  an integer frame rate keep loading unchanged.
+
 - Fixed: opening a corrupt or hand-crafted document could crash wxMaxima instead
   of displaying it. A matrix marked as having row/column names but containing no
   rows or columns crashed while drawing its separator lines, and exporting a

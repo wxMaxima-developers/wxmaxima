@@ -282,7 +282,7 @@ protected:
   wxCheckBox *m_wrapLatexMath;
   wxCheckBox *m_usesvg;
   wxCheckBox *m_antialiasLines;
-  wxSpinCtrl *m_defaultFramerate;
+  wxSpinCtrlDouble *m_defaultFramerate;
   wxSpinCtrl *m_defaultPlotWidth;
   wxSpinCtrl *m_defaultPlotHeight;
   wxSpinCtrl *m_displayedDigits;

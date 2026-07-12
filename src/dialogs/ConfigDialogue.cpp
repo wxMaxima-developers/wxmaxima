@@ -1248,9 +1248,10 @@ wxWindow *ConfigDialogue::CreateOptionsPanel() {
                                    _("Default animation framerate:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
                   5 * GetContentScaleFactor());
-  m_defaultFramerate = new wxSpinCtrl(
+  m_defaultFramerate = new wxSpinCtrlDouble(
                                       stdOpts_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition,
-                                      wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1, 200);
+                                      wxSize(150 * GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0.1, 200, 12, 0.5);
+  m_defaultFramerate->SetDigits(2); // allow fractional frames-per-second
   grid_sizer->Add(m_defaultFramerate, 0,
                   wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL,
                   5 * GetContentScaleFactor());

@@ -346,8 +346,9 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node, int WXUNUSE
   wxArrayString images;
   wxString framerate;
   if (node->GetAttribute(wxS("fr"), &framerate)) {
-    long fr;
-    if (framerate.ToLong(&fr))
+    double fr;
+    // ToDouble also reads the integer "fr" values written by older wxMaxima.
+    if (framerate.ToDouble(&fr))
       animation->SetFrameRate(fr);
   }
   if (node->GetAttribute(wxS("frame"), &framerate)) {
