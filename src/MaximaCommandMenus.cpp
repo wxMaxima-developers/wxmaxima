@@ -29,8 +29,11 @@
 #include "wxMaxima.h"
 #include "EventIDs.h"
 #include <wx/windowptr.h>
+#include <wx/colordlg.h>
 #include "wizards/ActualValuesStorageWiz.h"
 #include "wizards/CsvWiz.h"
+#include "wizards/DrawWiz.h"
+#include "wizards/Gen2Wiz.h"
 #include "wizards/ListSortWiz.h"
 #include "wizards/Gen1Wiz.h"
 #include "wizards/Gen3Wiz.h"
@@ -1867,4 +1870,168 @@ void MaximaCommandMenus::StatsMenu(wxCommandEvent &event) {
         }
       });
   }
+}
+
+void MaximaCommandMenus::DrawMenu(wxCommandEvent &event) {
+  if(!m_wxMaxima.GetWorksheet())
+    return;
+  if (!m_wxMaxima.m_drawPane)
+    return;
+
+  m_wxMaxima.UpdateDrawPane();
+  int dimensions = m_wxMaxima.m_drawPane->GetDimensions();
+
+  m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
+
+  wxString expr;
+  if (dimensions < 2)
+    expr = m_wxMaxima.GetDefaultEntry();
+  else
+    expr = "%";
+
+  if(event.GetId() == EventIDs::menu_draw_2d){
+      wxWindowPtr<DrawWiz> wiz(new DrawWiz(&m_wxMaxima, &m_wxMaxima.m_configuration, 2));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK) {
+          m_wxMaxima.GetWorksheet()->OpenHCaret(wiz->GetValue());
+          m_wxMaxima.GetWorksheet()->GetActiveCell()->SetCaretPosition(
+                                                         m_wxMaxima.GetWorksheet()->GetActiveCell()->GetCaretPosition() - 3);
+        }
+      });
+  }
+  else if(event.GetId() == EventIDs::menu_draw_3d){
+    if (dimensions < 2) {
+      wxWindowPtr<DrawWiz> wiz(new DrawWiz(&m_wxMaxima, &m_wxMaxima.m_configuration, 3));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK) {
+          m_wxMaxima.GetWorksheet()->OpenHCaret(wiz->GetValue());
+          m_wxMaxima.GetWorksheet()->GetActiveCell()->SetCaretPosition(
+                                                         m_wxMaxima.GetWorksheet()->GetActiveCell()->GetCaretPosition() - 3);
+        }
+      });
+    } else {
+      wxWindowPtr<Wiz3D> wiz(new Wiz3D(&m_wxMaxima, &m_wxMaxima.m_configuration));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK)
+          m_wxMaxima.AddDrawParameter(wiz->GetValue());
+      });
+    }
+  }
+  else if(event.GetId() == EventIDs::menu_draw_fgcolor){
+      wxColour col = wxGetColourFromUser(&m_wxMaxima);
+      if (col.IsOk())
+        m_wxMaxima.AddDrawParameter("color=\"" + col.GetAsString(wxC2S_HTML_SYNTAX) + "\"");
+  }
+  else if(event.GetId() == EventIDs::menu_draw_fillcolor){
+      wxColour col = wxGetColourFromUser(&m_wxMaxima);
+      if (col.IsOk())
+        m_wxMaxima.AddDrawParameter("fill_color=\"" + col.GetAsString(wxC2S_HTML_SYNTAX) + "\"");
+  }
+  else if(event.GetId() == EventIDs::menu_draw_title){
+      wxWindowPtr<Gen1Wiz> wiz(new Gen1Wiz(
+                                           &m_wxMaxima, -1, &m_wxMaxima.m_configuration, _("Set the diagram title"),
+                                           _("Title (Sub- and superscripts as x_{10} or x^{10})"), expr));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK) {
+          wxString cmd = wxS("title=\"") + wiz->GetValue() + wxS("\"");
+          m_wxMaxima.AddDrawParameter(std::move(cmd));
+        }
+      });
+  }
+  else if(event.GetId() == EventIDs::menu_draw_key){
+      wxWindowPtr<Gen1Wiz> wiz(new Gen1Wiz(
+                                           &m_wxMaxima, -1, &m_wxMaxima.m_configuration,
+                                           _("Set the next plot's title. Empty = no title."),
+                                           _("Title (Sub- and superscripts as x_{10} or x^{10})"), expr));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK) {
+          wxString cmd = wxS("key=\"") + wiz->GetValue() + wxS("\"");
+          m_wxMaxima.AddDrawParameter(std::move(cmd));
+        }
+      });
+  }
+  else if(event.GetId() == EventIDs::menu_draw_explicit){
+      wxWindowPtr<ExplicitWiz> wiz(new ExplicitWiz(&m_wxMaxima, &m_wxMaxima.m_configuration, expr, dimensions));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK)
+          m_wxMaxima.AddDrawParameter(wiz->GetValue());
+      });
+  }
+
+  else if(event.GetId() == EventIDs::menu_draw_implicit){
+      wxWindowPtr<ImplicitWiz> wiz(new ImplicitWiz(&m_wxMaxima, &m_wxMaxima.m_configuration, expr, dimensions));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK)
+          m_wxMaxima.AddDrawParameter(wiz->GetValue());
+      });
+  }
+
+  else if(event.GetId() == EventIDs::menu_draw_parametric){
+      wxWindowPtr<ParametricWiz> wiz(new ParametricWiz(&m_wxMaxima, &m_wxMaxima.m_configuration, dimensions));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK)
+          m_wxMaxima.AddDrawParameter(wiz->GetValue());
+      });
+  }
+
+  else if(event.GetId() == EventIDs::menu_draw_points){
+      wxWindowPtr<WizPoints> wiz(new WizPoints(&m_wxMaxima, &m_wxMaxima.m_configuration, dimensions, expr));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK)
+          m_wxMaxima.AddDrawParameter(wiz->GetValue());
+      });
+  }
+
+  else if(event.GetId() == EventIDs::menu_draw_grid){
+      wxWindowPtr<Gen2Wiz> wiz(new Gen2Wiz(
+                                           _("x direction [in multiples of the tick frequency]"),
+                                           _("y direction [in multiples of the tick frequency]"), "1", "1",
+                                           &m_wxMaxima.m_configuration, &m_wxMaxima, -1, _("Set the grid density.")));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK) {
+          wxString cmd =
+            wxS("grid=[") + wiz->GetValue1() + "," + wiz->GetValue2() + wxS("]");
+          m_wxMaxima.AddDrawParameter(std::move(cmd));
+        }
+      });
+  }
+
+  else if(event.GetId() == EventIDs::menu_draw_axis){
+      wxWindowPtr<AxisWiz> wiz(new AxisWiz(&m_wxMaxima, &m_wxMaxima.m_configuration, dimensions));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK) {
+          m_wxMaxima.AddDrawParameter(wiz->GetValue());
+        }
+      });
+  }
+
+  else if(event.GetId() == EventIDs::menu_draw_contour){
+      wxWindowPtr<WizContour> wiz(new WizContour(&m_wxMaxima, &m_wxMaxima.m_configuration));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK)
+          m_wxMaxima.AddDrawParameter(wiz->GetValue(), 3);
+      });
+  }
+
+  else if(event.GetId() == EventIDs::menu_draw_accuracy){
+      wxWindowPtr<WizDrawAccuracy> wiz(new WizDrawAccuracy(&m_wxMaxima, &m_wxMaxima.m_configuration, dimensions));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz, dimensions](int retcode) {
+        if (retcode == wxID_OK)
+          m_wxMaxima.AddDrawParameter(wiz->GetValue(), dimensions);
+      });
+  }
+  m_wxMaxima.CallAfter([this]{m_wxMaxima.GetWorksheet()->SetFocus();});
 }

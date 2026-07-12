@@ -86,6 +86,10 @@ public:
   //! read-/write-matrix-from-.csv wizard).
   void StatsMenu(wxCommandEvent &event);
 
+  //! Handles the "Draw" menu (2D/3D scene wizards plus the explicit/implicit/
+  //! parametric/points/contour/... draw-parameter wizards).
+  void DrawMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.

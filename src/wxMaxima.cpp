@@ -1056,34 +1056,34 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::ListMenu, &m_menuCommands, EventIDs::menu_list_create_from_args);
   Bind(wxEVT_MENU, &MaximaCommandMenus::ListMenu, &m_menuCommands, EventIDs::menu_csv2list);
   Bind(wxEVT_MENU, &MaximaCommandMenus::ListMenu, &m_menuCommands, EventIDs::menu_list2csv);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_2d);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_2d);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_3d);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_3d);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_fgcolor);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_fgcolor);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_fillcolor);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_fillcolor);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_title);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_title);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_key);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_key);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_explicit);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_explicit);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_implicit);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_implicit);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_parametric);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_parametric);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_points);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_points);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_axis);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_axis);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_contour);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_contour);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_accuracy);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_accuracy);
-  Bind(wxEVT_MENU, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_grid);
-  Bind(wxEVT_BUTTON, &wxMaxima::DrawMenu, this, EventIDs::menu_draw_grid);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_2d);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_2d);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_3d);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_3d);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_fgcolor);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_fgcolor);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_fillcolor);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_fillcolor);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_title);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_title);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_key);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_key);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_explicit);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_explicit);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_implicit);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_implicit);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_parametric);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_parametric);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_points);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_points);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_axis);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_axis);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_contour);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_contour);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_accuracy);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_accuracy);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_grid);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::DrawMenu, &m_menuCommands, EventIDs::menu_draw_grid);
   Bind(wxEVT_IDLE, &wxMaxima::OnIdle, this);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_remove_output);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::popid_hide_tooltipMarker);
@@ -7160,169 +7160,6 @@ void wxMaxima::AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand) {
   CallAfter([this]{GetWorksheet()->SetFocus();});
 }
 
-void wxMaxima::DrawMenu(wxCommandEvent &event) {
-  if(!GetWorksheet())
-    return;
-  if (!m_drawPane)
-    return;
-
-  UpdateDrawPane();
-  int dimensions = m_drawPane->GetDimensions();
-
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  wxString expr;
-  if (dimensions < 2)
-    expr = GetDefaultEntry();
-  else
-    expr = "%";
-
-  if(event.GetId() == EventIDs::menu_draw_2d){
-      wxWindowPtr<DrawWiz> wiz(new DrawWiz(this, &m_configuration, 2));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          GetWorksheet()->OpenHCaret(wiz->GetValue());
-          GetWorksheet()->GetActiveCell()->SetCaretPosition(
-                                                         GetWorksheet()->GetActiveCell()->GetCaretPosition() - 3);
-        }
-      });
-  }
-  else if(event.GetId() == EventIDs::menu_draw_3d){
-    if (dimensions < 2) {
-      wxWindowPtr<DrawWiz> wiz(new DrawWiz(this, &m_configuration, 3));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          GetWorksheet()->OpenHCaret(wiz->GetValue());
-          GetWorksheet()->GetActiveCell()->SetCaretPosition(
-                                                         GetWorksheet()->GetActiveCell()->GetCaretPosition() - 3);
-        }
-      });
-    } else {
-      wxWindowPtr<Wiz3D> wiz(new Wiz3D(this, &m_configuration));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK)
-          AddDrawParameter(wiz->GetValue());
-      });
-    }
-  }
-  else if(event.GetId() == EventIDs::menu_draw_fgcolor){
-      wxColour col = wxGetColourFromUser(this);
-      if (col.IsOk())
-        AddDrawParameter("color=\"" + col.GetAsString(wxC2S_HTML_SYNTAX) + "\"");
-  }
-  else if(event.GetId() == EventIDs::menu_draw_fillcolor){
-      wxColour col = wxGetColourFromUser(this);
-      if (col.IsOk())
-        AddDrawParameter("fill_color=\"" + col.GetAsString(wxC2S_HTML_SYNTAX) + "\"");
-  }
-  else if(event.GetId() == EventIDs::menu_draw_title){
-      wxWindowPtr<Gen1Wiz> wiz(new Gen1Wiz(
-                                           this, -1, &m_configuration, _("Set the diagram title"),
-                                           _("Title (Sub- and superscripts as x_{10} or x^{10})"), expr));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          wxString cmd = wxS("title=\"") + wiz->GetValue() + wxS("\"");
-          AddDrawParameter(std::move(cmd));
-        }
-      });
-  }
-  else if(event.GetId() == EventIDs::menu_draw_key){
-      wxWindowPtr<Gen1Wiz> wiz(new Gen1Wiz(
-                                           this, -1, &m_configuration,
-                                           _("Set the next plot's title. Empty = no title."),
-                                           _("Title (Sub- and superscripts as x_{10} or x^{10})"), expr));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          wxString cmd = wxS("key=\"") + wiz->GetValue() + wxS("\"");
-          AddDrawParameter(std::move(cmd));
-        }
-      });
-  }
-  else if(event.GetId() == EventIDs::menu_draw_explicit){
-      wxWindowPtr<ExplicitWiz> wiz(new ExplicitWiz(this, &m_configuration, expr, dimensions));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK)
-          AddDrawParameter(wiz->GetValue());
-      });
-  }
-
-  else if(event.GetId() == EventIDs::menu_draw_implicit){
-      wxWindowPtr<ImplicitWiz> wiz(new ImplicitWiz(this, &m_configuration, expr, dimensions));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK)
-          AddDrawParameter(wiz->GetValue());
-      });
-  }
-
-  else if(event.GetId() == EventIDs::menu_draw_parametric){
-      wxWindowPtr<ParametricWiz> wiz(new ParametricWiz(this, &m_configuration, dimensions));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK)
-          AddDrawParameter(wiz->GetValue());
-      });
-  }
-
-  else if(event.GetId() == EventIDs::menu_draw_points){
-      wxWindowPtr<WizPoints> wiz(new WizPoints(this, &m_configuration, dimensions, expr));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK)
-          AddDrawParameter(wiz->GetValue());
-      });
-  }
-
-  else if(event.GetId() == EventIDs::menu_draw_grid){
-      wxWindowPtr<Gen2Wiz> wiz(new Gen2Wiz(
-                                           _("x direction [in multiples of the tick frequency]"),
-                                           _("y direction [in multiples of the tick frequency]"), "1", "1",
-                                           &m_configuration, this, -1, _("Set the grid density.")));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          wxString cmd =
-            wxS("grid=[") + wiz->GetValue1() + "," + wiz->GetValue2() + wxS("]");
-          AddDrawParameter(std::move(cmd));
-        }
-      });
-  }
-
-  else if(event.GetId() == EventIDs::menu_draw_axis){
-      wxWindowPtr<AxisWiz> wiz(new AxisWiz(this, &m_configuration, dimensions));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          AddDrawParameter(wiz->GetValue());
-        }
-      });
-  }
-
-  else if(event.GetId() == EventIDs::menu_draw_contour){
-      wxWindowPtr<WizContour> wiz(new WizContour(this, &m_configuration));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK)
-          AddDrawParameter(wiz->GetValue(), 3);
-      });
-  }
-
-  else if(event.GetId() == EventIDs::menu_draw_accuracy){
-      wxWindowPtr<WizDrawAccuracy> wiz(new WizDrawAccuracy(this, &m_configuration, dimensions));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz, dimensions](int retcode) {
-        if (retcode == wxID_OK)
-          AddDrawParameter(wiz->GetValue(), dimensions);
-      });
-  }
-  CallAfter([this]{GetWorksheet()->SetFocus();});
-}
 
 
 
