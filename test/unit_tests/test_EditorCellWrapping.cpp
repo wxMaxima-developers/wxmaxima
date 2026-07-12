@@ -630,8 +630,12 @@ int main(int argc, char **argv) {
   g_dc->SelectObject(*g_bmp);
   g_cfg = new Configuration(g_dc);
   g_cfg->SetZoomFactor(1.0);
-  static CellPointers cellPointers(nullptr);
+  static DocumentCellPointers documentPointers;
+  static ViewCellPointers viewPointers(nullptr);
+  static CellPointers cellPointers(documentPointers, viewPointers);
   g_cfg->SetCellPointers(&cellPointers);
+  g_cfg->SetDocumentCellPointers(&documentPointers);
+  g_cfg->SetViewCellPointers(&viewPointers);
 
   const int result = Catch::Session().run(argc, argv);
 

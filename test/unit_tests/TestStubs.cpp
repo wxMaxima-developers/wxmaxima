@@ -10,7 +10,11 @@
 #if !DISABLE_CELLPOINTER_STUBS
 #include "CellPointers.cpp"
 
-CellPointers pointers(nullptr);
+// The two owned halves of the split registry plus the compatibility facade that
+// references them - mirrors how the Worksheet owns them in the real app.
+DocumentCellPointers documentPointers;
+ViewCellPointers viewPointers(nullptr);
+CellPointers pointers(documentPointers, viewPointers);
 #endif
 
 bool Configuration::m_debugMode = false;
@@ -22,6 +26,8 @@ Configuration::Configuration(wxDC *dc, InitOpt) {
   m_renderContext.SetRecalcDC(dc);
 #if !DISABLE_CELLPOINTER_STUBS
   SetCellPointers(&pointers);
+  SetDocumentCellPointers(&documentPointers);
+  SetViewCellPointers(&viewPointers);
 #endif
 }
 Configuration::~Configuration() {}

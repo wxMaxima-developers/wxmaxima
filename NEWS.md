@@ -82,6 +82,11 @@
   GetViewCellPointers()), and the Worksheet registers both halves. GroupCell and
   EditorCell cache and use whichever half they need; the image and animation
   cells use only the view half. No behavior change.
+- Internal: the two cell-pointer halves are now owned by their natural owners -
+  the document-model half by WorksheetDocument, the transient view-state half by
+  the Worksheet. The combined CellPointers is now a thin facade that references
+  the two owned halves, kept only for the callers not yet routed to the halves
+  directly. No behavior change.
 - Internal: the "is the document saved?" flag moved from Worksheet into
   WorksheetDocument. The document now owns the flag; when it flips, the document
   tells the window through a new WorksheetDocumentView::NotifySavedStateChanged()

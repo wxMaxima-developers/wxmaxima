@@ -41,6 +41,7 @@
 #ifndef WORKSHEETDOCUMENT_H
 #define WORKSHEETDOCUMENT_H
 
+#include "CellPointers.h"
 #include "EvaluationQueue.h"
 #include "TreeUndoManager.h"
 #include "WorksheetCursor.h"
@@ -126,6 +127,12 @@ public:
   //! Record whether Maxima is waiting for an answer to a question.
   void SetQuestionPending(bool pending) { m_questionPrompt = pending; }
 
+  //! The document-model half of the cell-pointer registry (selection, the
+  //! active/answer/current-text cell, working group and error list).
+  DocumentCellPointers &GetCellPointers() { return m_cellPointers; }
+  //! The document-model half of the cell-pointer registry (read-only view).
+  const DocumentCellPointers &GetCellPointers() const { return m_cellPointers; }
+
   //! True while the document has no unsaved changes.
   bool IsSaved() const { return m_saved; }
   /*! Record whether the document is in its saved state.
@@ -169,6 +176,8 @@ private:
   bool m_questionPrompt = false;
   //! True while the document has no changes that still need saving.
   bool m_saved = true;
+  //! The document-model half of the cell-pointer registry.
+  DocumentCellPointers m_cellPointers;
 };
 
 #endif // WORKSHEETDOCUMENT_H

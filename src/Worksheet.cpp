@@ -98,7 +98,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
 #endif
                        ),
   m_unsavedDocuments(wxS("unsaved")),
-  m_cellPointers(this), m_dc(this), m_configuration(config),
+  m_dc(this), m_configuration(config),
   m_layout(config, *this, [this]{ return GetTree(); },
            [this]{ return GetLastCellInWorksheet(); }),
   m_autocomplete(config),

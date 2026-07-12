@@ -293,17 +293,19 @@ private:
   structure.
 
   As part of the WorksheetDocument / view split the pointers have been separated
-  into a document-model half (DocumentCellPointers) and a transient view-state
-  half (ViewCellPointers). CellPointers now holds one of each and forwards its
-  historical accessors to the appropriate half; call sites will be routed to the
-  two halves directly, and the halves moved onto their real owners, in following
-  increments. Both halves must stay reachable through the Configuration registry
-  because cells read and write them via Cell::GetCellPointers().
+  into a document-model half (DocumentCellPointers, owned by WorksheetDocument)
+  and a transient view-state half (ViewCellPointers, owned by the Worksheet).
+  CellPointers is now a thin facade that *references* those two owned halves and
+  forwards its historical accessors to the appropriate one; it is a compatibility
+  handle for the callers not yet routed to the halves directly (the Worksheet's
+  own accessors and the exporters). The remaining call sites move to the two
+  halves - and this facade goes away - in a following increment.
 */
 class CellPointers
 {
 public:
-  explicit CellPointers(wxScrolledCanvas *worksheet) : m_view(worksheet) {}
+  CellPointers(DocumentCellPointers &document, ViewCellPointers &view)
+    : m_document(document), m_view(view) {}
 
   //! The document-model half of the pointers.
   DocumentCellPointers &Document() { return m_document; }
@@ -381,8 +383,8 @@ public:
   wxScrolledCanvas *GetWorksheet() { return m_view.GetWorksheet(); }
 
 private:
-  DocumentCellPointers m_document;
-  ViewCellPointers m_view;
+  DocumentCellPointers &m_document;
+  ViewCellPointers &m_view;
 };
 
 #endif

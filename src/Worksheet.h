@@ -150,8 +150,6 @@ private:
   bool m_updateControls = true;
   //! Is a scroll to the cursor scheduled?
   bool m_scrollToCaret = false;
-  //! The pointers to cells that can be deleted by these cells on deletion of the cells.
-  CellPointers m_cellPointers;
   // The x position to scroll to
   int m_newxPosition = -1;
   // The y position to scroll to
@@ -1580,6 +1578,14 @@ protected:
   //! Worksheet's document accessors delegate to. Grows as the document/view
   //! split migrates more state off Worksheet.
   WorksheetDocument m_document;
+  //! The transient view-state half of the cell-pointer registry (hover,
+  //! selection anchors, scroll target, animation timers). Owned here; the
+  //! document-model half is owned by m_document. Declared after m_document so
+  //! the m_cellPointers facade below can bind references to both.
+  ViewCellPointers m_viewCellPointers{this};
+  //! Compatibility facade referencing the two owned halves, for the callers not
+  //! yet routed to the halves directly. Must be initialised after both halves.
+  CellPointers m_cellPointers{m_document.GetCellPointers(), m_viewCellPointers};
   //! A memory we can manually buffer the contents of the area that is to be redrawn in
   wxBitmap m_memory;
   virtual wxSize DoGetBestClientSize() const override;

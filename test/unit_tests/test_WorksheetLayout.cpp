@@ -324,8 +324,12 @@ int main(int argc, char **argv) {
   // The cell layer dereferences the CellPointers registry unconditionally; a
   // null canvas is fine (it is only used by AnimationCell's timer). What we
   // deliberately do NOT create here: a Worksheet or any other window.
-  static CellPointers cellPointers(nullptr);
+  static DocumentCellPointers documentPointers;
+  static ViewCellPointers viewPointers(nullptr);
+  static CellPointers cellPointers(documentPointers, viewPointers);
   g_cfg->SetCellPointers(&cellPointers);
+  g_cfg->SetDocumentCellPointers(&documentPointers);
+  g_cfg->SetViewCellPointers(&viewPointers);
 
   const int result = Catch::Session().run(argc, argv);
 
