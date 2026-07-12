@@ -531,7 +531,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_trigsimp);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_product);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_radcan);
-  Bind(wxEVT_BUTTON, &wxMaxima::MaximaMenu, this, EventIDs::button_subst);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::button_subst);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::button_plot2);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::button_plot3);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::button_map);
@@ -571,7 +571,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_rectform);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::button_trigrat);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_polarform);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, ToolBar::menu_restart_id);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, ToolBar::menu_restart_id);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, wxID_EXIT);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, wxID_ABOUT);
   Bind(wxEVT_MENU, &MaximaCommandMenus::HelpMenu, &m_menuCommands, EventIDs::menu_license);
@@ -579,18 +579,18 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, wxID_SAVE);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, wxID_SAVEAS);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_load_id);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_functions);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_variables);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_arrays);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_macros);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_labels);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_myoptions);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_rules);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_aliases);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_structs);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_dependencies);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_gradefs);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_let_rule_packages);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_functions);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_variables);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_arrays);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_macros);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_labels);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_myoptions);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_rules);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_aliases);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_structs);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_dependencies);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_gradefs);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_let_rule_packages);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_PREFERENCES);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_sconsole_id);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_export_html);
@@ -685,16 +685,16 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_lin);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_solve_algsys);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_eliminate);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_clear_var);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_clear_fun);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_clear_var);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_clear_fun);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_ivp_1);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_ivp_2);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_bvp);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_bvp);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::menu_rk);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_fun_def);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_gensym);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_fun_def);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_gensym);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_divide);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_gcd);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_lcm);
@@ -732,7 +732,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_sum);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_product);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_change_var);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_time);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_time);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_factsimp);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_factcomb);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_realpart);
@@ -758,26 +758,26 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::menu_animationautostart);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::menu_animationframerate);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::menu_plot_format);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_soft_restart);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_dependencies);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_values);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_functions);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_arrays);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_myoptions);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_rules);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_aliases);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_structures);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_labels);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_gradefs);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_props);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_macros);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_kill_let_rule_packages);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_garbage_collect);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_room);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_jumptoerror);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_display);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_soft_restart);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill_dependencies);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill_values);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill_functions);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill_arrays);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill_myoptions);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill_rules);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill_aliases);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill_structures);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill_labels);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill_gradefs);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill_props);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill_macros);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_kill_let_rule_packages);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_garbage_collect);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_room);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_jumptoerror);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_display);
   Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_pade);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_add_path);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_add_path);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, EventIDs::menu_copy_uuid);
   Bind(wxEVT_MENU, &MaximaCommandMenus::FileMenu, &m_menuCommands, EventIDs::menu_jump_to_uuid);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_COPY);
@@ -789,124 +789,124 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_UNDO);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_REDO);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::EditMenu, &m_menuCommands, wxID_REDO);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_texform);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_grind);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_debugmode_lisp);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_debugmode_all);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_debugmode_off);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_for);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_while);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_block);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_block_noLocal);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_local);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_return);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_trace);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_lambda);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_quotequote);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_quote);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_quoteblock);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_def_fun);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_def_macro);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_def_variable);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_compile);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_paramType);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_structdef);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_structnew);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_structuse);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_saveLisp);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_loadLisp);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_maximatostring);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringtomaxima);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_texform);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_grind);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_debugmode_lisp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_debugmode_all);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_debugmode_off);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_for);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_while);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_block);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_block_noLocal);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_local);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_return);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_trace);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_lambda);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_quotequote);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_quote);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_quoteblock);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_def_fun);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_def_macro);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_def_variable);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_compile);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_paramType);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_structdef);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_structnew);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_structuse);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_saveLisp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_loadLisp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_maximatostring);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringtomaxima);
 
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_setposition);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_getposition);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_flush_output);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_flength);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_close);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_opena);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_openr);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_openw);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_printf);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_readline);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_readchar);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_readbyte);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_writebyte);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_charp);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_alphacharp);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_alphanumericp);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_digitcharp);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_constituent);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_uppercasep);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_lowercasep);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_create_ascii);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_cequal);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_cequalignore);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_clessp);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_clesspignore);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_cgreaterp);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_cgreaterpignore);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sequal);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sequalignore);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_ascii);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_cint);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_unicode);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_unicode_to_utf8);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_utf8_to_unicode);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_charat);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_charlist);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_simplode);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sinsert);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_eval_string);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_parse_string);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_scopy);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sdowncase);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_slength);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_smake);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_smismatch);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_split);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sposition);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sremove);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_sremovefirst);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_tokens);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_ssearch);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_ssort);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_ssubstfirst);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_strim);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_striml);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_strimr);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_number_to_octets);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_octets_to_number);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_octets_to_string);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_stringproc_string_to_octets);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_load);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_regex_compile);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_regex_match_pos);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_regex_match);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_regex_split);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_subst_first);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_regex_subst);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_sregex_string_to_regex);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_setposition);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_getposition);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_flush_output);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_flength);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_close);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_opena);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_openr);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_openw);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_printf);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_readline);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_readchar);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_readbyte);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_writebyte);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_charp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_alphacharp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_alphanumericp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_digitcharp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_constituent);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_uppercasep);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_lowercasep);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_create_ascii);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_cequal);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_cequalignore);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_clessp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_clesspignore);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_cgreaterp);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_cgreaterpignore);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_sequal);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_sequalignore);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_ascii);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_cint);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_unicode);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_unicode_to_utf8);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_utf8_to_unicode);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_charat);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_charlist);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_simplode);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_sinsert);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_eval_string);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_parse_string);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_scopy);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_sdowncase);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_slength);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_smake);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_smismatch);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_split);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_sposition);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_sremove);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_sremovefirst);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_tokens);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_ssearch);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_ssort);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_ssubstfirst);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_strim);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_striml);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_strimr);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_number_to_octets);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_octets_to_number);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_octets_to_string);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_stringproc_string_to_octets);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_sregex_load);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_sregex_regex_compile);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_sregex_regex_match_pos);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_sregex_regex_match);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_sregex_regex_split);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_sregex_subst_first);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_sregex_regex_subst);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_sregex_string_to_regex);
 
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_load);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_chdir);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_mkdir);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_rmdir);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_getcurrentdirectory);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_copy_file);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_rename_file);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_delete_file);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_getenv);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_directory);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_pathname_directory);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_pathname_name);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_opsyst_pathname_type);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_opsyst_load);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_opsyst_chdir);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_opsyst_mkdir);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_opsyst_rmdir);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_opsyst_getcurrentdirectory);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_opsyst_copy_file);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_opsyst_rename_file);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_opsyst_delete_file);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_opsyst_getenv);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_opsyst_directory);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_opsyst_pathname_directory);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_opsyst_pathname_name);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_opsyst_pathname_type);
 
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_load);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_lang_c);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_lang_fortran);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_lang_ratfor);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_to_stdout);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::gentran_to_file);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::gentran_load);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::gentran_lang_c);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::gentran_lang_fortran);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::gentran_lang_ratfor);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::gentran_to_stdout);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::gentran_to_file);
 
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_to_fact);
   Bind(wxEVT_MENU, &MaximaCommandMenus::SimplifyMenu, &m_menuCommands, EventIDs::menu_to_gamma);
@@ -1001,7 +1001,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_evaluate);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_evaluate_section);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, ToolBar::tb_eval);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, ToolBar::tb_eval_all);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, ToolBar::tb_eval_all);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, ToolBar::tb_evaluate_rest);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, ToolBar::tb_evaltillhere);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_merge_cells);
@@ -1022,9 +1022,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_tocdnd);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_fold);
   Bind(wxEVT_MENU, &MaximaCommandMenus::PopupMenu, &m_menuCommands, EventIDs::popid_unfold);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_evaluate_all_visible);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_evaluate_all);
-  Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, ToolBar::tb_evaltillhere);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_evaluate_all_visible);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, EventIDs::menu_evaluate_all);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::MaximaMenu, &m_menuCommands, ToolBar::tb_evaltillhere);
   Bind(wxEVT_MENU, &MaximaCommandMenus::ListMenu, &m_menuCommands, EventIDs::menu_list_create_from_elements);
   Bind(wxEVT_MENU, &MaximaCommandMenus::ListMenu, &m_menuCommands, EventIDs::menu_list_create_from_rule);
   Bind(wxEVT_MENU, &MaximaCommandMenus::ListMenu, &m_menuCommands, EventIDs::menu_list_create_from_list);
@@ -5609,846 +5609,6 @@ void wxMaxima::OnSymbolAdd(wxCommandEvent &event) {
 }
 
 
-void wxMaxima::MaximaMenu(wxCommandEvent &event) {
-  if(!GetWorksheet())
-    return;
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  wxString expr = GetDefaultEntry();
-  if(event.GetId() == EventIDs::menu_jumptoerror){
-    GroupCell *lastError = GetWorksheet()->GetErrorList().LastError();
-    if (lastError) {
-      GetWorksheet()->SetActiveCell(lastError->GetEditable());
-      if (lastError->GetEditable()) {
-        lastError->GetEditable()->CaretToEnd();
-      }
-      GetWorksheet()->ScrollToCaret();
-    }
-  }
-  else if(event.GetId() == ToolBar::menu_restart_id){
-    m_closing = true;
-    GetWorksheet()->SetWorkingGroup(nullptr);
-    GetWorksheet()->GetEvaluationQueue().Clear();
-    GetWorksheet()->ResetInputPrompts();
-    m_unsuccessfulConnectionAttempts = 0;
-    StartMaxima(true);
-  }
-  else if(event.GetId() == EventIDs::menu_soft_restart){
-    MenuCommand(wxS("kill(all);"));
-  }
-  else if(event.GetId() == EventIDs::menu_kill_dependencies){
-    MenuCommand(wxS("kill(dependencies);"));
-  }
-  else if(event.GetId() == EventIDs::menu_kill_values){
-    MenuCommand(wxS("kill(values);"));
-  }
-  else if(event.GetId() == EventIDs::menu_kill_functions){
-    MenuCommand(wxS("kill(functions);"));
-  }
-  else if(event.GetId() == EventIDs::menu_kill_arrays){
-    MenuCommand(wxS("kill(arrays);"));
-  }
-  else if(event.GetId() == EventIDs::menu_kill_myoptions){
-    MenuCommand(wxS("kill(options);"));
-  }
-  else if(event.GetId() == EventIDs::menu_kill_rules){
-    MenuCommand(wxS("kill(rules);"));
-  }
-  else if(event.GetId() == EventIDs::menu_kill_aliases){
-    MenuCommand(wxS("kill(aliases);"));
-  }
-  else if(event.GetId() == EventIDs::menu_kill_structures){
-    MenuCommand(wxS("kill(structures);"));
-  }
-  else if(event.GetId() == EventIDs::menu_kill_labels){
-    MenuCommand(wxS("kill(labels);"));
-  }
-  else if(event.GetId() == EventIDs::menu_kill_gradefs){
-    MenuCommand(wxS("kill(gradefs);"));
-  }
-  else if(event.GetId() == EventIDs::menu_kill_props){
-    MenuCommand(wxS("kill(props);"));
-  }
-  else if(event.GetId() == EventIDs::menu_kill_macros){
-    MenuCommand(wxS("kill(macros);"));
-  }
-  else if(event.GetId() == EventIDs::menu_kill_let_rule_packages){
-    MenuCommand(wxS("kill(let_rule_packages);"));
-  }
-  else if(event.GetId() == EventIDs::menu_garbage_collect){
-    MenuCommand(wxS("garbage_collect();"));
-  }
-  else if(event.GetId() == EventIDs::menu_room){
-    MenuCommand(wxS("?room();"));
-  }
-  else if(event.GetId() == EventIDs::menu_functions){
-    MenuCommand(wxS("functions;"));
-  }
-  else if(event.GetId() == EventIDs::menu_variables){
-    MenuCommand(wxS("values;"));
-  }
-  else if(event.GetId() == EventIDs::menu_arrays){
-    MenuCommand(wxS("arrays;"));
-  }
-  else if(event.GetId() == EventIDs::menu_macros){
-    MenuCommand(wxS("macros;"));
-  }
-  else if(event.GetId() == EventIDs::menu_labels){
-    MenuCommand(wxS("labels;"));
-  }
-  else if(event.GetId() == EventIDs::menu_myoptions){
-    MenuCommand(wxS("myoptions;"));
-  }
-  else if(event.GetId() == EventIDs::menu_rules){
-    MenuCommand(wxS("rules;"));
-  }
-  else if(event.GetId() == EventIDs::menu_aliases){
-    MenuCommand(wxS("aliases;"));
-  }
-  else if(event.GetId() == EventIDs::menu_structs){
-    MenuCommand(wxS("structures;"));
-  }
-  else if(event.GetId() == EventIDs::menu_dependencies){
-    MenuCommand(wxS("dependencies;"));
-  }
-  else if(event.GetId() == EventIDs::menu_gradefs){
-    MenuCommand(wxS("gradefs;"));
-  }
-  else if(event.GetId() == EventIDs::menu_let_rule_packages){
-    MenuCommand(wxS("let_rule_packages;"));
-  }
-
-  else if(event.GetId() == EventIDs::menu_display) {
-    wxString choices[] = {wxS("xml"), wxS("ascii"), wxS("none")};
-    wxString choice =
-      wxGetSingleChoice(_("Select math display algorithm"),
-                        _("Display algorithm"), 3, choices, this);
-    if (choice.Length()) {
-      wxString cmd = wxS("set_display('") + choice + wxS(")$");
-      MenuCommand(cmd);
-    }
-  }
-  else if(event.GetId() == EventIDs::menu_texform) {
-    wxString cmd = wxS("tex(") + expr + wxS(")$");
-    MenuCommand(cmd);
-  }
-  else if(event.GetId() == EventIDs::menu_grind) {
-    wxString cmd = wxS("grind(") + expr + wxS(")$");
-    MenuCommand(cmd);
-  }
-  else if(event.GetId() == EventIDs::menu_debugmode_lisp) {
-    wxString cmd = wxS("debugmode: lisp$");
-    MenuCommand(cmd);
-  }
-  else if(event.GetId() == EventIDs::menu_debugmode_all) {
-    wxString cmd = wxS("debugmode: true$");
-    MenuCommand(cmd);
-  }
-  else if(event.GetId() == EventIDs::menu_debugmode_off) {
-    wxString cmd = wxS("debugmode: false$");
-    MenuCommand(cmd);
-  }
-  else if(event.GetId() == EventIDs::menu_time) {
-    wxString cmd;
-    if (event.IsChecked())
-      cmd = wxS("showtime:all$");
-    else
-      cmd = wxS("showtime:false$");
-    MenuCommand(cmd);
-  }
-  else if(event.GetId() == EventIDs::gentran_lang_c){
-    MenuCommand(wxS("gentranlang:c;"));
-  }
-  else if(event.GetId() == EventIDs::gentran_lang_fortran){
-    MenuCommand(wxS("gentranlang:fortran;"));
-  }
-  else if(event.GetId() == EventIDs::gentran_lang_ratfor){
-    MenuCommand(wxS("gentranlang:ratfor;"));
-  }
-  else if(event.GetId() == EventIDs::gentran_to_stdout){
-    CommandWiz(_("Convert to programming language"), wxEmptyString,
-               wxEmptyString, wxS("gentran(#1#);"), wxS("Expression(s)"),
-               wxS("%"),
-               _("Expression or a list of comma-separated expressions"));
-  }
-  else if(event.GetId() == EventIDs::gentran_to_file){
-    CommandWiz(_("Convert to programming language file"), wxEmptyString,
-               wxEmptyString, wxS("gentran(#1#,[#2#]);"), wxS("Expression(s)"),
-               wxS("%"),
-               _("Expression or a list of comma-separated expressions"),
-               wxS("Filename(s)"), wxS("%"),
-               _("Filename or a list of comma-separated file names"));
-  }
-  else if(event.GetId() == EventIDs::gentran_load){
-    MenuCommand(wxS("load(\"gentran\")$"));
-  }
-  else if(event.GetId() == EventIDs::menu_fun_def){
-    CommandWiz(_("Show the function's definition"), wxEmptyString,
-               wxEmptyString, wxS("fundef(#1#);"), wxS("function"), wxS("%"),
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_for){
-    CommandWiz(_("For loop"), wxEmptyString, wxEmptyString,
-               wxS("for #1#:#2# thru #3# step #4# do #5#;"),
-               wxS("loop variable:"), wxS("i"), wxEmptyString, wxS("Start:"),
-               wxS("1"), wxEmptyString, wxS("End:"), wxS("10"), wxEmptyString,
-               wxS("Step width:"), wxS("1"), wxEmptyString, wxS("What to do:"),
-               wxS("disp(i)"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_while){
-    CommandWiz(_("While loop"), wxEmptyString, wxEmptyString,
-               wxS("while #1# do #2#;"),
-               wxS("Condition:"), wxS("%"), wxEmptyString, wxS("What to do:"),
-               wxS("disp(i)"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_block){
-    CommandWiz(_("Program block"), wxEmptyString, wxEmptyString,
-               wxS("block([#1#], #2#);"), wxS("Local variable(s):"), wxS("i:0"),
-               _("Comma-separated variable names, can be initialized by the "
-                 "\":\" operator."),
-               wxS("What to do:"), wxS("i:i+1,disp(i)"),
-               _("Comma-separated commands"));
-  }
-  else if(event.GetId() == EventIDs::menu_block_noLocal){
-    CommandWiz(
-               _("Program (no local variables)"),
-               _("If a program doesn't need local variables, Maxima allows "
-                 "putting the commands between parentheses. The result of the last "
-                 "operation is the return value of the program."),
-               wxEmptyString, wxS("(#1#);"), wxS("What to do:"), wxS("i:i+1,disp(i)"),
-               _("Comma-separated commands"));
-  }
-  else if(event.GetId() == EventIDs::menu_local){
-    CommandWiz(_("Declare a function local to a Program"),
-               _("The command local() allows telling Maxima which functions to "
-                 "make local to the current program when defined."),
-               wxEmptyString, wxS("local(#1#);"), wxS("Function name:"), expr,
-               _("Comma-separated function names"));
-  }
-  else if(event.GetId() == EventIDs::menu_return){
-    CommandWiz(
-               _("Return from a block or loop"),
-               _("Unlike in other programming language return() only exits from the "
-                 "current loop or block(), not from the whole function."),
-               wxEmptyString, wxS("return(#1#);"), wxS("return value:"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_trace){
-    CommandWiz(_("Trace function(s)"), wxEmptyString, wxEmptyString,
-               wxS("trace(#1#);"), wxS("Function(s):"), expr,
-               _("Comma-separated function names."));
-  }
-  else if(event.GetId() == EventIDs::menu_lambda){
-    CommandWiz(
-               _("Lambda"),
-               _("Lambda generates a function, but doesn't give it a name.\n"
-                 "This is useful if you want to use a function only once, perhaps "
-                 "as a parameter to another function and don't need it to be named.\n"
-                 "Also you can fill a variable with a lambda() construct, effectively "
-                 "generating a function pointer: A variable that can be used "
-                 "as a function, and filled with a different function, if needed."),
-               wxEmptyString, wxS("lambda([#1#],#2#);"),
-               wxS("Names for the parameters:"), expr,
-               _("Comma-separated names the parameters will be referenced by later."),
-               wxS("Contents:"), expr, _("Comma-separated expressions."));
-  }
-  else if(event.GetId() == EventIDs::menu_quotequote){
-    CommandWiz(
-               _("Interpret maxima's output as input"),
-               _("Sometimes one wants maxima to loose the information that a function "
-                 "name was used with the ' operator in order to make maxima not "
-                 "evaluate "
-                 "it. In other places one wants % to mean \"the last expression at "
-                 "the "
-                 "time this function was created\", not \"the last expression now\".\n"
-                 "In both cases the '' operator will do what is requested."),
-               wxEmptyString, wxS("''#1#;"), wxS("Expression:"), expr,
-               _("Expression whose output is to be used as maxima's input."),
-               wxS("Contents:"), expr, _("Comma-separated expressions."));
-  }
-  else if(event.GetId() == EventIDs::menu_quote){
-    CommandWiz(_("Don't evaluate one command"),
-               _("Maxima automatically simplifies expressions it gets as input "
-                 "and then tries to evaluate their value. The ' operator "
-                 "tells maxima that we want a command to be in noun form, "
-                 "which means: "
-                 "stand here as is, and unevaluated.\n"
-                 "The ' operator can be undone by using the '' operator."),
-               wxEmptyString, wxS("'#1#;"), wxS("Command:"), expr,
-               _("The name of a function we don't want to be evaluated here"));
-  }
-  else if(event.GetId() == EventIDs::menu_quoteblock){
-    CommandWiz(
-               _("Don't evaluate one whole expression"), wxEmptyString, wxEmptyString,
-               wxS("'(#1#);"), _("expression:"), expr,
-               _("The name of an expression that we don't want to be evaluated."));
-  }
-  else if(event.GetId() == EventIDs::menu_def_fun){
-    CommandWiz(_("Define a function"), wxEmptyString, wxEmptyString,
-               wxS("#1#(#2#):=#3#;"), _("Function name:"), expr, wxEmptyString,
-               _("Parameter(s):"), wxS("x,[y]"),
-               _("Comma-separated parameter names. A parameter in square "
-                 "brackets [] will be filled with the list of any additional "
-                 "arguments the function gets."),
-               _("Function contents:"), wxS("sin(x)+lsum(i,i,y)"),
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_gensym){
-    MenuCommand("gensym();");
-  }
-  else if(event.GetId() == EventIDs::menu_def_macro){
-    CommandWiz(_("Define a macro"), wxEmptyString, wxEmptyString,
-               wxS("#1#(#2#)::=#3#;"), _("Macro name:"), expr, wxEmptyString,
-               _("Parameter(s):"), wxS("x,[y]"),
-               _("Comma-separated parameter names. A parameter in square "
-                 "brackets [] will be filled with the list of any additional "
-                 "arguments the function gets."),
-               _("Macro contents:"), wxS("sin(x)+lsum(i,i,y)"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_def_variable){
-    CommandWiz(_("Define a variable"), wxEmptyString, wxEmptyString,
-               wxS("#1#:#2#;"), _("Variable name:"), expr, wxEmptyString,
-               _("Contents:"), wxS("1"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_compile){
-    CommandWiz(
-               _("Compile a function"),
-               _("Compiling a function can generate a considerable speed boost if "
-                 "the types of the function parameters are made known to the function "
-                 "before it is compiled. Else the generated code has to be "
-                 "hideously generic."),
-               wxEmptyString, wxS("compile(#1#);"), _("Function name(s):"), expr,
-               _("Comma-separated function names"));
-  }
-  else if(event.GetId() == EventIDs::menu_paramType){
-    CommandWiz(_("Declare the type of a function parameter"),
-               _("If the type of a function parameter is known when compiling "
-                 "a function "
-                 "the code can vastly be optimized.\n"
-                 "Known types:\n\n"
-                 "array, boolean, integer, fixnum (machine-length integer), "
-                 "float (machine-size floating-point numbers), "
-                 "real or any (which is useful for declaring arrays of any)"),
-               wxEmptyString, wxS("mode_declare(#1#);"), _("Parameter name:"),
-               expr, wxEmptyString, _("Type:"), wxS("boolean"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_structdef){
-    CommandWiz(_("Define a structure type"), wxEmptyString, wxEmptyString,
-               wxS("defstruct(#1#(#2#));"), _("Struct type name:"), expr,
-               _("The name of the new struct type"), _("Fields:"), wxS("U,I"),
-               _("The comma-separated names of the struct fields"));
-  }
-  else if(event.GetId() == EventIDs::menu_structnew){
-    CommandWiz(_("Define a structure"), wxEmptyString, wxEmptyString,
-               wxS("new(#1#(#2#));"), _("Struct type name:"), expr,
-               _("The name of the struct type"), _("Field contents:"),
-               wxS("1,2"),
-               _("The comma-separated contents of the struct fields"));
-  }
-  else if(event.GetId() == EventIDs::menu_structuse){
-    CommandWiz(_("Read a structure field"), wxEmptyString, wxEmptyString,
-               wxS("#1#@#2#;"), _("Struct :"), expr,
-               _("The name of the struct"), _("Field name:"), wxS("U"),
-               _("The name of the field to read"));
-  }
-  else if(event.GetId() == EventIDs::menu_saveLisp){
-    CommandWiz(
-               _("Save as lisp code"), wxEmptyString, wxEmptyString, wxS("save(#1#);"),
-               _("filename:"), wxEmptyString, _("Elements:"), expr,
-               _("Comma-separated names of the elements that shall be written"));
-  }
-  else if(event.GetId() == EventIDs::menu_loadLisp){
-    CommandWiz(_("Load lisp code"), wxEmptyString, wxEmptyString,
-               wxS("load(#1#);"), _("filename:"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_maximatostring){
-    CommandWiz(
-               _("Maxima to string"), wxEmptyString, wxEmptyString,
-               wxS("sconcat(#1#);"), _("Expression(s):"), expr,
-               _("Comma-separated expressions that shall be converted to a string"));
-  }
-  if(event.GetId() == EventIDs::menu_stringproc_setposition){
-    CommandWiz(_("Seek to position"), wxEmptyString, wxEmptyString,
-               wxS("fposition(#1#,#2#);"), _("Stream:"), expr, wxEmptyString,
-               _("Position:"), wxS("0"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_getposition){
-    CommandWiz(_("Get position in stream"), wxEmptyString, wxEmptyString,
-               wxS("fposition(#1#);"), _("Stream:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_flush_output){
-    CommandWiz(_("Flush stream"), wxEmptyString, wxEmptyString,
-               wxS("flush_output(#1#);"), _("Stream:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_flength){
-    CommandWiz(_("Stream length"), wxEmptyString, wxEmptyString,
-               wxS("flength(#1#);"), _("Stream:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_close){
-    CommandWiz(_("Close Stream"), wxEmptyString, wxEmptyString,
-               wxS("close(#1#);"), _("Stream:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_opena){
-    CommandWiz(_("Open for appending"), wxEmptyString, wxEmptyString,
-               wxS("#1#:opena(#2#);"), _("Stream:"), expr, wxEmptyString,
-               _("File name:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_openr){
-    CommandWiz(_("Open for reading"), wxEmptyString, wxEmptyString,
-               wxS("#1#:openr(#2#);"), _("Stream:"), expr, wxEmptyString,
-               _("File name:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_openw){
-    CommandWiz(_("Open for writing"), wxEmptyString, wxEmptyString,
-               wxS("#1#:openw(#2#);"), _("Stream:"), expr, wxEmptyString,
-               _("File name:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_printf){
-    CommandWiz(
-               _("printf"), wxEmptyString, wxEmptyString, wxS("printf(#1#,#2#,#3#);"),
-               _("Stream:"), wxS("false"), wxEmptyString, _("Lisp format string:"),
-               wxS("~a"),
-               _("Lisp format strings are more powerful than c++ format strings"),
-               _("Arguments:"), expr, _("Comma-separated arguments"));
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_readline){
-    CommandWiz(_("Read line"), wxEmptyString, wxEmptyString,
-               wxS("readline(#1#);"), _("Stream:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_readchar){
-    CommandWiz(_("Read char"), wxEmptyString, wxEmptyString,
-               wxS("readchar(#1#);"), _("Stream:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_readbyte){
-    CommandWiz(_("Read byte"), wxEmptyString, wxEmptyString,
-               wxS("readbyte(#1#);"), _("Stream:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_writebyte){
-    CommandWiz(_("Read byte"), wxEmptyString, wxEmptyString,
-               wxS("writebyte(#1#,#2#);"), _("Byte:"), wxS("65"), wxEmptyString,
-               _("Stream:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_charp){
-    CommandWiz(
-               _("Is a char?"), _("Chars are strings that are one character long"),
-               wxEmptyString, wxS("charp(#1#);"), _("Object:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_alphacharp){
-    CommandWiz(_("Is an alphabetic char?"), wxEmptyString, wxEmptyString,
-               wxS("alphacharp(#1#);"), _("Char:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_alphanumericp){
-    CommandWiz(_("Is an alphanumeric char?"), wxEmptyString, wxEmptyString,
-               wxS("alphanumericp(#1#);"), _("Char:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_digitcharp){
-    CommandWiz(_("Is a digit?"), wxEmptyString, wxEmptyString,
-               wxS("alphanumericp(#1#);"), _("Char:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_constituent){
-    CommandWiz(_("Is a printable char?"), wxEmptyString, wxEmptyString,
-               wxS("constituent(#1#);"), _("Char:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_uppercasep){
-    CommandWiz(_("Is a uppercase char?"), wxEmptyString, wxEmptyString,
-               wxS("uppercasep(#1#);"), _("Char:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_lowercasep){
-    CommandWiz(_("Is a lowercase char?"), wxEmptyString, wxEmptyString,
-               wxS("lowercasep(#1#);"), _("Char:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_create_ascii){
-    CommandWiz(_("Ascii code to char"), wxEmptyString, wxEmptyString,
-               wxS("ascii(#1#);"), _("Code number:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_cequal){
-    CommandWiz(_("Are the chars equal?"), wxEmptyString, wxEmptyString,
-               wxS("cequal(#1#,#2#);"), _("Char #1:"), expr, wxEmptyString,
-               _("Char #2:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_cequalignore){
-    CommandWiz(_("Are the chars equal, if case is ignored?"), wxEmptyString,
-               wxEmptyString, wxS("cequalignore(#1#,#2#);"), _("Char #1:"),
-               expr, wxEmptyString, _("Char #2:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_clessp){
-    CommandWiz(_("Is Char 1 less than Char2?"), wxEmptyString, wxEmptyString,
-               wxS("clessp(#1#,#2#);"), _("Char #1:"), expr, wxEmptyString,
-               _("Char #2:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_clesspignore){
-    CommandWiz(_("Is Char 1 less than Char2, if case is ignored?"),
-               wxEmptyString, wxEmptyString, wxS("clesspignore(#1#,#2#);"),
-               _("Char #1:"), expr, wxEmptyString, _("Char #2:"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_cgreaterp){
-    CommandWiz(_("Is Char 1 greater than Char2?"), wxEmptyString, wxEmptyString,
-               wxS("cgreaterp(#1#,#2#);"), _("Char #1:"), expr, wxEmptyString,
-               _("Char #2:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_cgreaterpignore){
-    CommandWiz(_("Is Char 1 greater than Char2, if case is ignored?"),
-               wxEmptyString, wxEmptyString, wxS("cgreaterpignore(#1#,#2#);"),
-               _("Char #1:"), expr, wxEmptyString, _("Char #2:"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_sequal){
-    CommandWiz(_("Are these strings equal?"), wxEmptyString, wxEmptyString,
-               wxS("sequal(#1#, #2#);"), _("String #1:"), expr, wxEmptyString,
-               _("String #2:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_sequalignore){
-    CommandWiz(_("Are these strings equal if case is ignored?"), wxEmptyString,
-               wxEmptyString, wxS("sequalignore(#1#, #2#);"), _("String #1:"), expr,
-               wxEmptyString, _("String #2:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_ascii){
-    CommandWiz(_("Ascii code to char"), wxEmptyString, wxEmptyString,
-               wxS("ascii(#1#);"), _("Code number:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_cint){
-    CommandWiz(_("Char to unicode code point"), wxEmptyString, wxEmptyString,
-               wxS("cint(#1#);"), _("Char:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_unicode){
-    CommandWiz(_("Char to unicode code point"), wxEmptyString, wxEmptyString,
-               wxS("cint(#1#);"), _("Char:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_unicode_to_utf8){
-    CommandWiz(_("Unicode code point to char"), wxEmptyString, wxEmptyString,
-               wxS("unicode(#1#);"), _("Codepoint number:"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_utf8_to_unicode){
-    CommandWiz(_("Unicode code point to utf8 numbers"), wxEmptyString,
-               wxEmptyString, wxS("utf8_to_unicode(#1#);"),
-               _("Codepoint number:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_charat){
-    CommandWiz(_("Extract the nth char of a string"), wxEmptyString,
-               wxEmptyString, wxS("charat(#1#, #2#);"), _("String:"), expr,
-               wxEmptyString, _("n:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_charlist){
-    CommandWiz(_("String to list of char"), wxEmptyString, wxEmptyString,
-               wxS("charlist(#1#);"), _("String:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_simplode){
-    CommandWiz(_("List of char to String"), wxEmptyString, wxEmptyString,
-               wxS("simplode(#1#);"), _("List of chars:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_sinsert){
-    CommandWiz(_("Insert a string into another"), wxEmptyString, wxEmptyString,
-               wxS("sinsert(#1#, #2#, #3#);"), _("New part:"), expr, wxEmptyString,
-               _("String:"), wxEmptyString, wxEmptyString, _("Position:"),
-               wxS("0"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_eval_string){
-    CommandWiz(_("Evaluate string"), wxEmptyString, wxEmptyString,
-               wxS("eval_string(#1#);"), _("String:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_parse_string){
-    CommandWiz(_("Parse string"), wxEmptyString, wxEmptyString,
-               wxS("parse_string(#1#);"), _("String:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_scopy){
-    CommandWiz(_("Copy string"),
-               _("In order to save memory the : operator doesn't create an "
-                 "individual copy of the string, but a clone that changes when "
-                 "the original string changes."),
-               wxEmptyString, wxS("scopy(#1#);"), _("String:"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_sdowncase){
-    CommandWiz(_("Convert string to lowercase"), wxEmptyString, wxEmptyString,
-               wxS("sdowncase(#1#);"), _("String:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_slength){
-    CommandWiz(_("String length"), wxEmptyString, wxEmptyString,
-               wxS("slength(#1#);"), _("String:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_smake){
-    CommandWiz(_("Create empty string"), wxEmptyString, wxEmptyString,
-               wxS("smake(#1#,#2#);"), _("String:"), expr, wxEmptyString,
-               _("Length:"), wxS("10"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_smismatch){
-    CommandWiz(_("Find first difference"), wxEmptyString, wxEmptyString,
-               wxS("smismatch(#1#,#2#);"), _("String #1:"), expr, wxEmptyString,
-               _("String #2:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_split){
-    CommandWiz(_("Split"), wxEmptyString, wxEmptyString, wxS("split(#1#,#2#);"),
-               _("String:"), expr, wxEmptyString, _("Delimiter:"), wxS(";"),
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_sposition){
-    CommandWiz(_("Find char in string"), wxEmptyString, wxEmptyString,
-               wxS("sposition(#1#,#2#);"), _("Char:"), wxS(";"), wxEmptyString,
-               _("String:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_sremove){
-    CommandWiz(_("Remove all occurrences of part"), wxEmptyString,
-               wxEmptyString, wxS("sremove(#1#,#2#);"), _("part:"), expr,
-               wxEmptyString, _("String:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_sremovefirst){
-    CommandWiz(_("Remove first occurrence of part"), wxEmptyString,
-               wxEmptyString, wxS("sremovefirst(#1#,#2#);"), _("part:"), expr,
-               wxEmptyString, _("String:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_tokens){
-    CommandWiz(_("Split string into tokens"), wxEmptyString, wxEmptyString,
-               wxS("tokens(#1#,#2#);"), _("String:"), wxEmptyString,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_ssearch){
-    CommandWiz(_("Search first occurrence of part"), wxEmptyString,
-               wxEmptyString, wxS("ssearch(#1#,#2#);"), _("part:"), expr,
-               wxEmptyString, _("String:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_ssort){
-    CommandWiz(_("Sort all characters in string"), wxEmptyString, wxEmptyString,
-               wxS("ssort(#1#);"), _("String:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_ssubstfirst){
-    CommandWiz(_("Replace the first occurrence of Part"), wxEmptyString,
-               wxEmptyString, wxS("ssubstfirst(#1#,#2#);"), _("Part:"),
-               wxEmptyString, wxEmptyString, _("String:"), wxEmptyString,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_strim){
-    CommandWiz(_("Trim string on both ends"), wxEmptyString, wxEmptyString,
-               wxS("strim(#1#);"), _("String:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_striml){
-    CommandWiz(_("Trim string left"), wxEmptyString, wxEmptyString,
-               wxS("striml(#1#);"), _("String:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_strimr){
-    CommandWiz(_("Trim string right"), wxEmptyString, wxEmptyString,
-               wxS("strimr(#1#);"), _("String:"), wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_number_to_octets){
-    CommandWiz(_("Number to octets"), wxEmptyString, wxEmptyString,
-               wxS("number_to_octets(#1#);"), _("Number:"), wxEmptyString,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_octets_to_number){
-    CommandWiz(_("Octets to Number"), wxEmptyString, wxEmptyString,
-               wxS("octets_to_number(#1#);"), _("Octets:"),
-               _("Comma-separated numbers from 0 to 255"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_octets_to_string){
-    CommandWiz(_("Octets to String"), wxEmptyString, wxEmptyString,
-               wxS("octets_to_string(#1#);"), _("Octets:"),
-               _("Comma-separated numbers from 0 to 255"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stringproc_string_to_octets){
-    CommandWiz(_("String to octets"), wxEmptyString, wxEmptyString,
-               wxS("string_to_octets(#1#);"), _("String:"), wxEmptyString,
-               wxEmptyString);
-  }
-
-  else if(event.GetId() == EventIDs::menu_stringtomaxima){
-    CommandWiz(_("Interpret string as maxima code"), wxEmptyString,
-               wxEmptyString, wxS("parse_string(#1#);"), wxS("String:"), expr,
-               wxEmptyString);
-  }
-
-  else if(event.GetId() == EventIDs::menu_sregex_load){
-    MenuCommand("load(\"sregex\");");
-  }
-  else if(event.GetId() == EventIDs::menu_sregex_regex_compile){
-    CommandWiz(_("Compile regex"),
-               _("Re-using a compiled regex is faster that using the same "
-                 "regex string multiple times."),
-               wxEmptyString, wxS("regex_compile(#1#);"), wxS("String:"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_sregex_regex_match_pos){
-    CommandWiz(_("Regex match position"), wxEmptyString, wxEmptyString,
-               wxS("regex_match_pos(#1#,#2#);"), wxS("Regex:"), expr,
-               wxEmptyString, wxS("String:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_sregex_regex_match){
-    CommandWiz(_("Regex match"), wxEmptyString, wxEmptyString,
-               wxS("regex_match(#1#,#2#);"), wxS("Regex:"), expr, wxEmptyString,
-               wxS("String:"), expr, wxEmptyString);
-  }
-  if(event.GetId() == EventIDs::menu_sregex_regex_split){
-    CommandWiz(_("Split on regex match"), wxEmptyString, wxEmptyString,
-               wxS("regex_split(#1#,#2#);"), wxS("Regex:"), expr, wxEmptyString,
-               wxS("String:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_sregex_subst_first){
-    CommandWiz(_("Replace first regex match"), wxEmptyString, wxEmptyString,
-               wxS("regex_subst_first(#1#,#2#);"), wxS("Regex:"), expr,
-               wxEmptyString, wxS("String:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_sregex_regex_subst){
-    CommandWiz(_("Replace all regex matches"), wxEmptyString, wxEmptyString,
-               wxS("regex_subst(#1#,#2#);"), wxS("Regex:"), expr, wxEmptyString,
-               wxS("String:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_sregex_string_to_regex){
-    CommandWiz(_("Convert string to matching regex"),
-               _("Escapes all special characters in a string. The result is a "
-                 "regex that matches this string exactly."),
-               wxEmptyString, wxS("string_to_regex(#1#);"), wxS("String:"),
-               expr, wxEmptyString);
-  }
-
-  else if(event.GetId() == EventIDs::menu_opsyst_load){
-    MenuCommand("load(\"operatingsystem\");");
-  }
-
-  else if(event.GetId() == EventIDs::menu_opsyst_chdir){
-    CommandWiz(_("Change directory"), wxEmptyString, wxEmptyString,
-               wxS("chdir(#1#);"), wxS("Directory:"), expr,
-               _("\"..\" means \"one directory up\"."));
-  }
-
-  else if(event.GetId() == EventIDs::menu_opsyst_mkdir){
-    CommandWiz(_("Create directory"), wxEmptyString, wxEmptyString,
-               wxS("mkdir(#1#);"), wxS("Directory:"), expr,
-               _("\"..\" means \"one directory up\"."));
-  }
-  else if(event.GetId() == EventIDs::menu_opsyst_rmdir){
-    CommandWiz(_("Remove directory"), wxEmptyString, wxEmptyString,
-               wxS("rmdir(#1#);"), wxS("Directory:"), expr,
-               _("\"..\" means \"one directory up\"."));
-  }
-
-  else if(event.GetId() == EventIDs::menu_opsyst_getcurrentdirectory){
-    MenuCommand(wxS("getcurrentdirectory();"));
-  }
-
-  else if(event.GetId() == EventIDs::menu_opsyst_copy_file){
-    CommandWiz(_("Copy file"), wxEmptyString, wxEmptyString,
-               wxS("copy_file(#1#,#2#);"), wxS("Source:"), expr, wxEmptyString,
-               wxS("Destination:"), expr, wxEmptyString);
-  }
-
-  else if(event.GetId() == EventIDs::menu_opsyst_rename_file){
-    CommandWiz(_("Rename file"), wxEmptyString, wxEmptyString,
-               wxS("rename_file(#1#,#2#);"), wxS("Source:"), expr,
-               wxEmptyString, wxS("Destination:"), expr, wxEmptyString);
-  }
-
-  else if(event.GetId() == EventIDs::menu_opsyst_delete_file){
-    CommandWiz(_("Delete file"), wxEmptyString, wxEmptyString,
-               wxS("delete_file(#1#);"), wxS("File:"), expr, wxEmptyString);
-  }
-
-  else if(event.GetId() == EventIDs::menu_opsyst_getenv){
-    CommandWiz(_("Read environment variable"), wxEmptyString, wxEmptyString,
-               wxS("getenv(#1#);"), wxS("Variable name:"), expr, wxEmptyString);
-  }
-
-  else if(event.GetId() == EventIDs::menu_opsyst_directory){
-    CommandWiz(
-               _("Read Directory"), wxEmptyString, wxEmptyString,
-               wxS("directory(#1#);"), wxS("Directory name:"), expr,
-               _("\".\" = \"The current directory\"\n\"..\" = \"One directory up\""));
-  }
-
-  else if(event.GetId() == EventIDs::menu_opsyst_pathname_directory){
-    CommandWiz(_("Extract directory part"), wxEmptyString, wxEmptyString,
-               wxS("pathname_directory(#1#);"), wxS("Path name:"), expr,
-               wxEmptyString);
-  }
-
-  else if(event.GetId() == EventIDs::menu_opsyst_pathname_name){
-    CommandWiz(_("Extract filename part"), wxEmptyString, wxEmptyString,
-               wxS("pathname_name(#1#);"), wxS("Path name:"), expr,
-               wxEmptyString);
-  }
-
-  else if(event.GetId() == EventIDs::menu_opsyst_pathname_type){
-    CommandWiz(_("Extract file type extension"), wxEmptyString, wxEmptyString,
-               wxS("pathname_type(#1#);"), wxS("Path name:"), expr,
-               wxEmptyString);
-  }
-
-  else if(event.GetId() == EventIDs::menu_add_path) {
-    if (m_lastPath.Length() == 0)
-      m_lastPath = wxGetHomeDir();
-    wxString dir = wxDirSelector(_("Add dir to path:"), m_lastPath);
-    if (dir.Length()) {
-      m_lastPath = dir;
-#if defined(__WXMSW__)
-      dir.Replace(wxS("\\"), wxS("/"));
-#endif
-      wxString cmd = wxS("file_search_maxima : cons(sconcat(\"") + dir +
-        wxS("/###.{lisp,mac,mc}\"), file_search_maxima)$");
-      MenuCommand(cmd);
-    }
-  }
-  else if((event.GetId() == EventIDs::menu_evaluate_all_visible) ||
-          (event.GetId() == ToolBar::tb_eval_all)) {
-    GetWorksheet()->GetEvaluationQueue().Clear();
-    GetWorksheet()->ResetInputPrompts();
-    EvaluationQueueLength(0);
-    if (m_configuration.RestartOnReEvaluation())
-      StartMaxima();
-    GetWorksheet()->AddDocumentToEvaluationQueue();
-    // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(GetWorksheet()->GetEvaluationQueue().Size(),
-                          GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-    TriggerEvaluation();
-  }
-  else if(event.GetId() == EventIDs::menu_evaluate_all) {
-    GetWorksheet()->GetEvaluationQueue().Clear();
-    GetWorksheet()->ResetInputPrompts();
-    EvaluationQueueLength(0);
-    if (m_configuration.RestartOnReEvaluation())
-      StartMaxima();
-    GetWorksheet()->AddEntireDocumentToEvaluationQueue();
-    // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(GetWorksheet()->GetEvaluationQueue().Size(),
-                          GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-    TriggerEvaluation();
-  }
-  else if(event.GetId() == ToolBar::tb_evaltillhere) {
-    GetWorksheet()->GetEvaluationQueue().Clear();
-    GetWorksheet()->ResetInputPrompts();
-    EvaluationQueueLength(0);
-    if (m_configuration.RestartOnReEvaluation())
-      StartMaxima();
-    GetWorksheet()->AddDocumentTillHereToEvaluationQueue();
-    // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(GetWorksheet()->GetEvaluationQueue().Size(),
-                          GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
-    TriggerEvaluation();
-  }
-  else if(event.GetId() == EventIDs::menu_clear_var){
-    CommandWiz(_("Delete variable(s)"), wxEmptyString, wxEmptyString,
-               wxS("remvalue(#1#);"), _("Variable name:"), wxS("all"),
-               wxEmptyString);
-  }
-  if(event.GetId() == EventIDs::menu_kill){
-    CommandWiz(_("Delete named object(s)"), wxEmptyString, wxEmptyString,
-               wxS("kill(#1#);"), _("Object name:"), wxS("all"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_clear_fun){
-    CommandWiz(_("Delete function(s)"), wxEmptyString, wxEmptyString,
-               wxS("remfunction(#1#);"), _("Function name:"), wxS("all"),
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::button_subst) {
-    wxWindowPtr<SubstituteWiz> wiz(new SubstituteWiz(this, -1, &m_configuration, _("Substitute")));
-    wiz->SetValue(expr);
-    // wiz->Centre(wxBOTH);
-    wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-      if (retcode == wxID_OK) {
-        wxString val = wiz->GetValue();
-        MenuCommand(val);
-      }
-    });
-  }
-}
 
 
 

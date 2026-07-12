@@ -112,6 +112,11 @@ public:
   //! and the solve/plot/integrate/... quick wizards).
   void PopupMenu(wxCommandEvent &event);
 
+  //! Handles the "Maxima" menu (restart/kill toggles, the debug/display/time
+  //! options, the evaluate-all/-till-here actions and the large family of
+  //! programming-, string-processing- and OS-command wizards).
+  void MaximaMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.

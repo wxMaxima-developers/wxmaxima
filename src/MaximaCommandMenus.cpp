@@ -66,6 +66,7 @@
 #include "wizards/Plot3dWiz.h"
 #include "wizards/PlotFormatWiz.h"
 #include "wizards/SeriesWiz.h"
+#include "wizards/SubstituteWiz.h"
 #include "wizards/SumWiz.h"
 #include "wizards/SystemWiz.h"
 
@@ -3630,5 +3631,846 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
     }
   else if(event.GetId() == EventIDs::popid_merge_cells){
     m_wxMaxima.GetWorksheet()->MergeCells();
+  }
+}
+
+void MaximaCommandMenus::MaximaMenu(wxCommandEvent &event) {
+  if(!m_wxMaxima.GetWorksheet())
+    return;
+  m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
+
+  wxString expr = m_wxMaxima.GetDefaultEntry();
+  if(event.GetId() == EventIDs::menu_jumptoerror){
+    GroupCell *lastError = m_wxMaxima.GetWorksheet()->GetErrorList().LastError();
+    if (lastError) {
+      m_wxMaxima.GetWorksheet()->SetActiveCell(lastError->GetEditable());
+      if (lastError->GetEditable()) {
+        lastError->GetEditable()->CaretToEnd();
+      }
+      m_wxMaxima.GetWorksheet()->ScrollToCaret();
+    }
+  }
+  else if(event.GetId() == ToolBar::menu_restart_id){
+    m_wxMaxima.m_closing = true;
+    m_wxMaxima.GetWorksheet()->SetWorkingGroup(nullptr);
+    m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Clear();
+    m_wxMaxima.GetWorksheet()->ResetInputPrompts();
+    m_wxMaxima.m_unsuccessfulConnectionAttempts = 0;
+    m_wxMaxima.StartMaxima(true);
+  }
+  else if(event.GetId() == EventIDs::menu_soft_restart){
+    m_wxMaxima.MenuCommand(wxS("kill(all);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_dependencies){
+    m_wxMaxima.MenuCommand(wxS("kill(dependencies);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_values){
+    m_wxMaxima.MenuCommand(wxS("kill(values);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_functions){
+    m_wxMaxima.MenuCommand(wxS("kill(functions);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_arrays){
+    m_wxMaxima.MenuCommand(wxS("kill(arrays);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_myoptions){
+    m_wxMaxima.MenuCommand(wxS("kill(options);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_rules){
+    m_wxMaxima.MenuCommand(wxS("kill(rules);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_aliases){
+    m_wxMaxima.MenuCommand(wxS("kill(aliases);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_structures){
+    m_wxMaxima.MenuCommand(wxS("kill(structures);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_labels){
+    m_wxMaxima.MenuCommand(wxS("kill(labels);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_gradefs){
+    m_wxMaxima.MenuCommand(wxS("kill(gradefs);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_props){
+    m_wxMaxima.MenuCommand(wxS("kill(props);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_macros){
+    m_wxMaxima.MenuCommand(wxS("kill(macros);"));
+  }
+  else if(event.GetId() == EventIDs::menu_kill_let_rule_packages){
+    m_wxMaxima.MenuCommand(wxS("kill(let_rule_packages);"));
+  }
+  else if(event.GetId() == EventIDs::menu_garbage_collect){
+    m_wxMaxima.MenuCommand(wxS("garbage_collect();"));
+  }
+  else if(event.GetId() == EventIDs::menu_room){
+    m_wxMaxima.MenuCommand(wxS("?room();"));
+  }
+  else if(event.GetId() == EventIDs::menu_functions){
+    m_wxMaxima.MenuCommand(wxS("functions;"));
+  }
+  else if(event.GetId() == EventIDs::menu_variables){
+    m_wxMaxima.MenuCommand(wxS("values;"));
+  }
+  else if(event.GetId() == EventIDs::menu_arrays){
+    m_wxMaxima.MenuCommand(wxS("arrays;"));
+  }
+  else if(event.GetId() == EventIDs::menu_macros){
+    m_wxMaxima.MenuCommand(wxS("macros;"));
+  }
+  else if(event.GetId() == EventIDs::menu_labels){
+    m_wxMaxima.MenuCommand(wxS("labels;"));
+  }
+  else if(event.GetId() == EventIDs::menu_myoptions){
+    m_wxMaxima.MenuCommand(wxS("myoptions;"));
+  }
+  else if(event.GetId() == EventIDs::menu_rules){
+    m_wxMaxima.MenuCommand(wxS("rules;"));
+  }
+  else if(event.GetId() == EventIDs::menu_aliases){
+    m_wxMaxima.MenuCommand(wxS("aliases;"));
+  }
+  else if(event.GetId() == EventIDs::menu_structs){
+    m_wxMaxima.MenuCommand(wxS("structures;"));
+  }
+  else if(event.GetId() == EventIDs::menu_dependencies){
+    m_wxMaxima.MenuCommand(wxS("dependencies;"));
+  }
+  else if(event.GetId() == EventIDs::menu_gradefs){
+    m_wxMaxima.MenuCommand(wxS("gradefs;"));
+  }
+  else if(event.GetId() == EventIDs::menu_let_rule_packages){
+    m_wxMaxima.MenuCommand(wxS("let_rule_packages;"));
+  }
+
+  else if(event.GetId() == EventIDs::menu_display) {
+    wxString choices[] = {wxS("xml"), wxS("ascii"), wxS("none")};
+    wxString choice =
+      wxGetSingleChoice(_("Select math display algorithm"),
+                        _("Display algorithm"), 3, choices, &m_wxMaxima);
+    if (choice.Length()) {
+      wxString cmd = wxS("set_display('") + choice + wxS(")$");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  }
+  else if(event.GetId() == EventIDs::menu_texform) {
+    wxString cmd = wxS("tex(") + expr + wxS(")$");
+    m_wxMaxima.MenuCommand(cmd);
+  }
+  else if(event.GetId() == EventIDs::menu_grind) {
+    wxString cmd = wxS("grind(") + expr + wxS(")$");
+    m_wxMaxima.MenuCommand(cmd);
+  }
+  else if(event.GetId() == EventIDs::menu_debugmode_lisp) {
+    wxString cmd = wxS("debugmode: lisp$");
+    m_wxMaxima.MenuCommand(cmd);
+  }
+  else if(event.GetId() == EventIDs::menu_debugmode_all) {
+    wxString cmd = wxS("debugmode: true$");
+    m_wxMaxima.MenuCommand(cmd);
+  }
+  else if(event.GetId() == EventIDs::menu_debugmode_off) {
+    wxString cmd = wxS("debugmode: false$");
+    m_wxMaxima.MenuCommand(cmd);
+  }
+  else if(event.GetId() == EventIDs::menu_time) {
+    wxString cmd;
+    if (event.IsChecked())
+      cmd = wxS("showtime:all$");
+    else
+      cmd = wxS("showtime:false$");
+    m_wxMaxima.MenuCommand(cmd);
+  }
+  else if(event.GetId() == EventIDs::gentran_lang_c){
+    m_wxMaxima.MenuCommand(wxS("gentranlang:c;"));
+  }
+  else if(event.GetId() == EventIDs::gentran_lang_fortran){
+    m_wxMaxima.MenuCommand(wxS("gentranlang:fortran;"));
+  }
+  else if(event.GetId() == EventIDs::gentran_lang_ratfor){
+    m_wxMaxima.MenuCommand(wxS("gentranlang:ratfor;"));
+  }
+  else if(event.GetId() == EventIDs::gentran_to_stdout){
+    m_wxMaxima.CommandWiz(_("Convert to programming language"), wxEmptyString,
+               wxEmptyString, wxS("gentran(#1#);"), wxS("Expression(s)"),
+               wxS("%"),
+               _("Expression or a list of comma-separated expressions"));
+  }
+  else if(event.GetId() == EventIDs::gentran_to_file){
+    m_wxMaxima.CommandWiz(_("Convert to programming language file"), wxEmptyString,
+               wxEmptyString, wxS("gentran(#1#,[#2#]);"), wxS("Expression(s)"),
+               wxS("%"),
+               _("Expression or a list of comma-separated expressions"),
+               wxS("Filename(s)"), wxS("%"),
+               _("Filename or a list of comma-separated file names"));
+  }
+  else if(event.GetId() == EventIDs::gentran_load){
+    m_wxMaxima.MenuCommand(wxS("load(\"gentran\")$"));
+  }
+  else if(event.GetId() == EventIDs::menu_fun_def){
+    m_wxMaxima.CommandWiz(_("Show the function's definition"), wxEmptyString,
+               wxEmptyString, wxS("fundef(#1#);"), wxS("function"), wxS("%"),
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_for){
+    m_wxMaxima.CommandWiz(_("For loop"), wxEmptyString, wxEmptyString,
+               wxS("for #1#:#2# thru #3# step #4# do #5#;"),
+               wxS("loop variable:"), wxS("i"), wxEmptyString, wxS("Start:"),
+               wxS("1"), wxEmptyString, wxS("End:"), wxS("10"), wxEmptyString,
+               wxS("Step width:"), wxS("1"), wxEmptyString, wxS("What to do:"),
+               wxS("disp(i)"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_while){
+    m_wxMaxima.CommandWiz(_("While loop"), wxEmptyString, wxEmptyString,
+               wxS("while #1# do #2#;"),
+               wxS("Condition:"), wxS("%"), wxEmptyString, wxS("What to do:"),
+               wxS("disp(i)"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_block){
+    m_wxMaxima.CommandWiz(_("Program block"), wxEmptyString, wxEmptyString,
+               wxS("block([#1#], #2#);"), wxS("Local variable(s):"), wxS("i:0"),
+               _("Comma-separated variable names, can be initialized by the "
+                 "\":\" operator."),
+               wxS("What to do:"), wxS("i:i+1,disp(i)"),
+               _("Comma-separated commands"));
+  }
+  else if(event.GetId() == EventIDs::menu_block_noLocal){
+    m_wxMaxima.CommandWiz(
+               _("Program (no local variables)"),
+               _("If a program doesn't need local variables, Maxima allows "
+                 "putting the commands between parentheses. The result of the last "
+                 "operation is the return value of the program."),
+               wxEmptyString, wxS("(#1#);"), wxS("What to do:"), wxS("i:i+1,disp(i)"),
+               _("Comma-separated commands"));
+  }
+  else if(event.GetId() == EventIDs::menu_local){
+    m_wxMaxima.CommandWiz(_("Declare a function local to a Program"),
+               _("The command local() allows telling Maxima which functions to "
+                 "make local to the current program when defined."),
+               wxEmptyString, wxS("local(#1#);"), wxS("Function name:"), expr,
+               _("Comma-separated function names"));
+  }
+  else if(event.GetId() == EventIDs::menu_return){
+    m_wxMaxima.CommandWiz(
+               _("Return from a block or loop"),
+               _("Unlike in other programming language return() only exits from the "
+                 "current loop or block(), not from the whole function."),
+               wxEmptyString, wxS("return(#1#);"), wxS("return value:"), expr,
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_trace){
+    m_wxMaxima.CommandWiz(_("Trace function(s)"), wxEmptyString, wxEmptyString,
+               wxS("trace(#1#);"), wxS("Function(s):"), expr,
+               _("Comma-separated function names."));
+  }
+  else if(event.GetId() == EventIDs::menu_lambda){
+    m_wxMaxima.CommandWiz(
+               _("Lambda"),
+               _("Lambda generates a function, but doesn't give it a name.\n"
+                 "This is useful if you want to use a function only once, perhaps "
+                 "as a parameter to another function and don't need it to be named.\n"
+                 "Also you can fill a variable with a lambda() construct, effectively "
+                 "generating a function pointer: A variable that can be used "
+                 "as a function, and filled with a different function, if needed."),
+               wxEmptyString, wxS("lambda([#1#],#2#);"),
+               wxS("Names for the parameters:"), expr,
+               _("Comma-separated names the parameters will be referenced by later."),
+               wxS("Contents:"), expr, _("Comma-separated expressions."));
+  }
+  else if(event.GetId() == EventIDs::menu_quotequote){
+    m_wxMaxima.CommandWiz(
+               _("Interpret maxima's output as input"),
+               _("Sometimes one wants maxima to loose the information that a function "
+                 "name was used with the ' operator in order to make maxima not "
+                 "evaluate "
+                 "it. In other places one wants % to mean \"the last expression at "
+                 "the "
+                 "time this function was created\", not \"the last expression now\".\n"
+                 "In both cases the '' operator will do what is requested."),
+               wxEmptyString, wxS("''#1#;"), wxS("Expression:"), expr,
+               _("Expression whose output is to be used as maxima's input."),
+               wxS("Contents:"), expr, _("Comma-separated expressions."));
+  }
+  else if(event.GetId() == EventIDs::menu_quote){
+    m_wxMaxima.CommandWiz(_("Don't evaluate one command"),
+               _("Maxima automatically simplifies expressions it gets as input "
+                 "and then tries to evaluate their value. The ' operator "
+                 "tells maxima that we want a command to be in noun form, "
+                 "which means: "
+                 "stand here as is, and unevaluated.\n"
+                 "The ' operator can be undone by using the '' operator."),
+               wxEmptyString, wxS("'#1#;"), wxS("Command:"), expr,
+               _("The name of a function we don't want to be evaluated here"));
+  }
+  else if(event.GetId() == EventIDs::menu_quoteblock){
+    m_wxMaxima.CommandWiz(
+               _("Don't evaluate one whole expression"), wxEmptyString, wxEmptyString,
+               wxS("'(#1#);"), _("expression:"), expr,
+               _("The name of an expression that we don't want to be evaluated."));
+  }
+  else if(event.GetId() == EventIDs::menu_def_fun){
+    m_wxMaxima.CommandWiz(_("Define a function"), wxEmptyString, wxEmptyString,
+               wxS("#1#(#2#):=#3#;"), _("Function name:"), expr, wxEmptyString,
+               _("Parameter(s):"), wxS("x,[y]"),
+               _("Comma-separated parameter names. A parameter in square "
+                 "brackets [] will be filled with the list of any additional "
+                 "arguments the function gets."),
+               _("Function contents:"), wxS("sin(x)+lsum(i,i,y)"),
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_gensym){
+    m_wxMaxima.MenuCommand("gensym();");
+  }
+  else if(event.GetId() == EventIDs::menu_def_macro){
+    m_wxMaxima.CommandWiz(_("Define a macro"), wxEmptyString, wxEmptyString,
+               wxS("#1#(#2#)::=#3#;"), _("Macro name:"), expr, wxEmptyString,
+               _("Parameter(s):"), wxS("x,[y]"),
+               _("Comma-separated parameter names. A parameter in square "
+                 "brackets [] will be filled with the list of any additional "
+                 "arguments the function gets."),
+               _("Macro contents:"), wxS("sin(x)+lsum(i,i,y)"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_def_variable){
+    m_wxMaxima.CommandWiz(_("Define a variable"), wxEmptyString, wxEmptyString,
+               wxS("#1#:#2#;"), _("Variable name:"), expr, wxEmptyString,
+               _("Contents:"), wxS("1"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_compile){
+    m_wxMaxima.CommandWiz(
+               _("Compile a function"),
+               _("Compiling a function can generate a considerable speed boost if "
+                 "the types of the function parameters are made known to the function "
+                 "before it is compiled. Else the generated code has to be "
+                 "hideously generic."),
+               wxEmptyString, wxS("compile(#1#);"), _("Function name(s):"), expr,
+               _("Comma-separated function names"));
+  }
+  else if(event.GetId() == EventIDs::menu_paramType){
+    m_wxMaxima.CommandWiz(_("Declare the type of a function parameter"),
+               _("If the type of a function parameter is known when compiling "
+                 "a function "
+                 "the code can vastly be optimized.\n"
+                 "Known types:\n\n"
+                 "array, boolean, integer, fixnum (machine-length integer), "
+                 "float (machine-size floating-point numbers), "
+                 "real or any (which is useful for declaring arrays of any)"),
+               wxEmptyString, wxS("mode_declare(#1#);"), _("Parameter name:"),
+               expr, wxEmptyString, _("Type:"), wxS("boolean"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_structdef){
+    m_wxMaxima.CommandWiz(_("Define a structure type"), wxEmptyString, wxEmptyString,
+               wxS("defstruct(#1#(#2#));"), _("Struct type name:"), expr,
+               _("The name of the new struct type"), _("Fields:"), wxS("U,I"),
+               _("The comma-separated names of the struct fields"));
+  }
+  else if(event.GetId() == EventIDs::menu_structnew){
+    m_wxMaxima.CommandWiz(_("Define a structure"), wxEmptyString, wxEmptyString,
+               wxS("new(#1#(#2#));"), _("Struct type name:"), expr,
+               _("The name of the struct type"), _("Field contents:"),
+               wxS("1,2"),
+               _("The comma-separated contents of the struct fields"));
+  }
+  else if(event.GetId() == EventIDs::menu_structuse){
+    m_wxMaxima.CommandWiz(_("Read a structure field"), wxEmptyString, wxEmptyString,
+               wxS("#1#@#2#;"), _("Struct :"), expr,
+               _("The name of the struct"), _("Field name:"), wxS("U"),
+               _("The name of the field to read"));
+  }
+  else if(event.GetId() == EventIDs::menu_saveLisp){
+    m_wxMaxima.CommandWiz(
+               _("Save as lisp code"), wxEmptyString, wxEmptyString, wxS("save(#1#);"),
+               _("filename:"), wxEmptyString, _("Elements:"), expr,
+               _("Comma-separated names of the elements that shall be written"));
+  }
+  else if(event.GetId() == EventIDs::menu_loadLisp){
+    m_wxMaxima.CommandWiz(_("Load lisp code"), wxEmptyString, wxEmptyString,
+               wxS("load(#1#);"), _("filename:"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_maximatostring){
+    m_wxMaxima.CommandWiz(
+               _("Maxima to string"), wxEmptyString, wxEmptyString,
+               wxS("sconcat(#1#);"), _("Expression(s):"), expr,
+               _("Comma-separated expressions that shall be converted to a string"));
+  }
+  if(event.GetId() == EventIDs::menu_stringproc_setposition){
+    m_wxMaxima.CommandWiz(_("Seek to position"), wxEmptyString, wxEmptyString,
+               wxS("fposition(#1#,#2#);"), _("Stream:"), expr, wxEmptyString,
+               _("Position:"), wxS("0"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_getposition){
+    m_wxMaxima.CommandWiz(_("Get position in stream"), wxEmptyString, wxEmptyString,
+               wxS("fposition(#1#);"), _("Stream:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_flush_output){
+    m_wxMaxima.CommandWiz(_("Flush stream"), wxEmptyString, wxEmptyString,
+               wxS("flush_output(#1#);"), _("Stream:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_flength){
+    m_wxMaxima.CommandWiz(_("Stream length"), wxEmptyString, wxEmptyString,
+               wxS("flength(#1#);"), _("Stream:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_close){
+    m_wxMaxima.CommandWiz(_("Close Stream"), wxEmptyString, wxEmptyString,
+               wxS("close(#1#);"), _("Stream:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_opena){
+    m_wxMaxima.CommandWiz(_("Open for appending"), wxEmptyString, wxEmptyString,
+               wxS("#1#:opena(#2#);"), _("Stream:"), expr, wxEmptyString,
+               _("File name:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_openr){
+    m_wxMaxima.CommandWiz(_("Open for reading"), wxEmptyString, wxEmptyString,
+               wxS("#1#:openr(#2#);"), _("Stream:"), expr, wxEmptyString,
+               _("File name:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_openw){
+    m_wxMaxima.CommandWiz(_("Open for writing"), wxEmptyString, wxEmptyString,
+               wxS("#1#:openw(#2#);"), _("Stream:"), expr, wxEmptyString,
+               _("File name:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_printf){
+    m_wxMaxima.CommandWiz(
+               _("printf"), wxEmptyString, wxEmptyString, wxS("printf(#1#,#2#,#3#);"),
+               _("Stream:"), wxS("false"), wxEmptyString, _("Lisp format string:"),
+               wxS("~a"),
+               _("Lisp format strings are more powerful than c++ format strings"),
+               _("Arguments:"), expr, _("Comma-separated arguments"));
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_readline){
+    m_wxMaxima.CommandWiz(_("Read line"), wxEmptyString, wxEmptyString,
+               wxS("readline(#1#);"), _("Stream:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_readchar){
+    m_wxMaxima.CommandWiz(_("Read char"), wxEmptyString, wxEmptyString,
+               wxS("readchar(#1#);"), _("Stream:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_readbyte){
+    m_wxMaxima.CommandWiz(_("Read byte"), wxEmptyString, wxEmptyString,
+               wxS("readbyte(#1#);"), _("Stream:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_writebyte){
+    m_wxMaxima.CommandWiz(_("Read byte"), wxEmptyString, wxEmptyString,
+               wxS("writebyte(#1#,#2#);"), _("Byte:"), wxS("65"), wxEmptyString,
+               _("Stream:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_charp){
+    m_wxMaxima.CommandWiz(
+               _("Is a char?"), _("Chars are strings that are one character long"),
+               wxEmptyString, wxS("charp(#1#);"), _("Object:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_alphacharp){
+    m_wxMaxima.CommandWiz(_("Is an alphabetic char?"), wxEmptyString, wxEmptyString,
+               wxS("alphacharp(#1#);"), _("Char:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_alphanumericp){
+    m_wxMaxima.CommandWiz(_("Is an alphanumeric char?"), wxEmptyString, wxEmptyString,
+               wxS("alphanumericp(#1#);"), _("Char:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_digitcharp){
+    m_wxMaxima.CommandWiz(_("Is a digit?"), wxEmptyString, wxEmptyString,
+               wxS("alphanumericp(#1#);"), _("Char:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_constituent){
+    m_wxMaxima.CommandWiz(_("Is a printable char?"), wxEmptyString, wxEmptyString,
+               wxS("constituent(#1#);"), _("Char:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_uppercasep){
+    m_wxMaxima.CommandWiz(_("Is a uppercase char?"), wxEmptyString, wxEmptyString,
+               wxS("uppercasep(#1#);"), _("Char:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_lowercasep){
+    m_wxMaxima.CommandWiz(_("Is a lowercase char?"), wxEmptyString, wxEmptyString,
+               wxS("lowercasep(#1#);"), _("Char:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_create_ascii){
+    m_wxMaxima.CommandWiz(_("Ascii code to char"), wxEmptyString, wxEmptyString,
+               wxS("ascii(#1#);"), _("Code number:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_cequal){
+    m_wxMaxima.CommandWiz(_("Are the chars equal?"), wxEmptyString, wxEmptyString,
+               wxS("cequal(#1#,#2#);"), _("Char #1:"), expr, wxEmptyString,
+               _("Char #2:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_cequalignore){
+    m_wxMaxima.CommandWiz(_("Are the chars equal, if case is ignored?"), wxEmptyString,
+               wxEmptyString, wxS("cequalignore(#1#,#2#);"), _("Char #1:"),
+               expr, wxEmptyString, _("Char #2:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_clessp){
+    m_wxMaxima.CommandWiz(_("Is Char 1 less than Char2?"), wxEmptyString, wxEmptyString,
+               wxS("clessp(#1#,#2#);"), _("Char #1:"), expr, wxEmptyString,
+               _("Char #2:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_clesspignore){
+    m_wxMaxima.CommandWiz(_("Is Char 1 less than Char2, if case is ignored?"),
+               wxEmptyString, wxEmptyString, wxS("clesspignore(#1#,#2#);"),
+               _("Char #1:"), expr, wxEmptyString, _("Char #2:"), expr,
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_cgreaterp){
+    m_wxMaxima.CommandWiz(_("Is Char 1 greater than Char2?"), wxEmptyString, wxEmptyString,
+               wxS("cgreaterp(#1#,#2#);"), _("Char #1:"), expr, wxEmptyString,
+               _("Char #2:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_cgreaterpignore){
+    m_wxMaxima.CommandWiz(_("Is Char 1 greater than Char2, if case is ignored?"),
+               wxEmptyString, wxEmptyString, wxS("cgreaterpignore(#1#,#2#);"),
+               _("Char #1:"), expr, wxEmptyString, _("Char #2:"), expr,
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_sequal){
+    m_wxMaxima.CommandWiz(_("Are these strings equal?"), wxEmptyString, wxEmptyString,
+               wxS("sequal(#1#, #2#);"), _("String #1:"), expr, wxEmptyString,
+               _("String #2:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_sequalignore){
+    m_wxMaxima.CommandWiz(_("Are these strings equal if case is ignored?"), wxEmptyString,
+               wxEmptyString, wxS("sequalignore(#1#, #2#);"), _("String #1:"), expr,
+               wxEmptyString, _("String #2:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_ascii){
+    m_wxMaxima.CommandWiz(_("Ascii code to char"), wxEmptyString, wxEmptyString,
+               wxS("ascii(#1#);"), _("Code number:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_cint){
+    m_wxMaxima.CommandWiz(_("Char to unicode code point"), wxEmptyString, wxEmptyString,
+               wxS("cint(#1#);"), _("Char:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_unicode){
+    m_wxMaxima.CommandWiz(_("Char to unicode code point"), wxEmptyString, wxEmptyString,
+               wxS("cint(#1#);"), _("Char:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_unicode_to_utf8){
+    m_wxMaxima.CommandWiz(_("Unicode code point to char"), wxEmptyString, wxEmptyString,
+               wxS("unicode(#1#);"), _("Codepoint number:"), expr,
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_utf8_to_unicode){
+    m_wxMaxima.CommandWiz(_("Unicode code point to utf8 numbers"), wxEmptyString,
+               wxEmptyString, wxS("utf8_to_unicode(#1#);"),
+               _("Codepoint number:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_charat){
+    m_wxMaxima.CommandWiz(_("Extract the nth char of a string"), wxEmptyString,
+               wxEmptyString, wxS("charat(#1#, #2#);"), _("String:"), expr,
+               wxEmptyString, _("n:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_charlist){
+    m_wxMaxima.CommandWiz(_("String to list of char"), wxEmptyString, wxEmptyString,
+               wxS("charlist(#1#);"), _("String:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_simplode){
+    m_wxMaxima.CommandWiz(_("List of char to String"), wxEmptyString, wxEmptyString,
+               wxS("simplode(#1#);"), _("List of chars:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_sinsert){
+    m_wxMaxima.CommandWiz(_("Insert a string into another"), wxEmptyString, wxEmptyString,
+               wxS("sinsert(#1#, #2#, #3#);"), _("New part:"), expr, wxEmptyString,
+               _("String:"), wxEmptyString, wxEmptyString, _("Position:"),
+               wxS("0"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_eval_string){
+    m_wxMaxima.CommandWiz(_("Evaluate string"), wxEmptyString, wxEmptyString,
+               wxS("eval_string(#1#);"), _("String:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_parse_string){
+    m_wxMaxima.CommandWiz(_("Parse string"), wxEmptyString, wxEmptyString,
+               wxS("parse_string(#1#);"), _("String:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_scopy){
+    m_wxMaxima.CommandWiz(_("Copy string"),
+               _("In order to save memory the : operator doesn't create an "
+                 "individual copy of the string, but a clone that changes when "
+                 "the original string changes."),
+               wxEmptyString, wxS("scopy(#1#);"), _("String:"), expr,
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_sdowncase){
+    m_wxMaxima.CommandWiz(_("Convert string to lowercase"), wxEmptyString, wxEmptyString,
+               wxS("sdowncase(#1#);"), _("String:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_slength){
+    m_wxMaxima.CommandWiz(_("String length"), wxEmptyString, wxEmptyString,
+               wxS("slength(#1#);"), _("String:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_smake){
+    m_wxMaxima.CommandWiz(_("Create empty string"), wxEmptyString, wxEmptyString,
+               wxS("smake(#1#,#2#);"), _("String:"), expr, wxEmptyString,
+               _("Length:"), wxS("10"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_smismatch){
+    m_wxMaxima.CommandWiz(_("Find first difference"), wxEmptyString, wxEmptyString,
+               wxS("smismatch(#1#,#2#);"), _("String #1:"), expr, wxEmptyString,
+               _("String #2:"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_split){
+    m_wxMaxima.CommandWiz(_("Split"), wxEmptyString, wxEmptyString, wxS("split(#1#,#2#);"),
+               _("String:"), expr, wxEmptyString, _("Delimiter:"), wxS(";"),
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_sposition){
+    m_wxMaxima.CommandWiz(_("Find char in string"), wxEmptyString, wxEmptyString,
+               wxS("sposition(#1#,#2#);"), _("Char:"), wxS(";"), wxEmptyString,
+               _("String:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_sremove){
+    m_wxMaxima.CommandWiz(_("Remove all occurrences of part"), wxEmptyString,
+               wxEmptyString, wxS("sremove(#1#,#2#);"), _("part:"), expr,
+               wxEmptyString, _("String:"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_sremovefirst){
+    m_wxMaxima.CommandWiz(_("Remove first occurrence of part"), wxEmptyString,
+               wxEmptyString, wxS("sremovefirst(#1#,#2#);"), _("part:"), expr,
+               wxEmptyString, _("String:"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_tokens){
+    m_wxMaxima.CommandWiz(_("Split string into tokens"), wxEmptyString, wxEmptyString,
+               wxS("tokens(#1#,#2#);"), _("String:"), wxEmptyString,
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_ssearch){
+    m_wxMaxima.CommandWiz(_("Search first occurrence of part"), wxEmptyString,
+               wxEmptyString, wxS("ssearch(#1#,#2#);"), _("part:"), expr,
+               wxEmptyString, _("String:"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_ssort){
+    m_wxMaxima.CommandWiz(_("Sort all characters in string"), wxEmptyString, wxEmptyString,
+               wxS("ssort(#1#);"), _("String:"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_ssubstfirst){
+    m_wxMaxima.CommandWiz(_("Replace the first occurrence of Part"), wxEmptyString,
+               wxEmptyString, wxS("ssubstfirst(#1#,#2#);"), _("Part:"),
+               wxEmptyString, wxEmptyString, _("String:"), wxEmptyString,
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_strim){
+    m_wxMaxima.CommandWiz(_("Trim string on both ends"), wxEmptyString, wxEmptyString,
+               wxS("strim(#1#);"), _("String:"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_striml){
+    m_wxMaxima.CommandWiz(_("Trim string left"), wxEmptyString, wxEmptyString,
+               wxS("striml(#1#);"), _("String:"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_strimr){
+    m_wxMaxima.CommandWiz(_("Trim string right"), wxEmptyString, wxEmptyString,
+               wxS("strimr(#1#);"), _("String:"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_number_to_octets){
+    m_wxMaxima.CommandWiz(_("Number to octets"), wxEmptyString, wxEmptyString,
+               wxS("number_to_octets(#1#);"), _("Number:"), wxEmptyString,
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_octets_to_number){
+    m_wxMaxima.CommandWiz(_("Octets to Number"), wxEmptyString, wxEmptyString,
+               wxS("octets_to_number(#1#);"), _("Octets:"),
+               _("Comma-separated numbers from 0 to 255"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_octets_to_string){
+    m_wxMaxima.CommandWiz(_("Octets to String"), wxEmptyString, wxEmptyString,
+               wxS("octets_to_string(#1#);"), _("Octets:"),
+               _("Comma-separated numbers from 0 to 255"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_stringproc_string_to_octets){
+    m_wxMaxima.CommandWiz(_("String to octets"), wxEmptyString, wxEmptyString,
+               wxS("string_to_octets(#1#);"), _("String:"), wxEmptyString,
+               wxEmptyString);
+  }
+
+  else if(event.GetId() == EventIDs::menu_stringtomaxima){
+    m_wxMaxima.CommandWiz(_("Interpret string as maxima code"), wxEmptyString,
+               wxEmptyString, wxS("parse_string(#1#);"), wxS("String:"), expr,
+               wxEmptyString);
+  }
+
+  else if(event.GetId() == EventIDs::menu_sregex_load){
+    m_wxMaxima.MenuCommand("load(\"sregex\");");
+  }
+  else if(event.GetId() == EventIDs::menu_sregex_regex_compile){
+    m_wxMaxima.CommandWiz(_("Compile regex"),
+               _("Re-using a compiled regex is faster that using the same "
+                 "regex string multiple times."),
+               wxEmptyString, wxS("regex_compile(#1#);"), wxS("String:"), expr,
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_sregex_regex_match_pos){
+    m_wxMaxima.CommandWiz(_("Regex match position"), wxEmptyString, wxEmptyString,
+               wxS("regex_match_pos(#1#,#2#);"), wxS("Regex:"), expr,
+               wxEmptyString, wxS("String:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_sregex_regex_match){
+    m_wxMaxima.CommandWiz(_("Regex match"), wxEmptyString, wxEmptyString,
+               wxS("regex_match(#1#,#2#);"), wxS("Regex:"), expr, wxEmptyString,
+               wxS("String:"), expr, wxEmptyString);
+  }
+  if(event.GetId() == EventIDs::menu_sregex_regex_split){
+    m_wxMaxima.CommandWiz(_("Split on regex match"), wxEmptyString, wxEmptyString,
+               wxS("regex_split(#1#,#2#);"), wxS("Regex:"), expr, wxEmptyString,
+               wxS("String:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_sregex_subst_first){
+    m_wxMaxima.CommandWiz(_("Replace first regex match"), wxEmptyString, wxEmptyString,
+               wxS("regex_subst_first(#1#,#2#);"), wxS("Regex:"), expr,
+               wxEmptyString, wxS("String:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_sregex_regex_subst){
+    m_wxMaxima.CommandWiz(_("Replace all regex matches"), wxEmptyString, wxEmptyString,
+               wxS("regex_subst(#1#,#2#);"), wxS("Regex:"), expr, wxEmptyString,
+               wxS("String:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_sregex_string_to_regex){
+    m_wxMaxima.CommandWiz(_("Convert string to matching regex"),
+               _("Escapes all special characters in a string. The result is a "
+                 "regex that matches this string exactly."),
+               wxEmptyString, wxS("string_to_regex(#1#);"), wxS("String:"),
+               expr, wxEmptyString);
+  }
+
+  else if(event.GetId() == EventIDs::menu_opsyst_load){
+    m_wxMaxima.MenuCommand("load(\"operatingsystem\");");
+  }
+
+  else if(event.GetId() == EventIDs::menu_opsyst_chdir){
+    m_wxMaxima.CommandWiz(_("Change directory"), wxEmptyString, wxEmptyString,
+               wxS("chdir(#1#);"), wxS("Directory:"), expr,
+               _("\"..\" means \"one directory up\"."));
+  }
+
+  else if(event.GetId() == EventIDs::menu_opsyst_mkdir){
+    m_wxMaxima.CommandWiz(_("Create directory"), wxEmptyString, wxEmptyString,
+               wxS("mkdir(#1#);"), wxS("Directory:"), expr,
+               _("\"..\" means \"one directory up\"."));
+  }
+  else if(event.GetId() == EventIDs::menu_opsyst_rmdir){
+    m_wxMaxima.CommandWiz(_("Remove directory"), wxEmptyString, wxEmptyString,
+               wxS("rmdir(#1#);"), wxS("Directory:"), expr,
+               _("\"..\" means \"one directory up\"."));
+  }
+
+  else if(event.GetId() == EventIDs::menu_opsyst_getcurrentdirectory){
+    m_wxMaxima.MenuCommand(wxS("getcurrentdirectory();"));
+  }
+
+  else if(event.GetId() == EventIDs::menu_opsyst_copy_file){
+    m_wxMaxima.CommandWiz(_("Copy file"), wxEmptyString, wxEmptyString,
+               wxS("copy_file(#1#,#2#);"), wxS("Source:"), expr, wxEmptyString,
+               wxS("Destination:"), expr, wxEmptyString);
+  }
+
+  else if(event.GetId() == EventIDs::menu_opsyst_rename_file){
+    m_wxMaxima.CommandWiz(_("Rename file"), wxEmptyString, wxEmptyString,
+               wxS("rename_file(#1#,#2#);"), wxS("Source:"), expr,
+               wxEmptyString, wxS("Destination:"), expr, wxEmptyString);
+  }
+
+  else if(event.GetId() == EventIDs::menu_opsyst_delete_file){
+    m_wxMaxima.CommandWiz(_("Delete file"), wxEmptyString, wxEmptyString,
+               wxS("delete_file(#1#);"), wxS("File:"), expr, wxEmptyString);
+  }
+
+  else if(event.GetId() == EventIDs::menu_opsyst_getenv){
+    m_wxMaxima.CommandWiz(_("Read environment variable"), wxEmptyString, wxEmptyString,
+               wxS("getenv(#1#);"), wxS("Variable name:"), expr, wxEmptyString);
+  }
+
+  else if(event.GetId() == EventIDs::menu_opsyst_directory){
+    m_wxMaxima.CommandWiz(
+               _("Read Directory"), wxEmptyString, wxEmptyString,
+               wxS("directory(#1#);"), wxS("Directory name:"), expr,
+               _("\".\" = \"The current directory\"\n\"..\" = \"One directory up\""));
+  }
+
+  else if(event.GetId() == EventIDs::menu_opsyst_pathname_directory){
+    m_wxMaxima.CommandWiz(_("Extract directory part"), wxEmptyString, wxEmptyString,
+               wxS("pathname_directory(#1#);"), wxS("Path name:"), expr,
+               wxEmptyString);
+  }
+
+  else if(event.GetId() == EventIDs::menu_opsyst_pathname_name){
+    m_wxMaxima.CommandWiz(_("Extract filename part"), wxEmptyString, wxEmptyString,
+               wxS("pathname_name(#1#);"), wxS("Path name:"), expr,
+               wxEmptyString);
+  }
+
+  else if(event.GetId() == EventIDs::menu_opsyst_pathname_type){
+    m_wxMaxima.CommandWiz(_("Extract file type extension"), wxEmptyString, wxEmptyString,
+               wxS("pathname_type(#1#);"), wxS("Path name:"), expr,
+               wxEmptyString);
+  }
+
+  else if(event.GetId() == EventIDs::menu_add_path) {
+    if (m_wxMaxima.m_lastPath.Length() == 0)
+      m_wxMaxima.m_lastPath = wxGetHomeDir();
+    wxString dir = wxDirSelector(_("Add dir to path:"), m_wxMaxima.m_lastPath);
+    if (dir.Length()) {
+      m_wxMaxima.m_lastPath = dir;
+#if defined(__WXMSW__)
+      dir.Replace(wxS("\\"), wxS("/"));
+#endif
+      wxString cmd = wxS("file_search_maxima : cons(sconcat(\"") + dir +
+        wxS("/###.{lisp,mac,mc}\"), file_search_maxima)$");
+      m_wxMaxima.MenuCommand(cmd);
+    }
+  }
+  else if((event.GetId() == EventIDs::menu_evaluate_all_visible) ||
+          (event.GetId() == ToolBar::tb_eval_all)) {
+    m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Clear();
+    m_wxMaxima.GetWorksheet()->ResetInputPrompts();
+    m_wxMaxima.EvaluationQueueLength(0);
+    if (m_wxMaxima.m_configuration.RestartOnReEvaluation())
+      m_wxMaxima.StartMaxima();
+    m_wxMaxima.GetWorksheet()->AddDocumentToEvaluationQueue();
+    // Inform the user about the length of the evaluation queue.
+    m_wxMaxima.EvaluationQueueLength(m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Size(),
+                          m_wxMaxima.GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
+    m_wxMaxima.TriggerEvaluation();
+  }
+  else if(event.GetId() == EventIDs::menu_evaluate_all) {
+    m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Clear();
+    m_wxMaxima.GetWorksheet()->ResetInputPrompts();
+    m_wxMaxima.EvaluationQueueLength(0);
+    if (m_wxMaxima.m_configuration.RestartOnReEvaluation())
+      m_wxMaxima.StartMaxima();
+    m_wxMaxima.GetWorksheet()->AddEntireDocumentToEvaluationQueue();
+    // Inform the user about the length of the evaluation queue.
+    m_wxMaxima.EvaluationQueueLength(m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Size(),
+                          m_wxMaxima.GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
+    m_wxMaxima.TriggerEvaluation();
+  }
+  else if(event.GetId() == ToolBar::tb_evaltillhere) {
+    m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Clear();
+    m_wxMaxima.GetWorksheet()->ResetInputPrompts();
+    m_wxMaxima.EvaluationQueueLength(0);
+    if (m_wxMaxima.m_configuration.RestartOnReEvaluation())
+      m_wxMaxima.StartMaxima();
+    m_wxMaxima.GetWorksheet()->AddDocumentTillHereToEvaluationQueue();
+    // Inform the user about the length of the evaluation queue.
+    m_wxMaxima.EvaluationQueueLength(m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Size(),
+                          m_wxMaxima.GetWorksheet()->GetEvaluationQueue().CommandsLeftInCell());
+    m_wxMaxima.TriggerEvaluation();
+  }
+  else if(event.GetId() == EventIDs::menu_clear_var){
+    m_wxMaxima.CommandWiz(_("Delete variable(s)"), wxEmptyString, wxEmptyString,
+               wxS("remvalue(#1#);"), _("Variable name:"), wxS("all"),
+               wxEmptyString);
+  }
+  if(event.GetId() == EventIDs::menu_kill){
+    m_wxMaxima.CommandWiz(_("Delete named object(s)"), wxEmptyString, wxEmptyString,
+               wxS("kill(#1#);"), _("Object name:"), wxS("all"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_clear_fun){
+    m_wxMaxima.CommandWiz(_("Delete function(s)"), wxEmptyString, wxEmptyString,
+               wxS("remfunction(#1#);"), _("Function name:"), wxS("all"),
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::button_subst) {
+    wxWindowPtr<SubstituteWiz> wiz(new SubstituteWiz(&m_wxMaxima, -1, &m_wxMaxima.m_configuration, _("Substitute")));
+    wiz->SetValue(expr);
+    // wiz->Centre(wxBOTH);
+    wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+      if (retcode == wxID_OK) {
+        wxString val = wiz->GetValue();
+        m_wxMaxima.MenuCommand(val);
+      }
+    });
   }
 }
