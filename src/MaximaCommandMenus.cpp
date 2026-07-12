@@ -29,7 +29,9 @@
 #include "wxMaxima.h"
 #include "EventIDs.h"
 #include <wx/windowptr.h>
+#include "wizards/ActualValuesStorageWiz.h"
 #include "wizards/CsvWiz.h"
+#include "wizards/ListSortWiz.h"
 #include "wizards/Gen1Wiz.h"
 #include "wizards/Gen3Wiz.h"
 #include "wizards/IntegrateWiz.h"
@@ -1378,5 +1380,227 @@ void MaximaCommandMenus::MatrixMenu(wxCommandEvent &event) {
                wxS("sin(i)"), wxEmptyString, _("Loop variable"), wxS("i"),
                _("The name of the variable that shall contain the current element"),
                _("Object composed of elements"), wxS("expr"));
+  }
+}
+
+void MaximaCommandMenus::ListMenu(wxCommandEvent &event) {
+  if(!m_wxMaxima.GetWorksheet())
+    return;
+  m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
+
+  wxString expr = m_wxMaxima.GetDefaultEntry();
+  if(event.GetId() == EventIDs::menu_csv2list){
+      wxWindowPtr<CsvImportWiz> wiz(new CsvImportWiz(&m_wxMaxima, &m_wxMaxima.m_configuration));
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK) {
+          wxString cmd = wxS("read_nested_list(\"") + wiz->GetFilename() + wxS("\", ") +
+            wiz->GetSeparator() + wxS(");");
+          m_wxMaxima.MenuCommand(cmd);
+        }
+      });
+  }
+  else if(event.GetId() == EventIDs::menu_list2csv){
+      wxWindowPtr<CsvExportWiz> wiz(new CsvExportWiz(&m_wxMaxima, &m_wxMaxima.m_configuration, _("List")));
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK) {
+          wxString cmd = wxS("write_data(") + wiz->GetMatrix() + wxS(", \"") +
+            wiz->GetFilename() + wxS("\", ") + wiz->GetSeparator() + wxS(");");
+          m_wxMaxima.MenuCommand(cmd);
+        }
+      });
+  }
+  else if(event.GetId() == EventIDs::menu_list_create_from_args){
+    m_wxMaxima.CommandWiz(_("Extract function arguments"), wxEmptyString, wxEmptyString,
+               wxS("args(#1#)$"),
+               _("The function call whose arguments to extract"), expr,
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_list2matrix){
+    // apply('matrix, list-of-rows) builds a matrix from a nested list; the
+    // title used to claim the opposite direction.
+    m_wxMaxima.CommandWiz(_("Nested list to matrix"), wxEmptyString, wxEmptyString,
+               wxS("apply('matrix, #1#);"), _("List:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_matrix2list){
+    // args(matrix) returns the matrix rows as a nested list; the title used to
+    // claim the opposite direction.
+    m_wxMaxima.CommandWiz(_("Matrix to nested list"), wxEmptyString, wxEmptyString,
+               wxS("args(#1#);"), _("Matrix:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_create_from_elements){
+    m_wxMaxima.CommandWiz(_("Create list from comma-separated elements"), wxEmptyString,
+               wxEmptyString, wxS("[#1#]"), _("Comma-separated elements"), expr,
+               wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_create_from_rule){
+    m_wxMaxima.CommandWiz(
+               _("Create a list from a rule"), wxEmptyString, wxEmptyString,
+               wxS("makelist(#1#,#2#,#3#,#4#,#5#);"), _("Rule:"), expr,
+               _("The rule that explains how to generate the value of a list item.\n"
+                 "Might be something like \"i\", \"i^2\" or \"sin(i)\""),
+               _("Index variable:"), wxS("i"),
+               _("The number of the item which is stepped from \"Index Start\" to "
+                 "\"Index End\"."),
+               _("Index Start:"), wxS("1"), wxEmptyString, _("Index End:"), wxS("100"),
+               wxEmptyString, _("Index Step:"), wxS("1"), wxEmptyString);
+  }
+
+  else if(event.GetId() == EventIDs::menu_list_create_from_list){
+    m_wxMaxima.CommandWiz(
+               _("Create a list from a list"), wxEmptyString, wxEmptyString,
+               wxS("makelist(#1#,#2#,#3#);"), _("Expr:"), expr,
+               _("The ‘j’th element is equal to ‘ev (<expr>, <x>=<list>[j])’ \n"
+                 "j are the elements of the source list.\n"
+                 "Might be something like \"x=i\""),
+               _("Index variable:"), wxS("i"),
+               _("The variable the value of the current source item is stored in."),
+               _("Source list:"), wxS("[1,8,32]"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_actual_values_storage){
+      wxWindowPtr<ActualValuesStorageWiz> wiz(new ActualValuesStorageWiz(
+                                                                         &m_wxMaxima.m_configuration, &m_wxMaxima, -1,
+                                                                         _("Create a list as a storage for the values of variables")));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK) {
+          m_wxMaxima.MenuCommand(wiz->GetValue());
+        }
+      });
+    }
+  else if(event.GetId() == EventIDs::menu_list_sort){
+      wxWindowPtr<ListSortWiz> wiz(new ListSortWiz(&m_wxMaxima.m_configuration, &m_wxMaxima, -1, _("Sort a list"), expr));
+      // wiz->Centre(wxBOTH);
+      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
+        if (retcode == wxID_OK) {
+          m_wxMaxima.MenuCommand(wiz->GetValue());
+        }
+      });
+    }
+  else if(event.GetId() == EventIDs::menu_list_length){
+    m_wxMaxima.CommandWiz(_("Returns the number of elements of a list"), wxEmptyString, wxEmptyString,
+               wxS("length(#1#);"), _("List:"), expr, wxEmptyString);
+
+  }
+  else if(event.GetId() == EventIDs::menu_list_push){
+    m_wxMaxima.CommandWiz(_("Push an element to a list"), wxEmptyString, wxEmptyString,
+               wxS("push(#2#,#1#);"), _("List:"), expr, wxEmptyString,
+               _("Element:"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_pop){
+    m_wxMaxima.CommandWiz(_("Remove and return the first element of a list"), wxEmptyString, wxEmptyString,
+               wxS("pop(#1#);"), _("List:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_reverse){
+    m_wxMaxima.CommandWiz(_("Reverses the order of the members of a list"), wxEmptyString, wxEmptyString,
+               wxS("reverse(#1#);"), _("List:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_first){
+    m_wxMaxima.CommandWiz(_("Returns the first element of a list"), wxEmptyString, wxEmptyString,
+               wxS("first(#1#);"), _("List:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_last){
+    m_wxMaxima.CommandWiz(_("Returns the last element of a list"), wxEmptyString, wxEmptyString,
+               wxS("last(#1#);"), _("List:"), expr, wxEmptyString);
+
+  }
+  else if(event.GetId() == EventIDs::menu_list_rest){
+    m_wxMaxima.CommandWiz(_("Drop the first n list elements"),
+               _("Return the list without its first n elements"), wxEmptyString,
+               wxS("rest(#1#,#2#);"), _("List:"), expr, wxEmptyString, _("n:"),
+               wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_restN){
+    m_wxMaxima.CommandWiz(_("Drop the last n list elements"),
+               _("Return the list without its last n elements"), wxEmptyString,
+               wxS("rest(#1#,-#2#);"), _("List:"), expr, wxEmptyString, _("n:"),
+               wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_lastn){
+    // rest(list, n) drops the FIRST n elements, so extracting the last n needs
+    // rest(list, length(list) - n). The old template returned the wrong slice.
+    m_wxMaxima.CommandWiz(_("Extract the last n list elements"),
+               _("Extract the last n elements from a list"), wxEmptyString,
+               wxS("rest(#1#,length(#1#)-#2#);"), _("List"), expr, wxEmptyString,
+               _("Number of elements"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_nth){
+    m_wxMaxima.CommandWiz(
+               _("Extract the nth list elements"),
+               _("Attention: Extracting a random list element isn't efficient for "
+                 "long lists."
+                 "Iterating over lists using makelist() or for loops is way faster."),
+               wxEmptyString, wxS("#1#[#2#];"), _("List"), expr, wxEmptyString,
+               _("Element number"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_map){
+    m_wxMaxima.CommandWiz(_("Apply a function to each list element"), wxEmptyString,
+               wxEmptyString, wxS("map(#1#,#2#);"), _("function"), expr,
+               wxEmptyString, _("list"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_use_actual_values){
+    m_wxMaxima.CommandWiz(_("Introduce a list of actual values into an equation"),
+               // The values have to be wrapped in a list; otherwise several
+               // comma-separated equations become the subst(new,old,expr) form
+               // and are not substituted.
+               wxEmptyString, wxEmptyString, wxS("subst([#1#],#2#);"),
+               _("List with values"), wxEmptyString,
+               _("Comma-separated list entry in the format val1=1,val2=2"),
+               _("Equation"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_extract_value){
+    m_wxMaxima.CommandWiz(_("Extract a variable's value from a list of variable values"),
+               // The list of values has to be bracketed so all of them are used
+               // (a bare comma-separated list is misread as subst(new,old,expr)).
+               wxEmptyString, wxEmptyString, wxS("subst([#1#],#2#);"), _("List"),
+               expr,
+               _("Comma-separated list entry in the format val1=1,val2=2"),
+               _("Variable name"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_as_function_arguments){
+    m_wxMaxima.CommandWiz(_("Use a list as parameter list for a function"), wxEmptyString,
+               wxEmptyString, wxS("apply(#1#,#2#);"), _("Function name"), expr,
+               _("Comma-separated list entry in the format val1=1,val2=2"),
+               _("List"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_do_for_each_element){
+    m_wxMaxima.CommandWiz(
+               _("Do for each list element"), wxEmptyString, wxEmptyString,
+               wxS("for #2# in #1# do #3#;"), _("List:"), expr,
+               _("Comma-separated list entry in the format val1=1,val2=2"),
+               _("Iterator name:"), wxS("i"),
+               _("The variable the value of the current source item is stored in."),
+               _("What to do:"), wxS("disp(i)"),
+               _("Either a single expression or a comma-separated list of expressions "
+                 "between parenthesis. In the latter case the result of the last "
+                 "expression in the parenthesis is used."));
+  }
+  else if(event.GetId() == EventIDs::menu_list_remove_duplicates){
+    m_wxMaxima.CommandWiz(_(" Returns the unique elements of the list"), wxEmptyString, wxEmptyString,
+               wxS("unique(#1#);"), _("List:"), expr, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_remove_element){
+    m_wxMaxima.CommandWiz(_("Remove an element from a list"), wxEmptyString, wxEmptyString,
+               wxS("delete(#1#,#2#);"), _("Element"), expr, wxEmptyString,
+               _("List"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_append_item_start){
+    m_wxMaxima.CommandWiz(_("Add an element to the start of a list"), wxEmptyString,
+               wxEmptyString, wxS("cons(#1#,#2#);"), _("Item"), expr,
+               wxEmptyString, _("List"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_append_item_end){
+    m_wxMaxima.CommandWiz(_("Add an element to the end of a list"), wxEmptyString,
+               wxEmptyString, wxS("append(#1#,[#2#]);"), _("List"), expr,
+               wxEmptyString, _("Item"), wxEmptyString, wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_append_list){
+    m_wxMaxima.CommandWiz(_("Append a list to another list"), wxEmptyString, wxEmptyString,
+               wxS("append(#1#,#2#);"), _("List #1"), expr, wxEmptyString,
+               _("List #2"), wxS("[1]"), wxEmptyString);
+  }
+  else if(event.GetId() == EventIDs::menu_list_interleave){
+    m_wxMaxima.CommandWiz(_("Interleave two lists"), wxEmptyString, wxEmptyString,
+               wxS("join(#1#,#2#);"), _("List #1"), expr, wxEmptyString,
+               _("List #2"), wxEmptyString, wxEmptyString);
   }
 }

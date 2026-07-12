@@ -6,8 +6,8 @@
   directly to the menu/button events - now on the MaximaCommandMenus instance the
   frame owns - and reach wxMaxima's services (MenuCommand, the wizards, the
   worksheet) through a friend reference. Handlers moved so far: the Plot,
-  Calculus, Numeric, Simplify, Equations and Algebra/matrix menus. No behavior
-  change.
+  Calculus, Numeric, Simplify, Equations, Algebra/matrix and List menus. No
+  behavior change.
 
 - Windows: on shutdown wxMaxima suppresses the OS hard-error message boxes ("this
   application could not be started", the critical-error and crash boxes) for

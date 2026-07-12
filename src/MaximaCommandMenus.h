@@ -74,6 +74,10 @@ public:
   //! matrix wizards, .csv import/export, and the matrix-operation command wizards).
   void MatrixMenu(wxCommandEvent &event);
 
+  //! Handles the "List" menu (build/sort/map/… lists, .csv list import/export and
+  //! the actual-values-storage wizard).
+  void ListMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.
