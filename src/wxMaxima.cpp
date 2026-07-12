@@ -339,53 +339,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
 
 
 
-  // Variables whose value only toggles menu check marks are not listed here:
-  // they are handled by the declarative table in MaximaMenuSync.cpp.
-  if (m_variableReadActions.empty()) {
-    m_variableReadActions[wxS("display2d_unicode")] =
-      &wxMaxima::VariableActionDisplay2d_Unicode;
-    m_variableReadActions[wxS("maxima_userdir")] =
-      &wxMaxima::VariableActionUserDir;
-    m_variableReadActions[wxS("sinnpiflag")] =
-      &wxMaxima::VariableActionSinnpiflag;
-    m_variableReadActions[wxS("maxima_tempdir")] =
-      &wxMaxima::VariableActionTempDir;
-    m_variableReadActions[wxS("*autoconf-version*")] =
-      &wxMaxima::VariableActionAutoconfVersion;
-    m_variableReadActions[wxS("*autoconf-host*")] =
-      &wxMaxima::VariableActionAutoconfHost;
-    m_variableReadActions[wxS("*maxima-infodir*")] =
-      &wxMaxima::VariableActionMaximaInfodir;
-    m_variableReadActions[wxS("*maxima-htmldir*")] =
-      &wxMaxima::VariableActionMaximaHtmldir;
-    m_variableReadActions[wxS("gnuplot_command")] =
-      &wxMaxima::VariableActionGnuplotCommand;
-    m_variableReadActions[wxS("*maxima-sharedir*")] =
-      &wxMaxima::VariableActionMaximaSharedir;
-    m_variableReadActions[wxS("*maxima-demodir*")] =
-      &wxMaxima::VariableActionMaximaDemodir;
-    m_variableReadActions[wxS("*lisp-name*")] =
-      &wxMaxima::VariableActionLispName;
-    m_variableReadActions[wxS("*lisp-version*")] =
-      &wxMaxima::VariableActionLispVersion;
-    m_variableReadActions[wxS("*wx-load-file-name*")] =
-      &wxMaxima::VariableActionWxLoadFileName;
-    m_variableReadActions[wxS("output_format_for_help")] =
-      &wxMaxima::VariableActionHtmlHelp;
-    m_variableReadActions[wxS("engineering_format_floats")] =
-      &wxMaxima::VariableActionEngineeringFormat;
-    m_variableReadActions[wxS("display2d")] =
-      &wxMaxima::VariableActionDisplay2D;
-    m_variableReadActions[wxS("*alt-display2d*")] =
-      &wxMaxima::VariableActionAltDisplay2D;
-    m_variableReadActions[wxS("*maxima-operators*")] =
-      &wxMaxima::VariableActionOperators;
-  }
-
-  if (m_variableUndefinedActions.empty()) {
-    m_variableUndefinedActions[wxS("sinnpiflag")] =
-      &wxMaxima::VariableActionSinnpiflagUndefined;
-  }
 
   wxString lang;
   if (wxGetEnv("LANG", &lang))
@@ -1894,7 +1847,7 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
       wxStringInputStream xmlStream(event.GetString());
       xmldoc.Load(xmlStream);
       m_statusBar->NetworkStatus(StatusBar::receive);
-      ReadVariables(xmldoc);
+      m_responseReader.ReadVariables(xmldoc);
     }
     break;
   case Maxima::XML_WATCH_VARIABLES_ADD:
@@ -1903,7 +1856,7 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
       wxStringInputStream xmlStream(event.GetString());
       xmldoc.Load(xmlStream);
       m_statusBar->NetworkStatus(StatusBar::receive);
-      ReadAddVariables(xmldoc);
+      m_responseReader.ReadAddVariables(xmldoc);
     }
     break;
   case Maxima::XML_STATUSBAR:
@@ -2603,121 +2556,6 @@ void wxMaxima::OnMaximaClose(wxProcessEvent &event) {
 
 
 
-void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {
-  if(!xmldoc.IsOk())
-    {
-      DoRawConsoleAppend(_("There was an error in the XML that should describe the contents of some variables.\n"
-                           "Please report this as a bug to the wxMaxima project."),
-                         MC_TYPE_ERROR);
-      AbortOnError();
-    }
-  else
-    {
-      const std::vector<MaximaVariableUpdate> updates =
-        ParseMaximaVariableUpdates(xmldoc);
-
-      for (const MaximaVariableUpdate &update : updates) {
-        if (update.m_bound) {
-          if(GetWorksheet() && (m_variablesPane))
-            m_variablesPane->VariableValue(update.m_name, update.m_value);
-
-          // A gcl-compiled maxima reports values with a trailing newline,
-          // which ended up verbatim in anything treating the value as a
-          // path (most prominently: a maxima_userdir named "...\n").
-          // Trim before the quote-strip so a newline after the closing
-          // quote cannot defeat it, either.
-          wxString value = update.m_value;
-          value.Trim(true).Trim(false);
-          // Undo an eventual stringdisp:true adding quoting marks to strings
-          if (value.StartsWith("\"") && value.EndsWith("\""))
-            value = value.SubString(1, value.Length() - 2);
-
-          SyncMenusToMaximaVariable(GetMenuBar(), update.m_name, value);
-          auto varFunc = m_variableReadActions.find(update.m_name);
-          if (varFunc != m_variableReadActions.end())
-            std::invoke(varFunc->second, this, value);
-        } else {
-          if(GetWorksheet() && (m_variablesPane))
-            m_variablesPane->VariableUndefined(update.m_name);
-          auto varFunc = m_variableUndefinedActions.find(update.m_name);
-          if (varFunc != m_variableUndefinedActions.end())
-            std::invoke(varFunc->second, this);
-        }
-      }
-
-      if (updates.size() > 1)
-        wxLogMessage(_("Maxima sends a new set of auto-completable symbols."));
-      else
-        wxLogMessage(_("Maxima has sent a new variable value."));
-    }
-  TriggerEvaluation();
-  QueryVariableValue();
-}
-
-void wxMaxima::VariableActionSinnpiflag(const wxString &WXUNUSED(value)) {
-  m_fourierLoaded = true;
-}
-
-void wxMaxima::VariableActionSinnpiflagUndefined() { m_fourierLoaded = false; }
-
-void wxMaxima::VariableActionUserDir(const wxString &value) {
-  Dirstructure::Get()->UserConfDir(value);
-  m_history->SetSavePlace(value);
-  wxLogMessage(_("Maxima user configuration is located in directory %s"), value);
-}
-
-void wxMaxima::VariableActionDisplay2d_Unicode(const wxString &value) {
- if (value == wxS("true"))
-   m_configuration.Display2d_Unicode(true);
- if (value == wxS("false"))
-   m_configuration.Display2d_Unicode(false);
- }
-
-void wxMaxima::VariableActionTempDir(const wxString &value) {
-  m_maximaTempDir = value;
-  wxLogMessage(_("Maxima uses temp directory %s"), value);
-  if (!wxDirExists(value)) {
-    // Sometimes people delete their temp dir
-    // and gnuplot won't create a new one for them.
-    wxMkdir(value, wxS_DIR_DEFAULT);
-  }
-}
-
-void wxMaxima::VariableActionAutoconfVersion(const wxString &value) {
-  if(GetWorksheet())
-    m_configuration.SetMaximaVersion(value);
-  wxLogMessage(_("Maxima version: %s"), value);
-}
-void wxMaxima::VariableActionAutoconfHost(const wxString &value) {
-  m_configuration.SetMaximaArch(value);
-  wxLogMessage(_("Maxima architecture: %s"), value);
-}
-void wxMaxima::VariableActionMaximaInfodir(const wxString &value) {
-  // Make sure that we get out all ".." and "~" of the path as they seem to
-  // confuse the help browser logic
-  wxLogMessage(_("Maxima's manual is located in directory %s"),
-               value);
-}
-
-void wxMaxima::VariableActionMaximaHtmldir(const wxString &value) {
-  m_maximaHtmlDir = value;
-  wxFileName dir(value);
-  dir.MakeAbsolute();
-  wxString dir_canonical = dir.GetPath();
-  wxLogMessage(_("Maxima's HTML manuals are in directory %s"),
-               dir_canonical);
-  if(GetWorksheet())
-    {
-      GetWorksheet()->SetMaximaDocDir(dir_canonical);
-      // Interactive-only: don't spend a background thread parsing the whole HTML
-      // manual to cache its anchors during a batch run (pointless, and its
-      // shutdown join wedged the multithreadtest CI run). Deferred to
-      // ExitAfterEval() if/when the session turns interactive.
-      if (IsInteractive())
-        GetWorksheet()->LoadHelpFileAnchors(dir_canonical,
-                                            m_configuration.GetMaximaVersion());
-    }
-}
 void wxMaxima::GnuplotCommandName(wxString gnuplot) {
   m_gnuplotcommand = gnuplot;
   if (!wxFileName(m_gnuplotcommand).IsAbsolute()) {
@@ -2840,197 +2678,6 @@ void wxMaxima::GnuplotCommandName(wxString gnuplot) {
     m_gnuplotcommand = "\"" + m_gnuplotcommand + "\"";
 }
 
-void wxMaxima::VariableActionGnuplotCommand(const wxString &value) {
-  GnuplotCommandName(value);
-
-  wxLogMessage(_("Querying gnuplot which graphics drivers it supports."));
-  wxEnvVariableHashMap environment;
-  // gnuplot uses the PAGER variable only on un*x - and on un*x there is cat.
-  environment["PAGER"] = "cat";
-  environment["LINES"] = "10000";
-  environment["LESS_LINES"] = "10000";
-  if(!Configuration::GetMaximaLang().IsEmpty())
-    environment["LANG"] = Configuration::GetMaximaLang();
-  wxGetEnvMap(&environment);
-
-  m_gnuplotTerminalQueryProcess =
-    new wxProcess(this, EventIDs::gnuplot_query_terminals_id);
-  m_gnuplotTerminalQueryProcess->Redirect();
-  std::unique_ptr<wxExecuteEnv> env(new wxExecuteEnv);
-  env->env = std::move(environment);
-#ifdef __WINDOWS__
-  // On Windows the terminal-query uses the command-line gnuplot.exe
-  // (m_gnuplotcommand_commandline, populated by GnuplotCommandName) rather than
-  // the possibly-GUI "wgnuplot" so the query process exits on its own instead of
-  // staying around until someone closes its terminal window.
-  wxString gnuplot_query =
-      m_gnuplotcommand_commandline + " -e \"print GPVAL_TERMINALS\"";
-#else
-  wxString gnuplot_query = m_gnuplotcommand + " -e \"print GPVAL_TERMINALS\"";
-#endif
-  if (wxExecute(gnuplot_query,
-                wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
-                m_gnuplotTerminalQueryProcess, env.get()) < 0)
-    wxLogMessage(_("Cannot start gnuplot"));
-}
-
-void wxMaxima::VariableActionMaximaSharedir(const wxString &value) {
-  wxString dir = value;
-  dir.Trim(true);
-  m_configuration.MaximaShareDir(dir);
-  wxLogMessage(_("Maxima's share files are located in directory %s"),
-               dir);
-  /// READ FUNCTIONS FOR AUTOCOMPLETION
-  if(GetWorksheet() && IsInteractive())
-    GetWorksheet()->LoadSymbols();
-}
-
-void wxMaxima::VariableActionMaximaDemodir(const wxString &value) {
-  wxString dir = value;
-  dir.Trim(true);
-  m_configuration.MaximaDemoDir(dir);
-  wxLogMessage(_("Maxima's demo files are located in directory %s"),
-               dir);
-}
-
-void wxMaxima::VariableActionLispName(const wxString &value) {
-  m_configuration.SetLispType(value);
-  wxLogMessage(_("Maxima was compiled using %s"), value);
-}
-void wxMaxima::VariableActionLispVersion(const wxString &value) {
-  m_configuration.SetLispVersion(value);
-  wxLogMessage(_("Lisp version: %s"), value);
-}
-void wxMaxima::VariableActionWxLoadFileName(const wxString &value) {
-  m_recentPackages.AddDocument(value);
-  UpdateRecentDocuments();
-  wxLogMessage(_("Maxima has loaded the file %s."), value);
-  m_updateAutocompletion = true;
-}
-
-void wxMaxima::VariableActionEngineeringFormat(const wxString &value) {
-  // The menu check mark is table-synced (MaximaMenuSync); the value is
-  // additionally mirrored here so the menu handler can toggle it correctly.
-  m_maximaVariable_engineeringFormat = value;
-}
-void wxMaxima::VariableActionHtmlHelp(const wxString &value) {
-  if (value == wxS("text")) {
-    if (!m_HelpMenu->IsChecked(EventIDs::menu_maxima_uses_internal_help))
-      m_HelpMenu->Check(EventIDs::menu_maxima_uses_internal_help, true);
-    m_configuration.MaximaHelpFormat(Configuration::maxima);
-  }
-  if (value == wxS("html")) {
-    if (!m_HelpMenu->IsChecked(EventIDs::menu_maxima_uses_html_help))
-      m_HelpMenu->Check(EventIDs::menu_maxima_uses_html_help, true);
-    m_configuration.MaximaHelpFormat(Configuration::browser);
-  }
-  if(m_configuration.OfferInternalHelpBrowser())
-    {
-      if ((value == wxS("wxmaxima")) || (value == wxS("frontend"))) {
-        if (!m_HelpMenu->IsChecked(EventIDs::menu_maxima_uses_wxmaxima_help))
-          m_HelpMenu->Check(EventIDs::menu_maxima_uses_wxmaxima_help, true);
-        m_configuration.MaximaHelpFormat(Configuration::frontend);
-      }
-    }
-}
-
-void wxMaxima::VariableActionDisplay2D(const wxString &value) {
-  if (m_maximaVariable_display2d != value) {
-    m_maximaVariable_display2d = value;
-    UpdateDisplayMode();
-  }
-}
-void wxMaxima::VariableActionAltDisplay2D(const wxString &value) {
-  if (m_maximaVariable_altdisplay2d != value) {
-    m_maximaVariable_altdisplay2d = value;
-    UpdateDisplayMode();
-  }
-}
-
-void wxMaxima::UpdateDisplayMode() {
-  if (m_maximaVariable_display2d == wxS("false")) {
-    m_configuration.DisplayMode(Configuration::display_1dASCII);
-    m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_1D_ASCII, true);
-  } else {
-    if (m_maximaVariable_altdisplay2d == wxS("false")) {
-      if(m_configuration.Display2d_Unicode())
-        {
-          m_configuration.DisplayMode(Configuration::display_2dUNICODE);
-          m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_2D_UNICODE, true);
-        } else {
-        m_configuration.DisplayMode(Configuration::display_2dASCII);
-        m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_2D_ASCII, true);
-      }
-    } else {
-      m_configuration.DisplayMode(Configuration::display_2d);
-      m_equationTypeMenuMenu->Check(EventIDs::menu_math_as_graphics, true);
-    }
-  }
-}
-
-void wxMaxima::VariableActionOperators(const wxString &value) {
-  wxXmlDocument xmldoc;
-  wxString newOperators;
-  wxStringInputStream xmlStream(value);
-  {
-    xmldoc.Load(xmlStream);
-  }
-  if(!xmldoc.IsOk())
-    {
-      DoRawConsoleAppend(_("There was an error in the XML that should contain the list of operators.\n"
-                           "Please report this as a bug to the wxMaxima project."),
-                         MC_TYPE_ERROR);
-      AbortOnError();
-    }
-  else
-    {
-      wxXmlNode *node = xmldoc.GetRoot();
-      if (node != NULL) {
-        wxXmlNode *contents = node->GetChildren();
-        while (contents) {
-          if (contents->GetName() == wxS("operator")) {
-            wxXmlNode *innernode = contents->GetChildren();
-            if (innernode) {
-              wxString content = innernode->GetContent();
-              if ((!content.IsEmpty()) &&
-                  (!m_configuration.IsOperator(content))) {
-                if ((content.at(0) > '9') || (content.at(0) < '0')) {
-                  m_configuration.AddMaximaOperator(content);
-                  if (!newOperators.IsEmpty())
-                    newOperators += wxS(", ");
-                  newOperators += content;
-                }
-              }
-            }
-          }
-          contents = contents->GetNext();
-        }
-        if (!newOperators.IsEmpty()) {
-          wxLogMessage(_("New maxima Operators detected: %s"), newOperators);
-          if(GetWorksheet())
-            GetWorksheet()->RequestRecalculation();
-        }
-      }
-    }
-}
-
-void wxMaxima::ReadAddVariables(const wxXmlDocument &xmldoc) {
-  wxLogMessage(_("Maxima sends us a new set of variables for the watch list."));
-  if(!xmldoc.IsOk())
-    {
-      DoRawConsoleAppend(_("There was an error in the XML that should contain a list of watch variables.\n"
-                           "Please report this as a bug to the wxMaxima project."),
-                         MC_TYPE_ERROR);
-      AbortOnError();
-    }
-  else
-    {
-      for (const wxString &name : ParseWatchVariableAdditions(xmldoc)) {
-        if(GetWorksheet() && (m_variablesPane))
-          m_variablesPane->AddWatch(name);
-      }
-  }
-}
 
 bool wxMaxima::QueryVariableValue() {
   if (GetWorksheet() && (!GetWorksheet()->GetEvaluationQueue().Empty()))
@@ -6211,7 +5858,5 @@ wxString wxMaxima::m_mathPrefix2(wxS("<math>"));
 //wxString wxMaxima::m_mathSuffix1(wxS("</mth>"));
 //wxString wxMaxima::m_mathSuffix2(wxS("</math>"));
 wxString wxMaxima::m_firstPrompt(wxS("(%i1) "));
-wxMaxima::VarReadFunctionHash wxMaxima::m_variableReadActions;
-wxMaxima::VarUndefinedFunctionHash wxMaxima::m_variableUndefinedActions;
 wxString wxMaxima::maxima_command_line_filename;
 wxLogWindow *MyApp::m_logWindow;

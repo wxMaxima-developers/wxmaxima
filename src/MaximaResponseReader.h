@@ -42,6 +42,8 @@
 
 #include <wx/string.h>
 #include <wx/xml/xml.h>
+#include <wx/hashmap.h>
+#include <unordered_map>
 
 class wxMaxima;
 
@@ -55,7 +57,9 @@ class wxMaxima;
 class MaximaResponseReader
 {
 public:
-  explicit MaximaResponseReader(wxMaxima &wxm) : m_wxMaxima(wxm) {}
+  explicit MaximaResponseReader(wxMaxima &wxm) : m_wxMaxima(wxm) {
+    RegisterVariableActions();
+  }
 
   //! Handles a <statusbar> document: shows its text in wxMaxima's status bar.
   void ReadStatusBar(const wxXmlDocument &xmldoc);
@@ -90,10 +94,83 @@ public:
   //! (most prominently the gnuplot subprocess's diagnostics).
   void ReadStdErr();
 
+  //! Handles a <variables> document: updates the variables sidebar, the
+  //! table-synced menus and runs the per-variable action for each value
+  //! Maxima advertised.
+  void ReadVariables(const wxXmlDocument &xmldoc);
+
+  //! Handles a <watch_variables_add> document: adds the named variables to the
+  //! variables-sidebar watch list.
+  void ReadAddVariables(const wxXmlDocument &xmldoc);
+
 private:
   //! The wxMaxima frame whose services the handlers drive. Not owned; the
   //! frame owns this object.
   wxMaxima &m_wxMaxima;
+
+  // --- Per-variable actions -------------------------------------------------
+  // Run by ReadVariables() when Maxima advertises the value (or undefined-ness)
+  // of one of the variables wxMaxima watches. Registered in the dispatch
+  // tables below by RegisterVariableActions().
+
+  //! Called if maxima tells us the value of the maxima variable display2d_unicode.
+  void VariableActionDisplay2d_Unicode(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable output_format_for_help.
+  void VariableActionHtmlHelp(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable sinnpiflag.
+  void VariableActionSinnpiflag(const wxString &value);
+  //! Called if maxima tells us that the maxima variable sinnpiflag is undefined.
+  void VariableActionSinnpiflagUndefined();
+  //! Called if maxima tells us where the user files are located.
+  void VariableActionUserDir(const wxString &value);
+  //! Called if maxima tells us where the temp files are located.
+  void VariableActionTempDir(const wxString &value);
+  //! Called if maxima tells us the maxima version as defined by autoconf.
+  void VariableActionAutoconfVersion(const wxString &value);
+  //! Called if maxima tells us the maxima build host as defined by autoconf.
+  void VariableActionAutoconfHost(const wxString &value);
+  //! Called if maxima tells us the maxima info dir.
+  void VariableActionMaximaInfodir(const wxString &value);
+  //! Called if maxima tells us the maxima html dir.
+  void VariableActionMaximaHtmldir(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable <code>gnuplot</code>
+  void VariableActionGnuplotCommand(const wxString &value);
+  //! Called if maxima tells us the maxima share dir.
+  void VariableActionMaximaSharedir(const wxString &value);
+  //! Called if maxima tells us the maxima demo dir.
+  void VariableActionMaximaDemodir(const wxString &value);
+  //! Called if maxima tells us the lisp name.
+  void VariableActionLispName(const wxString &value);
+  //! Called if maxima tells us the lisp version.
+  void VariableActionLispVersion(const wxString &value);
+  //! Called if maxima tells us the name of a package that was loaded
+  void VariableActionWxLoadFileName(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable <code>display2d</code>
+  void VariableActionDisplay2D(const wxString &value);
+  //! Called if maxima tells us if it currently outputs XML
+  void VariableActionAltDisplay2D(const wxString &value);
+  //! Called if maxima tells us the value of the maxima variable <code>engineering_format_floats</code>
+  void VariableActionEngineeringFormat(const wxString &value);
+  //! Called if maxima sends us the list of known operators
+  void VariableActionOperators(const wxString &value);
+  /*! Derive the display mode (1D/2D ASCII/unicode/graphical) from the
+    display2d and *alt-display2d* variable values Maxima sent us and
+    apply it to the configuration and the display-math-as menu.
+  */
+  void UpdateDisplayMode();
+
+  //! Populates the dispatch tables below (once; they are static).
+  void RegisterVariableActions();
+
+  typedef void (MaximaResponseReader::*VarReadFunction)(const wxString &value);
+  typedef void (MaximaResponseReader::*VarUndefinedFunction)();
+  typedef std::unordered_map <wxString, VarReadFunction, wxStringHash> VarReadFunctionHash;
+  typedef std::unordered_map <wxString, VarUndefinedFunction,
+                              wxStringHash> VarUndefinedFunctionHash;
+  //! Maps a variable name to the action run when Maxima advertises its value.
+  static VarReadFunctionHash m_variableReadActions;
+  //! Maps a variable name to the action run when Maxima reports it undefined.
+  static VarUndefinedFunctionHash m_variableUndefinedActions;
 };
 
 #endif // MAXIMARESPONSEREADER_H

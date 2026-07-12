@@ -512,58 +512,6 @@ protected:
 
   void ReadMaximaIPC(const wxString &data){m_ipc.ReadInputData(data);}
 
-  /*! Reads the variable values maxima advertises to us
-   */
-  void ReadVariables(const wxXmlDocument &xmldoc);
-
-  /*! Reads the "add variable to watch list" tag maxima can send us
-   */
-  void ReadAddVariables(const wxXmlDocument &xmldoc);
-  //! Called if maxima tells us the value of the maxima variable display2d_unicode.
-  void VariableActionDisplay2d_Unicode(const wxString &value);
-  //! Called if maxima tells us the value of the maxima variable output_format_for_help.
-  void VariableActionHtmlHelp(const wxString &value);
-  //! Called if maxima tells us the value of the maxima variable sinnpiflag.
-  void VariableActionSinnpiflag(const wxString &value);
-  //! Called if maxima tells us that the maxima variable sinnpiflag is undefined.
-  void VariableActionSinnpiflagUndefined();
-  //! Called if maxima tells us where the user files are located.
-  void VariableActionUserDir(const wxString &value);
-  //! Called if maxima tells us where the temp files are located.
-  void VariableActionTempDir(const wxString &value);
-  //! Called if maxima tells us the maxima version as defined by autoconf.
-  void VariableActionAutoconfVersion(const wxString &value);
-  //! Called if maxima tells us the maxima build host as defined by autoconf.
-  void VariableActionAutoconfHost(const wxString &value);
-  //! Called if maxima tells us the maxima info dir.
-  void VariableActionMaximaInfodir(const wxString &value);
-  //! Called if maxima tells us the maxima html dir.
-  void VariableActionMaximaHtmldir(const wxString &value);
-  //! Called if maxima tells us the value of the maxima variable <code>gnuplot</code>
-  void VariableActionGnuplotCommand(const wxString &value);
-  //! Called if maxima tells us the maxima share dir.
-  void VariableActionMaximaSharedir(const wxString &value);
-  //! Called if maxima tells us the maxima demo dir.
-  void VariableActionMaximaDemodir(const wxString &value);
-  //! Called if maxima tells us the lisp name.
-  void VariableActionLispName(const wxString &value);
-  //! Called if maxima tells us the lisp version.
-  void VariableActionLispVersion(const wxString &value);
-  //! Called if maxima tells us the name of a package that was loaded
-  void VariableActionWxLoadFileName(const wxString &value);
-  //! Called if maxima tells us the value of the maxima variable <code>display2d</code>
-  void VariableActionDisplay2D(const wxString &value);
-  //! Called if maxima tells us if it currently outputs XML
-  void VariableActionAltDisplay2D(const wxString &value);
-  //! Called if maxima tells us the value of the maxima variable <code>engineering_format_floats</code>
-  void VariableActionEngineeringFormat(const wxString &value);
-  //! Called if maxima sends us the list of known operators
-  void VariableActionOperators(const wxString &value);
-  /*! Derive the display mode (1D/2D ASCII/unicode/graphical) from the
-    display2d and *alt-display2d* variable values Maxima sent us and
-    apply it to the configuration and the display-math-as menu.
-  */
-  void UpdateDisplayMode();
   wxString m_maximaVariable_display2d;
   wxString m_maximaVariable_altdisplay2d;
   wxString m_maximaVariable_engineeringFormat;
@@ -755,16 +703,6 @@ protected:
 private:
   wxString m_fileToOpen;
   bool m_fourierLoaded = false;
-  //! A pointer to a method that handles a text chunk
-  typedef void (wxMaxima::*VarReadFunction)(const wxString &value);
-  typedef void (wxMaxima::*VarUndefinedFunction)();
-  typedef std::unordered_map <wxString, VarReadFunction, wxStringHash> VarReadFunctionHash;
-  typedef std::unordered_map <wxString, VarUndefinedFunction,
-                              wxStringHash> VarUndefinedFunctionHash;
-  //! A list of actions we want to execute if we are sent the contents of specific variables
-  static VarReadFunctionHash m_variableReadActions;
-  //! A list of actions we want to execute if certain variables are undefined;
-  static VarUndefinedFunctionHash m_variableUndefinedActions;
 
 #if wxUSE_DRAG_AND_DROP
 
