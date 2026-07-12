@@ -388,8 +388,6 @@ protected:
     \param event The event that triggered calling this function.
   */
   void ShowPane(wxCommandEvent &event);            //<! Makes a sidebar visible
-  void OnMaximaClose(wxProcessEvent &event);      //
-  void OnMaximaClose();      //
   void OnGnuplotClose(wxProcessEvent &event);      //
   void OnGnuplotQueryTerminals(wxProcessEvent &event);      //
 
@@ -405,14 +403,8 @@ protected:
   //! Is triggered when the "Replace All" button in the search dialog is pressed
   void OnReplaceAll(wxFindDialogEvent &event);
 
-  //! Is called if maxima connects to wxMaxima.
-  void OnMaximaConnect();
-
   //! Maxima sends or receives data, or disconnects
   void MaximaEvent(wxThreadEvent &event);
-
-  //! Server event: Maxima connects
-  void ServerEvent(wxSocketEvent &event);
 
   /*! Add a parameter to a draw command
 
@@ -481,18 +473,6 @@ protected:
 
   wxString GetDefaultEntry();
 
-  //! starts the server
-  bool StartServer();
-  /*! starts maxima (uses getCommand) or restarts it if needed
-
-    Normally a restart is only needed if
-    - maxima isn't currently in the process of starting up or
-    - maxima is running and has never evaluated any program
-    so a restart won't change anything
-    \param force true means to restart maxima unconditionally.
-  */
-  bool StartMaxima(bool force = false);
-
   void OnClose(wxCloseEvent &event);               //!< close wxMaxima window
   wxString GetCommand(bool params = true);         //!< returns the command to start maxima
   //    (uses guessConfiguration)
@@ -536,7 +516,6 @@ protected:
   */
   void SetupVariables();
 
-  void KillMaxima(bool logMessage = true);                 //!< kills the maxima process
   /*! Update the title
 
     Updates the "saved" status, as well, but does only do anything if saved has

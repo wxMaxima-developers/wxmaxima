@@ -39,6 +39,8 @@
 #define MAXIMAPROCESSMANAGER_H
 
 class wxMaxima;
+class wxSocketEvent;
+class wxProcessEvent;
 
 /*! The Maxima process/socket lifecycle extracted from the wxMaxima god class.
 
@@ -73,11 +75,37 @@ public:
   */
   static void SetupTerminationHandlers();
 
+  //! Opens the local socket server Maxima connects back to. Returns false if no
+  //! server could be created.
+  bool StartServer();
+
+  //! Handles a socket event on the server: on a connection, accepts it.
+  void ServerEvent(wxSocketEvent &event);
+
+  //! Accepts Maxima's connection to our server socket, wires up the data
+  //! stream and kicks off the initial variable/setup queries.
+  void OnMaximaConnect();
+
+  /*! (Re)starts the Maxima process (and its server socket) if needed.
+
+    \param force true means restart Maxima unconditionally.
+  */
+  bool StartMaxima(bool force = false);
+
+  //! Kills the Maxima process (and cleans up its temp files / registered PID).
+  void KillMaxima(bool logMessage = true);
+
+  //! Reacts to the Maxima process having exited (reports it and, unless we
+  //! closed it on purpose, tries to restart it).
+  void OnMaximaClose();
+  //! wxEVT_END_PROCESS handler for the Maxima process; forwards to
+  //! OnMaximaClose() if the PID matches.
+  void OnMaximaClose(wxProcessEvent &event);
+
 private:
   //! The wxMaxima frame whose services the lifecycle handlers drive. Not owned;
-  //! the frame owns this object. Unused until the (non-static) lifecycle
-  //! handlers move here in a later slice; the safety net moved first is static.
-  [[maybe_unused]] wxMaxima &m_wxMaxima;
+  //! the frame owns this object.
+  wxMaxima &m_wxMaxima;
 };
 
 #endif // MAXIMAPROCESSMANAGER_H

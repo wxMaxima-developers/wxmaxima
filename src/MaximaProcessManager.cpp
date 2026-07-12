@@ -25,6 +25,10 @@
 */
 
 #include "MaximaProcessManager.h"
+#include "wxMaxima.h"
+#include "Maxima.h"
+#include "EventIDs.h"
+#include "dialogs/MaximaNotStartingDialog.h"
 
 #ifndef __WXMSW__
 #include <csignal>
@@ -119,3 +123,463 @@ void MaximaProcessManager::SetupTerminationHandlers() {
   sigaction(SIGHUP, &sa, nullptr);
 #endif
 }
+
+void MaximaProcessManager::ServerEvent(wxSocketEvent &event) {
+  switch (event.GetSocketEvent()) {
+  case wxSOCKET_CONNECTION:
+    OnMaximaConnect();
+    break;
+
+  default:
+    wxLogMessage(_("Encountered an unknown socket event."));
+    break;
+  }
+}
+
+void MaximaProcessManager::OnMaximaConnect() {
+  if (m_wxMaxima.m_client && (m_wxMaxima.m_client->IsConnected())) {
+    wxLogMessage(_("New connection attempt whilst already connected."));
+    return;
+  }
+  if (m_wxMaxima.m_maximaProcess == NULL) {
+    wxLogMessage(_("New connection attempt, but no currently running maxima process."));
+    return;
+  }
+  if (m_wxMaxima.m_server == NULL) {
+    wxLogMessage(_("New connection attempt, but no currently no socket maxima could connect to."));
+    return;
+  }
+
+  m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::idle);
+  if(m_wxMaxima.GetWorksheet())
+    m_wxMaxima.GetWorksheet()->QuestionAnswered();
+
+  m_wxMaxima.m_client = std::make_unique<Maxima>(m_wxMaxima.m_server->Accept(false), &m_wxMaxima.m_configuration);
+  if (m_wxMaxima.m_client->IsConnected()) {
+    m_wxMaxima.m_client->Bind(EVT_MAXIMA, &wxMaxima::MaximaEvent, &m_wxMaxima);
+    m_wxMaxima.SetupVariables();
+  } else {
+    wxLogMessage(_("Connection attempt, but connection failed."));
+    m_wxMaxima.m_unsuccessfulConnectionAttempts++;
+    if (m_wxMaxima.m_unsuccessfulConnectionAttempts < 12) {
+      wxLogMessage(_("Trying to restart maxima."));
+      StartMaxima(true);
+      return;
+    }
+  }
+}
+
+bool MaximaProcessManager::StartServer() {
+  if (m_wxMaxima.m_server) {
+    if(m_wxMaxima.m_server->IsOk())
+      m_wxMaxima.m_server->Close();
+    m_wxMaxima.m_server.reset();
+  }
+  m_wxMaxima.m_port = m_wxMaxima.m_configuration.DefaultPort() + m_wxMaxima.m_unsuccessfulConnectionAttempts;
+
+  do {
+    wxLogMessage(_("Trying to start the socket a Maxima on the local "
+                   "machine can connect to on port %i"), m_wxMaxima.m_port);
+
+    // Currently, only wxIPV4address is implemented (current wxWidgets 3.2.6)
+    // https://docs.wxwidgets.org/3.2.6/classwx_i_paddress.html
+    wxIPV4address addr;
+    if (!addr.LocalHost())
+      wxLogMessage(_("Cannot set the communication address to localhost."));
+    if (!addr.Service(m_wxMaxima.m_port))
+      wxLogMessage(_("Cannot set the communication port to %i."), m_wxMaxima.m_port);
+    m_wxMaxima.m_server = std::unique_ptr<wxSocketServer,
+                               wxMaxima::ServerDeleter>(
+                                              new wxSocketServer(addr, wxSOCKET_WAITALL_WRITE));
+    if (!m_wxMaxima.m_server->IsOk()) {
+      m_wxMaxima.m_port++;
+      m_wxMaxima.m_server.reset();
+    }
+  } while (((m_wxMaxima.m_port < m_wxMaxima.m_configuration.DefaultPort() + 15000) &&
+            (m_wxMaxima.m_port < 65535) && (!m_wxMaxima.m_server)));
+
+  if (!m_wxMaxima.m_server) {
+    m_wxMaxima.StatusText(_("Starting server failed"));
+    m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::error);
+    LoggingMessageBox(_("wxMaxima could not start a server.\n\n"
+                        "Please check you have network support\n"
+                        "enabled, that no internet safety appliance is configured "
+                        "to intercept creation of servers even if said server only accepts "
+                        "connections from local application (maxima insists on the graphical "
+                        "frontend acting as a server it can connect on over a local socket) "
+                        "and try again!"),
+                      _("Fatal error"), wxOK | wxICON_ERROR);
+
+    return false;
+  } else {
+    m_wxMaxima.m_server->SetEventHandler(*m_wxMaxima.GetEventHandler());
+    m_wxMaxima.m_server->Notify(true);
+    m_wxMaxima.m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
+    m_wxMaxima.m_server->SetTimeout(30);
+    m_wxMaxima.StatusText(_("Server started"));
+    return true;
+  }
+}
+
+bool MaximaProcessManager::StartMaxima(bool force) {
+  wxString dirname;
+  {
+    wxString filename;
+    if(m_wxMaxima.GetWorksheet())
+      filename = m_wxMaxima.GetWorksheet()->GetCurrentFile();
+    if (!filename.IsEmpty()) {
+      wxFileName dir(filename);
+      dir.MakeAbsolute();
+      dirname = dir.GetPath();
+    }
+  }
+  // We only need to start or restart maxima if we aren't connected to a maxima
+  // that till now never has done anything and therefore is in perfect working
+  // order.
+  wxString dirname_Old;
+  wxGetEnv("MAXIMA_INITIAL_FOLDER", &dirname_Old);
+
+  if ((m_wxMaxima.m_maximaProcess == NULL) || (m_wxMaxima.m_hasEvaluatedCells) || force ||
+      (dirname != dirname_Old)) {
+    if (!StartServer())
+      return false;
+
+    if ((m_wxMaxima.m_maximaProcess != NULL) || (m_wxMaxima.m_pid >= 0) || (m_wxMaxima.m_client))
+      {
+        m_wxMaxima.m_unsuccessfulConnectionAttempts = 0;
+        KillMaxima();
+      }
+
+    if ((m_wxMaxima.m_xmlInspector) && (m_wxMaxima.IsPaneDisplayed(EventIDs::menu_pane_xmlInspector)))
+      m_wxMaxima.m_xmlInspector->Clear();
+
+    // Maxima isn't in lisp mode
+    m_wxMaxima.m_configuration.InLispMode(false);
+
+    // Maxima isn't asking questions
+    m_wxMaxima.QuestionAnswered();
+
+    // If we have an open file tell Maxima to start in the directory the file is
+    // in
+    wxUnsetEnv("MAXIMA_INITIAL_FOLDER");
+    if (!dirname.IsEmpty()) {
+      if (wxDirExists(dirname)) {
+        // Tell Maxima to start in the directory the file is in
+        wxSetEnv(wxS("MAXIMA_INITIAL_FOLDER"), dirname);
+      } else {
+        wxLogWarning(wxS("Directory %s doesn't exist. Maxima "
+                         "might complain about that."),
+                     dirname);
+      }
+    }
+
+    m_wxMaxima.m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
+
+    wxString command = m_wxMaxima.GetCommand();
+    if (!command.IsEmpty()) {
+      command.Append(wxString::Format(wxS(" -s %d "), (int)m_wxMaxima.m_port));
+
+      m_wxMaxima.m_maximaProcess = new wxProcess(&m_wxMaxima, m_wxMaxima.m_maxima_process_id);
+      m_wxMaxima.m_maximaProcess->Redirect();
+      //      m_wxMaxima.m_maximaProcess->SetPriority(wxPRIORITY_MAX);
+      m_wxMaxima.m_first = true;
+      m_wxMaxima.m_firstPromptBuffer.Clear();
+      m_wxMaxima.m_pid = -1;
+      m_wxMaxima.m_maximaPid = -1;
+      wxLogMessage(_("Running maxima as: %s"), command);
+
+      wxEnvVariableHashMap environment;
+      environment = m_wxMaxima.m_configuration.MaximaEnvVars();
+      wxGetEnvMap(&environment);
+      // Tell Maxima we want to be able to kill it on Ctrl+G by sending it a
+      // signal. Strictly necessary only on MS Windows where we don't have a
+      // kill() command.
+      environment["MAXIMA_SIGNALS_THREAD"] = "1";
+      if(!Configuration::GetMaximaLang().IsEmpty())
+        environment["LANG"] = Configuration::GetMaximaLang();
+      // TODO: Is this still necessary for gnuplot on MacOs?
+#if defined __WXOSX__
+      environment["DISPLAY"] = ":0.0";
+#endif
+      m_wxMaxima.m_maximaAuthenticated = false;
+      m_wxMaxima.m_discardAllData = false;
+      // XOR OS entropy (RandomEntropy()) with PRNG output so the token is strong
+      // when either source is good — entropy of the XOR is >= max(both sources).
+      static constexpr size_t TOKEN_BYTES = 512;
+      static_assert(TOKEN_BYTES % sizeof(uint32_t) == 0, "TOKEN_BYTES must be a multiple of 4");
+      std::unique_ptr<wxExecuteEnv> env = std::unique_ptr<wxExecuteEnv>(new wxExecuteEnv);
+      wxMemoryBuffer membuf(TOKEN_BYTES);
+      std::uniform_int_distribution<unsigned int> byteUD(0, 255);
+      for (size_t i = 0; i < TOKEN_BYTES / sizeof(uint32_t); i++) {
+        auto rdVal = static_cast<uint32_t>(m_wxMaxima.m_configuration.RandomEntropy());
+        for (size_t j = 0; j < sizeof(uint32_t); j++) {
+          membuf.AppendByte(static_cast<char>(
+            static_cast<unsigned char>(rdVal & 0xFFu) ^
+            static_cast<unsigned char>(byteUD(m_wxMaxima.m_configuration.RandomEngine()))));
+          rdVal >>= 8;
+        }
+      }
+      m_wxMaxima.m_maximaAuthString = wxBase64Encode(membuf);
+      environment["MAXIMA_AUTH_CODE"] = m_wxMaxima.m_maximaAuthString;
+
+      env->env = std::move(environment);
+      Configuration::g_stats.maximaProcessesSpawned++;
+      m_wxMaxima.m_pid = wxExecute(
+          command,
+          wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE | wxEXEC_MAKE_GROUP_LEADER,
+          m_wxMaxima.m_maximaProcess, env.get());
+      if (m_wxMaxima.m_pid <= 0) {
+        m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::process_wont_start);
+        m_wxMaxima.StatusText(_("Cannot start the maxima binary"));
+        m_wxMaxima.m_maximaProcess = NULL;
+        m_wxMaxima.m_maximaStdout = NULL;
+        m_wxMaxima.m_maximaStderr = NULL;
+        m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::offline);
+        MaximaNotStartingDialog *dlg = new MaximaNotStartingDialog(&m_wxMaxima, -1, &m_wxMaxima.m_configuration, _("Failed to start Maxima"));
+        dlg->ShowModal();
+        return false;
+      }
+      // Track this Maxima so a termination signal / crash can kill it even if
+      // our destructor never runs (see the registry above the class methods).
+      MaximaProcessManager::RegisterChildMaxima(m_wxMaxima.m_pid);
+      m_wxMaxima.m_maximaStdout = m_wxMaxima.m_maximaProcess->GetInputStream();
+      m_wxMaxima.m_maximaStderr = m_wxMaxima.m_maximaProcess->GetErrorStream();
+      m_wxMaxima.m_lastPrompt = wxS("(%i1) ");
+      m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::wait_for_start);
+    } else {
+      m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::offline);
+      wxLogMessage(_("Cannot find a maxima binary and no binary chosen in the "
+                     "config dialogue."));
+      return false;
+    }
+    if(m_wxMaxima.GetWorksheet())
+      m_wxMaxima.GetWorksheet()->GetErrorList().Clear();
+
+    // Initialize the performance counter.
+    m_wxMaxima.GetMaximaCPUPercentage();
+  }
+  return true;
+}
+
+void MaximaProcessManager::KillMaxima(bool logMessage) {
+  if (logMessage && (m_wxMaxima.m_closing || (m_wxMaxima.m_maximaProcess == NULL) || (m_wxMaxima.m_pid > 0))) {
+    if (m_wxMaxima.m_maximaPid > 0)
+      wxLogMessage("Killing Maxima. Wrapper PID=%ld, Maxima PID=%ld", m_wxMaxima.m_pid,
+                   m_wxMaxima.m_maximaPid);
+    else
+      wxLogMessage("Killing Maxima. PID=%ld", m_wxMaxima.m_pid);
+    if (m_wxMaxima.m_history)
+      m_wxMaxima.m_history->MaximaSessionStart();
+  }
+  m_wxMaxima.m_discardAllData = true;
+  m_wxMaxima.m_closing = true;
+  if(m_wxMaxima.GetWorksheet() && (m_wxMaxima.m_variablesPane))
+    {
+      m_wxMaxima.m_variablesPane->ResetValues();
+      m_wxMaxima.m_varNamesToQuery = m_wxMaxima.m_variablesPane->GetEscapedVarnames();
+    }
+  m_wxMaxima.m_configCommands.Clear();
+  // The new maxima process will be in its initial condition => mark it as such.
+  m_wxMaxima.m_hasEvaluatedCells = false;
+  m_wxMaxima.m_maximaError = false;
+
+  if(m_wxMaxima.GetWorksheet())
+    {
+      m_wxMaxima.GetWorksheet()->SetWorkingGroup(nullptr);
+      m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Clear();
+    }
+  m_wxMaxima.EvaluationQueueLength(0);
+
+  // We start checking for Maximas output again as soon as we send some data to
+  // the program.
+  m_wxMaxima.m_statusBar->SetMaximaCPUPercentage(0);
+  m_wxMaxima.m_CWD.Clear();
+  m_wxMaxima.QuestionAnswered();
+
+  if(m_wxMaxima.m_maximaProcess) {
+    // If Maxima no more has a stdout it should automatically close
+    m_wxMaxima.m_maximaProcess->CloseOutput();
+  }
+  m_wxMaxima.m_maximaStdout = NULL;
+  m_wxMaxima.m_maximaStderr = NULL;
+  // This closes Maxima's network connection.
+  m_wxMaxima.m_client.reset();
+
+  // Finally found a long outstanding problem with leftover Lisp processes
+  // (using debugging with command line Maxima and netcat):
+  //
+  // On Windows just closing the network (kill the netcat server) does NOT
+  // terminate the Lisp, which is running in the background.
+  // Don't know why. But do not try to do that, just kill the Maxima process (using "taskkill")!
+#ifndef __WINDOWS__
+  // If the process really exists after that, kill it with Signals.
+  wxKillError killresult;
+  if (wxProcess::Exists(m_wxMaxima.m_pid)) {
+    killresult = wxProcess::Kill(m_wxMaxima.m_pid, wxSIGTERM, wxKILL_CHILDREN);
+    wxLogMessage("Kill Maxima (SIGTERM). killresult=%d  [0=wxKILL_OK]", killresult);
+  }
+  if (wxProcess::Exists(m_wxMaxima.m_pid)) {
+    killresult = wxProcess::Kill(m_wxMaxima.m_pid, wxSIGKILL, wxKILL_CHILDREN);
+    wxLogMessage("Kill Maxima (SIGKILL). killresult=%d  [0=wxKILL_OK]", killresult);
+  }
+#else
+  // Windows: it is complicated
+  // wxSIGTERM seems not be enough, we need wxSIGKILL. See:
+  // https://github.com/wxWidgets/wxWidgets/issues/15356
+  //
+  // However - I identified a wxWidgets issue, that only the direct children are killed
+  // with wxKill(..., wxKILL_CHILDREN):
+  // https://github.com/wxWidgets/wxWidgets/issues/25069
+  // Since it will take some time until wxWidgets distributions with this fix are released and in use,
+  // use the "taskkill" solution now.
+  wxArrayString taskkill_out, taskkill_err;
+  // wxEXEC_NOEVENTS: wait for taskkill *without* dispatching events. The plain
+  // wxEXEC_SYNC default spins a nested event loop here, which re-enters
+  // ProcessPendingEvents() on the Maxima wxEvtHandler we are in the middle of
+  // tearing down (m_wxMaxima.m_client was just reset above) -- tripping
+  // "should have pending events if called" (event.cpp) and, with asserts
+  // enabled, aborting; in release it could wedge. We do not need the event loop
+  // while killing Maxima (the wxMilliSleep wait loop just below is already a
+  // blocking, event-free wait), so suppress event dispatch for the kill.
+  wxExecute(wxString::Format("taskkill /PID %d /F /T", m_wxMaxima.m_pid), taskkill_out, taskkill_err, wxEXEC_SYNC | wxEXEC_NOEVENTS);
+  for (size_t i=0; i<taskkill_out.GetCount(); ++i)
+    wxLogMessage("taskkill_out: %s", taskkill_out.Item(i));
+  for (size_t i=0; i<taskkill_err.GetCount(); ++i)
+    wxLogMessage("taskkill_err: %s", taskkill_err.Item(i));
+#endif
+  // Wait for Maxima to actually exit before we clean up its temporary files
+  int count = 40;
+  while (wxProcess::Exists(m_wxMaxima.m_pid) && (count > 0)) {
+    wxMilliSleep(50);
+    count--;
+  }
+
+  // As we might have killed maxima before it was able to clean up its
+  // temp files we try to do so manually now:
+  if (m_wxMaxima.m_maximaTempDir != wxEmptyString) {
+    if (wxFileExists(m_wxMaxima.m_maximaTempDir + wxS("/maxout") +
+                     wxString::Format("%li.gnuplot", m_wxMaxima.m_pid)))
+      wxRemoveFile(m_wxMaxima.m_maximaTempDir + wxS("/maxout") +
+                   wxString::Format("%li.gnuplot", m_wxMaxima.m_pid));
+    if (wxFileExists(m_wxMaxima.m_maximaTempDir + wxS("/data") +
+                     wxString::Format("%li.gnuplot", m_wxMaxima.m_pid)))
+      wxRemoveFile(m_wxMaxima.m_maximaTempDir + wxS("/data") +
+                   wxString::Format("%li.gnuplot", m_wxMaxima.m_pid));
+    if (wxFileExists(m_wxMaxima.m_maximaTempDir + wxS("/maxout") +
+                     wxString::Format("%li.xmaxima", m_wxMaxima.m_pid)))
+      wxRemoveFile(m_wxMaxima.m_maximaTempDir + wxS("/maxout") +
+                   wxString::Format("%li.xmaxima", m_wxMaxima.m_pid));
+    if (wxFileExists(m_wxMaxima.m_maximaTempDir + wxS("/maxout_") +
+                     wxString::Format("%li.gnuplot", m_wxMaxima.m_pid)))
+      wxRemoveFile(m_wxMaxima.m_maximaTempDir + wxS("/maxout_") +
+                   wxString::Format("%li.gnuplot", m_wxMaxima.m_pid));
+    if (wxFileExists(m_wxMaxima.m_maximaTempDir + wxS("/data_") +
+                     wxString::Format("%li.gnuplot", m_wxMaxima.m_pid)))
+      wxRemoveFile(m_wxMaxima.m_maximaTempDir + wxS("/data_") +
+                   wxString::Format("%li.gnuplot", m_wxMaxima.m_pid));
+    if (wxFileExists(m_wxMaxima.m_maximaTempDir + wxS("/maxout_") +
+                     wxString::Format("%li.xmaxima", m_wxMaxima.m_pid)))
+      wxRemoveFile(m_wxMaxima.m_maximaTempDir + wxS("/maxout_") +
+                   wxString::Format("%li.xmaxima", m_wxMaxima.m_pid));
+
+    // Remove leftover png images from with_slider_draw, etc. (issue #2081).
+    wxDir dir(m_wxMaxima.m_maximaTempDir);
+    wxString file;
+    bool cont = dir.GetFirst(&file, wxString::Format("maxout_%li_*.png", m_wxMaxima.m_pid), wxDIR_FILES);
+    while (cont) {
+      wxRemoveFile(m_wxMaxima.m_maximaTempDir + wxS("/") + file);
+      cont = dir.GetNext(&file);
+    }
+  }
+  // Set m_wxMaxima.m_pid to -1.The process really shouldn't exist any more.
+  MaximaProcessManager::UnregisterChildMaxima(m_wxMaxima.m_pid);
+  m_wxMaxima.m_pid = -1;
+  m_wxMaxima.m_maximaPid = -1;
+
+  // We don't need to be informed any more if the maxima process we just tried to
+  // kill actually exits.
+  if(m_wxMaxima.m_maximaProcess) {
+    m_wxMaxima.m_maximaProcess->Detach();
+    m_wxMaxima.m_maximaProcess = NULL;
+  }
+}
+
+void MaximaProcessManager::OnMaximaClose(){
+  if (wxProcess::Exists(m_wxMaxima.m_pid)) KillMaxima();
+  m_wxMaxima.m_maximaProcess = NULL;
+  MaximaProcessManager::UnregisterChildMaxima(m_wxMaxima.m_pid);
+  m_wxMaxima.m_pid = -1;
+  if (m_wxMaxima.m_maximaStdout) {
+    wxTextInputStream istrm(*m_wxMaxima.m_maximaStdout, wxS('\t'),
+                            wxConvAuto(wxFONTENCODING_UTF8));
+    wxString o;
+    wxChar ch;
+    while (((ch = istrm.GetChar()) != wxS('\0')) && (m_wxMaxima.m_maximaStdout->CanRead()))
+      o += ch;
+
+    wxString o_trimmed = o;
+    o_trimmed.Trim();
+    if (!o.IsEmpty())
+      wxLogMessage(_("Last message from maxima's stdout: %s"), o);
+  }
+  if (m_wxMaxima.m_maximaStderr) {
+    wxTextInputStream istrm(*m_wxMaxima.m_maximaStderr, wxS('\t'),
+                            wxConvAuto(wxFONTENCODING_UTF8));
+    wxString o;
+    wxChar ch;
+    while (((ch = istrm.GetChar()) != wxS('\0')) && (m_wxMaxima.m_maximaStderr->CanRead()))
+      o += ch;
+
+    wxString o_trimmed = o;
+    o_trimmed.Trim();
+    if (!o.IsEmpty())
+      wxLogMessage(_("Last message from maxima's stderr: %s"), o);
+  }
+  m_wxMaxima.m_maximaStdout = NULL;
+  m_wxMaxima.m_maximaStderr = NULL;
+  m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::offline);
+  if (!m_wxMaxima.m_closing) {
+    m_wxMaxima.StatusText(_("Maxima process terminated unexpectedly."));
+
+    if (m_wxMaxima.m_first) {
+      LoggingMessageBox(
+                        _("Can not start Maxima. The most probable cause is that Maxima "
+                          "isn't installed (it can be downloaded from "
+                          "https://maxima.sourceforge.io) or in wxMaxima's config dialogue "
+                          "the setting for Maxima's location is wrong."),
+                        _("Error"), wxOK | wxICON_ERROR);
+    }
+
+    // Let's see if maxima has told us why this did happen.
+    m_wxMaxima.m_responseReader.ReadStdErr();
+    m_wxMaxima.ConsoleAppend(wxS("\nMaxima exited...\n"), MC_TYPE_ERROR);
+
+    if (m_wxMaxima.m_unsuccessfulConnectionAttempts > 10)
+      m_wxMaxima.ConsoleAppend(wxS("Restart Maxima with 'Maxima->Restart Maxima'.\n"),
+                    MC_TYPE_ERROR);
+    else {
+      m_wxMaxima.ConsoleAppend(wxS("Trying to restart Maxima.\n"), MC_TYPE_ERROR);
+      // Perhaps we shouldn't restart maxima again if it outputs a prompt and
+      // crashes immediately after => Each prompt is deemed as but one hint
+      // for a working maxima while each crash counts twice.
+      m_wxMaxima.m_unsuccessfulConnectionAttempts += 2;
+      StartMaxima(true);
+    }
+    if(m_wxMaxima.GetWorksheet())
+      m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Clear();
+  }
+  // We did close Maxima on purpose (m_wxMaxima.m_closing==true) - do not restart it.
+  //else
+  //  StartMaxima(true);
+
+  m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::disconnected);
+  m_wxMaxima.UpdateToolBar();
+  m_wxMaxima.UpdateMenus();
+}
+
+void MaximaProcessManager::OnMaximaClose(wxProcessEvent &event) {
+  if(event.GetPid() != m_wxMaxima.m_pid)
+    return;
+  OnMaximaClose();
+}
+

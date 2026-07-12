@@ -3353,7 +3353,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
     m_wxMaxima.GetWorksheet()->ResetInputPrompts();
     m_wxMaxima.EvaluationQueueLength(0);
     if (m_wxMaxima.m_configuration.RestartOnReEvaluation())
-      m_wxMaxima.StartMaxima();
+      m_wxMaxima.m_processManager.StartMaxima();
     m_wxMaxima.GetWorksheet()->AddDocumentTillHereToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
     m_wxMaxima.EvaluationQueueLength(m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Size(),
@@ -3658,7 +3658,7 @@ void MaximaCommandMenus::MaximaMenu(wxCommandEvent &event) {
     m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Clear();
     m_wxMaxima.GetWorksheet()->ResetInputPrompts();
     m_wxMaxima.m_unsuccessfulConnectionAttempts = 0;
-    m_wxMaxima.StartMaxima(true);
+    m_wxMaxima.m_processManager.StartMaxima(true);
   }
   else if(event.GetId() == EventIDs::menu_soft_restart){
     m_wxMaxima.MenuCommand(wxS("kill(all);"));
@@ -4419,7 +4419,7 @@ void MaximaCommandMenus::MaximaMenu(wxCommandEvent &event) {
     m_wxMaxima.GetWorksheet()->ResetInputPrompts();
     m_wxMaxima.EvaluationQueueLength(0);
     if (m_wxMaxima.m_configuration.RestartOnReEvaluation())
-      m_wxMaxima.StartMaxima();
+      m_wxMaxima.m_processManager.StartMaxima();
     m_wxMaxima.GetWorksheet()->AddDocumentToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
     m_wxMaxima.EvaluationQueueLength(m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Size(),
@@ -4431,7 +4431,7 @@ void MaximaCommandMenus::MaximaMenu(wxCommandEvent &event) {
     m_wxMaxima.GetWorksheet()->ResetInputPrompts();
     m_wxMaxima.EvaluationQueueLength(0);
     if (m_wxMaxima.m_configuration.RestartOnReEvaluation())
-      m_wxMaxima.StartMaxima();
+      m_wxMaxima.m_processManager.StartMaxima();
     m_wxMaxima.GetWorksheet()->AddEntireDocumentToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
     m_wxMaxima.EvaluationQueueLength(m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Size(),
@@ -4443,7 +4443,7 @@ void MaximaCommandMenus::MaximaMenu(wxCommandEvent &event) {
     m_wxMaxima.GetWorksheet()->ResetInputPrompts();
     m_wxMaxima.EvaluationQueueLength(0);
     if (m_wxMaxima.m_configuration.RestartOnReEvaluation())
-      m_wxMaxima.StartMaxima();
+      m_wxMaxima.m_processManager.StartMaxima();
     m_wxMaxima.GetWorksheet()->AddDocumentTillHereToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
     m_wxMaxima.EvaluationQueueLength(m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Size(),
