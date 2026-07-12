@@ -82,7 +82,7 @@ var searchData=
   ['setfontfrom_79',['SetFontFrom',['../classStyle.html#a779cf42ab0bbe8af28ad3e16282c3e10',1,'Style']]],
   ['setfontsize_80',['SetFontSize',['../classStyle.html#ad910ac6a66dd0020408af3fbb9f97364',1,'Style']]],
   ['setforeground_81',['SetForeground',['../classEditorCell.html#ade23fd5db81b8bdbe20352c73845e704',1,'EditorCell']]],
-  ['setframerate_82',['SetFrameRate',['../classAnimationCell.html#a7dc2f11ce3d781bd68e99cc76fb7c165',1,'AnimationCell']]],
+  ['setframerate_82',['SetFrameRate',['../classAnimationCell.html#a3d589a00939b971ff30c39ab10d66664',1,'AnimationCell']]],
   ['setfromfont_83',['SetFromFont',['../classStyle.html#a8bd1e2dac2cb164001669fcaaff3b41c',1,'Style']]],
   ['setgroup_84',['SetGroup',['../classMathParser.html#ad0fbc23e1d108a73e2718893fb7bf7e2',1,'MathParser']]],
   ['setgroupcellunderpointer_85',['SetGroupCellUnderPointer',['../classViewCellPointers.html#a1cd48a86d1407d186a2faed1ea4dfcce',1,'ViewCellPointers']]],

@@ -53,7 +53,7 @@ var searchData=
   ['allselected_50',['AllSelected',['../classEditorCell.html#aa5416be45e35122d2a4e491aa6ee40ad',1,'EditorCell']]],
   ['always_5ffalse_51',['always_false',['../structCatch_1_1always__false.html',1,'Catch']]],
   ['animate_52',['Animate',['../classWorksheet.html#a4f1b2fb2616a2fb5b538090d141f3875',1,'Worksheet']]],
-  ['animationcell_53',['AnimationCell',['../classAnimationCell.html#a94e0a814e6f8dd598e16992f8f7a2504',1,'AnimationCell::AnimationCell(GroupCell *group, Configuration *config, const wxString &amp;wxmxFile, int framerate=-1)'],['../classAnimationCell.html#a2b08abd9999571a92775095946058f25',1,'AnimationCell::AnimationCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &amp;image, const wxString &amp;type)'],['../classAnimationCell.html',1,'AnimationCell']]],
+  ['animationcell_53',['AnimationCell',['../classAnimationCell.html#a2d611af94b2714608ff83378f144485b',1,'AnimationCell::AnimationCell(GroupCell *group, Configuration *config, const wxString &amp;wxmxFile, double framerate=-1)'],['../classAnimationCell.html#a2b08abd9999571a92775095946058f25',1,'AnimationCell::AnimationCell(GroupCell *group, Configuration *config, const wxMemoryBuffer &amp;image, const wxString &amp;type)'],['../classAnimationCell.html',1,'AnimationCell']]],
   ['animationcell_2ecpp_54',['AnimationCell.cpp',['../AnimationCell_8cpp.html',1,'']]],
   ['animationcell_2eh_55',['AnimationCell.h',['../AnimationCell_8h.html',1,'']]],
   ['animationstartstopstate_56',['AnimationStartStopState',['../classToolBar.html#a327b655c366e7932f751d2815cc629fc',1,'ToolBar']]],

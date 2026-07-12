@@ -68,7 +68,7 @@ var searchData=
   ['getfont_65',['GetFont',['../classStyle.html#a9463ef5d4f115c42be47179e8242051f',1,'Style::GetFont(AFontSize fontSize) const'],['../classStyle.html#ae65117ed29804f2f3c920ab7605b3b6c',1,'Style::GetFont() const'],['../classFontVariantCache.html#a1e9362b0852d549ddf9429b07c57227a',1,'FontVariantCache::GetFont()'],['../classEditorCell.html#a0dea17c38d6948249361f46826177afc',1,'EditorCell::GetFont()']]],
   ['getfontsize_66',['GetFontSize',['../classStyle.html#a656f2706c40158fe34d54719573dfa22',1,'Style::GetFontSize() const'],['../classStyle.html#a371ea491289f25c67dc76e9a6f9d9b95',1,'Style::GetFontSize(const wxFont &amp;)']]],
   ['getforwx_67',['GetForWX',['../classAFontSize.html#a23446c7f79bcb1f7a28e62b85038109d',1,'AFontSize']]],
-  ['getframerate_68',['GetFrameRate',['../classAnimationCell.html#a7960ee45f7ba8058f1d0b2a0a36890ff',1,'AnimationCell']]],
+  ['getframerate_68',['GetFrameRate',['../classAnimationCell.html#ac24a98004278477922b653d8fe726f8a',1,'AnimationCell']]],
   ['getfullcommandundercursor_69',['GetFullCommandUnderCursor',['../classEditorCell.html#a979a5b36e845989a1f5c56faaf6442e3',1,'EditorCell']]],
   ['getgnuplotdata_70',['GetGnuplotData',['../classImage.html#a598f011cda6b2845052e82a186eaac77',1,'Image']]],
   ['getgnuplotsource_71',['GetGnuplotSource',['../classImage.html#a415793dbfa4ec00d1baeb3008ab7124d',1,'Image']]],
