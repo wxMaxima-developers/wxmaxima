@@ -56,5 +56,30 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   MathParser mp(g_cfg);
   mp.SetGroup(g_group);
   auto cell = mp.ParseTag(doc.GetRoot(), true, 0);   // build the 2D math cells
+  if (!cell)
+    return 0;
+
+  // Parsing alone leaves the layout, paint and export paths un-fuzzed - which is
+  // exactly where real crashes hid (the matrix separator-line draw and the
+  // animation exporters both threw on degenerate cells the fuzzer parsed but
+  // never drew/exported). So lay the parsed tree out, draw it, and run every
+  // list exporter over it.
+  Cell *list = cell.get();
+  wxLogNull noLog;
+  list->RecalculateList(g_cfg->GetMathFontSize());
+  list->SetCurrentPointList(wxPoint(0, 0));
+  {
+    // Force Cell::DrawThisCell() to actually paint (otherwise the 64x64 DC's
+    // clip region would skip most cells).
+    NoClipToDrawRegion noClip(g_cfg);
+    list->DrawList(g_dc, g_dc);
+  }
+  list->ListToString();
+  list->ListToMatlab();
+  list->ListToTeX();
+  list->ListToXML();
+  list->ListToMathML();
+  list->ListToOMML();
+  list->ListToRTF();
   return 0;
 }
