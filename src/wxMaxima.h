@@ -510,40 +510,7 @@ protected:
   wxString GetCommand(bool params = true);         //!< returns the command to start maxima
   //    (uses guessConfiguration)
 
-  //! Polls the stderr and stdout of maxima for input.
-  void ReadStdErr();
-
-  /*! Determines the process id of maxima from its initial output
-
-    This function does several things:
-    - it sets m_pid to the process id of maxima
-    - it discards all data until this point
-    - and it prepares the worksheet for editing.
-
-    \param data The string ReadFirstPrompt() does read its data from.
-    After leaving this function data is empty again.
-  */
-  void ReadFirstPrompt(const wxString &data);
-
-  /*! Reads text that isn't enclosed between xml tags.
-
-    Some commands provide status messages before the math output or the command has finished.
-    This function makes wxMaxima output them directly as they arrive.
-
-    After processing the lines not enclosed in xml tags they are removed from data.
-  */
-  void ReadMiscText(const wxString &data);
-
-  /*! Reads the input prompt from Maxima.
-
-    After processing the input prompt it is removed from data.
-  */
-  void ReadPrompt(const wxString &data);
-
   void ReadMaximaIPC(const wxString &data){m_ipc.ReadInputData(data);}
-
-  //! Read (and discard) suppressed output
-  void ReadSuppressedOutput(const wxString &data);
 
   /*! Reads the variable values maxima advertises to us
    */

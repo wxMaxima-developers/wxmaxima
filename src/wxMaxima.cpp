@@ -1853,12 +1853,12 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
     // Read out stderr: We will do that in the background on a regular basis,
     // anyway. But if we do it manually now, too, the probability that things
     // are presented to the user in chronological order increases a bit.
-    ReadStdErr();
+    m_responseReader.ReadStdErr();
     m_statusBar->NetworkStatus(StatusBar::receive);
     if(m_first)
-      ReadFirstPrompt(event.GetString());
+      m_responseReader.ReadFirstPrompt(event.GetString());
     else
-      ReadMiscText(event.GetString());
+      m_responseReader.ReadMiscText(event.GetString());
     break;
   case Maxima::STRING_FOR_XMLINSPECTOR:
     if(m_xmlInspector)
@@ -1870,14 +1870,14 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
       }
     break;
   case Maxima::XML_PROMPT:
-    ReadStdErr();
+    m_responseReader.ReadStdErr();
     m_statusBar->NetworkStatus(StatusBar::receive);
-    ReadPrompt(event.GetString());
+    m_responseReader.ReadPrompt(event.GetString());
     break;
   case Maxima::XML_SUPPRESSOUTPUT:
-    ReadStdErr();
+    m_responseReader.ReadStdErr();
     m_statusBar->NetworkStatus(StatusBar::receive);
-    ReadSuppressedOutput(event.GetString());
+    m_responseReader.ReadSuppressedOutput(event.GetString());
     break;
   case Maxima::XML_WXXMLSYMBOLS:
     {
@@ -1941,7 +1941,7 @@ void wxMaxima::MaximaEvent(wxThreadEvent &event) {
   case Maxima::XML_WXXML_KEY: // TODO: Should the key be outside the SuppressOutput?
     break;
   case Maxima::READ_PENDING:
-    ReadStdErr();
+    m_responseReader.ReadStdErr();
     m_statusBar->NetworkStatus(StatusBar::receive);
     break;
   case Maxima::WRITE_PENDING:
@@ -2564,7 +2564,7 @@ void wxMaxima::OnMaximaClose(){
     }
 
     // Let's see if maxima has told us why this did happen.
-    ReadStdErr();
+    m_responseReader.ReadStdErr();
     ConsoleAppend(wxS("\nMaxima exited...\n"), MC_TYPE_ERROR);
 
     if (m_unsuccessfulConnectionAttempts > 10)
@@ -2600,170 +2600,8 @@ void wxMaxima::OnMaximaClose(wxProcessEvent &event) {
 ///  Dealing with stuff read from the socket
 ///--------------------------------------------------------------------------------
 
-void wxMaxima::ReadFirstPrompt(const wxString &data) {
-  m_firstPromptBuffer += data;
-  auto end = m_firstPromptBuffer.Find(m_firstPrompt);
-  if (end  == wxNOT_FOUND)
-    return;
 
-  m_bytesFromMaxima = 0;
 
-  int start = 0;
-  start = m_firstPromptBuffer.Find(wxS("Maxima "));
-  if (start == wxNOT_FOUND)
-    start = 0;
-  FirstOutput();
-
-  m_maximaBusy = false;
-
-  // Wait for a line maxima informs us about it's process id in.
-  int s = m_firstPromptBuffer.Find(wxS("pid="));
-  if (s != wxNOT_FOUND) {
-    s += 4;
-    int t =
-        s + m_firstPromptBuffer.SubString(s, m_firstPromptBuffer.Length()).Find(wxS("\n")) - 1;
-
-    // Read this pid
-    if (s < t)
-      if (!m_firstPromptBuffer.SubString(s, t).ToLong(&m_maximaPid))
-        wxLogMessage(_("Cannot interpret the numeric value of pid %s"),
-                     m_firstPromptBuffer.SubString(s, t));
-  }
-
-  if (m_pid > 0)
-    m_MenuBar->EnableItem(EventIDs::menu_interrupt_id, true);
-
-  m_client->ClearFirstPrompt();
-  m_first = false;
-  StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
-  m_closing = false; // when restarting maxima this is temporarily true
-
-  wxString prompt_compact = m_firstPromptBuffer.Left(
-      start + static_cast<std::size_t>(end) + m_firstPrompt.Length() - 1);
-  prompt_compact.Replace(wxS("\n"), wxS("\u21b2"));
-
-  wxLogMessage(_("Received maxima's first prompt: %s"), prompt_compact);
-
-  if (m_maximaPid > 0)
-    wxLogMessage(_("Maxima's PID is %li"), m_maximaPid);
-  else
-    wxLogMessage(_("Maxima's PID is %li"), m_pid);
-
-  m_firstPromptBuffer.Clear();
-
-  if (GetWorksheet() && (GetWorksheet()->GetEvaluationQueue().Empty())) {
-    // Inform the user that the evaluation queue is empty.
-    EvaluationQueueLength(0);
-    if (GetWorksheet() && (m_configuration.GetOpenHCaret()) &&
-        (GetWorksheet()->GetActiveCell() == NULL))
-      GetWorksheet()->OpenNextOrCreateCell();
-  } else
-    TriggerEvaluation();
-}
-
-void wxMaxima::ReadMiscText(const wxString &data) {
-  if(!m_maximaAuthenticated)
-    return;
-
-  auto style = MC_TYPE_ASCIIMATHS;
-
-  if (data.StartsWith(wxS("(%")))
-    style = MC_TYPE_TEXT;
-
-  if (data.IsEmpty())
-    return;
-
-  if (data == "\r")
-    return;
-
-  if (GetWorksheet() && (data.StartsWith("\n")))
-    GetWorksheet()->SetCurrentTextCell(nullptr);
-
-  // A version of the text where each line begins with non-whitespace and
-  // whitespace characters are merged.
-  wxString mergedWhitespace = wxS("\n");
-  bool whitespace = true;
-  for (wxString::const_iterator it = data.begin(); it != data.end(); ++it) {
-    if ((*it == wxS(' ')) || (*it == wxS('\t'))) {
-      // Merge non-newline whitespace to a space.
-      if (!whitespace)
-        mergedWhitespace += wxS(' ');
-    } else
-      mergedWhitespace += *it;
-
-    if ((*it == wxS(' ')) || (*it == wxS('\t')) || (*it == wxS('\n')))
-      whitespace = true;
-    else
-      whitespace = false;
-  }
-
-  if ((mergedWhitespace.Contains(wxS("\n-- an error."))) ||
-      (mergedWhitespace.Contains(wxS(":incorrect syntax:"))) ||
-      (mergedWhitespace.Contains(wxS("\nincorrect syntax"))) ||
-      (mergedWhitespace.Contains(wxS("\nMaxima encountered a Lisp error"))) ||
-      (mergedWhitespace.Contains(wxS("\nkillcontext: no such context"))) ||
-      (mergedWhitespace.Contains(
-                                 wxS("\ndbl:MAXIMA>>"))) || // a gcl error message
-      (mergedWhitespace.Contains(
-                                 wxS("\nTo enable the Lisp debugger set *debugger-hook* to "
-                                     "nil."))) // a scbl error message
-      )
-    style = MC_TYPE_ERROR;
-
-  if ((mergedWhitespace.StartsWith(wxS("Warning:"))) ||
-      (mergedWhitespace.StartsWith(wxS("warning:"))) ||
-      (mergedWhitespace.StartsWith(wxS("WARNING:"))) ||
-      (mergedWhitespace.Contains(wxS("\nWarning:"))) ||
-      (mergedWhitespace.Contains(wxS("\nWARNING:"))) ||
-      (mergedWhitespace.Contains(wxS("\nwarning:"))) ||
-      (mergedWhitespace.Contains(wxS(": Warning:"))) ||
-      (mergedWhitespace.Contains(wxS(": warning:"))))
-    style = MC_TYPE_WARNING;
-  else {
-    // Gnuplot errors differ from gnuplot warnings by not containing a
-    // "warning:"
-    if (m_gnuplotErrorRegex.Matches(mergedWhitespace))
-      style = MC_TYPE_ERROR;
-  }
-
-  // Add the text line to the console
-  if (GetWorksheet() && (!data.empty())) {
-    GetWorksheet()->SetCurrentTextCell(ConsoleAppend(data, style));
-    if (style == MC_TYPE_ERROR)
-      AbortOnError();
-  }
-  if (GetWorksheet() && (data.EndsWith("\n")))
-    GetWorksheet()->SetCurrentTextCell(nullptr);
-}
-
-void wxMaxima::ReadSuppressedOutput(const wxString &data) {
-  if(!m_maximaAuthenticated)
-    {
-      if(data.Find("</wxxml-key>") != wxNOT_FOUND) {
-        if(data.Find("<wxxml-key>" + m_maximaAuthString + "</wxxml-key>")){
-          wxLogMessage(_("Maxima has authenticated!"));
-          m_maximaAuthenticated = true;
-        } else {
-          wxLogMessage(_("Cannot authenticate Maxima!"));
-          LoggingMessageBox(
-                            _("Could not make sure that we talk to the maxima we started => "
-                              "discarding all data it sends."),
-                            _("Warning"), wxOK | wxICON_EXCLAMATION);
-          m_discardAllData = true;
-        }
-      }
-    }
-
-  if(!m_maximaAuthenticated)
-    {
-      wxLogMessage(_("Maxima didn't attempt to authenticate!"));
-      LoggingMessageBox(
-                        _("Could not make sure that we talk to the maxima we started => "
-                          "discarding all data it sends."),
-                        _("Warning"), wxOK | wxICON_EXCLAMATION);
-      m_discardAllData = true;
-    }
-}
 
 void wxMaxima::ReadVariables(const wxXmlDocument &xmldoc) {
   if(!xmldoc.IsOk())
@@ -3233,142 +3071,6 @@ bool wxMaxima::QueryVariableValue() {
 /***
  * Checks if maxima displayed a new prompt.
  */
-void wxMaxima::ReadPrompt(const wxString &data) {
-  m_evalOnStartup = false;
-  if(!GetWorksheet())
-    return;
-
-  GetWorksheet()->SetCurrentTextCell(nullptr);
-
-  // Assume we don't have a question prompt
-  GetWorksheet()->QuestionPending(false);
-  m_ready = true;
-
-  wxLogMessage(_("Got a new input prompt!"));
-  m_maximaBusy = false;
-  m_bytesFromMaxima = 0;
-
-  wxString label = data.SubString(m_promptPrefix.Length(),
-                                  data.Length() - m_promptSuffix.Length() - 1);
-
-  // If we got a prompt our connection to maxima was successful.
-  if (m_unsuccessfulConnectionAttempts > 0)
-    m_unsuccessfulConnectionAttempts--;
-  label.Trim(true);
-  label.Trim(false);
-  // Input prompts have a length > 0 and end in a number followed by a ")".
-  // Depending on ibase the digits of the number might be between 'A' and 'Z',
-  // too. Input prompts also begin with a "(". Questions (hopefully)
-  // don't do that; Lisp prompts look like question prompts.
-  //
-  // sbcl debug prompts have the format "(dbm:1)".
-  if (((label.Length() > 2) && label.StartsWith("(%") &&
-       (!label.StartsWith("(dbm:")) && label.EndsWith(")") &&
-       (((label[label.Length() - 2] >= (wxS('0'))) &&
-         (label[label.Length() - 2] <= (wxS('9')))) ||
-        ((label[label.Length() - 2] >= (wxS('A'))) &&
-         (label[label.Length() - 2] <= (wxS('Z')))))) ||
-      m_configuration.InLispMode() || (label.StartsWith(wxS("MAXIMA>"))) ||
-      (label.StartsWith(wxS("\nMAXIMA>")))) {
-    // Maxima displayed a new main prompt => We don't have a question
-    GetWorksheet()->QuestionAnswered();
-    // And we can remove one command from the evaluation queue.
-    GetWorksheet()->GetEvaluationQueue().RemoveFirst();
-
-    m_lastPrompt = label;
-    // remove the event maxima has just processed from the evaluation queue
-    // if we remove a command from the evaluation queue the next output line
-    // will be the first from the next command.
-    m_outputCellsFromCurrentCommand = 0;
-    if (GetWorksheet()->GetEvaluationQueue().Empty()) { // queue empty.
-      // This worksheet has drained its evaluation queue, so a clean batch run
-      // is done and may exit normally. Disarm exit-on-error for THIS worksheet
-      // only -- m_exitOnError is process-wide and shared, so clearing it here
-      // would disable exit-on-error in every other window of a --single_process
-      // run (the multithreadtest hang).
-      m_exitOnErrorArmed = false;
-      if (m_maximaError)
-        StatusMaximaBusy(StatusBar::MaximaStatus::maximaerror);
-      else
-        StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
-      // If we have selected a cell in order to show we are evaluating it
-      // we should now remove this marker.
-      if (GetWorksheet()->FollowEvaluation()) {
-        if (GetWorksheet()->GetActiveCell())
-          GetWorksheet()->GetActiveCell()->SelectNone();
-        GetWorksheet()->ClearSelection();
-      }
-      GetWorksheet()->FollowEvaluation(false);
-      // Inform the user that the evaluation queue is empty.
-      EvaluationQueueLength(0);
-      GetWorksheet()->SetWorkingGroup(nullptr);
-      GetWorksheet()->GetEvaluationQueue().RemoveFirst();
-      GetWorksheet()->RequestRedraw();
-      // Now that maxima is idle we can ask for the contents of its variables
-      QueryVariableValue();
-    } else { // we don't have an empty queue
-      m_ready = false;
-      GetWorksheet()->RequestRedraw();
-      GetWorksheet()->SetWorkingGroup(nullptr);
-      StatusMaximaBusy(StatusBar::MaximaStatus::sending);
-      TriggerEvaluation();
-    }
-
-    if (GetWorksheet()->GetEvaluationQueue().Empty()) {
-      if ((m_configuration.GetOpenHCaret()) &&
-          (GetWorksheet()->GetActiveCell() == NULL))
-        GetWorksheet()->OpenNextOrCreateCell();
-    }
-  } else { // We have a question
-    GetWorksheet()->SetLastQuestion(label);
-    GetWorksheet()->QuestionAnswered();
-    GetWorksheet()->QuestionPending(true);
-    // If the user answers a question additional output might be required even
-    // if the question has been preceded by many lines.
-    m_outputCellsFromCurrentCommand = 0;
-
-    bool autoAnswer = GetWorksheet()->OpenQuestionCaret();
-
-    if (GetWorksheet()->ScrolledAwayFromEvaluation()) {
-      if (GetWorksheet()->m_mainToolBar)
-        GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
-    }
-
-    if (!label.IsEmpty()) {
-      int options = AppendOpt::NewLine | AppendOpt::BigSkip;
-      if (!autoAnswer)
-        options |= AppendOpt::PromptToolTip;
-
-      if (std::max(label.Find(m_mathPrefix1), label.Find(m_mathPrefix2)) >= 0)
-        DoConsoleAppend(label, MC_TYPE_PROMPT, AppendOpt(options));
-      else
-        DoRawConsoleAppend(label, MC_TYPE_PROMPT, AppendOpt(options));
-    }
-
-    if (!autoAnswer) {
-      if ((GetWorksheet()->GetWorkingGroup() == NULL) ||
-          ((GetWorksheet()->GetWorkingGroup()->m_knownAnswers.empty()) &&
-           GetWorksheet()->GetWorkingGroup()->AutoAnswer()))
-        GetWorksheet()->SetNotification(_("Maxima asks a question!"),
-                                        wxICON_INFORMATION);
-      StatusMaximaBusy(StatusBar::MaximaStatus::userinput);
-    }
-  }
-  label.Trim(false);
-  if (label.StartsWith(wxS("MAXIMA>")) || label.StartsWith("(dbm:")) {
-    if (!m_configuration.InLispMode()) {
-      if (label.StartsWith("(dbm:"))
-        wxLogMessage(_("Switched to lisp mode after receiving a lisp debug prompt!"));
-      else
-        wxLogMessage(_("Switched to lisp mode after receiving a lisp prompt!"));
-    }
-    m_configuration.InLispMode(true);
-  } else {
-    if (m_configuration.InLispMode())
-      wxLogMessage(_("Ended lisp mode after receiving a maxima prompt!"));
-    m_configuration.InLispMode(false);
-  }
-}
 
 void wxMaxima::SetCWD(wxString file) {
   // If maxima isn't connected we cannot do anything
@@ -5061,76 +4763,6 @@ bool wxMaxima::SaveFile(bool forceSave) {
   return true;
 }
 
-void wxMaxima::ReadStdErr() {
-  // Maxima sends us its actual results over the network socket, not via its
-  // stdout/stderr. But those streams are not silent after startup: in
-  // particular Maxima forwards the stdout and stderr of the gnuplot process it
-  // launches, so plotting errors and warnings (and the "End of animation
-  // sequence" / Fontconfig / QSocketNotifier chatter filtered below) arrive
-  // here. We also want to surface anything that turns up if something is
-  // severely broken. Hence we keep reading and reporting both streams.
-
-  if (m_maximaProcess == NULL)
-    return;
-
-  if (m_maximaProcess->IsInputAvailable()) {
-    wxASSERT_MSG(
-                 m_maximaStdout != NULL,
-                 wxS("Bug: Trying to read from maxima but don't have an input stream"));
-    if(m_maximaStdout == NULL)
-      return;
-    wxTextInputStream istrm(*m_maximaStdout, wxS('\t'),
-                            wxConvAuto(wxFONTENCODING_UTF8));
-    wxString o;
-    wxChar ch;
-    while (((ch = istrm.GetChar()) != wxS('\0')) && (m_maximaStdout->CanRead()))
-      o += ch;
-
-    wxString o_trimmed = o;
-    o_trimmed.Trim();
-
-    o = _("Message from the stdout of Maxima: ") + o;
-    if ((o_trimmed != wxEmptyString) &&
-        (!o_trimmed.StartsWith("Connecting Maxima to server on port")) && (!m_first)) {
-      DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
-      if (Maxima::GetPipeToStdErr())
-        std::cerr << o;
-    }
-  }
-  if (m_maximaProcess->IsErrorAvailable()) {
-    wxASSERT_MSG(m_maximaStderr != NULL,
-                 wxS("Bug: Trying to read from maxima but don't have a error "
-                     "input stream"));
-    if(m_maximaStderr == NULL)
-      return;
-    wxTextInputStream istrm(*m_maximaStderr, wxS('\t'),
-                            wxConvAuto(wxFONTENCODING_UTF8));
-    wxString o;
-    wxChar ch;
-    while (((ch = istrm.GetChar()) != wxS('\0')) && (m_maximaStderr->CanRead()))
-      o += ch;
-
-    wxString o_trimmed = o;
-    o_trimmed.Trim();
-
-    o = wxS("Message from maxima's stderr stream: ") + o;
-
-    if ((o != wxS("Message from maxima's stderr stream: End of animation sequence")) &&
-        (o != wxS("Message from maxima's stderr stream: Fontconfig warning: using without calling FcInit()")) &&  // harmless warning, which may occur with Gnuplot 6 and fontconfig
-        (o != wxS("Message from maxima's stderr stream: QSocketNotifier: Can only be used with threads started with QThread")) &&  // Maybe related to Gnuplot / Wayland?
-        !o.Contains("frames in animation sequence") &&
-        (o_trimmed != wxEmptyString) && (o.Length() > 1)) {
-      DoRawConsoleAppend(o, MC_TYPE_ERROR);
-      AbortOnError();
-      TriggerEvaluation();
-      GetWorksheet()->GetErrorList().Add(GetWorksheet()->GetWorkingGroup(true));
-
-      if (Maxima::GetPipeToStdErr())
-        std::cerr << o;
-    } else
-      DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
-  }
-}
 
 bool wxMaxima::AbortOnError() {
   // Maxima encountered an error.
@@ -5301,7 +4933,7 @@ double wxMaxima::GetMaximaCPUPercentage() {
 void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
   switch (event.GetId()) {
   case MAXIMA_STDOUT_POLL_ID:
-    ReadStdErr();
+    m_responseReader.ReadStdErr();
 
     if (m_maximaProcess != NULL) {
       // The atexit() of maxima informs us if the process dies. But it sometimes
@@ -6057,7 +5689,7 @@ void wxMaxima::TriggerEvaluation() {
   // From now on we look every second if we got some output from a crashing
   // maxima: Is maxima is working correctly the stdout and stderr descriptors we
   // poll don't offer any data.
-  ReadStdErr();
+  m_responseReader.ReadStdErr();
   m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
 
   if (GetWorksheet()->GetEvaluationQueue().m_workingGroupChanged) {

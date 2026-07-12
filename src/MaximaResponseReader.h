@@ -71,6 +71,25 @@ public:
   //! to the worksheet's autocompleter.
   void ReadLoadSymbols(const wxXmlDocument &data);
 
+  //! Handles Maxima's very first prompt after startup (banner, PID, readiness).
+  void ReadFirstPrompt(const wxString &data);
+
+  //! Handles a chunk of plain (non-XML) text Maxima sent: classifies it as
+  //! output/warning/error and appends it to the worksheet.
+  void ReadMiscText(const wxString &data);
+
+  //! Handles output Maxima marked as suppressed; also the startup
+  //! authentication handshake (the <wxxml-key> exchange).
+  void ReadSuppressedOutput(const wxString &data);
+
+  //! Handles a new input/question prompt: advances the evaluation queue or
+  //! surfaces the question, and tracks Maxima's lisp/maxima mode.
+  void ReadPrompt(const wxString &data);
+
+  //! Reads and reports whatever Maxima forwarded on its stdout/stderr streams
+  //! (most prominently the gnuplot subprocess's diagnostics).
+  void ReadStdErr();
+
 private:
   //! The wxMaxima frame whose services the handlers drive. Not owned; the
   //! frame owns this object.
