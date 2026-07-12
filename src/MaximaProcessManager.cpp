@@ -158,7 +158,7 @@ void MaximaProcessManager::OnMaximaConnect() {
   m_wxMaxima.m_client = std::make_unique<Maxima>(m_wxMaxima.m_server->Accept(false), &m_wxMaxima.m_configuration);
   if (m_wxMaxima.m_client->IsConnected()) {
     m_wxMaxima.m_client->Bind(EVT_MAXIMA, &MaximaProcessManager::MaximaEvent, this);
-    m_wxMaxima.SetupVariables();
+    m_wxMaxima.m_evaluator.SetupVariables();
   } else {
     wxLogMessage(_("Connection attempt, but connection failed."));
     m_wxMaxima.m_unsuccessfulConnectionAttempts++;

@@ -491,15 +491,6 @@ protected:
   //! Does this file contain anything worth saving?
   bool SaveNecessary();
 
-  /*! Setup maxima's variables
-
-    This method is called once when maxima starts. It loads wxmathml.lisp
-    and sets some option variables.
-
-    \todo Set pngcairo to be the default terminal as soon as the mac platform
-    supports it.
-  */
-  void SetupVariables();
 
   /*! Update the title
 

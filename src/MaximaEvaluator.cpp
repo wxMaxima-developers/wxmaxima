@@ -29,6 +29,8 @@
 #include "cells/TextCell.h"
 #include "cells/EditorCell.h"
 #include "cells/GroupCell.h"
+#include "wxMathml.h"
+#include "Version.h"
 #include <wx/tokenzr.h>
 #include <memory>
 
@@ -451,3 +453,98 @@ void MaximaEvaluator::TriggerEvaluation() {
   }
 }
 
+
+void MaximaEvaluator::SetupVariables() {
+  wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
+  if (m_wxMaxima.m_exitAfterEval) {
+    SendMaxima(":lisp-quiet (defvar *wx-defer-queries* t)\n");
+  }
+  wxMathML wxmathml(&m_wxMaxima.m_configuration);
+  SendMaxima(wxmathml.GetCmd());
+  wxString cmd;
+
+#if defined(__WXOSX__)
+  wxString gnuplot_binary = m_wxMaxima.m_gnuplotcommand;
+
+  gnuplot_binary.Replace("\\", "\\\\");
+  gnuplot_binary.Replace("\"", "\\\"");
+  if (wxFileExists(m_wxMaxima.m_gnuplotcommand))
+    cmd += wxS("\n:lisp-quiet (setf $gnuplot_command \"") + m_wxMaxima.m_gnuplotcommand +
+      wxS("\")\n");
+  wxLogMessage(_("Setting gnuplot_binary to %s"),
+               m_wxMaxima.m_gnuplotcommand);
+#endif
+  cmd.Replace(wxS("\\"), wxS("/"));
+  SendMaxima(cmd);
+
+  switch(m_wxMaxima.m_configuration.MaximaHelpFormat())
+    {
+    case Configuration::frontend:
+      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$frontend)");
+      break;
+
+    case Configuration::maxima:
+      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$text)");
+      break;
+
+    case Configuration::browser:
+      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$html)");
+      break;
+
+    default:
+      SendMaxima(":lisp-quiet (msetq $output_format_for_help '$frontend)");
+    }
+  wxString wxmaximaversion_lisp(WXMAXIMA_VERSION);
+
+#ifdef __WXMSW__
+  wxmaximaversion_lisp += "_MSW";
+#endif
+#ifdef __WXMOTIF__
+  wxmaximaversion_lisp += "_MOTIF";
+#endif
+#ifdef __WXDFB__
+  wxmaximaversion_lisp += "_DIRECTFB";
+#endif
+#ifdef __WXUNIVERSAL__
+  wxmaximaversion_lisp += "_WXUNIVERSAL";
+#endif
+#ifdef __WXOSX__
+  wxmaximaversion_lisp += "_MAC";
+#endif
+
+#ifdef __WXGTK__
+#ifdef __WXGTK3__
+  wxmaximaversion_lisp += "_GTK3";
+#else
+#ifdef __WXGTK2__
+  wxmaximaversion_lisp += "_GTK2";
+#else
+  wxmaximaversion_lisp += "_GTKX";
+#endif
+#endif
+#endif
+
+  wxmaximaversion_lisp.Replace("\\", "\\\\");
+  wxmaximaversion_lisp.Replace("\"", "\\\"");
+  wxLogMessage(_("Updating maxima's configuration"));
+  SendMaxima(wxString(wxS(":lisp-quiet (setq $wxmaximaversion \"")) +
+             wxString(wxmaximaversion_lisp) +
+             wxS("\") ($put \'$wxmaxima (read-wxmaxima-version \"" +
+                 wxString(wxmaximaversion_lisp) +
+                 wxS("\") '$version) (setq $wxwidgetsversion \"")) +
+             wxString(wxVERSION_STRING) +
+             wxS("\")   (if (boundp '$maxima_frontend_version) (setq "
+                 "$maxima_frontend_version \"" +
+                 wxmaximaversion_lisp +
+                 "\")) (ignore-errors (setf (symbol-value "
+                 "'*lisp-quiet-suppressed-prompt*) \"" +
+                 m_wxMaxima.m_promptPrefix + "(%i1)" + m_wxMaxima.m_promptSuffix + "\"))\n"));
+  wxLogMessage(_("Setting prompt and help format"));
+  SendMaxima(wxS(":lisp-quiet (setf *prompt-suffix* \"") +
+             m_wxMaxima.m_promptSuffix + wxS("\") (setf *prompt-prefix* \"") +
+             m_wxMaxima.m_promptPrefix +
+             wxS("\") (setf $in_netmath nil) (setf $show_openplot t) ") +
+             wxS("\n"));
+
+  m_wxMaxima.ConfigChanged();
+}

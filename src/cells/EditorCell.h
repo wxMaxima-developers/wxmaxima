@@ -741,7 +741,7 @@ private:
 
     These characters can be thought to LaTeX and the html browser if necessary in
     TextCell::ToTeX and EditorCell::ToTeX. They can also be
-    converted to maxima strings in wxMaxima::SendMaxima.
+    converted to maxima strings in MaximaEvaluator::SendMaxima.
   */
   static wxString InterpretEscapeString(const wxString &txt);
 

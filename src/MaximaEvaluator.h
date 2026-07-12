@@ -77,6 +77,13 @@ public:
   //! otherwise settles the UI into its idle state. The core queue pump.
   void TriggerEvaluation();
 
+  /*! Sends Maxima the one-time startup configuration.
+
+    Runs once when Maxima connects: loads wxmathml.lisp and sets the option
+    variables (help format, prompts, gnuplot binary, version handshake).
+  */
+  void SetupVariables();
+
 private:
   //! The wxMaxima frame whose services the driver uses. Not owned; the frame
   //! owns this object.
