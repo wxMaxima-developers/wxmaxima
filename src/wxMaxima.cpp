@@ -516,20 +516,20 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_image);
   Bind(wxEVT_MENU, &wxMaxima::PopupMenu, this, EventIDs::popid_animation_save);
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::popid_animation_start);
-  Bind(wxEVT_BUTTON, &wxMaxima::CalculusMenu, this, EventIDs::button_integrate);
-  Bind(wxEVT_BUTTON, &wxMaxima::CalculusMenu, this, EventIDs::button_diff);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_integrate);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_diff);
   Bind(wxEVT_BUTTON, &wxMaxima::EquationsMenu, this, EventIDs::button_solve);
   Bind(wxEVT_BUTTON, &wxMaxima::EquationsMenu, this, EventIDs::button_solve_ode);
-  Bind(wxEVT_BUTTON, &wxMaxima::CalculusMenu, this, EventIDs::button_sum);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_sum);
   Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_expand);
   Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_factor);
-  Bind(wxEVT_BUTTON, &wxMaxima::CalculusMenu, this, EventIDs::button_taylor);
-  Bind(wxEVT_BUTTON, &wxMaxima::CalculusMenu, this, EventIDs::button_limit);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_taylor);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_limit);
   Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_ratsimp);
   Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_trigexpand);
   Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_trigreduce);
   Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_trigsimp);
-  Bind(wxEVT_BUTTON, &wxMaxima::CalculusMenu, this, EventIDs::button_product);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::button_product);
   Bind(wxEVT_BUTTON, &wxMaxima::SimplifyMenu, this, EventIDs::button_radcan);
   Bind(wxEVT_BUTTON, &wxMaxima::MaximaMenu, this, EventIDs::button_subst);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::PlotMenu, &m_menuCommands, EventIDs::button_plot2);
@@ -695,24 +695,24 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_rk);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_fun_def);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_gensym);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_divide);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_gcd);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_lcm);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_continued_fraction);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_partfrac);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_risch);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_integrate);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_laplace);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_ilt);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_diff);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_taylor);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_powerseries);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_fourier);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_limit);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_lbfgs);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_divide);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_gcd);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_lcm);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_continued_fraction);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_partfrac);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_risch);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_integrate);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_laplace);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_ilt);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_diff);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_taylor);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_powerseries);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_fourier);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_limit);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_lbfgs);
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_gen_mat);
   Bind(wxEVT_MENU, &wxMaxima::MatrixMenu, this, EventIDs::menu_gen_mat_lambda);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_sum);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_sum);
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_maximahelp);
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_wxmaximahelp);
   Bind(wxEVT_MENU, &wxMaxima::HelpMenu, this, EventIDs::menu_example);
@@ -729,9 +729,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_lhs);
   Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_rhs);
   Bind(wxEVT_MENU, &wxMaxima::EquationsMenu, this, EventIDs::menu_construct_fraction);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_sum);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_product);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_change_var);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_sum);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_product);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_change_var);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_time);
   Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_factsimp);
   Bind(wxEVT_MENU, &wxMaxima::SimplifyMenu, this, EventIDs::menu_factcomb);
@@ -776,7 +776,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_room);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_jumptoerror);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_display);
-  Bind(wxEVT_MENU, &wxMaxima::CalculusMenu, this, EventIDs::menu_pade);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::CalculusMenu, &m_menuCommands, EventIDs::menu_pade);
   Bind(wxEVT_MENU, &wxMaxima::MaximaMenu, this, EventIDs::menu_add_path);
   Bind(wxEVT_MENU, &wxMaxima::EditMenu, this, EventIDs::menu_copy_uuid);
   Bind(wxEVT_MENU, &wxMaxima::FileMenu, this, EventIDs::menu_jump_to_uuid);
@@ -8472,200 +8472,6 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event) {
 }
 
 
-void wxMaxima::CalculusMenu(wxCommandEvent &event) {
-  if(!GetWorksheet())
-    return;
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  wxString expr = GetDefaultEntry();
-  if(event.GetId() == EventIDs::menu_change_var){
-    CommandWiz(
-               _("Change variable"),
-               wxS("Takes an integral or sum in respect to the Old Variable and "
-                   "replaces "
-                   "that variable by a new one both adjusting the integrand and the "
-                   "limits "
-                   "accordingly. The field \"Equation\" specifies how the Old "
-                   "Variable and "
-                   "the New Variable are related to each other; For sums changevar "
-                   "isn't "
-                   "intelligent enough to do more than a shift of the variable.\n\n"
-                   "changevar(integrate(f(x),x,1,10),u=sqrt(x),u,x);\n"
-                   "results in\n"
-                   "2*integrate(u*f(u^2),u,1,sqrt(10))\n\n"),
-               wxEmptyString, wxS("changevar(#1#,#2#,#3#,#4#);"), _("Integral/Sum:"),
-               expr, wxEmptyString, _("Equation:"), wxS("u=sqrt(x)"), wxEmptyString,
-               _("New variable:"), wxS("u"), wxEmptyString, _("Old variable:"),
-               wxS("x"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_change_var_evaluate){
-    CommandWiz(
-               _("Change variable and evaluate"),
-               wxS("Takes an integral or sum in respect to the Old Variable and "
-                   "replaces "
-                   "that variable by a new one both adjusting the integrand and the "
-                   "limits "
-                   "accordingly. Then evaluates the resulting integral or sum. "
-                   "The field \"Equation\" specifies how the Old Variable and "
-                   "the New Variable are related to each other; For sums changevar "
-                   "isn't "
-                   "intelligent enough to do more than a shift of the variable.\n\n"
-                   "changevar(integrate(f(x),x,1,10),u=sqrt(x),u,x);\n"
-                   "results in\n"
-                   "2*integrate(u*f(u^2),u,1,sqrt(10))\n\n"),
-               wxEmptyString, wxS("changevar(#1#,#2#,#3#,#4#),nouns;"),
-               _("Integral/Sum:"), expr, wxEmptyString, _("Equation:"),
-               wxS("u=sqrt(x)"), wxEmptyString, _("New variable:"), wxS("u"),
-               wxEmptyString, _("Old variable:"), wxS("x"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_pade){
-    CommandWiz(_("Pade approximation"), wxEmptyString, wxEmptyString,
-               wxS("pade(#1#,#2#,#3#);"), _("Taylor series:"), expr,
-               wxEmptyString, _("Num. deg:"), wxS("4"), wxEmptyString,
-               _("Denom. deg:"), wxS("4"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_taylor){
-    CommandWiz(_("Taylor series"),
-               _("Approximates a expression around a point as a polynom\n"
-                 "The trailing \"...\" can be removed by using ratdisrep()"),
-               wxEmptyString, wxS("taylor(#1#,#2#,#3#,#4#);"), _("Expression:"),
-               expr, wxEmptyString, _("Variable:"), wxS("x"), wxEmptyString,
-               _("Point:"), wxS("0"), wxEmptyString, _("Degree:"), wxS("3"),
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_powerseries){
-    CommandWiz(_("Power series"), _("Approximates a expression as a polynom"),
-               // The niceindices( ... ) parenthesis has to be closed, too:
-               // the old template emitted "niceindices(powerseries(e,x,0);"
-               // which Maxima rejects with "incorrect syntax: Missing )".
-               wxEmptyString, wxS("niceindices(powerseries(#1#,#2#,#3#));"),
-               _("Expression:"), expr, wxEmptyString, _("Variable:"), wxS("x"),
-               wxEmptyString, _("point:"), wxS("0"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_fourier){
-      wxString loadCmd;
-      if (!m_fourierLoaded)
-        loadCmd = wxS("load(\"fourie\")$\n");
-      CommandWiz(_("Fourier coefficients"),
-                 _("Calculates the fourier coefficients for the expression from "
-                   "-p to p"),
-                 wxEmptyString, loadCmd + wxS("fourier(#1#,#2#,#3#);"),
-                 _("Expression:"), expr, wxEmptyString, _("Variable:"), wxS("x"),
-                 wxEmptyString, _("Range radius:"), wxS("2"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_continued_fraction){
-      wxString cmd = wxS("cfdisrep(cf(") + expr + wxS("));");
-      MenuCommand(cmd);
-    }
-  else if(event.GetId() == EventIDs::menu_lcm){
-    CommandWiz(_("LCM"), wxEmptyString, wxEmptyString, wxS("lcm(#1#,#2#);"),
-               _("Polynomial 1:"), expr, wxEmptyString, _("Polynomial 2:"),
-               wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_gcd){
-    CommandWiz(_("GCD"), wxEmptyString, wxEmptyString, wxS("gcd(#1#,#2#);"),
-               _("Polynomial 1:"), expr, wxEmptyString, _("Polynomial 2:"),
-               wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_divide){
-    CommandWiz(_("GCD"), wxEmptyString, wxEmptyString, wxS("divide(#1#,#2#);"),
-               _("Polynomial 1:"), expr, wxEmptyString, _("Polynomial 2:"),
-               wxEmptyString, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_partfrac){
-    CommandWiz(_("Partial Fractions"), wxEmptyString, wxEmptyString,
-               wxS("partfrac(#1#,#2#);"), _("Expression:"), expr, wxEmptyString,
-               _("Variable:"), wxS("n"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_risch){
-    CommandWiz(_("Integrate (risch)"), wxEmptyString, wxEmptyString,
-               wxS("risch(#1#,#2#);"), _("Expression:"), expr, wxEmptyString,
-               _("Variable:"), wxS("x"), wxEmptyString);
-  }
-  else if((event.GetId() == EventIDs::button_integrate) ||
-          (event.GetId() == EventIDs::menu_integrate)){
-      wxWindowPtr<IntegrateWiz> wiz(new IntegrateWiz(this, -1, &m_configuration, _("Integrate")));
-      wiz->SetValue(expr);
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          wxString val = wiz->GetValue();
-          MenuCommand(val);
-        }
-      });
-    }
-  else if(event.GetId() == EventIDs::menu_laplace){
-    CommandWiz(_("Laplace"), wxEmptyString, wxEmptyString,
-               wxS("laplace(#1#,#2#,#3#);"), _("Expression:"), expr,
-               wxEmptyString, _("Old variable:"), wxS("t"), wxEmptyString,
-               _("New variable:"), wxS("s"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_ilt){
-    CommandWiz(_("Inverse Laplace"), wxEmptyString, wxEmptyString,
-               wxS("ilt(#1#,#2#,#3#);"), _("Expression:"), expr, wxEmptyString,
-               _("Old variable:"), wxS("s"), wxEmptyString, _("New variable:"),
-               wxS("t"), wxEmptyString);
-  }
-  else if((event.GetId() == EventIDs::button_diff) ||
-          (event.GetId() == EventIDs::menu_diff)){
-    CommandWiz(_("Differentiate"), _("Differentiates an expression n times"),
-               wxEmptyString, wxS("diff(#1#,#2#,#3#);"), _("Expression:"), expr,
-               wxEmptyString, _("Variable(s):"), wxS("x"), wxEmptyString,
-               _("Times:"), wxS("1"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::button_taylor){
-      wxWindowPtr<SeriesWiz> wiz(new SeriesWiz(this, -1, &m_configuration, _("Series")));
-      wiz->SetValue(expr);
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          wxString val = wiz->GetValue();
-          MenuCommand(val);
-        }
-      });
-    }
-  else if((event.GetId() == EventIDs::button_limit) ||
-          (event.GetId() == EventIDs::menu_limit)){
-      wxWindowPtr<LimitWiz> wiz(new LimitWiz(this, -1, &m_configuration, _("Limit")));
-      wiz->SetValue(expr);
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          wxString val = wiz->GetValue();
-          MenuCommand(val);
-        }
-      });
-    }
-  else if(event.GetId() == EventIDs::menu_lbfgs){
-    CommandWiz(_("Find minimum"),
-               _("Allows varying the parameters of a function until it fits "
-                 "experimental data."),
-               wxEmptyString, wxS("lbfgs(#1#,#2#,#3#,#4#,[1,1]);"),
-               _("Expression:"), expr, wxEmptyString, _("Variables:"), wxS("x"),
-               wxEmptyString, _("Initial estimates:"), wxS("1.0"),
-               wxEmptyString, _("Epsilon:"), wxS("1e-4"), wxEmptyString);
-  }
-  else if((event.GetId() == EventIDs::button_sum) ||
-          (event.GetId() == EventIDs::menu_sum)){
-      wxWindowPtr<SumWiz> wiz(new SumWiz(this, -1, &m_configuration, _("Sum")));
-      wiz->SetValue(expr);
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          wxString val = wiz->GetValue();
-          MenuCommand(val);
-        }
-      });
-    }
-  else if((event.GetId() == EventIDs::button_product) ||
-          (event.GetId() == EventIDs::menu_product)){
-    CommandWiz(_("Product"), wxEmptyString, wxEmptyString,
-               wxS("product(#1#,#2#,#3#,#4#);"), _("Expression:"), expr,
-               wxEmptyString, _("Variable:"), wxS("k"), wxEmptyString,
-               _("From:"), wxS("1"), wxEmptyString, _("To:"), wxS("n"),
-               wxEmptyString);
-  }
-}
 
 
 void wxMaxima::NumericalMenu(wxCommandEvent &event) {

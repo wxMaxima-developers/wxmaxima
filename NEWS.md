@@ -5,8 +5,8 @@
   MaximaCommandMenus class (one menu per commit). The handlers stay bound
   directly to the menu/button events - now on the MaximaCommandMenus instance the
   frame owns - and reach wxMaxima's services (MenuCommand, the wizards, the
-  worksheet) through a friend reference. First handler moved: the Plot menu. No
-  behavior change.
+  worksheet) through a friend reference. Handlers moved so far: the Plot and
+  Calculus menus. No behavior change.
 
 - Windows: on shutdown wxMaxima suppresses the OS hard-error message boxes ("this
   application could not be started", the critical-error and crash boxes) for
