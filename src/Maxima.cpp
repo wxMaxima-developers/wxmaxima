@@ -87,7 +87,7 @@ Maxima::~Maxima() {
   // handler+sink, which we don't have here), and ~wxEvtHandler would clear them
   // anyway. wxEVT_TIMER/wxEVT_SOCKET are effectively no-ops (the socket runs with
   // Notify(false) and is read by the worker thread); EVT_MAXIMA is the one wired
-  // up from wxMaxima (m_client->Bind(EVT_MAXIMA, &wxMaxima::MaximaEvent, ...)).
+  // up from wxMaxima (m_client->Bind(EVT_MAXIMA, &MaximaProcessManager::MaximaEvent, ...)).
   Disconnect(wxEVT_TIMER);
   Disconnect(wxEVT_SOCKET);
   Disconnect(EVT_MAXIMA);

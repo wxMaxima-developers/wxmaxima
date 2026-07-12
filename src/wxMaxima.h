@@ -706,7 +706,7 @@ private:
   //! (initialised in the constructor, where *this is unambiguously complete).
   MaximaCommandMenus m_menuCommands;
   //! The Maxima-response (Read*) handlers peeled off this god class;
-  //! wxMaxima::MaximaEvent dispatches each incoming chunk to them. Holds a
+  //! MaximaProcessManager::MaximaEvent dispatches each incoming chunk to them. Holds a
   //! reference back to this frame (initialised in the constructor, where *this
   //! is unambiguously complete).
   MaximaResponseReader m_responseReader;

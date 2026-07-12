@@ -25,7 +25,7 @@
 
   Maxima answers wxMaxima's commands with XML wrapped in known tags plus the
   occasional bit of plain text (prompts, stderr, misc output). wxMaxima's
-  socket-event handler (wxMaxima::MaximaEvent) classifies each chunk and hands
+  socket-event handler (MaximaProcessManager::MaximaEvent) classifies each chunk and hands
   it to one of the Read* handlers collected here. They used to be members of
   the wxMaxima god class; they are being peeled off into this class to shrink
   wxMaxima.cpp.
@@ -49,7 +49,7 @@ class wxMaxima;
 
 /*! The Maxima-response handlers extracted from the wxMaxima god class.
 
-  Owned by value by the wxMaxima frame; wxMaxima::MaximaEvent dispatches each
+  Owned by value by the wxMaxima frame; MaximaProcessManager::MaximaEvent dispatches each
   incoming chunk to the matching handler here. Holds a reference back to that
   frame for the services the handlers need (the worksheet, the sidebars, the
   status bar, the configuration).
