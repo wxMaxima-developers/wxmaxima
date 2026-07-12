@@ -1099,23 +1099,23 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_MENU, &wxMaxima::InsertMenu, this, EventIDs::popid_never_autoanswer);
   Bind(wxEVT_LISTBOX_DCLICK, &wxMaxima::HistoryDClick, this, history_ctrl_id);
   Bind(wxEVT_LIST_ITEM_ACTIVATED, &wxMaxima::TableOfContentsSelection, this, structure_ctrl_id);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_histogram);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_piechart);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_scatterplot);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_barsplot);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_boxplot);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_mean);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_median);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_var);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_dev);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_tt1);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_tt2);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_tnorm);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_linreg);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_lsquares);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_readm);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_histogram);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_piechart);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_scatterplot);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_barsplot);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_boxplot);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_mean);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_median);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_var);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_dev);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_tt1);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_tt2);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_tnorm);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_linreg);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_lsquares);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_readm);
   Bind(wxEVT_BUTTON, &MaximaCommandMenus::MatrixMenu, &m_menuCommands, EventIDs::menu_stats_enterm);
-  Bind(wxEVT_BUTTON, &wxMaxima::StatsMenu, this, EventIDs::menu_stats_subsample);
+  Bind(wxEVT_BUTTON, &MaximaCommandMenus::StatsMenu, &m_menuCommands, EventIDs::menu_stats_subsample);
   Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_title);
   Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_text);
   Bind(wxEVT_BUTTON, &wxMaxima::InsertMenu, this, EventIDs::menu_format_heading6);
@@ -1137,43 +1137,43 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
   Bind(wxEVT_ICONIZE, &wxMaxima::OnMinimize, this);
   Bind(SYMBOLADDEVENT, &wxMaxima::OnSymbolAdd, this);
   Bind(wxEVT_MENU, &wxMaxima::ReplaceSuggestion, this, EventIDs::popid_suggestion1, EventIDs::popid_suggestion1 + EventIDs::NumberOfSuggestions - 1);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_real);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_imaginary);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_complex);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_additive);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_alphabetic);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_bindtest);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_antisymmetric);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_commutative);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_symmetric);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_constant);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_even);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_odd);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_evenfun);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_real);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_imaginary);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_complex);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_additive);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_alphabetic);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_bindtest);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_antisymmetric);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_commutative);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_symmetric);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_constant);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_even);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_odd);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_evenfun);
   Bind(wxEVT_MENU, &MaximaCommandMenus::EquationsMenu, &m_menuCommands, EventIDs::popid_property_atvalue);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_oddfun);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_increasing);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_decreasing);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_integer);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_noninteger);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_integervalued);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_lassociative);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_rassociative);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_linear);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_mainvar);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_multiplicative);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_nary);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_nonarray);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_nonscalar);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_scalar);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_noun);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_outative);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_posfun);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_rational);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_irrational);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_greaterThan);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_evfun);
-  Bind(wxEVT_MENU, &wxMaxima::PropertiesMenu, this, EventIDs::popid_property_evflag);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_oddfun);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_increasing);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_decreasing);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_integer);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_noninteger);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_integervalued);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_lassociative);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_rassociative);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_linear);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_mainvar);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_multiplicative);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_nary);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_nonarray);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_nonscalar);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_scalar);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_noun);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_outative);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_posfun);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_rational);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_irrational);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_greaterThan);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_evfun);
+  Bind(wxEVT_MENU, &MaximaCommandMenus::PropertiesMenu, &m_menuCommands, EventIDs::popid_property_evflag);
   // Make wxWidgets remember the size and position of the wxMaxima window
   SetName(wxS("wxMaxima"));
   if (!wxPersistenceManager::Get().RegisterAndRestore(this)) {
@@ -6288,128 +6288,6 @@ void wxMaxima::OnSymbolAdd(wxCommandEvent &event) {
   m_symbolsSidebar->UpdateUserSymbols();
 }
 
-void wxMaxima::PropertiesMenu(wxCommandEvent &event) {
-  event.Skip();
-  if(!GetWorksheet())
-    return;
-  EditorCell *editor = GetWorksheet()->GetActiveCell();
-  if (editor == NULL)
-    return;
-  wxString obj = editor->GetWordUnderCaret();
-  if (obj.IsEmpty())
-    obj = editor->GetSelectionString();
-
-  if(event.GetId() == EventIDs::popid_property_real){
-    MenuCommand(wxS("declare(") + obj + wxS(", real") + wxS(")$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_imaginary){
-    MenuCommand(wxS("declare(") + obj + wxS(", imaginary)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_complex){
-    MenuCommand(wxS("declare(") + obj + wxS(", complex)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_additive){
-    MenuCommand(wxS("declare(") + obj + wxS(", additive)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_alphabetic){
-    MenuCommand(wxS("declare(") + obj + wxS(", alphabetic)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_bindtest){
-    MenuCommand(wxS("declare(") + obj + wxS(", bindtest)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_antisymmetric){
-    MenuCommand(wxS("declare(") + obj + wxS(", antisymmetric)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_commutative){
-    MenuCommand(wxS("declare(") + obj + wxS(", commutative)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_symmetric){
-    MenuCommand(wxS("declare(") + obj + wxS(", symmetric)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_constant){
-    MenuCommand(wxS("declare(") + obj + wxS(", constant)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_even){
-    MenuCommand(wxS("declare(") + obj + wxS(", even)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_odd){
-    MenuCommand(wxS("declare(") + obj + wxS(", odd)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_evenfun){
-    MenuCommand(wxS("declare(") + obj + wxS(", evenfun)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_oddfun){
-    MenuCommand(wxS("declare(") + obj + wxS(", oddfun)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_increasing){
-    MenuCommand(wxS("declare(") + obj + wxS(", increasing)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_decreasing){
-    MenuCommand(wxS("declare(") + obj + wxS(", decreasing)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_integer){
-    MenuCommand(wxS("declare(") + obj + wxS(", integer)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_noninteger){
-    MenuCommand(wxS("declare(") + obj + wxS(", noninteger)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_integervalued){
-    MenuCommand(wxS("declare(") + obj + wxS(", integervalued)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_lassociative){
-    MenuCommand(wxS("declare(") + obj + wxS(", lassociative)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_rassociative){
-    MenuCommand(wxS("declare(") + obj + wxS(", rassociative)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_linear){
-    MenuCommand(wxS("declare(") + obj + wxS(", linear)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_mainvar){
-    MenuCommand(wxS("declare(") + obj + wxS(", mainvar)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_multiplicative){
-    MenuCommand(wxS("declare(") + obj + wxS(", multiplicative)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_nary){
-    MenuCommand(wxS("declare(") + obj + wxS(", nary)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_nonarray){
-    MenuCommand(wxS("declare(") + obj + wxS(", nonarray)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_nonscalar){
-    MenuCommand(wxS("declare(") + obj + wxS(", nonscalar)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_scalar){
-    MenuCommand(wxS("declare(") + obj + wxS(", scalar)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_noun){
-    MenuCommand(wxS("declare(") + obj + wxS(", noun)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_outative){
-    MenuCommand(wxS("declare(") + obj + wxS(", outative)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_posfun){
-    MenuCommand(wxS("declare(") + obj + wxS(", posfun)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_rational){
-    MenuCommand(wxS("declare(") + obj + wxS(", rational)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_irrational){
-    MenuCommand(wxS("declare(") + obj + wxS(", irrational)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_evfun){
-    MenuCommand(wxS("declare(") + obj + wxS(", evfun)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_evflag){
-    MenuCommand(wxS("declare(") + obj + wxS(", evflag)$"));
-  }
-  else if(event.GetId() == EventIDs::popid_property_greaterThan){
-    CommandWiz(_("Assume a value range for a variable"), wxEmptyString,
-               wxEmptyString, wxS("assume(#1#)"), _("Variable"),
-               obj + wxS(">0"), wxEmptyString);
-  }
-}
 
 void wxMaxima::MaximaMenu(wxCommandEvent &event) {
   if(!GetWorksheet())
@@ -7700,145 +7578,6 @@ void wxMaxima::RepairFileAssociations() {
 #endif
 
 
-void wxMaxima::StatsMenu(wxCommandEvent &event) {
-  GetWorksheet()->CloseAutoCompletePopup();
-
-  wxString expr = GetDefaultEntry();
-
-  if(event.GetId() == EventIDs::menu_stats_histogram){
-    CommandWiz(_("Histogram"), wxEmptyString, wxEmptyString,
-               wxS("wxhistogram(#1#,nclasses=#2#);"), _("Data:"), expr,
-               wxEmptyString, _("Classes:"), wxS("10"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_scatterplot){
-    CommandWiz(_("Scatterplot"), wxEmptyString, wxEmptyString,
-               wxS("wxscatterplot(#1#,nclasses=#2#);"), _("Data:"), expr,
-               wxEmptyString, _("Classes:"), wxS("10"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_barsplot){
-    CommandWiz(_("Plot as bars"), wxEmptyString, wxEmptyString,
-               wxS("wxbarsplot(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_boxplot){
-    CommandWiz(_("Boxplot"), wxEmptyString, wxEmptyString,
-               wxS("wxboxplot(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_piechart){
-    CommandWiz(_("Plot as pie chart"), wxEmptyString, wxEmptyString,
-               wxS("wxpiechart(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_mean){
-    CommandWiz(_("Calculate mean value"), wxEmptyString, wxEmptyString,
-               wxS("mean(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_median){
-    CommandWiz(_("Calculate median value"), wxEmptyString, wxEmptyString,
-               wxS("median(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_var){
-    CommandWiz(_("Calculate variance"), wxEmptyString, wxEmptyString,
-               wxS("var(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_dev){
-    CommandWiz(_("Calculate standard deviation"), wxEmptyString, wxEmptyString,
-               wxS("std(#1#);"), _("Data:"), wxS("%"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_tt1){
-    CommandWiz(_("One sample t-test"), wxEmptyString, wxEmptyString,
-               wxS("test_mean(#1#,mean=#2#);"), _("Sample:"), expr,
-               wxEmptyString, _("Mean:"), wxS("0"), wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_tt2){
-    CommandWiz(_("Two sample t-test"), wxEmptyString, wxEmptyString,
-               wxS("test_means_difference(#1#,#2#);"), _("Sample 1:"), expr,
-               wxEmptyString, _("Sample 2:"), expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_tnorm){
-    CommandWiz(_("Shapiro-Wilk test for normality"), wxEmptyString,
-               wxEmptyString, wxS("test_normality(#1#);"), _("Data:"), expr,
-               wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_linreg){
-    CommandWiz(_("Simple linear regression"), wxEmptyString,
-               // simple_linear_regression() fits a single predictor (a list of
-               // x/y pairs), not a multivariate model.
-               wxEmptyString, wxS("simple_linear_regression(#1#);"), _("Data:"),
-               expr, wxEmptyString);
-  }
-  else if(event.GetId() == EventIDs::menu_stats_lsquares){
-    CommandWiz(
-               _("Least Squares Fit"), wxEmptyString, wxEmptyString,
-               wxS("lsquares_estimates(#1#,[#2#],#3#,[#4#],iprint=[-1,0]);"),
-               _("Data Matrix:"), expr,
-               _("A matrix in which each row is a set of variables"), _("Col. names:"),
-               wxS("x,y"), _("The list of variables contained in each matrix row"),
-               _("Equation:"), wxS("y=A*x+B"), _("The equation to fit the data to"),
-               _("Variables:"), wxS("A,B"),
-               _("The variables to search the optimum solution for"));
-  }
-  else if(event.GetId() == EventIDs::menu_stats_readm){
-      wxString file = wxFileSelector(
-                                     _("Open matrix"), m_lastPath, wxEmptyString, wxEmptyString,
-                                     _("Data file (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"), wxFD_OPEN);
-      if (file != wxEmptyString) {
-        m_lastPath = wxPathOnly(file);
-
-#if defined __WXMSW__
-        file.Replace(wxS("\\"), wxS("/"));
-#endif
-
-        wxString name =
-          wxGetTextFromUser(wxS("Enter matrix name:"), wxS("Matrix name"));
-        wxString cmd;
-
-        if (name != wxEmptyString)
-          cmd << name << wxS(": ");
-
-        wxString format;
-        if (file.Lower().EndsWith(wxS(".csv")))
-          format = wxS("csv");
-        else if (file.Lower().EndsWith(wxS(".tab")))
-          format = wxS("tab");
-
-        if (format != wxEmptyString)
-          MenuCommand(cmd + wxS("read_matrix(\"") + file + wxS("\", '") + format +
-                      wxS(");"));
-        else
-          MenuCommand(cmd + wxS("read_matrix(\"") + file + wxS("\");"));
-      }
-    }
-  else if(event.GetId() == EventIDs::menu_stats_subsample){
-      wxWindowPtr<Gen4Wiz> wiz(new Gen4Wiz(
-                                           _("Data Matrix:"), _("Condition:"), _("Include columns:"),
-                                           _("Matrix name:"), expr, wxS("col[1]#'NA"), wxEmptyString,
-                                           wxEmptyString, &m_configuration, this, -1, _("Select Subsample"), true));
-      // wiz->Centre(wxBOTH);
-      wiz->ShowWindowModalThenDo([this, wiz](int retcode) {
-        if (retcode == wxID_OK) {
-          wxString name = wiz->GetValue4();
-
-          wxString cmd;
-
-          if (name != wxEmptyString)
-            cmd << name << wxS(": ");
-
-          cmd += wxS("subsample(\n   ") + wiz->GetValue1() + wxS(",\n   ") +
-            wxS("lambda([col], is( ");
-
-          if (wiz->GetValue2() != wxEmptyString)
-            cmd += wiz->GetValue2() + wxS(" ))");
-          else
-            cmd += wxS("true ))");
-
-          if (wiz->GetValue3() != wxEmptyString)
-            cmd += wxS(",\n   ") + wiz->GetValue3();
-
-          cmd += wxS(");");
-          MenuCommand(cmd);
-        }
-      });
-  }
-}
 
 bool wxMaxima::SaveOnClose() {
   if (!SaveNecessary()) {

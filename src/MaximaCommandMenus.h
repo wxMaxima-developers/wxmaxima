@@ -78,6 +78,14 @@ public:
   //! the actual-values-storage wizard).
   void ListMenu(wxCommandEvent &event);
 
+  //! Handles the "Variable/Function properties" menu (declare/remove properties,
+  //! assume/forget, ... - almost entirely direct MenuCommand entries).
+  void PropertiesMenu(wxCommandEvent &event);
+
+  //! Handles the "Statistics" menu (mean/median/.../test wizards and the
+  //! read-/write-matrix-from-.csv wizard).
+  void StatsMenu(wxCommandEvent &event);
+
 private:
   //! The wxMaxima frame whose services (MenuCommand, wizards, worksheet) the
   //! handlers drive. Not owned; the frame owns this object.

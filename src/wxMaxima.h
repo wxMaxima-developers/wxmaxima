@@ -388,7 +388,6 @@ protected:
   void MenuCommand(const wxString &cmd);           //!< Inserts command cmd into the worksheet
   void FileMenu(wxCommandEvent &event);            //!< Processes "file menu" clicks
   void MaximaMenu(wxCommandEvent &event);          //!< Processes "maxima menu" clicks
-  void PropertiesMenu(wxCommandEvent &event);         //!< Processes "Variable/Function props menu" clicks
   void DrawMenu(wxCommandEvent &event);            //!< Processes "draw menu" clicks
   void HelpMenu(wxCommandEvent &event);            //!< Processes "Help menu" clicks
 #ifdef __WXMSW__
@@ -411,7 +410,6 @@ protected:
   void OnGnuplotClose(wxProcessEvent &event);      //
   void OnGnuplotQueryTerminals(wxProcessEvent &event);      //
   void PopupMenu(wxCommandEvent &event);           //
-  void StatsMenu(wxCommandEvent &event);           //
 
   //! Is triggered when the textstyle drop-down box's value is changed.
   void ChangeCellStyle(wxCommandEvent &event);
