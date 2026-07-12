@@ -28,16 +28,17 @@
 #include <algorithm>
 #include <iterator>
 
-CellPointers::CellPointers(wxScrolledCanvas *worksheet)
-  : m_worksheet(worksheet) {}
+// ======================================================================
+//  ViewCellPointers (transient window state)
+// ======================================================================
 
-wxString CellPointers::WXMXGetNewFileName() {
+wxString ViewCellPointers::WXMXGetNewFileName() {
   wxString file(wxS("image"));
   file << (++m_wxmxImgCounter) << wxS(".");
   return file;
 }
 
-void CellPointers::SetTimerIdForCell(Cell *const cell, int const timerId) {
+void ViewCellPointers::SetTimerIdForCell(Cell *const cell, int const timerId) {
   auto match =
     std::find_if(m_timerIds.begin(), m_timerIds.end(),
                  [cell](auto const &ctid) { return ctid.cell == cell; });
@@ -49,7 +50,7 @@ void CellPointers::SetTimerIdForCell(Cell *const cell, int const timerId) {
   m_timerIds.emplace_back(cell, timerId);
 }
 
-int CellPointers::GetTimerIdForCell(Cell *const cell) const {
+int ViewCellPointers::GetTimerIdForCell(Cell *const cell) const {
   auto match =
     std::find_if(m_timerIds.begin(), m_timerIds.end(),
                  [cell](auto const &ctid) { return ctid.cell == cell; });
@@ -58,7 +59,7 @@ int CellPointers::GetTimerIdForCell(Cell *const cell) const {
   return -1;
 }
 
-Cell *CellPointers::GetCellForTimerId(int const timerId) const {
+Cell *ViewCellPointers::GetCellForTimerId(int const timerId) const {
   auto match = std::find_if(
                             m_timerIds.begin(), m_timerIds.end(),
                             [timerId](auto const &ctid) { return ctid.timerId == timerId; });
@@ -67,7 +68,7 @@ Cell *CellPointers::GetCellForTimerId(int const timerId) const {
   return nullptr;
 }
 
-void CellPointers::RemoveTimerIdForCell(const Cell *const cell) {
+void ViewCellPointers::RemoveTimerIdForCell(const Cell *const cell) {
   auto it = m_timerIds.begin();
   while (it != m_timerIds.end() && it->cell != cell)
     std::advance(it, 1);
@@ -75,72 +76,80 @@ void CellPointers::RemoveTimerIdForCell(const Cell *const cell) {
     m_timerIds.erase(it);
 }
 
-void CellPointers::ErrorList::Remove(GroupCell *cell) {
-  m_errors.erase(std::remove(m_errors.begin(), m_errors.end(), cell),
-                 m_errors.end());
-}
-
-bool CellPointers::ErrorList::Contains(GroupCell *cell) const {
-  return std::find(m_errors.begin(), m_errors.end(), cell) != m_errors.end();
-}
-
-void CellPointers::ErrorList::Add(GroupCell *cell) {
-  m_errors.emplace_back(cell);
-}
-
-EditorCell *CellPointers::GetAnswerCell() const { return m_answerCell; }
-
-void CellPointers::SetAnswerCell(EditorCell *cell) { m_answerCell = cell; }
-
-void CellPointers::ClearAnswerCellIfInGroup(GroupCell *group) {
-  if (m_answerCell && m_answerCell->GetGroup() == group)
-    m_answerCell = {};
-}
-
-TextCell *CellPointers::GetCurrentTextCell() const { return m_currentTextCell; }
-
-void CellPointers::SetCurrentTextCell(TextCell *cell) { m_currentTextCell = cell; }
-
-EditorCell *CellPointers::GetActiveCell() const { return m_activeCell; }
-
-void CellPointers::SetActiveCell(EditorCell *cell) { m_activeCell = cell; }
-
-void CellPointers::SetSearchStart(EditorCell *cell, int index) {
+void ViewCellPointers::SetSearchStart(EditorCell *cell, int index) {
   m_cellSearchStartedIn = cell;
   m_indexSearchStartedAt = index;
 }
 
-void CellPointers::SetMouseSelectionStart(EditorCell *cell) {
+void ViewCellPointers::SetMouseSelectionStart(EditorCell *cell) {
   m_cellMouseSelectionStartedIn = cell;
 }
 
-void CellPointers::SetKeyboardSelectionStart(EditorCell *cell) {
+void ViewCellPointers::SetKeyboardSelectionStart(EditorCell *cell) {
   m_cellKeyboardSelectionStartedIn = cell;
 }
 
-GroupCell *CellPointers::GetGroupCellUnderPointer() const {
+GroupCell *ViewCellPointers::GetGroupCellUnderPointer() const {
   return m_groupCellUnderPointer;
 }
 
-void CellPointers::SetGroupCellUnderPointer(GroupCell *cell) {
+void ViewCellPointers::SetGroupCellUnderPointer(GroupCell *cell) {
   m_groupCellUnderPointer = cell;
 }
 
-void CellPointers::SetWorkingGroup(GroupCell *group) {
+// ======================================================================
+//  DocumentCellPointers (the document model)
+// ======================================================================
+
+void DocumentCellPointers::ErrorList::Remove(GroupCell *cell) {
+  m_errors.erase(std::remove(m_errors.begin(), m_errors.end(), cell),
+                 m_errors.end());
+}
+
+bool DocumentCellPointers::ErrorList::Contains(GroupCell *cell) const {
+  return std::find(m_errors.begin(), m_errors.end(), cell) != m_errors.end();
+}
+
+void DocumentCellPointers::ErrorList::Add(GroupCell *cell) {
+  m_errors.emplace_back(cell);
+}
+
+GroupCell *DocumentCellPointers::ErrorList::FirstError() const {
+  return m_errors.empty() ? nullptr : m_errors.front().get();
+}
+
+GroupCell *DocumentCellPointers::ErrorList::LastError() const {
+  return m_errors.empty() ? nullptr : m_errors.back().get();
+}
+
+EditorCell *DocumentCellPointers::GetAnswerCell() const { return m_answerCell; }
+
+void DocumentCellPointers::SetAnswerCell(EditorCell *cell) { m_answerCell = cell; }
+
+void DocumentCellPointers::ClearAnswerCellIfInGroup(GroupCell *group) {
+  if (m_answerCell && m_answerCell->GetGroup() == group)
+    m_answerCell = {};
+}
+
+TextCell *DocumentCellPointers::GetCurrentTextCell() const {
+  return m_currentTextCell;
+}
+
+void DocumentCellPointers::SetCurrentTextCell(TextCell *cell) {
+  m_currentTextCell = cell;
+}
+
+EditorCell *DocumentCellPointers::GetActiveCell() const { return m_activeCell; }
+
+void DocumentCellPointers::SetActiveCell(EditorCell *cell) { m_activeCell = cell; }
+
+void DocumentCellPointers::SetWorkingGroup(GroupCell *group) {
   if (group)
     m_lastWorkingGroup = group;
   m_workingGroup = group;
 }
 
-GroupCell *CellPointers::GetWorkingGroup(bool resortToLast) const {
+GroupCell *DocumentCellPointers::GetWorkingGroup(bool resortToLast) const {
   return (m_workingGroup || !resortToLast) ? m_workingGroup
     : m_lastWorkingGroup;
-}
-
-GroupCell *CellPointers::ErrorList::FirstError() const {
-  return m_errors.empty() ? nullptr : m_errors.front().get();
-}
-
-GroupCell *CellPointers::ErrorList::LastError() const {
-  return m_errors.empty() ? nullptr : m_errors.back().get();
 }

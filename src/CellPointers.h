@@ -35,28 +35,20 @@ typedef wxScrolled<wxWindow> wxScrolledCanvas;
 class EditorCell;
 class TextCell;
 
-/*! The storage for pointers to cells.
+/*! The document-model half of the cell-pointer registry.
 
-  If a cell is deleted it is necessary to remove all pointers that might
-  allow to access the now-defunct cell. These pointers are kept in this
-  per-worksheet structure.
+  These pointers describe the edited document itself: what is selected, which
+  editor is active or answering maxima's question, which text cell maxima's
+  incoming output is appended to, which group cell maxima is working on, and
+  which group cells hold errors. None of them depend on how the document is
+  displayed, so this half will eventually be owned by WorksheetDocument.
+
+  Every stored pointer is a CellPtr, which auto-nulls when its cell is
+  destroyed, so a stale reference reads as null instead of dangling.
 */
-class CellPointers
+class DocumentCellPointers
 {
-  // The members below are being untangled into two conceptual groups as part of
-  // the WorksheetDocument / view split (see the "Document-side" and "View /
-  // interaction-side" banners further down). Document-side pointers describe the
-  // document model (what is selected, which cell is active/answering, what maxima
-  // is working on, which cells hold errors). View/interaction-side pointers
-  // describe transient window state (hover, drag/keyboard-selection anchors,
-  // scroll targets, animation timers). Both halves must remain reachable through
-  // the Configuration -> CellPointers registry because cells read and write them
-  // via Cell::GetCellPointers(); the split is therefore an *internal* reorg, not
-  // a relocation of these members onto another owner. Members are moved behind
-  // accessors one self-contained concern at a time; until then most stay public.
 public:
-  explicit CellPointers(wxScrolledCanvas *worksheet);
-
   //! A list of editor cells containing error messages.
   class ErrorList
   {
@@ -81,41 +73,34 @@ public:
     std::vector<CellPtr<GroupCell>> m_errors;
   };
 
-  // ======================================================================
-  //  Document-side pointers (the document model)
-  // ======================================================================
-
   //! Returns the cell maxima currently works on. NULL if there isn't such a cell.
   /*!
     \param resortToLast true = if we already have set the cell maxima works on to NULL
     use the last cell maxima was known to work on.
   */
   GroupCell *GetWorkingGroup(bool resortToLast = false) const;
-
   //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
   void SetWorkingGroup(GroupCell *group);
-
   //! The last group cell maxima was working on (regardless of the current one).
   GroupCell *GetLastWorkingGroup() const { return m_lastWorkingGroup; }
 
   //! Are any whole cells (as opposed to text inside an editor) selected?
   bool HasCellsSelected() const { return m_selectionStart && m_selectionEnd; }
 
-  //! The first cell of the currently selected range of cells (see
-  //! m_selectionStart), or null. Returned by reference so callers keep the
-  //! CellPtr conveniences (CastAs<>, auto-nulling) without a raw-pointer copy.
+  //! The first cell of the currently selected range of cells, or null. Returned
+  //! by reference so callers keep the CellPtr conveniences (CastAs<>,
+  //! auto-nulling) without a raw-pointer copy.
   const CellPtr<Cell> &GetSelectionStart() const { return m_selectionStart; }
-  //! The last cell of the currently selected range of cells (see
-  //! m_selectionEnd), or null.
+  //! The last cell of the currently selected range of cells, or null.
   const CellPtr<Cell> &GetSelectionEnd() const { return m_selectionEnd; }
   //! Set the first cell of the selected range (may be null).
   void SetSelectionStart(Cell *cell) { m_selectionStart = cell; }
   //! Set the last cell of the selected range (may be null).
   void SetSelectionEnd(Cell *cell) { m_selectionEnd = cell; }
 
-  // GetAnswerCell/SetAnswerCell are defined out-of-line: converting the CellPtr
-  // to (or assigning a raw pointer from) EditorCell* needs the complete
-  // EditorCell type, which this header only forward-declares.
+  // The out-of-line definitions convert a CellPtr to (or a raw pointer from)
+  // EditorCell*/TextCell*, which needs the complete type this header only
+  // forward-declares.
   //! The editor cell maxima's current question is being answered in, or null.
   EditorCell *GetAnswerCell() const;
   //! Set the editor cell maxima's current question is answered in.
@@ -126,17 +111,11 @@ public:
   //! group's output is being reset or the group is going away.
   void ClearAnswerCellIfInGroup(GroupCell *group);
 
-  // GetCurrentTextCell/SetCurrentTextCell are defined out-of-line for the same
-  // reason as the answer-cell accessors: the CellPtr<->TextCell* conversion
-  // needs the complete TextCell type, which this header only forward-declares.
   //! The text cell the text maxima is currently sending us is being appended to.
   TextCell *GetCurrentTextCell() const;
   //! Set the text cell maxima's incoming text is being appended to (may be null).
   void SetCurrentTextCell(TextCell *cell);
 
-  // GetActiveCell/SetActiveCell are defined out-of-line for the same reason as
-  // the answer-cell accessors: the CellPtr<->EditorCell* conversion needs the
-  // complete EditorCell type, which this header only forward-declares.
   //! The editor cell the blinking text cursor is in, or null.
   EditorCell *GetActiveCell() const;
   //! Set the editor cell the blinking text cursor is in (may be null).
@@ -144,7 +123,7 @@ public:
   //! Forget the editor cell the text cursor was in.
   void ClearActiveCell() { m_activeCell = {}; }
 
-  //! The currently selected string (see m_selectionString), or empty.
+  //! The currently selected string, or empty.
   const wxString &GetSelectionString() const { return m_selectionString; }
   //! Set the currently selected string.
   void SetSelectionString(const wxString &str) { m_selectionString = str; }
@@ -156,84 +135,7 @@ public:
   //! The list of cells maxima has complained about errors in (read-only view).
   const ErrorList &GetErrorList() const { return m_errorList; }
 
-  // ======================================================================
-  //  View / interaction-side pointers (transient window state)
-  // ======================================================================
-
-  void ScrollToCell(Cell *cell) { m_cellToScrollTo = cell; }
-  Cell *CellToScrollTo() { return m_cellToScrollTo; }
-
-  //! Is a scroll to CellToScrollTo() currently scheduled?
-  bool ScrollToCellScheduled() const { return m_scrollToCell; }
-  //! Schedule (or cancel) scrolling to CellToScrollTo().
-  void SetScrollToCellScheduled(bool scheduled) { m_scrollToCell = scheduled; }
-
-  //! The EditorCell an incremental search was started in, or null.
-  const CellPtr<EditorCell> &SearchStart() const { return m_cellSearchStartedIn; }
-  //! The cursor position an incremental search was started at (-1 = none).
-  int IndexSearchStartedAt() const { return m_indexSearchStartedAt; }
-  //! Record where an incremental search started (its cell and cursor index).
-  //! Out-of-line: assigning the raw EditorCell* needs the complete type.
-  void SetSearchStart(EditorCell *cell, int index);
-
-  //! The EditorCell a mouse selection was started in, or null.
-  const CellPtr<EditorCell> &MouseSelectionStart() const
-    { return m_cellMouseSelectionStartedIn; }
-  //! Record the EditorCell a mouse selection started in (out-of-line: see above).
-  void SetMouseSelectionStart(EditorCell *cell);
-
-  //! The EditorCell a keyboard selection was started in, or null.
-  const CellPtr<EditorCell> &KeyboardSelectionStart() const
-    { return m_cellKeyboardSelectionStartedIn; }
-  //! Record the EditorCell a keyboard selection started in (out-of-line: see above).
-  void SetKeyboardSelectionStart(EditorCell *cell);
-
-  //! Forget where the search was started
-  void ResetSearchStart()
-    {
-      m_cellSearchStartedIn = {};
-      m_indexSearchStartedAt = -1;
-    }
-
-  //! Forget where the mouse selection was started
-  void ResetMouseSelectionStart()
-    { m_cellMouseSelectionStartedIn = {}; }
-
-  //! Forget where the keyboard selection was started
-  void ResetKeyboardSelectionStart()
-    { m_cellKeyboardSelectionStartedIn = {}; }
-
-  void SetTimerIdForCell(Cell *cell, int timerId);
-  int GetTimerIdForCell(Cell *cell) const;
-  Cell *GetCellForTimerId(int timerId) const;
-  void RemoveTimerIdForCell(const Cell *const cell);
-
-  // GetGroupCellUnderPointer/SetGroupCellUnderPointer are defined out-of-line:
-  // the CellPtr<->GroupCell* conversion needs the complete GroupCell type,
-  // which this header only forward-declares.
-  //! The GroupCell currently under the mouse pointer, or null.
-  GroupCell *GetGroupCellUnderPointer() const;
-  //! Set the GroupCell under the mouse pointer (may be null).
-  void SetGroupCellUnderPointer(GroupCell *cell);
-  //! The cell currently under the mouse pointer, or null.
-  Cell *GetCellUnderPointer() const { return m_cellUnderPointer; }
-  //! Set the cell under the mouse pointer (may be null).
-  void SetCellUnderPointer(Cell *cell) { m_cellUnderPointer = cell; }
-  //! Forget which cell was under the mouse pointer.
-  void ClearCellUnderPointer() { m_cellUnderPointer = {}; }
-
-  // ======================================================================
-  //  Serialization helpers (.wxmx image numbering)
-  // ======================================================================
-
-  void WXMXResetCounter() { m_wxmxImgCounter = 0; }
-  wxString WXMXGetNewFileName();
-  std::size_t WXMXImageCount() const { return m_wxmxImgCounter; }
-
-  wxScrolledCanvas *GetWorksheet() { return m_worksheet; }
-
 private:
-  // ---- Document-side (encapsulated) ----
   /*! The group cell maxima is currently working on.
 
     NULL means that maxima isn't currently evaluating a cell.
@@ -252,17 +154,13 @@ private:
     NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
     is selected and therefore the selection is handled by EditorCell; This cell is
     always above m_selectionEnd.
-
-    See also m_hCaretPositionStart and m_selectionEnd
   */
   CellPtr<Cell> m_selectionStart;
   /*! The last cell of the currently selected range of Cells.
 
     NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
     is selected and therefore the selection is handled by EditorCell; This cell is
-    always above m_selectionStart.
-
-    See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
+    always below m_selectionStart.
   */
   CellPtr<Cell> m_selectionEnd;
   /*! The currently selected string.
@@ -273,8 +171,86 @@ private:
   wxString m_selectionString;
   //! The list of cells maxima has complained about errors in.
   ErrorList m_errorList;
+};
 
-  // ---- View-side (encapsulated) ----
+/*! The view/interaction half of the cell-pointer registry.
+
+  These pointers describe transient window state that has nothing to do with the
+  document model: which cell/group cell is under the mouse pointer, where a
+  mouse/keyboard/incremental-search selection was started, which cell we still
+  need to scroll to, and the per-cell animation-timer ids. This half will
+  eventually be owned by the Worksheet window.
+
+  Every stored cell pointer is a CellPtr, so it auto-nulls when its cell dies.
+*/
+class ViewCellPointers
+{
+public:
+  explicit ViewCellPointers(wxScrolledCanvas *worksheet) : m_worksheet(worksheet) {}
+
+  void ScrollToCell(Cell *cell) { m_cellToScrollTo = cell; }
+  Cell *CellToScrollTo() { return m_cellToScrollTo; }
+
+  //! Is a scroll to CellToScrollTo() currently scheduled?
+  bool ScrollToCellScheduled() const { return m_scrollToCell; }
+  //! Schedule (or cancel) scrolling to CellToScrollTo().
+  void SetScrollToCellScheduled(bool scheduled) { m_scrollToCell = scheduled; }
+
+  //! The EditorCell an incremental search was started in, or null.
+  const CellPtr<EditorCell> &SearchStart() const { return m_cellSearchStartedIn; }
+  //! The cursor position an incremental search was started at (-1 = none).
+  int IndexSearchStartedAt() const { return m_indexSearchStartedAt; }
+  //! Record where an incremental search started (its cell and cursor index).
+  //! Out-of-line: assigning the raw EditorCell* needs the complete type.
+  void SetSearchStart(EditorCell *cell, int index);
+  //! Forget where the search was started
+  void ResetSearchStart()
+    {
+      m_cellSearchStartedIn = {};
+      m_indexSearchStartedAt = -1;
+    }
+
+  //! The EditorCell a mouse selection was started in, or null.
+  const CellPtr<EditorCell> &MouseSelectionStart() const
+    { return m_cellMouseSelectionStartedIn; }
+  //! Record the EditorCell a mouse selection started in (out-of-line: see above).
+  void SetMouseSelectionStart(EditorCell *cell);
+  //! Forget where the mouse selection was started
+  void ResetMouseSelectionStart()
+    { m_cellMouseSelectionStartedIn = {}; }
+
+  //! The EditorCell a keyboard selection was started in, or null.
+  const CellPtr<EditorCell> &KeyboardSelectionStart() const
+    { return m_cellKeyboardSelectionStartedIn; }
+  //! Record the EditorCell a keyboard selection started in (out-of-line: see above).
+  void SetKeyboardSelectionStart(EditorCell *cell);
+  //! Forget where the keyboard selection was started
+  void ResetKeyboardSelectionStart()
+    { m_cellKeyboardSelectionStartedIn = {}; }
+
+  void SetTimerIdForCell(Cell *cell, int timerId);
+  int GetTimerIdForCell(Cell *cell) const;
+  Cell *GetCellForTimerId(int timerId) const;
+  void RemoveTimerIdForCell(const Cell *const cell);
+
+  //! The GroupCell currently under the mouse pointer, or null.
+  GroupCell *GetGroupCellUnderPointer() const;
+  //! Set the GroupCell under the mouse pointer (may be null).
+  void SetGroupCellUnderPointer(GroupCell *cell);
+  //! The cell currently under the mouse pointer, or null.
+  Cell *GetCellUnderPointer() const { return m_cellUnderPointer; }
+  //! Set the cell under the mouse pointer (may be null).
+  void SetCellUnderPointer(Cell *cell) { m_cellUnderPointer = cell; }
+  //! Forget which cell was under the mouse pointer.
+  void ClearCellUnderPointer() { m_cellUnderPointer = {}; }
+
+  void WXMXResetCounter() { m_wxmxImgCounter = 0; }
+  wxString WXMXGetNewFileName();
+  std::size_t WXMXImageCount() const { return m_wxmxImgCounter; }
+
+  wxScrolledCanvas *GetWorksheet() { return m_worksheet; }
+
+private:
   //! The GroupCell that is under the mouse pointer
   CellPtr<GroupCell> m_groupCellUnderPointer;
   //! The cell currently under the mouse pointer
@@ -308,6 +284,105 @@ private:
   wxScrolledCanvas *const m_worksheet;
   //! The image counter for saving .wxmx files
   std::size_t m_wxmxImgCounter = 0;
+};
+
+/*! The storage for pointers to cells.
+
+  If a cell is deleted it is necessary to remove all pointers that might allow to
+  access the now-defunct cell. These pointers are kept in this per-worksheet
+  structure.
+
+  As part of the WorksheetDocument / view split the pointers have been separated
+  into a document-model half (DocumentCellPointers) and a transient view-state
+  half (ViewCellPointers). CellPointers now holds one of each and forwards its
+  historical accessors to the appropriate half; call sites will be routed to the
+  two halves directly, and the halves moved onto their real owners, in following
+  increments. Both halves must stay reachable through the Configuration registry
+  because cells read and write them via Cell::GetCellPointers().
+*/
+class CellPointers
+{
+public:
+  explicit CellPointers(wxScrolledCanvas *worksheet) : m_view(worksheet) {}
+
+  //! The document-model half of the pointers.
+  DocumentCellPointers &Document() { return m_document; }
+  const DocumentCellPointers &Document() const { return m_document; }
+  //! The transient view-state half of the pointers.
+  ViewCellPointers &View() { return m_view; }
+  const ViewCellPointers &View() const { return m_view; }
+
+  //! Kept so existing "CellPointers::ErrorList" references keep compiling.
+  using ErrorList = DocumentCellPointers::ErrorList;
+
+  // ---- Document-side forwarders ----
+  GroupCell *GetWorkingGroup(bool resortToLast = false) const
+    { return m_document.GetWorkingGroup(resortToLast); }
+  void SetWorkingGroup(GroupCell *group) { m_document.SetWorkingGroup(group); }
+  GroupCell *GetLastWorkingGroup() const { return m_document.GetLastWorkingGroup(); }
+  bool HasCellsSelected() const { return m_document.HasCellsSelected(); }
+  const CellPtr<Cell> &GetSelectionStart() const { return m_document.GetSelectionStart(); }
+  const CellPtr<Cell> &GetSelectionEnd() const { return m_document.GetSelectionEnd(); }
+  void SetSelectionStart(Cell *cell) { m_document.SetSelectionStart(cell); }
+  void SetSelectionEnd(Cell *cell) { m_document.SetSelectionEnd(cell); }
+  EditorCell *GetAnswerCell() const { return m_document.GetAnswerCell(); }
+  void SetAnswerCell(EditorCell *cell) { m_document.SetAnswerCell(cell); }
+  void ClearAnswerCell() { m_document.ClearAnswerCell(); }
+  void ClearAnswerCellIfInGroup(GroupCell *group)
+    { m_document.ClearAnswerCellIfInGroup(group); }
+  TextCell *GetCurrentTextCell() const { return m_document.GetCurrentTextCell(); }
+  void SetCurrentTextCell(TextCell *cell) { m_document.SetCurrentTextCell(cell); }
+  EditorCell *GetActiveCell() const { return m_document.GetActiveCell(); }
+  void SetActiveCell(EditorCell *cell) { m_document.SetActiveCell(cell); }
+  void ClearActiveCell() { m_document.ClearActiveCell(); }
+  const wxString &GetSelectionString() const { return m_document.GetSelectionString(); }
+  void SetSelectionString(const wxString &str) { m_document.SetSelectionString(str); }
+  void ClearSelectionString() { m_document.ClearSelectionString(); }
+  ErrorList &GetErrorList() { return m_document.GetErrorList(); }
+  const ErrorList &GetErrorList() const { return m_document.GetErrorList(); }
+
+  // ---- View-side forwarders ----
+  void ScrollToCell(Cell *cell) { m_view.ScrollToCell(cell); }
+  Cell *CellToScrollTo() { return m_view.CellToScrollTo(); }
+  bool ScrollToCellScheduled() const { return m_view.ScrollToCellScheduled(); }
+  void SetScrollToCellScheduled(bool scheduled)
+    { m_view.SetScrollToCellScheduled(scheduled); }
+  const CellPtr<EditorCell> &SearchStart() const { return m_view.SearchStart(); }
+  int IndexSearchStartedAt() const { return m_view.IndexSearchStartedAt(); }
+  void SetSearchStart(EditorCell *cell, int index)
+    { m_view.SetSearchStart(cell, index); }
+  void ResetSearchStart() { m_view.ResetSearchStart(); }
+  const CellPtr<EditorCell> &MouseSelectionStart() const
+    { return m_view.MouseSelectionStart(); }
+  void SetMouseSelectionStart(EditorCell *cell)
+    { m_view.SetMouseSelectionStart(cell); }
+  void ResetMouseSelectionStart() { m_view.ResetMouseSelectionStart(); }
+  const CellPtr<EditorCell> &KeyboardSelectionStart() const
+    { return m_view.KeyboardSelectionStart(); }
+  void SetKeyboardSelectionStart(EditorCell *cell)
+    { m_view.SetKeyboardSelectionStart(cell); }
+  void ResetKeyboardSelectionStart() { m_view.ResetKeyboardSelectionStart(); }
+  void SetTimerIdForCell(Cell *cell, int timerId)
+    { m_view.SetTimerIdForCell(cell, timerId); }
+  int GetTimerIdForCell(Cell *cell) const { return m_view.GetTimerIdForCell(cell); }
+  Cell *GetCellForTimerId(int timerId) const { return m_view.GetCellForTimerId(timerId); }
+  void RemoveTimerIdForCell(const Cell *const cell)
+    { m_view.RemoveTimerIdForCell(cell); }
+  GroupCell *GetGroupCellUnderPointer() const
+    { return m_view.GetGroupCellUnderPointer(); }
+  void SetGroupCellUnderPointer(GroupCell *cell)
+    { m_view.SetGroupCellUnderPointer(cell); }
+  Cell *GetCellUnderPointer() const { return m_view.GetCellUnderPointer(); }
+  void SetCellUnderPointer(Cell *cell) { m_view.SetCellUnderPointer(cell); }
+  void ClearCellUnderPointer() { m_view.ClearCellUnderPointer(); }
+  void WXMXResetCounter() { m_view.WXMXResetCounter(); }
+  wxString WXMXGetNewFileName() { return m_view.WXMXGetNewFileName(); }
+  std::size_t WXMXImageCount() const { return m_view.WXMXImageCount(); }
+  wxScrolledCanvas *GetWorksheet() { return m_view.GetWorksheet(); }
+
+private:
+  DocumentCellPointers m_document;
+  ViewCellPointers m_view;
 };
 
 #endif

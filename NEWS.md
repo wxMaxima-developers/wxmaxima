@@ -71,6 +71,12 @@
   selection anchors and the "scroll-to-cell scheduled" flag - are now behind
   accessors too, so every CellPointers member is private and the class is ready
   to be split into its document-side and view-side halves.
+- Internal: CellPointers is now split into a DocumentCellPointers half (the
+  document model: selection, active/answer/current-text cell, working group,
+  error list) and a ViewCellPointers half (transient window state: hover,
+  mouse/keyboard/search anchors, scroll target, animation timers, .wxmx image
+  counter). CellPointers holds one of each and forwards its historical accessors
+  to the appropriate half, so no call site changed yet. No behavior change.
 - Internal: the "is the document saved?" flag moved from Worksheet into
   WorksheetDocument. The document now owns the flag; when it flips, the document
   tells the window through a new WorksheetDocumentView::NotifySavedStateChanged()
