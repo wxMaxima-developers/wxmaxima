@@ -2521,6 +2521,11 @@ void EditorCell::SelectPointText(const wxPoint point) {
       currentLine++;
     }
   }
+  // Handle indentation: a wrapped continuation line is drawn shifted right by
+  // its indentPixels (see Draw), so a click's x must be measured from there.
+  // This applies to code and text cells alike.
+  posInCell.x -= indentPixels;
+
   if (GetType() == MC_TYPE_INPUT) {
     // Code cell
 
@@ -2571,9 +2576,6 @@ void EditorCell::SelectPointText(const wxPoint point) {
     // Text cell
 
     wxString text = m_text;
-
-    // Handle indentation.
-    posInCell.x -= indentPixels;
 
     wxString::const_iterator it = text.begin() + pos;
     // Stop at the hard newline OR the soft break that ends this display line

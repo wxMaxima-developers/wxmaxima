@@ -422,6 +422,51 @@ SCENARIO("Deeply nested code wraps with clamped indentation instead of degenerat
   }
 }
 
+SCENARIO("Mouse clicks on indented continuation lines hit the right character") {
+  // Regression: SelectPointText's code branch ignored the continuation-line
+  // indentation (the text branch subtracted it), so a click on a wrapped,
+  // indented code line selected a position to the right of the clicked
+  // character - by exactly the indentation width. PositionToPoint and
+  // GetLineWidth DO include the indentation, so the two must round-trip.
+  WrapSetupGuard guard;
+  GIVEN("a wrapped code cell whose continuation lines are indented") {
+    g_cfg->SetAutoWrap(2);
+    CodeNarrow();
+    wxString original = wxS("f(g(");
+    for (int i = 0; i < 30; i++)
+      original += wxString::Format(wxS("arg_%d, "), i);
+    original += wxS("0))");
+    GroupCell group(g_cfg, GC_TYPE_CODE, original);
+    EditorCell *editor = group.GetEditable();
+    group.Recalculate();
+    // SelectPointText/PositionToPoint work in worksheet coordinates relative
+    // to the cell's position; the windowless harness has to provide one.
+    editor->SetCurrentPoint(wxPoint(0, 0));
+
+    const std::vector<size_t> breaks = Breaks(editor);
+    REQUIRE(breaks.size() >= 2);
+
+    THEN("the continuation lines really are indented (else this test is moot)") {
+      // The first character of a continuation line is drawn at
+      // x = cell x (0 here) + indentation, so its caret point reveals the
+      // indentation through the public API.
+      REQUIRE(editor->PositionToPoint(breaks[0]).x > 0);
+    }
+
+    THEN("caret positions on continuation lines survive a point round-trip") {
+      for (size_t b = 0; b < breaks.size(); b++) {
+        // A few characters into the continuation line, clear of the break
+        // boundary itself.
+        const size_t pos = std::min(breaks[b] + 3, editor->GetValue().Length());
+        const wxPoint pt = editor->PositionToPoint(pos);
+        REQUIRE(pt != wxDefaultPosition);
+        editor->SelectPointText(pt);
+        REQUIRE(editor->CursorPosition() == pos);
+      }
+    }
+  }
+}
+
 SCENARIO("Hard newlines reset the wrap accounting") {
   WrapSetupGuard guard;
   g_cfg->SetAutoWrap(2);
