@@ -128,6 +128,16 @@ private:
   //! The wxMaxima frame whose services the lifecycle handlers drive. Not owned;
   //! the frame owns this object.
   wxMaxima &m_wxMaxima;
+  /*! Reentrancy tripwire for MaximaEvent().
+
+    True while MaximaEvent() is on the stack. MaximaEvent() must never nest:
+    nesting means something below it pumped the event queue (a modal dialog,
+    wxYield, ...) while a chunk from Maxima was still being interpreted, so a
+    second chunk would be interpreted against half-updated state. All dialogs
+    reachable from Maxima event handlers are therefore CallAfter-deferred;
+    the flag catches (via wxASSERT) any future violation of that rule.
+  */
+  bool m_inMaximaEvent = false;
 };
 
 #endif // MAXIMAPROCESSMANAGER_H

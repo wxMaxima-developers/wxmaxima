@@ -202,14 +202,19 @@ bool MaximaProcessManager::StartServer() {
   if (!m_wxMaxima.m_server) {
     m_wxMaxima.StatusText(_("Starting server failed"));
     m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::error);
-    LoggingMessageBox(_("wxMaxima could not start a server.\n\n"
-                        "Please check you have network support\n"
-                        "enabled, that no internet safety appliance is configured "
-                        "to intercept creation of servers even if said server only accepts "
-                        "connections from local application (maxima insists on the graphical "
-                        "frontend acting as a server it can connect on over a local socket) "
-                        "and try again!"),
-                      _("Fatal error"), wxOK | wxICON_ERROR);
+    // Deferred: StartServer runs inside StartMaxima, which can itself run
+    // under a wxProcess-termination event (restart after a crash); no modal
+    // dialogs inside event handlers.
+    m_wxMaxima.CallAfter([]{
+      LoggingMessageBox(_("wxMaxima could not start a server.\n\n"
+                          "Please check you have network support\n"
+                          "enabled, that no internet safety appliance is configured "
+                          "to intercept creation of servers even if said server only accepts "
+                          "connections from local application (maxima insists on the graphical "
+                          "frontend acting as a server it can connect on over a local socket) "
+                          "and try again!"),
+                        _("Fatal error"), wxOK | wxICON_ERROR);
+    });
 
     return false;
   } else {
@@ -336,8 +341,15 @@ bool MaximaProcessManager::StartMaxima(bool force) {
         m_wxMaxima.m_maximaStdout = NULL;
         m_wxMaxima.m_maximaStderr = NULL;
         m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::offline);
-        MaximaNotStartingDialog *dlg = new MaximaNotStartingDialog(&m_wxMaxima, -1, &m_wxMaxima.m_configuration, _("Failed to start Maxima"));
-        dlg->ShowModal();
+        // Deferred: StartMaxima can run under a wxProcess-termination event
+        // (restart after a crash), and a modal dialog inside an event handler
+        // pumps the event queue reentrantly. The stack-allocated dialog also
+        // fixes a leak (the old new'd dialog was never destroyed).
+        m_wxMaxima.CallAfter([this]{
+          MaximaNotStartingDialog dlg(&m_wxMaxima, -1, &m_wxMaxima.m_configuration,
+                                      _("Failed to start Maxima"));
+          dlg.ShowModal();
+        });
         return false;
       }
       // Track this Maxima so a termination signal / crash can kill it even if
@@ -543,12 +555,17 @@ void MaximaProcessManager::OnMaximaClose(){
     m_wxMaxima.StatusText(_("Maxima process terminated unexpectedly."));
 
     if (m_wxMaxima.m_first) {
-      LoggingMessageBox(
-                        _("Can not start Maxima. The most probable cause is that Maxima "
-                          "isn't installed (it can be downloaded from "
-                          "https://maxima.sourceforge.io) or in wxMaxima's config dialogue "
-                          "the setting for Maxima's location is wrong."),
-                        _("Error"), wxOK | wxICON_ERROR);
+      // Deferred: we are inside a wxProcess-termination event handler; a
+      // modal box here would pump the event queue reentrantly and would also
+      // hold up the restart attempt below until the user dismisses it.
+      m_wxMaxima.CallAfter([]{
+        LoggingMessageBox(
+                          _("Can not start Maxima. The most probable cause is that Maxima "
+                            "isn't installed (it can be downloaded from "
+                            "https://maxima.sourceforge.io) or in wxMaxima's config dialogue "
+                            "the setting for Maxima's location is wrong."),
+                          _("Error"), wxOK | wxICON_ERROR);
+      });
     }
 
     // Let's see if maxima has told us why this did happen.
@@ -587,6 +604,18 @@ void MaximaProcessManager::OnMaximaClose(wxProcessEvent &event) {
 
 void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
   using std::swap;
+  // Reentrancy tripwire: see m_inMaximaEvent's documentation. If this assert
+  // fires, some code reachable from a Read* handler below pumped the event
+  // queue (typically a modal dialog) - defer that dialog with CallAfter
+  // instead.
+  wxASSERT_MSG(!m_inMaximaEvent,
+               wxS("MaximaEvent() re-entered: a nested event loop ran inside "
+                   "a Maxima data handler"));
+  struct FlagHolder {
+    explicit FlagHolder(bool &flag) : m_flag(flag) { m_flag = true; }
+    ~FlagHolder() { m_flag = false; }
+    bool &m_flag;
+  } inEventFlag(m_inMaximaEvent);
   // Don't interpret data from a Maxima process we don't trust: either its
   // authentication against MAXIMA_AUTH_CODE failed (so whatever connected to
   // our socket might not be the Maxima we started), or we are in the process

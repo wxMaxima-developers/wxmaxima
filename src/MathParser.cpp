@@ -1315,11 +1315,28 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all, int depth)
     }
 
     if (gotInvalid && !all) {
-      // Tell the user we ran into problems.
+      // Tell the user we ran into problems - but never with a modal dialog
+      // from inside the parse: we may be sitting under a Maxima socket event
+      // handler, and a modal box would pump the event queue, letting further
+      // incoming data re-enter this (stateful: SetGroup) parser mid-parse.
+      // Defer the box past the current handler and coalesce bursts of invalid
+      // tags (a corrupt stream would otherwise queue one box per chunk) into
+      // a single dialog; every occurrence is still wxLogMessage()d.
       wxString msg;
       msg = tree.GetLastAppended()->ToString();
       if (!msg.empty()) {
-        LoggingMessageBox(msg, _("Warning"), wxOK | wxICON_WARNING);
+        wxLogMessage(_("Invalid XML: %s"), msg);
+        static bool warningPending = false;
+        if (wxTheApp && !warningPending) {
+          warningPending = true;
+          wxTheApp->CallAfter([msg]{
+            LoggingMessageBox(msg, _("Warning"), wxOK | wxICON_WARNING);
+            // Cleared only after the box closes: warnings arriving while it
+            // is open (its modal loop pumps queued CallAfters) stay coalesced
+            // instead of stacking a second box on top of it.
+            warningPending = false;
+          });
+        }
         gotInvalid = false;
       }
     }

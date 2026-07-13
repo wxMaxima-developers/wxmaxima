@@ -1,5 +1,17 @@
 # Current development version
 
+- Stability: error dialogs triggered by data or events from the Maxima process
+  (authentication failure, invalid XML in Maxima's output, Maxima terminating
+  or failing to start) are no longer shown from inside the event handler that
+  detected the problem. A modal dialog there pumps the event queue, so further
+  incoming data could re-enter the half-finished handler (and each further
+  chunk could stack another dialog on top). The dialogs are now deferred until
+  the handler has finished, duplicates are coalesced, and a debug assertion
+  guards against reintroducing nested handling. Also fixes the wrong-key
+  authentication path showing two stacked warning boxes, data still being
+  interpreted while the authentication warning was open, and a leak of the
+  "Maxima failed to start" dialog.
+
 - Fixed: the check that the process connecting to wxMaxima's socket really is
   the Maxima it started compared the authentication key in a way that accepted
   any key, and a failed authentication didn't actually discard the impostor's

@@ -264,34 +264,37 @@ void MaximaResponseReader::ReadMiscText(const wxString &data) {
 }
 
 void MaximaResponseReader::ReadSuppressedOutput(const wxString &data) {
-  if(!m_wxMaxima.m_maximaAuthenticated)
-    {
-      if(data.Find("</wxxml-key>") != wxNOT_FOUND) {
-        // Note the "!= wxNOT_FOUND": wxNOT_FOUND is -1 and therefore truthy,
-        // so testing Find()'s result as a bool accepts any key.
-        if(data.Find("<wxxml-key>" + m_wxMaxima.m_maximaAuthString + "</wxxml-key>") != wxNOT_FOUND){
-          wxLogMessage(_("Maxima has authenticated!"));
-          m_wxMaxima.m_maximaAuthenticated = true;
-        } else {
-          wxLogMessage(_("Cannot authenticate Maxima!"));
-          LoggingMessageBox(
-                            _("Could not make sure that we talk to the maxima we started => "
-                              "discarding all data it sends."),
-                            _("Warning"), wxOK | wxICON_EXCLAMATION);
-          m_wxMaxima.m_discardAllData = true;
-        }
-      }
-    }
+  if(m_wxMaxima.m_maximaAuthenticated)
+    return;
 
-  if(!m_wxMaxima.m_maximaAuthenticated)
-    {
-      wxLogMessage(_("Maxima didn't attempt to authenticate!"));
-      LoggingMessageBox(
-                        _("Could not make sure that we talk to the maxima we started => "
-                          "discarding all data it sends."),
-                        _("Warning"), wxOK | wxICON_EXCLAMATION);
-      m_wxMaxima.m_discardAllData = true;
-    }
+  // Note the "!= wxNOT_FOUND": wxNOT_FOUND is -1 and therefore truthy,
+  // so testing Find()'s result as a bool accepts any key.
+  if(data.Find("<wxxml-key>" + m_wxMaxima.m_maximaAuthString + "</wxxml-key>") != wxNOT_FOUND) {
+    wxLogMessage(_("Maxima has authenticated!"));
+    m_wxMaxima.m_maximaAuthenticated = true;
+    return;
+  }
+
+  if(data.Find("</wxxml-key>") != wxNOT_FOUND)
+    wxLogMessage(_("Cannot authenticate Maxima!"));
+  else
+    wxLogMessage(_("Maxima didn't attempt to authenticate!"));
+
+  // Order matters here, twice: the discard flag must be armed BEFORE the user
+  // is told about it, and the dialog must not be shown from within this event
+  // handler. A modal box spins a nested event loop, so anything the untrusted
+  // process sends while the box is open would be interpreted with this
+  // handler still on the stack. Arming the flag first means the MaximaEvent
+  // gate is already discarding by the time the (CallAfter-deferred) box
+  // appears - which also keeps a second suppressOutput chunk from stacking a
+  // second box.
+  m_wxMaxima.m_discardAllData = true;
+  m_wxMaxima.CallAfter([]{
+    LoggingMessageBox(
+                      _("Could not make sure that we talk to the maxima we started => "
+                        "discarding all data it sends."),
+                      _("Warning"), wxOK | wxICON_EXCLAMATION);
+  });
 }
 
 void MaximaResponseReader::ReadPrompt(const wxString &data) {
