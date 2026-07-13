@@ -1,5 +1,14 @@
 # Current development version
 
+- New: if the Lisp under Maxima (sbcl) crashes into its low-level debugger
+  (LDB), wxMaxima now recognizes it, explains what happened, and lets you type
+  LDB commands (such as "backtrace" or "exit") right in the worksheet instead
+  of the session simply hanging. LDB reads and writes the Maxima process's
+  stdin/stdout/stderr (it runs below the Lisp and cannot use the control
+  socket), so your input is routed there while LDB is active. Note: when
+  wxMaxima is started from a terminal, LDB may still use that terminal; started
+  as a normal GUI application it uses the worksheet.
+
 - Internal: the code that turns Maxima's output into worksheet cells
   (ConsoleAppend / DoConsoleAppend / DoRawConsoleAppend) was moved out of the
   large wxMaxima class into a dedicated MaximaOutputAppender, continuing the
