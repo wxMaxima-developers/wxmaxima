@@ -69,10 +69,12 @@ bool WorksheetLayout::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
     wxStopWatch stopwatch;
     bool propagationNeeded = true;
     int cellsVisited = 0;
+    int cellsRecalculated = 0;
     for (auto &cell : OnList(m_recalculateStart.get())) {
       cellsVisited++;
       GroupCell *group = static_cast<GroupCell *>(&cell);
       bool neededRecalc = group->NeedsRecalculation();
+      if (neededRecalc) cellsRecalculated++;
       bool movedThisTime = false;
       bool sizeChanged = false;
 
@@ -106,11 +108,13 @@ bool WorksheetLayout::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
         if (!atEnd)
           m_recalculateStart = cell.GetNext();
         else {
-          wxLogMessage(_("Recalculation hit the end of the worksheet => Updating its size (Visited %d cells in %ld ms)"), cellsVisited, stopwatch.Time());
+          wxLogMessage(_("Recalculation hit the end of the worksheet => Updating its size (Visited %d cells, recalculated %d, in %ld ms)"), cellsVisited, cellsRecalculated, stopwatch.Time());
           m_recalculateStart = {};
           AdjustSize();
         }
-        if (stopwatch.Time() > timeSliceMs)
+        if (stopwatch.Time() > timeSliceMs) {
+          m_lastCellsVisited = cellsVisited;
+          m_lastCellsRecalculated = cellsRecalculated;
           // Yield to the event loop, but keep m_recalculateStart pointing at the
           // cell we stopped before so the next call resumes there. Returning here
           // (instead of breaking out to the shared tail below) is essential: that
@@ -118,10 +122,13 @@ bool WorksheetLayout::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
           // walked, which would drop the resume point and leave every cell past
           // this slice permanently un-recalculated.
           return true;
+        }
       } else if (atEnd) {
-        wxLogMessage(_("Recalculated the whole worksheet at once => Updating its size (Visited %d cells in %ld ms)"), cellsVisited, stopwatch.Time());
+        wxLogMessage(_("Recalculated the whole worksheet at once => Updating its size (Visited %d cells, recalculated %d, in %ld ms)"), cellsVisited, cellsRecalculated, stopwatch.Time());
       }
     }
+    m_lastCellsVisited = cellsVisited;
+    m_lastCellsRecalculated = cellsRecalculated;
   }
   // Clear the pending-recalculation marker before AdjustSize(): the whole
   // scheduled range has been walked, so cell positions are valid now and

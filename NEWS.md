@@ -1,5 +1,11 @@
 # Current development version
 
+- Internal: the worksheet-recalculation log now also reports how many cells were
+  actually re-laid-out (not just visited), which makes an over-broad
+  recalculation easy to spot when diagnosing sluggishness, and a new
+  test_WorksheetLayout scenario locks in that a localized edit recalculates only
+  the cell that changed rather than the whole document.
+
 - Fixed several ways a corrupt or hostile .wxmx file could hang or misbehave
   instead of failing cleanly: a damaged archive opened in batch mode wedged the
   program (it repeatedly tried to auto-save the unloadable, name-less session,

@@ -303,6 +303,71 @@ SCENARIO("A zero-sized canvas blocks the layout walk") {
   }
 }
 
+// The recalculation walk must stay proportional to what actually changed: a
+// localized edit should re-lay-out only the cell(s) that changed, never the
+// whole worksheet. This has regressed before (an operation marking the entire
+// tree dirty, or a stray full RequestRecalculation()), and on a large document
+// a full re-layout on every keystroke / output line is a very visible lag.
+// GetLastCellsRecalculated() reports how many cells the last pass expensively
+// re-laid-out, which is what these tests pin.
+SCENARIO("A localized change recalculates only the cell that changed") {
+  GIVEN("a fully laid-out worksheet of many cells") {
+    EngineFixture f;
+    std::vector<GroupCell *> cells;
+    for (int i = 0; i < 30; i++)
+      cells.push_back(f.AddCell(wxString::Format(wxS("x%d:%d$"), i, i)));
+    f.layout.RequestRecalculation(cells.front());
+    // Drive the pass(es) to completion so every cell is clean.
+    while (f.layout.RecalculateIfNeeded())
+      ;
+
+    THEN("the initial full layout recalculated every cell") {
+      REQUIRE(f.layout.GetLastCellsRecalculated() == 30);
+    }
+
+    WHEN("a single cell in the middle is marked dirty and laid out again") {
+      f.layout.RequestRecalculation(cells[15]);
+      while (f.layout.RecalculateIfNeeded())
+        ;
+
+      THEN("only that one cell is expensively recalculated") {
+        REQUIRE(f.layout.GetLastCellsRecalculated() == 1);
+      }
+      AND_THEN("cells above the change are not even visited") {
+        // The walk starts at the changed cell, so it never touches the 15
+        // cells above it - only the change and the cells below get visited.
+        REQUIRE(f.layout.GetLastCellsVisited() <= 30 - 15);
+      }
+    }
+  }
+}
+
+SCENARIO("A global invalidation recalculates everything (the costly path)") {
+  GIVEN("a fully laid-out worksheet") {
+    EngineFixture f;
+    std::vector<GroupCell *> cells;
+    for (int i = 0; i < 12; i++)
+      cells.push_back(f.AddCell(wxString::Format(wxS("y%d:%d$"), i, i)));
+    f.layout.RequestRecalculation(cells.front());
+    while (f.layout.RecalculateIfNeeded())
+      ;
+
+    WHEN("every cell is marked dirty (as a font / zoom change does via "
+         "ResetSizeList) and the head is scheduled") {
+      for (GroupCell *c : cells)
+        c->MarkNeedsRecalculate();
+      f.layout.RequestRecalculation(cells.front());
+      while (f.layout.RecalculateIfNeeded())
+        ;
+
+      THEN("every cell is recalculated - which is why a full invalidation is "
+           "reserved for genuinely global changes, not per-cell edits") {
+        REQUIRE(f.layout.GetLastCellsRecalculated() == 12);
+      }
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

@@ -134,6 +134,14 @@ public:
   //! Drop any pending recalculation (e.g. when the document is cleared).
   void CancelPendingRecalculation() { m_recalculateStart = nullptr; }
 
+  //! GroupCells walked by the most recent RecalculateIfNeeded() pass (visited
+  //! includes cheap reposition-only cells; recalculated counts only the cells
+  //! that actually needed the expensive re-layout). Exposed for tests and
+  //! diagnostics: a localized change should recalculate very few cells, so a
+  //! large count on a small edit signals an over-broad recalculation.
+  int GetLastCellsVisited() const { return m_lastCellsVisited; }
+  int GetLastCellsRecalculated() const { return m_lastCellsRecalculated; }
+
 private:
   //! The settings storage, also supplying metrics and the recalc DC.
   Configuration *m_configuration;
@@ -157,6 +165,10 @@ private:
   int m_scrollUnit = 10;
   //! Does the worksheet's virtual (scroll) size need re-adjusting?
   bool m_adjustWorksheetSizeNeeded = false;
+  //! Bookkeeping from the most recent RecalculateIfNeeded() pass; see the
+  //! getters above.
+  int m_lastCellsVisited = 0;
+  int m_lastCellsRecalculated = 0;
 };
 
 #endif // WORKSHEETLAYOUT_H
