@@ -13,7 +13,7 @@ var searchData=
   ['readmanualtopicnames_10',['ReadManualTopicNames',['../classMaximaResponseReader.html#af2fe8c04dbcb55b3e307f5b2159fc94c',1,'MaximaResponseReader']]],
   ['readmath_11',['ReadMath',['../classMaximaResponseReader.html#a2f3a4c90209426a1b95544df7e3b670a',1,'MaximaResponseReader']]],
   ['readmisctext_12',['ReadMiscText',['../classMaximaResponseReader.html#a2dcee36ab2350c8cc14308a0885577af',1,'MaximaResponseReader']]],
-  ['readpotentiallyunclosedtag_13',['ReadPotentiallyUnclosedTag',['../classMaximaFileIO.html#a11b8ecf1d0f957682299803e9b3c9926',1,'MaximaFileIO']]],
+  ['readpotentiallyunclosedtag_13',['ReadPotentiallyUnclosedTag',['../classMaximaFileIO.html#a31a94164f4742efb04d63b707177b727',1,'MaximaFileIO']]],
   ['readprompt_14',['ReadPrompt',['../classMaximaResponseReader.html#a71497a2f970b25f2fafe4a75a872949f',1,'MaximaResponseReader']]],
   ['readsocket_15',['ReadSocket',['../classMaxima.html#a2a43dbaf7acf0560851899a20683543e',1,'Maxima']]],
   ['readstatusbar_16',['ReadStatusBar',['../classMaximaResponseReader.html#a580782a602cecb4ae87e61ab9a1043ff',1,'MaximaResponseReader']]],

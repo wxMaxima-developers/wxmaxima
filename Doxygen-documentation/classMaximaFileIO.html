@@ -105,10 +105,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>OpenXML</b> (const wx
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckWXMXVersion</b> (const wxString &amp;docversion)</td></tr>
 <tr class="memdesc:a80cf9d2b488d2beb597495eba57036e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Warns if a document was saved by a newer <a class="el" href="classwxMaxima.html">wxMaxima</a>; returns false if it is too new to open at all. <br /></td></tr>
 <tr class="separator:a80cf9d2b488d2beb597495eba57036e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11b8ecf1d0f957682299803e9b3c9926"><td class="memItemLeft" align="right" valign="top"><a id="a11b8ecf1d0f957682299803e9b3c9926" name="a11b8ecf1d0f957682299803e9b3c9926"></a>
-wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ReadPotentiallyUnclosedTag</b> (wxStringTokenizer &amp;lines, wxString firstLine)</td></tr>
-<tr class="memdesc:a11b8ecf1d0f957682299803e9b3c9926"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reassembles a cell whose closing XML tag went missing in a damaged .wxmx, used by OpenWXMXFile's recovery path (recursive). <br /></td></tr>
-<tr class="separator:a11b8ecf1d0f957682299803e9b3c9926"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31a94164f4742efb04d63b707177b727"><td class="memItemLeft" align="right" valign="top"><a id="a31a94164f4742efb04d63b707177b727" name="a31a94164f4742efb04d63b707177b727"></a>
+wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ReadPotentiallyUnclosedTag</b> (wxStringTokenizer &amp;lines, wxString firstLine, int depth=0)</td></tr>
+<tr class="memdesc:a31a94164f4742efb04d63b707177b727"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reassembles a cell whose closing XML tag went missing in a damaged .wxmx, used by OpenWXMXFile's recovery path (recursive; depth caps the nesting so a crafted file cannot overflow the stack). <br /></td></tr>
+<tr class="separator:a31a94164f4742efb04d63b707177b727"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a084dab48c065dd0919a95fc154b96cb2"><td class="memItemLeft" align="right" valign="top"><a id="a084dab48c065dd0919a95fc154b96cb2" name="a084dab48c065dd0919a95fc154b96cb2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>OpenFile</b> (const wxString &amp;file, const wxString &amp;command={})</td></tr>
 <tr class="memdesc:a084dab48c065dd0919a95fc154b96cb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a file: picks the loader by extension (or hands the file to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> via load()/batch()/demo() for non-worksheet files) and updates the UI. <br /></td></tr>

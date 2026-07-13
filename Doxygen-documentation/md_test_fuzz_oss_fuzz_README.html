@@ -76,14 +76,14 @@ $(function() {
 <div class="fragment"><div class="line">projects/wxmaxima/project.yaml</div>
 <div class="line">projects/wxmaxima/Dockerfile</div>
 <div class="line">projects/wxmaxima/build.sh</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md860"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md861"></a>
 Status: prepared, NOT yet validated on OSS-Fuzz</h1>
 <p>This scaffolding is a correct starting point, but it has <b>not</b> been run through OSS-Fuzz's infrastructure yet, and two things genuinely need checking first:</p>
 <ol type="1">
 <li><b>wxWidgets 3.2 is built from source</b> (it isn't packaged on the base image). <code>build.sh</code> does this with the OSS-Fuzz flags; the build is slow but cached in <code>$WORK</code>.</li>
 <li><b>The harnesses need an X display at run time</b> (wxGTK routes font/DC work through GTK). They start their own <code>Xvfb</code> (see <code>../fuzz_init.h</code>), so <b>Xvfb must exist in the OSS-Fuzz <em>run</em> image</b>, not just the build image. This is the main unknown — most OSS-Fuzz targets are display-free. If the run image lacks Xvfb, the alternative is a display-free harness that stubs <code><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a></code> (the way <code>test/unit_tests</code> does) so no GTK/display is needed.</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md861"></a>
+<h1><a class="anchor" id="autotoc_md862"></a>
 Validate locally before submitting</h1>
 <p>Use OSS-Fuzz's helper to build and smoke-run the targets in the real containers:</p>
 <div class="fragment"><div class="line">git clone https://github.com/google/oss-fuzz</div>
@@ -95,7 +95,7 @@ Validate locally before submitting</h1>
 <div class="line">python3 infra/helper.py check_build   wxmaxima</div>
 <div class="line">python3 infra/helper.py run_fuzzer    wxmaxima fuzz_mathparser</div>
 </div><!-- fragment --><p><code>check_build</code> / <code>run_fuzzer</code> is where the display dependency will show up if the run image has no Xvfb. Fix that (or switch to a display-free harness) before opening the PR.</p>
-<h1><a class="anchor" id="autotoc_md862"></a>
+<h1><a class="anchor" id="autotoc_md863"></a>
 How the CMake honours OSS-Fuzz</h1>
 <p><code>-DWXM_FUZZ=ON</code> plus a Clang compiler builds the targets. When <code>$LIB_FUZZING_ENGINE</code> is set (as OSS-Fuzz does), the CMake links it instead of <code>-fsanitize=fuzzer</code> and relies on <code>$CXXFLAGS</code> for the instrumentation; otherwise it adds <code>-fsanitize=fuzzer,address</code> itself for standalone/CI builds. </p>
 </div></div><!-- contents -->

@@ -136,7 +136,7 @@ Layout &amp; Compatibility</h1>
 <li><b>Windows Focus Management:</b> Use <code>CallAfter</code> for focus transitions (e.g., <code>m_searchText-&gt;SetFocus()</code>) to prevent the worksheet from "stealing" focus back.</li>
 <li><b>Constructor Initialization:</b> Order initialization lists to match header declaration order to prevent <code>-Wreorder</code> warnings.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md7"></a>
 Performance &amp; Documentation Mandates</h1>
 <ul>
 <li><b>NEWS.md Updates:</b> Every non-trivial change MUST be documented in <code>NEWS.md</code> under the "# Current development version" section.</li>
@@ -150,13 +150,13 @@ Performance &amp; Documentation Mandates</h1>
 </li>
 <li><b>Strict XML Mandate:</b> To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., <code>noneParens="true"</code>) to the filter list in <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">MathParser.cpp</a></code>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md7"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)</h1>
 <ul>
 <li><b>Geometry Awareness:</b> If modifying <code>Recalculate()</code> or <code>Draw()</code> geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in <code>art/Doxygen/</code>.</li>
 <li><b>Consistency:</b> New cell types should have <code>*Geometry.svg</code> and <code>*LinearGeometry.svg</code> (if applicable) diagrams.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md12"></a>
 Key Subsystems Map</h1>
 <ul>
 <li><b>Layout Engine:</b> <code>src/cells/</code> and <code><a class="el" href="Worksheet_8cpp.html" title="This file defines the class Worksheet.">src/Worksheet.cpp</a></code>.</li>
@@ -164,7 +164,7 @@ Key Subsystems Map</h1>
 <li><b>Main Logic:</b> <code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">src/wxMaxima.cpp</a></code> and <code><a class="el" href="wxMaximaFrame_8cpp.html" title="This file defines the class wxMaximaFrame.">src/wxMaximaFrame.cpp</a></code>.</li>
 <li><b><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>:</b> <code><a class="el" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage.">src/Configuration.cpp</a></code>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Error resilience</h1>
 <ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
