@@ -507,8 +507,12 @@ namespace Format {
 
           // Is this a comment from wxMaxima?
           if (line.StartsWith(wxS("/* [wxMaxima: "))) {
-            // Add the rest of this comment block to the "line".
-            while (!line.EndsWith(" end   ] */") &&
+            // Add the rest of this comment block to the "line". Stop at EOF too:
+            // readUntil() returns unchanged once the iterator reaches the end, so
+            // a wxMaxima comment block with no matching " end   ] */" marker (a
+            // truncated/corrupt .mac) would otherwise spin here forever.
+            while (s.ch != end &&
+                   !line.EndsWith(" end   ] */") &&
                    !line.EndsWith(" end   ] */\n")) {
               s = readUntil(line, s, '\n');
             }
@@ -521,7 +525,8 @@ namespace Format {
 
               s = readUntil(line, s, '\n');
 
-              while (!line.EndsWith(" end   ] */") &&
+              while (s.ch != end &&
+                     !line.EndsWith(" end   ] */") &&
                      !line.EndsWith(" end   ] */\n")) {
                 s = readUntil(line, s, '\n');
               }
