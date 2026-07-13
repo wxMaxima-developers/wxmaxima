@@ -28,6 +28,7 @@
 #include "Maxima.h"
 #include "MaximaVariableUpdates.h"
 #include "MaximaMenuSync.h"
+#include "LdbSupport.h"
 #include "EventIDs.h"
 #include <wx/sstream.h>
 #include <functional>
@@ -475,6 +476,19 @@ void MaximaResponseReader::ReadStdErr() {
     wxString o_trimmed = o;
     o_trimmed.Trim();
 
+    // sbcl prints the LDB banner on stdout when the Lisp runtime drops into its
+    // low-level debugger. This is the one unambiguous marker for entering LDB;
+    // from here on the user's input goes to Maxima's stdin, not the socket.
+    if (!m_wxMaxima.m_inLDB && LdbSupport::ContainsLdbBanner(o)) {
+      m_wxMaxima.m_inLDB = true;
+      wxLogMessage(_("Maxima's Lisp entered sbcl's low-level debugger (LDB)."));
+      m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
+        _("Maxima's Lisp (sbcl) has stopped in its low-level debugger (LDB). "
+          "The Lisp cannot continue; you can enter LDB commands - for example "
+          "\"backtrace\" for a stack trace, or \"exit\" to quit it."),
+        MC_TYPE_ERROR);
+    }
+
     o = _("Message from the stdout of Maxima: ") + o;
     if ((o_trimmed != wxEmptyString) &&
         (!o_trimmed.StartsWith("Connecting Maxima to server on port")) && (!m_wxMaxima.m_first)) {
@@ -498,6 +512,19 @@ void MaximaResponseReader::ReadStdErr() {
 
     wxString o_trimmed = o;
     o_trimmed.Trim();
+
+    // While sbcl is in LDB it writes its prompt ("ldb> ") and the output of
+    // LDB commands to stderr. Show it as-is, but do NOT run it through the
+    // normal error handling: AbortOnError / TriggerEvaluation drive the
+    // control socket, which is dead while the Lisp is stopped in LDB.
+    if (m_wxMaxima.m_inLDB || LdbSupport::LooksLikeLdb(o)) {
+      m_wxMaxima.m_inLDB = true;
+      if (o_trimmed != wxEmptyString)
+        m_wxMaxima.m_outputAppender.DoRawConsoleAppend(o, MC_TYPE_ERROR);
+      if (Maxima::GetPipeToStdErr())
+        std::cerr << o;
+      return;
+    }
 
     o = wxS("Message from maxima's stderr stream: ") + o;
 
