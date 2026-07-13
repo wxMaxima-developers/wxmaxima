@@ -630,6 +630,9 @@ wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_gnuplotProce
 wxProcess *&#160;</td><td class="memItemRight" valign="bottom"><b>m_gnuplotTerminalQueryProcess</b> = NULL</td></tr>
 <tr class="memdesc:ac57d86df2f36cc8707282576fc84d870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Info about the gnuplot process we start for querying the terminals it supports. <br /></td></tr>
 <tr class="separator:ac57d86df2f36cc8707282576fc84d870"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acff0b225bbd01c1f3a2609fecf901a87"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#acff0b225bbd01c1f3a2609fecf901a87">m_gnuplotProbedCommand</a></td></tr>
+<tr class="memdesc:acff0b225bbd01c1f3a2609fecf901a87"><td class="mdescLeft">&#160;</td><td class="mdescRight">The gnuplot command whose terminal support we already probed.  <br /></td></tr>
+<tr class="separator:acff0b225bbd01c1f3a2609fecf901a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f9c267c29a8f462cb89d933016a06ed"><td class="memItemLeft" align="right" valign="top"><a id="a2f9c267c29a8f462cb89d933016a06ed" name="a2f9c267c29a8f462cb89d933016a06ed"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_isActive</b> = true</td></tr>
 <tr class="memdesc:a2f9c267c29a8f462cb89d933016a06ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this window active? <br /></td></tr>
@@ -2006,7 +2009,7 @@ Plot Slider</h2>
 </div><div class="memdoc">
 
 <p>Spawn the "configure" menu. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>Inform maxima about the new default plot window size. </dd></dl>
 <p>Trigger reading all variables from <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> that are shown in the Variables sidebar </p>
 
 </div>
@@ -2034,6 +2037,31 @@ Plot Slider</h2>
 
 <p>Did we tell maxima to close? </p>
 <p>If we didn't we respan an unexpectedly-closing maxima. </p>
+
+</div>
+</div>
+<a id="acff0b225bbd01c1f3a2609fecf901a87" name="acff0b225bbd01c1f3a2609fecf901a87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acff0b225bbd01c1f3a2609fecf901a87">&#9670;&#160;</a></span>m_gnuplotProbedCommand</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString wxMaxima::m_gnuplotProbedCommand</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The gnuplot command whose terminal support we already probed. </p>
+<p>Set when a terminal query completes. <a class="el" href="classA.html">A</a> <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> restart re-sends gnuplot_command; if it resolves to the same gnuplot as before, its capabilities haven't changed and no new probe process is spawned - the cached UsePngCairo() answer is pushed to the new <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> by <a class="el" href="classwxMaxima.html#af2f5e80d2d27151a20ffc5efd641bc4e" title="Is called on start and whenever the configuration changes.">ConfigChanged()</a> anyway. </p>
 
 </div>
 </div>
