@@ -357,6 +357,10 @@ bool MaximaProcessManager::StartMaxima(bool force) {
       MaximaProcessManager::RegisterChildMaxima(m_wxMaxima.m_pid);
       m_wxMaxima.m_maximaStdout = m_wxMaxima.m_maximaProcess->GetInputStream();
       m_wxMaxima.m_maximaStderr = m_wxMaxima.m_maximaProcess->GetErrorStream();
+      // Maxima's stdin: normally unused (commands go over the socket), but
+      // sbcl's low-level debugger reads its input from here.
+      m_wxMaxima.m_maximaStdin = m_wxMaxima.m_maximaProcess->GetOutputStream();
+      m_wxMaxima.m_inLDB = false;
       m_wxMaxima.m_lastPrompt = wxS("(%i1) ");
       m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::wait_for_start);
     } else {
@@ -415,6 +419,8 @@ void MaximaProcessManager::KillMaxima(bool logMessage) {
   }
   m_wxMaxima.m_maximaStdout = NULL;
   m_wxMaxima.m_maximaStderr = NULL;
+  m_wxMaxima.m_maximaStdin = NULL;
+  m_wxMaxima.m_inLDB = false;
   // This closes Maxima's network connection.
   m_wxMaxima.m_client.reset();
 
@@ -550,6 +556,8 @@ void MaximaProcessManager::OnMaximaClose(){
   }
   m_wxMaxima.m_maximaStdout = NULL;
   m_wxMaxima.m_maximaStderr = NULL;
+  m_wxMaxima.m_maximaStdin = NULL;
+  m_wxMaxima.m_inLDB = false;
   m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::offline);
   if (!m_wxMaxima.m_closing) {
     m_wxMaxima.StatusText(_("Maxima process terminated unexpectedly."));
@@ -593,6 +601,28 @@ void MaximaProcessManager::OnMaximaClose(){
   m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::disconnected);
   m_wxMaxima.UpdateToolBar();
   m_wxMaxima.UpdateMenus();
+}
+
+bool MaximaProcessManager::WriteToMaximaStdin(const wxString &line) {
+  if (!m_wxMaxima.m_maximaStdin)
+    return false;
+
+  wxString toSend = line;
+  if (!toSend.EndsWith(wxS("\n")))
+    toSend += wxS("\n");
+
+  // LDB is a plain-ASCII line protocol; UTF-8 is a safe superset for it.
+  // The write goes straight to the pipe fd (wxPipeOutputStream is unbuffered),
+  // so LDB - waiting synchronously on stdin - sees it immediately. We must NOT
+  // CloseOutput() here: that would send EOF and end the LDB session after a
+  // single command.
+  const wxScopedCharBuffer utf8 = toSend.utf8_str();
+  m_wxMaxima.m_maximaStdin->Write(utf8.data(), utf8.length());
+  if (m_wxMaxima.m_maximaStdin->GetLastError() != wxSTREAM_NO_ERROR) {
+    wxLogMessage(_("Failed to write to Maxima's stdin (LDB)."));
+    return false;
+  }
+  return true;
 }
 
 void MaximaProcessManager::OnMaximaClose(wxProcessEvent &event) {

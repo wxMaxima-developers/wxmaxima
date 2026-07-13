@@ -110,6 +110,16 @@ public:
   //! and hands it to the matching reader / updates the status bar.
   void MaximaEvent(wxThreadEvent &event);
 
+  /*! Writes one line of input to the Maxima process's stdin.
+
+    Used to talk to sbcl's low-level debugger (LDB), which reads its commands
+    from stdin - not the control socket (LDB runs below the Lisp image and has
+    no access to Maxima's socket stream). A trailing newline is appended if
+    \p line does not already end in one. Returns false if there is no stdin
+    stream (no process) or the write failed.
+  */
+  bool WriteToMaximaStdin(const wxString &line);
+
   //! Sends the running Maxima an interrupt (Ctrl+G / the interrupt button).
   void Interrupt(wxCommandEvent &event);
 

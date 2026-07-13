@@ -540,6 +540,14 @@ protected:
   wxInputStream *m_maximaStdout = NULL;
   //! The stderr of the maxima process
   wxInputStream *m_maximaStderr = NULL;
+  //! The stdin of the maxima process. Normally unused (commands go over the
+  //! socket), but sbcl's low-level debugger (LDB) reads from here, so we keep
+  //! the stream to talk to LDB. See MaximaProcessManager::WriteToMaximaStdin.
+  wxOutputStream *m_maximaStdin = NULL;
+  //! True while sbcl is stopped in its low-level debugger (LDB). Set from the
+  //! LDB banner on the process's stdout, cleared when the process ends. While
+  //! set, user input is sent to Maxima's stdin (LDB) instead of the socket.
+  bool m_inLDB = false;
   //! The port the actual maxima process (not its wrapper script) runs at
   int m_port = -1;
   //! A marker for the start of maths

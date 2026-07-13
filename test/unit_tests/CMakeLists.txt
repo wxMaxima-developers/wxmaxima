@@ -70,6 +70,13 @@ add_executable(test_MaximaVariableUpdates
 target_link_libraries(test_MaximaVariableUpdates PRIVATE ${wxWidgets_LIBRARIES})
 add_test(MaximaVariableUpdates test_MaximaVariableUpdates)
 
+# The sbcl-LDB recognition helpers (LdbSupport) are GUI-free, so they are tested
+# directly against captured stdout/stderr text.
+add_executable(test_LdbSupport test_LdbSupport.cpp ${WXM_TEST_SETUP})
+target_include_directories(test_LdbSupport PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_LdbSupport PRIVATE ${wxWidgets_LIBRARIES})
+add_test(LdbSupport test_LdbSupport)
+
 # Guards the wxWidgets 3.3 "item" assert that wxMenu::GetHelpString() trips when
 # a highlighted menu id is not an item of that menu (seen mainly via the Windows
 # native menu code). MenuHelpString() is a tiny GUI-object helper, so it is

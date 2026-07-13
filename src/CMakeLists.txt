@@ -148,6 +148,7 @@ set(SOURCE_FILES
     MaximaEvaluator.cpp
     MaximaFileIO.cpp
     MaximaOutputAppender.cpp
+    LdbSupport.cpp
     MaximaMenuSync.cpp
     MaximaTokenizer.cpp
     MaximaManual.cpp
