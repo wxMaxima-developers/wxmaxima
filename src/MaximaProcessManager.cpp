@@ -570,13 +570,13 @@ void MaximaProcessManager::OnMaximaClose(){
 
     // Let's see if maxima has told us why this did happen.
     m_wxMaxima.m_responseReader.ReadStdErr();
-    m_wxMaxima.ConsoleAppend(wxS("\nMaxima exited...\n"), MC_TYPE_ERROR);
+    m_wxMaxima.m_outputAppender.ConsoleAppend(wxS("\nMaxima exited...\n"), MC_TYPE_ERROR);
 
     if (m_wxMaxima.m_unsuccessfulConnectionAttempts > 10)
-      m_wxMaxima.ConsoleAppend(wxS("Restart Maxima with 'Maxima->Restart Maxima'.\n"),
+      m_wxMaxima.m_outputAppender.ConsoleAppend(wxS("Restart Maxima with 'Maxima->Restart Maxima'.\n"),
                     MC_TYPE_ERROR);
     else {
-      m_wxMaxima.ConsoleAppend(wxS("Trying to restart Maxima.\n"), MC_TYPE_ERROR);
+      m_wxMaxima.m_outputAppender.ConsoleAppend(wxS("Trying to restart Maxima.\n"), MC_TYPE_ERROR);
       // Perhaps we shouldn't restart maxima again if it outputs a prompt and
       // crashes immediately after => Each prompt is deemed as but one hint
       // for a working maxima while each crash counts twice.
@@ -723,7 +723,7 @@ void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
     break;
   case Maxima::XML_TOOLONGMATHS:
     m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::receive);
-    m_wxMaxima.DoRawConsoleAppend(_("(Config tells to suppress the output of long cells)"),
+    m_wxMaxima.m_outputAppender.DoRawConsoleAppend(_("(Config tells to suppress the output of long cells)"),
                        MC_TYPE_WARNING);
     break;
   case Maxima::XML_WXXML_KEY: // TODO: Should the key be outside the SuppressOutput?
@@ -736,7 +736,7 @@ void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
     m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::transmit);
     break;
   case Maxima::WRITE_ERROR:
-    m_wxMaxima.DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
+    m_wxMaxima.m_outputAppender.DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
     break;
   case Maxima::DISCONNECTED: {
     wxLogMessage(_("Connection to Maxima lost."));

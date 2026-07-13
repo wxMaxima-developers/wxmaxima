@@ -1,5 +1,10 @@
 # Current development version
 
+- Internal: the code that turns Maxima's output into worksheet cells
+  (ConsoleAppend / DoConsoleAppend / DoRawConsoleAppend) was moved out of the
+  large wxMaxima class into a dedicated MaximaOutputAppender, continuing the
+  effort to break that class up. No behavior change.
+
 - Internal: the worksheet-recalculation log now also reports how many cells were
   actually re-laid-out (not just visited), which makes an over-broad
   recalculation easy to spot when diagnosing sluggishness, and a new

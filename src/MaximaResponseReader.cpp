@@ -37,7 +37,7 @@ void MaximaResponseReader::ReadStatusBar(const wxXmlDocument &xmldoc) {
     m_wxMaxima.GetWorksheet()->SetCurrentTextCell(nullptr);
   if(!xmldoc.IsOk())
     {
-      m_wxMaxima.DoRawConsoleAppend(_("There was an error in the XML that should describe the status bar message.\n"
+      m_wxMaxima.m_outputAppender.DoRawConsoleAppend(_("There was an error in the XML that should describe the status bar message.\n"
                            "Please report this as a bug to the wxMaxima project."),
                          MC_TYPE_ERROR);
       m_wxMaxima.m_evaluator.AbortOnError();
@@ -95,7 +95,7 @@ void MaximaResponseReader::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
     }
   else
     {
-      m_wxMaxima.DoRawConsoleAppend(_("There was an error in the XML that should describe the manual topics.\n"
+      m_wxMaxima.m_outputAppender.DoRawConsoleAppend(_("There was an error in the XML that should describe the manual topics.\n"
                            "Please report this as a bug to the wxMaxima project."),
                          MC_TYPE_ERROR);
       m_wxMaxima.m_evaluator.AbortOnError();
@@ -115,10 +115,10 @@ void MaximaResponseReader::ReadMath(const wxXmlDocument &xml) {
   // Append everything from the "beginning of math" to the "end of math" marker
   // to the console
   if (m_wxMaxima.m_configuration.UseUserLabels()) {
-    m_wxMaxima.ConsoleAppend(xml, MC_TYPE_DEFAULT,
+    m_wxMaxima.m_outputAppender.ConsoleAppend(xml, MC_TYPE_DEFAULT,
                   m_wxMaxima.GetWorksheet()->GetEvaluationQueue().GetUserLabel());
   } else {
-    m_wxMaxima.ConsoleAppend(xml, MC_TYPE_DEFAULT);
+    m_wxMaxima.m_outputAppender.ConsoleAppend(xml, MC_TYPE_DEFAULT);
   }
 }
 
@@ -255,7 +255,7 @@ void MaximaResponseReader::ReadMiscText(const wxString &data) {
 
   // Add the text line to the console
   if (m_wxMaxima.GetWorksheet() && (!data.empty())) {
-    m_wxMaxima.GetWorksheet()->SetCurrentTextCell(m_wxMaxima.ConsoleAppend(data, style));
+    m_wxMaxima.GetWorksheet()->SetCurrentTextCell(m_wxMaxima.m_outputAppender.ConsoleAppend(data, style));
     if (style == MC_TYPE_ERROR)
       m_wxMaxima.m_evaluator.AbortOnError();
   }
@@ -405,14 +405,14 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
     bool autoAnswer = m_wxMaxima.GetWorksheet()->WillAutoAnswer();
 
     if (!label.IsEmpty()) {
-      int options = wxMaxima::AppendOpt::NewLine | wxMaxima::AppendOpt::BigSkip;
+      int options = MaximaOutputAppender::AppendOpt::NewLine | MaximaOutputAppender::AppendOpt::BigSkip;
       if (!autoAnswer)
-        options |= wxMaxima::AppendOpt::PromptToolTip;
+        options |= MaximaOutputAppender::AppendOpt::PromptToolTip;
 
       if (std::max(label.Find(m_wxMaxima.m_mathPrefix1), label.Find(m_wxMaxima.m_mathPrefix2)) >= 0)
-        m_wxMaxima.DoConsoleAppend(label, MC_TYPE_PROMPT, wxMaxima::AppendOpt(options));
+        m_wxMaxima.m_outputAppender.DoConsoleAppend(label, MC_TYPE_PROMPT, MaximaOutputAppender::AppendOpt(options));
       else
-        m_wxMaxima.DoRawConsoleAppend(label, MC_TYPE_PROMPT, wxMaxima::AppendOpt(options));
+        m_wxMaxima.m_outputAppender.DoRawConsoleAppend(label, MC_TYPE_PROMPT, MaximaOutputAppender::AppendOpt(options));
     }
 
     m_wxMaxima.GetWorksheet()->OpenQuestionCaret();
@@ -478,7 +478,7 @@ void MaximaResponseReader::ReadStdErr() {
     o = _("Message from the stdout of Maxima: ") + o;
     if ((o_trimmed != wxEmptyString) &&
         (!o_trimmed.StartsWith("Connecting Maxima to server on port")) && (!m_wxMaxima.m_first)) {
-      m_wxMaxima.DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
+      m_wxMaxima.m_outputAppender.DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
       if (Maxima::GetPipeToStdErr())
         std::cerr << o;
     }
@@ -506,7 +506,7 @@ void MaximaResponseReader::ReadStdErr() {
         (o != wxS("Message from maxima's stderr stream: QSocketNotifier: Can only be used with threads started with QThread")) &&  // Maybe related to Gnuplot / Wayland?
         !o.Contains("frames in animation sequence") &&
         (o_trimmed != wxEmptyString) && (o.Length() > 1)) {
-      m_wxMaxima.DoRawConsoleAppend(o, MC_TYPE_ERROR);
+      m_wxMaxima.m_outputAppender.DoRawConsoleAppend(o, MC_TYPE_ERROR);
       m_wxMaxima.m_evaluator.AbortOnError();
       m_wxMaxima.m_evaluator.TriggerEvaluation();
       if(m_wxMaxima.GetWorksheet())
@@ -515,7 +515,7 @@ void MaximaResponseReader::ReadStdErr() {
       if (Maxima::GetPipeToStdErr())
         std::cerr << o;
     } else
-      m_wxMaxima.DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
+      m_wxMaxima.m_outputAppender.DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
   }
 }
 
@@ -523,7 +523,7 @@ void MaximaResponseReader::ReadStdErr() {
 void MaximaResponseReader::ReadVariables(const wxXmlDocument &xmldoc) {
   if(!xmldoc.IsOk())
     {
-      m_wxMaxima.DoRawConsoleAppend(_("There was an error in the XML that should describe the contents of some variables.\n"
+      m_wxMaxima.m_outputAppender.DoRawConsoleAppend(_("There was an error in the XML that should describe the contents of some variables.\n"
                            "Please report this as a bug to the wxMaxima project."),
                          MC_TYPE_ERROR);
       m_wxMaxima.m_evaluator.AbortOnError();
@@ -790,7 +790,7 @@ void MaximaResponseReader::VariableActionOperators(const wxString &value) {
   }
   if(!xmldoc.IsOk())
     {
-      m_wxMaxima.DoRawConsoleAppend(_("There was an error in the XML that should contain the list of operators.\n"
+      m_wxMaxima.m_outputAppender.DoRawConsoleAppend(_("There was an error in the XML that should contain the list of operators.\n"
                            "Please report this as a bug to the wxMaxima project."),
                          MC_TYPE_ERROR);
       m_wxMaxima.m_evaluator.AbortOnError();
@@ -831,7 +831,7 @@ void MaximaResponseReader::ReadAddVariables(const wxXmlDocument &xmldoc) {
   wxLogMessage(_("Maxima sends us a new set of variables for the watch list."));
   if(!xmldoc.IsOk())
     {
-      m_wxMaxima.DoRawConsoleAppend(_("There was an error in the XML that should contain a list of watch variables.\n"
+      m_wxMaxima.m_outputAppender.DoRawConsoleAppend(_("There was an error in the XML that should contain a list of watch variables.\n"
                            "Please report this as a bug to the wxMaxima project."),
                          MC_TYPE_ERROR);
       m_wxMaxima.m_evaluator.AbortOnError();

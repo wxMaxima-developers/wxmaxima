@@ -43,6 +43,7 @@
 #include "MaximaProcessManager.h"
 #include "MaximaEvaluator.h"
 #include "MaximaFileIO.h"
+#include "MaximaOutputAppender.h"
 #include "Dirstructure.h"
 #include <wx/socket.h>
 #include <wx/config.h>
@@ -407,24 +408,9 @@ protected:
   */
   void AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand = 2);
 
-  /* Append something to the console. Might be Text or XML maths.
-
-     \return A pointer to the last line of Unicode text that was appended or
-     NULL, if there is no such line (for example if the appended object is
-     maths instead).
-  */
-  TextCell *ConsoleAppend(wxString s, CellType type);        //!< append maxima output to console
-  void ConsoleAppend(wxXmlDocument xml, CellType type, const wxString &userLabel = {});        //!< append maxima output to console
-
-  enum AppendOpt { NewLine = 1, BigSkip = 2, PromptToolTip = 4, DefaultOpt = NewLine|BigSkip };
-  void DoConsoleAppend(wxString s, CellType type, AppendOpt opts = AppendOpt::DefaultOpt,
-                       const wxString &userLabel = {});
-
-  /*!Append one or more lines of ordinary unicode text to the console
-
-    \return A pointer to the last line that was appended or NULL, if there is no such line
-  */
-  TextCell *DoRawConsoleAppend(wxString s, CellType  type, AppendOpt opts = {});
+  // The console output appenders (ConsoleAppend / DoConsoleAppend /
+  // DoRawConsoleAppend) and their AppendOpt options now live in
+  // MaximaOutputAppender (m_outputAppender).
 
   /*! Spawn the "configure" menu.
 
@@ -644,6 +630,10 @@ private:
   //! worksheet, the status bar, the title, the Maxima process) through this
   //! friendship.
   friend class MaximaFileIO;
+  //! The extracted console output appenders reach wxMaxima's services (the
+  //! worksheet, the parser, the status bar, the evaluator) through this
+  //! friendship.
+  friend class MaximaOutputAppender;
 
   /*! A timer that determines when to do the next autosave;
 
@@ -687,6 +677,10 @@ private:
   //! reference back to this frame (initialised in the constructor, where *this
   //! is unambiguously complete).
   MaximaFileIO m_fileIO;
+  //! The console output appenders peeled off this god class. Holds a reference
+  //! back to this frame (initialised in the constructor, where *this is
+  //! unambiguously complete).
+  MaximaOutputAppender m_outputAppender;
 };
 
 #if wxUSE_DRAG_AND_DROP

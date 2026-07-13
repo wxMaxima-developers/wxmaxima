@@ -119,7 +119,7 @@ void MaximaEvaluator::SendMaxima(wxString s, bool addToHistory, bool background)
       m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::transmit);
     }
   } else {
-    m_wxMaxima.DoRawConsoleAppend(_("Refusing to send cell to maxima: ") +
+    m_wxMaxima.m_outputAppender.DoRawConsoleAppend(_("Refusing to send cell to maxima: ") +
                        parenthesisError + wxS("\n"),
                        MC_TYPE_ERROR);
     if(m_wxMaxima.GetWorksheet())

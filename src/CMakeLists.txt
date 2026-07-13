@@ -147,6 +147,7 @@ set(SOURCE_FILES
     MaximaProcessManager.cpp
     MaximaEvaluator.cpp
     MaximaFileIO.cpp
+    MaximaOutputAppender.cpp
     MaximaMenuSync.cpp
     MaximaTokenizer.cpp
     MaximaManual.cpp
