@@ -247,7 +247,10 @@ OutCommon::GetDataObject(const wxDataFormat &format) {
     {
         wxFileInputStream str(m_filename);
         if (str.IsOk())
-            while (!str.Eof()) {
+            // The IsOk() term matters: on a read ERROR (as opposed to EOF)
+            // Eof() stays false and LastRead() 0, so the loop would spin
+            // forever without appending anything.
+            while (str.IsOk() && !str.Eof()) {
                 auto *buf = contents.GetAppendBuf(chunkSize);
                 str.Read(buf, chunkSize);
                 contents.UngetAppendBuf(str.LastRead());

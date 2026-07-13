@@ -159,7 +159,10 @@ void UnicodeSidebar::OnPaint(wxPaintEvent &event) {
   wxRegEx regex(m_regex->GetValue());
   m_grid->HideRowLabels();
   m_grid->HideColLabels();
-  while (!zstream.Eof()) {
+  // The IsOk() term keeps a decompression error from spinning this loop
+  // forever (inside a paint handler!): Eof() only reports wxSTREAM_EOF, not
+  // read-error states.
+  while (zstream.IsOk() && !zstream.Eof()) {
     wxString line = textIn.ReadLine();
     wxStringTokenizer items(line, wxS(";"), wxTOKEN_RET_EMPTY_ALL);
     wxString number = items.GetNextToken();
