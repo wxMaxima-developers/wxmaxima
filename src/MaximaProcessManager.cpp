@@ -587,6 +587,21 @@ void MaximaProcessManager::OnMaximaClose(wxProcessEvent &event) {
 
 void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
   using std::swap;
+  // Don't interpret data from a Maxima process we don't trust: either its
+  // authentication against MAXIMA_AUTH_CODE failed (so whatever connected to
+  // our socket might not be the Maxima we started), or we are in the process
+  // of killing it. This gate is what makes m_discardAllData actually discard;
+  // it got lost when the chunk interpreter moved to the worker-thread
+  // architecture. Lifecycle events stay live so shutdown still works.
+  if (m_wxMaxima.m_discardAllData) {
+    switch (event.GetInt()) {
+    case Maxima::WRITE_ERROR:
+    case Maxima::DISCONNECTED:
+      break;
+    default:
+      return;
+    }
+  }
   switch (event.GetInt()) {
   case Maxima::READ_MISC_TEXT:
     // Read out stderr: We will do that in the background on a regular basis,

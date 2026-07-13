@@ -1,5 +1,12 @@
 # Current development version
 
+- Fixed: the check that the process connecting to wxMaxima's socket really is
+  the Maxima it started compared the authentication key in a way that accepted
+  any key, and a failed authentication didn't actually discard the impostor's
+  data (the discard flag had lost its only consumer in an earlier refactoring).
+  Both halves of that protection work again: data from a process that fails to
+  authenticate is now really ignored.
+
 - Animation frame rates are now floating-point: an animation (and the default
   framerate in the configuration dialog) may run at fractional or below-one-per-
   second speeds, e.g. 2.5 or 0.5 frames per second. Older documents that stored

@@ -123,7 +123,8 @@ void MaximaResponseReader::ReadMath(const wxXmlDocument &xml) {
 }
 
 void MaximaResponseReader::ReadLoadSymbols(const wxXmlDocument &data) {
-  m_wxMaxima.GetWorksheet()->AddSymbols(data);
+  if(m_wxMaxima.GetWorksheet())
+    m_wxMaxima.GetWorksheet()->AddSymbols(data);
 }
 
 void MaximaResponseReader::ReadFirstPrompt(const wxString &data) {
@@ -266,7 +267,9 @@ void MaximaResponseReader::ReadSuppressedOutput(const wxString &data) {
   if(!m_wxMaxima.m_maximaAuthenticated)
     {
       if(data.Find("</wxxml-key>") != wxNOT_FOUND) {
-        if(data.Find("<wxxml-key>" + m_wxMaxima.m_maximaAuthString + "</wxxml-key>")){
+        // Note the "!= wxNOT_FOUND": wxNOT_FOUND is -1 and therefore truthy,
+        // so testing Find()'s result as a bool accepts any key.
+        if(data.Find("<wxxml-key>" + m_wxMaxima.m_maximaAuthString + "</wxxml-key>") != wxNOT_FOUND){
           wxLogMessage(_("Maxima has authenticated!"));
           m_wxMaxima.m_maximaAuthenticated = true;
         } else {
@@ -306,6 +309,12 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
   m_wxMaxima.m_maximaBusy = false;
   m_wxMaxima.m_bytesFromMaxima = 0;
 
+  // Maxima::ProcessData only fires an XML_PROMPT event once it has a complete
+  // <PROMPT>...</PROMPT> tag, so the label extraction below may rely on data
+  // carrying both the prefix and the suffix. (If the invariant is ever broken
+  // SubString clamps, so release builds get a garbled label, not a crash.)
+  wxASSERT(data.StartsWith(m_wxMaxima.m_promptPrefix) &&
+           data.EndsWith(m_wxMaxima.m_promptSuffix));
   wxString label = data.SubString(m_wxMaxima.m_promptPrefix.Length(),
                                   data.Length() - m_wxMaxima.m_promptSuffix.Length() - 1);
 
@@ -490,7 +499,8 @@ void MaximaResponseReader::ReadStdErr() {
       m_wxMaxima.DoRawConsoleAppend(o, MC_TYPE_ERROR);
       m_wxMaxima.m_evaluator.AbortOnError();
       m_wxMaxima.m_evaluator.TriggerEvaluation();
-      m_wxMaxima.GetWorksheet()->GetErrorList().Add(m_wxMaxima.GetWorksheet()->GetWorkingGroup(true));
+      if(m_wxMaxima.GetWorksheet())
+        m_wxMaxima.GetWorksheet()->GetErrorList().Add(m_wxMaxima.GetWorksheet()->GetWorkingGroup(true));
 
       if (Maxima::GetPipeToStdErr())
         std::cerr << o;
