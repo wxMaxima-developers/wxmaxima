@@ -596,6 +596,11 @@ void MaximaProcessManager::OnMaximaClose(){
 }
 
 void MaximaProcessManager::OnMaximaClose(wxProcessEvent &event) {
+  // Skip() on every path: it leaves the event unprocessed, which tells
+  // wxProcess::OnTerminate to delete the wxProcess object itself (see
+  // OnGnuplotQueryTerminals). Without it the object of every ended Maxima
+  // process leaked - and a "delete it ourselves instead" would double-free.
+  event.Skip();
   if(event.GetPid() != m_wxMaxima.m_pid)
     return;
   OnMaximaClose();
@@ -873,11 +878,17 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
 
 
 void MaximaProcessManager::OnGnuplotQueryTerminals(wxProcessEvent &event) {
+  // Lifetime contract, easy to get wrong (a "fix" for the seeming leak here
+  // caused a double free): wxProcess::OnTerminate deletes the wxProcess
+  // itself when the event ends up NOT processed - and event.Skip() marks it
+  // exactly that. So this handler must Skip() on every path and must never
+  // delete the process; nulling our pointer is all the cleanup we own.
+  event.Skip();
   if (!m_wxMaxima.m_gnuplotTerminalQueryProcess)
     return;
   // Only handle the termination of the query we currently track: a stale
   // event from an older, superseded query (Maxima restart) must not make us
-  // read - let alone delete - the still-running current process.
+  // read the still-running current process's streams.
   if (event.GetPid() != m_wxMaxima.m_gnuplotTerminalQueryProcess->GetPid())
     return;
   wxString gnuplotMessage;
@@ -919,16 +930,13 @@ void MaximaProcessManager::OnGnuplotQueryTerminals(wxProcessEvent &event) {
     m_wxMaxima.m_configuration.UsePngCairo(false);
   }
   m_wxMaxima.m_gnuplotTerminalQueryProcess->CloseOutput();
-  // The process has ended (this IS its termination event) and we created it
-  // with an event handler, so deleting it is our job - just nulling the
-  // pointer leaked one wxProcess per terminal query.
-  delete m_wxMaxima.m_gnuplotTerminalQueryProcess;
+  // Drop our reference only - the Skip() above leaves the event unprocessed,
+  // which makes wxProcess::OnTerminate delete the object itself.
   m_wxMaxima.m_gnuplotTerminalQueryProcess = NULL;
   // Remember which gnuplot we just probed so a Maxima restart with an
   // unchanged gnuplot doesn't probe again. The PID guard above ensures this
   // event belongs to the latest query, i.e. to the current m_gnuplotcommand.
   m_wxMaxima.m_gnuplotProbedCommand = m_wxMaxima.m_gnuplotcommand;
-  event.Skip();
 }
 
 void MaximaProcessManager::OnGnuplotClose(wxProcessEvent &event) {
