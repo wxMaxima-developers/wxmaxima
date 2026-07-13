@@ -171,7 +171,7 @@ bool MaximaFileIO::OpenWXMFile(const wxString &file, Worksheet *document,
 }
 
 wxString MaximaFileIO::ReadPotentiallyUnclosedTag(wxStringTokenizer &lines,
-                                              wxString firstLine) {
+                                              wxString firstLine, int depth) {
   wxString result = firstLine + wxS("\n");
   wxString closingTag = firstLine;
   m_wxMaxima.m_xmlOpeningTagName.Replace(&closingTag, wxS("</\\1>"));
@@ -186,8 +186,11 @@ wxString MaximaFileIO::ReadPotentiallyUnclosedTag(wxStringTokenizer &lines,
       if (line.Contains(wxS("</")))
         break;
       else {
-        if (line.Contains(wxS("<")))
-          result += ReadPotentiallyUnclosedTag(lines, line);
+        // Each nested unclosed tag recurses; bound the depth so a crafted
+        // .wxmx with pathologically deep nesting can't overflow the stack.
+        // Too deep: keep the line as flat text instead of recursing.
+        if (line.Contains(wxS("<")) && depth < 250)
+          result += ReadPotentiallyUnclosedTag(lines, line, depth + 1);
         else
           result += line + wxS("\n");
       }

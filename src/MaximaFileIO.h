@@ -71,9 +71,10 @@ public:
   bool CheckWXMXVersion(const wxString &docversion);
 
   //! Reassembles a cell whose closing XML tag went missing in a damaged .wxmx,
-  //! used by OpenWXMXFile's recovery path (recursive).
+  //! used by OpenWXMXFile's recovery path (recursive; depth caps the nesting so
+  //! a crafted file cannot overflow the stack).
   wxString ReadPotentiallyUnclosedTag(wxStringTokenizer &lines,
-                                      wxString firstLine);
+                                      wxString firstLine, int depth = 0);
 
   //! Opens a file: picks the loader by extension (or hands the file to Maxima
   //! via load()/batch()/demo() for non-worksheet files) and updates the UI.
