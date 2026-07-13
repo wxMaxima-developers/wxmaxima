@@ -310,6 +310,28 @@ SCENARIO("A page break does not swallow the cell that follows it") {
   }
 }
 
+SCENARIO("A .wxm that opens with a fold marker does not crash the parser") {
+  // A fold with no preceding cell to attach the hidden tree to left "last" null
+  // in TreeFromWXM's WXM_FOLD case and dereferenced it (last->HideTree(...)).
+  // Such input is reachable by opening or pasting a hand-crafted/corrupt .wxm.
+  GIVEN("a .wxm whose very first marker is a fold-start") {
+    const wxString wxm =
+      wxS("/* [wxMaxima: fold    start ] */\n")
+      wxS("/* [wxMaxima: input   start ] */\n")
+      wxS("1+1;\n")
+      wxS("/* [wxMaxima: input   end   ] */\n")
+      wxS("/* [wxMaxima: fold    end   ] */\n");
+    std::vector<wxString> lines;
+    wxStringTokenizer tok(wxm, wxS("\n"), wxTOKEN_RET_EMPTY);
+    while (tok.HasMoreTokens())
+      lines.push_back(tok.GetNextToken());
+
+    THEN("parsing it does not crash") {
+      REQUIRE_NOTHROW(Format::TreeFromWXM(lines, g_cfg));
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

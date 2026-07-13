@@ -400,7 +400,12 @@ namespace Format {
         while (wxmLine != end && *wxmLine != endHeader)
           hiddenTree.push_back(*wxmLine++);
 
-        last->HideTree(TreeFromWXM(hiddenTree, config));
+        // A fold marker with no preceding cell to attach the hidden tree to
+        // (e.g. a .wxm/pasted text that opens with the fold marker) leaves
+        // "last" null; every other case here already guards it, so guard this
+        // one too instead of dereferencing null.
+        if (last)
+          last->HideTree(TreeFromWXM(hiddenTree, config));
       } break;
 
       case WXM_INVALID:
