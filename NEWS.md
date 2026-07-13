@@ -1,5 +1,17 @@
 # Current development version
 
+- Fixed several ways a corrupt or hostile .wxmx file could hang or misbehave
+  instead of failing cleanly: a damaged archive opened in batch mode wedged the
+  program (it repeatedly tried to auto-save the unloadable, name-less session,
+  reopening a "Save As" dialog from every idle cycle); a content.xml claiming
+  billions of watch variables or an enormous active-cell index drove
+  near-endless loops; and an over-large content.xml is now read only up to a
+  sane limit so a decompression bomb cannot exhaust memory. wxMaxima now
+  refuses such files gracefully (a batch run exits with an error code), and a
+  new corrupt_wxmx_smoke test guards it. Also: the .wxmx document-version check
+  is parsed locale-independently (it silently did nothing under locales that
+  use a comma decimal separator), and a skipped zip entry no longer leaks.
+
 - Fixed: when Maxima asks a question the input cell for the answer appeared
   above the question instead of below it (the answer cell was appended to the
   output before the question text).

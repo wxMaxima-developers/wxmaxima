@@ -26,6 +26,7 @@
 
 #include "MaximaFileIO.h"
 #include "wxMaxima.h"
+#include "dialogs/LoggingMessageDialog.h"
 #include "Worksheet.h"
 #include "WXMformat.h"
 #include "WXMXformat.h"
@@ -204,6 +205,27 @@ wxString MaximaFileIO::ReadPotentiallyUnclosedTag(wxStringTokenizer &lines,
   }
 }
 
+namespace {
+//! Parse a string of XML into xmldoc. No-op on an empty string: a
+//! wxMemoryInputStream built from an empty wxMemoryOutputStream trips a
+//! wxWidgets assertion ("must have buffer to CopyTo"), and empty content can
+//! never be valid XML anyway. Used by the .wxmx recovery ladder, whose earlier
+//! stages can whittle the recovered text down to nothing.
+void LoadXmlFromString(wxXmlDocument &xmldoc, const wxString &contents) {
+  if (contents.IsEmpty())
+    return;
+  wxMemoryOutputStream ostream;
+  wxTextOutputStream txtstrm(ostream);
+  txtstrm.WriteString(contents);
+  wxMemoryInputStream istream(ostream);
+#if wxCHECK_VERSION(3, 3, 0)
+  xmldoc.Load(istream, wxXMLDOC_KEEP_WHITESPACE_NODES);
+#else
+  xmldoc.Load(istream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+#endif
+}
+} // namespace
+
 bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
                             bool clearDocument) {
   wxLogMessage(_("Opening a wxmx file"));
@@ -227,15 +249,21 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
   // => After the next reboot the right-click context menu's "new" submenu
   // contains
   //    an entry that creates valid empty .wxmx files.
-  if (wxFile(file, wxFile::read).Eof()) {
-    document->ClearDocument();
-    if(m_wxMaxima.GetWorksheet())
-      m_wxMaxima.GetWorksheet()->SetCurrentFile(file);
-    m_wxMaxima.m_processManager.StartMaxima();
+  {
+    // The IsOpened() check keeps an unopenable file (deleted, no permission)
+    // from tripping wxFile::Eof()'s is-opened assert; such a file falls
+    // through to the zip reader whose error path reports it.
+    wxFile emptyCheck(file, wxFile::read);
+    if (emptyCheck.IsOpened() && emptyCheck.Eof()) {
+      document->ClearDocument();
+      if(m_wxMaxima.GetWorksheet())
+        m_wxMaxima.GetWorksheet()->SetCurrentFile(file);
+      m_wxMaxima.m_processManager.StartMaxima();
 
-    m_wxMaxima.ResetTitle(true, true);
-    document->SetSaved(true);
-    return true;
+      m_wxMaxima.ResetTitle(true, true);
+      document->SetSaved(true);
+      return true;
+    }
   }
 
   // open wxmx file
@@ -243,10 +271,12 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
 
   wxFileInputStream wxmxFile(file);
   wxZipInputStream wxmxContents(wxmxFile);
-  wxZipEntry *contentsEntry = NULL;
+  // GetNextEntry hands the caller ownership of each wxZipEntry; the
+  // unique_ptr frees the skipped entries and the matching one alike.
+  std::unique_ptr<wxZipEntry> contentsEntry;
   while(!wxmxContents.Eof())
     {
-      contentsEntry = wxmxContents.GetNextEntry();
+      contentsEntry.reset(wxmxContents.GetNextEntry());
       if((!contentsEntry) || (contentsEntry->GetName() == wxS("content.xml")))
         break;
     }
@@ -263,6 +293,12 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
     // to include a letter of ascii code 27 in content.xml. Let's filter this
     // char out.
 
+    // Upper bound on the content.xml we are willing to read into memory. A
+    // real worksheet's XML is at most a few tens of MB; a zip entry that
+    // declares (or, decompressed, produces) far more than this is either
+    // corrupt or a decompression bomb, and reading it all would exhaust
+    // memory / appear to hang. 256 MB is comfortably above any genuine file.
+    constexpr size_t MAX_CONTENT_XML_BYTES = 256u * 1024 * 1024;
     wxString contents;
     if (contentsEntry) {
       // Re-open the file.
@@ -273,8 +309,15 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
       // wxWidgets 3.3 no longer flips Eof() to true on an empty zip entry
       // (IsOk() goes false instead), so guard with IsOk() as well to avoid an
       // infinite ReadLine() loop on an empty content.xml.
-      while (wxmxContents.IsOk() && !wxmxContents.Eof())
+      while (wxmxContents.IsOk() && !wxmxContents.Eof() &&
+             (contents.length() < MAX_CONTENT_XML_BYTES))
         contents += istream1.ReadLine() + wxS("\n");
+      // No assert on the size: an oversized entry is untrusted input we handle,
+      // not a broken invariant.
+      if (contents.length() >= MAX_CONTENT_XML_BYTES)
+        wxLogMessage(_("content.xml exceeds the sanity limit of %zu bytes; "
+                       "the file may be corrupt or a decompression bomb."),
+                     MAX_CONTENT_XML_BYTES);
     } else {
       wxLogMessage(_("Trying to recover a broken .wxmx file."));
       // Let's try to recover the uncompressed text from a truncated .zip file
@@ -290,7 +333,8 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
             break;
           }
         }
-        while (input.IsOk() && !input.Eof()) {
+        while (input.IsOk() && !input.Eof() &&
+               (contents.length() < MAX_CONTENT_XML_BYTES)) {
           wxString line = text.ReadLine();
           if ((!input.Eof()) || (line != wxEmptyString)) {
             if (line.StartsWith(wxS("</wxMaximaDocument>"))) {
@@ -305,20 +349,7 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
     // Remove the illegal character
     contents.Replace(wxS('\u001b'), wxS("\u238B"));
 
-    {
-      // Write the string into a memory buffer
-      wxMemoryOutputStream ostream;
-      wxTextOutputStream txtstrm(ostream);
-      txtstrm.WriteString(contents);
-      wxMemoryInputStream istream(ostream);
-
-      // Try to load the file from the memory buffer.
-#if wxCHECK_VERSION(3, 3, 0)
-      xmldoc.Load(istream, wxXMLDOC_KEEP_WHITESPACE_NODES);
-#else
-      xmldoc.Load(istream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
-#endif
-    }
+    LoadXmlFromString(xmldoc, contents);
 
     // If the xml document still cannot be loaded let's extract only the input
     // cells.
@@ -338,20 +369,7 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
       }
       contents = contents_inputOnly;
 
-      {
-        // Write the string into a memory buffer
-        wxMemoryOutputStream ostream;
-        wxTextOutputStream txtstrm(ostream);
-        txtstrm.WriteString(contents);
-        wxMemoryInputStream istream(ostream);
-
-        // Try to load the file from the memory buffer.
-#if wxCHECK_VERSION(3, 3, 0)
-        xmldoc.Load(istream, wxXMLDOC_KEEP_WHITESPACE_NODES);
-#else
-        xmldoc.Load(istream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
-#endif
-      }
+      LoadXmlFromString(xmldoc, contents);
     }
 
     // If even that cannot be loaded let's try to reconstruct the closing
@@ -373,20 +391,7 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
       }
       contents_reconstructed += wxS("</wxMaximaDocument>\n");
       contents = contents_reconstructed;
-      {
-        // Write the string into a memory buffer
-        wxMemoryOutputStream ostream;
-        wxTextOutputStream txtstrm(ostream);
-        txtstrm.WriteString(contents);
-        wxMemoryInputStream istream(ostream);
-
-        // Try to load the file from the memory buffer.
-#if wxCHECK_VERSION(3, 3, 0)
-        xmldoc.Load(istream, wxXMLDOC_KEEP_WHITESPACE_NODES);
-#else
-        xmldoc.Load(istream, wxS("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
-#endif
-      }
+      LoadXmlFromString(xmldoc, contents);
     }
   }
   if (!xmldoc.IsOk()) {
@@ -428,6 +433,18 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
   long VariablesNumber;
   if (!VariablesNumberString.ToLong(&VariablesNumber))
     VariablesNumber = 0;
+  // A crafted file can claim billions of watch variables; the loop below would
+  // then call AddWatch() that many times and appear to hang. No real worksheet
+  // has anywhere near this many, so cap it (the attributes past the real count
+  // don't exist and would only add empty watches anyway).
+  // No assert here: variables_num is untrusted file content, so an out-of-range
+  // value is bad input to be handled, not a broken program invariant.
+  constexpr long MAX_WATCH_VARIABLES = 100000;
+  if (VariablesNumber > MAX_WATCH_VARIABLES) {
+    wxLogMessage(_("The file claims %ld watch variables; capping at %ld."),
+                 VariablesNumber, MAX_WATCH_VARIABLES);
+    VariablesNumber = MAX_WATCH_VARIABLES;
+  }
   if (VariablesNumber > 0) {
     if(m_wxMaxima.GetWorksheet() && (m_wxMaxima.m_variablesPane))
       m_wxMaxima.m_variablesPane->Clear();
@@ -482,9 +499,11 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
   if (m_wxMaxima.GetWorksheet() && (ActiveCellNumber > 0)) {
     GroupCell *pos = m_wxMaxima.GetWorksheet()->GetTree();
 
-    for (long i = 1; i < ActiveCellNumber; i++)
-      if (pos)
-        pos = pos->GetNext();
+    // Stop once we run off the end of the document instead of spinning through
+    // the remaining (possibly billions of) iterations a crafted activecell
+    // attribute can request.
+    for (long i = 1; (i < ActiveCellNumber) && pos; i++)
+      pos = pos->GetNext();
 
     if (m_wxMaxima.GetWorksheet() && pos)
       m_wxMaxima.GetWorksheet()->SetHCaret(pos);
@@ -496,7 +515,10 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
 
 bool MaximaFileIO::CheckWXMXVersion(const wxString &docversion) {
   double version = 1.0;
-  if (docversion.ToDouble(&version)) {
+  // ToCDouble: the version attribute is always written with a '.' decimal
+  // separator. Locale-aware ToDouble failed to parse it under locales with a
+  // ',' separator, silently skipping the version check entirely.
+  if (docversion.ToCDouble(&version)) {
     int version_major = static_cast<int>(version);
     int version_minor = static_cast<int>(10 * (version - static_cast<double>(version_major)));
 
@@ -736,6 +758,17 @@ bool MaximaFileIO::SaveFile(bool forceSave) {
   wxConfigBase *config = wxConfig::Get();
 
   if (file.Length() == 0 || forceSave) {
+    // Never pop an interactive Save-As dialog in non-interactive mode (a
+    // --batch / --exit-on-error run). Its native dialog does not honor
+    // LoggingMessageDialog's non-interactive flag, so under a headless run it
+    // was re-shown from every idle cycle when a batch run tried to auto-save a
+    // session that had no filename - e.g. after its input file failed to load,
+    // which wedged the process (it never reached its own Close()).
+    if (LoggingMessageDialog::IsNonInteractive()) {
+      wxLogMessage(_("Not saving: running non-interactively and no file name is set."));
+      return false;
+    }
+
     if (file.Length() == 0) {
       config->Read(wxS("defaultExt"), &fileExt);
       file = _("untitled") + wxS(".") + fileExt;

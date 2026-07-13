@@ -202,6 +202,18 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/diff_smoke_test.sh $<TARGET_FILE:wxmaxima> all-celltypes.wxmx intervals.wxmx)
 
+# Hostile-input smoke test: a corrupt .wxmx (damaged ZIP container, or a
+# content.xml with attacker-chosen counts) must fail to open gracefully, never
+# hang or crash. Fixtures live in the test source dir (not automatic_test_files)
+# so the .wxmx-validity checks don't try to validate them.
+add_test(
+    NAME corrupt_wxmx_smoke
+    COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/corrupt_wxmx_smoke.sh $<TARGET_FILE:wxmaxima>
+            ${CMAKE_CURRENT_SOURCE_DIR}/corrupt_garbage.wxmx
+            ${CMAKE_CURRENT_SOURCE_DIR}/corrupt_truncated.wxmx
+            ${CMAKE_CURRENT_SOURCE_DIR}/corrupt_hugevars.wxmx)
+set_tests_properties(corrupt_wxmx_smoke PROPERTIES TIMEOUT 200)
+
 add_test(
     NAME multiple_batch_files2
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files

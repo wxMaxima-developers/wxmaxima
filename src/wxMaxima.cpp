@@ -2019,6 +2019,11 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
         const wxString fileToOpen = m_fileToOpen;
         m_fileToOpen = wxEmptyString;
         m_openInitialFileError = !m_fileIO.OpenFile(fileToOpen);
+        // A batch run whose input file won't open has nothing to do and should
+        // report failure. (m_openInitialFileError is cleared again a few idle
+        // cycles later, so the exit code has to be latched here.)
+        if (m_openInitialFileError && m_exitAfterEval)
+          m_exitCode = 1;
         event.RequestMore();
         return;
       }
@@ -2213,6 +2218,9 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   if (m_exitAfterEval && GetWorksheet()->GetEvaluationQueue().Empty() &&
       m_fileToOpen.IsEmpty() && (!m_evalOnStartup))
     {
+      // SaveFile is now a no-op when the session has no file name and we are
+      // non-interactive (a failed initial load leaves exactly that state); the
+      // error exit code for that case is set where the load fails.
       m_fileIO.SaveFile(false);
       CallAfter([this]{Close();});
     }
