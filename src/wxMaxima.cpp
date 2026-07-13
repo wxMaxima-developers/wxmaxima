@@ -1341,17 +1341,31 @@ void wxMaxima::ConsoleAppend(wxXmlDocument xml, CellType type,
       m_parser.SetGroup(GetWorksheet()->GetInsertGroup());
       std::unique_ptr<Cell> cell(m_parser.ParseLine(xml, type));
       m_parser.SetGroup(nullptr);
-      // TODO: Does using || make any sense here?
-      GetWorksheet()->InsertLine(std::move(cell),
-                                 (AppendOpt::DefaultOpt & AppendOpt::NewLine) ||
-                                 cell->BreakLineHere());
+      if (!cell)
+        {
+          // Same contract as DoConsoleAppend: a parse failure must be visible,
+          // not silently dropped.
+          DoRawConsoleAppend(_("There was an error in the XML maxima has generated.\n"
+                               "Please report this as a bug to the wxMaxima project."),
+                             MC_TYPE_ERROR);
+          m_evaluator.AbortOnError();
+          return;
+        }
+      // The former second argument `(AppendOpt::DefaultOpt & AppendOpt::NewLine)
+      // || cell->BreakLineHere()` was constant true (DefaultOpt contains
+      // NewLine) - and only that short-circuit kept the read of `cell` next to
+      // std::move(cell) from being evaluation-order UB.
+      GetWorksheet()->InsertLine(std::move(cell), true);
     }
 }
 
 /*! ConsoleAppend adds a new line s of type to the console window.
  *
- * It will call
- * DoConsoleAppend if s is in xml and DoRawCosoleAppend if s is not in xml.
+ * Dispatches on the cell type: plain-text types (default output, errors,
+ * warnings, text, ASCII maths) go to DoRawConsoleAppend verbatim; prompts and
+ * everything else are wrapped in <span>...</span> and run through the XML
+ * parser via DoConsoleAppend. Also enforces the max-output-cells-per-command
+ * limit and strips a trailing </PROMPT> tag.
  */
 TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type) {
   if(!GetWorksheet())
@@ -1517,15 +1531,13 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
     cell = owned.get();
     GetWorksheet()->InsertLine(std::move(owned), true);
   } else {
-    std::unique_ptr<LabelCell> ownedCell;
-    TextCell *incompleteTextCell = nullptr;
-    if (type == MC_TYPE_PROMPT) {
-      incompleteTextCell = new LabelCell(GetWorksheet()->GetTree(),
-                                         &m_configuration,
-                                         wxEmptyString, TS_OTHER_PROMPT);
-      incompleteTextCell->ForceBreakLine(true);
-    } else
-      incompleteTextCell = GetWorksheet()->GetCurrentTextCell();
+    // Prompts never reach this branch - the else-if chain above already
+    // handled MC_TYPE_MAIN_PROMPT and MC_TYPE_PROMPT. (A dead inner
+    // "if (type == MC_TYPE_PROMPT) new LabelCell" that would have leaked its
+    // cell, plus an InsertLine of a never-assigned unique_ptr, used to live
+    // here.) If maxima's last line didn't end in a newline its text cell is
+    // still incomplete; the first line of the new data completes it.
+    TextCell *incompleteTextCell = GetWorksheet()->GetCurrentTextCell();
 
     if (incompleteTextCell) {
       auto pos = s.Find("\n");
@@ -1539,7 +1551,6 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type,
       }
 
       incompleteTextCell->SetValue(newVal);
-      GetWorksheet()->InsertLine(std::move(ownedCell));
       if (s.IsEmpty()) {
         return incompleteTextCell;
       }
