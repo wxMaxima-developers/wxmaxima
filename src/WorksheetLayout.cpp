@@ -156,17 +156,24 @@ void WorksheetLayout::RequestRecalculation(Cell *start) {
 
   group->MarkNeedsRecalculate();
 
-  if (!m_recalculateStart)
-    m_recalculateStart = group;
-  else {
-    // Move m_recalculateStart backwards to start, if start comes before
-    // m_recalculateStart.
-    for (Cell *walk = group; walk; walk = walk->GetPrevious()) {
-      if (walk == m_recalculateStart)
-        return;
-    }
-    m_recalculateStart = group;
+  // Walk from group towards the start of its list: if we meet
+  // m_recalculateStart the pending layout pass already covers group, and if
+  // we end at the tree's first cell, group lies above m_recalculateStart and
+  // becomes the new resume point. If we end anywhere else, group is not part
+  // of the worksheet at all (a freshly constructed cell that is not spliced
+  // in yet, or a cell in a hidden/folded subtree). Adopting such a cell as
+  // the resume point would make the layout pass walk the wrong list and
+  // silently drop the range that was already scheduled - so ignore the
+  // request; detached cells get scheduled when they are spliced into the
+  // tree, hidden ones when their fold parent is unfolded.
+  Cell *chainHead = group;
+  for (Cell *walk = group; walk; walk = walk->GetPrevious()) {
+    if (walk == m_recalculateStart)
+      return;
+    chainHead = walk;
   }
+  if (chainHead == m_getTree())
+    m_recalculateStart = group;
 }
 
 void WorksheetLayout::UpdateConfigurationClientSize() {
