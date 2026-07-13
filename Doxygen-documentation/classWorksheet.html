@@ -453,9 +453,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>GCContainsCurrentQues
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>OpenQuestionCaret</b> (const wxString &amp;txt={})</td></tr>
 <tr class="memdesc:a8894491a942fff2520b9dd8c8135695c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the cursor to the question maxima currently asks and if needed add a cell for user input. <br /></td></tr>
 <tr class="separator:a8894491a942fff2520b9dd8c8135695c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94bd94ddb17fece8123859edd328662c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a94bd94ddb17fece8123859edd328662c">WillAutoAnswer</a> () const</td></tr>
+<tr class="memdesc:a94bd94ddb17fece8123859edd328662c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute all collected scroll events in one go.  <br /></td></tr>
+<tr class="separator:a94bd94ddb17fece8123859edd328662c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9583dd8badd4f21d1abdea8fe065011"><td class="memItemLeft" align="right" valign="top"><a id="ad9583dd8badd4f21d1abdea8fe065011" name="ad9583dd8badd4f21d1abdea8fe065011"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateScrollPos</b> ()</td></tr>
-<tr class="memdesc:ad9583dd8badd4f21d1abdea8fe065011"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute all collected scroll events in one go. <br /></td></tr>
 <tr class="separator:ad9583dd8badd4f21d1abdea8fe065011"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af57ef1cf7e60d3e9160bcd22a4563bf5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#af57ef1cf7e60d3e9160bcd22a4563bf5">GetWorkingGroup</a> (bool resortToLast=false) const</td></tr>
 <tr class="memdesc:af57ef1cf7e60d3e9160bcd22a4563bf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cell maxima currently works on.  <br /></td></tr>
@@ -3082,6 +3084,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Update the table of contents. </p>
 <p>This function actually only schedules the update of the table-of-contents-tab. The actual update is done when <a class="el" href="classwxMaxima.html">wxMaxima</a> is idle. </p>
+
+</div>
+</div>
+<a id="a94bd94ddb17fece8123859edd328662c" name="a94bd94ddb17fece8123859edd328662c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94bd94ddb17fece8123859edd328662c">&#9670;&#160;</a></span>WillAutoAnswer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::WillAutoAnswer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Execute all collected scroll events in one go. </p>
+<p>Will the question maxima just asked be answered automatically?</p>
+<p>True iff the working group has a stored answer for the current question (GetLastQuestion()) and auto-answering is enabled for it. This is the same decision <a class="el" href="classWorksheet.html#a8894491a942fff2520b9dd8c8135695c" title="Move the cursor to the question maxima currently asks and if needed add a cell for user input.">OpenQuestionCaret()</a> makes (it calls this), split out so callers can know it BEFORE opening the answer cell: the question label has to be appended to the output first, or it ends up below the answer editor. </p>
 
 </div>
 </div>

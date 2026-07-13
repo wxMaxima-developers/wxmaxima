@@ -1121,7 +1121,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 <p>append maxima output to console </p>
 <p>ConsoleAppend adds a new line s of type to the console window.</p>
-<p>It will call DoConsoleAppend if s is in xml and DoRawCosoleAppend if s is not in xml. </p>
+<p>Dispatches on the cell type: plain-text types (default output, errors, warnings, text, ASCII maths) go to DoRawConsoleAppend verbatim; prompts and everything else are wrapped in <span>...</span> and run through the XML parser via DoConsoleAppend. Also enforces the max-output-cells-per-command limit and strips a trailing &lt;/PROMPT&gt; tag. </p>
 
 </div>
 </div>
