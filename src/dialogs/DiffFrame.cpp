@@ -351,6 +351,13 @@ void DiffFrame::UpdateDiffNavUI() {
 DiffFrame::DiffFrame(wxWindow *parent, const wxArrayString &files, Configuration *config)
   : wxFrame(parent, wxID_ANY, _("wxMaxima Diff Viewer"), wxDefaultPosition, wxSize(1000, 800)),
     m_configuration(config) {
+// Each DiffEntry stores one GroupCell* per pane in a fixed-size cells[3] array,
+// and the pane loops index it by m_worksheets.size(). Both call sites (the -d
+// command line in main.cpp and the compare-files menu) already reject anything
+// but 2 or 3 files, but assert the upper bound here too so a future caller that
+// drops that check trips in debug/ASan instead of reading past cells[3].
+wxASSERT_MSG(files.size() <= 3,
+             wxS("DiffFrame supports at most 3 files (DiffEntry::cells[3])."));
 wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
 
 // Add a simple toolbar for synchronization controls
