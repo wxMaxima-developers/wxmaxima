@@ -261,6 +261,10 @@ void Maxima::ProcessData(stop_token stopToken)
                 m_processingBuffer = m_processingBuffer.Mid(1);
                 progress = true;
             } else {
+                // If a stop request interrupted the scan above, tag may point
+                // at an entry the buffer does NOT start with. That is harmless
+                // only because the stop_requested check below breaks out
+                // before the buffer is sliced - keep it that way.
                 wxString tagEndName = wxS("</") + tag->first + wxS(">");
                 int end = m_processingBuffer.Find(tagEndName);
                 if (end != wxNOT_FOUND) {
@@ -269,7 +273,9 @@ void Maxima::ProcessData(stop_token stopToken)
                         batchedText.Clear();
                     }
                     if (stopToken.stop_requested()) break;
-                    size_t tagFullLength = end + tagEndName.Length();                    wxString fullTag = m_processingBuffer.Left(tagFullLength);
+                    wxASSERT(m_processingBuffer.StartsWith(wxS("<") + tag->first + wxS(">")));
+                    size_t tagFullLength = end + tagEndName.Length();
+                    wxString fullTag = m_processingBuffer.Left(tagFullLength);
                     m_processingBuffer = m_processingBuffer.Mid(tagFullLength);
                     if (m_processingBuffer.StartsWith(wxS("\n")))
                         m_processingBuffer = m_processingBuffer.Mid(1);
