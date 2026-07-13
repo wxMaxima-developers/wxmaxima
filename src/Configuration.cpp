@@ -335,7 +335,11 @@ void Configuration::ResetAllToDefaults() {
   m_useUnicodeMaths = true;
   m_offerKnownAnswers = true;
   m_parenthesisDrawMode = ascii;
-  m_autoWrap = 1;
+  // Text AND code cells wrap by default. Existing installations have an
+  // autoWrapMode key in their config, which overrides this; the pre-tri-state
+  // legacy value 3 that old installations persist is clamped to "text only"
+  // in ReadConfig, so for those users code wrapping stays opt-in.
+  m_autoWrap = 2;
   m_displayedDigits = 100;
   m_autoIndent = true;
   m_restartOnReEvaluation = true;

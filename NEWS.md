@@ -1,5 +1,21 @@
 # Current development version
 
+- Automatic line wrapping is now enabled for code cells as well as text cells
+  in new installations. Existing installations keep their configured wrapping
+  mode (for configurations written before code wrapping became selectable it
+  stays opt-in).
+
+- Fixed: clicking into the wrapped part of a code cell placed the cursor to
+  the right of the clicked character - by exactly the width of the
+  continuation line's indentation. Mouse selection now accounts for the
+  indentation in code cells the same way it always did in text cells.
+
+- Fixed: typing near the right edge of a wrapping text cell scrolled the
+  worksheet sideways for no reason: the caret entered the horizontal
+  scroll-into-view zone just before every automatic line wrap. The view now
+  only scrolls horizontally when the caret really leaves the visible area,
+  which lies beyond the point where wrapping lines break.
+
 - Stability: error dialogs triggered by data or events from the Maxima process
   (authentication failure, invalid XML in Maxima's output, Maxima terminating
   or failing to start) are no longer shown from inside the event handler that
