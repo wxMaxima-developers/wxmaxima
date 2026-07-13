@@ -1,5 +1,9 @@
 # Current development version
 
+- Restarting Maxima no longer spawns a new gnuplot process to probe which
+  graphics terminals gnuplot supports: if the restarted Maxima reports the
+  same gnuplot as before, the answer from the first probe is reused.
+
 - Stability: a failing save no longer risks stacking one "Saving failed!"
   dialog per autosave interval (the autosave timer restarted before the modal
   dialog was dismissed); the message is now shown once, after the handler that

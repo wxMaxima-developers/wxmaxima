@@ -291,6 +291,15 @@ protected:
   wxProcess *m_gnuplotProcess = NULL;
   //! Info about the gnuplot process we start for querying the terminals it supports
   wxProcess *m_gnuplotTerminalQueryProcess = NULL;
+  /*! The gnuplot command whose terminal support we already probed.
+
+    Set when a terminal query completes. A Maxima restart re-sends
+    gnuplot_command; if it resolves to the same gnuplot as before, its
+    capabilities haven't changed and no new probe process is spawned - the
+    cached UsePngCairo() answer is pushed to the new Maxima by ConfigChanged()
+    anyway.
+  */
+  wxString m_gnuplotProbedCommand;
   //! Is this window active?
   bool m_isActive = true;
   //! Called when this window is focussed or defocussed.

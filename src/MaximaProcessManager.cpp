@@ -924,6 +924,10 @@ void MaximaProcessManager::OnGnuplotQueryTerminals(wxProcessEvent &event) {
   // pointer leaked one wxProcess per terminal query.
   delete m_wxMaxima.m_gnuplotTerminalQueryProcess;
   m_wxMaxima.m_gnuplotTerminalQueryProcess = NULL;
+  // Remember which gnuplot we just probed so a Maxima restart with an
+  // unchanged gnuplot doesn't probe again. The PID guard above ensures this
+  // event belongs to the latest query, i.e. to the current m_gnuplotcommand.
+  m_wxMaxima.m_gnuplotProbedCommand = m_wxMaxima.m_gnuplotcommand;
   event.Skip();
 }
 

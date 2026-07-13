@@ -632,6 +632,16 @@ void MaximaResponseReader::VariableActionMaximaHtmldir(const wxString &value) {
 void MaximaResponseReader::VariableActionGnuplotCommand(const wxString &value) {
   m_wxMaxima.m_processManager.GnuplotCommandName(value);
 
+  // A Maxima restart re-sends gnuplot_command. If it resolves to the same
+  // gnuplot we already probed, its capabilities haven't changed: skip the
+  // probe process. ConfigChanged() pushes the cached UsePngCairo() answer to
+  // the new Maxima regardless.
+  if (!m_wxMaxima.m_gnuplotProbedCommand.IsEmpty() &&
+      (m_wxMaxima.m_gnuplotcommand == m_wxMaxima.m_gnuplotProbedCommand)) {
+    wxLogMessage(_("Not re-querying gnuplot's graphics drivers: same gnuplot as before."));
+    return;
+  }
+
   wxLogMessage(_("Querying gnuplot which graphics drivers it supports."));
   wxEnvVariableHashMap environment;
   // gnuplot uses the PAGER variable only on un*x - and on un*x there is cat.
