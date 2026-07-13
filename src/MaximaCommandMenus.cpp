@@ -2547,10 +2547,10 @@ void MaximaCommandMenus::InsertMenu(wxCommandEvent &event) {
   }
   else if((event.GetId() == EventIDs::menu_add_pagebreak) ||
           (event.GetId() == EventIDs::menu_format_pagebreak)) {
+    // InsertGroupCells schedules a recalculation targeted at the new cell.
     m_wxMaxima.GetWorksheet()->InsertGroupCells(
                                   std::make_unique<GroupCell>(&m_wxMaxima.m_configuration, GC_TYPE_PAGEBREAK),
                                   m_wxMaxima.GetWorksheet()->GetHCaret());
-    m_wxMaxima.GetWorksheet()->RequestRecalculation();
     return;}
   else if((event.GetId() == EventIDs::menu_insert_image) ||
           (event.GetId() == EventIDs::menu_format_image)){

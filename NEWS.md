@@ -1,5 +1,18 @@
 # Current development version
 
+- Speedup: many editing operations (deleting, pasting or restyling cells,
+  undo/redo, search-and-replace, drag-and-drop in the table of contents,
+  "remove all output") used to make the next layout pass walk the whole
+  worksheet; they now tell it exactly where the change happened, so on long
+  documents the cells above the edit aren't even visited. A new
+  test_LayoutInvariants scenario locks this in. Two bugs fixed on the way:
+  scheduling a layout pass for a cell that wasn't part of the worksheet yet
+  (e.g. a freshly created cell an instant before it is added) made the layout
+  engine forget the range it had already been asked to lay out, which could
+  transiently leave cells with stale geometry; and the check whether the
+  caret is visible read a freshly scheduled cell position before the layout
+  pass had actually run, so it could act on a stale position.
+
 - New: if the Lisp under Maxima (sbcl) crashes into its low-level debugger
   (LDB), wxMaxima now recognizes it, explains what happened, and lets you type
   LDB commands (such as "backtrace" or "exit") right in the worksheet instead

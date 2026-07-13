@@ -2506,7 +2506,7 @@ void wxMaxima::AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand) {
   } else {
     if (GetWorksheet()->GetActiveCell()) {
       GetWorksheet()->GetActiveCell()->AddDrawParameter(std::move(cmd));
-      GetWorksheet()->RequestRecalculation();
+      GetWorksheet()->RequestRecalculation(GetWorksheet()->GetActiveCell()->GetGroup());
       GetWorksheet()->RequestRedraw();
     }
   }

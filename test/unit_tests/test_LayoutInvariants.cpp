@@ -259,6 +259,66 @@ SCENARIO("A special matrix with row/column names but no entries does not crash o
   }
 }
 
+// Builds a worksheet of "count" one-line code groups in g_ws and lays it out.
+// Returns the group at "index" (0-based) for the scenario to operate on.
+static GroupCell *BuildWorksheet(int count, int index) {
+  GroupCell *last = nullptr;
+  for (int i = 0; i < count; i++)
+    last = g_ws->InsertGroupCells(
+      std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE,
+                                  wxString::Format(wxS("x%d;"), i)),
+      last);
+  g_ws->RecalculateIfNeeded();
+  REQUIRE(g_ws->GetLastCellsVisited() == count);
+  GroupCell *cell = g_ws->GetTree();
+  for (int i = 0; i < index; i++)
+    cell = cell->GetNext();
+  REQUIRE(cell != nullptr);
+  return cell;
+}
+
+SCENARIO("Editing operations on one cell do not visit the cells above it") {
+  // Guards the "stray whole-worksheet recalculation" regression: operations
+  // that change the tree at one known position must schedule the layout pass
+  // from that position (RequestRecalculation(cell)), not from the tree top
+  // (the no-argument RequestRecalculation()). The layout pass counts the
+  // cells it visited; a count spanning the whole document means some caller
+  // fell back to a global recalculation.
+  g_cfg->SetCanvasSize(wxSize(900, 600));
+
+  GIVEN("a worksheet of 10 code groups, fully laid out") {
+    GroupCell *sixth = BuildWorksheet(10, 5);
+
+    WHEN("the 6th group is deleted") {
+      g_ws->DeleteRegion(sixth, sixth);
+      g_ws->RecalculateIfNeeded();
+
+      THEN("the layout pass starts at the cell before it") {
+        // 9 cells remain; the pass may only span the deletion point (the
+        // 5th cell) to the end = 5 cells. The 4 cells above must not even
+        // be visited.
+        CHECK(g_ws->GetLastCellsVisited() <= 5);
+        CHECK(g_ws->GetLastCellsVisited() >= 1);
+      }
+    }
+
+    WHEN("a new group is inserted after the 6th group") {
+      g_ws->InsertGroupCells(
+        std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("new;")), sixth);
+      g_ws->RecalculateIfNeeded();
+
+      THEN("the layout pass starts at the new cell") {
+        // 11 cells now; the pass may only span the new cell (7th) to the
+        // end = 5 cells.
+        CHECK(g_ws->GetLastCellsVisited() <= 5);
+        CHECK(g_ws->GetLastCellsVisited() >= 1);
+      }
+    }
+
+    g_ws->DestroyTree();
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

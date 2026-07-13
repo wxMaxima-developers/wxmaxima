@@ -336,6 +336,12 @@ public:
   //! Set the parent cell of hidden cells
   void SetHiddenTreeParent(GroupCell *parent, GroupCell *last = nullptr);
 
+  /*! The cell this cell is hidden inside, if it is part of a folded subtree
+
+    \return NULL if this cell is part of the visible worksheet tree
+  */
+  GroupCell *GetHiddenTreeParent() const { return m_hiddenTreeParent; }
+
   /*! Fold this cell
 
     \return the cell's address if folding was successful, else NULL

@@ -877,8 +877,20 @@ public:
    */
   void RequestRecalculation(Cell *start) { m_layout.RequestRecalculation(start); }
 
-  //! Schedule a recalculation of the whole worksheet. See RequestRecalculation(Cell*).
+  /*! Schedule a recalculation of the whole worksheet. See RequestRecalculation(Cell*).
+
+    Only for operations that change the geometry of cells at unknown or
+    document-wide positions (zoom, font or window-width changes, unfolding).
+    An operation that changes one known cell must request
+    RequestRecalculation(cell) instead so the layout pass doesn't have to
+    visit the cells above it.
+   */
   void RequestRecalculation() { RequestRecalculation(GetTree()); }
+
+  //! How many cells the last layout pass visited. See WorksheetLayout.
+  int GetLastCellsVisited() const { return m_layout.GetLastCellsVisited(); }
+  //! How many cells the last layout pass truly recalculated. See WorksheetLayout.
+  int GetLastCellsRecalculated() const { return m_layout.GetLastCellsRecalculated(); }
 
   /*! Empties the current document
 
@@ -1331,8 +1343,16 @@ public:
   void OutputChanged()
     { m_document.OutputChanged(); }
 
+  //! Remove all output cells from the whole worksheet
   void RemoveAllOutput();
 
+  /*! Remove all output cells from the list of cells that starts at \p cell
+
+    Schedules a recalculation starting at \p cell - unless \p cell is part of
+    a hidden (folded) subtree: hidden cells are detached from the worksheet
+    tree, so they must not become the layout engine's resume point; they get
+    laid out when their fold parent is unfolded.
+  */
   void RemoveAllOutput(GroupCell *cell);
   // methods related to evaluation queue
 

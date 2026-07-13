@@ -2105,10 +2105,11 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style) {
   DeleteRegion(group, group);
   TreeUndo_AppendAction();
   auto *editable = newGroupCell->GetEditable();
+  // DeleteRegion and InsertGroupCells have both already scheduled a
+  // recalculation targeted at the changed position.
   InsertGroupCells(std::move(newGroupCell), prev);
   SetActiveCell(editable);
   SetSaved(false);
-  RequestRecalculation();
   RequestRedraw();
 }
 
@@ -2171,7 +2172,12 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
   if (renumber)
     NumberSections();
   UpdateTableOfContents();
-  RequestRecalculation();
+  // Geometry above the deleted region is unaffected: recalculate starting at
+  // the cell before it (or from the new tree start if we deleted at the top).
+  if (cellBeforeStart)
+    RequestRecalculation(cellBeforeStart);
+  else if (GetTree())
+    RequestRecalculation(GetTree());
   if(GetTree())
     GetTree()->UpdateYPositionList();
   RequestRedraw();
@@ -3124,8 +3130,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event) {
 
     // ESCAPE is handled by the new cell
   case WXK_ESCAPE:
-    OpenHCaret(wxEmptyString);
-    RequestRecalculation();
+    OpenHCaret(wxEmptyString); // schedules a recalculation of the new cell
     RecalculateIfNeeded();
     RedrawIfRequested();
     if (GetActiveCell())
@@ -3557,8 +3562,10 @@ void Worksheet::TOCdnd(GroupCell *dndStart, GroupCell *dndEnd) {
   std::unique_ptr<Cell> copiedCells = std::move(copy);
   std::unique_ptr<GroupCell> copiedGroupCells =
     unique_cast<Cell, GroupCell>(std::move(copiedCells));
+  // DeleteSelection and InsertGroupCells have both already scheduled a
+  // recalculation targeted at their respective positions; the layout engine
+  // merges them to the topmost one.
   InsertGroupCells(std::move(copiedGroupCells), dndEnd);
-  RequestRecalculation();
   RequestRedraw();
   UpdateTableOfContents();
   NumberSections();
@@ -4119,8 +4126,7 @@ bool Worksheet::CanRedo() const {
 void Worksheet::Undo() {
   if (CanUndoInsideCell()) {
     wxLogMessage(_("Issuing the active cell's undo function"));
-    UndoInsideCell();
-    RequestRecalculation();
+    UndoInsideCell(); // schedules a recalculation of the active cell's group
   } else {
     if (CanTreeUndo()) {
       wxLogMessage(_("Issuing the worksheet's undo function"));
@@ -4204,8 +4210,13 @@ bool Worksheet::TreeUndoCellAddition(UndoActions *sourcelist,
                                  "the beginning of the worksheet."));
 
   // We make the cell we want to end the deletion with visible.
-  if ((action.m_newCellsEnd) && (action.m_newCellsEnd->RevealHidden()))
+  if ((action.m_newCellsEnd) && (action.m_newCellsEnd->RevealHidden())) {
     FoldOccurred();
+    // Unfolding splices hidden cells back in above the region DeleteRegion
+    // will remove (and schedule a targeted recalculation for), so schedule
+    // a recalculation of the whole worksheet.
+    RequestRecalculation();
+  }
 
   wxASSERT_MSG(CanDeleteRegion(action.m_start, action.m_newCellsEnd),
                _("Got a request to undo an action that involves a delete which "
@@ -4275,12 +4286,16 @@ bool Worksheet::TreeUndoTextChange(UndoActions *sourcelist,
 
     // Make sure that the cell we have to work on is in the visible part of the
     // tree.
-    if (action.m_start->RevealHidden())
+    if (action.m_start->RevealHidden()) {
       FoldOccurred();
+      // Unfolding splices hidden cells back in above m_start, so a
+      // recalculation targeted at m_start wouldn't reach them.
+      RequestRecalculation();
+    } else
+      RequestRecalculation(action.m_start);
 
     SetHCaret(action.m_start);
 
-    RequestRecalculation();
     RequestRedraw();
 
     wxASSERT_MSG(!action.m_newCellsEnd,
@@ -4310,8 +4325,13 @@ bool Worksheet::TreeUndo(UndoActions *sourcelist,
 
   if (action.m_start) {
     // Make sure that the cell we work on is in the visible part of the tree.
-    if (action.m_start->RevealHidden())
+    if (action.m_start->RevealHidden()) {
       FoldOccurred();
+      // Unfolding splices hidden cells back in above m_start; the targeted
+      // recalculations the individual undo actions below schedule don't
+      // reach them, so schedule a recalculation of the whole worksheet.
+      RequestRecalculation();
+    }
   }
 
   bool actionContinues;
@@ -4332,7 +4352,8 @@ bool Worksheet::TreeUndo(UndoActions *sourcelist,
   } while (actionContinues);
   if (!undoForThisOperation->empty())
     undoForThisOperation->front().m_partOfAtomicAction = false;
-  RequestRecalculation();
+  // Each undo action above has already scheduled a recalculation targeted at
+  // the cells it changed; the layout engine merges them to the topmost one.
   RequestRedraw();
   return true;
 }
@@ -4585,8 +4606,10 @@ void Worksheet::PasteFromClipboard() {
 
         // Now paste the cells
         if (!GetTree()) {
-          // Empty work sheet => We paste cells as the new cells
+          // Empty work sheet => We paste cells as the new cells. The direct
+          // tree assignment doesn't schedule a recalculation on its own.
           TreeOwner() = std::move(contents);
+          RequestRecalculation();
         } else {
           bool hasHSelection =
             GetDocumentCellPointers().GetSelectionStart() &&
@@ -4599,10 +4622,11 @@ void Worksheet::PasteFromClipboard() {
             DeleteSelection();
             TreeUndo_AppendAction();
           }
+          // DeleteSelection and InsertGroupCells schedule recalculations
+          // targeted at the changed positions.
           InsertGroupCells(std::move(contents), target);
         }
         NumberSections();
-        RequestRecalculation();
         RequestRedraw();
         RedrawIfRequested();
         SetHCaret(end);
@@ -4863,7 +4887,7 @@ void Worksheet::UndoInsideCell() {
     GetActiveCell()->Undo();
     GetActiveCell()->GetGroup()->ResetSize();
     GetActiveCell()->ResetSize();
-    RequestRecalculation();
+    RequestRecalculation(GetActiveCell()->GetGroup());
     RequestRedraw();
   }
 }
@@ -4876,7 +4900,7 @@ void Worksheet::RedoInsideCell() {
   if (GetActiveCell()) {
     GetActiveCell()->Redo();
     GetActiveCell()->GetGroup()->ResetSize();
-    RequestRecalculation();
+    RequestRecalculation(GetActiveCell()->GetGroup());
     RequestRedraw();
   }
 }
@@ -4893,10 +4917,9 @@ void Worksheet::RemoveAllOutput() {
       ClearSelection();
   }
 
-  RemoveAllOutput(GetTree());
+  RemoveAllOutput(GetTree()); // schedules the recalculation, too
   OutputChanged();
 
-  RequestRecalculation();
   RequestRedraw();
 }
 
@@ -4912,11 +4935,15 @@ void Worksheet::RemoveAllOutput(GroupCell *cell) {
 
     GroupCell *sub = tmp.GetHiddenTree();
     if (sub)
+      // Cells in a hidden tree are detached from the worksheet, so they must
+      // not be passed to RequestRecalculation(); they get laid out when their
+      // fold parent is unfolded.
       RemoveAllOutput(sub);
   }
   m_layout.RequestAdjustSize();
   OutputChanged();
-  RequestRecalculation();
+  if (cell && !cell->GetHiddenTreeParent())
+    RequestRecalculation(cell);
 }
 
 void Worksheet::OnMouseMiddleUp(wxMouseEvent &event) {
@@ -5196,7 +5223,11 @@ bool Worksheet::CaretVisibleIs() {
     if (GetActiveCell()) {
       wxPoint point = GetActiveCell()->PositionToPoint();
       if (point.y < 1) {
+        // RequestRecalculation() only schedules a layout pass; it has to be
+        // followed by RecalculateIfNeeded() to actually run it - otherwise
+        // the re-read below sees the same stale position.
         RequestRecalculation();
+        RecalculateIfNeeded();
         point = GetActiveCell()->PositionToPoint();
       }
       return PointVisibleIs(point);
@@ -5247,7 +5278,7 @@ void Worksheet::Replace(const wxString &oldString, const wxString &newString,
     group->ResetInputLabel();
     group->ResetSize();
     GetActiveCell()->ResetSize();
-    RequestRecalculation();
+    RequestRecalculation(group);
     RequestRedraw();
   }
   GetActiveCell()->SearchStartedHere();
@@ -5263,7 +5294,7 @@ void Worksheet::Replace_RegEx(const wxString &oldString, const wxString &newStri
     group->ResetInputLabel();
     group->ResetSize();
     GetActiveCell()->ResetSize();
-    RequestRecalculation();
+    RequestRecalculation(group);
     RequestRedraw();
   }
   GetActiveCell()->SearchStartedHere();
