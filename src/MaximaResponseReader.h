@@ -104,6 +104,15 @@ public:
   void ReadAddVariables(const wxXmlDocument &xmldoc);
 
 private:
+  /*! Enter LDB mode on the first sign of sbcl's low-level debugger.
+
+    Idempotent: sets m_inLDB and posts a one-time explanatory notice. Called
+    from BOTH the stdout banner and the stderr "ldb>" prompt, because the
+    banner (stdout) is block-buffered and sbcl usually stops in LDB before it
+    flushes - so in practice the prompt (stderr, unbuffered) is what we see.
+  */
+  void EnterLdbMode();
+
   //! The wxMaxima frame whose services the handlers drive. Not owned; the
   //! frame owns this object.
   wxMaxima &m_wxMaxima;
