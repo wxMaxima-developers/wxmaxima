@@ -1514,6 +1514,16 @@ public:
   /*! Move the cursor to the question maxima currently asks and if needed add a cell for user input
     */
   bool OpenQuestionCaret(const wxString &txt = {});  //! Execute all collected scroll events in one go.
+
+  /*! Will the question maxima just asked be answered automatically?
+
+    True iff the working group has a stored answer for the current question
+    (GetLastQuestion()) and auto-answering is enabled for it. This is the same
+    decision OpenQuestionCaret() makes (it calls this), split out so callers
+    can know it BEFORE opening the answer cell: the question label has to be
+    appended to the output first, or it ends up below the answer editor.
+  */
+  bool WillAutoAnswer() const;
   void UpdateScrollPos();
 
   /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.

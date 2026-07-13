@@ -2186,6 +2186,13 @@ void Worksheet::SetAnswer(const wxString &answer) {
   answerCell->SetAnswer(GetLastQuestion(), answer);
 }
 
+bool Worksheet::WillAutoAnswer() const {
+  const GroupCell *group = GetWorkingGroup(true);
+  if (!group)
+    return false;
+  return group->AutoAnswer() && !group->GetAnswer(GetLastQuestion()).empty();
+}
+
 bool Worksheet::OpenQuestionCaret(const wxString &txt) {
   GroupCell *group = GetWorkingGroup(true);
   wxASSERT_MSG(group, _("Bug: Got a question but no cell to answer it in"));
@@ -2215,10 +2222,10 @@ bool Worksheet::OpenQuestionCaret(const wxString &txt) {
     if (!txt.empty())
       answerCell->SetValue(txt);
     else {
-      auto const &text = group->GetAnswer(GetLastQuestion());
-      if (!text.empty())
-        autoEvaluate = group->AutoAnswer();
-      answerCell->SetValue(text);
+      // Single source of truth: WillAutoAnswer() is this same decision,
+      // pre-computable by callers that need it before the cell exists.
+      autoEvaluate = WillAutoAnswer();
+      answerCell->SetValue(group->GetAnswer(GetLastQuestion()));
     }
     answerCell->CaretToEnd();
 

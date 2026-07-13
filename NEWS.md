@@ -1,5 +1,14 @@
 # Current development version
 
+- Fixed: when Maxima asks a question the input cell for the answer appeared
+  above the question instead of below it (the answer cell was appended to the
+  output before the question text).
+
+- Stability: dead code removed from the console-output appenders, including a
+  branch that could only have leaked and an expression one edit away from
+  undefined evaluation order; a 2D-maths chunk from Maxima that fails to parse
+  is now reported as an error instead of being dropped silently.
+
 - Restarting Maxima no longer spawns a new gnuplot process to probe which
   graphics terminals gnuplot supports: if the restarted Maxima reports the
   same gnuplot as before, the answer from the first probe is reused.
@@ -11,7 +20,9 @@
   gnuplot source/data files can no longer loop forever on a stream that
   reports a read error instead of an end-of-file. A superseded gnuplot
   terminal query (Maxima restart) no longer has its termination mis-attributed
-  to the newer query, and the query process object is freed instead of leaked.
+  to the newer query, and the process object of every Maxima process that
+  ended no longer leaks (its termination event was consumed in a way that told
+  wxWidgets somebody else would free it).
 
 - Automatic line wrapping is now enabled for code cells as well as text cells
   in new installations. Existing installations keep their configured wrapping

@@ -397,12 +397,12 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
     // if the question has been preceded by many lines.
     m_wxMaxima.m_outputCellsFromCurrentCommand = 0;
 
-    bool autoAnswer = m_wxMaxima.GetWorksheet()->OpenQuestionCaret();
-
-    if (m_wxMaxima.GetWorksheet()->ScrolledAwayFromEvaluation()) {
-      if (m_wxMaxima.GetWorksheet()->m_mainToolBar)
-        m_wxMaxima.GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
-    }
+    // The question label must reach the output list BEFORE OpenQuestionCaret
+    // appends the answer EditorCell to the same list - the other way around
+    // the answer editor shows up ABOVE the question it answers. The label's
+    // tooltip depends on whether the question will be auto-answered, which
+    // WillAutoAnswer() can tell without creating the answer cell.
+    bool autoAnswer = m_wxMaxima.GetWorksheet()->WillAutoAnswer();
 
     if (!label.IsEmpty()) {
       int options = wxMaxima::AppendOpt::NewLine | wxMaxima::AppendOpt::BigSkip;
@@ -413,6 +413,13 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
         m_wxMaxima.DoConsoleAppend(label, MC_TYPE_PROMPT, wxMaxima::AppendOpt(options));
       else
         m_wxMaxima.DoRawConsoleAppend(label, MC_TYPE_PROMPT, wxMaxima::AppendOpt(options));
+    }
+
+    m_wxMaxima.GetWorksheet()->OpenQuestionCaret();
+
+    if (m_wxMaxima.GetWorksheet()->ScrolledAwayFromEvaluation()) {
+      if (m_wxMaxima.GetWorksheet()->m_mainToolBar)
+        m_wxMaxima.GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
     }
 
     if (!autoAnswer) {
