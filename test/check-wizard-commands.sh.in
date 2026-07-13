@@ -1,7 +1,9 @@
 #!/bin/sh
 # Syntax-checks every wizard/menu command template that wxMaxima builds from a
-# "#n#" placeholder string (the CommandWiz "commandRule" arguments in
-# src/wxMaxima.cpp). Each template is filled with dummy operands (#1# -> g1, ...)
+# "#n#" placeholder string (the CommandWiz "commandRule" arguments, which live in
+# src/MaximaCommandMenus.cpp since the menu handlers were peeled out of the
+# wxMaxima god class; src/wxMaxima.cpp is still scanned in case any remain/return
+# there). Each template is filled with dummy operands (#1# -> g1, ...)
 # and handed to Maxima's parser via parse_string(): unlike evaluation, parsing
 # does not choke on the placeholder default values, but it still rejects
 # malformed syntax such as an unbalanced parenthesis -- exactly the class of bug
@@ -13,18 +15,21 @@
 
 set -eu
 
-SRC="@CMAKE_SOURCE_DIR@/src/wxMaxima.cpp"
+# The command templates moved from wxMaxima.cpp into MaximaCommandMenus.cpp with
+# the menu-handler extraction; scan both so the check follows the code.
+SRCS="@CMAKE_SOURCE_DIR@/src/MaximaCommandMenus.cpp @CMAKE_SOURCE_DIR@/src/wxMaxima.cpp"
 MAXIMA="@MAXIMA@"
 
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
 # Extract the unique command templates that contain a #n# placeholder.
-grep -oE 'wxS\("[^"]*#[0-9]#[^"]*"\)' "$SRC" \
+# -h: several source files, so suppress grep's "file:" prefix.
+grep -hoE 'wxS\("[^"]*#[0-9]#[^"]*"\)' $SRCS \
   | sed 's/^wxS("//; s/")$//' | sort -u > "$WORK/templates.txt"
 
 if [ ! -s "$WORK/templates.txt" ]; then
-  echo "Failure: no wizard command templates found in $SRC" >&2
+  echo "Failure: no wizard command templates found in $SRCS" >&2
   exit 1
 fi
 
