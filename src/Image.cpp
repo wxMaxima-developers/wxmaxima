@@ -348,7 +348,10 @@ void Image::LoadGnuplotSource(
     // that locates its temp data somewhere strange).
     // TODO: Manipulates a variable that isn't used at all.
     wxRegEx replaceDataFileName("'[^']*maxout_[^']*_[_0-9]*\\.data'");
-    while (!source->Eof()) {
+    // The IsOk() term matters: Eof() only reports wxSTREAM_EOF, so a stream
+    // stuck in a read-ERROR state never reaches Eof() and the loop would spin
+    // forever, growing the output by one "\n" per iteration.
+    while (source->IsOk() && !source->Eof()) {
       line = textIn.ReadLine();
       if (replaceDataFileName.Matches(line)) {
         replaceDataFileName.Replace(&line, wxS("'<DATAFILENAME>'"));
@@ -383,7 +386,8 @@ void Image::LoadGnuplotData(
     wxTextOutputStream textOut(zstream);
     wxString line;
 
-    while (!data->Eof()) {
+    // IsOk(): see LoadGnuplotSource - don't spin on a read error.
+    while (data->IsOk() && !data->Eof()) {
       line = textIn.ReadLine();
       textOut << line + wxS("\n");
     }

@@ -788,8 +788,7 @@ bool MaximaFileIO::SaveFile(bool forceSave) {
     if (file.Lower().EndsWith(wxS(".wxm"))) {
       config->Write(wxS("defaultExt"), wxS("wxm"));
       if (!m_wxMaxima.GetWorksheet()->ExportToMAC(file)) {
-        m_wxMaxima.StatusSaveFailed();
-        LoggingMessageBox(_("Saving failed!"), _("Error!"), wxOK);
+        ReportSaveFailed();
         m_wxMaxima.StartAutoSaveTimer();
         if (m_wxMaxima.ExitOnErrorArmed()) {
           wxMaxima::m_exitCode = 1;
@@ -806,8 +805,7 @@ bool MaximaFileIO::SaveFile(bool forceSave) {
                                 &m_wxMaxima.GetWorksheet()->GetViewCellPointers(),
                                 m_wxMaxima.m_variablesPane->GetVarnames(),
                                 m_wxMaxima.GetWorksheet()->GetHCaret())) {
-        m_wxMaxima.StatusSaveFailed();
-        LoggingMessageBox(_("Saving failed!"), _("Error!"), wxOK);
+        ReportSaveFailed();
         m_wxMaxima.StartAutoSaveTimer();
         if (m_wxMaxima.ExitOnErrorArmed()) {
           wxMaxima::m_exitCode = 1;
@@ -832,6 +830,19 @@ bool MaximaFileIO::SaveFile(bool forceSave) {
   m_wxMaxima.StartAutoSaveTimer();
 
   return true;
+}
+
+void MaximaFileIO::ReportSaveFailed() {
+  m_wxMaxima.StatusSaveFailed();
+  if (!m_saveFailedBoxPending) {
+    m_saveFailedBoxPending = true;
+    m_wxMaxima.CallAfter([this]{
+      LoggingMessageBox(_("Saving failed!"), _("Error!"), wxOK);
+      // Cleared only after the box closes so failures of further autosave
+      // attempts while it is open don't stack a second box on top of it.
+      m_saveFailedBoxPending = false;
+    });
+  }
 }
 
 bool MaximaFileIO::AutoSave() {

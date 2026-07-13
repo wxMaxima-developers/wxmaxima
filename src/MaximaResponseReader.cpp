@@ -642,6 +642,13 @@ void MaximaResponseReader::VariableActionGnuplotCommand(const wxString &value) {
     environment["LANG"] = Configuration::GetMaximaLang();
   wxGetEnvMap(&environment);
 
+  // A Maxima restart re-sends gnuplot_command, so a previous terminal query
+  // may still be in flight. Detach it (it then deletes itself when its child
+  // exits) instead of overwriting the pointer: its termination event would
+  // otherwise be handled against the NEW process - reading the wrong streams
+  // and deleting a wxProcess whose child is still running.
+  if (m_wxMaxima.m_gnuplotTerminalQueryProcess)
+    m_wxMaxima.m_gnuplotTerminalQueryProcess->Detach();
   m_wxMaxima.m_gnuplotTerminalQueryProcess =
     new wxProcess(&m_wxMaxima, EventIDs::gnuplot_query_terminals_id);
   m_wxMaxima.m_gnuplotTerminalQueryProcess->Redirect();

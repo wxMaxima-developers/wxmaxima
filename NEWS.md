@@ -1,5 +1,14 @@
 # Current development version
 
+- Stability: a failing save no longer risks stacking one "Saving failed!"
+  dialog per autosave interval (the autosave timer restarted before the modal
+  dialog was dismissed); the message is now shown once, after the handler that
+  detected it has finished. Reading gnuplot's terminal-list reply and cached
+  gnuplot source/data files can no longer loop forever on a stream that
+  reports a read error instead of an end-of-file. A superseded gnuplot
+  terminal query (Maxima restart) no longer has its termination mis-attributed
+  to the newer query, and the query process object is freed instead of leaked.
+
 - Automatic line wrapping is now enabled for code cells as well as text cells
   in new installations. Existing installations keep their configured wrapping
   mode (for configurations written before code wrapping became selectable it

@@ -875,18 +875,33 @@ void MaximaProcessManager::Interrupt(wxCommandEvent &WXUNUSED(event)) {
 void MaximaProcessManager::OnGnuplotQueryTerminals(wxProcessEvent &event) {
   if (!m_wxMaxima.m_gnuplotTerminalQueryProcess)
     return;
+  // Only handle the termination of the query we currently track: a stale
+  // event from an older, superseded query (Maxima restart) must not make us
+  // read - let alone delete - the still-running current process.
+  if (event.GetPid() != m_wxMaxima.m_gnuplotTerminalQueryProcess->GetPid())
+    return;
   wxString gnuplotMessage;
+  // Both streams exist because the query process was created with Redirect(),
+  // but guard anyway. The IsOk() term in the loops matters: Eof() only
+  // reports wxSTREAM_EOF, so a pipe stuck in a read-ERROR state would
+  // otherwise keep the loop spinning (and the string growing) forever.
   {
     wxInputStream *istream = m_wxMaxima.m_gnuplotTerminalQueryProcess->GetInputStream();
-    wxTextInputStream textin(*istream);
-    while (!istream->Eof())
-      gnuplotMessage += textin.ReadLine() + "\n";
+    wxASSERT(istream);
+    if (istream) {
+      wxTextInputStream textin(*istream);
+      while (istream->IsOk() && !istream->Eof())
+        gnuplotMessage += textin.ReadLine() + "\n";
+    }
   }
   {
     wxInputStream *istream = m_wxMaxima.m_gnuplotTerminalQueryProcess->GetErrorStream();
-    wxTextInputStream textin(*istream);
-    while (!istream->Eof())
-      gnuplotMessage += textin.ReadLine() + "\n";
+    wxASSERT(istream);
+    if (istream) {
+      wxTextInputStream textin(*istream);
+      while (istream->IsOk() && !istream->Eof())
+        gnuplotMessage += textin.ReadLine() + "\n";
+    }
   }
   gnuplotMessage.Trim(true);
   gnuplotMessage.Trim(false);
@@ -904,6 +919,10 @@ void MaximaProcessManager::OnGnuplotQueryTerminals(wxProcessEvent &event) {
     m_wxMaxima.m_configuration.UsePngCairo(false);
   }
   m_wxMaxima.m_gnuplotTerminalQueryProcess->CloseOutput();
+  // The process has ended (this IS its termination event) and we created it
+  // with an event handler, so deleting it is our job - just nulling the
+  // pointer leaked one wxProcess per terminal query.
+  delete m_wxMaxima.m_gnuplotTerminalQueryProcess;
   m_wxMaxima.m_gnuplotTerminalQueryProcess = NULL;
   event.Skip();
 }

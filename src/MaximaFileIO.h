@@ -87,6 +87,20 @@ public:
   bool AutoSave();
 
 private:
+  /*! Reports a failed save: status bar immediately, dialog deferred.
+
+    SaveFile() also runs from the autosave timer, and a modal dialog inside a
+    timer handler pumps the event queue - with the autosave timer already
+    restarted at that point, an unattended "Saving failed!" box would let the
+    next autosave re-enter SaveFile() and stack another box each interval.
+    So the box is CallAfter-deferred and coalesced via m_saveFailedBoxPending.
+  */
+  void ReportSaveFailed();
+
+  //! True while a deferred "Saving failed!" box is queued or open; further
+  //! failures only update the status bar until it is dismissed.
+  bool m_saveFailedBoxPending = false;
+
   //! The wxMaxima frame whose services the loaders/savers use. Not owned; the
   //! frame owns this object.
   wxMaxima &m_wxMaxima;
