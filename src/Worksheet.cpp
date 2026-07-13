@@ -4455,12 +4455,9 @@ void Worksheet::ShowPoint(wxPoint point) {
   view_x *= scrollUnit;
   view_y *= scrollUnit;
 
-  // Get the size of the worksheet window
-  GetSize(&width, &height);
-  // The scrollbars make part of the window size, but not of the
-  // size usable for text
-  height -= wxSystemSettings::GetMetric(wxSYS_VTHUMB_Y);
-  width -= wxSystemSettings::GetMetric(wxSYS_HTHUMB_X);
+  // Get the size of the worksheet window that is usable for text: the client
+  // size already excludes the scrollbars.
+  GetClientSize(&width, &height);
 
   const Configuration *configuration = m_configuration;
   int fontsize_px =
@@ -4472,7 +4469,14 @@ void Worksheet::ShowPoint(wxPoint point) {
   } else
     scrollToY = view_y;
 
-  if ((point.x - fontsize_px < view_x) || (point.x + 2 > view_x + width - 20)) {
+  // Horizontally we only scroll when the point actually leaves the visible
+  // area. The threshold must lie at (or beyond) the right window border:
+  // auto-wrapped lines break a few pixels before that border (GetLineWidth
+  // leaves a Scale_Px(5) margin), and with the old early threshold
+  // (20px + a scrollbar width before the border) the caret crossed the
+  // scroll zone right before every wrap - so typing at the right edge of a
+  // wrapping text cell scrolled the view sideways for no reason.
+  if ((point.x - fontsize_px < view_x) || (point.x + 2 > view_x + width)) {
     sc = true;
     scrollToX = point.x - width / 2;
   } else
