@@ -2362,8 +2362,11 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
       double cpuPercentage = GetMaximaCPUPercentage();
       m_statusBar->SetMaximaCPUPercentage(cpuPercentage);
 
+      // Keep polling while sbcl is stopped in LDB: it uses ~0 CPU waiting on
+      // stdin, so without m_inLDB the poll would stop and we would miss LDB's
+      // prompt and command output.
       if ((m_maximaProcess != NULL) && (m_pid > 0) &&
-          ((cpuPercentage > 0) || (m_maximaBusy)))
+          ((cpuPercentage > 0) || (m_maximaBusy) || (m_inLDB)))
         m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
     }
 

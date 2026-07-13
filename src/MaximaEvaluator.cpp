@@ -212,6 +212,22 @@ void MaximaEvaluator::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
     return;
   m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
 
+  // While sbcl is stopped in its low-level debugger the user's input is an LDB
+  // command, not Maxima code: send it to the process's stdin (the channel LDB
+  // reads) rather than the control socket, and do not queue it for evaluation.
+  if (m_wxMaxima.m_inLDB) {
+    EditorCell *ldbEditor = m_wxMaxima.GetWorksheet()->GetActiveCell();
+    if (ldbEditor) {
+      const wxString cmd = ldbEditor->ToString(true);
+      m_wxMaxima.m_processManager.WriteToMaximaStdin(cmd);
+      // Consume the input caret; LDB's reply (and its next "ldb>" prompt) will
+      // arrive on stderr and open a fresh input line.
+      m_wxMaxima.GetWorksheet()->QuestionAnswered();
+      m_wxMaxima.GetWorksheet()->SetHCaret(ldbEditor->GetGroup());
+    }
+    return;
+  }
+
   bool evaluating = !m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Empty();
   if (!evaluating)
     m_wxMaxima.GetWorksheet()->FollowEvaluation(true);

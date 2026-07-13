@@ -523,6 +523,18 @@ void MaximaResponseReader::ReadStdErr() {
         m_wxMaxima.m_outputAppender.DoRawConsoleAppend(o, MC_TYPE_ERROR);
       if (Maxima::GetPipeToStdErr())
         std::cerr << o;
+      // A trailing "ldb> " means LDB is waiting for a command. Give the user an
+      // input line (reusing the question-answer caret); MaximaEvaluator routes
+      // what they type there to Maxima's stdin while m_inLDB is set. Only open
+      // one at a time - answering it clears the answer cell, and the next
+      // prompt opens a fresh one.
+      if (LdbSupport::EndsWithLdbPrompt(o) && m_wxMaxima.GetWorksheet() &&
+          !m_wxMaxima.GetWorksheet()->GetDocumentCellPointers().GetAnswerCell()) {
+        m_wxMaxima.GetWorksheet()->OpenQuestionCaret();
+        if (EditorCell *answerCell =
+              m_wxMaxima.GetWorksheet()->GetDocumentCellPointers().GetAnswerCell())
+          m_wxMaxima.GetWorksheet()->SetActiveCell(answerCell);
+      }
       return;
     }
 
