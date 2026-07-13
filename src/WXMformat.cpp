@@ -267,7 +267,14 @@ namespace Format {
   }
 
   std::unique_ptr<GroupCell> TreeFromWXM(const std::vector<wxString> &wxmLines,
-                                         Configuration *config) {
+                                         Configuration *config, int depth) {
+    // Each nested WXM_FOLD recurses into TreeFromWXM; bound that so a crafted
+    // .wxm (or pasted text) with pathologically deep fold nesting can't overflow
+    // the stack. Mirrors MathParser's XML nesting cap; real documents nest folds
+    // only a handful of levels, so a deep-enough fold is simply dropped.
+    if (depth > 250)
+      return {};
+
     auto wxmLine = wxmLines.begin();
     auto const end = wxmLines.end();
 
@@ -405,7 +412,7 @@ namespace Format {
         // "last" null; every other case here already guards it, so guard this
         // one too instead of dereferencing null.
         if (last)
-          last->HideTree(TreeFromWXM(hiddenTree, config));
+          last->HideTree(TreeFromWXM(hiddenTree, config, depth + 1));
       } break;
 
       case WXM_INVALID:
