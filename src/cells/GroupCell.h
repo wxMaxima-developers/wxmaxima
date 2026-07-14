@@ -113,6 +113,16 @@ public:
   //! Does this GroupCell save the answer to a question?
   bool AutoAnswer() const { return m_autoAnswer; }
   void SetAutoAnswer(bool autoAnswer);
+  /*! Mark this group as needing a recalculation
+
+    The single funnel for making NeedsRecalculation() true: it sets
+    m_cellsAppended and - on the flag's false->true transition - notifies the
+    layout engine through Configuration::RequestRecalculate(), so the engine
+    always learns which cells became dirty. Don't set m_cellsAppended
+    directly: that hides the change from the engine (and even suppresses the
+    notification of a later MarkNeedsRecalculate(), since the flag is then
+    already set).
+  */
   void MarkNeedsRecalculate();
   //! Add a new answer to the cell
   void SetAnswer(const wxString &question, const wxString &answer);

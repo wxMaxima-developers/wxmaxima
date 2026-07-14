@@ -358,7 +358,7 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell) {
 
   UpdateCellsInGroup();
   m_updateConfusableCharWarnings = true;
-  m_cellsAppended = true;
+  MarkNeedsRecalculate();
   if (m_configuration)
     m_configuration->RequestAdjustWorksheetSize();
 }
@@ -1612,7 +1612,10 @@ void GroupCell::Hide(bool hide) {
   if (GetLabel())
     GetLabel()->ClearCacheList();
 
-  m_cellsAppended = true;
+  // Not a plain m_cellsAppended = true: that would suppress the engine
+  // notification the ResetSize() below wants to send (MarkNeedsRecalculate()
+  // only notifies on the flag's false->true transition).
+  MarkNeedsRecalculate();
   ResetSize();
   GetEditable()->ResetSize();
 }
@@ -1635,7 +1638,7 @@ bool GroupCell::HideTree(std::unique_ptr<GroupCell> &&tree) {
         tmp.GetLabel()->ClearCacheList();
     }
 
-    m_cellsAppended = true;
+    MarkNeedsRecalculate();
     return true;
   }
   else
@@ -1645,7 +1648,7 @@ bool GroupCell::HideTree(std::unique_ptr<GroupCell> &&tree) {
 std::unique_ptr<GroupCell> GroupCell::UnhideTree() {
   if (m_hiddenTree)
     {
-      m_cellsAppended = true;
+      MarkNeedsRecalculate();
       m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
     }
   return std::move(m_hiddenTree);
@@ -1708,7 +1711,7 @@ GroupCell *GroupCell::Fold() {
   m_hiddenTree =
     static_unique_ptr_cast<GroupCell>(std::move(tornOut.cellOwner));
   m_hiddenTree->SetHiddenTreeParent(this);
-  m_cellsAppended = true;
+  MarkNeedsRecalculate();
   return this;
 }
 
@@ -1718,7 +1721,7 @@ GroupCell *GroupCell::Unfold() {
   if (!IsFoldable() || !m_hiddenTree)
     return NULL;
 
-  m_cellsAppended = true;
+  MarkNeedsRecalculate();
   auto splicedIn = CellList::SpliceInAfter(this, std::move(m_hiddenTree));
   GetNext()->SetHiddenTreeParent(m_hiddenTreeParent,
                                  dynamic_cast<GroupCell *>(splicedIn.lastSpliced));
