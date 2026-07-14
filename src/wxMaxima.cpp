@@ -1265,6 +1265,13 @@ wxMaxima::~wxMaxima() {
     // Save the current state of the log window (shown/hidden) and, since the
     // last wxMaxima window is going away, dispose of the log window itself.
     wxConfig::Get()->Write("LogWindow", MyApp::m_logWindow->GetFrame()->IsShown());
+    // With --logtostderr a wxLogChain is the active log target and forwards
+    // every message to the log window as its "old" logger. Deleting the
+    // window first would leave the chain holding a dangling pointer, so the
+    // chain goes first: its destructor restores the log window as the active
+    // target, and the window's destructor in turn restores whatever target
+    // was active before it.
+    static_cast<MyApp *>(wxTheApp)->m_logChain.reset();
     wxDELETE(MyApp::m_logWindow);
     /* On the mac wxMaxima might still run if the last window has closed.
        This means we have no log window and therefore cannot log anything without

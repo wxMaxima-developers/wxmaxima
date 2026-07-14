@@ -9,7 +9,9 @@
   window and the preferences dialog now destroy their worksheets
   deterministically while the configuration is still whole, and destroying
   a Configuration that still has a worksheet attached fires an assertion in
-  debug builds so the order can't silently regress.
+  debug builds so the order can't silently regress. In the same teardown
+  review: with --logtostderr, closing the last window deleted the log
+  window while the stderr log chain still forwarded messages to it.
 
 - Speedup: merely moving the mouse across the worksheet used to repaint the
   whole visible worksheet (all of its text included) at up to full frame
