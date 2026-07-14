@@ -104,8 +104,13 @@ GroupCell *WorksheetDocument::InsertCells(std::unique_ptr<GroupCell> &&cells,
   if (!recalcStart)
     recalcStart = m_tree.get();
 
-  if (recalcStart && m_view)
+  if (recalcStart && m_view) {
     m_view->NotifyRecalculation(recalcStart);
+    // Also report the last inserted cell, so the layout engine's dirty range
+    // covers the whole insertion, not just its first cell.
+    if (lastOfCellsToInsert && lastOfCellsToInsert != recalcStart)
+      m_view->NotifyRecalculation(lastOfCellsToInsert);
+  }
   SetSaved(false); // document has been modified
 
   // AdjustSize() is intentionally NOT triggered directly here. Cell positions

@@ -73,13 +73,24 @@ public:
   /*! Schedule a recalculation of the worksheet starting with the cell start.
 
     This only *records* where the next layout pass has to start (it marks the
-    group dirty and moves m_recalculateStart); it does not size or position any
-    cell. The actual work - and, crucially, AdjustSize() once the cell
-    positions are correct - happens in RecalculateIfNeeded(). Calling
-    AdjustSize() (or otherwise reading cell geometry) right after this, without
-    a RecalculateIfNeeded() in between, reads stale positions.
+    group dirty and extends the pending dirty range [m_recalculateStart,
+    m_recalculateEnd]); it does not size or position any cell. The actual
+    work - and, crucially, AdjustSize() once the cell positions are correct -
+    happens in RecalculateIfNeeded(). Calling AdjustSize() (or otherwise
+    reading cell geometry) right after this, without a RecalculateIfNeeded()
+    in between, reads stale positions.
   */
   void RequestRecalculation(Cell *start);
+
+  /*! Schedule a recalculation of the whole worksheet.
+
+    For changes that potentially dirty cells at arbitrary positions (zoom,
+    font or configuration changes, window resizes): the dirty range becomes
+    "the first cell to the end of the document", so the next layout pass may
+    not stop early. An operation that changes one known cell should call
+    RequestRecalculation(cell) instead.
+  */
+  void RequestFullRecalculation();
 
   /*! Perform the scheduled recalculation, if one is pending.
 
@@ -132,7 +143,10 @@ public:
   void RequestAdjustSize() { m_adjustWorksheetSizeNeeded = true; }
 
   //! Drop any pending recalculation (e.g. when the document is cleared).
-  void CancelPendingRecalculation() { m_recalculateStart = nullptr; }
+  void CancelPendingRecalculation() {
+    m_recalculateStart = nullptr;
+    m_recalculateEnd = nullptr;
+  }
 
   //! GroupCells walked by the most recent RecalculateIfNeeded() pass (visited
   //! includes cheap reposition-only cells; recalculated counts only the cells
@@ -153,6 +167,17 @@ private:
   std::function<GroupCell *()> m_getLastCell;
   //! Where to start recalculation. NULL = No recalculation needed.
   CellPtr<GroupCell> m_recalculateStart;
+  /*! The last cell known to be dirty, i.e. the end of the pending dirty range.
+
+    NULL while m_recalculateStart is set means "up to the end of the
+    document" - the conservative fallback used for whole-document requests
+    (and automatically restored if the end cell is destroyed, since a CellPtr
+    nulls itself then). The layout pass may stop once it is past this cell
+    and no reposition propagation is pending; that is only sound because
+    every way a cell becomes dirty reports through RequestRecalculation()
+    (see GroupCell::MarkNeedsRecalculate()).
+  */
+  CellPtr<GroupCell> m_recalculateEnd;
   //! Cache for the document's content width; < 0 = needs remeasuring.
   int m_maxWidth_Cached = -1;
   //! Dedupe cache for AdjustSize(): the last virtual size handed to the view.

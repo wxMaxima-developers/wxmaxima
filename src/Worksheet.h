@@ -893,10 +893,11 @@ public:
     Only for operations that change the geometry of cells at unknown or
     document-wide positions (zoom, font or window-width changes, unfolding).
     An operation that changes one known cell must request
-    RequestRecalculation(cell) instead so the layout pass doesn't have to
-    visit the cells above it.
+    RequestRecalculation(cell) instead: a targeted request keeps the dirty
+    range bounded, so the layout pass neither visits the cells above the
+    change nor scans past the cells below it.
    */
-  void RequestRecalculation() { RequestRecalculation(GetTree()); }
+  void RequestRecalculation() { m_layout.RequestFullRecalculation(); }
 
   //! How many cells the last layout pass visited. See WorksheetLayout.
   int GetLastCellsVisited() const { return m_layout.GetLastCellsVisited(); }

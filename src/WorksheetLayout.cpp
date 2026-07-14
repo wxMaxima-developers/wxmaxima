@@ -47,11 +47,16 @@ bool WorksheetLayout::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
   GroupCell *tree = m_getTree();
   if (!m_recalculateStart || !tree) {
     m_recalculateStart = {};
+    m_recalculateEnd = {};
     return false;
   }
 
-  if (!tree->Contains(m_recalculateStart))
+  if (!tree->Contains(m_recalculateStart)) {
+    // The scheduled start is stale; we no longer know where the dirty cells
+    // are, so walk the whole document (an open-ended range).
     m_recalculateStart = tree;
+    m_recalculateEnd = {};
+  }
 
   int viewX, viewY;
   m_view.GetViewPosition(&viewX, &viewY);
@@ -68,6 +73,7 @@ bool WorksheetLayout::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
   {
     wxStopWatch stopwatch;
     bool propagationNeeded = true;
+    bool reachedEnd = false;
     int cellsVisited = 0;
     int cellsRecalculated = 0;
     for (auto &cell : OnList(m_recalculateStart.get())) {
@@ -95,13 +101,42 @@ bool WorksheetLayout::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
       } else if (propagationNeeded) {
         movedThisTime = group->Reposition();
       } else {
-        // Don't stop here: a cell further down the worksheet may still be dirty.
-        // Cells can be marked for recalculation non-contiguously (e.g. by
-        // folding/hiding or by asynchronous Maxima output landing in specific
-        // cells), so a clean, non-propagating cell does not imply everything
-        // below it is clean. Keep scanning.
+        // Within the dirty range, keep scanning even past a clean,
+        // non-propagating cell: cells can be marked for recalculation
+        // non-contiguously (e.g. by folding/hiding or by asynchronous Maxima
+        // output landing in specific cells).
       }
       propagationNeeded = movedThisTime || sizeChanged;
+
+      // Once the last cell of the dirty range has been processed and no
+      // reposition propagation is pending, the pass is complete: everything
+      // below is clean AND still in the right position. This is only sound
+      // because every way a cell becomes dirty reports through
+      // RequestRecalculation() (see GroupCell::MarkNeedsRecalculate());
+      // m_recalculateEnd == null means the range is open-ended and the walk
+      // continues to the end of the document.
+      if (m_recalculateEnd && &cell == m_recalculateEnd)
+        reachedEnd = true;
+      if (reachedEnd && !propagationNeeded) {
+        if (timeout)
+          // Parity with the sliced path's end-of-worksheet AdjustSize() call:
+          // let the shared tail below do the (cached, deduped) adjustment.
+          m_adjustWorksheetSizeNeeded = true;
+        wxLogMessage(_("Recalculation covered the whole dirty range => stopping early (Visited %d cells, recalculated %d, in %ld ms)"), cellsVisited, cellsRecalculated, stopwatch.Time());
+        if (m_configuration->GetDebugmode()) {
+          // Tripwire: stopping early is only sound if no dirty cell exists
+          // past the stop point, i.e. if every dirty-marking path reported
+          // through RequestRecalculation(). Scan the remainder and complain
+          // if the invariant is broken (the pass after the next full
+          // relayout would self-heal, but the bug should not stay hidden).
+          for (Cell *rest = cell.GetNext(); rest; rest = rest->GetNext())
+            wxASSERT_MSG(
+              !static_cast<GroupCell *>(rest)->NeedsRecalculation(),
+              wxS("Bug: a cell was marked dirty without the layout engine "
+                  "learning about it - see GroupCell::MarkNeedsRecalculate()"));
+        }
+        break;
+      }
 
       const bool atEnd = (cell.GetNext() == NULL);
       if (timeout) {
@@ -134,6 +169,7 @@ bool WorksheetLayout::RecalculateIfNeeded(bool timeout, long timeSliceMs) {
   // scheduled range has been walked, so cell positions are valid now and
   // AdjustSize()'s stale-position guard must let this legitimate call through.
   m_recalculateStart = {};
+  m_recalculateEnd = {};
   if (m_adjustWorksheetSizeNeeded)
     AdjustSize();
 
@@ -156,24 +192,55 @@ void WorksheetLayout::RequestRecalculation(Cell *start) {
 
   group->MarkNeedsRecalculate();
 
-  // Walk from group towards the start of its list: if we meet
-  // m_recalculateStart the pending layout pass already covers group, and if
-  // we end at the tree's first cell, group lies above m_recalculateStart and
-  // becomes the new resume point. If we end anywhere else, group is not part
-  // of the worksheet at all (a freshly constructed cell that is not spliced
-  // in yet, or a cell in a hidden/folded subtree). Adopting such a cell as
-  // the resume point would make the layout pass walk the wrong list and
-  // silently drop the range that was already scheduled - so ignore the
-  // request; detached cells get scheduled when they are spliced into the
-  // tree, hidden ones when their fold parent is unfolded.
+  // Walk from group towards the start of its list. The walk classifies the
+  // request against the pending dirty range [m_recalculateStart,
+  // m_recalculateEnd] in a single pass:
+  // - If we meet m_recalculateEnd and then m_recalculateStart, group lies
+  //   BELOW the range: extend its end down to group.
+  // - If we meet m_recalculateStart without having met the end, the range
+  //   already covers group (its end - possibly the open document end - lies
+  //   further down).
+  // - If we end at the tree's first cell, group lies ABOVE the range (or no
+  //   range is pending): it becomes the new start.
+  // - If we end anywhere else, group is not part of the worksheet at all
+  //   (a freshly constructed cell that is not spliced in yet, or a cell in
+  //   a hidden/folded subtree). Adopting such a cell would make the layout
+  //   pass walk the wrong list and silently drop the range that was already
+  //   scheduled - so ignore the request; detached cells get scheduled when
+  //   they are spliced into the tree, hidden ones when their fold parent is
+  //   unfolded.
+  bool sawEnd = false;
   Cell *chainHead = group;
   for (Cell *walk = group; walk; walk = walk->GetPrevious()) {
-    if (walk == m_recalculateStart)
+    if (m_recalculateEnd && walk == m_recalculateEnd)
+      sawEnd = true;
+    if (walk == m_recalculateStart) {
+      if (sawEnd)
+        m_recalculateEnd = group;
       return;
+    }
     chainHead = walk;
   }
-  if (chainHead == m_getTree())
+  if (chainHead != m_getTree())
+    return;
+  if (!m_recalculateStart) {
+    // No pending range: this request is the whole range.
     m_recalculateStart = group;
+    m_recalculateEnd = group;
+  } else {
+    // group lies above the pending range: move the start up to it. The end
+    // keeps covering the old range (staying open-ended if it was).
+    m_recalculateStart = group;
+  }
+}
+
+void WorksheetLayout::RequestFullRecalculation() {
+  GroupCell *tree = m_getTree();
+  if (!tree)
+    return;
+  tree->MarkNeedsRecalculate();
+  m_recalculateStart = tree;
+  m_recalculateEnd = {};
 }
 
 void WorksheetLayout::UpdateConfigurationClientSize() {

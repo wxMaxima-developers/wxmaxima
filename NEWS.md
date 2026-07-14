@@ -1,5 +1,14 @@
 # Current development version
 
+- Speedup on long worksheets: after a localized change (typing in a cell,
+  a single new output line, deleting or restyling a cell) the layout pass
+  now stops as soon as it has re-laid-out the changed region and confirmed
+  the cells below it are still correctly positioned, instead of always
+  scanning to the end of the document. Editing near the top of a very long
+  worksheet used to get slower the longer the document was; it no longer
+  does. Whole-document changes (zoom, font, window width) still relay the
+  whole worksheet, as they must.
+
 - Fixed a use-after-destruction on every window close: child windows are
   destroyed after their owner's member variables, so the worksheet's
   destructor (and the destructors of all the cells it owns) ran against an

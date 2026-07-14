@@ -342,6 +342,61 @@ SCENARIO("A localized change recalculates only the cell that changed") {
   }
 }
 
+SCENARIO("The layout pass stops early once the dirty range is covered") {
+  // The engine tracks the dirty range's END as well as its start (every
+  // dirty-marking path reports through RequestRecalculation()), so a pass
+  // that has processed the last dirty cell - and has no reposition
+  // propagation pending - must stop instead of scanning to the end of the
+  // document. On a long document this is the difference between an edit
+  // costing O(cells below the edit) and O(1).
+  GIVEN("a fully laid-out worksheet of 30 cells") {
+    EngineFixture f;
+    std::vector<GroupCell *> cells;
+    for (int i = 0; i < 30; i++)
+      cells.push_back(f.AddCell(wxString::Format(wxS("z%d:%d$"), i, i)));
+    f.layout.RequestRecalculation(cells.front());
+    while (f.layout.RecalculateIfNeeded())
+      ;
+
+    WHEN("one mid-document cell is re-laid-out without a height change") {
+      f.layout.RequestRecalculation(cells[15]);
+      while (f.layout.RecalculateIfNeeded())
+        ;
+
+      THEN("the pass stops right after the dirty range instead of scanning "
+           "to the end of the document") {
+        REQUIRE(f.layout.GetLastCellsRecalculated() == 1);
+        // The changed cell plus at most one cell below it (to see that the
+        // reposition propagation has settled).
+        REQUIRE(f.layout.GetLastCellsVisited() <= 2);
+      }
+    }
+
+    WHEN("two disjoint cells are marked dirty") {
+      f.layout.RequestRecalculation(cells[10]);
+      f.layout.RequestRecalculation(cells[20]);
+      while (f.layout.RecalculateIfNeeded())
+        ;
+
+      THEN("one pass covers the range between them and stops there") {
+        REQUIRE(f.layout.GetLastCellsRecalculated() == 2);
+        // Cells 10..20 plus at most one settling cell below.
+        REQUIRE(f.layout.GetLastCellsVisited() <= 12);
+      }
+    }
+
+    WHEN("a whole-document recalculation is requested") {
+      f.layout.RequestFullRecalculation();
+      while (f.layout.RecalculateIfNeeded())
+        ;
+
+      THEN("the pass visits every cell (the range is open-ended)") {
+        REQUIRE(f.layout.GetLastCellsVisited() == 30);
+      }
+    }
+  }
+}
+
 SCENARIO("A global invalidation recalculates everything (the costly path)") {
   GIVEN("a fully laid-out worksheet") {
     EngineFixture f;
