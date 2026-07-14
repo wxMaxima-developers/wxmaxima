@@ -479,6 +479,7 @@ void Worksheet::ApplyOverlayScrollbarsSetting() {
 Worksheet::~Worksheet() {
   // The view is dying: cells may no longer schedule recalculations on it.
   m_configuration->SetRecalculateRequestCallback({});
+  m_configuration->SetAdjustWorksheetSizeRequestCallback({});
   TreeUndo_ClearRedoActionList();
   TreeUndo_ClearUndoActionList();
 
@@ -494,6 +495,11 @@ Worksheet::~Worksheet() {
     m_configuration->SetDocumentCellPointers(NULL);
     m_configuration->SetViewCellPointers(NULL);
   }
+  // Detach from the configuration; its destructor asserts that no worksheet
+  // is attached any more, which catches owners that destroy their
+  // Configuration before the Worksheet that uses it.
+  if (m_configuration->GetWorkSheet() == this)
+    m_configuration->SetWorkSheet(NULL);
   m_configuration = NULL;
 }
 

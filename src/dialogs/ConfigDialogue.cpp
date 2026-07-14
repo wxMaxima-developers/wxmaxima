@@ -280,7 +280,17 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   Bind(wxEVT_BUTTON, &ConfigDialogue::OnChangeFontFamily, this, style_font_family);
 }
 
-ConfigDialogue::~ConfigDialogue() {}
+ConfigDialogue::~ConfigDialogue() {
+  // Child windows are normally destroyed by the wxWindow base class
+  // destructor - i.e. AFTER this class's members, and that includes
+  // m_configuration, which the sample worksheet's destructor (and the
+  // destructors of the cells it owns) still dereferences. Destroy the
+  // sample worksheet deterministically while the configuration is whole.
+  if (m_sampleWorksheet) {
+    m_sampleWorksheet->Destroy();
+    m_sampleWorksheet = NULL;
+  }
+}
 
 void ConfigDialogue::UsesvgChanged(
 #ifdef __WXOSX__

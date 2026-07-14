@@ -543,7 +543,16 @@ toolBar->AddSeparator();
   m_resizeTimer.StartOnce(40);
 }
 
-DiffFrame::~DiffFrame() {}
+DiffFrame::~DiffFrame() {
+  // Child windows are normally destroyed by the wxWindow base class
+  // destructor - i.e. AFTER this class's members, and that includes
+  // m_worksheetConfigurations, which each worksheet's destructor (and the
+  // destructors of the cells it owns) still dereferences. Destroy the
+  // worksheets deterministically while their configurations are whole.
+  for (auto *ws : m_worksheets)
+    ws->Destroy();
+  m_worksheets.clear();
+}
 
 void DiffFrame::RelayoutWorksheets() {
   if (m_worksheets.empty())

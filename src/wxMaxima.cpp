@@ -1197,7 +1197,10 @@ wxMaxima::~wxMaxima() {
           if(builtintxt.IsOk())
             {
               wxTextInputStream txt(builtintxt);
-              while(!builtintxt.Eof())
+              // The IsOk() term ends the loop on a read ERROR, too: Eof()
+              // only reports wxSTREAM_EOF, so on an error state the loop
+              // would spin forever.
+              while(builtintxt.IsOk() && !builtintxt.Eof())
                 {
                   wxString line;
                   line = txt.ReadLine();

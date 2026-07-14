@@ -953,6 +953,16 @@ void Configuration::SetZoomFactor(double newzoom) {
 }
 
 Configuration::~Configuration() {
+  // Teardown-order tripwire: the worksheet dereferences its configuration in
+  // its destructor (and so do the destructors of the cells it owns), so the
+  // worksheet must be destroyed FIRST. Since child windows are destroyed
+  // after their owner's members, every owner of a Configuration + Worksheet
+  // pair destroys the worksheet deterministically in its own destructor body
+  // (wxMaximaFrame, DiffFrame, ConfigDialogue). A worksheet still attached
+  // here means an owner got that order wrong.
+  wxASSERT_MSG(m_workSheet == NULL,
+               wxS("Bug: a Configuration was destroyed before the Worksheet "
+                   "that still uses it"));
   if(m_initOpts != temporary)
     {
       WriteStyles();

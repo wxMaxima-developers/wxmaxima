@@ -1,5 +1,16 @@
 # Current development version
 
+- Fixed a use-after-destruction on every window close: child windows are
+  destroyed after their owner's member variables, so the worksheet's
+  destructor (and the destructors of all the cells it owns) ran against an
+  already-destroyed Configuration object. This never crashed in practice
+  because the memory was still allocated, but it was undefined behavior one
+  code change away from a crash. The main window, the file-comparison
+  window and the preferences dialog now destroy their worksheets
+  deterministically while the configuration is still whole, and destroying
+  a Configuration that still has a worksheet attached fires an assertion in
+  debug builds so the order can't silently regress.
+
 - Speedup: merely moving the mouse across the worksheet used to repaint the
   whole visible worksheet (all of its text included) at up to full frame
   rate, visible as a stream of font-cache hits in the performance monitor

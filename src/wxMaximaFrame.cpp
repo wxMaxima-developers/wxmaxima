@@ -596,6 +596,16 @@ wxMaximaFrame::~wxMaximaFrame() {
 #if !wxCHECK_VERSION(3, 1, 4)
   m_manager.UnInit();
 #endif
+
+  // Child windows are normally destroyed by the wxWindow base class
+  // destructor - i.e. AFTER this class's members, m_configuration included.
+  // The worksheet's destructor (and the destructors of the cells it owns)
+  // still dereferences that configuration, so it must not outlive it:
+  // destroy the worksheet deterministically while the configuration is
+  // whole. (Destroy() on a non-top-level child deletes it immediately and
+  // unlinks it from the frame, so the base class won't destroy it twice.)
+  m_manager.DetachPane(m_worksheet);
+  m_worksheet->Destroy();
 }
 #if wxCHECK_VERSION(3, 1, 0)
 #include <wx/taskbarbutton.h>
