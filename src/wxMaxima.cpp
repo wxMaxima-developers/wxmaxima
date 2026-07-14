@@ -178,6 +178,9 @@ void wxMaxima::ConfigChanged() {
 
   ApplyAppearanceToApp(GetConfiguration().GetAppearance());
 
+  if (GetWorksheet())
+    GetWorksheet()->ApplyOverlayScrollbarsSetting();
+
   if (GetWorksheet() && (GetWorksheet()->GetTree()))
     GetWorksheet()->GetTree()->FontsChangedList();
 

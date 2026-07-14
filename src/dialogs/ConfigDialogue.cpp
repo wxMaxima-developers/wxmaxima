@@ -444,6 +444,13 @@ void ConfigDialogue::SetCheckboxValues() {
                              _("Hide the brackets that mark the extend of the worksheet cells at the "
                                "worksheet's right side and that contain the \"hide\" button of the "
                                "cell if the cells aren't active."));
+#ifdef __WXGTK__
+  m_overlayScrollbars->SetToolTip(
+                             _("Use GTK's overlay scrollbars, which appear over the worksheet and "
+                               "fade out when unused. Looks modern, but GTK repaints the whole "
+                               "worksheet on every frame of the fade animation - which runs after "
+                               "every mouse movement - so classic scrollbars are much faster."));
+#endif
   m_indentMaths->SetToolTip(_("Indent maths so all lines are in par with the "
                               "first line that starts after the label."));
 
@@ -511,6 +518,9 @@ void ConfigDialogue::SetCheckboxValues() {
   m_autoIndent->SetValue(configuration->GetAutoIndent());
   m_cursorJump->SetValue(configuration->CursorJump());
   m_hideBrackets->SetValue(configuration->HideBrackets());
+#ifdef __WXGTK__
+  m_overlayScrollbars->SetValue(configuration->OverlayScrollbars());
+#endif
   m_indentMaths->SetValue(configuration->IndentMaths());
   int val = 0;
   if (configuration->GetAutoWrap())
@@ -752,6 +762,12 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
   m_hideBrackets = new wxCheckBox(displaySizer->GetStaticBox(), wxID_ANY,
                                   _("Intelligently hide cell brackets"));
   displaySizer->Add(m_hideBrackets, wxSizerFlags());
+
+#ifdef __WXGTK__
+  m_overlayScrollbars = new wxCheckBox(displaySizer->GetStaticBox(), wxID_ANY,
+                                       _("Overlay scrollbars (slow: repaints the worksheet while they fade)"));
+  displaySizer->Add(m_overlayScrollbars, wxSizerFlags());
+#endif
 
   m_indentMaths = new wxCheckBox(displaySizer->GetStaticBox(), wxID_ANY,
                                  _("Indent equations by the label width"));
@@ -2176,6 +2192,9 @@ void ConfigDialogue::WriteSettings() {
   configuration->SetAutoIndent(m_autoIndent->GetValue());
   configuration->CursorJump(m_cursorJump->GetValue());
   configuration->HideBrackets(m_hideBrackets->GetValue());
+#ifdef __WXGTK__
+  configuration->OverlayScrollbars(m_overlayScrollbars->GetValue());
+#endif
   configuration->IndentMaths(m_indentMaths->GetValue());
   configuration->SetAutoWrap(m_autoWrap->GetSelection());
   configuration->LabelWidth(m_labelWidth->GetValue());

@@ -6,7 +6,8 @@
   whenever a cell bracket appeared or vanished under the pointer. Three
   causes fixed: GTK's overlay scrollbar is a composited window whose
   fade-in/fade-out animation forces full-window repaints, so the worksheet
-  now uses classic scrollbars on GTK; the paint routine now redraws each
+  now uses classic scrollbars on GTK by default (a configuration option
+  brings the overlay ones back); the paint routine now redraws each
   damaged rectangle separately instead of their bounding box (the bracket
   column plus the blinking cursor's bar used to combine into "everything");
   and several sidebars re-layouted themselves on every size event even when

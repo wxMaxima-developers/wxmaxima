@@ -317,6 +317,11 @@ protected:
   wxCheckBox *m_autoIndent;
   wxCheckBox *m_cursorJump;
   wxCheckBox *m_hideBrackets;
+#ifdef __WXGTK__
+  //! Use GTK's fading overlay scrollbars on the worksheet (slow: see
+  //! Worksheet::ApplyOverlayScrollbarsSetting())?
+  wxCheckBox *m_overlayScrollbars;
+#endif
   wxCheckBox *m_indentMaths;
   wxChoice *m_autoWrap;
   wxSpinCtrl *m_labelWidth;

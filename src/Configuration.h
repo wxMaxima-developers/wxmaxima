@@ -278,6 +278,19 @@ public:
   //! Define if we want to hide brackets that are not under the pointer.
   void HideBrackets(bool hide){m_hideBrackets = hide;}
 
+  /*! Use GTK's overlay scrollbars on the worksheet?
+
+    Off by default: the fading overlay indicator is a composited window, and
+    while its animation runs (after every pointer or wheel event) GTK
+    repaints the whole worksheet on every animation frame - see
+    Worksheet::ApplyOverlayScrollbarsSetting(). Only used on wxGTK.
+  */
+  bool OverlayScrollbars() const
+    { return m_overlayScrollbars; }
+
+  //! Define if the worksheet should use GTK's overlay scrollbars.
+  void OverlayScrollbars(bool overlay){m_overlayScrollbars = overlay;}
+
   //! Hide brackets that are not under the pointer?
   double PrintScale() const
     { return m_printScale; }
@@ -1285,6 +1298,8 @@ private:
   wxString m_maximaUserLocation;
   //! Hide brackets that are not under the pointer
   bool m_hideBrackets;
+  //! Use GTK's overlay scrollbars on the worksheet? See OverlayScrollbars().
+  bool m_overlayScrollbars;
   //! The scale for printing
   double m_printScale;
   double m_printMargin_Top;

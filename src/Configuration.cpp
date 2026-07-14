@@ -107,6 +107,7 @@ Configuration::Configuration(const Configuration &o) :
   m_helpBrowserUserLocation(o.m_helpBrowserUserLocation),
   m_maximaUserLocation(o.m_maximaUserLocation),
   m_hideBrackets(o.m_hideBrackets),
+  m_overlayScrollbars(o.m_overlayScrollbars),
   m_printScale(o.m_printScale),
   m_printMargin_Top(o.m_printMargin_Top),
   m_printMargin_Bot(o.m_printMargin_Bot),
@@ -308,6 +309,7 @@ void Configuration::ResetAllToDefaults() {
   m_showBrackets = true;
   m_printBrackets = false;
   m_hideBrackets = true;
+  m_overlayScrollbars = false;
   m_defaultPlotWidth = 1200;
   m_defaultPlotHeight = 900;
   SetLanguage(wxLANGUAGE_DEFAULT);
@@ -1231,6 +1233,7 @@ Configuration::ScalarConfigSettings() {
      &Configuration::m_greekSidebar_ShowLatinLookalikes},
     {wxS("greekSidebar_Show_mu"), &Configuration::m_greekSidebar_Show_mu},
     {wxS("hideBrackets"), &Configuration::m_hideBrackets},
+    {wxS("overlayScrollbars"), &Configuration::m_overlayScrollbars},
     {wxS("hidemultiplicationsign"), &Configuration::m_hidemultiplicationsign},
     {wxS("incrementalSearch"), &Configuration::m_incrementalSearch},
     {wxS("indentMaths"), &Configuration::m_indentMaths},

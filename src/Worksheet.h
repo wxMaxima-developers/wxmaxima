@@ -740,9 +740,20 @@ public:
   //! Re-read the configuration
   void UpdateConfig() {
     m_configuration->ReadConfig();
+    ApplyOverlayScrollbarsSetting();
     RequestRecalculation();
     Refresh();
   }
+
+  /*! Apply the configuration's OverlayScrollbars() choice to this window
+
+    On wxGTK switches the worksheet between GTK's fading overlay scrollbars
+    and classic ones; a no-op on all other platforms. Classic is the default
+    because the overlay indicator makes GTK repaint the whole worksheet on
+    every frame of its fade animation (see the implementation for details).
+    Called from the constructor and whenever the configuration changes.
+  */
+  void ApplyOverlayScrollbarsSetting();
 
   //! The name of the currently-opened file
   const wxString &GetCurrentFile() const { return m_document.GetCurrentFile(); }

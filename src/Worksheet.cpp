@@ -116,27 +116,6 @@ Worksheet::Worksheet(wxWindow *parent, int id,
                    "example https://github.com/wxWidgets/wxWidgets/issues/18462."));
     }
   }
-  // Use classic (non-overlay) scrollbars for the worksheet. GTK3's overlay
-  // scrollbar indicator is a composited child window, and compositing makes
-  // GTK repaint the whole worksheet on every frame of the indicator's
-  // fade-in/fade-out animation - which runs after every pointer or wheel
-  // event. Each of those repaints re-renders every visible cell's text, so
-  // merely moving the mouse across the worksheet caused full-viewport
-  // redraws at frame rate (visible as a stream of font-cache hits in the
-  // performance monitor). The functions are resolved at runtime so this
-  // compiles - and degrades to a no-op - with any GTK version wxWidgets
-  // might be linked against.
-  {
-    auto setOverlayScrolling = reinterpret_cast<void (*)(void *, int)>(
-      dlsym(RTLD_DEFAULT, "gtk_scrolled_window_set_overlay_scrolling"));
-    auto scrolledWindowType = reinterpret_cast<unsigned long (*)()>(
-      dlsym(RTLD_DEFAULT, "gtk_scrolled_window_get_type"));
-    auto instanceIsA = reinterpret_cast<int (*)(void *, unsigned long)>(
-      dlsym(RTLD_DEFAULT, "g_type_check_instance_is_a"));
-    if (setOverlayScrolling && scrolledWindowType && instanceIsA &&
-        GetHandle() && instanceIsA(GetHandle(), scrolledWindowType()))
-      setOverlayScrolling(GetHandle(), false);
-  }
 #endif
   SetMinClientSize(wxSize(100, 100));
   // This is somehow needed for wxAutoBufferedPaintDC
@@ -157,6 +136,7 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_configuration->SetAdjustWorksheetSizeRequestCallback(
     [this]{ m_layout.RequestAdjustSize(); });
   m_configuration->ReadConfig();
+  ApplyOverlayScrollbarsSetting();
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
 
   m_configuration->SetBackgroundBrush(*(wxTheBrushList->FindOrCreateBrush(
@@ -469,6 +449,31 @@ void Worksheet::RequestRedraw(GroupCell *start) {
       blinktime = 200;
     m_caretTimer.Start(blinktime);
   }
+}
+
+void Worksheet::ApplyOverlayScrollbarsSetting() {
+#ifdef __WXGTK__
+  // GTK3's overlay scrollbar indicator is a composited child window, and
+  // compositing makes GTK repaint the whole worksheet on every frame of the
+  // indicator's fade-in/fade-out animation - which runs after every pointer
+  // or wheel event. Each of those repaints re-renders every visible cell's
+  // text, so merely moving the mouse across the worksheet caused
+  // full-viewport redraws at frame rate (visible as a stream of font-cache
+  // hits in the performance monitor). Classic scrollbars don't have that
+  // cost, so they are the default; the configuration lets the user choose
+  // the overlay look regardless. The functions are resolved at runtime so
+  // this compiles - and degrades to a no-op - with any GTK version wxWidgets
+  // might be linked against.
+  auto setOverlayScrolling = reinterpret_cast<void (*)(void *, int)>(
+    dlsym(RTLD_DEFAULT, "gtk_scrolled_window_set_overlay_scrolling"));
+  auto scrolledWindowType = reinterpret_cast<unsigned long (*)()>(
+    dlsym(RTLD_DEFAULT, "gtk_scrolled_window_get_type"));
+  auto instanceIsA = reinterpret_cast<int (*)(void *, unsigned long)>(
+    dlsym(RTLD_DEFAULT, "g_type_check_instance_is_a"));
+  if (setOverlayScrolling && scrolledWindowType && instanceIsA &&
+      GetHandle() && instanceIsA(GetHandle(), scrolledWindowType()))
+    setOverlayScrolling(GetHandle(), m_configuration->OverlayScrollbars());
+#endif
 }
 
 Worksheet::~Worksheet() {
