@@ -120,6 +120,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateConfigurationCl
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CancelPendingRecalculation</b> ()</td></tr>
 <tr class="memdesc:ae245bc5f15a5a6311038dfcb8e2b0748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drop any pending recalculation (e.g. when the document is cleared). <br /></td></tr>
 <tr class="separator:ae245bc5f15a5a6311038dfcb8e2b0748"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a9a3e814aa66584f46b2b21df78afad"><td class="memItemLeft" align="right" valign="top"><a id="a7a9a3e814aa66584f46b2b21df78afad" name="a7a9a3e814aa66584f46b2b21df78afad"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCellsVisited</b> () const</td></tr>
+<tr class="memdesc:a7a9a3e814aa66584f46b2b21df78afad"><td class="mdescLeft">&#160;</td><td class="mdescRight">GroupCells walked by the most recent <a class="el" href="classWorksheetLayout.html#ac09d5900171a1150443e09682c411987" title="Perform the scheduled recalculation, if one is pending.">RecalculateIfNeeded()</a> pass (visited includes cheap reposition-only cells; recalculated counts only the cells that actually needed the expensive re-layout). Exposed for tests and diagnostics: a localized change should recalculate very few cells, so a large count on a small edit signals an over-broad recalculation. <br /></td></tr>
+<tr class="separator:a7a9a3e814aa66584f46b2b21df78afad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab80b2504e212b1aa34d5a71ce6d389d"><td class="memItemLeft" align="right" valign="top"><a id="aab80b2504e212b1aa34d5a71ce6d389d" name="aab80b2504e212b1aa34d5a71ce6d389d"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCellsRecalculated</b> () const</td></tr>
+<tr class="separator:aab80b2504e212b1aa34d5a71ce6d389d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The layout/recalculation engine of a worksheet. </p>

@@ -23,11 +23,12 @@ var searchData=
   ['loadbuiltinmanualanchors_20',['LoadBuiltInManualAnchors',['../classMaximaManual.html#ad09c01d401285181a342780dba6d3753',1,'MaximaManual']]],
   ['loadbuiltinsymbols_21',['LoadBuiltinSymbols',['../classAutoComplete.html#a9ea854df696c5e1ab20e9834dfef8a37',1,'AutoComplete']]],
   ['loadhelpfileanchors_22',['LoadHelpFileAnchors',['../classMaximaManual.html#a951e46e3290566074f0c09b2c9652991',1,'MaximaManual::LoadHelpFileAnchors()'],['../classWorksheet.html#a2df6bd0d0d77d61ff730792363efd993',1,'Worksheet::LoadHelpFileAnchors()']]],
-  ['loadimage_23',['LoadImage',['../classImage.html#a07e9f48042ddd9004c24c3ff9e899094',1,'Image::LoadImage()'],['../classwxMaxima.html#a6c78de2506c518c7804f6690f27c5102',1,'wxMaxima::LoadImage()']]],
+  ['loadimage_23',['LoadImage',['../classwxMaxima.html#a6c78de2506c518c7804f6690f27c5102',1,'wxMaxima::LoadImage()'],['../classImage.html#a07e9f48042ddd9004c24c3ff9e899094',1,'Image::LoadImage()']]],
   ['loadmanualanchorsfromcache_24',['LoadManualAnchorsFromCache',['../classMaximaManual.html#a8f70e3615c5761666ac92b7902cc96bc',1,'MaximaManual']]],
   ['loadmanualanchorsfromxml_25',['LoadManualAnchorsFromXML',['../classMaximaManual.html#acddcb69633df12600c39ebea000ef9c2',1,'MaximaManual']]],
   ['loadsave_26',['LoadSave',['../classConfigDialogue.html#afeac2a9acf99d95414b0f0e823550805',1,'ConfigDialogue']]],
   ['loadsymbols_27',['LoadSymbols',['../classAutoComplete.html#a6022d262109966147cbda01d6166d2ca',1,'AutoComplete::LoadSymbols()'],['../classWorksheet.html#aaa5b37aee0c005bb6f303c7dd84c64d1',1,'Worksheet::LoadSymbols()']]],
   ['localedir_28',['LocaleDir',['../classDirstructure.html#a07774426dee2c4edafa95ce9f7465661',1,'Dirstructure']]],
-  ['longnumbercell_29',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell']]]
+  ['longnumbercell_29',['LongNumberCell',['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell']]],
+  ['lookslikeldb_30',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]]
 ];

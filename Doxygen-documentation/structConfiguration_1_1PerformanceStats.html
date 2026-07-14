@@ -130,7 +130,32 @@ std::atomic&lt; long &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>
 <tr class="memitem:ad79e8fdfed577a5955c31a809d31b602"><td class="memItemLeft" align="right" valign="top"><a id="ad79e8fdfed577a5955c31a809d31b602" name="ad79e8fdfed577a5955c31a809d31b602"></a>
 std::atomic&lt; long &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cellsConvertedTo2D</b> {0}</td></tr>
 <tr class="separator:ad79e8fdfed577a5955c31a809d31b602"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a039d882a1c7ba1add9e95617cb9e122b"><td class="memItemLeft" align="right" valign="top"><a id="a039d882a1c7ba1add9e95617cb9e122b" name="a039d882a1c7ba1add9e95617cb9e122b"></a>
+std::atomic&lt; long &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>worksheetRepaints</b> {0}</td></tr>
+<tr class="memdesc:a039d882a1c7ba1add9e95617cb9e122b"><td class="mdescLeft">&#160;</td><td class="mdescRight">How often the worksheet was repainted (<a class="el" href="classWorksheet.html#a73394e056b0f357649503dab879f97ee" title="Is called by wxWidgets when it wants to redraw the worksheet or a part of it.">Worksheet::OnPaint</a> ran) <br /></td></tr>
+<tr class="separator:a039d882a1c7ba1add9e95617cb9e122b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cee5c0a285d881267cda7d06282e9fa"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; long &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structConfiguration_1_1PerformanceStats.html#a9cee5c0a285d881267cda7d06282e9fa">worksheetFullRepaints</a> {0}</td></tr>
+<tr class="memdesc:a9cee5c0a285d881267cda7d06282e9fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many of those repaints covered (nearly) the whole visible worksheet.  <br /></td></tr>
+<tr class="separator:a9cee5c0a285d881267cda7d06282e9fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="a9cee5c0a285d881267cda7d06282e9fa" name="a9cee5c0a285d881267cda7d06282e9fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cee5c0a285d881267cda7d06282e9fa">&#9670;&#160;</a></span>worksheetFullRepaints</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;long&gt; Configuration::PerformanceStats::worksheetFullRepaints {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>How many of those repaints covered (nearly) the whole visible worksheet. </p>
+<p>Full repaints re-render every visible cell's text, so they are the expensive kind: this counter rising while the user merely moves the mouse or a cursor blinks reproduces the "constant full redraws" performance bug class (e.g. the composited GTK overlay scrollbar). </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
 <li>src/<a class="el" href="Configuration_8h_source.html">Configuration.h</a></li>
 <li>src/<a class="el" href="Configuration_8cpp.html">Configuration.cpp</a></li>

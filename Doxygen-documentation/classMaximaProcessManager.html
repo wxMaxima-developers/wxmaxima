@@ -117,6 +117,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMaximaClose</b> (wx
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaEvent</b> (wxThreadEvent &amp;event)</td></tr>
 <tr class="memdesc:aa69972a2db3046920fdbdae913654ad9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The EVT_MAXIMA handler: classifies each chunk <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> sent over the socket and hands it to the matching reader / updates the status bar. <br /></td></tr>
 <tr class="separator:aa69972a2db3046920fdbdae913654ad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca13067a67f4d859b46459aa96bbb3b4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaProcessManager.html#aca13067a67f4d859b46459aa96bbb3b4">WriteToMaximaStdin</a> (const wxString &amp;line)</td></tr>
+<tr class="memdesc:aca13067a67f4d859b46459aa96bbb3b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes one line of input to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process's stdin.  <br /></td></tr>
+<tr class="separator:aca13067a67f4d859b46459aa96bbb3b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8136c36c72481c495ca5eaa38291ac06"><td class="memItemLeft" align="right" valign="top"><a id="a8136c36c72481c495ca5eaa38291ac06" name="a8136c36c72481c495ca5eaa38291ac06"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Interrupt</b> (wxCommandEvent &amp;event)</td></tr>
 <tr class="memdesc:a8136c36c72481c495ca5eaa38291ac06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends the running <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> an interrupt (Ctrl+G / the interrupt button). <br /></td></tr>
@@ -234,6 +237,27 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>UnregisterChil
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aca13067a67f4d859b46459aa96bbb3b4" name="aca13067a67f4d859b46459aa96bbb3b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca13067a67f4d859b46459aa96bbb3b4">&#9670;&#160;</a></span>WriteToMaximaStdin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MaximaProcessManager::WriteToMaximaStdin </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>line</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes one line of input to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process's stdin. </p>
+<p>Used to talk to sbcl's low-level debugger (LDB), which reads its commands from stdin - not the control socket (LDB runs below the Lisp image and has no access to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s socket stream). <a class="el" href="classA.html">A</a> trailing newline is appended if <code>line</code> does not already end in one. Returns false if there is no stdin stream (no process) or the write failed. </p>
 
 </div>
 </div>

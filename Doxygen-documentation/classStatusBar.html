@@ -155,8 +155,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaximaCPUPercentag
 <tr class="memitem:ac86400a6f7fafecd1ccba3021c49d60a"><td class="memItemLeft" align="right" valign="top"><a id="ac86400a6f7fafecd1ccba3021c49d60a" name="ac86400a6f7fafecd1ccba3021c49d60a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateStatusMaximaBusy</b> (MaximaStatus status, std::size_t bytesFromMaxima)</td></tr>
 <tr class="separator:ac86400a6f7fafecd1ccba3021c49d60a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99984d665335fb0e11317b92213b4a48"><td class="memItemLeft" align="right" valign="top"><a id="a99984d665335fb0e11317b92213b4a48" name="a99984d665335fb0e11317b92213b4a48"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetStatusText</b> (wxString statusText)</td></tr>
+<tr class="memitem:a99984d665335fb0e11317b92213b4a48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStatusBar.html#a99984d665335fb0e11317b92213b4a48">SetStatusText</a> (wxString statusText)</td></tr>
+<tr class="memdesc:a99984d665335fb0e11317b92213b4a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the left status text.  <br /></td></tr>
 <tr class="separator:a99984d665335fb0e11317b92213b4a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
@@ -176,7 +176,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>HandleTimerEvent</b> 
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The class that draws the status bar. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a99984d665335fb0e11317b92213b4a48" name="a99984d665335fb0e11317b92213b4a48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99984d665335fb0e11317b92213b4a48">&#9670;&#160;</a></span>SetStatusText()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void StatusBar::SetStatusText </td>
+          <td>(</td>
+          <td class="paramtype">wxString&#160;</td>
+          <td class="paramname"><em>statusText</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the left status text. </p>
+<p>Skips unchanged text: wxStaticText::SetLabel() re-sizes the label even for identical text, which on wxGTK re-layouts (and repaints) the whole frame - too expensive for a setter that is called from the idle loop. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="StatusBar_8h_source.html">StatusBar.h</a></li>
 <li>src/<a class="el" href="StatusBar_8cpp.html">StatusBar.cpp</a></li>
 </ul>

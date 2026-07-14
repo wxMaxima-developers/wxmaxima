@@ -862,6 +862,9 @@ std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&
 <tr class="memitem:a64ddf7f0b92addeac26ccf9f58e08fda"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a64ddf7f0b92addeac26ccf9f58e08fda">SetHiddenTreeParent</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *parent, <a class="el" href="classGroupCell.html">GroupCell</a> *last=nullptr)</td></tr>
 <tr class="memdesc:a64ddf7f0b92addeac26ccf9f58e08fda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the parent cell of hidden cells.  <br /></td></tr>
 <tr class="separator:a64ddf7f0b92addeac26ccf9f58e08fda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa612fd739257d2aac6e51f4c8686bbbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#aa612fd739257d2aac6e51f4c8686bbbf">GetHiddenTreeParent</a> () const</td></tr>
+<tr class="memdesc:aa612fd739257d2aac6e51f4c8686bbbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cell this cell is hidden inside, if it is part of a folded subtree.  <br /></td></tr>
+<tr class="separator:aa612fd739257d2aac6e51f4c8686bbbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a0bfd0bc4dbb4081891d162fcdf3834"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a9a0bfd0bc4dbb4081891d162fcdf3834">Fold</a> ()</td></tr>
 <tr class="memdesc:a9a0bfd0bc4dbb4081891d162fcdf3834"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold this cell.  <br /></td></tr>
 <tr class="separator:a9a0bfd0bc4dbb4081891d162fcdf3834"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2330,6 +2333,34 @@ The y position used here must be in sync with the one calculated by <a class="el
 <p>Returns <a class="el" href="classGroupCell.html#a8ab26daf4c5ce41d7f91ec2a386e2fc7" title="Returns the maximum distance between top and center of this line.">GetCenterList()</a>+<a class="el" href="classGroupCell.html#a0063aaddf1b0abe1b8e979bdff4a5967" title="Returns the maximum distance between center and bottom of this line.">GetMaxDrop()</a> </p>
 
 <p>Reimplemented in <a class="el" href="classImgCell.html#a7a3f4a7f99c960f5f4b9cf6306828338">ImgCell</a>, and <a class="el" href="classImgCellBase.html#abdfc20584d96ff15809c439616525770">ImgCellBase</a>.</p>
+
+</div>
+</div>
+<a id="aa612fd739257d2aac6e51f4c8686bbbf" name="aa612fd739257d2aac6e51f4c8686bbbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa612fd739257d2aac6e51f4c8686bbbf">&#9670;&#160;</a></span>GetHiddenTreeParent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGroupCell.html">GroupCell</a> * GroupCell::GetHiddenTreeParent </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The cell this cell is hidden inside, if it is part of a folded subtree. </p>
+<dl class="section return"><dt>Returns</dt><dd>NULL if this cell is part of the visible worksheet tree </dd></dl>
 
 </div>
 </div>

@@ -567,6 +567,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CodeCellVisibilityCha
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateConfig</b> ()</td></tr>
 <tr class="memdesc:a5241f3c8ca8043a6b70dad9c9e7ec5d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-read the configuration. <br /></td></tr>
 <tr class="separator:a5241f3c8ca8043a6b70dad9c9e7ec5d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31f00c070f65b7afefde35d7d8b04de7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a31f00c070f65b7afefde35d7d8b04de7">ApplyOverlayScrollbarsSetting</a> ()</td></tr>
+<tr class="memdesc:a31f00c070f65b7afefde35d7d8b04de7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the configuration's OverlayScrollbars() choice to this window.  <br /></td></tr>
+<tr class="separator:a31f00c070f65b7afefde35d7d8b04de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43a3fe820a3811abd5bcc4bbad6ceeab"><td class="memItemLeft" align="right" valign="top"><a id="a43a3fe820a3811abd5bcc4bbad6ceeab" name="a43a3fe820a3811abd5bcc4bbad6ceeab"></a>
 const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentFile</b> () const</td></tr>
 <tr class="memdesc:a43a3fe820a3811abd5bcc4bbad6ceeab"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the currently-opened file. <br /></td></tr>
@@ -646,10 +649,17 @@ std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&
 <tr class="memitem:afe461aa6d0926a930da39ab21e075ebe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#afe461aa6d0926a930da39ab21e075ebe">RequestRecalculation</a> (<a class="el" href="classCell.html">Cell</a> *start)</td></tr>
 <tr class="memdesc:afe461aa6d0926a930da39ab21e075ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a recalculation of the worksheet starting with the cell start.  <br /></td></tr>
 <tr class="separator:afe461aa6d0926a930da39ab21e075ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed8cb6f6c8f39ba930dac38a3e9e35e9"><td class="memItemLeft" align="right" valign="top"><a id="aed8cb6f6c8f39ba930dac38a3e9e35e9" name="aed8cb6f6c8f39ba930dac38a3e9e35e9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RequestRecalculation</b> ()</td></tr>
-<tr class="memdesc:aed8cb6f6c8f39ba930dac38a3e9e35e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a recalculation of the whole worksheet. See <a class="el" href="classWorksheet.html#afe461aa6d0926a930da39ab21e075ebe" title="Schedule a recalculation of the worksheet starting with the cell start.">RequestRecalculation(Cell*)</a>. <br /></td></tr>
+<tr class="memitem:aed8cb6f6c8f39ba930dac38a3e9e35e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#aed8cb6f6c8f39ba930dac38a3e9e35e9">RequestRecalculation</a> ()</td></tr>
+<tr class="memdesc:aed8cb6f6c8f39ba930dac38a3e9e35e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a recalculation of the whole worksheet.  <br /></td></tr>
 <tr class="separator:aed8cb6f6c8f39ba930dac38a3e9e35e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af54481339be57cb888df634ce9dd9a0f"><td class="memItemLeft" align="right" valign="top"><a id="af54481339be57cb888df634ce9dd9a0f" name="af54481339be57cb888df634ce9dd9a0f"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCellsVisited</b> () const</td></tr>
+<tr class="memdesc:af54481339be57cb888df634ce9dd9a0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many cells the last layout pass visited. See <a class="el" href="classWorksheetLayout.html" title="The layout/recalculation engine of a worksheet.">WorksheetLayout</a>. <br /></td></tr>
+<tr class="separator:af54481339be57cb888df634ce9dd9a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11bea02393fefa83a5edc0c31a61672b"><td class="memItemLeft" align="right" valign="top"><a id="a11bea02393fefa83a5edc0c31a61672b" name="a11bea02393fefa83a5edc0c31a61672b"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCellsRecalculated</b> () const</td></tr>
+<tr class="memdesc:a11bea02393fefa83a5edc0c31a61672b"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many cells the last layout pass truly recalculated. See <a class="el" href="classWorksheetLayout.html" title="The layout/recalculation engine of a worksheet.">WorksheetLayout</a>. <br /></td></tr>
+<tr class="separator:a11bea02393fefa83a5edc0c31a61672b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34d249bc04233e189ca317b7310e0df3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a34d249bc04233e189ca317b7310e0df3">ClearDocument</a> ()</td></tr>
 <tr class="memdesc:a34d249bc04233e189ca317b7310e0df3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empties the current document.  <br /></td></tr>
 <tr class="separator:a34d249bc04233e189ca317b7310e0df3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -984,9 +994,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OutputChanged</b> ()<
 <tr class="separator:ad9cc92143ce120bb92d5a9b8699e9e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c3192549dc86f85c74dd83d73aafeaa"><td class="memItemLeft" align="right" valign="top"><a id="a3c3192549dc86f85c74dd83d73aafeaa" name="a3c3192549dc86f85c74dd83d73aafeaa"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveAllOutput</b> ()</td></tr>
+<tr class="memdesc:a3c3192549dc86f85c74dd83d73aafeaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all output cells from the whole worksheet. <br /></td></tr>
 <tr class="separator:a3c3192549dc86f85c74dd83d73aafeaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e0ed92f8b23727715ba1ab771f2eacf"><td class="memItemLeft" align="right" valign="top"><a id="a7e0ed92f8b23727715ba1ab771f2eacf" name="a7e0ed92f8b23727715ba1ab771f2eacf"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveAllOutput</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *cell)</td></tr>
+<tr class="memitem:a7e0ed92f8b23727715ba1ab771f2eacf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a7e0ed92f8b23727715ba1ab771f2eacf">RemoveAllOutput</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *cell)</td></tr>
+<tr class="memdesc:a7e0ed92f8b23727715ba1ab771f2eacf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all output cells from the list of cells that starts at <code>cell</code>.  <br /></td></tr>
 <tr class="separator:a7e0ed92f8b23727715ba1ab771f2eacf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb78a2fd309c125f700a9ccf2780af3c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#afb78a2fd309c125f700a9ccf2780af3c">Evaluate</a> ()</td></tr>
 <tr class="memdesc:afb78a2fd309c125f700a9ccf2780af3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trigger the evaluation of the current cell(s)  <br /></td></tr>
@@ -1276,6 +1287,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a31f00c070f65b7afefde35d7d8b04de7" name="a31f00c070f65b7afefde35d7d8b04de7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31f00c070f65b7afefde35d7d8b04de7">&#9670;&#160;</a></span>ApplyOverlayScrollbarsSetting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::ApplyOverlayScrollbarsSetting </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Apply the configuration's OverlayScrollbars() choice to this window. </p>
+<p>On wxGTK switches the worksheet between GTK's fading overlay scrollbars and classic ones; a no-op on all other platforms. Classic is the default because the overlay indicator makes GTK repaint the whole worksheet on every frame of its fade animation (see the implementation for details). Called from the constructor and whenever the configuration changes. </p>
 
 </div>
 </div>
@@ -2548,6 +2579,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="a7e0ed92f8b23727715ba1ab771f2eacf" name="a7e0ed92f8b23727715ba1ab771f2eacf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e0ed92f8b23727715ba1ab771f2eacf">&#9670;&#160;</a></span>RemoveAllOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::RemoveAllOutput </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>cell</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Remove all output cells from the list of cells that starts at <code>cell</code>. </p>
+<p>Schedules a recalculation starting at <code>cell</code> - unless <code>cell</code> is part of a hidden (folded) subtree: hidden cells are detached from the worksheet tree, so they must not become the layout engine's resume point; they get laid out when their fold parent is unfolded. </p>
+
+</div>
+</div>
 <a id="a45dd852f44f53430ea492c65414e5440" name="a45dd852f44f53430ea492c65414e5440"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a45dd852f44f53430ea492c65414e5440">&#9670;&#160;</a></span>Replace()</h2>
 
@@ -2634,8 +2686,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 </div>
 </div>
+<a id="aed8cb6f6c8f39ba930dac38a3e9e35e9" name="aed8cb6f6c8f39ba930dac38a3e9e35e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed8cb6f6c8f39ba930dac38a3e9e35e9">&#9670;&#160;</a></span>RequestRecalculation() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::RequestRecalculation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Schedule a recalculation of the whole worksheet. </p>
+<p>See <a class="el" href="classWorksheet.html#afe461aa6d0926a930da39ab21e075ebe" title="Schedule a recalculation of the worksheet starting with the cell start.">RequestRecalculation(Cell*)</a>.</p>
+<p>Only for operations that change the geometry of cells at unknown or document-wide positions (zoom, font or window-width changes, unfolding). An operation that changes one known cell must request RequestRecalculation(cell) instead so the layout pass doesn't have to visit the cells above it. </p>
+
+</div>
+</div>
 <a id="afe461aa6d0926a930da39ab21e075ebe" name="afe461aa6d0926a930da39ab21e075ebe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe461aa6d0926a930da39ab21e075ebe">&#9670;&#160;</a></span>RequestRecalculation()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afe461aa6d0926a930da39ab21e075ebe">&#9670;&#160;</a></span>RequestRecalculation() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

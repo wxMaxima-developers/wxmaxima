@@ -40,7 +40,7 @@ var searchData=
   ['onkeydown_37',['OnKeyDown',['../classAutocompletePopup.html#af93c58d3f7a281e0b06f6661ee8d3241',1,'AutocompletePopup::OnKeyDown()'],['../classFindReplaceDialog.html#a7a791a24cebb7acde874a0d41551fefd',1,'FindReplaceDialog::OnKeyDown()'],['../classWorksheet.html#a9e3fd586f9ce0444292f60c94ab69c44',1,'Worksheet::OnKeyDown(wxKeyEvent &amp;event)']]],
   ['onkillfocus_38',['OnKillFocus',['../classWorksheet.html#a70b955741d065e1b5d90a7d21f4540ef',1,'Worksheet']]],
   ['onlist_39',['OnList',['../Cell_8h.html#a090144aa5d2b751b5cdd879ef8a01218',1,'Cell.h']]],
-  ['onmaximaclose_40',['OnMaximaClose',['../classMaximaProcessManager.html#a9d48eba31b6625659a3097ab8c7ebd05',1,'MaximaProcessManager::OnMaximaClose()'],['../classMaximaProcessManager.html#a4aeea91ec0e81f005e804aa6b703f5fa',1,'MaximaProcessManager::OnMaximaClose(wxProcessEvent &amp;event)']]],
+  ['onmaximaclose_40',['OnMaximaClose',['../classMaximaProcessManager.html#a4aeea91ec0e81f005e804aa6b703f5fa',1,'MaximaProcessManager::OnMaximaClose(wxProcessEvent &amp;event)'],['../classMaximaProcessManager.html#a9d48eba31b6625659a3097ab8c7ebd05',1,'MaximaProcessManager::OnMaximaClose()']]],
   ['onmaximaconnect_41',['OnMaximaConnect',['../classMaximaProcessManager.html#a17ff3be6b97193281857eaeb299a31b6',1,'MaximaProcessManager']]],
   ['onmenu_42',['OnMenu',['../classRegexCtrl.html#aa324f4c4789baa3d92b584b652ae8a51',1,'RegexCtrl::OnMenu()'],['../classUnicodeSidebar.html#aec58145f8b66dac056be90d9ee200baa',1,'UnicodeSidebar::OnMenu()']]],
   ['onminimize_43',['OnMinimize',['../classwxMaxima.html#a2ad773f071039f53cca0e0b85c4fd29c',1,'wxMaxima']]],
@@ -57,7 +57,7 @@ var searchData=
   ['onrightclick_54',['OnRightClick',['../classUnicodeSidebar.html#ab069b1eb73e12208cda06c0e415beefd',1,'UnicodeSidebar::OnRightClick()'],['../classVariablespane.html#aaee6c757a027d8e9c2fa8e4cc66735cf',1,'Variablespane::OnRightClick()']]],
   ['onscrollchanged_55',['OnScrollChanged',['../classWorksheet.html#afb954bda762d567ccc4e807b698f9f35',1,'Worksheet']]],
   ['onsetfocus_56',['OnSetFocus',['../classWorksheet.html#a63e05a9968487697466f7113bbe91012',1,'Worksheet']]],
-  ['onsize_57',['OnSize',['../classUnicodeSidebar.html#ac552bb10b1a1c747da6a2bd92f76cd7a',1,'UnicodeSidebar::OnSize()'],['../classGroupCell.html#a8cef74c83eb83bc898729404ce789812',1,'GroupCell::OnSize()']]],
+  ['onsize_57',['OnSize',['../classGroupCell.html#a8cef74c83eb83bc898729404ce789812',1,'GroupCell::OnSize()'],['../classUnicodeSidebar.html#ac552bb10b1a1c747da6a2bd92f76cd7a',1,'UnicodeSidebar::OnSize()']]],
   ['onstyletoeditchanged_58',['OnStyleToEditChanged',['../classConfigDialogue.html#a2a091d60545ae1407dbde8781ac7306f',1,'ConfigDialogue']]],
   ['onsymboladd_59',['OnSymbolAdd',['../classwxMaxima.html#a7f2472ea58c3d47cf35aa0b12fdaa4f9',1,'wxMaxima']]],
   ['ontabchange_60',['OnTabChange',['../classConfigDialogue.html#af3795489c61090c8da5365af9a071a01',1,'ConfigDialogue']]],
@@ -85,6 +85,7 @@ var searchData=
   ['outcommon_2eh_82',['OutCommon.h',['../OutCommon_8h.html',1,'']]],
   ['outputchanged_83',['OutputChanged',['../classWorksheetDocument.html#ae4e03a1c27d7836edd31b5055c4581d3',1,'WorksheetDocument']]],
   ['outputheightchanged_84',['OutputHeightChanged',['../classGroupCell.html#a261107dd67c2c3bbd0a3bd561e00ad62',1,'GroupCell']]],
-  ['overload_5ftest_85',['Overload_Test',['../classOverload__Test.html',1,'']]],
-  ['unique_5fptr_3c_20t_20_3e_86',['unique_ptr&lt; T &gt;',['../classCellListBuilder.html#af7962cb0f42dd905c9db70d5eb6e54b3',1,'CellListBuilder']]]
+  ['overlayscrollbars_85',['OverlayScrollbars',['../classConfiguration.html#accf3101066b9662eb6e2de4c1b44f9d1',1,'Configuration::OverlayScrollbars(bool overlay)'],['../classConfiguration.html#ab47f0eff43b0d7e3f812f2f2413723ac',1,'Configuration::OverlayScrollbars() const']]],
+  ['overload_5ftest_86',['Overload_Test',['../classOverload__Test.html',1,'']]],
+  ['unique_5fptr_3c_20t_20_3e_87',['unique_ptr&lt; T &gt;',['../classCellListBuilder.html#af7962cb0f42dd905c9db70d5eb6e54b3',1,'CellListBuilder']]]
 ];

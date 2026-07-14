@@ -260,6 +260,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HideBrackets</b> () c
 void&#160;</td><td class="memItemRight" valign="bottom"><b>HideBrackets</b> (bool hide)</td></tr>
 <tr class="memdesc:ac05473e9ab3c972d4587415e9d5611a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define if we want to hide brackets that are not under the pointer. <br /></td></tr>
 <tr class="separator:ac05473e9ab3c972d4587415e9d5611a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab47f0eff43b0d7e3f812f2f2413723ac"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#ab47f0eff43b0d7e3f812f2f2413723ac">OverlayScrollbars</a> () const</td></tr>
+<tr class="memdesc:ab47f0eff43b0d7e3f812f2f2413723ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use GTK's overlay scrollbars on the worksheet?  <br /></td></tr>
+<tr class="separator:ab47f0eff43b0d7e3f812f2f2413723ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accf3101066b9662eb6e2de4c1b44f9d1"><td class="memItemLeft" align="right" valign="top"><a id="accf3101066b9662eb6e2de4c1b44f9d1" name="accf3101066b9662eb6e2de4c1b44f9d1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OverlayScrollbars</b> (bool overlay)</td></tr>
+<tr class="memdesc:accf3101066b9662eb6e2de4c1b44f9d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define if the worksheet should use GTK's overlay scrollbars. <br /></td></tr>
+<tr class="separator:accf3101066b9662eb6e2de4c1b44f9d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aa083f8a96209a61f7816980ed36e25"><td class="memItemLeft" align="right" valign="top"><a id="a7aa083f8a96209a61f7816980ed36e25" name="a7aa083f8a96209a61f7816980ed36e25"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>PrintScale</b> () const</td></tr>
 <tr class="memdesc:a7aa083f8a96209a61f7816980ed36e25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hide brackets that are not under the pointer? <br /></td></tr>
@@ -1710,6 +1717,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ab47f0eff43b0d7e3f812f2f2413723ac" name="ab47f0eff43b0d7e3f812f2f2413723ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab47f0eff43b0d7e3f812f2f2413723ac">&#9670;&#160;</a></span>OverlayScrollbars()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Configuration::OverlayScrollbars </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Use GTK's overlay scrollbars on the worksheet? </p>
+<p>Off by default: the fading overlay indicator is a composited window, and while its animation runs (after every pointer or wheel event) GTK repaints the whole worksheet on every animation frame - see <a class="el" href="classWorksheet.html#a31f00c070f65b7afefde35d7d8b04de7" title="Apply the configuration&#39;s OverlayScrollbars() choice to this window.">Worksheet::ApplyOverlayScrollbarsSetting()</a>. Only used on wxGTK. </p>
 
 </div>
 </div>

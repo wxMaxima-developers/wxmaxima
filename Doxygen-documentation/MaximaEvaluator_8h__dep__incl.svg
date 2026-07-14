@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 1418;
+var viewWidth = 1491;
 var viewHeight = 192;
 var sectionId = 'dynsection-1';
 </script>
@@ -58,8 +58,8 @@ var sectionId = 'dynsection-1';
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="Drives the evaluation of the worksheet: it pulls cells off the evaluation queue, sends their commands...">
-<polygon fill="#999999" stroke="#666666" points="484,-184 356,-184 356,-165 484,-165 484,-184"/>
-<text text-anchor="middle" x="420" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">src/MaximaEvaluator.h</text>
+<polygon fill="#999999" stroke="#666666" points="309,-184 181,-184 181,-165 309,-165 309,-184"/>
+<text text-anchor="middle" x="245" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">src/MaximaEvaluator.h</text>
 </a>
 </g>
 </g>
@@ -75,191 +75,212 @@ var sectionId = 'dynsection-1';
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="#63b8ff" d="M382.41,-161.9C311.65,-140.07 160.17,-93.33 97.76,-74.07"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="381.66,-165.33 392.24,-164.94 383.72,-158.64 381.66,-165.33"/>
+<path fill="none" stroke="#63b8ff" d="M222.45,-159.59C185.8,-136.97 114.36,-92.88 84.09,-74.2"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="220.63,-162.57 230.97,-164.84 224.3,-156.61 220.63,-162.57"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="wxMaxima_8h.html" target="_top" xlink:title="This file declares the class wxMaxima that contains most of the program&#39;s logic.">
-<polygon fill="white" stroke="#666666" points="819.5,-129 722.5,-129 722.5,-110 819.5,-110 819.5,-129"/>
-<text text-anchor="middle" x="771" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMaxima.h</text>
+<g id="a_node3"><a xlink:href="MaximaOutputAppender_8cpp.html" target="_top" xlink:title="Implements the worksheet output appenders extracted from the wxMaxima god class.">
+<polygon fill="white" stroke="#666666" points="331.5,-74 158.5,-74 158.5,-55 331.5,-55 331.5,-74"/>
+<text text-anchor="middle" x="245" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/MaximaOutputAppender.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node1&#45;&gt;Node3</title>
-<path fill="none" stroke="#63b8ff" d="M486.69,-163.43C555.47,-153.04 661.1,-137.09 722.38,-127.84"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="485.76,-160.03 476.39,-164.98 486.8,-166.95 485.76,-160.03"/>
-</g>
-<!-- Node3&#45;&gt;Node2 -->
-<g id="edge4" class="edge">
-<title>Node3&#45;&gt;Node2</title>
-<path fill="none" stroke="#63b8ff" d="M711.89,-114.98C601.29,-108.23 355.57,-92.5 149,-74 146.11,-73.74 143.17,-73.47 140.2,-73.18"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="711.97,-118.49 722.16,-115.6 712.4,-111.5 711.97,-118.49"/>
+<path fill="none" stroke="#63b8ff" d="M245,-154.48C245,-130.84 245,-91.5 245,-74.16"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="241.5,-154.66 245,-164.66 248.5,-154.66 241.5,-154.66"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="MaximaCommandMenus_8cpp.html" target="_top" xlink:title="Implementation of the menu&#45;command handlers extracted from wxMaxima &#45; see MaximaCommandMenus....">
-<polygon fill="white" stroke="#666666" points="334,-74 158,-74 158,-55 334,-55 334,-74"/>
-<text text-anchor="middle" x="246" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/MaximaCommandMenus.cpp</text>
+<g id="a_node4"><a xlink:href="wxMaxima_8h.html" target="_top" xlink:title="This file declares the class wxMaxima that contains most of the program&#39;s logic.">
+<polygon fill="white" stroke="#666666" points="590.5,-129 493.5,-129 493.5,-110 590.5,-110 590.5,-129"/>
+<text text-anchor="middle" x="542" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMaxima.h</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node4 -->
+<!-- Node1&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
-<title>Node3&#45;&gt;Node4</title>
-<path fill="none" stroke="#63b8ff" d="M711.99,-112.54C618.91,-103.15 437.59,-84.84 330.64,-74.04"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="711.78,-116.04 722.08,-113.56 712.48,-109.07 711.78,-116.04"/>
+<title>Node1&#45;&gt;Node4</title>
+<path fill="none" stroke="#63b8ff" d="M302.78,-163.19C358.46,-153.25 441.74,-138.39 493.91,-129.08"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="301.95,-159.78 292.72,-164.98 303.18,-166.67 301.95,-159.78"/>
+</g>
+<!-- Node4&#45;&gt;Node2 -->
+<g id="edge5" class="edge">
+<title>Node4&#45;&gt;Node2</title>
+<path fill="none" stroke="#63b8ff" d="M483.3,-111.91C396.29,-102.14 233.36,-83.84 140.18,-73.38"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="482.94,-115.39 493.27,-113.03 483.72,-108.43 482.94,-115.39"/>
+</g>
+<!-- Node4&#45;&gt;Node3 -->
+<g id="edge7" class="edge">
+<title>Node4&#45;&gt;Node3</title>
+<path fill="none" stroke="#63b8ff" d="M484.22,-108.19C428.54,-98.25 345.26,-83.39 293.09,-74.08"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="483.82,-111.67 494.28,-109.98 485.05,-104.78 483.82,-111.67"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="MaximaFileIO_8cpp.html" target="_top" xlink:title="Implements the worksheet file loaders/savers extracted from the wxMaxima god class.">
-<polygon fill="white" stroke="#666666" points="474,-74 352,-74 352,-55 474,-55 474,-74"/>
-<text text-anchor="middle" x="413" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/MaximaFileIO.cpp</text>
+<g id="a_node5"><a xlink:href="MaximaCommandMenus_8cpp.html" target="_top" xlink:title="Implementation of the menu&#45;command handlers extracted from wxMaxima &#45; see MaximaCommandMenus....">
+<polygon fill="white" stroke="#666666" points="688,-74 512,-74 512,-55 688,-55 688,-74"/>
+<text text-anchor="middle" x="600" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/MaximaCommandMenus.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node5 -->
-<g id="edge5" class="edge">
-<title>Node3&#45;&gt;Node5</title>
-<path fill="none" stroke="#63b8ff" d="M712.39,-109.82C645.5,-99.92 536.82,-83.83 470.43,-74"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="711.94,-113.29 722.35,-111.3 712.97,-106.37 711.94,-113.29"/>
+<!-- Node4&#45;&gt;Node5 -->
+<g id="edge4" class="edge">
+<title>Node4&#45;&gt;Node5</title>
+<path fill="none" stroke="#63b8ff" d="M558.91,-103.04C569.2,-93.64 581.97,-81.98 590.51,-74.17"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="556.34,-100.66 551.32,-109.98 561.06,-105.82 556.34,-100.66"/>
 </g>
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="MaximaProcessManager_8cpp.html" target="_top" xlink:title="Implements the Maxima process/socket lifecycle extracted from the wxMaxima god class.">
-<polygon fill="white" stroke="#666666" points="665.5,-74 492.5,-74 492.5,-55 665.5,-55 665.5,-74"/>
-<text text-anchor="middle" x="579" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/MaximaProcessManager.cpp</text>
+<g id="a_node6"><a xlink:href="MaximaFileIO_8cpp.html" target="_top" xlink:title="Implements the worksheet file loaders/savers extracted from the wxMaxima god class.">
+<polygon fill="white" stroke="#666666" points="828,-74 706,-74 706,-55 828,-55 828,-74"/>
+<text text-anchor="middle" x="767" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/MaximaFileIO.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node6 -->
+<!-- Node4&#45;&gt;Node6 -->
 <g id="edge6" class="edge">
-<title>Node3&#45;&gt;Node6</title>
-<path fill="none" stroke="#63b8ff" d="M730.47,-107.31C694.54,-97.39 642.84,-83.12 610.09,-74.08"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="729.58,-110.7 740.15,-109.98 731.44,-103.95 729.58,-110.7"/>
+<title>Node4&#45;&gt;Node6</title>
+<path fill="none" stroke="#63b8ff" d="M587.89,-107.69C630.05,-97.76 691.7,-83.24 730.57,-74.08"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="587.08,-104.28 578.15,-109.98 588.69,-111.1 587.08,-104.28"/>
 </g>
 <!-- Node7 -->
 <g id="node7" class="node">
 <title>Node7</title>
-<g id="a_node7"><a xlink:href="MaximaResponseReader_8cpp.html" target="_top" xlink:title="Implements the Maxima&#45;response handlers extracted from the wxMaxima god class.">
-<polygon fill="white" stroke="#666666" points="858.5,-74 683.5,-74 683.5,-55 858.5,-55 858.5,-74"/>
-<text text-anchor="middle" x="771" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/MaximaResponseReader.cpp</text>
+<g id="a_node7"><a xlink:href="MaximaProcessManager_8cpp.html" target="_top" xlink:title="Implements the Maxima process/socket lifecycle extracted from the wxMaxima god class.">
+<polygon fill="white" stroke="#666666" points="1019.5,-74 846.5,-74 846.5,-55 1019.5,-55 1019.5,-74"/>
+<text text-anchor="middle" x="933" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/MaximaProcessManager.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node7 -->
-<g id="edge7" class="edge">
-<title>Node3&#45;&gt;Node7</title>
-<path fill="none" stroke="#63b8ff" d="M771,-99.66C771,-90.93 771,-80.99 771,-74.09"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="767.5,-99.75 771,-109.75 774.5,-99.75 767.5,-99.75"/>
+<!-- Node4&#45;&gt;Node7 -->
+<g id="edge8" class="edge">
+<title>Node4&#45;&gt;Node7</title>
+<path fill="none" stroke="#63b8ff" d="M601.05,-110.5C673.51,-100.67 795.86,-84.09 870.06,-74.03"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="600.17,-107.08 590.73,-111.89 601.11,-114.02 600.17,-107.08"/>
 </g>
 <!-- Node8 -->
 <g id="node8" class="node">
 <title>Node8</title>
-<g id="a_node8"><a xlink:href="Worksheet_8cpp.html" target="_top" xlink:title="This file defines the class Worksheet.">
-<polygon fill="white" stroke="#666666" points="983,-74 877,-74 877,-55 983,-55 983,-74"/>
-<text text-anchor="middle" x="930" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/Worksheet.cpp</text>
+<g id="a_node8"><a xlink:href="MaximaResponseReader_8cpp.html" target="_top" xlink:title="Implements the Maxima&#45;response handlers extracted from the wxMaxima god class.">
+<polygon fill="white" stroke="#666666" points="1212.5,-74 1037.5,-74 1037.5,-55 1212.5,-55 1212.5,-74"/>
+<text text-anchor="middle" x="1125" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/MaximaResponseReader.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node8 -->
-<g id="edge8" class="edge">
-<title>Node3&#45;&gt;Node8</title>
-<path fill="none" stroke="#63b8ff" d="M806.1,-106.8C835.78,-96.91 877.6,-82.97 904.25,-74.08"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="804.93,-103.5 796.55,-109.98 807.14,-110.14 804.93,-103.5"/>
+<!-- Node4&#45;&gt;Node8 -->
+<g id="edge9" class="edge">
+<title>Node4&#45;&gt;Node8</title>
+<path fill="none" stroke="#63b8ff" d="M600.92,-113.14C703.91,-103.78 917.17,-84.39 1037.48,-73.46"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="600.35,-109.68 590.7,-114.07 600.98,-116.65 600.35,-109.68"/>
 </g>
 <!-- Node9 -->
 <g id="node9" class="node">
 <title>Node9</title>
-<g id="a_node9"><a xlink:href="EditorCell_8cpp.html" target="_top" xlink:title="This file defines the class EditorCell.">
-<polygon fill="white" stroke="#666666" points="1128.5,-74 1001.5,-74 1001.5,-55 1128.5,-55 1128.5,-74"/>
-<text text-anchor="middle" x="1065" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/EditorCell.cpp</text>
+<g id="a_node9"><a xlink:href="Worksheet_8cpp.html" target="_top" xlink:title="This file defines the class Worksheet.">
+<polygon fill="white" stroke="#666666" points="1337,-74 1231,-74 1231,-55 1337,-55 1337,-74"/>
+<text text-anchor="middle" x="1284" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/Worksheet.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node9 -->
-<g id="edge9" class="edge">
-<title>Node3&#45;&gt;Node9</title>
-<path fill="none" stroke="#63b8ff" d="M828.2,-108.19C883.32,-98.25 965.75,-83.39 1017.39,-74.08"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="827.46,-104.77 818.24,-109.98 828.7,-111.65 827.46,-104.77"/>
+<!-- Node4&#45;&gt;Node9 -->
+<g id="edge10" class="edge">
+<title>Node4&#45;&gt;Node9</title>
+<path fill="none" stroke="#63b8ff" d="M601.01,-116.05C719.12,-110.83 992.91,-97.17 1222,-74 1224.92,-73.7 1227.91,-73.38 1230.93,-73.03"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="600.58,-112.56 590.75,-116.5 600.89,-119.56 600.58,-112.56"/>
 </g>
 <!-- Node10 -->
 <g id="node10" class="node">
 <title>Node10</title>
-<g id="a_node10"><a xlink:href="main_8cpp.html" target="_top" xlink:title="The file that defines the starting point of the program.">
-<polygon fill="white" stroke="#666666" points="1135.5,-19 1056.5,-19 1056.5,0 1135.5,0 1135.5,-19"/>
-<text text-anchor="middle" x="1096" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/main.cpp</text>
+<g id="a_node10"><a xlink:href="EditorCell_8cpp.html" target="_top" xlink:title="This file defines the class EditorCell.">
+<polygon fill="white" stroke="#666666" points="1482.5,-74 1355.5,-74 1355.5,-55 1482.5,-55 1482.5,-74"/>
+<text text-anchor="middle" x="1419" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/cells/EditorCell.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node10 -->
-<g id="edge10" class="edge">
-<title>Node3&#45;&gt;Node10</title>
-<path fill="none" stroke="#63b8ff" d="M829.63,-115.57C927.86,-110.05 1116.99,-96.59 1137,-74 1152.75,-56.22 1125.73,-31.84 1108.55,-19.08"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="829.34,-112.08 819.55,-116.12 829.73,-119.07 829.34,-112.08"/>
+<!-- Node4&#45;&gt;Node10 -->
+<g id="edge11" class="edge">
+<title>Node4&#45;&gt;Node10</title>
+<path fill="none" stroke="#63b8ff" d="M600.92,-116.46C733.94,-111.6 1067.66,-97.89 1346,-74 1349.05,-73.74 1352.17,-73.45 1355.32,-73.14"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="600.42,-112.98 590.56,-116.84 600.68,-119.97 600.42,-112.98"/>
 </g>
 <!-- Node11 -->
 <g id="node11" class="node">
 <title>Node11</title>
-<g id="a_node11"><a xlink:href="main_8h.html" target="_top" xlink:title="This file declares the class wxMaxima that contains most of the program&#39;s logic.">
-<polygon fill="white" stroke="#666666" points="1253,-74 1185,-74 1185,-55 1253,-55 1253,-74"/>
-<text text-anchor="middle" x="1219" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/main.h</text>
+<g id="a_node11"><a xlink:href="main_8cpp.html" target="_top" xlink:title="The file that defines the starting point of the program.">
+<polygon fill="white" stroke="#666666" points="338.5,-19 259.5,-19 259.5,0 338.5,0 338.5,-19"/>
+<text text-anchor="middle" x="299" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/main.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node11 -->
-<g id="edge11" class="edge">
-<title>Node3&#45;&gt;Node11</title>
-<path fill="none" stroke="#63b8ff" d="M829.9,-113.15C908.05,-105.77 1050.21,-91.4 1171,-74 1175.52,-73.35 1180.27,-72.59 1184.96,-71.81"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="829.4,-109.68 819.77,-114.1 830.06,-116.65 829.4,-109.68"/>
-</g>
-<!-- Node13 -->
-<g id="node13" class="node">
-<title>Node13</title>
-<g id="a_node13"><a xlink:href="wxMaxima_8cpp.html" target="_top" xlink:title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">
-<polygon fill="white" stroke="#666666" points="1410,-19 1302,-19 1302,0 1410,0 1410,-19"/>
-<text text-anchor="middle" x="1356" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMaxima.cpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node13 -->
-<g id="edge15" class="edge">
-<title>Node3&#45;&gt;Node13</title>
-<path fill="none" stroke="#63b8ff" d="M829.78,-116.83C942.28,-113.05 1183.81,-101.86 1262,-74 1296.69,-61.64 1330.86,-33.45 1346.76,-19.16"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="829.51,-113.34 819.63,-117.17 829.74,-120.34 829.51,-113.34"/>
-</g>
-<!-- Node11&#45;&gt;Node10 -->
-<g id="edge13" class="edge">
-<title>Node11&#45;&gt;Node10</title>
-<path fill="none" stroke="#63b8ff" d="M1189.75,-50.9C1167.03,-41.11 1136.13,-27.79 1116.12,-19.17"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="1188.67,-54.24 1199.24,-54.98 1191.44,-47.81 1188.67,-54.24"/>
+<!-- Node4&#45;&gt;Node11 -->
+<g id="edge12" class="edge">
+<title>Node4&#45;&gt;Node11</title>
+<path fill="none" stroke="#63b8ff" d="M483.31,-108.48C451.33,-101.56 411.71,-90.56 379,-74 349.89,-59.26 321.3,-32.91 307.52,-19.25"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="482.91,-111.97 493.41,-110.58 484.34,-105.11 482.91,-111.97"/>
 </g>
 <!-- Node12 -->
 <g id="node12" class="node">
 <title>Node12</title>
-<g id="a_node12"><a xlink:href="MaximaManual_8cpp.html" target="_top" xlink:title="This file defines the class MaximaManual.">
-<polygon fill="white" stroke="#666666" points="1284,-19 1154,-19 1154,0 1284,0 1284,-19"/>
-<text text-anchor="middle" x="1219" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/MaximaManual.cpp</text>
+<g id="a_node12"><a xlink:href="main_8h.html" target="_top" xlink:title="This file declares the class wxMaxima that contains most of the program&#39;s logic.">
+<polygon fill="white" stroke="#666666" points="456,-74 388,-74 388,-55 456,-55 456,-74"/>
+<text text-anchor="middle" x="422" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">src/main.h</text>
 </a>
 </g>
 </g>
-<!-- Node11&#45;&gt;Node12 -->
-<g id="edge12" class="edge">
-<title>Node11&#45;&gt;Node12</title>
-<path fill="none" stroke="#63b8ff" d="M1219,-44.66C1219,-35.93 1219,-25.99 1219,-19.09"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="1215.5,-44.75 1219,-54.75 1222.5,-44.75 1215.5,-44.75"/>
+<!-- Node4&#45;&gt;Node12 -->
+<g id="edge13" class="edge">
+<title>Node4&#45;&gt;Node12</title>
+<path fill="none" stroke="#63b8ff" d="M513.47,-105.9C491.3,-96.11 461.15,-82.79 441.63,-74.17"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="512.16,-109.15 522.72,-109.98 514.99,-102.74 512.16,-109.15"/>
 </g>
-<!-- Node11&#45;&gt;Node13 -->
+<!-- Node14 -->
+<g id="node14" class="node">
+<title>Node14</title>
+<g id="a_node14"><a xlink:href="wxMaxima_8cpp.html" target="_top" xlink:title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">
+<polygon fill="white" stroke="#666666" points="613,-19 505,-19 505,0 613,0 613,-19"/>
+<text text-anchor="middle" x="559" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/wxMaxima.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node4&#45;&gt;Node14 -->
+<g id="edge17" class="edge">
+<title>Node4&#45;&gt;Node14</title>
+<path fill="none" stroke="#63b8ff" d="M522.35,-103.11C508.84,-90.55 494.73,-72.14 503,-55 510.88,-38.67 527.99,-26.49 541.23,-19.04"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="520.2,-105.89 530.05,-109.78 524.78,-100.59 520.2,-105.89"/>
+</g>
+<!-- Node12&#45;&gt;Node11 -->
+<g id="edge15" class="edge">
+<title>Node12&#45;&gt;Node11</title>
+<path fill="none" stroke="#63b8ff" d="M392.75,-50.9C370.03,-41.11 339.13,-27.79 319.12,-19.17"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="391.67,-54.24 402.24,-54.98 394.44,-47.81 391.67,-54.24"/>
+</g>
+<!-- Node13 -->
+<g id="node13" class="node">
+<title>Node13</title>
+<g id="a_node13"><a xlink:href="MaximaManual_8cpp.html" target="_top" xlink:title="This file defines the class MaximaManual.">
+<polygon fill="white" stroke="#666666" points="487,-19 357,-19 357,0 487,0 487,-19"/>
+<text text-anchor="middle" x="422" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/MaximaManual.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node12&#45;&gt;Node13 -->
 <g id="edge14" class="edge">
-<title>Node11&#45;&gt;Node13</title>
-<path fill="none" stroke="#63b8ff" d="M1250.56,-51.29C1275.95,-41.47 1311,-27.91 1333.59,-19.17"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="1249.08,-48.11 1241.01,-54.98 1251.6,-54.64 1249.08,-48.11"/>
+<title>Node12&#45;&gt;Node13</title>
+<path fill="none" stroke="#63b8ff" d="M422,-44.66C422,-35.93 422,-25.99 422,-19.09"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="418.5,-44.75 422,-54.75 425.5,-44.75 418.5,-44.75"/>
+</g>
+<!-- Node12&#45;&gt;Node14 -->
+<g id="edge16" class="edge">
+<title>Node12&#45;&gt;Node14</title>
+<path fill="none" stroke="#63b8ff" d="M453.56,-51.29C478.95,-41.47 514,-27.91 536.59,-19.17"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="452.08,-48.11 444.01,-54.98 454.6,-54.64 452.08,-48.11"/>
 </g>
 </g>
 </svg>

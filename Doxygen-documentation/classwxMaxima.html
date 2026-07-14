@@ -76,7 +76,6 @@ $(function() {
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Data Fields</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pro-types">Protected Types</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
@@ -328,15 +327,6 @@ static const wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_pr
 <tr class="memdesc:acda83075adfcb1cfb18ff43912b770d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The marker for the end of a input prompt. <br /></td></tr>
 <tr class="separator:acda83075adfcb1cfb18ff43912b770d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-types" name="pro-types"></a>
-Protected Types</h2></td></tr>
-<tr class="memitem:a447d91f6e058f31dfc21e4305e260a5d"><td class="memItemLeft" align="right" valign="top"><a id="a447d91f6e058f31dfc21e4305e260a5d" name="a447d91f6e058f31dfc21e4305e260a5d"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>AppendOpt</b> { <b>NewLine</b> = 1
-, <b>BigSkip</b> = 2
-, <b>PromptToolTip</b> = 4
-, <b>DefaultOpt</b> = NewLine|BigSkip
- }</td></tr>
-<tr class="separator:a447d91f6e058f31dfc21e4305e260a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a5deb121b24bddcbcec77253c349980b8"><td class="memItemLeft" align="right" valign="top"><a id="a5deb121b24bddcbcec77253c349980b8" name="a5deb121b24bddcbcec77253c349980b8"></a>
@@ -458,18 +448,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnReplaceAll</b> (wxF
 <tr class="memitem:a38d67d29e2a899451459d93e7714b9e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a38d67d29e2a899451459d93e7714b9e2">AddDrawParameter</a> (wxString cmd, int dimensionsOfNewDrawCommand=2)</td></tr>
 <tr class="memdesc:a38d67d29e2a899451459d93e7714b9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a parameter to a draw command.  <br /></td></tr>
 <tr class="separator:a38d67d29e2a899451459d93e7714b9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2df506e5dc3a7aa8c11f5cc01f51aa0b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTextCell.html">TextCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a2df506e5dc3a7aa8c11f5cc01f51aa0b">ConsoleAppend</a> (wxString s, <a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type)</td></tr>
-<tr class="memdesc:a2df506e5dc3a7aa8c11f5cc01f51aa0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">append maxima output to console  <br /></td></tr>
-<tr class="separator:a2df506e5dc3a7aa8c11f5cc01f51aa0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae397ec8c3fb2c6f8ccc0ae2ae8ca18e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ae397ec8c3fb2c6f8ccc0ae2ae8ca18e7">ConsoleAppend</a> (wxXmlDocument xml, <a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type, const wxString &amp;userLabel={})</td></tr>
-<tr class="memdesc:ae397ec8c3fb2c6f8ccc0ae2ae8ca18e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">append maxima output to console  <br /></td></tr>
-<tr class="separator:ae397ec8c3fb2c6f8ccc0ae2ae8ca18e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa911d4cded3239afc69dcebd3431b7cc"><td class="memItemLeft" align="right" valign="top"><a id="aa911d4cded3239afc69dcebd3431b7cc" name="aa911d4cded3239afc69dcebd3431b7cc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DoConsoleAppend</b> (wxString s, <a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type, AppendOpt opts=AppendOpt::DefaultOpt, const wxString &amp;userLabel={})</td></tr>
-<tr class="separator:aa911d4cded3239afc69dcebd3431b7cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6170ab06ce39fe8f13d9f0c7ed2e837c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTextCell.html">TextCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a6170ab06ce39fe8f13d9f0c7ed2e837c">DoRawConsoleAppend</a> (wxString s, <a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type, AppendOpt opts={})</td></tr>
-<tr class="memdesc:a6170ab06ce39fe8f13d9f0c7ed2e837c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append one or more lines of ordinary unicode text to the console.  <br /></td></tr>
-<tr class="separator:a6170ab06ce39fe8f13d9f0c7ed2e837c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4dfc9339e684b4d9a6fe4b5a9e810871"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a4dfc9339e684b4d9a6fe4b5a9e810871">VarReadEvent</a> (wxCommandEvent &amp;event)</td></tr>
 <tr class="memdesc:a4dfc9339e684b4d9a6fe4b5a9e810871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawn the "configure" menu.  <br /></td></tr>
 <tr class="separator:a4dfc9339e684b4d9a6fe4b5a9e810871"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -672,6 +650,14 @@ wxInputStream *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaSt
 wxInputStream *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaStderr</b> = NULL</td></tr>
 <tr class="memdesc:a82c85e2499ede35b5d9333c6282cef3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The stderr of the maxima process. <br /></td></tr>
 <tr class="separator:a82c85e2499ede35b5d9333c6282cef3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c3e362f613bf04b50045abedc4c321c"><td class="memItemLeft" align="right" valign="top"><a id="a0c3e362f613bf04b50045abedc4c321c" name="a0c3e362f613bf04b50045abedc4c321c"></a>
+wxOutputStream *&#160;</td><td class="memItemRight" valign="bottom"><b>m_maximaStdin</b> = NULL</td></tr>
+<tr class="memdesc:a0c3e362f613bf04b50045abedc4c321c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The stdin of the maxima process. Normally unused (commands go over the socket), but sbcl's low-level debugger (LDB) reads from here, so we keep the stream to talk to LDB. See <a class="el" href="classMaximaProcessManager.html#aca13067a67f4d859b46459aa96bbb3b4" title="Writes one line of input to the Maxima process&#39;s stdin.">MaximaProcessManager::WriteToMaximaStdin</a>. <br /></td></tr>
+<tr class="separator:a0c3e362f613bf04b50045abedc4c321c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbee674f9f360c58b1157bd6daca7b31"><td class="memItemLeft" align="right" valign="top"><a id="acbee674f9f360c58b1157bd6daca7b31" name="acbee674f9f360c58b1157bd6daca7b31"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_inLDB</b> = false</td></tr>
+<tr class="memdesc:acbee674f9f360c58b1157bd6daca7b31"><td class="mdescLeft">&#160;</td><td class="mdescRight">True while sbcl is stopped in its low-level debugger (LDB). Set from the LDB banner on the process's stdout, cleared when the process ends. While set, user input is sent to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s stdin (LDB) instead of the socket. <br /></td></tr>
+<tr class="separator:acbee674f9f360c58b1157bd6daca7b31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b4330ab50309004698913613ac9b980"><td class="memItemLeft" align="right" valign="top"><a id="a0b4330ab50309004698913613ac9b980" name="a0b4330ab50309004698913613ac9b980"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>m_port</b> = -1</td></tr>
 <tr class="memdesc:a0b4330ab50309004698913613ac9b980"><td class="mdescLeft">&#160;</td><td class="mdescRight">The port the actual maxima process (not its wrapper script) runs at. <br /></td></tr>
@@ -1013,6 +999,10 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a94a30f27e23250dd009f3e5491e68d18">MaximaFileIO</a></td></tr>
 <tr class="memdesc:a94a30f27e23250dd009f3e5491e68d18"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extracted worksheet file loaders/savers reach <a class="el" href="classwxMaxima.html">wxMaxima</a>'s services (the worksheet, the status bar, the title, the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process) through this friendship. <br /></td></tr>
 <tr class="separator:a94a30f27e23250dd009f3e5491e68d18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87edbe07df092fb415d4bbf4639667d1"><td class="memItemLeft" align="right" valign="top"><a id="a87edbe07df092fb415d4bbf4639667d1" name="a87edbe07df092fb415d4bbf4639667d1"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a87edbe07df092fb415d4bbf4639667d1">MaximaOutputAppender</a></td></tr>
+<tr class="memdesc:a87edbe07df092fb415d4bbf4639667d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extracted console output appenders reach <a class="el" href="classwxMaxima.html">wxMaxima</a>'s services (the worksheet, the parser, the status bar, the evaluator) through this friendship. <br /></td></tr>
+<tr class="separator:a87edbe07df092fb415d4bbf4639667d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="ab6afd24efcd1d85c6aac02040adf0a68" name="ab6afd24efcd1d85c6aac02040adf0a68"></a>
@@ -1085,93 +1075,6 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 </div>
 </div>
-<a id="a2df506e5dc3a7aa8c11f5cc01f51aa0b" name="a2df506e5dc3a7aa8c11f5cc01f51aa0b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2df506e5dc3a7aa8c11f5cc01f51aa0b">&#9670;&#160;</a></span>ConsoleAppend() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classTextCell.html">TextCell</a> * wxMaxima::ConsoleAppend </td>
-          <td>(</td>
-          <td class="paramtype">wxString&#160;</td>
-          <td class="paramname"><em>s</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a>&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>append maxima output to console </p>
-<p>ConsoleAppend adds a new line s of type to the console window.</p>
-<p>Dispatches on the cell type: plain-text types (default output, errors, warnings, text, ASCII maths) go to DoRawConsoleAppend verbatim; prompts and everything else are wrapped in <span>...</span> and run through the XML parser via DoConsoleAppend. Also enforces the max-output-cells-per-command limit and strips a trailing &lt;/PROMPT&gt; tag. </p>
-
-</div>
-</div>
-<a id="ae397ec8c3fb2c6f8ccc0ae2ae8ca18e7" name="ae397ec8c3fb2c6f8ccc0ae2ae8ca18e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae397ec8c3fb2c6f8ccc0ae2ae8ca18e7">&#9670;&#160;</a></span>ConsoleAppend() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void wxMaxima::ConsoleAppend </td>
-          <td>(</td>
-          <td class="paramtype">wxXmlDocument&#160;</td>
-          <td class="paramname"><em>xml</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a>&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const wxString &amp;&#160;</td>
-          <td class="paramname"><em>userLabel</em> = <code>{}</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>append maxima output to console </p>
-<hr  />
- <h2><a class="anchor" id="autotoc_md849"></a>
-Appending stuff to output</h2>
-
-</div>
-</div>
 <a id="a9c781b7655fecb0a4987515342ec748d" name="a9c781b7655fecb0a4987515342ec748d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9c781b7655fecb0a4987515342ec748d">&#9670;&#160;</a></span>DockAllSidebars()</h2>
 
@@ -1198,51 +1101,6 @@ Appending stuff to output</h2>
 
 <p>An instant single-window mode. </p>
 <p><a class="el" href="classA.html">A</a> last resort if <a href="https://github.com/wxWidgets/wxWidgets/issues/18815">https://github.com/wxWidgets/wxWidgets/issues/18815</a> hinders one from re-docking windows. </p>
-
-</div>
-</div>
-<a id="a6170ab06ce39fe8f13d9f0c7ed2e837c" name="a6170ab06ce39fe8f13d9f0c7ed2e837c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6170ab06ce39fe8f13d9f0c7ed2e837c">&#9670;&#160;</a></span>DoRawConsoleAppend()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classTextCell.html">TextCell</a> * wxMaxima::DoRawConsoleAppend </td>
-          <td>(</td>
-          <td class="paramtype">wxString&#160;</td>
-          <td class="paramname"><em>s</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a>&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">AppendOpt&#160;</td>
-          <td class="paramname"><em>opts</em> = <code>{}</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Append one or more lines of ordinary unicode text to the console. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classA.html">A</a> pointer to the last line that was appended or NULL, if there is no such line </dd></dl>
 
 </div>
 </div>
@@ -1328,7 +1186,7 @@ Appending stuff to output</h2>
 
 <p>returns the command to start maxima </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md853"></a>
+ <h2><a class="anchor" id="autotoc_md852"></a>
 Getting configuration</h2>
 
 </div>
@@ -1505,7 +1363,7 @@ Getting configuration</h2>
 
 <p>Inserts command cmd into the worksheet. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md856"></a>
+ <h2><a class="anchor" id="autotoc_md855"></a>
 Menu and button events</h2>
 
 </div>
@@ -1541,7 +1399,7 @@ Menu and button events</h2>
 <p>Moving the screen update to this function, as well, makes sure that if we get events faster than we can update the screen that doesn't cause lag, but causes screen updates for old events to be dropped if we already have new ones. This normally makes programs feel way more responsive.</p>
 <p>The worksheet is additionally refreshed by a timer task in case that th computer is too busy to ever reach the idle task at all.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md855"></a>
+ <h2><a class="anchor" id="autotoc_md854"></a>
 Idle event</h2>
 
 </div>
@@ -1676,13 +1534,13 @@ Idle event</h2>
 <p>Set the current working directory file I/O from maxima is relative to. </p>
 <p>ServerEvent is triggered when maxima connects to the socket server.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md850"></a>
+ <h2><a class="anchor" id="autotoc_md849"></a>
 Socket stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md851"></a>
+ <h2><a class="anchor" id="autotoc_md850"></a>
 Maxima process stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md852"></a>
+ <h2><a class="anchor" id="autotoc_md851"></a>
 Dealing with stuff read from the socket</h2>
 
 </div>
@@ -1786,7 +1644,7 @@ Dealing with stuff read from the socket</h2>
       </table>
 </div><div class="memdoc">
 <hr  />
- <h2><a class="anchor" id="autotoc_md854"></a>
+ <h2><a class="anchor" id="autotoc_md853"></a>
 Tips and help</h2>
 
 </div>
@@ -1921,7 +1779,7 @@ Tips and help</h2>
 
 <p>Enables and disables the Right menu buttons. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md857"></a>
+ <h2><a class="anchor" id="autotoc_md856"></a>
 Menu and button events</h2>
 
 </div>
@@ -1979,7 +1837,7 @@ Menu and button events</h2>
 
 <p>Updates the slider to show the right frame. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md858"></a>
+ <h2><a class="anchor" id="autotoc_md857"></a>
 Plot Slider</h2>
 
 </div>
