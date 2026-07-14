@@ -24,9 +24,15 @@ for f in "$@"; do
     name=$(basename "$f")
     ERRLOG="$(mktemp)"
 
+    # Run on a scratch copy: --batch saves the document after evaluating it,
+    # and a fixture whose content is (partially) recoverable would get
+    # rewritten in place, silently un-corrupting the committed test file.
+    SCRATCH="$(mktemp -d)"
+    cp "$f" "$SCRATCH/$name"
+
     # No --exit-on-error: that flag masks the historical hang (it force-closes
     # on the first error). Plain --batch is the path that used to wedge.
-    "$BIN" --batch --logtostderr "$f" >"$ERRLOG" 2>&1 &
+    "$BIN" --batch --logtostderr "$SCRATCH/$name" >"$ERRLOG" 2>&1 &
     PID=$!
 
     # Poll for exit up to the timeout.
@@ -59,6 +65,7 @@ for f in "$@"; do
 
     [ "$rc" -ne 0 ] && { echo "--- $name output ---" >&2; tail -20 "$ERRLOG" >&2; }
     rm -f "$ERRLOG"
+    rm -rf "$SCRATCH"
 done
 
 exit "$rc"
