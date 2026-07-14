@@ -44,6 +44,8 @@ PerformanceSidebar::PerformanceSidebar(wxWindow *parent, int ID)
   AddStat(gridSizer, _("Recalc (Editor dirty):"), wxS("recalc_dirty"));
   AddStat(gridSizer, _("Converted to linear:"), wxS("to_linear"));
   AddStat(gridSizer, _("Converted to 2D:"), wxS("to_2d"));
+  AddStat(gridSizer, _("Worksheet repaints:"), wxS("repaints"));
+  AddStat(gridSizer, _("Full-window repaints:"), wxS("repaints_full"));
 
   mainSizer->Add(gridSizer, 1, wxALL | wxEXPAND, 10);
   SetSizer(mainSizer);
@@ -61,20 +63,41 @@ void PerformanceSidebar::AddStat(wxSizer* sizer, const wxString& label, const wx
 
 void PerformanceSidebar::UpdateContents()
 {
+  // Throttle: this is called from the idle loop, and the stats it displays
+  // change on every repaint (repainting bumps the font-cache counters). An
+  // update changes label text, which re-layouts and repaints - which changes
+  // the stats again, so updating on every idle event kept the GUI repainting
+  // in a loop. A couple of updates per second is plenty for a monitor.
+  if (m_sinceLastUpdate.Time() < 500)
+    return;
+  m_sinceLastUpdate.Start();
+
   const auto& stats = Configuration::g_stats;
-  m_valueLabels[wxS("builtin")]->SetLabel(wxString::Format(wxS("%ld"), stats.manualAnchorsFromBuiltin.load()));
-  m_valueLabels[wxS("cache")]->SetLabel(wxString::Format(wxS("%ld"), stats.manualAnchorsFromCache.load()));
-  m_valueLabels[wxS("compiled")]->SetLabel(wxString::Format(wxS("%ld"), stats.manualAnchorsCompiled.load()));
-  m_valueLabels[wxS("maxima")]->SetLabel(wxString::Format(wxS("%ld"), stats.maximaProcessesSpawned.load()));
-  m_valueLabels[wxS("font_hits")]->SetLabel(wxString::Format(wxS("%ld"), stats.fontCacheHits.load()));
-  m_valueLabels[wxS("font_misses")]->SetLabel(wxString::Format(wxS("%ld"), stats.fontCacheMisses.load()));
-  m_valueLabels[wxS("recalc_font")]->SetLabel(wxString::Format(wxS("%ld"), stats.recalculationNeeded_FontInvalid.load()));
-  m_valueLabels[wxS("recalc_size")]->SetLabel(wxString::Format(wxS("%ld"), stats.recalculationNeeded_SizeInvalid.load()));
-  m_valueLabels[wxS("recalc_mismatch")]->SetLabel(wxString::Format(wxS("%ld"), stats.recalculationNeeded_FontMismatch.load()));
-  m_valueLabels[wxS("recalc_config")]->SetLabel(wxString::Format(wxS("%ld"), stats.recalculationNeeded_ConfigChanged.load()));
-  m_valueLabels[wxS("recalc_appended")]->SetLabel(wxString::Format(wxS("%ld"), stats.recalculationNeeded_CellsAppended.load()));
-  m_valueLabels[wxS("recalc_dirty")]->SetLabel(wxString::Format(wxS("%ld"), stats.recalculationNeeded_EditorDirty.load()));
-  m_valueLabels[wxS("to_linear")]->SetLabel(wxString::Format(wxS("%ld"), stats.cellsConvertedToLinear.load()));
-  m_valueLabels[wxS("to_2d")]->SetLabel(wxString::Format(wxS("%ld"), stats.cellsConvertedTo2D.load()));
-  Layout();
+  bool changed = false;
+  const auto setStat = [&](const wxString &key, long value) {
+    wxStaticText *label = m_valueLabels[key];
+    const wxString text = wxString::Format(wxS("%ld"), value);
+    if (label->GetLabel() != text) {
+      label->SetLabel(text);
+      changed = true;
+    }
+  };
+  setStat(wxS("builtin"), stats.manualAnchorsFromBuiltin.load());
+  setStat(wxS("cache"), stats.manualAnchorsFromCache.load());
+  setStat(wxS("compiled"), stats.manualAnchorsCompiled.load());
+  setStat(wxS("maxima"), stats.maximaProcessesSpawned.load());
+  setStat(wxS("font_hits"), stats.fontCacheHits.load());
+  setStat(wxS("font_misses"), stats.fontCacheMisses.load());
+  setStat(wxS("recalc_font"), stats.recalculationNeeded_FontInvalid.load());
+  setStat(wxS("recalc_size"), stats.recalculationNeeded_SizeInvalid.load());
+  setStat(wxS("recalc_mismatch"), stats.recalculationNeeded_FontMismatch.load());
+  setStat(wxS("recalc_config"), stats.recalculationNeeded_ConfigChanged.load());
+  setStat(wxS("recalc_appended"), stats.recalculationNeeded_CellsAppended.load());
+  setStat(wxS("recalc_dirty"), stats.recalculationNeeded_EditorDirty.load());
+  setStat(wxS("to_linear"), stats.cellsConvertedToLinear.load());
+  setStat(wxS("to_2d"), stats.cellsConvertedTo2D.load());
+  setStat(wxS("repaints"), stats.worksheetRepaints.load());
+  setStat(wxS("repaints_full"), stats.worksheetFullRepaints.load());
+  if (changed)
+    Layout();
 }

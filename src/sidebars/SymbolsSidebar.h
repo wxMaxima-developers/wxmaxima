@@ -73,6 +73,9 @@ private:
   wxWindow *m_worksheet;
   //! The user symbols that are currently displayed
   wxString m_userSymbols_Last;
+  //! The virtual size UpdateVirtualSize() last applied, so it can skip
+  //! re-layouting when nothing changed (see the comment in its body).
+  wxSize m_lastVirtualSize = wxDefaultSize;
 };
 
 #endif // SYMBOLSSIDEBAR_H

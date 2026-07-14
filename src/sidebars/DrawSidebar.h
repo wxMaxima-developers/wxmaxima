@@ -52,6 +52,9 @@ protected:
   void OnSize(wxSizeEvent &event);
 private:
   Buttonwrapsizer *m_grid;
+  //! The virtual size OnSize() last applied, so it can skip re-layouting
+  //! when nothing changed (see the comment in its body).
+  wxSize m_lastVirtualSize = wxDefaultSize;
   wxButton *m_draw_setup2d;
   wxButton *m_draw_setup3d;
   wxButton *m_draw_explicit;

@@ -1,5 +1,23 @@
 # Current development version
 
+- Speedup: merely moving the mouse across the worksheet used to repaint the
+  whole visible worksheet (all of its text included) at up to full frame
+  rate, visible as a stream of font-cache hits in the performance monitor
+  whenever a cell bracket appeared or vanished under the pointer. Three
+  causes fixed: GTK's overlay scrollbar is a composited window whose
+  fade-in/fade-out animation forces full-window repaints, so the worksheet
+  now uses classic scrollbars on GTK; the paint routine now redraws each
+  damaged rectangle separately instead of their bounding box (the bracket
+  column plus the blinking cursor's bar used to combine into "everything");
+  and several sidebars re-layouted themselves on every size event even when
+  nothing had changed, which on wxGTK re-triggers itself on the next frame.
+  Also, the status bar and the performance monitor no longer re-set label
+  text that didn't change (each such set re-layouts the frame), and the
+  performance monitor now updates at most twice a second - its own updates
+  changed the statistics it displays, keeping the GUI busy in a loop. The
+  performance monitor gained "Worksheet repaints" and "Full-window repaints"
+  counters so a regression of this kind is easy to spot.
+
 - Speedup: many editing operations (deleting, pasting or restyling cells,
   undo/redo, search-and-replace, drag-and-drop in the table of contents,
   "remove all output") used to make the next layout pass walk the whole

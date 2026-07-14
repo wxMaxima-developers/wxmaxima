@@ -97,7 +97,16 @@ public:
   };
 
   void UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFromMaxima);
-  void SetStatusText(wxString statusText){m_statusText->SetLabel(statusText);}
+  /*! Set the left status text
+
+    Skips unchanged text: wxStaticText::SetLabel() re-sizes the label even
+    for identical text, which on wxGTK re-layouts (and repaints) the whole
+    frame - too expensive for a setter that is called from the idle loop.
+  */
+  void SetStatusText(wxString statusText){
+    if (m_statusText->GetLabel() != statusText)
+      m_statusText->SetLabel(statusText);
+  }
 protected:
   void StatusMsgDClick(wxMouseEvent &ev);
   void OnSize(wxSizeEvent &event);

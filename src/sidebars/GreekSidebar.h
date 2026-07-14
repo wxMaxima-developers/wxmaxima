@@ -63,6 +63,9 @@ class GreekSidebar : public wxScrolled<wxPanel>
   Buttonwrapsizer *m_lowercaseSizer;
   Buttonwrapsizer *m_uppercaseSizer;
   wxWindow *m_worksheet;
+  //! The virtual size UpdateVirtualSize() last applied, so it can skip
+  //! re-layouting when nothing changed (see the comment in its body).
+  wxSize m_lastVirtualSize = wxDefaultSize;
 };
 
 

@@ -25,16 +25,21 @@
 #include <wx/wx.h>
 #include <wx/panel.h>
 #include <wx/stattext.h>
+#include <wx/stopwatch.h>
 #include <map>
 
 class PerformanceSidebar : public wxScrolled<wxPanel>
 {
 public:
   explicit PerformanceSidebar(wxWindow *parent, int ID = wxID_ANY);
+  //! Refresh the displayed statistics. Called from the idle loop; throttles
+  //! itself and only touches labels whose value actually changed.
   void UpdateContents();
 
 private:
   std::map<wxString, wxStaticText*> m_valueLabels;
+  //! Time since the last displayed refresh, for throttling UpdateContents().
+  wxStopWatch m_sinceLastUpdate;
   void AddStat(wxSizer* sizer, const wxString& label, const wxString& key);
 };
 

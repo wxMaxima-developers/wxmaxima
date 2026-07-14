@@ -81,6 +81,18 @@ void GreekSidebar::UpdateVirtualSize() {
   const int lowerHeight = m_lowercaseSizer->HeightForWidth(width);
   const int upperHeight = m_uppercaseSizer->HeightForWidth(width);
 
+  // Only re-layout when the wrapped geometry really changed: SetSize calls
+  // made while GTK is allocating sizes (we are called from OnSize) are
+  // deferred by wxWidgets and replayed on the next frame, where they trigger
+  // a new allocation - so laying out unconditionally here re-layouts (and
+  // repaints) the sidebar on every frame for as long as events keep coming.
+  const wxSize virtualSize(width, lowerHeight + upperHeight);
+  if (virtualSize == m_lastVirtualSize &&
+      m_lowerCasePanel->GetMinSize().y == lowerHeight &&
+      m_upperCasePanel->GetMinSize().y == upperHeight)
+    return;
+  m_lastVirtualSize = virtualSize;
+
   // Pin the panels to those wrapped heights so the vbox stacks every row (rather
   // than squishing them), and give the wxScrolled a virtual height tall enough
   // for all of them -- so the vertical scrollbar can reach the rows below the fold
@@ -88,7 +100,7 @@ void GreekSidebar::UpdateVirtualSize() {
   m_lowerCasePanel->SetMinSize(wxSize(-1, lowerHeight));
   m_upperCasePanel->SetMinSize(wxSize(-1, upperHeight));
   Layout();
-  SetVirtualSize(width, lowerHeight + upperHeight);
+  SetVirtualSize(virtualSize);
 }
 
 void GreekSidebar::OnSize(wxSizeEvent &event) {

@@ -160,6 +160,15 @@ void DrawSidebar::OnSize(wxSizeEvent &event) {
   // the vertical scrollbar can reach the rows below the fold. Clamping the whole
   // virtual size to the client size clipped every row past the first on wx 3.3.
   const int width = GetClientSize().x;
-  SetVirtualSize(width, m_grid->HeightForWidth(width));
+  const wxSize virtualSize(width, m_grid->HeightForWidth(width));
+  // Only touch the virtual size when it really changed: SetSize calls made
+  // while GTK is allocating sizes (we are called from OnSize) are deferred
+  // by wxWidgets and replayed on the next frame, where they trigger a new
+  // allocation - so setting it unconditionally here re-layouts (and
+  // repaints) the sidebar on every frame for as long as events keep coming.
+  if (virtualSize != m_lastVirtualSize) {
+    m_lastVirtualSize = virtualSize;
+    SetVirtualSize(virtualSize);
+  }
   event.Skip();
 }

@@ -1351,6 +1351,8 @@ void Configuration::PerformanceStats::Report() const {
   wxLogMessage(_("  Recalculation needed - Editor dirty: %ld"), recalculationNeeded_EditorDirty.load());
   wxLogMessage(_("  Cells converted to linear: %ld"), cellsConvertedToLinear.load());
   wxLogMessage(_("  Cells converted to 2D: %ld"), cellsConvertedTo2D.load());
+  wxLogMessage(_("  Worksheet repaints: %ld"), worksheetRepaints.load());
+  wxLogMessage(_("  Full-window worksheet repaints: %ld"), worksheetFullRepaints.load());
 
   wxLog::FlushActive();
 }

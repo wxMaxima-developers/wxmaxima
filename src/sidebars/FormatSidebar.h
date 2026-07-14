@@ -44,6 +44,9 @@ public:
   explicit FormatSidebar(wxWindow *parent, int ID = wxID_ANY);
 private:
   Buttonwrapsizer *m_grid;
+  //! The virtual size OnSize() last applied, so it can skip re-layouting
+  //! when nothing changed (see the comment in its body).
+  wxSize m_lastVirtualSize = wxDefaultSize;
 };
 
 #endif // FORMATSIDEBAR_H

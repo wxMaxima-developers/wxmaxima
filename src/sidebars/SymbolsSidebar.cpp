@@ -43,10 +43,21 @@ void SymbolsSidebar::UpdateVirtualSize() {
   // first on wxWidgets 3.3.
   const int builtinHeight = m_builtInSymbolsSizer->HeightForWidth(width);
   const int userHeight = m_userSymbolsSizer->HeightForWidth(width);
+  // Only re-layout when the wrapped geometry really changed: SetSize calls
+  // made while GTK is allocating sizes (we are called from OnSize) are
+  // deferred by wxWidgets and replayed on the next frame, where they trigger
+  // a new allocation - so laying out unconditionally here re-layouts (and
+  // repaints) the sidebar on every frame for as long as events keep coming.
+  const wxSize virtualSize(width, builtinHeight + userHeight);
+  if (virtualSize == m_lastVirtualSize &&
+      m_builtInSymbols->GetMinSize().y == builtinHeight &&
+      m_userSymbols->GetMinSize().y == userHeight)
+    return;
+  m_lastVirtualSize = virtualSize;
   m_builtInSymbols->SetMinSize(wxSize(-1, builtinHeight));
   m_userSymbols->SetMinSize(wxSize(-1, userHeight));
   Layout();
-  SetVirtualSize(width, builtinHeight + userHeight);
+  SetVirtualSize(virtualSize);
 }
 
 void SymbolsSidebar::OnSize(wxSizeEvent &event) {

@@ -58,6 +58,9 @@
 #include <vector>
 #include <utility>
 #include <stdlib.h>
+#ifdef __WXGTK__
+#include <dlfcn.h>
+#endif
 #include <wx/caret.h>
 #include <wx/clipbrd.h>
 #include <wx/config.h>
@@ -112,6 +115,27 @@ Worksheet::Worksheet(wxWindow *parent, int id,
                    "hideously flicker and hotkeys to be broken, see for "
                    "example https://github.com/wxWidgets/wxWidgets/issues/18462."));
     }
+  }
+  // Use classic (non-overlay) scrollbars for the worksheet. GTK3's overlay
+  // scrollbar indicator is a composited child window, and compositing makes
+  // GTK repaint the whole worksheet on every frame of the indicator's
+  // fade-in/fade-out animation - which runs after every pointer or wheel
+  // event. Each of those repaints re-renders every visible cell's text, so
+  // merely moving the mouse across the worksheet caused full-viewport
+  // redraws at frame rate (visible as a stream of font-cache hits in the
+  // performance monitor). The functions are resolved at runtime so this
+  // compiles - and degrades to a no-op - with any GTK version wxWidgets
+  // might be linked against.
+  {
+    auto setOverlayScrolling = reinterpret_cast<void (*)(void *, int)>(
+      dlsym(RTLD_DEFAULT, "gtk_scrolled_window_set_overlay_scrolling"));
+    auto scrolledWindowType = reinterpret_cast<unsigned long (*)()>(
+      dlsym(RTLD_DEFAULT, "gtk_scrolled_window_get_type"));
+    auto instanceIsA = reinterpret_cast<int (*)(void *, unsigned long)>(
+      dlsym(RTLD_DEFAULT, "g_type_check_instance_is_a"));
+    if (setOverlayScrolling && scrolledWindowType && instanceIsA &&
+        GetHandle() && instanceIsA(GetHandle(), scrolledWindowType()))
+      setOverlayScrolling(GetHandle(), false);
   }
 #endif
   SetMinClientSize(wxSize(100, 100));
@@ -514,24 +538,30 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   dc.SetMapMode(wxMM_TEXT);
 
   // Now iterate over all single parts of the region we need to redraw and
-  // redraw the worksheet
+  // redraw the worksheet. Drawing each part separately (instead of their
+  // bounding box) matters: the update region routinely consists of small
+  // rectangles in opposite corners of the viewport - the cell bracket that
+  // appears under the mouse pointer at the left edge, the full-width but
+  // 3-pixel-high horizontal cursor, GTK's overlay scrollbar fading in at the
+  // right edge. The bounding box of two such rectangles spans essentially
+  // the whole viewport, which made every visible cell re-render its text on
+  // every bracket toggle or cursor blink; the individual rectangles are tiny
+  // and let the per-cell update-region test skip nearly everything.
   wxRect totalRect = GetUpdateRegion().GetBox();
   if ((totalRect.GetWidth() >= 1) && (totalRect.GetHeight() >= 1)) {
+    // Feed the performance monitor: count every repaint, and separately the
+    // (nearly) full-viewport ones - those re-render every visible cell, so
+    // this counter rising during plain mouse movement or a blinking cursor
+    // is the signature of a full-redraw feedback loop.
+    Configuration::g_stats.worksheetRepaints++;
+    if (totalRect.GetWidth() * 10 >= GetClientSize().x * 9 &&
+        totalRect.GetHeight() * 10 >= GetClientSize().y * 9)
+      Configuration::g_stats.worksheetFullRepaints++;
+
     // Set line pen and fill brushes
     SetBackgroundColour(m_configuration->DefaultBackgroundColor());
     PrepareDrawGC(dc);
     PrepareDrawGC(antiAliassingDC);
-
-    // Tell the configuration where to crop in this region
-    int xstart, xend, top, bottom;
-    CalcUnscrolledPosition(totalRect.GetLeft(), totalRect.GetTop(), &xstart, &top);
-    CalcUnscrolledPosition(totalRect.GetRight(), totalRect.GetBottom(), &xend, &bottom);
-    wxRect unscrolledRect;
-    unscrolledRect.SetLeft(xstart);
-    unscrolledRect.SetRight(xend);
-    unscrolledRect.SetTop(top);
-    unscrolledRect.SetBottom(bottom);
-    m_configuration->SetUpdateRegion(unscrolledRect);
 
     int width;
     int height;
@@ -546,89 +576,109 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
     m_configuration->SetVisibleRegion(visibleRegion);
     m_configuration->SetWorksheetPosition(GetPosition());
 
-    // Clear the drawing area (Clear() doesn't work on some wx3.0 installs)
-    dc.DrawRectangle(unscrolledRect);
+    for (wxRegionIterator regionPart(GetUpdateRegion()); regionPart; ++regionPart) {
+      const wxRect partRect = regionPart.GetRect();
+      if ((partRect.GetWidth() < 1) || (partRect.GetHeight() < 1))
+        continue;
 
-    //
-    // Draw the cell contents
-    //
-    if (GetTree()) {
-      dc.SetPen(*(wxThePenList->FindOrCreatePen(
-                                                m_configuration->GetColor(TS_MATH), 1, wxPENSTYLE_SOLID)));
-      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-                                                      m_configuration->GetColor(TS_MATH))));
-      for (auto &cell : OnList(GetTree())) {
-        if (cell.GetCurrentPoint().y + (cell.GetHeight() - cell.GetCenter()) < top) continue;
-        if (cell.GetCurrentPoint().y - cell.GetCenter() > bottom) break;
+      // Tell the configuration where to crop in this region
+      int xstart, xend, top, bottom;
+      CalcUnscrolledPosition(partRect.GetLeft(), partRect.GetTop(), &xstart, &top);
+      CalcUnscrolledPosition(partRect.GetRight(), partRect.GetBottom(), &xend, &bottom);
+      wxRect unscrolledRect;
+      unscrolledRect.SetLeft(xstart);
+      unscrolledRect.SetRight(xend);
+      unscrolledRect.SetTop(top);
+      unscrolledRect.SetBottom(bottom);
+      m_configuration->SetUpdateRegion(unscrolledRect);
 
-        wxRect cellRect = cell.GetRect();
-
-        // Clear the image cache of all cells above or below the viewport.
-        if (cellRect.GetTop() >= bottom || cellRect.GetBottom() <= top) {
-          // Only actually clear the image cache if there is a screen's height
-          // between us and the image's position: Else the chance is too high
-          // that we will very soon have to generated a scaled image again.
-          if ((cellRect.GetBottom() <= m_lastBottom - 2 * height) ||
-              (cellRect.GetTop() >= m_lastTop + 2 * height)) {
-            if (cell.GetOutput())
-              cell.GetOutput()->ClearCacheList();
-          }
-        }
-        //      m_drawThreads.push_back(std::jthread(&Worksheet::DrawGroupCell_UsingBitmap,
-        //                                  this,
-        //                                  &dc, &cell, unscrolledRect));
-        DrawGroupCell(dc, antiAliassingDC, cell);
-      }
-    }
-
-    {
-      std::lock_guard<std::mutex> guard(m_drawDCLock);
+      // Clear the drawing area (Clear() doesn't work on some wx3.0 installs)
+      dc.SetPen(*wxTRANSPARENT_PEN);
+      dc.SetBrush(m_configuration->GetBackgroundBrush());
+      dc.DrawRectangle(unscrolledRect);
 
       //
-      // Draw the horizontal caret
+      // Draw the cell contents
       //
-      if ((GetHCaretCursor().IsActive()) && (!GetHCaretCursor().SelectionStart()) &&
-          (m_hCaretBlinkVisible) && (m_hasFocus) && (GetHCaretCursor().Position())) {
+      if (GetTree()) {
         dc.SetPen(*(wxThePenList->FindOrCreatePen(
-                                                  m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+                                                  m_configuration->GetColor(TS_MATH), 1, wxPENSTYLE_SOLID)));
         dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
-                                                        m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
-        wxRect currentGCRect = GetHCaretCursor().Position()->GetRect();
-        int caretY = (static_cast<int>(m_configuration->GetGroupSkip())) / 2 +
-          currentGCRect.GetBottom() + 1;
-        dc.DrawRectangle(
-                         xstart + m_configuration->GetBaseIndent(),
-                         caretY - m_configuration->GetCursorWidth() / 2, MC_HCARET_WIDTH,
-                         m_configuration->GetCursorWidth());
+                                                        m_configuration->GetColor(TS_MATH))));
+        for (auto &cell : OnList(GetTree())) {
+          if (cell.GetCurrentPoint().y + (cell.GetHeight() - cell.GetCenter()) < top) continue;
+          if (cell.GetCurrentPoint().y - cell.GetCenter() > bottom) break;
+
+          wxRect cellRect = cell.GetRect();
+
+          // Clear the image cache of all cells above or below the viewport.
+          if (cellRect.GetTop() >= bottom || cellRect.GetBottom() <= top) {
+            // Only actually clear the image cache if there is a screen's height
+            // between us and the image's position: Else the chance is too high
+            // that we will very soon have to generated a scaled image again.
+            if ((cellRect.GetBottom() <= m_lastBottom - 2 * height) ||
+                (cellRect.GetTop() >= m_lastTop + 2 * height)) {
+              if (cell.GetOutput())
+                cell.GetOutput()->ClearCacheList();
+            }
+          }
+          //      m_drawThreads.push_back(std::jthread(&Worksheet::DrawGroupCell_UsingBitmap,
+          //                                  this,
+          //                                  &dc, &cell, unscrolledRect));
+          DrawGroupCell(dc, antiAliassingDC, cell);
+        }
       }
 
-      if ((GetHCaretCursor().IsActive()) && (!GetHCaretCursor().SelectionStart()) && (m_hasFocus) &&
-          (!GetHCaretCursor().Position())) {
-        if (!m_hCaretBlinkVisible) {
-          dc.SetBrush(
-                      m_configuration->GetBackgroundBrush());
-          dc.SetPen(*wxThePenList->FindOrCreatePen(
-                                                   GetBackgroundColour(), m_configuration->Scale_Px(1)));
-        } else {
+      {
+        std::lock_guard<std::mutex> guard(m_drawDCLock);
+
+        //
+        // Draw the horizontal caret
+        //
+        if ((GetHCaretCursor().IsActive()) && (!GetHCaretCursor().SelectionStart()) &&
+            (m_hCaretBlinkVisible) && (m_hasFocus) && (GetHCaretCursor().Position())) {
           dc.SetPen(*(wxThePenList->FindOrCreatePen(
-                                                    m_configuration->GetColor(TS_CURSOR), m_configuration->Scale_Px(1),
-                                                    wxPENSTYLE_SOLID)));
+                                                    m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
           dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
                                                           m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+          wxRect currentGCRect = GetHCaretCursor().Position()->GetRect();
+          int caretY = (static_cast<int>(m_configuration->GetGroupSkip())) / 2 +
+            currentGCRect.GetBottom() + 1;
+          dc.DrawRectangle(
+                           upperLeftScreenCorner.x + m_configuration->GetBaseIndent(),
+                           caretY - m_configuration->GetCursorWidth() / 2, MC_HCARET_WIDTH,
+                           m_configuration->GetCursorWidth());
         }
 
-        wxRect cursor =
-          wxRect(xstart + m_configuration->GetCellBracketWidth(),
-                 (m_configuration->GetBaseIndent() -
-                  m_configuration->GetCursorWidth()) /
-                 2,
-                 MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
-        dc.DrawRectangle(cursor);
-      }
-    }
+        if ((GetHCaretCursor().IsActive()) && (!GetHCaretCursor().SelectionStart()) && (m_hasFocus) &&
+            (!GetHCaretCursor().Position())) {
+          if (!m_hCaretBlinkVisible) {
+            dc.SetBrush(
+                        m_configuration->GetBackgroundBrush());
+            dc.SetPen(*wxThePenList->FindOrCreatePen(
+                                                     GetBackgroundColour(), m_configuration->Scale_Px(1)));
+          } else {
+            dc.SetPen(*(wxThePenList->FindOrCreatePen(
+                                                      m_configuration->GetColor(TS_CURSOR), m_configuration->Scale_Px(1),
+                                                      wxPENSTYLE_SOLID)));
+            dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(
+                                                            m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+          }
 
-    m_lastTop = top;
-    m_lastBottom = bottom;
+          wxRect cursor =
+            wxRect(upperLeftScreenCorner.x + m_configuration->GetCellBracketWidth(),
+                   (m_configuration->GetBaseIndent() -
+                    m_configuration->GetCursorWidth()) /
+                   2,
+                   MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
+          dc.DrawRectangle(cursor);
+        }
+      }
+    } // end of the update-region-part loop
+
+    // Track the viewport for the image-cache eviction check above.
+    m_lastTop = upperLeftScreenCorner.y;
+    m_lastBottom = upperLeftScreenCorner.y + height;
   }
 
   m_configuration->ReportMultipleRedraws();

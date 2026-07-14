@@ -112,6 +112,16 @@ public:
     std::atomic<long> recalculationNeeded_EditorDirty{0};
     std::atomic<long> cellsConvertedToLinear{0};
     std::atomic<long> cellsConvertedTo2D{0};
+    //! How often the worksheet was repainted (Worksheet::OnPaint ran)
+    std::atomic<long> worksheetRepaints{0};
+    /*! How many of those repaints covered (nearly) the whole visible worksheet
+
+      Full repaints re-render every visible cell's text, so they are the
+      expensive kind: this counter rising while the user merely moves the
+      mouse or a cursor blinks reproduces the "constant full redraws"
+      performance bug class (e.g. the composited GTK overlay scrollbar).
+    */
+    std::atomic<long> worksheetFullRepaints{0};
     void Report() const;
   };
   static PerformanceStats g_stats;
