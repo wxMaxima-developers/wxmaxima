@@ -758,7 +758,14 @@ public:
 public:
   static wxLogWindow *m_logWindow; // The wxWidgets log window, we use.
 
-  std::unique_ptr<wxLogChain> m_logChain;
+  /*! The --logtostderr log chain (static, like m_logWindow beneath it).
+
+    Static also so ~wxMaxima can reset it without an instance member access
+    through MyApp*: UBSan's vptr check would turn such an access into a
+    reference to MyApp's typeinfo, which the wxmTestApp-based test builds
+    (that exclude main.cpp, where MyApp's vtable lives) cannot resolve.
+  */
+  static std::unique_ptr<wxLogChain> m_logChain;
   static std::vector<wxProcess *> m_wxMaximaProcesses;
 #ifdef USE_QA
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_DEBUGREPORT

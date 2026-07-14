@@ -1271,7 +1271,7 @@ wxMaxima::~wxMaxima() {
     // chain goes first: its destructor restores the log window as the active
     // target, and the window's destructor in turn restores whatever target
     // was active before it.
-    static_cast<MyApp *>(wxTheApp)->m_logChain.reset();
+    MyApp::m_logChain.reset();
     wxDELETE(MyApp::m_logWindow);
     /* On the mac wxMaxima might still run if the last window has closed.
        This means we have no log window and therefore cannot log anything without
@@ -3357,3 +3357,4 @@ wxString wxMaxima::m_mathPrefix2(wxS("<math>"));
 wxString wxMaxima::m_firstPrompt(wxS("(%i1) "));
 wxString wxMaxima::maxima_command_line_filename;
 wxLogWindow *MyApp::m_logWindow;
+std::unique_ptr<wxLogChain> MyApp::m_logChain;
