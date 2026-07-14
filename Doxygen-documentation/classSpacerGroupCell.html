@@ -155,8 +155,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>AutoAnswer</b> () con
 <tr class="memitem:a64acb80b38272d5548461b53bd36055e"><td class="memItemLeft" align="right" valign="top"><a id="a64acb80b38272d5548461b53bd36055e" name="a64acb80b38272d5548461b53bd36055e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAutoAnswer</b> (bool autoAnswer)</td></tr>
 <tr class="separator:a64acb80b38272d5548461b53bd36055e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e11bf61fa61bf441d5790c7db5269f0"><td class="memItemLeft" align="right" valign="top"><a id="a4e11bf61fa61bf441d5790c7db5269f0" name="a4e11bf61fa61bf441d5790c7db5269f0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>MarkNeedsRecalculate</b> ()</td></tr>
+<tr class="memitem:a4e11bf61fa61bf441d5790c7db5269f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a4e11bf61fa61bf441d5790c7db5269f0">MarkNeedsRecalculate</a> ()</td></tr>
+<tr class="memdesc:a4e11bf61fa61bf441d5790c7db5269f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark this group as needing a recalculation.  <br /></td></tr>
 <tr class="separator:a4e11bf61fa61bf441d5790c7db5269f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a243af7ec23837d6b6780ff15f91f33"><td class="memItemLeft" align="right" valign="top"><a id="a9a243af7ec23837d6b6780ff15f91f33" name="a9a243af7ec23837d6b6780ff15f91f33"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAnswer</b> (const wxString &amp;question, const wxString &amp;answer)</td></tr>
@@ -3219,6 +3219,34 @@ The y position used here must be in sync with the one calculated by <a class="el
 <p>True if this cell represents a short number. </p>
 
 <p>Reimplemented in <a class="el" href="classTextCell.html#a8915bfe798fc73eeeeda6bcd7025d6f8">TextCell</a>.</p>
+
+</div>
+</div>
+<a id="a4e11bf61fa61bf441d5790c7db5269f0" name="a4e11bf61fa61bf441d5790c7db5269f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e11bf61fa61bf441d5790c7db5269f0">&#9670;&#160;</a></span>MarkNeedsRecalculate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GroupCell::MarkNeedsRecalculate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark this group as needing a recalculation. </p>
+<p>The single funnel for making <a class="el" href="classGroupCell.html#a2b1a8fb21cbb4f11e3a4c17726645a44" title="True, if something that affects the cell size has changed.">NeedsRecalculation()</a> true: it sets m_cellsAppended and - on the flag's false-&gt;true transition - notifies the layout engine through <a class="el" href="classConfiguration.html#af4b0a3094f44b6d504d24aa0e26ac2fd" title="Ask the view (if any) to recalculate the layout starting at the given group cell.">Configuration::RequestRecalculate()</a>, so the engine always learns which cells became dirty. Don't set m_cellsAppended directly: that hides the change from the engine (and even suppresses the notification of a later <a class="el" href="classGroupCell.html#a4e11bf61fa61bf441d5790c7db5269f0" title="Mark this group as needing a recalculation.">MarkNeedsRecalculate()</a>, since the flag is then already set). </p>
 
 </div>
 </div>

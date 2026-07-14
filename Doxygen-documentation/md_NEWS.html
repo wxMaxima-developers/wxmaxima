@@ -141,7 +141,7 @@ $(function() {
 <li>Internal: Worksheet::Recalculate() was renamed to RequestRecalculation(): it only schedules the next layout pass (the actual sizing/positioning happens in RecalculateIfNeeded()), and the old name wrongly implied it did the work.</li>
 <li>Internal: the "worksheet size needs adjusting" flag moved from the shared Configuration/RenderContext onto the <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>, next to the rest of its layout-scheduling state. Cells that change height signal it through a callback (like the existing recalculation-request one) instead of reaching into a render-context field that was really per-worksheet view state.</li>
 <li>Internal: <a class="el" href="classWorksheet.html#aaf4ec45a1b780ac72ba159358806d376" title="Adjust the virtual size and scrollbars; see WorksheetLayout::AdjustSize().">Worksheet::AdjustSize()</a> now defers instead of computing the scroll range from stale cell positions while a recalculation is still pending (it re-runs itself once the positions are correct). This turns a whole class of "adjusted the size before laying out" bugs - the freshly-opened diff pane that would not scroll was one - into a harmless no-op, and a debug assertion flags any code that reads the worksheet height with a recalculation outstanding.</li>
-<li>Internal: the cell layer no longer knows the <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> class at all - the first of the document/view state-split blockers is gone. Cells used to reach back into the view through Cell::GetWorksheet() (a <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> back-pointer cast to <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>) for three services; each now has a narrow channel of its own: the CellPointers registry is carried by <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> directly, GroupCell::MarkNeedsRecalculate() notifies the view through a callback the <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> registers on its <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> (and deregisters on destruction, so cells can no longer call into a half-destroyed view), and the accessibility code asks the generic wxScrolledCanvas for scroll geometry. Cell::GetWorksheet() is deleted; src/cells/ no longer includes <a class="el" href="Worksheet_8h.html" title="This file defines the class Worksheet.">Worksheet.h</a>.</li>
+<li>Internal: the cell layer no longer knows the <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> class at all - the first of the document/view state-split blockers is gone. Cells used to reach back into the view through Cell::GetWorksheet() (a <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> back-pointer cast to <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>) for three services; each now has a narrow channel of its own: the CellPointers registry is carried by <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> directly, <a class="el" href="classGroupCell.html#a4e11bf61fa61bf441d5790c7db5269f0" title="Mark this group as needing a recalculation.">GroupCell::MarkNeedsRecalculate()</a> notifies the view through a callback the <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> registers on its <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a> (and deregisters on destruction, so cells can no longer call into a half-destroyed view), and the accessibility code asks the generic wxScrolledCanvas for scroll geometry. Cell::GetWorksheet() is deleted; src/cells/ no longer includes <a class="el" href="Worksheet_8h.html" title="This file defines the class Worksheet.">Worksheet.h</a>.</li>
 <li>Windows: a batch-mode run (wxmaxima &ndash;batch, typically started from a script) could appear to hang for seconds to minutes before its window opened - at zero CPU - whenever the user had clicked into the console window: a click puts a QuickEdit console (the Windows default) into selection mode, and every write to it then suspends the writer until the selection is dismissed. <a class="el" href="classwxMaxima.html">wxMaxima</a> now clears the console's QuickEdit mode for the duration of a &ndash;batch run (and restores it on exit); interactive launches are unaffected. If you script <a class="el" href="classwxMaxima.html">wxMaxima</a>, redirecting its output to a file remains good practice.</li>
 <li>Internal: two integration tests (absCells, atCells) now share one MAXIMA_USERDIR to exercise the typical real-world setup - several <a class="el" href="classwxMaxima.html">wxMaxima</a> sessions reusing one ~/.maxima and its caches - which the per-test isolation never covered (suggested by Benoit). The pair loads no compiled package, keeping clear of <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s compiled-package cache race that the isolation exists to avoid.</li>
 <li>Fixed a mangled maxima user directory when maxima is compiled with GCL (as Debian's and Ubuntu's maxima packages are): GCL reports maxima_userdir with a trailing newline, and <a class="el" href="classwxMaxima.html">wxMaxima</a> created and used that directory verbatim - a second user directory whose name ends in a newline, created with permission bits 0001 (an accidental flag-as-mode in <a class="el" href="classDirstructure.html#a41e6178b2f12bd89cf47cb1f83e44791" title="The directory the user stores its data in.">Dirstructure::UserConfDir</a>), i.e. unreadable and unwritable even for its owner. Every cache <a class="el" href="classwxMaxima.html">wxMaxima</a> keeps there (manual anchors, known symbols, history) silently failed on such systems. Maxima-reported variable values are now whitespace-trimmed centrally, and the directory is created with proper permissions. Thanks to jgmb for the report.</li>
@@ -718,7 +718,7 @@ $(function() {
 - Better unicode handling (#1691)
 - Many additional bugfixes
 
-@section autotoc_md825 22.05.0:
+@section autotoc_md824 22.05.0:
 
 - Updated the Ukrainian translation
 - Added &lt;tt&gt;guess_exact_value&lt;/tt&gt; to the numeric menu.
@@ -740,14 +740,14 @@ $(function() {
 - The Cygwin build works again
 - Support for wxWidgets 3.1.6
 
-@section autotoc_md826 22.04.0:
+@section autotoc_md825 22.04.0:
 
 - A Russian translation update from Olesya Gerasimenko
 - Repaired drag-and-drop on MacOs (#1624)
 - Resolved a bug in parenthesis matching (#1649)
 - Faster startup logic
 
-@section autotoc_md827 22.03.0:
+@section autotoc_md826 22.03.0:
 
 - Add an compile option "WXM_INCLUDE_FONTS", which allows to
   specify, if additional fonts should be included.
@@ -774,7 +774,7 @@ $(function() {
 - Merging cells per keyboard shortcut works again (#1626)
 - Symbols buttons whose symbols the GUI font lacks are now hidden
 
-@section autotoc_md828 21.11.0:
+@section autotoc_md827 21.11.0:
 
 - Allow seeing all files in the file save dialog. (#1557)
 - Fix an error when using Alt up arrow (show previous command) (#1566)
@@ -792,15 +792,15 @@ $(function() {
 - Handle power events (#1607)
 - Fix ugly buttons in the sidebars with recent wxWidgets
 
-@section autotoc_md829 21.05.2:
+@section autotoc_md828 21.05.2:
 
 - The integral signs disappeared or were misplaced on some MS Windows computers
 
-@section autotoc_md830 21.05.1:
+@section autotoc_md829 21.05.1:
 
 - Resolved a segfault on printing that could be triggered on some computers
 
-@section autotoc_md831 21.05.0:
+@section autotoc_md830 21.05.0:
 
 - Long numbers now can be broken into lines
 - On Export long numbers sometimes got lost
@@ -814,7 +814,7 @@ $(function() {
   (before cyrillic, chinese and greek characters were missing).
 - Solved a crash when printing.
 
-@section autotoc_md833 21.04.0
+@section autotoc_md831 21.04.0
 
 - Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).</li>
 <li>Fix context sensitive help with F1 (bug #1508).</li>
@@ -828,7 +828,7 @@ $(function() {
 <li>Many external build scripts are now replaced by C++ and CMake commands.</li>
 <li><a class="el" href="classA.html">A</a> menu entry for when to invoke the debugger.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md834"></a>
+<h1><a class="anchor" id="autotoc_md832"></a>
 21.02.0</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> Spanish translation update by cyphra</li>
@@ -840,14 +840,14 @@ $(function() {
 <li>Made the time between autosaves configurable.</li>
 <li>Fixed an issue with reproducible builds.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md835"></a>
+<h1><a class="anchor" id="autotoc_md833"></a>
 21.01.0</h1>
 <ul>
 <li>Chinese translation updates by 刘荣.</li>
 <li><a class="el" href="classA.html">A</a> Russian translation update by OlesyaGerasimenko</li>
 <li>Many small bugfixes including a crash on loading files with images.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md836"></a>
+<h1><a class="anchor" id="autotoc_md834"></a>
 Changes in older wxMaxima versions you can find here</h1>
 <p><a href="https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md">https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md</a> </p>
 </div></div><!-- contents -->
