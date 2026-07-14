@@ -100,7 +100,7 @@ public:
 
   //! Handles the "Cell"/insert menu (cell insertion and type conversion,
   //! insert image, fold/unfold, auto-answer toggles, add-watch).
-  void InsertMenu(wxCommandEvent &event);
+  void OnInsertMenu(wxCommandEvent &event);
 
   //! Handles the "Edit" menu (copy/cut/paste/undo/redo, the copy-as-image/
   //! MathML/RTF variants, zoom, display-digits/label toggles, preferences,

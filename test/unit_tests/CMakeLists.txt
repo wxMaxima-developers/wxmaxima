@@ -42,6 +42,21 @@ add_executable(test_ImgCell test_ImgCell.cpp ${WXM_TEST_SETUP})
 target_link_libraries(test_ImgCell PRIVATE ${wxWidgets_LIBRARIES})
 add_test(ImgCell test_ImgCell)
 
+if(WXM_SANITIZE)
+    # These three tests build a deliberately partial class universe: they
+    # #include a hand-picked set of src/ files (via TestStubs.cpp) and leave
+    # e.g. EditorCell.cpp out. UBSan's vptr check emits a reference to the
+    # std::type_info of every polymorphic class accessed through a pointer -
+    # a symbol that is only defined next to the class's vtable in the .cpp
+    # that was left out, so the sanitized link fails with "undefined
+    # reference to typeinfo for EditorCell" (whether it does depends on the
+    # GCC version's codegen; GCC 14 emits it, 15 doesn't). The vptr check is
+    # meaningless for these stubbed builds anyway, so switch it off for them.
+    target_compile_options(test_CellPtr PRIVATE -fno-sanitize=vptr)
+    target_compile_options(test_SqrtCell PRIVATE -fno-sanitize=vptr)
+    target_compile_options(test_ImgCell PRIVATE -fno-sanitize=vptr)
+endif()
+
 add_executable(test_AFontSize test_AFontSize.cpp ${WXM_TEST_SETUP})
 target_link_libraries(test_AFontSize PRIVATE ${wxWidgets_LIBRARIES})
 #target_compile_features(test_ImgCell PUBLIC cxx_std_14)

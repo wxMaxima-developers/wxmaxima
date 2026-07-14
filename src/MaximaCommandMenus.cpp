@@ -2383,7 +2383,7 @@ void MaximaCommandMenus::FileMenu(wxCommandEvent &event) {
   m_wxMaxima.GetWorksheet()->RequestRedraw();
 }
 
-void MaximaCommandMenus::InsertMenu(wxCommandEvent &event) {
+void MaximaCommandMenus::OnInsertMenu(wxCommandEvent &event) {
   m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
 
   GroupType type = GC_TYPE_CODE;
