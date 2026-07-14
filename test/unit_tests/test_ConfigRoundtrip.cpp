@@ -58,13 +58,17 @@ namespace {
 /*! Moves every setting listed in ScalarConfigSettings() away from its default.
 
   Bools are flipped, strings gain a suffix and numbers are incremented by one.
-  The +1 stays within the legal range of every currently clamped setting
+  The perturbation must stay within the legal range of every clamped setting
   (showLength <= 3 has default 2, tocDepth >= 1, displayedDigits >= 20 has a
-  three-digit default); if a future table entry clamps tighter, pick its
-  perturbation here accordingly.
+  three-digit default); if a table entry's default sits at the top of its
+  range, list it below so it is perturbed downwards instead. autoWrapMode
+  needs that: its range is 0..2 and its default became 2 when code line
+  wrapping was enabled by default, so +1 would get clamped on read.
 */
 void Perturb(Configuration &cfg) {
-  for (const auto &setting : Configuration::ScalarConfigSettings())
+  for (const auto &setting : Configuration::ScalarConfigSettings()) {
+    const long numberDelta =
+      (wxString(setting.key) == wxS("autoWrapMode")) ? -1 : +1;
     std::visit(
       [&](auto member) {
         using Member = std::remove_reference_t<decltype(cfg.*member)>;
@@ -73,9 +77,10 @@ void Perturb(Configuration &cfg) {
         else if constexpr (std::is_same_v<Member, wxString>)
           (cfg.*member) += wxS("X");
         else
-          cfg.*member = (cfg.*member) + 1;
+          cfg.*member = (cfg.*member) + numberDelta;
       },
       setting.member);
+  }
 }
 } // namespace
 
