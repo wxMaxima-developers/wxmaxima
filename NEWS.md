@@ -11,9 +11,11 @@
   (lisp_mode) guards it.
 
 - New: the status bar shows a distinct "bug" pictogram, next to the
-  Maxima-activity icons, when Maxima's Lisp has stopped in a debugger (sbcl's
-  LDB), so it is obvious at a glance that Maxima is sitting in the debugger
-  rather than calculating or idle.
+  Maxima-activity icons, when Maxima has stopped in a debugger - both sbcl's
+  low-level debugger (LDB) and Maxima's own debugger (the "(dbm:N)" prompt you
+  reach with debugmode:true and an error, or a breakpoint) - so it is obvious
+  at a glance that Maxima is sitting in the debugger rather than calculating or
+  idle. The pictogram clears when you leave the debugger (e.g. with :top).
 
 - Speedup on long worksheets: after a localized change (typing in a cell,
   a single new output line, deleting or restyling a cell) the layout pass
