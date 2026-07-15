@@ -24,6 +24,21 @@ to_lisp();
 if lr1 # 3 then error("FAIL: single cross-cell Lisp form was not evaluated (the $ in $lr1 was mis-split)")$
 /* [wxMaxima: input   end   ] */
 /* [wxMaxima: input   start ] */
+lr1b: 0$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+to_lisp()
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+(setq $lr1b 4)
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+(to-maxima)
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+if lr1b # 4 then error("FAIL: to_lisp() WITHOUT a trailing ; did not enter lisp mode - no maxima line ending was added, so maxima waited forever (a hang here fails the test via timeout)")$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
 to_lisp();
 (setq $lr2a 11)
 (setq $lr2b 22)
@@ -31,6 +46,19 @@ to_lisp();
 /* [wxMaxima: input   end   ] */
 /* [wxMaxima: input   start ] */
 if lr2a # 11 or lr2b # 22 then error("FAIL: multiple Lisp forms in one cell were not all evaluated")$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+lr2c: 0$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+to_lisp();
+(setq $lr2c 33)
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+(to-maxima)
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+if lr2c # 33 then error("FAIL: a to_lisp() that is NOT the last command in a cell must not get a maxima ; appended to the following lisp form (and its $ must not be split)")$
 /* [wxMaxima: input   end   ] */
 /* [wxMaxima: input   start ] */
 if 6*7 # 42 then error("FAIL: normal Maxima evaluation is broken after Lisp round-trips")$

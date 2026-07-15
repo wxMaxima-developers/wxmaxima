@@ -306,13 +306,39 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
           ++it;
       }
       if (token == ("to_lisp")) {
-        while (
-               (it < commands.end()) && ((!token.EndsWith("(to-maxima)"))) &&
-               ((!token.EndsWith(wxString("(to") + wxS("\u2212") + "maxima)")))) {
-          token += wxString(*it);
-          ++it;
+        // Absorb the lisp forms that follow a to_lisp() (up to (to-maxima) or
+        // the end of the cell) into ONE Lisp token, so that a "$" inside them is
+        // not mistaken for a maxima statement terminator and no maxima ";" is
+        // appended to them.
+        //
+        // The exception is a to_lisp() that stands ALONE in the cell (no lisp
+        // form after it): that is an ordinary maxima call which must be sent
+        // with a ";" ending (added by AddEnding) so maxima evaluates it and
+        // prints the MAXIMA> prompt - otherwise it waits for a line ending
+        // forever. We tell the two apart by whether a lisp form - another "(" -
+        // appears after the to_lisp() call's own "()".
+        wxString lispSpan = token;
+        wxString::const_iterator scan = it;
+        while ((scan < commands.end()) &&
+               (!lispSpan.EndsWith("(to-maxima)")) &&
+               (!lispSpan.EndsWith(wxString("(to") + wxS("\u2212") + "maxima)"))) {
+          lispSpan += wxString(*scan);
+          ++scan;
         }
-        m_tokens.emplace_back(token, TS_CODE_LISP);
+        int callClose = lispSpan.Find(wxUniChar(')'));
+        bool hasLispForms =
+          (callClose != wxNOT_FOUND) &&
+          (lispSpan.Mid(callClose + 1).Find(wxUniChar('(')) != wxNOT_FOUND);
+        if (hasLispForms) {
+          token = lispSpan;
+          it = scan;
+          m_tokens.emplace_back(token, TS_CODE_LISP);
+        } else {
+          // to_lisp() alone: an ordinary maxima call. Emit it as a function and
+          // let the rest of the cell (its "()") tokenize normally, so AddEnding
+          // appends the ";" it needs.
+          m_tokens.emplace_back(token, TS_CODE_FUNCTION);
+        }
       } else {
         if (m_hardcodedFunctions.find(token) != m_hardcodedFunctions.end())
           m_tokens.emplace_back(token, TS_CODE_FUNCTION);

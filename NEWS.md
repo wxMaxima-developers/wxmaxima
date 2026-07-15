@@ -1,5 +1,13 @@
 # Current development version
 
+- Fixed to_lisp() handling: a cell containing just to_lisp() (or :to_lisp())
+  without a trailing ";" no longer leaves Maxima waiting for a line ending and
+  no longer makes wxMaxima wrongly believe it is in Lisp mode. A to_lisp() that
+  stands alone in a cell is now recognized as an ordinary Maxima call and gets
+  its terminator, while a to_lisp() that is followed by Lisp forms in the same
+  cell still keeps those forms as one Lisp block (so a "$" in them is not taken
+  for a statement terminator, and no ";" is appended to them).
+
 - Fixed another Maxima-debugger bug: only the first command typed at a
   debugger prompt (dbm:N) was treated as an answer to the debugger; the second
   and later commands were sent as ordinary worksheet input and left behind as
