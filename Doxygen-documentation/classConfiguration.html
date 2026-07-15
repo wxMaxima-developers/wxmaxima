@@ -915,6 +915,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetViewCellPointers</
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetRecalculateRequestCallback</b> (std::function&lt; void(<a class="el" href="classGroupCell.html">GroupCell</a> *)&gt; callback)</td></tr>
 <tr class="memdesc:ac7adce7e949fc75ef2e1c8f9e2e6419f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the callback <a class="el" href="classConfiguration.html#af4b0a3094f44b6d504d24aa0e26ac2fd" title="Ask the view (if any) to recalculate the layout starting at the given group cell.">RequestRecalculate()</a> notifies the view through. <br /></td></tr>
 <tr class="separator:ac7adce7e949fc75ef2e1c8f9e2e6419f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a381d3cc5d3720043c2be67719901caaf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a381d3cc5d3720043c2be67719901caaf">RequestRecalculateAll</a> () const</td></tr>
+<tr class="memdesc:a381d3cc5d3720043c2be67719901caaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ask the view to schedule a recalculation of the WHOLE worksheet.  <br /></td></tr>
+<tr class="separator:a381d3cc5d3720043c2be67719901caaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8152999fb39ae963167ccd072393cace"><td class="memItemLeft" align="right" valign="top"><a id="a8152999fb39ae963167ccd072393cace" name="a8152999fb39ae963167ccd072393cace"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetRecalculateAllRequestCallback</b> (std::function&lt; void()&gt; callback)</td></tr>
+<tr class="memdesc:a8152999fb39ae963167ccd072393cace"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the callback <a class="el" href="classConfiguration.html#a381d3cc5d3720043c2be67719901caaf" title="Ask the view to schedule a recalculation of the WHOLE worksheet.">RequestRecalculateAll()</a> / <a class="el" href="classConfiguration.html#a030f46a360020a9351b21e77681b7814" title="Force every cell to be recalculated on the next layout pass.">RecalculateForce()</a> notify through. <br /></td></tr>
+<tr class="separator:a8152999fb39ae963167ccd072393cace"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af93df7547990db08cb968122b7109147"><td class="memItemLeft" align="right" valign="top"><a id="af93df7547990db08cb968122b7109147" name="af93df7547990db08cb968122b7109147"></a>
 long&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultPort</b> () const</td></tr>
 <tr class="separator:af93df7547990db08cb968122b7109147"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1230,8 +1237,8 @@ std::default_random_engine &amp;&#160;</td><td class="memItemRight" valign="bott
 <tr class="memitem:a56f215c6fb33a7d594a2212377204370"><td class="memItemLeft" align="right" valign="top">std::int_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a56f215c6fb33a7d594a2212377204370">CellCfgCnt</a> () const</td></tr>
 <tr class="memdesc:a56f215c6fb33a7d594a2212377204370"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> counter that increases every time we need to recalculate all worksheet cells.  <br /></td></tr>
 <tr class="separator:a56f215c6fb33a7d594a2212377204370"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a030f46a360020a9351b21e77681b7814"><td class="memItemLeft" align="right" valign="top"><a id="a030f46a360020a9351b21e77681b7814" name="a030f46a360020a9351b21e77681b7814"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RecalculateForce</b> ()</td></tr>
+<tr class="memitem:a030f46a360020a9351b21e77681b7814"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a030f46a360020a9351b21e77681b7814">RecalculateForce</a> ()</td></tr>
+<tr class="memdesc:a030f46a360020a9351b21e77681b7814"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force every cell to be recalculated on the next layout pass.  <br /></td></tr>
 <tr class="separator:a030f46a360020a9351b21e77681b7814"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -1769,6 +1776,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 </div>
 </div>
+<a id="a030f46a360020a9351b21e77681b7814" name="a030f46a360020a9351b21e77681b7814"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a030f46a360020a9351b21e77681b7814">&#9670;&#160;</a></span>RecalculateForce()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Configuration::RecalculateForce </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Force every cell to be recalculated on the next layout pass. </p>
+<p>Bumps the global config counter (so every cell's ConfigChanged() reports dirty) AND notifies the view's layout engine to schedule a whole-document pass - the counter bump alone is invisible to the engine's per-cell dirty tracking, which would leave cells outside a pending bounded range stale. </p>
+
+</div>
+</div>
 <a id="a295a632df3661ad823bd4f8b604e6224" name="a295a632df3661ad823bd4f8b604e6224"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a295a632df3661ad823bd4f8b604e6224">&#9670;&#160;</a></span>ReportMultipleRedraws()</h2>
 
@@ -1843,6 +1878,34 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 <p>Ask the view (if any) to recalculate the layout starting at the given group cell. </p>
 <p>How <a class="el" href="classGroupCell.html#a4e11bf61fa61bf441d5790c7db5269f0" title="Mark this group as needing a recalculation.">GroupCell::MarkNeedsRecalculate()</a> reaches the view without the cells depending on the <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> class. <a class="el" href="classA.html">A</a> no-op for configurations without a view (printing, tests). </p>
+
+</div>
+</div>
+<a id="a381d3cc5d3720043c2be67719901caaf" name="a381d3cc5d3720043c2be67719901caaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a381d3cc5d3720043c2be67719901caaf">&#9670;&#160;</a></span>RequestRecalculateAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Configuration::RequestRecalculateAll </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Ask the view to schedule a recalculation of the WHOLE worksheet. </p>
+<p><a class="el" href="classConfiguration.html#a030f46a360020a9351b21e77681b7814" title="Force every cell to be recalculated on the next layout pass.">RecalculateForce()</a> bumps a global counter that flips every cell's ConfigChanged() dirty at once (see <a class="el" href="classConfiguration.html#a56f215c6fb33a7d594a2212377204370" title="A counter that increases every time we need to recalculate all worksheet cells.">CellCfgCnt()</a>); there is no per-cell notification, so the view's layout engine would not otherwise learn that the cells outside a pending bounded range became dirty. This tells it to lay the whole document out. <a class="el" href="classA.html">A</a> no-op for configurations without a view (printing, tests without a worksheet). </p>
 
 </div>
 </div>
