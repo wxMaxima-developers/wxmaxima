@@ -130,12 +130,15 @@ struct EngineFixture {
              [this] { return LastGroup(tree.get()); }) {
     g_cfg->SetRecalculateRequestCallback(
       [this](GroupCell *group) { layout.RequestRecalculation(group); });
+    g_cfg->SetRecalculateAllRequestCallback(
+      [this] { layout.RequestFullRecalculation(); });
     g_cfg->SetAdjustWorksheetSizeRequestCallback(
       [this] { layout.RequestAdjustSize(); });
     g_cfg->SetCanvasSize(wxSize(1000, 800));
   }
   ~EngineFixture() {
     g_cfg->SetRecalculateRequestCallback({});
+    g_cfg->SetRecalculateAllRequestCallback({});
     g_cfg->SetAdjustWorksheetSizeRequestCallback({});
   }
 
@@ -418,6 +421,43 @@ SCENARIO("A global invalidation recalculates everything (the costly path)") {
       THEN("every cell is recalculated - which is why a full invalidation is "
            "reserved for genuinely global changes, not per-cell edits") {
         REQUIRE(f.layout.GetLastCellsRecalculated() == 12);
+      }
+    }
+  }
+}
+
+SCENARIO("A config-counter bump while a bounded range is pending is absorbed fully") {
+  // RecalculateForce() (Configuration::RecalculateForce, called by every
+  // config setter - zoom, label width, ...) bumps a GLOBAL counter that flips
+  // every cell's ConfigChanged() to true at once, with no per-cell
+  // notification to the layout engine. If a bounded dirty range is pending
+  // when that happens, the early stop must NOT leave the cells outside the
+  // range reporting dirty forever - that is the exact invariant the
+  // RecalculateIfNeeded debug tripwire caught firing in CI's --debug
+  // integration tests.
+  GIVEN("a fully laid-out worksheet of 20 cells") {
+    EngineFixture f;
+    std::vector<GroupCell *> cells;
+    for (int i = 0; i < 20; i++)
+      cells.push_back(f.AddCell(wxString::Format(wxS("w%d:%d$"), i, i)));
+    f.layout.RequestRecalculation(cells.front());
+    while (f.layout.RecalculateIfNeeded())
+      ;
+    // Every cell is clean now.
+    for (GroupCell *c : cells)
+      REQUIRE(!c->NeedsRecalculation());
+
+    WHEN("a mid-document cell is scheduled and then a global config bump "
+         "happens before the pass runs") {
+      f.layout.RequestRecalculation(cells[10]);
+      g_cfg->RecalculateForce(); // bumps CellCfgCnt: all cells now ConfigChanged
+      REQUIRE(cells[19]->NeedsRecalculation()); // sanity: the bump took effect
+      while (f.layout.RecalculateIfNeeded())
+        ;
+
+      THEN("the pass absorbs the global invalidation - no cell is left dirty") {
+        for (GroupCell *c : cells)
+          REQUIRE(!c->NeedsRecalculation());
       }
     }
   }

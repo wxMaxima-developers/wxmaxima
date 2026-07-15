@@ -133,6 +133,8 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_configuration->SetViewCellPointers(&m_viewCellPointers);
   m_configuration->SetRecalculateRequestCallback(
     [this](GroupCell *group){ RequestRecalculation(group); });
+  m_configuration->SetRecalculateAllRequestCallback(
+    [this]{ m_layout.RequestFullRecalculation(); });
   m_configuration->SetAdjustWorksheetSizeRequestCallback(
     [this]{ m_layout.RequestAdjustSize(); });
   m_configuration->ReadConfig();
@@ -479,6 +481,7 @@ void Worksheet::ApplyOverlayScrollbarsSetting() {
 Worksheet::~Worksheet() {
   // The view is dying: cells may no longer schedule recalculations on it.
   m_configuration->SetRecalculateRequestCallback({});
+  m_configuration->SetRecalculateAllRequestCallback({});
   m_configuration->SetAdjustWorksheetSizeRequestCallback({});
   TreeUndo_ClearRedoActionList();
   TreeUndo_ClearUndoActionList();

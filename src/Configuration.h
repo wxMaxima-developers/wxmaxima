@@ -1038,6 +1038,20 @@ public:
   void SetRecalculateRequestCallback(std::function<void(GroupCell *)> callback)
     {m_recalculateRequest = std::move(callback);}
 
+  /*! Ask the view to schedule a recalculation of the WHOLE worksheet.
+
+    RecalculateForce() bumps a global counter that flips every cell's
+    ConfigChanged() dirty at once (see CellCfgCnt()); there is no per-cell
+    notification, so the view's layout engine would not otherwise learn that
+    the cells outside a pending bounded range became dirty. This tells it to
+    lay the whole document out. A no-op for configurations without a view
+    (printing, tests without a worksheet). */
+  void RequestRecalculateAll() const
+    {if (m_recalculateAllRequest) m_recalculateAllRequest();}
+  //! Set the callback RequestRecalculateAll() / RecalculateForce() notify through.
+  void SetRecalculateAllRequestCallback(std::function<void()> callback)
+    {m_recalculateAllRequest = std::move(callback);}
+
   long DefaultPort() const {return m_defaultPort;}
   void DefaultPort(long port){m_defaultPort = port;}
   bool GetAbortOnError() const {return m_abortOnError;}
@@ -1236,7 +1250,16 @@ public:
     to recalculate itself the worst thing that can happen is a visual glitch.
   */
   std::int_fast32_t CellCfgCnt() const {return m_cellCfgCnt;}
-  void RecalculateForce() { m_cellCfgCnt++; }
+  /*! Force every cell to be recalculated on the next layout pass.
+
+    Bumps the global config counter (so every cell's ConfigChanged() reports
+    dirty) AND notifies the view's layout engine to schedule a whole-document
+    pass - the counter bump alone is invisible to the engine's per-cell dirty
+    tracking, which would leave cells outside a pending bounded range stale. */
+  void RecalculateForce() {
+    m_cellCfgCnt++;
+    RequestRecalculateAll();
+  }
   static bool UseThreads(){return m_use_threads;}
   static void UseThreads(bool use){m_use_threads = use;}
   static void SetMaximaLang(const wxString &LANG){m_maxima_LANG = LANG;}
@@ -1283,6 +1306,8 @@ private:
   ViewCellPointers *m_viewCellPointers = NULL;
   //! The view's recalculation-request callback (see RequestRecalculate()). Not copied.
   std::function<void(GroupCell *)> m_recalculateRequest;
+  //! The view's whole-document recalculation callback (see RequestRecalculateAll()). Not copied.
+  std::function<void()> m_recalculateAllRequest;
   //! The view's adjust-size-request callback (see RequestAdjustWorksheetSize()). Not copied.
   std::function<void()> m_adjustWorksheetSizeRequest;
   //! The state of the current render pass (DCs, canvas, clipping, deadline)
