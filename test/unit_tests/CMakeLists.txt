@@ -92,6 +92,14 @@ target_include_directories(test_LdbSupport PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_LdbSupport PRIVATE ${wxWidgets_LIBRARIES})
 add_test(LdbSupport test_LdbSupport)
 
+# The Maxima-protocol helpers (MaximaProtocol) - prompt classification and the
+# blank-command predicate - are GUI-free, so they are tested directly against
+# captured prompt/command strings.
+add_executable(test_MaximaProtocol test_MaximaProtocol.cpp ${WXM_TEST_SETUP})
+target_include_directories(test_MaximaProtocol PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_MaximaProtocol PRIVATE ${wxWidgets_LIBRARIES})
+add_test(MaximaProtocol test_MaximaProtocol)
+
 # Guards the wxWidgets 3.3 "item" assert that wxMenu::GetHelpString() trips when
 # a highlighted menu id is not an item of that menu (seen mainly via the Windows
 # native menu code). MenuHelpString() is a tiny GUI-object helper, so it is

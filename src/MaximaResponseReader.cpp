@@ -29,6 +29,7 @@
 #include "MaximaVariableUpdates.h"
 #include "MaximaMenuSync.h"
 #include "LdbSupport.h"
+#include "MaximaProtocol.h"
 #include "EventIDs.h"
 #include <wx/sstream.h>
 #include <functional>
@@ -349,20 +350,11 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
     m_wxMaxima.m_configuration.InLispMode(false);
   }
 
-  // Input prompts have a length > 0 and end in a number followed by a ")".
-  // Depending on ibase the digits of the number might be between 'A' and 'Z',
-  // too. Input prompts also begin with a "(". Questions (hopefully)
-  // don't do that; Lisp prompts look like question prompts.
-  //
-  // sbcl debug prompts have the format "(dbm:1)".
-  if (((label.Length() > 2) && label.StartsWith("(%") &&
-       (!label.StartsWith("(dbm:")) && label.EndsWith(")") &&
-       (((label[label.Length() - 2] >= (wxS('0'))) &&
-         (label[label.Length() - 2] <= (wxS('9')))) ||
-        ((label[label.Length() - 2] >= (wxS('A'))) &&
-         (label[label.Length() - 2] <= (wxS('Z')))))) ||
-      m_wxMaxima.m_configuration.InLispMode() || (label.StartsWith(wxS("MAXIMA>"))) ||
-      (label.StartsWith(wxS("\nMAXIMA>")))) {
+  // Is this a new main prompt (advance the evaluation queue) or a question we
+  // must stop and answer? See MaximaProtocol::IsMainInputPrompt - including the
+  // documented "(dbm:N)" question-vs-main-prompt asymmetry once Lisp mode is on.
+  if (MaximaProtocol::IsMainInputPrompt(label,
+                                        m_wxMaxima.m_configuration.InLispMode())) {
     // Maxima displayed a new main prompt => We don't have a question
     m_wxMaxima.GetWorksheet()->QuestionAnswered();
     // And we can remove one command from the evaluation queue.

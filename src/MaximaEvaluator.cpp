@@ -30,6 +30,7 @@
 #include "cells/EditorCell.h"
 #include "cells/GroupCell.h"
 #include "wxMathml.h"
+#include "MaximaProtocol.h"
 #include "Version.h"
 #include <wx/tokenzr.h>
 #include <memory>
@@ -408,12 +409,12 @@ void MaximaEvaluator::TriggerEvaluation() {
       tmp->ResetSize();
 
       wxLogMessage(_("Sending a new command to Maxima."));
-      // Only send the config commands if there actually are any: An empty
-      // send results in a bare newline being transmitted, which a normal
-      // maxima prompt ignores - but the maxima debugger prompt (dbm:N)
+      // Only send the config commands if they are not blank: an all-whitespace
+      // (or empty) send results in a bare newline being transmitted, which a
+      // normal maxima prompt ignores - but the maxima debugger prompt (dbm:N)
       // interprets an empty line as "repeat the last command", which e.g.
       // makes ":h" followed by ":continue" show the help text twice.
-      if (!m_wxMaxima.m_configCommands.IsEmpty())
+      if (!MaximaProtocol::CommandIsBlank(m_wxMaxima.m_configCommands))
         SendMaxima(m_wxMaxima.m_configCommands);
       SendMaxima(text, true);
       m_wxMaxima.m_maximaBusy = true;
