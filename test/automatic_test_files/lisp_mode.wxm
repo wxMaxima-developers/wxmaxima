@@ -36,6 +36,15 @@ if lr2a # 11 or lr2b # 22 then error("FAIL: multiple Lisp forms in one cell were
 if 6*7 # 42 then error("FAIL: normal Maxima evaluation is broken after Lisp round-trips")$
 /* [wxMaxima: input   end   ] */
 /* [wxMaxima: input   start ] */
+:lisp (setq $cl1 7)
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+if cl1 # 7 then error("FAIL: the :lisp single-shot reader macro did not evaluate its form")$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+if 3*3 # 9 then error("FAIL: normal Maxima evaluation is broken after :lisp")$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
 "lisp-mode roundtrip test passed"$
 /* Maxima can't load/batch files which end with a comment! */
 /* [wxMaxima: input   end   ] */
