@@ -107,7 +107,7 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a3de8a6b955f99bb7a534c6ddfb47f9d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The network states that can be passed to <a class="el" href="classStatusBar.html#addf51766d62198da4dd162f7f2a05c6f" title="Informs the status bar about networking events.">NetworkStatus()</a> <br /></td></tr>
 <tr class="separator:a3de8a6b955f99bb7a534c6ddfb47f9d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1235c09bed081ebb46dbd8b264f5c96"><td class="memItemLeft" align="right" valign="top"><a id="af1235c09bed081ebb46dbd8b264f5c96" name="af1235c09bed081ebb46dbd8b264f5c96"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>MaximaStatus</b> { <br />
+<tr class="memitem:af1235c09bed081ebb46dbd8b264f5c96"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStatusBar.html#af1235c09bed081ebb46dbd8b264f5c96">MaximaStatus</a> { <br />
 &#160;&#160;<b>wait_for_start</b>
 , <b>process_wont_start</b>
 , <b>sending</b>
@@ -121,7 +121,9 @@ Public Types</h2></td></tr>
 &#160;&#160;<b>transferring</b>
 , <b>userinput</b>
 , <b>maximaerror</b>
-, <b>disconnected</b>
+, <a class="el" href="classStatusBar.html#af1235c09bed081ebb46dbd8b264f5c96a4420d8cdc87e59da070dc288d199b1b3">debugging</a>
+, <br />
+&#160;&#160;<b>disconnected</b>
 <br />
  }</td></tr>
 <tr class="separator:af1235c09bed081ebb46dbd8b264f5c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,7 +155,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaximaCPUPercentag
 <tr class="memdesc:a47625898d570191fc10f684df87c8b46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inform the status bar how many percents of the available CPU power maxima uses. <br /></td></tr>
 <tr class="separator:a47625898d570191fc10f684df87c8b46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac86400a6f7fafecd1ccba3021c49d60a"><td class="memItemLeft" align="right" valign="top"><a id="ac86400a6f7fafecd1ccba3021c49d60a" name="ac86400a6f7fafecd1ccba3021c49d60a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateStatusMaximaBusy</b> (MaximaStatus status, std::size_t bytesFromMaxima)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateStatusMaximaBusy</b> (<a class="el" href="classStatusBar.html#af1235c09bed081ebb46dbd8b264f5c96">MaximaStatus</a> status, std::size_t bytesFromMaxima)</td></tr>
 <tr class="separator:ac86400a6f7fafecd1ccba3021c49d60a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99984d665335fb0e11317b92213b4a48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStatusBar.html#a99984d665335fb0e11317b92213b4a48">SetStatusText</a> (wxString statusText)</td></tr>
 <tr class="memdesc:a99984d665335fb0e11317b92213b4a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the left status text.  <br /></td></tr>
@@ -176,7 +178,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>HandleTimerEvent</b> 
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The class that draws the status bar. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="af1235c09bed081ebb46dbd8b264f5c96" name="af1235c09bed081ebb46dbd8b264f5c96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1235c09bed081ebb46dbd8b264f5c96">&#9670;&#160;</a></span>MaximaStatus</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classStatusBar.html#af1235c09bed081ebb46dbd8b264f5c96">StatusBar::MaximaStatus</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af1235c09bed081ebb46dbd8b264f5c96a4420d8cdc87e59da070dc288d199b1b3" name="af1235c09bed081ebb46dbd8b264f5c96a4420d8cdc87e59da070dc288d199b1b3"></a>debugging&#160;</td><td class="fielddoc"><p><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s Lisp is stopped in a debugger (e.g. sbcl's LDB). </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a99984d665335fb0e11317b92213b4a48" name="a99984d665335fb0e11317b92213b4a48"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a99984d665335fb0e11317b92213b4a48">&#9670;&#160;</a></span>SetStatusText()</h2>
 
