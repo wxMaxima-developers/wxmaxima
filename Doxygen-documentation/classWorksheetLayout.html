@@ -94,6 +94,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a422101a8e1e9930368192d5f585b379a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetLayout.html#a422101a8e1e9930368192d5f585b379a">RequestRecalculation</a> (<a class="el" href="classCell.html">Cell</a> *start)</td></tr>
 <tr class="memdesc:a422101a8e1e9930368192d5f585b379a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a recalculation of the worksheet starting with the cell start.  <br /></td></tr>
 <tr class="separator:a422101a8e1e9930368192d5f585b379a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0df591f1f0ac2df0dd7865f56415008b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetLayout.html#a0df591f1f0ac2df0dd7865f56415008b">RequestFullRecalculation</a> ()</td></tr>
+<tr class="memdesc:a0df591f1f0ac2df0dd7865f56415008b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule a recalculation of the whole worksheet.  <br /></td></tr>
+<tr class="separator:a0df591f1f0ac2df0dd7865f56415008b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac09d5900171a1150443e09682c411987"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetLayout.html#ac09d5900171a1150443e09682c411987">RecalculateIfNeeded</a> (bool timeout=false, long timeSliceMs=50)</td></tr>
 <tr class="memdesc:ac09d5900171a1150443e09682c411987"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform the scheduled recalculation, if one is pending.  <br /></td></tr>
 <tr class="separator:ac09d5900171a1150443e09682c411987"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -344,6 +347,26 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCellsRecalculat
 
 </div>
 </div>
+<a id="a0df591f1f0ac2df0dd7865f56415008b" name="a0df591f1f0ac2df0dd7865f56415008b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0df591f1f0ac2df0dd7865f56415008b">&#9670;&#160;</a></span>RequestFullRecalculation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WorksheetLayout::RequestFullRecalculation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Schedule a recalculation of the whole worksheet. </p>
+<p>For changes that potentially dirty cells at arbitrary positions (zoom, font or configuration changes, window resizes): the dirty range becomes "the first cell to the end of the document", so the next layout pass may not stop early. An operation that changes one known cell should call RequestRecalculation(cell) instead. </p>
+
+</div>
+</div>
 <a id="a422101a8e1e9930368192d5f585b379a" name="a422101a8e1e9930368192d5f585b379a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a422101a8e1e9930368192d5f585b379a">&#9670;&#160;</a></span>RequestRecalculation()</h2>
 
@@ -361,7 +384,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCellsRecalculat
 </div><div class="memdoc">
 
 <p>Schedule a recalculation of the worksheet starting with the cell start. </p>
-<p>This only <em>records</em> where the next layout pass has to start (it marks the group dirty and moves m_recalculateStart); it does not size or position any cell. The actual work - and, crucially, <a class="el" href="classWorksheetLayout.html#a94a4b95c9a596798afe30e907badce31" title="Adjust the virtual size and scrollbars to the document&#39;s extent.">AdjustSize()</a> once the cell positions are correct - happens in <a class="el" href="classWorksheetLayout.html#ac09d5900171a1150443e09682c411987" title="Perform the scheduled recalculation, if one is pending.">RecalculateIfNeeded()</a>. Calling <a class="el" href="classWorksheetLayout.html#a94a4b95c9a596798afe30e907badce31" title="Adjust the virtual size and scrollbars to the document&#39;s extent.">AdjustSize()</a> (or otherwise reading cell geometry) right after this, without a <a class="el" href="classWorksheetLayout.html#ac09d5900171a1150443e09682c411987" title="Perform the scheduled recalculation, if one is pending.">RecalculateIfNeeded()</a> in between, reads stale positions. </p>
+<p>This only <em>records</em> where the next layout pass has to start (it marks the group dirty and extends the pending dirty range [m_recalculateStart, m_recalculateEnd]); it does not size or position any cell. The actual work - and, crucially, <a class="el" href="classWorksheetLayout.html#a94a4b95c9a596798afe30e907badce31" title="Adjust the virtual size and scrollbars to the document&#39;s extent.">AdjustSize()</a> once the cell positions are correct - happens in <a class="el" href="classWorksheetLayout.html#ac09d5900171a1150443e09682c411987" title="Perform the scheduled recalculation, if one is pending.">RecalculateIfNeeded()</a>. Calling <a class="el" href="classWorksheetLayout.html#a94a4b95c9a596798afe30e907badce31" title="Adjust the virtual size and scrollbars to the document&#39;s extent.">AdjustSize()</a> (or otherwise reading cell geometry) right after this, without a <a class="el" href="classWorksheetLayout.html#ac09d5900171a1150443e09682c411987" title="Perform the scheduled recalculation, if one is pending.">RecalculateIfNeeded()</a> in between, reads stale positions. </p>
 
 </div>
 </div>

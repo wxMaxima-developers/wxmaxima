@@ -2711,7 +2711,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Schedule a recalculation of the whole worksheet. </p>
 <p>See <a class="el" href="classWorksheet.html#afe461aa6d0926a930da39ab21e075ebe" title="Schedule a recalculation of the worksheet starting with the cell start.">RequestRecalculation(Cell*)</a>.</p>
-<p>Only for operations that change the geometry of cells at unknown or document-wide positions (zoom, font or window-width changes, unfolding). An operation that changes one known cell must request RequestRecalculation(cell) instead so the layout pass doesn't have to visit the cells above it. </p>
+<p>Only for operations that change the geometry of cells at unknown or document-wide positions (zoom, font or window-width changes, unfolding). An operation that changes one known cell must request RequestRecalculation(cell) instead: a targeted request keeps the dirty range bounded, so the layout pass neither visits the cells above the change nor scans past the cells below it. </p>
 
 </div>
 </div>
