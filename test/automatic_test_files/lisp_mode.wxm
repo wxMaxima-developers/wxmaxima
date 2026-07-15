@@ -1,0 +1,44 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 26.07.0-dev ] */
+/* [wxMaxima: comment start ]
+Regression test for to_lisp() / (to-maxima) mode switching. Self-checking:
+each Lisp form sets a Maxima variable (a Maxima variable "x" is the Lisp
+symbol "$x"), and after returning to Maxima mode we error() if the value is
+wrong. Run with --batch --exit-on-error: a wrong value, an unevaluated form,
+a mis-split "$" (which used to desync the REPL into a prompt-flood hang after
+to_lisp), or a hang all fail the test.
+   [wxMaxima: comment end   ] */
+/* [wxMaxima: input   start ] */
+lr1: 0$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+to_lisp();
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+(setq $lr1 3)
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+(to-maxima)
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+if lr1 # 3 then error("FAIL: single cross-cell Lisp form was not evaluated (the $ in $lr1 was mis-split)")$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+to_lisp();
+(setq $lr2a 11)
+(setq $lr2b 22)
+(to-maxima)
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+if lr2a # 11 or lr2b # 22 then error("FAIL: multiple Lisp forms in one cell were not all evaluated")$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+if 6*7 # 42 then error("FAIL: normal Maxima evaluation is broken after Lisp round-trips")$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+"lisp-mode roundtrip test passed"$
+/* Maxima can't load/batch files which end with a comment! */
+/* [wxMaxima: input   end   ] */
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 26.07.0-dev"$

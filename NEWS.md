@@ -1,5 +1,15 @@
 # Current development version
 
+- Fixed a hang after switching Maxima to Lisp mode with to_lisp(): the first
+  command evaluated after to_lisp() (and the first one after returning with
+  (to-maxima)) was tokenized before wxMaxima had registered the mode change,
+  so a "$" in a Lisp form - for example the "$x" that names a Maxima variable
+  from Lisp, as in (setq $x 3) - was wrongly treated as a Maxima statement
+  terminator and split the form, desyncing the Lisp REPL into a prompt flood
+  that never returned. wxMaxima now updates the Lisp-mode state from the
+  prompt before it tokenizes the next command. A new self-checking batch test
+  (lisp_mode) guards it.
+
 - New: the status bar shows a distinct "bug" pictogram, next to the
   Maxima-activity icons, when Maxima's Lisp has stopped in a debugger (sbcl's
   LDB), so it is obvious at a glance that Maxima is sitting in the debugger

@@ -327,6 +327,28 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
     m_wxMaxima.m_unsuccessfulConnectionAttempts--;
   label.Trim(true);
   label.Trim(false);
+
+  // Record the lisp-mode transition from this prompt BEFORE the queue is
+  // advanced below. RemoveFirst() lazily tokenizes the NEXT cell, and the
+  // tokenizer must already know the mode: in Maxima mode "$" ends a statement,
+  // but in Lisp mode "$" is an ordinary character (e.g. the "$x" that names a
+  // Maxima variable from Lisp, as in (setq $x 3)). Setting the flag only at
+  // the end of this function - after RemoveFirst() had already tokenized the
+  // next cell - split the first Lisp form after to_lisp() at its "$" (and,
+  // symmetrically, treated the first Maxima form after (to-maxima) as one Lisp
+  // blob), desyncing the REPL into a prompt flood / hang. The sbcl high-level
+  // debugger "(dbm:" prompt keeps its existing handling at the end of this
+  // function, so its question-vs-main-prompt classification is unchanged.
+  if (label.StartsWith(wxS("MAXIMA>"))) {
+    if (!m_wxMaxima.m_configuration.InLispMode())
+      wxLogMessage(_("Switched to lisp mode after receiving a lisp prompt!"));
+    m_wxMaxima.m_configuration.InLispMode(true);
+  } else if (!label.StartsWith(wxS("(dbm:"))) {
+    if (m_wxMaxima.m_configuration.InLispMode())
+      wxLogMessage(_("Ended lisp mode after receiving a maxima prompt!"));
+    m_wxMaxima.m_configuration.InLispMode(false);
+  }
+
   // Input prompts have a length > 0 and end in a number followed by a ")".
   // Depending on ibase the digits of the number might be between 'A' and 'Z',
   // too. Input prompts also begin with a "(". Questions (hopefully)

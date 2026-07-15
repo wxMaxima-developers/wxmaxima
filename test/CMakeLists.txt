@@ -194,6 +194,15 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --batch --exit-on-error boxes.wxm unicode.wxm)
 
+# to_lisp() / (to-maxima) mode switching. The worksheet is self-checking (each
+# Lisp form sets a Maxima variable that a later Maxima cell verifies with
+# error()); with --exit-on-error a wrong/unevaluated value fails, and the ctest
+# watchdog catches the prompt-flood hang that a mis-split "$" used to cause.
+add_test(
+    NAME lisp_mode
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error lisp_mode.wxm)
+
 # Smoke test for the side-by-side diff viewer (wxmxdiff / --diff): it has no
 # other test and has broken silently when surrounding code changed. Loads two
 # .wxmx files in diff mode and fails on a crash or assertion.
