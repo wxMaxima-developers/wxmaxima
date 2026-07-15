@@ -1,5 +1,14 @@
 # Current development version
 
+- Fixed another Maxima-debugger bug: only the first command typed at a
+  debugger prompt (dbm:N) was treated as an answer to the debugger; the second
+  and later commands were sent as ordinary worksheet input and left behind as
+  stray input cells in the worksheet. wxMaxima now treats every debugger prompt
+  as a question, so all debugger commands are answered and none pollute the
+  document. (Root cause: entering the debugger switches Maxima's reader to Lisp
+  mode, which made every debugger prompt after the first look like a normal
+  input prompt.)
+
 - Fixed a bug in the Maxima debugger support: at the debugger prompt (dbm:N)
   an empty input line is interpreted by Maxima as "repeat the last command".
   Before sending each queued command wxMaxima transmitted the (usually empty)

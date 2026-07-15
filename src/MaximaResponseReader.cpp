@@ -351,8 +351,9 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
   }
 
   // Is this a new main prompt (advance the evaluation queue) or a question we
-  // must stop and answer? See MaximaProtocol::IsMainInputPrompt - including the
-  // documented "(dbm:N)" question-vs-main-prompt asymmetry once Lisp mode is on.
+  // must stop and answer? See MaximaProtocol::IsMainInputPrompt. Note the
+  // debugger prompt "(dbm:N)" is always a question, so debugger commands are
+  // answered rather than recorded as worksheet input.
   if (MaximaProtocol::IsMainInputPrompt(label,
                                         m_wxMaxima.m_configuration.InLispMode())) {
     // Maxima displayed a new main prompt => We don't have a question

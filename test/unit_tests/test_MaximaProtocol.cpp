@@ -90,24 +90,20 @@ SCENARIO("The Maxima debugger prompt is recognized") {
   }
 }
 
-SCENARIO("The (dbm:N) question-vs-main-prompt asymmetry is pinned") {
-  // This documents a KNOWN BUG (see project_tech_debt). ReadPrompt turns Lisp
-  // mode ON as soon as it has seen one debugger prompt, so:
-  //   - the FIRST (dbm:N) prompt is seen with inLispMode == false, and
-  //   - every SUBSEQUENT one is seen with inLispMode == true.
-  // The classifier faithfully reproduces the consequence: the first debugger
-  // prompt is a question (an answer caret opens), but the next is treated as a
-  // main prompt - which is why debugger commands after the first get recorded
-  // as ordinary worksheet input. When that bug is fixed (debugger prompts
-  // should always be questions), the second REQUIRE below flips to REQUIRE_FALSE.
+SCENARIO("A debugger prompt is always a question, regardless of Lisp mode") {
+  // A debugger session turns Lisp mode on (for the pictogram + tokenizer), so
+  // ReadPrompt sees the first (dbm:N) prompt with inLispMode == false but every
+  // subsequent one with inLispMode == true. A (dbm:N) prompt must be classified
+  // as a question either way - otherwise the second and later debugger commands
+  // would advance the eval queue and be recorded as ordinary worksheet input.
   GIVEN("the first debugger prompt (Lisp mode not yet on)") {
-    THEN("it is classified as a question, not a main prompt") {
+    THEN("it is a question, not a main prompt") {
       REQUIRE_FALSE(IsMainInputPrompt(wxS("(dbm:1) "), false));
     }
   }
   GIVEN("a later debugger prompt (Lisp mode now on)") {
-    THEN("it is - today, buggily - classified as a main prompt") {
-      REQUIRE(IsMainInputPrompt(wxS("(dbm:1) "), true));
+    THEN("it is still a question, not a main prompt") {
+      REQUIRE_FALSE(IsMainInputPrompt(wxS("(dbm:1) "), true));
     }
   }
 }

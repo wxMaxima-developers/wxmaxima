@@ -60,6 +60,15 @@ bool IsNumberedInputPrompt(const wxString &label) {
 }
 
 bool IsMainInputPrompt(const wxString &label, bool inLispMode) {
+  // The Maxima debugger prompt "(dbm:N)" is ALWAYS a question wxMaxima must stop
+  // and answer, never a queue-advancing main prompt - even though a debugger
+  // session turns Lisp mode on. Special-casing it here (rather than letting the
+  // inLispMode clause below sweep it up) keeps every debugger command a
+  // question/answer, so commands after the first are no longer mis-recorded as
+  // ordinary worksheet input. The queue still advances normally when the
+  // debugger exits and Maxima prints a real "(%iN)" prompt.
+  if (IsDebuggerPrompt(label))
+    return false;
   return IsNumberedInputPrompt(label) || inLispMode || IsLispReplPrompt(label);
 }
 

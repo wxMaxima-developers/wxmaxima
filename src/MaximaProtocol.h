@@ -54,18 +54,12 @@ bool IsNumberedInputPrompt(const wxString &label);
 //! Does \p label mark a new *main* prompt - one where wxMaxima should advance
 //! its evaluation queue - as opposed to a question it must stop and answer?
 //!
-//! This mirrors the historical ReadPrompt condition exactly: a numbered input
-//! prompt, OR anything at all while wxMaxima already believes it is in Lisp
-//! mode, OR a Lisp-REPL prompt.
-//!
-//! \warning Note the second clause: while \p inLispMode is true, EVERY prompt -
-//! including the debugger's "(dbm:N)" - is reported as a main prompt. Because
-//! ReadPrompt turns Lisp mode ON as soon as it has seen one "(dbm:N)" prompt,
-//! the FIRST debugger prompt is classified as a question (answer caret) but
-//! every SUBSEQUENT one is classified as a main prompt (queue-advancing input).
-//! That asymmetry is a known bug (debugger commands after the first get
-//! recorded as ordinary worksheet input); this function reproduces the current
-//! behavior so the bug is pinned rather than fixed here.
+//! True for a numbered input prompt, for anything while wxMaxima is already in
+//! Lisp mode, and for a Lisp-REPL prompt. The debugger prompt "(dbm:N)" is the
+//! one exception to the Lisp-mode clause: it is ALWAYS a question, never a main
+//! prompt, so that every debugger command is answered rather than mis-recorded
+//! as worksheet input. (A debugger session turns Lisp mode on, which used to
+//! make every "(dbm:N)" after the first classify as a main prompt.)
 bool IsMainInputPrompt(const wxString &label, bool inLispMode);
 
 //! Would transmitting \p command send nothing but a bare newline? SendMaxima
