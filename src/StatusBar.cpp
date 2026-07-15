@@ -43,6 +43,7 @@
 #include "art/statusbar/System-lock-screen.h"
 #include "art/statusbar/network-error.h"
 #include "art/statusbar/debugging.h"
+#include "art/statusbar/lispmode.h"
 #include "art/statusbar/Waiting.h"
 #include <wx/artprov.h>
 #include <wx/display.h>
@@ -204,6 +205,10 @@ void StatusBar::UpdateBitmaps() {
       ArtProvider::GetImage(this, "debugging", GetClientSize().GetHeight(),
                             DEBUGGING_SVG_GZ,
                             DEBUGGING_SVG_GZ_SIZE);
+    m_bitmap_lispmode =
+      ArtProvider::GetImage(this, "lispmode", GetClientSize().GetHeight(),
+                            LISPMODE_SVG_GZ,
+                            LISPMODE_SVG_GZ_SIZE);
     m_bitmap_disconnected =
       ArtProvider::GetImage(this, "network-offline", GetClientSize().GetHeight(),
                             NETWORK_OFFLINE_SVG_GZ,
@@ -340,7 +345,25 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
       #endif
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_debugging);
-      m_maximaStatus->SetToolTip(_("Maxima's Lisp is stopped in a debugger"));
+      m_maximaStatus->SetToolTip(
+        _("Maxima has stopped in a debugger and is waiting for a command.\n"
+          "Common commands (type ':h' for the full list):\n"
+          "  :bt        show a backtrace of the call stack\n"
+          "  :continue  continue the computation\n"
+          "  :top       return to the top level (abandon the computation)\n"
+          "  :next / :step   step to the next line\n"
+          "  :frame     show the current stack frame"));
+      break;
+    case lispmode:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      updateTaskbar(wxTASKBAR_BUTTON_NO_PROGRESS, wxNullIcon);
+      #endif
+      #endif
+      m_maximaStatus->SetBitmap(m_bitmap_lispmode);
+      m_maximaStatus->SetToolTip(
+        _("Maxima's reader is in Lisp mode (after to_lisp()).\n"
+          "Type Lisp forms; enter (to-maxima) to return to Maxima mode."));
       break;
     case disconnected:
       #if wxCHECK_VERSION(3, 1, 0)

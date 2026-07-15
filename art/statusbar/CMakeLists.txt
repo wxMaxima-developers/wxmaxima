@@ -14,6 +14,7 @@ set(IMAGE_FILES
   System-lock-screen
   network-error
   debugging
+  lispmode
   Waiting)
 
 foreach(file ${IMAGE_FILES})

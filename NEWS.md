@@ -1,5 +1,11 @@
 # Current development version
 
+- New: a distinct "(λ)" pictogram in the status bar while Maxima's reader is in
+  Lisp mode (after to_lisp() / a MAXIMA> prompt), so it is obvious at a glance
+  that you are typing Lisp rather than Maxima; it clears when you return with
+  (to-maxima). Its tooltip, and the debugger pictogram's tooltip, now list the
+  common commands accepted at that prompt.
+
 - Fixed a hang after switching Maxima to Lisp mode with to_lisp(): the first
   command evaluated after to_lisp() (and the first one after returning with
   (to-maxima)) was tokenized before wxMaxima had registered the mode change,

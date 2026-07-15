@@ -539,6 +539,9 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
       case StatusBar::MaximaStatus::debugging:
         m_bytesFromMaxima_last = 0;
         break;
+      case StatusBar::MaximaStatus::lispmode:
+        m_bytesFromMaxima_last = 0;
+        break;
       case StatusBar::MaximaStatus::disconnected:
         m_bytesFromMaxima_last = 0;
         break;

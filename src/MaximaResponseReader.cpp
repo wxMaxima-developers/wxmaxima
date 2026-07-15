@@ -463,14 +463,16 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
         wxLogMessage(_("Switched to lisp mode after receiving a lisp prompt!"));
     }
     m_wxMaxima.m_configuration.InLispMode(true);
-    // While Maxima is stopped in its own debugger (the "(dbm:N)" prompt) show
-    // the debugger pictogram in the status bar - the same one sbcl's LDB uses -
-    // so it is obvious at a glance. Set it LAST so it wins over the userinput /
-    // main-prompt status the branches above set for this prompt; a subsequent
-    // normal "(%iN)" prompt (e.g. after :top or :continue) sets a non-debugging
-    // status and clears it.
+    // Status-bar pictogram for these special REPL modes. Set it LAST so it
+    // wins over the userinput / main-prompt status the branches above set for
+    // this prompt; a subsequent normal "(%iN)" prompt (e.g. after :top /
+    // :continue leaves the debugger, or (to-maxima) leaves Lisp mode) sets a
+    // non-special status and clears it. The debugger (dbm) wins over plain
+    // Lisp mode (MAXIMA>).
     if (label.StartsWith(wxS("(dbm:")))
       m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::debugging);
+    else
+      m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::lispmode);
   } else {
     if (m_wxMaxima.m_configuration.InLispMode())
       wxLogMessage(_("Ended lisp mode after receiving a maxima prompt!"));
