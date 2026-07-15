@@ -93,6 +93,8 @@ public:
     transferring,
     userinput,
     maximaerror,
+    //! Maxima's Lisp is stopped in a debugger (e.g. sbcl's LDB).
+    debugging,
     disconnected
   };
 
@@ -176,6 +178,7 @@ private:
   wxBitmap m_bitmap_parsing;
   wxBitmap m_bitmap_transferring;
   wxBitmap m_bitmap_userinput;
+  wxBitmap m_bitmap_debugging;
   wxBitmap m_bitmap_disconnected;
 };
 

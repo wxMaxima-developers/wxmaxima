@@ -1,5 +1,10 @@
 # Current development version
 
+- New: the status bar shows a distinct "bug" pictogram, next to the
+  Maxima-activity icons, when Maxima's Lisp has stopped in a debugger (sbcl's
+  LDB), so it is obvious at a glance that Maxima is sitting in the debugger
+  rather than calculating or idle.
+
 - Speedup on long worksheets: after a localized change (typing in a cell,
   a single new output line, deleting or restyling a cell) the layout pass
   now stops as soon as it has re-laid-out the changed region and confirmed

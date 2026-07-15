@@ -42,6 +42,7 @@
 #include "art/statusbar/Go-up.h"
 #include "art/statusbar/System-lock-screen.h"
 #include "art/statusbar/network-error.h"
+#include "art/statusbar/debugging.h"
 #include "art/statusbar/Waiting.h"
 #include <wx/artprov.h>
 #include <wx/display.h>
@@ -199,6 +200,10 @@ void StatusBar::UpdateBitmaps() {
       ArtProvider::GetImage(this, "important", GetClientSize().GetHeight(),
                             EMBLEM_IMPORTANT_SVG_GZ,
                             EMBLEM_IMPORTANT_SVG_GZ_SIZE);
+    m_bitmap_debugging =
+      ArtProvider::GetImage(this, "debugging", GetClientSize().GetHeight(),
+                            DEBUGGING_SVG_GZ,
+                            DEBUGGING_SVG_GZ_SIZE);
     m_bitmap_disconnected =
       ArtProvider::GetImage(this, "network-offline", GetClientSize().GetHeight(),
                             NETWORK_OFFLINE_SVG_GZ,
@@ -327,6 +332,15 @@ void StatusBar::UpdateStatusMaximaBusy(MaximaStatus status, std::size_t bytesFro
       #endif
       m_maximaStatus->SetBitmap(m_bitmap_process_wont_start);
       m_maximaStatus->SetToolTip(_("Maxima returned an error message"));
+      break;
+    case debugging:
+      #if wxCHECK_VERSION(3, 1, 0)
+      #ifdef __WXMSW__
+      updateTaskbar(wxTASKBAR_BUTTON_PAUSED, wxNullIcon);
+      #endif
+      #endif
+      m_maximaStatus->SetBitmap(m_bitmap_debugging);
+      m_maximaStatus->SetToolTip(_("Maxima's Lisp is stopped in a debugger"));
       break;
     case disconnected:
       #if wxCHECK_VERSION(3, 1, 0)

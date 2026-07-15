@@ -13,6 +13,7 @@ set(IMAGE_FILES
   Go-up
   System-lock-screen
   network-error
+  debugging
   Waiting)
 
 foreach(file ${IMAGE_FILES})

@@ -2142,6 +2142,7 @@ void wxMaxima::UpdateToolBar() {
     break;
   case StatusBar::MaximaStatus::wait_for_start:
   case StatusBar::MaximaStatus::disconnected:
+  case StatusBar::MaximaStatus::debugging:
   case StatusBar::MaximaStatus::process_wont_start:
     GetWorksheet()->m_mainToolBar->ShowFollowBitmap();
     GetWorksheet()->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);

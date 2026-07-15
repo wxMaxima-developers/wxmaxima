@@ -452,6 +452,8 @@ void MaximaResponseReader::EnterLdbMode() {
   if (m_wxMaxima.m_inLDB)
     return;
   m_wxMaxima.m_inLDB = true;
+  // Show the "stopped in a debugger" pictogram in the status bar.
+  m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::debugging);
   wxLogMessage(_("Maxima's Lisp entered sbcl's low-level debugger (LDB)."));
   m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
     _("Maxima's Lisp (sbcl) has stopped in its low-level debugger (LDB). "
