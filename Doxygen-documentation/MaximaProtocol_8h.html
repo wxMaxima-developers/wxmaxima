@@ -150,8 +150,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>MaximaProtocol::Comma
 </div><div class="memdoc">
 
 <p>Does <code>label</code> mark a new <em>main</em> prompt - one where <a class="el" href="classwxMaxima.html">wxMaxima</a> should advance its evaluation queue - as opposed to a question it must stop and answer? </p>
-<p>This mirrors the historical ReadPrompt condition exactly: a numbered input prompt, OR anything at all while <a class="el" href="classwxMaxima.html">wxMaxima</a> already believes it is in Lisp mode, OR a Lisp-REPL prompt.</p>
-<dl class="section warning"><dt>Warning</dt><dd>Note the second clause: while <code>inLispMode</code> is true, EVERY prompt - including the debugger's "(dbm:N)" - is reported as a main prompt. Because ReadPrompt turns Lisp mode ON as soon as it has seen one "(dbm:N)" prompt, the FIRST debugger prompt is classified as a question (answer caret) but every SUBSEQUENT one is classified as a main prompt (queue-advancing input). That asymmetry is a known bug (debugger commands after the first get recorded as ordinary worksheet input); this function reproduces the current behavior so the bug is pinned rather than fixed here. </dd></dl>
+<p>True for a numbered input prompt, for anything while <a class="el" href="classwxMaxima.html">wxMaxima</a> is already in Lisp mode, and for a Lisp-REPL prompt. The debugger prompt "(dbm:N)" is the one exception to the Lisp-mode clause: it is ALWAYS a question, never a main prompt, so that every debugger command is answered rather than mis-recorded as worksheet input. (<a class="el" href="classA.html">A</a> debugger session turns Lisp mode on, which used to make every "(dbm:N)" after the first classify as a main prompt.) </p>
 
 </div>
 </div>
