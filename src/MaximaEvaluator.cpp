@@ -408,7 +408,13 @@ void MaximaEvaluator::TriggerEvaluation() {
       tmp->ResetSize();
 
       wxLogMessage(_("Sending a new command to Maxima."));
-      SendMaxima(m_wxMaxima.m_configCommands);
+      // Only send the config commands if there actually are any: An empty
+      // send results in a bare newline being transmitted, which a normal
+      // maxima prompt ignores - but the maxima debugger prompt (dbm:N)
+      // interprets an empty line as "repeat the last command", which e.g.
+      // makes ":h" followed by ":continue" show the help text twice.
+      if (!m_wxMaxima.m_configCommands.IsEmpty())
+        SendMaxima(m_wxMaxima.m_configCommands);
       SendMaxima(text, true);
       m_wxMaxima.m_maximaBusy = true;
       // Now that we have sent a command we need to query all variable values

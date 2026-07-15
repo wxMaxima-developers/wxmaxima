@@ -1,5 +1,14 @@
 # Current development version
 
+- Fixed a bug in the Maxima debugger support: at the debugger prompt (dbm:N)
+  an empty input line is interpreted by Maxima as "repeat the last command".
+  Before sending each queued command wxMaxima transmitted the (usually empty)
+  list of pending configuration commands, which at that prompt turned into a
+  spurious blank line that repeated the previous command - so e.g. ":h"
+  followed by ":continue" showed the help text a second time instead of the
+  expected output. wxMaxima now only sends the configuration commands when
+  there actually are any.
+
 - New: a distinct "(λ)" pictogram in the status bar while Maxima's reader is in
   Lisp mode (after to_lisp() / a MAXIMA> prompt), so it is obvious at a glance
   that you are typing Lisp rather than Maxima; it clears when you return with
