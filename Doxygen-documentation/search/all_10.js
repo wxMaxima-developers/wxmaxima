@@ -43,15 +43,16 @@ var searchData=
   ['printout_2eh_40',['Printout.h',['../Printout_8h.html',1,'']]],
   ['printscale_41',['PrintScale',['../classConfiguration.html#a979f0fc08df8155b787bd1f01c56c318',1,'Configuration::PrintScale(double scale)'],['../classConfiguration.html#a7aa083f8a96209a61f7816980ed36e25',1,'Configuration::PrintScale() const']]],
   ['priority_42',['Priority',['../classBackgroundTask.html#a217da7631d4231f559cbad8f0e7e1566',1,'BackgroundTask']]],
-  ['processevent_43',['ProcessEvent',['../classEditorCell.html#a4861b52977f38bd665e1ccc7be68c075',1,'EditorCell::ProcessEvent()'],['../classCell.html#ac2c7b0f78b2d1e9e0d2865305fdbe07e',1,'Cell::ProcessEvent()']]],
+  ['processevent_43',['ProcessEvent',['../classCell.html#ac2c7b0f78b2d1e9e0d2865305fdbe07e',1,'Cell::ProcessEvent()'],['../classEditorCell.html#a4861b52977f38bd665e1ccc7be68c075',1,'EditorCell::ProcessEvent(wxKeyEvent &amp;event) override']]],
   ['processnewline_44',['ProcessNewline',['../classEditorCell.html#aeee97c9a24f0dd8c752a5f7224ba19a6',1,'EditorCell']]],
   ['productcell_45',['ProductCell',['../classProductCell.html#a4248f58cdc737fbf445dbafb2b7bd595',1,'ProductCell::ProductCell()'],['../classProductCell.html',1,'ProductCell']]],
   ['productcell_2ecpp_46',['ProductCell.cpp',['../ProductCell_8cpp.html',1,'']]],
   ['productcell_2eh_47',['ProductCell.h',['../ProductCell_8h.html',1,'']]],
   ['project_20instructions_48',['Project Instructions',['../md_AGENTS.html',1,'']]],
-  ['propertiesmenu_49',['PropertiesMenu',['../classMaximaCommandMenus.html#ac0eaf6e0cf0b25ab632ebf1f4ba1bc56',1,'MaximaCommandMenus']]],
-  ['publicvar_50',['publicVar',['../classJavadoc__Test.html#a44a516fbc3a4865e2dcae34649c9df6a',1,'Javadoc_Test::publicVar()'],['../classQTstyle__Test.html#aabf7b2e9ed83ea44aca4d213baae06d3',1,'QTstyle_Test::publicVar()']]],
-  ['pyclass_51',['PyClass',['../classdocstring_1_1PyClass.html',1,'docstring.PyClass'],['../classpyexample_1_1PyClass.html',1,'pyexample.PyClass']]],
-  ['pyexample_52',['pyexample',['../namespacepyexample.html',1,'']]],
-  ['pymethod_53',['PyMethod',['../classdocstring_1_1PyClass.html#af092e1eacc10334e0e8630531a3473b4',1,'docstring.PyClass.PyMethod()'],['../classpyexample_1_1PyClass.html#a654596774eb28a0c6d26eea565de3a9d',1,'pyexample.PyClass.PyMethod()']]]
+  ['promptreaction_49',['PromptReaction',['../test__EvalQueueCommands_8cpp.html#a3523eb909a21c68f680eec70a5d456ef',1,'test_EvalQueueCommands.cpp']]],
+  ['propertiesmenu_50',['PropertiesMenu',['../classMaximaCommandMenus.html#ac0eaf6e0cf0b25ab632ebf1f4ba1bc56',1,'MaximaCommandMenus']]],
+  ['publicvar_51',['publicVar',['../classQTstyle__Test.html#aabf7b2e9ed83ea44aca4d213baae06d3',1,'QTstyle_Test::publicVar()'],['../classJavadoc__Test.html#a44a516fbc3a4865e2dcae34649c9df6a',1,'Javadoc_Test::publicVar()']]],
+  ['pyclass_52',['PyClass',['../classdocstring_1_1PyClass.html',1,'docstring.PyClass'],['../classpyexample_1_1PyClass.html',1,'pyexample.PyClass']]],
+  ['pyexample_53',['pyexample',['../namespacepyexample.html',1,'']]],
+  ['pymethod_54',['PyMethod',['../classdocstring_1_1PyClass.html#af092e1eacc10334e0e8630531a3473b4',1,'docstring.PyClass.PyMethod()'],['../classpyexample_1_1PyClass.html#a654596774eb28a0c6d26eea565de3a9d',1,'pyexample.PyClass.PyMethod()']]]
 ];
