@@ -1,76 +1,11 @@
 # Current development version
 
-- Fixed to_lisp() handling: a cell containing just to_lisp() (or :to_lisp())
-  without a trailing ";" no longer leaves Maxima waiting for a line ending and
-  no longer makes wxMaxima wrongly believe it is in Lisp mode. A to_lisp() that
-  stands alone in a cell is now recognized as an ordinary Maxima call and gets
-  its terminator, while a to_lisp() that is followed by Lisp forms in the same
-  cell still keeps those forms as one Lisp block (so a "$" in them is not taken
-  for a statement terminator, and no ";" is appended to them).
-
-- Fixed another Maxima-debugger bug: only the first command typed at a
-  debugger prompt (dbm:N) was treated as an answer to the debugger; the second
-  and later commands were sent as ordinary worksheet input and left behind as
-  stray input cells in the worksheet. wxMaxima now treats every debugger prompt
-  as a question, so all debugger commands are answered and none pollute the
-  document. (Root cause: entering the debugger switches Maxima's reader to Lisp
-  mode, which made every debugger prompt after the first look like a normal
-  input prompt.)
-
-- Fixed a bug in the Maxima debugger support: at the debugger prompt (dbm:N)
-  an empty input line is interpreted by Maxima as "repeat the last command".
-  Before sending each queued command wxMaxima transmitted the (usually empty)
-  list of pending configuration commands, which at that prompt turned into a
-  spurious blank line that repeated the previous command - so e.g. ":h"
-  followed by ":continue" showed the help text a second time instead of the
-  expected output. wxMaxima now only sends the configuration commands when
-  there actually are any.
-
-- New: a distinct "(λ)" pictogram in the status bar while Maxima's reader is in
-  Lisp mode (after to_lisp() / a MAXIMA> prompt), so it is obvious at a glance
-  that you are typing Lisp rather than Maxima; it clears when you return with
-  (to-maxima). Its tooltip, and the debugger pictogram's tooltip, now list the
-  common commands accepted at that prompt.
-
-- Fixed a hang after switching Maxima to Lisp mode with to_lisp(): the first
-  command evaluated after to_lisp() (and the first one after returning with
-  (to-maxima)) was tokenized before wxMaxima had registered the mode change,
-  so a "$" in a Lisp form - for example the "$x" that names a Maxima variable
-  from Lisp, as in (setq $x 3) - was wrongly treated as a Maxima statement
-  terminator and split the form, desyncing the Lisp REPL into a prompt flood
-  that never returned. wxMaxima now updates the Lisp-mode state from the
-  prompt before it tokenizes the next command. A new self-checking batch test
-  (lisp_mode) guards it.
-
-- New: the status bar shows a distinct "bug" pictogram, next to the
-  Maxima-activity icons, when Maxima has stopped in a debugger - both sbcl's
-  low-level debugger (LDB) and Maxima's own debugger (the "(dbm:N)" prompt you
-  reach with debugmode:true and an error, or a breakpoint) - so it is obvious
-  at a glance that Maxima is sitting in the debugger rather than calculating or
-  idle. The pictogram clears when you leave the debugger (e.g. with :top).
-
-- Speedup on long worksheets: after a localized change (typing in a cell,
-  a single new output line, deleting or restyling a cell) the layout pass
-  now stops as soon as it has re-laid-out the changed region and confirmed
-  the cells below it are still correctly positioned, instead of always
-  scanning to the end of the document. Editing near the top of a very long
-  worksheet used to get slower the longer the document was; it no longer
-  does. Whole-document changes (zoom, font, window width) still relay the
-  whole worksheet, as they must.
-
-- Fixed a use-after-destruction on every window close: child windows are
-  destroyed after their owner's member variables, so the worksheet's
-  destructor (and the destructors of all the cells it owns) ran against an
-  already-destroyed Configuration object. This never crashed in practice
-  because the memory was still allocated, but it was undefined behavior one
-  code change away from a crash. The main window, the file-comparison
-  window and the preferences dialog now destroy their worksheets
-  deterministically while the configuration is still whole, and destroying
-  a Configuration that still has a worksheet attached fires an assertion in
-  debug builds so the order can't silently regress. In the same teardown
-  review: with --logtostderr, closing the last window deleted the log
-  window while the stderr log chain still forwarded messages to it.
-
+- Repaired the lisp mode.
+- Repaired the maxima debugger mode
+- Repaired the SBCL debugger (LDB) mode
+- Status bar pictograms for lisp and debugger modes
+- Many Speedups
+- A complete stability review using a Fable-Class AI
 - Speedup: merely moving the mouse across the worksheet used to repaint the
   whole visible worksheet (all of its text included) at up to full frame
   rate, visible as a stream of font-cache hits in the performance monitor
@@ -89,40 +24,9 @@
   changed the statistics it displays, keeping the GUI busy in a loop. The
   performance monitor gained "Worksheet repaints" and "Full-window repaints"
   counters so a regression of this kind is easy to spot.
-
-- Speedup: many editing operations (deleting, pasting or restyling cells,
-  undo/redo, search-and-replace, drag-and-drop in the table of contents,
-  "remove all output") used to make the next layout pass walk the whole
-  worksheet; they now tell it exactly where the change happened, so on long
-  documents the cells above the edit aren't even visited. A new
-  test_LayoutInvariants scenario locks this in. Two bugs fixed on the way:
-  scheduling a layout pass for a cell that wasn't part of the worksheet yet
-  (e.g. a freshly created cell an instant before it is added) made the layout
-  engine forget the range it had already been asked to lay out, which could
-  transiently leave cells with stale geometry; and the check whether the
-  caret is visible read a freshly scheduled cell position before the layout
-  pass had actually run, so it could act on a stale position.
-
-- New: if the Lisp under Maxima (sbcl) crashes into its low-level debugger
-  (LDB), wxMaxima now recognizes it, explains what happened, and lets you type
-  LDB commands (such as "backtrace" or "exit") right in the worksheet instead
-  of the session simply hanging. LDB reads and writes the Maxima process's
-  stdin/stdout/stderr (it runs below the Lisp and cannot use the control
-  socket), so your input is routed there while LDB is active. Note: when
-  wxMaxima is started from a terminal, LDB may still use that terminal; started
-  as a normal GUI application it uses the worksheet.
-
-- Internal: the code that turns Maxima's output into worksheet cells
-  (ConsoleAppend / DoConsoleAppend / DoRawConsoleAppend) was moved out of the
-  large wxMaxima class into a dedicated MaximaOutputAppender, continuing the
-  effort to break that class up. No behavior change.
-
-- Internal: the worksheet-recalculation log now also reports how many cells were
-  actually re-laid-out (not just visited), which makes an over-broad
-  recalculation easy to spot when diagnosing sluggishness, and a new
-  test_WorksheetLayout scenario locks in that a localized edit recalculates only
-  the cell that changed rather than the whole document.
-
+- Refactored the code into smallerclasses that are individually testable
+- Added automatic tests for most recurring bugs
+- More numbers for the performance monigor
 - Fixed several ways a corrupt or hostile .wxmx file could hang or misbehave
   instead of failing cleanly: a damaged archive opened in batch mode wedged the
   program (it repeatedly tried to auto-save the unloadable, name-less session,
@@ -134,16 +38,8 @@
   new corrupt_wxmx_smoke test guards it. Also: the .wxmx document-version check
   is parsed locale-independently (it silently did nothing under locales that
   use a comma decimal separator), and a skipped zip entry no longer leaks.
-
 - Fixed: when Maxima asks a question the input cell for the answer appeared
-  above the question instead of below it (the answer cell was appended to the
-  output before the question text).
-
-- Stability: dead code removed from the console-output appenders, including a
-  branch that could only have leaked and an expression one edit away from
-  undefined evaluation order; a 2D-maths chunk from Maxima that fails to parse
-  is now reported as an error instead of being dropped silently.
-
+  above the question instead of below it.
 - Restarting Maxima no longer spawns a new gnuplot process to probe which
   graphics terminals gnuplot supports: if the restarted Maxima reports the
   same gnuplot as before, the answer from the first probe is reused.
@@ -151,410 +47,60 @@
 - Stability: a failing save no longer risks stacking one "Saving failed!"
   dialog per autosave interval (the autosave timer restarted before the modal
   dialog was dismissed); the message is now shown once, after the handler that
-  detected it has finished. Reading gnuplot's terminal-list reply and cached
+  detected it has finished. 
+- Reading gnuplot's terminal-list reply and cached
   gnuplot source/data files can no longer loop forever on a stream that
-  reports a read error instead of an end-of-file. A superseded gnuplot
-  terminal query (Maxima restart) no longer has its termination mis-attributed
-  to the newer query, and the process object of every Maxima process that
-  ended no longer leaks (its termination event was consumed in a way that told
-  wxWidgets somebody else would free it).
-
-- Automatic line wrapping is now enabled for code cells as well as text cells
-  in new installations. Existing installations keep their configured wrapping
-  mode (for configurations written before code wrapping became selectable it
-  stays opt-in).
-
-- Fixed: clicking into the wrapped part of a code cell placed the cursor to
-  the right of the clicked character - by exactly the width of the
-  continuation line's indentation. Mouse selection now accounts for the
-  indentation in code cells the same way it always did in text cells.
-
+  reports a read error instead of an end-of-file. 
+- Better prevention of leaked maxima processes
+- Automatic line wrapping is now enabled for code cells
 - Fixed: typing near the right edge of a wrapping text cell scrolled the
   worksheet sideways for no reason: the caret entered the horizontal
-  scroll-into-view zone just before every automatic line wrap. The view now
-  only scrolls horizontally when the caret really leaves the visible area,
-  which lies beyond the point where wrapping lines break.
-
-- Stability: error dialogs triggered by data or events from the Maxima process
-  (authentication failure, invalid XML in Maxima's output, Maxima terminating
-  or failing to start) are no longer shown from inside the event handler that
-  detected the problem. A modal dialog there pumps the event queue, so further
-  incoming data could re-enter the half-finished handler (and each further
-  chunk could stack another dialog on top). The dialogs are now deferred until
-  the handler has finished, duplicates are coalesced, and a debug assertion
-  guards against reintroducing nested handling. Also fixes the wrong-key
-  authentication path showing two stacked warning boxes, data still being
-  interpreted while the authentication warning was open, and a leak of the
-  "Maxima failed to start" dialog.
-
-- Fixed: the check that the process connecting to wxMaxima's socket really is
-  the Maxima it started compared the authentication key in a way that accepted
-  any key, and a failed authentication didn't actually discard the impostor's
-  data (the discard flag had lost its only consumer in an earlier refactoring).
-  Both halves of that protection work again: data from a process that fails to
-  authenticate is now really ignored.
-
-- Animation frame rates are now floating-point: an animation (and the default
-  framerate in the configuration dialog) may run at fractional or below-one-per-
-  second speeds, e.g. 2.5 or 0.5 frames per second. Older documents that stored
-  an integer frame rate keep loading unchanged.
-
-- Fixed: opening a corrupt or hand-crafted document could crash wxMaxima instead
-  of displaying it. A matrix marked as having row/column names but containing no
-  rows or columns crashed while drawing its separator lines, and exporting a
-  frame-less animation, or exporting a single-frame animation to an animated GIF,
-  crashed as well. Such degenerate cells are now handled without terminating.
-
-- Internal: started peeling the ~3900-line block of "insert a Maxima command"
-  menu/button handlers out of the wxMaxima god class into a new
-  MaximaCommandMenus class (one menu per commit). The handlers stay bound
-  directly to the menu/button events - now on the MaximaCommandMenus instance the
-  frame owns - and reach wxMaxima's services (MenuCommand, the wizards, the
-  worksheet) through a friend reference. Handlers moved so far: the Plot,
-  Calculus, Numeric, Simplify, Equations, Algebra/matrix, List, Variable-
-  properties and Statistics menus. No behavior change.
-
+  scroll-into-view zone just before every automatic line wrap.
+- Better authentication of maxima
+- Animation frame rates are now floating-point.
 - Windows: on shutdown wxMaxima suppresses the OS hard-error message boxes ("this
-  application could not be started", the critical-error and crash boxes) for
-  itself and for the Maxima and gnuplot processes it launches, and it no longer
-  lets those child processes inherit its stdout/stderr. A fast batch run (for
-  example an empty worksheet) that killed a still-starting Maxima or gnuplot on
-  exit could otherwise pop a modal dialog which, with nobody to dismiss it on a
-  head-less or CI machine, kept the killed child - and the inherited output pipe
-  - alive and hung the run.
-- Fixed: several configuration-dialog settings were silently not saved when you
-  pressed OK. The OK handler persisted only the styles and the settings kept in
-  the shared key table, so the print margins, the autosave interval, the maximum
-  layout time, the maximum clipboard-bitmap size, the "keep %"/label-width/
-  save-untitled/cursor-jump options, "display all digits"/"insert line breaks
-  into long numbers" and the Maxima environment variables were all thrown away
-  the moment the dialog closed (the following refresh even reset the live value
-  back to the stored one). The dialog now saves through the complete write path.
-
-- The "Undo limit" setting is gone: the undo history is now always unlimited
-  (which was already the default). This removes an option from the crowded
-  configuration dialog; an undo limit stored by an older version is ignored.
-
+  application could not be started"
+- several configuration-dialog settings were silently not saved when pressing OK
 - The diff viewer now highlights, inside each changed cell, the exact words
   the matching cell of the other file doesn't contain (word-level inline
-  diff), instead of only marking the whole cell as changed. The highlight
-  color is configurable as "Diff viewer: changed text" in the style settings,
-  with separate light- and dark-mode defaults.
-- Automatic line wrapping for code cells works now and can be enabled under
-  Preferences -> Worksheet -> "Autowrap long lines" -> "Text & Code" (off by
-  default; existing configurations keep wrapping text only). The
-  continuation-line indentation is capped at half the worksheet width, so
-  wrapping a deeply nested line always makes it narrower - the failure that
-  originally got the feature disabled.
-- Fixed the disabled code-wrapping prototype's defects before re-enabling it:
-  soft line breaks were written into the middle of code tokens (which could
-  also crash on runs of consecutive spaces), the width accounting never reset
-  at hard newlines, and the continuation indentation was counted twice. The
-  new test_EditorCellWrapping pins the whole wrapping contract headlessly.
-- Copying or selecting text that spans a soft line break no longer leaks the
-  invisible break character, which would have turned into a hard line break
-  when pasted.
-- Soft (word-wrap) line breaks are now stored as derived layout data outside
-  the cell's text instead of as marker characters written into it. The content
-  a cell hands to the clipboard, to Maxima, to the file and to the selection is
-  therefore always exactly what you typed, which removes a whole family of
-  "the soft break leaked" bugs at the source rather than scrubbing the break
-  character back out in each place that reads the text.
-- Auto-wrapped code can now also break after the operators `+ - * / ( ) ; $`
-  (but never in the middle of a `**`), so a long expression with few spaces -
-  or none at all - still wraps to a readable width.
-- Internal: fourteen more scalar settings (among them the Maxima command-line
-  parameters, the document class and its options and the default network port)
-  now read and write through the single
-  `Configuration::ScalarConfigSettings()` key<->member table instead of a
-  hand-synced pair of `config->Read`/`config->Write` calls, so their read and
-  write sides can no longer drift apart on a key. test_ConfigRoundtrip, which
-  iterates that table, now covers them automatically.
-- Internal: CellPointers (the per-worksheet registry of pointers into the cell
-  tree that auto-null when a cell dies) is being untangled into its document-side
-  half (selection, active/answer cell, working group, error list) and its
-  view/interaction half (hover, drag/keyboard-selection anchors, scroll and
-  animation-timer targets). As a first step the members are grouped and
-  documented under those two headings and the "which cell is maxima working on",
-  "which editor holds maxima's current question", "which text cell maxima's
-  incoming text is appended to", "which editor the text cursor is in", "which
-  cell/group cell is under the mouse pointer", the selected cell range and the
-  selected string are now reached only through accessors, so all of these
-  pointers are private to CellPointers. The last members still touched directly
-  from outside - the error-cell list, the mouse/keyboard/incremental-search
-  selection anchors and the "scroll-to-cell scheduled" flag - are now behind
-  accessors too, so every CellPointers member is private and the class is ready
-  to be split into its document-side and view-side halves.
-- Internal: CellPointers is now split into a DocumentCellPointers half (the
-  document model: selection, active/answer/current-text cell, working group,
-  error list) and a ViewCellPointers half (transient window state: hover,
-  mouse/keyboard/search anchors, scroll target, animation timers, .wxmx image
-  counter). CellPointers holds one of each and forwards its historical accessors
-  to the appropriate half, so no call site changed yet. No behavior change.
-- Internal: the individual cells now reach the cell-pointer registry through the
-  two halves directly (Configuration/Cell gained GetDocumentCellPointers() and
-  GetViewCellPointers()), and the Worksheet registers both halves. GroupCell and
-  EditorCell cache and use whichever half they need; the image and animation
-  cells use only the view half. No behavior change.
-- Internal: the two cell-pointer halves are now owned by their natural owners -
-  the document-model half by WorksheetDocument, the transient view-state half by
-  the Worksheet. The combined CellPointers is now a thin facade that references
-  the two owned halves, kept only for the callers not yet routed to the halves
-  directly. No behavior change.
-- Internal: the CellPointers facade is gone. The Worksheet's own accessors and
-  its ~200 internal uses, the context menu, the exporters and the print-config
-  plumbing now go to the document-model or the view-state half directly (the
-  exporters, which only bump the .wxmx image counter, now take a
-  ViewCellPointers). CellPointers.h defines just the two halves; Cell and
-  Configuration expose only the two. This completes the split of the
-  cell-pointer registry into its document and view halves. No behavior change.
-- Internal: the "is the document saved?" flag moved from Worksheet into
-  WorksheetDocument. The document now owns the flag; when it flips, the document
-  tells the window through a new WorksheetDocumentView::NotifySavedStateChanged()
-  callback so the title-bar "modified" marker still refreshes. This retires the
-  old NotifyDocumentModified() callback (structural edits now just mark the
-  document unsaved directly). No behavior change.
-- Internal: the worksheet's view-independent document state is being gathered
-  into a new WorksheetDocument object that Worksheet delegates to (the document
-  half of the ongoing document/view split). The first fields moved are the
-  current file name and the "Maxima is asking a question" state.
-- Internal: the "schedule cells for evaluation" logic
-  (Add*ToEvaluationQueue) now keeps its document-pure core - which group cells
-  are eligible and the queue walk over a cell range - in a Worksheet-independent
-  WorksheetEvalQueue helper, while the viewport-follow and h-caret side effects
-  stay in Worksheet. Pinned headlessly by the new test_WorksheetEvalQueue.
-- Internal: the worksheet's layout/recalculation engine (RequestRecalculation,
-  RecalculateIfNeeded, AdjustSize, GetMaxPoint and their state) now lives in a
-  Worksheet-independent WorksheetLayout class that talks to the window only
-  through the WorksheetView interface. The full request -> recalculate ->
-  resize pipeline is thereby covered by a headless unit test
-  (test_WorksheetLayout) that needs no Worksheet window at all. No behavior
-  change.
-- Internal: the ` type="..."` attribute EditorCell::ToXML() writes is now chosen
-  by the subclass (CodeEditorCell always writes "input"; the base maps the
-  prose/sectioning types) instead of an m_type switch. No behavior change.
-- Internal: EditorCell's code-only input conveniences (auto-closing a just-typed
-  bracket/quote, %-prefixing a leading operator) now live in a CodeEditorCell
-  override of SetValue's preprocessing rather than an `if (m_type ==
-  MC_TYPE_INPUT)` branch. No behavior change.
-- Internal: EditorCell's code-vs-prose styling is now chosen by the concrete
-  subclass (a virtual StyleTypedText()) instead of an `if (m_type ==
-  MC_TYPE_INPUT)` switch inside StyleText() - the next step of the EditorCell
-  split. No behavior change (every code editor is a CodeEditorCell and vice
-  versa).
+  diff
 - Changing a cell's type (Cell -> Convert to code/text/section/...) can now be
-  undone: it goes through the same rebuild path the toolbar's cell-type dropdown
-  already used, instead of an in-place change the undo history did not record.
-  As before, converting a code cell to text/section/... drops its output (prose
-  cells have none), and an image cell can no longer be converted at all (that
-  would have discarded the image).
-- Internal: first step of splitting EditorCell along the only axis that really
-  diverges - code vs. prose. Two subclasses (code input incl. the Maxima-answer
-  editor; text and all sectioning levels) are now constructed through a new
-  EditorCell::Create() factory at every construction site. They add no behavior
-  yet - this slice only establishes the hierarchy so later slices can move the
-  code-only styling/tokenizer/paren state off the text cells. No behavior change.
-- Bugfix: wxMaxima no longer leaves an orphaned gnuplot process running after it
-  exits. The gnuplot terminal-capability query started at launch is
-  asynchronous, so a quick session (e.g. a `--batch` run) could exit while it
-  was still running; wxMaxima merely detached from it instead of ending it, so
-  it kept running - and, having inherited wxMaxima's output pipe, could keep a
-  `--pipe` parent's reader waiting. wxMaxima now kills the gnuplot processes it
-  launched on shutdown, as it already did for Maxima.
-- Internal: a new test (wxmaxima_no_stray_children) checks that a wxMaxima batch
-  run leaves behind no stray Maxima or gnuplot process - wxMaxima must terminate
-  the child processes it launches before it exits. It is a portable cmake -P
-  driver that runs on both the Linux and Windows CI.
+  undone.
 - The Microsoft Edge WebView2 loader license is now included in the third-party
   notices only on Windows builds that actually use it, i.e. built with webview
   support - not on Linux/Mac, nor on a Windows build with webview disabled.
-- Internal: GetMaxPoint()'s width computation was moved into a GUI-free
-  ComputeWorksheetContentWidth() next to the height math, so both extents the
-  worksheet's scroll range is built from are now covered by headless unit tests.
-- Internal: the two near-identical copies of the recalculation walk (one for the
-  time-sliced idle path, one for the lay-out-everything-at-once path) were merged
-  into a single loop, so fixes to the cell-processing logic no longer have to be
-  made twice. No behavior change.
 - Bugfix: the "how long did layout take" log message printed a meaningless
   near-zero duration, and the time-sliced layout of the off-screen part of a huge
-  worksheet was not actually time-limited. Both were caused by a stopwatch that
-  was restarted on every cell past the visible region (a flag that guarded the
-  restart was never set). The stopwatch now simply times the whole pass.
-- Bugfix: on a worksheet too large to lay out within one time slice, the
-  incremental (time-sliced) recalculation stopped after the first slice and never
-  resumed, leaving every cell below that point with a stale size and position
-  (visible as overlapping cells or a wrong scroll range) until an edit or resize
-  forced a full recalculation. The layout pass now correctly resumes where it left
-  off on the next idle tick.
-
-- Internal: the formula for the horizontal space a group cell occupies (its width
-  plus the left and right margins) was triplicated across GetMaxPoint() and both
-  branches of the recalculation walk; it now lives in one
-  GroupCellWidthWithMargins() helper.
-
-- Internal: the worksheet's virtual-size arithmetic (how the document extent and
-  window size become the scroll range and scroll step) was split out of
-  Worksheet::AdjustSize() into a GUI-free ComputeWorksheetVirtualSize(), so the
-  scroll-range contract - which "the pane won't scroll" bugs violate - is now
-  covered by a headless unit test instead of only being reachable through the GUI.
-- Internal: the view-facing half of Worksheet::AdjustSize() (reading the window's
-  client size and scroll position, writing the virtual size and scroll rate) now
-  goes through a small abstract WorksheetView interface that the Worksheet
-  implements with its scroll methods. A headless test drives the size-application
-  logic - including the "don't re-apply an unchanged size" deduplication and the
-  "never shrink below the current scroll position" rule - through a mock view,
-  instead of that logic only ever running inside a live GUI window.
-- Internal: the fiddly backward walk in Worksheet::GetMaxPoint() that derives the
-  document height from the trailing cells (skipping past cells whose size or
-  position is not yet trustworthy to an "anchor" cell) was likewise split into a
-  GUI-free ComputeWorksheetContentHeight() and pinned by headless unit tests, so
-  this stale-cell accounting can no longer drift unnoticed.
-- Scrolling to a cell whose position had not been computed yet now forces that
-  computation instead of silently giving up, so "scroll to this cell" works even
-  in the rare case where the target had no valid position.
+  worksheet was not actually time-limited.
+- Code deduplication.
 - Corrected the line wrapping position
 - The diff viewer's panes can be scrolled as soon as they open, instead of only
   after the window is resized.
 - The "return to the cell that is being evaluated" toolbar button now lights up
   when the evaluated cell is scrolled out of view, even when the text cursor is
   not inside it (previously it only reacted to the cell that held the cursor).
-- Internal: Worksheet::Recalculate() was renamed to RequestRecalculation(): it
-  only schedules the next layout pass (the actual sizing/positioning happens in
-  RecalculateIfNeeded()), and the old name wrongly implied it did the work.
-- Internal: the "worksheet size needs adjusting" flag moved from the shared
-  Configuration/RenderContext onto the Worksheet, next to the rest of its
-  layout-scheduling state. Cells that change height signal it through a callback
-  (like the existing recalculation-request one) instead of reaching into a
-  render-context field that was really per-worksheet view state.
-- Internal: Worksheet::AdjustSize() now defers instead of computing the scroll
-  range from stale cell positions while a recalculation is still pending (it
-  re-runs itself once the positions are correct). This turns a whole class of
-  "adjusted the size before laying out" bugs - the freshly-opened diff pane that
-  would not scroll was one - into a harmless no-op, and a debug assertion flags
-  any code that reads the worksheet height with a recalculation outstanding.
-- Internal: the cell layer no longer knows the Worksheet class at all -
-  the first of the document/view state-split blockers is gone. Cells used
-  to reach back into the view through Cell::GetWorksheet() (a
-  Configuration back-pointer cast to Worksheet) for three services; each
-  now has a narrow channel of its own: the CellPointers registry is
-  carried by Configuration directly, GroupCell::MarkNeedsRecalculate()
-  notifies the view through a callback the Worksheet registers on its
-  Configuration (and deregisters on destruction, so cells can no longer
-  call into a half-destroyed view), and the accessibility code asks the
-  generic wxScrolledCanvas for scroll geometry. Cell::GetWorksheet() is
-  deleted; src/cells/ no longer includes Worksheet.h.
-
 - Windows: a batch-mode run (wxmaxima --batch, typically started from a
   script) could appear to hang for seconds to minutes before its window
-  opened - at zero CPU - whenever the user had clicked into the console
-  window: a click puts a QuickEdit console (the Windows default) into
-  selection mode, and every write to it then suspends the writer until the
-  selection is dismissed. wxMaxima now clears the console's QuickEdit mode
-  for the duration of a --batch run (and restores it on exit); interactive
-  launches are unaffected. If you script wxMaxima, redirecting its output
-  to a file remains good practice.
-
-- Internal: two integration tests (absCells, atCells) now share one
-  MAXIMA_USERDIR to exercise the typical real-world setup - several
-  wxMaxima sessions reusing one ~/.maxima and its caches - which the
-  per-test isolation never covered (suggested by Benoit). The pair loads
-  no compiled package, keeping clear of Maxima's compiled-package cache
-  race that the isolation exists to avoid.
-
+  opened
 - Fixed a mangled maxima user directory when maxima is compiled with GCL
-  (as Debian's and Ubuntu's maxima packages are): GCL reports
-  maxima_userdir with a trailing newline, and wxMaxima created and used
-  that directory verbatim - a second user directory whose name ends in a
-  newline, created with permission bits 0001 (an accidental flag-as-mode
-  in Dirstructure::UserConfDir), i.e. unreadable and unwritable even for
-  its owner. Every cache wxMaxima keeps there (manual anchors, known
-  symbols, history) silently failed on such systems. Maxima-reported
-  variable values are now whitespace-trimmed centrally, and the directory
-  is created with proper permissions. Thanks to jgmb for the report.
-
-- Internal: fixed the broken CI builds: a range-for over string literals in
-  MaximaSessionInfo.h warned under gcc's -Werror (all three -Werror Linux
-  jobs), test_WorksheetExport.cpp lacked the wx/fileconf.h include that
-  wxMSW does not provide transitively (MinGW compile), and the new
-  ButtonWrapSizer test joins MenuHelpString in the MinGW test exclusion
-  until the wxMSW standalone-harness hang both share is diagnosed.
-
-- Internal: the worksheet's search engine - the wrap-around walk over the
-  cell groups that find-next uses to locate a match - now lives in its own
-  view-independent module (WorksheetSearch). The plain-text and regex
-  searches used to be two nearly identical ~250-line copies of that walk;
-  they now share one engine that differs only in the match test.
-  Worksheet::FindNext keeps deriving the start position from the screen and
-  cursor, the by-UUID cell jump, and showing the match.
-
-- Fixed find-next getting stuck when a match was found in an input prompt:
-  searching forward again re-found the same prompt forever instead of moving
-  on to the next match. A new regression test pins the worksheet search
-  behavior (match order within a cell group, search direction, wrap-around,
-  continuing from the cursor, case sensitivity and the regex variants).
-
-- Internal: the cursor that sits between two worksheet cells (the horizontal
-  caret) now lives in its own WorksheetCursor class - its active flag, its
-  position and the anchors of a select-with-the-caret gesture were three
-  loose Worksheet fields whose consistency every mutation site maintained by
-  hand. A new regression test pins the cursor model: the between-cells caret
-  and the in-cell text cursor exclude each other, neither is active while
-  cells are selected, and "where would inserted cells go" (GetHCaret) is a
-  derived anchor that falls back from the caret to the active cell to the
-  selection. First step towards a cursor abstraction the find/replace engine
-  can work through.
-
+  (as Debian's and Ubuntu's maxima packages are) match.
+- Fixed find-next getting stuck when a match was found in an input prompt
 - Fixed broken equation-image links in HTML exports using the "bitmap" equation
-  format: the image files are written as .png, but the links to them were built
-  from the .html file's own extension (a document exported as doc.html linked
-  every equation as "doc_0html" instead of "doc_0.png"). Embedded image cells
-  and animations were not affected. A new export regression test checks that
-  every image link in an exported HTML file points at a file that exists.
-- Internal: a wxWidgets assertion tripped inside a unit test now prints to
-  stderr and lets the test report its genuine outcome on every platform; the
-  previous guard against the modal assert dialog (which hangs unattended test
-  runs until the watchdog timeout) only covered Windows. A regression test for
-  the right-click menu checks the four main right-click states.
-- Internal: building the worksheet's right-click menu (~800 lines covering the
-  image/animation, selection, cursor-between-cells and inside-a-cell cases) now
-  lives in its own WorksheetContextMenu module instead of making up a tenth of
-  the Worksheet class in one method. Building the menu is a function of the
-  worksheet's state and never shows anything, so it is now unit-testable; the
-  mouse handling around it stays in Worksheet::OnMouseRightDown.
-- Internal: the document serializers (export to HTML including its equation
-  images and embedded .wxmx copy, LaTeX, .mac/.wxm batch files, the RTF
-  document frame and the render-selection-to-image-file helper, ~1200 lines)
-  now live in their own WorksheetExport module instead of inside the Worksheet
-  class. They only ever read the cell tree and the configuration - they are
-  document functionality that sat in the view class by accident; this is the
-  first slice of the document/view split. The Worksheet keeps thin wrappers,
-  so no caller changes; the export regression test pins the output
-  byte-for-byte across the move.
+  format
 - Added an export safety-net regression test (test_WorksheetExport): a rich
   worksheet (the real math corpus plus sentinel cells) is exported to HTML (all
   four equation formats), LaTeX, .mac and .wxm twice each; the runs must be
   byte-identical (modulo zip timestamps and SVG image ids, which wxWidgets
   numbers with a process-global counter) and contain the document's content.
-- Fixed math cells with subscripts, parenthesis or lists keeping stale spacing (way too much or even negative horizontal space) after a zoom change or a configuration change that arrived while the worksheet was being laid out - until something forced the affected cell to be recalculated. The cached per-list geometry now automatically expires whenever the configuration changes.
+- Fixed math cells with subscripts, parenthesis or lists keeping stale spacing
 - Added a layout-idempotency regression test: after zoom and canvas-size changes the converged layout must be identical to laying the same content out from scratch.
 - Configuration changes that alter how text is displayed (e.g. drawing a multiplication dot instead of an asterisk) take effect on the next redraw again instead of requiring the cells to be rebuilt.
 - The build now autodetects whether the wxWidgets webview and qa components are actually usable instead of failing to configure on installations whose wx-config advertises components that were never built. WXM_DISABLE_WEBVIEW/WXM_DISABLE_QA are still honored to force-disable them.
-- Internal: the cell-tree undo/redo state (the undo/redo stacks and the active-cell snapshot) now lives in its own TreeUndoManager class instead of being spread through the Worksheet class (no behavior change; guarded by the TreeUndo regression test).
-- Internal: parsing the variable-value XML Maxima sends now lives in its own GUI-free, unit-tested module (MaximaVariableUpdates) instead of inside the wxMaxima class. As a side effect a bound variable no longer briefly fires its "variable is undefined" handling while being parsed.
 - Fixed a crash in builds without webview support: requesting help on a topic (e.g. Maxima's ?? command) with exactly one matching topic name accessed the topic list out of bounds - and showed the wrong topic when there were several.
 - The help pane is now opened once per help request instead of once per matching topic name.
-- wxMaxima no longer writes obsolete "MainWindowPos" configuration values on every window resize and move (window geometry is remembered via wxWidgets' persistence framework; nothing ever read these values back).
-- Internal: 50 scalar configuration settings are now read and written through a single key-to-member table (Configuration::ScalarConfigSettings) instead of hand-synced Read/Write call pairs, so a setting can no longer be stored and loaded under mismatched keys - the bug class behind several "my settings don't stick" reports. A new round-trip regression test guards every table entry.
-- Internal: the state of the current render pass (measuring/drawing contexts, canvas size, update region and clipping, worksheet position, background brush and the layout deadline) now lives in its own RenderContext class instead of being mixed into the Configuration settings store (no behavior change; first step of splitting the two).
-- Internal: the rest of the transient render-pass state (the printing flag, the visible region, the worksheet-size-adjust request and the debug-mode duplicate-redraw trace) followed into RenderContext; Configuration keeps only the policy around it (style switching on print, forced recalculation on width changes). The duplicate-redraw check now also reports the trace's last cell, which it used to skip.
-- Internal: what wxMaxima knows about the running Maxima instance (its version, architecture and lisp, its directories, the lisp-mode flag and the operator-name table) now lives in its own MaximaSessionInfo class instead of being mixed into the Configuration settings store - this is session state that is never persisted, not a setting (no behavior change).
-- Internal: the "can this font render this character?" probe (rasterize and compare bitmaps) and its persisted per-font verdict cache now live in their own FontRenderabilityCache class instead of inside Configuration (no behavior change). Also removed a long-dead commented-out predecessor of that probe together with the member variable only it used.
-- Internal: the menu check marks that mirror Maxima option variables (numer, algebraic, showtime, logexpand, domain, debugmode, gentranlang, wxsubscripts, lmxchar and friends) are now kept in sync through one declarative variable-to-menu-items table (MaximaMenuSync) instead of a dozen hand-written handler methods in the wxMaxima class, with a regression test driving real menus built from the table. Also removed three variable mirrors nothing ever read and merged the two identical display-mode-derivation code blocks into one.
-- Fixed a potential crash in the "sidebar symbol buttons type into the last-used text field" feature: closing a wizard or dialog whose text field had the keyboard focus left a dangling pointer to the destroyed field that the next sidebar button press would write into. The tracking (formerly a raw pointer inside Configuration, which the field could not safely unregister from on some platforms, issue #2027) now nulls itself automatically when the field is destroyed, and lives in the text-control class it describes instead of in the settings store. A new regression test drives a real text control through the focus-destroy sequence.
-
-- Accessibility: screen readers now actually see the worksheet's contents. The worksheet reports itself as a document (with its cells as children) instead of a bare panel full of scrollbars, each sidebar now has a proper name instead of being an anonymous "panel", and the tools on the toolbar are now announced (with their names, states and a "press" action) instead of being invisible.
+- Accessibility: screen readers now actually see the worksheet's contents. 
 - Accessibility: the symbol/Greek-letter/math sidebar buttons are now announced as named push buttons (by their description, e.g. "Greek small letter alpha") instead of anonymous panels.
-- The Unicode characters sidebar can now be used from the keyboard: pressing Enter on a character inserts it (previously this needed a mouse double-click).
+- The Unicode characters sidebar can now be used from the keyboard
 - Fixed copying/cutting a freshly drag-and-dropped image turning it into an "Image data had zero length" error: the copy no longer reads the image before its background load has finished.
 - Fixed copying/cutting a range of cells losing every cell that follows an image, a page break, or a code cell with the "send known answers" flag: those cells' clipboard data was missing a separator, so the following cells were swallowed on paste.
 - Windows: wxMaxima now repairs its own .wxmx/.wxm/.mac file association on startup, so updating to a new install location no longer makes Windows "forget" which program opens .wxmx files.

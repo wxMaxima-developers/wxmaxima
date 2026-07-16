@@ -253,6 +253,18 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(WorksheetEvalQueue test_WorksheetEvalQueue)
 
+    # Command-level behavior of the EvaluationQueue: how a cell's input is split
+    # into the commands sent to maxima one at a time, and how lisp/maxima mode
+    # affects that. The GUI-free safety net for the planned prompt-driven queue
+    # rewrite (drives GetCommand/RemoveFirst with a scriptable InLispMode).
+    add_executable(test_EvalQueueCommands
+        test_EvalQueueCommands.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EvalQueueCommands PUBLIC cxx_std_20)
+    target_link_libraries(test_EvalQueueCommands PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(EvalQueueCommands test_EvalQueueCommands)
+
     # Hardening/fuzz test for EditorCell's text-editing core: drives the real
     # key-event paths and checks the cursor/selection invariants after every op.
     add_executable(test_EditorCellInvariants
