@@ -24,14 +24,13 @@
   broken into the individual commands that are sent to maxima one at a time, and
   how the queue advances from cell to cell.
 
-  This is the GUI-free safety net for the planned "lazy, purely prompt-driven"
-  rewrite of the queue (tokenize each command in the lisp/maxima mode current
-  when its turn comes; terminate only the last command of a cell, and only in
-  maxima mode). The default SCENARIOs pin the CURRENT behavior so the rewrite
-  cannot silently change it. The scenarios hidden behind the "[.redesign]" tag
-  encode the TARGET behavior of that rewrite - they do not run by default (so
-  they never fail the build today) and are turned on (drop the leading ".") once
-  the rewrite makes them pass.
+  This is the GUI-free safety net for the "lazy, purely prompt-driven" queue:
+  each command is tokenized in the lisp/maxima mode current when its turn comes;
+  only the last command of a cell is terminated, and only in maxima mode; and in
+  lisp mode each top-level form is sent as its own command (maxima's lisp REPL
+  prints a prompt per form). Scenarios tagged "[redesign]" pin the behaviors that
+  motivated that rewrite (a lone to_lisp() terminated by the queue itself; a
+  to_lisp() followed by lisp forms split into per-command sends).
 
   The queue is driven exactly the way the live code drives it: read the current
   command with GetCommand(), let a "prompt" possibly flip lisp mode, then
@@ -203,12 +202,10 @@ SCENARIO("CommandsLeftInCell counts down as commands are consumed") {
 }
 
 // ---------------------------------------------------------------------------
-// Target behavior of the prompt-driven rewrite. Hidden ("[.redesign]") so it
-// does not run - hence never fails - until the rewrite is in place; then drop
-// the leading dot from the tag to turn each on.
+// The behaviors that motivated the prompt-driven rewrite (tagged [redesign]).
 // ---------------------------------------------------------------------------
 
-SCENARIO("A lone to_lisp() is terminated and sent by itself", "[.redesign]") {
+SCENARIO("A lone to_lisp() is terminated and sent by itself", "[redesign]") {
   Reset();
   EvaluationQueue q;
   q.AddToQueue(MakeCodeCell(wxS("to_lisp()")));
@@ -221,7 +218,7 @@ SCENARIO("A lone to_lisp() is terminated and sent by itself", "[.redesign]") {
 
 SCENARIO("to_lisp() then lisp forms in one cell is driven per-command by the "
          "prompt",
-         "[.redesign]") {
+         "[redesign]") {
   Reset();
   EvaluationQueue q;
   q.AddToQueue(MakeCodeCell(wxS("to_lisp();\n(setq $x 3)\n(to-maxima)")));

@@ -305,59 +305,28 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
         if (it < commands.end())
           ++it;
       }
-      if (token == ("to_lisp")) {
-        // Absorb the lisp forms that follow a to_lisp() (up to (to-maxima) or
-        // the end of the cell) into ONE Lisp token, so that a "$" inside them is
-        // not mistaken for a maxima statement terminator and no maxima ";" is
-        // appended to them.
-        //
-        // The exception is a to_lisp() that stands ALONE in the cell (no lisp
-        // form after it): that is an ordinary maxima call which must be sent
-        // with a ";" ending (added by AddEnding) so maxima evaluates it and
-        // prints the MAXIMA> prompt - otherwise it waits for a line ending
-        // forever. We tell the two apart by whether a lisp form - another "(" -
-        // appears after the to_lisp() call's own "()".
-        wxString lispSpan = token;
-        wxString::const_iterator scan = it;
-        while ((scan < commands.end()) &&
-               (!lispSpan.EndsWith("(to-maxima)")) &&
-               (!lispSpan.EndsWith(wxString("(to") + wxS("\u2212") + "maxima)"))) {
-          lispSpan += wxString(*scan);
-          ++scan;
-        }
-        int callClose = lispSpan.Find(wxUniChar(')'));
-        bool hasLispForms =
-          (callClose != wxNOT_FOUND) &&
-          (lispSpan.Mid(callClose + 1).Find(wxUniChar('(')) != wxNOT_FOUND);
-        if (hasLispForms) {
-          token = lispSpan;
-          it = scan;
-          m_tokens.emplace_back(token, TS_CODE_LISP);
-        } else {
-          // to_lisp() alone: an ordinary maxima call. Emit it as a function and
-          // let the rest of the cell (its "()") tokenize normally, so AddEnding
-          // appends the ";" it needs.
-          m_tokens.emplace_back(token, TS_CODE_FUNCTION);
-        }
-      } else {
-        if (m_hardcodedFunctions.find(token) != m_hardcodedFunctions.end())
-          m_tokens.emplace_back(token, TS_CODE_FUNCTION);
-        else if (m_configuration->IsOperator(token))
-          m_tokens.emplace_back(token, TS_CODE_OPERATOR);
+      // Note: to_lisp() gets no special handling here. The evaluation queue
+      // tokenizes each command in the lisp/maxima mode that is current when it is
+      // sent (EvaluationQueue::ProduceNextCommand), so once to_lisp() has run and
+      // maxima has printed its MAXIMA> prompt the following commands are
+      // tokenized via the InLispMode() branch near the top of this function.
+      if (m_hardcodedFunctions.find(token) != m_hardcodedFunctions.end())
+        m_tokens.emplace_back(token, TS_CODE_FUNCTION);
+      else if (m_configuration->IsOperator(token))
+        m_tokens.emplace_back(token, TS_CODE_OPERATOR);
+      else {
+        // Let's look what the next char looks like
+        wxString::const_iterator it3(it);
+        while ((it3 < commands.end()) && ((*it3 == ' ') || (*it3 == '\t') ||
+                                          (*it3 == '\n') || (*it3 == '\r')))
+          ++it3;
+        if (it3 >= commands.end())
+          m_tokens.emplace_back(token, TS_CODE_VARIABLE);
         else {
-          // Let's look what the next char looks like
-          wxString::const_iterator it3(it);
-          while ((it3 < commands.end()) && ((*it3 == ' ') || (*it3 == '\t') ||
-                                            (*it3 == '\n') || (*it3 == '\r')))
-            ++it3;
-          if (it3 >= commands.end())
+          if (*it3 == '(')
+            m_tokens.emplace_back(token, TS_CODE_FUNCTION);
+          else
             m_tokens.emplace_back(token, TS_CODE_VARIABLE);
-          else {
-            if (*it3 == '(')
-              m_tokens.emplace_back(token, TS_CODE_FUNCTION);
-            else
-              m_tokens.emplace_back(token, TS_CODE_VARIABLE);
-          }
         }
       }
       continue;

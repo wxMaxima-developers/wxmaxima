@@ -74,22 +74,36 @@ private:
     wxString m_command;
   };
 
-  /*! A list of all the commands in the current cell
+  /*! The command that is currently ready to be sent (0 or 1 entries).
 
-    We need to track each single command:
-    - If we send more than one command at once maxima will interpret the command
-    as an answer to an eventual question and
-    - we need to know when to switch to the next cell
+    Commands of the current cell are produced ONE AT A TIME, lazily, so that each
+    is tokenized in the lisp/maxima mode that is current when it is its turn -
+    which we only know from the prompt maxima printed for the previous command.
+    That is what makes lisp mode purely prompt-driven, and it lets us decide the
+    trailing ";" only for the actual last command of a cell. (Sending more than
+    one command at once would also make maxima treat later commands as the answer
+    to a question the first one asked.)
   */
   std::vector<EvaluationQueue::Command> m_commands;
+  //! The not-yet-tokenized remainder of the current cell's input.
+  wxString m_pendingText;
+  //! The configuration of the current cell (needed to re-tokenize m_pendingText).
+  Configuration *m_pendingConfig = nullptr;
+  //! How many characters of the current cell have been turned into commands
+  //! already (so the current command can report its position within the cell).
+  long m_cellConsumedChars = 0;
   std::size_t m_size;
   //! The label the user has assigned to the current command.
   wxString m_userLabel;
   //! The groupCells in the evaluation Queue.
   std::vector<CellPtr<GroupCell>> m_queue;
 
-  //! Adds all commands in commandString as separate tokens to the queue.
+  //! Starts tokenizing a cell: remembers its text and produces its first command.
   void AddTokens(const GroupCell *cell);
+  //! Tokenizes the next single command out of m_pendingText, in the mode current
+  //! now, appending a ";" if it is the cell's last command and we are in maxima
+  //! (not lisp) mode.
+  void ProduceNextCommand();
 
 public:
   /*! Query for the label the user has assigned to the current command.
@@ -161,8 +175,11 @@ public:
   //! Get the size of the queue [in cells]
   int Size() const { return m_size; }
 
-  //! Get the size of the queue
-  int CommandsLeftInCell() const { return m_commands.size(); }
+  //! Roughly how many commands are still to be run in the current cell. Because
+  //! commands are tokenized lazily (their exact split depends on the lisp/maxima
+  //! mode, only known once each prior command's prompt arrives) this is a
+  //! best-effort progress hint, not an exact count.
+  int CommandsLeftInCell() const;
 };
 
 

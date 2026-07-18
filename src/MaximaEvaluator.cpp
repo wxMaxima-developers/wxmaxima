@@ -393,8 +393,14 @@ void MaximaEvaluator::TriggerEvaluation() {
   m_wxMaxima.m_commandIndex = m_wxMaxima.GetWorksheet()->GetEvaluationQueue().GetIndex();
   if ((text != wxEmptyString) && (text != wxS(";")) && (text != wxS("$"))) {
     std::size_t index;
+    // Validate the SINGLE command we are about to send, in the lisp/maxima mode
+    // that is current now - NOT the whole cell. A cell that switches to lisp mode
+    // (to_lisp() ... (to-maxima)) contains lisp forms whose "$" would look like a
+    // maxima statement terminator sitting inside an open "(" if the whole cell
+    // were checked in maxima mode, giving a false "un-closed parenthesis" error.
+    // Each command is already tokenized in its own mode by the evaluation queue.
     wxString parenthesisError =
-      m_wxMaxima.GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true), index);
+      m_wxMaxima.GetUnmatchedParenthesisState(text, index);
     if (parenthesisError.IsEmpty()) {
       if (m_wxMaxima.GetWorksheet()->FollowEvaluation()) {
         m_wxMaxima.GetWorksheet()->SetSelection(tmp);
