@@ -139,12 +139,12 @@ Functions</h2></td></tr>
 <tr class="memitem:aed55ffd66777c3e71bf391da8d8bb8ee"><td class="memItemLeft" align="right" valign="top"><a id="aed55ffd66777c3e71bf391da8d8bb8ee" name="aed55ffd66777c3e71bf391da8d8bb8ee"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;CommandsLeftInCell counts down as commands are consumed&quot;)</td></tr>
 <tr class="separator:aed55ffd66777c3e71bf391da8d8bb8ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab322a56e50a07b2e83bba4fc7b5907bf"><td class="memItemLeft" align="right" valign="top"><a id="ab322a56e50a07b2e83bba4fc7b5907bf" name="ab322a56e50a07b2e83bba4fc7b5907bf"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A lone to_lisp() is terminated and sent by itself&quot;, &quot;[.redesign]&quot;)</td></tr>
-<tr class="separator:ab322a56e50a07b2e83bba4fc7b5907bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a7cd4e4fd9abc1313367fa7490fc43b"><td class="memItemLeft" align="right" valign="top"><a id="a6a7cd4e4fd9abc1313367fa7490fc43b" name="a6a7cd4e4fd9abc1313367fa7490fc43b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;to_lisp() then lisp forms in one cell is driven per-command by the &quot; &quot;prompt&quot;, &quot;[.redesign]&quot;)</td></tr>
-<tr class="separator:a6a7cd4e4fd9abc1313367fa7490fc43b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8233604673110c70c6930f86eef4bc53"><td class="memItemLeft" align="right" valign="top"><a id="a8233604673110c70c6930f86eef4bc53" name="a8233604673110c70c6930f86eef4bc53"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A lone to_lisp() is terminated and sent by itself&quot;, &quot;[redesign]&quot;)</td></tr>
+<tr class="separator:a8233604673110c70c6930f86eef4bc53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04b6a0443b75e1b4b85a7e9248c49d5e"><td class="memItemLeft" align="right" valign="top"><a id="a04b6a0443b75e1b4b85a7e9248c49d5e" name="a04b6a0443b75e1b4b85a7e9248c49d5e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;to_lisp() then lisp forms in one cell is driven per-command by the &quot; &quot;prompt&quot;, &quot;[redesign]&quot;)</td></tr>
+<tr class="separator:a04b6a0443b75e1b4b85a7e9248c49d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06df7029011fe181f338255fa9645905"><td class="memItemLeft" align="right" valign="top"><a id="a06df7029011fe181f338255fa9645905" name="a06df7029011fe181f338255fa9645905"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxDECLARE_APP</b> (<a class="el" href="classTestApp.html">TestApp</a>)</td></tr>
 <tr class="separator:a06df7029011fe181f338255fa9645905"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,7 +154,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Command-level behavior of the <a class="el" href="classEvaluationQueue.html" title="A simple FIFO queue with manual removal of elements.">EvaluationQueue</a>: how a <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>'s input is broken into the individual commands that are sent to maxima one at a time, and how the queue advances from cell to cell. </p>
-<p>This is the GUI-free safety net for the planned "lazy, purely prompt-driven" rewrite of the queue (tokenize each command in the lisp/maxima mode current when its turn comes; terminate only the last command of a cell, and only in maxima mode). The default SCENARIOs pin the CURRENT behavior so the rewrite cannot silently change it. The scenarios hidden behind the "[.redesign]" tag encode the TARGET behavior of that rewrite - they do not run by default (so they never fail the build today) and are turned on (drop the leading ".") once the rewrite makes them pass.</p>
+<p>This is the GUI-free safety net for the "lazy, purely prompt-driven" queue: each command is tokenized in the lisp/maxima mode current when its turn comes; only the last command of a cell is terminated, and only in maxima mode; and in lisp mode each top-level form is sent as its own command (maxima's lisp REPL prints a prompt per form). Scenarios tagged "[redesign]" pin the behaviors that motivated that rewrite (a lone to_lisp() terminated by the queue itself; a to_lisp() followed by lisp forms split into per-command sends).</p>
 <p>The queue is driven exactly the way the live code drives it: read the current command with GetCommand(), let a "prompt" possibly flip lisp mode, then RemoveFirst() to advance - so a future prompt-driven queue can be exercised here without a <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>, a socket, or maxima. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->

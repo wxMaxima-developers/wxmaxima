@@ -137,7 +137,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Size</b> () const</td>
 <tr class="separator:ad6011adcd6242cb3c35030d86a0b6a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2d62d074c9b0112eddb9f97e1256105"><td class="memItemLeft" align="right" valign="top"><a id="aa2d62d074c9b0112eddb9f97e1256105" name="aa2d62d074c9b0112eddb9f97e1256105"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>CommandsLeftInCell</b> () const</td></tr>
-<tr class="memdesc:aa2d62d074c9b0112eddb9f97e1256105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of the queue. <br /></td></tr>
+<tr class="memdesc:aa2d62d074c9b0112eddb9f97e1256105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Roughly how many commands are still to be run in the current cell. Because commands are tokenized lazily (their exact split depends on the lisp/maxima mode, only known once each prior command's prompt arrives) this is a best-effort progress hint, not an exact count. <br /></td></tr>
 <tr class="separator:aa2d62d074c9b0112eddb9f97e1256105"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
