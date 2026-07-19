@@ -5538,7 +5538,8 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
       }
 
       if ((type == AutoComplete::demofile) ||
-          (type == AutoComplete::loadfile)) {
+          (type == AutoComplete::loadfile) ||
+          (type == AutoComplete::generalfile)) {
         if (partial.at(0) != wxS('\"')) {
           partial = wxS("\"") + partial;
           // If the editor auto-adds a closing quote this causes auto-completion
@@ -5648,7 +5649,8 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
       m_configuration->Scale_Px(m_configuration->GetFontSize(TS_TEXT)).Get();
     wxASSERT(!m_autocompletePopup);
     m_autocompletePopup = new AutocompletePopup(this, editor, &m_autocomplete,
-                                                type, &m_autocompletePopup);
+                                                type, &m_autocompletePopup,
+                                                wxFileName(GetCurrentFile()).GetPath(wxPATH_GET_VOLUME));
 
     // If necessary: Scroll right or down so that the pop-up is visible as a
     // whole.

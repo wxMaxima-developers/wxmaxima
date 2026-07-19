@@ -1,5 +1,13 @@
 # Current development version
 
+- File name arguments (openr(), read_matrix(), load(), demo(), ...) now
+  autocomplete bash-style: the popup lists the directory the partial file
+  name points into, every printable character (including dots and dashes)
+  narrows the list, Backspace widens it again instead of closing the popup,
+  and choosing a directory descends into it and continues completing there.
+  Also fixed: completing right after the opening quote works even when the
+  editor auto-added the closing quote, and the offered names no longer
+  carry a spurious leading "/" at the top level.
 - Fixed a layout bug where the horizontal extent of parenthesized content was
   underestimated: with nested parenthesis/fraction/subscript constructs that
   were only partially broken into lines, cells inside a 2D fraction could be
