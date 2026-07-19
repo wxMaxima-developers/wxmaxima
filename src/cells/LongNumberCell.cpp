@@ -72,14 +72,17 @@ Cell *LongNumberCell::GetInnerCell(size_t index) const
 }
 
 void LongNumberCell::Recalculate(AFontSize fontsize) const {
-  if (NeedsRecalculation(fontsize)) {
+  bool changed = false;
+  if (IsBrokenIntoLines() && m_innerCell)
+    changed |= m_innerCell->RecalculateList(fontsize);
+
+  if (changed || NeedsRecalculation(fontsize)) {
     // If the config settings about how many digits to display has changed we
     // need to regenerate the info which number to show.
     if (ConfigChanged())
       UpdateDisplayedText();
     if (IsBrokenIntoLines()) {
       Cell::Recalculate(fontsize);
-      m_innerCell->RecalculateList(fontsize);
       m_width = 0;
       m_height = 0;
       m_center = 0;

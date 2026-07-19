@@ -73,13 +73,15 @@ void DiffCell::MakeBreakupCells() {
 }
 
 void DiffCell::Recalculate(AFontSize fontsize) const {
-  if (NeedsRecalculation(fontsize)) {
+  bool changed = false;
+  changed |= m_baseCell->RecalculateList(fontsize);
+  changed |= m_diffCell->RecalculateList(fontsize);
+  changed |= m_open->RecalculateList(fontsize);
+  changed |= m_comma->RecalculateList(fontsize);
+  changed |= m_close->RecalculateList(fontsize);
+
+  if (changed || NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
-    m_baseCell->RecalculateList(fontsize);
-    m_diffCell->RecalculateList(fontsize);
-    m_open->RecalculateList(fontsize);
-    m_comma->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
     if (!IsBrokenIntoLines()) {
       m_width = m_baseCell->SumOfWidths() + m_diffCell->SumOfWidths();
       m_center = std::max(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());

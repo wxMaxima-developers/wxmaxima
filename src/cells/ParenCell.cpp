@@ -67,12 +67,14 @@ void ParenCell::SetInner(std::unique_ptr<Cell> inner, CellType type) {
 }
 
 void ParenCell::Recalculate(AFontSize fontsize) const {
-  if (NeedsRecalculation(fontsize)) {
+  bool changed = false;
+  if(m_innerCell)
+    changed |= m_innerCell->RecalculateList(fontsize);
+  changed |= m_open->RecalculateList(fontsize);
+  changed |= m_close->RecalculateList(fontsize);
+
+  if (changed || NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
-    if(m_innerCell)
-      m_innerCell->RecalculateList(fontsize);
-    m_open->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
 
     wxDC *dc = m_configuration->GetRecalcDC();
     int size = 0;

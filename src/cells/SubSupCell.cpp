@@ -106,33 +106,39 @@ void SubSupCell::SetExponent(std::unique_ptr<Cell> &&expt) {
 }
 
 void SubSupCell::Recalculate(AFontSize const fontsize) const {
-  if (NeedsRecalculation(fontsize)) {
-    Cell::Recalculate(fontsize);
-    AFontSize const smallerFontSize{MC_MIN_SIZE, fontsize - SUBSUP_DEC};
+  AFontSize const smallerFontSize{MC_MIN_SIZE, fontsize - SUBSUP_DEC};
 
-    m_baseCell->RecalculateList(fontsize);
+  bool changed = false;
+  changed |= m_baseCell->RecalculateList(fontsize);
+  if (m_postSubCell)
+    changed |= m_postSubCell->RecalculateList(smallerFontSize);
+  if (m_postSupCell)
+    changed |= m_postSupCell->RecalculateList(smallerFontSize);
+  if (m_preSubCell)
+    changed |= m_preSubCell->RecalculateList(smallerFontSize);
+  if (m_preSupCell)
+    changed |= m_preSupCell->RecalculateList(smallerFontSize);
+
+  if (changed || NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
 
     wxCoord preWidth = 0;
     wxCoord postWidth = 0;
     wxCoord subHeight = 0;
     wxCoord supHeight = 0;
     if (m_postSubCell) {
-      m_postSubCell->RecalculateList(smallerFontSize);
       postWidth = m_postSubCell->SumOfWidths();
       subHeight = m_postSubCell->GetHeightList();
     }
     if (m_postSupCell) {
-      m_postSupCell->RecalculateList(smallerFontSize);
       postWidth = std::max(postWidth, m_postSupCell->SumOfWidths());
       supHeight = m_postSupCell->GetHeightList();
     }
     if (m_preSubCell) {
-      m_preSubCell->RecalculateList(smallerFontSize);
       preWidth = m_preSubCell->SumOfWidths();
       subHeight = std::max(subHeight, m_preSubCell->GetHeightList());
     }
     if (m_preSupCell) {
-      m_preSupCell->RecalculateList(smallerFontSize);
       preWidth = std::max(preWidth, m_preSupCell->SumOfWidths());
       supHeight = std::max(supHeight, m_preSupCell->GetHeightList());
     }

@@ -50,10 +50,12 @@ AtCell::AtCell(GroupCell *group, const AtCell &cell)
 DEFINE_CELL(AtCell)
 
 void AtCell::Recalculate(AFontSize fontsize) const {
-  if (NeedsRecalculation(fontsize)) {
+  bool changed = false;
+  changed |= m_baseCell->RecalculateList(fontsize);
+  changed |= m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - 3});
+
+  if (changed || NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
-    m_baseCell->RecalculateList(fontsize);
-    m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - 3});
     m_width =
       m_baseCell->SumOfWidths() + m_indexCell->SumOfWidths() + Scale_Px(4);
 
