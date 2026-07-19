@@ -86,7 +86,7 @@ Inheritance diagram for LimitCell:</div>
 <div class="dynheader">
 Collaboration diagram for LimitCell:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classLimitCell__coll__graph.svg" width="100%" height="594"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classLimitCell__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -324,9 +324,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConfigChanged</b> () 
 <tr class="memitem:a7954c7c66fe91d4003388d80b9d8f95d"><td class="memItemLeft" align="right" valign="top">virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a7954c7c66fe91d4003388d80b9d8f95d">GetDiffPart</a> () const</td></tr>
 <tr class="memdesc:a7954c7c66fe91d4003388d80b9d8f95d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the part for diff tag support.  <br /></td></tr>
 <tr class="separator:a7954c7c66fe91d4003388d80b9d8f95d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ae334bf5a2cfb124329e61576f9ce74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a7ae334bf5a2cfb124329e61576f9ce74">RecalculateList</a> (<a class="el" href="classAFontSize.html">AFontSize</a> fontsize) const</td></tr>
-<tr class="memdesc:a7ae334bf5a2cfb124329e61576f9ce74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate both width and height of this list of cells.  <br /></td></tr>
-<tr class="separator:a7ae334bf5a2cfb124329e61576f9ce74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5f5d6a9b7f719c1b901498b9b545318"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#af5f5d6a9b7f719c1b901498b9b545318">RecalculateList</a> (<a class="el" href="classAFontSize.html">AFontSize</a> fontsize) const</td></tr>
+<tr class="memdesc:af5f5d6a9b7f719c1b901498b9b545318"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate both width and height of this list of cells.  <br /></td></tr>
+<tr class="separator:af5f5d6a9b7f719c1b901498b9b545318"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5bf2c2926996b8448fac94ef16a220f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#af5bf2c2926996b8448fac94ef16a220f">RecalculateTracked</a> (<a class="el" href="classAFontSize.html">AFontSize</a> fontsize) const</td></tr>
+<tr class="memdesc:af5bf2c2926996b8448fac94ef16a220f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculate this cell at the font size its owner dictates.  <br /></td></tr>
+<tr class="separator:af5bf2c2926996b8448fac94ef16a220f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03916ccbb09d0f1626896fda3faae470"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a03916ccbb09d0f1626896fda3faae470">FontSizeMatchesExpectation</a> () const</td></tr>
+<tr class="memdesc:a03916ccbb09d0f1626896fda3faae470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this cell's font size match what its owner last dictated?  <br /></td></tr>
+<tr class="separator:a03916ccbb09d0f1626896fda3faae470"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeefb0377b33712b91fe52218b434d101"><td class="memItemLeft" align="right" valign="top"><a id="aeefb0377b33712b91fe52218b434d101" name="aeefb0377b33712b91fe52218b434d101"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FontsChangedList</b> ()</td></tr>
 <tr class="memdesc:aeefb0377b33712b91fe52218b434d101"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell a whole list of cells that their fonts have changed. <br /></td></tr>
@@ -761,6 +767,9 @@ const wxString *&#160;</td><td class="memItemRight" valign="bottom"><b>m_toolTip
 <a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_fontSize</b> = {}</td></tr>
 <tr class="memdesc:a83826e248dea53b0e5aeed9510f317a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The unscaled font size. <br /></td></tr>
 <tr class="separator:a83826e248dea53b0e5aeed9510f317a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3eb2e6722da69cfc99d7a379eaee8441"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a3eb2e6722da69cfc99d7a379eaee8441">m_fontSize_expected</a> = {}</td></tr>
+<tr class="memdesc:a3eb2e6722da69cfc99d7a379eaee8441"><td class="mdescLeft">&#160;</td><td class="mdescRight">The font size this cell's owner last dictated (via <a class="el" href="classCell.html#af5bf2c2926996b8448fac94ef16a220f" title="Recalculate this cell at the font size its owner dictates.">RecalculateTracked()</a>).  <br /></td></tr>
+<tr class="separator:a3eb2e6722da69cfc99d7a379eaee8441"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81ed1262c5fd00767f90fc5e87f32778"><td class="memItemLeft" align="right" valign="top"><a id="a81ed1262c5fd00767f90fc5e87f32778" name="a81ed1262c5fd00767f90fc5e87f32778"></a>
 <a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_type</b> = MC_TYPE_DEFAULT</td></tr>
 <tr class="separator:a81ed1262c5fd00767f90fc5e87f32778"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1574,6 +1583,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 <p>To be called if the font has changed. </p>
 
 <p>Reimplemented in <a class="el" href="classTextCell.html#ad9f5566f915963fd9c1814d6467d2659">TextCell</a>.</p>
+
+</div>
+</div>
+<a id="a03916ccbb09d0f1626896fda3faae470" name="a03916ccbb09d0f1626896fda3faae470"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03916ccbb09d0f1626896fda3faae470">&#9670;&#160;</a></span>FontSizeMatchesExpectation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Cell::FontSizeMatchesExpectation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does this cell's font size match what its owner last dictated? </p>
+<p>False means the cell was re-measured behind its owner's back at a different font size (the "text in a 2D fraction drawn at full size" bug class): its geometry no longer matches the extents cached by the surrounding cells. Cells that were never recalculated through an owner (no expectation recorded) and cells broken into lines (not drawn themselves) trivially match. </p>
 
 </div>
 </div>
@@ -2706,8 +2743,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 </div>
 </div>
-<a id="a7ae334bf5a2cfb124329e61576f9ce74" name="a7ae334bf5a2cfb124329e61576f9ce74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ae334bf5a2cfb124329e61576f9ce74">&#9670;&#160;</a></span>RecalculateList()</h2>
+<a id="af5f5d6a9b7f719c1b901498b9b545318" name="af5f5d6a9b7f719c1b901498b9b545318"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5f5d6a9b7f719c1b901498b9b545318">&#9670;&#160;</a></span>RecalculateList()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2716,7 +2753,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Cell::RecalculateList </td>
+          <td class="memname">bool Cell::RecalculateList </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td>
           <td class="paramname"><em>fontsize</em></td><td>)</td>
@@ -2731,7 +2768,39 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 </div><div class="memdoc">
 
 <p>Recalculate both width and height of this list of cells. </p>
-<p>Is faster than a <code>RecalculateHeightList();RecalculateWidths();</code>. </p>
+<p>Is faster than a <code>RecalculateHeightList();RecalculateWidths();</code>.</p>
+<p>This is the authoritative way for a cell to lay out the cell lists it owns: the font size handed down here is remembered as each cell's expected font size (see <a class="el" href="classCell.html#a03916ccbb09d0f1626896fda3faae470" title="Does this cell&#39;s font size match what its owner last dictated?">FontSizeMatchesExpectation()</a>).</p>
+<dl class="section return"><dt>Returns</dt><dd>true if any cell in the list changed its size. </dd></dl>
+
+</div>
+</div>
+<a id="af5bf2c2926996b8448fac94ef16a220f" name="af5bf2c2926996b8448fac94ef16a220f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5bf2c2926996b8448fac94ef16a220f">&#9670;&#160;</a></span>RecalculateTracked()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Cell::RecalculateTracked </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classAFontSize.html">AFontSize</a>&#160;</td>
+          <td class="paramname"><em>fontsize</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Recalculate this cell at the font size its owner dictates. </p>
+<p>Like <a class="el" href="classLimitCell.html#ada10f18d6985473a44adcbd619d6af74" title="Recalculate the size of the cell and the difference between top and center.">Recalculate()</a>, but additionally remembers the dictated font size so debug checks can detect when a later recalculation - e.g. a lazy <a class="el" href="classCell.html#ab8c503658c4afca17cbd62784fdbdce3" title="Get the width of this cell.">GetWidth()</a> repair with a stale stored size - deviates from the size the surrounding layout was computed with. Used by <a class="el" href="classCell.html#af5f5d6a9b7f719c1b901498b9b545318" title="Recalculate both width and height of this list of cells.">RecalculateList()</a> and by the few places (<a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>) that recalculate individual cells directly.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if the cell's size changed. </dd></dl>
 
 </div>
 </div>
@@ -3587,7 +3656,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 <p>Some cells have different representations when they contain a line break. Examples for this are fractions or a set of parenthesis.</p>
 <p>This function tries to return a cell to the single-line form. </p>
 
-<p>Reimplemented in <a class="el" href="classSumCell.html#aa519823cf1b8fe4302aef4906249cf0f">SumCell</a>.</p>
+<p>Reimplemented in <a class="el" href="classFracCell.html#a5b8be4b0ec59b31317b7fabf0184a028">FracCell</a>, and <a class="el" href="classSumCell.html#aa519823cf1b8fe4302aef4906249cf0f">SumCell</a>.</p>
 
 </div>
 </div>
@@ -3731,6 +3800,31 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 <li>for EditorCells by it's <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>'s RecalculateHeight and</li>
 <li>for Cells when they are drawn. </li>
 </ul>
+
+</div>
+</div>
+<a id="a3eb2e6722da69cfc99d7a379eaee8441" name="a3eb2e6722da69cfc99d7a379eaee8441"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3eb2e6722da69cfc99d7a379eaee8441">&#9670;&#160;</a></span>m_fontSize_expected</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classAFontSize.html">AFontSize</a> Cell::m_fontSize_expected = {}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The font size this cell's owner last dictated (via <a class="el" href="classCell.html#af5bf2c2926996b8448fac94ef16a220f" title="Recalculate this cell at the font size its owner dictates.">RecalculateTracked()</a>). </p>
+<p>Null if the cell was never recalculated through its owner. Compared against m_fontSize in <a class="el" href="classCell.html#a03916ccbb09d0f1626896fda3faae470" title="Does this cell&#39;s font size match what its owner last dictated?">FontSizeMatchesExpectation()</a> to catch cells that were re-measured at the wrong size behind their owner's back. </p>
 
 </div>
 </div>

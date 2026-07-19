@@ -2,7 +2,7 @@ var searchData=
 [
   ['uint32_0',['UINT32',['../structcmd_8h.html#ae1e6edbbc26d6fbc71a90190d0266018',1,'structcmd.h']]],
   ['unaryexpr_1',['UnaryExpr',['../classCatch_1_1UnaryExpr.html',1,'Catch']]],
-  ['unbreak_2',['Unbreak',['../classSumCell.html#aa519823cf1b8fe4302aef4906249cf0f',1,'SumCell::Unbreak()'],['../classCell.html#a46a532b8571add09c58a65540ad60af8',1,'Cell::Unbreak() const']]],
+  ['unbreak_2',['Unbreak',['../classSumCell.html#aa519823cf1b8fe4302aef4906249cf0f',1,'SumCell::Unbreak()'],['../classFracCell.html#a5b8be4b0ec59b31317b7fabf0184a028',1,'FracCell::Unbreak()'],['../classCell.html#a46a532b8571add09c58a65540ad60af8',1,'Cell::Unbreak() const']]],
   ['unbreaklist_3',['UnbreakList',['../classCell.html#a219839333a616ee9f837d3e8a8ffcf1a',1,'Cell']]],
   ['unbreakupcells_4',['UnBreakUpCells',['../classCell.html#acdf7d9da0a2a4f055d4621193d6e561b',1,'Cell']]],
   ['uncheckedifequal_5',['UncheckedIfEqual',['../structMaximaMenuSyncRow.html#aab1861fb80f5b88b3b3c6f6abba42efaa2771bb1cbdebdb0b730968653b1b4841',1,'MaximaMenuSyncRow']]],

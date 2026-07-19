@@ -130,6 +130,9 @@ std::atomic&lt; long &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>
 <tr class="memitem:ad79e8fdfed577a5955c31a809d31b602"><td class="memItemLeft" align="right" valign="top"><a id="ad79e8fdfed577a5955c31a809d31b602" name="ad79e8fdfed577a5955c31a809d31b602"></a>
 std::atomic&lt; long &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cellsConvertedTo2D</b> {0}</td></tr>
 <tr class="separator:ad79e8fdfed577a5955c31a809d31b602"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ecf78ea7542599303566b3aad5f8fcb"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; long &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structConfiguration_1_1PerformanceStats.html#a0ecf78ea7542599303566b3aad5f8fcb">cellsDrawnAtWrongFontSize</a> {0}</td></tr>
+<tr class="memdesc:a0ecf78ea7542599303566b3aad5f8fcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many cells were drawn at a different font size than they were laid out with.  <br /></td></tr>
+<tr class="separator:a0ecf78ea7542599303566b3aad5f8fcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a039d882a1c7ba1add9e95617cb9e122b"><td class="memItemLeft" align="right" valign="top"><a id="a039d882a1c7ba1add9e95617cb9e122b" name="a039d882a1c7ba1add9e95617cb9e122b"></a>
 std::atomic&lt; long &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>worksheetRepaints</b> {0}</td></tr>
 <tr class="memdesc:a039d882a1c7ba1add9e95617cb9e122b"><td class="mdescLeft">&#160;</td><td class="mdescRight">How often the worksheet was repainted (<a class="el" href="classWorksheet.html#a73394e056b0f357649503dab879f97ee" title="Is called by wxWidgets when it wants to redraw the worksheet or a part of it.">Worksheet::OnPaint</a> ran) <br /></td></tr>
@@ -139,6 +142,23 @@ std::atomic&lt; long &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>
 <tr class="separator:a9cee5c0a285d881267cda7d06282e9fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Field Documentation</h2>
+<a id="a0ecf78ea7542599303566b3aad5f8fcb" name="a0ecf78ea7542599303566b3aad5f8fcb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ecf78ea7542599303566b3aad5f8fcb">&#9670;&#160;</a></span>cellsDrawnAtWrongFontSize</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;long&gt; Configuration::PerformanceStats::cellsDrawnAtWrongFontSize {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>How many cells were drawn at a different font size than they were laid out with. </p>
+<p>Nonzero means a cell was re-measured behind its owner's back (e.g. a lazy GetWidth() repair or a draw-list recalculation at the top-level font size) after the surrounding cells had already cached extents based on the owner-dictated size: the visible symptom is text in 2<a class="el" href="classD.html">D</a> fractions shown at full size and parentheses narrower than their content. </p>
+
+</div>
+</div>
 <a id="a9cee5c0a285d881267cda7d06282e9fa" name="a9cee5c0a285d881267cda7d06282e9fa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9cee5c0a285d881267cda7d06282e9fa">&#9670;&#160;</a></span>worksheetFullRepaints</h2>
 

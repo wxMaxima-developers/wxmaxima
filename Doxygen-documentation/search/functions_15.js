@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['unbreak_0',['Unbreak',['../classSumCell.html#aa519823cf1b8fe4302aef4906249cf0f',1,'SumCell::Unbreak()'],['../classCell.html#a46a532b8571add09c58a65540ad60af8',1,'Cell::Unbreak() const']]],
+  ['unbreak_0',['Unbreak',['../classFracCell.html#a5b8be4b0ec59b31317b7fabf0184a028',1,'FracCell::Unbreak()'],['../classCell.html#a46a532b8571add09c58a65540ad60af8',1,'Cell::Unbreak()'],['../classSumCell.html#aa519823cf1b8fe4302aef4906249cf0f',1,'SumCell::Unbreak()']]],
   ['unbreaklist_1',['UnbreakList',['../classCell.html#a219839333a616ee9f837d3e8a8ffcf1a',1,'Cell']]],
   ['unbreakupcells_2',['UnBreakUpCells',['../classCell.html#acdf7d9da0a2a4f055d4621193d6e561b',1,'Cell']]],
   ['undo_3',['Undo',['../classEditorCell.html#aaf1d96e92d05bf269423e42aa6d5b13c',1,'EditorCell']]],
