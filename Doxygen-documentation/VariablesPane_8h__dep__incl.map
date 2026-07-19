@@ -1,7 +1,7 @@
 <map id="src/sidebars/VariablesPane.h" name="src/sidebars/VariablesPane.h">
-<area shape="rect" id="node1" title="The file that contains the &quot;variables&quot; sidepane." alt="" coords="803,5,1009,31"/>
+<area shape="rect" id="node1" title="The file that contains the &quot;variables&quot; sidepane." alt="" coords="905,5,1112,31"/>
 <area shape="rect" id="node2" href="$MaximaCommandMenus_8cpp.html" title="Implementation of the menu&#45;command handlers extracted from wxMaxima &#45; see MaximaCommandMenus...." alt="" coords="149,313,383,339"/>
-<area shape="rect" id="node3" href="$Worksheet_8h.html" title="This file defines the class Worksheet." alt="" coords="1636,79,1763,104"/>
+<area shape="rect" id="node3" href="$Worksheet_8h.html" title="This file defines the class Worksheet." alt="" coords="1740,79,1867,104"/>
 <area shape="rect" id="node4" href="$MaximaFileIO_8cpp.html" title="Implements the worksheet file loaders/savers extracted from the wxMaxima god class." alt="" coords="674,313,837,339"/>
 <area shape="rect" id="node5" href="$MaximaOutputAppender_8cpp.html" title="Implements the worksheet output appenders extracted from the wxMaxima god class." alt="" coords="861,313,1092,339"/>
 <area shape="rect" id="node6" href="$Worksheet_8cpp.html" title="This file defines the class Worksheet." alt="" coords="509,313,650,339"/>
@@ -9,7 +9,7 @@
 <area shape="rect" id="node8" href="$ConfigDialogue_8h.html" title="The configuration dialog." alt="" coords="253,240,460,265"/>
 <area shape="rect" id="node11" href="$DiffFrame_8h_source.html" title=" " alt="" coords="5,240,177,265"/>
 <area shape="rect" id="node12" href="$Printout_8cpp.html" title="This file defines the class MathPrintOut." alt="" coords="889,159,1096,185"/>
-<area shape="rect" id="node13" href="$wxMaximaFrame_8h.html" title="This file declares the class wxMaximaFrame." alt="" coords="3647,159,3818,185"/>
+<area shape="rect" id="node13" href="$wxMaximaFrame_8h.html" title="This file declares the class wxMaximaFrame." alt="" coords="3858,159,4029,185"/>
 <area shape="rect" id="node24" href="$test__Accessibility_8cpp.html" title="Logic&#45;level regression tests for wxMaxima&#39;s custom wxAccessible classes." alt="" coords="1121,152,1265,192"/>
 <area shape="rect" id="node25" href="$test__EditorCellInvariants_8cpp.html" title="Hardening tests for EditorCell&#39;s text&#45;editing core." alt="" coords="1289,152,1473,192"/>
 <area shape="rect" id="node26" href="$test__EvalQueueCommands_8cpp.html" title="Command&#45;level behavior of the EvaluationQueue: how a GroupCell&#39;s input is broken into the individual ..." alt="" coords="1497,152,1697,192"/>
@@ -18,15 +18,16 @@
 <area shape="rect" id="node29" href="$test__TreeUndo_8cpp.html" title="Regression tests for the worksheet&#39;s cell&#45;tree undo/redo (the TreeUndo_* subsystem of Worksheet)." alt="" coords="2099,152,2243,192"/>
 <area shape="rect" id="node30" href="$test__WXMRoundtrip_8cpp.html" title="Regression tests for images surviving the .wxm serialization round&#45;trip." alt="" coords="2268,152,2421,192"/>
 <area shape="rect" id="node31" href="$test__WXMXRoundtrip_8cpp.html" title="Round&#45;trip tests for the .wxmx content.xml (the MathML&#45;like math format)." alt="" coords="2446,152,2609,192"/>
-<area shape="rect" id="node32" href="$test__WorksheetContextMenu_8cpp.html" title="Regression tests for the worksheet&#39;s right&#45;click context menu." alt="" coords="2633,152,2845,192"/>
-<area shape="rect" id="node33" href="$test__WorksheetCursor_8cpp.html" title="Pins the worksheet&#39;s cursor model before it is gathered into a cursor class." alt="" coords="2869,152,3036,192"/>
-<area shape="rect" id="node34" href="$test__WorksheetEvalQueue_8cpp.html" title="Pins the worksheet&#39;s &quot;add cells to the evaluation queue&quot; behavior before the Add*ToEvaluationQueue fa..." alt="" coords="3061,152,3255,192"/>
-<area shape="rect" id="node35" href="$test__WorksheetExport_8cpp.html" title="Safety net for the export/serialization cluster of Worksheet." alt="" coords="3280,152,3447,192"/>
-<area shape="rect" id="node36" href="$test__WorksheetFind_8cpp.html" title="Pins the worksheet&#39;s find/replace behavior before the search engine is extracted into WorksheetSearch..." alt="" coords="3471,152,3623,192"/>
+<area shape="rect" id="node32" href="$test__WorksheetClipboard_8cpp.html" title="Safety net for the multi&#45;format clipboard / drag&#45;and&#45;drop payload of Worksheet." alt="" coords="2633,152,2819,192"/>
+<area shape="rect" id="node33" href="$test__WorksheetContextMenu_8cpp.html" title="Regression tests for the worksheet&#39;s right&#45;click context menu." alt="" coords="2844,152,3056,192"/>
+<area shape="rect" id="node34" href="$test__WorksheetCursor_8cpp.html" title="Pins the worksheet&#39;s cursor model before it is gathered into a cursor class." alt="" coords="3080,152,3247,192"/>
+<area shape="rect" id="node35" href="$test__WorksheetEvalQueue_8cpp.html" title="Pins the worksheet&#39;s &quot;add cells to the evaluation queue&quot; behavior before the Add*ToEvaluationQueue fa..." alt="" coords="3271,152,3466,192"/>
+<area shape="rect" id="node36" href="$test__WorksheetExport_8cpp.html" title="Safety net for the export/serialization cluster of Worksheet." alt="" coords="3491,152,3657,192"/>
+<area shape="rect" id="node37" href="$test__WorksheetFind_8cpp.html" title="Pins the worksheet&#39;s find/replace behavior before the search engine is extracted into WorksheetSearch..." alt="" coords="3682,152,3834,192"/>
 <area shape="rect" id="node9" href="$main_8cpp.html" title="The file that defines the starting point of the program." alt="" coords="723,387,828,412"/>
 <area shape="rect" id="node10" href="$wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="1293,387,1437,412"/>
-<area shape="rect" id="node14" href="$AutocompletePopup_8cpp.html" title="This file defines the class AutocompletePopup." alt="" coords="3493,240,3695,265"/>
-<area shape="rect" id="node15" href="$EditorCell_8cpp.html" title="This file defines the class EditorCell." alt="" coords="2853,313,3023,339"/>
+<area shape="rect" id="node14" href="$AutocompletePopup_8cpp.html" title="This file defines the class AutocompletePopup." alt="" coords="3703,240,3906,265"/>
+<area shape="rect" id="node15" href="$EditorCell_8cpp.html" title="This file defines the class EditorCell." alt="" coords="2959,313,3128,339"/>
 <area shape="rect" id="node16" href="$main_8h.html" title="This file declares the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="1942,313,2033,339"/>
 <area shape="rect" id="node18" href="$GreekSidebar_8cpp.html" title="This file defines the class GreekSidebar." alt="" coords="1139,240,1358,265"/>
 <area shape="rect" id="node19" href="$wxMaxima_8h.html" title="This file declares the class wxMaxima that contains most of the program&#39;s logic." alt="" coords="1592,240,1721,265"/>

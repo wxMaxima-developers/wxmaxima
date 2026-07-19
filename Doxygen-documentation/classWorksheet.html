@@ -750,10 +750,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>PasteFromClipboard</b
 <tr class="memitem:a5442160d0574859589addb87d1f19b4d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a5442160d0574859589addb87d1f19b4d">Copy</a> (bool astext=false) const</td></tr>
 <tr class="memdesc:a5442160d0574859589addb87d1f19b4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the current selection to the clipboard.  <br /></td></tr>
 <tr class="separator:a5442160d0574859589addb87d1f19b4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af57bd4aac5fd36a36c73d24a7528747d"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; wxDataObject &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#af57bd4aac5fd36a36c73d24a7528747d">CreateSelectionDataObject</a> () const</td></tr>
+<tr class="memdesc:af57bd4aac5fd36a36c73d24a7528747d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the multi-format clipboard object for a non-cell selection.  <br /></td></tr>
+<tr class="separator:af57bd4aac5fd36a36c73d24a7528747d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a869313d1e2e7b142c31bf13de91b3e40"><td class="memItemLeft" align="right" valign="top"><a id="a869313d1e2e7b142c31bf13de91b3e40" name="a869313d1e2e7b142c31bf13de91b3e40"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CopyCells</b> () const</td></tr>
 <tr class="memdesc:a869313d1e2e7b142c31bf13de91b3e40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the selection to the clipboard as it would appear in a .wxm file. <br /></td></tr>
 <tr class="separator:a869313d1e2e7b142c31bf13de91b3e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ec0dd14c4a28ecfe628fbe727a12979"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; wxDataObject &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a1ec0dd14c4a28ecfe628fbe727a12979">CreateCellsDataObject</a> () const</td></tr>
+<tr class="memdesc:a1ec0dd14c4a28ecfe628fbe727a12979"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the multi-format clipboard object for a whole-cell selection.  <br /></td></tr>
+<tr class="separator:a1ec0dd14c4a28ecfe628fbe727a12979"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a463f9ba89bbe89263f0367650fdc0e10"><td class="memItemLeft" align="right" valign="top"><a id="a463f9ba89bbe89263f0367650fdc0e10" name="a463f9ba89bbe89263f0367650fdc0e10"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CopyMatlab</b> () const</td></tr>
 <tr class="memdesc:a463f9ba89bbe89263f0367650fdc0e10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a Matlab representation of the current selection to the clipboard. <br /></td></tr>
@@ -1518,6 +1524,46 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a1ec0dd14c4a28ecfe628fbe727a12979" name="a1ec0dd14c4a28ecfe628fbe727a12979"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ec0dd14c4a28ecfe628fbe727a12979">&#9670;&#160;</a></span>CreateCellsDataObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; wxDataObject &gt; Worksheet::CreateCellsDataObject </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Build the multi-format clipboard object for a whole-cell selection. </p>
+<p>The counterpart of <a class="el" href="classWorksheet.html#a869313d1e2e7b142c31bf13de91b3e40" title="Copy the selection to the clipboard as it would appear in a .wxm file.">CopyCells()</a> that produces the data (the RTF/text/wxm/ bitmap/EMF/SVG flavors) without touching the actual clipboard. Returns nullptr when nothing is selected. </p>
+
+</div>
+</div>
+<a id="af57bd4aac5fd36a36c73d24a7528747d" name="af57bd4aac5fd36a36c73d24a7528747d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af57bd4aac5fd36a36c73d24a7528747d">&#9670;&#160;</a></span>CreateSelectionDataObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; wxDataObject &gt; Worksheet::CreateSelectionDataObject </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Build the multi-format clipboard object for a non-cell selection. </p>
+<p>The counterpart of <a class="el" href="classWorksheet.html#a5442160d0574859589addb87d1f19b4d" title="Copy the current selection to the clipboard.">Copy()</a> that produces the data (the wxm/MathML/RTF/text/ bitmap flavors) without touching the actual clipboard, so its formats and payloads can be inspected in a unit test. Requires a selection; the caller handles the active-cell / image / whole-cell cases before calling this. </p>
 
 </div>
 </div>
