@@ -1,5 +1,8 @@
 # Current development version
 
+- Speedup: "Replace All" no longer schedules a re-layout of the whole
+  worksheet - only the cells that actually contained the search text are
+  re-laid-out.
 - The statistics sidebar now grows its scrollable height to its wrapped
   button rows, like the other sidebars: when the sidebar was narrow, the
   buttons below the fold could neither be shown nor scrolled to.
