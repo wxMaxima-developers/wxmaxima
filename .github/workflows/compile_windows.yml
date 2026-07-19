@@ -81,18 +81,51 @@ jobs:
         # packages from ever blocking the release/packaging path below.
         continue-on-error: true
         run: |
-            choco install maxima gnuplot -y --no-progress
-            # find_program() on Windows does not append .bat, and the Chocolatey
-            # package ships Maxima as maxima.bat, so locate it and hand cmake the
-            # explicit path (and add its directory to PATH for good measure).
-            $bat = Get-ChildItem -Path 'C:\' -Filter 'maxima.bat' -Recurse -Depth 3 -ErrorAction SilentlyContinue | Select-Object -First 1
+            # --- Maxima -------------------------------------------------------
+            # The Chocolatey package runs Maxima's NSIS installer silently, which
+            # downloads a ~150 MB .exe from SourceForge. SourceForge mirrors
+            # intermittently return an HTML/rate-limit page instead of the binary,
+            # so choco fails the checksum and installs nothing. Retry a few times
+            # (with the search inside the loop) so a single bad mirror response no
+            # longer leaves the whole job without a Maxima.
+            $bat = $null
+            foreach ($try in 1..3) {
+              choco install maxima -y --no-progress
+              # find_program() on Windows does not append .bat, and the Chocolatey
+              # package ships Maxima as maxima.bat. The installer's default layout
+              # is <root>\maxima-<version>\bin\maxima.bat; try that fast glob first
+              # (a full-drive recursive scan is slow and flaky), then the PATH
+              # shim, then a bounded recursive sweep one level deeper than the
+              # historic default so a future move under Program Files still
+              # resolves.
+              $roots = @('C:\','C:\Program Files','C:\Program Files (x86)',"$env:LOCALAPPDATA\Programs",'C:\tools')
+              $bat = Get-ChildItem -Path $roots -Filter 'maxima-*' -Directory -ErrorAction SilentlyContinue |
+                       ForEach-Object { Join-Path $_.FullName 'bin\maxima.bat' } |
+                       Where-Object { Test-Path $_ } | Select-Object -First 1 | ForEach-Object { Get-Item $_ }
+              if (-not $bat) {
+                $cmd = Get-Command maxima.bat -ErrorAction SilentlyContinue
+                if ($cmd) { $bat = Get-Item $cmd.Source }
+              }
+              if (-not $bat) {
+                $bat = Get-ChildItem -Path $roots -Filter 'maxima.bat' -Recurse -Depth 4 -ErrorAction SilentlyContinue | Select-Object -First 1
+              }
+              if ($bat) { break }
+              echo "::warning::maxima.bat not found after install attempt $try; retrying."
+              Start-Sleep -Seconds 15
+            }
             if ($bat) {
               echo "Found Maxima: $($bat.FullName)"
               "WXM_MAXIMA=$($bat.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append
               $bat.DirectoryName | Out-File -FilePath $env:GITHUB_PATH -Append
             } else {
-              echo "::warning::maxima.bat not found after install; integration tests will be skipped."
+              # Leave WXM_MAXIMA unset. The "Run integration tests" step below is
+              # gated on it, so a genuinely missing Maxima skips those tests with a
+              # loud annotation instead of hanging wxmaxima --batch for the full
+              # 20-minute timeout. The release/packaging path still runs.
+              echo "::error::maxima.bat not found after install; the Maxima-driven integration tests will be skipped."
             }
+            # --- gnuplot ------------------------------------------------------
+            choco install gnuplot -y --no-progress
             # Make sure wxMaxima's "gnuplot" resolves: the Chocolatey shim dir is
             # already on PATH, but locate gnuplot.exe and add its dir too in case
             # the package installs without a shim.
@@ -190,6 +223,11 @@ jobs:
             cd ..
             cd ..
       - name: Run integration tests
+        # Skip cleanly (rather than hang) when the Install-Maxima step could not
+        # locate maxima.bat: several of these tests launch wxmaxima --batch, which
+        # is NOT gated on cmake's find_program(MAXIMA) and would otherwise block
+        # waiting for a CAS that never connects until the 20-minute ceiling below.
+        if: env.WXM_MAXIMA != ''
         # Maxima-driven integration tests on Windows. Promoted from experimental to
         # REQUIRED: the suite has run end-to-end reliably, with a single consistent
         # failure - multithreadtest - which is now excluded here for the same
