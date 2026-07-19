@@ -1,5 +1,9 @@
 # Current development version
 
+- Evaluating a cell whose input is commented out entirely now removes the
+  cell's stale output. Previously such a cell was skipped silently while a
+  multi-cell evaluation advanced past it, keeping output that no longer
+  matches the input.
 - LDB mode: after answering an ldb> prompt (or clicking elsewhere), the next
   prompt's input line could no longer be reached - clicking into it did
   nothing and keystrokes opened a new worksheet cell instead. The LDB prompt

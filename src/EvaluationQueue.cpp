@@ -110,16 +110,17 @@ void EvaluationQueue::RemoveFirst() {
     if (!m_commands.empty())
       return;
   }
-  // The current cell is drained: advance to the next cell (skipping any that
-  // turn out to contain no runnable command).
-  do {
-    if (m_queue.empty())
-      return;
+  // The current cell is drained: advance to the next cell. A cell that turns
+  // out to contain no runnable command (e.g. an input that is commented out
+  // entirely) still becomes the working group for one round instead of being
+  // skipped silently: the evaluator has to see it so it can remove its
+  // now-stale output; it then advances past it via its empty-command path.
+  if (m_queue.empty())
+    return;
 
-    m_queue.erase(m_queue.begin());
-    m_size--;
-    AddTokens(GetCell());
-  } while (m_commands.empty() && (!m_queue.empty()));
+  m_queue.erase(m_queue.begin());
+  m_size--;
+  AddTokens(GetCell());
   m_workingGroupChanged = true;
 }
 
