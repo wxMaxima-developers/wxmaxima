@@ -684,8 +684,9 @@ wxBitmap Image::GetBitmap(double scale) {
     GenerateInvalidBitmap();
 
   wxLogBuffer errorAggregator;
-  // Let's see if we have cached the scaled bitmap with the right size
-  if (m_scaledBitmap.GetWidth() == m_width)
+  // Let's see if we have cached the scaled bitmap with the right size.
+  // Guard the size query: GetWidth() on an invalid bitmap asserts in wxWidgets.
+  if (m_scaledBitmap.IsOk() && (m_scaledBitmap.GetWidth() == m_width))
     return m_scaledBitmap;
 
   // Seems like we need to create a new scaled bitmap.
@@ -1073,8 +1074,10 @@ void Image::Recalculate(double scale) {
     m_width = 1;
   }
   // Clear this cell's image cache if it doesn't contain an image of the size
-  // we need right now.
-  if (m_scaledBitmap.GetWidth() != m_width)
+  // we need right now. Guard the size query: GetWidth() on an invalid bitmap
+  // (e.g. a not-yet-rendered or broken image) asserts in wxWidgets, which under
+  // a GUI assert handler hangs (this was a libFuzzer timeout on "<img/>").
+  if (!m_scaledBitmap.IsOk() || (m_scaledBitmap.GetWidth() != m_width))
     ClearCache();
 }
 

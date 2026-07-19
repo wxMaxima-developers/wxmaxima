@@ -1,5 +1,8 @@
 # Current development version
 
+- Fixed a hang when a worksheet contained an image that could not be rendered
+  (a broken or empty `<img>`): querying the size of the not-yet-rendered
+  bitmap tripped a wxWidgets assertion. Found by the layout/paint fuzzer.
 - Fixed an assertion/crash when cutting or copying cells while the bitmap or
   SVG clipboard flavor was enabled: the off-screen renderer that draws the
   copied cells no longer trips the configuration teardown check.
