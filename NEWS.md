@@ -1,5 +1,12 @@
 # Current development version
 
+- LDB mode: after answering an ldb> prompt (or clicking elsewhere), the next
+  prompt's input line could no longer be reached - clicking into it did
+  nothing and keystrokes opened a new worksheet cell instead. The LDB prompt
+  now engages the full question machinery, so clicking into the cell that
+  holds the prompt reopens its input line, and pressing Enter falls back to
+  the prompt's answer even if the cursor wandered off it. The pending prompt
+  is also cleaned up when the Lisp process ends.
 - File name arguments (openr(), read_matrix(), load(), demo(), ...) now
   autocomplete bash-style: the popup lists the directory the partial file
   name points into, every printable character (including dots and dashes)

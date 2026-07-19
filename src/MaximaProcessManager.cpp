@@ -557,6 +557,10 @@ void MaximaProcessManager::OnMaximaClose(){
   m_wxMaxima.m_maximaStdout = NULL;
   m_wxMaxima.m_maximaStderr = NULL;
   m_wxMaxima.m_maximaStdin = NULL;
+  // An LDB session ends with its process: retire the pending prompt's answer
+  // cell (and the question-pending state that made it clickable).
+  if (m_wxMaxima.m_inLDB)
+    m_wxMaxima.QuestionAnswered();
   m_wxMaxima.m_inLDB = false;
   m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::offline);
   if (!m_wxMaxima.m_closing) {

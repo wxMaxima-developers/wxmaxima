@@ -564,6 +564,11 @@ void MaximaResponseReader::ReadStdErr() {
       // prompt opens a fresh one.
       if (LdbSupport::EndsWithLdbPrompt(o) && m_wxMaxima.GetWorksheet() &&
           !m_wxMaxima.GetWorksheet()->GetDocumentCellPointers().GetAnswerCell()) {
+        // Engage the full question machinery, not just the caret: without
+        // QuestionPending a click into the (empty, easily deactivated) answer
+        // editor is treated as an ordinary output click, and there is no way
+        // to get back into it to answer the prompt.
+        m_wxMaxima.GetWorksheet()->QuestionPending(true);
         m_wxMaxima.GetWorksheet()->OpenQuestionCaret();
         if (EditorCell *answerCell =
               m_wxMaxima.GetWorksheet()->GetDocumentCellPointers().GetAnswerCell())
