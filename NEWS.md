@@ -1,5 +1,8 @@
 # Current development version
 
+- The statistics sidebar now grows its scrollable height to its wrapped
+  button rows, like the other sidebars: when the sidebar was narrow, the
+  buttons below the fold could neither be shown nor scrolled to.
 - The POT file for translators now also includes the translatable strings
   from the source subdirectories (cells, sidebars, wizards, ...): the
   extraction glob was flat and silently dropped them.

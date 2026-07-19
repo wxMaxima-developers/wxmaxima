@@ -36,7 +36,8 @@
 StatSidebar::StatSidebar(wxWindow *parent, int ID)
   : wxScrolled<wxPanel>(parent, ID)
 {
-  wxSizer *grid1 = new Buttonwrapsizer();
+  Buttonwrapsizer *grid1 = new Buttonwrapsizer();
+  m_wrapSizer = grid1;
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *box1 = new wxBoxSizer(wxVERTICAL);
   wxGridSizer *grid2 = new wxGridSizer(2);
@@ -114,6 +115,31 @@ StatSidebar::StatSidebar(wxWindow *parent, int ID)
 
   box->Add(box3, 0, style, sizerBorder);
 
+  Bind(wxEVT_SIZE, &StatSidebar::OnSize, this);
   SetSizer(box);
   FitInside();
+}
+
+void StatSidebar::UpdateVirtualSize() {
+  // Like the other sidebars with a Buttonwrapsizer: keep the virtual width at
+  // the client width (buttons wrap, no horizontal scrollbar) but grow the
+  // virtual height to the wrapped rows, so the vertical scrollbar can reach
+  // the buttons below the fold. The wrap sizer's own min height is a
+  // deliberately-small rearrangeable minimum, not the height-for-width, so
+  // pin it before asking the whole sizer tree for its height.
+  const int width = GetClientSize().x;
+  m_wrapSizer->SetMinSize(wxSize(-1, m_wrapSizer->HeightForWidth(width)));
+  const wxSize virtualSize(width, GetSizer()->GetMinSize().y);
+  // Only touch the virtual size when it really changed: SetSize calls made
+  // while GTK is allocating sizes are deferred and replayed on the next
+  // frame, where they would trigger a new allocation every frame.
+  if (virtualSize != m_lastVirtualSize) {
+    m_lastVirtualSize = virtualSize;
+    SetVirtualSize(virtualSize);
+  }
+}
+
+void StatSidebar::OnSize(wxSizeEvent &event) {
+  UpdateVirtualSize();
+  event.Skip();
 }
