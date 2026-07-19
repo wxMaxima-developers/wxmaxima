@@ -1,5 +1,8 @@
 # Current development version
 
+- Fixed an assertion/crash when cutting or copying cells while the bitmap or
+  SVG clipboard flavor was enabled: the off-screen renderer that draws the
+  copied cells no longer trips the configuration teardown check.
 - Repaired the lisp mode.
 - Repaired the maxima debugger mode
 - Repaired the SBCL debugger (LDB) mode

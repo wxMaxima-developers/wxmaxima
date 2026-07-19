@@ -209,6 +209,20 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(WorksheetExport test_WorksheetExport)
 
+    # Safety net for the multi-format clipboard / drag-export payload: builds
+    # the real Copy()/CopyCells() data objects over a live document and pins
+    # that their advertised formats are distinct (no wxDataFormat collision -
+    # the class of bug that trips the clipboard assertion) and each round-trips.
+    add_executable(test_WorksheetClipboard
+        test_WorksheetClipboard.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_WorksheetClipboard PUBLIC cxx_std_20)
+    target_compile_definitions(test_WorksheetClipboard PRIVATE
+        WXM_CORPUS_DIR="${CMAKE_SOURCE_DIR}/test/fuzz/corpus_mathparser")
+    target_link_libraries(test_WorksheetClipboard PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(WorksheetClipboard test_WorksheetClipboard)
+
     # Pins the right-click context menu (WorksheetContextMenu, extracted from
     # Worksheet::OnMouseRightDown): drives the main right-click states on a
     # real Worksheet and checks the expected menu entries appear.

@@ -960,7 +960,14 @@ Configuration::~Configuration() {
   // pair destroys the worksheet deterministically in its own destructor body
   // (wxMaximaFrame, DiffFrame, ConfigDialogue). A worksheet still attached
   // here means an owner got that order wrong.
-  wxASSERT_MSG(m_workSheet == NULL,
+  //
+  // A "temporary" configuration is exempt: the off-screen exporters
+  // (BitmapOut/SVGout/EMFout via OutCommon) build one to lay a *copy* of the
+  // selected cells out for rendering, and borrow the live worksheet pointer
+  // for that layout. Such a config never owns the worksheet and is destroyed
+  // (harmlessly) while the worksheet is still alive - e.g. on every Ctrl+X /
+  // copy-as-bitmap - so it is not subject to the ownership-order invariant.
+  wxASSERT_MSG(m_workSheet == NULL || m_initOpts == temporary,
                wxS("Bug: a Configuration was destroyed before the Worksheet "
                    "that still uses it"));
   if(m_initOpts != temporary)

@@ -1766,63 +1766,67 @@ bool Worksheet::Copy(bool astext) const {
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),
                _("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open()) {
-    wxDataObjectComposite *data = new wxDataObjectComposite;
-
-    // Add the wxm code corresponding to the selected output to the clipboard
-    wxString s = GetString(true);
-    data->Add(new wxmDataObject(s));
-
-    std::unique_ptr<Cell> cell(CopySelection());
-
-    if (m_configuration->CopyMathML()) {
-      // Add a mathML representation of the data to the clipboard
-      s = ConvertSelectionToMathML();
-      if (s != wxEmptyString) {
-        // We mark the MathML version of the data on the clipboard as
-        // "preferred" as if an application supports MathML neither bitmaps nor
-        // plain text makes much sense.
-        data->Add(new MathMLDataObject(s), true);
-        data->Add(new MathMLDataObject2(s), true);
-        if (m_configuration->CopyMathMLHTML())
-          data->Add(new wxHTMLDataObject(s), true);
-        // wxMathML is a HTML5 flavour, as well.
-        // See
-        // https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
-        //
-        // Unfortunately MS Word and Libreoffice Writer don't like this idea so
-        // I have disabled the following line of code again:
-        //
-        // data->Add(new wxHTMLDataObject(s));
-      }
-    }
-
-    if (m_configuration->CopyRTF()) {
-      // Add a RTF representation of the currently selected text
-      // to the clipboard: For some reason Libreoffice likes RTF more than
-      // it likes the MathML - which is standardized.
-      wxString rtf;
-      rtf = RTFStart() + cell->ListToRTF() + wxS("\\par\n") + RTFEnd();
-      data->Add(new RtfDataObject(rtf));
-      data->Add(new RtfDataObject2(rtf), true);
-    }
-
-    // Add a string representation of the selected output to the clipboard
-    s = cell->ListToString();
-    data->Add(new wxTextDataObject(s));
-
-    if (m_configuration->CopyBitmap()) {
-      // Try to fill bmp with a high-res version of the cells
-      BitmapOut output(&m_configuration, std::move(cell),
-                       m_configuration->BitmapScale(),
-                       1000000 * m_configuration->MaxClipbrdBitmapMegabytes());
-      if (output.IsOk())
-        data->Add(output.GetDataObject().release());
-    }
-    wxTheClipboard->SetData(data);
+    wxTheClipboard->SetData(CreateSelectionDataObject().release());
     wxTheClipboard->Close();
     return true;
   }
   return false;
+}
+
+std::unique_ptr<wxDataObject> Worksheet::CreateSelectionDataObject() const {
+  wxDataObjectComposite *data = new wxDataObjectComposite;
+
+  // Add the wxm code corresponding to the selected output to the clipboard
+  wxString s = GetString(true);
+  data->Add(new wxmDataObject(s));
+
+  std::unique_ptr<Cell> cell(CopySelection());
+
+  if (m_configuration->CopyMathML()) {
+    // Add a mathML representation of the data to the clipboard
+    s = ConvertSelectionToMathML();
+    if (s != wxEmptyString) {
+      // We mark the MathML version of the data on the clipboard as
+      // "preferred" as if an application supports MathML neither bitmaps nor
+      // plain text makes much sense.
+      data->Add(new MathMLDataObject(s), true);
+      data->Add(new MathMLDataObject2(s), true);
+      if (m_configuration->CopyMathMLHTML())
+        data->Add(new wxHTMLDataObject(s), true);
+      // wxMathML is a HTML5 flavour, as well.
+      // See
+      // https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
+      //
+      // Unfortunately MS Word and Libreoffice Writer don't like this idea so
+      // I have disabled the following line of code again:
+      //
+      // data->Add(new wxHTMLDataObject(s));
+    }
+  }
+
+  if (m_configuration->CopyRTF()) {
+    // Add a RTF representation of the currently selected text
+    // to the clipboard: For some reason Libreoffice likes RTF more than
+    // it likes the MathML - which is standardized.
+    wxString rtf;
+    rtf = RTFStart() + cell->ListToRTF() + wxS("\\par\n") + RTFEnd();
+    data->Add(new RtfDataObject(rtf));
+    data->Add(new RtfDataObject2(rtf), true);
+  }
+
+  // Add a string representation of the selected output to the clipboard
+  s = cell->ListToString();
+  data->Add(new wxTextDataObject(s));
+
+  if (m_configuration->CopyBitmap()) {
+    // Try to fill bmp with a high-res version of the cells
+    BitmapOut output(&m_configuration, std::move(cell),
+                     m_configuration->BitmapScale(),
+                     1000000 * m_configuration->MaxClipbrdBitmapMegabytes());
+    if (output.IsOk())
+      data->Add(output.GetDataObject().release());
+  }
+  return std::unique_ptr<wxDataObject>(data);
 }
 
 wxString Worksheet::ConvertSelectionToMathML() const {
@@ -1996,71 +2000,79 @@ bool Worksheet::CopyText() const {
 bool Worksheet::CopyCells() const {
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),
                _("Bug: The clipboard is already opened"));
-  if (!GetDocumentCellPointers().GetSelectionStart())
+  std::unique_ptr<wxDataObject> data = CreateCellsDataObject();
+  if (!data)
     return false;
 
   if (wxTheClipboard->Open()) {
-#if wxUSE_ENH_METAFILE
-    auto *data = new CompositeDataObject;
-#else
-    wxDataObjectComposite *data = new wxDataObjectComposite;
-#endif
-    wxString wxm;
-    wxString str;
-    wxString rtf = RTFStart();
-
-    const GroupCell *const end = GetDocumentCellPointers().GetSelectionEnd()->GetGroup();
-    bool firstcell = true;
-    for (auto &tmp : OnList(GetDocumentCellPointers().GetSelectionStart()->GetGroup())) {
-      if (!firstcell)
-        str += wxS("\n");
-      str += tmp.ToString();
-      firstcell = false;
-
-      if (m_configuration->CopyRTF())
-        rtf += tmp.ToRTF();
-      wxm += Format::TreeToWXM(&tmp);
-
-      if (&tmp == end)
-        break;
-    }
-
-    rtf += wxS("\\par") + RTFEnd();
-
-    if (m_configuration->CopyRTF()) {
-      data->Add(new RtfDataObject(rtf), true);
-      data->Add(new RtfDataObject2(rtf));
-    }
-    data->Add(new wxTextDataObject(str));
-    data->Add(new wxmDataObject(wxm));
-
-    if (m_configuration->CopyBitmap()) {
-      std::unique_ptr<BitmapOut> output(new BitmapOut(&m_configuration, CopySelection(),
-                                                      m_configuration->BitmapScale(),
-                                                      1000000 * m_configuration->MaxClipbrdBitmapMegabytes()));
-      if (output->IsOk())
-        data->Add(output->GetDataObject().release());
-    }
-
-#if wxUSE_ENH_METAFILE
-    if (m_configuration->CopyEMF()) {
-      std::unique_ptr<Emfout> emf(new Emfout(&m_configuration, CopySelection()));
-      if (emf->IsOk())
-        data->Add(emf->GetDataObject().release());
-    }
-#endif
-    if (m_configuration->CopySVG()) {
-      std::unique_ptr<Svgout> svg(new Svgout(&m_configuration, CopySelection()));
-      if (svg->IsOk())
-        data->Add(svg->GetDataObject().release());
-    }
-
-    wxTheClipboard->SetData(data);
+    wxTheClipboard->SetData(data.release());
     wxTheClipboard->Close();
     return true;
   }
 
   return false;
+}
+
+std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
+  if (!GetDocumentCellPointers().GetSelectionStart())
+    return nullptr;
+
+#if wxUSE_ENH_METAFILE
+  auto *data = new CompositeDataObject;
+#else
+  wxDataObjectComposite *data = new wxDataObjectComposite;
+#endif
+  wxString wxm;
+  wxString str;
+  wxString rtf = RTFStart();
+
+  const GroupCell *const end = GetDocumentCellPointers().GetSelectionEnd()->GetGroup();
+  bool firstcell = true;
+  for (auto &tmp : OnList(GetDocumentCellPointers().GetSelectionStart()->GetGroup())) {
+    if (!firstcell)
+      str += wxS("\n");
+    str += tmp.ToString();
+    firstcell = false;
+
+    if (m_configuration->CopyRTF())
+      rtf += tmp.ToRTF();
+    wxm += Format::TreeToWXM(&tmp);
+
+    if (&tmp == end)
+      break;
+  }
+
+  rtf += wxS("\\par") + RTFEnd();
+
+  if (m_configuration->CopyRTF()) {
+    data->Add(new RtfDataObject(rtf), true);
+    data->Add(new RtfDataObject2(rtf));
+  }
+  data->Add(new wxTextDataObject(str));
+  data->Add(new wxmDataObject(wxm));
+
+  if (m_configuration->CopyBitmap()) {
+    std::unique_ptr<BitmapOut> output(new BitmapOut(&m_configuration, CopySelection(),
+                                                    m_configuration->BitmapScale(),
+                                                    1000000 * m_configuration->MaxClipbrdBitmapMegabytes()));
+    if (output->IsOk())
+      data->Add(output->GetDataObject().release());
+  }
+
+#if wxUSE_ENH_METAFILE
+  if (m_configuration->CopyEMF()) {
+    std::unique_ptr<Emfout> emf(new Emfout(&m_configuration, CopySelection()));
+    if (emf->IsOk())
+      data->Add(emf->GetDataObject().release());
+  }
+#endif
+  if (m_configuration->CopySVG()) {
+    std::unique_ptr<Svgout> svg(new Svgout(&m_configuration, CopySelection()));
+    if (svg->IsOk())
+      data->Add(svg->GetDataObject().release());
+  }
+
+  return std::unique_ptr<wxDataObject>(data);
 }
 
 bool Worksheet::CanDeleteSelection() const {

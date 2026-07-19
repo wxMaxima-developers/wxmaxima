@@ -1049,8 +1049,25 @@ public:
   */
   bool Copy(bool astext = false) const;
 
+  /*! Build the multi-format clipboard object for a non-cell selection.
+
+    The counterpart of Copy() that produces the data (the wxm/MathML/RTF/text/
+    bitmap flavors) without touching the actual clipboard, so its formats and
+    payloads can be inspected in a unit test. Requires a selection; the caller
+    handles the active-cell / image / whole-cell cases before calling this.
+   */
+  std::unique_ptr<wxDataObject> CreateSelectionDataObject() const;
+
   //! Copy the selection to the clipboard as it would appear in a .wxm file
   bool CopyCells() const;
+
+  /*! Build the multi-format clipboard object for a whole-cell selection.
+
+    The counterpart of CopyCells() that produces the data (the RTF/text/wxm/
+    bitmap/EMF/SVG flavors) without touching the actual clipboard. Returns
+    nullptr when nothing is selected.
+   */
+  std::unique_ptr<wxDataObject> CreateCellsDataObject() const;
 
   //! Copy a Matlab representation of the current selection to the clipboard
   bool CopyMatlab() const;
