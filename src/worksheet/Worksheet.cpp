@@ -5392,6 +5392,10 @@ int Worksheet::ReplaceAll(const wxString &oldString, const wxString &newString,
       if (replaced > 0) {
         count += replaced;
         tmp.ResetInputLabel();
+        // ResetSize() routes through GroupCell::MarkNeedsRecalculate(), which
+        // notifies the layout engine about this specific group - the scheduled
+        // range therefore covers exactly the cells that changed, no
+        // whole-document RequestRecalculation() needed here.
         tmp.ResetSize();
       }
     }
@@ -5399,7 +5403,6 @@ int Worksheet::ReplaceAll(const wxString &oldString, const wxString &newString,
 
   if (count > 0) {
     SetSaved(false);
-    RequestRecalculation();
     RequestRedraw();
   }
 
@@ -5422,6 +5425,8 @@ int Worksheet::ReplaceAll_RegEx(const wxString &oldString, const wxString &newSt
       if (replaced > 0) {
         count += replaced;
         tmp.ResetInputLabel();
+        // See ReplaceAll(): ResetSize() already schedules a layout range
+        // covering exactly the changed groups.
         tmp.ResetSize();
       }
     }
@@ -5429,7 +5434,6 @@ int Worksheet::ReplaceAll_RegEx(const wxString &oldString, const wxString &newSt
 
   if (count > 0) {
     SetSaved(false);
-    RequestRecalculation();
     RequestRedraw();
   }
 

@@ -392,6 +392,19 @@ SCENARIO("Editing operations on one cell do not visit the cells above it") {
       }
     }
 
+    WHEN("ReplaceAll changes only the 6th group's input") {
+      // The cells are named x0; .. x9;, so this matches exactly one cell.
+      // Each changed group's ResetSize() notifies the layout engine itself;
+      // ReplaceAll must not fall back to a whole-worksheet recalculation.
+      REQUIRE(g_ws->ReplaceAll(wxS("x5"), wxS("y5"), true, true, false) == 1);
+      g_ws->RecalculateIfNeeded();
+
+      THEN("the layout pass doesn't visit the cells above the change") {
+        CHECK(g_ws->GetLastCellsVisited() <= 5);
+        CHECK(g_ws->GetLastCellsVisited() >= 1);
+      }
+    }
+
     g_ws->DestroyTree();
   }
 }
