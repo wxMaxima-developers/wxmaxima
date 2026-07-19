@@ -536,8 +536,37 @@ public:
   /*! Recalculate both width and height of this list of cells.
 
     Is faster than a <code>RecalculateHeightList();RecalculateWidths();</code>.
+
+    This is the authoritative way for a cell to lay out the cell lists it
+    owns: the font size handed down here is remembered as each cell's
+    expected font size (see FontSizeMatchesExpectation()).
+
+    \return true if any cell in the list changed its size.
   */
-  void RecalculateList(AFontSize fontsize) const;
+  bool RecalculateList(AFontSize fontsize) const;
+
+  /*! Recalculate this cell at the font size its owner dictates.
+
+    Like Recalculate(), but additionally remembers the dictated font size so
+    debug checks can detect when a later recalculation - e.g. a lazy
+    GetWidth() repair with a stale stored size - deviates from the size the
+    surrounding layout was computed with. Used by RecalculateList() and by
+    the few places (GroupCell) that recalculate individual cells directly.
+
+    \return true if the cell's size changed.
+  */
+  bool RecalculateTracked(AFontSize fontsize) const;
+
+  /*! Does this cell's font size match what its owner last dictated?
+
+    False means the cell was re-measured behind its owner's back at a
+    different font size (the "text in a 2D fraction drawn at full size"
+    bug class): its geometry no longer matches the extents cached by the
+    surrounding cells. Cells that were never recalculated through an owner
+    (no expectation recorded) and cells broken into lines (not drawn
+    themselves) trivially match.
+  */
+  bool FontSizeMatchesExpectation() const;
 
   //! Tell a whole list of cells that their fonts have changed
   void FontsChangedList();
@@ -1119,6 +1148,13 @@ protected:
   mutable AFontSize m_fontSize_Scaled = {};
   //! The unscaled font size.
   mutable AFontSize m_fontSize = {};
+  /*! The font size this cell's owner last dictated (via RecalculateTracked()).
+
+    Null if the cell was never recalculated through its owner. Compared
+    against m_fontSize in FontSizeMatchesExpectation() to catch cells that
+    were re-measured at the wrong size behind their owner's back.
+  */
+  mutable AFontSize m_fontSize_expected = {};
 
 //** 1-byte objects (2 bytes)
 //**

@@ -177,7 +177,11 @@ public:
     {
       if(m_loadImageTask)
         m_loadImageTask->Wait();
-      if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))
+      // Querying the size of an invalid bitmap trips a wxWidgets assertion (and,
+      // under a GUI assert handler, hangs). A not-yet-rendered cache is already
+      // "clear", so only shrink a bitmap that actually exists.
+      if (m_scaledBitmap.IsOk() &&
+          ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1)))
         m_scaledBitmap.Create(1, 1);
     }
 

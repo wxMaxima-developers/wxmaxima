@@ -100,18 +100,20 @@ void ExptCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
 }
 
 void ExptCell::Recalculate(AFontSize fontsize) const {
-  if (NeedsRecalculation(fontsize)) {
+  bool changed = false;
+  changed |= m_baseCell->RecalculateList(fontsize);
+
+  changed |= m_exp->RecalculateList(fontsize);
+  changed |= m_open->RecalculateList(fontsize);
+  changed |= m_close->RecalculateList(fontsize);
+
+  if (IsBrokenIntoLines())
+    changed |= m_exptCell->RecalculateList(fontsize);
+  else
+    changed |= m_exptCell->RecalculateList({MC_MIN_SIZE, fontsize - EXPT_DEC});
+
+  if (changed || NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
-    m_baseCell->RecalculateList(fontsize);
-
-    m_exp->RecalculateList(fontsize);
-    m_open->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
-
-    if (IsBrokenIntoLines())
-      m_exptCell->RecalculateList(fontsize);
-    else
-      m_exptCell->RecalculateList({MC_MIN_SIZE, fontsize - EXPT_DEC});
 
     if (IsBrokenIntoLines()) {
       m_height = m_width = m_center = 0;

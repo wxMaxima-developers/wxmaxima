@@ -62,25 +62,30 @@ static constexpr int LIMIT_FONT_SIZE_DECREASE = 2;
 static constexpr AFontSize MIN_LIMIT_FONT_SIZE = MC_MIN_SIZE;
 
 void LimitCell::Recalculate(AFontSize fontsize) const {
-  if (NeedsRecalculation(fontsize)) {
-    Cell::Recalculate(fontsize);
-    m_base->RecalculateList(fontsize);
-    m_name->RecalculateList(fontsize);
+  bool changed = false;
+  changed |= m_base->RecalculateList(fontsize);
+  changed |= m_name->RecalculateList(fontsize);
 
-    m_open->RecalculateList(fontsize);
-    m_comma->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
+  changed |= m_open->RecalculateList(fontsize);
+  changed |= m_comma->RecalculateList(fontsize);
+  changed |= m_close->RecalculateList(fontsize);
+
+  if (!IsBrokenIntoLines())
+    changed |= m_under->RecalculateList(
+        {MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE});
+  else
+    changed |= m_under->RecalculateList(fontsize);
+
+  if (changed || NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
 
     if (!IsBrokenIntoLines()) {
-      m_under->RecalculateList(
-          {MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE});
       m_width = std::max(m_name->SumOfWidths(), m_under->SumOfWidths()) +
                 m_base->SumOfWidths();
       m_center = std::max(m_base->GetCenterList(), m_name->GetCenterList());
       m_height = m_center + std::max(m_name->GetMaxDrop() + m_under->GetHeightList(),
                                      m_base->GetMaxDrop());
     } else {
-      m_under->RecalculateList(fontsize);
       m_width = m_height = m_center = 0;
     }
   }

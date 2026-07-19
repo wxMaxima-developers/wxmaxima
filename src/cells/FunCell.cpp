@@ -54,10 +54,12 @@ FunCell::FunCell(GroupCell *group, const FunCell &cell)
 DEFINE_CELL(FunCell)
 
 void FunCell::Recalculate(AFontSize fontsize) const {
-  if (NeedsRecalculation(fontsize)) {
+  bool changed = false;
+  changed |= m_argCell->RecalculateList(fontsize);
+  changed |= m_nameCell->RecalculateList(fontsize);
+
+  if (changed || NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
-    m_argCell->RecalculateList(fontsize);
-    m_nameCell->RecalculateList(fontsize);
 
     if (IsBrokenIntoLines()) {
       m_width = m_center = m_height = 0;

@@ -60,25 +60,25 @@ MatrCell::MatrCell(GroupCell *group, const MatrCell &cell)
 DEFINE_CELL(MatrCell)
 
 void MatrCell::Recalculate(AFontSize const fontsize) const {
-  if (NeedsRecalculation(fontsize)) {
-    Cell::Recalculate(fontsize);
-    AFontSize const fontsize_entry{MC_MIN_SIZE, fontsize - 2};
-    for (size_t i = 0; i < m_cells.size(); i++) {
-      if (m_configuration->IsLayoutCancelled()) {
-        // The layout deadline fired before we finished measuring the entries, so
-        // the m_widths / m_width / m_height computation below never ran. The base
-        // Cell::Recalculate() call above has, however, already validated this
-        // cell's size and font, which would make NeedsRecalculation() return
-        // false and leave the matrix frozen with stale (or first-pass garbage)
-        // column widths once the group is re-laid-out later
-        // (GroupCell::RecalculateOutput clears the cancel flag and may drop
-        // m_layoutSuppressed). Invalidate the size so we are forced to recompute
-        // on the next, non-deadline-bound layout pass.
-        m_width.Invalidate();
-        return;
-      }
-      m_cells.at(i)->RecalculateList(fontsize_entry);
+  AFontSize const fontsize_entry{MC_MIN_SIZE, fontsize - 2};
+  bool changed = false;
+  for (size_t i = 0; i < m_cells.size(); i++) {
+    if (m_configuration->IsLayoutCancelled()) {
+      // The layout deadline fired before we finished measuring the entries, so
+      // the m_widths / m_width / m_height computation below never ran. Make
+      // sure the guard below can't consider this cell up to date and leave the
+      // matrix frozen with stale (or first-pass garbage) column widths once
+      // the group is re-laid-out later (GroupCell::RecalculateOutput clears
+      // the cancel flag and may drop m_layoutSuppressed): invalidate the size
+      // so we are forced to recompute on the next, non-deadline-bound pass.
+      m_width.Invalidate();
+      return;
     }
+    changed |= m_cells.at(i)->RecalculateList(fontsize_entry);
+  }
+
+  if (changed || NeedsRecalculation(fontsize)) {
+    Cell::Recalculate(fontsize);
 
     m_width = 0;
     m_widths.clear();

@@ -524,7 +524,7 @@ void GroupCell::RecalculateInput() const {
         GetEditable()->RecalculateList(EditorFontSize());
 
       if (m_inputLabel) {
-        m_inputLabel->Recalculate(EditorFontSize());
+        m_inputLabel->RecalculateTracked(EditorFontSize());
         m_inputWidth = m_width = m_inputLabel->SumOfWidths();
 
         m_inputHeight = 0;
@@ -594,8 +594,8 @@ void GroupCell::RecalculateOutput() const {
 
     // Recalculate size of all output cells
     for (Cell &tmp : OnList(m_output.get())) {
-      tmp.Recalculate(tmp.IsMath() ? m_mathFontSize
-                      : m_configuration->GetDefaultFontSize());
+      tmp.RecalculateTracked(tmp.IsMath() ? m_mathFontSize
+                             : m_configuration->GetDefaultFontSize());
     }
 
     if (m_configuration->MaxLayoutTime() > 0)
@@ -623,8 +623,8 @@ void GroupCell::RecalculateOutput() const {
   // Recalculate size of cells again: Their size might have changed during
   // breaking lines
   for (Cell &tmp : OnList(displayed)) {
-    tmp.Recalculate(tmp.IsMath() ? m_mathFontSize
-                    : m_configuration->GetDefaultFontSize());
+    tmp.RecalculateTracked(tmp.IsMath() ? m_mathFontSize
+                           : m_configuration->GetDefaultFontSize());
   }
 
   // Calculate the height of the output
@@ -657,7 +657,7 @@ Cell *GroupCell::DisplayedOutput() const {
         std::make_unique<TextCell>(const_cast<GroupCell *>(this), m_configuration);
     tc->SetValue(_("(Layout took too long and was suppressed)"));
     tc->SetType(MC_TYPE_WARNING);
-    tc->Recalculate(m_configuration->GetDefaultFontSize());
+    tc->RecalculateTracked(m_configuration->GetDefaultFontSize());
     m_layoutSuppressedNotice = std::move(tc);
   }
   return m_layoutSuppressedNotice.get();

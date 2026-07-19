@@ -86,16 +86,22 @@ void FracCell::MakeDivideCell() {
 }
 
 void FracCell::Recalculate(AFontSize fontsize) const {
-  if (NeedsRecalculation(fontsize)) {
+  // Recalculate the children unconditionally: a nested cell may have been
+  // invalidated (e.g. by a break-up or unbreak) without this cell's own
+  // cached state changing, and only this cell knows the reduced font size
+  // the children must be laid out with.
+  bool changed = false;
+  if (m_inExponent || IsBrokenIntoLines()) {
+    changed |= m_displayedNum->RecalculateList(fontsize);
+    changed |= m_displayedDenom->RecalculateList(fontsize);
+  } else {
+    changed |= m_displayedNum->RecalculateList({MC_MIN_SIZE, fontsize - FRAC_DEC});
+    changed |= m_displayedDenom->RecalculateList({MC_MIN_SIZE, fontsize - FRAC_DEC});
+  }
+  changed |= m_divide->RecalculateList(fontsize);
+
+  if (changed || NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
-    if (m_inExponent || IsBrokenIntoLines()) {
-      m_displayedNum->RecalculateList(fontsize);
-      m_displayedDenom->RecalculateList(fontsize);
-    } else {
-      m_displayedNum->RecalculateList({MC_MIN_SIZE, fontsize - FRAC_DEC});
-      m_displayedDenom->RecalculateList({MC_MIN_SIZE, fontsize - FRAC_DEC});
-    }
-    m_divide->RecalculateList(fontsize);
 
     if (IsBrokenIntoLines()) {
       m_height = 0;
@@ -345,6 +351,15 @@ void FracCell::SetupBreakUps() const {
     m_displayedNum = Num();
     m_displayedDenom = Denom();
   }
+}
+
+void FracCell::Unbreak() const {
+  // Unbreak the currently displayed (possibly parenthesized) children first...
+  Cell::Unbreak();
+  // ...then restore the 2D numerator/denominator choice that BreakUp()
+  // switched to the parenthesized linear forms. Without this the fraction
+  // keeps displaying the linear-form parentheses after returning to 2D.
+  SetupBreakUps();
 }
 
 bool FracCell::BreakUp() const {

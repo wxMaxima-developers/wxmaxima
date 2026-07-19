@@ -421,10 +421,22 @@ int Cell::GetLineWidth() const {
  * It is a fast, rendering-only pass.
  */
 void Cell::Draw(wxDC *dc, wxDC *WXUNUSED(adc)) {
+  if (!FontSizeMatchesExpectation()) {
+    // This cell was re-measured at a different font size than the one its
+    // owner laid it out with: it will draw at a size the surrounding cached
+    // extents (e.g. a parenthesis width) don't account for.
+    Configuration::g_stats.cellsDrawnAtWrongFontSize++;
+    if (m_configuration->GetDebugmode())
+      wxLogMessage(wxS("Cell %s drawn at font size %.1f but laid out for %.1f"),
+                   GetInfo().GetName(), double(m_fontSize.Get()),
+                   double(m_fontSize_expected.Get()));
+  }
   if (m_configuration->GetDebugmode()) {
     if (!m_isHidden) {
       wxASSERT(GetWidth() >= 0);
       wxASSERT(GetHeight() >= 0);
+      wxASSERT_MSG(FontSizeMatchesExpectation(),
+                   wxS("Cell drawn at a different font size than it was laid out with"));
     }
   }
   m_configuration->NotifyOfCellRedraw(this);
@@ -524,12 +536,47 @@ void Cell::DrawList(wxDC *dc, wxDC *adc) {
   }
 }
 
-void Cell::RecalculateList(AFontSize fontsize) const {
+bool Cell::RecalculateList(AFontSize fontsize) const {
+  bool changed = false;
   for (const Cell &tmp : OnList(this)) {
     if (m_configuration->IsLayoutCancelled())
-      return;
-    tmp.Recalculate(fontsize);
+      return changed;
+    changed |= tmp.RecalculateTracked(fontsize);
   }
+  return changed;
+}
+
+bool Cell::RecalculateTracked(AFontSize fontsize) const {
+  m_fontSize_expected = fontsize;
+  const bool wasValid = HasValidSize();
+  const wxCoord oldWidth = m_width.GetOrElse(-1);
+  const wxCoord oldHeight = m_height.GetOrElse(-1);
+  const wxCoord oldCenter = m_center.GetOrElse(-1);
+  Recalculate(fontsize);
+  const bool changed = !wasValid || oldWidth != m_width.GetOrElse(-1) ||
+                       oldHeight != m_height.GetOrElse(-1) ||
+                       oldCenter != m_center.GetOrElse(-1);
+  // A changed size makes the cached list extents of this cell's list stale;
+  // the usual invalidation (ResetSize) may not have run if the change came
+  // from a font size mismatch alone.
+  if (changed)
+    InvalidateListCache();
+  return changed;
+}
+
+bool Cell::FontSizeMatchesExpectation() const {
+  // A cell that is broken into lines isn't drawn itself; its visible children
+  // carry their own expectations.
+  if (m_isBrokenIntoLines)
+    return true;
+  // No expectation recorded (never recalculated through an owner), or never
+  // recalculated at all: nothing to compare.
+  if (!m_fontSize_expected.IsValid() || !m_fontSize.IsValid())
+    return true;
+  // NeedsRecalculation() tolerates sub-0.2px differences of the scaled size,
+  // so the stored size may legitimately deviate a little from the dictated
+  // one. Real deviations are at least FRAC_DEC (= 1) in unscaled units.
+  return EqualToWithin(m_fontSize, m_fontSize_expected, 0.5f);
 }
 
 void Cell::ResetSizeList() const {

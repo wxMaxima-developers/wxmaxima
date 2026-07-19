@@ -99,6 +99,10 @@ public:
 
   bool BreakUp() const override;
 
+  //! Restores the 2D numerator/denominator display that BreakUp() switched
+  //! to the parenthesized linear forms.
+  void Unbreak() const override;
+
   void SetupBreakUps() const;
 
   void SetNextToDraw(Cell *next) const override;

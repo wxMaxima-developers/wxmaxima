@@ -51,10 +51,12 @@ SubCell::SubCell(GroupCell *group, const SubCell &cell)
 DEFINE_CELL(SubCell)
 
 void SubCell::Recalculate(AFontSize fontsize) const {
-  if (NeedsRecalculation(fontsize)) {
+  bool changed = false;
+  changed |= m_baseCell->RecalculateList(fontsize);
+  changed |= m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - SUB_DEC});
+
+  if (changed || NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
-    m_baseCell->RecalculateList(fontsize);
-    m_indexCell->RecalculateList({MC_MIN_SIZE, fontsize - SUB_DEC});
 
     wxCoord const rise =
         static_cast<wxCoord>(.8 * Scale_Px(fontsize)) - MC_EXP_INDENT;

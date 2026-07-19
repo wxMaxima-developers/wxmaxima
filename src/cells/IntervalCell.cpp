@@ -66,16 +66,18 @@ IntervalCell::IntervalCell(GroupCell *group, const IntervalCell &cell)
 DEFINE_CELL(IntervalCell)
 
 void IntervalCell::Recalculate(AFontSize fontsize) const {
-  if (NeedsRecalculation(fontsize)) {
+  bool changed = false;
+  changed |= m_comma->RecalculateList(fontsize);
+  changed |= m_open->RecalculateList(fontsize);
+  changed |= m_openBracket->RecalculateList(fontsize);
+  changed |= m_closeBracket->RecalculateList(fontsize);
+  changed |= m_ellipsis->RecalculateList(fontsize);
+  changed |= m_close->RecalculateList(fontsize);
+  changed |= m_start->RecalculateList(fontsize);
+  changed |= m_stop->RecalculateList(fontsize);
+
+  if (changed || NeedsRecalculation(fontsize)) {
     Cell::Recalculate(fontsize);
-    m_comma->RecalculateList(fontsize);
-    m_open->RecalculateList(fontsize);
-    m_openBracket->RecalculateList(fontsize);
-    m_closeBracket->RecalculateList(fontsize);
-    m_ellipsis->RecalculateList(fontsize);
-    m_close->RecalculateList(fontsize);
-    m_start->RecalculateList(fontsize);
-    m_stop->RecalculateList(fontsize);
 
     m_signWidth = m_close->GetWidth();
 

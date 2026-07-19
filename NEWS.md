@@ -1,5 +1,19 @@
 # Current development version
 
+- Fixed a layout bug where the horizontal extent of parenthesized content was
+  underestimated: with nested parenthesis/fraction/subscript constructs that
+  were only partially broken into lines, cells inside a 2D fraction could be
+  re-measured (and drawn) at the full font size while the surrounding
+  parenthesis kept extents computed at the reduced size. Composite cells now
+  always propagate the layout pass into their children, so a nested cell that
+  was invalidated by a break-up or unbreak is always re-laid-out at the font
+  size its surroundings dictate. In addition, every cell now remembers the
+  font size its owner laid it out with, drawing verifies the two match
+  (visible as a counter in the performance monitor and a log message in
+  debug mode), and the layout invariant tests check the same rule.
+- Fixed a hang when a worksheet contained an image that could not be rendered
+  (a broken or empty `<img>`): querying the size of the not-yet-rendered
+  bitmap tripped a wxWidgets assertion. Found by the layout/paint fuzzer.
 - Fixed an assertion/crash when cutting or copying cells while the bitmap or
   SVG clipboard flavor was enabled: the off-screen renderer that draws the
   copied cells no longer trips the configuration teardown check.

@@ -259,6 +259,83 @@ SCENARIO("A special matrix with row/column names but no entries does not crash o
   }
 }
 
+// Maxima-style output for the nested construct from the 2026-07 "parenthesis
+// narrower than its content" reports: a parenthesis containing a fraction
+// whose numerator holds another parenthesized fraction with subscripted
+// variables. The nesting means the inner cells must be laid out at reduced
+// font sizes, and a narrow canvas breaks up the nesting levels in several
+// waves - the outer cells first, then (at the font size that grew back to
+// full in the linearized form) the inner ones. A cell whose break-up happens
+// in a later wave sits below ancestors that already consider themselves laid
+// out; if those ancestors skip the recursion, the cell is re-measured behind
+// their back at whatever font size it happens to remember.
+static const char *const nestedFracXml =
+  R"(<mth><lbl altCopy="%o1">(%o1) </lbl><p><f><r><p><f><r><i><r><mi>x</mi></r><r><mn>1</mn></r></i><mo>+</mo><mi>aLongVariableName</mi></r><r><i><r><mi>y</mi></r><r><mn>2</mn></r></i><mo>+</mo><mi>anotherLongName</mi></r></f><mo>+</mo><mi>moreNumeratorContent</mi></p></r><r><mi>denominatorName</mi><mo>+</mo><mn>1234.5678</mn></r></f><mo>+</mo><mi>tailTerm</mi></p></mth>)";
+
+// Builds a code group whose output is the nested fraction tree above.
+static std::unique_ptr<GroupCell> MakeNestedFracGroup() {
+  auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE,
+                                           wxS("nested;"));
+  MathParser parser(g_cfg);
+  auto output = parser.ParseLine(wxString::FromUTF8(nestedFracXml));
+  REQUIRE(output != nullptr);
+  group->AppendOutput(std::move(output));
+  return group;
+}
+
+// CHECKs, for every cell reachable from "list", that the cell would draw at
+// the font size the surrounding layout was computed with - the invariant
+// Cell::Draw() checks in debug mode. A violation is the "text inside a 2D
+// fraction shown at full size / parenthesis narrower than its content" bug.
+static void RequireExpectedFontSizes(Cell *list, const wxString &path) {
+  int idx = 0;
+  for (Cell *c = list; c != nullptr; c = c->GetNext(), ++idx) {
+    wxString here = wxString::Format(wxS("%s/%d:%s"), path, idx,
+                                     c->GetInfo().GetName());
+    INFO("cell measured at a different font size than its owner dictated: "
+         << here.utf8_str());
+    CHECK(c->FontSizeMatchesExpectation());
+    int innerIdx = 0;
+    for (Cell &inner : OnInner(c))
+      RequireExpectedFontSizes(
+          &inner, here + wxString::Format(wxS("(%d)"), innerIdx++));
+  }
+}
+
+SCENARIO("Nested fractions keep their reduced font sizes through partial break-ups") {
+  GIVEN("nested parens/fractions/subscripts laid out at a wide canvas") {
+    g_cfg->SetZoomFactor(1.0);
+    g_cfg->SetCanvasSize(wxSize(900, 600));
+    auto group = MakeNestedFracGroup();
+    group->Recalculate();
+    RequireExpectedFontSizes(group->GetOutput(), wxS("out"));
+
+    // Different widths hit different partial break-up depths; each one must
+    // leave a self-consistent layout.
+    const int narrowWidth = GENERATE(400, 300, 240);
+
+    WHEN("the canvas narrows, breaking up part of the nesting") {
+      INFO("narrow canvas width: " << narrowWidth);
+      g_cfg->SetCanvasSize(wxSize(narrowWidth, 600));
+      group->Recalculate();
+
+      THEN("every cell is sized at the font size its owner dictated") {
+        RequireExpectedFontSizes(group->GetOutput(), wxS("out"));
+      }
+
+      THEN("after widening again, geometry equals a fresh wide layout") {
+        g_cfg->SetCanvasSize(wxSize(900, 600));
+        group->Recalculate();
+        RequireExpectedFontSizes(group->GetOutput(), wxS("out"));
+        auto fresh = MakeNestedFracGroup();
+        fresh->Recalculate();
+        RequireSameGeometry(GroupGeometry(group.get()),
+                            GroupGeometry(fresh.get()));
+      }
+    }
+  }
+}
+
 // Builds a worksheet of "count" one-line code groups in g_ws and lays it out.
 // Returns the group at "index" (0-based) for the scenario to operate on.
 static GroupCell *BuildWorksheet(int count, int index) {
