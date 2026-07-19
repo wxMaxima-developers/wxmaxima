@@ -106,19 +106,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnChar</b> (wxKeyEven
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnKeyDown</b> (wxKeyEvent &amp;event)</td></tr>
 <tr class="memdesc:af93c58d3f7a281e0b06f6661ee8d3241"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the info which key has been pressed with which modifier. <br /></td></tr>
 <tr class="separator:af93c58d3f7a281e0b06f6661ee8d3241"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a7033ddc45ef7622b8748c829265fda"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutocompletePopup.html#a1a7033ddc45ef7622b8748c829265fda">AutocompletePopup</a> (wxWindow *parent, <a class="el" href="classEditorCell.html">EditorCell</a> *editor, <a class="el" href="classAutoComplete.html">AutoComplete</a> *autocomplete, <a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">AutoComplete::autoCompletionType</a> type, <a class="el" href="classAutocompletePopup.html">AutocompletePopup</a> **doneptr)</td></tr>
-<tr class="memdesc:a1a7033ddc45ef7622b8748c829265fda"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor of the autocompletion window.  <br /></td></tr>
-<tr class="separator:a1a7033ddc45ef7622b8748c829265fda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ee72eb459c86699a599b41bf6dffbb0"><td class="memItemLeft" align="right" valign="top"><a id="a3ee72eb459c86699a599b41bf6dffbb0" name="a3ee72eb459c86699a599b41bf6dffbb0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateResults</b> ()</td></tr>
-<tr class="separator:a3ee72eb459c86699a599b41bf6dffbb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20ebacf806ace023b9b190d20de651c8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutocompletePopup.html#a20ebacf806ace023b9b190d20de651c8">AutocompletePopup</a> (wxWindow *parent, <a class="el" href="classEditorCell.html">EditorCell</a> *editor, <a class="el" href="classAutoComplete.html">AutoComplete</a> *autocomplete, <a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">AutoComplete::autoCompletionType</a> type, <a class="el" href="classAutocompletePopup.html">AutocompletePopup</a> **doneptr, const wxString &amp;fileBaseDir={})</td></tr>
+<tr class="memdesc:a20ebacf806ace023b9b190d20de651c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor of the autocompletion window.  <br /></td></tr>
+<tr class="separator:a20ebacf806ace023b9b190d20de651c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc27971e824c3049c4a2e7e0d424aa25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutocompletePopup.html#afc27971e824c3049c4a2e7e0d424aa25">UpdateResults</a> (bool allowAutoFinish=true)</td></tr>
+<tr class="memdesc:afc27971e824c3049c4a2e7e0d424aa25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-filter the completion list against the current partial.  <br /></td></tr>
+<tr class="separator:afc27971e824c3049c4a2e7e0d424aa25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab066daa9c567c1f4cf6ce5d7bceadbbd"><td class="memItemLeft" align="right" valign="top"><a id="ab066daa9c567c1f4cf6ce5d7bceadbbd" name="ab066daa9c567c1f4cf6ce5d7bceadbbd"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnClick</b> (wxMouseEvent &amp;event)</td></tr>
 <tr class="separator:ab066daa9c567c1f4cf6ce5d7bceadbbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1a7033ddc45ef7622b8748c829265fda" name="a1a7033ddc45ef7622b8748c829265fda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a7033ddc45ef7622b8748c829265fda">&#9670;&#160;</a></span>AutocompletePopup()</h2>
+<a id="a20ebacf806ace023b9b190d20de651c8" name="a20ebacf806ace023b9b190d20de651c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20ebacf806ace023b9b190d20de651c8">&#9670;&#160;</a></span>AutocompletePopup()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -151,7 +151,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnClick</b> (wxMouseE
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classAutocompletePopup.html">AutocompletePopup</a> **&#160;</td>
-          <td class="paramname"><em>doneptr</em>&#160;</td>
+          <td class="paramname"><em>doneptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>fileBaseDir</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -169,6 +175,34 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnClick</b> (wxMouseE
     <tr><td class="paramname">autocomplete</td><td>The autocompletion data </td></tr>
     <tr><td class="paramname">type</td><td>The type of completion needed </td></tr>
     <tr><td class="paramname">doneptr</td><td><a class="el" href="classA.html">A</a> pointer that will be set to NULL when the pop-up is destroyed. </td></tr>
+    <tr><td class="paramname">fileBaseDir</td><td>The directory relative file names are resolved against (used by the file-name completion types to descend into subdirectories). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="afc27971e824c3049c4a2e7e0d424aa25" name="afc27971e824c3049c4a2e7e0d424aa25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc27971e824c3049c4a2e7e0d424aa25">&#9670;&#160;</a></span>UpdateResults()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AutocompletePopup::UpdateResults </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>allowAutoFinish</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Re-filter the completion list against the current partial. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">allowAutoFinish</td><td>With true, a single remaining completion is applied immediately (finishing the completion or descending into the directory it names). Pass false when the user is deleting: silently re-inserting what was just deleted would fight the user - the single match is then only displayed. </td></tr>
   </table>
   </dd>
 </dl>

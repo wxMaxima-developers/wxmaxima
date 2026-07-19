@@ -70,7 +70,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a>  </div>
   <div class="headertitle"><div class="title">StatSidebar Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -92,7 +93,38 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3c77058d30a7341ca790797c14f4ba68"><td class="memItemLeft" align="right" valign="top"><a id="a3c77058d30a7341ca790797c14f4ba68" name="a3c77058d30a7341ca790797c14f4ba68"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>StatSidebar</b> (wxWindow *parent, int ID=wxID_ANY)</td></tr>
 <tr class="separator:a3c77058d30a7341ca790797c14f4ba68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa68fcb1c9db4297151ba5328106ba6d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStatSidebar.html#aa68fcb1c9db4297151ba5328106ba6d0">UpdateVirtualSize</a> ()</td></tr>
+<tr class="memdesc:aa68fcb1c9db4297151ba5328106ba6d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grow the virtual height to the wrapped button rows.  <br /></td></tr>
+<tr class="separator:aa68fcb1c9db4297151ba5328106ba6d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a89955c1261f9ad60e29b17584450e6af"><td class="memItemLeft" align="right" valign="top"><a id="a89955c1261f9ad60e29b17584450e6af" name="a89955c1261f9ad60e29b17584450e6af"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSize</b> (wxSizeEvent &amp;event)</td></tr>
+<tr class="memdesc:a89955c1261f9ad60e29b17584450e6af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="classStatSidebar.html#aa68fcb1c9db4297151ba5328106ba6d0" title="Grow the virtual height to the wrapped button rows.">UpdateVirtualSize()</a> whenever the sidebar's size changes. <br /></td></tr>
+<tr class="separator:a89955c1261f9ad60e29b17584450e6af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa68fcb1c9db4297151ba5328106ba6d0" name="aa68fcb1c9db4297151ba5328106ba6d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa68fcb1c9db4297151ba5328106ba6d0">&#9670;&#160;</a></span>UpdateVirtualSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void StatSidebar::UpdateVirtualSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Grow the virtual height to the wrapped button rows. </p>
+<p>Public so tests can drive it directly: under a headless wxGTK without an event loop SetSize() does not deliver wxEVT_SIZE synchronously. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/sidebars/<a class="el" href="StatSidebar_8h_source.html">StatSidebar.h</a></li>
 <li>src/sidebars/<a class="el" href="StatSidebar_8cpp.html">StatSidebar.cpp</a></li>

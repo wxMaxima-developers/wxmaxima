@@ -157,6 +157,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateLoadFiles</b> (
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateGeneralFiles</b> (wxString partial, const wxString &amp;maximaDir)</td></tr>
 <tr class="memdesc:abe1d7b397653ee795eca19f0983b3c90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble a list of files. <br /></td></tr>
 <tr class="separator:abe1d7b397653ee795eca19f0983b3c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38815223980af54d0ad3d76dd4d7d3bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoComplete.html#a38815223980af54d0ad3d76dd4d7d3bb">UpdateFiles</a> (<a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a> type, const wxString &amp;partial, const wxString &amp;maximaDir)</td></tr>
+<tr class="memdesc:a38815223980af54d0ad3d76dd4d7d3bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-scan the directory a file-name completion currently points into.  <br /></td></tr>
+<tr class="separator:a38815223980af54d0ad3d76dd4d7d3bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7caeb6b2a96643d5b7320c011d79e77"><td class="memItemLeft" align="right" valign="top"><a id="ac7caeb6b2a96643d5b7320c011d79e77" name="ac7caeb6b2a96643d5b7320c011d79e77"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddWorksheetWords</b> (const WordList &amp;words)</td></tr>
 <tr class="memdesc:ac7caeb6b2a96643d5b7320c011d79e77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add words to the list of words that appear in the workSheet's code cells. <br /></td></tr>
@@ -190,6 +193,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasDemofile</b> (cons
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a5899754a936dc2c7b1360ca0635a93e9"><td class="memItemLeft" align="right" valign="top"><a id="a5899754a936dc2c7b1360ca0635a93e9" name="a5899754a936dc2c7b1360ca0635a93e9"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CompletesFiles</b> (<a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a> type)</td></tr>
+<tr class="memdesc:a5899754a936dc2c7b1360ca0635a93e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this completion type one that completes file names? <br /></td></tr>
+<tr class="separator:a5899754a936dc2c7b1360ca0635a93e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0026315422c75170949786143a114dd"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoComplete.html#ad0026315422c75170949786143a114dd">FixTemplate</a> (wxString templ)</td></tr>
 <tr class="memdesc:ad0026315422c75170949786143a114dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basically runs a regex over templates.  <br /></td></tr>
 <tr class="separator:ad0026315422c75170949786143a114dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -341,6 +348,43 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Makes <a class="el" href="classwxMaxima.html">wxMaxima</a> know all its builtin symbols. </p>
 <p>This function might cause a compiler warning because it is suspiciously long. For the same reason it has been split into a separate file. </p>
+
+</div>
+</div>
+<a id="a38815223980af54d0ad3d76dd4d7d3bb" name="a38815223980af54d0ad3d76dd4d7d3bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38815223980af54d0ad3d76dd4d7d3bb">&#9670;&#160;</a></span>UpdateFiles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AutoComplete::UpdateFiles </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classAutoComplete.html#a6225a91b46c0459755a62de137620b29">autoCompletionType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>partial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>maximaDir</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Re-scan the directory a file-name completion currently points into. </p>
+<p>Dispatches to <a class="el" href="classAutoComplete.html#a454b8ef21c3cb19b634192452bfbb400" title="Replace the list of files in the directory the worksheet file is in to the demo files list.">UpdateDemoFiles()</a>/UpdateLoadFiles()/UpdateGeneralFiles() depending on <code>type</code>. Called while a file-name completion is in progress whenever the partial gains or loses a directory component (the user typed a "/", descended into a subdirectory or deleted back across a "/"), so the popup can offer that directory's contents bash-style. </p>
 
 </div>
 </div>
