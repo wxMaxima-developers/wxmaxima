@@ -2728,7 +2728,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event) {
     //   int fontsize = m_configuration->GetDefaultFontSize();
     auto fontsize = m_configuration->GetDefaultFontSize();
 
-    GetActiveCell()->Recalculate(std::max(fontsize, MC_MIN_SIZE));
+    GetActiveCell()->RecalculateTracked(std::max(fontsize, MC_MIN_SIZE));
 
     if (oldHeight != GetActiveCell()->GetHeight()) {
       GetActiveCell()->GetGroup()->InputHeightChanged();

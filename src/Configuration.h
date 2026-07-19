@@ -112,6 +112,15 @@ public:
     std::atomic<long> recalculationNeeded_EditorDirty{0};
     std::atomic<long> cellsConvertedToLinear{0};
     std::atomic<long> cellsConvertedTo2D{0};
+    /*! How many cells were drawn at a different font size than they were laid out with
+
+      Nonzero means a cell was re-measured behind its owner's back (e.g. a
+      lazy GetWidth() repair or a draw-list recalculation at the top-level
+      font size) after the surrounding cells had already cached extents based
+      on the owner-dictated size: the visible symptom is text in 2D fractions
+      shown at full size and parentheses narrower than their content.
+    */
+    std::atomic<long> cellsDrawnAtWrongFontSize{0};
     //! How often the worksheet was repainted (Worksheet::OnPaint ran)
     std::atomic<long> worksheetRepaints{0};
     /*! How many of those repaints covered (nearly) the whole visible worksheet
