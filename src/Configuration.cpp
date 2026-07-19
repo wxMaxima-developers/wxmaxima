@@ -145,6 +145,7 @@ Configuration::Configuration(const Configuration &o) :
   m_mathJaxURL_UseUser(o.m_mathJaxURL_UseUser),
   m_showCodeCells(o.m_showCodeCells),
   m_copyBitmap(o.m_copyBitmap),
+  m_announceOutput(o.m_announceOutput),
   m_copyMathML(o.m_copyMathML),
   m_copyMathMLHTML(o.m_copyMathMLHTML),
   m_showLength(o.m_showLength),
@@ -327,6 +328,8 @@ void Configuration::ResetAllToDefaults() {
   // prefer the bitmap
   // to Mathml and RTF. Also mail programs prefer bitmaps to text - which is
   // counter-productive for maxima-discuss.
+  m_announceOutput = true; // Fire a screen-reader event when a result arrives.
+  // Harmless (a no-op MSAA notification) when no screen reader is listening.
   m_copyMathML = true;
   m_copyMathMLHTML = false;
   m_copyRTF = true;
@@ -1219,6 +1222,7 @@ Configuration::ScalarConfigSettings() {
   static const std::vector<ScalarSetting> settings = {
     {wxS("abortOnError"), &Configuration::m_abortOnError},
     {wxS("allowNetworkHelp"), &Configuration::m_allowNetworkHelp},
+    {wxS("announceOutput"), &Configuration::m_announceOutput},
     {wxS("autodetectHelpBrowser"), &Configuration::m_autodetectHelpBrowser},
     {wxS("autodetectMaxima"), &Configuration::m_autodetectMaxima},
     {wxS("autoIndent"), &Configuration::m_autoIndent},

@@ -12,6 +12,10 @@ WxMaxima is included with the Windows and the Macintosh installer for
 Maxima. Packages are also available for many Linux distributions. Screenshots
 and documentation can be found at <https://wxmaxima-developers.github.io/wxmaxima>/
 
+Using wxMaxima with a screen reader? See the accessibility section of the
+manual: <https://wxmaxima-developers.github.io/wxmaxima/wxmaxima.html#accessibility-using-wxmaxima-with-a-screen-reader>
+(it is also available in the program under Help → Accessibility).
+
 Instructions on where to get a complete Maxima package from
 can be found at <https://maxima.sourceforge.io/download.html>.
 

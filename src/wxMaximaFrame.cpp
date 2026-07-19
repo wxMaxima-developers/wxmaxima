@@ -1917,6 +1917,8 @@ void wxMaximaFrame::SetupHelpMenu() {
     m_HelpMenu->Append(EventIDs::menu_goto_url, _("Go to URL"));
 #endif
   m_HelpMenu->Append(EventIDs::menu_show_tip, _("Show &Tips..."), _("Show a tip"));
+  m_HelpMenu->Append(EventIDs::menu_accessibility_help, _("&Accessibility..."),
+                     _("Using wxMaxima with a screen reader"));
   if(GetConfiguration().OfferInternalHelpBrowser())
     {
       m_HelpMenu->AppendSeparator();

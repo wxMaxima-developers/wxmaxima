@@ -279,6 +279,31 @@ Most hotkeys can be found in the text of the respective menus. Since they are ac
 
 If a text cell begins with `TeX:` the TeX export contains the literal text that follows the `TeX:` marker. Using this feature allows the entry of TeX markup within the _wxMaxima_ workbook.
 
+## Accessibility (using wxMaxima with a screen reader)
+
+This section is also reachable from inside the program under **Help → Accessibility**.
+
+**Please note:** accessibility support has to be compiled into wxWidgets, the toolkit _wxMaxima_ is built on. As of 2026 the ready-made packages that ship it enabled are, unfortunately, Microsoft Windows only. On other systems _wxMaxima_ still runs, but a screen reader will not be able to see the worksheet.
+
+### How the worksheet is laid out
+
+- The worksheet is a vertical list of cells. Move between them with the **Up** and **Down** arrow keys.
+- A calculation is a *code cell* that **groups an input with its result**: the input you type is on top and _Maxima_'s output appears directly **below** it, as part of the same cell. Arrow navigation stops on the input, and the cell is read to the screen reader as “Input: … Output: …” so you hear both parts and know the result lives below the input you typed.
+- Press **Shift+Enter** to evaluate the current cell.
+
+### Hearing results
+
+- When a result arrives it is announced automatically. This can be turned off in _wxMaxima_'s configuration if you find it too talkative.
+
+### Entering Greek letters and symbols
+
+- Press the **Escape** key, then type the name of the letter and press **Enter**: `Escape`, `alpha`, `Enter` gives the Greek letter α. Many symbols work the same way (for example `Escape` then `=>`, `and`, or `partial`).
+
+### Menus, sidebars and the keyboard
+
+- Every command is reachable from the menu bar with the standard hotkeys (`Alt+F` for File, `Alt+V` for View, and so on).
+- The sidebars (Greek letters, symbols, math templates, …) are mostly a *visual convenience*: everything they offer can also be typed or reached through the menus, so you do not need them to work efficiently.
+
 ## File Formats
 
 The material that is developed in a _wxMaxima_ session can be stored for later use in any of three ways:

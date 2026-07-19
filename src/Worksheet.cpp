@@ -5958,6 +5958,31 @@ int Worksheet::GetAccessibilityId(Cell *cell) const {
   }
   return 0;
 }
+#endif
+
+void Worksheet::AnnounceOutputToScreenReader(GroupCell *group) {
+#if wxUSE_ACCESSIBILITY
+  if (!group || m_accessibilityInfo == NULL)
+    return;
+  if (!m_configuration->AnnounceEvaluationResults())
+    return;
+
+  int childId = GetAccessibilityId(group);
+  if (childId <= 0)
+    return;
+
+  // The group's accessible value (its Input:/Output: text) has changed now that
+  // the result arrived; a VALUECHANGE event is the MSAA cue for a screen reader
+  // to re-read it. Notify on GetTargetWindow(), where the AccessibilityInfo is
+  // attached.
+  wxAccessible::NotifyEvent(wxACC_EVENT_OBJECT_VALUECHANGE, GetTargetWindow(),
+                            wxOBJID_CLIENT, childId);
+#else
+  wxUnusedVar(group);
+#endif
+}
+
+#if wxUSE_ACCESSIBILITY
 
 Worksheet::AccessibilityInfo::AccessibilityInfo(wxWindow *parent,
                                                 Worksheet *worksheet)

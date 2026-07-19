@@ -32,6 +32,10 @@
 #include <wx/colordlg.h>
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
+#include <wx/dialog.h>
+#include <wx/textctrl.h>
+#include <wx/sizer.h>
+#include <wx/button.h>
 #include <wx/process.h>
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
@@ -2060,6 +2064,69 @@ void MaximaCommandMenus::DrawMenu(wxCommandEvent &event) {
   m_wxMaxima.CallAfter([this]{m_wxMaxima.GetWorksheet()->SetFocus();});
 }
 
+//! The text shown by Help -> Accessibility. Kept in one place so README.md and
+//! the online manual can mirror it. See also ACCESSIBILITY.md in the repo.
+static wxString AccessibilityHelpText() {
+  return
+    _("Using wxMaxima with a screen reader\n"
+      "===================================\n"
+      "\n"
+      "Please note: accessibility support has to be compiled into wxWidgets, the\n"
+      "toolkit wxMaxima is built on. As of 2026 the ready-made packages that ship\n"
+      "it enabled are, unfortunately, Microsoft Windows only. On other systems\n"
+      "wxMaxima still runs, but a screen reader will not see the worksheet.\n"
+      "\n"
+      "How the worksheet is laid out\n"
+      "-----------------------------\n"
+      "* The worksheet is a vertical list of cells. Move between them with the\n"
+      "  Up and Down arrow keys.\n"
+      "* A calculation is a code cell that GROUPS an input with its result: the\n"
+      "  input you type is on top and Maxima's output appears directly BELOW it,\n"
+      "  as part of the same cell. Arrow navigation stops on the input, and the\n"
+      "  cell is read as \"Input: ... Output: ...\" so you hear both parts.\n"
+      "* Press Shift+Enter to evaluate the current cell.\n"
+      "\n"
+      "Hearing results\n"
+      "---------------\n"
+      "* When a result arrives it is announced automatically. (This can be turned\n"
+      "  off in wxMaxima's configuration if you find it too talkative.)\n"
+      "\n"
+      "Entering Greek letters and symbols\n"
+      "----------------------------------\n"
+      "* Press the Escape key, then type the name of the letter and press Enter:\n"
+      "  Escape, \"alpha\", Enter gives the Greek letter alpha. Many symbols work\n"
+      "  the same way (for example Escape then \"=>\", \"and\", or \"partial\").\n"
+      "\n"
+      "Menus, sidebars and the keyboard\n"
+      "--------------------------------\n"
+      "* Every command is reachable from the menu bar with the standard hotkeys\n"
+      "  (Alt+F for File, Alt+V for View, and so on).\n"
+      "* The sidebars (Greek letters, symbols, math templates, ...) are mostly a\n"
+      "  visual convenience: everything they offer can also be typed or reached\n"
+      "  through the menus, so you do not need them.\n"
+      "\n"
+      "The full manual, including this information, is online at\n"
+      "https://wxmaxima-developers.github.io/wxmaxima/\n");
+}
+
+static void ShowAccessibilityHelp(wxWindow *parent) {
+  wxDialog dlg(parent, wxID_ANY, _("Accessibility"), wxDefaultPosition,
+               wxSize(640, 560), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+  auto *sizer = new wxBoxSizer(wxVERTICAL);
+  // A read-only multi-line text control (not a static label) so a screen-reader
+  // user can arrow through the text line by line and copy it.
+  auto *text = new wxTextCtrl(&dlg, wxID_ANY, AccessibilityHelpText(),
+                              wxDefaultPosition, wxDefaultSize,
+                              wxTE_MULTILINE | wxTE_READONLY | wxTE_BESTWRAP);
+  text->SetName(_("Accessibility information"));
+  sizer->Add(text, wxSizerFlags(1).Expand().Border(wxALL, 8));
+  sizer->Add(dlg.CreateButtonSizer(wxOK), wxSizerFlags().Expand().Border(wxALL, 8));
+  dlg.SetSizer(sizer);
+  text->SetInsertionPoint(0);
+  text->SetFocus();
+  dlg.ShowModal();
+}
+
 void MaximaCommandMenus::HelpMenu(wxCommandEvent &event) {
   m_wxMaxima.GetWorksheet()->CloseAutoCompletePopup();
 
@@ -2139,6 +2206,10 @@ void MaximaCommandMenus::HelpMenu(wxCommandEvent &event) {
 
   else if(event.GetId() == EventIDs::menu_show_tip){
     m_wxMaxima.ShowTip(true);
+  }
+
+  else if(event.GetId() == EventIDs::menu_accessibility_help){
+    ShowAccessibilityHelp(&m_wxMaxima);
   }
 
   else if(event.GetId() == EventIDs::menu_build_info){

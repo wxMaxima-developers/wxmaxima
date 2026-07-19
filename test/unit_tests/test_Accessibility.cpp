@@ -52,6 +52,7 @@
 #include "Worksheet.h"
 #include "wxMaximaArtProvider.h"
 #include "cells/GroupCell.h"
+#include "cells/TextCell.h"
 #include "sidebars/CharButton.h"
 
 #include <cstdlib>
@@ -96,6 +97,34 @@ SCENARIO("The accessibility test harness builds the worksheet and a toolbar") {
                                       /*forceShow=*/true);
   REQUIRE(button->GetTextObject() != nullptr);
   button->Destroy();
+}
+
+// Unguarded: GetAccessibilityText() is plain string logic, so it is exercised
+// on every platform (the label wording is what makes a blind user aware that a
+// code cell groups an input with its result below it).
+SCENARIO("A code cell's accessibility text labels its input and output") {
+  auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("2*21;"));
+  auto output = std::make_unique<TextCell>(group.get(), g_cfg, wxS("42"));
+  group->SetOutput(std::move(output));
+
+  const wxString text = group->GetAccessibilityText();
+
+  THEN("both parts appear, each behind its own spoken label") {
+    REQUIRE(text.Contains(wxS("2*21")));
+    REQUIRE(text.Contains(wxS("42")));
+    REQUIRE(text.Contains(wxS("Input")));
+    REQUIRE(text.Contains(wxS("Output")));
+    // The input's label must come before the output's, matching the visual
+    // top-to-bottom order the user is being told about.
+    REQUIRE(text.Find(wxS("Input")) < text.Find(wxS("Output")));
+  }
+
+  THEN("an unevaluated code cell still labels its input") {
+    auto bare = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("f(x):=x;"));
+    const wxString bareText = bare->GetAccessibilityText();
+    REQUIRE(bareText.Contains(wxS("f(x)")));
+    REQUIRE(bareText.Contains(wxS("Input")));
+  }
 }
 
 #if wxUSE_ACCESSIBILITY

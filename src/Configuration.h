@@ -948,6 +948,10 @@ public:
   bool CopyBitmap() const {return m_copyBitmap;}
   void CopyBitmap(bool copyBitmap){ m_copyBitmap = copyBitmap; }
 
+  //! Announce a code cell's result to the screen reader when it arrives?
+  bool AnnounceEvaluationResults() const {return m_announceOutput;}
+  void AnnounceEvaluationResults(bool announce){ m_announceOutput = announce; }
+
   bool CopyMathML() const {return m_copyMathML;}
   void CopyMathML(bool copyMathML){ m_copyMathML = copyMathML;}
   bool CopyMathMLHTML() const {return m_copyMathMLHTML;}
@@ -1376,6 +1380,7 @@ private:
   bool m_mathJaxURL_UseUser;
   bool m_showCodeCells;
   bool m_copyBitmap;
+  bool m_announceOutput;
   bool m_copyMathML;
   bool m_copyMathMLHTML;
   long m_showLength;

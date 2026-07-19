@@ -356,6 +356,11 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
   // answered rather than recorded as worksheet input.
   if (MaximaProtocol::IsMainInputPrompt(label,
                                         m_wxMaxima.m_configuration.InLispMode())) {
+    // The cell that just finished evaluating is the current working group; its
+    // output is now complete. Capture it before the queue advances (which
+    // clears/moves the working group) so we can announce the result to a screen
+    // reader once the bookkeeping below is done.
+    GroupCell *finishedGroup = m_wxMaxima.GetWorksheet()->GetWorkingGroup();
     // Maxima displayed a new main prompt => We don't have a question
     m_wxMaxima.GetWorksheet()->QuestionAnswered();
     // And we can remove one command from the evaluation queue.
@@ -405,6 +410,10 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
           (m_wxMaxima.GetWorksheet()->GetActiveCell() == NULL))
         m_wxMaxima.GetWorksheet()->OpenNextOrCreateCell();
     }
+
+    // Now that the queue bookkeeping is done and focus has moved on, let a
+    // screen reader speak the result that just arrived.
+    m_wxMaxima.GetWorksheet()->AnnounceOutputToScreenReader(finishedGroup);
   } else { // We have a question
     m_wxMaxima.GetWorksheet()->SetLastQuestion(label);
     m_wxMaxima.GetWorksheet()->QuestionAnswered();

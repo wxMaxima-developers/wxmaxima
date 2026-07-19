@@ -423,6 +423,16 @@ public:
   //! A textual representation of this cell
   wxString ToString() const override;
 
+  /*! A screen-reader-friendly text for this cell.
+
+    Unlike ToString() (which joins the input and its output with a bare
+    newline), this labels the parts of a code cell - "Input: ... Output: ..." -
+    so a blind user hears that a result exists and lives below the input,
+    instead of one run-on blob. Non-code cells fall back to their plain text.
+    Kept out of the wxUSE_ACCESSIBILITY guard so the label logic is unit-testable
+    on every platform. */
+  wxString GetAccessibilityText() const;
+
   //! Is this cell part of the evaluation Queue?
   void InEvaluationQueue(bool inQueue) { m_inEvaluationQueue = inQueue; }
 

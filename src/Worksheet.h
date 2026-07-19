@@ -1595,6 +1595,16 @@ public:
   int GetAccessibilityId(Cell *cell) const;
 #endif
 
+  /*! Tell the screen reader a code cell just produced its result.
+
+    After Shift+Enter the keyboard focus moves on to the next input cell, so the
+    new output is never in the focused object and a screen reader stays silent
+    about it. Firing an accessibility value-change event on the finished group
+    (gated on Configuration::AnnounceEvaluationResults()) lets the reader speak
+    the result without the user hunting for it. A no-op when accessibility is
+    compiled out or the setting is off. */
+  void AnnounceOutputToScreenReader(GroupCell *group);
+
 #if wxUSE_ACCESSIBILITY
   class AccessibilityInfo: public wxAccessible
   {

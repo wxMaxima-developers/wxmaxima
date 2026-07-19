@@ -1,5 +1,12 @@
 # Current development version
 
+- Accessibility: a code cell is now read to screen readers as
+  "Input: … Output: …" so it is clear that the result is grouped with, and
+  sits below, the input it belongs to.
+- Accessibility: when a calculation finishes its result is announced to the
+  screen reader automatically (can be turned off in the configuration).
+- Accessibility: a new Help → Accessibility entry (and a matching section in
+  the manual) explains how to use wxMaxima with a screen reader.
 - Fixed an assertion/crash when cutting or copying cells while the bitmap or
   SVG clipboard flavor was enabled: the off-screen renderer that draws the
   copied cells no longer trips the configuration teardown check.

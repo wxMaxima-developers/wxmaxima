@@ -1083,6 +1083,44 @@ wxString GroupCell::ToString() const {
   return str;
 }
 
+wxString GroupCell::GetAccessibilityText() const {
+  wxLogNull logNull;
+
+  // Non-code cells (title/section/text/image) carry no separate output, so
+  // their plain text already reads correctly.
+  if (m_groupType != GC_TYPE_CODE)
+    return ToString();
+
+  wxString input;
+  if ((m_configuration->ShowCodeCells()) && (GetEditable() != NULL))
+    input = GetEditable()->ToString();
+
+  wxString output;
+  if (!IsHidden()) {
+    bool firstCell = true;
+    for (const Cell &tmp : OnDrawList(m_output.get())) {
+      if (!firstCell)
+        output += wxS("\n");
+      output += tmp.ToString();
+      firstCell = false;
+    }
+  }
+
+  wxString result;
+  if (!input.IsEmpty())
+    result = wxString::Format(_("Input: %s"), input);
+  if (!output.IsEmpty()) {
+    if (!result.IsEmpty())
+      result += wxS(". ");
+    // TRANSLATORS: introduces a code cell's Maxima result to a screen reader.
+    result += wxString::Format(_("Output: %s"), output);
+  }
+
+  // A code cell that has not been evaluated yet (no output) still benefits from
+  // the "Input:" label; a completely empty cell falls back to ToString().
+  return result.IsEmpty() ? ToString() : result;
+}
+
 wxString GroupCell::ToTeX() const {
   return ToTeX(wxEmptyString, wxEmptyString, NULL);
 }
@@ -1911,9 +1949,10 @@ wxAccStatus GroupCell::GetName(int childId, wxString *name) const {
     return wxACC_FAIL;
   }
 
-  // ToString() produces "label input\noutput" which is the most useful
-  // text to read aloud for this group
-  *name = ToString();
+  // GetAccessibilityText() labels the input and output parts ("Input: ...
+  // Output: ...") so a screen-reader user hears the cell's structure instead
+  // of one run-on blob.
+  *name = GetAccessibilityText();
   return name->empty() ? wxACC_NOT_IMPLEMENTED : wxACC_OK;
 }
 
