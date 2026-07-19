@@ -49,7 +49,7 @@
 
 #include "Configuration.h"
 #include "EvaluationQueue.h"
-#include "Worksheet.h"
+#include "worksheet/Worksheet.h"
 #include "cells/EditorCell.h"
 #include "cells/GroupCell.h"
 #include "cells/TextCell.h"
@@ -161,6 +161,47 @@ SCENARIO("Commands are drawn from the cells in queue order") {
     REQUIRE(cmds.size() == 2);
     REQUIRE(cmds[0] == wxS("first;"));
     REQUIRE(cmds[1] == wxS("second;"));
+  }
+}
+
+SCENARIO("A cell without a runnable command still becomes the working cell once") {
+  // A cell whose input is commented out entirely produces no command, but it
+  // must not be skipped silently while the queue advances: the evaluator has
+  // to see it as the working cell for one round so it can remove the cell's
+  // now-stale output. (Being the FRONT cell, added via AddToQueue, already
+  // worked - the silent skip happened when such a cell was reached while
+  // advancing from an earlier cell.)
+  Reset();
+  EvaluationQueue q;
+  GroupCell *c0 = MakeCodeCell(wxS("first;"));
+  GroupCell *commented = MakeCodeCell(wxS("/* nothing to do */"));
+  GroupCell *c2 = MakeCodeCell(wxS("last;"));
+  q.AddToQueue(c0);
+  q.AddToQueue(commented);
+  q.AddToQueue(c2);
+
+  std::vector<const GroupCell *> frontCells;
+  std::vector<wxString> cmds;
+  int guard = 0;
+  while (!q.Empty() && (guard++ < 100)) {
+    if (frontCells.empty() || frontCells.back() != q.GetCell())
+      frontCells.push_back(q.GetCell());
+    wxString cmd = q.GetCommand();
+    if (!cmd.IsEmpty())
+      cmds.push_back(cmd);
+    q.RemoveFirst();
+  }
+
+  THEN("the commented cell yields no command") {
+    REQUIRE(cmds.size() == 2);
+    REQUIRE(cmds[0] == wxS("first;"));
+    REQUIRE(cmds[1] == wxS("last;"));
+  }
+  THEN("but it does become the working cell between its neighbors") {
+    REQUIRE(frontCells.size() == 3);
+    REQUIRE(frontCells[0] == c0);
+    REQUIRE(frontCells[1] == commented);
+    REQUIRE(frontCells[2] == c2);
   }
 }
 

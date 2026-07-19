@@ -75,11 +75,34 @@ private:
   //! freed cell (see "Long-lived cell references" in CellPtr.h).
   CellPtr<EditorCell> m_editor;
   AutoComplete::autoCompletionType m_type;
+  /*! The directory relative file names are resolved against
+
+    (the worksheet file's directory). Needed to re-scan directories while a
+    file-name completion descends into subdirectories bash-style.
+  */
+  wxString m_fileBaseDir;
 
   //! The position of our pop-up
   wxPoint m_position;
   //! The visible rectangle of the screen
   wxRect m_screenRect;
+
+  //! Does this popup complete file names?
+  bool CompletesFiles() const { return AutoComplete::CompletesFiles(m_type); }
+  //! Is this completion a directory (a quoted name with a trailing slash)?
+  static bool IsDirectoryCompletion(const wxString &completion) {
+    return completion.EndsWith(wxS("/\""));
+  }
+  /*! Descend into the directory named by \p completion instead of finishing
+
+    Replaces the editor text by the completion without its closing quote,
+    re-scans that directory and re-filters, so the popup now offers the
+    directory's contents.
+
+    \return false if the completion equals the current partial (an empty
+    directory - there is nothing to descend into), true otherwise.
+  */
+  bool DescendIntoDirectory(const wxString &completion);
 
 public:
   //! Define where the popup will appear on Create()
@@ -99,11 +122,22 @@ public:
     \param autocomplete The autocompletion data
     \param type The type of completion needed
     \param doneptr A pointer that will be set to NULL when the pop-up is destroyed.
+    \param fileBaseDir The directory relative file names are resolved against
+    (used by the file-name completion types to descend into subdirectories).
   */
   AutocompletePopup(wxWindow *parent, EditorCell *editor, AutoComplete *autocomplete,
-                    AutoComplete::autoCompletionType type, AutocompletePopup **doneptr);
+                    AutoComplete::autoCompletionType type, AutocompletePopup **doneptr,
+                    const wxString &fileBaseDir = {});
 
-  void UpdateResults();
+  /*! Re-filter the completion list against the current partial
+
+    \param allowAutoFinish With true, a single remaining completion is
+    applied immediately (finishing the completion or descending into the
+    directory it names). Pass false when the user is deleting: silently
+    re-inserting what was just deleted would fight the user - the single
+    match is then only displayed.
+  */
+  void UpdateResults(bool allowAutoFinish = true);
 
   void OnClick(wxMouseEvent &event);
 };

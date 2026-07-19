@@ -1,5 +1,30 @@
 # Current development version
 
+- The statistics sidebar now grows its scrollable height to its wrapped
+  button rows, like the other sidebars: when the sidebar was narrow, the
+  buttons below the fold could neither be shown nor scrolled to.
+- The POT file for translators now also includes the translatable strings
+  from the source subdirectories (cells, sidebars, wizards, ...): the
+  extraction glob was flat and silently dropped them.
+- Evaluating a cell whose input is commented out entirely now removes the
+  cell's stale output. Previously such a cell was skipped silently while a
+  multi-cell evaluation advanced past it, keeping output that no longer
+  matches the input.
+- LDB mode: after answering an ldb> prompt (or clicking elsewhere), the next
+  prompt's input line could no longer be reached - clicking into it did
+  nothing and keystrokes opened a new worksheet cell instead. The LDB prompt
+  now engages the full question machinery, so clicking into the cell that
+  holds the prompt reopens its input line, and pressing Enter falls back to
+  the prompt's answer even if the cursor wandered off it. The pending prompt
+  is also cleaned up when the Lisp process ends.
+- File name arguments (openr(), read_matrix(), load(), demo(), ...) now
+  autocomplete bash-style: the popup lists the directory the partial file
+  name points into, every printable character (including dots and dashes)
+  narrows the list, Backspace widens it again instead of closing the popup,
+  and choosing a directory descends into it and continues completing there.
+  Also fixed: completing right after the opening quote works even when the
+  editor auto-added the closing quote, and the offered names no longer
+  carry a spurious leading "/" at the top level.
 - Fixed a layout bug where the horizontal extent of parenthesized content was
   underestimated: with nested parenthesis/fraction/subscript constructs that
   were only partially broken into lines, cells inside a 2D fraction could be

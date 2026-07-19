@@ -110,6 +110,22 @@ public:
   //! Assemble a list of files
   void UpdateGeneralFiles(wxString partial, const wxString &maximaDir);
 
+  //! Is this completion type one that completes file names?
+  static bool CompletesFiles(autoCompletionType type) {
+    return (type == loadfile) || (type == demofile) || (type == generalfile);
+  }
+
+  /*! Re-scan the directory a file-name completion currently points into.
+
+    Dispatches to UpdateDemoFiles()/UpdateLoadFiles()/UpdateGeneralFiles()
+    depending on \p type. Called while a file-name completion is in progress
+    whenever the partial gains or loses a directory component (the user typed
+    a "/", descended into a subdirectory or deleted back across a "/"), so
+    the popup can offer that directory's contents bash-style.
+  */
+  void UpdateFiles(autoCompletionType type, const wxString &partial,
+                   const wxString &maximaDir);
+
   //! Add words to the list of words that appear in the workSheet's code cells
   void AddWorksheetWords(const WordList &words);
   void AddWorksheetWords(WordList::const_iterator begin, WordList::const_iterator end);

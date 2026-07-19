@@ -4,7 +4,7 @@
 #include "fuzz_init.h"
 #include "WXMformat.h"
 #include "Configuration.h"
-#include "Worksheet.h"
+#include "worksheet/Worksheet.h"
 #include <wx/app.h>
 #include <wx/frame.h>
 #include <wx/dcmemory.h>

@@ -34,10 +34,29 @@
 #include <wx/sizer.h>
 #include <wx/panel.h>
 
+class Buttonwrapsizer;
+
 class StatSidebar : public wxScrolled<wxPanel>
 {
 public:
   explicit StatSidebar(wxWindow *parent, int ID = wxID_ANY);
+
+  /*! Grow the virtual height to the wrapped button rows
+
+    Public so tests can drive it directly: under a headless wxGTK without an
+    event loop SetSize() does not deliver wxEVT_SIZE synchronously.
+  */
+  void UpdateVirtualSize();
+
+protected:
+  //! Calls UpdateVirtualSize() whenever the sidebar's size changes
+  void OnSize(wxSizeEvent &event);
+
+private:
+  //! The wrapping sizer holding the Mean/Median/Variance/Deviation buttons
+  Buttonwrapsizer *m_wrapSizer = {};
+  //! The last virtual size we set, to only re-set it on real changes
+  wxSize m_lastVirtualSize;
 };
 
 #endif // STATSIDEBAR_H

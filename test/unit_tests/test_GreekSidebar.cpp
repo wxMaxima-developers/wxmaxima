@@ -40,6 +40,7 @@
 
 #include "Configuration.h"
 #include "sidebars/GreekSidebar.h"
+#include "sidebars/StatSidebar.h"
 
 #include <cstdlib>
 #ifndef _WIN32
@@ -72,6 +73,25 @@ static void EnsureDisplay() {
     sleep(1);
   }
 #endif
+}
+
+SCENARIO("A too-small statistics sidebar keeps its buttons reachable by scrolling") {
+  // Same bug family as the Greek sidebar: a Buttonwrapsizer's own min height
+  // is a deliberately-small rearrangeable minimum, so without pinning it the
+  // virtual height underestimates the wrapped rows and the buttons below the
+  // fold can be neither shown nor scrolled to.
+  StatSidebar *sidebar = new StatSidebar(g_frame, wxID_ANY);
+
+  GIVEN("a size far too small to show every button") {
+    sidebar->SetSize(wxSize(70, 30));
+    sidebar->UpdateVirtualSize();
+
+    THEN("its virtual height exceeds its client height") {
+      REQUIRE(sidebar->GetClientSize().x > 0);
+      REQUIRE(sidebar->GetVirtualSize().y > sidebar->GetClientSize().y);
+    }
+  }
+  sidebar->Destroy();
 }
 
 SCENARIO("A too-small Greek sidebar keeps its wrapped rows reachable by scrolling") {

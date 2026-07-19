@@ -479,6 +479,23 @@ void AutoComplete::LoadableFiles_BackgroundTask(stop_token stopToken, wxString s
   QueueEvent(event);
 }
 
+void AutoComplete::UpdateFiles(autoCompletionType type, const wxString &partial,
+                               const wxString &maximaDir) {
+  switch (type) {
+  case demofile:
+    UpdateDemoFiles(partial, maximaDir);
+    break;
+  case loadfile:
+    UpdateLoadFiles(partial, maximaDir);
+    break;
+  case generalfile:
+    UpdateGeneralFiles(partial, maximaDir);
+    break;
+  default:
+    break;
+  }
+}
+
 void AutoComplete::UpdateDemoFiles(wxString partial, const wxString &maximaDir) {
   // Remove the opening quote from the partial.
   if (partial.StartsWith(wxS('\"')))
@@ -490,7 +507,12 @@ void AutoComplete::UpdateDemoFiles(wxString partial, const wxString &maximaDir) 
     partial.Clear();
   else
     partial = partial.Left(pos);
-  wxString prefix = partial + wxS("/");
+  // The prefix every completion carries: the directory part the user already
+  // typed. Nothing (not "/", which would turn relative names absolute) while
+  // the partial has no directory component yet.
+  wxString prefix;
+  if (!partial.IsEmpty())
+    prefix = partial + wxS("/");
 
   // Determine if we need to add the path to maxima's current dir to the path in
   // partial
@@ -526,7 +548,12 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, const wxString &maximaDi
     partial.Clear();
   else
     partial = partial.Left(pos);
-  wxString prefix = partial + wxS("/");
+  // The prefix every completion carries: the directory part the user already
+  // typed. Nothing (not "/", which would turn relative names absolute) while
+  // the partial has no directory component yet.
+  wxString prefix;
+  if (!partial.IsEmpty())
+    prefix = partial + wxS("/");
 
   // Determine if we need to add the path to maxima's current dir to the path in
   // partial
@@ -538,6 +565,13 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, const wxString &maximaDi
   // Determine the name of the directory
   if ((partial != wxEmptyString) && wxDirExists(partial))
     partial += "/";
+
+  // Replace the previous directory's listing: keeping it would offer paths
+  // from other directory levels alongside this one's contents.
+  {
+    const std::lock_guard<std::mutex> lock(m_keywordsLock);
+    m_wordList.at(generalfile).clear();
+  }
 
   // Add all files from the maxima directory to the demo file list
   if (partial != wxS("//")) {
@@ -561,7 +595,12 @@ void AutoComplete::UpdateLoadFiles(wxString partial, const wxString &maximaDir) 
     partial.Clear();
   else
     partial = partial.Left(pos);
-  wxString prefix = partial + wxS("/");
+  // The prefix every completion carries: the directory part the user already
+  // typed. Nothing (not "/", which would turn relative names absolute) while
+  // the partial has no directory component yet.
+  wxString prefix;
+  if (!partial.IsEmpty())
+    prefix = partial + wxS("/");
 
   // Determine if we need to add the path to maxima's current dir to the path in
   // partial
@@ -595,8 +634,8 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
   std::vector<wxString> completions;
   std::vector<wxString> perfectCompletions;
 
-  if (((type == AutoComplete::demofile) || (type == AutoComplete::loadfile)) &&
-      (partial.EndsWith("\"")))
+  if (CompletesFiles(type) && (partial.EndsWith("\"")) &&
+      (!partial.EndsWith("\\\"")))
     partial = partial.Left(partial.Length() - 1);
 
   wxASSERT_MSG((type >= command) && (type <= unit),

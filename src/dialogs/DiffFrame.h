@@ -21,7 +21,7 @@
 #ifndef DIFFFRAME_H
 #define DIFFFRAME_H
 
-#include "Worksheet.h"
+#include "worksheet/Worksheet.h"
 #include <wx/wx.h>
 #include <wx/srchctrl.h>
 #include <vector>

@@ -289,6 +289,17 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(EditorCellInvariants test_EditorCellInvariants)
 
+    # The directory-scanning half of the bash-like file-name completion:
+    # openr()/load()/demo() file arguments complete against the directory the
+    # partial currently points into, descending level by level.
+    add_executable(test_Autocomplete
+        test_Autocomplete.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_Autocomplete PUBLIC cxx_std_20)
+    target_link_libraries(test_Autocomplete PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_test(Autocomplete test_Autocomplete)
+
     # Layout idempotency invariants: after zoom / canvas-size changes, the
     # converged layout must equal a fresh layout of the same content - catches
     # any cell that stays marked "recalculated" while holding stale geometry

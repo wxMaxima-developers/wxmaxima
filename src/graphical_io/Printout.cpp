@@ -31,7 +31,7 @@
 #define DPI_REFERENCE 96
 
 #include "Printout.h"
-#include "Worksheet.h"
+#include "worksheet/Worksheet.h"
 
 #include <wx/busyinfo.h>
 #include <wx/config.h>

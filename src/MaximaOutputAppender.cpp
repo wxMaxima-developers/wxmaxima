@@ -26,7 +26,7 @@
 
 #include "MaximaOutputAppender.h"
 #include "wxMaxima.h"
-#include "Worksheet.h"
+#include "worksheet/Worksheet.h"
 #include "MathParser.h"
 #include "MaximaEvaluator.h"
 #include "cells/GroupCell.h"

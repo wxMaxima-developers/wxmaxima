@@ -218,6 +218,11 @@ void MaximaEvaluator::EvaluateEvent(wxCommandEvent &WXUNUSED(event)) {
   // reads) rather than the control socket, and do not queue it for evaluation.
   if (m_wxMaxima.m_inLDB) {
     EditorCell *ldbEditor = m_wxMaxima.GetWorksheet()->GetActiveCell();
+    // The cursor may have wandered off the answer line; the LDB command is
+    // then whatever the answer cell holds.
+    if (!ldbEditor)
+      ldbEditor =
+        m_wxMaxima.GetWorksheet()->GetDocumentCellPointers().GetAnswerCell();
     if (ldbEditor) {
       const wxString cmd = ldbEditor->ToString(true);
       m_wxMaxima.m_processManager.WriteToMaximaStdin(cmd);

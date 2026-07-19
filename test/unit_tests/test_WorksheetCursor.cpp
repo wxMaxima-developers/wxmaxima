@@ -38,7 +38,7 @@
 #include <wx/log.h>
 
 #include "Configuration.h"
-#include "Worksheet.h"
+#include "worksheet/Worksheet.h"
 #include "cells/EditorCell.h"
 #include "cells/GroupCell.h"
 

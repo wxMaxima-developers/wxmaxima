@@ -38,7 +38,7 @@
 #include <wx/wupdlock.h>
 #include <algorithm>
 
-void AutocompletePopup::UpdateResults() {
+void AutocompletePopup::UpdateResults(bool allowAutoFinish) {
   // The editor we are completing into may have been destroyed while this popup
   // was open (m_editor is a CellPtr and auto-nulls). If so there is nothing to
   // complete; our callers dismiss the popup.
@@ -49,7 +49,8 @@ void AutocompletePopup::UpdateResults() {
 
   switch (m_completions.size()) {
   case 1:
-    if ((m_type == AutoComplete::esccommand) && (m_partial.Length() < 2)) {
+    if (((m_type == AutoComplete::esccommand) && (m_partial.Length() < 2)) ||
+        !allowAutoFinish) {
       DeleteAllItems();
       for (unsigned int i = 0; i < m_completions.size(); i++)
         InsertItem(i, m_completions.at(i));
@@ -58,6 +59,12 @@ void AutocompletePopup::UpdateResults() {
       Focus(0);
       break;
     }
+
+    // A single directory match: descend into it and keep completing,
+    // bash-style, instead of finishing the completion.
+    if (CompletesFiles() && IsDirectoryCompletion(m_completions.at(0)) &&
+        DescendIntoDirectory(m_completions.at(0)))
+      return;
 
     if (m_type != AutoComplete::esccommand) {
       m_editor->ReplaceSelection(m_editor->GetSelectionString(),
@@ -120,6 +127,12 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
       if (m_type != AutoComplete::esccommand)
         m_editor->ReplaceSelection(m_editor->GetSelectionString(), m_partial,
                                    true);
+      // The common prefix may end right at a directory boundary; make sure
+      // that directory's contents are on offer.
+      if (CompletesFiles() && m_partial.EndsWith(wxS("/"))) {
+        m_autocomplete->UpdateFiles(m_type, m_partial, m_fileBaseDir);
+        UpdateResults();
+      }
     }
     break;
   case WXK_RETURN:
@@ -130,6 +143,14 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
       selection = 0;
 
     if (m_completions.size() > 0) {
+      // Accepting a directory descends into it and continues completing
+      // there, bash-style.
+      if (CompletesFiles() &&
+          IsDirectoryCompletion(m_completions.at(selection)) &&
+          DescendIntoDirectory(m_completions.at(selection))) {
+        m_parent->GetParent()->Refresh();
+        break;
+      }
       if (m_type != AutoComplete::esccommand)
         m_editor->ReplaceSelection(m_editor->GetSelectionString(),
                                    m_completions.at(selection));
@@ -215,17 +236,33 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event) {
     wxString oldString = m_partial;
     if (m_partial != wxEmptyString)
       m_partial = m_partial.Left(m_partial.Length() - 1);
-    if (oldString != wxEmptyString) {
-      UpdateResults();
-
-      if (m_type != AutoComplete::esccommand)
-        m_editor->ReplaceSelection(oldString, m_partial, true);
-    } else
+    if (m_type == AutoComplete::esccommand) {
+      // Esc-command completion keeps its traditional behavior: deleting ends
+      // the completion.
+      if (oldString != wxEmptyString)
+        UpdateResults();
+      else
+        m_parent->GetParent()->Refresh();
+      if (!m_editor->IsActive())
+        m_editor->ActivateCursor();
+      return void(Destroy());
+    }
+    if (oldString == wxEmptyString) {
+      // Nothing left to delete from the completion: end it.
       m_parent->GetParent()->Refresh();
-    if (!m_editor->IsActive())
-      m_editor->ActivateCursor();
-
-    return void(Destroy());
+      if (!m_editor->IsActive())
+        m_editor->ActivateCursor();
+      return void(Destroy());
+    }
+    m_editor->ReplaceSelection(oldString, m_partial, true);
+    // Deleting back across a "/" moves the completion into the parent
+    // directory, whose contents may not be scanned yet.
+    if (CompletesFiles() && oldString.EndsWith(wxS("/")))
+      m_autocomplete->UpdateFiles(m_type, m_partial, m_fileBaseDir);
+    // Widen the filter, but keep the popup open: silently re-completing the
+    // just-deleted text would fight the user.
+    UpdateResults(false);
+    break;
   }
   default:
     event.Skip();
@@ -275,6 +312,13 @@ void AutocompletePopup::OnClick(wxMouseEvent &WXUNUSED(event)) {
 
   if (m_value < 0)
     m_value = 0;
+  // Clicking a directory descends into it and continues completing there,
+  // bash-style.
+  if (CompletesFiles() && IsDirectoryCompletion(m_completions.at(m_value)) &&
+      DescendIntoDirectory(m_completions.at(m_value))) {
+    m_parent->GetParent()->Refresh();
+    return;
+  }
   m_partial = m_completions.at(m_value);
   if (m_type != AutoComplete::esccommand)
     m_editor->ReplaceSelection(m_editor->GetSelectionString(), m_partial);
@@ -288,12 +332,31 @@ void AutocompletePopup::OnClick(wxMouseEvent &WXUNUSED(event)) {
 
 AutocompletePopup::~AutocompletePopup() { GetParent()->SetFocus(); }
 
+bool AutocompletePopup::DescendIntoDirectory(const wxString &completion) {
+  // Strip the closing quote: the user continues typing inside the string.
+  wxString newPartial = completion;
+  if (newPartial.EndsWith(wxS("\"")))
+    newPartial.Truncate(newPartial.Length() - 1);
+
+  // An empty directory offers itself as its only completion; there is
+  // nothing to descend into.
+  if (newPartial == m_partial)
+    return false;
+
+  m_editor->ReplaceSelection(m_editor->GetSelectionString(), newPartial, true);
+  m_partial = newPartial;
+  m_autocomplete->UpdateFiles(m_type, m_partial, m_fileBaseDir);
+  UpdateResults();
+  return true;
+}
+
 AutocompletePopup::AutocompletePopup(wxWindow *parent, EditorCell *editor,
                                      AutoComplete *autocomplete,
                                      AutoComplete::autoCompletionType type,
-                                     AutocompletePopup **doneptr)
+                                     AutocompletePopup **doneptr,
+                                     const wxString &fileBaseDir)
   : m_parent(parent), m_doneptr{*doneptr}, m_autocomplete(autocomplete),
-    m_editor(editor), m_type(type) {
+    m_editor(editor), m_type(type), m_fileBaseDir(fileBaseDir) {
   wxASSERT_MSG(!*doneptr,
                "Attempted to create coexistent autocomplete popups.");
 
@@ -312,15 +375,19 @@ void AutocompletePopup::OnChar(wxKeyEvent &event) {
     return void(Destroy());
   wxUniChar key = event.GetUnicodeKey();
   if (((m_type == AutoComplete::esccommand) && wxIsprint(key)) ||
-      ((wxIsalnum(key)) || (key == wxS('_')) || (key == wxS('\"')) ||
-       (((m_type == AutoComplete::generalfile) ||
-         (m_type == AutoComplete::loadfile) ||
-         (m_type == AutoComplete::demofile)) &&
-        (key == wxS('/'))))) {
+      // File names may contain nearly any character (dots, dashes,
+      // spaces...), so while completing file names every printable key
+      // narrows the filter bash-style instead of ending the completion.
+      (CompletesFiles() && wxIsprint(key)) ||
+      (wxIsalnum(key)) || (key == wxS('_')) || (key == wxS('\"'))) {
     wxString oldString = m_editor->GetSelectionString();
     m_partial += key;
     if (m_type != AutoComplete::esccommand)
       m_editor->ReplaceSelection(oldString, m_partial, true);
+    // Typing a "/" moves the completion into a subdirectory, whose contents
+    // haven't been scanned yet.
+    if (CompletesFiles() && (key == wxS('/')))
+      m_autocomplete->UpdateFiles(m_type, m_partial, m_fileBaseDir);
     UpdateResults();
     return;
   } else if (wxIsprint(key)) {
