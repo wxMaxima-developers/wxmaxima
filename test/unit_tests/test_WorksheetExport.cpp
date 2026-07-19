@@ -59,7 +59,7 @@
 
 #include "Configuration.h"
 #include "MathParser.h"
-#include "Worksheet.h"
+#include "worksheet/Worksheet.h"
 #include "cells/GroupCell.h"
 
 #include <cstdlib>

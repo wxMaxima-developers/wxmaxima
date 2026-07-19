@@ -54,7 +54,7 @@ extern unsigned char view_refresh_svg_gz[];
 #define CONFIGDIALOGUE_H
 
 #include "cells/TextStyle.h"
-#include "../Worksheet.h"
+#include "worksheet/Worksheet.h"
 #include "../Configuration.h"
 
 enum

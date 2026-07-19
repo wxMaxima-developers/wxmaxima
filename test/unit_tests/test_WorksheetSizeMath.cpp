@@ -27,7 +27,7 @@
 */
 
 #define CATCH_CONFIG_RUNNER
-#include "WorksheetSizeMath.h"
+#include "worksheet/WorksheetSizeMath.h"
 #include <catch2/catch.hpp>
 
 SCENARIO("A tall document gets a scroll range proportional to its height") {

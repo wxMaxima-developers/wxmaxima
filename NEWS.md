@@ -1,5 +1,8 @@
 # Current development version
 
+- The POT file for translators now also includes the translatable strings
+  from the source subdirectories (cells, sidebars, wizards, ...): the
+  extraction glob was flat and silently dropped them.
 - Evaluating a cell whose input is commented out entirely now removes the
   cell's stale output. Previously such a cell was skipped silently while a
   multi-cell evaluation advanced past it, keeping output that no longer

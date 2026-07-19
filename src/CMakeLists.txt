@@ -163,13 +163,13 @@ set(SOURCE_FILES
     SvgBitmap.cpp
     SvgPanel.cpp
     ToolBar.cpp
-    Worksheet.cpp
-    WorksheetContextMenu.cpp
-    WorksheetDocument.cpp
-    WorksheetEvalQueue.cpp
-    WorksheetExport.cpp
-    WorksheetLayout.cpp
-    WorksheetSearch.cpp
+    worksheet/Worksheet.cpp
+    worksheet/WorksheetContextMenu.cpp
+    worksheet/WorksheetDocument.cpp
+    worksheet/WorksheetEvalQueue.cpp
+    worksheet/WorksheetExport.cpp
+    worksheet/WorksheetLayout.cpp
+    worksheet/WorksheetSearch.cpp
     WrappingStaticText.cpp
     WXMformat.cpp
     WXMXformat.cpp

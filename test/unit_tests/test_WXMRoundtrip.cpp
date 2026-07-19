@@ -46,7 +46,7 @@
 
 #include "Configuration.h"
 #include "WXMformat.h"
-#include "Worksheet.h"
+#include "worksheet/Worksheet.h"
 #include "cells/CellList.h"
 #include "cells/EditorCell.h"
 #include "cells/GroupCell.h"

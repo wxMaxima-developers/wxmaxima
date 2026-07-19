@@ -49,7 +49,7 @@
 
 #include "Configuration.h"
 #include "EvaluationQueue.h"
-#include "Worksheet.h"
+#include "worksheet/Worksheet.h"
 #include "cells/EditorCell.h"
 #include "cells/GroupCell.h"
 #include "cells/TextCell.h"

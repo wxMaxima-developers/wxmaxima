@@ -49,7 +49,7 @@
 
 #include "Configuration.h"
 #include "ToolBar.h"
-#include "Worksheet.h"
+#include "worksheet/Worksheet.h"
 #include "wxMaximaArtProvider.h"
 #include "cells/GroupCell.h"
 #include "sidebars/CharButton.h"

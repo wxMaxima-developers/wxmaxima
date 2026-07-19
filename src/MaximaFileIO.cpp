@@ -27,7 +27,7 @@
 #include "MaximaFileIO.h"
 #include "wxMaxima.h"
 #include "dialogs/LoggingMessageDialog.h"
-#include "Worksheet.h"
+#include "worksheet/Worksheet.h"
 #include "WXMformat.h"
 #include "WXMXformat.h"
 #include "cells/GroupCell.h"

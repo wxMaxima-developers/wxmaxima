@@ -40,8 +40,8 @@
 #include <wx/mstream.h>
 
 #include "Configuration.h"
-#include "Worksheet.h"
-#include "WorksheetContextMenu.h"
+#include "worksheet/Worksheet.h"
+#include "worksheet/WorksheetContextMenu.h"
 #include "cells/EditorCell.h"
 #include "cells/GroupCell.h"
 #include "cells/ImgCell.h"

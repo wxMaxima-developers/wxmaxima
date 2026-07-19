@@ -24,7 +24,7 @@
 
 #include "OutCommon.h"
 #include "cells/GroupCell.h"
-#include "Worksheet.h"
+#include "worksheet/Worksheet.h"
 #include <cmath>
 #include <wx/clipbrd.h>
 #include <wx/filename.h>

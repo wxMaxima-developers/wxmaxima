@@ -39,7 +39,7 @@
 
 #include "CellPointers.h"
 #include "Configuration.h"
-#include "WorksheetLayout.h"
+#include "worksheet/WorksheetLayout.h"
 #include "cells/CellList.h"
 #include "cells/EditorCell.h"
 #include "cells/GroupCell.h"
