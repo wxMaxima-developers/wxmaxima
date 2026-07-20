@@ -70,6 +70,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle"><div class="title">WorksheetDocument Class Reference</div></div>
 </div><!--header-->
@@ -80,6 +81,15 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="WorksheetDocument_8h_source.html">WorksheetDocument.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a597da4ddc26d35569b9346897dff3b72"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#a597da4ddc26d35569b9346897dff3b72">TextUndoResult</a> { <a class="el" href="classWorksheetDocument.html#a597da4ddc26d35569b9346897dff3b72a2df905ed9fb0e7f499818b94f3dbe3c4">CellGone</a>
+, <a class="el" href="classWorksheetDocument.html#a597da4ddc26d35569b9346897dff3b72a773b1ab79b5aa284fc01d1ebb6e73c52">NoOpSkipped</a>
+, <a class="el" href="classWorksheetDocument.html#a597da4ddc26d35569b9346897dff3b72a733d43480c8589b1368e5def6b480415">Applied</a>
+ }</td></tr>
+<tr class="memdesc:a597da4ddc26d35569b9346897dff3b72"><td class="mdescLeft">&#160;</td><td class="mdescRight">What <a class="el" href="classWorksheetDocument.html#aea3c71faab0e9e0002511cbb1ff777e7" title="Apply a pending text-change undo/redo action.">UndoTextChange()</a> did with the action it was given.  <a href="classWorksheetDocument.html#a597da4ddc26d35569b9346897dff3b72">More...</a><br /></td></tr>
+<tr class="separator:a597da4ddc26d35569b9346897dff3b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a41b5b6374e0e74e3743dce43d483fa1a"><td class="memItemLeft" align="right" valign="top"><a id="a41b5b6374e0e74e3743dce43d483fa1a" name="a41b5b6374e0e74e3743dce43d483fa1a"></a>
@@ -120,6 +130,13 @@ const <a class="el" href="classWorksheetCursor.html">WorksheetCursor</a> &amp;&#
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDocumentView</b> (<a class="el" href="classWorksheetDocumentView.html">WorksheetDocumentView</a> *view)</td></tr>
 <tr class="memdesc:a8018540fc5c0916b30a2ad55d4b539ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register the view the document notifies when it edits its own structure. <br /></td></tr>
 <tr class="separator:a8018540fc5c0916b30a2ad55d4b539ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2485bccdfa9cfdb777057564bc07cba6"><td class="memItemLeft" align="right" valign="top"><a id="a2485bccdfa9cfdb777057564bc07cba6" name="a2485bccdfa9cfdb777057564bc07cba6"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanApplyTreeAction</b> (const <a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> &amp;actions) const</td></tr>
+<tr class="memdesc:a2485bccdfa9cfdb777057564bc07cba6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can the tree-undo/redo at the front of the given stack be applied now? <br /></td></tr>
+<tr class="separator:a2485bccdfa9cfdb777057564bc07cba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea3c71faab0e9e0002511cbb1ff777e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWorksheetDocument.html#a597da4ddc26d35569b9346897dff3b72">TextUndoResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#aea3c71faab0e9e0002511cbb1ff777e7">UndoTextChange</a> (const <a class="el" href="classTreeUndoAction.html">TreeUndoAction</a> &amp;action, <a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *undoForThisOperation)</td></tr>
+<tr class="memdesc:aea3c71faab0e9e0002511cbb1ff777e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply a pending text-change undo/redo <code>action</code>.  <br /></td></tr>
+<tr class="separator:aea3c71faab0e9e0002511cbb1ff777e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ec83ad2a0a4dd651eb3dcbf6708c9a3"><td class="memItemLeft" align="right" valign="top"><a id="a3ec83ad2a0a4dd651eb3dcbf6708c9a3" name="a3ec83ad2a0a4dd651eb3dcbf6708c9a3"></a>
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCell</b> () const</td></tr>
 <tr class="memdesc:a3ec83ad2a0a4dd651eb3dcbf6708c9a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The document's last <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>, memoised in m_last (null if empty). <br /></td></tr>
@@ -131,6 +148,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>NumberSections</b> ()
 <tr class="memitem:a5a7df2e2a0c3062f8b87a200df0ed3ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#a5a7df2e2a0c3062f8b87a200df0ed3ae">InsertCells</a> (std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt; &amp;&amp;cells, <a class="el" href="classGroupCell.html">GroupCell</a> *where)</td></tr>
 <tr class="memdesc:a5a7df2e2a0c3062f8b87a200df0ed3ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a list of group cells into the document after <code>where</code>.  <br /></td></tr>
 <tr class="separator:a5a7df2e2a0c3062f8b87a200df0ed3ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e7dda0c9ffb86ec74df2cfa4af106f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#a9e7dda0c9ffb86ec74df2cfa4af106f6">CanRemoveCells</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *start, const <a class="el" href="classGroupCell.html">GroupCell</a> *end) const</td></tr>
+<tr class="memdesc:a9e7dda0c9ffb86ec74df2cfa4af106f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can the range [start,end] (inclusive) be safely removed from the tree?  <br /></td></tr>
+<tr class="separator:a9e7dda0c9ffb86ec74df2cfa4af106f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa11aac1f488aad6dc935062e01df2a94"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#aa11aac1f488aad6dc935062e01df2a94">RemoveCells</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *start, <a class="el" href="classGroupCell.html">GroupCell</a> *end)</td></tr>
+<tr class="memdesc:aa11aac1f488aad6dc935062e01df2a94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the range [start,end] (inclusive) from the tree.  <br /></td></tr>
+<tr class="separator:aa11aac1f488aad6dc935062e01df2a94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e2180cfeeb6314874cc28750efe7e38"><td class="memItemLeft" align="right" valign="top"><a id="a7e2180cfeeb6314874cc28750efe7e38" name="a7e2180cfeeb6314874cc28750efe7e38"></a>
 const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentFile</b> () const</td></tr>
 <tr class="memdesc:a7e2180cfeeb6314874cc28750efe7e38"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file this document was last loaded from / saved to (empty if none). <br /></td></tr>
@@ -177,7 +200,71 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSaved</b> () const<
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The view-independent state and commands of an edited worksheet document. </p>
 <p>Currently a small aggregate that <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> delegates to; it grows as further document state is migrated off <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>. Held by value by <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a597da4ddc26d35569b9346897dff3b72" name="a597da4ddc26d35569b9346897dff3b72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a597da4ddc26d35569b9346897dff3b72">&#9670;&#160;</a></span>TextUndoResult</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="classWorksheetDocument.html#a597da4ddc26d35569b9346897dff3b72">WorksheetDocument::TextUndoResult</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>What <a class="el" href="classWorksheetDocument.html#aea3c71faab0e9e0002511cbb1ff777e7" title="Apply a pending text-change undo/redo action.">UndoTextChange()</a> did with the action it was given. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a597da4ddc26d35569b9346897dff3b72a2df905ed9fb0e7f499818b94f3dbe3c4" name="a597da4ddc26d35569b9346897dff3b72a2df905ed9fb0e7f499818b94f3dbe3c4"></a>CellGone&#160;</td><td class="fielddoc"><p>The cell no longer exists; the caller should drop the action. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a597da4ddc26d35569b9346897dff3b72a773b1ab79b5aa284fc01d1ebb6e73c52" name="a597da4ddc26d35569b9346897dff3b72a773b1ab79b5aa284fc01d1ebb6e73c52"></a>NoOpSkipped&#160;</td><td class="fielddoc"><p>The cell's text already matched the target state (a later, since reverted edit reproduced it); nothing to apply, try the next action. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a597da4ddc26d35569b9346897dff3b72a733d43480c8589b1368e5def6b480415" name="a597da4ddc26d35569b9346897dff3b72a733d43480c8589b1368e5def6b480415"></a>Applied&#160;</td><td class="fielddoc"><p>The cell's text/selection were reverted to the recorded old state. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9e7dda0c9ffb86ec74df2cfa4af106f6" name="a9e7dda0c9ffb86ec74df2cfa4af106f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e7dda0c9ffb86ec74df2cfa4af106f6">&#9670;&#160;</a></span>CanRemoveCells()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool WorksheetDocument::CanRemoveCells </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Can the range [start,end] (inclusive) be safely removed from the tree? </p>
+<p>Refuses if either end is null, or if the range contains the cell <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is currently evaluating. </p>
+
+</div>
+</div>
 <a id="a5a7df2e2a0c3062f8b87a200df0ed3ae" name="a5a7df2e2a0c3062f8b87a200df0ed3ae"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5a7df2e2a0c3062f8b87a200df0ed3ae">&#9670;&#160;</a></span>InsertCells()</h2>
 
@@ -265,6 +352,37 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSaved</b> () const<
 
 </div>
 </div>
+<a id="aa11aac1f488aad6dc935062e01df2a94" name="aa11aac1f488aad6dc935062e01df2a94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa11aac1f488aad6dc935062e01df2a94">&#9670;&#160;</a></span>RemoveCells()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt; WorksheetDocument::RemoveCells </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Remove the range [start,end] (inclusive) from the tree. </p>
+<p>Pure structural surgery plus the document-side bookkeeping it implies: dequeues the removed cells from the evaluation queue, clears their cached output bitmaps, splices them out of the tree, renumbers sections if a foldable or image cell left, and notifies the view (recalc/redraw/ modified) through the registered <a class="el" href="classWorksheetDocumentView.html" title="The view notifications a WorksheetDocument emits when it edits itself.">WorksheetDocumentView</a>. Returns the removed cells (still linked to each other) so the caller can push them onto its undo buffer, or null if <code>start</code> / <code>end</code> don't form a removable range (see <a class="el" href="classWorksheetDocument.html#a9e7dda0c9ffb86ec74df2cfa4af106f6" title="Can the range [start,end] (inclusive) be safely removed from the tree?">CanRemoveCells()</a>). The caller (<a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>) still handles the cursor/selection housekeeping around the deletion (moving the cursor to a sane place before cells vanish out from under it) and the layout-position refresh, both view concerns. </p>
+
+</div>
+</div>
 <a id="a1ba7f4fe0df647d7037f84b0501debd9" name="a1ba7f4fe0df647d7037f84b0501debd9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1ba7f4fe0df647d7037f84b0501debd9">&#9670;&#160;</a></span>SetSaved()</h2>
 
@@ -311,6 +429,37 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSaved</b> () const<
 
 <p>Mutable access to the owning pointer of the cell tree. </p>
 <p>Transitional: while the tree-editing surgery still lives in <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>, it reseats the head of the list (moves a new tree in, resets it, splices), so it needs the unique_ptr itself, not just <a class="el" href="classWorksheetDocument.html#ad2234fe1e5369878511fd26ca443e4b4" title="The first GroupCell of the document (null when the document is empty).">GetTree()</a>. Moves onto <a class="el" href="classWorksheetDocument.html" title="The view-independent state and commands of an edited worksheet document.">WorksheetDocument</a> with the tree-surgery methods in a later increment. </p>
+
+</div>
+</div>
+<a id="aea3c71faab0e9e0002511cbb1ff777e7" name="aea3c71faab0e9e0002511cbb1ff777e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea3c71faab0e9e0002511cbb1ff777e7">&#9670;&#160;</a></span>UndoTextChange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classWorksheetDocument.html#a597da4ddc26d35569b9346897dff3b72">WorksheetDocument::TextUndoResult</a> WorksheetDocument::UndoTextChange </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classTreeUndoAction.html">TreeUndoAction</a> &amp;&#160;</td>
+          <td class="paramname"><em>action</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *&#160;</td>
+          <td class="paramname"><em>undoForThisOperation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Apply a pending text-change undo/redo <code>action</code>. </p>
+<p>Pure part of <a class="el" href="group__UndoBufferFill.html#ga407d02d9a242ff4d83b0aeb467bfd04f" title="Undo a text change.">Worksheet::TreeUndoTextChange()</a>: checks the target cell is still part of the tree, detects a no-op (the text to restore is already there), records the cell's CURRENT state into <code>undoForThisOperation</code> (so this undo can itself be redone) and reverts the cell's text/selection to the recorded old state. The caller still has to move the cursor to the affected cell and schedule its recalculation/redraw on Applied, or retry the next action on NoOpSkipped - both view/cursor concerns. </p>
 
 </div>
 </div>

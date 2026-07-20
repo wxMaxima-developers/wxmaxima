@@ -113,6 +113,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad02361b7e9c08a3bc88a7b750367178a"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCodeEditorCell.html#ad02361b7e9c08a3bc88a7b750367178a">XMLTypeAttribute</a> () const override</td></tr>
 <tr class="memdesc:ad02361b7e9c08a3bc88a7b750367178a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code cells always serialize as type="input".  <br /></td></tr>
 <tr class="separator:ad02361b7e9c08a3bc88a7b750367178a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadf6a7ed34a3e21300c4c54a082a2b30"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCodeEditorCell.html#aadf6a7ed34a3e21300c4c54a082a2b30">ToRTF</a> () const override</td></tr>
+<tr class="memdesc:aadf6a7ed34a3e21300c4c54a082a2b30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code serializes to RTF snippet-by-snippet, keeping the syntax highlighting; prose maps its heading/text style in the base.  <br /></td></tr>
+<tr class="separator:aadf6a7ed34a3e21300c4c54a082a2b30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86be10ed007378c49b1008b6cb6d0792"><td class="memItemLeft" align="right" valign="top"><a id="a86be10ed007378c49b1008b6cb6d0792" name="a86be10ed007378c49b1008b6cb6d0792"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateSelectionString</b> ()</td></tr>
 <tr class="separator:a86be10ed007378c49b1008b6cb6d0792"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -230,9 +233,6 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ToHTML</b> () con
 <tr class="memitem:aa5f7bab5e50995fa3e022521ff30779a"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#aa5f7bab5e50995fa3e022521ff30779a">ToMatlab</a> (bool dontLimitToSelection) const</td></tr>
 <tr class="memdesc:aa5f7bab5e50995fa3e022521ff30779a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the current cell to a string.  <br /></td></tr>
 <tr class="separator:aa5f7bab5e50995fa3e022521ff30779a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a306bdd1169df188b11f673e243a39f9d"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a306bdd1169df188b11f673e243a39f9d">ToRTF</a> () const override</td></tr>
-<tr class="memdesc:a306bdd1169df188b11f673e243a39f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the current cell to RTF code.  <br /></td></tr>
-<tr class="separator:a306bdd1169df188b11f673e243a39f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a5b9c7481505e976eee32c9bc465d76"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a3a5b9c7481505e976eee32c9bc465d76">ToString</a> () const override</td></tr>
 <tr class="memdesc:a3a5b9c7481505e976eee32c9bc465d76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cell's representation as a string.  <br /></td></tr>
 <tr class="separator:a3a5b9c7481505e976eee32c9bc465d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1088,6 +1088,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>InvalidateListCache</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:a43a98e45fe392edc23b5b6c5053fae78"><td class="memItemLeft" align="right" valign="top"><a id="a43a98e45fe392edc23b5b6c5053fae78" name="a43a98e45fe392edc23b5b6c5053fae78"></a>
+std::vector&lt; <a class="el" href="classEditorCell_1_1StyledText.html">StyledText</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_styledText</b></td></tr>
+<tr class="memdesc:a43a98e45fe392edc23b5b6c5053fae78"><td class="mdescLeft">&#160;</td><td class="mdescRight">The styled-run rendering representation of m_text; see <a class="el" href="classEditorCell_1_1StyledText.html" title="A piece of styled text for syntax highlighting.">StyledText</a>. <br /></td></tr>
+<tr class="separator:a43a98e45fe392edc23b5b6c5053fae78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memItemLeft" align="right" valign="top">wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a82735e7fb2d5fd1dbefd3a37ae758b32">m_currentPoint</a> {-1, -1}</td></tr>
 <tr class="memdesc:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="mdescLeft">&#160;</td><td class="mdescRight">The point in the work sheet at which this cell begins.  <br /></td></tr>
 <tr class="separator:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4408,8 +4412,8 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 
 </div>
 </div>
-<a id="a306bdd1169df188b11f673e243a39f9d" name="a306bdd1169df188b11f673e243a39f9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a306bdd1169df188b11f673e243a39f9d">&#9670;&#160;</a></span>ToRTF()</h2>
+<a id="aadf6a7ed34a3e21300c4c54a082a2b30" name="aadf6a7ed34a3e21300c4c54a082a2b30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadf6a7ed34a3e21300c4c54a082a2b30">&#9670;&#160;</a></span>ToRTF()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4418,7 +4422,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">wxString EditorCell::ToRTF </td>
+          <td class="memname">wxString CodeEditorCell::ToRTF </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -4426,12 +4430,12 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Convert the current cell to RTF code. </p>
+<p>Code serializes to RTF snippet-by-snippet, keeping the syntax highlighting; prose maps its heading/text style in the base. </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html#afe07195285a0666f89fc025d2d0ecbc7">Cell</a>.</p>
 
