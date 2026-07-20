@@ -94,6 +94,33 @@ public:
   //! Register the view the document notifies when it edits its own structure.
   void SetDocumentView(WorksheetDocumentView *view) { m_view = view; }
 
+  //! Can the tree-undo/redo at the front of the given stack be applied now?
+  bool CanApplyTreeAction(const UndoActions &actions) const;
+
+  //! What UndoTextChange() did with the action it was given.
+  enum class TextUndoResult {
+    //! The cell no longer exists; the caller should drop the action.
+    CellGone,
+    //! The cell's text already matched the target state (a later, since
+    //! reverted edit reproduced it); nothing to apply, try the next action.
+    NoOpSkipped,
+    //! The cell's text/selection were reverted to the recorded old state.
+    Applied
+  };
+
+  /*! Apply a pending text-change undo/redo \p action.
+
+    Pure part of Worksheet::TreeUndoTextChange(): checks the target cell is
+    still part of the tree, detects a no-op (the text to restore is already
+    there), records the cell's CURRENT state into \p undoForThisOperation (so
+    this undo can itself be redone) and reverts the cell's text/selection to
+    the recorded old state. The caller still has to move the cursor to the
+    affected cell and schedule its recalculation/redraw on Applied, or retry
+    the next action on NoOpSkipped - both view/cursor concerns.
+  */
+  TextUndoResult UndoTextChange(const TreeUndoAction &action,
+                                UndoActions *undoForThisOperation);
+
   //! The document's last GroupCell, memoised in m_last (null if empty).
   GroupCell *GetLastCell() const;
 

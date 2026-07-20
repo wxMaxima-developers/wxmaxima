@@ -191,3 +191,54 @@ std::unique_ptr<GroupCell> WorksheetDocument::RemoveCells(GroupCell *start,
 
   return removed;
 }
+
+bool WorksheetDocument::CanApplyTreeAction(const UndoActions &actions) const {
+  if (actions.empty())
+    return false;
+
+  // If the action will delete cells we have to look if we are allowed to.
+  if (actions.front().m_newCellsEnd)
+    return CanRemoveCells(actions.front().m_start, actions.front().m_newCellsEnd);
+  return true;
+}
+
+WorksheetDocument::TextUndoResult
+WorksheetDocument::UndoTextChange(const TreeUndoAction &action,
+                                  UndoActions *undoForThisOperation) {
+  if (!action.m_start || !m_tree->Contains(action.m_start))
+    return TextUndoResult::CellGone;
+
+  EditorCell *ed = action.m_start->GetEditable();
+
+  // If this action actually does do nothing - the caller should try the next
+  // one instead.
+  if ((action.m_oldText == ed->GetValue()) ||
+      (action.m_oldText + wxS(";") == ed->GetValue()))
+    return TextUndoResult::NoOpSkipped;
+
+  // Document the current state of this cell (including cursor/selection) so
+  // the next action can be undone (i.e. this undo can itself be redone).
+  undoForThisOperation->emplace_front(
+    action.m_start, ed->GetValue(),
+    static_cast<long long>(ed->SelectionStart()),
+    static_cast<long long>(ed->SelectionEnd()));
+
+  // Revert the old cell state.
+  ed->SetValue(action.m_oldText);
+
+  // Restore the cursor/selection that was recorded when this undo entry was
+  // saved.
+  if (action.m_oldSelStart >= 0) {
+    long long selEnd =
+      (action.m_oldSelEnd >= 0) ? action.m_oldSelEnd : action.m_oldSelStart;
+    ed->SetSelection(static_cast<size_t>(action.m_oldSelStart),
+                     static_cast<size_t>(selEnd));
+  }
+
+  wxASSERT_MSG(!action.m_newCellsEnd,
+               _("Bug: Got a request to first change the contents of a cell "
+                 "and to then undelete it."));
+  wxASSERT_MSG(!action.m_oldCells, _("Bug: Undo action with both cell "
+                                     "contents change and cell addition."));
+  return TextUndoResult::Applied;
+}

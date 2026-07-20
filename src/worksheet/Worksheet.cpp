@@ -4169,33 +4169,11 @@ void Worksheet::Undo() {
 }
 
 bool Worksheet::CanTreeUndo() const {
-  const UndoActions &undoActions = GetTreeUndo().UndoStack();
-  if (undoActions.empty())
-    return false;
-  else {
-    // If the next undo action will delete cells we have to look if we are
-    // allowed to do this.
-    if (undoActions.front().m_newCellsEnd)
-      return CanDeleteRegion(undoActions.front().m_start,
-                             undoActions.front().m_newCellsEnd);
-    else
-      return true;
-  }
+  return m_document.CanApplyTreeAction(GetTreeUndo().UndoStack());
 }
 
 bool Worksheet::CanTreeRedo() const {
-  const UndoActions &redoActions = GetTreeUndo().RedoStack();
-  if (redoActions.empty()) {
-    return false;
-  } else {
-    // If the next redo action will delete cells we have to look if we are
-    // allowed to do this.
-    if (redoActions.front().m_newCellsEnd)
-      return CanDeleteRegion(redoActions.front().m_start,
-                             redoActions.front().m_newCellsEnd);
-    else
-      return true;
-  }
+  return m_document.CanApplyTreeAction(GetTreeUndo().RedoStack());
 }
 
 void Worksheet::Redo() {
@@ -4276,68 +4254,38 @@ bool Worksheet::TreeUndoTextChange(UndoActions *sourcelist,
 
   // m_start is a CellPtr, so it auto-nulls if the cell whose text this action
   // changed was destroyed after the action was recorded. A destroyed (or
-  // otherwise no-longer-present) cell cannot have its text change undone, so we
-  // drop the action rather than dereference a stale pointer.
-  if (!action.m_start || !GetTree()->Contains(action.m_start)) {
+  // otherwise no-longer-present) cell cannot have its text change undone; the
+  // document reverts the cell state and tells us which case we're in.
+  switch (m_document.UndoTextChange(action, undoForThisOperation)) {
+  case WorksheetDocument::TextUndoResult::CellGone:
     wxLogMessage(
       wxS("Skipping the undo of a text change: the cell it refers to is no "
           "longer part of the worksheet."));
     return false;
+  case WorksheetDocument::TextUndoResult::NoOpSkipped:
+    // This action actually does nothing - make another attempt on undoing
+    // things.
+    sourcelist->pop_front();
+    return TreeUndo(sourcelist, undoForThisOperation);
+  case WorksheetDocument::TextUndoResult::Applied:
+    break;
   }
 
-  if (action.m_start) {
-    // If this action actually does do nothing - we have not done anything
-    // and want to make another attempt on undoing things.
-    if ((action.m_oldText == action.m_start->GetEditable()->GetValue()) ||
-        (action.m_oldText + wxS(";") ==
-         action.m_start->GetEditable()->GetValue())) {
-      sourcelist->pop_front();
-      return TreeUndo(sourcelist, undoForThisOperation);
-    }
+  // Make sure that the cell we have to work on is in the visible part of the
+  // tree.
+  if (action.m_start->RevealHidden()) {
+    FoldOccurred();
+    // Unfolding splices hidden cells back in above m_start, so a
+    // recalculation targeted at m_start wouldn't reach them.
+    RequestRecalculation();
+  } else
+    RequestRecalculation(action.m_start);
 
-    // Document the current state of this cell (including cursor/selection)
-    // so the next action can be undone (i.e. this undo can itself be redone).
-    {
-      EditorCell *ed = action.m_start->GetEditable();
-      undoForThisOperation->emplace_front(
-        action.m_start, ed->GetValue(),
-        static_cast<long long>(ed->SelectionStart()),
-        static_cast<long long>(ed->SelectionEnd()));
-    }
+  SetHCaret(action.m_start);
 
-    // Revert the old cell state
-    action.m_start->GetEditable()->SetValue(action.m_oldText);
+  RequestRedraw();
 
-    // Restore the cursor/selection that was recorded when this undo entry was saved.
-    if (action.m_oldSelStart >= 0) {
-      EditorCell *ed = action.m_start->GetEditable();
-      long long selEnd = (action.m_oldSelEnd >= 0) ? action.m_oldSelEnd : action.m_oldSelStart;
-      ed->SetSelection(static_cast<size_t>(action.m_oldSelStart),
-                       static_cast<size_t>(selEnd));
-    }
-
-    // Make sure that the cell we have to work on is in the visible part of the
-    // tree.
-    if (action.m_start->RevealHidden()) {
-      FoldOccurred();
-      // Unfolding splices hidden cells back in above m_start, so a
-      // recalculation targeted at m_start wouldn't reach them.
-      RequestRecalculation();
-    } else
-      RequestRecalculation(action.m_start);
-
-    SetHCaret(action.m_start);
-
-    RequestRedraw();
-
-    wxASSERT_MSG(!action.m_newCellsEnd,
-                 _("Bug: Got a request to first change the contents of a cell "
-                   "and to then undelete it."));
-    wxASSERT_MSG(!action.m_oldCells, _("Bug: Undo action with both cell "
-                                       "contents change and cell addition."));
-    return true;
-  }
-  return false;
+  return true;
 }
 
 bool Worksheet::TreeUndo(UndoActions *sourcelist,
