@@ -145,6 +145,49 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanApplyTreeAction</b
 void&#160;</td><td class="memItemRight" valign="bottom"><b>NumberSections</b> () const</td></tr>
 <tr class="memdesc:a65606595a687d98ae9448f0b45eb8df1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renumber all sectioning cells (titles, sections, ...) from the top. <br /></td></tr>
 <tr class="separator:a65606595a687d98ae9448f0b45eb8df1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f218fe1ec553513d36a953dff12b74c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#a5f218fe1ec553513d36a953dff12b74c">ToggleFold</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
+<tr class="memdesc:a5f218fe1ec553513d36a953dff12b74c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold or unfold <code>which</code>, whichever it currently isn't; see <a class="el" href="classGroupCell.html#a9a0bfd0bc4dbb4081891d162fcdf3834" title="Fold this cell.">GroupCell::Fold()</a>/Unfold().  <br /></td></tr>
+<tr class="separator:a5f218fe1ec553513d36a953dff12b74c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3127abab526677ad7ce9053778cc0e6"><td class="memItemLeft" align="right" valign="top"><a id="ae3127abab526677ad7ce9053778cc0e6" name="ae3127abab526677ad7ce9053778cc0e6"></a>
+<a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleFoldAll</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
+<tr class="memdesc:ae3127abab526677ad7ce9053778cc0e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="classWorksheetDocument.html#a5f218fe1ec553513d36a953dff12b74c" title="Fold or unfold which, whichever it currently isn&#39;t; see GroupCell::Fold()/Unfold().">ToggleFold()</a>, but folds/unfolds <code>which's</code> whole subtree. <br /></td></tr>
+<tr class="separator:ae3127abab526677ad7ce9053778cc0e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d2c20f1f2a0e7d21beb8ba29558630b"><td class="memItemLeft" align="right" valign="top"><a id="a1d2c20f1f2a0e7d21beb8ba29558630b" name="a1d2c20f1f2a0e7d21beb8ba29558630b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>FoldAll</b> ()</td></tr>
+<tr class="memdesc:a1d2c20f1f2a0e7d21beb8ba29558630b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively folds every foldable cell in the document. <br /></td></tr>
+<tr class="separator:a1d2c20f1f2a0e7d21beb8ba29558630b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27cb4d8bfb4956e16d865ae34f1d7876"><td class="memItemLeft" align="right" valign="top"><a id="a27cb4d8bfb4956e16d865ae34f1d7876" name="a27cb4d8bfb4956e16d865ae34f1d7876"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UnfoldAll</b> ()</td></tr>
+<tr class="memdesc:a27cb4d8bfb4956e16d865ae34f1d7876"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively unfolds every folded cell in the document. <br /></td></tr>
+<tr class="separator:a27cb4d8bfb4956e16d865ae34f1d7876"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aade30a7133d7d45d05d055b16756aa2a"><td class="memItemLeft" align="right" valign="top"><a id="aade30a7133d7d45d05d055b16756aa2a" name="aade30a7133d7d45d05d055b16756aa2a"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanEdit</b> () const</td></tr>
+<tr class="memdesc:aade30a7133d7d45d05d055b16756aa2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is exactly one cell selected, and does it directly follow <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own input prompt (as opposed to being e.g. a text or section cell)? <br /></td></tr>
+<tr class="separator:aade30a7133d7d45d05d055b16756aa2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa61cc9709ab03925684b8b20bee4437d"><td class="memItemLeft" align="right" valign="top"><a id="aa61cc9709ab03925684b8b20bee4437d" name="aa61cc9709ab03925684b8b20bee4437d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanDeleteSelection</b> () const</td></tr>
+<tr class="memdesc:aa61cc9709ab03925684b8b20bee4437d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can the current selection be deleted right now (see <a class="el" href="classWorksheetDocument.html#a9e7dda0c9ffb86ec74df2cfa4af106f6" title="Can the range [start,end] (inclusive) be safely removed from the tree?">CanRemoveCells()</a>)? <br /></td></tr>
+<tr class="separator:aa61cc9709ab03925684b8b20bee4437d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a046f012991be9cd84746404c2db0b464"><td class="memItemLeft" align="right" valign="top"><a id="a046f012991be9cd84746404c2db0b464" name="a046f012991be9cd84746404c2db0b464"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanMergeSelection</b> () const</td></tr>
+<tr class="memdesc:a046f012991be9cd84746404c2db0b464"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can the current selection (of more than one cell) be merged into one? <br /></td></tr>
+<tr class="separator:a046f012991be9cd84746404c2db0b464"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5771222e28078fe38b9ecc21a382cbc8"><td class="memItemLeft" align="right" valign="top"><a id="a5771222e28078fe38b9ecc21a382cbc8" name="a5771222e28078fe38b9ecc21a382cbc8"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSelected</b> (<a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type) const</td></tr>
+<tr class="memdesc:a5771222e28078fe38b9ecc21a382cbc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the selection exactly one cell of the given type? <br /></td></tr>
+<tr class="separator:a5771222e28078fe38b9ecc21a382cbc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48d925248533cbfa3aa2870a3adab778"><td class="memItemLeft" align="right" valign="top"><a id="a48d925248533cbfa3aa2870a3adab778" name="a48d925248533cbfa3aa2870a3adab778"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSelectionInWorkingGroup</b> () const</td></tr>
+<tr class="memdesc:a48d925248533cbfa3aa2870a3adab778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the selection start inside the group <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is currently evaluating? <br /></td></tr>
+<tr class="separator:a48d925248533cbfa3aa2870a3adab778"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3801ad955bb6638cf28e5dc60c38f5e1"><td class="memItemLeft" align="right" valign="top"><a id="a3801ad955bb6638cf28e5dc60c38f5e1" name="a3801ad955bb6638cf28e5dc60c38f5e1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanUndoInsideCell</b> () const</td></tr>
+<tr class="memdesc:a3801ad955bb6638cf28e5dc60c38f5e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can the active cell's own (intra-cell) undo be invoked right now? <br /></td></tr>
+<tr class="separator:a3801ad955bb6638cf28e5dc60c38f5e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b64bf062230648c9b8661042d863aad"><td class="memItemLeft" align="right" valign="top"><a id="a1b64bf062230648c9b8661042d863aad" name="a1b64bf062230648c9b8661042d863aad"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanRedoInsideCell</b> () const</td></tr>
+<tr class="memdesc:a1b64bf062230648c9b8661042d863aad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can the active cell's own (intra-cell) redo be invoked right now? <br /></td></tr>
+<tr class="separator:a1b64bf062230648c9b8661042d863aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a7df2e2a0c3062f8b87a200df0ed3ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#a5a7df2e2a0c3062f8b87a200df0ed3ae">InsertCells</a> (std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt; &amp;&amp;cells, <a class="el" href="classGroupCell.html">GroupCell</a> *where)</td></tr>
 <tr class="memdesc:a5a7df2e2a0c3062f8b87a200df0ed3ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a list of group cells into the document after <code>where</code>.  <br /></td></tr>
 <tr class="separator:a5a7df2e2a0c3062f8b87a200df0ed3ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -401,6 +444,27 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSaved</b> () const<
 
 <p>Record whether the document is in its saved state. </p>
 <p>On an actual change of the flag the view is told via <a class="el" href="classWorksheetDocumentView.html#a40722c389000b1f7551b7ab1159c2fac" title="The document&#39;s saved-state flipped; refresh the controls that show it.">WorksheetDocumentView::NotifySavedStateChanged()</a> so it can refresh the controls that depend on the saved-state. Defined in the .cpp because it needs the complete <a class="el" href="classWorksheetDocumentView.html" title="The view notifications a WorksheetDocument emits when it edits itself.">WorksheetDocumentView</a> type. </p>
+
+</div>
+</div>
+<a id="a5f218fe1ec553513d36a953dff12b74c" name="a5f218fe1ec553513d36a953dff12b74c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f218fe1ec553513d36a953dff12b74c">&#9670;&#160;</a></span>ToggleFold()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGroupCell.html">GroupCell</a> * WorksheetDocument::ToggleFold </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>which</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fold or unfold <code>which</code>, whichever it currently isn't; see <a class="el" href="classGroupCell.html#a9a0bfd0bc4dbb4081891d162fcdf3834" title="Fold this cell.">GroupCell::Fold()</a>/Unfold(). </p>
+<p>Returns the cell if something actually changed, null if <code>which</code> is null or not foldable. The caller still has to schedule a recalculation - every existing caller already does. </p>
 
 </div>
 </div>

@@ -29,7 +29,7 @@ var searchData=
   ['fixtemplate_26',['FixTemplate',['../classAutoComplete.html#ad0026315422c75170949786143a114dd',1,'AutoComplete']]],
   ['fn_5ftest_27',['Fn_Test',['../classFn__Test.html',1,'']]],
   ['fold_28',['Fold',['../classGroupCell.html#a9a0bfd0bc4dbb4081891d162fcdf3834',1,'GroupCell']]],
-  ['foldall_29',['FoldAll',['../classGroupCell.html#afe3c67676318a1b1ba043fb48dd56a4e',1,'GroupCell::FoldAll()'],['../classWorksheet.html#a16eca996fef1aa7e00cfd9886923671d',1,'Worksheet::FoldAll()']]],
+  ['foldall_29',['FoldAll',['../classGroupCell.html#afe3c67676318a1b1ba043fb48dd56a4e',1,'GroupCell::FoldAll()'],['../classWorksheetDocument.html#a1d2c20f1f2a0e7d21beb8ba29558630b',1,'WorksheetDocument::FoldAll()']]],
   ['foldoccurred_30',['FoldOccurred',['../classWorksheet.html#a78ceeae9f7262c599b824e0f9a93ad9b',1,'Worksheet']]],
   ['followevaluation_31',['FollowEvaluation',['../classWorksheet.html#a6b947343c72f5e4da75470bd381907d8',1,'Worksheet::FollowEvaluation(bool followEvaluation)'],['../classWorksheet.html#af02bfd71d23fe6804fc27525f41e84bb',1,'Worksheet::FollowEvaluation() const']]],
   ['fontchanged_32',['FontChanged',['../classConfiguration.html#a2c1e5f6af5c57992c025514ba8046c0e',1,'Configuration']]],

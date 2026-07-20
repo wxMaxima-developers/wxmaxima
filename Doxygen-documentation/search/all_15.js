@@ -13,7 +13,7 @@ var searchData=
   ['undotextchange_10',['UndoTextChange',['../classWorksheetDocument.html#aea3c71faab0e9e0002511cbb1ff777e7',1,'WorksheetDocument']]],
   ['unescapevarname_11',['UnescapeVarname',['../classVariablespane.html#afbb41264dadeb1976a429c553ff59321',1,'Variablespane']]],
   ['unfold_12',['Unfold',['../classGroupCell.html#ae702e3d21db18a336c72bfe2d6da667a',1,'GroupCell']]],
-  ['unfoldall_13',['UnfoldAll',['../classGroupCell.html#aa53341c4c978ce683242b28cd6c74835',1,'GroupCell::UnfoldAll()'],['../classWorksheet.html#a3b39c76c8bd9e25b3c743607a70db892',1,'Worksheet::UnfoldAll()']]],
+  ['unfoldall_13',['UnfoldAll',['../classGroupCell.html#aa53341c4c978ce683242b28cd6c74835',1,'GroupCell::UnfoldAll()'],['../classWorksheetDocument.html#a27cb4d8bfb4956e16d865ae34f1d7876',1,'WorksheetDocument::UnfoldAll()']]],
   ['ungroupedfunction_14',['ungroupedFunction',['../classMemgrp__Test.html#a8a3a4ac34b2e25696159ac420bd4bdc6',1,'Memgrp_Test']]],
   ['unhidetree_15',['UnhideTree',['../classGroupCell.html#a3670bf4a157be63688d1554e78f8eb93',1,'GroupCell']]],
   ['unicodesidebar_16',['UnicodeSidebar',['../classUnicodeSidebar.html#ab880d1a15ee6873c5149b96d5fc169c0',1,'UnicodeSidebar::UnicodeSidebar()'],['../classUnicodeSidebar.html',1,'UnicodeSidebar']]],

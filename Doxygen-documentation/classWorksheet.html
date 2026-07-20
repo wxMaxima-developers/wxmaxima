@@ -859,10 +859,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSelection</b> (<a 
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateConfigurationClientSize</b> ()</td></tr>
 <tr class="memdesc:a2aec1b688e41c8199e6e014982eee55d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inform the configuration about the current client size. <br /></td></tr>
 <tr class="separator:a2aec1b688e41c8199e6e014982eee55d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e0a8948701df178baefb45803608716"><td class="memItemLeft" align="right" valign="top"><a id="a5e0a8948701df178baefb45803608716" name="a5e0a8948701df178baefb45803608716"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanEdit</b> ()</td></tr>
-<tr class="memdesc:a5e0a8948701df178baefb45803608716"><td class="mdescLeft">&#160;</td><td class="mdescRight">We can edit the input if the we have the whole input in selection! <br /></td></tr>
-<tr class="separator:a5e0a8948701df178baefb45803608716"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd320d8da1302351485a101202843ab1"><td class="memItemLeft" align="right" valign="top"><a id="acd320d8da1302351485a101202843ab1" name="acd320d8da1302351485a101202843ab1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanEdit</b> () const</td></tr>
+<tr class="memdesc:acd320d8da1302351485a101202843ab1"><td class="mdescLeft">&#160;</td><td class="mdescRight">We can edit the input if the we have the whole input in selection! <br /></td></tr>
+<tr class="separator:acd320d8da1302351485a101202843ab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f454d025f103b6cf2abd9d1cebcc3ae"><td class="memItemLeft" align="right" valign="top"><a id="a3f454d025f103b6cf2abd9d1cebcc3ae" name="a3f454d025f103b6cf2abd9d1cebcc3ae"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ActivatePrevInput</b> ()</td></tr>
 <tr class="separator:a3f454d025f103b6cf2abd9d1cebcc3ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -917,9 +917,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSetFocus</b> (wxFoc
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnKillFocus</b> (wxFocusEvent &amp;event)</td></tr>
 <tr class="memdesc:a70b955741d065e1b5d90a7d21f4540ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">What to do if the worksheet looses the input focus. <br /></td></tr>
 <tr class="separator:a70b955741d065e1b5d90a7d21f4540ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dfd3c377a9520702e5c6cba30edd5e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a8dfd3c377a9520702e5c6cba30edd5e5">IsSelected</a> (<a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type)</td></tr>
-<tr class="memdesc:a8dfd3c377a9520702e5c6cba30edd5e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the selection start with a cell of the type "type".  <br /></td></tr>
-<tr class="separator:a8dfd3c377a9520702e5c6cba30edd5e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a646c6c2f7f4ae852f02cf0e201d6c865"><td class="memItemLeft" align="right" valign="top"><a id="a646c6c2f7f4ae852f02cf0e201d6c865" name="a646c6c2f7f4ae852f02cf0e201d6c865"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSelected</b> (<a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type) const</td></tr>
+<tr class="memdesc:a646c6c2f7f4ae852f02cf0e201d6c865"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the selection start with a cell of the type "type". <br /></td></tr>
+<tr class="separator:a646c6c2f7f4ae852f02cf0e201d6c865"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a562dbc1fe04cc54b2d13ddc5ae5c4e97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a562dbc1fe04cc54b2d13ddc5ae5c4e97">StepAnimation</a> (int change=1)</td></tr>
 <tr class="memdesc:a562dbc1fe04cc54b2d13ddc5ae5c4e97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the slide of the currently selected animation or advance it by one step.  <br /></td></tr>
 <tr class="separator:a562dbc1fe04cc54b2d13ddc5ae5c4e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -931,10 +932,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsActiveInLast</b> ()
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastCell</b> ()</td></tr>
 <tr class="memdesc:a89c528484cac64458376d6aaefb7b5d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last cell of the worksheet. <br /></td></tr>
 <tr class="separator:a89c528484cac64458376d6aaefb7b5d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf379a135e0cf51b54fb7e1aef2208dd"><td class="memItemLeft" align="right" valign="top"><a id="aaf379a135e0cf51b54fb7e1aef2208dd" name="aaf379a135e0cf51b54fb7e1aef2208dd"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSelectionInWorkingGroup</b> ()</td></tr>
-<tr class="memdesc:aaf379a135e0cf51b54fb7e1aef2208dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the selection in the current working group? <br /></td></tr>
-<tr class="separator:aaf379a135e0cf51b54fb7e1aef2208dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fea4a6b9c4db515334b17157dccf438"><td class="memItemLeft" align="right" valign="top"><a id="a0fea4a6b9c4db515334b17157dccf438" name="a0fea4a6b9c4db515334b17157dccf438"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSelectionInWorkingGroup</b> () const</td></tr>
+<tr class="memdesc:a0fea4a6b9c4db515334b17157dccf438"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the selection in the current working group? <br /></td></tr>
+<tr class="separator:a0fea4a6b9c4db515334b17157dccf438"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addd4563d9e3b3526a423bd95e887d1a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#addd4563d9e3b3526a423bd95e887d1a3">SetActiveCell</a> (<a class="el" href="classEditorCell.html">EditorCell</a> *cell)</td></tr>
 <tr class="memdesc:addd4563d9e3b3526a423bd95e887d1a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark an editor cell as the active one.  <br /></td></tr>
 <tr class="separator:addd4563d9e3b3526a423bd95e887d1a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1050,19 +1051,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddCellToEvaluationQu
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FoldOccurred</b> ()</td></tr>
 <tr class="memdesc:a78ceeae9f7262c599b824e0f9a93ad9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call when a fold action was detected, to update the state in response to a fold occurring. <br /></td></tr>
 <tr class="separator:a78ceeae9f7262c599b824e0f9a93ad9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05f5dcd8380c87a893b1509559995fc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a05f5dcd8380c87a893b1509559995fc4">ToggleFold</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
-<tr class="memdesc:a05f5dcd8380c87a893b1509559995fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold or unfold a cell.  <br /></td></tr>
+<tr class="memitem:a05f5dcd8380c87a893b1509559995fc4"><td class="memItemLeft" align="right" valign="top"><a id="a05f5dcd8380c87a893b1509559995fc4" name="a05f5dcd8380c87a893b1509559995fc4"></a>
+<a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleFold</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
+<tr class="memdesc:a05f5dcd8380c87a893b1509559995fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold or unfold a cell. <br /></td></tr>
 <tr class="separator:a05f5dcd8380c87a893b1509559995fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5874f84b01e4d3a0d60597d8903ce13e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a5874f84b01e4d3a0d60597d8903ce13e">ToggleFoldAll</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
-<tr class="memdesc:a5874f84b01e4d3a0d60597d8903ce13e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggles the status of the fold for the given <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> and its children.  <br /></td></tr>
+<tr class="memitem:a5874f84b01e4d3a0d60597d8903ce13e"><td class="memItemLeft" align="right" valign="top"><a id="a5874f84b01e4d3a0d60597d8903ce13e" name="a5874f84b01e4d3a0d60597d8903ce13e"></a>
+<a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleFoldAll</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
 <tr class="separator:a5874f84b01e4d3a0d60597d8903ce13e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16eca996fef1aa7e00cfd9886923671d"><td class="memItemLeft" align="right" valign="top"><a id="a16eca996fef1aa7e00cfd9886923671d" name="a16eca996fef1aa7e00cfd9886923671d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FoldAll</b> ()</td></tr>
-<tr class="memdesc:a16eca996fef1aa7e00cfd9886923671d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively folds the whole document. <br /></td></tr>
 <tr class="separator:a16eca996fef1aa7e00cfd9886923671d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b39c76c8bd9e25b3c743607a70db892"><td class="memItemLeft" align="right" valign="top"><a id="a3b39c76c8bd9e25b3c743607a70db892" name="a3b39c76c8bd9e25b3c743607a70db892"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UnfoldAll</b> ()</td></tr>
-<tr class="memdesc:a3b39c76c8bd9e25b3c743607a70db892"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively unfolds the whole document. <br /></td></tr>
 <tr class="separator:a3b39c76c8bd9e25b3c743607a70db892"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65e10949a9a88aa0446cd8d3ab749465"><td class="memItemLeft" align="right" valign="top"><a id="a65e10949a9a88aa0446cd8d3ab749465" name="a65e10949a9a88aa0446cd8d3ab749465"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetZoomFactor</b> (double newzoom)</td></tr>
@@ -1282,7 +1282,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Animate the current slide show. </p>
-<p>Starts playing the animation of a cell generated with the with_slider_* commands.</p>
+<p>Is this cell selected? Starts playing the animation of a cell generated with the with_slider_* commands.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">run</td><td><ul>
@@ -1342,6 +1342,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool Worksheet::CanMergeSelection </td>
@@ -1350,6 +1353,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Can we merge the selected cells into one? </p>
@@ -1362,6 +1370,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool Worksheet::CanRedoInsideCell </td>
@@ -1370,6 +1381,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Is it possible to issue an undo in the currently selected cell? </p>
@@ -1382,6 +1398,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool Worksheet::CanUndoInsideCell </td>
@@ -1390,6 +1409,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Is it possible to issue an undo in the currently selected cell? </p>
@@ -2197,27 +2221,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Add a new line to the output cell of the working group. </p>
 <p>If maxima isn't currently evaluating and therefore there is no working group the line is appended to the last cell of the worksheet, instead. </p>
-
-</div>
-</div>
-<a id="a8dfd3c377a9520702e5c6cba30edd5e5" name="a8dfd3c377a9520702e5c6cba30edd5e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8dfd3c377a9520702e5c6cba30edd5e5">&#9670;&#160;</a></span>IsSelected()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Worksheet::IsSelected </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a>&#160;</td>
-          <td class="paramname"><em>type</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Does the selection start with a cell of the type "type". </p>
-<p>Is this cell selected? </p>
 
 </div>
 </div>
@@ -3113,63 +3116,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a05f5dcd8380c87a893b1509559995fc4" name="a05f5dcd8380c87a893b1509559995fc4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05f5dcd8380c87a893b1509559995fc4">&#9670;&#160;</a></span>ToggleFold()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classGroupCell.html">GroupCell</a> * Worksheet::ToggleFold </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
-          <td class="paramname"><em>which</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Fold or unfold a cell. </p>
-<p>Toggles the status of the fold for the given <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a>.</p>
-<p>If the cell is folded, it will be unfolded; otherwise it will be folded.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">which</td><td>The <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> to fold or unfold. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classA.html">A</a> pointer to a <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> if the action succeeded; NULL otherwise. </dd></dl>
-
-</div>
-</div>
-<a id="a5874f84b01e4d3a0d60597d8903ce13e" name="a5874f84b01e4d3a0d60597d8903ce13e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5874f84b01e4d3a0d60597d8903ce13e">&#9670;&#160;</a></span>ToggleFoldAll()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classGroupCell.html">GroupCell</a> * Worksheet::ToggleFoldAll </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
-          <td class="paramname"><em>which</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Toggles the status of the fold for the given <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> and its children. </p>
-<p>If the cell is folded, it will be recursively unfolded; otherwise it will be recursively folded.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">which</td><td>The <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> to recursively fold or unfold. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classA.html">A</a> pointer to a <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> if the action succeeded; NULL otherwise. </dd></dl>
 
 </div>
 </div>
