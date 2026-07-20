@@ -634,8 +634,8 @@ std::vector<wxString> AutoComplete::CompleteSymbol(wxString partial,
   std::vector<wxString> completions;
   std::vector<wxString> perfectCompletions;
 
-  if (CompletesFiles(type) && (partial.EndsWith("\"")) &&
-      (!partial.EndsWith("\\\"")))
+  if (CompletesFiles(type) && (partial.Length() > 1) &&
+      (partial.EndsWith("\"")) && (!partial.EndsWith("\\\"")))
     partial = partial.Left(partial.Length() - 1);
 
   wxASSERT_MSG((type >= command) && (type <= unit),

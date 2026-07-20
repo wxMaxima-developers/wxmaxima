@@ -1,5 +1,10 @@
 # Current development version
 
+- On builds with accessibility support (e.g. Windows) the configuration
+  dialog gained an "Accessibility" tab: Maxima's output can now be announced
+  to screen readers either as maths in linear text form (the default) or as
+  MathML (wrapped in a complete namespaced <math> document), for screen
+  readers that can speak MathML.
 - Speedup: "Replace All" no longer schedules a re-layout of the whole
   worksheet - only the cells that actually contained the search text are
   re-laid-out.
@@ -26,8 +31,11 @@
   narrows the list, Backspace widens it again instead of closing the popup,
   and choosing a directory descends into it and continues completing there.
   Also fixed: completing right after the opening quote works even when the
-  editor auto-added the closing quote, and the offered names no longer
-  carry a spurious leading "/" at the top level.
+  editor auto-added the closing quote, the offered names no longer
+  carry a spurious leading "/" at the top level, repeated completion
+  attempts no longer eat the quotes one by one, and in a still-unsaved
+  worksheet the completion now offers the home directory instead of
+  nothing at all.
 - Fixed a layout bug where the horizontal extent of parenthesized content was
   underestimated: with nested parenthesis/fraction/subscript constructs that
   were only partially broken into lines, cells inside a 2D fraction could be

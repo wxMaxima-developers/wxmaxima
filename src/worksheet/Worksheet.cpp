@@ -5446,6 +5446,13 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
   if (!editor)
     return false;
 
+  // The directory relative file names are completed against: the worksheet
+  // file's directory - or, for a still-unsaved worksheet, the user's home
+  // directory (where a freshly started maxima resolves relative names).
+  wxString fileBaseDir = wxFileName(GetCurrentFile()).GetPath(wxPATH_GET_VOLUME);
+  if (fileBaseDir.IsEmpty())
+    fileBaseDir = wxGetHomeDir();
+
   wxString partial;
   if (type != AutoComplete::esccommand) {
     editor->SelectWordUnderCaret(false, false, true);
@@ -5551,7 +5558,12 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
           editor->ReplaceSelection(editor->GetSelectionString(), partial, true,
                                    false, true);
         }
-        if ((partial.EndsWith("\"") && (!(partial.EndsWith("\\\""))))) {
+        // Strip a closing quote (e.g. the editor's auto-added one) - but only
+        // if there is more than the opening quote: a partial consisting of
+        // just "\"" ends with a quote too, and stripping it would eat the
+        // opening quote on every further completion attempt.
+        if ((partial.Length() > 1) && (partial.EndsWith("\"")) &&
+            (!(partial.EndsWith("\\\"")))) {
           partial = partial.Left(partial.Length() - 1);
           editor->ReplaceSelection(editor->GetSelectionString(), partial, true);
         }
@@ -5562,15 +5574,15 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
 
       if (type == AutoComplete::demofile)
         m_autocomplete.UpdateDemoFiles(
-                                       partial, wxFileName(GetCurrentFile()).GetPath(wxPATH_GET_VOLUME));
+                                       partial, fileBaseDir);
 
       if (type == AutoComplete::loadfile)
         m_autocomplete.UpdateLoadFiles(
-                                       partial, wxFileName(GetCurrentFile()).GetPath(wxPATH_GET_VOLUME));
+                                       partial, fileBaseDir);
 
       if (type == AutoComplete::generalfile)
         m_autocomplete.UpdateGeneralFiles(
-                                          partial, wxFileName(GetCurrentFile()).GetPath(wxPATH_GET_VOLUME));
+                                          partial, fileBaseDir);
     }
   }
 
@@ -5654,7 +5666,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {
     wxASSERT(!m_autocompletePopup);
     m_autocompletePopup = new AutocompletePopup(this, editor, &m_autocomplete,
                                                 type, &m_autocompletePopup,
-                                                wxFileName(GetCurrentFile()).GetPath(wxPATH_GET_VOLUME));
+                                                fileBaseDir);
 
     // If necessary: Scroll right or down so that the pop-up is visible as a
     // whole.
