@@ -162,6 +162,7 @@ Configuration::Configuration(const Configuration &o) :
   m_showMatchingParens(o.m_showMatchingParens),
   m_hidemultiplicationsign(o.m_hidemultiplicationsign),
   m_offerKnownAnswers(o.m_offerKnownAnswers),
+  m_screenReaderAnnouncesMathML(o.m_screenReaderAnnouncesMathML),
   m_defaultPort(o.m_defaultPort),
   m_maxGnuplotMegabytes(o.m_maxGnuplotMegabytes),
   m_defaultPlotHeight(o.m_defaultPlotHeight),
@@ -336,6 +337,7 @@ void Configuration::ResetAllToDefaults() {
   m_layoutStrategy = LayoutStrategy::layout2DIfFits;
   m_useUnicodeMaths = true;
   m_offerKnownAnswers = true;
+  m_screenReaderAnnouncesMathML = false;
   m_parenthesisDrawMode = ascii;
   // Text AND code cells wrap by default. Existing installations have an
   // autoWrapMode key in their config, which overrides this; the pre-tri-state
@@ -1272,6 +1274,8 @@ Configuration::ScalarConfigSettings() {
     {wxS("recentItems"), &Configuration::m_recentItems},
     {wxS("restartOnReEvaluation"), &Configuration::m_restartOnReEvaluation},
     {wxS("saveImgFileName"), &Configuration::m_saveImgFileName},
+    {wxS("screenReaderAnnouncesMathML"),
+     &Configuration::m_screenReaderAnnouncesMathML},
     {wxS("showLength"), &Configuration::m_showLength},
     {wxS("showMatchingParens"), &Configuration::m_showMatchingParens},
     {wxS("singlePageManual"), &Configuration::m_singlePageManual},

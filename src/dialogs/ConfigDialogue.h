@@ -189,6 +189,14 @@ private:
   //! The panel that allows to choose which formats to put on the clipboard
   wxWindow *CreateRevertToDefaultsPanel();
 
+#if wxUSE_ACCESSIBILITY
+  //! The panel with the screen reader settings
+  wxWindow *CreateAccessibilityPanel();
+
+  //! Announce maxima's output as MathML instead of linear maths text?
+  wxCheckBox *m_screenReaderMathML;
+#endif
+
   wxCheckBox *m_copyBitmap, *m_copyMathML, *m_copyMathMLHTML, *m_copyRTF, *m_copySVG;
 #if wxUSE_ENH_METAFILE
   wxCheckBox *m_copyEMF;

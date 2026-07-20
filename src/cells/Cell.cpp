@@ -1517,8 +1517,16 @@ wxAccStatus Cell::GetName(int childId, wxString *name) const {
     return wxACC_FAIL;
   }
 
-  // Use the text representation as the accessible name
-  *name = ToString();
+  // Use the text representation as the accessible name - or, if the user
+  // configured a screen reader that can speak MathML, the MathML one.
+  // The fragment is wrapped into a complete namespaced <math> document (the
+  // same shape the clipboard export uses): that is what MathML-aware tools
+  // need in order to recognize the string as MathML.
+  if (m_configuration->ScreenReaderAnnouncesMathML() && IsMath())
+    *name = wxS("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">") +
+            ToMathML() + wxS("</math>");
+  else
+    *name = ToString();
   return name->empty() ? wxACC_NOT_IMPLEMENTED : wxACC_OK;
 }
 
@@ -1572,7 +1580,11 @@ wxAccStatus Cell::GetValue(int childId, wxString *strValue) const {
   Cell *childCell = nullptr;
   if (GetChild(childId, &childCell) == wxACC_OK)
     {
-      *strValue = childCell->ToString();
+      if (m_configuration->ScreenReaderAnnouncesMathML() && childCell->IsMath())
+        *strValue = wxS("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">") +
+                    childCell->ToMathML() + wxS("</math>");
+      else
+        *strValue = childCell->ToString();
       return wxACC_OK;
     }
 

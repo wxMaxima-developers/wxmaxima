@@ -245,6 +245,12 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
   m_notebook->AddPage(CreatePrintPanel(), _("Printout settings"), false, 7);
+#if wxUSE_ACCESSIBILITY
+  // Only offered when wxWidgets was compiled with accessibility support -
+  // without it there is no screen-reader integration these settings could
+  // configure. Re-uses the "options" tab icon.
+  m_notebook->AddPage(CreateAccessibilityPanel(), _("Accessibility"), false, 4);
+#endif
   m_notebook->AddPage(CreateRevertToDefaultsPanel(),
                       _("Revert all to defaults"), false, 8);
 
@@ -547,6 +553,9 @@ void ConfigDialogue::SetCheckboxValues() {
   m_notifyIfIdle->SetValue(configuration->NotifyIfIdle());
   m_fixedFontInTC->SetValue(configuration->FixedFontInTextControls());
   m_offerKnownAnswers->SetValue(m_configuration->OfferKnownAnswers());
+#if wxUSE_ACCESSIBILITY
+  m_screenReaderMathML->SetValue(configuration->ScreenReaderAnnouncesMathML());
+#endif
   m_keepPercentWithSpecials->SetValue(configuration->CheckKeepPercent());
   m_abortOnError->SetValue(configuration->GetAbortOnError());
   m_restartOnReEvaluation->SetValue(configuration->RestartOnReEvaluation());
@@ -1792,6 +1801,35 @@ void ConfigDialogue::OnChangeMaximaEnvVar(wxGridEvent &WXUNUSED(event)) {
   m_maximaEnvVariables->GetParent()->GetParent()->Layout();
 }
 
+#if wxUSE_ACCESSIBILITY
+wxWindow *ConfigDialogue::CreateAccessibilityPanel() {
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
+  panel->SetScrollRate(5 * GetContentScaleFactor(),
+                       5 * GetContentScaleFactor());
+  panel->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
+                           GetContentScaleFactor() * mMinPanelHeight));
+
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  wxStaticBoxSizer *announceSizer =
+    new wxStaticBoxSizer(wxVERTICAL, panel, _("Screen reader"));
+
+  m_screenReaderMathML =
+    new wxCheckBox(announceSizer->GetStaticBox(), wxID_ANY,
+                   _("Announce Maxima's output as MathML"));
+  m_screenReaderMathML->SetToolTip(
+      _("If unset, Maxima's output is announced to the screen reader as "
+        "maths in a linear text form. Set this option if your screen reader "
+        "can speak MathML properly."));
+  announceSizer->Add(m_screenReaderMathML, wxSizerFlags());
+
+  vbox->Add(announceSizer, wxSizerFlags().Expand().Border(
+                               wxALL, 5 * GetContentScaleFactor()));
+  panel->SetSizer(vbox);
+  panel->FitInside();
+  return panel;
+}
+#endif
+
 wxWindow *ConfigDialogue::CreateClipboardPanel() {
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
   panel->SetScrollRate(5 * GetContentScaleFactor(),
@@ -2190,6 +2228,9 @@ void ConfigDialogue::WriteSettings() {
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
   configuration->FixedFontInTextControls(m_fixedFontInTC->GetValue());
   configuration->OfferKnownAnswers(m_offerKnownAnswers->GetValue());
+#if wxUSE_ACCESSIBILITY
+  configuration->ScreenReaderAnnouncesMathML(m_screenReaderMathML->GetValue());
+#endif
   configuration->SetChangeAsterisk(m_changeAsterisk->GetValue());
   configuration->HidemultiplicationSign(m_hidemultiplicationSign->GetValue());
   configuration->Latin2Greek(m_latin2Greek->GetValue());

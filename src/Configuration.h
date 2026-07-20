@@ -1078,6 +1078,16 @@ public:
   void OfferKnownAnswers(bool offerKnownAnswers)
     {m_offerKnownAnswers = offerKnownAnswers;}
 
+  /*! Announce maxima's output to screen readers as MathML?
+
+    With false (the default) the accessible name of a math cell is its linear
+    maths text (ToString()); with true it is the cell's MathML representation,
+    for screen readers that can speak MathML properly.
+  */
+  bool ScreenReaderAnnouncesMathML() const {return m_screenReaderAnnouncesMathML;}
+  void ScreenReaderAnnouncesMathML(bool mathML)
+    {m_screenReaderAnnouncesMathML = mathML;}
+
   wxString Documentclass() const {return m_documentclass;}
   void Documentclass(wxString clss){m_documentclass = std::move(clss);}
   wxString DocumentclassOptions() const {return m_documentclassOptions;}
@@ -1402,6 +1412,7 @@ private:
   bool m_showMatchingParens;
   bool m_hidemultiplicationsign;
   bool m_offerKnownAnswers;
+  bool m_screenReaderAnnouncesMathML;
   long m_defaultPort;
   long m_maxGnuplotMegabytes;
   long m_defaultPlotHeight;
