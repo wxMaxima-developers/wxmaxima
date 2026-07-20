@@ -2108,20 +2108,7 @@ void Worksheet::DeleteCurrentCell() {
 }
 
 bool Worksheet::CanDeleteRegion(GroupCell *start, const GroupCell *end) const {
-  if (!start || !end)
-    return false;
-
-  // We refuse deletion of a cell we are planning to evaluate
-  for (const GroupCell &tmp : OnList(start)) {
-    // We refuse deletion of a cell maxima is currently evaluating
-    if (&tmp == GetWorkingGroup())
-      return false;
-
-    if (&tmp == end)
-      return true;
-  }
-
-  return true;
+  return m_document.CanRemoveCells(start, end);
 }
 
 void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart,
@@ -2201,7 +2188,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
 
   // Abort deletion if there is no valid selection or if we cannot
   // delete it.
-  if (!CanDeleteRegion(start, end))
+  if (!m_document.CanRemoveCells(start, end))
     return;
 
   GetHCaretCursor().SetSelectionAnchors(NULL, NULL);
@@ -2211,53 +2198,22 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end,
   ClearSelection();
   SetHCaret(start->GetPrevious());
 
-  // check if chapters or sections need to be renumbered
-  bool renumber = false;
-  for (auto &tmp : OnList(start)) {
-    GetEvaluationQueue().Remove(&tmp);
-
-    if (tmp.IsFoldable() || (tmp.GetGroupType() == GC_TYPE_IMAGE))
-      renumber = true;
-
-    // Don't keep cached versions of scaled images around in the undo buffer.
-    if (tmp.GetOutput())
-      tmp.GetOutput()->ClearCacheList();
-
-    if (&tmp == end)
-      break;
-  }
-
   GroupCell *cellBeforeStart = start->GetPrevious();
 
-  auto tornOut = CellList::TearOut(start, end);
-  LastCache() = nullptr;
-  if (!tornOut.cellOwner) {
-    wxASSERT(GetTree() == tornOut.cell);
-    tornOut.cellOwner = std::move(TreeOwner());
-    TreeOwner() = dynamic_unique_ptr_cast<GroupCell>(std::move(tornOut.tailOwner));
-  }
+  // The document owns the cell tree, so it does the actual splice and
+  // notifies this window (recalc/redraw/modified) through the
+  // WorksheetDocumentView interface.
+  auto removedCells = m_document.RemoveCells(start, end);
 
   // Do we have an undo buffer for this action?
-  if (undoBuffer) {
-    // We have an undo buffer => add the deleted cells there
-    auto cells =
-      static_unique_ptr_cast<GroupCell>(std::move(tornOut.cellOwner));
-    undoBuffer->emplace_front(cellBeforeStart, nullptr, cells.release());
-  }
+  if (undoBuffer)
+    undoBuffer->emplace_front(cellBeforeStart, nullptr, removedCells.release());
 
-  if (renumber)
-    NumberSections();
   UpdateTableOfContents();
-  // Geometry above the deleted region is unaffected: recalculate starting at
-  // the cell before it (or from the new tree start if we deleted at the top).
-  if (cellBeforeStart)
-    RequestRecalculation(cellBeforeStart);
-  else if (GetTree())
-    RequestRecalculation(GetTree());
-  if(GetTree())
+  // Cell positions are layout results (view state), so refreshing them after
+  // the deletion stays here rather than in WorksheetDocument.
+  if (GetTree())
     GetTree()->UpdateYPositionList();
-  RequestRedraw();
-  SetSaved(false);
 }
 
 void Worksheet::SetAnswer(const wxString &answer) {

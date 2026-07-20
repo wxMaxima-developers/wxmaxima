@@ -28,6 +28,7 @@
 #include "WorksheetDocument.h"
 #include "WorksheetDocumentView.h"
 #include "cells/CellList.h"
+#include "cells/CellPtr.h"
 #include "cells/GroupCell.h"
 
 void WorksheetDocument::SetSaved(bool saved) {
@@ -121,4 +122,72 @@ GroupCell *WorksheetDocument::InsertCells(std::unique_ptr<GroupCell> &&cells,
   // ensures that RecalculateIfNeeded() will call AdjustSize() after positions
   // are correct.
   return lastOfCellsToInsert;
+}
+
+bool WorksheetDocument::CanRemoveCells(GroupCell *start,
+                                      const GroupCell *end) const {
+  if (!start || !end)
+    return false;
+
+  // We refuse deletion of a cell we are planning to evaluate
+  for (const GroupCell &tmp : OnList(start)) {
+    // We refuse deletion of a cell maxima is currently evaluating
+    if (&tmp == m_cellPointers.GetWorkingGroup())
+      return false;
+
+    if (&tmp == end)
+      return true;
+  }
+
+  return true;
+}
+
+std::unique_ptr<GroupCell> WorksheetDocument::RemoveCells(GroupCell *start,
+                                                          GroupCell *end) {
+  if (!CanRemoveCells(start, end))
+    return nullptr;
+
+  // check if chapters or sections need to be renumbered
+  bool renumber = false;
+  for (auto &tmp : OnList(start)) {
+    m_evaluationQueue.Remove(&tmp);
+
+    if (tmp.IsFoldable() || (tmp.GetGroupType() == GC_TYPE_IMAGE))
+      renumber = true;
+
+    // Don't keep cached versions of scaled images around in the undo buffer.
+    if (tmp.GetOutput())
+      tmp.GetOutput()->ClearCacheList();
+
+    if (&tmp == end)
+      break;
+  }
+
+  GroupCell *cellBeforeStart = start->GetPrevious();
+
+  auto tornOut = CellList::TearOut(start, end);
+  m_last = nullptr;
+  if (!tornOut.cellOwner) {
+    wxASSERT(m_tree.get() == tornOut.cell);
+    tornOut.cellOwner = std::move(m_tree);
+    m_tree = dynamic_unique_ptr_cast<GroupCell>(std::move(tornOut.tailOwner));
+  }
+  auto removed = static_unique_ptr_cast<GroupCell>(std::move(tornOut.cellOwner));
+
+  if (renumber)
+    NumberSections();
+
+  if (m_view) {
+    // Geometry above the deleted region is unaffected: recalculate starting
+    // at the cell before it (or from the new tree start if we deleted at the
+    // top). If both are null the whole document was just emptied - nothing
+    // left to recalculate (RequestRecalculation() requires a non-null start).
+    GroupCell *recalcStart = cellBeforeStart ? cellBeforeStart : m_tree.get();
+    if (recalcStart)
+      m_view->NotifyRecalculation(recalcStart);
+    m_view->NotifyRedraw(nullptr);
+  }
+  SetSaved(false);
+
+  return removed;
 }

@@ -110,6 +110,29 @@ public:
   */
   GroupCell *InsertCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where);
 
+  /*! Can the range [start,end] (inclusive) be safely removed from the tree?
+
+    Refuses if either end is null, or if the range contains the cell Maxima is
+    currently evaluating.
+  */
+  bool CanRemoveCells(GroupCell *start, const GroupCell *end) const;
+
+  /*! Remove the range [start,end] (inclusive) from the tree.
+
+    Pure structural surgery plus the document-side bookkeeping it implies:
+    dequeues the removed cells from the evaluation queue, clears their cached
+    output bitmaps, splices them out of the tree, renumbers sections if a
+    foldable or image cell left, and notifies the view (recalc/redraw/
+    modified) through the registered WorksheetDocumentView. Returns the
+    removed cells (still linked to each other) so the caller can push them
+    onto its undo buffer, or null if \p start / \p end don't form a
+    removable range (see CanRemoveCells()). The caller (Worksheet) still
+    handles the cursor/selection housekeeping around the deletion (moving
+    the cursor to a sane place before cells vanish out from under it) and
+    the layout-position refresh, both view concerns.
+  */
+  std::unique_ptr<GroupCell> RemoveCells(GroupCell *start, GroupCell *end);
+
   //! The file this document was last loaded from / saved to (empty if none).
   const wxString &GetCurrentFile() const { return m_currentFile; }
   //! Record the file this document is associated with.
