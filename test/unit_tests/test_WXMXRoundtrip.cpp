@@ -47,6 +47,7 @@
 #include "Configuration.h"
 #include "MathParser.h"
 #include "worksheet/Worksheet.h"
+#include "cells/CellList.h"
 #include "cells/GroupCell.h"
 
 #include <cstdlib>
@@ -134,6 +135,44 @@ SCENARIO("Real content.xml corpus files round-trip to a stable serialization") {
     THEN(wxString::Format(wxS("%s is idempotent"), name).ToStdString()) {
       RequireIdempotent(ReadFile(path));
     }
+  }
+}
+
+SCENARIO("A folded section's hidden children survive the content.xml round-trip") {
+  auto section = std::make_unique<GroupCell>(g_cfg, GC_TYPE_SECTION, wxS("A section"));
+  auto child1 = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("1+1;"));
+  auto child2 = std::make_unique<GroupCell>(g_cfg, GC_TYPE_TEXT, wxS("child text"));
+
+  CellListBuilder<GroupCell> children;
+  children.DynamicAppend(child1.release());
+  children.DynamicAppend(child2.release());
+  REQUIRE(section->HideTree(std::move(children)));
+
+  const wxString xml = section->ToXML();
+  THEN("the <fold> survives a parse/reserialize cycle unchanged") {
+    RequireIdempotent(WrapDocument(xml));
+  }
+  THEN("re-parsing it directly recovers the hidden tree structurally") {
+    const wxString wrapped = WrapDocument(xml);
+    const wxScopedCharBuffer utf8 = wrapped.utf8_str();
+    wxMemoryInputStream in(utf8.data(), utf8.length());
+    wxXmlDocument doc;
+    REQUIRE(doc.Load(in));
+    MathParser mp(g_cfg);
+    std::unique_ptr<GroupCell> tree = mp.CreateTreeFromXMLNode(doc.GetRoot());
+    REQUIRE(tree != nullptr);
+    REQUIRE(tree->GetGroupType() == GC_TYPE_SECTION);
+    REQUIRE(tree->GetNext() == nullptr); // hidden children are NOT in the main list
+    GroupCell *hidden = tree->GetHiddenTree();
+    REQUIRE(hidden != nullptr);
+    std::vector<GroupCell *> hiddenCells;
+    for (auto &h : OnList(hidden))
+      hiddenCells.push_back(&h);
+    REQUIRE(hiddenCells.size() == 2);
+    REQUIRE(hiddenCells[0]->GetGroupType() == GC_TYPE_CODE);
+    REQUIRE(hiddenCells[0]->GetEditable()->GetValue() == wxS("1+1;"));
+    REQUIRE(hiddenCells[1]->GetGroupType() == GC_TYPE_TEXT);
+    REQUIRE(hiddenCells[1]->GetEditable()->GetValue() == wxS("child text"));
   }
 }
 

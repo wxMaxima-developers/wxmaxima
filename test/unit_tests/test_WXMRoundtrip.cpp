@@ -332,6 +332,39 @@ SCENARIO("A .wxm that opens with a fold marker does not crash the parser") {
   }
 }
 
+SCENARIO("A folded section's hidden children survive the .wxm round-trip") {
+  auto section = std::make_unique<GroupCell>(g_cfg, GC_TYPE_SECTION, wxS("A section"));
+  auto child1 = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("1+1;"));
+  auto child2 = std::make_unique<GroupCell>(g_cfg, GC_TYPE_TEXT, wxS("child text"));
+
+  CellListBuilder<GroupCell> children;
+  children.DynamicAppend(child1.release());
+  children.DynamicAppend(child2.release());
+  REQUIRE(section->HideTree(std::move(children)));
+
+  auto reloaded = SerializeAndReload({section.get()});
+  REQUIRE(reloaded != nullptr);
+
+  std::vector<GroupCell *> got;
+  for (auto &g : OnList(reloaded.get()))
+    got.push_back(&g);
+
+  THEN("only the section is visible at the top level, and its hidden tree carries both children") {
+    REQUIRE(got.size() == 1);
+    REQUIRE(got[0]->GetGroupType() == GC_TYPE_SECTION);
+    GroupCell *hidden = got[0]->GetHiddenTree();
+    REQUIRE(hidden != nullptr);
+    std::vector<GroupCell*> hiddenCells;
+    for (auto &h : OnList(hidden))
+      hiddenCells.push_back(&h);
+    REQUIRE(hiddenCells.size() == 2);
+    REQUIRE(hiddenCells[0]->GetGroupType() == GC_TYPE_CODE);
+    REQUIRE(hiddenCells[0]->GetEditable()->GetValue() == wxS("1+1;"));
+    REQUIRE(hiddenCells[1]->GetGroupType() == GC_TYPE_TEXT);
+    REQUIRE(hiddenCells[1]->GetEditable()->GetValue() == wxS("child text"));
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
