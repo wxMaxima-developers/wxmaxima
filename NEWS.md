@@ -3,10 +3,6 @@
 - Typing "(" at the horizontal cursor opens a new code cell containing "()"
   with the caret between the parens again, like "[", "{" and "\"" do. A
   refactor had left the caret in front of the opening paren instead.
-- The "Convert to code/comment/title/..." menu items are now greyed out
-  when there is no active cell to convert, or it is an image cell (converting
-  an image cell would discard the image, so it was silently refused already;
-  it is now visibly disabled too).
 - On builds with accessibility support (e.g. Windows) the configuration
   dialog gained an "Accessibility" tab: Maxima's output can now be announced
   to screen readers either as maths in linear text form (the default) or as
