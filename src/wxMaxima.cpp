@@ -2049,6 +2049,23 @@ void wxMaxima::UpdateMenus() {
   m_MenuBar->EnableItem(EventIDs::menu_evaluate, GetWorksheet()->GetActiveCell() ||
                         GetWorksheet()->HasCellsSelected());
 
+  {
+    // "Convert to ..." rebuilds the group from its editable's text, which
+    // would discard an image cell's image, so Worksheet::SetCellStyle refuses
+    // image cells; grey the items out there instead of silently doing nothing.
+    const EditorCell *active = GetWorksheet()->GetActiveCell();
+    const bool canConvert = active && active->GetGroup() &&
+      (active->GetGroup()->GetGroupType() != GC_TYPE_IMAGE);
+    m_MenuBar->EnableItem(EventIDs::menu_convert_to_code, canConvert);
+    m_MenuBar->EnableItem(EventIDs::menu_convert_to_comment, canConvert);
+    m_MenuBar->EnableItem(EventIDs::menu_convert_to_title, canConvert);
+    m_MenuBar->EnableItem(EventIDs::menu_convert_to_section, canConvert);
+    m_MenuBar->EnableItem(EventIDs::menu_convert_to_subsection, canConvert);
+    m_MenuBar->EnableItem(EventIDs::menu_convert_to_subsubsection, canConvert);
+    m_MenuBar->EnableItem(EventIDs::menu_convert_to_heading5, canConvert);
+    m_MenuBar->EnableItem(EventIDs::menu_convert_to_heading6, canConvert);
+  }
+
   m_MenuBar->EnableItem(EventIDs::menu_evaluate_all_visible, GetWorksheet()->GetTree());
   m_MenuBar->EnableItem(ToolBar::tb_evaltillhere, GetWorksheet()->GetTree() &&
                         GetWorksheet()->CanPaste() &&

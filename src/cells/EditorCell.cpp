@@ -124,6 +124,9 @@ public:
                               std::size_t &cursorPos) const override;
   //! Code cells always serialize as type="input".
   wxString XMLTypeAttribute() const override { return wxS(" type=\"input\""); }
+  //! Code serializes to RTF snippet-by-snippet, keeping the syntax
+  //! highlighting; prose maps its heading/text style in the base.
+  wxString ToRTF() const override;
 };
 
 class TextEditorCell final : public EditorCell {
@@ -146,7 +149,7 @@ wxString CodeEditorCell::PreprocessNewValue(const wxString &text,
     // inside it.
     if (text == wxS("(")) {
       result = wxS("()");
-      cursorPos = 0;
+      cursorPos = 1;
     } else if (text == wxS("[")) {
       result = wxS("[]");
       cursorPos = 1;
@@ -396,6 +399,35 @@ wxString EditorCell::ToMatlab(bool dontLimitToSelection) const {
   return text;
 }
 
+wxString CodeEditorCell::ToRTF() const {
+  // The (dead in practice) MC_TYPE_PROMPT case: prompts are code editors by
+  // construction (see EditorCell::IsCodeType), but the visible (%i1) labels
+  // are TextCells, so an EditorCell of this type shouldn't occur.
+  if (m_type == MC_TYPE_PROMPT)
+    return wxString::Format(wxS("\\cf%li"), static_cast<long>(GetTextStyle())) +
+      wxS("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") +
+      RTFescape(GetValue()) + wxS("\n");
+
+  wxString retval(wxS(" "));
+  for (const auto &textSnippet : m_styledText) {
+    wxString escaped = RTFescape(textSnippet.GetText());
+
+    if (textSnippet.IsStyleSet()) {
+      retval +=
+        wxString::Format(wxS("\\cf%li "), static_cast<long>(textSnippet.GetTextStyle()));
+      retval += escaped;
+    } else {
+      retval += wxString::Format(wxS("\\cf%li "), static_cast<long>(TS_CODE_DEFAULT));
+      retval += wxS("{") + escaped + wxS("}\n");
+    }
+    if (textSnippet.GetText().Contains(wxS("\n"))) {
+      retval += wxS("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
+    }
+  }
+  retval += wxString::Format(wxS("\\cf%li "), static_cast<long>(TS_CODE_DEFAULT));
+  return retval;
+}
+
 wxString EditorCell::ToRTF() const {
   wxString retval;
 
@@ -418,34 +450,11 @@ wxString EditorCell::ToRTF() const {
   case MC_TYPE_HEADING6:
     retval += wxS("\\pard\\s5\\b\\f0\\fs32 ") + RTFescape(m_text) + wxS("\n");
     break;
-  case MC_TYPE_PROMPT:
-    retval += wxString::Format(wxS("\\cf%li"), static_cast<long>(GetTextStyle())) +
-      wxS("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") +
-      RTFescape(m_text) + wxS("\n");
-    break;
   case MC_TYPE_TEXT:
     retval += wxS("\\pard\\s0 ") + RTFescape(m_text, true);
     break;
-  case MC_TYPE_INPUT: {
-    retval += wxS(" ");
-    for (const auto &textSnippet : m_styledText) {
-      wxString escaped = RTFescape(textSnippet.GetText());
-
-      if (textSnippet.IsStyleSet()) {
-        retval +=
-          wxString::Format(wxS("\\cf%li "), static_cast<long>(textSnippet.GetTextStyle()));
-        retval += escaped;
-      } else {
-        retval += wxString::Format(wxS("\\cf%li "), static_cast<long>(TS_CODE_DEFAULT));
-        retval += wxS("{") + escaped + wxS("}\n");
-      }
-      if (textSnippet.GetText().Contains(wxS("\n"))) {
-        retval += wxS("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
-      }
-    }
-    retval += wxString::Format(wxS("\\cf%li "), static_cast<long>(TS_CODE_DEFAULT));
-    break;
-  }
+  // MC_TYPE_INPUT and MC_TYPE_PROMPT are code types (see IsCodeType); they
+  // never occur here since CodeEditorCell overrides ToRTF().
   default:
     retval += wxS("\\pard\\s0 ") + RTFescape(m_text);
     break;

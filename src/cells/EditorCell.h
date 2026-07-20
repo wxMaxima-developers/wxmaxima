@@ -614,6 +614,7 @@ private:
   size_t m_selectionStart = 0;
   size_t m_selectionEnd = 0;
   size_t m_lastSelectionStart = 0;
+protected:
   /*! A piece of styled text for syntax highlighting
 
     A piece of styled text may be
@@ -623,6 +624,9 @@ private:
     - whitespace
     - '\\r' indicating a soft line break optionally equipped with indentation
     and a character that marks a continued quote or similar
+
+    Protected (not private): CodeEditorCell::ToRTF() serializes
+    \ref m_styledText snippet-by-snippet to keep the syntax highlighting.
   */
   class StyledText
   {
@@ -674,6 +678,7 @@ private:
     bool IsStyleSet() const { return m_styleThisText; }
   };
 
+private:
 #if defined __WXOSX__
   bool HandleCtrlCommand(wxKeyEvent &ev);
 #endif
@@ -775,7 +780,10 @@ private:
   /*! The text this Editor contains
    */
   mutable wxString m_text;
+protected:
+  //! The styled-run rendering representation of m_text; see StyledText.
   mutable std::vector<StyledText> m_styledText;
+private:
 
   /*! Soft (word-wrap) line-break positions, kept OUTSIDE the content string.
 

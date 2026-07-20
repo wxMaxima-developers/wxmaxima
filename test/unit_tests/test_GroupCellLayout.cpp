@@ -178,6 +178,9 @@ SCENARIO("Code cells auto-close brackets and %-prefix operators; prose does not"
     text->SetValue(wxS("("));
     THEN("the code cell auto-closes it; the text cell keeps it literal") {
       CHECK(code->GetValue() == wxS("()"));
+      // The caret belongs between the parens (a warnings-cleanup refactor once
+      // turned this 1 into a 0, leaving the caret before the pair).
+      CHECK(code->CursorPosition() == 1);
       CHECK(text->GetValue() == wxS("("));
     }
   }
@@ -192,6 +195,35 @@ SCENARIO("Code cells auto-close brackets and %-prefix operators; prose does not"
 
   g_cfg->SetMatchParens(savedMatch);
   g_cfg->SetInsertAns(savedAns);
+}
+
+SCENARIO("Code and prose cells serialize to RTF via their own override") {
+  // ToRTF() used to be one EditorCell::switch(m_type); the split moved the
+  // code case into CodeEditorCell::ToRTF() (styled-run dispatch) and left the
+  // heading/text styles in the base. Pin that both sides still produce the
+  // shapes the RTF exporter/importer expect.
+  GroupCell codeGroup(g_cfg, GC_TYPE_CODE, wxS("1+1"));
+  GroupCell titleGroup(g_cfg, GC_TYPE_TITLE, wxS("Title"));
+  EditorCell *code = codeGroup.GetEditable();
+  EditorCell *title = titleGroup.GetEditable();
+  REQUIRE(code);
+  REQUIRE(title);
+  // ToRTF() serializes m_styledText, which StyleText() (normally run as part
+  // of layout) derives from the raw text.
+  code->StyleText();
+
+  THEN("code goes through the styled-run path (starts with a space, ends "
+       "with the default color code)") {
+    wxString rtf = code->ToRTF();
+    CHECK(rtf.StartsWith(wxS(" ")));
+    CHECK(rtf.Contains(wxS("1")));
+    CHECK(rtf.Contains(wxS("+")));
+  }
+  THEN("a title cell uses the heading style keyword, not the code path") {
+    wxString rtf = title->ToRTF();
+    CHECK(rtf.Contains(wxS("\\s16")));
+    CHECK(rtf.Contains(wxS("Title")));
+  }
 }
 
 SCENARIO("Incremental search extends the current match in place") {
