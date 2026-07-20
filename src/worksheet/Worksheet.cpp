@@ -1114,68 +1114,6 @@ void Worksheet::FoldOccurred() {
   OutputChanged();
 }
 
-/**
- * Toggles the status of the fold for the given GroupCell.
- * If the cell is folded, it will be unfolded; otherwise it will be folded.
- *
- * @param which   The GroupCell to fold or unfold.
- * @return        A pointer to a GroupCell if the action succeeded;
- *                NULL otherwise.
- */
-GroupCell *Worksheet::ToggleFold(GroupCell *which) {
-  if (!which || !which->IsFoldable())
-    return {};
-
-  GroupCell *result = which->GetHiddenTree() ? which->Unfold() : which->Fold();
-
-  if (result) // something has folded/unfolded
-    FoldOccurred();
-
-  return result;
-}
-
-/**
- * Toggles the status of the fold for the given GroupCell and its children.
- * If the cell is folded, it will be recursively unfolded;
- * otherwise it will be recursively folded.
- *
- * @param which   The GroupCell to recursively fold or unfold.
- * @return        A pointer to a GroupCell if the action succeeded;
- *                NULL otherwise.
- */
-GroupCell *Worksheet::ToggleFoldAll(GroupCell *which) {
-  if (!which || !which->IsFoldable())
-    return {};
-
-  GroupCell *result =
-    which->GetHiddenTree() ? which->UnfoldAll() : which->FoldAll();
-
-  if (result) // something has folded/unfolded
-    FoldOccurred();
-
-  return result;
-}
-
-/**
- * Recursively folds the whole document.
- */
-void Worksheet::FoldAll() {
-  if (GetTree()) {
-    GetTree()->FoldAll();
-    FoldOccurred();
-  }
-}
-
-/**
- * Recursively unfolds the whole document.
- */
-void Worksheet::UnfoldAll() {
-  if (GetTree()) {
-    GetTree()->UnfoldAll();
-    FoldOccurred();
-  }
-}
-
 /***
  * Right mouse - popup-menu
  */
@@ -2073,14 +2011,6 @@ std::unique_ptr<wxDataObject> Worksheet::CreateCellsDataObject() const {
   }
 
   return std::unique_ptr<wxDataObject>(data);
-}
-
-bool Worksheet::CanDeleteSelection() const {
-  if (!GetDocumentCellPointers().HasCellsSelected())
-    return false;
-
-  return CanDeleteRegion(GetDocumentCellPointers().GetSelectionStart()->GetGroup(),
-                         GetDocumentCellPointers().GetSelectionEnd()->GetGroup());
 }
 
 void Worksheet::DeleteSelection() {
@@ -3841,24 +3771,6 @@ bool Worksheet::ExportToMAC(const wxString &file) {
   return true;
 }
 
-bool Worksheet::CanEdit() {
-  if (!GetDocumentCellPointers().GetSelectionStart() ||
-      GetDocumentCellPointers().GetSelectionEnd() != GetDocumentCellPointers().GetSelectionStart())
-    return false;
-
-  if (!GetDocumentCellPointers().GetSelectionStart()->IsEditable())
-    return false;
-
-  if (!GetDocumentCellPointers().GetSelectionStart()->GetPrevious())
-    return false;
-
-  if (GetDocumentCellPointers().GetSelectionStart()->GetPrevious()->GetType() !=
-      MC_TYPE_MAIN_PROMPT)
-    return false;
-
-  return true;
-}
-
 void Worksheet::OnDoubleClick(wxMouseEvent &event) {
   event.Skip();
   BTextCtrl::ForgetLastActive();
@@ -4185,19 +4097,6 @@ void Worksheet::Redo() {
       UpdateTableOfContents();
     }
   }
-}
-
-bool Worksheet::CanMergeSelection() const {
-  // We cannot merge cells if not at least two cells are selected
-  if (GetSelectionStart() == GetSelectionEnd())
-    return false;
-
-  // We cannot merge cells if we cannot delete the cells that are
-  // removed during the merge.
-  if (!CanDeleteSelection())
-    return false;
-
-  return true;
 }
 
 bool Worksheet::TreeUndoCellDeletion(UndoActions *sourcelist,
@@ -4772,24 +4671,12 @@ void Worksheet::CheckUnixCopy() {
 }
 
 //! Is this cell selected?
-bool Worksheet::IsSelected(CellType type) {
-  return GetDocumentCellPointers().GetSelectionStart() &&
-    GetDocumentCellPointers().GetSelectionStart()->GetType() == type &&
-    ((type != MC_TYPE_IMAGE && type != MC_TYPE_SLIDE) ||
-     GetDocumentCellPointers().GetSelectionStart() == GetDocumentCellPointers().GetSelectionEnd());
-}
-
 //! Starts playing the animation of a cell generated with the with_slider_*
 //! commands
 void Worksheet::Animate(bool run) const {
   AnimationCell * const animation = GetSelectedAnimation();
   if(animation != NULL)
     animation->AnimationRunning(run);
-}
-
-bool Worksheet::IsSelectionInWorkingGroup() {
-  return GetDocumentCellPointers().GetSelectionStart() && GetWorkingGroup() &&
-    GetDocumentCellPointers().GetSelectionStart()->GetGroup() == GetWorkingGroup();
 }
 
 GroupCell *Worksheet::GetHCaret() {
@@ -4858,10 +4745,6 @@ void Worksheet::ShowHCaret() {
   GetHCaretCursor().Activate();
 }
 
-bool Worksheet::CanUndoInsideCell() const {
-  return GetActiveCell() && GetActiveCell()->CanUndo();
-}
-
 void Worksheet::UndoInsideCell() {
   if (GetActiveCell()) {
     GetActiveCell()->Undo();
@@ -4870,10 +4753,6 @@ void Worksheet::UndoInsideCell() {
     RequestRecalculation(GetActiveCell()->GetGroup());
     RequestRedraw();
   }
-}
-
-bool Worksheet::CanRedoInsideCell() const {
-  return GetActiveCell() && GetActiveCell()->CanRedo();
 }
 
 void Worksheet::RedoInsideCell() {

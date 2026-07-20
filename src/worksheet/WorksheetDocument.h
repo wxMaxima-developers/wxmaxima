@@ -127,6 +127,35 @@ public:
   //! Renumber all sectioning cells (titles, sections, ...) from the top.
   void NumberSections() const;
 
+  /*! Fold or unfold \p which, whichever it currently isn't; see
+    GroupCell::Fold()/Unfold(). Returns the cell if something actually
+    changed, null if \p which is null or not foldable. The caller still has
+    to schedule a recalculation - every existing caller already does.
+  */
+  GroupCell *ToggleFold(GroupCell *which);
+  //! Like ToggleFold(), but folds/unfolds \p which's whole subtree.
+  GroupCell *ToggleFoldAll(GroupCell *which);
+  //! Recursively folds every foldable cell in the document.
+  void FoldAll();
+  //! Recursively unfolds every folded cell in the document.
+  void UnfoldAll();
+
+  //! Is exactly one cell selected, and does it directly follow Maxima's own
+  //! input prompt (as opposed to being e.g. a text or section cell)?
+  bool CanEdit() const;
+  //! Can the current selection be deleted right now (see CanRemoveCells())?
+  bool CanDeleteSelection() const;
+  //! Can the current selection (of more than one cell) be merged into one?
+  bool CanMergeSelection() const;
+  //! Is the selection exactly one cell of the given type?
+  bool IsSelected(CellType type) const;
+  //! Is the selection start inside the group Maxima is currently evaluating?
+  bool IsSelectionInWorkingGroup() const;
+  //! Can the active cell's own (intra-cell) undo be invoked right now?
+  bool CanUndoInsideCell() const;
+  //! Can the active cell's own (intra-cell) redo be invoked right now?
+  bool CanRedoInsideCell() const;
+
   /*! Insert a list of group cells into the document after \p where.
 
     \p where == null inserts at the very top. Splices the cells into the tree,

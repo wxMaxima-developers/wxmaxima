@@ -783,7 +783,7 @@ public:
     \todo Does it make sense to make to allow the text of sections and image cells
     with math cells?
   */
-  bool CanMergeSelection() const;
+  bool CanMergeSelection() const { return m_document.CanMergeSelection(); }
 
   bool CanUndo() const;
 
@@ -974,7 +974,7 @@ public:
   bool CanDeleteRegion(GroupCell *start, const GroupCell *end) const;
 
   //! Is it possible to delete the currently selected cells?
-  bool CanDeleteSelection() const;
+  bool CanDeleteSelection() const { return m_document.CanDeleteSelection(); }
 
   /*! Delete the currently active cell - or the cell above this one.
 
@@ -1167,7 +1167,7 @@ public:
 
   /*! We can edit the input if the we have the whole input in selection!
    */
-  bool CanEdit();
+  bool CanEdit() const { return m_document.CanEdit(); }
 
   bool ActivatePrevInput() { return ActivateInput(-1); }
   bool ActivateNextInput() { return ActivateInput(+1); }
@@ -1267,7 +1267,7 @@ public:
   void OnKillFocus(wxFocusEvent &event);
 
   //! Does the selection start with a cell of the type "type"
-  bool IsSelected(CellType type);
+  bool IsSelected(CellType type) const { return m_document.IsSelected(type); }
 
   /*! Set the slide of the currently selected animation or advance it by one step
 
@@ -1288,7 +1288,7 @@ public:
     }
 
   //! Is the selection in the current working group?
-  bool IsSelectionInWorkingGroup();
+  bool IsSelectionInWorkingGroup() const { return m_document.IsSelectionInWorkingGroup(); }
 
   void SetActiveCell(EditorCell *cell);
 
@@ -1324,7 +1324,7 @@ public:
 
     \return false if no cell is selected or there is no further undo information
   */
-  bool CanUndoInsideCell() const;
+  bool CanUndoInsideCell() const { return m_document.CanUndoInsideCell(); }
 
   void UndoInsideCell();
 
@@ -1332,7 +1332,7 @@ public:
 
     \return false if no cell is selected or no redo can be executed.
   */
-  bool CanRedoInsideCell() const;
+  bool CanRedoInsideCell() const { return m_document.CanRedoInsideCell(); }
 
   void RedoInsideCell();
 
@@ -1425,13 +1425,13 @@ public:
 
   // methods for folding
   //! Fold or unfold a cell
-  GroupCell *ToggleFold(GroupCell *which);
+  GroupCell *ToggleFold(GroupCell *which) { return m_document.ToggleFold(which); }
 
-  GroupCell *ToggleFoldAll(GroupCell *which);
+  GroupCell *ToggleFoldAll(GroupCell *which) { return m_document.ToggleFoldAll(which); }
 
-  void FoldAll();
+  void FoldAll() { m_document.FoldAll(); }
 
-  void UnfoldAll();
+  void UnfoldAll() { m_document.UnfoldAll(); }
 
   // methods for zooming the document in and out
   void SetZoomFactor(double newzoom);

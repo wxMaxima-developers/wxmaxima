@@ -242,3 +242,101 @@ WorksheetDocument::UndoTextChange(const TreeUndoAction &action,
                                      "contents change and cell addition."));
   return TextUndoResult::Applied;
 }
+
+GroupCell *WorksheetDocument::ToggleFold(GroupCell *which) {
+  if (!which || !which->IsFoldable())
+    return {};
+
+  GroupCell *result = which->GetHiddenTree() ? which->Unfold() : which->Fold();
+
+  if (result) // something has folded/unfolded
+    OutputChanged();
+
+  return result;
+}
+
+GroupCell *WorksheetDocument::ToggleFoldAll(GroupCell *which) {
+  if (!which || !which->IsFoldable())
+    return {};
+
+  GroupCell *result =
+    which->GetHiddenTree() ? which->UnfoldAll() : which->FoldAll();
+
+  if (result) // something has folded/unfolded
+    OutputChanged();
+
+  return result;
+}
+
+void WorksheetDocument::FoldAll() {
+  if (m_tree) {
+    m_tree->FoldAll();
+    OutputChanged();
+  }
+}
+
+void WorksheetDocument::UnfoldAll() {
+  if (m_tree) {
+    m_tree->UnfoldAll();
+    OutputChanged();
+  }
+}
+
+bool WorksheetDocument::CanEdit() const {
+  if (!m_cellPointers.GetSelectionStart() ||
+      m_cellPointers.GetSelectionEnd() != m_cellPointers.GetSelectionStart())
+    return false;
+
+  if (!m_cellPointers.GetSelectionStart()->IsEditable())
+    return false;
+
+  if (!m_cellPointers.GetSelectionStart()->GetPrevious())
+    return false;
+
+  if (m_cellPointers.GetSelectionStart()->GetPrevious()->GetType() !=
+      MC_TYPE_MAIN_PROMPT)
+    return false;
+
+  return true;
+}
+
+bool WorksheetDocument::CanDeleteSelection() const {
+  if (!m_cellPointers.HasCellsSelected())
+    return false;
+
+  return CanRemoveCells(m_cellPointers.GetSelectionStart()->GetGroup(),
+                        m_cellPointers.GetSelectionEnd()->GetGroup());
+}
+
+bool WorksheetDocument::CanMergeSelection() const {
+  // We cannot merge cells if not at least two cells are selected
+  if (m_cellPointers.GetSelectionStart() == m_cellPointers.GetSelectionEnd())
+    return false;
+
+  // We cannot merge cells if we cannot delete the cells that are
+  // removed during the merge.
+  if (!CanDeleteSelection())
+    return false;
+
+  return true;
+}
+
+bool WorksheetDocument::IsSelected(CellType type) const {
+  return m_cellPointers.GetSelectionStart() &&
+    m_cellPointers.GetSelectionStart()->GetType() == type &&
+    ((type != MC_TYPE_IMAGE && type != MC_TYPE_SLIDE) ||
+     m_cellPointers.GetSelectionStart() == m_cellPointers.GetSelectionEnd());
+}
+
+bool WorksheetDocument::IsSelectionInWorkingGroup() const {
+  return m_cellPointers.GetSelectionStart() && m_cellPointers.GetWorkingGroup() &&
+    m_cellPointers.GetSelectionStart()->GetGroup() == m_cellPointers.GetWorkingGroup();
+}
+
+bool WorksheetDocument::CanUndoInsideCell() const {
+  return m_cellPointers.GetActiveCell() && m_cellPointers.GetActiveCell()->CanUndo();
+}
+
+bool WorksheetDocument::CanRedoInsideCell() const {
+  return m_cellPointers.GetActiveCell() && m_cellPointers.GetActiveCell()->CanRedo();
+}
