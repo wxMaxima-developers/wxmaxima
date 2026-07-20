@@ -8,6 +8,9 @@
 - Speedup: "Replace All" no longer schedules a re-layout of the whole
   worksheet - only the cells that actually contained the search text are
   re-laid-out.
+- Speedup: scrolling to a cell whose position isn't known yet (and the
+  caret-visibility check) now schedules a re-layout targeted at that cell
+  instead of one spanning the whole worksheet.
 - The statistics sidebar now grows its scrollable height to its wrapped
   button rows, like the other sidebars: when the sidebar was narrow, the
   buttons below the fold could neither be shown nor scrolled to.

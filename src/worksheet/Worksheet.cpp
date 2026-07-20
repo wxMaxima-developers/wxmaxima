@@ -4134,12 +4134,12 @@ void Worksheet::ScrollToCellIfNeeded() {
   int cellY = cell->GetCurrentY();
 
   if (cellY < 0) {
-    // The cell has no valid position yet. RequestRecalculation() only schedules
-    // a layout pass, so it has to be followed by RecalculateIfNeeded() to
-    // actually run it - otherwise the re-read below sees the same stale value.
-    // (This was a no-op even before Recalculate() was renamed: scheduling alone
-    // never updated the position.)
-    RequestRecalculation();
+    // The cell has no valid position yet. A request targeted at its group is
+    // enough: the layout pass positions the group from its (already laid-out)
+    // predecessor and propagates downwards. Scheduling has to be followed by
+    // RecalculateIfNeeded() to actually run the pass - otherwise the re-read
+    // below sees the same stale value.
+    RequestRecalculation(cell->GetGroup());
     RecalculateIfNeeded();
     cellY = cell->GetCurrentY();
   }
@@ -5299,10 +5299,13 @@ bool Worksheet::CaretVisibleIs() {
     if (GetActiveCell()) {
       wxPoint point = GetActiveCell()->PositionToPoint();
       if (point.y < 1) {
-        // RequestRecalculation() only schedules a layout pass; it has to be
-        // followed by RecalculateIfNeeded() to actually run it - otherwise
-        // the re-read below sees the same stale position.
-        RequestRecalculation();
+        // The active cell has no valid position yet. A request targeted at
+        // its group suffices (see ScrollToCellIfNeeded()) and, unlike a
+        // whole-worksheet request, doesn't turn a bounded pending layout
+        // range into a full-document walk. Scheduling has to be followed by
+        // RecalculateIfNeeded() to actually run the pass - otherwise the
+        // re-read below sees the same stale position.
+        RequestRecalculation(GetActiveCell()->GetGroup());
         RecalculateIfNeeded();
         point = GetActiveCell()->PositionToPoint();
       }
