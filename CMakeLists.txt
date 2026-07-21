@@ -314,13 +314,6 @@ add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
 install(FILES AUTHORS.md COPYING GPL.txt NEWS.md README README.md DESTINATION share/doc/wxmaxima)
 
-# include wxWidgets DLLs on Windows on appveyor
-if(WIN32 AND APPVEYOR_BUILD)
-    install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
-        DESTINATION programs
-        COMPONENT applications)
-endif()
-
 # The fuzz object library (test/fuzz, built with -DWXM_FUZZ=ON) compiles the same
 # sources as wxmaxima, so it needs the same bin2h-generated headers (icons,
 # embedded examples, builtin_commands.h, ...). Those dependencies are added to
