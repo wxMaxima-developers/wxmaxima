@@ -126,7 +126,7 @@ macOS X prerequisites</h3>
 <h2><a class="anchor" id="autotoc_md36"></a>
 Compiling on Windows</h2>
 <p>You can use the MinGW-w64 (<a href="https://www.mingw-w64.org/">https://www.mingw-w64.org/</a>) compilers.</p>
-<p>You can also build using MS Visual Studio 2019 or newer. Since MSVS provides adequate versions of both cmake and ninja, there's no need to install those. The build has to start from within the <em>x64 Native Tools Command Prompt</em>, and you have to first build wxWidgets before you build wxmaxima. You can get some inspiration about how to do both of these steps by examining the PowerShell scripts that do the building within <code>.appveyor.yml</code> file.</p>
+<p>You can also build using MS Visual Studio 2019 or newer. Since MSVS provides adequate versions of both cmake and ninja, there's no need to install those. The build has to start from within the <em>x64 Native Tools Command Prompt</em>, and you have to first build wxWidgets before you build wxmaxima. You can get some inspiration about how to do both of these steps by examining the MSVC build steps in <code>.github/workflows/compile_windows.yml</code>.</p>
 <h3><a class="anchor" id="autotoc_md37"></a>
 Note for the Mingw-w64 compiler and crosscompiler</h3>
 <p>These compilers come with two forms of thread support - win32 and posix. The win32 thread version does not support std::thread, which <a class="el" href="classwxMaxima.html">wxMaxima</a> uses for multithreading, so be sure to install or reconfigure the posix version.</p>
@@ -165,7 +165,7 @@ Creating a standalone wxMaxima</h2>
 </ul>
 <h2><a class="anchor" id="autotoc_md44"></a>
 Troubleshooting</h2>
-<p>If you have problems when compiling <a class="el" href="classwxMaxima.html">wxMaxima</a>, maybe a look in the configurations for various CI-Systems (<code>.appveyor.yml</code> and files in <code>.github/workflows/</code>) may be helpful to see, how <a class="el" href="classwxMaxima.html">wxMaxima</a> is compiled on these systems.</p>
+<p>If you have problems when compiling <a class="el" href="classwxMaxima.html">wxMaxima</a>, maybe a look in the configurations for various CI-Systems (the files in <code>.github/workflows/</code>) may be helpful to see, how <a class="el" href="classwxMaxima.html">wxMaxima</a> is compiled on these systems.</p>
 <p>If something is not clear / should be improved in that document, please open an issue. This document should help YOU to compile <a class="el" href="classwxMaxima.html">wxMaxima</a>. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
