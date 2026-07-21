@@ -1,0 +1,69 @@
+name: update_website_version
+
+# On a Version tag, update the version strings the download page shows so they
+# always match the release, instead of relying on a manual edit that is easy to
+# forget. The gh-pages branch hand-maintains two of them:
+#   * version.txt                -> "wxmaxima = <version>"
+#   * download.html "latest ..." -> "The latest version of wxMaxima is <version>."
+# (Only these root files are touched; the Doxygen docs subtree that the separate
+# doxygen-gh-pages workflow deploys is left alone.)
+
+on:
+  push:
+    tags:
+      - 'Version-*'
+
+permissions:
+  contents: write
+
+jobs:
+  update_website_version:
+    name: Update the website's version strings
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@v7
+        with:
+          ref: gh-pages
+          # Full history so the rebase-retry below can re-sync cleanly if the
+          # Doxygen deploy pushed to gh-pages in the meantime.
+          fetch-depth: 0
+
+      - name: Update version.txt and download.html
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#Version-}"
+          echo "Release version: $version"
+          printf 'wxmaxima = %s\n' "$version" > version.txt
+          # Replace only the version number, keeping the surrounding sentence
+          # (and its trailing period) intact. Exactly one line matches.
+          sed -i -E "s/(The latest version of wxMaxima is )[0-9]+\.[0-9]+\.[0-9]+/\1${version}/" download.html
+          echo "--- version.txt ---"; cat version.txt
+          echo "--- download.html ---"; grep -nE "The latest version of wxMaxima is" download.html
+
+      - name: Commit and push if changed
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then
+            echo "version.txt / download.html already up to date; nothing to commit."
+            exit 0
+          fi
+          version="${GITHUB_REF_NAME#Version-}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add version.txt download.html
+          git commit -m "Update version.txt / download.html (${version} release)"
+          # gh-pages is also written by the Doxygen deploy (on pushes to main),
+          # so a concurrent write could reject this push. Retry with a rebase --
+          # the two touch different files, so the rebase applies cleanly.
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:gh-pages; then
+              echo "pushed on attempt ${attempt}"
+              exit 0
+            fi
+            echo "push rejected (attempt ${attempt}); rebasing onto latest gh-pages"
+            git pull --rebase origin gh-pages
+          done
+          echo "::error::could not push the website version update after several attempts"
+          exit 1
