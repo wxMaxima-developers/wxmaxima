@@ -6,12 +6,12 @@ confinement: strict
 grade: stable
 base: core24
 license: GPL-2.0+
-architectures:
-   - build-on: arm64
-   - build-on: armhf
-   - build-on: amd64
-   - build-on: ppc64el
-   - build-on: s390x
+platforms:
+  amd64:
+  arm64:
+  armhf:
+  ppc64el:
+  s390x:
 
 apps:
   wxmaxima:
