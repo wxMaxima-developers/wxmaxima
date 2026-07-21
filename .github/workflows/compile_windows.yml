@@ -16,19 +16,6 @@ jobs:
       contents: write  # for actions/create-release to create a release
     runs-on: windows-latest
     steps:
-      - name: create_release
-        if: startsWith(github.ref, 'refs/tags/Version')
-        id: create_release
-        uses: softprops/action-gh-release@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Automatic compilation on a new release
-          draft: false
-          prerelease: false
       - name: Checkout wxMaxima
         uses: actions/checkout@v7
         with:
@@ -249,6 +236,38 @@ jobs:
             ctest -LE "unittest|needs_posix" -E "multithreadtest" --repeat after-timeout:2 -j 2 --output-on-failure
             cd ..
             cd ..
+      - name: Extract release notes from NEWS.md
+        # The release body is the "Current development version" section: from
+        # the top of the file down to (not including) the next top-level "# "
+        # heading, which marks the previous version. Kept as its own step
+        # (rather than inline in the release-publishing step below) so it can
+        # be inspected in the log independent of whether publishing runs.
+        if: startsWith(github.ref, 'refs/tags/Version')
+        run: |
+            $lines = Get-Content wxMaxima\NEWS.md
+            $endIdx = $lines.Count - 1
+            for ($i = 1; $i -lt $lines.Count; $i++) {
+              if ($lines[$i] -match '^# ') { $endIdx = $i - 1; break }
+            }
+            $lines[1..$endIdx] | Out-File -FilePath wxMaxima\release-notes.md -Encoding utf8
+      - name: Publish release
+        # Only after the build AND its integration tests have passed: this
+        # runs last in the job, so a build or test failure never publishes a
+        # broken installer. macOS/Ubuntu attach their own artifacts to the
+        # same release separately (softprops/action-gh-release creates the
+        # release if this is the first job to reach it, or updates it - and
+        # preserves this call's name/body either way).
+        if: startsWith(github.ref, 'refs/tags/Version')
+        uses: softprops/action-gh-release@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          name: Release ${{ github.ref_name }}
+          body_path: wxMaxima/release-notes.md
+          files: wxMaxima/build/*.exe
+          draft: false
+          prerelease: false
 
   MSVC:
     permissions:

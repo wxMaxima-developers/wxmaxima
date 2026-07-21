@@ -9,45 +9,14 @@ permissions:
   contents: read
 
 jobs:
-  # Commented out, because github has no ARM runners
-  #
-  # compile_Ninja_ARM:
-  #   runs-on: osx-arm64
-  #   steps:
-  #     - name: Checkout wxMaxima from git
-  #       uses: actions/checkout@v7
-  #       with:
-  #         # We must fetch at least the immediate parents so that if this is
-  #         # a pull request then we can checkout the head.
-  #         fetch-depth: 15
-  #     - name: Install the dependencies
-  #       run: |
-  #            export PATH=$PATH:/usr/local/opt/gettext/bin
-  #            export HOMEBREW_NO_AUTO_UPDATE=1
-  #            set -e
-  #            brew install gettext ninja pandoc wxwidgets
-  #            set +e
-  #     - name: Configure wxMaxima
-  #       run: |
-  #            mkdir ../build-wxm
-  #            cmake -S . -B ../build-wxm -G Ninja -DCMAKE_INSTALL_PREFIX=. -DWXM_UNIT_TESTS=YES
-
-  #     - name: Check Info.plist
-  #       run: |
-  #            ls -l ../build-wxm/src/Info.plist
-  #     - name: Compile wxMaxima
-  #       run: |
-  #            cmake --build ../build-wxm
-  #     - name: Install wxMaxima
-  #       run: |
-  #            cmake --install ../build-wxm
-  #     - name: Package wxMaxima
-  #       run: |
-  #            cd ../build-wxm
-  #             cpack -G DragNDrop||cpack -G DragNDrop||cpack -G DragNDrop||cpack -G DragNDrop
-
   compile_Ninja:
+    # macos-latest is an arm64 (Apple Silicon) runner - GitHub's Intel macOS
+    # images are being retired (macos-15-intel is the last, through Fall
+    # 2027) and Apple itself hasn't sold an Intel Mac since 2023, so this one
+    # job is the release build; no separate Intel job is planned.
     runs-on: macos-latest
+    permissions:
+      contents: write  # for softprops/action-gh-release to attach the dmg to a release
 
     steps:
       - name: Checkout wxMaxima from git
@@ -94,13 +63,30 @@ jobs:
       - name: Upload the dmg
         uses: actions/upload-artifact@v7
         with:
-          name: wxMaxima_ia64.dmg
+          name: wxMaxima_arm64.dmg
           path: wxMaxima.dmg
       - name: Upload the dmg checksum
         uses: actions/upload-artifact@v7
         with:
-          name: wxMaxima_ia64.dmg.sha512
+          name: wxMaxima_arm64.dmg.sha512
           path: wxMaxima.dmg.sha512
+      - name: Publish release
+        # Attaches to the release the Windows job creates (see its "Publish
+        # release" step); this call omits name/body so it never overwrites
+        # them, and never runs first in practice since this job is much
+        # faster - but the action creates the release if it doesn't exist
+        # yet either way.
+        if: startsWith(github.ref, 'refs/tags/Version')
+        uses: softprops/action-gh-release@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          files: |
+            wxMaxima.dmg
+            wxMaxima.dmg.sha512
+          draft: false
+          prerelease: false
 
   compile_Make:
     runs-on: macos-latest

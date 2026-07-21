@@ -12,6 +12,8 @@ jobs:
   compile_latest_and_test:
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    permissions:
+      contents: write  # for softprops/action-gh-release to attach the .deb to a release
 
     steps:
       - name: Checkout_git
@@ -67,6 +69,34 @@ jobs:
              GDK_BACKEND=x11 dbus-run-session -- xvfb-run -a ctest -j 2 -E "multithreadtest"
              ls -la test/test_userdirs  # check for issue #2110.
              cd ..
+      - name: Package .deb (release only)
+        # A separate Release-mode build, kept out of the Debug build/ above
+        # (used for testing) so packaging never touches its build type or
+        # flags. Only runs on a release tag, since it doubles the build time.
+        # "-B _CPack_DEB" mirrors test/check-lintian.sh.in's proven invocation.
+        if: startsWith(github.ref, 'refs/tags/Version')
+        run: |
+             mkdir build-release
+             cd build-release
+             cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
+             cmake --build .
+             cpack -G DEB -B _CPack_DEB
+             # CPack's default .deb name doesn't encode which Ubuntu release
+             # it was built on, and compile_2204 (below) would otherwise
+             # produce an identically-named file - rename so both can attach
+             # to the same GitHub release without colliding.
+             mv _CPack_DEB/*.deb wxmaxima-ubuntu-latest-amd64.deb
+             cd ..
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/Version')
+        uses: softprops/action-gh-release@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          files: build-release/*.deb
+          draft: false
+          prerelease: false
 
   compile_and_test_sanitized:
     # Builds with AddressSanitizer + UndefinedBehaviorSanitizer and runs the
@@ -161,6 +191,8 @@ jobs:
   compile_2204:
     runs-on: ubuntu-22.04
     timeout-minutes: 30
+    permissions:
+      contents: write  # for softprops/action-gh-release to attach the .deb to a release
 
     steps:
       - name: Checkout_git
@@ -172,7 +204,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt-get update
-             sudo apt-get install cmake gettext libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev pandoc make po4a
+             sudo apt-get install cmake dpkg-dev gettext libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev pandoc make po4a
       - name: configure
         run: |
              export CXXFLAGS="-Wall -Wextra"
@@ -192,5 +224,27 @@ jobs:
       - name: cat_german_translation
         # output the german translation - how does it look like on Ubuntu 22.04?
         run: cat build/info/wxmaxima.de.md
+      - name: Package .deb (release only)
+        # See the matching step in compile_latest_and_test: a separate
+        # Release-mode build dir, only on a release tag.
+        if: startsWith(github.ref, 'refs/tags/Version')
+        run: |
+             mkdir build-release
+             cd build-release
+             cmake -DCMAKE_BUILD_TYPE=Release ..
+             cmake --build .
+             cpack -G DEB -B _CPack_DEB
+             mv _CPack_DEB/*.deb wxmaxima-ubuntu-22.04-amd64.deb
+             cd ..
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/Version')
+        uses: softprops/action-gh-release@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          files: build-release/*.deb
+          draft: false
+          prerelease: false
 
 
