@@ -1,5 +1,11 @@
 # Current development version
 
+This release contains an unusually large batch of improvements -- many of them
+developed with substantial help from the AI assistants **Claude** and
+**Fable**: dark mode for the whole Windows user interface, native
+Windows-on-Arm builds, numerous speedups, and a large number of bug and
+stability fixes.
+
 - On Windows, switching to dark mode now also darkens the native user
   interface (menus, toolbars, sidebars, dialogs), not just the worksheet.
   wxWidgets can only enable this during application startup, so the saved
@@ -47,27 +53,17 @@
   the prompt's answer even if the cursor wandered off it. The pending prompt
   is also cleaned up when the Lisp process ends.
 - File name arguments (openr(), read_matrix(), load(), demo(), ...) now
-  autocomplete bash-style: the popup lists the directory the partial file
-  name points into, every printable character (including dots and dashes)
-  narrows the list, Backspace widens it again instead of closing the popup,
-  and choosing a directory descends into it and continues completing there.
-  Also fixed: completing right after the opening quote works even when the
-  editor auto-added the closing quote, the offered names no longer
-  carry a spurious leading "/" at the top level, repeated completion
-  attempts no longer eat the quotes one by one, and in a still-unsaved
-  worksheet the completion now offers the home directory instead of
-  nothing at all.
-- Fixed a layout bug where the horizontal extent of parenthesized content was
-  underestimated: with nested parenthesis/fraction/subscript constructs that
-  were only partially broken into lines, cells inside a 2D fraction could be
-  re-measured (and drawn) at the full font size while the surrounding
-  parenthesis kept extents computed at the reduced size. Composite cells now
-  always propagate the layout pass into their children, so a nested cell that
-  was invalidated by a break-up or unbreak is always re-laid-out at the font
-  size its surroundings dictate. In addition, every cell now remembers the
-  font size its owner laid it out with, drawing verifies the two match
-  (visible as a counter in the performance monitor and a log message in
-  debug mode), and the layout invariant tests check the same rule.
+  autocomplete bash-style: the popup lists the directory the partial name
+  points into, typing narrows the list and Backspace widens it again, and
+  choosing a directory descends into it and keeps completing there. Several
+  edge cases (the editor's auto-added closing quote, a spurious leading "/" at
+  the top level, and completion in a still-unsaved worksheet) were fixed too.
+- Fixed a layout bug where the width of parenthesized content was
+  underestimated: in partially-broken nested parenthesis/fraction/subscript
+  constructs, cells inside a fraction could be drawn at the full font size
+  while the surrounding parenthesis used the reduced-size extents. Composite
+  cells now always re-lay-out their children at the right font size, and each
+  cell remembers (and drawing verifies) the font size it was laid out with.
 - Fixed a hang when a worksheet contained an image that could not be rendered
   (a broken or empty `<img>`): querying the size of the not-yet-rendered
   bitmap tripped a wxWidgets assertion. Found by the layout/paint fuzzer.
@@ -80,38 +76,23 @@
 - Status bar pictograms for lisp and debugger modes
 - Many Speedups
 - A complete stability review using a Fable-Class AI
-- Speedup: merely moving the mouse across the worksheet used to repaint the
-  whole visible worksheet (all of its text included) at up to full frame
-  rate, visible as a stream of font-cache hits in the performance monitor
-  whenever a cell bracket appeared or vanished under the pointer. Three
-  causes fixed: GTK's overlay scrollbar is a composited window whose
-  fade-in/fade-out animation forces full-window repaints, so the worksheet
-  now uses classic scrollbars on GTK by default (a configuration option
-  brings the overlay ones back); the paint routine now redraws each
-  damaged rectangle separately instead of their bounding box (the bracket
-  column plus the blinking cursor's bar used to combine into "everything");
-  and several sidebars re-layouted themselves on every size event even when
-  nothing had changed, which on wxGTK re-triggers itself on the next frame.
-  Also, the status bar and the performance monitor no longer re-set label
-  text that didn't change (each such set re-layouts the frame), and the
-  performance monitor now updates at most twice a second - its own updates
-  changed the statistics it displays, keeping the GUI busy in a loop. The
-  performance monitor gained "Worksheet repaints" and "Full-window repaints"
-  counters so a regression of this kind is easy to spot.
-- Refactored the code into smallerclasses that are individually testable
+- Speedup: merely moving the mouse across the worksheet no longer repaints the
+  whole visible worksheet at up to full frame rate. On GTK the worksheet now
+  uses classic scrollbars by default (the overlay ones forced full-window
+  repaints; a configuration option brings them back), the paint routine
+  redraws each damaged rectangle separately, and needless idle re-layouts of
+  the sidebars, status bar and performance monitor were removed. New
+  "Worksheet repaints" / "Full-window repaints" counters in the performance
+  monitor make such regressions easy to spot.
+- Refactored the code into smaller, individually testable classes
 - Added automatic tests for most recurring bugs
-- More numbers for the performance monigor
-- Fixed several ways a corrupt or hostile .wxmx file could hang or misbehave
-  instead of failing cleanly: a damaged archive opened in batch mode wedged the
-  program (it repeatedly tried to auto-save the unloadable, name-less session,
-  reopening a "Save As" dialog from every idle cycle); a content.xml claiming
-  billions of watch variables or an enormous active-cell index drove
-  near-endless loops; and an over-large content.xml is now read only up to a
-  sane limit so a decompression bomb cannot exhaust memory. wxMaxima now
-  refuses such files gracefully (a batch run exits with an error code), and a
-  new corrupt_wxmx_smoke test guards it. Also: the .wxmx document-version check
-  is parsed locale-independently (it silently did nothing under locales that
-  use a comma decimal separator), and a skipped zip entry no longer leaks.
+- More counters in the performance monitor
+- Corrupt or hostile .wxmx files now fail cleanly instead of hanging: a damaged
+  archive no longer wedges a batch run in an endless "Save As" loop, absurd
+  watch-variable or active-cell counts no longer drive near-endless loops, and
+  an over-large content.xml is read only up to a sane limit (a
+  decompression-bomb guard). Guarded by a new corrupt_wxmx_smoke test. The
+  .wxmx document-version check is now parsed locale-independently.
 - Fixed: when Maxima asks a question the input cell for the answer appeared
   above the question instead of below it.
 - Restarting Maxima no longer spawns a new gnuplot process to probe which
@@ -161,11 +142,8 @@
 - Fixed find-next getting stuck when a match was found in an input prompt
 - Fixed broken equation-image links in HTML exports using the "bitmap" equation
   format
-- Added an export safety-net regression test (test_WorksheetExport): a rich
-  worksheet (the real math corpus plus sentinel cells) is exported to HTML (all
-  four equation formats), LaTeX, .mac and .wxm twice each; the runs must be
-  byte-identical (modulo zip timestamps and SVG image ids, which wxWidgets
-  numbers with a process-global counter) and contain the document's content.
+- Added an export safety-net regression test (test_WorksheetExport) covering
+  HTML (all equation formats), LaTeX, .mac and .wxm export.
 - Fixed math cells with subscripts, parenthesis or lists keeping stale spacing
 - Added a layout-idempotency regression test: after zoom and canvas-size changes the converged layout must be identical to laying the same content out from scratch.
 - Configuration changes that alter how text is displayed (e.g. drawing a multiplication dot instead of an asterisk) take effect on the next redraw again instead of requiring the cells to be rebuilt.

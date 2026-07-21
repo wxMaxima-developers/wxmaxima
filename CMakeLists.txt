@@ -11,7 +11,7 @@ endif (POLICY CMP0048)
 project(wxMaxima
         DESCRIPTION "wxMaxima is a document based interface for the computer algebra system Maxima."
         HOMEPAGE_URL "https://wxmaxima-developers.github.io/wxmaxima/"
-        VERSION 26.07.0
+        VERSION 26.07.1
         LANGUAGES CXX
        )
 
