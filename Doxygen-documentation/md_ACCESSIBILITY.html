@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Status of screen-reader / assistive-technology support, and the plan to improve it. Written 2026-07-01.</p>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md7"></a>
 How to read this document</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a>'s accessibility is exposed through <code>wxAccessible</code> (MSAA/UI Automation on Windows, ATK/AT-SPI on Linux when wxWidgets is built with <code>--enable-accessibility</code>). <b>The primary target is Windows</b> — standard wxWidgets distributions enable accessibility there, whereas the common Linux packages ship <code>wxUSE_ACCESSIBILITY=0</code>, which compiles all of this out.</p>
 <p><b>Testing loop.</b> Behavioural validation needs an actual screen reader (NVDA / JAWS) on Windows, done by our blind tester, who reaches the code only through the once-a-day nightly build — a multi-day feedback loop. Therefore:</p>
@@ -82,7 +82,7 @@ How to read this document</h1>
 <li>Reserve the tester's slow feedback for the <em>subjective</em> questions marked <b>[ASK TESTER]</b> below.</li>
 <li>Batch fixes so each nightly he receives covers as much as possible.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md10"></a>
 Legend</h1>
 <ul>
 <li>✅ Done / believed good. ⚠️ Partial or unverified. ❌ Known gap.</li>

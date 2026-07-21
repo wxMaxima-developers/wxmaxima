@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>On Windows, switching to dark mode now also darkens the native user interface (menus, toolbars, sidebars, dialogs), not just the worksheet. wxWidgets can only enable this during application startup, so the saved appearance is now applied before the main window is created. (Toggling the appearance while <a class="el" href="classwxMaxima.html">wxMaxima</a> is running may still need a restart to fully re-theme the native controls &ndash; a Windows limitation.)</li>
 <li>Native Windows-on-Arm (ARM64) builds: each release now includes a self-contained portable ZIP for ARM64 Windows, built natively with the clang-aarch64 toolchain. Unzip it and run wxmaxima.exe &ndash; no installer and no separate runtime needed.</li>
 <li>The worksheet diff viewer now shows changes inside a folded (collapsed) section instead of silently ignoring them: the cell alignment used to walk only the visible top-level cells, so two worksheets that differed solely inside a fold looked identical in the diff. Folded content is now expanded in the diff view and highlighted like any other change.</li>
 <li>Typing "(" at the horizontal cursor opens a new code cell containing "()" with the caret between the parens again, like "[", "{" and "\"" do. <a class="el" href="classA.html">A</a> refactor had left the caret in front of the opening paren instead.</li>
