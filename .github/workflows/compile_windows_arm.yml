@@ -30,6 +30,8 @@ jobs:
     name: Compile using CLANGARM64
     runs-on: windows-11-arm
     timeout-minutes: 60
+    permissions:
+      contents: write  # for softprops/action-gh-release to attach the ARM64 ZIP
     # MSYS2 shells emit a normal (non-fatal) message on first login; make bash
     # strict so a real error still fails the step.
     defaults:
@@ -53,6 +55,8 @@ jobs:
           # resolves it without hints.
           install: >-
             git
+            zip
+            unzip
             mingw-w64-clang-aarch64-clang
             mingw-w64-clang-aarch64-cmake
             mingw-w64-clang-aarch64-ninja
@@ -88,3 +92,68 @@ jobs:
         # unknown, so keep the exclusion for now and revisit once the rest is
         # green (dropping it is a one-line follow-up if they pass here).
         run: ctest --test-dir build -L unittest -E "MenuHelpString|ButtonWrapSizer" --output-on-failure
+
+      # --- PHASE 2a: portable ZIP -------------------------------------------
+      # Produce a self-contained ZIP and upload it as a workflow artifact so its
+      # completeness can be verified (downloaded + inspected) BEFORE anything is
+      # attached to a release. wxWidgets is linked statically, so the only DLLs
+      # to ship are the clang C++ runtime (libc++, libunwind), winpthread, and
+      # any dynamic dependencies of wx's static libs (zlib/png/jpeg/expat/...).
+      # We do not hand-maintain that list: ldd reports the exe's full transitive
+      # DLL closure, and we bundle every entry that resolves inside the MSYS2
+      # CLANGARM64 tree (i.e. not a Windows system DLL). These are exactly the
+      # DLLs the unit-test exes already loaded successfully in the step above.
+      - name: Stage runtime dependencies
+        run: |
+            set -euo pipefail
+            exe=build/src/wxmaxima.exe
+            echo "=== ldd $exe ==="
+            ldd "$exe"
+            stagedir=dist/wxmaxima
+            mkdir -p "$stagedir"
+            cp "$exe" "$stagedir/"
+            cp build/src/wxmaxima.exe.manifest "$stagedir/" 2>/dev/null || true
+            # Bundle every dependency resolving under the CLANGARM64 prefix. ldd
+            # is transitive, so one pass over the exe captures the whole closure.
+            ldd "$exe" | awk '{print $3}' | grep -iE '/clangarm64/bin/' | sort -u | while read -r dll; do
+              cp -v "$dll" "$stagedir/"
+            done
+            echo "=== staged payload ==="
+            ls -l "$stagedir"
+
+      - name: Create portable ZIP
+        run: |
+            set -euo pipefail
+            ver=$(grep -oiE 'VERSION[[:space:]]+[0-9]+\.[0-9]+\.[0-9]+' CMakeLists.txt | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' || echo dev)
+            zipname="wxmaxima-${ver}-windows-arm64-portable.zip"
+            echo "ZIP_NAME=$zipname" >> "$GITHUB_ENV"
+            ( cd dist && zip -r "../$zipname" wxmaxima )
+            echo "=== zip contents ==="
+            unzip -l "$zipname"
+
+      - name: Upload portable ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wxmaxima-windows-arm64-portable
+          path: ${{ env.ZIP_NAME }}
+          if-no-files-found: error
+
+      - name: Attach portable ZIP to the release
+        # Only on a Version tag, and only after build + unit tests + packaging
+        # have all succeeded (this is the last step), so a failure never
+        # publishes a broken ARM64 asset. Attaches just this one file: the
+        # Windows x86 job owns the release name and body, and
+        # softprops/action-gh-release merges files from every job onto the same
+        # release without overwriting those -- exactly as the Ubuntu/macOS jobs
+        # do (they also attach files only). The distinct
+        # wxmaxima-<ver>-windows-arm64-portable.zip name cannot collide with the
+        # x86 job's *.exe installer.
+        if: startsWith(github.ref, 'refs/tags/Version')
+        uses: softprops/action-gh-release@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          files: ${{ env.ZIP_NAME }}
+          draft: false
+          prerelease: false

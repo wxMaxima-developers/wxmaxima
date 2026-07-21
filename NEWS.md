@@ -1,5 +1,9 @@
 # Current development version
 
+- Native Windows-on-Arm (ARM64) builds: each release now includes a
+  self-contained portable ZIP for ARM64 Windows, built natively with the
+  clang-aarch64 toolchain. Unzip it and run wxmaxima.exe -- no installer and
+  no separate runtime needed.
 - The worksheet diff viewer now shows changes inside a folded (collapsed)
   section instead of silently ignoring them: the cell alignment used to walk
   only the visible top-level cells, so two worksheets that differed solely
