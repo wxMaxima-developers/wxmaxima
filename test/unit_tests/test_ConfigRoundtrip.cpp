@@ -122,27 +122,22 @@ SCENARIO("Every scalar setting in the table round-trips through write and read")
 }
 
 SCENARIO("Settings written only by WriteSettings() survive an OK-path round-trip") {
-  // These settings are deliberately kept out of ScalarConfigSettings() and are
-  // written only by Configuration::WriteSettings() -- NOT by WriteStyles(),
-  // which persists just the styles plus the scalar table. The preferences
-  // dialog must therefore save through WriteSettings(): persisting through
-  // WriteStyles() (as ConfigDialogue::WriteSettings() once did) silently
-  // dropped every one of these on OK, and the OK path's following ReadConfig()
-  // then reset the live value to the old stored one.
+  // These two are stored as an XML blob (a hash map, not a plain scalar) and
+  // so can't move into ScalarConfigSettings(); they are written only by
+  // Configuration::WriteSettings() -- NOT by WriteStyles(), which persists
+  // just the styles plus the scalar table. The preferences dialog must
+  // therefore save through WriteSettings(): persisting through WriteStyles()
+  // (as ConfigDialogue::WriteSettings() once did) silently dropped every
+  // WriteSettings()-only setting on OK, and the OK path's following
+  // ReadConfig() then reset the live value to the old stored one.
   GIVEN("a configuration whose WriteSettings()-only members differ from the "
         "defaults") {
     const wxString file = wxFileName::CreateTempFileName(wxS("wxm_configtest"));
     REQUIRE(!file.IsEmpty());
 
     Configuration cfgWrite(nullptr, Configuration::temporary);
-    const int autosave = cfgWrite.AutosaveMinutes() + 1;
-    const double printMargin = cfgWrite.PrintMargin_Top() + 1;
-    const bool keepPercent = !cfgWrite.CheckKeepPercent();
-    const long labelWidth = cfgWrite.LabelWidth() + 1;
-    cfgWrite.AutosaveMinutes(autosave);
-    cfgWrite.PrintMargin_Top(printMargin);
-    cfgWrite.SetKeepPercent(keepPercent);
-    cfgWrite.LabelWidth(labelWidth);
+    cfgWrite.SetMaximaEnvVar(wxS("SOME_VAR"), wxS("some value"));
+    cfgWrite.HideMarkerForThisMessage(wxS("a message"), true);
 
     WHEN("they are written with WriteSettings() and read into a fresh "
          "configuration") {
@@ -157,11 +152,13 @@ SCENARIO("Settings written only by WriteSettings() survive an OK-path round-trip
       wxConfig::Set(oldConfig);
       delete fileConfig;
 
-      THEN("every one of them arrives unchanged") {
-        CHECK(cfgRead.AutosaveMinutes() == autosave);
-        CHECK(cfgRead.PrintMargin_Top() == printMargin);
-        CHECK(cfgRead.CheckKeepPercent() == keepPercent);
-        CHECK(cfgRead.LabelWidth() == labelWidth);
+      THEN("both arrive unchanged") {
+        const auto &envVars = cfgRead.MaximaEnvVars();
+        const auto it = envVars.find(wxS("SOME_VAR"));
+        CHECK(it != envVars.end());
+        if (it != envVars.end())
+          CHECK(it->second == wxS("some value"));
+        CHECK(cfgRead.HideMarkerForThisMessage(wxS("a message")));
       }
     }
     wxRemoveFile(file);

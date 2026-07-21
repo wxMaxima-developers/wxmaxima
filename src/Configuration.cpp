@@ -606,20 +606,15 @@ void Configuration::ReadConfig() {
 
   m_fontRenderability.ReadFrom(config);
 
+  // autoSaveMinutes and MaxLayoutTime are read by the table loop above; clamp
+  // them here, same as displayedDigits/showLength/tocDepth below.
+  if (m_autoSaveMinutes <= 0)
+    m_autoSaveMinutes = 3;
+  if (m_maxLayoutTime <= 0)
+    m_maxLayoutTime = 5;
+
   {
     wxString hideMessagesConfigString;
-    config->Read(wxS("Print/Margin/Top"), &m_printMargin_Top);
-    config->Read(wxS("Print/Margin/Bot"), &m_printMargin_Bot);
-    config->Read(wxS("Print/Margin/Left"), &m_printMargin_Left);
-    config->Read(wxS("Print/Margin/Right"), &m_printMargin_Right);
-    config->Read(wxS("showAllDigits"), &m_showAllDigits);
-    config->Read(wxS("lineBreaksInLongNums"), &m_lineBreaksInLongNums);
-    config->Read(wxS("autoSaveMinutes"), &m_autoSaveMinutes);
-    if (m_autoSaveMinutes <= 0)
-      m_autoSaveMinutes = 3;
-    config->Read(wxS("MaxLayoutTime"), &m_maxLayoutTime);
-    if (m_maxLayoutTime <= 0)
-      m_maxLayoutTime = 5;
     config->Read(wxS("maximaUsesWxmaximaBrowser"),
                  &m_maximaUsesWxmaximaBrowser);
     {
@@ -711,8 +706,8 @@ void Configuration::ReadConfig() {
       }
     }
   }
-  config->Read(wxS("maxClipbrd_BitmapMegabytes"),
-               &m_maxClipbrd_BitmapMegabytes);
+  // Read by the table loop above; clamp here, same as autoSaveMinutes/
+  // MaxLayoutTime.
   if (m_maxClipbrd_BitmapMegabytes < 0)
     m_maxClipbrd_BitmapMegabytes = 1;
   #ifdef __WXMSW__
@@ -795,16 +790,6 @@ void Configuration::ReadConfig() {
 
   if (m_displayedDigits <= 20)
     m_displayedDigits = 20;
-
-
-
-
-
-  config->Read(wxS("labelWidth"), &m_labelWidth);
-
-  config->Read(wxS("keepPercent"), &m_keepPercent);
-  config->Read(wxS("saveUntitled"), &m_saveUntitled);
-  config->Read(wxS("cursorJump"), &m_cursorJump);
 
   ReadStyles();
   if (!haveAppearanceSetting) {
@@ -1096,21 +1081,11 @@ void Configuration::WriteSettings(const wxString &file) {
   config->Write("usewgnuplot", m_useWgnuplot);
 #endif
   config->Write("maximaHelpFormat", static_cast<long>(m_maximaHelpFormat));
-  config->Write(wxS("Print/Margin/Top"), m_printMargin_Top);
-  config->Write(wxS("Print/Margin/Bot"), m_printMargin_Bot);
-  config->Write(wxS("Print/Margin/Left"), m_printMargin_Left);
-  config->Write(wxS("Print/Margin/Right"), m_printMargin_Right);
-  config->Write(wxS("showAllDigits"), m_showAllDigits);
-  config->Write(wxS("lineBreaksInLongNums"), m_lineBreaksInLongNums);
-  config->Write(wxS("keepPercent"), m_keepPercent);
-  config->Write(wxS("labelWidth"), m_labelWidth);
-  config->Write(wxS("saveUntitled"), m_saveUntitled);
-  config->Write(wxS("cursorJump"), m_cursorJump);
-  config->Write(wxS("autoSaveMinutes"), m_autoSaveMinutes);
-  config->Write(wxS("MaxLayoutTime"), m_maxLayoutTime);
 
-  config->Write(wxS("maxClipbrd_BitmapMegabytes"),
-                m_maxClipbrd_BitmapMegabytes);
+  // Print margins, showAllDigits, lineBreaksInLongNums, keepPercent,
+  // labelWidth, saveUntitled, cursorJump, autoSaveMinutes, MaxLayoutTime and
+  // maxClipbrd_BitmapMegabytes are all in ScalarConfigSettings() now, so
+  // WriteStyles() below writes them.
 
   WriteStyles(config);
   m_fontRenderability.WriteTo(config);
@@ -1224,6 +1199,10 @@ Configuration::ScalarConfigSettings() {
     {wxS("autodetectHelpBrowser"), &Configuration::m_autodetectHelpBrowser},
     {wxS("autodetectMaxima"), &Configuration::m_autodetectMaxima},
     {wxS("autoIndent"), &Configuration::m_autoIndent},
+    // Read a second time, raw, further down: a stored 0 means "autosave as a
+    // temp file", a state this clamped copy can no longer represent once
+    // clamped up to 3.
+    {wxS("autoSaveMinutes"), &Configuration::m_autoSaveMinutes},
     {wxS("autoWrapMode"), &Configuration::m_autoWrap},
     {wxS("bitmapScale"), &Configuration::m_bitmapScale},
     {wxS("changeAsterisk"), &Configuration::m_changeAsterisk},
@@ -1233,6 +1212,7 @@ Configuration::ScalarConfigSettings() {
     {wxS("copyMathML"), &Configuration::m_copyMathML},
     {wxS("copyRTF"), &Configuration::m_copyRTF},
     {wxS("copySVG"), &Configuration::m_copySVG},
+    {wxS("cursorJump"), &Configuration::m_cursorJump},
     // Key renamed (was "DefaultFramerate") when the value changed from int to
     // double: reading an existing integer-typed registry/plist value back as a
     // double asserts in wxRegConfig (Windows) / the macOS backend. A fresh key
@@ -1257,25 +1237,37 @@ Configuration::ScalarConfigSettings() {
     {wxS("incrementalSearch"), &Configuration::m_incrementalSearch},
     {wxS("indentMaths"), &Configuration::m_indentMaths},
     {wxS("insertAns"), &Configuration::m_insertAns},
+    {wxS("keepPercent"), &Configuration::m_keepPercent},
+    {wxS("labelWidth"), &Configuration::m_labelWidth},
     {wxS("latin2greek"), &Configuration::m_latin2greek},
+    {wxS("lineBreaksInLongNums"), &Configuration::m_lineBreaksInLongNums},
     {wxS("matchParens"), &Configuration::m_matchParens},
     {wxS("mathJaxURL"), &Configuration::m_mathJaxURL},
     {wxS("mathJaxURL_UseUser"), &Configuration::m_mathJaxURL_UseUser},
+    {wxS("maxClipbrd_BitmapMegabytes"),
+     &Configuration::m_maxClipbrd_BitmapMegabytes},
     {wxS("maxGnuplotMegabytes"), &Configuration::m_maxGnuplotMegabytes},
     {wxS("maxima"), &Configuration::m_maximaUserLocation},
     {wxS("maximaUsesHhtmlBrowser"), &Configuration::m_maximaUsesHhtmlBrowser},
+    {wxS("MaxLayoutTime"), &Configuration::m_maxLayoutTime},
     {wxS("notifyIfIdle"), &Configuration::m_notifyIfIdle},
     {wxS("numpadEnterEvaluates"), &Configuration::m_numpadEnterEvaluates},
     {wxS("offerKnownAnswers"), &Configuration::m_offerKnownAnswers},
     {wxS("openHCaret"), &Configuration::m_openHCaret},
     {wxS("parameters"), &Configuration::m_maximaParameters},
+    {wxS("Print/Margin/Top"), &Configuration::m_printMargin_Top},
+    {wxS("Print/Margin/Bot"), &Configuration::m_printMargin_Bot},
+    {wxS("Print/Margin/Left"), &Configuration::m_printMargin_Left},
+    {wxS("Print/Margin/Right"), &Configuration::m_printMargin_Right},
     {wxS("printBrackets"), &Configuration::m_printBrackets},
     {wxS("printScale"), &Configuration::m_printScale},
     {wxS("recentItems"), &Configuration::m_recentItems},
     {wxS("restartOnReEvaluation"), &Configuration::m_restartOnReEvaluation},
     {wxS("saveImgFileName"), &Configuration::m_saveImgFileName},
+    {wxS("saveUntitled"), &Configuration::m_saveUntitled},
     {wxS("screenReaderAnnouncesMathML"),
      &Configuration::m_screenReaderAnnouncesMathML},
+    {wxS("showAllDigits"), &Configuration::m_showAllDigits},
     {wxS("showLength"), &Configuration::m_showLength},
     {wxS("showMatchingParens"), &Configuration::m_showMatchingParens},
     {wxS("singlePageManual"), &Configuration::m_singlePageManual},
