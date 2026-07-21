@@ -691,6 +691,15 @@ private:
   MaximaOutputAppender m_outputAppender;
 };
 
+//! Apply the chosen light/dark appearance to the native application chrome
+//! (menus, toolbars, sidebars, dialogs) via wxApp::SetAppearance().
+//!
+//! No-op before wxWidgets 3.3. On Windows the native chrome only picks up the
+//! appearance when this is called during startup, before the first top-level
+//! window is created -- so it must run early in MyApp::OnInit() and not only
+//! from wxMaxima::ConfigChanged() at runtime.
+void ApplyAppearanceToApp(Configuration::Appearance appearance);
+
 #if wxUSE_DRAG_AND_DROP
 
 // cppcheck-suppress noConstructor

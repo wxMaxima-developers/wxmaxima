@@ -1,5 +1,11 @@
 # Current development version
 
+- On Windows, switching to dark mode now also darkens the native user
+  interface (menus, toolbars, sidebars, dialogs), not just the worksheet.
+  wxWidgets can only enable this during application startup, so the saved
+  appearance is now applied before the main window is created. (Toggling the
+  appearance while wxMaxima is running may still need a restart to fully
+  re-theme the native controls -- a Windows limitation.)
 - Native Windows-on-Arm (ARM64) builds: each release now includes a
   self-contained portable ZIP for ARM64 Windows, built natively with the
   clang-aarch64 toolchain. Unzip it and run wxmaxima.exe -- no installer and
