@@ -365,6 +365,34 @@ SCENARIO("A folded section's hidden children survive the .wxm round-trip") {
   }
 }
 
+SCENARIO("Nested folds survive the .wxm round-trip") {
+  auto section = std::make_unique<GroupCell>(g_cfg, GC_TYPE_SECTION, wxS("Outer"));
+  auto subsection = std::make_unique<GroupCell>(g_cfg, GC_TYPE_SUBSECTION, wxS("Inner"));
+  auto code = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("1+1;"));
+
+  REQUIRE(subsection->HideTree(std::move(code)));
+
+  CellListBuilder<GroupCell> outerChildren;
+  outerChildren.DynamicAppend(subsection.release());
+  REQUIRE(section->HideTree(std::move(outerChildren)));
+
+  auto reloaded = SerializeAndReload({section.get()});
+  REQUIRE(reloaded != nullptr);
+
+  THEN("both fold levels and the innermost cell survive") {
+    REQUIRE(reloaded->GetGroupType() == GC_TYPE_SECTION);
+    REQUIRE(reloaded->GetNext() == nullptr);
+    GroupCell *innerHidden = reloaded->GetHiddenTree();
+    REQUIRE(innerHidden != nullptr);
+    REQUIRE(innerHidden->GetGroupType() == GC_TYPE_SUBSECTION);
+    REQUIRE(innerHidden->GetNext() == nullptr);
+    GroupCell *innermost = innerHidden->GetHiddenTree();
+    REQUIRE(innermost != nullptr);
+    REQUIRE(innermost->GetGroupType() == GC_TYPE_CODE);
+    REQUIRE(innermost->GetEditable()->GetValue() == wxS("1+1;"));
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
