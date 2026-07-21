@@ -570,6 +570,22 @@ bool MyApp::OnInit() {
   } else
     wxConfig::Set(new wxConfig(wxS("wxMaxima")));
 
+  // Pull the light/dark appearance lever now -- before the first top-level
+  // window is created further down -- so the native chrome (menus, toolbars,
+  // sidebars, dialogs) follows it on Windows, where wxApp::SetAppearance() only
+  // affects the chrome when called during startup. The runtime call in
+  // wxMaxima::ConfigChanged() stays for macOS/GTK, which can switch live. Read
+  // the saved setting straight from the just-installed config (mirrors
+  // Configuration's own read: default followSystem, clamp to the valid range).
+  {
+    long appearance = static_cast<long>(Configuration::Appearance::followSystem);
+    wxConfig::Get()->Read(wxS("appearance"), &appearance);
+    if (appearance < 0 ||
+        appearance > static_cast<long>(Configuration::Appearance::followSystem))
+      appearance = static_cast<long>(Configuration::Appearance::followSystem);
+    ApplyAppearanceToApp(static_cast<Configuration::Appearance>(appearance));
+  }
+
   if (cmdLineParser.Found(wxS("logtostderr"))) {
 #ifdef __WXMSW__
     // Windows *GUI applications* do not have stderr (and stdout/stdin) assigned.

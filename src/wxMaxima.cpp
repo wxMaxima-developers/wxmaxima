@@ -152,7 +152,14 @@ wxDECLARE_APP(MyApp);
 // worksheet's light/dark appearance. Only wxWidgets 3.3+ can drive the OS
 // appearance from inside the app; on older wx this is a no-op (the worksheet is
 // themed via its style set, the chrome stays whatever the OS gives us).
-static void ApplyAppearanceToApp(Configuration::Appearance appearance) {
+//
+// On Windows the native chrome only honours this when it runs during startup,
+// before the first top-level window exists: a later SetAppearance() returns
+// AppearanceResult::CannotChange and leaves the chrome untouched (which is why
+// only the worksheet used to switch). It is therefore also called early from
+// MyApp::OnInit(), not just from ConfigChanged() at runtime. Declared in
+// wxMaxima.h so OnInit() can reach it.
+void ApplyAppearanceToApp(Configuration::Appearance appearance) {
 #if wxCHECK_VERSION(3, 3, 0)
   if (!wxTheApp)
     return;
