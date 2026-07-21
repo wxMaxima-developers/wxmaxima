@@ -1,0 +1,36 @@
+name: build_snap
+
+# Builds the Snap package from snap/snapcraft.yaml so that breakage is caught
+# in CI instead of only when the Snap Store (or a maintainer) tries to build a
+# release. The snap silently rotted once already: base was bumped to core24
+# (Ubuntu 24.04) in 2024 while the build/stage packages stayed at wxWidgets 3.0,
+# which no longer exists on noble -- nothing in CI noticed because the snap was
+# never built here. This job closes that gap and uploads the built .snap as an
+# artifact for inspection / manual test-install.
+
+on: [push]
+
+permissions:
+  contents: read
+
+jobs:
+  build_snap:
+    name: Build the snap
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout wxMaxima
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 15
+
+      - name: Build snap
+        uses: snapcore/action-build@v1
+        id: build
+
+      - name: Upload snap artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wxmaxima-snap
+          path: ${{ steps.build.outputs.snap }}
+          if-no-files-found: error

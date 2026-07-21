@@ -6,12 +6,12 @@ confinement: strict
 grade: stable
 base: core24
 license: GPL-2.0+
-architectures:
-   - build-on: arm64
-   - build-on: armhf
-   - build-on: amd64
-   - build-on: ppc64el
-   - build-on: s390x
+platforms:
+  amd64:
+  arm64:
+  armhf:
+  ppc64el:
+  s390x:
 
 apps:
   wxmaxima:
@@ -34,23 +34,24 @@ parts:
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
     source: https://github.com/wxMaxima-developers/wxmaxima.git
+    # core24 == Ubuntu 24.04 (noble), which ships wxWidgets 3.2 (not 3.0) and
+    # applied the 64-bit time_t transition, so the runtime libraries carry the
+    # "t64" suffix. These names mirror the wxWidgets 3.2 packages the Ubuntu CI
+    # job builds against. (The old 3.0 names silently broke the snap when the
+    # base was bumped to core24.)
     build-packages:
-     - libwxbase3.0-dev
-     - libwxgtk3.0-gtk3-dev
-     - libwxgtk-webview3.0-gtk3-dev
+     - libwxgtk3.2-dev
+     - libwxgtk-webview3.2-dev
      - gettext
     stage-snaps:
      - maxima
     stage-packages:
-     - libwxbase3.0-0v5
+     - libwxbase3.2-1t64
+     - libwxgtk3.2-1t64
+     - libwxgtk-webview3.2-1t64
      - libglu1-mesa
-     - freeglut3
      - wx-common
-     - libwxgtk-webview3.0-gtk3-0v5
      - gettext
-     - libwxbase3.0-dev
-     - libwxgtk3.0-gtk3-dev
-     - libwxgtk-webview3.0-gtk3-dev
      - locales-all
     stage:
      - -usr/share/texmf/ls-R
