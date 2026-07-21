@@ -1,0 +1,82 @@
+name: compile_windows_arm
+
+# Native Windows-on-Arm (aarch64) build -- PHASE 1: bring-up only.
+#
+# Purpose is twofold (see discussion): produce a Windows ARM64 binary AND
+# exercise wxMaxima's own code on a native aarch64 toolchain, which tends to
+# surface latent portability bugs (word-size/pointer assumptions, alignment,
+# endianness-free but ABI-sensitive code) that the x86 builds never hit.
+#
+# This is deliberately a SEPARATE workflow from compile_windows.yml so that a
+# broken ARM experiment can never block or corrupt the proven x86 MinGW release
+# job. It builds and runs the self-contained C++ unit tests only; it does NOT
+# package an installer and does NOT attach anything to a release yet. Once this
+# is reliably green we add packaging (bundling the clang/wx runtime DLLs) and,
+# after that, the release-attach on a Version tag -- mirroring the x86 job.
+#
+# Toolchain: GitHub's native "windows-11-arm" runner (GA + free for public
+# repos since 2025-08) + MSYS2's CLANGARM64 environment. wxWidgets is taken
+# from MSYS2's PREBUILT clang-aarch64 3.3 package rather than built from source,
+# so the very first run tests our code, not a from-scratch wx build. (A static
+# from-source wx build, matching the x86 installer, is a later, optional phase.)
+
+on: [push]
+
+permissions:
+  contents: read
+
+jobs:
+  compile_windows_arm:
+    name: Compile using CLANGARM64
+    runs-on: windows-11-arm
+    timeout-minutes: 60
+    # MSYS2 shells emit a normal (non-fatal) message on first login; make bash
+    # strict so a real error still fails the step.
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - name: Checkout wxMaxima
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 15
+
+      - name: Set up MSYS2 (CLANGARM64)
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: CLANGARM64
+          update: true
+          # Prebuilt clang-aarch64 toolchain + build tools + wxWidgets 3.3.
+          # The wxwidgets3.3-msw package pulls in its own runtime deps, and
+          # ships wx-config in the CLANGARM64 prefix so CMake's FindwxWidgets
+          # resolves it without hints.
+          install: >-
+            git
+            mingw-w64-clang-aarch64-clang
+            mingw-w64-clang-aarch64-cmake
+            mingw-w64-clang-aarch64-ninja
+            mingw-w64-clang-aarch64-pkgconf
+            mingw-w64-clang-aarch64-wxwidgets3.3-msw
+
+      - name: Configure wxMaxima
+        # No -DMAXIMA: there is no native aarch64 Windows Maxima, so we do not
+        # register the Maxima-driven integration tests (they would hang waiting
+        # for a CAS that never connects). WXM_UNIT_TESTS=YES still registers the
+        # self-contained C++ unit tests, which need neither Maxima nor a display.
+        run: |
+            mkdir -p build
+            cd build
+            export CXXFLAGS="-Wall -Wextra"
+            cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DWXM_UNIT_TESTS=YES ..
+
+      - name: Compile wxMaxima
+        run: cmake --build build
+
+      - name: Run unit tests
+        # "unittest" label = the self-contained C++ tests. MenuHelpString and
+        # ButtonWrapSizer are excluded on x86 MinGW because their standalone
+        # harnesses hang there; whether that reproduces under CLANGARM64 is
+        # unknown, so keep the exclusion for now and revisit once the rest is
+        # green (dropping it is a one-line follow-up if they pass here).
+        run: ctest --test-dir build -L unittest -E "MenuHelpString|ButtonWrapSizer" --output-on-failure
