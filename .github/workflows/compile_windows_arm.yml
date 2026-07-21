@@ -68,7 +68,15 @@ jobs:
             mkdir -p build
             cd build
             export CXXFLAGS="-Wall -Wextra"
-            cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DWXM_UNIT_TESTS=YES ..
+            # -DwxWidgets_USE_STATIC=ON is REQUIRED: MSYS2's clang-aarch64 wx
+            # package ships static archives (libwx_*-3.3.a), but CMake's
+            # FindwxWidgets otherwise asks wx-config for a *shared* link, which
+            # defines WXUSINGDLL and marks every wx symbol __declspec(dllimport).
+            # Linking those dllimport references against the static archives
+            # fails ("... is not an import library"). Forcing static makes
+            # wx-config drop WXUSINGDLL so both sides agree -- same as the x86
+            # MinGW job (-DwxWidgets_USE_STATIC=true).
+            cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DWXM_UNIT_TESTS=YES -DwxWidgets_USE_STATIC=ON ..
 
       - name: Compile wxMaxima
         run: cmake --build build
