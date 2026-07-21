@@ -72,31 +72,50 @@ $(function() {
   <div class="headertitle"><div class="title"><a class="el" href="classwxMaxima.html">wxMaxima</a> Release Checklist </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md797"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md838"></a>
 GitHub documentation about managing releases:</h1>
 <p><a href="https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository">https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository</a></p>
-<h1><a class="anchor" id="autotoc_md798"></a>
-wxMaxima (additional) steps:</h1>
+<h1><a class="anchor" id="autotoc_md839"></a>
+What CI now does automatically</h1>
+<p>Pushing an <b>annotated tag whose name starts with <code>Version</code></b> triggers the release automation. You no longer need to build or upload the platform binaries, create the release, or un-draft it by hand:</p>
 <ul>
-<li>Does the current git version compile? Do the checks on GitHub work?</li>
-<li>Enter the new version number into CMakeLists.txt</li>
-<li>Update the version numbers in the 'docker-wxmaxima' repository (update_versions.sh)</li>
-<li>Update NEWS.md in order to announce the new version on <a href="https://freshcode.club/">https://freshcode.club/</a></li>
-<li>Update data/io.github.wxmaxima_developers.wxMaxima.appdata.xml with the information about the new release. Most html tags are forbidden by flatpack or appImage builders.</li>
-<li>Validate the appdata file with: appstream-util validate data/io.github.wxmaxima_developers.wxMaxima.appdata.xml</li>
-<li>Update snap/snapcraft.yaml</li>
-<li>Run "make test"</li>
-<li>Does test/testbench_simple.wxmx work?</li>
+<li>All platforms are built as <b>Release</b> builds and attached to the GitHub release for that tag:<ul>
+<li>Windows: the NSIS installer (<code>.exe</code>) — <code>compile_windows.yml</code></li>
+<li>macOS: the <code>.dmg</code> — <code>compile_mac.yml</code></li>
+<li>Linux: the <code>.deb</code> — <code>compile_ubuntu.yml</code></li>
+<li>Windows on Arm (ARM64): the self-contained portable <code>.zip</code> — <code>compile_windows_arm.yml</code></li>
+</ul>
+</li>
+<li>The release is created (or updated) and un-drafted automatically, with its body taken from the <code># Current development version</code> section of <code>NEWS.md</code>.</li>
+</ul>
+<p>Other checks that now run on every push (so they can't surprise you at release time):</p>
+<ul>
+<li>Full build + unit/integration tests on all platforms.</li>
+<li><code>appstream-util validate</code> of the appdata file (<code>compile_ubuntu.yml</code>).</li>
+<li>The snap package builds from <code>snap/snapcraft.yaml</code> (<code>build_snap.yml</code>).</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md840"></a>
+Manual steps (still required)</h1>
+<ul>
+<li>Make sure the current git version compiles and <b>all GitHub checks are green</b> — the release jobs only publish after their build+tests pass.</li>
+<li>Enter the new version number into <code>CMakeLists.txt</code>.</li>
+<li>Update <code>NEWS.md</code> (this also becomes the release notes / the announcement on <a href="https://freshcode.club/">https://freshcode.club/</a>).</li>
+<li>Update <code>data/io.github.wxmaxima_developers.wxMaxima.appdata.xml</code> with the new <code>&lt;release&gt;</code> entry. Most HTML tags are forbidden by the flatpak/appImage builders. (CI now validates the file, but you still write the entry.)</li>
+<li>Update <code>snap/snapcraft.yaml</code> (at least the <code>version:</code>). CI now <em>builds</em> the snap, but does not bump its version for you.</li>
+<li>Update the version numbers in the <code>docker-wxmaxima</code> repository (<code>update_versions.sh</code>).</li>
 <li>Update the included HTML manuals.</li>
-<li>Create an (annotated: using "git tag -a") git tag for the release</li>
-<li>Push the tag to GitHub, using: git push origin &ndash;tags</li>
-<li>When building binaries (RPM, DEB, binary tar.gz, ...) do a RELEASE build: configure <a class="el" href="classwxMaxima.html">wxMaxima</a> with <code>cmake -DCMAKE_BUILD_TYPE=Release ..</code> This will not append the Suffix "-dev" to the file names of the generated packages. (This is done, when building (default) "Debug" builds, so that Development versions can be clearly recognized.</li>
-<li>Go to the releases page GitHub and convert the tag into a release. If possible add an Windows installer too. Be sure, to remove the 'draft' status. Log out from GitHub and check, if you see the release as an anonymous user too.</li>
-<li>Update the release info in the files download.html and in version.txt in the gh_pages branch.</li>
-<li>Download the tarball (.tar.gz and .zip version) and run the following command on them: gpg &ndash;armor &ndash;detach-sign &lt;filename&gt;</li>
-<li>On the release page on github modify the release to contain the two .asc files the command produced.</li>
-<li>In <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s source tree in crosscompile-windows/wxmaxima/CMakeLists.txt: Change the version number and the MD5 sum of the release tarball to the newest value.</li>
-<li>Create a Windows installer using the 'Crosscompiled-Windows-installer' repository and add it to the release. </li>
+<li>Confirm <code>test/testbench_simple.wxmx</code> still works.</li>
+<li>Create an <b>annotated</b> tag: <code>git tag -a Version-&lt;x.y.z&gt;</code> and push it: <code>git push origin --tags</code>. <b>This push is what triggers the automated build + release above.</b></li>
+<li>After the release is published, verify it as an anonymous user (log out of GitHub and check the release page).</li>
+<li>Update the release info in <code>download.html</code> and <code>version.txt</code> in the <code>gh_pages</code> branch.</li>
+<li>Download the source tarball (<code>.tar.gz</code> and <code>.zip</code>) and sign each: <code>gpg --armor --detach-sign &lt;filename&gt;</code>, then add the two <code>.asc</code> files to the release page. (Signing needs your private key and is therefore still manual.)</li>
+<li>In <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s source tree, <code>crosscompile-windows/wxmaxima/CMakeLists.txt</code>: update the version number and the MD5 sum of the release tarball.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md841"></a>
+Superseded</h2>
+<ul>
+<li>The old "create a Windows installer using the *Crosscompiled-Windows-installer*
+  repository and add it to the release" step is superseded by the Windows installer that <code>compile_windows.yml</code> now builds and attaches automatically. Keep it only as a fallback if the CI installer is ever unavailable. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
