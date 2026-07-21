@@ -135,8 +135,8 @@ provides adequate versions of both cmake and ninja, there's no need
 to install those. The build has to start from within the  *x64 Native
 Tools Command Prompt*, and you have to first build wxWidgets before
 you build wxmaxima. You can get some inspiration about how to do both
-of these steps by examining the PowerShell scripts that do the building
-within `.appveyor.yml` file.
+of these steps by examining the MSVC build steps in
+`.github/workflows/compile_windows.yml`.
 
 #### Note for the Mingw-w64 compiler and crosscompiler
 
@@ -214,7 +214,7 @@ might not be the end of the world, neither:
 ### Troubleshooting
 
 If you have problems when compiling wxMaxima, maybe a look in the configurations
-for various CI-Systems (`.appveyor.yml` and files in `.github/workflows/`)
+for various CI-Systems (the files in `.github/workflows/`)
 may be helpful to see, how wxMaxima is compiled on these systems.
 
 If something is not clear / should be improved in that document, please open an issue. This document
