@@ -1,5 +1,10 @@
 # Current development version
 
+- The worksheet diff viewer now shows changes inside a folded (collapsed)
+  section instead of silently ignoring them: the cell alignment used to walk
+  only the visible top-level cells, so two worksheets that differed solely
+  inside a fold looked identical in the diff. Folded content is now expanded
+  in the diff view and highlighted like any other change.
 - Typing "(" at the horizontal cursor opens a new code cell containing "()"
   with the caret between the parens again, like "[", "{" and "\"" do. A
   refactor had left the caret in front of the opening paren instead.

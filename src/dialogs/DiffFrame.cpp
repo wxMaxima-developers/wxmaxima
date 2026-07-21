@@ -835,6 +835,33 @@ void DiffFrame::LoadFiles(const wxArrayString &WXUNUSED(files)) {
  * 4. Populates the worksheets with either matched cells (highlighted if 
  *    content differs) or SpacerGroupCells for gaps.
  */
+namespace {
+// Flattens a cell list into the diff's comparison sequence, recursing into
+// each cell's folded (hidden) subtree right after the cell itself - the same
+// document order TreeToWXM()/ToXML() serialize a fold in. Folded content used
+// to be invisible to the diff viewer entirely (a plain OnList() walk never
+// follows GetHiddenTree()), so a worksheet that differed only inside a
+// collapsed section showed up as identical. Flattening means the rebuilt diff
+// worksheets always show folded cells expanded - there is no equivalent of
+// "still folded, but flagged as containing a change" without much more work,
+// and expanded-but-highlighted is the more useful default for reviewing a
+// change anyway.
+void CollectCellsWithHidden(GroupCell *tree, std::vector<GroupCell *> &cells,
+                            std::vector<Diff::CellMatchData> &matchData) {
+  for (auto &c : OnList(tree)) {
+    cells.push_back(&c);
+    Diff::CellMatchData md;
+    md.uuid = c.GetUUID();
+    md.type = c.GetGroupType();
+    auto ed = c.GetEditable();
+    if (ed) md.content = ed->GetValue();
+    matchData.push_back(md);
+    if (c.GetHiddenTree())
+      CollectCellsWithHidden(c.GetHiddenTree(), cells, matchData);
+  }
+}
+} // namespace
+
 void DiffFrame::AlignCells() {
   size_t numFiles = m_worksheets.size();
   if (numFiles < 2) return;
@@ -853,17 +880,8 @@ void DiffFrame::AlignCells() {
                                      m_worksheetConfigurations[i].get()));
       std::vector<GroupCell*> cells;
       std::vector<Diff::CellMatchData> matchData;
-      if (sourceTrees.back()) {
-          for (auto &c : OnList(sourceTrees.back().get())) {
-              cells.push_back(&c);
-              Diff::CellMatchData md;
-              md.uuid = c.GetUUID();
-              md.type = c.GetGroupType();
-              auto ed = c.GetEditable();
-              if (ed) md.content = ed->GetValue();
-              matchData.push_back(md);
-          }
-      }
+      if (sourceTrees.back())
+          CollectCellsWithHidden(sourceTrees.back().get(), cells, matchData);
       cellLists.push_back(cells);
       matchDataLists.push_back(matchData);
   }
@@ -924,7 +942,12 @@ void DiffFrame::AlignCells() {
           if (row[i] != -1) {
               // Cell exists in this file: Insert a copy
               auto copy = std::unique_ptr<GroupCell>(dynamic_cast<GroupCell*>(cellLists[i][row[i]]->Copy(nullptr).release()));
-              
+              // GroupCell's copy ctor deep-copies a hidden (folded) subtree
+              // too, but CollectCellsWithHidden() already flattened this
+              // cell's own hidden children into their own rows above -
+              // keeping the copy's would duplicate that content.
+              copy->UnhideTree();
+
               // Check if the cell content differs from any of the matching cells
               // in other files, and collect the intra-cell ranges that differ
               // (the parts of this cell's text the other file's cell lacks).
