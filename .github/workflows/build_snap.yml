@@ -5,10 +5,27 @@ name: build_snap
 # release. The snap silently rotted once already: base was bumped to core24
 # (Ubuntu 24.04) in 2024 while the build/stage packages stayed at wxWidgets 3.0,
 # which no longer exists on noble -- nothing in CI noticed because the snap was
-# never built here. This job closes that gap and uploads the built .snap as an
-# artifact for inspection / manual test-install.
+# never built here. This job closes that gap.
+#
+# On every push the snap is only built and uploaded as a workflow artifact (a
+# CI check). Once a week -- and on a manual "Run workflow" -- the freshly built
+# snap is additionally published to the Snap Store's "edge" channel. Because the
+# snapcraft.yaml pulls Maxima in via `stage-snaps: [maxima]`, the weekly rebuild
+# also picks up the newest Maxima snap (rebuilt on its own schedule) together
+# with the latest security fixes from the core24 runtime.
+#
+# Publishing needs the SNAPCRAFT_STORE_CREDENTIALS repository secret, generated
+# with:
+#   snapcraft export-login --snaps=wxmaxima \
+#     --channels=edge --acls package_push,package_release creds.txt
+# and pasted verbatim into Settings -> Secrets and variables -> Actions.
 
-on: [push]
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    # Every Monday at 04:00 UTC.
+    - cron: '0 4 * * 1'
 
 permissions:
   contents: read
@@ -34,3 +51,17 @@ jobs:
           name: wxmaxima-snap
           path: ${{ steps.build.outputs.snap }}
           if-no-files-found: error
+
+      # Only publish on the weekly schedule or a manual dispatch, never on an
+      # ordinary push. Skipped automatically on forks / whenever the secret is
+      # absent, so the build-only CI check keeps working without credentials.
+      - name: Publish to the edge channel
+        if: >-
+          (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+          && github.repository == 'wxMaxima-developers/wxmaxima'
+        uses: snapcore/action-publish@v1
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        with:
+          snap: ${{ steps.build.outputs.snap }}
+          release: edge
