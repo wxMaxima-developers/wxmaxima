@@ -112,7 +112,6 @@ jobs:
             stagedir=dist/wxmaxima
             mkdir -p "$stagedir"
             cp "$exe" "$stagedir/"
-            cp build/src/wxmaxima.exe.manifest "$stagedir/" 2>/dev/null || true
             # Bundle every dependency resolving under the CLANGARM64 prefix. ldd
             # is transitive, so one pass over the exe captures the whole closure.
             ldd "$exe" | awk '{print $3}' | grep -iE '/clangarm64/bin/' | sort -u | while read -r dll; do
