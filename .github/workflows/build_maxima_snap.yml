@@ -1,0 +1,116 @@
+name: build_maxima_snap
+
+# Rebuilds and publishes the *Maxima* snap, to both the edge and stable channels.
+#
+# The wxMaxima snap embeds Maxima via `stage-snaps: [maxima]`, i.e. it pulls a
+# pre-built Maxima snap from the store at build time -- it never rebuilds Maxima
+# itself. The Maxima snap is defined in the Maxima source tree
+# (snap/snapcraft.yaml, hosted on SourceForge), which has no CI of its own, so
+# nothing rebuilt it on a schedule: it drifted to an old Maxima version and, more
+# importantly, stopped picking up security fixes from the core24 runtime and the
+# staged packages.
+#
+# This job closes that gap. Once a week it rebuilds the Maxima snap from Maxima's
+# own snapcraft.yaml so the bundled libraries and base get refreshed, in two
+# variants:
+#   * stable <- the latest Maxima *release* tag (X.Y.Z)
+#   * edge   <- the current development HEAD (Maxima releases infrequently, so
+#               edge lets users get newer Maxima between releases)
+# It runs on Saturday, ahead of the wxMaxima stable (Sunday) and edge (Monday)
+# snap jobs, so those rebuilds bundle this fresh Maxima.
+#
+# The Maxima snapcraft.yaml hard-codes a stale `version:`; the real version lives
+# in configure.ac (AC_INIT([maxima], [X.Y.Z])) and is patched in at build time
+# (with a +git<sha> suffix on edge so each development build is distinguishable).
+#
+# Publishing uses the SNAPCRAFT_STORE_CREDENTIALS repository secret (the same one
+# the wxMaxima snap jobs use; its ACLs must allow package_push/package_release on
+# the maxima snap).
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every Saturday at 04:00 UTC.
+    - cron: '0 4 * * 6'
+
+permissions:
+  contents: read
+
+jobs:
+  build_maxima_snap:
+    name: Build and publish the Maxima snap (${{ matrix.channel }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        channel: [stable, edge]
+    steps:
+      # No actions/checkout: this job builds Maxima, not wxMaxima. Clone the
+      # Maxima source (which carries its own snap/snapcraft.yaml) into the empty
+      # workspace root so snapcore/action-build finds snap/snapcraft.yaml there.
+      - name: Clone Maxima and select the ref for this channel
+        run: |
+          set -eu
+          git clone https://git.code.sf.net/p/maxima/code .
+          if [ "${{ matrix.channel }}" = stable ]; then
+            # Maxima release tags are plain X.Y.Z; the release-candidate tags
+            # look like "version-59399rc4" and must not be selected.
+            ref=$(git tag -l | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n1)
+            test -n "$ref"
+            echo "Building Maxima release $ref for the stable channel"
+            git checkout --quiet "$ref"
+          else
+            echo "Building Maxima development HEAD ($(git rev-parse --short HEAD)) for the edge channel"
+          fi
+
+      - name: Patch the snap version to the real Maxima version
+        env:
+          CHANNEL: ${{ matrix.channel }}
+        run: |
+          set -eu
+          python3 - <<'PY'
+          import os, re, subprocess
+          base = ""
+          with open("configure.ac") as f:
+              for line in f:
+                  m = re.search(r'AC_INIT\(\[maxima\],\s*\[([0-9.]+)\]', line)
+                  if m:
+                      base = m.group(1)
+                      break
+          assert base, "could not read the Maxima version from configure.ac"
+          if os.environ["CHANNEL"] == "edge":
+              sha = subprocess.check_output(
+                  ["git", "rev-parse", "--short", "HEAD"]).decode().strip()
+              ver = "%s+git%s" % (base, sha)   # e.g. 5.49.0+gita1b2c3d
+          else:
+              ver = base                        # e.g. 5.49.0
+          ver = ver[:32]                        # snap version limit
+          p = "snap/snapcraft.yaml"
+          s = open(p).read()
+          s = re.sub(r'(?m)^version:.*', "version: '%s'" % ver, s)
+          open(p, "w").write(s)
+          print("Maxima snap version set to", ver)
+          PY
+
+      - name: Build the Maxima snap
+        uses: snapcore/action-build@v1
+        id: build
+
+      - name: Upload snap artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: maxima-snap-${{ matrix.channel }}
+          path: ${{ steps.build.outputs.snap }}
+          if-no-files-found: error
+
+      # Skipped on forks / whenever the secret is absent, so the build-only run
+      # keeps working without credentials.
+      - name: Publish to the ${{ matrix.channel }} channel
+        if: github.repository == 'wxMaxima-developers/wxmaxima'
+        uses: snapcore/action-publish@v1
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        with:
+          snap: ${{ steps.build.outputs.snap }}
+          release: ${{ matrix.channel }}
