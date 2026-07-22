@@ -158,6 +158,7 @@ stability fixes.
 - Windows: wxMaxima now repairs its own .wxmx/.wxm/.mac file association on startup, so updating to a new install location no longer makes Windows "forget" which program opens .wxmx files.
 - Windows: a new Help menu item registers wxMaxima as the tool TortoiseSVN and TortoiseGit use to compare .wxmx files.
 - Added a regression test guarding the worksheet's line-wrapping (line-breaking) layout pass.
+- Internal: the Maxima-code-only editor state (tokenizer output, autocomplete word list and matching-parenthesis highlight) now lives on the CodeEditorCell subclass instead of on every EditorCell, so text and heading cells no longer carry it. Behaviour is unchanged.
 
 # 26.07.0
 

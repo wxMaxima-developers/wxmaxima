@@ -157,7 +157,8 @@ public:
   void KeyboardSelectionStartedHere() const;
 
   //! A list of words that might be applicable to the autocomplete function.
-  const auto &GetWordList() const { return m_wordList; }
+  //! Only code cells carry one; the base (prose) returns an empty list.
+  virtual const std::vector<wxString> &GetWordList() const;
 
   /*! Expand all tabulators.
 
@@ -258,8 +259,8 @@ public:
     that this line is to be broken here until the window's width changes.
   */
   void StyleText() const;
-  /*! Is Called by StyleText() if this is a code cell */
-  void StyleTextCode() const;
+  //! Style prose (text/heading cells). Code styling (StyleTextCode) lives on
+  //! CodeEditorCell, which owns the tokenizer/word-list state it produces.
   void StyleTextTexts() const;
 
 protected:
@@ -287,6 +288,22 @@ protected:
     switch inside ToXML().
   */
   virtual wxString XMLTypeAttribute() const;
+
+  /*! Forget any matching-parenthesis highlight.
+
+    The base (prose) has no paren highlight and does nothing; CodeEditorCell
+    resets its m_paren1/m_paren2. Called from shared editing operations that
+    invalidate the cursor context (activation, cut, selection, undo, ...).
+  */
+  virtual void ClearParenMatch() {}
+
+  /*! Draw the matching-parenthesis highlight boxes, if any.
+
+    The base (prose) draws nothing; CodeEditorCell draws the boxes for
+    m_paren1/m_paren2. Called from Draw() when this cell is active and no
+    selection is shown.
+  */
+  virtual void DrawParenHighlight(wxDC *dc) { (void)dc; }
 
 public:
   void Reset();
@@ -376,9 +393,12 @@ public:
       return SelectionActive();
     }
 
-  bool FindMatchingQuotes();
+  /*! Recompute the matching-parenthesis highlight for the current cursor.
 
-  void FindMatchingParens();
+    The base (prose) has no parens to match and does nothing; CodeEditorCell
+    scans its token list. Called from the shared editing/cursor operations.
+  */
+  virtual void FindMatchingParens();
 
   wxCoord GetLineWidth(size_t line, size_t pos);
 
@@ -599,8 +619,9 @@ public:
 
   //! Get the list of commands, parenthesis, strings and whitespaces in a code cell
 //  const MaximaTokenizer::TokenList &GetDisplayedTokens() const;
-  //! Get the list of commands, parenthesis, strings and whitespaces including hidden ones
-  const MaximaTokenizer::TokenList &GetAllTokens() const;
+  //! Get the list of commands, parenthesis, strings and whitespaces including
+  //! hidden ones. Only code cells have tokens; the base returns an empty list.
+  virtual const MaximaTokenizer::TokenList &GetAllTokens() const;
 
 private:
   //! Clamps a (possibly negative or past-the-end) position to a valid index into
@@ -705,6 +726,9 @@ private:
     \c textPos is the content offset where the continuation line begins (the
     value pushed to \ref m_softBreaks).
   */
+protected:
+  // The code-styling helpers below are protected because StyleTextCode() (which
+  // uses them) lives on the CodeEditorCell subclass.
   struct SoftBreakCandidate {
     std::size_t snippetIdx = 0;
     std::size_t textPos = 0;
@@ -756,8 +780,9 @@ private:
   //! Determines the size of a text snippet
   wxSize GetTextSize(const wxString &text) const;
 
+private:
   //! The memory for the undo history
-  History m_history;  
+  History m_history;
   //! Set the editor's state from a history entry
   void SetState(const History::HistoryEntry &state);
   //! Get the styled text
@@ -769,18 +794,10 @@ private:
   //! Cached widths of text snippets, one width per style
   mutable StringHash m_widths;
 
-  //! A list of all potential autoComplete targets within this cell
-  mutable std::vector<wxString> m_wordList;
-
-  //! The individual commands, parenthesis, strings and whitespaces a code cell consists of
-  mutable MaximaTokenizer::TokenList m_tokens;
-  //! The individual commands, parenthesis, strings and whitespaces including hidden lines
-  mutable MaximaTokenizer::TokenList m_tokens_including_hidden;
-
+protected:
   /*! The text this Editor contains
    */
   mutable wxString m_text;
-protected:
   //! The styled-run rendering representation of m_text; see StyledText.
   mutable std::vector<StyledText> m_styledText;
 private:
@@ -819,7 +836,6 @@ private:
   size_t m_errorIndex = 1;
   mutable size_t m_numberOfLines = 1;
   mutable wxCoord m_charHeight = 12;
-  long m_paren1 = -1, m_paren2 = -1;
 
 //** 2 bytes
 //**
@@ -827,10 +843,6 @@ private:
   AFontWeight m_fontWeight;
 
 
-  //! Does the list of tokens including hidden items need to be recalculated?
-  mutable bool m_tokens_including_hidden_valid = false;
-  //! Does the list of displayed tokens need to be recalculated?
-  mutable bool m_tokens_valid = false;
 
 
 //** Bitfield objects (2 bytes)
