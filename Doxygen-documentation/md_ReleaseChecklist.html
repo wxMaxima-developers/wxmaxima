@@ -72,10 +72,10 @@ $(function() {
   <div class="headertitle"><div class="title"><a class="el" href="classwxMaxima.html">wxMaxima</a> Release Checklist </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md797"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md838"></a>
 GitHub documentation about managing releases:</h1>
 <p><a href="https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository">https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository</a></p>
-<h1><a class="anchor" id="autotoc_md798"></a>
+<h1><a class="anchor" id="autotoc_md839"></a>
 What CI now does automatically</h1>
 <p>Pushing an <b>annotated tag whose name starts with <code>Version</code></b> triggers the release automation. You no longer need to build or upload the platform binaries, create the release, or un-draft it by hand:</p>
 <ul>
@@ -94,7 +94,7 @@ What CI now does automatically</h1>
 <li><code>appstream-util validate</code> of the appdata file (<code>compile_ubuntu.yml</code>).</li>
 <li>The snap package builds from <code>snap/snapcraft.yaml</code> (<code>build_snap.yml</code>).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md799"></a>
+<h1><a class="anchor" id="autotoc_md840"></a>
 Manual steps (still required)</h1>
 <ul>
 <li>Make sure the current git version compiles and <b>all GitHub checks are green</b> — the release jobs only publish after their build+tests pass.</li>
@@ -111,7 +111,7 @@ Manual steps (still required)</h1>
 <li>Download the source tarball (<code>.tar.gz</code> and <code>.zip</code>) and sign each: <code>gpg --armor --detach-sign &lt;filename&gt;</code>, then add the two <code>.asc</code> files to the release page. (Signing needs your private key and is therefore still manual.)</li>
 <li>In <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s source tree, <code>crosscompile-windows/wxmaxima/CMakeLists.txt</code>: update the version number and the MD5 sum of the release tarball.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md800"></a>
+<h2><a class="anchor" id="autotoc_md841"></a>
 Superseded</h2>
 <ul>
 <li>The old "create a Windows installer using the *Crosscompiled-Windows-installer*
