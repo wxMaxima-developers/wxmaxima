@@ -19,6 +19,11 @@ name: build_maxima_snap
 # It runs on Saturday, ahead of the wxMaxima stable (Sunday) and edge (Monday)
 # snap jobs, so those rebuilds bundle this fresh Maxima.
 #
+# Each channel is built for both amd64 and arm64 on native runners (arm64 uses
+# GitHub's ubuntu-24.04-arm runners, free for public repositories), so the store
+# serves a matching Maxima snap to users of either architecture. arm64 wxMaxima
+# snaps stage-snap the arm64 Maxima, so this must publish before them.
+#
 # The Maxima snapcraft.yaml hard-codes a stale `version:`; the real version lives
 # in configure.ac (AC_INIT([maxima], [X.Y.Z])) and is patched in at build time
 # (with a +git<sha> suffix on edge so each development build is distinguishable).
@@ -38,13 +43,19 @@ permissions:
 
 jobs:
   build_maxima_snap:
-    name: Build and publish the Maxima snap (${{ matrix.channel }})
-    runs-on: ubuntu-latest
+    name: Build and publish the Maxima snap (${{ matrix.channel }}, ${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 180
     strategy:
       fail-fast: false
       matrix:
         channel: [stable, edge]
+        arch: [amd64, arm64]
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-24.04-arm
     steps:
       # No actions/checkout: this job builds Maxima, not wxMaxima. Clone the
       # Maxima source (which carries its own snap/snapcraft.yaml) into the empty
@@ -100,7 +111,7 @@ jobs:
       - name: Upload snap artifact
         uses: actions/upload-artifact@v4
         with:
-          name: maxima-snap-${{ matrix.channel }}
+          name: maxima-snap-${{ matrix.channel }}-${{ matrix.arch }}
           path: ${{ steps.build.outputs.snap }}
           if-no-files-found: error
 
