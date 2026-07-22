@@ -166,6 +166,7 @@ stability fixes.
 - Windows: a new Help menu item registers wxMaxima as the tool TortoiseSVN and TortoiseGit use to compare .wxmx files.
 - Added a regression test guarding the worksheet's line-wrapping (line-breaking) layout pass.
 - Snap package: opening a link in the system web browser (the manual, "visit website", Maxima's online documentation) now works. The confined snap reaches the host's default browser through the XDG Desktop Portal instead of trying to launch a browser that is not visible inside the sandbox -- no browser is bundled and confinement stays strict.
+- Find: a match found inside a cell's output now scrolls to the matching part of the output, even in a long output cell. Previously the view only scrolled to the top of the output because the matched item -- if it had not been drawn yet -- had no on-screen position, so the scroll fell back to the start of the output.
 
 # 26.07.0
 
