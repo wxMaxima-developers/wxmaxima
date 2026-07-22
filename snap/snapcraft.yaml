@@ -18,6 +18,16 @@ apps:
     extensions: [gnome]
     command: usr/bin/wxmaxima
     desktop: usr/share/applications/io.github.wxmaxima_developers.wxMaxima.desktop
+    environment:
+      # Route "open URL in the system browser" and native file dialogs through
+      # the XDG Desktop Portal instead of trying to exec a browser binary that
+      # does not exist inside the confinement. This is what lets clicking a link
+      # (help, "visit website", ...) open the host's default browser without
+      # bundling any browser or loosening confinement. GTK only consults the
+      # portal for these when GTK_USE_PORTAL is set. (The snapd-provided
+      # xdg-open shim already forwards to the host; this covers the GTK path
+      # wxLaunchDefaultBrowser() uses.)
+      GTK_USE_PORTAL: "1"
     plugs: [network, network-bind, home, removable-media, optical-drive, process-control, cups-control, upower-observe]
       # gtk-3-themes:
       #   interface: content

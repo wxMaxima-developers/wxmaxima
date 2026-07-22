@@ -1582,7 +1582,17 @@ void wxMaxima::LaunchHelpBrowser(wxString uri) {
   } else
 #endif
     {
-      if (m_configuration.AutodetectHelpBrowser()) {
+      if (wxGetEnv(wxS("SNAP"), nullptr)) {
+        // Inside a confined snap the system browser lives on the host, outside
+        // the sandbox: exec-ing a mime-resolved (or hard-coded) browser command
+        // fails because that binary is hidden by the confinement. Route the URL
+        // through wxLaunchDefaultBrowser() instead -- it uses gtk_show_uri()
+        // and, with GTK_USE_PORTAL=1 set by the snap, reaches the host's default
+        // browser via the XDG Desktop Portal. No browser has to be bundled and
+        // confinement stays strict.
+        if (!wxLaunchDefaultBrowser(uri))
+          wxLogMessage(_("Launching the system's default help browser failed."));
+      } else if (m_configuration.AutodetectHelpBrowser()) {
         // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
         auto *manager = wxTheMimeTypesManager;
         wxFileType *filetype = manager->GetFileTypeFromExtension("html");

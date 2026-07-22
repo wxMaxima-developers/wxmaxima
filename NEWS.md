@@ -158,6 +158,7 @@ stability fixes.
 - Windows: wxMaxima now repairs its own .wxmx/.wxm/.mac file association on startup, so updating to a new install location no longer makes Windows "forget" which program opens .wxmx files.
 - Windows: a new Help menu item registers wxMaxima as the tool TortoiseSVN and TortoiseGit use to compare .wxmx files.
 - Added a regression test guarding the worksheet's line-wrapping (line-breaking) layout pass.
+- Snap package: opening a link in the system web browser (the manual, "visit website", Maxima's online documentation) now works. The confined snap reaches the host's default browser through the XDG Desktop Portal instead of trying to launch a browser that is not visible inside the sandbox -- no browser is bundled and confinement stays strict.
 
 # 26.07.0
 
