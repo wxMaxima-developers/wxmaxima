@@ -1,5 +1,7 @@
 # Current development version
 
+# 26.07.1
+
 This release contains an unusually large batch of improvements -- many of them
 developed with substantial help from the AI assistants **Claude** and
 **Fable**: dark mode for the whole Windows user interface, native
