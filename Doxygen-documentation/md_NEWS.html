@@ -139,6 +139,7 @@ $(function() {
 <li>Windows: <a class="el" href="classwxMaxima.html">wxMaxima</a> now repairs its own .wxmx/.wxm/.mac file association on startup, so updating to a new install location no longer makes Windows "forget" which program opens .wxmx files.</li>
 <li>Windows: a new Help menu item registers <a class="el" href="classwxMaxima.html">wxMaxima</a> as the tool TortoiseSVN and TortoiseGit use to compare .wxmx files.</li>
 <li>Added a regression test guarding the worksheet's line-wrapping (line-breaking) layout pass.</li>
+<li>Snap package: opening a link in the system web browser (the manual, "visit website", <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s online documentation) now works. The confined snap reaches the host's default browser through the XDG Desktop Portal instead of trying to launch a browser that is not visible inside the sandbox &ndash; no browser is bundled and confinement stays strict.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md795"></a>
 26.07.0</h1>
