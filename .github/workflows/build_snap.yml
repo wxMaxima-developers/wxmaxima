@@ -1,18 +1,24 @@
 name: build_snap
 
-# Builds the Snap package from snap/snapcraft.yaml so that breakage is caught
-# in CI instead of only when the Snap Store (or a maintainer) tries to build a
-# release. The snap silently rotted once already: base was bumped to core24
-# (Ubuntu 24.04) in 2024 while the build/stage packages stayed at wxWidgets 3.0,
-# which no longer exists on noble -- nothing in CI noticed because the snap was
-# never built here. This job closes that gap.
+# Builds the wxMaxima Snap for the *edge* channel (development HEAD), for both
+# amd64 and arm64, so breakage is caught in CI instead of only when the Snap
+# Store (or a maintainer) tries to build a release. The snap silently rotted
+# once already: base was bumped to core24 (Ubuntu 24.04) in 2024 while the
+# build/stage packages stayed at wxWidgets 3.0, which no longer exists on noble
+# -- nothing in CI noticed because the snap was never built here.
 #
-# On every push the snap is only built and uploaded as a workflow artifact (a
-# CI check). Once a week -- and on a manual "Run workflow" -- the freshly built
-# snap is additionally published to the Snap Store's "edge" channel. Because the
-# snapcraft.yaml pulls Maxima in via `stage-snaps: [maxima]`, the weekly rebuild
-# also picks up the newest Maxima snap (rebuilt on its own schedule) together
-# with the latest security fixes from the core24 runtime.
+# On every push each architecture's snap is only built and uploaded as a
+# workflow artifact (a CI check). Once a week -- and on a manual "Run workflow"
+# -- the freshly built snaps are additionally published to the Snap Store's
+# "edge" channel (one revision per architecture; the store serves each user the
+# right one).
+#
+# For the published edge snaps the bundled Maxima is switched from the store's
+# stable Maxima to its edge Maxima (`maxima/latest/edge`), so edge is "HEAD of
+# both". Push (build-only) runs keep bundling stable Maxima, which always exists,
+# so the CI check never depends on an edge Maxima revision having been published
+# yet. arm64 needs an arm64 Maxima snap in the store first -- build_maxima_snap
+# publishes those (run it before the first arm64 wxMaxima build).
 #
 # Publishing needs the SNAPCRAFT_STORE_CREDENTIALS repository secret, generated
 # with:
@@ -24,7 +30,7 @@ on:
   push:
   workflow_dispatch:
   schedule:
-    # Every Monday at 04:00 UTC.
+    # Every Monday at 04:00 UTC (after the Saturday Maxima rebuild).
     - cron: '0 4 * * 1'
 
 permissions:
@@ -32,14 +38,43 @@ permissions:
 
 jobs:
   build_snap:
-    name: Build the snap
-    runs-on: ubuntu-latest
+    name: Build the edge snap (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-24.04-arm
     steps:
       - name: Checkout wxMaxima
         uses: actions/checkout@v7
         with:
           fetch-depth: 15
+
+      # Only for the snaps we actually publish to edge: bundle Maxima's edge
+      # channel instead of its stable one, so the edge wxMaxima ships the newest
+      # Maxima too. Left as stable on push builds so the CI check doesn't depend
+      # on an edge Maxima revision existing yet.
+      - name: Bundle Maxima's edge channel when publishing
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          # snapcraft.yaml has CRLF line endings, so anchor-based sed on the bare
+          # "maxima" stage-snaps entry silently matches nothing. Use an explicit,
+          # line-ending-preserving replace that fails loudly if the entry moves.
+          python3 - <<'PY'
+          import re
+          p = "snap/snapcraft.yaml"
+          s = open(p, newline="").read()   # preserve CRLF/LF exactly
+          s2 = re.sub(r'(?m)^([^\S\r\n]*-[^\S\r\n]+)maxima([^\S\r\n]*\r?)$',
+                      r'\1maxima/latest/edge\2', s)
+          assert s2 != s, "did not find the '- maxima' stage-snaps entry to switch to edge"
+          open(p, "w", newline="").write(s2)
+          PY
+          grep -n 'maxima' snap/snapcraft.yaml
 
       - name: Build snap
         uses: snapcore/action-build@v1
@@ -48,7 +83,7 @@ jobs:
       - name: Upload snap artifact
         uses: actions/upload-artifact@v4
         with:
-          name: wxmaxima-snap
+          name: wxmaxima-snap-edge-${{ matrix.arch }}
           path: ${{ steps.build.outputs.snap }}
           if-no-files-found: error
 

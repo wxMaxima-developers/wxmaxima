@@ -35,9 +35,17 @@ permissions:
 
 jobs:
   build_snap_stable:
-    name: Build and publish the wxMaxima snap (stable)
-    runs-on: ubuntu-latest
+    name: Build and publish the wxMaxima snap (stable, ${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-24.04-arm
     steps:
       - name: Checkout wxMaxima
         uses: actions/checkout@v7
@@ -80,7 +88,7 @@ jobs:
       - name: Upload snap artifact
         uses: actions/upload-artifact@v4
         with:
-          name: wxmaxima-snap-stable
+          name: wxmaxima-snap-stable-${{ matrix.arch }}
           path: ${{ steps.build.outputs.snap }}
           if-no-files-found: error
 
