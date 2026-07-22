@@ -311,8 +311,6 @@ endif()
 
 file(RELATIVE_PATH TRANSLATIONS_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/locales/wxMaxima/)
 
-configure_file("wxmaxima.exe.manifest.in" wxmaxima.exe.manifest)
-
 # allow local execution (./wxmaxima-local) from the build directory without installation
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.bat.in" ../wxmaxima-local.bat)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.in" ../wxmaxima-local)
@@ -411,13 +409,13 @@ if(NOT WIN32)
         create_install_symlink(wxmaxima bin/wxmxdiff)
     ")
 endif()
-# Windows: Install the manifest file as wxmaxima.exe.manifest, see
-# https://learn.microsoft.com/en-us/windows/win32/sbscs/application-manifests
-# We do (currently) not try to include it in the wxmaxima binary,
-# an extra file is valid too and might help to test various entries in that file.
-if(WIN32)
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.exe.manifest" DESTINATION bin)
-endif()
+# wxmaxima.exe already carries an embedded application manifest: wxmaxima.rc
+# (with wxUSE_DPI_AWARE_MANIFEST) pulls in wxWidgets' wx_dpi_aware_pmv2.manifest,
+# which declares Common-Controls v6, per-monitor-v2 DPI awareness and the
+# supportedOS entries up to Windows 11. Windows uses that embedded manifest and
+# ignores any external <exe>.manifest sitting next to it, so we deliberately do
+# NOT ship a separate one (an external file that never takes effect only invites
+# people to "fix" theming/DPI by editing a manifest Windows never reads).
 
 # Build Packages
 if(WIN32)
