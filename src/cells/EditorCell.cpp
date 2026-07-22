@@ -127,6 +127,33 @@ public:
   //! Code serializes to RTF snippet-by-snippet, keeping the syntax
   //! highlighting; prose maps its heading/text style in the base.
   wxString ToRTF() const override;
+
+  // --- code-only state + behavior (moved off the base in slice 5) ---
+  const std::vector<wxString> &GetWordList() const override { return m_wordList; }
+  const MaximaTokenizer::TokenList &GetAllTokens() const override;
+  void FindMatchingParens() override;
+  void ClearParenMatch() override { m_paren1 = m_paren2 = -1; }
+  void DrawParenHighlight(wxDC *dc) override;
+
+private:
+  //! The code-vs-prose styler for code (populates m_tokens/m_wordList). Only
+  //! ever runs on a CodeEditorCell (via StyleTypedText()).
+  void StyleTextCode() const;
+  //! Helper of FindMatchingParens() for the "cursor on a quote" case.
+  bool FindMatchingQuotes();
+
+  //! A list of all potential autoComplete targets within this cell
+  mutable std::vector<wxString> m_wordList;
+  //! The individual commands, parenthesis, strings and whitespaces a code cell consists of
+  mutable MaximaTokenizer::TokenList m_tokens;
+  //! The individual commands, parenthesis, strings and whitespaces including hidden lines
+  mutable MaximaTokenizer::TokenList m_tokens_including_hidden;
+  //! Does the list of displayed tokens need to be recalculated?
+  mutable bool m_tokens_valid = false;
+  //! Does the list of tokens including hidden items need to be recalculated?
+  mutable bool m_tokens_including_hidden_valid = false;
+  //! The offsets of the pair of matching parens/quotes to highlight, or -1.
+  long m_paren1 = -1, m_paren2 = -1;
 };
 
 class TextEditorCell final : public EditorCell {
@@ -946,39 +973,11 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
                         SelectionRight(), TS_SELECTION);
 
         //
-        // Matching parens - draw only if we don't have selection
+        // Matching parens - draw only if we don't have selection. Prose cells
+        // have no parens; CodeEditorCell draws its m_paren1/m_paren2 highlight.
         //
-        else if ((m_paren1 != -1 && m_paren2 != -1) &&
-                 (m_configuration->ShowMatchingParens())) {
-          {
-
-#if defined(__WXOSX__)
-            dc->SetPen(wxNullPen); // no border on rectangles
-#else
-            dc->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1,
-                                                       wxPENSTYLE_SOLID))); // window linux, set a pen
-#endif
-            dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION)))); // highlight c.
-          }
-          if (m_paren1 >= 0 && static_cast<size_t>(m_paren1) < m_text.Length() &&
-              m_paren2 >= 0 && static_cast<size_t>(m_paren2) < m_text.Length()) {
-            wxPoint matchPoint = PositionToPoint(m_paren1);
-            wxCoord width, height;
-            dc->GetTextExtent(m_text.at(m_paren1), &width, &height);
-            wxRect matchRect(matchPoint.x + 1,
-                             matchPoint.y + Scale_Px(2) - m_center + 1,
-                             width - 1, height - 1);
-            if (m_configuration->InUpdateRegion(matchRect))
-              dc->DrawRectangle(CropToUpdateRegion(matchRect));
-            matchPoint = PositionToPoint(m_paren2);
-            dc->GetTextExtent(m_text.at(m_paren2), &width, &height);
-            matchRect = wxRect(matchPoint.x + 1,
-                               matchPoint.y + Scale_Px(2) - m_center + 1,
-                               width - 1, height - 1);
-            if (m_configuration->InUpdateRegion(matchRect))
-              dc->DrawRectangle(CropToUpdateRegion(matchRect));
-          }
-        } // else if (m_paren1 != -1 && m_paren2 != -1)
+        else
+          DrawParenHighlight(dc);
       }   // if (IsActive())
 
     //
@@ -1296,8 +1295,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event) {
   if ((!done) && (wxIsprint(event.GetUnicodeKey())))
     HandleOrdinaryKey(event);
 
-  if (m_type == MC_TYPE_INPUT)
-    FindMatchingParens();
+  FindMatchingParens();
 
   if (m_isDirty) {
     if (GetGroup())
@@ -2208,7 +2206,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event) {
  *
  * @return true if matching quotation marks were found; false otherwise
  */
-bool EditorCell::FindMatchingQuotes() {
+bool CodeEditorCell::FindMatchingQuotes() {
   size_t pos = 0;
   for (auto const &tok : m_tokens) {
     if ((tok.GetText().StartsWith(wxS("\""))) &&
@@ -2228,7 +2226,7 @@ bool EditorCell::FindMatchingQuotes() {
   return false;
 }
 
-void EditorCell::FindMatchingParens() {
+void CodeEditorCell::FindMatchingParens() {
   m_paren1 = m_paren2 = -1;
   if (CursorPosition() >= m_text.Length())
     return;
@@ -2339,7 +2337,7 @@ bool EditorCell::ActivateCursor() {
   m_documentCellPointers->SetActiveCell(this);
 
   ClearSelection();
-  m_paren1 = m_paren2 = -1;
+  ClearParenMatch();
 
   // upon activation unhide the parent groupcell
   if (FirstLineOnlyEditor()) {
@@ -2349,8 +2347,7 @@ bool EditorCell::ActivateCursor() {
       retval = true;
     }
   }
-  if (GetType() == MC_TYPE_INPUT)
-    FindMatchingParens();
+  FindMatchingParens();
   return retval;
 }
 
@@ -2395,7 +2392,7 @@ bool EditorCell::AddEnding() {
 
   if (endingNeeded) {
     m_text += wxS(";");
-      m_paren1 = m_paren2 = -1;
+      ClearParenMatch();
       m_width.Invalidate();
     StyleText();
     return true;
@@ -2611,7 +2608,7 @@ void EditorCell::SelectRectText(const wxPoint one, const wxPoint two) {
   SelectPointText(one);
   size_t start = CursorPosition();
   SelectPointText(two);
-  m_paren2 = m_paren1 = -1;
+  ClearParenMatch();
   SelectionStart(start);
 }
 
@@ -2857,7 +2854,7 @@ bool EditorCell::CutToClipboard() {
   StyleText();
 
   ClearSelection();
-  m_paren1 = m_paren2 = -1;
+  ClearParenMatch();
   m_width.Invalidate();
   m_height.Invalidate();
   m_center.Invalidate();
@@ -2874,8 +2871,7 @@ void EditorCell::InsertText(wxString text) {
 
   ReplaceSelection(GetSelectionString(), text);
 
-  if (GetType() == MC_TYPE_INPUT)
-    FindMatchingParens();
+  FindMatchingParens();
 
   m_text.Replace(wxS("\u2028"), "\n");
   m_text.Replace(wxS("\u2029"), "\n");
@@ -3055,7 +3051,7 @@ void EditorCell::History::ClearUndoBuffer() {
 void EditorCell::SetState(const EditorCell::History::HistoryEntry &state) {
   m_text = state.GetText();
   StyleText();
-  m_paren1 = m_paren2 = -1;
+  ClearParenMatch();
   m_isDirty = true;
   m_width.Invalidate();
   m_height.Invalidate();
@@ -3178,8 +3174,11 @@ void EditorCell::HandleSoftLineBreaks_Code(SoftBreakCandidate &candidate,
   candidate.valid = false;
 }
 
-void EditorCell::StyleTextCode() const {
-  // We have to style code
+void CodeEditorCell::StyleTextCode() const {
+  // We have to style code. m_wordList is cleared here because the base
+  // StyleText() no longer knows about it (it moved to this subclass);
+  // m_tokens_valid is set at the very end for the same reason.
+  m_wordList.clear();
   SoftBreakCandidate candidate;
   // If a space is part of the initial spaces that do the indentation of a cell
   // it is not eligible for soft line breaks: It would add a soft line break
@@ -3298,6 +3297,7 @@ void EditorCell::StyleTextCode() const {
   std::sort(m_wordList.begin(), m_wordList.end());
   if(!suppressedLinesInfo.IsEmpty())
     m_styledText.push_back(StyledText(TS_CODE_COMMENT, suppressedLinesInfo));
+  m_tokens_valid = true;
 }
 
 void EditorCell::StyleTextTexts() const {
@@ -3569,7 +3569,7 @@ lineProcessed:
   }
 } // Style text, not code?
 
-const MaximaTokenizer::TokenList &EditorCell::GetAllTokens() const {
+const MaximaTokenizer::TokenList &CodeEditorCell::GetAllTokens() const {
   if(FirstLineOnlyEditor())
     {
       if(!m_tokens_including_hidden_valid)
@@ -3599,7 +3599,6 @@ void EditorCell::StyleText() const {
   // the font type and size.
   SetFont(m_configuration->GetRecalcDC());
 
-  m_wordList.clear();
   m_styledText.clear();
   // Soft breaks are derived layout data; re-derive them from scratch on every
   // restyle. They live in a side table (m_softBreaks), never inside m_text.
@@ -3610,15 +3609,63 @@ void EditorCell::StyleText() const {
     // (legacy files, paste). Real soft breaks are never stored in the content
     // any more, so this touches nothing in normal operation.
     m_text.Replace(wxS("\r"), wxS(" "));
-    // Style as code or prose, dispatched by the concrete subclass.
+    // Style as code or prose, dispatched by the concrete subclass. The code
+    // path (CodeEditorCell::StyleTextCode) also fills its own m_wordList and
+    // marks its tokens valid; prose has neither.
     StyleTypedText();
   }
-  m_tokens_valid = true;
 }
 
 // Base = prose; CodeEditorCell overrides this to style Maxima code. This is the
 // virtual seam that replaced StyleText()'s old `if (m_type == MC_TYPE_INPUT)`.
 void EditorCell::StyleTypedText() const { StyleTextTexts(); }
+
+// --- Base (prose) defaults for the code-only virtuals. CodeEditorCell overrides
+// each; prose cells have no tokens, no word list and no paren highlight. ---
+void EditorCell::FindMatchingParens() {}
+
+const std::vector<wxString> &EditorCell::GetWordList() const {
+  static const std::vector<wxString> empty;
+  return empty;
+}
+
+const MaximaTokenizer::TokenList &EditorCell::GetAllTokens() const {
+  static const MaximaTokenizer::TokenList empty;
+  return empty;
+}
+
+void CodeEditorCell::DrawParenHighlight(wxDC *dc) {
+  if (!((m_paren1 != -1 && m_paren2 != -1) &&
+        m_configuration->ShowMatchingParens()))
+    return;
+
+#if defined(__WXOSX__)
+  dc->SetPen(wxNullPen); // no border on rectangles
+#else
+  dc->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1,
+                                             wxPENSTYLE_SOLID))); // window linux, set a pen
+#endif
+  dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION)))); // highlight c.
+
+  if (m_paren1 >= 0 && static_cast<size_t>(m_paren1) < m_text.Length() &&
+      m_paren2 >= 0 && static_cast<size_t>(m_paren2) < m_text.Length()) {
+    wxPoint matchPoint = PositionToPoint(m_paren1);
+    wxCoord width, height;
+    dc->GetTextExtent(m_text.at(m_paren1), &width, &height);
+    wxRect matchRect(matchPoint.x + 1,
+                     matchPoint.y + Scale_Px(2) - m_center + 1,
+                     width - 1, height - 1);
+    if (m_configuration->InUpdateRegion(matchRect))
+      dc->DrawRectangle(CropToUpdateRegion(matchRect));
+    matchPoint = PositionToPoint(m_paren2);
+    dc->GetTextExtent(m_text.at(m_paren2), &width, &height);
+    matchRect = wxRect(matchPoint.x + 1,
+                       matchPoint.y + Scale_Px(2) - m_center + 1,
+                       width - 1, height - 1);
+    if (m_configuration->InUpdateRegion(matchRect))
+      dc->DrawRectangle(CropToUpdateRegion(matchRect));
+  }
+}
 
 wxString EditorCell::PreprocessNewValue(const wxString &text,
                                         std::size_t &cursorPos) const {
@@ -3948,8 +3995,7 @@ bool EditorCell::ReplaceSelection(const wxString &oldStr,
   else
     ClearSelection();
 
-  if (GetType() == MC_TYPE_INPUT)
-    FindMatchingParens();
+  FindMatchingParens();
 
   StyleText();
   return true;
@@ -3977,8 +4023,7 @@ bool EditorCell::ReplaceSelection_RegEx(const wxString &oldStr,
   m_text = text;
   CursorPosition(match.GetEnd());
 
-  if (GetType() == MC_TYPE_INPUT)
-    FindMatchingParens();
+  FindMatchingParens();
 
   StyleText();
   return true;
@@ -4077,20 +4122,17 @@ bool EditorCell::FindNextTemplate(bool left) {
 
 void EditorCell::CaretToEnd() {
   CursorPosition(m_text.Length());
-  if (GetType() == MC_TYPE_INPUT)
-    FindMatchingParens();
+  FindMatchingParens();
 }
 
 void EditorCell::CaretToStart() {
   CursorPosition(0);
-  if (GetType() == MC_TYPE_INPUT)
-    FindMatchingParens();
+  FindMatchingParens();
 }
 
 void EditorCell::CaretToPosition(size_t pos) {
   CursorPosition(pos);
-  if (GetType() == MC_TYPE_INPUT)
-    FindMatchingParens();
+  FindMatchingParens();
 }
 
 #if wxUSE_ACCESSIBILITY
