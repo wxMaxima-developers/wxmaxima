@@ -393,6 +393,48 @@ SCENARIO("Nested folds survive the .wxm round-trip") {
   }
 }
 
+SCENARIO("An image folded into a section survives the .wxm round-trip byte-for-byte") {
+  // The basic fold round-trip used input-only cells; here the hidden tree holds
+  // an image cell (bytes stored inline as base64) plus a following code cell, so
+  // the fold wrapper must not disturb the embedded image data.
+  const wxMemoryBuffer png = EncodeImage(wxBITMAP_TYPE_PNG);
+  REQUIRE(png.GetDataLen() > 0);
+
+  auto imgGroup = std::make_unique<GroupCell>(g_cfg, GC_TYPE_IMAGE);
+  imgGroup->SetOutput(std::make_unique<ImgCell>(nullptr, g_cfg, png, wxS("png")));
+  auto codeGroup = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("2+2;"));
+
+  auto section = std::make_unique<GroupCell>(g_cfg, GC_TYPE_SECTION, wxS("With an image"));
+  CellListBuilder<GroupCell> children;
+  children.DynamicAppend(imgGroup.release());
+  children.DynamicAppend(codeGroup.release());
+  REQUIRE(section->HideTree(std::move(children)));
+
+  auto reloaded = SerializeAndReload({section.get()});
+  REQUIRE(reloaded != nullptr);
+
+  THEN("only the section is visible and its hidden image keeps its bytes intact") {
+    std::vector<GroupCell *> got;
+    for (auto &g : OnList(reloaded.get()))
+      got.push_back(&g);
+    REQUIRE(got.size() == 1);
+    REQUIRE(got[0]->GetGroupType() == GC_TYPE_SECTION);
+
+    GroupCell *hidden = got[0]->GetHiddenTree();
+    REQUIRE(hidden != nullptr);
+    REQUIRE(hidden->GetGroupType() == GC_TYPE_IMAGE);
+    auto *img = dynamic_cast<ImgCell *>(hidden->GetLabel());
+    REQUIRE(img != nullptr);
+    const wxMemoryBuffer reloadedBytes = img->GetCompressedImage();
+    REQUIRE(reloadedBytes.GetDataLen() > 0);     // not the "zero length" bug
+    REQUIRE(SameBytes(reloadedBytes, png));       // stored verbatim inside the fold
+
+    REQUIRE(hidden->GetNext() != nullptr);
+    REQUIRE(hidden->GetNext()->GetGroupType() == GC_TYPE_CODE);
+    REQUIRE(hidden->GetNext()->GetEditable()->GetValue() == wxS("2+2;"));
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

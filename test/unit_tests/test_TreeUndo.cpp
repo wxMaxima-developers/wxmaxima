@@ -88,6 +88,13 @@ void BuildTree(const std::vector<wxString> &texts) {
       std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, t), where);
   g_ws->TreeUndo_ClearBuffers();
 }
+
+//! Append a fresh GroupCell of the given type/text after the last cell, without
+//! recording an undo action (buffers are cleared afterwards by the caller).
+GroupCell *AppendCell(GroupType type, const wxString &text) {
+  return g_ws->InsertGroupCells(std::make_unique<GroupCell>(g_cfg, type, text),
+                                NthCell(CellCount() - 1));
+}
 } // namespace
 
 SCENARIO("Adding a cell is undoable and redoable") {
@@ -207,6 +214,110 @@ SCENARIO("SetCellStyle refuses to convert an image cell") {
       THEN("the cell is left untouched as an image cell") {
         REQUIRE(CellCount() == countBefore);
         REQUIRE(NthCell(CellCount() - 1)->GetGroupType() == GC_TYPE_IMAGE);
+      }
+    }
+  }
+}
+
+SCENARIO("Folding survives an unrelated deletion and its undo") {
+  GIVEN("a worksheet [code, section, code] with the section folded") {
+    g_ws->ClearDocument();
+    GroupCell *top = AppendCell(GC_TYPE_CODE, wxS("top:1$"));
+    GroupCell *section = AppendCell(GC_TYPE_SECTION, wxS("A section"));
+    AppendCell(GC_TYPE_CODE, wxS("child:2$")); // becomes the section's child
+    g_ws->TreeUndo_ClearBuffers();
+
+    // Fold the section: its following code child moves into the hidden tree.
+    REQUIRE(g_ws->ToggleFold(section) == section);
+    REQUIRE(section->GetHiddenTree() != nullptr);
+    REQUIRE(section->GetHiddenTree()->GetEditable()->GetValue() == wxS("child:2$"));
+    REQUIRE(CellCount() == 2); // only [code, section] are visible now
+    g_ws->TreeUndo_ClearBuffers(); // folding itself is not an undoable action
+
+    WHEN("an unrelated cell above the fold is deleted and the delete is undone") {
+      g_ws->DeleteRegion(top, top);
+      REQUIRE(CellCount() == 1); // just the section is left visible
+
+      REQUIRE(g_ws->TreeUndo());
+
+      THEN("the deleted cell returns and the section is still folded") {
+        REQUIRE(CellCount() == 2);
+        GroupCell *restoredSection = NthCell(1);
+        REQUIRE(restoredSection->GetGroupType() == GC_TYPE_SECTION);
+        REQUIRE(restoredSection->GetHiddenTree() != nullptr);
+        CHECK(restoredSection->GetHiddenTree()->GetEditable()->GetValue() ==
+              wxS("child:2$"));
+      }
+    }
+  }
+}
+
+SCENARIO("Deleting a folded section and undoing it restores the fold") {
+  GIVEN("a worksheet [code, section, code] with the section folded") {
+    g_ws->ClearDocument();
+    AppendCell(GC_TYPE_CODE, wxS("top:1$"));
+    GroupCell *section = AppendCell(GC_TYPE_SECTION, wxS("A section"));
+    AppendCell(GC_TYPE_CODE, wxS("child:2$"));
+    g_ws->TreeUndo_ClearBuffers();
+
+    REQUIRE(g_ws->ToggleFold(section) == section);
+    REQUIRE(section->GetHiddenTree() != nullptr);
+    REQUIRE(CellCount() == 2);
+    g_ws->TreeUndo_ClearBuffers();
+
+    WHEN("the folded section itself is deleted") {
+      g_ws->DeleteRegion(section, section);
+      REQUIRE(CellCount() == 1); // the hidden child goes with the section
+
+      THEN("undo brings the section back still folded; redo removes it again") {
+        REQUIRE(g_ws->TreeUndo());
+        REQUIRE(CellCount() == 2);
+        GroupCell *restored = NthCell(1);
+        REQUIRE(restored->GetGroupType() == GC_TYPE_SECTION);
+        REQUIRE(restored->GetHiddenTree() != nullptr);
+        CHECK(restored->GetHiddenTree()->GetGroupType() == GC_TYPE_CODE);
+        CHECK(restored->GetHiddenTree()->GetEditable()->GetValue() ==
+              wxS("child:2$"));
+        // The hidden child must not have leaked into the visible list.
+        CHECK(restored->GetNext() == nullptr);
+
+        REQUIRE(g_ws->TreeRedo());
+        CHECK(CellCount() == 1);
+      }
+    }
+  }
+}
+
+SCENARIO("Undoing an insertion whose cell was folded away reveals and removes it") {
+  // This drives TreeUndoCellAddition's RevealHidden() branch: the undo range
+  // (the inserted cell) has since been folded into a section's hidden tree, so
+  // the undo must first unfold it back into the visible list before deleting it.
+  GIVEN("a section, a code cell inserted after it, then folded into the section") {
+    g_ws->ClearDocument();
+    GroupCell *section = AppendCell(GC_TYPE_SECTION, wxS("A section"));
+    g_ws->TreeUndo_ClearBuffers();
+
+    // The insertion we will undo: a code cell right after the section.
+    GroupCell *child = g_ws->InsertGroupCells(
+      std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("child:2$")), section);
+    REQUIRE(CellCount() == 2);
+    REQUIRE(g_ws->CanUndo());
+
+    // Fold the section: the freshly-inserted child moves into the hidden tree,
+    // so the pending undo action now points at a hidden cell.
+    REQUIRE(g_ws->ToggleFold(section) == section);
+    REQUIRE(section->GetHiddenTree() == child);
+    REQUIRE(CellCount() == 1);
+
+    WHEN("the insertion is undone") {
+      REQUIRE(g_ws->TreeUndo());
+
+      THEN("the child is gone and the section is left unfolded and empty") {
+        REQUIRE(CellCount() == 1);
+        GroupCell *only = NthCell(0);
+        REQUIRE(only->GetGroupType() == GC_TYPE_SECTION);
+        CHECK(only->GetHiddenTree() == nullptr); // unfolded during the undo
+        CHECK(only->GetNext() == nullptr);        // the inserted cell was removed
       }
     }
   }

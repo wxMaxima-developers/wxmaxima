@@ -176,6 +176,54 @@ SCENARIO("A folded section's hidden children survive the content.xml round-trip"
   }
 }
 
+SCENARIO("A folded code cell keeps its computed output across the content.xml round-trip") {
+  // .wxm stores input only, so evaluation output inside a hidden tree is a
+  // .wxmx-only concern. This folds a code cell that has an <output> block and
+  // checks the output survives both the idempotency check and a structural
+  // reparse of the hidden tree.
+  const wxString folded =
+    wxS("<cell type=\"section\" sectioning_level=\"2\">\n")
+    wxS("<editor type=\"section\" sectioning_level=\"2\">\n")
+    wxS("<line>A section</line>\n")
+    wxS("</editor>\n")
+    wxS("<fold>\n")
+    wxS("<cell type=\"code\">\n")
+    wxS("<input>\n")
+    wxS("<editor type=\"input\">\n")
+    wxS("<line>1+1;</line>\n")
+    wxS("</editor>\n")
+    wxS("</input>\n")
+    wxS("<output>\n")
+    wxS("<mth><lbl altCopy=\"(%o1)&#009;\">(%o1) </lbl><n>2</n>\n")
+    wxS("</mth></output>\n")
+    wxS("</cell>\n")
+    wxS("</fold>\n")
+    wxS("</cell>");
+
+  THEN("the folded cell with output round-trips to a stable serialization") {
+    RequireIdempotent(WrapDocument(folded));
+  }
+  THEN("re-parsing recovers the hidden code cell together with its output") {
+    const wxString wrapped = WrapDocument(folded);
+    const wxScopedCharBuffer utf8 = wrapped.utf8_str();
+    wxMemoryInputStream in(utf8.data(), utf8.length());
+    wxXmlDocument doc;
+    REQUIRE(doc.Load(in));
+    MathParser mp(g_cfg);
+    std::unique_ptr<GroupCell> tree = mp.CreateTreeFromXMLNode(doc.GetRoot());
+    REQUIRE(tree != nullptr);
+    REQUIRE(tree->GetGroupType() == GC_TYPE_SECTION);
+    REQUIRE(tree->GetNext() == nullptr); // the code cell is hidden, not visible
+
+    GroupCell *hidden = tree->GetHiddenTree();
+    REQUIRE(hidden != nullptr);
+    REQUIRE(hidden->GetGroupType() == GC_TYPE_CODE);
+    REQUIRE(hidden->GetEditable()->GetValue() == wxS("1+1;"));
+    // The computed result must have travelled into the hidden tree too.
+    REQUIRE(hidden->GetOutput() != nullptr);
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
