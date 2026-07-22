@@ -1,0 +1,95 @@
+name: build_snap_stable
+
+# Builds and publishes the wxMaxima snap for the *stable* channel: the latest
+# wxMaxima *release* bundled with the latest Maxima *release*.
+#
+# build_snap.yml handles the edge channel (wxMaxima development HEAD). This
+# companion handles stable. It builds the newest `Version-*` release tag rather
+# than the default branch, and -- because the committed snapcraft.yaml keeps
+# `stage-snaps: [maxima]`, which resolves to Maxima's stable channel -- bundles
+# the latest Maxima release (refreshed weekly by build_maxima_snap.yml).
+#
+# It runs:
+#   * on every `Version-*` tag push  -> a new release reaches stable immediately;
+#   * weekly (Sunday, after the Saturday Maxima rebuild) -> so the stable snap
+#     keeps picking up security fixes from the Maxima snap, the core24 runtime
+#     and the staged packages *between* wxMaxima releases, not only at release.
+#
+# The snap is built from the current repo's snapcraft.yaml (so packaging fixes
+# reach stable as soon as they land on the default branch) with `source-tag`
+# pinned to the release, and its version label set from the tag.
+#
+# Publishing uses the SNAPCRAFT_STORE_CREDENTIALS repository secret.
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'Version-*'
+  schedule:
+    # Every Sunday at 04:00 UTC (after the Saturday Maxima rebuild).
+    - cron: '0 4 * * 0'
+
+permissions:
+  contents: read
+
+jobs:
+  build_snap_stable:
+    name: Build and publish the wxMaxima snap (stable)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout wxMaxima
+        uses: actions/checkout@v7
+        with:
+          # Full history so the release tags are available on scheduled runs.
+          fetch-depth: 0
+
+      - name: Pin the snap to the latest wxMaxima release
+        run: |
+          set -eu
+          if [ "${GITHUB_REF_TYPE:-}" = tag ]; then
+            tag="${GITHUB_REF_NAME}"
+          else
+            tag=$(git tag -l 'Version-*' | sort -V | tail -n1)
+          fi
+          test -n "$tag"
+          echo "Building wxMaxima release $tag for the stable channel"
+          CHANNEL_TAG="$tag" python3 - <<'PY'
+          import os, re
+          tag = os.environ["CHANNEL_TAG"]
+          ver = tag[len("Version-"):] if tag.startswith("Version-") else tag
+          p = "snap/snapcraft.yaml"
+          s = open(p).read()
+          # Label the snap with the release version.
+          s = re.sub(r'(?m)^version:.*', "version: '%s-0'" % ver, s)
+          # Build the release tag instead of the default branch: add a
+          # source-tag right after the wxMaxima git source line (4-space indent,
+          # matching the surrounding part keys).
+          src = "source: https://github.com/wxMaxima-developers/wxmaxima.git"
+          assert src in s, "wxMaxima git source line not found in snapcraft.yaml"
+          s = s.replace(src, src + "\n    source-tag: " + tag, 1)
+          open(p, "w").write(s)
+          print("stable snap: version %s-0, source-tag %s" % (ver, tag))
+          PY
+
+      - name: Build snap
+        uses: snapcore/action-build@v1
+        id: build
+
+      - name: Upload snap artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wxmaxima-snap-stable
+          path: ${{ steps.build.outputs.snap }}
+          if-no-files-found: error
+
+      - name: Publish to the stable channel
+        if: >-
+          github.repository == 'wxMaxima-developers/wxmaxima'
+        uses: snapcore/action-publish@v1
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        with:
+          snap: ${{ steps.build.outputs.snap }}
+          release: stable
