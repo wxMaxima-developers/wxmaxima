@@ -4012,6 +4012,19 @@ void Worksheet::ScrollToCellIfNeeded() {
     cellY = cell->GetCurrentY();
   }
 
+  // Cells inside a group's output only get their absolute position assigned
+  // when the group is drawn (see UpdateOutputPositions()). A "Find" match deep
+  // inside a tall output that has not been drawn yet therefore still reads
+  // y < 0 after the recalc above; without this the scroll would fall back to
+  // the group's top (line below) and stop at the start of the output instead
+  // of at the match. Compute the output positions explicitly so we can scroll
+  // to the matching cell itself. (Same fix ScrollToCaretIfNeeded() applies for
+  // carets in output cells.)
+  if (cellY < 0 && cell->GetGroup()) {
+    cell->GetGroup()->UpdateOutputPositions();
+    cellY = cell->GetCurrentY();
+  }
+
   if (cellY < 0)
     cellY = cell->GetGroup()->GetCurrentY();
 
