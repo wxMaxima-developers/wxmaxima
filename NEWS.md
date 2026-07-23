@@ -1,5 +1,10 @@
 # Current development version
 
+- Windows: the wxMaxima window and taskbar button again show the wxMaxima logo
+  instead of the generic wxWidgets "W" icon. The window icon now also falls back
+  to the logo compiled into the binary, so it no longer depends solely on the
+  .ico resource being the one Windows selects.
+
 # 26.07.1
 
 This release contains an unusually large batch of improvements -- many of them

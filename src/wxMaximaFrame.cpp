@@ -48,6 +48,7 @@
 #include "wxMaximaIcon.h"
 #include <wx/artprov.h>
 #include <wx/config.h>
+#include <wx/iconbndl.h>
 #include <wx/display.h>
 #include <wx/fileconf.h>
 #include <wx/filename.h>
@@ -176,11 +177,17 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id,
   StatusMaximaBusy(StatusBar::MaximaStatus::waiting);
 
 #if defined(__WXMSW__)
-  // On Windows the taskbar icon needs to reside in the Resources file the
-  // linker includes. Also it needs to be in Microsoft's own .ico format => This
-  // file we don't ship with the source, but take it from the Resources file
-  // instead.
-  SetIcon(wxICON(icon0));
+  // Explorer shows the exe file's .ico resource (icon0 -> maximaicon.ico) that
+  // the linker embeds. For the *window* icon (the title-bar icon and the running
+  // app's taskbar button) we build a bundle from that resource AND the wxMaxima
+  // logo that is compiled into the binary (wxMaximaIcon(), the same one GTK
+  // uses). Relying on the resource alone let the window fall back to wxWidgets'
+  // own generic icon (wxICON_AAA, i.e. the "W") whenever that resource icon was
+  // not the one selected; the embedded copy is always valid, so the wxMaxima
+  // logo is shown regardless.
+  wxIconBundle icons(wxT("icon0"), nullptr);
+  icons.AddIcon(wxMaximaIcon());
+  SetIcons(icons);
 #elif defined(__WXGTK__)
   // This icon we include in the executable [in its compressed form] so we avoid
   // the questions "Was the icon file packaged with wxMaxima?" and "Can we
