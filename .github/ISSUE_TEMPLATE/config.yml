@@ -1,0 +1,15 @@
+# Shown on the "New issue" chooser. Blank issues stay enabled so wxMaxima GUI
+# bugs can still be filed here directly; the links below route the things that
+# do NOT belong in this tracker (Maxima's mathematics, and general questions) to
+# the right place. See also .github/SUPPORT.md.
+blank_issues_enabled: true
+contact_links:
+  - name: wxMaxima questions & discussion (the GUI)
+    url: https://github.com/wxMaxima-developers/wxmaxima/discussions
+    about: Usage questions, ideas and general discussion about the wxMaxima interface belong in Discussions, not in the issue tracker.
+  - name: Maxima mathematics bugs (the CAS / math engine)
+    url: https://sourceforge.net/p/maxima/bugs/
+    about: A wrong or missing mathematical result comes from Maxima itself. Please report it in Maxima's SourceForge bug tracker — not here. (Reproduce it by running plain `maxima` in a terminal to be sure.)
+  - name: Maxima mailing list (using Maxima the CAS)
+    url: https://maxima.sourceforge.io/maximalist.html
+    about: Questions about Maxima the computer algebra system — as opposed to the wxMaxima GUI — are best asked on the Maxima mailing list.
