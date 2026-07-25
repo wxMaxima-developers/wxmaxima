@@ -112,6 +112,457 @@ public:
   const wxString &input;
 };
 
+/*! Reads the document's style settings from the config and writes the
+  external HTML stylesheet (fonts, colours, per-style bold/italic, and the
+  layout rules for equations, code cells, headings, ...).
+
+  Split out of ExportToHTML: it only reads the configuration and writes to
+  the css stream, and is by far the largest self-contained chunk of the
+  exporter. versionString/versionPad are passed in because ExportToHTML also
+  stamps them into the document body.
+ */
+void WriteHtmlStyleSheet(wxTextOutputStream &css, wxConfigBase *config,
+                         const wxString &versionString,
+                         const wxString &versionPad) {
+  wxString font, fontTitle, fontSection, fontSubsection, fontSubsubsection,
+    fontHeading5, fontHeading6, fontText;
+  wxString colorInput(wxS("blue"));
+  wxString colorPrompt(wxS("red"));
+  wxString colorText(wxS("black")), colorTitle(wxS("black")),
+    colorSection(wxS("black")), colorSubSec(wxS("black")),
+    colorSubsubSec(wxS("black")), colorHeading5(wxS("black")),
+    colorHeading6(wxS("black"));
+  wxString colorCodeVariable = wxS("rgb(0,128,0)");
+  wxString colorCodeFunction = wxS("rgb(128,0,0)");
+  wxString colorCodeComment = wxS("rgb(64,64,64)");
+  wxString colorCodeNumber = wxS("rgb(128,64,0)");
+  wxString colorCodeString = wxS("rgb(0,0,128)");
+  wxString colorCodeOperator = wxS("rgb(0,0,128)");
+  wxString colorCodeLisp = wxS("rgb(255,0,128)");
+  wxString colorCodeEndOfLine = wxS("rgb(192,192,192)");
+
+  wxString colorTextBg(wxS("white"));
+  wxString colorBg(wxS("white"));
+
+  // bold and italic
+  bool boldInput = false;
+  bool italicInput = false;
+  bool boldPrompt = false;
+  bool italicPrompt = false;
+  bool boldString = false;
+  bool italicString = false;
+
+  bool boldTitle = false;
+  bool italicTitle = false;
+  bool underTitle = false;
+  bool boldSection = false;
+  bool italicSection = false;
+  bool underSection = false;
+  bool boldSubsection = false;
+  bool boldSubsubsection = false;
+  bool boldHeading5 = false;
+  bool boldHeading6 = false;
+  bool italicSubsection = false;
+  bool italicSubsubsection = false;
+  bool italicHeading5 = false;
+  bool italicHeading6 = false;
+  bool underSubsection = false;
+  bool underSubsubsection = false;
+  bool underHeading5 = false;
+  bool underHeading6 = false;
+
+  int fontSize = 12;
+  // main fontsize
+  config->Read(wxS("fontSize"), &fontSize);
+
+  // read fonts
+  config->Read(wxS("Style/fontname"), &font);
+  config->Read(wxS("Style/Title/fontname"), &fontTitle);
+  config->Read(wxS("Style/Section/fontname"), &fontSection);
+  config->Read(wxS("Style/Subsection/fontname"), &fontSubsection);
+  config->Read(wxS("Style/Subsubsection/fontname"), &fontSubsubsection);
+  config->Read(wxS("Style/Heading5/fontname"), &fontHeading5);
+  config->Read(wxS("Style/Heading6/fontname"), &fontHeading6);
+  config->Read(wxS("Style/Text/fontname"), &fontText);
+
+  // read colors
+  config->Read(wxS("Style/Input/color"), &colorInput);
+  config->Read(wxS("Style/MainPrompt/color"), &colorPrompt);
+  config->Read(wxS("Style/Text/color"), &colorText);
+  config->Read(wxS("Style/Section/color"), &colorSection);
+  config->Read(wxS("Style/Subsection/color"), &colorSubSec);
+  config->Read(wxS("Style/Subsubsection/color"), &colorSubsubSec);
+  config->Read(wxS("Style/Heading5/color"), &colorHeading5);
+  config->Read(wxS("Style/Heading6/color"), &colorHeading6);
+  config->Read(wxS("Style/Title/color"), &colorTitle);
+  config->Read(wxS("Style/TextBackground/color"), &colorBg);
+  config->Read(wxS("Style/Background/color"), &colorTextBg);
+
+  config->Read(wxS("Style/CodeHighlighting/Variable/color"),
+               &colorCodeVariable);
+  config->Read(wxS("Style/CodeHighlighting/Function/color"),
+               &colorCodeFunction);
+  config->Read(wxS("Style/CodeHighlighting/Comment/color"), &colorCodeComment);
+  config->Read(wxS("Style/CodeHighlighting/Number/color"), &colorCodeNumber);
+  config->Read(wxS("Style/CodeHighlighting/String/color"), &colorCodeString);
+  config->Read(wxS("Style/CodeHighlighting/Operator/color"),
+               &colorCodeOperator);
+  config->Read(wxS("Style/CodeHighlighting/Lisp/color"), &colorCodeLisp);
+
+  // read bold and italic
+  config->Read(wxS("Style/Input/bold"), &boldInput);
+  config->Read(wxS("Style/String/bold"), &boldString);
+  config->Read(wxS("Style/Input/italic"), &italicInput);
+  config->Read(wxS("Style/String/italic"), &italicString);
+  config->Read(wxS("Style/MainPrompt/bold"), &boldPrompt);
+  config->Read(wxS("Style/MainPrompt/italic"), &italicPrompt);
+
+  config->Read(wxS("Style/Title/bold"), &boldTitle);
+  config->Read(wxS("Style/Title/italic"), &italicTitle);
+  config->Read(wxS("Style/Title/underlined"), &underTitle);
+  config->Read(wxS("Style/Section/bold"), &boldSection);
+  config->Read(wxS("Style/Section/italic"), &italicSection);
+  config->Read(wxS("Style/Section/underlined"), &underSection);
+  config->Read(wxS("Style/Subsection/bold"), &boldSubsection);
+  config->Read(wxS("Style/Subsection/italic"), &italicSubsection);
+  config->Read(wxS("Style/Subsection/underlined"), &underSubsection);
+  config->Read(wxS("Style/Subsubsection/bold"), &boldSubsubsection);
+  config->Read(wxS("Style/Subsubsection/italic"), &italicSubsubsection);
+  config->Read(wxS("Style/Subsubsection/underlined"), &underSubsubsection);
+  config->Read(wxS("Style/Heading5/bold"), &boldHeading5);
+  config->Read(wxS("Style/Heading5/italic"), &italicHeading5);
+  config->Read(wxS("Style/Heading5/underlined"), &underHeading5);
+  config->Read(wxS("Style/Heading6/bold"), &boldHeading6);
+  config->Read(wxS("Style/Heading6/italic"), &italicHeading6);
+  config->Read(wxS("Style/Heading6/underlined"), &underHeading6);
+
+  css << wxS("\n");
+  css << wxS("/* *********") + versionPad + wxS("******** \n");
+  css << wxS("   *        ") + versionString + wxS("       * \n");
+  css << wxS("   *********") + versionPad + wxS("******** */\n");
+
+  // BODY STYLE
+  css << wxS("body {\n");
+  if (font.Length()) {
+    css << wxS("  font-family: ") + font + wxS(";\n");
+  }
+  if (colorBg.Length()) {
+    wxColour color(colorBg);
+    css << wxS("  background-color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+  }
+  css << wxS("}\n");
+
+  // INPUT STYLE
+  css << wxS(".input {\n");
+  if (colorInput.Length()) {
+    wxColour color(colorInput);
+    css << wxS("  color: \n") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+  }
+  if (boldInput)
+    css << wxS("  font-weight: bold;\n");
+  if (italicInput)
+    css << wxS("  font-style: italic;\n");
+  css << wxS("}\n");
+
+  // COMMENT STYLE
+  css << wxS(".comment {\n");
+  if (fontText.Length()) {
+    css << wxS("  font-family: ") + fontText + wxS(";\n");
+  }
+
+  if (colorText.Length()) {
+    wxColour color(colorText);
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+  }
+  if (colorTextBg.Length()) {
+    wxColour color(colorTextBg);
+    css << wxS("  background-color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+  }
+  css << wxS("  padding: 2mm;\n");
+  css << wxS("}\n");
+
+  // Colors for code highlighting
+  if (colorCodeVariable.Length()) {
+    wxColour color(colorCodeVariable);
+    css << wxS(".code_variable {\n");
+    css << wxS("  color: \n") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+    css << wxS("}\n");
+  }
+
+  css << wxS("p {\n");
+  css << wxS("  margin-top: 0em;\n");
+  css << wxS("  margin-bottom: 0em;\n");
+  css << wxS("}\n");
+
+  if (colorCodeFunction.Length()) {
+    wxColour color(colorCodeFunction);
+    css << wxS(".code_function {\n\n");
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+    css << wxS("}\n");
+  }
+
+  if (colorCodeComment.Length()) {
+    wxColour color(colorCodeComment);
+    css << wxS(".code_comment {\n");
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+    css << wxS("}\n");
+  }
+
+  if (colorCodeNumber.Length()) {
+    wxColour color(colorCodeNumber);
+    css << wxS(".code_number {\n");
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+    css << wxS("}\n");
+  }
+
+  if (colorCodeString.Length()) {
+    wxColour color(colorCodeString);
+    css << wxS(".code_string {\n");
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+    css << wxS("}\n");
+  }
+
+  if (colorCodeOperator.Length()) {
+    wxColour color(colorCodeOperator);
+    css << wxS(".code_operator {\n");
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+    css << wxS("}\n");
+  }
+
+  if (colorCodeLisp.Length()) {
+    wxColour color(colorCodeLisp);
+    css << wxS(".code_lisp {\n");
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+    css << wxS("}\n");
+  }
+
+  if (colorCodeEndOfLine.Length()) {
+    wxColour color(colorCodeEndOfLine);
+    css << wxS(".code_endofline {\n");
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";");
+    css << wxS("}\n");
+  }
+
+  // SMOOTHER IMAGE SCALING FOR THE IE
+  css << "img {\n";
+  css << wxS("  -ms-interpolation-mode: bicubic;\n");
+  css << wxS("}\n");
+
+  // IMAGE STYLE
+  css << wxS(".image {\n");
+  if (fontText.Length()) {
+    css << wxS("  font-family: ") + fontText + wxS(";\n");
+  }
+  if (colorText.Length()) {
+    wxColour color(colorText);
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+  }
+  css << wxS("  padding: 2mm;\n");
+  css << wxS("}\n");
+
+  // SECTION STYLE
+  css << wxS(".section {\n");
+  if (fontSection.Length()) {
+    css << wxS("  font-family: ") + fontSection + wxS(";\\");
+  }
+  if (colorSection.Length()) {
+    wxColour color(colorSection);
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+  }
+  if (boldSection)
+    css << wxS("  font-weight: bold;\n");
+  if (underSection)
+    css << wxS("  text-decoration: underline;\n");
+  if (italicSection)
+    css << wxS("  font-style: italic;\n");
+  css << wxS("  font-size: 1.5em;\n");
+  css << wxS("  padding: 2mm;\n");
+  css << wxS("}\n");
+
+  // SUBSECTION STYLE
+  css << wxS(".subsect {\n");
+  if (fontSubsection.Length()) {
+    css << wxS("  font-family: ") + fontSubsection + wxS(";\n");
+  }
+  if (colorSubSec.Length()) {
+    wxColour color(colorSubSec);
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+  }
+  if (boldSubsection)
+    css << wxS("  font-weight: bold;\n");
+  if (underSubsection)
+    css << wxS("  text-decoration: underline;\n");
+  if (italicSubsection)
+    css << wxS("  font-style: italic;\n");
+  css << wxS("  font-size: 1.2em;\n");
+  css << wxS("  padding: 2mm;\n");
+  css << wxS("}\n");
+
+  // SUBSUBSECTION STYLE
+  css << wxS(".subsubsect {\n");
+  if (fontSubsubsection.Length()) {
+    css << wxS("  font-family: ") + fontSubsubsection + wxS(";\n");
+  }
+  if (colorSubsubSec.Length()) {
+    wxColour color(colorSubsubSec);
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+  }
+  if (boldSubsubsection)
+    css << wxS("  font-weight: bold;\n");
+  if (underSubsubsection)
+    css << wxS("  text-decoration: underline;\n");
+  if (italicSubsubsection)
+    css << wxS("  font-style: italic;\n");
+  css << wxS("  font-size: 1.2em;\n");
+  css << wxS("  padding: 2mm;\n");
+  css << wxS("}\n");
+
+  // HEADING5 STYLE
+  css << wxS(".heading5 {\n");
+  if (fontHeading5.Length()) {
+    css << wxS("  font-family: ") + fontHeading5 + wxS(";\n");
+  }
+  if (colorHeading5.Length()) {
+    wxColour color(colorHeading5);
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+  }
+  if (boldHeading5)
+    css << wxS("  font-weight: bold;\n");
+  if (underHeading5)
+    css << wxS("  text-decoration: underline;\n");
+  if (italicHeading5)
+    css << wxS("  font-style: italic;\n");
+  css << wxS("  font-size: 1.2em;\n");
+  css << wxS("  padding: 2mm;\n");
+  css << wxS("}\n");
+
+  // HEADING6 STYLE
+  css << wxS(".heading6 {\n");
+  if (fontHeading6.Length()) {
+    css << wxS("  font-family: ") + fontHeading6 + wxS(";\n");
+  }
+  if (colorHeading6.Length()) {
+    wxColour color(colorHeading6);
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+  }
+  if (boldHeading6)
+    css << wxS("  font-weight: bold;\n");
+  if (underHeading6)
+    css << wxS("  text-decoration: underline;\n");
+  if (italicHeading6)
+    css << wxS("  font-style: italic;\n");
+  css << wxS("  font-size: 1.2em;\n");
+  css << wxS("  padding: 2mm;\n");
+  css << wxS("}\n");
+
+  // TITLE STYLE
+  css << wxS(".title {\n");
+  if (fontTitle.Length()) {
+    css << wxS("  font-family: ") + fontTitle + wxS(";\n");
+  }
+  if (colorTitle.Length()) {
+    wxColour color(colorTitle);
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+  }
+  if (boldTitle)
+    css << wxS("  font-weight: bold;\n");
+  if (underTitle)
+    css << wxS("  text-decoration: underline;\n");
+  if (italicTitle)
+    css << wxS("  font-style: italic;\n");
+  css << wxS("  font-size: 2em;\n");
+  css << wxS("  padding: 2mm;\n");
+  css << wxS("}\n");
+
+  // PROMPT STYLE
+  css << wxS(".prompt {\n");
+  if (colorPrompt.Length()) {
+    wxColour color(colorPrompt);
+    css << wxS("  color: ") +
+      color.GetAsString(wxC2S_CSS_SYNTAX) +
+      wxS(";\n");
+  }
+  if (boldPrompt)
+    css << wxS("  font-weight: bold;\n");
+  if (italicPrompt)
+    css << wxS("  font-style: italic;\n");
+  css << wxS("}\n");
+
+  // EQUATION + LABEL (MathML export)
+  // The equation label ("(%o1)") is laid out beside the <math> as HTML so it
+  // stays visible on native-MathML browsers, which no longer support
+  // <mlabeledtr>. A two-column grid keeps the label at the left margin; the
+  // equation lives in the second column, whose horizontal alignment is set in
+  // one place (justify-self below) so it is easy to override.
+  css << wxS(".equation {\n");
+  css << wxS("  display: grid;\n");
+  css << wxS("  grid-template-columns: auto 1fr;\n");
+  css << wxS("  align-items: baseline;\n");
+  css << wxS("  column-gap: 1em;\n");
+  css << wxS("  margin: 0.3em 0;\n");
+  css << wxS("}\n");
+  css << wxS(".eqlabel {\n");
+  css << wxS("  grid-column: 1;\n");
+  if (colorPrompt.Length()) {
+    wxColour color(colorPrompt);
+    css << wxS("  color: ") + color.GetAsString(wxC2S_CSS_SYNTAX) + wxS(";\n");
+  }
+  css << wxS("}\n");
+  css << wxS(".equation > math {\n");
+  css << wxS("  grid-column: 2;\n");
+  css << wxS("  /* Equation alignment. This is the single place to change how\n");
+  css << wxS("     exported equations line up: use left, center or right. */\n");
+  css << wxS("  justify-self: left;\n");
+  css << wxS("}\n");
+
+  // TABLES
+  css << wxS("table {\n");
+  css << wxS("  border: 0px;\n");
+  css << wxS("}\n");
+  css << wxS("td {\n");
+  css << wxS("  vertical-align: top;\n");
+  css << wxS("  padding: 1mm;\n");
+  css << wxS("}\n");
+}
+
 } // namespace
 
 void WorksheetExport::AddLineToFile(wxTextFile &output, const wxString &s) {
@@ -456,6 +907,60 @@ wxString HtmlImageTag(const wxString &filePrefix, int count,
     tag += wxS("<br>");
   return tag + wxS("\n");
 }
+
+/*! Writes the MathJaX fill-in <script> setup into the HTML head.
+
+  Only the mathML_mathJaX export format wants MathJaX, and then only as a
+  fall-back: native MathML needs no script and the image formats none either.
+  The default (native MathML) format emits nothing here, so its page makes no
+  external requests at all.
+
+  Equations are exported as MathML, which every current browser renders
+  natively. MathJaX is pulled in only as a fill-in: we feature-detect native
+  MathML once the page is parsed (by measuring an <mspace> of a known size) and
+  download MathJaX from its (external!) CDN only when it is missing.
+
+  MathJaX (3 and 4) is configured by assigning to window.MathJax *before* its
+  loader runs; the old MathJax.Hub.Config() call was the MathJaX 2 API and is
+  silently ignored by MathJaX >= 3. displayAlign is an output-jax option, so we
+  set it for both CommonHTML (the CDN default) and SVG.
+ */
+void WriteMathJaxSetup(wxString &output, Configuration *configuration) {
+  if (configuration->HTMLequationFormat() != Configuration::mathML_mathJaX)
+    return;
+
+  output << wxS("<script>\n");
+  output << wxS("  window.MathJax = {\n");
+  output << wxS("    chtml: {displayAlign: \"left\"},\n");
+  output << wxS("    svg: {displayAlign: \"left\"}\n");
+  output << wxS("  };\n");
+  output << wxS("</script>\n");
+  output << wxS("<script>\n");
+  output << wxS("  (function() {\n");
+  output << wxS("    function loadMathJaxIfNeeded() {\n");
+  output << wxS("      var probe = document.createElement(\"div\");\n");
+  output << wxS("      probe.style.cssText =\n");
+  output << wxS("        \"position:absolute;visibility:hidden;height:0;overflow:hidden\";\n");
+  output << wxS("      probe.innerHTML =\n");
+  output << wxS("        '<math><mspace width=\"77px\" height=\"23px\"></mspace></math>';\n");
+  output << wxS("      document.body.appendChild(probe);\n");
+  output << wxS("      var box = probe.firstChild.firstChild.getBoundingClientRect();\n");
+  output << wxS("      document.body.removeChild(probe);\n");
+  output << wxS("      if (Math.abs(box.width - 77) < 2 && Math.abs(box.height - 23) < 2)\n");
+  output << wxS("        return; // the browser renders MathML natively\n");
+  output << wxS("      var s = document.createElement(\"script\");\n");
+  output << wxS("      s.id = \"MathJax-script\";\n");
+  output << wxS("      s.async = true;\n");
+  output << wxS("      s.src = \"") + configuration->MathJaXURL() + wxS("\";\n");
+  output << wxS("      document.head.appendChild(s);\n");
+  output << wxS("    }\n");
+  output << wxS("    if (document.readyState === \"loading\")\n");
+  output << wxS("      document.addEventListener(\"DOMContentLoaded\", loadMathJaxIfNeeded);\n");
+  output << wxS("    else\n");
+  output << wxS("      loadMathJaxIfNeeded();\n");
+  output << wxS("  })();\n");
+  output << wxS("</script>\n");
+}
 } // namespace
 
 bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration,
@@ -512,167 +1017,8 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   // Write styles
   //////////////////////////////////////////////
 
-  const Configuration::htmlExportFormat eqFormat =
-    configuration->HTMLequationFormat();
-  if (eqFormat == Configuration::mathML_mathJaX) {
-    // Equations are exported as MathML, which every current browser renders
-    // natively without any external dependency. In this mode MathJax is wanted
-    // only as a *fill-in* for the few browsers that still lack MathML support:
-    // we feature-detect native MathML once the page is parsed (by measuring an
-    // <mspace> of a known size) and download MathJax from its (external!) CDN
-    // only when it is missing. On modern browsers MathJax is never fetched.
-    //
-    // The default export format (Configuration::mathML) omits this block
-    // entirely, so the page makes no external requests at all.
-    //
-    // MathJax (3 and 4) is configured by assigning to window.MathJax *before*
-    // its loader runs; the old MathJax.Hub.Config() call was the MathJax 2 API
-    // and is silently ignored by MathJax >= 3. displayAlign is an output-jax
-    // option, so we set it for both CommonHTML (the CDN default) and SVG.
-    output << wxS("<script>\n");
-    output << wxS("  window.MathJax = {\n");
-    output << wxS("    chtml: {displayAlign: \"left\"},\n");
-    output << wxS("    svg: {displayAlign: \"left\"}\n");
-    output << wxS("  };\n");
-    output << wxS("</script>\n");
-    output << wxS("<script>\n");
-    output << wxS("  (function() {\n");
-    output << wxS("    function loadMathJaxIfNeeded() {\n");
-    output << wxS("      var probe = document.createElement(\"div\");\n");
-    output << wxS("      probe.style.cssText =\n");
-    output << wxS("        \"position:absolute;visibility:hidden;height:0;overflow:hidden\";\n");
-    output << wxS("      probe.innerHTML =\n");
-    output << wxS("        '<math><mspace width=\"77px\" height=\"23px\"></mspace></math>';\n");
-    output << wxS("      document.body.appendChild(probe);\n");
-    output << wxS("      var box = probe.firstChild.firstChild.getBoundingClientRect();\n");
-    output << wxS("      document.body.removeChild(probe);\n");
-    output << wxS("      if (Math.abs(box.width - 77) < 2 && Math.abs(box.height - 23) < 2)\n");
-    output << wxS("        return; // the browser renders MathML natively\n");
-    output << wxS("      var s = document.createElement(\"script\");\n");
-    output << wxS("      s.id = \"MathJax-script\";\n");
-    output << wxS("      s.async = true;\n");
-    output << wxS("      s.src = \"") + configuration->MathJaXURL() + wxS("\";\n");
-    output << wxS("      document.head.appendChild(s);\n");
-    output << wxS("    }\n");
-    output << wxS("    if (document.readyState === \"loading\")\n");
-    output << wxS("      document.addEventListener(\"DOMContentLoaded\", loadMathJaxIfNeeded);\n");
-    output << wxS("    else\n");
-    output << wxS("      loadMathJaxIfNeeded();\n");
-    output << wxS("  })();\n");
-    output << wxS("</script>\n");
-  }
+  WriteMathJaxSetup(output, configuration);
 
-  wxString font, fontTitle, fontSection, fontSubsection, fontSubsubsection,
-    fontHeading5, fontHeading6, fontText;
-  wxString colorInput(wxS("blue"));
-  wxString colorPrompt(wxS("red"));
-  wxString colorText(wxS("black")), colorTitle(wxS("black")),
-    colorSection(wxS("black")), colorSubSec(wxS("black")),
-    colorSubsubSec(wxS("black")), colorHeading5(wxS("black")),
-    colorHeading6(wxS("black"));
-  wxString colorCodeVariable = wxS("rgb(0,128,0)");
-  wxString colorCodeFunction = wxS("rgb(128,0,0)");
-  wxString colorCodeComment = wxS("rgb(64,64,64)");
-  wxString colorCodeNumber = wxS("rgb(128,64,0)");
-  wxString colorCodeString = wxS("rgb(0,0,128)");
-  wxString colorCodeOperator = wxS("rgb(0,0,128)");
-  wxString colorCodeLisp = wxS("rgb(255,0,128)");
-  wxString colorCodeEndOfLine = wxS("rgb(192,192,192)");
-
-  wxString colorTextBg(wxS("white"));
-  wxString colorBg(wxS("white"));
-
-  // bold and italic
-  bool boldInput = false;
-  bool italicInput = false;
-  bool boldPrompt = false;
-  bool italicPrompt = false;
-  bool boldString = false;
-  bool italicString = false;
-
-  bool boldTitle = false;
-  bool italicTitle = false;
-  bool underTitle = false;
-  bool boldSection = false;
-  bool italicSection = false;
-  bool underSection = false;
-  bool boldSubsection = false;
-  bool boldSubsubsection = false;
-  bool boldHeading5 = false;
-  bool boldHeading6 = false;
-  bool italicSubsection = false;
-  bool italicSubsubsection = false;
-  bool italicHeading5 = false;
-  bool italicHeading6 = false;
-  bool underSubsection = false;
-  bool underSubsubsection = false;
-  bool underHeading5 = false;
-  bool underHeading6 = false;
-
-  int fontSize = 12;
-  // main fontsize
-  config->Read(wxS("fontSize"), &fontSize);
-
-  // read fonts
-  config->Read(wxS("Style/fontname"), &font);
-  config->Read(wxS("Style/Title/fontname"), &fontTitle);
-  config->Read(wxS("Style/Section/fontname"), &fontSection);
-  config->Read(wxS("Style/Subsection/fontname"), &fontSubsection);
-  config->Read(wxS("Style/Subsubsection/fontname"), &fontSubsubsection);
-  config->Read(wxS("Style/Heading5/fontname"), &fontHeading5);
-  config->Read(wxS("Style/Heading6/fontname"), &fontHeading6);
-  config->Read(wxS("Style/Text/fontname"), &fontText);
-
-  // read colors
-  config->Read(wxS("Style/Input/color"), &colorInput);
-  config->Read(wxS("Style/MainPrompt/color"), &colorPrompt);
-  config->Read(wxS("Style/Text/color"), &colorText);
-  config->Read(wxS("Style/Section/color"), &colorSection);
-  config->Read(wxS("Style/Subsection/color"), &colorSubSec);
-  config->Read(wxS("Style/Subsubsection/color"), &colorSubsubSec);
-  config->Read(wxS("Style/Heading5/color"), &colorHeading5);
-  config->Read(wxS("Style/Heading6/color"), &colorHeading6);
-  config->Read(wxS("Style/Title/color"), &colorTitle);
-  config->Read(wxS("Style/TextBackground/color"), &colorBg);
-  config->Read(wxS("Style/Background/color"), &colorTextBg);
-
-  config->Read(wxS("Style/CodeHighlighting/Variable/color"),
-               &colorCodeVariable);
-  config->Read(wxS("Style/CodeHighlighting/Function/color"),
-               &colorCodeFunction);
-  config->Read(wxS("Style/CodeHighlighting/Comment/color"), &colorCodeComment);
-  config->Read(wxS("Style/CodeHighlighting/Number/color"), &colorCodeNumber);
-  config->Read(wxS("Style/CodeHighlighting/String/color"), &colorCodeString);
-  config->Read(wxS("Style/CodeHighlighting/Operator/color"),
-               &colorCodeOperator);
-  config->Read(wxS("Style/CodeHighlighting/Lisp/color"), &colorCodeLisp);
-
-  // read bold and italic
-  config->Read(wxS("Style/Input/bold"), &boldInput);
-  config->Read(wxS("Style/String/bold"), &boldString);
-  config->Read(wxS("Style/Input/italic"), &italicInput);
-  config->Read(wxS("Style/String/italic"), &italicString);
-  config->Read(wxS("Style/MainPrompt/bold"), &boldPrompt);
-  config->Read(wxS("Style/MainPrompt/italic"), &italicPrompt);
-
-  config->Read(wxS("Style/Title/bold"), &boldTitle);
-  config->Read(wxS("Style/Title/italic"), &italicTitle);
-  config->Read(wxS("Style/Title/underlined"), &underTitle);
-  config->Read(wxS("Style/Section/bold"), &boldSection);
-  config->Read(wxS("Style/Section/italic"), &italicSection);
-  config->Read(wxS("Style/Section/underlined"), &underSection);
-  config->Read(wxS("Style/Subsection/bold"), &boldSubsection);
-  config->Read(wxS("Style/Subsection/italic"), &italicSubsection);
-  config->Read(wxS("Style/Subsection/underlined"), &underSubsection);
-  config->Read(wxS("Style/Subsubsection/bold"), &boldSubsubsection);
-  config->Read(wxS("Style/Subsubsection/italic"), &italicSubsubsection);
-  config->Read(wxS("Style/Subsubsection/underlined"), &underSubsubsection);
-  config->Read(wxS("Style/Heading5/bold"), &boldHeading5);
-  config->Read(wxS("Style/Heading5/italic"), &italicHeading5);
-  config->Read(wxS("Style/Heading5/underlined"), &underHeading5);
-  config->Read(wxS("Style/Heading6/bold"), &boldHeading6);
-  config->Read(wxS("Style/Heading6/italic"), &italicHeading6);
-  config->Read(wxS("Style/Heading6/underlined"), &underHeading6);
 
   wxURI css_url(cssfileName_rel);
   wxString encoded_css_url =
@@ -685,331 +1031,7 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   for (unsigned int i = 0; i < versionString.Length(); i++)
     versionPad += "*";
 
-  css << wxS("\n");
-  css << wxS("/* *********") + versionPad + wxS("******** \n");
-  css << wxS("   *        ") + versionString + wxS("       * \n");
-  css << wxS("   *********") + versionPad + wxS("******** */\n");
-
-  // BODY STYLE
-  css << wxS("body {\n");
-  if (font.Length()) {
-    css << wxS("  font-family: ") + font + wxS(";\n");
-  }
-  if (colorBg.Length()) {
-    wxColour color(colorBg);
-    css << wxS("  background-color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-  }
-  css << wxS("}\n");
-
-  // INPUT STYLE
-  css << wxS(".input {\n");
-  if (colorInput.Length()) {
-    wxColour color(colorInput);
-    css << wxS("  color: \n") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-  }
-  if (boldInput)
-    css << wxS("  font-weight: bold;\n");
-  if (italicInput)
-    css << wxS("  font-style: italic;\n");
-  css << wxS("}\n");
-
-  // COMMENT STYLE
-  css << wxS(".comment {\n");
-  if (fontText.Length()) {
-    css << wxS("  font-family: ") + fontText + wxS(";\n");
-  }
-
-  if (colorText.Length()) {
-    wxColour color(colorText);
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-  }
-  if (colorTextBg.Length()) {
-    wxColour color(colorTextBg);
-    css << wxS("  background-color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-  }
-  css << wxS("  padding: 2mm;\n");
-  css << wxS("}\n");
-
-  // Colors for code highlighting
-  if (colorCodeVariable.Length()) {
-    wxColour color(colorCodeVariable);
-    css << wxS(".code_variable {\n");
-    css << wxS("  color: \n") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-    css << wxS("}\n");
-  }
-
-  css << wxS("p {\n");
-  css << wxS("  margin-top: 0em;\n");
-  css << wxS("  margin-bottom: 0em;\n");
-  css << wxS("}\n");
-
-  if (colorCodeFunction.Length()) {
-    wxColour color(colorCodeFunction);
-    css << wxS(".code_function {\n\n");
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-    css << wxS("}\n");
-  }
-
-  if (colorCodeComment.Length()) {
-    wxColour color(colorCodeComment);
-    css << wxS(".code_comment {\n");
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-    css << wxS("}\n");
-  }
-
-  if (colorCodeNumber.Length()) {
-    wxColour color(colorCodeNumber);
-    css << wxS(".code_number {\n");
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-    css << wxS("}\n");
-  }
-
-  if (colorCodeString.Length()) {
-    wxColour color(colorCodeString);
-    css << wxS(".code_string {\n");
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-    css << wxS("}\n");
-  }
-
-  if (colorCodeOperator.Length()) {
-    wxColour color(colorCodeOperator);
-    css << wxS(".code_operator {\n");
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-    css << wxS("}\n");
-  }
-
-  if (colorCodeLisp.Length()) {
-    wxColour color(colorCodeLisp);
-    css << wxS(".code_lisp {\n");
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-    css << wxS("}\n");
-  }
-
-  if (colorCodeEndOfLine.Length()) {
-    wxColour color(colorCodeEndOfLine);
-    css << wxS(".code_endofline {\n");
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";");
-    css << wxS("}\n");
-  }
-
-  // SMOOTHER IMAGE SCALING FOR THE IE
-  css << "img {\n";
-  css << wxS("  -ms-interpolation-mode: bicubic;\n");
-  css << wxS("}\n");
-
-  // IMAGE STYLE
-  css << wxS(".image {\n");
-  if (fontText.Length()) {
-    css << wxS("  font-family: ") + fontText + wxS(";\n");
-  }
-  if (colorText.Length()) {
-    wxColour color(colorText);
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-  }
-  css << wxS("  padding: 2mm;\n");
-  css << wxS("}\n");
-
-  // SECTION STYLE
-  css << wxS(".section {\n");
-  if (fontSection.Length()) {
-    css << wxS("  font-family: ") + fontSection + wxS(";\\");
-  }
-  if (colorSection.Length()) {
-    wxColour color(colorSection);
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-  }
-  if (boldSection)
-    css << wxS("  font-weight: bold;\n");
-  if (underSection)
-    css << wxS("  text-decoration: underline;\n");
-  if (italicSection)
-    css << wxS("  font-style: italic;\n");
-  css << wxS("  font-size: 1.5em;\n");
-  css << wxS("  padding: 2mm;\n");
-  css << wxS("}\n");
-
-  // SUBSECTION STYLE
-  css << wxS(".subsect {\n");
-  if (fontSubsection.Length()) {
-    css << wxS("  font-family: ") + fontSubsection + wxS(";\n");
-  }
-  if (colorSubSec.Length()) {
-    wxColour color(colorSubSec);
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-  }
-  if (boldSubsection)
-    css << wxS("  font-weight: bold;\n");
-  if (underSubsection)
-    css << wxS("  text-decoration: underline;\n");
-  if (italicSubsection)
-    css << wxS("  font-style: italic;\n");
-  css << wxS("  font-size: 1.2em;\n");
-  css << wxS("  padding: 2mm;\n");
-  css << wxS("}\n");
-
-  // SUBSUBSECTION STYLE
-  css << wxS(".subsubsect {\n");
-  if (fontSubsubsection.Length()) {
-    css << wxS("  font-family: ") + fontSubsubsection + wxS(";\n");
-  }
-  if (colorSubsubSec.Length()) {
-    wxColour color(colorSubsubSec);
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-  }
-  if (boldSubsubsection)
-    css << wxS("  font-weight: bold;\n");
-  if (underSubsubsection)
-    css << wxS("  text-decoration: underline;\n");
-  if (italicSubsubsection)
-    css << wxS("  font-style: italic;\n");
-  css << wxS("  font-size: 1.2em;\n");
-  css << wxS("  padding: 2mm;\n");
-  css << wxS("}\n");
-
-  // HEADING5 STYLE
-  css << wxS(".heading5 {\n");
-  if (fontHeading5.Length()) {
-    css << wxS("  font-family: ") + fontHeading5 + wxS(";\n");
-  }
-  if (colorHeading5.Length()) {
-    wxColour color(colorHeading5);
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-  }
-  if (boldHeading5)
-    css << wxS("  font-weight: bold;\n");
-  if (underHeading5)
-    css << wxS("  text-decoration: underline;\n");
-  if (italicHeading5)
-    css << wxS("  font-style: italic;\n");
-  css << wxS("  font-size: 1.2em;\n");
-  css << wxS("  padding: 2mm;\n");
-  css << wxS("}\n");
-
-  // HEADING6 STYLE
-  css << wxS(".heading6 {\n");
-  if (fontHeading6.Length()) {
-    css << wxS("  font-family: ") + fontHeading6 + wxS(";\n");
-  }
-  if (colorHeading6.Length()) {
-    wxColour color(colorHeading6);
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-  }
-  if (boldHeading6)
-    css << wxS("  font-weight: bold;\n");
-  if (underHeading6)
-    css << wxS("  text-decoration: underline;\n");
-  if (italicHeading6)
-    css << wxS("  font-style: italic;\n");
-  css << wxS("  font-size: 1.2em;\n");
-  css << wxS("  padding: 2mm;\n");
-  css << wxS("}\n");
-
-  // TITLE STYLE
-  css << wxS(".title {\n");
-  if (fontTitle.Length()) {
-    css << wxS("  font-family: ") + fontTitle + wxS(";\n");
-  }
-  if (colorTitle.Length()) {
-    wxColour color(colorTitle);
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-  }
-  if (boldTitle)
-    css << wxS("  font-weight: bold;\n");
-  if (underTitle)
-    css << wxS("  text-decoration: underline;\n");
-  if (italicTitle)
-    css << wxS("  font-style: italic;\n");
-  css << wxS("  font-size: 2em;\n");
-  css << wxS("  padding: 2mm;\n");
-  css << wxS("}\n");
-
-  // PROMPT STYLE
-  css << wxS(".prompt {\n");
-  if (colorPrompt.Length()) {
-    wxColour color(colorPrompt);
-    css << wxS("  color: ") +
-      color.GetAsString(wxC2S_CSS_SYNTAX) +
-      wxS(";\n");
-  }
-  if (boldPrompt)
-    css << wxS("  font-weight: bold;\n");
-  if (italicPrompt)
-    css << wxS("  font-style: italic;\n");
-  css << wxS("}\n");
-
-  // EQUATION + LABEL (MathML export)
-  // The equation label ("(%o1)") is laid out beside the <math> as HTML so it
-  // stays visible on native-MathML browsers, which no longer support
-  // <mlabeledtr>. A two-column grid keeps the label at the left margin; the
-  // equation lives in the second column, whose horizontal alignment is set in
-  // one place (justify-self below) so it is easy to override.
-  css << wxS(".equation {\n");
-  css << wxS("  display: grid;\n");
-  css << wxS("  grid-template-columns: auto 1fr;\n");
-  css << wxS("  align-items: baseline;\n");
-  css << wxS("  column-gap: 1em;\n");
-  css << wxS("  margin: 0.3em 0;\n");
-  css << wxS("}\n");
-  css << wxS(".eqlabel {\n");
-  css << wxS("  grid-column: 1;\n");
-  if (colorPrompt.Length()) {
-    wxColour color(colorPrompt);
-    css << wxS("  color: ") + color.GetAsString(wxC2S_CSS_SYNTAX) + wxS(";\n");
-  }
-  css << wxS("}\n");
-  css << wxS(".equation > math {\n");
-  css << wxS("  grid-column: 2;\n");
-  css << wxS("  /* Equation alignment. This is the single place to change how\n");
-  css << wxS("     exported equations line up: use left, center or right. */\n");
-  css << wxS("  justify-self: left;\n");
-  css << wxS("}\n");
-
-  // TABLES
-  css << wxS("table {\n");
-  css << wxS("  border: 0px;\n");
-  css << wxS("}\n");
-  css << wxS("td {\n");
-  css << wxS("  vertical-align: top;\n");
-  css << wxS("  padding: 1mm;\n");
-  css << wxS("}\n");
+  WriteHtmlStyleSheet(css, config, versionString, versionPad);
 
   output << wxS(" </head>\n");
   output << wxS(" <body>\n");
