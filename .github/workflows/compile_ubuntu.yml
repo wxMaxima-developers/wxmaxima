@@ -25,7 +25,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt-get update
-             sudo apt-get install appstream appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dbus dpkg-dev po4a rpmlint lintian weston rpm
+             sudo apt-get install appstream appstream-util cmake desktop-file-utils doxygen gettext gnuplot gnuplot-x11 graphviz libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc xvfb at-spi2-core dbus dpkg-dev po4a rpmlint lintian weston rpm tidy
       - name: validate_appdata
         # Release-blocker gate, previously a manual checklist step: a malformed
         # appdata file breaks the flatpak/appImage/appstream builders. Catch it
@@ -123,7 +123,7 @@ jobs:
       - name: install_packages
         run: |
              sudo apt-get update
-             sudo apt-get install appstream cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc po4a xvfb at-spi2-core dbus
+             sudo apt-get install appstream cmake desktop-file-utils gettext gnuplot gnuplot-x11 libwxgtk3.2-dev libwxgtk-webview3.2-dev maxima maxima-share maxima-doc netcat-openbsd ninja-build pandoc po4a xvfb at-spi2-core dbus tidy
       - name: configure
         run: |
              export LANG=en_US.UTF-8

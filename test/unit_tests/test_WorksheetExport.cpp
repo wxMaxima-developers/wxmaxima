@@ -54,6 +54,7 @@
 #include <wx/log.h>
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
+#include <wx/utils.h>
 #include <wx/xml/xml.h>
 #include <wx/zipstrm.h>
 
@@ -296,6 +297,27 @@ static void RequireImgSrcsExist(const wxString &html, const wxString &htmlDir) {
   REQUIRE(checked > 0);
 }
 
+/*! Validate an exported HTML file with HTML Tidy, when it is installed.
+
+  Our HTML is assembled by string concatenation, so a structural slip (an
+  unbalanced tag, a stray attribute) is easy to introduce and invisible to the
+  content assertions. Tidy catches those. It is optional: if the `tidy` binary
+  isn't on PATH (wxExecute returns -1) the check is skipped so the suite still
+  runs everywhere. Tidy's exit code is 0 when the document is clean, 1 on
+  warnings and 2 on errors -- we require a completely clean bill of health,
+  since the exporter currently produces zero tidy messages for every flavor.
+*/
+static void RequireValidHtml(const wxString &htmlPath) {
+  wxArrayString out, err;
+  const wxString cmd = wxS("tidy -q -e \"") + htmlPath + wxS("\"");
+  const long rc = wxExecute(cmd, out, err, wxEXEC_SYNC);
+  if (rc < 0)
+    return; // tidy not installed -> skip cleanly
+  for (const auto &line : err)
+    INFO("tidy: " << line.ToStdString());
+  REQUIRE(rc == 0);
+}
+
 SCENARIO("HTML export succeeds, is deterministic and contains the document") {
   BuildDocumentOnce();
 
@@ -333,6 +355,8 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
       RequireIdenticalTrees(snap1, snap2);
       const wxString html = ReadTextFile(dir1 + wxS("/doc.html"));
       RequireContainsSentinels(html);
+      // The exported HTML must be structurally valid (skipped if tidy absent).
+      RequireValidHtml(dir1 + wxS("/doc.html"));
       // Image links must not dangle (broken-link regression, see helper).
       if (eq.format == Configuration::bitmap ||
           eq.format == Configuration::svg)
