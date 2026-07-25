@@ -425,6 +425,39 @@ wxSize WorksheetExport::CopyToFile(const wxString &file, Cell *start, Cell *end,
   return retval;
 }
 
+namespace {
+/*! Emit one <img> tag pointing at an exported image in the _htmlimg/ subdir.
+
+  Every image the HTML export writes -- rendered equations (SVG/PNG), animations
+  (GIF) and embedded images -- uses the same tag shape; only the file extension,
+  the optional pixel width and the alt text differ. Centralizing it here keeps
+  those (formerly six, hand-copied) call sites from drifting apart.
+
+  \param filePrefix URL-encoded base name shared by the .html file and its
+                    _htmlimg/ directory.
+  \param count      Index that makes the image file name unique.
+  \param ext        File extension including the leading dot (e.g. ".svg").
+  \param widthPx    Pixel width for the width attribute, or -1 to omit it.
+  \param alt        Already-HTML-escaped alt text.
+  \param withBreak  Append a <br> after the tag (for equation images that sit
+                    in the running output flow).
+ */
+wxString HtmlImageTag(const wxString &filePrefix, int count,
+                      const wxString &ext, long widthPx, const wxString &alt,
+                      bool withBreak) {
+  wxString tag = wxS("  <img src=\"") + filePrefix + wxS("_htmlimg/") +
+                 filePrefix + wxString::Format(wxS("_%d"), count) + ext +
+                 wxS("\"");
+  if (widthPx >= 0)
+    tag += wxString::Format(wxS(" width=\"%li\""), widthPx);
+  tag += wxS(" style=\"max-width:90%;\" loading=\"lazy\" alt=\"") + alt +
+         wxS("\">");
+  if (withBreak)
+    tag += wxS("<br>");
+  return tag + wxS("\n");
+}
+} // namespace
+
 bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration,
                                    const wxString &file,
                                    ViewCellPointers *cellPointers, GroupCell *hCaret) {
@@ -1050,13 +1083,9 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
             dynamic_cast<AnimationCell *>(&(*chunk))->ToGif(
                                                             imgDir + wxS("/") + filename +
                                                             wxString::Format(wxS("_%d.gif"), count));
-            output
-              << wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
-              filename_encoded +
-              wxString::Format(
-                               _("_%d.gif\"  alt=\"Animated Diagram\" "
-                                 "loading=\"lazy\" style=\"max-width:90%%;\">\n"),
-                               count);
+            output << HtmlImageTag(filename_encoded, count, wxS(".gif"),
+                                   /*widthPx=*/-1, _("Animated Diagram"),
+                                   /*withBreak=*/false);
           } else if (dynamic_cast<ImgCellBase *>(&(*chunk)) == NULL) {
             switch (configuration->HTMLequationFormat()) {
             case Configuration::svg: {
@@ -1066,42 +1095,29 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
                                                      imgDir, filename, count);
               Svgout svgout(&configuration, std::move(chunk), filepath);
 
-              wxString line =
-                wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
-                filename_encoded +
-                wxString::Format(
-                                 wxS("_%d.svg\" width=\"%li\" style=\"max-width:90%%;\" "
-                                     "loading=\"lazy\" alt=\""),
-                                 count, static_cast<long>(svgout.GetSize().x)) +
-                alttext + wxS("\"><br>\n");
-
-              output << line + "\n";
+              output << HtmlImageTag(filename_encoded, count, wxS(".svg"),
+                                     static_cast<long>(svgout.GetSize().x),
+                                     alttext, /*withBreak=*/true)
+                     << wxS("\n");
               break;
             }
 
             case Configuration::bitmap: {
-              wxSize size;
-              size = CopyToFile(imgDir + wxS("/") + filename +
-                                wxString::Format(wxS("_%d.png"), count),
-                                &(*chunk), NULL, true,
-                                configuration->BitmapScale(), &configuration);
-              int borderwidth = 0;
+              wxSize size =
+                CopyToFile(imgDir + wxS("/") + filename +
+                             wxString::Format(wxS("_%d.png"), count),
+                           &(*chunk), NULL, true,
+                           configuration->BitmapScale(), &configuration);
               wxString alttext =
                 EditorCell::EscapeHTMLChars(chunk->ListToString());
-              borderwidth = chunk->GetImageBorderWidth();
+              int borderwidth = chunk->GetImageBorderWidth();
+              long const widthPx =
+                static_cast<long>(size.x) / configuration->BitmapScale() -
+                2 * borderwidth;
 
-              wxString line =
-                wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
-                filename_encoded +
-                wxString::Format(
-                                 wxS("_%d.png\" width=\"%li\" style=\"max-width:90%%;\" "
-                                     "loading=\"lazy\" alt=\" "),
-                                 count,
-                                 static_cast<long>(size.x) / configuration->BitmapScale() -
-                                 2 * borderwidth) +
-                alttext + wxS("\"><br>\n");
-
-              output << line + "\n";
+              output << HtmlImageTag(filename_encoded, count, wxS(".png"),
+                                     widthPx, alttext, /*withBreak=*/true)
+                     << wxS("\n");
               break;
             }
 
@@ -1136,28 +1152,19 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
             }
             }
           } else {
-            wxSize size;
             ext = wxS(".") +
               dynamic_cast<ImgCellBase *>(&(*chunk))->GetExtension();
-            size = dynamic_cast<ImgCellBase *>(&(*chunk))->ToImageFile(
+            wxSize size = dynamic_cast<ImgCellBase *>(&(*chunk))->ToImageFile(
                                                                        imgDir + wxS("/") + filename +
                                                                        wxString::Format(wxS("_%d"), count) + ext);
-            int borderwidth = 0;
             wxString alttext =
               EditorCell::EscapeHTMLChars(chunk->ListToString());
-            borderwidth = chunk->GetImageBorderWidth();
+            int borderwidth = chunk->GetImageBorderWidth();
 
-            wxString line =
-              wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
-              filename_encoded +
-              wxString::Format(
-                               wxS("_%li%s\" width=\"%li\" style=\"max-width:90%%;\" "
-                                   "loading=\"lazy\" alt=\""),
-                               static_cast<long>(count),
-                               ext.utf8_str(), static_cast<long>(size.x) - 2 * borderwidth) +
-              alttext + wxS("\"><br>\n");
-
-            output << line + "\n";
+            output << HtmlImageTag(filename_encoded, count, ext,
+                                   static_cast<long>(size.x) - 2 * borderwidth,
+                                   alttext, /*withBreak=*/true)
+                   << wxS("\n");
           }
           count++;
 
@@ -1257,13 +1264,9 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
                 dynamic_cast<AnimationCell *>(tmp.GetOutput())
                   ->ToGif(imgDir + wxS("/") + filename +
                           wxString::Format(wxS("_%d.gif"), count));
-                output << wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
-                  filename_encoded +
-                  wxString::Format(
-                                   _("_%d.gif\" alt=\"Animated Diagram\" "
-                                     "style=\"max-width:90%%;\" loading=\"lazy\">"),
-                                   count)
-                       << wxS("\n");
+                output << HtmlImageTag(filename_encoded, count, wxS(".gif"),
+                                       /*widthPx=*/-1, _("Animated Diagram"),
+                                       /*withBreak=*/false);
               } else {
                 ImgCellBase *imgCell = dynamic_cast<ImgCellBase *>(out);
                 wxASSERT(imgCell);
@@ -1272,13 +1275,10 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
                     imgCell->ToImageFile(imgDir + wxS("/") + filename +
                                          wxString::Format(wxS("_%d."), count) +
                                          imgCell->GetExtension());
-                    output
-                      << wxS("  <img src=\"") + filename_encoded + wxS("_htmlimg/") +
-                      filename_encoded +
-                      wxString::Format(
-                                       wxS("_%d.%s\" alt=\"Diagram\" "
-                                           "style=\"max-width:90%%;\" loading=\"lazy\">"),
-                                       count, imgCell->GetExtension().utf8_str());
+                    output << HtmlImageTag(
+                      filename_encoded, count,
+                      wxS(".") + imgCell->GetExtension(), /*widthPx=*/-1,
+                      _("Diagram"), /*withBreak=*/false);
                   }
               }
               output << wxS("</div>\n");
