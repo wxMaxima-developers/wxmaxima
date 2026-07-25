@@ -125,20 +125,20 @@ Legend</h1>
 <li>✅/⚠️ <b><a class="el" href="classUnicodeSidebar.html" title="This class generates a pane containing the last commands that were issued.">UnicodeSidebar</a></b> is a <code>wxGrid</code> (not custom-drawn, as first assumed): <code>wxGrid</code> has built-in accessibility, so its cells — including the character's name column ("GREEK SMALL LETTER ALPHA") — are readable, and the grid is arrow-key navigable. The gap was <b>activation was mouse-only</b> (double-click); Enter now inserts the focused character too. <b>[ASK TESTER]</b> confirm reading and Enter-to-insert.</li>
 <li>⚠️ Table-of-Contents, Variables (grid), <a class="el" href="classHistory.html" title="This class generates a pane containing the last commands that were issued.">History</a> (list) use standard wx controls → accessible by default, but unverified. <b>[ASK TESTER]</b> spot-check.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 5. Menus — ⚠️ (believed OK)</h1>
 <ul>
 <li>Native menus are accessible through the OS by default, and the wxWidgets 3.3 <code>GetHelpString</code> assert that broke menu use was fixed. Menu item <b>names</b> come from the item labels (present) and their help strings show in the status bar. <b>[ASK TESTER]</b> spot-check that menus read correctly.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md10"></a>
 6. Dialogs &amp; wizards — ⚠️ (mostly standard controls)</h1>
 <ul>
 <li>The config dialog, find/replace, and the code-generating wizards are built from standard wx controls (<code>wxTextCtrl</code>, <code>wxButton</code>, <code>wxChoice</code>, <code>wxSpinCtrl</code>), which carry native accessibility. Main risks: (a) controls whose <em>label</em> is a separate <code>wxStaticText</code> not associated with the field (screen reader may not tie label to input), (b) any custom-drawn preview panels (<code><a class="el" href="classSvgPanel.html" title="A panel that shows an example image.">SvgPanel</a></code> shows an image with no accessible name). Lower priority than the worksheet/sidebars. <b>[ASK TESTER]</b> as they come up.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 7. Status bar — ⚠️ (believed OK, standard control)</h1>
 <hr  />
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Priority order</h1>
 <ol type="1">
 <li><b>[ASK TESTER] batch</b> — validate the fixes already shipped (worksheet as a document + cell navigation, toolbar tools, sidebar names) and answer the output-announcement and math-representation questions. These shape everything else and need the most lead time.</li>
@@ -147,7 +147,7 @@ Priority order</h1>
 <li><b><a class="el" href="classUnicodeSidebar.html" title="This class generates a pane containing the last commands that were issued.">UnicodeSidebar</a></b> custom-draw accessibility.</li>
 <li>Dialog/wizard label-to-field association + <code><a class="el" href="classSvgPanel.html" title="A panel that shows an example image.">SvgPanel</a></code> names, as reported.</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md14"></a>
 Things for the tester to try (fastest way to move this forward)</h1>
 <p>Once a nightly with these changes reaches you, in NVDA/JAWS:</p><ol type="1">
 <li>Tab to the worksheet — is it a "document"? Can you arrow through the cells and hear each input and its result?</li>
