@@ -303,9 +303,9 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
   // bitmap and svg additionally exercise the CopyToFile image rendering.
   struct EqFormat { Configuration::htmlExportFormat format; const wxChar *name; };
   const EqFormat formats[] = {
-    {Configuration::mathJaX_TeX, wxS("mathjax")},
+    {Configuration::mathML, wxS("mathml_native")},
+    {Configuration::mathML_mathJaX, wxS("mathml_fillin")},
     {Configuration::bitmap, wxS("bitmap")},
-    {Configuration::mathML_mathJaX, wxS("mathml")},
     {Configuration::svg, wxS("svg")},
   };
   const Configuration::htmlExportFormat oldFormat =
@@ -337,6 +337,30 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
       if (eq.format == Configuration::bitmap ||
           eq.format == Configuration::svg)
         RequireImgSrcsExist(html, dir1);
+      // Both MathML flavors emit native <math> with the label beside it as
+      // HTML. MathML Core dropped <mlabeledtr>, so it must never appear.
+      if (eq.format == Configuration::mathML ||
+          eq.format == Configuration::mathML_mathJaX) {
+        REQUIRE(html.Contains(wxS("<math")));
+        REQUIRE(html.Contains(wxS("class=\"equation\"")));
+        REQUIRE(html.Contains(wxS("class=\"eqlabel\"")));
+        REQUIRE_FALSE(html.Contains(wxS("mlabeledtr")));
+        // MathJax must never be loaded as an unconditional <script src>.
+        REQUIRE_FALSE(
+          html.Contains(wxS("<script id=\"MathJax-script\" async src=")));
+      }
+      // The default MathML mode must be fully self-contained: no MathJax, no
+      // JavaScript, no reference to any external server at all.
+      if (eq.format == Configuration::mathML) {
+        REQUIRE_FALSE(html.Contains(wxS("MathJax")));
+        REQUIRE_FALSE(html.Contains(wxS("mathjax")));
+        REQUIRE_FALSE(html.Contains(wxS("<script")));
+      }
+      // The fall-back mode adds MathJax, but only via feature detection.
+      if (eq.format == Configuration::mathML_mathJaX) {
+        REQUIRE(html.Contains(wxS("window.MathJax")));
+        REQUIRE(html.Contains(wxS("loadMathJaxIfNeeded")));
+      }
     }
   }
   g_cfg->HTMLequationFormat(oldFormat);

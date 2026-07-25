@@ -143,10 +143,18 @@ public:
   //! The export formats we support for HTML equations
   enum htmlExportFormat
   {
+    //! Deprecated: the TeX-via-MathJaX HTML export was removed. The value is
+    //! kept so saved configurations migrate to native MathML (see
+    //! Configuration.cpp) instead of silently shifting to another format.
     mathJaX_TeX = 0,
     bitmap = 1,
+    //! Native MathML, plus MathJaX downloaded as a fall-back only for the few
+    //! browsers that still lack MathML support.
     mathML_mathJaX = 2,
     svg = 3,
+    //! Native MathML with no MathJaX at all: the exported page makes no
+    //! external requests. This is the default.
+    mathML = 4,
     html_export_invalidChoice
   };
 
@@ -950,7 +958,7 @@ public:
 
   bool EnterEvaluates() const {return m_enterEvaluates;}
   void EnterEvaluates(bool enterEvaluates) {m_enterEvaluates = enterEvaluates;}
-  static wxString MathJaXURL_Auto() { return wxS("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");}
+  static wxString MathJaXURL_Auto() { return wxS("https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js");}
   //! Returns the URL MathJaX can be found at.
   void MathJaXURL(wxString url){m_mathJaxURL = std::move(url);}
 
