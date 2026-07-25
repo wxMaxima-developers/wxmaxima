@@ -172,6 +172,27 @@ jobs:
             cpack || type D:/a/wxmaxima/wxmaxima/wxMaxima/build/_CPack_Packages/win64/NSIS/NSISOutput.log
             cd ..
             cd ..
+      - name: Verify the package bundles the MinGW runtime DLLs
+        # Guards the fix for the "installer is missing DLLs" report: without the
+        # MinGW C++ runtime bundled, wxmaxima.exe won't start on a clean machine.
+        # We can't run a Windows GUI here, so instead assert the produced ZIP
+        # actually contains the three runtime DLLs. Fails the job if any is gone.
+        run: |
+            $zip = Get-ChildItem -Path wxMaxima\build -Filter *.zip -Recurse | Select-Object -First 1
+            if (-not $zip) { echo "::error::no ZIP package was produced"; exit 1 }
+            echo "Inspecting $($zip.FullName)"
+            Add-Type -AssemblyName System.IO.Compression.FileSystem
+            $names = [System.IO.Compression.ZipFile]::OpenRead($zip.FullName).Entries.Name
+            $missing = @()
+            foreach ($dll in @("libstdc++-6.dll","libgcc_s_seh-1.dll","libwinpthread-1.dll")) {
+              if ($names -contains $dll) { echo "ok: $dll" }
+              else { $missing += $dll }
+            }
+            if ($missing.Count -gt 0) {
+              echo "::error::the package is missing runtime DLL(s): $($missing -join ', ')"
+              exit 1
+            }
+            echo "All required MinGW runtime DLLs are present in the package."
       - name: Stage runtime DLLs next to wxmaxima.exe
         # The release wxmaxima.exe is built non-static, so it depends on the MinGW
         # runtime DLLs (libstdc++-6 / libgcc_s_seh-1 / libwinpthread-1) being found
