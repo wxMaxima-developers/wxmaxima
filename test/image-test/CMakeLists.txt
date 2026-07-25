@@ -10,7 +10,7 @@ set(IMAGE_FILES
 330px-Maxima.svg.webp
 330px-Maxima.svg.xpm
 Maxima_pathonly.svg
-Maxima_pathonly.svg.gz
+Maxima_pathonly.svgz
 Maxima.svg
 Maxima.svgz
 )
