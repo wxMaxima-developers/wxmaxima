@@ -1086,7 +1086,7 @@ add_test(
 add_test(
     NAME multithreadtest
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --debug --logtostderr --pipe --single_process --batch --exit-on-error threadtest.wxm threadtest2.wxm)
+    COMMAND echo "load(draw);quit();" | ${MAXIMA} --very-very-quiet --quit-on-error ; wxmaxima --debug --logtostderr --pipe --single_process --batch --exit-on-error threadtest.wxm threadtest2.wxm)
 
 #add_test(
 #    NAME ipc_copypaste1
