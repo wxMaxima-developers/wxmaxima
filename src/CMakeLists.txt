@@ -423,6 +423,29 @@ if(WIN32)
     set(CPACK_NSIS_DEFINES "ManifestDPIAware true")
     include(InstallRequiredSystemLibraries)
     install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
+
+    # The release wxmaxima.exe is linked against the MinGW C++ runtime
+    # dynamically, so it needs libstdc++-6.dll, libgcc_s_seh-1.dll and
+    # libwinpthread-1.dll at launch -- otherwise it fails to start on a clean
+    # Windows machine with a "missing DLL" error. InstallRequiredSystemLibraries
+    # is unreliable for MinGW (it frequently omits libwinpthread-1.dll, and
+    # sometimes the whole set), so bundle these explicitly, taken from the exact
+    # toolchain that built the exe. This is the packaging counterpart of the
+    # "Stage runtime DLLs next to wxmaxima.exe" step the test job already does.
+    if(MINGW)
+        get_filename_component(_mingw_bindir "${CMAKE_CXX_COMPILER}" DIRECTORY)
+        foreach(_runtime_dll
+                libstdc++-6.dll libgcc_s_seh-1.dll libwinpthread-1.dll)
+            if(EXISTS "${_mingw_bindir}/${_runtime_dll}")
+                install(FILES "${_mingw_bindir}/${_runtime_dll}" DESTINATION bin)
+            else()
+                message(WARNING
+                    "MinGW runtime ${_runtime_dll} not found in "
+                    "${_mingw_bindir}; the Windows package may ship without it "
+                    "and fail to start on a clean machine.")
+            endif()
+        endforeach()
+    endif()
 elseif(APPLE)
     # If we have generated an .apk bundle we can package this in a DMG image
     set(CPACK_GENERATOR "DragNDrop")

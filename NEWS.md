@@ -1,5 +1,10 @@
 # Current development version
 
+- Windows: the installer/ZIP now bundles the MinGW C++ runtime DLLs
+  (libstdc++-6, libgcc_s_seh-1, libwinpthread-1) that wxmaxima.exe needs to
+  start. They were relied on being pulled in automatically, which was
+  unreliable, so on some machines wxMaxima failed to launch with a missing-DLL
+  error. CI now also checks the package actually contains them.
 - HTML export now defaults to native MathML. Every current browser renders
   MathML itself, so the exported page needs no JavaScript and, unlike before,
   makes no requests to any external server -- removing both a privacy/security
