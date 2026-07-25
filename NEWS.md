@@ -1,5 +1,21 @@
 # Current development version
 
+- HTML export now defaults to native MathML. Every current browser renders
+  MathML itself, so the exported page needs no JavaScript and, unlike before,
+  makes no requests to any external server -- removing both a privacy/security
+  dependency and the wait for a download. MathJaX is now offered only as an
+  optional fall-back ("MathML + MathJaX fall-back for old browsers"), which
+  downloads MathJaX from its CDN solely on browsers too old to support MathML.
+- HTML export: the separate "TeX, interpreted by MathJaX" option was removed;
+  existing configurations that used it fall back to the new MathML default.
+  (LaTeX export to a .tex file is unaffected.)
+- HTML export: equation labels (like `(%o1)`) and line-wrapped equations now
+  show up in browsers that render MathML natively. They previously relied on
+  `<mlabeledtr>`/`mtable side`, which the MathML Core standard (implemented by
+  Chrome and Safari) dropped; labels are now placed beside the equation as
+  HTML and the equation layout uses plain MathML-Core table rows.
+- HTML export: when the MathJaX fall-back is used it is now MathJaX version 4,
+  configured through the current API so the equation-alignment settings apply.
 - Windows: the wxMaxima window and taskbar button again show the wxMaxima logo
   instead of the generic wxWidgets "W" icon. The window icon now also falls back
   to the logo compiled into the binary, so it no longer depends solely on the

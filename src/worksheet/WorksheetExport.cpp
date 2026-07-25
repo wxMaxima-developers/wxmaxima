@@ -479,21 +479,53 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   // Write styles
   //////////////////////////////////////////////
 
-  if ((configuration->HTMLequationFormat() ==
-       Configuration::mathML_mathJaX) ||
-      (configuration->HTMLequationFormat() == Configuration::mathJaX_TeX)) {
-    output << wxS("<script type=\"text/x-mathjax-config\">\n");
-    output << wxS("  MathJax.Hub.Config({\n");
-    output << wxS("    displayAlign: \"left\",\n");
-    output << wxS("    context: \"MathJax\",\n");
-    output << wxS("    TeX: {TagSide: \"left\"}\n");
-    output << wxS("  })\n");
+  const Configuration::htmlExportFormat eqFormat =
+    configuration->HTMLequationFormat();
+  if (eqFormat == Configuration::mathML_mathJaX) {
+    // Equations are exported as MathML, which every current browser renders
+    // natively without any external dependency. In this mode MathJax is wanted
+    // only as a *fill-in* for the few browsers that still lack MathML support:
+    // we feature-detect native MathML once the page is parsed (by measuring an
+    // <mspace> of a known size) and download MathJax from its (external!) CDN
+    // only when it is missing. On modern browsers MathJax is never fetched.
+    //
+    // The default export format (Configuration::mathML) omits this block
+    // entirely, so the page makes no external requests at all.
+    //
+    // MathJax (3 and 4) is configured by assigning to window.MathJax *before*
+    // its loader runs; the old MathJax.Hub.Config() call was the MathJax 2 API
+    // and is silently ignored by MathJax >= 3. displayAlign is an output-jax
+    // option, so we set it for both CommonHTML (the CDN default) and SVG.
+    output << wxS("<script>\n");
+    output << wxS("  window.MathJax = {\n");
+    output << wxS("    chtml: {displayAlign: \"left\"},\n");
+    output << wxS("    svg: {displayAlign: \"left\"}\n");
+    output << wxS("  };\n");
     output << wxS("</script>\n");
-    output << wxS("<script id=\"MathJax-script\" async src=\"") +
-      configuration->MathJaXURL() + wxS("\">\n");
-    // prevent optimizing <script src="..."><script> to <script src=..."/>
-    output << wxS("  // A comment that hinders wxWidgets from optimizing this "
-                  "tag too much.\n");
+    output << wxS("<script>\n");
+    output << wxS("  (function() {\n");
+    output << wxS("    function loadMathJaxIfNeeded() {\n");
+    output << wxS("      var probe = document.createElement(\"div\");\n");
+    output << wxS("      probe.style.cssText =\n");
+    output << wxS("        \"position:absolute;visibility:hidden;height:0;overflow:hidden\";\n");
+    output << wxS("      probe.innerHTML =\n");
+    output << wxS("        '<math><mspace width=\"77px\" height=\"23px\"></mspace></math>';\n");
+    output << wxS("      document.body.appendChild(probe);\n");
+    output << wxS("      var box = probe.firstChild.firstChild.getBoundingClientRect();\n");
+    output << wxS("      document.body.removeChild(probe);\n");
+    output << wxS("      if (Math.abs(box.width - 77) < 2 && Math.abs(box.height - 23) < 2)\n");
+    output << wxS("        return; // the browser renders MathML natively\n");
+    output << wxS("      var s = document.createElement(\"script\");\n");
+    output << wxS("      s.id = \"MathJax-script\";\n");
+    output << wxS("      s.async = true;\n");
+    output << wxS("      s.src = \"") + configuration->MathJaXURL() + wxS("\";\n");
+    output << wxS("      document.head.appendChild(s);\n");
+    output << wxS("    }\n");
+    output << wxS("    if (document.readyState === \"loading\")\n");
+    output << wxS("      document.addEventListener(\"DOMContentLoaded\", loadMathJaxIfNeeded);\n");
+    output << wxS("    else\n");
+    output << wxS("      loadMathJaxIfNeeded();\n");
+    output << wxS("  })();\n");
     output << wxS("</script>\n");
   }
 
@@ -910,6 +942,33 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
     css << wxS("  font-style: italic;\n");
   css << wxS("}\n");
 
+  // EQUATION + LABEL (MathML export)
+  // The equation label ("(%o1)") is laid out beside the <math> as HTML so it
+  // stays visible on native-MathML browsers, which no longer support
+  // <mlabeledtr>. A two-column grid keeps the label at the left margin; the
+  // equation lives in the second column, whose horizontal alignment is set in
+  // one place (justify-self below) so it is easy to override.
+  css << wxS(".equation {\n");
+  css << wxS("  display: grid;\n");
+  css << wxS("  grid-template-columns: auto 1fr;\n");
+  css << wxS("  align-items: baseline;\n");
+  css << wxS("  column-gap: 1em;\n");
+  css << wxS("  margin: 0.3em 0;\n");
+  css << wxS("}\n");
+  css << wxS(".eqlabel {\n");
+  css << wxS("  grid-column: 1;\n");
+  if (colorPrompt.Length()) {
+    wxColour color(colorPrompt);
+    css << wxS("  color: ") + color.GetAsString(wxC2S_CSS_SYNTAX) + wxS(";\n");
+  }
+  css << wxS("}\n");
+  css << wxS(".equation > math {\n");
+  css << wxS("  grid-column: 2;\n");
+  css << wxS("  /* Equation alignment. This is the single place to change how\n");
+  css << wxS("     exported equations line up: use left, center or right. */\n");
+  css << wxS("  justify-self: left;\n");
+  css << wxS("}\n");
+
   // TABLES
   css << wxS("table {\n");
   css << wxS("  border: 0px;\n");
@@ -926,23 +985,6 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   output << wxS("<!-- *********") + versionPad + wxS("******** -->\n");
   output << wxS("<!-- *        ") + versionString + wxS("       * -->\n");
   output << wxS("<!-- *********") + versionPad + wxS("******** -->\n");
-
-  if ((configuration->HTMLequationFormat() != Configuration::bitmap) &&
-      (configuration->HTMLequationFormat() != Configuration::svg)) {
-    // Tell users that have disabled JavaScript why they don't get 2d maths.
-    output << wxS("<noscript>");
-    output << wxS("<div class=\"error message\">");
-    output << wxS("<p>Please enable JavaScript in order to get a 2d display of "
-                  "the equations embedded in this web page.</p>");
-    output << wxS("</div>");
-    output << wxS("</noscript>");
-
-    // Tell mathJax about the \abs{} operator we define for LaTeX.
-    output << wxS("<p hidden = \"hidden\">\\(");
-    output << wxS("      \\DeclareMathOperator{\\abs}{abs}\n");
-    output << wxS("      \\newcommand{\\ensuremath}[1]{\\mbox{$#1$}}\n");
-    output << wxS("\\)</p>");
-  }
 
   //////////////////////////////////////////////
   // Write the actual contents
@@ -1017,28 +1059,6 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
                                count);
           } else if (dynamic_cast<ImgCellBase *>(&(*chunk)) == NULL) {
             switch (configuration->HTMLequationFormat()) {
-            case Configuration::mathJaX_TeX: {
-              wxString line = chunk->ListToTeX();
-
-              line.Replace(wxS("<"), wxS("&lt;"));
-              line.Replace(wxS("&"), wxS("&amp;"));
-              line.Replace(wxS(">"), wxS("&gt;"));
-              // Work around a known limitation in MathJaX: According to
-              // https://github.com/mathjax/MathJax/issues/569 Non-Math Text
-              // will still be interpreted as Text, not as TeX for a long while.
-              //
-              // So instead of  "\%o1" print "%o1" - that works fine now.
-              // Since we are using a *fixed* Mathjax version for an export,
-              // nothing will happen, if Mathjax changes that behaviour and
-              // would interpret the % as TeX comment. When we would upgrade to
-              // the new MathJax version we would need to escape the % with \%,
-              // but now that is not necessary.
-              line.Replace(wxS("\\tag{\\% "), wxS("\\tag{%"));
-
-              output << wxS("<p>\n\\[") << line << wxS("\\]\n</p>\n");
-              break;
-            }
-
             case Configuration::svg: {
               auto const alttext =
                 EditorCell::EscapeHTMLChars(chunk->ListToString());
@@ -1086,11 +1106,33 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
             }
 
             default: {
-              wxString line = chunk->ListToMathML();
-              output
-                << wxS("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" "
-                       "display=\"block\">")
-                << line << wxS("</math>\n");
+              // MathML mode. A leading label cell (e.g. "(%o1)") is emitted
+              // beside the equation as plain HTML rather than inside the
+              // <math>: MathML Core (what native browsers implement) dropped
+              // <mlabeledtr>, so an in-math label would silently vanish on
+              // Chrome/Safari. The equation itself becomes a native <math>
+              // element, with MathJax used only as a fill-in (see the header).
+              Cell *first = &(*chunk);
+              Cell *eqStart = first;
+              wxString labelText;
+              if ((first->GetTextStyle() == TS_LABEL) ||
+                  (first->GetTextStyle() == TS_USERLABEL)) {
+                labelText = first->ToString();
+                labelText.Trim(true).Trim(false);
+                eqStart = first->GetNext();
+              }
+
+              output << wxS("<div class=\"equation\">\n");
+              if (!labelText.IsEmpty())
+                output << wxS("  <span class=\"eqlabel\">")
+                       << EditorCell::EscapeHTMLChars(labelText)
+                       << wxS("</span>\n");
+              if (eqStart != NULL)
+                output
+                  << wxS("  <math xmlns=\"http://www.w3.org/1998/Math/MathML\" "
+                         "display=\"block\">")
+                  << eqStart->ListToMathML() << wxS("</math>\n");
+              output << wxS("</div>\n");
             }
             }
           } else {

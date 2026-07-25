@@ -82,6 +82,21 @@ extern size_t MEDIA_PLAYBACK_START_SVG_GZ_SIZE;
 
 #define CONFIG_ICON_SCALE (1.0)
 
+//! The order of the "Export equations to HTML as:" choice control.
+//
+// This deliberately differs from the htmlExportFormat enum values: the enum
+// keeps a deprecated mathJaX_TeX = 0 slot so old configs migrate cleanly, and
+// that removed option must not appear here. So the choice index is mapped to an
+// enum value explicitly (via this table) instead of relying on them matching.
+static const Configuration::htmlExportFormat s_htmlEqFormats[] = {
+  Configuration::mathML,         //!< default: native MathML, no external deps
+  Configuration::mathML_mathJaX, //!< native MathML + MathJaX fall-back
+  Configuration::bitmap,
+  Configuration::svg,
+};
+static const int s_htmlEqFormatCount =
+  sizeof(s_htmlEqFormats) / sizeof(s_htmlEqFormats[0]);
+
 int ConfigDialogue::GetImageSize() {
   int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
@@ -403,14 +418,16 @@ void ConfigDialogue::SetCheckboxValues() {
                                 "bracket showing the extend of the cell and allowing to fold it. This "
                                 "setting now tells if this bracket is to be printed, as well."));
   m_exportWithMathJAX->SetToolTip(
-                                  _("MathJAX creates scalable High-Quality representations of 2D Maths "
-                                    "that can be used for Drag-And-Drop and provides accessibility "
-                                    "options. The disadvantage of MathJAX is that it needs JavaScript and "
-                                    "a little bit of time in order to typeset equations.\nMathML is much "
-                                    "faster than MathJaX, if it is supported by the browser. But many "
-                                    "MathML implementations tend to lack necessary features.\nBitmaps tend "
-                                    "to need more band width than the other two options. They lack support "
-                                    "for advanced features like drag-and-drop or accessibility. Also they "
+                                  _("\"MathML (rendered by the browser)\" is the recommended choice: "
+                                    "every current browser renders MathML natively and instantly, and "
+                                    "the exported page needs no JavaScript and makes no requests to any "
+                                    "external server.\n\"MathML + MathJaX fall-back for old browsers\" "
+                                    "behaves the same on current browsers, but additionally downloads "
+                                    "MathJaX from an external server (a CDN) as a fall-back on browsers "
+                                    "too old to support MathML. Only choose this if you need to support "
+                                    "such browsers and accept the external dependency.\nBitmaps tend to "
+                                    "need more band width than the other options. They lack support for "
+                                    "advanced features like drag-and-drop or accessibility. Also they "
                                     "have problems aligning and scaling with the rest of the text and "
                                     "might use fonts that don't match the rest of the document."));
   m_usesvg->SetToolTip(_("PNG images can be read by old wxMaxima versions - "
@@ -513,7 +530,17 @@ void ConfigDialogue::SetCheckboxValues() {
   m_wrapLatexMath->SetValue(configuration->WrapLatexMath());
   m_exportContainsWXMX->SetValue(configuration->ExportContainsWXMX());
   m_printBrackets->SetValue(configuration->PrintBrackets());
-  m_exportWithMathJAX->SetSelection(configuration->HTMLequationFormat());
+  {
+    // Map the stored format to a choice index; anything not offered anymore
+    // (e.g. the removed mathJaX_TeX) falls back to the default (index 0).
+    int sel = 0;
+    for (int i = 0; i < s_htmlEqFormatCount; ++i)
+      if (s_htmlEqFormats[i] == configuration->HTMLequationFormat()) {
+        sel = i;
+        break;
+      }
+    m_exportWithMathJAX->SetSelection(sel);
+  }
   m_matchParens->SetValue(configuration->GetMatchParens());
   m_showMatchingParens->SetValue(configuration->ShowMatchingParens());
   m_showLength->SetSelection(configuration->ShowLength());
@@ -1164,10 +1191,11 @@ wxWindow *ConfigDialogue::CreateExportPanel() {
   wxFlexGridSizer *htmlGrid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
   wxStaticText *mju = new wxStaticText(html_sizer->GetStaticBox(), wxID_ANY,
                                        _("Export equations to HTML as:"));
+  // Keep this list in the same order as s_htmlEqFormats (see top of file).
   wxArrayString mathJaxChoices;
-  mathJaxChoices.Add(_("TeX, interpreted by MathJaX"));
+  mathJaxChoices.Add(_("MathML (rendered by the browser)"));
+  mathJaxChoices.Add(_("MathML + MathJaX fall-back for old browsers"));
   mathJaxChoices.Add(_("Bitmaps"));
-  mathJaxChoices.Add(_("MathML + MathJaX as Fill-In"));
   mathJaxChoices.Add(_("SVG graphics"));
   m_exportWithMathJAX =
     new wxChoice(html_sizer->GetStaticBox(), wxID_ANY, wxDefaultPosition,
@@ -2278,8 +2306,12 @@ void ConfigDialogue::WriteSettings() {
   configuration->WrapLatexMath(m_wrapLatexMath->GetValue());
   configuration->ExportContainsWXMX(m_exportContainsWXMX->GetValue());
   configuration->PrintBrackets(m_printBrackets->GetValue());
-  configuration->HTMLequationFormat(
-                                    (Configuration::htmlExportFormat)m_exportWithMathJAX->GetSelection());
+  {
+    int sel = m_exportWithMathJAX->GetSelection();
+    if ((sel < 0) || (sel >= s_htmlEqFormatCount))
+      sel = 0;
+    configuration->HTMLequationFormat(s_htmlEqFormats[sel]);
+  }
 
   if (m_linebreaksInLongNums->GetValue()) {
     configuration->ShowAllDigits(true);

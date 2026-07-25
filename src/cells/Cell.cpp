@@ -986,7 +986,7 @@ wxString Cell::ListToMathML(bool startofline) const {
     // Handle linebreaks
     if ((&tmp != this) && (tmp.HasHardLineBreak()))
       retval +=
-        wxS("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
+        wxS("</mtd></mtr>\n<mtr columnalign=\"left\"><mtd>");
 
     // If a linebreak isn't followed by a label we need to introduce an empty
     // one.
@@ -1013,10 +1013,16 @@ wxString Cell::ListToMathML(bool startofline) const {
   if ((multiCell) && (!needsTable))
     retval = wxS("<mrow>") + retval + wxS("</mrow>\n");
 
-  // If we put the region we exported into a table we need to end this table now
+  // If we put the region we exported into a table we need to end this table
+  // now. We deliberately use a plain <mtr> rather than <mlabeledtr side="left">:
+  // labeled rows and the mtable "side" attribute were dropped from MathML Core,
+  // so browsers that render MathML natively (Chrome, Safari, ...) ignore them.
+  // A plain multi-column <mtr> is part of MathML Core and renders everywhere;
+  // in the HTML export the equation label rides beside the <math> as HTML
+  // instead (see WorksheetExport.cpp).
   if (needsTable)
-    retval = wxS("<mtable side=\"left\">\n<mlabeledtr><mtd>") + retval +
-      wxS("</mtd></mlabeledtr>\n</mtable>");
+    retval = wxS("<mtable columnalign=\"left\">\n<mtr><mtd>") + retval +
+      wxS("</mtd></mtr>\n</mtable>");
   return retval;
 }
 

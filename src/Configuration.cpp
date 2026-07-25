@@ -270,7 +270,7 @@ void Configuration::ResetAllToDefaults() {
   m_wxMathML_Filename.Clear();
 
   m_mathJaxURL =
-    wxS("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");
+    wxS("https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js");
   m_usePartialForDiff = false, m_documentclass = wxS("article");
   m_documentclassOptions = wxS("fleqn");
   m_incrementalSearch = true;
@@ -292,7 +292,7 @@ void Configuration::ResetAllToDefaults() {
   m_saveUntitled = true;
   m_cursorJump = true;
   m_autoSaveAsTempFile = false;
-  m_htmlEquationFormat = mathJaX_TeX;
+  m_htmlEquationFormat = mathML;
   m_autodetectMaxima = true;
   m_mathJaxURL_UseUser = false;
   m_TOCshowsSectionNumbers = false;
@@ -748,10 +748,11 @@ void Configuration::ReadConfig() {
   {
     int tmp = static_cast<int>(m_htmlEquationFormat);
     config->Read("HTMLequationFormat", &tmp);
-    if(tmp < 0)
-      tmp = mathJaX_TeX;
-    if(tmp > html_export_invalidChoice)
-      tmp = svg;
+    // The TeX-via-MathJaX HTML export was removed; migrate saved configs (whose
+    // old default was mathJaX_TeX) to native MathML. Also clamp anything out of
+    // range to the default.
+    if ((tmp < 0) || (tmp >= html_export_invalidChoice) || (tmp == mathJaX_TeX))
+      tmp = mathML;
     m_htmlEquationFormat = static_cast<Configuration::htmlExportFormat>(tmp);
   }
 
