@@ -1,0 +1,114 @@
+name: check_mathjax_version
+
+# The HTML export does not bundle MathJax; it points the browser at the jsDelivr
+# CDN with the major version pinned in src/Configuration.h:
+#   https://cdn.jsdelivr.net/npm/mathjax@<MAJOR>/es5/tex-mml-chtml.js
+# The "@<MAJOR>" means the CDN keeps serving the newest release *within* that
+# major, so patch/minor updates need no action from us. A new *major*, however,
+# is not a mechanical bump: MathJax changed its configuration API between v2 and
+# v3 (MathJax.Hub.Config -> window.MathJax), which silently broke our left-align
+# / tag-side tweaks until commit c9cd92a0a fixed them. So when a newer major
+# appears, a human must re-check the window.MathJax config block in
+# src/worksheet/WorksheetExport.cpp before bumping the pin.
+#
+# This job just watches: once a week it compares the pinned major against
+# MathJax's latest GitHub release and, when they diverge, opens (once) a
+# reminder issue. It never edits code. When the pin catches up, it closes the
+# reminder again.
+
+on:
+  schedule:
+    # Mondays 06:00 UTC. Weekly is plenty for a major-version watch.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+# A stable title so the job can find its own previous issue instead of spamming
+# a new one every week. The changing version numbers live in the body.
+env:
+  ISSUE_TITLE: 'MathJax has a newer major version — review the HTML-export config'
+
+jobs:
+  check_mathjax_version:
+    name: Check for a new major MathJax release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Compare pinned major against latest MathJax release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          # --- Pinned major, read from the single source of truth ---
+          pinned=$(grep -oE 'mathjax@[0-9]+' src/Configuration.h | head -1 | grep -oE '[0-9]+$')
+          if [ -z "${pinned:-}" ]; then
+            echo "::error::Could not find the pinned 'mathjax@<MAJOR>' URL in src/Configuration.h"
+            exit 1
+          fi
+          echo "Pinned MathJax major: $pinned"
+
+          # --- Latest released major, from the MathJax repo ---
+          latest_tag=$(gh api repos/mathjax/MathJax/releases/latest --jq '.tag_name')
+          # Tags look like "4.1.3" (older ones "v1.1"); tolerate an optional 'v'.
+          latest_major=$(printf '%s' "$latest_tag" | sed -E 's/^v//' | grep -oE '^[0-9]+')
+          if [ -z "${latest_major:-}" ]; then
+            echo "::error::Could not parse a major version from latest MathJax tag '$latest_tag'"
+            exit 1
+          fi
+          echo "Latest MathJax release: $latest_tag (major $latest_major)"
+
+          # --- Find any reminder issue this job opened before ---
+          existing=$(gh issue list \
+            --state open \
+            --search "\"$ISSUE_TITLE\" in:title" \
+            --json number,title \
+            --jq "map(select(.title == \"$ISSUE_TITLE\")) | .[0].number // empty")
+
+          if [ "$latest_major" -le "$pinned" ]; then
+            echo "Pin is up to date (pinned $pinned >= latest $latest_major); nothing to do."
+            if [ -n "${existing:-}" ]; then
+              echo "Closing stale reminder issue #$existing."
+              gh issue close "$existing" \
+                --comment "The pinned MathJax major (@$pinned) is no longer behind the latest release (v$latest_tag). Closing automatically."
+            fi
+            exit 0
+          fi
+
+          echo "A newer major is available (pinned $pinned < latest $latest_major)."
+          body=$(cat <<EOF
+          The HTML export pins MathJax to **major version \`$pinned\`** via the CDN
+          URL in \`src/Configuration.h\` (\`MathJaXURL_Auto()\`), but the latest
+          MathJax release is **\`$latest_tag\`** (major \`$latest_major\`).
+
+          Bumping a major is **not** a mechanical change — MathJax has changed its
+          configuration API across majors before (v2's \`MathJax.Hub.Config\` →
+          v3's \`window.MathJax\`), which silently broke our left-align / tag-side
+          equation tweaks until commit \`c9cd92a0a\`.
+
+          Before bumping the \`mathjax@$pinned\` pin, review the \`window.MathJax\`
+          config block and the CDN path in
+          \`src/worksheet/WorksheetExport.cpp\` (and the two URLs in
+          \`src/Configuration.{h,cpp}\`) against the
+          [MathJax v$latest_major docs](https://docs.mathjax.org/) — the
+          \`tex\`/\`chtml\`/\`svg\` option shapes and the \`es5/tex-mml-chtml.js\`
+          entry point in particular.
+
+          _Opened automatically by the \`check_mathjax_version\` workflow. It will
+          close this issue once the pin catches up._
+          EOF
+          )
+
+          if [ -n "${existing:-}" ]; then
+            echo "Reminder issue #$existing already open; refreshing its body."
+            gh issue edit "$existing" --body "$body"
+          else
+            echo "Opening a new reminder issue."
+            gh issue create --title "$ISSUE_TITLE" --body "$body"
+          fi
