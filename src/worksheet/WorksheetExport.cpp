@@ -482,12 +482,19 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   if ((configuration->HTMLequationFormat() ==
        Configuration::mathML_mathJaX) ||
       (configuration->HTMLequationFormat() == Configuration::mathJaX_TeX)) {
-    output << wxS("<script type=\"text/x-mathjax-config\">\n");
-    output << wxS("  MathJax.Hub.Config({\n");
-    output << wxS("    displayAlign: \"left\",\n");
-    output << wxS("    context: \"MathJax\",\n");
-    output << wxS("    TeX: {TagSide: \"left\"}\n");
-    output << wxS("  })\n");
+    // MathJax 3 (what the default CDN URL below loads) is configured by
+    // assigning to window.MathJax *before* the loader script runs. The old
+    // MathJax.Hub.Config() call is the MathJax 2 API and is silently ignored by
+    // MathJax 3, so these left-align / tag-side tweaks used to have no effect at
+    // all. displayAlign is an output-renderer option, so set it for both the
+    // CommonHTML (the CDN default) and SVG outputs in case MathJaXURL points at
+    // an SVG build.
+    output << wxS("<script>\n");
+    output << wxS("  window.MathJax = {\n");
+    output << wxS("    tex: {tagSide: \"left\"},\n");
+    output << wxS("    chtml: {displayAlign: \"left\"},\n");
+    output << wxS("    svg: {displayAlign: \"left\"}\n");
+    output << wxS("  };\n");
     output << wxS("</script>\n");
     output << wxS("<script id=\"MathJax-script\" async src=\"") +
       configuration->MathJaXURL() + wxS("\">\n");

@@ -4,6 +4,11 @@
   instead of the generic wxWidgets "W" icon. The window icon now also falls back
   to the logo compiled into the binary, so it no longer depends solely on the
   .ico resource being the one Windows selects.
+- HTML export: the MathJax equation configuration (left-aligned equations and
+  left-side equation tags) is applied again. The export still used MathJax 2's
+  MathJax.Hub.Config() call, which the MathJax 3 that is actually loaded ignores,
+  so those settings had silently stopped taking effect; it now uses the MathJax 3
+  configuration.
 
 # 26.07.1
 
