@@ -78,13 +78,42 @@ $(function() {
 <p>Information on how to compile <a class="el" href="classwxMaxima.html">wxMaxima</a> from source instead can be found at <a href="https://github.com/wxMaxima-developers/wxmaxima/blob/main/Compiling.md">https://github.com/wxMaxima-developers/wxmaxima/blob/main/Compiling.md</a>. The documentation for the code itself can be found here instead: <a href="https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/">https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/</a></p>
 <p>WxMaxima is an open source project developed by volunteers and your contributions are always welcome.</p>
 <p>The <a class="el" href="classwxMaxima.html">wxMaxima</a> Team</p>
-<h1><a class="anchor" id="autotoc_md795"></a>
+<h1><a class="anchor" id="autotoc_md796"></a>
 Note concerning Wayland (recent Linux/BSD distributions)</h1>
 <p>There seem to be issues with the Wayland Display Server and wxWidgets. WxMaxima may be affected, e.g. that sidebars are not moveable.</p>
 <p>You can either disable Wayland and use X11 instead (globally) or just tell, that <a class="el" href="classwxMaxima.html">wxMaxima</a> should use the X Window System by setting: <code>GDK_BACKEND=x11</code></p>
 <p>E.g. start <a class="el" href="classwxMaxima.html">wxMaxima</a> with:</p>
 <p><code>GDK_BACKEND=x11 wxmaxima</code></p>
-<p>(For example, Ubuntu 22.04 (with a Wayland capable graphics card) is affected.) </p>
+<p>(For example, Ubuntu 22.04 (with a Wayland capable graphics card) is affected.)</p>
+<h1><a class="anchor" id="autotoc_md797"></a>
+Status</h1>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Architecture   </th><th class="markdownTableHeadNone">OS   </th><th class="markdownTableHeadNone"><a class="el" href="classTest.html" title="A template class.">Test</a>   </th><th class="markdownTableHeadNone">Status    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">AMD64+ARM64   </td><td class="markdownTableBodyNone">Ubuntu   </td><td class="markdownTableBodyNone">Update of the snappy package of maxima   </td><td class="markdownTableBodyNone"><a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/build_maxima_snap.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/build_maxima_snap.yml/badge.svg" alt="build_maxima_snap" style="pointer-events: none;" class="inline"/></a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">AMD64+ARM64   </td><td class="markdownTableBodyNone">Ubuntu   </td><td class="markdownTableBodyNone">Update of the snappy package/edge channel   </td><td class="markdownTableBodyNone"><a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/build_snap.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/build_snap.yml/badge.svg" alt="build_snap" style="pointer-events: none;" class="inline"/></a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">AMD64+ARM64   </td><td class="markdownTableBodyNone">Ubuntu   </td><td class="markdownTableBodyNone">Update of the snappy package/stable channel   </td><td class="markdownTableBodyNone"><a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/build_snap_stable.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/build_snap_stable.yml/badge.svg" alt="build_snap_stable" style="pointer-events: none;" class="inline"/></a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">AMD64   </td><td class="markdownTableBodyNone">Ubuntu   </td><td class="markdownTableBodyNone">Fuzzing of file and keyboard input   </td><td class="markdownTableBodyNone"><a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/fuzz.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/fuzz.yml/badge.svg" alt="fuzz" style="pointer-events: none;" class="inline"/></a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">AMD64   </td><td class="markdownTableBodyNone">Ubuntu   </td><td class="markdownTableBodyNone">Coverity code scan   </td><td class="markdownTableBodyNone"><a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/coverity-scan.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/coverity-scan.yml/badge.svg" alt="coverity_scan" style="pointer-events: none;" class="inline"/></a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">AMD64   </td><td class="markdownTableBodyNone">Ubuntu   </td><td class="markdownTableBodyNone">Check: Is MathJaX current?   </td><td class="markdownTableBodyNone"><a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/check_mathjax_version.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/check_mathjax_version.yml/badge.svg" alt="check_mathjax_version" style="pointer-events: none;" class="inline"/></a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">AMD64   </td><td class="markdownTableBodyNone">Ubuntu   </td><td class="markdownTableBodyNone">CodeQL code scan   </td><td class="markdownTableBodyNone"><a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/codeql-analysis.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/codeql-analysis.yml/badge.svg" alt="CodeQL" style="pointer-events: none;" class="inline"/></a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">AMD64   </td><td class="markdownTableBodyNone">Windows   </td><td class="markdownTableBodyNone">Compile using Cygwin   </td><td class="markdownTableBodyNone"><a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_cygwin.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_cygwin.yml/badge.svg" alt="compile_cygwin" style="pointer-events: none;" class="inline"/></a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ARM64   </td><td class="markdownTableBodyNone">Mac OS   </td><td class="markdownTableBodyNone">Compile on the mac   </td><td class="markdownTableBodyNone"><a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_mac.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_mac.yml/badge.svg" alt="compile_mac" style="pointer-events: none;" class="inline"/></a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">AMD64   </td><td class="markdownTableBodyNone">Ubuntu   </td><td class="markdownTableBodyNone">Compile and test under Ubuntu   </td><td class="markdownTableBodyNone"><a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_ubuntu.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_ubuntu.yml/badge.svg" alt="compile_ubuntu" style="pointer-events: none;" class="inline"/></a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">IA32   </td><td class="markdownTableBodyNone">Ubuntu   </td><td class="markdownTableBodyNone">Compile under Ubuntu   </td><td class="markdownTableBodyNone"><a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_ubuntu_32bit.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_ubuntu_32bit.yml/badge.svg" alt="compile_ubuntu_32bit" style="pointer-events: none;" class="inline"/></a>   </td></tr>
+</table>
+<p>| |AMD64|Windows|Compile and test under Windows|<a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_windows.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_windows.yml/badge.svg" alt="compile_windows" style="pointer-events: none;" class="inline"/></a>| |AMD64|Ubuntu|Coverity Scan|<a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/coverity-scan.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/coverity-scan.yml/badge.svg" alt="coverity_scan" style="pointer-events: none;" class="inline"/></a>| |AMD64|Ubuntu|Flawfinder|<a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/flawfinder.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/flawfinder.yml/badge.svg" alt="flawfinder" style="pointer-events: none;" class="inline"/></a>| |AMD64|Ubuntu|Microsoft C++ Code analysis|<a href="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/msvc.yml"><img src="https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/msvc.yml/badge.svg" alt="Microsoft C++ Code Analysis" style="pointer-events: none;" class="inline"/></a>| </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
