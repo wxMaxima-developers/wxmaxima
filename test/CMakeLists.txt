@@ -4,7 +4,7 @@
 file(GLOB IMAGE_FILES automatic_test_files/*.png automatic_test_files/*.gif)
 file(GLOB TEST_FILES ${IMAGE_FILES} automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg)
 file(GLOB TESTBENCH_IMAGE_FILES automatic_test_files/a.png automatic_test_files/b.png automatic_test_files/c.png automatic_test_files/d.png)
-file(GLOB TESTBENCH_FILES ${TESTBENCH_IMAGE_FILES} testbench_simple.wxmx testbench_simple.mac)
+file(GLOB TESTBENCH_FILES ${TESTBENCH_IMAGE_FILES} testbench_simple.wxmx testbench_simple.wxm)
 
 find_program(MAXIMA maxima)
 if(MAXIMA)
@@ -1015,7 +1015,7 @@ add_test(
 add_test(
     NAME openMacFiles
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND wxmaxima --debug --logtostderr --pipe -f autosave.cfg --batch --exit-on-error testbench_simple.mac)
+    COMMAND wxmaxima --debug --logtostderr --pipe -f autosave.cfg --batch --exit-on-error testbench_simple.wxm)
 
 add_test(
     NAME openMacFiles2
