@@ -55,7 +55,6 @@ E.g. start wxMaxima with:
 |ARM64|Mac OS|Compile on the mac|[![compile_mac](https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_mac.yml/badge.svg)](https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_mac.yml)|
 |AMD64|Ubuntu|Compile and test under Ubuntu|[![compile_ubuntu](https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_ubuntu.yml/badge.svg)](https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_ubuntu.yml)|
 |IA32|Ubuntu|Compile under Ubuntu|[![compile_ubuntu_32bit](https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_ubuntu_32bit.yml/badge.svg)](https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_ubuntu_32bit.yml)|
-|
 |AMD64|Windows|Compile and test under Windows|[![compile_windows](https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_windows.yml/badge.svg)](https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/compile_windows.yml)|
 |AMD64|Ubuntu|Coverity Scan|[![coverity_scan](https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/coverity-scan.yml/badge.svg)](https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/coverity-scan.yml)|
 |AMD64|Ubuntu|Flawfinder|[![flawfinder](https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/flawfinder.yml/badge.svg)](https://github.com/wxMaxima-developers/wxmaxima/actions/workflows/flawfinder.yml)|
