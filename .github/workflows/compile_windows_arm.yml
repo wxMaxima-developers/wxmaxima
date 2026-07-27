@@ -131,7 +131,7 @@ jobs:
             unzip -l "$zipname"
 
       - name: Upload portable ZIP artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: wxmaxima-windows-arm64-portable
           path: ${{ env.ZIP_NAME }}
