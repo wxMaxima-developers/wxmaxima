@@ -961,49 +961,17 @@ void WriteMathJaxSetup(wxString &output, Configuration *configuration) {
   output << wxS("  })();\n");
   output << wxS("</script>\n");
 }
-} // namespace
 
-bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration,
-                                   const wxString &file,
-                                   ViewCellPointers *cellPointers, GroupCell *hCaret) {
-  // Don't update the worksheet whilst exporting
-  //  wxWindowUpdateLocker noUpdates(this);
+/*! Write the HTML `<head>` (through the opening `<body>` and version banner).
 
-  // The path to the image directory as seen from the html directory
-  wxString imgDir_rel;
-  // The absolute path to the image directory
-  wxString imgDir;
-  // What happens if we split the filename into several parts.
-  wxString path, filename, ext;
-  wxConfigBase *config = wxConfig::Get();
-
-  int count = 0;
-  MarkDownHTML MarkDown(configuration);
-
-  wxFileName::SplitPath(file, &path, &filename, &ext);
-  imgDir_rel = filename + wxS("_htmlimg");
-  imgDir = path + wxS("/") + imgDir_rel;
-
-  if (!wxDirExists(imgDir)) {
-    if (!wxMkdir(imgDir))
-      return false;
-  }
-
-  wxString cssfileName_rel = imgDir_rel + wxS("/") + filename + wxS(".css");
-  wxString cssfileName = path + wxS("/") + cssfileName_rel;
-  wxFileOutputStream cssfile(cssfileName);
-  if (!cssfile.IsOk())
-    return false;
-
-  wxURI filename_uri(filename);
-  wxString filename_encoded =
-    filename_uri.BuildURI(); /* handle HTML entities like " " => "%20" */
-
-  wxTextOutputStream css(cssfile);
-
-  wxString output;
-
-  configuration->ClipToDrawRegion(false);
+  Everything that goes into the output stream ahead of the exported cells: the
+  doctype, title/meta, the optional MathJaX fill-in script, the stylesheet link
+  and the version-comment banner. The stylesheet itself is written separately
+  into the .css file by WriteHtmlStyleSheet().
+ */
+void WriteHTMLHead(wxString &output, Configuration *configuration,
+                   const wxString &filename, const wxString &encoded_css_url,
+                   const wxString &versionString, const wxString &versionPad) {
   output << wxS("<!DOCTYPE html>\n");
   output << wxS("<html>\n"); // We do not know the language of the
   // exported document.
@@ -1013,25 +981,10 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   output << wxS("  <meta http-equiv=\"Content-Type\" content=\"text/html; "
                 "charset=utf-8\">\n");
 
-  //////////////////////////////////////////////
-  // Write styles
-  //////////////////////////////////////////////
-
   WriteMathJaxSetup(output, configuration);
 
-
-  wxURI css_url(cssfileName_rel);
-  wxString encoded_css_url =
-    css_url.BuildURI(); /* handle HTML entities like " " => "%20" */
   output << wxS("  <link rel=\"stylesheet\" type=\"text/css\" href=\"") +
     encoded_css_url + wxS("\">\n");
-
-  wxString versionString = wxS("Created with wxMaxima version " WXMAXIMA_VERSION);
-  wxString versionPad;
-  for (unsigned int i = 0; i < versionString.Length(); i++)
-    versionPad += "*";
-
-  WriteHtmlStyleSheet(css, config, versionString, versionPad);
 
   output << wxS(" </head>\n");
   output << wxS(" <body>\n");
@@ -1040,286 +993,339 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   output << wxS("<!-- *********") + versionPad + wxS("******** -->\n");
   output << wxS("<!-- *        ") + versionString + wxS("       * -->\n");
   output << wxS("<!-- *********") + versionPad + wxS("******** -->\n");
+}
 
-  //////////////////////////////////////////////
-  // Write the actual contents
-  //////////////////////////////////////////////
+/*! Render one output chunk (equation, image or animation) of a code cell.
 
-  for (auto &tmp : OnList(tree)) {
-    // Handle a code cell
-    if (tmp.GetGroupType() == GC_TYPE_CODE) {
-      // Handle the label
-      const Cell *out = tmp.GetLabel();
+  Writes any image file into imgDir and appends the matching <img> tag (or, for
+  the native-MathML format, an inline <math> element) to output. The chunk is a
+  freshly-copied cell list owned by this call.
+ */
+void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
+                       Configuration *configuration, const wxString &imgDir,
+                       const wxString &filename,
+                       const wxString &filename_encoded, int count) {
+  if (dynamic_cast<AnimationCell *>(&(*chunk)) != NULL) {
+    dynamic_cast<AnimationCell *>(&(*chunk))->ToGif(
+                                                    imgDir + wxS("/") + filename +
+                                                    wxString::Format(wxS("_%d.gif"), count));
+    output << HtmlImageTag(filename_encoded, count, wxS(".gif"),
+                           /*widthPx=*/-1, _("Animated Diagram"),
+                           /*withBreak=*/false);
+  } else if (dynamic_cast<ImgCellBase *>(&(*chunk)) == NULL) {
+    switch (configuration->HTMLequationFormat()) {
+    case Configuration::svg: {
+      auto const alttext =
+        EditorCell::EscapeHTMLChars(chunk->ListToString());
+      auto const filepath = wxString::Format(wxS("%s/%s_%d.svg"),
+                                             imgDir, filename, count);
+      Svgout svgout(&configuration, std::move(chunk), filepath);
 
-      if (out || (configuration->ShowCodeCells()))
-        output << wxS("\n\n<!-- Code cell -->\n\n\n");
+      output << HtmlImageTag(filename_encoded, count, wxS(".svg"),
+                             static_cast<long>(svgout.GetSize().x),
+                             alttext, /*withBreak=*/true)
+             << wxS("\n");
+      break;
+    }
 
-      // Handle the input
-      if (configuration->ShowCodeCells()) {
-        const Cell *prompt = tmp.GetPrompt();
-        output << wxS("<table><tr><td>\n");
-        output << wxS("  <span class=\"prompt\">\n");
-        output << prompt->ToString();
-        output << wxS("\n  </span></td>\n");
+    case Configuration::bitmap: {
+      wxSize size =
+        WorksheetExport::CopyToFile(imgDir + wxS("/") + filename +
+                                      wxString::Format(wxS("_%d.png"), count),
+                                    &(*chunk), NULL, true,
+                                    configuration->BitmapScale(), &configuration);
+      wxString alttext =
+        EditorCell::EscapeHTMLChars(chunk->ListToString());
+      int borderwidth = chunk->GetImageBorderWidth();
+      long const widthPx =
+        static_cast<long>(size.x) / configuration->BitmapScale() -
+        2 * borderwidth;
 
-        const EditorCell *input = tmp.GetEditable();
-        if (input) {
-          output << wxS("  <td><span class=\"input\">\n");
-          output << input->ToHTML();
-          output << wxS("  </span></td>\n");
-        }
-        output << wxS("</tr></table>\n");
+      output << HtmlImageTag(filename_encoded, count, wxS(".png"),
+                             widthPx, alttext, /*withBreak=*/true)
+             << wxS("\n");
+      break;
+    }
+
+    default: {
+      // MathML mode. A leading label cell (e.g. "(%o1)") is emitted
+      // beside the equation as plain HTML rather than inside the
+      // <math>: MathML Core (what native browsers implement) dropped
+      // <mlabeledtr>, so an in-math label would silently vanish on
+      // Chrome/Safari. The equation itself becomes a native <math>
+      // element, with MathJax used only as a fill-in (see the header).
+      Cell *first = &(*chunk);
+      Cell *eqStart = first;
+      wxString labelText;
+      if ((first->GetTextStyle() == TS_LABEL) ||
+          (first->GetTextStyle() == TS_USERLABEL)) {
+        labelText = first->ToString();
+        labelText.Trim(true).Trim(false);
+        eqStart = first->GetNext();
       }
 
-      // Handle the output - if output exists.
-      if (out == NULL) {
-        // No output to export.x
-        output << wxS("\n");
-      } else {
-        // We got output.
-        // Output is a list that can consist of equations, images and
-        // animations. We need to handle each of these item types separately =>
-        // break down the list into chunks of one type.
-        Cell *chunkStart = tmp.GetLabel();
-        while (chunkStart != NULL) {
-          Cell *chunkEnd = chunkStart;
+      output << wxS("<div class=\"equation\">\n");
+      if (!labelText.IsEmpty())
+        output << wxS("  <span class=\"eqlabel\">")
+               << EditorCell::EscapeHTMLChars(labelText)
+               << wxS("</span>\n");
+      if (eqStart != NULL)
+        output
+          << wxS("  <math xmlns=\"http://www.w3.org/1998/Math/MathML\" "
+                 "display=\"block\">")
+          << eqStart->ListToMathML() << wxS("</math>\n");
+      output << wxS("</div>\n");
+    }
+    }
+  } else {
+    wxString ext = wxS(".") +
+      dynamic_cast<ImgCellBase *>(&(*chunk))->GetExtension();
+    wxSize size = dynamic_cast<ImgCellBase *>(&(*chunk))->ToImageFile(
+                                                                 imgDir + wxS("/") + filename +
+                                                                 wxString::Format(wxS("_%d"), count) + ext);
+    wxString alttext =
+      EditorCell::EscapeHTMLChars(chunk->ListToString());
+    int borderwidth = chunk->GetImageBorderWidth();
 
-          if ((chunkEnd->GetType() != MC_TYPE_SLIDE) &&
-              (chunkEnd->GetType() != MC_TYPE_IMAGE))
-            while (chunkEnd->GetNext() != NULL) {
-              auto *chunkNext = chunkEnd->GetNext();
-              if ((chunkNext->GetType() == MC_TYPE_SLIDE) ||
-                  (chunkNext->GetType() == MC_TYPE_IMAGE) ||
-                  (chunkNext->GetTextStyle() == TS_LABEL) ||
-                  (chunkNext->GetTextStyle() == TS_USERLABEL))
-                break;
-              chunkEnd = chunkNext;
-            }
+    output << HtmlImageTag(filename_encoded, count, ext,
+                           static_cast<long>(size.x) - 2 * borderwidth,
+                           alttext, /*withBreak=*/true)
+           << wxS("\n");
+  }
+}
 
-          // Create a list containing only our chunk.
-          auto chunk = CopySelection(chunkStart, chunkEnd);
+/*! Export one GC_TYPE_CODE group cell: the prompt, the input and the output.
 
-          // Export the chunk.
+  The output is a mixed list of equations, images and animations; it is split
+  into single-type chunks that ExportOutputChunk() renders one at a time. Each
+  chunk consumes one image index (count).
+ */
+void ExportCodeCell(wxString &output, GroupCell &tmp,
+                    Configuration *configuration, const wxString &imgDir,
+                    const wxString &filename,
+                    const wxString &filename_encoded, int &count) {
+  // Handle the label
+  const Cell *out = tmp.GetLabel();
 
-          if (dynamic_cast<AnimationCell *>(&(*chunk)) != NULL) {
-            dynamic_cast<AnimationCell *>(&(*chunk))->ToGif(
-                                                            imgDir + wxS("/") + filename +
-                                                            wxString::Format(wxS("_%d.gif"), count));
-            output << HtmlImageTag(filename_encoded, count, wxS(".gif"),
-                                   /*widthPx=*/-1, _("Animated Diagram"),
-                                   /*withBreak=*/false);
-          } else if (dynamic_cast<ImgCellBase *>(&(*chunk)) == NULL) {
-            switch (configuration->HTMLequationFormat()) {
-            case Configuration::svg: {
-              auto const alttext =
-                EditorCell::EscapeHTMLChars(chunk->ListToString());
-              auto const filepath = wxString::Format(wxS("%s/%s_%d.svg"),
-                                                     imgDir, filename, count);
-              Svgout svgout(&configuration, std::move(chunk), filepath);
+  if (out || (configuration->ShowCodeCells()))
+    output << wxS("\n\n<!-- Code cell -->\n\n\n");
 
-              output << HtmlImageTag(filename_encoded, count, wxS(".svg"),
-                                     static_cast<long>(svgout.GetSize().x),
-                                     alttext, /*withBreak=*/true)
-                     << wxS("\n");
-              break;
-            }
+  // Handle the input
+  if (configuration->ShowCodeCells()) {
+    const Cell *prompt = tmp.GetPrompt();
+    output << wxS("<table><tr><td>\n");
+    output << wxS("  <span class=\"prompt\">\n");
+    output << prompt->ToString();
+    output << wxS("\n  </span></td>\n");
 
-            case Configuration::bitmap: {
-              wxSize size =
-                CopyToFile(imgDir + wxS("/") + filename +
-                             wxString::Format(wxS("_%d.png"), count),
-                           &(*chunk), NULL, true,
-                           configuration->BitmapScale(), &configuration);
-              wxString alttext =
-                EditorCell::EscapeHTMLChars(chunk->ListToString());
-              int borderwidth = chunk->GetImageBorderWidth();
-              long const widthPx =
-                static_cast<long>(size.x) / configuration->BitmapScale() -
-                2 * borderwidth;
-
-              output << HtmlImageTag(filename_encoded, count, wxS(".png"),
-                                     widthPx, alttext, /*withBreak=*/true)
-                     << wxS("\n");
-              break;
-            }
-
-            default: {
-              // MathML mode. A leading label cell (e.g. "(%o1)") is emitted
-              // beside the equation as plain HTML rather than inside the
-              // <math>: MathML Core (what native browsers implement) dropped
-              // <mlabeledtr>, so an in-math label would silently vanish on
-              // Chrome/Safari. The equation itself becomes a native <math>
-              // element, with MathJax used only as a fill-in (see the header).
-              Cell *first = &(*chunk);
-              Cell *eqStart = first;
-              wxString labelText;
-              if ((first->GetTextStyle() == TS_LABEL) ||
-                  (first->GetTextStyle() == TS_USERLABEL)) {
-                labelText = first->ToString();
-                labelText.Trim(true).Trim(false);
-                eqStart = first->GetNext();
-              }
-
-              output << wxS("<div class=\"equation\">\n");
-              if (!labelText.IsEmpty())
-                output << wxS("  <span class=\"eqlabel\">")
-                       << EditorCell::EscapeHTMLChars(labelText)
-                       << wxS("</span>\n");
-              if (eqStart != NULL)
-                output
-                  << wxS("  <math xmlns=\"http://www.w3.org/1998/Math/MathML\" "
-                         "display=\"block\">")
-                  << eqStart->ListToMathML() << wxS("</math>\n");
-              output << wxS("</div>\n");
-            }
-            }
-          } else {
-            ext = wxS(".") +
-              dynamic_cast<ImgCellBase *>(&(*chunk))->GetExtension();
-            wxSize size = dynamic_cast<ImgCellBase *>(&(*chunk))->ToImageFile(
-                                                                       imgDir + wxS("/") + filename +
-                                                                       wxString::Format(wxS("_%d"), count) + ext);
-            wxString alttext =
-              EditorCell::EscapeHTMLChars(chunk->ListToString());
-            int borderwidth = chunk->GetImageBorderWidth();
-
-            output << HtmlImageTag(filename_encoded, count, ext,
-                                   static_cast<long>(size.x) - 2 * borderwidth,
-                                   alttext, /*withBreak=*/true)
-                   << wxS("\n");
-          }
-          count++;
-
-          chunkStart = chunkEnd->GetNext();
-        }
-      }
-    } else // No code cell
-      {
-        switch (tmp.GetGroupType()) {
-        case GC_TYPE_TEXT:
-          output << wxS("\n\n<!-- Text cell -->\n\n\n");
-          output << wxS("<div class=\"comment\">\n");
-          // A text cell can include block-level HTML elements, e.g. <ul> ...
-          // </ul> (converted from Markdown) Therefore do not output <p> ... </p>
-          // elements, that would result in invalid HTML.
-          output << MarkDown.MarkDown(EditorCell::EscapeHTMLChars(
-                                                                  tmp.GetEditable()->ToString())) +
-            "\n";
-          output << wxS("</div>\n");
-          break;
-        case GC_TYPE_SECTION:
-          output << wxS("\n\n<!-- Section cell -->\n\n\n");
-          output << wxS("<div class=\"section\">\n");
-          output << wxS("<p>\n");
-          output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
-                                                tmp.GetEditable()->ToString()) +
-            "\n";
-          output << wxS("</p>\n");
-          output << wxS("</div>\n");
-          break;
-        case GC_TYPE_SUBSECTION:
-          output << wxS("\n\n<!-- Subsection cell -->\n\n\n");
-          output << wxS("<div class=\"subsect\">\n");
-          output << wxS("<p>\n");
-          output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
-                                                tmp.GetEditable()->ToString()) +
-            "\n";
-          output << wxS("</p>\n");
-          output << wxS("</div>\n");
-          break;
-        case GC_TYPE_SUBSUBSECTION:
-          output << wxS("\n\n<!-- Subsubsection cell -->\n\n\n");
-          output << wxS("<div class=\"subsubsect\">\n");
-          output << wxS("<p>\n");
-          output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
-                                                tmp.GetEditable()->ToString()) +
-            "\n";
-          output << wxS("</p>\n");
-          output << wxS("</div>\n");
-          break;
-        case GC_TYPE_HEADING5:
-          output << wxS("\n\n<!-- Heading5 cell -->\n\n\n");
-          output << wxS("<div class=\"heading5\">\n");
-          output << wxS("<p>\n");
-          output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
-                                                tmp.GetEditable()->ToString()) +
-            "\n";
-          output << wxS("</p>\n");
-          output << wxS("</div>\n");
-          break;
-        case GC_TYPE_HEADING6:
-          output << wxS("\n\n<!-- Heading6 cell -->\n\n\n");
-          output << wxS("<div class=\"heading6\">\n");
-          output << wxS("<p>\n");
-          output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
-                                                tmp.GetEditable()->ToString()) +
-            "\n";
-          output << wxS("</p>\n");
-          output << wxS("</div>\n");
-          break;
-        case GC_TYPE_TITLE:
-          output << wxS("\n\n<!-- Title cell -->\n\n\n");
-          output << wxS("<div class=\"title\">\n");
-          output << wxS("<p>\n");
-          output << EditorCell::EscapeHTMLChars(tmp.GetEditable()->ToString()) +
-            "\n";
-          output << wxS("</p>\n");
-          output << wxS("</div>\n");
-          break;
-        case GC_TYPE_PAGEBREAK:
-          output << wxS("\n\n<!-- Page break cell -->\n\n\n");
-          output << wxS("<div class=\"comment\">\n");
-          output << wxS("<hr>\n");
-          output << wxS("</div>\n");
-          break;
-        case GC_TYPE_IMAGE: {
-          Cell *out = tmp.GetLabel();
-          if(out)
-            {
-              output << wxS("\n\n<!-- Image cell -->\n\n\n");
-              output << wxS("<div class=\"image\">\n");
-              output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
-                                                    tmp.GetEditable()->ToString())
-                     << wxS("\n");
-              output << wxS("<br>\n");
-              if (dynamic_cast<AnimationCell *>(tmp.GetOutput()) != NULL) {
-                dynamic_cast<AnimationCell *>(tmp.GetOutput())
-                  ->ToGif(imgDir + wxS("/") + filename +
-                          wxString::Format(wxS("_%d.gif"), count));
-                output << HtmlImageTag(filename_encoded, count, wxS(".gif"),
-                                       /*widthPx=*/-1, _("Animated Diagram"),
-                                       /*withBreak=*/false);
-              } else {
-                ImgCellBase *imgCell = dynamic_cast<ImgCellBase *>(out);
-                wxASSERT(imgCell);
-                if(imgCell)
-                  {
-                    imgCell->ToImageFile(imgDir + wxS("/") + filename +
-                                         wxString::Format(wxS("_%d."), count) +
-                                         imgCell->GetExtension());
-                    output << HtmlImageTag(
-                      filename_encoded, count,
-                      wxS(".") + imgCell->GetExtension(), /*widthPx=*/-1,
-                      _("Diagram"), /*withBreak=*/false);
-                  }
-              }
-              output << wxS("</div>\n");
-              count++;
-            }
-          else
-            wxLogMessage(_("ImageCell without image."));
-        } break;
-        case GC_TYPE_CODE:
-        case GC_TYPE_INVALID:
-          break;
-        }
-      }
+    const EditorCell *input = tmp.GetEditable();
+    if (input) {
+      output << wxS("  <td><span class=\"input\">\n");
+      output << input->ToHTML();
+      output << wxS("  </span></td>\n");
+    }
+    output << wxS("</tr></table>\n");
   }
 
-  //////////////////////////////////////////////
-  // Footer
-  //////////////////////////////////////////////
+  // Handle the output - if output exists.
+  if (out == NULL) {
+    // No output to export.x
+    output << wxS("\n");
+  } else {
+    // We got output.
+    // Output is a list that can consist of equations, images and
+    // animations. We need to handle each of these item types separately =>
+    // break down the list into chunks of one type.
+    Cell *chunkStart = tmp.GetLabel();
+    while (chunkStart != NULL) {
+      Cell *chunkEnd = chunkStart;
 
+      if ((chunkEnd->GetType() != MC_TYPE_SLIDE) &&
+          (chunkEnd->GetType() != MC_TYPE_IMAGE))
+        while (chunkEnd->GetNext() != NULL) {
+          auto *chunkNext = chunkEnd->GetNext();
+          if ((chunkNext->GetType() == MC_TYPE_SLIDE) ||
+              (chunkNext->GetType() == MC_TYPE_IMAGE) ||
+              (chunkNext->GetTextStyle() == TS_LABEL) ||
+              (chunkNext->GetTextStyle() == TS_USERLABEL))
+            break;
+          chunkEnd = chunkNext;
+        }
+
+      // Create a list containing only our chunk.
+      auto chunk = WorksheetExport::CopySelection(chunkStart, chunkEnd);
+
+      // Export the chunk.
+      ExportOutputChunk(output, std::move(chunk), configuration, imgDir,
+                        filename, filename_encoded, count);
+      count++;
+
+      chunkStart = chunkEnd->GetNext();
+    }
+  }
+}
+
+/*! Export one non-code group cell (text, heading, section, image, page break).
+
+  These have no math-output chunking; each maps to a single styled <div>. Image
+  cells additionally write their picture into imgDir and consume one index.
+ */
+void ExportOtherCell(wxString &output, GroupCell &tmp, MarkDownHTML &MarkDown,
+                     const wxString &imgDir, const wxString &filename,
+                     const wxString &filename_encoded, int &count) {
+  switch (tmp.GetGroupType()) {
+  case GC_TYPE_TEXT:
+    output << wxS("\n\n<!-- Text cell -->\n\n\n");
+    output << wxS("<div class=\"comment\">\n");
+    // A text cell can include block-level HTML elements, e.g. <ul> ...
+    // </ul> (converted from Markdown) Therefore do not output <p> ... </p>
+    // elements, that would result in invalid HTML.
+    output << MarkDown.MarkDown(EditorCell::EscapeHTMLChars(
+                                                            tmp.GetEditable()->ToString())) +
+      "\n";
+    output << wxS("</div>\n");
+    break;
+  case GC_TYPE_SECTION:
+    output << wxS("\n\n<!-- Section cell -->\n\n\n");
+    output << wxS("<div class=\"section\">\n");
+    output << wxS("<p>\n");
+    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+                                          tmp.GetEditable()->ToString()) +
+      "\n";
+    output << wxS("</p>\n");
+    output << wxS("</div>\n");
+    break;
+  case GC_TYPE_SUBSECTION:
+    output << wxS("\n\n<!-- Subsection cell -->\n\n\n");
+    output << wxS("<div class=\"subsect\">\n");
+    output << wxS("<p>\n");
+    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+                                          tmp.GetEditable()->ToString()) +
+      "\n";
+    output << wxS("</p>\n");
+    output << wxS("</div>\n");
+    break;
+  case GC_TYPE_SUBSUBSECTION:
+    output << wxS("\n\n<!-- Subsubsection cell -->\n\n\n");
+    output << wxS("<div class=\"subsubsect\">\n");
+    output << wxS("<p>\n");
+    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+                                          tmp.GetEditable()->ToString()) +
+      "\n";
+    output << wxS("</p>\n");
+    output << wxS("</div>\n");
+    break;
+  case GC_TYPE_HEADING5:
+    output << wxS("\n\n<!-- Heading5 cell -->\n\n\n");
+    output << wxS("<div class=\"heading5\">\n");
+    output << wxS("<p>\n");
+    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+                                          tmp.GetEditable()->ToString()) +
+      "\n";
+    output << wxS("</p>\n");
+    output << wxS("</div>\n");
+    break;
+  case GC_TYPE_HEADING6:
+    output << wxS("\n\n<!-- Heading6 cell -->\n\n\n");
+    output << wxS("<div class=\"heading6\">\n");
+    output << wxS("<p>\n");
+    output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+                                          tmp.GetEditable()->ToString()) +
+      "\n";
+    output << wxS("</p>\n");
+    output << wxS("</div>\n");
+    break;
+  case GC_TYPE_TITLE:
+    output << wxS("\n\n<!-- Title cell -->\n\n\n");
+    output << wxS("<div class=\"title\">\n");
+    output << wxS("<p>\n");
+    output << EditorCell::EscapeHTMLChars(tmp.GetEditable()->ToString()) +
+      "\n";
+    output << wxS("</p>\n");
+    output << wxS("</div>\n");
+    break;
+  case GC_TYPE_PAGEBREAK:
+    output << wxS("\n\n<!-- Page break cell -->\n\n\n");
+    output << wxS("<div class=\"comment\">\n");
+    output << wxS("<hr>\n");
+    output << wxS("</div>\n");
+    break;
+  case GC_TYPE_IMAGE: {
+    Cell *out = tmp.GetLabel();
+    if(out)
+      {
+        output << wxS("\n\n<!-- Image cell -->\n\n\n");
+        output << wxS("<div class=\"image\">\n");
+        output << EditorCell::EscapeHTMLChars(tmp.GetPrompt()->ToString() +
+                                              tmp.GetEditable()->ToString())
+               << wxS("\n");
+        output << wxS("<br>\n");
+        if (dynamic_cast<AnimationCell *>(tmp.GetOutput()) != NULL) {
+          dynamic_cast<AnimationCell *>(tmp.GetOutput())
+            ->ToGif(imgDir + wxS("/") + filename +
+                    wxString::Format(wxS("_%d.gif"), count));
+          output << HtmlImageTag(filename_encoded, count, wxS(".gif"),
+                                 /*widthPx=*/-1, _("Animated Diagram"),
+                                 /*withBreak=*/false);
+        } else {
+          ImgCellBase *imgCell = dynamic_cast<ImgCellBase *>(out);
+          wxASSERT(imgCell);
+          if(imgCell)
+            {
+              imgCell->ToImageFile(imgDir + wxS("/") + filename +
+                                   wxString::Format(wxS("_%d."), count) +
+                                   imgCell->GetExtension());
+              output << HtmlImageTag(
+                filename_encoded, count,
+                wxS(".") + imgCell->GetExtension(), /*widthPx=*/-1,
+                _("Diagram"), /*withBreak=*/false);
+            }
+        }
+        output << wxS("</div>\n");
+        count++;
+      }
+    else
+      wxLogMessage(_("ImageCell without image."));
+  } break;
+  case GC_TYPE_CODE:
+  case GC_TYPE_INVALID:
+    break;
+  }
+}
+
+/*! Write the exported cells (the HTML `<body>` contents) into output.
+
+  Iterates the worksheet tree, dispatching code cells and every other cell type
+  to their respective helpers. Image files are written next to output in imgDir.
+ */
+void WriteHTMLBody(wxString &output, GroupCell *tree,
+                   Configuration *configuration, const wxString &imgDir,
+                   const wxString &filename,
+                   const wxString &filename_encoded) {
+  int count = 0;
+  MarkDownHTML MarkDown(configuration);
+
+  for (auto &tmp : OnList(tree)) {
+    if (tmp.GetGroupType() == GC_TYPE_CODE)
+      ExportCodeCell(output, tmp, configuration, imgDir, filename,
+                     filename_encoded, count);
+    else
+      ExportOtherCell(output, tmp, MarkDown, imgDir, filename,
+                      filename_encoded, count);
+  }
+}
+
+/*! Write the HTML footer, and optionally an embedded .wxmx download link.
+
+  Closes the running output with the wxMaxima credit line and, when
+  Configuration::ExportContainsWXMX() is set, writes a .wxmx copy of the tree
+  into imgDir and links to it before closing `</body></html>`.
+ */
+void WriteHTMLFooter(wxString &output, GroupCell *tree,
+                     Configuration *configuration,
+                     ViewCellPointers *cellPointers, GroupCell *hCaret,
+                     const wxString &path, const wxString &imgDir_rel,
+                     const wxString &filename) {
   output << wxS("\n");
   output << wxS(" <hr>\n");
   output << wxS(" <p><small> Created with "
@@ -1347,6 +1353,78 @@ bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration
   //
   output << wxS(" </body>\n");
   output << wxS("</html>\n");
+}
+} // namespace
+
+bool WorksheetExport::ExportToHTML(GroupCell *tree, Configuration *configuration,
+                                   const wxString &file,
+                                   ViewCellPointers *cellPointers, GroupCell *hCaret) {
+  // Don't update the worksheet whilst exporting
+  //  wxWindowUpdateLocker noUpdates(this);
+
+  // The path to the image directory as seen from the html directory
+  wxString imgDir_rel;
+  // The absolute path to the image directory
+  wxString imgDir;
+  // What happens if we split the filename into several parts.
+  wxString path, filename, ext;
+  wxConfigBase *config = wxConfig::Get();
+
+  wxFileName::SplitPath(file, &path, &filename, &ext);
+  imgDir_rel = filename + wxS("_htmlimg");
+  imgDir = path + wxS("/") + imgDir_rel;
+
+  if (!wxDirExists(imgDir)) {
+    if (!wxMkdir(imgDir))
+      return false;
+  }
+
+  wxString cssfileName_rel = imgDir_rel + wxS("/") + filename + wxS(".css");
+  wxString cssfileName = path + wxS("/") + cssfileName_rel;
+  wxFileOutputStream cssfile(cssfileName);
+  if (!cssfile.IsOk())
+    return false;
+
+  wxURI filename_uri(filename);
+  wxString filename_encoded =
+    filename_uri.BuildURI(); /* handle HTML entities like " " => "%20" */
+
+  wxTextOutputStream css(cssfile);
+
+  wxString output;
+
+  configuration->ClipToDrawRegion(false);
+
+  wxURI css_url(cssfileName_rel);
+  wxString encoded_css_url =
+    css_url.BuildURI(); /* handle HTML entities like " " => "%20" */
+
+  wxString versionString = wxS("Created with wxMaxima version " WXMAXIMA_VERSION);
+  wxString versionPad;
+  for (unsigned int i = 0; i < versionString.Length(); i++)
+    versionPad += "*";
+
+  //////////////////////////////////////////////
+  // Head + styles
+  //////////////////////////////////////////////
+
+  WriteHTMLHead(output, configuration, filename, encoded_css_url,
+                versionString, versionPad);
+  WriteHtmlStyleSheet(css, config, versionString, versionPad);
+
+  //////////////////////////////////////////////
+  // Write the actual contents
+  //////////////////////////////////////////////
+
+  WriteHTMLBody(output, tree, configuration, imgDir, filename,
+                filename_encoded);
+
+  //////////////////////////////////////////////
+  // Footer
+  //////////////////////////////////////////////
+
+  WriteHTMLFooter(output, tree, configuration, cellPointers, hCaret, path,
+                  imgDir_rel, filename);
 
   configuration->ClipToDrawRegion(true);
 
