@@ -63,6 +63,7 @@
 #include "worksheet/Worksheet.h"
 #include "cells/GroupCell.h"
 
+#include <algorithm>
 #include <cstdlib>
 #include <map>
 #include <string>
@@ -297,6 +298,69 @@ static void RequireImgSrcsExist(const wxString &html, const wxString &htmlDir) {
   REQUIRE(checked > 0);
 }
 
+/*! Guard against clipped equation bitmaps in the HTML "bitmap" flavor.
+
+  BitmapOut sizes its canvas to the rendered content, so a correctly drawn
+  equation fills essentially the whole image. A scale-handling regression made
+  the exporter magnify the drawing by BitmapScale (default 3) once too often, so
+  at scale 3 the equation was laid down three times too large for the canvas and
+  only its upper-left third (or nothing at all) survived -- the exported images
+  came out mostly or entirely blank. The content assertions never noticed
+  because they only look at the HTML text, not the pixels.
+
+  For every exported equation PNG we therefore require that it contains ink at
+  all, and -- for images large enough that clipping is unambiguous -- that the
+  ink's bounding box covers at least half the canvas in both dimensions. Post-fix
+  the large images cover >=0.97 of the width and >=0.73 of the height; the buggy
+  ones dropped below 0.2 in at least one dimension or were completely blank, so
+  the 0.5 threshold separates them with a wide margin. Small glyph images (a lone
+  "1", a comma) legitimately leave more slack, so only the non-blank check
+  applies to them.
+*/
+static void RequireBitmapsNotClipped(const wxString &htmlDir) {
+  const wxString imgDir = htmlDir + wxS("/doc_htmlimg");
+  wxArrayString pngs;
+  wxDir::GetAllFiles(imgDir, &pngs, wxS("doc_*.png"), wxDIR_FILES);
+  REQUIRE(pngs.GetCount() > 0);
+  for (const wxString &png : pngs) {
+    wxImage img;
+    INFO("equation bitmap: " << png.ToStdString());
+    REQUIRE(img.LoadFile(png));
+    const int w = img.GetWidth(), h = img.GetHeight();
+    REQUIRE(w > 0);
+    REQUIRE(h > 0);
+
+    // The top-left pixel is background (the canvas is cleared to the text
+    // background colour before drawing); anything differing from it is ink.
+    const unsigned char bgR = img.GetRed(0, 0), bgG = img.GetGreen(0, 0),
+                        bgB = img.GetBlue(0, 0);
+    int minX = w, minY = h, maxX = -1, maxY = -1;
+    for (int y = 0; y < h; ++y)
+      for (int x = 0; x < w; ++x) {
+        const int dr = std::abs((int)img.GetRed(x, y) - bgR);
+        const int dg = std::abs((int)img.GetGreen(x, y) - bgG);
+        const int db = std::abs((int)img.GetBlue(x, y) - bgB);
+        if (dr + dg + db > 48) {
+          minX = std::min(minX, x); maxX = std::max(maxX, x);
+          minY = std::min(minY, y); maxY = std::max(maxY, y);
+        }
+      }
+
+    // Every exported equation must render *something*.
+    REQUIRE(maxX >= 0);
+
+    // On images big enough that a partial render is unambiguous, the ink must
+    // fill a good part of the canvas the exporter sized to fit it.
+    if (w >= 200 && h >= 100) {
+      const double coverX = double(maxX - minX + 1) / w;
+      const double coverY = double(maxY - minY + 1) / h;
+      INFO("ink coverage " << coverX << " x " << coverY << " of " << w << "x" << h);
+      REQUIRE(coverX >= 0.5);
+      REQUIRE(coverY >= 0.5);
+    }
+  }
+}
+
 /*! Validate an exported HTML file with HTML Tidy, when it is installed.
 
   Our HTML is assembled by string concatenation, so a structural slip (an
@@ -368,6 +432,10 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
       if (eq.format == Configuration::bitmap ||
           eq.format == Configuration::svg)
         RequireImgSrcsExist(html, dir1);
+      // The bitmap flavor must not clip equations to a corner of the canvas
+      // (a BitmapScale double-magnification regression, see helper).
+      if (eq.format == Configuration::bitmap)
+        RequireBitmapsNotClipped(dir1);
       // Both MathML flavors emit native <math> with the label beside it as
       // HTML. MathML Core dropped <mlabeledtr>, so it must never appear.
       if (eq.format == Configuration::mathML ||
