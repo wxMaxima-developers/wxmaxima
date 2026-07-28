@@ -34,7 +34,11 @@
 BitmapOut::BitmapOut(const Configuration * const *configuration, double scale)
   : m_cmn(configuration, BM_FULL_WIDTH, scale) {
   m_cmn.SetSize({10, 10});
-  m_bmp.CreateScaled(10, 10, 24, scale);
+  // A plain placeholder bitmap plus SetUserScale below: the same scale regime
+  // Layout() uses for the real canvas, so cell measurement during PrepareLayout
+  // and the final drawing agree. (Not CreateScaled, which would add a second
+  // scale factor on top of the user scale -- see the comment in Layout().)
+  m_bmp.Create(10, 10, 24);
   m_dc.SelectObject(m_bmp);
   m_dc.SetUserScale(scale, scale);
   m_dc.SetPen(wxNullPen);
@@ -68,7 +72,6 @@ bool BitmapOut::Layout(long int maxSize) {
 
   auto scale = m_cmn.GetScale();
   auto size = m_cmn.GetScaledSize();
-  auto rawSize = m_cmn.GetSize();
 
   // Bitmaps that are bigger than the available memory can lead to crashes within
   // MS Windows or the X server.
@@ -76,10 +79,21 @@ bool BitmapOut::Layout(long int maxSize) {
                        (size.x >= 20000) || (size.y >= 20000)))
     goto failed;
 
+  // Allocate the canvas at the full *device* size (the already-scaled size) and
+  // let SetUserScale(scale) below do the magnification. Using
+  // CreateScaled(rawSize, scale) here gave the bitmap its own scale factor on
+  // top of the user scale, so drawing was magnified by `scale` twice: at the
+  // default BitmapScale of 3 the content was laid down three times too large for
+  // the canvas and only its upper-left third survived (equations exported to
+  // HTML as bitmaps came out mostly blank). A plain bitmap sized to the scaled
+  // extent matches the single SetUserScale magnification. At scale == 1 this is
+  // identical to the old CreateScaled(size, 1), so the clipboard "copy as
+  // bitmap" path (which always renders at scale 1) is unchanged.
+  //
   // The depth 24 hinders wxWidgets from creating rgb0 bitmaps that some
   // windows applications will interpret as rgba if they appear on
   // the clipboards and therefore render them all-transparent.
-  m_bmp.CreateScaled(rawSize.x, rawSize.y, 24, scale);
+  m_bmp.Create(size.x, size.y, 24);
 
   if (!m_bmp.IsOk())
     goto failed;

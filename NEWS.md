@@ -6,6 +6,12 @@
   plain sentence could end up as a picture of text or as a run of MathML
   operators that browsers rendered oddly; it now reads as text in every export
   flavour and stays selectable and searchable.
+- Bitmap rendering of equations no longer clips them to a corner of the image.
+  Anything rendered at a "Bitmap scale" other than 1 -- the HTML export's bitmap
+  equation flavor and the optional "Bitmap" clipboard format both use the
+  default scale of 3 -- was magnified once too often, so only the upper-left
+  third of each equation (or nothing at all) fit on the canvas. The explicit
+  "Copy as Bitmap" command was unaffected, as it always renders at scale 1.
 - Windows: the installer/ZIP now bundles the MinGW C++ runtime DLLs
   (libstdc++-6, libgcc_s_seh-1, libwinpthread-1) that wxmaxima.exe needs to
   start. They were relied on being pulled in automatically, which was
