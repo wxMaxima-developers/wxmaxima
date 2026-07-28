@@ -919,6 +919,16 @@ public:
          GetDocumentCellPointers().GetActiveCell()->CanCopy());
     }
 
+  /*! Would "Copy as MathML" of the current selection produce actual math?
+
+    True only when the selection would serialize to MathML that contains a
+    real math element (a variable, number, fraction, ...). A selection of
+    plain text, comments, labels or strings serializes to <mtext>/<ms>/<mo>
+    only, so offering "Copy as MathML" for it is pointless (and used to yield
+    prose wrapped as MathML operators that word processors render oddly).
+   */
+  bool CanCopyAsMathML() const;
+
   bool CanPaste() const
     { return GetDocumentCellPointers().GetActiveCell() || GetHCaretCursor().IsActive(); }
 
