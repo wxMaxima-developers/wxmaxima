@@ -1,5 +1,11 @@
 # Current development version
 
+- HTML export: non-math output (Maxima messages, warnings, errors and plain
+  strings) is now written as ordinary, HTML-escaped text instead of being
+  rendered to a PNG/SVG image or wrapped in a `<math>` element. Previously a
+  plain sentence could end up as a picture of text or as a run of MathML
+  operators that browsers rendered oddly; it now reads as text in every export
+  flavour and stays selectable and searchable.
 - Windows: the installer/ZIP now bundles the MinGW C++ runtime DLLs
   (libstdc++-6, libgcc_s_seh-1, libwinpthread-1) that wxmaxima.exe needs to
   start. They were relied on being pulled in automatically, which was

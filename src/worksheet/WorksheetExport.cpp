@@ -552,6 +552,15 @@ void WriteHtmlStyleSheet(wxTextOutputStream &css, wxConfigBase *config,
   css << wxS("     exported equations line up: use left, center or right. */\n");
   css << wxS("  justify-self: left;\n");
   css << wxS("}\n");
+  // Plain (non-math) Maxima output -- messages, warnings, errors and strings
+  // -- shares the equation grid so it lines up with the equations above and
+  // below it, but is emitted as ordinary text rather than as a <math> element
+  // or a rendered image.
+  css << wxS(".equation > .outputtext {\n");
+  css << wxS("  grid-column: 2;\n");
+  css << wxS("  justify-self: left;\n");
+  css << wxS("  white-space: pre-wrap;\n");
+  css << wxS("}\n");
 
   // TABLES
   css << wxS("table {\n");
@@ -995,11 +1004,60 @@ void WriteHTMLHead(wxString &output, Configuration *configuration,
   output << wxS("<!-- *********") + versionPad + wxS("******** -->\n");
 }
 
-/*! Render one output chunk (equation, image or animation) of a code cell.
+//! Is this cell a piece of plain (non-math) Maxima output?
+bool CellIsProseText(const Cell *cell) {
+  switch (cell->GetTextStyle()) {
+  case TS_TEXT:
+  case TS_STRING:
+  case TS_ERROR:
+  case TS_WARNING:
+    return true;
+  default:
+    return false;
+  }
+}
 
-  Writes any image file into imgDir and appends the matching <img> tag (or, for
-  the native-MathML format, an inline <math> element) to output. The chunk is a
-  freshly-copied cell list owned by this call.
+/*! Is the whole output chunk (after its optional label) plain text?
+
+  True only when there is content and every top-level cell of it is prose
+  text (a message, warning, error or string). A chunk that mixes text with
+  actual math -- or is empty -- returns false so it keeps going through the
+  equation renderer. Strings nested *inside* a math expression don't count:
+  they are not top-level cells of the chunk.
+ */
+bool ChunkIsPlainText(const Cell *content) {
+  if (content == NULL)
+    return false;
+  for (const Cell *c = content; c != NULL; c = c->GetNext())
+    if (!CellIsProseText(c))
+      return false;
+  return true;
+}
+
+/*! Emit a plain-text output chunk as escaped HTML text.
+
+  Reuses the .equation grid so the text lines up with the equations around
+  it, but writes the content as ordinary text (CSS white-space:pre-wrap keeps
+  Maxima's line breaks) instead of a <math> element or a rendered image.
+ */
+void EmitPlainTextOutput(wxString &output, const wxString &labelText,
+                         const Cell *content) {
+  output << wxS("<div class=\"equation\">\n");
+  if (!labelText.IsEmpty())
+    output << wxS("  <span class=\"eqlabel\">")
+           << EditorCell::EscapeHTMLChars(labelText) << wxS("</span>\n");
+  output << wxS("  <span class=\"outputtext\">")
+         << EditorCell::EscapeHTMLChars(content->ListToString())
+         << wxS("</span>\n");
+  output << wxS("</div>\n");
+}
+
+/*! Render one output chunk (equation, image, animation or plain text).
+
+  Writes any image file into imgDir and appends the matching <img> tag, an
+  inline <math> element (native-MathML format) or -- for non-math output such
+  as messages, warnings, errors and strings -- escaped HTML text. The chunk is
+  a freshly-copied cell list owned by this call.
  */
 void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
                        Configuration *configuration, const wxString &imgDir,
@@ -1013,6 +1071,26 @@ void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
                            /*widthPx=*/-1, _("Animated Diagram"),
                            /*withBreak=*/false);
   } else if (dynamic_cast<ImgCellBase *>(&(*chunk)) == NULL) {
+    // Split off a leading output label (e.g. "(%o1)") so it can be shown
+    // beside the content rather than fed to the math renderer.
+    Cell *first = &(*chunk);
+    Cell *content = first;
+    wxString labelText;
+    if ((first->GetTextStyle() == TS_LABEL) ||
+        (first->GetTextStyle() == TS_USERLABEL)) {
+      labelText = first->ToString();
+      labelText.Trim(true).Trim(false);
+      content = first->GetNext();
+    }
+
+    if (ChunkIsPlainText(content)) {
+      // Non-math output: a message, warning, error or string. Emit it as
+      // text rather than a PNG/SVG of a sentence or prose wrapped in <math>
+      // (where a plain sentence turns into a run of <mo> operators).
+      EmitPlainTextOutput(output, labelText, content);
+      return;
+    }
+
     switch (configuration->HTMLequationFormat()) {
     case Configuration::svg: {
       auto const alttext =
@@ -1054,26 +1132,16 @@ void ExportOutputChunk(wxString &output, std::unique_ptr<Cell> chunk,
       // <mlabeledtr>, so an in-math label would silently vanish on
       // Chrome/Safari. The equation itself becomes a native <math>
       // element, with MathJax used only as a fill-in (see the header).
-      Cell *first = &(*chunk);
-      Cell *eqStart = first;
-      wxString labelText;
-      if ((first->GetTextStyle() == TS_LABEL) ||
-          (first->GetTextStyle() == TS_USERLABEL)) {
-        labelText = first->ToString();
-        labelText.Trim(true).Trim(false);
-        eqStart = first->GetNext();
-      }
-
       output << wxS("<div class=\"equation\">\n");
       if (!labelText.IsEmpty())
         output << wxS("  <span class=\"eqlabel\">")
                << EditorCell::EscapeHTMLChars(labelText)
                << wxS("</span>\n");
-      if (eqStart != NULL)
+      if (content != NULL)
         output
           << wxS("  <math xmlns=\"http://www.w3.org/1998/Math/MathML\" "
                  "display=\"block\">")
-          << eqStart->ListToMathML() << wxS("</math>\n");
+          << content->ListToMathML() << wxS("</math>\n");
       output << wxS("</div>\n");
     }
     }
