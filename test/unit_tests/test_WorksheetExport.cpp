@@ -217,10 +217,7 @@ static wxString MakeExportDir(const wxString &name) {
   return dir;
 }
 
-static std::unique_ptr<GroupCell> ParseCorpusFile(const wxString &name) {
-  const wxString path =
-    wxFileName(wxString(wxS(WXM_CORPUS_DIR)), name).GetFullPath();
-  const wxString xml = ReadTextFile(path);
+static std::unique_ptr<GroupCell> ParseXmlString(const wxString &xml) {
   const wxScopedCharBuffer utf8 = xml.utf8_str();
   wxMemoryInputStream in(utf8.data(), utf8.length());
   wxXmlDocument doc;
@@ -232,11 +229,40 @@ static std::unique_ptr<GroupCell> ParseCorpusFile(const wxString &name) {
   return tree;
 }
 
+static std::unique_ptr<GroupCell> ParseCorpusFile(const wxString &name) {
+  const wxString path =
+    wxFileName(wxString(wxS(WXM_CORPUS_DIR)), name).GetFullPath();
+  return ParseXmlString(ReadTextFile(path));
+}
+
 // Sentinel texts that must be findable in every export format.
 static const wxChar *const kTitleSentinel = wxS("ExportNetDocumentTitle");
 static const wxChar *const kSectionSentinel = wxS("ExportNetSectionHeading");
 static const wxChar *const kTextSentinel = wxS("ExportNetTextParagraph");
 static const wxChar *const kCodeSentinel = wxS("factor(xexportnet^2-1);");
+
+// A code cell whose output is *non-math* text: a warning (whose message
+// contains characters that must be HTML-escaped) and a labelled string. Both
+// must be exported as plain text, not routed through the equation renderer.
+static const wxChar *const kStringSentinel = wxS("ExportNetString value");
+static const wxChar *const kTextOutputXml = wxS(
+  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+  "<wxMaximaDocument version=\"1.5\" zoom=\"100\">\n"
+  "<cell type=\"code\">\n"
+  "<input><editor type=\"input\"><line>warnexample;</line></editor></input>\n"
+  "<output>\n"
+  "<mth><t breakline=\"true\" type=\"warning\">ExportNetWarning: replaced a"
+  " &amp; b &lt; c</t></mth>\n"
+  "</output>\n"
+  "</cell>\n"
+  "<cell type=\"code\">\n"
+  "<input><editor type=\"input\"><line>strexample;</line></editor></input>\n"
+  "<output>\n"
+  "<mth><lbl altCopy=\"(%o9)&#9;\">(%o9) </lbl><st>ExportNetString value</st>"
+  "</mth>\n"
+  "</output>\n"
+  "</cell>\n"
+  "</wxMaximaDocument>\n");
 
 /*! Fills the worksheet with the real math corpus plus sentinel cells.
 
@@ -250,6 +276,10 @@ static void BuildDocumentOnce() {
   // A rich body of real math output, exported by actual wxMaxima.
   g_ws->InsertGroupCells(ParseCorpusFile(wxS("sampleWorksheet.xml")), nullptr);
   g_ws->InsertGroupCells(ParseCorpusFile(wxS("math-constructs.xml")),
+                         g_ws->GetLastCellInWorksheet());
+  // Non-math text output (a warning and a string), to pin that it is exported
+  // as text rather than as a <math> element or a rendered image.
+  g_ws->InsertGroupCells(ParseXmlString(kTextOutputXml),
                          g_ws->GetLastCellInWorksheet());
 
   // Sentinels for asserting content presence per format.
@@ -355,6 +385,13 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
       RequireIdenticalTrees(snap1, snap2);
       const wxString html = ReadTextFile(dir1 + wxS("/doc.html"));
       RequireContainsSentinels(html);
+      // Non-math output must be emitted as text in every flavor: it carries
+      // the .outputtext class, its message is HTML-escaped, and it is never
+      // wrapped in <math> (which would turn a sentence into a run of <mo>).
+      REQUIRE(html.Contains(wxS("class=\"outputtext\"")));
+      REQUIRE(html.Contains(wxS("replaced a &amp; b &lt; c")));
+      REQUIRE(html.Contains(kStringSentinel));
+      REQUIRE_FALSE(html.Contains(wxS("<mo>ExportNetWarning")));
       // The exported HTML must be structurally valid (skipped if tidy absent).
       RequireValidHtml(dir1 + wxS("/doc.html"));
       // Image links must not dangle (broken-link regression, see helper).
