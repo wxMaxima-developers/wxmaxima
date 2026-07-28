@@ -2046,7 +2046,8 @@ void wxMaxima::UpdateMenus() {
   m_MenuBar->EnableItem(EventIDs::menu_copy_tex_from_worksheet, GetWorksheet()->CanCopy());
   m_MenuBar->EnableItem(EventIDs::menu_copy_matlab_from_worksheet,
                         GetWorksheet()->CanCopy());
-  m_MenuBar->EnableItem(EventIDs::popid_copy_mathml, GetWorksheet()->CanCopy());
+  m_MenuBar->EnableItem(EventIDs::popid_copy_mathml,
+                        GetWorksheet()->CanCopyAsMathML());
   m_MenuBar->EnableItem(EventIDs::menu_copy_as_bitmap, GetWorksheet()->CanCopy());
   m_MenuBar->EnableItem(EventIDs::menu_copy_as_svg, GetWorksheet()->CanCopy());
 #if wxUSE_ENH_METAFILE

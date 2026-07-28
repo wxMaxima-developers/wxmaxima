@@ -1816,6 +1816,25 @@ wxString Worksheet::ConvertSelectionToMathML() const {
   return s;
 }
 
+bool Worksheet::CanCopyAsMathML() const {
+  // Judge the offer by exactly what the copy would produce, so the menu item
+  // never promises MathML the copy can't deliver. Prose (text/comments/
+  // strings/labels) serializes to <mtext>/<ms>/<mo> only; the presence of any
+  // genuine math *content* element is what makes "Copy as MathML" worthwhile.
+  // Note: <mtable> is deliberately NOT in this list -- ListToMathML also wraps
+  // multi-line or labelled *text* in a table, so it isn't a math signal (a
+  // matrix's entries are caught by <mn>/<mi> instead).
+  const wxString mathml = ConvertSelectionToMathML();
+  static const wxChar *const mathTags[] = {
+    wxS("<mi"),    wxS("<mn"),      wxS("<mfrac"), wxS("<msup"),
+    wxS("<msub"),  wxS("<msubsup"), wxS("<msqrt"), wxS("<mroot"),
+    wxS("<munder"), wxS("<mover"),  wxS("<munderover")};
+  for (const wxChar *const tag : mathTags)
+    if (mathml.Contains(tag))
+      return true;
+  return false;
+}
+
 bool Worksheet::CopyMathML() const {
   wxString s = ConvertSelectionToMathML();
 

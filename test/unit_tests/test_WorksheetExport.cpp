@@ -564,6 +564,40 @@ SCENARIO("The selection-to-string converters are deterministic and complete") {
     REQUIRE(m1.Contains(wxS("<math")));
   }
 
+  THEN("CanCopyAsMathML offers MathML only for selections with real math") {
+    // Selecting whole GroupCells or an in-output text message must not offer
+    // MathML; selecting a code cell's math output must. (A whole-GroupCell
+    // selection serializes to empty MathML -- GroupCell has no ToMathML -- so
+    // the offer is judged on in-output selections, which is the useful case.)
+    bool mathOutputOffered = false;
+    GroupCell *warn = nullptr;
+    for (GroupCell *g = g_ws->GetTree(); g != nullptr; g = g->GetNext()) {
+      if (g->GetEditable() &&
+          g->GetEditable()->ToString().Contains(wxS("warnexample")))
+        warn = g;
+      // Select this cell's whole output (label .. last output cell).
+      Cell *out = g->GetLabel();
+      if (out == nullptr)
+        continue;
+      Cell *outEnd = out;
+      while (outEnd->GetNext() != nullptr)
+        outEnd = outEnd->GetNext();
+      g_ws->SetSelection(out, outEnd);
+      if (g_ws->CanCopyAsMathML())
+        mathOutputOffered = true;
+    }
+    // At least one corpus cell has genuine math output.
+    REQUIRE(mathOutputOffered);
+
+    // The plain-text warning output serializes to <mo>/<mtext> only, so it
+    // must never offer MathML.
+    REQUIRE(warn != nullptr);
+    Cell *wout = warn->GetLabel();
+    REQUIRE(wout != nullptr);
+    g_ws->SetSelection(wout, wout);
+    REQUIRE_FALSE(g_ws->CanCopyAsMathML());
+  }
+
   THEN("the RTF frame is stable and well-formed") {
     const wxString start = g_ws->RTFStart();
     const wxString end = g_ws->RTFEnd();

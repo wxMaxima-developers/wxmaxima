@@ -6,6 +6,10 @@
   plain sentence could end up as a picture of text or as a run of MathML
   operators that browsers rendered oddly; it now reads as text in every export
   flavour and stays selectable and searchable.
+- "Copy as MathML" is no longer offered (in the context menu or the Edit menu)
+  for a selection that contains no maths -- plain text, comments, labels or
+  strings. Copying those produced MathML that only wrapped the text in operator
+  elements, which word processors rendered oddly.
 - Bitmap rendering of equations no longer clips them to a corner of the image.
   Anything rendered at a "Bitmap scale" other than 1 -- the HTML export's bitmap
   equation flavor and the optional "Bitmap" clipboard format both use the

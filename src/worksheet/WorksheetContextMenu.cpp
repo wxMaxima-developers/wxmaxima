@@ -127,7 +127,8 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                            wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_copy_text, _("Copy as plain text"),
                            wxEmptyString, wxITEM_NORMAL);
-          if (worksheet.GetDocumentCellPointers().GetSelectionStart() == worksheet.GetDocumentCellPointers().GetSelectionEnd())
+          if ((worksheet.GetDocumentCellPointers().GetSelectionStart() == worksheet.GetDocumentCellPointers().GetSelectionEnd()) &&
+              worksheet.CanCopyAsMathML())
             popupMenu.Append(EventIDs::popid_copy_mathml,
                              _("Copy as MathML (e.g. to word processor)"),
                              wxEmptyString, wxITEM_NORMAL);
@@ -267,9 +268,10 @@ void PopulateWorksheetContextMenu(Worksheet &worksheet, wxMenu &popupMenu,
                            wxITEM_NORMAL);
           popupMenu.Append(EventIDs::popid_copy_text, _("Copy as plain text"),
                            wxEmptyString, wxITEM_NORMAL);
-          popupMenu.Append(EventIDs::popid_copy_mathml,
-                           _("Copy as MathML (e.g. to word processor)"),
-                           wxEmptyString, wxITEM_NORMAL);
+          if (worksheet.CanCopyAsMathML())
+            popupMenu.Append(EventIDs::popid_copy_mathml,
+                             _("Copy as MathML (e.g. to word processor)"),
+                             wxEmptyString, wxITEM_NORMAL);
 
           popupMenu.Append(EventIDs::popid_copy_image, _("Copy as Image"), wxEmptyString,
                            wxITEM_NORMAL);
