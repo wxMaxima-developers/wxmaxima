@@ -669,6 +669,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetInputPrompts</b>
 <tr class="memitem:ac6137b1a90f44088cbc0f3c6b5141f50"><td class="memItemLeft" align="right" valign="top"><a id="ac6137b1a90f44088cbc0f3c6b5141f50" name="ac6137b1a90f44088cbc0f3c6b5141f50"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanCopy</b> () const</td></tr>
 <tr class="separator:ac6137b1a90f44088cbc0f3c6b5141f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdbbe083aee5a68c963b6d2e3f905946"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#abdbbe083aee5a68c963b6d2e3f905946">CanCopyAsMathML</a> () const</td></tr>
+<tr class="memdesc:abdbbe083aee5a68c963b6d2e3f905946"><td class="mdescLeft">&#160;</td><td class="mdescRight">Would "Copy as MathML" of the current selection produce actual math?  <br /></td></tr>
+<tr class="separator:abdbbe083aee5a68c963b6d2e3f905946"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9bfa59d73646af83067c8fbae958486"><td class="memItemLeft" align="right" valign="top"><a id="ae9bfa59d73646af83067c8fbae958486" name="ae9bfa59d73646af83067c8fbae958486"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanPaste</b> () const</td></tr>
 <tr class="separator:ae9bfa59d73646af83067c8fbae958486"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1334,6 +1337,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 <p>No completions - clear the selection and return false</p>
 <p>If there is only one completion, use it</p>
 <p>If there are more than one completions, popup a menu</p>
+
+</div>
+</div>
+<a id="abdbbe083aee5a68c963b6d2e3f905946" name="abdbbe083aee5a68c963b6d2e3f905946"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdbbe083aee5a68c963b6d2e3f905946">&#9670;&#160;</a></span>CanCopyAsMathML()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Worksheet::CanCopyAsMathML </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Would "Copy as MathML" of the current selection produce actual math? </p>
+<p>True only when the selection would serialize to MathML that contains a real math element (a variable, number, fraction, ...). <a class="el" href="classA.html">A</a> selection of plain text, comments, labels or strings serializes to &lt;mtext&gt;/&lt;ms&gt;/&lt;mo&gt; only, so offering "Copy as MathML" for it is pointless (and used to yield prose wrapped as MathML operators that word processors render oddly). </p>
 
 </div>
 </div>

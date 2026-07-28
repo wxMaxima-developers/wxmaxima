@@ -302,17 +302,17 @@ Unicode replacement</h3>
 <p>Unicode has several "common" fractions encoded as one Unicode code point: <code>¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞</code></p>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> will replace them with their <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> representations, e.g <code>(1/4)</code> before the input is sent do <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>. There are also <code>⅟</code>, which will be replaced by <code>1/</code> and <code>↉</code> (used in baseball), which will be replaced by <code>(0/3)</code>.</p>
 <p>It is recommended to use <b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> code</b> (not these Unicode code points) in input cells (Rationale: (a) it might be possible, that the used font for math input does not contain them; (b) if you save the document as <code>wxm</code>-file, it is usually readable by (command line) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, but these changes will of course not work in command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>); but they may occur, if you cut&amp;paste a formula from another document.</p>
-<h3><a class="anchor" id="autotoc_md644"></a>
+<h3><a class="anchor" id="autotoc_md645"></a>
 Side Panes</h3>
 <p>Доступ до найважливіших команд <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> або речей, подібних до таблиці змісту, вікон із діагностичними повідомленнями або журналу останніх виданих команд можна отримати за допомогою бічних панелей. Увімкнути бічні панелі можна за допомогою меню «Перегляд». Панелі можна пересувати як всередині вікна <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, так і ззовні. Ще однією корисною панеллю є панель введення грецьких літер за допомогою вказівника миші.</p>
 <p><img src="./SidePanes.png" alt="Приклад різних бічних панелей" class="inline"/></p>
 <p>За допомогою бічної панелі «Зміст» можна збільшити або зменшити рівень заголовка: просто клацніть на заголовку правою кнопкою миші і виберіть наступний більший або менший рівень заголовка.</p>
 <p><img src="./Sidepane-TOC-convert-headings.png" alt="Збільшення або зменшення рівня заголовка за допомогою бічної панелі
 «Зміст»" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md645"></a>
+<h3><a class="anchor" id="autotoc_md646"></a>
 MathML output</h3>
 <p>Several word processors and similar programs either recognize <a href="https://www.w3.org/Math/">MathML</a> input and automatically insert it as an editable 2<a class="el" href="classD.html">D</a> equation - or (like LibreOffice) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. <em>WxMaxima</em>, therefore, offers several entries in the right-click menu.</p>
-<h3><a class="anchor" id="autotoc_md646"></a>
+<h3><a class="anchor" id="autotoc_md647"></a>
 Markdown support</h3>
 <p><em>WxMaxima</em> offers a set of standard <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> conventions that don’t collide with mathematical notation. One of these elements is bullet lists.</p>
 <div class="fragment"><div class="line">Ordinary text</div>
@@ -421,10 +421,10 @@ Markdown support</h3>
 <div class="fragment"><div class="line">/* [wxMaxima: fold    start ] */</div>
 <div class="line">...</div>
 <div class="line">/* [wxMaxima: fold    end   ] */</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md647"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md648"></a>
 .wxmx</h3>
 <p>У цьому заснованому на XML форматі файлів зберігається увесь робочий аркуш, включно із даними щодо масштабу та списком спостереження. Цей формат файлів є рекомендованим.</p>
-<h4><a class="anchor" id="autotoc_md648"></a>
+<h4><a class="anchor" id="autotoc_md649"></a>
 File format of wxmx files</h4>
 <p><a class="el" href="classA.html">A</a> <code>wxmx</code>-file seems to be a binary format, but one can handle it with tools, which are included in your OS. It is a zip file, one can decompress it with <code>unzip</code> (maybe rename it before, so that is recognized by the unzip program of your OS). We do not use the compression function, just the possibility to merge several files into one file - images are already compressed and the rest is simple text (probably much smaller, than huge images, which are included).</p>
 <p>It does contain the following files:</p>
@@ -435,7 +435,7 @@ File format of wxmx files</h4>
 <li><code>content.xml</code>: a XML document, which contains the various cells of your document in XML format.</li>
 </ul>
 <p>So, if something goes wrong, you can unzip a <a class="el" href="classwxMaxima.html">wxMaxima</a> document (maybe rename it before to a <code>zip</code>-file), maybe make changes in the <code>content.xml</code> file with a text editor, or replace an broken image, zip the files again, probably rename the <code>zip</code> to a <code>wxmx</code>-file - and you get another modified <code>wxmx</code>-file.</p>
-<h2><a class="anchor" id="autotoc_md649"></a>
+<h2><a class="anchor" id="autotoc_md650"></a>
 Configuration options</h2>
 <p>Для деяких типових змінних налаштувань у <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> передбачено два способи налаштовування:</p>
 <ul>
@@ -443,10 +443,10 @@ Configuration options</h2>
 <li>Also, the values for most configuration variables can be changed for the current session only by overwriting their values from the worksheet, as shown below.</li>
 </ul>
 <p><img src="./wxMaxima_configuration_001.png" alt="Налаштування wxMaxima 1" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md650"></a>
+<h3><a class="anchor" id="autotoc_md651"></a>
 Default animation framerate</h3>
 <p>Частота кадрів анімації, яка використовуватиметься для нових анімацій, зберігається у змінній <code>wxanimate_framerate</code>. Початкове значення цієї змінної, яке міститиметься у новому робочому аркуші, можна змінити за допомогою діалогового вікна налаштовування.</p>
-<h3><a class="anchor" id="autotoc_md651"></a>
+<h3><a class="anchor" id="autotoc_md652"></a>
 Default plot size for new &lt;em&gt;maxima&lt;/em&gt; sessions</h3>
 <p>After the next start, plots embedded into the worksheet will be created with this size if the value of <code>wxplot_size</code> isn’t changed by <em>maxima</em>.</p>
 <p>In order to set the plot size of a single graph only use the following notation can be used that sets a variable’s value for one command only:</p>
@@ -456,7 +456,7 @@ Default plot size for new &lt;em&gt;maxima&lt;/em&gt; sessions</h3>
 <div class="line">       x,-5,5</div>
 <div class="line">   )</div>
 <div class="line">), wxplot_size=[480,480]$</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md652"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md653"></a>
 Match parenthesis in text controls</h3>
 <p>За допомогою цього пункту можна увімкнути дві речі:</p>
 <ul>
