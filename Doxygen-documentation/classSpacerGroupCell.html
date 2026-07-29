@@ -914,6 +914,9 @@ static std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#16
 <tr class="memitem:a31e6b7d74121472d8bf8625e37d6d2e4"><td class="memItemLeft" align="right" valign="top"><a id="a31e6b7d74121472d8bf8625e37d6d2e4" name="a31e6b7d74121472d8bf8625e37d6d2e4"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ToTeXImage</b> (const <a class="el" href="classCell.html">Cell</a> *tmp, const wxString &amp;imgDir, const wxString &amp;filename, std::size_t *imgCounter)</td></tr>
 <tr class="separator:a31e6b7d74121472d8bf8625e37d6d2e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d3ab6bd5170f698c992ee2e18e648c9"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a8d3ab6bd5170f698c992ee2e18e648c9">ToTeXAnimation</a> (const <a class="el" href="classCell.html">Cell</a> *tmp, const wxString &amp;imgDir, const wxString &amp;filename, std::size_t *imgCounter)</td></tr>
+<tr class="memdesc:a8d3ab6bd5170f698c992ee2e18e648c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write an animation's frames as images and emit an \animategraphics for it.  <br /></td></tr>
+<tr class="separator:a8d3ab6bd5170f698c992ee2e18e648c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7425b9481ec817268e10b9eadddbc877"><td class="memItemLeft" align="right" valign="top"><a id="a7425b9481ec817268e10b9eadddbc877" name="a7425b9481ec817268e10b9eadddbc877"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>TexEscapeOutputCell</b> (wxString Input)</td></tr>
 <tr class="separator:a7425b9481ec817268e10b9eadddbc877"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4242,7 +4245,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
@@ -4499,6 +4502,57 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a8d3ab6bd5170f698c992ee2e18e648c9" name="a8d3ab6bd5170f698c992ee2e18e648c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d3ab6bd5170f698c992ee2e18e648c9">&#9670;&#160;</a></span>ToTeXAnimation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString GroupCell::ToTeXAnimation </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classCell.html">Cell</a> *&#160;</td>
+          <td class="paramname"><em>tmp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>imgDir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t *&#160;</td>
+          <td class="paramname"><em>imgCounter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Write an animation's frames as images and emit an \animategraphics for it. </p>
+<p>Returns an empty string (so the caller can fall back to a placeholder) if the cell isn't an animation, has no frames, or there is nowhere to write the frame images to. </p>
 
 </div>
 </div>
