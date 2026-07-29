@@ -660,6 +660,8 @@ public:
   static const wxWindowIDRef popid_copy_svg;
   static const wxWindowIDRef popid_copy_emf;
   static const wxWindowIDRef popid_copy_rtf;
+  static const wxWindowIDRef popid_export_output_svg;
+  static const wxWindowIDRef popid_export_output_png;
   static const wxWindowIDRef popid_add_watch;
   static const wxWindowIDRef popid_add_watch_label;
   static const wxWindowIDRef popid_special_constant_percent;

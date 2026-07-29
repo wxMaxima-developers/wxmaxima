@@ -1,5 +1,11 @@
 # Current development version
 
+- New right-click items "Export output as SVG to a folder..." and "...as PNG
+  to a folder...": for the selected cell(s) they write one image file per
+  output into a directory you choose, named after the output label (e.g.
+  `o12.svg`). Previously the only way to harvest the rendered equation images
+  was to run a full HTML export and dig the pictures out of its `_htmlimg/`
+  folder.
 - HTML export: non-math output (Maxima messages, warnings, errors and plain
   strings) is now written as ordinary, HTML-escaped text instead of being
   rendered to a PNG/SVG image or wrapped in a `<math>` element. Previously a
