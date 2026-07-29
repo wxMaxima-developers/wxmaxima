@@ -644,17 +644,32 @@ wxString TextCell::ToTeX() const {
   wxString mathModeEnd = wxS(" ");
 
   if ((GetTextStyle() == TS_ERROR) || (GetTextStyle() == TS_WARNING) ||
+      (GetTextStyle() == TS_TEXT) ||
       (GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL) ||
       (GetTextStyle() == TS_MAIN_PROMPT) || (GetTextStyle() == TS_OTHER_PROMPT)) {
+    // These are emitted as LaTeX text (see GroupCell::ToTeXCodeCell), so any
+    // math symbols must be self-contained \ensuremath{...} to stay valid
+    // outside math mode.
     mathModeStart = wxS("\\ensuremath{");
     mathModeEnd = wxS("}");
     if ((GetTextStyle() == TS_LABEL) || (GetTextStyle() == TS_USERLABEL) ||
-        (GetTextStyle() == TS_MAIN_PROMPT) || (GetTextStyle() == TS_OTHER_PROMPT))
+        (GetTextStyle() == TS_MAIN_PROMPT) || (GetTextStyle() == TS_OTHER_PROMPT)) {
       text.Replace(wxS("\\"), wxEmptyString);
-    else
-      text.Replace(wxS("\\"), mathModeStart + wxS("\\backslash") + mathModeEnd);
-    text.Replace(wxS("{"), wxS("\\{"));
-    text.Replace(wxS("}"), wxS("\\}"));
+      text.Replace(wxS("{"), wxS("\\{"));
+      text.Replace(wxS("}"), wxS("\\}"));
+    } else {
+      // A backslash becomes \ensuremath{\backslash}, whose OWN braces must
+      // survive the brace-escaping. Route it through a placeholder first, then
+      // escape the text's own braces, then expand the placeholder -- otherwise
+      // the brace-escaping mangles the just-inserted \ensuremath{} and any
+      // backslash in output text produced broken LaTeX (\ensuremath\{...).
+      const wxString backslashMarker(wxUniChar(0xE000)); // private-use char
+      text.Replace(wxS("\\"), backslashMarker);
+      text.Replace(wxS("{"), wxS("\\{"));
+      text.Replace(wxS("}"), wxS("\\}"));
+      text.Replace(backslashMarker,
+                   mathModeStart + wxS("\\backslash") + mathModeEnd);
+    }
   } else {
     text.Replace(wxS("\\"), mathModeStart + wxS("\\backslash") + mathModeEnd);
     text.Replace(wxS("{"), wxS("\\{"));
@@ -995,8 +1010,10 @@ wxString TextCell::ToTeX() const {
       text.Replace(wxS("\\text{Ö}"), wxS("\\text{\\textit{Ö}}"));
       text.Replace(wxS("\\text{Ü}"), wxS("\\text{\\textit{Ü}}"));
     } else if ((GetTextStyle() == TS_ERROR) || (GetTextStyle() == TS_WARNING)) {
+      // Emitted as text by ToTeXCodeCell, so no need to escape out of and back
+      // into math mode (the old "\] ... \[" dance) here.
       if (text.Length() > 1)
-        text = wxS("\\] \\texttt{%error\n") + text + wxS("}") + wxS("\\[");
+        text = wxS("\\texttt{%error\n") + text + wxS("}");
     } else if (GetTextStyle() == TS_MATH) {
       if ((text.Length() > 2) && (text != wxS("\\,")) && (text != wxS("\\, ") && text != wxS("\\cdot ")))
         text = wxS("\\mbox{") + text + wxS("}");

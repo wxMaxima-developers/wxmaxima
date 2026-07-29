@@ -1,5 +1,10 @@
 # Current development version
 
+- LaTeX export: non-math output (Maxima messages, warnings and errors) is now
+  written as LaTeX text instead of being forced through the math renderer, and
+  a backslash in such output no longer produces broken LaTeX -- the
+  `\ensuremath{}` that wraps it was itself being brace-escaped into invalid
+  markup. (Strings were already exported as text.)
 - New Maxima command `wxworksheettohtml("file.html")` exports the current
   worksheet to HTML from within a Maxima session (for scripted/batch export).
   Keyword options choose the flavour: `flavor="mathml"` (default, self-contained

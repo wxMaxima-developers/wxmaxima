@@ -263,6 +263,13 @@ static const wxChar *const kTextOutputXml = wxS(
   "</mth>\n"
   "</output>\n"
   "</cell>\n"
+  "<cell type=\"code\">\n"
+  "<input><editor type=\"input\"><line>textexample;</line></editor></input>\n"
+  "<output>\n"
+  "<mth><t breakline=\"true\">ExportNetTextOutput line: alpha=&#945; "
+  "backslash=\\ ok</t></mth>\n"
+  "</output>\n"
+  "</cell>\n"
   "</wxMaximaDocument>\n");
 
 /*! Fills the worksheet with the real math corpus plus sentinel cells.
@@ -502,6 +509,33 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
   g_cfg->HTMLequationFormat(oldFormat);
 }
 
+/*! Compile an exported .tex with pdflatex, when it is installed.
+
+  The LaTeX export is assembled by string concatenation across ~30 ToTeX() cell
+  methods, so a malformed macro or an unbalanced math mode is easy to introduce
+  and invisible to the content assertions -- but it breaks the whole document.
+  Actually compiling it is the real guard. Optional: if pdflatex isn't on PATH
+  (wxExecute returns -1) the check is skipped so the suite still runs everywhere
+  (e.g. CI without a TeX toolchain). pdflatex runs in the .tex's own directory
+  so the relative <name>_img/ graphics paths resolve.
+*/
+static void RequireTexCompiles(const wxString &texPath) {
+  const wxFileName texFile(texPath);
+  wxArrayString out, err;
+  wxExecuteEnv env;
+  env.cwd = texFile.GetPath();
+  const wxString cmd =
+    wxS("pdflatex -interaction=nonstopmode -halt-on-error \"") +
+    texFile.GetFullName() + wxS("\"");
+  const long rc = wxExecute(cmd, out, err, wxEXEC_SYNC, &env);
+  if (rc < 0)
+    return; // pdflatex not installed -> skip cleanly
+  if (rc != 0)
+    for (const auto &line : out)
+      INFO("pdflatex: " << line.ToStdString());
+  REQUIRE(rc == 0);
+}
+
 SCENARIO("TeX export succeeds, is deterministic and contains the document") {
   BuildDocumentOnce();
 
@@ -519,6 +553,20 @@ SCENARIO("TeX export succeeds, is deterministic and contains the document") {
     REQUIRE(tex.Contains(wxS("\\documentclass")));
     REQUIRE(tex.Contains(wxS("\\end{document}")));
     RequireContainsSentinels(tex);
+  }
+
+  THEN("non-math output is emitted as text, not forced through math mode") {
+    const wxString tex = ReadTextFile(dir1 + wxS("/doc.tex"));
+    // The warning is emitted as \texttt{...} text ...
+    REQUIRE(tex.Contains(wxS("\\texttt{%error")));
+    // ... without the old "escape out of and back into math mode" hack.
+    REQUIRE_FALSE(tex.Contains(wxS("\\] \\texttt{%error")));
+    // A plain text output line survives too.
+    REQUIRE(tex.Contains(wxS("ExportNetTextOutput")));
+  }
+
+  THEN("the exported LaTeX compiles (skipped if pdflatex is absent)") {
+    RequireTexCompiles(dir1 + wxS("/doc.tex"));
   }
 }
 
