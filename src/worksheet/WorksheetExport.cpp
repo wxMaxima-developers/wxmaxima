@@ -719,6 +719,14 @@ bool WorksheetExport::ExportToTeX(GroupCell *tree, Configuration *configuration,
   // necessary logic for this to TeX.
   output << wxS("\\usepackage{color}\n");
   output << wxS("\\usepackage[leqno]{amsmath}\n");
+  // On the modern Unicode engines (XeLaTeX/LuaLaTeX) unicode-math lets the
+  // document typeset arbitrary Unicode maths directly -- so a symbol wxMaxima
+  // doesn't translate to a LaTeX command still renders instead of vanishing or
+  // breaking the build. It must be loaded after amsmath, and only there (pdfTeX
+  // has no Unicode-math font machinery; it keeps the inputenc path above).
+  output << wxS("\\ifPDFTeX\\else\n");
+  output << wxS("  \\usepackage{unicode-math}\n");
+  output << wxS("\\fi\n");
 
   // We want to shrink pictures the user has included if they are
   // higher or wider than the page.

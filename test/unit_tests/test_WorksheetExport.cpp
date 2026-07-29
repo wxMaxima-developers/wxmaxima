@@ -267,7 +267,7 @@ static const wxChar *const kTextOutputXml = wxS(
   "<input><editor type=\"input\"><line>textexample;</line></editor></input>\n"
   "<output>\n"
   "<mth><t breakline=\"true\">ExportNetTextOutput line: alpha=&#945; "
-  "backslash=\\ ok</t></mth>\n"
+  "backslash=\\ nabla=&#8711; equiv=&#8801; approx=&#8776; ok</t></mth>\n"
   "</output>\n"
   "</cell>\n"
   "</wxMaximaDocument>\n");
@@ -509,30 +509,35 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
   g_cfg->HTMLequationFormat(oldFormat);
 }
 
-/*! Compile an exported .tex with pdflatex, when it is installed.
+/*! Compile an exported .tex with a LaTeX engine, when it is installed.
 
   The LaTeX export is assembled by string concatenation across ~30 ToTeX() cell
   methods, so a malformed macro or an unbalanced math mode is easy to introduce
   and invisible to the content assertions -- but it breaks the whole document.
-  Actually compiling it is the real guard. Optional: if pdflatex isn't on PATH
-  (wxExecute returns -1) the check is skipped so the suite still runs everywhere
-  (e.g. CI without a TeX toolchain). pdflatex runs in the .tex's own directory
-  so the relative <name>_img/ graphics paths resolve.
+  Actually compiling it is the real guard. We exercise both engine families,
+  because the preamble branches on \ifPDFTeX: `pdflatex` (inputenc path) and
+  `lualatex` (fontspec + unicode-math path). Optional: if the engine isn't on
+  PATH (wxExecute returns -1) that engine is skipped so the suite still runs
+  everywhere (e.g. CI without a TeX toolchain). The engine runs in the .tex's
+  own directory so the relative <name>_img/ graphics paths resolve; a per-engine
+  jobname keeps their aux/pdf outputs from clobbering each other.
 */
-static void RequireTexCompiles(const wxString &texPath) {
+static void RequireTexCompiles(const wxString &texPath, const wxString &engine) {
   const wxFileName texFile(texPath);
   wxArrayString out, err;
   wxExecuteEnv env;
   env.cwd = texFile.GetPath();
-  const wxString cmd =
-    wxS("pdflatex -interaction=nonstopmode -halt-on-error \"") +
-    texFile.GetFullName() + wxS("\"");
+  const wxString cmd = engine +
+    wxS(" -interaction=nonstopmode -halt-on-error -jobname=out_") + engine +
+    wxS(" \"") + texFile.GetFullName() + wxS("\"");
   const long rc = wxExecute(cmd, out, err, wxEXEC_SYNC, &env);
   if (rc < 0)
-    return; // pdflatex not installed -> skip cleanly
-  if (rc != 0)
+    return; // this engine not installed -> skip cleanly
+  if (rc != 0) {
+    INFO("engine: " << engine.ToStdString());
     for (const auto &line : out)
-      INFO("pdflatex: " << line.ToStdString());
+      INFO(line.ToStdString());
+  }
   REQUIRE(rc == 0);
 }
 
@@ -565,8 +570,11 @@ SCENARIO("TeX export succeeds, is deterministic and contains the document") {
     REQUIRE(tex.Contains(wxS("ExportNetTextOutput")));
   }
 
-  THEN("the exported LaTeX compiles (skipped if pdflatex is absent)") {
-    RequireTexCompiles(dir1 + wxS("/doc.tex"));
+  THEN("the exported LaTeX compiles under both engine families") {
+    // pdfTeX (inputenc path) and a Unicode engine (fontspec + unicode-math
+    // path); each is skipped if that binary isn't installed.
+    RequireTexCompiles(dir1 + wxS("/doc.tex"), wxS("pdflatex"));
+    RequireTexCompiles(dir1 + wxS("/doc.tex"), wxS("lualatex"));
   }
 }
 
