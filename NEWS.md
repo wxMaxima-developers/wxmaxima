@@ -1,5 +1,11 @@
 # Current development version
 
+- LaTeX export: on the Unicode engines (XeLaTeX/LuaLaTeX) the exported document
+  now loads `unicode-math`, so a Unicode symbol wxMaxima has no explicit LaTeX
+  translation for is typeset directly from the character instead of vanishing or
+  breaking the build. A few common symbols that were missing from the
+  translation table (nabla, approx, equiv) render under pdfTeX too now.
+
 - LaTeX export: non-math output (Maxima messages, warnings and errors) is now
   written as LaTeX text instead of being forced through the math renderer, and
   a backslash in such output no longer produces broken LaTeX -- the

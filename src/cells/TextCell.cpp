@@ -785,6 +785,9 @@ wxString TextCell::ToTeX() const {
   text.Replace(wxS("\u2263"), mathModeStart + wxS("\\equiv") + mathModeEnd);
   text.Replace(wxS("\u2211"), mathModeStart + wxS("\\sum") + mathModeEnd);
   text.Replace(wxS("\u220F"), mathModeStart + wxS("\\prod") + mathModeEnd);
+  text.Replace(wxS("\u2207"), mathModeStart + wxS("\\nabla") + mathModeEnd);
+  text.Replace(wxS("\u2261"), mathModeStart + wxS("\\equiv") + mathModeEnd);
+  text.Replace(wxS("\u2248"), mathModeStart + wxS("\\approx") + mathModeEnd);
   text.Replace(wxS("\u2225"), mathModeStart + wxS("\\parallel") + mathModeEnd);
   text.Replace(wxS("\u27C2"), mathModeStart + wxS("\\bot") + mathModeEnd);
   text.Replace(wxS("~"), mathModeStart + wxS("\\sim ") + mathModeEnd);
