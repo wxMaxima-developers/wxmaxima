@@ -26,9 +26,10 @@ var searchData=
   ['exitaftereval_23',['ExitAfterEval',['../classwxMaxima.html#ae1282d42b62a5d4620e95aa7c9c054c3',1,'wxMaxima']]],
   ['exitonerror_24',['ExitOnError',['../classwxMaxima.html#a4252227241877b64d96fa93249a6089c',1,'wxMaxima']]],
   ['exitonerrorarmed_25',['ExitOnErrorArmed',['../classwxMaxima.html#a8bbff1144191cdff9306acb101a57307',1,'wxMaxima']]],
-  ['exporttohtml_26',['ExportToHTML',['../classWorksheet.html#a2ee514a4bc8e4164cfd661d7c32fe965',1,'Worksheet::ExportToHTML()'],['../WorksheetExport_8h.html#af176cb310c6fd3c83973df2f0ccfb5aa',1,'WorksheetExport::ExportToHTML()']]],
-  ['exporttomac_27',['ExportToMAC',['../classWorksheet.html#ad66ccef72e32b507379559594f0c9190',1,'Worksheet::ExportToMAC()'],['../WorksheetExport_8h.html#a778ac9307ea55debf08d0c658b5cf8fd',1,'WorksheetExport::ExportToMAC()']]],
-  ['exporttotex_28',['ExportToTeX',['../classWorksheet.html#aaea30ddc4ca6de8eb92b5ed45ce527fe',1,'Worksheet::ExportToTeX()'],['../WorksheetExport_8h.html#ad086ada2f54ab7392da2fdaf5158ff32',1,'WorksheetExport::ExportToTeX()']]],
-  ['exptcell_29',['ExptCell',['../classExptCell.html#ab3a01ce869823525a95272e9258a0843',1,'ExptCell']]],
-  ['extramaximaargs_30',['ExtraMaximaArgs',['../classwxMaxima.html#a3e8b0edd0117a7f64a69c0e17c82ec52',1,'wxMaxima::ExtraMaximaArgs(const wxString &amp;args)'],['../classwxMaxima.html#a2f0f0d79dfcb0df2455c1de2fd3169b7',1,'wxMaxima::ExtraMaximaArgs()']]]
+  ['exportselectionoutputtodir_26',['ExportSelectionOutputToDir',['../classWorksheet.html#ae57bd6a7dcc3fdc952cf376b52215d00',1,'Worksheet']]],
+  ['exporttohtml_27',['ExportToHTML',['../classWorksheet.html#a2ee514a4bc8e4164cfd661d7c32fe965',1,'Worksheet::ExportToHTML()'],['../WorksheetExport_8h.html#af176cb310c6fd3c83973df2f0ccfb5aa',1,'WorksheetExport::ExportToHTML()']]],
+  ['exporttomac_28',['ExportToMAC',['../classWorksheet.html#ad66ccef72e32b507379559594f0c9190',1,'Worksheet::ExportToMAC()'],['../WorksheetExport_8h.html#a778ac9307ea55debf08d0c658b5cf8fd',1,'WorksheetExport::ExportToMAC()']]],
+  ['exporttotex_29',['ExportToTeX',['../classWorksheet.html#aaea30ddc4ca6de8eb92b5ed45ce527fe',1,'Worksheet::ExportToTeX()'],['../WorksheetExport_8h.html#ad086ada2f54ab7392da2fdaf5158ff32',1,'WorksheetExport::ExportToTeX()']]],
+  ['exptcell_30',['ExptCell',['../classExptCell.html#ab3a01ce869823525a95272e9258a0843',1,'ExptCell']]],
+  ['extramaximaargs_31',['ExtraMaximaArgs',['../classwxMaxima.html#a3e8b0edd0117a7f64a69c0e17c82ec52',1,'wxMaxima::ExtraMaximaArgs(const wxString &amp;args)'],['../classwxMaxima.html#a2f0f0d79dfcb0df2455c1de2fd3169b7',1,'wxMaxima::ExtraMaximaArgs()']]]
 ];

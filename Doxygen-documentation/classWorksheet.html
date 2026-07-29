@@ -809,6 +809,9 @@ wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>CopyToFile</b> (con
 <tr class="memitem:a27c3c5c0e486d25ea72febafe1c14547"><td class="memItemLeft" align="right" valign="top"><a id="a27c3c5c0e486d25ea72febafe1c14547" name="a27c3c5c0e486d25ea72febafe1c14547"></a>
 wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>CopyToFile</b> (const wxString &amp;file, <a class="el" href="classCell.html">Cell</a> *start, <a class="el" href="classCell.html">Cell</a> *end, bool asData=false, double scale=1) const</td></tr>
 <tr class="separator:a27c3c5c0e486d25ea72febafe1c14547"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae57bd6a7dcc3fdc952cf376b52215d00"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#ae57bd6a7dcc3fdc952cf376b52215d00">ExportSelectionOutputToDir</a> (const wxString &amp;dir, bool svg)</td></tr>
+<tr class="memdesc:ae57bd6a7dcc3fdc952cf376b52215d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write each selected group cell's output to an image file in a folder.  <br /></td></tr>
+<tr class="separator:ae57bd6a7dcc3fdc952cf376b52215d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ee514a4bc8e4164cfd661d7c32fe965"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#a2ee514a4bc8e4164cfd661d7c32fe965">ExportToHTML</a> (const wxString &amp;file)</td></tr>
 <tr class="memdesc:a2ee514a4bc8e4164cfd661d7c32fe965"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export the file to an html document.  <br /></td></tr>
 <tr class="separator:a2ee514a4bc8e4164cfd661d7c32fe965"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1738,6 +1741,45 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 
 <p>Trigger the evaluation of the current cell(s) </p>
 <p>Internally this function simulates a click on the "Cell/Evaluate Cell(s)" button. </p>
+
+</div>
+</div>
+<a id="ae57bd6a7dcc3fdc952cf376b52215d00" name="ae57bd6a7dcc3fdc952cf376b52215d00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae57bd6a7dcc3fdc952cf376b52215d00">&#9670;&#160;</a></span>ExportSelectionOutputToDir()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Worksheet::ExportSelectionOutputToDir </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>dir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>svg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Write each selected group cell's output to an image file in a folder. </p>
+<p>One file per selected cell that has output, named after the cell's output label (e.g. "o12.svg"), rendered with the same Svgout/BitmapOut path the HTML export uses. This is the direct alternative to harvesting the images an HTML export drops into its _htmlimg/ folder.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>The target directory (must exist). </td></tr>
+    <tr><td class="paramname">svg</td><td>true for .svg files, false for .png files. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of image files written. </dd></dl>
 
 </div>
 </div>
