@@ -22,14 +22,15 @@ var searchData=
   ['evaluate_19',['Evaluate',['../classWorksheet.html#afb78a2fd309c125f700a9ccf2780af3c',1,'Worksheet']]],
   ['evaluateevent_20',['EvaluateEvent',['../classMaximaEvaluator.html#adcac52da280ae9c028e10cdc765a7a6b',1,'MaximaEvaluator']]],
   ['evaluationqueuelength_21',['EvaluationQueueLength',['../classwxMaximaFrame.html#a6efbec2e174855c25bbdfba2c8fd18b8',1,'wxMaximaFrame']]],
-  ['example_22',['example',['../classTag.html#acc641ffae34e2c4c03a6edf0a513be28',1,'Tag::example()'],['../classInclude__Test.html#aa286655e8f7f6a8ad203ef5fd8548b81',1,'Include_Test::example()'],['../classExample__Test.html#a22a62b12c65fd5e43b6eadaabb21ebb0',1,'Example_Test::example()']]],
+  ['example_22',['example',['../classExample__Test.html#a22a62b12c65fd5e43b6eadaabb21ebb0',1,'Example_Test::example()'],['../classInclude__Test.html#aa286655e8f7f6a8ad203ef5fd8548b81',1,'Include_Test::example()'],['../classTag.html#acc641ffae34e2c4c03a6edf0a513be28',1,'Tag::example()']]],
   ['exitaftereval_23',['ExitAfterEval',['../classwxMaxima.html#ae1282d42b62a5d4620e95aa7c9c054c3',1,'wxMaxima']]],
   ['exitonerror_24',['ExitOnError',['../classwxMaxima.html#a4252227241877b64d96fa93249a6089c',1,'wxMaxima']]],
   ['exitonerrorarmed_25',['ExitOnErrorArmed',['../classwxMaxima.html#a8bbff1144191cdff9306acb101a57307',1,'wxMaxima']]],
   ['exportselectionoutputtodir_26',['ExportSelectionOutputToDir',['../classWorksheet.html#ae57bd6a7dcc3fdc952cf376b52215d00',1,'Worksheet']]],
   ['exporttohtml_27',['ExportToHTML',['../classWorksheet.html#a2ee514a4bc8e4164cfd661d7c32fe965',1,'Worksheet::ExportToHTML()'],['../WorksheetExport_8h.html#af176cb310c6fd3c83973df2f0ccfb5aa',1,'WorksheetExport::ExportToHTML()']]],
-  ['exporttomac_28',['ExportToMAC',['../classWorksheet.html#ad66ccef72e32b507379559594f0c9190',1,'Worksheet::ExportToMAC()'],['../WorksheetExport_8h.html#a778ac9307ea55debf08d0c658b5cf8fd',1,'WorksheetExport::ExportToMAC()']]],
-  ['exporttotex_29',['ExportToTeX',['../classWorksheet.html#aaea30ddc4ca6de8eb92b5ed45ce527fe',1,'Worksheet::ExportToTeX()'],['../WorksheetExport_8h.html#ad086ada2f54ab7392da2fdaf5158ff32',1,'WorksheetExport::ExportToTeX()']]],
-  ['exptcell_30',['ExptCell',['../classExptCell.html#ab3a01ce869823525a95272e9258a0843',1,'ExptCell']]],
-  ['extramaximaargs_31',['ExtraMaximaArgs',['../classwxMaxima.html#a3e8b0edd0117a7f64a69c0e17c82ec52',1,'wxMaxima::ExtraMaximaArgs(const wxString &amp;args)'],['../classwxMaxima.html#a2f0f0d79dfcb0df2455c1de2fd3169b7',1,'wxMaxima::ExtraMaximaArgs()']]]
+  ['exporttomac_28',['ExportToMAC',['../classWorksheet.html#ad66ccef72e32b507379559594f0c9190',1,'Worksheet::ExportToMAC()'],['../WorksheetExport_8h.html#a778ac9307ea55debf08d0c658b5cf8fd',1,'WorksheetExport::ExportToMAC(wxTextFile &amp;output, GroupCell *tree, bool wxm, const std::vector&lt; int &gt; &amp;cellMap, bool fixReorderedIndices)']]],
+  ['exporttotex_29',['ExportToTeX',['../WorksheetExport_8h.html#ad086ada2f54ab7392da2fdaf5158ff32',1,'WorksheetExport::ExportToTeX()'],['../classWorksheet.html#aaea30ddc4ca6de8eb92b5ed45ce527fe',1,'Worksheet::ExportToTeX()']]],
+  ['exportworksheettohtml_30',['ExportWorksheetToHtml',['../classwxMaxima.html#a777a8b68c097b50e7e9e0766b54c4b6a',1,'wxMaxima']]],
+  ['exptcell_31',['ExptCell',['../classExptCell.html#ab3a01ce869823525a95272e9258a0843',1,'ExptCell']]],
+  ['extramaximaargs_32',['ExtraMaximaArgs',['../classwxMaxima.html#a2f0f0d79dfcb0df2455c1de2fd3169b7',1,'wxMaxima::ExtraMaximaArgs()'],['../classwxMaxima.html#a3e8b0edd0117a7f64a69c0e17c82ec52',1,'wxMaxima::ExtraMaximaArgs(const wxString &amp;args)']]]
 ];

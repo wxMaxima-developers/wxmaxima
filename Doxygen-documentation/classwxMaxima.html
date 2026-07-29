@@ -413,6 +413,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnKeyDown</b> (wxKeyE
 <tr class="memitem:ac92da2d00f70ebb78bf96233eda45f82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#ac92da2d00f70ebb78bf96233eda45f82">MenuCommand</a> (const wxString &amp;cmd)</td></tr>
 <tr class="memdesc:ac92da2d00f70ebb78bf96233eda45f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts command cmd into the worksheet.  <br /></td></tr>
 <tr class="separator:ac92da2d00f70ebb78bf96233eda45f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a777a8b68c097b50e7e9e0766b54c4b6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a777a8b68c097b50e7e9e0766b54c4b6a">ExportWorksheetToHtml</a> (const wxString &amp;filename, const wxString &amp;flavor, bool embedWxmx)</td></tr>
+<tr class="memdesc:a777a8b68c097b50e7e9e0766b54c4b6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export the current worksheet to an HTML file (driven by wxworksheettohtml).  <br /></td></tr>
+<tr class="separator:a777a8b68c097b50e7e9e0766b54c4b6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a631676fba885bf2e4ca0e85406532133"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a631676fba885bf2e4ca0e85406532133">ReplaceSuggestion</a> (wxCommandEvent &amp;event)</td></tr>
 <tr class="memdesc:a631676fba885bf2e4ca0e85406532133"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes clicks on suggestions Make the menu item, toolbars and panes visible that should be visible right now.  <br /></td></tr>
 <tr class="separator:a631676fba885bf2e4ca0e85406532133"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1160,6 +1163,58 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 </div>
 </div>
+<a id="a777a8b68c097b50e7e9e0766b54c4b6a" name="a777a8b68c097b50e7e9e0766b54c4b6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a777a8b68c097b50e7e9e0766b54c4b6a">&#9670;&#160;</a></span>ExportWorksheetToHtml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void wxMaxima::ExportWorksheetToHtml </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>flavor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>embedWxmx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Export the current worksheet to an HTML file (driven by wxworksheettohtml). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>The (absolute) target file. </td></tr>
+    <tr><td class="paramname">flavor</td><td>The equation flavor: "mathml", "mathjax", "svg" or "bitmap". </td></tr>
+    <tr><td class="paramname">embedWxmx</td><td>Whether to embed a downloadable .wxmx copy of the session. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a7a21b166a198e37ef62ac4be7a726669" name="a7a21b166a198e37ef62ac4be7a726669"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7a21b166a198e37ef62ac4be7a726669">&#9670;&#160;</a></span>GetCommand()</h2>
 
@@ -1186,7 +1241,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 <p>returns the command to start maxima </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md856"></a>
+ <h2><a class="anchor" id="autotoc_md857"></a>
 Getting configuration</h2>
 
 </div>
@@ -1363,7 +1418,7 @@ Getting configuration</h2>
 
 <p>Inserts command cmd into the worksheet. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md859"></a>
+ <h2><a class="anchor" id="autotoc_md860"></a>
 Menu and button events</h2>
 
 </div>
@@ -1399,7 +1454,7 @@ Menu and button events</h2>
 <p>Moving the screen update to this function, as well, makes sure that if we get events faster than we can update the screen that doesn't cause lag, but causes screen updates for old events to be dropped if we already have new ones. This normally makes programs feel way more responsive.</p>
 <p>The worksheet is additionally refreshed by a timer task in case that th computer is too busy to ever reach the idle task at all.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md858"></a>
+ <h2><a class="anchor" id="autotoc_md859"></a>
 Idle event</h2>
 
 </div>
@@ -1534,13 +1589,13 @@ Idle event</h2>
 <p>Set the current working directory file I/O from maxima is relative to. </p>
 <p>ServerEvent is triggered when maxima connects to the socket server.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md853"></a>
+ <h2><a class="anchor" id="autotoc_md854"></a>
 Socket stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md854"></a>
+ <h2><a class="anchor" id="autotoc_md855"></a>
 Maxima process stuff</h2>
 <hr  />
- <h2><a class="anchor" id="autotoc_md855"></a>
+ <h2><a class="anchor" id="autotoc_md856"></a>
 Dealing with stuff read from the socket</h2>
 
 </div>
@@ -1644,7 +1699,7 @@ Dealing with stuff read from the socket</h2>
       </table>
 </div><div class="memdoc">
 <hr  />
- <h2><a class="anchor" id="autotoc_md857"></a>
+ <h2><a class="anchor" id="autotoc_md858"></a>
 Tips and help</h2>
 
 </div>
@@ -1779,7 +1834,7 @@ Tips and help</h2>
 
 <p>Enables and disables the Right menu buttons. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md860"></a>
+ <h2><a class="anchor" id="autotoc_md861"></a>
 Menu and button events</h2>
 
 </div>
@@ -1837,7 +1892,7 @@ Menu and button events</h2>
 
 <p>Updates the slider to show the right frame. </p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md861"></a>
+ <h2><a class="anchor" id="autotoc_md867"></a>
 Plot Slider</h2>
 
 </div>

@@ -89,6 +89,9 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadStatusBar</b> (const wxXmlDocument &amp;xmldoc)</td></tr>
 <tr class="memdesc:a580782a602cecb4ae87e61ab9a1043ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles a &lt;statusbar&gt; document: shows its text in <a class="el" href="classwxMaxima.html">wxMaxima</a>'s status bar. <br /></td></tr>
 <tr class="separator:a580782a602cecb4ae87e61ab9a1043ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa579d88d3101cfce5d3a9f5e702efd8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaximaResponseReader.html#aa579d88d3101cfce5d3a9f5e702efd8c">ReadWorksheetExport</a> (const wxXmlDocument &amp;xmldoc)</td></tr>
+<tr class="memdesc:aa579d88d3101cfce5d3a9f5e702efd8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles a &lt;worksheetexport&gt; document: exports the worksheet to a file.  <br /></td></tr>
+<tr class="separator:aa579d88d3101cfce5d3a9f5e702efd8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2fe8c04dbcb55b3e307f5b2159fc94c"><td class="memItemLeft" align="right" valign="top"><a id="af2fe8c04dbcb55b3e307f5b2159fc94c" name="af2fe8c04dbcb55b3e307f5b2159fc94c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadManualTopicNames</b> (const wxXmlDocument &amp;xmldoc)</td></tr>
 <tr class="memdesc:af2fe8c04dbcb55b3e307f5b2159fc94c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles a &lt;html-manual-keywords&gt; document: opens the manual on the keyword(s) <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> resolved a help request to. <br /></td></tr>
@@ -133,7 +136,29 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadAddVariables</b> 
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The Maxima-response handlers extracted from the <a class="el" href="classwxMaxima.html">wxMaxima</a> god class. </p>
 <p>Owned by value by the <a class="el" href="classwxMaxima.html">wxMaxima</a> frame; <a class="el" href="classMaximaProcessManager.html#aa69972a2db3046920fdbdae913654ad9" title="The EVT_MAXIMA handler: classifies each chunk Maxima sent over the socket and hands it to the matchin...">MaximaProcessManager::MaximaEvent</a> dispatches each incoming chunk to the matching handler here. Holds a reference back to that frame for the services the handlers need (the worksheet, the sidebars, the status bar, the configuration). </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa579d88d3101cfce5d3a9f5e702efd8c" name="aa579d88d3101cfce5d3a9f5e702efd8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa579d88d3101cfce5d3a9f5e702efd8c">&#9670;&#160;</a></span>ReadWorksheetExport()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MaximaResponseReader::ReadWorksheetExport </td>
+          <td>(</td>
+          <td class="paramtype">const wxXmlDocument &amp;&#160;</td>
+          <td class="paramname"><em>xmldoc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handles a &lt;worksheetexport&gt; document: exports the worksheet to a file. </p>
+<p>The document is emitted by the wxworksheetto* <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands and carries the export kind, the target file and the keyword options as child elements (<code>&lt;type&gt;</code>, <code>&lt;file&gt;</code>, <code>&lt;option name="..."&gt;</code>). Currently type "html" is implemented. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="MaximaResponseReader_8h_source.html">MaximaResponseReader.h</a></li>
 <li>src/<a class="el" href="MaximaResponseReader_8cpp.html">MaximaResponseReader.cpp</a></li>
 </ul>
