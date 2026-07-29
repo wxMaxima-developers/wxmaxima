@@ -678,21 +678,17 @@ void WorksheetExport::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm,
   }
 }
 
-bool WorksheetExport::ExportToTeX(GroupCell *tree, Configuration *configuration,
-                                  const wxString &file) {
-  wxString imgDir;
-  wxString path, filename, ext;
+namespace {
+/*! Write the LaTeX preamble: document class, packages and the helper macros.
 
-  wxFileName::SplitPath(file, &path, &filename, &ext);
-  imgDir = path + wxS("/") + filename + wxS("_img");
-  std::size_t imgCounter = 0;
-
-  wxFileOutputStream outfile(file);
-  if (!outfile.IsOk())
-    return false;
-
-  wxTextOutputStream output(outfile);
-
+  Everything the TeX export emits ahead of \begin{document} -- the
+  \documentclass (with the user's configured class/options), the package list
+  (with the \ifPDFTeX inputenc-vs-fontspec/unicode-math split), the
+  \includeimage sizing macro, the \abs operator and the label colour, plus any
+  user-supplied preamble. Split out of ExportToTeX so the exporter body reads as
+  preamble / contents / footer.
+ */
+void WriteTeXPreamble(wxTextOutputStream &output, Configuration *configuration) {
   if (configuration->DocumentclassOptions().IsEmpty())
     output << "\\documentclass{" + configuration->Documentclass() + "}\n\n";
   else
@@ -780,6 +776,25 @@ bool WorksheetExport::ExportToTeX(GroupCell *tree, Configuration *configuration,
   wxString texPreamble = configuration->TexPreamble();
   if (!texPreamble.IsEmpty())
     output << texPreamble << wxS("\n\n");
+}
+} // namespace
+
+bool WorksheetExport::ExportToTeX(GroupCell *tree, Configuration *configuration,
+                                  const wxString &file) {
+  wxString imgDir;
+  wxString path, filename, ext;
+
+  wxFileName::SplitPath(file, &path, &filename, &ext);
+  imgDir = path + wxS("/") + filename + wxS("_img");
+  std::size_t imgCounter = 0;
+
+  wxFileOutputStream outfile(file);
+  if (!outfile.IsOk())
+    return false;
+
+  wxTextOutputStream output(outfile);
+
+  WriteTeXPreamble(output, configuration);
 
   output << wxS("\\begin{document}\n");
 
