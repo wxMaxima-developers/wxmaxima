@@ -85,7 +85,11 @@ jobs:
           base = ""
           with open("configure.ac") as f:
               for line in f:
-                  m = re.search(r'AC_INIT\(\[maxima\],\s*\[([0-9.]+)\]', line)
+                  # Capture the whole version token, not just digits+dots:
+                  # Maxima's development HEAD uses a suffix, e.g.
+                  # AC_INIT([maxima], [5.49post]), which a [0-9.]+ pattern
+                  # can't match -> the edge build failed to read the version.
+                  m = re.search(r'AC_INIT\(\[maxima\],\s*\[([^\]]+)\]', line)
                   if m:
                       base = m.group(1)
                       break
