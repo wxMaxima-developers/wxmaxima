@@ -1108,6 +1108,19 @@ public:
 
   wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData = false, double scale = 1) const;
 
+  /*! Write each selected group cell's output to an image file in a folder.
+
+    One file per selected cell that has output, named after the cell's output
+    label (e.g. "o12.svg"), rendered with the same Svgout/BitmapOut path the
+    HTML export uses. This is the direct alternative to harvesting the images
+    an HTML export drops into its _htmlimg/ folder.
+
+    \param dir The target directory (must exist).
+    \param svg true for .svg files, false for .png files.
+    \return the number of image files written.
+  */
+  int ExportSelectionOutputToDir(const wxString &dir, bool svg);
+
   /*! Export the file to an html document
 
     \todo Worksheet and text cell background work fine, but their names might be interchanged.

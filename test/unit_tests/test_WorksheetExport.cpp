@@ -575,6 +575,32 @@ SCENARIO("The selection-to-string converters are deterministic and complete") {
   g_ws->ClearSelection();
 }
 
+SCENARIO("Per-cell output export writes one image file per selected output") {
+  BuildDocumentOnce();
+  g_ws->SetSelection(g_ws->GetTree(), g_ws->GetLastCellInWorksheet());
+
+  for (const bool svg : {true, false}) {
+    const wxString dir =
+      MakeExportDir(svg ? wxS("outimg_svg") : wxS("outimg_png"));
+    const int written = g_ws->ExportSelectionOutputToDir(dir, svg);
+
+    THEN("one non-empty file of the requested type is written per output") {
+      REQUIRE(written > 0);
+      const auto snap = SnapshotDir(dir);
+      // Exactly one file per exported output (names are de-duplicated).
+      REQUIRE(snap.size() == static_cast<size_t>(written));
+      const wxString ext = svg ? wxS(".svg") : wxS(".png");
+      for (const auto &entry : snap) {
+        INFO("file: " << entry.first.ToStdString());
+        REQUIRE(entry.first.EndsWith(ext));
+        REQUIRE_FALSE(entry.second.empty());
+      }
+    }
+  }
+
+  g_ws->ClearSelection();
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

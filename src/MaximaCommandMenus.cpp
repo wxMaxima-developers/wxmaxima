@@ -30,6 +30,7 @@
 #include "EventIDs.h"
 #include <wx/windowptr.h>
 #include <wx/colordlg.h>
+#include <wx/dirdlg.h>
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
 #include <wx/process.h>
@@ -3394,6 +3395,28 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::popid_copy_svg){
     if (m_wxMaxima.GetWorksheet()->CanCopy())
       m_wxMaxima.GetWorksheet()->CopySVG();
+  }
+  else if((event.GetId() == EventIDs::popid_export_output_svg) ||
+          (event.GetId() == EventIDs::popid_export_output_png)){
+    const bool svg = (event.GetId() == EventIDs::popid_export_output_svg);
+    if (m_wxMaxima.GetWorksheet()->CanCopy()) {
+      wxDirDialog dirDialog(&m_wxMaxima,
+                            _("Export the selected output(s) to this folder"),
+                            m_wxMaxima.m_lastPath, wxDD_DEFAULT_STYLE);
+      if (dirDialog.ShowModal() == wxID_OK) {
+        const wxString dir = dirDialog.GetPath();
+        const int written =
+          m_wxMaxima.GetWorksheet()->ExportSelectionOutputToDir(dir, svg);
+        m_wxMaxima.m_lastPath = dir;
+        if (written > 0)
+          m_wxMaxima.StatusText(
+            wxString::Format(_("Exported %d output image(s) to %s"),
+                             written, dir));
+        else
+          m_wxMaxima.StatusText(
+            _("The selection contains no output that could be exported."));
+      }
+    }
   }
 #if wxUSE_ENH_METAFILE
   else if(event.GetId() == EventIDs::popid_copy_emf){

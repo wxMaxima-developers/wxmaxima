@@ -3476,6 +3476,76 @@ wxSize Worksheet::CopyToFile(const wxString &file, Cell *start, Cell *end,
                                      &m_configuration);
 }
 
+//! Turn an output label like "(%o12)" into a file stem like "o12".
+static wxString OutputFileStem(const wxString &label) {
+  wxString stem;
+  for (size_t i = 0; i < label.length(); ++i) {
+    const wxChar c = label[i];
+    if (wxIsalnum(c) || (c == wxS('_')) || (c == wxS('-')))
+      stem += c;
+  }
+  // Keep the file name well within every filesystem's length limit even for a
+  // pathologically long "label".
+  if (stem.length() > 64)
+    stem = stem.Left(64);
+  return stem;
+}
+
+int Worksheet::ExportSelectionOutputToDir(const wxString &dir, bool svg) {
+  Cell *const selStart = GetDocumentCellPointers().GetSelectionStart();
+  Cell *const selEnd = GetDocumentCellPointers().GetSelectionEnd();
+  if ((selStart == NULL) || (selEnd == NULL))
+    return 0;
+
+  // Render the cells at full size, exactly like the HTML exporter does.
+  wxBusyCursor busy;
+  m_configuration->ClipToDrawRegion(false);
+
+  const wxString ext = svg ? wxS(".svg") : wxS(".png");
+  std::vector<wxString> usedNames;
+  int count = 0;
+  int index = 0;
+
+  const GroupCell *const lastGroup = selEnd->GetGroup();
+  for (auto &group : OnList(selStart->GetGroup())) {
+    Cell *const output = group.GetLabel();
+    if (output != NULL) {
+      ++index;
+      // Name the file after the (%oN)/(%iN) label when the output has one;
+      // otherwise (a warning, an error, a bare string, an image) use a running
+      // index. De-duplicate collisions below.
+      wxString base;
+      if ((output->GetTextStyle() == TS_LABEL) ||
+          (output->GetTextStyle() == TS_USERLABEL))
+        base = OutputFileStem(output->ToString());
+      if (base.IsEmpty())
+        base = wxString::Format(wxS("output_%d"), index);
+      wxString name = base;
+      for (int n = 2;
+           std::find(usedNames.begin(), usedNames.end(), name) !=
+             usedNames.end();
+           ++n)
+        name = base + wxString::Format(wxS("_%d"), n);
+      usedNames.push_back(name);
+
+      const wxString path = dir + wxS("/") + name + ext;
+      if (svg) {
+        Svgout out(&m_configuration, CopySelection(output, NULL, false), path);
+      } else {
+        CopyToFile(path, output, NULL, /*asData=*/true,
+                   m_configuration->BitmapScale());
+      }
+      ++count;
+    }
+    if (&group == lastGroup)
+      break;
+  }
+
+  m_configuration->ClipToDrawRegion(true);
+  RequestRecalculation();
+  return count;
+}
+
 std::unique_ptr<Cell> Worksheet::CopySelection(bool asData) const {
   return CopySelection(GetDocumentCellPointers().GetSelectionStart(),
                        GetDocumentCellPointers().GetSelectionEnd(), asData);
