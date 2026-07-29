@@ -75,6 +75,8 @@ void MaximaResponseReader::ReadWorksheetExport(const wxXmlDocument &xmldoc) {
   wxString file;
   wxString flavor = wxS("mathml");
   bool wxmx = false;
+  wxString documentclass;
+  wxString documentclassOptions;
   for (wxXmlNode *child = root->GetChildren(); child != NULL;
        child = child->GetNext()) {
     const wxString name = child->GetName();
@@ -90,17 +92,24 @@ void MaximaResponseReader::ReadWorksheetExport(const wxXmlDocument &xmldoc) {
         flavor = content;
       else if (key == wxS("wxmx"))
         wxmx = (content == wxS("true"));
+      else if (key == wxS("documentclass"))
+        documentclass = content;
+      else if (key == wxS("documentclassoptions"))
+        documentclassOptions = content;
     }
   }
 
   if (file.IsEmpty()) {
     m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
-      _("wxworksheettohtml: no target file name was given."), MC_TYPE_WARNING);
+      _("wxworksheettohtml/totex: no target file name was given."),
+      MC_TYPE_WARNING);
     return;
   }
 
   if (type == wxS("html"))
     m_wxMaxima.ExportWorksheetToHtml(file, flavor, wxmx);
+  else if (type == wxS("tex"))
+    m_wxMaxima.ExportWorksheetToTex(file, documentclass, documentclassOptions);
   else
     m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
       wxString::Format(

@@ -2095,6 +2095,43 @@ void wxMaxima::ExportWorksheetToHtml(const wxString &filename,
   }
 }
 
+void wxMaxima::ExportWorksheetToTex(const wxString &filename,
+                                    const wxString &documentclass,
+                                    const wxString &documentclassOptions) {
+  if (!GetWorksheet())
+    return;
+
+  // Apply the requested document-class overrides to the very Configuration the
+  // exporter reads, then restore them so the command has no lasting effect.
+  Configuration *const cfg = GetWorksheet()->GetConfig();
+  const wxString oldClass = cfg->Documentclass();
+  const wxString oldOptions = cfg->DocumentclassOptions();
+  if (!documentclass.IsEmpty())
+    cfg->Documentclass(documentclass);
+  if (!documentclassOptions.IsEmpty())
+    cfg->DocumentclassOptions(documentclassOptions);
+
+  StatusExportStart();
+  bool ok;
+  {
+    wxBusyCursor crs;
+    ok = GetWorksheet()->ExportToTeX(filename);
+  }
+
+  cfg->Documentclass(oldClass);
+  cfg->DocumentclassOptions(oldOptions);
+
+  if (ok) {
+    StatusExportFinished();
+    StatusText(wxString::Format(_("Exported the worksheet to %s"), filename));
+  } else {
+    StatusExportFailed();
+    m_outputAppender.DoRawConsoleAppend(
+      wxString::Format(_("wxworksheettotex: could not write \"%s\"."), filename),
+      MC_TYPE_ERROR);
+  }
+}
+
 ///--------------------------------------------------------------------------------
 ///  Menu and button events
 ///--------------------------------------------------------------------------------

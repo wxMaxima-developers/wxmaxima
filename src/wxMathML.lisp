@@ -210,6 +210,12 @@
 (defun $wxworksheettohtml (filename &rest opts)
   (wxexport-emit "html" filename opts))
 
+;; wxworksheettotex("file.tex" [, documentclass=..., documentclassoptions=...])
+;;   documentclass         overrides the LaTeX \documentclass (e.g. "report")
+;;   documentclassoptions  overrides its options (e.g. "12pt,a4paper")
+(defun $wxworksheettotex (filename &rest opts)
+  (wxexport-emit "tex" filename opts))
+
 ;; Muffles compiler-notes where we don't want to drown in debug messages.
 (defmacro no-warning (form)
   #+sbcl `(handler-bind

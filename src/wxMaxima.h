@@ -383,6 +383,18 @@ protected:
   */
   void ExportWorksheetToHtml(const wxString &filename, const wxString &flavor,
                              bool embedWxmx);
+
+  /*! Export the current worksheet to a LaTeX file (driven by wxworksheettotex).
+
+    \param filename The (absolute) target file.
+    \param documentclass Overrides the LaTeX document class (empty = keep the
+                         configured one).
+    \param documentclassOptions Overrides the document-class options (empty =
+                         keep the configured ones).
+  */
+  void ExportWorksheetToTex(const wxString &filename,
+                            const wxString &documentclass,
+                            const wxString &documentclassOptions);
 #ifdef __WXMSW__
   //! Register wxMaxima's own path as the .wxmx diff tool for TortoiseSVN/Git.
   void RegisterWxmxDiffTool();
