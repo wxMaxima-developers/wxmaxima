@@ -1262,6 +1262,12 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
           break;
 
         case TS_STRING:
+        case TS_TEXT:
+        case TS_ERROR:
+        case TS_WARNING:
+          // Non-math output (a string, a message, a warning or an error) is
+          // emitted as LaTeX text, not forced through the math renderer: it is
+          // prose, and wrapping a sentence in \[...\] produced garbled output.
           if (mathMode) {
             str += wxS("\\mbox{}\n\\]");
             mathMode = false;

@@ -1,5 +1,10 @@
 # Current development version
 
+- LaTeX export: non-math output (Maxima messages, warnings and errors) is now
+  written as LaTeX text instead of being forced through the math renderer, and
+  a backslash in such output no longer produces broken LaTeX -- the
+  `\ensuremath{}` that wraps it was itself being brace-escaped into invalid
+  markup. (Strings were already exported as text.)
 - New right-click items "Export output as SVG to a folder..." and "...as PNG
   to a folder...": for the selected cell(s) they write one image file per
   output into a directory you choose, named after the output label (e.g.
