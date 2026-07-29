@@ -481,7 +481,19 @@ A relative file name is interpreted relative to _Maxima_’s working directory. 
 
 The `flavor` values match the equation formats offered by the graphical **File → Export** dialog: `mathml` produces a self-contained page that needs no internet connection, `mathjax` adds a MathJaX fall-back for browsers that still lack MathML, and `svg`/`bitmap` render every equation to an image.
 
-Support for `wxworksheettotex()` and `wxworksheettopdf()` is planned.
+The companion command `wxworksheettotex()` exports to a LaTeX (`.tex`) file the same way:
+
+```maxima
+wxworksheettotex("report.tex")$
+wxworksheettotex("report.tex", documentclass="report", documentclassoptions="12pt,a4paper")$
+```
+
+| option                 | meaning                                                              |
+| ---------------------- | -------------------------------------------------------------------- |
+| `documentclass`        | overrides the LaTeX `\documentclass` (e.g. `"article"`, `"report"`)  |
+| `documentclassoptions` | overrides its options (e.g. `"12pt,a4paper"`)                        |
+
+Support for `wxworksheettopdf()` is planned.
 
 ## Plotting
 

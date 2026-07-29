@@ -1,5 +1,9 @@
 # Current development version
 
+- New Maxima command `wxworksheettotex("file.tex")` exports the current
+  worksheet to LaTeX from within a Maxima session, the companion of
+  `wxworksheettohtml()`. Keyword options `documentclass=...` and
+  `documentclassoptions=...` override the LaTeX document class for that export.
 - LaTeX export: on the Unicode engines (XeLaTeX/LuaLaTeX) the exported document
   now loads `unicode-math`, so a Unicode symbol wxMaxima has no explicit LaTeX
   translation for is typeset directly from the character instead of vanishing or
