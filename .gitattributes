@@ -1,3 +1,10 @@
+# NEWS.md is an append-only changelog: every branch adds its own bullet at the
+# top, so branches routinely "conflict" there even though both edits should be
+# kept. The built-in union merge driver keeps both sides instead of emitting
+# conflict markers. NB this applies to local merges/rebases; GitHub's web-UI
+# merge does not run merge drivers, so resolve NEWS conflicts locally.
+NEWS.md merge=union
+
 *.wxmx binary
 *.wxm linguist-language=maxima-session
 *.wxmx linguist-language=maxima-session
