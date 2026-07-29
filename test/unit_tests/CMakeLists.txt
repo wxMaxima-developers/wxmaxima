@@ -204,7 +204,8 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_WorksheetExport PUBLIC cxx_std_20)
     target_compile_definitions(test_WorksheetExport PRIVATE
-        WXM_CORPUS_DIR="${CMAKE_SOURCE_DIR}/test/fuzz/corpus_mathparser")
+        WXM_CORPUS_DIR="${CMAKE_SOURCE_DIR}/test/fuzz/corpus_mathparser"
+        WXM_TESTFILES_DIR="${CMAKE_SOURCE_DIR}/test/automatic_test_files")
     target_link_libraries(test_WorksheetExport PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     add_test(WorksheetExport test_WorksheetExport)

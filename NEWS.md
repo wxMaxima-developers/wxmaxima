@@ -1,5 +1,11 @@
 # Current development version
 
+- LaTeX export: animations (slide shows) are exported again. Each frame is
+  written as an image and embedded with the `animate` package's
+  `\animategraphics`, which plays the animation in PDF viewers that support it
+  and shows the first frame in the others. The export previously left only an
+  "[animated graphics - not shown in TeX export]" placeholder.
+
 - New Maxima command `wxworksheettotex("file.tex")` exports the current
   worksheet to LaTeX from within a Maxima session, the companion of
   `wxworksheettohtml()`. Keyword options `documentclass=...` and

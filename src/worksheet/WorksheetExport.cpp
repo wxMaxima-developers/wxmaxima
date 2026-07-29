@@ -715,6 +715,10 @@ bool WorksheetExport::ExportToTeX(GroupCell *tree, Configuration *configuration,
 
   // The following line loads all code needed in order to include graphics.
   output << wxS("\\usepackage{graphicx}\n");
+  // Lets \animategraphics embed the frames of an animation as a real animation
+  // that plays in PDF viewers supporting it (and shows the first frame in the
+  // rest).
+  output << wxS("\\usepackage{animate}\n");
   // We want to color the labels and text cells. The following line adds the
   // necessary logic for this to TeX.
   output << wxS("\\usepackage{color}\n");
