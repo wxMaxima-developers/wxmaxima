@@ -2032,6 +2032,69 @@ void wxMaxima::MenuCommand(const wxString &cmd) {
   GetWorksheet()->RequestRedraw();
 }
 
+//! Map a wxworksheettohtml flavor string to a Configuration::htmlExportFormat.
+static Configuration::htmlExportFormat
+HtmlFlavorFromString(const wxString &flavor, bool *known) {
+  *known = true;
+  if (flavor == wxS("mathml"))
+    return Configuration::mathML;
+  if ((flavor == wxS("mathjax")) || (flavor == wxS("mathml+mathjax")))
+    return Configuration::mathML_mathJaX;
+  if (flavor == wxS("svg"))
+    return Configuration::svg;
+  if ((flavor == wxS("bitmap")) || (flavor == wxS("png")))
+    return Configuration::bitmap;
+  *known = false;
+  return Configuration::mathML;
+}
+
+void wxMaxima::ExportWorksheetToHtml(const wxString &filename,
+                                     const wxString &flavor, bool embedWxmx) {
+  if (!GetWorksheet())
+    return;
+
+  // Drive the export off the very Configuration the exporter reads, so the
+  // requested flavor actually takes effect; restore it afterwards so the
+  // command has no lasting side effect on the session.
+  Configuration *const cfg = GetWorksheet()->GetConfig();
+  bool known = true;
+  const Configuration::htmlExportFormat fmt =
+    HtmlFlavorFromString(flavor, &known);
+  if (!known)
+    m_outputAppender.DoRawConsoleAppend(
+      wxString::Format(
+        _("wxworksheettohtml: unknown flavor \"%s\"; using native MathML. "
+          "Known flavors: mathml, mathjax, svg, bitmap."),
+        flavor),
+      MC_TYPE_WARNING);
+
+  const Configuration::htmlExportFormat oldFmt = cfg->HTMLequationFormat();
+  const bool oldWxmx = cfg->ExportContainsWXMX();
+  cfg->HTMLequationFormat(fmt);
+  cfg->ExportContainsWXMX(embedWxmx);
+
+  StatusExportStart();
+  bool ok;
+  {
+    wxBusyCursor crs;
+    ok = GetWorksheet()->ExportToHTML(filename);
+  }
+
+  cfg->HTMLequationFormat(oldFmt);
+  cfg->ExportContainsWXMX(oldWxmx);
+
+  if (ok) {
+    StatusExportFinished();
+    StatusText(wxString::Format(_("Exported the worksheet to %s"), filename));
+  } else {
+    StatusExportFailed();
+    m_outputAppender.DoRawConsoleAppend(
+      wxString::Format(_("wxworksheettohtml: could not write \"%s\"."),
+                       filename),
+      MC_TYPE_ERROR);
+  }
+}
+
 ///--------------------------------------------------------------------------------
 ///  Menu and button events
 ///--------------------------------------------------------------------------------

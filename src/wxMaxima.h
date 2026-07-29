@@ -374,6 +374,15 @@ protected:
   bool m_dataFromMaximaIs = false;
 
   void MenuCommand(const wxString &cmd);           //!< Inserts command cmd into the worksheet
+
+  /*! Export the current worksheet to an HTML file (driven by wxworksheettohtml).
+
+    \param filename The (absolute) target file.
+    \param flavor   The equation flavor: "mathml", "mathjax", "svg" or "bitmap".
+    \param embedWxmx Whether to embed a downloadable .wxmx copy of the session.
+  */
+  void ExportWorksheetToHtml(const wxString &filename, const wxString &flavor,
+                             bool embedWxmx);
 #ifdef __WXMSW__
   //! Register wxMaxima's own path as the .wxmx diff tool for TortoiseSVN/Git.
   void RegisterWxmxDiffTool();

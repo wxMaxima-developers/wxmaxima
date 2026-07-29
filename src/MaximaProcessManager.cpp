@@ -737,6 +737,15 @@ void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
       m_wxMaxima.m_responseReader.ReadStatusBar(xmldoc);
     }
     break;
+  case Maxima::XML_WORKSHEET_EXPORT:
+    {
+      wxXmlDocument xmldoc;
+      wxStringInputStream xmlStream(event.GetString());
+      xmldoc.Load(xmlStream);
+      m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::receive);
+      m_wxMaxima.m_responseReader.ReadWorksheetExport(xmldoc);
+    }
+    break;
   case Maxima::XML_HTML_MANUAL_KEYWORDS:
     {
       wxXmlDocument xmldoc;

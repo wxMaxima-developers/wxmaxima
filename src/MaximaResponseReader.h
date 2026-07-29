@@ -64,6 +64,15 @@ public:
   //! Handles a <statusbar> document: shows its text in wxMaxima's status bar.
   void ReadStatusBar(const wxXmlDocument &xmldoc);
 
+  /*! Handles a <worksheetexport> document: exports the worksheet to a file.
+
+    The document is emitted by the wxworksheetto* Maxima commands and carries
+    the export kind, the target file and the keyword options as child elements
+    (`<type>`, `<file>`, `<option name="...">`). Currently type "html" is
+    implemented.
+  */
+  void ReadWorksheetExport(const wxXmlDocument &xmldoc);
+
   //! Handles a <html-manual-keywords> document: opens the manual on the
   //! keyword(s) Maxima resolved a help request to.
   void ReadManualTopicNames(const wxXmlDocument &xmldoc);
