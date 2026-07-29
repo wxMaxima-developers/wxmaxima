@@ -476,7 +476,18 @@ Exporting the worksheet from within Maxima</h2>
 <td class="markdownTableBodyNone"><code>wxmx</code>   </td><td class="markdownTableBodyNone"><code>false</code> (default), <code>true</code>   </td><td class="markdownTableBodyNone">embed a downloadable <code>.wxmx</code> copy of the session   </td></tr>
 </table>
 <p>The <code>flavor</code> values match the equation formats offered by the graphical <b>File → Export</b> dialog: <code>mathml</code> produces a self-contained page that needs no internet connection, <code>mathjax</code> adds a MathJaX fall-back for browsers that still lack MathML, and <code>svg</code>/<code>bitmap</code> render every equation to an image.</p>
-<p>Support for <code>wxworksheettotex()</code> and <code>wxworksheettopdf()</code> is planned.</p>
+<p>The companion command <code>wxworksheettotex()</code> exports to a LaTeX (<code>.tex</code>) file the same way:</p>
+<div class="fragment"><div class="line">wxworksheettotex(&quot;report.tex&quot;)$</div>
+<div class="line">wxworksheettotex(&quot;report.tex&quot;, documentclass=&quot;report&quot;, documentclassoptions=&quot;12pt,a4paper&quot;)$</div>
+</div><!-- fragment --><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">option   </th><th class="markdownTableHeadNone">meaning    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>documentclass</code>   </td><td class="markdownTableBodyNone">overrides the LaTeX <code>\documentclass</code> (e.g. <code>"article"</code>, <code>"report"</code>)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>documentclassoptions</code>   </td><td class="markdownTableBodyNone">overrides its options (e.g. <code>"12pt,a4paper"</code>)   </td></tr>
+</table>
+<p>Support for <code>wxworksheettopdf()</code> is planned.</p>
 <h2><a class="anchor" id="autotoc_md415"></a>
 Plotting</h2>
 <p>Plotting (having fundamentally to do with graphics) is a place where a graphical user interface will have to provide some extensions to the original program.</p>

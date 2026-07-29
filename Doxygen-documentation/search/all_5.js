@@ -68,9 +68,10 @@ var searchData=
   ['exporttomac_65',['ExportToMAC',['../classWorksheet.html#ad66ccef72e32b507379559594f0c9190',1,'Worksheet::ExportToMAC()'],['../WorksheetExport_8h.html#a778ac9307ea55debf08d0c658b5cf8fd',1,'WorksheetExport::ExportToMAC()']]],
   ['exporttotex_66',['ExportToTeX',['../classWorksheet.html#aaea30ddc4ca6de8eb92b5ed45ce527fe',1,'Worksheet::ExportToTeX()'],['../WorksheetExport_8h.html#ad086ada2f54ab7392da2fdaf5158ff32',1,'WorksheetExport::ExportToTeX()']]],
   ['exportworksheettohtml_67',['ExportWorksheetToHtml',['../classwxMaxima.html#a777a8b68c097b50e7e9e0766b54c4b6a',1,'wxMaxima']]],
-  ['exprlhs_68',['ExprLhs',['../classCatch_1_1ExprLhs.html',1,'Catch']]],
-  ['exptcell_69',['ExptCell',['../classExptCell.html#ab3a01ce869823525a95272e9258a0843',1,'ExptCell::ExptCell()'],['../classExptCell.html',1,'ExptCell']]],
-  ['exptcell_2ecpp_70',['ExptCell.cpp',['../ExptCell_8cpp.html',1,'']]],
-  ['exptcell_2eh_71',['ExptCell.h',['../ExptCell_8h.html',1,'']]],
-  ['extramaximaargs_72',['ExtraMaximaArgs',['../classwxMaxima.html#a2f0f0d79dfcb0df2455c1de2fd3169b7',1,'wxMaxima::ExtraMaximaArgs()'],['../classwxMaxima.html#a3e8b0edd0117a7f64a69c0e17c82ec52',1,'wxMaxima::ExtraMaximaArgs(const wxString &amp;args)']]]
+  ['exportworksheettotex_68',['ExportWorksheetToTex',['../classwxMaxima.html#a5779b6adaea87c784838909df41ac4d3',1,'wxMaxima']]],
+  ['exprlhs_69',['ExprLhs',['../classCatch_1_1ExprLhs.html',1,'Catch']]],
+  ['exptcell_70',['ExptCell',['../classExptCell.html#ab3a01ce869823525a95272e9258a0843',1,'ExptCell::ExptCell()'],['../classExptCell.html',1,'ExptCell']]],
+  ['exptcell_2ecpp_71',['ExptCell.cpp',['../ExptCell_8cpp.html',1,'']]],
+  ['exptcell_2eh_72',['ExptCell.h',['../ExptCell_8h.html',1,'']]],
+  ['extramaximaargs_73',['ExtraMaximaArgs',['../classwxMaxima.html#a2f0f0d79dfcb0df2455c1de2fd3169b7',1,'wxMaxima::ExtraMaximaArgs()'],['../classwxMaxima.html#a3e8b0edd0117a7f64a69c0e17c82ec52',1,'wxMaxima::ExtraMaximaArgs(const wxString &amp;args)']]]
 ];
