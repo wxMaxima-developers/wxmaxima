@@ -463,6 +463,26 @@ for i:1 thru 10 do (
 )$
 ```
 
+## Exporting the worksheet from within Maxima
+
+The command `wxworksheettohtml()` exports the current worksheet to an HTML file from within a running _Maxima_ session, which is convenient for scripted or batch export. Like `wxstatusbar()` it is safe to use in code that might also run in plain (console) _Maxima_: if _wxMaxima_ isn’t present the command is simply left unevaluated.
+
+```maxima
+wxworksheettohtml("report.html")$
+wxworksheettohtml("report.html", flavor="svg", wxmx=true)$
+```
+
+A relative file name is interpreted relative to _Maxima_’s working directory. The optional keyword options are:
+
+| option   | values                                          | meaning                                             |
+| -------- | ----------------------------------------------- | --------------------------------------------------- |
+| `flavor` | `mathml` (default), `mathjax`, `svg`, `bitmap`  | how the equations are rendered in the exported page |
+| `wxmx`   | `false` (default), `true`                       | embed a downloadable `.wxmx` copy of the session    |
+
+The `flavor` values match the equation formats offered by the graphical **File → Export** dialog: `mathml` produces a self-contained page that needs no internet connection, `mathjax` adds a MathJaX fall-back for browsers that still lack MathML, and `svg`/`bitmap` render every equation to an image.
+
+Support for `wxworksheettotex()` and `wxworksheettopdf()` is planned.
+
 ## Plotting
 
 Plotting (having fundamentally to do with graphics) is a place where a graphical user interface will have to provide some extensions to the original program.

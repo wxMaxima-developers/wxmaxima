@@ -163,6 +163,53 @@
   t
   )
 
+;; Export the current worksheet to a file from within a Maxima session.
+;;
+;; All wxworksheetto* commands (currently only html; tex and pdf are planned)
+;; share ONE <worksheetexport> tag so wxMaxima's XML-tag scanner stays small.
+;; That scanner only recognizes attribute-free opening tags, so the export kind
+;; and the keyword options travel as child ELEMENTS, which wxMaxima parses as
+;; XML: <worksheetexport><type>html</type><file>...</file>
+;;      <option name="flavor">svg</option>...</worksheetexport>
+(defun wxexport-keyname (sym)
+  (string-downcase ($sconcat sym)))
+
+(defun wxexport-valstr (val)
+  (cond ((eq val t) "true")
+	((null val) "false")
+	((eq val '$true) "true")
+	((eq val '$false) "false")
+	(t ($sconcat val))))
+
+(defun wxexport-options-xml (opts)
+  ;; Turn the key=value options (Maxima mequal expressions) into
+  ;; <option name="key">value</option> children.
+  (let ((s ""))
+    (dolist (o opts s)
+      (when (and (consp o) (consp (car o)) (eq (caar o) 'mequal))
+	(setq s (concatenate 'string s
+			     "<option name=\"" (wxexport-keyname (second o)) "\">"
+			     (wxxml-fix-string (wxexport-valstr (third o)))
+			     "</option>"))))))
+
+(defun wxexport-emit (type filename opts)
+  (finish-output)
+  (let ((absname (or (ignore-errors
+		       (namestring (merge-pathnames ($sconcat filename))))
+		     ($sconcat filename))))
+    (format t "<worksheetexport><type>~a</type><file>~a</file>~a</worksheetexport>~%"
+	    type
+	    (wxxml-fix-string absname)
+	    (wxexport-options-xml opts)))
+  (finish-output)
+  filename)
+
+;; wxworksheettohtml("file.html" [, flavor=..., wxmx=...])
+;;   flavor in {mathml (default), mathjax, svg, bitmap}
+;;   wxmx = true embeds a downloadable .wxmx copy of the session
+(defun $wxworksheettohtml (filename &rest opts)
+  (wxexport-emit "html" filename opts))
+
 ;; Muffles compiler-notes where we don't want to drown in debug messages.
 (defmacro no-warning (form)
   #+sbcl `(handler-bind
