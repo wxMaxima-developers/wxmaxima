@@ -62,6 +62,7 @@
 #include "MathParser.h"
 #include "worksheet/Worksheet.h"
 #include "cells/GroupCell.h"
+#include "cells/AnimationCell.h"
 
 #include <algorithm>
 #include <cstdlib>
@@ -689,6 +690,43 @@ SCENARIO("Per-cell output export writes one image file per selected output") {
   }
 
   g_ws->ClearSelection();
+}
+
+SCENARIO("An animation exports to LaTeX as \\animategraphics and compiles") {
+  // A small multi-frame GIF, loaded into an AnimationCell the way an exported
+  // slideshow would be.
+  const wxString gif =
+    wxFileName(wxString(wxS(WXM_TESTFILES_DIR)), wxS("anim3frames.gif"))
+      .GetFullPath();
+  REQUIRE(wxFileExists(gif));
+  auto group = std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE);
+  AnimationCell anim(group.get(), g_cfg, gif, /*remove=*/false);
+  REQUIRE(anim.Length() == 3);
+
+  const wxString dir = MakeExportDir(wxS("anim"));
+  std::size_t counter = 0;
+  const wxString tex = GroupCell::ToTeXAnimation(&anim, dir + wxS("/doc_img"),
+                                                 wxS("doc"), &counter);
+
+  THEN("it emits \\animategraphics over all frames and writes the frames") {
+    REQUIRE(tex.Contains(wxS("\\animategraphics")));
+    REQUIRE(tex.Contains(wxS("{0}{2}"))); // 3 frames -> indices 0..2
+    for (int i = 0; i < 3; i++)
+      REQUIRE(wxFileExists(
+        dir + wxString::Format(wxS("/doc_img/doc_1_frame_%d.png"), i)));
+  }
+
+  THEN("the \\animategraphics compiles with the animate package") {
+    const wxString docTex = dir + wxS("/anim.tex");
+    wxFFile f(docTex, wxS("wb"));
+    REQUIRE(f.IsOpened());
+    REQUIRE(f.Write(wxS("\\documentclass{article}\n\\usepackage{graphicx}\n"
+                        "\\usepackage{animate}\n\\begin{document}\n") +
+                      tex + wxS("\n\\end{document}\n"),
+                    wxConvUTF8));
+    f.Close();
+    RequireTexCompiles(docTex, wxS("pdflatex"));
+  }
 }
 
 class TestApp : public wxApp {

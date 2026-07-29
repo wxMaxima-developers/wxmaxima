@@ -207,6 +207,14 @@ public:
 
   static wxString ToTeXImage(const Cell *tmp, const wxString &imgDir, const wxString &filename, std::size_t *imgCounter);
 
+  /*! Write an animation's frames as images and emit an \animategraphics for it.
+
+    Returns an empty string (so the caller can fall back to a placeholder) if
+    the cell isn't an animation, has no frames, or there is nowhere to write the
+    frame images to.
+  */
+  static wxString ToTeXAnimation(const Cell *tmp, const wxString &imgDir, const wxString &filename, std::size_t *imgCounter);
+
   wxString ToTeX() const override;
 
   wxString ToXML() const override;

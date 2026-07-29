@@ -1247,7 +1247,12 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
       if (tmp.GetType() == MC_TYPE_IMAGE) {
         str << ToTeXImage(&tmp, imgDir, filename, imgCounter);
       } else if (tmp.GetType() == MC_TYPE_SLIDE) {
-        str << "\\text{[animated graphics - not shown in TeX export]}";
+        const wxString anim =
+          ToTeXAnimation(&tmp, imgDir, filename, imgCounter);
+        if (anim.IsEmpty())
+          str << "\\text{[animated graphics - not shown in TeX export]}";
+        else
+          str << anim;
       } else {
         switch (tmp.GetTextStyle()) {
         case TS_LABEL:
@@ -1332,6 +1337,47 @@ wxString GroupCell::ToTeXImage(const Cell *tmp, const wxString &imgDir, const wx
   }
 
   return str;
+}
+
+wxString GroupCell::ToTeXAnimation(const Cell *tmp, const wxString &imgDir,
+                                   const wxString &filename,
+                                   std::size_t *imgCounter) {
+  const AnimationCell *const anim = dynamic_cast<const AnimationCell *>(tmp);
+  if ((anim == NULL) || (imgCounter == NULL) || imgDir.IsEmpty())
+    return wxEmptyString;
+  const int frames = anim->Length();
+  if (frames <= 0)
+    return wxEmptyString;
+  if (!wxDirExists(imgDir))
+    if (!wxMkdir(imgDir))
+      return wxEmptyString;
+
+  (*imgCounter)++;
+  // \animategraphics wants the frames as <base>0.png ... <base>(N-1).png.
+  const wxString base =
+    filename + wxString::Format(wxS("_%zu_frame_"), *imgCounter);
+  int written = 0;
+  for (int i = 0; i < frames; i++) {
+    wxImage img = anim->GetBitmap(i);
+    if (!img.IsOk())
+      continue;
+    if (img.SaveFile(imgDir + wxS("/") + base +
+                       wxString::Format(wxS("%d"), i) + wxS(".png"),
+                     wxBITMAP_TYPE_PNG))
+      written++;
+  }
+  if (written == 0)
+    return wxEmptyString;
+
+  int fps = static_cast<int>(anim->GetFrameRate() + 0.5);
+  if (fps < 1)
+    fps = 1;
+
+  // Plays in PDF viewers that support \animategraphics, first frame elsewhere.
+  return wxString::Format(
+    wxS("\\animategraphics[autoplay,loop,width=.95\\linewidth,"
+        "height=.80\\textheight,keepaspectratio]{%d}{%s}{0}{%d}"),
+    fps, filename + wxS("_img/") + base, frames - 1);
 }
 
 wxString GroupCell::ToXML() const {
