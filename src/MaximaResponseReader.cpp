@@ -55,6 +55,59 @@ void MaximaResponseReader::ReadStatusBar(const wxXmlDocument &xmldoc) {
     }
 }
 
+void MaximaResponseReader::ReadWorksheetExport(const wxXmlDocument &xmldoc) {
+  if (m_wxMaxima.GetWorksheet())
+    m_wxMaxima.GetWorksheet()->SetCurrentTextCell(nullptr);
+  if (!xmldoc.IsOk()) {
+    m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
+      _("There was an error in the XML describing a worksheet-export request.\n"
+        "Please report this as a bug to the wxMaxima project."),
+      MC_TYPE_ERROR);
+    m_wxMaxima.m_evaluator.AbortOnError();
+    return;
+  }
+
+  wxXmlNode *const root = xmldoc.GetRoot();
+  if (root == NULL)
+    return;
+
+  wxString type = wxS("html");
+  wxString file;
+  wxString flavor = wxS("mathml");
+  bool wxmx = false;
+  for (wxXmlNode *child = root->GetChildren(); child != NULL;
+       child = child->GetNext()) {
+    const wxString name = child->GetName();
+    wxString content = child->GetNodeContent();
+    content.Trim(true).Trim(false);
+    if (name == wxS("type"))
+      type = content;
+    else if (name == wxS("file"))
+      file = content;
+    else if (name == wxS("option")) {
+      const wxString key = child->GetAttribute(wxS("name"));
+      if (key == wxS("flavor"))
+        flavor = content;
+      else if (key == wxS("wxmx"))
+        wxmx = (content == wxS("true"));
+    }
+  }
+
+  if (file.IsEmpty()) {
+    m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
+      _("wxworksheettohtml: no target file name was given."), MC_TYPE_WARNING);
+    return;
+  }
+
+  if (type == wxS("html"))
+    m_wxMaxima.ExportWorksheetToHtml(file, flavor, wxmx);
+  else
+    m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
+      wxString::Format(
+        _("Worksheet export of type \"%s\" is not supported yet."), type),
+      MC_TYPE_WARNING);
+}
+
 void MaximaResponseReader::ReadManualTopicNames(const wxXmlDocument &xmldoc) {
   if(xmldoc.IsOk())
     {

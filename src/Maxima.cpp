@@ -57,6 +57,7 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
           m_knownTags[wxS("variables")] = XML_VARIABLES;
           m_knownTags[wxS("watch_variables_add")] = XML_WATCH_VARIABLES_ADD;
           m_knownTags[wxS("statusbar")] = XML_STATUSBAR;
+          m_knownTags[wxS("worksheetexport")] = XML_WORKSHEET_EXPORT;
           m_knownTags[wxS("html-manual-keywords")] = XML_HTML_MANUAL_KEYWORDS;
           m_knownTags[wxS("mth")] = XML_MATHS;
           m_knownTags[wxS("math")] = XML_MATHS;

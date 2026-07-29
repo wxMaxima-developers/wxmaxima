@@ -5,6 +5,12 @@
   a backslash in such output no longer produces broken LaTeX -- the
   `\ensuremath{}` that wraps it was itself being brace-escaped into invalid
   markup. (Strings were already exported as text.)
+- New Maxima command `wxworksheettohtml("file.html")` exports the current
+  worksheet to HTML from within a Maxima session (for scripted/batch export).
+  Keyword options choose the flavour: `flavor="mathml"` (default, self-contained
+  native MathML), `"mathjax"`, `"svg"` or `"bitmap"`, and `wxmx=true` embeds a
+  downloadable copy of the session. (`wxworksheettotex`/`...topdf` are planned
+  and will share the same mechanism.)
 - New right-click items "Export output as SVG to a folder..." and "...as PNG
   to a folder...": for the selected cell(s) they write one image file per
   output into a directory you choose, named after the output label (e.g.

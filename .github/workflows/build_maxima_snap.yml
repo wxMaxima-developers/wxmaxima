@@ -104,6 +104,33 @@ jobs:
           print("Maxima snap version set to", ver)
           PY
 
+      # Maxima renamed its desktop launcher (maxima commit 181c06a5b,
+      # "Updates the name of the desktop launcher file for Xmaxima") -- it now
+      # installs desktopintegration/Xmaxima.desktop as
+      # usr/share/applications/Xmaxima.desktop. But Maxima's snap/snapcraft.yaml
+      # still points the xmaxima app's `desktop:` key at the old
+      # net.sourceforge.maxima.xmaxima.desktop, so snapcraft fails because that
+      # file no longer exists in the prime tree. The rename is already in the
+      # 5.49.0 release, so both channels are affected.
+      #
+      # Point `desktop:` at whatever .desktop file this Maxima ref actually
+      # installs (so it stays correct for older refs too). Drop this step once
+      # Maxima's own snapcraft.yaml is fixed upstream.
+      - name: Work around Maxima's stale desktop-file path in snapcraft.yaml
+        run: |
+          set -eu
+          desktop_src=$(ls desktopintegration/*.desktop 2>/dev/null | head -n1 || true)
+          if [ -z "$desktop_src" ]; then
+            echo "No .desktop file under desktopintegration/; leaving snapcraft.yaml unchanged."
+            exit 0
+          fi
+          desktop_file=$(basename "$desktop_src")
+          sed -i -E \
+            "s#^([[:space:]]*desktop:[[:space:]]*usr/share/applications/).*#\1${desktop_file}#" \
+            snap/snapcraft.yaml
+          echo "Patched the xmaxima app's desktop: entry to $desktop_file"
+          grep -n 'desktop:' snap/snapcraft.yaml
+
       - name: Build the Maxima snap
         uses: snapcore/action-build@v1
         id: build
