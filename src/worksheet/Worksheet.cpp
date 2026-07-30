@@ -166,9 +166,55 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_caretTimer.Start(blinktime);
   DisableKeyboardScrolling();
 
-  // hack to workaround problems in RtL locales,
-  // https://bugzilla.redhat.com/show_bug.cgi?id=455863
+  // Pin the worksheet's own layout direction to left-to-right.
+  //
+  // This is the 2009 workaround for
+  // https://bugzilla.redhat.com/show_bug.cgi?id=455863, filed against wxMaxima:
+  // in a right-to-left locale the worksheet showed *nothing at all*, because the
+  // content was positioned outside the visible rectangle. Forcing LTR keeps the
+  // worksheet readable there, at the price of left-aligning text in a language
+  // that should be right-aligned -- so it is a band-aid over a real defect, and
+  // the defect is still unfixed.
+  //
+  // The pin stays even for a right-to-left document, and that is deliberate
+  // rather than lazy. Letting wxWidgets mirror the window DC does give correct
+  // right-to-left prose for free, but it mirrors *only* a window DC, and
+  // Cell::Draw is shared with the export and print contexts (BitmapOut, Svgout,
+  // Printout), which are never mirrored. Every drawing primitive would then have
+  // to know which kind of context it is drawing into, and right-to-left would
+  // work on screen but not on paper or in an exported image. Mirroring is
+  // therefore done where the positions are computed instead -- see
+  // Configuration::RightToLeftDocument().
   SetLayoutDirection(wxLayout_LeftToRight);
+
+  // Which way the *document* reads. It follows the user interface language:
+  // wxApp::GetLayoutDirection() asks wxUILocale, which falls back to
+  // wxWidgets' own language table, so Hebrew, Arabic, Farsi and Urdu are
+  // recognised as right-to-left without the toolkit's translations having to be
+  // installed and without wxMaxima needing a translation of its own yet.
+  //
+  // WXM_LAYOUT_DIRECTION=rtl|ltr overrides that, which is how the right-to-left
+  // layout is exercised from a test or from CI without setting a locale at all.
+  {
+    bool rightToLeft = wxTheApp && (wxTheApp->GetLayoutDirection() ==
+                                    wxLayout_RightToLeft);
+    const wxChar *source = wxS("the UI language");
+
+    wxString layoutDir;
+    if (wxGetEnv(wxS("WXM_LAYOUT_DIRECTION"), &layoutDir)) {
+      layoutDir.MakeLower();
+      if ((layoutDir == wxS("rtl")) || (layoutDir == wxS("ltr"))) {
+        rightToLeft = (layoutDir == wxS("rtl"));
+        source = wxS("WXM_LAYOUT_DIRECTION");
+      }
+    }
+    m_configuration->RightToLeftDocument(rightToLeft);
+
+    wxLogMessage(wxS("Document reads %s (from %s); the worksheet window itself "
+                     "stays left-to-right."),
+                 rightToLeft ? wxS("right-to-left") : wxS("left-to-right"),
+                 source);
+  }
 
   // If the following option is missing a size change might cause the scrollbar
   // to be shown causing a size change causing a relayout causing the scrollbar

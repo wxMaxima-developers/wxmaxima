@@ -1,5 +1,14 @@
 # Current development version
 
+- In a right-to-left user interface language (Hebrew, Arabic, Farsi, Urdu) the
+  text of comment, title and section cells is now set flush right instead of
+  flush left, and the caret and mouse follow it. Input cells keep their left
+  margin and equations are not mirrored: those read left to right in every
+  script, even where a variable's own name does not. Which way the document
+  reads follows the interface language; there is not yet a right-to-left
+  translation of wxMaxima itself, so setting the language is currently the way
+  to see this.
+
 - LaTeX export: 2-D ASCII-art maths -- what Maxima prints when it isn't asked
   for XML, for example from the Lisp side -- is exported as a verbatim block
   instead of being pushed through the math renderer. Its meaning is carried
