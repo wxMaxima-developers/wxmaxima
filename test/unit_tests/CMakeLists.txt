@@ -17,6 +17,15 @@ include_directories(
 # test until ctest's watchdog kills it. Compiles to nothing off Windows.
 set(WXM_TEST_SETUP "${CMAKE_CURRENT_SOURCE_DIR}/wxm_test_setup.cpp")
 
+# On Windows the tests also need an application manifest, or the loader binds
+# COMCTL32 to the legacy 5.82 assembly, which lacks the window-subclassing
+# entry points wx's GUI code imports, and refuses to start the executable at
+# all. See wxm_test_manifest.rc for the full story. Cygwin builds no PE
+# resources, and wxmaxima.exe gets the same manifest from src/wxmaxima.rc.
+if(WIN32 AND NOT CYGWIN)
+    list(APPEND WXM_TEST_SETUP "${CMAKE_CURRENT_SOURCE_DIR}/wxm_test_manifest.rc")
+endif()
+
 if(MINGW)
     # Statically link the GCC/C++/winpthread runtimes into the test executables.
     # Otherwise each exe depends on libstdc++-6.dll, libgcc_s_seh-1.dll and

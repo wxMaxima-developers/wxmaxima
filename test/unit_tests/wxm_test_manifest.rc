@@ -1,0 +1,22 @@
+// An application manifest for the unit-test executables.
+//
+// Without one, Windows binds COMCTL32.dll to the legacy 5.82 side-by-side
+// assembly. That version predates the window-subclassing API, so it exports
+// neither SetWindowSubclass nor RemoveWindowSubclass nor DefSubclassProc --
+// all three of which wxWidgets' GUI code imports. The loader then rejects the
+// executable outright with STATUS_ENTRYPOINT_NOT_FOUND (exit code 0xc0000139)
+// before main() is reached, which under ctest looks like a test failing in a
+// hundredth of a second with no output at all.
+//
+// Only the tests that pull in wx's GUI code were affected, since they are the
+// ones that import COMCTL32; a test that does not, such as test_AFontSize,
+// passed throughout. wxmaxima.exe itself was never affected because
+// src/wxmaxima.rc gives it this same manifest.
+//
+// wx's own resource script carries a manifest that asks for ComCtl32 v6, so
+// including it is all that is needed. wxUSE_DPI_AWARE_MANIFEST matches
+// src/wxmaxima.rc, so the tests run under the same DPI regime as the
+// application they test.
+#define wxUSE_DPI_AWARE_MANIFEST 2
+
+#include "wx/msw/wx.rc"
