@@ -403,7 +403,6 @@ par Maxima en ligne de commande, mais ces substitutions ne fonctionneront
 peuvent apparaître si vous copiez-collez une formule depuis un autre
 document.
 
-
 ### Les panneaux latéraux
 
 Les raccourcis vers les commandes les plus importantes de _Maxima_, comme
@@ -441,7 +440,7 @@ _WxMaxima_ offers a set of standard
 [Markdown](https://en.wikipedia.org/wiki/Markdown) conventions that don’t
 collide with mathematical notation. One of these elements is bullet lists.
 
-```
+```text
 Texte ordinaire
 * Un élément, niveau d'indentation 1
 * Un autre élément au niveau d'indentation 1
@@ -454,14 +453,14 @@ Texte ordinaire
 _WxMaxima_ reconnaîtra le texte commençant par le caractère `>` comme des
 blocs de citations  :
 
-``` Texte ordinaire > citation citation citation citation > citation
+```text Texte ordinaire > citation citation citation citation > citation
 citation citation citation > citation citation citation citation Texte
 ordinaire```
 
 _WxMaxima_’s TeX and HTML output will also recognize `=>` and replace it by
 the corresponding Unicode sign:
 
-``` cogito => sum.  ```
+```text cogito => sum.  ```
 
 D’autres symboles reconnus par les exports HTML et TeX sont `<=` et `>=`
 pour les comparaisons, une double flèche à double pointe (`<=>`), des
@@ -542,13 +541,13 @@ commentaires spéciaux Maxima.
 
 Cela commence par le commentaire suivant :
 
-``` /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/ /* [
+```maxima /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/ /* [
 Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */ ```
 
 Puis les cellules suivent, encodées sous forme de commentaires Maxima, par
 exemple une cellule de section :
 
-```
+```maxima
 /* [wxMaxima: section start ]
 Titre de la section
    [wxMaxima: section end   ] */
@@ -557,7 +556,7 @@ Titre de la section
 ou (dans une cellule Math, l'entrée n'est bien sûr *pas* mise en commentaire
 (la sortie n'est pas enregistrée dans un fichier `wxm`)) :
 
-```
+```maxima
 /* [wxMaxima: input   start ] */
 f(x):=x^2+1$
 f(2);
@@ -567,7 +566,7 @@ f(2);
 Les images sont [encodées en Base64](https://en.wikipedia.org/wiki/Base64)
 avec l'indication du type de l'image sur la première ligne):
 
-```
+```maxima
 /* [wxMaxima: image   start ]
 jpg
 [séquence de caractères très chaotique à première vue]
@@ -576,13 +575,13 @@ jpg
 
 Une saut de page est simplement une ligne contenant :
 
-```
+```maxima
 /* [wxMaxima: saut de page    ] */
 ```
 
 Et les cellules repliées sont marquées par :
 
-```
+```maxima
 /* [wxMaxima: fold    start ] */
 ...
 /* [wxMaxima: fold    end   ] */
@@ -764,6 +763,43 @@ for i:1 thru 10 do (
     ?sleep(3)
 )$
 ```
+
+## Exporting the worksheet from within Maxima
+
+The command `wxworksheettohtml()` exports the current worksheet to an HTML
+file from within a running _Maxima_ session, which is convenient for
+scripted or batch export. Like `wxstatusbar()` it is safe to use in code
+that might also run in plain (console) _Maxima_: if _wxMaxima_ isn’t present
+the command is simply left unevaluated.
+
+```maxima wxworksheettohtml("report.html")$ wxworksheettohtml("report.html",
+flavor="svg", wxmx=true)$ ```
+
+A relative file name is interpreted relative to _Maxima_’s working
+directory. The optional keyword options are:
+
+| option   | values                                          | meaning                                             |
+| -------- | ----------------------------------------------- | --------------------------------------------------- |
+| `flavor` | `mathml` (default), `mathjax`, `svg`, `bitmap`  | how the equations are rendered in the exported page |
+| `wxmx`   | `false` (default), `true`                       | embed a downloadable `.wxmx` copy of the session    |
+
+The `flavor` values match the equation formats offered by the graphical
+**File → Export** dialog: `mathml` produces a self-contained page that needs
+no internet connection, `mathjax` adds a MathJaX fall-back for browsers that
+still lack MathML, and `svg`/`bitmap` render every equation to an image.
+
+The companion command `wxworksheettotex()` exports to a LaTeX (`.tex`) file
+the same way:
+
+```maxima wxworksheettotex("report.tex")$ wxworksheettotex("report.tex",
+documentclass="report", documentclassoptions="12pt,a4paper")$ ```
+
+| option                 | meaning                                                              |
+| ---------------------- | -------------------------------------------------------------------- |
+| `documentclass`        | overrides the LaTeX `\documentclass` (e.g. `"article"`, `"report"`)  |
+| `documentclassoptions` | overrides its options (e.g. `"12pt,a4paper"`)                        |
+
+Support for `wxworksheettopdf()` is planned.
 
 ## Graphiques
 
@@ -1235,14 +1271,21 @@ The function `wx_matrix()` is a wrapper for Maxima's `matrix()` command that
 allows for more flexible formatting of matrices in wxMaxima:
 
 **`wx_matrix( <matrix>, [options] )`**
-- **`lines=true`**: Draws internal separator lines between the cells. This is required to visually separate headings from data.
-- **`rownames=true`**: Tells wxMaxima that the first column of the matrix contains labels.
-- **`colnames=true`**: Tells wxMaxima that the first row of the matrix contains labels.
-- **`parenstyle=<style>`**: Sets the type of parenthesis or brackets to draw around the matrix. Supported styles are: `round` `()`, `square` `[]`, `angled` `<>`, `straight` `||`, or `none`.
+
+- **`lines=true`**: Draws internal separator lines between the cells. This
+  is required to visually separate headings from data.
+- **`rownames=true`**: Tells wxMaxima that the first column of the matrix
+  contains labels.
+- **`colnames=true`**: Tells wxMaxima that the first row of the matrix
+  contains labels.
+- **`parenstyle=<style>`**: Sets the type of parenthesis or brackets to draw
+  around the matrix. Supported styles are: `round` `()`, `square` `[]`,
+  `angled` `<>`, `straight` `||`, or `none`.
 
 Example:
+
 ```maxima
-wx_matrix(matrix(["Name", "Value"], ["X", 10], ["Y", 20]), 
+wx_matrix(matrix(["Name", "Value"], ["X", 10], ["Y", 20]),
           lines=true, rownames=true, colnames=true, parenstyle=square);
 ```
 
@@ -1254,7 +1297,6 @@ pour signaler un bug concernant le système actuel :
 - - `wxbuild_info()` : Rassemble des informations sur la version en cours
   d'exécution  de _wxMaxima_
 - `wxbug_report()` indique comment et où signaler les bogues
-
 
 ## Ecrire le résultat de la sortie en rouge
 
@@ -1289,7 +1331,7 @@ tips, some example worksheets and in command line Maxima included demos (the
 
 Veuillez noter que les exemples indiquent :
 
-~~~ At the ’_’ prompt, type ’;’ and <enter> to proceed with the
+~~~text At the ’_’ prompt, type ’;’ and <enter> to proceed with the
 demonstration.  ~~~
 
 Cela est valable pour Maxima en ligne de commande, mais dans wxMaxima, par
@@ -1477,7 +1519,7 @@ l’installation. Cependant, toute version de _Maxima_ basée sur SBCL, ayant
 déjà évalué une cellule durant la session en cours, peut gentiment indiquer
 son emplacement après exécution de la commande suivante :
 
-``` :lisp (sb-impl::userinit-pathname)  ```
+```maxima :lisp (sb-impl::userinit-pathname)  ```
 
 ## Remarque concernant Wayland (distributions Linux/BSD récentes)
 
@@ -1578,7 +1620,7 @@ wxdraw2d(
 ## Après la mise à niveau vers macOS 13.1, les commandes plot et/ou draw
 affichent des messages d'erreur du type
 
-``` 1 HIToolbox 0x00007ff80cd91726
+```text 1 HIToolbox 0x00007ff80cd91726
 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102 2 HIToolbox
 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52 3 HIToolbox
 0x00007ff80cd35908 SetMenuBarObscured + 408 ...  ```
