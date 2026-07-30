@@ -758,6 +758,30 @@ wxCoord GroupCell::GetInputIndent() const {
  * - Mathematical indentation (aligning results with the input area).
  * - Coordinate accumulation (drop and center list).
  */
+bool GroupCell::IsOutputLabel(const Cell &cell) {
+  return (cell.GetTextStyle() == TS_LABEL) ||
+    (cell.GetTextStyle() == TS_USERLABEL);
+}
+
+std::vector<GroupCell::OutputLineWidths>
+GroupCell::MeasureOutputLines(Cell *displayed) {
+  std::vector<OutputLineWidths> lines;
+  bool isFirst = true;
+  for (const Cell &tmp : OnDrawList(displayed)) {
+    if (isFirst || tmp.BreakLineHere())
+      lines.emplace_back();
+    OutputLineWidths &line = lines.back();
+    // Only a *leading* run of labels counts as the label: a string that happens
+    // to be styled like one further along the line belongs to the equation.
+    if (IsOutputLabel(tmp) && (line.rest == 0))
+      line.label += tmp.GetWidth();
+    else
+      line.rest += tmp.GetWidth();
+    isFirst = false;
+  }
+  return lines;
+}
+
 void GroupCell::UpdateOutputPositions() const {
   Cell *const displayed = DisplayedOutput();
   if (displayed && !IsHidden()) {
@@ -770,8 +794,28 @@ void GroupCell::UpdateOutputPositions() const {
     // (m_outputRect is mutable - no const_cast needed).
     m_outputRect.SetPosition(in);
 
+    // A right-to-left document sets each result against the right-hand edge of
+    // the content column, with its "(%o1)" in the label column to the right of
+    // that -- the mirror of the left-to-right layout, and of what the input
+    // half of the cell already does. The equation's *contents* are not
+    // mirrored: an equation reads left to right in every script.
+    //
+    // Placing a line therefore needs its widths before the first cell of it is
+    // placed, which one pass over the draw list works out. The label is what
+    // starts a line, so its width and the rest's are counted separately.
+    const bool rightToLeft = m_configuration->RightToLeftDocument();
+    const wxCoord labelColumnLeft =
+      ContentColumnRight() - Scale_Px(m_configuration->GetLabelWidth()) -
+      MC_TEXT_PADDING;
+    std::vector<OutputLineWidths> lineWidths;
+    if (rightToLeft)
+      lineWidths = MeasureOutputLines(displayed);
+
     bool isFirst = true;
     int drop = 0;
+    std::size_t lineIndex = 0;
+    bool inLabelColumn = false;
+    wxCoord equationStart = 0;
     for (Cell &tmp : OnDrawList(displayed)) {
       if (isFirst || tmp.BreakLineHere()) {
         if (!isFirst) {
@@ -779,18 +823,37 @@ void GroupCell::UpdateOutputPositions() const {
           in.y += m_configuration->GetInterEquationSkip();
           if (tmp.HasBigSkip())
             in.y += MC_LINE_SKIP;
+          if (rightToLeft)
+            lineIndex++;
         }
 
         // Apply horizontal indentation
-        in.x = m_currentPoint.x + tmp.GetLineIndent();
-        
+        if (rightToLeft && (lineIndex < lineWidths.size())) {
+          const OutputLineWidths &line = lineWidths.at(lineIndex);
+          equationStart = labelColumnLeft - line.rest;
+          // The label sits in its own column on the right; everything after it
+          // is set flush against the left of that column.
+          inLabelColumn = (line.label > 0);
+          in.x = inLabelColumn ? ContentColumnRight() - line.label
+            : equationStart;
+        } else
+          in.x = m_currentPoint.x + tmp.GetLineIndent();
+
         // Accumulate vertical height based on previous line's drop and current line's center
         in.y += drop + tmp.GetCenterList();
         drop = tmp.GetMaxDrop();
       }
+
+      // Leaving the label column means jumping back to where the equation
+      // itself starts, since the two are not adjacent in a mirrored layout.
+      if (inLabelColumn && !IsOutputLabel(tmp)) {
+        in.x = equationStart;
+        inLabelColumn = false;
+      }
+
       // Recursively position the cell and its children
       tmp.SetCurrentPoint(in);
-      
+
       // Advance horizontally
       in.x += tmp.GetWidth();
       isFirst = false;

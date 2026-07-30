@@ -32,6 +32,7 @@
 
 #include <utility>
 #include <memory>
+#include <vector>
 #include "Cell.h"
 #include "EditorCell.h"
 #include <unordered_map>
@@ -237,6 +238,22 @@ public:
 
   //! The x just past the right edge of the content column. See the definition.
   wxCoord ContentColumnRight() const;
+
+  //! The widths of one line of output, split at the label that starts it.
+  struct OutputLineWidths {
+    wxCoord label = 0;
+    wxCoord rest = 0;
+  };
+
+  //! Is this output cell one of the labels that start a line, like "(%o1)"?
+  static bool IsOutputLabel(const Cell &cell);
+
+  /*! The width of every line of output, so a line can be placed before it is walked.
+
+    Only needed to set output flush right in a right-to-left document, where a
+    line's starting x depends on how wide the whole line turns out to be.
+   */
+  static std::vector<OutputLineWidths> MeasureOutputLines(Cell *displayed);
 
   /*! Where this group cell's label (the "(%i1)", or a section's number) goes.
 
