@@ -17,15 +17,16 @@ var searchData=
   ['maximalocation_14',['MaximaLocation',['../classConfiguration.html#a6d90ad4232c786592219a4afc370d675',1,'Configuration']]],
   ['maximamenu_15',['MaximaMenu',['../classMaximaCommandMenus.html#a67e4bed2500bd59532df70f9135f47ab',1,'MaximaCommandMenus']]],
   ['maximamenusyncrows_16',['MaximaMenuSyncRows',['../MaximaMenuSync_8h.html#a842d00d5b536bd6a560a6bfe488d2ba3',1,'MaximaMenuSyncRows():&#160;MaximaMenuSync.cpp'],['../MaximaMenuSync_8cpp.html#a842d00d5b536bd6a560a6bfe488d2ba3',1,'MaximaMenuSyncRows():&#160;MaximaMenuSync.cpp']]],
-  ['maximaparameters_17',['MaximaParameters',['../classConfiguration.html#a5b565e55d9e06075da06dab3863e313b',1,'Configuration::MaximaParameters() const'],['../classConfiguration.html#ad239d557be93853639c3425b21ade190',1,'Configuration::MaximaParameters(wxString parameters)']]],
+  ['maximaparameters_17',['MaximaParameters',['../classConfiguration.html#ad239d557be93853639c3425b21ade190',1,'Configuration::MaximaParameters(wxString parameters)'],['../classConfiguration.html#a5b565e55d9e06075da06dab3863e313b',1,'Configuration::MaximaParameters() const']]],
   ['maximasessioninfo_18',['MaximaSessionInfo',['../classMaximaSessionInfo.html#aee3201bb277b6e2ee0a0af7496dad509',1,'MaximaSessionInfo']]],
   ['maximasessionstart_19',['MaximaSessionStart',['../classHistory.html#a4a50b4c22d87784dee4b52719d06c655',1,'History']]],
   ['maximatokenizer_20',['MaximaTokenizer',['../classMaximaTokenizer.html#aece7dce3250f6c4b86dd977577f74bb5',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration, const TokenList &amp;initialTokens)'],['../classMaximaTokenizer.html#a86f0055757187f8b7533adde1d4a32d0',1,'MaximaTokenizer::MaximaTokenizer(const wxString &amp;commands, const Configuration *const configuration)']]],
   ['maximauserlocation_21',['MaximaUserLocation',['../classConfiguration.html#a52c3103a8a856b7ef2263c50e4ce6711',1,'Configuration::MaximaUserLocation() const'],['../classConfiguration.html#ab243f8140f4f378ddd57caa0dbb2b9b0',1,'Configuration::MaximaUserLocation(wxString maxima)']]],
   ['maximavarnametolisp_22',['MaximaVarnameToLisp',['../classMaxima.html#aa463e9595a0b289f322d56d68db9f636',1,'Maxima']]],
-  ['member_23',['member',['../classFn__Test.html#a823b5c9726bb8f6ece50e57ac8e3092c',1,'Fn_Test::member()'],['../classAutolink__Test.html#acf783a43c2b4b6cc9dd2361784eca2e1',1,'Autolink_Test::member(int, int)'],['../classAutolink__Test.html#a393ea281f235a2f603d98daf72b0d411',1,'Autolink_Test::member(int)'],['../classAfterdoc__Test.html#a57ba94e9039ee90a1b191ae0009a05dd',1,'Afterdoc_Test::member()']]],
-  ['menucommand_24',['MenuCommand',['../classwxMaxima.html#ac92da2d00f70ebb78bf96233eda45f82',1,'wxMaxima']]],
-  ['menuhelpstring_25',['MenuHelpString',['../MenuHelpString_8cpp.html#ac67bf830ab57783420c34a9b71898137',1,'MenuHelpString(wxMenu *menu, int id):&#160;MenuHelpString.cpp'],['../MenuHelpString_8h.html#ac67bf830ab57783420c34a9b71898137',1,'MenuHelpString(wxMenu *menu, int id):&#160;MenuHelpString.cpp']]],
-  ['mouseselectionstart_26',['MouseSelectionStart',['../classViewCellPointers.html#a69ca67350af0390921aa19fc930a18a8',1,'ViewCellPointers']]],
-  ['mouseselectionstartedhere_27',['MouseSelectionStartedHere',['../classEditorCell.html#aeb91a26e7fbfb314b31bfd8625139abe',1,'EditorCell']]]
+  ['measureoutputlines_23',['MeasureOutputLines',['../classGroupCell.html#a6d4320ed6389e2ea7c1c653b70e16dfa',1,'GroupCell']]],
+  ['member_24',['member',['../classFn__Test.html#a823b5c9726bb8f6ece50e57ac8e3092c',1,'Fn_Test::member()'],['../classAutolink__Test.html#acf783a43c2b4b6cc9dd2361784eca2e1',1,'Autolink_Test::member(int, int)'],['../classAutolink__Test.html#a393ea281f235a2f603d98daf72b0d411',1,'Autolink_Test::member(int)'],['../classAfterdoc__Test.html#a57ba94e9039ee90a1b191ae0009a05dd',1,'Afterdoc_Test::member()']]],
+  ['menucommand_25',['MenuCommand',['../classwxMaxima.html#ac92da2d00f70ebb78bf96233eda45f82',1,'wxMaxima']]],
+  ['menuhelpstring_26',['MenuHelpString',['../MenuHelpString_8cpp.html#ac67bf830ab57783420c34a9b71898137',1,'MenuHelpString(wxMenu *menu, int id):&#160;MenuHelpString.cpp'],['../MenuHelpString_8h.html#ac67bf830ab57783420c34a9b71898137',1,'MenuHelpString(wxMenu *menu, int id):&#160;MenuHelpString.cpp']]],
+  ['mouseselectionstart_27',['MouseSelectionStart',['../classViewCellPointers.html#a69ca67350af0390921aa19fc930a18a8',1,'ViewCellPointers']]],
+  ['mouseselectionstartedhere_28',['MouseSelectionStartedHere',['../classEditorCell.html#aeb91a26e7fbfb314b31bfd8625139abe',1,'EditorCell']]]
 ];
