@@ -23,6 +23,7 @@ once-a-day nightly build — a multi-day feedback loop. Therefore:
 - Batch fixes so each nightly he receives covers as much as possible.
 
 ## Legend
+
 - ✅ Done / believed good.  ⚠️ Partial or unverified.  ❌ Known gap.
 - **[ASK TESTER]** = needs a real screen reader to judge; can't be unit-tested.
 
@@ -124,6 +125,7 @@ once-a-day nightly build — a multi-day feedback loop. Therefore:
 ## Things for the tester to try (fastest way to move this forward)
 
 Once a nightly with these changes reaches you, in NVDA/JAWS:
+
 1. Tab to the worksheet — is it a "document"? Can you arrow through the cells and
    hear each input and its result?
 2. After evaluating a cell, is the new result announced, or must you navigate to

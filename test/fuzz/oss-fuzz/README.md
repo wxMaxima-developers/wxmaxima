@@ -6,7 +6,7 @@ integration for it. They are kept here for version control; to actually enable
 OSS-Fuzz they must be submitted as a pull request to the OSS-Fuzz repository
 under `projects/wxmaxima/`:
 
-```
+```text
 projects/wxmaxima/project.yaml
 projects/wxmaxima/Dockerfile
 projects/wxmaxima/build.sh

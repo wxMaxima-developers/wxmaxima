@@ -339,7 +339,7 @@ msgstr ""
 "MathML depuis le presse-papiers ». D'autres prennent en charge les équations en RTF. _WxMaxima_ offre donc plusieurs options dans le menu contextuel (clic droit)."
 
 msgid ""
-"```\n"
+"```text\n"
 "Ordinary text\n"
 " * One item, indentation level 1\n"
 " * Another item at indentation level 1\n"
@@ -349,7 +349,7 @@ msgid ""
 "Ordinary text\n"
 "```\n"
 msgstr ""
-"```\n"
+"```text\n"
 "Texte ordinaire\n"
 "* Un élément, niveau d'indentation 1\n"
 "* Un autre élément au niveau d'indentation 1\n"
@@ -380,27 +380,27 @@ msgstr ""
 "besoin de connaître."
 
 msgid ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: section start ]\n"
 "Title of the section\n"
 "   [wxMaxima: section end   ] */\n"
 "```\n"
 msgstr ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: section start ]\n"
 "Titre de la section\n"
 "   [wxMaxima: section end   ] */\n"
 "```\n"
 
 msgid ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: input   start ] */\n"
 "f(x):=x^2+1$\n"
 "f(2);\n"
 "/* [wxMaxima: input   end   ] */\n"
 "```\n"
 msgstr ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: input   start ] */\n"
 "f(x):=x^2+1$\n"
 "f(2);\n"
@@ -408,14 +408,14 @@ msgstr ""
 "```\n"
 
 msgid ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: image   start ]\n"
 "jpg\n"
 "[very chaotic looking character sequence]\n"
 "   [wxMaxima: image   end   ] */\n"
 "```\n"
 msgstr ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: image   start ]\n"
 "jpg\n"
 "[séquence de caractères très chaotique à première vue]\n"
@@ -423,22 +423,22 @@ msgstr ""
 "```\n"
 
 msgid ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: page break    ] */\n"
 "```\n"
 msgstr ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: saut de page    ] */\n"
 "```\n"
 
 msgid ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: fold    start ] */\n"
 "...\n"
 "/* [wxMaxima: fold    end   ] */\n"
 "```\n"
 msgstr ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: fold    start ] */\n"
 "...\n"
 "/* [wxMaxima: fold    end   ] */\n"
@@ -1485,8 +1485,8 @@ msgstr "_WxMaxima_ reconnaîtra le texte commençant par le caractère `>` comme
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:261
-msgid "``` Ordinary text > quote quote quote quote > quote quote quote quote > quote quote quote quote Ordinary text ```"
-msgstr "``` Texte ordinaire > citation citation citation citation > citation citation citation citation > citation citation citation citation Texte ordinaire```"
+msgid "```text Ordinary text > quote quote quote quote > quote quote quote quote > quote quote quote quote Ordinary text ```"
+msgstr "```text Texte ordinaire > citation citation citation citation > citation citation citation citation > citation citation citation citation Texte ordinaire```"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:263
@@ -1495,8 +1495,8 @@ msgstr "_WxMaxima_ reconnaîtra `=>` dans ses sorties TeX et HTML et le remplace
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:267
-msgid "``` cogito => sum.  ```"
-msgstr "``` cogito => sum.  ```"
+msgid "```text cogito => sum.  ```"
+msgstr "```text cogito => sum.  ```"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:269
@@ -1600,8 +1600,8 @@ msgstr "Cela commence par le commentaire suivant :"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:316
-msgid "``` /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/ /* [ Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */ ```"
-msgstr "``` /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/ /* [ Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */ ```"
+msgid "```maxima /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/ /* [ Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */ ```"
+msgstr "```maxima /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/ /* [ Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */ ```"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:318
@@ -2560,8 +2560,8 @@ msgstr "Le dossier où ce fichier doit être placé dépend du système et de l�
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:931
-msgid "``` :lisp (sb-impl::userinit-pathname)  ```"
-msgstr "``` :lisp (sb-impl::userinit-pathname)  ```"
+msgid "```maxima :lisp (sb-impl::userinit-pathname)  ```"
+msgstr "```maxima :lisp (sb-impl::userinit-pathname)  ```"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:933
@@ -2643,8 +2643,8 @@ msgstr "## Après la mise à niveau vers macOS 13.1, les commandes plot et/ou dr
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1013
-msgid "``` 1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102 2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52 3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408 ...  ```"
-msgstr "``` 1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102 2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52 3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408 ...  ```"
+msgid "```text 1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102 2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52 3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408 ...  ```"
+msgstr "```text 1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102 2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52 3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408 ...  ```"
 
 #. type: Plain text
 #. type: Plain text

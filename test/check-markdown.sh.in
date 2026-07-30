@@ -1,0 +1,75 @@
+#!/bin/sh
+# Lints the hand-written Markdown documentation with mdl (the markdownlint gem),
+# using the repository's .mdlrc.
+#
+# The docs are the first thing a would-be contributor or packager reads, and a
+# malformed list or a header level that skips a step renders wrong on GitHub
+# without anybody noticing locally. Which rules apply is decided by .mdlrc, not
+# here -- note that mdl's config is Ruby, so the rule list needs commas; without
+# them mdl silently ignores the whole list.
+#
+# Optional, like check-lintian/check-rpmlint: if mdl isn't installed the test
+# passes with a warning, so the suite still runs on machines without Ruby.
+#
+# The translated manuals info/wxmaxima.<lang>.md are excluded: they are
+# linguist-generated (a build step propagates the English info/wxmaxima.md into
+# them), so a finding there has to be fixed in the English source, and their
+# translators can't act on it anyway.
+
+set -eu
+
+if ! command -v mdl >/dev/null 2>&1; then
+    echo "Warning: mdl not found. Skipping the Markdown lint."
+    echo "         Install it with: gem install mdl"
+    exit 0
+fi
+
+SRCDIR="@CMAKE_SOURCE_DIR@"
+cd "$SRCDIR" || exit 1
+
+# Both ship in the release tarball (they are test inputs, so unlike the other
+# tool dotfiles they are deliberately *not* export-ignore'd in .gitattributes).
+# Should they be missing anyway -- a distribution that strips dotfiles from its
+# source package -- skip rather than fail somebody else's build.
+if [ ! -f .mdlrc ] || [ ! -f .mdl_style.rb ]; then
+    echo "Warning: no .mdlrc/.mdl_style.rb (a release tarball omits them)."
+    echo "         Skipping the Markdown lint."
+    exit 0
+fi
+
+# The project's own *.md files. Ask git, so that a developer's local, ignored
+# notes (CLAUDE.md is in .gitignore) can't fail the build; fall back to find for
+# a release tarball, which has no .git. Either way the generated translations
+# info/wxmaxima.<lang>.md are dropped, while the English info/wxmaxima.md they
+# are generated from is kept.
+if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+    ALL_MD="$(git ls-files '*.md')"
+else
+    ALL_MD="$(find . \
+                   \( -name '.?*' -o -name 'build' -o -name 'build-*' \) -prune -o \
+                   -name '*.md' -print \
+              | sed 's|^\./||')"
+fi
+# One deliberate exclusion on top of the generated translations: cmake-bin2h/ is
+# a vendored third-party copy (see its README for the upstream URL and commit),
+# so findings there would have to be fixed upstream, and rewriting it locally
+# only makes the next update harder.
+#
+# NB info/wxmaxima.md *is* linted, although it is the source po4a translates into
+# the nine manuals and its formatting is part of the translatable strings (the
+# .po catalogs hold msgids like "``` cogito => sum.  ```"). Re-formatting it
+# therefore marks some translations fuzzy -- accepted deliberately, so that the
+# manual is held to the same standard as the rest of the docs.
+FILES="$(printf '%s\n' "$ALL_MD" \
+         | grep -Ev '(^|/)info/wxmaxima\.[A-Za-z_]+\.md$' \
+         | grep -Ev '^cmake-bin2h/' \
+         | sort)"
+
+if [ -z "$FILES" ]; then
+    echo "Error: found no Markdown files to lint."
+    exit 1
+fi
+
+# shellcheck disable=SC2086 # the file list is deliberately word-split
+mdl -c .mdlrc $FILES
+echo "Markdown lint: clean."

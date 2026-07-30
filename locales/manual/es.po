@@ -1085,7 +1085,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:251
 #, no-wrap
 msgid ""
-"```\n"
+"```text\n"
 "Ordinary text\n"
 " * One item, indentation level 1\n"
 " * Another item at indentation level 1\n"
@@ -1095,7 +1095,7 @@ msgid ""
 "Ordinary text\n"
 "```\n"
 msgstr ""
-"```\n"
+"```text\n"
 "Texto ordinario\n"
 " * Un ítem, nivel 1 de sangrado\n"
 " * Otro ítem en nivel 1 de sangrado\n"
@@ -1115,10 +1115,10 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:261
 msgid ""
-"``` Ordinary text > quote quote quote quote > quote quote quote quote > "
+"```text Ordinary text > quote quote quote quote > quote quote quote quote > "
 "quote quote quote quote Ordinary text ```"
 msgstr ""
-"``` Texto ordinario > comilla comilla comilla > comilla comilla comilla > "
+"```text Texto ordinario > comilla comilla comilla > comilla comilla comilla > "
 "comilla comilla comilla Texto ordinario ```"
 
 #. type: Plain text
@@ -1132,8 +1132,8 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:267
-msgid "``` cogito => sum.  ```"
-msgstr "``` cogito => sum.  ```"
+msgid "```text cogito => sum.  ```"
+msgstr "```text cogito => sum.  ```"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:269
@@ -1360,10 +1360,10 @@ msgstr "Comienza con el siguiente comentario:"
 #. type: Plain text
 #: ../../info/wxmaxima.md:316
 msgid ""
-"``` /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/ /* "
+"```maxima /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/ /* "
 "[ Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */ ```"
 msgstr ""
-"``` /* [archivo de guion wxMaxima versión 1] [ ¡NO LO EDITE A MANO! ]*/ /* "
+"```maxima /* [archivo de guion wxMaxima versión 1] [ ¡NO LO EDITE A MANO! ]*/ /* "
 "[ Creado con wxMaxima versión 24.02.2_DevelopmentSnapshot ] */ ```"
 
 #. type: Plain text
@@ -1378,13 +1378,13 @@ msgstr ""
 #: ../../info/wxmaxima.md:324
 #, no-wrap
 msgid ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: section start ]\n"
 "Title of the section\n"
 "   [wxMaxima: section end   ] */\n"
 "```\n"
 msgstr ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: inicio de sesión ]\n"
 "Título de la sección\n"
 "   [wxMaxima: final de sección   ] */\n"
@@ -1403,14 +1403,14 @@ msgstr ""
 #: ../../info/wxmaxima.md:333
 #, no-wrap
 msgid ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: input   start ] */\n"
 "f(x):=x^2+1$\n"
 "f(2);\n"
 "/* [wxMaxima: input   end   ] */\n"
 "```\n"
 msgstr ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: entrada   inicio ] */\n"
 "f(x):=x^2+1$\n"
 "f(2);\n"
@@ -1430,14 +1430,14 @@ msgstr ""
 #: ../../info/wxmaxima.md:342
 #, no-wrap
 msgid ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: image   start ]\n"
 "jpg\n"
 "[very chaotic looking character sequence]\n"
 "   [wxMaxima: image   end   ] */\n"
 "```\n"
 msgstr ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: imagen  inicio ]\n"
 "jpg\n"
 "[vista de secuencia de caracteres muy caótica]\n"
@@ -1453,11 +1453,11 @@ msgstr "Un salto de página es tan solo una línea conteniendo:"
 #: ../../info/wxmaxima.md:348
 #, no-wrap
 msgid ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: page break    ] */\n"
 "```\n"
 msgstr ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: salto de página    ] */\n"
 "```\n"
 
@@ -1470,13 +1470,13 @@ msgstr "Y las celdas encarpetadas marcadas por:"
 #: ../../info/wxmaxima.md:356
 #, no-wrap
 msgid ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: fold    start ] */\n"
 "...\n"
 "/* [wxMaxima: fold    end   ] */\n"
 "```\n"
 msgstr ""
-"```\n"
+"```maxima\n"
 "/* [wxMaxima: carpeta    inicio ] */\n"
 "...\n"
 "/* [wxMaxima: carpeta    final  ] */\n"
@@ -3213,7 +3213,7 @@ msgstr ""
 msgid ""
 "Example:\n"
 "```maxima\n"
-"wx_matrix(matrix([\"Name\", \"Value\"], [\"X\", 10], [\"Y\", 20]), \n"
+"wx_matrix(matrix([\"Name\", \"Value\"], [\"X\", 10], [\"Y\", 20]),\n"
 "          lines=true, rownames=true, colnames=true, parenstyle=square);\n"
 "```\n"
 msgstr ""
@@ -3325,10 +3325,10 @@ msgstr "Infórmese, que las demos escriben:"
 #. type: Plain text
 #: ../../info/wxmaxima.md:843
 msgid ""
-"~~~ At the ’_’ prompt, type ’;’ and <enter> to proceed with the "
+"~~~text At the ’_’ prompt, type ’;’ and <enter> to proceed with the "
 "demonstration.  ~~~"
 msgstr ""
-"~~~ En la solicitud ’_’, teclee ’;’ y <entrar> para proceder con la "
+"~~~text En la solicitud ’_’, teclee ’;’ y <entrar> para proceder con la "
 "demostración.  ~~~"
 
 #. type: Plain text
@@ -3806,8 +3806,8 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:945
-msgid "``` :lisp (sb-impl::userinit-pathname)  ```"
-msgstr "``` :lisp (sb-impl::userinit-pathname)  ```"
+msgid "```maxima :lisp (sb-impl::userinit-pathname)  ```"
+msgstr "```maxima :lisp (sb-impl::userinit-pathname)  ```"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:947
@@ -4065,7 +4065,7 @@ msgstr ""
 #| "0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52 3 "
 #| "HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408 ...  ```"
 msgid ""
-"``` 1 HIToolbox 0x00007ff80cd91726 "
+"```text 1 HIToolbox 0x00007ff80cd91726 "
 "_ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102 2 HIToolbox "
 "0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52 3 HIToolbox "
 "0x00007ff80cd35908 SetMenuBarObscured + 408 ...  ```"

@@ -179,10 +179,10 @@ stability fixes.
 - Stability: a failing save no longer risks stacking one "Saving failed!"
   dialog per autosave interval (the autosave timer restarted before the modal
   dialog was dismissed); the message is now shown once, after the handler that
-  detected it has finished. 
+  detected it has finished.
 - Reading gnuplot's terminal-list reply and cached
   gnuplot source/data files can no longer loop forever on a stream that
-  reports a read error instead of an end-of-file. 
+  reports a read error instead of an end-of-file.
 - Better prevention of leaked maxima processes
 - Automatic line wrapping is now enabled for code cells
 - Fixed: typing near the right edge of a wrapping text cell scrolled the
@@ -227,7 +227,7 @@ stability fixes.
 - The build now autodetects whether the wxWidgets webview and qa components are actually usable instead of failing to configure on installations whose wx-config advertises components that were never built. WXM_DISABLE_WEBVIEW/WXM_DISABLE_QA are still honored to force-disable them.
 - Fixed a crash in builds without webview support: requesting help on a topic (e.g. Maxima's ?? command) with exactly one matching topic name accessed the topic list out of bounds - and showed the wrong topic when there were several.
 - The help pane is now opened once per help request instead of once per matching topic name.
-- Accessibility: screen readers now actually see the worksheet's contents. 
+- Accessibility: screen readers now actually see the worksheet's contents.
 - Accessibility: the symbol/Greek-letter/math sidebar buttons are now announced as named push buttons (by their description, e.g. "Greek small letter alpha") instead of anonymous panels.
 - The Unicode characters sidebar can now be used from the keyboard
 - Fixed copying/cutting a freshly drag-and-dropped image turning it into an "Image data had zero length" error: the copy no longer reads the image before its background load has finished.
@@ -261,7 +261,7 @@ stability fixes.
 
 # 26.06.2
 
-- A whole AI-driven safety review 
+- A whole AI-driven safety review
 - MSW only: .wxmx file contents were sometimes loaded twice
 - Many diff viewer improvements
 - Many find dialogue improvoements
@@ -317,20 +317,20 @@ stability fixes.
 - Fix XML output for definite integrals. It was saved without the limits.
 - Resolved a Crash on encountering some integrals (#2095)
 - A complete overhaul of the worksheet's layout and display engine.
-- Opening <file.wxmx>#UUID opens the file and scrolls to the Group with 
+- Opening <file.wxmx>#UUID opens the file and scrolls to the Group with
   that UUID
 - Many stability improvements, most of these AI-driven (#2072, #2061)
 - The size of subscripts is now calculated correctly
 - The table of contents can now show section numbers
 - Massive improvement of the search within the worksheet
 - Ctrl+G now interrupts the current command again on MS windows
-- Reduced the time windows in which wxMaxima blocks because it is 
+- Reduced the time windows in which wxMaxima blocks because it is
   processing data
-- Fixed a deadlock when closing the application while background 
+- Fixed a deadlock when closing the application while background
   autocompletion tasks were running.
-- Fixed a bug where finding an item in an output cell didn't trigger a 
+- Fixed a bug where finding an item in an output cell didn't trigger a
   scroll to the found item.
-- Fixed a bug where text from long output cells couldn't be selected 
+- Fixed a bug where text from long output cells couldn't be selected
   if the beginning of the cell was scrolled out of view (#2069)
 - MS Windows: The "maxima is running" indicator should now work correctly
 - HI-DPI improvements

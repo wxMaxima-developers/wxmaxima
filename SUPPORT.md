@@ -1,7 +1,7 @@
 # Getting help & reporting problems
 
 wxMaxima is the graphical **front-end** that displays math and handles user input
-in a worksheet. **Maxima** is the computer algebra system — the "math engine" that 
+in a worksheet. **Maxima** is the computer algebra system — the "math engine" that
 does the actual calculations. They are two separate projects, so where to go depends
 on what your question or problem is about.
 
@@ -40,9 +40,10 @@ More about Maxima itself: <https://maxima.sourceforge.io/>.
 wxMaxima contains a crash report generator that bundles all the information about
 what lead to the crash.
 
-The only information from the crash report that is really helpful is 
- * the backtrace that tells what line number the crash was in and what
-   function calls with what parameters lead there.
- * The operating system and
- * The version of wxMaxima since the line number the line that caused the crash is 
-   in might have changed since the release of that version. 
+The only information from the crash report that is really helpful is
+
+- the backtrace that tells what line number the crash was in and what
+  function calls with what parameters lead there.
+- The operating system and
+- The version of wxMaxima since the line number the line that caused the crash is
+  in might have changed since the release of that version.

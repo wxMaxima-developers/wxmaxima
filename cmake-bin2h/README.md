@@ -1,4 +1,4 @@
-These files were downloaded from: https://github.com/sivachandran/cmake-bin2h
+These files were downloaded from: <https://github.com/sivachandran/cmake-bin2h>
 (Git commit: 3777f88)
 
 # bin2h.cmake
