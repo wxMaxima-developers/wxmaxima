@@ -4,23 +4,81 @@ This file contains architectural insights, conventions, and operational knowledg
 
 ## Build System
 
-- **Build Tool:** `ninja`
-- **Build Directory:** `build`
-- **Compilation Command:** `ninja -C build`
+Configure once (a Debug build is the default), then build and run without
+installing:
+
+```sh
+cmake -S . -B build -G Ninja
+ninja -C build
+./build/wxmaxima-local
+```
+
+For a release build (more optimization, log window hidden by default) add
+`-DCMAKE_BUILD_TYPE=Release` to the `cmake` line.
+
+Run the tests -- most of them need Maxima installed:
+
+```sh
+ctest --test-dir build                        # everything
+ctest --test-dir build -R <name-of-the-test>  # one test; names in test/CMakeLists.txt
+xvfb-run ctest --test-dir build               # headless, no X server
+```
+
+The sanitizer build (ASan + UBSan) is what CI runs on every push. Run it
+locally before merging changes to cell lifetime, layout or parsing:
+
+```sh
+cmake -S . -B build-asan -G Ninja -DWXM_SANITIZE=address,undefined
+ninja -C build-asan
+ASAN_OPTIONS=detect_leaks=0 UBSAN_OPTIONS=print_stacktrace=1 \
+    xvfb-run ctest --test-dir build-asan
+```
+
+Leak detection stays off (`detect_leaks=0`) because GTK/Pango leak noise drowns
+out real findings.
+
+Other useful targets: `ninja -C build Doxygen` builds the source documentation
+(note the capital D, and the target only exists when Doxygen is installed), and
+`ninja -C build update-locale` refreshes the translation files.
 
 ## Architecture & GUI
+
+wxMaxima is a GUI front-end to the Maxima CAS; it talks to a Maxima process over
+a local TCP socket.
 
 - **wxAuiManager:** The application uses `wxAuiManager` for its complex layout (sidebars, toolbars, worksheet).
   - **Linux/GTK Timing:** On Linux (especially KDE Plasma with Global Menus), calling `m_manager.Update()` can disrupt the menu bar if it's already attached. This is a known environmental issue in the interaction between wxWidgets, GTK3, and the KDE Global Menu proxy.
     - **Automated Fix:** On systems with wxWidgets <= 3.2 running on KDE, Unity, or with `appmenu-gtk-module` enabled, wxMaxima automatically sets `UBUNTU_MENUPROXY=0` at startup in `main.cpp` to force menus to remain within the window and prevent disappearance.
     - If the menu still disappears, clearing `GTK_MODULES` (e.g., `GTK_MODULES=""`) can also restore local menus.
-- **Cursors:** The worksheet has 2 types of Cursor: A standard cursor in an EditorCell or a hCaret between two worksheet cells. Only one cursor is active at a time.
+- **Cursors:** The worksheet has 2 types of Cursor: A standard cursor in an EditorCell or a hCaret between two worksheet cells (`m_hCaretPosition`, the horizontal bar that marks a position *between* group cells, used for inserting and for selecting whole cells). Only one cursor is active at a time.
 - **Key Classes:**
-  - `wxMaxima`: The main application class (subclass of `wxMaximaFrame`).
-  - `wxMaximaFrame`: The base frame class handling layout and sidebars.
+  - `wxMaxima` (`src/wxMaxima.cpp`): The main application class (subclass of `wxMaximaFrame`). Holds most of the program logic -- Maxima process management, parsing incoming XML, menu and toolbar actions, file I/O.
+  - `wxMaximaFrame` (`src/wxMaximaFrame.cpp`): The base frame class handling layout and sidebars (TOC, variables, history, symbols, draw), the toolbars and the central worksheet.
+  - `Worksheet` (`src/worksheet/Worksheet.cpp`): The scrollable document view. Owns the cell tree (`m_tree`) and handles drawing, keyboard and mouse input, the cursors, the selection and the evaluation queue.
+  - `GroupCell` (`src/cells/GroupCell.cpp`): The top-level container cell that bundles an input `EditorCell` with its output. The worksheet is a linked list of `GroupCell`s.
+  - `Cell` (`src/cells/Cell.cpp`): Base class of all maths display cells -- `TextCell`, `FracCell`, `SqrtCell`, `IntCell`, `MatrCell`, `AnimationCell` and friends.
   - `EditorCell`: Handles text and code input, including Markdown-like formatting (bullet lists).
+  - `MathParser` (`src/MathParser.cpp`): Parses the MathML-like XML Maxima produces (via `wxMathML.lisp`) into a tree of `Cell` objects.
+  - `Maxima` (`src/Maxima.cpp`): Owns the TCP socket to the Maxima process and emits `EVT_MAXIMA` events carrying incoming data.
   - `Variablespane`: Manages the list of defined variables and their values.
   - `AutoComplete`: Handles the autocomplete logic for commands, variables, and files.
+
+### Communication with Maxima
+
+wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML
+wrapped in known tags. `Maxima` reads that data on a worker thread and posts
+`EVT_MAXIMA` events to the main thread, where `wxMaxima` handles them.
+
+`src/wxMathML.lisp` is compiled into the binary (through CMake's bin2h) and is
+what tells Maxima to format its output as MathML-like XML. For development,
+`--wxmathml-lisp=<path>` overrides it with an external file, so a change can be
+tried without rebuilding.
+
+### File Formats
+
+- **`.wxmx`** -- a ZIP archive holding `content.xml` (the MathML-like XML) plus
+  the embedded images. The format version lives in `src/WXMXformat.h`.
+- **`.wxm`** -- the plain-text format, read by `Format::ParseWXMFile()`.
 
 ## Conventions & Standards
 
@@ -28,13 +86,14 @@ This file contains architectural insights, conventions, and operational knowledg
 - **String Literals & Translations:** Use the `wxS()` macro for all string literals and `_()` for user-facing translatable strings.
 - **Logging:** Use `wxLogMessage()` for debugging; messages are visible in **View -> Toggle Log Window** or by using the option `--logtostderr`.
 - **Asynchronous Sidebars & Safety:** Sidebars (TOC, Variables Pane) update asynchronously. Always validate `GroupCell` pointers (using `m_tree->Contains()`) before use.
+- **Long-Lived Cell References:** Anything that keeps a reference to a `Cell` or `GroupCell` beyond the current call -- undo/redo actions, the evaluation queue, the selection, the sidebars, a cached "last clicked" cell -- MUST hold it as a `CellPtr<...>`, never as a raw pointer. `CellPtr` derives from `Observed` and nulls itself when the cell is destroyed, so a stale reference reads as `nullptr` instead of dangling; null-check it when consuming it, because the cell may have died since it was stored. A raw `Cell *` is fine only for the duration of a single function or event.
 - **Cell UUIDs & Navigation:** Cells have unique `m_uuid`. Filenames support `#UUID` fragments.
 - **Forward Compatibility:** `ToXML()` implementations MUST call `GetXMLFlags()` and include its output in the opening tag to preserve unknown attributes.
 - **Serialization Tags:** Some cells use shortened tags (e.g., `LimitCell` uses `<lm>`). Verify in `MathParser.cpp` before modifying.
 - **Gnuplot Probe:** MUST be done asynchronously (e.g., `wxEXEC_ASYNC`). Synchronous execution blocks the UI and can disrupt the Linux global menu system.
 - **Variable Escaping:** Use `Maxima::EscapeVarnameForMaxima` for characters like `,`, `°`, and special symbols. A digit at the *start* of a variable name must be escaped (e.g., `\1a`).
-- **Maxima Restart (Windows):** Restarting requires a manual reset of the network client (`m_client.reset()`) and streams in `KillMaxima` to avoid socket state errors.
-- **Worksheet Search Logic:** Traverse in visual order: Prompt $\to$ Editor $\to$ Output (Forward) or Output $\to$ Editor $\to$ Prompt (Reverse). Resume from current caret position.
+- **Maxima Restart (Windows):** Restarting requires a manual reset of the network client (`m_client.reset()`) and streams in `KillMaxima` (which lives in `MaximaProcessManager`, not in `wxMaxima` any more) to avoid socket state errors.
+- **Worksheet Search Logic:** Traverse in visual order: Prompt → Editor → Output (Forward) or Output → Editor → Prompt (Reverse). Resume from current caret position.
 - **Layout Timeout:** Complex output can trigger a timeout (configurable in Options), replacing slow-to-render cells with a warning.
 - **C++ Standard:** The project uses **C++20**. To support users on older operating systems (like Debian-oldstable or RHEL), wxMaxima aims to stay approximately 10 years behind the current C++ standard.
 - **wxWidgets Version:** Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use `MakeAbsolute()` + `GetFullPath()` instead of `GetAbsolutePath()`).
@@ -48,7 +107,7 @@ This file contains architectural insights, conventions, and operational knowledg
 
      **Recursive Strategy:** If a 2D object is too wide, `CollectWideCells` recursively identifies sub-cells that are already >80% of the available width. These sub-cells are also converted to linear form in the same pass. This heuristic accounts for font size increases that occur when a parent object is linearized, preventing redundant O(N^2) size resets and recalculations in deeply nested structures.
   3. `BreakLines_List()`: Final line wrapping.
-- **High-DPI / wxBitmapBundle:** Use `wxBitmapBundle` for SVG rendering. Avoid unnecessary `GetPreferredBitmapSizeFor` calls on macOS to prevent `nodiscard` warnings.
+- **High-DPI / wxBitmapBundle:** Use `wxBitmapBundle` for SVG rendering.
 - **Windows Focus Management:** Use `CallAfter` for focus transitions (e.g., `m_searchText->SetFocus()`) to prevent the worksheet from "stealing" focus back.
 - **Constructor Initialization:** Order initialization lists to match header declaration order to prevent `-Wreorder` warnings.
 
@@ -70,9 +129,9 @@ This file contains architectural insights, conventions, and operational knowledg
 
 ## Key Subsystems Map
 
-- **Layout Engine:** `src/cells/` and `src/Worksheet.cpp`.
+- **Layout Engine:** `src/cells/` and `src/worksheet/` (`Worksheet.cpp` and its siblings moved into that subdirectory).
 - **MathML Formatting:** `src/wxMathML.lisp` and `src/MathParser.cpp`.
-- **Main Logic:** `src/wxMaxima.cpp` and `src/wxMaximaFrame.cpp`.
+- **Main Logic:** `src/wxMaxima.cpp` and `src/wxMaximaFrame.cpp` -- but much of what used to sit in `wxMaxima` has been peeled off into friend classes, so look there first: `MaximaProcessManager` (spawn/kill/connect and the data pump), `MaximaEvaluator` (evaluation queue and command protocol), `MaximaResponseReader` (the incoming-XML handlers), `MaximaFileIO` (worksheet open/save) and `MaximaCommandMenus` (the menu handlers).
 - **Configuration:** `src/Configuration.cpp`.
 
 ## Error resilience
