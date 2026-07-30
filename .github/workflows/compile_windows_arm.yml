@@ -93,6 +93,74 @@ jobs:
         # green (dropping it is a one-line follow-up if they pass here).
         run: ctest --test-dir build -L unittest -E "MenuHelpString|ButtonWrapSizer" --output-on-failure
 
+      # Diagnose a loader failure in the unit tests.
+      #
+      # Since 2026-07-30 three of the tests -- CellPtr, SqrtCell and ImgCell --
+      # fail here with exit code 0xc0000139, STATUS_ENTRYPOINT_NOT_FOUND, in
+      # under a tenth of a second, i.e. the Windows loader rejects the
+      # executable before any test code runs. The other thirty pass, and a
+      # commit touching nothing but documentation reproduces it, so it is the
+      # toolchain rather than our code -- the same run also logged 404s while
+      # fetching MSYS2 packages. STATUS_ENTRYPOINT_NOT_FOUND means a DLL loaded
+      # but did not export a symbol the executable imports, so the answer is in
+      # the import and export tables, and in which MSYS2 package versions are
+      # installed.
+      #
+      # This step collects that raw material rather than trying to parse PE
+      # tables in YAML, and uploads it as an artifact for offline analysis. It
+      # runs only when the tests failed, never fails itself, and compares each
+      # failing executable against a passing one (AFontSize) -- the difference
+      # between their imports is the most likely place to find the culprit.
+      - name: Collect loader diagnostics
+        if: failure()
+        continue-on-error: true
+        run: |
+            set +e
+            out=arm-diagnostics
+            mkdir -p "$out"
+            tests=build/test/unit_tests
+
+            # Installed package versions, so a future run can be diffed against
+            # a green one. This is what the logs of an older run no longer yield.
+            pacman -Q > "$out/pacman-Q.txt" 2>&1
+            echo "=== MSYS2 packages: $(wc -l < "$out/pacman-Q.txt") installed"
+
+            for t in test_CellPtr test_SqrtCell test_ImgCell test_AFontSize; do
+              exe="$tests/$t.exe"
+              [ -f "$exe" ] || { echo "missing: $exe"; continue; }
+              echo "=== $t: running it directly to capture the loader's complaint"
+              "$exe" > "$out/$t.run.txt" 2>&1
+              echo "$t exit=$?" | tee -a "$out/exit-codes.txt"
+              ldd "$exe"       > "$out/$t.ldd.txt"     2>&1
+              objdump -p "$exe" > "$out/$t.objdump.txt" 2>&1
+              # Just the imported DLL names, so the sets can be diffed by eye.
+              grep -i 'DLL Name:' "$out/$t.objdump.txt" | sort -u \
+                  > "$out/$t.dlls.txt"
+            done
+
+            echo "=== DLLs imported by the failing CellPtr but not by the passing AFontSize"
+            diff "$out/test_AFontSize.dlls.txt" "$out/test_CellPtr.dlls.txt"
+
+            # Export tables of every DLL the failing executable resolves inside
+            # the MSYS2 tree: the missing entry point has to be absent from one
+            # of these.
+            ldd "$tests/test_CellPtr.exe" | awk '{print $3}' \
+                | grep -iE '/clangarm64/bin/' | sort -u \
+                | while read -r dll; do
+                    objdump -p "$dll" > "$out/dll-$(basename "$dll").txt" 2>&1
+                  done
+            ls -l "$out"
+            exit 0
+
+      - name: Upload loader diagnostics
+        if: failure()
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: wxmaxima-windows-arm64-loader-diagnostics
+          path: arm-diagnostics
+          if-no-files-found: warn
+
       # --- PHASE 2a: portable ZIP -------------------------------------------
       # Produce a self-contained ZIP and upload it as a workflow artifact so its
       # completeness can be verified (downloaded + inspected) BEFORE anything is
