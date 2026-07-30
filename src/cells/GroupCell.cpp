@@ -1207,6 +1207,48 @@ wxString GroupCell::ToTeX(const wxString &imgDir, const wxString &filename,
   return str;
 }
 
+namespace {
+/*! Escape LaTeX's special characters in a piece of plain text.
+
+  Used for the label in front of ASCII-art output, which is emitted as ordinary
+  text instead of as an equation tag: a Maxima label like "(%o12)" contains a
+  percent sign, which LaTeX would otherwise read as the start of a comment and
+  swallow the rest of the line with.
+
+  The backslash is parked in a private-use character while the braces are
+  escaped, so that the braces of the \textbackslash{} we replace it with
+  afterwards don't get escaped in turn -- the ordering bug that used to produce
+  \ensuremath\{\backslash\} for a backslash in an error message.
+ */
+wxString TexEscapePlainText(wxString text) {
+  static const wxString marker(wxUniChar(0xE000));
+  text.Replace(wxS("\\"), marker);
+  text.Replace(wxS("{"), wxS("\\{"));
+  text.Replace(wxS("}"), wxS("\\}"));
+  text.Replace(wxS("$"), wxS("\\$"));
+  text.Replace(wxS("&"), wxS("\\&"));
+  text.Replace(wxS("#"), wxS("\\#"));
+  text.Replace(wxS("%"), wxS("\\%"));
+  text.Replace(wxS("_"), wxS("\\_"));
+  text.Replace(wxS("~"), wxS("\\textasciitilde{}"));
+  text.Replace(wxS("^"), wxS("\\textasciicircum{}"));
+  text.Replace(marker, wxS("\\textbackslash{}"));
+  return text;
+}
+
+/*! Make one line of 2-D ASCII art safe to put inside a verbatim environment.
+
+  Inside verbatim nothing is special except the literal string
+  "\end{verbatim}", which ends the environment early -- so that is the only
+  sequence that has to be broken up. (LaTeX ignores the space we insert when
+  looking for the end of a verbatim block, so the art keeps its width.)
+ */
+wxString TexProtectVerbatim(wxString line) {
+  line.Replace(wxS("\\end{verbatim}"), wxS("\\end {verbatim}"));
+  return line;
+}
+} // namespace
+
 wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filename,
                                   std::size_t *imgCounter) const {
   wxString str;
@@ -1242,8 +1284,23 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
       str += wxS("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
 
     bool mathMode = false;
+    bool asciiArt = false;
 
     for (const Cell &tmp : OnDrawList(m_output.get())) {
+      // 2-D ASCII-art maths -- what maxima prints when it isn't asked for XML,
+      // e.g. from the Lisp side or with display2d in its plain-text mode --
+      // draws fraction bars, roots and matrices out of characters, so it only
+      // stays readable if its exact column alignment does. Math mode collapses
+      // runs of spaces and ignores the line breaks, so a run of ASCII-art lines
+      // is emitted as one verbatim block instead of as an equation.
+      const bool isAsciiArt = (tmp.GetTextStyle() == TS_ASCIIMATHS);
+
+      // Anything that isn't another art line ends the block.
+      if (asciiArt && !isAsciiArt) {
+        str += wxS("\\end{verbatim}\n");
+        asciiArt = false;
+      }
+
       if (tmp.GetType() == MC_TYPE_IMAGE) {
         str << ToTeXImage(&tmp, imgDir, filename, imgCounter);
       } else if (tmp.GetType() == MC_TYPE_SLIDE) {
@@ -1253,10 +1310,42 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
           str << "\\text{[animated graphics - not shown in TeX export]}";
         else
           str << anim;
+      } else if (isAsciiArt) {
+        if (mathMode) {
+          str += wxS("\\mbox{}\n\\]");
+          mathMode = false;
+        }
+        if (!asciiArt) {
+          str += wxS("\n\\begin{verbatim}\n");
+          asciiArt = true;
+        }
+        // ToString() gives the art back as characters (it also undoes the
+        // unicode minus the parser substitutes for "-", which is what keeps
+        // fraction bars printable under pdfTeX) and appends the line break the
+        // next cell forces; we add exactly one line break ourselves.
+        wxString line = tmp.ToString();
+        while (line.EndsWith(wxS("\n")))
+          line.RemoveLast();
+        str += TexProtectVerbatim(line) + wxS("\n");
       } else {
         switch (tmp.GetTextStyle()) {
         case TS_LABEL:
-        case TS_USERLABEL:
+        case TS_USERLABEL: {
+          // A label in front of ASCII art must not open math mode: the art is
+          // about to leave it again, and all that would be left of the equation
+          // is an empty, numbered \[...\]. Emit the label as text instead.
+          const Cell *const next = tmp.GetNextToDraw();
+          if (next && (next->GetTextStyle() == TS_ASCIIMATHS)) {
+            if (mathMode) {
+              str += wxS("\\mbox{}\n\\]");
+              mathMode = false;
+            }
+            wxString label = tmp.GetValue();
+            label.Trim(true).Trim(false);
+            str += wxS("\n\\noindent\\textcolor{labelcolor}{\\texttt{") +
+              TexEscapePlainText(label) + wxS("}}\n");
+            break;
+          }
           if (mathMode)
             str += wxS("\\mbox{}\\]\n\\[\\displaystyle ");
           else {
@@ -1265,6 +1354,7 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
           }
           str += tmp.ToTeX() + wxS("\n");
           break;
+        }
 
         case TS_STRING:
         case TS_TEXT:
@@ -1290,6 +1380,9 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
         }
       }
     }
+
+    if (asciiArt)
+      str += wxS("\\end{verbatim}\n");
 
     if (mathMode) {
       // Some invisible dummy content that keeps TeX happy if there really is

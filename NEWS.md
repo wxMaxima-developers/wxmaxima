@@ -1,5 +1,14 @@
 # Current development version
 
+- LaTeX export: 2-D ASCII-art maths -- what Maxima prints when it isn't asked
+  for XML, for example from the Lisp side -- is exported as a verbatim block
+  instead of being pushed through the math renderer. Its meaning is carried
+  entirely by the column alignment (fraction bars drawn out of hyphens,
+  exponents parked above their base), and math mode collapsed the spaces and
+  dropped the line breaks, so the art arrived as an unreadable single line. The
+  label in front of such a block is now written as coloured text, too, instead
+  of as the number of an otherwise empty equation.
+
 - LaTeX export: animations (slide shows) are exported again. Each frame is
   written as an image and embedded with the `animate` package's
   `\animategraphics`, which plays the animation in PDF viewers that support it
