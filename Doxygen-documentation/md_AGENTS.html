@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the <a class="el" href="classwxMaxima.html">wxMaxima</a> codebase. <b>Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.</b></p>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md3"></a>
 Build System</h1>
 <p>Configure once (a Debug build is the default), then build and run without installing:</p>
 <div class="fragment"><div class="line">cmake -S . -B build -G Ninja</div>
@@ -91,7 +91,7 @@ Build System</h1>
 <div class="line">    xvfb-run ctest --test-dir build-asan</div>
 </div><!-- fragment --><p>Leak detection stays off (<code>detect_leaks=0</code>) because GTK/Pango leak noise drowns out real findings.</p>
 <p>Other useful targets: <code>ninja -<a class="el" href="classC.html">C</a> build Doxygen</code> builds the source documentation (note the capital <a class="el" href="classD.html">D</a>, and the target only exists when Doxygen is installed), and <code>ninja -<a class="el" href="classC.html">C</a> build update-locale</code> refreshes the translation files.</p>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md7"></a>
 Architecture &amp; GUI</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
@@ -118,17 +118,17 @@ Architecture &amp; GUI</h1>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 Communication with Maxima</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</p>
 <p><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</p>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md12"></a>
 File Formats</h2>
 <ul>
 <li>**<code>.wxmx</code>** &ndash; a ZIP archive holding <code>content.xml</code> (the MathML-like XML) plus the embedded images. The format version lives in <code><a class="el" href="WXMXformat_8h_source.html">src/WXMXformat.h</a></code>.</li>
 <li>**<code>.wxm</code>** &ndash; the plain-text format, read by <code>Format::ParseWXMFile()</code>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md19"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Conventions &amp; Standards</h1>
 <ul>
 <li><b>Git Environment:</b> Note that running <code>git diff</code> might launch the visual diff tool <code>meld</code> instead of outputting to the terminal. Always use <code>git diff --no-ext-diff</code> if you need terminal output.</li>
@@ -147,7 +147,7 @@ Conventions &amp; Standards</h1>
 <li><b>C++ Standard:</b> The project uses <b>C++20</b>. To support users on older operating systems (like Debian-oldstable or RHEL), <a class="el" href="classwxMaxima.html">wxMaxima</a> aims to stay approximately 10 years behind the current C++ standard.</li>
 <li><b>wxWidgets Version:</b> Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use <code>MakeAbsolute()</code> + <code>GetFullPath()</code> instead of <code>GetAbsolutePath()</code>).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md20"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 Layout &amp; Compatibility</h1>
 <ul>
 <li><b>Mathematical <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> Padding:</b> Use <code>MC_TEXT_PADDING</code> (in <code><a class="el" href="Configuration_8h_source.html">Configuration.h</a></code>) for text-based cells. <b>Exception:</b> <code><a class="el" href="classDigitCell.html" title="A Text cell that display a digit of a more-than-one-line-wide number.">DigitCell</a></code> does not include padding to ensure visual consistency in broken-up numbers.</li>
