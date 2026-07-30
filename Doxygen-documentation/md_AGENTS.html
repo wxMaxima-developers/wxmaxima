@@ -73,15 +73,27 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the <a class="el" href="classwxMaxima.html">wxMaxima</a> codebase. <b>Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.</b></p>
-<h1><a class="anchor" id="autotoc_md3"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Build System</h1>
-<ul>
-<li><b>Build Tool:</b> <code>ninja</code></li>
-<li><b>Build Directory:</b> <code>build</code></li>
-<li><b>Compilation Command:</b> <code>ninja -<a class="el" href="classC.html">C</a> build</code></li>
-</ul>
-<h1><a class="anchor" id="autotoc_md4"></a>
+<p>Configure once (a Debug build is the default), then build and run without installing:</p>
+<div class="fragment"><div class="line">cmake -S . -B build -G Ninja</div>
+<div class="line">ninja -C build</div>
+<div class="line">./build/wxmaxima-local</div>
+</div><!-- fragment --><p>For a release build (more optimization, log window hidden by default) add <code>-DCMAKE_BUILD_TYPE=Release</code> to the <code>cmake</code> line.</p>
+<p>Run the tests &ndash; most of them need <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> installed:</p>
+<div class="fragment"><div class="line">ctest --test-dir build                        # everything</div>
+<div class="line">ctest --test-dir build -R &lt;name-of-the-test&gt;  # one test; names in test/CMakeLists.txt</div>
+<div class="line">xvfb-run ctest --test-dir build               # headless, no X server</div>
+</div><!-- fragment --><p>The sanitizer build (ASan + UBSan) is what CI runs on every push. Run it locally before merging changes to cell lifetime, layout or parsing:</p>
+<div class="fragment"><div class="line">cmake -S . -B build-asan -G Ninja -DWXM_SANITIZE=address,undefined</div>
+<div class="line">ninja -C build-asan</div>
+<div class="line">ASAN_OPTIONS=detect_leaks=0 UBSAN_OPTIONS=print_stacktrace=1 \</div>
+<div class="line">    xvfb-run ctest --test-dir build-asan</div>
+</div><!-- fragment --><p>Leak detection stays off (<code>detect_leaks=0</code>) because GTK/Pango leak noise drowns out real findings.</p>
+<p>Other useful targets: <code>ninja -<a class="el" href="classC.html">C</a> build Doxygen</code> builds the source documentation (note the capital <a class="el" href="classD.html">D</a>, and the target only exists when Doxygen is installed), and <code>ninja -<a class="el" href="classC.html">C</a> build update-locale</code> refreshes the translation files.</p>
+<h1><a class="anchor" id="autotoc_md14"></a>
 Architecture &amp; GUI</h1>
+<p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
 <li><b>wxAuiManager:</b> The application uses <code>wxAuiManager</code> for its complex layout (sidebars, toolbars, worksheet).<ul>
 <li><b>Linux/GTK Timing:</b> On Linux (especially KDE Plasma with Global Menus), calling <code>m_manager.Update()</code> can disrupt the menu bar if it's already attached. This is a known environmental issue in the interaction between wxWidgets, GTK3, and the KDE Global Menu proxy.<ul>
@@ -91,35 +103,51 @@ Architecture &amp; GUI</h1>
 </li>
 </ul>
 </li>
-<li><b>Cursors:</b> The worksheet has 2 types of Cursor: <a class="el" href="classA.html">A</a> standard cursor in an <a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> or a hCaret between two worksheet cells. Only one cursor is active at a time.</li>
+<li><b>Cursors:</b> The worksheet has 2 types of Cursor: <a class="el" href="classA.html">A</a> standard cursor in an <a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> or a hCaret between two worksheet cells (<code>m_hCaretPosition</code>, the horizontal bar that marks a position <em>between</em> group cells, used for inserting and for selecting whole cells). Only one cursor is active at a time.</li>
 <li><b>Key Classes:</b><ul>
-<li><code><a class="el" href="classwxMaxima.html">wxMaxima</a></code>: The main application class (subclass of <code><a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a></code>).</li>
-<li><code><a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a></code>: The base frame class handling layout and sidebars.</li>
+<li><code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> (<code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">src/wxMaxima.cpp</a></code>): The main application class (subclass of <code><a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a></code>). Holds most of the program logic &ndash; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process management, parsing incoming XML, menu and toolbar actions, file I/O.</li>
+<li><code><a class="el" href="classwxMaximaFrame.html" title="The frame containing the menu and the sidebars.">wxMaximaFrame</a></code> (<code><a class="el" href="wxMaximaFrame_8cpp.html" title="This file defines the class wxMaximaFrame.">src/wxMaximaFrame.cpp</a></code>): The base frame class handling layout and sidebars (TOC, variables, history, symbols, draw), the toolbars and the central worksheet.</li>
+<li><code><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></code> (<code><a class="el" href="Worksheet_8cpp.html" title="This file defines the class Worksheet.">src/worksheet/Worksheet.cpp</a></code>): The scrollable document view. Owns the cell tree (<code>m_tree</code>) and handles drawing, keyboard and mouse input, the cursors, the selection and the evaluation queue.</li>
+<li><code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code> (<code><a class="el" href="GroupCell_8cpp.html" title="This file defines the class GroupCell.">src/cells/GroupCell.cpp</a></code>): The top-level container cell that bundles an input <code><a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a></code> with its output. The worksheet is a linked list of <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code>s.</li>
+<li><code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> (<code><a class="el" href="Cell_8cpp.html" title="Core layout and rendering logic for worksheet cells.">src/cells/Cell.cpp</a></code>): Base class of all maths display cells &ndash; <code><a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a></code>, <code><a class="el" href="classFracCell.html">FracCell</a></code>, <code><a class="el" href="classSqrtCell.html" title="This class represents a square root.">SqrtCell</a></code>, <code><a class="el" href="classIntCell.html" title="This class represents an integral.">IntCell</a></code>, <code><a class="el" href="classMatrCell.html" title="A Cell that displays a matrix.">MatrCell</a></code>, <code><a class="el" href="classAnimationCell.html">AnimationCell</a></code> and friends.</li>
 <li><code><a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a></code>: Handles text and code input, including Markdown-like formatting (bullet lists).</li>
+<li><code><a class="el" href="classMathParser.html" title="This class handles parsing the xml representation of a cell tree.">MathParser</a></code> (<code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">src/MathParser.cpp</a></code>): Parses the MathML-like XML <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> produces (via <code>wxMathML.lisp</code>) into a tree of <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> objects.</li>
+<li><code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> (<code>src/Maxima.cpp</code>): Owns the TCP socket to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process and emits <code>EVT_MAXIMA</code> events carrying incoming data.</li>
 <li><code><a class="el" href="classVariablespane.html" title="A &quot;variables&quot; sidepane.">Variablespane</a></code>: Manages the list of defined variables and their values.</li>
 <li><code><a class="el" href="classAutoComplete.html">AutoComplete</a></code>: Handles the autocomplete logic for commands, variables, and files.</li>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md17"></a>
+Communication with Maxima</h2>
+<p><a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</p>
+<p><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</p>
+<h2><a class="anchor" id="autotoc_md18"></a>
+File Formats</h2>
+<ul>
+<li>**<code>.wxmx</code>** &ndash; a ZIP archive holding <code>content.xml</code> (the MathML-like XML) plus the embedded images. The format version lives in <code><a class="el" href="WXMXformat_8h_source.html">src/WXMXformat.h</a></code>.</li>
+<li>**<code>.wxm</code>** &ndash; the plain-text format, read by <code>Format::ParseWXMFile()</code>.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md19"></a>
 Conventions &amp; Standards</h1>
 <ul>
 <li><b>Git Environment:</b> Note that running <code>git diff</code> might launch the visual diff tool <code>meld</code> instead of outputting to the terminal. Always use <code>git diff --no-ext-diff</code> if you need terminal output.</li>
 <li><b><a class="el" href="classString.html" title="A String class.">String</a> Literals &amp; Translations:</b> Use the <code>wxS()</code> macro for all string literals and <code>_()</code> for user-facing translatable strings.</li>
 <li><b>Logging:</b> Use <code>wxLogMessage()</code> for debugging; messages are visible in <b>View -&gt; Toggle Log Window</b> or by using the option <code>--logtostderr</code>.</li>
 <li><b>Asynchronous Sidebars &amp; Safety:</b> Sidebars (TOC, Variables Pane) update asynchronously. Always validate <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code> pointers (using <code>m_tree-&gt;Contains()</code>) before use.</li>
+<li><b>Long-Lived <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> References:</b> Anything that keeps a reference to a <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> or <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code> beyond the current call &ndash; undo/redo actions, the evaluation queue, the selection, the sidebars, a cached "last clicked" cell &ndash; MUST hold it as a <code><a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a>&lt;...&gt;</code>, never as a raw pointer. <code><a class="el" href="classCellPtr.html" title="A weak non-owning pointer that becomes null whenever the observed object is destroyed.">CellPtr</a></code> derives from <code><a class="el" href="classObserved.html" title="Objects deriving from this class can be observed by the CellPtr.">Observed</a></code> and nulls itself when the cell is destroyed, so a stale reference reads as <code>nullptr</code> instead of dangling; null-check it when consuming it, because the cell may have died since it was stored. <a class="el" href="classA.html">A</a> raw <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> *</code> is fine only for the duration of a single function or event.</li>
 <li><b><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> UUIDs &amp; Navigation:</b> Cells have unique <code>m_uuid</code>. Filenames support <code>#UUID</code> fragments.</li>
 <li><b>Forward Compatibility:</b> <code>ToXML()</code> implementations MUST call <code>GetXMLFlags()</code> and include its output in the opening tag to preserve unknown attributes.</li>
 <li><b>Serialization Tags:</b> Some cells use shortened tags (e.g., <code><a class="el" href="classLimitCell.html">LimitCell</a></code> uses <code>&lt;lm&gt;</code>). Verify in <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">MathParser.cpp</a></code> before modifying.</li>
 <li><b>Gnuplot Probe:</b> MUST be done asynchronously (e.g., <code>wxEXEC_ASYNC</code>). Synchronous execution blocks the UI and can disrupt the Linux global menu system.</li>
 <li><b>Variable Escaping:</b> Use <code><a class="el" href="classMaxima.html#ae61a721a9a8f85d80dcdde2fe6228d4e" title="Convert a human-readable maxima variable name to one maxima understands.">Maxima::EscapeVarnameForMaxima</a></code> for characters like <code>,</code>, <code>°</code>, and special symbols. <a class="el" href="classA.html">A</a> digit at the <em>start</em> of a variable name must be escaped (e.g., <code>\1a</code>).</li>
-<li><b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> Restart (Windows):</b> Restarting requires a manual reset of the network client (<code>m_client.reset()</code>) and streams in <code>KillMaxima</code> to avoid socket state errors.</li>
-<li><b><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> Search Logic:</b> Traverse in visual order: Prompt $\to$ Editor $\to$ Output (Forward) or Output $\to$ Editor $\to$ Prompt (Reverse). Resume from current caret position.</li>
+<li><b><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> Restart (Windows):</b> Restarting requires a manual reset of the network client (<code>m_client.reset()</code>) and streams in <code>KillMaxima</code> (which lives in <code><a class="el" href="classMaximaProcessManager.html" title="The Maxima process/socket lifecycle extracted from the wxMaxima god class.">MaximaProcessManager</a></code>, not in <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> any more) to avoid socket state errors.</li>
+<li><b><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> Search Logic:</b> Traverse in visual order: Prompt → Editor → Output (Forward) or Output → Editor → Prompt (Reverse). Resume from current caret position.</li>
 <li><b>Layout Timeout:</b> Complex output can trigger a timeout (configurable in Options), replacing slow-to-render cells with a warning.</li>
 <li><b>C++ Standard:</b> The project uses <b>C++20</b>. To support users on older operating systems (like Debian-oldstable or RHEL), <a class="el" href="classwxMaxima.html">wxMaxima</a> aims to stay approximately 10 years behind the current C++ standard.</li>
 <li><b>wxWidgets Version:</b> Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use <code>MakeAbsolute()</code> + <code>GetFullPath()</code> instead of <code>GetAbsolutePath()</code>).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 Layout &amp; Compatibility</h1>
 <ul>
 <li><b>Mathematical <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> Padding:</b> Use <code>MC_TEXT_PADDING</code> (in <code><a class="el" href="Configuration_8h_source.html">Configuration.h</a></code>) for text-based cells. <b>Exception:</b> <code><a class="el" href="classDigitCell.html" title="A Text cell that display a digit of a more-than-one-line-wide number.">DigitCell</a></code> does not include padding to ensure visual consistency in broken-up numbers.</li>
@@ -131,11 +159,11 @@ Layout &amp; Compatibility</h1>
 <li><code>BreakLines_List()</code>: Final line wrapping.</li>
 </ol>
 </li>
-<li><b>High-DPI / wxBitmapBundle:</b> Use <code>wxBitmapBundle</code> for SVG rendering. Avoid unnecessary <code>GetPreferredBitmapSizeFor</code> calls on macOS to prevent <code>nodiscard</code> warnings.</li>
+<li><b>High-DPI / wxBitmapBundle:</b> Use <code>wxBitmapBundle</code> for SVG rendering.</li>
 <li><b>Windows Focus Management:</b> Use <code>CallAfter</code> for focus transitions (e.g., <code>m_searchText-&gt;SetFocus()</code>) to prevent the worksheet from "stealing" focus back.</li>
 <li><b>Constructor Initialization:</b> Order initialization lists to match header declaration order to prevent <code>-Wreorder</code> warnings.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 Performance &amp; Documentation Mandates</h1>
 <ul>
 <li><b>NEWS.md Updates:</b> Every non-trivial change MUST be documented in <code>NEWS.md</code> under the "# Current development version" section.</li>
@@ -149,21 +177,21 @@ Performance &amp; Documentation Mandates</h1>
 </li>
 <li><b>Strict XML Mandate:</b> To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., <code>noneParens="true"</code>) to the filter list in <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">MathParser.cpp</a></code>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md22"></a>
 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)</h1>
 <ul>
 <li><b>Geometry Awareness:</b> If modifying <code>Recalculate()</code> or <code>Draw()</code> geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in <code>art/Doxygen/</code>.</li>
 <li><b>Consistency:</b> New cell types should have <code>*Geometry.svg</code> and <code>*LinearGeometry.svg</code> (if applicable) diagrams.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md23"></a>
 Key Subsystems Map</h1>
 <ul>
-<li><b>Layout Engine:</b> <code>src/cells/</code> and <code>src/Worksheet.cpp</code>.</li>
+<li><b>Layout Engine:</b> <code>src/cells/</code> and <code>src/worksheet/</code> (<code><a class="el" href="Worksheet_8cpp.html" title="This file defines the class Worksheet.">Worksheet.cpp</a></code> and its siblings moved into that subdirectory).</li>
 <li><b>MathML Formatting:</b> <code>src/wxMathML.lisp</code> and <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">src/MathParser.cpp</a></code>.</li>
-<li><b>Main Logic:</b> <code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">src/wxMaxima.cpp</a></code> and <code><a class="el" href="wxMaximaFrame_8cpp.html" title="This file defines the class wxMaximaFrame.">src/wxMaximaFrame.cpp</a></code>.</li>
+<li><b>Main Logic:</b> <code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">src/wxMaxima.cpp</a></code> and <code><a class="el" href="wxMaximaFrame_8cpp.html" title="This file defines the class wxMaximaFrame.">src/wxMaximaFrame.cpp</a></code> &ndash; but much of what used to sit in <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> has been peeled off into friend classes, so look there first: <code><a class="el" href="classMaximaProcessManager.html" title="The Maxima process/socket lifecycle extracted from the wxMaxima god class.">MaximaProcessManager</a></code> (spawn/kill/connect and the data pump), <code><a class="el" href="classMaximaEvaluator.html" title="The evaluation-queue driver / command protocol extracted from wxMaxima.">MaximaEvaluator</a></code> (evaluation queue and command protocol), <code><a class="el" href="classMaximaResponseReader.html" title="The Maxima-response handlers extracted from the wxMaxima god class.">MaximaResponseReader</a></code> (the incoming-XML handlers), <code><a class="el" href="classMaximaFileIO.html" title="The worksheet file loaders/savers extracted from the wxMaxima god class.">MaximaFileIO</a></code> (worksheet open/save) and <code><a class="el" href="classMaximaCommandMenus.html" title="The menu-command handlers extracted from the wxMaxima god class.">MaximaCommandMenus</a></code> (the menu handlers).</li>
 <li><b><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>:</b> <code><a class="el" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage.">src/Configuration.cpp</a></code>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md21"></a>
+<h1><a class="anchor" id="autotoc_md24"></a>
 Error resilience</h1>
 <ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>

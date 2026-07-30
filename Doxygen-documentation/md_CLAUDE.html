@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>wxMaxima: README</title>
+<title>wxMaxima: Project instructions for Claude Code</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -69,27 +69,13 @@ $(function() {
 
 </div><!-- top -->
 <div><div class="header">
-  <div class="headertitle"><div class="title">README </div></div>
+  <div class="headertitle"><div class="title">Project instructions for Claude Code </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>These files were downloaded from: <a href="https://github.com/sivachandran/cmake-bin2h">https://github.com/sivachandran/cmake-bin2h</a> (Git commit: 3777f88)</p>
-<h1><a class="anchor" id="autotoc_md27"></a>
-bin2h.cmake</h1>
-<p>Pure CMake function to convert any file into C/C++ header, implemented with only CMake commands.</p>
-<h2><a class="anchor" id="autotoc_md28"></a>
-Example Usage</h2>
-<div class="fragment"><div class="line">include(bin2h.cmake)</div>
-<div class="line">...</div>
-<div class="line">message(&quot;Embedding following files into header file ${HEADER_FILE}&quot;)</div>
-<div class="line">foreach(file ${SOURCE_FILES})</div>
-<div class="line">    message(&quot;   ${file}&quot;)</div>
-<div class="line"> </div>
-<div class="line">    get_filename_component(variableName ${file} NAME)</div>
-<div class="line"> </div>
-<div class="line">    bin2h(SOURCE_FILE ${file} HEADER_FILE ${HEADER_FILE} VARIABLE_NAME ${variableName} APPEND NULL_TERMINATE)</div>
-<div class="line">    file(APPEND ${HEADER_FILE} &quot;\n&quot;)</div>
-<div class="line">endforeach()</div>
-</div><!-- fragment --> </div></div><!-- contents -->
+<div class="textblock"><p>The instructions live in <a class="el" href="md_AGENTS.html">AGENTS.md</a>, so that every agent &ndash; and every human contributor &ndash; reads the same file instead of a per-tool copy that drifts out of step. This file only imports it:</p>
+<p>@AGENTS.md</p>
+<p>Personal notes and machine-specific setup do not belong here: put them in <code>CLAUDE.local.md</code>, which is git-ignored. </p>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -27,7 +27,7 @@ var searchData=
   ['populateworksheetcontextmenu_24',['PopulateWorksheetContextMenu',['../WorksheetContextMenu_8cpp.html#a6d9dfcf2c8de1c896fa173c5c71c97f2',1,'PopulateWorksheetContextMenu(Worksheet &amp;worksheet, wxMenu &amp;popupMenu, int downx, int downy, bool clickInSelection):&#160;WorksheetContextMenu.cpp'],['../WorksheetContextMenu_8h.html#a6d9dfcf2c8de1c896fa173c5c71c97f2',1,'PopulateWorksheetContextMenu(Worksheet &amp;worksheet, wxMenu &amp;popupMenu, int downx, int downy, bool clickInSelection):&#160;WorksheetContextMenu.cpp']]],
   ['popupmenu_25',['PopupMenu',['../classMaximaCommandMenus.html#a760cd6d545815b8da1542164eadfe574',1,'MaximaCommandMenus']]],
   ['position_26',['Position',['../classWorksheetCursor.html#adb3eb5bef3300a9ce337cccf7cdb53d9',1,'WorksheetCursor']]],
-  ['positiontopoint_27',['PositionToPoint',['../classEditorCell.html#aee2e4419dba49c4fe442356e4fe86dd8',1,'EditorCell::PositionToPoint()'],['../classCell.html#aaa36d155774bc5968831c791e710e431',1,'Cell::PositionToPoint()'],['../classCell.html#affb518e214e892d67c6e252eb303fece',1,'Cell::PositionToPoint(size_t WXUNUSED(pos))'],['../classEditorCell.html#a984fe2e0c07f031fc103bbdd72c1f70a',1,'EditorCell::PositionToPoint() override']]],
+  ['positiontopoint_27',['PositionToPoint',['../classCell.html#affb518e214e892d67c6e252eb303fece',1,'Cell::PositionToPoint(size_t WXUNUSED(pos))'],['../classCell.html#aaa36d155774bc5968831c791e710e431',1,'Cell::PositionToPoint()'],['../classEditorCell.html#aee2e4419dba49c4fe442356e4fe86dd8',1,'EditorCell::PositionToPoint(size_t pos) override'],['../classEditorCell.html#a984fe2e0c07f031fc103bbdd72c1f70a',1,'EditorCell::PositionToPoint() override']]],
   ['positiontoxy_28',['PositionToXY',['../classEditorCell.html#aab014fc6b15be1b1e5c265c06f7a5509',1,'EditorCell']]],
   ['powrise_29',['PowRise',['../classExptCell.html#a40499d5c427329fd04e7876ccaba71e5',1,'ExptCell']]],
   ['predicatematcher_30',['PredicateMatcher',['../classCatch_1_1Matchers_1_1Generic_1_1PredicateMatcher.html',1,'Catch::Matchers::Generic']]],
@@ -49,10 +49,11 @@ var searchData=
   ['productcell_2ecpp_46',['ProductCell.cpp',['../ProductCell_8cpp.html',1,'']]],
   ['productcell_2eh_47',['ProductCell.h',['../ProductCell_8h.html',1,'']]],
   ['project_20instructions_48',['Project Instructions',['../md_AGENTS.html',1,'']]],
-  ['promptreaction_49',['PromptReaction',['../test__EvalQueueCommands_8cpp.html#a3523eb909a21c68f680eec70a5d456ef',1,'test_EvalQueueCommands.cpp']]],
-  ['propertiesmenu_50',['PropertiesMenu',['../classMaximaCommandMenus.html#ac0eaf6e0cf0b25ab632ebf1f4ba1bc56',1,'MaximaCommandMenus']]],
-  ['publicvar_51',['publicVar',['../classQTstyle__Test.html#aabf7b2e9ed83ea44aca4d213baae06d3',1,'QTstyle_Test::publicVar()'],['../classJavadoc__Test.html#a44a516fbc3a4865e2dcae34649c9df6a',1,'Javadoc_Test::publicVar()']]],
-  ['pyclass_52',['PyClass',['../classdocstring_1_1PyClass.html',1,'docstring.PyClass'],['../classpyexample_1_1PyClass.html',1,'pyexample.PyClass']]],
-  ['pyexample_53',['pyexample',['../namespacepyexample.html',1,'']]],
-  ['pymethod_54',['PyMethod',['../classdocstring_1_1PyClass.html#af092e1eacc10334e0e8630531a3473b4',1,'docstring.PyClass.PyMethod()'],['../classpyexample_1_1PyClass.html#a654596774eb28a0c6d26eea565de3a9d',1,'pyexample.PyClass.PyMethod()']]]
+  ['project_20instructions_20for_20claude_20code_49',['Project instructions for Claude Code',['../md_CLAUDE.html',1,'']]],
+  ['promptreaction_50',['PromptReaction',['../test__EvalQueueCommands_8cpp.html#a3523eb909a21c68f680eec70a5d456ef',1,'test_EvalQueueCommands.cpp']]],
+  ['propertiesmenu_51',['PropertiesMenu',['../classMaximaCommandMenus.html#ac0eaf6e0cf0b25ab632ebf1f4ba1bc56',1,'MaximaCommandMenus']]],
+  ['publicvar_52',['publicVar',['../classQTstyle__Test.html#aabf7b2e9ed83ea44aca4d213baae06d3',1,'QTstyle_Test::publicVar()'],['../classJavadoc__Test.html#a44a516fbc3a4865e2dcae34649c9df6a',1,'Javadoc_Test::publicVar()']]],
+  ['pyclass_53',['PyClass',['../classdocstring_1_1PyClass.html',1,'docstring.PyClass'],['../classpyexample_1_1PyClass.html',1,'pyexample.PyClass']]],
+  ['pyexample_54',['pyexample',['../namespacepyexample.html',1,'']]],
+  ['pymethod_55',['PyMethod',['../classdocstring_1_1PyClass.html#af092e1eacc10334e0e8630531a3473b4',1,'docstring.PyClass.PyMethod()'],['../classpyexample_1_1PyClass.html#a654596774eb28a0c6d26eea565de3a9d',1,'pyexample.PyClass.PyMethod()']]]
 ];
