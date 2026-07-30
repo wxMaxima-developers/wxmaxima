@@ -990,6 +990,13 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
     wxPoint TextCurrentPoint = TextStartingpoint;
     int lastStyle = -1;
     size_t lastIndent = 0;
+    // In a right-to-left document only the point each line *starts* at moves:
+    // the snippets keep their order, since that order is already the logical
+    // one and the toolkit shapes and orders the text inside each of them.
+    const std::vector<wxCoord> rtlLineOffsets = RightToLeftLineOffsets();
+    size_t rtlLine = 0;
+    if (!rtlLineOffsets.empty())
+      TextCurrentPoint.x += rtlLineOffsets.front();
     for (auto &textSnippet : m_styledText) {
       wxCoord width;
 
@@ -1003,6 +1010,8 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
         TextCurrentPoint.x = TextStartingpoint.x;
         TextCurrentPoint.y += m_charHeight;
         TextCurrentPoint.x += textSnippet.GetIndentPixels();
+        if (++rtlLine < rtlLineOffsets.size())
+          TextCurrentPoint.x += rtlLineOffsets.at(rtlLine);
       } else {
         // We need to draw some text.
 
@@ -2497,6 +2506,9 @@ wxPoint EditorCell::PositionToPoint(size_t pos) {
   width = GetLineWidth(cY, cX);
 
   x += width;
+  // The caret has to follow the text when a right-to-left line is set flush
+  // right - the same shift Draw() applies to that line.
+  x += RightToLeftLineOffset(cY);
   y += m_charHeight * cY;
 
   return wxPoint(x, y);
@@ -2532,8 +2544,11 @@ void EditorCell::SelectPointText(const wxPoint point) {
   }
   // Handle indentation: a wrapped continuation line is drawn shifted right by
   // its indentPixels (see Draw), so a click's x must be measured from there.
-  // This applies to code and text cells alike.
+  // This applies to code and text cells alike. A right-to-left line is shifted
+  // right once more, to sit flush with the widest one, so take that off too --
+  // otherwise a click lands on the wrong character.
   posInCell.x -= indentPixels;
+  posInCell.x -= RightToLeftLineOffset(lin > 0 ? lin - 1 : 0);
 
   if (GetType() == MC_TYPE_INPUT) {
     // Code cell
@@ -2910,6 +2925,65 @@ void EditorCell::PasteFromClipboard(const bool primary) {
   }
   if (primary)
     wxTheClipboard->UsePrimarySelection(false);
+}
+
+std::vector<wxCoord> EditorCell::RightToLeftLineOffsets() {
+  std::vector<wxCoord> offsets;
+  if (!m_configuration->RightToLeftDocument())
+    return offsets;
+
+  // Prose follows the document's direction; code does not. "مقدار : 5;" is
+  // still Maxima syntax and reads left to right even though the variable's own
+  // name is Farsi -- the same reason an equation is never mirrored. So an input
+  // or prompt cell keeps its left margin in a right-to-left document, and only
+  // text, title and section cells move.
+  if (IsCodeType(m_type))
+    return offsets;
+
+  // Measure every line, then shift each one right by whatever is left over of
+  // the width available to it: the result is prose set flush right with a
+  // ragged left margin, which is what a right-to-left script wants.
+  //
+  // The reference is Configuration::GetLineWidth() -- the viewport less
+  // everything that sits left of a text cell's text and less the right-hand
+  // margin, i.e. exactly the width this cell's lines were wrapped into, and
+  // exactly the width available from the point Draw() starts at. Aligning to
+  // the widest line *within the cell* instead would be wrong: a single-line
+  // paragraph is its own widest line and so would never move at all.
+  wxDC *const dc = m_configuration->GetRecalcDC();
+  SetFont(dc);
+  const wxCoord available = m_configuration->GetLineWidth();
+
+  std::vector<wxCoord> lineWidths;
+  wxCoord lineWidth = 0;
+  for (const auto &textSnippet : m_styledText) {
+    if ((textSnippet.GetText() == wxS("\n")) ||
+        (textSnippet.GetText() == wxS("\r"))) {
+      lineWidths.push_back(lineWidth);
+      lineWidth = textSnippet.GetIndentPixels();
+    } else if (textSnippet.SizeKnown())
+      lineWidth += textSnippet.GetWidth();
+    else {
+      wxCoord width, height;
+      dc->GetTextExtent(textSnippet.GetText(), &width, &height);
+      lineWidth += width;
+    }
+  }
+  lineWidths.push_back(lineWidth);
+
+  // A line that is wider than the space available (an unbreakable word, say)
+  // stays where it is rather than being pushed off to the left.
+  offsets.reserve(lineWidths.size());
+  for (const wxCoord width : lineWidths)
+    offsets.push_back(std::max(available - width, 0));
+  return offsets;
+}
+
+wxCoord EditorCell::RightToLeftLineOffset(size_t line) {
+  const std::vector<wxCoord> offsets = RightToLeftLineOffsets();
+  if (line < offsets.size())
+    return offsets.at(line);
+  return 0;
 }
 
 wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {

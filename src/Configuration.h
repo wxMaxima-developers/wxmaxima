@@ -814,6 +814,32 @@ public:
       m_renderContext.SetCanvasSize(siz);
     }
 
+  /*! Does the document read right-to-left (Arabic, Hebrew, Persian, Urdu)?
+
+    This is a *layout* property, deliberately not the drawing context's layout
+    direction. wxWidgets can mirror a window DC for us, but only a window DC:
+    Cell::Draw is shared with the export and print contexts (BitmapOut, Svgout,
+    Printout), which are never mirrored, so a mirrored screen would mean every
+    drawing primitive needing to know which kind of context it is drawing into.
+    Mirroring where the positions are computed instead keeps the cells ignorant
+    of it and makes right-to-left come out right on paper and in an exported
+    image as well as on screen. The worksheet window therefore stays pinned to
+    left-to-right; see the comment in Worksheet's constructor.
+
+    Maths is *not* mirrored even here: an equation reads left-to-right in every
+    script. Only the flow of prose and the side that labels and brackets sit on
+    follow this.
+   */
+  bool RightToLeftDocument() const
+    { return m_rightToLeftDocument; }
+
+  bool RightToLeftDocument(bool rightToLeft)
+    {
+      if (m_rightToLeftDocument != rightToLeft)
+        RecalculateForce();
+      return m_rightToLeftDocument = rightToLeft;
+    }
+
   //! Show the cell brackets [displayed left to each group cell showing its extend]?
   bool ShowBrackets() const
     { return m_showBrackets; }
@@ -1358,6 +1384,8 @@ private:
   double m_printMargin_Bot;
   double m_printMargin_Left;
   double m_printMargin_Right;
+  //! Does the document read right-to-left? See RightToLeftDocument().
+  bool m_rightToLeftDocument;
   //! Show the cell brackets [displayed left to each group cell showing its extend]?
   bool m_showBrackets;
   //! Prlong the cell brackets [displayed left to each group cell showing its extend]?

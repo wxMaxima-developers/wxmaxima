@@ -382,6 +382,17 @@ public:
 
   wxCoord GetLineWidth(size_t line, size_t pos);
 
+  /*! How far each line has to move right to sit flush with the widest one.
+
+    Empty unless the document reads right-to-left
+    (Configuration::RightToLeftDocument), so a left-to-right document pays
+    nothing for this. Indexed by line; see RightToLeftLineOffset().
+   */
+  std::vector<wxCoord> RightToLeftLineOffsets();
+
+  //! RightToLeftLineOffsets() for a single line, 0 when there is none.
+  wxCoord RightToLeftLineOffset(size_t line);
+
   /*! true, if this cell's width has to be recalculated.
    */
   bool IsDirty() const override

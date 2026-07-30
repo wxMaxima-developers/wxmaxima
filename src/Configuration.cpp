@@ -113,6 +113,7 @@ Configuration::Configuration(const Configuration &o) :
   m_printMargin_Bot(o.m_printMargin_Bot),
   m_printMargin_Left(o.m_printMargin_Left),
   m_printMargin_Right(o.m_printMargin_Right),
+  m_rightToLeftDocument(o.m_rightToLeftDocument),
   m_showBrackets(o.m_showBrackets),
   m_printBrackets(o.m_printBrackets),
   m_changeAsterisk(o.m_changeAsterisk),
@@ -307,6 +308,7 @@ void Configuration::ResetAllToDefaults() {
   m_printScale = 1.0;
   m_notifyIfIdle = true;
   m_fixReorderedIndices = true;
+  m_rightToLeftDocument = false;
   m_showBrackets = true;
   m_printBrackets = false;
   m_hideBrackets = true;
