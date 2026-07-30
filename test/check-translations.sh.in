@@ -1,0 +1,80 @@
+#!/bin/sh
+# Checks every translation catalogue with msgfmt.
+#
+# The one that really matters is --check-format: if a msgstr's format specifiers
+# don't match its msgid -- a "%s" that became "%d", or one that got lost in
+# translation -- then wxWidgets formats that string against the wrong arguments
+# at runtime, in a language the developers probably don't read. gettext catches
+# it statically, so nothing of the sort should ever reach a release.
+#
+# Header warnings ("field 'Language' still has the initial default value") are
+# reported as a count and do NOT fail: msgfmt exits 0 for them, they are cosmetic
+# metadata, and several catalogues have carried them for years.
+#
+# Accelerator mismatches (a "&File" whose translation lost the "&") are counted
+# and reported too, also without failing: there are ~205 of them across the
+# catalogues right now, so gating on them would mean editing translations rather
+# than guarding them. The number is printed so it can be watched, and driven down.
+#
+# Optional, like check-lintian/check-rpmlint/check-markdown: without msgfmt (i.e.
+# without gettext) the test passes with a warning.
+
+set -eu
+
+if ! command -v msgfmt >/dev/null 2>&1; then
+    echo "Warning: msgfmt not found. Skipping the translation checks."
+    echo "         It is part of gettext."
+    exit 0
+fi
+
+SRCDIR="@CMAKE_SOURCE_DIR@"
+cd "$SRCDIR" || exit 1
+
+# Every catalogue and template. Use git when it is available so that a stray .po
+# in a build tree can't join in, and fall back to find for a release tarball.
+if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+    CATALOGUES="$(git ls-files '*.po' '*.pot')"
+else
+    CATALOGUES="$(find . \( -name '.?*' -o -name 'build' -o -name 'build-*' \) -prune -o \
+                       \( -name '*.po' -o -name '*.pot' \) -print | sed 's|^\./||')"
+fi
+
+if [ -z "$CATALOGUES" ]; then
+    echo "Error: found no translation catalogues to check."
+    exit 1
+fi
+
+BROKEN=""
+COUNT=0
+WARNED=0
+ACCEL=0
+
+for po in $CATALOGUES; do
+    COUNT=$((COUNT + 1))
+
+    # The gate. -c is --check-format plus --check-header and --check-domain; only
+    # a real error makes msgfmt exit non-zero.
+    if ! output="$(msgfmt -c -o /dev/null "$po" 2>&1)"; then
+        echo "FAILED: $po"
+        echo "$output"
+        BROKEN="$BROKEN $po"
+        continue
+    fi
+    if [ -n "$output" ]; then
+        WARNED=$((WARNED + 1))
+    fi
+
+    # Informational only.
+    n="$(msgfmt --check-accelerators='&' -o /dev/null "$po" 2>&1 \
+         | grep -c 'accelerator' || true)"
+    ACCEL=$((ACCEL + n))
+done
+
+if [ -n "$BROKEN" ]; then
+    echo
+    echo "Translation catalogues with errors:$BROKEN"
+    exit 1
+fi
+
+echo "Translations: $COUNT catalogues compile cleanly" \
+     "($WARNED with cosmetic header warnings, $ACCEL accelerator mismatches)."
