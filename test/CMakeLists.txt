@@ -21,6 +21,7 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-xml-validity.sh.in" check-xml-
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxmx-validity.sh.in" check-wxmx-validity.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wizard-commands.sh.in" check-wizard-commands.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-markdown.sh.in" check-markdown.sh)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-translations.sh.in" check-translations.sh)
 
 # Create a headless wrapper script
 set(WXM_TEST_WRAPPER "${CMAKE_CURRENT_BINARY_DIR}/run_headless.sh")
@@ -185,6 +186,15 @@ add_test(
 add_test(
     NAME check-markdown
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-markdown.sh"
+)
+
+# Check every translation catalogue with msgfmt. Chiefly --check-format: a msgstr
+# whose format specifiers don't match its msgid makes wxWidgets format against
+# the wrong arguments at runtime, in a language we may not read.
+# Skipped with a warning where gettext isn't installed.
+add_test(
+    NAME check-translations
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-translations.sh"
 )
 
 add_test(
