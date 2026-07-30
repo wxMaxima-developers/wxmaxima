@@ -271,6 +271,21 @@ static const wxChar *const kTextOutputXml = wxS(
   "backslash=\\ nabla=&#8711; equiv=&#8801; approx=&#8776; ok</t></mth>\n"
   "</output>\n"
   "</cell>\n"
+  // A labelled block of 2-D ASCII-art maths: four lines whose meaning is
+  // carried entirely by their column alignment (a fraction bar drawn out of
+  // hyphens, an exponent parked above the base). Math mode would collapse the
+  // spaces and drop the line breaks, so this pins the verbatim block.
+  "<cell type=\"code\">\n"
+  "<input><editor type=\"input\"><line>asciiartexample;</line></editor></input>\n"
+  "<output>\n"
+  "<mth><lbl altCopy=\"(%o11)&#9;\">(%o11) </lbl>"
+  "<t breakline=\"true\" type=\"ASCII-Art\">                        2</t>\n"
+  "<t breakline=\"true\" type=\"ASCII-Art\">    ExportNetAsciiArt x  + 1</t>\n"
+  "<t breakline=\"true\" type=\"ASCII-Art\">    ------------------------</t>\n"
+  "<t breakline=\"true\" type=\"ASCII-Art\">         ExportNetAsciiArt x</t>\n"
+  "</mth>\n"
+  "</output>\n"
+  "</cell>\n"
   "</wxMaximaDocument>\n");
 
 /*! Fills the worksheet with the real math corpus plus sentinel cells.
@@ -569,6 +584,23 @@ SCENARIO("TeX export succeeds, is deterministic and contains the document") {
     REQUIRE_FALSE(tex.Contains(wxS("\\] \\texttt{%error")));
     // A plain text output line survives too.
     REQUIRE(tex.Contains(wxS("ExportNetTextOutput")));
+  }
+
+  THEN("2-D ASCII-art output keeps its alignment in a verbatim block") {
+    const wxString tex = ReadTextFile(dir1 + wxS("/doc.tex"));
+    REQUIRE(tex.Contains(wxS("\\begin{verbatim}")));
+    REQUIRE(tex.Contains(wxS("\\end{verbatim}")));
+    // The art is emitted character for character: the indentation that parks
+    // the exponent above its base, and the fraction bar as plain ASCII hyphens
+    // -- the parser turns "-" into a unicode minus for the screen, and a
+    // unicode minus would abort the pdfTeX run.
+    REQUIRE(tex.Contains(wxS("                        2")));
+    REQUIRE(tex.Contains(wxS("    ExportNetAsciiArt x  + 1")));
+    REQUIRE(tex.Contains(wxS("    ------------------------")));
+    // Its label is written as coloured text rather than as an equation tag,
+    // which would have left an empty numbered equation in front of the block.
+    REQUIRE(tex.Contains(wxS("\\textcolor{labelcolor}{\\texttt{(\\%o11)}}")));
+    REQUIRE_FALSE(tex.Contains(wxS("\\tag{%o11}")));
   }
 
   THEN("the exported LaTeX compiles under both engine families") {
