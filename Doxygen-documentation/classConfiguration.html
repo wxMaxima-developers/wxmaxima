@@ -655,6 +655,12 @@ wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>GetCanvasSize</b> (
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCanvasSize</b> (wxSize siz)</td></tr>
 <tr class="memdesc:acf2480a0cd9d621c7cb910153c8daba1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the size of the current worksheet's visible window. <br /></td></tr>
 <tr class="separator:acf2480a0cd9d621c7cb910153c8daba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b652a7273738e04765b311e3f8cbacc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConfiguration.html#a8b652a7273738e04765b311e3f8cbacc">RightToLeftDocument</a> () const</td></tr>
+<tr class="memdesc:a8b652a7273738e04765b311e3f8cbacc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the document read right-to-left (Arabic, Hebrew, Persian, Urdu)?  <br /></td></tr>
+<tr class="separator:a8b652a7273738e04765b311e3f8cbacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bc7fc84b8bace2a54fa83c011fdfaa7"><td class="memItemLeft" align="right" valign="top"><a id="a1bc7fc84b8bace2a54fa83c011fdfaa7" name="a1bc7fc84b8bace2a54fa83c011fdfaa7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>RightToLeftDocument</b> (bool rightToLeft)</td></tr>
+<tr class="separator:a1bc7fc84b8bace2a54fa83c011fdfaa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa36086a91785b7a6dc9bcb5a1b3e0da8"><td class="memItemLeft" align="right" valign="top"><a id="aa36086a91785b7a6dc9bcb5a1b3e0da8" name="aa36086a91785b7a6dc9bcb5a1b3e0da8"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShowBrackets</b> () const</td></tr>
 <tr class="memdesc:aa36086a91785b7a6dc9bcb5a1b3e0da8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the cell brackets [displayed left to each group cell showing its extend]? <br /></td></tr>
@@ -1937,6 +1943,35 @@ static <a class="el" href="structConfiguration_1_1PerformanceStats.html">Perform
 
 <p>Ask the view to schedule a recalculation of the WHOLE worksheet. </p>
 <p><a class="el" href="classConfiguration.html#a030f46a360020a9351b21e77681b7814" title="Force every cell to be recalculated on the next layout pass.">RecalculateForce()</a> bumps a global counter that flips every cell's ConfigChanged() dirty at once (see <a class="el" href="classConfiguration.html#a56f215c6fb33a7d594a2212377204370" title="A counter that increases every time we need to recalculate all worksheet cells.">CellCfgCnt()</a>); there is no per-cell notification, so the view's layout engine would not otherwise learn that the cells outside a pending bounded range became dirty. This tells it to lay the whole document out. <a class="el" href="classA.html">A</a> no-op for configurations without a view (printing, tests without a worksheet). </p>
+
+</div>
+</div>
+<a id="a8b652a7273738e04765b311e3f8cbacc" name="a8b652a7273738e04765b311e3f8cbacc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b652a7273738e04765b311e3f8cbacc">&#9670;&#160;</a></span>RightToLeftDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Configuration::RightToLeftDocument </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does the document read right-to-left (Arabic, Hebrew, Persian, Urdu)? </p>
+<p>This is a <em>layout</em> property, deliberately not the drawing context's layout direction. wxWidgets can mirror a window DC for us, but only a window DC: <a class="el" href="classCell.html#ab68d11529549439a5e2e1e2aca1a9d30" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Cell::Draw</a> is shared with the export and print contexts (<a class="el" href="classBitmapOut.html" title="Renders portions of the work sheet (including 2D maths) as bitmap.">BitmapOut</a>, <a class="el" href="classSvgout.html">Svgout</a>, <a class="el" href="classPrintout.html">Printout</a>), which are never mirrored, so a mirrored screen would mean every drawing primitive needing to know which kind of context it is drawing into. Mirroring where the positions are computed instead keeps the cells ignorant of it and makes right-to-left come out right on paper and in an exported image as well as on screen. The worksheet window therefore stays pinned to left-to-right; see the comment in <a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a>'s constructor.</p>
+<p>Maths is <em>not</em> mirrored even here: an equation reads left-to-right in every script. Only the flow of prose and the side that labels and brackets sit on follow this. </p>
 
 </div>
 </div>

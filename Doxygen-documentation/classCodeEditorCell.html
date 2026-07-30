@@ -391,6 +391,13 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>GetLineWidth</b> (
 <tr class="memitem:aa4c30056412188aac10dd2dc97df4020"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa4c30056412188aac10dd2dc97df4020">GetLineWidth</a> () const</td></tr>
 <tr class="memdesc:aa4c30056412188aac10dd2dc97df4020"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many pixels is the current line of this list of cells wide?  <br /></td></tr>
 <tr class="separator:aa4c30056412188aac10dd2dc97df4020"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44950f120dee696847e234c400f3cb6e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a44950f120dee696847e234c400f3cb6e">RightToLeftLineOffsets</a> ()</td></tr>
+<tr class="memdesc:a44950f120dee696847e234c400f3cb6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">How far each line has to move right to sit flush with the widest one.  <br /></td></tr>
+<tr class="separator:a44950f120dee696847e234c400f3cb6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7a25ebb0c1c6d43f452b525f6dc5b8b"><td class="memItemLeft" align="right" valign="top"><a id="aa7a25ebb0c1c6d43f452b525f6dc5b8b" name="aa7a25ebb0c1c6d43f452b525f6dc5b8b"></a>
+wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>RightToLeftLineOffset</b> (size_t line)</td></tr>
+<tr class="memdesc:aa7a25ebb0c1c6d43f452b525f6dc5b8b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classEditorCell.html#a44950f120dee696847e234c400f3cb6e" title="How far each line has to move right to sit flush with the widest one.">RightToLeftLineOffsets()</a> for a single line, 0 when there is none. <br /></td></tr>
+<tr class="separator:aa7a25ebb0c1c6d43f452b525f6dc5b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4807ce8e89b54bd65503012aaa657690"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a4807ce8e89b54bd65503012aaa657690">IsDirty</a> () const override</td></tr>
 <tr class="memdesc:a4807ce8e89b54bd65503012aaa657690"><td class="mdescLeft">&#160;</td><td class="mdescRight">true, if this cell's width has to be recalculated.  <br /></td></tr>
 <tr class="separator:a4807ce8e89b54bd65503012aaa657690"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3494,6 +3501,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 <p>Mark all cached size information as "to be calculated". </p>
 <p>Resets remembered size and position info for this cell and all cells inside it.</p>
 <p>Resets cached data like width and the height of the current cell as well as the vertical position of the center. Then repeats this with </p>
+
+</div>
+</div>
+<a id="a44950f120dee696847e234c400f3cb6e" name="a44950f120dee696847e234c400f3cb6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44950f120dee696847e234c400f3cb6e">&#9670;&#160;</a></span>RightToLeftLineOffsets()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; wxCoord &gt; EditorCell::RightToLeftLineOffsets </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How far each line has to move right to sit flush with the widest one. </p>
+<p>Empty unless the document reads right-to-left (<a class="el" href="classConfiguration.html#a8b652a7273738e04765b311e3f8cbacc" title="Does the document read right-to-left (Arabic, Hebrew, Persian, Urdu)?">Configuration::RightToLeftDocument</a>), so a left-to-right document pays nothing for this. Indexed by line; see <a class="el" href="classEditorCell.html#aa7a25ebb0c1c6d43f452b525f6dc5b8b" title="RightToLeftLineOffsets() for a single line, 0 when there is none.">RightToLeftLineOffset()</a>. </p>
 
 </div>
 </div>
