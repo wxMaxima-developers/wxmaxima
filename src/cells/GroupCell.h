@@ -225,6 +225,28 @@ public:
 
   wxRect HideRect() const;
 
+  /*! The left edge of the gutter column the cell bracket is drawn in.
+
+    The bracket marks a cell's extent from the outside of the page: to the left
+    of the content in a left-to-right document, and to the right of it in a
+    right-to-left one. Everything that draws or hit-tests the bracket asks here,
+    so the picture and the mouse cannot drift apart -- which is the failure mode
+    that makes mirrored user interfaces feel broken.
+   */
+  wxCoord BracketColumnLeft() const;
+
+  //! The x just past the right edge of the content column. See the definition.
+  wxCoord ContentColumnRight() const;
+
+  /*! Where this group cell's label (the "(%i1)", or a section's number) goes.
+
+    Beside the text on the outside of the page: left of it in a left-to-right
+    document, right of it in a right-to-left one. The text column starts at the
+    cell's own x in a right-to-left document, since the label no longer precedes
+    it -- see CalculateInputPosition().
+   */
+  wxPoint CalculateLabelPosition() const;
+
   // raw manipulation of GC (should be protected)
   void SetInput(std::unique_ptr<Cell> &&input);
 
