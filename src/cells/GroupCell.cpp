@@ -497,13 +497,9 @@ void GroupCell::RecalculateInput() const {
   m_currentPoint.x = m_configuration->GetIndent();
 
   if (m_inputLabel)
-    m_inputLabel->SetCurrentPoint(m_currentPoint);
-  if (GetEditable()) {
-    wxPoint in = GetCurrentPoint();
-
-    in.x += GetInputIndent();
-    GetEditable()->SetCurrentPoint(in);
-  }
+    m_inputLabel->SetCurrentPoint(CalculateLabelPosition());
+  if (GetEditable())
+    GetEditable()->SetCurrentPoint(CalculateInputPosition());
 
   // special case
   if (m_groupType == GC_TYPE_PAGEBREAK) {
@@ -696,7 +692,41 @@ bool GroupCell::Reposition() const {
   return false;
 }
 
+/*! The x just past the right edge of a cell's content column.
+
+  Deliberately the same for every cell, so that the gutter and the label column
+  of a right-to-left document line up into straight columns the way they do on
+  the left in a left-to-right one. Configuration::GetLineWidth() is the width
+  the text is wrapped into and the label column is what GroupCell puts in front
+  of it, so the two together are the content's width.
+ */
+wxCoord GroupCell::ContentColumnRight() const {
+  return m_configuration->GetIndent() + m_configuration->GetLineWidth() +
+    Scale_Px(m_configuration->GetLabelWidth()) + MC_TEXT_PADDING;
+}
+
+wxCoord GroupCell::BracketColumnLeft() const {
+  if (m_configuration->RightToLeftDocument())
+    return ContentColumnRight();
+  return m_configuration->GetIndent() - m_configuration->GetCellBracketWidth();
+}
+
+wxPoint GroupCell::CalculateLabelPosition() const {
+  if (m_configuration->RightToLeftDocument()) {
+    wxCoord labelWidth = 0;
+    if (m_inputLabel && (m_inputLabel->GetWidth() >= 0))
+      labelWidth = m_inputLabel->GetWidth();
+    return wxPoint(ContentColumnRight() - labelWidth,
+                   m_currentPoint.y);
+  }
+  return m_currentPoint;
+}
+
 wxPoint GroupCell::CalculateInputPosition() const {
+  // In a right-to-left document the label sits to the right of the text, so the
+  // text starts at the cell's own x rather than a label's width further in.
+  if (m_configuration->RightToLeftDocument())
+    return wxPoint(m_currentPoint.x, m_currentPoint.y);
   return wxPoint(m_currentPoint.x + GetInputIndent(), m_currentPoint.y);
 }
 
@@ -776,7 +806,7 @@ void GroupCell::SetCurrentPoint(wxPoint point) const {
   
   // 1. Position Input Label (%i1)
   if (m_inputLabel)
-    m_inputLabel->SetCurrentPointList(m_currentPoint);
+    m_inputLabel->SetCurrentPointList(CalculateLabelPosition());
 
   // 2. Position Editor (the code area)
   EditorCell *editor = GetEditable();
@@ -877,8 +907,7 @@ wxCoord GroupCell::GetCenterList() const {
 wxRect GroupCell::GetBracketRect() const {
   // Keep this in sync with the rectangle DrawBracket() clears and paints.
   const wxRect rect = GetRect();
-  return wxRect(m_configuration->GetIndent() -
-                    m_configuration->GetCellBracketWidth(),
+  return wxRect(BracketColumnLeft(),
                 rect.GetTop() - 2, m_configuration->GetCellBracketWidth(),
                 rect.GetHeight() + 5);
 }
@@ -942,8 +971,7 @@ void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
     }
   }
   wxRect rect = GetRect();
-  rect = wxRect(m_configuration->GetIndent() -
-                m_configuration->GetCellBracketWidth(),
+  rect = wxRect(BracketColumnLeft(),
                 rect.GetTop() - 2, m_configuration->GetCellBracketWidth(),
                 rect.GetHeight() + 5);
   if (m_configuration->InUpdateRegion(rect))
@@ -968,7 +996,7 @@ void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
                                                    m_configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
       }
     wxRect bracketRect = wxRect(
-                                m_configuration->GetIndent() - m_configuration->GetCellBracketWidth(),
+                                BracketColumnLeft(),
                                 rect.GetTop() - 2, m_configuration->GetCellBracketWidth(),
                                 rect.GetHeight() + 5);
     if (m_configuration->InUpdateRegion(bracketRect))
@@ -1045,7 +1073,11 @@ void GroupCell::DrawBracket(wxDC *dc, wxDC *antialiassingDC) {
 }
 
 wxRect GroupCell::HideRect() const {
-  return wxRect(m_currentPoint.x - m_configuration->GetCellBracketWidth() -
+  // The fold toggle sits at the top of the bracket, so it follows the bracket
+  // to the other side of the page in a right-to-left document. Worksheet's
+  // click handling asks this same rectangle, so the toggle stays where it
+  // looks like it is.
+  return wxRect(BracketColumnLeft() -
                 m_configuration->GetDefaultLineWidth() / 2,
                 m_currentPoint.y - m_center -
                 m_configuration->GetDefaultLineWidth() / 2,
