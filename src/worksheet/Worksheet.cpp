@@ -166,9 +166,42 @@ Worksheet::Worksheet(wxWindow *parent, int id,
   m_caretTimer.Start(blinktime);
   DisableKeyboardScrolling();
 
-  // hack to workaround problems in RtL locales,
-  // https://bugzilla.redhat.com/show_bug.cgi?id=455863
-  SetLayoutDirection(wxLayout_LeftToRight);
+  // Pin the worksheet's own layout direction to left-to-right.
+  //
+  // This is the 2009 workaround for
+  // https://bugzilla.redhat.com/show_bug.cgi?id=455863, filed against wxMaxima:
+  // in a right-to-left locale the worksheet showed *nothing at all*, because the
+  // content was positioned outside the visible rectangle. Forcing LTR keeps the
+  // worksheet readable there, at the price of left-aligning text in a language
+  // that should be right-aligned -- so it is a band-aid over a real defect, and
+  // the defect is still unfixed.
+  //
+  // WXM_LAYOUT_DIRECTION overrides the pin, so the broken right-to-left
+  // behaviour can be reproduced and worked on without an RTL locale and its GTK
+  // translations installed -- setting the widget's direction is all that a
+  // locale would do here anyway:
+  //   rtl     force right-to-left (reproduces the defect)
+  //   ltr     force left-to-right (the default, i.e. the workaround)
+  //   default leave whatever the toolkit derived from the locale
+  {
+    wxString layoutDir;
+    if (!wxGetEnv(wxS("WXM_LAYOUT_DIRECTION"), &layoutDir))
+      layoutDir = wxS("ltr");
+    layoutDir.MakeLower();
+
+    if (layoutDir == wxS("rtl"))
+      SetLayoutDirection(wxLayout_RightToLeft);
+    else if (layoutDir != wxS("default"))
+      SetLayoutDirection(wxLayout_LeftToRight);
+
+    wxLogMessage(wxS("Worksheet layout direction: requested \"%s\", effective %s"),
+                 layoutDir,
+                 GetLayoutDirection() == wxLayout_RightToLeft
+                     ? wxS("right-to-left")
+                     : (GetLayoutDirection() == wxLayout_LeftToRight
+                            ? wxS("left-to-right")
+                            : wxS("default")));
+  }
 
   // If the following option is missing a size change might cause the scrollbar
   // to be shown causing a size change causing a relayout causing the scrollbar
