@@ -3,9 +3,10 @@
 - In a right-to-left user interface language (Hebrew, Arabic, Farsi, Urdu) the
   text of comment, title and section cells is now set flush right instead of
   flush left, and the caret and mouse follow it. The furniture of the page
-  follows: labels such as `(%i1)`, a section's number, the cell bracket and its
-  fold button all move to the right-hand side, and the text starts at the left
-  edge instead. Input cells keep their left margin and equations are not
+  follows: labels such as `(%i1)` and `(%o1)`, a section's number, the cell
+  bracket and its fold button all move to the right-hand side, results are set
+  against the right edge of the page, and the text starts at the left edge
+  instead. Input cells keep their left margin and equations are not
   mirrored: those read left to right in every script, even where a variable's
   own name does not. Which way the document reads follows the interface
   language; there is not yet a right-to-left translation of wxMaxima itself, so
