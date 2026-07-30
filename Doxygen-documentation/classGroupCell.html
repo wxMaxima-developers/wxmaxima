@@ -235,6 +235,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SwitchHide</b> ()</td
 <tr class="memitem:a2c4882635cb9293fc9246a0a5e6213db"><td class="memItemLeft" align="right" valign="top"><a id="a2c4882635cb9293fc9246a0a5e6213db" name="a2c4882635cb9293fc9246a0a5e6213db"></a>
 wxRect&#160;</td><td class="memItemRight" valign="bottom"><b>HideRect</b> () const</td></tr>
 <tr class="separator:a2c4882635cb9293fc9246a0a5e6213db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a264f80f939ef82cf25fd1f3108b086af"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a264f80f939ef82cf25fd1f3108b086af">BracketColumnLeft</a> () const</td></tr>
+<tr class="memdesc:a264f80f939ef82cf25fd1f3108b086af"><td class="mdescLeft">&#160;</td><td class="mdescRight">The left edge of the gutter column the cell bracket is drawn in.  <br /></td></tr>
+<tr class="separator:a264f80f939ef82cf25fd1f3108b086af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73daccf22e07da173886d03bde720be3"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a73daccf22e07da173886d03bde720be3">ContentColumnRight</a> () const</td></tr>
+<tr class="memdesc:a73daccf22e07da173886d03bde720be3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The x just past the right edge of the content column. See the definition.  <br /></td></tr>
+<tr class="separator:a73daccf22e07da173886d03bde720be3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a230b8f6179821b56b6fdf5cd9345e8ff"><td class="memItemLeft" align="right" valign="top">wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a230b8f6179821b56b6fdf5cd9345e8ff">CalculateLabelPosition</a> () const</td></tr>
+<tr class="memdesc:a230b8f6179821b56b6fdf5cd9345e8ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where this group cell's label (the "(%i1)", or a section's number) goes.  <br /></td></tr>
+<tr class="separator:a230b8f6179821b56b6fdf5cd9345e8ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4244a4c9ad09be0feba3a04e04ceb481"><td class="memItemLeft" align="right" valign="top"><a id="a4244a4c9ad09be0feba3a04e04ceb481" name="a4244a4c9ad09be0feba3a04e04ceb481"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetInput</b> (std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;&amp;input)</td></tr>
 <tr class="separator:a4244a4c9ad09be0feba3a04e04ceb481"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1250,6 +1259,26 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lookalik
 
 </div>
 </div>
+<a id="a264f80f939ef82cf25fd1f3108b086af" name="a264f80f939ef82cf25fd1f3108b086af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a264f80f939ef82cf25fd1f3108b086af">&#9670;&#160;</a></span>BracketColumnLeft()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxCoord GroupCell::BracketColumnLeft </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The left edge of the gutter column the cell bracket is drawn in. </p>
+<p>The bracket marks a cell's extent from the outside of the page: to the left of the content in a left-to-right document, and to the right of it in a right-to-left one. Everything that draws or hit-tests the bracket asks here, so the picture and the mouse cannot drift apart &ndash; which is the failure mode that makes mirrored user interfaces feel broken. </p>
+
+</div>
+</div>
 <a id="a81b738e213a8390ed10aefe8d286ce9d" name="a81b738e213a8390ed10aefe8d286ce9d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a81b738e213a8390ed10aefe8d286ce9d">&#9670;&#160;</a></span>BreakLines_List()</h2>
 
@@ -1379,6 +1408,26 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lookalik
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a230b8f6179821b56b6fdf5cd9345e8ff" name="a230b8f6179821b56b6fdf5cd9345e8ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a230b8f6179821b56b6fdf5cd9345e8ff">&#9670;&#160;</a></span>CalculateLabelPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxPoint GroupCell::CalculateLabelPosition </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Where this group cell's label (the "(%i1)", or a section's number) goes. </p>
+<p>Beside the text on the outside of the page: left of it in a left-to-right document, right of it in a right-to-left one. The text column starts at the cell's own x in a right-to-left document, since the label no longer precedes it &ndash; see CalculateInputPosition(). </p>
 
 </div>
 </div>
@@ -1672,6 +1721,27 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_lookalik
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a73daccf22e07da173886d03bde720be3" name="a73daccf22e07da173886d03bde720be3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73daccf22e07da173886d03bde720be3">&#9670;&#160;</a></span>ContentColumnRight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxCoord GroupCell::ContentColumnRight </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The x just past the right edge of the content column. See the definition. </p>
+<p>The x just past the right edge of a cell's content column.</p>
+<p>Deliberately the same for every cell, so that the gutter and the label column of a right-to-left document line up into straight columns the way they do on the left in a left-to-right one. <a class="el" href="classConfiguration.html#aab8b2c0eadfec6687bf7f473d182788e" title="Returns the maximum sensible width for a text line [in characters]:">Configuration::GetLineWidth()</a> is the width the text is wrapped into and the label column is what <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> puts in front of it, so the two together are the content's width. </p>
 
 </div>
 </div>
