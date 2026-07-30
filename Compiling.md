@@ -1,17 +1,17 @@
-## Building wxMaxima from source
+# Building wxMaxima from source
 
 To build wxMaxima from sources you need to have a C++ compiler (C++20 is required),
 wxWidgets >= 3.0 (>= 3.2 recommended) (including development headers) and
 CMake >= 3.16 installed.
 
-### Compiling wxMaxima on Linux / Unix systems and Linux-like systems (Cygwin, WSL, MacPorts, Fink, Homebrew,...)
+## Compiling wxMaxima on Linux / Unix systems and Linux-like systems (Cygwin, WSL, MacPorts, Fink, Homebrew,...)
 
 wxMaxima is built using the CMake build system.
 
 The following steps will build and install wxMaxima using CMake.
 Download and extract wxMaxima (the latest release or a git clone or zip snapshot of the latest development version) and change in the wxMaxima tree. Then:
 
-```
+```sh
 mkdir -p build          # create a build directory (may even be outside the wxmaxima code)
 cd build                # change to the build directory
 cmake ..                # configure the build.
@@ -23,12 +23,14 @@ cmake --build .         # build wxMaxima
 ```
 
 Now you can test your wxMaxima build (or just use it without installation) by calling:
-```
+
+```sh
 ./wxmaxima-local
 ```
 
 If everything is okay install wxMaxima with:
-```
+
+```sh
 sudo cmake --build . -- install
 ```
 
@@ -36,7 +38,7 @@ If you want to install into a special prefix (not `/usr/local`), add
 `-DCMAKE_INSTALL_PREFIX=/your/installation/prefix` to the first
 cmake invocation. E.g.
 
-```
+```sh
 cmake -DCMAKE_INSTALL_PREFIX=/opt/wxmaxima ..
 ```
 
@@ -44,10 +46,10 @@ By default a "Debug" build will be made (less optimization, debug symbols) - and
 wxMaxima log window (may contain helpful log messages) when started; if you want to create a
 "Release" build (more optimization, the log window is not shown by default, it can be toggled
 on and off using "View->Toggle log window") set the build type (CMake supports other build types too) using:
-```
+
+```sh
 cmake -DCMAKE_BUILD_TYPE=Release ..
 ```
-
 
 Of course you can use the CMake GUI (`cmake-gui`) or curses based CMake
 (`ccmake`) for the configure step and change some CMake variables.
@@ -55,24 +57,24 @@ Of course you can use the CMake GUI (`cmake-gui`) or curses based CMake
 If you want to create binary packages (tar.gz, tar.bz2, DEB & RPM, on macOS
 also .dmg), the following command will create them:
 
-```
+```sh
 cmake --build . -- package
 ```
 
 To update the locale files (po and pot) in the source code:
 
-```
+```sh
 cmake --build . -- update-locale
 ```
 
-#### Testing wxMaxima
+### Testing wxMaxima
 
 You can use (or test) a fresh compiled wxMaxima (without installation) by calling
 `./wxmaxima-local` from the build-directory.
 
 wxMaxima comes with several tests, which can be run using
 
-```
+```sh
 ctest
 ```
 
@@ -83,36 +85,35 @@ On Linux/Unix the tests usually require a X Server; if you start the tests witho
 automatic tests using cron, when doing tests using a continuous integration system, etc.)
 you can use `xvfb-run` to create a virtual X Server environment, e.g. just run: `xvfb-run ctest`
 
-#### macOS: Creating a portable .apk and .dmg installer
+### macOS: Creating a portable .apk and .dmg installer
 
 This requires wxWidgets to be installed, e.G. using MacPorts.
 If you are in the extracted wxMaxima directory, call e.g.
 
-```
+```sh
 mkdir ../build-wxm
 cmake -S . -B ../build-wxm -DCMAKE_INSTALL_PREFIX=.
 cmake --build ../build-wxm
 cmake --build ../build-wxm --install
 ```
 
-#### Ubuntu or Debian build prerequisites
+### Ubuntu or Debian build prerequisites
 
-```
+```sh
 sudo apt-get install build-essential libwxgtk3.2-gtk3-dev libwxgtk-webview3.2-gtk3-dev wx3.2-i18n ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a
 ```
 
 beforehand or (if apt-get is configured to load the source package
 repositories and not only the binary packages) by the simpler
 
-```
+```sh
 sudo apt-get build-dep wxmaxima
 ```
 
 You must use the apt-get install command when the version you are building has dependencies
 which are not listed as dependencies in your distro's repository version of wxmaxima.
 
-
-#### macOS X prerequisites
+### macOS X prerequisites
 
 On macOS X you most probably need the command-line compiler one can tell
 Xcode to install. Additionally wxWidgets needs to be installed, which can
@@ -122,13 +123,12 @@ wxMaxima.
 
 Additional information about building on macOS:
 
-- https://themaximalist.org/about/my-mac-os-installation/
-- https://github.com/wxMaxima-developers/wxmaxima/issues/2026#issuecomment-3172804134
+- <https://themaximalist.org/about/my-mac-os-installation/>
+- <https://github.com/wxMaxima-developers/wxmaxima/issues/2026#issuecomment-3172804134>
 
-### Compiling on Windows
+## Compiling on Windows
 
-
-You can use the MinGW-w64 (https://www.mingw-w64.org/) compilers.
+You can use the MinGW-w64 (<https://www.mingw-w64.org/>) compilers.
 
 You can also build using MS Visual Studio 2019 or newer. Since MSVS
 provides adequate versions of both cmake and ninja, there's no need
@@ -138,7 +138,7 @@ you build wxmaxima. You can get some inspiration about how to do both
 of these steps by examining the MSVC build steps in
 `.github/workflows/compile_windows.yml`.
 
-#### Note for the Mingw-w64 compiler and crosscompiler
+### Note for the Mingw-w64 compiler and crosscompiler
 
 These compilers come with two forms of thread support - win32 and posix.
 The win32 thread version does not support std::thread, which wxMaxima
@@ -148,52 +148,51 @@ posix version.
 On Ubuntu Linux the crosscompiler `x86_64-w64-mingw32-g++` can be
 reconfigured using:
 
-```
+```sh
 update-alternatives --config x86_64-w64-mingw32-g++
 ```
 
 (For 32 bit the same works for the 32 bit crosscompiler `i686-w64-mingw32-g++`.)
 
-### Compiling for Android 9
+## Compiling for Android 9
 
 Some information how to build for Android 9 can be found in the wxMaxima
 discussion forum:
-https://github.com/wxMaxima-developers/wxmaxima/discussions/1594
+<https://github.com/wxMaxima-developers/wxmaxima/discussions/1594>
 
-### Documentation of the source
+## Documentation of the source
 
 An HTML version of wxMaxima's source code documentation can be found at
-https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/
+<https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/>
 
 A local version of the documentation of wxMaxima's source can be
 generated using doxygen and the `doxygen` target:
 
-```
+```sh
 cmake --build ../build-wxm -- doxygen
 ```
 
-### wxWidgets isn't found
+## wxWidgets isn't found
 
 CMake has currently (Feb 2022) problems finding a wxWidgets that was
 compiled using CMake. If that is the reason maybe wxWidgets was compiled
 without wxWebView. In that case
 
-```
+```sh
 cmake -S . -B ../build-wxm -DWXM_DISABLE_WEBVIEW=on
 ```
 
 might allow cmake to find wxWidgets at the cost of losing the integrated
 dockable help browser.
 
-
-### wxWidgets without QA component
+## wxWidgets without QA component
 
 One can use the option `-DWXM_DISABLE_QA=on` to disable that library, if necessary.
 Reported in [issue #2064](https://github.com/wxMaxima-developers/wxmaxima/issues/2064).
 
-## Additional information for packagers
+# Additional information for packagers
 
-### Creating a standalone wxMaxima
+## Creating a standalone wxMaxima
 
 wxMaxima, if linked statically, is pretty standalone and therefore fit for
 creating a portable app:
@@ -211,7 +210,7 @@ might not be the end of the world, neither:
 - And if there are no manual files wxMaxima will redirect the system's web
   browser to an online version of the manual, instead.
 
-### Troubleshooting
+## Troubleshooting
 
 If you have problems when compiling wxMaxima, maybe a look in the configurations
 for various CI-Systems (the files in `.github/workflows/`)

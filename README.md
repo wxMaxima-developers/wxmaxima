@@ -17,7 +17,7 @@ can be found at <https://maxima.sourceforge.io/download.html>.
 
 Information on how to compile wxMaxima from source instead can be
 found at <https://github.com/wxMaxima-developers/wxmaxima/blob/main/Compiling.md>.
-The documentation for the code itself can be found here instead: 
+The documentation for the code itself can be found here instead:
 <https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/>
 
 WxMaxima is an open source project developed by volunteers and your

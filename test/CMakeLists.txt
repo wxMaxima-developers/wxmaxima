@@ -20,6 +20,7 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxMathML.sh.in" check-wxMathML
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-xml-validity.sh.in" check-xml-validity.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxmx-validity.sh.in" check-wxmx-validity.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wizard-commands.sh.in" check-wizard-commands.sh)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-markdown.sh.in" check-markdown.sh)
 
 # Create a headless wrapper script
 set(WXM_TEST_WRAPPER "${CMAKE_CURRENT_BINARY_DIR}/run_headless.sh")
@@ -177,6 +178,13 @@ add_test(
 add_test(
     NAME check-wizard-commands
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wizard-commands.sh"
+)
+
+# Lint the hand-written Markdown docs (README, Compiling, NEWS, ...) with mdl.
+# Skipped with a warning where mdl isn't installed.
+add_test(
+    NAME check-markdown
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-markdown.sh"
 )
 
 add_test(

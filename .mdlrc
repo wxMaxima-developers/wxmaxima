@@ -1,1 +1,6 @@
-rules "~MD013" "~MD025" "~MD026" "~MD033"
+# mdl (markdownlint) configuration. The rule selection lives in the style file,
+# because only a style file can pass parameters to a rule. Keep them in sync:
+# a `rules "~MD013", ...` line here would override the style file -- and note
+# that mdl's config is Ruby, so such a list needs COMMAS between the entries;
+# without them mdl silently ignores the whole line (which it did for years).
+style ".mdl_style.rb"
