@@ -382,6 +382,36 @@ public:
 
   wxCoord GetLineWidth(size_t line, size_t pos);
 
+  /*! Is this character a strong right-to-left one (Hebrew, Arabic, Farsi, ...)?
+
+    "Strong" in the sense of the Unicode bidirectional algorithm: a character
+    that carries a direction of its own, as opposed to a digit, a space or
+    punctuation, which take theirs from what surrounds them.
+   */
+  static bool IsStrongRightToLeft(wxUniChar c);
+
+  //! Is this character a strong left-to-right one?
+  static bool IsStrongLeftToRight(wxUniChar c);
+
+  /*! Is the given display line written right to left?
+
+    Decided by its first strong character, which is the rule the Unicode
+    bidirectional algorithm uses for a paragraph. A line with no strong
+    character at all - digits and punctuation only - follows the document.
+
+    Only lines that are wholly one direction are handled: for those the caret's
+    position is the mirror of what measuring the text before it gives, which is
+    exact and needs no reordering. A line that genuinely mixes the two scripts
+    would need the real algorithm and is left as it was.
+   */
+  bool LineIsRightToLeft(size_t line);
+
+  //! Does this line mix strong characters of both directions?
+  bool LineIsMixedDirection(size_t line);
+
+  //! How many characters the given display line holds, excluding its newline.
+  size_t LineLength(size_t line);
+
   /*! How far each line has to move right to sit flush with the widest one.
 
     Empty unless the document reads right-to-left

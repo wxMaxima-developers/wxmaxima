@@ -8,7 +8,11 @@
   against the right edge of the page, and the text starts at the left edge
   instead. Input cells keep their left margin and equations are not
   mirrored: those read left to right in every script, even where a variable's
-  own name does not. Which way the document reads follows the interface
+  own name does not. Inside right-to-left text the caret is drawn where that
+  text actually is -- it used to be placed at the mirror image of its position,
+  so putting the cursor in front of a Hebrew word showed it at the word's far
+  end -- and the arrow keys move it the way it is drawn rather than the way the
+  text is stored. Which way the document reads follows the interface
   language; there is not yet a right-to-left translation of wxMaxima itself, so
   setting the language is currently the way to see this.
 
