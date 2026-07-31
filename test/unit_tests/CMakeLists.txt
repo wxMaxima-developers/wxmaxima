@@ -17,13 +17,20 @@ include_directories(
 # test until ctest's watchdog kills it. Compiles to nothing off Windows.
 set(WXM_TEST_SETUP "${CMAKE_CURRENT_SOURCE_DIR}/wxm_test_setup.cpp")
 
-# On Windows the tests also need an application manifest, or the loader binds
-# COMCTL32 to the legacy 5.82 assembly, which lacks the window-subclassing
-# entry points wx's GUI code imports, and refuses to start the executable at
-# all. See wxm_test_manifest.rc for the full story. Cygwin builds no PE
-# resources, and wxmaxima.exe gets the same manifest from src/wxmaxima.rc.
+# On Windows a test executable needs an application manifest, or the loader
+# binds COMCTL32 to the legacy 5.82 assembly, which lacks the window-subclassing
+# entry points wx's GUI code imports, and refuses to start it at all. See
+# wxm_test_manifest.rc for the full story.
+#
+# Only for the tests that are built standalone, though. The ones that link the
+# wxmTestApp object library already get wx's resources from src/wxmaxima.rc,
+# which is part of that library; adding a second copy makes the linker fail with
+# "duplicate resource" for every bitmap and icon in it. Cygwin builds no PE
+# resources at all.
 if(WIN32 AND NOT CYGWIN)
-    list(APPEND WXM_TEST_SETUP "${CMAKE_CURRENT_SOURCE_DIR}/wxm_test_manifest.rc")
+    set(WXM_TEST_MANIFEST "${CMAKE_CURRENT_SOURCE_DIR}/wxm_test_manifest.rc")
+else()
+    set(WXM_TEST_MANIFEST "")
 endif()
 
 if(MINGW)
@@ -39,15 +46,15 @@ if(MINGW)
     add_link_options(-static)
 endif()
 
-add_executable(test_CellPtr test_CellPtr.cpp ${WXM_TEST_SETUP})
+add_executable(test_CellPtr test_CellPtr.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_CellPtr PRIVATE ${wxWidgets_LIBRARIES})
 add_test(CellPtr test_CellPtr)
 
-add_executable(test_SqrtCell test_SqrtCell.cpp ${WXM_TEST_SETUP})
+add_executable(test_SqrtCell test_SqrtCell.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_SqrtCell PRIVATE ${wxWidgets_LIBRARIES})
 add_test(SqrtCell test_SqrtCell)
 
-add_executable(test_ImgCell test_ImgCell.cpp ${WXM_TEST_SETUP})
+add_executable(test_ImgCell test_ImgCell.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_ImgCell PRIVATE ${wxWidgets_LIBRARIES})
 add_test(ImgCell test_ImgCell)
 
@@ -66,37 +73,37 @@ if(WXM_SANITIZE)
     target_compile_options(test_ImgCell PRIVATE -fno-sanitize=vptr)
 endif()
 
-add_executable(test_AFontSize test_AFontSize.cpp ${WXM_TEST_SETUP})
+add_executable(test_AFontSize test_AFontSize.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_AFontSize PRIVATE ${wxWidgets_LIBRARIES})
 #target_compile_features(test_ImgCell PUBLIC cxx_std_14)
 add_test(AFontSize test_AFontSize)
 
-add_executable(test_DiffAlgorithm test_DiffAlgorithm.cpp ${WXM_TEST_SETUP})
+add_executable(test_DiffAlgorithm test_DiffAlgorithm.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_DiffAlgorithm PRIVATE ${wxWidgets_LIBRARIES})
 add_test(DiffAlgorithm test_DiffAlgorithm)
 
 # The diff viewer's scroll-sync geometry is GUI-free (see dialogs/DiffScrollSync),
 # so it is tested directly, without the heavy wxmTestApp object library.
-add_executable(test_DiffScrollSync test_DiffScrollSync.cpp ${WXM_TEST_SETUP})
+add_executable(test_DiffScrollSync test_DiffScrollSync.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_DiffScrollSync PRIVATE ${wxWidgets_LIBRARIES})
 add_test(DiffScrollSync test_DiffScrollSync)
 
 # The worksheet's virtual-size arithmetic (extracted from Worksheet::AdjustSize)
 # is GUI-free (see WorksheetSizeMath.h), so it is tested directly.
-add_executable(test_WorksheetSizeMath test_WorksheetSizeMath.cpp ${WXM_TEST_SETUP})
+add_executable(test_WorksheetSizeMath test_WorksheetSizeMath.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_WorksheetSizeMath PRIVATE ${wxWidgets_LIBRARIES})
 add_test(WorksheetSizeMath test_WorksheetSizeMath)
 
 # The parser for the <variables> XML Maxima sends (extracted from
 # wxMaxima::ReadVariables) is GUI-free, so it is tested directly too.
 add_executable(test_MaximaVariableUpdates
-    test_MaximaVariableUpdates.cpp ${WXM_TEST_SETUP})
+    test_MaximaVariableUpdates.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_MaximaVariableUpdates PRIVATE ${wxWidgets_LIBRARIES})
 add_test(MaximaVariableUpdates test_MaximaVariableUpdates)
 
 # The sbcl-LDB recognition helpers (LdbSupport) are GUI-free, so they are tested
 # directly against captured stdout/stderr text.
-add_executable(test_LdbSupport test_LdbSupport.cpp ${WXM_TEST_SETUP})
+add_executable(test_LdbSupport test_LdbSupport.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_include_directories(test_LdbSupport PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_LdbSupport PRIVATE ${wxWidgets_LIBRARIES})
 add_test(LdbSupport test_LdbSupport)
@@ -104,7 +111,7 @@ add_test(LdbSupport test_LdbSupport)
 # The Maxima-protocol helpers (MaximaProtocol) - prompt classification and the
 # blank-command predicate - are GUI-free, so they are tested directly against
 # captured prompt/command strings.
-add_executable(test_MaximaProtocol test_MaximaProtocol.cpp ${WXM_TEST_SETUP})
+add_executable(test_MaximaProtocol test_MaximaProtocol.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_include_directories(test_MaximaProtocol PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_MaximaProtocol PRIVATE ${wxWidgets_LIBRARIES})
 add_test(MaximaProtocol test_MaximaProtocol)
@@ -116,7 +123,7 @@ add_test(MaximaProtocol test_MaximaProtocol)
 # runs this even though it drives no GUI, giving Gunter (who has no Windows box)
 # a check for a Windows-surfacing bug.
 add_executable(test_MenuHelpString
-    test_MenuHelpString.cpp ${CMAKE_SOURCE_DIR}/src/MenuHelpString.cpp ${WXM_TEST_SETUP})
+    test_MenuHelpString.cpp ${CMAKE_SOURCE_DIR}/src/MenuHelpString.cpp ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_MenuHelpString PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME MenuHelpString
         COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_MenuHelpString>")
@@ -126,7 +133,7 @@ add_test(NAME MenuHelpString
 # wx 3.0 and again on wx 3.3). Small, standalone: compiles the class directly.
 add_executable(test_ButtonWrapSizer
     test_ButtonWrapSizer.cpp ${CMAKE_SOURCE_DIR}/src/sidebars/ButtonWrapSizer.cpp
-    ${WXM_TEST_SETUP})
+    ${WXM_TEST_SETUP} ${WXM_TEST_MANIFEST})
 target_link_libraries(test_ButtonWrapSizer PRIVATE ${wxWidgets_LIBRARIES})
 add_test(NAME ButtonWrapSizer
         COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_ButtonWrapSizer>")
