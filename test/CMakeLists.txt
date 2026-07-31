@@ -38,13 +38,19 @@ trap \"rm -rf $XDG_RUNTIME_DIR\" EXIT
 unset DISPLAY
 unset WAYLAND_DISPLAY
 
-# 2. Try Weston (Wayland)
-if command -v weston >/dev/null 2>&1; then
-    export GDK_BACKEND=wayland
-    echo \"Attempting headless Weston...\" >&2
-    # Use exec to ensure signals from ctest reach the process and it's dead on timeout
-    exec weston --backend=headless -- \"$@\"
-fi
+# 2. Weston is deliberately not used.
+#
+# This used to try \"weston --backend=headless -- <test>\" first. Weston 13
+# answers that with \"fatal: unhandled option: --\" and runs nothing, so every
+# test on a machine that has weston installed failed in a hundredth of a second.
+# It went unnoticed for as long as nothing invoked this wrapper; the moment the
+# unit tests were moved onto it, every GUI test on the Ubuntu CI - which has
+# weston - broke, while this machine, which does not, saw nothing.
+#
+# X11 under Xvfb is what wxMaxima is actually tested against, so that is what
+# this uses. Should Wayland coverage ever be wanted it needs a working
+# invocation - weston started in the background, WAYLAND_DISPLAY exported, the
+# client run separately - and a CI job that proves it.
 
 # 3. Try xvfb-run (X11)
 if command -v xvfb-run >/dev/null 2>&1; then
