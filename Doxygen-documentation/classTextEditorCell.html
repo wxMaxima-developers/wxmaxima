@@ -382,6 +382,17 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>GetLineWidth</b> (
 <tr class="memitem:aa4c30056412188aac10dd2dc97df4020"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#aa4c30056412188aac10dd2dc97df4020">GetLineWidth</a> () const</td></tr>
 <tr class="memdesc:aa4c30056412188aac10dd2dc97df4020"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many pixels is the current line of this list of cells wide?  <br /></td></tr>
 <tr class="separator:aa4c30056412188aac10dd2dc97df4020"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe395bc87c1fd928a5402e48cfe81468"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#abe395bc87c1fd928a5402e48cfe81468">LineIsRightToLeft</a> (size_t line)</td></tr>
+<tr class="memdesc:abe395bc87c1fd928a5402e48cfe81468"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the given display line written right to left?  <br /></td></tr>
+<tr class="separator:abe395bc87c1fd928a5402e48cfe81468"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed79db0238298c1a29dfcf546eddebdc"><td class="memItemLeft" align="right" valign="top"><a id="aed79db0238298c1a29dfcf546eddebdc" name="aed79db0238298c1a29dfcf546eddebdc"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>LineIsMixedDirection</b> (size_t line)</td></tr>
+<tr class="memdesc:aed79db0238298c1a29dfcf546eddebdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this line mix strong characters of both directions? <br /></td></tr>
+<tr class="separator:aed79db0238298c1a29dfcf546eddebdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3eb0dffd98545b2d87e2c24da0f9ac8"><td class="memItemLeft" align="right" valign="top"><a id="aa3eb0dffd98545b2d87e2c24da0f9ac8" name="aa3eb0dffd98545b2d87e2c24da0f9ac8"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>LineLength</b> (size_t line)</td></tr>
+<tr class="memdesc:aa3eb0dffd98545b2d87e2c24da0f9ac8"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many characters the given display line holds, excluding its newline. <br /></td></tr>
+<tr class="separator:aa3eb0dffd98545b2d87e2c24da0f9ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44950f120dee696847e234c400f3cb6e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a44950f120dee696847e234c400f3cb6e">RightToLeftLineOffsets</a> ()</td></tr>
 <tr class="memdesc:a44950f120dee696847e234c400f3cb6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">How far each line has to move right to sit flush with the widest one.  <br /></td></tr>
 <tr class="separator:a44950f120dee696847e234c400f3cb6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1021,6 +1032,13 @@ static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>EscapeHTML
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>PrependNBSP</b> (wxString input)</td></tr>
 <tr class="memdesc:af3be8dfe7234ba3db4cfc0e7d43946fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert all but the first of a row of multiple spaces to non-breakable. <br /></td></tr>
 <tr class="separator:af3be8dfe7234ba3db4cfc0e7d43946fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeec7fe555eb52998175e1fa3599f953e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#aeec7fe555eb52998175e1fa3599f953e">IsStrongRightToLeft</a> (wxUniChar c)</td></tr>
+<tr class="memdesc:aeec7fe555eb52998175e1fa3599f953e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this character a strong right-to-left one (Hebrew, Arabic, Farsi, ...)?  <br /></td></tr>
+<tr class="separator:aeec7fe555eb52998175e1fa3599f953e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7784cb04262d0a604b3c5eafc3c5e0f4"><td class="memItemLeft" align="right" valign="top"><a id="a7784cb04262d0a604b3c5eafc3c5e0f4" name="a7784cb04262d0a604b3c5eafc3c5e0f4"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsStrongLeftToRight</b> (wxUniChar c)</td></tr>
+<tr class="memdesc:a7784cb04262d0a604b3c5eafc3c5e0f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this character a strong left-to-right one? <br /></td></tr>
+<tr class="separator:a7784cb04262d0a604b3c5eafc3c5e0f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd71632a3a3deec61e646bca3797a504"><td class="memItemLeft" align="right" valign="top"><a id="acd71632a3a3deec61e646bca3797a504" name="acd71632a3a3deec61e646bca3797a504"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>OMML2RTF</b> (wxXmlNode *node)</td></tr>
 <tr class="memdesc:acd71632a3a3deec61e646bca3797a504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an OMML tag to the corresponding RTF snippet. <br /></td></tr>
@@ -3169,6 +3187,65 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 <p>True if this cell represents a short number. </p>
 
 <p>Reimplemented in <a class="el" href="classTextCell.html#a8915bfe798fc73eeeeda6bcd7025d6f8">TextCell</a>.</p>
+
+</div>
+</div>
+<a id="aeec7fe555eb52998175e1fa3599f953e" name="aeec7fe555eb52998175e1fa3599f953e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeec7fe555eb52998175e1fa3599f953e">&#9670;&#160;</a></span>IsStrongRightToLeft()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EditorCell::IsStrongRightToLeft </td>
+          <td>(</td>
+          <td class="paramtype">wxUniChar&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is this character a strong right-to-left one (Hebrew, Arabic, Farsi, ...)? </p>
+<p>"Strong" in the sense of the Unicode bidirectional algorithm: a character that carries a direction of its own, as opposed to a digit, a space or punctuation, which take theirs from what surrounds them. </p>
+
+</div>
+</div>
+<a id="abe395bc87c1fd928a5402e48cfe81468" name="abe395bc87c1fd928a5402e48cfe81468"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe395bc87c1fd928a5402e48cfe81468">&#9670;&#160;</a></span>LineIsRightToLeft()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EditorCell::LineIsRightToLeft </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>line</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is the given display line written right to left? </p>
+<p>Decided by its first strong character, which is the rule the Unicode bidirectional algorithm uses for a paragraph. <a class="el" href="classA.html">A</a> line with no strong character at all - digits and punctuation only - follows the document.</p>
+<p>Only lines that are wholly one direction are handled: for those the caret's position is the mirror of what measuring the text before it gives, which is exact and needs no reordering. <a class="el" href="classA.html">A</a> line that genuinely mixes the two scripts would need the real algorithm and is left as it was. </p>
 
 </div>
 </div>
