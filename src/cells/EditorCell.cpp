@@ -1549,6 +1549,21 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
     return true;
   }
 
+  // The arrow keys move the caret by what the user sees, not by what is stored.
+  // In a right-to-left line the two disagree: the text is drawn in the reverse
+  // of its stored order, so stepping *forward* through it moves the caret to the
+  // *left* on screen. Pressing Left there therefore has to do what Right does to
+  // the stored text, and the other way round -- otherwise the caret walks the
+  // wrong way and the key that looks like it should undo the last movement
+  // repeats it. Only lines that are wholly one direction are handled; see
+  // LineIsRightToLeft().
+  if ((event.GetKeyCode() == WXK_LEFT) || (event.GetKeyCode() == WXK_RIGHT)) {
+    size_t cursorColumn, cursorLine;
+    PositionToXY(CursorPosition(), &cursorColumn, &cursorLine);
+    if (LineIsRightToLeft(cursorLine) && !LineIsMixedDirection(cursorLine))
+      event.m_keyCode = (event.GetKeyCode() == WXK_LEFT) ? WXK_RIGHT : WXK_LEFT;
+  }
+
   switch (event.GetKeyCode()) {
   case WXK_LEFT:
     {
@@ -2505,7 +2520,17 @@ wxPoint EditorCell::PositionToPoint(size_t pos) {
 
   width = GetLineWidth(cY, cX);
 
-  x += width;
+  // A right-to-left line is drawn in the reverse of the order it is stored in,
+  // so the text before a position is drawn *after* it: the caret belongs that
+  // far in from the line's right end rather than from its left. Mirroring the
+  // measurement is exact as long as the line is wholly one direction, which is
+  // the case LineIsRightToLeft() answers for; a line genuinely mixing scripts
+  // needs the real bidirectional algorithm and is left as it was.
+  if (LineIsRightToLeft(cY) && !LineIsMixedDirection(cY))
+    x += GetLineWidth(cY, LineLength(cY)) - width;
+  else
+    x += width;
+
   // The caret has to follow the text when a right-to-left line is set flush
   // right - the same shift Draw() applies to that line.
   x += RightToLeftLineOffset(cY);
@@ -2984,6 +3009,67 @@ wxCoord EditorCell::RightToLeftLineOffset(size_t line) {
   if (line < offsets.size())
     return offsets.at(line);
   return 0;
+}
+
+bool EditorCell::IsStrongRightToLeft(wxUniChar c) {
+  const auto u = static_cast<wxUint32>(c);
+  return
+    // Hebrew, and the alphabetic presentation forms that follow it
+    ((u >= 0x0590) && (u <= 0x05FF)) || ((u >= 0xFB1D) && (u <= 0xFB4F)) ||
+    // Arabic, including the Farsi and Urdu letters, plus its supplements
+    ((u >= 0x0600) && (u <= 0x06FF)) || ((u >= 0x0750) && (u <= 0x077F)) ||
+    ((u >= 0x08A0) && (u <= 0x08FF)) ||
+    // Arabic presentation forms A and B
+    ((u >= 0xFB50) && (u <= 0xFDFF)) || ((u >= 0xFE70) && (u <= 0xFEFF)) ||
+    // Syriac, Thaana, N'Ko, Samaritan, Mandaic
+    ((u >= 0x0700) && (u <= 0x074F)) || ((u >= 0x0780) && (u <= 0x07BF)) ||
+    ((u >= 0x07C0) && (u <= 0x07FF)) || ((u >= 0x0800) && (u <= 0x083F)) ||
+    ((u >= 0x0840) && (u <= 0x085F));
+}
+
+bool EditorCell::IsStrongLeftToRight(wxUniChar c) {
+  // Everything a Latin, Greek or Cyrillic script writes with, which is as much
+  // as this needs to tell apart from the right-to-left blocks above. Digits are
+  // deliberately not here: they take their direction from their surroundings.
+  return wxIsalpha(c) && !IsStrongRightToLeft(c);
+}
+
+bool EditorCell::LineIsRightToLeft(size_t line) {
+  const size_t start = XYToPosition(0, line);
+  for (size_t pos = start; pos < m_text.Length(); pos++) {
+    const wxUniChar c = m_text.at(pos);
+    if (c == wxS('\n'))
+      break;
+    if (IsStrongRightToLeft(c))
+      return true;
+    if (IsStrongLeftToRight(c))
+      return false;
+  }
+  // Nothing strong either way: follow the document.
+  return m_configuration->RightToLeftDocument();
+}
+
+size_t EditorCell::LineLength(size_t line) {
+  const size_t start = XYToPosition(0, line);
+  size_t length = 0;
+  while ((start + length < m_text.Length()) &&
+         (m_text.at(start + length) != wxS('\n')))
+    length++;
+  return length;
+}
+
+bool EditorCell::LineIsMixedDirection(size_t line) {
+  const size_t start = XYToPosition(0, line);
+  bool sawRightToLeft = false;
+  bool sawLeftToRight = false;
+  for (size_t pos = start; pos < m_text.Length(); pos++) {
+    const wxUniChar c = m_text.at(pos);
+    if (c == wxS('\n'))
+      break;
+    sawRightToLeft = sawRightToLeft || IsStrongRightToLeft(c);
+    sawLeftToRight = sawLeftToRight || IsStrongLeftToRight(c);
+  }
+  return sawRightToLeft && sawLeftToRight;
 }
 
 wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
