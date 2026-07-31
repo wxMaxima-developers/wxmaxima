@@ -173,6 +173,48 @@ SCENARIO("The arrow keys move the caret the way it is drawn") {
   }
 }
 
+SCENARIO("A selection covers the characters it selects") {
+  // The rectangle MarkSelection() draws for a run: its left edge, and its width.
+  // Selecting positions [2,5) must cover exactly the glyphs of those three
+  // characters - the same span of screen in either script, just reached from
+  // the other end.
+  const size_t from = 2, to = 5;
+
+  GIVEN("a left-to-right word") {
+    auto group = MakeCell(kLatin);
+    EditorCell *editor = group->GetEditable();
+    REQUIRE(editor != nullptr);
+
+    THEN("the rectangle starts where the first selected character is") {
+      const wxCoord startX = editor->PositionToPoint(from).x;
+      const wxCoord endX = editor->PositionToPoint(to).x;
+      const wxCoord width = endX - startX;
+      REQUIRE(width > 0);
+      REQUIRE(editor->SelectionRunLeft(from, to, startX, width) == startX);
+    }
+  }
+
+  GIVEN("a right-to-left word") {
+    auto group = MakeCell(kHebrew);
+    EditorCell *editor = group->GetEditable();
+    REQUIRE(editor != nullptr);
+
+    THEN("the rectangle starts at the *last* selected character instead") {
+      const wxCoord startX = editor->PositionToPoint(from).x;
+      const wxCoord endX = editor->PositionToPoint(to).x;
+      // Reading right to left, a later position is further left.
+      REQUIRE(endX < startX);
+      const wxCoord width = startX - endX;
+
+      const wxCoord left = editor->SelectionRunLeft(from, to, startX, width);
+      // Taking the run's start as the left edge would have highlighted the text
+      // *after* the selection; the rectangle has to sit over the glyphs.
+      REQUIRE(left == endX);
+      REQUIRE(left + width == startX);
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }
