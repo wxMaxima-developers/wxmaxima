@@ -34,17 +34,13 @@
   it exists.
 
   Windowless: a real GroupCell/EditorCell against a memory-DC Configuration, in
-  the manner of test_EditorCellWrapping.
+  the manner of test_EditorCellWrapping. The display comes from the run_headless
+  wrapper ctest starts this through, so there is no Xvfb wrangling here.
 */
 
 #include <wx/wx.h>
 #include <wx/bitmap.h>
 #include <wx/dcmemory.h>
-
-#include <cstdlib>
-#ifndef _WIN32
-#include <unistd.h>
-#endif
 
 #include <vector>
 
@@ -61,17 +57,6 @@ wxBitmap *g_bmp = nullptr;
 wxMemoryDC *g_dc = nullptr;
 Configuration *g_cfg = nullptr;
 } // namespace
-
-static void EnsureDisplay() {
-#ifndef _WIN32
-  if (getenv("DISPLAY") || getenv("WAYLAND_DISPLAY"))
-    return;
-  if (system("Xvfb :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &") == 0) {
-    setenv("DISPLAY", ":99", 1);
-    sleep(1);
-  }
-#endif
-}
 
 namespace {
 
@@ -196,7 +181,6 @@ wxDECLARE_APP(TestApp);
 
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
-  EnsureDisplay();
   wxApp::SetInstance(new TestApp());
   wxEntryStart(argc, argv);
   wxTheApp->CallOnInit();
