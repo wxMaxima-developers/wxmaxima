@@ -59,7 +59,16 @@ if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
 	    TARGET ${LANG}_po
 	    PRE_BUILD
 	    COMMENT "Creating and installing the PO- and GMO-file for language ${LANG}"
-	    COMMAND "${GETTEXT_MSGMERGE_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po" "${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.pot" -U
+	    # --previous records, on every entry msgmerge marks fuzzy, the msgid
+	    # the translation was written against ("#| msgid ..."). Without it a
+	    # fuzzy entry says only that something changed, not what: a trailing
+	    # full stop and a complete rewording look exactly alike, so deciding
+	    # whether the old translation still fits needs someone who reads the
+	    # language. With it, the cosmetic changes can be told apart from the
+	    # real ones without reading a word of it. The catalogues currently
+	    # hold ~9400 fuzzy entries and not one of them says what it used to
+	    # be; this stops that from being true of the next ones.
+	    COMMAND "${GETTEXT_MSGMERGE_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po" "${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.pot" -U --previous
 	    COMMAND "${GETTEXT_MSGFMT_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po" -o "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
 	    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/locale/${LANG}/LC_MESSAGES/wxMaxima.mo")
 	# Call msgmerge for each language and create a merged language file
