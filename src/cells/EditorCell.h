@@ -412,6 +412,18 @@ public:
   //! How many characters the given display line holds, excluding its newline.
   size_t LineLength(size_t line);
 
+  /*! The left edge of the rectangle covering the run [runStart, runEnd).
+
+    \param runStartX where PositionToPoint() puts runStart
+    \param runWidth  how wide the run's text is
+
+    The same for both directions except in one respect: on a right-to-left line
+    the run is drawn from its end leftwards, so runStart marks its *right* edge
+    and the rectangle begins a run-width further left.
+   */
+  wxCoord SelectionRunLeft(size_t runStart, size_t runEnd, wxCoord runStartX,
+                           wxCoord runWidth);
+
   /*! How far each line has to move right to sit flush with the widest one.
 
     Empty unless the document reads right-to-left

@@ -797,6 +797,21 @@ wxString EditorCell::ToHTML() const {
   return retval;
 }
 
+wxCoord EditorCell::SelectionRunLeft(size_t runStart, size_t runEnd,
+                                     wxCoord runStartX, wxCoord runWidth) {
+  size_t column, line;
+  PositionToXY(runStart, &column, &line);
+  if (!LineIsRightToLeft(line) || LineIsMixedDirection(line))
+    return runStartX;
+
+  // The run reads right to left, so runStart sits at its right edge: the left
+  // edge is one run-width further left. Deriving it from runStartX rather than
+  // from PositionToPoint(runEnd) keeps the rectangle exactly as wide as the
+  // text it covers, even where the two differ by a rounding.
+  (void)runEnd;
+  return runStartX - runWidth;
+}
+
 void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle style) {
   if (start > m_text.Length())
     start = m_text.Length();
@@ -834,6 +849,14 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
         .GetWidth();
     if (pos == lineStart) // empty line
       selectionWidth = 0;
+
+    // On a right-to-left line the selected run is drawn from its *end*
+    // leftwards, so the first selected character is at the run's right edge and
+    // the rectangle has to start at the last one instead. Taking
+    // PositionToPoint(lineStart) as the left edge there would highlight the
+    // text that follows the selection rather than the selection itself.
+    point.x = SelectionRunLeft(lineStart, pos, point.x, selectionWidth);
+
     wxRect rect;
 #if defined(__WXOSX__)
     rect = GetRect(); // rectangle representing the cell

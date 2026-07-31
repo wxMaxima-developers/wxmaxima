@@ -12,8 +12,9 @@
   text actually is -- it used to be placed at the mirror image of its position,
   so putting the cursor in front of a Hebrew word showed it at the word's far
   end -- and the arrow keys move it the way it is drawn rather than the way the
-  text is stored. Which way the document reads follows the interface
-  language; there is not yet a right-to-left translation of wxMaxima itself, so
+  text is stored, and selecting inside it highlights the characters that are
+  selected rather than the ones after them. Which way the document reads follows
+  the interface language; there is not yet a right-to-left translation of wxMaxima itself, so
   setting the language is currently the way to see this.
 
 - LaTeX export: 2-D ASCII-art maths -- what Maxima prints when it isn't asked
