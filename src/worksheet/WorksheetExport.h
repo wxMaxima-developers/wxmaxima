@@ -77,7 +77,8 @@ wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData,
 
 //! Export the tree to a LaTeX document; images go to a <name>_img directory.
 bool ExportToTeX(GroupCell *tree, Configuration *configuration,
-                 const wxString &file);
+                 const wxString &file, ViewCellPointers *cellPointers,
+                 GroupCell *hCaret);
 
 /*! Serialize the tree as .wxm (wxm = true) or .mac lines into output.
 

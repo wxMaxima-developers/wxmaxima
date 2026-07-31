@@ -2097,7 +2097,8 @@ void wxMaxima::ExportWorksheetToHtml(const wxString &filename,
 
 void wxMaxima::ExportWorksheetToTex(const wxString &filename,
                                     const wxString &documentclass,
-                                    const wxString &documentclassOptions) {
+                                    const wxString &documentclassOptions,
+                                    bool embedWorksheet) {
   if (!GetWorksheet())
     return;
 
@@ -2106,6 +2107,8 @@ void wxMaxima::ExportWorksheetToTex(const wxString &filename,
   Configuration *const cfg = GetWorksheet()->GetConfig();
   const wxString oldClass = cfg->Documentclass();
   const wxString oldOptions = cfg->DocumentclassOptions();
+  const bool oldEmbed = cfg->ExportContainsWXMX();
+  cfg->ExportContainsWXMX(embedWorksheet);
   if (!documentclass.IsEmpty())
     cfg->Documentclass(documentclass);
   if (!documentclassOptions.IsEmpty())
@@ -2120,6 +2123,7 @@ void wxMaxima::ExportWorksheetToTex(const wxString &filename,
 
   cfg->Documentclass(oldClass);
   cfg->DocumentclassOptions(oldOptions);
+  cfg->ExportContainsWXMX(oldEmbed);
 
   if (ok) {
     StatusExportFinished();

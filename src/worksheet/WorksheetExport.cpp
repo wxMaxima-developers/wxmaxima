@@ -715,6 +715,14 @@ void WriteTeXPreamble(wxTextOutputStream &output, Configuration *configuration) 
   // that plays in PDF viewers supporting it (and shows the first frame in the
   // rest).
   output << wxS("\\usepackage{animate}\n");
+
+  // Carries the worksheet itself inside the PDF as a file attachment, so the
+  // document and the session that produced it cannot be separated. attachfile2
+  // rather than attachfile: the older package fails under LuaLaTeX, while this
+  // one works on pdfTeX, LuaTeX and XeTeX alike. Only loaded when there is
+  // something to attach, so nobody needs the package otherwise.
+  if (configuration->ExportContainsWXMX())
+    output << wxS("\\usepackage{attachfile2}\n");
   // We want to color the labels and text cells. The following line adds the
   // necessary logic for this to TeX.
   output << wxS("\\usepackage{color}\n");
@@ -780,7 +788,9 @@ void WriteTeXPreamble(wxTextOutputStream &output, Configuration *configuration) 
 } // namespace
 
 bool WorksheetExport::ExportToTeX(GroupCell *tree, Configuration *configuration,
-                                  const wxString &file) {
+                                  const wxString &file,
+                                  ViewCellPointers *cellPointers,
+                                  GroupCell *hCaret) {
   wxString imgDir;
   wxString path, filename, ext;
 
@@ -804,6 +814,20 @@ bool WorksheetExport::ExportToTeX(GroupCell *tree, Configuration *configuration,
   for (auto &tmp : OnList(tree)) {
     wxString s = tmp.ToTeX(imgDir, filename, &imgCounter);
     output << s << wxS("\n");
+  }
+
+  // The worksheet itself, embedded in the PDF the way the HTML export offers it
+  // for download. It is written beside the .tex, since that is what the LaTeX
+  // run has to find, and named after it.
+  if (configuration->ExportContainsWXMX()) {
+    const wxString wxmxFile = path + wxS("/") + filename + wxS(".wxmx");
+    std::vector<wxString> noVariables;
+    if (Format::ExportToWXMX(tree, wxmxFile, configuration, cellPointers,
+                             noVariables, hCaret))
+      output << wxS("\n\\attachfile[mimetype=application/zip,")
+             << wxS("description={The wxMaxima session this document was made "
+                    "from}]{")
+             << filename << wxS(".wxmx}\n");
   }
 
   //

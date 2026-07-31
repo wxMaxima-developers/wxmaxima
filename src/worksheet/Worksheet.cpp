@@ -3701,7 +3701,8 @@ void Worksheet::CodeCellVisibilityChanged() {
 bool Worksheet::ExportToTeX(const wxString &file) {
   // Show a busy cursor as long as we export.
   wxBusyCursor crs;
-  return WorksheetExport::ExportToTeX(GetTree(), m_configuration, file);
+  return WorksheetExport::ExportToTeX(GetTree(), m_configuration, file,
+                                      &GetViewCellPointers(), GetHCaret());
 }
 
 void Worksheet::LoadSymbols() { m_autocomplete.LoadSymbols(); }

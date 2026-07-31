@@ -210,9 +210,11 @@
 (defun $wxworksheettohtml (filename &rest opts)
   (wxexport-emit "html" filename opts))
 
-;; wxworksheettotex("file.tex" [, documentclass=..., documentclassoptions=...])
+;; wxworksheettotex("file.tex" [, documentclass=..., documentclassoptions=...,
+;;                    wxmx=...])
 ;;   documentclass         overrides the LaTeX \documentclass (e.g. "report")
 ;;   documentclassoptions  overrides its options (e.g. "12pt,a4paper")
+;;   wxmx = true           embeds the session in the PDF as a file attachment
 (defun $wxworksheettotex (filename &rest opts)
   (wxexport-emit "tex" filename opts))
 
