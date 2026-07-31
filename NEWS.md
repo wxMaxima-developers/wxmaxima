@@ -1,5 +1,13 @@
 # Current development version
 
+- Hebrew and Arabic can now be chosen as the interface language. Both are only
+  seeded, not translated: they cover the thirty menu and dialog words that mean
+  the same in every desktop application and leave the rest in English. What they
+  do give is a way to run wxMaxima right-to-left without changing the system
+  locale, and a starting point for anyone who wants to take one of these
+  languages on -- the entries were not written or reviewed by a speaker, and are
+  meant to be overwritten.
+
 - In a right-to-left user interface language (Hebrew, Arabic, Farsi, Urdu) the
   text of comment, title and section cells is now set flush right instead of
   flush left, and the caret and mouse follow it. The furniture of the page
