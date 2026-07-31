@@ -394,7 +394,8 @@ protected:
   */
   void ExportWorksheetToTex(const wxString &filename,
                             const wxString &documentclass,
-                            const wxString &documentclassOptions);
+                            const wxString &documentclassOptions,
+                            bool embedWorksheet);
 #ifdef __WXMSW__
   //! Register wxMaxima's own path as the .wxmx diff tool for TortoiseSVN/Git.
   void RegisterWxmxDiffTool();

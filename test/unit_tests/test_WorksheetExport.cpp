@@ -592,6 +592,39 @@ SCENARIO("TeX export succeeds, is deterministic and contains the document") {
     REQUIRE_FALSE(tex.Contains(wxS("\\tag{%o11}")));
   }
 
+  THEN("the worksheet itself is carried inside the PDF") {
+    // The .tex only says \attachfile; whether anything actually reaches the
+    // PDF is decided by the LaTeX run, so this asks the finished PDF rather
+    // than the source. Skipped where the tools are absent, like the compile
+    // check below.
+    const bool wanted = g_cfg->ExportContainsWXMX();
+    g_cfg->ExportContainsWXMX(true);
+    const wxString dir = MakeExportDir(wxS("tex_attach"));
+    REQUIRE(g_ws->ExportToTeX(dir + wxS("/doc.tex")));
+    g_cfg->ExportContainsWXMX(wanted);
+
+    // The worksheet is written beside the .tex, which is where LaTeX looks.
+    REQUIRE(wxFileExists(dir + wxS("/doc.wxmx")));
+
+    const wxString tex = ReadTextFile(dir + wxS("/doc.tex"));
+    REQUIRE(tex.Contains(wxS("\\usepackage{attachfile2}")));
+    REQUIRE(tex.Contains(wxS("\\attachfile")));
+
+    RequireTexCompiles(dir + wxS("/doc.tex"), wxS("pdflatex"));
+    const wxString pdf = dir + wxS("/out_pdflatex.pdf");
+    if (wxFileExists(pdf)) {
+      wxArrayString out, err;
+      if (wxExecute(wxS("pdfdetach -list \"") + pdf + wxS("\""), out, err,
+                    wxEXEC_SYNC) == 0) {
+        wxString listing;
+        for (const auto &line : out)
+          listing += line + wxS("\n");
+        INFO(listing.ToStdString());
+        REQUIRE(listing.Contains(wxS("doc.wxmx")));
+      }
+    }
+  }
+
   THEN("the exported LaTeX compiles under both engine families") {
     // pdfTeX (inputenc path) and a Unicode engine (fontspec + unicode-math
     // path); each is skipped if that binary isn't installed.

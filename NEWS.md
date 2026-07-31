@@ -1,5 +1,12 @@
 # Current development version
 
+- The LaTeX export can carry the worksheet inside the PDF. With "Export
+  contains the .wxmx file" set -- the same preference the HTML export already
+  used to offer the session as a download -- the exported document embeds the
+  .wxmx as a file attachment, so the PDF and the session that produced it cannot
+  become separated. `wxworksheettotex("f.tex", wxmx=true)` does the same from
+  within Maxima, matching `wxworksheettohtml`.
+
 - Hebrew and Arabic can now be chosen as the interface language. Both are only
   seeded, not translated: they cover the thirty menu and dialog words that mean
   the same in every desktop application and leave the rest in English. What they

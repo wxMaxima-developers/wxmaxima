@@ -109,7 +109,8 @@ void MaximaResponseReader::ReadWorksheetExport(const wxXmlDocument &xmldoc) {
   if (type == wxS("html"))
     m_wxMaxima.ExportWorksheetToHtml(file, flavor, wxmx);
   else if (type == wxS("tex"))
-    m_wxMaxima.ExportWorksheetToTex(file, documentclass, documentclassOptions);
+    m_wxMaxima.ExportWorksheetToTex(file, documentclass, documentclassOptions,
+                                    wxmx);
   else
     m_wxMaxima.m_outputAppender.DoRawConsoleAppend(
       wxString::Format(
