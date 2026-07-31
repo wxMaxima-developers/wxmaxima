@@ -416,9 +416,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnKeyDown</b> (wxKeyE
 <tr class="memitem:a777a8b68c097b50e7e9e0766b54c4b6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a777a8b68c097b50e7e9e0766b54c4b6a">ExportWorksheetToHtml</a> (const wxString &amp;filename, const wxString &amp;flavor, bool embedWxmx)</td></tr>
 <tr class="memdesc:a777a8b68c097b50e7e9e0766b54c4b6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export the current worksheet to an HTML file (driven by wxworksheettohtml).  <br /></td></tr>
 <tr class="separator:a777a8b68c097b50e7e9e0766b54c4b6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5779b6adaea87c784838909df41ac4d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a5779b6adaea87c784838909df41ac4d3">ExportWorksheetToTex</a> (const wxString &amp;filename, const wxString &amp;documentclass, const wxString &amp;documentclassOptions)</td></tr>
-<tr class="memdesc:a5779b6adaea87c784838909df41ac4d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export the current worksheet to a LaTeX file (driven by wxworksheettotex).  <br /></td></tr>
-<tr class="separator:a5779b6adaea87c784838909df41ac4d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe8cf026a2984af46883b9c8f82a5dbc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#afe8cf026a2984af46883b9c8f82a5dbc">ExportWorksheetToTex</a> (const wxString &amp;filename, const wxString &amp;documentclass, const wxString &amp;documentclassOptions, bool embedWorksheet)</td></tr>
+<tr class="memdesc:afe8cf026a2984af46883b9c8f82a5dbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export the current worksheet to a LaTeX file (driven by wxworksheettotex).  <br /></td></tr>
+<tr class="separator:afe8cf026a2984af46883b9c8f82a5dbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a631676fba885bf2e4ca0e85406532133"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwxMaxima.html#a631676fba885bf2e4ca0e85406532133">ReplaceSuggestion</a> (wxCommandEvent &amp;event)</td></tr>
 <tr class="memdesc:a631676fba885bf2e4ca0e85406532133"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes clicks on suggestions Make the menu item, toolbars and panes visible that should be visible right now.  <br /></td></tr>
 <tr class="separator:a631676fba885bf2e4ca0e85406532133"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1218,8 +1218,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 
 </div>
 </div>
-<a id="a5779b6adaea87c784838909df41ac4d3" name="a5779b6adaea87c784838909df41ac4d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5779b6adaea87c784838909df41ac4d3">&#9670;&#160;</a></span>ExportWorksheetToTex()</h2>
+<a id="afe8cf026a2984af46883b9c8f82a5dbc" name="afe8cf026a2984af46883b9c8f82a5dbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe8cf026a2984af46883b9c8f82a5dbc">&#9670;&#160;</a></span>ExportWorksheetToTex()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1243,7 +1243,13 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const wxString &amp;&#160;</td>
-          <td class="paramname"><em>documentclassOptions</em>&#160;</td>
+          <td class="paramname"><em>documentclassOptions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>embedWorksheet</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
