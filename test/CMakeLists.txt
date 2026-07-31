@@ -1229,7 +1229,7 @@ endif()
 # done by name in the loop below so conditionally-defined tests (e.g. load_symbol,
 # only added for new-enough Maxima) are handled automatically.
 set(WXM_POSIX_TESTS
-  check-wxMathML.lisp_1 check-wizard-commands
+  check-wxMathML.lisp_1 check-wizard-commands check-translations
   check-xml-validity_matrix_default check-xml-validity_matrix_lines
   check-xml-validity_matrix_complex check-xml-validity_mfrac
   check-wxmx-validity_all-celltypes check-wxmx-validity_intervals
@@ -1237,7 +1237,7 @@ set(WXM_POSIX_TESTS
   wxxml-array-no-display-properties wxxml-array-display-properties
   wxxmltag wxxmltag2 wxxml-mlable wxxml-mlable2 wxxml-orthopoly
   wxxml-pochhammer wxxml-pderivop mminus mfactorial mprod block mlist
-  true false mfrac load_symbol
+  true false mfrac load_symbol check-markdown 
   subscriptp_1 subscriptp_2 subscriptp_3 subscriptp_4 subscriptp_5
   subscriptp_6 subscriptp_7 subscriptp_8 subscriptp_9 subscriptp_10
   subscriptp_11)
