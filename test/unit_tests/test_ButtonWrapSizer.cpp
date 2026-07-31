@@ -53,17 +53,6 @@ public:
 };
 wxDECLARE_APP(TestApp);
 
-static void EnsureDisplay() {
-#ifndef _WIN32
-  if (getenv("DISPLAY") || getenv("WAYLAND_DISPLAY"))
-    return;
-  if (system("Xvfb :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &") == 0) {
-    setenv("DISPLAY", ":99", 1);
-    sleep(1);
-  }
-#endif
-}
-
 // Fills a panel with n buttons inside a Buttonwrapsizer, sizes it to the given
 // width and lays it out. The buttons are the caller's to inspect afterwards.
 static std::vector<wxWindow *> LayOutButtons(wxFrame *frame, int n, int width) {
@@ -184,7 +173,6 @@ SCENARIO("Buttonwrapsizer::HeightForWidth needs more height at a narrower width"
 
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
-  EnsureDisplay();
   wxApp::SetInstance(new TestApp());
   wxEntryStart(argc, argv);
   wxTheApp->CallOnInit();

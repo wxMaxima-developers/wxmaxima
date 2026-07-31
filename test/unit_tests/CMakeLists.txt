@@ -118,7 +118,8 @@ add_test(MaximaProtocol test_MaximaProtocol)
 add_executable(test_MenuHelpString
     test_MenuHelpString.cpp ${CMAKE_SOURCE_DIR}/src/MenuHelpString.cpp ${WXM_TEST_SETUP})
 target_link_libraries(test_MenuHelpString PRIVATE ${wxWidgets_LIBRARIES})
-add_test(MenuHelpString test_MenuHelpString)
+add_test(NAME MenuHelpString
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_MenuHelpString>")
 
 # Guards the Greek/symbol sidebars' Buttonwrapsizer (a wxWrapSizer subclass that
 # uses the protected m_availSize -- fragile across wx versions, broke wrapping on
@@ -127,7 +128,8 @@ add_executable(test_ButtonWrapSizer
     test_ButtonWrapSizer.cpp ${CMAKE_SOURCE_DIR}/src/sidebars/ButtonWrapSizer.cpp
     ${WXM_TEST_SETUP})
 target_link_libraries(test_ButtonWrapSizer PRIVATE ${wxWidgets_LIBRARIES})
-add_test(ButtonWrapSizer test_ButtonWrapSizer)
+add_test(NAME ButtonWrapSizer
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_ButtonWrapSizer>")
 
 # Layout/recalculation regression test. Unlike the tests above (which stub out
 # GroupCell via TestStubs.cpp), this links the real application code through the
@@ -140,7 +142,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_GroupCellLayout PUBLIC cxx_std_20)
     target_link_libraries(test_GroupCellLayout PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(GroupCellLayout test_GroupCellLayout)
+    add_test(NAME GroupCellLayout
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_GroupCellLayout>")
 
     # Drives the full layout pipeline (RequestRecalculation ->
     # RecalculateIfNeeded -> virtual size pushed to a mock view) with real
@@ -152,7 +155,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_WorksheetLayout PUBLIC cxx_std_20)
     target_link_libraries(test_WorksheetLayout PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(WorksheetLayout test_WorksheetLayout)
+    add_test(NAME WorksheetLayout
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_WorksheetLayout>")
 
     # Line-wrapping inside EditorCells: soft breaks must be derived layout
     # state that never alters or leaks out of the cell's content, for the
@@ -163,7 +167,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_EditorCellWrapping PUBLIC cxx_std_20)
     target_link_libraries(test_EditorCellWrapping PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(EditorCellWrapping test_EditorCellWrapping)
+    add_test(NAME EditorCellWrapping
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_EditorCellWrapping>")
 
     # What the caret does inside bidirectional text: a position in a Hebrew word
     # has to map to a point in the word's *drawn* order, which is the reverse of
@@ -194,7 +199,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_Accessibility PUBLIC cxx_std_20)
     target_link_libraries(test_Accessibility PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(Accessibility test_Accessibility)
+    add_test(NAME Accessibility
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_Accessibility>")
 
     # Guards everything a .wxm file (= the copy-to-clipboard path) can hold --
     # images in several formats, every text cell type, code cell answers and the
@@ -205,7 +211,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_WXMRoundtrip PUBLIC cxx_std_20)
     target_link_libraries(test_WXMRoundtrip PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(WXMRoundtrip test_WXMRoundtrip)
+    add_test(NAME WXMRoundtrip
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_WXMRoundtrip>")
 
     # Round-trip guard for the .wxmx content.xml (the MathML-like math format):
     # parsing a content.xml into a cell tree and serialising it back must be a
@@ -218,7 +225,8 @@ if(TARGET wxmTestApp)
         WXM_CORPUS_DIR="${CMAKE_SOURCE_DIR}/test/fuzz/corpus_mathparser")
     target_link_libraries(test_WXMXRoundtrip PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(WXMXRoundtrip test_WXMXRoundtrip)
+    add_test(NAME WXMXRoundtrip
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_WXMXRoundtrip>")
 
     # Safety net for extracting the export/serialization cluster out of
     # Worksheet: loads the real math corpus plus sentinel cells into a live
@@ -235,7 +243,8 @@ if(TARGET wxmTestApp)
         WXM_TESTFILES_DIR="${CMAKE_SOURCE_DIR}/test/automatic_test_files")
     target_link_libraries(test_WorksheetExport PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(WorksheetExport test_WorksheetExport)
+    add_test(NAME WorksheetExport
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_WorksheetExport>")
 
     # Safety net for the multi-format clipboard / drag-export payload: builds
     # the real Copy()/CopyCells() data objects over a live document and pins
@@ -249,7 +258,8 @@ if(TARGET wxmTestApp)
         WXM_CORPUS_DIR="${CMAKE_SOURCE_DIR}/test/fuzz/corpus_mathparser")
     target_link_libraries(test_WorksheetClipboard PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(WorksheetClipboard test_WorksheetClipboard)
+    add_test(NAME WorksheetClipboard
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_WorksheetClipboard>")
 
     # Pins the right-click context menu (WorksheetContextMenu, extracted from
     # Worksheet::OnMouseRightDown): drives the main right-click states on a
@@ -260,7 +270,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_WorksheetContextMenu PUBLIC cxx_std_20)
     target_link_libraries(test_WorksheetContextMenu PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(WorksheetContextMenu test_WorksheetContextMenu)
+    add_test(NAME WorksheetContextMenu
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_WorksheetContextMenu>")
 
     # Pins the worksheet's two-cursor model (h-caret between cells XOR editor
     # cursor inside a cell; neither while cells are selected) ahead of the
@@ -271,7 +282,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_WorksheetCursor PUBLIC cxx_std_20)
     target_link_libraries(test_WorksheetCursor PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(WorksheetCursor test_WorksheetCursor)
+    add_test(NAME WorksheetCursor
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_WorksheetCursor>")
 
     # Pins the worksheet's find/replace behavior (wrap-around group loop,
     # prompt/editor/output order, start-from-cursor skip rules) ahead of the
@@ -282,7 +294,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_WorksheetFind PUBLIC cxx_std_20)
     target_link_libraries(test_WorksheetFind PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(WorksheetFind test_WorksheetFind)
+    add_test(NAME WorksheetFind
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_WorksheetFind>")
 
     # Pins the "add cells to the evaluation queue" behavior (which visible code
     # cells each Add*ToEvaluationQueue enqueues, and where the h-caret lands)
@@ -293,7 +306,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_WorksheetEvalQueue PUBLIC cxx_std_20)
     target_link_libraries(test_WorksheetEvalQueue PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(WorksheetEvalQueue test_WorksheetEvalQueue)
+    add_test(NAME WorksheetEvalQueue
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_WorksheetEvalQueue>")
 
     # Command-level behavior of the EvaluationQueue: how a cell's input is split
     # into the commands sent to maxima one at a time, and how lisp/maxima mode
@@ -305,7 +319,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_EvalQueueCommands PUBLIC cxx_std_20)
     target_link_libraries(test_EvalQueueCommands PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(EvalQueueCommands test_EvalQueueCommands)
+    add_test(NAME EvalQueueCommands
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_EvalQueueCommands>")
 
     # Hardening/fuzz test for EditorCell's text-editing core: drives the real
     # key-event paths and checks the cursor/selection invariants after every op.
@@ -315,7 +330,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_EditorCellInvariants PUBLIC cxx_std_20)
     target_link_libraries(test_EditorCellInvariants PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(EditorCellInvariants test_EditorCellInvariants)
+    add_test(NAME EditorCellInvariants
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_EditorCellInvariants>")
 
     # The directory-scanning half of the bash-like file-name completion:
     # openr()/load()/demo() file arguments complete against the directory the
@@ -326,7 +342,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_Autocomplete PUBLIC cxx_std_20)
     target_link_libraries(test_Autocomplete PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(Autocomplete test_Autocomplete)
+    add_test(NAME Autocomplete
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_Autocomplete>")
 
     # Layout idempotency invariants: after zoom / canvas-size changes, the
     # converged layout must equal a fresh layout of the same content - catches
@@ -338,7 +355,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_LayoutInvariants PUBLIC cxx_std_20)
     target_link_libraries(test_LayoutInvariants PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(LayoutInvariants test_LayoutInvariants)
+    add_test(NAME LayoutInvariants
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_LayoutInvariants>")
 
     # Round-trip test for the mechanical scalar settings: guards that
     # ReadConfig() and the settings-write side share one key<->member table
@@ -350,7 +368,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_ConfigRoundtrip PUBLIC cxx_std_20)
     target_link_libraries(test_ConfigRoundtrip PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(ConfigRoundtrip test_ConfigRoundtrip)
+    add_test(NAME ConfigRoundtrip
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_ConfigRoundtrip>")
 
     # Round-trip test for the worksheet styles: guards that ReadStyles() and
     # WriteStyles() share one TextStyle -> config-key mapping so styles can never
@@ -361,7 +380,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_StyleConfigRoundtrip PUBLIC cxx_std_20)
     target_link_libraries(test_StyleConfigRoundtrip PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(StyleConfigRoundtrip test_StyleConfigRoundtrip)
+    add_test(NAME StyleConfigRoundtrip
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_StyleConfigRoundtrip>")
 
     # Direct parser test for MaximaManual's help anchors: batch mode no longer
     # compiles anchors (interactive-only), so they need their own regression net.
@@ -371,7 +391,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_ManualAnchors PUBLIC cxx_std_20)
     target_link_libraries(test_ManualAnchors PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(ManualAnchors test_ManualAnchors)
+    add_test(NAME ManualAnchors
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_ManualAnchors>")
 
     # Regression test for the cell-tree undo/redo (TreeUndo_*); the safety net for
     # extracting that subsystem out of the Worksheet god class.
@@ -381,7 +402,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_TreeUndo PUBLIC cxx_std_20)
     target_link_libraries(test_TreeUndo PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(TreeUndo test_TreeUndo)
+    add_test(NAME TreeUndo
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_TreeUndo>")
 
     # Drives a real GreekSidebar to guard its line wrapping: when too small to show
     # every letter it must grow its virtual height so the wrapped rows stay
@@ -392,7 +414,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_GreekSidebar PUBLIC cxx_std_20)
     target_link_libraries(test_GreekSidebar PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(GreekSidebar test_GreekSidebar)
+    add_test(NAME GreekSidebar
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_GreekSidebar>")
 
     # Drives a real BTextCtrl to guard the last-active-text-control tracking
     # (which text control the sidebars' symbol buttons type into). It was a raw
@@ -405,7 +428,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_LastActiveTextCtrl PUBLIC cxx_std_20)
     target_link_libraries(test_LastActiveTextCtrl PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(LastActiveTextCtrl test_LastActiveTextCtrl)
+    add_test(NAME LastActiveTextCtrl
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_LastActiveTextCtrl>")
 
     # Guards the declarative variable-to-menu-items table (MaximaMenuSync) that
     # keeps menu check marks in sync with the option variables Maxima reports -
@@ -417,7 +441,8 @@ if(TARGET wxmTestApp)
     target_compile_features(test_MaximaMenuSync PUBLIC cxx_std_20)
     target_link_libraries(test_MaximaMenuSync PRIVATE
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    add_test(MaximaMenuSync test_MaximaMenuSync)
+    add_test(NAME MaximaMenuSync
+        COMMAND "${WXM_TEST_WRAPPER}" "$<TARGET_FILE:test_MaximaMenuSync>")
 endif()
 
 # Same watchdog timeout the parent directory applies to its tests: keep a hung

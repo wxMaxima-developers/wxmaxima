@@ -46,7 +46,6 @@
 #include <cstdlib>
 #include <stdexcept>
 #ifndef _WIN32
-#include <unistd.h> // sleep(), used only by the POSIX EnsureDisplay() path
 #endif
 
 #define CATCH_CONFIG_RUNNER
@@ -122,20 +121,8 @@ public:
 wxDECLARE_APP(TestApp);
 
 // wxGTK routes menu/GUI object creation through GTK, which needs an X display.
-static void EnsureDisplay() {
-#ifndef _WIN32
-  if (getenv("DISPLAY") || getenv("WAYLAND_DISPLAY"))
-    return;
-  if (system("Xvfb :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &") == 0) {
-    setenv("DISPLAY", ":99", 1);
-    sleep(1);
-  }
-#endif
-}
-
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
-  EnsureDisplay();
   wxApp::SetInstance(new TestApp());
   wxEntryStart(argc, argv);
   wxTheApp->CallOnInit();
