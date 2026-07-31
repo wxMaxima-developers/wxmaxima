@@ -51,7 +51,6 @@
 #include <memory>
 #include <vector>
 #ifndef _WIN32
-#include <unistd.h> // sleep(), used only by the POSIX EnsureDisplay() path
 #endif
 
 #define CATCH_CONFIG_RUNNER
@@ -68,19 +67,6 @@ Configuration *g_cfg = nullptr;
 
 // wxGTK routes font/DC work through GTK, which needs an X display. When run via
 // ctest the headless wrapper provides one; when run directly we start our own.
-static void EnsureDisplay() {
-#ifndef _WIN32
-  // Windows runners have a real desktop session, so this is a no-op there
-  // (and Xvfb/setenv/sleep are POSIX-only anyway).
-  if (getenv("DISPLAY") || getenv("WAYLAND_DISPLAY"))
-    return;
-  if (system("Xvfb :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &") == 0) {
-    setenv("DISPLAY", ":99", 1);
-    sleep(1);
-  }
-#endif
-}
-
 namespace {
 
 //! Saves the auto-wrap mode and canvas size; restores both on scope exit.
@@ -665,7 +651,6 @@ wxDECLARE_APP(TestApp);
 
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
-  EnsureDisplay();
   wxApp::SetInstance(new TestApp());
   wxEntryStart(argc, argv);
   wxTheApp->CallOnInit();

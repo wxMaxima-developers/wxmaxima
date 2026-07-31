@@ -58,17 +58,6 @@ Configuration *g_cfg = nullptr;
 wxString g_baseDir;
 } // namespace
 
-static void EnsureDisplay() {
-#ifndef _WIN32
-  if (getenv("DISPLAY") || getenv("WAYLAND_DISPLAY"))
-    return;
-  if (system("Xvfb :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &") == 0) {
-    setenv("DISPLAY", ":99", 1);
-    sleep(1);
-  }
-#endif
-}
-
 // Runs before Catch2's session, so failures abort instead of REQUIREing.
 static void Touch(const wxString &path) {
   wxFFile file(path, wxS("w"));
@@ -206,7 +195,6 @@ wxDECLARE_APP(TestApp);
 
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
-  EnsureDisplay();
   wxApp::SetInstance(new TestApp());
   wxEntryStart(argc, argv);
   wxTheApp->CallOnInit();

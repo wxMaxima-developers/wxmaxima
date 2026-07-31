@@ -70,17 +70,6 @@ Worksheet *g_ws = nullptr;
 wxFrame *g_frame = nullptr;
 } // namespace
 
-static void EnsureDisplay() {
-#ifndef _WIN32
-  if (getenv("DISPLAY") || getenv("WAYLAND_DISPLAY"))
-    return;
-  if (system("Xvfb :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &") == 0) {
-    setenv("DISPLAY", ":99", 1);
-    sleep(1);
-  }
-#endif
-}
-
 // Parses a whole content.xml document into a cell tree and serialises the tree
 // back to the content.xml cell markup (without the <wxMaximaDocument> wrapper).
 static wxString ParseSerialize(const wxString &documentXml) {
@@ -232,7 +221,6 @@ wxDECLARE_APP(TestApp);
 
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
-  EnsureDisplay();
   wxApp::SetInstance(new TestApp());
   wxEntryStart(argc, argv);
   wxTheApp->CallOnInit();

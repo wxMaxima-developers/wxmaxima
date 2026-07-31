@@ -53,7 +53,6 @@
 #include <cstdlib>
 #include <vector>
 #ifndef _WIN32
-#include <unistd.h> // sleep(), used only by the POSIX EnsureDisplay() path
 #endif
 
 #define CATCH_CONFIG_RUNNER
@@ -65,17 +64,6 @@ wxMemoryDC *g_dc = nullptr;
 Configuration *g_cfg = nullptr;
 Worksheet *g_ws = nullptr;
 } // namespace
-
-static void EnsureDisplay() {
-#ifndef _WIN32
-  if (getenv("DISPLAY") || getenv("WAYLAND_DISPLAY"))
-    return;
-  if (system("Xvfb :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &") == 0) {
-    setenv("DISPLAY", ":99", 1);
-    sleep(1);
-  }
-#endif
-}
 
 // Maxima output (via wxMathML.lisp) for
 //   f_aa\,bb\+cc[ff]=[min=11.1111*10^3,...,Fail=0.00111*10^3*"ppm"];
@@ -417,7 +405,6 @@ wxDECLARE_APP(TestApp);
 
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
-  EnsureDisplay();
   wxApp::SetInstance(new TestApp());
   wxEntryStart(argc, argv);
   wxTheApp->CallOnInit();

@@ -64,17 +64,6 @@ public:
 };
 wxDECLARE_APP(TestApp);
 
-static void EnsureDisplay() {
-#ifndef _WIN32
-  if (getenv("DISPLAY") || getenv("WAYLAND_DISPLAY"))
-    return;
-  if (system("Xvfb :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &") == 0) {
-    setenv("DISPLAY", ":99", 1);
-    sleep(1);
-  }
-#endif
-}
-
 SCENARIO("A too-small statistics sidebar keeps its buttons reachable by scrolling") {
   // Same bug family as the Greek sidebar: a Buttonwrapsizer's own min height
   // is a deliberately-small rearrangeable minimum, so without pinning it the
@@ -115,7 +104,6 @@ SCENARIO("A too-small Greek sidebar keeps its wrapped rows reachable by scrollin
 
 int main(int argc, char **argv) {
   wxLog::EnableLogging(false);
-  EnsureDisplay();
   wxApp::SetInstance(new TestApp());
   wxEntryStart(argc, argv);
   wxTheApp->CallOnInit();
