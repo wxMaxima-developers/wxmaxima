@@ -1,0 +1,117 @@
+#!/bin/sh
+# Checks that a translated menu label's keyboard shortcut still works.
+#
+# A wxWidgets menu label is "Copy as Text\tCtrl+Shift+C": the part after the tab
+# names the shortcut. Translators reasonably localise the visible half, and
+# sometimes localise the other half too - which only works if they use exactly
+# the word wxWidgets itself uses. wxAcceleratorEntry accepts either the English
+# name of a key or its translation from wx's *own* catalogue, compared case
+# insensitively (see CompareAccelString in wx's src/common/accelcmn.cpp). A near
+# miss is not a near miss: the accelerator fails to parse and the shortcut is
+# silently dead, with nothing in the interface to say so.
+#
+# Spanish wrote "Ctrl+Mayús+C" where wx says "Mayúsculas", French "Ctrl+Maj+C"
+# where wx says "Majuscule", and both lost every shortcut that used Shift.
+# Galician and Kabyle localised key names although wx ships no catalogue for
+# them at all, so only English can ever parse there.
+#
+# Deliberately re-mapping a shortcut is a different thing and stays allowed: a
+# German keyboard needs AltGr for "[", so Ctrl+Alt+[ becomes Ctrl+9. That
+# parses, so it passes. Only what cannot parse fails.
+#
+# Optional, like the other checks: without gettext's msgunfmt this passes with a
+# warning.
+
+set -eu
+
+if ! command -v msgunfmt >/dev/null 2>&1; then
+    echo "Warning: msgunfmt not found. Skipping the accelerator check."
+    echo "         It is part of gettext."
+    exit 0
+fi
+
+SRCDIR="@CMAKE_SOURCE_DIR@"
+cd "$SRCDIR" || exit 1
+
+# Where wx keeps its own catalogues, which is where the localised key names have
+# to come from. Several prefixes, because it depends on how wx was installed.
+WX_LOCALE_DIRS="/usr/local/share/locale /usr/share/locale"
+
+# The key and modifier names wxWidgets knows in English. These always parse, in
+# every language, and are the safe answer when wx has no catalogue for one.
+EN_NAMES="Delete Del Back Backspace Insert Ins Enter Return PageUp PageDown PgUp
+PgDn Left Right Up Down Home End Space Tab Esc Escape Add Subtract Multiply
+Divide Decimal Menu Ctrl Alt Shift Cmd Meta Super RawCtrl Snapshot Clear Help"
+
+status=0
+checked=0
+dead=0
+
+for po in $(git ls-files 'locales/wxMaxima/*.po' 2>/dev/null || \
+            find locales/wxMaxima -name '*.po'); do
+    lang=$(basename "$po" .po)
+
+    # The names this language may use: English, plus wx's own translations of
+    # them if wx ships a catalogue for it.
+    names_file=$(mktemp)
+    for n in $EN_NAMES; do printf '%s\n' "$n"; done | tr 'A-Z' 'a-z' > "$names_file"
+    for dir in $WX_LOCALE_DIRS; do
+        for mo in "$dir/$lang/LC_MESSAGES/"wxstd*.mo; do
+            [ -f "$mo" ] || continue
+            msgunfmt "$mo" 2>/dev/null | awk -v names="$EN_NAMES" '
+                BEGIN { split(names, a, /[ \n]+/); for (i in a) want[a[i]] = 1 }
+                /^msgid "/ { id = substr($0, 8, length($0) - 8); next }
+                /^msgstr "/ {
+                    tr = substr($0, 9, length($0) - 9)
+                    if (id in want && tr != "") print tolower(tr)
+                    id = ""
+                }' >> "$names_file"
+        done
+    done
+
+    # Every translated label that carries a shortcut, checked token by token.
+    report=$(awk -v lang="$lang" -v namesfile="$names_file" '
+        BEGIN {
+            while ((getline n < namesfile) > 0) known[n] = 1
+        }
+        /^#, / { if ($0 ~ /fuzzy/) fuzzy = 1; next }
+        /^msgid "/  { id = substr($0, 8, length($0) - 8); next }
+        /^msgstr "/ {
+            str = substr($0, 9, length($0) - 9)
+            if (!fuzzy && str != "" && id ~ /\\t/ && str ~ /\\t/) {
+                sub(/^[^\t]*\\t/, "", str)          # keep the shortcut only
+                total++
+                n = split(str, tok, /[+-]/)
+                for (i = 1; i <= n; i++) {
+                    t = tolower(tok[i])
+                    gsub(/^[ \t]+|[ \t]+$/, "", t)
+                    if (t == "" || length(t) == 1) continue
+                    if (t ~ /^f[0-9][0-9]?$/) continue
+                    if (!(t in known))
+                        printf "  %-5s %-34s %s\n", lang, substr(id, 1, 34), str
+                }
+            }
+            id = ""; fuzzy = 0
+        }
+        END { printf "TOTAL %d\n", total > "/dev/stderr" }
+    ' "$po" 2>/dev/null)
+
+    rm -f "$names_file"
+
+    if [ -n "$report" ]; then
+        printf '%s\n' "$report"
+        dead=$((dead + $(printf '%s\n' "$report" | wc -l)))
+        status=1
+    fi
+    checked=$((checked + 1))
+done
+
+if [ "$status" -ne 0 ]; then
+    echo
+    echo "The shortcuts above cannot be parsed by wxWidgets and therefore do"
+    echo "nothing. Use the English name of the key, which always works, or the"
+    echo "exact word wx's own catalogue for that language uses."
+    exit 1
+fi
+
+echo "Accelerators: every translated shortcut in $checked catalogues parses."

@@ -22,6 +22,7 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wxmx-validity.sh.in" check-wxm
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-wizard-commands.sh.in" check-wizard-commands.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-markdown.sh.in" check-markdown.sh)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-translations.sh.in" check-translations.sh)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/check-accelerators.sh.in" check-accelerators.sh)
 
 # Create a headless wrapper script
 set(WXM_TEST_WRAPPER "${CMAKE_CURRENT_BINARY_DIR}/run_headless.sh")
@@ -195,6 +196,13 @@ add_test(
 add_test(
     NAME check-translations
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-translations.sh"
+)
+
+# A translated menu label's keyboard shortcut has to remain one wxWidgets can
+# parse, or it silently stops working. Nothing in gettext checks this.
+add_test(
+    NAME check-accelerators
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-accelerators.sh"
 )
 
 add_test(

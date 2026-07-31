@@ -1,5 +1,14 @@
 # Current development version
 
+- Keyboard shortcuts work again in Spanish, French, Galician, Kabyle and
+  Turkish. A menu label carries its shortcut after a tab -- "Copy as
+  Text\tCtrl+Shift+C" -- and wxWidgets accepts either the English name of a key
+  or the exact word its own translation uses. Where a translation had a near
+  miss, "Ctrl+Mayus+C" against wxWidgets' "Mayusculas" or "Ctrl+Maj+C" against
+  "Majuscule", the shortcut simply did nothing, with nothing in the menu to say
+  so. Forty-two of them were dead; they are listed in a new test now, so the
+  next one cannot go unnoticed.
+
 - Hebrew and Arabic can now be chosen as the interface language. Both are only
   seeded, not translated: they cover the thirty menu and dialog words that mean
   the same in every desktop application and leave the rest in English. What they
