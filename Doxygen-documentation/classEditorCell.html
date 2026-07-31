@@ -388,6 +388,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>LineIsMixedDirection<
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>LineLength</b> (size_t line)</td></tr>
 <tr class="memdesc:aa3eb0dffd98545b2d87e2c24da0f9ac8"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many characters the given display line holds, excluding its newline. <br /></td></tr>
 <tr class="separator:aa3eb0dffd98545b2d87e2c24da0f9ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8af9e8241de76cbdf5c5bc78f861d22d"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a8af9e8241de76cbdf5c5bc78f861d22d">SelectionRunLeft</a> (size_t runStart, size_t runEnd, wxCoord runStartX, wxCoord runWidth)</td></tr>
+<tr class="memdesc:a8af9e8241de76cbdf5c5bc78f861d22d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The left edge of the rectangle covering the run [runStart, runEnd).  <br /></td></tr>
+<tr class="separator:a8af9e8241de76cbdf5c5bc78f861d22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44950f120dee696847e234c400f3cb6e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a44950f120dee696847e234c400f3cb6e">RightToLeftLineOffsets</a> ()</td></tr>
 <tr class="memdesc:a44950f120dee696847e234c400f3cb6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">How far each line has to move right to sit flush with the widest one.  <br /></td></tr>
 <tr class="separator:a44950f120dee696847e234c400f3cb6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3689,6 +3692,56 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 <p>Select the whole text contained in this <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a>. </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html#a458690f0ddadb9ff6b898515c70941b8">Cell</a>.</p>
+
+</div>
+</div>
+<a id="a8af9e8241de76cbdf5c5bc78f861d22d" name="a8af9e8241de76cbdf5c5bc78f861d22d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8af9e8241de76cbdf5c5bc78f861d22d">&#9670;&#160;</a></span>SelectionRunLeft()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxCoord EditorCell::SelectionRunLeft </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>runStart</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>runEnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxCoord&#160;</td>
+          <td class="paramname"><em>runStartX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxCoord&#160;</td>
+          <td class="paramname"><em>runWidth</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The left edge of the rectangle covering the run [runStart, runEnd). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">runStartX</td><td>where <a class="el" href="classEditorCell.html#a984fe2e0c07f031fc103bbdd72c1f70a" title="Locates the cursor in the editable text of this cell.">PositionToPoint()</a> puts runStart </td></tr>
+    <tr><td class="paramname">runWidth</td><td>how wide the run's text is</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>The same for both directions except in one respect: on a right-to-left line the run is drawn from its end leftwards, so runStart marks its <em>right</em> edge and the rectangle begins a run-width further left. </p>
 
 </div>
 </div>
