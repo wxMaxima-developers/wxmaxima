@@ -181,6 +181,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
       "processes. Allows more than one gcl-compiled maxima to run at the "
       "same time, but might provoke crashes.");
   m_languages[_("(Use default language)")] = wxLANGUAGE_DEFAULT;
+  m_languages[_("Arabic")] = wxLANGUAGE_ARABIC;
   m_languages[_("Catalan")] = wxLANGUAGE_CATALAN;
   m_languages[_("Chinese (Simplified)")] = wxLANGUAGE_CHINESE_SIMPLIFIED;
   m_languages[_("Chinese (traditional)")] = wxLANGUAGE_CHINESE_TRADITIONAL;
@@ -192,6 +193,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_languages[_("Galician")] = wxLANGUAGE_GALICIAN;
   m_languages[_("German")] = wxLANGUAGE_GERMAN;
   m_languages[_("Greek")] = wxLANGUAGE_GREEK;
+  m_languages[_("Hebrew")] = wxLANGUAGE_HEBREW;
   m_languages[_("Hungarian")] = wxLANGUAGE_HUNGARIAN;
   m_languages[_("Italian")] = wxLANGUAGE_ITALIAN;
   m_languages[_("Japanese")] = wxLANGUAGE_JAPANESE;

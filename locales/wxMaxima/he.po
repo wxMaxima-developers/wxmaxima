@@ -1,0 +1,162 @@
+# Partial Hebrew translation of wxMaxima.
+#
+# A seed rather than a translation: it covers only the couple of dozen menu and
+# dialog words that mean the same in every desktop application, and leaves the
+# other ~1875 strings to fall back to English. It exists so that wxMaxima can be
+# run right-to-left at all, and so that whoever takes this language on has
+# somewhere to start rather than an empty file.
+#
+# These entries were not written by a Hebrew speaker and have not been reviewed
+# by one. They are the standard renderings used across desktop environments, but
+# where a language admits more than one form - imperative against gerund for menu
+# verbs, say - the choice here is a guess at the most common one. Corrections are
+# welcome and should simply overwrite what is here.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wxMaxima\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-31 12:00+0200\n"
+"PO-Revision-Date: 2026-07-31 12:00+0200\n"
+"Last-Translator: unreviewed seed, see the note above\n"
+"Language-Team: none yet\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n\n"
+
+
+#: ../../src/main.cpp:439
+msgid "File"
+msgstr "קובץ"
+
+#: ../../src/wxMaximaFrame.cpp:836
+msgid "View"
+msgstr "תצוגה"
+
+#: ../../src/ToolBar.cpp:328 ../../src/wxMaximaFrame.cpp:330
+msgid "Help"
+msgstr "עזרה"
+
+#: ../../src/ToolBar.cpp:176 ../../src/main.cpp:593 ../../src/wxMaxima.cpp:6074
+msgid "Open"
+msgstr "פתח"
+
+#: ../../src/ToolBar.cpp:177 ../../src/wxMaxima.cpp:11203
+msgid "Save"
+msgstr "שמור"
+
+#: ../../src/wxMaxima.cpp:11203
+msgid "Cancel"
+msgstr "ביטול"
+
+#: ../../src/wxMaxima.cpp:9802 ../../src/wxMaxima.cpp:10161
+msgid "OK"
+msgstr "אישור"
+
+#: ../../src/ToolBar.cpp:209 ../../src/Worksheet.cpp:1290
+#: ../../src/Worksheet.cpp:1359 ../../src/Worksheet.cpp:1498
+#: ../../src/Worksheet.cpp:1684
+msgid "Copy"
+msgstr "העתק"
+
+#: ../../src/ToolBar.cpp:210 ../../src/Worksheet.cpp:1654
+#: ../../src/Worksheet.cpp:1685
+msgid "Paste"
+msgstr "הדבק"
+
+#: ../../src/ToolBar.cpp:208 ../../src/Worksheet.cpp:1683
+msgid "Cut"
+msgstr "גזור"
+
+#: ../../src/ToolBar.cpp:191
+msgid "Undo"
+msgstr "בטל"
+
+#: ../../src/ToolBar.cpp:192
+msgid "Redo"
+msgstr "בצע שוב"
+
+#: ../../src/ToolBar.cpp:184
+msgid "Print"
+msgstr "הדפס"
+
+#: ../../src/ToolBar.cpp:174
+msgid "New"
+msgstr "חדש"
+
+#: ../../src/main.cpp:438
+msgid "Exit"
+msgstr "יציאה"
+
+#: ../../src/wxMaximaFrame.cpp:1550
+msgid "No"
+msgstr "לא"
+
+#: ../../src/ToolBar.cpp:222
+msgid "Find"
+msgstr "חפש"
+
+#: ../../src/wxMaximaFrame.cpp:1963
+msgid "About"
+msgstr "אודות"
+
+#: ../../src/ToolBar.cpp:199
+msgid "Options"
+msgstr "אפשרויות"
+
+#: ../../src/main.cpp:437
+msgid "Preferences"
+msgstr "העדפות"
+
+#: ../../src/wxMaximaFrame.cpp:314
+msgid "Insert"
+msgstr "הוסף"
+
+#: ../../src/ToolBar.cpp:214 ../../src/ToolBar.cpp:215
+#: ../../src/wxMaximaFrame.cpp:673
+msgid "Select all"
+msgstr "בחר הכל"
+
+#: ../../src/WXMXformat.cpp:258 ../../src/WXMXformat.cpp:288
+#: ../../src/WXMXformat.cpp:296 ../../src/WXMXformat.cpp:311
+#: ../../src/WXMXformat.cpp:332 ../../src/WXMXformat.cpp:362
+#: ../../src/wxMaxima.cpp:3020 ../../src/wxMaxima.cpp:4163
+#: ../../src/wxMaxima.cpp:4222 ../../src/wxMaxima.cpp:4231
+#: ../../src/wxMaxima.cpp:4491 ../../src/wxMaxima.cpp:4502
+#: ../../src/wxMaxima.cpp:4605 ../../src/wxMaxima.cpp:4634
+#: ../../src/wxMaxima.cpp:4645 ../../src/wxMaxima.cpp:11125
+#: ../../src/wxMaxima.cpp:11166
+msgid "Error"
+msgstr "שגיאה"
+
+#: ../../src/MathParser.cpp:1229 ../../src/wxMaxima.cpp:3296
+#: ../../src/wxMaxima.cpp:3308 ../../src/wxMaxima.cpp:4613
+#: ../../src/wxMaxima.cpp:4703 ../../src/wxMaxima.cpp:4840
+msgid "Warning"
+msgstr "אזהרה"
+
+#: ../../src/wxMaximaFrame.cpp:626
+msgid "&File"
+msgstr "&קובץ"
+
+#: ../../src/wxMaximaFrame.cpp:689
+msgid "&Edit"
+msgstr "&עריכה"
+
+#: ../../src/wxMaximaFrame.cpp:1968
+msgid "&Help"
+msgstr "&עזרה"
+
+#: ../../src/wxMaximaFrame.cpp:1780
+msgid "&Plot"
+msgstr "&תרשים"
+
+#: ../../src/wxMaximaFrame.cpp:1870
+msgid "&Numeric"
+msgstr "&מספרי"
+
+#: ../../src/wxMaximaFrame.cpp:1763
+msgid "&List"
+msgstr "&רשימה"
