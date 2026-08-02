@@ -434,7 +434,7 @@ bool MyApp::OnInit() {
       wxFileName xdgDir(configFileXDG);
       wxString dirName(xdgDir.GetPath());
       if (!wxDirExists(dirName))
-        wxMkdir(dirName, 0x700);
+        wxMkdir(dirName, 0700);
       if (wxFileExists(configFileOld))
         wxCopyFile(configFileOld, configFileXDG);
     }
@@ -467,7 +467,7 @@ bool MyApp::OnInit() {
     // directory will fail. This happens e.g. on Windows 10.
     auto const tempDir = wxStandardPaths::Get().GetTempDir();
     if (!wxDirExists(tempDir))
-      wxMkdir(tempDir, 0x700);
+      wxMkdir(tempDir, 0700);
 
     wxFileTranslationsLoader::AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
     wxFileTranslationsLoader::AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir() +
