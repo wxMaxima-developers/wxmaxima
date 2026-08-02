@@ -3,7 +3,7 @@
 # Compile a list of test files
 file(GLOB IMAGE_FILES automatic_test_files/*.png automatic_test_files/*.gif)
 file(GLOB TEST_FILES ${IMAGE_FILES} automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg)
-file(GLOB TESTBENCH_IMAGE_FILES automatic_test_files/a.png automatic_test_files/b.png automatic_test_files/c.png automatic_test_files/d.png)
+file(GLOB TESTBENCH_IMAGE_FILES automatic_test_files/a.png automatic_test_files/b.png automatic_test_files/c.png automatic_test_files/d.png automatic_test_files/ad.gif)
 file(GLOB TESTBENCH_FILES ${TESTBENCH_IMAGE_FILES} testbench_simple.wxmx testbench_simple.wxm)
 
 find_program(MAXIMA maxima)
