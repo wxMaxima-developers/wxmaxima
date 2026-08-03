@@ -164,6 +164,34 @@ tried without rebuilding.
 - **Main Logic:** `src/wxMaxima.cpp` and `src/wxMaximaFrame.cpp` -- but much of what used to sit in `wxMaxima` has been peeled off into friend classes, so look there first: `MaximaProcessManager` (spawn/kill/connect and the data pump), `MaximaEvaluator` (evaluation queue and command protocol), `MaximaResponseReader` (the incoming-XML handlers), `MaximaFileIO` (worksheet open/save) and `MaximaCommandMenus` (the menu handlers).
 - **Configuration:** `src/Configuration.cpp`.
 
+## Backlog / Future Work
+
+Items the maintainer has flagged as worth doing but hasn't asked for yet -- don't
+start on these without checking in first, but pick them up if asked for "what's
+next" style work.
+
+- **Consolidate newer `Cell` bool members into its bitfield:** KubaO previously
+  merged most of `Cell`'s (and its heavy subclasses') boolean flags into
+  bitfields to shrink `sizeof(Cell)`, which measurably sped up wxMaxima. The
+  win is memory-footprint/cache-locality, not per-access speed: worksheets can
+  hold tens of thousands of `Cell` instances, and `Recalculate()`/`Draw()`/hit
+  testing walk the *entire* tree repeatedly (potentially every keystroke), so
+  a smaller object means far fewer cache misses on a full-tree walk -- that
+  dominates the trivial extra cost of a bitfield's mask-and-shift. Since then,
+  new standalone `bool m_foo;` members have likely accumulated again outside
+  the bitfield; audit `Cell.h` and frequently-instantiated subclasses
+  (`TextCell`, `GroupCell`, ...) for candidates. Two things to check per field
+  before migrating: (1) nothing takes its address (`&m_foo` doesn't work on a
+  bit-field member), (2) it isn't touched from another thread expecting normal
+  `bool` atomicity/tearing behavior. While at it, prefer in-class default
+  member initializers on the bit-field declarations themselves (e.g.
+  `bool m_foo : 1 = false;`) over setting them in the constructor body/init
+  list -- this was awkward pre-C++20 (part of why it probably wasn't done at
+  the time) but the project now targets C++20, where it works cleanly.
+- **Real tab handling in `EditorCell`:** tabs are currently just replaced by
+  spaces on input instead of being handled as their own character/column-stop
+  concept.
+
 ## Error resilience
 
 - To err is human => If your instructions don't seem to make sense feel free to ask.
