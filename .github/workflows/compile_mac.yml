@@ -32,7 +32,7 @@ jobs:
              export HOMEBREW_NO_INSTALL_CLEANUP=1
              export HOMEBREW_NO_ANALYTICS=1
              set -e
-             brew install gettext ninja pandoc wxwidgets
+             brew install fribidi gettext ninja pandoc wxwidgets
              set +e
       - name: xcode-select
         run: |
@@ -105,7 +105,7 @@ jobs:
              export HOMEBREW_NO_INSTALL_CLEANUP=1
              export HOMEBREW_NO_ANALYTICS=1
              set -e
-             brew install gettext pandoc wxwidgets
+             brew install fribidi gettext pandoc wxwidgets
              set +e
       - name: configure
         run: |
@@ -232,7 +232,7 @@ jobs:
              export HOMEBREW_NO_INSTALL_CLEANUP=1
              export HOMEBREW_NO_ANALYTICS=1
              set -e
-             brew install gettext ninja pandoc wxwidgets
+             brew install fribidi gettext ninja pandoc wxwidgets
              set +e
       - name: xcode-select
         run: |

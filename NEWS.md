@@ -1,5 +1,46 @@
 # Current development version
 
+- Build system: a `po4a` older than 0.70 (e.g. Ubuntu 24.04's own package,
+  version 0.69) is now detected and not used, with a CMake warning explaining
+  why, instead of risking it: `po4a` before 0.70 parsed text encodings
+  loosely, which can silently corrupt non-ASCII translated text -
+  reproduced directly, turning a German manual paragraph into English with
+  mangled UTF-8, with no error or warning of po4a's own. Nothing else about
+  building or running wxMaxima needs `po4a` at all; only regenerating the
+  manual's translations from a source-text change does.
+
+- The temporary file created while rendering the SVG (or EMF) representation
+  of a selection for the clipboard now lives in a private, mode-0700
+  subdirectory of the user's own configuration directory instead of the
+  shared system temp directory, so another unprivileged user on the same
+  machine cannot plant a symlink under the name it happens to get. wxWidgets'
+  SVG/EMF renderers only know how to write to a real path, so the file itself
+  couldn't be avoided; where it lives could be.
+
+- New Maxima variable `wxdirs`, a struct holding the paths wxMaxima itself
+  uses (`wxdirs@userconfdir`, `wxdirs@datadir`, `wxdirs@helpdir`,
+  `wxdirs@localedir`, `wxdirs@maximalocation`). These differ by maintainer,
+  distribution and OS (see `Dirstructure`'s own doc comment), so a `.mac` file
+  that wants e.g. the user's configuration directory now has a way to ask for
+  it instead of guessing or searching the filesystem.
+
+- The caret, mouse clicks, arrow-key movement and selection highlighting
+  (including the "text that coincides with the selection" marker and the diff
+  viewer) are now all correctly placed on a line that mixes left-to-right and
+  right-to-left text - e.g. a Farsi word next to a German one. This uses
+  libfribidi, an optional dependency (`WXM_USE_FRIBIDI`, on by default when
+  found): without it, mixed-direction lines keep the previous
+  single-direction-only approximation.
+
+- Fixed: clicking inside right-to-left text (Hebrew, Arabic, Farsi, Urdu)
+  placed the caret at the mirror image of the character actually clicked on -
+  the first letter's position resolved to the last, and the other way round.
+  This was independent of the mixed-direction work above: it also affected a
+  line that was wholly one direction.
+
+- THIRD-PARTY-NOTICES.txt (shown in the "License" tab) now also credits
+  wxWidgets and the bundled NanoSVG, which had been missing.
+
 - wxMaxima's translations can now also be contributed online via
   <https://crowdin.com/project/wxmaxima-gui>, in addition to editing the
   `.po` files in `locales/` directly.

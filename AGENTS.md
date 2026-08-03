@@ -41,6 +41,16 @@ Other useful targets: `ninja -C build Doxygen` builds the source documentation
 (note the capital D, and the target only exists when Doxygen is installed), and
 `ninja -C build update-locale` refreshes the translation files.
 
+`CheckPo4aVersion.cmake` (included from `info/CMakeLists.txt` and
+`locales/manual/CMakeLists.txt`, the only two places that invoke `po4a`)
+refuses `po4a` older than 0.70 -- pre-0.70 parses text encodings loosely and
+can silently corrupt non-ASCII translated text with no warning of its own,
+confirmed directly with Ubuntu 24.04's own `po4a` 0.69 package turning a
+German manual paragraph into mangled English on nothing more than a plain
+reconfigure. `PO4A` ends up `PO4A-NOTFOUND` (falsy) in that case, same
+contract `find_program()` itself has, so existing `if(PO4A)` guards keep
+working without extra checks.
+
 ## Architecture & GUI
 
 wxMaxima is a GUI front-end to the Maxima CAS; it talks to a Maxima process over
@@ -73,6 +83,20 @@ wrapped in known tags. `Maxima` reads that data on a worker thread and posts
 what tells Maxima to format its output as MathML-like XML. For development,
 `--wxmathml-lisp=<path>` overrides it with an external file, so a change can be
 tried without rebuilding.
+
+- **`m_configCommands` (`wxMaxima.cpp`):** the string of startup/config commands
+  sent to Maxima on connect (and again whenever settings change while it's
+  running). Mixes `:lisp-quiet (...)` directives with plain Maxima statements
+  ending in `$` in the same stream -- both are valid there, since it is fed to
+  Maxima the same way interactive input is. `wxdirs`, the Maxima struct
+  exposing wxMaxima's own paths, is built this way; each field is set with its
+  own `wxdirs@field: "value"$` statement rather than `new(wxdirs(field=value,
+  ...))`, because Maxima's `defstruct` does not evaluate named-field
+  initializers to the field's value -- it silently stores the unevaluated
+  `field = value` equation instead (confirmed against a real Maxima 5.46).
+  Values that could contain `"` or `\` (any filesystem path) need
+  `wxMaxima::EscapeForLisp()` first; despite the name it is exactly the
+  escaping Maxima string literals need too.
 
 ### File Formats
 
@@ -109,6 +133,8 @@ tried without rebuilding.
   3. `BreakLines_List()`: Final line wrapping.
 - **High-DPI / wxBitmapBundle:** Use `wxBitmapBundle` for SVG rendering.
 - **Windows Focus Management:** Use `CallAfter` for focus transitions (e.g., `m_searchText->SetFocus()`) to prevent the worksheet from "stealing" focus back.
+- **Graphical export temp files (`src/graphical_io/OutCommon.cpp`):** `wxSVGFileDC`/EMF's DC only write to a real path, so the SVG/EMF representation rendered for the clipboard needs a temp file (unlike a real "Export as..." target file, which is the user's own chosen path and untouched by this). `PrivateTempDir()` puts it in a mode-0700 `tmp/` subdirectory of `Dirstructure::UserConfDir()` instead of the shared system temp dir, so another unprivileged user can't win a race between the file's creation and its being opened by name (the classic symlink-swap window any path-only API leaves open). Falls back to `wxFileName::CreateTempFileName()`'s own default location if that directory can't be created.
+- **Bidi (`src/Bidi.h`/`.cpp`):** Reorders a line of text per the Unicode Bidirectional Algorithm (UAX #9), using `libfribidi` when it's available at build time (`USE_FRIBIDI` in `BuildConfig.h`, optional, `WXM_USE_FRIBIDI` CMake option, on by default when `pkg-config fribidi` is found) and falling back to a single-run approximation otherwise. No wxWidgets backend exposes this reordering itself -- Pango/CoreText/DirectWrite compute it internally to shape glyphs but never hand it back to the app. `EditorCell::GetLineBidiRuns()` wraps it as absolute `m_text` positions; `MixedDirectionOffset()` (used by `PositionToPoint()`, hence also `MarkSelection()` and `SelectPointText()`'s click search) and `HandleSpecialKey()`'s arrow-key handling are the consumers. wxmTestApp is an OBJECT library (`test/unit_tests/CMakeLists.txt`): it compiles `Bidi.cpp` itself and needs `PkgConfig::FRIBIDI` linked directly to *it* (not just to `wxmaxima`) to get fribidi's include path at that compile step; separately, its own `target_link_libraries()` don't propagate through `$<TARGET_OBJECTS:wxmTestApp>`, so anything it needs must *also* be linked into each consuming test executable directly (`WXM_TESTAPP_EXTRA_LIBS`) for the final link. The imported target has to be declared `GLOBAL` since `test/` is a sibling directory of `src/`, not a descendant. `#include <fribidi.h>`, not `<fribidi/fribidi.h>`: pkg-config's own `-I` already points *at* fribidi's header directory (confirmed on both Debian's and Homebrew's `.pc` files), so the extra `fribidi/` prefix only "worked" on Linux by accident, via `/usr/include` being an implicit compiler search path Homebrew's non-default prefix doesn't share -- caught by a real macOS CI failure, not by this sandbox.
 - **ConfigDialogue Tabs Must Scroll:** Every tab panel in `src/dialogs/ConfigDialogue.cpp` is a `wxScrolled<wxPanel>` with `SetScrollRate(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor())` and `SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth, GetContentScaleFactor() * mMinPanelHeight))`. Without this, a tab's natural size (which grows with font size/DPI/translation length) can make the whole dialog taller than a hi-DPI screen with no way to reach what's cut off. When adding a new tab, copy this pattern (see `CreateWorksheetPanel()`) rather than a plain `wxPanel`.
 - **Constructor Initialization:** Order initialization lists to match header declaration order to prevent `-Wreorder` warnings.
 

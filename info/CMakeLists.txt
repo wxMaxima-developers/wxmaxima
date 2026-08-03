@@ -1,21 +1,15 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-find_program(PO4A po4a)
+include(${CMAKE_SOURCE_DIR}/CheckPo4aVersion.cmake)
 if(PO4A)
-	# Get po4a version number
-	execute_process(COMMAND ${PO4A} --version OUTPUT_VARIABLE PO4A_VERSION_TEXT)
-	string(REGEX REPLACE "^po4a version ([^\n]*).*" "\\1"  PO4A_VERSION "${PO4A_VERSION_TEXT}")
-	string(REGEX REPLACE "\\.$" ""  PO4A_VERSION "${PO4A_VERSION}") # remove trailing dot.
-	message(STATUS "Found po4a: ${PO4A} (found version \"${PO4A_VERSION}\")")
 	if(WXM_PO4A_UPDATE_MANUAL_PO_POT_FILES)
 	    execute_process(COMMAND ${PO4A} --verbose ${CMAKE_BINARY_DIR}/po4a.cfg)
 	else()
 	    execute_process(COMMAND ${PO4A} --verbose --no-update ${CMAKE_BINARY_DIR}/po4a.cfg)
 	    message(STATUS "Calling po4a with the option --no-update - not updating the po/pot files in the source tree.")
-	    message(STATUS "Remark: older versions of po4a seem to update the pot file, although the option --no-update is used.")
 	endif()
 else()
-	message(STATUS "po4a not found. Disable the generation of localized documentation.")
+	message(STATUS "po4a not found (or too old, see CheckPo4aVersion.cmake). Disable the generation of localized documentation.")
 endif()
 
 find_program(PANDOC pandoc)

@@ -1,7 +1,7 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
 
-find_program(PO4A po4a)
+include(${CMAKE_SOURCE_DIR}/CheckPo4aVersion.cmake)
 
 # which languages are supported?
 file(GLOB TRANSLATION_FILES *.po)
@@ -20,5 +20,5 @@ if(PO4A)
         COMMAND ${PO4A} po4a.cfg
     )
 else()
-    message(STATUS "po4a-updatepo not found. Language specific .po files cannot be automatically updated with changes from the untranslated manual.")
+    message(STATUS "po4a not found (or too old, see CheckPo4aVersion.cmake). Language specific .po files cannot be automatically updated with changes from the untranslated manual.")
 endif()

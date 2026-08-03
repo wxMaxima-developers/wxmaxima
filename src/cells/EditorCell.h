@@ -32,6 +32,8 @@
 #include <list>
 #include <unordered_map>
 
+struct BidiRun;
+
 /*! \file
 
   This file contains the definition of the class EditorCell
@@ -399,10 +401,13 @@ public:
     bidirectional algorithm uses for a paragraph. A line with no strong
     character at all - digits and punctuation only - follows the document.
 
-    Only lines that are wholly one direction are handled: for those the caret's
-    position is the mirror of what measuring the text before it gives, which is
-    exact and needs no reordering. A line that genuinely mixes the two scripts
-    would need the real algorithm and is left as it was.
+    Only lines that are wholly one direction are handled here: for those the
+    caret's position is the mirror of what measuring the text before it gives,
+    which is exact and needs no reordering. A line that genuinely mixes the two
+    scripts needs the real bidirectional algorithm instead - see
+    GetLineBidiRuns() and Bidi::GetRuns(), which PositionToPoint(),
+    MarkSelection() and HandleSpecialKey()'s arrow-key handling all fall back
+    to for a line this function can't characterise with one direction.
    */
   bool LineIsRightToLeft(size_t line);
 
@@ -423,6 +428,24 @@ public:
    */
   wxCoord SelectionRunLeft(size_t runStart, size_t runEnd, wxCoord runStartX,
                            wxCoord runWidth);
+
+  /*! Bidi::GetRuns() for a display line, as absolute positions into m_text
+    (Bidi::GetRuns() itself only knows the line's own text, so its runs are
+    relative to that - this is the shared first step for anything that needs
+    the real bidi run structure at a whole-cell position instead).
+
+    \return false (leaving *runs untouched) if libfribidi isn't compiled in
+            (Bidi::IsAvailable()) or the line is empty.
+   */
+  bool GetLineBidiRuns(size_t line, std::vector<BidiRun> *runs);
+
+  /*! Where position sits, in pixels from the line's own left edge, found via
+    the real bidi algorithm (GetLineBidiRuns()) instead of assuming the whole
+    line is one direction the way PositionToPoint()'s own fast path does.
+
+    \return false (leaving *offset untouched) if libfribidi isn't compiled in.
+   */
+  bool MixedDirectionOffset(size_t line, size_t position, wxCoord *offset);
 
   /*! How far each line has to move right to sit flush with the widest one.
 

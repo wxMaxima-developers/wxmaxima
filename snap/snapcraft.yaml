@@ -53,6 +53,10 @@ parts:
      - libwxgtk3.2-dev
      - libwxgtk-webview3.2-dev
      - gettext
+     # For correct right-to-left/mixed-direction text editing (see Bidi.h);
+     # optional at build time, but always available in the snap so it doesn't
+     # depend on what the host happens to have installed.
+     - libfribidi-dev
     stage-snaps:
      - maxima
     stage-packages:
@@ -63,6 +67,7 @@ parts:
      - wx-common
      - gettext
      - locales-all
+     - libfribidi0
     stage:
      - -usr/share/texmf/ls-R
  
