@@ -377,6 +377,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>FindMatchingParens</b
 <tr class="memitem:aab555df03f1b668d5b7cca422291bd48"><td class="memItemLeft" align="right" valign="top"><a id="aab555df03f1b668d5b7cca422291bd48" name="aab555df03f1b668d5b7cca422291bd48"></a>
 wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>GetLineWidth</b> (size_t line, size_t pos)</td></tr>
 <tr class="separator:aab555df03f1b668d5b7cca422291bd48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1449c2bc0308ca9fbe0378dbc62881b3"><td class="memItemLeft" align="right" valign="top"><a id="a1449c2bc0308ca9fbe0378dbc62881b3" name="a1449c2bc0308ca9fbe0378dbc62881b3"></a>
+wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>NextTabStop</b> (wxCoord startX) const</td></tr>
+<tr class="memdesc:a1449c2bc0308ca9fbe0378dbc62881b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pixel x of the next 4-column tab stop at or after startX, where one column is the width of a space glyph in the current font. startX is relative to the current line's own start (post-indentation), matching how GetLineWidth()/Recalculate() already track their x accumulators. <br /></td></tr>
+<tr class="separator:a1449c2bc0308ca9fbe0378dbc62881b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50995740f8f9bcededce3020a036ab54"><td class="memItemLeft" align="right" valign="top"><a id="a50995740f8f9bcededce3020a036ab54" name="a50995740f8f9bcededce3020a036ab54"></a>
+wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>MeasureTextWidth</b> (wxCoord startX, const wxString &amp;text) const</td></tr>
+<tr class="memdesc:a50995740f8f9bcededce3020a036ab54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Width, in pixels, of <code>text</code> when it starts at horizontal position startX on its line &ndash; like GetTextSize(text).<a class="el" href="classCell.html#ab8c503658c4afca17cbd62784fdbdce3" title="Get the width of this cell.">GetWidth()</a>, but correct when text contains embedded '\t' characters, whose width depends on where they fall (tab width is position-dependent, the one thing GetTextExtent() cannot compute on its own). For call sites that measure a raw m_text substring rather than a single already-tokenized <a class="el" href="classEditorCell_1_1StyledText.html" title="A piece of styled text for syntax highlighting.">StyledText</a> snippet (a tab is always its own isolated snippet &ndash; see <a class="el" href="classMaximaTokenizer.html" title="Maximatokenizer breaks down maxima input to individual commands.">MaximaTokenizer</a> &ndash; but can still be embedded anywhere inside an arbitrary m_text substring). <br /></td></tr>
+<tr class="separator:a50995740f8f9bcededce3020a036ab54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe395bc87c1fd928a5402e48cfe81468"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#abe395bc87c1fd928a5402e48cfe81468">LineIsRightToLeft</a> (size_t line)</td></tr>
 <tr class="memdesc:abe395bc87c1fd928a5402e48cfe81468"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the given display line written right to left?  <br /></td></tr>
 <tr class="separator:abe395bc87c1fd928a5402e48cfe81468"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1046,9 +1054,9 @@ Static Public Member Functions</h2></td></tr>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCodeType</b> (<a class="el" href="Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fd">CellType</a> type)</td></tr>
 <tr class="memdesc:ac0e56e5dc5c0dee87121952965fced43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is <code>type</code> a code (Maxima-input) cell type, as opposed to text/sectioning? <br /></td></tr>
 <tr class="separator:ac0e56e5dc5c0dee87121952965fced43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56acb43218c6996f85bb3acfb9a610ca"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a56acb43218c6996f85bb3acfb9a610ca">TabExpand</a> (const wxString &amp;input_, size_t posInLine)</td></tr>
-<tr class="memdesc:a56acb43218c6996f85bb3acfb9a610ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expand all tabulators.  <br /></td></tr>
-<tr class="separator:a56acb43218c6996f85bb3acfb9a610ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67ca5cd76bd14de0691bbb80d7c54b68"><td class="memItemLeft" align="right" valign="top">static wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a67ca5cd76bd14de0691bbb80d7c54b68">NormalizeLineEndings</a> (const wxString &amp;input_)</td></tr>
+<tr class="memdesc:a67ca5cd76bd14de0691bbb80d7c54b68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalize line endings.  <br /></td></tr>
+<tr class="separator:a67ca5cd76bd14de0691bbb80d7c54b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7a4a8ae88746563be0420bb0c242838"><td class="memItemLeft" align="right" valign="top"><a id="af7a4a8ae88746563be0420bb0c242838" name="af7a4a8ae88746563be0420bb0c242838"></a>
 static wxString&#160;</td><td class="memItemRight" valign="bottom"><b>EscapeHTMLChars</b> (wxString input)</td></tr>
 <tr class="memdesc:af7a4a8ae88746563be0420bb0c242838"><td class="mdescLeft">&#160;</td><td class="mdescRight">Escape all chars that cannot be used in HTML otherwise. <br /></td></tr>
@@ -3341,6 +3349,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 </div>
 </div>
+<a id="a67ca5cd76bd14de0691bbb80d7c54b68" name="a67ca5cd76bd14de0691bbb80d7c54b68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67ca5cd76bd14de0691bbb80d7c54b68">&#9670;&#160;</a></span>NormalizeLineEndings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">wxString EditorCell::NormalizeLineEndings </td>
+          <td>(</td>
+          <td class="paramtype">const wxString &amp;&#160;</td>
+          <td class="paramname"><em>input_</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Normalize line endings. </p>
+<p>Collapses literal "\r\n" (Windows CRLF) sequences to "\n". Does NOT touch a lone '\r': that is <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own soft (word-wrap) line break marker, not a line ending, and must survive untouched (see the comment in the constructor). </p>
+
+</div>
+</div>
 <a id="aae3f133b4f77aa5839e9c55ae71119dc" name="aae3f133b4f77aa5839e9c55ae71119dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aae3f133b4f77aa5839e9c55ae71119dc">&#9670;&#160;</a></span>PasteFromClipboard()</h2>
 
@@ -4430,52 +4467,6 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 <p>Toggles the visibility of the cursor which is used to make it blink. </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html">Cell</a>.</p>
-
-</div>
-</div>
-<a id="a56acb43218c6996f85bb3acfb9a610ca" name="a56acb43218c6996f85bb3acfb9a610ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56acb43218c6996f85bb3acfb9a610ca">&#9670;&#160;</a></span>TabExpand()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">wxString EditorCell::TabExpand </td>
-          <td>(</td>
-          <td class="paramtype">const wxString &amp;&#160;</td>
-          <td class="paramname"><em>input_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>posInLine</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Expand all tabulators. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">input</td><td>The string the tabulators should be expanded in </td></tr>
-    <tr><td class="paramname">posInLine</td><td>The number of characters that come before the input in the same line </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>Implement the actual TAB expansion </dd></dl>
 
 </div>
 </div>
