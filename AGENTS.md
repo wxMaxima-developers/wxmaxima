@@ -121,6 +121,9 @@ tried without rebuilding.
 - **Layout Timeout:** Complex output can trigger a timeout (configurable in Options), replacing slow-to-render cells with a warning.
 - **C++ Standard:** The project uses **C++20**. To support users on older operating systems (like Debian-oldstable or RHEL), wxMaxima aims to stay approximately 10 years behind the current C++ standard.
 - **wxWidgets Version:** Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use `MakeAbsolute()` + `GetFullPath()` instead of `GetAbsolutePath()`).
+- **Sizer Flags Are Different Enum Types:** `wxDirection` (`wxLEFT`/`wxRIGHT`/`wxALL`/...), `wxAlignment` (`wxALIGN_*`) and `wxStretch` (`wxEXPAND`/...) are three distinct unscoped enums; OR'ing two of them directly (e.g. `wxALIGN_CENTER_VERTICAL | wxALL`) is deprecated in C++20 and GCC warns `-Wdeprecated-enum-enum-conversion`. Fix by casting the *first* operand of the OR-chain to `int` (e.g. `static_cast<int>(wxALIGN_CENTER_VERTICAL) | wxALL`) -- since `|` is left-associative, this makes every subsequent operation `int | enum`, which is unambiguous and unwarned, without needing to touch the rest of the chain. Only the leftmost token needs the cast, however many differently-typed flags follow.
+- **`[[maybe_unused]]` on data members and GCC < 12:** GCC before version 12 doesn't support `[[maybe_unused]]` on non-static data members at all and warns `'maybe_unused' attribute ignored [-Wattributes]` regardless of whether the member is actually used (reproduced directly against `g++-11`; fixed by `g++-12`). Since the attribute is still needed for Clang (`-Wunused-private-field`), don't just delete it -- wrap the declaration in `#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12` / `#pragma GCC diagnostic push/ignored "-Wattributes"` ... `#pragma GCC diagnostic pop` / `#endif` (see `SvgBitmap.h`, `wxMathml.h`, `graphical_io/Printout.h`).
+- **CI Warnings Live On the Non-`-Werror` Jobs:** `compile_latest_and_test` and `compile_without_webview` (Ubuntu) build with `-Werror`, so they can't show warnings by construction -- check `compile_2204` (Ubuntu 22.04, plain `-Wall -Wextra`, GCC 11) for real warnings that survive to a release build. Don't assume that job's warning list is exhaustive, though: e.g. the `[[maybe_unused]]`-on-a-data-member GCC<12 warning above showed up for `Printout.h` in one such log but not for the identical pattern in `SvgBitmap.h`/`wxMathml.h` in the same run, for reasons that weren't tracked down (not precompiled headers -- `WXM_ENABLE_PRECOMPILED_HEADERS` defaults `OFF`) -- a clean local build with `g++-11 -Wall -Wextra` is the more reliable check for this specific class of warning.
 
 ## Layout & Compatibility
 
@@ -160,6 +163,34 @@ tried without rebuilding.
 - **MathML Formatting:** `src/wxMathML.lisp` and `src/MathParser.cpp`.
 - **Main Logic:** `src/wxMaxima.cpp` and `src/wxMaximaFrame.cpp` -- but much of what used to sit in `wxMaxima` has been peeled off into friend classes, so look there first: `MaximaProcessManager` (spawn/kill/connect and the data pump), `MaximaEvaluator` (evaluation queue and command protocol), `MaximaResponseReader` (the incoming-XML handlers), `MaximaFileIO` (worksheet open/save) and `MaximaCommandMenus` (the menu handlers).
 - **Configuration:** `src/Configuration.cpp`.
+
+## Backlog / Future Work
+
+Items the maintainer has flagged as worth doing but hasn't asked for yet -- don't
+start on these without checking in first, but pick them up if asked for "what's
+next" style work.
+
+- **Consolidate newer `Cell` bool members into its bitfield:** KubaO previously
+  merged most of `Cell`'s (and its heavy subclasses') boolean flags into
+  bitfields to shrink `sizeof(Cell)`, which measurably sped up wxMaxima. The
+  win is memory-footprint/cache-locality, not per-access speed: worksheets can
+  hold tens of thousands of `Cell` instances, and `Recalculate()`/`Draw()`/hit
+  testing walk the *entire* tree repeatedly (potentially every keystroke), so
+  a smaller object means far fewer cache misses on a full-tree walk -- that
+  dominates the trivial extra cost of a bitfield's mask-and-shift. Since then,
+  new standalone `bool m_foo;` members have likely accumulated again outside
+  the bitfield; audit `Cell.h` and frequently-instantiated subclasses
+  (`TextCell`, `GroupCell`, ...) for candidates. Two things to check per field
+  before migrating: (1) nothing takes its address (`&m_foo` doesn't work on a
+  bit-field member), (2) it isn't touched from another thread expecting normal
+  `bool` atomicity/tearing behavior. While at it, prefer in-class default
+  member initializers on the bit-field declarations themselves (e.g.
+  `bool m_foo : 1 = false;`) over setting them in the constructor body/init
+  list -- this was awkward pre-C++20 (part of why it probably wasn't done at
+  the time) but the project now targets C++20, where it works cleanly.
+- **Real tab handling in `EditorCell`:** tabs are currently just replaced by
+  spaces on input instead of being handled as their own character/column-stop
+  concept.
 
 ## Error resilience
 

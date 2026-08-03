@@ -78,17 +78,17 @@ void BC2Wiz::do_layout() {
   grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                     5);
   sizer_1->Add(text_ctrl_2, 0, wxALL, 5);
-  sizer_1->Add(label_4, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  sizer_1->Add(label_4, 0, static_cast<int>(wxALIGN_CENTER_VERTICAL) | wxALL, 5);
   sizer_1->Add(text_ctrl_3, 0, wxALL, 5);
   grid_sizer_2->Add(sizer_1, 0, wxALL, 0);
   grid_sizer_2->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                     5);
   sizer_2->Add(text_ctrl_4, 0, wxALL, 5);
-  sizer_2->Add(label_6, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  sizer_2->Add(label_6, 0, static_cast<int>(wxALIGN_CENTER_VERTICAL) | wxALL, 5);
   sizer_2->Add(text_ctrl_5, 0, wxALL, 5);
   grid_sizer_2->Add(sizer_2, 0, wxALL, 0);
   grid_sizer_1->Add(grid_sizer_2, 1, 0, 0);
-  grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+  grid_sizer_1->Add(static_line_1, 0, static_cast<int>(wxEXPAND) | wxLEFT | wxRIGHT, 2);
   sizer_3->Add(button_1, 0, wxALL, 5);
   sizer_3->Add(button_2, 0, wxALL, 5);
   grid_sizer_1->Add(sizer_3, 1, wxALIGN_RIGHT, 0);

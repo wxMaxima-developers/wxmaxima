@@ -58,7 +58,7 @@ MaximaNotStartingDialog::MaximaNotStartingDialog(wxWindow *parent, int id, Confi
 
   nameSizer->Add(m_maximaUserLocation,
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
-  vsizer->Add(nameSizer, 1, wxEXPAND | wxLEFT, 0);
+  vsizer->Add(nameSizer, 1, static_cast<int>(wxEXPAND) | wxLEFT, 0);
   m_maximaUserLocation->SetValue(m_configuration->MaximaUserLocation());
   m_autodetectMaxima->SetValue(m_configuration->AutodetectMaxima());
   m_noAutodetectMaxima->SetValue(!m_configuration->AutodetectMaxima());
@@ -77,7 +77,7 @@ MaximaNotStartingDialog::MaximaNotStartingDialog(wxWindow *parent, int id, Confi
 #endif
   buttonSizer->Add(button_1, 0, wxALL, 5);
   buttonSizer->Add(button_2, 0, wxALL, 5);
-  vsizer->Add(buttonSizer, 1, wxEXPAND | wxLEFT, 0);
+  vsizer->Add(buttonSizer, 1, static_cast<int>(wxEXPAND) | wxLEFT, 0);
   SetSizerAndFit(vsizer);
 }
 

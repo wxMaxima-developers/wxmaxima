@@ -64,7 +64,18 @@ private:
   //! The renderable svg image after we have read it in
   std::unique_ptr<wxm_NSVGimage, decltype(std::free)*> m_svgImage{nullptr, std::free};
   //! The window this bitmap will be drawn o
+#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12
+  // GCC < 12 doesn't support [[maybe_unused]] on non-static data members and
+  // warns "attribute ignored" about it (fixed in GCC 12); Clang needs the
+  // attribute here to silence -Wunused-private-field, so it can't just be
+  // removed.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wattributes"
+#endif
   [[maybe_unused]] wxWindow *m_window = NULL;
+#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12
+#pragma GCC diagnostic pop
+#endif
 };
 
 #endif // SVGBITMAP_H

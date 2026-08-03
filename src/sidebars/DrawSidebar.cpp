@@ -39,7 +39,7 @@ DrawSidebar::DrawSidebar(wxWindow *parent, int id)
   SetScrollRate(5, 5);
   m_grid = new Buttonwrapsizer(wxHORIZONTAL);
   m_dimensions = -1;
-  int style = wxALL | wxEXPAND;
+  int style = static_cast<int>(wxALL) | wxEXPAND;
   int border = 0;
 
   m_grid->Add(m_draw_setup2d = new wxButton(this, EventIDs::menu_draw_2d, _("2D"),

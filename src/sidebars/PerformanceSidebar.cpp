@@ -47,7 +47,7 @@ PerformanceSidebar::PerformanceSidebar(wxWindow *parent, int ID)
   AddStat(gridSizer, _("Worksheet repaints:"), wxS("repaints"));
   AddStat(gridSizer, _("Full-window repaints:"), wxS("repaints_full"));
 
-  mainSizer->Add(gridSizer, 1, wxALL | wxEXPAND, 10);
+  mainSizer->Add(gridSizer, 1, static_cast<int>(wxALL) | wxEXPAND, 10);
   SetSizer(mainSizer);
   SetScrollRate(5, 5);
   UpdateContents();

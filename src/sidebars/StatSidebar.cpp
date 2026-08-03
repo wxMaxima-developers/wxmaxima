@@ -45,7 +45,7 @@ StatSidebar::StatSidebar(wxWindow *parent, int ID)
   wxBoxSizer *box3 = new wxBoxSizer(wxVERTICAL);
   SetScrollRate(5, 5);
 
-  int style = wxALL | wxEXPAND;
+  int style = static_cast<int>(wxALL) | wxEXPAND;
   int border = 0;
   int sizerBorder = 2;
 

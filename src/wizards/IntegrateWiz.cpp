@@ -107,13 +107,13 @@ void IntegrateWiz::do_layout() {
   grid_sizer_4->Add(checkbox_1, 0, wxALL, 5);
   grid_sizer_4->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                     5);
-  grid_sizer_5->Add(text_ctrl_3, 0, wxALL | wxEXPAND, 5);
+  grid_sizer_5->Add(text_ctrl_3, 0, static_cast<int>(wxALL) | wxEXPAND, 5);
   grid_sizer_5->Add(button_3, 0, wxALL, 5);
   grid_sizer_5->AddGrowableCol(0);
   grid_sizer_4->Add(grid_sizer_5, 1, 0, 0);
   grid_sizer_4->Add(label_5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                     5);
-  grid_sizer_6->Add(text_ctrl_4, 0, wxALL | wxEXPAND, 5);
+  grid_sizer_6->Add(text_ctrl_4, 0, static_cast<int>(wxALL) | wxEXPAND, 5);
   grid_sizer_6->Add(button_4, 0, wxALL, 5);
   grid_sizer_6->AddGrowableCol(0);
   grid_sizer_4->Add(grid_sizer_6, 1, 0, 0);
@@ -123,7 +123,7 @@ void IntegrateWiz::do_layout() {
                     5);
   grid_sizer_4->Add(choice_1, 0, wxALL, 5);
   grid_sizer_3->Add(grid_sizer_4, 1, wxEXPAND, 0);
-  grid_sizer_3->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+  grid_sizer_3->Add(static_line_1, 0, static_cast<int>(wxEXPAND) | wxLEFT | wxRIGHT, 2);
   sizer_3->Add(button_1, 0, wxALL, 5);
   sizer_3->Add(button_2, 0, wxALL, 5);
   grid_sizer_3->Add(sizer_3, 1, wxALIGN_RIGHT, 0);
