@@ -1,5 +1,21 @@
 # Current development version
 
+- Fixed misaligned ASCII-art 2D math (`set_display('ascii)`): the top/bottom
+  lines of a fraction, matrix, etc. are padded by Maxima on the assumption
+  that every line -- including the `(%oN)` label line -- renders in the same
+  monospace font. wxMaxima used to guess which lines belonged to the same
+  block from their *content* alone (whether a chunk of already-batched
+  socket data happened to start with `(%`), and since that batching is
+  timing-dependent rather than tied to Maxima's actual output boundaries,
+  the label line could land in a separate read from its neighbors and get
+  misclassified into a different, proportional font -- breaking the visual
+  alignment even though Maxima's own whitespace padding was correct.
+  `wxMathML.lisp` now wraps each complete ASCII-art block in explicit
+  `<wxxml-asciimath>`/`</wxxml-asciimath>` markers (reusing Maxima's own
+  stock ASCII printer via a `*alt-display2d*` hook, not reimplementing it),
+  so wxMaxima always renders a whole block in one uniform monospace style
+  instead of guessing per chunk.
+
 - `--batch`/`--exit-on-error` now actually halts when Maxima asks an
   interactive question it cannot auto-answer, instead of hanging forever:
   the process logs the question and exits with an error status, matching

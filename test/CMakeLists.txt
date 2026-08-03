@@ -222,6 +222,17 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error lisp_mode.wxm)
 
+# set_display('ascii): wx-ascii-displa wraps Maxima's own stock ASCII-art
+# printer in <wxxml-asciimath> markers instead of reimplementing it. The
+# worksheet is self-checking (results are compared against the same
+# expressions evaluated in the default XML display mode); with
+# --exit-on-error a wrong value, an error, or a hang in the lisp hook fails
+# the test.
+add_test(
+    NAME asciiDisplay
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error asciiDisplay.wxm)
+
 # Smoke test for the side-by-side diff viewer (wxmxdiff / --diff): it has no
 # other test and has broken silently when surrounding code changed. Loads two
 # .wxmx files in diff mode and fails on a crash or assertion.

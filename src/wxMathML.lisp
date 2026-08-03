@@ -1547,6 +1547,31 @@ Submit bug reports by following the 'New issue' link on that page."))
 ;; Default to use wxMaxima's 2d XML display
 (setf *alt-display2d* 'mydispla)
 
+;; Wraps Maxima's own stock ASCII-art 2D display (the one *alt-display2d*
+;; would otherwise bypass) in <wxxml-asciimath>...</wxxml-asciimath>
+;; markers, without reimplementing any of its formatting. Maxima pads the
+;; lines above/below the label line assuming every line is later rendered
+;; in one uniform monospace font; wxMaxima used to guess which physical
+;; lines belonged to that same block from their *content* alone (whether a
+;; line of already-batched socket data happened to start with "(%") - since
+;; batching is timing-dependent, not tied to Maxima's actual block
+;; boundaries, a block's label line could land in a different socket read
+;; than its neighbors and get misclassified into a different (proportional)
+;; font, breaking the alignment Maxima's whitespace padding assumed. Explicit
+;; markers make the block boundaries unambiguous instead of guessed.
+;; Rebinding *alt-display2d* to nil for the (displa x) call - rather than
+;; calling some lower-level stock-printer function directly - re-enters
+;; Maxima's own dispatch and picks up its stock ASCII path, since nil is
+;; exactly what tells that dispatch not to redirect to an alternate printer;
+;; this also stays correct through any of Maxima's own recursive
+;; sub-expression displa calls (matrix rows, etc.), because they run inside
+;; the same dynamic extent.
+(defun wx-ascii-displa (x)
+  (format t "~%<wxxml-asciimath>")
+  (let ((*alt-display2d* nil))
+    (displa x))
+  (format t "</wxxml-asciimath>~%"))
+
 ;; Allow the user to switch between display schemes.
 (defun $set_display (tp)
   (cond
@@ -1554,7 +1579,7 @@ Submit bug reports by following the 'New issue' link on that page."))
      (setq $display2d nil))
     ((eq tp '$ascii)
      (setq $display2d t)
-     (setf *alt-display2d* nil))
+     (setf *alt-display2d* 'wx-ascii-displa))
     ((eq tp '$xml)
      (setq $display2d t)
      (setf *alt-display2d* 'mydispla))
