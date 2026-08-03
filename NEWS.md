@@ -30,6 +30,22 @@
   left to interact with it - confirmed live in gdb as the cause of the
   `rememberingAnswers` test's intermittent CI timeout.
 
+- Fixed a startup-timing race that could silently discard queued cells
+  during batch evaluation, most visibly as `automatic_test_files/lisp_mode.wxm`
+  intermittently failing or hanging in CI: on connect, wxMaxima sends its
+  `wxdirs@userconfdir`/`datadir`/`helpdir`/... struct-field setup bundled
+  ahead of the worksheet's first real command. Those field assignments are
+  genuine Maxima statements (needed for `defstruct`/`@` struct-field syntax),
+  so Maxima answered each with its own extra `(%iN)` prompt - and the
+  evaluation queue, which has no way to tell a config-command prompt from a
+  real one, advanced (and thereby silently dropped) one queued cell for
+  every such extra prompt. Confirmed live with `tcpdump` on the raw
+  wxMaxima<->Maxima socket: the evaluation queue's cell count could drop
+  from 21 to 0 in one shot, with no further command ever having been sent.
+  Fixed by evaluating the whole `wxdirs` setup from Lisp via
+  `mread`/`meval` inside a `:lisp-quiet` form, like the rest of the startup
+  configuration, so it no longer produces a prompt of its own.
+
 - The worksheet's editor now supports real tab characters: a `'\t'` typed,
   pasted, or loaded from a file stays a real character instead of being
   silently and irreversibly rewritten into 1-4 spaces, and is expanded to the
