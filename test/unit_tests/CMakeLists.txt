@@ -200,6 +200,18 @@ if(TARGET wxmTestApp)
     add_test(NAME EditorCellWrapping
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellWrapping>")
 
+    # Configuration::GetAsciiArtColumns() tells Maxima's own ASCII-art 2D/1D
+    # printer ($linel) how many columns of the worksheet's monospace
+    # ASCII-math font currently fit into the window (#1608).
+    add_executable(test_AsciiArtLinel
+        test_AsciiArtLinel.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_AsciiArtLinel PUBLIC cxx_std_20)
+    target_link_libraries(test_AsciiArtLinel PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME AsciiArtLinel
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AsciiArtLinel>")
+
     # What the caret does inside bidirectional text: a position in a Hebrew word
     # has to map to a point in the word's *drawn* order, which is the reverse of
     # the order it is stored in.

@@ -1,5 +1,15 @@
 # Current development version
 
+- wxMaxima now tells Maxima's ASCII-art 2D/1D printer (`set_display('ascii)`
+  and `set_display('none)`) how wide the worksheet actually is: `$linel` is
+  set, right before every command, to the number of columns of the
+  worksheet's monospace ASCII-math font that currently fit into the window
+  (`Configuration::GetAsciiArtColumns()`), instead of Maxima's fixed factory
+  default of 79. Wide fractions/matrices/etc. now wrap where they actually
+  need to on the current window size and font, rather than wxMaxima having
+  to widen the cell (and add a horizontal scrollbar) to show output Maxima
+  wrapped for a different width -- or not wrapping it widely enough (#1608).
+
 - Fixed misaligned ASCII-art 2D math (`set_display('ascii)`): the top/bottom
   lines of a fraction, matrix, etc. are padded by Maxima on the assumption
   that every line -- including the `(%oN)` label line -- renders in the same

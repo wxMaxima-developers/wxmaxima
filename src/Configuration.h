@@ -513,6 +513,11 @@ public:
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
   long GetLineWidth() const;
 
+  //! How many columns of the ASCII-art monospace font (TS_ASCIIMATHS) fit
+  //! into GetLineWidth()? Used to tell Maxima's own ASCII-art 2D/1D printer
+  //! ($linel) how wide the worksheet actually is, see wxMaxima::ConfigChanged().
+  long GetAsciiArtColumns() const;
+
   bool SaveUntitled() const { return m_saveUntitled;}
   void SaveUntitled(bool save) {m_saveUntitled = save;}
 

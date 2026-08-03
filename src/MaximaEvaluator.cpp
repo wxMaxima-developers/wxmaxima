@@ -420,6 +420,10 @@ void MaximaEvaluator::TriggerEvaluation() {
       tmp->ResetSize();
 
       wxLogMessage(_("Sending a new command to Maxima."));
+      // Freshly computed right before every command, not just cached in
+      // ConfigChanged(): the worksheet may have been resized, or its font
+      // size changed, since the last cell was evaluated.
+      m_wxMaxima.m_configCommands += LinelConfigCommand();
       // Only send the config commands if they are not blank: an all-whitespace
       // (or empty) send results in a bare newline being transmitted, which a
       // normal maxima prompt ignores - but the maxima debugger prompt (dbm:N)
@@ -487,6 +491,19 @@ void MaximaEvaluator::TriggerEvaluation() {
   }
 }
 
+wxString MaximaEvaluator::LinelConfigCommand() const {
+  // ":lisp-quiet" is a Maxima top-level reader escape, not a Lisp reader
+  // macro: to_lisp()'s raw Lisp REPL doesn't understand a leading ":" at
+  // all and chokes on it ("incorrect syntax: : is not a prefix operator"),
+  // corrupting the rest of the exchange - confirmed live via lisp_mode.wxm.
+  // Skip it while wxMaxima believes Maxima is in that raw Lisp mode; the
+  // worksheet's width hasn't gone stale in the meantime, so it will simply
+  // be sent again once evaluation returns to plain Maxima commands.
+  if (m_wxMaxima.m_configuration.InLispMode())
+    return wxEmptyString;
+  return wxString::Format(wxS(":lisp-quiet (setq $linel %ld)\n"),
+                          m_wxMaxima.m_configuration.GetAsciiArtColumns());
+}
 
 void MaximaEvaluator::SetupVariables() {
   wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
