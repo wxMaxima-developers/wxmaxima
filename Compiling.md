@@ -100,8 +100,11 @@ cmake --build ../build-wxm --install
 ### Ubuntu or Debian build prerequisites
 
 ```sh
-sudo apt-get install build-essential libwxgtk3.2-gtk3-dev libwxgtk-webview3.2-gtk3-dev wx3.2-i18n ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a
+sudo apt-get install build-essential libwxgtk3.2-gtk3-dev libwxgtk-webview3.2-gtk3-dev wx3.2-i18n ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a libfribidi-dev
 ```
+
+(`libfribidi-dev` is optional -- see "New optional dependency: libfribidi" under
+"Additional information for packagers" below.)
 
 beforehand or (if apt-get is configured to load the source package
 repositories and not only the binary packages) by the simpler
@@ -119,7 +122,8 @@ On macOS X you most probably need the command-line compiler one can tell
 Xcode to install. Additionally wxWidgets needs to be installed, which can
 be done using Homebrew, Fink or MacPorts and should be named wxWidgets or
 wxMac there. XCode versions older than version 13.0 have problems compiling
-wxMaxima.
+wxMaxima. Optionally, `brew install fribidi` -- see "New optional
+dependency: libfribidi" under "Additional information for packagers" below.
 
 Additional information about building on macOS:
 
@@ -192,13 +196,30 @@ Reported in [issue #2064](https://github.com/wxMaxima-developers/wxmaxima/issues
 
 # Additional information for packagers
 
+## New optional dependency: libfribidi
+
+wxMaxima can optionally link `libfribidi` for correct caret placement, mouse
+clicks, arrow-key movement and selection highlighting on a worksheet line
+that mixes left-to-right and right-to-left text (e.g. a Farsi word next to a
+German one). It is detected automatically via `pkg-config` at configure time
+(`WXM_USE_FRIBIDI`, a CMake option, defaults to `ON`) and needs no other
+configuration; without it (or with `-DWXM_USE_FRIBIDI=off`) wxMaxima builds
+and runs exactly as before, just with the older, single-direction-only
+approximation on a mixed-direction line. Packages that don't need
+right-to-left support, or that target a system libfribidi doesn't cover, can
+skip the `-dev` package entirely.
+
+The package is called `libfribidi-dev` on Debian/Ubuntu, `fribidi-devel` on
+Fedora/RHEL, `fribidi` on Homebrew/MacPorts/Arch, and `mingw-w64-x86_64-fribidi`
+under MSYS2.
+
 ## Creating a standalone wxMaxima
 
 wxMaxima, if linked statically, is pretty standalone and therefore fit for
 creating a portable app:
 
-- It only depends on one single library: wxWidgets, that can be linked
-  statically,
+- It only depends on one single required library: wxWidgets, that can be
+  linked statically (libfribidi, above, is optional),
 - And besides a working maxima installation it only attempts to use two
   sets of external files: The manual and the translation files.
 
