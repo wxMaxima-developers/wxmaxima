@@ -70,11 +70,11 @@ void SysWiz::do_layout() {
     grid_sizer_2->Add(m_inputs[static_cast<size_t>(i) - 1], 0, wxALL, 5);
   }
   text = new wxStaticText(this, -1, _("Variables:"));
-  grid_sizer_2->Add(text, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
+  grid_sizer_2->Add(text, 0, static_cast<int>(wxALL) | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
                     5);
   grid_sizer_2->Add(variables, 0, wxALL, 5);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
-  grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+  grid_sizer_1->Add(static_line_1, 0, static_cast<int>(wxEXPAND) | wxLEFT | wxRIGHT, 2);
   sizer_1->Add(button_1, 0, wxALL, 5);
   sizer_1->Add(button_2, 0, wxALL, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);

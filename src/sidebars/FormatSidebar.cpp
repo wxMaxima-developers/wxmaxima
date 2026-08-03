@@ -39,7 +39,7 @@ FormatSidebar::FormatSidebar(wxWindow *parent, int ID)
   m_grid = new Buttonwrapsizer();
   SetScrollRate(5, 5);
 
-  int style = wxALL | wxEXPAND;
+  int style = static_cast<int>(wxALL) | wxEXPAND;
   int border = 0;
 
   m_grid->Add(new wxButton(this, EventIDs::menu_format_text, _("Text"), wxDefaultPosition,

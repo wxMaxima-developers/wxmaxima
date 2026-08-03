@@ -137,21 +137,21 @@ void Plot3DWiz::do_layout() {
   wxBoxSizer *sizer_6 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                     5);
-  grid_sizer_2->Add(text_ctrl_1, 1, wxEXPAND | wxALL, 5);
+  grid_sizer_2->Add(text_ctrl_1, 1, static_cast<int>(wxEXPAND) | wxALL, 5);
   grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                     5);
   sizer_2->Add(text_ctrl_2, 0, wxALL, 5);
-  sizer_2->Add(label_4, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer_2->Add(label_4, 0, static_cast<int>(wxALL) | wxALIGN_CENTER_VERTICAL, 5);
   sizer_2->Add(text_ctrl_3, 0, wxALL, 5);
-  sizer_2->Add(label_5, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer_2->Add(label_5, 0, static_cast<int>(wxALL) | wxALIGN_CENTER_VERTICAL, 5);
   sizer_2->Add(text_ctrl_4, 0, wxALL, 5);
   grid_sizer_2->Add(sizer_2, 1, wxEXPAND, 0);
   grid_sizer_2->Add(label_6, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                     5);
   sizer_3->Add(text_ctrl_5, 0, wxALL, 5);
-  sizer_3->Add(label_7, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer_3->Add(label_7, 0, static_cast<int>(wxALL) | wxALIGN_CENTER_VERTICAL, 5);
   sizer_3->Add(text_ctrl_6, 0, wxALL, 5);
-  sizer_3->Add(label_8, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer_3->Add(label_8, 0, static_cast<int>(wxALL) | wxALIGN_CENTER_VERTICAL, 5);
   sizer_3->Add(text_ctrl_7, 0, wxALL, 5);
   grid_sizer_2->Add(sizer_3, 1, wxEXPAND, 0);
   grid_sizer_2->Add(label_9, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
@@ -167,15 +167,15 @@ void Plot3DWiz::do_layout() {
   grid_sizer_2->Add(label_12, 0,
                     wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   sizer_5->Add(combo_box_2, 0, wxALL, 5);
-  sizer_5->Add(check_box_1, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer_5->Add(check_box_1, 0, static_cast<int>(wxALL) | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_2->Add(sizer_5, 1, wxEXPAND, 0);
   grid_sizer_2->Add(label_13, 0,
                     wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-  sizer_6->Add(text_ctrl_10, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer_6->Add(text_ctrl_10, 0, static_cast<int>(wxALL) | wxALIGN_CENTER_VERTICAL, 5);
   sizer_6->Add(button_3, 0, wxALL, 5);
   grid_sizer_2->Add(sizer_6, 1, wxEXPAND, 0);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
-  grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+  grid_sizer_1->Add(static_line_1, 0, static_cast<int>(wxEXPAND) | wxLEFT | wxRIGHT, 2);
   sizer_1->Add(button_1, 0, wxALL, 5);
   sizer_1->Add(button_2, 0, wxALL, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);

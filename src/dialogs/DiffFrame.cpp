@@ -476,7 +476,7 @@ toolBar->AddSeparator();
     });
 
     wxBoxSizer *paneSizer = new wxBoxSizer(wxVERTICAL);
-    paneSizer->Add(fileLabel, 0, wxEXPAND | wxALL, 2);
+    paneSizer->Add(fileLabel, 0, static_cast<int>(wxEXPAND) | wxALL, 2);
     wxBoxSizer *wsRow = new wxBoxSizer(wxHORIZONTAL);
     wsRow->Add(ws, 1, wxEXPAND);
     wsRow->Add(bar, 0, wxEXPAND);

@@ -66,9 +66,9 @@ void PlotFormatWiz::set_properties() {
 void PlotFormatWiz::do_layout() {
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  grid_sizer_1->Add(label_1, 0, wxALIGN_CENTER | wxALL, 5);
-  grid_sizer_1->Add(combo_box_1, 0, wxALIGN_CENTER | wxALL, 5);
-  grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+  grid_sizer_1->Add(label_1, 0, static_cast<int>(wxALIGN_CENTER) | wxALL, 5);
+  grid_sizer_1->Add(combo_box_1, 0, static_cast<int>(wxALIGN_CENTER) | wxALL, 5);
+  grid_sizer_1->Add(static_line_1, 0, static_cast<int>(wxEXPAND) | wxLEFT | wxRIGHT, 2);
   sizer_1->Add(button_1, 0, wxALL, 5);
   sizer_1->Add(button_2, 0, wxALL, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);

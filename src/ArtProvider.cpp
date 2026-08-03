@@ -40,6 +40,7 @@
 #include "art/menu/watchlist.h"
 #include "art/menu/cell-merge.h"
 
+#if wxCHECK_VERSION(3, 1, 6)
 namespace {
 //! Our embedded SVG blobs are either raw text (which starts with '<') or
 //! gzip-compressed. Returns the SVG as text, decompressing if needed -- so the
@@ -57,6 +58,7 @@ wxString DecompressSvg(const unsigned char *data, std::size_t len) {
   return out.GetString();
 }
 } // namespace
+#endif
 
 wxBitmap ArtProvider::GetImage(wxWindow *win, const wxString &name, int width,
                                unsigned const char *data, std::size_t dataLen) {

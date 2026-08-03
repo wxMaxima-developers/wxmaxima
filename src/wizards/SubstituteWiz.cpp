@@ -66,18 +66,18 @@ void SubstituteWiz::do_layout() {
   wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(4, 2, 0, 0);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                     5);
-  grid_sizer_2->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 5);
+  grid_sizer_2->Add(text_ctrl_1, 0, static_cast<int>(wxALL) | wxEXPAND, 5);
   grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                     5);
-  grid_sizer_2->Add(text_ctrl_2, 0, wxALL | wxEXPAND, 5);
+  grid_sizer_2->Add(text_ctrl_2, 0, static_cast<int>(wxALL) | wxEXPAND, 5);
   grid_sizer_2->Add(label_4, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                     5);
-  grid_sizer_2->Add(text_ctrl_3, 0, wxALL | wxEXPAND, 5);
+  grid_sizer_2->Add(text_ctrl_3, 0, static_cast<int>(wxALL) | wxEXPAND, 5);
   grid_sizer_2->Add(20, 20, 0, 0);
   grid_sizer_2->Add(checkbox_1, 0, wxALL, 5);
   grid_sizer_2->AddGrowableCol(1);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
-  grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+  grid_sizer_1->Add(static_line_1, 0, static_cast<int>(wxEXPAND) | wxLEFT | wxRIGHT, 2);
   sizer_1->Add(button_1, 0, wxALL, 5);
   sizer_1->Add(button_2, 0, wxALL, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);

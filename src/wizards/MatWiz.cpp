@@ -102,8 +102,8 @@ void MatWiz::do_layout() {
       grid_sizer_2->Add(m_inputs[static_cast<size_t>(j) * m_width + i], 0, wxALL, 1);
     }
   }
-  grid_sizer_1->Add(grid_sizer_2, 1, wxALL | wxALIGN_CENTER_HORIZONTAL, 0);
-  grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxALL, 2);
+  grid_sizer_1->Add(grid_sizer_2, 1, static_cast<int>(wxALL) | wxALIGN_CENTER_HORIZONTAL, 0);
+  grid_sizer_1->Add(static_line_1, 0, static_cast<int>(wxEXPAND) | wxALL, 2);
   sizer_1->Add(button_1, 0, wxALL, 5);
   sizer_1->Add(button_2, 0, wxALL, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
@@ -192,20 +192,20 @@ void MatDim::do_layout() {
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(4, 2, 0, 0);
-  grid_sizer_2->Add(label_2, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
+  grid_sizer_2->Add(label_2, 0, static_cast<int>(wxALL) | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
                     5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
-  grid_sizer_2->Add(label_3, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
+  grid_sizer_2->Add(label_3, 0, static_cast<int>(wxALL) | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
                     5);
   grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 5);
-  grid_sizer_2->Add(label_4, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
+  grid_sizer_2->Add(label_4, 0, static_cast<int>(wxALL) | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
                     5);
-  grid_sizer_2->Add(choice_1, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer_2->Add(label_0, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
+  grid_sizer_2->Add(choice_1, 0, static_cast<int>(wxALL) | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_2->Add(label_0, 0, static_cast<int>(wxALL) | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
                     5);
   grid_sizer_2->Add(text_ctrl_0, 0, wxALL, 5);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
-  grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxALL, 2);
+  grid_sizer_1->Add(static_line_1, 0, static_cast<int>(wxEXPAND) | wxALL, 2);
   sizer_1->Add(button_1, 0, wxALL, 5);
   sizer_1->Add(button_2, 0, wxALL, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);

@@ -1,5 +1,13 @@
 # Current development version
 
+- Build system: fixed the ~90 `-Wdeprecated-enum-enum-conversion` warnings
+  the Ubuntu 22.04 CI build produced from `wxDirection`/`wxAlignment`/
+  `wxStretch` sizer flags being OR'd together directly (e.g.
+  `wxALIGN_CENTER_VERTICAL | wxALL`) - harmless, but real, deprecated-in-C++20
+  behavior; also fixed a genuinely unused function that only compiled in for
+  wxWidgets < 3.1.6, and worked around a GCC < 12 bug that misreports
+  `[[maybe_unused]]` on class data members as an ignored attribute.
+
 - Build system: a `po4a` older than 0.70 (e.g. Ubuntu 24.04's own package,
   version 0.69) is now detected and not used, with a CMake warning explaining
   why, instead of risking it: `po4a` before 0.70 parsed text encodings
