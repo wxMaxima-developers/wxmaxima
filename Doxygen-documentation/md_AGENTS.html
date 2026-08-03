@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the <a class="el" href="classwxMaxima.html">wxMaxima</a> codebase. <b>Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.</b></p>
-<h1><a class="anchor" id="autotoc_md2"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 Build System</h1>
 <p>Configure once (a Debug build is the default), then build and run without installing:</p>
 <div class="fragment"><div class="line">cmake -S . -B build -G Ninja</div>
@@ -95,7 +95,7 @@ Build System</h1>
 <ul>
 <li><b>Sandbox: missing <code>maxima-index.lisp</code> and its knock-on ctest failures.</b> In this sandbox's container image, <code>/etc/dpkg/dpkg.cfg.d/*</code> has <code>path-exclude=/usr/share/doc/*</code> (a common image-slimming policy), so every package's <code>/usr/share/doc/*</code> content is silently dropped on install &ndash; <code>apt-get install --reinstall maxima maxima-doc</code> does not bring it back. <code>maxima</code>'s own package ships <code>/usr/share/doc/maxima/info/maxima-index.lisp.gz</code> (confirmed by extracting the real <code>.deb</code> with <code>dpkg-deb -x</code>), so its absence here is this sandbox's doc-stripping, not a missing dependency &ndash; the actual <a class="el" href="classwxMaxima.html">wxMaxima</a> <code>.deb</code> (<code>CPACK_DEBIAN_PACKAGE_DEPENDS "maxima, maxima-doc"</code> in <code>src/CMakeLists.txt</code>) already hard-<code>Depends:</code> on both, and a normal install on a normal system is unaffected. Workaround for this sandbox only (not a repo change): `apt-get download maxima &amp;&amp; dpkg-deb -x maxima_*.deb /tmp/x &amp;&amp; gunzip -c /tmp/x/usr/share/doc/maxima/info/maxima-index.lisp.gz &gt; /usr/share/doc/maxima/info/maxima-index.lisp<code>. Without it, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> logs </code>Warning: SIMPLE-WARNING: <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is unable to set up the help system<code>on every startup, and</code>ctest<code>targets that use</code>&ndash;exit-on-error<code> (</code>openMacFiles<code>,</code>openMacFiles2<code>, and most of the</code>*_cmdline_wxmathml<code>/ </code>tutorial_*<code>/similar batch tests in</code>test/CMakeLists.txt`) fail near-instantly on that warning alone &ndash; with the workaround applied, those specific two tests (<code>openMacFiles</code>/<code>openMacFiles2</code>) instead <em>time out</em> (confirmed to reproduce identically on an unmodified <code>main</code> checkout in an isolated worktree, so it's pre-existing and unrelated to any particular change) &ndash; not yet root-caused. Don't burn time re-diagnosing either symptom from scratch; both are sandbox/pre-existing, not something a code change here broke.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md3"></a>
+<h1><a class="anchor" id="autotoc_md17"></a>
 Architecture &amp; GUI</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
@@ -122,22 +122,49 @@ Architecture &amp; GUI</h1>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md18"></a>
 Communication with Maxima</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</p>
 <p><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</p>
 <ul>
-<li>**<code>m_configCommands</code> (<code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">wxMaxima.cpp</a></code>):** the string of startup/config commands sent to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> on connect (and again whenever settings change while it's running). Mixes <code>:lisp-quiet (...)</code> directives with plain <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> statements ending in <code>$</code> in the same stream &ndash; both are valid there, since it is fed to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> the same way interactive input is. <code>wxdirs</code>, the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> struct exposing <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own paths, is built this way; each field is set with its own <code>wxdirs@field: "value"$</code> statement rather than <code>new(wxdirs(field=value, ...))</code>, because <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s <code>defstruct</code> does not evaluate named-field initializers to the field's value &ndash; it silently stores the unevaluated <code>field = value</code> equation instead (confirmed against a real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 5.46). Values that could contain <code>"&lt;/tt&gt; or &lt;tt&gt;\\&lt;/tt&gt; (any filesystem path) need
-  &lt;tt&gt;wxMaxima::EscapeForLisp()&lt;/tt&gt; first; despite the name it is exactly the
-  escaping Maxima string literals need too.
+<li>**<code>m_configCommands</code> (<code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">wxMaxima.cpp</a></code>):** the string of startup/config commands sent to <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> on connect (and again whenever settings change while it's running). <b>Every entry in it MUST be a <code>:lisp-quiet (...)</code> directive &ndash; never a plain <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> statement ending in <code>$</code>/<code>;</code>.</b> <code>m_configCommands</code> is sent bundled immediately ahead of the evaluation queue's next real per-cell command (<code><a class="el" href="classMaximaEvaluator.html#a5611fae48d6f6b13d6baec93e72fe39f" title="If Maxima is idle and the queue is non-empty, sends the next command; otherwise settles the UI into i...">MaximaEvaluator::TriggerEvaluation()</a></code>), and <code><a class="el" href="classEvaluationQueue.html#a9281421bc414407c4d8fa99335ecb24e" title="Removes the first command in the queue.">EvaluationQueue::RemoveFirst()</a></code> has no way to tell "a prompt answering a
+  config command" from "a prompt answering a real queued cell" &ndash; it advances the queue by one cell for <em>every</em> main <code>(iN)</code> prompt it sees. <a class="el" href="classA.html">A</a> plain statement here makes <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> print its own extra prompt, and <code>RemoveFirst()</code> then silently drops one real (never-sent) queued cell for each such prompt &ndash; confirmed live with <code>tcpdump</code> on the raw <a class="el" href="classwxMaxima.html">wxMaxima</a>&lt;-&gt;<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> socket to drop the whole evaluation queue (21 cells to 0) in one shot, root-causing an intermittent hang/failure in <code>automatic_test_files/lisp_mode.wxm</code>. This bit <code>wxdirs</code>, the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> struct exposing <a class="el" href="classwxMaxima.html">wxMaxima</a>'s own paths: it has to be built via genuine <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> syntax (<code>defstruct</code>, <code>wxdirs@field: "value"</code>, ...) since <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s <code>defstruct</code> does not evaluate named-field initializers to the field's value &ndash; it silently stores the unevaluated <code>field = value</code> equation instead (confirmed against a real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> 5.46), and <code>new(wxdirs(field=value, ...))</code> therefore doesn't work either. The fix: build the Maxima-syntax statement (still going through <code>wxMaxima::EscapeForLisp()</code> per value &ndash; despite the name it is exactly the escaping <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> string literals need too, for <code>"&lt;/tt&gt;/&lt;tt&gt;\\&lt;/tt&gt; in any
+  filesystem path), then wrap the &lt;em&gt;whole&lt;/em&gt; statement text as the argument to
+  &lt;tt&gt;:lisp-quiet (with-input-from-string (wxst "...") (meval (caddr (mread
+  wxst 0))))&lt;/tt&gt; &amp;ndash; reads and evaluates it from Lisp with no separate prompt of
+  its own, same as every other &lt;tt&gt;m_configCommands&lt;/tt&gt; entry. The statement text
+  needs &lt;tt&gt;EscapeForLisp()&lt;/tt&gt; applied a &lt;em&gt;second&lt;/em&gt; time at that point, since it is
+  now itself the content of a Lisp string literal (each individual field
+  value was already escaped once, for the Maxima string literal it sits
+  inside).
+  - &lt;strong&gt;Debugging technique note:&lt;/strong&gt; when in doubt about what actually crossed
+    the wxMaxima&lt;-&gt;Maxima socket (vs. what a log line &lt;em&gt;claims&lt;/em&gt; was sent),
+    &lt;tt&gt;wxLogMessage()&lt;/tt&gt;-based tracing inside wxMaxima can itself be misleading &amp;ndash;
+    &lt;tt&gt;Maxima::Write()&lt;/tt&gt; only enqueues to &lt;tt&gt;m_outputQueue&lt;/tt&gt;; the worker thread
+    flushes it to the socket separately and asynchronously, so a logged "sent"
+    call is not proof the bytes ever left the process (e.g. if the app exits
+    first). &amp;lsquo;tcpdump -i lo -w file.pcap 'tcp portrange 49000-49999&amp;rsquo;&lt;tt&gt;plus a
+    small manual pcap parser (this sandbox's Python has no working&lt;/tt&gt;scapy&lt;tt&gt;--
+&lt;/tt&gt;cryptography`'s Rust backend panics on import here &amp;ndash; so parse the
+    classic pcap format directly: 24-byte global header, then repeated
+    16-byte-record-header + packet frames; skip the 14-byte Ethernet header,
+    read the IP header's IHL for its length, then the TCP header's data
+    offset for its length) gives ground truth immune to any wxMaxima-internal
+    misattribution. Also: &lt;tt&gt;wxLogMessage()&lt;/tt&gt; is not safe to call from
+    &lt;tt&gt;Maxima::WorkerThread()&lt;/tt&gt; (a non-GUI thread) &amp;ndash; it crashed with a
+    &lt;tt&gt;wxArgNormalizer&lt;/tt&gt; format-specifier assertion the first time it was tried
+    there for debugging (triggered by &lt;tt&gt;%zu&lt;/tt&gt; specifically; the crash went away
+    switching to &lt;tt&gt;%lu&lt;/tt&gt; + an explicit &lt;tt&gt;(unsigned long)&lt;/tt&gt; cast, but the
+    thread-safety of logging from that thread at all remains unverified &amp;ndash;
+    treat any such tracing as temporary/debug-only, never ship it).
 
-@subsection autotoc_md5 File Formats
+@subsection autotoc_md21 File Formats
 
 - **&lt;tt&gt;.wxmx&lt;/tt&gt;** &amp;ndash; a ZIP archive holding &lt;tt&gt;content.xml&lt;/tt&gt; (the MathML-like XML) plus
   the embedded images. The format version lives in &lt;tt&gt;src/WXMXformat.h&lt;/tt&gt;.
 - **&lt;tt&gt;.wxm&lt;/tt&gt;** &amp;ndash; the plain-text format, read by &lt;tt&gt;Format::ParseWXMFile()&lt;/tt&gt;.
 
-@section autotoc_md6 Conventions &amp; Standards
+@section autotoc_md22 Conventions &amp; Standards
 
 - &lt;strong&gt;Git Environment:&lt;/strong&gt; Note that running &lt;tt&gt;git diff&lt;/tt&gt; might launch the visual diff tool &lt;tt&gt;meld&lt;/tt&gt; instead of outputting to the terminal. Always use &lt;tt&gt;git diff --no-ext-diff&lt;/tt&gt; if you need terminal output.
 - &lt;strong&gt;String Literals &amp; Translations:&lt;/strong&gt; Use the &lt;tt&gt;wxS()&lt;/tt&gt; macro for all string literals and &lt;tt&gt;_()&lt;/tt&gt; for user-facing translatable strings.
@@ -159,7 +186,7 @@ Communication with Maxima</h2>
 - **CI Warnings Live On the Non-&lt;/tt&gt;-Werror&lt;tt&gt;Jobs:**&lt;/tt&gt;compile_latest_and_test&lt;tt&gt;and&lt;/tt&gt;compile_without_webview&lt;tt&gt;(Ubuntu) build with&lt;/tt&gt;-Werror&lt;tt&gt;, so they can't show warnings by construction -- check&lt;/tt&gt;compile_2204&lt;tt&gt;(Ubuntu 22.04, plain&lt;/tt&gt;-Wall -Wextra&lt;tt&gt;, GCC 11) for real warnings that survive to a release build. Don't assume that job's warning list is exhaustive, though: e.g. the&lt;/tt&gt;[[maybe_unused]]&lt;tt&gt;-on-a-data-member GCC\&lt;12 warning above showed up for&lt;/tt&gt;Printout.h&lt;tt&gt;in one such log but not for the identical pattern in&lt;/tt&gt;SvgBitmap.h&lt;tt&gt;/&lt;/tt&gt;wxMathml.h&lt;tt&gt;in the same run, for reasons that weren't tracked down (not precompiled headers --&lt;/tt&gt;WXM_ENABLE_PRECOMPILED_HEADERS&lt;tt&gt;defaults&lt;/tt&gt;OFF&lt;tt&gt;) -- a clean local build with&lt;/tt&gt;g++-11 -Wall -Wextra&lt;tt&gt;is the more reliable check for this specific class of warning.
 - **Tab Characters in&lt;/tt&gt;EditorCell&lt;tt&gt;:** A&lt;/tt&gt;'\t'&lt;tt&gt;is a real, single character in&lt;/tt&gt;m_text&lt;tt&gt;(see&lt;/tt&gt;EditorCell::NormalizeLineEndings()&lt;tt&gt;, which replaced the old&lt;/tt&gt;TabExpand()&lt;tt&gt;that irreversibly rewrote every tab to 1-4 spaces on input/paste/load). It is expanded to the next 4-column tab stop -- one column being the width of a space glyph in the current font -- only where text becomes pixels, via&lt;/tt&gt;EditorCell::NextTabStop(startX)&lt;tt&gt;/&lt;/tt&gt;MeasureTextWidth(startX, text)&lt;tt&gt;. Tab width is **position-dependent**, the one thing&lt;/tt&gt;GetTextExtent()&lt;tt&gt;/&lt;/tt&gt;GetTextSize()&lt;tt&gt;cannot compute on their own (unlike every other character), so it can never be cached the way&lt;/tt&gt;StyledText::SetWidth()&amp;lsquo; caches other tokens&amp;rsquo; widths. &lt;tt&gt;MaximaTokenizer&lt;/tt&gt; guarantees a tab is always its own isolated, single-character token (never merged into a space run, mirroring how a newline is already its own token) &amp;ndash; this is &lt;em&gt;load-bearing&lt;/em&gt;: every &lt;tt&gt;m_styledText&lt;/tt&gt;-based site (&lt;tt&gt;Draw()&lt;/tt&gt;, &lt;tt&gt;Recalculate()&lt;/tt&gt;, &lt;tt&gt;GetLineWidth()&lt;/tt&gt;, &lt;tt&gt;SelectPointText()&lt;/tt&gt;'s code-cell branch, &lt;tt&gt;StyleTextCode()&lt;/tt&gt;) only needs a &lt;tt&gt;text == wxS("\t")&lt;/tt&gt; equality check as a result, never substring splitting. Prose/text cells don't go through &lt;tt&gt;MaximaTokenizer&lt;/tt&gt; at all, so &lt;tt&gt;EditorCell::StyleTextTexts()&lt;/tt&gt; uses its own splitter, &lt;tt&gt;PushTextLine()&lt;/tt&gt;, to get the same isolation guarantee for a tab embedded in an otherwise plain line of text. Sites that measure a raw &lt;tt&gt;m_text&lt;/tt&gt; substring instead of a single token (&lt;tt&gt;MarkSelection()&lt;/tt&gt;, &lt;tt&gt;MixedDirectionOffset()&lt;/tt&gt;, &lt;tt&gt;StyleTextTexts()&lt;/tt&gt;'s wrap check) go through &lt;tt&gt;MeasureTextWidth()&lt;/tt&gt; instead, which splits on &amp;lsquo;&amp;rsquo;\t'&lt;tt&gt;internally since a substring can still have one embedded anywhere. Left/Right arrow and Delete need **no special-casing** for tabs -- they already move/delete exactly one&lt;/tt&gt;m_text&lt;tt&gt;character, which is now correct automatically. The plain&lt;/tt&gt;WXK_BACK` case's old "gobble up to 4 trailing spaces" shim was a workaround for the old space-expanded-tab world and is gone; a real tab deletes in one plain single-character backspace like anything else.
 
-@section autotoc_md7 Layout &amp; Compatibility
+@section autotoc_md27 Layout &amp; Compatibility
 
 - &lt;strong&gt;Mathematical Cell Padding:&lt;/strong&gt; Use &lt;tt&gt;MC_TEXT_PADDING&lt;/tt&gt; (in &lt;tt&gt;Configuration.h&lt;/tt&gt;) for text-based cells. &lt;strong&gt;Exception:&lt;/strong&gt; &lt;tt&gt;DigitCell&lt;/tt&gt; does not include padding to ensure visual consistency in broken-up numbers.
 - &lt;strong&gt;Three-Step Layout Process:&lt;/strong&gt;
@@ -175,7 +202,7 @@ Communication with Maxima</h2>
 - **ConfigDialogue Tabs Must Scroll:&lt;/strong&gt; Every tab panel in &lt;tt&gt;src/dialogs/ConfigDialogue.cpp&lt;/tt&gt; is a &lt;tt&gt;wxScrolled\&lt;wxPanel\&gt;&lt;/tt&gt; with &lt;tt&gt;SetScrollRate(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor())&lt;/tt&gt; and &lt;tt&gt;SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth, GetContentScaleFactor() * mMinPanelHeight))&lt;/tt&gt;. Without this, a tab's natural size (which grows with font size/DPI/translation length) can make the whole dialog taller than a hi-DPI screen with no way to reach what's cut off. When adding a new tab, copy this pattern (see &lt;tt&gt;CreateWorksheetPanel()&lt;/tt&gt;) rather than a plain &lt;tt&gt;wxPanel&lt;/tt&gt;.
 - &lt;strong&gt;Constructor Initialization:&lt;/strong&gt; Order initialization lists to match header declaration order to prevent &lt;tt&gt;-Wreorder&lt;/tt&gt; warnings.
 
-@section autotoc_md8 Performance &amp; Documentation Mandates
+@section autotoc_md30 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
@@ -186,19 +213,19 @@ Communication with Maxima</h2>
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md9 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md31 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md10 Key Subsystems Map
+@section autotoc_md32 Key Subsystems Map
 
 - &lt;strong&gt;Layout Engine:&lt;/strong&gt; &lt;tt&gt;src/cells/&lt;/tt&gt; and &lt;tt&gt;src/worksheet/&lt;/tt&gt; (&lt;tt&gt;Worksheet.cpp&lt;/tt&gt; and its siblings moved into that subdirectory).
 - &lt;strong&gt;MathML Formatting:&lt;/strong&gt; &lt;tt&gt;src/wxMathML.lisp&lt;/tt&gt; and &lt;tt&gt;src/MathParser.cpp&lt;/tt&gt;.
 - &lt;strong&gt;Main Logic:&lt;/strong&gt; &lt;tt&gt;src/wxMaxima.cpp&lt;/tt&gt; and &lt;tt&gt;src/wxMaximaFrame.cpp&lt;/tt&gt; &amp;ndash; but much of what used to sit in &lt;tt&gt;wxMaxima&lt;/tt&gt; has been peeled off into friend classes, so look there first: &lt;tt&gt;MaximaProcessManager&lt;/tt&gt; (spawn/kill/connect and the data pump), &lt;tt&gt;MaximaEvaluator&lt;/tt&gt; (evaluation queue and command protocol), &lt;tt&gt;MaximaResponseReader&lt;/tt&gt; (the incoming-XML handlers), &lt;tt&gt;MaximaFileIO&lt;/tt&gt; (worksheet open/save) and &lt;tt&gt;MaximaCommandMenus&lt;/tt&gt; (the menu handlers).
 - &lt;strong&gt;Configuration:&lt;/strong&gt; &lt;tt&gt;src/Configuration.cpp&lt;/tt&gt;.
 
-@section autotoc_md11 Backlog / Future Work
+@section autotoc_md33 Backlog / Future Work
 
 Items the maintainer has flagged as worth doing but hasn't asked for yet &amp;ndash; don't
 start on these without checking in first, but pick them up if asked for "what's next" style work.</code></li>
@@ -206,7 +233,7 @@ start on these without checking in first, but pick them up if asked for "what's 
 <li><code><b>Real tab handling in <code><a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a></code>:</b> tabs are currently just replaced by spaces on input instead of being handled as their own character/column-stop concept.</code></li>
 </ul>
 <p><code></code></p>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md34"></a>
 Error resilience</h1>
 <p><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
