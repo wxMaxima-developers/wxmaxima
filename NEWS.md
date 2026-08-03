@@ -1,5 +1,8 @@
 # Current development version
 
+- THIRD-PARTY-NOTICES.txt (shown in the "License" tab) now also credits
+  wxWidgets and the bundled NanoSVG, which had been missing.
+
 - wxMaxima's translations can now also be contributed online via
   <https://crowdin.com/project/wxmaxima-gui>, in addition to editing the
   `.po` files in `locales/` directly.
