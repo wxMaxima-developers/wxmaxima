@@ -249,6 +249,47 @@ SCENARIO("Selection + Tab/Shift+Tab indent and dedent with a real tab") {
   }
 }
 
+SCENARIO("Selection stays active across repeated Tab/Shift+Tab presses") {
+  // Regression guard: Tab/Shift+Tab on a selection used to call
+  // CursorPosition(start) right after SetSelection(start, end), which
+  // collapses the selection to a caret (CursorPosition(pos) sets both
+  // selection ends to pos) -- so a second Tab press saw no selection at all
+  // and did nothing, instead of indenting the same lines again.
+  GIVEN("a two-line selection, no existing indentation") {
+    auto group = MakeCodeCell(wxS("a:1$\nb:2$"));
+    EditorCell *editor = group->GetEditable();
+    REQUIRE(editor != nullptr);
+    editor->SetSelection(0, editor->GetValue().Length());
+
+    WHEN("Tab is pressed once") {
+      PressKey(editor, WXK_TAB);
+
+      THEN("the selection is still active, spanning the (now longer) lines") {
+        REQUIRE(editor->SelectionActive());
+        REQUIRE(editor->SelectionLeft() == 0);
+        REQUIRE(editor->SelectionRight() == editor->GetValue().Length());
+      }
+
+      AND_WHEN("Tab is pressed again without re-selecting") {
+        PressKey(editor, WXK_TAB);
+
+        THEN("both lines are indented a second time") {
+          REQUIRE(editor->GetValue() == wxS("\t\ta:1$\n\t\tb:2$"));
+        }
+
+        AND_WHEN("Shift+Tab is pressed twice more, still without re-selecting") {
+          PressKey(editor, WXK_TAB, /*shift=*/true);
+          PressKey(editor, WXK_TAB, /*shift=*/true);
+
+          THEN("both dedents apply, back to the original text") {
+            REQUIRE(editor->GetValue() == wxS("a:1$\nb:2$"));
+          }
+        }
+      }
+    }
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

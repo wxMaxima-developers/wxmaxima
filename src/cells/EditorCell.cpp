@@ -2067,11 +2067,16 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
                   ++it;
                 }
               }
+              // Keep the selection alive (as [start, end)) rather than
+              // collapsing it to a caret: CursorPosition(start) would set
+              // both selection ends to start, undoing the SetSelection()
+              // just above and preventing repeated Tab/Shift+Tab presses
+              // from indenting/dedenting further.
               SetSelection(start, end);
             } else {
               m_text.erase(start, end - start);
+              CursorPosition(start);
             }
-            CursorPosition(start);
             StyleText();
             break;
           } else {
