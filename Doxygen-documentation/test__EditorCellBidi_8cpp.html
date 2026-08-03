@@ -81,12 +81,13 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>What the caret does inside bidirectional text.  
+<p>What the caret, click-to-position and arrow keys do inside bidirectional text.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;wx/wx.h&gt;</code><br />
 <code>#include &lt;wx/bitmap.h&gt;</code><br />
 <code>#include &lt;wx/dcmemory.h&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
+<code>#include &quot;<a class="el" href="Bidi_8h_source.html">Bidi.h</a>&quot;</code><br />
 <code>#include &quot;CellPointers.h&quot;</code><br />
 <code>#include &quot;Configuration.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="EditorCell_8h_source.html">cells/EditorCell.h</a>&quot;</code><br />
@@ -115,6 +116,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a87e6ff08be666577c79b48bd09548b39"><td class="memItemLeft" align="right" valign="top"><a id="a87e6ff08be666577c79b48bd09548b39" name="a87e6ff08be666577c79b48bd09548b39"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A selection covers the characters it selects&quot;)</td></tr>
 <tr class="separator:a87e6ff08be666577c79b48bd09548b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4722b94c283389d131bdede8e8cc6d8"><td class="memItemLeft" align="right" valign="top"><a id="ae4722b94c283389d131bdede8e8cc6d8" name="ae4722b94c283389d131bdede8e8cc6d8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;The caret is placed correctly on a mixed-direction line&quot;)</td></tr>
+<tr class="separator:ae4722b94c283389d131bdede8e8cc6d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adeaef7b93426586d3fd9e7c6df8ac4ba"><td class="memItemLeft" align="right" valign="top"><a id="adeaef7b93426586d3fd9e7c6df8ac4ba" name="adeaef7b93426586d3fd9e7c6df8ac4ba"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;A click resolves to the position whose caret it lands on&quot;)</td></tr>
+<tr class="separator:adeaef7b93426586d3fd9e7c6df8ac4ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bf55b99dffb113cf6caad147c16d8b9"><td class="memItemLeft" align="right" valign="top"><a id="a7bf55b99dffb113cf6caad147c16d8b9" name="a7bf55b99dffb113cf6caad147c16d8b9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;The arrow keys move the caret the way it is drawn on a mixed-direction line&quot;)</td></tr>
+<tr class="separator:a7bf55b99dffb113cf6caad147c16d8b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06df7029011fe181f338255fa9645905"><td class="memItemLeft" align="right" valign="top"><a id="a06df7029011fe181f338255fa9645905" name="a06df7029011fe181f338255fa9645905"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>wxDECLARE_APP</b> (<a class="el" href="classTestApp.html">TestApp</a>)</td></tr>
 <tr class="separator:a06df7029011fe181f338255fa9645905"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,9 +133,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>What the caret does inside bidirectional text. </p>
-<p><a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> maps a caret position (an index into the content) to a point by measuring how wide the text before it is - PositionToPoint(). That is only correct while the text is drawn in the same order it is stored. In a right-to-left script it is not: the first character of a Hebrew word is drawn at its <em>right</em> end, so a caret one character in belongs near the right of the word and not, as the measurement says, one character's width from its left.</p>
-<p>These scenarios measure the mapping rather than assume it, for a left-to-right string as the control and a right-to-left one as the subject. They are written to describe what the caret <em>should</em> do, so they document the gap for as long as it exists.</p>
+<div class="textblock"><p>What the caret, click-to-position and arrow keys do inside bidirectional text. </p>
+<p><a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a> maps a caret position (an index into the content) to a point by measuring how wide the text before it is - PositionToPoint(). That is only correct while the text is drawn in the same order it is stored. In a right-to-left script it is not: the first character of a Hebrew word is drawn at its <em>right</em> end, so a caret one character in belongs near the right of the word and not, as the measurement says, one character's width from its left. SelectPointText() (turning a click into a position) and HandleSpecialKey()'s arrow-key handling face the same problem from the other direction.</p>
+<p>These scenarios measure the mapping rather than assume it, for a left-to-right string as the control, a right-to-left one, and a line mixing the two.</p>
 <p>Windowless: a real GroupCell/EditorCell against a memory-DC <a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>, in the manner of test_EditorCellWrapping. The display comes from the run_headless wrapper ctest starts this through, so there is no Xvfb wrangling here. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->

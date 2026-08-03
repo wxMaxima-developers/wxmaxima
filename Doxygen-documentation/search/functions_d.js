@@ -27,6 +27,7 @@ var searchData=
   ['member_24',['member',['../classFn__Test.html#a823b5c9726bb8f6ece50e57ac8e3092c',1,'Fn_Test::member()'],['../classAutolink__Test.html#acf783a43c2b4b6cc9dd2361784eca2e1',1,'Autolink_Test::member(int, int)'],['../classAutolink__Test.html#a393ea281f235a2f603d98daf72b0d411',1,'Autolink_Test::member(int)'],['../classAfterdoc__Test.html#a57ba94e9039ee90a1b191ae0009a05dd',1,'Afterdoc_Test::member()']]],
   ['menucommand_25',['MenuCommand',['../classwxMaxima.html#ac92da2d00f70ebb78bf96233eda45f82',1,'wxMaxima']]],
   ['menuhelpstring_26',['MenuHelpString',['../MenuHelpString_8cpp.html#ac67bf830ab57783420c34a9b71898137',1,'MenuHelpString(wxMenu *menu, int id):&#160;MenuHelpString.cpp'],['../MenuHelpString_8h.html#ac67bf830ab57783420c34a9b71898137',1,'MenuHelpString(wxMenu *menu, int id):&#160;MenuHelpString.cpp']]],
-  ['mouseselectionstart_27',['MouseSelectionStart',['../classViewCellPointers.html#a69ca67350af0390921aa19fc930a18a8',1,'ViewCellPointers']]],
-  ['mouseselectionstartedhere_28',['MouseSelectionStartedHere',['../classEditorCell.html#aeb91a26e7fbfb314b31bfd8625139abe',1,'EditorCell']]]
+  ['mixeddirectionoffset_27',['MixedDirectionOffset',['../classEditorCell.html#a88eabaa9e35ddd303e35f6d84672eb19',1,'EditorCell']]],
+  ['mouseselectionstart_28',['MouseSelectionStart',['../classViewCellPointers.html#a69ca67350af0390921aa19fc930a18a8',1,'ViewCellPointers']]],
+  ['mouseselectionstartedhere_29',['MouseSelectionStartedHere',['../classEditorCell.html#aeb91a26e7fbfb314b31bfd8625139abe',1,'EditorCell']]]
 ];

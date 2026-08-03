@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['labelcell_0',['LabelCell',['../classLabelCell.html#a00cf44447f4482f9d66e0354ca53a314',1,'LabelCell::LabelCell()'],['../classLabelCell.html',1,'LabelCell']]],
+  ['labelcell_0',['LabelCell',['../classLabelCell.html',1,'LabelCell'],['../classLabelCell.html#a00cf44447f4482f9d66e0354ca53a314',1,'LabelCell::LabelCell()']]],
   ['labelcell_2ecpp_1',['LabelCell.cpp',['../LabelCell_8cpp.html',1,'']]],
   ['labelwidth_2',['LabelWidth',['../classConfiguration.html#af3b0f8fb4028e08a740f513ba164c260',1,'Configuration::LabelWidth(long labelWidth)'],['../classConfiguration.html#a77a60713054dd9d878976dd81c00f81e',1,'Configuration::LabelWidth() const']]],
   ['last_3',['last',['../classCell.html#a67b0906e71228e806a3ff42a571fe91c',1,'Cell']]],
@@ -50,8 +50,10 @@ var searchData=
   ['localedir_47',['LocaleDir',['../classDirstructure.html#a07774426dee2c4edafa95ce9f7465661',1,'Dirstructure']]],
   ['loggingmessagedialog_48',['LoggingMessageDialog',['../classLoggingMessageDialog.html',1,'']]],
   ['loggingmessagedialog_2eh_49',['LoggingMessageDialog.h',['../LoggingMessageDialog_8h.html',1,'']]],
-  ['longnumbercell_50',['LongNumberCell',['../classLongNumberCell.html',1,'LongNumberCell'],['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell::LongNumberCell()']]],
-  ['longnumbercell_2ecpp_51',['LongNumberCell.cpp',['../LongNumberCell_8cpp.html',1,'']]],
-  ['lookslikeldb_52',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]],
-  ['low_53',['Low',['../classBackgroundTask.html#a217da7631d4231f559cbad8f0e7e1566a28d0edd045e05cf5af64e35ae0c4c6ef',1,'BackgroundTask']]]
+  ['logicalend_50',['logicalEnd',['../structBidiRun.html#a34f116b6e5a21e826c1edb38d4a93959',1,'BidiRun']]],
+  ['logicalstart_51',['logicalStart',['../structBidiRun.html#a428f3a52bd7412f8a2560f246c57ab59',1,'BidiRun']]],
+  ['longnumbercell_52',['LongNumberCell',['../classLongNumberCell.html',1,'LongNumberCell'],['../classLongNumberCell.html#ae650abe2ed7d371b47a6ed2aa55e3424',1,'LongNumberCell::LongNumberCell()']]],
+  ['longnumbercell_2ecpp_53',['LongNumberCell.cpp',['../LongNumberCell_8cpp.html',1,'']]],
+  ['lookslikeldb_54',['LooksLikeLdb',['../LdbSupport_8cpp.html#a4ad83c27ca9d16abc6068282936aae76',1,'LdbSupport']]],
+  ['low_55',['Low',['../classBackgroundTask.html#a217da7631d4231f559cbad8f0e7e1566a28d0edd045e05cf5af64e35ae0c4c6ef',1,'BackgroundTask']]]
 ];

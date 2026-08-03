@@ -391,6 +391,12 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>LineLength</b> (siz
 <tr class="memitem:a8af9e8241de76cbdf5c5bc78f861d22d"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a8af9e8241de76cbdf5c5bc78f861d22d">SelectionRunLeft</a> (size_t runStart, size_t runEnd, wxCoord runStartX, wxCoord runWidth)</td></tr>
 <tr class="memdesc:a8af9e8241de76cbdf5c5bc78f861d22d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The left edge of the rectangle covering the run [runStart, runEnd).  <br /></td></tr>
 <tr class="separator:a8af9e8241de76cbdf5c5bc78f861d22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b4ff35d700a313978316ceb4a638b01"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a9b4ff35d700a313978316ceb4a638b01">GetLineBidiRuns</a> (size_t line, std::vector&lt; <a class="el" href="structBidiRun.html">BidiRun</a> &gt; *runs)</td></tr>
+<tr class="memdesc:a9b4ff35d700a313978316ceb4a638b01"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classBidi.html#a32b1067e51fc8e6dd30b0a6e4011adfc" title="The runs that make up line, in visual (left-to-right on screen) order.">Bidi::GetRuns()</a> for a display line, as absolute positions into m_text (<a class="el" href="classBidi.html#a32b1067e51fc8e6dd30b0a6e4011adfc" title="The runs that make up line, in visual (left-to-right on screen) order.">Bidi::GetRuns()</a> itself only knows the line's own text, so its runs are relative to that - this is the shared first step for anything that needs the real bidi run structure at a whole-cell position instead).  <br /></td></tr>
+<tr class="separator:a9b4ff35d700a313978316ceb4a638b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88eabaa9e35ddd303e35f6d84672eb19"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a88eabaa9e35ddd303e35f6d84672eb19">MixedDirectionOffset</a> (size_t line, size_t position, wxCoord *offset)</td></tr>
+<tr class="memdesc:a88eabaa9e35ddd303e35f6d84672eb19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where position sits, in pixels from the line's own left edge, found via the real bidi algorithm (<a class="el" href="classEditorCell.html#a9b4ff35d700a313978316ceb4a638b01" title="Bidi::GetRuns() for a display line, as absolute positions into m_text (Bidi::GetRuns() itself only kn...">GetLineBidiRuns()</a>) instead of assuming the whole line is one direction the way <a class="el" href="classEditorCell.html#a984fe2e0c07f031fc103bbdd72c1f70a" title="Locates the cursor in the editable text of this cell.">PositionToPoint()</a>'s own fast path does.  <br /></td></tr>
+<tr class="separator:a88eabaa9e35ddd303e35f6d84672eb19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44950f120dee696847e234c400f3cb6e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; wxCoord &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEditorCell.html#a44950f120dee696847e234c400f3cb6e">RightToLeftLineOffsets</a> ()</td></tr>
 <tr class="memdesc:a44950f120dee696847e234c400f3cb6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">How far each line has to move right to sit flush with the widest one.  <br /></td></tr>
 <tr class="separator:a44950f120dee696847e234c400f3cb6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2555,6 +2561,37 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 </div>
 </div>
+<a id="a9b4ff35d700a313978316ceb4a638b01" name="a9b4ff35d700a313978316ceb4a638b01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b4ff35d700a313978316ceb4a638b01">&#9670;&#160;</a></span>GetLineBidiRuns()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EditorCell::GetLineBidiRuns </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structBidiRun.html">BidiRun</a> &gt; *&#160;</td>
+          <td class="paramname"><em>runs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classBidi.html#a32b1067e51fc8e6dd30b0a6e4011adfc" title="The runs that make up line, in visual (left-to-right on screen) order.">Bidi::GetRuns()</a> for a display line, as absolute positions into m_text (<a class="el" href="classBidi.html#a32b1067e51fc8e6dd30b0a6e4011adfc" title="The runs that make up line, in visual (left-to-right on screen) order.">Bidi::GetRuns()</a> itself only knows the line's own text, so its runs are relative to that - this is the shared first step for anything that needs the real bidi run structure at a whole-cell position instead). </p>
+<dl class="section return"><dt>Returns</dt><dd>false (leaving *runs untouched) if libfribidi isn't compiled in (<a class="el" href="classBidi.html#a10cb67ac585bd2d82bc580687d079716" title="True if libfribidi is compiled in, so GetRuns() reorders mixed-direction lines correctly.">Bidi::IsAvailable()</a>) or the line is empty. </dd></dl>
+
+</div>
+</div>
 <a id="aa4c30056412188aac10dd2dc97df4020" name="aa4c30056412188aac10dd2dc97df4020"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa4c30056412188aac10dd2dc97df4020">&#9670;&#160;</a></span>GetLineWidth()</h2>
 
@@ -3233,7 +3270,44 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</t
 
 <p>Is the given display line written right to left? </p>
 <p>Decided by its first strong character, which is the rule the Unicode bidirectional algorithm uses for a paragraph. <a class="el" href="classA.html">A</a> line with no strong character at all - digits and punctuation only - follows the document.</p>
-<p>Only lines that are wholly one direction are handled: for those the caret's position is the mirror of what measuring the text before it gives, which is exact and needs no reordering. <a class="el" href="classA.html">A</a> line that genuinely mixes the two scripts would need the real algorithm and is left as it was. </p>
+<p>Only lines that are wholly one direction are handled here: for those the caret's position is the mirror of what measuring the text before it gives, which is exact and needs no reordering. <a class="el" href="classA.html">A</a> line that genuinely mixes the two scripts needs the real bidirectional algorithm instead - see <a class="el" href="classEditorCell.html#a9b4ff35d700a313978316ceb4a638b01" title="Bidi::GetRuns() for a display line, as absolute positions into m_text (Bidi::GetRuns() itself only kn...">GetLineBidiRuns()</a> and <a class="el" href="classBidi.html#a32b1067e51fc8e6dd30b0a6e4011adfc" title="The runs that make up line, in visual (left-to-right on screen) order.">Bidi::GetRuns()</a>, which <a class="el" href="classEditorCell.html#a984fe2e0c07f031fc103bbdd72c1f70a" title="Locates the cursor in the editable text of this cell.">PositionToPoint()</a>, MarkSelection() and HandleSpecialKey()'s arrow-key handling all fall back to for a line this function can't characterise with one direction. </p>
+
+</div>
+</div>
+<a id="a88eabaa9e35ddd303e35f6d84672eb19" name="a88eabaa9e35ddd303e35f6d84672eb19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88eabaa9e35ddd303e35f6d84672eb19">&#9670;&#160;</a></span>MixedDirectionOffset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EditorCell::MixedDirectionOffset </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wxCoord *&#160;</td>
+          <td class="paramname"><em>offset</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Where position sits, in pixels from the line's own left edge, found via the real bidi algorithm (<a class="el" href="classEditorCell.html#a9b4ff35d700a313978316ceb4a638b01" title="Bidi::GetRuns() for a display line, as absolute positions into m_text (Bidi::GetRuns() itself only kn...">GetLineBidiRuns()</a>) instead of assuming the whole line is one direction the way <a class="el" href="classEditorCell.html#a984fe2e0c07f031fc103bbdd72c1f70a" title="Locates the cursor in the editable text of this cell.">PositionToPoint()</a>'s own fast path does. </p>
+<dl class="section return"><dt>Returns</dt><dd>false (leaving *offset untouched) if libfribidi isn't compiled in. </dd></dl>
 
 </div>
 </div>
