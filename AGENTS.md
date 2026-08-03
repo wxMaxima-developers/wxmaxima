@@ -109,6 +109,7 @@ tried without rebuilding.
   3. `BreakLines_List()`: Final line wrapping.
 - **High-DPI / wxBitmapBundle:** Use `wxBitmapBundle` for SVG rendering.
 - **Windows Focus Management:** Use `CallAfter` for focus transitions (e.g., `m_searchText->SetFocus()`) to prevent the worksheet from "stealing" focus back.
+- **ConfigDialogue Tabs Must Scroll:** Every tab panel in `src/dialogs/ConfigDialogue.cpp` is a `wxScrolled<wxPanel>` with `SetScrollRate(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor())` and `SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth, GetContentScaleFactor() * mMinPanelHeight))`. Without this, a tab's natural size (which grows with font size/DPI/translation length) can make the whole dialog taller than a hi-DPI screen with no way to reach what's cut off. When adding a new tab, copy this pattern (see `CreateWorksheetPanel()`) rather than a plain `wxPanel`.
 - **Constructor Initialization:** Order initialization lists to match header declaration order to prevent `-Wreorder` warnings.
 
 ## Performance & Documentation Mandates
