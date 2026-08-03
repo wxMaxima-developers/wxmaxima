@@ -112,17 +112,55 @@ tried without rebuilding.
 
 - **`m_configCommands` (`wxMaxima.cpp`):** the string of startup/config commands
   sent to Maxima on connect (and again whenever settings change while it's
-  running). Mixes `:lisp-quiet (...)` directives with plain Maxima statements
-  ending in `$` in the same stream -- both are valid there, since it is fed to
-  Maxima the same way interactive input is. `wxdirs`, the Maxima struct
-  exposing wxMaxima's own paths, is built this way; each field is set with its
-  own `wxdirs@field: "value"$` statement rather than `new(wxdirs(field=value,
-  ...))`, because Maxima's `defstruct` does not evaluate named-field
-  initializers to the field's value -- it silently stores the unevaluated
-  `field = value` equation instead (confirmed against a real Maxima 5.46).
-  Values that could contain `"` or `\` (any filesystem path) need
-  `wxMaxima::EscapeForLisp()` first; despite the name it is exactly the
-  escaping Maxima string literals need too.
+  running). **Every entry in it MUST be a `:lisp-quiet (...)` directive --
+  never a plain Maxima statement ending in `$`/`;`.** `m_configCommands` is
+  sent bundled immediately ahead of the evaluation queue's next real per-cell
+  command (`MaximaEvaluator::TriggerEvaluation()`), and
+  `EvaluationQueue::RemoveFirst()` has no way to tell "a prompt answering a
+  config command" from "a prompt answering a real queued cell" -- it advances
+  the queue by one cell for *every* main `(%iN)` prompt it sees. A plain
+  statement here makes Maxima print its own extra prompt, and
+  `RemoveFirst()` then silently drops one real (never-sent) queued cell for
+  each such prompt -- confirmed live with `tcpdump` on the raw
+  wxMaxima<->Maxima socket to drop the whole evaluation queue (21 cells to 0)
+  in one shot, root-causing an intermittent hang/failure in
+  `automatic_test_files/lisp_mode.wxm`. This bit `wxdirs`, the Maxima struct
+  exposing wxMaxima's own paths: it has to be built via genuine Maxima syntax
+  (`defstruct`, `wxdirs@field: "value"`, ...) since Maxima's `defstruct` does
+  not evaluate named-field initializers to the field's value -- it silently
+  stores the unevaluated `field = value` equation instead (confirmed against
+  a real Maxima 5.46), and `new(wxdirs(field=value, ...))` therefore doesn't
+  work either. The fix: build the Maxima-syntax statement (still going
+  through `wxMaxima::EscapeForLisp()` per value -- despite the name it is
+  exactly the escaping Maxima string literals need too, for `"`/`\` in any
+  filesystem path), then wrap the *whole* statement text as the argument to
+  `:lisp-quiet (with-input-from-string (wxst "...") (meval (caddr (mread
+  wxst 0))))` -- reads and evaluates it from Lisp with no separate prompt of
+  its own, same as every other `m_configCommands` entry. The statement text
+  needs `EscapeForLisp()` applied a *second* time at that point, since it is
+  now itself the content of a Lisp string literal (each individual field
+  value was already escaped once, for the Maxima string literal it sits
+  inside).
+  - **Debugging technique note:** when in doubt about what actually crossed
+    the wxMaxima<->Maxima socket (vs. what a log line *claims* was sent),
+    `wxLogMessage()`-based tracing inside wxMaxima can itself be misleading --
+    `Maxima::Write()` only enqueues to `m_outputQueue`; the worker thread
+    flushes it to the socket separately and asynchronously, so a logged "sent"
+    call is not proof the bytes ever left the process (e.g. if the app exits
+    first). `tcpdump -i lo -w file.pcap 'tcp portrange 49000-49999'` plus a
+    small manual pcap parser (this sandbox's Python has no working `scapy` --
+    `cryptography`'s Rust backend panics on import here -- so parse the
+    classic pcap format directly: 24-byte global header, then repeated
+    16-byte-record-header + packet frames; skip the 14-byte Ethernet header,
+    read the IP header's IHL for its length, then the TCP header's data
+    offset for its length) gives ground truth immune to any wxMaxima-internal
+    misattribution. Also: `wxLogMessage()` is not safe to call from
+    `Maxima::WorkerThread()` (a non-GUI thread) -- it crashed with a
+    `wxArgNormalizer` format-specifier assertion the first time it was tried
+    there for debugging (triggered by `%zu` specifically; the crash went away
+    switching to `%lu` + an explicit `(unsigned long)` cast, but the
+    thread-safety of logging from that thread at all remains unverified --
+    treat any such tracing as temporary/debug-only, never ship it).
 
 ### File Formats
 

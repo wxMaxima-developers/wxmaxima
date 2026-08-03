@@ -239,23 +239,47 @@ void wxMaxima::ConfigChanged() {
   // finds its data in different places on different systems (see
   // Dirstructure's own doc comment), so a .mac file that wants e.g. the
   // user's config directory needs a way to ask for it instead of guessing.
-  // Sent as several small statements rather than one with named-field
+  // Built as several small statements rather than one with named-field
   // initializers (new(wxdirs(userconfdir="...", ...))) because Maxima's
   // defstruct does not actually evaluate those to the field's value - it
   // silently stores the unevaluated "field = value" equation instead.
-  m_configCommands += wxS("defstruct(wxdirs(userconfdir, datadir, helpdir, "
-                          "localedir, maximalocation))$\n");
-  m_configCommands += wxS("wxdirs: new(wxdirs)$\n");
-  m_configCommands += wxString::Format(wxS("wxdirs@userconfdir: \"%s\"$\n"),
-                                       EscapeForLisp(Dirstructure::Get()->UserConfDir()));
-  m_configCommands += wxString::Format(wxS("wxdirs@datadir: \"%s\"$\n"),
-                                       EscapeForLisp(Dirstructure::Get()->DataDir()));
-  m_configCommands += wxString::Format(wxS("wxdirs@helpdir: \"%s\"$\n"),
-                                       EscapeForLisp(Dirstructure::Get()->HelpDir()));
-  m_configCommands += wxString::Format(wxS("wxdirs@localedir: \"%s\"$\n"),
-                                       EscapeForLisp(Dirstructure::Get()->LocaleDir()));
-  m_configCommands += wxString::Format(wxS("wxdirs@maximalocation: \"%s\"$\n"),
-                                       EscapeForLisp(Dirstructure::Get()->MaximaDefaultLocation()));
+  //
+  // The whole thing is Maxima syntax (needed for "@" struct-field assignment
+  // and defstruct), but it must not itself trigger a fresh "(%iN)" prompt:
+  // m_configCommands is sent bundled ahead of the next real evaluation-queue
+  // command (see MaximaEvaluator::TriggerEvaluation()), and
+  // EvaluationQueue::RemoveFirst() advances the queue by exactly one cell for
+  // every main prompt it sees, with no way to tell a config-command prompt
+  // from a real one. A plain "$"-terminated top-level statement here - even
+  // a single block(...)$ combining all the field assignments - makes Maxima
+  // answer with its own extra prompt, and that prompt silently consumes one
+  // more (real, still unsent) queued cell, desyncing the queue from what was
+  // actually sent - confirmed live by tcpdump on the
+  // automatic_test_files/lisp_mode.wxm hang. So the statement is instead
+  // read and evaluated from Lisp via mread/meval inside a :lisp-quiet form,
+  // exactly like every other m_configCommands entry: :lisp-quiet forms are
+  // answered inline, with no separate prompt of their own. The whole
+  // statement text is run through EscapeForLisp() a second time (each
+  // individual value was already escaped once, for the Maxima string literal
+  // it sits in) since it is itself now the content of a Lisp string literal.
+  wxString wxdirsStatement =
+    wxS("block(defstruct(wxdirs(userconfdir, datadir, helpdir, "
+        "localedir, maximalocation)), wxdirs: new(wxdirs)");
+  wxdirsStatement += wxString::Format(wxS(", wxdirs@userconfdir: \"%s\""),
+                                      EscapeForLisp(Dirstructure::Get()->UserConfDir()));
+  wxdirsStatement += wxString::Format(wxS(", wxdirs@datadir: \"%s\""),
+                                      EscapeForLisp(Dirstructure::Get()->DataDir()));
+  wxdirsStatement += wxString::Format(wxS(", wxdirs@helpdir: \"%s\""),
+                                      EscapeForLisp(Dirstructure::Get()->HelpDir()));
+  wxdirsStatement += wxString::Format(wxS(", wxdirs@localedir: \"%s\""),
+                                      EscapeForLisp(Dirstructure::Get()->LocaleDir()));
+  wxdirsStatement += wxString::Format(wxS(", wxdirs@maximalocation: \"%s\""),
+                                      EscapeForLisp(Dirstructure::Get()->MaximaDefaultLocation()));
+  wxdirsStatement += wxS(")$");
+  m_configCommands += wxString::Format(
+    wxS(":lisp-quiet (with-input-from-string (wxst \"%s\") ")
+    wxS("(meval (caddr (mread wxst 0))))\n"),
+    EscapeForLisp(wxdirsStatement));
 
   m_configCommands += wxString::Format(wxS(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
                                        m_configuration.DefaultPlotWidth(),
@@ -1997,6 +2021,16 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   if (m_exitAfterEval && GetWorksheet()->GetEvaluationQueue().Empty() &&
       m_fileToOpen.IsEmpty() && (!m_evalOnStartup))
     {
+      // This -- not a merely transient evaluation-queue-empty moment, which
+      // can recur mid-run (e.g. between an auto-answered question and the
+      // next cell it queues) -- is the actual "clean batch run is done"
+      // point: disarm exit-on-error for THIS worksheet only now, so a
+      // subsequent unrelated error (e.g. from a background task) can't force
+      // -close a window whose real work already finished normally.
+      // m_exitOnError itself is process-wide and shared, so clearing that
+      // instead would disable exit-on-error in every other window of a
+      // --single_process run (the multithreadtest hang).
+      m_exitOnErrorArmed = false;
       // SaveFile is now a no-op when the session has no file name and we are
       // non-interactive (a failed initial load leaves exactly that state); the
       // error exit code for that case is set where the load fails.
