@@ -9,6 +9,16 @@
   confirmed with a live debugger, the evaluation queue was advancing
   correctly and simply waiting on an answer nobody could provide.
 
+- Test fixtures: `test/testbench_simple.wxm`'s "Cell height calculations"
+  cell and `test/testbench_simple.wxmx`'s `abs(x(1))` cell now have a
+  recorded auto-answer for interactive questions Maxima 5.46.0 asks that
+  neither cell was previously annotated for, so `openMacFiles` and
+  `testbench_simple.wxmx` complete instead of hitting the new --batch halt
+  above. Confirmed along the way: the "Enter space-separated numbers,
+  `all' or `none':" prompt reads a raw line, not a Maxima expression, so an
+  answer ending in `;` is invalid input Maxima will wait on indefinitely --
+  the new cell's recorded answer uses plain `none` instead.
+
 - `--exit-on-error` no longer goes permanently toothless partway through a
   worksheet that legitimately empties its evaluation queue more than once
   in a single batch run (e.g. one using auto-answered questions, where each
