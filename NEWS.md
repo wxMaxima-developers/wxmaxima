@@ -1,5 +1,13 @@
 # Current development version
 
+- The temporary file created while rendering the SVG (or EMF) representation
+  of a selection for the clipboard now lives in a private, mode-0700
+  subdirectory of the user's own configuration directory instead of the
+  shared system temp directory, so another unprivileged user on the same
+  machine cannot plant a symlink under the name it happens to get. wxWidgets'
+  SVG/EMF renderers only know how to write to a real path, so the file itself
+  couldn't be avoided; where it lives could be.
+
 - New Maxima variable `wxdirs`, a struct holding the paths wxMaxima itself
   uses (`wxdirs@userconfdir`, `wxdirs@datadir`, `wxdirs@helpdir`,
   `wxdirs@localedir`, `wxdirs@maximalocation`). These differ by maintainer,
