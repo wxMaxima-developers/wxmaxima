@@ -1,5 +1,12 @@
 # Current development version
 
+- New Maxima variable `wxdirs`, a struct holding the paths wxMaxima itself
+  uses (`wxdirs@userconfdir`, `wxdirs@datadir`, `wxdirs@helpdir`,
+  `wxdirs@localedir`, `wxdirs@maximalocation`). These differ by maintainer,
+  distribution and OS (see `Dirstructure`'s own doc comment), so a `.mac` file
+  that wants e.g. the user's configuration directory now has a way to ask for
+  it instead of guessing or searching the filesystem.
+
 - The caret, mouse clicks, arrow-key movement and selection highlighting
   (including the "text that coincides with the selection" marker and the diff
   viewer) are now all correctly placed on a line that mixes left-to-right and

@@ -234,6 +234,29 @@ void wxMaxima::ConfigChanged() {
   m_configCommands += wxString::Format(wxS(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
                                        EscapeForLisp(Dirstructure::Get()->HelpDir()));
 
+  // The same paths, but as an actual Maxima struct (wxdirs@userconfdir, ...)
+  // instead of a Lisp variable only wxbuild_info() above can see: wxMaxima
+  // finds its data in different places on different systems (see
+  // Dirstructure's own doc comment), so a .mac file that wants e.g. the
+  // user's config directory needs a way to ask for it instead of guessing.
+  // Sent as several small statements rather than one with named-field
+  // initializers (new(wxdirs(userconfdir="...", ...))) because Maxima's
+  // defstruct does not actually evaluate those to the field's value - it
+  // silently stores the unevaluated "field = value" equation instead.
+  m_configCommands += wxS("defstruct(wxdirs(userconfdir, datadir, helpdir, "
+                          "localedir, maximalocation))$\n");
+  m_configCommands += wxS("wxdirs: new(wxdirs)$\n");
+  m_configCommands += wxString::Format(wxS("wxdirs@userconfdir: \"%s\"$\n"),
+                                       EscapeForLisp(Dirstructure::Get()->UserConfDir()));
+  m_configCommands += wxString::Format(wxS("wxdirs@datadir: \"%s\"$\n"),
+                                       EscapeForLisp(Dirstructure::Get()->DataDir()));
+  m_configCommands += wxString::Format(wxS("wxdirs@helpdir: \"%s\"$\n"),
+                                       EscapeForLisp(Dirstructure::Get()->HelpDir()));
+  m_configCommands += wxString::Format(wxS("wxdirs@localedir: \"%s\"$\n"),
+                                       EscapeForLisp(Dirstructure::Get()->LocaleDir()));
+  m_configCommands += wxString::Format(wxS("wxdirs@maximalocation: \"%s\"$\n"),
+                                       EscapeForLisp(Dirstructure::Get()->MaximaDefaultLocation()));
+
   m_configCommands += wxString::Format(wxS(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
                                        m_configuration.DefaultPlotWidth(),
                                        m_configuration.DefaultPlotHeight());

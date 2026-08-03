@@ -74,6 +74,20 @@ what tells Maxima to format its output as MathML-like XML. For development,
 `--wxmathml-lisp=<path>` overrides it with an external file, so a change can be
 tried without rebuilding.
 
+- **`m_configCommands` (`wxMaxima.cpp`):** the string of startup/config commands
+  sent to Maxima on connect (and again whenever settings change while it's
+  running). Mixes `:lisp-quiet (...)` directives with plain Maxima statements
+  ending in `$` in the same stream -- both are valid there, since it is fed to
+  Maxima the same way interactive input is. `wxdirs`, the Maxima struct
+  exposing wxMaxima's own paths, is built this way; each field is set with its
+  own `wxdirs@field: "value"$` statement rather than `new(wxdirs(field=value,
+  ...))`, because Maxima's `defstruct` does not evaluate named-field
+  initializers to the field's value -- it silently stores the unevaluated
+  `field = value` equation instead (confirmed against a real Maxima 5.46).
+  Values that could contain `"` or `\` (any filesystem path) need
+  `wxMaxima::EscapeForLisp()` first; despite the name it is exactly the
+  escaping Maxima string literals need too.
+
 ### File Formats
 
 - **`.wxmx`** -- a ZIP archive holding `content.xml` (the MathML-like XML) plus
