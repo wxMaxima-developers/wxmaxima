@@ -496,6 +496,12 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
                      "--batch."),
                    label);
       wxMaxima::m_exitCode = 1;
+      // Maxima repeats an unanswered question's prompt on its own timer (see
+      // #2183) -- kill it now, rather than waiting for Close()'s eventual
+      // Destroy(), so those repeats can't re-enter this branch and spam the
+      // log before the window actually closes. KillMaxima() sets
+      // m_discardAllData, which gates out exactly that further input.
+      m_wxMaxima.m_processManager.KillMaxima();
       m_wxMaxima.Close();
       return;
     }
