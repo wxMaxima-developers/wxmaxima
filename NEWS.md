@@ -1,5 +1,14 @@
 # Current development version
 
+- Build system: a `po4a` older than 0.70 (e.g. Ubuntu 24.04's own package,
+  version 0.69) is now detected and not used, with a CMake warning explaining
+  why, instead of risking it: `po4a` before 0.70 parsed text encodings
+  loosely, which can silently corrupt non-ASCII translated text -
+  reproduced directly, turning a German manual paragraph into English with
+  mangled UTF-8, with no error or warning of po4a's own. Nothing else about
+  building or running wxMaxima needs `po4a` at all; only regenerating the
+  manual's translations from a source-text change does.
+
 - The temporary file created while rendering the SVG (or EMF) representation
   of a selection for the clipboard now lives in a private, mode-0700
   subdirectory of the user's own configuration directory instead of the

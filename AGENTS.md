@@ -41,6 +41,16 @@ Other useful targets: `ninja -C build Doxygen` builds the source documentation
 (note the capital D, and the target only exists when Doxygen is installed), and
 `ninja -C build update-locale` refreshes the translation files.
 
+`CheckPo4aVersion.cmake` (included from `info/CMakeLists.txt` and
+`locales/manual/CMakeLists.txt`, the only two places that invoke `po4a`)
+refuses `po4a` older than 0.70 -- pre-0.70 parses text encodings loosely and
+can silently corrupt non-ASCII translated text with no warning of its own,
+confirmed directly with Ubuntu 24.04's own `po4a` 0.69 package turning a
+German manual paragraph into mangled English on nothing more than a plain
+reconfigure. `PO4A` ends up `PO4A-NOTFOUND` (falsy) in that case, same
+contract `find_program()` itself has, so existing `if(PO4A)` guards keep
+working without extra checks.
+
 ## Architecture & GUI
 
 wxMaxima is a GUI front-end to the Maxima CAS; it talks to a Maxima process over

@@ -104,7 +104,10 @@ sudo apt-get install build-essential libwxgtk3.2-gtk3-dev libwxgtk-webview3.2-gt
 ```
 
 (`libfribidi-dev` is optional -- see "New optional dependency: libfribidi" under
-"Additional information for packagers" below.)
+"Additional information for packagers" below. `po4a` needs to be version 0.70
+or newer -- an older one (e.g. Ubuntu 24.04's own `po4a` 0.69 package) is
+detected and silently not used, with a CMake warning explaining why, rather
+than risk it corrupting the translated manual; see `CheckPo4aVersion.cmake`.)
 
 beforehand or (if apt-get is configured to load the source package
 repositories and not only the binary packages) by the simpler
