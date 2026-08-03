@@ -162,6 +162,35 @@ tried without rebuilding.
     thread-safety of logging from that thread at all remains unverified --
     treat any such tracing as temporary/debug-only, never ship it).
 
+- **ASCII-art 2D display (`set_display('ascii)`) and `*alt-display2d*`:**
+  when `$display2d` is on, Maxima's evaluator checks the special variable
+  `*alt-display2d*` before printing a result: if it's a function symbol,
+  that function is called *instead of* Maxima's own stock printer (this is
+  how `mydispla` in `wxMathML.lisp` produces the normal `<mth>`/XML output);
+  if it's `nil`, Maxima falls through to its own built-in ASCII-art printer,
+  which pads a result's lines with literal spaces so a multi-line fraction/
+  matrix/etc. lines up correctly under the `(%oN)` label -- but that padding
+  assumes every line, including the label, ends up rendered in one uniform
+  monospace font. `wxMathML.lisp`'s `wx-ascii-displa` wraps that stock
+  printer in `<wxxml-asciimath>`/`</wxxml-asciimath>` markers *without*
+  reimplementing it: it dynamically rebinds `*alt-display2d*` to `nil` for
+  just the duration of `(displa x)`, which re-enters Maxima's own dispatch
+  and this time takes the stock ASCII path (confirmed live: this is
+  correctly reentrant-safe through Maxima's own recursive sub-expression
+  `displa` calls, e.g. matrix rows, since they run inside the same dynamic
+  extent). `Maxima::ProcessData()` only fires the corresponding
+  `XML_ASCIIMATH` event once it has seen the *complete* matching closing
+  tag, so `MaximaResponseReader::ReadAsciiMath()` always receives one whole
+  block in one piece and can render all of it in one uniform style --
+  before this, `ReadMiscText()` guessed a chunk's style from whether it
+  happened to start with `"(%"`, and since chunks are split by socket/timer
+  batching (not by where Maxima's actual output boundaries are), a block's
+  label line could land in a separate batch than its neighbors and get
+  misclassified into a different (proportional) font, breaking the
+  alignment Maxima's padding assumed -- root-caused with a raw
+  `:lisp-quiet (with-input-from-string ...)` / socket-level reproduction
+  (see the debugging technique note above) before the fix, not guessed.
+
 ### File Formats
 
 - **`.wxmx`** -- a ZIP archive holding `content.xml` (the MathML-like XML) plus

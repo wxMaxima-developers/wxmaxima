@@ -95,6 +95,11 @@ public:
   //! authentication handshake (the <wxxml-key> exchange).
   void ReadSuppressedOutput(const wxString &data);
 
+  //! Handles one complete <wxxml-asciimath>...</wxxml-asciimath> block:
+  //! Maxima's stock ASCII-art 2D display, always rendered as one uniform
+  //! monospace block instead of ReadMiscText()'s per-chunk font guess.
+  void ReadAsciiMath(const wxString &data);
+
   //! Handles a new input/question prompt: advances the evaluation queue or
   //! surfaces the question, and tracks Maxima's lisp/maxima mode.
   void ReadPrompt(const wxString &data);

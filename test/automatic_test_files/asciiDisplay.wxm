@@ -1,0 +1,45 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 26.07.1-dev ] */
+/* [wxMaxima: comment start ]
+Regression test for set_display('ascii): wxMathML.lisp's wx-ascii-displa
+wraps Maxima's own stock ASCII-art 2D printer in
+<wxxml-asciimath>/</wxxml-asciimath> markers (by dynamically rebinding
+*alt-display2d* to nil for one (displa x) call) instead of disabling the
+hook outright, so wxMaxima can always render a whole block in one uniform
+monospace style. This is self-checking: each result is compared against
+the value computed while still in the default XML display mode, and mode
+switches themselves are also checked, so a broken wx-ascii-displa (wrong
+value, an error, or a hang) fails the test.
+   [wxMaxima: comment end   ] */
+/* [wxMaxima: input   start ] */
+ar1: sin(a/b)$
+mr1: matrix([1,2],[3,4]) . matrix([5,6],[7,8])$
+nr1: 6*7$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+if set_display('ascii) # 'ascii then error("FAIL: set_display('ascii) did not report switching to ascii display")$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+ar2: sin(a/b)$
+mr2: matrix([1,2],[3,4]) . matrix([5,6],[7,8])$
+nr2: 6*7$
+sin(a/b);
+matrix([1,2],[3,4]) . matrix([5,6],[7,8]);
+6*7;
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+if ar1 # ar2 then error("FAIL: a fraction's value changed across set_display('ascii)")$
+if mr1 # mr2 then error("FAIL: a matrix product's value changed across set_display('ascii)")$
+if nr1 # nr2 then error("FAIL: a plain number's value changed across set_display('ascii)")$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+if set_display('xml) # 'xml then error("FAIL: set_display('xml) did not report switching back to xml display")$
+if 6*7 # 42 then error("FAIL: normal Maxima evaluation is broken after an ascii-display round-trip")$
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: input   start ] */
+"ascii-display round-trip test passed"$
+/* Maxima can't load/batch files which end with a comment! */
+/* [wxMaxima: input   end   ] */
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 26.07.1-dev"$

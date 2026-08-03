@@ -362,6 +362,26 @@ void MaximaResponseReader::ReadSuppressedOutput(const wxString &data) {
   });
 }
 
+void MaximaResponseReader::ReadAsciiMath(const wxString &data) {
+  if(!m_wxMaxima.GetWorksheet())
+    return;
+
+  // Maxima::ProcessData only fires this event once it has a complete
+  // <wxxml-asciimath>...</wxxml-asciimath> tag (see the class comment
+  // there), so the whole block - however many socket reads it took to
+  // arrive - is always classified and rendered as one uniform monospace
+  // unit here, unlike ReadMiscText()'s per-chunk "does this text start with
+  // (%" guess.
+  static const wxString startTag = wxS("<wxxml-asciimath>");
+  static const wxString endTag = wxS("</wxxml-asciimath>");
+  wxASSERT(data.StartsWith(startTag) && data.EndsWith(endTag));
+  wxString content = data.SubString(startTag.Length(),
+                                    data.Length() - endTag.Length() - 1);
+
+  m_wxMaxima.GetWorksheet()->SetCurrentTextCell(nullptr);
+  m_wxMaxima.m_outputAppender.DoRawConsoleAppend(content, MC_TYPE_ASCIIMATHS);
+}
+
 void MaximaResponseReader::ReadPrompt(const wxString &data) {
   m_wxMaxima.m_evalOnStartup = false;
   if(!m_wxMaxima.GetWorksheet())
