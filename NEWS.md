@@ -1,5 +1,16 @@
 # Current development version
 
+- The worksheet's editor now supports real tab characters: a `'\t'` typed,
+  pasted, or loaded from a file stays a real character instead of being
+  silently and irreversibly rewritten into 1-4 spaces, and is expanded to the
+  next 4-column tab stop only where it is drawn or measured. The Tab key (with
+  no selection) inserts a real tab; selecting one or more lines and pressing
+  Tab/Shift+Tab indents/dedents them with a real tab per level (dedent still
+  falls back to removing up to 4 leading spaces on already space-indented
+  text). One consequence: opening a plain `.mac` file that uses tabs for
+  alignment and saving it again now reproduces those tabs byte-for-byte,
+  instead of turning them into spaces.
+
 - Build system: fixed the ~90 `-Wdeprecated-enum-enum-conversion` warnings
   the Ubuntu 22.04 CI build produced from `wxDirection`/`wxAlignment`/
   `wxStretch` sizer flags being OR'd together directly (e.g.

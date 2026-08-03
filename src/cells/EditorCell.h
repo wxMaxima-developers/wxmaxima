@@ -161,13 +161,14 @@ public:
   //! A list of words that might be applicable to the autocomplete function.
   const auto &GetWordList() const { return m_wordList; }
 
-  /*! Expand all tabulators.
+  /*! Normalize line endings.
 
-    \param input The string the tabulators should be expanded in
-    \param posInLine The number of characters that come before the input in the same line
-    \todo Implement the actual TAB expansion
+    Collapses literal "\r\n" (Windows CRLF) sequences to "\n". Does NOT touch
+    a lone '\r': that is wxMaxima's own soft (word-wrap) line break marker,
+    not a line ending, and must survive untouched (see the comment in the
+    constructor).
   */
-  static wxString TabExpand(const wxString &input_, size_t posInLine);
+  static wxString NormalizeLineEndings(const wxString &input_);
 
   //! Escape all chars that cannot be used in HTML otherwise
   static wxString EscapeHTMLChars(wxString input);
@@ -383,6 +384,22 @@ public:
   void FindMatchingParens();
 
   wxCoord GetLineWidth(size_t line, size_t pos);
+
+  //! Pixel x of the next 4-column tab stop at or after startX, where one
+  //! column is the width of a space glyph in the current font. startX is
+  //! relative to the current line's own start (post-indentation), matching
+  //! how GetLineWidth()/Recalculate() already track their x accumulators.
+  wxCoord NextTabStop(wxCoord startX) const;
+
+  //! Width, in pixels, of `text` when it starts at horizontal position startX
+  //! on its line -- like GetTextSize(text).GetWidth(), but correct when text
+  //! contains embedded '\t' characters, whose width depends on where they
+  //! fall (tab width is position-dependent, the one thing GetTextExtent()
+  //! cannot compute on its own). For call sites that measure a raw m_text
+  //! substring rather than a single already-tokenized StyledText snippet
+  //! (a tab is always its own isolated snippet -- see MaximaTokenizer -- but
+  //! can still be embedded anywhere inside an arbitrary m_text substring).
+  wxCoord MeasureTextWidth(wxCoord startX, const wxString &text) const;
 
   /*! Is this character a strong right-to-left one (Hebrew, Arabic, Farsi, ...)?
 
@@ -679,6 +696,15 @@ public:
   const MaximaTokenizer::TokenList &GetAllTokens() const;
 
 private:
+  //! Used by StyleTextTexts(): pushes `line` as one or more StyledText
+  //! snippets, isolating each '\t' into its own snippet the way the code-cell
+  //! tokenizer already guarantees -- so Draw()/Recalculate()/GetLineWidth()
+  //! can expand it to a tab stop instead of measuring it as an ordinary (and,
+  //! for a tab, meaningless) glyph. Only the first resulting snippet carries
+  //! indentChar, since Draw() draws it at a fixed position regardless of
+  //! which snippet triggers it.
+  void PushTextLine(const wxString &line, const wxString &indentChar) const;
+
   //! Clamps a (possibly negative or past-the-end) position to a valid index into
   //! the current text, i.e. to [0, m_text.Length()]. Used by the selection and
   //! cursor setters so the stored positions are always valid.
