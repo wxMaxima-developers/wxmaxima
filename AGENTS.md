@@ -51,6 +51,32 @@ reconfigure. `PO4A` ends up `PO4A-NOTFOUND` (falsy) in that case, same
 contract `find_program()` itself has, so existing `if(PO4A)` guards keep
 working without extra checks.
 
+- **Sandbox: missing `maxima-index.lisp` and its knock-on ctest failures.**
+  In this sandbox's container image, `/etc/dpkg/dpkg.cfg.d/*` has
+  `path-exclude=/usr/share/doc/*` (a common image-slimming policy), so every
+  package's `/usr/share/doc/*` content is silently dropped on install --
+  `apt-get install --reinstall maxima maxima-doc` does not bring it back.
+  `maxima`'s own package ships `/usr/share/doc/maxima/info/maxima-index.lisp.gz`
+  (confirmed by extracting the real `.deb` with `dpkg-deb -x`), so its absence
+  here is this sandbox's doc-stripping, not a missing dependency -- the actual
+  wxMaxima `.deb` (`CPACK_DEBIAN_PACKAGE_DEPENDS "maxima, maxima-doc"` in
+  `src/CMakeLists.txt`) already hard-`Depends:` on both, and a normal install
+  on a normal system is unaffected. Workaround for this sandbox only (not a
+  repo change): `apt-get download maxima && dpkg-deb -x maxima_*.deb
+  /tmp/x && gunzip -c /tmp/x/usr/share/doc/maxima/info/maxima-index.lisp.gz >
+  /usr/share/doc/maxima/info/maxima-index.lisp`. Without it, Maxima logs
+  `Warning: SIMPLE-WARNING: Maxima is unable to set up the help system` on
+  every startup, and `ctest` targets that use `--exit-on-error`
+  (`openMacFiles`, `openMacFiles2`, and most of the `*_cmdline_wxmathml`/
+  `tutorial_*`/similar batch tests in `test/CMakeLists.txt`) fail near-instantly
+  on that warning alone -- with the workaround applied, those specific two
+  tests (`openMacFiles`/`openMacFiles2`) instead *time out* (confirmed to
+  reproduce identically on an unmodified `main` checkout in an isolated
+  worktree, so it's pre-existing and unrelated to any particular change) --
+  not yet root-caused. Don't burn time re-diagnosing either symptom from
+  scratch; both are sandbox/pre-existing, not something a code change here
+  broke.
+
 ## Architecture & GUI
 
 wxMaxima is a GUI front-end to the Maxima CAS; it talks to a Maxima process over
