@@ -415,6 +415,13 @@ if(WXM_UNIT_TESTS)
     list(REMOVE_ITEM TEST_APP_SOURCES main.cpp)
     add_library(wxmTestApp OBJECT ${TEST_APP_SOURCES})
     target_compile_features(wxmTestApp PUBLIC cxx_std_20)
+    if(FRIBIDI_FOUND)
+        # wxmTestApp compiles Bidi.cpp itself, so it needs fribidi's include
+        # path for that compilation - separate from WXM_TESTAPP_EXTRA_LIBS
+        # below (test/unit_tests/CMakeLists.txt), which is only about linking
+        # the already-compiled object files into each test executable.
+        target_link_libraries(wxmTestApp PUBLIC PkgConfig::FRIBIDI)
+    endif()
 endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_BINARY_DIR}/Version.h)

@@ -23,7 +23,7 @@
 #include <algorithm>
 
 #ifdef USE_FRIBIDI
-#include <fribidi/fribidi.h>
+#include <fribidi.h>
 #endif
 
 bool Bidi::IsAvailable() {
