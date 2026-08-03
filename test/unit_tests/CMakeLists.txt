@@ -218,6 +218,19 @@ if(TARGET wxmTestApp)
     add_test(NAME EditorCellBidi
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellBidi>")
 
+    # Real tab-character support: a '\t' is a single character in m_text,
+    # expanded to the next 4-column stop only at draw/measure time
+    # (NextTabStop()/GetLineWidth()), plus the Tab-key and Backspace behavior
+    # that changed once a tab stopped being 1-4 literal spaces.
+    add_executable(test_EditorCellTabs
+        test_EditorCellTabs.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellTabs PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellTabs PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME EditorCellTabs
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellTabs>")
+
     # Logic-level regression tests for the custom wxAccessible classes (worksheet
     # and toolbar). They only assert where wxUSE_ACCESSIBILITY is set (the Windows
     # CI); elsewhere they compile out to a harness sanity check. This catches the
@@ -243,6 +256,20 @@ if(TARGET wxmTestApp)
         ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME WXMRoundtrip
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WXMRoundtrip>")
+
+    # Guards a plain .mac file (Format::TreeToWXM(cell, wxm=false) /
+    # Format::ParseMACContents(), the code ExportToMAC()/OpenMACFile() use)
+    # surviving wxMaxima's open/save round-trip byte-for-byte, focused on tab
+    # characters -- the concrete case that used to get silently rewritten to
+    # spaces.
+    add_executable(test_MACRoundtrip
+        test_MACRoundtrip.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_MACRoundtrip PUBLIC cxx_std_20)
+    target_link_libraries(test_MACRoundtrip PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME MACRoundtrip
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MACRoundtrip>")
 
     # Round-trip guard for the .wxmx content.xml (the MathML-like math format):
     # parsing a content.xml into a cell tree and serialising it back must be a

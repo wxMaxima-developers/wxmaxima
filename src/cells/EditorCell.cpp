@@ -73,9 +73,9 @@ EditorCell::EditorCell(GroupCell *group, Configuration *config,
           SetValue(wxS("{}"));
           CursorPosition(1);
         }
-      else SetValue(TabExpand(text, 0));
+      else SetValue(NormalizeLineEndings(text));
     }
-  else SetValue(TabExpand(text, 0));
+  else SetValue(NormalizeLineEndings(text));
   m_height = m_charHeight + 2 * Scale_Px(2);
   m_center = m_height / 2;
   m_width = 2 * Scale_Px(2);
@@ -708,6 +708,11 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
              (textSnippet.GetText().StartsWith(wxS('\r'))))) {
           m_numberOfLines++;
           linewidth = textSnippet.GetIndentPixels();
+        } else if (textSnippet.GetText() == wxS("\t")) {
+          // A tab's width depends on where it starts on the line, so unlike
+          // every other token it must never be cached via SetWidth().
+          linewidth = NextTabStop(linewidth);
+          width = std::max(width, linewidth);
         } else {
           m_configuration->GetRecalcDC()->GetTextExtent(textSnippet.GetText(),
                                                         &tokenwidth, &tokenheight);
@@ -846,8 +851,8 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
 
     point = PositionToPoint(lineStart); // left edge (includes any indentation)
     wxCoord selectionWidth =
-      GetTextSize(m_text.SubString(lineStart, pos > lineStart ? pos - 1 : lineStart))
-        .GetWidth();
+      MeasureTextWidth(point.x,
+                       m_text.SubString(lineStart, pos > lineStart ? pos - 1 : lineStart));
     if (pos == lineStart) // empty line
       selectionWidth = 0;
 
@@ -1050,6 +1055,13 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
         TextCurrentPoint.x += textSnippet.GetIndentPixels();
         if (++rtlLine < rtlLineOffsets.size())
           TextCurrentPoint.x += rtlLineOffsets.at(rtlLine);
+      } else if (textSnippet.GetText() == wxS("\t")) {
+        // A tab draws no glyph of its own -- it just advances to the next
+        // tab stop, measured from the current line's own start (including
+        // its indentation).
+        const wxCoord lineOrigin = TextStartingpoint.x + lastIndent;
+        TextCurrentPoint.x =
+          lineOrigin + NextTabStop(TextCurrentPoint.x - lineOrigin);
       } else {
         // We need to draw some text.
 
@@ -1206,38 +1218,38 @@ wxString EditorCell::GetCurrentCommand() const {
   return command;
 }
 
-wxString EditorCell::TabExpand(const wxString &input_, size_t posInLine) {
-  wxString retval;
-
-  // Convert the text to our line endings.
-  wxString input =
-    input_; // TODO the state machine below can be changed instead
+wxString EditorCell::NormalizeLineEndings(const wxString &input_) {
+  wxString input = input_;
   input.Replace(wxS("\r\n"), wxS("\n"));
+  return input;
+}
 
-  wxString::const_iterator ch = input.begin();
-  while (ch < input.end()) {
-    if ((*ch == wxS('\n'))) {
-      posInLine = 0;
-      retval += *ch;
-      ++ch;
-      continue;
-    }
+wxCoord EditorCell::NextTabStop(wxCoord startX) const {
+  const wxCoord tabWidth = 4 * GetTextSize(wxS(" ")).GetWidth();
+  if (tabWidth <= 0)
+    return startX;
+  return ((startX / tabWidth) + 1) * tabWidth;
+}
 
+wxCoord EditorCell::MeasureTextWidth(wxCoord startX, const wxString &text) const {
+  if (text.Find(wxS('\t')) == wxNOT_FOUND)
+    return GetTextSize(text).GetWidth();
+
+  wxCoord x = startX;
+  wxString run;
+  for (wxString::const_iterator ch = text.begin(); ch != text.end(); ++ch) {
     if (*ch == wxS('\t')) {
-      size_t spacesToAdd = 4 - (posInLine % 4);
-      for (size_t i = 0; i < spacesToAdd; ++i)
-        retval += wxS(" ");
-      posInLine += spacesToAdd;
-      ++ch;
-      continue;
+      if (!run.empty()) {
+        x += GetTextSize(run).GetWidth();
+        run.clear();
+      }
+      x = NextTabStop(x);
     } else
-      retval += *ch;
-    if (ch < input.end()) {
-      ++ch;
-      ++posInLine;
-    }
+      run += *ch;
   }
-  return retval;
+  if (!run.empty())
+    x += GetTextSize(run).GetWidth();
+  return x - startX;
 }
 
 size_t EditorCell::BeginningOfLine(size_t pos) const {
@@ -1936,29 +1948,26 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
             m_containsChanges = true;
             m_isDirty = true;
 
-            if (m_text.Left(pos).Right(4) ==
-                wxS("    ")) {
-              m_text = m_text.Left(pos - 4) +
-                m_text.Mid(pos);
-              pos -= 4;
-            } else {
-              /// If deleting ( in () then delete both.
-              size_t right = pos;
-              if (pos < m_text.Length() &&
-                  m_configuration->GetMatchParens() &&
-                  ((m_text.at(pos - 1) == '[' &&
-                    m_text.at(pos) == ']') ||
-                   (m_text.at(pos - 1) == '(' &&
-                    m_text.at(pos) == ')') ||
-                   (m_text.at(pos - 1) == '{' &&
-                    m_text.at(pos) == '}') ||
-                   (m_text.at(pos - 1) == '"' &&
-                    m_text.at(pos) == '"')))
-                right++;
-              m_text = m_text.Left(pos - 1) +
-                m_text.Mid(right);
-              pos--;
-            }
+            // Plain single-character delete. This also removes a whole tab
+            // in one press, since a tab is one real character in m_text now
+            // (no more need for the old special case that gobbled up to 4
+            // trailing spaces to emulate deleting a space-expanded tab).
+            /// If deleting ( in () then delete both.
+            size_t right = pos;
+            if (pos < m_text.Length() &&
+                m_configuration->GetMatchParens() &&
+                ((m_text.at(pos - 1) == '[' &&
+                  m_text.at(pos) == ']') ||
+                 (m_text.at(pos - 1) == '(' &&
+                  m_text.at(pos) == ')') ||
+                 (m_text.at(pos - 1) == '{' &&
+                  m_text.at(pos) == '}') ||
+                 (m_text.at(pos - 1) == '"' &&
+                  m_text.at(pos) == '"')))
+              right++;
+            m_text = m_text.Left(pos - 1) +
+              m_text.Mid(right);
+            pos--;
           }
 
         } else {
@@ -2026,18 +2035,27 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 
               while (p < end) {
                 if (event.ShiftDown()) {
-                  for (int i = 0; i < 4; i++) {
-                    if (p < end && m_text.at(p) == wxS(' ')) {
-                      m_text.erase(p, 1);
-                      if (end > 0)
-                        end--;
-                    } else
-                      break;
+                  if (p < end && m_text.at(p) == wxS('\t')) {
+                    m_text.erase(p, 1);
+                    if (end > 0)
+                      end--;
+                  } else {
+                    // No leading tab to remove (e.g. an already
+                    // space-indented document): fall back to removing up to
+                    // 4 leading spaces, as before.
+                    for (int i = 0; i < 4; i++) {
+                      if (p < end && m_text.at(p) == wxS(' ')) {
+                        m_text.erase(p, 1);
+                        if (end > 0)
+                          end--;
+                      } else
+                        break;
+                    }
                   }
                 } else {
-                  m_text.insert(p, wxS("    "));
-                  end += 4;
-                  p += 4;
+                  m_text.insert(p, wxS("\t"));
+                  end += 1;
+                  p += 1;
                 }
                 wxString::const_iterator it = m_text.begin() + p;
                 while (it != m_text.end() && p < end && *it != wxS('\n') && *it != wxS('\r')) {
@@ -2049,30 +2067,34 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
                   ++it;
                 }
               }
+              // Keep the selection alive (as [start, end)) rather than
+              // collapsing it to a caret: CursorPosition(start) would set
+              // both selection ends to start, undoing the SetSelection()
+              // just above and preventing repeated Tab/Shift+Tab presses
+              // from indenting/dedenting further.
               SetSelection(start, end);
             } else {
               m_text.erase(start, end - start);
+              CursorPosition(start);
             }
-            CursorPosition(start);
             StyleText();
             break;
           } else {
             if (!event.ShiftDown()) {
-              // Selection active and Tab was pressed without Shift
-              size_t col, line;
-              PositionToXY(pos, &col, &line);
-              wxString ins;
-              do {
-                col++;
-                ins += wxS(" ");
-              } while (col % 4 != 0);
-
-              m_text.insert(pos, ins);
-              pos += ins.Length();
+              // No selection and Tab was pressed without Shift: insert a
+              // real tab character.
+              m_text.insert(pos, wxS("\t"));
+              pos += 1;
             } else {
-              // Selection active and Shift+Tab
+              // No selection and Shift+Tab: dedent by one leading tab if
+              // there is one; otherwise fall back to removing up to 4
+              // leading spaces, for already space-indented documents.
               size_t start = BeginningOfLine(pos);
-              if (m_text.SubString(start, start + 3) == wxS("    ")) {
+              if ((start < m_text.Length()) && (m_text.at(start) == wxS('\t'))) {
+                m_text.erase(start, 1);
+                if (pos > start)
+                  pos = start;
+              } else if (m_text.SubString(start, start + 3) == wxS("    ")) {
                 m_text.erase(start, 4);
                 if (pos > start) {
                   pos = start;
@@ -2648,12 +2670,26 @@ void EditorCell::SelectPointText(const wxPoint point) {
     // Find the text snippet the cursor is in
     while ((textSnippet != m_styledText.end()) && (xpos < posInCell.x)) {
       wxString txt = textSnippet->GetText();
-      wxCoord firstCharWidth;
-      firstCharWidth = GetTextSize(txt.Left(1)).GetWidth();
 
       if ((txt == wxS("\n")) || (txt == wxS("\r")))
         break;
 
+      if (txt == wxS("\t")) {
+        // A tab's width is position-dependent, so it can't be measured via
+        // GetTextSize(); treat the whole tab as one unit and round at its own
+        // midpoint, mirroring how the general case rounds at half its first
+        // character's width.
+        const wxCoord stop = NextTabStop(xpos);
+        if (xpos + (stop - xpos) / 2 < posInCell.x) {
+          xpos = stop;
+          pos += 1;
+        } else
+          break;
+        ++textSnippet;
+        continue;
+      }
+
+      wxCoord firstCharWidth = GetTextSize(txt.Left(1)).GetWidth();
       wxCoord w = GetTextSize(txt).GetWidth();
       if (xpos + w + firstCharWidth / 2 < posInCell.x) {
         xpos += w;
@@ -2669,18 +2705,26 @@ void EditorCell::SelectPointText(const wxPoint point) {
     if (textSnippet != m_styledText.end())
       snippet = textSnippet->GetText();
 
-    lastwidth = GetTextSize(snippet.Left(1)).GetWidth();
-    lastwidth = -lastwidth;
+    if (snippet == wxS("\t")) {
+      // Same whole-unit rounding as the coarse scan above: land before or
+      // after the tab depending on which side of its midpoint the click fell.
+      const wxCoord stop = NextTabStop(xpos);
+      if (xpos + (stop - xpos) / 2 < posInCell.x)
+        pos++;
+    } else {
+      lastwidth = GetTextSize(snippet.Left(1)).GetWidth();
+      lastwidth = -lastwidth;
 
-    // Now determine which char inside this text snippet the cursor is at
-    if ((snippet != wxS("\r")) && (snippet != wxS("\n"))) {
-      for (size_t i = 0; i < snippet.Length(); i++) {
-        wxCoord width = GetTextSize(snippet.Left(i)).GetWidth();
-        if (xpos + width + (width - lastwidth) / 2 < posInCell.x)
-          pos++;
-        else
-          break;
-        lastwidth = width;
+      // Now determine which char inside this text snippet the cursor is at
+      if ((snippet != wxS("\r")) && (snippet != wxS("\n"))) {
+        for (size_t i = 0; i < snippet.Length(); i++) {
+          wxCoord width = GetTextSize(snippet.Left(i)).GetWidth();
+          if (xpos + width + (width - lastwidth) / 2 < posInCell.x)
+            pos++;
+          else
+            break;
+          lastwidth = width;
+        }
       }
     }
     m_displayCaret = true;
@@ -2980,8 +3024,7 @@ void EditorCell::InsertText(wxString text) {
   SaveValue();
   m_containsChanges = true;
 
-  text =
-    TabExpand(text, CursorPosition() - BeginningOfLine(CursorPosition()));
+  text = NormalizeLineEndings(text);
 
   ReplaceSelection(GetSelectionString(), text);
 
@@ -3189,7 +3232,7 @@ bool EditorCell::MixedDirectionOffset(size_t line, size_t position, wxCoord *off
   for (const auto &r : runs) {
     if (&r == run)
       break;
-    x += GetTextSize(m_text.SubString(r.logicalStart, r.logicalEnd - 1)).GetWidth();
+    x += MeasureTextWidth(x, m_text.SubString(r.logicalStart, r.logicalEnd - 1));
   }
 
   // Within the run itself: a left-to-right run measures normally, from its
@@ -3200,10 +3243,10 @@ bool EditorCell::MixedDirectionOffset(size_t line, size_t position, wxCoord *off
   // whole line.
   if (run->rightToLeft) {
     if (position < run->logicalEnd)
-      x += GetTextSize(m_text.SubString(position, run->logicalEnd - 1)).GetWidth();
+      x += MeasureTextWidth(x, m_text.SubString(position, run->logicalEnd - 1));
   } else {
     if (position > run->logicalStart)
-      x += GetTextSize(m_text.SubString(run->logicalStart, position - 1)).GetWidth();
+      x += MeasureTextWidth(x, m_text.SubString(run->logicalStart, position - 1));
   }
   *offset = x;
   return true;
@@ -3257,11 +3300,18 @@ wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
     if(snippet.Length() <= pos)
       {
         pos -= snippet.Length();
-        wxCoord snippetWidth = GetTextSize(snippet).GetWidth();
-        lineWidth += snippetWidth;
+        // A tab is always its own isolated, single-character snippet (see
+        // MaximaTokenizer), so this is the "fully consumed" case for it; its
+        // width is position-dependent, hence NextTabStop() rather than a
+        // GetTextSize() lookup.
+        lineWidth = (snippet == wxS("\t")) ? NextTabStop(lineWidth)
+                                            : lineWidth + GetTextSize(snippet).GetWidth();
       }
     else
       {
+        // pos < snippet.Length() here; for a lone-tab snippet (length 1) the
+        // only way to land here is pos == 0, where Left(0) is already
+        // correctly "" / width 0, so no tab special-case is needed.
         wxString partialSnippet = snippet.Left(pos);
         wxCoord snippetWidth = GetTextSize(partialSnippet).GetWidth();
         lineWidth += snippetWidth;
@@ -3541,6 +3591,21 @@ void EditorCell::StyleTextCode() const {
       continue;
     }
 
+    // Handle a Tab: the tokenizer always hands it to us as its own isolated,
+    // single-character token (never merged with surrounding spaces), so it
+    // can be pushed straight through. Its width depends on where it starts on
+    // the line, so unlike every other token it is never measured via
+    // GetTextSize()/cached via SetWidth() -- Draw()/Recalculate()/
+    // GetLineWidth() all expand it to the next tab stop at the point they use
+    // it instead. Deliberately not registered as a soft-break candidate the
+    // way a space is: wrapping exactly at a tab is out of scope here, a line
+    // can still wrap at the next space after one as today.
+    if (Ch == wxS('\t')) {
+      m_styledText.push_back(StyledText(tokenString, GetTextStyle()));
+      lineWidth = NextTabStop(lineWidth);
+      continue;
+    }
+
     // Most of the other item types can contain Newlines - that we want as
     // separate tokens
     wxString txt = tokenString;
@@ -3597,6 +3662,28 @@ void EditorCell::StyleTextCode() const {
     m_styledText.push_back(StyledText(TS_CODE_COMMENT, suppressedLinesInfo));
 }
 
+void EditorCell::PushTextLine(const wxString &line, const wxString &indentChar) const {
+  if (line.Find(wxS('\t')) == wxNOT_FOUND) {
+    m_styledText.push_back(StyledText(line, GetTextStyle(), 0, indentChar));
+    return;
+  }
+
+  bool pushedAny = false;
+  wxString run;
+  for (wxString::const_iterator ch = line.begin(); ch != line.end(); ++ch) {
+    if (*ch == wxS('\t')) {
+      m_styledText.push_back(
+        StyledText(run, GetTextStyle(), 0, pushedAny ? wxString() : indentChar));
+      pushedAny = true;
+      run.clear();
+      m_styledText.push_back(StyledText(wxS("\t"), GetTextStyle()));
+    } else
+      run += *ch;
+  }
+  m_styledText.push_back(
+    StyledText(run, GetTextStyle(), 0, pushedAny ? wxString() : indentChar));
+}
+
 void EditorCell::StyleTextTexts() const {
   // Remove all bullets of item lists as we will introduce them again in the
   // next step, as well.
@@ -3638,7 +3725,7 @@ void EditorCell::StyleTextTexts() const {
               indent = 0;
 
             // How long is the current line already?
-            width = GetTextSize(m_text.SubString(lastLineStart, i)).GetWidth();
+            width = MeasureTextWidth(0, m_text.SubString(lastLineStart, i));
             // Do we need to introduce a soft line break?
             if (width + indent >= m_configuration->GetLineWidth()) {
               // We need a line break in front of the last space
@@ -3677,7 +3764,7 @@ void EditorCell::StyleTextTexts() const {
           // auto-wrapping
           if ((*it == ' ') || (nextChar >= m_text.end())) {
             // Determine the current line's length
-            width = GetTextSize(m_text.SubString(lastLineStart, i)).GetWidth();
+            width = MeasureTextWidth(0, m_text.SubString(lastLineStart, i));
             // Determine the current indentation
             if ((!indentPixels.empty()) && (!newLine))
               indent = indentPixels.back();
@@ -3804,7 +3891,7 @@ lineProcessed:
           m_styledText.back().SetIndentation(indent);
       }
       // Store the indented line in the list of styled text snippets
-      m_styledText.push_back(StyledText(line, GetTextStyle(), 0, indentChar));
+      PushTextLine(line, indentChar);
 
       if (it != m_text.end()) {
         // If the cell doesn't end with the last char of this line we have to
@@ -3852,14 +3939,13 @@ lineProcessed:
     while (lines.HasMoreTokens()) {
       wxString line = lines.GetNextToken();
       if (FirstLineOnlyEditor()) {
-        m_styledText.push_back(
-                               StyledText(line + wxString::Format(_(" ... + %li hidden lines"),
-                                                                  static_cast<long>(m_text.Freq(wxS('\n')))),
-                                          GetTextStyle(), 0, wxEmptyString));
+        PushTextLine(line + wxString::Format(_(" ... + %li hidden lines"),
+                                             static_cast<long>(m_text.Freq(wxS('\n')))),
+                    wxEmptyString);
         break;
       }
 
-      m_styledText.push_back(StyledText(line, GetTextStyle(), 0, wxEmptyString));
+      PushTextLine(line, wxEmptyString);
       if ((lines.HasMoreTokens()))
         m_styledText.push_back(StyledText(wxS("\n"), GetTextStyle(), 0, wxEmptyString));
     }

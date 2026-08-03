@@ -263,14 +263,21 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
       m_tokens.emplace_back(token);
       continue;
     }
-    // Merge consecutive spaces into one single token
+    // A tab is always its own single-character token -- like a newline, never
+    // merged with surrounding spaces -- since its on-screen width depends on
+    // which column it starts at and EditorCell needs to see it in isolation
+    // to expand it to the next tab stop rather than treat it as opaque
+    // whitespace of a fixed width.
+    if (Ch == '\t') {
+      m_tokens.emplace_back(wxString("\t"));
+      ++it;
+      continue;
+    }
+    // Merge consecutive (non-tab) spaces into one single token
     if (IsSpace(Ch)) {
       wxString token;
-      while ((it < commands.end()) && IsSpace(Ch)) {
-        if (Ch == '\t')
-          token += "\t";
-        else
-          token += " ";
+      while ((it < commands.end()) && IsSpace(Ch) && (Ch != '\t')) {
+        token += " ";
         if (++it < commands.end())
           Ch = *it;
       }
