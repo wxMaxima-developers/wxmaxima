@@ -31,6 +31,7 @@
 
 #include "EditorCell.h"
 
+#include "Bidi.h"
 #include "CellImpl.h"
 #include "CellPointers.h"
 #include "MarkDown.h"
@@ -855,7 +856,21 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
     // the rectangle has to start at the last one instead. Taking
     // PositionToPoint(lineStart) as the left edge there would highlight the
     // text that follows the selection rather than the selection itself.
-    point.x = SelectionRunLeft(lineStart, pos, point.x, selectionWidth);
+    size_t dispColumn, dispLine;
+    PositionToXY(lineStart, &dispColumn, &dispLine);
+    wxCoord mixedStart, mixedEnd;
+    if (LineIsMixedDirection(dispLine) &&
+        MixedDirectionRunOffsets(dispLine, lineStart, pos, &mixedStart, &mixedEnd)) {
+      // [lineStart, pos) sits entirely inside one bidi run of a line that
+      // isn't wholly one direction - SelectionRunLeft() can't place that (it
+      // only knows the *line's* direction), but Bidi::GetRuns() does. This
+      // supersedes both the left edge and the flat substring width above,
+      // which both assumed a single direction for the whole line.
+      const wxCoord lineLeft = point.x - GetLineWidth(dispLine, dispColumn);
+      point.x = lineLeft + std::min(mixedStart, mixedEnd);
+      selectionWidth = (mixedStart > mixedEnd) ? (mixedStart - mixedEnd) : (mixedEnd - mixedStart);
+    } else
+      point.x = SelectionRunLeft(lineStart, pos, point.x, selectionWidth);
 
     wxRect rect;
 #if defined(__WXOSX__)
@@ -3093,6 +3108,71 @@ bool EditorCell::LineIsMixedDirection(size_t line) {
     sawLeftToRight = sawLeftToRight || IsStrongLeftToRight(c);
   }
   return sawRightToLeft && sawLeftToRight;
+}
+
+bool EditorCell::MixedDirectionRunOffsets(size_t line, size_t start, size_t end,
+                                          wxCoord *startOffset, wxCoord *endOffset) {
+  if (!Bidi::IsAvailable())
+    return false;
+
+  const size_t lineStart = XYToPosition(0, line);
+  const size_t lineLen = LineLength(line);
+  if ((lineLen == 0) || (start < lineStart) || (end < lineStart))
+    return false;
+  const size_t startCol = start - lineStart;
+  const size_t endCol = end - lineStart;
+  if ((startCol > lineLen) || (endCol > lineLen))
+    return false;
+
+  const wxString lineText = m_text.SubString(lineStart, lineStart + lineLen - 1);
+  const std::vector<BidiRun> runs =
+    Bidi::GetRuns(lineText, m_configuration->RightToLeftDocument());
+
+  // The run that has to contain *both* ends of [start, end): a range that
+  // itself crosses a direction boundary can't be represented as one
+  // rectangle (see MarkSelection()'s comment on the German/Farsi case), so
+  // this only ever fires for the common case of a range entirely inside one
+  // run.
+  const BidiRun *run = nullptr;
+  for (const auto &r : runs)
+    if ((startCol >= r.logicalStart) && (startCol <= r.logicalEnd) &&
+        (endCol >= r.logicalStart) && (endCol <= r.logicalEnd)) {
+      run = &r;
+      break;
+    }
+  if (!run)
+    return false;
+
+  // Runs that come before this one on screen, in full: they sit to this
+  // run's left regardless of their own direction.
+  wxCoord before = 0;
+  for (const auto &r : runs) {
+    if (&r == run)
+      break;
+    before += GetTextSize(lineText.SubString(r.logicalStart, r.logicalEnd - 1)).GetWidth();
+  }
+
+  // Within the run itself: a left-to-right run measures normally, from its
+  // own start; a right-to-left one is drawn back to front, so a position's
+  // distance from the run's *left* edge is the width of what comes *after*
+  // it in logical order - the same reasoning SelectionRunLeft() uses for a
+  // wholly-right-to-left line, just local to this one run instead of the
+  // whole line.
+  auto offsetInLine = [&](size_t column) {
+    wxCoord x = before;
+    if (run->rightToLeft) {
+      if (column < run->logicalEnd)
+        x += GetTextSize(lineText.SubString(column, run->logicalEnd - 1)).GetWidth();
+    } else {
+      if (column > run->logicalStart)
+        x += GetTextSize(lineText.SubString(run->logicalStart, column - 1)).GetWidth();
+    }
+    return x;
+  };
+
+  *startOffset = offsetInLine(startCol);
+  *endOffset = offsetInLine(endCol);
+  return true;
 }
 
 wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {

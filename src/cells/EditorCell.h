@@ -399,10 +399,14 @@ public:
     bidirectional algorithm uses for a paragraph. A line with no strong
     character at all - digits and punctuation only - follows the document.
 
-    Only lines that are wholly one direction are handled: for those the caret's
-    position is the mirror of what measuring the text before it gives, which is
-    exact and needs no reordering. A line that genuinely mixes the two scripts
-    would need the real algorithm and is left as it was.
+    Only lines that are wholly one direction are handled here: for those the
+    caret's position is the mirror of what measuring the text before it gives,
+    which is exact and needs no reordering. A line that genuinely mixes the two
+    scripts needs the real bidirectional algorithm; the caret, click-to-position
+    and arrow-key movement still don't use it and are left as they were, but
+    MarkSelection() does, via MixedDirectionRunOffsets() and Bidi::GetRuns(),
+    for the common case of a highlighted range that itself sits inside a single
+    run even though the line around it doesn't.
    */
   bool LineIsRightToLeft(size_t line);
 
@@ -423,6 +427,24 @@ public:
    */
   wxCoord SelectionRunLeft(size_t runStart, size_t runEnd, wxCoord runStartX,
                            wxCoord runWidth);
+
+  /*! The pixel offsets of start and end from the line's own left edge, on a
+    line LineIsMixedDirection() says mixes scripts and where [start, end)
+    falls entirely inside one of Bidi::GetRuns()'s runs.
+
+    This is what SelectionRunLeft() cannot do for a mixed line (see its own
+    comment): a highlighted range that itself sits inside a single
+    right-to-left run still needs to be drawn in the right place even though
+    the *line* isn't wholly one direction, and unlike SelectionRunLeft() this
+    doesn't assume which direction that run is - it asks Bidi::GetRuns().
+
+    \return false (leaving *startOffset/*endOffset untouched) if libfribidi
+            isn't compiled in, or start and end don't share a single run - a
+            selection that crosses a direction boundary can't be drawn as one
+            rectangle at all, so the caller keeps its existing behaviour then.
+   */
+  bool MixedDirectionRunOffsets(size_t line, size_t start, size_t end,
+                                wxCoord *startOffset, wxCoord *endOffset);
 
   /*! How far each line has to move right to sit flush with the widest one.
 

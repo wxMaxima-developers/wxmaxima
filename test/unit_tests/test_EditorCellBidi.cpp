@@ -44,6 +44,7 @@
 
 #include <vector>
 
+#include "Bidi.h"
 #include "CellPointers.h"
 #include "Configuration.h"
 #include "cells/EditorCell.h"
@@ -211,6 +212,56 @@ SCENARIO("A selection covers the characters it selects") {
       // *after* the selection; the rectangle has to sit over the glyphs.
       REQUIRE(left == endX);
       REQUIRE(left + width == startX);
+    }
+  }
+}
+
+SCENARIO("Highlighting a range that sits inside one run of a mixed-direction line") {
+  // "abcdefgh" (Latin) followed by "שלוםעולם" (Hebrew) on one line: the line
+  // as a whole mixes directions, but a range entirely inside the Hebrew tail
+  // is a single right-to-left run - the case LineIsRightToLeft()/
+  // PositionToPoint()/SelectionRunLeft() can't handle by themselves (see
+  // their own comments), because they only know whether the *line* is wholly
+  // one direction. This is what a selection or a "text that coincides with
+  // the search term" marker inside a mixed paragraph actually needs.
+  const wxString mixed = kLatin + kHebrew;
+
+  GIVEN("a range entirely inside the trailing right-to-left run") {
+    auto group = MakeCell(mixed);
+    EditorCell *editor = group->GetEditable();
+    REQUIRE(editor != nullptr);
+    REQUIRE(editor->LineIsMixedDirection(0));
+
+    // Three Hebrew letters, starting one character into the Hebrew run.
+    const size_t from = kLatin.Length() + 1, to = kLatin.Length() + 4;
+    wxCoord startOffset = 0, endOffset = 0;
+    const bool ok = editor->MixedDirectionRunOffsets(0, from, to, &startOffset, &endOffset);
+
+    if (Bidi::IsAvailable()) {
+      THEN("it succeeds and mirrors the run, the same way a wholly "
+           "right-to-left line does in SelectionRunLeft() above") {
+        REQUIRE(ok);
+        // Later position -> smaller offset: reading right to left, "from" is
+        // closer to the run's right (later-drawn) end than "to" is.
+        REQUIRE(endOffset < startOffset);
+      }
+    } else {
+      THEN("without libfribidi it declines rather than guess") {
+        REQUIRE_FALSE(ok);
+      }
+    }
+  }
+
+  GIVEN("a range that crosses the direction boundary") {
+    auto group = MakeCell(mixed);
+    EditorCell *editor = group->GetEditable();
+    REQUIRE(editor != nullptr);
+
+    const size_t from = kLatin.Length() - 2, to = kLatin.Length() + 2;
+    wxCoord startOffset = 0, endOffset = 0;
+
+    THEN("it declines - a range that isn't inside one run can't be one rectangle") {
+      REQUIRE_FALSE(editor->MixedDirectionRunOffsets(0, from, to, &startOffset, &endOffset));
     }
   }
 }

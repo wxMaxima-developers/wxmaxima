@@ -1,5 +1,15 @@
 # Current development version
 
+- Selection highlighting (including the "text that coincides with the
+  selection" marker and the diff viewer) is now correctly placed on a line
+  that mixes left-to-right and right-to-left text, for a highlighted range
+  that itself sits inside a single run - e.g. three Farsi letters highlighted
+  because they match the current search term, on a line that also contains
+  Latin text. This uses libfribidi, an optional dependency (`WXM_USE_FRIBIDI`,
+  on by default when found): without it, mixed-direction lines keep the
+  previous single-direction-only approximation. The caret, click-to-position
+  and arrow-key movement don't use it yet and are unchanged.
+
 - THIRD-PARTY-NOTICES.txt (shown in the "License" tab) now also credits
   wxWidgets and the bundled NanoSVG, which had been missing.
 
