@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the <a class="el" href="classwxMaxima.html">wxMaxima</a> codebase. <b>Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.</b></p>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md43"></a>
 Build System</h1>
 <p>Configure once (a Debug build is the default), then build and run without installing:</p>
 <div class="fragment"><div class="line">cmake -S . -B build -G Ninja</div>
@@ -92,7 +92,7 @@ Build System</h1>
 </div><!-- fragment --><p>Leak detection stays off (<code>detect_leaks=0</code>) because GTK/Pango leak noise drowns out real findings.</p>
 <p>Other useful targets: <code>ninja -<a class="el" href="classC.html">C</a> build Doxygen</code> builds the source documentation (note the capital <a class="el" href="classD.html">D</a>, and the target only exists when Doxygen is installed), and <code>ninja -<a class="el" href="classC.html">C</a> build update-locale</code> refreshes the translation files.</p>
 <p><code>CheckPo4aVersion.cmake</code> (included from <code>info/CMakeLists.txt</code> and <code>locales/manual/CMakeLists.txt</code>, the only two places that invoke <code>po4a</code>) refuses <code>po4a</code> older than 0.70 &ndash; pre-0.70 parses text encodings loosely and can silently corrupt non-ASCII translated text with no warning of its own, confirmed directly with Ubuntu 24.04's own <code>po4a</code> 0.69 package turning a German manual paragraph into mangled English on nothing more than a plain reconfigure. <code>PO4A</code> ends up <code>PO4A-NOTFOUND</code> (falsy) in that case, same contract <code>find_program()</code> itself has, so existing <code>if(PO4A)</code> guards keep working without extra checks.</p>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md44"></a>
 Architecture &amp; GUI</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
@@ -119,7 +119,7 @@ Architecture &amp; GUI</h1>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h2><a class="anchor" id="autotoc_md45"></a>
 Communication with Maxima</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</p>
 <p><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</p>
@@ -128,13 +128,13 @@ Communication with Maxima</h2>
   &lt;tt&gt;wxMaxima::EscapeForLisp()&lt;/tt&gt; first; despite the name it is exactly the
   escaping Maxima string literals need too.
 
-@subsection autotoc_md18 File Formats
+@subsection autotoc_md46 File Formats
 
 - **&lt;tt&gt;.wxmx&lt;/tt&gt;** &amp;ndash; a ZIP archive holding &lt;tt&gt;content.xml&lt;/tt&gt; (the MathML-like XML) plus
   the embedded images. The format version lives in &lt;tt&gt;src/WXMXformat.h&lt;/tt&gt;.
 - **&lt;tt&gt;.wxm&lt;/tt&gt;** &amp;ndash; the plain-text format, read by &lt;tt&gt;Format::ParseWXMFile()&lt;/tt&gt;.
 
-@section autotoc_md19 Conventions &amp; Standards
+@section autotoc_md47 Conventions &amp; Standards
 
 - &lt;strong&gt;Git Environment:&lt;/strong&gt; Note that running &lt;tt&gt;git diff&lt;/tt&gt; might launch the visual diff tool &lt;tt&gt;meld&lt;/tt&gt; instead of outputting to the terminal. Always use &lt;tt&gt;git diff --no-ext-diff&lt;/tt&gt; if you need terminal output.
 - &lt;strong&gt;String Literals &amp; Translations:&lt;/strong&gt; Use the &lt;tt&gt;wxS()&lt;/tt&gt; macro for all string literals and &lt;tt&gt;_()&lt;/tt&gt; for user-facing translatable strings.
@@ -151,8 +151,11 @@ Communication with Maxima</h2>
 - &lt;strong&gt;Layout Timeout:&lt;/strong&gt; Complex output can trigger a timeout (configurable in Options), replacing slow-to-render cells with a warning.
 - &lt;strong&gt;C++ Standard:&lt;/strong&gt; The project uses &lt;strong&gt;C++20&lt;/strong&gt;. To support users on older operating systems (like Debian-oldstable or RHEL), wxMaxima aims to stay approximately 10 years behind the current C++ standard.
 - &lt;strong&gt;wxWidgets Version:&lt;/strong&gt; Maintain compatibility with wxWidgets 3.0.5 where possible. Avoid features only available in 3.1+ (e.g., use &lt;tt&gt;MakeAbsolute()&lt;/tt&gt; + &lt;tt&gt;GetFullPath()&lt;/tt&gt; instead of &lt;tt&gt;GetAbsolutePath()&lt;/tt&gt;).
+- &lt;strong&gt;Sizer Flags Are Different Enum Types:&lt;/strong&gt; &lt;tt&gt;wxDirection&lt;/tt&gt; (&lt;tt&gt;wxLEFT&lt;/tt&gt;/&lt;tt&gt;wxRIGHT&lt;/tt&gt;/&lt;tt&gt;wxALL&lt;/tt&gt;/...), &lt;tt&gt;wxAlignment&lt;/tt&gt; (&lt;tt&gt;wxALIGN_*&lt;/tt&gt;) and &lt;tt&gt;wxStretch&lt;/tt&gt; (&lt;tt&gt;wxEXPAND&lt;/tt&gt;/...) are three distinct unscoped enums; OR'ing two of them directly (e.g. &lt;tt&gt;wxALIGN_CENTER_VERTICAL | wxALL&lt;/tt&gt;) is deprecated in C++20 and GCC warns &lt;tt&gt;-Wdeprecated-enum-enum-conversion&lt;/tt&gt;. Fix by casting the &lt;em&gt;first&lt;/em&gt; operand of the OR-chain to &lt;tt&gt;int&lt;/tt&gt; (e.g. &lt;tt&gt;static_cast\&lt;int\&gt;(wxALIGN_CENTER_VERTICAL) | wxALL&lt;/tt&gt;) &amp;ndash; since &lt;tt&gt;|&lt;/tt&gt; is left-associative, this makes every subsequent operation &lt;tt&gt;int | enum&lt;/tt&gt;, which is unambiguous and unwarned, without needing to touch the rest of the chain. Only the leftmost token needs the cast, however many differently-typed flags follow.
+- **&lt;tt&gt;[[maybe_unused]]&lt;/tt&gt; on data members and GCC &lt; 12:** GCC before version 12 doesn't support &lt;tt&gt;[[maybe_unused]]&lt;/tt&gt; on non-static data members at all and warns &amp;lsquo;'maybe_unused&amp;rsquo; attribute ignored [-Wattributes]&lt;tt&gt;regardless of whether the member is actually used (reproduced directly against&lt;/tt&gt;g++-11&lt;tt&gt;; fixed by&lt;/tt&gt;g++-12&lt;tt&gt;). Since the attribute is still needed for Clang (&lt;/tt&gt;-Wunused-private-field&lt;tt&gt;), don't just delete it -- wrap the declaration in&lt;/tt&gt;#if defined(&lt;strong&gt;GNUC&lt;/strong&gt;) &amp;&amp; !defined(&lt;strong&gt;clang&lt;/strong&gt;) &amp;&amp; &lt;strong&gt;GNUC&lt;/strong&gt; &lt; 12&lt;tt&gt;/&lt;/tt&gt;#pragma GCC diagnostic push/ignored "-Wattributes"&lt;tt&gt;...&lt;/tt&gt;#pragma GCC diagnostic pop&lt;tt&gt;/&lt;/tt&gt;#endif&lt;tt&gt;(see&lt;/tt&gt;SvgBitmap.h&lt;tt&gt;,&lt;/tt&gt;wxMathml.h&lt;tt&gt;,&lt;/tt&gt;graphical_io/Printout.h&lt;tt&gt;).
+- **CI Warnings Live On the Non-&lt;/tt&gt;-Werror&lt;tt&gt;Jobs:**&lt;/tt&gt;compile_latest_and_test&lt;tt&gt;and&lt;/tt&gt;compile_without_webview&lt;tt&gt;(Ubuntu) build with&lt;/tt&gt;-Werror&lt;tt&gt;, so they can't show warnings by construction -- check&lt;/tt&gt;compile_2204&lt;tt&gt;(Ubuntu 22.04, plain&lt;/tt&gt;-Wall -Wextra&lt;tt&gt;, GCC 11) for real warnings that survive to a release build. Don't assume that job's warning list is exhaustive, though: e.g. the&lt;/tt&gt;[[maybe_unused]]&lt;tt&gt;-on-a-data-member GCC\&lt;12 warning above showed up for&lt;/tt&gt;Printout.h&lt;tt&gt;in one such log but not for the identical pattern in&lt;/tt&gt;SvgBitmap.h&lt;tt&gt;/&lt;/tt&gt;wxMathml.h&lt;tt&gt;in the same run, for reasons that weren't tracked down (not precompiled headers --&lt;/tt&gt;WXM_ENABLE_PRECOMPILED_HEADERS&lt;tt&gt;defaults&lt;/tt&gt;OFF&lt;tt&gt;) -- a clean local build with&lt;/tt&gt;g++-11 -Wall -Wextra` is the more reliable check for this specific class of warning.
 
-@section autotoc_md20 Layout &amp; Compatibility
+@section autotoc_md48 Layout &amp; Compatibility
 
 - &lt;strong&gt;Mathematical Cell Padding:&lt;/strong&gt; Use &lt;tt&gt;MC_TEXT_PADDING&lt;/tt&gt; (in &lt;tt&gt;Configuration.h&lt;/tt&gt;) for text-based cells. &lt;strong&gt;Exception:&lt;/strong&gt; &lt;tt&gt;DigitCell&lt;/tt&gt; does not include padding to ensure visual consistency in broken-up numbers.
 - &lt;strong&gt;Three-Step Layout Process:&lt;/strong&gt;
@@ -168,7 +171,7 @@ Communication with Maxima</h2>
 - **ConfigDialogue Tabs Must Scroll:&lt;/strong&gt; Every tab panel in &lt;tt&gt;src/dialogs/ConfigDialogue.cpp&lt;/tt&gt; is a &lt;tt&gt;wxScrolled\&lt;wxPanel\&gt;&lt;/tt&gt; with &lt;tt&gt;SetScrollRate(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor())&lt;/tt&gt; and &lt;tt&gt;SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth, GetContentScaleFactor() * mMinPanelHeight))&lt;/tt&gt;. Without this, a tab's natural size (which grows with font size/DPI/translation length) can make the whole dialog taller than a hi-DPI screen with no way to reach what's cut off. When adding a new tab, copy this pattern (see &lt;tt&gt;CreateWorksheetPanel()&lt;/tt&gt;) rather than a plain &lt;tt&gt;wxPanel&lt;/tt&gt;.
 - &lt;strong&gt;Constructor Initialization:&lt;/strong&gt; Order initialization lists to match header declaration order to prevent &lt;tt&gt;-Wreorder&lt;/tt&gt; warnings.
 
-@section autotoc_md21 Performance &amp; Documentation Mandates
+@section autotoc_md49 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
@@ -177,27 +180,34 @@ Communication with Maxima</h2>
   - Use &lt;tt&gt;with-output-to-string&lt;/tt&gt; instead of recursive concatenation for large inputs.
   - Use &lt;tt&gt;unwind-protect&lt;/tt&gt; when modifying global state like &lt;tt&gt;\$lmxchar&lt;/tt&gt;.
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
-- &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"</code>) to the filter list in <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">MathParser.cpp</a></code>.</li>
+- &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
+
+@section autotoc_md50 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+
+- &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
+- &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
+
+@section autotoc_md51 Key Subsystems Map
+
+- &lt;strong&gt;Layout Engine:&lt;/strong&gt; &lt;tt&gt;src/cells/&lt;/tt&gt; and &lt;tt&gt;src/worksheet/&lt;/tt&gt; (&lt;tt&gt;Worksheet.cpp&lt;/tt&gt; and its siblings moved into that subdirectory).
+- &lt;strong&gt;MathML Formatting:&lt;/strong&gt; &lt;tt&gt;src/wxMathML.lisp&lt;/tt&gt; and &lt;tt&gt;src/MathParser.cpp&lt;/tt&gt;.
+- &lt;strong&gt;Main Logic:&lt;/strong&gt; &lt;tt&gt;src/wxMaxima.cpp&lt;/tt&gt; and &lt;tt&gt;src/wxMaximaFrame.cpp&lt;/tt&gt; &amp;ndash; but much of what used to sit in &lt;tt&gt;wxMaxima&lt;/tt&gt; has been peeled off into friend classes, so look there first: &lt;tt&gt;MaximaProcessManager&lt;/tt&gt; (spawn/kill/connect and the data pump), &lt;tt&gt;MaximaEvaluator&lt;/tt&gt; (evaluation queue and command protocol), &lt;tt&gt;MaximaResponseReader&lt;/tt&gt; (the incoming-XML handlers), &lt;tt&gt;MaximaFileIO&lt;/tt&gt; (worksheet open/save) and &lt;tt&gt;MaximaCommandMenus&lt;/tt&gt; (the menu handlers).
+- &lt;strong&gt;Configuration:&lt;/strong&gt; &lt;tt&gt;src/Configuration.cpp&lt;/tt&gt;.
+
+@section autotoc_md52 Backlog / Future Work
+
+Items the maintainer has flagged as worth doing but hasn't asked for yet &amp;ndash; don't
+start on these without checking in first, but pick them up if asked for "what's next" style work.</code></li>
+<li><code><b>Consolidate newer <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> bool members into its bitfield:</b> KubaO previously merged most of <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code>'s (and its heavy subclasses') boolean flags into bitfields to shrink <code>sizeof(Cell)</code>, which measurably sped up <a class="el" href="classwxMaxima.html">wxMaxima</a>. The win is memory-footprint/cache-locality, not per-access speed: worksheets can hold tens of thousands of <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code> instances, and <code>Recalculate()</code>/<code>Draw()</code>/hit testing walk the <em>entire</em> tree repeatedly (potentially every keystroke), so a smaller object means far fewer cache misses on a full-tree walk &ndash; that dominates the trivial extra cost of a bitfield's mask-and-shift. Since then, new standalone <code>bool m_foo;</code> members have likely accumulated again outside the bitfield; audit <code><a class="el" href="Cell_8h.html" title="The definition of the base class of all cells the worksheet consists of.">Cell.h</a></code> and frequently-instantiated subclasses (<code><a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a></code>, <code><a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a></code>, ...) for candidates. Two things to check per field before migrating: (1) nothing takes its address (<code>&amp;m_foo</code> doesn't work on a bit-field member), (2) it isn't touched from another thread expecting normal <code>bool</code> atomicity/tearing behavior. While at it, prefer in-class default member initializers on the bit-field declarations themselves (e.g. <code>bool m_foo : 1 = false;</code>) over setting them in the constructor body/init list &ndash; this was awkward pre-C++20 (part of why it probably wasn't done at the time) but the project now targets C++20, where it works cleanly.</code></li>
+<li><code><b>Real tab handling in <code><a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a></code>:</b> tabs are currently just replaced by spaces on input instead of being handled as their own character/column-stop concept.</code></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md22"></a>
-Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)</h1>
-<ul>
-<li><b>Geometry Awareness:</b> If modifying <code>Recalculate()</code> or <code>Draw()</code> geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in <code>art/Doxygen/</code>.</li>
-<li><b>Consistency:</b> New cell types should have <code>*Geometry.svg</code> and <code>*LinearGeometry.svg</code> (if applicable) diagrams.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md23"></a>
-Key Subsystems Map</h1>
-<ul>
-<li><b>Layout Engine:</b> <code>src/cells/</code> and <code>src/worksheet/</code> (<code><a class="el" href="Worksheet_8cpp.html" title="This file defines the class Worksheet.">Worksheet.cpp</a></code> and its siblings moved into that subdirectory).</li>
-<li><b>MathML Formatting:</b> <code>src/wxMathML.lisp</code> and <code><a class="el" href="MathParser_8cpp.html" title="This file defines the class MathParser that reads wxmx data and math from Maxima.">src/MathParser.cpp</a></code>.</li>
-<li><b>Main Logic:</b> <code><a class="el" href="wxMaxima_8cpp.html" title="This file defines the contents of the class wxMaxima that contains most of the program&#39;s logic.">src/wxMaxima.cpp</a></code> and <code><a class="el" href="wxMaximaFrame_8cpp.html" title="This file defines the class wxMaximaFrame.">src/wxMaximaFrame.cpp</a></code> &ndash; but much of what used to sit in <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> has been peeled off into friend classes, so look there first: <code><a class="el" href="classMaximaProcessManager.html" title="The Maxima process/socket lifecycle extracted from the wxMaxima god class.">MaximaProcessManager</a></code> (spawn/kill/connect and the data pump), <code><a class="el" href="classMaximaEvaluator.html" title="The evaluation-queue driver / command protocol extracted from wxMaxima.">MaximaEvaluator</a></code> (evaluation queue and command protocol), <code><a class="el" href="classMaximaResponseReader.html" title="The Maxima-response handlers extracted from the wxMaxima god class.">MaximaResponseReader</a></code> (the incoming-XML handlers), <code><a class="el" href="classMaximaFileIO.html" title="The worksheet file loaders/savers extracted from the wxMaxima god class.">MaximaFileIO</a></code> (worksheet open/save) and <code><a class="el" href="classMaximaCommandMenus.html" title="The menu-command handlers extracted from the wxMaxima god class.">MaximaCommandMenus</a></code> (the menu handlers).</li>
-<li><b><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a>:</b> <code><a class="el" href="Configuration_8cpp.html" title="This file defines the class Configuration which serves as a fast configuration storage.">src/Configuration.cpp</a></code>.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<p><code></code></p>
+<h1><a class="anchor" id="autotoc_md53"></a>
 Error resilience</h1>
-<ul>
+<p><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>
 </ul>
+<p></code></p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

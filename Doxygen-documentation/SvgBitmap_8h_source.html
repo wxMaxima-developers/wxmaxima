@@ -126,10 +126,21 @@ $(function() {
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keyword">static</span> <span class="keyword">struct </span>wxm_NSVGrasterizer* m_svgRast;</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  std::unique_ptr&lt;wxm_NSVGimage, <span class="keyword">decltype</span>(std::free)*&gt; m_svgImage{<span class="keyword">nullptr</span>, std::free};</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  [[maybe_unused]] wxWindow *m_window = NULL;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>};</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#endif </span><span class="comment">// SVGBITMAP_H</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#if defined(__GNUC__) &amp;&amp; !defined(__clang__) &amp;&amp; __GNUC__ &lt; 12</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="comment">// GCC &lt; 12 doesn&#39;t support [[maybe_unused]] on non-static data members and</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="comment">// warns &quot;attribute ignored&quot; about it (fixed in GCC 12); Clang needs the</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">// attribute here to silence -Wunused-private-field, so it can&#39;t just be</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">// removed.</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wattributes&quot;</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  [[maybe_unused]] wxWindow *m_window = NULL;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#if defined(__GNUC__) &amp;&amp; !defined(__clang__) &amp;&amp; __GNUC__ &lt; 12</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#endif </span><span class="comment">// SVGBITMAP_H</span></div>
 <div class="ttc" id="aCell_8h_html"><div class="ttname"><a href="Cell_8h.html">Cell.h</a></div><div class="ttdoc">The definition of the base class of all cells the worksheet consists of.</div></div>
 <div class="ttc" id="aclassSvgBitmap_html"><div class="ttname"><a href="classSvgBitmap.html">SvgBitmap</a></div><div class="ttdoc">A wxBitmap with a constructor that generates the image from SVG.</div><div class="ttdef"><b>Definition:</b> SvgBitmap.h:42</div></div>
 <div class="ttc" id="aclassSvgBitmap_html_a3cb094555331124576038b9300fd9631"><div class="ttname"><a href="classSvgBitmap.html#a3cb094555331124576038b9300fd9631">SvgBitmap::GetInvalidBitmap</a></div><div class="ttdeci">wxBitmap GetInvalidBitmap(int targetSize)</div><div class="ttdoc">An &quot;invalid bitmap&quot; sign.</div><div class="ttdef"><b>Definition:</b> SvgBitmap.cpp:132</div></div>
