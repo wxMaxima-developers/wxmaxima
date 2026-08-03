@@ -32,6 +32,8 @@
 #include <list>
 #include <unordered_map>
 
+struct BidiRun;
+
 /*! \file
 
   This file contains the definition of the class EditorCell
@@ -402,11 +404,10 @@ public:
     Only lines that are wholly one direction are handled here: for those the
     caret's position is the mirror of what measuring the text before it gives,
     which is exact and needs no reordering. A line that genuinely mixes the two
-    scripts needs the real bidirectional algorithm; the caret, click-to-position
-    and arrow-key movement still don't use it and are left as they were, but
-    MarkSelection() does, via MixedDirectionRunOffsets() and Bidi::GetRuns(),
-    for the common case of a highlighted range that itself sits inside a single
-    run even though the line around it doesn't.
+    scripts needs the real bidirectional algorithm instead - see
+    GetLineBidiRuns() and Bidi::GetRuns(), which PositionToPoint(),
+    MarkSelection() and HandleSpecialKey()'s arrow-key handling all fall back
+    to for a line this function can't characterise with one direction.
    */
   bool LineIsRightToLeft(size_t line);
 
@@ -428,23 +429,23 @@ public:
   wxCoord SelectionRunLeft(size_t runStart, size_t runEnd, wxCoord runStartX,
                            wxCoord runWidth);
 
-  /*! The pixel offsets of start and end from the line's own left edge, on a
-    line LineIsMixedDirection() says mixes scripts and where [start, end)
-    falls entirely inside one of Bidi::GetRuns()'s runs.
+  /*! Bidi::GetRuns() for a display line, as absolute positions into m_text
+    (Bidi::GetRuns() itself only knows the line's own text, so its runs are
+    relative to that - this is the shared first step for anything that needs
+    the real bidi run structure at a whole-cell position instead).
 
-    This is what SelectionRunLeft() cannot do for a mixed line (see its own
-    comment): a highlighted range that itself sits inside a single
-    right-to-left run still needs to be drawn in the right place even though
-    the *line* isn't wholly one direction, and unlike SelectionRunLeft() this
-    doesn't assume which direction that run is - it asks Bidi::GetRuns().
-
-    \return false (leaving *startOffset/*endOffset untouched) if libfribidi
-            isn't compiled in, or start and end don't share a single run - a
-            selection that crosses a direction boundary can't be drawn as one
-            rectangle at all, so the caller keeps its existing behaviour then.
+    \return false (leaving *runs untouched) if libfribidi isn't compiled in
+            (Bidi::IsAvailable()) or the line is empty.
    */
-  bool MixedDirectionRunOffsets(size_t line, size_t start, size_t end,
-                                wxCoord *startOffset, wxCoord *endOffset);
+  bool GetLineBidiRuns(size_t line, std::vector<BidiRun> *runs);
+
+  /*! Where position sits, in pixels from the line's own left edge, found via
+    the real bidi algorithm (GetLineBidiRuns()) instead of assuming the whole
+    line is one direction the way PositionToPoint()'s own fast path does.
+
+    \return false (leaving *offset untouched) if libfribidi isn't compiled in.
+   */
+  bool MixedDirectionOffset(size_t line, size_t position, wxCoord *offset);
 
   /*! How far each line has to move right to sit flush with the widest one.
 

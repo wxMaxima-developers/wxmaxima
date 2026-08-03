@@ -858,17 +858,17 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
     // text that follows the selection rather than the selection itself.
     size_t dispColumn, dispLine;
     PositionToXY(lineStart, &dispColumn, &dispLine);
-    wxCoord mixedStart, mixedEnd;
-    if (LineIsMixedDirection(dispLine) &&
-        MixedDirectionRunOffsets(dispLine, lineStart, pos, &mixedStart, &mixedEnd)) {
-      // [lineStart, pos) sits entirely inside one bidi run of a line that
-      // isn't wholly one direction - SelectionRunLeft() can't place that (it
-      // only knows the *line's* direction), but Bidi::GetRuns() does. This
-      // supersedes both the left edge and the flat substring width above,
-      // which both assumed a single direction for the whole line.
-      const wxCoord lineLeft = point.x - GetLineWidth(dispLine, dispColumn);
-      point.x = lineLeft + std::min(mixedStart, mixedEnd);
-      selectionWidth = (mixedStart > mixedEnd) ? (mixedStart - mixedEnd) : (mixedEnd - mixedStart);
+    if (LineIsMixedDirection(dispLine) && Bidi::IsAvailable()) {
+      // SelectionRunLeft() below only knows the *line's* direction, which
+      // isn't enough here; PositionToPoint() itself does know the run
+      // [lineStart, pos) is in (see MixedDirectionOffset()), for lineStart
+      // and pos independently, so the rectangle is simply the span between
+      // them. That also covers a range spanning more than one run as a
+      // single bounding rectangle - the same approximation a wholly
+      // right-to-left line already makes.
+      const wxCoord endX = PositionToPoint(pos).x;
+      selectionWidth = (endX > point.x) ? (endX - point.x) : (point.x - endX);
+      point.x = std::min(point.x, endX);
     } else
       point.x = SelectionRunLeft(lineStart, pos, point.x, selectionWidth);
 
@@ -1593,12 +1593,34 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
   // *left* on screen. Pressing Left there therefore has to do what Right does to
   // the stored text, and the other way round -- otherwise the caret walks the
   // wrong way and the key that looks like it should undo the last movement
-  // repeats it. Only lines that are wholly one direction are handled; see
-  // LineIsRightToLeft().
+  // repeats it.
   if ((event.GetKeyCode() == WXK_LEFT) || (event.GetKeyCode() == WXK_RIGHT)) {
     size_t cursorColumn, cursorLine;
     PositionToXY(CursorPosition(), &cursorColumn, &cursorLine);
-    if (LineIsRightToLeft(cursorLine) && !LineIsMixedDirection(cursorLine))
+
+    bool rightToLeft = false;
+    bool decided = false;
+    if (LineIsMixedDirection(cursorLine)) {
+      // Which way is "forward" on screen depends on the run the caret is
+      // actually sitting in, not the line as a whole - the same reason
+      // MixedDirectionOffset() exists for PositionToPoint().
+      std::vector<BidiRun> runs;
+      if (GetLineBidiRuns(cursorLine, &runs)) {
+        const size_t pos = CursorPosition();
+        for (const auto &r : runs)
+          if ((pos >= r.logicalStart) && (pos <= r.logicalEnd)) {
+            rightToLeft = r.rightToLeft;
+            decided = true;
+            break;
+          }
+      }
+    }
+    // Otherwise (a wholly one-direction line, or a mixed one libfribidi can't
+    // reorder): the line's own direction, if it has one.
+    if (!decided)
+      rightToLeft = LineIsRightToLeft(cursorLine) && !LineIsMixedDirection(cursorLine);
+
+    if (rightToLeft)
       event.m_keyCode = (event.GetKeyCode() == WXK_LEFT) ? WXK_RIGHT : WXK_LEFT;
   }
 
@@ -2551,23 +2573,29 @@ wxPoint EditorCell::PositionToPoint(size_t pos) {
   if ((x < 0) || (y < 0))
     return wxDefaultPosition;
 
-  wxCoord width;
   size_t cX, cY;
-
   PositionToXY(pos, &cX, &cY);
 
-  width = GetLineWidth(cY, cX);
+  wxCoord mixedOffset;
+  if (LineIsMixedDirection(cY) && MixedDirectionOffset(cY, pos, &mixedOffset)) {
+    // The real bidi algorithm places this exactly - the same computation
+    // MarkSelection() already uses (see MixedDirectionOffset()) - superseding
+    // the single-direction mirror/plain-width choice below, which only knows
+    // whether the *whole line* is one direction.
+    x += mixedOffset;
+  } else {
+    const wxCoord width = GetLineWidth(cY, cX);
 
-  // A right-to-left line is drawn in the reverse of the order it is stored in,
-  // so the text before a position is drawn *after* it: the caret belongs that
-  // far in from the line's right end rather than from its left. Mirroring the
-  // measurement is exact as long as the line is wholly one direction, which is
-  // the case LineIsRightToLeft() answers for; a line genuinely mixing scripts
-  // needs the real bidirectional algorithm and is left as it was.
-  if (LineIsRightToLeft(cY) && !LineIsMixedDirection(cY))
-    x += GetLineWidth(cY, LineLength(cY)) - width;
-  else
-    x += width;
+    // A right-to-left line is drawn in the reverse of the order it is stored
+    // in, so the text before a position is drawn *after* it: the caret
+    // belongs that far in from the line's right end rather than from its
+    // left. Mirroring the measurement is exact as long as the line is wholly
+    // one direction, which is the case LineIsRightToLeft() answers for.
+    if (LineIsRightToLeft(cY) && !LineIsMixedDirection(cY))
+      x += GetLineWidth(cY, LineLength(cY)) - width;
+    else
+      x += width;
+  }
 
   // The caret has to follow the text when a right-to-left line is set flush
   // right - the same shift Draw() applies to that line.
@@ -2660,25 +2688,30 @@ void EditorCell::SelectPointText(const wxPoint point) {
     // The line that now follows is pure paranoia.
     pos = std::min(pos, m_text.Length());
   } else {
-    // Text cell
+    // Text cell: search for the position on this display line whose caret -
+    // as PositionToPoint() places it, the same source of truth Draw() and
+    // MarkSelection() use - is closest to the click, instead of re-deriving
+    // the mapping by hand. A per-character forward scan comparing against a
+    // monotonically growing substring width (what used to be here) assumes
+    // stored order is drawn order, which only holds for left-to-right text:
+    // on a right-to-left line it resolved a click to the *mirror image* of
+    // the right position, and a mixed-direction line fares no better.
+    auto distanceTo = [&](size_t candidate) {
+      const wxCoord x = PositionToPoint(candidate).x;
+      return (x > point.x) ? (x - point.x) : (point.x - x);
+    };
 
-    wxString text = m_text;
-
-    wxString::const_iterator it = text.begin() + pos;
-    // Stop at the hard newline OR the soft break that ends this display line
-    // (the soft break at lineStart started it and must not end it at once).
-    while (it != text.end() && *it != '\n' &&
-           !((pos != lineStart) && IsSoftBreakBefore(pos))) {
-      wxCoord width;
-      width =
-        GetTextSize(text.SubString(lineStart, pos)).GetWidth();
-      if (width > posInCell.x)
-        break;
-
-      pos++;
-      ++it;
+    const size_t lineEnd = lineStart + LineLength(lin);
+    size_t best = lineStart;
+    wxCoord bestDist = distanceTo(lineStart);
+    for (size_t candidate = lineStart + 1; candidate <= lineEnd; candidate++) {
+      const wxCoord dist = distanceTo(candidate);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = candidate;
+      }
     }
-    pos = std::min(pos, text.Length());
+    pos = best;
 
     m_displayCaret = true;
   }
@@ -3110,46 +3143,53 @@ bool EditorCell::LineIsMixedDirection(size_t line) {
   return sawRightToLeft && sawLeftToRight;
 }
 
-bool EditorCell::MixedDirectionRunOffsets(size_t line, size_t start, size_t end,
-                                          wxCoord *startOffset, wxCoord *endOffset) {
+bool EditorCell::GetLineBidiRuns(size_t line, std::vector<BidiRun> *runs) {
   if (!Bidi::IsAvailable())
     return false;
 
   const size_t lineStart = XYToPosition(0, line);
   const size_t lineLen = LineLength(line);
-  if ((lineLen == 0) || (start < lineStart) || (end < lineStart))
-    return false;
-  const size_t startCol = start - lineStart;
-  const size_t endCol = end - lineStart;
-  if ((startCol > lineLen) || (endCol > lineLen))
+  if (lineLen == 0)
     return false;
 
   const wxString lineText = m_text.SubString(lineStart, lineStart + lineLen - 1);
-  const std::vector<BidiRun> runs =
-    Bidi::GetRuns(lineText, m_configuration->RightToLeftDocument());
+  *runs = Bidi::GetRuns(lineText, m_configuration->RightToLeftDocument());
+  // Bidi::GetRuns() only ever sees this one line's text, so its runs are
+  // relative to it; shift them to absolute m_text positions so every caller
+  // here can compare them against the positions it already works with.
+  for (auto &r : *runs) {
+    r.logicalStart += lineStart;
+    r.logicalEnd += lineStart;
+  }
+  return true;
+}
 
-  // The run that has to contain *both* ends of [start, end): a range that
-  // itself crosses a direction boundary can't be represented as one
-  // rectangle (see MarkSelection()'s comment on the German/Farsi case), so
-  // this only ever fires for the common case of a range entirely inside one
-  // run.
+bool EditorCell::MixedDirectionOffset(size_t line, size_t position, wxCoord *offset) {
+  std::vector<BidiRun> runs;
+  if (!GetLineBidiRuns(line, &runs))
+    return false;
+
   const BidiRun *run = nullptr;
   for (const auto &r : runs)
-    if ((startCol >= r.logicalStart) && (startCol <= r.logicalEnd) &&
-        (endCol >= r.logicalStart) && (endCol <= r.logicalEnd)) {
+    if ((position >= r.logicalStart) && (position <= r.logicalEnd)) {
       run = &r;
       break;
     }
   if (!run)
     return false;
 
+  // A wrapped continuation line starts indented (see Draw()/GetLineWidth());
+  // the run composition below measures from where the *text* starts, so the
+  // indent has to be added back on top to land in the same coordinate space
+  // as GetLineWidth() and PositionToPoint()'s other callers.
+  wxCoord x = GetLineWidth(line, 0);
+
   // Runs that come before this one on screen, in full: they sit to this
   // run's left regardless of their own direction.
-  wxCoord before = 0;
   for (const auto &r : runs) {
     if (&r == run)
       break;
-    before += GetTextSize(lineText.SubString(r.logicalStart, r.logicalEnd - 1)).GetWidth();
+    x += GetTextSize(m_text.SubString(r.logicalStart, r.logicalEnd - 1)).GetWidth();
   }
 
   // Within the run itself: a left-to-right run measures normally, from its
@@ -3158,20 +3198,14 @@ bool EditorCell::MixedDirectionRunOffsets(size_t line, size_t start, size_t end,
   // it in logical order - the same reasoning SelectionRunLeft() uses for a
   // wholly-right-to-left line, just local to this one run instead of the
   // whole line.
-  auto offsetInLine = [&](size_t column) {
-    wxCoord x = before;
-    if (run->rightToLeft) {
-      if (column < run->logicalEnd)
-        x += GetTextSize(lineText.SubString(column, run->logicalEnd - 1)).GetWidth();
-    } else {
-      if (column > run->logicalStart)
-        x += GetTextSize(lineText.SubString(run->logicalStart, column - 1)).GetWidth();
-    }
-    return x;
-  };
-
-  *startOffset = offsetInLine(startCol);
-  *endOffset = offsetInLine(endCol);
+  if (run->rightToLeft) {
+    if (position < run->logicalEnd)
+      x += GetTextSize(m_text.SubString(position, run->logicalEnd - 1)).GetWidth();
+  } else {
+    if (position > run->logicalStart)
+      x += GetTextSize(m_text.SubString(run->logicalStart, position - 1)).GetWidth();
+  }
+  *offset = x;
   return true;
 }
 

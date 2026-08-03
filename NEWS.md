@@ -1,14 +1,18 @@
 # Current development version
 
-- Selection highlighting (including the "text that coincides with the
-  selection" marker and the diff viewer) is now correctly placed on a line
-  that mixes left-to-right and right-to-left text, for a highlighted range
-  that itself sits inside a single run - e.g. three Farsi letters highlighted
-  because they match the current search term, on a line that also contains
-  Latin text. This uses libfribidi, an optional dependency (`WXM_USE_FRIBIDI`,
-  on by default when found): without it, mixed-direction lines keep the
-  previous single-direction-only approximation. The caret, click-to-position
-  and arrow-key movement don't use it yet and are unchanged.
+- The caret, mouse clicks, arrow-key movement and selection highlighting
+  (including the "text that coincides with the selection" marker and the diff
+  viewer) are now all correctly placed on a line that mixes left-to-right and
+  right-to-left text - e.g. a Farsi word next to a German one. This uses
+  libfribidi, an optional dependency (`WXM_USE_FRIBIDI`, on by default when
+  found): without it, mixed-direction lines keep the previous
+  single-direction-only approximation.
+
+- Fixed: clicking inside right-to-left text (Hebrew, Arabic, Farsi, Urdu)
+  placed the caret at the mirror image of the character actually clicked on -
+  the first letter's position resolved to the last, and the other way round.
+  This was independent of the mixed-direction work above: it also affected a
+  line that was wholly one direction.
 
 - THIRD-PARTY-NOTICES.txt (shown in the "License" tab) now also credits
   wxWidgets and the bundled NanoSVG, which had been missing.
