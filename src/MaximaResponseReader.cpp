@@ -483,6 +483,23 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
     // WillAutoAnswer() can tell without creating the answer cell.
     bool autoAnswer = m_wxMaxima.GetWorksheet()->WillAutoAnswer();
 
+    // --batch's own --help text promises "Halts on questions": with no
+    // interactive user to type an answer and no scripted one to fall back on
+    // (autoAnswer==false), waiting on OpenQuestionCaret()'s answer editor
+    // would instead hang forever -- confirmed via gdb to be exactly the CI
+    // hang in #2183 (openMacFiles/tutorial_10Minutes/testbench_simple.wxmx
+    // all provoke a Maxima question deep in a large worksheet). Log clearly
+    // and exit with an error status instead of stalling.
+    if (m_wxMaxima.m_exitAfterEval && !autoAnswer) {
+      wxLogMessage(_("Batch mode: Maxima asked a question with no scripted "
+                     "answer available (\"%s\"). Halting, as documented for "
+                     "--batch."),
+                   label);
+      wxMaxima::m_exitCode = 1;
+      m_wxMaxima.Close();
+      return;
+    }
+
     if (!label.IsEmpty()) {
       int options = MaximaOutputAppender::AppendOpt::NewLine | MaximaOutputAppender::AppendOpt::BigSkip;
       if (!autoAnswer)

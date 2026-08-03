@@ -1,5 +1,14 @@
 # Current development version
 
+- `--batch`/`--exit-on-error` now actually halts when Maxima asks an
+  interactive question it cannot auto-answer, instead of hanging forever:
+  the process logs the question and exits with an error status, matching
+  what `--batch --help` already promised ("Halts on questions"). This was
+  the root cause of the intermittent CI timeouts on `openMacFiles`,
+  `tutorial_10Minutes`, `rememberingAnswers` and `testbench_simple.wxmx` -
+  confirmed with a live debugger, the evaluation queue was advancing
+  correctly and simply waiting on an answer nobody could provide.
+
 - The worksheet's editor now supports real tab characters: a `'\t'` typed,
   pasted, or loaded from a file stays a real character instead of being
   silently and irreversibly rewritten into 1-4 spaces, and is expanded to the
