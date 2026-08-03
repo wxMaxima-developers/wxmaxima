@@ -430,12 +430,21 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
     // will be the first from the next command.
     m_wxMaxima.m_outputCellsFromCurrentCommand = 0;
     if (m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Empty()) { // queue empty.
-      // This worksheet has drained its evaluation queue, so a clean batch run
-      // is done and may exit normally. Disarm exit-on-error for THIS worksheet
-      // only -- m_exitOnError is process-wide and shared, so clearing it here
-      // would disable exit-on-error in every other window of a --single_process
-      // run (the multithreadtest hang).
-      m_wxMaxima.m_exitOnErrorArmed = false;
+      // NOTE: exit-on-error is deliberately NOT disarmed here. The queue can
+      // legitimately go empty more than once during a single, uninterrupted
+      // batch run -- e.g. a cell with an auto-answered question empties the
+      // queue, and only afterwards does OpenQuestionCaret()'s queued
+      // menu_evaluate event refill it with the next cell. Disarming on the
+      // first such transient emptying left --exit-on-error permanently
+      // toothless for the rest of the file: a later, real Maxima error would
+      // then call ExitAfterEval(false) instead of exiting, leaving the
+      // process idling forever with nobody left to interact with it (see
+      // #2183's rememberingAnswers regression -- confirmed live in gdb: by
+      // the time a "the process hangs" report was traced,
+      // m_exitOnErrorArmed and m_exitAfterEval had both already gone false
+      // well before the point that actually hung). The real "clean batch run
+      // is done" disarm point is wxMaxima::OnIdle(), which additionally
+      // requires m_fileToOpen and m_evalOnStartup to have settled.
       if (m_wxMaxima.m_maximaError)
         m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::maximaerror);
       else

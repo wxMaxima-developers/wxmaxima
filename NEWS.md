@@ -9,6 +9,17 @@
   confirmed with a live debugger, the evaluation queue was advancing
   correctly and simply waiting on an answer nobody could provide.
 
+- `--exit-on-error` no longer goes permanently toothless partway through a
+  worksheet that legitimately empties its evaluation queue more than once
+  in a single batch run (e.g. one using auto-answered questions, where each
+  answered question empties the queue before the next cell refills it): the
+  per-worksheet arming flag was previously disarmed on the first such
+  transient emptying rather than at actual batch completion, so a real
+  Maxima error arriving afterwards silently dropped the session out of
+  batch mode instead of exiting, leaving it to idle forever with nobody
+  left to interact with it - confirmed live in gdb as the cause of the
+  `rememberingAnswers` test's intermittent CI timeout.
+
 - The worksheet's editor now supports real tab characters: a `'\t'` typed,
   pasted, or loaded from a file stays a real character instead of being
   silently and irreversibly rewritten into 1-4 spaces, and is expanded to the

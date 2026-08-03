@@ -1997,6 +1997,16 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
   if (m_exitAfterEval && GetWorksheet()->GetEvaluationQueue().Empty() &&
       m_fileToOpen.IsEmpty() && (!m_evalOnStartup))
     {
+      // This -- not a merely transient evaluation-queue-empty moment, which
+      // can recur mid-run (e.g. between an auto-answered question and the
+      // next cell it queues) -- is the actual "clean batch run is done"
+      // point: disarm exit-on-error for THIS worksheet only now, so a
+      // subsequent unrelated error (e.g. from a background task) can't force
+      // -close a window whose real work already finished normally.
+      // m_exitOnError itself is process-wide and shared, so clearing that
+      // instead would disable exit-on-error in every other window of a
+      // --single_process run (the multithreadtest hang).
+      m_exitOnErrorArmed = false;
       // SaveFile is now a no-op when the session has no file name and we are
       // non-interactive (a failed initial load leaves exactly that state); the
       // error exit code for that case is set where the load fails.
