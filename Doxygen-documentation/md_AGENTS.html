@@ -158,13 +158,42 @@ Communication with Maxima</h2>
     thread-safety of logging from that thread at all remains unverified &amp;ndash;
     treat any such tracing as temporary/debug-only, never ship it).
 
-@subsection autotoc_md21 File Formats
+- **ASCII-art 2D display (&lt;tt&gt;set_display('ascii)&lt;/tt&gt;) and &lt;tt&gt;*alt-display2d*&lt;/tt&gt;:**
+  when &lt;tt&gt;\$display2d&lt;/tt&gt; is on, Maxima's evaluator checks the special variable
+  &lt;tt&gt;*alt-display2d*&lt;/tt&gt; before printing a result: if it's a function symbol,
+  that function is called &lt;em&gt;instead of&lt;/em&gt; Maxima's own stock printer (this is
+  how &lt;tt&gt;mydispla&lt;/tt&gt; in &lt;tt&gt;wxMathML.lisp&lt;/tt&gt; produces the normal &lt;tt&gt;\&lt;mth\&gt;&lt;/tt&gt;/XML output);
+  if it's &lt;tt&gt;nil&lt;/tt&gt;, Maxima falls through to its own built-in ASCII-art printer,
+  which pads a result's lines with literal spaces so a multi-line fraction/
+  matrix/etc. lines up correctly under the &lt;tt&gt;(%oN)&lt;/tt&gt; label &amp;ndash; but that padding
+  assumes every line, including the label, ends up rendered in one uniform
+  monospace font. &lt;tt&gt;wxMathML.lisp&lt;/tt&gt;'s &lt;tt&gt;wx-ascii-displa&lt;/tt&gt; wraps that stock
+  printer in &lt;tt&gt;\&lt;wxxml-asciimath\&gt;&lt;/tt&gt;/&lt;tt&gt;\&lt;/wxxml-asciimath\&gt;&lt;/tt&gt; markers &lt;em&gt;without&lt;/em&gt;
+  reimplementing it: it dynamically rebinds &lt;tt&gt;*alt-display2d*&lt;/tt&gt; to &lt;tt&gt;nil&lt;/tt&gt; for
+  just the duration of &lt;tt&gt;(displa x)&lt;/tt&gt;, which re-enters Maxima's own dispatch
+  and this time takes the stock ASCII path (confirmed live: this is
+  correctly reentrant-safe through Maxima's own recursive sub-expression
+  &lt;tt&gt;displa&lt;/tt&gt; calls, e.g. matrix rows, since they run inside the same dynamic
+  extent). &lt;tt&gt;Maxima::ProcessData()&lt;/tt&gt; only fires the corresponding
+  &lt;tt&gt;XML_ASCIIMATH&lt;/tt&gt; event once it has seen the &lt;em&gt;complete&lt;/em&gt; matching closing
+  tag, so &lt;tt&gt;MaximaResponseReader::ReadAsciiMath()&lt;/tt&gt; always receives one whole
+  block in one piece and can render all of it in one uniform style &amp;ndash;
+  before this, &lt;tt&gt;ReadMiscText()&lt;/tt&gt; guessed a chunk's style from whether it
+  happened to start with &lt;tt&gt;"(%"&lt;/tt&gt;, and since chunks are split by socket/timer
+  batching (not by where Maxima's actual output boundaries are), a block's
+  label line could land in a separate batch than its neighbors and get
+  misclassified into a different (proportional) font, breaking the
+  alignment Maxima's padding assumed &amp;ndash; root-caused with a raw
+  &lt;tt&gt;:lisp-quiet (with-input-from-string ...)&lt;/tt&gt; / socket-level reproduction
+  (see the debugging technique note above) before the fix, not guessed.
+
+@subsection autotoc_md22 File Formats
 
 - **&lt;tt&gt;.wxmx&lt;/tt&gt;** &amp;ndash; a ZIP archive holding &lt;tt&gt;content.xml&lt;/tt&gt; (the MathML-like XML) plus
   the embedded images. The format version lives in &lt;tt&gt;src/WXMXformat.h&lt;/tt&gt;.
 - **&lt;tt&gt;.wxm&lt;/tt&gt;** &amp;ndash; the plain-text format, read by &lt;tt&gt;Format::ParseWXMFile()&lt;/tt&gt;.
 
-@section autotoc_md22 Conventions &amp; Standards
+@section autotoc_md23 Conventions &amp; Standards
 
 - &lt;strong&gt;Git Environment:&lt;/strong&gt; Note that running &lt;tt&gt;git diff&lt;/tt&gt; might launch the visual diff tool &lt;tt&gt;meld&lt;/tt&gt; instead of outputting to the terminal. Always use &lt;tt&gt;git diff --no-ext-diff&lt;/tt&gt; if you need terminal output.
 - &lt;strong&gt;String Literals &amp; Translations:&lt;/strong&gt; Use the &lt;tt&gt;wxS()&lt;/tt&gt; macro for all string literals and &lt;tt&gt;_()&lt;/tt&gt; for user-facing translatable strings.
@@ -186,7 +215,7 @@ Communication with Maxima</h2>
 - **CI Warnings Live On the Non-&lt;/tt&gt;-Werror&lt;tt&gt;Jobs:**&lt;/tt&gt;compile_latest_and_test&lt;tt&gt;and&lt;/tt&gt;compile_without_webview&lt;tt&gt;(Ubuntu) build with&lt;/tt&gt;-Werror&lt;tt&gt;, so they can't show warnings by construction -- check&lt;/tt&gt;compile_2204&lt;tt&gt;(Ubuntu 22.04, plain&lt;/tt&gt;-Wall -Wextra&lt;tt&gt;, GCC 11) for real warnings that survive to a release build. Don't assume that job's warning list is exhaustive, though: e.g. the&lt;/tt&gt;[[maybe_unused]]&lt;tt&gt;-on-a-data-member GCC\&lt;12 warning above showed up for&lt;/tt&gt;Printout.h&lt;tt&gt;in one such log but not for the identical pattern in&lt;/tt&gt;SvgBitmap.h&lt;tt&gt;/&lt;/tt&gt;wxMathml.h&lt;tt&gt;in the same run, for reasons that weren't tracked down (not precompiled headers --&lt;/tt&gt;WXM_ENABLE_PRECOMPILED_HEADERS&lt;tt&gt;defaults&lt;/tt&gt;OFF&lt;tt&gt;) -- a clean local build with&lt;/tt&gt;g++-11 -Wall -Wextra&lt;tt&gt;is the more reliable check for this specific class of warning.
 - **Tab Characters in&lt;/tt&gt;EditorCell&lt;tt&gt;:** A&lt;/tt&gt;'\t'&lt;tt&gt;is a real, single character in&lt;/tt&gt;m_text&lt;tt&gt;(see&lt;/tt&gt;EditorCell::NormalizeLineEndings()&lt;tt&gt;, which replaced the old&lt;/tt&gt;TabExpand()&lt;tt&gt;that irreversibly rewrote every tab to 1-4 spaces on input/paste/load). It is expanded to the next 4-column tab stop -- one column being the width of a space glyph in the current font -- only where text becomes pixels, via&lt;/tt&gt;EditorCell::NextTabStop(startX)&lt;tt&gt;/&lt;/tt&gt;MeasureTextWidth(startX, text)&lt;tt&gt;. Tab width is **position-dependent**, the one thing&lt;/tt&gt;GetTextExtent()&lt;tt&gt;/&lt;/tt&gt;GetTextSize()&lt;tt&gt;cannot compute on their own (unlike every other character), so it can never be cached the way&lt;/tt&gt;StyledText::SetWidth()&amp;lsquo; caches other tokens&amp;rsquo; widths. &lt;tt&gt;MaximaTokenizer&lt;/tt&gt; guarantees a tab is always its own isolated, single-character token (never merged into a space run, mirroring how a newline is already its own token) &amp;ndash; this is &lt;em&gt;load-bearing&lt;/em&gt;: every &lt;tt&gt;m_styledText&lt;/tt&gt;-based site (&lt;tt&gt;Draw()&lt;/tt&gt;, &lt;tt&gt;Recalculate()&lt;/tt&gt;, &lt;tt&gt;GetLineWidth()&lt;/tt&gt;, &lt;tt&gt;SelectPointText()&lt;/tt&gt;'s code-cell branch, &lt;tt&gt;StyleTextCode()&lt;/tt&gt;) only needs a &lt;tt&gt;text == wxS("\t")&lt;/tt&gt; equality check as a result, never substring splitting. Prose/text cells don't go through &lt;tt&gt;MaximaTokenizer&lt;/tt&gt; at all, so &lt;tt&gt;EditorCell::StyleTextTexts()&lt;/tt&gt; uses its own splitter, &lt;tt&gt;PushTextLine()&lt;/tt&gt;, to get the same isolation guarantee for a tab embedded in an otherwise plain line of text. Sites that measure a raw &lt;tt&gt;m_text&lt;/tt&gt; substring instead of a single token (&lt;tt&gt;MarkSelection()&lt;/tt&gt;, &lt;tt&gt;MixedDirectionOffset()&lt;/tt&gt;, &lt;tt&gt;StyleTextTexts()&lt;/tt&gt;'s wrap check) go through &lt;tt&gt;MeasureTextWidth()&lt;/tt&gt; instead, which splits on &amp;lsquo;&amp;rsquo;\t'&lt;tt&gt;internally since a substring can still have one embedded anywhere. Left/Right arrow and Delete need **no special-casing** for tabs -- they already move/delete exactly one&lt;/tt&gt;m_text&lt;tt&gt;character, which is now correct automatically. The plain&lt;/tt&gt;WXK_BACK` case's old "gobble up to 4 trailing spaces" shim was a workaround for the old space-expanded-tab world and is gone; a real tab deletes in one plain single-character backspace like anything else.
 
-@section autotoc_md27 Layout &amp; Compatibility
+@section autotoc_md29 Layout &amp; Compatibility
 
 - &lt;strong&gt;Mathematical Cell Padding:&lt;/strong&gt; Use &lt;tt&gt;MC_TEXT_PADDING&lt;/tt&gt; (in &lt;tt&gt;Configuration.h&lt;/tt&gt;) for text-based cells. &lt;strong&gt;Exception:&lt;/strong&gt; &lt;tt&gt;DigitCell&lt;/tt&gt; does not include padding to ensure visual consistency in broken-up numbers.
 - &lt;strong&gt;Three-Step Layout Process:&lt;/strong&gt;

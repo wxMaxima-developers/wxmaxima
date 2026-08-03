@@ -128,7 +128,8 @@ var menudata={children:[
 {text:"t",url:"functions_eval.html#index_t"},
 {text:"u",url:"functions_eval.html#index_u"},
 {text:"v",url:"functions_eval.html#index_v"},
-{text:"w",url:"functions_eval.html#index_w"}]},
+{text:"w",url:"functions_eval.html#index_w"},
+{text:"x",url:"functions_eval.html#index_x"}]},
 {text:"Related Functions",url:"functions_rela.html"}]}]},
 {text:"Files",url:"files.html",children:[
 {text:"File List",url:"files.html"},
