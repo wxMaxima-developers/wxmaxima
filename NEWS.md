@@ -1,5 +1,14 @@
 # Current development version
 
+- wxMaxima's translations can now also be contributed online via
+  <https://crowdin.com/project/wxmaxima-gui>, in addition to editing the
+  `.po` files in `locales/` directly.
+
+- The "Revert to defaults" tab of the configuration dialogue is scrollable
+  again, like every other tab. It had been left as a plain, non-scrolling
+  panel, so on a screen too short to show it in full there was no way to
+  reach the buttons below the fold.
+
 - The LaTeX export can carry the worksheet inside the PDF. With "Export
   contains the .wxmx file" set -- the same preference the HTML export already
   used to offer the session as a download -- the exported document embeds the

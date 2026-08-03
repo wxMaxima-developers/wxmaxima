@@ -25,6 +25,17 @@ contributions are always welcome.
 
 The wxMaxima Team
 
+## Translations
+
+WxMaxima is translated by volunteers, and help with translations is always
+welcome, whether that means improving an existing translation or adding a
+new language. Translations can be contributed in either of two ways:
+
+- Directly, by editing the `.po` files in the `locales/` subdirectory
+  (see `locales/README.md` for details), or
+- Online, without needing any of the source code, via our project on
+  Crowdin: <https://crowdin.com/project/wxmaxima-gui>
+
 ## Note concerning Wayland (recent Linux/BSD distributions)
 
 There seem to be issues with the Wayland Display Server and wxWidgets.

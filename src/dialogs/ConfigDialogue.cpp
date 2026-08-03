@@ -938,11 +938,11 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel() {
 }
 
 wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel() {
-  wxPanel *panel = new wxPanel(m_notebook, wxID_ANY);
-  // panel->SetScrollRate(5 * GetContentScaleFactor(),
-  //                      5 * GetContentScaleFactor());
-  // panel->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
-  //                          GetContentScaleFactor() * mMinPanelHeight));
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, wxID_ANY);
+  panel->SetScrollRate(5 * GetContentScaleFactor(),
+                       5 * GetContentScaleFactor());
+  panel->SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth,
+                           GetContentScaleFactor() * mMinPanelHeight));
 
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   // WrappingStaticText *helpText1 = new WrappingStaticText(
