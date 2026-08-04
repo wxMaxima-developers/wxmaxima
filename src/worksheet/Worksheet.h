@@ -1517,6 +1517,18 @@ public:
   int ReplaceAll(const wxString &oldString, const wxString &newString, bool ignoreCase, bool searchInInput = true, bool searchInOutput = true);
   int ReplaceAll_RegEx(const wxString &oldString, const wxString &newString, bool searchInInput = true, bool searchInOutput = true);
 
+  /*! Anonymize the code cells in the current selection for a bug report (GH #1339).
+
+    Replaces every variable/function name that isn't built into Maxima (see
+    AutoComplete::GetSymbolList()) with a random, collision-free name, the
+    same replacement everywhere the original name occurs within the scanned
+    cells. Only code cells (GC_TYPE_CODE) are touched; text/heading cells are
+    left alone. If nothing is selected, asks the user whether to anonymize
+    the whole document instead of silently doing nothing or silently doing
+    everything. All edits are grouped into a single document-level undo step.
+  */
+  void AnonymizeCodeCells();
+
   wxString GetInputAboveCaret();
 
   wxString GetOutputAboveCaret();

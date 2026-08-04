@@ -400,6 +400,7 @@ const wxWindowIDRef EventIDs::menu_plot_format(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_build_info(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_register_wxmx_difftool(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_bug_report(wxWindow::NewControlId());
+const wxWindowIDRef EventIDs::menu_anonymize(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_add_path(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_evaluate_all_visible(wxWindow::NewControlId());
 const wxWindowIDRef EventIDs::menu_evaluate_all(wxWindow::NewControlId());

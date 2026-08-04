@@ -1986,6 +1986,12 @@ void wxMaximaFrame::SetupHelpMenu() {
                      _("Info about Maxima build"), wxITEM_NORMAL);
   m_HelpMenu->Append(EventIDs::menu_bug_report, _("&Bug Report"), _("Report bug"),
                      wxITEM_NORMAL);
+  m_HelpMenu->Append(EventIDs::menu_anonymize, _("Anonymize Code for Bug Report"),
+                     _("Replace non-builtin variable and function names in the "
+                       "selected code cells (or the whole document) with random "
+                       "names, so a worksheet can be shared without revealing "
+                       "its original names"),
+                     wxITEM_NORMAL);
   m_HelpMenu->Append(EventIDs::menu_license, _("&License"), _("wxMaxima's license"),
                      wxITEM_NORMAL);
   m_HelpMenu->Append(EventIDs::menu_changelog, _("Change Log"), _("wxMaxima's ChangeLog"),
