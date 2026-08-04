@@ -693,9 +693,6 @@ static size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetLiveContr
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:ae711291ce968e22ebb908c93b5df38e6"><td class="memItemLeft" align="right" valign="top"><a id="ae711291ce968e22ebb908c93b5df38e6" name="ae711291ce968e22ebb908c93b5df38e6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InitBitFields_ListCell</b> ()</td></tr>
-<tr class="separator:ae711291ce968e22ebb908c93b5df38e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e96373d1087101e9c1bb115e0320805"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2e96373d1087101e9c1bb115e0320805">BreakUpAndMark</a> () const</td></tr>
 <tr class="memdesc:a2e96373d1087101e9c1bb115e0320805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break up the internal cells of this cell, and mark it as broken up.  <br /></td></tr>
 <tr class="separator:a2e96373d1087101e9c1bb115e0320805"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -739,7 +736,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_signWidth</b> = 12</
 <a class="el" href="classCachedInteger.html">CachedInteger</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_signHeight</b></td></tr>
 <tr class="separator:a9e900e4154d96b8a52ddee145d7f2edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51fb0d322d5997b0b50508cc267d9b7c"><td class="memItemLeft" align="right" valign="top"><a id="a51fb0d322d5997b0b50508cc267d9b7c" name="a51fb0d322d5997b0b50508cc267d9b7c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_drawAsAscii</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_drawAsAscii</b>: 1 = true</td></tr>
 <tr class="memdesc:a51fb0d322d5997b0b50508cc267d9b7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">How to create a big parenthesis sign? <br /></td></tr>
 <tr class="separator:a51fb0d322d5997b0b50508cc267d9b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memItemLeft" align="right" valign="top">wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a82735e7fb2d5fd1dbefd3a37ae758b32">m_currentPoint</a> {-1, -1}</td></tr>
@@ -812,10 +809,10 @@ std::map&lt; wxString, wxString &gt;&#160;</td><td class="memItemRight" valign="
 <tr class="memdesc:a0b6bb30cecbaf8f384ba0cdfb656edcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extra XML attributes we don't know yet. <br /></td></tr>
 <tr class="separator:a0b6bb30cecbaf8f384ba0cdfb656edcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e69a7c575694780a337056791b70c37"><td class="memItemLeft" align="right" valign="top"><a id="a7e69a7c575694780a337056791b70c37" name="a7e69a7c575694780a337056791b70c37"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_forceBreakLine</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_forceBreakLine</b>: 1 = false</td></tr>
 <tr class="separator:a7e69a7c575694780a337056791b70c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85db96d7703ebbd7bc40ddf6ef0e8c75"><td class="memItemLeft" align="right" valign="top"><a id="a85db96d7703ebbd7bc40ddf6ef0e8c75" name="a85db96d7703ebbd7bc40ddf6ef0e8c75"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = false</td></tr>
 <tr class="separator:a85db96d7703ebbd7bc40ddf6ef0e8c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -3417,7 +3414,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

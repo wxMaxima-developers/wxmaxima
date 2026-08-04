@@ -993,9 +993,6 @@ wxCoord&#160;</td><td class="memItemRight" valign="bottom"><b>GetInputIndent</b>
 <tr class="memitem:af11c1e46f8f268933872da56c890a9d9"><td class="memItemLeft" align="right" valign="top"><a id="af11c1e46f8f268933872da56c890a9d9" name="af11c1e46f8f268933872da56c890a9d9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateCellsInGroup</b> ()</td></tr>
 <tr class="separator:af11c1e46f8f268933872da56c890a9d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefae4ff06ce84e00a83abf09ba6d5829"><td class="memItemLeft" align="right" valign="top"><a id="aefae4ff06ce84e00a83abf09ba6d5829" name="aefae4ff06ce84e00a83abf09ba6d5829"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InitBitFields_GroupCell</b> ()</td></tr>
-<tr class="separator:aefae4ff06ce84e00a83abf09ba6d5829"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e96373d1087101e9c1bb115e0320805"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2e96373d1087101e9c1bb115e0320805">BreakUpAndMark</a> () const</td></tr>
 <tr class="memdesc:a2e96373d1087101e9c1bb115e0320805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break up the internal cells of this cell, and mark it as broken up.  <br /></td></tr>
 <tr class="separator:a2e96373d1087101e9c1bb115e0320805"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1077,27 +1074,27 @@ int16_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_numberedAnswersC
 <tr class="memdesc:a1ea2f385e51bb846b2799fae710014a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which type this cell is of? <br /></td></tr>
 <tr class="separator:a1ea2f385e51bb846b2799fae710014a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c0fc474baebfe58f022886d4c67df31"><td class="memItemLeft" align="right" valign="top"><a id="a3c0fc474baebfe58f022886d4c67df31" name="a3c0fc474baebfe58f022886d4c67df31"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_autoAnswer</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_autoAnswer</b>: 1 = false</td></tr>
 <tr class="memdesc:a3c0fc474baebfe58f022886d4c67df31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> automatically fill in the answer to questions? <br /></td></tr>
 <tr class="separator:a3c0fc474baebfe58f022886d4c67df31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cb323adf4d78fdf03b7c835a45703eb"><td class="memItemLeft" align="right" valign="top"><a id="a1cb323adf4d78fdf03b7c835a45703eb" name="a1cb323adf4d78fdf03b7c835a45703eb"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_inEvaluationQueue</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_inEvaluationQueue</b>: 1 = false</td></tr>
 <tr class="separator:a1cb323adf4d78fdf03b7c835a45703eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad01bcf8bec367f43ac823d1388b1550c"><td class="memItemLeft" align="right" valign="top"><a id="ad01bcf8bec367f43ac823d1388b1550c" name="ad01bcf8bec367f43ac823d1388b1550c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_lastInEvaluationQueue</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_lastInEvaluationQueue</b>: 1 = false</td></tr>
 <tr class="separator:ad01bcf8bec367f43ac823d1388b1550c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05a57d396b4920f2eb5062fd6e65f04a"><td class="memItemLeft" align="right" valign="top"><a id="a05a57d396b4920f2eb5062fd6e65f04a" name="a05a57d396b4920f2eb5062fd6e65f04a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_updateConfusableCharWarnings</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_updateConfusableCharWarnings</b>: 1 = true</td></tr>
 <tr class="separator:a05a57d396b4920f2eb5062fd6e65f04a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af78c9f91699bd500e5a167027760de40"><td class="memItemLeft" align="right" valign="top"><a id="af78c9f91699bd500e5a167027760de40" name="af78c9f91699bd500e5a167027760de40"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_suppressTooltipMarker</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_suppressTooltipMarker</b>: 1 = false</td></tr>
 <tr class="memdesc:af78c9f91699bd500e5a167027760de40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suppress the yellow ToolTip marker? <br /></td></tr>
 <tr class="separator:af78c9f91699bd500e5a167027760de40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6533764a8a367825d9ad862a9c9b5f83"><td class="memItemLeft" align="right" valign="top"><a id="a6533764a8a367825d9ad862a9c9b5f83" name="a6533764a8a367825d9ad862a9c9b5f83"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_cellsAppended</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_cellsAppended</b>: 1 = false</td></tr>
 <tr class="memdesc:a6533764a8a367825d9ad862a9c9b5f83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output cells were appended since the last layout, so a recalculation is needed (see <a class="el" href="classGroupCell.html#a2b1a8fb21cbb4f11e3a4c17726645a44" title="True, if something that affects the cell size has changed.">NeedsRecalculation()</a>); cleared once the group is recalculated. <br /></td></tr>
 <tr class="separator:a6533764a8a367825d9ad862a9c9b5f83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad511e87de0bc16659030d93208a57055"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#ad511e87de0bc16659030d93208a57055">m_layoutSuppressed</a>: 1</td></tr>
+<tr class="memitem:ad511e87de0bc16659030d93208a57055"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#ad511e87de0bc16659030d93208a57055">m_layoutSuppressed</a>: 1 = false</td></tr>
 <tr class="memdesc:ad511e87de0bc16659030d93208a57055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Laying out this group's output exceeded the configured deadline.  <br /></td></tr>
 <tr class="separator:ad511e87de0bc16659030d93208a57055"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memItemLeft" align="right" valign="top">wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a82735e7fb2d5fd1dbefd3a37ae758b32">m_currentPoint</a> {-1, -1}</td></tr>
@@ -1170,10 +1167,10 @@ std::map&lt; wxString, wxString &gt;&#160;</td><td class="memItemRight" valign="
 <tr class="memdesc:a0b6bb30cecbaf8f384ba0cdfb656edcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extra XML attributes we don't know yet. <br /></td></tr>
 <tr class="separator:a0b6bb30cecbaf8f384ba0cdfb656edcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e69a7c575694780a337056791b70c37"><td class="memItemLeft" align="right" valign="top"><a id="a7e69a7c575694780a337056791b70c37" name="a7e69a7c575694780a337056791b70c37"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_forceBreakLine</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_forceBreakLine</b>: 1 = false</td></tr>
 <tr class="separator:a7e69a7c575694780a337056791b70c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85db96d7703ebbd7bc40ddf6ef0e8c75"><td class="memItemLeft" align="right" valign="top"><a id="a85db96d7703ebbd7bc40ddf6ef0e8c75" name="a85db96d7703ebbd7bc40ddf6ef0e8c75"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = false</td></tr>
 <tr class="separator:a85db96d7703ebbd7bc40ddf6ef0e8c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
@@ -4340,7 +4337,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>

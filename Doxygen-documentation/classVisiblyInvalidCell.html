@@ -756,9 +756,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateToolTip</b> ()<
 <tr class="memitem:a51928b9c5367910d0b0a0273bf1f5691"><td class="memItemLeft" align="right" valign="top"><a id="a51928b9c5367910d0b0a0273bf1f5691" name="a51928b9c5367910d0b0a0273bf1f5691"></a>
 wxSize&#160;</td><td class="memItemRight" valign="bottom"><b>CalculateTextSize</b> (wxDC *dc, const wxString &amp;text, TextCell::TextIndex const index) const</td></tr>
 <tr class="separator:a51928b9c5367910d0b0a0273bf1f5691"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bdb7d3021768409d668edda7f0f3b9b"><td class="memItemLeft" align="right" valign="top"><a id="a0bdb7d3021768409d668edda7f0f3b9b" name="a0bdb7d3021768409d668edda7f0f3b9b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InitBitFields_TextCell</b> ()</td></tr>
-<tr class="separator:a0bdb7d3021768409d668edda7f0f3b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e96373d1087101e9c1bb115e0320805"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a2e96373d1087101e9c1bb115e0320805">BreakUpAndMark</a> () const</td></tr>
 <tr class="memdesc:a2e96373d1087101e9c1bb115e0320805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break up the internal cells of this cell, and mark it as broken up.  <br /></td></tr>
 <tr class="separator:a2e96373d1087101e9c1bb115e0320805"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -804,11 +801,11 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_displayedText</
 std::vector&lt; <a class="el" href="structTextCell_1_1SizeEntry.html">SizeEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_sizeCache</b></td></tr>
 <tr class="separator:a52a50b102b17fcdaca56e883a80fa1ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29a7ea98c248a741844dc13dff28c6c3"><td class="memItemLeft" align="right" valign="top"><a id="a29a7ea98c248a741844dc13dff28c6c3" name="a29a7ea98c248a741844dc13dff28c6c3"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_dontEscapeOpeningParenthesis</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_dontEscapeOpeningParenthesis</b>: 1 = false</td></tr>
 <tr class="memdesc:a29a7ea98c248a741844dc13dff28c6c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is an ending "(" of a function name the opening parenthesis of the function? <br /></td></tr>
 <tr class="separator:a29a7ea98c248a741844dc13dff28c6c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc72edb63ab7cdfcb2739807452d9019"><td class="memItemLeft" align="right" valign="top"><a id="abc72edb63ab7cdfcb2739807452d9019" name="abc72edb63ab7cdfcb2739807452d9019"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_promptTooltip</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_promptTooltip</b>: 1 = false</td></tr>
 <tr class="memdesc:abc72edb63ab7cdfcb2739807452d9019"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default to a special tooltip for prompts? <br /></td></tr>
 <tr class="separator:abc72edb63ab7cdfcb2739807452d9019"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82735e7fb2d5fd1dbefd3a37ae758b32"><td class="memItemLeft" align="right" valign="top">wxPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a82735e7fb2d5fd1dbefd3a37ae758b32">m_currentPoint</a> {-1, -1}</td></tr>
@@ -881,10 +878,10 @@ std::map&lt; wxString, wxString &gt;&#160;</td><td class="memItemRight" valign="
 <tr class="memdesc:a0b6bb30cecbaf8f384ba0cdfb656edcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extra XML attributes we don't know yet. <br /></td></tr>
 <tr class="separator:a0b6bb30cecbaf8f384ba0cdfb656edcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e69a7c575694780a337056791b70c37"><td class="memItemLeft" align="right" valign="top"><a id="a7e69a7c575694780a337056791b70c37" name="a7e69a7c575694780a337056791b70c37"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_forceBreakLine</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_forceBreakLine</b>: 1 = false</td></tr>
 <tr class="separator:a7e69a7c575694780a337056791b70c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85db96d7703ebbd7bc40ddf6ef0e8c75"><td class="memItemLeft" align="right" valign="top"><a id="a85db96d7703ebbd7bc40ddf6ef0e8c75" name="a85db96d7703ebbd7bc40ddf6ef0e8c75"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = false</td></tr>
 <tr class="separator:a85db96d7703ebbd7bc40ddf6ef0e8c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
@@ -3519,7 +3516,7 @@ template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base
 </div><div class="memdoc">
 
 <p>Allows to change the text a <a class="el" href="classTextCell.html" title="A Text cell.">TextCell</a> contains. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Do we ever use this function? </dd></dl>
 
 </div>
 </div>
