@@ -50,7 +50,6 @@ IntCell::IntCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&upperLimit, std::unique_ptr<Cell> &&var)
   : Cell(group, config), m_base(std::move(base)), m_var(std::move(var)),
     m_lowerLimit(std::move(lowerLimit)), m_upperLimit(std::move(upperLimit)) {
-  InitBitFields_IntCell();
   SetStyle(TS_VARIABLE);
   MakeBreakUpCells();
 }

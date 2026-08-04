@@ -34,7 +34,6 @@ LimitCell::LimitCell(GroupCell *group, Configuration *config,
                      std::unique_ptr<Cell> &&name)
   : Cell(group, config), m_name(std::move(name)), m_base(std::move(base)),
     m_under(std::move(under)) {
-  InitBitFields_LimitCell();
   SetStyle(TS_VARIABLE);
   MakeBreakUpCells();
 }

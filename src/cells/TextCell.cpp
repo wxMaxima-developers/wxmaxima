@@ -38,7 +38,6 @@ TextCell::TextCell(GroupCell *group, Configuration *config,
                    const wxString &text, TextStyle style)
   : Cell(group, config)
 {
-  InitBitFields_TextCell();
   switch (style) {
   case TS_MATH:
     m_type = MC_TYPE_TEXT;

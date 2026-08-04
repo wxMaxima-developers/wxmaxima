@@ -156,13 +156,8 @@ private:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields_FracCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_inExponent = false;
-    }
   //! Fractions in exponents are shown in their linear form.
-  bool m_inExponent : 1 /* InitBitFields_FracCell */;
+  bool m_inExponent : 1 = false;
 };
 
 #endif // FRACCELL_H

@@ -1166,20 +1166,6 @@ protected:
 private:
 //** Bitfield objects (2 bytes)
 //**
-  void InitBitFields_Cell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_ownsToolTip = false;
-      m_bigSkip = false;
-      m_isBrokenIntoLines = false;
-      m_isHidden = false;
-      m_isHidableMultSign = false;
-      m_suppressMultiplicationDot = false;
-      m_breakLine = false;
-      m_forceBreakLine = false;
-      m_highlight = false;
-    }
-
   /*! (Re)compute the cached list geometry if any of it is invalid.
 
     Walks the draw list once starting at this cell and fills m_cachedCenterList,
@@ -1188,28 +1174,23 @@ private:
     O(1) after the first call. A no-op while all four caches are still valid. */
   void UpdateListCaches() const;
 
-  // In the boolean bit fields below, InitBitFields_Cell is an indication that
-  // the InitBitFields_Cell() method initializes a given field. It should be
-  // only added once such initialization is in place. It makes it easier
-  // to verify that all bit fields are initialized.
-
   //! Whether the cell owns its m_tooltip - otherwise it points to a static string.
-  mutable bool m_ownsToolTip : 1 /* InitBitFields_Cell */;
-  bool m_bigSkip : 1 /* InitBitFields_Cell */;
-  mutable bool m_isBrokenIntoLines : 1 /* InitBitFields_Cell */;
-  bool m_isHidden : 1 /* InitBitFields_Cell */;
-  bool m_isHidableMultSign : 1 /* InitBitFields_Cell */;
-  bool m_suppressMultiplicationDot : 1 /* InitBitFields_Cell */;
+  mutable bool m_ownsToolTip : 1 = false;
+  bool m_bigSkip : 1 = false;
+  mutable bool m_isBrokenIntoLines : 1 = false;
+  bool m_isHidden : 1 = false;
+  bool m_isHidableMultSign : 1 = false;
+  bool m_suppressMultiplicationDot : 1 = false;
   //! Are we allowed to add a line break before this cell?
-  mutable bool m_breakLine : 1 /* InitBitFields_Cell */;
+  mutable bool m_breakLine : 1 = false;
 protected:
   //! The UUID of this cell
   wxString m_uuid;
   //! Extra XML attributes we don't know yet
   std::map<wxString, wxString> m_extraAttributes;
 
-  mutable bool m_forceBreakLine : 1 /* InitBitFields_Cell */;
-  bool m_highlight : 1 /* InitBitFields_Cell */;
+  mutable bool m_forceBreakLine : 1 = false;
+  bool m_highlight : 1 = false;
 
 protected:
   friend class InnerCellIterator;

@@ -148,14 +148,8 @@ private:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields_SumCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_displayParen = true;
-    }
-
   //! Display m_paren if true, or Base() if false
-  mutable bool m_displayParen : 1 /* InitBitFields_SumCell */;
+  mutable bool m_displayParen : 1 = true;
 };
 
 #endif // SUMCELL_H

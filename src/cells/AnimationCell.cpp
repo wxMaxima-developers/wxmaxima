@@ -56,7 +56,6 @@ AnimationCell::AnimationCell(GroupCell *group, Configuration *config,
     m_displayed(0), m_imageBorderWidth(Scale_Px(1)) {
   if (framerate > 0)
     m_framerate = framerate;
-  InitBitFields_AnimationCell();
   m_type = MC_TYPE_SLIDE;
 }
 

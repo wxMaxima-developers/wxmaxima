@@ -101,8 +101,10 @@ public:
 protected:
   void DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) const;
   void DrawBigRightOpenBracket(wxDC *dc, wxPoint point) const;
-  bool m_leftBracketOpensLeft;
-  bool m_rightBracketOpensRight;
+  //! Does the "-inf" left end mean the opening bracket should point left?
+  bool m_leftBracketOpensLeft : 1;
+  //! Does the "inf" right end mean the closing bracket should point right?
+  bool m_rightBracketOpensRight : 1;
   // The pointers below point to inner cells and must be kept contiguous.
   // ** This is the draw list order. All pointers must be the same:
   // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
@@ -121,13 +123,8 @@ protected:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields_IntervalCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_drawAsAscii = true;
-    }
   //! How to create a big parenthesis sign?
-  mutable bool m_drawAsAscii : 1 /* InitBitFields_IntervalCell */;
+  mutable bool m_drawAsAscii : 1 = true;
 };
 
 #endif // INTERVALCELL_H

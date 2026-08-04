@@ -45,7 +45,6 @@
 
 ImgCell::ImgCell(GroupCell *group, Configuration *config)
   : ImgCellBase(group, config), m_imageBorderWidth(1) {
-  InitBitFields_ImgCell();
   m_type = MC_TYPE_IMAGE;
 }
 

@@ -93,7 +93,6 @@ const wxString Cell::GetToolTip(const wxPoint point) const {
 Cell::Cell(GroupCell *group, Configuration *config)
   : m_group(group), m_configuration(config), m_toolTip(&wxm::emptyString) {
   wxASSERT((!group) || ((group->GetType() == MC_TYPE_GROUP || group == this)));
-  InitBitFields_Cell();
   // Invalidate the size fields directly instead of calling ResetSize(): a
   // GroupCell passes itself as m_group while it is still inside this base-class
   // (Cell) constructor, so ResetSize()'s m_group->MarkNeedsRecalculate() would

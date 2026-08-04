@@ -75,13 +75,6 @@ private:
   //**
   mutable int m_numStartWidth = 0;
   mutable int m_ellipsisWidth = 0;
-
-  //** Bitfield objects (0 bytes)
-  //**
-  static void InitBitFields_LongNumberCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-    }
 };
 
 #endif // LONGNUMBERCELL_H

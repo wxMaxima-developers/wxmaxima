@@ -120,12 +120,7 @@ private:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields_ExptCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_isMatrix = false;
-    }
-  bool m_isMatrix : 1 /* InitBitFields_ExptCell */;
+  bool m_isMatrix : 1 = false;
 };
 
 

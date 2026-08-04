@@ -38,7 +38,6 @@
 SubSupCell::SubSupCell(GroupCell *group, Configuration *config,
                        std::unique_ptr<Cell> &&base)
   : Cell(group, config), m_baseCell(std::move(base)) {
-  InitBitFields_SubSubCell();
 }
 
 SubSupCell::SubSupCell(GroupCell *group, const SubSupCell &cell)
