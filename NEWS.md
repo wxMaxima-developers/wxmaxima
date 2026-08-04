@@ -1,5 +1,14 @@
 # Current development version
 
+- Test fixtures: `test/automatic_test_files/10MinuteTutorial.wxm`'s
+  `assume(a > 0)$ integrate(1/(x^2+a),x); forget(a > 0)$` cell now has a
+  recorded auto-answer for the "Is a positive or negative?" question, fixing
+  an intermittent `tutorial_10Minutes` CI failure: despite the preceding
+  `assume(a > 0)`, `integrate()`'s internal algorithm occasionally still
+  asks the question interactively on some runs (reproduced locally at
+  roughly a 1-in-20 to 1-in-30 rate) -- this cell simply never had a
+  recorded answer for that rare case, since its whole point is to
+  demonstrate that `assume()` normally makes the question unnecessary.
 - Fixed the LaTeX export of an integral's differential ("dx", "d\theta", ...):
   it now renders upright (`\mathrm{d}`) instead of in math mode's default
   italic (#972).
