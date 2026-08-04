@@ -441,6 +441,17 @@ if(TARGET wxmTestApp)
     add_test(NAME LayoutInvariants
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_LayoutInvariants>")
 
+    # An integral's "d" (dx/dtheta/...) must render upright in LaTeX export,
+    # not in math mode's default italic (GH #972).
+    add_executable(test_IntegralToTeX
+        test_IntegralToTeX.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_IntegralToTeX PUBLIC cxx_std_20)
+    target_link_libraries(test_IntegralToTeX PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME IntegralToTeX
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_IntegralToTeX>")
+
     # Round-trip test for the mechanical scalar settings: guards that
     # ReadConfig() and the settings-write side share one key<->member table
     # (Configuration::ScalarConfigSettings) so a setting can never be written
