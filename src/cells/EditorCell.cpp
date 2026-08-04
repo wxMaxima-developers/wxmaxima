@@ -46,7 +46,6 @@
 EditorCell::EditorCell(GroupCell *group, Configuration *config,
                        wxString text)
   : Cell(group, config), m_text(text) {
-  InitBitFields_EditorCell();
   // Do NOT translate '\r' to '\n' here: '\r' is wxMaxima's *soft* (word-wrap)
   // line break and '\n' is a *hard* one. Converting them freezes a transient
   // layout decision into permanent content -- e.g. when a cell is copied (the

@@ -112,12 +112,7 @@ private:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields_ParenCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_print = true;
-    }
-  bool m_print : 1 /* InitBitFields_ParenCell */;
+  bool m_print : 1 = true;
 };
 
 #endif // PARENCELL_H

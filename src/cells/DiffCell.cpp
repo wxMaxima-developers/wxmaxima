@@ -42,7 +42,6 @@ DiffCell::DiffCell(GroupCell *group, Configuration *config,
     m_diffCell(std::move(diff))
 
 {
-  InitBitFields_DiffCell();
   SetStyle(TS_VARIABLE);
   m_diffCell->SetSuppressMultiplicationDot(true);
   if(m_baseCell)

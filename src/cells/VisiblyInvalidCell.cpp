@@ -36,7 +36,6 @@ static wxString cellContents(wxS("?"));
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *group, Configuration *config)
   : TextCell(group, config, cellContents, TS_ERROR) {
-  InitBitFields_VisiblyInvalidCell();
   // We cannot do this at the startup of the program as we first need to wait
   // for the language selection to take place.
   // NOTE: static variables are initialized exactly 0 or 1 times, so the below

@@ -102,13 +102,6 @@ private:
   std::unique_ptr<Cell> m_nameCell;
   std::unique_ptr<Cell> m_argCell;
   // The pointers above point to inner cells and must be kept contiguous.
-
-//** Bitfield objects (0 bytes)
-//**
-  static void InitBitFields_FunCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-    }
 };
 
 #endif // FUNCELL_H

@@ -101,13 +101,8 @@ protected:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields_ListCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_drawAsAscii = true;
-    }
   //! How to create a big parenthesis sign?
-  mutable bool m_drawAsAscii : 1 /* InitBitFields_ListCell */;
+  mutable bool m_drawAsAscii : 1 = true;
 };
 
 #endif // LISTCELL_H

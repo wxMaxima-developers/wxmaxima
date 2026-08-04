@@ -38,7 +38,6 @@
 LongNumberCell::LongNumberCell(GroupCell *group, Configuration *config,
                                const wxString &number)
   : TextCell(group, config, number, TS_NUMBER) {
-  InitBitFields_LongNumberCell();
 }
 
 LongNumberCell::LongNumberCell(GroupCell *group, const LongNumberCell &cell)

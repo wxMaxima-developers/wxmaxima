@@ -928,41 +928,25 @@ private:
   AFontStyle m_fontStyle;
   AFontWeight m_fontWeight;
 
-
-  //! Does the list of tokens including hidden items need to be recalculated?
-  mutable bool m_tokens_including_hidden_valid = false;
-  //! Does the list of displayed tokens need to be recalculated?
-  mutable bool m_tokens_valid = false;
-
-
 //** Bitfield objects (2 bytes)
 //**
-  void InitBitFields_EditorCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_autoAnswer = false;
-      m_containsChanges = false;
-      m_containsChangesCheck = false;
-      m_displayCaret = false;
-      m_hasFocus = false;
-      m_selectionChanged = false;
-      m_underlined = false;
-      m_errorIndexSet = false;
-    }
-
   //! Mark this cell as "Automatically answer questions".
-  bool m_autoAnswer : 1 /* InitBitFields_EditorCell */;
+  bool m_autoAnswer : 1 = false;
   //! true, if this function has changed since the last evaluation by maxima
-  mutable bool m_containsChanges : 1 /* InitBitFields_EditorCell */;
-  bool m_containsChangesCheck : 1 /* InitBitFields_EditorCell */;
-  bool m_displayCaret : 1 /* InitBitFields_EditorCell */;
-  bool m_hasFocus : 1 /* InitBitFields_EditorCell */;
-  bool m_errorIndexSet : 1 /* InitBitFields_EditorCell */;
+  mutable bool m_containsChanges : 1 = false;
+  bool m_containsChangesCheck : 1 = false;
+  bool m_displayCaret : 1 = false;
+  bool m_hasFocus : 1 = false;
+  bool m_errorIndexSet : 1 = false;
   //! Has the selection changed since the last draw event?
-  bool m_selectionChanged : 1 /* InitBitFields_EditorCell */;
+  bool m_selectionChanged : 1 = false;
   //! Does this cell's size have to be recalculated?
-  bool m_underlined : 1 /* InitBitFields_EditorCell */;
-  mutable bool m_isDirty = true /* InitBitFields_EditorCell */;
+  bool m_underlined : 1 = false;
+  //! Does the list of tokens including hidden items need to be recalculated?
+  mutable bool m_tokens_including_hidden_valid : 1 = false;
+  //! Does the list of displayed tokens need to be recalculated?
+  mutable bool m_tokens_valid : 1 = false;
+  mutable bool m_isDirty : 1 = true;
 };
 
 #endif // EDITORCELL_H
