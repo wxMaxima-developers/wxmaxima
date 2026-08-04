@@ -460,6 +460,31 @@ tried without rebuilding.
 - **`Cell` Bitfields Use C++20 Default Member Initializers, Not `InitBitFields_ClassName()`:** Every per-class flag bit-field (`Cell`, `EditorCell`, `GroupCell`, `TextCell`, `MatrCell`, and the rest of `src/cells/`) declares its default inline, e.g. `bool m_foo : 1 = false;`. The older pattern -- an `InitBitFields_ClassName()` method called from the constructor body, with each field tagged `/* InitBitFields_ClassName */` -- predated C++20 support for bit-field default member initializers and has been fully removed (2026-08); don't reintroduce it for new flags. Classes with zero bit-fields of their own no longer carry an empty stub either. Before folding an existing full-size `bool m_foo;` into a class's bitfield, check (1) nothing takes its address (`&m_foo` doesn't work on a bit-field member) and (2) it's only touched from the GUI thread (no cross-thread `bool` atomicity/tearing expectations) -- worksheet cells are not thread-shared, but double-check call sites rather than assuming. **Declaration order matters more than usual here**: C++ initializes members in declaration order, not constructor-init-list order, so a bit-field read by a *later*-declared member's own initializer (e.g. `IntervalCell::m_leftBracketOpensLeft`/`m_rightBracketOpensRight`, read by the `m_openBracket`/`m_closeBracket` initializers) must stay declared *before* those members -- relocating it next to an unrelated bitfield group to save a byte is undefined behavior (reading the bit-field before it's initialized), not just a style choice, caught before it shipped by tracing the actual initialization order rather than trusting the mem-initializer-list order. When a field can't move, bit-fielding it in place still works: two adjacent `: 1` declarations pack into a shared byte regardless of position.
 - **Tab Characters in `EditorCell`:** A `'\t'` is a real, single character in `m_text` (see `EditorCell::NormalizeLineEndings()`, which replaced the old `TabExpand()` that irreversibly rewrote every tab to 1-4 spaces on input/paste/load). It is expanded to the next 4-column tab stop -- one column being the width of a space glyph in the current font -- only where text becomes pixels, via `EditorCell::NextTabStop(startX)`/`MeasureTextWidth(startX, text)`. Tab width is **position-dependent**, the one thing `GetTextExtent()`/`GetTextSize()` cannot compute on their own (unlike every other character), so it can never be cached the way `StyledText::SetWidth()` caches other tokens' widths. `MaximaTokenizer` guarantees a tab is always its own isolated, single-character token (never merged into a space run, mirroring how a newline is already its own token) -- this is *load-bearing*: every `m_styledText`-based site (`Draw()`, `Recalculate()`, `GetLineWidth()`, `SelectPointText()`'s code-cell branch, `StyleTextCode()`) only needs a `text == wxS("\t")` equality check as a result, never substring splitting. Prose/text cells don't go through `MaximaTokenizer` at all, so `EditorCell::StyleTextTexts()` uses its own splitter, `PushTextLine()`, to get the same isolation guarantee for a tab embedded in an otherwise plain line of text. Sites that measure a raw `m_text` substring instead of a single token (`MarkSelection()`, `MixedDirectionOffset()`, `StyleTextTexts()`'s wrap check) go through `MeasureTextWidth()` instead, which splits on `'\t'` internally since a substring can still have one embedded anywhere. Left/Right arrow and Delete need **no special-casing** for tabs -- they already move/delete exactly one `m_text` character, which is now correct automatically. The plain `WXK_BACK` case's old "gobble up to 4 trailing spaces" shim was a workaround for the old space-expanded-tab world and is gone; a real tab deletes in one plain single-character backspace like anything else.
 
+- **`TextCell::ToTeX()`'s `TS_SPECIAL_CONSTANT` branch is a hardcoded
+  allowlist with a silent fall-through, not a general style handler
+  (GH #972):** `<s>` in wxMathML.lisp is used for `%pi`/`%i`/`%e`/`inf`/
+  `minf` and, separately, for the "d" of an integral's "dx"/"d\theta"/...
+  (`wxxml-int`) -- all five constants get an explicit `if/else if`, but
+  "d" didn't, so it fell through to the branch's final `else return text;`
+  as a bare, unstyled character instead of ever reaching the later
+  `\ensuremath{\mathrm{...}}` wrapping code that runs for `TS_VARIABLE`/
+  `TS_GREEK_CONSTANT`/`TS_SPECIAL_CONSTANT` further down the function --
+  that later code is dead for every `TS_SPECIAL_CONSTANT` value, since the
+  early branch always returns first. Fixed by adding an explicit `d` case
+  returning `\mathrm{d}` (no `\ensuremath{}` needed: it's only ever emitted
+  already inside `IntCell::ToTeX()`'s math-mode string, which also already
+  supplies the separating `\, ` ahead of it, so don't duplicate that here).
+  Adding a new special case to this list resurfaced a second, easy-to-miss
+  coupling: `TextCell::ToTeX()`'s own multiplication-dot logic (for e.g. the
+  denominator of `d/dt` or a `dx*dy`-style differential product) identifies
+  "the previous cell was that same 'd'" by comparing
+  `GetPrevious()->ToTeX() == wxS("d")` -- once "d" stopped returning the
+  literal string `"d"`, this comparison went permanently false. Any
+  `TS_SPECIAL_CONSTANT` case whose `ToTeX()` output no longer equals its raw
+  text needs same-file call sites recompared with `ToString()` (returns the
+  untransformed `m_text`) instead of `ToTeX()`, not just the one place a new
+  case is added.
+
 ## Layout & Compatibility
 
 - **Mathematical Cell Padding:** Use `MC_TEXT_PADDING` (in `Configuration.h`) for text-based cells. **Exception:** `DigitCell` does not include padding to ensure visual consistency in broken-up numbers.
