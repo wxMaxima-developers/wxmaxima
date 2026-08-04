@@ -75,26 +75,26 @@ $(function() {
 <div class="textblock"><p><a class="el" href="classwxMaxima.html">wxMaxima</a> è un'interfaccia utente grafica (GUI) per il sistema di algebra computazionale (CAS) <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. <a class="el" href="classwxMaxima.html">wxMaxima</a> consente di utilizzare tutte le funzioni di <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, inoltre, fornisce comode procedure guidate per accedere alle funzionalità più comunemente utilizzate. Questo manuale descrive alcune delle funzionalità che rendono <a class="el" href="classwxMaxima.html">wxMaxima</a> una delle GUI più popolari per <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</p>
 <p><img src="./wxMaximaLogo.png" alt="logo wxMaxima" class="inline"/></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md365"></a>
+<h1><a class="anchor" id="autotoc_md313"></a>
 Introduction to wxMaxima</h1>
-<h2><a class="anchor" id="autotoc_md366"></a>
+<h2><a class="anchor" id="autotoc_md314"></a>
 &lt;em&gt;Maxima&lt;/em&gt; and wxMaxima</h2>
 <p>Nel dominio open source, i grandi sistemi sono normalmente suddivisi in progetti più piccoli che sono più facili da gestire per piccoli gruppi di sviluppatori. Ad esempio, un programma di masterizzazione di CD sarà costituito da uno strumento a riga di comando che effettivamente masterizza il CD e da un'interfaccia utente grafica che consente agli utenti di utilizzarlo senza dover conoscere tutte le opzioni della riga di comando, e di fatto senza utilizzare affatto la riga di comando. Un vantaggio di questo approccio è che il lavoro di sviluppo che è stato investito nel programma a riga di comando può essere condiviso da molti programmi: lo stesso programma a riga di comando del masterizzatore CD può essere utilizzato come plug-in "invia-al-CD" per un'applicazione di gestione file, per la funzione "masterizza su CD" di un lettore musicale e come masterizzatore di CD per uno strumento di backup su DVD. Un altro vantaggio è che suddividere una grande attività in parti più piccole consente agli sviluppatori di fornire diverse interfacce utente per lo stesso programma.</p>
 <p>Un sistema di algebra computazionale (CAS) come <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> si inserisce in questo quadro. Un CAS può fornire la logica dietro un'applicazione di calcolatrice di precisione arbitraria o può fare trasformazioni automatiche di formule sullo sfondo di un sistema più grande (ad esempio, [Sage] (<a href="https://www.sagemath.org/">https://www.sagemath.org/</a>)). In alternativa, può essere utilizzato direttamente come sistema indipendente. <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> è utilizzabile tramite riga di comando. Spesso, tuttavia, un'interfaccia come <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> si rivela un modo più efficiente per accedere al software, in particolare per i nuovi utenti.</p>
-<h3><a class="anchor" id="autotoc_md367"></a>
+<h3><a class="anchor" id="autotoc_md327"></a>
 &lt;em&gt;Maxima&lt;/em&gt;</h3>
 <p><em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> è un sistema di algebra computazionale (CAS) completo. Un CAS è un programma in grado di risolvere problemi matematici riorganizzando le formule e trovando una formula che risolve il problema invece di emettere semplicemente il valore numerico del risultato. In altre parole, <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> può fungere da calcolatrice che fornisce rappresentazioni numeriche di variabili e può anche fornire soluzioni analitiche. Inoltre, offre una gamma di metodi numerici di analisi per equazioni o sistemi di equazioni che non possono essere risolti analiticamente.</p>
 <p><img src="./maxima_screenshot.png" alt="schermata di Maxima, riga di comando" class="inline"/></p>
 <p>Extensive documentation for <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> is <a href="https://maxima.sourceforge.io/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the <code>F1</code> key) causes _wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual page for the command at the cursor.</p>
-<h3><a class="anchor" id="autotoc_md368"></a>
+<h3><a class="anchor" id="autotoc_md332"></a>
 WxMaxima</h3>
 <p><em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> è un'interfaccia utente grafica che fornisce flessibilità e tutte le funzionalità di <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. <a class="el" href="classwxMaxima.html">wxMaxima</a> offre agli utenti una visualizzazione grafica e molte caratteristiche che rendono più facile lavorare con <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. Ad esempio <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> consente di esportare il contenuto di una qualsiasi cella (o, se necessario, anche qualsiasi parte di una formula) come testo, come LaTeX o come specifica MathML con un semplice clic destro. In effetti, è possibile esportare un'intera cartella di lavoro, sia come file HTML che come file LaTeX. La documentazione per <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, comprese le cartelle di lavoro per illustrare gli aspetti del suo utilizzo, è online su <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">sito della guida</a>, nonché tramite il menu della guida.</p>
 <p><img src="./wxMaximaWindow.png" alt="wxMaxima window" class="inline"/></p>
 <p>I calcoli immessi in <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> vengono eseguiti dallo strumento della riga di comando <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> in background.</p>
-<h2><a class="anchor" id="autotoc_md369"></a>
+<h2><a class="anchor" id="autotoc_md334"></a>
 Workbook basics</h2>
 <p>Gran parte di <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> si spiega da sé, ma alcuni dettagli richiedono attenzione. <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">Questo sito</a> contiene una serie di cartelle di lavoro che affrontano vari aspetti di <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>. Lavorare attraverso alcuni di questi (in particolare il "tutorial _(wx)Maxima_ di 10 minuti") può essere utile ad aumentare la propria familiarità sia con il contenuto di <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> sia con l'uso di <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> per interagire con <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. Questo manuale si concentra sulla descrizione degli aspetti di <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> che probabilmente non sono evidenti e che potrebbero non essere trattati nel materiale online.</p>
-<h3><a class="anchor" id="autotoc_md370"></a>
+<h3><a class="anchor" id="autotoc_md336"></a>
 The workbook approach</h3>
 <p>Una delle pochissime cose che non sono standard in <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> è che organizza i dati per <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> in celle che vengono elaborate (ovvero: inviate a <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>) solo quando l'utente lo richiede. Quando viene elaborata una cella, tutti i comandi in quella cella, e solo quella cella, vengono valutati in modalità 'batch'. (L'affermazione precedente non è del tutto accurata: si può selezionare un insieme di celle adiacenti e valutarle tutte assieme. Inoltre, si può istruire <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> a valutare tutte le celle in una cartella di lavoro in un solo passaggio.) L'approccio di <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> all'invio di comandi per l'esecuzione potrebbe sembrare poco familiare a prima vista. Tuttavia, facilita drasticamente il lavoro con documenti di grandi dimensioni (dove l'utente potrebbe non desiderare che ogni modifica attivi automaticamente una rivalutazione completa dell'intero documento). Inoltre, questo approccio è molto utile per la ricerca difetti.</p>
 <p>Se il testo viene digitato in <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em>, si crea automaticamente una nuova cella del foglio di lavoro. Il tipo di questa cella può essere selezionato nella barra degli strumenti. Se viene creata una cella di codice, la cella può essere inviata a <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>, il che fa sì che il risultato del calcolo venga visualizzato sotto il codice. Di seguito viene mostrata una coppia di tali comandi.</p>
@@ -103,7 +103,7 @@ The workbook approach</h3>
 <p>Oltre alle celle di ingresso, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> consente l'uso di celle di testo per la documentazione, celle immagine, celle titolo, celle capitolo e celle sezione. Ogni cella ha una propria memoria degli annullamenti, quindi eseguire la correzione modificando i valori di più celle e quindi ripristinare gradualmente le modifiche non necessarie, è piuttosto semplice. Inoltre, il foglio di lavoro stesso ha una memoria degli annullamenti globale che può annullare le modifiche, le aggiunte e le eliminazioni delle celle.</p>
 <p>La figura seguente mostra diversi tipi di celle (celle titolo, celle sezione, celle sottosezione, celle testo, celle ingresso/uscita e celle immagine).</p>
 <p><img src="./cell-example.png" alt="Esempio di celle wxMaxima diverse" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md371"></a>
+<h3><a class="anchor" id="autotoc_md347"></a>
 Cells</h3>
 <p>Il foglio di lavoro è organizzato in celle. <a class="el" href="classwxMaxima.html">wxMaxima</a> riconosce i seguenti tipi di celle:</p>
 <ul>
@@ -117,7 +117,7 @@ Cells</h3>
 <p>Il comportamento predefinito di <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> quando viene inserito del testo è creare automaticamente una cella matematica. È possibile creare celle di altro tipo utilizzando il menu Cella, utilizzando i tasti di scelta rapida visualizzati nel menu o utilizzando l'elenco a discesa nella barra degli strumenti. Una volta creata la cella non-matematica, tutto ciò che viene digitato nel file viene interpretato come testo.</p>
 <p>Un testo di commento (in stile linguaggio <a class="el" href="classC.html">C</a>) può fare parte di una cella matematica come di seguito: <code>/* Questo commento verrà ignorato da <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> */</code></p>
 <p>"`/*`" marca l'inizio del commento, mentre "`*/`" la sua fine.</p>
-<h3><a class="anchor" id="autotoc_md372"></a>
+<h3><a class="anchor" id="autotoc_md354"></a>
 Horizontal and vertical cursors</h3>
 <p>Se l'utente tenta di selezionare una frase completa, un elaboratore di testi tenterà di estendere la selezione per iniziare e terminare automaticamente con un limite di parola. Allo stesso modo <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> se viene selezionata più di una cella estenderà la selezione alle celle intere.</p>
 <p>Ciò che non è standard è che <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> fornisce flessibilità di trascinamento della selezione definendo due tipi di cursori. <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> passerà da uno all'altro automaticamente alla bisogna:</p>
@@ -132,15 +132,15 @@ wxMaxima" class="inline"/></p>
 <p>Se si naviga tra le diverse celle, si vedrà anche il cursore orizzontale (lampeggiante), col quale si può inserire una cella nel foglio di lavoro (una cella matematica, semplicemente iniziando a digitare la formula, o un altro tipo di cella utilizzando il menu).</p>
 <p><img src="./horizontal-cursor-between-cells.png" alt="(blinking) cursore orizzontale tra
 celle" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md373"></a>
+<h3><a class="anchor" id="autotoc_md366"></a>
 Sending cells to Maxima</h3>
 <p>The command in a code cell is executed once by pressing <code>CTRL</code>+<code>ENTER</code>, <code>SHIFT</code>+<code>ENTER</code> or the <code>ENTER</code> key on the keypad. The <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> default is to enter commands when either <code>CTRL</code>+<code>ENTER</code> or <code>SHIFT</code>+<code>ENTER</code> is entered, but <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> can be configured to execute commands in response to <code>ENTER</code>.</p>
-<h3><a class="anchor" id="autotoc_md374"></a>
+<h3><a class="anchor" id="autotoc_md370"></a>
 Command autocompletion</h3>
 <p><em>WxMaxima</em> contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <code>CTRL</code>+<code>SPACE</code>. The autocompletion is context-sensitive. For example, if activated within a unit specification for ezUnits it will offer a list of applicable units.</p>
 <p><img src="./ezUnits.png" alt="ezUnits" class="inline"/></p>
 <p>Besides completing a file name, a unit name, or the current command or variable name, the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <code>SHIFT</code>+<code>CTRL</code>+<code>SPACE</code> or select the respective menu item (Cell/Show Template).</p>
-<h4><a class="anchor" id="autotoc_md375"></a>
+<h4><a class="anchor" id="autotoc_md374"></a>
 Greek characters</h4>
 <p>I computer tradizionalmente memorizzavano i caratteri in valori a 8 bit. Ciò consente un massimo di 256 caratteri diversi. Tutte le lettere, i numeri e i simboli di controllo (fine trasmissione, fine stringa, linee e bordi per disegnare rettangoli per i menu, <em>ecc.</em> .) di quasi tutte le lingue possono essere compresi in tale limitazione.</p>
 <p>Per la maggior parte dei paesi, la codifica di 256 caratteri che è stata scelta non include per esempio le lettere greche, che sono usate frequentemente in matematica. Per superare questo tipo di limitazione è stato inventato <a href="https://home.unicode.org/">Unicode</a>: una codifica che fa funzionare normalmente il testo inglese, ma può andare molto oltre il limite dei 256 caratteri.</p>
@@ -715,7 +715,7 @@ Startup files</h2>
 </ul>
 <p>For example, if Gnuplot is installed in <code>/opt</code> (maybe on MacOS), you can add <code>gnuplot_command:"/opt/local/bin/gnuplot"$</code> (or <code>/opt/gnuplot/bin/gnuplot</code> or any other path) to these files.</p>
 <p>These files are in the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> user directory (usually <code>USERPROFILE%/maxima</code> in Windows, <code>$HOME/.maxima</code> otherwise). The location can be found out with the command: <code>maxima_userdir;</code></p>
-<h2><a class="anchor" id="autotoc_md522"></a>
+<h2><a class="anchor" id="autotoc_md425"></a>
 Special variables wx...</h2>
 <ul>
 <li><code>wxsubscripts</code> tells <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> if it should convert variable names that contain an underscore (<code>R_150</code> or the like) into subscripted variables. See <code>wxdeclare_subscript</code> for details which variable names are automatically converted.</li>
@@ -737,7 +737,7 @@ Special variables wx...</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md523"></a>
+<h2><a class="anchor" id="autotoc_md426"></a>
 Pretty-printing 2D output</h2>
 <p>The function <code>table_form()</code> displays a 2<a class="el" href="classD.html">D</a> list in a form that is more readable than the output from _Maxima_’s default output routine. The input is a list of one or more lists. Like the "print" command, this command displays output even when ended with a dollar sign. Ending the command with a semicolon results in the same table along with a "done" statement.</p>
 <div class="fragment"><div class="line">table_form(</div>
@@ -761,24 +761,24 @@ Pretty-printing 2D output</h2>
 <p>Example:</p>
 <div class="fragment"><div class="line">wx_matrix(matrix([&quot;Name&quot;, &quot;Value&quot;], [&quot;X&quot;, 10], [&quot;Y&quot;, 20]),</div>
 <div class="line">          lines=true, rownames=true, colnames=true, parenstyle=square);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md524"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md427"></a>
 Bug reporting</h2>
 <p><em>WxMaxima</em> provides a few functions that gather bug reporting information about the current system:</p>
 <ul>
 <li><code>wxbuild_info()</code> gathers information about the currently running version of <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em></li>
 <li><code>wxbug_report()</code> tells how and where to file bugs</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md525"></a>
+<h2><a class="anchor" id="autotoc_md428"></a>
 Marking output being drawn in red</h2>
 <p><em>Maxima_’s <code>box()</code> command causes _wxMaxima</em> to print its argument with a red foreground, if the second argument to the command is the text <code>highlight</code>.</p>
-<h2><a class="anchor" id="autotoc_md526"></a>
+<h2><a class="anchor" id="autotoc_md429"></a>
 Output rendering.</h2>
 <p>With <code>set_display()</code> one can set, how <a class="el" href="classwxMaxima.html">wxMaxima</a> will render the output.</p>
 <p><code>set_display('xml)</code> is the default value. Here <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> speaks to <a class="el" href="classwxMaxima.html">wxMaxima</a> using an (machine readable) XML-dialect (can be seen in the "Raw XML
 sidebar") and outputs the resulting formulas nicely rendered, e.g. pretty Matrices, Square root signs, fractions, etc.</p>
 <p><code>set_display('ascii)</code> causes <a class="el" href="classwxMaxima.html">wxMaxima</a> to output formulas as in command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> - as ASCII-Art.</p>
 <p><code>set_display('none)</code> causes 'one-line' ASCII results - the same as the command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> command <code>display2d:false;</code> does.</p>
-<h1><a class="anchor" id="autotoc_md527"></a>
+<h1><a class="anchor" id="autotoc_md430"></a>
 Help menu</h1>
 <p>WxMaxima’s help menu provides access to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> and <a class="el" href="classwxMaxima.html">wxMaxima</a> manual, tips, some example worksheets and in command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> included demos (the <code>demo()</code> command).</p>
 <p>Please notice, that the demos write:</p>
@@ -786,19 +786,19 @@ Help menu</h1>
 </div><!-- fragment --><p>That is valid for command-line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>, however in <a class="el" href="classwxMaxima.html">wxMaxima</a> by default it is necessary to continue the demonstration with: <code>CTRL</code>+<code>ENTER</code></p>
 <p>(That can be configured in the Configure-&gt;Worksheet-&gt;"Hotkeys for sending commands to Maxima" menu.)</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md528"></a>
+<h1><a class="anchor" id="autotoc_md431"></a>
 Troubleshooting</h1>
-<h2><a class="anchor" id="autotoc_md529"></a>
+<h2><a class="anchor" id="autotoc_md432"></a>
 Cannot connect to &lt;em&gt;Maxima&lt;/em&gt;</h2>
 <p>Since <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (the program that does the actual mathematics) and <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example, a firewall could be set up in a way that it doesn’t just prevent unauthorized connections from the internet (and perhaps intercept some connections to the internet, too), but also blocks inter-process-communication inside the same computer. Note that since <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> is being run by a Lisp processor the process communication that is blocked does not necessarily have to be named "maxima". Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe, or similar names.</p>
 <p>On Unix computers another possible reason would be that the loopback network that provides network connections between two programs in the same computer isn’t properly configured.</p>
-<h2><a class="anchor" id="autotoc_md531"></a>
+<h2><a class="anchor" id="autotoc_md433"></a>
 How to save data from a broken .wxmx file</h2>
 <p>Internally most modern XML-based formats are ordinary zip files. <em>WxMaxima</em> doesn’t turn on compression, so the contents of <code>.wxmx</code> files can be viewed in any text editor.</p>
 <p>If the zip signature at the end of the file is still intact after renaming a broken <code>.wxmx</code> file to <code>.zip</code> most operating systems will provide a way to extract any portion of the information that is stored inside it. This can be done when there is a need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> during saving detected that something went wrong there will be a <code>.wxmx~</code> file whose contents might help.</p>
 <p>And even if there isn’t such a file: The <code>.wxmx</code> file is a container format and the XML portion is stored uncompressed. It it is possible to rename the <code>.wxmx</code> file to a <code>.txt</code> file and to use a text editor to recover the XML portion of the file’s contents (it starts with <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> and ends with <code>&lt;/wxMaximaDocument&gt;</code>. Before and after that text you will see some unreadable binary contents in the text editor).</p>
 <p>If a text file containing only these contents (e.g. copy and paste this text into a new file) is saved as a file ending in <code>.xml</code>, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> will know how to recover the text from the document.</p>
-<h2><a class="anchor" id="autotoc_md532"></a>
+<h2><a class="anchor" id="autotoc_md434"></a>
 I want some debug info to be displayed on the screen before my command has finished</h2>
 <p>Normally <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> waits for the whole 2<a class="el" href="classD.html">D</a> formula to be transferred before it begins to typeset. This saves time for making many attempts to typeset a only partially completed equation. There is a <code>disp</code> command, though, that will provide debug output immediately and without waiting for the current <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> command to finish:</p>
 <div class="fragment"><div class="line">for i:1 thru 10 do (</div>
@@ -809,7 +809,7 @@ I want some debug info to be displayed on the screen before my command has finis
 <div class="line">   ?sleep(3)</div>
 <div class="line">)$</div>
 </div><!-- fragment --><p>Alternatively one can look for the <code>wxstatusbar()</code> command above.</p>
-<h2><a class="anchor" id="autotoc_md533"></a>
+<h2><a class="anchor" id="autotoc_md435"></a>
 Plotting only shows a closed empty envelope with an error message</h2>
 <p>This means that <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> could not read the file <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> that was supposed to instruct <em>Gnuplot</em> to create.</p>
 <p>Possible reasons for this error are:</p>
@@ -820,10 +820,10 @@ Plotting only shows a closed empty envelope with an error message</h2>
   for the plot" checkbox in the configuration dialog and don’t set <code>wxplot_pngcairo</code> to true from <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>.</li>
 <li>Gnuplot didn’t output a valid <code>.png</code> file.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md534"></a>
+<h2><a class="anchor" id="autotoc_md436"></a>
 Plotting an animation results in “error: undefined variable”</h2>
 <p>The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using a <code>subst</code> command that substitutes the slider variable into the equation to plot resolves this problem. At the end of section Embedding animations into the spreadsheet, you can see an example.</p>
-<h2><a class="anchor" id="autotoc_md535"></a>
+<h2><a class="anchor" id="autotoc_md437"></a>
 I lost cell content and undo doesn’t remember</h2>
 <p>There are separate undo functions for cell operations and for changes inside of cells so chances are low that this ever happens. If it does there are several methods to recover data:</p>
 <ul>
@@ -833,45 +833,45 @@ I lost cell content and undo doesn’t remember</h2>
 <li>If nothing else helps <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> contains a replay feature:</li>
 </ul>
 <div class="fragment"><div class="line">playback();</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md536"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md438"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; starts up with the message “Maxima process terminated.”</h2>
 <p>One possible reason is that <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> cannot be found in the location that is set in the “Maxima” tab of <em>wxMaxima_’s configuration dialog and therefore won’t run at all. Setting the path to a working _Maxima</em> binary should fix this problem.</p>
-<h2><a class="anchor" id="autotoc_md537"></a>
+<h2><a class="anchor" id="autotoc_md439"></a>
 Maxima is forever calculating and not responding to input</h2>
 <p>It is theoretically possible that <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> doesn’t realize that <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> has finished calculating and therefore never gets informed it can send new data to <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em>. If this is the case “Trigger evaluation” might resynchronize the two programs.</p>
-<h2><a class="anchor" id="autotoc_md538"></a>
+<h2><a class="anchor" id="autotoc_md440"></a>
 My SBCL-based &lt;em&gt;Maxima&lt;/em&gt; runs out of memory</h2>
 <p>The Lisp compiler SBCL by default comes with a memory limit that allows it to run even on low-end computers. When compiling a big software package like Lapack or dealing with extremely big lists of equations this limit might be too low. In order to extend the limits, SBCL can be provided with the command line parameter <code>--dynamic-space-size</code> that tells SBCL how many megabytes it should reserve. <a class="el" href="classA.html">A</a> 32bit Windows-SBCL can reserve up to 999 Megabytes. <a class="el" href="classA.html">A</a> 64-bit SBCL version running on Windows can be instructed to use more than the about 1280 Megabytes compiling Lapack needs.</p>
 <p>One way to provide <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> (and thus SBCL) with command line parameters is the "Additional parameters for Maxima" field of _wxMaxima_’s configuration dialogue.</p>
 <p><img src="./sbclMemory.png" alt="sbcl memory" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md539"></a>
+<h2><a class="anchor" id="autotoc_md441"></a>
 Input sometimes is sluggish/ignoring keys on Ubuntu</h2>
 <p>Installing the package <code>ibus-gtk</code> should resolve this issue. See (<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>) for details.</p>
-<h2><a class="anchor" id="autotoc_md540"></a>
+<h2><a class="anchor" id="autotoc_md442"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; halts when &lt;em&gt;Maxima&lt;/em&gt; processes Greek characters or Umlauts</h2>
 <p>If your <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> is based on SBCL the following lines have to be added to your <code>.sbclrc</code>:</p>
 <div class="fragment"><div class="line">(setf sb-impl::*default-external-format* :utf-8)</div>
 </div><!-- fragment --><p>The folder where this file has to be placed is system- and installation-specific. But any SBCL-based <em><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></em> that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:</p>
 <div class="fragment"><div class="line">:lisp (sb-impl::userinit-pathname)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md541"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md443"></a>
 Note concerning Wayland (recent Linux/BSD distributions)</h2>
 <p>There seem to be issues with the Wayland Display Server and wxWidgets. WxMaxima may be affected, e.g. that sidebars are not moveable.</p>
 <p>You can either disable Wayland and use X11 instead (globally) or just tell, that <a class="el" href="classwxMaxima.html">wxMaxima</a> should use the X Window System by setting: <code>GDK_BACKEND=x11</code></p>
 <p>E.g. start <a class="el" href="classwxMaxima.html">wxMaxima</a> with:</p>
 <p><code>GDK_BACKEND=x11 wxmaxima</code></p>
-<h2><a class="anchor" id="autotoc_md542"></a>
+<h2><a class="anchor" id="autotoc_md444"></a>
 The menu bar disappears on KDE Plasma</h2>
 <p>On some KDE Plasma installations the global menu bar disappears when clicked. As this is a bug in the global menu proxy, the only way to avoid it is to tell that <a class="el" href="classwxMaxima.html">wxMaxima</a> should use its own menu bar instead of the global one. This is done by setting: <code>UBUNTU_MENUPROXY=0</code></p>
 <p>Starting with version 26.05.0, <a class="el" href="classwxMaxima.html">wxMaxima</a> attempts to set this variable automatically if it detects an affected system (KDE, Unity, or Ubuntu with older wxWidgets versions).</p>
 <p>If the automatic fix fails, you can manually start <a class="el" href="classwxMaxima.html">wxMaxima</a> with:</p>
 <p><code>UBUNTU_MENUPROXY=0 wxmaxima</code></p>
-<h2><a class="anchor" id="autotoc_md543"></a>
+<h2><a class="anchor" id="autotoc_md445"></a>
 Why is the integrated manual browser not offered on my Windows PC?</h2>
 <p>Either wxWidgets wasn’t compiled with support for Microsoft’s webview2 or Microsoft’s webview2 isn’t installed.</p>
-<h2><a class="anchor" id="autotoc_md544"></a>
+<h2><a class="anchor" id="autotoc_md446"></a>
 Why is the external manual browser not working on my Linux box?</h2>
 <p>The HTML browser might be a snap, flatpack or appimage version. All of these typically cannot access files that are installed on your local system. Another reason might be that maxima or <a class="el" href="classwxMaxima.html">wxMaxima</a> is installed as a snap, flatpack or something else that doesn’t give the host system access to its contents. <a class="el" href="classA.html">A</a> third reason might be that the maxima HTML manual isn’t installed and the online one cannot be accessed.</p>
-<h2><a class="anchor" id="autotoc_md545"></a>
+<h2><a class="anchor" id="autotoc_md447"></a>
 Can I make &lt;em&gt;wxMaxima&lt;/em&gt; output both image files and embedded plots at once?</h2>
 <p>The worksheet embeds `.png files. <em>WxMaxima</em> allows the user to specify where they should be generated:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
@@ -900,56 +900,56 @@ Can I make &lt;em&gt;wxMaxima&lt;/em&gt; output both image files and embedded pl
 <div class="line">pngdraw2d(&quot;Test&quot;,</div>
 <div class="line">        explicit(sin(x),x,1,10)</div>
 <div class="line">);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md546"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md448"></a>
 Can I set the aspect ratio of an embedded plot?</h2>
 <p>Use the variable <code>wxplot_size</code>:</p>
 <div class="fragment"><div class="line">wxdraw2d(</div>
 <div class="line">    explicit(sin(x),x,1,10)</div>
 <div class="line">),wxplot_size=[1000,1000];</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md547"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md449"></a>
 After upgrading to MacOS 13.1 plot and/or draw commands output error messages like</h2>
 <div class="fragment"><div class="line">1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102</div>
 <div class="line">2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52</div>
 <div class="line">3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408</div>
 <div class="line">...</div>
 </div><!-- fragment --><p>This might be an issue with the operating system. Disable the hiding of the menu bar (SystemSettings =&gt; Desktop &amp; Dock =&gt; Menu Bar) might solve the issue. See <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1746">wxMaxima issue #1746</a> for more information.</p>
-<h2><a class="anchor" id="autotoc_md548"></a>
+<h2><a class="anchor" id="autotoc_md450"></a>
 Logging</h2>
 <p>Log messages might be helpful to debug problems. WxMaxima can log many events. Most log entries will be helpful for developers, especially in case of problems or bugs. If you run a "Release"-Build, the log windows is not shown by default, if you run a development version, it is shown by default as a second window. You can enable and disable this window using the "View-&gt;Toggle log window" menu entry.</p>
 <p>Messages are not 'lost', if the log window is not shown, if you select to show the log window later, you will see past log messages (if you did not clear the messages).</p>
 <p>Such messages may be helpful, when you create bug reports (or trying to find a bug by yourself).</p>
 <p>Log messages can (additionally) be printed to STDERR, when using the command line option "--logtostderr". On Windows a separate text console will be opened, as a Windows GUI application does not have the standard IO connected.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md549"></a>
+<h1><a class="anchor" id="autotoc_md451"></a>
 FAQ</h1>
-<h2><a class="anchor" id="autotoc_md550"></a>
+<h2><a class="anchor" id="autotoc_md452"></a>
 Is there a way to make more text fit on a LaTeX page?</h2>
 <p>Yes. Use the <a href="https://ctan.org/pkg/geometry">LaTeX package "geometry"</a> to specify the size of the borders.</p>
 <p>You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"-&gt;"Additional lines for the TeX preamble"), to set borders of 1cm):</p>
 <div class="fragment"><div class="line">\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md551"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md453"></a>
 Is there a dark mode?</h2>
 <p>If wxWidgets is new enough, <em><a class="el" href="classwxMaxima.html">wxMaxima</a></em> will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively, there is a <code>View/Invert worksheet brightness</code> menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.</p>
-<h2><a class="anchor" id="autotoc_md552"></a>
+<h2><a class="anchor" id="autotoc_md454"></a>
 &lt;em&gt;WxMaxima&lt;/em&gt; sometimes hangs for several seconds once in the first minute</h2>
 <p><em>WxMaxima</em> delegates some big tasks like parsing <em>Maxima_’s &gt;1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima</em> needs to wait a couple of seconds before it can continue its work.</p>
-<h2><a class="anchor" id="autotoc_md553"></a>
+<h2><a class="anchor" id="autotoc_md455"></a>
 Especially when testing new locale settings, a message box "locale ’xx_YY’ can not be set" occurs</h2>
 <p><img src="./locale-warning.png" alt="Locale warning" class="inline"/></p>
 <p>(The same problem can occur with other applications too). The translations seem okay after you click on ’OK’. WxMaxima does not only use its own translations but the translations of the wxWidgets framework too.</p>
 <p>These locales maybe not present in the system. On Ubuntu/Debian systems they can be generated using: <code>dpkg-reconfigure locales</code></p>
-<h2><a class="anchor" id="autotoc_md554"></a>
+<h2><a class="anchor" id="autotoc_md456"></a>
 How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?</h2>
 <p>You can find these symbols in the Unicode sidebar (search for ’double-struck capital’). But the selected font must also support these symbols. If they do not display properly, select another font.</p>
-<h2><a class="anchor" id="autotoc_md555"></a>
+<h2><a class="anchor" id="autotoc_md457"></a>
 How can a Maxima script determine, if it is running under wxMaxima or command line Maxima?</h2>
 <p>If <a class="el" href="classwxMaxima.html">wxMaxima</a> is used, the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> variable <code>maxima_frontend</code> is set to <code>wxmaxima</code>. The <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> variable <code>maxima_frontend_version</code> contains the <a class="el" href="classwxMaxima.html">wxMaxima</a> version in this case.</p>
 <p>If no frontend is used (you are using command line <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>), these variables are <code>false</code>.</p>
-<h2><a class="anchor" id="autotoc_md556"></a>
+<h2><a class="anchor" id="autotoc_md458"></a>
 Help! I can not save my document!</h2>
 <p>If saving as wxmx file does not work, try saving the document as wxm file (and vice versa). And you can also try to remove all output (Menu Cell-&gt;Remove all output) and save that file, maybe some unexpected output causes issues during the save process.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md557"></a>
+<h1><a class="anchor" id="autotoc_md459"></a>
 Command-line arguments</h1>
 <p>Usually you can start programs with a graphical user interface just by clicking on a desktop icon or desktop menu entry. WxMaxima - if started from the command line - still provides some command-line switches, though.</p>
 <ul>
@@ -971,7 +971,7 @@ Command-line arguments</h1>
 </ul>
 <p>Instead of a minus, some operating systems might use a dash in front of the command-line switches.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md558"></a>
+<h1><a class="anchor" id="autotoc_md460"></a>
 About the program, contributing to wxMaxima</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is mainly developed using the programming language C++ using the <a href="https://www.wxwidgets.org">wxWidgets framework</a>, as build system we use <a href="https://www.cmake.org">CMake</a>, a small part is written in Lisp. You can contribute to <a class="el" href="classwxMaxima.html">wxMaxima</a>, join the <a class="el" href="classwxMaxima.html">wxMaxima</a> project at <a href="https://github.com/wxMaxima-developers/wxmaxima">https://github.com/wxMaxima-developers/wxmaxima</a>, if you have knowledge of these programming languages and want to help and contribute to the open source project <a class="el" href="classwxMaxima.html">wxMaxima</a>.</p>
 <p>But not only programmers are necessary! You can also contribute to <a class="el" href="classwxMaxima.html">wxMaxima</a>, if you help to improve the documentation, find and report bugs (and maybe bugfixes), suggest new features, help to translate <a class="el" href="classwxMaxima.html">wxMaxima</a> or the manual to your language (read the README.md in the <a href="https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales">locale subdirectory</a> how <a class="el" href="classwxMaxima.html">wxMaxima</a> and the manual can be translated).</p>
