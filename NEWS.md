@@ -1,5 +1,26 @@
 # Current development version
 
+- Fixed a critical bug in the translation merge above: `po4a` treats the `.po`
+  file it is pointed at as its own and rewrites it wholesale on every run, so
+  pointing it directly at the combined `locales/wxMaxima/<lang>.po` (as the
+  merge originally did) silently deleted every UI translation the first time
+  `make update-locale-manual-in-source` ran with a real `po4a` >= 0.70 (a
+  language with 1000+ translated UI strings dropped to just its ~69 manual
+  translations). `po4a` now keeps writing its own `locales/manual/<lang>.po`
+  as before, and a new `merge_manual_po.cmake` step folds that into
+  `locales/wxMaxima/<lang>.po` before `msgmerge` runs, so translators still
+  only need to look in one file.
+- Fixed translated manual headings, lists and code blocks sometimes wrapping
+  incorrectly or losing their Markdown formatting after `po4a` translation
+  (#2047): `po4a`'s `[type: text]` mode needs `-o markdown` passed explicitly
+  to recognize Markdown structure -- its own default for that option does not
+  take effect through this invocation path. Existing translations of an
+  affected heading/list/code block are marked fuzzy (their translated text is
+  preserved in the `.po` file, but a fuzzy entry isn't used in the generated
+  manual until a translator re-confirms it, since the old translation's exact
+  wording no longer matches how `po4a` now segments that text) rather than
+  lost outright.
+
 - Translations: the manual's per-language translations now live merged into
   `locales/wxMaxima/*.po`, alongside wxMaxima's own UI strings, instead of a
   separate `locales/manual/*.po` per language -- so translating both only

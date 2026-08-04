@@ -1,4 +1,4 @@
-# El manual del usuario de wxMaxima
+# The wxMaxima user manual
 
 WxMaxima es un interfaz gráfico del usuario (IGU) para el sistema algebraico
 de computación _Maxima_ (CAS). WxMaxima le permite a uno utilizar todas las
@@ -11,9 +11,9 @@ más populares para _Maxima_.
 
 ______________________________________________________________________
 
-# Introducción a wxMaxima
+# Introduction to wxMaxima
 
-## _Maxima_ y wxMaxima
+## _Maxima_ and wxMaxima
 
 En el dominio de código abierto, los sistemas grandes están divididos
 normalmente en proyectos más pequeños que son más fáciles para manipular en
@@ -53,13 +53,7 @@ resueltos.
 ![Pantallazo de Maxima, línea intrucción](./maxima_screenshot.png){
 id=img_maxima_pantallazo }
 
-Documentación extensiva para _Maxima_ está [disponible en
-Internet](https://maxima.sourceforge.io/documentation.html).  Parte de esta
-documentación además está disponible en el menú de ayuda de wxMaxima.
-Pulsando la tecla Ayuda (en muchos sistemas la tecla <kbd>F1</kbd>) causa
-que la característica de contexto de ayuda distinguible de _wxMaxima_
-automáticamente vaya a la página del manual de _Maxima_ para la instrucción
-en el cursor.
+Extensive documentation for _Maxima_ is  [available in the internet](https://maxima.sourceforge.io/documentation.html). Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the <kbd>F1</kbd> key) causes _wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual page for the command at the cursor.
 
 ### WxMaxima
 
@@ -81,7 +75,7 @@ _wxMaxima_, así como a través del menú de ayuda.
 Los cálculos que son introducidos en _wxMaxima_ son realizados por la
 herramienta de línea de instrucciones de _Maxima_ en el segundo plano.
 
-## Cuaderno básico
+## Workbook basics
 
 Mucho de _wxMaxima_ son auto-explicativos, pero algunos detalles requieren
 atención.  [Este
@@ -93,7 +87,7 @@ uso de _wxMAxima_ para interactuar con _Maxima_.  Este manual se concentra
 en describir aspectos de _wxMaxima_ que no son como los evidentes y que tal
 vez no está cubierto dentro del material en línea.
 
-### La aproximación del cuaderno
+### The workbook approach
 
 Una de las muy pocas cosas que no están normalizadas en _wxMaxima_ es que se
 organiza los datos para _Maxima_ dentro de celdas que son evaluadas (la cual
@@ -139,7 +133,7 @@ sección, subsección, texto, E/S e imagen).
 
 ![Ejemplo de celdas wxMaxima](./cell-example.png){ id=img_cell-example }
 
-### Celdas
+### Cells
 
 La hoja de trabajo está organizada dentro de celdas.  wxmaxima conoce los
 tipos de celdas siguientes:
@@ -166,7 +160,7 @@ ignorado por Maxima */`
 
 "`/*`" marca el inicio del comentario, "`*/`" el final.
 
-### Cursores horizontales y verticales
+### Horizontal and vertical cursors
 
 Si el usuario intenta seccionar una oración completa, un procesador de
 palabras intentará extender la selección para iniciar y finalizar
@@ -183,12 +177,7 @@ entre ellos automáticamente cuando lo necesite:
   moving the cursor inside a cell using the mouse pointer or the cursor keys
   and works much like the cursor in a text editor.
 
-Cuando arranque wxMaxima, solo verá el cursor horizontal parpadeando. Si
-inicia al teclear, automáticamente será creada una celda matemática y el
-cursor cambiará a una vertical usual (verá una flecha derecha como
-"petición", tras ser evaluada la celda matemática
-(<kbd>CTRL</kbd>+<kbd>ENTRAR</kbd>), verá las etiquetas, p.ej. `(%i1)`,
-`(%o1)`).
+When you start wxMaxima, you will only see the blinking horizontal cursor. If you start typing, a math cell will be automatically created and the cursor will change to a regular vertical one (you will see a right arrow as "prompt", after the Math cell is evaluated (<kbd>CTRL</kbd>+<kbd>ENTER</kbd>), you will see the labels, e.g. `(%i1)`, `(%o1)`).
 
 ![(parpadeando) cursor horizontal tras iniciar
 wxMaxima](./horizontal-cursor-only.png){ id=img_horizontal_cursor_only }
@@ -206,35 +195,19 @@ celda diferente utilizando el menú).
 celdas](./horizontal-cursor-between-cells.png){
 id=img_horizontal_cursor_between_cells }
 
-### Enviar celdas a “Maxima”
+### Sending cells to Maxima
 
-La instrucción dentro de una celda de código es ejecutada una vez pulsando
-<kbd>CTRL</kbd>+<kbd>ENTRAR</kbd>, <kbd>MAYÚS</kbd>+<kbd>ENTRAR</kbd> o la
-tecla <kbd>ENTRAR</kbd> en el teclado numérico. Lo predeterminado de
-_wxMaxima_ es introducir instrucciones cuando se introduzca
-<kbd>CTRL</kbd>+<kbd>ENTRAR</kbd> o <kbd>MAYÚS</kbd>+<kbd>ENTRAR</kbd>, pero
-_wxMaxima_ puede ser configurado para ejecutar instrucciones como respuesta
-al <kbd>ENTRAR</kbd>.
+The command in a code cell is executed once by pressing <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad. The _wxMaxima_ default is to enter commands when either <kbd>CTRL</kbd>+<kbd>ENTER</kbd> or <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> is entered, but _wxMaxima_ can be configured to execute commands in response to <kbd>ENTER</kbd>.
 
-### Instrucción con auto-completado
+### Command autocompletion
 
-_WxMaxima_ contiene una característica de auto-completado que es disparada a
-través del menú (Celda/Palabra Completa) o alternativamente pulsando la
-combinación de teclas <kbd>CTRL</kbd>+<kbd>ESPACIO</kbd>.  El
-auto-completado distingue MAYÚS/minús.  Por ejemplo si está activado dentro
-de una especificación unitaria para ezUnits ofrecerá un listado de unidades
-aplicables.
+_WxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example, if activated within a unit specification for ezUnits it will offer a list of applicable units.
 
 ![ezUnits](./ezUnits.png){ id=img_ezUnits }
 
-Al lado de completar un nombre de archivo, un nombre de unidad o la
-instrucción actual o el nombre de variable, el auto-completado es capas de
-mostrar una plantilla para muchas de las instrucciones iniciando el tipo (y
-significado) de los parámetros que este programa espera. Para activar esta
-característica presione <kbd>MAYÚS</kbd>+<kbd>CTRL</kbd>+<kbd>ESPACIO</kbd>
-o seleccione el ítem del menú respectivo (Celda/Mostrar plantilla).
+Besides completing a file name, a unit name, or the current command or variable name, the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).
 
-#### Caracteres griegos
+#### Greek characters
 
 Equipos tradicionalmente almacenados en valores 8-bit.  Esto permite para un
 máximo de 256 caracteres diferentes.  Todas las letras, números t y símbolos
@@ -357,15 +330,9 @@ adicionales:
 Puede utilizar también los «Símbolos» de la barra lateral para introducir
 estos símbolos matemáticos.
 
-Si un símbolo especial no está dentro del listado, es posible introducir
-caracteres Unicode arbitrarios pulsando <kbd>ESC</kbd> \[número del carácter
-(hexadecimal)\] <kbd>ESC</kbd>. Adicionalmente los "símbolos" de barra
-lateral tiene un menú de pulsación secundaria que permite representar un
-listado de todos los símbolos Unicode disponibles uno puede añadir a esta
-barra de herramientas o para la hoja de trabajo.
+If a special symbol isn’t in the list, it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> \[number of the character (hexadecimal)\] <kbd>ESC</kbd>. Additionally the "symbols" sidebar has a right-click menu that allow to display a list of all available Unicode symbols one can add to this toolbar or to the worksheet.
 
-<kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> por tanto los
-resultados en una `a`.
+<kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> therefore results in an `a`.
 
 Note que muchos de estos símbolos (notablemente excepciones son los símbolos
 lógicos) no tiene un significado especial dentro de _Maxima_ y por lo tanto
@@ -373,12 +340,10 @@ serán interpretados como caracteres ordinarios.  Si _Maxima_ está compilado
 utilizando un Lisp que no admite caracteres Unicode quizá cause un mensaje
 de error.
 
-Puede ser el caso que p.ej. caracteres griegos o símbolos matemáticos no
-estén incluidos dentro de la tipografía seleccionada, entonces puede no ser
-reproducibles.  Para resolver ese problema, seleccione otras tipografías
-(utilizando: Editar→Configurar→Estilo).
+It may be the case that e.g. Greek characters or mathematical symbols are not included in the selected font, then they can not be displayed.
+To solve that problem, select other fonts (using: Edit -> Configure -> Style).
 
-### Sustitución Unicode
+### Unicode replacement
 
 wxMaxima sustituirá varios caracteres Unicode por sus expresiones
 respectivas de Maxima, p.ej. "²" por "^2", "³" por "^3", el signo de raíz
@@ -401,7 +366,7 @@ math input does not contain them; (b) if you save the document as
 changes will of course not work in command line Maxima); but they may occur,
 if you cut&paste a formula from another document.
 
-### Paneles Laterales
+### Side Panes
 
 Enlaces para las instrucciones de _Maxima_ más importantes, cosas como un
 índice de contenido, ventanas con mensajes de depuración o un historial de
@@ -423,7 +388,7 @@ bajo.
 TOC](./Sidepane-TOC-convert-headings.png){ id=Sidepane-TOC-convert-headings
 }
 
-### Salida MathML
+### MathML output
 
 Varios procesadores de palabras y programas similares o bien reconocen
 entradas de [MathML](https://www.w3.org/Math/) y lo insertan automáticamente
@@ -433,7 +398,7 @@ portapapeles”.  Otros admiten matemáticas RTF.  _WxMaxima_ por lo tanto
 ofrece varios apuntes dentro del menú a través de la pulsación secundaria
 del menú.
 
-### Asistente Markdown
+### Markdown support
 
 _WxMaxima_ ofrece un conjunto de convenciones de
 [Markdown](https://es.wikipedia.org/wiki/Markdown) estándar que no colisione
@@ -441,32 +406,34 @@ con la notación matemática.  Una vez que estos elementos son listados de
 puntos.
 
 ```text
-Texto ordinario
- * Un ítem, nivel 1 de sangrado
- * Otro ítem en nivel 1 de sangrado
-   * Un ítem en un nivel de sangrado 2
-   * Un segundo ítem en el nivel 2 de sangrado
- * Un tercer ítem en el nivel 1 del sangrado
-Texto ordinario
+Ordinary text
+ * One item, indentation level 1
+ * Another item at indentation level 1
+   * An item at a second indentation level
+   * A second item at the second indentation level
+ * A third item at the first indentation level
+Ordinary text
 ```
 
-_WxMaxima_ reconocerá texto iniciando con los caracteres `>` como
-entrecomillado de bloque:
+_WxMaxima_ will recognize text starting with `>` chars as block quotes:
 
-```text Texto ordinario > comilla comilla comilla > comilla comilla comilla
-> comilla comilla comilla Texto ordinario ```
+```text
+Ordinary text
+> quote quote quote quote
+> quote quote quote quote
+> quote quote quote quote
+Ordinary text
+```
 
-Las salidas de TeX y HTML de _wxMaxima_ también reconocerán `=>` y lo
-reemplazarán por el signo correspondiente de Unicode:
+_WxMaxima_’s TeX and HTML output will also recognize `=>` and replace it by the corresponding Unicode sign:
 
-```text cogito => sum.  ```
+```text
+cogito => sum.
+```
 
-Otros símbolos de exportación HTML y TeX reconocerán son `<=` y `>=` para
-comparaciones, una flecha doble doble-apuntada (`<=>`), flechas con cabecera
-única (`<->`, `->` y `<-`) y `+/-` como el signo respectivo.  Para salida
-TeX además son reconocidos `<<` y `>>`.
+Other symbols the HTML and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single-headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.
 
-### Teclas rápidas
+### Hotkeys
 
 Muchas teclas resaltadas pueden ser encontradas dentro del texto de los
 respectivos menús.  Desde que son tomados actualmente desde el texto del
@@ -481,13 +448,13 @@ están documentadas dentro de los menús:
   auto-completion mechanism.
 - <kbd>MAYÚS</kbd>+<kbd>ESPACIO</kbd> introduce un espacio sin ruptura.
 
-## TeX crudo dentro de la exportación TeX
+### Raw TeX in the TeX export
 
 Si una celda de texto comienza con `TeX:` la exportación de TeX contiene el
 texto literal que continua el marcador `TeX:`.  Utilizando esta
 característica permite al apunte del marcado TeX sin el cuaderno _wxMaxima_.
 
-## Formatos de Archivos
+## File Formats
 
 El material desarrollado en una sesión _wxMaxima_ puede ser almacenado para
 un posterior uso en cualquiera de estas tras maneras:
@@ -517,19 +484,14 @@ pueden releer como una sesión _wxMaxima_.
 
 ### .wxm
 
-`.wxm` files contain the worksheet except for _Maxima_’s output. On Maxima
-versions >5.38 they can be read using _Maxima_’s `load()` function just as
-.mac files. Well - mostly. Questions (like `asksign(x)`) are problematic, as
-the answer is written in the `.wxm` file (so that it can be suggested after
-loading), but that can Maxima not evaluate.  You can prevent Maxima from
-asking questions by using `assume()` to declare some properties, Maxima
-wants to know.
+`.wxm` files contain the worksheet except for _Maxima_’s output. On Maxima versions >5.38 they can be read using _Maxima_’s `load()` function just as .mac files. Well - mostly. Questions (like `asksign(x)`) are problematic, as the answer is written in the `.wxm` file (so that it can be suggested after loading), but that can Maxima not evaluate.
+You can prevent Maxima from asking questions by using `assume()` to declare some properties, Maxima wants to know.
 
 With this plain-text format, it sometimes is unavoidable that worksheets
 that use new features are not downwards-compatible with older versions of
 _wxMaxima_.
 
-#### Formato de archivo de archivos wxm
+#### File format of wxm files
 
 Esto es tan solo un archivo de texto simple (puede abrirlo con un editor de
 texto), conteniendo el contenido de celda como algunos comentarios Maxima
@@ -537,50 +499,52 @@ especial.
 
 Comienza con el siguiente comentario:
 
-```maxima /* [archivo de guion wxMaxima versión 1] [ ¡NO LO EDITE A MANO!
-]*/ /* [ Creado con wxMaxima versión 24.02.2_DevelopmentSnapshot ] */ ```
+```maxima
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */
+```
 
 Y entonces las celdas siguientes, codificados como comentarios Maxima,
 p.ej., una celda de sección:
 
 ```maxima
-/* [wxMaxima: inicio de sesión ]
-Título de la sección
-   [wxMaxima: final de sección   ] */
+/* [wxMaxima: section start ]
+Title of the section
+   [wxMaxima: section end   ] */
 ```
 
 o (en una celda matemática la entrada es por supuesto *no* comentada afuera
 (la salida no es guardada en un archivo `wxm`)):
 
 ```maxima
-/* [wxMaxima: entrada   inicio ] */
+/* [wxMaxima: input   start ] */
 f(x):=x^2+1$
 f(2);
-/* [wxMaxima: entrada   final   ] */
+/* [wxMaxima: input   end   ] */
 ```
 
 Imágenes están [codificadas en base64](https://es.wikipedia.org/wiki/Base64)
 con el tipo de imagen como primera línea):
 
 ```maxima
-/* [wxMaxima: imagen  inicio ]
+/* [wxMaxima: image   start ]
 jpg
-[vista de secuencia de caracteres muy caótica]
-   [wxMaxima: imagen  final  ] */
+[very chaotic looking character sequence]
+   [wxMaxima: image   end   ] */
 ```
 
 Un salto de página es tan solo una línea conteniendo:
 
 ```maxima
-/* [wxMaxima: salto de página    ] */
+/* [wxMaxima: page break    ] */
 ```
 
 Y las celdas encarpetadas marcadas por:
 
 ```maxima
-/* [wxMaxima: carpeta    inicio ] */
+/* [wxMaxima: fold    start ] */
 ...
-/* [wxMaxima: carpeta    final  ] */
+/* [wxMaxima: fold    end   ] */
 ```
 
 ### .wxmx
@@ -589,7 +553,7 @@ Este archivo cuyo formato está basado en XML guarda la hoja de trabajo
 completa incluyendo cosas como el factor de zoom y el listado de vigía.  Es
 el formato de archivo preferido.
 
-#### Formato de archivo de archivos wxm
+#### File format of wxmx files
 
 A `wxmx`-file seems to be a binary format, but one can handle it with tools,
 which are included in your OS. It is a zip file, one can decompress it with
@@ -615,7 +579,7 @@ with a text editor, or replace an broken image, zip the files again,
 probably rename the `zip` to a `wxmx`-file - and you get another modified
 `wxmx`-file.
 
-## Opciones de configuración
+## Configuration options
 
 Para algunas configuraciones comunes de variables _wxMaxima_ ofrecen dos
 maneras de configurarlas:
@@ -629,14 +593,14 @@ maneras de configurarlas:
 ![Configuración de wxMaxima 1](./wxMaxima_configuration_001.png){
 id=img_wxMaxima_configuration_001 }
 
-### Velocidad de cuadros de animación predeterminada
+### Default animation framerate
 
 La tasa del marco de animación que se utiliza para animaciones nuevas se
 conserva dentro de la variable `wxanimate_framerate`.  El valor inicial de
 esta variable contiene dentro una hoja de trabajo nueva que puede ser
 modificada utilizando el diálogo de configuración.
 
-### Tamaño de trama predet. para sesiones _maxima_ nuevas
+### Default plot size for new _maxima_ sessions
 
 Tras el siguiente inicio, tramas empotradas a la hoja del trabajo será
 creada con este tamaño si el valor de `wxplot_size` no es modificado por
@@ -650,12 +614,12 @@ valor de variable solamente para una sola instrucción:
 wxdraw2d(
    explicit(
        x^2,
-	   x,-5,5
+       x,-5,5
    )
 ), wxplot_size=[480,480]$
 ```
 
-### Coincide paréntesis en controles de texto
+### Match parenthesis in text controls
 
 Esta opción habilita dos cosas:
 
@@ -664,7 +628,7 @@ Esta opción habilita dos cosas:
 - Si el texto está seleccionad si cualquiera de estas teclas es pulsada el
   texto seleccionado será puedes entre los signos coincidan.
 
-### No guardar automáticamente la hoja de trabajo
+### Don’t save the worksheet automatically
 
 Si esta opción está puesta, el archivo donde la hoja de trabajo será
 sobrescrita solamente al solicitar el usuario.  En caso de un cuelgue/corte
@@ -677,18 +641,10 @@ telefónica moderna:
 - Ficheros son guardados automáticamente al salir
 - And the file will automatically be saved every 3 minutes.
 
-### ¿Donde está la configuración guardada?
+### Where is the configuration saved?
 
-Si está utilizando Unix/Linux, la información de la configuración será
-guardada dentro de un archivo `.wxMaxima` dentro de su directorio personal
-(si está utilizando wxWidgets < 3.1.1), o
-`.config/wxMaxima.conf`((XDG-Estandarizado) si wxWidgets ≥ 3.1.1).  Puede
-obtener la versión de wxWidgets desde la instrucción `wxbuild_info();` o
-para utilizar la opción del menú Ayuda→Acerca
-de. [wxWidgets](https://www.wxwidgets.org/) es la biblioteca IGU de
-plataforma cruzada lo cual es la base para _wxMaxima_ (por lo tanto el `wx`
-dentro del nombre).  (Cuando el nombre del archivo comience con un punto,
-`.wxmaxima` o `.config` estarán ocultos).
+If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your home directory (if you are using wxWidgets \< 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for _wxMaxima_ (therefore the `wx` in the name).
+(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).
 
 Si está utilizando Windows, la configuración será almacenada dentro del
 registro.  Encontrará los apuntes para _wxMaxima_ en la posición siguiente
@@ -697,7 +653,7 @@ dentro del registro:
 
 ______________________________________________________________________
 
-# Extensiones para _Maxima_
+# Extensions to _Maxima_
 
 _WxMaxima_ es primariamente un interfaz gráfico de usuario para _Maxima_.
 Por lo tanto, su propósito principal es enviar órdenes a _Maxima_ y
@@ -707,7 +663,7 @@ _wxMaxima_ para generar informes exportando un contenido del cuaderno a HTML
 y LaTeX ha sido mencionado.  Esta sección considera algunas maneras que
 _wxMaxima_ mejora la inclusión de gráficos dentro de una sesión.
 
-## Variables subescritas
+## Subscripted variables
 
 Especificidades `wxsubscripts`, si (y como) _wxMaxima_ auto-suscribirá
 nombres de variable:
@@ -733,9 +689,9 @@ declarado como "para ser sub-guionado" utilizando la instrucción
 una variable como sub-guion puede ser revertido utilizando la instrucción
 siguiente: `wxdeclare_subscript(nombre_variable,false);`
 
-Puede utilizar el menú «Vista→Auto-subguion» para fijar estos valores.
+You can use the menu "View->Autosubscript" to set these values.
 
-## Comentario del usuario en la barra de estado
+## User feedback in the status bar
 
 Las instrucciones de ejecución largas pueden proporcionar al usuario su
 estado dentro de la barra de estado.  Esta comentario es sustituído por
@@ -748,11 +704,11 @@ presente la instrucción `wxstatusbar()` será tan solo dejada sin evaluar.
 
 ```maxima
 for i:1 thru 10 do (
-    /* Dice al usuario como de lejos obtuvo */
+    /* Tell the user how far we got */
     wxstatusbar(concat("Pass ",i)),
-    /* (sleep n) es una función Lisp, la cual puede utilizarse */
-    /* con el carácter "?" antes. Retarda el */
-    /* la ejecución del programa (aquí: para 3 segundos) */
+    /* (sleep n) is a Lisp function, which can be used */
+    /* with the character "?" before. It delays the */
+    /* program execution (here: for 3 seconds) */
     ?sleep(3)
 )$
 ```
@@ -765,8 +721,10 @@ scripted or batch export. Like `wxstatusbar()` it is safe to use in code
 that might also run in plain (console) _Maxima_: if _wxMaxima_ isn’t present
 the command is simply left unevaluated.
 
-```maxima wxworksheettohtml("report.html")$ wxworksheettohtml("report.html",
-flavor="svg", wxmx=true)$ ```
+```maxima
+wxworksheettohtml("report.html")$
+wxworksheettohtml("report.html", flavor="svg", wxmx=true)$
+```
 
 A relative file name is interpreted relative to _Maxima_’s working
 directory. The optional keyword options are:
@@ -784,8 +742,10 @@ still lack MathML, and `svg`/`bitmap` render every equation to an image.
 The companion command `wxworksheettotex()` exports to a LaTeX (`.tex`) file
 the same way:
 
-```maxima wxworksheettotex("report.tex")$ wxworksheettotex("report.tex",
-documentclass="report", documentclassoptions="12pt,a4paper")$ ```
+```maxima
+wxworksheettotex("report.tex")$
+wxworksheettotex("report.tex", documentclass="report", documentclassoptions="12pt,a4paper")$
+```
 
 | option                 | meaning                                                              |
 | ---------------------- | -------------------------------------------------------------------- |
@@ -794,13 +754,13 @@ documentclass="report", documentclassoptions="12pt,a4paper")$ ```
 
 Support for `wxworksheettopdf()` is planned.
 
-## Tramar
+## Plotting
 
 Tramar (teniendo fundamentalmente hacerlo con gráficas) es un lugar donde un
 interfaz gráfico del usuario tendrá para proporcionar algunas extensiones
 para el programa original.
 
-### Empotrar una trama dentro de la hoja de trabajo
+### Embedding a plot into the worksheet
 
 _Maxima_ normalmente instrumenta el programa _Gnuplot_ externo para abrir
 una ventana separada por cada diagrama que crea.  Debido a que muchas veces
@@ -837,7 +797,7 @@ is most likely a Maxima issue and should be reported in the [Maxima
 bugtracker](https://sourceforge.net/p/maxima/bugs/). Or maybe a Gnuplot
 issue.
 
-### Creación de tramas empotradas más mayores o menores
+### Making embedded plots bigger or smaller
 
 Tal como notó arriba, el dialogo de configuración proporciona una manera de
 modificar el tamaño de trama predeterminada lo cual fija el valor de inicio
@@ -875,7 +835,7 @@ trazos empotrados utilizando p.e. instrucciones `wxplot`, `wxdraw`,
 `wxcontour_plot` y `wximplicit_plot` y para animaciones empotradas con
 instrucciones `with_slider_draw` y `wxanimate`.
 
-## Tramas de mayor calidad
+### Better quality plots
 
 _Gnuplot_ parece no proporcionar una manera portable de determinar si admite
 bitmap de salida de calidad alta que la biblioteca Cairo proporciona. En los
@@ -886,7 +846,7 @@ y estilos de línea adicional. Si `wxplot_pngCairo` está establecido sin
 _Gnuplot_ admitiendo esto el resultado dará mensajes de error en vez de
 gráficos.
 
-### Abriendo tramados empotrados en ventanas _Gnuplot_ interactivas
+### Opening embedded plots in interactive _Gnuplot_ windows
 
 Si fue generada una trama utilizando las instrucciones de tipo `wxdraw`
 (`wxplot2d` y `wxplot3d` no son admitidas por esta característica) y el
@@ -894,7 +854,7 @@ tamaño del archivo del proyecto _Gnuplot_ subyacente no es una manera
 demasiado buena que _wxMaxima_ ofrezca un menú de pulsación secundaria que
 permita abrir el tramado dentro de una ventana interactiva de _Gnuplot_.
 
-### Abrir consola para instrucciones Gnuplot en las ventanas `tramado`
+### Opening Gnuplot’s command console in `plot` windows
 
 On MS Windows, there are two Gnuplot programs, `gnuplot.exe` and
 `wgnuplot.exe`.  You can configure, which command should be used using the
@@ -903,7 +863,7 @@ window, where _gnuplot_ commands can be entered into, `gnuplot.exe` does not
 offer this possibility. Unfortunately, `wgnuplot.exe` causes _Gnuplot_ to
 "steal" the keyboard focus for a short time every time a plot is prepared.
 
-### Empotrar animaciones dentro de la hoja de cálculo
+### Embedding animations into the spreadsheet
 
 Diagramas 3D tienden hacerlo difícil para lectura de datos
 cuantitativos. Una alternativa viable sería asignar el 3er parámetro a la
@@ -1017,21 +977,25 @@ with_slider_draw(
 )$
 ```
 
-### Abrir múltiples tramas en ventanas contemporáneas
+### Opening multiple plots in contemporaneous windows
 
 Mientras no sean proporcionados por _wxMaxima_ esta característica de
 _Maxima_ (sobre configuraciones que la admitan) algunas veces vienen
 manualmente.  Los siguientes ejemplos vienen desde una carta desde Mario
 Rodríguez al listado de correo de _Maxima_:
 
-```maxima load(draw);
+```maxima
+load(draw);
 
-/* Parabola in window #1 */ draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));
+/* Parabola in window #1 */
+draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));
 
-/* Parabola in window #2 */ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
+/* Parabola in window #2 */
+draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
 
 /* Paraboloid in window #3 */
-draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1)); ```
+draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
+```
 
 Plotting multiple plots in the same window is possible, too (the same is
 possible in command line Maxima with the standard `draw()` command):
@@ -1047,7 +1011,7 @@ wxdraw(
 );
 ```
 
-### El panel lateral «Tramado utilizando dibujo»
+### The "Plot using draw" side pane
 
 La barra lateral «Tramado utilizando dibujo» oculta un generador de código
 simple que permite generar escenas que hagan uso de alguna de la
@@ -1072,34 +1036,34 @@ Genera el esqueleto de una instrucción `draw()` que dibuja una escena 3D.
 Si no está configurada ninguna escena 2D o 3D, todo de los otros botones
 configuran una escena 2D que contenga la instrucción que el botón genera.
 
-#### Expresión
+#### Expression
 
 Adjunta una trama común de una expresión como `sin(x)`, `x*sin(x)` o
 `x^2+2*x-4` para la instrucción `draw()` el cursor actualmente está dentro.
 Si no hay ninguna instrucción de dibujo en una escena 2D con la trama es
 generada.  Cada escena puede ser completada con cualquier número de tramas.
 
-#### Tramado implícito
+#### Implicit plot
 
 Intenta encontrar todos los puntos como una expresión `y=sin(x)`,
 `y*sin(x)=3` o `x^2+y^2=4` es verdadero y trama de la curva resultante
 dentro de la instrucción `draw()` el cursor actualmente está dentro.  Si no
 hay instrucción de dibujo en escena de 2D con el trama es generado.
 
-#### Trama paramétrica
+#### Parametric plot
 
 Para un paso de una variable desde un límite inferior a un límite superior y
 utiliza dos expresiones como `t*sin(t)` y `t*cos(t)` para generar
 coordenadas x, y (y en tramas 3D también z) de una curva que es puesta
 dentro de la instrucción de actual del dibujo.
 
-#### Puntos
+#### Points
 
 Dibuja muchos puntos que pueden ser unidos opcionalmente.  Las coordenadas
 de los puntos son tomados desde un listado de listas, una unimatriz 2D o un
 listado o unimatriz por cada eje.
 
-#### Título del diagrama
+#### Diagram title
 
 Dibuja un título sobre el final superior del diagrama,
 
@@ -1107,7 +1071,7 @@ Dibuja un título sobre el final superior del diagrama,
 
 Establece los ejes.
 
-#### Contorno
+#### Contour
 
 (Solo para tramas 3D): agrega líneas de contorno similares a los que puedan
 ser encontrados dentro de una asociación de una montaña a la trama de
@@ -1115,18 +1079,18 @@ instrucciones que continúe dentro de la instrucción ‘draw()’ actual y/o al
 plano de tierra del diagrama.  Alternativamente, este asistente permite
 descartar el dibujo de las curvas completamente.
 
-#### Nombre de trama
+#### Plot name
 
 Agrega un apunte para leyenda mostrando el nombre del siguiente tramado de
 la leyenda del diagrama. Un nombre vacío deshabilita generando apuntes de
 leyenda para las tramas siguientes.
 
-#### Color de línea
+#### Line colour
 
 Establece el color de línea para las tramas seguidas que contiene la
 instrucción de dibujo actual.
 
-#### Color de relleno
+#### Fill colour
 
 Establece un color de relleno para tramas seguidas que contiene la
 instrucción de dibujo actual.
@@ -1135,7 +1099,7 @@ instrucción de dibujo actual.
 
 Aparece un asistente que permite establecer las líneas de rejilla.
 
-#### Precisión
+#### Accuracy
 
 Permite seleccionar un punto adecuado dentro de la velocidad versus
 exactitud compensada que es parte de cualquier programa de trama.
@@ -1168,7 +1132,7 @@ Read the Maxima and Gnuplot documentation for further information.  Note:
 Gnuplot seems to have issues with larger font sizes, see [wxMaxima issue
 1966](https://github.com/wxMaxima-developers/wxmaxima/issues/1966).
 
-## Gráficos empotrados
+## Embedding graphics
 
 Si el formato de archivo `.wxmx` está siendo utilizado empotrando archivos
 dentro de un proyecto _wxMaxima_ puede ser hecho como fácilmente como por
@@ -1176,9 +1140,11 @@ arrastrar-y-soltar.  Pero algunas veces (por ejemplo si el contenido de la
 imagen es modificado posteriormente sobre una sesión) es mejor decirle al
 archivo que cargue la imagen al evaluar:
 
-```maxima show_image("man.png"); ```
+```maxima
+show_image("man.png");
+```
 
-## Archivos de inicio
+## Startup files
 
 El diálogo de configuración de _wxMaxima_ ofrece editar dos archivos con
 instrucciones que son ejecutadas al inicializar:
@@ -1196,7 +1162,7 @@ These files are in the Maxima user directory (usually `%USERPROFILE%/maxima`
 in Windows, `$HOME/.maxima` otherwise). The location can be found out with
 the command: `maxima_userdir;`
 
-## Variables especiales wx...
+## Special variables wx...
 
 - ‘wxsubscripts’ le dice a _Maxima_ si debería convertir los nombres de
   variables que contengan un guión bajo (‘R_150’ o lo similar) en variables
@@ -1223,8 +1189,22 @@ the command: `maxima_userdir;`
   predeterminadamente?
 - `wxmaximaversion`: Returns the version number of _wxMaxima_.
 - `wxwidgetsversion`: Returns the wxWidgets version _wxMaxima_ is using.
+- `wxdirs`: A struct holding the paths _wxMaxima_ itself uses, since these
+  differ by maintainer, distribution and operating system:
+  - `wxdirs@userconfdir`: The directory the user's configuration is stored
+    in. Same directory as `maxima_userdir` (see above) - both point at the
+    same place, `wxdirs@userconfdir` is only useful if that is more
+    convenient to reach from a `.mac` file than the Maxima-side variable.
+  - `wxdirs@datadir`: The directory _wxMaxima_'s own data (icons, the
+    built-in autocompletion list, ...) is installed in.
+  - `wxdirs@helpdir`: The directory the offline copy of this manual is
+    installed in.
+  - `wxdirs@localedir`: The directory _wxMaxima_'s translation files are
+    installed in.
+  - `wxdirs@maximalocation`: The path to the _Maxima_ executable _wxMaxima_
+    is configured to start.
 
-## Salida de 2D con impresión bonita
+## Pretty-printing 2D output
 
 La función `table_form()` representa un listado 2D dentro de un formulario
 que es más legible que la salida desde la rutina de salida predeterminada de
@@ -1278,7 +1258,7 @@ wx_matrix(matrix(["Name", "Value"], ["X", 10], ["Y", 20]),
           lines=true, rownames=true, colnames=true, parenstyle=square);
 ```
 
-## Comunicar fallo
+## Bug reporting
 
 _WxMaxima_ proporciona unas pocas funciones que obtenga información de
 comunicados de fallos acerca del sistema actual:
@@ -1287,7 +1267,7 @@ comunicados de fallos acerca del sistema actual:
   of _wxMaxima_
 - `wxbug_report()` informa cómo y donde archivar los gazapos
 
-## Marcar que la salida sea dibujada en rojo
+## Marking output being drawn in red
 
 La instrucción `box()` de _Maxima_ causa que _wxMaxima_ escriba su argumento
 con un fondo rojo, si el segundo argumento para la instrucción es el texto
@@ -1302,14 +1282,13 @@ using an (machine readable) XML-dialect (can be seen in the "Raw XML
 sidebar") and outputs the resulting formulas nicely rendered, e.g. pretty
 Matrices, Square root signs, fractions, etc.
 
-<!--- Currently that does not work as it should, the line with the output
-label is shifted right (issue: #2006) --> `set_display('ascii)` causes
-wxMaxima to output formulas as in command line Maxima - as ASCII-Art.
+<!--- Currently that does not work as it should, the line with the output label is shifted right (issue: #2006) -->
+`set_display('ascii)` causes wxMaxima to output formulas as in command line Maxima - as ASCII-Art.
 
 `set_display('none)` causes 'one-line' ASCII results - the same as the
 command line Maxima command `display2d:false;` does.
 
-# Menú de ayuda
+# Help menu
 
 El menú de ayuda de wxMaxima proporciona acceso para el manual de Maxima y
 wxMaxima, consejos, algunos ejemplos de hojas de trabajo y en la línea de
@@ -1317,21 +1296,19 @@ instrucción de Maxima incluyó demos (la instrucción `demo()`).
 
 Infórmese, que las demos escriben:
 
-~~~text En la solicitud ’_’, teclee ’;’ y <entrar> para proceder con la
-demostración.  ~~~
+~~~text
+At the ’_’ prompt, type ’;’ and <enter> to proceed with the demonstration.
+~~~
 
-Eso es válido para línea de instrucciones de Maxima, sin embargo en wxMaxima
-por defecto es necesario continuar la demostración con:
-<kbd>CTRL</kbd>+<kbd>ENTRAR</kbd>
+That is valid for command-line Maxima, however in wxMaxima by default it is necessary to continue the demonstration with: <kbd>CTRL</kbd>+<kbd>ENTER</kbd>
 
-(Eso puede ser configurado en el menú Configurar→Hoja de trabajo→"Teclas
-directas para enviar instrucciones a Maxima".)
+(That can be configured in the Configure->Worksheet->"Hotkeys for sending commands to Maxima" menu.)
 
 ______________________________________________________________________
 
-# Solución de problemas
+# Troubleshooting
 
-## No se puede conectar a _Maxima_
+## Cannot connect to _Maxima_
 
 Desde _Maxima_ (el programa que hace las matemáticas actuales) y _wxMaxima_
 (proporcionando el interfaz de usuario de uso-fácil) con programas separados
@@ -1350,7 +1327,7 @@ En las máquinas Un\*x otra razón posible sería que la red del bucle
 invertido que proporciona conexiones de red entre dos programas dentro del
 mismo equipo no está configurado apropiadamente.
 
-## Cómo guardar datos desde un archivo .wxmx defectuoso
+## How to save data from a broken .wxmx file
 
 Internamente muchos formatos modernos basados en XML están normalmente en
 archivos zip. _WxMaxima_ no activa la compresión, por lo que el contenido de
@@ -1365,21 +1342,14 @@ procesamiento de texto.  Si la firma zip no está intacta que no necesita
 estar el final del mundo: si _wxMaxima_ al guardar ha detectado que algo es
 erróneo habrá un archivo `.wxmx~` cuyo contenido quizá ayude.
 
-E incluso si no hay un archivo: el archivo `.wxmx` es un formato de
-contenedor y la porción XML es almacenada sin comprimir.  Es posible
-renombrar el archivo `.wxmx` a un archivo `.txt` y utilizar un editor de
-texto para recuperar la porción XML del contenido del archivo (se inicia con
-`<?xml version="1.0" encoding="UTF-8"?>` y termina con
-`</wxMaximaDocument>`. Antes y después de ese texto verá algún contenido
-binario no legible dentro del editor del texto).
+And even if there isn’t such a file: The `.wxmx` file is a container format and the XML portion is stored uncompressed. It it is possible to rename the `.wxmx` file to a `.txt` file and to use a text editor to recover the XML portion of the file’s contents (it starts with `<?xml version="1.0" encoding="UTF-8"?>` and ends with `</wxMaximaDocument>`. Before and after that text you will see some unreadable binary contents in the text editor).
 
 Si un archivo de texto conteniendo solamente estos contenidos (p.ej. copiar
 y pegar este texto a un archivo nuevo) es guardado como un archivo
 terminando en `.xml`, _wxMaxima_ conocerá como recuperar el texto desde el
 documento.
 
-## Deseo algo del informe de depuración para ser desplegada sobre la
-pantalla antes de que mi instrucción haya finalizado
+## I want some debug info to be displayed on the screen before my command has finished
 
 Normalmente _wxMaxima_ espera a la fórmula 2D completa para ser transferida
 antes que comenzar a configurar el conjunto del tipo.  Esto guarda tiempo
@@ -1391,17 +1361,16 @@ instrucción de _Maxima_ finalice:
 ```maxima
 for i:1 thru 10 do (
    disp(i),
-   /* (sleep n) es una función de Lisp, la cual puede utilizarse */
-   /* con el carácter "?" antes.  Retrasa la ejecución del */
-   /* programa (aquí: por 3 segundos) */
+   /* (sleep n) is a Lisp function, which can be used */
+   /* with the character "?" before. It delays the */
+   /* program execution (here: for 3 seconds) */
    ?sleep(3)
 )$
 ```
 
 Alternativamente uno puede buscar la instrucción `wxstatusbar()` arriba.
 
-## El tramado solamente muestra una cobertura de sobre vacío cerrado con un
-mensaje de error
+## Plotting only shows a closed empty envelope with an error message
 
 Esto significa que _wxMaxima_ no pudo leer el archivo _Maxima_ que fue
 proporcionado a la instrucción _Gnuplot_ para crear.
@@ -1424,7 +1393,7 @@ Las posibles razones de este error son:
   establezca `wxplot_pngcairo` a cierto desde _Maxima_.
 - Gnuplot no saca un fichero «.png» válido.
 
-## Tramar una animación de resultados en «error: variable no definida»
+## Plotting an animation results in “error: undefined variable”
 
 El valor de la variable desplazada por defecto únicamente es sustituido
 dentro de la expresión que está para ser tramado si es visible ahí.
@@ -1434,7 +1403,7 @@ la sección [Animaciones empotradas a la hoja de
 cálculo](#embedding-animations-into-the-spreadsheet), puede consultar un
 ejemplo.
 
-## He perdido el contenido de una celda y al deshacer no lo recuerda
+## I lost cell content and undo doesn’t remember
 
 Hay funciones de deshacer separadas para operaciones de celdas y para
 modificaciones dentro de celdas tales que modifiquen son bajos que este a
@@ -1453,9 +1422,11 @@ veces ocurran.  Si no hay varios métodos para cubrir datos:
   emitidas recientemente.
 - Si nada más ayuda _Maxima_ contiene una característica de reproducción:
 
-```maxima playback(); ```
+```maxima
+playback();
+```
 
-## _WxMaxima_ arranca con el mensaje «Proceso de Maxima terminado.»
+## _WxMaxima_ starts up with the message “Maxima process terminated.”
 
 Una razón posible es que _Maxima_ no puede ser encontrada dentro de la
 localización que está fijada dentro de la etiqueta “Maxima” del diálogo de
@@ -1463,14 +1434,14 @@ configuración de _wxMaxima_ y por lo tanto no ejecutará nada.  Estableciendo
 la ruta a un _Maxima_ binario para el trabajo debería solucionar este
 problema.
 
-## ‘Maxima’ está calculando para siempre y no responde a la entrada
+## Maxima is forever calculating and not responding to input
 
 Es posible teóricamente que _wxMaxima_ no realiza que _Maxima_ ha finalizado
 el cálculo y por lo tanto nunca está informado que puede enviar datos nuevos
 a _Maxima_. Si esto es el caso “Disparar evaluación” tal vez re-sincronice
 los dos programas.
 
-## Mi _Maxima_ basada en SBCL se ejecuta fuera de la memoria
+## My SBCL-based _Maxima_ runs out of memory
 
 El compilador Lisp SBCL por defecto viene con un límite de memoria que lo
 permite ejecutar incluso en equipos de bajo nivel.  Cuando compile un
@@ -1489,27 +1460,31 @@ diálogo de configuración de _wxMaxima_.
 
 ![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }
 
-## Algunas veces las teclas de entrada son vagas/perezosas en Ubuntu
+## Input sometimes is sluggish/ignoring keys on Ubuntu
 
 La instalación del paquete «ibus-gtk» debería resolver este problema.  Vea
 [https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558))
 para los detalles.
 
-## _WxMaxima_ se detiene cuando _Maxima_ procesa caracteres griegos o ümlaut
+## _WxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts
 
 Si su _Maxima_ está basado en SBCL las siguientes líneas tienen que ser
 agregadas a su `.sbclrc`:
 
-```commonlisp (setf sb-impl::*default-external-format* :utf-8)  ```
+```commonlisp
+(setf sb-impl::*default-external-format* :utf-8)
+```
 
 La carpeta donde este archivo tiene que colocarse es específico del sistema
 e instalación.  Pero cualquier _Maxima_ basada en SBCL que ya ha evaluado
 una celda dentro de la sesión actual felizmente dirá donde puede ser
 encontrada tras obtener la instrucción siguiente:
 
-```maxima :lisp (sb-impl::userinit-pathname)  ```
+```maxima
+:lisp (sb-impl::userinit-pathname)
+```
 
-## Nota concerniente a Wayland (distribuciones recientes de Linux/BSD)
+## Note concerning Wayland (recent Linux/BSD distributions)
 
 Parecen ser emitidos con el Servidor de Pantalla Wayland y wxWidgets.
 WxMaxima puede ser afectado, p.ej. esas barras laterales no son movibles.
@@ -1537,12 +1512,12 @@ If the automatic fix fails, you can manually start wxMaxima with:
 
 `UBUNTU_MENUPROXY=0 wxmaxima`
 
-### ¿Por qué no es ofrecido el explorador manual integrado en mi PC Windows?
+## Why is the integrated manual browser not offered on my Windows PC?
 
 O bien wxWidgets no fueron compilados con mantenimiento para webview2 o
 webview2 de Microsoft no está instalado.
 
-### ¿Por qué el explorador manual externo no funciona en mi caja Linux?
+## Why is the external manual browser not working on my Linux box?
 
 El explorador HTML quizá es una versión de «snap», «flatpack» o
 «appimage». Todo de estos típicamente no puede acceder archivos que son
@@ -1552,8 +1527,7 @@ proporciona el acceso al sistema hospedante para sus contenidos. Una tercera
 razón sería que el manual HTML de maxima no está instalado y la conexión por
 línea no puede ser accedida.
 
-### ¿Se puede crear la salida de _wxMaxima_ por ambos archivo de imagen y
-tramas empotradas a la vez?
+## Can I make _wxMaxima_ output both image files and embedded plots at once?
 
 La hoja de trabajo empotra archivos .png. _wxMaxima_ permite al usuario
 especificar donde serían generados:
@@ -1592,7 +1566,7 @@ pngdraw2d("Test",
 );
 ```
 
-### ¿Se puede establecer la proporción de aspecto de una trama?
+## Can I set the aspect ratio of an embedded plot?
 
 Use the variable `wxplot_size`:
 
@@ -1602,28 +1576,22 @@ wxdraw2d(
 ),wxplot_size=[1000,1000];
 ```
 
-### Tras mejorar a MacOS 13.1 los mensajes de error de salida para las
-instrucciones de trama y/o dibujos como
+## After upgrading to MacOS 13.1 plot and/or draw commands output error messages like
 
-```text 1 HIToolbox 0x00007ff80cd91726
-_ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102 2 HIToolbox
-0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52 3 HIToolbox
-0x00007ff80cd35908 SetMenuBarObscured + 408 ...  ```
+```text
+1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102
+2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52
+3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408
+...
+```
 
-Esto quizá sea un asunto con el sistema operativo. Desactive el oculto de la
-barra de menú (SystemSettings => Desktop & Dock => Menu Bar) tal vez
-resuelve el asunto.  Consulte [wxMaxima issue
-#1746](https://github.com/wxMaxima-developers/wxmaxima/issues/1746) para más
-información.
+This might be an issue with the operating system. Disable the hiding of the menu bar (SystemSettings => Desktop & Dock => Menu Bar) might solve the issue. See [wxMaxima issue #1746](https://github.com/wxMaxima-developers/wxmaxima/issues/1746) for more information.
 
 ## Logging
 
-Log messages might be helpful to debug problems. WxMaxima can log many
-events. Most log entries will be helpful for developers, especially in case
-of problems or bugs. If you run a "Release"-Build, the log windows is not
-shown by default, if you run a development version, it is shown by default
-as a second window. You can enable and disable this window using the
-"View->Toggle log window" menu entry.
+Log messages might be helpful to debug problems. WxMaxima can log many events. Most log entries will be helpful for developers, especially in case of problems or bugs. If you run a "Release"-Build,
+the log windows is not shown by default, if you run a development version, it is shown by default as a second window. You can enable and disable
+this window using the "View->Toggle log window" menu entry.
 
 Messages are not 'lost', if the log window is not shown, if you select to
 show the log window later, you will see past log messages (if you did not
@@ -1641,18 +1609,18 @@ ______________________________________________________________________
 
 # FAQ
 
-## ¿Hay una manera de crear más texto que quepa en una página LaTeX?
+## Is there a way to make more text fit on a LaTeX page?
 
 Sí.  Utilice el [paquete "geometry" de LaTeX](https://ctan.org/pkg/geometry)
 para especificar el tamaño de los bordes.
 
-Puede agregar la línea siguiente al preámbulo LaTeX (por ejemplo utilizando
-el campo respectivo dentro del diálogo de configuración («Exportar» →
-«Líneas adicionales para el preámbulo TeX»), para fijar bordes de 1cm):
+You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"->"Additional lines for the TeX preamble"), to set borders of 1cm):
 
-```latex \usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry} ```
+```latex
+\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
+```
 
-## ¿Hay un modo oscuro?
+## Is there a dark mode?
 
 Si wxWidgets es suficientemente nuevo _wxMaxima_ automáticamente estará en
 modo oscuro si el resto del sistema operativo también lo está.  La misma
@@ -1661,17 +1629,11 @@ puede ser configurado de otras maneras.  Alternativamente hay un apunte del
 menú para ‘Ver/Invertir brillo de la hoja de trabajo’ para convertir
 rápidamente la hoja de trabajo desde oscuro a claro y viceversa.
 
-## _WxMaxima_ algunas veces se cuelga durante varios segundos una vez en el
-primer minuto
+## _WxMaxima_ sometimes hangs for several seconds once in the first minute
 
-_WxMaxima_ delega algunas tareas grandes como interpretar el manual de
-página >1000 de _Maxima_ para tareas en segundo plano, lo cual normalmente
-va totalmente no comunicado.  En el momento que el resultado de dicha tarea
-es necesaria, es posible que _wxMaxima_ necesite esperar un par de segundos
-antes de poder continuar su trabajo.
+_WxMaxima_ delegates some big tasks like parsing _Maxima_’s >1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.
 
-## Especialmente cuando pruebe parámetros locales nuevos, sucede una caja
-con el mensaje "locale ’xx_YY’ no puede ser fijada"
+## Especially when testing new locale settings, a message box "locale ’xx_YY’ can not be set" occurs
 
 ![Aviso local](./locale-warning.png){ id=img_locale_warning}
 
@@ -1683,16 +1645,14 @@ trabajo de wxWidgets.
 Estos locales quizá no sean presente dentro del sistema. En sistemas
 Ubuntu/Debian pueden ser generados utilizando: `dpkg-reconfigure locales`
 
-## ¿Cómo puedo utilizar símbolos para números reales, naturales (ℝ, ℕ),
-etc.?
+## How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?
 
 Puede encontrar estos símbolos en la barra lateral Unicode (busca
 ’doble-stuck capital’). Pero la tipografía seleccionada además debe mantener
 estos símbolos. Si no representan apropiadamente, seleccione otra
 tipografía.
 
-## ¿Cómo puede un guion Maxima determinar, si está ejecutándose bajo
-wxMaxima o línea de instrucción de Maxima?
+## How can a Maxima script determine, if it is running under wxMaxima or command line Maxima?
 
 Si se utiliza wxMaxima, la variable `maxima_frontend` de Maxima está fijada
 a `wxmaxima`. La variable Maxima `maxima_frontend_version` contiene la
@@ -1703,14 +1663,11 @@ instrucción), estas variables son falsas.
 
 ## Help! I can not save my document!
 
-If saving as wxmx file does not work, try saving the document as wxm file
-(and vice versa). And you can also try to remove all output (Menu
-Cell->Remove all output) and save that file, maybe some unexpected output
-causes issues during the save process.
+If saving as wxmx file does not work, try saving the document as wxm file (and vice versa). And you can also try to remove all output (Menu Cell->Remove all output) and save that file, maybe some unexpected output causes issues during the save process.
 
 ______________________________________________________________________
 
-# Argumentos de línea de instrucción
+# Command-line arguments
 
 Usualmente puede iniciar programas con un interfaz gráfico de usuario tan
 solo pulsando en un icono de escritorio o apunte de menú del
@@ -1751,7 +1708,7 @@ breve al frente de los conmutadores de línea de instrucciones.
 
 ______________________________________________________________________
 
-# Sobre el programa, contribuyendo a wxMaxima
+# About the program, contributing to wxMaxima
 
 wxMaxima es principalmente desarrollado utilizando el lenguaje de
 programación C++ utilizando el [marco de trabajo
@@ -1780,7 +1737,4 @@ El programa es casi autónomo, por tanto excepto para bibliotecas del sistema
 gráficos o la parte Lisp (el archivo `wxmathML.lisp`) es necesario, se
 incluyen estos archivos dentro del ejecutable.
 
-Si es un desarrollador, quizá desea intentar un archivo modificado de
-`wxmathML.lisp` sin tener que recompilar todo, uno puede utilizar la opción
-de línea de instrucción `--wxmathml-lisp=<str>` para utilizar otro archivo
-Lisp, no el incluido.
+If you are a developer, you might want to try out a modified `wxmathML.lisp`-file without recompiling everything, one can use the command line option `--wxmathml-lisp=<str>` to use another Lisp file, not the included one.

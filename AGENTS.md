@@ -199,28 +199,137 @@ tried without rebuilding.
 
 ### Translations (`locales/`)
 
-- **One combined `.po` per language, in `locales/wxMaxima/`:** it covers both
-  wxMaxima's own UI strings (`xgettext`-extracted from `src/**/*.cpp`/`*.h`)
-  and the manual's prose (`po4a`-extracted from `info/wxmaxima.md`), merged
-  into a single catalog -- a translator only needs one file per language.
-  `locales/wxMaxima/wxMaxima.pot`, the template both `msgmerge` and Crowdin
-  work against, is regenerated as the union of a fresh source scan and
-  `locales/manual/wxmaxima.md.pot` (`msgcat --use-first`, preferring
-  `wxMaxima.pot`'s own header) by the `update-locale` CMake target -- so this
-  stays merged on every future update instead of re-diverging into two
-  catalogs again. `locales/manual/wxmaxima.md.pot` itself still exists (it's
-  `po4a`'s own intermediate template, scoped to just the manual's msgids) but
-  there is no more `locales/manual/*.po`: `po4a.cfg`'s `$lang:` path points at
-  `locales/wxMaxima/$lang.po` instead, and `po4a` looks up each of its own
-  (manual-only) msgids there, ignoring the UI-only entries it has no
-  matching source line for.
-- **Don't run this sandbox's `po4a` (0.69) against real translated content.**
-  See `CheckPo4aVersion.cmake`'s corruption warning above -- verifying a
-  change to the translation *pipeline* (`po4a.cfg.in`, the CMake wiring) is
-  fine without running `po4a` itself; regenerating actual `.po`/`.md` output
-  needs a real `po4a` >= 0.70, which wasn't reachable from this sandbox
-  (`apt` only has 0.69; Debian's package archive and po4a's own GitHub
-  releases were both unreachable through this sandbox's proxy).
+- **One combined `.po` per language, in `locales/wxMaxima/`, is the file a
+  translator edits.** It covers both wxMaxima's own UI strings
+  (`xgettext`-extracted from `src/**/*.cpp`/`*.h`) and the manual's prose
+  (`po4a`-extracted from `info/wxmaxima.md`). `locales/wxMaxima/wxMaxima.pot`,
+  the template both `msgmerge` and Crowdin work against, is regenerated as
+  the union of a fresh source scan and `locales/manual/wxmaxima.md.pot`
+  (`msgcat --use-first`, preferring `wxMaxima.pot`'s own header) by the
+  `update-locale` CMake target.
+- **`po4a` must never be pointed at `locales/wxMaxima/<lang>.po` directly.**
+  It looks like the obvious way to keep the manual's translations inside the
+  combined file (`po4a.cfg`'s `$lang:` path *was* set to
+  `locales/wxMaxima/$lang.po` at one point), but `po4a` doesn't treat a `.po`
+  file as something to add/update entries in - it treats it as *its own*,
+  and **rewrites it wholesale to contain only the entries it itself
+  extracted from `info/wxmaxima.md`, silently discarding everything else**.
+  Confirmed live: a language with 1000 translated UI strings and 69
+  translated manual strings dropped to 69 (the UI strings gone) after one
+  `po4a` run against the combined file - and this shipped merged to `main`
+  before being caught. `po4a` therefore keeps writing its own
+  `locales/manual/<lang>.po` (`po4a.cfg`'s `$lang:` path), exactly as before
+  the two catalogs were combined; `locales/wxMaxima/CMakeLists.txt`'s
+  `${LANG}_po` target runs `merge_manual_po.cmake` (`msgcat --use-first`) to
+  fold `locales/manual/<lang>.po` into `locales/wxMaxima/<lang>.po` *before*
+  `msgmerge`, every time - that script is the only place allowed to write
+  manual content into the combined file. `locales/manual/*.po` only exists
+  for the languages that actually have a manual translation (not the full
+  `locales/wxMaxima/*.po` language list) - `info/CMakeLists.txt` expects a
+  matching `info/wxmaxima.<lang>.md` to already exist for every language
+  `po4a.cfg`'s language list names, and doesn't create a fresh empty one, so
+  don't widen that language list to languages that have no manual
+  translation yet without also handling that.
+- **`po4a.cfg`'s manual `[type: text]` line needs `opt:"-o markdown"`
+  explicitly** - `Locale::Po4a::Text`'s own default for that option is `1`,
+  but that default does not take effect through `[type: text]`'s normal
+  invocation; confirmed live by extracting the same heading with and without
+  an explicit `-o markdown`. Without it, every markdown structural element
+  (`##` headings, list items, ...) is extracted as generic wrapped "Plain
+  text" instead of being recognized as its own no-wrap markdown construct,
+  which is what caused #2047: a translated heading long enough to wrap got a
+  literal newline inserted mid-heading when `po4a` wrote it back out,
+  turning the second half into a normal paragraph in the rendered manual.
+  The tempting broader fix, `opt:"-o neverwrap"` (disables wrapping
+  entirely), is a trap: it doesn't just change *output* wrapping, it changes
+  how `po4a` *segments source paragraphs into msgids* (each source line
+  becomes a literal embedded `\n` in the msgid instead of the paragraph
+  being one reflowed string) - confirmed live it turns 293 cleanly-matched
+  German translations into 2 clean matches + 328 fuzzy, i.e. it invalidates
+  the translation of nearly every multi-line paragraph in the whole manual,
+  for a bug that's specifically about headings. `-o markdown` alone fixes
+  the reported bug (headings/lists become their own no-wrap entries) with a
+  much smaller, semantically-justified cost: only headings, list items and
+  fenced code blocks need re-confirming as fuzzy (e.g. 293 clean -> 183
+  clean + 156 fuzzy for German - about 89 of those are headings whose old
+  msgstr still has the now-redundant leading `## ` baked in, since `po4a`
+  auto-prepends it from the `Title ##` type instead of storing it in the
+  translated text; the rest are fenced-code-block delimiters `po4a` now
+  reconstructs itself instead of storing literally, plus a handful of
+  entries that were already fuzzy for unrelated reasons - real source-text
+  edits, not a `markdown` side effect), not full paragraphs. **The old
+  translation text is not deleted** (`.po` keeps the fuzzy msgstr plus the
+  previous msgid in a `#|` comment) **but it stops appearing in the
+  generated manual** until a translator re-confirms it - `po4a-translate`
+  skips fuzzy entries by default the same way `msgfmt` does for a compiled
+  `.mo`, falling back to the untranslated English source. Don't describe
+  this fix as lossless to a translator without that caveat: a previously
+  fully-translated heading really does render in English again in
+  `info/wxmaxima.<lang>.md` until someone reviews the (mostly mechanical:
+  strip the leading `#+ `) fuzzy diff. Fixing the wrapping bug and keeping
+  every translation rendering are in tension - there's no `po4a` option that
+  gets both, since the whole point of `-o markdown` is to change what a
+  heading's msgid *is*.
+- **`locales/wxMaxima/CMakeLists.txt`'s `${LANG}_po` target needs
+  `wxMaxima.pot` in its own `DEPENDS`, not just as a plain path string
+  inside a `COMMAND` argument.** `add_custom_command(OUTPUT wxMaxima.pot
+  ...)` only creates a file-level build rule; a *different* custom command
+  (or target) that merely references that output path in a shell argument
+  gets no ordering guarantee from it. Confirmed live: after fixing the
+  manual's extraction to `-o markdown`, `make update-locale` kept producing
+  stale results (matching the pre-fix fuzzy/translated counts exactly)
+  because `wxMaxima.pot` itself hadn't been rebuilt - `${LANG}_po`'s
+  `PRE_BUILD` command still consumed yesterday's `wxMaxima.pot` on disk.
+  Fixed by declaring `DEPENDS ${LANG}.po wxMaxima.pot` on the
+  `add_custom_target(${LANG}_po ...)` line.
+- **Committing a `make update-locale` run's output means committing
+  *every* language's drift against the current C++ source, not just the
+  fix you're testing.** Running it live in this sandbox (to verify the two
+  bugs above) also picked up ~1100 real UI strings that exist in
+  `src/**/*.cpp`/`*.h` today but were missing from every committed
+  `locales/wxMaxima/*.po` and `wxMaxima.pot` (confirmed genuine, not a
+  sandbox artifact: `grep`-verified several, e.g. `Configuration.cpp`'s
+  `_("  Font cache hits: %ld")`, actually exist in the source at `HEAD` -
+  `xgettext` just hadn't been re-run against the source in a while before
+  `wxMaxima.pot` was last committed). That's real, legitimate drift, but
+  it's a separate concern from a `po4a`-pipeline bug fix - bundling ~1100
+  new untranslated strings across 24 languages into a bugfix commit buries
+  the actual fix and forces reviewers (translators included) to wade
+  through unrelated noise. After verifying a `po4a`/CMake fix works
+  end-to-end in the build directory, `git checkout --
+  locales/wxMaxima/*.po locales/wxMaxima/wxMaxima.pot` to drop that
+  incidental drift back to the committed state before committing, keeping
+  only the actual pipeline files (`po4a.cfg.in`, the `CMakeLists.txt`s,
+  `merge_manual_po.cmake`) plus whatever's scoped to the manual itself
+  (`locales/manual/*.po`, `locales/manual/wxmaxima.md.pot`,
+  `info/wxmaxima.<lang>.md`). The UI-string staleness is a legitimate
+  follow-up `make update-locale` run of its own, on its own commit.
+- **Don't run this sandbox's stock `po4a` (0.69) against real translated
+  content.** See `CheckPo4aVersion.cmake`'s corruption warning above --
+  verifying a change to the translation *pipeline*
+  (`po4a.cfg.in`/`merge_manual_po.cmake`/the CMake wiring) is fine without
+  running `po4a` itself, but regenerating actual `.po`/`.md` output needs a
+  real `po4a` >= 0.70. It wasn't reachable via any of apt (only has 0.69),
+  Debian's package archive, or po4a's own GitHub releases (both blocked by
+  this sandbox's proxy) - but a source tarball of a current release, fetched
+  outside the sandbox and handed to the agent as a file, runs perfectly well
+  unpacked with no install step beyond `PERL5LIB=<unpacked-dir>/lib`
+  pointing at its `Locale::Po4a::*` modules; the `po4a`/`po4a-updatepo`/
+  `po4a-translate`/etc. scripts at the tarball's top level need nothing else
+  to work standalone, e.g. `PERL5LIB=lib ./po4a --version`. Regenerating
+  translated content live and diffing it (`msgfmt --statistics` before/after
+  per language, matching translated-message counts) is how both bugs above
+  were actually caught, not guessed from reading `Locale::Po4a::Text`'s
+  source.
+- **`git clean -fd` after `git checkout --` on a directory wipes untracked
+  files in it too, including ones you meant to keep** (e.g. a new
+  `locales/manual/<lang>.po` restored from a scratch copy, or a brand new
+  `.cmake` helper script that was never committed yet) - it doesn't
+  distinguish "test-run droppings" from "uncommitted new work" by intent,
+  only by whether `git add` has seen the path yet. Prefer reverting only the
+  specific files that are actually wrong (or committing work-in-progress to
+  a scratch commit first) over a blanket `git checkout -- <dir> && git clean
+  -fd <dir>` once a directory has a mix of both kinds of changes in it.
 
 ## Conventions & Standards
 

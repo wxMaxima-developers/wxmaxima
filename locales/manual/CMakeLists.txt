@@ -3,10 +3,15 @@
 
 include(${CMAKE_SOURCE_DIR}/CheckPo4aVersion.cmake)
 
-# Translations of the manual now live merged into locales/wxMaxima/*.po
-# alongside the UI strings (see locales/README.md), so the language list
-# comes from there.
-file(GLOB LANGUAGES ${CMAKE_CURRENT_SOURCE_DIR}/../wxMaxima/*.po)
+# which languages are supported? info/CMakeLists.txt expects a translated
+# info/wxmaxima.<lang>.md to already exist for every language in this list
+# (it doesn't generate a fresh empty one), so this must stay scoped to the
+# languages that actually have a manual translation - not every language
+# locales/wxMaxima/*.po covers (most of which have no manual translation at
+# all yet, only UI strings). po4a keeps writing its own po file here (see
+# ../wxMaxima/merge_manual_po.cmake for why it can't write directly into the
+# combined locales/wxMaxima/*.po).
+file(GLOB LANGUAGES *.po)
 list(TRANSFORM LANGUAGES REPLACE ".*/(.*).po$" "\\1")
 string(REPLACE ";" " " LANGUAGES_SPACESEPARATED "${LANGUAGES}")
 file(RELATIVE_PATH WXMAXIMA_MD_RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}/info/wxmaxima.md")
