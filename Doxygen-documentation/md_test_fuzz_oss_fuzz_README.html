@@ -95,7 +95,7 @@ Validate locally before submitting</h1>
 <div class="line">python3 infra/helper.py check_build   wxmaxima</div>
 <div class="line">python3 infra/helper.py run_fuzzer    wxmaxima fuzz_mathparser</div>
 </div><!-- fragment --><p><code>check_build</code> / <code>run_fuzzer</code> is where the display dependency will show up if the run image has no Xvfb. Fix that (or switch to a display-free harness) before opening the PR.</p>
-<h1><a class="anchor" id="autotoc_md1036"></a>
+<h1><a class="anchor" id="autotoc_md1035"></a>
 How the CMake honours OSS-Fuzz</h1>
 <p><code>-DWXM_FUZZ=ON</code> plus a Clang compiler builds the targets. When <code>$LIB_FUZZING_ENGINE</code> is set (as OSS-Fuzz does), the CMake links it instead of <code>-fsanitize=fuzzer</code> and relies on <code>$CXXFLAGS</code> for the instrumentation; otherwise it adds <code>-fsanitize=fuzzer,address</code> itself for standalone/CI builds. </p>
 </div></div><!-- contents -->
