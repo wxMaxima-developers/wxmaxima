@@ -1,5 +1,28 @@
 # Current development version
 
+- Translations: the manual's per-language translations now live merged into
+  `locales/wxMaxima/*.po`, alongside wxMaxima's own UI strings, instead of a
+  separate `locales/manual/*.po` per language -- so translating both only
+  needs one file per language. `wxMaxima.pot` (the template `msgmerge` and
+  Crowdin work against) is now the union of a fresh scan of the C++ source
+  and the manual's own template (`locales/manual/wxmaxima.md.pot`, kept
+  current by `po4a`), combined via `msgcat --use-first` so future
+  `make update-locale` runs keep staying merged instead of re-diverging. No
+  existing translation was lost: German/Spanish/French/Italian/Russian/
+  Turkish/Ukrainian/Chinese (Simplified), the eight languages that had a
+  separate manual translation, keep every one of those translated strings,
+  now inside their `locales/wxMaxima/*.po` file.
+
+- wxMaxima now tells Maxima's ASCII-art 2D/1D printer (`set_display('ascii)`
+  and `set_display('none)`) how wide the worksheet actually is: `$linel` is
+  set, right before every command, to the number of columns of the
+  worksheet's monospace ASCII-math font that currently fit into the window
+  (`Configuration::GetAsciiArtColumns()`), instead of Maxima's fixed factory
+  default of 79. Wide fractions/matrices/etc. now wrap where they actually
+  need to on the current window size and font, rather than wxMaxima having
+  to widen the cell (and add a horizontal scrollbar) to show output Maxima
+  wrapped for a different width -- or not wrapping it widely enough (#1608).
+
 - Fixed misaligned ASCII-art 2D math (`set_display('ascii)`): the top/bottom
   lines of a fraction, matrix, etc. are padded by Maxima on the assumption
   that every line -- including the `(%oN)` label line -- renders in the same

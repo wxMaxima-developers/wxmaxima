@@ -3,9 +3,10 @@
 
 include(${CMAKE_SOURCE_DIR}/CheckPo4aVersion.cmake)
 
-# which languages are supported?
-file(GLOB TRANSLATION_FILES *.po)
-file(GLOB LANGUAGES *.po)
+# Translations of the manual now live merged into locales/wxMaxima/*.po
+# alongside the UI strings (see locales/README.md), so the language list
+# comes from there.
+file(GLOB LANGUAGES ${CMAKE_CURRENT_SOURCE_DIR}/../wxMaxima/*.po)
 list(TRANSFORM LANGUAGES REPLACE ".*/(.*).po$" "\\1")
 string(REPLACE ";" " " LANGUAGES_SPACESEPARATED "${LANGUAGES}")
 file(RELATIVE_PATH WXMAXIMA_MD_RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}/info/wxmaxima.md")

@@ -197,6 +197,31 @@ tried without rebuilding.
   the embedded images. The format version lives in `src/WXMXformat.h`.
 - **`.wxm`** -- the plain-text format, read by `Format::ParseWXMFile()`.
 
+### Translations (`locales/`)
+
+- **One combined `.po` per language, in `locales/wxMaxima/`:** it covers both
+  wxMaxima's own UI strings (`xgettext`-extracted from `src/**/*.cpp`/`*.h`)
+  and the manual's prose (`po4a`-extracted from `info/wxmaxima.md`), merged
+  into a single catalog -- a translator only needs one file per language.
+  `locales/wxMaxima/wxMaxima.pot`, the template both `msgmerge` and Crowdin
+  work against, is regenerated as the union of a fresh source scan and
+  `locales/manual/wxmaxima.md.pot` (`msgcat --use-first`, preferring
+  `wxMaxima.pot`'s own header) by the `update-locale` CMake target -- so this
+  stays merged on every future update instead of re-diverging into two
+  catalogs again. `locales/manual/wxmaxima.md.pot` itself still exists (it's
+  `po4a`'s own intermediate template, scoped to just the manual's msgids) but
+  there is no more `locales/manual/*.po`: `po4a.cfg`'s `$lang:` path points at
+  `locales/wxMaxima/$lang.po` instead, and `po4a` looks up each of its own
+  (manual-only) msgids there, ignoring the UI-only entries it has no
+  matching source line for.
+- **Don't run this sandbox's `po4a` (0.69) against real translated content.**
+  See `CheckPo4aVersion.cmake`'s corruption warning above -- verifying a
+  change to the translation *pipeline* (`po4a.cfg.in`, the CMake wiring) is
+  fine without running `po4a` itself; regenerating actual `.po`/`.md` output
+  needs a real `po4a` >= 0.70, which wasn't reachable from this sandbox
+  (`apt` only has 0.69; Debian's package archive and po4a's own GitHub
+  releases were both unreachable through this sandbox's proxy).
+
 ## Conventions & Standards
 
 - **Git Environment:** Note that running `git diff` might launch the visual diff tool `meld` instead of outputting to the terminal. Always use `git diff --no-ext-diff` if you need terminal output.
