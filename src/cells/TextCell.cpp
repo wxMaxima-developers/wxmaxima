@@ -847,7 +847,7 @@ wxString TextCell::ToTeX() const {
       // look if there actually is a last element.
       if (GetPrevious()) {
         if (GetPrevious()->GetTextStyle() == TS_SPECIAL_CONSTANT &&
-            GetPrevious()->ToTeX() == wxS("d")) {
+            GetPrevious()->ToString() == wxS("d")) {
           text.Replace(wxS("*"), wxS("\\, "));
           text.Replace(wxS("\u00B7"), wxS("\\, "));
         } else {
@@ -972,6 +972,12 @@ wxString TextCell::ToTeX() const {
       return wxS("i");
     else if (text == wxS("\\% pi"))
       return wxS("\\ensuremath{\\pi} ");
+    else if (text == wxS("d"))
+      // The "d" of an integral's "dx"/"dtheta"/... (the only other user of
+      // this style, see wxxml-int in wxMathML.lisp): must render upright,
+      // not in math mode's default italic (GH #972). IntCell::ToTeX()
+      // already inserts the separating "\, " ahead of this cell.
+      return wxS("\\mathrm{d}");
     else
       return text;
   }

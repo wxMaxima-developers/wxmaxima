@@ -9,6 +9,9 @@
   roughly a 1-in-20 to 1-in-30 rate) -- this cell simply never had a
   recorded answer for that rare case, since its whole point is to
   demonstrate that `assume()` normally makes the question unnecessary.
+- Fixed the LaTeX export of an integral's differential ("dx", "d\theta", ...):
+  it now renders upright (`\mathrm{d}`) instead of in math mode's default
+  italic (#972).
 - Fixed a build failure on GCC 11 (Ubuntu 22.04) and Cygwin:
   `src/cells/CellIterators.h` used `std::vector` without including `<vector>`,
   which happened to work only where some other header transitively pulled it
