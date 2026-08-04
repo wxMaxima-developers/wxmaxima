@@ -7,6 +7,11 @@
   in a bug report without revealing the original names. Maxima builtins and
   the tokenizer's own syntax keywords (`for`/`then`/`do`/...) are left alone,
   and the whole operation is a single undo step.
+- Fixed a build failure on GCC 11 (Ubuntu 22.04) and Cygwin:
+  `src/cells/CellIterators.h` used `std::vector` without including `<vector>`,
+  which happened to work only where some other header transitively pulled it
+  in first -- not the case for every toolchain/include order (introduced by
+  the `m_nextToDraw` removal below).
 - Reduced the memory footprint of every cell on the worksheet by removing
   `m_nextToDraw`, a per-cell pointer used only by fractions, parentheses and
   similar 2D-capable cells when line-wrapped; the same information is now
