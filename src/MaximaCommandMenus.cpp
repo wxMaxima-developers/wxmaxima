@@ -2150,6 +2150,10 @@ void MaximaCommandMenus::HelpMenu(wxCommandEvent &event) {
     m_wxMaxima.MenuCommand(wxS("wxbug_report()$"));
   }
 
+  else if(event.GetId() == EventIDs::menu_anonymize){
+    m_wxMaxima.GetWorksheet()->AnonymizeCodeCells();
+  }
+
   else if(event.GetId() == EventIDs::menu_help_tutorials){
     wxLaunchDefaultBrowser(wxS("https://wxMaxima-developers.github.io/wxmaxima/help.html"));
   }

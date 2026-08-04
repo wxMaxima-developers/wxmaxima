@@ -33,9 +33,7 @@
 #include <wx/string.h>
 #include <wx/wx.h>
 
-MaximaTokenizer::MaximaTokenizer(const wxString &commands,
-                                 const Configuration * const configuration)
-  : m_configuration(configuration) {
+void MaximaTokenizer::EnsureHardcodedFunctionsInitialized() {
   if (m_hardcodedFunctions.empty()) {
     m_hardcodedFunctions["for"] = 1;
     m_hardcodedFunctions["in"] = 1;
@@ -56,6 +54,12 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
     m_hardcodedFunctions["true"] = 1;
     m_hardcodedFunctions["false"] = 1;
   }
+}
+
+MaximaTokenizer::MaximaTokenizer(const wxString &commands,
+                                 const Configuration * const configuration)
+  : m_configuration(configuration) {
+  EnsureHardcodedFunctionsInitialized();
 
   // ----------------------------------------------------------------
   // --------------------- Step one:                -----------------
