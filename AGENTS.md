@@ -457,6 +457,30 @@ next" style work.
 - **Real tab handling in `EditorCell`:** tabs are currently just replaced by
   spaces on input instead of being handled as their own character/column-stop
   concept.
+- **GH #1335 -- cell allocations are non-local (still open, unstarted):**
+  `Cell`s are still individually heap-allocated and linked via each cell's own
+  `m_previous`/`m_next`, not stored contiguously. `CellList.h`'s own header
+  comment already says "the eventual plan is to have a list of cells be a
+  dedicated lightweight class working together with an arena allocator", but
+  `CellListBuilderBase` still just holds a `std::unique_ptr<Cell> m_head` --
+  that plan was never implemented. The issue's three proposed moves are all
+  still open: (1) drop `m_previous`/`m_next` from `Cell` in favor of a
+  `CellList` that owns contiguous storage, (2) hoist `m_group` from `Cell` to
+  `CellList` (one owner per list), (3) hoist the per-line-geometry caches --
+  the issue calls them `m_fullWidth`/`m_maxCenter`/`m_maxDrop`, renamed since
+  to `m_cachedSumOfWidths`/`m_cachedCenterList`/`m_cachedMaxDrop`/
+  `m_cachedLineWidth` -- from `Cell` to `CellList` too. Confirmed `sizeof(Cell)`
+  is 224 bytes on the current tree (checked directly, post-#1445), not the 112
+  the issue was measured against in 2020 -- `Cell` has grown substantially
+  since (accessibility support, config-change-tracking atomics, UUID string,
+  extra-XML-attributes map, ...), so the issue's "112 -> 76 bytes" estimate is
+  stale, but the underlying proposal is still real. This is a bigger
+  undertaking than #1445: it changes the core list *storage model*
+  (`m_next`/`m_previous` becoming array-relative instead of pointer-based),
+  touching every list-manipulation site in `CellList.cpp` plus anything
+  walking `GetNext()`/`GetPrevious()` directly -- scope it out carefully
+  before starting, don't assume it's a small follow-on to #1445 just because
+  they're adjacent/both filed by KubaO in 2020.
 
 ## Error resilience
 
