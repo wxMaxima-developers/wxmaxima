@@ -154,6 +154,57 @@ a local TCP socket.
   draw-list-mirroring bookkeeping, since there's nothing stored to keep in
   sync.
 
+- **`Worksheet::AnonymizeCodeCells()` (GH #1339, Help menu -> "Anonymize Code
+  for Bug Report"):** renames every non-builtin variable/function name in the
+  selected code cells (whole document if nothing's selected, after a
+  confirmation `wxMessageBox`) to a random `anon_...` name, the same
+  replacement for every occurrence of a given original name, as a single
+  undo step. Telling "a user-defined name" apart from "a name Maxima already
+  knows" needs **two** independent checks on each `TS_CODE_VARIABLE`/
+  `TS_CODE_FUNCTION` token, not one: `AutoComplete::GetSymbolList()` (Maxima
+  builtins plus session-loaded package symbols -- deliberately *not*
+  polluted by user-typed worksheet words, which live in a separate
+  `m_worksheetWords` map) catches real Maxima functions/variables, but
+  `MaximaTokenizer` tokenizes its own hardcoded control-flow keywords
+  (`for`/`in`/`then`/`while`/`do`/`thru`/`next`/`step`/`unless`/`from`/`if`/
+  `else`/`elseif`/`and`/`or`/`not`/`true`/`false`) with that same
+  variable/function style, and only 4 of those 18
+  (`and`/`false`/`in`/`true`) also happen to appear in
+  `data/builtin_commands.txt` -- confirmed directly by grepping that file.
+  A filter using only `GetSymbolList()` would rename `for`/`then`/`do`/...
+  themselves and corrupt the Maxima syntax outright. Fixed by exposing the
+  tokenizer's private keyword set as a new public static
+  `MaximaTokenizer::IsHardcodedKeyword()` and checking both. That accessor
+  needed its own fix first: the keyword map was populated lazily inside the
+  constructor, so calling it before any `MaximaTokenizer` instance existed
+  silently returned false for everything -- fixed by extracting
+  `EnsureHardcodedFunctionsInitialized()` and calling it from both the
+  constructor and the new accessor.
+  `test/unit_tests/test_AnonymizeCodeCells.cpp` pins this with a real
+  `Worksheet`/`Configuration` (no live Maxima), calling the narrow,
+  synchronous `AutoComplete::LoadBuiltinSymbols()` in its `main()` rather
+  than the full `Worksheet::LoadSymbols()` -- the latter also kicks off
+  `LoadableFiles_BackgroundTask`'s directory scan for Maxima's share/demo
+  folders, which stalled for 70+ seconds in this sandbox and got the test
+  process killed by its ctest timeout. A substring check like
+  `after.Contains(wxS("f("))` to confirm a renamed function is gone is
+  fragile and intermittently flaky (confirmed live, ~1-in-3 failure rate
+  over repeated runs): the random 13-character `anon_...` replacement for
+  some *other* name can itself end in the letter being searched for, and
+  since a real function call always has `(` immediately after its name in
+  valid Maxima syntax, the reconstructed text can contain a coincidental
+  `...anon_xyzqwrtf(...` match. Use exact per-token comparison via
+  `MaximaTokenizer` instead (see that test file's `HasExactToken()` helper).
+  The "nothing selected -> confirm whole document" `wxMessageBox` path can't
+  be driven or screenshotted reliably in this sandbox's Xvfb (no window
+  manager is running, and a GTK modal dialog's window never became visible
+  to `import -window <id>`/`-window root` in several attempts, though the
+  underlying `wxMessageBox` call is the same well-established idiom used
+  elsewhere in this codebase) -- verified instead by exercising the
+  already-selected-cells path end-to-end in a live Xvfb session (typed real
+  code, selected the group cell via hCaret + Shift+Up, confirmed the
+  rendered text changed consistently and a single Ctrl+Z restored it).
+
 ### Communication with Maxima
 
 wxMaxima sends Lisp and Maxima commands over the socket; Maxima answers with XML

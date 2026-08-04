@@ -5,6 +5,13 @@
   which happened to work only where some other header transitively pulled it
   in first -- not the case for every toolchain/include order (introduced by
   the `m_nextToDraw` removal below).
+- Added "Anonymize Code for Bug Report" to the Help menu (#1339): replaces
+  every non-builtin variable and function name in the selected code cells (or,
+  after confirmation, the whole document) with a random name, consistently
+  across all occurrences and all selected cells, so a worksheet can be shared
+  in a bug report without revealing the original names. Maxima builtins and
+  the tokenizer's own syntax keywords (`for`/`then`/`do`/...) are left alone,
+  and the whole operation is a single undo step.
 - Reduced the memory footprint of every cell on the worksheet by removing
   `m_nextToDraw`, a per-cell pointer used only by fractions, parentheses and
   similar 2D-capable cells when line-wrapped; the same information is now

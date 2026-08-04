@@ -96,6 +96,22 @@ public:
   MaximaTokenizer(const wxString &commands, const Configuration * const configuration,
                   const TokenList &initialTokens);
 
+  /*! Is this text one of the fake-function keywords (see m_hardcodedFunctions)?
+
+    These are tokenized as TS_CODE_FUNCTION -- the same style as a genuine
+    function call -- but are Maxima syntax, not identifiers a user could have
+    defined: "for", "then", "do" and the like. Anything that walks tokens
+    looking for user-definable names (e.g. a variable-renaming tool) needs to
+    exclude these in addition to checking a token's text against the known
+    builtin/command list, since most of them (unlike genuine builtin
+    functions) are deliberately not real Maxima function names and so don't
+    appear in that list at all.
+  */
+  static bool IsHardcodedKeyword(const wxString &text) {
+    EnsureHardcodedFunctionsInitialized();
+    return m_hardcodedFunctions.find(text) != m_hardcodedFunctions.end();
+  }
+
 protected:
   //! The tokens the string is divided into
   TokenList m_tokens;
@@ -123,6 +139,8 @@ protected:
     argument. These fake functions are kept in this hash.
   */
   static StringHash m_hardcodedFunctions;
+  //! Populates m_hardcodedFunctions on first use; safe to call repeatedly.
+  static void EnsureHardcodedFunctionsInitialized();
 
 };
 

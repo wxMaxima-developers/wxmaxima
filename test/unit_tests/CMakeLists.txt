@@ -366,6 +366,20 @@ if(TARGET wxmTestApp)
     add_test(NAME WorksheetFind
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetFind>")
 
+    # Pins Worksheet::AnonymizeCodeCells() (GH #1339): non-builtin
+    # variable/function names in the selected code cells get replaced with a
+    # random, collision-free, reproducible-within-the-run name, while Maxima
+    # builtins, the tokenizer's hardcoded keywords, non-code cells and cells
+    # outside the selection are left alone, all as a single undo step.
+    add_executable(test_AnonymizeCodeCells
+        test_AnonymizeCodeCells.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_AnonymizeCodeCells PUBLIC cxx_std_20)
+    target_link_libraries(test_AnonymizeCodeCells PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME AnonymizeCodeCells
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AnonymizeCodeCells>")
+
     # Pins the "add cells to the evaluation queue" behavior (which visible code
     # cells each Add*ToEvaluationQueue enqueues, and where the h-caret lands)
     # ahead of the WorksheetEvalQueue extraction.
