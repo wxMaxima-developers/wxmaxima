@@ -1,5 +1,10 @@
 # Current development version
 
+- Fixed a build failure on GCC 11 (Ubuntu 22.04) and Cygwin:
+  `src/cells/CellIterators.h` used `std::vector` without including `<vector>`,
+  which happened to work only where some other header transitively pulled it
+  in first -- not the case for every toolchain/include order (introduced by
+  the `m_nextToDraw` removal below).
 - Added "Anonymize Code for Bug Report" to the Help menu (#1339): replaces
   every non-builtin variable and function name in the selected code cells (or,
   after confirmation, the whole document) with a random name, consistently
