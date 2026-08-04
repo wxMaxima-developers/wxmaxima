@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the <a class="el" href="classwxMaxima.html">wxMaxima</a> codebase. <b>Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.</b></p>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 Build System</h1>
 <p>Configure once (a Debug build is the default), then build and run without installing:</p>
 <div class="fragment"><div class="line">cmake -S . -B build -G Ninja</div>
@@ -95,7 +95,7 @@ Build System</h1>
 <ul>
 <li><b>Sandbox: missing <code>maxima-index.lisp</code> and its knock-on ctest failures.</b> In this sandbox's container image, <code>/etc/dpkg/dpkg.cfg.d/*</code> has <code>path-exclude=/usr/share/doc/*</code> (a common image-slimming policy), so every package's <code>/usr/share/doc/*</code> content is silently dropped on install &ndash; <code>apt-get install --reinstall maxima maxima-doc</code> does not bring it back. <code>maxima</code>'s own package ships <code>/usr/share/doc/maxima/info/maxima-index.lisp.gz</code> (confirmed by extracting the real <code>.deb</code> with <code>dpkg-deb -x</code>), so its absence here is this sandbox's doc-stripping, not a missing dependency &ndash; the actual <a class="el" href="classwxMaxima.html">wxMaxima</a> <code>.deb</code> (<code>CPACK_DEBIAN_PACKAGE_DEPENDS "maxima, maxima-doc"</code> in <code>src/CMakeLists.txt</code>) already hard-<code>Depends:</code> on both, and a normal install on a normal system is unaffected. Workaround for this sandbox only (not a repo change): `apt-get download maxima &amp;&amp; dpkg-deb -x maxima_*.deb /tmp/x &amp;&amp; gunzip -c /tmp/x/usr/share/doc/maxima/info/maxima-index.lisp.gz &gt; /usr/share/doc/maxima/info/maxima-index.lisp<code>. Without it, <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> logs </code>Warning: SIMPLE-WARNING: <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is unable to set up the help system<code>on every startup, and</code>ctest<code>targets that use</code>&ndash;exit-on-error<code> (</code>openMacFiles<code>,</code>openMacFiles2<code>, and most of the</code>*_cmdline_wxmathml<code>/ </code>tutorial_*<code>/similar batch tests in</code>test/CMakeLists.txt`) fail near-instantly on that warning alone &ndash; with the workaround applied, those specific two tests (<code>openMacFiles</code>/<code>openMacFiles2</code>) instead <em>time out</em> (confirmed to reproduce identically on an unmodified <code>main</code> checkout in an isolated worktree, so it's pre-existing and unrelated to any particular change) &ndash; not yet root-caused. Don't burn time re-diagnosing either symptom from scratch; both are sandbox/pre-existing, not something a code change here broke.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 Architecture &amp; GUI</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
@@ -122,7 +122,7 @@ Architecture &amp; GUI</h1>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md26"></a>
 Communication with Maxima</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</p>
 <p><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</p>
@@ -187,38 +187,146 @@ Communication with Maxima</h2>
   &lt;tt&gt;:lisp-quiet (with-input-from-string ...)&lt;/tt&gt; / socket-level reproduction
   (see the debugging technique note above) before the fix, not guessed.
 
-@subsection autotoc_md19 File Formats
+@subsection autotoc_md27 File Formats
 
 - **&lt;tt&gt;.wxmx&lt;/tt&gt;** &amp;ndash; a ZIP archive holding &lt;tt&gt;content.xml&lt;/tt&gt; (the MathML-like XML) plus
   the embedded images. The format version lives in &lt;tt&gt;src/WXMXformat.h&lt;/tt&gt;.
 - **&lt;tt&gt;.wxm&lt;/tt&gt;** &amp;ndash; the plain-text format, read by &lt;tt&gt;Format::ParseWXMFile()&lt;/tt&gt;.
 
-@subsection autotoc_md20 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)
+@subsection autotoc_md28 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)
 
-- &lt;strong&gt;One combined &lt;tt&gt;.po&lt;/tt&gt; per language, in &lt;tt&gt;locales/wxMaxima/&lt;/tt&gt;:&lt;/strong&gt; it covers both
-  wxMaxima's own UI strings (&lt;tt&gt;xgettext&lt;/tt&gt;-extracted from &lt;tt&gt;src/**/*.cpp&lt;/tt&gt;/&lt;tt&gt;*.h&lt;/tt&gt;)
-  and the manual's prose (&lt;tt&gt;po4a&lt;/tt&gt;-extracted from &lt;tt&gt;info/wxmaxima.md&lt;/tt&gt;), merged
-  into a single catalog &amp;ndash; a translator only needs one file per language.
-  &lt;tt&gt;locales/wxMaxima/wxMaxima.pot&lt;/tt&gt;, the template both &lt;tt&gt;msgmerge&lt;/tt&gt; and Crowdin
-  work against, is regenerated as the union of a fresh source scan and
-  &lt;tt&gt;locales/manual/wxmaxima.md.pot&lt;/tt&gt; (&lt;tt&gt;msgcat --use-first&lt;/tt&gt;, preferring
-  &lt;tt&gt;wxMaxima.pot&lt;/tt&gt;'s own header) by the &lt;tt&gt;update-locale&lt;/tt&gt; CMake target &amp;ndash; so this
-  stays merged on every future update instead of re-diverging into two
-  catalogs again. &lt;tt&gt;locales/manual/wxmaxima.md.pot&lt;/tt&gt; itself still exists (it's
-  &lt;tt&gt;po4a&lt;/tt&gt;'s own intermediate template, scoped to just the manual's msgids) but
-  there is no more &lt;tt&gt;locales/manual/*.po&lt;/tt&gt;: &lt;tt&gt;po4a.cfg&lt;/tt&gt;'s &lt;tt&gt;\$lang:&lt;/tt&gt; path points at
-  &lt;tt&gt;locales/wxMaxima/\$lang.po&lt;/tt&gt; instead, and &lt;tt&gt;po4a&lt;/tt&gt; looks up each of its own
-  (manual-only) msgids there, ignoring the UI-only entries it has no
-  matching source line for.
-- &lt;strong&gt;Don't run this sandbox's &lt;tt&gt;po4a&lt;/tt&gt; (0.69) against real translated content.&lt;/strong&gt;
-  See &lt;tt&gt;CheckPo4aVersion.cmake&lt;/tt&gt;'s corruption warning above &amp;ndash; verifying a
-  change to the translation &lt;em&gt;pipeline&lt;/em&gt; (&lt;tt&gt;po4a.cfg.in&lt;/tt&gt;, the CMake wiring) is
-  fine without running &lt;tt&gt;po4a&lt;/tt&gt; itself; regenerating actual &lt;tt&gt;.po&lt;/tt&gt;/&lt;tt&gt;.md&lt;/tt&gt; output
-  needs a real &lt;tt&gt;po4a&lt;/tt&gt; &gt;= 0.70, which wasn't reachable from this sandbox
-  (&lt;tt&gt;apt&lt;/tt&gt; only has 0.69; Debian's package archive and po4a's own GitHub
-  releases were both unreachable through this sandbox's proxy).
+- &lt;strong&gt;One combined &lt;tt&gt;.po&lt;/tt&gt; per language, in &lt;tt&gt;locales/wxMaxima/&lt;/tt&gt;, is the file a
+  translator edits.&lt;/strong&gt; It covers both wxMaxima's own UI strings
+  (&lt;tt&gt;xgettext&lt;/tt&gt;-extracted from &lt;tt&gt;src/**/*.cpp&lt;/tt&gt;/&lt;tt&gt;*.h&lt;/tt&gt;) and the manual's prose
+  (&lt;tt&gt;po4a&lt;/tt&gt;-extracted from &lt;tt&gt;info/wxmaxima.md&lt;/tt&gt;). &lt;tt&gt;locales/wxMaxima/wxMaxima.pot&lt;/tt&gt;,
+  the template both &lt;tt&gt;msgmerge&lt;/tt&gt; and Crowdin work against, is regenerated as
+  the union of a fresh source scan and &lt;tt&gt;locales/manual/wxmaxima.md.pot&lt;/tt&gt;
+  (&lt;tt&gt;msgcat --use-first&lt;/tt&gt;, preferring &lt;tt&gt;wxMaxima.pot&lt;/tt&gt;'s own header) by the
+  &lt;tt&gt;update-locale&lt;/tt&gt; CMake target.
+- **&lt;tt&gt;po4a&lt;/tt&gt; must never be pointed at &lt;tt&gt;locales/wxMaxima/\&lt;lang\&gt;.po&lt;/tt&gt; directly.**
+  It looks like the obvious way to keep the manual's translations inside the
+  combined file (&lt;tt&gt;po4a.cfg&lt;/tt&gt;'s &lt;tt&gt;\$lang:&lt;/tt&gt; path &lt;em&gt;was&lt;/em&gt; set to
+  &lt;tt&gt;locales/wxMaxima/\$lang.po&lt;/tt&gt; at one point), but &lt;tt&gt;po4a&lt;/tt&gt; doesn't treat a &lt;tt&gt;.po&lt;/tt&gt;
+  file as something to add/update entries in - it treats it as &lt;em&gt;its own&lt;/em&gt;,
+  and &lt;strong&gt;rewrites it wholesale to contain only the entries it itself
+  extracted from &lt;tt&gt;info/wxmaxima.md&lt;/tt&gt;, silently discarding everything else&lt;/strong&gt;.
+  Confirmed live: a language with 1000 translated UI strings and 69
+  translated manual strings dropped to 69 (the UI strings gone) after one
+  &lt;tt&gt;po4a&lt;/tt&gt; run against the combined file - and this shipped merged to &lt;tt&gt;main&lt;/tt&gt;
+  before being caught. &lt;tt&gt;po4a&lt;/tt&gt; therefore keeps writing its own
+  &lt;tt&gt;locales/manual/\&lt;lang\&gt;.po&lt;/tt&gt; (&lt;tt&gt;po4a.cfg&lt;/tt&gt;'s &lt;tt&gt;\$lang:&lt;/tt&gt; path), exactly as before
+  the two catalogs were combined; &lt;tt&gt;locales/wxMaxima/CMakeLists.txt&lt;/tt&gt;'s
+  &lt;tt&gt;\${LANG}_po&lt;/tt&gt; target runs &lt;tt&gt;merge_manual_po.cmake&lt;/tt&gt; (&lt;tt&gt;msgcat --use-first&lt;/tt&gt;) to
+  fold &lt;tt&gt;locales/manual/\&lt;lang\&gt;.po&lt;/tt&gt; into &lt;tt&gt;locales/wxMaxima/\&lt;lang\&gt;.po&lt;/tt&gt; &lt;em&gt;before&lt;/em&gt;
+  &lt;tt&gt;msgmerge&lt;/tt&gt;, every time - that script is the only place allowed to write
+  manual content into the combined file. &lt;tt&gt;locales/manual/*.po&lt;/tt&gt; only exists
+  for the languages that actually have a manual translation (not the full
+  &lt;tt&gt;locales/wxMaxima/*.po&lt;/tt&gt; language list) - &lt;tt&gt;info/CMakeLists.txt&lt;/tt&gt; expects a
+  matching &lt;tt&gt;info/wxmaxima.\&lt;lang\&gt;.md&lt;/tt&gt; to already exist for every language
+  &lt;tt&gt;po4a.cfg&lt;/tt&gt;'s language list names, and doesn't create a fresh empty one, so
+  don't widen that language list to languages that have no manual
+  translation yet without also handling that.
+- **&lt;tt&gt;po4a.cfg&lt;/tt&gt;'s manual &lt;tt&gt;[type: text]&lt;/tt&gt; line needs &lt;tt&gt;opt:"-o markdown"&lt;/tt&gt;
+  explicitly** - &lt;tt&gt;Locale::Po4a::Text&lt;/tt&gt;'s own default for that option is &lt;tt&gt;1&lt;/tt&gt;,
+  but that default does not take effect through &lt;tt&gt;[type: text]&lt;/tt&gt;'s normal
+  invocation; confirmed live by extracting the same heading with and without
+  an explicit &lt;tt&gt;-o markdown&lt;/tt&gt;. Without it, every markdown structural element
+  (&lt;tt&gt;\#\#&lt;/tt&gt; headings, list items, ...) is extracted as generic wrapped "Plain text" instead of being recognized as its own no-wrap markdown construct,
+  which is what caused #2047: a translated heading long enough to wrap got a
+  literal newline inserted mid-heading when &lt;tt&gt;po4a&lt;/tt&gt; wrote it back out,
+  turning the second half into a normal paragraph in the rendered manual.
+  The tempting broader fix, &lt;tt&gt;opt:"-o neverwrap"&lt;/tt&gt; (disables wrapping
+  entirely), is a trap: it doesn't just change &lt;em&gt;output&lt;/em&gt; wrapping, it changes
+  how &lt;tt&gt;po4a&lt;/tt&gt; &lt;em&gt;segments source paragraphs into msgids&lt;/em&gt; (each source line
+  becomes a literal embedded &lt;tt&gt;\\n&lt;/tt&gt; in the msgid instead of the paragraph
+  being one reflowed string) - confirmed live it turns 293 cleanly-matched
+  German translations into 2 clean matches + 328 fuzzy, i.e. it invalidates
+  the translation of nearly every multi-line paragraph in the whole manual,
+  for a bug that's specifically about headings. &lt;tt&gt;-o markdown&lt;/tt&gt; alone fixes
+  the reported bug (headings/lists become their own no-wrap entries) with a
+  much smaller, semantically-justified cost: only headings, list items and
+  fenced code blocks need re-confirming as fuzzy (e.g. 293 clean -&gt; 183
+  clean + 156 fuzzy for German - about 89 of those are headings whose old
+  msgstr still has the now-redundant leading &lt;tt&gt;\#\#&lt;/tt&gt; baked in, since &lt;tt&gt;po4a&lt;/tt&gt;
+  auto-prepends it from the &lt;tt&gt;Title \#\#&lt;/tt&gt; type instead of storing it in the
+  translated text; the rest are fenced-code-block delimiters &lt;tt&gt;po4a&lt;/tt&gt; now
+  reconstructs itself instead of storing literally, plus a handful of
+  entries that were already fuzzy for unrelated reasons - real source-text
+  edits, not a &lt;tt&gt;markdown&lt;/tt&gt; side effect), not full paragraphs. &lt;strong&gt;The old
+  translation text is not deleted&lt;/strong&gt; (&lt;tt&gt;.po&lt;/tt&gt; keeps the fuzzy msgstr plus the
+  previous msgid in a &lt;tt&gt;\#|&lt;/tt&gt; comment) &lt;strong&gt;but it stops appearing in the
+  generated manual&lt;/strong&gt; until a translator re-confirms it - &lt;tt&gt;po4a-translate&lt;/tt&gt;
+  skips fuzzy entries by default the same way &lt;tt&gt;msgfmt&lt;/tt&gt; does for a compiled
+  &lt;tt&gt;.mo&lt;/tt&gt;, falling back to the untranslated English source. Don't describe
+  this fix as lossless to a translator without that caveat: a previously
+  fully-translated heading really does render in English again in
+  &lt;tt&gt;info/wxmaxima.\&lt;lang\&gt;.md&lt;/tt&gt; until someone reviews the (mostly mechanical:
+  strip the leading &lt;tt&gt;\#+&lt;/tt&gt;) fuzzy diff. Fixing the wrapping bug and keeping
+  every translation rendering are in tension - there's no &lt;tt&gt;po4a&lt;/tt&gt; option that
+  gets both, since the whole point of &lt;tt&gt;-o markdown&lt;/tt&gt; is to change what a
+  heading's msgid &lt;em&gt;is&lt;/em&gt;.
+- **&lt;tt&gt;locales/wxMaxima/CMakeLists.txt&lt;/tt&gt;'s &lt;tt&gt;\${LANG}_po&lt;/tt&gt; target needs
+  &lt;tt&gt;wxMaxima.pot&lt;/tt&gt; in its own &lt;tt&gt;DEPENDS&lt;/tt&gt;, not just as a plain path string
+  inside a &lt;tt&gt;COMMAND&lt;/tt&gt; argument.** &lt;tt&gt;add_custom_command(OUTPUT wxMaxima.pot
+  ...)&lt;/tt&gt; only creates a file-level build rule; a &lt;em&gt;different&lt;/em&gt; custom command
+  (or target) that merely references that output path in a shell argument
+  gets no ordering guarantee from it. Confirmed live: after fixing the
+  manual's extraction to &lt;tt&gt;-o markdown&lt;/tt&gt;, &lt;tt&gt;make update-locale&lt;/tt&gt; kept producing
+  stale results (matching the pre-fix fuzzy/translated counts exactly)
+  because &lt;tt&gt;wxMaxima.pot&lt;/tt&gt; itself hadn't been rebuilt - &lt;tt&gt;\${LANG}_po&lt;/tt&gt;'s
+  &lt;tt&gt;PRE_BUILD&lt;/tt&gt; command still consumed yesterday's &lt;tt&gt;wxMaxima.pot&lt;/tt&gt; on disk.
+  Fixed by declaring &lt;tt&gt;DEPENDS \${LANG}.po wxMaxima.pot&lt;/tt&gt; on the
+  &lt;tt&gt;add_custom_target(\${LANG}_po ...)&lt;/tt&gt; line.
+- &lt;strong&gt;Committing a &lt;tt&gt;make update-locale&lt;/tt&gt; run's output means committing
+  &lt;em&gt;every&lt;/em&gt; language's drift against the current C++ source, not just the
+  fix you're testing.&lt;/strong&gt; Running it live in this sandbox (to verify the two
+  bugs above) also picked up ~1100 real UI strings that exist in
+  &lt;tt&gt;src/**/*.cpp&lt;/tt&gt;/&lt;tt&gt;*.h&lt;/tt&gt; today but were missing from every committed
+  &lt;tt&gt;locales/wxMaxima/*.po&lt;/tt&gt; and &lt;tt&gt;wxMaxima.pot&lt;/tt&gt; (confirmed genuine, not a
+  sandbox artifact: &lt;tt&gt;grep&lt;/tt&gt;-verified several, e.g. &lt;tt&gt;Configuration.cpp&lt;/tt&gt;'s
+  &lt;tt&gt;_(" Font cache hits: ld")&lt;/tt&gt;, actually exist in the source at &lt;tt&gt;HEAD&lt;/tt&gt; -
+  &lt;tt&gt;xgettext&lt;/tt&gt; just hadn't been re-run against the source in a while before
+  &lt;tt&gt;wxMaxima.pot&lt;/tt&gt; was last committed). That's real, legitimate drift, but
+  it's a separate concern from a &lt;tt&gt;po4a&lt;/tt&gt;-pipeline bug fix - bundling ~1100
+  new untranslated strings across 24 languages into a bugfix commit buries
+  the actual fix and forces reviewers (translators included) to wade
+  through unrelated noise. After verifying a &lt;tt&gt;po4a&lt;/tt&gt;/CMake fix works
+  end-to-end in the build directory, &lt;tt&gt;git checkout --
+  locales/wxMaxima/*.po locales/wxMaxima/wxMaxima.pot&lt;/tt&gt; to drop that
+  incidental drift back to the committed state before committing, keeping
+  only the actual pipeline files (&lt;tt&gt;po4a.cfg.in&lt;/tt&gt;, the &lt;tt&gt;CMakeLists.txt&lt;/tt&gt;s,
+  &lt;tt&gt;merge_manual_po.cmake&lt;/tt&gt;) plus whatever's scoped to the manual itself
+  (&lt;tt&gt;locales/manual/*.po&lt;/tt&gt;, &lt;tt&gt;locales/manual/wxmaxima.md.pot&lt;/tt&gt;,
+  &lt;tt&gt;info/wxmaxima.\&lt;lang\&gt;.md&lt;/tt&gt;). The UI-string staleness is a legitimate
+  follow-up &lt;tt&gt;make update-locale&lt;/tt&gt; run of its own, on its own commit.
+- &lt;strong&gt;Don't run this sandbox's stock &lt;tt&gt;po4a&lt;/tt&gt; (0.69) against real translated
+  content.&lt;/strong&gt; See &lt;tt&gt;CheckPo4aVersion.cmake&lt;/tt&gt;'s corruption warning above &amp;ndash;
+  verifying a change to the translation &lt;em&gt;pipeline&lt;/em&gt;
+  (&lt;tt&gt;po4a.cfg.in&lt;/tt&gt;/&lt;tt&gt;merge_manual_po.cmake&lt;/tt&gt;/the CMake wiring) is fine without
+  running &lt;tt&gt;po4a&lt;/tt&gt; itself, but regenerating actual &lt;tt&gt;.po&lt;/tt&gt;/&lt;tt&gt;.md&lt;/tt&gt; output needs a
+  real &lt;tt&gt;po4a&lt;/tt&gt; &gt;= 0.70. It wasn't reachable via any of apt (only has 0.69),
+  Debian's package archive, or po4a's own GitHub releases (both blocked by
+  this sandbox's proxy) - but a source tarball of a current release, fetched
+  outside the sandbox and handed to the agent as a file, runs perfectly well
+  unpacked with no install step beyond &lt;tt&gt;PERL5LIB=\&lt;unpacked-dir\&gt;/lib&lt;/tt&gt;
+  pointing at its &lt;tt&gt;Locale::Po4a::*&lt;/tt&gt; modules; the &lt;tt&gt;po4a&lt;/tt&gt;/&lt;tt&gt;po4a-updatepo&lt;/tt&gt;/
+  &lt;tt&gt;po4a-translate&lt;/tt&gt;/etc. scripts at the tarball's top level need nothing else
+  to work standalone, e.g. &lt;tt&gt;PERL5LIB=lib ./po4a --version&lt;/tt&gt;. Regenerating
+  translated content live and diffing it (&lt;tt&gt;msgfmt --statistics&lt;/tt&gt; before/after
+  per language, matching translated-message counts) is how both bugs above
+  were actually caught, not guessed from reading &lt;tt&gt;Locale::Po4a::Text&lt;/tt&gt;'s
+  source.
+- **&lt;tt&gt;git clean -fd&lt;/tt&gt; after &lt;tt&gt;git checkout --&lt;/tt&gt; on a directory wipes untracked
+  files in it too, including ones you meant to keep** (e.g. a new
+  &lt;tt&gt;locales/manual/\&lt;lang\&gt;.po&lt;/tt&gt; restored from a scratch copy, or a brand new
+  &lt;tt&gt;.cmake&lt;/tt&gt; helper script that was never committed yet) - it doesn't
+  distinguish "test-run droppings" from "uncommitted new work" by intent,
+  only by whether &lt;tt&gt;git add&lt;/tt&gt; has seen the path yet. Prefer reverting only the
+  specific files that are actually wrong (or committing work-in-progress to
+  a scratch commit first) over a blanket &lt;tt&gt;git checkout -- \&lt;dir\&gt; \&amp;\&amp; git clean
+  -fd \&lt;dir\&gt;&lt;/tt&gt; once a directory has a mix of both kinds of changes in it.
 
-@section autotoc_md22 Conventions &amp; Standards
+@section autotoc_md29 Conventions &amp; Standards
 
 - &lt;strong&gt;Git Environment:&lt;/strong&gt; Note that running &lt;tt&gt;git diff&lt;/tt&gt; might launch the visual diff tool &lt;tt&gt;meld&lt;/tt&gt; instead of outputting to the terminal. Always use &lt;tt&gt;git diff --no-ext-diff&lt;/tt&gt; if you need terminal output.
 - &lt;strong&gt;String Literals &amp; Translations:&lt;/strong&gt; Use the &lt;tt&gt;wxS()&lt;/tt&gt; macro for all string literals and &lt;tt&gt;_()&lt;/tt&gt; for user-facing translatable strings.
@@ -240,7 +348,7 @@ Communication with Maxima</h2>
 - **CI Warnings Live On the Non-&lt;/tt&gt;-Werror&lt;tt&gt;Jobs:**&lt;/tt&gt;compile_latest_and_test&lt;tt&gt;and&lt;/tt&gt;compile_without_webview&lt;tt&gt;(Ubuntu) build with&lt;/tt&gt;-Werror&lt;tt&gt;, so they can't show warnings by construction -- check&lt;/tt&gt;compile_2204&lt;tt&gt;(Ubuntu 22.04, plain&lt;/tt&gt;-Wall -Wextra&lt;tt&gt;, GCC 11) for real warnings that survive to a release build. Don't assume that job's warning list is exhaustive, though: e.g. the&lt;/tt&gt;[[maybe_unused]]&lt;tt&gt;-on-a-data-member GCC\&lt;12 warning above showed up for&lt;/tt&gt;Printout.h&lt;tt&gt;in one such log but not for the identical pattern in&lt;/tt&gt;SvgBitmap.h&lt;tt&gt;/&lt;/tt&gt;wxMathml.h&lt;tt&gt;in the same run, for reasons that weren't tracked down (not precompiled headers --&lt;/tt&gt;WXM_ENABLE_PRECOMPILED_HEADERS&lt;tt&gt;defaults&lt;/tt&gt;OFF&lt;tt&gt;) -- a clean local build with&lt;/tt&gt;g++-11 -Wall -Wextra&lt;tt&gt;is the more reliable check for this specific class of warning.
 - **Tab Characters in&lt;/tt&gt;EditorCell&lt;tt&gt;:** A&lt;/tt&gt;'\t'&lt;tt&gt;is a real, single character in&lt;/tt&gt;m_text&lt;tt&gt;(see&lt;/tt&gt;EditorCell::NormalizeLineEndings()&lt;tt&gt;, which replaced the old&lt;/tt&gt;TabExpand()&lt;tt&gt;that irreversibly rewrote every tab to 1-4 spaces on input/paste/load). It is expanded to the next 4-column tab stop -- one column being the width of a space glyph in the current font -- only where text becomes pixels, via&lt;/tt&gt;EditorCell::NextTabStop(startX)&lt;tt&gt;/&lt;/tt&gt;MeasureTextWidth(startX, text)&lt;tt&gt;. Tab width is **position-dependent**, the one thing&lt;/tt&gt;GetTextExtent()&lt;tt&gt;/&lt;/tt&gt;GetTextSize()&lt;tt&gt;cannot compute on their own (unlike every other character), so it can never be cached the way&lt;/tt&gt;StyledText::SetWidth()&amp;lsquo; caches other tokens&amp;rsquo; widths. &lt;tt&gt;MaximaTokenizer&lt;/tt&gt; guarantees a tab is always its own isolated, single-character token (never merged into a space run, mirroring how a newline is already its own token) &amp;ndash; this is &lt;em&gt;load-bearing&lt;/em&gt;: every &lt;tt&gt;m_styledText&lt;/tt&gt;-based site (&lt;tt&gt;Draw()&lt;/tt&gt;, &lt;tt&gt;Recalculate()&lt;/tt&gt;, &lt;tt&gt;GetLineWidth()&lt;/tt&gt;, &lt;tt&gt;SelectPointText()&lt;/tt&gt;'s code-cell branch, &lt;tt&gt;StyleTextCode()&lt;/tt&gt;) only needs a &lt;tt&gt;text == wxS("\t")&lt;/tt&gt; equality check as a result, never substring splitting. Prose/text cells don't go through &lt;tt&gt;MaximaTokenizer&lt;/tt&gt; at all, so &lt;tt&gt;EditorCell::StyleTextTexts()&lt;/tt&gt; uses its own splitter, &lt;tt&gt;PushTextLine()&lt;/tt&gt;, to get the same isolation guarantee for a tab embedded in an otherwise plain line of text. Sites that measure a raw &lt;tt&gt;m_text&lt;/tt&gt; substring instead of a single token (&lt;tt&gt;MarkSelection()&lt;/tt&gt;, &lt;tt&gt;MixedDirectionOffset()&lt;/tt&gt;, &lt;tt&gt;StyleTextTexts()&lt;/tt&gt;'s wrap check) go through &lt;tt&gt;MeasureTextWidth()&lt;/tt&gt; instead, which splits on &amp;lsquo;&amp;rsquo;\t'&lt;tt&gt;internally since a substring can still have one embedded anywhere. Left/Right arrow and Delete need **no special-casing** for tabs -- they already move/delete exactly one&lt;/tt&gt;m_text&lt;tt&gt;character, which is now correct automatically. The plain&lt;/tt&gt;WXK_BACK` case's old "gobble up to 4 trailing spaces" shim was a workaround for the old space-expanded-tab world and is gone; a real tab deletes in one plain single-character backspace like anything else.
 
-@section autotoc_md25 Layout &amp; Compatibility
+@section autotoc_md30 Layout &amp; Compatibility
 
 - &lt;strong&gt;Mathematical Cell Padding:&lt;/strong&gt; Use &lt;tt&gt;MC_TEXT_PADDING&lt;/tt&gt; (in &lt;tt&gt;Configuration.h&lt;/tt&gt;) for text-based cells. &lt;strong&gt;Exception:&lt;/strong&gt; &lt;tt&gt;DigitCell&lt;/tt&gt; does not include padding to ensure visual consistency in broken-up numbers.
 - &lt;strong&gt;Three-Step Layout Process:&lt;/strong&gt;
@@ -256,7 +364,7 @@ Communication with Maxima</h2>
 - **ConfigDialogue Tabs Must Scroll:&lt;/strong&gt; Every tab panel in &lt;tt&gt;src/dialogs/ConfigDialogue.cpp&lt;/tt&gt; is a &lt;tt&gt;wxScrolled\&lt;wxPanel\&gt;&lt;/tt&gt; with &lt;tt&gt;SetScrollRate(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor())&lt;/tt&gt; and &lt;tt&gt;SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth, GetContentScaleFactor() * mMinPanelHeight))&lt;/tt&gt;. Without this, a tab's natural size (which grows with font size/DPI/translation length) can make the whole dialog taller than a hi-DPI screen with no way to reach what's cut off. When adding a new tab, copy this pattern (see &lt;tt&gt;CreateWorksheetPanel()&lt;/tt&gt;) rather than a plain &lt;tt&gt;wxPanel&lt;/tt&gt;.
 - &lt;strong&gt;Constructor Initialization:&lt;/strong&gt; Order initialization lists to match header declaration order to prevent &lt;tt&gt;-Wreorder&lt;/tt&gt; warnings.
 
-@section autotoc_md29 Performance &amp; Documentation Mandates
+@section autotoc_md31 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
@@ -267,19 +375,19 @@ Communication with Maxima</h2>
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md30 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md32 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md31 Key Subsystems Map
+@section autotoc_md33 Key Subsystems Map
 
 - &lt;strong&gt;Layout Engine:&lt;/strong&gt; &lt;tt&gt;src/cells/&lt;/tt&gt; and &lt;tt&gt;src/worksheet/&lt;/tt&gt; (&lt;tt&gt;Worksheet.cpp&lt;/tt&gt; and its siblings moved into that subdirectory).
 - &lt;strong&gt;MathML Formatting:&lt;/strong&gt; &lt;tt&gt;src/wxMathML.lisp&lt;/tt&gt; and &lt;tt&gt;src/MathParser.cpp&lt;/tt&gt;.
 - &lt;strong&gt;Main Logic:&lt;/strong&gt; &lt;tt&gt;src/wxMaxima.cpp&lt;/tt&gt; and &lt;tt&gt;src/wxMaximaFrame.cpp&lt;/tt&gt; &amp;ndash; but much of what used to sit in &lt;tt&gt;wxMaxima&lt;/tt&gt; has been peeled off into friend classes, so look there first: &lt;tt&gt;MaximaProcessManager&lt;/tt&gt; (spawn/kill/connect and the data pump), &lt;tt&gt;MaximaEvaluator&lt;/tt&gt; (evaluation queue and command protocol), &lt;tt&gt;MaximaResponseReader&lt;/tt&gt; (the incoming-XML handlers), &lt;tt&gt;MaximaFileIO&lt;/tt&gt; (worksheet open/save) and &lt;tt&gt;MaximaCommandMenus&lt;/tt&gt; (the menu handlers).
 - &lt;strong&gt;Configuration:&lt;/strong&gt; &lt;tt&gt;src/Configuration.cpp&lt;/tt&gt;.
 
-@section autotoc_md32 Backlog / Future Work
+@section autotoc_md34 Backlog / Future Work
 
 Items the maintainer has flagged as worth doing but hasn't asked for yet &amp;ndash; don't
 start on these without checking in first, but pick them up if asked for "what's next" style work.</code></li>
@@ -287,7 +395,7 @@ start on these without checking in first, but pick them up if asked for "what's 
 <li><code><b>Real tab handling in <code><a class="el" href="classEditorCell.html" title="This class defines what the user sees as input cell.">EditorCell</a></code>:</b> tabs are currently just replaced by spaces on input instead of being handled as their own character/column-stop concept.</code></li>
 </ul>
 <p><code></code></p>
-<h1><a class="anchor" id="autotoc_md33"></a>
+<h1><a class="anchor" id="autotoc_md35"></a>
 Error resilience</h1>
 <p><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>

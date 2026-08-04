@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['el_20manual_20del_20usuario_20de_20wxmaxima_0',['El manual del usuario de wxMaxima',['../md_info_wxmaxima_es.html',1,'']]]
+  ['getting_20help_20_26_20reporting_20problems_0',['Getting help &amp; reporting problems',['../md_SUPPORT.html',1,'']]]
 ];
