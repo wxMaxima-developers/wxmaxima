@@ -65,7 +65,7 @@ if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
 
 	add_custom_target(
 	    ${LANG}_po
-	    DEPENDS ${LANG}.po)
+	    DEPENDS ${LANG}.po wxMaxima.pot)
 	add_custom_command(
 	    TARGET ${LANG}_po
 	    PRE_BUILD
@@ -79,6 +79,15 @@ if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
 	    # real ones without reading a word of it. The catalogues currently
 	    # hold ~9400 fuzzy entries and not one of them says what it used to
 	    # be; this stops that from being true of the next ones.
+	    # Fold locales/manual/${LANG}.po's translations (if any - po4a keeps
+	    # writing its own file there, see merge_manual_po.cmake for why) into
+	    # this file BEFORE msgmerge, so the combined catalog picks up the
+	    # manual's current translations too.
+	    COMMAND "${CMAKE_COMMAND}"
+		"-DLANG_PO=${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po"
+		"-DMANUAL_PO=${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po"
+		"-DMSGCAT=${MSGCAT}"
+		-P "${CMAKE_CURRENT_SOURCE_DIR}/merge_manual_po.cmake"
 	    COMMAND "${GETTEXT_MSGMERGE_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po" "${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.pot" -U --previous
 	    COMMAND "${GETTEXT_MSGFMT_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po" -o "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
 	    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/locale/${LANG}/LC_MESSAGES/wxMaxima.mo")
