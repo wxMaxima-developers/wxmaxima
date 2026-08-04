@@ -18,16 +18,27 @@ file(GLOB POT_SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp ${CMAKE_SOURCE_DIR}/src
 
 if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
     find_program(XGETTEXT xgettext)
+    find_program(MSGCAT msgcat)
     # generate a wxMaxima.pot in the build dir - don't touch the existing source (for now)
     # if that is okay, one may copy it to the source dir.
     # Currently the full source paths are used in the comments.
+    #
+    # The manual's translations live merged into these same .po files (see
+    # locales/README.md), so the strings extracted from the manual
+    # (../manual/wxmaxima.md.pot, kept current by update-locale-manual-in-source)
+    # need to stay part of this pot too, or the next 'make update-locale' would
+    # mark every manual-only msgid obsolete and drop it from every language's
+    # .po file. msgcat --use-first prefers wxMaxima.pot's own (source-derived)
+    # header over the manual pot's when both define the same field, so the
+    # combined file's placeholder header stays in wxMaxima.pot's usual shape.
     add_custom_command(
 	OUTPUT wxMaxima.pot
-	DEPENDS ${POT_SOURCE_FILES}
+	DEPENDS ${POT_SOURCE_FILES} ${CMAKE_SOURCE_DIR}/locales/manual/wxmaxima.md.pot
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	COMMAND ${XGETTEXT} -C --from-code=UTF-8 -k_ -s -o "${CMAKE_CURRENT_BINARY_DIR}/wxMaxima.pot" ${POT_SOURCE_FILES_REL}
+	COMMAND ${XGETTEXT} -C --from-code=UTF-8 -k_ -s -o "${CMAKE_CURRENT_BINARY_DIR}/wxMaxima_sourcecode.pot" ${POT_SOURCE_FILES_REL}
+	COMMAND ${MSGCAT} --use-first --no-wrap "${CMAKE_CURRENT_BINARY_DIR}/wxMaxima_sourcecode.pot" "${CMAKE_SOURCE_DIR}/locales/manual/wxmaxima.md.pot" -o "${CMAKE_CURRENT_BINARY_DIR}/wxMaxima.pot"
 	COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/wxMaxima.pot" "${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.pot"
-	COMMENT "Updating the POT-file from the current sourcecode")
+	COMMENT "Updating the POT-file from the current sourcecode and the manual")
 
     foreach(POFILE ${TRANSLATION_FILES})
 	string(REGEX REPLACE ".*locales/wxMaxima/(.*).po$" "\\1" LANG ${POFILE})
