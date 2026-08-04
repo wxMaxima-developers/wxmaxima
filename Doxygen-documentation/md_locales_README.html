@@ -73,12 +73,14 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Translations are an important aspect of open-source programs. Any help with them is always appreciated.</p>
-<p>The subdirectories of this folder contain the translations of</p>
+<p><code>wxMaxima/*.po</code> holds one combined catalog per language, covering both</p>
 <ul>
-<li><a class="el" href="classwxMaxima.html">wxMaxima</a> itself</li>
-<li><a class="el" href="classwxMaxima.html">wxMaxima</a>'s manual</li>
+<li><a class="el" href="classwxMaxima.html">wxMaxima</a>'s own UI strings (extracted from the C++ source via <code>xgettext</code>), and</li>
+<li><a class="el" href="classwxMaxima.html">wxMaxima</a>'s manual (extracted from <code>info/wxmaxima.md</code> via <code>po4a</code>)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md805"></a>
+<p><code>wxMaxima.pot</code> (the untranslated template <code>msgmerge</code>/Crowdin work against) is the union of both sources: <code>make update-locale</code> regenerates it by combining a fresh <code>xgettext</code> scan of the source with <code>manual/wxmaxima.md.pot</code> (itself kept current by <code>make update-locale-manual-in-source</code>, which needs <code>po4a</code> &gt;= 0.70 - see <code>CheckPo4aVersion.cmake</code>) via <code>msgcat</code>. <a class="el" href="classA.html">A</a> translator therefore only has one file per language to work in for both the UI and the manual.</p>
+<p><code>manual/wxmaxima.md.pot</code> still exists as po4a's own intermediate template (it extracts msgids purely from <code>info/wxmaxima.md</code>), but the manual's actual per-language translations now live in <code>wxMaxima/*.po</code> alongside the UI strings, not in a separate <code>manual/*.po</code> per language: po4a reads the manual's msgids out of the combined file when regenerating <code>info/wxmaxima.$lang.md</code>, simply ignoring the UI-only entries it has no source line for.</p>
+<h1><a class="anchor" id="autotoc_md806"></a>
 Translating wxMaxima to a new language</h1>
 <p>In order to translate <a class="el" href="classwxMaxima.html">wxMaxima</a> to a entirely new language two things have to be done:</p>
 <ul>
@@ -86,7 +88,7 @@ Translating wxMaxima to a new language</h1>
 <li>For Linux desktop integration additionally data/io.github.wxmaxima_developers.wxMaxima.desktop needs to be equipped with a translation.</li>
 </ul>
 <p>WxMaxima also uses translations of the wxWidgets framework (e.g. for standard dialogs).</p>
-<h1><a class="anchor" id="autotoc_md806"></a>
+<h1><a class="anchor" id="autotoc_md807"></a>
 Improving an existing translation</h1>
 <p>In order to improve an existing translation just edit the according .po file. Any help is always welcome. </p>
 </div></div><!-- contents -->
