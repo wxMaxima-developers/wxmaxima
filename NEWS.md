@@ -1,5 +1,9 @@
 # Current development version
 
+- Reduced the memory footprint of every cell on the worksheet by removing
+  `m_nextToDraw`, a per-cell pointer used only by fractions, parentheses and
+  similar 2D-capable cells when line-wrapped; the same information is now
+  computed on demand instead of stored on every cell (closes #1445).
 - Fixed a critical bug in the translation merge above: `po4a` treats the `.po`
   file it is pointed at as its own and rewrites it wholesale on every run, so
   pointing it directly at the combined `locales/wxMaxima/<lang>.po` (as the

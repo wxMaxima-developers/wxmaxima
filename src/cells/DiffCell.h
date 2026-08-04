@@ -39,6 +39,9 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
+  //! ORDER MATTERS: also used, via the default GetBrokenCellCount()/
+  //! GetBrokenCell(), as this cell's broken/linear draw sequence -- "diff(",
+  //! the base, ",", the diff variable(s), ")", unconditionally.
   size_t GetInnerCellCount() const override { return 5; }
   Cell *GetInnerCell(size_t index) const override {
     switch (index) {
@@ -69,8 +72,6 @@ public:
   wxString ToString() const override;
   wxString ToTeX() const override;
   wxString ToXML() const override;
-
-  void SetNextToDraw(Cell *next) const override;
 
   bool BreakUp() const override;
 

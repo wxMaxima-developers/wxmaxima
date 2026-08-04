@@ -34,17 +34,17 @@
 
 /*! The class that represents parenthesis that are wrapped around text
 
-  In the case that this cell is broken into two lines in the order of
-  m_nextToDraw this cell is represented by the following individual
-  cells:
+  Once IsBrokenIntoLines(), the draw list (see GetBrokenCellCount()/
+  GetBrokenCell(), a proper SUBSET of GetInnerCellCount()/GetInnerCell() --
+  the bracket glyphs and ellipsis are only ever part of the 2D form) expands
+  this cell into the following individual cells instead of drawing it as a
+  single 2D object:
 
-  - The IntervalCell itself
-  - The opening "["
-  - The contents
-  - The closing "]".
-
-  If it isn't broken into multiple cells m_nextToDraw points to the
-  cell that follows this Cell.
+  - The opening "interval("
+  - The start value
+  - ","
+  - The stop value
+  - The closing ")".
 */
 class IntervalCell : public Cell
 {
@@ -81,6 +81,30 @@ public:
     }
   }
 
+  /*! ORDER MATTERS, and this is NOT the same set as GetInnerCellCount()/
+    GetInnerCell() above: m_openBracket, m_ellipsis and m_closeBracket are
+    only ever drawn directly by Draw() as part of the 2D bracket/ellipsis
+    rendering and never appear in the broken/linear draw sequence, which is
+    "interval(", the start value, ",", the stop value, ")", unconditionally.
+  */
+  size_t GetBrokenCellCount() const override { return 5; }
+  Cell *GetBrokenCell(size_t index) const override {
+    switch (index) {
+    case 0:
+      return m_open.get();
+    case 1:
+      return m_start.get();
+    case 2:
+      return m_comma.get();
+    case 3:
+      return m_stop.get();
+    case 4:
+      return m_close.get();
+    default:
+      return nullptr;
+    }
+  }
+
   void Recalculate(const AFontSize fontsize) const override;
 
   using Cell::SetCurrentPoint;
@@ -95,8 +119,6 @@ public:
   virtual wxString ToString() const override;
   virtual wxString ToTeX() const override;
   virtual wxString ToXML() const override;
-
-  void SetNextToDraw(Cell *next) const override;
 
 protected:
   void DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) const;

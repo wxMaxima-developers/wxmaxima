@@ -164,15 +164,5 @@ bool FunCell::BreakUp() const {
     return false;
 
   Cell::BreakUpAndMark();
-  m_nameCell->last()->SetNextToDraw(m_argCell);
-  m_argCell->last()->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_nameCell;
   return true;
-}
-
-void FunCell::SetNextToDraw(Cell *next) const {
-  if (IsBrokenIntoLines())
-    m_argCell->last()->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
 }

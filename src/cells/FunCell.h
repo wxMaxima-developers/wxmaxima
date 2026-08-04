@@ -38,17 +38,13 @@
   - AbsCell
   - ConjugateCell
 
-  In the case that this cell is broken into two lines in the order of
-  m_nextToDraw this cell is represented by the following individual
-  cells:
+  Once IsBrokenIntoLines(), the draw list (see GetBrokenCellCount()/
+  GetBrokenCell(), which here is simply GetInnerCellCount()/GetInnerCell())
+  expands this cell into the following individual cells instead of drawing
+  it as a single 2D object:
 
-  - The FunCell itself
-  - The function name"
-  - The ParenCell containing its contents
-  - The closing ")".
-
-  If it isn't broken into multiple cells m_nextToDraw points to the
-  cell that follows this Cell.
+  - The function name
+  - The ParenCell containing its contents.
 */
 class FunCell final : public Cell
 {
@@ -60,6 +56,9 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
+  //! ORDER MATTERS: also used, via the default GetBrokenCellCount()/
+  //! GetBrokenCell(), as this cell's broken/linear draw sequence -- the
+  //! function name, then its (parenthesized) argument, unconditionally.
   size_t GetInnerCellCount() const override { return 2; }
   Cell *GetInnerCell(size_t index) const override {
     switch (index) {
@@ -89,8 +88,6 @@ public:
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
   bool BreakUp() const override;
-
-  void SetNextToDraw(Cell *next) const override;
 
 private:
   //! Text that should end up on the clipboard if this cell is copied as text.

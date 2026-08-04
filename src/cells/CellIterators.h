@@ -88,10 +88,30 @@ public:
   static constexpr const_iterator cend() { return {}; }
 };
 
+/*! Walks the "draw list": the flattened sequence of cells that make up one
+  displayed line, in the order they should be measured/drawn/hit-tested.
+
+  This used to be a stored `m_nextToDraw` pointer on every `Cell`, threaded by
+  hand (via virtual `SetNextToDraw()` overrides) whenever a compound cell's
+  `BreakUp()`/`Unbreak()` ran. It is now computed on the fly instead: a cell
+  that `IsBrokenIntoLines()` is expanded into its `GetBrokenCellCount()`/
+  `GetBrokenCell()` pieces (each of which may itself have further siblings via
+  `GetNext()`, and may itself be broken, recursively) instead of being treated
+  as a single opaque node. The explicit stack below remembers, for each
+  broken cell currently being expanded, which piece to resume at once its
+  current piece's own chain is exhausted -- normal documents nest only a few
+  levels deep, so this stays small (and empty, with no allocation at all,
+  for any line that contains no broken cell).
+*/
 template <typename Cell>
 class CellDrawListIterator final {
   static_assert(std::is_class<Cell>::value, "The type argument must be a class");
+  struct Frame {
+    Cell *parent;
+    size_t nextIndex;
+  };
   Cell *m_ptr = {};
+  std::vector<Frame> m_stack;
 
 public:
   using iterator_category = std::forward_iterator_tag;
@@ -100,33 +120,58 @@ public:
   using pointer = Cell *;
   using reference = Cell &;
 
-  constexpr CellDrawListIterator() = default;
-  constexpr explicit CellDrawListIterator(const std::unique_ptr<Cell> &p) : m_ptr(p.get()) {}
-  constexpr explicit CellDrawListIterator(Cell *p) : m_ptr(p) {}
-  constexpr CellDrawListIterator(const CellDrawListIterator &o) = default;
-  constexpr CellDrawListIterator &operator=(const CellDrawListIterator &o) = default;
-  constexpr CellDrawListIterator operator++(int) {
+  CellDrawListIterator() = default;
+  explicit CellDrawListIterator(const std::unique_ptr<Cell> &p) : m_ptr(p.get()) {}
+  explicit CellDrawListIterator(Cell *p) : m_ptr(p) {}
+  CellDrawListIterator(const CellDrawListIterator &o) = default;
+  CellDrawListIterator &operator=(const CellDrawListIterator &o) = default;
+  CellDrawListIterator operator++(int) {
     auto ret = *this;
     return operator++(), ret;
   }
-  // constexpr fails if wxASSERT contains assembler code, which is true on MinGW
   CellDrawListIterator &operator++()
     {
-      if (m_ptr)
-      {
-        const auto *const prev = m_ptr;
-        m_ptr = m_ptr->GetNextToDraw();
-        wxASSERT(prev != m_ptr);
+      if (!m_ptr)
+        return *this;
+
+      const auto *const prev = m_ptr;
+      Cell *next = {};
+
+      if (prev->IsBrokenIntoLines() && prev->GetBrokenCellCount() > 0) {
+        // Descend into this cell's broken-form pieces. Once piece 0's own
+        // chain (and anything nested inside it) is exhausted, resume here
+        // at index 1.
+        m_stack.push_back(Frame{const_cast<Cell *>(prev), 1});
+        next = prev->GetBrokenCell(0);
+      } else {
+        next = prev->GetNext();
+        while (!next && !m_stack.empty()) {
+          Frame &frame = m_stack.back();
+          if (frame.nextIndex < frame.parent->GetBrokenCellCount()) {
+            next = frame.parent->GetBrokenCell(frame.nextIndex++);
+            continue;
+          }
+          // This broken cell's pieces are all done: resume with whatever
+          // originally followed it, or -- if it has no successor of its
+          // own -- keep unwinding into whatever enclosing broken cell (if
+          // any) we're nested inside of.
+          Cell *const afterParent = frame.parent->GetNext();
+          m_stack.pop_back();
+          next = afterParent;
+        }
       }
+
+      m_ptr = next;
+      wxASSERT(prev != m_ptr);
       return *this;
     }
-  constexpr bool operator==(const CellDrawListIterator &o) const
+  bool operator==(const CellDrawListIterator &o) const
     { return m_ptr == o.m_ptr; }
-  constexpr bool operator!=(const CellDrawListIterator &o) const
+  bool operator!=(const CellDrawListIterator &o) const
     { return m_ptr != o.m_ptr; }
-  constexpr operator bool() const { return m_ptr; }
-  constexpr operator Cell*() const { return m_ptr; }
-  constexpr Cell *operator->() const { return m_ptr; }
+  operator bool() const { return m_ptr; }
+  operator Cell*() const { return m_ptr; }
+  Cell *operator->() const { return m_ptr; }
 };
 
 template <typename Cell> class CellDrawListAdapter final

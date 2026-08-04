@@ -34,17 +34,13 @@
 
 /*! The class that represents parenthesis that are wrapped around text
 
-  In the case that this cell is broken into two lines in the order of
-  m_nextToDraw this cell is represented by the following individual
-  cells:
+  Once IsBrokenIntoLines(), the draw list (see GetBrokenCellCount()/
+  GetBrokenCell()) expands this cell into the following individual cells
+  instead of drawing it as a single 2D object:
 
-  - The ListCell itself
   - The opening "["
   - The contents
   - The closing "]".
-
-  If it isn't broken into multiple cells m_nextToDraw points to the
-  cell that follows this Cell.
 */
 class ListCell : public Cell
 {
@@ -56,6 +52,9 @@ public:
   virtual std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   virtual const CellTypeInfo &GetInfo() override;
 
+  //! ORDER MATTERS: also used, via the default GetBrokenCellCount()/
+  //! GetBrokenCell(), as this cell's broken/linear draw sequence -- "[",
+  //! then the (possibly multi-cell) contents, then "]", unconditionally.
   size_t GetInnerCellCount() const override { return 3; }
   Cell *GetInnerCell(size_t index) const override {
     switch (index) {
@@ -84,8 +83,6 @@ public:
   virtual wxString ToString() const override;
   virtual wxString ToTeX() const override;
   virtual wxString ToXML() const override;
-
-  void SetNextToDraw(Cell *next) const override;
 
 protected:
   // The pointers below point to inner cells and must be kept contiguous.

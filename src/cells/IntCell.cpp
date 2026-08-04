@@ -350,32 +350,7 @@ bool IntCell::BreakUp() const {
     return false;
 
   Cell::BreakUpAndMark();
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_open;
-  m_open->last()->SetNextToDraw(m_base);
-  m_base->last()->SetNextToDraw(m_comma1);
-  // The first cell of m_var should normally be a "d"
-  if (m_var->GetNext() != NULL)
-    m_comma1->last()->SetNextToDraw(m_var->GetNext());
-  else
-    m_comma1->last()->SetNextToDraw(m_var);
-  if (HasLimits())
-    m_var->last()->SetNextToDraw(m_close);
-  else {
-    m_var->last()->SetNextToDraw(m_comma2);
-    m_comma2->last()->SetNextToDraw(m_lowerLimit);
-    m_lowerLimit->last()->SetNextToDraw(m_comma3);
-    m_comma3->last()->SetNextToDraw(m_upperLimit);
-    m_upperLimit->last()->SetNextToDraw(m_close);
-  }
   return true;
-}
-
-void IntCell::SetNextToDraw(Cell *next) const {
-  if (IsBrokenIntoLines())
-    m_close->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
 }
 
 const wxString IntCell::m_svgIntegralSign(reinterpret_cast<const char*>(INTSIGN));

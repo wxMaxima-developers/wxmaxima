@@ -411,10 +411,13 @@ protected:
       // Warning: This function is CRITICAL to the performance of wxMaxima
       // as a whole!
       //
-      // The common hot path that iterates cells via the m_nextToDraw uses
-      // this function and is intimately tied to its performance. Small
+      // Every Cell's m_group is a CellPtr<GroupCell>, and GetGroup() -- called
+      // throughout layout, drawing and hit-testing -- goes through this
+      // function, so it is intimately tied to overall performance. Small
       // changes here can cause performance regressions - or small performance
-      // improvements.
+      // improvements. (The draw list used to be a second CellPtr, m_nextToDraw,
+      // present on every cell; it's computed on the fly now instead, see
+      // CellIterators.h, so this is no longer its hot path too.)
       //
       // If you change anything, do before- and after- measurements to verify
       // that whatever improvement you sought is in fact achieved. Changes that
@@ -484,8 +487,10 @@ static_assert(alignof(CellPtrBase) >= 4, "CellPtrBase doesn't have minimum viabl
  * abstraction!**
  *
  * **Warning:** To maintain performance, most cells should have at most one CellPtr
- * pointing at them. Currently, this is the m_nextToDraw - it uses up our "CellPtr
- * budget". The remaining CellPtrs are in CellPointers, and there is very few cells
+ * pointing at them. This is m_group - every Cell has one. (The draw list used to be
+ * a second CellPtr, m_nextToDraw, present on every cell; it's computed on the fly
+ * now instead - see CellIterators.h - so it no longer spends any of our "CellPtr
+ * budget".) The remaining CellPtrs are in CellPointers, and there is very few cells
  * at any given time that are pointed-to by those pointers, and thus the performance
  * impact is minimal.
  *

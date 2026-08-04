@@ -103,15 +103,21 @@ public:
 /*!
   The base class all cell types the worksheet can consist of are derived from
 
-  Every Cell is part of two double-linked lists:
-  - A Cell does have a member m_previous that points to the previous item
-  (or contains a NULL for the head node of the list) and a member named m_next
-  that points to the next cell (or contains a NULL if this is the end node of a list).
-  - And there is m_nextToDraw that contain fractions and similar
-  items as one element if they are drawn as a single 2D object that isn't divided by
-  a line break, but will contain every single element of a fraction as a separate
-  object if the fraction is broken into several lines and therefore displayed in its
-  a linear form.
+  Every Cell is part of a double-linked list: a Cell has a member m_previous
+  that points to the previous item (or contains a NULL for the head node of
+  the list) and a member named m_next that points to the next cell (or
+  contains a NULL if this is the end node of a list).
+
+  On top of that, the "draw list" (see OnDrawList() and GetBrokenCellCount()/
+  GetBrokenCell()) is a flattened view of that same tree along which cells
+  are actually measured/drawn/hit-tested: it treats a compound cell (a
+  fraction and similar) as a single 2D object as long as it isn't divided by
+  a line break, but expands it into every one of its individual pieces once
+  it IsBrokenIntoLines() and is therefore displayed in its linear form. Unlike
+  m_previous/m_next, the draw list isn't a stored pointer -- it's computed on
+  the fly by CellDrawListIterator from GetNext() plus GetBrokenCellCount()/
+  GetBrokenCell(), since which cells belong to it depends on that runtime
+  broken/unbroken state.
 
   Also every list of Cells can be a branch of a tree since every math cell contains
   a pointer to its parent group cell.
@@ -765,32 +771,32 @@ public:
 
   //! Get the next cell in the list.
   Cell *GetNext() const { return m_next.get(); }
-  /*! Get the next cell that needs to be drawn
 
-    In case of potential 2d objects like fractions either the fraction needs to be
-    drawn as a single 2D object or the nominator, the cell containing the "/" and
-    the denominator are pointed to by GetNextToDraw() as single separate objects.
+  /*! The number of pieces this cell is displayed as once it IsBrokenIntoLines(),
+    and in what order -- see GetBrokenCell().
+
+    Defaults to GetInnerCellCount()/GetInnerCell(), which is correct for every
+    compound cell whose broken (linear/1D) form shows exactly its structural
+    inner cells, in the same order, unconditionally (e.g. ParenCell: "(",
+    contents, ")"). A handful of cells (IntCell, SumCell, IntervalCell,
+    LimitCell) show a runtime-conditional subset or a different substitute
+    object (e.g. IntCell omits the limits unless HasLimits(); SumCell displays
+    Base() instead of the ParenCell wrapper) and override both this and
+    GetBrokenCell() to match their BreakUp() logic exactly.
+
+    ORDER IS LOAD-BEARING: this pair is the sole source of the on-screen,
+    left-to-right sequence the draw list (CellDrawListIterator, i.e.
+    OnDrawList()) expands a broken cell into -- Draw(), the width/height/line
+    caches (UpdateListCaches() and friends) and hit-testing/selection
+    (GetCellsInOutputRect() and friends) all walk it. There is no longer a
+    separate, hand-threaded pointer chain to cross-check it against, so
+    getting the index-to-piece mapping (or which indices exist, for the
+    classes that override this) wrong directly produces wrong rendering, not
+    just a wrong tree-shape for an unrelated recursive walk.
   */
-  Cell *GetNextToDraw() const { return m_nextToDraw; }
-
-  /*! Tells this cell which one should be the next cell to be drawn
-
-    If the cell is displayed as 2d object this sets the pointer to the next cell.
-
-    If the cell is broken into lines this sets the pointer of the last of the
-    list of cells this cell is displayed as.
-  */
-  virtual void SetNextToDraw(Cell *next) const { m_nextToDraw = next; }
-  template <typename T, typename Del,
-            typename std::enable_if<std::is_base_of<Cell, T>::value, bool>::type = true>
-  /*! Tells this cell which one should be the next cell to be drawn
-
-    If the cell is displayed as 2d object this sets the pointer to the next cell.
-
-    If the cell is broken into lines this sets the pointer of the last of the
-    list of cells this cell is displayed as.
-  */
-  void SetNextToDraw(const std::unique_ptr<T, Del> &ptr) { SetNextToDraw(ptr.get()); }
+  virtual size_t GetBrokenCellCount() const { return GetInnerCellCount(); }
+  //! Retrieve a piece of this cell's broken (linear/1D) display; see GetBrokenCellCount().
+  virtual Cell *GetBrokenCell(size_t index) const { return GetInnerCell(index); }
 
   /*! Determine if this cell contains text that isn't code
 
@@ -1097,9 +1103,6 @@ public:
 protected:
   /*! The GroupCell this list of cells belongs to. */
   CellPtr<GroupCell> m_group;
-  //! The next cell in the draw list. This has been factored into Cell temporarily to
-  //! reduce the change "noise" when it will be subsequently removed.
-  mutable CellPtr<Cell> m_nextToDraw;
 
   //! A pointer to the configuration responsible for this worksheet
   Configuration *m_configuration;
