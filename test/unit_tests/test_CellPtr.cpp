@@ -703,12 +703,12 @@ SCENARIO("DrawListIterator works") {
   GIVEN("A broken-up cell with two inner cells") {
     IterArrayCell<2> cell;
     cell.MockBreakUp();
-    Cell *prevCell = &cell;
-    for (auto &inner : cell.inner) {
+    // GetBrokenCellCount()/GetBrokenCell() default to GetInnerCellCount()/
+    // GetInnerCell(), which IterArrayCell already overrides to expose
+    // `inner` -- so once the cell IsBrokenIntoLines(), the draw list
+    // iterator descends into `inner` on its own; no manual linking needed.
+    for (auto &inner : cell.inner)
       inner = std::make_unique<FullTestCell>();
-      prevCell->SetNextToDraw(inner.get());
-      prevCell = inner.get();
-    }
     THEN("A range-for loop over the draw list iterates over the cell and its inner cells")
     {
       std::vector<Cell *> trace;
@@ -717,6 +717,40 @@ SCENARIO("DrawListIterator works") {
       REQUIRE(trace[0] == &cell);
       REQUIRE(trace[1] == cell.inner[0].get());
       REQUIRE(trace[2] == cell.inner[1].get());
+    }
+  }
+  GIVEN("A broken-up cell whose first inner cell is itself broken up") {
+    // Regression guard: this is the exact shape (a broken compound cell
+    // nested inside another broken compound cell -- e.g. a broken fraction
+    // in a broken fraction's numerator, or a broken parenthesis inside a
+    // broken parenthesis) that a 2020 attempt at removing the m_nextToDraw
+    // pointer got wrong, breaking nested line-breaking. The draw list must
+    // descend into the inner broken cell's own pieces before resuming the
+    // outer cell's remaining pieces.
+    auto outerCell = std::make_unique<IterArrayCell<2>>();
+    outerCell->MockBreakUp();
+
+    auto innerBroken = std::make_unique<IterArrayCell<2>>();
+    innerBroken->MockBreakUp();
+    for (auto &leaf : innerBroken->inner)
+      leaf = std::make_unique<FullTestCell>();
+
+    IterArrayCell<2> *const innerBrokenPtr = innerBroken.get();
+    outerCell->inner[0] = std::move(innerBroken);
+    outerCell->inner[1] = std::make_unique<FullTestCell>();
+
+    THEN("A range-for loop over the draw list visits the nested cell's own "
+         "pieces before the outer cell's remaining piece")
+    {
+      std::vector<Cell *> trace;
+      for (auto &tmp : OnDrawList(static_cast<Cell*>(outerCell.get())))
+        trace.push_back(&tmp);
+      REQUIRE(trace.size() == 5);
+      REQUIRE(trace[0] == outerCell.get());
+      REQUIRE(trace[1] == innerBrokenPtr);
+      REQUIRE(trace[2] == innerBrokenPtr->inner[0].get());
+      REQUIRE(trace[3] == innerBrokenPtr->inner[1].get());
+      REQUIRE(trace[4] == outerCell->inner[1].get());
     }
   }
 }

@@ -208,11 +208,5 @@ bool ExptCell::BreakUp() const {
     return false;
 
   Cell::BreakUpAndMark();
-  m_baseCell->last()->SetNextToDraw(m_exp);
-  m_exp->SetNextToDraw(m_open);
-  m_open->SetNextToDraw(m_exptCell);
-  m_exptCell->last()->SetNextToDraw(m_close);
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_baseCell;
   return true;
 }

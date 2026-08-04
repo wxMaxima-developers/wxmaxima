@@ -35,17 +35,13 @@
 
 /*! The class that represents parenthesis that are wrapped around text
 
-  In the case that this cell is broken into two lines in the order of
-  m_nextToDraw this cell is represented by the following individual
-  cells:
+  Once IsBrokenIntoLines(), the draw list (see GetBrokenCellCount()/
+  GetBrokenCell(), inherited unchanged from ListCell) expands this cell into
+  the following individual cells instead of drawing it as a single 2D object:
 
-  - The SetCell itself
   - The opening "["
   - The contents
   - The closing "]".
-
-  If it isn't broken into multiple cells m_nextToDraw points to the
-  cell that follows this Cell.
 */
 class SetCell final : public ListCell
 {

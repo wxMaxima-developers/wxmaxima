@@ -98,6 +98,61 @@ a local TCP socket.
   - `Maxima` (`src/Maxima.cpp`): Owns the TCP socket to the Maxima process and emits `EVT_MAXIMA` events carrying incoming data.
   - `Variablespane`: Manages the list of defined variables and their values.
   - `AutoComplete`: Handles the autocomplete logic for commands, variables, and files.
+- **The draw list is computed, not stored (2026-08, closes GH #1445):** `Cell`
+  used to carry a `mutable CellPtr<Cell> m_nextToDraw` member -- a second
+  always-present `CellPtr` on *every* cell, threaded by hand via a virtual
+  `SetNextToDraw()` override on each 2D-capable compound cell (`FracCell`,
+  `ParenCell`, `SqrtCell`, `AbsCell`, `BoxCell`, `ConjugateCell`, `ListCell`,
+  `ExptCell`, `SumCell`, `IntCell`, `LimitCell`, `IntervalCell`, `DiffCell`,
+  `FunCell`, `NamedBoxCell`, `LongNumberCell`) whenever `BreakUp()`/`Unbreak()`
+  ran. `CellDrawListIterator` (`src/cells/CellIterators.h`) now computes the
+  same flattened "line" sequence on the fly instead: it walks `GetNext()` for
+  ordinary siblings, and when a cell `IsBrokenIntoLines()` it descends into
+  `GetBrokenCellCount()`/`GetBrokenCell()` (an explicit stack in the iterator
+  remembers where to resume once a nested expansion is exhausted -- normal
+  documents nest only a few levels deep, so this stays empty, with zero
+  allocation, for any line containing no broken cell). `GetBrokenCellCount()`/
+  `GetBrokenCell()` default to the existing `GetInnerCellCount()`/
+  `GetInnerCell()` (the *semantic*-children interface, previously used only
+  for `ResetSize_Recursively()`/`CollectWideCells()`/tooltip fallback), which
+  turned out to already match the draw sequence exactly for 11 of the 15
+  classes above (confirmed by direct comparison against each `BreakUp()`,
+  not assumed). **Four classes needed a real, separate override**, because
+  their structural inner-cell set and their actual linear draw sequence
+  diverge under runtime conditions: `IntCell` (the linear form omits the
+  lower/upper limit slots entirely when `HasLimits()`), `SumCell` (shows
+  `Base()` -- the bare, unwrapped content -- instead of the `ParenCell`
+  wrapper `GetInnerCell()` reports, and conditionally omits the upper-limit
+  pieces when `over` is empty), `IntervalCell` and `LimitCell` (both have
+  structural slots -- bracket glyphs, the "lim" name label -- that exist only
+  for the 2D form and are never part of the linear one). Getting one of
+  these four wrong is a real rendering bug, not just a wrong tree-shape for
+  an unrelated recursive walk, since there is no longer a separate
+  hand-threaded pointer chain to cross-check the sequence against -- treat
+  any future change to a class's `GetInnerCellCount()`/`GetInnerCell()` (or
+  `GetBrokenCellCount()`/`GetBrokenCell()` override) as a rendering-order
+  change and re-verify it against that class's actual `BreakUp()` logic.
+  A 2020 attempt at this same removal (branch
+  `feature/KubaO/remove-nexttodraw`, never merged) shipped visible
+  regressions in exactly this class of nested-breaking scenario (a broken
+  fraction inside a broken fraction/paren/diff cell) because it didn't
+  account for this divergence; this attempt was verified against it
+  directly -- both with a dedicated nested-broken-cell unit test
+  (`test/unit_tests/test_CellPtr.cpp`, `SCENARIO("DrawListIterator works")`)
+  and by running the real batch tests (`absCells`, `boxCells`, `diffCells`,
+  `conjugateCells`, `exptCells`, `fracCells`, `intCells`, `intervals`,
+  `limitCells`, `matrixCells`, `parenthesisCells`, `sumCells`) against a real
+  Maxima, plus a manual Xvfb+ImageMagick screenshot of
+  `diff(abs(f(x)/g(x)),x)` at a narrow width (a broken `diff` containing a
+  broken `abs` containing a broken nested fraction, all at once) to visually
+  confirm correct rendering -- this sandbox can install `maxima`/`maxima-doc`
+  (see the sandbox note under Build System for the doc-stripping workaround)
+  and `Xvfb`/`xdotool`/`imagemagick` for exactly this kind of check when a
+  change is rendering-sensitive and the automated test suite's XML/structural
+  assertions aren't enough on their own. `CellList.cpp`'s `SetNext()`/
+  `AppendCell()`/`SpliceInAfter()`/`TearOut()` no longer need any
+  draw-list-mirroring bookkeeping, since there's nothing stored to keep in
+  sync.
 
 ### Communication with Maxima
 

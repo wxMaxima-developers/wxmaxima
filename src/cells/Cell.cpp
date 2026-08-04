@@ -1389,7 +1389,6 @@ void Cell::Unbreak() const {
     m_isBrokenIntoLines = false;
   }
   SoftLineBreak(false);
-  SetNextToDraw(GetNext());
 }
 
 void Cell::UnbreakList() const {

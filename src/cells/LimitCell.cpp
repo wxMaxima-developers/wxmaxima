@@ -174,18 +174,5 @@ bool LimitCell::BreakUp() const {
     return false;
 
   BreakUpAndMark();
-  m_open->SetNextToDraw(m_base.get());
-  m_base->last()->SetNextToDraw(m_comma.get());
-  m_comma->SetNextToDraw(m_under.get());
-  m_under->last()->SetNextToDraw(m_close.get());
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_open.get();
   return true;
-}
-
-void LimitCell::SetNextToDraw(Cell *next) const {
-  if (IsBrokenIntoLines()) {
-    m_close->SetNextToDraw(next);
-  } else
-    m_nextToDraw = next;
 }

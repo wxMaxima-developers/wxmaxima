@@ -53,6 +53,14 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
+  //! ORDER MATTERS: also used, via the default GetBrokenCellCount()/
+  //! GetBrokenCell(), as this cell's broken/linear draw sequence -- unlike
+  //! most compound cells, no separate override is needed here, because
+  //! m_displayedNum/m_displayedDenom are ALREADY the dynamically-aliased
+  //! "what's currently shown" slots (see SetupBreakUps()/BreakUp(): they
+  //! point at the bare numerator/denominator, or at their ParenCell wrapper
+  //! when one is needed), so this same sequence is correct whether the
+  //! fraction IsBrokenIntoLines() or not.
   size_t GetInnerCellCount() const override { return 3; }
   Cell *GetInnerCell(size_t index) const override {
     switch (index) {
@@ -105,7 +113,6 @@ public:
 
   void SetupBreakUps() const;
 
-  void SetNextToDraw(Cell *next) const override;
 private:
   //! Makes the division sign cell, used in linear form - whether when broken
   //! into lines, or when the exponent flag is set.

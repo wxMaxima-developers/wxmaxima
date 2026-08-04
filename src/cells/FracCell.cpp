@@ -370,17 +370,5 @@ bool FracCell::BreakUp() const {
     m_displayedNum = m_numParenthesis.get();
   if (Denom() && Denom()->GetNext())
     m_displayedDenom = m_denomParenthesis.get();
-  // Note: Yes, we don't want m_displayedNum->last() here.
-  m_displayedNum->SetNextToDraw(m_divide);
-  m_divide->SetNextToDraw(m_displayedDenom);
-  m_displayedDenom->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_displayedNum;
   return true;
-}
-
-void FracCell::SetNextToDraw(Cell *next) const {
-  if (IsBrokenIntoLines())
-    m_displayedDenom->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
 }
