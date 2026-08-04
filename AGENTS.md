@@ -77,6 +77,45 @@ working without extra checks.
   scratch; both are sandbox/pre-existing, not something a code change here
   broke.
 
+- **`tutorial_10Minutes` intermittent CI failure, root-caused (2026-08):**
+  failed with "Batch mode: Maxima asked a question with no scripted answer
+  available" for `Is a positive or negative?`, at a genuinely low rate
+  (reproduced locally at roughly 1-in-20 to 1-in-30 with a tight
+  parallel-Xvfb repro loop -- not reproducible from a handful of manual
+  runs, so don't conclude "can't reproduce" from fewer than ~50 attempts).
+  **This is not app-level nondeterminism** -- confirmed directly by
+  instrumenting the exact failure path (`MaximaResponseReader::ReadPrompt`'s
+  halt branch) to dump `GetDocumentCellPointers().GetWorkingGroup(false)`
+  vs. `Worksheet::GetWorkingGroup(true)`'s resolved cell: they were always
+  the *same*, correct `GroupCell`, with its `m_autoAnswer`/`m_knownAnswers`
+  exactly as authored in the `.wxm` file -- ruling out a stale/wrong
+  "current working group" pointer, the first (and wrong) theory. The
+  `assume(a > 0)$ integrate(1/(x^2+a),x); forget(a > 0)$` cell (the
+  tutorial's own demonstration that `assume()` normally makes the question
+  unnecessary) is genuinely the one asking -- and since it was never meant
+  to need an interactive answer, it had none recorded. `EvaluationQueue`
+  sends each cell's statements one at a time, gated on receiving Maxima's
+  own prompt for the previous one (`ProduceNextCommand()`/`RemoveFirst()`),
+  so the client-side ordering is not in question: Maxima had already fully
+  processed and returned from `assume(a > 0)$` before `integrate(...)` was
+  even sent. So the "sometimes still asks despite the assumption" behavior
+  is on **Maxima's own side** -- plausibly GCL's address-based hash-table
+  iteration order affecting which internal branch `integrate()`'s algorithm
+  explores (never proven by cracking open GCL internals here, but every
+  app-level explanation was directly ruled out first, not assumed away).
+  Adding a plain `wxLogMessage`-based diagnostic to the *hot* path
+  (`Worksheet::WillAutoAnswer()`, called on every question, not just
+  failures) measurably suppressed the race (0 failures in 70 runs, vs. ~10%
+  before) -- a classic instrumentation-perturbs-the-race signature. The fix
+  that actually worked: add the diagnostic dump *only inside the
+  already-failing branch* (zero cost on the hot/success path, since that
+  branch only runs when about to halt anyway) -- this reliably caught it
+  without perturbing timing. Fixed for real by recording an auto-answer
+  ("p;") for this cell too, mirroring the defensive multi-variant recording
+  the *other* "positive or negative?" cell earlier in the same file already
+  has. Verified with 180 back-to-back parallel runs (0 failures) after the
+  fix, vs. the ~1-in-20 to 1-in-30 rate before it.
+
 ## Architecture & GUI
 
 wxMaxima is a GUI front-end to the Maxima CAS; it talks to a Maxima process over
