@@ -70,11 +70,17 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle"><div class="title">CellDrawListIterator&lt; Cell &gt; Class Template Reference<span class="mlabels"><span class="mlabel">final</span></span></div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Walks the "draw list": the flattened sequence of cells that make up one displayed line, in the order they should be measured/drawn/hit-tested.  
+ <a href="classCellDrawListIterator.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="CellIterators_8h_source.html">CellIterators.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -96,41 +102,45 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b> = <a c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a87dd2108036456d3bfe5032eb365ce8f"><td class="memItemLeft" align="right" valign="top"><a id="a87dd2108036456d3bfe5032eb365ce8f" name="a87dd2108036456d3bfe5032eb365ce8f"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>CellDrawListIterator</b> (const std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;p)</td></tr>
-<tr class="separator:a87dd2108036456d3bfe5032eb365ce8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a388b5080eab21c2550d6aa3daf2a6d70"><td class="memItemLeft" align="right" valign="top"><a id="a388b5080eab21c2550d6aa3daf2a6d70" name="a388b5080eab21c2550d6aa3daf2a6d70"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>CellDrawListIterator</b> (<a class="el" href="classCell.html">Cell</a> *p)</td></tr>
-<tr class="separator:a388b5080eab21c2550d6aa3daf2a6d70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d80da4e69b60555dea659568b06d6c6"><td class="memItemLeft" align="right" valign="top"><a id="a9d80da4e69b60555dea659568b06d6c6" name="a9d80da4e69b60555dea659568b06d6c6"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>CellDrawListIterator</b> (const <a class="el" href="classCellDrawListIterator.html">CellDrawListIterator</a> &amp;o)=default</td></tr>
-<tr class="separator:a9d80da4e69b60555dea659568b06d6c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7992c97b7fe8c09a3d38ab9512a27ae"><td class="memItemLeft" align="right" valign="top"><a id="aa7992c97b7fe8c09a3d38ab9512a27ae" name="aa7992c97b7fe8c09a3d38ab9512a27ae"></a>
-constexpr <a class="el" href="classCellDrawListIterator.html">CellDrawListIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classCellDrawListIterator.html">CellDrawListIterator</a> &amp;o)=default</td></tr>
-<tr class="separator:aa7992c97b7fe8c09a3d38ab9512a27ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d42d927b56482e4ececad9ae35632d3"><td class="memItemLeft" align="right" valign="top"><a id="a2d42d927b56482e4ececad9ae35632d3" name="a2d42d927b56482e4ececad9ae35632d3"></a>
-constexpr <a class="el" href="classCellDrawListIterator.html">CellDrawListIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator++</b> (int)</td></tr>
-<tr class="separator:a2d42d927b56482e4ececad9ae35632d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6a12640f1e9856d290d7a3069639980"><td class="memItemLeft" align="right" valign="top"><a id="ac6a12640f1e9856d290d7a3069639980" name="ac6a12640f1e9856d290d7a3069639980"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>CellDrawListIterator</b> (const std::unique_ptr&lt; <a class="el" href="classCell.html">Cell</a> &gt; &amp;p)</td></tr>
+<tr class="separator:ac6a12640f1e9856d290d7a3069639980"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa1e3b6c81b0605ea18e3b450b4df605"><td class="memItemLeft" align="right" valign="top"><a id="aaa1e3b6c81b0605ea18e3b450b4df605" name="aaa1e3b6c81b0605ea18e3b450b4df605"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>CellDrawListIterator</b> (<a class="el" href="classCell.html">Cell</a> *p)</td></tr>
+<tr class="separator:aaa1e3b6c81b0605ea18e3b450b4df605"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2eacf774ff81ea0589401865c7bd593"><td class="memItemLeft" align="right" valign="top"><a id="aa2eacf774ff81ea0589401865c7bd593" name="aa2eacf774ff81ea0589401865c7bd593"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>CellDrawListIterator</b> (const <a class="el" href="classCellDrawListIterator.html">CellDrawListIterator</a> &amp;o)=default</td></tr>
+<tr class="separator:aa2eacf774ff81ea0589401865c7bd593"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0539dd02a85d055c5bc1ce982ed3b5f"><td class="memItemLeft" align="right" valign="top"><a id="ac0539dd02a85d055c5bc1ce982ed3b5f" name="ac0539dd02a85d055c5bc1ce982ed3b5f"></a>
+<a class="el" href="classCellDrawListIterator.html">CellDrawListIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classCellDrawListIterator.html">CellDrawListIterator</a> &amp;o)=default</td></tr>
+<tr class="separator:ac0539dd02a85d055c5bc1ce982ed3b5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1534aa2cdb6214af48771c4060cb358"><td class="memItemLeft" align="right" valign="top"><a id="ad1534aa2cdb6214af48771c4060cb358" name="ad1534aa2cdb6214af48771c4060cb358"></a>
+<a class="el" href="classCellDrawListIterator.html">CellDrawListIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator++</b> (int)</td></tr>
+<tr class="separator:ad1534aa2cdb6214af48771c4060cb358"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29e811f1924aa5dfdff5ade5f08ed26b"><td class="memItemLeft" align="right" valign="top"><a id="a29e811f1924aa5dfdff5ade5f08ed26b" name="a29e811f1924aa5dfdff5ade5f08ed26b"></a>
 <a class="el" href="classCellDrawListIterator.html">CellDrawListIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator++</b> ()</td></tr>
 <tr class="separator:a29e811f1924aa5dfdff5ade5f08ed26b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a823dd96cdceb49e2c841d31a77a37579"><td class="memItemLeft" align="right" valign="top"><a id="a823dd96cdceb49e2c841d31a77a37579" name="a823dd96cdceb49e2c841d31a77a37579"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classCellDrawListIterator.html">CellDrawListIterator</a> &amp;o) const</td></tr>
-<tr class="separator:a823dd96cdceb49e2c841d31a77a37579"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7a1311d81bedfe7c1e74bbcd5e21e2c"><td class="memItemLeft" align="right" valign="top"><a id="ad7a1311d81bedfe7c1e74bbcd5e21e2c" name="ad7a1311d81bedfe7c1e74bbcd5e21e2c"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (const <a class="el" href="classCellDrawListIterator.html">CellDrawListIterator</a> &amp;o) const</td></tr>
-<tr class="separator:ad7a1311d81bedfe7c1e74bbcd5e21e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c2a452bedc2ac3127f81622a4933267"><td class="memItemLeft" align="right" valign="top"><a id="a2c2a452bedc2ac3127f81622a4933267" name="a2c2a452bedc2ac3127f81622a4933267"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="separator:a2c2a452bedc2ac3127f81622a4933267"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a531009822595f7101ce44bd98f0b2870"><td class="memItemLeft" align="right" valign="top"><a id="a531009822595f7101ce44bd98f0b2870" name="a531009822595f7101ce44bd98f0b2870"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator Cell *</b> () const</td></tr>
-<tr class="separator:a531009822595f7101ce44bd98f0b2870"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a050c790119937f75e580bfdb5371ed91"><td class="memItemLeft" align="right" valign="top"><a id="a050c790119937f75e580bfdb5371ed91" name="a050c790119937f75e580bfdb5371ed91"></a>
-constexpr <a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
-<tr class="separator:a050c790119937f75e580bfdb5371ed91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a602357f71ce5caa7b5280cd56aea6aec"><td class="memItemLeft" align="right" valign="top"><a id="a602357f71ce5caa7b5280cd56aea6aec" name="a602357f71ce5caa7b5280cd56aea6aec"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classCellDrawListIterator.html">CellDrawListIterator</a> &amp;o) const</td></tr>
+<tr class="separator:a602357f71ce5caa7b5280cd56aea6aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addb7f778bec508947013eab22f977c26"><td class="memItemLeft" align="right" valign="top"><a id="addb7f778bec508947013eab22f977c26" name="addb7f778bec508947013eab22f977c26"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (const <a class="el" href="classCellDrawListIterator.html">CellDrawListIterator</a> &amp;o) const</td></tr>
+<tr class="separator:addb7f778bec508947013eab22f977c26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a226dd04b60c98949a1fc18d60329f2f9"><td class="memItemLeft" align="right" valign="top"><a id="a226dd04b60c98949a1fc18d60329f2f9" name="a226dd04b60c98949a1fc18d60329f2f9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
+<tr class="separator:a226dd04b60c98949a1fc18d60329f2f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a544d35894893b8a5db700d03de9d0119"><td class="memItemLeft" align="right" valign="top"><a id="a544d35894893b8a5db700d03de9d0119" name="a544d35894893b8a5db700d03de9d0119"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator Cell *</b> () const</td></tr>
+<tr class="separator:a544d35894893b8a5db700d03de9d0119"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c2492a57f2533ebd6fe4a9292782460"><td class="memItemLeft" align="right" valign="top"><a id="a0c2492a57f2533ebd6fe4a9292782460" name="a0c2492a57f2533ebd6fe4a9292782460"></a>
+<a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
+<tr class="separator:a0c2492a57f2533ebd6fe4a9292782460"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename <a class="el" href="classCell.html">Cell</a>&gt;<br />
+class CellDrawListIterator&lt; Cell &gt;</div><p>Walks the "draw list": the flattened sequence of cells that make up one displayed line, in the order they should be measured/drawn/hit-tested. </p>
+<p>This used to be a stored <code>m_nextToDraw</code> pointer on every <code><a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a></code>, threaded by hand (via virtual <code>SetNextToDraw()</code> overrides) whenever a compound cell's <code>BreakUp()</code>/<code>Unbreak()</code> ran. It is now computed on the fly instead: a cell that <code>IsBrokenIntoLines()</code> is expanded into its <code>GetBrokenCellCount()</code>/ <code>GetBrokenCell()</code> pieces (each of which may itself have further siblings via <code>GetNext()</code>, and may itself be broken, recursively) instead of being treated as a single opaque node. The explicit stack below remembers, for each broken cell currently being expanded, which piece to resume at once its current piece's own chain is exhausted &ndash; normal documents nest only a few levels deep, so this stays small (and empty, with no allocation at all, for any line that contains no broken cell). </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/cells/<a class="el" href="CellIterators_8h_source.html">CellIterators.h</a></li>
 </ul>
 </div><!-- contents -->

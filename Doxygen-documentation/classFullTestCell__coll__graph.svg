@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 1067;
+var viewWidth = 949;
 var viewHeight = 424;
 var sectionId = 'dynsection-1';
 </script>
@@ -58,8 +58,8 @@ var sectionId = 'dynsection-1';
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title=" ">
-<polygon fill="#999999" stroke="#666666" points="349,-19 277,-19 277,0 349,0 349,-19"/>
-<text text-anchor="middle" x="313" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">FullTestCell</text>
+<polygon fill="#999999" stroke="#666666" points="295,-19 223,-19 223,0 295,0 295,-19"/>
+<text text-anchor="middle" x="259" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">FullTestCell</text>
 </a>
 </g>
 </g>
@@ -67,16 +67,16 @@ var sectionId = 'dynsection-1';
 <g id="node2" class="node">
 <title>Node2</title>
 <g id="a_node2"><a xlink:href="structWithGroup.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#bfbfbf" points="316,-75 248,-75 248,-56 316,-56 316,-75"/>
-<text text-anchor="middle" x="282" y="-63" font-family="Helvetica,sans-Serif" font-size="10.00">WithGroup</text>
+<polygon fill="white" stroke="#bfbfbf" points="262,-75 194,-75 194,-56 262,-56 262,-75"/>
+<text text-anchor="middle" x="228" y="-63" font-family="Helvetica,sans-Serif" font-size="10.00">WithGroup</text>
 </a>
 </g>
 </g>
 <!-- Node2&#45;&gt;Node1 -->
 <g id="edge1" class="edge">
 <title>Node2&#45;&gt;Node1</title>
-<path fill="none" stroke="#8b1a1a" d="M292.18,-46.77C297.47,-37.55 303.72,-26.67 307.98,-19.25"/>
-<polygon fill="#8b1a1a" stroke="#8b1a1a" points="289.06,-45.17 287.12,-55.58 295.13,-48.65 289.06,-45.17"/>
+<path fill="none" stroke="#8b1a1a" d="M238.18,-46.77C243.47,-37.55 249.72,-26.67 253.98,-19.25"/>
+<polygon fill="#8b1a1a" stroke="#8b1a1a" points="235.06,-45.17 233.12,-55.58 241.13,-48.65 235.06,-45.17"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
@@ -90,25 +90,25 @@ var sectionId = 'dynsection-1';
 <!-- Node3&#45;&gt;Node2 -->
 <g id="edge2" class="edge">
 <title>Node3&#45;&gt;Node2</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M73.56,-309.58C72.77,-287.79 74.17,-251.58 89,-225 131.25,-149.27 225.28,-95.13 264.4,-75.06"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="70.08,-310.01 74.14,-319.8 77.07,-309.62 70.08,-310.01"/>
-<text text-anchor="middle" x="175.5" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00"> configuration</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M74.35,-309.66C74.32,-288.2 76.45,-252.56 89,-225 119.93,-157.05 189.83,-96.74 216.95,-75.05"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="70.85,-309.79 74.53,-319.72 77.85,-309.66 70.85,-309.79"/>
+<text text-anchor="middle" x="164.5" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00"> configuration</text>
 </g>
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
 <g id="a_node6"><a xlink:href="classCell.html" target="_top" xlink:title="The base class all cell types the worksheet can consist of are derived from.">
-<polygon fill="white" stroke="#666666" points="361.5,-207 326.5,-207 326.5,-188 361.5,-188 361.5,-207"/>
-<text text-anchor="middle" x="344" y="-195" font-family="Helvetica,sans-Serif" font-size="10.00">Cell</text>
+<polygon fill="white" stroke="#666666" points="307.5,-207 272.5,-207 272.5,-188 307.5,-188 307.5,-207"/>
+<text text-anchor="middle" x="290" y="-195" font-family="Helvetica,sans-Serif" font-size="10.00">Cell</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node6 -->
-<g id="edge11" class="edge">
+<g id="edge9" class="edge">
 <title>Node3&#45;&gt;Node6</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M82.91,-310.38C84.01,-307.6 85.08,-304.74 86,-302 97.25,-268.48 79.27,-248.15 106,-225 138.84,-196.56 276.69,-196.89 326.2,-197.98"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="79.61,-309.21 78.98,-319.78 86.07,-311.91 79.61,-309.21"/>
-<text text-anchor="middle" x="147" y="-261" font-family="Helvetica,sans-Serif" font-size="10.00"> m_configuration</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M82.94,-310.39C84.04,-307.61 85.1,-304.74 86,-302 97.01,-268.52 78.87,-248.65 105,-225 129.36,-202.96 230.94,-199.21 272.33,-198.6"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="79.64,-309.22 79.01,-319.79 86.1,-311.92 79.64,-309.22"/>
+<text text-anchor="middle" x="146" y="-261" font-family="Helvetica,sans-Serif" font-size="10.00"> m_configuration</text>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
@@ -131,36 +131,36 @@ var sectionId = 'dynsection-1';
 <g id="node5" class="node">
 <title>Node5</title>
 <g id="a_node5"><a xlink:href="classGroupCell.html" target="_top" xlink:title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">
-<polygon fill="white" stroke="#666666" points="736.5,-141 671.5,-141 671.5,-122 736.5,-122 736.5,-141"/>
-<text text-anchor="middle" x="704" y="-129" font-family="Helvetica,sans-Serif" font-size="10.00">GroupCell</text>
+<polygon fill="white" stroke="#666666" points="618.5,-141 553.5,-141 553.5,-122 618.5,-122 618.5,-141"/>
+<text text-anchor="middle" x="586" y="-129" font-family="Helvetica,sans-Serif" font-size="10.00">GroupCell</text>
 </a>
 </g>
 </g>
 <!-- Node5&#45;&gt;Node2 -->
 <g id="edge4" class="edge">
 <title>Node5&#45;&gt;Node2</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M661.28,-124.02C577.4,-111.3 392.69,-83.29 316.21,-71.69"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="660.83,-127.49 671.24,-125.53 661.88,-120.57 660.83,-127.49"/>
-<text text-anchor="middle" x="533.5" y="-96" font-family="Helvetica,sans-Serif" font-size="10.00"> group</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M543.21,-122.85C471.3,-110 327.66,-84.32 262.08,-72.59"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="542.82,-126.34 553.28,-124.65 544.05,-119.45 542.82,-126.34"/>
+<text text-anchor="middle" x="443.5" y="-96" font-family="Helvetica,sans-Serif" font-size="10.00"> group</text>
 </g>
 <!-- Node5&#45;&gt;Node5 -->
-<g id="edge16" class="edge">
+<g id="edge14" class="edge">
 <title>Node5&#45;&gt;Node5</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M746.64,-136.57C751.41,-135.61 754.5,-133.92 754.5,-131.5 754.5,-127.62 746.6,-125.63 736.54,-125.51"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="746.18,-133.09 736.54,-137.49 746.82,-140.06 746.18,-133.09"/>
-<text text-anchor="middle" x="806" y="-129" font-family="Helvetica,sans-Serif" font-size="10.00"> m_hiddenTreeParent</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M628.64,-136.57C633.41,-135.61 636.5,-133.92 636.5,-131.5 636.5,-127.62 628.6,-125.63 618.54,-125.51"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="628.18,-133.09 618.54,-137.49 628.82,-140.06 628.18,-133.09"/>
+<text text-anchor="middle" x="688" y="-129" font-family="Helvetica,sans-Serif" font-size="10.00"> m_hiddenTreeParent</text>
 </g>
 <!-- Node6&#45;&gt;Node1 -->
-<g id="edge18" class="edge">
+<g id="edge16" class="edge">
 <title>Node6&#45;&gt;Node1</title>
-<path fill="none" stroke="#63b8ff" d="M342.23,-177.91C339.48,-150.9 333.6,-99.31 325,-56 322.42,-43.02 318.3,-28.25 315.62,-19.15"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="338.74,-178.28 343.21,-187.89 345.71,-177.59 338.74,-178.28"/>
+<path fill="none" stroke="#63b8ff" d="M288.23,-177.91C285.48,-150.9 279.6,-99.31 271,-56 268.42,-43.02 264.3,-28.25 261.62,-19.15"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="284.74,-178.28 289.21,-187.89 291.71,-177.59 284.74,-178.28"/>
 </g>
 <!-- Node6&#45;&gt;Node5 -->
 <g id="edge5" class="edge">
 <title>Node6&#45;&gt;Node5</title>
-<path fill="none" stroke="#63b8ff" d="M371.85,-191.55C437.41,-179.89 601.19,-150.78 671.31,-138.31"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="371.09,-188.13 361.85,-193.33 372.31,-195.02 371.09,-188.13"/>
+<path fill="none" stroke="#63b8ff" d="M317.66,-190.52C372.51,-178.66 494.79,-152.22 553.42,-139.54"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="316.66,-187.15 307.63,-192.69 318.14,-194 316.66,-187.15"/>
 </g>
 <!-- Node7 -->
 <g id="node7" class="node">
@@ -174,8 +174,8 @@ var sectionId = 'dynsection-1';
 <!-- Node7&#45;&gt;Node6 -->
 <g id="edge6" class="edge">
 <title>Node7&#45;&gt;Node6</title>
-<path fill="none" stroke="#63b8ff" d="M181.42,-312.14C208.21,-283.78 260.98,-228.18 266,-225 284.84,-213.05 309.69,-205.83 326.22,-202"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="178.63,-309.99 174.32,-319.67 183.73,-314.8 178.63,-309.99"/>
+<path fill="none" stroke="#63b8ff" d="M181.74,-312.6C184.91,-309.19 188.14,-305.54 191,-302 217.11,-269.68 213.47,-253.18 244,-225 252.26,-217.37 263.1,-211 272.18,-206.41"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="179.07,-310.33 174.68,-319.97 184.13,-315.17 179.07,-310.33"/>
 </g>
 <!-- Node8 -->
 <g id="node8" class="node">
@@ -189,125 +189,103 @@ var sectionId = 'dynsection-1';
 <!-- Node8&#45;&gt;Node6 -->
 <g id="edge7" class="edge">
 <title>Node8&#45;&gt;Node6</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M271.34,-309.84C268.05,-287.5 266.14,-249.98 284,-225 293.87,-211.2 312.58,-204.49 326.49,-201.29"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="267.9,-310.47 273.03,-319.73 274.8,-309.29 267.9,-310.47"/>
-<text text-anchor="middle" x="307" y="-261" font-family="Helvetica,sans-Serif" font-size="10.00"> m_group</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M261.4,-311.59C259.59,-308.55 258.01,-305.3 257,-302 246.94,-269.29 242.2,-255.86 257,-225 260.56,-217.58 267.32,-211.58 273.8,-207.18"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="258.6,-313.69 267.2,-319.89 264.34,-309.68 258.6,-313.69"/>
+<text text-anchor="middle" x="280" y="-261" font-family="Helvetica,sans-Serif" font-size="10.00"> m_group</text>
 </g>
 <!-- Node9 -->
 <g id="node9" class="node">
 <title>Node9</title>
 <g id="a_node9"><a xlink:href="classCellPtrBase.html" target="_top" xlink:title="An implementation detail for the type&#45;specific templated cell pointers.">
-<polygon fill="white" stroke="#666666" points="372.5,-410.5 299.5,-410.5 299.5,-391.5 372.5,-391.5 372.5,-410.5"/>
-<text text-anchor="middle" x="336" y="-398.5" font-family="Helvetica,sans-Serif" font-size="10.00">CellPtrBase</text>
+<polygon fill="white" stroke="#666666" points="311.5,-410.5 238.5,-410.5 238.5,-391.5 311.5,-391.5 311.5,-410.5"/>
+<text text-anchor="middle" x="275" y="-398.5" font-family="Helvetica,sans-Serif" font-size="10.00">CellPtrBase</text>
 </a>
 </g>
 </g>
 <!-- Node9&#45;&gt;Node8 -->
 <g id="edge8" class="edge">
 <title>Node9&#45;&gt;Node8</title>
-<path fill="none" stroke="#63b8ff" d="M321.63,-383.63C309.39,-369.68 292.27,-350.17 282.54,-339.09"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="319.29,-386.27 328.52,-391.48 324.55,-381.65 319.29,-386.27"/>
+<path fill="none" stroke="#63b8ff" d="M275,-381.21C275,-367.5 275,-349.55 275,-339.09"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="271.5,-381.48 275,-391.48 278.5,-381.48 271.5,-381.48"/>
 </g>
 <!-- Node10 -->
 <g id="node10" class="node">
 <title>Node10</title>
-<g id="a_node10"><a xlink:href="classCellPtr.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="443,-339 353,-339 353,-320 443,-320 443,-339"/>
-<text text-anchor="middle" x="398" y="-327" font-family="Helvetica,sans-Serif" font-size="10.00">CellPtr&lt; Cell &gt;</text>
+<g id="a_node10"><a xlink:href="classCachedInteger.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="505,-339 353,-339 353,-320 505,-320 505,-339"/>
+<text text-anchor="middle" x="429" y="-327" font-family="Helvetica,sans-Serif" font-size="10.00">CachedInteger&lt; wxCoord &gt;</text>
 </a>
 </g>
 </g>
-<!-- Node9&#45;&gt;Node10 -->
-<g id="edge10" class="edge">
-<title>Node9&#45;&gt;Node10</title>
-<path fill="none" stroke="#63b8ff" d="M350.6,-383.63C363.05,-369.68 380.45,-350.17 390.34,-339.09"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="347.65,-381.69 343.6,-391.48 352.87,-386.35 347.65,-381.69"/>
-</g>
 <!-- Node10&#45;&gt;Node6 -->
-<g id="edge9" class="edge">
+<g id="edge10" class="edge">
 <title>Node10&#45;&gt;Node6</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M358.18,-314.93C352.95,-311.5 348.28,-307.25 345,-302 326.05,-271.67 335.96,-225.95 341.31,-207.1"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="356.89,-318.21 367.35,-319.95 360.25,-312.07 356.89,-318.21"/>
-<text text-anchor="middle" x="383" y="-261" font-family="Helvetica,sans-Serif" font-size="10.00"> m_nextToDraw</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M347.14,-316.15C339.37,-312.52 332.12,-307.89 326,-302 300.26,-277.23 316.02,-258.26 303,-225 300.61,-218.89 297.36,-212.27 294.71,-207.17"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="345.88,-319.42 356.46,-319.97 348.54,-312.94 345.88,-319.42"/>
+<text text-anchor="middle" x="384.5" y="-294" font-family="Helvetica,sans-Serif" font-size="10.00"> m_cachedCenterList</text>
+<text text-anchor="middle" x="384.5" y="-283" font-family="Helvetica,sans-Serif" font-size="10.00">m_cachedLineWidth</text>
+<text text-anchor="middle" x="384.5" y="-272" font-family="Helvetica,sans-Serif" font-size="10.00">m_cachedMaxDrop</text>
+<text text-anchor="middle" x="384.5" y="-261" font-family="Helvetica,sans-Serif" font-size="10.00">m_cachedSumOfWidths</text>
+<text text-anchor="middle" x="384.5" y="-250" font-family="Helvetica,sans-Serif" font-size="10.00">m_center</text>
+<text text-anchor="middle" x="384.5" y="-239" font-family="Helvetica,sans-Serif" font-size="10.00">m_height</text>
+<text text-anchor="middle" x="384.5" y="-228" font-family="Helvetica,sans-Serif" font-size="10.00">m_width</text>
 </g>
 <!-- Node11 -->
 <g id="node11" class="node">
 <title>Node11</title>
-<g id="a_node11"><a xlink:href="classCachedInteger.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="613,-339 461,-339 461,-320 613,-320 613,-339"/>
-<text text-anchor="middle" x="537" y="-327" font-family="Helvetica,sans-Serif" font-size="10.00">CachedInteger&lt; wxCoord &gt;</text>
+<g id="a_node11"><a xlink:href="classAFontSize.html" target="_top" xlink:title="A Type&#45;Safe Fixed&#45;Point Font Size.">
+<polygon fill="white" stroke="#666666" points="603.5,-339 538.5,-339 538.5,-320 603.5,-320 603.5,-339"/>
+<text text-anchor="middle" x="571" y="-327" font-family="Helvetica,sans-Serif" font-size="10.00">AFontSize</text>
 </a>
 </g>
 </g>
+<!-- Node11&#45;&gt;Node5 -->
+<g id="edge15" class="edge">
+<title>Node11&#45;&gt;Node5</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M572.43,-309.76C575.6,-268.38 583.09,-170.58 585.34,-141.07"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="568.94,-309.59 571.66,-319.83 575.92,-310.12 568.94,-309.59"/>
+<text text-anchor="middle" x="623.5" y="-195" font-family="Helvetica,sans-Serif" font-size="10.00"> m_mathFontSize</text>
+</g>
 <!-- Node11&#45;&gt;Node6 -->
-<g id="edge12" class="edge">
+<g id="edge11" class="edge">
 <title>Node11&#45;&gt;Node6</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M465,-316.16C457.25,-312.56 450.01,-307.93 444,-302 418.59,-276.91 445.73,-250.77 421,-225 405.34,-208.68 379.18,-202.41 361.76,-200"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="463.72,-319.42 474.3,-319.94 466.35,-312.93 463.72,-319.42"/>
-<text text-anchor="middle" x="502.5" y="-294" font-family="Helvetica,sans-Serif" font-size="10.00"> m_cachedCenterList</text>
-<text text-anchor="middle" x="502.5" y="-283" font-family="Helvetica,sans-Serif" font-size="10.00">m_cachedLineWidth</text>
-<text text-anchor="middle" x="502.5" y="-272" font-family="Helvetica,sans-Serif" font-size="10.00">m_cachedMaxDrop</text>
-<text text-anchor="middle" x="502.5" y="-261" font-family="Helvetica,sans-Serif" font-size="10.00">m_cachedSumOfWidths</text>
-<text text-anchor="middle" x="502.5" y="-250" font-family="Helvetica,sans-Serif" font-size="10.00">m_center</text>
-<text text-anchor="middle" x="502.5" y="-239" font-family="Helvetica,sans-Serif" font-size="10.00">m_height</text>
-<text text-anchor="middle" x="502.5" y="-228" font-family="Helvetica,sans-Serif" font-size="10.00">m_width</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M528.41,-322.12C503.45,-317.57 475.1,-310.72 466,-302 440.21,-277.29 469.71,-248.71 443,-225 423.19,-207.42 343.65,-201.21 307.74,-199.28"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="528.01,-325.61 538.47,-323.87 529.21,-318.71 528.01,-325.61"/>
+<text text-anchor="middle" x="519" y="-272" font-family="Helvetica,sans-Serif" font-size="10.00"> m_fontSize</text>
+<text text-anchor="middle" x="519" y="-261" font-family="Helvetica,sans-Serif" font-size="10.00">m_fontSize_Scaled</text>
+<text text-anchor="middle" x="519" y="-250" font-family="Helvetica,sans-Serif" font-size="10.00">m_fontSize_expected</text>
 </g>
 <!-- Node12 -->
 <g id="node12" class="node">
 <title>Node12</title>
-<g id="a_node12"><a xlink:href="classAFontSize.html" target="_top" xlink:title="A Type&#45;Safe Fixed&#45;Point Font Size.">
-<polygon fill="white" stroke="#666666" points="716.5,-339 651.5,-339 651.5,-320 716.5,-320 716.5,-339"/>
-<text text-anchor="middle" x="684" y="-327" font-family="Helvetica,sans-Serif" font-size="10.00">AFontSize</text>
+<g id="a_node12"><a xlink:href="classDocumentCellPointers.html" target="_top" xlink:title="The document&#45;model half of the cell&#45;pointer registry.">
+<polygon fill="white" stroke="#666666" points="814.5,-207 689.5,-207 689.5,-188 814.5,-188 814.5,-207"/>
+<text text-anchor="middle" x="752" y="-195" font-family="Helvetica,sans-Serif" font-size="10.00">DocumentCellPointers</text>
 </a>
 </g>
 </g>
 <!-- Node12&#45;&gt;Node5 -->
-<g id="edge17" class="edge">
+<g id="edge12" class="edge">
 <title>Node12&#45;&gt;Node5</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M688.59,-309.74C689.12,-307.15 689.61,-304.52 690,-302 699.42,-240.71 702.81,-165.92 703.72,-141.02"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="685.12,-309.2 686.31,-319.73 691.95,-310.75 685.12,-309.2"/>
-<text text-anchor="middle" x="743.5" y="-195" font-family="Helvetica,sans-Serif" font-size="10.00"> m_mathFontSize</text>
-</g>
-<!-- Node12&#45;&gt;Node6 -->
-<g id="edge13" class="edge">
-<title>Node12&#45;&gt;Node6</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M641.39,-321.49C618.13,-316.86 592.4,-310.14 584,-302 558.35,-277.14 588.29,-248.04 561,-225 530.98,-199.66 407.63,-197.97 361.51,-198.26"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="641.01,-324.98 651.48,-323.41 642.31,-318.1 641.01,-324.98"/>
-<text text-anchor="middle" x="637" y="-272" font-family="Helvetica,sans-Serif" font-size="10.00"> m_fontSize</text>
-<text text-anchor="middle" x="637" y="-261" font-family="Helvetica,sans-Serif" font-size="10.00">m_fontSize_Scaled</text>
-<text text-anchor="middle" x="637" y="-250" font-family="Helvetica,sans-Serif" font-size="10.00">m_fontSize_expected</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M720.03,-184.18C687.23,-171.53 637.04,-152.18 608.3,-141.1"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="719.02,-187.54 729.61,-187.87 721.54,-181.01 719.02,-187.54"/>
+<text text-anchor="middle" x="741" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00"> m_documentCellPointers</text>
 </g>
 <!-- Node13 -->
 <g id="node13" class="node">
 <title>Node13</title>
-<g id="a_node13"><a xlink:href="classDocumentCellPointers.html" target="_top" xlink:title="The document&#45;model half of the cell&#45;pointer registry.">
-<polygon fill="white" stroke="#666666" points="932.5,-207 807.5,-207 807.5,-188 932.5,-188 932.5,-207"/>
-<text text-anchor="middle" x="870" y="-195" font-family="Helvetica,sans-Serif" font-size="10.00">DocumentCellPointers</text>
+<g id="a_node13"><a xlink:href="classViewCellPointers.html" target="_top" xlink:title="The view/interaction half of the cell&#45;pointer registry.">
+<polygon fill="white" stroke="#666666" points="940.5,-207 841.5,-207 841.5,-188 940.5,-188 940.5,-207"/>
+<text text-anchor="middle" x="891" y="-195" font-family="Helvetica,sans-Serif" font-size="10.00">ViewCellPointers</text>
 </a>
 </g>
 </g>
 <!-- Node13&#45;&gt;Node5 -->
-<g id="edge14" class="edge">
+<g id="edge13" class="edge">
 <title>Node13&#45;&gt;Node5</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M838.03,-184.18C805.23,-171.53 755.04,-152.18 726.3,-141.1"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="837.02,-187.54 847.61,-187.87 839.54,-181.01 837.02,-187.54"/>
-<text text-anchor="middle" x="859" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00"> m_documentCellPointers</text>
-</g>
-<!-- Node14 -->
-<g id="node14" class="node">
-<title>Node14</title>
-<g id="a_node14"><a xlink:href="classViewCellPointers.html" target="_top" xlink:title="The view/interaction half of the cell&#45;pointer registry.">
-<polygon fill="white" stroke="#666666" points="1058.5,-207 959.5,-207 959.5,-188 1058.5,-188 1058.5,-207"/>
-<text text-anchor="middle" x="1009" y="-195" font-family="Helvetica,sans-Serif" font-size="10.00">ViewCellPointers</text>
-</a>
-</g>
-</g>
-<!-- Node14&#45;&gt;Node5 -->
-<g id="edge15" class="edge">
-<title>Node14&#45;&gt;Node5</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M984.68,-183.12C968.52,-174.84 946.56,-164.73 926,-159 860.38,-140.73 780.39,-135.05 736.58,-133.29"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="983.45,-186.43 993.93,-187.99 986.71,-180.23 983.45,-186.43"/>
-<text text-anchor="middle" x="1006" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00"> m_viewCellPointers</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M866.68,-183.12C850.52,-174.84 828.56,-164.73 808,-159 742.38,-140.73 662.39,-135.05 618.58,-133.29"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="865.45,-186.43 875.93,-187.99 868.71,-180.23 865.45,-186.43"/>
+<text text-anchor="middle" x="888" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00"> m_viewCellPointers</text>
 </g>
 </g>
 </svg>

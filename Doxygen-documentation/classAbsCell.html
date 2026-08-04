@@ -91,7 +91,7 @@ Inheritance diagram for AbsCell:</div>
 <div class="dynheader">
 Collaboration diagram for AbsCell:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classAbsCell__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classAbsCell__coll__graph.svg" width="100%" height="592"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -109,7 +109,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a863f4329701c7c22e5d658c17be365d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the information about this cell's type.  <br /></td></tr>
 <tr class="separator:a863f4329701c7c22e5d658c17be365d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe69fd31d194a2de8e97fe13c3b0ed8c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbsCell.html#abe69fd31d194a2de8e97fe13c3b0ed8c">GetInnerCellCount</a> () const override</td></tr>
-<tr class="memdesc:abe69fd31d194a2de8e97fe13c3b0ed8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of inner cells - for use by the iterators.  <br /></td></tr>
+<tr class="memdesc:abe69fd31d194a2de8e97fe13c3b0ed8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ORDER MATTERS: also used, via the default <a class="el" href="classCell.html#a73d23619875f8b6c48df6244db97e3d3" title="The number of pieces this cell is displayed as once it IsBrokenIntoLines(), and in what order – see G...">GetBrokenCellCount()</a>/ <a class="el" href="classCell.html#a45b3235bcd1ac8d2de798292b715a99b" title="Retrieve a piece of this cell&#39;s broken (linear/1D) display; see GetBrokenCellCount().">GetBrokenCell()</a>, as this cell's broken/linear draw sequence &ndash; "abs(", then the (possibly multi-cell) contents, then ")", unconditionally.  <br /></td></tr>
 <tr class="separator:abe69fd31d194a2de8e97fe13c3b0ed8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac9d17763a45ea66fde7442aa181ecb3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbsCell.html#aac9d17763a45ea66fde7442aa181ecb3">GetInnerCell</a> (size_t index) const override</td></tr>
 <tr class="memdesc:aac9d17763a45ea66fde7442aa181ecb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve an inner cell with given index which must be less than GetInnerCellCount.  <br /></td></tr>
@@ -144,9 +144,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0049ac878f64925ad518ee488537b899"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbsCell.html#a0049ac878f64925ad518ee488537b899">ToXML</a> () const override</td></tr>
 <tr class="memdesc:a0049ac878f64925ad518ee488537b899"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert this cell to a representation fit for saving in a .wxmx file.  <br /></td></tr>
 <tr class="separator:a0049ac878f64925ad518ee488537b899"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a829d4f662165ef014f26917449631d5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbsCell.html#a829d4f662165ef014f26917449631d5f">SetNextToDraw</a> (<a class="el" href="classCell.html">Cell</a> *next) const override</td></tr>
-<tr class="memdesc:a829d4f662165ef014f26917449631d5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this cell which one should be the next cell to be drawn.  <br /></td></tr>
-<tr class="separator:a829d4f662165ef014f26917449631d5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3a292ab7d72829835b49ceb185e2a46"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbsCell.html#ac3a292ab7d72829835b49ceb185e2a46">SetCurrentPoint</a> (wxPoint point) const</td></tr>
 <tr class="memdesc:ac3a292ab7d72829835b49ceb185e2a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass 2: Arrangement.  <br /></td></tr>
 <tr class="separator:ac3a292ab7d72829835b49ceb185e2a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -489,13 +486,12 @@ virtual wxString&#160;</td><td class="memItemRight" valign="bottom"><b>ListToRTF
 <a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetNext</b> () const</td></tr>
 <tr class="memdesc:a442891009601d45b4e3d7204c7cb048e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the next cell in the list. <br /></td></tr>
 <tr class="separator:a442891009601d45b4e3d7204c7cb048e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24a76c329051ab9bb62d3ae6a8a3cc5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a24a76c329051ab9bb62d3ae6a8a3cc5b">GetNextToDraw</a> () const</td></tr>
-<tr class="memdesc:a24a76c329051ab9bb62d3ae6a8a3cc5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the next cell that needs to be drawn.  <br /></td></tr>
-<tr class="separator:a24a76c329051ab9bb62d3ae6a8a3cc5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base_of&lt; <a class="el" href="classCell.html">Cell</a>, T &gt;::value, bool &gt;::type  = true&gt; </td></tr>
-<tr class="memitem:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classCell.html#aa9203114af1b15d15a3ab9d40ff2b7ff">SetNextToDraw</a> (const std::unique_ptr&lt; T, Del &gt; &amp;ptr)</td></tr>
-<tr class="memdesc:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this cell which one should be the next cell to be drawn.  <br /></td></tr>
-<tr class="separator:aa9203114af1b15d15a3ab9d40ff2b7ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73d23619875f8b6c48df6244db97e3d3"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a73d23619875f8b6c48df6244db97e3d3">GetBrokenCellCount</a> () const</td></tr>
+<tr class="memdesc:a73d23619875f8b6c48df6244db97e3d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of pieces this cell is displayed as once it <a class="el" href="classCell.html#a0d729564b9738d49cf62ed37720534f3" title="Whether this cell is broken into two or more lines.">IsBrokenIntoLines()</a>, and in what order &ndash; see <a class="el" href="classCell.html#a45b3235bcd1ac8d2de798292b715a99b" title="Retrieve a piece of this cell&#39;s broken (linear/1D) display; see GetBrokenCellCount().">GetBrokenCell()</a>.  <br /></td></tr>
+<tr class="separator:a73d23619875f8b6c48df6244db97e3d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45b3235bcd1ac8d2de798292b715a99b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classCell.html">Cell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a45b3235bcd1ac8d2de798292b715a99b">GetBrokenCell</a> (size_t index) const</td></tr>
+<tr class="memdesc:a45b3235bcd1ac8d2de798292b715a99b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a piece of this cell's broken (linear/1D) display; see <a class="el" href="classCell.html#a73d23619875f8b6c48df6244db97e3d3" title="The number of pieces this cell is displayed as once it IsBrokenIntoLines(), and in what order – see G...">GetBrokenCellCount()</a>.  <br /></td></tr>
+<tr class="separator:a45b3235bcd1ac8d2de798292b715a99b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd452bb5f74e9b11692b91c3c7a18dc7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#acd452bb5f74e9b11692b91c3c7a18dc7">IsComment</a> () const</td></tr>
 <tr class="memdesc:acd452bb5f74e9b11692b91c3c7a18dc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if this cell contains text that isn't code.  <br /></td></tr>
 <tr class="separator:acd452bb5f74e9b11692b91c3c7a18dc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -727,10 +723,6 @@ Protected Attributes</h2></td></tr>
 <a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_group</b></td></tr>
 <tr class="memdesc:a263043a48aa269b443127595bc6c1f5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classGroupCell.html" title="A cell grouping input (and, if there is one, also the output) cell to a foldable item.">GroupCell</a> this list of cells belongs to. <br /></td></tr>
 <tr class="separator:a263043a48aa269b443127595bc6c1f5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ca6ebf51cb44210717ec5b4417642c6"><td class="memItemLeft" align="right" valign="top"><a id="a3ca6ebf51cb44210717ec5b4417642c6" name="a3ca6ebf51cb44210717ec5b4417642c6"></a>
-<a class="el" href="classCellPtr.html">CellPtr</a>&lt; <a class="el" href="classCell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_nextToDraw</b></td></tr>
-<tr class="memdesc:a3ca6ebf51cb44210717ec5b4417642c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The next cell in the draw list. This has been factored into <a class="el" href="classCell.html" title="The base class all cell types the worksheet can consist of are derived from.">Cell</a> temporarily to reduce the change "noise" when it will be subsequently removed. <br /></td></tr>
-<tr class="separator:a3ca6ebf51cb44210717ec5b4417642c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab838986df358498e18db0df480910aa5"><td class="memItemLeft" align="right" valign="top"><a id="ab838986df358498e18db0df480910aa5" name="ab838986df358498e18db0df480910aa5"></a>
 <a class="el" href="classConfiguration.html">Configuration</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_configuration</b></td></tr>
 <tr class="memdesc:ab838986df358498e18db0df480910aa5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> pointer to the configuration responsible for this worksheet. <br /></td></tr>
@@ -798,14 +790,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classA.html">A</a> cell that represents an abs(x) block. </p>
-<p>In the case that this cell is broken into multiple lines, it is represented by the following cells in the draw order:</p>
+<p>Once <a class="el" href="classCell.html#a0d729564b9738d49cf62ed37720534f3" title="Whether this cell is broken into two or more lines.">IsBrokenIntoLines()</a>, the draw list (see <a class="el" href="classCell.html#a73d23619875f8b6c48df6244db97e3d3" title="The number of pieces this cell is displayed as once it IsBrokenIntoLines(), and in what order – see G...">GetBrokenCellCount()</a>/ <a class="el" href="classCell.html#a45b3235bcd1ac8d2de798292b715a99b" title="Retrieve a piece of this cell&#39;s broken (linear/1D) display; see GetBrokenCellCount().">GetBrokenCell()</a>) expands this cell into the following individual cells instead of drawing it as a single 2<a class="el" href="classD.html">D</a> object:</p>
 <ul>
-<li>The <a class="el" href="classAbsCell.html" title="A cell that represents an abs(x) block.">AbsCell</a> itself</li>
 <li>The opening "abs("</li>
 <li>The contents</li>
-<li>The closing ")".</li>
+<li>The closing ")". </li>
 </ul>
-<p>If it isn't broken into multiple cells, then m_nextToDraw points to the cell that follows this <a class="el" href="classAbsCell.html" title="A cell that represents an abs(x) block.">AbsCell</a>. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae1070944251c8ce4b9ee69c2b2cb09cb" name="ae1070944251c8ce4b9ee69c2b2cb09cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae1070944251c8ce4b9ee69c2b2cb09cb">&#9670;&#160;</a></span>AbsCell()</h2>
@@ -1684,6 +1674,67 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 </div>
 </div>
+<a id="a45b3235bcd1ac8d2de798292b715a99b" name="a45b3235bcd1ac8d2de798292b715a99b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45b3235bcd1ac8d2de798292b715a99b">&#9670;&#160;</a></span>GetBrokenCell()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classCell.html">Cell</a> * Cell::GetBrokenCell </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve a piece of this cell's broken (linear/1D) display; see <a class="el" href="classCell.html#a73d23619875f8b6c48df6244db97e3d3" title="The number of pieces this cell is displayed as once it IsBrokenIntoLines(), and in what order – see G...">GetBrokenCellCount()</a>. </p>
+
+<p>Reimplemented in <a class="el" href="classIntCell.html#a120aa0fdbabab7195ac9ba686a0d067a">IntCell</a>, <a class="el" href="classIntervalCell.html#a9619415ba340ebf72d87c1b1f31975da">IntervalCell</a>, <a class="el" href="classLimitCell.html#aff428942ce9fdb027cb5ceb3e7e292a5">LimitCell</a>, and <a class="el" href="classSumCell.html#a7e2ecd1117e355c8661ccefd6e2873a2">SumCell</a>.</p>
+
+</div>
+</div>
+<a id="a73d23619875f8b6c48df6244db97e3d3" name="a73d23619875f8b6c48df6244db97e3d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73d23619875f8b6c48df6244db97e3d3">&#9670;&#160;</a></span>GetBrokenCellCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual size_t Cell::GetBrokenCellCount </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The number of pieces this cell is displayed as once it <a class="el" href="classCell.html#a0d729564b9738d49cf62ed37720534f3" title="Whether this cell is broken into two or more lines.">IsBrokenIntoLines()</a>, and in what order &ndash; see <a class="el" href="classCell.html#a45b3235bcd1ac8d2de798292b715a99b" title="Retrieve a piece of this cell&#39;s broken (linear/1D) display; see GetBrokenCellCount().">GetBrokenCell()</a>. </p>
+<p>Defaults to <a class="el" href="classAbsCell.html#abe69fd31d194a2de8e97fe13c3b0ed8c" title="ORDER MATTERS: also used, via the default GetBrokenCellCount()/ GetBrokenCell(), as this cell&#39;s broke...">GetInnerCellCount()</a>/GetInnerCell(), which is correct for every compound cell whose broken (linear/1D) form shows exactly its structural inner cells, in the same order, unconditionally (e.g. <a class="el" href="classParenCell.html" title="The class that represents parenthesis that are wrapped around text.">ParenCell</a>: "(", contents, ")"). <a class="el" href="classA.html">A</a> handful of cells (<a class="el" href="classIntCell.html" title="This class represents an integral.">IntCell</a>, <a class="el" href="classSumCell.html">SumCell</a>, <a class="el" href="classIntervalCell.html" title="The class that represents parenthesis that are wrapped around text.">IntervalCell</a>, <a class="el" href="classLimitCell.html">LimitCell</a>) show a runtime-conditional subset or a different substitute object (e.g. <a class="el" href="classIntCell.html" title="This class represents an integral.">IntCell</a> omits the limits unless HasLimits(); <a class="el" href="classSumCell.html">SumCell</a> displays Base() instead of the <a class="el" href="classParenCell.html" title="The class that represents parenthesis that are wrapped around text.">ParenCell</a> wrapper) and override both this and <a class="el" href="classCell.html#a45b3235bcd1ac8d2de798292b715a99b" title="Retrieve a piece of this cell&#39;s broken (linear/1D) display; see GetBrokenCellCount().">GetBrokenCell()</a> to match their <a class="el" href="classAbsCell.html#a75eed8cb55ce9ed431b34a6283096776" title="Try to split this command into lines to make it fit on the screen.">BreakUp()</a> logic exactly.</p>
+<p>ORDER IS LOAD-BEARING: this pair is the sole source of the on-screen, left-to-right sequence the draw list (<a class="el" href="classCellDrawListIterator.html" title="Walks the &quot;draw list&quot;: the flattened sequence of cells that make up one displayed line,...">CellDrawListIterator</a>, i.e. <a class="el" href="Cell_8h.html#a9e6fa20089cf63259f71743f096ccd08" title="Returns an iterable that goes over the cell draw list, starting with given, possibly null,...">OnDrawList()</a>) expands a broken cell into &ndash; <a class="el" href="classAbsCell.html#a60272a7728f354cb250348a4fdc0d084" title="Pass 3 (Paint): Renders the cell using pre-calculated coordinates.">Draw()</a>, the width/height/line caches (UpdateListCaches() and friends) and hit-testing/selection (GetCellsInOutputRect() and friends) all walk it. There is no longer a separate, hand-threaded pointer chain to cross-check it against, so getting the index-to-piece mapping (or which indices exist, for the classes that override this) wrong directly produces wrong rendering, not just a wrong tree-shape for an unrelated recursive walk. </p>
+
+<p>Reimplemented in <a class="el" href="classIntCell.html#a1ad6f1e444ddbcd42ab844d4733739ea">IntCell</a>, <a class="el" href="classIntervalCell.html#aae3f72b75698199398788524d3e76346">IntervalCell</a>, <a class="el" href="classLimitCell.html#a62be41088fb1345a5404c3e81fdcd518">LimitCell</a>, and <a class="el" href="classSumCell.html#a5e046c0e60bce31763789a7461f86d95">SumCell</a>.</p>
+
+</div>
+</div>
 <a id="a7e24879799180879057621844056db20" name="a7e24879799180879057621844056db20"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7e24879799180879057621844056db20">&#9670;&#160;</a></span>GetCenter()</h2>
 
@@ -2006,7 +2057,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </table>
 </div><div class="memdoc">
 
-<p>The number of inner cells - for use by the iterators. </p>
+<p>ORDER MATTERS: also used, via the default <a class="el" href="classCell.html#a73d23619875f8b6c48df6244db97e3d3" title="The number of pieces this cell is displayed as once it IsBrokenIntoLines(), and in what order – see G...">GetBrokenCellCount()</a>/ <a class="el" href="classCell.html#a45b3235bcd1ac8d2de798292b715a99b" title="Retrieve a piece of this cell&#39;s broken (linear/1D) display; see GetBrokenCellCount().">GetBrokenCell()</a>, as this cell's broken/linear draw sequence &ndash; "abs(", then the (possibly multi-cell) contents, then ")", unconditionally. </p>
 
 <p>Reimplemented from <a class="el" href="classCell.html#a1546dfa78b57d64b5d9e994803a02226">Cell</a>.</p>
 
@@ -2097,34 +2148,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>Note that the center doesn't need to be exactly in the middle of an object. For a fraction for example the center is exactly at the middle of the horizontal line. </p>
 
 <p>Reimplemented in <a class="el" href="classGroupCell.html#a0063aaddf1b0abe1b8e979bdff4a5967">GroupCell</a>.</p>
-
-</div>
-</div>
-<a id="a24a76c329051ab9bb62d3ae6a8a3cc5b" name="a24a76c329051ab9bb62d3ae6a8a3cc5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24a76c329051ab9bb62d3ae6a8a3cc5b">&#9670;&#160;</a></span>GetNextToDraw()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classCell.html">Cell</a> * Cell::GetNextToDraw </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the next cell that needs to be drawn. </p>
-<p>In case of potential 2d objects like fractions either the fraction needs to be drawn as a single 2<a class="el" href="classD.html">D</a> object or the nominator, the cell containing the "/" and the denominator are pointed to by <a class="el" href="classCell.html#a24a76c329051ab9bb62d3ae6a8a3cc5b" title="Get the next cell that needs to be drawn.">GetNextToDraw()</a> as single separate objects. </p>
 
 </div>
 </div>
@@ -3235,70 +3258,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 
 <p>Tell this list of cells to be an exponent. </p>
 <p>Fractions in exponents are displayed as 1<a class="el" href="classD.html">D</a> maths </p>
-
-</div>
-</div>
-<a id="a829d4f662165ef014f26917449631d5f" name="a829d4f662165ef014f26917449631d5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a829d4f662165ef014f26917449631d5f">&#9670;&#160;</a></span>SetNextToDraw() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void AbsCell::SetNextToDraw </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classCell.html">Cell</a> *&#160;</td>
-          <td class="paramname"><em>next</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Tells this cell which one should be the next cell to be drawn. </p>
-<p>If the cell is displayed as 2d object this sets the pointer to the next cell.</p>
-<p>If the cell is broken into lines this sets the pointer of the last of the list of cells this cell is displayed as. </p>
-
-<p>Reimplemented from <a class="el" href="classCell.html#ab9e4dc4eef0a49d313138c0348c304be">Cell</a>.</p>
-
-</div>
-</div>
-<a id="aa9203114af1b15d15a3ab9d40ff2b7ff" name="aa9203114af1b15d15a3ab9d40ff2b7ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9203114af1b15d15a3ab9d40ff2b7ff">&#9670;&#160;</a></span>SetNextToDraw() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , typename Del , typename std::enable_if&lt; std::is_base_of&lt; <a class="el" href="classCell.html">Cell</a>, T &gt;::value, bool &gt;::type  = true&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Cell::SetNextToDraw </td>
-          <td>(</td>
-          <td class="paramtype">const std::unique_ptr&lt; T, Del &gt; &amp;&#160;</td>
-          <td class="paramname"><em>ptr</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Tells this cell which one should be the next cell to be drawn. </p>
-<p>If the cell is displayed as 2d object this sets the pointer to the next cell.</p>
-<p>If the cell is broken into lines this sets the pointer of the last of the list of cells this cell is displayed as. </p>
 
 </div>
 </div>
