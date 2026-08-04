@@ -1112,6 +1112,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Replace_RegEx</b> (co
 <tr class="memitem:a1ea274fc5770a0dd61232da70e54efc9"><td class="memItemLeft" align="right" valign="top"><a id="a1ea274fc5770a0dd61232da70e54efc9" name="a1ea274fc5770a0dd61232da70e54efc9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ReplaceAll_RegEx</b> (const wxString &amp;oldString, const wxString &amp;newString, bool searchInInput=true, bool searchInOutput=true)</td></tr>
 <tr class="separator:a1ea274fc5770a0dd61232da70e54efc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affa70f7ae7950c29aeca916a2dc9ac0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheet.html#affa70f7ae7950c29aeca916a2dc9ac0f">AnonymizeCodeCells</a> ()</td></tr>
+<tr class="memdesc:affa70f7ae7950c29aeca916a2dc9ac0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Anonymize the code cells in the current selection for a bug report (GH #1339).  <br /></td></tr>
+<tr class="separator:affa70f7ae7950c29aeca916a2dc9ac0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b2dfe8a94a249ca4918b495604a9174"><td class="memItemLeft" align="right" valign="top"><a id="a5b2dfe8a94a249ca4918b495604a9174" name="a5b2dfe8a94a249ca4918b495604a9174"></a>
 wxString&#160;</td><td class="memItemRight" valign="bottom"><b>GetInputAboveCaret</b> ()</td></tr>
 <tr class="separator:a5b2dfe8a94a249ca4918b495604a9174"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1299,6 +1302,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="affa70f7ae7950c29aeca916a2dc9ac0f" name="affa70f7ae7950c29aeca916a2dc9ac0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affa70f7ae7950c29aeca916a2dc9ac0f">&#9670;&#160;</a></span>AnonymizeCodeCells()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Worksheet::AnonymizeCodeCells </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Anonymize the code cells in the current selection for a bug report (GH #1339). </p>
+<p>Replaces every variable/function name that isn't built into <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (see <a class="el" href="classAutoComplete.html#a0b5d26fd3444fddee6b48ade7ce5f5e6" title="Returns a list of Symbols we know.">AutoComplete::GetSymbolList()</a>) with a random, collision-free name, the same replacement everywhere the original name occurs within the scanned cells. Only code cells (GC_TYPE_CODE) are touched; text/heading cells are left alone. If nothing is selected, asks the user whether to anonymize the whole document instead of silently doing nothing or silently doing everything. All edits are grouped into a single document-level undo step. </p>
 
 </div>
 </div>
@@ -1800,7 +1823,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Export the file to an html document. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a> and text cell background work fine, but their names might be interchanged. </dd></dl>
 
 </div>
 </div>
@@ -1870,7 +1893,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Do an incremental search from the cursor or the point the last search started at. </p>
-<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
+<p>Used by the find dialog. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Keep a list of positions the last few letters were found at? </dd></dl>
 
 </div>
 </div>
@@ -3144,7 +3167,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuestionAnswered</b> 
 </div><div class="memdoc">
 
 <p>Scrolls to a point on the worksheet. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>I have deactivated this assert for the release as it scares the users in a case we don't seem to have a problem. But we perhaps should try to find out why it is triggered.</dd></dl>
 <p><a class="el" href="classTest.html" title="A template class.">Test</a> case:</p><ul>
 <li>Create a code cell</li>
 <li>Press the "hide all code cells" button.</li>
