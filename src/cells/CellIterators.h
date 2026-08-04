@@ -31,6 +31,7 @@
 #include <memory>
 #include <type_traits>
 #include <iterator>
+#include <vector>
 
 template <typename Cell> class CellListIterator final {
   static_assert(std::is_class<Cell>::value, "The type argument must be a class");
