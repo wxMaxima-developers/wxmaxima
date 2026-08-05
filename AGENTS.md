@@ -77,44 +77,87 @@ working without extra checks.
   scratch; both are sandbox/pre-existing, not something a code change here
   broke.
 
-- **`tutorial_10Minutes` intermittent CI failure, root-caused (2026-08):**
-  failed with "Batch mode: Maxima asked a question with no scripted answer
+- **`tutorial_10Minutes` intermittent CI failure -- the workaround below is
+  verified, but the real underlying bug is CONFIRMED and still UNFIXED
+  (2026-08). Do not re-close this as "explained by Maxima-side
+  nondeterminism" -- that theory was directly disproven, see below.**
+  Failed with "Batch mode: Maxima asked a question with no scripted answer
   available" for `Is a positive or negative?`, at a genuinely low rate
   (reproduced locally at roughly 1-in-20 to 1-in-30 with a tight
   parallel-Xvfb repro loop -- not reproducible from a handful of manual
   runs, so don't conclude "can't reproduce" from fewer than ~50 attempts).
-  **This is not app-level nondeterminism** -- confirmed directly by
-  instrumenting the exact failure path (`MaximaResponseReader::ReadPrompt`'s
-  halt branch) to dump `GetDocumentCellPointers().GetWorkingGroup(false)`
-  vs. `Worksheet::GetWorkingGroup(true)`'s resolved cell: they were always
-  the *same*, correct `GroupCell`, with its `m_autoAnswer`/`m_knownAnswers`
-  exactly as authored in the `.wxm` file -- ruling out a stale/wrong
-  "current working group" pointer, the first (and wrong) theory. The
-  `assume(a > 0)$ integrate(1/(x^2+a),x); forget(a > 0)$` cell (the
-  tutorial's own demonstration that `assume()` normally makes the question
-  unnecessary) is genuinely the one asking -- and since it was never meant
-  to need an interactive answer, it had none recorded. `EvaluationQueue`
-  sends each cell's statements one at a time, gated on receiving Maxima's
-  own prompt for the previous one (`ProduceNextCommand()`/`RemoveFirst()`),
-  so the client-side ordering is not in question: Maxima had already fully
-  processed and returned from `assume(a > 0)$` before `integrate(...)` was
-  even sent. So the "sometimes still asks despite the assumption" behavior
-  is on **Maxima's own side** -- plausibly GCL's address-based hash-table
-  iteration order affecting which internal branch `integrate()`'s algorithm
-  explores (never proven by cracking open GCL internals here, but every
-  app-level explanation was directly ruled out first, not assumed away).
-  Adding a plain `wxLogMessage`-based diagnostic to the *hot* path
-  (`Worksheet::WillAutoAnswer()`, called on every question, not just
-  failures) measurably suppressed the race (0 failures in 70 runs, vs. ~10%
-  before) -- a classic instrumentation-perturbs-the-race signature. The fix
-  that actually worked: add the diagnostic dump *only inside the
-  already-failing branch* (zero cost on the hot/success path, since that
-  branch only runs when about to halt anyway) -- this reliably caught it
-  without perturbing timing. Fixed for real by recording an auto-answer
+  The asking cell is `assume(a > 0)$ integrate(1/(x^2+a),x); forget(a > 0)$`
+  (the tutorial's own demonstration that `assume()` normally makes the
+  question unnecessary) -- and since it was never meant to need an
+  interactive answer, it had none recorded, hence the halt.
+  **Two theories were tried and directly disproven, in order, before the
+  real one was confirmed -- both by hard evidence, not by reasoning about
+  the code:**
+  1. *Stale "current working group" pointer.* Instrumenting
+     `Worksheet::WillAutoAnswer()` to dump
+     `GetDocumentCellPointers().GetWorkingGroup(false)` vs.
+     `Worksheet::GetWorkingGroup(true)`'s resolved cell showed they were
+     always the *same*, correct `GroupCell` -- ruled out.
+  2. *Maxima/GCL-internal nondeterminism* (the theory originally written
+     here): that `integrate()`'s own algorithm occasionally doesn't consult
+     the assumption database, e.g. via GCL's address-based hash-table
+     iteration order. This looked plausible because `EvaluationQueue` sends
+     each cell's statements one at a time, gated on receiving Maxima's own
+     prompt for the previous one, so it *seemed* like `assume(a > 0)$` must
+     already have been fully processed before `integrate(...)` was sent.
+     **This was wrong, and directly disproven** by an actual `tcpdump`
+     capture (`tcp portrange 49000-49999` on `lo`, per the debugging
+     technique note under Communication with Maxima) of a live failing run,
+     followed with `tshark -z follow,tcp,ascii,<stream>`: the raw
+     wxMaxima->Maxima wire transcript shows `integrate( 1 / (x^2 + a), x);`
+     sent *immediately* after the previous cell's last command, with
+     **`assume(a > 0)$` never transmitted at all**. Not corrupted, not
+     reordered, not delayed -- entirely absent from the wire. (Credit:
+     this line of investigation started from the user's specific recollection
+     of a past incident where a Lisp runtime's flush-on-no-wait behavior hit
+     an MTU-triggered code path that shuffled packets while keeping their
+     content correct -- a good reason to check the wire directly instead of
+     trusting either "the client surely sent it" or "Maxima is nondeterministic".)
+  **The real bug: `assume(a > 0)$`, the FIRST statement of a multi-statement
+  cell, is being silently dropped somewhere in the client-side command
+  queuing before it ever reaches `Maxima::Write()`.** Confirmed narrowed
+  further: instrumenting `EvaluationQueue::RemoveFirst()` to log whenever
+  `m_commands.front()` contains `"assume("` -- gated on a plain, cheap
+  `wxString::Contains()` check so it fires on essentially none of the many
+  calls per run -- caught a live failure where *that log never fired at
+  all*, meaning `"assume(a > 0)$"` never even transiently became
+  `m_commands.front()`; the drop happens no later than the very first
+  `AddTokens()`/`ProduceNextCommand()` peel for that cell (or possibly
+  even earlier, in what `cell->GetEditable()->ToString(true)` itself
+  returns -- not yet distinguished). **This remains the open question.**
+  A follow-up attempt using a genuinely zero-I/O in-memory ring buffer
+  (plain array writes in `RemoveFirst()`/`AddTokens()`/
+  `ProduceNextCommand()`, dumped only from the one place that's already
+  proven zero-cost -- the halt branch) failed to reproduce across 3
+  consecutive 150-run batches (450 runs, 0 hits), a real deviation from the
+  established ~1-in-20-to-30 baseline -- this is an extraordinarily
+  narrow race, and printf/logging-based approaches (even genuinely cheap
+  ones) may be fundamentally unable to catch it without perturbing it away;
+  a live `gdb` session with conditional breakpoints (no per-hit I/O) is the
+  more promising next tool, following the pattern already used successfully
+  for the *different* `--exit-on-error` timing bugs elsewhere in this file.
+  **The workaround that IS verified and shipped:** recording an auto-answer
   ("p;") for this cell too, mirroring the defensive multi-variant recording
   the *other* "positive or negative?" cell earlier in the same file already
-  has. Verified with 180 back-to-back parallel runs (0 failures) after the
-  fix, vs. the ~1-in-20 to 1-in-30 rate before it.
+  has -- this makes the test resilient to the halt regardless of the
+  underlying cause, verified with 180 back-to-back parallel runs (0
+  failures) vs. the ~1-in-20-to-30 rate before it, but **it papers over the
+  symptom, not the underlying silent-statement-drop bug**, which is a real
+  correctness issue (a side-effecting command a user's worksheet depends on
+  can silently never execute) independent of this specific tutorial file.
+  See GH #2196 for the ongoing follow-up. Also worth flagging: this bug
+  class (a whole statement silently dropped, no error, no visible symptom)
+  would be invisible to nearly every other test in this suite -- it was
+  only caught here because this one specific cell happens to have an
+  observable side effect (whether Maxima needs to ask an interactive
+  question) that differs depending on whether the dropped statement ran.
+  A cell without such a canary would just silently produce a
+  different-but-plausible-looking answer.
 
 ## Architecture & GUI
 

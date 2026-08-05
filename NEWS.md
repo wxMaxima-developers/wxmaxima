@@ -1,5 +1,15 @@
 # Current development version
 
+- New regression test `commandSequenceIntegrity` (GH #2196): a confirmed
+  but not yet root-caused bug lets the first statement of a multi-statement
+  cell be silently dropped and never sent to Maxima at all during `--batch`
+  evaluation, with no error and no visible symptom unless something later
+  happens to depend on it. This test maximizes the number of independent
+  cell-to-cell transitions (the exact boundary where the drop was observed)
+  in a single run -- 150 small cells, each appending a unique sequential tag
+  to a shared list -- and asserts via a real Maxima `error()` that every
+  statement actually ran, turning a currently invisible class of bug into
+  a reproducible CI failure instead of a silently wrong answer.
 - Test fixtures: `test/automatic_test_files/10MinuteTutorial.wxm`'s
   `assume(a > 0)$ integrate(1/(x^2+a),x); forget(a > 0)$` cell now has a
   recorded auto-answer for the "Is a positive or negative?" question, fixing
