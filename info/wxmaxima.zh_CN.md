@@ -557,7 +557,7 @@ wxdraw2d(
 ), wxplot_size=[480,480]$
 ```
 
-### Match parenthesis in text controls
+### 在文本控件中匹配括号
 
 该选项使以下两个功能生效：
 
@@ -951,7 +951,7 @@ Generates the skeleton of a `draw()` command that draws a 3D scene. If
 neither a 2D nor a 3D scene is set up, all of the other buttons set up a 2D
 scene that contains the command the button generates.
 
-#### Expression
+#### 表达式
 
 在光标当前所在的 `draw()` 命令中添加绘图函数表达式，如 `sin(x)`, `x*sin(x)` 或者 `x^2+2*x-4` 等
 。每个图中可以绘制任意数量的图形。如果没有 `draw()` 命令，将调用绘制二维图形的模板。
@@ -961,24 +961,24 @@ scene that contains the command the button generates.
 尝试寻找满足 `y=sin(x)`，`y*sin(x)=3` 或 `x^2+y^2=4` 之类的表达式的所有解，并在光标当前所在的 `draw()`
 命令中绘制对应曲线。如果没有 `draw()` 命令，将调用绘制二维图形的模板。
 
-#### Parametric plot
+#### 参数式绘图
 
 将变量（如 t）从下限变化到上限，并在当前绘图命令中使用两个表达式（如 `t*sin(t)` 和 `t*cos(t)`），以生成曲线上点的横、纵坐标
 (x,y)（在三维图形中，第三个表达式生成竖坐标 z）。
 
-#### Points
+#### 点
 
 绘制多个点，并且可以选择顺次连接它们。点的坐标取自列表的列表、二维数组或为每个轴指定的一个列表或数组。
 
-#### Diagram title
+#### 图表标题
 
 在图形上方绘制标题。
 
-#### Axis
+#### 坐标轴
 
 设置坐标轴。
 
-#### Contour
+#### 等高线
 
 (Only for 3D plots): Adds contour lines similar to the ones one can find in
 a map of a mountain to the plot commands that follow in the current `draw()`
@@ -986,7 +986,7 @@ command and/or to the ground plane of the diagram. Alternatively, this
 wizard allows skipping drawing the curves entirely only showing the contour
 plot.
 
-#### Plot name
+#### 图形名称
 
 Adds a legend entry showing the next plot’s name to the legend of the
 diagram. An empty name disables generating legend entries for the following
@@ -1000,11 +1000,11 @@ plots.
 
 为当前 `draw()` 命令所绘图形设置填充颜色。
 
-#### Grid
+#### 网格
 
 弹出设置网格线的向导。
 
-#### Accuracy
+#### 精度
 
 允许选择适当数目的点，以兼顾速度与精度（任何绘图程序都会权衡两者）。
 
