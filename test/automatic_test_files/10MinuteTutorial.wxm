@@ -169,25 +169,6 @@ assume(a > 0)$
 integrate( 1 / (x^2 + a), x);
 forget(a > 0)$
 /* [wxMaxima: input   end   ] */
-/* [wxMaxima: question  start ] */
-<math><st>Is </st><mi>a</mi><st> positive or negative?</st></math>
-/* [wxMaxima: question  end   ] */
-/* [wxMaxima: answer  start ] */
-p;
-/* [wxMaxima: answer  end   ] */
-/* [wxMaxima: question  start ] */
-<math><st>Is </st><mi lisp="*var-tag*">a</mi><st> positive or negative?</st></math>
-/* [wxMaxima: question  end   ] */
-/* [wxMaxima: answer  start ] */
-p;
-/* [wxMaxima: answer  end   ] */
-/* [wxMaxima: question  start ] */
-<math><mrow lisp="mtext"><mrow lisp="mtext"><st>Is </st><mi>a</mi><st> positive or negative?</st></mrow></mrow></math>
-/* [wxMaxima: question  end   ] */
-/* [wxMaxima: answer  start ] */
-p;
-/* [wxMaxima: answer  end   ] */
-/* [wxMaxima: autoanswer    ] */
 
 
 /* [wxMaxima: comment start ]

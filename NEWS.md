@@ -12,6 +12,18 @@
   (or skipping) the wrong thing. Not checked in interactive use, where a
   cell's text can legitimately differ from what was queued if the user
   edited it before its turn came up.
+- Test fixtures: removed the recorded auto-answer PR #2195 added for
+  `tutorial_10Minutes`'s `assume(a > 0)$ integrate(...); forget(a > 0)$`
+  cell. That auto-answer stopped the test from flaking, but it also silently
+  swallows the actual symptom of the still-open bug GH #2196 (the cell's
+  `assume(a > 0)$` statement occasionally never reaches Maxima at all) --
+  with the recorded answer in place, a drop just gets auto-answered instead
+  of halting the batch run, so this test could no longer detect it. Removing
+  it restores `tutorial_10Minutes` as a working (if occasionally flaky)
+  canary for GH #2196, alongside the deterministic `commandSequenceIntegrity`
+  regression test. The other question/answer pair earlier in the same file
+  (the tutorial's own intentional demonstration of the interactive-question
+  feature) is unrelated and untouched.
 - Translations: added a reverse sync (`locales/wxMaxima/split_manual_po.cmake`,
   wired into `update-locale-manual-in-source`) that pulls a language's
   manual-content translations back out of the combined
