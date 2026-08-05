@@ -215,7 +215,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
   m_languages[_("Malay")] = wxLANGUAGE_MALAY;
   m_languages[_("Nepali")] = wxLANGUAGE_NEPALI;
   m_languages[_("Norwegian")] = wxLANGUAGE_NORWEGIAN_BOKMAL;
-  m_languages[_("Persian")] = wxLANGUAGE_PERSIAN_IRAN;
+  m_languages[_("Persian")] = wxLANGUAGE_FARSI;
   m_languages[_("Polish")] = wxLANGUAGE_POLISH;
   m_languages[_("Portuguese")] = wxLANGUAGE_PORTUGUESE;
   m_languages[_("Portuguese (Brazilian)")] = wxLANGUAGE_PORTUGUESE_BRAZILIAN;
