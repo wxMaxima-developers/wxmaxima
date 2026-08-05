@@ -316,6 +316,66 @@ SCENARIO("to_lisp() then lisp forms in one cell is driven per-command by the "
   }
 }
 
+SCENARIO("to_lisp() as a lone cell's only command still gets terminated when "
+         "the PREVIOUS cell ended in lisp mode and switched back",
+         "[redesign]") {
+  // A specific, remembered detail about GH #2196: the one thing ever seen to
+  // be lost was possibly just a to_lisp() command's own trailing ";", not
+  // the whole statement. Auto-terminating the last command of a cell only
+  // happens "if not in lisp mode" (ProduceNextCommand()'s !haveBoundary
+  // branch) - if that check ever saw a stale InLispMode()==true for a
+  // command that is actually still a plain maxima statement (to_lisp()
+  // itself hasn't run yet, so tokenizing it should always happen in maxima
+  // mode), the ";" would silently never be appended. Cell 0 ends with
+  // (to-maxima) (leaves lisp mode); cell 1 starts with a bare to_lisp() (no
+  // ";" typed) as its ONLY command - by the time cell 1 is tokenized,
+  // InLispMode() must already be back to false.
+  Reset();
+  EvaluationQueue q;
+  GroupCell *c0 = MakeCodeCell(wxS("to_lisp();\n(setq $x 3)\n(to-maxima)"));
+  GroupCell *c1 = MakeCodeCell(wxS("to_lisp()"));
+  q.AddToQueue(c0);
+  q.AddToQueue(c1);
+  PromptReaction prompt = [](const wxString &cmd) {
+    if (cmd.Contains(wxS("to_lisp")))
+      g_cfg->InLispMode(true);
+    if (cmd.Contains(wxS("to-maxima")))
+      g_cfg->InLispMode(false);
+  };
+  auto cmds = DriveQueue(q, prompt);
+  THEN("cell 1's to_lisp() still arrives, terminated") {
+    REQUIRE(cmds.size() >= 4);
+    REQUIRE(cmds.back() == wxS("to_lisp();"));
+  }
+}
+
+SCENARIO("to_lisp() as the FIRST of two commands in a cell reached by "
+         "advancing from the previous cell",
+         "[redesign]") {
+  // Same concern as above, but via RemoveFirst()'s cell-to-cell advance path
+  // (AddTokens() called from inside RemoveFirst(), not from AddToQueue())
+  // rather than being the queue's initial cell - the exact boundary GH #2196
+  // was actually observed at.
+  Reset();
+  EvaluationQueue q;
+  GroupCell *c0 = MakeCodeCell(wxS("first;"));
+  GroupCell *c1 = MakeCodeCell(wxS("to_lisp();\n(setq $x 3)\n(to-maxima)"));
+  q.AddToQueue(c0);
+  q.AddToQueue(c1);
+  PromptReaction prompt = [](const wxString &cmd) {
+    if (cmd.Contains(wxS("to_lisp")))
+      g_cfg->InLispMode(true);
+    if (cmd.Contains(wxS("to-maxima")))
+      g_cfg->InLispMode(false);
+  };
+  auto cmds = DriveQueue(q, prompt);
+  THEN("to_lisp() survives the cell-boundary advance, terminated") {
+    REQUIRE(cmds.size() >= 4);
+    REQUIRE(cmds[0] == wxS("first;"));
+    REQUIRE(cmds[1] == wxS("to_lisp();"));
+  }
+}
+
 class TestApp : public wxApp {
 public:
   bool OnInit() override { return true; }

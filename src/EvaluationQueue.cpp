@@ -48,15 +48,21 @@ void EvaluationQueue::Clear() {
   m_pendingConfig = nullptr;
   m_cellConsumedChars = 0;
   m_workingGroupChanged = false;
+  m_integrityFailure = false;
+  m_integrityFailureEnqueuedText.Clear();
+  m_integrityFailureCurrentText.Clear();
 }
 
 bool EvaluationQueue::IsInQueue(GroupCell *gr) const {
-  return std::find(m_queue.begin(), m_queue.end(), gr) != m_queue.end();
+  return std::find_if(m_queue.begin(), m_queue.end(),
+                       [gr](const QueuedCell &qc) { return qc.cell == gr; }) !=
+         m_queue.end();
 }
 
 void EvaluationQueue::Remove(GroupCell *gr) {
   bool removeFirst = IsLastInQueue(gr);
-  auto pos = std::find(m_queue.begin(), m_queue.end(), gr);
+  auto pos = std::find_if(m_queue.begin(), m_queue.end(),
+                           [gr](const QueuedCell &qc) { return qc.cell == gr; });
   if (pos != m_queue.end())
     m_queue.erase(pos);
   m_size = m_queue.size();
@@ -66,7 +72,7 @@ void EvaluationQueue::Remove(GroupCell *gr) {
     m_pendingConfig = nullptr;
     m_cellConsumedChars = 0;
     if (!m_queue.empty())
-      AddTokens(GetCell());
+      AddTokens();
   }
 }
 
@@ -78,12 +84,16 @@ void EvaluationQueue::AddToQueue(GroupCell *gr) {
       gr->GetEditable() == NULL) // don't add cells which can't be evaluated
     return;
 
-  if (m_queue.empty()) {
-    AddTokens(gr);
+  const bool wasEmpty = m_queue.empty();
+  m_size++;
+  // Snapshot the cell's text now, at the moment it's queued -- AddTokens()
+  // re-reads it once this cell becomes current and compares the two (see
+  // GH #2196 and m_integrityFailure).
+  m_queue.push_back({CellPtr<GroupCell>(gr), gr->GetEditable()->ToString(true)});
+  if (wasEmpty) {
+    AddTokens();
     m_workingGroupChanged = true;
   }
-  m_size++;
-  m_queue.push_back(CellPtr<GroupCell>(gr));
 }
 
 /**
@@ -120,19 +130,42 @@ void EvaluationQueue::RemoveFirst() {
 
   m_queue.erase(m_queue.begin());
   m_size--;
-  AddTokens(GetCell());
+  AddTokens();
   m_workingGroupChanged = true;
 }
 
-void EvaluationQueue::AddTokens(const GroupCell *cell) {
+void EvaluationQueue::AddTokens() {
   m_commands.clear();
   m_pendingText.Clear();
   m_pendingConfig = nullptr;
   m_cellConsumedChars = 0;
-  if (cell == NULL)
+  m_integrityFailure = false;
+  m_integrityFailureEnqueuedText.Clear();
+  m_integrityFailureCurrentText.Clear();
+  if (m_queue.empty())
+    return;
+  GroupCell *const cell = m_queue.front().cell;
+  if (cell == nullptr || cell->GetEditable() == nullptr)
     return;
   m_pendingConfig = cell->GetEditable()->GetConfiguration();
   m_pendingText = cell->GetEditable()->ToString(true);
+  // GH #2196: the first statement of a multi-statement cell has been
+  // observed to silently vanish somewhere between a cell being queued and
+  // becoming current, with no error and nothing sent to Maxima. The root
+  // cause is still unknown (a live tcpdump capture confirmed the drop, but
+  // repeated live instrumentation to catch the mechanism itself failed --
+  // see AGENTS.md). This comparison can't fix the unknown cause, but it can
+  // catch its one observable effect: if the cell's text now differs from
+  // what was captured when it was queued, that mismatch itself is the bug
+  // signature. Recorded here regardless of caller; MaximaEvaluator decides
+  // whether it matters (batch mode has no interactive user who could have
+  // legitimately edited a not-yet-reached queued cell in the meantime, so
+  // there a mismatch can only be this bug).
+  if (m_pendingText != m_queue.front().textAtEnqueue) {
+    m_integrityFailure = true;
+    m_integrityFailureEnqueuedText = m_queue.front().textAtEnqueue;
+    m_integrityFailureCurrentText = m_pendingText;
+  }
   ProduceNextCommand();
 }
 
@@ -311,7 +344,7 @@ GroupCell *EvaluationQueue::GetCell() {
   if (m_queue.empty())
     return NULL;
   else
-    return m_queue.front();
+    return m_queue.front().cell;
 }
 
 wxString EvaluationQueue::GetCommand() {
