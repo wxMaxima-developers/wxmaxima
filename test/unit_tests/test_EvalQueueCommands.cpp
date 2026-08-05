@@ -153,6 +153,55 @@ SCENARIO("Commands are drawn from the cells in queue order") {
   }
 }
 
+SCENARIO("The first statement of a multi-statement cell survives a queue "
+         "advance from the previous cell") {
+  // GH #2196: every existing multi-statement scenario above only exercises a
+  // cell reached via AddToQueue() (which calls AddTokens() directly). A cell
+  // reached instead via RemoveFirst()'s "current cell drained, advance to the
+  // next one" path takes a different code path to populate its first command
+  // (the do-while loop in RemoveFirst() itself, not AddTokens() called
+  // directly) - this pins that path also correctly produces every statement,
+  // in particular the first one, instead of silently skipping it.
+  Reset();
+  EvaluationQueue q;
+  GroupCell *c0 = MakeCodeCell(wxS("first;"));
+  GroupCell *c1 = MakeCodeCell(wxS("assume(a > 0)$ integrate(1/(x^2+a),x); forget(a > 0)$"));
+  q.AddToQueue(c0);
+  q.AddToQueue(c1);
+  auto cmds = DriveQueue(q);
+  THEN("every statement of the second cell arrives, in order, none dropped") {
+    REQUIRE(cmds.size() == 4);
+    REQUIRE(cmds[0] == wxS("first;"));
+    REQUIRE(cmds[1] == wxS("assume(a > 0)$"));
+    REQUIRE(cmds[2] == wxS("integrate(1/(x^2+a),x);"));
+    REQUIRE(cmds[3] == wxS("forget(a > 0)$"));
+  }
+}
+
+SCENARIO("The first statement of a multi-statement cell survives advancing "
+         "through an empty-command cell") {
+  // Same GH #2196 concern, but via RemoveFirst()'s do-while loop actually
+  // iterating more than once (skipping the commented-out cell) before it
+  // finds a runnable command - a different path through the same function
+  // than a plain one-hop advance.
+  Reset();
+  EvaluationQueue q;
+  GroupCell *c0 = MakeCodeCell(wxS("first;"));
+  GroupCell *commented = MakeCodeCell(wxS("/* nothing to do */"));
+  GroupCell *c2 = MakeCodeCell(wxS("assume(a > 0)$ integrate(1/(x^2+a),x); forget(a > 0)$"));
+  q.AddToQueue(c0);
+  q.AddToQueue(commented);
+  q.AddToQueue(c2);
+  auto cmds = DriveQueue(q);
+  THEN("every statement of the third cell arrives, in order, none dropped") {
+    REQUIRE(cmds.size() == 4);
+    REQUIRE(cmds[0] == wxS("first;"));
+    REQUIRE(cmds[1] == wxS("assume(a > 0)$"));
+    REQUIRE(cmds[2] == wxS("integrate(1/(x^2+a),x);"));
+    REQUIRE(cmds[3] == wxS("forget(a > 0)$"));
+  }
+}
+
 SCENARIO("A cell without a runnable command still becomes the working cell once") {
   // A cell whose input is commented out entirely produces no command, but it
   // must not be skipped silently while the queue advances: the evaluator has
