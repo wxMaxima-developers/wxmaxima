@@ -10,12 +10,23 @@ jobs:
   setup_cygwin:
     runs-on: windows-latest
     steps:
+      # Runs before setup_cygwin on purpose: cygwin-install-action puts its own
+      # git.exe ahead of the native one on PATH, and that git refuses this
+      # checkout with "detected dubious ownership" (a safe.directory check that
+      # Cygwin's POSIX ownership emulation trips on Windows runners) -- checking
+      # out first, while the runner's native git is still the one on PATH,
+      # avoids the whole problem instead of adding a safe.directory exception.
+      - name: Checkout_git
+        uses: actions/checkout@v7
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 15
+          path: wxmaxima
       - name: setup_cygwin
         uses: cygwin/cygwin-install-action@v6
         with:
           packages: cmake git libwx_baseu3.0-devel libwx_gtk3u3.0-devel gcc-core gcc-g++ make gettext-devel
-      - name: Checkout_git
-        run: git clone --depth 20 https://github.com/wxMaxima-developers/wxmaxima.git
       - name: configure
         run: |
              mkdir build
