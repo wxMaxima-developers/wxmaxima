@@ -1,5 +1,26 @@
 # Current development version
 
+- Translations: added a reverse sync (`locales/wxMaxima/split_manual_po.cmake`,
+  wired into `update-locale-manual-in-source`) that pulls a language's
+  manual-content translations back out of the combined
+  `locales/wxMaxima/<lang>.po` -- the file Crowdin actually writes to -- into
+  `locales/manual/<lang>.po`, so translations contributed through Crowdin for
+  the manual's own strings reach `info/wxmaxima.<lang>.md` instead of sitting
+  unused in the combined file.
+- Translations: seeded manual-translation infrastructure
+  (`locales/manual/<lang>.po`) for the 15 languages that had UI translation
+  but no manual translation at all (ar, ca, cs, da, el, fi, gl, he, hu, ja,
+  kab, nb, pl, pt_BR, zh_TW); `info/CMakeLists.txt` now falls back to the
+  English manual for a language below po4a's translated-content threshold,
+  instead of hard-failing `cmake` configure for anyone with po4a and pandoc
+  installed.
+- Translations: seeded fresh, untranslated `locales/wxMaxima/<lang>.po` for
+  every language wxWidgets itself ships stock UI translations for that
+  wxMaxima didn't have yet (af, an, co, eu, fa, hi, hr, id, ka, ko, lt, lv,
+  ms, ne, nl, pt, ro, sk, sl, sq, sr, sv, ta, vi), and added the
+  corresponding entries to the language-selection dialog
+  (`ConfigDialogue.cpp`) for the ones with a `wxLANGUAGE_*` constant
+  available (all but Aragonese, which wxWidgets 3.2 has no enum value for).
 - New regression test `commandSequenceIntegrity` (GH #2196): a confirmed
   but not yet root-caused bug lets the first statement of a multi-statement
   cell be silently dropped and never sent to Maxima at all during `--batch`
