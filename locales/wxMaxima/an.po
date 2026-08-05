@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: wxmaxima-gui\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-30 11:38+0200\n"
-"PO-Revision-Date: 2026-07-30 11:38+0200\n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2026-08-05 07:25\n"
+"Last-Translator: \n"
 "Language-Team: none\n"
 "Language: an\n"
 "MIME-Version: 1.0\n"
@@ -33,8 +33,7 @@ msgstr ""
 #: ../../src/wxMaxima.cpp:5153
 msgid ""
 "\n"
-"Use the menu \"View->Toggle log window\" to show/hide a log window with all "
-"debug messages."
+"Use the menu \"View->Toggle log window\" to show/hide a log window with all debug messages."
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:4230
@@ -337,8 +336,8 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:2065
 msgid ""
-"... [suppressed additional lines as the output is longer than allowed in the "
-"wxMaxima configuration] "
+"... [suppressed additional lines as the output is longer than allowed in the"
+" wxMaxima configuration] "
 msgstr ""
 
 #: ../../src/Worksheet.cpp:6666
@@ -367,8 +366,7 @@ msgid "; %i commands left in the current cell"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:10617
-msgid ""
-"A \":lisp\" as the first command might fail to send a \"finished\" signal."
+msgid "A \":lisp\" as the first command might fail to send a \"finished\" signal."
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:6585
@@ -528,8 +526,8 @@ msgstr ""
 
 #: ../../src/ToolBar.cpp:321 ../../src/ToolBar.cpp:589
 msgid ""
-"After clicking on animations created with with_slider_draw() or similar this "
-"slider allows to change the current frame."
+"After clicking on animations created with with_slider_draw() or similar this"
+" slider allows to change the current frame."
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1028
@@ -546,9 +544,10 @@ msgstr ""
 
 #: ../../src/main.cpp:594 ../../src/wxMaxima.cpp:6075
 msgid ""
-"All openable types (*.wxm, *.wxmx, *.mac, *.out, *.xml)|*.wxm;*.wxmx;*.mac;*."
-"out;*.xml|wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|Maxima session (*."
-"mac)|*.mac|Xmaxima session (*.out)|*.out|xml from broken .wxmx (*.xml)|*.xml"
+"All openable types (*.wxm, *.wxmx, *.mac, *.out, "
+"*.xml)|*.wxm;*.wxmx;*.mac;*.out;*.xml|wxMaxima document (*.wxm, "
+"*.wxmx)|*.wxm;*.wxmx|Maxima session (*.mac)|*.mac|Xmaxima session "
+"(*.out)|*.out|xml from broken .wxmx (*.xml)|*.xml"
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:733
@@ -713,8 +712,8 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:8545
 msgid ""
-"Attention: Extracting a random list element isn't efficient for long lists."
-"Iterating over lists using makelist() or for loops is way faster."
+"Attention: Extracting a random list element isn't efficient for long "
+"lists.Iterating over lists using makelist() or for loops is way faster."
 msgstr ""
 
 #: ../../src/Worksheet.cpp:1618
@@ -816,8 +815,8 @@ msgstr ""
 
 #: ../../src/Worksheet.cpp:6378
 msgid ""
-"Bug: Got a request to change the contents of the cell above the beginning of "
-"the worksheet."
+"Bug: Got a request to change the contents of the cell above the beginning of"
+" the worksheet."
 msgstr ""
 
 #: ../../src/Worksheet.cpp:6346
@@ -981,8 +980,8 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:3016 ../../src/wxMaxima.cpp:4836
 msgid ""
-"Can not start Maxima. The most probable cause is that Maxima isn't installed "
-"(it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's "
+"Can not start Maxima. The most probable cause is that Maxima isn't installed"
+" (it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's "
 "config dialogue the setting for Maxima's location is wrong."
 msgstr ""
 
@@ -1380,8 +1379,7 @@ msgid ""
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:7054
-msgid ""
-"Comma-separated variable names, can be initialized by the \":\" operator."
+msgid "Comma-separated variable names, can be initialized by the \":\" operator."
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:7753 ../../src/wxMaxima.cpp:7767
@@ -1457,8 +1455,8 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:7163
 msgid ""
-"Compiling a function can generate a considerable speed boost if the types of "
-"the function parameters are made known to the function before it is "
+"Compiling a function can generate a considerable speed boost if the types of"
+" the function parameters are made known to the function before it is "
 "compiled. Else the generated code has to be hideously generic."
 msgstr ""
 
@@ -3137,7 +3135,8 @@ msgstr ""
 
 #: ../../src/MaximaManual.cpp:452
 #, c-format
-msgid "Found %li anchors, URLs (individual files): %li, URLs (singlepage): %li"
+msgid ""
+"Found %li anchors, URLs (individual files): %li, URLs (singlepage): %li"
 msgstr ""
 
 #: ../../src/MaximaManual.cpp:313
@@ -3237,9 +3236,9 @@ msgstr ""
 
 #: ../../src/Worksheet.cpp:103
 msgid ""
-"GTK_IM_MODULE is set to \"xim\". Expect the program to hideously flicker and "
-"hotkeys to be broken, see for example https://trac.wxwidgets.org/"
-"ticket/18462."
+"GTK_IM_MODULE is set to \"xim\". Expect the program to hideously flicker and"
+" hotkeys to be broken, see for example "
+"https://trac.wxwidgets.org/ticket/18462."
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:295
@@ -3264,8 +3263,8 @@ msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1681
 msgid ""
-"Generate a storage for variable values that can be introduced into equations "
-"at any time"
+"Generate a storage for variable values that can be introduced into equations"
+" at any time"
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1672
@@ -3385,8 +3384,8 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:6123
 msgid ""
-"HTML file (*.html)|*.html|maxima batch file (*.mac)|*.mac|LaTeX file (*.tex)|"
-"*.tex"
+"HTML file (*.html)|*.html|maxima batch file (*.mac)|*.mac|LaTeX file "
+"(*.tex)|*.tex"
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1341
@@ -3408,8 +3407,8 @@ msgstr ""
 #: ../../src/MaximaManual.cpp:260
 #, c-format
 msgid ""
-"Have only %li keyword anchors at the end of parsing the maxima manual => Not "
-"caching the result of using the built-in keyword list"
+"Have only %li keyword anchors at the end of parsing the maxima manual => Not"
+" caching the result of using the built-in keyword list"
 msgstr ""
 
 #: ../../src/Configuration.cpp:88 ../../src/ToolBar.cpp:276
@@ -3528,19 +3527,16 @@ msgstr ""
 #: ../../src/wxMaxima.cpp:7062
 msgid ""
 "If a program doesn't need local variables maxima allows to put the commands "
-"between parenthesis. The result of the last operation is the return value of "
-"the program."
+"between parenthesis. The result of the last operation is the return value of"
+" the program."
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:7172
 msgid ""
-"If the type of a function parameter is known when compiling a function the "
-"code can vastly be optimized.\n"
+"If the type of a function parameter is known when compiling a function the code can vastly be optimized.\n"
 "Known types:\n"
 "\n"
-"array, boolean, integer, fixnum (machine-length integer), float (machine-"
-"size floating-point numbers), real or any (which is useful for declaring "
-"arrays of any)"
+"array, boolean, integer, fixnum (machine-length integer), float (machine-size floating-point numbers), real or any (which is useful for declaring arrays of any)"
 msgstr ""
 
 #: ../../src/MathParser.cpp:890
@@ -3559,8 +3555,8 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:10147 ../../src/wxMaxima.cpp:10855
 msgid ""
-"Image files (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;*.jpg;*."
-"bmp;*.xpm;*.gif;*.svg;*.svgz"
+"Image files (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, "
+"*.svgz)|*.png;*.jpg;*.bmp;*.xpm;*.gif;*.svg;*.svgz"
 msgstr ""
 
 #: ../../src/Worksheet.cpp:5509
@@ -3577,11 +3573,8 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:7993
 msgid ""
-"In order to save memory the \":\" operator does clone the matrix, not copy "
-"it:\n"
-"If you change an element of one matrix the same element will change in all "
-"of its clones. copymatrix() instead generates a copy of a matrix: A new "
-"matrix that, if changed in any way, won't change the original."
+"In order to save memory the \":\" operator does clone the matrix, not copy it:\n"
+"If you change an element of one matrix the same element will change in all of its clones. copymatrix() instead generates a copy of a matrix: A new matrix that, if changed in any way, won't change the original."
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:7404
@@ -3854,8 +3847,8 @@ msgstr ""
 
 #: ../../src/ToolBar.cpp:232
 msgid ""
-"Interrupt current computation. To completely restart maxima press the button "
-"left to this one."
+"Interrupt current computation. To completely restart maxima press the button"
+" left to this one."
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:2766
@@ -4054,11 +4047,8 @@ msgstr ""
 #: ../../src/wxMaxima.cpp:7091
 msgid ""
 "Lambda generates a function, but doesn't give it a name.\n"
-"This is useful if you want to use a function only once, perhaps as a "
-"parameter to another function and don't need it to be named.\n"
-"Also you can fill a variable with a lambda() construct, effectively "
-"generating a function pointer: A variable that can be used as a function, "
-"and filled with a different function, if needed."
+"This is useful if you want to use a function only once, perhaps as a parameter to another function and don't need it to be named.\n"
+"Also you can fill a variable with a lambda() construct, effectively generating a function pointer: A variable that can be used as a function, and filled with a different function, if needed."
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:8997
@@ -4391,13 +4381,10 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:8627
 msgid ""
-"Maxima allows to make functions \"nouns\", which means that they aren't "
-"automatically evaluated as soon as maxima encounters them.\n"
-"Ways make a function a noun include declaring it a noun, preceding it with "
-"a  ' or putting it between the parenthesis of '().\n"
+"Maxima allows to make functions \"nouns\", which means that they aren't automatically evaluated as soon as maxima encounters them.\n"
+"Ways make a function a noun include declaring it a noun, preceding it with a  ' or putting it between the parenthesis of '().\n"
 "\n"
-"This command tells maxima that the nouns in this expression shall now be "
-"evaluated, too."
+"This command tells maxima that the nouns in this expression shall now be evaluated, too."
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:3473
@@ -4415,9 +4402,7 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:7118
 msgid ""
-"Maxima automatically simplifies expressions it gets as input and then tries "
-"to evaluate their value. The ' operator tells maxima that we want a command "
-"to be in noun form, which means: stand here as is, and unevaluated.\n"
+"Maxima automatically simplifies expressions it gets as input and then tries to evaluate their value. The ' operator tells maxima that we want a command to be in noun form, which means: stand here as is, and unevaluated.\n"
 "The ' operator can be undone by using the '' operator."
 msgstr ""
 
@@ -4603,8 +4588,8 @@ msgid ""
 "if maxima crashes wxMaxima (and therefore the worksheet) stays intact. "
 "Currently the two programs aren't connected to each other which might mean "
 "that maxima is still starting up or couldn't be started. Alternatively it "
-"can be caused by a firewall that it setup to not only intercepts connections "
-"from the outside, but also to intercept connections between two programs "
+"can be caused by a firewall that it setup to not only intercepts connections"
+" from the outside, but also to intercept connections between two programs "
 "that run on the same computer. Another reason for maxima not starting up "
 "might be that maxima cannot be found (see wxMaxima's Configuration dialogue "
 "for a way to specify maxima's location) or isn't in a working order."
@@ -4612,9 +4597,7 @@ msgstr ""
 
 #: ../../src/StatusBar.cpp:61
 msgid ""
-"Maxima, the program that does the actual mathematics is started as a "
-"separate process. This has the advantage that an eventual crash of maxima "
-"cannot harm wxMaxima, which displays the worksheet.\n"
+"Maxima, the program that does the actual mathematics is started as a separate process. This has the advantage that an eventual crash of maxima cannot harm wxMaxima, which displays the worksheet.\n"
 "This icon indicates if data is transferred between maxima and wxMaxima."
 msgstr ""
 
@@ -4962,7 +4945,8 @@ msgstr ""
 msgid "Only Integers and single letters"
 msgstr ""
 
-#: ../../src/ToolBar.cpp:176 ../../src/main.cpp:593 ../../src/wxMaxima.cpp:6074
+#: ../../src/ToolBar.cpp:176 ../../src/main.cpp:593
+#: ../../src/wxMaxima.cpp:6074
 msgid "Open"
 msgstr ""
 
@@ -5087,17 +5071,17 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:6442
 msgid ""
-"PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|GIF image (*.gif)|*.gif|"
-"Scaleable vector graphics (*.svg)|*.svg|Windows bitmap (*.bmp)|*.bmp|"
-"Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
-"pixmap (*.xpm)|*.xpm"
+"PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|GIF image "
+"(*.gif)|*.gif|Scaleable vector graphics (*.svg)|*.svg|Windows bitmap "
+"(*.bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|Tagged image file format "
+"(*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:10117
 msgid ""
-"PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*."
-"bmp|GIF image (*.gif)|*.gif|Portable anymap (*.pnm)|*.pnm|Tagged image file "
-"format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
+"PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap "
+"(*.bmp)|*.bmp|GIF image (*.gif)|*.gif|Portable anymap (*.pnm)|*.pnm|Tagged "
+"image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:8924
@@ -5956,10 +5940,10 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:10107
 msgid ""
-"Scalable Vector image (*.svg)|*.svg|Compressed Scalable Vector Image (*."
-"svgz)|*.svgz|PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|GIF image (*."
-"gif)|*.gif|Windows bitmap (*.bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|Tagged "
-"image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
+"Scalable Vector image (*.svg)|*.svg|Compressed Scalable Vector Image "
+"(*.svgz)|*.svgz|PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|GIF image "
+"(*.gif)|*.gif|Windows bitmap (*.bmp)|*.bmp|Portable anymap "
+"(*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:9533
@@ -5973,7 +5957,8 @@ msgid ""
 msgstr ""
 
 #: ../../src/Autocomplete.cpp:458
-msgid "Scheduling a background task that scans for autocompletable file names."
+msgid ""
+"Scheduling a background task that scans for autocompletable file names."
 msgstr ""
 
 #: ../../src/ToolBar.cpp:632
@@ -6147,8 +6132,8 @@ msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1820
 msgid ""
-"Set the precision for numbers that are defined as bigfloat. Such numbers can "
-"be generated by entering 1.5b12 or as bfloat(1.234)"
+"Set the precision for numbers that are defined as bigfloat. Such numbers can"
+" be generated by entering 1.5b12 or as bfloat(1.234)"
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:811
@@ -6557,10 +6542,7 @@ msgstr ""
 #: ../../src/wxMaxima.cpp:7105
 #, c-format
 msgid ""
-"Sometimes one wants maxima to loose the information that a function name was "
-"used with the ' operator in order to make maxima not evaluate it. In other "
-"places one wants % to mean \"the last expression at the time this function "
-"was created\", not \"the last expression now\".\n"
+"Sometimes one wants maxima to loose the information that a function name was used with the ' operator in order to make maxima not evaluate it. In other places one wants % to mean \"the last expression at the time this function was created\", not \"the last expression now\".\n"
 "In both cases the '' operator will do what is requested."
 msgstr ""
 
@@ -6806,8 +6788,8 @@ msgstr ""
 #: ../../src/wxMaxima.cpp:8756
 #, c-format
 msgid ""
-"Substitutes, but makes sure that if substituting t=0 in diff(x,t) the result "
-"isn't 0 (as t no more changes), but %at(diff(x,t),t=0)."
+"Substitutes, but makes sure that if substituting t=0 in diff(x,t) the result"
+" isn't 0 (as t no more changes), but %at(diff(x,t),t=0)."
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:8739
@@ -6847,8 +6829,8 @@ msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1551
 msgid ""
-"Switch off simplifications of log(). Set Maxima option variable logexpand:"
-"false"
+"Switch off simplifications of log(). Set Maxima option variable "
+"logexpand:false"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:4090
@@ -6901,8 +6883,8 @@ msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1945
 msgid ""
-"Tells maxima to show the help for ?, ?? and describe() in a separate browser "
-"window"
+"Tells maxima to show the help for ?, ?? and describe() in a separate browser"
+" window"
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1941
@@ -6996,11 +6978,8 @@ msgstr ""
 
 #: ../../src/Image.cpp:985
 msgid ""
-"The image could not be displayed. It may be broken, in a wrong format or be "
-"the result of gnuplot not being able to write the image or not being able to "
-"understand what maxima wanted to plot.\n"
-"One example of the latter would be: Gnuplot refuses to plot entirely empty "
-"images"
+"The image could not be displayed. It may be broken, in a wrong format or be the result of gnuplot not being able to write the image or not being able to understand what maxima wanted to plot.\n"
+"One example of the latter would be: Gnuplot refuses to plot entirely empty images"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:9799 ../../src/wxMaxima.cpp:10158
@@ -7057,9 +7036,7 @@ msgid "The name of the variable that shall contain the current element"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:8468
-msgid ""
-"The number of the item which is stepped from \"Index Start\" to \"Index "
-"End\"."
+msgid "The number of the item which is stepped from \"Index Start\" to \"Index End\"."
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:8465 ../../src/wxMaxima.cpp:8478
@@ -7078,15 +7055,13 @@ msgstr ""
 #: ../../src/wxMaxima.cpp:7818
 msgid ""
 "The solution of an ODE tells the shape, but not the height of the solution.\n"
-"If the ODE's result is known at two points this function fills in the "
-"correct values for the  constants"
+"If the ODE's result is known at two points this function fills in the correct values for the  constants"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:7794 ../../src/wxMaxima.cpp:7805
 msgid ""
 "The solution of an ODE tells the shape, but not the height of the solution.\n"
-"If the ODE's state is known at a point this function fills in the correct "
-"values for the constants"
+"If the ODE's state is known at a point this function fills in the correct values for the constants"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:7896
@@ -7115,8 +7090,7 @@ msgstr ""
 #: ../../src/MathParser.cpp:629
 msgid ""
 "The xml data from maxima or from the .wxmx file was missing data here.\n"
-"If you find a way how to reproduce this problem please file a bug report "
-"against wxMaxima."
+"If you find a way how to reproduce this problem please file a bug report against wxMaxima."
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:2143
@@ -7127,8 +7101,7 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:3911
 msgid ""
-"There was an error in the XML that should contain a list of watch "
-"variables.\n"
+"There was an error in the XML that should contain a list of watch variables.\n"
 "Please report this as a bug to the wxMaxima project."
 msgstr ""
 
@@ -7140,8 +7113,7 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:3321
 msgid ""
-"There was an error in the XML that should describe the contents of some "
-"variables.\n"
+"There was an error in the XML that should describe the contents of some variables.\n"
 "Please report this as a bug to the wxMaxima project."
 msgstr ""
 
@@ -7270,8 +7242,9 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:7832
 msgid ""
-"Tries to find a numerical solution for a 1st order ODE (or in other words: a "
-"equation of the format depends(x,t);diff(x,t)=(something containing x and t)"
+"Tries to find a numerical solution for a 1st order ODE (or in other words: a"
+" equation of the format depends(x,t);diff(x,t)=(something containing x and "
+"t)"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:10036
@@ -7288,8 +7261,7 @@ msgstr ""
 #: ../../src/wxMaxima.cpp:7719
 msgid ""
 "Tries to find all solutions of a polynomial numerically using bfloats.\n"
-"Might be able to detect solutions in non-polynomials, as well, if the "
-"expression is approximated by an polynomial, beforehand:\n"
+"Might be able to detect solutions in non-polynomials, as well, if the expression is approximated by an polynomial, beforehand:\n"
 "\n"
 "    bfallroots(ratdisrep(taylor(expression,0,30)));"
 msgstr ""
@@ -7297,8 +7269,7 @@ msgstr ""
 #: ../../src/wxMaxima.cpp:7709
 msgid ""
 "Tries to find all solutions of a polynomial numerically.\n"
-"Might be able to detect solutions in non-polynomials, as well, if the "
-"expression is approximated by an polynomial, beforehand:\n"
+"Might be able to detect solutions in non-polynomials, as well, if the expression is approximated by an polynomial, beforehand:\n"
 "\n"
 "    allroots(ratdisrep(taylor(expression,0,30)));"
 msgstr ""
@@ -7306,12 +7277,9 @@ msgstr ""
 #: ../../src/wxMaxima.cpp:7730
 #, c-format
 msgid ""
-"Tries to find exact fractions that match the numerical solutions of a "
-"polynomial.\n"
-"Is not able to deal with solutions with a imaginary part. Numerical "
-"constants like %pi% need to be eliminated using float() or similar\n"
-"Might be able to detect solutions in non-polynomials, as well, if the "
-"expression is approximated by an polynomial, beforehand:\n"
+"Tries to find exact fractions that match the numerical solutions of a polynomial.\n"
+"Is not able to deal with solutions with a imaginary part. Numerical constants like %pi% need to be eliminated using float() or similar\n"
+"Might be able to detect solutions in non-polynomials, as well, if the expression is approximated by an polynomial, beforehand:\n"
 "\n"
 "    realroots(ratdisrep(taylor(expression,0,30)));\n"
 "\n"
@@ -7431,8 +7399,8 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:11160
 msgid ""
-"Unable to interpret the version info I got from http://wxMaxima-developers."
-"github.io/wxmaxima/version.txt: "
+"Unable to interpret the version info I got from http://wxMaxima-"
+"developers.github.io/wxmaxima/version.txt: "
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1007
@@ -7587,7 +7555,8 @@ msgid "User-defined labels"
 msgstr ""
 
 #: ../../src/MaximaManual.cpp:483
-msgid "Using Maxima help file from wxMaxima configuration file (helpFile=...))"
+msgid ""
+"Using Maxima help file from wxMaxima configuration file (helpFile=...))"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:4825
@@ -7600,8 +7569,8 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:2961
 msgid ""
-"Using gnuplot's antialiassing-less png driver for embedded plots as pngcairo "
-"could not be found"
+"Using gnuplot's antialiassing-less png driver for embedded plots as pngcairo"
+" could not be found"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:2956
@@ -7725,8 +7694,7 @@ msgstr ""
 #: ../../src/Dirstructure.cpp:72
 #, c-format
 msgid ""
-"Warning: Cannot create %s, the directory maxima keeps configuration, user "
-"packages and caches in.\n"
+"Warning: Cannot create %s, the directory maxima keeps configuration, user packages and caches in.\n"
 "Make sure that your system's home directory is set up correctly"
 msgstr ""
 
@@ -7757,8 +7725,8 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:5673
 msgid ""
-"Whole document (*.wxmx)|*.wxmx|The input, readable by load() (maxima > 5.38) "
-"(*.wxm)|*.wxm|All Files (*.*)|*"
+"Whole document (*.wxmx)|*.wxmx|The input, readable by load() (maxima > 5.38)"
+" (*.wxm)|*.wxm|All Files (*.*)|*"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:210
@@ -7831,16 +7799,12 @@ msgstr ""
 
 #: ../../src/Worksheet.cpp:5278
 #, c-format
-msgid ""
-"_%d.gif\"  alt=\"Animated Diagram\" loading=\"lazy\" style=\"max-width:90%%;"
-"\">\n"
+msgid "_%d.gif\"  alt=\"Animated Diagram\" loading=\"lazy\" style=\"max-width:90%%;\">\n"
 msgstr ""
 
 #: ../../src/Worksheet.cpp:5484
 #, c-format
-msgid ""
-"_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" "
-"loading=\"lazy\">"
+msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" loading=\"lazy\">"
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1690
@@ -7977,8 +7941,8 @@ msgstr ""
 msgid ""
 "radcan() is a powerful tools for simplification trigonometric functions but "
 "needs to be taken with care: If a function has more than one branch radcan "
-"uses the one that looks like it would fit best, not necessarily the one that "
-"makes sense for the problem that resulted in the Expression that is to be "
+"uses the one that looks like it would fit best, not necessarily the one that"
+" makes sense for the problem that resulted in the Expression that is to be "
 "simplified."
 msgstr ""
 
@@ -8000,23 +7964,15 @@ msgstr ""
 
 #: ../../src/wxMaxima.cpp:10018
 msgid ""
-"solve() will solve a list of equations only if for n independent equations "
-"there are n variables to solve to.\n"
-"If only one result variable is of interest the other result variables can be "
-"used to to tell solve() which variables to eliminate from the solution\n"
-"solve() searches for a global solution. If a problem has different solutions "
-"depending on the range its variables are in one way to successfully use "
-"solve() is to use solve() to eliminate variables one by one and to manually "
-"choose which of the solutions solve() found matches the current problem."
+"solve() will solve a list of equations only if for n independent equations there are n variables to solve to.\n"
+"If only one result variable is of interest the other result variables can be used to to tell solve() which variables to eliminate from the solution\n"
+"solve() searches for a global solution. If a problem has different solutions depending on the range its variables are in one way to successfully use solve() is to use solve() to eliminate variables one by one and to manually choose which of the solutions solve() found matches the current problem."
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:7745
 msgid ""
-"solve() will solve a list of equations only if for n independent equations "
-"there are n variables to solve to.\n"
-"If only one result variable is of interest the other result variables solve "
-"needs to do its work can be used to tell solve() which variables to "
-"eliminate in the solution for the interesting variable."
+"solve() will solve a list of equations only if for n independent equations there are n variables to solve to.\n"
+"If only one result variable is of interest the other result variables solve needs to do its work can be used to tell solve() which variables to eliminate in the solution for the interesting variable."
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:7784
@@ -8079,10 +8035,7 @@ msgid ""
 "wxMaxima could not start a server.\n"
 "\n"
 "Please check you have network support\n"
-"enabled, that no internet safety appliance is configured to intercept "
-"creation of servers even if said server only accepts connections from local "
-"application (maxima insists on the graphical frontend acting as a server it "
-"can connect on over a local socket) and try again!"
+"enabled, that no internet safety appliance is configured to intercept creation of servers even if said server only accepts connections from local application (maxima insists on the graphical frontend acting as a server it can connect on over a local socket) and try again!"
 msgstr ""
 
 #: ../../src/wxMaxima.cpp:5285
@@ -8170,8 +8123,8 @@ msgid ""
 "WxMaxima is a graphical user interface (GUI) for the _Maxima_ computer "
 "algebra system (CAS). WxMaxima allows one to use all of _Maxima_’s "
 "functions. In addition, it provides convenient wizards for accessing the "
-"most commonly used features. This manual describes some of the features that "
-"make wxMaxima one of the most popular GUIs for _Maxima_."
+"most commonly used features. This manual describes some of the features that"
+" make wxMaxima one of the most popular GUIs for _Maxima_."
 msgstr ""
 
 #. type: Plain text
@@ -8204,10 +8157,10 @@ msgid ""
 "projects that are easier to handle for small groups of developers. For "
 "example a CD burner program will consist of a command-line tool that "
 "actually burns the CD and a graphical user interface that allows users to "
-"implement it without having to learn about all the command line switches and "
-"in fact without using the command line at all. One advantage of this "
-"approach is that the developing work that was invested into the command-line "
-"program can be shared by many programs: The same CD-burner command-line "
+"implement it without having to learn about all the command line switches and"
+" in fact without using the command line at all. One advantage of this "
+"approach is that the developing work that was invested into the command-line"
+" program can be shared by many programs: The same CD-burner command-line "
 "program can be used as a “send-to-CD”-plug-in for a file manager "
 "application, for the “burn to CD” function of a music player and as the CD "
 "writer for a DVD backup tool. Another advantage is that splitting one big "
@@ -8221,9 +8174,9 @@ msgid ""
 "A computer algebra system (CAS) like _Maxima_ fits into this framework. A "
 "CAS can provide the logic behind an arbitrary precision calculator "
 "application or it can do automatic transforms of formulas in the background "
-"of a bigger system (e.g., [Sage](https://www.sagemath.org/)). Alternatively, "
-"it can be used directly as a free-standing system. _Maxima_ can be accessed "
-"via a command line. Often, however, an interface like _wxMaxima_ proves a "
+"of a bigger system (e.g., [Sage](https://www.sagemath.org/)). Alternatively,"
+" it can be used directly as a free-standing system. _Maxima_ can be accessed"
+" via a command line. Often, however, an interface like _wxMaxima_ proves a "
 "more efficient way to access the software, especially for newcomers."
 msgstr ""
 
@@ -8248,19 +8201,19 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:22
 msgid ""
-"![Maxima screenshot, command line](./maxima_screenshot.png)"
-"{ id=img_maxima_screenshot }"
+"![Maxima screenshot, command line](./maxima_screenshot.png){ "
+"id=img_maxima_screenshot }"
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:24
 msgid ""
-"Extensive documentation for _Maxima_ is [available in the internet](https://"
-"maxima.sourceforge.io/documentation.html). Part of this documentation is "
-"also available in wxMaxima’s help menu. Pressing the Help key (on most "
-"systems the <kbd>F1</kbd> key) causes _wxMaxima_’s context-sensitive help "
-"feature to automatically jump to _Maxima_’s manual page for the command at "
-"the cursor."
+"Extensive documentation for _Maxima_ is [available in the "
+"internet](https://maxima.sourceforge.io/documentation.html). Part of this "
+"documentation is also available in wxMaxima’s help menu. Pressing the Help "
+"key (on most systems the <kbd>F1</kbd> key) causes _wxMaxima_’s context-"
+"sensitive help feature to automatically jump to _Maxima_’s manual page for "
+"the command at the cursor."
 msgstr ""
 
 #. type: Plain text
@@ -8272,15 +8225,15 @@ msgstr ""
 #: ../../info/wxmaxima.md:28
 msgid ""
 "_WxMaxima_ is a graphical user interface that provides the full "
-"functionality and flexibility of _Maxima_. WxMaxima offers users a graphical "
-"display and many features that make working with _Maxima_ easier. For "
+"functionality and flexibility of _Maxima_. WxMaxima offers users a graphical"
+" display and many features that make working with _Maxima_ easier. For "
 "example _wxMaxima_ allows one to export any cell’s contents (or, if that is "
 "needed, any part of a formula, as well) as text, as LaTeX or as MathML "
 "specification at a simple right-click. Indeed, an entire workbook can be "
 "exported, either as a HTML file or as a LaTeX file. Documentation for "
 "_wxMaxima_, including workbooks to illustrate aspects of its use, is online "
-"at the _wxMaxima_ [help site](https://wxMaxima-developers.github.io/wxmaxima/"
-"help.html), as well as via the help menu."
+"at the _wxMaxima_ [help site](https://wxMaxima-"
+"developers.github.io/wxmaxima/help.html), as well as via the help menu."
 msgstr ""
 
 #. type: Plain text
@@ -8324,9 +8277,9 @@ msgid ""
 "One of the very few things that are not standard in _wxMaxima_ is that it "
 "organizes the data for _Maxima_ into cells that are evaluated (which means: "
 "sent to _Maxima_) only when the user requests this. When a cell is "
-"evaluated, all commands in that cell, and only that cell, are evaluated as a "
-"batch. (The preceding statement is not quite accurate: One can select a set "
-"of adjacent cells and evaluate them together. Also, one can instruct "
+"evaluated, all commands in that cell, and only that cell, are evaluated as a"
+" batch. (The preceding statement is not quite accurate: One can select a set"
+" of adjacent cells and evaluate them together. Also, one can instruct "
 "_Maxima_ to evaluate all cells in a workbook in one pass.) _WxMaxima_’s "
 "approach to submitting commands for execution might feel unfamiliar at the "
 "first sight. It does, however, drastically ease work with big documents "
@@ -8341,8 +8294,8 @@ msgid ""
 "If text is typed into _wxMaxima_ it automatically creates a new worksheet "
 "cell. The type of this cell can be selected in the toolbar. If a code cell "
 "is created the cell can be sent to _Maxima_, which causes the result of the "
-"calculation to be displayed below the code. A pair of such commands is shown "
-"below."
+"calculation to be displayed below the code. A pair of such commands is shown"
+" below."
 msgstr ""
 
 #. type: Plain text
@@ -8354,10 +8307,10 @@ msgstr ""
 #: ../../info/wxmaxima.md:46
 msgid ""
 "On evaluation of an input cell’s contents the input cell _Maxima_ assigns a "
-"label to the input (by default shown in red and recognizable by the `%i`) by "
-"which it can be referenced later in the _wxMaxima_ session. The output that "
-"_Maxima_ generates also gets a label that begins with `%o` and by default is "
-"hidden, except if the user assigns the output a name. In this case by "
+"label to the input (by default shown in red and recognizable by the `%i`) by"
+" which it can be referenced later in the _wxMaxima_ session. The output that"
+" _Maxima_ generates also gets a label that begins with `%o` and by default "
+"is hidden, except if the user assigns the output a name. In this case by "
 "default the user-defined label is displayed. The `%o`-style label _Maxima_ "
 "auto-generates will also be accessible, though."
 msgstr ""
@@ -8367,10 +8320,10 @@ msgstr ""
 msgid ""
 "Besides the input cells _wxMaxima_ allows for text cells for documentation, "
 "image cells, title cells, chapter cells and section cells. Every cell has "
-"its own undo buffer so debugging by changing the values of several cells and "
-"then gradually reverting the unneeded changes is rather easy. Furthermore "
-"the worksheet itself has a global undo buffer that can undo cell edits, adds "
-"and deletes."
+"its own undo buffer so debugging by changing the values of several cells and"
+" then gradually reverting the unneeded changes is rather easy. Furthermore "
+"the worksheet itself has a global undo buffer that can undo cell edits, adds"
+" and deletes."
 msgstr ""
 
 #. type: Plain text
@@ -8395,7 +8348,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:56
 msgid ""
-"The worksheet is organized in cells. WxMaxima knows the following cell types:"
+"The worksheet is organized in cells. WxMaxima knows the following cell "
+"types:"
 msgstr ""
 
 #. type: Bullet: '- '
@@ -8434,8 +8388,8 @@ msgstr ""
 #: ../../info/wxmaxima.md:65
 msgid ""
 "The default behavior of _wxMaxima_ when text is entered is to automatically "
-"create a math cell. Cells of other types can be created using the Cell menu, "
-"using the hot keys shown in the menu or using the drop-down list in the "
+"create a math cell. Cells of other types can be created using the Cell menu,"
+" using the hot keys shown in the menu or using the drop-down list in the "
 "toolbar. Once the non-math cell is created, whatever is typed into the file "
 "is interpreted as text."
 msgstr ""
@@ -8443,9 +8397,10 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:67
 msgid ""
-"A (C-style) [comment text](https://maxima.sourceforge.io/docs/manual/"
-"maxima_singlepage.html#Comments) can be part of a math cell as follows: `/* "
-"This comment will be ignored by Maxima */`"
+"A (C-style) [comment "
+"text](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Comments)"
+" can be part of a math cell as follows: `/* This comment will be ignored by "
+"Maxima */`"
 msgstr ""
 
 #. type: Plain text
@@ -8462,16 +8417,16 @@ msgstr ""
 #: ../../info/wxmaxima.md:73
 msgid ""
 "If the user tries to select a complete sentence, a word processor will try "
-"to extend the selection to automatically begin and end with a word boundary. "
-"Likewise, if more than one cell is selected, _wxMaxima_ will extend the "
+"to extend the selection to automatically begin and end with a word boundary."
+" Likewise, if more than one cell is selected, _wxMaxima_ will extend the "
 "selection to whole cells."
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:75
 msgid ""
-"What isn’t standard is that _wxMaxima_ provides drag-and-drop flexibility by "
-"defining two types of cursors. _WxMaxima_ will switch between them "
+"What isn’t standard is that _wxMaxima_ provides drag-and-drop flexibility by"
+" defining two types of cursors. _WxMaxima_ will switch between them "
 "automatically when needed:"
 msgstr ""
 
@@ -8496,8 +8451,9 @@ msgid ""
 "When you start wxMaxima, you will only see the blinking horizontal cursor. "
 "If you start typing, a math cell will be automatically created and the "
 "cursor will change to a regular vertical one (you will see a right arrow as "
-"\"prompt\", after the Math cell is evaluated (<kbd>CTRL</kbd>+<kbd>ENTER</"
-"kbd>), you will see the labels, e.g. `(%i1)`, `(%o1)`)."
+"\"prompt\", after the Math cell is evaluated "
+"(<kbd>CTRL</kbd>+<kbd>ENTER</kbd>), you will see the labels, e.g. `(%i1)`, "
+"`(%o1)`)."
 msgstr ""
 
 #. type: Plain text
@@ -8539,12 +8495,12 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:92
 msgid ""
-"The command in a code cell is executed once by pressing <kbd>CTRL</"
-"kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</"
-"kbd> key on the keypad. The _wxMaxima_ default is to enter commands when "
-"either <kbd>CTRL</kbd>+<kbd>ENTER</kbd> or <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> "
-"is entered, but _wxMaxima_ can be configured to execute commands in response "
-"to <kbd>ENTER</kbd>."
+"The command in a code cell is executed once by pressing "
+"<kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the "
+"<kbd>ENTER</kbd> key on the keypad. The _wxMaxima_ default is to enter "
+"commands when either <kbd>CTRL</kbd>+<kbd>ENTER</kbd> or "
+"<kbd>SHIFT</kbd>+<kbd>ENTER</kbd> is entered, but _wxMaxima_ can be "
+"configured to execute commands in response to <kbd>ENTER</kbd>."
 msgstr ""
 
 #. type: Plain text
@@ -8555,8 +8511,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:96
 msgid ""
-"_WxMaxima_ contains an autocompletion feature that is triggered via the menu "
-"(Cell/Complete Word) or alternatively by pressing the key combination "
+"_WxMaxima_ contains an autocompletion feature that is triggered via the menu"
+" (Cell/Complete Word) or alternatively by pressing the key combination "
 "<kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. "
 "For example, if activated within a unit specification for ezUnits it will "
 "offer a list of applicable units."
@@ -8571,11 +8527,11 @@ msgstr ""
 #: ../../info/wxmaxima.md:100
 msgid ""
 "Besides completing a file name, a unit name, or the current command or "
-"variable name, the autocompletion is able to show a template for most of the "
-"commands indicating the type (and meaning) of the parameters this program "
-"expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</"
-"kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show "
-"Template)."
+"variable name, the autocompletion is able to show a template for most of the"
+" commands indicating the type (and meaning) of the parameters this program "
+"expects. To activate this feature press "
+"<kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective "
+"menu item (Cell/Show Template)."
 msgstr ""
 
 #. type: Plain text
@@ -8586,8 +8542,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:104
 msgid ""
-"Computers traditionally stored characters in 8-bit values. This allows for a "
-"maximum of 256 different characters. All letters, numbers, and control "
+"Computers traditionally stored characters in 8-bit values. This allows for a"
+" maximum of 256 different characters. All letters, numbers, and control "
 "symbols (end of transmission, end of string, lines and edges for drawing "
 "rectangles for menus _etc_.) of nearly any given language can fit within "
 "that limit."
@@ -8596,18 +8552,19 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:106
 msgid ""
-"For most countries, the codepage of 256 characters that has been chosen does "
-"not include things like Greek letters, though, that are frequently used in "
-"mathematics. To overcome this type of limitation [Unicode](https://home."
-"unicode.org/) has been invented: An encoding that makes English text work "
-"like normal, but to use much more than 256 characters."
+"For most countries, the codepage of 256 characters that has been chosen does"
+" not include things like Greek letters, though, that are frequently used in "
+"mathematics. To overcome this type of limitation "
+"[Unicode](https://home.unicode.org/) has been invented: An encoding that "
+"makes English text work like normal, but to use much more than 256 "
+"characters."
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:108
 msgid ""
-"_Maxima_ allows Unicode if it was compiled using a Lisp compiler that either "
-"supports Unicode or that doesn’t care about the font encoding. As at least "
+"_Maxima_ allows Unicode if it was compiled using a Lisp compiler that either"
+" supports Unicode or that doesn’t care about the font encoding. As at least "
 "one of this pair of conditions is likely to be true. _WxMaxima_ provides a "
 "method of entering Greek characters using the keyboard:"
 msgstr ""
@@ -8623,8 +8580,8 @@ msgstr ""
 #: ../../info/wxmaxima.md:111
 msgid ""
 "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or "
-"two for the Greek letter omicron) and <kbd>ESC</kbd> again. In this case the "
-"following letters are supported:"
+"two for the Greek letter omicron) and <kbd>ESC</kbd> again. In this case the"
+" following letters are supported:"
 msgstr ""
 
 #. type: Plain text
@@ -8653,8 +8610,7 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:132
-msgid ""
-"You can also use the \"Greek letters\"-sidebar to enter the Greek letters."
+msgid "You can also use the \"Greek letters\"-sidebar to enter the Greek letters."
 msgstr ""
 
 #. type: Plain text
@@ -8666,25 +8622,26 @@ msgstr ""
 #: ../../info/wxmaxima.md:138
 msgid ""
 "Several Latin letters look like the Greek letters, e.g. the Latin letter "
-"\"A\" and the Greek letter \"Alpha\". Although they look identical, they are "
-"two different Unicode characters, represented by different Unicode code "
+"\"A\" and the Greek letter \"Alpha\". Although they look identical, they are"
+" two different Unicode characters, represented by different Unicode code "
 "points (numbers)."
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:143
 msgid ""
-"This might be problematic, if you assign a value to the variable A and later "
-"use the Greek letter Alpha to do something with this variable, especially on "
-"printouts.  For the Greek letter my (which is also used as prefix for micro) "
-"there are also two different Unicode code points."
+"This might be problematic, if you assign a value to the variable A and later"
+" use the Greek letter Alpha to do something with this variable, especially "
+"on printouts.  For the Greek letter my (which is also used as prefix for "
+"micro) there are also two different Unicode code points."
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:146
 msgid ""
 "The \"Greek letters\"-sidebar therefore has the option, that lookalike "
-"characters are not available (which can be changed using a right-click menu)."
+"characters are not available (which can be changed using a right-click "
+"menu)."
 msgstr ""
 
 #. type: Plain text
@@ -8753,7 +8710,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:201
 msgid ""
-"You can also use the \"Symbols\"-sidebar to enter these Mathematical symbols."
+"You can also use the \"Symbols\"-sidebar to enter these Mathematical "
+"symbols."
 msgstr ""
 
 #. type: Plain text
@@ -8769,8 +8727,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:205
 msgid ""
-"<kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> therefore results in an "
-"`a`."
+"<kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> therefore results in an"
+" `a`."
 msgstr ""
 
 #. type: Plain text
@@ -8786,8 +8744,8 @@ msgstr ""
 #: ../../info/wxmaxima.md:210
 msgid ""
 "It may be the case that e.g. Greek characters or mathematical symbols are "
-"not included in the selected font, then they can not be displayed.  To solve "
-"that problem, select other fonts (using: Edit -> Configure -> Style)."
+"not included in the selected font, then they can not be displayed.  To solve"
+" that problem, select other fonts (using: Edit -> Configure -> Style)."
 msgstr ""
 
 #. type: Plain text
@@ -8825,10 +8783,10 @@ msgstr ""
 msgid ""
 "It is recommended to use **Maxima code** (not these Unicode code points) in "
 "input cells (Rationale: (a) it might be possible, that the used font for "
-"math input does not contain them; (b) if you save the document as `wxm`-"
-"file, it is usually readable by (command line) Maxima, but these changes "
-"will of course not work in command line Maxima); but they may occur, if you "
-"cut&paste a formula from another document."
+"math input does not contain them; (b) if you save the document as "
+"`wxm`-file, it is usually readable by (command line) Maxima, but these "
+"changes will of course not work in command line Maxima); but they may occur,"
+" if you cut&paste a formula from another document."
 msgstr ""
 
 #. type: Plain text
@@ -8841,15 +8799,16 @@ msgstr ""
 msgid ""
 "Shortcuts to the most important _Maxima_ commands, things like a table of "
 "contents, windows with debug messages or a history of the last issued "
-"commands can be accessed using the side panes. They can be enabled using the "
-"\"View\" menu. They all can be moved to other locations inside or outside "
+"commands can be accessed using the side panes. They can be enabled using the"
+" \"View\" menu. They all can be moved to other locations inside or outside "
 "the _wxMaxima_ window. Other useful panes is the one that allows to input "
 "Greek letters using the mouse."
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:227
-msgid "![Example of different side panes](./SidePanes.png){ id=img_SidePanes }"
+msgid ""
+"![Example of different side panes](./SidePanes.png){ id=img_SidePanes }"
 msgstr ""
 
 #. type: Plain text
@@ -8863,8 +8822,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:232
 msgid ""
-"![Increase or decrease headings in the TOC side pane](./Sidepane-TOC-convert-"
-"headings.png){ id=Sidepane-TOC-convert-headings }"
+"![Increase or decrease headings in the TOC side pane](./Sidepane-TOC-"
+"convert-headings.png){ id=Sidepane-TOC-convert-headings }"
 msgstr ""
 
 #. type: Plain text
@@ -8875,10 +8834,10 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:236
 msgid ""
-"Several word processors and similar programs either recognize [MathML]"
-"(https://www.w3.org/Math/) input and automatically insert it as an editable "
-"2D equation - or (like LibreOffice) have an equation editor that offers an "
-"“import MathML from clipboard” feature. Others support RTF maths. "
+"Several word processors and similar programs either recognize "
+"[MathML](https://www.w3.org/Math/) input and automatically insert it as an "
+"editable 2D equation - or (like LibreOffice) have an equation editor that "
+"offers an “import MathML from clipboard” feature. Others support RTF maths. "
 "_WxMaxima_, therefore, offers several entries in the right-click menu."
 msgstr ""
 
@@ -8890,9 +8849,9 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:240
 msgid ""
-"_WxMaxima_ offers a set of standard [Markdown](https://en.wikipedia.org/wiki/"
-"Markdown) conventions that don’t collide with mathematical notation. One of "
-"these elements is bullet lists."
+"_WxMaxima_ offers a set of standard "
+"[Markdown](https://en.wikipedia.org/wiki/Markdown) conventions that don’t "
+"collide with mathematical notation. One of these elements is bullet lists."
 msgstr ""
 
 #. type: Plain text
@@ -8912,7 +8871,8 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:252
-msgid "_WxMaxima_ will recognize text starting with `>` chars as block quotes:"
+msgid ""
+"_WxMaxima_ will recognize text starting with `>` chars as block quotes:"
 msgstr ""
 
 #. type: Plain text
@@ -8938,9 +8898,9 @@ msgstr ""
 #: ../../info/wxmaxima.md:268
 msgid ""
 "Other symbols the HTML and TeX export will recognize are `<=` and `>=` for "
-"comparisons, a double-pointed double arrow (`<=>`), single-headed arrows (`<-"
-">`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also "
-"`<<` and `>>` are recognized."
+"comparisons, a double-pointed double arrow (`<=>`), single-headed arrows "
+"(`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also"
+" `<<` and `>>` are recognized."
 msgstr ""
 
 #. type: Plain text
@@ -8967,8 +8927,9 @@ msgstr ""
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:276
 msgid ""
-"<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</"
-"kbd> triggers the auto-completion mechanism."
+"<kbd>CTRL</kbd>+<kbd>TAB</kbd> or "
+"<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> triggers the auto-completion"
+" mechanism."
 msgstr ""
 
 #. type: Bullet: '- '
@@ -9017,14 +8978,15 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:291
 msgid ""
-"One example is shown below. `Quadratic.mac` defines a function and afterward "
-"generates a plot with `wxdraw2d()`.  Afterward the contents of the file "
+"One example is shown below. `Quadratic.mac` defines a function and afterward"
+" generates a plot with `wxdraw2d()`.  Afterward the contents of the file "
 "`Quadratic.mac` are printed and newly defined function `f()` is evaluated."
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:293
-msgid "![Loading a file with `batch()`](./BatchImage.png){ id=img_BatchImage }"
+msgid ""
+"![Loading a file with `batch()`](./BatchImage.png){ id=img_BatchImage }"
 msgstr ""
 
 #. type: Plain text
@@ -9053,10 +9015,10 @@ msgstr ""
 #: ../../info/wxmaxima.md:302
 msgid ""
 "`.wxm` files contain the worksheet except for _Maxima_’s output. On Maxima "
-"versions >5.38 they can be read using _Maxima_’s `load()` function just as ."
-"mac files. Well - mostly. Questions (like `asksign(x)`) are problematic, as "
-"the answer is written in the `.wxm` file (so that it can be suggested after "
-"loading), but that can Maxima not evaluate.  You can prevent Maxima from "
+"versions >5.38 they can be read using _Maxima_’s `load()` function just as "
+".mac files. Well - mostly. Questions (like `asksign(x)`) are problematic, as"
+" the answer is written in the `.wxm` file (so that it can be suggested after"
+" loading), but that can Maxima not evaluate.  You can prevent Maxima from "
 "asking questions by using `assume()` to declare some properties, Maxima "
 "wants to know."
 msgstr ""
@@ -9089,8 +9051,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:315
 msgid ""
-"```maxima /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/ /* "
-"[ Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */ ```"
+"```maxima /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/ /* ["
+" Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */ ```"
 msgstr ""
 
 #. type: Plain text
@@ -9113,8 +9075,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:325
 msgid ""
-"or (in a Math cell the input is of course *not* commented out (the output is "
-"not saved in a `wxm` file)):"
+"or (in a Math cell the input is of course *not* commented out (the output is"
+" not saved in a `wxm` file)):"
 msgstr ""
 
 #. type: Plain text
@@ -9198,12 +9160,12 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:364
 msgid ""
-"A `wxmx`-file seems to be a binary format, but one can handle it with tools, "
-"which are included in your OS. It is a zip file, one can decompress it with "
-"`unzip` (maybe rename it before, so that is recognized by the unzip program "
-"of your OS).  We do not use the compression function, just the possibility "
-"to merge several files into one file - images are already compressed and the "
-"rest is simple text (probably much smaller, than huge images, which are "
+"A `wxmx`-file seems to be a binary format, but one can handle it with tools,"
+" which are included in your OS. It is a zip file, one can decompress it with"
+" `unzip` (maybe rename it before, so that is recognized by the unzip program"
+" of your OS).  We do not use the compression function, just the possibility "
+"to merge several files into one file - images are already compressed and the"
+" rest is simple text (probably much smaller, than huge images, which are "
 "included)."
 msgstr ""
 
@@ -9215,8 +9177,8 @@ msgstr ""
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:371
 msgid ""
-"`mimetype`: this file does contain the mimetype of wxMaxima files: `text/x-"
-"wxmathml`"
+"`mimetype`: this file does contain the mimetype of wxMaxima files: "
+"`text/x-wxmathml`"
 msgstr ""
 
 #. type: Bullet: '- '
@@ -9242,8 +9204,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:373
 msgid ""
-"So, if something goes wrong, you can unzip a wxMaxima document (maybe rename "
-"it before to a `zip`-file), maybe make changes in the `content.xml` file "
+"So, if something goes wrong, you can unzip a wxMaxima document (maybe rename"
+" it before to a `zip`-file), maybe make changes in the `content.xml` file "
 "with a text editor, or replace an broken image, zip the files again, "
 "probably rename the `zip` to a `wxmx`-file - and you get another modified "
 "`wxmx`-file."
@@ -9279,8 +9241,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:382
 msgid ""
-"![wxMaxima configuration 1](./wxMaxima_configuration_001.png)"
-"{ id=img_wxMaxima_configuration_001 }"
+"![wxMaxima configuration 1](./wxMaxima_configuration_001.png){ "
+"id=img_wxMaxima_configuration_001 }"
 msgstr ""
 
 #. type: Plain text
@@ -9292,8 +9254,8 @@ msgstr ""
 #: ../../info/wxmaxima.md:386
 msgid ""
 "The animation framerate that is used for new animations is kept in the "
-"variable `wxanimate_framerate`. The initial value this variable will contain "
-"in a new worksheet can be changed using the configuration dialogue."
+"variable `wxanimate_framerate`. The initial value this variable will contain"
+" in a new worksheet can be changed using the configuration dialogue."
 msgstr ""
 
 #. type: Plain text
@@ -9304,8 +9266,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:390
 msgid ""
-"After the next start, plots embedded into the worksheet will be created with "
-"this size if the value of `wxplot_size` isn’t changed by _maxima_."
+"After the next start, plots embedded into the worksheet will be created with"
+" this size if the value of `wxplot_size` isn’t changed by _maxima_."
 msgstr ""
 
 #. type: Plain text
@@ -9369,7 +9331,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:414
 msgid ""
-"If this option isn’t set _wxMaxima_ behaves more like a modern cellphone app:"
+"If this option isn’t set _wxMaxima_ behaves more like a modern cellphone "
+"app:"
 msgstr ""
 
 #. type: Bullet: '- '
@@ -9394,10 +9357,10 @@ msgid ""
 "a file `.wxMaxima` in your home directory (if you are using wxWidgets \\< "
 "3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is "
 "used). You can retrieve the wxWidgets version from the command "
-"`wxbuild_info();` or by using the menu option Help->About. [wxWidgets]"
-"(https://www.wxwidgets.org/) is the cross-platform GUI library, which is the "
-"base for _wxMaxima_ (therefore the `wx` in the name).  (Since the filename "
-"starts with a dot, `.wxMaxima` or `.config` will be hidden)."
+"`wxbuild_info();` or by using the menu option Help->About. "
+"[wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, "
+"which is the base for _wxMaxima_ (therefore the `wx` in the name).  (Since "
+"the filename starts with a dot, `.wxMaxima` or `.config` will be hidden)."
 msgstr ""
 
 #. type: Plain text
@@ -9418,8 +9381,8 @@ msgstr ""
 msgid ""
 "_WxMaxima_ is primarily a graphical user interface for _Maxima_. As such, "
 "its main purpose is to pass along commands to _Maxima_ and to report the "
-"results of executing those commands. In some cases, however, _wxMaxima_ adds "
-"functionality to _Maxima_. _WxMaxima_’s ability to generate reports by "
+"results of executing those commands. In some cases, however, _wxMaxima_ adds"
+" functionality to _Maxima_. _WxMaxima_’s ability to generate reports by "
 "exporting a workbook’s contents to HTML and LaTeX files has been mentioned. "
 "This section considers some ways that _wxMaxima_ enhances the inclusion of "
 "graphics in a session."
@@ -9470,8 +9433,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:445
 msgid ""
-"![How variables are autosubscripted using wxsubscripts](./wxsubscripts.png)"
-"{ id=img_wxsubscripts }"
+"![How variables are autosubscripted using wxsubscripts](./wxsubscripts.png){"
+" id=img_wxsubscripts }"
 msgstr ""
 
 #. type: Plain text
@@ -9498,11 +9461,11 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:453
 msgid ""
-"Long-running commands can provide user feedback in the status bar. This user "
-"feedback is replaced by any new feedback that is placed there (allowing to "
+"Long-running commands can provide user feedback in the status bar. This user"
+" feedback is replaced by any new feedback that is placed there (allowing to "
 "use it as a progress indicator) and is deleted as soon as the current "
-"command sent to _Maxima_ is finished. It is safe to use `wxstatusbar()` even "
-"in libraries that might be used with plain _Maxima_ (as opposed to "
+"command sent to _Maxima_ is finished. It is safe to use `wxstatusbar()` even"
+" in libraries that might be used with plain _Maxima_ (as opposed to "
 "_wxMaxima_): If _wxMaxima_ isn’t present the `wxstatusbar()` command will "
 "just be left unevaluated."
 msgstr ""
@@ -9534,15 +9497,15 @@ msgid ""
 "The command `wxworksheettohtml()` exports the current worksheet to an HTML "
 "file from within a running _Maxima_ session, which is convenient for "
 "scripted or batch export. Like `wxstatusbar()` it is safe to use in code "
-"that might also run in plain (console) _Maxima_: if _wxMaxima_ isn’t present "
-"the command is simply left unevaluated."
+"that might also run in plain (console) _Maxima_: if _wxMaxima_ isn’t present"
+" the command is simply left unevaluated."
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:473
 msgid ""
-"```maxima wxworksheettohtml(\"report.html\")$ wxworksheettohtml(\"report."
-"html\", flavor=\"svg\", wxmx=true)$ ```"
+"```maxima wxworksheettohtml(\"report.html\")$ "
+"wxworksheettohtml(\"report.html\", flavor=\"svg\", wxmx=true)$ ```"
 msgstr ""
 
 #. type: Plain text
@@ -9566,9 +9529,10 @@ msgstr ""
 #: ../../info/wxmaxima.md:482
 msgid ""
 "The `flavor` values match the equation formats offered by the graphical "
-"**File → Export** dialog: `mathml` produces a self-contained page that needs "
-"no internet connection, `mathjax` adds a MathJaX fall-back for browsers that "
-"still lack MathML, and `svg`/`bitmap` render every equation to an image."
+"**File → Export** dialog: `mathml` produces a self-contained page that needs"
+" no internet connection, `mathjax` adds a MathJaX fall-back for browsers "
+"that still lack MathML, and `svg`/`bitmap` render every equation to an "
+"image."
 msgstr ""
 
 #. type: Plain text
@@ -9581,8 +9545,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:489
 msgid ""
-"```maxima wxworksheettotex(\"report.tex\")$ wxworksheettotex(\"report.tex\", "
-"documentclass=\"report\", documentclassoptions=\"12pt,a4paper\")$ ```"
+"```maxima wxworksheettotex(\"report.tex\")$ wxworksheettotex(\"report.tex\","
+" documentclass=\"report\", documentclassoptions=\"12pt,a4paper\")$ ```"
 msgstr ""
 
 #. type: Plain text
@@ -9665,8 +9629,8 @@ msgid ""
 "If you got problems with one of these functions, please check, if the "
 "problem exists in the the Maxima function too (e.g. you got an error with "
 "`wxplot2d()`, check the same plot in the Maxima command `plot2d()` (which "
-"opens the plot in a separate Window)). If the problem does not disappear, it "
-"is most likely a Maxima issue and should be reported in the [Maxima "
+"opens the plot in a separate Window)). If the problem does not disappear, it"
+" is most likely a Maxima issue and should be reported in the [Maxima "
 "bugtracker](https://sourceforge.net/p/maxima/bugs/). Or maybe a Gnuplot "
 "issue."
 msgstr ""
@@ -9706,8 +9670,8 @@ msgstr ""
 msgid ""
 "If the size of only one plot is to be changed _Maxima_ provides a canonical "
 "way to change an attribute only for the current cell. In this usage the "
-"specification `wxplot_size = [value1, value2]` is appended to the "
-"`wxdraw2d( )` command, and is not part of the `wxdraw2d` command."
+"specification `wxplot_size = [value1, value2]` is appended to the `wxdraw2d("
+" )` command, and is not part of the `wxdraw2d` command."
 msgstr ""
 
 #. type: Plain text
@@ -9729,8 +9693,8 @@ msgstr ""
 msgid ""
 "Setting the size of embedded plot with `wxplot_size` works for embedded "
 "plots using e.g. `wxplot`, `wxdraw`, `wxcontour_plot` and `wximplicit_plot` "
-"commands and for embedded animations with `with_slider_draw` and `wxanimate` "
-"commands."
+"commands and for embedded animations with `with_slider_draw` and `wxanimate`"
+" commands."
 msgstr ""
 
 #. type: Plain text
@@ -9772,11 +9736,11 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:564
 msgid ""
-"On MS Windows, there are two Gnuplot programs, `gnuplot.exe` and `wgnuplot."
-"exe`.  You can configure, which command should be used using the "
+"On MS Windows, there are two Gnuplot programs, `gnuplot.exe` and "
+"`wgnuplot.exe`.  You can configure, which command should be used using the "
 "configuration menu. `wgnuplot.exe` offers the possibility to open a console "
-"window, where _gnuplot_ commands can be entered into, `gnuplot.exe` does not "
-"offer this possibility. Unfortunately, `wgnuplot.exe` causes _Gnuplot_ to "
+"window, where _gnuplot_ commands can be entered into, `gnuplot.exe` does not"
+" offer this possibility. Unfortunately, `wgnuplot.exe` causes _Gnuplot_ to "
 "\"steal\" the keyboard focus for a short time every time a plot is prepared."
 msgstr ""
 
@@ -9791,8 +9755,9 @@ msgid ""
 "3D diagrams tend to make it hard to read quantitative data. A viable "
 "alternative might be to assign the 3rd parameter to the mouse wheel. The "
 "`with_slider_draw` command is a version of `wxdraw2d` that does prepare "
-"multiple plots and allows to switch between them by moving the slider on top "
-"of the screen. _WxMaxima_ allows to export this animation as an animated gif."
+"multiple plots and allows to switch between them by moving the slider on top"
+" of the screen. _WxMaxima_ allows to export this animation as an animated "
+"gif."
 msgstr ""
 
 #. type: Plain text
@@ -9900,8 +9865,8 @@ msgstr ""
 #: ../../info/wxmaxima.md:626
 msgid ""
 "Normally the animations are played back or exported with the frame rate "
-"chosen in the configuration of _wxMaxima_. To set the speed at an individual "
-"animation is played back the variable `wxanimate_framerate` can be used:"
+"chosen in the configuration of _wxMaxima_. To set the speed at an individual"
+" animation is played back the variable `wxanimate_framerate` can be used:"
 msgstr ""
 
 #. type: Plain text
@@ -9996,8 +9961,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:675
 msgid ""
-"/* Paraboloid in window #3 */ draw3d(terminal=[wxt,3],explicit(x^2+y^2,"
-"x,-1,1,y,-1,1)); ```"
+"/* Paraboloid in window #3 */ "
+"draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1)); ```"
 msgstr ""
 
 #. type: Plain text
@@ -10095,9 +10060,9 @@ msgstr ""
 #: ../../info/wxmaxima.md:710
 msgid ""
 "Tries to find all points an expression like `y=sin(x)`, `y*sin(x)=3` or "
-"`x^2+y^2=4` is true at and plots the resulting curve in the `draw()` command "
-"the cursor currently is in. If there is no draw command a 2D scene with the "
-"plot is generated."
+"`x^2+y^2=4` is true at and plots the resulting curve in the `draw()` command"
+" the cursor currently is in. If there is no draw command a 2D scene with the"
+" plot is generated."
 msgstr ""
 
 #. type: Plain text
@@ -10156,8 +10121,8 @@ msgstr ""
 #: ../../info/wxmaxima.md:730
 msgid ""
 "(Only for 3D plots): Adds contour lines similar to the ones one can find in "
-"a map of a mountain to the plot commands that follow in the current `draw()` "
-"command and/or to the ground plane of the diagram. Alternatively, this "
+"a map of a mountain to the plot commands that follow in the current `draw()`"
+" command and/or to the ground plane of the diagram. Alternatively, this "
 "wizard allows skipping drawing the curves entirely only showing the contour "
 "plot."
 msgstr ""
@@ -10326,16 +10291,16 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:790
 msgid ""
-"For example, if Gnuplot is installed in `/opt` (maybe on MacOS), you can add "
-"`gnuplot_command:\"/opt/local/bin/gnuplot\"$` (or `/opt/gnuplot/bin/gnuplot` "
-"or any other path) to these files."
+"For example, if Gnuplot is installed in `/opt` (maybe on MacOS), you can add"
+" `gnuplot_command:\"/opt/local/bin/gnuplot\"$` (or "
+"`/opt/gnuplot/bin/gnuplot` or any other path) to these files."
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:792
 msgid ""
-"These files are in the Maxima user directory (usually `%USERPROFILE%/maxima` "
-"in Windows, `$HOME/.maxima` otherwise). The location can be found out with "
+"These files are in the Maxima user directory (usually `%USERPROFILE%/maxima`"
+" in Windows, `$HOME/.maxima` otherwise). The location can be found out with "
 "the command: `maxima_userdir;`"
 msgstr ""
 
@@ -10370,8 +10335,8 @@ msgstr ""
 #. type: Bullet: '- '
 #: ../../info/wxmaxima.md:805
 msgid ""
-"`wxplot_pngcairo` tells whether _wxMaxima_ tries to use _Gnuplot_’s pngcairo "
-"terminal that provides more line styles and a better overall graphics "
+"`wxplot_pngcairo` tells whether _wxMaxima_ tries to use _Gnuplot_’s pngcairo"
+" terminal that provides more line styles and a better overall graphics "
 "quality."
 msgstr ""
 
@@ -10385,10 +10350,10 @@ msgstr ""
 msgid ""
 "`wxchangedir`: On most operating systems _wxMaxima_ automatically sets "
 "_Maxima_’s working directory to the directory of the current file. This "
-"allows file I/O (e.g. by `read_matrix`) to work without specifying the whole "
-"path to the file that has to be read or written. On Windows this feature "
-"sometimes causes error messages and therefore can be set to `false` from the "
-"config dialogue."
+"allows file I/O (e.g. by `read_matrix`) to work without specifying the whole"
+" path to the file that has to be read or written. On Windows this feature "
+"sometimes causes error messages and therefore can be set to `false` from the"
+" config dialogue."
 msgstr ""
 
 #. type: Bullet: '- '
@@ -10452,8 +10417,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:822
 msgid ""
-"![A third table example](./MatrixTableExample.png)"
-"{ id=img_MatrixTableExample }"
+"![A third table example](./MatrixTableExample.png){ "
+"id=img_MatrixTableExample }"
 msgstr ""
 
 #. type: Plain text
@@ -10466,15 +10431,15 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:826
 msgid ""
-"![Another table_form example](./SecondTableExample.png)"
-"{ id=img_SecondTableExample }"
+"![Another table_form example](./SecondTableExample.png){ "
+"id=img_SecondTableExample }"
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:828
 msgid ""
-"The function `wx_matrix()` is a wrapper for Maxima's `matrix()` command that "
-"allows for more flexible formatting of matrices in wxMaxima:"
+"The function `wx_matrix()` is a wrapper for Maxima's `matrix()` command that"
+" allows for more flexible formatting of matrices in wxMaxima:"
 msgstr ""
 
 #. type: Plain text
@@ -10607,8 +10572,8 @@ msgstr ""
 #: ../../info/wxmaxima.md:869
 msgid ""
 "WxMaxima’s help menu provides access to the Maxima and wxMaxima manual, "
-"tips, some example worksheets and in command line Maxima included demos (the "
-"`demo()` command)."
+"tips, some example worksheets and in command line Maxima included demos (the"
+" `demo()` command)."
 msgstr ""
 
 #. type: Plain text
@@ -10627,8 +10592,8 @@ msgstr ""
 #: ../../info/wxmaxima.md:877
 msgid ""
 "That is valid for command-line Maxima, however in wxMaxima by default it is "
-"necessary to continue the demonstration with: <kbd>CTRL</kbd>+<kbd>ENTER</"
-"kbd>"
+"necessary to continue the demonstration with: "
+"<kbd>CTRL</kbd>+<kbd>ENTER</kbd>"
 msgstr ""
 
 #. type: Plain text
@@ -10651,8 +10616,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:887
 msgid ""
-"Since _Maxima_ (the program that does the actual mathematics) and _wxMaxima_ "
-"(providing the easy-to-use user interface) are separate programs that "
+"Since _Maxima_ (the program that does the actual mathematics) and _wxMaxima_"
+" (providing the easy-to-use user interface) are separate programs that "
 "communicate by the means of a local network connection. Therefore the most "
 "probable cause is that this connection is somehow not working. For example, "
 "a firewall could be set up in a way that it doesn’t just prevent "
@@ -10668,9 +10633,9 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:889
 msgid ""
-"On Unix computers another possible reason would be that the loopback network "
-"that provides network connections between two programs in the same computer "
-"isn’t properly configured."
+"On Unix computers another possible reason would be that the loopback network"
+" that provides network connections between two programs in the same computer"
+" isn’t properly configured."
 msgstr ""
 
 #. type: Plain text
@@ -10689,13 +10654,14 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:895
 msgid ""
-"If the zip signature at the end of the file is still intact after renaming a "
-"broken `.wxmx` file to `.zip` most operating systems will provide a way to "
-"extract any portion of the information that is stored inside it. This can be "
-"done when there is a need of recovering the original image files from a text "
-"processor document. If the zip signature isn’t intact that does not need to "
-"be the end of the world: If _wxMaxima_ during saving detected that something "
-"went wrong there will be a `.wxmx~` file whose contents might help."
+"If the zip signature at the end of the file is still intact after renaming a"
+" broken `.wxmx` file to `.zip` most operating systems will provide a way to "
+"extract any portion of the information that is stored inside it. This can be"
+" done when there is a need of recovering the original image files from a "
+"text processor document. If the zip signature isn’t intact that does not "
+"need to be the end of the world: If _wxMaxima_ during saving detected that "
+"something went wrong there will be a `.wxmx~` file whose contents might "
+"help."
 msgstr ""
 
 #. type: Plain text
@@ -10712,8 +10678,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:899
 msgid ""
-"If a text file containing only these contents (e.g. copy and paste this text "
-"into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know "
+"If a text file containing only these contents (e.g. copy and paste this text"
+" into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know "
 "how to recover the text from the document."
 msgstr ""
 
@@ -10775,8 +10741,8 @@ msgstr ""
 #: ../../info/wxmaxima.md:926
 msgid ""
 "The plotting command is part of a third-party package like `implicit_plot` "
-"but this package was not loaded by _Maxima_’s `load()` command before trying "
-"to plot."
+"but this package was not loaded by _Maxima_’s `load()` command before trying"
+" to plot."
 msgstr ""
 
 #. type: Bullet: '- '
@@ -10785,8 +10751,8 @@ msgid ""
 "_Maxima_ tried to do something the currently installed version of _Gnuplot_ "
 "isn’t able to understand. In this case, a file ending in `.gnuplot` located "
 "in the directory, which _Maxima_’s variable `maxima_userdir` is pointing, "
-"contains the instructions from _Maxima_ to _Gnuplot_. Most of the time, this "
-"file’s contents therefore are helpful when debugging the problem."
+"contains the instructions from _Maxima_ to _Gnuplot_. Most of the time, this"
+" file’s contents therefore are helpful when debugging the problem."
 msgstr ""
 
 #. type: Bullet: '- '
@@ -10828,8 +10794,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:934
 msgid ""
-"There are separate undo functions for cell operations and for changes inside "
-"of cells so chances are low that this ever happens. If it does there are "
+"There are separate undo functions for cell operations and for changes inside"
+" of cells so chances are low that this ever happens. If it does there are "
 "several methods to recover data:"
 msgstr ""
 
@@ -10853,7 +10819,8 @@ msgstr ""
 #: ../../info/wxmaxima.md:939
 msgid ""
 "If you don’t: Don’t panic. In the “View” menu there is a way to show a "
-"history pane that shows all _Maxima_ commands that have been issued recently."
+"history pane that shows all _Maxima_ commands that have been issued "
+"recently."
 msgstr ""
 
 #. type: Bullet: '- '
@@ -10874,8 +10841,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:947
 msgid ""
-"One possible reason is that _Maxima_ cannot be found in the location that is "
-"set in the “Maxima” tab of _wxMaxima_’s configuration dialog and therefore "
+"One possible reason is that _Maxima_ cannot be found in the location that is"
+" set in the “Maxima” tab of _wxMaxima_’s configuration dialog and therefore "
 "won’t run at all. Setting the path to a working _Maxima_ binary should fix "
 "this problem."
 msgstr ""
@@ -10903,21 +10870,21 @@ msgstr ""
 #: ../../info/wxmaxima.md:955
 msgid ""
 "The Lisp compiler SBCL by default comes with a memory limit that allows it "
-"to run even on low-end computers. When compiling a big software package like "
-"Lapack or dealing with extremely big lists of equations this limit might be "
-"too low. In order to extend the limits, SBCL can be provided with the "
+"to run even on low-end computers. When compiling a big software package like"
+" Lapack or dealing with extremely big lists of equations this limit might be"
+" too low. In order to extend the limits, SBCL can be provided with the "
 "command line parameter `--dynamic-space-size` that tells SBCL how many "
 "megabytes it should reserve. A 32bit Windows-SBCL can reserve up to 999 "
-"Megabytes. A 64-bit SBCL version running on Windows can be instructed to use "
-"more than the about 1280 Megabytes compiling Lapack needs."
+"Megabytes. A 64-bit SBCL version running on Windows can be instructed to use"
+" more than the about 1280 Megabytes compiling Lapack needs."
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:957
 msgid ""
 "One way to provide _Maxima_ (and thus SBCL) with command line parameters is "
-"the \"Additional parameters for Maxima\" field of _wxMaxima_’s configuration "
-"dialogue."
+"the \"Additional parameters for Maxima\" field of _wxMaxima_’s configuration"
+" dialogue."
 msgstr ""
 
 #. type: Plain text
@@ -10933,14 +10900,15 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:963
 msgid ""
-"Installing the package `ibus-gtk` should resolve this issue. See ([https://"
-"bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs."
-"launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558)) for details."
+"Installing the package `ibus-gtk` should resolve this issue. See "
+"([https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558))"
+" for details."
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:965
-msgid "## _WxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts"
+msgid ""
+"## _WxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts"
 msgstr ""
 
 #. type: Plain text
@@ -10984,8 +10952,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:986
 msgid ""
-"You can either disable Wayland and use X11 instead (globally)  or just tell, "
-"that wxMaxima should use the X Window System by setting: `GDK_BACKEND=x11`"
+"You can either disable Wayland and use X11 instead (globally)  or just tell,"
+" that wxMaxima should use the X Window System by setting: `GDK_BACKEND=x11`"
 msgstr ""
 
 #. type: Plain text
@@ -11050,8 +11018,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:1018
 msgid ""
-"The HTML browser might be a snap, flatpack or appimage version. All of these "
-"typically cannot access files that are installed on your local system. "
+"The HTML browser might be a snap, flatpack or appimage version. All of these"
+" typically cannot access files that are installed on your local system. "
 "Another reason might be that maxima or wxMaxima is installed as a snap, "
 "flatpack or something else that doesn’t give the host system access to its "
 "contents. A third reason might be that the maxima HTML manual isn’t "
@@ -11086,8 +11054,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:1031
 msgid ""
-"If a different format is to be used, it is easier to generate the images and "
-"then import them into the worksheet again:"
+"If a different format is to be used, it is easier to generate the images and"
+" then import them into the worksheet again:"
 msgstr ""
 
 #. type: Plain text
@@ -11166,8 +11134,8 @@ msgstr ""
 msgid ""
 "This might be an issue with the operating system. Disable the hiding of the "
 "menu bar (SystemSettings => Desktop & Dock => Menu Bar) might solve the "
-"issue. See [wxMaxima issue #1746](https://github.com/wxMaxima-developers/"
-"wxmaxima/issues/1746) for more information."
+"issue. See [wxMaxima issue #1746](https://github.com/wxMaxima-"
+"developers/wxmaxima/issues/1746) for more information."
 msgstr ""
 
 #. type: Plain text
@@ -11182,8 +11150,8 @@ msgid ""
 "events. Most log entries will be helpful for developers, especially in case "
 "of problems or bugs. If you run a \"Release\"-Build, the log windows is not "
 "shown by default, if you run a development version, it is shown by default "
-"as a second window. You can enable and disable this window using the \"View-"
-">Toggle log window\" menu entry."
+"as a second window. You can enable and disable this window using the "
+"\"View->Toggle log window\" menu entry."
 msgstr ""
 
 #. type: Plain text
@@ -11197,16 +11165,17 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:1086
 msgid ""
-"Such messages may be helpful, when you create bug reports (or trying to find "
-"a bug by yourself)."
+"Such messages may be helpful, when you create bug reports (or trying to find"
+" a bug by yourself)."
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1089
 msgid ""
-"Log messages can (additionally) be printed to STDERR, when using the command "
-"line option \"--logtostderr\". On Windows a separate text console will be "
-"opened, as a Windows GUI application does not have the standard IO connected."
+"Log messages can (additionally) be printed to STDERR, when using the command"
+" line option \"--logtostderr\". On Windows a separate text console will be "
+"opened, as a Windows GUI application does not have the standard IO "
+"connected."
 msgstr ""
 
 #. type: Plain text
@@ -11248,11 +11217,11 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:1107
 msgid ""
-"If wxWidgets is new enough, _wxMaxima_ will automatically be in dark mode if "
-"the rest of the operating system is. The worksheet itself is by default "
+"If wxWidgets is new enough, _wxMaxima_ will automatically be in dark mode if"
+" the rest of the operating system is. The worksheet itself is by default "
 "equipped with a bright background. But it can be configured otherwise. "
-"Alternatively, there is a `View/Invert worksheet brightness` menu entry that "
-"allows to quickly convert the worksheet from dark to bright and vice versa."
+"Alternatively, there is a `View/Invert worksheet brightness` menu entry that"
+" allows to quickly convert the worksheet from dark to bright and vice versa."
 msgstr ""
 
 #. type: Plain text
@@ -11267,7 +11236,8 @@ msgid ""
 "_WxMaxima_ delegates some big tasks like parsing _Maxima_’s >1000-page-"
 "manual to background tasks, which normally goes totally unnoticed. At the "
 "moment the result of such a task is needed, though, it is possible that "
-"_wxMaxima_ needs to wait a couple of seconds before it can continue its work."
+"_wxMaxima_ needs to wait a couple of seconds before it can continue its "
+"work."
 msgstr ""
 
 #. type: Plain text
@@ -11293,8 +11263,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:1122
 msgid ""
-"These locales maybe not present in the system. On Ubuntu/Debian systems they "
-"can be generated using: `dpkg-reconfigure locales`"
+"These locales maybe not present in the system. On Ubuntu/Debian systems they"
+" can be generated using: `dpkg-reconfigure locales`"
 msgstr ""
 
 #. type: Plain text
@@ -11306,9 +11276,9 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:1126
 msgid ""
-"You can find these symbols in the Unicode sidebar (search for ’double-struck "
-"capital’). But the selected font must also support these symbols. If they do "
-"not display properly, select another font."
+"You can find these symbols in the Unicode sidebar (search for ’double-struck"
+" capital’). But the selected font must also support these symbols. If they "
+"do not display properly, select another font."
 msgstr ""
 
 #. type: Plain text
@@ -11342,9 +11312,9 @@ msgstr ""
 #: ../../info/wxmaxima.md:1136
 msgid ""
 "If saving as wxmx file does not work, try saving the document as wxm file "
-"(and vice versa). And you can also try to remove all output (Menu Cell-"
-">Remove all output) and save that file, maybe some unexpected output causes "
-"issues during the save process."
+"(and vice versa). And you can also try to remove all output (Menu "
+"Cell->Remove all output) and save that file, maybe some unexpected output "
+"causes issues during the save process."
 msgstr ""
 
 #. type: Plain text
@@ -11356,8 +11326,8 @@ msgstr ""
 #: ../../info/wxmaxima.md:1142
 msgid ""
 "Usually you can start programs with a graphical user interface just by "
-"clicking on a desktop icon or desktop menu entry. WxMaxima - if started from "
-"the command line - still provides some command-line switches, though."
+"clicking on a desktop icon or desktop menu entry. WxMaxima - if started from"
+" the command line - still provides some command-line switches, though."
 msgstr ""
 
 #. type: Bullet: '- '
@@ -11386,8 +11356,8 @@ msgstr ""
 #: ../../info/wxmaxima.md:1158
 msgid ""
 "`-b` or `--batch`: If the command-line opens a file all cells in this file "
-"are evaluated and the file is saved afterward. This is for example useful if "
-"the session described in the file makes _Maxima_ generate output files. "
+"are evaluated and the file is saved afterward. This is for example useful if"
+" the session described in the file makes _Maxima_ generate output files. "
 "Batch-processing will be stopped if _wxMaxima_ detects that _Maxima_ has "
 "output an error and will pause if _Maxima_ has a question: Mathematics is "
 "somewhat interactive by nature so a completely interaction-free batch "
@@ -11428,21 +11398,22 @@ msgid ""
 "wxMaxima is mainly developed using the programming language C++ using the "
 "[wxWidgets framework](https://www.wxwidgets.org), as build system we use "
 "[CMake](https://www.cmake.org), a small part is written in Lisp. You can "
-"contribute to wxMaxima, join the wxMaxima project at <https://github.com/"
-"wxMaxima-developers/wxmaxima>, if you have knowledge of these programming "
-"languages and want to help and contribute to the open source project "
-"wxMaxima."
+"contribute to wxMaxima, join the wxMaxima project at "
+"<https://github.com/wxMaxima-developers/wxmaxima>, if you have knowledge of "
+"these programming languages and want to help and contribute to the open "
+"source project wxMaxima."
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:1168
 msgid ""
-"But not only programmers are necessary! You can also contribute to wxMaxima, "
-"if you help to improve the documentation, find and report bugs (and maybe "
-"bugfixes), suggest new features, help to translate wxMaxima or the manual to "
-"your language (read the README.md in the [locale subdirectory](https://"
-"github.com/wxMaxima-developers/wxmaxima/tree/main/locales) how wxMaxima and "
-"the manual can be translated)."
+"But not only programmers are necessary! You can also contribute to wxMaxima,"
+" if you help to improve the documentation, find and report bugs (and maybe "
+"bugfixes), suggest new features, help to translate wxMaxima or the manual to"
+" your language (read the README.md in the [locale "
+"subdirectory](https://github.com/wxMaxima-"
+"developers/wxmaxima/tree/main/locales) how wxMaxima and the manual can be "
+"translated)."
 msgstr ""
 
 #. type: Plain text
@@ -11453,8 +11424,9 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:1172
 msgid ""
-"The source code of wxMaxima is documented using Doxygen [here](https://"
-"wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/)."
+"The source code of wxMaxima is documented using Doxygen "
+"[here](https://wxmaxima-developers.github.io/wxmaxima/Doxygen-"
+"documentation/)."
 msgstr ""
 
 #. type: Plain text
@@ -11469,7 +11441,8 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:1175
 msgid ""
-"If you are a developer, you might want to try out a modified `wxmathML.lisp`-"
-"file without recompiling everything, one can use the command line option `--"
-"wxmathml-lisp=<str>` to use another Lisp file, not the included one."
+"If you are a developer, you might want to try out a modified "
+"`wxmathML.lisp`-file without recompiling everything, one can use the command"
+" line option `--wxmathml-lisp=<str>` to use another Lisp file, not the "
+"included one."
 msgstr ""
