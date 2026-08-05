@@ -1,5 +1,17 @@
 # Current development version
 
+- `EvaluationQueue` now catches (in `--batch` mode) rather than silently
+  proceeding on the failure mode behind GH #2196: a cell's text at the
+  moment it becomes the queue's current cell no longer necessarily matching
+  what was captured when the cell was queued -- the observed signature of a
+  statement (e.g. the `assume(...)` in the original report) never reaching
+  Maxima at all. The exact mechanism is still unknown, so this can't fix the
+  underlying bug, but it makes its effect loud instead of silent: a mismatch
+  now halts the batch run with a clear error naming both texts, the same way
+  an unmatched-parenthesis refusal already does, instead of quietly sending
+  (or skipping) the wrong thing. Not checked in interactive use, where a
+  cell's text can legitimately differ from what was queued if the user
+  edited it before its turn came up.
 - Test fixtures: removed the recorded auto-answer PR #2195 added for
   `tutorial_10Minutes`'s `assume(a > 0)$ integrate(...); forget(a > 0)$`
   cell. That auto-answer stopped the test from flaking, but it also silently

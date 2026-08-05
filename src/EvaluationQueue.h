@@ -95,11 +95,32 @@ private:
   std::size_t m_size;
   //! The label the user has assigned to the current command.
   wxString m_userLabel;
-  //! The groupCells in the evaluation Queue.
-  std::vector<CellPtr<GroupCell>> m_queue;
 
-  //! Starts tokenizing a cell: remembers its text and produces its first command.
-  void AddTokens(const GroupCell *cell);
+  //! A cell in the queue, together with the text it had when it was queued
+  //! (see m_integrityFailure below).
+  struct QueuedCell {
+    CellPtr<GroupCell> cell;
+    wxString textAtEnqueue;
+  };
+  //! The groupCells in the evaluation Queue.
+  std::vector<QueuedCell> m_queue;
+
+  //! Set by AddTokens() when the cell that just became current has different
+  //! text now than what was captured when it was added to the queue (see
+  //! GH #2196: this is the signature of a statement being silently dropped,
+  //! not something that can happen legitimately in --batch mode, where there
+  //! is no interactive user who could have edited a not-yet-reached queued
+  //! cell in the meantime). Purely informational here -- EvaluationQueue
+  //! itself always proceeds with the freshly-read text either way, exactly
+  //! as it did before this check existed; it is the caller's job to decide
+  //! whether the mismatch matters (see MaximaEvaluator::TriggerEvaluation()).
+  bool m_integrityFailure = false;
+  wxString m_integrityFailureEnqueuedText;
+  wxString m_integrityFailureCurrentText;
+
+  //! Starts tokenizing the queue's current (front) cell: remembers its text
+  //! and produces its first command.
+  void AddTokens();
   //! Tokenizes the next single command out of m_pendingText, in the mode current
   //! now, appending a ";" if it is the cell's last command and we are in maxima
   //! (not lisp) mode.
@@ -139,7 +160,7 @@ public:
   //! Is GroupCell gr part of the evaluation queue?
   bool IsLastInQueue(GroupCell const *gr)
     {
-      return !m_queue.empty() && (gr == m_queue.front());
+      return !m_queue.empty() && (gr == m_queue.front().cell);
     }
 
   //! Is GroupCell gr part of the evaluation queue?
@@ -171,6 +192,20 @@ public:
 
   //! Return the next command that needs to be evaluated.
   wxString GetCommand();
+
+  //! Did the cell that just became current (see GetCell()) have different
+  //! text than what was captured when it was added to the queue? See
+  //! m_integrityFailure -- this is purely a diagnostic signal, it does not
+  //! change what GetCommand() returns.
+  bool HasIntegrityFailure() const { return m_integrityFailure; }
+  //! The cell's text as it was when AddToQueue() was called, valid only
+  //! while HasIntegrityFailure() is true for the current cell.
+  const wxString &GetIntegrityFailureEnqueuedText() const
+    { return m_integrityFailureEnqueuedText; }
+  //! The cell's text as AddTokens() actually read it, valid only while
+  //! HasIntegrityFailure() is true for the current cell.
+  const wxString &GetIntegrityFailureCurrentText() const
+    { return m_integrityFailureCurrentText; }
 
   //! Get the size of the queue [in cells]
   int Size() const { return m_size; }

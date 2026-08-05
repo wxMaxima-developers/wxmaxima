@@ -357,6 +357,37 @@ void MaximaEvaluator::TriggerEvaluation() {
     return; // empty queue
   }
 
+  // GH #2196: the cell that just became current has different text now than
+  // when it was queued -- the signature of a statement being silently
+  // dropped (a live tcpdump capture confirmed this happens; the exact
+  // mechanism is still unknown, see AGENTS.md). Only treated as a hard
+  // error in --batch mode: there, nothing legitimate could have changed a
+  // not-yet-reached queued cell's text (no interactive user to edit it), so
+  // a mismatch there can only be this bug. In interactive use the same
+  // mismatch is ordinary and expected -- a user editing a cell before its
+  // turn comes up -- so it is intentionally not checked there; whatever the
+  // cell now reads is simply what gets evaluated, same as always.
+  if (m_wxMaxima.m_exitAfterEval &&
+      m_wxMaxima.GetWorksheet()->GetEvaluationQueue().HasIntegrityFailure()) {
+    auto &evaluationQueue = m_wxMaxima.GetWorksheet()->GetEvaluationQueue();
+    m_wxMaxima.GetWorksheet()->GetErrorList().Add(tmp);
+    m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::maximaerror);
+    auto cell = std::make_unique<TextCell>(
+        tmp, &m_wxMaxima.m_configuration,
+        _("Refusing to evaluate cell: its text changed between being "
+          "queued and being evaluated (see GH #2196).\nQueued as: ") +
+            evaluationQueue.GetIntegrityFailureEnqueuedText() +
+            _("\nNow reads: ") +
+            evaluationQueue.GetIntegrityFailureCurrentText() + wxS("\n"));
+    cell->SetType(MC_TYPE_ERROR);
+    tmp->SetOutput(std::move(cell));
+    evaluationQueue.Clear();
+    m_wxMaxima.GetWorksheet()->SetWorkingGroup(nullptr);
+    m_wxMaxima.GetWorksheet()->RequestRedraw();
+    AbortOnError();
+    return;
+  }
+
   // Add a semicolon at the end of the cell, if needed.
   if (tmp->AddEnding())
     m_wxMaxima.GetWorksheet()->GetEvaluationQueue().AddEnding();
