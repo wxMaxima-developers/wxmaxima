@@ -750,6 +750,17 @@ void Image::InvalidBitmap(const wxString &message) {
   // produced by GenerateInvalidBitmap() and never re-attempts a decode.
 }
 
+void Image::RecordDataUnavailable(const wxString &message) {
+  m_loadFailureKind = LoadFailureKind::DataUnavailable;
+  InvalidBitmap(message);
+}
+
+void Image::RecordDecodeFailure(const wxString &message, bool missingCodec) {
+  m_loadFailureKind =
+    missingCodec ? LoadFailureKind::MissingCodec : LoadFailureKind::DecodeFailed;
+  InvalidBitmap(message);
+}
+
 void Image::GenerateInvalidBitmap() {
   if (!m_isInvalid)
     return;
@@ -864,6 +875,10 @@ void Image::LoadImage_Backgroundtask(stop_token stopToken,
                                      wxString image, wxString wxmxFile,
                                      bool remove) {
   wxLogBuffer errorAggregator;
+  // A fresh attempt starts with a clean slate: if this Image is being
+  // reloaded after a previous attempt failed (e.g. a config change), a
+  // successful reload must not leave the earlier failure recorded.
+  m_loadFailureKind = LoadFailureKind::None;
 
   if (stopToken.stop_requested()) return;
 
@@ -900,7 +915,7 @@ void Image::LoadImage_Backgroundtask(stop_token stopToken,
       }
     }
     else
-      InvalidBitmap(errorAggregator.GetBuffer());
+      RecordDataUnavailable(errorAggregator.GetBuffer());
   }
 
   if (stopToken.stop_requested()) return;
@@ -979,6 +994,11 @@ void Image::LoadImage_Backgroundtask(stop_token stopToken,
           m_svgRast.reset(wxm_nsvgCreateRasterizer());
         m_originalWidth = m_svgImage->width;
         m_originalHeight = m_svgImage->height;
+      } else {
+        // nanosvg is vendored, not a wxWidgets codec: there is no "missing
+        // handler" case here, a parse failure is always a real bug.
+        RecordDecodeFailure(_("Could not parse the SVG image data."),
+                             /* missingCodec = */ false);
       }
     } else {
       wxMemoryInputStream istream(m_compressedImage.GetData(),
@@ -1003,10 +1023,18 @@ void Image::LoadImage_Backgroundtask(stop_token stopToken,
         }
       } else {
         wxString errorMessage = errorAggregator.GetBuffer();
-        InvalidBitmap(errorMessage);
+        // A null handler means this wxWidgets build has no decoder registered
+        // for the format at all (e.g. WebP/TIFF support not compiled in) --
+        // not our bug. A registered handler that still failed to decode the
+        // actual bytes is a real failure.
+        bool missingCodec =
+          (wxImage::FindHandler(m_extension, wxBITMAP_TYPE_ANY) == nullptr);
+        RecordDecodeFailure(errorMessage, missingCodec);
         wxLogMessage("LoadImage(): %s", errorMessage.mb_str());
       }
     }
+  } else {
+    RecordDataUnavailable(_("No usable image data was found."));
   }
 }
 

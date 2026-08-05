@@ -59,6 +59,9 @@ public:
   virtual size_t GetOriginalWidth() const = 0;
   virtual size_t GetOriginalHeight() const = 0;
 
+  virtual void TallyImageLoadFailures(int &dataUnavailable,
+                                      int &decodeFailed) const override = 0;
+
   //! Can this image be exported in SVG format?
   virtual bool CanExportSVG() const = 0;
 

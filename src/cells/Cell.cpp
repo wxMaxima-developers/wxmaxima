@@ -1323,6 +1323,20 @@ void Cell::ResetSize_RecursivelyList() const {
     tmp.ResetSize_Recursively();
 }
 
+void Cell::TallyImageLoadFailures_Recursively(int &dataUnavailable,
+                                              int &decodeFailed) const {
+  TallyImageLoadFailures(dataUnavailable, decodeFailed);
+  for (Cell &cell : OnInner(this))
+    for (Cell &tmp : OnList(&cell))
+      tmp.TallyImageLoadFailures_Recursively(dataUnavailable, decodeFailed);
+}
+
+void Cell::TallyImageLoadFailures_RecursivelyList(int &dataUnavailable,
+                                                  int &decodeFailed) const {
+  for (const Cell &tmp : OnList(this))
+    tmp.TallyImageLoadFailures_Recursively(dataUnavailable, decodeFailed);
+}
+
 void Cell::ResetSize() const {
   m_cellCfgCnt_last--;
   m_width.Invalidate();

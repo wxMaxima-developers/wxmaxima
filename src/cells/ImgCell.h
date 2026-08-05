@@ -69,6 +69,14 @@ public:
   int GetPPI() const override {return m_image->GetPPI();}
   size_t GetOriginalWidth() const override {return m_image->GetOriginalWidth();}
   size_t GetOriginalHeight() const override {return m_image->GetOriginalHeight();}
+  void TallyImageLoadFailures(int &dataUnavailable, int &decodeFailed) const override {
+    if (!m_image) return;
+    switch (m_image->GetLoadFailureKind()) {
+    case Image::LoadFailureKind::DataUnavailable: dataUnavailable++; break;
+    case Image::LoadFailureKind::DecodeFailed: decodeFailed++; break;
+    default: break;
+    }
+  }
 
   void ReloadImage(const wxString &image, const wxString &wxmFile);
 

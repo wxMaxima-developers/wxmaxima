@@ -2032,6 +2032,38 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       // instead would disable exit-on-error in every other window of a
       // --single_process run (the multithreadtest hang).
       m_exitOnErrorArmed = false;
+
+      // GH #2178: tally each image's CURRENT, final state -- not "did a
+      // failure ever happen this session", which would also catch a stale
+      // embedded copy that was already superseded by a fresh, successful
+      // evaluation (e.g. show_image() re-loading over an old wxmx's broken
+      // copy of the same file). Also blocks until every image in the
+      // document has resolved, since one produced by the very last evaluated
+      // cell (e.g. a plot) can still be decoding on a background thread at
+      // this exact instant.
+      int imagesDataUnavailable = 0;
+      int imagesDecodeFailed = 0;
+      if (GetWorksheet()->GetTree())
+        GetWorksheet()->GetTree()->TallyImageLoadFailures_RecursivelyList(
+          imagesDataUnavailable, imagesDecodeFailed);
+
+      // An image whose raw data we never even got is always a real failure.
+      // A registered decoder failing on bytes it did receive only fails the
+      // batch run under --debug, since plain --batch's contract is "evaluate
+      // correctly", not "render correctly" -- and a wxWidgets build simply
+      // missing a codec for one format is never counted here at all (see
+      // Image::RecordDecodeFailure()), regardless of --debug.
+      if (imagesDataUnavailable > 0) {
+        wxLogMessage(_("Batch mode: %d image(s) could not be loaded at all."),
+                     imagesDataUnavailable);
+        m_exitCode = 1;
+      }
+      if (m_configuration.GetDebugmode() && (imagesDecodeFailed > 0)) {
+        wxLogMessage(_("Batch mode: %d image(s) failed to decode/render (--debug)."),
+                     imagesDecodeFailed);
+        m_exitCode = 1;
+      }
+
       // SaveFile is now a no-op when the session has no file name and we are
       // non-interactive (a failed initial load leaves exactly that state); the
       // error exit code for that case is set where the load fails.

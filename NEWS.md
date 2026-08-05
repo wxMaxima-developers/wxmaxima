@@ -12,6 +12,21 @@
   (or skipping) the wrong thing. Not checked in interactive use, where a
   cell's text can legitimately differ from what was queued if the user
   edited it before its turn came up.
+- Batch mode (GH #2178): a failed image load is no longer silent. If an
+  image's raw data could never be obtained at all (missing file, empty wxmx
+  entry, ...) `--batch`/`--exit-on-error` now exits with an error, since
+  there was nothing to even attempt rendering. A registered decoder failing
+  to render bytes it did receive additionally fails the batch run under
+  `--debug` (plain `--batch`'s contract is "evaluate correctly", not "render
+  correctly"); a wxWidgets build simply lacking a codec for one format (e.g.
+  no WebP/TIFF support compiled in) is never treated as a failure either way.
+  Also fixed two related silent gaps found while implementing this: a
+  zero-byte image (no data at all) and a failed SVG parse previously left the
+  image looking like a normal 640x480 blank instead of showing the "could not
+  be rendered" placeholder. Regenerated `test/image-test/image-test.wxmx`,
+  whose `Maxima.svg`/`Maxima.svgz`-derived entries had been silently saved
+  as empty (0-byte) images by an old wxMaxima version -- invisible until this
+  change started checking for it.
 - Test fixtures: removed the recorded auto-answer PR #2195 added for
   `tutorial_10Minutes`'s `assume(a > 0)$ integrate(...); forget(a > 0)$`
   cell. That auto-answer stopped the test from flaking, but it also silently
