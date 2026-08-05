@@ -1062,6 +1062,16 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error 10MinuteTutorial.wxm)
 
+# GH #2196: the first statement of a multi-statement cell can be silently
+# dropped and never sent to Maxima at all. This file maximizes the number of
+# independent cell-to-cell transitions (the boundary where the drop was
+# observed) in a single run and asserts, via a real Maxima error(), that
+# every one of them actually ran -- see the file's own header comment.
+add_test(
+    NAME commandSequenceIntegrity
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error commandSequenceIntegrity.wxm)
+
 add_test(
     NAME comment_begin
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
