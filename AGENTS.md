@@ -158,6 +158,51 @@ working without extra checks.
   question) that differs depending on whether the dropped statement ran.
   A cell without such a canary would just silently produce a
   different-but-plausible-looking answer.
+  - **This sandbox cannot run `rr` or eBPF uprobes, and gdb hardware
+    watchpoints insert but then fail on resume -- confirmed live, not
+    assumed.** `rr record` fails immediately (`Unable to open performance
+    counter with 'perf_event_open'`): `/sys/bus/event_source/devices/` has
+    no `cpu` entry (only `breakpoint`/`msr`/`power`/`software`/`tracepoint`/
+    `uprobe`), so there is no hardware PMU exposed to the container at all --
+    not a `perf_event_paranoid` permission issue, a missing device. `rr`
+    needs that PMU for its retired-conditional-branch counting; there is no
+    workaround, this is a hard environment limit. `bpftrace`'s `BEGIN`
+    probe fires fine (plain BPF program loading works), but a `uprobe:`
+    probe on the built `wxmaxima` binary silently reports "No probes to
+    attach" -- uprobe attachment itself is blocked even though the kernel
+    lists it as a source. Oddest of all: `gdb`'s hardware watchpoints
+    (`watch this->m_commands` on a live, multi-threaded `wxmaxima`) report
+    success and show no error at the moment they're set, faking out a quick
+    check -- but the FIRST subsequent `continue` fails with "Could not
+    insert hardware watchpoint" / "Could not insert hardware breakpoints:
+    You may have requested too many hardware breakpoints/watchpoints",
+    reproduced 3/3 with a minimal `watch` + `continue` script and 0/3
+    failures with the identical `watch` alone (no `continue`) -- so the
+    debug registers can be written once but not reprogrammed across the
+    process's threads when the kernel actually tries to arm them for
+    execution. Software breakpoints (plain `break`/`tbreak`) work
+    completely normally, including hitting, `commands` blocks, and
+    `continue` across hundreds of hits -- only the *hardware*-assisted
+    paths (perf counters, uprobes, debug-register resume) are affected,
+    consistent with a sandboxing layer that fakes/no-ops specific
+    hardware-facility syscalls rather than a resource exhaustion or a
+    generic ptrace restriction (plain ptrace, software breakpoints, and
+    even setting-not-resuming a hardware watchpoint all work). **On real
+    (non-sandboxed) hardware, `rr record` + `rr replay` is almost
+    certainly the right tool for this bug** -- it would let a natural
+    reproduction under `rr record` (much lower overhead than gdb
+    breakpoints or logging, since it only needs to log nondeterministic
+    inputs, not trap on every call) be replayed deterministically
+    afterward, with arbitrarily heavy breakpoints/watchpoints during
+    *replay* costing nothing towards reproducing the original race. Try
+    that first outside this sandbox before repeating any of the above.
+  - A gdb software-breakpoint hunt (`EvaluationQueue.cpp:124`, right after
+    `AddTokens(GetCell())` on every cell-to-cell advance, logging
+    `m_commands[0]` and continuing automatically) was run against
+    `commandSequenceIntegrity.wxm` as the most targeted live attempt so
+    far, checking every run's advance log for a gap in the expected
+    1,3,5,...,299 sequence. See the follow-up note below (or GH #2196
+    directly) for whether it caught anything.
 
 ## Architecture & GUI
 
