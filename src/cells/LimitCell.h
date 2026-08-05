@@ -68,6 +68,30 @@ public:
     }
   }
 
+  /*! ORDER MATTERS, and this is NOT the same set as GetInnerCellCount()/
+    GetInnerCell() above: m_name (the "lim" label, index 0 there) is never
+    part of the broken/linear draw sequence -- it's only ever drawn directly
+    by Draw() as part of the 2D "lim" + subscript rendering. The linear form
+    is "limit(", the base, ",", the "var->to" condition, ")", unconditionally.
+  */
+  size_t GetBrokenCellCount() const override { return 5; }
+  Cell *GetBrokenCell(size_t index) const override {
+    switch (index) {
+    case 0:
+      return m_open.get();
+    case 1:
+      return m_base.get();
+    case 2:
+      return m_comma.get();
+    case 3:
+      return m_under.get();
+    case 4:
+      return m_close.get();
+    default:
+      return nullptr;
+    }
+  }
+
   void Recalculate(const AFontSize fontsize) const override;
 
   using Cell::SetCurrentPoint;
@@ -83,7 +107,6 @@ public:
 
   bool BreakUp() const override;
 
-  void SetNextToDraw(Cell *next) const override;
 private:
   void MakeBreakUpCells();
 
@@ -97,13 +120,6 @@ private:
   std::unique_ptr<Cell> m_under;
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
-
-//** Bitfield objects (0 bytes)
-//**
-  static void InitBitFields_LimitCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-    }
 };
 
 #endif // LIMITCELL_H

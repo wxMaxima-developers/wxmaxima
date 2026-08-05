@@ -362,6 +362,26 @@ void MaximaResponseReader::ReadSuppressedOutput(const wxString &data) {
   });
 }
 
+void MaximaResponseReader::ReadAsciiMath(const wxString &data) {
+  if(!m_wxMaxima.GetWorksheet())
+    return;
+
+  // Maxima::ProcessData only fires this event once it has a complete
+  // <wxxml-asciimath>...</wxxml-asciimath> tag (see the class comment
+  // there), so the whole block - however many socket reads it took to
+  // arrive - is always classified and rendered as one uniform monospace
+  // unit here, unlike ReadMiscText()'s per-chunk "does this text start with
+  // (%" guess.
+  static const wxString startTag = wxS("<wxxml-asciimath>");
+  static const wxString endTag = wxS("</wxxml-asciimath>");
+  wxASSERT(data.StartsWith(startTag) && data.EndsWith(endTag));
+  wxString content = data.SubString(startTag.Length(),
+                                    data.Length() - endTag.Length() - 1);
+
+  m_wxMaxima.GetWorksheet()->SetCurrentTextCell(nullptr);
+  m_wxMaxima.m_outputAppender.DoRawConsoleAppend(content, MC_TYPE_ASCIIMATHS);
+}
+
 void MaximaResponseReader::ReadPrompt(const wxString &data) {
   m_wxMaxima.m_evalOnStartup = false;
   if(!m_wxMaxima.GetWorksheet())
@@ -430,12 +450,21 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
     // will be the first from the next command.
     m_wxMaxima.m_outputCellsFromCurrentCommand = 0;
     if (m_wxMaxima.GetWorksheet()->GetEvaluationQueue().Empty()) { // queue empty.
-      // This worksheet has drained its evaluation queue, so a clean batch run
-      // is done and may exit normally. Disarm exit-on-error for THIS worksheet
-      // only -- m_exitOnError is process-wide and shared, so clearing it here
-      // would disable exit-on-error in every other window of a --single_process
-      // run (the multithreadtest hang).
-      m_wxMaxima.m_exitOnErrorArmed = false;
+      // NOTE: exit-on-error is deliberately NOT disarmed here. The queue can
+      // legitimately go empty more than once during a single, uninterrupted
+      // batch run -- e.g. a cell with an auto-answered question empties the
+      // queue, and only afterwards does OpenQuestionCaret()'s queued
+      // menu_evaluate event refill it with the next cell. Disarming on the
+      // first such transient emptying left --exit-on-error permanently
+      // toothless for the rest of the file: a later, real Maxima error would
+      // then call ExitAfterEval(false) instead of exiting, leaving the
+      // process idling forever with nobody left to interact with it (see
+      // #2183's rememberingAnswers regression -- confirmed live in gdb: by
+      // the time a "the process hangs" report was traced,
+      // m_exitOnErrorArmed and m_exitAfterEval had both already gone false
+      // well before the point that actually hung). The real "clean batch run
+      // is done" disarm point is wxMaxima::OnIdle(), which additionally
+      // requires m_fileToOpen and m_evalOnStartup to have settled.
       if (m_wxMaxima.m_maximaError)
         m_wxMaxima.StatusMaximaBusy(StatusBar::MaximaStatus::maximaerror);
       else
@@ -482,6 +511,29 @@ void MaximaResponseReader::ReadPrompt(const wxString &data) {
     // tooltip depends on whether the question will be auto-answered, which
     // WillAutoAnswer() can tell without creating the answer cell.
     bool autoAnswer = m_wxMaxima.GetWorksheet()->WillAutoAnswer();
+
+    // --batch's own --help text promises "Halts on questions": with no
+    // interactive user to type an answer and no scripted one to fall back on
+    // (autoAnswer==false), waiting on OpenQuestionCaret()'s answer editor
+    // would instead hang forever -- confirmed via gdb to be exactly the CI
+    // hang in #2183 (openMacFiles/tutorial_10Minutes/testbench_simple.wxmx
+    // all provoke a Maxima question deep in a large worksheet). Log clearly
+    // and exit with an error status instead of stalling.
+    if (m_wxMaxima.m_exitAfterEval && !autoAnswer) {
+      wxLogMessage(_("Batch mode: Maxima asked a question with no scripted "
+                     "answer available (\"%s\"). Halting, as documented for "
+                     "--batch."),
+                   label);
+      wxMaxima::m_exitCode = 1;
+      // Maxima repeats an unanswered question's prompt on its own timer (see
+      // #2183) -- kill it now, rather than waiting for Close()'s eventual
+      // Destroy(), so those repeats can't re-enter this branch and spam the
+      // log before the window actually closes. KillMaxima() sets
+      // m_discardAllData, which gates out exactly that further input.
+      m_wxMaxima.m_processManager.KillMaxima();
+      m_wxMaxima.Close();
+      return;
+    }
 
     if (!label.IsEmpty()) {
       int options = MaximaOutputAppender::AppendOpt::NewLine | MaximaOutputAppender::AppendOpt::BigSkip;

@@ -802,6 +802,12 @@ These files are in the Maxima user directory (usually `%USERPROFILE%/maxima` in 
 - `wxanimate_autoplay`: Automatically play animations by default?
 - `wxmaximaversion`: Returns the version number of _wxMaxima_.
 - `wxwidgetsversion`: Returns the wxWidgets version _wxMaxima_ is using.
+- `wxdirs`: A struct holding the paths _wxMaxima_ itself uses, since these differ by maintainer, distribution and operating system:
+  - `wxdirs@userconfdir`: The directory the user's configuration is stored in. Same directory as `maxima_userdir` (see above) - both point at the same place, `wxdirs@userconfdir` is only useful if that is more convenient to reach from a `.mac` file than the Maxima-side variable.
+  - `wxdirs@datadir`: The directory _wxMaxima_'s own data (icons, the built-in autocompletion list, ...) is installed in.
+  - `wxdirs@helpdir`: The directory the offline copy of this manual is installed in.
+  - `wxdirs@localedir`: The directory _wxMaxima_'s translation files are installed in.
+  - `wxdirs@maximalocation`: The path to the _Maxima_ executable _wxMaxima_ is configured to start.
 
 ## Pretty-printing 2D output
 

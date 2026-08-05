@@ -148,17 +148,10 @@ protected:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields_TextCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_dontEscapeOpeningParenthesis = false;
-      m_promptTooltip = false;
-    }
-
   //! Is an ending "(" of a function name the opening parenthesis of the function?
-  bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields_TextCell */;
+  bool m_dontEscapeOpeningParenthesis : 1 = false;
   //! Default to a special tooltip for prompts?
-  bool m_promptTooltip : 1 /* InitBitFields_TextCell */;
+  bool m_promptTooltip : 1 = false;
 };
 
 #endif // TEXTCELL_H

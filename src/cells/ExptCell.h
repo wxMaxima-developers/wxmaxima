@@ -35,17 +35,16 @@
 
 /*! This cell represents a exp() or %e^x-construct.
 
-  In the case that this cell is broken into two lines in the order of
-  m_nextToDraw this cell is represented by the following individual
-  cells:
+  Once IsBrokenIntoLines(), the draw list (see GetBrokenCellCount()/
+  GetBrokenCell(), which here is simply GetInnerCellCount()/GetInnerCell())
+  expands this cell into the following individual cells instead of drawing
+  it as a single 2D object:
 
-  - The ExptCell itself
-  - The opening "exp("
-  - The contents
+  - The base
+  - "^"
+  - The opening "("
+  - The exponent
   - The closing ")".
-
-  If it isn't broken into multiple cells m_nextToDraw points to the
-  cell that follows this Cell.
 */
 class ExptCell final : public Cell
 {
@@ -56,6 +55,9 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
+  //! ORDER MATTERS: also used, via the default GetBrokenCellCount()/
+  //! GetBrokenCell(), as this cell's broken/linear draw sequence -- the
+  //! base, "^", "(", the exponent, ")", unconditionally.
   size_t GetInnerCellCount() const override { return 5; }
   Cell *GetInnerCell(size_t index) const override {
     switch (index) {
@@ -120,12 +122,7 @@ private:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields_ExptCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_isMatrix = false;
-    }
-  bool m_isMatrix : 1 /* InitBitFields_ExptCell */;
+  bool m_isMatrix : 1 = false;
 };
 
 

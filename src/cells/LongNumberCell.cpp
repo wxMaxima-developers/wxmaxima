@@ -38,7 +38,6 @@
 LongNumberCell::LongNumberCell(GroupCell *group, Configuration *config,
                                const wxString &number)
   : TextCell(group, config, number, TS_NUMBER) {
-  InitBitFields_LongNumberCell();
 }
 
 LongNumberCell::LongNumberCell(GroupCell *group, const LongNumberCell &cell)
@@ -266,15 +265,6 @@ bool LongNumberCell::BreakUp() const {
       }
     }
   }
-  m_innerCell->last()->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_innerCell;
   Cell::BreakUpAndMark();
   return true;
-}
-
-void LongNumberCell::SetNextToDraw(Cell *next) const {
-  if (IsBrokenIntoLines())
-    m_innerCell->last()->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
 }

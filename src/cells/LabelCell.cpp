@@ -36,7 +36,6 @@ LabelCell::LabelCell(GroupCell *group, Configuration *config,
                      const wxString &automaticLabel, TextStyle style)
   : TextCell(group, config, automaticLabel, style)
 {
-  InitBitFields_LabelCell();
   m_width = Scale_Px(m_configuration->GetLabelWidth());
 }
 

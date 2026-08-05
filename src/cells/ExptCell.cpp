@@ -38,7 +38,6 @@ ExptCell::ExptCell(GroupCell *group, Configuration *config,
                    std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&expt)
   : Cell(group, config), m_baseCell(std::move(base)),
     m_exptCell(std::move(expt)) {
-  InitBitFields_ExptCell();
   SetStyle(TS_VARIABLE);
   MakeBreakupCells();
 }
@@ -209,11 +208,5 @@ bool ExptCell::BreakUp() const {
     return false;
 
   Cell::BreakUpAndMark();
-  m_baseCell->last()->SetNextToDraw(m_exp);
-  m_exp->SetNextToDraw(m_open);
-  m_open->SetNextToDraw(m_exptCell);
-  m_exptCell->last()->SetNextToDraw(m_close);
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_baseCell;
   return true;
 }

@@ -46,13 +46,6 @@ public:
   void SetCurrentPoint(wxPoint point) const override;
   void Draw(wxDC *dc, wxDC *antialiassingDC) override;
 
-  private:
-//** Bitfield objects (0 bytes)
-//**
-  static void InitBitFields_VisiblyInvalidCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-    }
 };
 
 #endif // VISIBLYINVALIDCELL_H

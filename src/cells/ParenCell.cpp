@@ -38,7 +38,6 @@ ParenCell::ParenCell(GroupCell *group, Configuration *config,
     m_open(std::make_unique<TextCell>(group, config, wxS("("))),
     m_innerCell(std::move(inner)),
     m_close(std::make_unique<TextCell>(group, config, wxS(")"))) {
-  InitBitFields_ParenCell();
   // If there is a contents it doesn't need to start with a multiplication
   // dot.
   if(m_innerCell)
@@ -348,21 +347,5 @@ bool ParenCell::BreakUp() const {
     return false;
 
   Cell::BreakUpAndMark();
-  if(m_innerCell)
-    {
-      m_open->SetNextToDraw(m_innerCell);
-      m_innerCell->last()->SetNextToDraw(m_close);
-    }
-  else
-    m_open->SetNextToDraw(m_close);
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_open;
   return true;
-}
-
-void ParenCell::SetNextToDraw(Cell *next) const {
-  if (IsBrokenIntoLines())
-    m_close->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
 }

@@ -222,6 +222,17 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error lisp_mode.wxm)
 
+# set_display('ascii): wx-ascii-displa wraps Maxima's own stock ASCII-art
+# printer in <wxxml-asciimath> markers instead of reimplementing it. The
+# worksheet is self-checking (results are compared against the same
+# expressions evaluated in the default XML display mode); with
+# --exit-on-error a wrong value, an error, or a hang in the lisp hook fails
+# the test.
+add_test(
+    NAME asciiDisplay
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error asciiDisplay.wxm)
+
 # Smoke test for the side-by-side diff viewer (wxmxdiff / --diff): it has no
 # other test and has broken silently when surrounding code changed. Loads two
 # .wxmx files in diff mode and fails on a crash or assertion.
@@ -1050,6 +1061,16 @@ add_test(
     NAME tutorial_10Minutes
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --debug --logtostderr --pipe  --batch --exit-on-error 10MinuteTutorial.wxm)
+
+# GH #2196: the first statement of a multi-statement cell can be silently
+# dropped and never sent to Maxima at all. This file maximizes the number of
+# independent cell-to-cell transitions (the boundary where the drop was
+# observed) in a single run and asserts, via a real Maxima error(), that
+# every one of them actually ran -- see the file's own header comment.
+add_test(
+    NAME commandSequenceIntegrity
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --debug --logtostderr --pipe --batch --exit-on-error commandSequenceIntegrity.wxm)
 
 add_test(
     NAME comment_begin

@@ -771,6 +771,11 @@ void MaximaProcessManager::MaximaEvent(wxThreadEvent &event) {
     break;
   case Maxima::XML_WXXML_KEY: // TODO: Should the key be outside the SuppressOutput?
     break;
+  case Maxima::XML_ASCIIMATH:
+    m_wxMaxima.m_responseReader.ReadStdErr();
+    m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::receive);
+    m_wxMaxima.m_responseReader.ReadAsciiMath(event.GetString());
+    break;
   case Maxima::READ_PENDING:
     m_wxMaxima.m_responseReader.ReadStdErr();
     m_wxMaxima.m_statusBar->NetworkStatus(StatusBar::receive);

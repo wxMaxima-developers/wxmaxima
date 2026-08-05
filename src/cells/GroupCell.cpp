@@ -55,7 +55,6 @@
 GroupCell::GroupCell(Configuration *config, GroupType groupType,
                      const wxString &initString)
   : Cell(this, config), m_groupType(groupType) {
-  InitBitFields_GroupCell();
   m_mathFontSize = m_configuration->GetMathFontSize();
   ForceBreakLine();
   m_type = MC_TYPE_GROUP;
@@ -286,7 +285,6 @@ void GroupCell::AppendInput(std::unique_ptr<Cell> &&cell) {
       // m_group->ResetSize_Recursively. Perhaps we can decide that SetNext alone could do
       // something like that, as long as it wouldn't cause quadratic behavior.
       CellList::SetNext(m_inputLabel.get(), nullptr);
-      wxASSERT(!m_inputLabel->GetNextToDraw());
       CellList::AppendCell(m_inputLabel, std::move(cell));
     } else {
       AppendOutput(std::move(cell));
@@ -1381,7 +1379,10 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
     bool mathMode = false;
     bool asciiArt = false;
 
-    for (const Cell &tmp : OnDrawList(m_output.get())) {
+    auto const outputDrawList = OnDrawList(m_output.get());
+    for (auto it = outputDrawList.begin(), listEnd = outputDrawList.end();
+         it != listEnd; ++it) {
+      const Cell &tmp = *it;
       // 2-D ASCII-art maths -- what maxima prints when it isn't asked for XML,
       // e.g. from the Lisp side or with display2d in its plain-text mode --
       // draws fraction bars, roots and matrices out of characters, so it only
@@ -1429,7 +1430,9 @@ wxString GroupCell::ToTeXCodeCell(const wxString &imgDir, const wxString &filena
           // A label in front of ASCII art must not open math mode: the art is
           // about to leave it again, and all that would be left of the equation
           // is an empty, numbered \[...\]. Emit the label as text instead.
-          const Cell *const next = tmp.GetNextToDraw();
+          auto peek = it;
+          ++peek;
+          const Cell *const next = peek;
           if (next && (next->GetTextStyle() == TS_ASCIIMATHS)) {
             if (mathMode) {
               str += wxS("\\mbox{}\n\\]");

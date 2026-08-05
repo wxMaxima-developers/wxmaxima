@@ -573,35 +573,23 @@ protected:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields_GroupCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_autoAnswer = false;
-      m_inEvaluationQueue = false;
-      m_lastInEvaluationQueue = false;
-      m_updateConfusableCharWarnings = true;
-      m_suppressTooltipMarker = false;
-      m_cellsAppended = false;
-      m_layoutSuppressed = false;
-    }
-
   //! Does this GroupCell automatically fill in the answer to questions?
-  bool m_autoAnswer : 1 /* InitBitFields_GroupCell */;
-  bool m_inEvaluationQueue : 1 /* InitBitFields_GroupCell */;
-  bool m_lastInEvaluationQueue : 1 /* InitBitFields_GroupCell */;
-  bool m_updateConfusableCharWarnings : 1 /* InitBitFields_GroupCell */;
+  bool m_autoAnswer : 1 = false;
+  bool m_inEvaluationQueue : 1 = false;
+  bool m_lastInEvaluationQueue : 1 = false;
+  bool m_updateConfusableCharWarnings : 1 = true;
   //! Suppress the yellow ToolTip marker?
-  bool m_suppressTooltipMarker : 1 /* InitBitFields_GroupCell */;
+  bool m_suppressTooltipMarker : 1 = false;
   //! Output cells were appended since the last layout, so a recalculation is
   //! needed (see NeedsRecalculation()); cleared once the group is recalculated.
-  mutable bool m_cellsAppended : 1 /* InitBitFields_GroupCell */;
+  mutable bool m_cellsAppended : 1 = false;
   /*! Laying out this group's output exceeded the configured deadline.
 
     While set, DisplayedOutput() shows a lightweight placeholder instead of the
     (kept-intact) real output and RecalculateOutput() no longer tries to break
     it into lines. Cleared whenever the output changes (AppendOutput() /
     RemoveOutput()), so layout is re-attempted for the new output. */
-  mutable bool m_layoutSuppressed : 1 /* InitBitFields_GroupCell */;
+  mutable bool m_layoutSuppressed : 1 = false;
 
   static wxString m_lookalikeChars;
 };

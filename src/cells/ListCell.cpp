@@ -36,7 +36,6 @@ ListCell::ListCell(GroupCell *group, Configuration *config,
     m_open(std::make_unique<TextCell>(group, config, wxS("["))),
     m_innerCell(std::move(inner)),
     m_close(std::make_unique<TextCell>(group, config, wxS("]"))) {
-  InitBitFields_ListCell();
   SetStyle(TS_VARIABLE);
 
   // It is valid to construct this cell this with a null inner cell
@@ -211,16 +210,5 @@ bool ListCell::BreakUp() const {
     return false;
 
   Cell::BreakUpAndMark();
-  m_open->SetNextToDraw(m_innerCell);
-  m_innerCell->last()->SetNextToDraw(m_close);
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_open;
   return true;
-}
-
-void ListCell::SetNextToDraw(Cell *next) const {
-  if (IsBrokenIntoLines())
-    m_close->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
 }

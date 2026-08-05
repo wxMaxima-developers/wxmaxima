@@ -1,5 +1,209 @@
 # Current development version
 
+- New regression test `commandSequenceIntegrity` (GH #2196): a confirmed
+  but not yet root-caused bug lets the first statement of a multi-statement
+  cell be silently dropped and never sent to Maxima at all during `--batch`
+  evaluation, with no error and no visible symptom unless something later
+  happens to depend on it. This test maximizes the number of independent
+  cell-to-cell transitions (the exact boundary where the drop was observed)
+  in a single run -- 150 small cells, each appending a unique sequential tag
+  to a shared list -- and asserts via a real Maxima `error()` that every
+  statement actually ran, turning a currently invisible class of bug into
+  a reproducible CI failure instead of a silently wrong answer.
+- Test fixtures: `test/automatic_test_files/10MinuteTutorial.wxm`'s
+  `assume(a > 0)$ integrate(1/(x^2+a),x); forget(a > 0)$` cell now has a
+  recorded auto-answer for the "Is a positive or negative?" question, fixing
+  an intermittent `tutorial_10Minutes` CI failure: despite the preceding
+  `assume(a > 0)`, `integrate()`'s internal algorithm occasionally still
+  asks the question interactively on some runs (reproduced locally at
+  roughly a 1-in-20 to 1-in-30 rate) -- this cell simply never had a
+  recorded answer for that rare case, since its whole point is to
+  demonstrate that `assume()` normally makes the question unnecessary.
+- Fixed the LaTeX export of an integral's differential ("dx", "d\theta", ...):
+  it now renders upright (`\mathrm{d}`) instead of in math mode's default
+  italic (#972).
+- Fixed a build failure on GCC 11 (Ubuntu 22.04) and Cygwin:
+  `src/cells/CellIterators.h` used `std::vector` without including `<vector>`,
+  which happened to work only where some other header transitively pulled it
+  in first -- not the case for every toolchain/include order (introduced by
+  the `m_nextToDraw` removal below).
+- Added "Anonymize Code for Bug Report" to the Help menu (#1339): replaces
+  every non-builtin variable and function name in the selected code cells (or,
+  after confirmation, the whole document) with a random name, consistently
+  across all occurrences and all selected cells, so a worksheet can be shared
+  in a bug report without revealing the original names. Maxima builtins and
+  the tokenizer's own syntax keywords (`for`/`then`/`do`/...) are left alone,
+  and the whole operation is a single undo step.
+- Reduced the memory footprint of every cell on the worksheet by removing
+  `m_nextToDraw`, a per-cell pointer used only by fractions, parentheses and
+  similar 2D-capable cells when line-wrapped; the same information is now
+  computed on demand instead of stored on every cell (closes #1445).
+- Fixed a critical bug in the translation merge above: `po4a` treats the `.po`
+  file it is pointed at as its own and rewrites it wholesale on every run, so
+  pointing it directly at the combined `locales/wxMaxima/<lang>.po` (as the
+  merge originally did) silently deleted every UI translation the first time
+  `make update-locale-manual-in-source` ran with a real `po4a` >= 0.70 (a
+  language with 1000+ translated UI strings dropped to just its ~69 manual
+  translations). `po4a` now keeps writing its own `locales/manual/<lang>.po`
+  as before, and a new `merge_manual_po.cmake` step folds that into
+  `locales/wxMaxima/<lang>.po` before `msgmerge` runs, so translators still
+  only need to look in one file.
+- Fixed translated manual headings, lists and code blocks sometimes wrapping
+  incorrectly or losing their Markdown formatting after `po4a` translation
+  (#2047): `po4a`'s `[type: text]` mode needs `-o markdown` passed explicitly
+  to recognize Markdown structure -- its own default for that option does not
+  take effect through this invocation path. Existing translations of an
+  affected heading/list/code block are marked fuzzy (their translated text is
+  preserved in the `.po` file, but a fuzzy entry isn't used in the generated
+  manual until a translator re-confirms it, since the old translation's exact
+  wording no longer matches how `po4a` now segments that text) rather than
+  lost outright.
+
+- Translations: the manual's per-language translations now live merged into
+  `locales/wxMaxima/*.po`, alongside wxMaxima's own UI strings, instead of a
+  separate `locales/manual/*.po` per language -- so translating both only
+  needs one file per language. `wxMaxima.pot` (the template `msgmerge` and
+  Crowdin work against) is now the union of a fresh scan of the C++ source
+  and the manual's own template (`locales/manual/wxmaxima.md.pot`, kept
+  current by `po4a`), combined via `msgcat --use-first` so future
+  `make update-locale` runs keep staying merged instead of re-diverging. No
+  existing translation was lost: German/Spanish/French/Italian/Russian/
+  Turkish/Ukrainian/Chinese (Simplified), the eight languages that had a
+  separate manual translation, keep every one of those translated strings,
+  now inside their `locales/wxMaxima/*.po` file.
+
+- wxMaxima now tells Maxima's ASCII-art 2D/1D printer (`set_display('ascii)`
+  and `set_display('none)`) how wide the worksheet actually is: `$linel` is
+  set, right before every command, to the number of columns of the
+  worksheet's monospace ASCII-math font that currently fit into the window
+  (`Configuration::GetAsciiArtColumns()`), instead of Maxima's fixed factory
+  default of 79. Wide fractions/matrices/etc. now wrap where they actually
+  need to on the current window size and font, rather than wxMaxima having
+  to widen the cell (and add a horizontal scrollbar) to show output Maxima
+  wrapped for a different width -- or not wrapping it widely enough (#1608).
+
+- Fixed misaligned ASCII-art 2D math (`set_display('ascii)`): the top/bottom
+  lines of a fraction, matrix, etc. are padded by Maxima on the assumption
+  that every line -- including the `(%oN)` label line -- renders in the same
+  monospace font. wxMaxima used to guess which lines belonged to the same
+  block from their *content* alone (whether a chunk of already-batched
+  socket data happened to start with `(%`), and since that batching is
+  timing-dependent rather than tied to Maxima's actual output boundaries,
+  the label line could land in a separate read from its neighbors and get
+  misclassified into a different, proportional font -- breaking the visual
+  alignment even though Maxima's own whitespace padding was correct.
+  `wxMathML.lisp` now wraps each complete ASCII-art block in explicit
+  `<wxxml-asciimath>`/`</wxxml-asciimath>` markers (reusing Maxima's own
+  stock ASCII printer via a `*alt-display2d*` hook, not reimplementing it),
+  so wxMaxima always renders a whole block in one uniform monospace style
+  instead of guessing per chunk.
+
+- `--batch`/`--exit-on-error` now actually halts when Maxima asks an
+  interactive question it cannot auto-answer, instead of hanging forever:
+  the process logs the question and exits with an error status, matching
+  what `--batch --help` already promised ("Halts on questions"). This was
+  the root cause of the intermittent CI timeouts on `openMacFiles`,
+  `tutorial_10Minutes`, `rememberingAnswers` and `testbench_simple.wxmx` -
+  confirmed with a live debugger, the evaluation queue was advancing
+  correctly and simply waiting on an answer nobody could provide.
+
+- Test fixtures: `test/testbench_simple.wxm`'s "Cell height calculations"
+  cell and `test/testbench_simple.wxmx`'s `abs(x(1))` cell now have a
+  recorded auto-answer for interactive questions Maxima 5.46.0 asks that
+  neither cell was previously annotated for, so `openMacFiles` and
+  `testbench_simple.wxmx` complete instead of hitting the new --batch halt
+  above. Confirmed along the way: the "Enter space-separated numbers,
+  `all' or `none':" prompt reads a raw line, not a Maxima expression, so an
+  answer ending in `;` is invalid input Maxima will wait on indefinitely --
+  the new cell's recorded answer uses plain `none` instead.
+
+- `--exit-on-error` no longer goes permanently toothless partway through a
+  worksheet that legitimately empties its evaluation queue more than once
+  in a single batch run (e.g. one using auto-answered questions, where each
+  answered question empties the queue before the next cell refills it): the
+  per-worksheet arming flag was previously disarmed on the first such
+  transient emptying rather than at actual batch completion, so a real
+  Maxima error arriving afterwards silently dropped the session out of
+  batch mode instead of exiting, leaving it to idle forever with nobody
+  left to interact with it - confirmed live in gdb as the cause of the
+  `rememberingAnswers` test's intermittent CI timeout.
+
+- Fixed a startup-timing race that could silently discard queued cells
+  during batch evaluation, most visibly as `automatic_test_files/lisp_mode.wxm`
+  intermittently failing or hanging in CI: on connect, wxMaxima sends its
+  `wxdirs@userconfdir`/`datadir`/`helpdir`/... struct-field setup bundled
+  ahead of the worksheet's first real command. Those field assignments are
+  genuine Maxima statements (needed for `defstruct`/`@` struct-field syntax),
+  so Maxima answered each with its own extra `(%iN)` prompt - and the
+  evaluation queue, which has no way to tell a config-command prompt from a
+  real one, advanced (and thereby silently dropped) one queued cell for
+  every such extra prompt. Confirmed live with `tcpdump` on the raw
+  wxMaxima<->Maxima socket: the evaluation queue's cell count could drop
+  from 21 to 0 in one shot, with no further command ever having been sent.
+  Fixed by evaluating the whole `wxdirs` setup from Lisp via
+  `mread`/`meval` inside a `:lisp-quiet` form, like the rest of the startup
+  configuration, so it no longer produces a prompt of its own.
+
+- The worksheet's editor now supports real tab characters: a `'\t'` typed,
+  pasted, or loaded from a file stays a real character instead of being
+  silently and irreversibly rewritten into 1-4 spaces, and is expanded to the
+  next 4-column tab stop only where it is drawn or measured. The Tab key (with
+  no selection) inserts a real tab; selecting one or more lines and pressing
+  Tab/Shift+Tab indents/dedents them with a real tab per level (dedent still
+  falls back to removing up to 4 leading spaces on already space-indented
+  text). One consequence: opening a plain `.mac` file that uses tabs for
+  alignment and saving it again now reproduces those tabs byte-for-byte,
+  instead of turning them into spaces.
+
+- Build system: fixed the ~90 `-Wdeprecated-enum-enum-conversion` warnings
+  the Ubuntu 22.04 CI build produced from `wxDirection`/`wxAlignment`/
+  `wxStretch` sizer flags being OR'd together directly (e.g.
+  `wxALIGN_CENTER_VERTICAL | wxALL`) - harmless, but real, deprecated-in-C++20
+  behavior; also fixed a genuinely unused function that only compiled in for
+  wxWidgets < 3.1.6, and worked around a GCC < 12 bug that misreports
+  `[[maybe_unused]]` on class data members as an ignored attribute.
+
+- Build system: a `po4a` older than 0.70 (e.g. Ubuntu 24.04's own package,
+  version 0.69) is now detected and not used, with a CMake warning explaining
+  why, instead of risking it: `po4a` before 0.70 parsed text encodings
+  loosely, which can silently corrupt non-ASCII translated text -
+  reproduced directly, turning a German manual paragraph into English with
+  mangled UTF-8, with no error or warning of po4a's own. Nothing else about
+  building or running wxMaxima needs `po4a` at all; only regenerating the
+  manual's translations from a source-text change does.
+
+- The temporary file created while rendering the SVG (or EMF) representation
+  of a selection for the clipboard now lives in a private, mode-0700
+  subdirectory of the user's own configuration directory instead of the
+  shared system temp directory, so another unprivileged user on the same
+  machine cannot plant a symlink under the name it happens to get. wxWidgets'
+  SVG/EMF renderers only know how to write to a real path, so the file itself
+  couldn't be avoided; where it lives could be.
+
+- New Maxima variable `wxdirs`, a struct holding the paths wxMaxima itself
+  uses (`wxdirs@userconfdir`, `wxdirs@datadir`, `wxdirs@helpdir`,
+  `wxdirs@localedir`, `wxdirs@maximalocation`). These differ by maintainer,
+  distribution and OS (see `Dirstructure`'s own doc comment), so a `.mac` file
+  that wants e.g. the user's configuration directory now has a way to ask for
+  it instead of guessing or searching the filesystem.
+
+- The caret, mouse clicks, arrow-key movement and selection highlighting
+  (including the "text that coincides with the selection" marker and the diff
+  viewer) are now all correctly placed on a line that mixes left-to-right and
+  right-to-left text - e.g. a Farsi word next to a German one. This uses
+  libfribidi, an optional dependency (`WXM_USE_FRIBIDI`, on by default when
+  found): without it, mixed-direction lines keep the previous
+  single-direction-only approximation.
+
+- Fixed: clicking inside right-to-left text (Hebrew, Arabic, Farsi, Urdu)
+  placed the caret at the mirror image of the character actually clicked on -
+  the first letter's position resolved to the last, and the other way round.
+  This was independent of the mixed-direction work above: it also affected a
+  line that was wholly one direction.
+
+- THIRD-PARTY-NOTICES.txt (shown in the "License" tab) now also credits
+  wxWidgets and the bundled NanoSVG, which had been missing.
+
 - wxMaxima's translations can now also be contributed online via
   <https://crowdin.com/project/wxmaxima-gui>, in addition to editing the
   `.po` files in `locales/` directly.

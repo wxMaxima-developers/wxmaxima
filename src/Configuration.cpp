@@ -915,6 +915,31 @@ long Configuration::GetLineWidth() const {
   return lineWidth;
 }
 
+long Configuration::GetAsciiArtColumns() const {
+  // Maxima's own ASCII-art 2D printer (wx-ascii-displa in wxMathML.lisp,
+  // reached through set_display('ascii), and the plain 1D printer reached
+  // through set_display('none)) wraps a result at $linel columns of
+  // whatever font the result is later displayed in. wxMaxima always shows
+  // that output (TS_ASCIIMATHS) in a monospace font (see Styles.cpp), so -
+  // unlike proportional text - a single character's pixel width here is
+  // every character's pixel width, and dividing the available line width by
+  // it tells Maxima how many columns actually fit before wxMaxima's own
+  // line-breaking would otherwise misalign the ASCII art.
+  const Style *style = GetStyle(TS_ASCIIMATHS);
+  const wxFont &font = style->GetFont(Scale_Px(style->GetFontSize()));
+  wxBitmap measuringBitmap(1, 1);
+  wxMemoryDC measuringDC(measuringBitmap);
+  measuringDC.SetFont(font);
+  wxCoord charWidth, charHeight;
+  measuringDC.GetTextExtent(wxS("0"), &charWidth, &charHeight);
+  if (charWidth < 1)
+    return 79; // Maxima's own factory default, in case the font can't be measured.
+
+  // Keep the result in a sane range: a near-closed window shouldn't make
+  // Maxima wrap every fraction bar into unreadable one-character fragments.
+  return std::clamp<long>(GetLineWidth() / charWidth, 20, 2000);
+}
+
 //! A comparison operator for wxImage
 // static bool operator==(const wxImage &a, const wxImage &b) {
 //   if (a.GetSize() != b.GetSize())

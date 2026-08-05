@@ -156,12 +156,22 @@ add_test(NAME ButtonWrapSizer
 # wxmTestApp object library so it can exercise the genuine GroupCell/EditorCell
 # recalculation pipeline.
 if(TARGET wxmTestApp)
+    # wxmTestApp is an OBJECT library: linking it via $<TARGET_OBJECTS:...>
+    # (below) pulls in its object files but not its own target_link_libraries()
+    # requirements, so anything one of those objects needs - currently just
+    # libfribidi, for Bidi.cpp, see src/CMakeLists.txt - has to be linked into
+    # each executable below directly too.
+    set(WXM_TESTAPP_EXTRA_LIBS "")
+    if(TARGET PkgConfig::FRIBIDI)
+        list(APPEND WXM_TESTAPP_EXTRA_LIBS PkgConfig::FRIBIDI)
+    endif()
+
     add_executable(test_GroupCellLayout
         test_GroupCellLayout.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_GroupCellLayout PUBLIC cxx_std_20)
     target_link_libraries(test_GroupCellLayout PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME GroupCellLayout
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_GroupCellLayout>")
 
@@ -174,7 +184,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_WorksheetLayout PUBLIC cxx_std_20)
     target_link_libraries(test_WorksheetLayout PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME WorksheetLayout
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetLayout>")
 
@@ -186,9 +196,21 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_EditorCellWrapping PUBLIC cxx_std_20)
     target_link_libraries(test_EditorCellWrapping PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME EditorCellWrapping
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellWrapping>")
+
+    # Configuration::GetAsciiArtColumns() tells Maxima's own ASCII-art 2D/1D
+    # printer ($linel) how many columns of the worksheet's monospace
+    # ASCII-math font currently fit into the window (#1608).
+    add_executable(test_AsciiArtLinel
+        test_AsciiArtLinel.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_AsciiArtLinel PUBLIC cxx_std_20)
+    target_link_libraries(test_AsciiArtLinel PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME AsciiArtLinel
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AsciiArtLinel>")
 
     # What the caret does inside bidirectional text: a position in a Hebrew word
     # has to map to a point in the word's *drawn* order, which is the reverse of
@@ -198,7 +220,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_EditorCellBidi PUBLIC cxx_std_20)
     target_link_libraries(test_EditorCellBidi PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     # Started through the headless wrapper rather than spawning an Xvfb of its
     # own, as the other GUI tests still do. The wrapper picks a free display
     # instead of a fixed :99 two tests can collide on, kills the server it
@@ -207,6 +229,19 @@ if(TARGET wxmTestApp)
     # out of the test, which is what flawfinder rightly objects to.
     add_test(NAME EditorCellBidi
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellBidi>")
+
+    # Real tab-character support: a '\t' is a single character in m_text,
+    # expanded to the next 4-column stop only at draw/measure time
+    # (NextTabStop()/GetLineWidth()), plus the Tab-key and Backspace behavior
+    # that changed once a tab stopped being 1-4 literal spaces.
+    add_executable(test_EditorCellTabs
+        test_EditorCellTabs.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_EditorCellTabs PUBLIC cxx_std_20)
+    target_link_libraries(test_EditorCellTabs PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME EditorCellTabs
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellTabs>")
 
     # Logic-level regression tests for the custom wxAccessible classes (worksheet
     # and toolbar). They only assert where wxUSE_ACCESSIBILITY is set (the Windows
@@ -218,7 +253,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_Accessibility PUBLIC cxx_std_20)
     target_link_libraries(test_Accessibility PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME Accessibility
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_Accessibility>")
 
@@ -230,9 +265,23 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_WXMRoundtrip PUBLIC cxx_std_20)
     target_link_libraries(test_WXMRoundtrip PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME WXMRoundtrip
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WXMRoundtrip>")
+
+    # Guards a plain .mac file (Format::TreeToWXM(cell, wxm=false) /
+    # Format::ParseMACContents(), the code ExportToMAC()/OpenMACFile() use)
+    # surviving wxMaxima's open/save round-trip byte-for-byte, focused on tab
+    # characters -- the concrete case that used to get silently rewritten to
+    # spaces.
+    add_executable(test_MACRoundtrip
+        test_MACRoundtrip.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_MACRoundtrip PUBLIC cxx_std_20)
+    target_link_libraries(test_MACRoundtrip PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME MACRoundtrip
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MACRoundtrip>")
 
     # Round-trip guard for the .wxmx content.xml (the MathML-like math format):
     # parsing a content.xml into a cell tree and serialising it back must be a
@@ -244,7 +293,7 @@ if(TARGET wxmTestApp)
     target_compile_definitions(test_WXMXRoundtrip PRIVATE
         WXM_CORPUS_DIR="${CMAKE_SOURCE_DIR}/test/fuzz/corpus_mathparser")
     target_link_libraries(test_WXMXRoundtrip PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME WXMXRoundtrip
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WXMXRoundtrip>")
 
@@ -262,7 +311,7 @@ if(TARGET wxmTestApp)
         WXM_CORPUS_DIR="${CMAKE_SOURCE_DIR}/test/fuzz/corpus_mathparser"
         WXM_TESTFILES_DIR="${CMAKE_SOURCE_DIR}/test/automatic_test_files")
     target_link_libraries(test_WorksheetExport PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME WorksheetExport
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetExport>")
 
@@ -277,7 +326,7 @@ if(TARGET wxmTestApp)
     target_compile_definitions(test_WorksheetClipboard PRIVATE
         WXM_CORPUS_DIR="${CMAKE_SOURCE_DIR}/test/fuzz/corpus_mathparser")
     target_link_libraries(test_WorksheetClipboard PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME WorksheetClipboard
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetClipboard>")
 
@@ -289,7 +338,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_WorksheetContextMenu PUBLIC cxx_std_20)
     target_link_libraries(test_WorksheetContextMenu PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME WorksheetContextMenu
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetContextMenu>")
 
@@ -301,7 +350,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_WorksheetCursor PUBLIC cxx_std_20)
     target_link_libraries(test_WorksheetCursor PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME WorksheetCursor
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetCursor>")
 
@@ -313,9 +362,23 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_WorksheetFind PUBLIC cxx_std_20)
     target_link_libraries(test_WorksheetFind PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME WorksheetFind
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetFind>")
+
+    # Pins Worksheet::AnonymizeCodeCells() (GH #1339): non-builtin
+    # variable/function names in the selected code cells get replaced with a
+    # random, collision-free, reproducible-within-the-run name, while Maxima
+    # builtins, the tokenizer's hardcoded keywords, non-code cells and cells
+    # outside the selection are left alone, all as a single undo step.
+    add_executable(test_AnonymizeCodeCells
+        test_AnonymizeCodeCells.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_AnonymizeCodeCells PUBLIC cxx_std_20)
+    target_link_libraries(test_AnonymizeCodeCells PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME AnonymizeCodeCells
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_AnonymizeCodeCells>")
 
     # Pins the "add cells to the evaluation queue" behavior (which visible code
     # cells each Add*ToEvaluationQueue enqueues, and where the h-caret lands)
@@ -325,7 +388,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_WorksheetEvalQueue PUBLIC cxx_std_20)
     target_link_libraries(test_WorksheetEvalQueue PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME WorksheetEvalQueue
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetEvalQueue>")
 
@@ -338,7 +401,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_EvalQueueCommands PUBLIC cxx_std_20)
     target_link_libraries(test_EvalQueueCommands PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME EvalQueueCommands
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EvalQueueCommands>")
 
@@ -349,7 +412,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_EditorCellInvariants PUBLIC cxx_std_20)
     target_link_libraries(test_EditorCellInvariants PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME EditorCellInvariants
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_EditorCellInvariants>")
 
@@ -361,7 +424,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_Autocomplete PUBLIC cxx_std_20)
     target_link_libraries(test_Autocomplete PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME Autocomplete
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_Autocomplete>")
 
@@ -374,9 +437,20 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_LayoutInvariants PUBLIC cxx_std_20)
     target_link_libraries(test_LayoutInvariants PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME LayoutInvariants
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_LayoutInvariants>")
+
+    # An integral's "d" (dx/dtheta/...) must render upright in LaTeX export,
+    # not in math mode's default italic (GH #972).
+    add_executable(test_IntegralToTeX
+        test_IntegralToTeX.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_IntegralToTeX PUBLIC cxx_std_20)
+    target_link_libraries(test_IntegralToTeX PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME IntegralToTeX
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_IntegralToTeX>")
 
     # Round-trip test for the mechanical scalar settings: guards that
     # ReadConfig() and the settings-write side share one key<->member table
@@ -387,7 +461,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_ConfigRoundtrip PUBLIC cxx_std_20)
     target_link_libraries(test_ConfigRoundtrip PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME ConfigRoundtrip
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ConfigRoundtrip>")
 
@@ -399,7 +473,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_StyleConfigRoundtrip PUBLIC cxx_std_20)
     target_link_libraries(test_StyleConfigRoundtrip PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME StyleConfigRoundtrip
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_StyleConfigRoundtrip>")
 
@@ -410,7 +484,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_ManualAnchors PUBLIC cxx_std_20)
     target_link_libraries(test_ManualAnchors PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME ManualAnchors
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_ManualAnchors>")
 
@@ -421,7 +495,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_TreeUndo PUBLIC cxx_std_20)
     target_link_libraries(test_TreeUndo PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME TreeUndo
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TreeUndo>")
 
@@ -433,7 +507,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_GreekSidebar PUBLIC cxx_std_20)
     target_link_libraries(test_GreekSidebar PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME GreekSidebar
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_GreekSidebar>")
 
@@ -447,7 +521,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_LastActiveTextCtrl PUBLIC cxx_std_20)
     target_link_libraries(test_LastActiveTextCtrl PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME LastActiveTextCtrl
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_LastActiveTextCtrl>")
 
@@ -460,7 +534,7 @@ if(TARGET wxmTestApp)
         $<TARGET_OBJECTS:wxmTestApp>)
     target_compile_features(test_MaximaMenuSync PUBLIC cxx_std_20)
     target_link_libraries(test_MaximaMenuSync PRIVATE
-        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
     add_test(NAME MaximaMenuSync
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MaximaMenuSync>")
 endif()

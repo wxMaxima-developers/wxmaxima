@@ -46,7 +46,6 @@ IntervalCell::IntervalCell(GroupCell *group, Configuration *config,
     m_closeBracket(std::make_unique<TextCell>(
                                               group, config, m_rightBracketOpensRight ? wxS("[") : wxS("]"))),
     m_close(std::make_unique<TextCell>(group, config, wxS(")"))) {
-  InitBitFields_IntervalCell();
   SetStyle(TS_VARIABLE);
 
   // Tell the first of our inner cells not to begin with a multiplication dot.
@@ -264,18 +263,5 @@ bool IntervalCell::BreakUp() const {
     return false;
 
   Cell::BreakUpAndMark();
-  m_stop->last()->SetNextToDraw(m_close);
-  m_comma->SetNextToDraw(m_stop);
-  m_start->last()->SetNextToDraw(m_comma);
-  m_open->SetNextToDraw(m_start);
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_open;
   return true;
-}
-
-void IntervalCell::SetNextToDraw(Cell *next) const {
-  if (IsBrokenIntoLines())
-    m_close->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
 }

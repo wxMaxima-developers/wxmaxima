@@ -35,7 +35,6 @@
 ConjugateCell::ConjugateCell(GroupCell *group, Configuration *config,
                              std::unique_ptr<Cell> &&inner)
   : Cell(group, config), m_innerCell(std::move(inner)) {
-  InitBitFields_ConjungateCell();
   SetStyle(TS_VARIABLE);
   MakeBreakupCells();
 }
@@ -151,16 +150,5 @@ bool ConjugateCell::BreakUp() const {
     return false;
 
   Cell::BreakUpAndMark();
-  m_open->SetNextToDraw(m_innerCell);
-  m_innerCell->last()->SetNextToDraw(m_close);
-  m_close->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_open;
   return true;
-}
-
-void ConjugateCell::SetNextToDraw(Cell *next) const {
-  if (IsBrokenIntoLines())
-    m_close->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
 }

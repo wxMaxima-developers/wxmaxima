@@ -34,17 +34,17 @@
 
 /*! The class that represents parenthesis that are wrapped around text
 
-  In the case that this cell is broken into two lines in the order of
-  m_nextToDraw this cell is represented by the following individual
-  cells:
+  Once IsBrokenIntoLines(), the draw list (see GetBrokenCellCount()/
+  GetBrokenCell(), a proper SUBSET of GetInnerCellCount()/GetInnerCell() --
+  the bracket glyphs and ellipsis are only ever part of the 2D form) expands
+  this cell into the following individual cells instead of drawing it as a
+  single 2D object:
 
-  - The IntervalCell itself
-  - The opening "["
-  - The contents
-  - The closing "]".
-
-  If it isn't broken into multiple cells m_nextToDraw points to the
-  cell that follows this Cell.
+  - The opening "interval("
+  - The start value
+  - ","
+  - The stop value
+  - The closing ")".
 */
 class IntervalCell : public Cell
 {
@@ -81,6 +81,30 @@ public:
     }
   }
 
+  /*! ORDER MATTERS, and this is NOT the same set as GetInnerCellCount()/
+    GetInnerCell() above: m_openBracket, m_ellipsis and m_closeBracket are
+    only ever drawn directly by Draw() as part of the 2D bracket/ellipsis
+    rendering and never appear in the broken/linear draw sequence, which is
+    "interval(", the start value, ",", the stop value, ")", unconditionally.
+  */
+  size_t GetBrokenCellCount() const override { return 5; }
+  Cell *GetBrokenCell(size_t index) const override {
+    switch (index) {
+    case 0:
+      return m_open.get();
+    case 1:
+      return m_start.get();
+    case 2:
+      return m_comma.get();
+    case 3:
+      return m_stop.get();
+    case 4:
+      return m_close.get();
+    default:
+      return nullptr;
+    }
+  }
+
   void Recalculate(const AFontSize fontsize) const override;
 
   using Cell::SetCurrentPoint;
@@ -96,13 +120,13 @@ public:
   virtual wxString ToTeX() const override;
   virtual wxString ToXML() const override;
 
-  void SetNextToDraw(Cell *next) const override;
-
 protected:
   void DrawBigLeftOpenBracket(wxDC *dc, wxPoint point) const;
   void DrawBigRightOpenBracket(wxDC *dc, wxPoint point) const;
-  bool m_leftBracketOpensLeft;
-  bool m_rightBracketOpensRight;
+  //! Does the "-inf" left end mean the opening bracket should point left?
+  bool m_leftBracketOpensLeft : 1;
+  //! Does the "inf" right end mean the closing bracket should point right?
+  bool m_rightBracketOpensRight : 1;
   // The pointers below point to inner cells and must be kept contiguous.
   // ** This is the draw list order. All pointers must be the same:
   // ** either Cell * or std::unique_ptr<Cell>. NO OTHER TYPES are allowed.
@@ -121,13 +145,8 @@ protected:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields_IntervalCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_drawAsAscii = true;
-    }
   //! How to create a big parenthesis sign?
-  mutable bool m_drawAsAscii : 1 /* InitBitFields_IntervalCell */;
+  mutable bool m_drawAsAscii : 1 = true;
 };
 
 #endif // INTERVALCELL_H

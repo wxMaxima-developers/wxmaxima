@@ -55,6 +55,9 @@
 #include "ArtProvider.h"
 #include <algorithm>
 #include <memory>
+#include <random>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 #include <utility>
 #include <stdlib.h>
@@ -5373,6 +5376,150 @@ int Worksheet::ReplaceAll_RegEx(const wxString &oldString, const wxString &newSt
   }
 
   return count;
+}
+
+namespace {
+//! Generates a random, not-yet-used, always-valid Maxima identifier and
+//! reserves it in \p usedNames so a later call can't return it again.
+wxString GenerateAnonymousName(Configuration *configuration,
+                               std::unordered_set<wxString, wxStringHash> &usedNames) {
+  static const wxString letters = wxS("abcdefghijklmnopqrstuvwxyz");
+  static const wxString alnum = wxS("abcdefghijklmnopqrstuvwxyz0123456789");
+  std::uniform_int_distribution<size_t> letterDist(0, letters.Length() - 1);
+  std::uniform_int_distribution<size_t> alnumDist(0, alnum.Length() - 1);
+  for (;;) {
+    wxString candidate = wxS("anon_");
+    candidate += letters[letterDist(configuration->RandomEngine())];
+    for (int i = 0; i < 7; ++i)
+      candidate += alnum[alnumDist(configuration->RandomEngine())];
+    if (usedNames.insert(candidate).second)
+      return candidate;
+  }
+}
+} // namespace
+
+void Worksheet::AnonymizeCodeCells() {
+  if (!GetTree())
+    return;
+
+  GroupCell *startGroup;
+  GroupCell *endGroup;
+  if (HasCellsSelected()) {
+    startGroup = GetDocumentCellPointers().GetSelectionStart()->GetGroup();
+    endGroup = GetDocumentCellPointers().GetSelectionEnd()->GetGroup();
+  } else {
+    int answer = wxMessageBox(
+        _("No cells are selected. Anonymize the code in the whole document?"),
+        _("Anonymize Code for Bug Report"),
+        wxYES_NO | wxICON_QUESTION | wxCENTRE, this);
+    if (answer != wxYES)
+      return;
+    startGroup = GetTree();
+    endGroup = GetLastCellInWorksheet();
+  }
+  if (!startGroup || !endGroup)
+    return;
+
+  // Pass 1: walk the selected code cells once to collect every candidate
+  // name (TS_CODE_VARIABLE/TS_CODE_FUNCTION token text) that isn't Maxima
+  // syntax (MaximaTokenizer::IsHardcodedKeyword(), e.g. "for"/"then"/"do" --
+  // these are tokenized with the same style as a real function call, but
+  // aren't identifiers a user could have defined).
+  std::vector<GroupCell *> codeGroups;
+  std::unordered_set<wxString, wxStringHash> candidateNames;
+  for (auto &tmp : OnList(startGroup)) {
+    if (tmp.GetGroupType() == GC_TYPE_CODE) {
+      EditorCell *editor = tmp.GetEditable();
+      if (editor && editor->IsCodeEditor()) {
+        codeGroups.push_back(&tmp);
+        for (auto const &tok : editor->GetAllTokens()) {
+          TextStyle style = tok.GetTextStyle();
+          if ((style == TS_CODE_VARIABLE || style == TS_CODE_FUNCTION) &&
+              !MaximaTokenizer::IsHardcodedKeyword(tok.GetText()))
+            candidateNames.insert(tok.GetText());
+        }
+      }
+    }
+    if (&tmp == endGroup)
+      break;
+  }
+  if (codeGroups.empty())
+    return;
+
+  // Names Maxima itself already knows (builtins, plus anything a loaded
+  // package has defined this session) must never be renamed.
+  std::unordered_set<wxString, wxStringHash> knownToMaxima;
+  for (auto const &symbol : GetAutocomplete().GetSymbolList())
+    knownToMaxima.insert(symbol);
+
+  // Every name actually appearing in the scanned cells (whether it ends up
+  // renamed or not) plus every name Maxima knows about is off-limits for a
+  // freshly generated replacement -- otherwise a "random" replacement could
+  // collide with a real, distinct name and silently merge two variables.
+  std::unordered_set<wxString, wxStringHash> usedNames = knownToMaxima;
+  usedNames.insert(candidateNames.begin(), candidateNames.end());
+
+  std::unordered_map<wxString, wxString, wxStringHash> renameMap;
+  for (auto const &name : candidateNames)
+    if (knownToMaxima.find(name) == knownToMaxima.end())
+      renameMap[name] = GenerateAnonymousName(m_configuration, usedNames);
+
+  if (renameMap.empty())
+    return;
+
+  // Pass 2: rebuild each affected cell's text, substituting renamed tokens.
+  // Concatenating every token's text reproduces the original text exactly
+  // (MaximaTokenizer's tokens are contiguous and non-overlapping, including
+  // whitespace/newline tokens -- the same invariant Worksheet::UnicodeToMaxima()
+  // above already relies on), so only the renamed identifiers change.
+  struct PendingEdit {
+    GroupCell *group;
+    EditorCell *editor;
+    wxString oldText;
+    wxString newText;
+  };
+  std::vector<PendingEdit> edits;
+  for (GroupCell *group : codeGroups) {
+    EditorCell *editor = group->GetEditable();
+    wxString newText;
+    bool changed = false;
+    for (auto const &tok : editor->GetAllTokens()) {
+      TextStyle style = tok.GetTextStyle();
+      if (style == TS_CODE_VARIABLE || style == TS_CODE_FUNCTION) {
+        auto it = renameMap.find(tok.GetText());
+        if (it != renameMap.end()) {
+          newText += it->second;
+          changed = true;
+          continue;
+        }
+      }
+      newText += tok.GetText();
+    }
+    if (changed)
+      edits.push_back({group, editor, editor->GetValue(), std::move(newText)});
+  }
+  if (edits.empty())
+    return;
+
+  // Record one undo action per edited cell, chaining all but the last one
+  // via TreeUndo_AppendAction() so the whole batch undoes as a single step
+  // (see TOCdnd()/SetCellStyle() for the same chaining pattern).
+  GetTreeUndo().ClearRedoActionList();
+  for (size_t i = 0; i < edits.size(); ++i) {
+    const PendingEdit &edit = edits[i];
+    GetTreeUndo().UndoStack().emplace_front(
+        edit.group, edit.oldText,
+        static_cast<long long>(edit.editor->SelectionStart()),
+        static_cast<long long>(edit.editor->SelectionEnd()));
+    if (i + 1 < edits.size())
+      TreeUndo_AppendAction();
+    edit.editor->SetValue(edit.newText);
+    edit.group->ResetInputLabel();
+    edit.group->ResetSize();
+  }
+
+  SetSaved(false);
+  RequestRedraw();
 }
 
 bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type) {

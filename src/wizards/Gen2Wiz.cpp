@@ -77,16 +77,16 @@ void Gen2Wiz::do_layout() {
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(5, 1, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(2, 2, 0, 0);
-  grid_sizer_2->Add(label_2, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
+  grid_sizer_2->Add(label_2, 0, static_cast<int>(wxALL) | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
                     5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
-  grid_sizer_2->Add(label_3, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
+  grid_sizer_2->Add(label_3, 0, static_cast<int>(wxALL) | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
                     5);
   grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 5);
   if (m_warning != NULL)
     grid_sizer_1->Add(m_warning, 0, wxALL, 5);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
-  grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+  grid_sizer_1->Add(static_line_1, 0, static_cast<int>(wxEXPAND) | wxLEFT | wxRIGHT, 2);
   sizer_1->Add(button_1, 0, wxALL, 5);
   sizer_1->Add(button_2, 0, wxALL, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);

@@ -1,0 +1,784 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 26.07.1-dev ] */
+
+/* [wxMaxima: comment start ]
+Regression test for GH #2196: the first statement of a multi-statement
+cell can be silently dropped during --batch evaluation and never reach
+Maxima at all (confirmed via a live tcpdump capture, not corrupted or
+reordered -- simply never sent). This file maximizes the number of
+independent cell-to-cell transitions (the exact boundary where the drop
+was observed) in a single run: each of the many small cells below has
+exactly two statements appending a unique, sequential tag to a shared
+list. The final cell asserts the list matches the full expected
+sequence -- if any statement (especially a cell's first, the specific
+case seen in GH #2196) is silently dropped, the assertion fails with a
+real Maxima error(), which --exit-on-error turns into a nonzero exit
+code instead of the drop passing by unnoticed.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: []$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(1, chk)$
+chk: cons(2, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(3, chk)$
+chk: cons(4, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(5, chk)$
+chk: cons(6, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(7, chk)$
+chk: cons(8, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(9, chk)$
+chk: cons(10, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(11, chk)$
+chk: cons(12, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(13, chk)$
+chk: cons(14, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(15, chk)$
+chk: cons(16, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(17, chk)$
+chk: cons(18, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(19, chk)$
+chk: cons(20, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(21, chk)$
+chk: cons(22, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(23, chk)$
+chk: cons(24, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(25, chk)$
+chk: cons(26, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(27, chk)$
+chk: cons(28, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(29, chk)$
+chk: cons(30, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(31, chk)$
+chk: cons(32, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(33, chk)$
+chk: cons(34, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(35, chk)$
+chk: cons(36, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(37, chk)$
+chk: cons(38, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(39, chk)$
+chk: cons(40, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(41, chk)$
+chk: cons(42, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(43, chk)$
+chk: cons(44, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(45, chk)$
+chk: cons(46, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(47, chk)$
+chk: cons(48, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(49, chk)$
+chk: cons(50, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(51, chk)$
+chk: cons(52, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(53, chk)$
+chk: cons(54, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(55, chk)$
+chk: cons(56, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(57, chk)$
+chk: cons(58, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(59, chk)$
+chk: cons(60, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(61, chk)$
+chk: cons(62, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(63, chk)$
+chk: cons(64, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(65, chk)$
+chk: cons(66, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(67, chk)$
+chk: cons(68, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(69, chk)$
+chk: cons(70, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(71, chk)$
+chk: cons(72, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(73, chk)$
+chk: cons(74, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(75, chk)$
+chk: cons(76, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(77, chk)$
+chk: cons(78, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(79, chk)$
+chk: cons(80, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(81, chk)$
+chk: cons(82, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(83, chk)$
+chk: cons(84, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(85, chk)$
+chk: cons(86, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(87, chk)$
+chk: cons(88, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(89, chk)$
+chk: cons(90, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(91, chk)$
+chk: cons(92, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(93, chk)$
+chk: cons(94, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(95, chk)$
+chk: cons(96, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(97, chk)$
+chk: cons(98, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(99, chk)$
+chk: cons(100, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(101, chk)$
+chk: cons(102, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(103, chk)$
+chk: cons(104, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(105, chk)$
+chk: cons(106, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(107, chk)$
+chk: cons(108, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(109, chk)$
+chk: cons(110, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(111, chk)$
+chk: cons(112, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(113, chk)$
+chk: cons(114, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(115, chk)$
+chk: cons(116, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(117, chk)$
+chk: cons(118, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(119, chk)$
+chk: cons(120, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(121, chk)$
+chk: cons(122, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(123, chk)$
+chk: cons(124, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(125, chk)$
+chk: cons(126, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(127, chk)$
+chk: cons(128, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(129, chk)$
+chk: cons(130, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(131, chk)$
+chk: cons(132, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(133, chk)$
+chk: cons(134, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(135, chk)$
+chk: cons(136, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(137, chk)$
+chk: cons(138, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(139, chk)$
+chk: cons(140, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(141, chk)$
+chk: cons(142, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(143, chk)$
+chk: cons(144, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(145, chk)$
+chk: cons(146, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(147, chk)$
+chk: cons(148, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(149, chk)$
+chk: cons(150, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(151, chk)$
+chk: cons(152, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(153, chk)$
+chk: cons(154, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(155, chk)$
+chk: cons(156, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(157, chk)$
+chk: cons(158, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(159, chk)$
+chk: cons(160, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(161, chk)$
+chk: cons(162, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(163, chk)$
+chk: cons(164, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(165, chk)$
+chk: cons(166, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(167, chk)$
+chk: cons(168, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(169, chk)$
+chk: cons(170, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(171, chk)$
+chk: cons(172, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(173, chk)$
+chk: cons(174, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(175, chk)$
+chk: cons(176, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(177, chk)$
+chk: cons(178, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(179, chk)$
+chk: cons(180, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(181, chk)$
+chk: cons(182, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(183, chk)$
+chk: cons(184, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(185, chk)$
+chk: cons(186, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(187, chk)$
+chk: cons(188, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(189, chk)$
+chk: cons(190, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(191, chk)$
+chk: cons(192, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(193, chk)$
+chk: cons(194, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(195, chk)$
+chk: cons(196, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(197, chk)$
+chk: cons(198, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(199, chk)$
+chk: cons(200, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(201, chk)$
+chk: cons(202, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(203, chk)$
+chk: cons(204, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(205, chk)$
+chk: cons(206, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(207, chk)$
+chk: cons(208, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(209, chk)$
+chk: cons(210, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(211, chk)$
+chk: cons(212, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(213, chk)$
+chk: cons(214, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(215, chk)$
+chk: cons(216, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(217, chk)$
+chk: cons(218, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(219, chk)$
+chk: cons(220, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(221, chk)$
+chk: cons(222, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(223, chk)$
+chk: cons(224, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(225, chk)$
+chk: cons(226, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(227, chk)$
+chk: cons(228, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(229, chk)$
+chk: cons(230, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(231, chk)$
+chk: cons(232, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(233, chk)$
+chk: cons(234, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(235, chk)$
+chk: cons(236, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(237, chk)$
+chk: cons(238, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(239, chk)$
+chk: cons(240, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(241, chk)$
+chk: cons(242, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(243, chk)$
+chk: cons(244, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(245, chk)$
+chk: cons(246, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(247, chk)$
+chk: cons(248, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(249, chk)$
+chk: cons(250, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(251, chk)$
+chk: cons(252, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(253, chk)$
+chk: cons(254, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(255, chk)$
+chk: cons(256, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(257, chk)$
+chk: cons(258, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(259, chk)$
+chk: cons(260, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(261, chk)$
+chk: cons(262, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(263, chk)$
+chk: cons(264, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(265, chk)$
+chk: cons(266, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(267, chk)$
+chk: cons(268, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(269, chk)$
+chk: cons(270, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(271, chk)$
+chk: cons(272, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(273, chk)$
+chk: cons(274, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(275, chk)$
+chk: cons(276, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(277, chk)$
+chk: cons(278, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(279, chk)$
+chk: cons(280, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(281, chk)$
+chk: cons(282, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(283, chk)$
+chk: cons(284, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(285, chk)$
+chk: cons(286, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(287, chk)$
+chk: cons(288, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(289, chk)$
+chk: cons(290, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(291, chk)$
+chk: cons(292, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(293, chk)$
+chk: cons(294, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(295, chk)$
+chk: cons(296, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(297, chk)$
+chk: cons(298, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chk: cons(299, chk)$
+chk: cons(300, chk)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+expected: makelist(i, i, 1, 300)$
+actual: reverse(chk)$
+if actual # expected then
+  error("Command sequence integrity check failed (GH #2196): a statement ",
+        "was silently dropped. missing=",
+        setdifference(setify(expected), setify(actual)),
+        " unexpected=", setdifference(setify(actual), setify(expected)),
+        " got_length=", length(actual), " expected_length=", length(expected))
+else print("Command sequence integrity check passed: all", length(expected), "statements ran.")$
+/* [wxMaxima: input   end   ] */
+

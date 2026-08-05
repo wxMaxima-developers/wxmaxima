@@ -34,17 +34,13 @@
 
 /*! The class that represents parenthesis that are wrapped around text
 
-  In the case that this cell is broken into two lines in the order of
-  m_nextToDraw this cell is represented by the following individual
-  cells:
+  Once IsBrokenIntoLines(), the draw list (see GetBrokenCellCount()/
+  GetBrokenCell()) expands this cell into the following individual cells
+  instead of drawing it as a single 2D object:
 
-  - The ParenCell itself
   - The opening "("
   - The contents
   - The closing ")".
-
-  If it isn't broken into multiple cells m_nextToDraw points to the
-  cell that follows this Cell.
 */
 class ParenCell final : public Cell
 {
@@ -57,6 +53,9 @@ public:
   const CellTypeInfo &GetInfo() override;
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
 
+  //! ORDER MATTERS: also used, via the default GetBrokenCellCount()/
+  //! GetBrokenCell(), as this cell's broken/linear draw sequence -- "(",
+  //! then the (possibly multi-cell) contents, then ")", unconditionally.
   size_t GetInnerCellCount() const override { return 3; }
   Cell *GetInnerCell(size_t index) const override {
     switch (index) {
@@ -93,8 +92,6 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  void SetNextToDraw(Cell *next) const override;
-
 private:
   // The pointers below point to inner cells and must be kept contiguous.
   // ** This is the draw list order. All pointers must be the same:
@@ -112,12 +109,7 @@ private:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields_ParenCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_print = true;
-    }
-  bool m_print : 1 /* InitBitFields_ParenCell */;
+  bool m_print : 1 = true;
 };
 
 #endif // PARENCELL_H

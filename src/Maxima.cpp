@@ -62,6 +62,7 @@ Maxima::Maxima(wxSocketBase *socket, Configuration *config) :
           m_knownTags[wxS("mth")] = XML_MATHS;
           m_knownTags[wxS("math")] = XML_MATHS;
           m_knownTags[wxS("wxxml-key")] = XML_WXXML_KEY;
+          m_knownTags[wxS("wxxml-asciimath")] = XML_ASCIIMATH;
         }
   }
   wxASSERT(socket);

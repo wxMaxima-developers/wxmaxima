@@ -123,6 +123,8 @@ public:
     XML_MATHS,
     XML_TOOLONGMATHS,
     XML_WXXML_KEY,
+    //! Maxima has sent one complete block of ASCII-art 2D display output.
+    XML_ASCIIMATH,
     //! Maxima has disconnected (possibly because the process had died).
     DISCONNECTED,
     //! A write to Maxima is still ongoing. We use this event to keep the traffic indicator alive.

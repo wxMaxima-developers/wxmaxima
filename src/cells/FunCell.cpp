@@ -38,7 +38,6 @@ FunCell::FunCell(GroupCell *group, Configuration *config,
                  std::unique_ptr<Cell> &&name, std::unique_ptr<Cell> &&arg)
   : Cell(group, config), m_nameCell(std::move(name)),
     m_argCell(std::move(arg)) {
-  InitBitFields_FunCell();
   SetStyle(TS_FUNCTION);
   m_nameCell->SetStyle(TS_FUNCTION);
 }
@@ -165,15 +164,5 @@ bool FunCell::BreakUp() const {
     return false;
 
   Cell::BreakUpAndMark();
-  m_nameCell->last()->SetNextToDraw(m_argCell);
-  m_argCell->last()->SetNextToDraw(m_nextToDraw);
-  m_nextToDraw = m_nameCell;
   return true;
-}
-
-void FunCell::SetNextToDraw(Cell *next) const {
-  if (IsBrokenIntoLines())
-    m_argCell->last()->SetNextToDraw(next);
-  else
-    m_nextToDraw = next;
 }

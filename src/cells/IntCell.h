@@ -98,7 +98,60 @@ public:
   wxString ToXML() const override;
 
   bool BreakUp() const override;
-  void SetNextToDraw(Cell *next) const override;
+
+  /*! ORDER MATTERS, and this is a runtime-conditional SUBSET of
+    GetInnerCellCount()/GetInnerCell() above, not the same fixed 9 slots:
+    when HasLimits(), the linear form omits the lower/upper limit entirely
+    (just "integrate(base,var)"); otherwise it includes them (see BreakUp()
+    for the exact rationale -- this mirrors it precisely, don't derive it
+    independently). Also: if the integration variable cell m_var itself
+    starts with a leading "d" sibling (the usual case), that leading piece
+    is skipped and the chain starts at m_var->GetNext() instead -- returning
+    that as the "head" is enough, since GetNext() from there still reaches
+    the same tail.
+  */
+  size_t GetBrokenCellCount() const override { return HasLimits() ? 5 : 9; }
+  Cell *GetBrokenCell(size_t index) const override {
+    Cell *const varHead = m_var->GetNext() ? m_var->GetNext() : m_var.get();
+    if (HasLimits()) {
+      switch (index) {
+      case 0:
+        return m_open.get();
+      case 1:
+        return m_base.get();
+      case 2:
+        return m_comma1.get();
+      case 3:
+        return varHead;
+      case 4:
+        return m_close.get();
+      default:
+        return nullptr;
+      }
+    }
+    switch (index) {
+    case 0:
+      return m_open.get();
+    case 1:
+      return m_base.get();
+    case 2:
+      return m_comma1.get();
+    case 3:
+      return varHead;
+    case 4:
+      return m_comma2.get();
+    case 5:
+      return m_lowerLimit.get();
+    case 6:
+      return m_comma3.get();
+    case 7:
+      return m_upperLimit.get();
+    case 8:
+      return m_close.get();
+    default:
+      return nullptr;
+    }
+  }
 
   //! Does this integral have limits?
   bool HasLimits() const {return (m_intStyle == INT_DEF) &&
@@ -141,13 +194,6 @@ private:
 
   //! Is this integral definitive?
   IntegralType m_intStyle = INT_IDEF;
-
-//** Bitfield objects (0 bytes)
-//**
-  static void InitBitFields_IntCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-    }
 };
 
 #endif  // INTCELL_Hs.

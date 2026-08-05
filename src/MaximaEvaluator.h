@@ -85,6 +85,14 @@ public:
   void SetupVariables();
 
 private:
+  //! A ":lisp-quiet (setq $linel ...)" command that tells Maxima's ASCII-art
+  //! 2D/1D printer how many columns of the worksheet's monospace ASCII-math
+  //! font currently fit into the window, freshly computed so it stays
+  //! correct across window resizes and font-size changes between cells
+  //! (unlike the rest of m_configCommands, which is only refreshed on
+  //! ConfigChanged()). See Configuration::GetAsciiArtColumns().
+  wxString LinelConfigCommand() const;
+
   //! The wxMaxima frame whose services the driver uses. Not owned; the frame
   //! owns this object.
   wxMaxima &m_wxMaxima;

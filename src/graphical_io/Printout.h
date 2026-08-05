@@ -71,7 +71,18 @@ private:
   Configuration m_configuration;
   //! A pointer to m_configuration we can point to
   Configuration *const m_configPointer;
+#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12
+  // GCC < 12 doesn't support [[maybe_unused]] on non-static data members and
+  // warns "attribute ignored" about it (fixed in GCC 12); Clang needs the
+  // attribute here to silence -Wunused-private-field, so it can't just be
+  // removed.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wattributes"
+#endif
   [[maybe_unused]] const double m_scaleFactor;
+#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12
+#pragma GCC diagnostic pop
+#endif
   // Sets Configuration::Printing() to true while we print
   Printing m_printing;
 };

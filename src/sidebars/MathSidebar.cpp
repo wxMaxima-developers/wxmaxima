@@ -38,7 +38,7 @@ MathSidebar::MathSidebar(wxWindow *parent, int ID)
   m_grid = new Buttonwrapsizer();
   SetScrollRate(5, 5);
 
-  int style = wxALL | wxEXPAND;
+  int style = static_cast<int>(wxALL) | wxEXPAND;
   int border = 0;
 
   m_grid->Add(new wxButton(this, EventIDs::button_ratsimp, _("Simplify"),

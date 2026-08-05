@@ -35,17 +35,13 @@
 
 /*! A cell that represents a box(x) block
 
-  In the case that this cell is broken into two lines in the order of
-  m_nextToDraw this cell is represented by the following individual
-  cells:
+  Once IsBrokenIntoLines(), the draw list (see GetBrokenCellCount()/
+  GetBrokenCell()) expands this cell into the following individual cells
+  instead of drawing it as a single 2D object:
 
-  - The BoxCell itself
   - The opening "box("
   - The contents
   - The closing ")".
-
-  If it isn't broken into multiple cells m_nextToDraw points to the
-  cell that follows this Cell.
 */
 class BoxCell final : public Cell
 {
@@ -56,6 +52,9 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
+  //! ORDER MATTERS: also used, via the default GetBrokenCellCount()/
+  //! GetBrokenCell(), as this cell's broken/linear draw sequence -- "box(",
+  //! then the (possibly multi-cell) contents, then ")", unconditionally.
   size_t GetInnerCellCount() const override { return 3; }
   Cell *GetInnerCell(size_t index) const override {
     switch (index) {
@@ -72,8 +71,6 @@ public:
 
   bool BreakUp() const override;
 
-  void SetNextToDraw(Cell *next) const override;
-
 private:
   void MakeBreakupCells();
 
@@ -84,13 +81,6 @@ private:
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
-
-//** Bitfield objects (0 bytes)
-//**
-  static void InitBitFields_BoxCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-    }
 
   void Recalculate(const AFontSize fontsize) const override;
 

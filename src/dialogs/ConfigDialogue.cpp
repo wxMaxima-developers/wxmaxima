@@ -2039,7 +2039,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   // dark palette.
   wxBoxSizer *appearanceSizer = new wxBoxSizer(wxHORIZONTAL);
   appearanceSizer->Add(new wxStaticText(panel, wxID_ANY, _("Appearance:")), 0,
-                       wxALIGN_CENTER_VERTICAL | wxRIGHT,
+                       static_cast<int>(wxALIGN_CENTER_VERTICAL) | wxRIGHT,
                        5 * GetContentScaleFactor());
   wxArrayString appearanceChoices;
   appearanceChoices.Add(_("Light"));          // Configuration::Appearance::light
@@ -2144,7 +2144,7 @@ wxWindow *ConfigDialogue::CreateStylePanel() {
   loadSavesizer->Add(
                      m_saveStyle,
                      wxSizerFlags().Border(wxUP | wxDOWN, 5 * GetContentScaleFactor()));
-  vsizer->Add(loadSavesizer, 0, wxALIGN_RIGHT | wxALL,
+  vsizer->Add(loadSavesizer, 0, static_cast<int>(wxALIGN_RIGHT) | wxALL,
               5 * GetContentScaleFactor());
 
   m_configuration->SetZoomFactor(1.0);

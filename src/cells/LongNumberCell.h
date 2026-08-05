@@ -54,7 +54,12 @@ public:
   void SetCurrentPoint(wxPoint point) const override;
   void Draw(wxDC *dc, wxDC *antialiassingDC) override;
   bool BreakUp() const override;
-  void SetNextToDraw(Cell *next) const override;
+  //! ORDER MATTERS: also used, via the default GetBrokenCellCount()/
+  //! GetBrokenCell(), as this cell's broken/linear draw sequence. There is
+  //! only ever this one slot -- BreakUp() builds the whole grouped-digit
+  //! chain as m_innerCell's own GetNext() siblings, so the draw-list
+  //! iterator walks all of them by following that chain, not by iterating
+  //! further indices here.
   size_t GetInnerCellCount() const override { if(m_innerCell) return 1; else return 0; }
   // cppcheck-suppress objectIndex
   Cell *GetInnerCell(size_t index) const override;
@@ -75,13 +80,6 @@ private:
   //**
   mutable int m_numStartWidth = 0;
   mutable int m_ellipsisWidth = 0;
-
-  //** Bitfield objects (0 bytes)
-  //**
-  static void InitBitFields_LongNumberCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-    }
 };
 
 #endif // LONGNUMBERCELL_H

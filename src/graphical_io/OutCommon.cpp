@@ -23,6 +23,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "OutCommon.h"
+#include "Dirstructure.h"
 #include "cells/GroupCell.h"
 #include "worksheet/Worksheet.h"
 #include <cmath>
@@ -30,15 +31,45 @@
 #include <wx/filename.h>
 #include <wx/wfstream.h>
 
-static wxString MakeTempFilename() {
-    return wxFileName::CreateTempFileName(wxS("wxmaxima_size_"));
+namespace {
+
+/*! A private (mode 0700) subdirectory of the user's own config directory, for
+  the throwaway files this class creates while rendering an export for the
+  clipboard (there is no in-memory alternative: wxSVGFileDC and friends only
+  know how to write to a real path).
+
+  Unlike the shared system temp directory these otherwise land in, no other
+  unprivileged user has write access here, so nobody can race the file's
+  creation with a symlink planted under the name it happens to get.
+
+  \return an empty string if the directory couldn't be created (e.g.
+          UserConfDir() itself is unusable), so the caller falls back to
+          wxFileName::CreateTempFileName()'s own default location.
+*/
+wxString PrivateTempDir() {
+  wxString dir = Dirstructure::UserConfDir();
+  if (dir.IsEmpty())
+    return {};
+  if (!dir.EndsWith(wxFileName::GetPathSeparator()))
+    dir += wxFileName::GetPathSeparator();
+  dir += wxS("tmp");
+  if (!wxFileName::DirExists(dir) &&
+      !wxFileName::Mkdir(dir, wxS_IRUSR | wxS_IWUSR | wxS_IXUSR, wxPATH_MKDIR_FULL))
+    return {};
+  return dir + wxFileName::GetPathSeparator();
 }
+
+wxString MakeTempFilename(const wxString &prefix) {
+    return wxFileName::CreateTempFileName(PrivateTempDir() + prefix);
+}
+
+} // namespace
 
 OutCommon::OutCommon(const Configuration * const *configuration, const wxString &filename,
                      int fullWidth, double scale)
-    : m_tempFilename(MakeTempFilename()),
+    : m_tempFilename(MakeTempFilename(wxS("wxmaxima_size_"))),
       m_filename(filename.empty()
-                 ? wxFileName::CreateTempFileName(wxS("wxmaxima_"))
+                 ? MakeTempFilename(wxS("wxmaxima_"))
                  : filename),
       m_configuration(configuration), m_scale(scale), m_fullWidth(fullWidth) {
     m_thisconfig.ShowCodeCells(m_oldconfig->ShowCodeCells());

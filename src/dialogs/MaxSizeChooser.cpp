@@ -57,16 +57,16 @@ MaxSizeChooser::MaxSizeChooser(wxWindow *parent, int id, const int &width,
               new wxStaticText(
                                this, -1,
                                _("The maximum size for this image. Values <= 0 mean: Unspecified.")),
-              0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
-  grid_sizer_1->Add(widthText, 0, wxALL | wxEXPAND, 5);
-  grid_sizer_1->Add(m_imageWidth, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
-  grid_sizer_1->Add(heightText, 0, wxALL | wxEXPAND, 5);
-  grid_sizer_1->Add(m_imageHeight, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+              0, static_cast<int>(wxALL) | wxALIGN_CENTER_HORIZONTAL, 5);
+  grid_sizer_1->Add(widthText, 0, static_cast<int>(wxALL) | wxEXPAND, 5);
+  grid_sizer_1->Add(m_imageWidth, 0, static_cast<int>(wxEXPAND) | wxLEFT | wxRIGHT, 2);
+  grid_sizer_1->Add(heightText, 0, static_cast<int>(wxALL) | wxEXPAND, 5);
+  grid_sizer_1->Add(m_imageHeight, 0, static_cast<int>(wxEXPAND) | wxLEFT | wxRIGHT, 2);
 
   sizer_1->Add(button_1, 0, wxALL, 5);
   sizer_1->Add(button_2, 0, wxALL, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);
   SetAutoLayout(true);
-  vsizer->Add(grid_sizer_1, 1, wxEXPAND | wxLEFT, 0);
+  vsizer->Add(grid_sizer_1, 1, static_cast<int>(wxEXPAND) | wxLEFT, 0);
   SetSizerAndFit(vsizer);
 }

@@ -74,7 +74,6 @@ std::unique_ptr<Cell> CellList::SetNext(Cell *cell, std::unique_ptr<Cell> &&next
   // Set the previous pointer for our successor
   if (cell->m_next)
     cell->m_next->m_previous = cell;
-  cell->SetNextToDraw(cell->m_next);
   cell->InvalidateListCache();
 
   Check(cell);
@@ -101,23 +100,8 @@ void CellList::AppendCell(Cell *cell, std::unique_ptr<Cell> &&tail) {
     // above would be inappropriate.
     cell->GetGroup()->ResetSize_Recursively();
 
-  auto *const next = tail.get();
   auto *const last = cell->last();
-
-  // We want to append to the draw list as well
-  // Get the end of the draw list
-  auto *lastToDraw = last->GetNextToDraw();
-  if (lastToDraw && lastToDraw->GetNextToDraw()) {
-    while (lastToDraw->GetNextToDraw())
-      lastToDraw = lastToDraw->GetNextToDraw();
-  }
-
-  // Append the cell
   SetNext(last, std::move(tail));
-
-  // Restore the draw list, and append the cell to it
-  if (lastToDraw)
-    lastToDraw->SetNextToDraw(next);
 }
 
 CellList::SplicedIn
@@ -136,13 +120,8 @@ CellList::SpliceInAfter(Cell *where, std::unique_ptr<Cell> &&head, Cell *last) {
       wxASSERT_MSG(!last->m_next,
                    "Bug: SpliceIn::last has a successor, it will be deleted.");
 
-      // We're explicitly splicing into the draw list as well
-      // - preserve the draw list.
-      auto *const nextToDraw = where->GetNextToDraw();
-
       // Insert the cells into the cell list
       SetNext(last, std::move(where->m_next));
-      last->SetNextToDraw(nextToDraw);
     }
   SetNext(where, std::move(head));
 
@@ -173,7 +152,6 @@ CellList::TornOut CellList::TearOut(Cell *first, Cell *last) {
     Check(retval.tailOwner.get());
   }
 
-  wxASSERT(!last->GetNextToDraw());
   wxASSERT(!first->m_previous);
   Check(first);
   Check(last);

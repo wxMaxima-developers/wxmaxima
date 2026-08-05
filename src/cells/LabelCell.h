@@ -62,13 +62,6 @@ private:
 //**
   //! The user-defined label for this label cell.
   wxString m_userDefinedLabel;
-
-//** Bitfield objects (0 bytes)
-//**
-  static void InitBitFields_LabelCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-    }
 };
 
 #endif // LABELCELL_H

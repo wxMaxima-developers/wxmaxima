@@ -39,6 +39,9 @@ public:
   std::unique_ptr<Cell> Copy(GroupCell *group) const override;
   const CellTypeInfo &GetInfo() override;
 
+  //! ORDER MATTERS: also used, via the default GetBrokenCellCount()/
+  //! GetBrokenCell(), as this cell's broken/linear draw sequence -- "diff(",
+  //! the base, ",", the diff variable(s), ")", unconditionally.
   size_t GetInnerCellCount() const override { return 5; }
   Cell *GetInnerCell(size_t index) const override {
     switch (index) {
@@ -70,8 +73,6 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  void SetNextToDraw(Cell *next) const override;
-
   bool BreakUp() const override;
 
 private:
@@ -86,13 +87,6 @@ private:
   std::unique_ptr<Cell> m_diffCell;
   std::unique_ptr<Cell> m_close;
   // The pointers above point to inner cells and must be kept contiguous.
-
-//** Bitfield objects (0 bytes)
-//**
-  static void InitBitFields_DiffCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-    }
 };
 
 #endif // DIFFCELL_H

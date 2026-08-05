@@ -46,7 +46,18 @@ private:
   //! If we read wxMathml.lisp from a file this variable is not-empty and contains its name
   static wxString m_wxMathML_file;
   wxString m_wxMathML;
+#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12
+  // GCC < 12 doesn't support [[maybe_unused]] on non-static data members and
+  // warns "attribute ignored" about it (fixed in GCC 12); Clang needs the
+  // attribute here to silence -Wunused-private-field, so it can't just be
+  // removed.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wattributes"
+#endif
   [[maybe_unused]] Configuration *m_configuration = NULL;
+#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 12
+#pragma GCC diagnostic pop
+#endif
   static wxString m_maximaCMD;
 };
 

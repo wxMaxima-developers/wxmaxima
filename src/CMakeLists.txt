@@ -133,6 +133,7 @@ set(SOURCE_FILES
     DiffAlgorithm.cpp
     Dirstructure.cpp
     BackgroundQueue.cpp
+    Bidi.cpp
     EvaluationQueue.cpp
     EventIDs.cpp
     FontRenderabilityCache.cpp
@@ -303,6 +304,38 @@ else()
   set(USE_QA "1")
 endif()
 
+# libfribidi gives EditorCell the real Unicode Bidi Algorithm (UAX #9), so
+# caret placement, selection and click-to-position are correct on lines that
+# mix left-to-right and right-to-left text - something no wxWidgets backend
+# exposes itself (Pango/CoreText/Uniscribe do it internally for rendering,
+# but never hand the reordering back to the application). It is optional:
+# without it, mixed-direction lines fall back to EditorCell's older,
+# single-direction-only heuristic, unchanged from before this existed.
+option(WXM_USE_FRIBIDI "Use libfribidi for correct bidirectional (RTL) text editing, if it is found" ON)
+if(WXM_USE_FRIBIDI)
+  find_package(PkgConfig QUIET)
+  if(PkgConfig_FOUND)
+    # GLOBAL: test/unit_tests is a sibling directory of this one (both are
+    # add_subdirectory()'d straight from the top-level CMakeLists.txt), and a
+    # handful of its test executables link the wxmTestApp object library that
+    # Bidi.cpp lives in - they need to see this target too, which a plain
+    # (non-GLOBAL) imported target from pkg_check_modules would not let them.
+    pkg_check_modules(FRIBIDI IMPORTED_TARGET GLOBAL fribidi)
+  endif()
+endif()
+if(FRIBIDI_FOUND)
+  set(USE_FRIBIDI "1")
+  message(STATUS "Found libfribidi ${FRIBIDI_VERSION}: bidirectional text editing will be accurate.")
+else()
+  set(USE_FRIBIDI "0")
+  if(WXM_USE_FRIBIDI)
+    message(STATUS "libfribidi not found: mixed-direction (bidirectional) text editing "
+                    "will fall back to the older, single-direction-only heuristic. "
+                    "Install libfribidi-dev (or your distribution's equivalent) for "
+                    "correct behaviour.")
+  endif()
+endif()
+
 if(WXM_ENABLE_PRECOMPILED_HEADERS)
   target_precompile_headers(wxmaxima PUBLIC "precomp.h")
 else()
@@ -316,6 +349,10 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.bat.in" ../wxmaxima-l
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.in" ../wxmaxima-local)
 
 target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+
+if(FRIBIDI_FOUND)
+  target_link_libraries(wxmaxima PkgConfig::FRIBIDI)
+endif()
 
 if(COMPILE_SUCCEEDED)
   message("Success!")
@@ -378,6 +415,13 @@ if(WXM_UNIT_TESTS)
     list(REMOVE_ITEM TEST_APP_SOURCES main.cpp)
     add_library(wxmTestApp OBJECT ${TEST_APP_SOURCES})
     target_compile_features(wxmTestApp PUBLIC cxx_std_20)
+    if(FRIBIDI_FOUND)
+        # wxmTestApp compiles Bidi.cpp itself, so it needs fribidi's include
+        # path for that compilation - separate from WXM_TESTAPP_EXTRA_LIBS
+        # below (test/unit_tests/CMakeLists.txt), which is only about linking
+        # the already-compiled object files into each test executable.
+        target_link_libraries(wxmTestApp PUBLIC PkgConfig::FRIBIDI)
+    endif()
 endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_BINARY_DIR}/Version.h)

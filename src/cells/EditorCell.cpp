@@ -31,6 +31,7 @@
 
 #include "EditorCell.h"
 
+#include "Bidi.h"
 #include "CellImpl.h"
 #include "CellPointers.h"
 #include "MarkDown.h"
@@ -45,7 +46,6 @@
 EditorCell::EditorCell(GroupCell *group, Configuration *config,
                        wxString text)
   : Cell(group, config), m_text(text) {
-  InitBitFields_EditorCell();
   // Do NOT translate '\r' to '\n' here: '\r' is wxMaxima's *soft* (word-wrap)
   // line break and '\n' is a *hard* one. Converting them freezes a transient
   // layout decision into permanent content -- e.g. when a cell is copied (the
@@ -72,9 +72,9 @@ EditorCell::EditorCell(GroupCell *group, Configuration *config,
           SetValue(wxS("{}"));
           CursorPosition(1);
         }
-      else SetValue(TabExpand(text, 0));
+      else SetValue(NormalizeLineEndings(text));
     }
-  else SetValue(TabExpand(text, 0));
+  else SetValue(NormalizeLineEndings(text));
   m_height = m_charHeight + 2 * Scale_Px(2);
   m_center = m_height / 2;
   m_width = 2 * Scale_Px(2);
@@ -707,6 +707,11 @@ void EditorCell::Recalculate(AFontSize fontsize) const {
              (textSnippet.GetText().StartsWith(wxS('\r'))))) {
           m_numberOfLines++;
           linewidth = textSnippet.GetIndentPixels();
+        } else if (textSnippet.GetText() == wxS("\t")) {
+          // A tab's width depends on where it starts on the line, so unlike
+          // every other token it must never be cached via SetWidth().
+          linewidth = NextTabStop(linewidth);
+          width = std::max(width, linewidth);
         } else {
           m_configuration->GetRecalcDC()->GetTextExtent(textSnippet.GetText(),
                                                         &tokenwidth, &tokenheight);
@@ -845,8 +850,8 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
 
     point = PositionToPoint(lineStart); // left edge (includes any indentation)
     wxCoord selectionWidth =
-      GetTextSize(m_text.SubString(lineStart, pos > lineStart ? pos - 1 : lineStart))
-        .GetWidth();
+      MeasureTextWidth(point.x,
+                       m_text.SubString(lineStart, pos > lineStart ? pos - 1 : lineStart));
     if (pos == lineStart) // empty line
       selectionWidth = 0;
 
@@ -855,7 +860,21 @@ void EditorCell::MarkSelection(wxDC *dc, size_t start, size_t end, TextStyle sty
     // the rectangle has to start at the last one instead. Taking
     // PositionToPoint(lineStart) as the left edge there would highlight the
     // text that follows the selection rather than the selection itself.
-    point.x = SelectionRunLeft(lineStart, pos, point.x, selectionWidth);
+    size_t dispColumn, dispLine;
+    PositionToXY(lineStart, &dispColumn, &dispLine);
+    if (LineIsMixedDirection(dispLine) && Bidi::IsAvailable()) {
+      // SelectionRunLeft() below only knows the *line's* direction, which
+      // isn't enough here; PositionToPoint() itself does know the run
+      // [lineStart, pos) is in (see MixedDirectionOffset()), for lineStart
+      // and pos independently, so the rectangle is simply the span between
+      // them. That also covers a range spanning more than one run as a
+      // single bounding rectangle - the same approximation a wholly
+      // right-to-left line already makes.
+      const wxCoord endX = PositionToPoint(pos).x;
+      selectionWidth = (endX > point.x) ? (endX - point.x) : (point.x - endX);
+      point.x = std::min(point.x, endX);
+    } else
+      point.x = SelectionRunLeft(lineStart, pos, point.x, selectionWidth);
 
     wxRect rect;
 #if defined(__WXOSX__)
@@ -1035,6 +1054,13 @@ void EditorCell::Draw(wxDC *dc, wxDC *antialiassingDC) {
         TextCurrentPoint.x += textSnippet.GetIndentPixels();
         if (++rtlLine < rtlLineOffsets.size())
           TextCurrentPoint.x += rtlLineOffsets.at(rtlLine);
+      } else if (textSnippet.GetText() == wxS("\t")) {
+        // A tab draws no glyph of its own -- it just advances to the next
+        // tab stop, measured from the current line's own start (including
+        // its indentation).
+        const wxCoord lineOrigin = TextStartingpoint.x + lastIndent;
+        TextCurrentPoint.x =
+          lineOrigin + NextTabStop(TextCurrentPoint.x - lineOrigin);
       } else {
         // We need to draw some text.
 
@@ -1191,38 +1217,38 @@ wxString EditorCell::GetCurrentCommand() const {
   return command;
 }
 
-wxString EditorCell::TabExpand(const wxString &input_, size_t posInLine) {
-  wxString retval;
-
-  // Convert the text to our line endings.
-  wxString input =
-    input_; // TODO the state machine below can be changed instead
+wxString EditorCell::NormalizeLineEndings(const wxString &input_) {
+  wxString input = input_;
   input.Replace(wxS("\r\n"), wxS("\n"));
+  return input;
+}
 
-  wxString::const_iterator ch = input.begin();
-  while (ch < input.end()) {
-    if ((*ch == wxS('\n'))) {
-      posInLine = 0;
-      retval += *ch;
-      ++ch;
-      continue;
-    }
+wxCoord EditorCell::NextTabStop(wxCoord startX) const {
+  const wxCoord tabWidth = 4 * GetTextSize(wxS(" ")).GetWidth();
+  if (tabWidth <= 0)
+    return startX;
+  return ((startX / tabWidth) + 1) * tabWidth;
+}
 
+wxCoord EditorCell::MeasureTextWidth(wxCoord startX, const wxString &text) const {
+  if (text.Find(wxS('\t')) == wxNOT_FOUND)
+    return GetTextSize(text).GetWidth();
+
+  wxCoord x = startX;
+  wxString run;
+  for (wxString::const_iterator ch = text.begin(); ch != text.end(); ++ch) {
     if (*ch == wxS('\t')) {
-      size_t spacesToAdd = 4 - (posInLine % 4);
-      for (size_t i = 0; i < spacesToAdd; ++i)
-        retval += wxS(" ");
-      posInLine += spacesToAdd;
-      ++ch;
-      continue;
+      if (!run.empty()) {
+        x += GetTextSize(run).GetWidth();
+        run.clear();
+      }
+      x = NextTabStop(x);
     } else
-      retval += *ch;
-    if (ch < input.end()) {
-      ++ch;
-      ++posInLine;
-    }
+      run += *ch;
   }
-  return retval;
+  if (!run.empty())
+    x += GetTextSize(run).GetWidth();
+  return x - startX;
 }
 
 size_t EditorCell::BeginningOfLine(size_t pos) const {
@@ -1578,12 +1604,34 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
   // *left* on screen. Pressing Left there therefore has to do what Right does to
   // the stored text, and the other way round -- otherwise the caret walks the
   // wrong way and the key that looks like it should undo the last movement
-  // repeats it. Only lines that are wholly one direction are handled; see
-  // LineIsRightToLeft().
+  // repeats it.
   if ((event.GetKeyCode() == WXK_LEFT) || (event.GetKeyCode() == WXK_RIGHT)) {
     size_t cursorColumn, cursorLine;
     PositionToXY(CursorPosition(), &cursorColumn, &cursorLine);
-    if (LineIsRightToLeft(cursorLine) && !LineIsMixedDirection(cursorLine))
+
+    bool rightToLeft = false;
+    bool decided = false;
+    if (LineIsMixedDirection(cursorLine)) {
+      // Which way is "forward" on screen depends on the run the caret is
+      // actually sitting in, not the line as a whole - the same reason
+      // MixedDirectionOffset() exists for PositionToPoint().
+      std::vector<BidiRun> runs;
+      if (GetLineBidiRuns(cursorLine, &runs)) {
+        const size_t pos = CursorPosition();
+        for (const auto &r : runs)
+          if ((pos >= r.logicalStart) && (pos <= r.logicalEnd)) {
+            rightToLeft = r.rightToLeft;
+            decided = true;
+            break;
+          }
+      }
+    }
+    // Otherwise (a wholly one-direction line, or a mixed one libfribidi can't
+    // reorder): the line's own direction, if it has one.
+    if (!decided)
+      rightToLeft = LineIsRightToLeft(cursorLine) && !LineIsMixedDirection(cursorLine);
+
+    if (rightToLeft)
       event.m_keyCode = (event.GetKeyCode() == WXK_LEFT) ? WXK_RIGHT : WXK_LEFT;
   }
 
@@ -1899,29 +1947,26 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
             m_containsChanges = true;
             m_isDirty = true;
 
-            if (m_text.Left(pos).Right(4) ==
-                wxS("    ")) {
-              m_text = m_text.Left(pos - 4) +
-                m_text.Mid(pos);
-              pos -= 4;
-            } else {
-              /// If deleting ( in () then delete both.
-              size_t right = pos;
-              if (pos < m_text.Length() &&
-                  m_configuration->GetMatchParens() &&
-                  ((m_text.at(pos - 1) == '[' &&
-                    m_text.at(pos) == ']') ||
-                   (m_text.at(pos - 1) == '(' &&
-                    m_text.at(pos) == ')') ||
-                   (m_text.at(pos - 1) == '{' &&
-                    m_text.at(pos) == '}') ||
-                   (m_text.at(pos - 1) == '"' &&
-                    m_text.at(pos) == '"')))
-                right++;
-              m_text = m_text.Left(pos - 1) +
-                m_text.Mid(right);
-              pos--;
-            }
+            // Plain single-character delete. This also removes a whole tab
+            // in one press, since a tab is one real character in m_text now
+            // (no more need for the old special case that gobbled up to 4
+            // trailing spaces to emulate deleting a space-expanded tab).
+            /// If deleting ( in () then delete both.
+            size_t right = pos;
+            if (pos < m_text.Length() &&
+                m_configuration->GetMatchParens() &&
+                ((m_text.at(pos - 1) == '[' &&
+                  m_text.at(pos) == ']') ||
+                 (m_text.at(pos - 1) == '(' &&
+                  m_text.at(pos) == ')') ||
+                 (m_text.at(pos - 1) == '{' &&
+                  m_text.at(pos) == '}') ||
+                 (m_text.at(pos - 1) == '"' &&
+                  m_text.at(pos) == '"')))
+              right++;
+            m_text = m_text.Left(pos - 1) +
+              m_text.Mid(right);
+            pos--;
           }
 
         } else {
@@ -1989,18 +2034,27 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 
               while (p < end) {
                 if (event.ShiftDown()) {
-                  for (int i = 0; i < 4; i++) {
-                    if (p < end && m_text.at(p) == wxS(' ')) {
-                      m_text.erase(p, 1);
-                      if (end > 0)
-                        end--;
-                    } else
-                      break;
+                  if (p < end && m_text.at(p) == wxS('\t')) {
+                    m_text.erase(p, 1);
+                    if (end > 0)
+                      end--;
+                  } else {
+                    // No leading tab to remove (e.g. an already
+                    // space-indented document): fall back to removing up to
+                    // 4 leading spaces, as before.
+                    for (int i = 0; i < 4; i++) {
+                      if (p < end && m_text.at(p) == wxS(' ')) {
+                        m_text.erase(p, 1);
+                        if (end > 0)
+                          end--;
+                      } else
+                        break;
+                    }
                   }
                 } else {
-                  m_text.insert(p, wxS("    "));
-                  end += 4;
-                  p += 4;
+                  m_text.insert(p, wxS("\t"));
+                  end += 1;
+                  p += 1;
                 }
                 wxString::const_iterator it = m_text.begin() + p;
                 while (it != m_text.end() && p < end && *it != wxS('\n') && *it != wxS('\r')) {
@@ -2012,30 +2066,34 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
                   ++it;
                 }
               }
+              // Keep the selection alive (as [start, end)) rather than
+              // collapsing it to a caret: CursorPosition(start) would set
+              // both selection ends to start, undoing the SetSelection()
+              // just above and preventing repeated Tab/Shift+Tab presses
+              // from indenting/dedenting further.
               SetSelection(start, end);
             } else {
               m_text.erase(start, end - start);
+              CursorPosition(start);
             }
-            CursorPosition(start);
             StyleText();
             break;
           } else {
             if (!event.ShiftDown()) {
-              // Selection active and Tab was pressed without Shift
-              size_t col, line;
-              PositionToXY(pos, &col, &line);
-              wxString ins;
-              do {
-                col++;
-                ins += wxS(" ");
-              } while (col % 4 != 0);
-
-              m_text.insert(pos, ins);
-              pos += ins.Length();
+              // No selection and Tab was pressed without Shift: insert a
+              // real tab character.
+              m_text.insert(pos, wxS("\t"));
+              pos += 1;
             } else {
-              // Selection active and Shift+Tab
+              // No selection and Shift+Tab: dedent by one leading tab if
+              // there is one; otherwise fall back to removing up to 4
+              // leading spaces, for already space-indented documents.
               size_t start = BeginningOfLine(pos);
-              if (m_text.SubString(start, start + 3) == wxS("    ")) {
+              if ((start < m_text.Length()) && (m_text.at(start) == wxS('\t'))) {
+                m_text.erase(start, 1);
+                if (pos > start)
+                  pos = start;
+              } else if (m_text.SubString(start, start + 3) == wxS("    ")) {
                 m_text.erase(start, 4);
                 if (pos > start) {
                   pos = start;
@@ -2536,23 +2594,29 @@ wxPoint EditorCell::PositionToPoint(size_t pos) {
   if ((x < 0) || (y < 0))
     return wxDefaultPosition;
 
-  wxCoord width;
   size_t cX, cY;
-
   PositionToXY(pos, &cX, &cY);
 
-  width = GetLineWidth(cY, cX);
+  wxCoord mixedOffset;
+  if (LineIsMixedDirection(cY) && MixedDirectionOffset(cY, pos, &mixedOffset)) {
+    // The real bidi algorithm places this exactly - the same computation
+    // MarkSelection() already uses (see MixedDirectionOffset()) - superseding
+    // the single-direction mirror/plain-width choice below, which only knows
+    // whether the *whole line* is one direction.
+    x += mixedOffset;
+  } else {
+    const wxCoord width = GetLineWidth(cY, cX);
 
-  // A right-to-left line is drawn in the reverse of the order it is stored in,
-  // so the text before a position is drawn *after* it: the caret belongs that
-  // far in from the line's right end rather than from its left. Mirroring the
-  // measurement is exact as long as the line is wholly one direction, which is
-  // the case LineIsRightToLeft() answers for; a line genuinely mixing scripts
-  // needs the real bidirectional algorithm and is left as it was.
-  if (LineIsRightToLeft(cY) && !LineIsMixedDirection(cY))
-    x += GetLineWidth(cY, LineLength(cY)) - width;
-  else
-    x += width;
+    // A right-to-left line is drawn in the reverse of the order it is stored
+    // in, so the text before a position is drawn *after* it: the caret
+    // belongs that far in from the line's right end rather than from its
+    // left. Mirroring the measurement is exact as long as the line is wholly
+    // one direction, which is the case LineIsRightToLeft() answers for.
+    if (LineIsRightToLeft(cY) && !LineIsMixedDirection(cY))
+      x += GetLineWidth(cY, LineLength(cY)) - width;
+    else
+      x += width;
+  }
 
   // The caret has to follow the text when a right-to-left line is set flush
   // right - the same shift Draw() applies to that line.
@@ -2605,12 +2669,26 @@ void EditorCell::SelectPointText(const wxPoint point) {
     // Find the text snippet the cursor is in
     while ((textSnippet != m_styledText.end()) && (xpos < posInCell.x)) {
       wxString txt = textSnippet->GetText();
-      wxCoord firstCharWidth;
-      firstCharWidth = GetTextSize(txt.Left(1)).GetWidth();
 
       if ((txt == wxS("\n")) || (txt == wxS("\r")))
         break;
 
+      if (txt == wxS("\t")) {
+        // A tab's width is position-dependent, so it can't be measured via
+        // GetTextSize(); treat the whole tab as one unit and round at its own
+        // midpoint, mirroring how the general case rounds at half its first
+        // character's width.
+        const wxCoord stop = NextTabStop(xpos);
+        if (xpos + (stop - xpos) / 2 < posInCell.x) {
+          xpos = stop;
+          pos += 1;
+        } else
+          break;
+        ++textSnippet;
+        continue;
+      }
+
+      wxCoord firstCharWidth = GetTextSize(txt.Left(1)).GetWidth();
       wxCoord w = GetTextSize(txt).GetWidth();
       if (xpos + w + firstCharWidth / 2 < posInCell.x) {
         xpos += w;
@@ -2626,18 +2704,26 @@ void EditorCell::SelectPointText(const wxPoint point) {
     if (textSnippet != m_styledText.end())
       snippet = textSnippet->GetText();
 
-    lastwidth = GetTextSize(snippet.Left(1)).GetWidth();
-    lastwidth = -lastwidth;
+    if (snippet == wxS("\t")) {
+      // Same whole-unit rounding as the coarse scan above: land before or
+      // after the tab depending on which side of its midpoint the click fell.
+      const wxCoord stop = NextTabStop(xpos);
+      if (xpos + (stop - xpos) / 2 < posInCell.x)
+        pos++;
+    } else {
+      lastwidth = GetTextSize(snippet.Left(1)).GetWidth();
+      lastwidth = -lastwidth;
 
-    // Now determine which char inside this text snippet the cursor is at
-    if ((snippet != wxS("\r")) && (snippet != wxS("\n"))) {
-      for (size_t i = 0; i < snippet.Length(); i++) {
-        wxCoord width = GetTextSize(snippet.Left(i)).GetWidth();
-        if (xpos + width + (width - lastwidth) / 2 < posInCell.x)
-          pos++;
-        else
-          break;
-        lastwidth = width;
+      // Now determine which char inside this text snippet the cursor is at
+      if ((snippet != wxS("\r")) && (snippet != wxS("\n"))) {
+        for (size_t i = 0; i < snippet.Length(); i++) {
+          wxCoord width = GetTextSize(snippet.Left(i)).GetWidth();
+          if (xpos + width + (width - lastwidth) / 2 < posInCell.x)
+            pos++;
+          else
+            break;
+          lastwidth = width;
+        }
       }
     }
     m_displayCaret = true;
@@ -2645,25 +2731,30 @@ void EditorCell::SelectPointText(const wxPoint point) {
     // The line that now follows is pure paranoia.
     pos = std::min(pos, m_text.Length());
   } else {
-    // Text cell
+    // Text cell: search for the position on this display line whose caret -
+    // as PositionToPoint() places it, the same source of truth Draw() and
+    // MarkSelection() use - is closest to the click, instead of re-deriving
+    // the mapping by hand. A per-character forward scan comparing against a
+    // monotonically growing substring width (what used to be here) assumes
+    // stored order is drawn order, which only holds for left-to-right text:
+    // on a right-to-left line it resolved a click to the *mirror image* of
+    // the right position, and a mixed-direction line fares no better.
+    auto distanceTo = [&](size_t candidate) {
+      const wxCoord x = PositionToPoint(candidate).x;
+      return (x > point.x) ? (x - point.x) : (point.x - x);
+    };
 
-    wxString text = m_text;
-
-    wxString::const_iterator it = text.begin() + pos;
-    // Stop at the hard newline OR the soft break that ends this display line
-    // (the soft break at lineStart started it and must not end it at once).
-    while (it != text.end() && *it != '\n' &&
-           !((pos != lineStart) && IsSoftBreakBefore(pos))) {
-      wxCoord width;
-      width =
-        GetTextSize(text.SubString(lineStart, pos)).GetWidth();
-      if (width > posInCell.x)
-        break;
-
-      pos++;
-      ++it;
+    const size_t lineEnd = lineStart + LineLength(lin);
+    size_t best = lineStart;
+    wxCoord bestDist = distanceTo(lineStart);
+    for (size_t candidate = lineStart + 1; candidate <= lineEnd; candidate++) {
+      const wxCoord dist = distanceTo(candidate);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = candidate;
+      }
     }
-    pos = std::min(pos, text.Length());
+    pos = best;
 
     m_displayCaret = true;
   }
@@ -2932,8 +3023,7 @@ void EditorCell::InsertText(wxString text) {
   SaveValue();
   m_containsChanges = true;
 
-  text =
-    TabExpand(text, CursorPosition() - BeginningOfLine(CursorPosition()));
+  text = NormalizeLineEndings(text);
 
   ReplaceSelection(GetSelectionString(), text);
 
@@ -3095,6 +3185,72 @@ bool EditorCell::LineIsMixedDirection(size_t line) {
   return sawRightToLeft && sawLeftToRight;
 }
 
+bool EditorCell::GetLineBidiRuns(size_t line, std::vector<BidiRun> *runs) {
+  if (!Bidi::IsAvailable())
+    return false;
+
+  const size_t lineStart = XYToPosition(0, line);
+  const size_t lineLen = LineLength(line);
+  if (lineLen == 0)
+    return false;
+
+  const wxString lineText = m_text.SubString(lineStart, lineStart + lineLen - 1);
+  *runs = Bidi::GetRuns(lineText, m_configuration->RightToLeftDocument());
+  // Bidi::GetRuns() only ever sees this one line's text, so its runs are
+  // relative to it; shift them to absolute m_text positions so every caller
+  // here can compare them against the positions it already works with.
+  for (auto &r : *runs) {
+    r.logicalStart += lineStart;
+    r.logicalEnd += lineStart;
+  }
+  return true;
+}
+
+bool EditorCell::MixedDirectionOffset(size_t line, size_t position, wxCoord *offset) {
+  std::vector<BidiRun> runs;
+  if (!GetLineBidiRuns(line, &runs))
+    return false;
+
+  const BidiRun *run = nullptr;
+  for (const auto &r : runs)
+    if ((position >= r.logicalStart) && (position <= r.logicalEnd)) {
+      run = &r;
+      break;
+    }
+  if (!run)
+    return false;
+
+  // A wrapped continuation line starts indented (see Draw()/GetLineWidth());
+  // the run composition below measures from where the *text* starts, so the
+  // indent has to be added back on top to land in the same coordinate space
+  // as GetLineWidth() and PositionToPoint()'s other callers.
+  wxCoord x = GetLineWidth(line, 0);
+
+  // Runs that come before this one on screen, in full: they sit to this
+  // run's left regardless of their own direction.
+  for (const auto &r : runs) {
+    if (&r == run)
+      break;
+    x += MeasureTextWidth(x, m_text.SubString(r.logicalStart, r.logicalEnd - 1));
+  }
+
+  // Within the run itself: a left-to-right run measures normally, from its
+  // own start; a right-to-left one is drawn back to front, so a position's
+  // distance from the run's *left* edge is the width of what comes *after*
+  // it in logical order - the same reasoning SelectionRunLeft() uses for a
+  // wholly-right-to-left line, just local to this one run instead of the
+  // whole line.
+  if (run->rightToLeft) {
+    if (position < run->logicalEnd)
+      x += MeasureTextWidth(x, m_text.SubString(position, run->logicalEnd - 1));
+  } else {
+    if (position > run->logicalStart)
+      x += MeasureTextWidth(x, m_text.SubString(run->logicalStart, position - 1));
+  }
+  *offset = x;
+  return true;
+}
+
 wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
   // Find the text snippet the line we search for begins with for determining
   // the indentation needed.
@@ -3143,11 +3299,18 @@ wxCoord EditorCell::GetLineWidth(size_t line, size_t pos) {
     if(snippet.Length() <= pos)
       {
         pos -= snippet.Length();
-        wxCoord snippetWidth = GetTextSize(snippet).GetWidth();
-        lineWidth += snippetWidth;
+        // A tab is always its own isolated, single-character snippet (see
+        // MaximaTokenizer), so this is the "fully consumed" case for it; its
+        // width is position-dependent, hence NextTabStop() rather than a
+        // GetTextSize() lookup.
+        lineWidth = (snippet == wxS("\t")) ? NextTabStop(lineWidth)
+                                            : lineWidth + GetTextSize(snippet).GetWidth();
       }
     else
       {
+        // pos < snippet.Length() here; for a lone-tab snippet (length 1) the
+        // only way to land here is pos == 0, where Left(0) is already
+        // correctly "" / width 0, so no tab special-case is needed.
         wxString partialSnippet = snippet.Left(pos);
         wxCoord snippetWidth = GetTextSize(partialSnippet).GetWidth();
         lineWidth += snippetWidth;
@@ -3427,6 +3590,21 @@ void EditorCell::StyleTextCode() const {
       continue;
     }
 
+    // Handle a Tab: the tokenizer always hands it to us as its own isolated,
+    // single-character token (never merged with surrounding spaces), so it
+    // can be pushed straight through. Its width depends on where it starts on
+    // the line, so unlike every other token it is never measured via
+    // GetTextSize()/cached via SetWidth() -- Draw()/Recalculate()/
+    // GetLineWidth() all expand it to the next tab stop at the point they use
+    // it instead. Deliberately not registered as a soft-break candidate the
+    // way a space is: wrapping exactly at a tab is out of scope here, a line
+    // can still wrap at the next space after one as today.
+    if (Ch == wxS('\t')) {
+      m_styledText.push_back(StyledText(tokenString, GetTextStyle()));
+      lineWidth = NextTabStop(lineWidth);
+      continue;
+    }
+
     // Most of the other item types can contain Newlines - that we want as
     // separate tokens
     wxString txt = tokenString;
@@ -3483,6 +3661,28 @@ void EditorCell::StyleTextCode() const {
     m_styledText.push_back(StyledText(TS_CODE_COMMENT, suppressedLinesInfo));
 }
 
+void EditorCell::PushTextLine(const wxString &line, const wxString &indentChar) const {
+  if (line.Find(wxS('\t')) == wxNOT_FOUND) {
+    m_styledText.push_back(StyledText(line, GetTextStyle(), 0, indentChar));
+    return;
+  }
+
+  bool pushedAny = false;
+  wxString run;
+  for (wxString::const_iterator ch = line.begin(); ch != line.end(); ++ch) {
+    if (*ch == wxS('\t')) {
+      m_styledText.push_back(
+        StyledText(run, GetTextStyle(), 0, pushedAny ? wxString() : indentChar));
+      pushedAny = true;
+      run.clear();
+      m_styledText.push_back(StyledText(wxS("\t"), GetTextStyle()));
+    } else
+      run += *ch;
+  }
+  m_styledText.push_back(
+    StyledText(run, GetTextStyle(), 0, pushedAny ? wxString() : indentChar));
+}
+
 void EditorCell::StyleTextTexts() const {
   // Remove all bullets of item lists as we will introduce them again in the
   // next step, as well.
@@ -3524,7 +3724,7 @@ void EditorCell::StyleTextTexts() const {
               indent = 0;
 
             // How long is the current line already?
-            width = GetTextSize(m_text.SubString(lastLineStart, i)).GetWidth();
+            width = MeasureTextWidth(0, m_text.SubString(lastLineStart, i));
             // Do we need to introduce a soft line break?
             if (width + indent >= m_configuration->GetLineWidth()) {
               // We need a line break in front of the last space
@@ -3563,7 +3763,7 @@ void EditorCell::StyleTextTexts() const {
           // auto-wrapping
           if ((*it == ' ') || (nextChar >= m_text.end())) {
             // Determine the current line's length
-            width = GetTextSize(m_text.SubString(lastLineStart, i)).GetWidth();
+            width = MeasureTextWidth(0, m_text.SubString(lastLineStart, i));
             // Determine the current indentation
             if ((!indentPixels.empty()) && (!newLine))
               indent = indentPixels.back();
@@ -3690,7 +3890,7 @@ lineProcessed:
           m_styledText.back().SetIndentation(indent);
       }
       // Store the indented line in the list of styled text snippets
-      m_styledText.push_back(StyledText(line, GetTextStyle(), 0, indentChar));
+      PushTextLine(line, indentChar);
 
       if (it != m_text.end()) {
         // If the cell doesn't end with the last char of this line we have to
@@ -3738,14 +3938,13 @@ lineProcessed:
     while (lines.HasMoreTokens()) {
       wxString line = lines.GetNextToken();
       if (FirstLineOnlyEditor()) {
-        m_styledText.push_back(
-                               StyledText(line + wxString::Format(_(" ... + %li hidden lines"),
-                                                                  static_cast<long>(m_text.Freq(wxS('\n')))),
-                                          GetTextStyle(), 0, wxEmptyString));
+        PushTextLine(line + wxString::Format(_(" ... + %li hidden lines"),
+                                             static_cast<long>(m_text.Freq(wxS('\n')))),
+                    wxEmptyString);
         break;
       }
 
-      m_styledText.push_back(StyledText(line, GetTextStyle(), 0, wxEmptyString));
+      PushTextLine(line, wxEmptyString);
       if ((lines.HasMoreTokens()))
         m_styledText.push_back(StyledText(wxS("\n"), GetTextStyle(), 0, wxEmptyString));
     }

@@ -95,7 +95,46 @@ public:
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
   bool BreakUp() const override;
-  void SetNextToDraw(Cell *next) const override;
+
+  /*! ORDER MATTERS, and this is NOT the same set as GetInnerCellCount()/
+    GetInnerCell() above: index 1 there is m_paren (the ParenCell wrapper),
+    but the linear form shows Base() -- the wrapper's bare inner content,
+    parenthesis-free -- since BreakUp() clears m_displayParen before
+    building this sequence. m_under (index 9 above) never appears at all;
+    m_start (derived from m_under at construction) is shown instead. The
+    upper-limit pieces (comma3, over) are only present when m_over actually
+    has content (mirrors BreakUp()'s own `m_over->ToString().IsEmpty()`
+    check precisely -- don't derive this independently).
+  */
+  size_t GetBrokenCellCount() const override {
+    return m_over->ToString().IsEmpty() ? 7 : 9;
+  }
+  Cell *GetBrokenCell(size_t index) const override {
+    const bool hasOver = !m_over->ToString().IsEmpty();
+    switch (index) {
+    case 0:
+      return m_open.get();
+    case 1:
+      return Base();
+    case 2:
+      return m_comma1.get();
+    case 3:
+      return m_var.get();
+    case 4:
+      return m_comma2.get();
+    case 5:
+      return m_start.get();
+    case 6:
+      return hasOver ? m_comma3.get() : m_close.get();
+    case 7:
+      return hasOver ? m_over.get() : nullptr;
+    case 8:
+      return hasOver ? m_close.get() : nullptr;
+    default:
+      return nullptr;
+    }
+  }
+
   void Unbreak() const override final;
 
 protected:
@@ -148,14 +187,8 @@ private:
 
 //** Bitfield objects (1 bytes)
 //**
-  void InitBitFields_SumCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_displayParen = true;
-    }
-
   //! Display m_paren if true, or Base() if false
-  mutable bool m_displayParen : 1 /* InitBitFields_SumCell */;
+  mutable bool m_displayParen : 1 = true;
 };
 
 #endif // SUMCELL_H

@@ -32,6 +32,8 @@
 #include <list>
 #include <unordered_map>
 
+struct BidiRun;
+
 /*! \file
 
   This file contains the definition of the class EditorCell
@@ -159,13 +161,14 @@ public:
   //! A list of words that might be applicable to the autocomplete function.
   const auto &GetWordList() const { return m_wordList; }
 
-  /*! Expand all tabulators.
+  /*! Normalize line endings.
 
-    \param input The string the tabulators should be expanded in
-    \param posInLine The number of characters that come before the input in the same line
-    \todo Implement the actual TAB expansion
+    Collapses literal "\r\n" (Windows CRLF) sequences to "\n". Does NOT touch
+    a lone '\r': that is wxMaxima's own soft (word-wrap) line break marker,
+    not a line ending, and must survive untouched (see the comment in the
+    constructor).
   */
-  static wxString TabExpand(const wxString &input_, size_t posInLine);
+  static wxString NormalizeLineEndings(const wxString &input_);
 
   //! Escape all chars that cannot be used in HTML otherwise
   static wxString EscapeHTMLChars(wxString input);
@@ -382,6 +385,22 @@ public:
 
   wxCoord GetLineWidth(size_t line, size_t pos);
 
+  //! Pixel x of the next 4-column tab stop at or after startX, where one
+  //! column is the width of a space glyph in the current font. startX is
+  //! relative to the current line's own start (post-indentation), matching
+  //! how GetLineWidth()/Recalculate() already track their x accumulators.
+  wxCoord NextTabStop(wxCoord startX) const;
+
+  //! Width, in pixels, of `text` when it starts at horizontal position startX
+  //! on its line -- like GetTextSize(text).GetWidth(), but correct when text
+  //! contains embedded '\t' characters, whose width depends on where they
+  //! fall (tab width is position-dependent, the one thing GetTextExtent()
+  //! cannot compute on its own). For call sites that measure a raw m_text
+  //! substring rather than a single already-tokenized StyledText snippet
+  //! (a tab is always its own isolated snippet -- see MaximaTokenizer -- but
+  //! can still be embedded anywhere inside an arbitrary m_text substring).
+  wxCoord MeasureTextWidth(wxCoord startX, const wxString &text) const;
+
   /*! Is this character a strong right-to-left one (Hebrew, Arabic, Farsi, ...)?
 
     "Strong" in the sense of the Unicode bidirectional algorithm: a character
@@ -399,10 +418,13 @@ public:
     bidirectional algorithm uses for a paragraph. A line with no strong
     character at all - digits and punctuation only - follows the document.
 
-    Only lines that are wholly one direction are handled: for those the caret's
-    position is the mirror of what measuring the text before it gives, which is
-    exact and needs no reordering. A line that genuinely mixes the two scripts
-    would need the real algorithm and is left as it was.
+    Only lines that are wholly one direction are handled here: for those the
+    caret's position is the mirror of what measuring the text before it gives,
+    which is exact and needs no reordering. A line that genuinely mixes the two
+    scripts needs the real bidirectional algorithm instead - see
+    GetLineBidiRuns() and Bidi::GetRuns(), which PositionToPoint(),
+    MarkSelection() and HandleSpecialKey()'s arrow-key handling all fall back
+    to for a line this function can't characterise with one direction.
    */
   bool LineIsRightToLeft(size_t line);
 
@@ -423,6 +445,24 @@ public:
    */
   wxCoord SelectionRunLeft(size_t runStart, size_t runEnd, wxCoord runStartX,
                            wxCoord runWidth);
+
+  /*! Bidi::GetRuns() for a display line, as absolute positions into m_text
+    (Bidi::GetRuns() itself only knows the line's own text, so its runs are
+    relative to that - this is the shared first step for anything that needs
+    the real bidi run structure at a whole-cell position instead).
+
+    \return false (leaving *runs untouched) if libfribidi isn't compiled in
+            (Bidi::IsAvailable()) or the line is empty.
+   */
+  bool GetLineBidiRuns(size_t line, std::vector<BidiRun> *runs);
+
+  /*! Where position sits, in pixels from the line's own left edge, found via
+    the real bidi algorithm (GetLineBidiRuns()) instead of assuming the whole
+    line is one direction the way PositionToPoint()'s own fast path does.
+
+    \return false (leaving *offset untouched) if libfribidi isn't compiled in.
+   */
+  bool MixedDirectionOffset(size_t line, size_t position, wxCoord *offset);
 
   /*! How far each line has to move right to sit flush with the widest one.
 
@@ -656,6 +696,15 @@ public:
   const MaximaTokenizer::TokenList &GetAllTokens() const;
 
 private:
+  //! Used by StyleTextTexts(): pushes `line` as one or more StyledText
+  //! snippets, isolating each '\t' into its own snippet the way the code-cell
+  //! tokenizer already guarantees -- so Draw()/Recalculate()/GetLineWidth()
+  //! can expand it to a tab stop instead of measuring it as an ordinary (and,
+  //! for a tab, meaningless) glyph. Only the first resulting snippet carries
+  //! indentChar, since Draw() draws it at a fixed position regardless of
+  //! which snippet triggers it.
+  void PushTextLine(const wxString &line, const wxString &indentChar) const;
+
   //! Clamps a (possibly negative or past-the-end) position to a valid index into
   //! the current text, i.e. to [0, m_text.Length()]. Used by the selection and
   //! cursor setters so the stored positions are always valid.
@@ -879,41 +928,25 @@ private:
   AFontStyle m_fontStyle;
   AFontWeight m_fontWeight;
 
-
-  //! Does the list of tokens including hidden items need to be recalculated?
-  mutable bool m_tokens_including_hidden_valid = false;
-  //! Does the list of displayed tokens need to be recalculated?
-  mutable bool m_tokens_valid = false;
-
-
 //** Bitfield objects (2 bytes)
 //**
-  void InitBitFields_EditorCell()
-    { // Keep the initialization order below same as the order
-      // of bit fields in this class!
-      m_autoAnswer = false;
-      m_containsChanges = false;
-      m_containsChangesCheck = false;
-      m_displayCaret = false;
-      m_hasFocus = false;
-      m_selectionChanged = false;
-      m_underlined = false;
-      m_errorIndexSet = false;
-    }
-
   //! Mark this cell as "Automatically answer questions".
-  bool m_autoAnswer : 1 /* InitBitFields_EditorCell */;
+  bool m_autoAnswer : 1 = false;
   //! true, if this function has changed since the last evaluation by maxima
-  mutable bool m_containsChanges : 1 /* InitBitFields_EditorCell */;
-  bool m_containsChangesCheck : 1 /* InitBitFields_EditorCell */;
-  bool m_displayCaret : 1 /* InitBitFields_EditorCell */;
-  bool m_hasFocus : 1 /* InitBitFields_EditorCell */;
-  bool m_errorIndexSet : 1 /* InitBitFields_EditorCell */;
+  mutable bool m_containsChanges : 1 = false;
+  bool m_containsChangesCheck : 1 = false;
+  bool m_displayCaret : 1 = false;
+  bool m_hasFocus : 1 = false;
+  bool m_errorIndexSet : 1 = false;
   //! Has the selection changed since the last draw event?
-  bool m_selectionChanged : 1 /* InitBitFields_EditorCell */;
+  bool m_selectionChanged : 1 = false;
   //! Does this cell's size have to be recalculated?
-  bool m_underlined : 1 /* InitBitFields_EditorCell */;
-  mutable bool m_isDirty = true /* InitBitFields_EditorCell */;
+  bool m_underlined : 1 = false;
+  //! Does the list of tokens including hidden items need to be recalculated?
+  mutable bool m_tokens_including_hidden_valid : 1 = false;
+  //! Does the list of displayed tokens need to be recalculated?
+  mutable bool m_tokens_valid : 1 = false;
+  mutable bool m_isDirty : 1 = true;
 };
 
 #endif // EDITORCELL_H
