@@ -999,7 +999,7 @@ Generates the skeleton of a `draw()` command that draws a 3D scene. If
 neither a 2D nor a 3D scene is set up, all of the other buttons set up a 2D
 scene that contains the command the button generates.
 
-#### Expression
+#### İfade
 
 İmlecin içinde bulunduğu `draw ()` komutuna `sin (x)`, `x * sin (x)` veya `x
 ^ 2 + 2 * x-4` gibi bir ifadenin standart grafiğini ekler. çizim ile bir 2D

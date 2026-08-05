@@ -980,7 +980,7 @@ Generates the skeleton of a `draw()` command that draws a 3D scene. If
 neither a 2D nor a 3D scene is set up, all of the other buttons set up a 2D
 scene that contains the command the button generates.
 
-#### Expression
+#### Ausdruck
 
 Fügt den aktuellen `draw()`-Befehl den Plot einer Kurve wie `sin(x)`,
 `x*sin(x)` oder `x^2+2*x-4` hinzu. Besteht noch kein `draw()`-Befehl, wird

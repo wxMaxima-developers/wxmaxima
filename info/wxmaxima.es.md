@@ -1036,7 +1036,7 @@ Genera el esqueleto de una instrucción `draw()` que dibuja una escena 3D.
 Si no está configurada ninguna escena 2D o 3D, todo de los otros botones
 configuran una escena 2D que contenga la instrucción que el botón genera.
 
-#### Expression
+#### Expresión
 
 Adjunta una trama común de una expresión como `sin(x)`, `x*sin(x)` o
 `x^2+2*x-4` para la instrucción `draw()` el cursor actualmente está dentro.

@@ -1,0 +1,7155 @@
+# This file is distributed under the same license as the wxMaxima package.
+#
+# rabbit <rabbit@ctu.edu.tw>, 2009.
+# cw.ahbong <cwahbong@users.sourceforge.net>, 2010, 2011, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: wxMaxima 0.8.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-04 07:28+0000\n"
+"PO-Revision-Date: 2012-03-14 10:23+0800\n"
+"Last-Translator: cw.ahbong <cwahbong@users.sourceforge.net>\n"
+"Language-Team: American English <kde-i18n-doc@kde.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Country: TAIWAN\n"
+"X-Generator: Lokalize 1.2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. type: Title #
+#: ../../info/wxmaxima.md:1
+#, fuzzy, no-wrap
+msgid "The wxMaxima user manual"
+msgstr "顯示 Maxima 說明"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:4
+msgid "WxMaxima is a graphical user interface (GUI) for the _Maxima_ computer algebra system (CAS). WxMaxima allows one to use all of _Maxima_’s functions. In addition, it provides convenient wizards for accessing the most commonly used features. This manual describes some of the features that make wxMaxima one of the most popular GUIs for _Maxima_."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:6
+msgid "![wxMaxima logo](./wxMaximaLogo.png){ id=img_wxMaximaLogo }"
+msgstr ""
+
+#. type: Title #
+#: ../../info/wxmaxima.md:9
+#, fuzzy, no-wrap
+msgid "Introduction to wxMaxima"
+msgstr "歡迎使用 wxMaxima"
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:11
+#, no-wrap
+msgid "_Maxima_ and wxMaxima"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:14
+msgid "In the open-source domain, big systems are normally split into smaller projects that are easier to handle for small groups of developers. For example a CD burner program will consist of a command-line tool that actually burns the CD and a graphical user interface that allows users to implement it without having to learn about all the command line switches and in fact without using the command line at all. One advantage of this approach is that the developing work that was invested into the command-line program can be shared by many programs: The same CD-burner command-line program can be used as a “send-to-CD”-plug-in for a file manager application, for the “burn to CD” function of a music player and as the CD writer for a DVD backup tool. Another advantage is that splitting one big task into smaller parts allows the developers to provide several user interfaces for the same program."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:16
+msgid "A computer algebra system (CAS) like _Maxima_ fits into this framework. A CAS can provide the logic behind an arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., [Sage](https://www.sagemath.org/)). Alternatively, it can be used directly as a free-standing system. _Maxima_ can be accessed via a command line. Often, however, an interface like _wxMaxima_ proves a more efficient way to access the software, especially for newcomers."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:17
+#, fuzzy, no-wrap
+msgid "_Maxima_"
+msgstr "Maxima(&M)"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:20
+msgid "_Maxima_ is a full-featured computer algebra system (CAS). A CAS is a program that can solve mathematical problems by rearranging formulas and finding a formula that solves the problem as opposed to just outputting the numeric value of the result. In other words, _Maxima_ can serve as a calculator that gives numerical representations of variables, and it can also provide analytical solutions. Furthermore, it offers a range of numerical methods of analysis for equations or systems of equations that cannot be solved analytically."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:22
+msgid "![Maxima screenshot, command line](./maxima_screenshot.png){ id=img_maxima_screenshot }"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:24
+#, no-wrap
+msgid "Extensive documentation for _Maxima_ is  [available in the internet](https://maxima.sourceforge.io/documentation.html). Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the <kbd>F1</kbd> key) causes _wxMaxima_’s context-sensitive help feature to automatically jump to _Maxima_’s manual page for the command at the cursor.\n"
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:25
+#, fuzzy, no-wrap
+msgid "WxMaxima"
+msgstr "Maxima(&M)"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:28
+msgid "_WxMaxima_ is a graphical user interface that provides the full functionality and flexibility of _Maxima_. WxMaxima offers users a graphical display and many features that make working with _Maxima_ easier. For example _wxMaxima_ allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as a HTML file or as a LaTeX file. Documentation for _wxMaxima_, including workbooks to illustrate aspects of its use, is online at the _wxMaxima_ [help site](https://wxMaxima-developers.github.io/wxmaxima/help.html), as well as via the help menu."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:30
+msgid "![wxMaxima window](./wxMaximaWindow.png){ id=img_wxMaximaWindow }"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:32
+msgid "The calculations that are entered in _wxMaxima_ are performed by the _Maxima_ command-line tool in the background."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:33
+#, no-wrap
+msgid "Workbook basics"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:36
+msgid "Much of _wxMaxima_ is self-explaining, but some details require attention. [This site](https://wxMaxima-developers.github.io/wxmaxima/help.html) contains a number of workbooks that address various aspects of _wxMaxima_. Working through some of these (particularly the \"10 minute _(wx)Maxima_ tutorial\") will increase one’s familiarity with both the content of _Maxima_ and the use of _wxMaxima_ to interact with _Maxima_. This manual concentrates on describing aspects of _wxMaxima_ that are not likely to be self-evident and that might not be covered in the online material."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:37
+#, no-wrap
+msgid "The workbook approach"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:40
+msgid "One of the very few things that are not standard in _wxMaxima_ is that it organizes the data for _Maxima_ into cells that are evaluated (which means: sent to _Maxima_) only when the user requests this. When a cell is evaluated, all commands in that cell, and only that cell, are evaluated as a batch. (The preceding statement is not quite accurate: One can select a set of adjacent cells and evaluate them together. Also, one can instruct _Maxima_ to evaluate all cells in a workbook in one pass.) _WxMaxima_’s approach to submitting commands for execution might feel unfamiliar at the first sight. It does, however, drastically ease work with big documents (where the user does not want every change to automatically trigger a full re-evaluation of the whole document). Also, this approach is very handy for debugging."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:42
+msgid "If text is typed into _wxMaxima_ it automatically creates a new worksheet cell. The type of this cell can be selected in the toolbar. If a code cell is created the cell can be sent to _Maxima_, which causes the result of the calculation to be displayed below the code. A pair of such commands is shown below."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:44
+msgid "![Input/output cell](./InputCell.png){ id=img_InputCell }"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:46
+msgid "On evaluation of an input cell’s contents the input cell _Maxima_ assigns a label to the input (by default shown in red and recognizable by the `%i`) by which it can be referenced later in the _wxMaxima_ session. The output that _Maxima_ generates also gets a label that begins with `%o` and by default is hidden, except if the user assigns the output a name. In this case by default the user-defined label is displayed. The `%o`-style label _Maxima_ auto-generates will also be accessible, though."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:48
+msgid "Besides the input cells _wxMaxima_ allows for text cells for documentation, image cells, title cells, chapter cells and section cells. Every cell has its own undo buffer so debugging by changing the values of several cells and then gradually reverting the unneeded changes is rather easy. Furthermore the worksheet itself has a global undo buffer that can undo cell edits, adds and deletes."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:50
+msgid "The figure below shows different cell types (title cells, section cells, subsection cells, text cells, input/output cells and image cells)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:52
+msgid "![Example of different wxMaxima cells](./cell-example.png){ id=img_cell-example }"
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:53
+#, fuzzy, no-wrap
+msgid "Cells"
+msgstr "合併單元"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:56
+msgid "The worksheet is organized in cells. WxMaxima knows the following cell types:"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:63
+msgid "Math cells, containing one or more lines of _Maxima_ input."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:63
+msgid "Output of, or a question from, _Maxima_."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:63
+#, fuzzy
+msgid "Image cells."
+msgstr "合併單元"
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:63
+msgid "Text cells, that can for example be used for documentation."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:63
+msgid "A title, section or a subsection. 6 levels of different headings are possible."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:63
+#, fuzzy
+msgid "Page breaks."
+msgstr "換頁符號"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:65
+msgid "The default behavior of _wxMaxima_ when text is entered is to automatically create a math cell. Cells of other types can be created using the Cell menu, using the hot keys shown in the menu or using the drop-down list in the toolbar. Once the non-math cell is created, whatever is typed into the file is interpreted as text."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:67
+msgid "A (C-style) [comment text](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#Comments) can be part of a math cell as follows: `/* This comment will be ignored by Maxima */`"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:69
+msgid "\"`/*`\" marks the start of the comment, \"`*/`\" the end."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:70
+#, no-wrap
+msgid "Horizontal and vertical cursors"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:73
+msgid "If the user tries to select a complete sentence, a word processor will try to extend the selection to automatically begin and end with a word boundary. Likewise, if more than one cell is selected, _wxMaxima_ will extend the selection to whole cells."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:75
+msgid "What isn’t standard is that _wxMaxima_ provides drag-and-drop flexibility by defining two types of cursors. _WxMaxima_ will switch between them automatically when needed:"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:78
+msgid "The cursor is drawn horizontally if it is moved in the space between two cells or by clicking there."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:78
+msgid "A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:80
+#, no-wrap
+msgid "When you start wxMaxima, you will only see the blinking horizontal cursor. If you start typing, a math cell will be automatically created and the cursor will change to a regular vertical one (you will see a right arrow as \"prompt\", after the Math cell is evaluated (<kbd>CTRL</kbd>+<kbd>ENTER</kbd>), you will see the labels, e.g. `(%i1)`, `(%o1)`).\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:82
+msgid "![(blinking) horizontal cursor after wxMaxima start](./horizontal-cursor-only.png){ id=img_horizontal_cursor_only }"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:84
+msgid "You might want to create a different cell type (using the \"Cell\" menu), maybe a title cell or text cell, which describes, what will be done, when you start creating your worksheet."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:86
+msgid "If you navigate between the different cells, you will also see the (blinking) horizontal cursor, where you can insert a cell into your worksheet (either a math cell, by just start typing your formula - or a different cell type using the menu)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:88
+msgid "![(blinking) horizontal cursor between cells](./horizontal-cursor-between-cells.png){ id=img_horizontal_cursor_between_cells }"
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:89
+#, fuzzy, no-wrap
+msgid "Sending cells to Maxima"
+msgstr "歡迎使用 wxMaxima"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:92
+#, no-wrap
+msgid "The command in a code cell is executed once by pressing <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad. The _wxMaxima_ default is to enter commands when either <kbd>CTRL</kbd>+<kbd>ENTER</kbd> or <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> is entered, but _wxMaxima_ can be configured to execute commands in response to <kbd>ENTER</kbd>.\n"
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:93
+#, fuzzy, no-wrap
+msgid "Command autocompletion"
+msgstr "將所選區域變成註解"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:96
+#, no-wrap
+msgid "_WxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example, if activated within a unit specification for ezUnits it will offer a list of applicable units.\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:98
+msgid "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:100
+#, no-wrap
+msgid "Besides completing a file name, a unit name, or the current command or variable name, the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).\n"
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:101
+#, fuzzy, no-wrap
+msgid "Greek characters"
+msgstr "希臘字母"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:104
+msgid "Computers traditionally stored characters in 8-bit values. This allows for a maximum of 256 different characters. All letters, numbers, and control symbols (end of transmission, end of string, lines and edges for drawing rectangles for menus _etc_.) of nearly any given language can fit within that limit."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:106
+msgid "For most countries, the codepage of 256 characters that has been chosen does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation [Unicode](https://home.unicode.org/) has been invented: An encoding that makes English text work like normal, but to use much more than 256 characters."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:108
+msgid "_Maxima_ allows Unicode if it was compiled using a Lisp compiler that either supports Unicode or that doesn’t care about the font encoding. As at least one of this pair of conditions is likely to be true. _WxMaxima_ provides a method of entering Greek characters using the keyboard:"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:111
+msgid "A Greek letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to type the Greek character’s name."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:111
+msgid "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or two for the Greek letter omicron) and <kbd>ESC</kbd> again. In this case the following letters are supported:"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:130
+#, no-wrap
+msgid ""
+"| key | Greek letter | key | Greek letter | key | Greek letter |\n"
+"| :-: | :----------: | :-: | :----------: | :-: | :----------: |\n"
+"|  a  |    alpha     |  i  |     iota     |  r  |     rho      |\n"
+"|  b  |     beta     |  k  |    kappa     |  s  |    sigma     |\n"
+"|  g  |    gamma     |  l  |    lambda    |  t  |     tau      |\n"
+"|  d  |    delta     |  m  |      mu      |  u  |   upsilon    |\n"
+"|  e  |   epsilon    |  n  |      nu      |  f  |     phi      |\n"
+"|  z  |     zeta     |  x  |      xi      |  c  |     chi      |\n"
+"|  h  |     eta      | om  |   omicron    |  y  |     psi      |\n"
+"|  q  |    theta     |  p  |      pi      |  o  |    omega     |\n"
+"|  A  |    Alpha     |  I  |     Iota     |  R  |     Rho      |\n"
+"|  B  |     Beta     |  K  |    Kappa     |  S  |    Sigma     |\n"
+"|  G  |    Gamma     |  L  |    Lambda    |  T  |     Tau      |\n"
+"|  D  |    Delta     |  M  |      Mu      |  U  |   Upsilon    |\n"
+"|  E  |   Epsilon    |  N  |      Nu      |  P  |     Phi      |\n"
+"|  Z  |     Zeta     |  X  |      Xi      |  C  |     Chi      |\n"
+"|  H  |     Eta      | Om  |   Omicron    |  Y  |     Psi      |\n"
+"|  T  |    Theta     |  P  |      Pi      |  O  |    Omega     |\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:132
+msgid "You can also use the \"Greek letters\"-sidebar to enter the Greek letters."
+msgstr ""
+
+#. type: Title #####
+#: ../../info/wxmaxima.md:133
+#, fuzzy, no-wrap
+msgid "Attention: Lookalike characters"
+msgstr "希臘字母"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:138
+msgid "Several Latin letters look like the Greek letters, e.g. the Latin letter \"A\" and the Greek letter \"Alpha\". Although they look identical, they are two different Unicode characters, represented by different Unicode code points (numbers)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:143
+msgid "This might be problematic, if you assign a value to the variable A and later use the Greek letter Alpha to do something with this variable, especially on printouts.  For the Greek letter my (which is also used as prefix for micro) there are also two different Unicode code points."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:146
+msgid "The \"Greek letters\"-sidebar therefore has the option, that lookalike characters are not available (which can be changed using a right-click menu)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:148
+msgid "The same mechanism also allows to enter some miscellaneous mathematical symbols:"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:199
+#, no-wrap
+msgid ""
+"| keys to enter  | mathematical symbol                                   |\n"
+"| -------------- | ----------------------------------------------------- |\n"
+"| hbar           | Planck constant: a h with a horizontal bar above it   |\n"
+"| Hbar           | a H with a horizontal bar above it                    |\n"
+"| 2              | squared                                               |\n"
+"| 3              | to the power of three                                 |\n"
+"| /2             | 1/2                                                   |\n"
+"| partial        | partial sign (the d of dx/dt)                         |\n"
+"| integral       | integral sign                                         |\n"
+"| sq             | square root                                           |\n"
+"| ii             | imaginary                                             |\n"
+"| ee             | element                                               |\n"
+"| in             | in                                                    |\n"
+"| impl implies   | implies                                               |\n"
+"| inf            | infinity                                              |\n"
+"| empty          | empty                                                 |\n"
+"| TB             | big triangle right                                    |\n"
+"| tb             | small triangle right                                  |\n"
+"| and            | and                                                   |\n"
+"| or             | or                                                    |\n"
+"| xor            | xor                                                   |\n"
+"| nand           | nand                                                  |\n"
+"| nor            | nor                                                   |\n"
+"| equiv          | equivalent to                                         |\n"
+"| not            | not                                                   |\n"
+"| union          | union                                                 |\n"
+"| inter          | intersection                                          |\n"
+"| subseteq       | subset or equal                                       |\n"
+"| subset         | subset                                                |\n"
+"| notsubseteq    | not subset or equal                                   |\n"
+"| notsubset      | not subset                                            |\n"
+"| approx         | approximately                                         |\n"
+"| propto         | proportional to                                       |\n"
+"| neq != /= or # | not equal to                                          |\n"
+"| +/- or pm      | a plus/minus sign                                     |\n"
+"| \\<= or leq     | equal or less than                                    |\n"
+"| >= or geq      | equal or greater than                                 |\n"
+"| \\<\\< or ll     | much less than                                        |\n"
+"| >> or gg       | much greater than                                     |\n"
+"| qed            | end of proof                                          |\n"
+"| nabla          | a nabla operator                                      |\n"
+"| sum            | sum sign                                              |\n"
+"| prod           | product sign                                          |\n"
+"| exists         | there exists sign                                     |\n"
+"| nexists        | there is no sign                                      |\n"
+"| parallel       | a parallel sign                                       |\n"
+"| perp           | a perpendicular sign                                  |\n"
+"| leadsto        | a leads to sign                                       |\n"
+"| ->             | a right arrow                                         |\n"
+"| -->            | a long right arrow                                    |\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:201
+msgid "You can also use the \"Symbols\"-sidebar to enter these Mathematical symbols."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:203
+#, no-wrap
+msgid "If a special symbol isn’t in the list, it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> \\[number of the character (hexadecimal)\\] <kbd>ESC</kbd>. Additionally the \"symbols\" sidebar has a right-click menu that allow to display a list of all available Unicode symbols one can add to this toolbar or to the worksheet.\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:205
+#, no-wrap
+msgid "<kbd>ESC</kbd><kbd>6</kbd><kbd>1</kbd><kbd>ESC</kbd> therefore results in an `a`.\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:207
+msgid "Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in _Maxima_ and therefore will be interpreted as ordinary characters. If _Maxima_ is compiled using a Lisp that doesn’t support Unicode characters they might cause an error message."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:210
+#, no-wrap
+msgid ""
+"It may be the case that e.g. Greek characters or mathematical symbols are not included in the selected font, then they can not be displayed.\n"
+"To solve that problem, select other fonts (using: Edit -> Configure -> Style).\n"
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:211
+#, fuzzy, no-wrap
+msgid "Unicode replacement"
+msgstr "希臘字母"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:214
+msgid "wxMaxima will replace several Unicode characters with their respective Maxima expressions, e.g. `²` with `^2`, `³` with `^3`, the square root sign with the function `sqrt()`, the (mathematical) Sigma sign (which is not the same Unicode character as the corresponding Greek letter) with `sum()`, etc."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:217
+msgid "Unicode has several \"common\" fractions encoded as one Unicode code point: `¼, ½, ¾, ⅐, ⅑, ⅒, ⅓, ⅔, ⅕, ⅖, ⅗, ⅘, ⅙, ⅚, ⅛, ⅜, ⅝, ⅞`"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:219
+msgid "wxMaxima will replace them with their Maxima representations, e.g `(1/4)` before the input is sent do Maxima. There are also `⅟`, which will be replaced by `1/` and `↉` (used in baseball), which will be replaced by `(0/3)`."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:221
+msgid "It is recommended to use **Maxima code** (not these Unicode code points) in input cells (Rationale: (a) it might be possible, that the used font for math input does not contain them; (b) if you save the document as `wxm`-file, it is usually readable by (command line) Maxima, but these changes will of course not work in command line Maxima); but they may occur, if you cut&paste a formula from another document."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:222
+#, fuzzy, no-wrap
+msgid "Side Panes"
+msgstr "隱藏所有窗格"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:225
+msgid "Shortcuts to the most important _Maxima_ commands, things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the \"View\" menu. They all can be moved to other locations inside or outside the _wxMaxima_ window. Other useful panes is the one that allows to input Greek letters using the mouse."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:227
+msgid "![Example of different side panes](./SidePanes.png){ id=img_SidePanes }"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:230
+msgid "In the \"table of contents\" side pane, one can increase or decrease a heading by just clicking on the heading with the right mouse button and select the next higher or lower heading type."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:232
+msgid "![Increase or decrease headings in the TOC side pane](./Sidepane-TOC-convert-headings.png){ id=Sidepane-TOC-convert-headings }"
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:233
+#, fuzzy, no-wrap
+msgid "MathML output"
+msgstr "數學字型："
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:236
+msgid "Several word processors and similar programs either recognize [MathML](https://www.w3.org/Math/) input and automatically insert it as an editable 2D equation - or (like LibreOffice) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. _WxMaxima_, therefore, offers several entries in the right-click menu."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:237
+#, no-wrap
+msgid "Markdown support"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:240
+msgid "_WxMaxima_ offers a set of standard [Markdown](https://en.wikipedia.org/wiki/Markdown) conventions that don’t collide with mathematical notation. One of these elements is bullet lists."
+msgstr ""
+
+#. type: Fenced code block (text)
+#: ../../info/wxmaxima.md:241
+#, no-wrap
+msgid ""
+"Ordinary text\n"
+" * One item, indentation level 1\n"
+" * Another item at indentation level 1\n"
+"   * An item at a second indentation level\n"
+"   * A second item at the second indentation level\n"
+" * A third item at the first indentation level\n"
+"Ordinary text\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:252
+#, no-wrap
+msgid "_WxMaxima_ will recognize text starting with `>` chars as block quotes:\n"
+msgstr ""
+
+#. type: Fenced code block (text)
+#: ../../info/wxmaxima.md:253
+#, no-wrap
+msgid ""
+"Ordinary text\n"
+"> quote quote quote quote\n"
+"> quote quote quote quote\n"
+"> quote quote quote quote\n"
+"Ordinary text\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:262
+#, no-wrap
+msgid "_WxMaxima_’s TeX and HTML output will also recognize `=>` and replace it by the corresponding Unicode sign:\n"
+msgstr ""
+
+#. type: Fenced code block (text)
+#: ../../info/wxmaxima.md:263
+#, no-wrap
+msgid "cogito => sum.\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:268
+#, no-wrap
+msgid "Other symbols the HTML and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single-headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.\n"
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:269
+#, no-wrap
+msgid "Hotkeys"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:272
+msgid "Most hotkeys can be found in the text of the respective menus. Since they are actually taken from the menu text and thus can be customized by the translations of _wxMaxima_ to match the needs of users of the local keyboard, we do not document them here. A few hotkeys or hotkey aliases, though, are not documented in the menus:"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:276
+msgid "<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:276
+msgid "<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> triggers the auto-completion mechanism."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:276
+msgid "<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:277
+#, no-wrap
+msgid "Raw TeX in the TeX export"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:280
+msgid "If a text cell begins with `TeX:` the TeX export contains the literal text that follows the `TeX:` marker. Using this feature allows the entry of TeX markup within the _wxMaxima_ workbook."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:281
+#, fuzzy, no-wrap
+msgid "File Formats"
+msgstr "找不到檔案"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:284
+msgid "The material that is developed in a _wxMaxima_ session can be stored for later use in any of three ways:"
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:285
+#, no-wrap
+msgid ".mac"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:288
+msgid "`.mac` files are ordinary text files that contain _Maxima_ commands. They can be read using _Maxima_’s `batch()` or `load()` command or _wxMaxima_’s File/Batch File menu entry."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:291
+msgid "One example is shown below. `Quadratic.mac` defines a function and afterward generates a plot with `wxdraw2d()`.  Afterward the contents of the file `Quadratic.mac` are printed and newly defined function `f()` is evaluated."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:293
+msgid "![Loading a file with `batch()`](./BatchImage.png){ id=img_BatchImage }"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:295
+msgid "Attention: Although the file `Quadratic.mac` has a usual _Maxima_ extension (`.mac`), it can only be read by _wxMaxima_, since the command `wxdraw2d()` is a wxMaxima-extension to _Maxima_. (Command line) Maxima will ignore the unknown command `wxdraw2d()` and print it as output again."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:297
+msgid "You can be use `.mac` files for writing your own library of macros. But since they don’t contain enough structural information they cannot be read back as a _wxMaxima_ session."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:298
+#, no-wrap
+msgid ".wxm"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:302
+#, no-wrap
+msgid ""
+"`.wxm` files contain the worksheet except for _Maxima_’s output. On Maxima versions >5.38 they can be read using _Maxima_’s `load()` function just as .mac files. Well - mostly. Questions (like `asksign(x)`) are problematic, as the answer is written in the `.wxm` file (so that it can be suggested after loading), but that can Maxima not evaluate.\n"
+"You can prevent Maxima from asking questions by using `assume()` to declare some properties, Maxima wants to know.\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:304
+msgid "With this plain-text format, it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:305
+#, no-wrap
+msgid "File format of wxm files"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:308
+msgid "This is just a plain text file (you can open it with a text editor), containing the cell contents as some special Maxima comments."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:310
+msgid "It starts with the following comment:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:311
+#, no-wrap
+msgid ""
+"/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/\n"
+"/* [ Created with wxMaxima version 24.02.2_DevelopmentSnapshot ] */\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:317
+msgid "And then the cells follow, encoded as Maxima comments, e.g. a section cell:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:318
+#, no-wrap
+msgid ""
+"/* [wxMaxima: section start ]\n"
+"Title of the section\n"
+"   [wxMaxima: section end   ] */\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:325
+msgid "or (in a Math cell the input is of course *not* commented out (the output is not saved in a `wxm` file)):"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:326
+#, no-wrap
+msgid ""
+"/* [wxMaxima: input   start ] */\n"
+"f(x):=x^2+1$\n"
+"f(2);\n"
+"/* [wxMaxima: input   end   ] */\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:334
+msgid "Images are [Base64 encoded](https://en.wikipedia.org/wiki/Base64) with the image type as first line):"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:335
+#, no-wrap
+msgid ""
+"/* [wxMaxima: image   start ]\n"
+"jpg\n"
+"[very chaotic looking character sequence]\n"
+"   [wxMaxima: image   end   ] */\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:343
+msgid "A page break is just one line containing:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:344
+#, no-wrap
+msgid "/* [wxMaxima: page break    ] */\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:349
+msgid "And folded cells marked by:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:350
+#, no-wrap
+msgid ""
+"/* [wxMaxima: fold    start ] */\n"
+"...\n"
+"/* [wxMaxima: fold    end   ] */\n"
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:356
+#, no-wrap
+msgid ".wxmx"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:359
+msgid "This XML-based file format saves the complete worksheet including things like the zoom factor and the watchlist. It is the preferred file format."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:360
+#, no-wrap
+msgid "File format of wxmx files"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:364
+msgid "A `wxmx`-file seems to be a binary format, but one can handle it with tools, which are included in your OS. It is a zip file, one can decompress it with `unzip` (maybe rename it before, so that is recognized by the unzip program of your OS).  We do not use the compression function, just the possibility to merge several files into one file - images are already compressed and the rest is simple text (probably much smaller, than huge images, which are included)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:366
+msgid "It does contain the following files:"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:371
+msgid "`mimetype`: this file does contain the mimetype of wxMaxima files: `text/x-wxmathml`"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:371
+msgid "`format.txt`: a short description about wxMaxima and the wxmx file format"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:371
+msgid "Images (e.g. png, jpeg): inline plots which were produced in the wxMaxima session and included images."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:371
+msgid "`content.xml`: a XML document, which contains the various cells of your document in XML format."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:373
+msgid "So, if something goes wrong, you can unzip a wxMaxima document (maybe rename it before to a `zip`-file), maybe make changes in the `content.xml` file with a text editor, or replace an broken image, zip the files again, probably rename the `zip` to a `wxmx`-file - and you get another modified `wxmx`-file."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:374
+#, no-wrap
+msgid "Configuration options"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:377
+msgid "For some common configuration variables _wxMaxima_ offers two ways of configuring:"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:380
+msgid "The configuration dialog box below lets you change their default values for the current and subsequent sessions."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:380
+msgid "Also, the values for most configuration variables can be changed for the current session only by overwriting their values from the worksheet, as shown below."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:382
+msgid "![wxMaxima configuration 1](./wxMaxima_configuration_001.png){ id=img_wxMaxima_configuration_001 }"
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:383
+#, no-wrap
+msgid "Default animation framerate"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:386
+msgid "The animation framerate that is used for new animations is kept in the variable `wxanimate_framerate`. The initial value this variable will contain in a new worksheet can be changed using the configuration dialogue."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:387
+#, no-wrap
+msgid "Default plot size for new _maxima_ sessions"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:390
+msgid "After the next start, plots embedded into the worksheet will be created with this size if the value of `wxplot_size` isn’t changed by _maxima_."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:392
+msgid "In order to set the plot size of a single graph only use the following notation can be used that sets a variable’s value for one command only:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:393
+#, no-wrap
+msgid ""
+"wxdraw2d(\n"
+"   explicit(\n"
+"       x^2,\n"
+"       x,-5,5\n"
+"   )\n"
+"), wxplot_size=[480,480]$\n"
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:402
+#, fuzzy, no-wrap
+msgid "Match parenthesis in text controls"
+msgstr "在文字控制項中使用等寬字型"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:405
+msgid "This option enables two things:"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:408
+msgid "If an opening parenthesis, bracket, or double quote is entered _wxMaxima_ will insert a closing one after it."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:408
+msgid "If text is selected if any of these keys is pressed the selected text will be put between the matched signs."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:409
+#, no-wrap
+msgid "Don’t save the worksheet automatically"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:412
+msgid "If this option is set, the file where the worksheet is will be overwritten only the request of the user. In case of a crash/power loss/... a recent backup copy is still made available in the temp directory, though."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:414
+msgid "If this option isn’t set _wxMaxima_ behaves more like a modern cellphone app:"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:417
+msgid "Files are saved automatically on exit"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:417
+msgid "And the file will automatically be saved every 3 minutes."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:418
+#, no-wrap
+msgid "Where is the configuration saved?"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:422
+#, no-wrap
+msgid ""
+"If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your home directory (if you are using wxWidgets \\< 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for _wxMaxima_ (therefore the `wx` in the name).\n"
+"(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:424
+msgid "If you are using Windows, the configuration will be stored in the registry. You will find the entries for _wxMaxima_ at the following position in the registry: `HKEY_CURRENT_USER\\Software\\wxMaxima`"
+msgstr ""
+
+#. type: Title #
+#: ../../info/wxmaxima.md:427
+#, no-wrap
+msgid "Extensions to _Maxima_"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:430
+msgid "_WxMaxima_ is primarily a graphical user interface for _Maxima_. As such, its main purpose is to pass along commands to _Maxima_ and to report the results of executing those commands. In some cases, however, _wxMaxima_ adds functionality to _Maxima_. _WxMaxima_’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that _wxMaxima_ enhances the inclusion of graphics in a session."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:431
+#, fuzzy, no-wrap
+msgid "Subscripted variables"
+msgstr "顯示已定義的變數"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:434
+msgid "`wxsubscripts` specifies, if (and how) _wxMaxima_ will autosubscript variable names:"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:436
+msgid "If it is `false`, the functionality is off, wxMaxima will not autosubscript part of variable names after an underscore."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:438
+msgid "If it is set to `'all`, everything after an underscore will be subscripted."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:440
+msgid "If it is set to `true` variable names of the format `x_y` are displayed using a subscript if"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:443
+msgid "Either `x` or `y` is a single letter or"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:443
+msgid "`y` is an integer (can include more than one character)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:445
+msgid "![How variables are autosubscripted using wxsubscripts](./wxsubscripts.png){ id=img_wxsubscripts }"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:447
+msgid "If the variable name doesn’t match these requirements, it can still be declared as \"to be subscripted\" using the command `wxdeclare_subscript(variable_name);` or `wxdeclare_subscript([variable_name1,variable_name2,...]);` Declaring a variable as subscripted can be reverted using the following command: `wxdeclare_subscript(variable_name,false);`"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:449
+#, no-wrap
+msgid "You can use the menu \"View->Autosubscript\" to set these values.\n"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:450
+#, no-wrap
+msgid "User feedback in the status bar"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:453
+msgid "Long-running commands can provide user feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to _Maxima_ is finished. It is safe to use `wxstatusbar()` even in libraries that might be used with plain _Maxima_ (as opposed to _wxMaxima_): If _wxMaxima_ isn’t present the `wxstatusbar()` command will just be left unevaluated."
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:454
+#, no-wrap
+msgid ""
+"for i:1 thru 10 do (\n"
+"    /* Tell the user how far we got */\n"
+"    wxstatusbar(concat(\"Pass \",i)),\n"
+"    /* (sleep n) is a Lisp function, which can be used */\n"
+"    /* with the character \"?\" before. It delays the */\n"
+"    /* program execution (here: for 3 seconds) */\n"
+"    ?sleep(3)\n"
+")$\n"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:465
+#, no-wrap
+msgid "Exporting the worksheet from within Maxima"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:468
+msgid "The command `wxworksheettohtml()` exports the current worksheet to an HTML file from within a running _Maxima_ session, which is convenient for scripted or batch export. Like `wxstatusbar()` it is safe to use in code that might also run in plain (console) _Maxima_: if _wxMaxima_ isn’t present the command is simply left unevaluated."
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:469
+#, no-wrap
+msgid ""
+"wxworksheettohtml(\"report.html\")$\n"
+"wxworksheettohtml(\"report.html\", flavor=\"svg\", wxmx=true)$\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:475
+msgid "A relative file name is interpreted relative to _Maxima_’s working directory. The optional keyword options are:"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:480
+#, no-wrap
+msgid ""
+"| option   | values                                          | meaning                                             |\n"
+"| -------- | ----------------------------------------------- | --------------------------------------------------- |\n"
+"| `flavor` | `mathml` (default), `mathjax`, `svg`, `bitmap`  | how the equations are rendered in the exported page |\n"
+"| `wxmx`   | `false` (default), `true`                       | embed a downloadable `.wxmx` copy of the session    |\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:482
+msgid "The `flavor` values match the equation formats offered by the graphical **File → Export** dialog: `mathml` produces a self-contained page that needs no internet connection, `mathjax` adds a MathJaX fall-back for browsers that still lack MathML, and `svg`/`bitmap` render every equation to an image."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:484
+msgid "The companion command `wxworksheettotex()` exports to a LaTeX (`.tex`) file the same way:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:485
+#, no-wrap
+msgid ""
+"wxworksheettotex(\"report.tex\")$\n"
+"wxworksheettotex(\"report.tex\", documentclass=\"report\", documentclassoptions=\"12pt,a4paper\")$\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:494
+#, no-wrap
+msgid ""
+"| option                 | meaning                                                              |\n"
+"| ---------------------- | -------------------------------------------------------------------- |\n"
+"| `documentclass`        | overrides the LaTeX `\\documentclass` (e.g. `\"article\"`, `\"report\"`)  |\n"
+"| `documentclassoptions` | overrides its options (e.g. `\"12pt,a4paper\"`)                        |\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:496
+msgid "Support for `wxworksheettopdf()` is planned."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:497
+#, fuzzy, no-wrap
+msgid "Plotting"
+msgstr "繪圖(&P)"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:500
+msgid "Plotting (having fundamentally to do with graphics) is a place where a graphical user interface will have to provide some extensions to the original program."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:501
+#, no-wrap
+msgid "Embedding a plot into the worksheet"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:504
+msgid "_Maxima_ normally instructs the external program _Gnuplot_ to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the worksheet instead _wxMaxima_ provides its own set of plot functions that don’t differ from the corresponding _maxima_ functions save in their name: They are all prefixed by a “wx”."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:506
+msgid "The following plotting functions have wx-counterparts:"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:520
+#, no-wrap
+msgid ""
+"| wxMaxima’s plot function | Maxima’s plot function                                                                          |\n"
+"| ------------------------ | ----------------------------------------------------------------------------------------------- |\n"
+"| `wxplot2d()`             | [plot2d](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#plot2d)               |\n"
+"| `wxplot3d()`             | [plot3d](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#plot3d)               |\n"
+"| `wxdraw2d()`             | [draw2d](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#draw2d)               |\n"
+"| `wxdraw3d()`             | [draw2d](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#draw3d)               |\n"
+"| `wxdraw()`               | [draw](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#draw)                   |\n"
+"| `wximplicit_plot()`      | [implicit_plot](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#implicit_plot) |\n"
+"| `wxhistogram()`          | [histogram](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#histogram)         |\n"
+"| `wxscatterplot()`        | [scatterplot](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#scatterplot)     |\n"
+"| `wxbarsplot()`           | [barsplot](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#barsplot)           |\n"
+"| `wxpiechart()`           | [piechart](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#piechart)           |\n"
+"| `wxboxplot()`            | [boxplot](https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#boxplot)             |\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:522
+msgid "If a `wxm`-file is read by (console) Maxima, these functions are ignored (and printed as output, as other unknown functions in Maxima)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:524
+msgid "If you got problems with one of these functions, please check, if the problem exists in the the Maxima function too (e.g. you got an error with `wxplot2d()`, check the same plot in the Maxima command `plot2d()` (which opens the plot in a separate Window)). If the problem does not disappear, it is most likely a Maxima issue and should be reported in the [Maxima bugtracker](https://sourceforge.net/p/maxima/bugs/). Or maybe a Gnuplot issue."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:525
+#, no-wrap
+msgid "Making embedded plots bigger or smaller"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:528
+msgid "As noted above, the configure dialog provides a way to change the default size plots created which sets the starting value of `wxplot_size`. The plotting routines of _wxMaxima_ respect this variable that specifies the size of a plot in pixels. It can always be queried or used to set the size of the following plots:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:529
+#, no-wrap
+msgid ""
+"wxplot_size:[1200,800]$\n"
+"wxdraw2d(\n"
+"    explicit(\n"
+"        sin(x),\n"
+"        x,1,10\n"
+"    )\n"
+")$\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:540
+msgid "If the size of only one plot is to be changed _Maxima_ provides a canonical way to change an attribute only for the current cell. In this usage the specification `wxplot_size = [value1, value2]` is appended to the `wxdraw2d( )` command, and is not part of the `wxdraw2d` command."
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:541
+#, no-wrap
+msgid ""
+"wxdraw2d(\n"
+"    explicit(\n"
+"        sin(x),\n"
+"        x,1,10\n"
+"    )\n"
+"),wxplot_size=[1600,800]$\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:551
+msgid "Setting the size of embedded plot with `wxplot_size` works for embedded plots using e.g. `wxplot`, `wxdraw`, `wxcontour_plot` and `wximplicit_plot` commands and for embedded animations with `with_slider_draw` and `wxanimate` commands."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:552
+#, no-wrap
+msgid "Better quality plots"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:555
+msgid "_Gnuplot_ doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output that the Cairo library provides. On systems where _Gnuplot_ is compiled to use this library the pngCairo option from the configuration menu (that can be overridden by the variable `wxplot_pngcairo`) enables support for antialiasing and additional line styles. If `wxplot_pngCairo` is set without _Gnuplot_ supporting this the result will be error messages instead of graphics."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:556
+#, no-wrap
+msgid "Opening embedded plots in interactive _Gnuplot_ windows"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:559
+msgid "If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and `wxplot3d` isn’t supported by this feature) and the file size of the underlying _Gnuplot_ project isn’t way too high _wxMaxima_ offers a right-click menu that allows to open the plot in an interactive _Gnuplot_ window."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:560
+#, no-wrap
+msgid "Opening Gnuplot’s command console in `plot` windows"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:564
+msgid "On MS Windows, there are two Gnuplot programs, `gnuplot.exe` and `wgnuplot.exe`.  You can configure, which command should be used using the configuration menu. `wgnuplot.exe` offers the possibility to open a console window, where _gnuplot_ commands can be entered into, `gnuplot.exe` does not offer this possibility. Unfortunately, `wgnuplot.exe` causes _Gnuplot_ to \"steal\" the keyboard focus for a short time every time a plot is prepared."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:565
+#, no-wrap
+msgid "Embedding animations into the spreadsheet"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:568
+msgid "3D diagrams tend to make it hard to read quantitative data. A viable alternative might be to assign the 3rd parameter to the mouse wheel. The `with_slider_draw` command is a version of `wxdraw2d` that does prepare multiple plots and allows to switch between them by moving the slider on top of the screen. _WxMaxima_ allows to export this animation as an animated gif."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:570
+msgid "The first two arguments for `with_slider_draw` are the name of the variable that is stepped between the plots and a list of the values of these variable. The arguments that follow are the ordinary arguments for `wxdraw2d`:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:571
+#, no-wrap
+msgid ""
+"with_slider_draw(\n"
+"    f,[1,2,3,4,5,6,7,10],\n"
+"    title=concat(\"f=\",f,\"Hz\"),\n"
+"    explicit(\n"
+"        sin(2*%pi*f*x),\n"
+"        x,0,1\n"
+"    ),grid=true\n"
+");\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:583
+msgid "The same functionality for 3D plots is accessible as `with_slider_draw3d`, which allows for rotating 3d plots:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:584
+#, no-wrap
+msgid ""
+"wxanimate_autoplay:true;\n"
+"wxanimate_framerate:20;\n"
+"with_slider_draw3d(\n"
+"    α,makelist(i,i,1,360,3),\n"
+"    title=sconcat(\"α=\",α),\n"
+"    surface_hide=true,\n"
+"    contour=both,\n"
+"    view=[60,α],\n"
+"    explicit(\n"
+"        sin(x)*sin(y),\n"
+"        x,-π,π,\n"
+"        y,-π,π\n"
+"    )\n"
+")$\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:602
+msgid "If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make its 3D nature available to the intuition:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:603
+#, no-wrap
+msgid ""
+"wxanimate_autoplay:true;\n"
+"wxanimate_framerate:20;\n"
+"with_slider_draw3d(\n"
+"    t,makelist(i,i,0,2*π,.05*π),\n"
+"    title=sconcat(\"α=\",α),\n"
+"    surface_hide=true,\n"
+"    contour=both,\n"
+"    view=[60,30+5*sin(t)],\n"
+"    explicit(\n"
+"        sin(x)*y^2,\n"
+"        x,-2*π,2*π,\n"
+"        y,-2*π,2*π\n"
+"    )\n"
+")$\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:621
+msgid "For those more familiar with `plot` than with `draw`, there is a second set of functions:"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:624
+msgid "`with_slider` and"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:624
+msgid "`wxanimate`."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:626
+msgid "Normally the animations are played back or exported with the frame rate chosen in the configuration of _wxMaxima_. To set the speed at an individual animation is played back the variable `wxanimate_framerate` can be used:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:627
+#, no-wrap
+msgid ""
+"wxanimate(a, 10,\n"
+"    sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:633
+msgid "The animation functions use _Maxima_’s `makelist` command and therefore share the pitfall that the slider variable’s value is substituted into the expression only if the variable is directly visible in the expression. Therefore the following example will fail:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:634
+#, no-wrap
+msgid ""
+"f:sin(a*x);\n"
+"with_slider_draw(\n"
+"    a,makelist(i/2,i,1,10),\n"
+"    title=concat(\"a=\",float(a)),\n"
+"    grid=true,\n"
+"    explicit(f,x,0,10)\n"
+")$\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:645
+msgid "If _Maxima_ is explicitly asked to substitute the slider’s value plotting works fine instead:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:646
+#, no-wrap
+msgid ""
+"f:sin(a*x);\n"
+"with_slider_draw(\n"
+"    b,makelist(i/2,i,1,10),\n"
+"    title=concat(\"a=\",float(b)),\n"
+"    grid=true,\n"
+"    explicit(\n"
+"        subst(a=b,f),\n"
+"        x,0,10\n"
+"    )\n"
+")$\n"
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:659
+#, no-wrap
+msgid "Opening multiple plots in contemporaneous windows"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:662
+msgid "While not being provided by _wxMaxima_ this feature of _Maxima_ (on setups that support it) sometimes comes in handily. The following example comes from a post from Mario Rodriguez to the _Maxima_ mailing list:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:663
+#, no-wrap
+msgid ""
+"load(draw);\n"
+"\n"
+"/* Parabola in window #1 */\n"
+"draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+"\n"
+"/* Parabola in window #2 */\n"
+"draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+"\n"
+"/* Paraboloid in window #3 */\n"
+"draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:677
+msgid "Plotting multiple plots in the same window is possible, too (the same is possible in command line Maxima with the standard `draw()` command):"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:678
+#, no-wrap
+msgid ""
+"wxdraw(\n"
+"  gr2d(\n"
+"    key=\"sin (x)\",grid=[2,2],\n"
+"    explicit(sin(x),x,0,2*%pi)),\n"
+"  gr2d(\n"
+"    key=\"cos (x)\",grid=[2,2],\n"
+"    explicit(cos(x),x,0,2*%pi))\n"
+");\n"
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:689
+#, no-wrap
+msgid "The \"Plot using draw\" side pane"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:692
+msgid "The \"Plot using draw\" sidebar hides a simple code generator that allows generating scenes that make use of some of the flexibility of the _draw_ package _maxima_ comes with."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:693
+#, no-wrap
+msgid "2D"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:696
+msgid "Generates the skeleton of a `draw()` command that draws a 2D scene. This scene later has to be filled with commands that generate the scene’s contents, for example by using the buttons in the rows below the \"2D\" button."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:698
+msgid "One helpful feature of the 2D button is that it allows to set up the scene as an animation in which a variable (by default it is _t_) has a different value in each frame: Often a moving 2D plot allows easier interpretation than the same data in a non-moving 3D one."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:699
+#, no-wrap
+msgid "3D"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:702
+msgid "Generates the skeleton of a `draw()` command that draws a 3D scene. If neither a 2D nor a 3D scene is set up, all of the other buttons set up a 2D scene that contains the command the button generates."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:703
+#, no-wrap
+msgid "Expression"
+msgstr "數式"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:706
+msgid "Appends a standard plot of an expression like `sin(x)`, `x*sin(x)` or `x^2+2*x-4` to the `draw()` command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated. Each scene can be filled with any number of plots."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:707
+#, fuzzy, no-wrap
+msgid "Implicit plot"
+msgstr "離散繪圖"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:710
+msgid "Tries to find all points an expression like `y=sin(x)`, `y*sin(x)=3` or `x^2+y^2=4` is true at and plots the resulting curve in the `draw()` command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:711
+#, fuzzy, no-wrap
+msgid "Parametric plot"
+msgstr "參數式繪圖"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:714
+msgid "Steps a variable from a lower limit to an upper limit and uses two expressions like `t*sin(t)` and `t*cos(t)` for generating the x, y (and in 3D plots also z) coordinates of a curve that is put into the current draw command."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:715
+#, fuzzy, no-wrap
+msgid "Points"
+msgstr "點："
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:718
+msgid "Draws many points that can optionally be joined. The coordinates of the points are taken from a list of lists, a 2D array or one list or array for each axis."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:719
+#, no-wrap
+msgid "Diagram title"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:722
+msgid "Draws a title on the upper end of the diagram,"
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:723
+#, no-wrap
+msgid "Axis"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:726
+msgid "Sets up the axis."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:727
+#, no-wrap
+msgid "Contour"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:730
+msgid "(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current `draw()` command and/or to the ground plane of the diagram. Alternatively, this wizard allows skipping drawing the curves entirely only showing the contour plot."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:731
+#, fuzzy, no-wrap
+msgid "Plot name"
+msgstr "串列："
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:734
+msgid "Adds a legend entry showing the next plot’s name to the legend of the diagram. An empty name disables generating legend entries for the following plots."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:735
+#, fuzzy, no-wrap
+msgid "Line colour"
+msgstr "所選區域"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:738
+msgid "Sets the line colour for the following plots the current draw command contains."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:739
+#, no-wrap
+msgid "Fill colour"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:742
+msgid "Sets the fill colour for the following plots the current draw command contains."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:743
+#, fuzzy, no-wrap
+msgid "Grid"
+msgstr "格線："
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:746
+msgid "Pops up a wizard that allows to set up grid lines."
+msgstr ""
+
+#. type: Title ####
+#: ../../info/wxmaxima.md:747
+#, no-wrap
+msgid "Accuracy"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:750
+msgid "Allows to select an adequate point in the speed vs. accuracy tradeoff that is part of any plot program."
+msgstr ""
+
+#. type: Title ###
+#: ../../info/wxmaxima.md:751
+#, no-wrap
+msgid "Modify font and font size for plots"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:754
+msgid "Especially when you use a high resolution display, the default font size might be very small. For the `draw`-based commands, you can set the font / font size using options like `font=...`, `font_size=...`, e.g.:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:755
+#, no-wrap
+msgid ""
+"wxdraw2d(\n"
+"     font=\"Helvetica\",\n"
+"     font_size=30,\n"
+"     explicit(sin(x),x,1,10));\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:763
+msgid "For the `plot`-commands (e.g. `wxplot2d`, `wxplot3d`) font sizes and fonts can be set using the `gnuplot_preamble` command, e.g.:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:764
+#, no-wrap
+msgid ""
+"wxplot2d(sin(x),[x,1,10],\n"
+"         [gnuplot_preamble, \"set tics font \\\"Arial, 30\\\"; set xlabel font \\\",20\\\"; set ylabel font \\\",20\\\";\"]);\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:770
+msgid "This sets the font for the numbers to Arial with size 30, the size for the xlabel and ylabel font to 20 (with the default font)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:773
+msgid "Read the Maxima and Gnuplot documentation for further information.  Note: Gnuplot seems to have issues with larger font sizes, see [wxMaxima issue 1966](https://github.com/wxMaxima-developers/wxmaxima/issues/1966)."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:774
+#, no-wrap
+msgid "Embedding graphics"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:777
+msgid "If the `.wxmx` file format is being used embedding files in a _wxMaxima_ project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:778
+#, no-wrap
+msgid "show_image(\"man.png\");\n"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:782
+#, no-wrap
+msgid "Startup files"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:785
+msgid "The config dialogue of _wxMaxima_ offers to edit two files with commands that are executed on startup:"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:788
+msgid "A file that contains commands that are executed on starting up _Maxima_: `maxima-init.mac`"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:788
+msgid "one file of additional commands that are executed if _wxMaxima_ is starting _Maxima_: `wxmaxima-init.mac`"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:790
+msgid "For example, if Gnuplot is installed in `/opt` (maybe on MacOS), you can add `gnuplot_command:\"/opt/local/bin/gnuplot\"$` (or `/opt/gnuplot/bin/gnuplot` or any other path) to these files."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:792
+msgid "These files are in the Maxima user directory (usually `%USERPROFILE%/maxima` in Windows, `$HOME/.maxima` otherwise). The location can be found out with the command: `maxima_userdir;`"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:793
+#, fuzzy, no-wrap
+msgid "Special variables wx..."
+msgstr "刪除變數"
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:811
+msgid "`wxsubscripts` tells _Maxima_ if it should convert variable names that contain an underscore (`R_150` or the like) into subscripted variables. See `wxdeclare_subscript` for details which variable names are automatically converted."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:811
+msgid "`wxfilename`: This variable contains the name of the file currently opened in _wxMaxima_."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:811
+msgid "`wxdirname`: This variable contains the name the directory, in which the file currently opened in _wxMaxima_ is."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:811
+msgid "`wxplot_pngcairo` tells whether _wxMaxima_ tries to use _Gnuplot_’s pngcairo terminal that provides more line styles and a better overall graphics quality."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:811
+msgid "`wxplot_size` defines the resolution of embedded plots."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:811
+msgid "`wxchangedir`: On most operating systems _wxMaxima_ automatically sets _Maxima_’s working directory to the directory of the current file. This allows file I/O (e.g. by `read_matrix`) to work without specifying the whole path to the file that has to be read or written. On Windows this feature sometimes causes error messages and therefore can be set to `false` from the config dialogue."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:811
+msgid "`wxanimate_framerate`: The number of frames per second the following animations have to be played back with."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:811
+msgid "`wxanimate_autoplay`: Automatically play animations by default?"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:811
+msgid "`wxmaximaversion`: Returns the version number of _wxMaxima_."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:811
+msgid "`wxwidgetsversion`: Returns the wxWidgets version _wxMaxima_ is using."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:811
+msgid "`wxdirs`: A struct holding the paths _wxMaxima_ itself uses, since these differ by maintainer, distribution and operating system:"
+msgstr ""
+
+#. type: Bullet: '  - '
+#: ../../info/wxmaxima.md:811
+msgid "`wxdirs@userconfdir`: The directory the user's configuration is stored in. Same directory as `maxima_userdir` (see above) - both point at the same place, `wxdirs@userconfdir` is only useful if that is more convenient to reach from a `.mac` file than the Maxima-side variable."
+msgstr ""
+
+#. type: Bullet: '  - '
+#: ../../info/wxmaxima.md:811
+msgid "`wxdirs@datadir`: The directory _wxMaxima_'s own data (icons, the built-in autocompletion list, ...) is installed in."
+msgstr ""
+
+#. type: Bullet: '  - '
+#: ../../info/wxmaxima.md:811
+msgid "`wxdirs@helpdir`: The directory the offline copy of this manual is installed in."
+msgstr ""
+
+#. type: Bullet: '  - '
+#: ../../info/wxmaxima.md:811
+msgid "`wxdirs@localedir`: The directory _wxMaxima_'s translation files are installed in."
+msgstr ""
+
+#. type: Bullet: '  - '
+#: ../../info/wxmaxima.md:811
+msgid "`wxdirs@maximalocation`: The path to the _Maxima_ executable _wxMaxima_ is configured to start."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:812
+#, fuzzy, no-wrap
+msgid "Pretty-printing 2D output"
+msgstr "解析輸出中"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:815
+msgid "The function `table_form()` displays a 2D list in a form that is more readable than the output from _Maxima_’s default output routine. The input is a list of one or more lists. Like the \"print\" command, this command displays output even when ended with a dollar sign. Ending the command with a semicolon results in the same table along with a \"done\" statement."
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:816
+#, no-wrap
+msgid ""
+"table_form(\n"
+"    [\n"
+"        [1,2],\n"
+"        [3,4]\n"
+"    ]\n"
+")$\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:826
+msgid "As the next example shows, the lists that are assembled by the `table_form` command can be created before the command is executed."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:828
+msgid "![A third table example](./MatrixTableExample.png){ id=img_MatrixTableExample }"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:830
+msgid "Also, because a matrix is a list of lists, matrices can be converted to tables in a similar fashion."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:832
+msgid "![Another table_form example](./SecondTableExample.png){ id=img_SecondTableExample }"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:834
+msgid "The function `wx_matrix()` is a wrapper for Maxima's `matrix()` command that allows for more flexible formatting of matrices in wxMaxima:"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:836
+#, no-wrap
+msgid "**`wx_matrix( <matrix>, [options] )`**\n"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:841
+msgid "**`lines=true`**: Draws internal separator lines between the cells. This is required to visually separate headings from data."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:841
+msgid "**`rownames=true`**: Tells wxMaxima that the first column of the matrix contains labels."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:841
+msgid "**`colnames=true`**: Tells wxMaxima that the first row of the matrix contains labels."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:841
+msgid "**`parenstyle=<style>`**: Sets the type of parenthesis or brackets to draw around the matrix. Supported styles are: `round` `()`, `square` `[]`, `angled` `<>`, `straight` `||`, or `none`."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:843
+#, fuzzy
+msgid "Example:"
+msgstr "範例"
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:844
+#, no-wrap
+msgid ""
+"wx_matrix(matrix([\"Name\", \"Value\"], [\"X\", 10], [\"Y\", 20]),\n"
+"          lines=true, rownames=true, colnames=true, parenstyle=square);\n"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:849
+#, no-wrap
+msgid "Bug reporting"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:852
+msgid "_WxMaxima_ provides a few functions that gather bug reporting information about the current system:"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:855
+msgid "`wxbuild_info()` gathers information about the currently running version of _wxMaxima_"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:855
+msgid "`wxbug_report()` tells how and where to file bugs"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:856
+#, no-wrap
+msgid "Marking output being drawn in red"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:860
+msgid "_Maxima_’s `box()` command causes _wxMaxima_ to print its argument with a red foreground, if the second argument to the command is the text `highlight`."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:861
+#, fuzzy, no-wrap
+msgid "Output rendering."
+msgstr "字串"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:864
+msgid "With `set_display()` one can set, how wxMaxima will render the output."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:866
+msgid "`set_display('xml)` is the default value. Here Maxima speaks to wxMaxima using an (machine readable) XML-dialect (can be seen in the \"Raw XML sidebar\") and outputs the resulting formulas nicely rendered, e.g. pretty Matrices, Square root signs, fractions, etc."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:869
+#, no-wrap
+msgid ""
+"<!--- Currently that does not work as it should, the line with the output label is shifted right (issue: #2006) -->\n"
+"`set_display('ascii)` causes wxMaxima to output formulas as in command line Maxima - as ASCII-Art.\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:871
+msgid "`set_display('none)` causes 'one-line' ASCII results - the same as the command line Maxima command `display2d:false;` does."
+msgstr ""
+
+#. type: Title #
+#: ../../info/wxmaxima.md:872
+#, fuzzy, no-wrap
+msgid "Help menu"
+msgstr "說明"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:875
+msgid "WxMaxima’s help menu provides access to the Maxima and wxMaxima manual, tips, some example worksheets and in command line Maxima included demos (the `demo()` command)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:877
+msgid "Please notice, that the demos write:"
+msgstr ""
+
+#. type: Fenced code block (text)
+#: ../../info/wxmaxima.md:878
+#, no-wrap
+msgid "At the ’_’ prompt, type ’;’ and <enter> to proceed with the demonstration.\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:883
+#, no-wrap
+msgid "That is valid for command-line Maxima, however in wxMaxima by default it is necessary to continue the demonstration with: <kbd>CTRL</kbd>+<kbd>ENTER</kbd>\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:885
+#, no-wrap
+msgid "(That can be configured in the Configure->Worksheet->\"Hotkeys for sending commands to Maxima\" menu.)\n"
+msgstr ""
+
+#. type: Title #
+#: ../../info/wxmaxima.md:888
+#, no-wrap
+msgid "Troubleshooting"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:890
+#, fuzzy, no-wrap
+msgid "Cannot connect to _Maxima_"
+msgstr ""
+"\n"
+"未連線"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:893
+msgid "Since _Maxima_ (the program that does the actual mathematics) and _wxMaxima_ (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example, a firewall could be set up in a way that it doesn’t just prevent unauthorized connections from the internet (and perhaps intercept some connections to the internet, too), but also blocks inter-process-communication inside the same computer. Note that since _Maxima_ is being run by a Lisp processor the process communication that is blocked does not necessarily have to be named \"maxima\". Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe, or similar names."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:895
+msgid "On Unix computers another possible reason would be that the loopback network that provides network connections between two programs in the same computer isn’t properly configured."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:896
+#, no-wrap
+msgid "How to save data from a broken .wxmx file"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:899
+msgid "Internally most modern XML-based formats are ordinary zip files. _WxMaxima_ doesn’t turn on compression, so the contents of `.wxmx` files can be viewed in any text editor."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:901
+msgid "If the zip signature at the end of the file is still intact after renaming a broken `.wxmx` file to `.zip` most operating systems will provide a way to extract any portion of the information that is stored inside it. This can be done when there is a need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If _wxMaxima_ during saving detected that something went wrong there will be a `.wxmx~` file whose contents might help."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:903
+#, no-wrap
+msgid "And even if there isn’t such a file: The `.wxmx` file is a container format and the XML portion is stored uncompressed. It it is possible to rename the `.wxmx` file to a `.txt` file and to use a text editor to recover the XML portion of the file’s contents (it starts with `<?xml version=\"1.0\" encoding=\"UTF-8\"?>` and ends with `</wxMaximaDocument>`. Before and after that text you will see some unreadable binary contents in the text editor).\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:905
+msgid "If a text file containing only these contents (e.g. copy and paste this text into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know how to recover the text from the document."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:906
+#, no-wrap
+msgid "I want some debug info to be displayed on the screen before my command has finished"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:909
+msgid "Normally _wxMaxima_ waits for the whole 2D formula to be transferred before it begins to typeset. This saves time for making many attempts to typeset a only partially completed equation. There is a `disp` command, though, that will provide debug output immediately and without waiting for the current _Maxima_ command to finish:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:910
+#, no-wrap
+msgid ""
+"for i:1 thru 10 do (\n"
+"   disp(i),\n"
+"   /* (sleep n) is a Lisp function, which can be used */\n"
+"   /* with the character \"?\" before. It delays the */\n"
+"   /* program execution (here: for 3 seconds) */\n"
+"   ?sleep(3)\n"
+")$\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:921
+msgid "Alternatively one can look for the `wxstatusbar()` command above."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:922
+#, no-wrap
+msgid "Plotting only shows a closed empty envelope with an error message"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:925
+msgid "This means that _wxMaxima_ could not read the file _Maxima_ that was supposed to instruct _Gnuplot_ to create."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:927
+msgid "Possible reasons for this error are:"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:932
+msgid "The plotting command is part of a third-party package like `implicit_plot` but this package was not loaded by _Maxima_’s `load()` command before trying to plot."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:932
+msgid "_Maxima_ tried to do something the currently installed version of _Gnuplot_ isn’t able to understand. In this case, a file ending in `.gnuplot` located in the directory, which _Maxima_’s variable `maxima_userdir` is pointing, contains the instructions from _Maxima_ to _Gnuplot_. Most of the time, this file’s contents therefore are helpful when debugging the problem."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:932
+msgid "Gnuplot was instructed to use the pngCairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the \"Use the Cairo terminal for the plot\" checkbox in the configuration dialog and don’t set `wxplot_pngcairo` to true from _Maxima_."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:932
+msgid "Gnuplot didn’t output a valid `.png` file."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:933
+#, no-wrap
+msgid "Plotting an animation results in “error: undefined variable”"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:936
+msgid "The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using a `subst` command that substitutes the slider variable into the equation to plot resolves this problem. At the end of section [Embedding animations into the spreadsheet](#embedding-animations-into-the-spreadsheet), you can see an example."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:937
+#, no-wrap
+msgid "I lost cell content and undo doesn’t remember"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:940
+msgid "There are separate undo functions for cell operations and for changes inside of cells so chances are low that this ever happens. If it does there are several methods to recover data:"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:945
+msgid "_WxMaxima_ actually has two undo features: The global undo buffer that is active if no cell is selected and a per-cell undo buffer that is active if the cursor is inside a cell. It is worth trying to use both undo options in order to see if an old value can still be accessed."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:945
+msgid "If you still have a way to find out what label _Maxima_ has assigned to the cell just type in the cell’s label and its contents will reappear."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:945
+msgid "If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that shows all _Maxima_ commands that have been issued recently."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:945
+msgid "If nothing else helps _Maxima_ contains a replay feature:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:946
+#, no-wrap
+msgid "playback();\n"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:950
+#, no-wrap
+msgid "_WxMaxima_ starts up with the message “Maxima process terminated.”"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:953
+msgid "One possible reason is that _Maxima_ cannot be found in the location that is set in the “Maxima” tab of _wxMaxima_’s configuration dialog and therefore won’t run at all. Setting the path to a working _Maxima_ binary should fix this problem."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:954
+#, no-wrap
+msgid "Maxima is forever calculating and not responding to input"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:957
+msgid "It is theoretically possible that _wxMaxima_ doesn’t realize that _Maxima_ has finished calculating and therefore never gets informed it can send new data to _Maxima_. If this is the case “Trigger evaluation” might resynchronize the two programs."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:958
+#, no-wrap
+msgid "My SBCL-based _Maxima_ runs out of memory"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:961
+msgid "The Lisp compiler SBCL by default comes with a memory limit that allows it to run even on low-end computers. When compiling a big software package like Lapack or dealing with extremely big lists of equations this limit might be too low. In order to extend the limits, SBCL can be provided with the command line parameter `--dynamic-space-size` that tells SBCL how many megabytes it should reserve. A 32bit Windows-SBCL can reserve up to 999 Megabytes. A 64-bit SBCL version running on Windows can be instructed to use more than the about 1280 Megabytes compiling Lapack needs."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:963
+msgid "One way to provide _Maxima_ (and thus SBCL) with command line parameters is the \"Additional parameters for Maxima\" field of _wxMaxima_’s configuration dialogue."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:965
+msgid "![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:966
+#, no-wrap
+msgid "Input sometimes is sluggish/ignoring keys on Ubuntu"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:969
+msgid "Installing the package `ibus-gtk` should resolve this issue. See ([https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558)) for details."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:970
+#, no-wrap
+msgid "_WxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:973
+msgid "If your _Maxima_ is based on SBCL the following lines have to be added to your `.sbclrc`:"
+msgstr ""
+
+#. type: Fenced code block (commonlisp)
+#: ../../info/wxmaxima.md:974
+#, no-wrap
+msgid "(setf sb-impl::*default-external-format* :utf-8)\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:979
+msgid "The folder where this file has to be placed is system- and installation-specific. But any SBCL-based _Maxima_ that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:980
+#, no-wrap
+msgid ":lisp (sb-impl::userinit-pathname)\n"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:984
+#, no-wrap
+msgid "Note concerning Wayland (recent Linux/BSD distributions)"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:988
+msgid "There seem to be issues with the Wayland Display Server and wxWidgets.  WxMaxima may be affected, e.g. that sidebars are not moveable."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:992
+msgid "You can either disable Wayland and use X11 instead (globally)  or just tell, that wxMaxima should use the X Window System by setting: `GDK_BACKEND=x11`"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:994
+#, fuzzy
+msgid "E.g. start wxMaxima with:"
+msgstr "重新啟動 Maxima"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:996
+msgid "`GDK_BACKEND=x11 wxmaxima`"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:997
+#, no-wrap
+msgid "The menu bar disappears on KDE Plasma"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1003
+msgid "On some KDE Plasma installations the global menu bar disappears when clicked.  As this is a bug in the global menu proxy, the only way to avoid it is to tell that wxMaxima should use its own menu bar instead of the global one.  This is done by setting: `UBUNTU_MENUPROXY=0`"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1007
+msgid "Starting with version 26.05.0, wxMaxima attempts to set this variable automatically if it detects an affected system (KDE, Unity, or Ubuntu with older wxWidgets versions)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1009
+msgid "If the automatic fix fails, you can manually start wxMaxima with:"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1011
+msgid "`UBUNTU_MENUPROXY=0 wxmaxima`"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:1012
+#, no-wrap
+msgid "Why is the integrated manual browser not offered on my Windows PC?"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1016
+msgid "Either wxWidgets wasn’t compiled with support for Microsoft’s webview2 or Microsoft’s webview2 isn’t installed."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:1017
+#, no-wrap
+msgid "Why is the external manual browser not working on my Linux box?"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1024
+msgid "The HTML browser might be a snap, flatpack or appimage version. All of these typically cannot access files that are installed on your local system. Another reason might be that maxima or wxMaxima is installed as a snap, flatpack or something else that doesn’t give the host system access to its contents. A third reason might be that the maxima HTML manual isn’t installed and the online one cannot be accessed."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:1025
+#, no-wrap
+msgid "Can I make _wxMaxima_ output both image files and embedded plots at once?"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1028
+msgid "The worksheet embeds `.png files. _WxMaxima_ allows the user to specify where they should be generated:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:1029
+#, no-wrap
+msgid ""
+"wxdraw2d(\n"
+"    file_name=\"test\",  /* extension .png automatically added */\n"
+"    explicit(sin(x),x,1,10)\n"
+");\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1037
+msgid "If a different format is to be used, it is easier to generate the images and then import them into the worksheet again:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:1038
+#, no-wrap
+msgid ""
+"load(\"draw\");\n"
+"pngdraw(name,[contents]):=\n"
+"(\n"
+"    draw(\n"
+"        append(\n"
+"            [\n"
+"                terminal=pngcairo,\n"
+"                dimensions=wxplot_size,\n"
+"                file_name=name\n"
+"            ],\n"
+"            contents\n"
+"        )\n"
+"    ),\n"
+"    show_image(printf(false,\"~a.png\",name))\n"
+");\n"
+"pngdraw2d(name,[contents]):=\n"
+"    pngdraw(name,gr2d(contents));\n"
+"\n"
+"pngdraw2d(\"Test\",\n"
+"        explicit(sin(x),x,1,10)\n"
+");\n"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:1062
+#, no-wrap
+msgid "Can I set the aspect ratio of an embedded plot?"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1065
+msgid "Use the variable `wxplot_size`:"
+msgstr ""
+
+#. type: Fenced code block (maxima)
+#: ../../info/wxmaxima.md:1066
+#, no-wrap
+msgid ""
+"wxdraw2d(\n"
+"    explicit(sin(x),x,1,10)\n"
+"),wxplot_size=[1000,1000];\n"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:1072
+#, no-wrap
+msgid "After upgrading to MacOS 13.1 plot and/or draw commands output error messages like"
+msgstr ""
+
+#. type: Fenced code block (text)
+#: ../../info/wxmaxima.md:1074
+#, no-wrap
+msgid ""
+"1 HIToolbox 0x00007ff80cd91726 _ZN15MenuBarInstance22EnsureAutoShowObserverEv + 102\n"
+"2 HIToolbox 0x00007ff80cd912b8 _ZN15MenuBarInstance14EnableAutoShowEv + 52\n"
+"3 HIToolbox 0x00007ff80cd35908 SetMenuBarObscured + 408\n"
+"...\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1082
+#, no-wrap
+msgid "This might be an issue with the operating system. Disable the hiding of the menu bar (SystemSettings => Desktop & Dock => Menu Bar) might solve the issue. See [wxMaxima issue #1746](https://github.com/wxMaxima-developers/wxmaxima/issues/1746) for more information.\n"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:1083
+#, no-wrap
+msgid "Logging"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1088
+#, no-wrap
+msgid ""
+"Log messages might be helpful to debug problems. WxMaxima can log many events. Most log entries will be helpful for developers, especially in case of problems or bugs. If you run a \"Release\"-Build,\n"
+"the log windows is not shown by default, if you run a development version, it is shown by default as a second window. You can enable and disable\n"
+"this window using the \"View->Toggle log window\" menu entry.\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1090
+msgid "Messages are not 'lost', if the log window is not shown, if you select to show the log window later, you will see past log messages (if you did not clear the messages)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1092
+msgid "Such messages may be helpful, when you create bug reports (or trying to find a bug by yourself)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1095
+msgid "Log messages can (additionally) be printed to STDERR, when using the command line option \"--logtostderr\". On Windows a separate text console will be opened, as a Windows GUI application does not have the standard IO connected."
+msgstr ""
+
+#. type: Title #
+#: ../../info/wxmaxima.md:1098
+#, no-wrap
+msgid "FAQ"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:1100
+#, no-wrap
+msgid "Is there a way to make more text fit on a LaTeX page?"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1103
+msgid "Yes. Use the [LaTeX package \"geometry\"](https://ctan.org/pkg/geometry) to specify the size of the borders."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1105
+#, no-wrap
+msgid "You can add the following line to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"), to set borders of 1cm):\n"
+msgstr ""
+
+#. type: Fenced code block (latex)
+#: ../../info/wxmaxima.md:1106
+#, no-wrap
+msgid "\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:1110
+#, no-wrap
+msgid "Is there a dark mode?"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1113
+msgid "If wxWidgets is new enough, _wxMaxima_ will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively, there is a `View/Invert worksheet brightness` menu entry that allows to quickly convert the worksheet from dark to bright and vice versa."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:1114
+#, no-wrap
+msgid "_WxMaxima_ sometimes hangs for several seconds once in the first minute"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1117
+#, no-wrap
+msgid "_WxMaxima_ delegates some big tasks like parsing _Maxima_’s >1000-page-manual to background tasks, which normally goes totally unnoticed. At the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.\n"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:1118
+#, no-wrap
+msgid "Especially when testing new locale settings, a message box \"locale ’xx_YY’ can not be set\" occurs"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1121
+msgid "![Locale warning](./locale-warning.png){ id=img_locale_warning}"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1125
+msgid "(The same problem can occur with other applications too). The translations seem okay after you click on ’OK’. WxMaxima does not only use its own translations but the translations of the wxWidgets framework too."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1128
+msgid "These locales maybe not present in the system. On Ubuntu/Debian systems they can be generated using: `dpkg-reconfigure locales`"
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:1129
+#, no-wrap
+msgid "How can I use symbols for real numbers, natural numbers (ℝ, ℕ), etc.?"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1132
+msgid "You can find these symbols in the Unicode sidebar (search for ’double-struck capital’). But the selected font must also support these symbols. If they do not display properly, select another font."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:1133
+#, no-wrap
+msgid "How can a Maxima script determine, if it is running under wxMaxima or command line Maxima?"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1136
+msgid "If wxMaxima is used, the Maxima variable `maxima_frontend` is set to `wxmaxima`. The Maxima variable `maxima_frontend_version` contains the wxMaxima version in this case."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1138
+msgid "If no frontend is used (you are using command line Maxima), these variables are `false`."
+msgstr ""
+
+#. type: Title ##
+#: ../../info/wxmaxima.md:1139
+#, no-wrap
+msgid "Help! I can not save my document!"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1142
+#, no-wrap
+msgid "If saving as wxmx file does not work, try saving the document as wxm file (and vice versa). And you can also try to remove all output (Menu Cell->Remove all output) and save that file, maybe some unexpected output causes issues during the save process.\n"
+msgstr ""
+
+#. type: Title #
+#: ../../info/wxmaxima.md:1145
+#, fuzzy, no-wrap
+msgid "Command-line arguments"
+msgstr "x 座標，以逗號分隔"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1148
+msgid "Usually you can start programs with a graphical user interface just by clicking on a desktop icon or desktop menu entry. WxMaxima - if started from the command line - still provides some command-line switches, though."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:1164
+msgid "`-v` or `--version`: Output the version information"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:1164
+msgid "`-h` or `--help`: Output a short help text"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:1164
+msgid "`-o` or `--open=<str>`: Open the filename given as an argument to this command-line switch"
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:1164
+msgid "`-e` or `--eval`: Evaluate the file after opening it."
+msgstr ""
+
+#. type: Bullet: '- '
+#: ../../info/wxmaxima.md:1164
+msgid "`-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated and the file is saved afterward. This is for example useful if the session described in the file makes _Maxima_ generate output files. Batch-processing will be stopped if _wxMaxima_ detects that _Maxima_ has output an error and will pause if _Maxima_ has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1164
+#, no-wrap
+msgid ""
+"- `--logtostderr`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
+"- `--pipe`:                        Pipe messages from Maxima to stdout.\n"
+"- `--exit-on-error`:               Close the program on any maxima error.\n"
+"- `-f` or `--ini=<str>`: Use the init file that was given as an argument to this command-line switch\n"
+"- `-u`, `--use-version=<str>`:     Use maxima version `<str>`.\n"
+"- `-l`, `--lisp=<str>`:              Use a Maxima compiled with Lisp compiler `<str>`.\n"
+"- `-X`, `--extra-args=<str>`:        Allows to specify extra Maxima arguments\n"
+"- `-m` or `--maxima=<str>`:    allows specifying the location of the _maxima_ binary\n"
+"- `--enableipc`: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.\n"
+"- `--wxmathml-lisp=<str>`:   Location of wxMathML.lisp (if not the built-in should be used, mainly for developers).\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1166
+msgid "Instead of a minus, some operating systems might use a dash in front of the command-line switches."
+msgstr ""
+
+#. type: Title #
+#: ../../info/wxmaxima.md:1169
+#, no-wrap
+msgid "About the program, contributing to wxMaxima"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1172
+msgid "wxMaxima is mainly developed using the programming language C++ using the [wxWidgets framework](https://www.wxwidgets.org), as build system we use [CMake](https://www.cmake.org), a small part is written in Lisp. You can contribute to wxMaxima, join the wxMaxima project at <https://github.com/wxMaxima-developers/wxmaxima>, if you have knowledge of these programming languages and want to help and contribute to the open source project wxMaxima."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1174
+msgid "But not only programmers are necessary! You can also contribute to wxMaxima, if you help to improve the documentation, find and report bugs (and maybe bugfixes), suggest new features, help to translate wxMaxima or the manual to your language (read the README.md in the [locale subdirectory](https://github.com/wxMaxima-developers/wxmaxima/tree/main/locales) how wxMaxima and the manual can be translated)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1176
+msgid "Or answer questions of other users in the discussion forum."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1178
+msgid "The source code of wxMaxima is documented using Doxygen [here](https://wxmaxima-developers.github.io/wxmaxima/Doxygen-documentation/)."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1180
+msgid "The program is nearly self-contained, so except for system libraries (and the wxWidgets library), no external dependencies (like graphic files or the Lisp part (the `wxmathML.lisp`-file) is needed, these files are included in the executable."
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:1181
+#, no-wrap
+msgid "If you are a developer, you might want to try out a modified `wxmathML.lisp`-file without recompiling everything, one can use the command line option `--wxmathml-lisp=<str>` to use another Lisp file, not the included one.\n"
+msgstr ""
+
+#, fuzzy
+#~ msgid "&Algebraic Mode"
+#~ msgstr "代數(&A)"
+
+#~ msgid "&Apropos..."
+#~ msgstr "Apropos 指令(&A)..."
+
+#~ msgid "&Batch File...\tCtrl+B"
+#~ msgstr "以批次檔載入(&B)...\tCtrl+B"
+
+#~ msgid "&Boundary Value Problem..."
+#~ msgstr "邊界值問題(&B)..."
+
+#~ msgid "&Calculus"
+#~ msgstr "微積分(&C)"
+
+#~ msgid "&Canonical Form"
+#~ msgstr "標準形式(&C)"
+
+#~ msgid "&Characteristic Polynomial..."
+#~ msgstr "特徵多項式(&C)..."
+
+#~ msgid "&Clear Memory"
+#~ msgstr "清除記憶體(&C)"
+
+#~ msgid "&Combine Factorials"
+#~ msgstr "合併階乘(&C)"
+
+#~ msgid "&Complex Simplification"
+#~ msgstr "複數化簡(&C)"
+
+#~ msgid "&Continued Fraction"
+#~ msgstr "連分數(&C)"
+
+#~ msgid "&Copy\tCtrl+C"
+#~ msgstr "複製(&C)\tCtrl+C"
+
+#~ msgid "&Demoivre"
+#~ msgstr "Demoivre(&D)"
+
+#~ msgid "&Determinant"
+#~ msgstr "行列式(&D)"
+
+#~ msgid "&Differentiate..."
+#~ msgstr "微分(&D)..."
+
+#~ msgid "&Edit"
+#~ msgstr "編輯(&E)"
+
+#~ msgid "&Eliminate Variable..."
+#~ msgstr "消去變數(&E)..."
+
+#~ msgid "&Enter Matrix..."
+#~ msgstr "輸入矩陣(&E)..."
+
+#~ msgid "&Example..."
+#~ msgstr "範例(&E)..."
+
+#~ msgid "&Expand Expression"
+#~ msgstr "展開數式(&E)"
+
+#~ msgid "&Expand Trigonometric"
+#~ msgstr "展開三角函數(&E)"
+
+#~ msgid "&Exponentialize"
+#~ msgstr "指數化(&E)"
+
+#~ msgid "&Export..."
+#~ msgstr "匯出(&E)..."
+
+#~ msgid "&Factor Expression"
+#~ msgstr "因式分解數式(&F)"
+
+#~ msgid "&File"
+#~ msgstr "檔案(&F)"
+
+#, fuzzy
+#~ msgid "&Functions"
+#~ msgstr "函數："
+
+#~ msgid "&Greatest Common Divisor..."
+#~ msgstr "最大公因式(&G)..."
+
+#~ msgid "&Help"
+#~ msgstr "說明(&H)"
+
+#~ msgid "&Integrate..."
+#~ msgstr "積分(&I)..."
+
+#~ msgid "&Interrupt\tCtrl+G"
+#~ msgstr "中斷(&I)\tCtrl+G"
+
+#~ msgid "&Invert Matrix"
+#~ msgstr "反矩陣(&I)"
+
+#, fuzzy
+#~ msgid "&List"
+#~ msgstr "串列："
+
+#~ msgid "&Load Package...\tCtrl+L"
+#~ msgstr "載入 Package(&L)...\tCtrl+L"
+
+#~ msgid "&Maxima"
+#~ msgstr "Maxima(&M)"
+
+#, fuzzy
+#~ msgid "&Maxima help"
+#~ msgstr "顯示 Maxima 說明"
+
+#~ msgid "&Modulus Computation..."
+#~ msgstr "設定模運算(&M)..."
+
+#, fuzzy
+#~ msgid "&New\tCtrl+N"
+#~ msgstr "新增\tCtrl+N"
+
+#~ msgid "&Numeric"
+#~ msgstr "數值(&N)"
+
+#, fuzzy
+#~ msgid "&Numeric Output"
+#~ msgstr "切換數值輸出(&N)"
+
+#, fuzzy
+#~ msgid "&Open\tCtrl+O"
+#~ msgstr "開啟(&O)\tCtrl+O"
+
+#~ msgid "&Open...\tCtrl+O"
+#~ msgstr "開啟(&O)...\tCtrl+O"
+
+#~ msgid "&Print...\tCtrl+P"
+#~ msgstr "列印(&P)...\tCtrl+P"
+
+#~ msgid "&Reduce Trigonometric"
+#~ msgstr "縮併三角函數(&R)"
+
+#, fuzzy
+#~ msgid "&Restart Maxima\tCtrl+Alt+R"
+#~ msgstr "重新啟動 Maxima(&R)"
+
+#~ msgid "&Save\tCtrl+S"
+#~ msgstr "儲存(&S)\tCtrl+S"
+
+#~ msgid "&Simplify"
+#~ msgstr "化簡(&S)"
+
+#~ msgid "&Simplify Factorials"
+#~ msgstr "化簡階乘(&S)"
+
+#~ msgid "&Simplify Trigonometric"
+#~ msgstr "化簡三角函數(&S)"
+
+#~ msgid "&Solve..."
+#~ msgstr "求解(&S)..."
+
+#, fuzzy
+#~ msgid "&Time Display"
+#~ msgstr "切換計算時間顯示(&T)"
+
+#~ msgid "&Transpose Matrix"
+#~ msgstr "轉置矩陣(&T)"
+
+#~ msgid "&Trigonometric Simplification"
+#~ msgstr "三角化簡(&T)"
+
+#, fuzzy
+#~ msgid "&Variables"
+#~ msgstr "變數"
+
+#, fuzzy
+#~ msgid "1×n Matrix b:"
+#~ msgstr "矩陣："
+
+#, fuzzy
+#~ msgid "2D Array to Matrix..."
+#~ msgstr "映射至整個矩陣(&P)..."
+
+#, fuzzy
+#~ msgid "A irrational variable"
+#~ msgstr "變數變換"
+
+#, fuzzy
+#~ msgid "A linear function"
+#~ msgstr "刪除函數"
+
+#, fuzzy
+#~ msgid "A rational variable"
+#~ msgstr "變數變換"
+
+#, fuzzy
+#~ msgid "A&pply function to each Matrix element..."
+#~ msgstr "套用函數至串列"
+
+#~ msgid "A&t Value..."
+#~ msgstr "定點設值(T)..."
+
+#~ msgid "About"
+#~ msgstr "關於"
+
+#~ msgid "About wxMaxima"
+#~ msgstr "關於 wxMaxima"
+
+#~ msgid "Ad&joint Matrix"
+#~ msgstr "伴隨矩陣(&J)"
+
+#~ msgid "Add Algebraic E&quality..."
+#~ msgstr "新增代數"
+
+#~ msgid "Add a directory to search path"
+#~ msgstr "將目錄加入搜尋路徑"
+
+#, fuzzy
+#~ msgid "Add an element to the end of a list"
+#~ msgstr "開啟文件"
+
+#, fuzzy
+#~ msgid "Add an element to the start of a list"
+#~ msgstr "開啟文件"
+
+#~ msgid "Add dir to path:"
+#~ msgstr "將目錄加入搜尋路徑："
+
+#~ msgid "Add equality to the rational simplifier"
+#~ msgstr "新增有理數式化簡所使用的等式"
+
+#~ msgid "Add to &Path..."
+#~ msgstr "加入搜尋路徑(&P)..."
+
+#, fuzzy
+#~ msgid "All but the 1st n elements"
+#~ msgstr "套用函數至串列"
+
+#, fuzzy
+#~ msgid "All but the last n elements"
+#~ msgstr "套用函數至串列"
+
+#, fuzzy
+#~ msgid "All visible sidebars"
+#~ msgstr "舊變數："
+
+#, fuzzy
+#~ msgid "Animation autoplay"
+#~ msgstr "儲存動畫至檔案"
+
+#, fuzzy
+#~ msgid "Append a list to an existing list"
+#~ msgstr "求數式的極限"
+
+#, fuzzy
+#~ msgid "Append a list to another list"
+#~ msgstr "求數式的極限"
+
+#, fuzzy
+#~ msgid "Append an element"
+#~ msgstr "開啟文件"
+
+#, fuzzy
+#~ msgid "Append an element to the beginning an existing list"
+#~ msgstr "求數式的極限"
+
+#, fuzzy
+#~ msgid "Append an element to the end of an existing list"
+#~ msgstr "求數式的極限"
+
+#, fuzzy
+#~ msgid "Apply a function to each list element"
+#~ msgstr "套用函數至串列"
+
+#~ msgid "Apropos"
+#~ msgstr "Apropos 指令"
+
+#, fuzzy
+#~ msgid "Are the chars equal?"
+#~ msgstr "子章節單元"
+
+#, fuzzy
+#~ msgid "Array"
+#~ msgstr "陣列："
+
+#, fuzzy
+#~ msgid "Arrays"
+#~ msgstr "陣列："
+
+#~ msgid "Batch File"
+#~ msgstr "以批次檔載入"
+
+#, fuzzy
+#~ msgid "Boundary value problem"
+#~ msgstr "邊界值問題(&B)..."
+
+#~ msgid "Build &Info"
+#~ msgstr "建置資訊(&I)"
+
+#, fuzzy
+#~ msgid "C&hange Variable in Integrate..."
+#~ msgstr "變數變換(&H)..."
+
+#~ msgid "C&onfigure"
+#~ msgstr "設定(&O)"
+
+#~ msgid "Calculate &Product..."
+#~ msgstr "計算乘積(&P)..."
+
+#~ msgid "Calculate Su&m..."
+#~ msgstr "計算加總(&M)..."
+
+#~ msgid "Calculate bigfloat value of the last result"
+#~ msgstr "將最後的計算結果以長浮點數 (bigfloat) 表示"
+
+#~ msgid "Calculate float value of the last result"
+#~ msgstr "將最後的計算結果以浮點數 (float) 表示"
+
+#, fuzzy
+#~ msgid "Calculate mean value"
+#~ msgstr "模運算："
+
+#, fuzzy
+#~ msgid "Calculate median value"
+#~ msgstr "模運算："
+
+#~ msgid "Calculate modulus:"
+#~ msgstr "模運算："
+
+#, fuzzy
+#~ msgid "Calculate numeric value of the last result"
+#~ msgstr "將最後的計算結果以浮點數 (float) 表示"
+
+#~ msgid "Calculate products"
+#~ msgstr "計算乘積"
+
+#~ msgid "Calculate sums"
+#~ msgstr "計算加總"
+
+#, fuzzy
+#~ msgid "Calculate the eigenvalues of a matrix numerically"
+#~ msgstr "計算矩陣的反矩陣"
+
+#, fuzzy
+#~ msgid "Calculate variation"
+#~ msgstr "計算乘積"
+
+#~ msgid "Can not connect to the web server."
+#~ msgstr "無法連線至網路伺服器。"
+
+#~ msgid "Can not download version info."
+#~ msgstr "無法下載版本資訊。"
+
+#~ msgid "Cancel"
+#~ msgstr "取消"
+
+#, fuzzy
+#~ msgid "Cannot start gnuplot"
+#~ msgstr "參數式繪圖"
+
+#~ msgid "Ce&ll"
+#~ msgstr "單元(&L)"
+
+#, fuzzy
+#~ msgid "Cell bracket fill, Active"
+#~ msgstr "單元框"
+
+#, fuzzy
+#~ msgid "Cell bracket fill, Inactive"
+#~ msgstr "單元框"
+
+#~ msgid "Change &2d Display"
+#~ msgstr "變更顯示方式(&2)"
+
+#, fuzzy
+#~ msgid "Change Image"
+#~ msgstr "變數變換"
+
+#, fuzzy
+#~ msgid "Change Image..."
+#~ msgstr "儲存圖片..."
+
+#, fuzzy
+#~ msgid "Change Log"
+#~ msgstr "變數變換"
+
+#, fuzzy
+#~ msgid "Change directory..."
+#~ msgstr "儲存圖片..."
+
+#~ msgid "Change the 2d display algorithm used to display math output"
+#~ msgstr "變更顯示數學輸出的演算法"
+
+#~ msgid "Change variable"
+#~ msgstr "變數變換"
+
+#, fuzzy
+#~ msgid "Change variable and evaluate"
+#~ msgstr "對積分數式或加總數式作變數變換"
+
+#~ msgid "Change variable in integral or sum"
+#~ msgstr "對積分數式或加總數式作變數變換"
+
+#, fuzzy
+#~ msgid "Change variable in integral or sum and evaluate the result"
+#~ msgstr "對積分數式或加總數式作變數變換"
+
+#, fuzzy
+#~ msgid "Changed option variables"
+#~ msgstr "變數變換"
+
+#, fuzzy
+#~ msgid "Char #2:"
+#~ msgstr "矩陣："
+
+#, fuzzy
+#~ msgid "Characteristic polynom"
+#~ msgstr "特徵多項式(&C)..."
+
+#~ msgid "Check for Updates"
+#~ msgstr "檢查更新"
+
+#, fuzzy
+#~ msgid "Check if a newer version of wxMaxima is available."
+#~ msgstr "檢查是否存在新版的 wxMaxima 或 Maxima"
+
+#~ msgid "Classes:"
+#~ msgstr "種類數："
+
+#, fuzzy
+#~ msgid "Clear all aliases"
+#~ msgstr "清除記憶體(&C)"
+
+#, fuzzy
+#~ msgid "Clear all arrays"
+#~ msgstr "清除記憶體(&C)"
+
+#, fuzzy
+#~ msgid "Clear all dependencies"
+#~ msgstr "清除記憶體(&C)"
+
+#, fuzzy
+#~ msgid "Clear all functions"
+#~ msgstr "刪除函數"
+
+#, fuzzy
+#~ msgid "Clear all gradefs"
+#~ msgstr "清除記憶體(&C)"
+
+#, fuzzy
+#~ msgid "Clear all labels"
+#~ msgstr "清除記憶體(&C)"
+
+#, fuzzy
+#~ msgid "Clear all macros"
+#~ msgstr "清除記憶體(&C)"
+
+#, fuzzy
+#~ msgid "Clear all props"
+#~ msgstr "清除記憶體(&C)"
+
+#, fuzzy
+#~ msgid "Clear all rules"
+#~ msgstr "清除記憶體(&C)"
+
+#, fuzzy
+#~ msgid "Clear all structures"
+#~ msgstr "清除記憶體(&C)"
+
+#, fuzzy
+#~ msgid "Clear all variables"
+#~ msgstr "刪除變數"
+
+#~ msgid "Close\tCtrl+W"
+#~ msgstr "關閉\tCtrl+W"
+
+#~ msgid "Close window"
+#~ msgstr "關閉視窗"
+
+#, fuzzy
+#~ msgid "Close..."
+#~ msgstr "求解..."
+
+#, fuzzy
+#~ msgid "Code Default (Maxima input)"
+#~ msgstr "Maxima 輸入"
+
+#, fuzzy
+#~ msgid "Code number:"
+#~ msgstr "欄："
+
+#, fuzzy
+#~ msgid "Codepoint number:"
+#~ msgstr "欄："
+
+#~ msgid "Col. names:"
+#~ msgstr "欄位名："
+
+#, fuzzy
+#~ msgid "Color of Outdated cells"
+#~ msgstr "過時的單元"
+
+#, fuzzy
+#~ msgid "Color of text equal to selection"
+#~ msgstr "剪下所選區域"
+
+#, fuzzy
+#~ msgid "Column number:"
+#~ msgstr "欄："
+
+#, fuzzy
+#~ msgid "Column numbers:"
+#~ msgstr "欄："
+
+#, fuzzy
+#~ msgid "Columns"
+#~ msgstr "欄："
+
+#~ msgid "Combine factorials in an expression"
+#~ msgstr "合併數式中的階乘"
+
+#, fuzzy
+#~ msgid "Comma-separated arguments"
+#~ msgstr "x 座標，以逗號分隔"
+
+#, fuzzy
+#~ msgid "Comma-separated commands"
+#~ msgstr "x 座標，以逗號分隔"
+
+#, fuzzy
+#~ msgid "Comma-separated elements"
+#~ msgstr "x 座標，以逗號分隔"
+
+#, fuzzy
+#~ msgid "Comma-separated equations"
+#~ msgstr "x 座標，以逗號分隔"
+
+#, fuzzy
+#~ msgid "Comma-separated expressions"
+#~ msgstr "x 座標，以逗號分隔"
+
+#, fuzzy
+#~ msgid "Comma-separated expressions that shall be converted to a string"
+#~ msgstr "x 座標，以逗號分隔"
+
+#, fuzzy
+#~ msgid "Comma-separated expressions."
+#~ msgstr "x 座標，以逗號分隔"
+
+#, fuzzy
+#~ msgid "Comma-separated function names"
+#~ msgstr "x 座標，以逗號分隔"
+
+#, fuzzy
+#~ msgid "Comma-separated function names."
+#~ msgstr "x 座標，以逗號分隔"
+
+#, fuzzy
+#~ msgid "Comma-separated numbers from 0 to 255"
+#~ msgstr "x 座標，以逗號分隔"
+
+#, fuzzy
+#~ msgid "Comment selection\tCtrl+/"
+#~ msgstr "將所選區域變成註解"
+
+#, fuzzy
+#~ msgid "Compile a function"
+#~ msgstr "刪除函數"
+
+#, fuzzy
+#~ msgid "Compile a regular expression"
+#~ msgstr "刪除函數"
+
+#, fuzzy
+#~ msgid "Compile function..."
+#~ msgstr "刪除函數(&U)..."
+
+#, fuzzy
+#~ msgid "Compile regex"
+#~ msgstr "自動完成"
+
+#, fuzzy
+#~ msgid "Complete Word\tCtrl+Space"
+#~ msgstr "自動完成\tCtrl+K"
+
+#~ msgid "Complete word"
+#~ msgstr "自動完成"
+
+#~ msgid "Compute continued fraction of a value"
+#~ msgstr "計算數值的連分數表示"
+
+#~ msgid "Compute the adjoint matrix"
+#~ msgstr "計算伴隨矩陣"
+
+#~ msgid "Compute the characteristic polynomial of a matrix"
+#~ msgstr "計算矩陣的特徵多項式"
+
+#~ msgid "Compute the determinant of a matrix"
+#~ msgstr "計算矩陣的行列式的值"
+
+#~ msgid "Compute the greatest common divisor"
+#~ msgstr "計算最大公因式"
+
+#~ msgid "Compute the inverse of a matrix"
+#~ msgstr "計算矩陣的反矩陣"
+
+#~ msgid "Compute the least common multiple (do load(functs) before using)"
+#~ msgstr "計算最小公倍式 (在使用前會先執行 load(functs) )"
+
+#, fuzzy
+#~ msgid "Compute the rank of a matrix"
+#~ msgstr "計算矩陣的行列式的值"
+
+#~ msgid "Condition:"
+#~ msgstr "條件："
+
+#~ msgid "Configure wxMaxima"
+#~ msgstr "設定 wxMaxima"
+
+#, fuzzy
+#~ msgid "Construct a fraction"
+#~ msgstr "連分數(&C)"
+
+#, fuzzy
+#~ msgid "Construct fraction..."
+#~ msgstr "連分數(&C)"
+
+#, fuzzy
+#~ msgid "Contents:"
+#~ msgstr "希臘字母"
+
+#~ msgid "Contract Logarithms"
+#~ msgstr "合併對數數式"
+
+#, fuzzy
+#~ msgid "Conversions"
+#~ msgstr "轉換為直角座標形式(&R)"
+
+#, fuzzy
+#~ msgid "Convert"
+#~ msgstr "轉換為直角座標形式(&R)"
+
+#, fuzzy
+#~ msgid "Convert + Write to file"
+#~ msgstr "轉換為階乘(&F)"
+
+#, fuzzy
+#~ msgid "Convert Column to list..."
+#~ msgstr "轉換為階乘(&F)"
+
+#, fuzzy
+#~ msgid "Convert Row to list..."
+#~ msgstr "轉換為階乘(&F)"
+
+#~ msgid "Convert binomials, beta and gamma function to factorials"
+#~ msgstr "轉換二項式、beta、及 gamma 函數為階乘數式"
+
+#~ msgid "Convert binomials, factorials and beta function to gamma function"
+#~ msgstr "轉換二項式、階乘和 beta 函數為 gamma 函數"
+
+#~ msgid "Convert complex expression to polar form"
+#~ msgstr "轉換複數數式為極座標形式"
+
+#~ msgid "Convert complex expression to rect form"
+#~ msgstr "轉換複數數式為直角座標形式"
+
+#~ msgid "Convert exponential function of imaginary argument to trigonometric form"
+#~ msgstr "轉換虛數的指數函數為三角函數形式"
+
+#, fuzzy
+#~ msgid "Convert string to lowercase"
+#~ msgstr "轉換為階乘(&F)"
+
+#, fuzzy
+#~ msgid "Convert string to matching regex"
+#~ msgstr "轉換為 Gamma 函數(&G)"
+
+#~ msgid "Convert sum of logarithms to logarithm of product"
+#~ msgstr "將數項相加的對數轉換為對數內的乘積"
+
+#~ msgid "Convert to &Factorials"
+#~ msgstr "轉換為階乘(&F)"
+
+#~ msgid "Convert to &Gamma"
+#~ msgstr "轉換為 Gamma 函數(&G)"
+
+#~ msgid "Convert to &Polarform"
+#~ msgstr "轉換為極座標形式(&P)"
+
+#~ msgid "Convert to &Rectform"
+#~ msgstr "轉換為直角座標形式(&R)"
+
+#, fuzzy
+#~ msgid "Convert to downcase..."
+#~ msgstr "轉換為階乘(&F)"
+
+#, fuzzy
+#~ msgid "Convert to programming language"
+#~ msgstr "轉換為 Gamma 函數(&G)"
+
+#~ msgid "Convert trigonometric expression to canonical quasilinear form"
+#~ msgstr "轉換三角函數數式為標準準線性形式"
+
+#~ msgid "Convert trigonometric functions to exponential form"
+#~ msgstr "轉換三角函數數式為指數形式"
+
+#~ msgid "Copy"
+#~ msgstr "複製"
+
+#, fuzzy
+#~ msgid "Copy Animation"
+#~ msgstr "停止動畫"
+
+#~ msgid "Copy Previous Input\tCtrl+I"
+#~ msgstr "複製上一個輸入\tCtrl+I"
+
+#, fuzzy
+#~ msgid "Copy Previous Output\tCtrl+U"
+#~ msgstr "複製上一個輸入\tCtrl+I"
+
+#, fuzzy
+#~ msgid "Copy a matrix"
+#~ msgstr "複製為圖片"
+
+#~ msgid "Copy as Image"
+#~ msgstr "複製為圖片"
+
+#~ msgid "Copy as LaTeX"
+#~ msgstr "複製為 LaTeX 格式"
+
+#, fuzzy
+#~ msgid "Copy as MathML"
+#~ msgstr "複製為圖片"
+
+#, fuzzy
+#~ msgid "Copy as RTF"
+#~ msgstr "複製為 LaTeX 格式"
+
+#, fuzzy
+#~ msgid "Copy as SVG"
+#~ msgstr "複製為 LaTeX 格式"
+
+#~ msgid "Copy as Text\tCtrl+Shift+C"
+#~ msgstr "複製為純文字\tCtrl+Shift+C"
+
+#, fuzzy
+#~ msgid "Copy as plain text"
+#~ msgstr "複製為圖片"
+
+#, fuzzy
+#~ msgid "Copy file"
+#~ msgstr "複製"
+
+#, fuzzy
+#~ msgid "Copy file..."
+#~ msgstr "求解..."
+
+#~ msgid "Copy selection"
+#~ msgstr "複製所選區域"
+
+#, fuzzy
+#~ msgid "Copy selection from document as an SVG image"
+#~ msgstr "複製所選區域為圖片"
+
+#~ msgid "Copy selection from document as an image"
+#~ msgstr "複製所選區域為圖片"
+
+#, fuzzy
+#~ msgid "Copy selection from document as rtf that a word processor might understand"
+#~ msgstr "複製所選區域為圖片"
+
+#~ msgid "Copy selection from document as text"
+#~ msgstr "複製所選區域為純文字"
+
+#~ msgid "Copy selection from document in LaTeX format"
+#~ msgstr "複製所選區域為 LaTeX 格式"
+
+#, fuzzy
+#~ msgid "Copy string"
+#~ msgstr "複製所選區域"
+
+#, fuzzy
+#~ msgid "Copy string..."
+#~ msgstr "輸入矩陣..."
+
+#, fuzzy
+#~ msgid "Create Matrix"
+#~ msgstr "產生矩陣"
+
+#, fuzzy
+#~ msgid "Create a list"
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "Create a list from a rule"
+#~ msgstr "從數式產生串列"
+
+#~ msgid "Create a new cell with previous input"
+#~ msgstr "以上一個輸入建立一個新的單元"
+
+#, fuzzy
+#~ msgid "Create a new cell with previous output"
+#~ msgstr "以上一個輸入建立一個新的單元"
+
+#, fuzzy
+#~ msgid "Create directory"
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "Create directory..."
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "Create empty string"
+#~ msgstr "產生矩陣"
+
+#, fuzzy
+#~ msgid "Create empty string..."
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "Create list"
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "Create struct..."
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "Cursor color"
+#~ msgstr "游標"
+
+#~ msgid "Cut"
+#~ msgstr "剪下"
+
+#~ msgid "Cut\tCtrl+X"
+#~ msgstr "剪下\tCtrl+X"
+
+#~ msgid "Cut selection"
+#~ msgstr "剪下所選區域"
+
+#~ msgid "Data Matrix:"
+#~ msgstr "資料矩陣："
+
+#~ msgid "Data file (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
+#~ msgstr "資料檔 (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
+
+#~ msgid "Data:"
+#~ msgstr "資料："
+
+#, fuzzy
+#~ msgid "Declare main variable:"
+#~ msgstr "刪除變數"
+
+#~ msgid "Decompose rational function to partial fractions"
+#~ msgstr "將有理函數分解為部分分式"
+
+#, fuzzy
+#~ msgid "Decreasing function f(x)<x"
+#~ msgstr "刪除該函數："
+
+#, fuzzy
+#~ msgid "Define a function"
+#~ msgstr "刪除函數"
+
+#, fuzzy
+#~ msgid "Define a variable"
+#~ msgstr "刪除變數"
+
+#, fuzzy
+#~ msgid "Define function..."
+#~ msgstr "刪除函數(&U)..."
+
+#, fuzzy
+#~ msgid "Define variable..."
+#~ msgstr "刪除變數"
+
+#~ msgid "Delete F&unction..."
+#~ msgstr "刪除函數(&U)..."
+
+#~ msgid "Delete Selection"
+#~ msgstr "刪除所選區域"
+
+#~ msgid "Delete V&ariable..."
+#~ msgstr "刪除變數(&A)..."
+
+#~ msgid "Delete a function"
+#~ msgstr "刪除函數"
+
+#~ msgid "Delete a variable"
+#~ msgstr "刪除變數"
+
+#~ msgid "Delete all values from memory"
+#~ msgstr "刪除記憶體中全部的值"
+
+#, fuzzy
+#~ msgid "Delete file"
+#~ msgstr "刪除變數"
+
+#, fuzzy
+#~ msgid "Delete file..."
+#~ msgstr "刪除變數(&A)..."
+
+#, fuzzy
+#~ msgid "Delete function(s)"
+#~ msgstr "刪除該函數："
+
+#, fuzzy
+#~ msgid "Delete named object(s)"
+#~ msgstr "刪除該函數："
+
+#, fuzzy
+#~ msgid "Delete named object..."
+#~ msgstr "刪除函數(&U)..."
+
+#, fuzzy
+#~ msgid "Delete variable(s)"
+#~ msgstr "刪除該變數："
+
+#, fuzzy
+#~ msgid "Delimiter:"
+#~ msgstr "消去"
+
+#~ msgid "Denom. deg:"
+#~ msgstr "分母 degree："
+
+#~ msgid "Di&vide Polynomials..."
+#~ msgstr "多項式相除(&V)..."
+
+#~ msgid "Differentiate"
+#~ msgstr "微分"
+
+#~ msgid "Differentiate expression"
+#~ msgstr "對數式微分"
+
+#~ msgid "Differentiate..."
+#~ msgstr "微分..."
+
+#, fuzzy
+#~ msgid "Differentiates an expression n times"
+#~ msgstr "對數式微分"
+
+#, fuzzy
+#~ msgid "Differentiates the expression n times"
+#~ msgstr "對數式微分"
+
+#, fuzzy
+#~ msgid "Directory operations"
+#~ msgstr "方向："
+
+#~ msgid "Display Te&X Form"
+#~ msgstr "以 TeX 格式顯示(&X)"
+
+#~ msgid "Display algorithm"
+#~ msgstr "用於顯示的演算法"
+
+#, fuzzy
+#~ msgid "Display equations"
+#~ msgstr "解方程式"
+
+#~ msgid "Display last result in TeX form"
+#~ msgstr "將最後的結果以 TeX 格式顯示"
+
+#, fuzzy
+#~ msgid "Display string quotation marks"
+#~ msgstr "解方程式"
+
+#~ msgid "Display time used for evaluation"
+#~ msgstr "顯示評算所花費的時間"
+
+#, fuzzy
+#~ msgid "Displayed Precision"
+#~ msgstr "解方程式"
+
+#, fuzzy
+#~ msgid "Dito, and evaluate the result..."
+#~ msgstr "評算名詞形式(&N)"
+
+#~ msgid "Divide Cell"
+#~ msgstr "分割單元"
+
+#~ msgid "Divide numbers or polynomials"
+#~ msgstr "將數字或多項式相除"
+
+#, fuzzy
+#~ msgid "Do for each list element"
+#~ msgstr "套用函數至串列"
+
+#, fuzzy, c-format
+#~ msgid "Do you want to save the changes you made in the document \"%s\"?"
+#~ msgstr "您是否想儲存於此文件中的變更： \""
+
+#~ msgid "Document background"
+#~ msgstr "文件背景"
+
+#, fuzzy
+#~ msgid "Document was saved using a newer version of wxMaxima so it may not load correctly. Please update your wxMaxima."
+#~ msgstr " 是以新版的 wxMaxima 儲存，所以可能無法正確的讀取。請更新您的 wxMaxima。"
+
+#, fuzzy
+#~ msgid "Document was saved using a newer version of wxMaxima. Please update your wxMaxima."
+#~ msgstr " 是以新版的 wxMaxima 儲存，請更新您的 wxMaxima 。"
+
+#, fuzzy
+#~ msgid "Don't evaluate Expression..."
+#~ msgstr "對數式積分"
+
+#, fuzzy
+#~ msgid "Don't evaluate one command"
+#~ msgstr "顯示這個指令的使用範例："
+
+#, fuzzy
+#~ msgid "Don't evaluate one whole expression"
+#~ msgstr "取得複數數式的實部"
+
+#~ msgid "Don't save"
+#~ msgstr "不要儲存"
+
+#, fuzzy
+#~ msgid "Drop the first n list elements"
+#~ msgstr "套用函數至串列"
+
+#, fuzzy
+#~ msgid "Drop the last n list elements"
+#~ msgstr "套用函數至串列"
+
+#~ msgid "E&quations"
+#~ msgstr "方程式(&Q)"
+
+#~ msgid "E&xit\tCtrl+Q"
+#~ msgstr "結束(&X)\tCtrl+Q"
+
+#~ msgid "Eige&nvectors"
+#~ msgstr "特徵向量(&N)"
+
+#~ msgid "Eigen&values"
+#~ msgstr "特徵值(&V)"
+
+#, fuzzy
+#~ msgid "Eigenvalues (complex)"
+#~ msgstr "特徵值(&V)"
+
+#, fuzzy
+#~ msgid "Eigenvalues (real)"
+#~ msgstr "特徵值(&V)"
+
+#, fuzzy
+#~ msgid "Eliminate a variable"
+#~ msgstr "消去變數(&E)..."
+
+#~ msgid "Eliminate a variable from a system of equations"
+#~ msgstr "自方程組中消去變數"
+
+#, fuzzy
+#~ msgid "Enable:"
+#~ msgstr "變數："
+
+#~ msgid "Enter a matrix"
+#~ msgstr "輸入一個矩陣"
+
+#~ msgid "Enter an equation for rational simplification:"
+#~ msgstr "輸入供化簡有理數式的方程式："
+
+#~ msgid "Enter matrix"
+#~ msgstr "輸入矩陣"
+
+#, fuzzy
+#~ msgid "Enter new precision for bigfloats:"
+#~ msgstr "輸入新的精確度："
+
+#, fuzzy
+#~ msgid "Environment variables"
+#~ msgstr "附加參數："
+
+#~ msgid "Epsilon:"
+#~ msgstr "Epsilon:"
+
+#, fuzzy
+#~ msgid "Equation"
+#~ msgstr "方程式："
+
+#, fuzzy
+#~ msgid "Equation(s)"
+#~ msgstr "方程式："
+
+#~ msgid "Equation(s):"
+#~ msgstr "方程式："
+
+#~ msgid "Equation:"
+#~ msgstr "方程式："
+
+#~ msgid "Error"
+#~ msgstr "錯誤"
+
+#~ msgid "Error!"
+#~ msgstr "錯誤！"
+
+#, fuzzy
+#~ msgid "Evaluate &Noun Forms..."
+#~ msgstr "評算名詞形式(&N)"
+
+#, fuzzy
+#~ msgid "Evaluate All Cells\tCtrl+Shift+R"
+#~ msgstr "評算所有單元\tCtrl+R"
+
+#, fuzzy
+#~ msgid "Evaluate All Visible Cells\tCtrl+R"
+#~ msgstr "評算所有單元\tCtrl+R"
+
+#, fuzzy
+#~ msgid "Evaluate Cell"
+#~ msgstr "評算單元"
+
+#~ msgid "Evaluate Cell(s)"
+#~ msgstr "評算單元"
+
+#, fuzzy
+#~ msgid "Evaluate Cells Above"
+#~ msgstr "評算單元"
+
+#, fuzzy
+#~ msgid "Evaluate Cells Above\tCtrl+Shift+P"
+#~ msgstr "評算所有單元\tCtrl+R"
+
+#, fuzzy
+#~ msgid "Evaluate Cells Below"
+#~ msgstr "評算單元"
+
+#, fuzzy
+#~ msgid "Evaluate Nouns"
+#~ msgstr "評算名詞形式(&N)"
+
+#~ msgid "Evaluate active or selected cell(s)"
+#~ msgstr "評算正在活動中或所選擇的單元"
+
+#~ msgid "Evaluate all cells in the document"
+#~ msgstr "評算這份文件中的所有單元"
+
+#~ msgid "Evaluate all noun forms in expression"
+#~ msgstr "評算數式中所有的名詞形式"
+
+#, fuzzy
+#~ msgid "Evaluate all visible cells in the document"
+#~ msgstr "評算這份文件中的所有單元"
+
+#, fuzzy
+#~ msgid "Evaluate string"
+#~ msgstr "評算名詞形式(&N)"
+
+#, fuzzy
+#~ msgid "Evaluate string..."
+#~ msgstr "評算名詞形式(&N)"
+
+#, fuzzy
+#~ msgid "Evaluate the file from the cursor to its end"
+#~ msgstr "評算這份文件中的所有單元"
+
+#, fuzzy
+#~ msgid "Evaluate the rest"
+#~ msgstr "評算名詞形式(&N)"
+
+#, fuzzy
+#~ msgid "Evaluate to point"
+#~ msgstr "評算名詞形式(&N)"
+
+#~ msgid "Expand Expression"
+#~ msgstr "展開數式"
+
+#~ msgid "Expand an expression"
+#~ msgstr "展開數式"
+
+#, fuzzy
+#~ msgid "Expand for given variables"
+#~ msgstr "變數變換"
+
+#, fuzzy
+#~ msgid "Expand for variable(s):"
+#~ msgstr "新變數："
+
+#, fuzzy
+#~ msgid "Expand log in previous expression"
+#~ msgstr "展開數式"
+
+#~ msgid "Expand trigonometric expression"
+#~ msgstr "展開三角函數數式"
+
+#~ msgid "Export"
+#~ msgstr "匯出"
+
+#, fuzzy
+#~ msgid "Export List to csv file..."
+#~ msgstr "匯出為 TeX 失敗！"
+
+#, fuzzy
+#~ msgid "Export a list to a csv file"
+#~ msgstr "讀取 Maxima package 檔"
+
+#, fuzzy
+#~ msgid "Export a matrix to a csv file"
+#~ msgstr "讀取 Maxima package 檔"
+
+#, fuzzy
+#~ msgid "Export document to a HTML or LaTeX file"
+#~ msgstr "將文件匯出為 HTML 或 pdfLaTeX 檔案"
+
+#, fuzzy
+#~ msgid "Export failed."
+#~ msgstr "匯出為 TeX 失敗！"
+
+#~ msgid "Exporting to HTML failed!"
+#~ msgstr "匯出為 HTML 失敗！"
+
+#~ msgid "Exporting to TeX failed!"
+#~ msgstr "匯出為 TeX 失敗！"
+
+#, fuzzy
+#~ msgid "Exporting to maxima batch file failed!"
+#~ msgstr "匯出為 TeX 失敗！"
+
+#, fuzzy
+#~ msgid "Exporting..."
+#~ msgstr "匯出(&E)..."
+
+#, fuzzy
+#~ msgid "Expression or a list of comma-separated expressions"
+#~ msgstr "x 座標，以逗號分隔"
+
+#, fuzzy
+#~ msgid "Expression to string..."
+#~ msgstr "數式"
+
+#~ msgid "Expression(s):"
+#~ msgstr "數式："
+
+#~ msgid "Expression:"
+#~ msgstr "數式："
+
+#, fuzzy
+#~ msgid "Extract Column..."
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Extract Row..."
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Extract a matrix column"
+#~ msgstr "輸入一個矩陣"
+
+#, fuzzy
+#~ msgid "Extract a matrix column as a list"
+#~ msgstr "輸入一個矩陣"
+
+#, fuzzy
+#~ msgid "Extract a matrix from a 2-dimensional array"
+#~ msgstr "以二維陣列產生一個矩陣"
+
+#, fuzzy
+#~ msgid "Extract a matrix row"
+#~ msgstr "輸入一個矩陣"
+
+#, fuzzy
+#~ msgid "Extract a matrix row as a list"
+#~ msgstr "輸入一個矩陣"
+
+#, fuzzy
+#~ msgid "Extract a row from the matrix and convert it to a list"
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Extract char..."
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Extract dir from path..."
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Extract directory part"
+#~ msgstr "函數名"
+
+#, fuzzy
+#~ msgid "Extract file type extension"
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Extract filename part"
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Extract function arguments"
+#~ msgstr "函數名"
+
+#, fuzzy
+#~ msgid "Extract list Elements"
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Extract matrix from 2D array"
+#~ msgstr "輸入一個矩陣"
+
+#, fuzzy
+#~ msgid "Extract the argument list from a function call"
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Extract the last n elements from a list"
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Extract the nth char of a string"
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Extract the nth list elements"
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Extracts a rectangle from a 2D array and converts it to a matrix"
+#~ msgstr "從數式產生串列"
+
+#~ msgid "Factor Complex"
+#~ msgstr "複數因式分解"
+
+#~ msgid "Factor Expression"
+#~ msgstr "因式分解數式"
+
+#, fuzzy
+#~ msgid "Factor Expression including subexpressions"
+#~ msgstr "因式分解含 Gaussian 數的數式"
+
+#~ msgid "Factor an expression"
+#~ msgstr "因式分解數式"
+
+#~ msgid "Factor an expression in Gaussian numbers"
+#~ msgstr "因式分解含 Gaussian 數的數式"
+
+#~ msgid "Factorials and &Gamma"
+#~ msgstr "階乘與 Gamma 函數(&G)"
+
+#, fuzzy
+#~ msgid "Failed to start Maxima"
+#~ msgstr "重新啟動 Maxima"
+
+#~ msgid "Fatal error"
+#~ msgstr "嚴重錯誤"
+
+#, fuzzy
+#~ msgid "Field contents:"
+#~ msgstr "希臘字母"
+
+#, fuzzy
+#~ msgid "Field name:"
+#~ msgstr "舊變數："
+
+#~ msgid "File"
+#~ msgstr "檔案"
+
+#, fuzzy
+#~ msgid "File I/O"
+#~ msgstr "檔案"
+
+#, fuzzy
+#~ msgid "File could not be opened"
+#~ msgstr "找不到檔案"
+
+#, fuzzy
+#~ msgid "File name:"
+#~ msgstr "舊變數："
+
+#~ msgid "File not found"
+#~ msgstr "找不到檔案"
+
+#, fuzzy
+#~ msgid "File opened"
+#~ msgstr "找不到檔案"
+
+#, fuzzy
+#~ msgid "File operations"
+#~ msgstr "找不到檔案"
+
+#~ msgid "File you tried to open does not exist."
+#~ msgstr "找不到您想開啟的檔案。"
+
+#, fuzzy
+#~ msgid "File/directory functions"
+#~ msgstr "方向："
+
+#~ msgid "Find"
+#~ msgstr "尋找"
+
+#~ msgid "Find\tCtrl+F"
+#~ msgstr "尋找\tCtrl+F"
+
+#~ msgid "Find &Limit..."
+#~ msgstr "求極限(&L)..."
+
+#~ msgid "Find Minimum..."
+#~ msgstr "求極小值..."
+
+#~ msgid "Find Root..."
+#~ msgstr "找根..."
+
+#~ msgid "Find a (unconstrained) minimum of an expression"
+#~ msgstr "找數式的極小值(無區間限制)"
+
+#~ msgid "Find a limit of an expression"
+#~ msgstr "求數式的極限"
+
+#, fuzzy
+#~ msgid "Find a numerical solution for a first degree ODE"
+#~ msgstr "解 1 階常微分方程的初始值問題"
+
+#~ msgid "Find a root of an equation on an interval"
+#~ msgstr "在區間中找方程式的根"
+
+#~ msgid "Find all roots of a polynomial"
+#~ msgstr "找多項式所有的根"
+
+#~ msgid "Find all roots of a polynomial (bfloat)"
+#~ msgstr "找多項式所有的根(以長浮點數表示)"
+
+#~ msgid "Find and Replace"
+#~ msgstr "尋找及取代"
+
+#~ msgid "Find and replace"
+#~ msgstr "尋找及取代"
+
+#~ msgid "Find eigenvalues of a matrix"
+#~ msgstr "尋找矩陣的特徵值"
+
+#~ msgid "Find eigenvectors of a matrix"
+#~ msgstr "尋找矩陣的特徵向量"
+
+#, fuzzy
+#~ msgid "Find fractions that real roots of a polynomial and "
+#~ msgstr "找多項式所有的實根"
+
+#~ msgid "Find minimum"
+#~ msgstr "求極小值"
+
+#, fuzzy
+#~ msgid "Find the maximum absolute value of a matrix entry"
+#~ msgstr "尋找矩陣的特徵值"
+
+#, fuzzy
+#~ msgid "Fold All\tCtrl+Alt+["
+#~ msgstr "全部選取\tCtrl+A"
+
+#~ msgid "From:"
+#~ msgstr "從："
+
+#~ msgid "Full Screen\tAlt+Enter"
+#~ msgstr "全螢幕\tAlt+Enter"
+
+#, fuzzy
+#~ msgid "Function contents:"
+#~ msgstr "函數名"
+
+#, fuzzy
+#~ msgid "Function f(x):"
+#~ msgstr "函數："
+
+#, fuzzy
+#~ msgid "Function name"
+#~ msgstr "函數名"
+
+#, fuzzy
+#~ msgid "Function name(s):"
+#~ msgstr "函數名"
+
+#, fuzzy
+#~ msgid "Function name:"
+#~ msgstr "函數名"
+
+#~ msgid "Function:"
+#~ msgstr "函數："
+
+#~ msgid "Functions for complex simplification"
+#~ msgstr "用以化簡複數數式的函數"
+
+#~ msgid "Functions for simplifying factorials and gamma function"
+#~ msgstr "用以化簡階乘及 gamma 函數的函數"
+
+#~ msgid "Functions for simplifying trigonometric expressions"
+#~ msgstr "用以化簡三角函數數式的函數"
+
+#~ msgid "GCD"
+#~ msgstr "最大公因式"
+
+#~ msgid "GIF image (*.gif)|*.gif"
+#~ msgstr "GIF (*.gif)|*.gif"
+
+#~ msgid "General Math"
+#~ msgstr "常用數學"
+
+#~ msgid "General Math\tAlt+Shift+M"
+#~ msgstr "常用數學\tAlt+Shift+M"
+
+#~ msgid "Generate Matrix from Expression..."
+#~ msgstr "以數式產生矩陣..."
+
+#~ msgid "Generate a matrix from a lambda expression"
+#~ msgstr "以 lambda 數式產生矩陣"
+
+#, fuzzy
+#~ msgid "Generate matrix from a rule"
+#~ msgstr "從數式產生串列"
+
+#~ msgid "Get &Imaginary Part"
+#~ msgstr "取虛部(&I)"
+
+#~ msgid "Get Laplace transformation of an expression"
+#~ msgstr "計算數式的 Laplace 變換"
+
+#~ msgid "Get Real P&art"
+#~ msgstr "取實部(&A)"
+
+#~ msgid "Get inverse Laplace transformation of an expression"
+#~ msgstr "計算數式的 Laplace 逆變換"
+
+#, fuzzy
+#~ msgid "Get position..."
+#~ msgstr "偏差..."
+
+#~ msgid "Get the imaginary part of complex expression"
+#~ msgstr "取得複數數式的虛部"
+
+#~ msgid "Get the real part of complex expression"
+#~ msgstr "取得複數數式的實部"
+
+#, fuzzy
+#~ msgid "Got a new input prompt!"
+#~ msgstr "插入新的輸入單元"
+
+#, fuzzy
+#~ msgid "Greater or less than a value"
+#~ msgstr "子章節單元"
+
+#, fuzzy
+#~ msgid "Greek Letters"
+#~ msgstr "希臘字母"
+
+#, fuzzy
+#~ msgid "Greek Letters\tAlt+Shift+G"
+#~ msgstr "常用數學\tAlt+Shift+M"
+
+#, fuzzy
+#~ msgid "HTML file (*.html)|*.html|maxima batch file (*.mac)|*.mac|LaTeX file (*.tex)|*.tex"
+#~ msgstr "HTML 檔案 (*.html)|*.html|pdfLaTeX 檔案 (*.tex)|*.tex|所有類型|*"
+
+#, fuzzy
+#~ msgid "Hadamard Product"
+#~ msgstr "乘積"
+
+#, fuzzy
+#~ msgid "Hadamard exponent..."
+#~ msgstr "矩陣名："
+
+#, fuzzy
+#~ msgid "Hide All Toolbars\tAlt+Shift+-"
+#~ msgstr "全部隱藏\tAlt+Shift+-"
+
+#, fuzzy
+#~ msgid "Hide Code"
+#~ msgstr "分割單元"
+
+#, fuzzy
+#~ msgid "Hide Code Cells\tAlt+Ctrl+H"
+#~ msgstr "插入(單元)\tAlt+Shift+C"
+
+#, fuzzy
+#~ msgid "Hide Part"
+#~ msgstr "分割單元"
+
+#, fuzzy
+#~ msgid "Hide Section"
+#~ msgstr "章節"
+
+#, fuzzy
+#~ msgid "Hide Subsection"
+#~ msgstr "子章節"
+
+#, fuzzy
+#~ msgid "Hide Subsubsection"
+#~ msgstr "子章節"
+
+#, fuzzy
+#~ msgid "Hide cell brackets"
+#~ msgstr "作用中的單元框"
+
+#, fuzzy
+#~ msgid "Hide contents"
+#~ msgstr "希臘字母"
+
+#, fuzzy
+#~ msgid "Highlight (box)"
+#~ msgstr "高亮度標記(於dpart函數中)"
+
+#~ msgid "Histogram"
+#~ msgstr "直方圖"
+
+#~ msgid "History"
+#~ msgstr "歷史記錄"
+
+#, fuzzy
+#~ msgid "History\tAlt+Shift+I"
+#~ msgstr "歷史記錄\tAlt+Shift+H"
+
+#~ msgid "Include columns:"
+#~ msgstr "包含欄位："
+
+#, fuzzy
+#~ msgid "Index variable:"
+#~ msgstr "新變數："
+
+#~ msgid "Info about Maxima build"
+#~ msgstr "關於 Maxima 建置的資訊"
+
+#, fuzzy
+#~ msgid "Initial Condition"
+#~ msgstr "條件："
+
+#~ msgid "Initial Value Problem (&1)..."
+#~ msgstr "一階常微方初始值問題(&1)..."
+
+#~ msgid "Initial Value Problem (&2)..."
+#~ msgstr "二階常微方初始值問題(&2)..."
+
+#, fuzzy
+#~ msgid "Initial estimates:"
+#~ msgstr "起始預估："
+
+#, fuzzy
+#~ msgid "Initial x:"
+#~ msgstr "起始預估："
+
+#~ msgid "Input labels"
+#~ msgstr "輸入標籤"
+
+#~ msgid "Insert"
+#~ msgstr "插入"
+
+#~ msgid "Insert &Section Cell\tCtrl+3"
+#~ msgstr "插入章節單元(&S)\tCtrl+3"
+
+#~ msgid "Insert &Text Cell\tCtrl+1"
+#~ msgstr "插入文字單元(&T)\tCtrl+1"
+
+#~ msgid "Insert Cell\tAlt+Shift+C"
+#~ msgstr "插入(單元)\tAlt+Shift+C"
+
+#~ msgid "Insert Image"
+#~ msgstr "插入圖片"
+
+#~ msgid "Insert Image..."
+#~ msgstr "插入圖片..."
+
+#, fuzzy
+#~ msgid "Insert Input &Cell\tCtrl+0"
+#~ msgstr "插入輸入單元(&C)"
+
+#~ msgid "Insert Page Break"
+#~ msgstr "插入換頁符號"
+
+#~ msgid "Insert S&ubsection Cell\tCtrl+4"
+#~ msgstr "插入子章節單元(&U)\tCtrl+4"
+
+#, fuzzy
+#~ msgid "Insert S&ubsubsection Cell\tCtrl+5"
+#~ msgstr "插入子章節單元(&U)\tCtrl+4"
+
+#~ msgid "Insert Section Cell"
+#~ msgstr "插入章節單元"
+
+#~ msgid "Insert Subsection Cell"
+#~ msgstr "插入子章節單元"
+
+#, fuzzy
+#~ msgid "Insert Subsubsection Cell"
+#~ msgstr "插入子章節單元"
+
+#~ msgid "Insert T&itle Cell\tCtrl+2"
+#~ msgstr "插入標題單元(&I)\tCtrl+2"
+
+#~ msgid "Insert Text Cell"
+#~ msgstr "插入文字單元"
+
+#~ msgid "Insert Title Cell"
+#~ msgstr "插入標題單元"
+
+#~ msgid "Insert a new input cell"
+#~ msgstr "插入新的輸入單元"
+
+#~ msgid "Insert a new section cell"
+#~ msgstr "插入新的章節單元"
+
+#~ msgid "Insert a new subsection cell"
+#~ msgstr "插入新的子章節單元"
+
+#, fuzzy
+#~ msgid "Insert a new subsubsection cell"
+#~ msgstr "插入新的子章節單元"
+
+#~ msgid "Insert a new text cell"
+#~ msgstr "插入新的文字單元"
+
+#~ msgid "Insert a new title cell"
+#~ msgstr "插入新的標題單元"
+
+#~ msgid "Insert a page break"
+#~ msgstr "插入一個換頁符號"
+
+#, fuzzy
+#~ msgid "Insert char..."
+#~ msgstr "插入圖片..."
+
+#, fuzzy
+#~ msgid "Insert textbased cell"
+#~ msgstr "插入文字單元"
+
+#~ msgid "Integral/Sum:"
+#~ msgstr "積分／加總："
+
+#~ msgid "Integrate"
+#~ msgstr "積分"
+
+#~ msgid "Integrate (risch)"
+#~ msgstr "Risch 積分"
+
+#~ msgid "Integrate expression"
+#~ msgstr "對數式積分"
+
+#~ msgid "Integrate expression with Risch algorithm"
+#~ msgstr "使用 Risch 演算法積分數式"
+
+#, fuzzy
+#~ msgid "Integrate numerically"
+#~ msgstr "Risch 積分"
+
+#~ msgid "Integrate..."
+#~ msgstr "積分..."
+
+#, fuzzy
+#~ msgid "Interleave"
+#~ msgstr "積分"
+
+#, fuzzy
+#~ msgid "Interleave the values of two lists"
+#~ msgstr "積分"
+
+#, fuzzy
+#~ msgid "Interleave two lists"
+#~ msgstr "積分"
+
+#, fuzzy
+#~ msgid "Interpret string..."
+#~ msgstr "輸入矩陣..."
+
+#~ msgid "Interrupt"
+#~ msgstr "中斷"
+
+#~ msgid "Interrupt current computation"
+#~ msgstr "中斷目前的計算"
+
+#~ msgid "Inverse Laplace"
+#~ msgstr "Laplace 逆變換"
+
+#~ msgid "Inverse Laplace T&ransform..."
+#~ msgstr "反 Laplace 變換(&R)..."
+
+#, fuzzy
+#~ msgid "Is Char 1 greater than Char2?"
+#~ msgstr "子章節單元"
+
+#, fuzzy
+#~ msgid "Is a complex variable"
+#~ msgstr "新變數："
+
+#, fuzzy
+#~ msgid "Is a digit?"
+#~ msgstr "用於顯示的演算法"
+
+#, fuzzy
+#~ msgid "Is a real variable"
+#~ msgstr "變數變換"
+
+#, fuzzy
+#~ msgid "Is an even function"
+#~ msgstr "刪除函數"
+
+#, fuzzy
+#~ msgid "Is an imaginary variable"
+#~ msgstr "變數變換"
+
+#, fuzzy
+#~ msgid "Is an integer variable"
+#~ msgstr "變數變換"
+
+#, fuzzy
+#~ msgid "Is an odd function"
+#~ msgstr "刪除函數"
+
+#, fuzzy
+#~ msgid "Is greater?..."
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "Is no integer variable"
+#~ msgstr "變數變換"
+
+#, fuzzy
+#~ msgid "Iterator name:"
+#~ msgstr "矩陣名："
+
+#~ msgid "LCM"
+#~ msgstr "最小公倍式"
+
+#, fuzzy
+#~ msgid "Labels"
+#~ msgstr "輸入標籤"
+
+#~ msgid "Laplace"
+#~ msgstr "Laplace 變換"
+
+#~ msgid "Laplace &Transform..."
+#~ msgstr "Laplace 變換(&T)..."
+
+#, fuzzy
+#~ msgid "Last n"
+#~ msgstr "串列："
+
+#~ msgid "Least Common Multiple..."
+#~ msgstr "最小公倍式..."
+
+#~ msgid "Least Squares Fit"
+#~ msgstr "最小平方法"
+
+#, fuzzy
+#~ msgid "Left Matrix:"
+#~ msgstr "開啟矩陣"
+
+#, fuzzy
+#~ msgid "Likely to be the main variable"
+#~ msgstr "刪除變數"
+
+#~ msgid "Limit"
+#~ msgstr "極限"
+
+#, fuzzy
+#~ msgid "Lisp format string:"
+#~ msgstr "Maxima 詢問"
+
+#, fuzzy
+#~ msgid "List"
+#~ msgstr "串列："
+
+#, fuzzy
+#~ msgid "List #1"
+#~ msgstr "串列："
+
+#, fuzzy
+#~ msgid "List #2"
+#~ msgstr "串列："
+
+#, fuzzy
+#~ msgid "List of chars to string..."
+#~ msgstr "數式"
+
+#, fuzzy
+#~ msgid "List of chars:"
+#~ msgstr "輸入標籤"
+
+#~ msgid "List:"
+#~ msgstr "串列："
+
+#~ msgid "Load Package"
+#~ msgstr "載入 Package"
+
+#, fuzzy
+#~ msgid "Load Recent Package"
+#~ msgstr "載入 Package"
+
+#~ msgid "Load a Maxima file using the batch command"
+#~ msgstr "以批次命令的方式載入 Maxima 檔"
+
+#~ msgid "Load a Maxima package file"
+#~ msgstr "讀取 Maxima package 檔"
+
+#, fuzzy
+#~ msgid "Load a list from a csv file"
+#~ msgstr "讀取 Maxima package 檔"
+
+#, fuzzy
+#~ msgid "Load a matrix from a csv file"
+#~ msgstr "讀取 Maxima package 檔"
+
+#, fuzzy
+#~ msgid "Load lapack"
+#~ msgstr "載入 Package"
+
+#, fuzzy
+#~ msgid "Load lisp code"
+#~ msgstr "載入 Package"
+
+#, fuzzy
+#~ msgid "Load lisp..."
+#~ msgstr "載入 Package"
+
+#, fuzzy
+#~ msgid "Loop variable"
+#~ msgstr "新變數："
+
+#~ msgid "Lower bound:"
+#~ msgstr "下界："
+
+#, fuzzy
+#~ msgid "M&atrix"
+#~ msgstr "矩陣"
+
+#, fuzzy
+#~ msgid "Macro contents:"
+#~ msgstr "希臘字母"
+
+#, fuzzy
+#~ msgid "Macro name:"
+#~ msgstr "矩陣名："
+
+#, fuzzy
+#~ msgid "Main Toolbar\tAlt+Shift+B"
+#~ msgstr "工具列\tAlt+Shift+T"
+
+#, fuzzy
+#~ msgid "Make function local..."
+#~ msgstr "映射函數至串列"
+
+#~ msgid "Map"
+#~ msgstr "映射"
+
+#, fuzzy
+#~ msgid "Map an expression"
+#~ msgstr "展開數式"
+
+#~ msgid "Map function to a matrix"
+#~ msgstr "映射函數至矩陣"
+
+#, fuzzy
+#~ msgid "Map function to a matrix, affecting all of its clones"
+#~ msgstr "映射函數至矩陣"
+
+#, fuzzy
+#~ msgid "Math Default"
+#~ msgstr "預設"
+
+#~ msgid "Matrix"
+#~ msgstr "矩陣"
+
+#, fuzzy
+#~ msgid "Matrix Exponent"
+#~ msgstr "矩陣名："
+
+#, fuzzy
+#~ msgid "Matrix exponent..."
+#~ msgstr "矩陣名："
+
+#, fuzzy
+#~ msgid "Matrix from csv file"
+#~ msgstr "自檔案載入樣式"
+
+#, fuzzy
+#~ msgid "Matrix from csv file..."
+#~ msgstr "自檔案載入樣式"
+
+#~ msgid "Matrix map"
+#~ msgstr "矩陣映射"
+
+#~ msgid "Matrix name:"
+#~ msgstr "矩陣名："
+
+#, fuzzy
+#~ msgid "Matrix parenthesis"
+#~ msgstr "在文字控制項中輸入時匹配括弧"
+
+#, fuzzy
+#~ msgid "Matrix to csv file"
+#~ msgstr "自檔案載入樣式"
+
+#~ msgid "Matrix:"
+#~ msgstr "矩陣："
+
+#, fuzzy
+#~ msgid "Maxima asks a question"
+#~ msgstr "Maxima 詢問"
+
+#, fuzzy
+#~ msgid "Maxima asks a question!"
+#~ msgstr "Maxima 詢問"
+
+#, fuzzy
+#~ msgid "Maxima has authenticated!"
+#~ msgstr "Maxima 程序已結束"
+
+#, fuzzy
+#~ msgid "Maxima has finished calculating."
+#~ msgstr "Maxima 計算中"
+
+#, fuzzy
+#~ msgid "Maxima has issued an error!"
+#~ msgstr "Maxima 詢問"
+
+#, fuzzy
+#~ msgid "Maxima help file not found!"
+#~ msgstr "找不到檔案"
+
+#~ msgid "Maxima input"
+#~ msgstr "Maxima 輸入"
+
+#~ msgid "Maxima is calculating"
+#~ msgstr "Maxima 計算中"
+
+#, fuzzy
+#~ msgid "Maxima is ready for input."
+#~ msgstr "Maxima 輸入"
+
+#~ msgid "Maxima package (*.mac)|*.mac"
+#~ msgstr "Maxima package (*.mac)|*.mac"
+
+#~ msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
+#~ msgstr "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|所有類型|*"
+
+#, fuzzy
+#~ msgid "Maxima question labels"
+#~ msgstr "Maxima 詢問"
+
+#, fuzzy
+#~ msgid "Maxima shows help in the console"
+#~ msgstr "找不到檔案"
+
+#, fuzzy
+#~ msgid "Maxima started. Waiting for authentication..."
+#~ msgstr "Maxima 已啟動，等待連線中..."
+
+#~ msgid "Maxima started. Waiting for connection..."
+#~ msgstr "Maxima 已啟動，等待連線中..."
+
+#, fuzzy
+#~ msgid "Maxima started. Waiting for initial prompt..."
+#~ msgstr "Maxima 已啟動，等待連線中..."
+
+#, fuzzy
+#~ msgid "Maxima to other language"
+#~ msgstr "Maxima 詢問"
+
+#, fuzzy
+#~ msgid "Maxima to string"
+#~ msgstr "Maxima 詢問"
+
+#, fuzzy
+#~ msgid "Maxima vs. Programming languages"
+#~ msgstr "轉換為 Gamma 函數(&G)"
+
+#, fuzzy
+#~ msgid "Maxima warnings"
+#~ msgstr "Maxima 選項"
+
+#, fuzzy, c-format
+#~ msgid "Maxima's share files are located in directory %s"
+#~ msgstr "開始動畫"
+
+#~ msgid "Mean:"
+#~ msgstr "平均值："
+
+#, fuzzy
+#~ msgid "Memory"
+#~ msgstr "清除記憶體(&C)"
+
+#~ msgid "Merge Cells"
+#~ msgstr "合併單元"
+
+#, fuzzy
+#~ msgid "Mismatched parenthesis"
+#~ msgstr "在文字控制項中輸入時匹配括弧"
+
+#, fuzzy
+#~ msgid "Multivariate linear regression"
+#~ msgstr "線性迴歸..."
+
+#, fuzzy
+#~ msgid "Name of t:"
+#~ msgstr "命名："
+
+#, fuzzy
+#~ msgid "Name of x:"
+#~ msgstr "命名："
+
+#~ msgid "New"
+#~ msgstr "新增"
+
+#~ msgid "New\tCtrl+N"
+#~ msgstr "新增\tCtrl+N"
+
+#~ msgid "New document"
+#~ msgstr "新增文件"
+
+#, fuzzy
+#~ msgid "New part:"
+#~ msgstr "新變數："
+
+#~ msgid "New variable:"
+#~ msgstr "新變數："
+
+#~ msgid "Next Command\tAlt+Down"
+#~ msgstr "下一個命令\tAlt+Down"
+
+#, fuzzy
+#~ msgid "No Array"
+#~ msgstr "陣列："
+
+#~ msgid "No matches found!"
+#~ msgstr "找不到匹配的項目！"
+
+#~ msgid "Not a valid matrix dimension!"
+#~ msgstr "這不是有效的矩陣大小！"
+
+#~ msgid "Not a valid number of equations!"
+#~ msgstr "這不是有效的數字或方程式！"
+
+#~ msgid "Num. deg:"
+#~ msgstr "分子 degree："
+
+#, fuzzy
+#~ msgid "Number of elements"
+#~ msgstr "方程式數量："
+
+#~ msgid "Number of equations:"
+#~ msgstr "方程式數量："
+
+#, fuzzy
+#~ msgid "Number to octets"
+#~ msgstr "方程式數量："
+
+#, fuzzy
+#~ msgid "Number to octets..."
+#~ msgstr "方程式數量："
+
+#, fuzzy
+#~ msgid "Number:"
+#~ msgstr "數字"
+
+#, fuzzy
+#~ msgid "Numeric output"
+#~ msgstr "切換數值輸出／數式輸出"
+
+#, fuzzy
+#~ msgid "Numerical operations (lapack)"
+#~ msgstr "數值積分(&N)"
+
+#, fuzzy
+#~ msgid "Numerical solution for 1st degree ODE"
+#~ msgstr "解 1 階常微分方程的初始值問題"
+
+#, fuzzy
+#~ msgid "Numerical solution..."
+#~ msgstr "切換數值輸出／數式輸出"
+
+#, fuzzy
+#~ msgid "Numerical solutions of polynomial (bfloat)..."
+#~ msgstr "找多項式所有的根"
+
+#, fuzzy
+#~ msgid "Numerical solutions of polynomial..."
+#~ msgstr "找多項式所有的根"
+
+#~ msgid "OK"
+#~ msgstr "確認"
+
+#, fuzzy
+#~ msgid "Object composed of elements"
+#~ msgstr "方程式數量："
+
+#, fuzzy
+#~ msgid "Object name:"
+#~ msgstr "串列："
+
+#, fuzzy
+#~ msgid "Object:"
+#~ msgstr "串列："
+
+#, fuzzy
+#~ msgid "Octets to string..."
+#~ msgstr "數式"
+
+#~ msgid "Old variable:"
+#~ msgstr "舊變數："
+
+#, fuzzy
+#~ msgid "On all errors"
+#~ msgstr "嚴重錯誤"
+
+#~ msgid "One sample t-test"
+#~ msgstr "單樣本 t-檢驗"
+
+#~ msgid "Online tutorials"
+#~ msgstr "線上教材"
+
+#~ msgid "Open"
+#~ msgstr "開啟"
+
+#~ msgid "Open a document"
+#~ msgstr "開啟文件"
+
+#~ msgid "Open a new window"
+#~ msgstr "開新視窗"
+
+#~ msgid "Open document"
+#~ msgstr "開啟文件"
+
+#, fuzzy
+#~ msgid "Open for reading..."
+#~ msgstr "數式"
+
+#, fuzzy
+#~ msgid "Open for writing..."
+#~ msgstr "匯出(&E)..."
+
+#~ msgid "Open matrix"
+#~ msgstr "開啟矩陣"
+
+#, fuzzy
+#~ msgid "Open recent"
+#~ msgstr "最近開啟的文件"
+
+#~ msgid "Opening file"
+#~ msgstr "正在開啟檔案"
+
+#~ msgid "Options"
+#~ msgstr "選項"
+
+#, fuzzy
+#~ msgid "Output C"
+#~ msgstr "輸出標籤"
+
+#~ msgid "Output labels"
+#~ msgstr "輸出標籤"
+
+#, fuzzy
+#~ msgid "Output: Function names"
+#~ msgstr "函數名"
+
+#, fuzzy
+#~ msgid "Output: Operators"
+#~ msgstr "輸出標籤"
+
+#, fuzzy, c-format
+#~ msgid "Output: Special constants (%e,%i)"
+#~ msgstr "特殊常數"
+
+#, fuzzy
+#~ msgid "Output: Strings"
+#~ msgstr "字串"
+
+#, fuzzy
+#~ msgid "Output: Variable names"
+#~ msgstr "舊變數："
+
+#~ msgid "Pade approximation"
+#~ msgstr "Pade 近似"
+
+#~ msgid "Pade approximation of a Taylor series"
+#~ msgstr "計算 Taylor 級數的 Pade 近似"
+
+#, fuzzy
+#~ msgid "Parallel Substitute..."
+#~ msgstr "代換..."
+
+#, fuzzy
+#~ msgid "Parameter name:"
+#~ msgstr "矩陣名："
+
+#, fuzzy
+#~ msgid "Parameter(s):"
+#~ msgstr "變數："
+
+#, fuzzy
+#~ msgid "Parse string only..."
+#~ msgstr "輸入矩陣..."
+
+#~ msgid "Partial &Fractions..."
+#~ msgstr "部分分式(&F)..."
+
+#, fuzzy
+#~ msgid "Partial Fractions"
+#~ msgstr "部分分式"
+
+#~ msgid "Parts of the document will not be loaded correctly!"
+#~ msgstr "文件的某部分將無法被正確的讀取！"
+
+#~ msgid "Paste"
+#~ msgstr "貼上"
+
+#~ msgid "Paste\tCtrl+V"
+#~ msgstr "貼上\tCtrl+V"
+
+#~ msgid "Paste from clipboard"
+#~ msgstr "從剪貼簿貼上"
+
+#~ msgid "Paste text from clipboard"
+#~ msgstr "從剪貼簿貼上文字"
+
+#~ msgid "Please configure wxMaxima with 'Edit->Configure'."
+#~ msgstr "請從「編輯(E)」->「設定(O)」設定 wxMaxima"
+
+#~ msgid "Plot &2d..."
+#~ msgstr "二維繪圖(&2)..."
+
+#~ msgid "Plot &3d..."
+#~ msgstr "三維繪圖(&3)..."
+
+#~ msgid "Plot &Format..."
+#~ msgstr "繪圖格式(&F)..."
+
+#~ msgid "Plot 2D"
+#~ msgstr "二維繪圖"
+
+#~ msgid "Plot 2D..."
+#~ msgstr "二維繪圖..."
+
+#~ msgid "Plot 3D"
+#~ msgstr "三維繪圖"
+
+#~ msgid "Plot 3D..."
+#~ msgstr "三維繪圖..."
+
+#~ msgid "Plot format"
+#~ msgstr "繪圖格式"
+
+#~ msgid "Plot in 2 dimensions"
+#~ msgstr "二維繪圖"
+
+#~ msgid "Plot in 3 dimensions"
+#~ msgstr "三維繪圖"
+
+#~ msgid "Polynomial 1:"
+#~ msgstr "多項式 1："
+
+#~ msgid "Polynomial 2:"
+#~ msgstr "多項式 2："
+
+#, fuzzy
+#~ msgid "Polynomial:"
+#~ msgstr "多項式 1："
+
+#, fuzzy
+#~ msgid "Position:"
+#~ msgstr "條件："
+
+#, fuzzy
+#~ msgid "Power series"
+#~ msgstr "冪級數(&P)"
+
+#, fuzzy
+#~ msgid "Power series..."
+#~ msgstr "冪級數(&P)"
+
+#~ msgid "Precision"
+#~ msgstr "精確度"
+
+#, fuzzy
+#~ msgid "Preferences"
+#~ msgstr "偏好設定...\tCTRL+,"
+
+#, fuzzy
+#~ msgid "Preferences...\tCtrl+,"
+#~ msgstr "偏好設定...\tCTRL+,"
+
+#, fuzzy
+#~ msgid "Prepend an element"
+#~ msgstr "開啟文件"
+
+#~ msgid "Previous Command\tAlt+Up"
+#~ msgstr "上一個命令\tAlt+Up"
+
+#~ msgid "Print"
+#~ msgstr "列印"
+
+#, fuzzy
+#~ msgid "Print cell brackets"
+#~ msgstr "作用中的單元框"
+
+#~ msgid "Print document"
+#~ msgstr "列印文件"
+
+#~ msgid "Product"
+#~ msgstr "乘積"
+
+#, fuzzy
+#~ msgid "Program"
+#~ msgstr "直方圖"
+
+#, fuzzy
+#~ msgid "Program (no local variables)"
+#~ msgstr "變數變換"
+
+#, fuzzy
+#~ msgid "Push an element to a list"
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Re-evaluate all cells above the one the cursor is in"
+#~ msgstr "評算這份文件中的所有單元"
+
+#, fuzzy
+#~ msgid "Re-evaluate all cells below the one the cursor is in"
+#~ msgstr "評算這份文件中的所有單元"
+
+#, fuzzy
+#~ msgid "Re-opening STDIN failed."
+#~ msgstr "正在開啟檔案"
+
+#, fuzzy
+#~ msgid "Read .wxm data from clipboard"
+#~ msgstr "從剪貼簿貼上文字"
+
+#, fuzzy
+#~ msgid "Read List from csv file..."
+#~ msgstr "自檔案載入樣式"
+
+#, fuzzy
+#~ msgid "Read char"
+#~ msgstr "讀取矩陣..."
+
+#, fuzzy
+#~ msgid "Read environment variable"
+#~ msgstr "附加參數："
+
+#, fuzzy
+#~ msgid "Read environment variable..."
+#~ msgstr "刪除變數"
+
+#~ msgid "Reading Maxima output"
+#~ msgstr "正在讀取 Maxima 的輸出"
+
+#~ msgid "Ready for user input"
+#~ msgstr "準備就緒"
+
+#~ msgid "Recall next command from history"
+#~ msgstr "呼叫歷史記錄中的下一個命令"
+
+#~ msgid "Recall previous command from history"
+#~ msgstr "呼叫歷史紀錄中的上一個命令"
+
+#, fuzzy
+#~ msgid "Recover unsaved"
+#~ msgstr "未儲存"
+
+#, fuzzy
+#~ msgid "Recursive Substitute..."
+#~ msgstr "代換..."
+
+#, fuzzy
+#~ msgid "Redo\tCtrl+Y"
+#~ msgstr "復原\tCtrl+Z"
+
+#~ msgid "Redo last change"
+#~ msgstr "重作上次的變更"
+
+#~ msgid "Reduce trigonometric expression"
+#~ msgstr "縮併三角函數數式"
+
+#, fuzzy
+#~ msgid "Regular expression that matches a string"
+#~ msgstr "x 座標，以逗號分隔"
+
+#, fuzzy
+#~ msgid "Regular expressions"
+#~ msgstr "對數式積分"
+
+#, fuzzy
+#~ msgid "Reload Image"
+#~ msgstr "複製為圖片"
+
+#~ msgid "Remove All Output"
+#~ msgstr "移除所有輸出"
+
+#, fuzzy
+#~ msgid "Remove an element from a list"
+#~ msgstr "從數式產生串列"
+
+#~ msgid "Remove output from input cells"
+#~ msgstr "移除所有輸入單元的輸出"
+
+#, fuzzy
+#~ msgid "Rename file"
+#~ msgstr "正在開啟檔案"
+
+#, fuzzy
+#~ msgid "Rename file..."
+#~ msgstr "刪除變數"
+
+#, fuzzy
+#~ msgid "Reorganize an expression using horner's rule"
+#~ msgstr "因式分解含 Gaussian 數的數式"
+
+#, fuzzy
+#~ msgid "Replace the first occurrence of Part"
+#~ msgstr "找到 %d 個並取代。"
+
+#, fuzzy
+#~ msgid "Replace..."
+#~ msgstr "全部選取"
+
+#, fuzzy, c-format
+#~ msgid "Replaced %li occurrences."
+#~ msgstr "找到 %d 個並取代。"
+
+#~ msgid "Report bug"
+#~ msgstr "回報發現的錯誤"
+
+#, fuzzy
+#~ msgid "Reset option variables"
+#~ msgstr "變數變換"
+
+#~ msgid "Restart Maxima"
+#~ msgstr "重新啟動 Maxima"
+
+#, fuzzy
+#~ msgid "Restrict Maximum size"
+#~ msgstr "重新啟動 Maxima"
+
+#, fuzzy
+#~ msgid "Result variables:"
+#~ msgstr "刪除該變數："
+
+#, fuzzy
+#~ msgid "Right Matrix:"
+#~ msgstr "輸入矩陣"
+
+#~ msgid "Risch Integration..."
+#~ msgstr "Risch 積分..."
+
+#, fuzzy
+#~ msgid "Row numbers:"
+#~ msgstr "數字"
+
+#, fuzzy
+#~ msgid "Rows"
+#~ msgstr "列："
+
+#, fuzzy
+#~ msgid "Run each element through an expression"
+#~ msgstr "求數式的極限"
+
+#, fuzzy
+#~ msgid "Runs each element through an expression"
+#~ msgstr "求數式的極限"
+
+#~ msgid "Sample 1:"
+#~ msgstr "樣本 1："
+
+#~ msgid "Sample 2:"
+#~ msgstr "樣本 2："
+
+#~ msgid "Sample:"
+#~ msgstr "樣本："
+
+#~ msgid "Save"
+#~ msgstr "儲存"
+
+#~ msgid "Save Animation..."
+#~ msgstr "儲存動畫..."
+
+#~ msgid "Save As"
+#~ msgstr "另存新檔"
+
+#~ msgid "Save As...\tShift+Ctrl+S"
+#~ msgstr "另存新檔...\tShift+Ctrl+S"
+
+#~ msgid "Save Image..."
+#~ msgstr "儲存圖片..."
+
+#~ msgid "Save Selection to Image"
+#~ msgstr "儲存所選區域為圖片"
+
+#~ msgid "Save Selection to Image..."
+#~ msgstr "儲存為圖片..."
+
+#~ msgid "Save animation to file"
+#~ msgstr "儲存動畫至檔案"
+
+#, fuzzy
+#~ msgid "Save as lisp..."
+#~ msgstr "載入 Package"
+
+#~ msgid "Save document"
+#~ msgstr "儲存文件"
+
+#~ msgid "Save document as"
+#~ msgstr "將文件另存新檔"
+
+#~ msgid "Save selection from document to an image file"
+#~ msgstr "儲存所選區域為圖片檔"
+
+#~ msgid "Save selection to file"
+#~ msgstr "儲存選取區域至檔案"
+
+#, fuzzy
+#~ msgid "Saving failed."
+#~ msgstr "伺服器啟動失敗"
+
+#~ msgid "Scatterplot"
+#~ msgstr "散布圖"
+
+#~ msgid "Section"
+#~ msgstr "章節"
+
+#, fuzzy
+#~ msgid "Seek to position"
+#~ msgstr "Pade 近似"
+
+#~ msgid "Select All"
+#~ msgstr "全部選取"
+
+#~ msgid "Select All\tCtrl+A"
+#~ msgstr "全部選取\tCtrl+A"
+
+#~ msgid "Select Subsample"
+#~ msgstr "選取子樣本"
+
+#~ msgid "Select all"
+#~ msgstr "全部選取"
+
+#~ msgid "Select math display algorithm"
+#~ msgstr "選擇用於顯示數學的演算法"
+
+#, fuzzy
+#~ msgid "Sequential Comparative Simplification"
+#~ msgstr "複數化簡(&C)"
+
+#~ msgid "Series"
+#~ msgstr "級數"
+
+#, fuzzy
+#~ msgid "Series approximation"
+#~ msgstr "Pade 近似"
+
+#~ msgid "Server started"
+#~ msgstr "伺服器已啟動"
+
+#, fuzzy
+#~ msgid "Set &displayed Precision..."
+#~ msgstr "設定精確度(&P)..."
+
+#~ msgid "Set Zoom"
+#~ msgstr "顯示比例"
+
+#, fuzzy
+#~ msgid "Set bigfloat &Precision..."
+#~ msgstr "設定 bigfloat 的精確度"
+
+#, fuzzy
+#~ msgid "Set main variable..."
+#~ msgstr "刪除變數"
+
+#~ msgid "Set plot format"
+#~ msgstr "設定繪圖格式"
+
+#, fuzzy
+#~ msgid "Set position..."
+#~ msgstr "儲存動畫..."
+
+#, fuzzy
+#~ msgid "Set the \"algebraic\" flag"
+#~ msgstr "切換代數旗標"
+
+#, fuzzy
+#~ msgid "Set the frame rate for animations."
+#~ msgstr "開始動畫"
+
+#~ msgid "Set zoom to 100%"
+#~ msgstr "將顯示比例設定為 100%"
+
+#~ msgid "Set zoom to 120%"
+#~ msgstr "將顯示比例設定為 120%"
+
+#~ msgid "Set zoom to 150%"
+#~ msgstr "將顯示比例設定為 150%"
+
+#~ msgid "Set zoom to 200%"
+#~ msgstr "將顯示比例設定為 200%"
+
+#~ msgid "Set zoom to 300%"
+#~ msgstr "將顯示比例設定為 300%"
+
+#~ msgid "Set zoom to 80%"
+#~ msgstr "將顯示比例設定為 80%"
+
+#, fuzzy
+#~ msgid "Setting prompt and help format"
+#~ msgstr "設定繪圖格式"
+
+#~ msgid "Setup atvalues for solving ODE with Laplace transformation"
+#~ msgstr "在使用 Laplace 變換解常微分方程前將定點設值"
+
+#~ msgid "Setup modulus computation"
+#~ msgstr "設定模運算"
+
+#, fuzzy
+#~ msgid "Show \"%\" in special constants"
+#~ msgstr "特殊常數"
+
+#~ msgid "Show &Tips..."
+#~ msgstr "顯示小秘訣(&T)..."
+
+#, fuzzy
+#~ msgid "Show Template\tCtrl+Shift+Space"
+#~ msgstr "顯示範本\tCtrl+Shift+K"
+
+#, fuzzy
+#~ msgid "Show XML representation"
+#~ msgstr "顯示長的數式"
+
+#~ msgid "Show a tip"
+#~ msgstr "顯示小秘訣"
+
+#~ msgid "Show all commands similar to:"
+#~ msgstr "顯示全部與此指令相似的指令："
+
+#~ msgid "Show an example for the command:"
+#~ msgstr "顯示這個指令的使用範例："
+
+#~ msgid "Show an example of usage"
+#~ msgstr "顯示一個使用範例"
+
+#~ msgid "Show commands similar to"
+#~ msgstr "顯示相似的指令"
+
+#~ msgid "Show defined functions"
+#~ msgstr "顯示已定義的函數"
+
+#~ msgid "Show defined variables"
+#~ msgstr "顯示已定義的變數"
+
+#~ msgid "Show definition of a function"
+#~ msgstr "顯示函數的定義"
+
+#, fuzzy
+#~ msgid "Show function &Definition..."
+#~ msgstr "顯示函數定義(&D)..."
+
+#~ msgid "Show function template"
+#~ msgstr "顯示函數範本"
+
+#, fuzzy
+#~ msgid "Show input labels"
+#~ msgstr "輸入標籤"
+
+#, fuzzy
+#~ msgid "Show lisp representation"
+#~ msgstr "顯示長的數式"
+
+#, fuzzy
+#~ msgid "Show the function's definition"
+#~ msgstr "顯示該函數的定義："
+
+#, fuzzy
+#~ msgid "Show the undo and redo button?"
+#~ msgstr "顯示該函數的定義："
+
+#, fuzzy
+#~ msgid "Show user definitions"
+#~ msgstr "顯示該函數的定義："
+
+#, fuzzy
+#~ msgid "Simplify &Radicals..."
+#~ msgstr "化簡根式(&R)"
+
+#~ msgid "Simplify Expression"
+#~ msgstr "化簡數式"
+
+#, fuzzy
+#~ msgid "Simplify Logarithms"
+#~ msgstr "化簡此加總"
+
+#~ msgid "Simplify an expression containing factorials"
+#~ msgstr "化簡包含階乘的數式"
+
+#, fuzzy
+#~ msgid "Simplify equations"
+#~ msgstr "解方程式"
+
+#~ msgid "Simplify expression containing radicals"
+#~ msgstr "化簡包含根號的數式"
+
+#, fuzzy
+#~ msgid "Simplify radicals"
+#~ msgstr "化簡根式(&R)"
+
+#~ msgid "Simplify rational expression"
+#~ msgstr "化簡有理數式"
+
+#, fuzzy
+#~ msgid "Simplify sums"
+#~ msgstr "化簡"
+
+#~ msgid "Simplify trigonometric expression"
+#~ msgstr "化簡三角函數數式"
+
+#, fuzzy
+#~ msgid "Smart Substitute..."
+#~ msgstr "代換..."
+
+#, fuzzy
+#~ msgid "Smart substitution"
+#~ msgstr "代換"
+
+#, fuzzy
+#~ msgid "Solution of the ODE:"
+#~ msgstr "一般解："
+
+#~ msgid "Solve"
+#~ msgstr "求解"
+
+#~ msgid "Solve &Algebraic System..."
+#~ msgstr "解代數系統(&A)..."
+
+#~ msgid "Solve &Linear System..."
+#~ msgstr "解線性系統(&L)..."
+
+#~ msgid "Solve &ODE..."
+#~ msgstr "解常微分方程(&O)..."
+
+#~ msgid "Solve (to_poly)..."
+#~ msgstr "求解 (to_poly)..."
+
+#, fuzzy
+#~ msgid "Solve Ax=b"
+#~ msgstr "求解"
+
+#~ msgid "Solve ODE"
+#~ msgstr "解常微分方程"
+
+#~ msgid "Solve ODE with Lapla&ce..."
+#~ msgstr "以 Laplace 變換解常微分方程(&C)..."
+
+#, fuzzy
+#~ msgid "Solve a linear equation system using dgesv"
+#~ msgstr "解線性方程組"
+
+#~ msgid "Solve algebraic system"
+#~ msgstr "解代數系統"
+
+#~ msgid "Solve algebraic system of equations"
+#~ msgstr "解代數方程組"
+
+#~ msgid "Solve boundary value problem for second degree ODE"
+#~ msgstr "解 2 階常微分方程的邊界值問題"
+
+#, fuzzy
+#~ msgid "Solve differential equations using laplace()"
+#~ msgstr "以 Laplace 變換解常微分方程式"
+
+#~ msgid "Solve equation(s)"
+#~ msgstr "解方程式"
+
+#~ msgid "Solve equation(s) with to_poly_solve"
+#~ msgstr "使用 to_poly_solve 解方程式"
+
+#, fuzzy
+#~ msgid "Solve equations numerically"
+#~ msgstr "解方程式"
+
+#, fuzzy
+#~ msgid "Solve equations to polynom"
+#~ msgstr "使用 to_poly_solve 解方程式"
+
+#~ msgid "Solve initial value problem for first degree ODE"
+#~ msgstr "解 1 階常微分方程的初始值問題"
+
+#~ msgid "Solve initial value problem for second degree ODE"
+#~ msgstr "解 2 階常微分方程的初始值問題"
+
+#~ msgid "Solve linear system"
+#~ msgstr "解線性系統"
+
+#~ msgid "Solve linear system of equations"
+#~ msgstr "解線性方程組"
+
+#~ msgid "Solve ordinary differential equation of maximum degree 2"
+#~ msgstr "解常微分方程式 (最大 2 階)"
+
+#~ msgid "Solve ordinary differential equations with Laplace transformation"
+#~ msgstr "以 Laplace 變換解常微分方程式"
+
+#, fuzzy
+#~ msgid "Solve polynomials numerically"
+#~ msgstr "解方程式"
+
+#, fuzzy
+#~ msgid "Solve polynomials numerically (bfloats)"
+#~ msgstr "解方程式"
+
+#, fuzzy
+#~ msgid "Solve polynomials numerically (real roots)"
+#~ msgstr "解方程式"
+
+#, fuzzy
+#~ msgid "Solve symbolically"
+#~ msgstr "解方程式"
+
+#~ msgid "Solve..."
+#~ msgstr "求解..."
+
+#, fuzzy
+#~ msgid "Sort a list"
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "Sort the characters..."
+#~ msgstr "希臘字母"
+
+#, fuzzy
+#~ msgid "Source list:"
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "Split..."
+#~ msgstr "箱形圖..."
+
+#, fuzzy
+#~ msgid "Standard Text"
+#~ msgstr "選項"
+
+#~ msgid "Start Animation"
+#~ msgstr "開始動畫"
+
+#, fuzzy
+#~ msgid "Start or Stop animation"
+#~ msgstr "開始動畫"
+
+#~ msgid "Starting Maxima process failed"
+#~ msgstr "Maxima 程序啟動失敗"
+
+#, fuzzy
+#~ msgid "Starting a new wxMaxima process for a new window"
+#~ msgstr "Maxima 程序啟動失敗"
+
+#~ msgid "Starting server failed"
+#~ msgstr "伺服器啟動失敗"
+
+#~ msgid "Statistics"
+#~ msgstr "統計"
+
+#~ msgid "Statistics\tAlt+Shift+S"
+#~ msgstr "統計\tAlt+Shift+S"
+
+#, fuzzy
+#~ msgid "Step width:"
+#~ msgstr "乘積"
+
+#, fuzzy
+#~ msgid "String"
+#~ msgstr "字串"
+
+#, fuzzy
+#~ msgid "String #1:"
+#~ msgstr "字串"
+
+#, fuzzy
+#~ msgid "String #2:"
+#~ msgstr "字串"
+
+#, fuzzy
+#~ msgid "String Tests"
+#~ msgstr "字串"
+
+#, fuzzy
+#~ msgid "String length"
+#~ msgstr "字串"
+
+#, fuzzy
+#~ msgid "String to octets"
+#~ msgstr "字串"
+
+#, fuzzy
+#~ msgid "String:"
+#~ msgstr "字串"
+
+#~ msgid "Subsection"
+#~ msgstr "子章節"
+
+#~ msgid "Substitute"
+#~ msgstr "代換"
+
+#, fuzzy
+#~ msgid "Substitute all matches"
+#~ msgstr "代換..."
+
+#, fuzzy
+#~ msgid "Substitute only in parts..."
+#~ msgstr "代換..."
+
+#~ msgid "Substitute..."
+#~ msgstr "代換..."
+
+#, fuzzy
+#~ msgid "Subsubsection"
+#~ msgstr "子章節"
+
+#, fuzzy
+#~ msgid "Suggestion: "
+#~ msgstr "子章節"
+
+#~ msgid "Sum"
+#~ msgstr "加總"
+
+#, fuzzy
+#~ msgid "Symbolic Constant"
+#~ msgstr "選擇常數"
+
+#, fuzzy
+#~ msgid "Symbols\tAlt+Shift+Y"
+#~ msgstr "統計\tAlt+Shift+S"
+
+#, fuzzy
+#~ msgid "Table of Contents\tAlt+Shift+T"
+#~ msgstr "工具列\tAlt+Shift+T"
+
+#, fuzzy
+#~ msgid "Taylor series"
+#~ msgstr "Taylor 級數："
+
+#, fuzzy
+#~ msgid "Taylor series..."
+#~ msgstr "Taylor 級數："
+
+#~ msgid "Taylor series:"
+#~ msgstr "Taylor 級數："
+
+#~ msgid "Text"
+#~ msgstr "文字"
+
+#~ msgid "Text cell background"
+#~ msgstr "文字單元背景"
+
+#, fuzzy
+#~ msgid "The comma-separated names of the struct fields"
+#~ msgstr "輸入以逗號分隔的所有變數"
+
+#, fuzzy
+#~ msgid "The manual of wxMaxima"
+#~ msgstr "歡迎使用 wxMaxima"
+
+#, fuzzy
+#~ msgid ""
+#~ "There was an error in the XML maxima has generated.\n"
+#~ "Please report this as a bug to the wxMaxima project."
+#~ msgstr ""
+#~ "在所產生的 XML 中發現錯誤！\n"
+#~ "\n"
+#~ "請回報此錯誤。"
+
+#, fuzzy
+#~ msgid ""
+#~ "There was an error in the XML that should describe the manual topics.\n"
+#~ "Please report this as a bug to the wxMaxima project."
+#~ msgstr ""
+#~ "在所產生的 XML 中發現錯誤！\n"
+#~ "\n"
+#~ "請回報此錯誤。"
+
+#~ msgid "Times:"
+#~ msgstr "次數："
+
+#~ msgid "Title"
+#~ msgstr "標題"
+
+#~ msgid "To &Bigfloat"
+#~ msgstr "計算長浮點數(&B)"
+
+#~ msgid "To &Float"
+#~ msgstr "計算浮點數(&F)"
+
+#~ msgid "To Float"
+#~ msgstr "計算浮點數"
+
+#, fuzzy
+#~ msgid "To exact fraction"
+#~ msgstr "部分分式"
+
+#, fuzzy
+#~ msgid "To exact number"
+#~ msgstr "顯示函數(&F)"
+
+#~ msgid "To:"
+#~ msgstr "到："
+
+#~ msgid "Toggle full screen editing"
+#~ msgstr "切換全螢幕編輯模式"
+
+#, fuzzy
+#~ msgid "Trace a function..."
+#~ msgstr "刪除函數"
+
+#, fuzzy
+#~ msgid "Trace function(s)"
+#~ msgstr "刪除該函數："
+
+#, fuzzy
+#~ msgid "Transformations"
+#~ msgstr "計算轉置矩陣"
+
+#~ msgid "Transpose a matrix"
+#~ msgstr "計算轉置矩陣"
+
+#, fuzzy
+#~ msgid "Trim left..."
+#~ msgstr "極限..."
+
+#, fuzzy
+#~ msgid "Trim right..."
+#~ msgstr "極限..."
+
+#~ msgid "Tutorials"
+#~ msgstr "教材"
+
+#~ msgid "Two sample t-test"
+#~ msgstr "雙樣本 t-檢驗"
+
+#, fuzzy
+#~ msgid "Type"
+#~ msgstr "類型："
+
+#~ msgid "Type:"
+#~ msgstr "類型："
+
+#, fuzzy
+#~ msgid "Undefine"
+#~ msgstr "底線"
+
+#~ msgid "Undo\tCtrl+Z"
+#~ msgstr "復原\tCtrl+Z"
+
+#~ msgid "Undo last change"
+#~ msgstr "復原上次的變更"
+
+#, fuzzy
+#~ msgid "Unfold All\tCtrl+Alt+]"
+#~ msgstr "全部選取\tCtrl+A"
+
+#, fuzzy
+#~ msgid "Unhide Section"
+#~ msgstr "章節"
+
+#, fuzzy
+#~ msgid "Unhide Subsection"
+#~ msgstr "子章節"
+
+#, fuzzy
+#~ msgid "Unhide Subsubsection"
+#~ msgstr "子章節"
+
+#, fuzzy
+#~ msgid "Unhide contents"
+#~ msgstr "希臘字母"
+
+#~ msgid "Upgrade"
+#~ msgstr "升級"
+
+#~ msgid "Upper bound:"
+#~ msgstr "上界："
+
+#, fuzzy
+#~ msgid "Use a list"
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "Use list"
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "Use struct field..."
+#~ msgstr "連分數(&C)"
+
+#, fuzzy
+#~ msgid "Using configured Maxima path."
+#~ msgstr "設定 wxMaxima"
+
+#, fuzzy
+#~ msgid "Value at a given point"
+#~ msgstr "評算名詞形式(&N)"
+
+#, fuzzy
+#~ msgid "Value at that point:"
+#~ msgstr "評算名詞形式(&N)"
+
+#, fuzzy
+#~ msgid "Value y at that point:"
+#~ msgstr "評算名詞形式(&N)"
+
+#~ msgid "Value:"
+#~ msgstr "值："
+
+#, fuzzy
+#~ msgid "Variable name"
+#~ msgstr "舊變數："
+
+#, fuzzy
+#~ msgid "Variable name, not contents..."
+#~ msgstr "舊變數："
+
+#, fuzzy
+#~ msgid "Variable name:"
+#~ msgstr "舊變數："
+
+#, fuzzy
+#~ msgid "Variable(s)"
+#~ msgstr "變數："
+
+#~ msgid "Variable(s):"
+#~ msgstr "變數："
+
+#~ msgid "Variable:"
+#~ msgstr "變數："
+
+#~ msgid "Variables"
+#~ msgstr "變數"
+
+#~ msgid "Variables:"
+#~ msgstr "變數："
+
+#~ msgid "Warning"
+#~ msgstr "警告"
+
+#, fuzzy
+#~ msgid "Warning:"
+#~ msgstr "警告"
+
+#, fuzzy, c-format
+#~ msgid ""
+#~ "You have version %s. The newest version source code is available for is %s.\n"
+#~ "\n"
+#~ "Select OK to visit the wxMaxima webpage."
+#~ msgstr ""
+#~ "您的版本是 %s ，最新的版本是 %s 。\n"
+#~ "\n"
+#~ "按「確認」至 wxMaxima 首頁。"
+
+#~ msgid "Your changes will be lost if you don't save them."
+#~ msgstr "如果您未儲存，您所做的所有修改將遺失。"
+
+#~ msgid "Your version of wxMaxima is up to date."
+#~ msgstr "您的 wxMaxima 是最新版本"
+
+#, fuzzy
+#~ msgid "Zoom &In\tCtrl++"
+#~ msgstr "放大(&I)\tAlt+I"
+
+#, fuzzy
+#~ msgid "Zoom Ou&t\tCtrl+-"
+#~ msgstr "縮小(&T)\tAlt+O"
+
+#~ msgid "Zoom in 10%"
+#~ msgstr "將顯示比例放大 10%"
+
+#~ msgid "Zoom out 10%"
+#~ msgstr "將顯示比例縮小 10%"
+
+#~ msgid "[ unsaved ]"
+#~ msgstr "[ 未儲存 ]"
+
+#~ msgid "[ unsaved* ]"
+#~ msgstr "[ 未儲存* ]"
+
+#, fuzzy
+#~ msgid "apply function to each element"
+#~ msgstr "套用函數至串列"
+
+#, fuzzy
+#~ msgid "expression:"
+#~ msgstr "數式："
+
+#, fuzzy
+#~ msgid "filename:"
+#~ msgstr "舊變數："
+
+#, fuzzy
+#~ msgid "from a list"
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "from function arguments"
+#~ msgstr "函數名"
+
+#, fuzzy
+#~ msgid "function"
+#~ msgstr "函數"
+
+#, fuzzy
+#~ msgid "list"
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "m×n Matrix A:"
+#~ msgstr "矩陣："
+
+#, fuzzy
+#~ msgid "n:"
+#~ msgstr "尋找"
+
+#, fuzzy
+#~ msgid "nth"
+#~ msgstr "否"
+
+#, fuzzy
+#~ msgid "point:"
+#~ msgstr "點："
+
+#, fuzzy
+#~ msgid "precision:"
+#~ msgstr "精確度"
+
+#, fuzzy
+#~ msgid "printf"
+#~ msgstr "列印"
+
+#, fuzzy
+#~ msgid "printf..."
+#~ msgstr "微分..."
+
+#, fuzzy
+#~ msgid "readbyte..."
+#~ msgstr "積分..."
+
+#, fuzzy
+#~ msgid "readchar..."
+#~ msgstr "圓餅圖..."
+
+#, fuzzy
+#~ msgid "readline..."
+#~ msgstr "變異數..."
+
+#~ msgid "unsaved"
+#~ msgstr "未儲存"
+
+#~ msgid "untitled"
+#~ msgstr "未命名"
+
+#, fuzzy
+#~ msgid "use as function arguments"
+#~ msgstr "函數名"
+
+#, fuzzy, c-format
+#~ msgid "wxMaxima %ld"
+#~ msgstr "wxMaxima %s "
+
+#, fuzzy, c-format
+#~ msgid "wxMaxima %s (%s) "
+#~ msgstr "wxMaxima %s "
+
+#~ msgid "wxMaxima document"
+#~ msgstr "wxMaxima 文件"
+
+#~ msgid "wxMaxima encountered an error loading "
+#~ msgstr "wxMaxima 發生讀取錯誤"
+
+#, fuzzy
+#~ msgid "wxMaxima shows help in a browser"
+#~ msgstr "找不到檔案"
+
+#, fuzzy
+#~ msgid "wxMaxima shows help in the sidebar"
+#~ msgstr "找不到檔案"
+
+#, fuzzy
+#~ msgid "wxMaxima's ChangeLog"
+#~ msgstr "wxMaxima 圖示"
+
+#, fuzzy
+#~| msgid "Expression"
+#~ msgid "#### Expression"
+#~ msgstr "數式"
+
+#, fuzzy
+#~| msgid "Parametric plot"
+#~ msgid "#### Parametric plot"
+#~ msgstr "參數式繪圖"
+
+#, fuzzy
+#~ msgid "#### Points"
+#~ msgstr "點："
+
+#, fuzzy
+#~ msgid "#### Grid"
+#~ msgstr "格線："
+
+#, fuzzy
+#~ msgid "Killing Maxima."
+#~ msgstr "Maxima 啟動中..."
+
+#, fuzzy, c-format
+#~ msgid "Maxima process (pid %li) has terminated\n"
+#~ msgstr "Maxima 程序已結束"
+
+#, fuzzy
+#~ msgid "Divide Cell\tCtrl+D"
+#~ msgstr "分割單元"
+
+#, fuzzy
+#~ msgid "Matrix height"
+#~ msgstr "在文字控制項中輸入時匹配括弧"
+
+#, fuzzy
+#~ msgid "Matrix width"
+#~ msgstr "乘積"
+
+#, fuzzy
+#~ msgid "Merge Cells\tCtrl+M"
+#~ msgstr "合併單元"
+
+#, fuzzy
+#~ msgid ""
+#~ "wxMaxima could not start a server.\n"
+#~ "\n"
+#~ "Please check you have network support\n"
+#~ "enabled and try again!"
+#~ msgstr ""
+#~ "wxMaxima 無法啟動伺服器。\n"
+#~ "\n"
+#~ "請檢查您的網路支援，\n"
+#~ "將其開啟並再試一次！"
+
+#, fuzzy
+#~ msgid "Maxima version: "
+#~ msgstr ""
+#~ "\n"
+#~ "Maxima 版本："
+
+#, fuzzy
+#~ msgid "Maxima was compiled using: "
+#~ msgstr ""
+#~ "\n"
+#~ "Maxima 版本："
+
+#, fuzzy
+#~ msgid "wxMaxima is a cross-platform graphical user interface for the computer algebra system Maxima based on wxWidgets.\n"
+#~ msgstr "wxMaxima 是基於 wxWidgets ，為電腦代數系統 Maxima 的圖形使用界面。"
+
+#~ msgid ""
+#~ "\n"
+#~ "\n"
+#~ "wxWidgets: %d.%d.%d\n"
+#~ "Unicode support: %s"
+#~ msgstr ""
+#~ "\n"
+#~ "\n"
+#~ "wxWidgets 版本：%d.%d.%d\n"
+#~ "支援 Unicode：%s"
+
+#~ msgid "yes"
+#~ msgstr "是"
+
+#, fuzzy
+#~ msgid "\"Numpad Enter\" always evaluates cells"
+#~ msgstr "按 Enter 評算單元"
+
+#~ msgid "(Use default language)"
+#~ msgstr "( 使用預設語言 )"
+
+#~ msgid "A 'horizontal cursor' was introduced in wxMaxima 0.8.0. It looks like a horizontal line between cells. It indicates where a new cell will appear if you type or paste text or execute a menu command."
+#~ msgstr "自 wxMaxima 0.8.0 版開始引進「水平游標」。它的外觀為單元之間的水平線，代表您輸入或貼上文字或執行標能表命令時新單元出現的位置。"
+
+#, fuzzy
+#~ msgid "A new document format has been introduced in wxMaxima 0.8.2 that saves not only your input and text commentaries, but also the outputs of your calculations. When saving your document, select 'Whole document (*.wxmx)' format."
+#~ msgstr "從 wxMaxima 0.8.2 版開始有新的文件格式。這種格式除了儲存您的輸入和文字註解以外，也一起儲存您的計算的輸出。請在儲存您的文件時，選擇「wxMaxima XML 文件」。"
+
+#~ msgid "Additional parameters for Maxima (e.g. -l clisp)."
+#~ msgstr "Maxima 的附加參數 (例： -l clisp)"
+
+#, fuzzy
+#~ msgid "Additional parameters for maxima"
+#~ msgstr "附加參數："
+
+#, fuzzy
+#~ msgid "All variable names"
+#~ msgstr "舊變數："
+
+#~ msgid "All|*"
+#~ msgstr "所有類型|*"
+
+#~ msgid "Ask to save untitled documents"
+#~ msgstr "詢問是否儲存未命名文件"
+
+#, fuzzy
+#~ msgid "Auto-insert closing parenthesis"
+#~ msgstr "在文字控制項中輸入時匹配括弧"
+
+#~ msgid "Barsplot..."
+#~ msgstr "長條圖..."
+
+#~ msgid "Bat files (*.bat)|*.bat|All|*"
+#~ msgstr "批次檔 (*.bat)|*.bat|所有類型|*"
+
+#, fuzzy
+#~ msgid "Bat files (*.bat)|*.bat|Exe files (*.exe)||All|*"
+#~ msgstr "批次檔 (*.bat)|*.bat|所有類型|*"
+
+#~ msgid "Bold"
+#~ msgstr "粗體"
+
+#~ msgid "Boxplot..."
+#~ msgstr "箱形圖..."
+
+#, fuzzy
+#~ msgid "By default, Shift-Enter is used to evaluate commands, while Enter is used for multiline input. This behaviour can be changed in 'Edit->Configure' dialog by checking 'Enter evaluates cells'. This switches the roles of these two key commands."
+#~ msgstr "預設值使用 Shift+Enter 來開始評算，Enter 則是用來做多行輸入。這個操作方式可透過「編輯(E)」->「設定(O)」對話框中勾選「按 Enter 鍵評算單元」變更。這會交換這兩組按鍵的功能。"
+
+#~ msgid "Canonical (tr)"
+#~ msgstr "標準型式 (三角)"
+
+#~ msgid "Catalan"
+#~ msgstr "Catalan"
+
+#, fuzzy
+#~ msgid "ChangeLog"
+#~ msgstr "變數變換"
+
+#~ msgid "Choose font"
+#~ msgstr "選擇字型"
+
+#, fuzzy
+#~ msgid "Choose the %s Font"
+#~ msgstr "選擇字型"
+
+#, fuzzy
+#~ msgid "Clear the selection"
+#~ msgstr "剪下所選區域"
+
+#~ msgid "Config file (*.ini)|*.ini"
+#~ msgstr "設定檔 (*.ini)|*.ini"
+
+#, fuzzy
+#~ msgid "Convert to Heading 5"
+#~ msgstr "轉換為 Gamma 函數(&G)"
+
+#, fuzzy
+#~ msgid "Convert to Heading 6"
+#~ msgstr "轉換為 Gamma 函數(&G)"
+
+#, fuzzy
+#~ msgid "Convert to Section"
+#~ msgstr "轉換為直角座標形式(&R)"
+
+#, fuzzy
+#~ msgid "Convert to Sub-Subsection"
+#~ msgstr "插入子章節單元"
+
+#, fuzzy
+#~ msgid "Convert to Subsection"
+#~ msgstr "轉換為直角座標形式(&R)"
+
+#, fuzzy
+#~ msgid "Convert to Title"
+#~ msgstr "轉換為階乘(&F)"
+
+#~ msgid "Czech"
+#~ msgstr "Czech"
+
+#~ msgid "Danish"
+#~ msgstr "Danish"
+
+#, fuzzy
+#~ msgid "Default port for communication with wxMaxima:"
+#~ msgstr "供 Maxima 與 wxMaxima 溝通的預設埠"
+
+#~ msgid "Deviation..."
+#~ msgstr "偏差..."
+
+#~ msgid "Diff..."
+#~ msgstr "微分..."
+
+#, fuzzy
+#~ msgid "Display"
+#~ msgstr "切換計算時間顯示(&T)"
+
+#, fuzzy
+#~ msgid "Display all digits"
+#~ msgstr "用於顯示的演算法"
+
+#~ msgid "English"
+#~ msgstr "English"
+
+#~ msgid "Enter Matrix..."
+#~ msgstr "輸入矩陣..."
+
+#, fuzzy
+#~ msgid "Enter adds newlines, Ctrl+Enter evaluates cells"
+#~ msgstr "按 Enter 評算單元"
+
+#, fuzzy
+#~ msgid "Enter evaluates cells, Ctrl+Enter adds newlines"
+#~ msgstr "按 Enter 評算單元"
+
+#~ msgid "Enter the path to the Maxima executable."
+#~ msgstr "輸入可執行 Maxima 的路徑"
+
+#, fuzzy
+#~ msgid "Environment variables for maxima"
+#~ msgstr "附加參數："
+
+#, fuzzy
+#~ msgid "Epsilon"
+#~ msgstr "Epsilon:"
+
+#, fuzzy
+#~ msgid "Evaluate"
+#~ msgstr "評算單元"
+
+#~ msgid "Example text"
+#~ msgstr "Example text 範例文字"
+
+#~ msgid "Expand"
+#~ msgstr "展開"
+
+#~ msgid "Expand (tr)"
+#~ msgstr "展開 (三角)"
+
+#, fuzzy
+#~ msgid "Export As"
+#~ msgstr "匯出"
+
+#, fuzzy
+#~ msgid "Export all settings"
+#~ msgstr "匯出為 TeX 失敗！"
+
+#, fuzzy
+#~ msgid "Export equations to HTML as:"
+#~ msgstr "匯出為 HTML 失敗！"
+
+#, fuzzy
+#~ msgid "Export the style settings"
+#~ msgstr "匯出為 TeX 失敗！"
+
+#, fuzzy
+#~ msgid "Exporting to .mac file failed!"
+#~ msgstr "匯出為 TeX 失敗！"
+
+#~ msgid "Factor"
+#~ msgstr "因式分解"
+
+#, fuzzy
+#~ msgid "Find:"
+#~ msgstr "尋找"
+
+#, fuzzy
+#~ msgid "Finnish"
+#~ msgstr "Danish"
+
+#~ msgid "Fixed font in text controls"
+#~ msgstr "文字控制項使用等寬字型"
+
+#~ msgid "Fonts"
+#~ msgstr "字型"
+
+#~ msgid "French"
+#~ msgstr "French"
+
+#~ msgid "German"
+#~ msgstr "German"
+
+#~ msgid "Greek"
+#~ msgstr "Greek"
+
+#, fuzzy
+#~ msgid "Hide"
+#~ msgstr "分割單元"
+
+#, fuzzy
+#~ msgid "Highlight the matching parenthesis"
+#~ msgstr "在文字控制項中輸入時匹配括弧"
+
+#~ msgid "Histogram..."
+#~ msgstr "直方圖..."
+
+#~ msgid "Horizontal cursor works like a normal cursor, but it operates on cells: press up or down arrow to move it, holding down Shift while moving will select cells, pressing backspace or delete twice will delete a cell next to it."
+#~ msgstr "水平游標就像一般游標一樣，但是它是對單元操作。按向上或向下箭頭來移動它，在移動時按住 Shift 鍵將會選擇單元，按 backspace 或 delete 鍵兩次會刪除相鄰的單元。"
+
+#~ msgid "Hungarian"
+#~ msgstr "Hungarian"
+
+#~ msgid "If your calculation is taking too long to evaluate, you can try 'Maxima->Interrupt' or 'Maxima->Restart Maxima' menu commands."
+#~ msgstr "若您的計算花費過長的時間，您可以嘗試「Maxima(M)」->「中斷(I)」或「Maxima(M)」->「重新啟動 Maxima(R)」這兩個功能表命令。"
+
+#~ msgid "Image"
+#~ msgstr "圖片"
+
+#, fuzzy
+#~ msgid "Import+Export"
+#~ msgstr "匯出"
+
+#~ msgid "Infinity"
+#~ msgstr "無限大"
+
+#, fuzzy
+#~ msgid "Integral sign"
+#~ msgstr "對數式積分"
+
+#, fuzzy
+#~ msgid "Intelligently hide cell brackets"
+#~ msgstr "作用中的單元框"
+
+#, fuzzy
+#~ msgid "Interaction"
+#~ msgstr "方向："
+
+#, fuzzy
+#~ msgid "Internal"
+#~ msgstr "積分"
+
+#~ msgid ""
+#~ "Invalid entry for Maxima program.\n"
+#~ "\n"
+#~ "Please enter the path to Maxima program again."
+#~ msgstr ""
+#~ "無效的 Maxima 程式路徑。\n"
+#~ "\n"
+#~ "請再次輸入 Maxima 程式的所在路徑。"
+
+#~ msgid "Italian"
+#~ msgstr "Italian"
+
+#~ msgid "Italic"
+#~ msgstr "斜體"
+
+#~ msgid "Japanese"
+#~ msgstr "Japanese"
+
+#~ msgid "Keep percent sign with special symbols: %e, %i, etc."
+#~ msgstr "保留特殊符號前的百分比號，像是「%e」、「%i」等..."
+
+#~ msgid "Language used for wxMaxima GUI."
+#~ msgstr "wxMaxima 圖形介面的語言"
+
+#~ msgid "Language:"
+#~ msgstr "語言："
+
+#~ msgid "Least Squares Fit..."
+#~ msgstr "最小平方法..."
+
+#~ msgid "Limit..."
+#~ msgstr "極限..."
+
+#~ msgid "Linear Regression..."
+#~ msgstr "線性迴歸..."
+
+#, fuzzy
+#~ msgid "List of labels"
+#~ msgstr "輸入標籤"
+
+#~ msgid "Load"
+#~ msgstr "載入"
+
+#~ msgid "Load style from file"
+#~ msgstr "自檔案載入樣式"
+
+#, fuzzy
+#~ msgid "Match Case"
+#~ msgstr "以批次檔載入"
+
+#, fuzzy
+#~ msgid "Maxima Location"
+#~ msgstr "Maxima 詢問"
+
+#, fuzzy
+#~ msgid "Maxima configuration"
+#~ msgstr "wxMaxima 設定"
+
+#~ msgid "Maxima program:"
+#~ msgstr "Maxima 程式："
+
+#, fuzzy
+#~ msgid "Maxima session (*.mac)|*.mac"
+#~ msgstr "Maxima package (*.mac)|*.mac"
+
+#, fuzzy
+#~ msgid "Maxima usage"
+#~ msgstr "wxMaxima 圖示"
+
+#, fuzzy
+#~ msgid ""
+#~ "Maxima uses ':=' to define functions, e.g.:\n"
+#~ "f(x) := x^2;"
+#~ msgstr "Maxima 使用 \":\" 來設定數值 (例：\"a : 3;\")，使用 \":=\" 來定義函數 (例：\"f(x) := x^2\")。"
+
+#~ msgid "Mean Difference Test..."
+#~ msgstr "平均差檢驗..."
+
+#~ msgid "Mean Test..."
+#~ msgstr "平均值檢驗..."
+
+#~ msgid "Mean..."
+#~ msgstr "平均..."
+
+#~ msgid "Median..."
+#~ msgstr "中位數..."
+
+#, fuzzy
+#~ msgid "Misc settings"
+#~ msgstr "匯出為 TeX 失敗！"
+
+#~ msgid "Normality Test..."
+#~ msgstr "常態分布檢驗..."
+
+#~ msgid "Open a cell when Maxima expects input"
+#~ msgstr "當 Maxima 期望輸入時新增單元"
+
+#~ msgid "Piechart..."
+#~ msgstr "圓餅圖..."
+
+#~ msgid "Please restart wxMaxima for changes to take effect!"
+#~ msgstr "請重新啟動 wxMaxima 使變更生效！"
+
+#~ msgid "Polish"
+#~ msgstr "Polish"
+
+#~ msgid "Portuguese (Brazilian)"
+#~ msgstr "Portuguese (Brazilian)"
+
+#, fuzzy
+#~ msgid "Print Margins"
+#~ msgstr "列印"
+
+#, fuzzy
+#~ msgid "Print scale:"
+#~ msgstr "列印文件"
+
+#, fuzzy
+#~ msgid "Printout settings"
+#~ msgstr "匯出為 TeX 失敗！"
+
+#, fuzzy
+#~ msgid "Privacy settings"
+#~ msgstr "匯出為 TeX 失敗！"
+
+#, fuzzy
+#~ msgid "Product sign"
+#~ msgstr "乘積"
+
+#~ msgid "Read Matrix..."
+#~ msgstr "讀取矩陣..."
+
+#, fuzzy
+#~ msgid "Read config to file"
+#~ msgstr "儲存選取區域至檔案"
+
+#~ msgid "Rectform"
+#~ msgstr "直角坐標形式"
+
+#~ msgid "Reduce (tr)"
+#~ msgstr "縮併 (三角)"
+
+#, fuzzy
+#~ msgid "Reloading the styles from disc"
+#~ msgstr "自檔案載入樣式"
+
+#, fuzzy
+#~ msgid "Replace All"
+#~ msgstr "全部選取"
+
+#, fuzzy
+#~ msgid "Revert changes"
+#~ msgstr "重作上次的變更"
+
+#, fuzzy
+#~ msgid "Right"
+#~ msgstr "右"
+
+#~ msgid "Russian"
+#~ msgstr "Russian"
+
+#, fuzzy
+#~ msgid "Save config to file"
+#~ msgstr "儲存選取區域至檔案"
+
+#~ msgid "Save style to file"
+#~ msgstr "將樣式儲存至檔案"
+
+#~ msgid "Scatterplot..."
+#~ msgstr "散布圖..."
+
+#, fuzzy
+#~ msgid "Select"
+#~ msgstr "所選區域"
+
+#~ msgid "Select Maxima program"
+#~ msgstr "選擇 Maxima 程式"
+
+#, fuzzy
+#~ msgid "Selecting a part of an output and right-clicking on the selection will bring up a menu with convenient functions that will operate on the selection."
+#~ msgstr "選取輸出並點擊右鍵會顯示功能表，其中含有一些供您方便操作所選區域的函數。"
+
+#, fuzzy
+#~ msgid "Show labels:"
+#~ msgstr "顯示變數(&V)"
+
+#~ msgid "Show long expressions in wxMaxima document."
+#~ msgstr "在 wxMaxima 文件中顯示長的數式"
+
+#, fuzzy
+#~ msgid "Show long expressions:"
+#~ msgstr "顯示長的數式"
+
+#, fuzzy
+#~ msgid "Show section numbers"
+#~ msgstr "顯示函數(&F)"
+
+#, fuzzy
+#~ msgid "Simple"
+#~ msgstr "樣本："
+
+#~ msgid "Simplify"
+#~ msgstr "化簡"
+
+#~ msgid "Simplify (r)"
+#~ msgstr "化簡根式"
+
+#~ msgid "Simplify (tr)"
+#~ msgstr "化簡 (三角)"
+
+#, fuzzy
+#~ msgid "Since wxMaxima 0.8.2 you can also insert images into your documents. Use 'Cell->Insert Image...' menu command."
+#~ msgstr "自 wxMaxima 0.8.2 版開始您可以使用「單元(C)」->「插入圖片...」功能表在文件中插入圖片。請注意：若您希望將圖片與文件一起儲存，您必須將您的文件儲存為 「wxMaxima XML 文件」。"
+
+#~ msgid "Solve ODE..."
+#~ msgstr "解常微分方程..."
+
+#~ msgid "Spanish"
+#~ msgstr "Spanish"
+
+#, fuzzy
+#~ msgid "Standard Options"
+#~ msgstr "選項"
+
+#~ msgid "Style"
+#~ msgstr "樣式"
+
+#~ msgid "Styles"
+#~ msgstr "樣式"
+
+#~ msgid "Subsample..."
+#~ msgstr "子樣本..."
+
+#~ msgid "Subst..."
+#~ msgstr "代換"
+
+#, fuzzy
+#~ msgid "Text Only"
+#~ msgstr "文字單元"
+
+#~ msgid "The default port used for communication between Maxima and wxMaxima."
+#~ msgstr "供 Maxima 與 wxMaxima 溝通的預設埠"
+
+#~ msgid "Title, section and subsection cells can be folded to hide their contents. To fold or unfold, click in the square next to the cell. If you shift-click, all sublevels of that cell will also fold/unfold."
+#~ msgstr "標題單元、章節單元和子章節單元可被折疊並隱藏它們的內容。欲折疊或取消折疊，點擊該單元左側的小正方形。如果您按住 Shift 鍵並點擊小正方形，所有該單元中的子單元也會跟著折疊或取消折疊。"
+
+#~ msgid "To plot in polar coordinates, select 'set polar' in the Options entry for Plot2d dialog. You can also plot in spherical and cylindrical coordinates in 3D."
+#~ msgstr "欲在極座標上繪圖，在二維繪圖對話視窗的「選項」中選擇 \"set polar\" 。您也可以在三維繪圖中在球座標或柱座標上繪圖。"
+
+#, fuzzy
+#~ msgid "To put parentheses around an expression, select it, and press '(' or ')' depending on where you want the cursor to appear afterwards."
+#~ msgstr "欲在數式外側加上括號，請先選取它，再依照您想要游標出現的位置按「(」或「)」。"
+
+#~ msgid "To save the size and position of wxMaxima windows between session, use 'Edit->Configure' dialog."
+#~ msgstr "欲儲存工作階段之間 wxMaxima 視窗的大小及位置，請從「編輯(E)」->「設定(O)」變更。"
+
+#, fuzzy
+#~ msgid "To start using wxMaxima right away, start typing your command. An input cell should appear. Then press Shift-Enter to evaluate your command."
+#~ msgstr "欲立即使用 wxMaxima，請開始輸入命令，此時應該會出現一個輸入單元，然後按 Shift+Enter 鍵評算您的命令。"
+
+#, fuzzy
+#~ msgid "Top"
+#~ msgstr "到："
+
+#~ msgid "Ukrainian"
+#~ msgstr "Ukrainian"
+
+#, fuzzy
+#~ msgid "Upsilon"
+#~ msgstr "Epsilon:"
+
+#~ msgid "Use centered dot character for multiplication"
+#~ msgstr "用圓點符號表示乘法"
+
+#, fuzzy
+#~ msgid "Value"
+#~ msgstr "值："
+
+#~ msgid "Variance..."
+#~ msgstr "變異數..."
+
+#~ msgid "When applying functions with one argument from menus, the default argument is '%'. To apply the function to some other value, select it in the document before executing a menu command."
+#~ msgstr "當您從功能表使用只有一個引數的函數時，預設的引數是「%」。欲使用其他的值作為引數，請在執行功能表命令前從文件中選取該值。"
+
+#, fuzzy
+#~ msgid "Yes"
+#~ msgstr "是"
+
+#~ msgid "You can access the last output using the variable '%'. You can access the output of previous commands using variables '%on' where n is the number of output."
+#~ msgstr "您可以使用「%」存取最後一筆輸出。您也可以使用「%on」(n是輸出的編號)來存取先前命令的輸出。"
+
+#~ msgid "You can evaluate your whole document by using 'Cell->Evaluate All Cells' menu command or the appropriate key shortcut. The cells will be evaluated in the order they appear in the document."
+#~ msgstr "您可以使用「單元(C)」->「評算所有單元」功能表命令或該相對應的快捷鍵評算您的文件中的所有單元。這些單元會依照它們在文件中出現的順序評算。"
+
+#, fuzzy
+#~ msgid "You can get help on a Maxima function by selecting or clicking on the function name and pressing F1. wxMaxima will search the help index for the selection or the word under the cursor."
+#~ msgstr "您可以透過選取或點擊函數名並按 F1 取得 Maxima 函數的說明。wxMaxima 會在說明的索引中搜尋所選區域。"
+
+#~ msgid "You can hide output part of cells by clicking in the triangle on the left side of cells. This works on text cells also."
+#~ msgstr "您可以透過點擊單元左側的小三角形來隱藏單元的輸出部分。文字單元中也有同樣的功能。"
+
+#, fuzzy
+#~ msgid "You can insert different types of 'cells' in wxMaxima documents using the 'Cell' menu. Note that only 'input cells' can be evaluated, while others are used for commenting and structuring your calculations."
+#~ msgstr "您可以使用「編輯(E)」->「單元(C)」功能表在 wxMaxima 文件中插入不同種類的「單元」。請注意：只有「輸入單元」可以被評算，其他種類的單元是用來註解或組織您的計算。"
+
+#~ msgid "You can select multiple cells either with a mouse - click'n'drag from between cells or from a cell bracket on the left - or with a keyboard - hold down Shift while moving the horizontal cursor - and then operate on selection. This comes in handy when you want to delete or evaluate multiple cells."
+#~ msgstr "您可以透過滑鼠(在單元之間或左側的單元框拖曳)或鍵盤(在移動水平游標時按住Shift鍵)選取多個單元，然後對所選區域操作。這在您想要刪除或評算多個單元時很有用。"
+
+#, fuzzy
+#~ msgid "and"
+#~ msgstr "展開"
+
+#, fuzzy
+#~ msgid "epsilon"
+#~ msgstr "Epsilon:"
+
+#, fuzzy
+#~ msgid "greater than or equal"
+#~ msgstr "子章節單元"
+
+#, fuzzy
+#~ msgid "in"
+#~ msgstr "尋找"
+
+#, fuzzy
+#~ msgid "intersection"
+#~ msgstr "方向："
+
+#, fuzzy
+#~ msgid "less or equal"
+#~ msgstr "子章節單元"
+
+#, fuzzy
+#~ msgid "much greater than"
+#~ msgstr "子章節單元"
+
+#, fuzzy
+#~ msgid "nor"
+#~ msgstr "否"
+
+#, fuzzy
+#~ msgid "not"
+#~ msgstr "否"
+
+#, fuzzy
+#~ msgid "partial sign"
+#~ msgstr "部分分式"
+
+#, fuzzy
+#~ msgid "subset"
+#~ msgstr "子章節"
+
+#, fuzzy
+#~ msgid "subset or equal"
+#~ msgstr "子章節單元"
+
+#, fuzzy
+#~ msgid "upsilon"
+#~ msgstr "Epsilon:"
+
+#~ msgid "wxMaxima configuration"
+#~ msgstr "wxMaxima 設定"
+
+#~ msgid "wxMaxima dialogs set default values for inputs entries, one of which is '%'. If you have made a selection in your document, the selection will be used instead of '%'."
+#~ msgstr "wxMaxima 對話框會設定輸入內容為預設值，其中一種是 \"%\"。如果您已經在您的文件中作選取，則這個選取內容將會取代 \"%\"。"
+
+#, fuzzy
+#~ msgid "wxMaxima startup file location: "
+#~ msgstr "開始動畫"
+
+#, fuzzy
+#~ msgid "xor"
+#~ msgstr "匯出"
+
+#~ msgid "Direction:"
+#~ msgstr "方向："
+
+#, fuzzy
+#~ msgid "Lisp files (*.lisp)|*.lisp|All|*"
+#~ msgstr "Postscript 檔 (*.eps)|*.eps|所有類型|*"
+
+#~ msgid "Default"
+#~ msgstr "預設"
+
+#~ msgid "Font used for display in document."
+#~ msgstr "文件中用以顯示一般文字的字型"
+
+#~ msgid "Font used for displaying math characters in document."
+#~ msgstr "文件中用以顯示數學文字的字型"
+
+#~ msgid "Numbers"
+#~ msgstr "數字"
+
+#~ msgid "Text cell"
+#~ msgstr "文字單元"
+
+#~ msgid "Show &Functions"
+#~ msgstr "顯示函數(&F)"
+
+#~ msgid "Show &Variables"
+#~ msgstr "顯示變數(&V)"
+
+#, fuzzy
+#~ msgid "P&adé Approximation..."
+#~ msgstr "Pade 近似(&A)..."
+
+#~ msgid "&Find Root..."
+#~ msgstr "找根(&F)..."
+
+#~ msgid "&Roots of Polynomial (Real)"
+#~ msgstr "找多項式所有的根(實數) (&R)"
+
+#~ msgid "&Simplify Expression"
+#~ msgstr "化簡數式(&S)"
+
+#~ msgid "Delete"
+#~ msgstr "刪除"
+
+#~ msgid "Enter Data"
+#~ msgstr "輸入資料"
+
+#, fuzzy
+#~ msgid "Equation="
+#~ msgstr "方程式："
+
+#~ msgid "Get &Series..."
+#~ msgstr "取級數(&S)..."
+
+#~ msgid "Get the Taylor or power series of expression"
+#~ msgstr "取數式的 Taylor 級數或冪級數"
+
+#~ msgid "Make substitution in expression"
+#~ msgstr "在數式中作代換"
+
+#~ msgid "Modulus"
+#~ msgstr "模運算"
+
+#~ msgid "Roots of &Polynomial"
+#~ msgstr "找多項式所有的根(&P)"
+
+#~ msgid "Roots of Polynomial (bfloat)"
+#~ msgstr "找多項式所有的根(長浮點數)"
+
+#~ msgid "Series..."
+#~ msgstr "級數..."
+
+#~ msgid "Tellrat"
+#~ msgstr "Tellrat 函數"
+
+#~ msgid "&Apply to List..."
+#~ msgstr "套用函數至串列(&A)..."
+
+#~ msgid "&Generate Matrix..."
+#~ msgstr "產生矩陣(&G)..."
+
+#, fuzzy
+#~ msgid "&Map to List(s)..."
+#~ msgstr "映射至整個串列(&M)..."
+
+#~ msgid "Apply"
+#~ msgstr "套用"
+
+#~ msgid "Apply function to a list"
+#~ msgstr "套用函數至串列"
+
+#~ msgid "At value"
+#~ msgstr "定點設值"
+
+#~ msgid "BC2"
+#~ msgstr "邊界條件(二階)"
+
+#~ msgid "Char poly"
+#~ msgstr "特徵多項式"
+
+#~ msgid "Convert logarithm of product to sum of logarithms"
+#~ msgstr "將對數內的乘積轉換為數項相加的對數"
+
+#, fuzzy
+#~ msgid "Create a list from another list"
+#~ msgstr "從數式產生串列"
+
+#~ msgid "Derivative:"
+#~ msgstr "導函數："
+
+#~ msgid "Divide"
+#~ msgstr "數字／多項式相除"
+
+#~ msgid "Equations:"
+#~ msgstr "方程式："
+
+#~ msgid "Expand Logarithms"
+#~ msgstr "展開對數數式"
+
+#~ msgid "Find root"
+#~ msgstr "找根"
+
+#~ msgid "IC1"
+#~ msgstr "初始條件(一階)"
+
+#~ msgid "IC2"
+#~ msgstr "初始條件(二階)"
+
+#, fuzzy
+#~ msgid "List(s):"
+#~ msgstr "串列："
+
+#~ msgid "Make &List..."
+#~ msgstr "產生串列(&L)..."
+
+#~ msgid "Make list"
+#~ msgstr "產生串列"
+
+#~ msgid "Make list from expression"
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "comma-separated column numbers:"
+#~ msgstr "x 座標，以逗號分隔"
+
+#~ msgid "matrix[i,j]:"
+#~ msgstr "矩陣[i,j]："
+
+#, fuzzy
+#~ msgid "Fast access to all list elements\n"
+#~ msgstr "從數式產生串列"
+
+#, fuzzy
+#~ msgid "Memoizing functions\n"
+#~ msgstr "顯示已定義的函數"
+
+#~ msgid "Show Maxima help"
+#~ msgstr "顯示 Maxima 說明"
+
+#~ msgid "Starting server on port %d"
+#~ msgstr "於 %d埠啟動伺服器"
+
+#, fuzzy
+#~ msgid "makelist\n"
+#~ msgstr "產生串列"
+
+#, fuzzy
+#~ msgid "map runs the same function on every single list element:\n"
+#~ msgstr "套用函數至串列"
+
+#~ msgid "Plot 2d..."
+#~ msgstr "二維繪圖..."
+
+#~ msgid "Plot 3d..."
+#~ msgstr "三維繪圖..."
+
+#, fuzzy
+#~ msgid "Restart maxima"
+#~ msgstr "重新啟動 Maxima"
+
+#~ msgid "Toggle &Algebraic Flag"
+#~ msgstr "切換代數旗標(&A)"
+
+#, fuzzy
+#~ msgid "Choose the Math Font"
+#~ msgstr "選擇字型"
+
+#, fuzzy
+#~ msgid "Connected."
+#~ msgstr "未連線"
+
+#, fuzzy
+#~ msgid ""
+#~ "Parts of the document will not be loaded correctly:\n"
+#~ "Found unknown XML Tag name "
+#~ msgstr "文件的某部分將無法被正確的讀取！"
+
+#~ msgid "Save panes layout"
+#~ msgstr "儲存窗格配置"
+
+#~ msgid "Save panes layout between sessions."
+#~ msgstr "儲存工作階段間的窗格配置"
+
+#, fuzzy
+#~ msgid " samples"
+#~ msgstr "範例"
+
+#, fuzzy
+#~ msgid " times"
+#~ msgstr "次數："
+
+#~ msgid "&Definite integration"
+#~ msgstr "定積分(&D)"
+
+#~ msgid "&Nusum"
+#~ msgstr "使用 Nusum(&N)"
+
+#~ msgid "&Rational"
+#~ msgstr "有理式(&R)"
+
+#~ msgid "&Special"
+#~ msgstr "特殊(&S)"
+
+#~ msgid "&Taylor series"
+#~ msgstr "Taylor 級數(&T)"
+
+#~ msgid "&pm3d"
+#~ msgstr "pm3d(&P)"
+
+#~ msgid "- Infinity"
+#~ msgstr "負無限大"
+
+#, fuzzy
+#~ msgid "A function f(a,b), named"
+#~ msgstr "函數名"
+
+#, fuzzy
+#~ msgid "A page break"
+#~ msgstr "換頁符號"
+
+#, fuzzy
+#~ msgid "A static plot"
+#~ msgstr "參數式繪圖"
+
+#, fuzzy
+#~ msgid "A sub-subsection heading"
+#~ msgstr "子章節單元"
+
+#, fuzzy
+#~ msgid "A subsection heading"
+#~ msgstr "子章節單元"
+
+#~ msgid "Browse"
+#~ msgstr "瀏覽"
+
+#~ msgid "Choose new plot format:"
+#~ msgstr "選擇新的繪圖格式："
+
+#~ msgid "Comma separated x coordinates"
+#~ msgstr "x 座標，以逗號分隔"
+
+#~ msgid "Comma separated y coordinates"
+#~ msgstr "y 座標，以逗號分隔"
+
+#~ msgid "Constant"
+#~ msgstr "常數"
+
+#, fuzzy
+#~ msgid "Data format"
+#~ msgstr "繪圖格式"
+
+#~ msgid "Depth:"
+#~ msgstr "深度："
+
+#~ msgid "Equation %d:"
+#~ msgstr "方程式 %d："
+
+#~ msgid "Figure %d:"
+#~ msgstr "圖 %d:"
+
+#~ msgid "File:"
+#~ msgstr "檔案："
+
+#~ msgid "Format:"
+#~ msgstr "格式："
+
+#, fuzzy
+#~ msgid "Frame counter end"
+#~ msgstr "找不到檔案"
+
+#~ msgid "Method:"
+#~ msgstr "方法："
+
+#~ msgid "New value:"
+#~ msgstr "新值："
+
+#~ msgid "Old value:"
+#~ msgstr "舊值："
+
+#~ msgid "Options:"
+#~ msgstr "選項："
+
+#, fuzzy
+#~ msgid "Plot an explicit expression"
+#~ msgstr "求數式的極限"
+
+#~ msgid "Plot to file:"
+#~ msgstr "繪圖存檔："
+
+#, fuzzy
+#~ msgid "Point type:"
+#~ msgstr "點："
+
+#, fuzzy
+#~ msgid "Reuse last"
+#~ msgstr "產生串列"
+
+#~ msgid "Save plot to file"
+#~ msgstr "儲存繪圖至檔案"
+
+#~ msgid "Special"
+#~ msgstr "特殊"
+
+#, fuzzy
+#~ msgid "Start value of the parameter"
+#~ msgstr "將最後的計算結果以浮點數 (float) 表示"
+
+#~ msgid "Ticks:"
+#~ msgstr "描繪密度："
+
+#, fuzzy
+#~ msgid "Type in text"
+#~ msgstr "複製為圖片"
+
+#~ msgid "Use Gosper algorithm"
+#~ msgstr "使用 Gosper 演算法"
+
+#~ msgid "antisymmetric"
+#~ msgstr "反對稱"
+
+#~ msgid "both sides"
+#~ msgstr "雙邊"
+
+#~ msgid "default"
+#~ msgstr "預設值"
+
+#~ msgid "diagonal"
+#~ msgstr "對角"
+
+#~ msgid "general"
+#~ msgstr "一般"
+
+#~ msgid "inline"
+#~ msgstr "隨文字顯示"
+
+#~ msgid "left"
+#~ msgstr "左"
+
+#~ msgid "logscale"
+#~ msgstr "對數尺度"
+
+#~ msgid "symmetric"
+#~ msgstr "對稱"
+
+#, fuzzy
+#~ msgid "the x and the y coordinate."
+#~ msgstr "y 座標，以逗號分隔"
+
+#, fuzzy
+#~ msgid "Complex infinity."
+#~ msgstr "複數化簡(&C)"
+
+#, fuzzy
+#~ msgid "The inverse laplace transform."
+#~ msgstr "反 Laplace 變換(&R)..."
+
+#~ msgid "Greek constants"
+#~ msgstr "希臘字母"
+
+#~ msgid "Section cell"
+#~ msgstr "章節單元"
+
+#~ msgid "Subsection cell"
+#~ msgstr "子章節單元"
+
+#, fuzzy
+#~ msgid "Subsubsection cell"
+#~ msgstr "子章節單元"
+
+#~ msgid "Title cell"
+#~ msgstr "標題單元"
+
+#~ msgid "Default font:"
+#~ msgstr "預設字型："
+
+#, fuzzy
+#~ msgid "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*.bmp|Portable animap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
+#~ msgstr "PNG (*.png)|*.png|JPEG (*.jpg)|*.jpg|Windows 點陣圖 (*.bmp)|*.bmp|X pixmap (*.xpm)|*.xpm"
+
+#~ msgid ""
+#~ "wxMaxima could not find help files.\n"
+#~ "\n"
+#~ "Please check your installation."
+#~ msgstr ""
+#~ "wxMaxima 找不到說明檔案\n"
+#~ "\n"
+#~ "請檢查您的安裝"
+
+#, fuzzy
+#~ msgid "wxMaxima &Help\tCtrl+?"
+#~ msgstr "Maxima 說明(H)\tCTRL+?"
+
+#, fuzzy
+#~ msgid "wxMaxima &Help\tF1"
+#~ msgstr "Maxima 說明(H)\tF1"
+
+#~ msgid ""
+#~ "\n"
+#~ "Lisp: "
+#~ msgstr ""
+#~ "\n"
+#~ "Lisp 版本："
+
+#~ msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
+#~ msgstr "wxMaxima 文件 (*.wxm, *.wxmx)|*.wxm;*.wxmx"
+
+#~ msgid "&Interrupt\tCtrl+."
+#~ msgstr "中斷(&I)\tCtrl+."
+
+#~ msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
+#~ msgstr "圖片檔 (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
+
+#~ msgid "Save wxMaxima window size/position"
+#~ msgstr "儲存 wxMaxima 視窗的大小及位置"
+
+#~ msgid "Save wxMaxima window size/position between sessions."
+#~ msgstr "儲存工作階段間 wxMaxima 視窗的大小及位置"

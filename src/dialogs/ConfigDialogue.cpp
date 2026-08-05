@@ -181,32 +181,55 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent)
       "processes. Allows more than one gcl-compiled maxima to run at the "
       "same time, but might provoke crashes.");
   m_languages[_("(Use default language)")] = wxLANGUAGE_DEFAULT;
+  m_languages[_("Afrikaans")] = wxLANGUAGE_AFRIKAANS;
+  m_languages[_("Albanian")] = wxLANGUAGE_ALBANIAN;
   m_languages[_("Arabic")] = wxLANGUAGE_ARABIC;
+  m_languages[_("Basque")] = wxLANGUAGE_BASQUE;
   m_languages[_("Catalan")] = wxLANGUAGE_CATALAN;
   m_languages[_("Chinese (Simplified)")] = wxLANGUAGE_CHINESE_SIMPLIFIED;
   m_languages[_("Chinese (traditional)")] = wxLANGUAGE_CHINESE_TRADITIONAL;
+  m_languages[_("Corsican")] = wxLANGUAGE_CORSICAN;
+  m_languages[_("Croatian")] = wxLANGUAGE_CROATIAN;
   m_languages[_("Czech")] = wxLANGUAGE_CZECH;
   m_languages[_("Danish")] = wxLANGUAGE_DANISH;
+  m_languages[_("Dutch")] = wxLANGUAGE_DUTCH;
   m_languages[_("English")] = wxLANGUAGE_ENGLISH;
   m_languages[_("Finnish")] = wxLANGUAGE_FINNISH;
   m_languages[_("French")] = wxLANGUAGE_FRENCH;
   m_languages[_("Galician")] = wxLANGUAGE_GALICIAN;
+  m_languages[_("Georgian")] = wxLANGUAGE_GEORGIAN;
   m_languages[_("German")] = wxLANGUAGE_GERMAN;
   m_languages[_("Greek")] = wxLANGUAGE_GREEK;
   m_languages[_("Hebrew")] = wxLANGUAGE_HEBREW;
+  m_languages[_("Hindi")] = wxLANGUAGE_HINDI;
   m_languages[_("Hungarian")] = wxLANGUAGE_HUNGARIAN;
+  m_languages[_("Indonesian")] = wxLANGUAGE_INDONESIAN;
   m_languages[_("Italian")] = wxLANGUAGE_ITALIAN;
   m_languages[_("Japanese")] = wxLANGUAGE_JAPANESE;
 #if wxCHECK_VERSION(3, 0, 2)
   m_languages[_("Kabyle")] = wxLANGUAGE_KABYLE;
 #endif
+  m_languages[_("Korean")] = wxLANGUAGE_KOREAN;
+  m_languages[_("Latvian")] = wxLANGUAGE_LATVIAN;
+  m_languages[_("Lithuanian")] = wxLANGUAGE_LITHUANIAN;
+  m_languages[_("Malay")] = wxLANGUAGE_MALAY;
+  m_languages[_("Nepali")] = wxLANGUAGE_NEPALI;
   m_languages[_("Norwegian")] = wxLANGUAGE_NORWEGIAN_BOKMAL;
+  m_languages[_("Persian")] = wxLANGUAGE_FARSI;
   m_languages[_("Polish")] = wxLANGUAGE_POLISH;
+  m_languages[_("Portuguese")] = wxLANGUAGE_PORTUGUESE;
   m_languages[_("Portuguese (Brazilian)")] = wxLANGUAGE_PORTUGUESE_BRAZILIAN;
+  m_languages[_("Romanian")] = wxLANGUAGE_ROMANIAN;
   m_languages[_("Russian")] = wxLANGUAGE_RUSSIAN;
+  m_languages[_("Serbian")] = wxLANGUAGE_SERBIAN;
+  m_languages[_("Slovak")] = wxLANGUAGE_SLOVAK;
+  m_languages[_("Slovenian")] = wxLANGUAGE_SLOVENIAN;
   m_languages[_("Spanish")] = wxLANGUAGE_SPANISH;
+  m_languages[_("Swedish")] = wxLANGUAGE_SWEDISH;
+  m_languages[_("Tamil")] = wxLANGUAGE_TAMIL;
   m_languages[_("Turkish")] = wxLANGUAGE_TURKISH;
   m_languages[_("Ukrainian")] = wxLANGUAGE_UKRAINIAN;
+  m_languages[_("Vietnamese")] = wxLANGUAGE_VIETNAMESE;
 
   m_configuration = std::unique_ptr<Configuration>(new Configuration());
   SetSheetInnerBorder(3);

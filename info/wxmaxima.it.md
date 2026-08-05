@@ -1027,7 +1027,7 @@ Generates the skeleton of a `draw()` command that draws a 3D scene. If
 neither a 2D nor a 3D scene is set up, all of the other buttons set up a 2D
 scene that contains the command the button generates.
 
-#### Expression
+#### Espressione
 
 Appends a standard plot of an expression like `sin(x)`, `x*sin(x)` or
 `x^2+2*x-4` to the `draw()` command the cursor currently is in. If there is

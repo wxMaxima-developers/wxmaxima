@@ -93,7 +93,20 @@ if(PANDOC)
 	file(COPY ${IMAGEFILES} DESTINATION .)
         configure_file(wxmaxima.md wxmaxima.md COPYONLY)
 	foreach(BASENAME ${BASENAMES})
-                configure_file(${BASENAME}.md ${BASENAME}.md COPYONLY)
+                if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md")
+                    configure_file(${BASENAME}.md ${BASENAME}.md COPYONLY)
+                else()
+                    # po4a only writes a translated ${BASENAME}.md once that
+                    # language crosses its --keep threshold (po4a.cfg.in sets
+                    # 5%); a just-seeded language with no translated manual
+                    # strings yet has none. Fall back to the English original
+                    # so configure doesn't hard-fail for every contributor
+                    # with po4a+pandoc installed until someone crosses that
+                    # threshold - po4a starts writing the real file in the
+                    # source tree once they do, and this branch stops being
+                    # taken on the next configure.
+                    configure_file(wxmaxima.md ${BASENAME}.md COPYONLY)
+                endif()
 	endforeach()
 	generate_wxmaxima_documentation_html("wxmaxima")
 	generate_wxmaxima_documentation_epub("wxmaxima")
