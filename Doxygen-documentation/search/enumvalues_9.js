@@ -20,5 +20,6 @@ var searchData=
   ['mc_5ftype_5fsubsubsection_17',['MC_TYPE_SUBSUBSECTION',['../Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fdaabe6b100490f2e7ae52d5d1edd6de454',1,'Cell.h']]],
   ['mc_5ftype_5ftext_18',['MC_TYPE_TEXT',['../Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fdadc163f592004a920421b06c483489f56',1,'Cell.h']]],
   ['mc_5ftype_5ftitle_19',['MC_TYPE_TITLE',['../Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fdaa2a1990ce6582b0b9cadf7f0fe5b002b',1,'Cell.h']]],
-  ['mc_5ftype_5fwarning_20',['MC_TYPE_WARNING',['../Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fda15defe91ff4a4a9187bebd30e06507bc',1,'Cell.h']]]
+  ['mc_5ftype_5fwarning_20',['MC_TYPE_WARNING',['../Cell_8h.html#accb32ccb3ff8f2c6736a6ebe544894fda15defe91ff4a4a9187bebd30e06507bc',1,'Cell.h']]],
+  ['missingcodec_21',['MissingCodec',['../classImage.html#aa66fcc260d334a93ab2186636f78fc5ba3b329ed0c114035a1472d56f40d1d8af',1,'Image']]]
 ];

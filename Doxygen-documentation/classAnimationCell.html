@@ -134,6 +134,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const 
 <tr class="separator:a16838298adb0ec0af57389a136270f9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3caecea91fec79d3d1aaa51828ddc09f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimationCell.html#a3caecea91fec79d3d1aaa51828ddc09f">GetOriginalHeight</a> () const override</td></tr>
 <tr class="separator:a3caecea91fec79d3d1aaa51828ddc09f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0a28d7a0c8ab67540c1f329b0b3f5fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimationCell.html#ae0a28d7a0c8ab67540c1f329b0b3f5fd">TallyImageLoadFailures</a> (int &amp;dataUnavailable, int &amp;decodeFailed) const override</td></tr>
+<tr class="memdesc:ae0a28d7a0c8ab67540c1f329b0b3f5fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlike GetOriginalWidth()/Height(), this tallies EVERY frame, not just the one currently displayed.  <br /></td></tr>
+<tr class="separator:ae0a28d7a0c8ab67540c1f329b0b3f5fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a150098cfbc66142915f4ee022e5d073d"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimationCell.html#a150098cfbc66142915f4ee022e5d073d">GetExtension</a> () const override</td></tr>
 <tr class="memdesc:a150098cfbc66142915f4ee022e5d073d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the file name extension that matches the image type.  <br /></td></tr>
 <tr class="separator:a150098cfbc66142915f4ee022e5d073d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -223,6 +226,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CompressedGnuplotSour
 <tr class="memitem:a69674af20401792e65d0f48438894491"><td class="memItemLeft" align="right" valign="top">wxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAnimationCell.html#a69674af20401792e65d0f48438894491">GnuplotSource</a> () const override</td></tr>
 <tr class="memdesc:a69674af20401792e65d0f48438894491"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the file with gnuplot commands that created this file.  <br /></td></tr>
 <tr class="separator:a69674af20401792e65d0f48438894491"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a0978c286a88d6ab0199789ef7fd40b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a4a0978c286a88d6ab0199789ef7fd40b">TallyImageLoadFailures</a> (int &amp;WXUNUSED(dataUnavailable), int &amp;WXUNUSED(decodeFailed)) const</td></tr>
+<tr class="memdesc:a4a0978c286a88d6ab0199789ef7fd40b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocks until this cell's own image (if any) has finished loading, then adds 1 to <em>dataUnavailable</em> or <em>decodeFailed</em> if it ended up invalid (see <a class="el" href="classImage.html#aa66fcc260d334a93ab2186636f78fc5b" title="Why the most recent load attempt left this image invalid, if it did.">Image::LoadFailureKind</a>) &ndash; neither if it loaded fine or has no image at all.  <br /></td></tr>
+<tr class="separator:a4a0978c286a88d6ab0199789ef7fd40b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47609f0f35aa58b174a6d137f7e082b6"><td class="memItemLeft" align="right" valign="top">wxCoord&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a47609f0f35aa58b174a6d137f7e082b6">Scale_Px</a> (double px) const</td></tr>
 <tr class="memdesc:a47609f0f35aa58b174a6d137f7e082b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale font sizes and line widths according to the zoom factor.  <br /></td></tr>
 <tr class="separator:a47609f0f35aa58b174a6d137f7e082b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -281,6 +287,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasHardLineBreak</b> 
 <tr class="memitem:a875968c41928e8e1fcf25238b9a9cda1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a875968c41928e8e1fcf25238b9a9cda1">ClearCacheList</a> ()</td></tr>
 <tr class="memdesc:a875968c41928e8e1fcf25238b9a9cda1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the cache of the whole list of cells starting with this one.  <br /></td></tr>
 <tr class="separator:a875968c41928e8e1fcf25238b9a9cda1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b8f49c7624c56f2360b43b4b76b235a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCell.html#a1b8f49c7624c56f2360b43b4b76b235a">TallyImageLoadFailures_Recursively</a> (int &amp;dataUnavailable, int &amp;decodeFailed) const</td></tr>
+<tr class="memdesc:a1b8f49c7624c56f2360b43b4b76b235a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively visits this cell and everything nested inside it (including an image produced by the very last evaluated cell, which may still be loading on a background thread at the instant this is called), tallying GH #2178 image load failures into <em>dataUnavailable/<em>decodeFailed</em>.</em>  <br /></td></tr>
+<tr class="separator:a1b8f49c7624c56f2360b43b4b76b235a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4a69e5c19c99f957837481596e4714f"><td class="memItemLeft" align="right" valign="top"><a id="ac4a69e5c19c99f957837481596e4714f" name="ac4a69e5c19c99f957837481596e4714f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>TallyImageLoadFailures_RecursivelyList</b> (int &amp;dataUnavailable, int &amp;decodeFailed) const</td></tr>
+<tr class="memdesc:ac4a69e5c19c99f957837481596e4714f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as <a class="el" href="classCell.html#a1b8f49c7624c56f2360b43b4b76b235a" title="Recursively visits this cell and everything nested inside it (including an image produced by the very...">TallyImageLoadFailures_Recursively()</a>, but for the whole list of cells starting with this one. <br /></td></tr>
+<tr class="separator:ac4a69e5c19c99f957837481596e4714f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66419f232b008b6dbbe814868f01320d"><td class="memItemLeft" align="right" valign="top"><a id="a66419f232b008b6dbbe814868f01320d" name="a66419f232b008b6dbbe814868f01320d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetConfigurationList</b> (<a class="el" href="classConfiguration.html">Configuration</a> *config)</td></tr>
 <tr class="memdesc:a66419f232b008b6dbbe814868f01320d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell this cell list to use the configuration object config. <br /></td></tr>
@@ -3517,6 +3530,124 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 </div><div class="memdoc">
 
 <p>Reimplemented in <a class="el" href="classEditorCell.html#a6c62ab93a0ca82c1c92d369957e09abb">EditorCell</a>.</p>
+
+</div>
+</div>
+<a id="ae0a28d7a0c8ab67540c1f329b0b3f5fd" name="ae0a28d7a0c8ab67540c1f329b0b3f5fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0a28d7a0c8ab67540c1f329b0b3f5fd">&#9670;&#160;</a></span>TallyImageLoadFailures() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AnimationCell::TallyImageLoadFailures </td>
+          <td>(</td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>dataUnavailable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>decodeFailed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Unlike GetOriginalWidth()/Height(), this tallies EVERY frame, not just the one currently displayed. </p>
+
+<p>Implements <a class="el" href="classImgCellBase.html">ImgCellBase</a>.</p>
+
+</div>
+</div>
+<a id="a4a0978c286a88d6ab0199789ef7fd40b" name="a4a0978c286a88d6ab0199789ef7fd40b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a0978c286a88d6ab0199789ef7fd40b">&#9670;&#160;</a></span>TallyImageLoadFailures() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Cell::TallyImageLoadFailures </td>
+          <td>(</td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>WXUNUSED</em>dataUnavailable, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>WXUNUSED</em>decodeFailed&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Blocks until this cell's own image (if any) has finished loading, then adds 1 to <em>dataUnavailable</em> or <em>decodeFailed</em> if it ended up invalid (see <a class="el" href="classImage.html#aa66fcc260d334a93ab2186636f78fc5b" title="Why the most recent load attempt left this image invalid, if it did.">Image::LoadFailureKind</a>) &ndash; neither if it loaded fine or has no image at all. </p>
+<p><a class="el" href="classA.html">A</a> no-op for every cell type except ImgCell/AnimationCell, overridden there. See <a class="el" href="classCell.html#a1b8f49c7624c56f2360b43b4b76b235a" title="Recursively visits this cell and everything nested inside it (including an image produced by the very...">Cell::TallyImageLoadFailures_Recursively()</a>. </p>
+
+</div>
+</div>
+<a id="a1b8f49c7624c56f2360b43b4b76b235a" name="a1b8f49c7624c56f2360b43b4b76b235a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b8f49c7624c56f2360b43b4b76b235a">&#9670;&#160;</a></span>TallyImageLoadFailures_Recursively()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Cell::TallyImageLoadFailures_Recursively </td>
+          <td>(</td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>dataUnavailable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>decodeFailed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Recursively visits this cell and everything nested inside it (including an image produced by the very last evaluated cell, which may still be loading on a background thread at the instant this is called), tallying GH #2178 image load failures into <em>dataUnavailable/<em>decodeFailed</em>.</em> </p>
+<p>Reflects only the CURRENT, final state of each image: one that failed once but was then reloaded successfully (e.g. a stale embedded copy later replaced by a fresh evaluation) is not counted. </p>
 
 </div>
 </div>

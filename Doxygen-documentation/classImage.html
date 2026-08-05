@@ -71,6 +71,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Data Fields</a>  </div>
@@ -87,6 +88,16 @@ $(function() {
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage_1_1WxmxStream.html">WxmxStream</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:aa66fcc260d334a93ab2186636f78fc5b"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#aa66fcc260d334a93ab2186636f78fc5b">LoadFailureKind</a> { <b>None</b>
+, <a class="el" href="classImage.html#aa66fcc260d334a93ab2186636f78fc5bae46c3285d7872de9634eb0640bfb0870">DataUnavailable</a>
+, <a class="el" href="classImage.html#aa66fcc260d334a93ab2186636f78fc5ba3b329ed0c114035a1472d56f40d1d8af">MissingCodec</a>
+, <a class="el" href="classImage.html#aa66fcc260d334a93ab2186636f78fc5ba5f73b4d4c9b43e90d8c15847d54575e6">DecodeFailed</a>
+ }</td></tr>
+<tr class="memdesc:aa66fcc260d334a93ab2186636f78fc5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Why the most recent load attempt left this image invalid, if it did.  <a href="classImage.html#aa66fcc260d334a93ab2186636f78fc5b">More...</a><br /></td></tr>
+<tr class="separator:aa66fcc260d334a93ab2186636f78fc5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -128,6 +139,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>InvalidBitmap</b> (co
 <tr class="memitem:a14253d6e1edad82709bed758d73f25e9"><td class="memItemLeft" align="right" valign="top"><a id="a14253d6e1edad82709bed758d73f25e9" name="a14253d6e1edad82709bed758d73f25e9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GenerateInvalidBitmap</b> ()</td></tr>
 <tr class="separator:a14253d6e1edad82709bed758d73f25e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a777e5847d982db8cc939c89a455fe9b2"><td class="memItemLeft" align="right" valign="top"><a id="a777e5847d982db8cc939c89a455fe9b2" name="a777e5847d982db8cc939c89a455fe9b2"></a>
+<a class="el" href="classImage.html#aa66fcc260d334a93ab2186636f78fc5b">LoadFailureKind</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetLoadFailureKind</b> () const</td></tr>
+<tr class="memdesc:a777e5847d982db8cc939c89a455fe9b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocks until this image's background load task (if any) has finished, then reports why it ended up invalid, if it did. Reflects only the CURRENT state &ndash; an image that failed once but was then reloaded successfully (e.g. a stale embedded copy later replaced by a fresh evaluation) reports LoadFailureKind::None. <br /></td></tr>
+<tr class="separator:a777e5847d982db8cc939c89a455fe9b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dbad9d2fc36a7c035e7a067f352d8a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a0dbad9d2fc36a7c035e7a067f352d8a4">GnuplotSource</a> (wxString gnuplotFilename, wxString dataFilename, const wxString &amp;wxmxFile=wxEmptyString)</td></tr>
 <tr class="memdesc:a0dbad9d2fc36a7c035e7a067f352d8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the name of the gnuplot source and data file of this image.  <br /></td></tr>
 <tr class="separator:a0dbad9d2fc36a7c035e7a067f352d8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -267,7 +282,41 @@ wxMemoryBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>m_compresse
 <li>and if we have big images (big plots or for example photographs) we don't need to store them in their uncompressed form.</li>
 <li>One could even delete the cached scaled images for all cells that currently are off-screen in order to save memory. </li>
 </ul>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="aa66fcc260d334a93ab2186636f78fc5b" name="aa66fcc260d334a93ab2186636f78fc5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa66fcc260d334a93ab2186636f78fc5b">&#9670;&#160;</a></span>LoadFailureKind</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="classImage.html#aa66fcc260d334a93ab2186636f78fc5b">Image::LoadFailureKind</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Why the most recent load attempt left this image invalid, if it did. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa66fcc260d334a93ab2186636f78fc5bae46c3285d7872de9634eb0640bfb0870" name="aa66fcc260d334a93ab2186636f78fc5bae46c3285d7872de9634eb0640bfb0870"></a>DataUnavailable&#160;</td><td class="fielddoc"><p>Raw data could never be obtained at all (file not found, empty wxmx entry, ...). Always a real failure: there was nothing to even attempt rendering, regardless of what &ndash;debug says. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa66fcc260d334a93ab2186636f78fc5ba3b329ed0c114035a1472d56f40d1d8af" name="aa66fcc260d334a93ab2186636f78fc5ba3b329ed0c114035a1472d56f40d1d8af"></a>MissingCodec&#160;</td><td class="fielddoc"><p>Data was read fine, but this wxWidgets build has no decoder registered for the format at all (e.g. WebP/TIFF support not compiled in). Not our bug &ndash; never counted towards a batch-mode failure. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa66fcc260d334a93ab2186636f78fc5ba5f73b4d4c9b43e90d8c15847d54575e6" name="aa66fcc260d334a93ab2186636f78fc5ba5f73b4d4c9b43e90d8c15847d54575e6"></a>DecodeFailed&#160;</td><td class="fielddoc"><p>Data was read fine and a decoder exists for the format (or it's an SVG, parsed by our own vendored code, which has no "missing decoder" concept) &ndash; but decoding/parsing it still failed. <a class="el" href="classA.html">A</a> real bug. </p>
+<p>Only meaningful to react to under &ndash;debug: plain batch mode's contract is "evaluate correctly", not "render correctly" &ndash; see GH #2178. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5914663cd2c7958ef99bad1c8d0b4a7c" name="a5914663cd2c7958ef99bad1c8d0b4a7c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5914663cd2c7958ef99bad1c8d0b4a7c">&#9670;&#160;</a></span>Image() <span class="overload">[1/2]</span></h2>
 
