@@ -73,6 +73,18 @@ public:
     if(IsOk())return m_images.at(m_displayed)->GetOriginalWidth(); else return 0;}
   size_t GetOriginalHeight() const override {
     if(IsOk())return m_images.at(m_displayed)->GetOriginalHeight(); else return 0;}
+  //! Unlike GetOriginalWidth()/Height(), this tallies EVERY frame, not just
+  //! the one currently displayed.
+  void TallyImageLoadFailures(int &dataUnavailable, int &decodeFailed) const override {
+    for (const auto &image : m_images) {
+      if (!image) continue;
+      switch (image->GetLoadFailureKind()) {
+      case Image::LoadFailureKind::DataUnavailable: dataUnavailable++; break;
+      case Image::LoadFailureKind::DecodeFailed: decodeFailed++; break;
+      default: break;
+      }
+    }
+  }
   wxString GetExtension() const override
     { if (IsOk())return m_images.at(m_displayed)->GetExtension(); else return wxEmptyString; }
 

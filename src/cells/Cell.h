@@ -343,6 +343,36 @@ public:
     For details see ClearCache().
   */
   void ClearCacheList();
+
+  /*! Blocks until this cell's own image (if any) has finished loading, then
+    adds 1 to \a dataUnavailable or \a decodeFailed if it ended up invalid
+    (see Image::LoadFailureKind) -- neither if it loaded fine or has no
+    image at all.
+
+    A no-op for every cell type except ImgCell/AnimationCell, overridden
+    there. See Cell::TallyImageLoadFailures_Recursively().
+  */
+  virtual void TallyImageLoadFailures(int &WXUNUSED(dataUnavailable),
+                                      int &WXUNUSED(decodeFailed)) const
+    {}
+
+  /*! Recursively visits this cell and everything nested inside it (including
+    an image produced by the very last evaluated cell, which may still be
+    loading on a background thread at the instant this is called), tallying
+    GH #2178 image load failures into \a dataUnavailable/\a decodeFailed.
+
+    Reflects only the CURRENT, final state of each image: one that failed
+    once but was then reloaded successfully (e.g. a stale embedded copy later
+    replaced by a fresh evaluation) is not counted.
+  */
+  void TallyImageLoadFailures_Recursively(int &dataUnavailable,
+                                          int &decodeFailed) const;
+
+  /*! Same as TallyImageLoadFailures_Recursively(), but for the whole list of
+    cells starting with this one.
+  */
+  void TallyImageLoadFailures_RecursivelyList(int &dataUnavailable,
+                                              int &decodeFailed) const;
   //! Tell this cell list to use the configuration object config
   void SetConfigurationList(Configuration *config);
   //! Tell this cell to use the configuration object config

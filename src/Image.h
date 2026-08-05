@@ -31,7 +31,6 @@
 
 #include <memory>
 #include <thread>
-#include <atomic>
 #include "BackgroundQueue.h"
 #include "precomp.h"
 #include "Compat.h"
@@ -125,6 +124,37 @@ public:
 
   wxString m_invalidBitmapMessage;
   bool m_isInvalid = false;
+
+  //! Why the most recent load attempt left this image invalid, if it did.
+  enum class LoadFailureKind {
+    None,
+    //! Raw data could never be obtained at all (file not found, empty wxmx
+    //! entry, ...). Always a real failure: there was nothing to even attempt
+    //! rendering, regardless of what --debug says.
+    DataUnavailable,
+    //! Data was read fine, but this wxWidgets build has no decoder registered
+    //! for the format at all (e.g. WebP/TIFF support not compiled in). Not
+    //! our bug -- never counted towards a batch-mode failure.
+    MissingCodec,
+    //! Data was read fine and a decoder exists for the format (or it's an
+    //! SVG, parsed by our own vendored code, which has no "missing decoder"
+    //! concept) -- but decoding/parsing it still failed. A real bug.
+    //!
+    //! Only meaningful to react to under --debug: plain batch mode's
+    //! contract is "evaluate correctly", not "render correctly" -- see
+    //! GH #2178.
+    DecodeFailed,
+  };
+  //! Blocks until this image's background load task (if any) has finished,
+  //! then reports why it ended up invalid, if it did. Reflects only the
+  //! CURRENT state -- an image that failed once but was then reloaded
+  //! successfully (e.g. a stale embedded copy later replaced by a fresh
+  //! evaluation) reports LoadFailureKind::None.
+  LoadFailureKind GetLoadFailureKind() const {
+    if (m_loadImageTask)
+      m_loadImageTask->Wait();
+    return m_loadFailureKind;
+  }
 
   /*! Sets the name of the gnuplot source and data file of this image
 
@@ -308,6 +338,17 @@ private:
   void LoadImage(wxString image, const wxString &wxmxFile, bool remove = true);
   //! Reads the compressed image into a memory buffer
   wxMemoryBuffer ReadCompressedImage(stop_token stopToken, wxInputStream *data);
+  //! We never even got this image's bytes.
+  void RecordDataUnavailable(const wxString &message);
+  /*! We got this image's bytes but could not decode/render them.
+
+    \param missingCodec true if this wxWidgets build simply has no decoder
+    registered for the format (not our bug); false if a decoder exists (or
+    the format is SVG, parsed by our own vendored code) and still failed (a
+    real bug).
+  */
+  void RecordDecodeFailure(const wxString &message, bool missingCodec);
+  LoadFailureKind m_loadFailureKind = LoadFailureKind::None;
   Configuration *m_configuration = NULL;
   /*! The upper width limit for displaying this image
    */
