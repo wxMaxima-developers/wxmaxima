@@ -43,6 +43,11 @@ parts:
     plugin: cmake
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
+      # This snap stages gnuplot via the maxima snap below (strict confinement
+      # can't just exec a host gnuplot binary), so it is being distributed, not
+      # merely recommended -- gnuplot's own license notice needs to travel
+      # with it. See THIRD-PARTY-NOTICES-Gnuplot.txt.
+      - -DWXM_BUNDLES_GNUPLOT=ON
     source: https://github.com/wxMaxima-developers/wxmaxima.git
     # core24 == Ubuntu 24.04 (noble), which ships wxWidgets 3.2 (not 3.0) and
     # applied the 64-bit time_t transition, so the runtime libraries carry the

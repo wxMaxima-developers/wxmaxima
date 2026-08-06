@@ -77,6 +77,8 @@ set(WXM_SANITIZE "" CACHE STRING
     "Comma-separated list of sanitizers to compile with, e.g. \"address,undefined\" (GCC/Clang only).")
 option(WXM_FUZZ
     "Build the coverage-guided libFuzzer parser fuzz targets (requires a Clang compiler). See test/fuzz/." OFF)
+option(WXM_BUNDLES_GNUPLOT
+    "This build bundles its own gnuplot binary instead of relying on a separately installed one (e.g. the snap, which stages gnuplot via the maxima snap so it works under strict confinement). Appends gnuplot's own license notice to THIRD-PARTY-NOTICES.txt, since it is then being distributed, not merely recommended." OFF)
 
 if(DEFINED MACOSX_VERSION_MIN)
     set(CMAKE_OSX_DEPLOYMENT_TARGET ${MACOSX_VERSION_MIN} CACHE STRING FORCE)
