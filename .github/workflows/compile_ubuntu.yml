@@ -93,6 +93,29 @@ jobs:
              # to the same GitHub release without colliding.
              mv _CPack_DEB/*.deb wxmaxima-ubuntu-latest-amd64.deb
              cd ..
+      - name: Package source tarball + checksum (release only)
+        # GH #1192: a .tar.xz source archive plus a sha256 checksum for it.
+        # xz compresses noticeably tighter than GitHub's own auto-generated
+        # tag archives (which use plain gzip) - real bandwidth for the distro
+        # packagers who mirror/rebuild from upstream source tarballs at scale
+        # (the issue's original report: ~40% smaller for the same release).
+        # Built with "git archive" from the tagged commit rather than reusing
+        # GitHub's own "Source code" assets: those are documented to not be
+        # guaranteed byte-stable over time (GitHub can silently regenerate
+        # them), which is exactly why a distro packager pinning a sha256
+        # against one can't fully trust it to stay valid - a checksum we
+        # generate and attach ourselves, once, doesn't have that problem.
+        if: startsWith(github.ref, 'refs/tags/Version')
+        run: |
+             VERSION="${GITHUB_REF_NAME#Version-}"
+             git archive --prefix="wxmaxima-${VERSION}/" -o "wxmaxima-${VERSION}.tar" HEAD
+             xz -9 "wxmaxima-${VERSION}.tar"
+             mv "wxmaxima-${VERSION}.tar.xz" build-release/
+             # sha256sum records whatever path it's given; strip the
+             # "build-release/" build-directory prefix so the checksum file
+             # verifies correctly once someone has both files side by side
+             # in the same (arbitrary) local directory after downloading.
+             ( cd build-release && sha256sum "wxmaxima-${VERSION}.tar.xz" > "wxmaxima-${VERSION}.tar.xz.sha256" )
       - name: Publish release
         if: startsWith(github.ref, 'refs/tags/Version')
         uses: softprops/action-gh-release@v3
@@ -100,7 +123,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          files: build-release/*.deb
+          files: |
+            build-release/*.deb
+            build-release/*.tar.xz
+            build-release/*.tar.xz.sha256
           draft: false
           prerelease: false
 
