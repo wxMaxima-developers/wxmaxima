@@ -243,42 +243,92 @@ WorksheetDocument::UndoTextChange(const TreeUndoAction &action,
   return TextUndoResult::Applied;
 }
 
+void WorksheetDocument::RecordFoldUndo(const std::vector<GroupCell *> &affected,
+                                       TreeUndoAction::FoldDirection direction) {
+  if (affected.empty())
+    return;
+
+  m_treeUndo.ClearRedoActionList();
+  // Pushed newest-first (emplace_front), so the LAST entry pushed here (the
+  // first cell FoldAll()/UnfoldAll() actually touched) ends up as the atomic
+  // group's un-marked tail -- see TreeUndoManager::AppendAction().
+  for (std::size_t i = 0; i < affected.size(); ++i) {
+    m_treeUndo.UndoStack().emplace_front(affected[i], direction);
+    if (i + 1 < affected.size())
+      m_treeUndo.AppendAction();
+  }
+}
+
+GroupCell *WorksheetDocument::Fold(GroupCell *which) {
+  if (!which || !which->IsFoldable() || which->GetHiddenTree())
+    return {};
+
+  GroupCell *result = which->Fold();
+
+  if (result) { // something has folded
+    OutputChanged();
+    m_treeUndo.ClearRedoActionList();
+    m_treeUndo.UndoStack().emplace_front(which, TreeUndoAction::FoldDirection::Folded);
+  }
+
+  return result;
+}
+
+GroupCell *WorksheetDocument::Unfold(GroupCell *which) {
+  if (!which || !which->IsFoldable() || !which->GetHiddenTree())
+    return {};
+
+  GroupCell *result = which->Unfold();
+
+  if (result) { // something has unfolded
+    OutputChanged();
+    m_treeUndo.ClearRedoActionList();
+    m_treeUndo.UndoStack().emplace_front(which, TreeUndoAction::FoldDirection::Unfolded);
+  }
+
+  return result;
+}
+
 GroupCell *WorksheetDocument::ToggleFold(GroupCell *which) {
   if (!which || !which->IsFoldable())
     return {};
 
-  GroupCell *result = which->GetHiddenTree() ? which->Unfold() : which->Fold();
-
-  if (result) // something has folded/unfolded
-    OutputChanged();
-
-  return result;
+  return which->GetHiddenTree() ? Unfold(which) : Fold(which);
 }
 
 GroupCell *WorksheetDocument::ToggleFoldAll(GroupCell *which) {
   if (!which || !which->IsFoldable())
     return {};
 
+  bool wasFolded = which->GetHiddenTree() != nullptr;
+  std::vector<GroupCell *> affected;
   GroupCell *result =
-    which->GetHiddenTree() ? which->UnfoldAll() : which->FoldAll();
+    wasFolded ? which->UnfoldAll(&affected) : which->FoldAll(&affected);
 
-  if (result) // something has folded/unfolded
+  if (result) { // something has folded/unfolded
     OutputChanged();
+    RecordFoldUndo(affected, wasFolded ? TreeUndoAction::FoldDirection::Unfolded
+                                       : TreeUndoAction::FoldDirection::Folded);
+  }
 
   return result;
 }
 
 void WorksheetDocument::FoldAll() {
   if (m_tree) {
-    m_tree->FoldAll();
+    std::vector<GroupCell *> affected;
+    m_tree->FoldAll(&affected);
     OutputChanged();
+    RecordFoldUndo(affected, TreeUndoAction::FoldDirection::Folded);
   }
 }
 
 void WorksheetDocument::UnfoldAll() {
   if (m_tree) {
-    m_tree->UnfoldAll();
+    std::vector<GroupCell *> affected;
+    m_tree->UnfoldAll(&affected);
     OutputChanged();
+    RecordFoldUndo(affected, TreeUndoAction::FoldDirection::Unfolded);
   }
 }
 

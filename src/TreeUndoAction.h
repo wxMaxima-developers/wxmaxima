@@ -36,6 +36,7 @@
 #include <wx/string.h>
 #include <list>
 #include <memory>
+#include <optional>
 
 /*! The description of one action for the undo (or redo) command.
   This object is immutable - the undo/redo buffer cannot be modified.
@@ -58,6 +59,18 @@ public:
   TreeUndoAction(GroupCell *start, GroupCell *end, GroupCell *oldCells) :
     m_start(start), m_newCellsEnd(end), m_oldCells(oldCells)
     {
+    }
+
+  //! Which way a fold/unfold undo action (see m_fold) goes.
+  enum class FoldDirection {
+    Folded,  //!< This action folded start's subtree; undoing it unfolds it.
+    Unfolded //!< This action unfolded start's subtree; undoing it folds it.
+  };
+
+  TreeUndoAction(GroupCell *start, FoldDirection direction) :
+    m_start(start), m_fold(direction)
+    {
+      wxASSERT_MSG(start, _("Bug: Trying to record a fold/unfold for undo without a cell."));
     }
 
   /*! True = This undo action is only part of an atomic undo action.
@@ -114,6 +127,14 @@ public:
     If this field's value is NULL no cells have to be added to undo this action.
   */
   std::unique_ptr<GroupCell> m_oldCells;
+
+  /*! Set only for fold/unfold actions (see FoldDirection): whether this
+    action folded or unfolded the subtree that starts right after m_start.
+
+    std::nullopt for every other action kind (text change, cell addition,
+    cell deletion).
+  */
+  const std::optional<FoldDirection> m_fold;
 };
 
 //! The type of the list of tree actions that can be undone

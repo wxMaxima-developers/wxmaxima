@@ -1971,30 +1971,34 @@ GroupCell *GroupCell::Unfold() {
   return dynamic_cast<GroupCell *>(splicedIn.lastSpliced);
 }
 
-GroupCell *GroupCell::FoldAll() {
+GroupCell *GroupCell::FoldAll(std::vector<GroupCell *> *affected) {
   GroupCell *result = NULL;
   for (auto &tmp : OnList(this)) {
     if (tmp.IsFoldable() && !tmp.m_hiddenTree) {
       tmp.Fold();
       result = &tmp;
+      if (affected)
+        affected->push_back(&tmp);
     }
     if (tmp.m_hiddenTree != NULL)
-      tmp.m_hiddenTree->FoldAll();
+      tmp.m_hiddenTree->FoldAll(affected);
   }
   return result;
 }
 
 // unfolds recursively its contents
 // if (all) then also calls it on it's m_next
-GroupCell *GroupCell::UnfoldAll() {
+GroupCell *GroupCell::UnfoldAll(std::vector<GroupCell *> *affected) {
   GroupCell *result = NULL;
   for (auto &tmp : OnList(this)) {
     if (tmp.IsFoldable() && (tmp.m_hiddenTree != NULL)) {
       tmp.Unfold();
       result = &tmp;
+      if (affected)
+        affected->push_back(&tmp);
     }
     if (tmp.m_hiddenTree != NULL)
-      tmp.m_hiddenTree->UnfoldAll();
+      tmp.m_hiddenTree->UnfoldAll(affected);
   }
   return result;
 }

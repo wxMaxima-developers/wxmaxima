@@ -310,6 +310,10 @@ public:
 
     Called from TreeUndo().*/
   bool TreeUndoCellAddition(UndoActions *sourcelist, UndoActions *undoForThisOperation);
+  /*! Undo a fold or unfold (GH #266)
+
+    Called from TreeUndo().*/
+  bool TreeUndoFold(UndoActions *sourcelist, UndoActions *undoForThisOperation);
 
   //! Undo a tree operation.
   bool TreeUndo()
@@ -1447,6 +1451,12 @@ public:
   void FoldOccurred();
 
   // methods for folding
+  //! Fold a cell (see WorksheetDocument::Fold())
+  GroupCell *Fold(GroupCell *which) { return m_document.Fold(which); }
+
+  //! Unfold a cell (see WorksheetDocument::Unfold())
+  GroupCell *Unfold(GroupCell *which) { return m_document.Unfold(which); }
+
   //! Fold or unfold a cell
   GroupCell *ToggleFold(GroupCell *which) { return m_document.ToggleFold(which); }
 

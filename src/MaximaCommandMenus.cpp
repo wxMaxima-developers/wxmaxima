@@ -3124,7 +3124,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
         // This "if" is pure paranoia. But - since the costs of an "if" are low...
         GroupCell *group = m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup();
         if (group->IsFoldable())
-          group->Fold();
+          m_wxMaxima.GetWorksheet()->Fold(group);
         else
           group->Hide(true);
         m_wxMaxima.GetWorksheet()->UpdateTableOfContents();
@@ -3225,7 +3225,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
   else if(event.GetId() == EventIDs::popid_unfold){
       GroupCell *group = m_wxMaxima.GetWorksheet()->GetActiveCell()->GetGroup();
       if (group->IsFoldable())
-        group->Unfold();
+        m_wxMaxima.GetWorksheet()->Unfold(group);
       else
         group->Hide(false);
       m_wxMaxima.GetWorksheet()->UpdateTableOfContents();
@@ -3237,7 +3237,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
       if ((m_wxMaxima.GetWorksheet()->GetTree()) &&
           (m_wxMaxima.GetWorksheet()->GetTree()->Contains(
                                             m_wxMaxima.m_tableOfContents->RightClickedOn()))) {
-        m_wxMaxima.m_tableOfContents->RightClickedOn()->Fold();
+        m_wxMaxima.GetWorksheet()->Fold(m_wxMaxima.m_tableOfContents->RightClickedOn());
         m_wxMaxima.GetWorksheet()->RequestRecalculation();
         m_wxMaxima.GetWorksheet()->RequestRedraw();
         m_wxMaxima.GetWorksheet()->UpdateTableOfContents();
@@ -3251,7 +3251,7 @@ void MaximaCommandMenus::PopupMenu(wxCommandEvent &event) {
       if ((m_wxMaxima.GetWorksheet()->GetTree()) &&
           (m_wxMaxima.GetWorksheet()->GetTree()->Contains(
                                             m_wxMaxima.m_tableOfContents->RightClickedOn()))) {
-        m_wxMaxima.m_tableOfContents->RightClickedOn()->Unfold();
+        m_wxMaxima.GetWorksheet()->Unfold(m_wxMaxima.m_tableOfContents->RightClickedOn());
         m_wxMaxima.GetWorksheet()->RequestRecalculation();
         m_wxMaxima.GetWorksheet()->RequestRedraw();
         m_wxMaxima.GetWorksheet()->UpdateTableOfContents();

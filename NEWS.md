@@ -1,5 +1,18 @@
 # Current development version
 
+- Folding/unfolding a section (or the whole document, via "Fold All"/
+  "Unfold All") is now recorded in the undo buffer (GH #266), a 2013 feature
+  request: Ctrl+Z after an accidental fold, or after "Fold All" collapses a
+  document you didn't mean to collapse, restores exactly the fold state that
+  was there before. A single-cell fold/unfold undoes with one Ctrl+Z; "Fold
+  All"/"Unfold All" (which can fold many cells at once, only the ones that
+  weren't already in that state) undoes and redoes all of them together as
+  one atomic step, so it doesn't unfold sections that were already folded
+  before "Fold All" ran. Implemented by giving `TreeUndoAction` a fourth,
+  explicit fold/unfold case alongside its existing text-change/insertion/
+  deletion ones, rather than reusing those for something semantically
+  different (a fold keeps its subtree alive and logically part of the
+  document, unlike a real deletion).
 - "Can set maxima's working directory but cannot change it during the
   maxima session" (GH #1672): this warning, printed by `wx-cd` whenever it
   fails to keep Maxima's working directory in sync with the worksheet's,

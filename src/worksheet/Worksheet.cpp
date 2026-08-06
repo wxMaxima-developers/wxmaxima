@@ -4312,6 +4312,35 @@ bool Worksheet::TreeUndoCellAddition(UndoActions *sourcelist,
   return true;
 }
 
+bool Worksheet::TreeUndoFold(UndoActions *sourcelist,
+                             UndoActions *undoForThisOperation) {
+  const TreeUndoAction &action = sourcelist->front();
+  GroupCell *cell = action.m_start.get();
+  if (!cell)
+    // The cell this action folded/unfolded no longer exists (e.g. it was
+    // later deleted) -- nothing to undo.
+    return false;
+
+  TreeUndoAction::FoldDirection direction = *action.m_fold;
+
+  // Record the opposite direction, so this undo step can itself be redone.
+  undoForThisOperation->emplace_front(
+    cell, direction == TreeUndoAction::FoldDirection::Folded
+            ? TreeUndoAction::FoldDirection::Unfolded
+            : TreeUndoAction::FoldDirection::Folded);
+
+  if (direction == TreeUndoAction::FoldDirection::Folded)
+    cell->Unfold();
+  else
+    cell->Fold();
+
+  FoldOccurred();
+  UpdateTableOfContents();
+  RequestRecalculation();
+  RequestRedraw();
+  return true;
+}
+
 bool Worksheet::TreeUndoTextChange(UndoActions *sourcelist,
                                    UndoActions *undoForThisOperation) {
   const TreeUndoAction &action = sourcelist->front();
@@ -4383,6 +4412,8 @@ bool Worksheet::TreeUndo(UndoActions *sourcelist,
     const TreeUndoAction &actn = sourcelist->front();
     if (actn.m_newCellsEnd)
       TreeUndoCellAddition(sourcelist, undoForThisOperation);
+    else if (actn.m_fold)
+      TreeUndoFold(sourcelist, undoForThisOperation);
     else {
       if (actn.m_oldCells)
         TreeUndoCellDeletion(sourcelist, undoForThisOperation);

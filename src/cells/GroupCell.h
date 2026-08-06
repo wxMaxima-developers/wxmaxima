@@ -412,15 +412,21 @@ public:
 
   /*! Fold all cells
 
+    \param affected If non-null, every cell actually folded by this call is
+                     appended here, in the order it was folded -- the
+                     caller can use this to record one undo action per cell.
     \return the cell's address if folding was successful, else NULL
   */
-  GroupCell *FoldAll();
+  GroupCell *FoldAll(std::vector<GroupCell *> *affected = nullptr);
 
   /*! Unfold all cells
 
+    \param affected If non-null, every cell actually unfolded by this call
+                     is appended here, in the order it was unfolded -- the
+                     caller can use this to record one undo action per cell.
     \return the last unfolded cell's address if unfolding was successful, else NULL
   */
-  GroupCell *UnfoldAll();
+  GroupCell *UnfoldAll(std::vector<GroupCell *> *affected = nullptr);
 
   /*! Document structure: Can this cell type be part of the contents of comparedTo?
 
