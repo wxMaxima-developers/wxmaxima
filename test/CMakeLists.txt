@@ -173,6 +173,15 @@ add_test(
     COMMAND echo 'quit() ;' | nc -l 40000 & sleep 10 ; ${MAXIMA} -s 40000)
 
 # A (very simple) test, if wxMathML.lisp file works (creates the expected XML output).
+#
+# NOTE: every check-wxMathML.sh-based test (this one included) needs its NAME
+# added to WXM_POSIX_TESTS near the bottom of this file, or it tries to run on
+# the Windows CI job too (where the "COMMAND" is a plain .sh script, so it
+# fails outright with BAD_COMMAND rather than being skipped) -- confirmed live
+# on GH #2222's CI: check-wxMathML.lisp_box_no_extra_parens,
+# check-wxMathML.lisp_highlight_box_keeps_parens, and the two
+# check-wxMathML.lisp_sum_*_summand_* tests all shipped without this and only
+# got caught once a later, unrelated PR's Windows CI run failed on them.
 add_test(
     NAME check-wxMathML.lisp_1
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "1+1;" "<math><lbl altCopy=\"%o1\">(%o1) </lbl><mn>2</mn></math>"
@@ -1303,7 +1312,11 @@ endif()
 # done by name in the loop below so conditionally-defined tests (e.g. load_symbol,
 # only added for new-enough Maxima) are handled automatically.
 set(WXM_POSIX_TESTS
-  check-wxMathML.lisp_1 check-wizard-commands check-translations
+  check-wxMathML.lisp_1 check-wxMathML.lisp_box_no_extra_parens
+  check-wxMathML.lisp_highlight_box_keeps_parens
+  check-wxMathML.lisp_sum_bare_summand_no_parens
+  check-wxMathML.lisp_sum_compound_summand_needs_parens
+  check-wizard-commands check-translations
   check-xml-validity_matrix_default check-xml-validity_matrix_lines
   check-xml-validity_matrix_complex check-xml-validity_mfrac
   check-wxmx-validity_all-celltypes check-wxmx-validity_intervals
