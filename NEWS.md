@@ -1,5 +1,13 @@
 # Current development version
 
+- Snap packaging: the snap stages gnuplot via the `maxima` snap so plotting
+  works under strict confinement, which means it distributes gnuplot's own
+  binary rather than merely recommending a separately-installed one.
+  gnuplot's license notice now travels with any build configured with
+  `-DWXM_BUNDLES_GNUPLOT=ON` (currently just the snap), appended to
+  `THIRD-PARTY-NOTICES.txt` (see `THIRD-PARTY-NOTICES-Gnuplot.txt`) and
+  therefore reachable from the app's own Help > License dialog. Regular
+  builds, which only recommend a system gnuplot, are unaffected.
 - `EvaluationQueue` now catches (in `--batch` mode) rather than silently
   proceeding on the failure mode behind GH #2196: a cell's text at the
   moment it becomes the queue's current cell no longer necessarily matching
