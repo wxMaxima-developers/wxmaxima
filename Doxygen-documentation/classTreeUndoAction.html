@@ -70,6 +70,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle"><div class="title">TreeUndoAction Class Reference</div></div>
@@ -87,6 +88,14 @@ Collaboration diagram for TreeUndoAction:</div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a73c65676a722b73e3c868115eccac2a9"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTreeUndoAction.html#a73c65676a722b73e3c868115eccac2a9">FoldDirection</a> { <a class="el" href="classTreeUndoAction.html#a73c65676a722b73e3c868115eccac2a9a9693b677e1c2acf924b9d7bf3aca557b">Folded</a>
+, <a class="el" href="classTreeUndoAction.html#a73c65676a722b73e3c868115eccac2a9a581d00d30495540d09a1f5b2430baaca">Unfolded</a>
+ }</td></tr>
+<tr class="memdesc:a73c65676a722b73e3c868115eccac2a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which way a fold/unfold undo action (see m_fold) goes.  <a href="classTreeUndoAction.html#a73c65676a722b73e3c868115eccac2a9">More...</a><br /></td></tr>
+<tr class="separator:a73c65676a722b73e3c868115eccac2a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a69f29803018d969fc70cee03726f6b54"><td class="memItemLeft" align="right" valign="top"><a id="a69f29803018d969fc70cee03726f6b54" name="a69f29803018d969fc70cee03726f6b54"></a>
@@ -98,6 +107,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a53d8188ee773b041f6f999d79b523836"><td class="memItemLeft" align="right" valign="top"><a id="a53d8188ee773b041f6f999d79b523836" name="a53d8188ee773b041f6f999d79b523836"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndoAction</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *start, <a class="el" href="classGroupCell.html">GroupCell</a> *end, <a class="el" href="classGroupCell.html">GroupCell</a> *oldCells)</td></tr>
 <tr class="separator:a53d8188ee773b041f6f999d79b523836"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d85ef8594e86d37570dcfa0ac09ed9c"><td class="memItemLeft" align="right" valign="top"><a id="a9d85ef8594e86d37570dcfa0ac09ed9c" name="a9d85ef8594e86d37570dcfa0ac09ed9c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndoAction</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *start, <a class="el" href="classTreeUndoAction.html#a73c65676a722b73e3c868115eccac2a9">FoldDirection</a> direction)</td></tr>
+<tr class="separator:a9d85ef8594e86d37570dcfa0ac09ed9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -122,11 +134,62 @@ const long long&#160;</td><td class="memItemRight" valign="bottom"><b>m_oldSelEn
 <tr class="memitem:aa4fd669a662700777aa6eaa46e6900f1"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTreeUndoAction.html#aa4fd669a662700777aa6eaa46e6900f1">m_oldCells</a></td></tr>
 <tr class="memdesc:aa4fd669a662700777aa6eaa46e6900f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cells that were deleted in this action.  <br /></td></tr>
 <tr class="separator:aa4fd669a662700777aa6eaa46e6900f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63c1574e14498415f081e34edf394243"><td class="memItemLeft" align="right" valign="top">const std::optional&lt; <a class="el" href="classTreeUndoAction.html#a73c65676a722b73e3c868115eccac2a9">FoldDirection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTreeUndoAction.html#a63c1574e14498415f081e34edf394243">m_fold</a></td></tr>
+<tr class="memdesc:a63c1574e14498415f081e34edf394243"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set only for fold/unfold actions (see FoldDirection): whether this action folded or unfolded the subtree that starts right after m_start.  <br /></td></tr>
+<tr class="separator:a63c1574e14498415f081e34edf394243"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The description of one action for the undo (or redo) command. </p>
 <p>This object is immutable - the undo/redo buffer cannot be modified. </p>
-</div><h2 class="groupheader">Field Documentation</h2>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a73c65676a722b73e3c868115eccac2a9" name="a73c65676a722b73e3c868115eccac2a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73c65676a722b73e3c868115eccac2a9">&#9670;&#160;</a></span>FoldDirection</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="classTreeUndoAction.html#a73c65676a722b73e3c868115eccac2a9">TreeUndoAction::FoldDirection</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Which way a fold/unfold undo action (see m_fold) goes. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a73c65676a722b73e3c868115eccac2a9a9693b677e1c2acf924b9d7bf3aca557b" name="a73c65676a722b73e3c868115eccac2a9a9693b677e1c2acf924b9d7bf3aca557b"></a>Folded&#160;</td><td class="fielddoc"><p>This action folded start's subtree; undoing it unfolds it. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a73c65676a722b73e3c868115eccac2a9a581d00d30495540d09a1f5b2430baaca" name="a73c65676a722b73e3c868115eccac2a9a581d00d30495540d09a1f5b2430baaca"></a>Unfolded&#160;</td><td class="fielddoc"><p>This action unfolded start's subtree; undoing it folds it. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="a63c1574e14498415f081e34edf394243" name="a63c1574e14498415f081e34edf394243"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63c1574e14498415f081e34edf394243">&#9670;&#160;</a></span>m_fold</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::optional&lt;<a class="el" href="classTreeUndoAction.html#a73c65676a722b73e3c868115eccac2a9">FoldDirection</a>&gt; TreeUndoAction::m_fold</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set only for fold/unfold actions (see FoldDirection): whether this action folded or unfolded the subtree that starts right after m_start. </p>
+<p>std::nullopt for every other action kind (text change, cell addition, cell deletion). </p>
+
+</div>
+</div>
 <a id="ab6ad3437857ae30bd6187244a230aa4c" name="ab6ad3437857ae30bd6187244a230aa4c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab6ad3437857ae30bd6187244a230aa4c">&#9670;&#160;</a></span>m_newCellsEnd</h2>
 

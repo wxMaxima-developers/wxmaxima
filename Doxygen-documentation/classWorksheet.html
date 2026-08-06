@@ -182,6 +182,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo_AppendAction
 <tr class="memitem:gaa2cb2222c648177ea95b6718abbfb35a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gaa2cb2222c648177ea95b6718abbfb35a">TreeUndoCellAddition</a> (<a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *sourcelist, <a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *undoForThisOperation)</td></tr>
 <tr class="memdesc:gaa2cb2222c648177ea95b6718abbfb35a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo adding cells.  <br /></td></tr>
 <tr class="separator:gaa2cb2222c648177ea95b6718abbfb35a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafad0706dea772ad942cf34edf2f5aae7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__UndoBufferFill.html#gafad0706dea772ad942cf34edf2f5aae7">TreeUndoFold</a> (<a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *sourcelist, <a class="el" href="TreeUndoAction_8h.html#a0b9224ea18b8cab4c41a6a3dd8e37ccf">UndoActions</a> *undoForThisOperation)</td></tr>
+<tr class="memdesc:gafad0706dea772ad942cf34edf2f5aae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo a fold or unfold (GH #266)  <br /></td></tr>
+<tr class="separator:gafad0706dea772ad942cf34edf2f5aae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga40ec7f7067b8bbf2f800607e61f658cd"><td class="memItemLeft" align="right" valign="top">
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>TreeUndo</b> ()</td></tr>
 <tr class="memdesc:ga40ec7f7067b8bbf2f800607e61f658cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Undo a tree operation. <br /></td></tr>
@@ -1057,6 +1060,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddCellToEvaluationQu
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FoldOccurred</b> ()</td></tr>
 <tr class="memdesc:a78ceeae9f7262c599b824e0f9a93ad9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call when a fold action was detected, to update the state in response to a fold occurring. <br /></td></tr>
 <tr class="separator:a78ceeae9f7262c599b824e0f9a93ad9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abef0423eae28a7664370ede5fa9a51ae"><td class="memItemLeft" align="right" valign="top"><a id="abef0423eae28a7664370ede5fa9a51ae" name="abef0423eae28a7664370ede5fa9a51ae"></a>
+<a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>Fold</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
+<tr class="memdesc:abef0423eae28a7664370ede5fa9a51ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold a cell (see <a class="el" href="classWorksheetDocument.html#ae8466e5a5fe816856290a69e9d75021e" title="Fold which; see GroupCell::Fold().">WorksheetDocument::Fold()</a>) <br /></td></tr>
+<tr class="separator:abef0423eae28a7664370ede5fa9a51ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56520f49a9eea2a70e1f6ddb141bc0dc"><td class="memItemLeft" align="right" valign="top"><a id="a56520f49a9eea2a70e1f6ddb141bc0dc" name="a56520f49a9eea2a70e1f6ddb141bc0dc"></a>
+<a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>Unfold</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
+<tr class="memdesc:a56520f49a9eea2a70e1f6ddb141bc0dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unfold a cell (see <a class="el" href="classWorksheetDocument.html#a445aea2787c72a85a78a9dfe01344241" title="Unfold which; see GroupCell::Unfold(). Mirrors Fold().">WorksheetDocument::Unfold()</a>) <br /></td></tr>
+<tr class="separator:a56520f49a9eea2a70e1f6ddb141bc0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05f5dcd8380c87a893b1509559995fc4"><td class="memItemLeft" align="right" valign="top"><a id="a05f5dcd8380c87a893b1509559995fc4" name="a05f5dcd8380c87a893b1509559995fc4"></a>
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleFold</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
 <tr class="memdesc:a05f5dcd8380c87a893b1509559995fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold or unfold a cell. <br /></td></tr>

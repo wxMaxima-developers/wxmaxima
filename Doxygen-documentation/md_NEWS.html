@@ -73,6 +73,17 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>macOS: translation files should now actually make it into the app bundle (GH #1711). Two separate bugs meant the <code>.mo</code> files never reached <code>Contents/Resources/locale/&lt;lang&gt;/LC_MESSAGES/</code>, where <a class="el" href="classwxMaxima.html">wxMaxima</a> looks for them: the CMake target that copies them into the build tree with the correct per-language layout was unconditionally skipped on Apple (working around what turned out to be an Xcode-generator-specific issue &ndash; the DMG- producing CI job actually uses Ninja, not Xcode, and doesn't need the workaround), and separately, the bundle's own resource list tried to glob for them before they even existed (translations are generated during the build, but that glob is evaluated once at configure time) with a pattern that wouldn't have matched their actual nested location anyway. Fixed by narrowing the Apple exclusion to just the Xcode generator, and copying the already-correctly-laid-out translation directory into the bundle in a build-time install step instead of a configure-time glob. Not verified on a real Mac (none was available to test this on) &ndash; please report back if translations still don't show up in a built .dmg.</li>
+<li><code>sum()</code>/<code>product()</code>/<code>lsum</code> (GH #1536) no longer wrap a plain summand in spurious parentheses: <code>sum(k,k,1,n)</code> now displays the sum sign over a bare <code>k</code>, matching <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own terminal output, instead of always showing <code>(k)</code>. <a class="el" href="classA.html">A</a> genuinely compound summand, like <code>sum(k+k^2,k,1,n)</code>, still gets the parentheses, since dropping them there really could be misread as extending past the sum sign. The decision is made in <code>wxxml-sum</code> (<code>wxMathML.lisp</code>) from the real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> expression (<code>mplusp</code>) rather than an invented operator precedence &ndash; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s own printer has no <code>lbp</code>/<code>rbp</code> registered for <code>sum</code>/<code>product</code> either, so it can't be using generic precedence comparison for this &ndash; and is carried across the wire to <code><a class="el" href="classSumCell.html">SumCell</a></code> (which still needed a small, targeted change of its own: its 2<a class="el" href="classD.html">D</a> on-screen layout is computed in C++, and turned out not to be reachable through <code><a class="el" href="classParenCell.html" title="The class that represents parenthesis that are wrapped around text.">ParenCell</a></code>'s existing "print" flag, which only suppresses parentheses in text/TeX/MathML export, not in the interactive display).</li>
+<li>Folding/unfolding a section (or the whole document, via "Fold All"/ "Unfold All") is now recorded in the undo buffer (GH #266), a 2013 feature request: Ctrl+Z after an accidental fold, or after "Fold All" collapses a document you didn't mean to collapse, restores exactly the fold state that was there before. <a class="el" href="classA.html">A</a> single-cell fold/unfold undoes with one Ctrl+Z; "Fold
+  All"/"Unfold All" (which can fold many cells at once, only the ones that weren't already in that state) undoes and redoes all of them together as one atomic step, so it doesn't unfold sections that were already folded before "Fold All" ran. Implemented by giving <code><a class="el" href="classTreeUndoAction.html" title="The description of one action for the undo (or redo) command.">TreeUndoAction</a></code> a fourth, explicit fold/unfold case alongside its existing text-change/insertion/ deletion ones, rather than reusing those for something semantically different (a fold keeps its subtree alive and logically part of the document, unlike a real deletion).</li>
+<li>"Can set maxima's working directory but cannot change it during the
+  maxima session" (GH #1672): this warning, printed by <code>wx-cd</code> whenever it fails to keep <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s working directory in sync with the worksheet's, had two separate root causes and a nuisance of its own, all fixed:<ul>
+<li><a class="el" href="classA.html">A</a> directory name containing <code>*</code>, <code>?</code>, <code>[</code> or <code>]</code> (e.g. <code>Draft [v2]</code>) always failed: Common Lisp's portable pathname syntax treats those characters as wildcard markers rather than literal ones, so SBCL's <code>pathname-directory</code> turned a perfectly real directory into an unmatched wildcard pattern. Fixed by parsing the string with <code>sb-ext:native-pathname</code> instead, which has no such reinterpretation.</li>
+<li>On Windows specifically, a directory name containing a character outside the system's active codepage (e.g. Cyrillic or CJK on a Western-European Windows install) also always failed: <code>sb-posix:chdir</code>/<code>sb-posix:getcwd</code> go through the <a class="el" href="classC.html">C</a> runtime's ANSI-only <code>_chdir</code>/<code>_getcwd</code>, which cannot represent such characters at all (a confirmed, still-open upstream SBCL bug, launchpad #2100706). Fixed by calling the Win32 wide-character APIs directly instead, with the previous behavior kept as an automatic fallback.</li>
+<li>Once triggered by a persistently broken path, the warning printed again on every single cd attempt for the rest of the session, and since a saved <code>.wxmx</code> document keeps every cell's output verbatim, reopening and resaving an affected document over many sessions could accumulate hundreds of copies of the exact same warning. <code>wx-cd</code> now remembers the last directory it failed on and only reports a given failure once, until either a different directory fails or the same one starts working again.</li>
+</ul>
+</li>
 <li>Display (GH #1948): <code>box()</code> draws its own border around its argument, so it never needed the extra pair of parentheses <code>wxMathML.lisp</code>'s generic precedence-based paren-insertion logic could still wrap around it, e.g. <code>a*box(b)*c</code> showing spurious parens around <code>box(b)</code>. Fixed by giving <code>box()</code> (and its labelled form, <code>box(expr, label)</code>) a precedence higher than any real operator's, so it never needs disambiguating &ndash; except for the one case where it doesn't actually draw a border at all: <code>box(expr,
   highlight)</code> only colors its content, and correctly keeps the disambiguating parentheses it already had, since a bare color change doesn't visually delimit its own extent.</li>
 <li>Code cell syntax highlighting (GH #898): an identifier split across two physical lines by an escaped newline (<code>\</code> immediately followed by a line break &ndash; confirmed against a real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> that this contributes nothing to the resolved name at all, e.g. <code>fo\&lt;newline&gt;obar</code> is plainly <code>foobar</code>, unlike an ordinary escaped character such as <code>a\,b</code>, which resolves to the symbol <code>a,b</code>) used to be highlighted as two unrelated tokens: the half before the line break wasn't classified at all (falling through the function/variable/operator/keyword lookups entirely), and the half after it started over as if it were a brand new, independent identifier. Both halves are now resolved and styled as the one logical name <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> actually sees.</li>
@@ -148,7 +159,7 @@ $(function() {
 <li>HTML export: when the MathJaX fall-back is used it is now MathJaX version 4, configured through the current API so the equation-alignment settings apply.</li>
 <li>Windows: the <a class="el" href="classwxMaxima.html">wxMaxima</a> window and taskbar button again show the <a class="el" href="classwxMaxima.html">wxMaxima</a> logo instead of the generic wxWidgets "W" icon. The window icon now also falls back to the logo compiled into the binary, so it no longer depends solely on the .ico resource being the one Windows selects.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md959"></a>
+<h1><a class="anchor" id="autotoc_md971"></a>
 26.07.1</h1>
 <p>This release contains an unusually large batch of improvements &ndash; many of them developed with substantial help from the AI assistants <b>Claude</b> and <b>Fable</b>: dark mode for the whole Windows user interface, native Windows-on-Arm builds, numerous speedups, and a large number of bug and stability fixes.</p>
 <ul>
@@ -220,7 +231,7 @@ $(function() {
 <li>Snap package: opening a link in the system web browser (the manual, "visit website", <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s online documentation) now works. The confined snap reaches the host's default browser through the XDG Desktop Portal instead of trying to launch a browser that is not visible inside the sandbox &ndash; no browser is bundled and confinement stays strict.</li>
 <li>Find: a match found inside a cell's output now scrolls to the matching part of the output, even in a long output cell. Previously the view only scrolled to the top of the output because the matched item &ndash; if it had not been drawn yet &ndash; had no on-screen position, so the scroll fell back to the start of the output.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md960"></a>
+<h1><a class="anchor" id="autotoc_md972"></a>
 26.07.0</h1>
 <ul>
 <li>Fixed a crash on loading a worksheet containing an empty <code>&lt;img/&gt;</code> or <code>&lt;slideshow/&gt;</code> tag (found by the parser fuzzer).</li>
@@ -242,7 +253,7 @@ $(function() {
 <li><a class="el" href="classA.html">A</a> correctness review for all wizards.</li>
 <li>EditorCells again grow and shrink when the user adds and removes lines</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md961"></a>
+<h1><a class="anchor" id="autotoc_md973"></a>
 26.06.2</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> whole AI-driven safety review</li>
@@ -264,7 +275,7 @@ $(function() {
 <li>Better undo handling.</li>
 <li>Another try to make accessibility work.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md962"></a>
+<h1><a class="anchor" id="autotoc_md974"></a>
 26.06.1</h1>
 <ul>
 <li>Fix the Ctrl+F keyboard focus on MS Windows to correctly focus the find dialogue instead of leaving it on the worksheet.</li>
@@ -277,7 +288,7 @@ $(function() {
 <li>Fix scroll position tracking: call ScrolledAwayFromEvaluation(true) when the user manually scrolls so that the active cell is completely outside the visible portion of the worksheet.</li>
 <li>Fix inserting a new cell (via hCaret) on large worksheets causing the scroll range to shrink to the first screen and the view to jump to the top.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md963"></a>
+<h1><a class="anchor" id="autotoc_md975"></a>
 26.06.0</h1>
 <ul>
 <li>Optimize drawing during mouse moves (bracket autohide): redraw only the actual height of the cell, rather than drawing all the way to the absolute bottom coordinate.</li>
@@ -323,7 +334,7 @@ $(function() {
 <li>Files opened by double-clicking now have a consistent layout</li>
 <li>Added automatic tests and repaired others.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md964"></a>
+<h1><a class="anchor" id="autotoc_md976"></a>
 26.05.0</h1>
 <ul>
 <li>Fix search and replace. Before in a longer string - e.g. "aaaaaaaaa" only every second occurrence was replaced, when (e.g.) one wanted to replace "a" by "b".</li>
@@ -354,7 +365,7 @@ $(function() {
 <li>Fix inconsistent behavior in the list menu (mentioned in the discussion forum)</li>
 <li>Make toolbar icons HDPI (#2074).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md965"></a>
+<h1><a class="anchor" id="autotoc_md977"></a>
 26.01.0</h1>
 <ul>
 <li>Keep the wxm/mac difference when saving wxm/exporting mac. This omits unneeded comments (/* [<a class="el" href="classwxMaxima.html">wxMaxima</a>: input start ] */ (and input end) in a mac file (structural comments (section, ...) are still saved) and especially omits question/answer comments - they are unreadable by <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> (see #2014, not only wxm files but also mac files were problematic). At least the issue with mac files is solved.</li>
@@ -377,7 +388,7 @@ $(function() {
 <li><a class="el" href="classA.html">A</a> more consistent worksheet zoom feature.</li>
 <li><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s state should now be displayed in the windows task bar.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md966"></a>
+<h1><a class="anchor" id="autotoc_md978"></a>
 25.04.0</h1>
 <ul>
 <li>Use the (standard) wxWidgets log window instead of our own log pane. Less code to maintain, more features (e.g. clear log, save log). In "Release" builds the log window will be hidden (and can be enabled using View-&gt;Toggle log window, otherwise it is shown.</li>
@@ -392,7 +403,7 @@ $(function() {
 - Fix compiling with wxWidgets without webview.
 - HTML export/Mathjax: Don't remove 1st/last label char (#2003)
 
-@section autotoc_md967 25.01.0
+@section autotoc_md979 25.01.0
 
 - Remove the change label width popup menu (#1964).
   It was not working at all and caused crashes. And I think the
@@ -407,7 +418,7 @@ $(function() {
 - Fix the (Windows) crash in the suggestions menu (#1980).
 - HTML export: print the output labels on the left side.
 
-@section autotoc_md968 24.11.0
+@section autotoc_md980 24.11.0
 
 - A Spanish translation update by cyphra.
 - Resolved a crash when inverting the worksheet (#1951)
@@ -422,7 +433,7 @@ $(function() {
 - Allow Maxima strings with newlines. (#76)
 - Support Maxima which uses ABCL.
 
-@section autotoc_md969 24.08.0
+@section autotoc_md981 24.08.0
 
 - An advanced plotting tutorial
 - Try harder to kill maxima on closing it
@@ -449,7 +460,7 @@ $(function() {
 - On MS Windows one can now choose between Gnuplot and wGnuplot (#1934)
 - Fixed the error message about dual manifest files on MSVC
 
-@section autotoc_md970 24.05.0
+@section autotoc_md982 24.05.0
 
 - Faster discarding of maths that is too long to read
 - Resolved a crash on closing the last window (#1898)
@@ -483,13 +494,13 @@ $(function() {
 - On MSW wxWidgets &gt;=3.2 now is mandatory for getting high-DPI support
 - A backward-search fix (#1913)
 
-@section autotoc_md971 24.02.2
+@section autotoc_md983 24.02.2
 
 - Set maxima's LANG variable, not wxMaxima's LANG (#1897)
 - Sped up the communication between maxima and wxMaxima
 - Sometimes newlines in misc text from maxima got lost (#1894)
 
-@section autotoc_md972 24.02.1
+@section autotoc_md984 24.02.1
 
 - wxMaxima now correctly installs its icons (#1892)
 - A race condition on closing Maxima
@@ -502,7 +513,7 @@ $(function() {
 - Ctrl+Alt+M now restarts maxima
 - Added a Maxima/Memory menu
 
-@section autotoc_md973 24.02.0
+@section autotoc_md985 24.02.0
 
 - Faster start-up
 - Better performance directly after startup
@@ -535,7 +546,7 @@ $(function() {
 - Fix crash when exporting a worksheet with animations to TeX
 - Resolved a crash on closing a window (#1889)
 
-@section autotoc_md974 23.12.0
+@section autotoc_md986 23.12.0
 
 - Input text selection was cleared when right-clicking
   on it (#1845)
@@ -554,7 +565,7 @@ $(function() {
 - Hidden cells weren't restored from wxm files (#1855)
 - diff() no longer causes spurious multiplication dots (#1825)
 
-@section autotoc_md975 23.11.0
+@section autotoc_md987 23.11.0
 
 - Correctly draw the bracket of the cell under the cursor (#1811)
 - Maths display was corrupted if the window was temporarily not wide
@@ -574,7 +585,7 @@ $(function() {
 - Resolved many warnings from several static analysis tools
 - Fine-tuning of the "undo" function
 
-@section autotoc_md980 23.10.0
+@section autotoc_md988 23.10.0
 
 - A big rewrite to make the static analysis tools happy
 - Many stability improvements
@@ -592,7 +603,7 @@ $(function() {
 - Better error messages for bitmaps
 - Many additional bug fixes
 
-@section autotoc_md981 23.08.0
+@section autotoc_md989 23.08.0
 
 - Better print scaling
 - More consistent page size handling for printing
@@ -600,7 +611,7 @@ $(function() {
 - Resolved many warnings from cppcheck
 - A RegEx search
 
-@section autotoc_md982 23.07.0
+@section autotoc_md990 23.07.0
 
 - Printing: Made the page margins configurable (#1787)
 - Printing: We no more print page headers (#1791)
@@ -615,7 +626,7 @@ $(function() {
 - The cursor no more disappears (#1788)
 - Updated italian translation
 
-@section autotoc_md983 23.05.1
+@section autotoc_md991 23.05.1
 
 - Updated the Russian and Italian translation.
 - Process the command line option &lt;tt&gt;--maxima=\&lt;str\&gt;&lt;/tt&gt;.
@@ -627,7 +638,7 @@ $(function() {
   window width changes
 - 2D display of integrals had zero size (#1780)
 
-@section autotoc_md984 23.05.0
+@section autotoc_md992 23.05.0
 
 - Got rid of some compiler and cppcheck warnings
 - Big performance improvements
@@ -646,7 +657,7 @@ $(function() {
   of the parent process
 - wxMaxima no more tries to install its own fonts.
 
-@section autotoc_md985 23.04.1
+@section autotoc_md993 23.04.1
 
 - More config dialogue tweaks
 - MacOs: No more create config icons that aren't needed
@@ -657,7 +668,7 @@ $(function() {
 - Be aware that the MSW port recycles unused window IDs.
 - The load() command now again works with symbols as package names.
 
-@section autotoc_md986 23.04.0
+@section autotoc_md994 23.04.0
 
 - Made the GUI more responsive for functions with much output
 - Handle errors in the XML from maxima more gracefully
@@ -671,7 +682,7 @@ $(function() {
 - Resolved several asserts
 - Resolved a few small bugs in the autosave logic
 
-@section autotoc_md987 23.03.0
+@section autotoc_md995 23.03.0
 
 - Make sure all bitmaps are valid on High-DPI MacOs (#1749)
 - More styles consistency (#1753)
@@ -684,7 +695,7 @@ $(function() {
 - Completely rewrote the dockable-sidebars-stuff
 - Many files are now build on demand, not at configure time
 
-@section autotoc_md988 23.02.0
+@section autotoc_md996 23.02.0
 
 - Fix XML generation of wxmx documents (#1556)
 - A faster font cache
@@ -695,7 +706,7 @@ $(function() {
 - A separate style for operators (#1002)
 - A nicer ChangeLog
 
-@section autotoc_md989 22.12.0
+@section autotoc_md997 22.12.0
 
 - A cleaner status bar with double-click actions
 - Better display of labels
@@ -710,11 +721,11 @@ $(function() {
 - Faster saving of .wxmx files
 - Better toolbar bitmap handling
 
-@section autotoc_md991 22.11.1
+@section autotoc_md998 22.11.1
 
 - Repaired zooming the worksheet
 
-@section autotoc_md992 22.11.0
+@section autotoc_md999 22.11.0
 
 - Resolved an ID collision (#1726)
 - Faster restart of maxima (#1715)
@@ -727,7 +738,7 @@ $(function() {
 - Many windows build improvements
 - Resolved a crash on restarting maxima
 
-@section autotoc_md993 22.09.0
+@section autotoc_md1000 22.09.0
 
 - Support for wxWidgets 3.1.7
 - The description field for wizards no more is a MouseOverToolTip
@@ -759,7 +770,7 @@ $(function() {
 - Better unicode handling (#1691)
 - Many additional bugfixes
 
-@section autotoc_md994 22.05.0:
+@section autotoc_md1001 22.05.0:
 
 - Updated the Ukrainian translation
 - Added &lt;tt&gt;guess_exact_value&lt;/tt&gt; to the numeric menu.
@@ -781,14 +792,14 @@ $(function() {
 - The Cygwin build works again
 - Support for wxWidgets 3.1.6
 
-@section autotoc_md995 22.04.0:
+@section autotoc_md1002 22.04.0:
 
 - A Russian translation update from Olesya Gerasimenko
 - Repaired drag-and-drop on MacOs (#1624)
 - Resolved a bug in parenthesis matching (#1649)
 - Faster startup logic
 
-@section autotoc_md996 22.03.0:
+@section autotoc_md1003 22.03.0:
 
 - Add an compile option "WXM_INCLUDE_FONTS", which allows to
   specify, if additional fonts should be included.
@@ -815,7 +826,7 @@ $(function() {
 - Merging cells per keyboard shortcut works again (#1626)
 - Symbols buttons whose symbols the GUI font lacks are now hidden
 
-@section autotoc_md999 21.11.0:
+@section autotoc_md1004 21.11.0:
 
 - Allow seeing all files in the file save dialog. (#1557)
 - Fix an error when using Alt up arrow (show previous command) (#1566)
@@ -833,15 +844,15 @@ $(function() {
 - Handle power events (#1607)
 - Fix ugly buttons in the sidebars with recent wxWidgets
 
-@section autotoc_md1000 21.05.2:
+@section autotoc_md1005 21.05.2:
 
 - The integral signs disappeared or were misplaced on some MS Windows computers
 
-@section autotoc_md1002 21.05.1:
+@section autotoc_md1006 21.05.1:
 
 - Resolved a segfault on printing that could be triggered on some computers
 
-@section autotoc_md1003 21.05.0:
+@section autotoc_md1007 21.05.0:
 
 - Long numbers now can be broken into lines
 - On Export long numbers sometimes got lost
@@ -855,7 +866,7 @@ $(function() {
   (before cyrillic, chinese and greek characters were missing).
 - Solved a crash when printing.
 
-@section autotoc_md1004 21.04.0
+@section autotoc_md1008 21.04.0
 
 - Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).</li>
 <li>Fix context sensitive help with F1 (bug #1508).</li>
@@ -869,7 +880,7 @@ $(function() {
 <li>Many external build scripts are now replaced by C++ and CMake commands.</li>
 <li><a class="el" href="classA.html">A</a> menu entry for when to invoke the debugger.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1006"></a>
+<h1><a class="anchor" id="autotoc_md1009"></a>
 21.02.0</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> Spanish translation update by cyphra</li>
@@ -881,14 +892,14 @@ $(function() {
 <li>Made the time between autosaves configurable.</li>
 <li>Fixed an issue with reproducible builds.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1007"></a>
+<h1><a class="anchor" id="autotoc_md1010"></a>
 21.01.0</h1>
 <ul>
 <li>Chinese translation updates by 刘荣.</li>
 <li><a class="el" href="classA.html">A</a> Russian translation update by OlesyaGerasimenko</li>
 <li>Many small bugfixes including a crash on loading files with images.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1008"></a>
+<h1><a class="anchor" id="autotoc_md1011"></a>
 Changes in older wxMaxima versions you can find here</h1>
 <p><a href="https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md">https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md</a> </p>
 </div></div><!-- contents -->

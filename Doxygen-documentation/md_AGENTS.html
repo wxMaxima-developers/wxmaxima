@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This file contains architectural insights, conventions, and operational knowledge to assist AI agents working on the <a class="el" href="classwxMaxima.html">wxMaxima</a> codebase. <b>Agents are explicitly permitted and encouraged to update this file with new findings that improve context and safety.</b></p>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<h1><a class="anchor" id="autotoc_md29"></a>
 Build System</h1>
 <p>Configure once (a Debug build is the default), then build and run without installing:</p>
 <div class="fragment"><div class="line">cmake -S . -B build -G Ninja</div>
@@ -108,8 +108,14 @@ Build System</h1>
 <li><a class="el" href="classA.html">A</a> gdb software-breakpoint hunt (<code><a class="el" href="EvaluationQueue_8cpp.html" title="This file defines the class EvaluationQueue.">EvaluationQueue.cpp</a>:124</code>, right after <code>AddTokens(GetCell())</code> on every cell-to-cell advance, logging <code>m_commands[0]</code> and continuing automatically) was run against <code>commandSequenceIntegrity.wxm</code> as the most targeted live attempt so far, checking every run's advance log for a gap in the expected 1,3,5,...,299 sequence. See the follow-up note below (or GH #2196 directly) for whether it caught anything.</li>
 </ul>
 </li>
+<li><b>macOS translation files never reaching the app bundle (GH #1711) &ndash; two independent bugs, neither of which this sandbox (Linux, no <code>.app</code>/<code>MACOSX_BUNDLE</code>/DragNDrop support at all) can actually build or verify.</b> <code><a class="el" href="classDirstructure.html#a07774426dee2c4edafa95ce9f7465661" title="The directory the locale data is to be found in.">Dirstructure::LocaleDir()</a></code>/<code>wxFileTranslationsLoader</code> (see <code><a class="el" href="main_8cpp.html" title="The file that defines the starting point of the program.">main.cpp</a></code>) look specifically under <code>Contents/Resources/locale/&lt;lang&gt;/LC_MESSAGES/wxMaxima.mo</code> at runtime.<ol type="1">
+<li><code>locales/wxMaxima/CMakeLists.txt</code>'s <code>copy_mo_file_${LANG}_for_wxmaxima_local</code> target &ndash; the only thing that populates <code>${CMAKE_BINARY_DIR}/share/locale/&lt;lang&gt;/LC_MESSAGES/wxMaxima.mo</code> with that exact nesting, <code>ALL</code>-tagged so it runs on every normal build &ndash; was unconditionally skipped <code>if(NOT APPLE)</code>, per a comment saying it "does not work with Apple XCode." Confirmed live (Linux, but the CMake logic itself doesn't depend on the platform): a plain <code>ninja</code> in this sandbox, having never explicitly invoked <code>update-locale</code>, still produces a fully populated <code>build/share/locale/*/LC_MESSAGES/*.mo</code> from this target alone &ndash; so on macOS it was producing nothing, full stop. The macOS CI job that actually ships the DMG passes <code>-G Ninja</code>, not Xcode (only a separate, non-packaging smoke-test job uses Xcode) &ndash; narrowed the guard to <code>if(NOT (APPLE AND CMAKE_GENERATOR STREQUAL "Xcode"))</code> instead of excluding all of Apple.</li>
+<li>Separately, <code>src/CMakeLists.txt</code>'s macOS bundle resource list tried to <code>file(GLOB ${CMAKE_BINARY_DIR}/locale/*.mo)</code> into the <code>RESOURCE</code> target property. Two bugs stacked here too: <code>file(GLOB)</code> freezes its result at <em>configure</em> time, before a single build step has run and generated any <code>.mo</code> file at all (confirmed empirically the same way as above &ndash; this glob's directory doesn't exist yet on a fresh configure); and even if the files existed, this pattern is non-recursive and wouldn't match their actual <code>locale/&lt;lang&gt;/LC_MESSAGES/wxMaxima.mo</code> nesting, and CMake's <code>RESOURCE</code> property flattens whatever it <em>does</em> match directly into <code>Contents/Resources</code> with no way to reproduce a subdirectory structure. Fixed by dropping the glob and instead copying the (now-populated, already-correctly-nested) <code>share/locale</code> directory into <code>Contents/Resources/locale</code> via a plain <code>file(COPY ...)</code> inside the existing <code>install(CODE ...)</code> block that already runs <code>fixup_bundle</code> &ndash; the same "has to be a separate step, everything the build produces is
+     only guaranteed to exist by then" reasoning that block's own comment already gives for deferring <code>fixup_bundle</code> itself. Verified as much as is possible without a Mac: the CMake configure and a full build succeed unaffected on Linux (the <code>if(NOT (APPLE AND ...))</code> change is a no-op there, <code>CMAKE_GENERATOR</code> is never <code>"Xcode"</code> outside Apple), <code>share/locale</code> still populates correctly, and the exact <code>file(COPY ...)</code> logic (including its <code>if(EXISTS ...)</code> guard, which fails <em>silently</em> rather than breaking the build if this is somehow still wrong) was validated standalone via <code>cmake -P</code> against a fake <code>share/locale/&lt;lang&gt;/LC_MESSAGES/*.mo</code> tree, confirming it reproduces the nesting correctly. The actual Apple-only code paths themselves remain unverified &ndash; if a real macOS build still doesn't get translations, check here first before re-deriving any of the above from scratch.</li>
+</ol>
+</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md44"></a>
+<h1><a class="anchor" id="autotoc_md37"></a>
 Architecture &amp; GUI</h1>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> is a GUI front-end to the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> CAS; it talks to a <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> process over a local TCP socket.</p>
 <ul>
@@ -140,7 +146,7 @@ Architecture &amp; GUI</h1>
   for Bug Report"):** renames every non-builtin variable/function name in the selected code cells (whole document if nothing's selected, after a confirmation <code>wxMessageBox</code>) to a random <code>anon_...</code> name, the same replacement for every occurrence of a given original name, as a single undo step. Telling "a user-defined name" apart from "a name Maxima already
   knows" needs <b>two</b> independent checks on each <code>TS_CODE_VARIABLE</code>/ <code>TS_CODE_FUNCTION</code> token, not one: <code><a class="el" href="classAutoComplete.html#a0b5d26fd3444fddee6b48ade7ce5f5e6" title="Returns a list of Symbols we know.">AutoComplete::GetSymbolList()</a></code> (<a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> builtins plus session-loaded package symbols &ndash; deliberately <em>not</em> polluted by user-typed worksheet words, which live in a separate <code>m_worksheetWords</code> map) catches real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> functions/variables, but <code><a class="el" href="classMaximaTokenizer.html" title="Maximatokenizer breaks down maxima input to individual commands.">MaximaTokenizer</a></code> tokenizes its own hardcoded control-flow keywords (<code>for</code>/<code>in</code>/<code>then</code>/<code>while</code>/<code>do</code>/<code>thru</code>/<code>next</code>/<code>step</code>/<code>unless</code>/<code>from</code>/<code>if</code>/ <code>else</code>/<code>elseif</code>/<code>and</code>/<code>or</code>/<code>not</code>/<code>true</code>/<code>false</code>) with that same variable/function style, and only 4 of those 18 (<code>and</code>/<code>false</code>/<code>in</code>/<code>true</code>) also happen to appear in <code>data/builtin_commands.txt</code> &ndash; confirmed directly by grepping that file. <a class="el" href="classA.html">A</a> filter using only <code>GetSymbolList()</code> would rename <code>for</code>/<code>then</code>/<code>do</code>/... themselves and corrupt the <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> syntax outright. Fixed by exposing the tokenizer's private keyword set as a new public static <code><a class="el" href="classMaximaTokenizer.html#ac7083ea9e2abd63847239119d2dda493" title="Is this text one of the fake-function keywords (see m_hardcodedFunctions)?">MaximaTokenizer::IsHardcodedKeyword()</a></code> and checking both. That accessor needed its own fix first: the keyword map was populated lazily inside the constructor, so calling it before any <code><a class="el" href="classMaximaTokenizer.html" title="Maximatokenizer breaks down maxima input to individual commands.">MaximaTokenizer</a></code> instance existed silently returned false for everything &ndash; fixed by extracting <code>EnsureHardcodedFunctionsInitialized()</code> and calling it from both the constructor and the new accessor. <code><a class="el" href="test__AnonymizeCodeCells_8cpp.html" title="Pins Worksheet::AnonymizeCodeCells() (GH #1339): replacing every non-builtin variable/function name i...">test/unit_tests/test_AnonymizeCodeCells.cpp</a></code> pins this with a real <code><a class="el" href="classWorksheet.html" title="The canvas that contains the spreadsheet the whole program is about.">Worksheet</a></code>/<code><a class="el" href="classConfiguration.html" title="The configuration storage for the current worksheet.">Configuration</a></code> (no live <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>), calling the narrow, synchronous <code><a class="el" href="classAutoComplete.html#a9ea854df696c5e1ab20e9834dfef8a37" title="Makes wxMaxima know all its builtin symbols.">AutoComplete::LoadBuiltinSymbols()</a></code> in its <code>main()</code> rather than the full <code><a class="el" href="classWorksheet.html#aaa5b37aee0c005bb6f303c7dd84c64d1" title="Compile a list of known autocompletion symbols.">Worksheet::LoadSymbols()</a></code> &ndash; the latter also kicks off <code>LoadableFiles_BackgroundTask</code>'s directory scan for <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a>'s share/demo folders, which stalled for 70+ seconds in this sandbox and got the test process killed by its ctest timeout. <a class="el" href="classA.html">A</a> substring check like <code>after.Contains(wxS("f("))</code> to confirm a renamed function is gone is fragile and intermittently flaky (confirmed live, ~1-in-3 failure rate over repeated runs): the random 13-character <code>anon_...</code> replacement for some <em>other</em> name can itself end in the letter being searched for, and since a real function call always has <code>(</code> immediately after its name in valid <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> syntax, the reconstructed text can contain a coincidental <code>...anon_xyzqwrtf(...</code> match. Use exact per-token comparison via <code><a class="el" href="classMaximaTokenizer.html" title="Maximatokenizer breaks down maxima input to individual commands.">MaximaTokenizer</a></code> instead (see that test file's <code>HasExactToken()</code> helper). The "nothing selected -&gt; confirm whole document" <code>wxMessageBox</code> path can't be driven or screenshotted reliably in this sandbox's Xvfb (no window manager is running, and a GTK modal dialog's window never became visible to <code>import -window &lt;id&gt;</code>/<code>-window root</code> in several attempts, though the underlying <code>wxMessageBox</code> call is the same well-established idiom used elsewhere in this codebase) &ndash; verified instead by exercising the already-selected-cells path end-to-end in a live Xvfb session (typed real code, selected the group cell via hCaret + Shift+Up, confirmed the rendered text changed consistently and a single Ctrl+Z restored it).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md45"></a>
+<h2><a class="anchor" id="autotoc_md38"></a>
 Communication with Maxima</h2>
 <p><a class="el" href="classwxMaxima.html">wxMaxima</a> sends Lisp and <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> commands over the socket; <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> answers with XML wrapped in known tags. <code><a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a></code> reads that data on a worker thread and posts <code>EVT_MAXIMA</code> events to the main thread, where <code><a class="el" href="classwxMaxima.html">wxMaxima</a></code> handles them.</p>
 <p><code>src/wxMathML.lisp</code> is compiled into the binary (through CMake's bin2h) and is what tells <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> to format its output as MathML-like XML. For development, <code>--wxmathml-lisp=&lt;path&gt;</code> overrides it with an external file, so a change can be tried without rebuilding.</p>
@@ -205,13 +211,13 @@ Communication with Maxima</h2>
   &lt;tt&gt;:lisp-quiet (with-input-from-string ...)&lt;/tt&gt; / socket-level reproduction
   (see the debugging technique note above) before the fix, not guessed.
 
-@subsection autotoc_md46 File Formats
+@subsection autotoc_md39 File Formats
 
 - **&lt;tt&gt;.wxmx&lt;/tt&gt;** &amp;ndash; a ZIP archive holding &lt;tt&gt;content.xml&lt;/tt&gt; (the MathML-like XML) plus
   the embedded images. The format version lives in &lt;tt&gt;src/WXMXformat.h&lt;/tt&gt;.
 - **&lt;tt&gt;.wxm&lt;/tt&gt;** &amp;ndash; the plain-text format, read by &lt;tt&gt;Format::ParseWXMFile()&lt;/tt&gt;.
 
-@subsection autotoc_md47 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)
+@subsection autotoc_md40 Translations (&lt;tt&gt;locales/&lt;/tt&gt;)
 
 - &lt;strong&gt;One combined &lt;tt&gt;.po&lt;/tt&gt; per language, in &lt;tt&gt;locales/wxMaxima/&lt;/tt&gt;, is the file a
   translator edits.&lt;/strong&gt; It covers both wxMaxima's own UI strings
@@ -344,7 +350,7 @@ Communication with Maxima</h2>
   a scratch commit first) over a blanket &lt;tt&gt;git checkout -- \&lt;dir\&gt; \&amp;\&amp; git clean
   -fd \&lt;dir\&gt;&lt;/tt&gt; once a directory has a mix of both kinds of changes in it.
 
-@section autotoc_md48 Conventions &amp; Standards
+@section autotoc_md41 Conventions &amp; Standards
 
 - &lt;strong&gt;Git Environment:&lt;/strong&gt; Note that running &lt;tt&gt;git diff&lt;/tt&gt; might launch the visual diff tool &lt;tt&gt;meld&lt;/tt&gt; instead of outputting to the terminal. Always use &lt;tt&gt;git diff --no-ext-diff&lt;/tt&gt; if you need terminal output.
 - &lt;strong&gt;String Literals &amp; Translations:&lt;/strong&gt; Use the &lt;tt&gt;wxS()&lt;/tt&gt; macro for all string literals and &lt;tt&gt;_()&lt;/tt&gt; for user-facing translatable strings.
@@ -392,7 +398,91 @@ Communication with Maxima</h2>
   untransformed &lt;tt&gt;m_text&lt;/tt&gt;) instead of &lt;tt&gt;ToTeX()&lt;/tt&gt;, not just the one place a new
   case is added.
 
-@section autotoc_md49 Layout &amp; Compatibility
+- **&lt;tt&gt;TreeUndoAction&lt;/tt&gt;'s discriminant model, and adding a fourth action kind
+  (GH #266, fold/unfold undo):** &lt;tt&gt;TreeUndoAction&lt;/tt&gt; (&lt;tt&gt;src/TreeUndoAction.h&lt;/tt&gt;) is
+  a single, non-polymorphic struct, not an &lt;tt&gt;Action&lt;/tt&gt;/&lt;tt&gt;Undo()&lt;/tt&gt;/&lt;tt&gt;Redo()&lt;/tt&gt; class
+  hierarchy &amp;ndash; &lt;tt&gt;Worksheet::TreeUndo()&lt;/tt&gt; (&lt;tt&gt;Worksheet.cpp&lt;/tt&gt;) tells apart the
+  three original action kinds (text change, cell insertion, cell deletion)
+  by which of &lt;tt&gt;m_newCellsEnd&lt;/tt&gt;/&lt;tt&gt;m_oldCells&lt;/tt&gt;/neither is set, not by a type
+  tag. Adding fold/unfold as a fourth kind followed the same style rather
+  than introducing polymorphism for a fourth fixed case: a &lt;tt&gt;std::optional\&lt;
+  FoldDirection\&gt;&lt;/tt&gt; field (&lt;tt&gt;FoldDirection::Folded&lt;/tt&gt;/&lt;tt&gt;Unfolded&lt;/tt&gt;), checked in
+  &lt;tt&gt;TreeUndo()&lt;/tt&gt;'s dispatch &lt;em&gt;before&lt;/em&gt; the existing &lt;tt&gt;m_oldCells&lt;/tt&gt;-vs-text-change
+  fallback (a &lt;tt&gt;std::nullopt&lt;/tt&gt; field, like the others, defaults via the
+  member's own default constructor &amp;ndash; no explicit initializer needed in the
+  three original constructors). Undoing a fold/unfold just applies the
+  opposite direction to the same cell (&lt;tt&gt;m_start&lt;/tt&gt;), which is naturally
+  reversible/re-doable through the same generic replay loop the other three
+  kinds already use (&lt;tt&gt;Worksheet::TreeUndo()&lt;/tt&gt;'s do-while + swapped-stacks
+  trick already makes redo "undo, but backwards" for free).
+  &lt;strong&gt;Two things worth getting right if you touch this again:&lt;/strong&gt;
+  1. &lt;tt&gt;GroupCell::Fold()&lt;/tt&gt;/&lt;tt&gt;Unfold()&lt;/tt&gt; (&lt;tt&gt;GroupCell.cpp&lt;/tt&gt;) are the low-level
+     primitives (&lt;tt&gt;CellList::TearOut&lt;/tt&gt;/&lt;tt&gt;SpliceInAfter&lt;/tt&gt;, same as &lt;tt&gt;DeleteRegion&lt;/tt&gt;/
+     &lt;tt&gt;InsertGroupCells&lt;/tt&gt; use) and do &lt;strong&gt;not&lt;/strong&gt; themselves record undo &amp;ndash; only
+     &lt;tt&gt;WorksheetDocument::Fold()&lt;/tt&gt;/&lt;tt&gt;Unfold()&lt;/tt&gt;/&lt;tt&gt;ToggleFold()&lt;/tt&gt;/&lt;tt&gt;FoldAll()&lt;/tt&gt;/
+     &lt;tt&gt;UnfoldAll()&lt;/tt&gt; do, since only &lt;tt&gt;WorksheetDocument&lt;/tt&gt; owns the
+     &lt;tt&gt;TreeUndoManager&lt;/tt&gt;. Anywhere that needs a fold/unfold NOT to be
+     independently undoable (the automatic auto-unfold in &lt;tt&gt;RevealHidden()&lt;/tt&gt;,
+     and the "make room" auto-unfold in &lt;tt&gt;Worksheet.cpp&lt;/tt&gt;'s new-cell-insertion
+     logic when the h-caret sits inside a folded ancestor) must keep calling
+     the raw &lt;tt&gt;GroupCell::Fold()&lt;/tt&gt;/&lt;tt&gt;Unfold()&lt;/tt&gt; directly, not the
+     &lt;tt&gt;WorksheetDocument&lt;/tt&gt;-level wrappers, or it'll silently start occupying
+     an undo slot it shouldn't.
+  2. &lt;tt&gt;TreeUndoManager::AppendAction()&lt;/tt&gt;'s ordering is easy to get backwards:
+     since actions are pushed with &lt;tt&gt;emplace_front&lt;/tt&gt; (newest at the front),
+     marking an entry's &lt;tt&gt;m_partOfAtomicAction = true&lt;/tt&gt; means "when the entry pushed *after* me gets undone, keep going and undo me too" &amp;ndash; so to
+     chain N actions (e.g. every cell "Fold All" actually folded) into one
+     atomic Ctrl+Z, call &lt;tt&gt;AppendAction()&lt;/tt&gt; after each push &lt;em&gt;except the
+     last-pushed one&lt;/em&gt; (see &lt;tt&gt;WorksheetDocument::RecordFoldUndo()&lt;/tt&gt;), not after
+     the first.
+  A pre-existing unit test (&lt;tt&gt;test/unit_tests/test_TreeUndo.cpp&lt;/tt&gt;,
+  "Undoing an insertion whose cell was folded away...") had to switch from
+  &lt;tt&gt;g_ws-\&gt;ToggleFold()&lt;/tt&gt; to the raw &lt;tt&gt;section-\&gt;Fold()&lt;/tt&gt; once folding became
+  independently undoable: it was relying on folding &lt;em&gt;not&lt;/em&gt; pushing its own
+  undo action so that a single &lt;tt&gt;TreeUndo()&lt;/tt&gt; call would reach past it to the
+  insertion underneath &amp;ndash; exactly the kind of test that silently encodes an
+  old architectural assumption and breaks the moment that assumption stops
+  holding, worth checking for before assuming "existing tests pass" means
+  "no behavior changed."
+
+- **&lt;tt&gt;SumCell&lt;/tt&gt;'s always-on parentheses (GH #1536), and why the fix needed
+  both wxMathML.lisp and C++:** &lt;tt&gt;sum(k,k,1,n)&lt;/tt&gt; used to always display as
+  &lt;tt&gt;Σ (k)&lt;/tt&gt;, even though Maxima's own terminal printer shows a bare &lt;tt&gt;k&lt;/tt&gt; &amp;ndash;
+  &lt;tt&gt;SumCell&lt;/tt&gt;'s constructor (&lt;tt&gt;src/cells/SumCell.cpp&lt;/tt&gt;) unconditionally wrapped
+  the summand in its own &lt;tt&gt;ParenCell&lt;/tt&gt; (&lt;tt&gt;m_paren&lt;/tt&gt;), regardless of what the
+  summand actually was. The tempting "just use the existing operator- precedence machinery" fix doesn't quite apply here: &lt;tt&gt;%sum&lt;/tt&gt;/&lt;tt&gt;%product&lt;/tt&gt; have
+  no &lt;tt&gt;lbp&lt;/tt&gt;/&lt;tt&gt;rbp&lt;/tt&gt; registered at all in real Maxima (confirmed live:
+  &amp;lsquo;(get &amp;rsquo;%sum 'lbp)&lt;tt&gt;is&lt;/tt&gt;NIL`), so Maxima's own printer can't be using
+  generic precedence comparison for this either &amp;ndash; it must special-case it,
+  and the same real distinction it makes (parenthesize a compound summand
+  like &lt;tt&gt;k+k^2&lt;/tt&gt;, not a bare one like &lt;tt&gt;k&lt;/tt&gt;) is exactly &lt;tt&gt;mplusp&lt;/tt&gt; on the actual
+  Maxima expression, which is what &lt;tt&gt;wxxml-sum&lt;/tt&gt; (&lt;tt&gt;wxMathML.lisp&lt;/tt&gt;) now checks.
+  This deliberately avoids inventing a new binding-power value for &lt;tt&gt;sum&lt;/tt&gt; &amp;ndash;
+  the maintainer has flagged doing that as risky in the past (wxMaxima's own
+  operator precedences drifting out of sync with Maxima's, GH #1536's
+  comment thread), so &lt;tt&gt;mplusp&lt;/tt&gt; (an existing Maxima predicate on the real
+  parsed expression) is used instead of a numeric precedence comparison.
+  That decision alone isn't sufficient, though: it has to reach &lt;tt&gt;SumCell&lt;/tt&gt;'s
+  2D on-screen layout, which is computed entirely in C++
+  (&lt;tt&gt;Recalculate()&lt;/tt&gt;/&lt;tt&gt;Draw()&lt;/tt&gt;), and &lt;tt&gt;ParenCell&lt;/tt&gt;'s own &lt;tt&gt;m_print&lt;/tt&gt; flag &amp;ndash; which
+  looked like the obvious existing mechanism to reuse &amp;ndash; turned out to only
+  suppress parentheses in &lt;tt&gt;ToString()&lt;/tt&gt;/&lt;tt&gt;ToTeX()&lt;/tt&gt;/&lt;tt&gt;ToMathML()&lt;/tt&gt; (text/export
+  formats); &lt;tt&gt;Recalculate()&lt;/tt&gt;/&lt;tt&gt;Draw()&lt;/tt&gt;/&lt;tt&gt;SetCurrentPoint()&lt;/tt&gt; don't check it at
+  all and always reserve/draw the paren glyphs regardless. So the Lisp-side
+  decision is carried across the wire as a &lt;tt&gt;needsparen&lt;/tt&gt; attribute on &lt;tt&gt;\&lt;sm\&gt;&lt;/tt&gt;,
+  which &lt;tt&gt;MathParser::ParseSumTag&lt;/tt&gt; reads and feeds into &lt;tt&gt;SumCell::NeedsParen()&lt;/tt&gt;
+  &amp;ndash; a new setter that drives the &lt;em&gt;already-existing&lt;/em&gt; &lt;tt&gt;m_displayParen&lt;/tt&gt;/
+  &lt;tt&gt;DisplayedBase()&lt;/tt&gt; mechanism (previously only toggled by &lt;tt&gt;BreakUp()&lt;/tt&gt;/
+  &lt;tt&gt;Unbreak()&lt;/tt&gt; for the broken-into-lines case) via a new persistent
+  &lt;tt&gt;m_baseNeedsParen&lt;/tt&gt; field, rather than inventing a second, competing
+  wrapping mechanism. Confirmed end-to-end with a live Xvfb screenshot
+  (&lt;tt&gt;sum(k,k,1,n)&lt;/tt&gt; bare, &lt;tt&gt;sum(k+k^2,k,1,n)&lt;/tt&gt; parenthesized, and
+  &lt;tt&gt;sum(k,k,1,n)+L&lt;/tt&gt; &amp;ndash; which motivated the original always-parenthesize
+  decision &amp;ndash; correctly getting &lt;em&gt;outer&lt;/em&gt; parens around the whole sum from
+  the unrelated, already-existing &lt;tt&gt;%sum&lt;/tt&gt; &lt;tt&gt;rbp&lt;/tt&gt; registration, not extra
+  parens around the summand).
+
+@section autotoc_md42 Layout &amp; Compatibility
 
 - &lt;strong&gt;Mathematical Cell Padding:&lt;/strong&gt; Use &lt;tt&gt;MC_TEXT_PADDING&lt;/tt&gt; (in &lt;tt&gt;Configuration.h&lt;/tt&gt;) for text-based cells. &lt;strong&gt;Exception:&lt;/strong&gt; &lt;tt&gt;DigitCell&lt;/tt&gt; does not include padding to ensure visual consistency in broken-up numbers.
 - &lt;strong&gt;Three-Step Layout Process:&lt;/strong&gt;
@@ -408,7 +498,7 @@ Communication with Maxima</h2>
 - **ConfigDialogue Tabs Must Scroll:&lt;/strong&gt; Every tab panel in &lt;tt&gt;src/dialogs/ConfigDialogue.cpp&lt;/tt&gt; is a &lt;tt&gt;wxScrolled\&lt;wxPanel\&gt;&lt;/tt&gt; with &lt;tt&gt;SetScrollRate(5 * GetContentScaleFactor(), 5 * GetContentScaleFactor())&lt;/tt&gt; and &lt;tt&gt;SetMinSize(wxSize(GetContentScaleFactor() * mMinPanelWidth, GetContentScaleFactor() * mMinPanelHeight))&lt;/tt&gt;. Without this, a tab's natural size (which grows with font size/DPI/translation length) can make the whole dialog taller than a hi-DPI screen with no way to reach what's cut off. When adding a new tab, copy this pattern (see &lt;tt&gt;CreateWorksheetPanel()&lt;/tt&gt;) rather than a plain &lt;tt&gt;wxPanel&lt;/tt&gt;.
 - &lt;strong&gt;Constructor Initialization:&lt;/strong&gt; Order initialization lists to match header declaration order to prevent &lt;tt&gt;-Wreorder&lt;/tt&gt; warnings.
 
-@section autotoc_md50 Performance &amp; Documentation Mandates
+@section autotoc_md43 Performance &amp; Documentation Mandates
 
 - &lt;strong&gt;NEWS.md Updates:&lt;/strong&gt; Every non-trivial change MUST be documented in &lt;tt&gt;NEWS.md&lt;/tt&gt; under the "# Current development version" section.
 - &lt;strong&gt;Doxygen Comments:&lt;/strong&gt; Include descriptions for all new classes and public methods. Complex algorithms (e.g., LCS alignment) require detailed architectural comments.
@@ -419,19 +509,19 @@ Communication with Maxima</h2>
   - Prefer &lt;tt&gt;(intern ...)&lt;/tt&gt; over &lt;tt&gt;read-from-string&lt;/tt&gt; for dynamic symbol generation.
 - &lt;strong&gt;Strict XML Mandate:&lt;/strong&gt; To avoid duplicate attributes, add any new manually-handled XML attribute (e.g., &lt;tt&gt;noneParens="true"&lt;/tt&gt;) to the filter list in &lt;tt&gt;MathParser.cpp&lt;/tt&gt;.
 
-@section autotoc_md51 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
+@section autotoc_md44 Visual Documentation (&lt;tt&gt;art/Doxygen/&lt;/tt&gt;)
 
 - &lt;strong&gt;Geometry Awareness:&lt;/strong&gt; If modifying &lt;tt&gt;Recalculate()&lt;/tt&gt; or &lt;tt&gt;Draw()&lt;/tt&gt; geometry (padding, center alignment), you MUST update the corresponding SVG diagrams in &lt;tt&gt;art/Doxygen/&lt;/tt&gt;.
 - &lt;strong&gt;Consistency:&lt;/strong&gt; New cell types should have &lt;tt&gt;*Geometry.svg&lt;/tt&gt; and &lt;tt&gt;*LinearGeometry.svg&lt;/tt&gt; (if applicable) diagrams.
 
-@section autotoc_md52 Key Subsystems Map
+@section autotoc_md45 Key Subsystems Map
 
 - &lt;strong&gt;Layout Engine:&lt;/strong&gt; &lt;tt&gt;src/cells/&lt;/tt&gt; and &lt;tt&gt;src/worksheet/&lt;/tt&gt; (&lt;tt&gt;Worksheet.cpp&lt;/tt&gt; and its siblings moved into that subdirectory).
 - &lt;strong&gt;MathML Formatting:&lt;/strong&gt; &lt;tt&gt;src/wxMathML.lisp&lt;/tt&gt; and &lt;tt&gt;src/MathParser.cpp&lt;/tt&gt;.
 - &lt;strong&gt;Main Logic:&lt;/strong&gt; &lt;tt&gt;src/wxMaxima.cpp&lt;/tt&gt; and &lt;tt&gt;src/wxMaximaFrame.cpp&lt;/tt&gt; &amp;ndash; but much of what used to sit in &lt;tt&gt;wxMaxima&lt;/tt&gt; has been peeled off into friend classes, so look there first: &lt;tt&gt;MaximaProcessManager&lt;/tt&gt; (spawn/kill/connect and the data pump), &lt;tt&gt;MaximaEvaluator&lt;/tt&gt; (evaluation queue and command protocol), &lt;tt&gt;MaximaResponseReader&lt;/tt&gt; (the incoming-XML handlers), &lt;tt&gt;MaximaFileIO&lt;/tt&gt; (worksheet open/save) and &lt;tt&gt;MaximaCommandMenus&lt;/tt&gt; (the menu handlers).
 - &lt;strong&gt;Configuration:&lt;/strong&gt; &lt;tt&gt;src/Configuration.cpp&lt;/tt&gt;.
 
-@section autotoc_md53 Backlog / Future Work
+@section autotoc_md46 Backlog / Future Work
 
 Items the maintainer has flagged as worth doing but hasn't asked for yet &amp;ndash; don't
 start on these without checking in first, but pick them up if asked for "what's next" style work.
@@ -457,7 +547,7 @@ start on these without checking in first, but pick them up if asked for "what's 
   extra-XML-attributes map, ...), so the issue's "112 -&gt; 76 bytes" estimate is stale, but the underlying proposal is still real. This is a bigger undertaking than #1445: it changes the core list <em>storage model</em> (<code>m_next</code>/<code>m_previous</code> becoming array-relative instead of pointer-based), touching every list-manipulation site in <code>CellList.cpp</code> plus anything walking <code>GetNext()</code>/<code>GetPrevious()</code> directly &ndash; scope it out carefully before starting, don't assume it's a small follow-on to #1445 just because they're adjacent/both filed by KubaO in 2020.</code></li>
 </ul>
 <p><code></code></p>
-<h1><a class="anchor" id="autotoc_md54"></a>
+<h1><a class="anchor" id="autotoc_md47"></a>
 Error resilience</h1>
 <p><code></p><ul>
 <li>To err is human =&gt; If your instructions don't seem to make sense feel free to ask. </li>

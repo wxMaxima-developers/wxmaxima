@@ -146,6 +146,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentPoint</b> (
 <tr class="memitem:a7ff6af1448700c3d1d00fd8cfc152ab5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a7ff6af1448700c3d1d00fd8cfc152ab5">SetAltCopyText</a> (const wxString &amp;text) override</td></tr>
 <tr class="memdesc:a7ff6af1448700c3d1d00fd8cfc152ab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">What should end up if placing this cell on the clipboard?  <br /></td></tr>
 <tr class="separator:a7ff6af1448700c3d1d00fd8cfc152ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a7f93c0715d58221298600205be2813"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a6a7f93c0715d58221298600205be2813">NeedsParen</a> (bool needsParen)</td></tr>
+<tr class="memdesc:a6a7f93c0715d58221298600205be2813"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the summand genuinely needs the disambiguating parentheses around it (GH #1536), e.g.  <br /></td></tr>
+<tr class="separator:a6a7f93c0715d58221298600205be2813"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a704b100ebbfa0d778f73ddfba84519fd"><td class="memItemLeft" align="right" valign="top">const wxString &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSumCell.html#a704b100ebbfa0d778f73ddfba84519fd">GetAltCopyText</a> () const override</td></tr>
 <tr class="memdesc:a704b100ebbfa0d778f73ddfba84519fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the text set using SetAltCopyText - may be empty.  <br /></td></tr>
 <tr class="separator:a704b100ebbfa0d778f73ddfba84519fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2877,6 +2880,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_highlight</b>: 1 = 
 <p>True if this cell represents a short number. </p>
 
 <p>Reimplemented in <a class="el" href="classTextCell.html#a8915bfe798fc73eeeeda6bcd7025d6f8">TextCell</a>.</p>
+
+</div>
+</div>
+<a id="a6a7f93c0715d58221298600205be2813" name="a6a7f93c0715d58221298600205be2813"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a7f93c0715d58221298600205be2813">&#9670;&#160;</a></span>NeedsParen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SumCell::NeedsParen </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>needsParen</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether the summand genuinely needs the disambiguating parentheses around it (GH #1536), e.g. </p>
+<p>because it is a sum of terms like "k+k^2" that could otherwise be misread as extending past the sum sign into whatever follows it &ndash; a bare summand like "k" doesn't. Must be set right after construction, before the first layout pass; defaults to true (the old, always-parenthesize behavior) if never called. </p>
 
 </div>
 </div>

@@ -906,12 +906,12 @@ std::unique_ptr&lt; <a class="el" href="classGroupCell.html">GroupCell</a> &gt;&
 <tr class="memitem:ae702e3d21db18a336c72bfe2d6da667a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#ae702e3d21db18a336c72bfe2d6da667a">Unfold</a> ()</td></tr>
 <tr class="memdesc:ae702e3d21db18a336c72bfe2d6da667a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unfold this cell.  <br /></td></tr>
 <tr class="separator:ae702e3d21db18a336c72bfe2d6da667a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe3c67676318a1b1ba043fb48dd56a4e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#afe3c67676318a1b1ba043fb48dd56a4e">FoldAll</a> ()</td></tr>
-<tr class="memdesc:afe3c67676318a1b1ba043fb48dd56a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold all cells.  <br /></td></tr>
-<tr class="separator:afe3c67676318a1b1ba043fb48dd56a4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa53341c4c978ce683242b28cd6c74835"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#aa53341c4c978ce683242b28cd6c74835">UnfoldAll</a> ()</td></tr>
-<tr class="memdesc:aa53341c4c978ce683242b28cd6c74835"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unfold all cells.  <br /></td></tr>
-<tr class="separator:aa53341c4c978ce683242b28cd6c74835"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea8d1724045e506da815686d8c3953ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#aea8d1724045e506da815686d8c3953ca">FoldAll</a> (std::vector&lt; <a class="el" href="classGroupCell.html">GroupCell</a> * &gt; *affected=nullptr)</td></tr>
+<tr class="memdesc:aea8d1724045e506da815686d8c3953ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold all cells.  <br /></td></tr>
+<tr class="separator:aea8d1724045e506da815686d8c3953ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fbc7a4de23e35bb923d43dca4dc0499"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#a9fbc7a4de23e35bb923d43dca4dc0499">UnfoldAll</a> (std::vector&lt; <a class="el" href="classGroupCell.html">GroupCell</a> * &gt; *affected=nullptr)</td></tr>
+<tr class="memdesc:a9fbc7a4de23e35bb923d43dca4dc0499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unfold all cells.  <br /></td></tr>
+<tr class="separator:a9fbc7a4de23e35bb923d43dca4dc0499"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeffb98409072154212d9481319d6914a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupCell.html#aeffb98409072154212d9481319d6914a">IsLesserGCType</a> (<a class="el" href="GroupCell_8h.html#ac96e474603b83b95ba1717acefc3e831">GroupType</a> comparedTo) const</td></tr>
 <tr class="memdesc:aeffb98409072154212d9481319d6914a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Document structure: Can this cell type be part of the contents of comparedTo?  <br /></td></tr>
 <tr class="separator:aeffb98409072154212d9481319d6914a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2079,8 +2079,8 @@ The y position used here must be in sync with the one calculated by <a class="el
 
 </div>
 </div>
-<a id="afe3c67676318a1b1ba043fb48dd56a4e" name="afe3c67676318a1b1ba043fb48dd56a4e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe3c67676318a1b1ba043fb48dd56a4e">&#9670;&#160;</a></span>FoldAll()</h2>
+<a id="aea8d1724045e506da815686d8c3953ca" name="aea8d1724045e506da815686d8c3953ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea8d1724045e506da815686d8c3953ca">&#9670;&#160;</a></span>FoldAll()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2088,13 +2088,20 @@ The y position used here must be in sync with the one calculated by <a class="el
         <tr>
           <td class="memname"><a class="el" href="classGroupCell.html">GroupCell</a> * GroupCell::FoldAll </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classGroupCell.html">GroupCell</a> * &gt; *&#160;</td>
+          <td class="paramname"><em>affected</em> = <code>nullptr</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Fold all cells. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">affected</td><td>If non-null, every cell actually folded by this call is appended here, in the order it was folded &ndash; the caller can use this to record one undo action per cell. </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>the cell's address if folding was successful, else NULL </dd></dl>
 
 </div>
@@ -4798,8 +4805,8 @@ true if any cells were unfolded. </dd></dl>
 
 </div>
 </div>
-<a id="aa53341c4c978ce683242b28cd6c74835" name="aa53341c4c978ce683242b28cd6c74835"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa53341c4c978ce683242b28cd6c74835">&#9670;&#160;</a></span>UnfoldAll()</h2>
+<a id="a9fbc7a4de23e35bb923d43dca4dc0499" name="a9fbc7a4de23e35bb923d43dca4dc0499"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fbc7a4de23e35bb923d43dca4dc0499">&#9670;&#160;</a></span>UnfoldAll()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4807,13 +4814,20 @@ true if any cells were unfolded. </dd></dl>
         <tr>
           <td class="memname"><a class="el" href="classGroupCell.html">GroupCell</a> * GroupCell::UnfoldAll </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classGroupCell.html">GroupCell</a> * &gt; *&#160;</td>
+          <td class="paramname"><em>affected</em> = <code>nullptr</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Unfold all cells. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">affected</td><td>If non-null, every cell actually unfolded by this call is appended here, in the order it was unfolded &ndash; the caller can use this to record one undo action per cell. </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>the last unfolded cell's address if unfolding was successful, else NULL </dd></dl>
 
 </div>

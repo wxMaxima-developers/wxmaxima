@@ -145,6 +145,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanApplyTreeAction</b
 void&#160;</td><td class="memItemRight" valign="bottom"><b>NumberSections</b> () const</td></tr>
 <tr class="memdesc:a65606595a687d98ae9448f0b45eb8df1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renumber all sectioning cells (titles, sections, ...) from the top. <br /></td></tr>
 <tr class="separator:a65606595a687d98ae9448f0b45eb8df1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8466e5a5fe816856290a69e9d75021e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#ae8466e5a5fe816856290a69e9d75021e">Fold</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
+<tr class="memdesc:ae8466e5a5fe816856290a69e9d75021e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold <code>which</code>; see <a class="el" href="classGroupCell.html#a9a0bfd0bc4dbb4081891d162fcdf3834" title="Fold this cell.">GroupCell::Fold()</a>.  <br /></td></tr>
+<tr class="separator:ae8466e5a5fe816856290a69e9d75021e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a445aea2787c72a85a78a9dfe01344241"><td class="memItemLeft" align="right" valign="top"><a id="a445aea2787c72a85a78a9dfe01344241" name="a445aea2787c72a85a78a9dfe01344241"></a>
+<a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>Unfold</b> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
+<tr class="memdesc:a445aea2787c72a85a78a9dfe01344241"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unfold <code>which</code>; see <a class="el" href="classGroupCell.html#ae702e3d21db18a336c72bfe2d6da667a" title="Unfold this cell.">GroupCell::Unfold()</a>. Mirrors <a class="el" href="classWorksheetDocument.html#ae8466e5a5fe816856290a69e9d75021e" title="Fold which; see GroupCell::Fold().">Fold()</a>. <br /></td></tr>
+<tr class="separator:a445aea2787c72a85a78a9dfe01344241"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f218fe1ec553513d36a953dff12b74c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorksheetDocument.html#a5f218fe1ec553513d36a953dff12b74c">ToggleFold</a> (<a class="el" href="classGroupCell.html">GroupCell</a> *which)</td></tr>
 <tr class="memdesc:a5f218fe1ec553513d36a953dff12b74c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold or unfold <code>which</code>, whichever it currently isn't; see <a class="el" href="classGroupCell.html#a9a0bfd0bc4dbb4081891d162fcdf3834" title="Fold this cell.">GroupCell::Fold()</a>/Unfold().  <br /></td></tr>
 <tr class="separator:a5f218fe1ec553513d36a953dff12b74c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -305,6 +312,27 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSaved</b> () const<
 
 <p>Can the range [start,end] (inclusive) be safely removed from the tree? </p>
 <p>Refuses if either end is null, or if the range contains the cell <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> is currently evaluating. </p>
+
+</div>
+</div>
+<a id="ae8466e5a5fe816856290a69e9d75021e" name="ae8466e5a5fe816856290a69e9d75021e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8466e5a5fe816856290a69e9d75021e">&#9670;&#160;</a></span>Fold()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGroupCell.html">GroupCell</a> * WorksheetDocument::Fold </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td>
+          <td class="paramname"><em>which</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fold <code>which</code>; see <a class="el" href="classGroupCell.html#a9a0bfd0bc4dbb4081891d162fcdf3834" title="Fold this cell.">GroupCell::Fold()</a>. </p>
+<p>Returns the cell if it was actually folded, null if <code>which</code> is null, not foldable, or already folded. Records an undo action (GH #266) and clears the redo list; the caller still has to schedule a recalculation - every existing caller already does. </p>
 
 </div>
 </div>
