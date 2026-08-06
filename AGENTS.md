@@ -204,6 +204,55 @@ working without extra checks.
     1,3,5,...,299 sequence. See the follow-up note below (or GH #2196
     directly) for whether it caught anything.
 
+- **macOS translation files never reaching the app bundle (GH #1711) --
+  two independent bugs, neither of which this sandbox (Linux, no
+  `.app`/`MACOSX_BUNDLE`/DragNDrop support at all) can actually build or
+  verify.** `Dirstructure::LocaleDir()`/`wxFileTranslationsLoader` (see
+  `main.cpp`) look specifically under
+  `Contents/Resources/locale/<lang>/LC_MESSAGES/wxMaxima.mo` at runtime.
+  1. `locales/wxMaxima/CMakeLists.txt`'s `copy_mo_file_${LANG}_for_wxmaxima_local`
+     target -- the only thing that populates
+     `${CMAKE_BINARY_DIR}/share/locale/<lang>/LC_MESSAGES/wxMaxima.mo` with
+     that exact nesting, `ALL`-tagged so it runs on every normal build -- was
+     unconditionally skipped `if(NOT APPLE)`, per a comment saying it
+     "does not work with Apple XCode." Confirmed live (Linux, but the CMake
+     logic itself doesn't depend on the platform): a plain `ninja` in this
+     sandbox, having never explicitly invoked `update-locale`, still produces
+     a fully populated `build/share/locale/*/LC_MESSAGES/*.mo` from this
+     target alone -- so on macOS it was producing nothing, full stop. The
+     macOS CI job that actually ships the DMG passes `-G Ninja`, not Xcode
+     (only a separate, non-packaging smoke-test job uses Xcode) -- narrowed
+     the guard to `if(NOT (APPLE AND CMAKE_GENERATOR STREQUAL "Xcode"))`
+     instead of excluding all of Apple.
+  2. Separately, `src/CMakeLists.txt`'s macOS bundle resource list tried to
+     `file(GLOB ${CMAKE_BINARY_DIR}/locale/*.mo)` into the `RESOURCE` target
+     property. Two bugs stacked here too: `file(GLOB)` freezes its result at
+     *configure* time, before a single build step has run and generated any
+     `.mo` file at all (confirmed empirically the same way as above -- this
+     glob's directory doesn't exist yet on a fresh configure); and even if
+     the files existed, this pattern is non-recursive and wouldn't match
+     their actual `locale/<lang>/LC_MESSAGES/wxMaxima.mo` nesting, and
+     CMake's `RESOURCE` property flattens whatever it *does* match directly
+     into `Contents/Resources` with no way to reproduce a subdirectory
+     structure. Fixed by dropping the glob and instead copying the
+     (now-populated, already-correctly-nested) `share/locale` directory into
+     `Contents/Resources/locale` via a plain `file(COPY ...)` inside the
+     existing `install(CODE ...)` block that already runs `fixup_bundle` --
+     the same "has to be a separate step, everything the build produces is
+     only guaranteed to exist by then" reasoning that block's own comment
+     already gives for deferring `fixup_bundle` itself.
+  Verified as much as is possible without a Mac: the CMake configure and a
+  full build succeed unaffected on Linux (the `if(NOT (APPLE AND ...))`
+  change is a no-op there, `CMAKE_GENERATOR` is never `"Xcode"` outside
+  Apple), `share/locale` still populates correctly, and the exact
+  `file(COPY ...)` logic (including its `if(EXISTS ...)` guard, which fails
+  *silently* rather than breaking the build if this is somehow still wrong)
+  was validated standalone via `cmake -P` against a fake
+  `share/locale/<lang>/LC_MESSAGES/*.mo` tree, confirming it reproduces the
+  nesting correctly. The actual Apple-only code paths themselves remain
+  unverified -- if a real macOS build still doesn't get translations, check
+  here first before re-deriving any of the above from scratch.
+
 ## Architecture & GUI
 
 wxMaxima is a GUI front-end to the Maxima CAS; it talks to a Maxima process over
