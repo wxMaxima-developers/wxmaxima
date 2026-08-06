@@ -178,6 +178,24 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "1+1;" "<math><lbl altCopy=\"%o1\">(%o1) </lbl><mn>2</mn></math>"
 )
 
+# GH #1948: box() draws its own border (the <hl> tag), so it must never be
+# wrapped in an extra, redundant pair of parentheses no matter what operator
+# surrounds it -- this pins that "a*box(b)*c" renders with no <p>/wxxml-paren
+# element between box's own <mrow> and its <hl> content.
+add_test(
+    NAME check-wxMathML.lisp_box_no_extra_parens
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a*box(b)*c;" "</hl></mrow><h>\\*</h><mi"
+)
+
+# GH #1948, the fringe case: box(expr, highlight) doesn't draw a border at
+# all (see MathParser::ParseHighlightTag) -- it only colors its content --
+# so unlike an ordinary box it still needs the parentheses above to visually
+# delimit its extent. This must keep getting them even after the fix above.
+add_test(
+    NAME check-wxMathML.lisp_highlight_box_keeps_parens
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a*box(b,highlight)*c;" "<p lisp=\"wxxml-paren\"><mrow><hl boxname=\"highlight\">"
+)
+
 # Syntax-check every wizard/menu command template (the "#n#" CommandWiz rules in
 # src/wxMaxima.cpp) through Maxima's parser, so a malformed generated command --
 # e.g. an unbalanced parenthesis -- fails the build instead of only being found

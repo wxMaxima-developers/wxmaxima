@@ -1,5 +1,15 @@
 # Current development version
 
+- Display (GH #1948): `box()` draws its own border around its argument, so
+  it never needed the extra pair of parentheses `wxMathML.lisp`'s generic
+  precedence-based paren-insertion logic could still wrap around it, e.g.
+  `a*box(b)*c` showing spurious parens around `box(b)`. Fixed by giving
+  `box()` (and its labelled form, `box(expr, label)`) a precedence higher
+  than any real operator's, so it never needs disambiguating -- except for
+  the one case where it doesn't actually draw a border at all: `box(expr,
+  highlight)` only colors its content, and correctly keeps the
+  disambiguating parentheses it already had, since a bare color change
+  doesn't visually delimit its own extent.
 - Code cell syntax highlighting (GH #898): an identifier split across two
   physical lines by an escaped newline (`\` immediately followed by a line
   break -- confirmed against a real Maxima that this contributes nothing to

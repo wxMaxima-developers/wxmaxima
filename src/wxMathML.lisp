@@ -593,6 +593,31 @@ Submit bug reports by following the 'New issue' link on that page."))
 		     y (cdr y)
 		     l nil))))))
 
+;; GH #1948: box()'s displayed precedence depends on whether it actually
+;; draws a border (always self-delimiting, so it should never need parens,
+;; see the high wxxml-lbp/rbp below) or is being used purely to color its
+;; content red without a border (boxname "highlight" -- see
+;; MathParser::ParseHighlightTag on the C++ side, which skips creating a
+;; BoxCell for that specific boxname and just applies a color instead). A
+;; bare color change doesn't visually delimit its own extent the way an
+;; actual border does, so that variant still needs the old, low precedence.
+;; Both variants of the *labelled* form (box(expr, boxname), including the
+;; "highlight" boxname) share the very same mlabox head symbol -- the
+;; unlabelled form box(expr) is mbox instead -- differing only in this
+;; argument, so a plain per-symbol wxxml-lbp/rbp property can't tell them
+;; apart. These wrappers can, since (unlike wxxml-lbp/rbp) they see the
+;; whole form, not just its head symbol.
+(defun wxxml-form-is-highlight-only-box (x)
+  (and (member (caar x) '(mbox mlabox))
+       (caddr x)
+       (equal (wxxml-mstring (caddr x)) "highlight")))
+
+(defun wxxml-form-lbp (x)
+  (if (wxxml-form-is-highlight-only-box x) 10. (wxxml-lbp (caar x))))
+
+(defun wxxml-form-rbp (x)
+  (if (wxxml-form-is-highlight-only-box x) 10. (wxxml-rbp (caar x))))
+
 ;; Converts a sexp element to XML
 ;;
 ;; Most objects are assigned properties to, that tell this function how to
@@ -602,8 +627,8 @@ Submit bug reports by following the 'New issue' link on that page."))
   (cond ((atom x) (wxxml-atom x l r))
 	((not (listp (car x)))
 	 (wxxml (cons '(mlist simp) x) l r lop rop))
-	((or (<= (wxxml-lbp (caar x)) (wxxml-rbp lop))
-	     (> (wxxml-lbp rop) (wxxml-rbp (caar x))))
+	((or (<= (wxxml-form-lbp x) (wxxml-rbp lop))
+	     (> (wxxml-lbp rop) (wxxml-form-rbp x)))
 	 (wxxml-paren x l r))
 	;; special check needed because macsyma notates arrays peculiarly
 	((member 'array (cdar x) :test #'eq) (wxxml-array x l r))
@@ -750,9 +775,31 @@ Submit bug reports by following the 'New issue' link on that page."))
 (wx-defprop mbox wxxml-mbox wxxml)
 (wx-defprop mlabox wxxml-mbox wxxml)
 
-(wx-defprop mbox 10. wxxml-rbp)
-(wx-defprop mbox 10. wxxml-lbp)
+;; GH #1948: box() draws its own border around its argument (see
+;; wxxml-mbox below, dispatched via the "wxxml" property above) and is
+;; therefore always self-delimiting, exactly like a matched-delimiter
+;; construct (a matrix, absolute value, ...) -- it should never need an
+;; extra pair of parentheses no matter what operator surrounds it. But the
+;; generic paren-insertion check in wxxml (wxxml-lbp/wxxml-rbp comparison)
+;; runs *before* the "wxxml" property dispatch, so a low precedence here
+;; still wraps the box in a redundant, wrong-looking pair of parentheses,
+;; e.g. "a*box(b)*c" (120 for mtimes). 250 clears every real operator's
+;; precedence in this file with headroom, including mquote's 201 (the
+;; highest otherwise in use, using a plain "<=" comparison so an exact tie
+;; would still parenthesize). mlabox (box(expr, boxname), the labelled
+;; form -- see wxxml-mbox below, which handles both) gets the same
+;; treatment; wxxml-form-lbp/rbp above override both back down to the old
+;; low precedence for the "highlight" boxname specifically.
+(wx-defprop mbox 250. wxxml-rbp)
+(wx-defprop mbox 250. wxxml-lbp)
 
+(wx-defprop mlabox 250. wxxml-rbp)
+(wx-defprop mlabox 250. wxxml-lbp)
+
+;; mlabbox (double b) does not appear to be an internal representation any
+;; live Maxima code path actually produces (box(expr, boxname) is mlabox,
+;; single b, above) -- left untouched since there's nothing to verify this
+;; against.
 (wx-defprop mlabbox 10. wxxml-rbp)
 (wx-defprop mlabbox 10. wxxml-lbp)
 
