@@ -15,6 +15,31 @@ menu, file loading/saving, …), it is a **wxMaxima** issue.
 If unsure just report the problem to the wxMaxima project so its members will find
 out where the problem lies.
 
+**Note:** this quick test can be misleading for the macOS quarantine issue below --
+a plain terminal session doesn't need the local socket wxMaxima uses to talk to
+Maxima, so `maxima` can look completely fine there even when wxMaxima cannot
+reach it at all.
+
+## Known issues
+
+### macOS: wxMaxima never evaluates anything (stuck on "Reading Maxima output")
+
+The GUI opens and is responsive, but every cell just sits in the evaluation
+queue forever, with the status bar stuck on "Reading Maxima output" (see
+[#1761](https://github.com/wxMaxima-developers/wxmaxima/issues/1761)). This is
+usually **macOS Gatekeeper quarantining the `maxima` binary** -- a binary
+installed via Homebrew, MacPorts, or downloaded directly can be flagged
+`com.apple.quarantine`, which then silently blocks the local socket connection
+wxMaxima uses to talk to it. Fix it from a Terminal:
+
+```sh
+xattr -dr com.apple.quarantine /path/to/maxima
+```
+
+If the exact binary path is unclear, running it against the whole install
+prefix also works, e.g. `$(brew --prefix)` for Homebrew or `/opt/local` for
+MacPorts.
+
 ## The wxMaxima GUI (this project)
 
 - **Questions, ideas, general discussion** →
