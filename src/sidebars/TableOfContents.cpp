@@ -91,23 +91,24 @@ void TableOfContents::OnTimer(wxTimerEvent &event) {
   }
 }
 
+long TableOfContents::ClampDropIndex(long hitIndex, int itemCount,
+                                     std::size_t numberOfCaptionsDragged) {
+  if ((hitIndex >= 0) &&
+      (static_cast<std::size_t>(hitIndex) >=
+       static_cast<std::size_t>(itemCount) - numberOfCaptionsDragged))
+    return static_cast<long>(itemCount) -
+      static_cast<long>(numberOfCaptionsDragged);
+  return hitIndex;
+}
+
 void TableOfContents::OnMouseMotion(wxMouseEvent &event) {
   if (m_dragImage != NULL) {
     int flags;
     m_dragCurrentPos =
       m_displayedItems->HitTest(event.GetPosition(), flags, NULL);
-    // Dropping at or beyond the last valid slot (there are
-    // GetItemCount() - m_numberOfCaptionsDragged "other" items left once the
-    // dragged block is removed) means "move to the end of the list" -- clamp
-    // to that boundary itself, not to m_numberOfCaptionsDragged - 1 (a
-    // position near the *start* of the list, which used to make "drop near
-    // the end" silently snap back next to the drag's own start and look like
-    // a no-op -- GH #1524).
-    if ((m_dragCurrentPos >= 0) &&
-        (static_cast<std::size_t>(m_dragCurrentPos) >=
-         m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged))
-      m_dragCurrentPos =
-        m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged;
+    m_dragCurrentPos = ClampDropIndex(m_dragCurrentPos,
+                                      m_displayedItems->GetItemCount(),
+                                      m_numberOfCaptionsDragged);
     if (m_dragFeedback_Last != m_dragCurrentPos) {
       m_dragImage->Hide();
       UpdateDisplay();
@@ -199,12 +200,8 @@ void TableOfContents::OnMouseUp(wxMouseEvent &evt) {
   }
   int flags;
   m_dragStop = m_displayedItems->HitTest(evt.GetPosition(), flags, NULL);
-  // See the matching comment in OnMouseMotion(): clamp to the boundary itself
-  // ("move to the end"), not to a fixed position near the drag's own start.
-  if ((m_dragStop >= 0) &&
-      (static_cast<std::size_t>(m_dragStop) >=
-       m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged))
-    m_dragStop = m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged;
+  m_dragStop = ClampDropIndex(m_dragStop, m_displayedItems->GetItemCount(),
+                              m_numberOfCaptionsDragged);
   if ((m_dragStart >= 0) && (m_dragStop >= 0) && (m_dragStart != m_dragStop)) {
     const wxWindow *mainWin = this;
     while (mainWin->GetParent() != NULL)

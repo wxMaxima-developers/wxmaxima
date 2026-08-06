@@ -366,6 +366,21 @@ if(TARGET wxmTestApp)
     add_test(NAME WorksheetFind
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetFind>")
 
+    # Pins Worksheet::TOCdnd() (the table of contents sidebar's drag-and-drop
+    # reorder, GH #1524) and TableOfContents::ClampDropIndex(): a chapter
+    # moves as a whole (taking its own content and nested sub-headings with
+    # it), with no pre-existing worksheet selection required, and dropping
+    # near the end of the list lands at the end rather than snapping back
+    # near the drag's own start.
+    add_executable(test_TableOfContentsDnD
+        test_TableOfContentsDnD.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_TableOfContentsDnD PUBLIC cxx_std_20)
+    target_link_libraries(test_TableOfContentsDnD PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME TableOfContentsDnD
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_TableOfContentsDnD>")
+
     # Pins Worksheet::AnonymizeCodeCells() (GH #1339): non-builtin
     # variable/function names in the selected code cells get replaced with a
     # random, collision-free, reproducible-within-the-run name, while Maxima

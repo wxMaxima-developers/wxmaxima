@@ -80,6 +80,21 @@ public:
 
   GroupCell *DNDStart() {return m_dndStartCell;}
   GroupCell *DNDEnd() {return m_dndEndCell;}
+
+  /*! Clamp a hit-tested drop position to a valid target.
+
+    hitIndex is tested against the *pre-drop* item count: once the dragged
+    block of numberOfCaptionsDragged items is removed, only
+    itemCount - numberOfCaptionsDragged "other" items are left, so dropping
+    at or past that many means "move to the end of the list" -- clamp to
+    that boundary itself. (A negative hitIndex, meaning HitTest() found no
+    item there, passes through unchanged.) Shared by OnMouseMotion() and
+    OnMouseUp(), and exposed as a pure function so it can be unit-tested
+    without needing to synthesize real mouse events -- see
+    test_TableOfContentsDnD.cpp.
+  */
+  static long ClampDropIndex(long hitIndex, int itemCount,
+                             std::size_t numberOfCaptionsDragged);
 protected:
   void OnSize(wxSizeEvent &event);
   void OnDragStart(wxListEvent &evt);
