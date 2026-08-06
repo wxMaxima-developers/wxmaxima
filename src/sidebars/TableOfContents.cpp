@@ -96,10 +96,18 @@ void TableOfContents::OnMouseMotion(wxMouseEvent &event) {
     int flags;
     m_dragCurrentPos =
       m_displayedItems->HitTest(event.GetPosition(), flags, NULL);
+    // Dropping at or beyond the last valid slot (there are
+    // GetItemCount() - m_numberOfCaptionsDragged "other" items left once the
+    // dragged block is removed) means "move to the end of the list" -- clamp
+    // to that boundary itself, not to m_numberOfCaptionsDragged - 1 (a
+    // position near the *start* of the list, which used to make "drop near
+    // the end" silently snap back next to the drag's own start and look like
+    // a no-op -- GH #1524).
     if ((m_dragCurrentPos >= 0) &&
         (static_cast<std::size_t>(m_dragCurrentPos) >=
          m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged))
-      m_dragCurrentPos = m_numberOfCaptionsDragged - 1;
+      m_dragCurrentPos =
+        m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged;
     if (m_dragFeedback_Last != m_dragCurrentPos) {
       m_dragImage->Hide();
       UpdateDisplay();
@@ -191,10 +199,12 @@ void TableOfContents::OnMouseUp(wxMouseEvent &evt) {
   }
   int flags;
   m_dragStop = m_displayedItems->HitTest(evt.GetPosition(), flags, NULL);
+  // See the matching comment in OnMouseMotion(): clamp to the boundary itself
+  // ("move to the end"), not to a fixed position near the drag's own start.
   if ((m_dragStop >= 0) &&
       (static_cast<std::size_t>(m_dragStop) >=
        m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged))
-    m_dragStop = m_numberOfCaptionsDragged - 1;
+    m_dragStop = m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged;
   if ((m_dragStart >= 0) && (m_dragStop >= 0) && (m_dragStart != m_dragStop)) {
     const wxWindow *mainWin = this;
     while (mainWin->GetParent() != NULL)
@@ -204,6 +214,15 @@ void TableOfContents::OnMouseUp(wxMouseEvent &evt) {
     tocEv->SetId(EventIDs::popid_tocdnd);
     mainWin->GetEventHandler()->QueueEvent(tocEv);
   }
+  // The drag is over: forget its state so that UpdateDisplay() (here and on
+  // every later call, e.g. from UpdateTableOfContents()) goes back to
+  // rendering the real tree order instead of getting stuck replaying this
+  // drag's reordered preview forever -- these used to only get reset in
+  // OnMouseCaptureLost(), never on a normal drop (GH #1524).
+  m_dragStart = -1;
+  m_dragStop = -1;
+  m_dragCurrentPos = -1;
+  m_dragFeedback_Last = -1;
   UpdateDisplay();
   evt.Skip();
 }

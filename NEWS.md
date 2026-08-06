@@ -1,5 +1,31 @@
 # Current development version
 
+- Table of contents sidebar: dragging a chapter/section entry to reorder it
+  (GH #1524) now actually works -- it was wired up (drag image, scroll-while-
+  dragging, the reordered-preview rendering) but never functional, since
+  three separate bugs each broke it in a different way:
+  - `Worksheet::TOCdnd()`, which performs the actual reorder, required a
+    worksheet selection to already exist before doing anything -- but
+    nothing sets one up before this function itself builds one from the
+    dragged cell a few lines later. In ordinary use (no unrelated selection
+    active when a TOC drag starts) this made every drop a silent no-op.
+  - Dropping at or near the end of the list snapped back to a position near
+    the drag's own start instead of the end, because the "clamp an
+    out-of-range drop position" logic in both `OnMouseMotion()` and
+    `OnMouseUp()` clamped to the wrong value.
+  - Dragging a heading that has its own sub-heading (e.g. a section with a
+    subsection) could silently strip the sub-heading (and its content) back
+    off during the move, landing it elsewhere in the document instead of
+    following its parent: the selection-extension logic compared each next
+    cell's rank against whatever cell the selection currently ended on
+    rather than against the originally-dragged heading's rank, so once the
+    selection had absorbed the dragged heading's own plain-content cell, a
+    sub-heading right after it was compared against that content cell
+    instead and always judged "not part of this chapter".
+  Verified end-to-end in a live session: dragging a section with a nested
+  subsection and its own content cells to a new position now moves the
+  whole chapter together, with correct renumbering and a table of contents
+  that stays in sync with the document afterwards.
 - Release automation (GH #1192): tagged releases now also attach a
   `.tar.xz` source archive plus a `.sha256` checksum file, built with
   `git archive` from the tagged commit rather than reusing GitHub's own

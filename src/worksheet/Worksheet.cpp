@@ -3620,8 +3620,13 @@ std::unique_ptr<Cell> Worksheet::CopySelection(bool asData) const {
 }
 
 void Worksheet::TOCdnd(GroupCell *dndStart, GroupCell *dndEnd) {
-  if((GetDocumentCellPointers().GetSelectionStart() == nullptr) || (GetDocumentCellPointers().GetSelectionEnd() == nullptr))
-    return;
+  // GH #1524: this used to also require a pre-existing worksheet selection
+  // (GetSelectionStart()/GetSelectionEnd() both non-null) before doing
+  // anything -- but nothing above builds that selection; it's this function
+  // itself that establishes one a few lines below, from dndStart. Since a
+  // TOC-driven drag is normally started with no unrelated selection active
+  // in the worksheet, that guard made the entire feature a silent no-op in
+  // ordinary use.
   if (!dndStart)
     return;
 
@@ -3632,18 +3637,26 @@ void Worksheet::TOCdnd(GroupCell *dndStart, GroupCell *dndEnd) {
   if (dndEnd && !GetTree()->Contains(dndEnd))
     return;
 
-  // Select the region that is to be moved
+  // Select the region that is to be moved: the dragged heading plus
+  // everything "lesser" than it -- sub-headings and their own content --
+  // stopping at the next heading of equal or higher rank (see
+  // GroupCell::IsLesserGCType()). Always compare against dndStart's own
+  // type, never a shifting one: comparing against whatever cell
+  // SelectionEnd currently sits on (as this used to) meant that once
+  // SelectionEnd had advanced onto dndStart's own plain-content cell, a
+  // sub-heading right after it got compared against that content cell's
+  // type instead of dndStart's -- IsLesserGCType() has no ordering relation
+  // to a non-heading type, so the comparison always came out false and
+  // silently cut the sub-heading (and its own content) loose from the
+  // chapter being moved (GH #1524). This mirrors the (correct) reference
+  // TableOfContents::OnDragStart() already uses for its own, separate
+  // "how many TOC entries are being dragged" count.
+  const GroupType dndStartType = dndStart->GetGroupType();
   GetDocumentCellPointers().SetSelectionStart(dndStart);
   GetDocumentCellPointers().SetSelectionEnd(GetDocumentCellPointers().GetSelectionStart());
-  if (GetDocumentCellPointers().GetSelectionEnd()->GetNext())
-    GetDocumentCellPointers().SetSelectionEnd(GetDocumentCellPointers().GetSelectionEnd()->GetNext());
-  while ((GetDocumentCellPointers().GetSelectionEnd()) &&
-         ((GetDocumentCellPointers().GetSelectionEnd()->GetNext() != NULL) &&
-          (dynamic_cast<GroupCell *>(GetDocumentCellPointers().GetSelectionEnd()->GetNext()) &&
-           dynamic_cast<GroupCell *>(GetDocumentCellPointers().GetSelectionEnd().get()) &&
-           (dynamic_cast<GroupCell *>(GetDocumentCellPointers().GetSelectionEnd()->GetNext())
-            ->IsLesserGCType(dynamic_cast<GroupCell *>(GetDocumentCellPointers().GetSelectionEnd().get())
-                             ->GetGroupType())))))
+  while (GetDocumentCellPointers().GetSelectionEnd()->GetNext() &&
+         dynamic_cast<GroupCell *>(GetDocumentCellPointers().GetSelectionEnd()->GetNext())
+           ->IsLesserGCType(dndStartType))
     GetDocumentCellPointers().SetSelectionEnd(GetDocumentCellPointers().GetSelectionEnd()->GetNext());
 
   // Copy the region we want to move
