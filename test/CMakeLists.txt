@@ -196,6 +196,27 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a*box(b,highlight)*c;" "<p lisp=\"wxxml-paren\"><mrow><hl boxname=\"highlight\">"
 )
 
+# GH #1672: wx-cd (the function wxMaxima uses to keep Maxima's working
+# directory in sync with the worksheet's) used to fail to cd into a
+# directory whose name contains characters outside the OS's active
+# codepage -- on Windows specifically, since sb-posix:chdir there goes
+# through the C runtime's ANSI-only _chdir (SBCL bug launchpad #2100706).
+# A CJK directory name is reliably outside the default English-Windows
+# codepage (1252). Unlike the other check-wxMathML.lisp_* tests this is a
+# CMake script, not the check-wxMathML.sh POSIX-shell helper, precisely so
+# it isn't limited by the "needs_posix" label below and actually runs on
+# the Windows CI job too -- see check-wx-cd-non-ascii.cmake for why.
+if(MAXIMA)
+  add_test(
+      NAME check-wxMathML.lisp_wx-cd_non_ascii_dir
+      COMMAND "${CMAKE_COMMAND}"
+              "-DMAXIMA=${MAXIMA}"
+              "-DWXMATHML_LISP=${CMAKE_SOURCE_DIR}/src/wxMathML.lisp"
+              "-DTEST_BASE_DIR=${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files"
+              -P "${CMAKE_CURRENT_SOURCE_DIR}/check-wx-cd-non-ascii.cmake"
+  )
+endif()
+
 # Syntax-check every wizard/menu command template (the "#n#" CommandWiz rules in
 # src/wxMaxima.cpp) through Maxima's parser, so a malformed generated command --
 # e.g. an unbalanced parenthesis -- fails the build instead of only being found
