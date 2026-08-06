@@ -71,6 +71,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a>  </div>
   <div class="headertitle"><div class="title">TableOfContents Class Reference</div></div>
 </div><!--header-->
@@ -123,6 +124,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnRegExEvent</b> (wxC
 <a class="el" href="classGroupCell.html">GroupCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>DNDEnd</b> ()</td></tr>
 <tr class="separator:a9d39604ec5e5f53e25794c58a9b621a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a89f6eb48b855ff1638a03d59ce618a5d"><td class="memItemLeft" align="right" valign="top">static long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTableOfContents.html#a89f6eb48b855ff1638a03d59ce618a5d">ClampDropIndex</a> (long hitIndex, int itemCount, std::size_t numberOfCaptionsDragged)</td></tr>
+<tr class="memdesc:a89f6eb48b855ff1638a03d59ce618a5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clamp a hit-tested drop position to a valid target.  <br /></td></tr>
+<tr class="separator:a89f6eb48b855ff1638a03d59ce618a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a8ca5f4f60e12384ab643cb03513ce326"><td class="memItemLeft" align="right" valign="top"><a id="a8ca5f4f60e12384ab643cb03513ce326" name="a8ca5f4f60e12384ab643cb03513ce326"></a>
@@ -150,6 +157,51 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>TocEntryString</b
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class generates a pane containing the table of contents. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a89f6eb48b855ff1638a03d59ce618a5d" name="a89f6eb48b855ff1638a03d59ce618a5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89f6eb48b855ff1638a03d59ce618a5d">&#9670;&#160;</a></span>ClampDropIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">long TableOfContents::ClampDropIndex </td>
+          <td>(</td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>hitIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>itemCount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>numberOfCaptionsDragged</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clamp a hit-tested drop position to a valid target. </p>
+<p>hitIndex is tested against the <em>pre-drop</em> item count: once the dragged block of numberOfCaptionsDragged items is removed, only itemCount - numberOfCaptionsDragged "other" items are left, so dropping at or past that many means "move to the end of the list" &ndash; clamp to that boundary itself. (<a class="el" href="classA.html">A</a> negative hitIndex, meaning HitTest() found no item there, passes through unchanged.) Shared by OnMouseMotion() and OnMouseUp(), and exposed as a pure function so it can be unit-tested without needing to synthesize real mouse events &ndash; see <a class="el" href="test__TableOfContentsDnD_8cpp.html" title="Regression tests for the table of contents sidebar&#39;s drag-and-drop reorder (GH #1524).">test_TableOfContentsDnD.cpp</a>. </p>
+
+</div>
+</div>
 <a id="a63819f993f35d4b2a813911406c24202" name="a63819f993f35d4b2a813911406c24202"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a63819f993f35d4b2a813911406c24202">&#9670;&#160;</a></span>UpdateTableOfContents()</h2>
 
