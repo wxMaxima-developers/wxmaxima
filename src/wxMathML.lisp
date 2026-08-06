@@ -1166,8 +1166,26 @@ Submit bug reports by following the 'New issue' link on that page."))
 
 ;; easily extended to union, intersect, otherops
 
+;; GH #1536: a bare summand ("k") doesn't need visual disambiguation from
+;; whatever follows the whole sum/product, but a compound one ("k+k^2")
+;; could otherwise be misread as extending past the sum sign into it --
+;; e.g. "sum k + L" is genuinely ambiguous about whether L is part of the
+;; sum. Maxima's own printer has no lbp/rbp registered for %sum/%product at
+;; all (confirmed: (get '%sum 'lbp) is NIL), so it can't be using generic
+;; operator-precedence comparison for this either -- mplusp (a direct,
+;; already-existing Maxima predicate on the real expression, not an
+;; invented precedence value) is the same structural distinction Maxima's
+;; own 2D ASCII printer visibly makes for this exact construct. This is
+;; carried across the wire as the needsparen attribute since the decision
+;; of whether to show parens has to reach SumCell's 2D on-screen layout in
+;; wxWidgets/C++, which ParenCell's own "print" flag cannot do (it only
+;; suppresses parens in text/TeX/MathML export, not in Recalculate()/Draw()).
+(defun wxxml-sum-needsparen (x)
+  (if (mplusp (cadr x)) "true" "false"))
+
 (defun wxxml-lproduct(x l r)
-  (let ((op "<sm type=\"lprod\"><mrow>")
+  (let* ((op (concatenate 'string "<sm type=\"lprod\" needsparen=\""
+			   (wxxml-sum-needsparen x) "\"><mrow>"))
 	;; gotta be one of those above
 	(s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
 	(index ;; "index = lowerlimit"
@@ -1178,7 +1196,8 @@ Submit bug reports by following the 'New issue' link on that page."))
 		    ,@s1 "</mrow></sm>") r)))
 
 (defun wxxml-lsum(x l r)
-  (let ((op "<sm type=\"lsum\"><mrow>")
+  (let* ((op (concatenate 'string "<sm type=\"lsum\" needsparen=\""
+			   (wxxml-sum-needsparen x) "\"><mrow>"))
 	;; gotta be one of those above
 	(s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
 	(index ;; "index = lowerlimit"
@@ -1189,10 +1208,11 @@ Submit bug reports by following the 'New issue' link on that page."))
 		    ,@s1 "</mrow></sm>") r)))
 
 (defun wxxml-sum(x l r)
-  (let ((op (if (or (eq (caar x) '%sum)
-		    (eq (caar x) '$sum))
-		"<sm><mrow>"
-		"<sm type=\"prod\"><mrow>"))
+  (let* ((prodp (not (or (eq (caar x) '%sum) (eq (caar x) '$sum))))
+	 (op (concatenate 'string "<sm"
+			   (if prodp " type=\"prod\"" "")
+			   " needsparen=\"" (wxxml-sum-needsparen x)
+			   "\"><mrow>"))
 	(s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
 	(index ;; "index = lowerlimit"
 	 (wxxml `((mequal simp) ,(caddr x) ,(cadddr x))

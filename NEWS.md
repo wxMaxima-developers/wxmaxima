@@ -1,5 +1,19 @@
 # Current development version
 
+- `sum()`/`product()`/`lsum` (GH #1536) no longer wrap a plain summand in
+  spurious parentheses: `sum(k,k,1,n)` now displays the sum sign over a bare
+  `k`, matching Maxima's own terminal output, instead of always showing
+  `(k)`. A genuinely compound summand, like `sum(k+k^2,k,1,n)`, still gets
+  the parentheses, since dropping them there really could be misread as
+  extending past the sum sign. The decision is made in `wxxml-sum`
+  (`wxMathML.lisp`) from the real Maxima expression (`mplusp`) rather than
+  an invented operator precedence -- Maxima's own printer has no `lbp`/`rbp`
+  registered for `sum`/`product` either, so it can't be using generic
+  precedence comparison for this -- and is carried across the wire to
+  `SumCell` (which still needed a small, targeted change of its own: its 2D
+  on-screen layout is computed in C++, and turned out not to be reachable
+  through `ParenCell`'s existing "print" flag, which only suppresses
+  parentheses in text/TeX/MathML export, not in the interactive display).
 - Folding/unfolding a section (or the whole document, via "Fold All"/
   "Unfold All") is now recorded in the undo buffer (GH #266), a 2013 feature
   request: Ctrl+Z after an accidental fold, or after "Fold All" collapses a

@@ -660,6 +660,44 @@ tried without rebuilding.
   holding, worth checking for before assuming "existing tests pass" means
   "no behavior changed."
 
+- **`SumCell`'s always-on parentheses (GH #1536), and why the fix needed
+  both wxMathML.lisp and C++:** `sum(k,k,1,n)` used to always display as
+  `Σ (k)`, even though Maxima's own terminal printer shows a bare `k` --
+  `SumCell`'s constructor (`src/cells/SumCell.cpp`) unconditionally wrapped
+  the summand in its own `ParenCell` (`m_paren`), regardless of what the
+  summand actually was. The tempting "just use the existing operator-
+  precedence machinery" fix doesn't quite apply here: `%sum`/`%product` have
+  no `lbp`/`rbp` registered at all in real Maxima (confirmed live:
+  `(get '%sum 'lbp)` is `NIL`), so Maxima's own printer can't be using
+  generic precedence comparison for this either -- it must special-case it,
+  and the same real distinction it makes (parenthesize a compound summand
+  like `k+k^2`, not a bare one like `k`) is exactly `mplusp` on the actual
+  Maxima expression, which is what `wxxml-sum` (`wxMathML.lisp`) now checks.
+  This deliberately avoids inventing a new binding-power value for `sum` --
+  the maintainer has flagged doing that as risky in the past (wxMaxima's own
+  operator precedences drifting out of sync with Maxima's, GH #1536's
+  comment thread), so `mplusp` (an existing Maxima predicate on the real
+  parsed expression) is used instead of a numeric precedence comparison.
+  That decision alone isn't sufficient, though: it has to reach `SumCell`'s
+  2D on-screen layout, which is computed entirely in C++
+  (`Recalculate()`/`Draw()`), and `ParenCell`'s own `m_print` flag -- which
+  looked like the obvious existing mechanism to reuse -- turned out to only
+  suppress parentheses in `ToString()`/`ToTeX()`/`ToMathML()` (text/export
+  formats); `Recalculate()`/`Draw()`/`SetCurrentPoint()` don't check it at
+  all and always reserve/draw the paren glyphs regardless. So the Lisp-side
+  decision is carried across the wire as a `needsparen` attribute on `<sm>`,
+  which `MathParser::ParseSumTag` reads and feeds into `SumCell::NeedsParen()`
+  -- a new setter that drives the *already-existing* `m_displayParen`/
+  `DisplayedBase()` mechanism (previously only toggled by `BreakUp()`/
+  `Unbreak()` for the broken-into-lines case) via a new persistent
+  `m_baseNeedsParen` field, rather than inventing a second, competing
+  wrapping mechanism. Confirmed end-to-end with a live Xvfb screenshot
+  (`sum(k,k,1,n)` bare, `sum(k+k^2,k,1,n)` parenthesized, and
+  `sum(k,k,1,n)+L` -- which motivated the original always-parenthesize
+  decision -- correctly getting *outer* parens around the whole sum from
+  the unrelated, already-existing `%sum` `rbp` registration, not extra
+  parens around the summand).
+
 ## Layout & Compatibility
 
 - **Mathematical Cell Padding:** Use `MC_TEXT_PADDING` (in `Configuration.h`) for text-based cells. **Exception:** `DigitCell` does not include padding to ensure visual consistency in broken-up numbers.

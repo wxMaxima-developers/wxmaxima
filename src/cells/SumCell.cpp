@@ -321,9 +321,11 @@ wxString SumCell::ToXML() const {
   wxString type = GetXMLType();
   wxString flags = GetXMLFlags();
 
-  return wxS("<sm type=\"") + type + "\"" + flags + wxS("><r>") +
-    m_under->ListToXML() + _T("</r><r>") + m_over->ListToXML() +
-    _T("</r><r>") + Base()->ListToXML() + _T("</r></sm>");
+  return wxS("<sm type=\"") + type + wxS("\" needsparen=\"") +
+    (m_baseNeedsParen ? wxS("true") : wxS("false")) + wxS("\"") + flags +
+    wxS("><r>") + m_under->ListToXML() + _T("</r><r>") +
+    m_over->ListToXML() + _T("</r><r>") + Base()->ListToXML() +
+    _T("</r></sm>");
 }
 
 wxString SumCell::ToMathML() const {
@@ -353,7 +355,7 @@ wxString SumCell::ToMathML() const {
 }
 
 void SumCell::Unbreak() const {
-  m_displayParen = true;
+  m_displayParen = m_baseNeedsParen;
   Cell::Unbreak();
 }
 
