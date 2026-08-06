@@ -27,6 +27,14 @@
   the 32-bit build, under a virtual X server, which previously only
   compiled the tests and never ran any of them -- the gap that let both of
   these bugs go undetected until a Debian rebuild caught them.
+- Release automation (GH #1192): tagged releases now also attach a
+  `.tar.xz` source archive plus a `.sha256` checksum file, built with
+  `git archive` from the tagged commit rather than reusing GitHub's own
+  auto-generated (and not guaranteed byte-stable over time) "Source code"
+  archives. `xz` compresses noticeably tighter than the `.tar.gz`/`.zip`
+  GitHub already provides automatically (~59% smaller for the current
+  tree) -- real bandwidth savings for distro packagers who mirror/rebuild
+  from upstream source tarballs at scale.
 - Snap: opening the local manual (Help > wxMaxima help, F1, ...) with "use
   external browser" selected in Options no longer silently fails under
   strict confinement. The portal-routed external browser may itself be a
