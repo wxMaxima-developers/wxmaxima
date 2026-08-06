@@ -342,6 +342,19 @@ if(TARGET wxmTestApp)
     add_test(NAME WorksheetContextMenu
         COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_WorksheetContextMenu>")
 
+    # Pins MaximaTokenizer's handling of an identifier split by an escaped
+    # newline (GH #898): both halves must stay one logical name for
+    # function/variable/operator/keyword classification, even though a
+    # newline still has to render as its own isolated token.
+    add_executable(test_MaximaTokenizer
+        test_MaximaTokenizer.cpp groupcell_test_stubs.cpp ${WXM_TEST_SETUP}
+        $<TARGET_OBJECTS:wxmTestApp>)
+    target_compile_features(test_MaximaTokenizer PUBLIC cxx_std_20)
+    target_link_libraries(test_MaximaTokenizer PRIVATE
+        ${wxWidgets_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${WXM_TESTAPP_EXTRA_LIBS})
+    add_test(NAME MaximaTokenizer
+        COMMAND ${WXM_TEST_LAUNCHER} "$<TARGET_FILE:test_MaximaTokenizer>")
+
     # Pins the worksheet's two-cursor model (h-caret between cells XOR editor
     # cursor inside a cell; neither while cells are selected) ahead of the
     # WorksheetCursor extraction.

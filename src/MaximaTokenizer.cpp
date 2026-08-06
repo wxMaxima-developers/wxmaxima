@@ -290,7 +290,22 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
     }
     // Handle keywords
     if (IsAlpha(Ch) || (Ch == '\\') || (Ch == '?')) {
+      // GH #898: an escaped newline ("\<newline>") inside an identifier is
+      // invisible to Maxima -- it just continues the same name onto the next
+      // physical line -- so it must not end the token for classification
+      // purposes, or the half before it and the half after it get styled as
+      // two unrelated tokens (the half before not even being classified at
+      // all, since it used to skip straight past the lookups below). But a
+      // newline still has to become its own isolated token when rendered
+      // (see "Tab Characters in EditorCell" in AGENTS.md: the editor's line
+      // splitting relies on every newline being isolated like that), so
+      // `token` keeps accumulating across escaped newlines as one logical
+      // name -- recording where each one falls in `newlineOffsets` -- and
+      // gets spliced back into multiple same-styled pieces with a real
+      // newline token between them once the whole name (and therefore its
+      // style) is known.
       wxString token;
+      std::vector<size_t> newlineOffsets;
       if (Ch == '?') {
         token += Ch;
         ++it;
@@ -305,12 +320,8 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
             Ch = *it;
             if (Ch != wxS('\n'))
               token += Ch;
-            else {
-              m_tokens.emplace_back(token);
-              token.Clear();
-
-              break;
-            }
+            else
+              newlineOffsets.push_back(token.Length());
           }
         }
         if (it < commands.end())
@@ -321,25 +332,48 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands,
       // sent (EvaluationQueue::ProduceNextCommand), so once to_lisp() has run and
       // maxima has printed its MAXIMA> prompt the following commands are
       // tokenized via the InLispMode() branch near the top of this function.
-      if (m_hardcodedFunctions.find(token) != m_hardcodedFunctions.end())
-        m_tokens.emplace_back(token, TS_CODE_FUNCTION);
-      else if (m_configuration->IsOperator(token))
-        m_tokens.emplace_back(token, TS_CODE_OPERATOR);
+      //
+      // The lookups below need the actual resolved Maxima symbol name, not
+      // the rendered text: confirmed against a real Maxima that an escaped
+      // newline contributes nothing to the name at all (fo\<newline>obar
+      // resolves to plain foobar), unlike an ordinary escaped character
+      // (a\,b resolves to the symbol a,b -- the backslash drops but the
+      // escaped character stays part of the name, same as `token` already
+      // renders it). So build `name` like `token`, except each escaped
+      // newline's trailing backslash (the last character of the segment
+      // ending at that offset) is dropped instead of carried over.
+      wxString name;
+      {
+        size_t prev = 0;
+        for (size_t offset : newlineOffsets) {
+          name += token.Mid(prev, offset - prev - 1);
+          prev = offset;
+        }
+        name += token.Mid(prev);
+      }
+      TextStyle style;
+      if (m_hardcodedFunctions.find(name) != m_hardcodedFunctions.end())
+        style = TS_CODE_FUNCTION;
+      else if (m_configuration->IsOperator(name))
+        style = TS_CODE_OPERATOR;
       else {
         // Let's look what the next char looks like
         wxString::const_iterator it3(it);
         while ((it3 < commands.end()) && ((*it3 == ' ') || (*it3 == '\t') ||
                                           (*it3 == '\n') || (*it3 == '\r')))
           ++it3;
-        if (it3 >= commands.end())
-          m_tokens.emplace_back(token, TS_CODE_VARIABLE);
-        else {
-          if (*it3 == '(')
-            m_tokens.emplace_back(token, TS_CODE_FUNCTION);
-          else
-            m_tokens.emplace_back(token, TS_CODE_VARIABLE);
-        }
+        style = ((it3 < commands.end()) && (*it3 == '('))
+          ? TS_CODE_FUNCTION : TS_CODE_VARIABLE;
       }
+      size_t prevOffset = 0;
+      for (size_t offset : newlineOffsets) {
+        if (offset > prevOffset)
+          m_tokens.emplace_back(token.Mid(prevOffset, offset - prevOffset), style);
+        m_tokens.emplace_back(wxUniChar('\n'));
+        prevOffset = offset;
+      }
+      if ((prevOffset < token.Length()) || newlineOffsets.empty())
+        m_tokens.emplace_back(token.Mid(prevOffset), style);
       continue;
     }
     if ((Ch == '$') || (Ch == ';')) {

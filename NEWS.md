@@ -1,5 +1,16 @@
 # Current development version
 
+- Code cell syntax highlighting (GH #898): an identifier split across two
+  physical lines by an escaped newline (`\` immediately followed by a line
+  break -- confirmed against a real Maxima that this contributes nothing to
+  the resolved name at all, e.g. `fo\<newline>obar` is plainly `foobar`,
+  unlike an ordinary escaped character such as `a\,b`, which resolves to the
+  symbol `a,b`) used to be highlighted as two unrelated tokens: the half
+  before the line break wasn't classified at all (falling through the
+  function/variable/operator/keyword lookups entirely), and the half after
+  it started over as if it were a brand new, independent identifier. Both
+  halves are now resolved and styled as the one logical name Maxima
+  actually sees.
 - Table of contents sidebar: dragging a chapter/section entry to reorder it
   (GH #1524) now actually works -- it was wired up (drag image, scroll-while-
   dragging, the reordered-preview rendering) but never functional, since
