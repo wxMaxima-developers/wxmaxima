@@ -91,15 +91,24 @@ void TableOfContents::OnTimer(wxTimerEvent &event) {
   }
 }
 
+long TableOfContents::ClampDropIndex(long hitIndex, int itemCount,
+                                     std::size_t numberOfCaptionsDragged) {
+  if ((hitIndex >= 0) &&
+      (static_cast<std::size_t>(hitIndex) >=
+       static_cast<std::size_t>(itemCount) - numberOfCaptionsDragged))
+    return static_cast<long>(itemCount) -
+      static_cast<long>(numberOfCaptionsDragged);
+  return hitIndex;
+}
+
 void TableOfContents::OnMouseMotion(wxMouseEvent &event) {
   if (m_dragImage != NULL) {
     int flags;
     m_dragCurrentPos =
       m_displayedItems->HitTest(event.GetPosition(), flags, NULL);
-    if ((m_dragCurrentPos >= 0) &&
-        (static_cast<std::size_t>(m_dragCurrentPos) >=
-         m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged))
-      m_dragCurrentPos = m_numberOfCaptionsDragged - 1;
+    m_dragCurrentPos = ClampDropIndex(m_dragCurrentPos,
+                                      m_displayedItems->GetItemCount(),
+                                      m_numberOfCaptionsDragged);
     if (m_dragFeedback_Last != m_dragCurrentPos) {
       m_dragImage->Hide();
       UpdateDisplay();
@@ -191,10 +200,8 @@ void TableOfContents::OnMouseUp(wxMouseEvent &evt) {
   }
   int flags;
   m_dragStop = m_displayedItems->HitTest(evt.GetPosition(), flags, NULL);
-  if ((m_dragStop >= 0) &&
-      (static_cast<std::size_t>(m_dragStop) >=
-       m_displayedItems->GetItemCount() - m_numberOfCaptionsDragged))
-    m_dragStop = m_numberOfCaptionsDragged - 1;
+  m_dragStop = ClampDropIndex(m_dragStop, m_displayedItems->GetItemCount(),
+                              m_numberOfCaptionsDragged);
   if ((m_dragStart >= 0) && (m_dragStop >= 0) && (m_dragStart != m_dragStop)) {
     const wxWindow *mainWin = this;
     while (mainWin->GetParent() != NULL)
@@ -204,6 +211,15 @@ void TableOfContents::OnMouseUp(wxMouseEvent &evt) {
     tocEv->SetId(EventIDs::popid_tocdnd);
     mainWin->GetEventHandler()->QueueEvent(tocEv);
   }
+  // The drag is over: forget its state so that UpdateDisplay() (here and on
+  // every later call, e.g. from UpdateTableOfContents()) goes back to
+  // rendering the real tree order instead of getting stuck replaying this
+  // drag's reordered preview forever -- these used to only get reset in
+  // OnMouseCaptureLost(), never on a normal drop (GH #1524).
+  m_dragStart = -1;
+  m_dragStop = -1;
+  m_dragCurrentPos = -1;
+  m_dragFeedback_Last = -1;
   UpdateDisplay();
   evt.Skip();
 }
