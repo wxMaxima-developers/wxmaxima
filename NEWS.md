@@ -1,5 +1,21 @@
 # Current development version
 
+- macOS: translation files should now actually make it into the app bundle
+  (GH #1711). Two separate bugs meant the `.mo` files never reached
+  `Contents/Resources/locale/<lang>/LC_MESSAGES/`, where wxMaxima looks for
+  them: the CMake target that copies them into the build tree with the
+  correct per-language layout was unconditionally skipped on Apple (working
+  around what turned out to be an Xcode-generator-specific issue -- the DMG-
+  producing CI job actually uses Ninja, not Xcode, and doesn't need the
+  workaround), and separately, the bundle's own resource list tried to glob
+  for them before they even existed (translations are generated during the
+  build, but that glob is evaluated once at configure time) with a pattern
+  that wouldn't have matched their actual nested location anyway. Fixed by
+  narrowing the Apple exclusion to just the Xcode generator, and copying the
+  already-correctly-laid-out translation directory into the bundle in a
+  build-time install step instead of a configure-time glob. Not verified on
+  a real Mac (none was available to test this on) -- please report back if
+  translations still don't show up in a built .dmg.
 - `sum()`/`product()`/`lsum` (GH #1536) no longer wrap a plain summand in
   spurious parentheses: `sum(k,k,1,n)` now displays the sum sign over a bare
   `k`, matching Maxima's own terminal output, instead of always showing

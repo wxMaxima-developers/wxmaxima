@@ -59,7 +59,17 @@ if(GETTEXT_FOUND AND GETTEXT_MSGFMT_EXECUTABLE AND GETTEXT_MSGMERGE_EXECUTABLE)
 	    DESTINATION "share/locale/${LANG}/LC_MESSAGES/"
 	    RENAME "wxMaxima.mo")
 
-  if(NOT APPLE)
+  # GH #1711: this used to be guarded by a blanket if(NOT APPLE), but the
+  # actual problem it works around is specific to the Xcode generator (see
+  # the "Xcode generator refuse[s] to configure" issue this same file's
+  # wxMaxima_pot indirection above already had to work around for a related
+  # reason) -- the macOS CI job that actually produces the shipped DMG uses
+  # -G Ninja, not Xcode, and works fine with this target. Narrowing the
+  # guard to Xcode specifically means the DMG-producing build now also gets
+  # ${CMAKE_BINARY_DIR}/share/locale/<lang>/LC_MESSAGES/wxMaxima.mo
+  # populated, which the macOS app-bundling step in src/CMakeLists.txt
+  # needs (it previously had nothing to copy at all).
+  if(NOT (APPLE AND CMAKE_GENERATOR STREQUAL "Xcode"))
     # 'install' message files in the directory "${CMAKE_BINARY_DIR}/share/locale/..."
     # too (at build time, not at install time), so that running ./wxmaxima-local
     # (without installing it) can find the message files and i18n works.
