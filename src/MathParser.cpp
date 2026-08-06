@@ -187,6 +187,7 @@ MathParser::MathParser(Configuration *cfg, const wxString &zipfile) {
       wxS("listdelim"),
       wxS("set"),
       wxS("roundedParens"),
+      wxS("needsparen"),
       wxS("noneParens"),
       wxS("bracketParens"),
       wxS("straightParens"),
@@ -1163,6 +1164,15 @@ std::unique_ptr<Cell> MathParser::ParseSumTag(wxXmlNode *node, int depth) {
   sum->SetHighlight(highlight);
   sum->SetType(m_ParserStyle);
   sum->SetStyle(TS_VARIABLE);
+  // GH #1536: wxxml-sum (wxMathML.lisp) already decided, from the real
+  // Maxima expression, whether the summand needs disambiguating parens
+  // (default true so an <sm> tag from before this attribute existed, e.g.
+  // an old cached wxMathML.lisp or a document saved by an older wxMaxima,
+  // keeps the previous always-parenthesize behavior). ProductCell is a
+  // SumCell, so this cast is valid for both branches above.
+  bool needsParen =
+    node->GetAttribute(wxS("needsparen"), wxS("true")) != wxS("false");
+  static_cast<SumCell *>(sum.get())->NeedsParen(needsParen);
   ParseCommonAttrs(node, sum);
   return sum;
 }

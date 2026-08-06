@@ -92,6 +92,18 @@ public:
   wxString ToXML() const override;
 
   void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
+
+  /*! Whether the summand genuinely needs the disambiguating parentheses
+    around it (GH #1536), e.g. because it is a sum of terms like "k+k^2"
+    that could otherwise be misread as extending past the sum sign into
+    whatever follows it -- a bare summand like "k" doesn't. Must be set
+    right after construction, before the first layout pass; defaults to
+    true (the old, always-parenthesize behavior) if never called.
+  */
+  void NeedsParen(bool needsParen) {
+    m_baseNeedsParen = needsParen;
+    m_displayParen = needsParen;
+  }
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
   bool BreakUp() const override;
@@ -156,7 +168,7 @@ protected:
   Cell *Base() const;
   Cell *Over() const {return m_over.get();}
   Cell *Under() const {return m_under.get();}
-  
+
 private:
   std::unique_ptr<Cell> MakeStart(Cell *under) const;
   void MakeBreakUpCells();
@@ -187,8 +199,20 @@ private:
 
 //** Bitfield objects (1 bytes)
 //**
-  //! Display m_paren if true, or Base() if false
+  /*! Display m_paren if true, or Base() if false.
+
+    Unlike m_baseNeedsParen this is transient view state, forced to false
+    whenever BreakUp() linearizes the cell (the linear form never shows a
+    sum sign to disambiguate against, so it never needs the parens either,
+    regardless of m_baseNeedsParen) and restored from m_baseNeedsParen by
+    Unbreak().
+  */
   mutable bool m_displayParen : 1 = true;
+  /*! Whether the summand structurally needs the disambiguating parentheses
+    (GH #1536) -- see NeedsParen(). Persists across BreakUp()/Unbreak(),
+    unlike m_displayParen.
+  */
+  bool m_baseNeedsParen : 1 = true;
 };
 
 #endif // SUMCELL_H

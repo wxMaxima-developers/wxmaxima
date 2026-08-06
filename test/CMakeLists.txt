@@ -196,6 +196,20 @@ add_test(
     COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "a*box(b,highlight)*c;" "<p lisp=\"wxxml-paren\"><mrow><hl boxname=\"highlight\">"
 )
 
+# GH #1536: a bare summand doesn't need the disambiguating parentheses
+# SumCell used to always draw around it -- only a compound one (here a sum
+# of terms, "k+k^2") does. wxxml-sum (wxMathML.lisp) decides this from the
+# real Maxima expression (mplusp) and hands the decision to SumCell via the
+# needsparen attribute on <sm>; these two pin that attribute for both cases.
+add_test(
+    NAME check-wxMathML.lisp_sum_bare_summand_no_parens
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "'sum(k,k,1,n);" "<sm needsparen=\"false\">"
+)
+add_test(
+    NAME check-wxMathML.lisp_sum_compound_summand_needs_parens
+    COMMAND "${CMAKE_CURRENT_BINARY_DIR}/check-wxMathML.sh" "'sum(k+k^2,k,1,n);" "<sm needsparen=\"true\">"
+)
+
 # GH #1672: wx-cd (the function wxMaxima uses to keep Maxima's working
 # directory in sync with the worksheet's) used to fail to cd into a
 # directory whose name contains characters outside the OS's active
