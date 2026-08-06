@@ -2431,10 +2431,81 @@ Submit bug reports by following the 'New issue' link on that page."))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; A function that allows wxMaxima to set maxima's current directory to that
 ;; of the worksheet.
+
+;; GH #1672: on Windows, sb-posix:chdir and sb-posix:getcwd go through the C
+;; runtime's ANSI-only _chdir/_getcwd, which encode/decode the path using
+;; the system's legacy codepage instead of Unicode (this is a confirmed,
+;; still-open upstream SBCL bug: launchpad #2100706). A directory name
+;; containing a character outside that codepage -- e.g. Cyrillic or CJK on
+;; a Western-European Windows install -- turns into an unrepresentable or
+;; mangled ANSI path, so chdir fails even though the directory genuinely
+;; exists. Call the Win32 wide-character APIs directly instead, so
+;; non-ASCII directory names work regardless of the active codepage.
+;;
+;; This is Windows-only code that cannot be exercised on the non-Windows
+;; systems it was developed and tested on, so it is purely additive: every
+;; call site falls back to the previous sb-posix-based behavior if the
+;; wide-API call is unavailable or signals an error, meaning a mistake here
+;; can make GH #1672 persist but must not stop Maxima from starting.
+#+(and sbcl win32)
+(sb-alien:define-alien-routine ("SetCurrentDirectoryW" wx--set-current-directory-w)
+    sb-alien:int
+  (path (* (sb-alien:unsigned 16))))
+
+#+(and sbcl win32)
+(defun wx-cd-win32-unicode (dir-string)
+  (ignore-errors
+    (let* ((octets (sb-ext:string-to-octets dir-string :external-format :utf-16le))
+	   (n (length octets))
+	   (buf (sb-alien:make-alien (sb-alien:unsigned 8) (+ n 2))))
+      (unwind-protect
+	  (progn
+	    (dotimes (i n) (setf (sb-alien:deref buf i) (aref octets i)))
+	    (setf (sb-alien:deref buf n) 0)
+	    (setf (sb-alien:deref buf (1+ n)) 0)
+	    (/= 0 (wx--set-current-directory-w
+		   (sb-alien:cast buf (* (sb-alien:unsigned 16))))))
+	(sb-alien:free-alien buf)))))
+
+#+(and sbcl win32)
+(defun wx-getcwd-win32-unicode ()
+  ;; sb-unix:posix-getcwd (part of sbcl's core, not the sb-posix contrib) is
+  ;; implemented on top of the wide GetCurrentDirectory Win32 API, unlike
+  ;; sb-posix:getcwd's ANSI-only C runtime call.
+  (ignore-errors (sb-unix:posix-getcwd)))
+
+;; GH #1672: the last directory string wx-cd failed to cd into, so a
+;; persistently-broken path doesn't keep reprinting the same warning once
+;; per session -- users have reported documents accumulating hundreds of
+;; copies of this warning, one per session in which the file was opened
+;; and re-saved without the underlying path ever getting fixed. Reset on
+;; success so a later, genuinely new failure (a different directory, or the
+;; same one breaking again after briefly working) still gets reported.
+(defvar *wx-cd-last-failed-dir* nil)
+
 (defun wx-cd (dir)
   (handler-case
       (progn
         (let ((dir (cond ((pathnamep dir) dir)
+	  		 #+sbcl
+	  		 ((stringp dir)
+	  		  ;; GH #1672: pathname-directory (used below for every
+	  		  ;; other lisp) parses the string using Common Lisp's
+	  		  ;; portable pathname syntax, which treats "*", "?", "["
+	  		  ;; and "]" as wildcard markers rather than literal
+	  		  ;; characters -- a directory legitimately named e.g.
+	  		  ;; "Draft [v2]" turns into an actual wildcard pattern
+	  		  ;; instead of a literal path component, and chdir-ing
+	  		  ;; to a wildcard pattern fails. sb-ext:native-pathname
+	  		  ;; parses the OS's own native path syntax instead, with
+	  		  ;; no such wildcard reinterpretation (confirmed: "*",
+	  		  ;; "?", "[", "]" all round-trip as literal characters),
+	  		  ;; so build the directory-only pathname from its result
+	  		  ;; instead of re-parsing the string through the
+	  		  ;; portable, wildcard-sensitive parser.
+	  		  (make-pathname :name nil :type nil
+	  				 :defaults (sb-ext:native-pathname dir)))
+	  		 #-sbcl
 	  		 ((stringp dir)
 	  		  (make-pathname :directory (pathname-directory dir)
 	    				 :host (pathname-host dir)
@@ -2447,8 +2518,16 @@ Submit bug reports by following the 'New issue' link on that page."))
 	  #+gcl (si::chdir dir)
 	  #+lispworks (hcl:change-directory dir)
 	  #+lucid (lcl:working-directory dir)
-	  #+sbcl (sb-posix:chdir (sb-ext:native-pathname dir))
-	  #+sbcl (setf *default-pathname-defaults* (sb-ext:native-pathname (format nil "~A~A" (sb-posix:getcwd) "/")))
+	  #+(and sbcl win32)
+	  (unless (wx-cd-win32-unicode (sb-ext:native-namestring dir))
+	    (sb-posix:chdir (sb-ext:native-pathname dir)))
+	  #+(and sbcl (not win32)) (sb-posix:chdir (sb-ext:native-pathname dir))
+	  #+(and sbcl win32)
+	  (setf *default-pathname-defaults*
+		(sb-ext:native-pathname
+		 (format nil "~A~A" (or (wx-getcwd-win32-unicode) (sb-posix:getcwd)) "/")))
+	  #+(and sbcl (not win32))
+	  (setf *default-pathname-defaults* (sb-ext:native-pathname (format nil "~A~A" (sb-posix:getcwd) "/")))
 	  #+ccl (ccl:cwd dir)
 	  #+ecl (si::chdir dir)
          ;;; Officially gcl supports (si:chdir dir), too. But the version
@@ -2462,9 +2541,14 @@ Submit bug reports by following the 'New issue' link on that page."))
 										       "Info: wxMathml.cpp: Changing the working dir during a maxima session isn't implemented for this lisp.")
   	  (namestring dir)
 	  (wx-print-variables)
-	  (wx-print-gui-variables)))
-    (error (c)        (format t "Warning: Can set maxima's working directory but cannot change it during the maxima session :~%~&~%")
-           (values 0 c))))
+	  (wx-print-gui-variables)
+	  (setf *wx-cd-last-failed-dir* nil)))
+    (error (c)
+      (let ((dir-string (if (stringp dir) dir (ignore-errors (namestring dir)))))
+	(unless (equal dir-string *wx-cd-last-failed-dir*)
+	  (setf *wx-cd-last-failed-dir* dir-string)
+	  (format t "Warning: Can set maxima's working directory but cannot change it during the maxima session :~%~&~%")))
+      (values 0 c))))
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; table_form implementation

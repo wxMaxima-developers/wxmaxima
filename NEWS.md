@@ -1,5 +1,31 @@
 # Current development version
 
+- "Can set maxima's working directory but cannot change it during the
+  maxima session" (GH #1672): this warning, printed by `wx-cd` whenever it
+  fails to keep Maxima's working directory in sync with the worksheet's,
+  had two separate root causes and a nuisance of its own, all fixed:
+  - A directory name containing `*`, `?`, `[` or `]` (e.g. `Draft [v2]`)
+    always failed: Common Lisp's portable pathname syntax treats those
+    characters as wildcard markers rather than literal ones, so SBCL's
+    `pathname-directory` turned a perfectly real directory into an
+    unmatched wildcard pattern. Fixed by parsing the string with
+    `sb-ext:native-pathname` instead, which has no such reinterpretation.
+  - On Windows specifically, a directory name containing a character
+    outside the system's active codepage (e.g. Cyrillic or CJK on a
+    Western-European Windows install) also always failed:
+    `sb-posix:chdir`/`sb-posix:getcwd` go through the C runtime's
+    ANSI-only `_chdir`/`_getcwd`, which cannot represent such characters
+    at all (a confirmed, still-open upstream SBCL bug, launchpad
+    #2100706). Fixed by calling the Win32 wide-character APIs directly
+    instead, with the previous behavior kept as an automatic fallback.
+  - Once triggered by a persistently broken path, the warning printed
+    again on every single cd attempt for the rest of the session, and
+    since a saved `.wxmx` document keeps every cell's output verbatim,
+    reopening and resaving an affected document over many sessions could
+    accumulate hundreds of copies of the exact same warning. `wx-cd` now
+    remembers the last directory it failed on and only reports a given
+    failure once, until either a different directory fails or the same
+    one starts working again.
 - Display (GH #1948): `box()` draws its own border around its argument, so
   it never needed the extra pair of parentheses `wxMathML.lisp`'s generic
   precedence-based paren-insertion logic could still wrap around it, e.g.
