@@ -612,6 +612,54 @@ tried without rebuilding.
   untransformed `m_text`) instead of `ToTeX()`, not just the one place a new
   case is added.
 
+- **`TreeUndoAction`'s discriminant model, and adding a fourth action kind
+  (GH #266, fold/unfold undo):** `TreeUndoAction` (`src/TreeUndoAction.h`) is
+  a single, non-polymorphic struct, not an `Action`/`Undo()`/`Redo()` class
+  hierarchy -- `Worksheet::TreeUndo()` (`Worksheet.cpp`) tells apart the
+  three original action kinds (text change, cell insertion, cell deletion)
+  by which of `m_newCellsEnd`/`m_oldCells`/neither is set, not by a type
+  tag. Adding fold/unfold as a fourth kind followed the same style rather
+  than introducing polymorphism for a fourth fixed case: a `std::optional<
+  FoldDirection>` field (`FoldDirection::Folded`/`Unfolded`), checked in
+  `TreeUndo()`'s dispatch *before* the existing `m_oldCells`-vs-text-change
+  fallback (a `std::nullopt` field, like the others, defaults via the
+  member's own default constructor -- no explicit initializer needed in the
+  three original constructors). Undoing a fold/unfold just applies the
+  opposite direction to the same cell (`m_start`), which is naturally
+  reversible/re-doable through the same generic replay loop the other three
+  kinds already use (`Worksheet::TreeUndo()`'s do-while + swapped-stacks
+  trick already makes redo "undo, but backwards" for free).
+  **Two things worth getting right if you touch this again:**
+  1. `GroupCell::Fold()`/`Unfold()` (`GroupCell.cpp`) are the low-level
+     primitives (`CellList::TearOut`/`SpliceInAfter`, same as `DeleteRegion`/
+     `InsertGroupCells` use) and do **not** themselves record undo -- only
+     `WorksheetDocument::Fold()`/`Unfold()`/`ToggleFold()`/`FoldAll()`/
+     `UnfoldAll()` do, since only `WorksheetDocument` owns the
+     `TreeUndoManager`. Anywhere that needs a fold/unfold NOT to be
+     independently undoable (the automatic auto-unfold in `RevealHidden()`,
+     and the "make room" auto-unfold in `Worksheet.cpp`'s new-cell-insertion
+     logic when the h-caret sits inside a folded ancestor) must keep calling
+     the raw `GroupCell::Fold()`/`Unfold()` directly, not the
+     `WorksheetDocument`-level wrappers, or it'll silently start occupying
+     an undo slot it shouldn't.
+  2. `TreeUndoManager::AppendAction()`'s ordering is easy to get backwards:
+     since actions are pushed with `emplace_front` (newest at the front),
+     marking an entry's `m_partOfAtomicAction = true` means "when the entry
+     pushed *after* me gets undone, keep going and undo me too" -- so to
+     chain N actions (e.g. every cell "Fold All" actually folded) into one
+     atomic Ctrl+Z, call `AppendAction()` after each push *except the
+     last-pushed one* (see `WorksheetDocument::RecordFoldUndo()`), not after
+     the first.
+  A pre-existing unit test (`test/unit_tests/test_TreeUndo.cpp`,
+  "Undoing an insertion whose cell was folded away...") had to switch from
+  `g_ws->ToggleFold()` to the raw `section->Fold()` once folding became
+  independently undoable: it was relying on folding *not* pushing its own
+  undo action so that a single `TreeUndo()` call would reach past it to the
+  insertion underneath -- exactly the kind of test that silently encodes an
+  old architectural assumption and breaks the moment that assumption stops
+  holding, worth checking for before assuming "existing tests pass" means
+  "no behavior changed."
+
 ## Layout & Compatibility
 
 - **Mathematical Cell Padding:** Use `MC_TEXT_PADDING` (in `Configuration.h`) for text-based cells. **Exception:** `DigitCell` does not include padding to ensure visual consistency in broken-up numbers.

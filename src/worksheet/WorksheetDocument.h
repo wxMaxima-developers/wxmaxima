@@ -48,6 +48,7 @@
 #include "cells/CellPtr.h"
 #include "cells/GroupCell.h"
 #include <memory>
+#include <vector>
 #include <wx/string.h>
 
 class WorksheetDocumentView;
@@ -127,6 +128,15 @@ public:
   //! Renumber all sectioning cells (titles, sections, ...) from the top.
   void NumberSections() const;
 
+  /*! Fold \p which; see GroupCell::Fold(). Returns the cell if it was
+    actually folded, null if \p which is null, not foldable, or already
+    folded. Records an undo action (GH #266) and clears the redo list; the
+    caller still has to schedule a recalculation - every existing caller
+    already does.
+  */
+  GroupCell *Fold(GroupCell *which);
+  //! Unfold \p which; see GroupCell::Unfold(). Mirrors Fold().
+  GroupCell *Unfold(GroupCell *which);
   /*! Fold or unfold \p which, whichever it currently isn't; see
     GroupCell::Fold()/Unfold(). Returns the cell if something actually
     changed, null if \p which is null or not foldable. The caller still has
@@ -234,6 +244,13 @@ public:
   }
 
 private:
+  /*! Record one undo action per cell in \p affected, all as a single atomic
+    group (see TreeUndoManager::AppendAction()), all going the same
+    \p direction, and clear the redo list. No-op if \p affected is empty.
+  */
+  void RecordFoldUndo(const std::vector<GroupCell *> &affected,
+                      TreeUndoAction::FoldDirection direction);
+
   //! The cells scheduled to be sent to Maxima, in evaluation order.
   EvaluationQueue m_evaluationQueue;
   //! Undo/redo history of edits to the cell-tree structure.

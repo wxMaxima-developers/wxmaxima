@@ -232,7 +232,12 @@ SCENARIO("Folding survives an unrelated deletion and its undo") {
     REQUIRE(section->GetHiddenTree() != nullptr);
     REQUIRE(section->GetHiddenTree()->GetEditable()->GetValue() == wxS("child:2$"));
     REQUIRE(CellCount() == 2); // only [code, section] are visible now
-    g_ws->TreeUndo_ClearBuffers(); // folding itself is not an undoable action
+    // Folding is itself undoable (GH #266) and just pushed its own action;
+    // discard it so the deletion below is the only action on the stack --
+    // this scenario is specifically about the deletion's undo leaving an
+    // unrelated, already-settled fold alone, not about the fold's own undo
+    // (see "Folding a section is undoable and redoable" for that).
+    g_ws->TreeUndo_ClearBuffers();
 
     WHEN("an unrelated cell above the fold is deleted and the delete is undone") {
       g_ws->DeleteRegion(top, top);
@@ -304,8 +309,15 @@ SCENARIO("Undoing an insertion whose cell was folded away reveals and removes it
     REQUIRE(g_ws->CanUndo());
 
     // Fold the section: the freshly-inserted child moves into the hidden tree,
-    // so the pending undo action now points at a hidden cell.
-    REQUIRE(g_ws->ToggleFold(section) == section);
+    // so the pending undo action now points at a hidden cell. Folding via the
+    // raw GroupCell::Fold() (not g_ws->ToggleFold()) is deliberate: since
+    // folding became undoable in its own right (GH #266), going through
+    // ToggleFold() here would push a second undo action in front of the
+    // insertion we actually want to test, so the first TreeUndo() below would
+    // undo the fold instead. This scenario is specifically about
+    // TreeUndoCellAddition's RevealHidden() branch, not about fold's own
+    // undo (see "Folding a section is undoable and redoable" for that).
+    REQUIRE(section->Fold() == section);
     REQUIRE(section->GetHiddenTree() == child);
     REQUIRE(CellCount() == 1);
 
@@ -318,6 +330,126 @@ SCENARIO("Undoing an insertion whose cell was folded away reveals and removes it
         REQUIRE(only->GetGroupType() == GC_TYPE_SECTION);
         CHECK(only->GetHiddenTree() == nullptr); // unfolded during the undo
         CHECK(only->GetNext() == nullptr);        // the inserted cell was removed
+      }
+    }
+  }
+}
+
+SCENARIO("Folding a section is undoable and redoable (GH #266)") {
+  GIVEN("a worksheet [code, section, code] with the section unfolded") {
+    g_ws->ClearDocument();
+    AppendCell(GC_TYPE_CODE, wxS("top:1$"));
+    GroupCell *section = AppendCell(GC_TYPE_SECTION, wxS("A section"));
+    AppendCell(GC_TYPE_CODE, wxS("child:2$"));
+    g_ws->TreeUndo_ClearBuffers();
+    REQUIRE(CellCount() == 3);
+
+    WHEN("the section is folded") {
+      REQUIRE(g_ws->ToggleFold(section) == section);
+      REQUIRE(section->GetHiddenTree() != nullptr);
+      REQUIRE(CellCount() == 2);
+
+      THEN("undo unfolds it again; redo folds it back") {
+        REQUIRE(g_ws->CanUndo());
+        REQUIRE(g_ws->TreeUndo());
+        CHECK(section->GetHiddenTree() == nullptr);
+        CHECK(CellCount() == 3);
+
+        REQUIRE(g_ws->TreeRedo());
+        CHECK(section->GetHiddenTree() != nullptr);
+        CHECK(CellCount() == 2);
+      }
+    }
+  }
+}
+
+SCENARIO("Unfolding a section is undoable and redoable (GH #266)") {
+  GIVEN("a worksheet [code, section] with the section folded over a child") {
+    g_ws->ClearDocument();
+    AppendCell(GC_TYPE_CODE, wxS("top:1$"));
+    GroupCell *section = AppendCell(GC_TYPE_SECTION, wxS("A section"));
+    AppendCell(GC_TYPE_CODE, wxS("child:2$"));
+    g_ws->TreeUndo_ClearBuffers();
+
+    REQUIRE(g_ws->ToggleFold(section) == section);
+    REQUIRE(section->GetHiddenTree() != nullptr);
+    g_ws->TreeUndo_ClearBuffers();
+
+    WHEN("the section is unfolded") {
+      REQUIRE(g_ws->ToggleFold(section) != nullptr);
+      REQUIRE(section->GetHiddenTree() == nullptr);
+      REQUIRE(CellCount() == 3);
+
+      THEN("undo folds it again; redo unfolds it back") {
+        REQUIRE(g_ws->TreeUndo());
+        CHECK(section->GetHiddenTree() != nullptr);
+        CHECK(CellCount() == 2);
+
+        REQUIRE(g_ws->TreeRedo());
+        CHECK(section->GetHiddenTree() == nullptr);
+        CHECK(CellCount() == 3);
+      }
+    }
+  }
+}
+
+SCENARIO("Folding and a later unrelated edit are two separate undo steps") {
+  GIVEN("a worksheet [code, section, code] with the section unfolded") {
+    g_ws->ClearDocument();
+    GroupCell *top = AppendCell(GC_TYPE_CODE, wxS("top:1$"));
+    GroupCell *section = AppendCell(GC_TYPE_SECTION, wxS("A section"));
+    AppendCell(GC_TYPE_CODE, wxS("child:2$"));
+    g_ws->TreeUndo_ClearBuffers();
+
+    WHEN("the section is folded, then an unrelated cell is inserted") {
+      REQUIRE(g_ws->ToggleFold(section) == section);
+      REQUIRE(CellCount() == 2);
+      g_ws->InsertGroupCells(
+        std::make_unique<GroupCell>(g_cfg, GC_TYPE_CODE, wxS("extra:3$")), top);
+      REQUIRE(CellCount() == 3);
+
+      THEN("the first undo only reverts the insertion; the fold survives") {
+        REQUIRE(g_ws->TreeUndo());
+        CHECK(CellCount() == 2);
+        CHECK(section->GetHiddenTree() != nullptr);
+
+        AND_THEN("a second undo reverts the fold too") {
+          REQUIRE(g_ws->TreeUndo());
+          CHECK(section->GetHiddenTree() == nullptr);
+          CHECK(CellCount() == 3);
+        }
+      }
+    }
+  }
+}
+
+SCENARIO("Fold All folds every foldable cell as one atomic undo step (GH #266)") {
+  GIVEN("a worksheet with two sections, each with a child") {
+    g_ws->ClearDocument();
+    GroupCell *sec1 = AppendCell(GC_TYPE_SECTION, wxS("Section 1"));
+    AppendCell(GC_TYPE_CODE, wxS("a:1$"));
+    GroupCell *sec2 = AppendCell(GC_TYPE_SECTION, wxS("Section 2"));
+    AppendCell(GC_TYPE_CODE, wxS("b:2$"));
+    g_ws->TreeUndo_ClearBuffers();
+    REQUIRE(CellCount() == 4);
+
+    WHEN("Fold All is invoked") {
+      g_ws->FoldAll();
+
+      THEN("both sections fold, and a single undo reverts both at once") {
+        REQUIRE(sec1->GetHiddenTree() != nullptr);
+        REQUIRE(sec2->GetHiddenTree() != nullptr);
+        REQUIRE(CellCount() == 2);
+
+        REQUIRE(g_ws->TreeUndo());
+        CHECK(sec1->GetHiddenTree() == nullptr);
+        CHECK(sec2->GetHiddenTree() == nullptr);
+        CHECK(CellCount() == 4);
+
+        REQUIRE(g_ws->TreeRedo());
+        CHECK(sec1->GetHiddenTree() != nullptr);
+        CHECK(sec2->GetHiddenTree() != nullptr);
+        CHECK(CellCount() == 2);
       }
     }
   }
