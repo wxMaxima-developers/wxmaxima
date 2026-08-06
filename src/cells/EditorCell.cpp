@@ -2018,11 +2018,15 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event) {
 
             auto start = SelectionLeft();
             auto end   = SelectionRight();
-            long long newLineIndex = std::min(m_text.find(wxS('\n'), start),
-                                           m_text.find(wxS('\r'), start));
+            // GH #2208: see the matching comment in FindNext() -- keep this
+            // in size_t/wxString::npos terms rather than converting to a
+            // signed type and comparing against wxNOT_FOUND, which only
+            // happens to work on a 64-bit build.
+            size_t newLineIndex = std::min(m_text.find(wxS('\n'), start),
+                                            m_text.find(wxS('\r'), start));
 
-            if (((newLineIndex != wxNOT_FOUND) && (static_cast<size_t>(newLineIndex) < end)) ||
-                (m_text.SubString(static_cast<size_t>(newLineIndex), start).Trim() == wxEmptyString)) {
+            if (((newLineIndex != wxString::npos) && (newLineIndex < end)) ||
+                (m_text.SubString(newLineIndex, start).Trim() == wxEmptyString)) {
               start = BeginningOfLine(start);
               size_t p = start;
 
@@ -4176,17 +4180,24 @@ bool EditorCell::FindNext(wxString str, const bool &down,
       CursorPosition(m_text.Length());
     }
   }
-  long long strStart = wxNOT_FOUND;
+  // GH #2208: wxString::find()/rfind() return size_t, whose "not found"
+  // value is wxString::npos (size_t(-1)), not wxNOT_FOUND -- assigning it to
+  // a signed 64-bit variable and comparing against wxNOT_FOUND (-1) only
+  // works by accident on a 64-bit build, where size_t is also 64 bits wide
+  // and the bit pattern reinterprets as -1. On a 32-bit build size_t is
+  // 32 bits, so npos zero-extends to a large positive number instead,
+  // making a failed search silently look like a match at a huge offset.
+  size_t strStart = wxString::npos;
   if (down)
     strStart = text.find(str, start);
   else
     strStart = text.rfind(str, start);
 
-  if (strStart != wxNOT_FOUND) {
+  if (strStart != wxString::npos) {
     if (down)
-      SetSelection(static_cast<size_t>(strStart), static_cast<size_t>(strStart) + str.Length());
+      SetSelection(strStart, strStart + str.Length());
     else
-      SetSelection(static_cast<size_t>(strStart) + str.Length(), static_cast<size_t>(strStart));
+      SetSelection(strStart + str.Length(), strStart);
     return true;
   }
   else

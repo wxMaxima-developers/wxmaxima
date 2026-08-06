@@ -195,6 +195,24 @@ bool MaximaEvaluator::AbortOnError() {
   }
 
   if (m_wxMaxima.ExitOnErrorArmed()) {
+    // Without this, a CI log for a --exit-on-error run that aborted here
+    // shows nothing but a normal-looking shutdown sequence (Kill Maxima,
+    // Performance Statistics, ...) with no indication an error happened at
+    // all or which cell caused it -- the failing cell's actual error text
+    // lives only in a TextCell in the worksheet, which nothing prints to
+    // --logtostderr/stderr. Log the cell that was current when we aborted
+    // (its input, and its output if the error already produced one) so the
+    // reason survives into the CI log instead of only the exit code.
+    GroupCell *const errorGroup = m_wxMaxima.GetWorksheet()->GetWorkingGroup(true);
+    wxString errorText;
+    if (errorGroup) {
+      if (errorGroup->GetEditable())
+        errorText = errorGroup->GetEditable()->ToString(true);
+      if (errorGroup->GetLabel())
+        errorText += wxS(" -> ") + errorGroup->GetLabel()->ToString();
+    }
+    wxLogMessage(_("Aborting due to --exit-on-error (exit code 1). Cell: %s"),
+                errorText);
     wxMaxima::m_exitCode = 1;
     m_wxMaxima.Close();
   }

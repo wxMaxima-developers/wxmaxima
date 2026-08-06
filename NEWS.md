@@ -26,6 +26,33 @@
   subsection and its own content cells to a new position now moves the
   whole chapter together, with correct renumbering and a table of contents
   that stays in sync with the document afterwards.
+- Fixed two 32-bit-only bugs (GH #2208), found because CI never actually ran
+  the test suite on a 32-bit build -- it only compiled it:
+  - `CellPtr`'s ordering comparison (`cmpObjects()`, backing `operator<`)
+    subtracted two unrelated `Observed*` pointers directly. That is
+    undefined behavior, and in practice, on a 32-bit address space, it
+    could silently overflow and produce the wrong sign (a null pointer no
+    longer compared as less than a real one) -- a 64-bit build's much
+    sparser address space essentially never triggers it. Fixed by comparing
+    the addresses as unsigned integers instead, which is well-defined on
+    any architecture. Verified against the exact addresses from the bug
+    report, and by cross-compiling and running the real `test_CellPtr` unit
+    test as an i386 binary.
+  - `EditorCell::FindNext()` (worksheet search) and its Tab-key indent
+    handler both stored a `wxString::find()`/`rfind()` result -- `size_t`,
+    whose "not found" value is `wxString::npos` -- into a signed 64-bit
+    variable and compared it against `wxNOT_FOUND` (`-1`). On a 64-bit
+    build `size_t` is also 64 bits wide, so `npos`'s bit pattern
+    reinterprets as `-1` and the comparison happens to work; on a 32-bit
+    build `size_t` is 32 bits, so `npos` zero-extends into a large positive
+    number instead, making every failed search look like a match at a huge
+    offset -- corrupting the worksheet's search/selection state. Fixed by
+    keeping both in `size_t`/`wxString::npos` terms throughout. Found by
+    running the real `test_WorksheetFind` unit test as an i386 binary.
+  CI now also actually runs the unit test suite (`ctest -L unittest`) on
+  the 32-bit build, under a virtual X server, which previously only
+  compiled the tests and never ran any of them -- the gap that let both of
+  these bugs go undetected until a Debian rebuild caught them.
 - Release automation (GH #1192): tagged releases now also attach a
   `.tar.xz` source archive plus a `.sha256` checksum file, built with
   `git archive` from the tagged commit rather than reusing GitHub's own
