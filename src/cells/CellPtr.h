@@ -450,6 +450,15 @@ protected:
 
   void base_reset(Observed *obj = nullptr) noexcept;
 
+  //! A total order over two (possibly unrelated) addresses, usable with
+  //! < 0 / == 0 / > 0. Compares them as unsigned integers rather than via
+  //! pointer subtraction: see the GH #2208 comment on cmpObjects() below.
+  static int CmpAddresses(const void *a, const void *b) noexcept {
+    const auto ia = reinterpret_cast<uintptr_t>(a);
+    const auto ib = reinterpret_cast<uintptr_t>(b);
+    return (ia > ib) - (ia < ib);
+  }
+
 public:
   template <typename U>
   static bool constexpr is_pointer() {
@@ -465,10 +474,24 @@ public:
   auto cmpPointers(const CellPtrBase &o) const noexcept { return m_ptr.GetImpl() - o.m_ptr.GetImpl(); }
 
   //! This is the spaceship operator acting on pointed-to objects
-  auto cmpObjects(const CellPtrBase &o) const noexcept { return base_get() - o.base_get(); }
+  //!
+  //! GH #2208: this used to be a plain `base_get() - o.base_get()` pointer
+  //! subtraction. That is undefined behavior for two pointers into unrelated
+  //! objects, and in practice, on 32-bit architectures, it can silently
+  //! produce the wrong sign: a signed ptrdiff_t subtraction of two addresses
+  //! spread widely across the (much smaller) 32-bit address space can
+  //! overflow and wrap around, which a 64-bit build's much sparser address
+  //! space essentially never triggers. Comparing the two addresses as
+  //! unsigned integers instead is well-defined on any architecture and gives
+  //! the total order operator< (used via cmpObjects() < 0) actually needs.
+  auto cmpObjects(const CellPtrBase &o) const noexcept {
+    return CmpAddresses(base_get(), o.base_get());
+  }
 
   //! This is the spaceship operator acting on pointed-to objects
-  auto cmpObjects(const Observed *o) const noexcept { return base_get() - o; }
+  auto cmpObjects(const Observed *o) const noexcept {
+    return CmpAddresses(base_get(), o);
+  }
 
   static size_t GetLiveInstanceCount() noexcept { return m_instanceCount; }
 
