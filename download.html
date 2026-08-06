@@ -133,6 +133,25 @@ brew install wxmaxima</pre>
       <p> Additionally a nightly build of wxMaxima (without Maxima) can be downloaded from <a href="https://www.peterpall.de/wxMaxima/nightly/wxMaxima.dmg"> www.peterpall.de/wxMaxima/nightly/wxMaxima.dmg</a>
     </div>
 
+    <div class="alert alert-warning" role="alert">
+      <h4>macOS: wxMaxima never evaluates anything</h4>
+      <p>
+        If the wxMaxima window opens fine but every cell just sits in the
+        evaluation queue forever (the status bar stuck on "Reading Maxima
+        output"), this is usually macOS Gatekeeper quarantining the
+        <code>maxima</code> binary installed above -- it silently blocks the
+        local connection wxMaxima uses to talk to it. Fix it from a Terminal:
+      </p>
+      <pre>xattr -dr com.apple.quarantine /path/to/maxima</pre>
+      <p>
+        If the exact binary path is unclear, running it against the whole
+        install prefix also works, e.g. <code>$(brew --prefix)</code> for
+        Homebrew or <code>/opt/local</code> for MacPorts. See
+        <a href="https://github.com/wxMaxima-developers/wxmaxima/issues/1761">issue #1761</a>
+        for details.
+      </p>
+    </div>
+
     <h1>Changelog</h1>
     Important changes in wxMaxima can be found in <a href="https://github.com/wxMaxima-developers/wxmaxima/blob/main/NEWS.md">NEWS.md</a>.<br>
     For all code changes look at the <a href="https://github.com/wxMaxima-developers/wxmaxima/commits/main/">Git commit history</a>.
