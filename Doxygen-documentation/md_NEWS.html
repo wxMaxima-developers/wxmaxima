@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
+<li>Code cell syntax highlighting (GH #898): an identifier split across two physical lines by an escaped newline (<code>\</code> immediately followed by a line break &ndash; confirmed against a real <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> that this contributes nothing to the resolved name at all, e.g. <code>fo\&lt;newline&gt;obar</code> is plainly <code>foobar</code>, unlike an ordinary escaped character such as <code>a\,b</code>, which resolves to the symbol <code>a,b</code>) used to be highlighted as two unrelated tokens: the half before the line break wasn't classified at all (falling through the function/variable/operator/keyword lookups entirely), and the half after it started over as if it were a brand new, independent identifier. Both halves are now resolved and styled as the one logical name <a class="el" href="classMaxima.html" title="Interface to the Maxima process.">Maxima</a> actually sees.</li>
 <li>Table of contents sidebar: dragging a chapter/section entry to reorder it (GH #1524) now actually works &ndash; it was wired up (drag image, scroll-while- dragging, the reordered-preview rendering) but never functional, since three separate bugs each broke it in a different way:<ul>
 <li><code>Worksheet::TOCdnd()</code>, which performs the actual reorder, required a worksheet selection to already exist before doing anything &ndash; but nothing sets one up before this function itself builds one from the dragged cell a few lines later. In ordinary use (no unrelated selection active when a TOC drag starts) this made every drop a silent no-op.</li>
 <li>Dropping at or near the end of the list snapped back to a position near the drag's own start instead of the end, because the "clamp an
@@ -571,7 +572,7 @@ $(function() {
 - Resolved many warnings from several static analysis tools
 - Fine-tuning of the "undo" function
 
-@section autotoc_md977 23.10.0
+@section autotoc_md976 23.10.0
 
 - A big rewrite to make the static analysis tools happy
 - Many stability improvements
@@ -589,7 +590,7 @@ $(function() {
 - Better error messages for bitmaps
 - Many additional bug fixes
 
-@section autotoc_md978 23.08.0
+@section autotoc_md977 23.08.0
 
 - Better print scaling
 - More consistent page size handling for printing
@@ -597,7 +598,7 @@ $(function() {
 - Resolved many warnings from cppcheck
 - A RegEx search
 
-@section autotoc_md979 23.07.0
+@section autotoc_md978 23.07.0
 
 - Printing: Made the page margins configurable (#1787)
 - Printing: We no more print page headers (#1791)
@@ -612,7 +613,7 @@ $(function() {
 - The cursor no more disappears (#1788)
 - Updated italian translation
 
-@section autotoc_md980 23.05.1
+@section autotoc_md979 23.05.1
 
 - Updated the Russian and Italian translation.
 - Process the command line option &lt;tt&gt;--maxima=\&lt;str\&gt;&lt;/tt&gt;.
@@ -624,7 +625,7 @@ $(function() {
   window width changes
 - 2D display of integrals had zero size (#1780)
 
-@section autotoc_md981 23.05.0
+@section autotoc_md980 23.05.0
 
 - Got rid of some compiler and cppcheck warnings
 - Big performance improvements
@@ -643,7 +644,7 @@ $(function() {
   of the parent process
 - wxMaxima no more tries to install its own fonts.
 
-@section autotoc_md982 23.04.1
+@section autotoc_md981 23.04.1
 
 - More config dialogue tweaks
 - MacOs: No more create config icons that aren't needed
@@ -654,7 +655,7 @@ $(function() {
 - Be aware that the MSW port recycles unused window IDs.
 - The load() command now again works with symbols as package names.
 
-@section autotoc_md983 23.04.0
+@section autotoc_md982 23.04.0
 
 - Made the GUI more responsive for functions with much output
 - Handle errors in the XML from maxima more gracefully
@@ -668,7 +669,7 @@ $(function() {
 - Resolved several asserts
 - Resolved a few small bugs in the autosave logic
 
-@section autotoc_md984 23.03.0
+@section autotoc_md983 23.03.0
 
 - Make sure all bitmaps are valid on High-DPI MacOs (#1749)
 - More styles consistency (#1753)
@@ -681,7 +682,7 @@ $(function() {
 - Completely rewrote the dockable-sidebars-stuff
 - Many files are now build on demand, not at configure time
 
-@section autotoc_md985 23.02.0
+@section autotoc_md984 23.02.0
 
 - Fix XML generation of wxmx documents (#1556)
 - A faster font cache
@@ -692,7 +693,7 @@ $(function() {
 - A separate style for operators (#1002)
 - A nicer ChangeLog
 
-@section autotoc_md986 22.12.0
+@section autotoc_md985 22.12.0
 
 - A cleaner status bar with double-click actions
 - Better display of labels
@@ -707,11 +708,11 @@ $(function() {
 - Faster saving of .wxmx files
 - Better toolbar bitmap handling
 
-@section autotoc_md987 22.11.1
+@section autotoc_md986 22.11.1
 
 - Repaired zooming the worksheet
 
-@section autotoc_md989 22.11.0
+@section autotoc_md987 22.11.0
 
 - Resolved an ID collision (#1726)
 - Faster restart of maxima (#1715)
@@ -724,7 +725,7 @@ $(function() {
 - Many windows build improvements
 - Resolved a crash on restarting maxima
 
-@section autotoc_md990 22.09.0
+@section autotoc_md988 22.09.0
 
 - Support for wxWidgets 3.1.7
 - The description field for wizards no more is a MouseOverToolTip
@@ -756,7 +757,7 @@ $(function() {
 - Better unicode handling (#1691)
 - Many additional bugfixes
 
-@section autotoc_md993 22.05.0:
+@section autotoc_md989 22.05.0:
 
 - Updated the Ukrainian translation
 - Added &lt;tt&gt;guess_exact_value&lt;/tt&gt; to the numeric menu.
@@ -778,14 +779,14 @@ $(function() {
 - The Cygwin build works again
 - Support for wxWidgets 3.1.6
 
-@section autotoc_md994 22.04.0:
+@section autotoc_md990 22.04.0:
 
 - A Russian translation update from Olesya Gerasimenko
 - Repaired drag-and-drop on MacOs (#1624)
 - Resolved a bug in parenthesis matching (#1649)
 - Faster startup logic
 
-@section autotoc_md995 22.03.0:
+@section autotoc_md991 22.03.0:
 
 - Add an compile option "WXM_INCLUDE_FONTS", which allows to
   specify, if additional fonts should be included.
@@ -812,7 +813,7 @@ $(function() {
 - Merging cells per keyboard shortcut works again (#1626)
 - Symbols buttons whose symbols the GUI font lacks are now hidden
 
-@section autotoc_md996 21.11.0:
+@section autotoc_md992 21.11.0:
 
 - Allow seeing all files in the file save dialog. (#1557)
 - Fix an error when using Alt up arrow (show previous command) (#1566)
@@ -830,15 +831,15 @@ $(function() {
 - Handle power events (#1607)
 - Fix ugly buttons in the sidebars with recent wxWidgets
 
-@section autotoc_md997 21.05.2:
+@section autotoc_md993 21.05.2:
 
 - The integral signs disappeared or were misplaced on some MS Windows computers
 
-@section autotoc_md998 21.05.1:
+@section autotoc_md994 21.05.1:
 
 - Resolved a segfault on printing that could be triggered on some computers
 
-@section autotoc_md999 21.05.0:
+@section autotoc_md995 21.05.0:
 
 - Long numbers now can be broken into lines
 - On Export long numbers sometimes got lost
@@ -852,7 +853,7 @@ $(function() {
   (before cyrillic, chinese and greek characters were missing).
 - Solved a crash when printing.
 
-@section autotoc_md1000 21.04.0
+@section autotoc_md996 21.04.0
 
 - Fix visualization after "Evaluate all cells (Ctrl+Shift+R)" (bug #1512).</li>
 <li>Fix context sensitive help with F1 (bug #1508).</li>
@@ -866,7 +867,7 @@ $(function() {
 <li>Many external build scripts are now replaced by C++ and CMake commands.</li>
 <li><a class="el" href="classA.html">A</a> menu entry for when to invoke the debugger.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1001"></a>
+<h1><a class="anchor" id="autotoc_md997"></a>
 21.02.0</h1>
 <ul>
 <li><a class="el" href="classA.html">A</a> Spanish translation update by cyphra</li>
@@ -878,14 +879,14 @@ $(function() {
 <li>Made the time between autosaves configurable.</li>
 <li>Fixed an issue with reproducible builds.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1002"></a>
+<h1><a class="anchor" id="autotoc_md998"></a>
 21.01.0</h1>
 <ul>
 <li>Chinese translation updates by 刘荣.</li>
 <li><a class="el" href="classA.html">A</a> Russian translation update by OlesyaGerasimenko</li>
 <li>Many small bugfixes including a crash on loading files with images.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1003"></a>
+<h1><a class="anchor" id="autotoc_md999"></a>
 Changes in older wxMaxima versions you can find here</h1>
 <p><a href="https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md">https://github.com/wxMaxima-developers/wxmaxima/blob/Version-21.02.0/NEWS.md</a> </p>
 </div></div><!-- contents -->
