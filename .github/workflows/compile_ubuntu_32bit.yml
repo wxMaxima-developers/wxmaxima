@@ -24,7 +24,7 @@ jobs:
         run: |
              sudo dpkg --add-architecture i386
              sudo apt-get update
-             sudo apt-get install g++-i686-linux-gnu cmake gettext libwxgtk3.2-dev:i386 libwxgtk-webview3.2-dev:i386 wx3.2-headers pandoc make po4a
+             sudo apt-get install g++-i686-linux-gnu cmake gettext libwxgtk3.2-dev:i386 libwxgtk-webview3.2-dev:i386 wx3.2-headers pandoc make po4a xvfb at-spi2-core dbus
       - name: configure
         run: |
              export CXX="i686-linux-gnu-g++"
@@ -32,10 +32,33 @@ jobs:
              export LANG=en_US.UTF-8
              mkdir build
              cd build
-             cmake ..
+             cmake -DWXM_UNIT_TESTS=YES ..
              cd ..
       - name: compile
         run: |
              cd build
              cmake --build .
+             cd ..
+      - name: Run unit tests
+        # GH #2208: this build's test/ subdirectory was never actually built,
+        # let alone run - so two real 32-bit-only bugs (CellPtr's cmpObjects()
+        # doing raw pointer subtraction, and EditorCell::FindNext()/its Tab-key
+        # handler comparing a wxString::find() result against wxNOT_FOUND
+        # through a signed 64-bit variable -- both undefined behavior /
+        # incorrect-by-construction patterns that only happen to produce the
+        # right answer when size_t is itself 64 bits wide) sat undetected
+        # until a Debian rebuild caught them. The "unittest" label selects the
+        # self-contained C++ unit tests (test/unit_tests/*), which need
+        # neither Maxima nor a real desktop - see test/unit_tests/CMakeLists.txt
+        # and compile_windows.yml's own "Run unit tests" step for the same
+        # pattern on another platform that cannot run the full Maxima-driven
+        # integration suite. Unlike Windows, though, most of these tests still
+        # instantiate real GTK widgets, so -- like compile_ubuntu.yml's own
+        # run_tests step -- they need a real (virtual) X server: xvfb-run
+        # supplies that, and dbus-run-session avoids each GTK process
+        # otherwise stalling ~25s waiting out the AT-SPI accessibility
+        # bridge's D-Bus timeout at startup.
+        run: |
+             cd build
+             GDK_BACKEND=x11 dbus-run-session -- xvfb-run -a ctest -L unittest --output-on-failure
              cd ..
