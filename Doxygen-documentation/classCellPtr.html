@@ -73,7 +73,8 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a>  </div>
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a>  </div>
   <div class="headertitle"><div class="title">CellPtr&lt; T &gt; Class Template Reference<span class="mlabels"><span class="mlabel">final</span></span></div></div>
 </div><!--header-->
 <div class="contents">
@@ -212,9 +213,8 @@ template&lt;typename U , typename Del , typename std::enable_if&lt; std::is_conv
 auto&#160;</td><td class="memItemRight" valign="bottom"><b>cmpPointers</b> (const <a class="el" href="classCellPtrBase.html">CellPtrBase</a> &amp;o) const noexcept</td></tr>
 <tr class="memdesc:a0de21cedfa166aa830acda35184dd231"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is exactly like the spaceship operator in C++20. <br /></td></tr>
 <tr class="separator:a0de21cedfa166aa830acda35184dd231"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4d1d2ff4c27a64d488277940cd42ee5"><td class="memItemLeft" align="right" valign="top"><a id="ab4d1d2ff4c27a64d488277940cd42ee5" name="ab4d1d2ff4c27a64d488277940cd42ee5"></a>
-auto&#160;</td><td class="memItemRight" valign="bottom"><b>cmpObjects</b> (const <a class="el" href="classCellPtrBase.html">CellPtrBase</a> &amp;o) const noexcept</td></tr>
-<tr class="memdesc:ab4d1d2ff4c27a64d488277940cd42ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the spaceship operator acting on pointed-to objects. <br /></td></tr>
+<tr class="memitem:ab4d1d2ff4c27a64d488277940cd42ee5"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCellPtrBase.html#ab4d1d2ff4c27a64d488277940cd42ee5">cmpObjects</a> (const <a class="el" href="classCellPtrBase.html">CellPtrBase</a> &amp;o) const noexcept</td></tr>
+<tr class="memdesc:ab4d1d2ff4c27a64d488277940cd42ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the spaceship operator acting on pointed-to objects.  <br /></td></tr>
 <tr class="separator:ab4d1d2ff4c27a64d488277940cd42ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af648c5ca94af7bcde6dec7caf01ec7ec"><td class="memItemLeft" align="right" valign="top"><a id="af648c5ca94af7bcde6dec7caf01ec7ec" name="af648c5ca94af7bcde6dec7caf01ec7ec"></a>
 auto&#160;</td><td class="memItemRight" valign="bottom"><b>cmpObjects</b> (const <a class="el" href="classObserved.html">Observed</a> *o) const noexcept</td></tr>
@@ -243,6 +243,13 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ac171721c2eac32b74a676c9375607dde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8caf3e9b626fc9e72681c67a127246d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCellPtrBase.html#a8caf3e9b626fc9e72681c67a127246d1">base_reset</a> (<a class="el" href="classObserved.html">Observed</a> *obj=nullptr) noexcept</td></tr>
 <tr class="separator:a8caf3e9b626fc9e72681c67a127246d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a0360b7b9f416b466a036b1ed05205831"><td class="memItemLeft" align="right" valign="top"><a id="a0360b7b9f416b466a036b1ed05205831" name="a0360b7b9f416b466a036b1ed05205831"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>CmpAddresses</b> (const void *a, const void *b) noexcept</td></tr>
+<tr class="memdesc:a0360b7b9f416b466a036b1ed05205831"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classA.html">A</a> total order over two (possibly unrelated) addresses, usable with &lt; 0 / == 0 / &gt; 0. Compares them as unsigned integers rather than via pointer subtraction: see the GH #2208 comment on <a class="el" href="classCellPtrBase.html#ab4d1d2ff4c27a64d488277940cd42ee5" title="This is the spaceship operator acting on pointed-to objects.">cmpObjects()</a> below. <br /></td></tr>
+<tr class="separator:a0360b7b9f416b466a036b1ed05205831"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
@@ -278,6 +285,35 @@ budget".) The remaining CellPtrs are in CellPointers, and there is very few cell
 </table>
 </div><div class="memdoc">
 <p>Different objects must have control blocks that are either null or non-null but different.</p>
+
+</div>
+</div>
+<a id="ab4d1d2ff4c27a64d488277940cd42ee5" name="ab4d1d2ff4c27a64d488277940cd42ee5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4d1d2ff4c27a64d488277940cd42ee5">&#9670;&#160;</a></span>cmpObjects()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto CellPtrBase::cmpObjects </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classCellPtrBase.html">CellPtrBase</a> &amp;&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This is the spaceship operator acting on pointed-to objects. </p>
+<p>GH #2208: this used to be a plain <code>base_get() - o.base_get()</code> pointer subtraction. That is undefined behavior for two pointers into unrelated objects, and in practice, on 32-bit architectures, it can silently produce the wrong sign: a signed ptrdiff_t subtraction of two addresses spread widely across the (much smaller) 32-bit address space can overflow and wrap around, which a 64-bit build's much sparser address space essentially never triggers. Comparing the two addresses as unsigned integers instead is well-defined on any architecture and gives the total order operator&lt; (used via <a class="el" href="classCellPtrBase.html#ab4d1d2ff4c27a64d488277940cd42ee5" title="This is the spaceship operator acting on pointed-to objects.">cmpObjects()</a> &lt; 0) actually needs. </p>
 
 </div>
 </div>
