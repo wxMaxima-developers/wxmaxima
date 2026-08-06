@@ -659,6 +659,14 @@ if(WIN32 AND USE_WEBVIEW)
     file(READ "${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES-Webview.txt" webview_license)
     file(APPEND "${CMAKE_BINARY_DIR}/THIRD-PARTY-NOTICES.txt" "${webview_license}")
 endif()
+
+# gnuplot is bundled (not just recommended) only by builds that pass
+# -DWXM_BUNDLES_GNUPLOT=ON, e.g. the snap (see snap/snapcraft.yaml), which
+# stages gnuplot via the maxima snap so it works under strict confinement.
+if(WXM_BUNDLES_GNUPLOT)
+    file(READ "${CMAKE_SOURCE_DIR}/THIRD-PARTY-NOTICES-Gnuplot.txt" gnuplot_license)
+    file(APPEND "${CMAKE_BINARY_DIR}/THIRD-PARTY-NOTICES.txt" "${gnuplot_license}")
+endif()
 add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/wxm_thirdparty_notices.h
         COMMAND ${CMAKE_COMMAND} ARGS
