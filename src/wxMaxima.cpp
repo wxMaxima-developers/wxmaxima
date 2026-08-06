@@ -1626,7 +1626,27 @@ void wxMaxima::ShowTip(bool force) {
 
 void wxMaxima::LaunchHelpBrowser(wxString uri) {
 #ifdef USE_WEBVIEW
-  if (m_configuration.InternalHelpBrowser()) {
+  // A file:// URI (the local manual) inside a confined snap is a special
+  // case: even once the portal successfully reaches the host's default
+  // browser (see the SNAP branch below), that browser still has to read the
+  // file itself off its own filesystem view. If it is ALSO a strictly
+  // confined snap -- Firefox and Chromium are commonly installed as snaps by
+  // default -- it cannot see another snap's private files at all, with no
+  // interface connecting them, so the manual fails to load with no clear
+  // reason why. The internal help pane reads the file in-process instead, so
+  // it isn't affected: use it unconditionally for a local file under
+  // confinement, regardless of the "use external browser" preference.
+  // Remote (http/https) links are unaffected either way -- the browser just
+  // fetches those over the network -- so this only narrows the local-manual
+  // case, not "visit website"-style external links.
+  // wxURI::BuildURI() (used to construct the manual's URI) normalizes an
+  // empty-authority "file://" + absolute path down to "file:/path" (one
+  // slash, not two) -- confirmed live: a plain uri.StartsWith("file://")
+  // check silently never matched. Parse the scheme properly instead of
+  // string-matching the serialized form.
+  bool forceInternal = wxGetEnv(wxS("SNAP"), nullptr) &&
+    (wxURI(uri).GetScheme() == wxS("file"));
+  if (m_configuration.InternalHelpBrowser() || forceInternal) {
     m_helpPane->SetURL(uri);
     wxMaximaFrame::ShowPane(EventIDs::menu_pane_help);
   } else

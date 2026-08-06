@@ -1,5 +1,17 @@
 # Current development version
 
+- Snap: opening the local manual (Help > wxMaxima help, F1, ...) with "use
+  external browser" selected in Options no longer silently fails under
+  strict confinement. The portal-routed external browser may itself be a
+  strictly confined snap (Firefox/Chromium are commonly installed that way
+  by default) and cannot see another snap's private files at all, so it
+  could never actually open the `file://` URI it was handed. The local
+  manual now always uses the internal help pane (which reads the file
+  in-process, unaffected by confinement) when running inside a snap,
+  regardless of the external-browser preference; external `http(s)://`
+  links (website, online manual) are unaffected either way, since fetching
+  those never depended on filesystem access across the confinement
+  boundary.
 - `EvaluationQueue` now catches (in `--batch` mode) rather than silently
   proceeding on the failure mode behind GH #2196: a cell's text at the
   moment it becomes the queue's current cell no longer necessarily matching
