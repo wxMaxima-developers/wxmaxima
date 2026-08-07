@@ -253,7 +253,7 @@ bool MaximaFileIO::OpenWXMXFile(const wxString &file, Worksheet *document,
     // The IsOpened() check keeps an unopenable file (deleted, no permission)
     // from tripping wxFile::Eof()'s is-opened assert; such a file falls
     // through to the zip reader whose error path reports it.
-    wxFile emptyCheck(file, wxFile::read);
+    wxFile emptyCheck(file, wxFile::read); // flawfinder: ignore -- wxFile::read is an open-mode enum, not the read() syscall
     if (emptyCheck.IsOpened() && emptyCheck.Eof()) {
       document->ClearDocument();
       if(m_wxMaxima.GetWorksheet())

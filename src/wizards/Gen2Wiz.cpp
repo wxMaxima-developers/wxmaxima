@@ -29,13 +29,13 @@ Gen2Wiz::Gen2Wiz(wxString lab1, wxString lab2, const wxString &val1, const wxStr
                  const wxString &title, bool eq, const wxString &warning,
                  const wxString &warningToolTip, const wxPoint &pos,
                  const wxSize &size, long style)
-  : wxDialog(parent, id, title, pos, size, style), equal(eq) {
+  : wxDialog(parent, id, title, pos, size, style), equal(eq) { // flawfinder: ignore -- plain bool member, not std::equal
   SetName(title);
   label_2 = new wxStaticText(this, -1, lab1);
   text_ctrl_1 =
     new BTextCtrl(this, -1, cfg, val1, wxDefaultPosition, wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, lab2);
-  if (equal)
+  if (equal) // flawfinder: ignore -- plain bool member, not std::equal
     text_ctrl_2 =
       new BTextCtrl(this, -1, cfg, val2, wxDefaultPosition, wxSize(230, -1));
   else

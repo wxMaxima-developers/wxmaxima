@@ -330,7 +330,7 @@ wxString ParenCell::ToMathML() const {
   if(m_innerCell)
     innerCellContents = m_innerCell->ListToMathML();
 
-  return (wxS("<mrow><mo>") + XMLescape(open) + wxS("</mo>") +
+  return (wxS("<mrow><mo>") + XMLescape(open) + wxS("</mo>") + // flawfinder: ignore -- "open" is a bracket-glyph string, not a file open
           innerCellContents + wxS("<mo>") + XMLescape(close) +
           wxS("</mo></mrow>\n"));
 }

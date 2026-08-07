@@ -39,11 +39,17 @@ jobs:
         # for the large majority of hits. flawfinder has no path-exclude flag
         # of its own (it only takes a list of files/directories to scan, which
         # it recurses into fully), so build the file list explicitly instead,
-        # pruning just those two vendored subtrees. Confirmed this drops the
-        # hit count from 226 to 18, all of them in wxMaxima's own source or
-        # its own tests -- a much more actionable signal than before.
+        # pruning just those two vendored subtrees plus test_ImgCell.h (a
+        # bin2c-generated binary-blob fixture flagged only for declaring a
+        # large const byte array -- "do not edit manually" per its own header,
+        # so it can't carry a flawfinder: ignore comment either). Confirmed
+        # this drops the hit count from 226 to 18, all of them in wxMaxima's
+        # own source or its own tests; the remaining ones were all confirmed
+        # false positives and got flawfinder: ignore comments with the reason
+        # right in the source, so a clean run of this step should now report 0.
         run: |
-          find . \( -path ./src/nanoSVG -o -path ./test/catch2 -o -path ./.git \) -prune \
+          find . \( -path ./src/nanoSVG -o -path ./test/catch2 -o -path ./.git \
+                     -o -path ./test/unit_tests/test_ImgCell.h \) -prune \
                -o -type f \( -name '*.c' -o -name '*.cc' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) -print \
                > flawfinder_files.txt
           flawfinder --sarif --quiet $(cat flawfinder_files.txt) > flawfinder_results.sarif

@@ -73,7 +73,7 @@ private:
 
   bool MatchParenthesis(int code);
 
-  void CloseParenthesis(const wxString &open, const wxString &close, bool fromOpen);
+  void CloseParenthesis(const wxString &open, const wxString &close, bool fromOpen); // flawfinder: ignore -- "open" here is a bracket-glyph parameter, not a file open
 
   void OnChar(wxKeyEvent &event);
   void OnFocus(wxFocusEvent &event);
