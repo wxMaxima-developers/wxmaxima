@@ -58,7 +58,7 @@ public:
   void SetLabel2ToolTip(wxString toolTip){label_3->SetToolTip(toolTip);}
 
 private:
-  bool equal;
+  bool equal; // flawfinder: ignore -- plain bool member, not std::equal
 
   void set_properties();
 

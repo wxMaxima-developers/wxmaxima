@@ -936,7 +936,7 @@ void Image::LoadImage_Backgroundtask(stop_token stopToken,
                                     m_compressedImage.GetDataLen());
         wxZlibInputStream zstream(istream);
         if (zstream.IsOk()) {
-          char head[512] = {};
+          char head[512] = {}; // flawfinder: ignore -- Read() below is bounded by sizeof(head)-1
           zstream.Read(head, sizeof(head) - 1);
           if (wxString::FromUTF8(head, zstream.LastRead()).Contains(wxS("<svg")))
             m_extension = wxS("svgz");

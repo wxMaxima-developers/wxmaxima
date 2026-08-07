@@ -11,10 +11,13 @@
 #include <unistd.h>
 
 static inline void EnsureDisplay() {
-  if (getenv("DISPLAY") || getenv("WAYLAND_DISPLAY"))
+  // Only checks whether these are set, never uses their value.
+  if (getenv("DISPLAY") || getenv("WAYLAND_DISPLAY")) // flawfinder: ignore
     return;
   // Best-effort: requires Xvfb to be installed (the OSS-Fuzz Dockerfile does).
-  if (system("Xvfb :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &") == 0) {
+  // Fixed literal command, no external input reaches it, and this only ever
+  // runs inside the fuzzer's own sandboxed harness.
+  if (system("Xvfb :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &") == 0) { // flawfinder: ignore
     setenv("DISPLAY", ":99", 1);
     sleep(1);   // let Xvfb come up before GTK connects
   }

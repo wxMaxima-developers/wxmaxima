@@ -143,7 +143,7 @@ static std::string ZipContentFingerprint(const wxString &path) {
   while (std::unique_ptr<wxZipEntry> entry{zip.GetNextEntry()}) {
     out += entry->GetName().utf8_str();
     out += '\0';
-    char buf[4096];
+    char buf[4096]; // flawfinder: ignore -- Read() below is bounded by sizeof(buf)
     for (;;) {
       zip.Read(buf, sizeof(buf));
       if (zip.LastRead() == 0)
@@ -800,8 +800,10 @@ int main(int argc, char **argv) {
   const wxString cfgFile = wxFileName::CreateTempFileName(wxS("wxmexportcfg"));
   wxConfig::Set(new wxFileConfig(wxS("wxMaxima"), wxEmptyString, cfgFile));
 
-  // Where the exported files go; kept if the refactor-diff harness asks for it.
-  if (const char *dump = getenv("WXM_EXPORT_DUMP_DIR")) {
+  // Where the exported files go; kept if the refactor-diff harness asks for
+  // it. Developer-set env var read by this test binary only, never by the
+  // shipped application.
+  if (const char *dump = getenv("WXM_EXPORT_DUMP_DIR")) { // flawfinder: ignore
     g_outputRoot = wxString::FromUTF8(dump);
     g_keepOutput = true;
     if (!wxDirExists(g_outputRoot))

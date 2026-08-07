@@ -307,7 +307,9 @@ OutCommon::DataObject::DataObject(const wxDataFormat &format,
 }
 
 bool OutCommon::DataObject::GetDataHere(void *buf) const {
-    memcpy(buf, m_databuf.GetData(), m_databuf.GetDataLen());
+    // wx calls GetDataSize() (== m_databuf.GetDataLen()) first and allocates
+    // buf accordingly, so the destination is always exactly large enough.
+    memcpy(buf, m_databuf.GetData(), m_databuf.GetDataLen()); // flawfinder: ignore
     return true;
 }
 
