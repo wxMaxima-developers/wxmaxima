@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima-gui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 00:07+0000\n"
-"PO-Revision-Date: 2026-08-07 00:23\n"
+"POT-Creation-Date: 2026-08-10 03:42+0000\n"
+"PO-Revision-Date: 2026-08-10 05:44\n"
 "Last-Translator: \n"
 "Language-Team: Tamil\n"
 "Language: ta_IN\n"
@@ -44,7 +44,7 @@ msgid "\n"
 "Now reads: "
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1979
+#: ../../src/wxMaxima.cpp:1981
 msgid "\n"
 "Use the menu \"View->Toggle log window\" to show/hide a log window with all debug messages."
 msgstr ""
@@ -201,13 +201,13 @@ msgstr ""
 msgid " times"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4413
+#: ../../src/MaximaCommandMenus.cpp:4473
 msgid "\".\" = \"The current directory\"\n"
 "\"..\" = \"One directory up\""
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4369 ../../src/MaximaCommandMenus.cpp:4375
-#: ../../src/MaximaCommandMenus.cpp:4380
+#: ../../src/MaximaCommandMenus.cpp:4429 ../../src/MaximaCommandMenus.cpp:4435
+#: ../../src/MaximaCommandMenus.cpp:4440
 msgid "\"..\" means \"one directory up\"."
 msgstr ""
 
@@ -234,7 +234,7 @@ msgstr ""
 msgid "%d differences"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1829
+#: ../../src/wxMaxima.cpp:1831
 #, c-format
 msgid "%i cells in evaluation queue"
 msgstr ""
@@ -254,7 +254,7 @@ msgstr ""
 msgid "%s: Can't interpret line: %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2857
+#: ../../src/wxMaxima.cpp:2859
 #, c-format
 msgid "%sCould not write the setting for:%s\n"
 "(Is the client installed?)"
@@ -520,7 +520,7 @@ msgstr ""
 msgid "(Animation)"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:769
+#: ../../src/MaximaProcessManager.cpp:771
 msgid "(Config tells to suppress the output of long cells)"
 msgstr ""
 
@@ -598,7 +598,7 @@ msgstr ""
 msgid "... [suppressed additional lines as the output is longer than allowed in the wxMaxima configuration] "
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:4647
+#: ../../src/worksheet/Worksheet.cpp:4657
 msgid ".wxm clipboard data with unusual header"
 msgstr ""
 
@@ -638,7 +638,7 @@ msgstr ""
 msgid "3D"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1833
+#: ../../src/wxMaxima.cpp:1835
 #, c-format
 msgid "; %i commands left in the current cell"
 msgstr ""
@@ -651,7 +651,7 @@ msgstr ""
 msgid "A 'horizontal cursor' was introduced in wxMaxima 0.8.0. It looks like a horizontal line between cells. It indicates where a new cell will appear if you type or paste text or execute a menu command."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3039
+#: ../../src/MaximaCommandMenus.cpp:3099
 msgid "A Ctrl-F event"
 msgstr ""
 
@@ -668,7 +668,7 @@ msgid "A command or number wasn't preceded by a \":\", a \"$\", a \";\" or a \",
 "Most probable cause: A missing comma between two list items."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2640
+#: ../../src/wxMaxima.cpp:2642
 #, c-format
 msgid "A find event, %s"
 msgstr ""
@@ -867,7 +867,7 @@ msgstr ""
 msgid "Add an element to the start of a list"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4437
+#: ../../src/MaximaCommandMenus.cpp:4497
 msgid "Add dir to path:"
 msgstr ""
 
@@ -1071,7 +1071,7 @@ msgstr ""
 msgid "Announce Maxima's output as MathML"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:5457 ../../src/wxMaximaFrame.cpp:1989
+#: ../../src/worksheet/Worksheet.cpp:5467 ../../src/wxMaximaFrame.cpp:1989
 msgid "Anonymize Code for Bug Report"
 msgstr ""
 
@@ -1141,23 +1141,23 @@ msgstr ""
 msgid "Arabic"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4129
+#: ../../src/MaximaCommandMenus.cpp:4189
 msgid "Are the chars equal, if case is ignored?"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4124
+#: ../../src/MaximaCommandMenus.cpp:4184
 msgid "Are the chars equal?"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4161
+#: ../../src/MaximaCommandMenus.cpp:4221
 msgid "Are these strings equal if case is ignored?"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4156
+#: ../../src/MaximaCommandMenus.cpp:4216
 msgid "Are these strings equal?"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4071
+#: ../../src/MaximaCommandMenus.cpp:4131
 msgid "Arguments:"
 msgstr ""
 
@@ -1179,7 +1179,7 @@ msgstr ""
 msgid "Ascending by magnitude (numeric only)"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4120 ../../src/MaximaCommandMenus.cpp:4166
+#: ../../src/MaximaCommandMenus.cpp:4180 ../../src/MaximaCommandMenus.cpp:4226
 msgid "Ascii code to char"
 msgstr ""
 
@@ -1195,11 +1195,11 @@ msgstr ""
 msgid "Asking the user for the location of a working maxima binary"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3492
+#: ../../src/MaximaCommandMenus.cpp:3552
 msgid "Assignment(s):"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3493
+#: ../../src/MaximaCommandMenus.cpp:3553
 msgid "Assignments of the format a=10,b=20"
 msgstr ""
 
@@ -1277,7 +1277,7 @@ msgstr ""
 msgid "Autosubscript numbers and text following single letters"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:2989
+#: ../../src/MaximaCommandMenus.cpp:3049
 msgid "Autosubscript this variable"
 msgstr ""
 
@@ -1317,12 +1317,12 @@ msgstr ""
 msgid "Batch File"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2077
+#: ../../src/wxMaxima.cpp:2079
 #, c-format
 msgid "Batch mode: %d image(s) could not be loaded at all."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2082
+#: ../../src/wxMaxima.cpp:2084
 #, c-format
 msgid "Batch mode: %d image(s) failed to decode/render (--debug)."
 msgstr ""
@@ -1360,7 +1360,7 @@ msgstr ""
 msgid "Bold"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2259
+#: ../../src/wxMaxima.cpp:2261
 msgid "Both horizontal and vertical cursor active at the same time"
 msgstr ""
 
@@ -1407,23 +1407,23 @@ msgstr ""
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:4183
+#: ../../src/worksheet/Worksheet.cpp:4193
 msgid "Bug: Cell with negative y position!"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:5895
+#: ../../src/worksheet/Worksheet.cpp:5905
 msgid "Bug: Encountered a heading I don't know how to move in one sectioning unit"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:5942
+#: ../../src/worksheet/Worksheet.cpp:5952
 msgid "Bug: Encountered a heading I don't know how to move out one sectioning unit"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:2234
+#: ../../src/worksheet/Worksheet.cpp:2244
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:4283
+#: ../../src/worksheet/Worksheet.cpp:4293
 msgid "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
@@ -1454,15 +1454,15 @@ msgstr ""
 #: ../../src/cells/AnimationCell.cpp:543 ../../src/cells/EditorCell.cpp:2968
 #: ../../src/cells/ImgCell.cpp:353 ../../src/graphical_io/BitmapOut.cpp:161
 #: ../../src/graphical_io/OutCommon.cpp:264
-#: ../../src/worksheet/Worksheet.cpp:1754
-#: ../../src/worksheet/Worksheet.cpp:1891
-#: ../../src/worksheet/Worksheet.cpp:1933
-#: ../../src/worksheet/Worksheet.cpp:1967
-#: ../../src/worksheet/Worksheet.cpp:1996
-#: ../../src/worksheet/Worksheet.cpp:2008
-#: ../../src/worksheet/Worksheet.cpp:3502
-#: ../../src/worksheet/Worksheet.cpp:4631
-#: ../../src/worksheet/Worksheet.cpp:4856
+#: ../../src/worksheet/Worksheet.cpp:1764
+#: ../../src/worksheet/Worksheet.cpp:1901
+#: ../../src/worksheet/Worksheet.cpp:1943
+#: ../../src/worksheet/Worksheet.cpp:1977
+#: ../../src/worksheet/Worksheet.cpp:2006
+#: ../../src/worksheet/Worksheet.cpp:2018
+#: ../../src/worksheet/Worksheet.cpp:3512
+#: ../../src/worksheet/Worksheet.cpp:4641
+#: ../../src/worksheet/Worksheet.cpp:4866
 msgid "Bug: The clipboard is already opened"
 msgstr ""
 
@@ -1482,11 +1482,11 @@ msgstr ""
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:5939
+#: ../../src/worksheet/Worksheet.cpp:5949
 msgid "Bug: Trying to move a title out by one sectioning unit"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:4915
+#: ../../src/worksheet/Worksheet.cpp:4925
 msgid "Bug: Trying to move the horizontally-drawn cursor to a place inside a GroupCell."
 msgstr ""
 
@@ -1531,7 +1531,7 @@ msgstr ""
 msgid "By default, Shift-Enter is used to evaluate commands, while Enter is used for multiline input. This behaviour can be changed in 'Edit->Configure' dialog by checking 'Enter evaluates cells'. This switches the roles of these two key commands."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4087
+#: ../../src/MaximaCommandMenus.cpp:4147
 msgid "Byte:"
 msgstr ""
 
@@ -1636,16 +1636,16 @@ msgstr ""
 msgid "Can be specified as flag in ev(exp, flag)"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3436
+#: ../../src/wxMaxima.cpp:3438
 msgid "Can not connect to the web server."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3382 ../../src/wxMaxima.cpp:3418
-#: ../../src/wxMaxima.cpp:3470
+#: ../../src/wxMaxima.cpp:3384 ../../src/wxMaxima.cpp:3420
+#: ../../src/wxMaxima.cpp:3472
 msgid "Can not download version info."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:575 ../../src/wxMaxima.cpp:1579
+#: ../../src/MaximaProcessManager.cpp:577 ../../src/wxMaxima.cpp:1581
 msgid "Can not start Maxima. The most probable cause is that Maxima isn't installed (it can be downloaded from https://maxima.sourceforge.io) or in wxMaxima's config dialogue the setting for Maxima's location is wrong."
 msgstr ""
 
@@ -1683,7 +1683,7 @@ msgstr ""
 #: ../../src/wizards/SeriesWiz.cpp:52 ../../src/wizards/SubstituteWiz.cpp:42
 #: ../../src/wizards/SubstituteWiz.cpp:44 ../../src/wizards/SumWiz.cpp:48
 #: ../../src/wizards/SumWiz.cpp:50 ../../src/wizards/SystemWiz.cpp:39
-#: ../../src/wizards/SystemWiz.cpp:41 ../../src/wxMaxima.cpp:3507
+#: ../../src/wizards/SystemWiz.cpp:41 ../../src/wxMaxima.cpp:3509
 msgid "Cancel"
 msgstr ""
 
@@ -1691,7 +1691,7 @@ msgstr ""
 msgid "Cannot authenticate Maxima!"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1281
+#: ../../src/wxMaxima.cpp:1283
 #, c-format
 msgid "Cannot cache the list of known symbols to %s"
 msgstr ""
@@ -1701,7 +1701,7 @@ msgstr ""
 msgid "Cannot create a font based on %s. Falling back to a default font."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:368
+#: ../../src/MaximaProcessManager.cpp:370
 msgid "Cannot find a maxima binary and no binary chosen in the config dialogue."
 msgstr ""
 
@@ -1715,8 +1715,8 @@ msgstr ""
 msgid "Cannot interpret the numeric value of pid %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3345 ../../src/wxMaxima.cpp:3352
-#: ../../src/wxMaxima.cpp:3359
+#: ../../src/wxMaxima.cpp:3347 ../../src/wxMaxima.cpp:3354
+#: ../../src/wxMaxima.cpp:3361
 #, c-format
 msgid "Cannot interpret version number component %s"
 msgstr ""
@@ -1748,20 +1748,24 @@ msgstr ""
 msgid "Cannot save the list of subjects manual contains to the file %s."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:189
+#: ../../src/MaximaProcessManager.cpp:191
 msgid "Cannot set the communication address to localhost."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:191
+#: ../../src/MaximaProcessManager.cpp:193
 #, c-format
 msgid "Cannot set the communication port to %i."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:2785 ../../src/MaximaResponseReader.cpp:880
+#: ../../src/MaximaCommandMenus.cpp:2795 ../../src/MaximaResponseReader.cpp:880
 msgid "Cannot start gnuplot"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:339 ../../src/StatusBar.cpp:254
+#: ../../src/MaximaCommandMenus.cpp:2844
+msgid "Cannot start the headless gnuplot warnings check"
+msgstr ""
+
+#: ../../src/MaximaProcessManager.cpp:341 ../../src/StatusBar.cpp:254
 msgid "Cannot start the maxima binary"
 msgstr ""
 
@@ -1793,7 +1797,7 @@ msgstr ""
 msgid "Cell bracket fill, Inactive"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3080
+#: ../../src/wxMaxima.cpp:3082
 msgid "Cell ends in a backslash"
 msgstr ""
 
@@ -1806,7 +1810,7 @@ msgstr ""
 msgid "Change &2d Display"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3581
+#: ../../src/MaximaCommandMenus.cpp:3641
 msgid "Change Image"
 msgstr ""
 
@@ -1818,7 +1822,7 @@ msgstr ""
 msgid "Change Log"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4367
+#: ../../src/MaximaCommandMenus.cpp:4427
 msgid "Change directory"
 msgstr ""
 
@@ -1862,20 +1866,20 @@ msgstr ""
 msgid "Changed option variables"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3639
+#: ../../src/MaximaCommandMenus.cpp:3699
 #, c-format
 msgid "Changing image originally loaded from file %s to %s."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4125 ../../src/MaximaCommandMenus.cpp:4130
-#: ../../src/MaximaCommandMenus.cpp:4135 ../../src/MaximaCommandMenus.cpp:4141
-#: ../../src/MaximaCommandMenus.cpp:4146 ../../src/MaximaCommandMenus.cpp:4152
+#: ../../src/MaximaCommandMenus.cpp:4185 ../../src/MaximaCommandMenus.cpp:4190
+#: ../../src/MaximaCommandMenus.cpp:4195 ../../src/MaximaCommandMenus.cpp:4201
+#: ../../src/MaximaCommandMenus.cpp:4206 ../../src/MaximaCommandMenus.cpp:4212
 msgid "Char #1:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4126 ../../src/MaximaCommandMenus.cpp:4131
-#: ../../src/MaximaCommandMenus.cpp:4136 ../../src/MaximaCommandMenus.cpp:4141
-#: ../../src/MaximaCommandMenus.cpp:4147 ../../src/MaximaCommandMenus.cpp:4152
+#: ../../src/MaximaCommandMenus.cpp:4186 ../../src/MaximaCommandMenus.cpp:4191
+#: ../../src/MaximaCommandMenus.cpp:4196 ../../src/MaximaCommandMenus.cpp:4201
+#: ../../src/MaximaCommandMenus.cpp:4207 ../../src/MaximaCommandMenus.cpp:4212
 msgid "Char #2:"
 msgstr ""
 
@@ -1883,15 +1887,15 @@ msgstr ""
 msgid "Char to Unicode code point..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4170 ../../src/MaximaCommandMenus.cpp:4174
+#: ../../src/MaximaCommandMenus.cpp:4230 ../../src/MaximaCommandMenus.cpp:4234
 msgid "Char to unicode code point"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4097 ../../src/MaximaCommandMenus.cpp:4101
-#: ../../src/MaximaCommandMenus.cpp:4105 ../../src/MaximaCommandMenus.cpp:4109
-#: ../../src/MaximaCommandMenus.cpp:4113 ../../src/MaximaCommandMenus.cpp:4117
-#: ../../src/MaximaCommandMenus.cpp:4171 ../../src/MaximaCommandMenus.cpp:4175
-#: ../../src/MaximaCommandMenus.cpp:4247
+#: ../../src/MaximaCommandMenus.cpp:4157 ../../src/MaximaCommandMenus.cpp:4161
+#: ../../src/MaximaCommandMenus.cpp:4165 ../../src/MaximaCommandMenus.cpp:4169
+#: ../../src/MaximaCommandMenus.cpp:4173 ../../src/MaximaCommandMenus.cpp:4177
+#: ../../src/MaximaCommandMenus.cpp:4231 ../../src/MaximaCommandMenus.cpp:4235
+#: ../../src/MaximaCommandMenus.cpp:4307
 msgid "Char:"
 msgstr ""
 
@@ -1903,7 +1907,7 @@ msgstr ""
 msgid "Characteristic polynom"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4092
+#: ../../src/MaximaCommandMenus.cpp:4152
 msgid "Chars are strings that are one character long"
 msgstr ""
 
@@ -2040,7 +2044,7 @@ msgstr ""
 msgid "Close\tCtrl+W"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4047
+#: ../../src/MaximaCommandMenus.cpp:4107
 msgid "Close Stream"
 msgstr ""
 
@@ -2092,11 +2096,11 @@ msgstr ""
 msgid "Code highlighting: Variables"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4121 ../../src/MaximaCommandMenus.cpp:4167
+#: ../../src/MaximaCommandMenus.cpp:4181 ../../src/MaximaCommandMenus.cpp:4227
 msgid "Code number:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4179 ../../src/MaximaCommandMenus.cpp:4185
+#: ../../src/MaximaCommandMenus.cpp:4239 ../../src/MaximaCommandMenus.cpp:4245
 msgid "Codepoint number:"
 msgstr ""
 
@@ -2136,7 +2140,7 @@ msgstr ""
 msgid "Comma"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3139
+#: ../../src/wxMaxima.cpp:3141
 msgid "Comma directly followed by a closing parenthesis"
 msgstr ""
 
@@ -2148,11 +2152,11 @@ msgstr ""
 msgid "Comma separated y coordinates"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4071
+#: ../../src/MaximaCommandMenus.cpp:4131
 msgid "Comma-separated arguments"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3869 ../../src/MaximaCommandMenus.cpp:3878
+#: ../../src/MaximaCommandMenus.cpp:3929 ../../src/MaximaCommandMenus.cpp:3938
 msgid "Comma-separated commands"
 msgstr ""
 
@@ -2161,7 +2165,7 @@ msgid "Comma-separated elements"
 msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:933 ../../src/MaximaCommandMenus.cpp:947
-#: ../../src/MaximaCommandMenus.cpp:3460
+#: ../../src/MaximaCommandMenus.cpp:3520
 msgid "Comma-separated equations"
 msgstr ""
 
@@ -2171,19 +2175,19 @@ msgstr ""
 msgid "Comma-separated expressions"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4027
+#: ../../src/MaximaCommandMenus.cpp:4087
 msgid "Comma-separated expressions that shall be converted to a string"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3912 ../../src/MaximaCommandMenus.cpp:3926
+#: ../../src/MaximaCommandMenus.cpp:3972 ../../src/MaximaCommandMenus.cpp:3986
 msgid "Comma-separated expressions."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3885 ../../src/MaximaCommandMenus.cpp:3980
+#: ../../src/MaximaCommandMenus.cpp:3945 ../../src/MaximaCommandMenus.cpp:4040
 msgid "Comma-separated function names"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3898
+#: ../../src/MaximaCommandMenus.cpp:3958
 msgid "Comma-separated function names."
 msgstr ""
 
@@ -2192,19 +2196,19 @@ msgstr ""
 msgid "Comma-separated list entry in the format val1=1,val2=2"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4017
+#: ../../src/MaximaCommandMenus.cpp:4077
 msgid "Comma-separated names of the elements that shall be written"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3911
+#: ../../src/MaximaCommandMenus.cpp:3971
 msgid "Comma-separated names the parameters will be referenced by later."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4300 ../../src/MaximaCommandMenus.cpp:4305
+#: ../../src/MaximaCommandMenus.cpp:4360 ../../src/MaximaCommandMenus.cpp:4365
 msgid "Comma-separated numbers from 0 to 255"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3949 ../../src/MaximaCommandMenus.cpp:3962
+#: ../../src/MaximaCommandMenus.cpp:4009 ../../src/MaximaCommandMenus.cpp:4022
 msgid "Comma-separated parameter names. A parameter in square brackets [] will be filled with the list of any additional arguments the function gets."
 msgstr ""
 
@@ -2212,13 +2216,13 @@ msgstr ""
 msgid "Comma-separated part numbers selecting the subexpression to replace (as in part())"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3866
+#: ../../src/MaximaCommandMenus.cpp:3926
 msgid "Comma-separated variable names, can be initialized by the \":\" operator."
 msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:711 ../../src/MaximaCommandMenus.cpp:792
 #: ../../src/MaximaCommandMenus.cpp:934 ../../src/MaximaCommandMenus.cpp:948
-#: ../../src/MaximaCommandMenus.cpp:3461
+#: ../../src/MaximaCommandMenus.cpp:3521
 msgid "Comma-separated variables"
 msgstr ""
 
@@ -2266,7 +2270,7 @@ msgstr ""
 msgid "Compile a QR decomposition using dgeqrf"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3974
+#: ../../src/MaximaCommandMenus.cpp:4034
 msgid "Compile a function"
 msgstr ""
 
@@ -2294,7 +2298,7 @@ msgstr ""
 msgid "Compile function..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4323
+#: ../../src/MaximaCommandMenus.cpp:4383
 msgid "Compile regex"
 msgstr ""
 
@@ -2307,7 +2311,7 @@ msgstr ""
 msgid "Compiling %s"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3975
+#: ../../src/MaximaCommandMenus.cpp:4035
 msgid "Compiling a function can generate a considerable speed boost if the types of the function parameters are made known to the function before it is compiled. Else the generated code has to be hideously generic."
 msgstr ""
 
@@ -2392,11 +2396,11 @@ msgstr ""
 msgid "Connect the dots"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:163
+#: ../../src/MaximaProcessManager.cpp:165
 msgid "Connection attempt, but connection failed."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:790
+#: ../../src/MaximaProcessManager.cpp:792
 msgid "Connection to Maxima lost."
 msgstr ""
 
@@ -2418,7 +2422,7 @@ msgstr ""
 msgid "Contents"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3970
+#: ../../src/MaximaCommandMenus.cpp:4030
 msgid "Contents:"
 msgstr ""
 
@@ -2506,11 +2510,11 @@ msgstr ""
 msgid "Convert exponential function of imaginary argument to trigonometric form"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4223
+#: ../../src/MaximaCommandMenus.cpp:4283
 msgid "Convert string to lowercase"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4355
+#: ../../src/MaximaCommandMenus.cpp:4415
 msgid "Convert string to matching regex"
 msgstr ""
 
@@ -2566,11 +2570,11 @@ msgstr ""
 msgid "Convert to downcase..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3828
+#: ../../src/MaximaCommandMenus.cpp:3888
 msgid "Convert to programming language"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3834
+#: ../../src/MaximaCommandMenus.cpp:3894
 msgid "Convert to programming language file"
 msgstr ""
 
@@ -2673,7 +2677,7 @@ msgstr ""
 msgid "Copy as plain text"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4388
+#: ../../src/MaximaCommandMenus.cpp:4448
 msgid "Copy file"
 msgstr ""
 
@@ -2731,7 +2735,7 @@ msgstr ""
 msgid "Copy selection from document in a MathML format many word processors can display as 2d equation"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4215
+#: ../../src/MaximaCommandMenus.cpp:4275
 msgid "Copy string"
 msgstr ""
 
@@ -2775,7 +2779,7 @@ msgstr ""
 msgid "Could not make sure that we talk to the maxima we started => discarding all data it sends."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:891
+#: ../../src/MaximaProcessManager.cpp:893
 msgid "Could not map view of the file needed in order to send an interrupt signal to maxima."
 msgstr ""
 
@@ -2783,8 +2787,8 @@ msgstr ""
 msgid "Could not parse the SVG image data."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:871
-#: ../../src/MaximaProcessManager.cpp:914
+#: ../../src/MaximaProcessManager.cpp:873
+#: ../../src/MaximaProcessManager.cpp:916
 msgid "Could not send an interrupt signal to maxima."
 msgstr ""
 
@@ -2828,7 +2832,7 @@ msgstr ""
 msgid "Create copy, not clone..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4373
+#: ../../src/MaximaCommandMenus.cpp:4433
 msgid "Create directory"
 msgstr ""
 
@@ -2836,7 +2840,7 @@ msgstr ""
 msgid "Create directory..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4231
+#: ../../src/MaximaCommandMenus.cpp:4291
 msgid "Create empty string"
 msgstr ""
 
@@ -2876,7 +2880,7 @@ msgstr ""
 msgid "Csv files (*.csv)|*.csv|Text files (*.txt)|*.txt|All|*"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:6115
+#: ../../src/worksheet/Worksheet.cpp:6125
 msgid "Cursor"
 msgstr ""
 
@@ -2927,7 +2931,7 @@ msgstr ""
 #: ../../src/MaximaCommandMenus.cpp:1785 ../../src/MaximaCommandMenus.cpp:1789
 #: ../../src/MaximaCommandMenus.cpp:1793 ../../src/MaximaCommandMenus.cpp:1797
 #: ../../src/MaximaCommandMenus.cpp:1801 ../../src/MaximaCommandMenus.cpp:1815
-#: ../../src/MaximaCommandMenus.cpp:1822 ../../src/MaximaCommandMenus.cpp:3459
+#: ../../src/MaximaCommandMenus.cpp:1822 ../../src/MaximaCommandMenus.cpp:3519
 msgid "Data:"
 msgstr ""
 
@@ -2939,11 +2943,11 @@ msgstr ""
 msgid "Declare Text to always be displayed as subscript"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3881
+#: ../../src/MaximaCommandMenus.cpp:3941
 msgid "Declare a function local to a Program"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:2999
+#: ../../src/MaximaCommandMenus.cpp:3059
 msgid "Declare a text snippet to always be displayed as subscript"
 msgstr ""
 
@@ -2956,7 +2960,7 @@ msgstr ""
 msgid "Declare main variable:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3983
+#: ../../src/MaximaCommandMenus.cpp:4043
 msgid "Declare the type of a function parameter"
 msgstr ""
 
@@ -2984,23 +2988,23 @@ msgstr ""
 msgid "Default port for communication with wxMaxima:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3946
+#: ../../src/MaximaCommandMenus.cpp:4006
 msgid "Define a function"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3959
+#: ../../src/MaximaCommandMenus.cpp:4019
 msgid "Define a macro"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4001
+#: ../../src/MaximaCommandMenus.cpp:4061
 msgid "Define a structure"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3995
+#: ../../src/MaximaCommandMenus.cpp:4055
 msgid "Define a structure type"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3968
+#: ../../src/MaximaCommandMenus.cpp:4028
 msgid "Define a variable"
 msgstr ""
 
@@ -3065,7 +3069,7 @@ msgstr ""
 msgid "Delete all values from memory"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4400
+#: ../../src/MaximaCommandMenus.cpp:4460
 msgid "Delete file"
 msgstr ""
 
@@ -3073,11 +3077,11 @@ msgstr ""
 msgid "Delete file..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4495
+#: ../../src/MaximaCommandMenus.cpp:4555
 msgid "Delete function(s)"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4491
+#: ../../src/MaximaCommandMenus.cpp:4551
 msgid "Delete named object(s)"
 msgstr ""
 
@@ -3085,11 +3089,11 @@ msgstr ""
 msgid "Delete named object..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4486
+#: ../../src/MaximaCommandMenus.cpp:4546
 msgid "Delete variable(s)"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4242
+#: ../../src/MaximaCommandMenus.cpp:4302
 msgid "Delimiter:"
 msgstr ""
 
@@ -3178,7 +3182,7 @@ msgstr ""
 msgid "Didn't find the maxima HTML manual."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1683
+#: ../../src/wxMaxima.cpp:1685
 msgid "Didn't get a help browser launch program command line, but can request the system's default help browser."
 msgstr ""
 
@@ -3195,7 +3199,7 @@ msgstr ""
 msgid "Difference %d / %d"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:264 ../../src/MaximaCommandMenus.cpp:3484
+#: ../../src/MaximaCommandMenus.cpp:264 ../../src/MaximaCommandMenus.cpp:3544
 msgid "Differentiate"
 msgstr ""
 
@@ -3211,7 +3215,7 @@ msgstr ""
 msgid "Differentiates an expression n times"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3484
+#: ../../src/MaximaCommandMenus.cpp:3544
 msgid "Differentiates the expression n times"
 msgstr ""
 
@@ -3239,7 +3243,7 @@ msgstr ""
 msgid "Display Te&X Form"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3784
+#: ../../src/MaximaCommandMenus.cpp:3844
 msgid "Display algorithm"
 msgstr ""
 
@@ -3263,11 +3267,11 @@ msgstr ""
 msgid "Display equations"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:2968
+#: ../../src/MaximaCommandMenus.cpp:3028
 msgid "Display expression in maxima's internal representation"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:2974
+#: ../../src/MaximaCommandMenus.cpp:3034
 msgid "Display expression in wxMaxima's internal representation"
 msgstr ""
 
@@ -3333,7 +3337,7 @@ msgstr ""
 msgid "Do for each list element"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3501
+#: ../../src/wxMaxima.cpp:3503
 #, c-format
 msgid "Do you want to save the changes you made in the document \"%s\"?"
 msgstr ""
@@ -3370,11 +3374,11 @@ msgstr ""
 msgid "Don't evaluate Expression..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3929
+#: ../../src/MaximaCommandMenus.cpp:3989
 msgid "Don't evaluate one command"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3941
+#: ../../src/MaximaCommandMenus.cpp:4001
 msgid "Don't evaluate one whole expression"
 msgstr ""
 
@@ -3388,7 +3392,7 @@ msgstr ""
 msgid "Don't mark this message text in yellow"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3507
+#: ../../src/wxMaxima.cpp:3509
 msgid "Don't save"
 msgstr ""
 
@@ -3507,7 +3511,7 @@ msgstr ""
 msgid "Element:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4016
+#: ../../src/MaximaCommandMenus.cpp:4076
 msgid "Elements:"
 msgstr ""
 
@@ -3532,7 +3536,7 @@ msgstr ""
 msgid "Encountered an unknown XML tag: <%s>"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:135
+#: ../../src/MaximaProcessManager.cpp:137
 msgid "Encountered an unknown socket event."
 msgstr ""
 
@@ -3672,7 +3676,7 @@ msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:150 ../../src/MaximaCommandMenus.cpp:170
 #: ../../src/MaximaCommandMenus.cpp:957 ../../src/MaximaCommandMenus.cpp:969
-#: ../../src/MaximaCommandMenus.cpp:1832 ../../src/MaximaCommandMenus.cpp:3468
+#: ../../src/MaximaCommandMenus.cpp:1832 ../../src/MaximaCommandMenus.cpp:3528
 msgid "Equation:"
 msgstr ""
 
@@ -3684,17 +3688,17 @@ msgstr ""
 #: ../../src/MaximaFileIO.cpp:130 ../../src/MaximaFileIO.cpp:399
 #: ../../src/MaximaFileIO.cpp:410 ../../src/MaximaFileIO.cpp:528
 #: ../../src/MaximaFileIO.cpp:557 ../../src/MaximaFileIO.cpp:568
-#: ../../src/MaximaProcessManager.cpp:579 ../../src/WXMXformat.cpp:260
+#: ../../src/MaximaProcessManager.cpp:581 ../../src/WXMXformat.cpp:260
 #: ../../src/WXMXformat.cpp:290 ../../src/WXMXformat.cpp:298
 #: ../../src/WXMXformat.cpp:313 ../../src/WXMXformat.cpp:334
 #: ../../src/WXMXformat.cpp:364 ../../src/dialogs/BinaryNameCtrl.cpp:78
-#: ../../src/main.cpp:725 ../../src/wxMaxima.cpp:3382
-#: ../../src/wxMaxima.cpp:3418 ../../src/wxMaxima.cpp:3436
-#: ../../src/wxMaxima.cpp:3470
+#: ../../src/main.cpp:725 ../../src/wxMaxima.cpp:3384
+#: ../../src/wxMaxima.cpp:3420 ../../src/wxMaxima.cpp:3438
+#: ../../src/wxMaxima.cpp:3472
 msgid "Error"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:787
+#: ../../src/MaximaProcessManager.cpp:789
 msgid "Error writing to Maxima"
 msgstr ""
 
@@ -3726,7 +3730,7 @@ msgid "Error: Cannot render the image:\n"
 "%s"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4356
+#: ../../src/MaximaCommandMenus.cpp:4416
 msgid "Escapes all special characters in a string. The result is a regex that matches this string exactly."
 msgstr ""
 
@@ -3836,7 +3840,7 @@ msgstr ""
 msgid "Evaluate current cell"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4207
+#: ../../src/MaximaCommandMenus.cpp:4267
 msgid "Evaluate string"
 msgstr ""
 
@@ -3989,7 +3993,7 @@ msgstr ""
 msgid "Export successful."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3408
+#: ../../src/MaximaCommandMenus.cpp:3468
 msgid "Export the selected output(s) to this folder"
 msgstr ""
 
@@ -4001,12 +4005,12 @@ msgstr ""
 msgid "Export visible commands to a .mac file"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3417
+#: ../../src/MaximaCommandMenus.cpp:3477
 #, c-format
 msgid "Exported %d output image(s) to %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2198 ../../src/wxMaxima.cpp:2240
+#: ../../src/wxMaxima.cpp:2200 ../../src/wxMaxima.cpp:2242
 #, c-format
 msgid "Exported the worksheet to %s"
 msgstr ""
@@ -4037,13 +4041,13 @@ msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:625 ../../src/MaximaCommandMenus.cpp:630
 #: ../../src/MaximaCommandMenus.cpp:650 ../../src/MaximaCommandMenus.cpp:1408
-#: ../../src/MaximaCommandMenus.cpp:2970 ../../src/MaximaCommandMenus.cpp:2976
-#: ../../src/MaximaCommandMenus.cpp:3494 ../../src/sidebars/DrawSidebar.cpp:54
+#: ../../src/MaximaCommandMenus.cpp:3030 ../../src/MaximaCommandMenus.cpp:3036
+#: ../../src/MaximaCommandMenus.cpp:3554 ../../src/sidebars/DrawSidebar.cpp:54
 #: ../../src/wizards/Plot3dWiz.cpp:32
 msgid "Expression"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3831 ../../src/MaximaCommandMenus.cpp:3837
+#: ../../src/MaximaCommandMenus.cpp:3891 ../../src/MaximaCommandMenus.cpp:3897
 msgid "Expression or a list of comma-separated expressions"
 msgstr ""
 
@@ -4067,11 +4071,11 @@ msgstr ""
 msgid "Expression to string..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3925
+#: ../../src/MaximaCommandMenus.cpp:3985
 msgid "Expression whose output is to be used as maxima's input."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4026 ../../src/wizards/Plot2dWiz.cpp:39
+#: ../../src/MaximaCommandMenus.cpp:4086 ../../src/wizards/Plot2dWiz.cpp:39
 msgid "Expression(s):"
 msgstr ""
 
@@ -4080,7 +4084,7 @@ msgstr ""
 #: ../../src/MaximaCommandMenus.cpp:235 ../../src/MaximaCommandMenus.cpp:252
 #: ../../src/MaximaCommandMenus.cpp:258 ../../src/MaximaCommandMenus.cpp:265
 #: ../../src/MaximaCommandMenus.cpp:297 ../../src/MaximaCommandMenus.cpp:316
-#: ../../src/MaximaCommandMenus.cpp:3485 ../../src/wizards/IntegrateWiz.cpp:33
+#: ../../src/MaximaCommandMenus.cpp:3545 ../../src/wizards/IntegrateWiz.cpp:33
 #: ../../src/wizards/LimitWiz.cpp:29 ../../src/wizards/SeriesWiz.cpp:30
 #: ../../src/wizards/SubstituteWiz.cpp:29 ../../src/wizards/SumWiz.cpp:31
 msgid "Expression:"
@@ -4150,11 +4154,11 @@ msgstr ""
 msgid "Extract dir from path..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4417
+#: ../../src/MaximaCommandMenus.cpp:4477
 msgid "Extract directory part"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4429
+#: ../../src/MaximaCommandMenus.cpp:4489
 msgid "Extract file type extension"
 msgstr ""
 
@@ -4162,7 +4166,7 @@ msgstr ""
 msgid "Extract filename from path..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4423
+#: ../../src/MaximaCommandMenus.cpp:4483
 msgid "Extract filename part"
 msgstr ""
 
@@ -4194,7 +4198,7 @@ msgstr ""
 msgid "Extract the last n list elements"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4188
+#: ../../src/MaximaCommandMenus.cpp:4248
 msgid "Extract the nth char of a string"
 msgstr ""
 
@@ -4252,11 +4256,11 @@ msgstr ""
 msgid "Failed to delete gnuplot file %s"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:350
+#: ../../src/MaximaProcessManager.cpp:352
 msgid "Failed to start Maxima"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:626
+#: ../../src/MaximaProcessManager.cpp:628
 msgid "Failed to write to Maxima's stdin (LDB)."
 msgstr ""
 
@@ -4268,7 +4272,7 @@ msgstr ""
 msgid "Fast list access"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:216
+#: ../../src/MaximaProcessManager.cpp:218
 msgid "Fatal error"
 msgstr ""
 
@@ -4276,15 +4280,15 @@ msgstr ""
 msgid "Field Separator"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4003
+#: ../../src/MaximaCommandMenus.cpp:4063
 msgid "Field contents:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4010
+#: ../../src/MaximaCommandMenus.cpp:4070
 msgid "Field name:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3997
+#: ../../src/MaximaCommandMenus.cpp:4057
 msgid "Fields:"
 msgstr ""
 
@@ -4308,12 +4312,12 @@ msgstr ""
 msgid "File could not be opened"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4053 ../../src/MaximaCommandMenus.cpp:4058
-#: ../../src/MaximaCommandMenus.cpp:4063
+#: ../../src/MaximaCommandMenus.cpp:4113 ../../src/MaximaCommandMenus.cpp:4118
+#: ../../src/MaximaCommandMenus.cpp:4123
 msgid "File name:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2993 ../../src/wxMaxima.cpp:3036
+#: ../../src/wxMaxima.cpp:2995 ../../src/wxMaxima.cpp:3038
 msgid "File not found"
 msgstr ""
 
@@ -4325,7 +4329,7 @@ msgstr ""
 msgid "File operations"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2992 ../../src/wxMaxima.cpp:3035
+#: ../../src/wxMaxima.cpp:2994 ../../src/wxMaxima.cpp:3037
 msgid "File you tried to open does not exist."
 msgstr ""
 
@@ -4337,7 +4341,7 @@ msgstr ""
 msgid "Filename"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3839
+#: ../../src/MaximaCommandMenus.cpp:3899
 msgid "Filename or a list of comma-separated file names"
 msgstr ""
 
@@ -4397,7 +4401,7 @@ msgstr ""
 msgid "Find all roots of a polynomial (bfloat)"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3043
+#: ../../src/MaximaCommandMenus.cpp:3103
 msgid "Find and Replace"
 msgstr ""
 
@@ -4406,7 +4410,7 @@ msgstr ""
 msgid "Find and replace"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4246
+#: ../../src/MaximaCommandMenus.cpp:4306
 msgid "Find char in string"
 msgstr ""
 
@@ -4426,7 +4430,7 @@ msgstr ""
 msgid "Find eigenvectors of a matrix"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4236
+#: ../../src/MaximaCommandMenus.cpp:4296
 msgid "Find first difference"
 msgstr ""
 
@@ -4446,7 +4450,7 @@ msgstr ""
 msgid "Find numerical solution..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3464
+#: ../../src/MaximaCommandMenus.cpp:3524
 msgid "Find root (solve numerically)"
 msgstr ""
 
@@ -4491,7 +4495,7 @@ msgstr ""
 msgid "Fixed font in text controls"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4039
+#: ../../src/MaximaCommandMenus.cpp:4099
 msgid "Flush stream"
 msgstr ""
 
@@ -4551,7 +4555,7 @@ msgid "For faster creation of cells the following shortcuts exist:\n\n"
 "   Ctrl+7: Heading6 cell\n"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3850
+#: ../../src/MaximaCommandMenus.cpp:3910
 msgid "For loop"
 msgstr ""
 
@@ -4563,11 +4567,11 @@ msgstr ""
 msgid "Format:"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:301 ../../src/wxMaxima.cpp:3521
+#: ../../src/worksheet/Worksheet.cpp:301 ../../src/wxMaxima.cpp:3523
 msgid "Forwarding the keyboard focus to a text control"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3524
+#: ../../src/wxMaxima.cpp:3526
 msgid "Forwarding the keyboard focus to the worksheet"
 msgstr ""
 
@@ -4655,7 +4659,7 @@ msgstr ""
 msgid "Full-window repaints:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3952
+#: ../../src/MaximaCommandMenus.cpp:4012
 msgid "Function contents:"
 msgstr ""
 
@@ -4667,11 +4671,11 @@ msgstr ""
 msgid "Function name"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3979
+#: ../../src/MaximaCommandMenus.cpp:4039
 msgid "Function name(s):"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3947 ../../src/MaximaCommandMenus.cpp:4496
+#: ../../src/MaximaCommandMenus.cpp:4007 ../../src/MaximaCommandMenus.cpp:4556
 msgid "Function name:"
 msgstr ""
 
@@ -4695,11 +4699,11 @@ msgstr ""
 msgid "GCD"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3655
+#: ../../src/MaximaCommandMenus.cpp:3715
 msgid "GIF image (*.gif)|*.gif"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3555
+#: ../../src/MaximaCommandMenus.cpp:3615
 msgid "GIF image (*.gif)|*.gif|Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
 
@@ -4787,7 +4791,7 @@ msgstr ""
 msgid "Get inverse Laplace transformation of an expression"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4035
+#: ../../src/MaximaCommandMenus.cpp:4095
 msgid "Get position in stream"
 msgstr ""
 
@@ -4803,7 +4807,7 @@ msgstr ""
 msgid "Get the real part of complex expression"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:1109
+#: ../../src/MaximaProcessManager.cpp:1220
 #, c-format
 msgid "Gnuplot (command line) found at: %s"
 msgstr ""
@@ -4812,19 +4816,25 @@ msgstr ""
 msgid "Gnuplot flavour"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:1107
+#: ../../src/MaximaProcessManager.cpp:1218
 #, c-format
 msgid "Gnuplot found at: %s"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:992
+#: ../../src/MaximaProcessManager.cpp:994
 msgid "Gnuplot has closed."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:1098
-#: ../../src/MaximaProcessManager.cpp:1103
+#: ../../src/MaximaProcessManager.cpp:1209
+#: ../../src/MaximaProcessManager.cpp:1214
 #, c-format
 msgid "Gnuplot not found, using the default: %s"
+msgstr ""
+
+#: ../../src/MaximaProcessManager.cpp:1097
+#, c-format
+msgid "Gnuplot reported the following while preparing the popped-out plot:\n"
+"%s"
 msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:2071 ../../src/wxMaximaFrame.cpp:1924
@@ -4835,7 +4845,7 @@ msgstr ""
 msgid "Got a new input prompt!"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:4296
+#: ../../src/worksheet/Worksheet.cpp:4306
 msgid "Got a request to undo an action that involves a delete which isn't possible at this moment."
 msgstr ""
 
@@ -5088,7 +5098,7 @@ msgstr ""
 msgid "Identical to"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3874
+#: ../../src/MaximaCommandMenus.cpp:3934
 msgid "If a program doesn't need local variables, Maxima allows putting the commands between parentheses. The result of the last operation is the return value of the program."
 msgstr ""
 
@@ -5144,7 +5154,7 @@ msgstr ""
 msgid "If the thing maxima complains about actually looks like a polynomial you can try running it through ratdisrep() in order to fix that problem."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3984
+#: ../../src/MaximaCommandMenus.cpp:4044
 msgid "If the type of a function parameter is known when compiling a function the code can vastly be optimized.\n"
 "Known types:\n\n"
 "array, boolean, integer, fixnum (machine-length integer), float (machine-size floating-point numbers), real or any (which is useful for declaring arrays of any)"
@@ -5203,8 +5213,8 @@ msgstr ""
 msgid "Image data had zero length!"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:2564 ../../src/MaximaCommandMenus.cpp:2873
-#: ../../src/MaximaCommandMenus.cpp:3582
+#: ../../src/MaximaCommandMenus.cpp:2564 ../../src/MaximaCommandMenus.cpp:2933
+#: ../../src/MaximaCommandMenus.cpp:3642
 msgid "Image files ("
 msgstr ""
 
@@ -5242,7 +5252,7 @@ msgid "In order to save memory the \":\" operator does clone the matrix, not cop
 "If you change an element of one matrix the same element will change in all of its clones. copymatrix() instead generates a copy of a matrix: A new matrix that, if changed in any way, won't change the original."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4216
+#: ../../src/MaximaCommandMenus.cpp:4276
 msgid "In order to save memory the : operator doesn't create an individual copy of the string, but a clone that changes when the original string changes."
 msgstr ""
 
@@ -5490,7 +5500,7 @@ msgstr ""
 msgid "Insert a page break"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4201
+#: ../../src/MaximaCommandMenus.cpp:4261
 msgid "Insert a string into another"
 msgstr ""
 
@@ -5514,7 +5524,7 @@ msgstr ""
 msgid "Insert textbased cell"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:6121
+#: ../../src/worksheet/Worksheet.cpp:6131
 msgid "Insertion point between cells"
 msgstr ""
 
@@ -5522,11 +5532,11 @@ msgstr ""
 msgid "Instantiating the HTML manual browser"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:1066
+#: ../../src/MaximaProcessManager.cpp:1177
 msgid "Instructed to prefer gnuplot over wgnuplot"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:1054
+#: ../../src/MaximaProcessManager.cpp:1165
 msgid "Instructed to prefer wgnuplot over gnuplot"
 msgstr ""
 
@@ -5542,7 +5552,7 @@ msgstr ""
 msgid "Integral/Sum:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:240 ../../src/MaximaCommandMenus.cpp:3473
+#: ../../src/MaximaCommandMenus.cpp:240 ../../src/MaximaCommandMenus.cpp:3533
 #: ../../src/wizards/IntegrateWiz.cpp:73
 msgid "Integrate"
 msgstr ""
@@ -5600,11 +5610,11 @@ msgstr ""
 msgid "Interpret like input..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3916
+#: ../../src/MaximaCommandMenus.cpp:3976
 msgid "Interpret maxima's output as input"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4314
+#: ../../src/MaximaCommandMenus.cpp:4374
 msgid "Interpret string as maxima code"
 msgstr ""
 
@@ -5624,7 +5634,7 @@ msgstr ""
 msgid "Interrupt current computation. To completely restart maxima press the button left to this one."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:874
+#: ../../src/MaximaProcessManager.cpp:876
 #, c-format
 msgid "Interrupting maxima: %s"
 msgstr ""
@@ -5637,7 +5647,7 @@ msgstr ""
 msgid "Introduce the actual values for variables stored in the list"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3491
+#: ../../src/MaximaCommandMenus.cpp:3551
 msgid "Introduces one or more assignments into an expression"
 msgstr ""
 
@@ -5662,23 +5672,23 @@ msgstr ""
 msgid "Iota"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4150
+#: ../../src/MaximaCommandMenus.cpp:4210
 msgid "Is Char 1 greater than Char2, if case is ignored?"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4145
+#: ../../src/MaximaCommandMenus.cpp:4205
 msgid "Is Char 1 greater than Char2?"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4139
+#: ../../src/MaximaCommandMenus.cpp:4199
 msgid "Is Char 1 less than Char2, if case is ignored?"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4134
+#: ../../src/MaximaCommandMenus.cpp:4194
 msgid "Is Char 1 less than Char2?"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4092
+#: ../../src/MaximaCommandMenus.cpp:4152
 msgid "Is a char?"
 msgstr ""
 
@@ -5690,7 +5700,7 @@ msgstr ""
 msgid "Is a complex variable"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4104
+#: ../../src/MaximaCommandMenus.cpp:4164
 msgid "Is a digit?"
 msgstr ""
 
@@ -5698,11 +5708,11 @@ msgstr ""
 msgid "Is a digit?..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4116
+#: ../../src/MaximaCommandMenus.cpp:4176
 msgid "Is a lowercase char?"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4108
+#: ../../src/MaximaCommandMenus.cpp:4168
 msgid "Is a printable char?"
 msgstr ""
 
@@ -5710,7 +5720,7 @@ msgstr ""
 msgid "Is a real variable"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4112
+#: ../../src/MaximaCommandMenus.cpp:4172
 msgid "Is a uppercase char?"
 msgstr ""
 
@@ -5722,11 +5732,11 @@ msgstr ""
 msgid "Is alphanumeric?..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4096
+#: ../../src/MaximaCommandMenus.cpp:4156
 msgid "Is an alphabetic char?"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4100
+#: ../../src/MaximaCommandMenus.cpp:4160
 msgid "Is an alphanumeric char?"
 msgstr ""
 
@@ -5778,11 +5788,11 @@ msgstr ""
 msgid "Issue a notification if maxima finishes calculating while the wxMaxima window isn't in focus."
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:4237
+#: ../../src/worksheet/Worksheet.cpp:4247
 msgid "Issuing the active cell's undo function"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:4241
+#: ../../src/worksheet/Worksheet.cpp:4251
 msgid "Issuing the worksheet's undo function"
 msgstr ""
 
@@ -5903,12 +5913,12 @@ msgstr ""
 msgid "Labels"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3902
+#: ../../src/MaximaCommandMenus.cpp:3962
 #: ../../src/sidebars/GreekSidebar.cpp:188
 msgid "Lambda"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3903
+#: ../../src/MaximaCommandMenus.cpp:3963
 msgid "Lambda generates a function, but doesn't give it a name.\n"
 "This is useful if you want to use a function only once, perhaps as a parameter to another function and don't need it to be named.\n"
 "Also you can fill a variable with a lambda() construct, effectively generating a function pointer: A variable that can be used as a function, and filled with a different function, if needed."
@@ -5934,12 +5944,12 @@ msgstr ""
 msgid "Last"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:555
+#: ../../src/MaximaProcessManager.cpp:557
 #, c-format
 msgid "Last message from maxima's stderr: %s"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:542
+#: ../../src/MaximaProcessManager.cpp:544
 #, c-format
 msgid "Last message from maxima's stdout: %s"
 msgstr ""
@@ -5948,7 +5958,7 @@ msgstr ""
 msgid "Last n"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3085
+#: ../../src/wxMaxima.cpp:3087
 msgid "Last non-whitespace is a question mark"
 msgstr ""
 
@@ -5956,12 +5966,12 @@ msgstr ""
 msgid "Latvian"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1673
+#: ../../src/wxMaxima.cpp:1675
 #, c-format
 msgid "Launching the system's default help browser as %s."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1664 ../../src/wxMaxima.cpp:1685
+#: ../../src/wxMaxima.cpp:1666 ../../src/wxMaxima.cpp:1687
 msgid "Launching the system's default help browser failed."
 msgstr ""
 
@@ -6006,7 +6016,7 @@ msgstr ""
 msgid "Length..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4233
+#: ../../src/MaximaCommandMenus.cpp:4293
 msgid "Length:"
 msgstr ""
 
@@ -6047,15 +6057,15 @@ msgstr ""
 msgid "Linear Regression..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4068
+#: ../../src/MaximaCommandMenus.cpp:4128
 msgid "Lisp format string:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4070
+#: ../../src/MaximaCommandMenus.cpp:4130
 msgid "Lisp format strings are more powerful than c++ format strings"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1872
+#: ../../src/wxMaxima.cpp:1874
 msgid "Lisp mode."
 msgstr ""
 
@@ -6103,7 +6113,7 @@ msgstr ""
 msgid "List of changed options"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4197
+#: ../../src/MaximaCommandMenus.cpp:4257
 msgid "List of char to String"
 msgstr ""
 
@@ -6111,7 +6121,7 @@ msgstr ""
 msgid "List of chars to string..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4198
+#: ../../src/MaximaCommandMenus.cpp:4258
 msgid "List of chars:"
 msgstr ""
 
@@ -6208,7 +6218,7 @@ msgstr ""
 msgid "Load lapack"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4020
+#: ../../src/MaximaCommandMenus.cpp:4080
 msgid "Load lisp code"
 msgstr ""
 
@@ -6240,7 +6250,7 @@ msgstr ""
 msgid "Loop variable"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:959 ../../src/MaximaCommandMenus.cpp:3469
+#: ../../src/MaximaCommandMenus.cpp:959 ../../src/MaximaCommandMenus.cpp:3529
 msgid "Lower bound:"
 msgstr ""
 
@@ -6256,11 +6266,11 @@ msgstr ""
 msgid "MAXIMA RESPONSE:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3965
+#: ../../src/MaximaCommandMenus.cpp:4025
 msgid "Macro contents:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3960
+#: ../../src/MaximaCommandMenus.cpp:4020
 msgid "Macro name:"
 msgstr ""
 
@@ -6456,7 +6466,7 @@ msgstr ""
 msgid "Maxima assigns each command/equation an automatic label (which looks like %i1 or %o1). If a command begins with a descriptive name followed by a : wxMaxima will call the descriptive name a \"user-defined label\" instead. This selection now allows telling wxMaxima whether to show only automatic labels, automatic labels if there aren't user-defined ones or no label at all until a user-defined label can be found by wxMaxima's heuristics. If automatic labels are suppressed extra vertical space is added between equations in order to ease discerning which line starts a new equation and which one only continues the one from the last line."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3930
+#: ../../src/MaximaCommandMenus.cpp:3990
 msgid "Maxima automatically simplifies expressions it gets as input and then tries to evaluate their value. The ' operator tells maxima that we want a command to be in noun form, which means: stand here as is, and unevaluated.\n"
 "The ' operator can be undone by using the '' operator."
 msgstr ""
@@ -6528,7 +6538,7 @@ msgstr ""
 msgid "Maxima is calculating"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1874
+#: ../../src/wxMaxima.cpp:1876
 msgid "Maxima is ready for input."
 msgstr ""
 
@@ -6545,7 +6555,7 @@ msgstr ""
 msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:567
+#: ../../src/MaximaProcessManager.cpp:569
 msgid "Maxima process terminated unexpectedly."
 msgstr ""
 
@@ -6617,7 +6627,7 @@ msgstr ""
 msgid "Maxima to other language"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4025
+#: ../../src/MaximaCommandMenus.cpp:4085
 msgid "Maxima to string"
 msgstr ""
 
@@ -6829,7 +6839,7 @@ msgstr ""
 msgid "Methods of generating a matrix"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:4859
+#: ../../src/worksheet/Worksheet.cpp:4869
 #, c-format
 msgid "Middle-click clipboard data: %s"
 msgstr ""
@@ -6855,7 +6865,7 @@ msgstr ""
 msgid "Misc settings"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3134 ../../src/wxMaxima.cpp:3136
+#: ../../src/wxMaxima.cpp:3136 ../../src/wxMaxima.cpp:3138
 msgid "Mismatched parenthesis"
 msgstr ""
 
@@ -6942,7 +6952,7 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:2994
+#: ../../src/MaximaCommandMenus.cpp:3054
 msgid "Never autosubscript this variable"
 msgstr ""
 
@@ -6967,15 +6977,15 @@ msgstr ""
 msgid "New button"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:142
+#: ../../src/MaximaProcessManager.cpp:144
 msgid "New connection attempt whilst already connected."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:150
+#: ../../src/MaximaProcessManager.cpp:152
 msgid "New connection attempt, but no currently no socket maxima could connect to."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:146
+#: ../../src/MaximaProcessManager.cpp:148
 msgid "New connection attempt, but no currently running maxima process."
 msgstr ""
 
@@ -6992,7 +7002,7 @@ msgstr ""
 msgid "New maxima Operators detected: %s"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4202
+#: ../../src/MaximaCommandMenus.cpp:4262
 msgid "New part:"
 msgstr ""
 
@@ -7030,7 +7040,7 @@ msgstr ""
 msgid "No Scalar"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:5456
+#: ../../src/worksheet/Worksheet.cpp:5466
 msgid "No cells are selected. Anonymize the code in the whole document?"
 msgstr ""
 
@@ -7042,7 +7052,7 @@ msgstr ""
 msgid "No differences"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3167
+#: ../../src/wxMaxima.cpp:3169
 msgid "No dollar ($) or semicolon (;) at the end of command"
 msgstr ""
 
@@ -7066,8 +7076,8 @@ msgstr ""
 msgid "No image to export"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2651 ../../src/wxMaxima.cpp:2659
-#: ../../src/wxMaxima.cpp:2680 ../../src/wxMaxima.cpp:2692
+#: ../../src/wxMaxima.cpp:2653 ../../src/wxMaxima.cpp:2661
+#: ../../src/wxMaxima.cpp:2682 ../../src/wxMaxima.cpp:2694
 msgid "No matches found!"
 msgstr ""
 
@@ -7166,7 +7176,7 @@ msgstr ""
 msgid "Number of equations:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4293
+#: ../../src/MaximaCommandMenus.cpp:4353
 msgid "Number to octets"
 msgstr ""
 
@@ -7178,7 +7188,7 @@ msgstr ""
 msgid "Number types"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4294
+#: ../../src/MaximaCommandMenus.cpp:4354
 msgid "Number:"
 msgstr ""
 
@@ -7210,7 +7220,7 @@ msgstr ""
 msgid "Numerical solutions of polynomial..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3205 ../../src/MaximaCommandMenus.cpp:3630
+#: ../../src/MaximaCommandMenus.cpp:3265 ../../src/MaximaCommandMenus.cpp:3690
 #: ../../src/dialogs/ChangeLogDialog.cpp:131
 #: ../../src/dialogs/LicenseDialog.cpp:90
 #: ../../src/dialogs/MaxSizeChooser.cpp:44
@@ -7261,19 +7271,19 @@ msgstr ""
 msgid "Object composed of elements"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4492
+#: ../../src/MaximaCommandMenus.cpp:4552
 msgid "Object name:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4093
+#: ../../src/MaximaCommandMenus.cpp:4153
 msgid "Object:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4298
+#: ../../src/MaximaCommandMenus.cpp:4358
 msgid "Octets to Number"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4303
+#: ../../src/MaximaCommandMenus.cpp:4363
 msgid "Octets to String"
 msgstr ""
 
@@ -7285,7 +7295,7 @@ msgstr ""
 msgid "Octets to string..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4299 ../../src/MaximaCommandMenus.cpp:4304
+#: ../../src/MaximaCommandMenus.cpp:4359 ../../src/MaximaCommandMenus.cpp:4364
 msgid "Octets:"
 msgstr ""
 
@@ -7367,7 +7377,7 @@ msgstr ""
 msgid "Open document"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4051
+#: ../../src/MaximaCommandMenus.cpp:4111
 msgid "Open for appending"
 msgstr ""
 
@@ -7375,7 +7385,7 @@ msgstr ""
 msgid "Open for appending..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4056
+#: ../../src/MaximaCommandMenus.cpp:4116
 msgid "Open for reading"
 msgstr ""
 
@@ -7383,7 +7393,7 @@ msgstr ""
 msgid "Open for reading..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4061
+#: ../../src/MaximaCommandMenus.cpp:4121
 msgid "Open for writing"
 msgstr ""
 
@@ -7408,7 +7418,7 @@ msgstr ""
 msgid "Opening file"
 msgstr ""
 
-#: ../../src/sidebars/HelpBrowser.cpp:175 ../../src/wxMaxima.cpp:1806
+#: ../../src/sidebars/HelpBrowser.cpp:175 ../../src/wxMaxima.cpp:1808
 #, c-format
 msgid "Opening help file %s"
 msgstr ""
@@ -7487,7 +7497,7 @@ msgstr ""
 msgid "Overlay scrollbars (slow: repaints the worksheet while they fade)"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3549
+#: ../../src/MaximaCommandMenus.cpp:3609
 msgid "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*.bmp|"
 msgstr ""
 
@@ -7519,11 +7529,11 @@ msgstr ""
 msgid "Parallel to"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3991
+#: ../../src/MaximaCommandMenus.cpp:4051
 msgid "Parameter name:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3948 ../../src/MaximaCommandMenus.cpp:3961
+#: ../../src/MaximaCommandMenus.cpp:4008 ../../src/MaximaCommandMenus.cpp:4021
 msgid "Parameter(s):"
 msgstr ""
 
@@ -7535,7 +7545,7 @@ msgstr ""
 msgid "Parametric plot"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4211
+#: ../../src/MaximaCommandMenus.cpp:4271
 msgid "Parse string"
 msgstr ""
 
@@ -7547,7 +7557,7 @@ msgstr ""
 msgid "Parsing output"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4276
+#: ../../src/MaximaCommandMenus.cpp:4336
 msgid "Part:"
 msgstr ""
 
@@ -7605,7 +7615,7 @@ msgstr ""
 msgid "Piechart..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1585
+#: ../../src/wxMaxima.cpp:1587
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr ""
 
@@ -7629,7 +7639,7 @@ msgstr ""
 msgid "Plot &Format..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:107 ../../src/MaximaCommandMenus.cpp:3497
+#: ../../src/MaximaCommandMenus.cpp:107 ../../src/MaximaCommandMenus.cpp:3557
 #: ../../src/wizards/Plot2dWiz.cpp:108 ../../src/wizards/Plot2dWiz.cpp:428
 #: ../../src/wizards/Plot2dWiz.cpp:441
 msgid "Plot 2D"
@@ -7640,7 +7650,7 @@ msgstr ""
 msgid "Plot 2D..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:85 ../../src/MaximaCommandMenus.cpp:3508
+#: ../../src/MaximaCommandMenus.cpp:85 ../../src/MaximaCommandMenus.cpp:3568
 #: ../../src/wizards/Plot3dWiz.cpp:103
 msgid "Plot 3D"
 msgstr ""
@@ -7749,7 +7759,7 @@ msgstr ""
 msgid "Popout interactively"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3545
+#: ../../src/MaximaCommandMenus.cpp:3605
 msgid "Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
 
@@ -7765,7 +7775,7 @@ msgstr ""
 msgid "Position of a match"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4032 ../../src/MaximaCommandMenus.cpp:4203
+#: ../../src/MaximaCommandMenus.cpp:4092 ../../src/MaximaCommandMenus.cpp:4263
 msgid "Position:"
 msgstr ""
 
@@ -7933,11 +7943,11 @@ msgstr ""
 msgid "Program"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3873
+#: ../../src/MaximaCommandMenus.cpp:3933
 msgid "Program (no local variables)"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3864
+#: ../../src/MaximaCommandMenus.cpp:3924
 msgid "Program block"
 msgstr ""
 
@@ -8018,20 +8028,20 @@ msgstr ""
 msgid "Re-opening STDOUT failed."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2887
+#: ../../src/wxMaxima.cpp:2889
 #, c-format
 msgid "Re-pointed the .wxmx file association at %s"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4324
+#: ../../src/MaximaCommandMenus.cpp:4384
 msgid "Re-using a compiled regex is faster that using the same regex string multiple times."
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:4649
+#: ../../src/worksheet/Worksheet.cpp:4659
 msgid "Read .wxm data from clipboard"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4411
+#: ../../src/MaximaCommandMenus.cpp:4471
 msgid "Read Directory"
 msgstr ""
 
@@ -8039,15 +8049,15 @@ msgstr ""
 msgid "Read Matrix..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4008
+#: ../../src/MaximaCommandMenus.cpp:4068
 msgid "Read a structure field"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4082 ../../src/MaximaCommandMenus.cpp:4086
+#: ../../src/MaximaCommandMenus.cpp:4142 ../../src/MaximaCommandMenus.cpp:4146
 msgid "Read byte"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4078
+#: ../../src/MaximaCommandMenus.cpp:4138
 msgid "Read char"
 msgstr ""
 
@@ -8055,7 +8065,7 @@ msgstr ""
 msgid "Read config to file"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4405
+#: ../../src/MaximaCommandMenus.cpp:4465
 msgid "Read environment variable"
 msgstr ""
 
@@ -8063,7 +8073,7 @@ msgstr ""
 msgid "Read environment variable..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4074
+#: ../../src/MaximaCommandMenus.cpp:4134
 msgid "Read line"
 msgstr ""
 
@@ -8217,11 +8227,11 @@ msgstr ""
 msgid "Regex"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4335
+#: ../../src/MaximaCommandMenus.cpp:4395
 msgid "Regex match"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4330
+#: ../../src/MaximaCommandMenus.cpp:4390
 msgid "Regex match position"
 msgstr ""
 
@@ -8254,7 +8264,7 @@ msgstr ""
 msgid "Reload the style settings from disc"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3212
+#: ../../src/MaximaCommandMenus.cpp:3272
 #, c-format
 msgid "Reloading image file %s."
 msgstr ""
@@ -8295,7 +8305,7 @@ msgstr ""
 msgid "Remove all occurrences of a word..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4251
+#: ../../src/MaximaCommandMenus.cpp:4311
 msgid "Remove all occurrences of part"
 msgstr ""
 
@@ -8311,7 +8321,7 @@ msgstr ""
 msgid "Remove columns from a matrix"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4378
+#: ../../src/MaximaCommandMenus.cpp:4438
 msgid "Remove directory"
 msgstr ""
 
@@ -8327,7 +8337,7 @@ msgstr ""
 msgid "Remove first occurrence of a word..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4256
+#: ../../src/MaximaCommandMenus.cpp:4316
 msgid "Remove first occurrence of part"
 msgstr ""
 
@@ -8347,7 +8357,7 @@ msgstr ""
 msgid "Remove rows from the a matrix"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4394
+#: ../../src/MaximaCommandMenus.cpp:4454
 msgid "Rename file"
 msgstr ""
 
@@ -8367,11 +8377,11 @@ msgstr ""
 msgid "Replace All"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4350
+#: ../../src/MaximaCommandMenus.cpp:4410
 msgid "Replace all regex matches"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4345
+#: ../../src/MaximaCommandMenus.cpp:4405
 msgid "Replace first regex match"
 msgstr ""
 
@@ -8379,7 +8389,7 @@ msgstr ""
 msgid "Replace non-builtin variable and function names in the selected code cells (or the whole document) with random names, so a worksheet can be shared without revealing its original names"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4275
+#: ../../src/MaximaCommandMenus.cpp:4335
 msgid "Replace the first occurrence of Part"
 msgstr ""
 
@@ -8387,7 +8397,7 @@ msgstr ""
 msgid "Replace..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2718
+#: ../../src/wxMaxima.cpp:2720
 #, c-format
 msgid "Replaced %li occurrences."
 msgstr ""
@@ -8431,7 +8441,7 @@ msgstr ""
 msgid "Restrict Maximum size"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3460
+#: ../../src/MaximaCommandMenus.cpp:3520
 msgid "Result variables:"
 msgstr ""
 
@@ -8443,7 +8453,7 @@ msgstr ""
 msgid "Return a match"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3889
+#: ../../src/MaximaCommandMenus.cpp:3949
 msgid "Return from a block or loop"
 msgstr ""
 
@@ -8604,12 +8614,12 @@ msgstr ""
 msgid "Run each element through an expression"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:2780
+#: ../../src/MaximaCommandMenus.cpp:2790
 #, c-format
 msgid "Running %s on the file %s: "
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:295
+#: ../../src/MaximaProcessManager.cpp:297
 #, c-format
 msgid "Running maxima as: %s"
 msgstr ""
@@ -8703,7 +8713,7 @@ msgid "Samples on a line:"
 msgstr ""
 
 #: ../../src/ToolBar.cpp:331 ../../src/ToolBar.cpp:334
-#: ../../src/dialogs/ConfigDialogue.cpp:2163 ../../src/wxMaxima.cpp:3507
+#: ../../src/dialogs/ConfigDialogue.cpp:2163 ../../src/wxMaxima.cpp:3509
 msgid "Save"
 msgstr ""
 
@@ -8723,7 +8733,7 @@ msgstr ""
 msgid "Save Image..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:2866
+#: ../../src/MaximaCommandMenus.cpp:2926
 msgid "Save Selection to Image"
 msgstr ""
 
@@ -8731,11 +8741,11 @@ msgstr ""
 msgid "Save Selection to Image..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3653
+#: ../../src/MaximaCommandMenus.cpp:3713
 msgid "Save animation to file"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4015
+#: ../../src/MaximaCommandMenus.cpp:4075
 msgid "Save as lisp code"
 msgstr ""
 
@@ -8764,7 +8774,7 @@ msgstr ""
 msgid "Save selection from document to an image file"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3560
+#: ../../src/MaximaCommandMenus.cpp:3620
 msgid "Save selection to file"
 msgstr ""
 
@@ -8792,7 +8802,7 @@ msgstr ""
 msgid "Scalable Vector Graphics (svg)"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3536
+#: ../../src/MaximaCommandMenus.cpp:3596
 msgid "Scalable Vector image (*.svg)|*.svg|Compressed Scalable Vector Image (*.svgz)|*.svgz|PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|GIF image (*.gif)|*.gif|Windows bitmap (*.bmp)|*.bmp|"
 msgstr ""
 
@@ -8824,7 +8834,7 @@ msgstr ""
 msgid "Search button"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4266
+#: ../../src/MaximaCommandMenus.cpp:4326
 msgid "Search first occurrence of part"
 msgstr ""
 
@@ -8852,7 +8862,7 @@ msgstr ""
 msgid "See also the speed <-> accuracy button."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4030
+#: ../../src/MaximaCommandMenus.cpp:4090
 msgid "Seek to position"
 msgstr ""
 
@@ -8908,7 +8918,7 @@ msgstr ""
 msgid "Select csv file to read"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3783
+#: ../../src/MaximaCommandMenus.cpp:3843
 msgid "Select math display algorithm"
 msgstr ""
 
@@ -8932,7 +8942,7 @@ msgstr ""
 msgid "Send the current cell to maxima"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:919
+#: ../../src/MaximaProcessManager.cpp:921
 msgid "Sending Maxima a SIGINT signal."
 msgstr ""
 
@@ -8944,7 +8954,7 @@ msgstr ""
 msgid "Sending a new command to Maxima."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:900
+#: ../../src/MaximaProcessManager.cpp:902
 msgid "Sending an interrupt signal to Maxima."
 msgstr ""
 
@@ -8972,7 +8982,7 @@ msgstr ""
 msgid "Series approximation"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:225
+#: ../../src/MaximaProcessManager.cpp:227
 msgid "Server started"
 msgstr ""
 
@@ -9275,7 +9285,7 @@ msgstr ""
 msgid "Show the differences between 2 or 3 files"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3845
+#: ../../src/MaximaCommandMenus.cpp:3905
 msgid "Show the function's definition"
 msgstr ""
 
@@ -9453,7 +9463,7 @@ msgstr ""
 msgid "Solution:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3446
+#: ../../src/MaximaCommandMenus.cpp:3506
 msgid "Solve"
 msgstr ""
 
@@ -9586,7 +9596,7 @@ msgstr ""
 msgid "Solving equations with Maxima"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3917
+#: ../../src/MaximaCommandMenus.cpp:3977
 #, c-format
 msgid "Sometimes one wants maxima to loose the information that a function name was used with the ' operator in order to make maxima not evaluate it. In other places one wants % to mean \"the last expression at the time this function was created\", not \"the last expression now\".\n"
 "In both cases the '' operator will do what is requested."
@@ -9604,7 +9614,7 @@ msgstr ""
 msgid "Sort a list"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4271
+#: ../../src/MaximaCommandMenus.cpp:4331
 msgid "Sort all characters in string"
 msgstr ""
 
@@ -9629,7 +9639,7 @@ msgstr ""
 msgid "Speed versus accuracy"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4241
+#: ../../src/MaximaCommandMenus.cpp:4301
 msgid "Split"
 msgstr ""
 
@@ -9637,11 +9647,11 @@ msgstr ""
 msgid "Split on match"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4340
+#: ../../src/MaximaCommandMenus.cpp:4400
 msgid "Split on regex match"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4261
+#: ../../src/MaximaCommandMenus.cpp:4321
 msgid "Split string into tokens"
 msgstr ""
 
@@ -9709,11 +9719,11 @@ msgstr ""
 msgid "Starting a new wxMaxima process for a new window"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1856 ../../src/wxMaxima.cpp:1882
+#: ../../src/wxMaxima.cpp:1858 ../../src/wxMaxima.cpp:1884
 msgid "Starting evaluation of the document"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:203
+#: ../../src/MaximaProcessManager.cpp:205
 msgid "Starting server failed"
 msgstr ""
 
@@ -9750,17 +9760,17 @@ msgstr ""
 msgid "Stream"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4043
+#: ../../src/MaximaCommandMenus.cpp:4103
 msgid "Stream length"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4031 ../../src/MaximaCommandMenus.cpp:4036
-#: ../../src/MaximaCommandMenus.cpp:4040 ../../src/MaximaCommandMenus.cpp:4044
-#: ../../src/MaximaCommandMenus.cpp:4048 ../../src/MaximaCommandMenus.cpp:4052
-#: ../../src/MaximaCommandMenus.cpp:4057 ../../src/MaximaCommandMenus.cpp:4062
-#: ../../src/MaximaCommandMenus.cpp:4068 ../../src/MaximaCommandMenus.cpp:4075
-#: ../../src/MaximaCommandMenus.cpp:4079 ../../src/MaximaCommandMenus.cpp:4083
-#: ../../src/MaximaCommandMenus.cpp:4088
+#: ../../src/MaximaCommandMenus.cpp:4091 ../../src/MaximaCommandMenus.cpp:4096
+#: ../../src/MaximaCommandMenus.cpp:4100 ../../src/MaximaCommandMenus.cpp:4104
+#: ../../src/MaximaCommandMenus.cpp:4108 ../../src/MaximaCommandMenus.cpp:4112
+#: ../../src/MaximaCommandMenus.cpp:4117 ../../src/MaximaCommandMenus.cpp:4122
+#: ../../src/MaximaCommandMenus.cpp:4128 ../../src/MaximaCommandMenus.cpp:4135
+#: ../../src/MaximaCommandMenus.cpp:4139 ../../src/MaximaCommandMenus.cpp:4143
+#: ../../src/MaximaCommandMenus.cpp:4148
 msgid "Stream:"
 msgstr ""
 
@@ -9772,13 +9782,13 @@ msgstr ""
 msgid "String"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4157 ../../src/MaximaCommandMenus.cpp:4162
-#: ../../src/MaximaCommandMenus.cpp:4237
+#: ../../src/MaximaCommandMenus.cpp:4217 ../../src/MaximaCommandMenus.cpp:4222
+#: ../../src/MaximaCommandMenus.cpp:4297
 msgid "String #1:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4158 ../../src/MaximaCommandMenus.cpp:4163
-#: ../../src/MaximaCommandMenus.cpp:4238
+#: ../../src/MaximaCommandMenus.cpp:4218 ../../src/MaximaCommandMenus.cpp:4223
+#: ../../src/MaximaCommandMenus.cpp:4298
 msgid "String #2:"
 msgstr ""
 
@@ -9786,11 +9796,11 @@ msgstr ""
 msgid "String Tests"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4227
+#: ../../src/MaximaCommandMenus.cpp:4287
 msgid "String length"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4193
+#: ../../src/MaximaCommandMenus.cpp:4253
 msgid "String to list of char"
 msgstr ""
 
@@ -9798,7 +9808,7 @@ msgstr ""
 msgid "String to list of chars..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4308
+#: ../../src/MaximaCommandMenus.cpp:4368
 msgid "String to octets"
 msgstr ""
 
@@ -9806,25 +9816,25 @@ msgstr ""
 msgid "String to octets..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4189 ../../src/MaximaCommandMenus.cpp:4194
-#: ../../src/MaximaCommandMenus.cpp:4203 ../../src/MaximaCommandMenus.cpp:4208
-#: ../../src/MaximaCommandMenus.cpp:4212 ../../src/MaximaCommandMenus.cpp:4219
-#: ../../src/MaximaCommandMenus.cpp:4224 ../../src/MaximaCommandMenus.cpp:4228
-#: ../../src/MaximaCommandMenus.cpp:4232 ../../src/MaximaCommandMenus.cpp:4242
-#: ../../src/MaximaCommandMenus.cpp:4248 ../../src/MaximaCommandMenus.cpp:4253
-#: ../../src/MaximaCommandMenus.cpp:4258 ../../src/MaximaCommandMenus.cpp:4262
-#: ../../src/MaximaCommandMenus.cpp:4268 ../../src/MaximaCommandMenus.cpp:4272
-#: ../../src/MaximaCommandMenus.cpp:4277 ../../src/MaximaCommandMenus.cpp:4282
-#: ../../src/MaximaCommandMenus.cpp:4286 ../../src/MaximaCommandMenus.cpp:4290
-#: ../../src/MaximaCommandMenus.cpp:4309
+#: ../../src/MaximaCommandMenus.cpp:4249 ../../src/MaximaCommandMenus.cpp:4254
+#: ../../src/MaximaCommandMenus.cpp:4263 ../../src/MaximaCommandMenus.cpp:4268
+#: ../../src/MaximaCommandMenus.cpp:4272 ../../src/MaximaCommandMenus.cpp:4279
+#: ../../src/MaximaCommandMenus.cpp:4284 ../../src/MaximaCommandMenus.cpp:4288
+#: ../../src/MaximaCommandMenus.cpp:4292 ../../src/MaximaCommandMenus.cpp:4302
+#: ../../src/MaximaCommandMenus.cpp:4308 ../../src/MaximaCommandMenus.cpp:4313
+#: ../../src/MaximaCommandMenus.cpp:4318 ../../src/MaximaCommandMenus.cpp:4322
+#: ../../src/MaximaCommandMenus.cpp:4328 ../../src/MaximaCommandMenus.cpp:4332
+#: ../../src/MaximaCommandMenus.cpp:4337 ../../src/MaximaCommandMenus.cpp:4342
+#: ../../src/MaximaCommandMenus.cpp:4346 ../../src/MaximaCommandMenus.cpp:4350
+#: ../../src/MaximaCommandMenus.cpp:4369
 msgid "String:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4009
+#: ../../src/MaximaCommandMenus.cpp:4069
 msgid "Struct :"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3996 ../../src/MaximaCommandMenus.cpp:4002
+#: ../../src/MaximaCommandMenus.cpp:4056 ../../src/MaximaCommandMenus.cpp:4062
 msgid "Struct type name:"
 msgstr ""
 
@@ -9864,8 +9874,8 @@ msgstr ""
 msgid "Subst..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:715 ../../src/MaximaCommandMenus.cpp:3490
-#: ../../src/MaximaCommandMenus.cpp:4500 ../../src/wizards/SubstituteWiz.cpp:53
+#: ../../src/MaximaCommandMenus.cpp:715 ../../src/MaximaCommandMenus.cpp:3550
+#: ../../src/MaximaCommandMenus.cpp:4560 ../../src/wizards/SubstituteWiz.cpp:53
 #: ../../src/wxMaximaFrame.cpp:1688
 msgid "Substitute"
 msgstr ""
@@ -10017,7 +10027,7 @@ msgstr ""
 msgid "Taylor series:"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1486
+#: ../../src/wxMaxima.cpp:1488
 msgid "Telling maxima about the new working directory."
 msgstr ""
 
@@ -10061,7 +10071,7 @@ msgstr ""
 msgid "Text cells can hold citations that as marked as such by beginning a line with \" > \". The number of spaces in front of the \">\" determines the indentation level, as it does with bullet lists."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3001
+#: ../../src/MaximaCommandMenus.cpp:3061
 msgid "Text snippet"
 msgstr ""
 
@@ -10076,7 +10086,7 @@ msgstr ""
 msgid "The .xml file doesn't seem to be valid xml or isn't a content.xml extracted from a .wxmx zip archive"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:842
+#: ../../src/MaximaProcessManager.cpp:844
 msgid "The Maxima process doesn't offer a shared memory segment we can send an interrupt signal to."
 msgstr ""
 
@@ -10116,15 +10126,15 @@ msgstr ""
 msgid "The color of the next line to draw"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4005
+#: ../../src/MaximaCommandMenus.cpp:4065
 msgid "The comma-separated contents of the struct fields"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3998
+#: ../../src/MaximaCommandMenus.cpp:4058
 msgid "The comma-separated names of the struct fields"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3882
+#: ../../src/MaximaCommandMenus.cpp:3942
 msgid "The command local() allows telling Maxima which functions to make local to the current program when defined."
 msgstr ""
 
@@ -10223,7 +10233,7 @@ msgid "The image could not be displayed. It may be broken, in a wrong format or 
 "One example of the latter would be: Gnuplot refuses to plot entirely empty images"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3202 ../../src/MaximaCommandMenus.cpp:3627
+#: ../../src/MaximaCommandMenus.cpp:3262 ../../src/MaximaCommandMenus.cpp:3687
 #, c-format
 msgid "The image file \"%s\" cannot be found."
 msgstr ""
@@ -10272,27 +10282,27 @@ msgstr ""
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3937
+#: ../../src/MaximaCommandMenus.cpp:3997
 msgid "The name of a function we don't want to be evaluated here"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3943
+#: ../../src/MaximaCommandMenus.cpp:4003
 msgid "The name of an expression that we don't want to be evaluated."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4011
+#: ../../src/MaximaCommandMenus.cpp:4071
 msgid "The name of the field to read"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3997
+#: ../../src/MaximaCommandMenus.cpp:4057
 msgid "The name of the new struct type"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4010
+#: ../../src/MaximaCommandMenus.cpp:4070
 msgid "The name of the struct"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4003
+#: ../../src/MaximaCommandMenus.cpp:4063
 msgid "The name of the struct type"
 msgstr ""
 
@@ -10355,7 +10365,7 @@ msgstr ""
 msgid "The second argument of at() isn't an equation or a list of equations. Most probably it was lacking an \"=\"."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3421
+#: ../../src/MaximaCommandMenus.cpp:3481
 msgid "The selection contains no output that could be exported."
 msgstr ""
 
@@ -10399,7 +10409,7 @@ msgstr ""
 msgid "The worksheet"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:6361
+#: ../../src/worksheet/Worksheet.cpp:6371
 msgid "The worksheet containing maxima's input and output"
 msgstr ""
 
@@ -10526,7 +10536,7 @@ msgstr ""
 msgid "Time [in Minutes] between autosaves"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:267 ../../src/MaximaCommandMenus.cpp:3487
+#: ../../src/MaximaCommandMenus.cpp:267 ../../src/MaximaCommandMenus.cpp:3547
 msgid "Times:"
 msgstr ""
 
@@ -10637,7 +10647,7 @@ msgstr ""
 msgid "Top end"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2860
+#: ../../src/wxMaxima.cpp:2862
 msgid "Tortoise diff tool"
 msgstr ""
 
@@ -10645,7 +10655,7 @@ msgstr ""
 msgid "Trace a function..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3896
+#: ../../src/MaximaCommandMenus.cpp:3956
 msgid "Trace function(s)"
 msgstr ""
 
@@ -10661,7 +10671,7 @@ msgstr ""
 msgid "Tries to find a numerical solution for a 1st order ODE (or in other words: a equation of the format depends(x,t);diff(x,t)=(something containing x and t)"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3465
+#: ../../src/MaximaCommandMenus.cpp:3525
 msgid "Tries to find a solution of the equation that lies between the two bounds."
 msgstr ""
 
@@ -10702,15 +10712,15 @@ msgstr ""
 msgid "Trim right..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4285
+#: ../../src/MaximaCommandMenus.cpp:4345
 msgid "Trim string left"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4281
+#: ../../src/MaximaCommandMenus.cpp:4341
 msgid "Trim string on both ends"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4289
+#: ../../src/MaximaCommandMenus.cpp:4349
 msgid "Trim string right"
 msgstr ""
 
@@ -10757,11 +10767,11 @@ msgstr ""
 msgid "Trying to remove the old temp file %s"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:166
+#: ../../src/MaximaProcessManager.cpp:168
 msgid "Trying to restart maxima."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:182
+#: ../../src/MaximaProcessManager.cpp:184
 #, c-format
 msgid "Trying to start the socket a Maxima on the local machine can connect to on port %i"
 msgstr ""
@@ -10778,7 +10788,7 @@ msgstr ""
 msgid "Two sample t-test"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:6239
+#: ../../src/worksheet/Worksheet.cpp:6249
 msgid "Type"
 msgstr ""
 
@@ -10786,7 +10796,7 @@ msgstr ""
 msgid "Type in text"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3992 ../../src/wizards/MatWiz.cpp:158
+#: ../../src/MaximaCommandMenus.cpp:4052 ../../src/wizards/MatWiz.cpp:158
 msgid "Type:"
 msgstr ""
 
@@ -10806,20 +10816,20 @@ msgstr ""
 msgid "Ukrainian"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3164
+#: ../../src/wxMaxima.cpp:3166
 msgid "Un-closed parenthesis"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3152
+#: ../../src/wxMaxima.cpp:3154
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3466
+#: ../../src/wxMaxima.cpp:3468
 #, c-format
 msgid "Unable to interpret the version info I got from %s: %s"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3412
+#: ../../src/wxMaxima.cpp:3414
 #, c-format
 msgid "Unable to interpret the version info I got: %s"
 msgstr ""
@@ -10914,7 +10924,7 @@ msgstr ""
 msgid "Unicode code point to UTF8..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4178
+#: ../../src/MaximaCommandMenus.cpp:4238
 msgid "Unicode code point to char"
 msgstr ""
 
@@ -10922,7 +10932,7 @@ msgstr ""
 msgid "Unicode code point to char..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4183
+#: ../../src/MaximaCommandMenus.cpp:4243
 msgid "Unicode code point to utf8 numbers"
 msgstr ""
 
@@ -10930,15 +10940,15 @@ msgstr ""
 msgid "Unicode symbols:"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3890
+#: ../../src/MaximaCommandMenus.cpp:3950
 msgid "Unlike in other programming language return() only exits from the current loop or block(), not from the whole function."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3103
+#: ../../src/wxMaxima.cpp:3105
 msgid "Unterminated comment."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3146
+#: ../../src/wxMaxima.cpp:3148
 msgid "Unterminated string."
 msgstr ""
 
@@ -10954,9 +10964,9 @@ msgstr ""
 msgid "Updating maxima's configuration"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3405 ../../src/wxMaxima.cpp:3410
-#: ../../src/wxMaxima.cpp:3412 ../../src/wxMaxima.cpp:3459
-#: ../../src/wxMaxima.cpp:3464 ../../src/wxMaxima.cpp:3467
+#: ../../src/wxMaxima.cpp:3407 ../../src/wxMaxima.cpp:3412
+#: ../../src/wxMaxima.cpp:3414 ../../src/wxMaxima.cpp:3461
+#: ../../src/wxMaxima.cpp:3466 ../../src/wxMaxima.cpp:3469
 msgid "Upgrade"
 msgstr ""
 
@@ -10965,7 +10975,7 @@ msgstr ""
 msgid "Upper bound on the number of cycles. Must be greater than or equal to 3."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:960 ../../src/MaximaCommandMenus.cpp:3470
+#: ../../src/MaximaCommandMenus.cpp:960 ../../src/MaximaCommandMenus.cpp:3530
 msgid "Upper bound:"
 msgstr ""
 
@@ -11068,19 +11078,19 @@ msgstr ""
 msgid "Using Maxima help file from wxMaxima configuration file (helpFile=...))"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1564
+#: ../../src/wxMaxima.cpp:1566
 msgid "Using Maxima path from command line."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1561
+#: ../../src/wxMaxima.cpp:1563
 msgid "Using configured Maxima path."
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:974
+#: ../../src/MaximaProcessManager.cpp:976
 msgid "Using gnuplot's antialiassing-less png driver for embedded plots as pngcairo could not be found"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:969
+#: ../../src/MaximaProcessManager.cpp:971
 msgid "Using gnuplot's pngcairo driver for embedded plots"
 msgstr ""
 
@@ -11150,8 +11160,8 @@ msgstr ""
 msgid "Variable for the z value"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:1586 ../../src/MaximaCommandMenus.cpp:2990
-#: ../../src/MaximaCommandMenus.cpp:2996
+#: ../../src/MaximaCommandMenus.cpp:1586 ../../src/MaximaCommandMenus.cpp:3050
+#: ../../src/MaximaCommandMenus.cpp:3056
 #: ../../src/wizards/ActualValuesStorageWiz.cpp:48
 msgid "Variable name"
 msgstr ""
@@ -11160,7 +11170,7 @@ msgstr ""
 msgid "Variable name, not contents..."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3969 ../../src/MaximaCommandMenus.cpp:4487
+#: ../../src/MaximaCommandMenus.cpp:4029 ../../src/MaximaCommandMenus.cpp:4547
 msgid "Variable name:"
 msgstr ""
 
@@ -11169,14 +11179,14 @@ msgid "Variable(s)"
 msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:266 ../../src/MaximaCommandMenus.cpp:1030
-#: ../../src/MaximaCommandMenus.cpp:1082 ../../src/MaximaCommandMenus.cpp:3486
+#: ../../src/MaximaCommandMenus.cpp:1082 ../../src/MaximaCommandMenus.cpp:3546
 msgid "Variable(s):"
 msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:185 ../../src/MaximaCommandMenus.cpp:195
 #: ../../src/MaximaCommandMenus.cpp:206 ../../src/MaximaCommandMenus.cpp:231
 #: ../../src/MaximaCommandMenus.cpp:236 ../../src/MaximaCommandMenus.cpp:317
-#: ../../src/MaximaCommandMenus.cpp:958 ../../src/MaximaCommandMenus.cpp:3468
+#: ../../src/MaximaCommandMenus.cpp:958 ../../src/MaximaCommandMenus.cpp:3528
 #: ../../src/wizards/IntegrateWiz.cpp:36 ../../src/wizards/LimitWiz.cpp:32
 #: ../../src/wizards/Plot2dWiz.cpp:45 ../../src/wizards/Plot2dWiz.cpp:55
 #: ../../src/wizards/Plot2dWiz.cpp:496 ../../src/wizards/Plot3dWiz.cpp:34
@@ -11227,7 +11237,8 @@ msgid "Warn if an inactive window is idle"
 msgstr ""
 
 #: ../../src/MathParser.cpp:1343 ../../src/MaximaFileIO.cpp:536
-#: ../../src/MaximaResponseReader.cpp:361 ../../src/wxMaxima.cpp:1583
+#: ../../src/MaximaProcessManager.cpp:1100
+#: ../../src/MaximaResponseReader.cpp:361 ../../src/wxMaxima.cpp:1585
 msgid "Warning"
 msgstr ""
 
@@ -11254,11 +11265,11 @@ msgid "We weren't searching for the location of wxMaxima!\n\n"
 "Please enter the path to the program again."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3543 ../../src/MaximaCommandMenus.cpp:3553
+#: ../../src/MaximaCommandMenus.cpp:3603 ../../src/MaximaCommandMenus.cpp:3613
 msgid "WebP (*.webp)|*.webp|"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:1869
+#: ../../src/wxMaxima.cpp:1871
 msgid "Welcome to wxMaxima"
 msgstr ""
 
@@ -11274,7 +11285,7 @@ msgstr ""
 msgid "When to invoke the lisp compiler's debugger"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3858
+#: ../../src/MaximaCommandMenus.cpp:3918
 msgid "While loop"
 msgstr ""
 
@@ -11303,11 +11314,11 @@ msgstr ""
 msgid "Worksheet export of type \"%s\" is not supported yet."
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:4901
+#: ../../src/worksheet/Worksheet.cpp:4911
 msgid "Worksheet got activated"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:4833
+#: ../../src/worksheet/Worksheet.cpp:4843
 msgid "Worksheet got the mouse focus"
 msgstr ""
 
@@ -11319,7 +11330,7 @@ msgstr ""
 msgid "Wrap equations exported by the \"copy as LaTeX\" feature between \\[ and \\] as equation markers"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:5190
+#: ../../src/worksheet/Worksheet.cpp:5200
 msgid "Wrapped search"
 msgstr ""
 
@@ -11387,17 +11398,17 @@ msgstr ""
 msgid "You got an idea for an improvement of wxMaxima? Great! Please submit your idea at https://github.com/wxMaxima-developers/wxmaxima/issues. "
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3402 ../../src/wxMaxima.cpp:3456
+#: ../../src/wxMaxima.cpp:3404 ../../src/wxMaxima.cpp:3458
 #, c-format
 msgid "You have version %s. The newest wxMaxima release is %s.\n\n"
 "Select OK to visit the wxMaxima webpage."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3506
+#: ../../src/wxMaxima.cpp:3508
 msgid "Your changes will be lost if you don't save them."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3410 ../../src/wxMaxima.cpp:3464
+#: ../../src/wxMaxima.cpp:3412 ../../src/wxMaxima.cpp:3466
 msgid "Your version of wxMaxima is up to date."
 msgstr ""
 
@@ -11421,11 +11432,11 @@ msgstr ""
 msgid "Zoom out 10%"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3202 ../../src/wxMaximaFrame.cpp:201
+#: ../../src/wxMaxima.cpp:3204 ../../src/wxMaximaFrame.cpp:201
 msgid "[ unsaved ]"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3204
+#: ../../src/wxMaxima.cpp:3206
 msgid "[ unsaved* ]"
 msgstr ""
 
@@ -11543,7 +11554,7 @@ msgstr ""
 msgid "exists"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3942
+#: ../../src/MaximaCommandMenus.cpp:4002
 msgid "expression:"
 msgstr ""
 
@@ -11557,7 +11568,7 @@ msgid "false=Don't generate subscripts\n"
 "all=_ marks subscripts."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4016 ../../src/MaximaCommandMenus.cpp:4021
+#: ../../src/MaximaCommandMenus.cpp:4076 ../../src/MaximaCommandMenus.cpp:4081
 msgid "filename:"
 msgstr ""
 
@@ -11673,7 +11684,7 @@ msgid "m×n Matrix A:"
 msgstr ""
 
 #: ../../src/MaximaCommandMenus.cpp:1538 ../../src/MaximaCommandMenus.cpp:1544
-#: ../../src/MaximaCommandMenus.cpp:4190
+#: ../../src/MaximaCommandMenus.cpp:4250
 msgid "n:"
 msgstr ""
 
@@ -11745,8 +11756,8 @@ msgstr ""
 msgid "part() or the [] operator was used in order to extract the nth element of something that was less than n elements long."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4252 ../../src/MaximaCommandMenus.cpp:4257
-#: ../../src/MaximaCommandMenus.cpp:4267
+#: ../../src/MaximaCommandMenus.cpp:4312 ../../src/MaximaCommandMenus.cpp:4317
+#: ../../src/MaximaCommandMenus.cpp:4327
 msgid "part:"
 msgstr ""
 
@@ -11779,7 +11790,7 @@ msgstr ""
 msgid "printOut: Setting the page size to (%li,%li)"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4067
+#: ../../src/MaximaCommandMenus.cpp:4127
 msgid "printf"
 msgstr ""
 
@@ -11847,7 +11858,7 @@ msgstr ""
 msgid "sigma"
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:3447
+#: ../../src/MaximaCommandMenus.cpp:3507
 msgid "solve() will solve a list of equations only if for n independent equations there are n variables to solve to.\n"
 "If only one result variable is of interest the other result variables can be used to to tell solve() which variables to eliminate from the solution\n"
 "solve() searches for a global solution. If a problem has different solutions depending on the range its variables are in one way to successfully use solve() is to use solve() to eliminate variables one by one and to manually choose which of the solutions solve() found matches the current problem."
@@ -11924,7 +11935,7 @@ msgstr ""
 msgid "unnamed function (lambda)..."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3494
+#: ../../src/wxMaxima.cpp:3496
 msgid "unsaved"
 msgstr ""
 
@@ -11962,7 +11973,7 @@ msgstr ""
 msgid "wxMaxima %ld"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:3191 ../../src/wxMaximaFrame.cpp:199
+#: ../../src/wxMaxima.cpp:3193 ../../src/wxMaximaFrame.cpp:199
 #, c-format
 msgid "wxMaxima %s (%s) "
 msgstr ""
@@ -11984,7 +11995,7 @@ msgstr ""
 msgid "wxMaxima configuration"
 msgstr ""
 
-#: ../../src/MaximaProcessManager.cpp:209
+#: ../../src/MaximaProcessManager.cpp:211
 msgid "wxMaxima could not start a server.\n\n"
 "Please check you have network support\n"
 "enabled, that no internet safety appliance is configured to intercept creation of servers even if said server only accepts connections from local application (maxima insists on the graphical frontend acting as a server it can connect on over a local socket) and try again!"
@@ -11994,7 +12005,7 @@ msgstr ""
 msgid "wxMaxima dialogs set default values for inputs entries, one of which is '%'. If you have made a selection in your document, the selection will be used instead of '%'."
 msgstr ""
 
-#: ../../src/MaximaCommandMenus.cpp:4544
+#: ../../src/MaximaCommandMenus.cpp:4604
 msgid "wxMaxima document"
 msgstr ""
 
@@ -12015,7 +12026,7 @@ msgstr ""
 msgid "wxMaxima is a cross-platform graphical user interface for the computer algebra system Maxima based on wxWidgets.\n"
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2852
+#: ../../src/wxMaxima.cpp:2854
 #, c-format
 msgid "wxMaxima is now the .wxmx diff tool for:%s\n\n"
 "Open a .wxmx file's \"Diff\" in TortoiseSVN/TortoiseGit to compare it side by side."
@@ -12073,7 +12084,7 @@ msgstr ""
 msgid "wxMaxima version %s"
 msgstr ""
 
-#: ../../src/worksheet/Worksheet.cpp:6154
+#: ../../src/worksheet/Worksheet.cpp:6164
 msgid "wxMaxima worksheet"
 msgstr ""
 
@@ -12101,17 +12112,17 @@ msgstr ""
 msgid "wxworksheettohtml/totex: no target file name was given."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2202
+#: ../../src/wxMaxima.cpp:2204
 #, c-format
 msgid "wxworksheettohtml: could not write \"%s\"."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2176
+#: ../../src/wxMaxima.cpp:2178
 #, c-format
 msgid "wxworksheettohtml: unknown flavor \"%s\"; using native MathML. Known flavors: mathml, mathjax, svg, bitmap."
 msgstr ""
 
-#: ../../src/wxMaxima.cpp:2244
+#: ../../src/wxMaxima.cpp:2246
 #, c-format
 msgid "wxworksheettotex: could not write \"%s\"."
 msgstr ""
