@@ -72,6 +72,37 @@ wxSize Svgout::Render(std::unique_ptr<Cell> &&tree) {
   return m_size;
 }
 
+wxString Svgout::AccessibleText() const {
+  if (!m_tree)
+    return {};
+
+  // The same plain-text rendering the clipboard and the .wxm exporter use, so
+  // a screen reader hears exactly what a sighted user would get by copying the
+  // cell as text.
+  //
+  // Every run of whitespace collapses to a single space. 2-D ASCII-art maths
+  // (TS_ASCIIMATHS) pads its lines with long runs of spaces and tabs to keep
+  // fraction bars and matrices aligned; that alignment is meaningless once the
+  // text is spoken rather than drawn, and left in it makes the label a
+  // stuttering mess. The line breaks have to go for the same reason: this ends
+  // up in an SVG <title>/aria-label, which is a single label, not a document.
+  const wxString text = m_tree->ListToString();
+  wxString label;
+  label.reserve(text.length());
+  bool pendingSpace = false;
+  for (const wxUniChar c : text) {
+    if (wxIsspace(c))
+      pendingSpace = true;
+    else {
+      if (pendingSpace && !label.IsEmpty())
+        label += wxS(' ');
+      pendingSpace = false;
+      label += c;
+    }
+  }
+  return label;
+}
+
 bool Svgout::Layout() {
   if (!m_cmn.PrepareLayout(m_tree.get()))
     return false;
@@ -79,14 +110,40 @@ bool Svgout::Layout() {
   // Let's switch to a DC of the right size for our object.
   auto size = m_cmn.GetSize();
   auto *config = m_cmn.GetConfiguration();
+#if wxCHECK_VERSION(3, 3, 3)
+  // wxWidgets 3.3.3 and up let us name the document, which turns the whole
+  // file from an anonymous picture into something a screen reader can
+  // announce. Older wxWidgets simply produces the same SVG as before -- note
+  // that the label is computed inside the guard too, so it cannot become an
+  // unused variable there.
+  const wxString text = AccessibleText();
+  wxSVGFileDC dc(m_cmn.GetFilename(), size.x, size.y, 20 * m_cmn.GetScale(),
+                 text);
+#else
   wxSVGFileDC dc(m_cmn.GetFilename(), size.x, size.y, 20 * m_cmn.GetScale());
+#endif
   m_cmn.SetRecalculationContext(&dc);
 #if wxCHECK_VERSION(3, 1, 0)
   dc.SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
 
   config->SetRecalcContext(dc);
+#if wxCHECK_VERSION(3, 3, 3)
+  {
+    // role="math" tells assistive technology that this group is an equation
+    // rather than decoration, and aria-label carries its text form. The group
+    // has to be closed before dc goes out of scope, hence the extra block:
+    // wxSVGAccessibleGroup emits the closing </g> from its destructor.
+    wxSVGAttributes attributes;
+    attributes.Role(wxS("math"));
+    if (!text.IsEmpty())
+      attributes.AriaLabel(text);
+    wxSVGAccessibleGroup group(dc, attributes);
+    m_cmn.Draw(m_tree.get());
+  }
+#else
   m_cmn.Draw(m_tree.get());
+#endif
   config->UnsetContext();
   // std::cerr<<"cfg1="<<config<<", cfg2="<<m_tree.get()->GetConfiguration()<<"\n";
   // std::cerr<<"LayoutEnd\n";

@@ -1,5 +1,11 @@
 # Current development version
 
+- Equations exported as SVG now carry their text form, so a screen reader can
+  read them out instead of announcing an anonymous picture (GH #2230). Both
+  the HTML export's equation images and the SVG that "Copy as SVG" puts on the
+  clipboard are affected: the file is given a title, and the drawing is marked
+  up as mathematics with the equation's text as its label. Needs wxWidgets
+  3.3.3 or newer; with an older wxWidgets the exported SVG is unchanged.
 - About 7000 translations that had quietly disappeared from 21 languages are
   back. The list of files the translation system reads was written in a way
   that only found sources sitting directly in `src/`, so everything in a

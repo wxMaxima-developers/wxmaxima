@@ -359,6 +359,41 @@ static void RequireImgSrcsExist(const wxString &html, const wxString &htmlDir) {
   "1", a comma) legitimately leave more slack, so only the non-blank check
   applies to them.
 */
+/*! Every exported equation SVG must be labelled for assistive technology.
+
+  An <img> pointing at an SVG is an opaque picture to a screen reader: the
+  maths inside it is drawn as anonymous paths, so without a label the reader
+  announces nothing useful. wxWidgets 3.3.3 gives wxSVGFileDC a document
+  <title> and accessible groups, and Svgout uses both (GH #2230): the document
+  is titled with the equation's text form, and the drawing is wrapped in a
+  role="math" group carrying the same text as aria-label.
+
+  Guarded on the wxWidgets version exactly like the code under test, so on an
+  older wxWidgets this simply doesn't apply rather than failing.
+*/
+static void RequireSvgIsLabelled(const wxString &htmlDir) {
+#if wxCHECK_VERSION(3, 3, 3)
+  const wxString imgDir = htmlDir + wxS("/doc_htmlimg");
+  wxArrayString svgs;
+  wxDir::GetAllFiles(imgDir, &svgs, wxS("*.svg"), wxDIR_FILES);
+  REQUIRE(svgs.GetCount() > 0);
+  for (const wxString &svg : svgs) {
+    INFO("equation svg: " << svg.ToStdString());
+    const wxString xml = ReadTextFile(svg);
+    REQUIRE(xml.Contains(wxS("role=\"math\"")));
+    REQUIRE(xml.Contains(wxS("aria-label=\"")));
+    REQUIRE(xml.Contains(wxS("<title>")));
+    // The label must not be empty, and must not have been left as the raw
+    // multi-line ASCII-art text: it is spoken, so Svgout folds whitespace.
+    REQUIRE_FALSE(xml.Contains(wxS("aria-label=\"\"")));
+    REQUIRE_FALSE(xml.Contains(wxS("<title></title>")));
+    REQUIRE_FALSE(xml.Contains(wxS("aria-label=\"  ")));
+  }
+#else
+  wxUnusedVar(htmlDir);
+#endif
+}
+
 static void RequireBitmapsNotClipped(const wxString &htmlDir) {
   const wxString imgDir = htmlDir + wxS("/doc_htmlimg");
   wxArrayString pngs;
@@ -485,6 +520,10 @@ SCENARIO("HTML export succeeds, is deterministic and contains the document") {
       // (a BitmapScale double-magnification regression, see helper).
       if (eq.format == Configuration::bitmap)
         RequireBitmapsNotClipped(dir1);
+      // The svg flavor must label its equations for screen readers (see
+      // helper); an unlabelled SVG is an anonymous picture to them.
+      if (eq.format == Configuration::svg)
+        RequireSvgIsLabelled(dir1);
       // Both MathML flavors emit native <math> with the label beside it as
       // HTML. MathML Core dropped <mlabeledtr>, so it must never appear.
       if (eq.format == Configuration::mathML ||

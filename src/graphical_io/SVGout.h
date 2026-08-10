@@ -60,6 +60,14 @@ public:
   std::unique_ptr<wxCustomDataObject> GetDataObject();
 
 private:
+  /*! The plain-text form of the rendered cells, for use as an accessible label
+
+    Empty if there is nothing to render. Line breaks are folded into spaces:
+    the result is used as a single SVG <title>/aria-label, which is a label,
+    not a document.
+  */
+  wxString AccessibleText() const;
+
   std::unique_ptr<Cell> m_tree;
   OutCommon m_cmn;
   wxSVGFileDC m_recalculationDc;
