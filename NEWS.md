@@ -1,5 +1,15 @@
 # Current development version
 
+- Restored 464 UI/manual translations across 16 languages (Catalan, Czech,
+  Danish, German, Greek, Spanish, Finnish, French, Galician, Hungarian,
+  Italian, Kabyle, Polish, Russian, Turkish, Ukrainian) that a Crowdin sync
+  had wiped to empty. The Crowdin export that produced this had branched a
+  few minutes before an unrelated PR restored translations for source files
+  under `src/`'s subdirectories, then merged half an hour later without
+  ever picking up that change -- a race, not a Crowdin misconfiguration
+  found so far. Also fixed a CMake policy bug in the just-added
+  `check-pot-coverage` CI guard (script mode doesn't inherit the top-level
+  policy settings, so its `IN_LIST` check unconditionally errored out).
 - Equations exported as SVG now carry their text form, so a screen reader can
   read them out instead of announcing an anonymous picture (GH #2230). Both
   the HTML export's equation images and the SVG that "Copy as SVG" puts on the

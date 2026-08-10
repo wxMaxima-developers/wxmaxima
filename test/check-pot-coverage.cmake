@@ -28,6 +28,12 @@ if(NOT SOURCE_DIR)
   message(FATAL_ERROR "check-pot-coverage: SOURCE_DIR must be set")
 endif()
 
+# Script mode (cmake -P) doesn't inherit the top-level CMakeLists.txt's policy
+# settings, so IN_LIST below needs this set explicitly -- without it CMake
+# falls back to the pre-3.3 OLD behavior, where if() doesn't know IN_LIST at
+# all, and errors out on it as a bare unquoted argument list.
+cmake_policy(SET CMP0057 NEW)
+
 set(pot "${SOURCE_DIR}/locales/wxMaxima/wxMaxima.pot")
 if(NOT EXISTS "${pot}")
   message(FATAL_ERROR "check-pot-coverage: ${pot} not found")
