@@ -353,6 +353,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id,
     GetWorksheet()->KeyboardInactiveTimer().SetOwner(this,
                                                      KEYBOARD_INACTIVITY_TIMER_ID);
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
+  m_maximaConnectWatchdogTimer.SetOwner(this, MAXIMA_CONNECT_WATCHDOG_ID);
 
   m_autoSaveTimer.SetOwner(this, AUTO_SAVE_TIMER_ID);
   // Window size/position persistence is handled by wxPersistenceManager
@@ -2622,6 +2623,66 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event) {
     }
 
     break;
+  case MAXIMA_CONNECT_WATCHDOG_ID: {
+    bool connected = m_client && m_client->IsConnected();
+    bool processAlive =
+      (m_maximaProcess != NULL) && (m_pid > 0) && wxProcess::Exists(m_pid);
+    if ((!connected) && processAlive && (!m_maximaConnectWatchdogWarningShown)) {
+      m_maximaConnectWatchdogWarningShown = true;
+      wxLogMessage(_("Maxima's process is running, but hasn't connected "
+                     "back to wxMaxima within 5 seconds."));
+      wxString command = GetCommand(false);
+      // Deferred: this timer can fire while a restart triggered from within
+      // another event handler is still in flight; no modal dialogs directly
+      // inside event handlers (see the similar CallAfter()s in
+      // MaximaProcessManager.cpp/StartMaxima()).
+      CallAfter([this, command] {
+#if defined(__WXOSX__)
+        LoggingMessageBox(
+          wxString::Format(
+            _("Maxima has started, but hasn't connected to wxMaxima yet.\n"
+              "\n"
+              "On macOS this can happen if Gatekeeper has quarantined the "
+              "Maxima binary -- common if it wasn't installed via a signed "
+              "installer (e.g. via Homebrew): the process starts, but "
+              "macOS silently prevents it from actually running instead "
+              "of showing a security prompt, since a background process "
+              "spawned by wxMaxima can never answer one.\n"
+              "\n"
+              "Try running Maxima once directly from a Terminal:\n"
+              "\n"
+              "%s\n"
+              "\n"
+              "If macOS shows a security prompt there, allow it. "
+              "Otherwise you can remove the quarantine flag directly "
+              "with:\n"
+              "\n"
+              "xattr -d com.apple.quarantine %s\n"
+              "\n"
+              "Then restart wxMaxima. wxMaxima will keep waiting and "
+              "periodically retry in the meantime."),
+            command, command),
+          _("Maxima isn't connecting"), wxOK | wxICON_INFORMATION);
+#else
+        LoggingMessageBox(
+          wxString::Format(
+            _("Maxima has started, but hasn't connected to wxMaxima "
+              "within 5 seconds.\n"
+              "\n"
+              "wxMaxima will keep waiting and periodically retry. If this "
+              "doesn't resolve itself, check the debug messages sidebar "
+              "(View > Show Debug Messages) for more detail, or check if "
+              "a firewall or security software is blocking local network "
+              "connections to wxMaxima.\n"
+              "\n"
+              "Command: %s"),
+            command),
+          _("Maxima isn't connecting"), wxOK | wxICON_INFORMATION);
+#endif
+      });
+    }
+    break;
+  }
   case KEYBOARD_INACTIVITY_TIMER_ID:
   case AUTO_SAVE_TIMER_ID:
     if ((!GetWorksheet()->KeyboardInactiveTimer().IsRunning()) &&

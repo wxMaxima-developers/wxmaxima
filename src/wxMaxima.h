@@ -128,7 +128,9 @@ public:
     //! The time between two auto-saves has elapsed.
     AUTO_SAVE_TIMER_ID,
     //! We look if we got new data from maxima's stdout.
-    MAXIMA_STDOUT_POLL_ID
+    MAXIMA_STDOUT_POLL_ID,
+    //! Maxima's process was started; has it connected back to us by now?
+    MAXIMA_CONNECT_WATCHDOG_ID
   };
 
 #ifdef wxHAS_POWER_EVENTS
@@ -140,6 +142,20 @@ public:
 
   //! A timer that polls for output from the maxima process.
   wxTimer m_maximaStdoutPollTimer;
+
+  /*! Fires once, a few seconds after Maxima's process is started.
+
+    If by then the process is still running but has never connected back to
+    us (GH #1182 -- reproducibly hangs at "Maxima started. Waiting for
+    connection..." forever on macOS when the Maxima binary is quarantined by
+    Gatekeeper, since a spawned, non-interactive child process can never
+    answer a security prompt macOS may be silently blocking it on) this
+    warns the user instead of leaving them looking at an unexplained,
+    permanently stuck status message.
+  */
+  wxTimer m_maximaConnectWatchdogTimer;
+  //! Have we already shown the "Maxima hasn't connected" warning this run?
+  bool m_maximaConnectWatchdogWarningShown = false;
 
   void ShowTip(bool force);
   //! Do we want to evaluate the document on startup?

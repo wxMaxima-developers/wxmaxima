@@ -987,6 +987,51 @@ tried without rebuilding.
     `SCENARIO`s failed with the exact old symptoms, then passed again once
     the fixes were restored.
 
+- **"Maxima started but never connects" watchdog (GH #1182, open since
+  2019).** Before this, if the Maxima process launched successfully but
+  its socket connection back to wxMaxima's `wxSocketServer` never arrived
+  -- wxMaxima is the TCP *server* here; the spawned `maxima` binary is the
+  *client* that has to connect back, see `MaximaProcessManager::
+  StartServer()`/`OnMaximaConnect()` -- nothing timed this out or told the
+  user: the worksheet just sat at "Maxima started. Waiting for
+  connection..." forever, with no error, no retry, no explanation. This is
+  distinct from the *other* code path that already existed
+  (`OnMaximaConnect()`'s `m_unsuccessfulConnectionAttempts < 12` retry
+  loop): that one only fires once a connection attempt reaches wxMaxima and
+  then fails -- it does nothing if no attempt ever arrives at all, which is
+  exactly what happens when the child process never gets far enough to open
+  the socket. Confirmed live in this sandbox (Linux, can't reproduce the
+  actual macOS Gatekeeper trigger, but the missing-timeout mechanism itself
+  is platform-independent): pointed wxMaxima's `-m` flag at a throwaway
+  shell script that just `sleep`s forever instead of a real `maxima`
+  binary -- unmodified `main` sits at "Waiting for connection..." with zero
+  further log output, indefinitely.
+  Fixed with a new one-shot `wxTimer` (`MAXIMA_CONNECT_WATCHDOG_ID`,
+  `wxMaxima::m_maximaConnectWatchdogTimer`) armed for 5 seconds (matching
+  the issue title's own number) every time `StartMaxima()` successfully
+  spawns a process, and stopped both on a real successful connection
+  (`OnMaximaConnect()`) and on `KillMaxima()` (covers deliberate shutdown
+  and the top of every restart, since `StartMaxima(force=true)` always
+  calls `KillMaxima()` before re-arming). If it fires while the process is
+  still alive (`wxProcess::Exists()`) and still not connected, it shows a
+  `LoggingMessageBox` once per run (`m_maximaConnectWatchdogWarningShown`
+  latches so the automatic restart loop -- which re-arms this same timer on
+  every retry -- doesn't reshow the dialog up to 12 times in a row). The
+  message branches on `__WXOSX__`: on macOS it names the quarantine
+  possibility specifically (a background process wxMaxima spawns can never
+  answer the interactive security prompt Gatekeeper would otherwise show,
+  so it just silently never finishes starting) and suggests both re-running
+  the shown command from a Terminal once and `xattr -d
+  com.apple.quarantine`; elsewhere it's a generic "still waiting, check the
+  debug sidebar or your firewall" message, since quarantine isn't the
+  relevant cause there. Verified end-to-end in a live Xvfb session with the
+  same fake-hung-process technique: the log line appears at exactly +5s and
+  only once, and a screenshot confirms the dialog renders correctly with
+  the non-macOS wording (the `__WXOSX__` branch itself is untestable here
+  for the same reason #2229-#2232 were -- no macOS hardware in this
+  sandbox -- but it's the same string-formatting/branching mechanism,
+  already exercised by the generic path).
+
 ## Layout & Compatibility
 
 - **Mathematical Cell Padding:** Use `MC_TEXT_PADDING` (in `Configuration.h`) for text-based cells. **Exception:** `DigitCell` does not include padding to ensure visual consistency in broken-up numbers.
